@@ -1,0 +1,92 @@
+﻿namespace myTNB.SitecoreCMS
+{
+    public static class Constants
+    {
+        public struct Sitecore
+        {
+            public struct Templates
+            {
+                public const string MyTNBHome = "{D80CC87A-CA6F-4BBA-8A18-743F3B64F6FA}";
+                public const string Timestamp = "{1F9D1E01-5C6E-43AD-9EAB-2CAD3328611A}";
+                public const string WalkthroughScreens = "{9AE3E8C9-6C50-419D-AC3E-55A1D9D99E1B}";
+                public const string EnergyTips = "{C1448C37-0E1F-4879-877C-92D0768DC87B}";
+                public const string PreLoginPromo = "{3C1FD061-FBD7-4987-AF31-72519F3DD6A1}";
+                public const string Locations = "{1F49F2D1-DF07-4AF0-8553-6204D23D552D}";
+                public const string FullRTEPages = "{E57E72BF-12E7-44CF-8287-A0D931EBE237}";
+                public const string Promotions = "{3216AF00-0C54-41E9-B574-0C73758285B4}";
+            }
+
+            public struct Fields
+            {
+                public struct Shared
+                {
+                    public const string Text = "Text";
+                    public const string SubText = "SubText";
+                    public const string GeneralText = "GeneralText";
+                    public const string GeneralLink = "GeneralLink";
+                    public const string Image = "Image";
+                    public const string Title = "Title";
+                }
+
+                public struct EnergyTips
+                {
+                    public const string Category = "Category";
+                }
+
+                public struct FullRTEPages
+                {
+                    public const string PublishedDate = "PublishedDate";
+                }
+
+                public struct Locations
+                {
+                    public const string PaymentTypes = "PaymentTypes";
+                    public const string Longitude = "Longitude";
+                    public const string Latitude = "Latitude";
+                }
+
+                public struct Promotions
+                {
+                    public const string CampaignPeriod = "CampaignPeriod";
+                    public const string Prizes = "Prizes";
+                    public const string HowToWin = "HowToWin";
+                    public const string FooterNote = "FooterNote";
+                    public const string PublishedDate = "PublishedDate";
+                }
+
+                public struct FAQs
+                {
+                    public const string Question = "Question";
+                    public const string Answer = "Answer";
+                }
+
+                public struct Timestamp
+                {
+                    public const string TimestampField = "Timestamp";
+                }
+            }
+
+            public struct ItemID
+            {
+                public const string WalkthroughScreens = "{82916769-EB51-4C0B-AC65-5C9D94989D35}";
+                public const string EnergyTips = "{7554B577-7220-472A-BA73-A4FC84EEFC2E}";
+                public const string Timestamp = "{0CF0191C-8E83-47A7-B225-FA49F614BCDA}";
+                public const string Locations = "{142AE94D-86D9-4FB4-88AB-F7F75B77323B}";
+                public const string PreLoginPromo = "{8F33E504-01AC-45BC-97A2-D46795F9AEBC}";
+                public const string FullRTEPages = "{41C06271-8712-4E29-BFC4-50FC9CA24132}";
+                public const string Promotions = "{EF6BF00E-A039-4F69-8ADC-01A77C25FC2D}";
+                public const string FAQs = "{28587E38-0753-4B6B-8EA8-024022033846}";
+            }
+
+            public struct ItemPath
+            {
+                public const string Promotions = "/sitecore/content/myTNBapp/Contents/Promotions";
+                public const string FAQs = "/sitecore/content/myTNBapp/Contents/FrequentlyAskedQuestions";
+
+                public const string Timestamp = "/sitecore/content/myTNBapp/Timestamp";
+                public const string WalkthroughScreens = "/sitecore/content/myTNBapp/Contents/Walkthrough Screens";
+                public const string FullRTEPages = "/sitecore/content/myTNBapp/Contents/Full RTE Pages/Terms Condition";
+            }
+        }
+    }
+}

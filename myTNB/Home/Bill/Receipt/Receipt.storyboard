@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="199">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <scene sceneID="198">
+            <objects>
+                <viewController id="199" sceneMemberID="viewController" storyboardIdentifier="ReceiptViewController" customClass="ReceiptViewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="196"/>
+                        <viewControllerLayoutGuide type="bottom" id="197"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="200">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="201" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="96" y="-30"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="app_logo" width="44" height="44"/>
+        <image name="email_white" width="24" height="24"/>
+        <image name="password_white" width="24" height="24"/>
+        <image name="Back-White" width="24" height="24"/>
+        <image name="Cancel-White" width="24" height="24"/>
+        <image name="Next-White" width="24" height="24"/>
+        <image name="Locate" width="32" height="32"/>
+        <image name="Calculator" width="32" height="32"/>
+        <image name="Supply" width="32" height="32"/>
+        <image name="Feedback" width="32" height="32"/>
+        <image name="Loaded" width="24" height="24"/>
+        <image name="Loading" width="24" height="24"/>
+        <image name="Email" width="24" height="24"/>
+        <image name="Password" width="24" height="24"/>
+        <image name="Account-Number" width="24" height="24"/>
+        <image name="IC" width="24" height="24"/>
+        <image name="Label" width="24" height="24"/>
+        <image name="Mobile-White" width="24" height="24"/>
+        <image name="Mobile" width="24" height="24"/>
+        <image name="Name-White" width="24" height="24"/>
+        <image name="Name" width="24" height="24"/>
+        <image name="Promo-Ads" width="636" height="392"/>
+        <image name="Billing" width="150" height="150"/>
+        <image name="Dashboard" width="150" height="150"/>
+        <image name="Payment" width="150" height="150"/>
+        <image name="App-Launch" width="320" height="568"/>
+        <image name="App-Launch-Gradient" width="750" height="1334"/>
+        <image name="Logo" width="44" height="44"/>
+        <image name="Delete" width="24" height="24"/>
+        <image name="Check-Green" width="30" height="28"/>
+        <image name="X-Red" width="30" height="32"/>
+        <image name="Scan" width="24" height="24"/>
+        <image name="Circle-With-Check-Green" width="105" height="105"/>
+        <image name="Logo-Title" width="200" height="44"/>
+        <image name="Tagline" width="113.333336" height="30"/>
+        <image name="Notification" width="24" height="24"/>
+        <image name="Tab-Dashboard" width="18" height="18"/>
+        <image name="Tab-Promotions" width="18" height="18"/>
+        <image name="Tab-Feedback" width="18" height="18"/>
+        <image name="Tab-More" width="18" height="18"/>
+        <image name="Download" width="24" height="24"/>
+        <image name="Table-Tick" width="24" height="24"/>
+        <image name="Tab-Bill" width="18" height="18"/>
+        <image name="Arrow-Left" width="16" height="16"/>
+        <image name="Arrow-Right" width="16" height="16"/>
+        <image name="Camera" width="24" height="24"/>
+        <image name="Card-Number" width="24" height="24"/>
+        <image name="Card-Expiry" width="24" height="24"/>
+        <image name="Card-CVV" width="24" height="24"/>
+        <image name="Dropdown" width="16" height="16"/>
+        <image name="Get-Access" width="150" height="150"/>
+        <image name="Empty-Dashboard" width="120" height="120"/>
+        <image name="Notification-Bill" width="24" height="24"/>
+        <image name="Notification-High-Usage" width="24" height="24"/>
+        <image name="Notification-Power" width="24" height="24"/>
+        <image name="Notification-Promo" width="24" height="24"/>
+        <image name="Notification-Unread" width="16" height="16"/>
+        <image name="Notification-Weather" width="24" height="24"/>
+        <image name="Notification-Delete" width="24" height="24"/>
+        <image name="Checkbox-Active" width="24" height="24"/>
+        <image name="Checkbox-Inactive" width="24" height="24"/>
+        <image name="IC-Action-Add-Card" width="24" height="24"/>
+        <image name="IC-Action-Checkbox-Active" width="24" height="24"/>
+        <image name="IC-Action-Checkbox-InActive" width="24" height="24"/>
+        <image name="IC-Action-Expand" width="24" height="24"/>
+        <image name="IC-Action-Tick" width="24" height="24"/>
+        <image name="IC-Action-Edit" width="24" height="24"/>
+        <image name="IC-Action-Delete" width="24" height="24"/>
+        <image name="IC-Payment-Card-Mastercard" width="24" height="24"/>
+        <image name="IC-Payment-Card-Visa" width="24" height="24"/>
+        <image name="IC-Payment-FPX" width="24" height="24"/>
+        <image name="Notification-New" width="24" height="24"/>
+        <image name="Call" width="24" height="24"/>
+        <image name="Logout-Logo" width="150" height="150"/>
+        <image name="IC-Action-Rating-Active" width="32" height="32"/>
+        <image name="IC-Action-Rating-Inactive" width="32" height="32"/>
+    </resources>
+    <simulatedMetricsContainer key="defaultSimulatedMetrics">
+        <simulatedScreenMetrics key="destination" type="retina47"/>
+        <simulatedOrientationMetrics key="orientation"/>
+    </simulatedMetricsContainer>
+</document>

@@ -1,0 +1,428 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="212">
+    <device id="retina4_0" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Navigation Controller-->
+        <scene sceneID="211">
+            <objects>
+                <navigationController id="212" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="214">
+                        <rect key="frame" x="0.0" y="20" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="476" kind="relationship" relationship="rootViewController" id="691"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="215" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-289" y="-133"/>
+        </scene>
+        <!--Select Payment Method-->
+        <scene sceneID="475">
+            <objects>
+                <viewController storyboardIdentifier="SelectPaymentMethodViewController" id="476" customClass="SelectPaymentMethodViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="473"/>
+                        <viewControllerLayoutGuide type="bottom" id="474"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="477">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="1393">
+                                <rect key="frame" x="0.0" y="68" width="375" height="599"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="addCardCell" rowHeight="58" id="1394" customClass="AddCardCell">
+                                        <rect key="frame" x="0.0" y="28" width="375" height="58"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="1394" id="1395">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="58"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="2927">
+                                                    <rect key="frame" x="34" y="16" width="24" height="24"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="24" id="2930"/>
+                                                        <constraint firstAttribute="width" constant="24" id="2931"/>
+                                                    </constraints>
+                                                    <variation key="default">
+                                                        <mask key="constraints">
+                                                            <exclude reference="2930"/>
+                                                            <exclude reference="2931"/>
+                                                        </mask>
+                                                    </variation>
+                                                    <variation key="heightClass=regular-widthClass=compact" image="IC-Action-Add-Card">
+                                                        <mask key="constraints">
+                                                            <include reference="2930"/>
+                                                            <include reference="2931"/>
+                                                        </mask>
+                                                    </variation>
+                                                </imageView>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Add Card" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2932">
+                                                    <rect key="frame" x="65" y="19" width="233" height="18"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                    <color key="textColor" red="0.66666666666666663" green="0.66666666666666663" blue="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="2927" firstAttribute="top" secondItem="1395" secondAttribute="top" constant="16" id="2928"/>
+                                                <constraint firstItem="2927" firstAttribute="leading" secondItem="1395" secondAttribute="leading" constant="34" id="2929"/>
+                                            </constraints>
+                                            <variation key="default">
+                                                <mask key="subviews">
+                                                    <exclude reference="2927"/>
+                                                    <exclude reference="2932"/>
+                                                </mask>
+                                                <mask key="constraints">
+                                                    <exclude reference="2928"/>
+                                                    <exclude reference="2929"/>
+                                                </mask>
+                                            </variation>
+                                            <variation key="heightClass=regular-widthClass=compact">
+                                                <mask key="subviews">
+                                                    <include reference="2927"/>
+                                                    <include reference="2932"/>
+                                                </mask>
+                                                <mask key="constraints">
+                                                    <include reference="2928"/>
+                                                    <include reference="2929"/>
+                                                </mask>
+                                            </variation>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="lblAddCard" destination="2932" id="name-outlet-2932"/>
+                                        </connections>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="selectPaymentCell" rowHeight="58" id="11407" customClass="SelectPaymentCell">
+                                        <rect key="frame" x="0.0" y="86" width="375" height="58"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="11407" id="11408">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="58"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="30014">
+                                                    <rect key="frame" x="18" y="2" width="339" height="58"/>
+                                                    <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <variation key="heightClass=regular-widthClass=compact">
+                                                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    </variation>
+                                                </view>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="30014" firstAttribute="leading" secondItem="11408" secondAttribute="leading" constant="18" id="30025"/>
+                                                <constraint firstAttribute="trailing" secondItem="30014" secondAttribute="trailing" constant="18" id="30028"/>
+                                                <constraint firstItem="30014" firstAttribute="top" secondItem="11408" secondAttribute="top" constant="2" id="30031"/>
+                                                <constraint firstItem="30014" firstAttribute="bottom" secondItem="11408" secondAttribute="bottom" constant="2" id="30034"/>
+                                            </constraints>
+                                            <variation key="default">
+                                                <mask key="subviews">
+                                                    <exclude reference="30014"/>
+                                                </mask>
+                                                <mask key="constraints">
+                                                    <exclude reference="30025"/>
+                                                    <exclude reference="30028"/>
+                                                    <exclude reference="30031"/>
+                                                    <exclude reference="30034"/>
+                                                </mask>
+                                            </variation>
+                                            <variation key="heightClass=regular-widthClass=compact">
+                                                <mask key="subviews">
+                                                    <include reference="30014"/>
+                                                </mask>
+                                                <mask key="constraints">
+                                                    <include reference="30025"/>
+                                                    <include reference="30028"/>
+                                                    <include reference="30031"/>
+                                                    <include reference="30034"/>
+                                                </mask>
+                                            </variation>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="fpxCell" rowHeight="58" id="12154" customClass="fpxCell">
+                                        <rect key="frame" x="0.0" y="144" width="375" height="58"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="12154" id="12155">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="58"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="29937">
+                                                    <rect key="frame" x="18" y="2" width="339" height="58"/>
+                                                    <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <variation key="heightClass=regular-widthClass=compact">
+                                                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    </variation>
+                                                </view>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="29937" firstAttribute="leading" secondItem="12155" secondAttribute="leading" constant="18" id="29998"/>
+                                                <constraint firstAttribute="trailing" secondItem="29937" secondAttribute="trailing" constant="9" id="30001">
+                                                    <variation key="heightClass=regular-widthClass=compact" constant="18"/>
+                                                </constraint>
+                                                <constraint firstItem="29937" firstAttribute="bottom" secondItem="12155" secondAttribute="bottom" id="30004">
+                                                    <variation key="heightClass=regular-widthClass=compact" constant="2"/>
+                                                </constraint>
+                                                <constraint firstItem="29937" firstAttribute="top" secondItem="12155" secondAttribute="top" constant="2" id="30007"/>
+                                            </constraints>
+                                            <variation key="default">
+                                                <mask key="subviews">
+                                                    <exclude reference="29937"/>
+                                                </mask>
+                                                <mask key="constraints">
+                                                    <exclude reference="29998"/>
+                                                    <exclude reference="30001"/>
+                                                    <exclude reference="30004"/>
+                                                    <exclude reference="30007"/>
+                                                </mask>
+                                            </variation>
+                                            <variation key="heightClass=regular-widthClass=compact">
+                                                <mask key="subviews">
+                                                    <include reference="29937"/>
+                                                </mask>
+                                                <mask key="constraints">
+                                                    <include reference="29998"/>
+                                                    <include reference="30001"/>
+                                                    <include reference="30004"/>
+                                                    <include reference="30007"/>
+                                                </mask>
+                                            </variation>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </prototypes>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <variation key="default">
+                            <mask key="subviews">
+                                <exclude reference="1393"/>
+                            </mask>
+                        </variation>
+                        <variation key="heightClass=regular-widthClass=compact">
+                            <mask key="subviews">
+                                <include reference="1393"/>
+                            </mask>
+                        </variation>
+                    </view>
+                    <navigationItem key="navigationItem" title="Select Payment Method" id="690"/>
+                    <connections>
+                        <outlet property="selectPaymentTableView" destination="1393" id="name-outlet-1393"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="478" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="250" y="-130"/>
+        </scene>
+        <scene sceneID="30570">
+            <objects>
+                <viewController id="30571" sceneMemberID="viewController" customClass="SelectBillsViewController" storyboardIdentifier="SelectBillsViewController" useStoryboardIdentifierAsRestorationIdentifier="YES">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="30568"/>
+                        <viewControllerLayoutGuide type="bottom" id="30569"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="30572">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" id="30719" translatesAutoresizingMaskIntoConstraints="NO">
+                                <rect key="frame" x="0.0" y="432" width="320" height="136"/>
+                                <color key="backgroundColor" colorSpace="calibratedWhite" white="0.666666666666667" alpha="1"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="32133" translatesAutoresizingMaskIntoConstraints="NO">
+                                        <rect key="frame" x="18" y="60" width="284" height="52"/>
+                                        <state key="normal" title="Pay bill (0)"/>
+                                        <constraints>
+                                            <constraint id="32136" firstItem="32133" firstAttribute="height" constant="52"/>
+                                        </constraints>
+                                    </button>
+                                </subviews>
+                                <constraints>
+                                    <constraint id="30724" firstItem="30719" firstAttribute="height" constant="136"/>
+                                    <constraint id="32134" firstItem="32133" firstAttribute="leading" secondItem="30719" secondAttribute="leading" constant="18"/>
+                                    <constraint id="32135" firstItem="30719" firstAttribute="trailing" secondItem="32133" secondAttribute="trailing" constant="18"/>
+                                    <constraint id="32137" firstItem="30719" firstAttribute="bottom" secondItem="32133" secondAttribute="bottom" constant="24"/>
+                                </constraints>
+                            </view>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="30720" translatesAutoresizingMaskIntoConstraints="NO" fixedFrame="YES">
+                                <rect key="frame" x="0.0" y="64" width="320" height="368"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="31571" customClass="SelectBillsTableViewCell" reuseIdentifier="SelectBillsTableViewCell" restorationIdentifier="SelectBillsTableViewCell">
+                                        <rect key="frame" x="0.0" y="28" width="320" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="31571" id="31572">
+                                            <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </prototypes>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </tableView>
+                        </subviews>
+                        <constraints>
+                            <constraint id="30723" firstItem="30719" firstAttribute="bottom" secondItem="30572" secondAttribute="bottom"/>
+                            <constraint id="30725" firstItem="30719" firstAttribute="trailing" secondItem="30572" secondAttribute="trailingMargin" constant="16"/>
+                            <constraint id="30726" firstItem="30572" firstAttribute="leadingMargin" secondItem="30719" secondAttribute="leading" constant="16"/>
+                        </constraints>
+                    </view>
+                    <navigationItem title="Select Bill(s)" id="30715" key="navigationItem"/>
+                    <connections>
+                        <outlet property="SelectBillsTableView" destination="30720" id="name-outlet-30720"/>
+                        <outlet property="BottomContainerView" destination="30719" id="name-outlet-30719"/>
+                        <outlet property="BtnPayBill" destination="32133" id="name-outlet-32133"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="30573" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="997" y="-129"/>
+        </scene>
+        <scene sceneID="30593">
+            <objects>
+                <navigationController id="30594" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="30596">
+                        <rect key="frame" x="0.0" y="20" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue id="30716" destination="30571" kind="relationship" relationship="rootViewController"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="30597" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="634" y="-131"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="IC-Action-Add-Card" width="24" height="24"/>
+        <image name="app_logo" width="44" height="44"/>
+        <image name="email_white" width="24" height="24"/>
+        <image name="Back-White" width="24" height="24"/>
+        <image name="Cancel-White" width="24" height="24"/>
+        <image name="Next-White" width="24" height="24"/>
+        <image name="Calculator" width="32" height="32"/>
+        <image name="Supply" width="32" height="32"/>
+        <image name="Feedback" width="32" height="32"/>
+        <image name="Loaded" width="24" height="24"/>
+        <image name="Loading" width="24" height="24"/>
+        <image name="Email" width="24" height="24"/>
+        <image name="Account-Number" width="24" height="24"/>
+        <image name="IC" width="24" height="24"/>
+        <image name="Label" width="24" height="24"/>
+        <image name="Mobile-White" width="24" height="24"/>
+        <image name="Mobile" width="24" height="24"/>
+        <image name="Name-White" width="24" height="24"/>
+        <image name="Name" width="24" height="24"/>
+        <image name="Billing" width="150" height="150"/>
+        <image name="Dashboard" width="150" height="150"/>
+        <image name="Payment" width="150" height="150"/>
+        <image name="App-Launch" width="320" height="568"/>
+        <image name="Logo" width="44" height="44"/>
+        <image name="Delete" width="24" height="24"/>
+        <image name="Check-Green" width="30" height="28"/>
+        <image name="X-Red" width="30" height="32"/>
+        <image name="Scan" width="24" height="24"/>
+        <image name="Circle-With-Check-Green" width="105" height="105"/>
+        <image name="Logo-Title" width="200" height="44"/>
+        <image name="Tagline" width="113.333336" height="30"/>
+        <image name="Notification" width="24" height="24"/>
+        <image name="Download" width="24" height="24"/>
+        <image name="Table-Tick" width="24" height="24"/>
+        <image name="Arrow-Left" width="16" height="16"/>
+        <image name="Arrow-Right" width="16" height="16"/>
+        <image name="Camera" width="24" height="24"/>
+        <image name="Card-Number" width="24" height="24"/>
+        <image name="Card-Expiry" width="24" height="24"/>
+        <image name="Card-CVV" width="24" height="24"/>
+        <image name="Dropdown" width="16" height="16"/>
+        <image name="Get-Access" width="150" height="150"/>
+        <image name="Empty-Dashboard" width="120" height="120"/>
+        <image name="Notification-Unread" width="16" height="16"/>
+        <image name="Notification-Delete" width="24" height="24"/>
+        <image name="Checkbox-Active" width="24" height="24"/>
+        <image name="Checkbox-Inactive" width="24" height="24"/>
+        <image name="IC-Action-Checkbox-Active" width="24" height="24"/>
+        <image name="IC-Action-Checkbox-InActive" width="24" height="24"/>
+        <image name="IC-Action-Expand" width="24" height="24"/>
+        <image name="IC-Action-Tick" width="24" height="24"/>
+        <image name="IC-Action-Edit" width="24" height="24"/>
+        <image name="IC-Action-Delete" width="24" height="24"/>
+        <image name="IC-Payment-Card-Mastercard" width="24" height="24"/>
+        <image name="IC-Payment-Card-Visa" width="24" height="24"/>
+        <image name="IC-Payment-FPX" width="24" height="24"/>
+        <image name="Notification-New" width="24" height="24"/>
+        <image name="Call" width="24" height="24"/>
+        <image name="Logout-Logo" width="150" height="150"/>
+        <image name="IC-Action-Rating-Active" width="32" height="32"/>
+        <image name="IC-Action-Rating-Inactive" width="32" height="32"/>
+        <image name="IC-Field-Search" width="24" height="24"/>
+        <image name="IC-Button-Map-Center" width="24" height="24"/>
+        <image name="IC-Header-Share" width="24" height="24"/>
+        <image name="IC-Action-Dropdown" width="24" height="24"/>
+        <image name="Map-Kedai-Tenaga" width="32" height="32"/>
+        <image name="Map-Convenient-Store" width="32" height="32"/>
+        <image name="Find_Account_Number" width="284" height="121"/>
+        <image name="Promo-Ads" width="321" height="198"/>
+        <image name="Direction" width="24" height="24"/>
+        <image name="Notification-Empty" width="150" height="150"/>
+        <image name="Card-Empty" width="150" height="150"/>
+        <image name="IC-Feedback" width="24" height="24"/>
+        <image name="IC-FieldCoordinates" width="24" height="24"/>
+        <image name="IC-Action-Location" width="24" height="24"/>
+        <image name="IC-FieldFeedback" width="24" height="24"/>
+        <image name="Faulty-TNB-Lamp" width="320" height="121"/>
+        <image name="Locate-Blue" width="32" height="32"/>
+        <image name="Feedback-Blue" width="24" height="24"/>
+        <image name="IC-Field-Text" width="24" height="24"/>
+        <image name="Red-Cross" width="122" height="122"/>
+        <image name="Loading-Circle" width="44" height="44"/>
+        <image name="Notification-New-Bill" width="24" height="24"/>
+        <image name="Notification-Bill-Due" width="24" height="24"/>
+        <image name="Notification-Reconnection" width="24" height="24"/>
+        <image name="Notification-Disconnection" width="24" height="24"/>
+        <image name="Notification-Dunning" width="24" height="24"/>
+        <image name="Password-Old" width="24" height="24"/>
+        <image name="Password" width="24" height="24"/>
+        <image name="password_white" width="24" height="24"/>
+        <image name="IC-Display-Prelogin" width="150" height="100"/>
+        <image name="Feedback-Bill" width="48" height="48"/>
+        <image name="Feedback-Header" width="320" height="126"/>
+        <image name="Feedback-Others" width="48" height="48"/>
+        <image name="Feedback-Streetlamp" width="48" height="48"/>
+        <image name="Feedback-Submitted" width="48" height="48"/>
+        <image name="Feedback-Submitted-Bill" width="24" height="24"/>
+        <image name="Feedback-Submitted-Others" width="24" height="24"/>
+        <image name="Feedback-Submitted-Streetlamp" width="24" height="24"/>
+        <image name="App-Launch-Gradient" width="320" height="568"/>
+        <image name="Tab-Feedback" width="25" height="25"/>
+        <image name="Tab-Promotions" width="25" height="25"/>
+        <image name="Tab-Dashboard" width="25" height="25"/>
+        <image name="Tab-More" width="25" height="25"/>
+        <image name="Payment-Checkbox-Active" width="24" height="24"/>
+        <image name="Payment-Checkbox-Inactive" width="24" height="24"/>
+        <image name="Tab-Bill" width="25" height="25"/>
+        <image name="IC-Action-Show-Password" width="24" height="24"/>
+        <image name="IC-Payment-Card-Amex" width="24" height="24"/>
+        <image name="IC-Empty-Promotion" width="150" height="150"/>
+        <image name="Notification-Promo" width="24" height="24"/>
+        <image name="Notification-Banner-Bill-Due" width="320" height="150"/>
+        <image name="Notification-Banner-New-Bill" width="320" height="150"/>
+        <image name="Notification-Banner-Disconnection" width="320" height="150"/>
+        <image name="Notification-Banner-Dunning" width="320" height="150"/>
+        <image name="Notification-Banner-Reconnection" width="320" height="150"/>
+        <image name="Tab-Promotions-Unread-Inactive" width="25" height="25"/>
+        <image name="Tab-Promotions-Unread-Active" width="25" height="25"/>
+        <image name="IC-RE-Leaf-White" width="16" height="16"/>
+        <image name="IC-RE-Leaf-Green" width="24" height="24"/>
+        <image name="IC-Action-Show-PasswordWhite" width="24" height="24"/>
+    </resources>
+</document>

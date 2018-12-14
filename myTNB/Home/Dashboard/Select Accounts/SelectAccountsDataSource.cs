@@ -1,0 +1,107 @@
+﻿using System;
+using System.Drawing;
+using CoreGraphics;
+using Foundation;
+using myTNB.Model;
+using UIKit;
+
+namespace myTNB.Dashboard.SelectAccounts
+{
+    public class SelectAccountsDataSource : UITableViewSource
+    {
+        public CustomerAccountRecordListModel _accountList = new CustomerAccountRecordListModel();
+        SelectAccountTableViewController _controller;
+        public SelectAccountsDataSource(SelectAccountTableViewController controller)
+        {
+            _controller = controller;
+            if (DataManager.DataManager.SharedInstance.AccountRecordsList != null && DataManager.DataManager.SharedInstance.AccountRecordsList.d != null)
+            {
+                _accountList = DataManager.DataManager.SharedInstance.AccountRecordsList;
+            }
+        }
+
+        public override nint NumberOfSections(UITableView tableView)
+        {
+            return 1;
+        }
+
+        public override nint RowsInSection(UITableView tableview, nint section)
+        {
+            return _accountList.d != null ? _accountList.d.Count : 0;
+        }
+
+        public override UITableViewCell GetCell(UITableView tableView, NSIndexPath indexPath)
+        {
+            CustomerAccountRecordModel item = new CustomerAccountRecordModel();
+            item = _accountList.d[indexPath.Row];
+            nfloat cellWidth = UIApplication.SharedApplication.KeyWindow.Frame.Width;
+            var cell = tableView.DequeueReusableCell("AccountsViewCell", indexPath) as AccountsViewCell;
+
+            cell.lblAccountName.Text = item.accDesc;
+            CGSize newLabelSize = GetLabelSize(cell.lblAccountName, cellWidth - 96, 24);
+            cell.lblAccountName.Frame = new CGRect(18, 16, newLabelSize.Width, 24);
+
+            cell.imgLeaf.Frame = new CGRect(18 + cell.lblAccountName.Frame.Width + 6, 16, 24, 24);
+            bool isREAccount = item.accountCategoryId != null
+                                   ? item.accountCategoryId.Equals("2")
+                                   : false;
+            cell.imgLeaf.Hidden = !isREAccount;
+
+            if (indexPath.Row == DataManager.DataManager.SharedInstance.CurrentSelectedAccountIndex
+               && item.accNum == _accountList.d[DataManager.DataManager.SharedInstance.CurrentSelectedAccountIndex].accNum)
+            {
+                cell.Accessory = UITableViewCellAccessory.None;
+                cell.AccessoryView = new UIView(new CGRect(0, 0, 24, 24));
+                UIImageView imgViewTick = new UIImageView(new CGRect(0, 0, 24, 24));
+                imgViewTick.Image = UIImage.FromBundle("Table-Tick");
+                cell.AccessoryView.AddSubview(imgViewTick);
+            }
+            else
+            {
+                if (cell != null && cell.AccessoryView != null && cell.AccessoryView.Subviews != null)
+                {
+                    foreach (var subView in cell.AccessoryView.Subviews)
+                    {
+                        subView.RemoveFromSuperview();
+                    }
+                }
+            }
+            return cell;
+        }
+
+        public override void RowSelected(UITableView tableView, NSIndexPath indexPath)
+        {
+            DataManager.DataManager.SharedInstance.SelectedAccount = _accountList.d[indexPath.Row];
+            DataManager.DataManager.SharedInstance.CurrentSelectedAccountIndex = indexPath.Row;
+            if (DataManager.DataManager.SharedInstance.CurrentSelectedAccountIndex
+               == DataManager.DataManager.SharedInstance.PreviousSelectedAccountIndex)
+            {
+                DataManager.DataManager.SharedInstance.IsSameAccount = true;
+            }
+            else
+            {
+                DataManager.DataManager.SharedInstance.PreviousSelectedAccountIndex
+                           = DataManager.DataManager.SharedInstance.CurrentSelectedAccountIndex;
+                DataManager.DataManager.SharedInstance.IsSameAccount = false;
+            }
+            if (DataManager.DataManager.SharedInstance.IsSameAccount)
+            {
+                _controller.DismissViewController(true, null);
+            }
+            else
+            {
+                _controller.ExecuteGetBillAccountDetailsCall();
+            }
+        }
+
+        public override nfloat GetHeightForRow(UITableView tableView, NSIndexPath indexPath)
+        {
+            return 57F;
+        }
+
+        CGSize GetLabelSize(UILabel label, nfloat width, nfloat height)
+        {
+            return label.Text.StringSize(label.Font, new SizeF((float)width, (float)height));
+        }
+    }
+}

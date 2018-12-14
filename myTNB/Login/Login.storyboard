@@ -1,0 +1,509 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="205">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Prelogin View Controller-->
+        <scene sceneID="204">
+            <objects>
+                <viewController storyboardIdentifier="PreloginViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="205" customClass="PreloginViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="202"/>
+                        <viewControllerLayoutGuide type="bottom" id="203"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="206">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="207" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="96" y="43"/>
+        </scene>
+        <!--Login View Controller-->
+        <scene sceneID="219">
+            <objects>
+                <viewController storyboardIdentifier="LoginViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="220" customClass="LoginViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="217"/>
+                        <viewControllerLayoutGuide type="bottom" id="218"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="221">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="574">
+                                <rect key="frame" x="18" y="595" width="343" height="48"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="48" id="5475"/>
+                                </constraints>
+                                <state key="normal" title="Login">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="5475"/>
+                                    </mask>
+                                </variation>
+                                <variation key="heightClass=regular-widthClass=compact">
+                                    <color key="backgroundColor" red="0.12156862745098039" green="0.58823529411764708" blue="0.19607843137254902" alpha="1" colorSpace="calibratedRGB"/>
+                                    <mask key="constraints">
+                                        <include reference="5475"/>
+                                    </mask>
+                                </variation>
+                            </button>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="2275">
+                                <rect key="frame" x="165.5" y="56" width="44" height="44"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="2376"/>
+                                    <constraint firstAttribute="width" constant="44" id="2388"/>
+                                </constraints>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="2376"/>
+                                        <exclude reference="2388"/>
+                                    </mask>
+                                </variation>
+                                <variation key="heightClass=regular-widthClass=compact" image="app_logo">
+                                    <mask key="constraints">
+                                        <include reference="2376"/>
+                                        <include reference="2388"/>
+                                    </mask>
+                                </variation>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Welcome back!" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2605">
+                                <rect key="frame" x="16" y="100" width="343" height="44"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="21" id="2652">
+                                        <variation key="heightClass=regular-widthClass=compact" constant="44"/>
+                                    </constraint>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="24"/>
+                                <color key="textColor" red="0.9882352941176471" green="0.76078431372549016" blue="0.17254901960784313" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="2652"/>
+                                    </mask>
+                                </variation>
+                                <variation key="heightClass=regular-widthClass=compact">
+                                    <mask key="constraints">
+                                        <include reference="2652"/>
+                                    </mask>
+                                </variation>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="myTNB Account Login" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2996">
+                                <rect key="frame" x="16" y="144" width="343" height="24"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="21" id="3168">
+                                        <variation key="heightClass=regular-widthClass=compact" constant="24"/>
+                                    </constraint>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="3168"/>
+                                    </mask>
+                                </variation>
+                                <variation key="heightClass=regular-widthClass=compact">
+                                    <mask key="constraints">
+                                        <include reference="3168"/>
+                                    </mask>
+                                </variation>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Don't have a myTNB account?" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6175">
+                                <rect key="frame" x="18" y="542" width="343" height="16"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="16" id="6185"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="6185"/>
+                                    </mask>
+                                </variation>
+                                <variation key="heightClass=regular-widthClass=compact">
+                                    <mask key="constraints">
+                                        <include reference="6185"/>
+                                    </mask>
+                                </variation>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6187">
+                                <rect key="frame" x="105.5" y="558" width="166" height="16"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="16" id="6188"/>
+                                    <constraint firstAttribute="width" constant="166" id="6189"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                <state key="normal" title="Register for an account">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="6188"/>
+                                        <exclude reference="6189"/>
+                                    </mask>
+                                </variation>
+                                <variation key="heightClass=regular-widthClass=compact">
+                                    <mask key="constraints">
+                                        <include reference="6188"/>
+                                        <include reference="6189"/>
+                                    </mask>
+                                </variation>
+                            </button>
+                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="58187">
+                                <rect key="frame" x="18" y="32" width="339" height="48"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Invalid Email or Password" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="58268">
+                                        <rect key="frame" x="16" y="16" width="307" height="16"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="16" id="58475"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                        <variation key="default">
+                                            <mask key="constraints">
+                                                <exclude reference="58475"/>
+                                            </mask>
+                                        </variation>
+                                        <variation key="heightClass=regular-widthClass=compact">
+                                            <mask key="constraints">
+                                                <include reference="58475"/>
+                                            </mask>
+                                        </variation>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="48" id="58431"/>
+                                    <constraint firstItem="58268" firstAttribute="leading" secondItem="58187" secondAttribute="leading" constant="8" id="58453">
+                                        <variation key="heightClass=regular-widthClass=compact" constant="16"/>
+                                    </constraint>
+                                    <constraint firstAttribute="trailing" secondItem="58268" secondAttribute="trailing" constant="8" id="58464">
+                                        <variation key="heightClass=regular-widthClass=compact" constant="16"/>
+                                    </constraint>
+                                    <constraint firstItem="58268" firstAttribute="top" secondItem="58187" secondAttribute="top" constant="14" id="58486">
+                                        <variation key="heightClass=regular-widthClass=compact" constant="16"/>
+                                    </constraint>
+                                </constraints>
+                                <variation key="default">
+                                    <mask key="subviews">
+                                        <exclude reference="58268"/>
+                                    </mask>
+                                    <mask key="constraints">
+                                        <exclude reference="58431"/>
+                                        <exclude reference="58453"/>
+                                        <exclude reference="58464"/>
+                                        <exclude reference="58486"/>
+                                    </mask>
+                                </variation>
+                                <variation key="heightClass=regular-widthClass=compact">
+                                    <color key="backgroundColor" red="0.9882352941176471" green="0.76078431372549016" blue="0.17254901960784313" alpha="1" colorSpace="calibratedRGB"/>
+                                    <mask key="subviews">
+                                        <include reference="58268"/>
+                                    </mask>
+                                    <mask key="constraints">
+                                        <include reference="58431"/>
+                                        <include reference="58453"/>
+                                        <include reference="58464"/>
+                                        <include reference="58486"/>
+                                    </mask>
+                                </variation>
+                            </view>
+                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="59333">
+                                <rect key="frame" x="18" y="32" width="339" height="64"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="An email to reset your password has been sent to email@email.com" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="59444">
+                                        <rect key="frame" x="16" y="16" width="307" height="32"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="32" id="60015"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                        <variation key="default">
+                                            <mask key="constraints">
+                                                <exclude reference="60015"/>
+                                            </mask>
+                                        </variation>
+                                        <variation key="heightClass=regular-widthClass=compact">
+                                            <mask key="constraints">
+                                                <include reference="60015"/>
+                                            </mask>
+                                        </variation>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="64" id="59971"/>
+                                    <constraint firstItem="59444" firstAttribute="leading" secondItem="59333" secondAttribute="leading" constant="16" id="59993"/>
+                                    <constraint firstAttribute="trailing" secondItem="59444" secondAttribute="trailing" constant="16" id="60004"/>
+                                    <constraint firstItem="59444" firstAttribute="top" secondItem="59333" secondAttribute="top" constant="16" id="60026"/>
+                                </constraints>
+                                <variation key="default">
+                                    <mask key="subviews">
+                                        <exclude reference="59444"/>
+                                    </mask>
+                                    <mask key="constraints">
+                                        <exclude reference="59971"/>
+                                        <exclude reference="59993"/>
+                                        <exclude reference="60004"/>
+                                        <exclude reference="60026"/>
+                                    </mask>
+                                </variation>
+                                <variation key="heightClass=regular-widthClass=compact">
+                                    <color key="backgroundColor" red="0.9882352941176471" green="0.76078431372549016" blue="0.17254901960784313" alpha="1" colorSpace="calibratedRGB"/>
+                                    <mask key="subviews">
+                                        <include reference="59444"/>
+                                    </mask>
+                                    <mask key="constraints">
+                                        <include reference="59971"/>
+                                        <include reference="59993"/>
+                                        <include reference="60004"/>
+                                        <include reference="60026"/>
+                                    </mask>
+                                </variation>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="2275" firstAttribute="top" secondItem="221" secondAttribute="top" constant="50" id="2364">
+                                <variation key="heightClass=regular-widthClass=compact" constant="56"/>
+                            </constraint>
+                            <constraint firstItem="2275" firstAttribute="centerX" secondItem="221" secondAttribute="centerX" id="2400"/>
+                            <constraint firstItem="2605" firstAttribute="leading" secondItem="221" secondAttribute="leadingMargin" id="2628"/>
+                            <constraint firstItem="2605" firstAttribute="trailing" secondItem="221" secondAttribute="trailingMargin" id="2640"/>
+                            <constraint firstItem="2605" firstAttribute="top" secondItem="221" secondAttribute="top" constant="129" id="2664">
+                                <variation key="heightClass=regular-widthClass=compact" constant="100"/>
+                            </constraint>
+                            <constraint firstItem="2996" firstAttribute="leading" secondItem="221" secondAttribute="leadingMargin" id="3144"/>
+                            <constraint firstItem="2996" firstAttribute="trailing" secondItem="2605" secondAttribute="trailing" id="3156"/>
+                            <constraint firstItem="2996" firstAttribute="top" secondItem="221" secondAttribute="top" constant="141" id="3180">
+                                <variation key="heightClass=regular-widthClass=compact" constant="144"/>
+                            </constraint>
+                            <constraint firstItem="574" firstAttribute="leading" secondItem="221" secondAttribute="leadingMargin" constant="2" id="5451"/>
+                            <constraint firstItem="574" firstAttribute="trailing" secondItem="221" secondAttribute="trailingMargin" constant="2" id="5463"/>
+                            <constraint firstAttribute="bottom" secondItem="574" secondAttribute="bottom" constant="24" id="5476"/>
+                            <constraint firstItem="6175" firstAttribute="leading" secondItem="221" secondAttribute="leadingMargin" constant="2" id="6183"/>
+                            <constraint firstItem="6175" firstAttribute="trailing" secondItem="221" secondAttribute="trailingMargin" constant="2" id="6184"/>
+                            <constraint firstAttribute="bottom" secondItem="6175" secondAttribute="bottom" constant="109" id="6186"/>
+                            <constraint firstItem="218" firstAttribute="top" secondItem="6187" secondAttribute="bottom" constant="93" id="6190"/>
+                            <constraint firstItem="6187" firstAttribute="centerX" secondItem="221" secondAttribute="centerX" constant="1" id="6191"/>
+                            <constraint firstItem="58187" firstAttribute="leading" secondItem="2605" secondAttribute="leading" constant="2" id="58409"/>
+                            <constraint firstItem="2605" firstAttribute="trailing" secondItem="58187" secondAttribute="trailing" constant="2" id="58420"/>
+                            <constraint firstItem="58187" firstAttribute="top" secondItem="221" secondAttribute="top" constant="32" id="58442"/>
+                            <constraint firstItem="59333" firstAttribute="leading" secondItem="2605" secondAttribute="leading" constant="2" id="59949"/>
+                            <constraint firstItem="2605" firstAttribute="trailing" secondItem="59333" secondAttribute="trailing" constant="2" id="59960"/>
+                            <constraint firstItem="59333" firstAttribute="top" secondItem="221" secondAttribute="top" constant="32" id="59982"/>
+                        </constraints>
+                        <variation key="default">
+                            <mask key="subviews">
+                                <exclude reference="574"/>
+                                <exclude reference="2275"/>
+                                <exclude reference="2605"/>
+                                <exclude reference="2996"/>
+                                <exclude reference="6175"/>
+                                <exclude reference="6187"/>
+                                <exclude reference="58187"/>
+                                <exclude reference="59333"/>
+                            </mask>
+                            <mask key="constraints">
+                                <exclude reference="6190"/>
+                                <exclude reference="58409"/>
+                                <exclude reference="58442"/>
+                                <exclude reference="59949"/>
+                                <exclude reference="59982"/>
+                                <exclude reference="2628"/>
+                                <exclude reference="2640"/>
+                                <exclude reference="2664"/>
+                                <exclude reference="58420"/>
+                                <exclude reference="59960"/>
+                                <exclude reference="3144"/>
+                                <exclude reference="3156"/>
+                                <exclude reference="3180"/>
+                                <exclude reference="2364"/>
+                                <exclude reference="2400"/>
+                                <exclude reference="6183"/>
+                                <exclude reference="6184"/>
+                                <exclude reference="6186"/>
+                                <exclude reference="6191"/>
+                                <exclude reference="5451"/>
+                                <exclude reference="5463"/>
+                                <exclude reference="5476"/>
+                            </mask>
+                        </variation>
+                        <variation key="widthClass=compact">
+                            <mask key="subviews">
+                                <include reference="574"/>
+                            </mask>
+                        </variation>
+                        <variation key="heightClass=regular-widthClass=compact">
+                            <mask key="subviews">
+                                <include reference="2275"/>
+                                <include reference="2605"/>
+                                <include reference="2996"/>
+                                <include reference="6175"/>
+                                <include reference="6187"/>
+                                <include reference="58187"/>
+                                <include reference="59333"/>
+                            </mask>
+                            <mask key="constraints">
+                                <include reference="6190"/>
+                                <include reference="58409"/>
+                                <include reference="58442"/>
+                                <include reference="59949"/>
+                                <include reference="59982"/>
+                                <include reference="2628"/>
+                                <include reference="2640"/>
+                                <include reference="2664"/>
+                                <include reference="58420"/>
+                                <include reference="59960"/>
+                                <include reference="3144"/>
+                                <include reference="3156"/>
+                                <include reference="3180"/>
+                                <include reference="2364"/>
+                                <include reference="2400"/>
+                                <include reference="6183"/>
+                                <include reference="6184"/>
+                                <include reference="6186"/>
+                                <include reference="6191"/>
+                                <include reference="5451"/>
+                                <include reference="5463"/>
+                                <include reference="5476"/>
+                            </mask>
+                        </variation>
+                    </view>
+                    <connections>
+                        <outlet property="btnLogin" destination="574" id="name-outlet-574"/>
+                        <outlet property="btnRegister" destination="6187" id="name-outlet-6187"/>
+                        <outlet property="imgViewLogo" destination="2275" id="name-outlet-2275"/>
+                        <outlet property="lblAccountLogin" destination="2996" id="name-outlet-2996"/>
+                        <outlet property="lblErrorMessage" destination="58268" id="name-outlet-58268"/>
+                        <outlet property="lblNoAccount" destination="6175" id="name-outlet-6175"/>
+                        <outlet property="lblNotifMessage" destination="59444" id="name-outlet-59444"/>
+                        <outlet property="lblWelcome" destination="2605" id="name-outlet-2605"/>
+                        <outlet property="viewErrorDialog" destination="58187" id="name-outlet-58187"/>
+                        <outlet property="viewNotifDialog" destination="59333" id="name-outlet-59333"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="222" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="524" y="41"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="app_logo" width="44" height="44"/>
+        <image name="email_white" width="24" height="24"/>
+        <image name="Back-White" width="24" height="24"/>
+        <image name="Cancel-White" width="24" height="24"/>
+        <image name="Next-White" width="24" height="24"/>
+        <image name="Calculator" width="32" height="32"/>
+        <image name="Supply" width="32" height="32"/>
+        <image name="Feedback" width="32" height="32"/>
+        <image name="Loaded" width="24" height="24"/>
+        <image name="Loading" width="24" height="24"/>
+        <image name="Email" width="24" height="24"/>
+        <image name="Account-Number" width="24" height="24"/>
+        <image name="IC" width="24" height="24"/>
+        <image name="Label" width="24" height="24"/>
+        <image name="Mobile-White" width="24" height="24"/>
+        <image name="Mobile" width="24" height="24"/>
+        <image name="Name-White" width="24" height="24"/>
+        <image name="Name" width="24" height="24"/>
+        <image name="Billing" width="150" height="150"/>
+        <image name="Dashboard" width="150" height="150"/>
+        <image name="Payment" width="150" height="150"/>
+        <image name="App-Launch" width="320" height="568"/>
+        <image name="App-Launch-Gradient" width="750" height="1334"/>
+        <image name="Logo" width="44" height="44"/>
+        <image name="Delete" width="24" height="24"/>
+        <image name="Check-Green" width="30" height="28"/>
+        <image name="X-Red" width="30" height="32"/>
+        <image name="Scan" width="24" height="24"/>
+        <image name="Circle-With-Check-Green" width="105" height="105"/>
+        <image name="Logo-Title" width="200" height="44"/>
+        <image name="Tagline" width="113.333336" height="30"/>
+        <image name="Notification" width="24" height="24"/>
+        <image name="Tab-Dashboard" width="18" height="18"/>
+        <image name="Tab-Promotions" width="18" height="18"/>
+        <image name="Tab-Feedback" width="18" height="18"/>
+        <image name="Tab-More" width="18" height="18"/>
+        <image name="Download" width="24" height="24"/>
+        <image name="Table-Tick" width="24" height="24"/>
+        <image name="Tab-Bill" width="18" height="18"/>
+        <image name="Arrow-Left" width="16" height="16"/>
+        <image name="Arrow-Right" width="16" height="16"/>
+        <image name="Camera" width="24" height="24"/>
+        <image name="Card-Number" width="24" height="24"/>
+        <image name="Card-Expiry" width="24" height="24"/>
+        <image name="Card-CVV" width="24" height="24"/>
+        <image name="Dropdown" width="16" height="16"/>
+        <image name="Get-Access" width="150" height="150"/>
+        <image name="Empty-Dashboard" width="120" height="120"/>
+        <image name="Notification-Unread" width="16" height="16"/>
+        <image name="Notification-Delete" width="24" height="24"/>
+        <image name="Checkbox-Active" width="24" height="24"/>
+        <image name="Checkbox-Inactive" width="24" height="24"/>
+        <image name="IC-Action-Add-Card" width="24" height="24"/>
+        <image name="IC-Action-Checkbox-Active" width="24" height="24"/>
+        <image name="IC-Action-Checkbox-InActive" width="24" height="24"/>
+        <image name="IC-Action-Expand" width="24" height="24"/>
+        <image name="IC-Action-Tick" width="24" height="24"/>
+        <image name="IC-Action-Edit" width="24" height="24"/>
+        <image name="IC-Action-Delete" width="24" height="24"/>
+        <image name="IC-Payment-Card-Mastercard" width="24" height="24"/>
+        <image name="IC-Payment-Card-Visa" width="24" height="24"/>
+        <image name="IC-Payment-FPX" width="24" height="24"/>
+        <image name="Notification-New" width="24" height="24"/>
+        <image name="Call" width="24" height="24"/>
+        <image name="Logout-Logo" width="150" height="150"/>
+        <image name="IC-Action-Rating-Active" width="32" height="32"/>
+        <image name="IC-Action-Rating-Inactive" width="32" height="32"/>
+        <image name="IC-Field-Search" width="24" height="24"/>
+        <image name="IC-Button-Map-Center" width="24" height="24"/>
+        <image name="IC-Header-Share" width="24" height="24"/>
+        <image name="IC-Action-Dropdown" width="24" height="24"/>
+        <image name="Map-Kedai-Tenaga" width="32" height="32"/>
+        <image name="Map-Convenient-Store" width="32" height="32"/>
+        <image name="Find_Account_Number" width="284" height="121"/>
+        <image name="Promo-Ads" width="321" height="198"/>
+        <image name="Direction" width="24" height="24"/>
+        <image name="Notification-Empty" width="150" height="150"/>
+        <image name="Card-Empty" width="150" height="150"/>
+        <image name="IC-Feedback" width="24" height="24"/>
+        <image name="IC-FieldCoordinates" width="24" height="24"/>
+        <image name="IC-Action-Location" width="24" height="24"/>
+        <image name="IC-FieldFeedback" width="24" height="24"/>
+        <image name="Faulty-TNB-Lamp" width="320" height="121"/>
+        <image name="Locate-Blue" width="32" height="32"/>
+        <image name="Feedback-Blue" width="24" height="24"/>
+        <image name="IC-Field-Text" width="24" height="24"/>
+        <image name="Red-Cross" width="122" height="122"/>
+        <image name="Loading-Circle" width="44" height="44"/>
+        <image name="Notification-New-Bill" width="24" height="24"/>
+        <image name="Notification-Bill-Due" width="24" height="24"/>
+        <image name="Notification-Reconnection" width="24" height="24"/>
+        <image name="Notification-Disconnection" width="24" height="24"/>
+        <image name="Notification-Dunning" width="24" height="24"/>
+        <image name="Password-Old" width="24" height="24"/>
+        <image name="Password" width="24" height="24"/>
+        <image name="password_white" width="24" height="24"/>
+        <image name="IC-Action-Show-Password" width="24" height="24"/>
+        <image name="IC-Display-Prelogin" width="150" height="100"/>
+    </resources>
+</document>

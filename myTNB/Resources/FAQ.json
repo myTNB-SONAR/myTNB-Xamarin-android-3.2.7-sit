@@ -1,0 +1,85 @@
+﻿{
+  "title": "myTNB FAQ",
+  "data": [
+    {
+      "title": "What is myTNB mobile app?",
+      "details": "myTNB mobile app is a digital service to manage your TNB electricity account. View and pay your electricity bills anytime, anywhere, and manage your TNB account on the go!"
+    },
+    {
+      "title": "What's new on this app?",
+      "details": "New features include a personalized, interactive Dashboard with a detailed view of your usage for the past 6 months, multiple account views, faster in-app payment with your credit cards, and a stress-free way to submit feedback."
+    },
+    {
+      "title": "I have an existing myTNB account, can I use the same account?",
+      "details": "Yes, you certainly can! myTNB mobile app and myTNB Portal uses the same set of credentials (user ID and password)."
+    },
+    {
+      "title": "Where can I find my bill account number?",
+      "details": "Your 12 – digit account number can be found on the top left corner of your monthly paper bill."
+    },
+    {
+      "title": "I am renting my home, how can I view more usage and account details?",
+      "details": "You would need to add your TNB electricity account as an owner. To do this, you need the IC number registered to the TNB account of the place you are renting."
+    },
+    {
+      "title": "I am a landlord and would like my tenants to manage their electricity bills with ease.",
+      "details": "That's great! Your tenants are welcome to download and use myTNB mobile app, but for them to view usage and enjoy full functionalities of the app, they would need to add the TNB electricity account as owners. You can help them out by providing the IC number registered to the TNB electricity account. "
+    },
+    {
+      "title": "I would like to pay for my family's electricity bills through the app. How do I do this?",
+      "details": "You can add your family members' TNB accounts and manage them through the app. On your Dashboard, tap on the dropdown button above the usage graph to access the add account function, or go to 'My Account' under 'More' on the navigation bar. Keep in mind that you will need the IC number registered to the TNB account in order to view full usage details."
+    },
+    {
+      "title": "Can I add multiple TNB electricity accounts?",
+      "details": "Yes. You can add multiple accounts through the add account function. On your Dashboard, tap on the dropdown button above the usage graph to access the add account function, or go to 'My Account' under 'More' on the navigation bar."
+    },
+    {
+      "title": "How do I check my electricity bill in myTNB mobile app?",
+      "details": "You can check your bill by tapping on 'View Bill' on your Dashboard. Alternatively, go to the 'Bills' tab on the navigation bar to view your bill and payment history."
+    },
+    {
+      "title": "How do I pay my bills through myTNB mobile app?",
+      "details": "Paying bills through myTNB mobile app is quick and easy. Simply tap on the 'Pay' button on your Dashboard and make a payment either with your credit card or through FPX (bank transfer)."
+    },
+    {
+      "title": "Can I pay more than my outstanding amount?",
+      "details": "Yes. The excess amount will be reflected in your next bill. "
+    },
+    {
+      "title": "What is the maximum amount I can pay in one transaction on the app?",
+      "details": "You may pay up to RM5,000 in a single transaction via credit/debit card. You may also pay via FPX (bank transfer) if the transaction is more than RM5000."
+    },
+    {
+      "title": "Can I view my usage history beyond 6 months?",
+      "details": "You will be able to view your usage history up to 6 months. Similarly on myTNB Portal at www.mytnb.com.my you can retrieve information of your TNB electricity account, including usage and billing history of up to 6 months."
+    },
+    {
+      "title": "How current is the account information?",
+      "details": "Account information is up to date to the current day. "
+    },
+    {
+      "title": "Can I view my feedback status in the app?",
+      "details": "You may view the feedback status when we roll out the new feature around mid-February 2018. For now, you will receive a SMS notification informing you of the update. The submitted feedback can be found under the 'Feedback' tab on the navigation bar."
+    },
+    {
+      "title": "How can I contact TNB?",
+      "details": "Getting in touch has never been easier. Call us on 15454 for Outages & Breakdowns and 1-300-88-5454 for Billing & General enquiries about your account. You can also drop us an email at tnbcareline@tnb.com.my or message us on Facebook at http://www.facebook.com/TNBCareline. Alternatively, navigate to 'Feedback' on the navigation bar to send an enquiry to our team."
+    },
+    {
+      "title": "Is my personal data safe?",
+      "details": "Absolutely. Your privacy is of utmost importance to us, therefore we employ the latest internet security technology to ensure the safety and confidentiality of your data."
+    },
+    {
+      "title": "After I have added my account in SSP, I cannot see my account on myTNB mobile app. How do I resolve this? ",
+      "details": "If your account is added in SSP simultaneously when you are logged in on myTNB mobile app, please kindly logout of the mobile app and login again to retry."
+    },
+    {
+      "title": "Can I see multiple accounts in myTNB app and myTNB portal?",
+      "details": "Yes, both myTNB app and myTNB portal share the same login information. The account and billing information is real time."
+    },
+    {
+      "title": "I love this app! Managing my TNB account has never been easier. How can I thank you?",
+      "details": "Thank you! You can share myTNB mobile app with your friends and family, and rate us on the Apple App Store or Google Play Store."
+    }
+  ]
+}
