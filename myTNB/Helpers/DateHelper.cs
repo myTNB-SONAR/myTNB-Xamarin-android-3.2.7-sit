@@ -56,18 +56,24 @@ namespace myTNB
             DateTime formattedDate = new DateTime();
             try
             {
-                string[] date = dateString.Split(separator);
-                int day = Int32.Parse(date[0]);
-                int month = Int32.Parse(date[1]);
-                int year = Int32.Parse(date[2]);
-                if (_isNotification)
+                if (!string.IsNullOrEmpty(dateString))
                 {
-                    formattedDate = new DateTime(year, day, month);
-                    _isNotification = false;
-                }
-                else
-                {
-                    formattedDate = new DateTime(year, month, day);
+                    string[] date = dateString.Split(separator);
+                    if (date.Length == 3)
+                    {
+                        int day = Int32.Parse(date[0]);
+                        int month = Int32.Parse(date[1]);
+                        int year = Int32.Parse(date[2]);
+                        if (_isNotification)
+                        {
+                            formattedDate = new DateTime(year, day, month);
+                            _isNotification = false;
+                        }
+                        else
+                        {
+                            formattedDate = new DateTime(year, month, day);
+                        }
+                    }
                 }
             }
             catch (Exception e)
@@ -88,10 +94,10 @@ namespace myTNB
             string addDate = string.Empty;
             try
             {
-                string[] date = dateString.Split(_separator);
-                int day = Int32.Parse(date[0]);
-                int month = Int32.Parse(date[1]);
-                int year = Int32.Parse(date[2]);
+                string[] date = dateString?.Split(_separator);
+                int day = Int32.Parse(date?[0]);
+                int month = Int32.Parse(date?[1]);
+                int year = Int32.Parse(date?[2]);
                 if (_isNotification)
                 {
                     formattedDate = new DateTime(year, day, month);
@@ -118,6 +124,34 @@ namespace myTNB
         public static string FormatToUtc(DateTime date)
         {
             return date.ToString(CultureInfo.CurrentCulture.DateTimeFormat.UniversalSortableDateTimePattern);
+        }
+
+        /// <summary>
+        /// Gets the date without separator. Assumes yyyyMMdd.
+        /// </summary>
+        /// <returns>The date without separator.</returns>
+        /// <param name="dateString">Date string.</param>
+        public static DateTime GetDateWithoutSeparator(string dateString)
+        {
+            DateTime date = default(DateTime);
+            try
+            {
+                int dateLength = 8;
+                if (!string.IsNullOrEmpty(dateString) && dateString?.Length >= dateLength)
+                {
+                    int year = Int32.Parse(dateString.Substring(0, 4));
+                    int month = Int32.Parse(dateString.Substring(4, 2));
+                    int day = Int32.Parse(dateString.Substring(6, 2));
+
+                    DateTime dt = new DateTime(year, month, day);
+                    date = dt;
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Parse Error: " + e.Message);
+            }
+            return date;
         }
 
     }

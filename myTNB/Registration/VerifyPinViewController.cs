@@ -3,10 +3,15 @@ using myTNB.Model;
 using myTNB.Registration.CustomerAccounts;
 using UIKit;
 using System.Threading.Tasks;
+using System.Collections.Generic;
 using CoreGraphics;
 using Foundation;
 using myTNB.SQLite.SQLiteDataManager;
 using System.Drawing;
+using myTNB.Dashboard.DashboardComponents;
+using myTNB.Extensions;
+using myTNB.DataManager;
+using System.Timers;
 
 namespace myTNB.Registration
 {
@@ -31,18 +36,40 @@ namespace myTNB.Registration
         UILabel _resendLabel;
         UIView _viewPinSent;
         UITapGestureRecognizer _onResendPin;
+        UIView _commonView;
+        UIView _headerView;
 
         bool _isKeyboardDismissed = false;
-
+        bool _isTokenInvalid = false;
         string _token = string.Empty;
+        string _mobileNo;
+
+        public bool IsMobileVerification = false;
+        public bool IsFromLogin = false;
+
+        Timer timer;
+        const double INTERVAL = 1000f;
+        public int timerCtr = 30;
 
         public override void ViewDidLoad()
         {
             base.ViewDidLoad();
             // Perform any additional setup after loading the view, typically from a nib.
-            NavigationItem.HidesBackButton = true;
+            NavigationController.NavigationBar.Hidden = false;
             AddBackButton();
+            if (IsMobileVerification)
+            {
+                NavigationItem.SetHidesBackButton(true, false);
+                NavigationItem.Title = "VerifyPinTitle".Translate();
+            }
+
+            timer = new Timer();
+            timer.Interval = INTERVAL;
+            timer.Elapsed += TimerElapsed;
+            timer.AutoReset = true;
+
             SetViews();
+            SetEvents(IsMobileVerification);
             InitializeVerifyPinSentView();
             ShowViewPinSent();
         }
@@ -60,40 +87,41 @@ namespace myTNB.Registration
             });
         }
 
-        internal void ShowAccountsVC() {
-			UIStoryboard storyBoard = UIStoryboard.FromName("AccountRecords", null);
-			AccountsViewController viewController =
-				storyBoard.InstantiateViewController("AccountsViewController") as AccountsViewController;
-			viewController._needsUpdate = true;
+        internal void ShowAccountsVC()
+        {
+            UIStoryboard storyBoard = UIStoryboard.FromName("AccountRecords", null);
+            AccountsViewController viewController =
+                storyBoard.InstantiateViewController("AccountsViewController") as AccountsViewController;
+            viewController._needsUpdate = true;
             viewController.isDashboardFlow = false;
-			NavigationController.PushViewController(viewController, true);
+            NavigationController.PushViewController(viewController, true);
         }
 
-		internal void AddBackButton()
-		{
-			UIImage backImg = UIImage.FromBundle("Back-White");
-			UIBarButtonItem btnBack = new UIBarButtonItem(backImg, UIBarButtonItemStyle.Done, (sender, e) => {
-				UIStoryboard storyBoard = UIStoryboard.FromName("Registration", null);
-                UIViewController viewController =
-                    storyBoard.InstantiateViewController("RegistrationViewController") as UIViewController;
-                NavigationController.PushViewController(viewController, true);
-			});
-			NavigationItem.LeftBarButtonItem = btnBack;
-		}
+        internal void AddBackButton()
+        {
+            UIImage backImg = UIImage.FromBundle("Back-White");
+            UIBarButtonItem btnBack = new UIBarButtonItem(backImg, UIBarButtonItemStyle.Done, (sender, e) =>
+            {
+                this.NavigationController?.PopViewController(true);
+            });
+            NavigationItem.LeftBarButtonItem = btnBack;
+        }
 
-        internal void CreateTokenField(){
+        internal void CreateTokenField(UIView parentView)
+        {
             UITextField txtFieldToken;
             UIView viewLine;
             _viewTokenFieldContainer = new UIView(new CGRect(66, 70, View.Frame.Width - 132, 40));
             _lblError = new UILabel(new CGRect(0, _viewTokenFieldContainer.Frame.Height - 14, _viewTokenFieldContainer.Frame.Width, 14));
-            _lblError.Font = myTNBFont.MuseoSans9();
+            _lblError.Font = myTNBFont.MuseoSans9_300();
             _lblError.TextColor = myTNBColor.Tomato();
             _lblError.TextAlignment = UITextAlignment.Left;
             _lblError.Text = "Invalid PIN";
             _lblError.Hidden = true;
             float txtFieldWidth = ((float)_viewTokenFieldContainer.Frame.Width - 36) / 4;
             float xLocation = 0;
-            for (int i = 0; i < 4; i++){
+            for (int i = 0; i < 4; i++)
+            {
                 int index = i;
                 txtFieldToken = new UITextField(new CGRect(xLocation, 0, txtFieldWidth, 24));
                 txtFieldToken.Placeholder = "-";
@@ -106,16 +134,18 @@ namespace myTNB.Registration
                 txtFieldToken.SpellCheckingType = UITextSpellCheckingType.No;
                 txtFieldToken.ReturnKeyType = UIReturnKeyType.Done;
                 txtFieldToken.TextAlignment = UITextAlignment.Center;
-                txtFieldToken.ShouldChangeCharacters = (textField, range, replacementString) => {
+                txtFieldToken.ShouldChangeCharacters = (textField, range, replacementString) =>
+                {
                     var newLength = textField.Text.Length + replacementString.Length - range.Length;
                     return newLength <= 1;
                 };
                 CreateDoneButton(txtFieldToken);
-                SetTextFieldEvents(txtFieldToken);
 
                 viewLine = new UIView(new CGRect(xLocation, 25, txtFieldWidth, 1));
                 viewLine.BackgroundColor = myTNBColor.PlatinumGrey();
-                viewLine.Tag = 6;
+                viewLine.Tag = index + 5;
+
+                SetTextFieldEvents(txtFieldToken, viewLine);
 
                 _viewTokenFieldContainer.AddSubview(viewLine);
                 _viewTokenFieldContainer.AddSubview(txtFieldToken);
@@ -123,12 +153,15 @@ namespace myTNB.Registration
                 xLocation += 12 + txtFieldWidth;
             }
             _viewTokenFieldContainer.AddSubview(_lblError);
-            View.AddSubview(_viewTokenFieldContainer);
+            parentView.AddSubview(_viewTokenFieldContainer);
         }
 
-        internal void SetTextFieldEvents(UITextField textField){
-            textField.EditingChanged += (sender, e) => {
-                if(textField.Text.Length == 1){
+        internal void SetTextFieldEvents(UITextField textField, UIView viewLine)
+        {
+            textField.EditingChanged += (sender, e) =>
+            {
+                if (textField.Text.Length == 1)
+                {
                     textField.ResignFirstResponder();
                     _isKeyboardDismissed = true;
                     int nextTag = (int)textField.Tag + 1;
@@ -137,13 +170,20 @@ namespace myTNB.Registration
                         UIResponder nextResponder = textField.Superview.ViewWithTag(nextTag);
                         nextResponder.BecomeFirstResponder();
                         _isKeyboardDismissed = false;
+                        UIView vLine = _viewTokenFieldContainer.ViewWithTag((int)textField.Tag + 5) as UIView;
+                        vLine.BackgroundColor = myTNBColor.PowerBlue();
                     }
                 }
                 ValidateFields(_isKeyboardDismissed);
+                IsPinInvalid();
+                UpdateTextFieldColor();
             };
-            textField.EditingDidBegin += (sender, e) => {
+            textField.EditingDidBegin += (sender, e) =>
+            {
+                viewLine.BackgroundColor = myTNBColor.PowerBlue();
             };
-            textField.ShouldEndEditing = (sender) => {
+            textField.ShouldEndEditing = (sender) =>
+            {
                 return true;
             };
             textField.ShouldReturn = (sender) =>
@@ -151,10 +191,14 @@ namespace myTNB.Registration
                 sender.ResignFirstResponder();
                 return false;
             };
-
+            textField.EditingDidEnd += (sender, e) =>
+            {
+                viewLine.BackgroundColor = myTNBColor.PlatinumGrey();
+            };
         }
 
-        internal void ClearTokenField(){
+        internal void ClearTokenField()
+        {
             UITextField txtFieldToken1 = _viewTokenFieldContainer.ViewWithTag(1) as UITextField;
             txtFieldToken1.Text = string.Empty;
             UITextField txtFieldToken2 = _viewTokenFieldContainer.ViewWithTag(2) as UITextField;
@@ -164,27 +208,108 @@ namespace myTNB.Registration
             UITextField txtFieldToken4 = _viewTokenFieldContainer.ViewWithTag(4) as UITextField;
             txtFieldToken4.Text = string.Empty;
         }
+        /// <summary>
+        /// Updates the color of the text field based on OTP validity input
+        /// </summary>
+        internal void UpdateTextFieldColor()
+        {
+            for (int i = 0; i < 4; i++)
+            {
+                UITextField txtField = _viewTokenFieldContainer.ViewWithTag(i + 1) as UITextField;
+                txtField.TextColor = (_isTokenInvalid) ? myTNBColor.Tomato() : myTNBColor.TunaGrey();
 
-        internal void ValidateFields(bool isKeyboardDismissed){
+                if (_isTokenInvalid)
+                {
+                    UIView viewLine = _viewTokenFieldContainer.ViewWithTag(i + 5) as UIView;
+                    viewLine.BackgroundColor = myTNBColor.Tomato();
+                }
+            }
+
+            if (_isTokenInvalid)
+                _isTokenInvalid = false;
+        }
+        /// <summary>
+        /// Determines when to hide/show the error message based on OTP validity input
+        /// </summary>
+        internal void IsPinInvalid()
+        {
+            if (_isTokenInvalid)
+                _lblError.Hidden = false;
+            else
+                _lblError.Hidden = true;
+        }
+
+        internal void ValidateFields(bool isKeyboardDismissed)
+        {
             UITextField txtFieldToken1 = _viewTokenFieldContainer.ViewWithTag(1) as UITextField;
             UITextField txtFieldToken2 = _viewTokenFieldContainer.ViewWithTag(2) as UITextField;
             UITextField txtFieldToken3 = _viewTokenFieldContainer.ViewWithTag(3) as UITextField;
             UITextField txtFieldToken4 = _viewTokenFieldContainer.ViewWithTag(4) as UITextField;
-          
-            if(!string.IsNullOrEmpty(txtFieldToken1.Text) && !string.IsNullOrEmpty(txtFieldToken2.Text)
-               && !string.IsNullOrEmpty(txtFieldToken3.Text) && !string.IsNullOrEmpty(txtFieldToken4.Text) && isKeyboardDismissed){
+
+            if (!string.IsNullOrEmpty(txtFieldToken1.Text) && !string.IsNullOrEmpty(txtFieldToken2.Text)
+               && !string.IsNullOrEmpty(txtFieldToken3.Text) && !string.IsNullOrEmpty(txtFieldToken4.Text) && isKeyboardDismissed)
+            {
                 ActivityIndicator.Show();
                 NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
                 {
-                    InvokeOnMainThread(() => {
+                    InvokeOnMainThread(async () =>
+                    {
                         if (NetworkUtility.isReachable)
                         {
                             _token = txtFieldToken1.Text + txtFieldToken2.Text + txtFieldToken3.Text + txtFieldToken4.Text;
-                            ExecuteRegisterUserCall();
+                            if (!IsMobileVerification)
+                            {
+                                ExecuteRegisterUserCall();
+                            }
+                            else
+                            {
+                                Console.WriteLine("_mobileNo: " + _mobileNo);
+                                Console.WriteLine("_token: " + _token);
+                                Console.WriteLine("IsFromLogin: " + IsFromLogin);
+                                var response = await ServiceCall.UpdatePhoneNumber(_mobileNo, _token, IsFromLogin);
+
+                                if (response?.d?.didSucceed == true)
+                                {
+                                    DataManager.DataManager.SharedInstance.UserEntity[0].mobileNo = _mobileNo;
+                                    if (!IsFromLogin)
+                                    {
+                                        DataManager.DataManager.SharedInstance.IsMobileNumberUpdated = true;
+                                    }
+                                    UserEntity userEntity = new UserEntity();
+                                    userEntity.Reset();
+                                    userEntity.InsertItem(DataManager.DataManager.SharedInstance.UserEntity[0]);
+                                    DataManager.DataManager.SharedInstance.UserEntity = userEntity.GetAllItems();
+
+                                    if (IsFromLogin)
+                                    {
+                                        var sharedPreference = NSUserDefaults.StandardUserDefaults;
+                                        sharedPreference.SetBool(true, TNBGlobal.PreferenceKeys.LoginState);
+                                        sharedPreference.SetBool(true, TNBGlobal.PreferenceKeys.PhoneVerification);
+                                        sharedPreference.Synchronize();
+                                        ExecuteGetCutomerRecordsCall();
+                                    }
+                                    else
+                                    {
+                                        DismissViewController(true, null);
+                                        ActivityIndicator.Hide();
+                                    }
+
+                                }
+                                else
+                                {
+                                    //DisplayAlertView("Error", "Cannot update mobile number. Please try again.");
+                                    _isTokenInvalid = true;
+                                    IsPinInvalid();
+                                    DisplayAlertView("OTPErrTtle".Translate(), response?.d?.message);
+                                    UpdateTextFieldColor();
+                                    ActivityIndicator.Hide();
+                                }
+                            }
+
                         }
                         else
                         {
-                            DisplayRegistrationAlertView("No Data Connection", "Please check your data connection and try again.");
+                            DisplayRegistrationAlertView("ErrNoNetworkTitle".Translate(), "ErrNoNetworkMsg".Translate());
                             ActivityIndicator.Hide();
                         }
                     });
@@ -192,27 +317,32 @@ namespace myTNB.Registration
             }
         }
 
-        internal void SetViews(){
-            string mobileNo = DataManager.DataManager.SharedInstance.User.MobileNo;
-            UILabel lblDescription = new UILabel(new CGRect(18, 16, View.Frame.Width - 36, 36));
-            lblDescription.Font = myTNBFont.MuseoSans14();
+        internal void SetViews()
+        {
+            nfloat locX = !IsMobileVerification ? 0 : _headerView?.Frame.Height ?? 0;
+            _commonView = new UIView(new CGRect(0, locX, View.Bounds.Width, 300));
+
+            _mobileNo = DataManager.DataManager.SharedInstance.User.MobileNo;
+            UILabel lblDescription = new UILabel(new CGRect(18, 8, View.Frame.Width - 36, 60));
+            lblDescription.Font = myTNBFont.MuseoSans16_300();
             lblDescription.TextColor = myTNBColor.TunaGrey();
             lblDescription.LineBreakMode = UILineBreakMode.WordWrap;
             lblDescription.Lines = 0;
-            lblDescription.Text = "Please enter 4 digit activation pin that was sent to " + mobileNo;
+            var desc = !IsMobileVerification ? "EnterOTPRegistration".Translate() : "EnterOTPMobileUpdate".Translate();
+            lblDescription.Text = string.Format(desc, _mobileNo);
             lblDescription.TextAlignment = UITextAlignment.Left;
-            View.AddSubview(lblDescription);
+            _commonView.AddSubview(lblDescription);
 
             UILabel lblResendToken = new UILabel(new CGRect(18, 158, View.Frame.Width - 36, 16));
-            lblResendToken.Font = myTNBFont.MuseoSans12();
+            lblResendToken.Font = myTNBFont.MuseoSans12_300();
             lblResendToken.TextColor = myTNBColor.TunaGrey();
             lblResendToken.LineBreakMode = UILineBreakMode.WordWrap;
             lblResendToken.Lines = 0;
             lblResendToken.Text = "Didn’t receive the SMS?";
             lblResendToken.TextAlignment = UITextAlignment.Center;
-            View.AddSubview(lblResendToken);
+            _commonView.AddSubview(lblResendToken);
 
-            CreateTokenField();
+            CreateTokenField(_commonView);
 
             int xLocation = ((int)View.Bounds.Width - 140) / 2;
             int yLocation = 180;
@@ -223,27 +353,61 @@ namespace myTNB.Registration
             _loadingView.Layer.CornerRadius = 5.0f;
             _loadingView.Layer.BorderWidth = 1.0f;
             _loadingView.Layer.BorderColor = myTNBColor.FreshGreen().CGColor;
-            View.AddSubview(_loadingView);
+            _commonView.AddSubview(_loadingView);
+
             _loadingImage = new UIImageView(new CGRect(14, 13, 24, 24));
             _resendLabel = new UILabel(new CGRect(41, 15, 100, 20));
-            _segment = new UIView(new CGRect(0,0,0,height));
+            _segment = new UIView(new CGRect(0, 0, 0, height));
+            _segment.Layer.CornerRadius = 5.0f;
             _loadingView.AddSubview(_segment);
             _loadingView.AddSubview(_loadingImage);
             _loadingView.AddSubview(_resendLabel);
-            _onResendPin = new UITapGestureRecognizer(() =>
-            {
-                Console.WriteLine("ON TAP RESEND");
-                ClearTokenField();
-                ExecuteSendRegistrationTokenSMSCall();
-            });
+
+            View.AddSubview(_commonView);
+
             AnimateResendView();
+        }
+
+        /// <summary>
+        /// Sets the events.
+        /// </summary>
+        /// <param name="isMobileUpdate">If set to <c>true</c> is mobile update.</param>
+        private void SetEvents(bool isMobileUpdate)
+        {
+            if (!isMobileUpdate)
+            {
+                _onResendPin = new UITapGestureRecognizer(() =>
+                {
+                    ClearTokenField();
+                    ExecuteSendRegistrationTokenSMSCall();
+                });
+            }
+            else
+            {
+                _onResendPin = new UITapGestureRecognizer(async () =>
+                {
+                    ClearTokenField();
+                    var response = await ServiceCall.SendUpdatePhoneTokenSMS(DataManager.DataManager.SharedInstance.User.MobileNo);
+                    if (response.d.didSucceed)
+                    {
+                        ShowViewPinSent();
+                        CreateResendView();
+                        AnimateResendView();
+                    }
+                    else
+                    {
+                        DisplayAlertView("Verify Mobile Number Token Failed", _smsToken?.d?.message);
+                    }
+                });
+            }
         }
 
         internal void ExecuteSendRegistrationTokenSMSCall()
         {
             NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
             {
-                InvokeOnMainThread(() => {
+                InvokeOnMainThread(() =>
+                {
                     if (NetworkUtility.isReachable)
                     {
                         SendRegistrationTokenSMS().ContinueWith(task =>
@@ -255,21 +419,12 @@ namespace myTNB.Registration
                                     if (_smsToken.d.isError.Equals("false") && _smsToken.d.status.Equals("success"))
                                     {
                                         ShowViewPinSent();
-                                        _segment.RemoveFromSuperview();
-                                        _loadingImage.RemoveFromSuperview();
-                                        _resendLabel.RemoveFromSuperview();
-                                        _loadingImage = new UIImageView(new CGRect(14, 13, 24, 24));
-                                        _resendLabel = new UILabel(new CGRect(41, 15, 100, 20));
-                                        _segment = new UIView(new CGRect(0, 0, 0, 48));
-                                        _loadingView.AddSubview(_segment);
-                                        _loadingView.AddSubview(_loadingImage);
-                                        _loadingView.AddSubview(_resendLabel);
-                                        _loadingView.RemoveGestureRecognizer(_onResendPin);
+                                        CreateResendView();
                                         AnimateResendView();
                                     }
                                     else
                                     {
-                                        DisplayAlertView("Registration Token Failed", _smsToken.d.message);
+                                        DisplayAlertView("Registration Token Failed", _smsToken?.d?.message);
                                     }
                                 }
                                 else
@@ -282,7 +437,7 @@ namespace myTNB.Registration
                     }
                     else
                     {
-                        DisplayAlertView("No Data Connection", "Please check your data connection and try again.");
+                        DisplayAlertView("ErrNoNetworkTitle".Translate(), "ErrNoNetworkMsg".Translate());
                         ActivityIndicator.Hide();
                     }
                 });
@@ -307,12 +462,17 @@ namespace myTNB.Registration
                     userEmail = DataManager.DataManager.SharedInstance.User.Email,
                     mobileNo = DataManager.DataManager.SharedInstance.User.MobileNo
                 };
-                _smsToken = serviceManager.SendRegistrationTokenSMS("SendRegistrationTokenSMS", requestParameter);
+                _smsToken = serviceManager.SendRegistrationTokenSMS("SendRegistrationTokenSMS_V2", requestParameter);
             });
         }
 
         internal void DisplayAlertView(string title, string message)
         {
+            if(string.IsNullOrWhiteSpace(message))
+            {
+                message = "DefaultErrorMessage".Translate();
+            }
+
             var alert = UIAlertController.Create(title, message, UIAlertControllerStyle.Alert);
             alert.AddAction(UIAlertAction.Create("Ok", UIAlertActionStyle.Cancel, null));
             PresentViewController(alert, animated: true, completionHandler: null);
@@ -321,46 +481,87 @@ namespace myTNB.Registration
         internal void DisplayRegistrationAlertView(string title, string message)
         {
             var alert = UIAlertController.Create(title, message, UIAlertControllerStyle.Alert);
-            alert.AddAction(UIAlertAction.Create("Cancel", UIAlertActionStyle.Cancel, (obj) => {
+            alert.AddAction(UIAlertAction.Create("Cancel", UIAlertActionStyle.Cancel, (obj) =>
+            {
                 Console.WriteLine("cancel");
                 UIStoryboard storyBoard = UIStoryboard.FromName("Registration", null);
                 UIViewController viewController =
                     storyBoard.InstantiateViewController("RegistrationViewController") as UIViewController;
                 NavigationController.PushViewController(viewController, true);
             }));
-            alert.AddAction(UIAlertAction.Create("Retry", UIAlertActionStyle.Default, (obj) => {
+            alert.AddAction(UIAlertAction.Create("Retry", UIAlertActionStyle.Default, (obj) =>
+            {
                 Console.WriteLine("retry");
                 ValidateFields(_isKeyboardDismissed);
             }));
             PresentViewController(alert, animated: true, completionHandler: null);
         }
 
-        internal void AnimateResendView(){
-            UIView.Animate(30, 1, UIViewAnimationOptions.CurveEaseOut, () => {
+        private void CreateResendView()
+        {
+            _segment.RemoveFromSuperview();
+            _loadingImage.RemoveFromSuperview();
+            _resendLabel.RemoveFromSuperview();
+            _loadingImage = new UIImageView(new CGRect(14, 13, 24, 24));
+            _resendLabel = new UILabel(new CGRect(41, 15, 100, 20));
+            _segment = new UIView(new CGRect(0, 0, 0, 48));
+            _loadingView.AddSubview(_segment);
+            _loadingView.AddSubview(_loadingImage);
+            _loadingView.AddSubview(_resendLabel);
+            _loadingView.RemoveGestureRecognizer(_onResendPin);
+        }
+        /// <summary>
+        /// Method to execute label update when timer lapses
+        /// </summary>
+        /// <param name="sender">Sender.</param>
+        /// <param name="e">E.</param>
+        private void TimerElapsed(object sender, ElapsedEventArgs e)
+        {
+            if (timerCtr > 0)
+            {
+                InvokeOnMainThread(() =>
+                {
+                    _resendLabel.Text = string.Format("ResendBtnTimerTxt".Translate(), timerCtr);
+                });
+                timerCtr = timerCtr - 1;
+            }
+            else
+            {
+                timer.Enabled = false;
+            }
+        }
+
+        internal void AnimateResendView()
+        {
+            timerCtr = 30;
+            _resendLabel.Text = string.Format("ResendBtnTimerTxt".Translate(), timerCtr);
+            _resendLabel.TextColor = myTNBColor.FreshGreen();
+            timer.Enabled = true;
+            UIView.Animate(30, 1, UIViewAnimationOptions.CurveEaseOut, () =>
+            {
                 _segment.Frame = new CGRect(0, 0, 140, 48);
                 //Fresh green with 24% opacity
                 _segment.BackgroundColor = new UIColor(red: 0.13f, green: 0.74f, blue: 0.30f, alpha: 0.24f);
                 _loadingImage.Image = _loadingImg;
-                _resendLabel.Text = "Resend (30)";
-                _resendLabel.TextColor = myTNBColor.FreshGreen();
-            },() => {
+            }, () =>
+            {
                 _segment.Frame = new CGRect(0, 0, 140, 48);
                 _segment.BackgroundColor = myTNBColor.FreshGreen();
-                _segment.Layer.CornerRadius = 5.0f;
                 _loadingImage.Frame = new CGRect(25, 13, 24, 24);
                 _resendLabel.Frame = new CGRect(55, 15, 85, 20);
-                _resendLabel.Text = "Resend";
+                _resendLabel.Text = "ResendBtnTxt".Translate();
                 _resendLabel.TextColor = UIColor.White;
                 _loadingImage.Image = _loadedImg;
                 _loadingView.AddGestureRecognizer(_onResendPin);
             });
         }
-    
+
         internal void ExecuteRegisterUserCall()
         {
             RegisterUser().ContinueWith(task =>
             {
-                InvokeOnMainThread(() => {
+                InvokeOnMainThread(() =>
+                {
                     if (_registerAccountList != null && _registerAccountList.d != null)
                     {
                         NewUserModel newUser = _registerAccountList.d;
@@ -374,14 +575,14 @@ namespace myTNB.Registration
                             //DataManager.DataManager.SharedInstance.User.ICNo = DataManager.DataManager.SharedInstance.User.ICNo;
                             //ExecuteLoginCall();
 
-                            DisplayAlertView("Registration Error", newUser.message);
+                            DisplayAlertView("Registration Error", newUser?.message);
                             ClearTokenField();
                             ActivityIndicator.Hide();
                         }
                     }
                     else
                     {
-                        DisplayAlertView("Registration Error", "Error in response");
+                        DisplayAlertView("Registration Error", "DefaultErrorMessage".Translate());
                         ClearTokenField();
                         ActivityIndicator.Hide();
                     }
@@ -398,10 +599,10 @@ namespace myTNB.Registration
                 {
                     apiKeyID = TNBGlobal.API_KEY_ID,
                     ipAddress = TNBGlobal.API_KEY_ID,
-                    clientType = TNBGlobal.API_KEY_ID,
+                    clientType = AppVersionHelper.GetBuildVersion(),
                     activeUserName = TNBGlobal.API_KEY_ID,
-                    devicePlatform = TNBGlobal.API_KEY_ID,
-                    deviceVersion = TNBGlobal.API_KEY_ID,
+                    devicePlatform = TNBGlobal.DEVICE_PLATFORM_IOS,
+                    deviceVersion = DeviceHelper.GetOSVersion(),
                     deviceCordova = TNBGlobal.API_KEY_ID,
                     displayName = DataManager.DataManager.SharedInstance.User.DisplayName,
                     username = DataManager.DataManager.SharedInstance.User.Email,
@@ -430,16 +631,18 @@ namespace myTNB.Registration
 
         internal void ExecuteLoginCall()
         {
-            Login().ContinueWith(task => {
-                InvokeOnMainThread(() => {
+            Login().ContinueWith(task =>
+            {
+                InvokeOnMainThread(() =>
+                {
                     if (_authenticationList != null && _authenticationList.d != null && _authenticationList.d.data != null)
                     {
-                        if (_authenticationList.d.isError.Equals("false"))
+                        if (_authenticationList.d.didSucceed == true)
                         {
                             UserAuthenticationModel auth = _authenticationList.d.data;
                             SetLoginLocalData();
                             var sharedPreference = NSUserDefaults.StandardUserDefaults;
-                            sharedPreference.SetBool(true, "isLogin");
+                            sharedPreference.SetBool(true, TNBGlobal.PreferenceKeys.LoginState);
                             sharedPreference.Synchronize();
                             PushNotificationHelper.GetNotifications();
                             DataManager.DataManager.SharedInstance.User.Password = string.Empty;
@@ -447,15 +650,14 @@ namespace myTNB.Registration
                         }
                         else
                         {
-                            Console.WriteLine("Problem in login");
-                            DisplayAlertView("Login Error", _authenticationList.d.message);
+                            DisplayAlertView("Login Error", _authenticationList?.d?.message);
                             ClearTokenField();
                         }
                         ActivityIndicator.Hide();
                     }
                     else
                     {
-                        DisplayAlertView("Registration Error", "Error in response");
+                        DisplayAlertView("Registration Error", "DefaultErrorMessage".Translate());
                         ClearTokenField();
                     }
                     ActivityIndicator.Hide();
@@ -463,9 +665,11 @@ namespace myTNB.Registration
             });
         }
 
+
         internal Task Login()
         {
-            return Task.Factory.StartNew(() => {
+            return Task.Factory.StartNew(() =>
+            {
                 ServiceManager serviceManager = new ServiceManager();
                 object requestParameter = new
                 {
@@ -473,16 +677,102 @@ namespace myTNB.Registration
                     password = DataManager.DataManager.SharedInstance.User.Password,
                     apiKeyID = TNBGlobal.API_KEY_ID,
                     ipAddress = TNBGlobal.API_KEY_ID,
-                    clientType = TNBGlobal.API_KEY_ID,
+                    clientType = AppVersionHelper.GetBuildVersion(),
                     activeUserName = TNBGlobal.API_KEY_ID,
-                    devicePlatform = TNBGlobal.API_KEY_ID,
-                    deviceVersion = TNBGlobal.API_KEY_ID,
+                    devicePlatform = TNBGlobal.DEVICE_PLATFORM_IOS,
+                    deviceVersion = DeviceHelper.GetOSVersion(),
                     deviceCordova = TNBGlobal.API_KEY_ID,
                     deviceId = DataManager.DataManager.SharedInstance.UDID,
-                    fcmToken = DataManager.DataManager.SharedInstance.FCMToken
+                    fcmToken = DataManager.DataManager.SharedInstance.FCMToken != null
+                                          && !string.IsNullOrEmpty(DataManager.DataManager.SharedInstance.FCMToken)
+                                          && !string.IsNullOrWhiteSpace(DataManager.DataManager.SharedInstance.FCMToken)
+                                          ? DataManager.DataManager.SharedInstance.FCMToken
+                                          : ""
                 };
                 _authenticationList = serviceManager.GetUserAuthentication("IsUserAuthenticate", requestParameter);
             });
+        }
+
+        void ExecuteGetCutomerRecordsCall()
+        {
+            ServiceCall.GetCustomerBillingAccountList().ContinueWith(task =>
+            {
+                InvokeOnMainThread(async () =>
+                {
+                    if (DataManager.DataManager.SharedInstance.CustomerAccounts != null
+                       && DataManager.DataManager.SharedInstance.CustomerAccounts.d != null
+                       && DataManager.DataManager.SharedInstance.CustomerAccounts.d.data != null)
+                    {
+                        DataManager.DataManager.SharedInstance.AccountRecordsList.d
+                                   = DataManager.DataManager.SharedInstance.CustomerAccounts.d.data;
+                    }
+
+                    if (DataManager.DataManager.SharedInstance.AccountRecordsList != null
+                        && DataManager.DataManager.SharedInstance.AccountRecordsList.d != null)
+                    {
+                        UserAccountsEntity uaManager = new UserAccountsEntity();
+                        uaManager.DeleteTable();
+                        uaManager.CreateTable();
+                        uaManager.InsertListOfItems(DataManager.DataManager.SharedInstance.AccountRecordsList);
+                    }
+
+                    if (DataManager.DataManager.SharedInstance.AccountRecordsList != null
+                       && DataManager.DataManager.SharedInstance.AccountRecordsList.d != null)
+                    {
+                        if (DataManager.DataManager.SharedInstance.AccountRecordsList.d.Count > 0)
+                        {
+                            DataManager.DataManager.SharedInstance.SelectedAccount = DataManager.DataManager.SharedInstance.AccountRecordsList.d[0];
+                            await ExecuteGetBillAccountDetailsCall();
+                        }
+                        else
+                        {
+                            UIStoryboard storyBoard = UIStoryboard.FromName("Dashboard", null);
+                            UIViewController loginVC = storyBoard.InstantiateViewController("HomeTabBarController") as UIViewController;
+                            PresentViewController(loginVC, true, null);
+                            ActivityIndicator.Hide();
+                        }
+                    }
+                    else
+                    {
+                        DataManager.DataManager.SharedInstance.AccountRecordsList = new CustomerAccountRecordListModel();
+                        DataManager.DataManager.SharedInstance.AccountRecordsList.d = new List<CustomerAccountRecordModel>();
+
+                        UIStoryboard storyBoard = UIStoryboard.FromName("Dashboard", null);
+                        UIViewController loginVC = storyBoard.InstantiateViewController("HomeTabBarController") as UIViewController;
+                        PresentViewController(loginVC, true, null);
+                        ActivityIndicator.Hide();
+                    }
+                });
+            });
+        }
+
+        private async Task ExecuteGetBillAccountDetailsCall()
+        {
+            var _billingAccountDetailsList = await ServiceCall.GetBillingAccountDetails();
+            if (_billingAccountDetailsList.d.didSucceed)
+            {
+                InvokeOnMainThread(() =>
+                {
+                    if (_billingAccountDetailsList != null && _billingAccountDetailsList.d != null
+                        && _billingAccountDetailsList.d.data != null)
+                    {
+                        PushNotificationHelper.GetNotifications();
+                        DataManager.DataManager.SharedInstance.BillingAccountDetails = _billingAccountDetailsList.d.data;
+                        UIStoryboard storyBoard = UIStoryboard.FromName("Dashboard", null);
+                        UIViewController loginVC = storyBoard.InstantiateViewController("HomeTabBarController") as UIViewController;
+                        PresentViewController(loginVC, true, null);
+                        ActivityIndicator.Hide();
+                    }
+                    else
+                    {
+                        DataManager.DataManager.SharedInstance.BillingAccountDetails = new BillingAccountDetailsDataModel();
+                        var alert = UIAlertController.Create("Unable to Login", "Something went wrong. Please try again later.", UIAlertControllerStyle.Alert);
+                        alert.AddAction(UIAlertAction.Create("Ok", UIAlertActionStyle.Cancel, null));
+                        PresentViewController(alert, animated: true, completionHandler: null);
+                    }
+                    ActivityIndicator.Hide();
+                });
+            }
         }
 
         internal void CreateDoneButton(UITextField textField)
@@ -502,7 +792,8 @@ namespace myTNB.Registration
             textField.InputAccessoryView = toolbar;
         }
 
-        internal void InitializeVerifyPinSentView(){
+        internal void InitializeVerifyPinSentView()
+        {
             _viewPinSent = new UIView(new CGRect(18, 32, View.Frame.Width - 36, 64));
             _viewPinSent.BackgroundColor = myTNBColor.SunGlow();
             _viewPinSent.Layer.CornerRadius = 2.0f;
@@ -510,7 +801,7 @@ namespace myTNB.Registration
 
             UILabel lblPinSent = new UILabel(new CGRect(16, 16, _viewPinSent.Frame.Width - 32, 32));
             lblPinSent.TextAlignment = UITextAlignment.Left;
-            lblPinSent.Font = myTNBFont.MuseoSans12();
+            lblPinSent.Font = myTNBFont.MuseoSans12_300();
             lblPinSent.TextColor = myTNBColor.TunaGrey();
             lblPinSent.Text = "An SMS containing the activation pin has been sent to your number.";
             lblPinSent.Lines = 0;
@@ -522,12 +813,15 @@ namespace myTNB.Registration
             currentWindow.AddSubview(_viewPinSent);
         }
 
-        internal void ShowViewPinSent(){
+        internal void ShowViewPinSent()
+        {
             _viewPinSent.Hidden = false;
             _viewPinSent.Alpha = 1.0f;
-            UIView.Animate(5, 1, UIViewAnimationOptions.CurveEaseOut, () => {
+            UIView.Animate(5, 1, UIViewAnimationOptions.CurveEaseOut, () =>
+            {
                 _viewPinSent.Alpha = 0.0f;
-            }, () => {
+            }, () =>
+            {
                 _viewPinSent.Hidden = true;
             });
         }

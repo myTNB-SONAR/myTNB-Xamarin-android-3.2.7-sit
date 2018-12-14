@@ -57,6 +57,7 @@ namespace myTNB.Home.Feedback
         public override void RowSelected(UITableView tableView, NSIndexPath indexPath)
         {
             DataManager.DataManager.SharedInstance.CurrentSelectedStateForFeedbackIndex = indexPath.Row;
+            _controller.OnSelect?.Invoke();
             _controller.NavigationController.PopViewController(true);
         }
     }

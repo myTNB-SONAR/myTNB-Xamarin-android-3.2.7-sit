@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>CFBundleShortVersionString</key>
-	<string>1.0.7</string>
+	<string>1.1.0</string>
 	<key>CFBundleVersion</key>
-	<string>1.0.93.0</string>
+	<string>1.1.0.1</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>MinimumOSVersion</key>
@@ -54,17 +54,26 @@
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>mytnbapp</string>
+				<string>fb1820273008266041</string>
 			</array>
 			<key>CFBundleURLName</key>
 			<string>com.mytnb.mytnb</string>
 		</dict>
 	</array>
+	<key>FacebookAppID</key>
+	<string>1820273008266041</string>
+	<key>FacebookDisplayName</key>
+	<string>myTNB</string>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>mytnbapp://</string>
 		<string>maps</string>
 		<string>comgooglemaps</string>
 		<string>waze</string>
+		<string>fbapi</string>
+		<string>fb-messenger-share-api</string>
+		<string>fbauth2</string>
+		<string>fbshareextension</string>
 	</array>
 	<key>CFBundleIdentifier</key>
 	<string>com.mytnb.mytnb</string>

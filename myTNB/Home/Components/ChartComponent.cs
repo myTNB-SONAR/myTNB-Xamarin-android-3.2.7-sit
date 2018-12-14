@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using CoreGraphics;
 using myTNB.Enums;
@@ -21,7 +22,16 @@ namespace myTNB.Dashboard.DashboardComponents
         internal void CreateComponent(bool isNormalMeter)
         {
             int yLocation = GetChartYLocation(isNormalMeter);
-            float viewPercentage = !DeviceHelper.IsIphoneXUpResolution() ? 0.33f : 0.45f;
+            //float viewPercentage = !DeviceHelper.IsIphoneXUpResolution() ? 0.33f : 0.45f;
+            float viewPercentage = 0.33f;
+            if (DeviceHelper.IsIphoneXUpResolution())
+            {
+                viewPercentage = 0.45f;
+            }
+            else if (DeviceHelper.IsIphone6UpResolution())
+            {
+                viewPercentage = 0.40f;
+            }
             float viewHeight = (float)_parentView.Frame.Height * viewPercentage;// 160f;//(float)_parentView.Frame.Height - (217f);
             _viewChart = new UIView(new CGRect(42, yLocation, _parentView.Frame.Width - 84, viewHeight));
 
@@ -40,13 +50,14 @@ namespace myTNB.Dashboard.DashboardComponents
         /// </summary>
         /// <param name="chartData">Chart data.</param>
         /// <param name="isNormalMeter">If set to <c>true</c> is normal meter.</param>
-        public void ConstructSegmentViews(List<SegmentDetailsModel> chartData, bool isNormalMeter = true, ChartModeEnum chartMode = ChartModeEnum.Cost)
+        public void ConstructSegmentViews(List<SegmentDetailsModel> chartData, bool isNormalMeter = true, ChartModeEnum chartMode = ChartModeEnum.Cost,
+                                          bool isREAccount = false)
         {
             RemoveChartViewSubViews();
             double chartContainerWidth = (double)_viewChart.Frame.Width;
             double chartContainerHeight = (double)_viewChart.Frame.Height;
 
-            int barTopMargin = 30;
+            int barTopMargin = DeviceHelper.IsIphoneXUpResolution() ? 50 : 30;
             int barBottomMargin = 18;
             if (_parentView.Frame.Width == 320)
             {
@@ -58,7 +69,7 @@ namespace myTNB.Dashboard.DashboardComponents
                                               : 0;
             double barHeight = chartContainerHeight * 0.74;
 
-            //if(DeviceHelper.IsIphoneX())
+            //if(DeviceHelper.IsIphoneXUpResolution())
             //{
             //    barHeight -= 18;
             //}
@@ -71,8 +82,8 @@ namespace myTNB.Dashboard.DashboardComponents
                 DrawLineChart(chartData, barBottomMargin, barHeight, barHeightByValues, chartContainerWidth);
             }
 
-            DrawBarChart(chartData, barTopMargin, barBottomMargin, barHeight, barHeightByValues, chartContainerWidth, 
-                         chartContainerHeight, isNormalMeter, chartMode);
+            DrawBarChart(chartData, barTopMargin, barBottomMargin, barHeight, barHeightByValues, chartContainerWidth,
+                         chartContainerHeight, isNormalMeter, chartMode, isREAccount);
         }
 
         /// <summary>
@@ -88,7 +99,8 @@ namespace myTNB.Dashboard.DashboardComponents
         /// <param name="isNormalMeter">If set to <c>true</c> is normal meter.</param>
         /// <param name="chartMode">Chart mode.</param>
         private void DrawBarChart(List<SegmentDetailsModel> chartData, int barTopMargin, int barBottomMargin, double barHeight, double barHeightByValues,
-                                  double chartContainerWidth, double chartContainerHeight, bool isNormalMeter = true, ChartModeEnum chartMode = ChartModeEnum.Cost)
+                                  double chartContainerWidth, double chartContainerHeight, bool isNormalMeter = true, ChartModeEnum chartMode = ChartModeEnum.Cost,
+                                  bool isREAccount = false)
         {
             double barMargin = 10;
             if (_parentView.Frame.Width == 320)
@@ -121,20 +133,39 @@ namespace myTNB.Dashboard.DashboardComponents
 
                 // set chart value based on consumption mode
                 var chartValue = GetChartValue(segmentData, chartMode);
-                double chartValueDbl = double.Parse(chartValue);
+                double chartValueDbl = TextHelper.ParseStringToDouble(chartValue);
+                var chartValue2 = GetChartValue(segmentData, ChartModeEnum.REUsage);
+                double chartValue2Dbl = TextHelper.ParseStringToDouble(chartValue2);
+
+                if (isREAccount)
+                {
+                    chartValueDbl = ChartHelper.UpdateValueForRE(chartValueDbl);
+                }
 
                 UIView viewSegment = new UIView(new CGRect(x * index, 0, x, chartContainerHeight));
                 viewSegment.Tag = 0;
 
-                var lblText = FormatChartValue(chartValue, chartMode);
-                var lblHeight = 14;
+                var lblText = FormatChartValue(chartValueDbl, chartMode);
                 var maxLines = 1;
-                var lblY = (barHeight - barHeightByValues * Math.Abs(chartValueDbl) - 4);
-                UILabel lblCost = new UILabel(new CGRect(-10, lblY, 
-                                                         viewSegment.Frame.Width + 20, lblHeight * maxLines));
-                lblCost.Font = myTNBFont.MuseoSans9();
+                var lblOffset = 5;
+
+                if (isREAccount)
+                {
+                    maxLines = 2;
+                    lblText += string.Format("{0}{1}", Environment.NewLine, FormatChartValue(chartValue2Dbl, ChartModeEnum.REUsage));
+
+                    if (DeviceHelper.IsIphone5() || DeviceHelper.IsIphone4())
+                        lblOffset += 3;
+                }
+
+                var lblHeight = 14;
+                var lblY = (barHeight - barHeightByValues * Math.Abs(chartValueDbl) - lblOffset * maxLines);
+                UILabel lblCost = new UILabel(new CGRect(-15, lblY,
+                                                         viewSegment.Frame.Width + 30, lblHeight * maxLines));
+                lblCost.Font = myTNBFont.MuseoSans10_500();
                 lblCost.TextColor = UIColor.White;
                 lblCost.TextAlignment = UITextAlignment.Center;
+                lblCost.LineBreakMode = UILineBreakMode.TailTruncation;
                 lblCost.Tag = 0;
                 lblCost.Hidden = true;
                 lblCost.Lines = maxLines;
@@ -144,7 +175,7 @@ namespace myTNB.Dashboard.DashboardComponents
                 UIView viewBar = new UIView(new CGRect(barMargin, viewSegment.Frame.Height - barTopMargin
                                                        , viewSegment.Frame.Width - (barMargin * 2), 0));
                 viewBar.Layer.CornerRadius = 10.0f;
-                viewBar.BackgroundColor = UIColor.FromRGBA(255, 255, 255, 50);
+                viewBar.BackgroundColor = UIColor.FromWhiteAlpha(1.0f, 0.2f);
                 viewBar.Tag = 1;
                 viewSegment.AddSubview(viewBar);
 
@@ -152,8 +183,8 @@ namespace myTNB.Dashboard.DashboardComponents
                                                          , lblDateY
                                                          , viewSegment.Frame.Width
                                                          , 14));
-                lblDate.Font = myTNBFont.MuseoSans9();
-                lblDate.TextColor = UIColor.White;
+                lblDate.Font = myTNBFont.MuseoSans9_300();
+                lblDate.TextColor = UIColor.FromWhiteAlpha(1.0f, 0.2f);
                 lblDate.TextAlignment = UITextAlignment.Center;
 
                 string dateString = string.Empty;
@@ -213,7 +244,7 @@ namespace myTNB.Dashboard.DashboardComponents
                                                     , viewLineY
                                                     , chartContainerWidth
                                                     , 1));
-            viewLine.BackgroundColor = UIColor.FromRGBA(255, 255, 255, 50);
+            viewLine.BackgroundColor = UIColor.FromWhiteAlpha(1.0f, 0.2f);
             _viewChart.AddSubview(viewLine);
         }
 
@@ -234,7 +265,7 @@ namespace myTNB.Dashboard.DashboardComponents
             for (int i = 0; i < chartData.Count; i++)
             {
                 SegmentDetailsModel segmentData = chartData[i];
-                double y = barBottomMargin + (barHeight - barHeightByValues * Math.Abs(double.Parse(segmentData.Amount)));
+                double y = barBottomMargin + (barHeight - barHeightByValues * Math.Abs(TextHelper.ParseStringToDouble(segmentData.Amount)));
                 points.Add(new CGPoint((x * i) + (x / 2), y));
             }
 
@@ -254,18 +285,18 @@ namespace myTNB.Dashboard.DashboardComponents
             {
                 default:
                 case ChartModeEnum.Cost:
-                    return chartData.Max(x => Math.Abs(double.Parse(x.Amount)));
+                    return chartData.Max(x => Math.Abs(TextHelper.ParseStringToDouble(x.Amount)));
                 case ChartModeEnum.Usage:
-                    return chartData.Max(x => Math.Abs(double.Parse(x.Consumption)));
+                    return chartData.Max(x => Math.Abs(TextHelper.ParseStringToDouble(x.Consumption)));
                 case ChartModeEnum.Emission:
                     return chartData.Max(x =>
                     {
                         if (!string.IsNullOrEmpty(x.CO2))
-                            return Math.Abs(double.Parse(x.CO2));
+                            return Math.Abs(TextHelper.ParseStringToDouble(x.CO2));
                         else
                             return 0;
                     });
-                                         
+
             }
         }
 
@@ -290,9 +321,12 @@ namespace myTNB.Dashboard.DashboardComponents
                 case ChartModeEnum.Emission:
                     str = segment.CO2;
                     break;
+                case ChartModeEnum.REUsage:
+                    str = segment.Usage;
+                    break;
             }
 
-            if(string.IsNullOrEmpty(str))
+            if (string.IsNullOrEmpty(str))
             {
                 str = "0";
             }
@@ -306,17 +340,19 @@ namespace myTNB.Dashboard.DashboardComponents
         /// <returns>The chart value.</returns>
         /// <param name="value">Value.</param>
         /// <param name="chartMode">Chart mode.</param>
-        private string FormatChartValue(string value, ChartModeEnum chartMode)
+        private string FormatChartValue(double value, ChartModeEnum chartMode)
         {
+            var str = value.ToString("N2", CultureInfo.InvariantCulture);
             switch (chartMode)
             {
                 default:
                 case ChartModeEnum.Cost:
-                    return string.Format("{0} {1}", TNBGlobal.UNIT_CURRENCY, value);
+                    return string.Format("{0} {1}", TNBGlobal.UNIT_CURRENCY, str);
                 case ChartModeEnum.Usage:
-                    return string.Format("{0} {1}", value, TNBGlobal.UNIT_ENERGY);
+                case ChartModeEnum.REUsage:
+                    return string.Format("{0} {1}", str, TNBGlobal.UNIT_ENERGY);
                 case ChartModeEnum.Emission:
-                    return string.Format("{0} {1}", value, TNBGlobal.UNIT_EMISSION);
+                    return string.Format("{0} {1}", str, TNBGlobal.UNIT_EMISSION);
             }
         }
 
@@ -371,7 +407,7 @@ namespace myTNB.Dashboard.DashboardComponents
 
         internal void ToggleSelected(bool isSelected, UIView segment)
         {
-            for (int i = 0; i < segment.Subviews.Count() - 1; i++)
+            for (int i = 0; i < segment.Subviews.Count(); i++)
             {
                 UIView view = segment.Subviews[i];
 
@@ -381,8 +417,13 @@ namespace myTNB.Dashboard.DashboardComponents
                 }
                 else if (i == 1)
                 {
-                    view.BackgroundColor = isSelected ? UIColor.FromRGBA(255, 255, 255, 100)
-                        : UIColor.FromRGBA(255, 255, 255, 50);
+                    view.BackgroundColor = isSelected ? UIColor.FromWhiteAlpha(1.0f, 0.7f)
+                        : UIColor.FromWhiteAlpha(1.0f, 0.2f);
+                }
+                else if (i == 2)
+                {
+                    (view as UILabel).TextColor = isSelected ? UIColor.FromWhiteAlpha(1.0f, 0.7f)
+                        : UIColor.FromWhiteAlpha(1.0f, 0.2f);
                 }
             }
         }
@@ -406,7 +447,7 @@ namespace myTNB.Dashboard.DashboardComponents
         internal void SetDefaultDate()
         {
             var index = DataManager.DataManager.SharedInstance.IsMontView ? 5 : 6;
-            if(_hasLineChart) 
+            if (_hasLineChart)
             {
                 index++;
             }

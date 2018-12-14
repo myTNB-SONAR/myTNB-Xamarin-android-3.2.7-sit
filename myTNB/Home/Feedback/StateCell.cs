@@ -14,6 +14,8 @@ namespace myTNB
         {
             get
             {
+                lblState.Font = myTNBFont.MuseoSans16_300();
+                lblState.TextColor = myTNBColor.TunaGrey();
                 return lblState;
             }
         }

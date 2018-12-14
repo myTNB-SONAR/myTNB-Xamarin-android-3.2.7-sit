@@ -6,6 +6,7 @@ using CoreGraphics;
 using myTNB.Dashboard.DashboardComponents;
 using myTNB.Model;
 using UIKit;
+using myTNB.Extensions;
 
 namespace myTNB.PushNotification
 {
@@ -44,9 +45,14 @@ namespace myTNB.PushNotification
             {
                 PushNotificationHelper.GetNotifications();
             }
-            _notificationSelectionComponent.SetAccountName(DataManager.DataManager.SharedInstance.NotificationGeneralTypes.d.data[DataManager.DataManager.SharedInstance.CurrentSelectedNotificationTypeIndex].Title);
 
-            string filterID = DataManager.DataManager.SharedInstance.NotificationGeneralTypes.d.data[DataManager.DataManager.SharedInstance.CurrentSelectedNotificationTypeIndex].Id;
+            string filterID = "all";
+            if (DataManager.DataManager.SharedInstance.CurrentSelectedNotificationTypeIndex < DataManager.DataManager.SharedInstance.NotificationGeneralTypes?.Count)
+            {
+                _notificationSelectionComponent.SetAccountName(DataManager.DataManager.SharedInstance.NotificationGeneralTypes[DataManager.DataManager.SharedInstance.CurrentSelectedNotificationTypeIndex].Title);
+                filterID = DataManager.DataManager.SharedInstance.NotificationGeneralTypes[DataManager.DataManager.SharedInstance.CurrentSelectedNotificationTypeIndex].Id;
+            }
+
 
             List<UserNotificationDataModel> notifications = new List<UserNotificationDataModel>();
             if (DataManager.DataManager.SharedInstance.UserNotifications.Count > 0)
@@ -93,7 +99,7 @@ namespace myTNB.PushNotification
 
         internal void SetNavigationBar()
         {
-            NavigationController.NavigationBar.Hidden = true;
+            NavigationController.SetNavigationBarHidden(true, false);
             GradientViewComponent gradientViewComponent = new GradientViewComponent(View, true, 89, true);
             UIView headerView = gradientViewComponent.GetUI();
             TitleBarComponent titleBarComponent = new TitleBarComponent(headerView);
@@ -109,7 +115,11 @@ namespace myTNB.PushNotification
 
             _notificationSelectionComponent = new AccountSelectionComponent(headerView);
             UIView accountSelectionView = _notificationSelectionComponent.GetUI();
-            _notificationSelectionComponent.SetAccountName(DataManager.DataManager.SharedInstance.NotificationGeneralTypes.d.data[DataManager.DataManager.SharedInstance.CurrentSelectedNotificationTypeIndex].Title);
+
+            if (DataManager.DataManager.SharedInstance.CurrentSelectedNotificationTypeIndex < DataManager.DataManager.SharedInstance.NotificationGeneralTypes?.Count)
+            {
+                _notificationSelectionComponent.SetAccountName(DataManager.DataManager.SharedInstance.NotificationGeneralTypes[DataManager.DataManager.SharedInstance.CurrentSelectedNotificationTypeIndex].Title);
+            }
             _notificationSelectionComponent.SetSelectAccountEvent(new UITapGestureRecognizer(() =>
             {
                 UIStoryboard storyBoard = UIStoryboard.FromName("PushNotification", null);
@@ -125,12 +135,12 @@ namespace myTNB.PushNotification
 
         internal void SetSubViews()
         {
-            pushNotificationTableView.Frame = new CGRect(0, DeviceHelper.IsIphoneX() ? 113 : 89, View.Frame.Width, View.Frame.Height - 89);
+            pushNotificationTableView.Frame = new CGRect(0, DeviceHelper.IsIphoneXUpResolution() ? 113 : 89, View.Frame.Width, View.Frame.Height - 89);
             pushNotificationTableView.RowHeight = 66f;
             pushNotificationTableView.SeparatorStyle = UITableViewCellSeparatorStyle.None;
         }
 
-        internal void ExecuteGetNotificationDetailedInfoCall(string id)
+        internal void ExecuteGetNotificationDetailedInfoCall(UserNotificationDataModel dataModel)
         {
             ActivityIndicator.Show();
             NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
@@ -139,20 +149,26 @@ namespace myTNB.PushNotification
                 {
                     if (NetworkUtility.isReachable)
                     {
-                        GetNotificationDetailedInfo(id).ContinueWith(task =>
+                        GetNotificationDetailedInfo(dataModel).ContinueWith(task =>
                         {
                             InvokeOnMainThread(() =>
                             {
-                                if (_detailedInfo != null && _detailedInfo.d != null
-                                   && _detailedInfo.d.isError.ToLower() == "false"
-                                   && _detailedInfo.d.status.ToLower() == "success"
-                                   && _detailedInfo.d.data != null)
+                                if (_detailedInfo != null && _detailedInfo?.d != null
+                                    && _detailedInfo?.d?.didSucceed == true
+                                   && _detailedInfo?.d?.status.ToLower() == "success"
+                                   && _detailedInfo?.d?.data != null)
                                 {
                                     DataManager.DataManager.SharedInstance.NotificationNeedsUpdate = true;
                                     UIStoryboard storyBoard = UIStoryboard.FromName("PushNotification", null);
                                     NotificationDetailsViewController viewController =
                                         storyBoard.InstantiateViewController("NotificationDetailsViewController") as NotificationDetailsViewController;
-                                    _detailedInfo.d.data.NotificationTitle = DataManager.DataManager.SharedInstance.UserNotifications.Where(x => x.Id == id).ToList()[0].Title;
+                                    var notificationTitle = string.Empty;
+                                    var notifResult = DataManager.DataManager.SharedInstance.UserNotifications.Where(x => x.Id == dataModel.Id).ToList();
+                                    if (notifResult.Count > 0)
+                                    {
+                                        notificationTitle = notifResult[0]?.Title;
+                                    }
+                                    _detailedInfo.d.data.NotificationTitle = notificationTitle;
                                     viewController.NotificationInfo = _detailedInfo.d.data;
                                     NavigationController.PushViewController(viewController, true);
                                 }
@@ -163,24 +179,28 @@ namespace myTNB.PushNotification
                     else
                     {
                         Console.WriteLine("No Network");
-                        DisplayAlertMessage("No Data Connection", "Please check your data connection and try again.");
+                        DisplayAlertMessage("ErrNoNetworkTitle".Translate(), "ErrNoNetworkMsg".Translate());
                         ActivityIndicator.Hide();
                     }
                 });
             });
         }
 
-        internal Task GetNotificationDetailedInfo(string id)
+        internal Task GetNotificationDetailedInfo(UserNotificationDataModel dataModel)
         {
             return Task.Factory.StartNew(() =>
             {
                 ServiceManager serviceManager = new ServiceManager();
                 object requestParameter = new
                 {
-                    apiKeyID = TNBGlobal.API_KEY_ID,
-                    notificationId = id
+                    ApiKeyID = TNBGlobal.API_KEY_ID,
+                    NotificationId = dataModel.Id,
+                    NotificationType = dataModel.NotificationType,
+                    Email = DataManager.DataManager.SharedInstance.UserEntity[0].email,
+                    DeviceId = DataManager.DataManager.SharedInstance.UDID,
+                    SSPUserId = DataManager.DataManager.SharedInstance.UserEntity[0].userID
                 };
-                _detailedInfo = serviceManager.GetNotificationDetailedInfo("GetNotificationDetailedInfo", requestParameter);
+                _detailedInfo = serviceManager.GetNotificationDetailedInfo("GetNotificationDetailedInfo_V2", requestParameter);
             });
         }
 

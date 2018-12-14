@@ -13,5 +13,14 @@ namespace myTNB
         {
             return NSBundle.MainBundle.InfoDictionary["CFBundleShortVersionString"].ToString();
         }
+
+        /// <summary>
+        /// Gets the build version.
+        /// </summary>
+        /// <returns>The build version.</returns>
+        public static string GetBuildVersion()
+        {
+            return NSBundle.MainBundle.InfoDictionary["CFBundleVersion"].ToString();
+        }
     }
 }

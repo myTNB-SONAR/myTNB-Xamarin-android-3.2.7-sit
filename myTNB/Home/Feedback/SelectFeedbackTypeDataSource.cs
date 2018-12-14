@@ -45,7 +45,7 @@ namespace myTNB.Home.Feedback
                     }
                 }
             }
-
+            cell.UpdateStyle();
             return cell;
 
         }

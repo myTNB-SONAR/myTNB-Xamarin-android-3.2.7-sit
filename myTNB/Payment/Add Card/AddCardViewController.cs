@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using UIKit;
 using CoreGraphics;
 using myTNB.Model;
@@ -7,6 +7,9 @@ using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Linq;
 using myTNB.Model.RequestPayBill;
+using myTNB.Extensions;
+using Foundation;
+using System.Globalization;
 
 namespace myTNB
 {
@@ -15,6 +18,9 @@ namespace myTNB
         public AddCardViewController(IntPtr handle) : base(handle)
         {
         }
+
+        UIScrollView ScrollView;
+        CGRect scrollViewFrame;
 
         UILabel lblCardNumberTitle;
         UILabel lblCardNumberError;
@@ -68,6 +74,9 @@ namespace myTNB
             {"A", @"^3[47][0-9]{13}$"}
         };
 
+        const int MinCvvLength = 3;
+        const int MaxCvvLength = 4;
+
         public override void ViewDidLoad()
         {
             base.ViewDidLoad();
@@ -75,6 +84,9 @@ namespace myTNB
             NavigationItem.HidesBackButton = true;
             SetNavigationItems();
             SetSubviews();
+
+            NSNotificationCenter.DefaultCenter.AddObserver(UIKeyboard.WillHideNotification, OnKeyboardNotification);
+            NSNotificationCenter.DefaultCenter.AddObserver(UIKeyboard.WillShowNotification, OnKeyboardNotification);
         }
 
         public override void DidReceiveMemoryWarning()
@@ -105,14 +117,24 @@ namespace myTNB
 
         internal void SetSubviews()
         {
+            // setup scrollview
+            ScrollView = new UIScrollView(new CGRect(0, 0, View.Frame.Width, View.Frame.Height));
+            ScrollView.BackgroundColor = UIColor.Clear;
+            View.AddSubview(ScrollView);
+
+            //Scrollview content size
+            ScrollView.ContentSize = new CGRect(0f, 0f, View.Frame.Width, UIScreen.MainScreen.Bounds.Height).Size;
+
+            scrollViewFrame = ScrollView.Frame;
+
             UILabel lblDescription = new UILabel(new CGRect(18, 16, View.Frame.Width - 36, 36));
-            lblDescription.Font = myTNBFont.MuseoSans14();
+            lblDescription.Font = myTNBFont.MuseoSans14_300();
             lblDescription.TextColor = myTNBColor.TunaGrey();
             lblDescription.LineBreakMode = UILineBreakMode.WordWrap;
             lblDescription.Lines = 0;
             lblDescription.Text = "Only credit / debit cards issued in Malaysia are accepted.";
             lblDescription.TextAlignment = UITextAlignment.Left;
-            View.AddSubview(lblDescription);
+            ScrollView.AddSubview(lblDescription);
 
             //Credit Card Number 
             UIView viewCardNumber = new UIView((new CGRect(18, 68, View.Frame.Width - 36, 51)));
@@ -120,15 +142,15 @@ namespace myTNB
 
             lblCardNumberTitle = new UILabel(new CGRect(0, 0, viewCardNumber.Frame.Width, 12));
             lblCardNumberTitle.TextColor = myTNBColor.SilverChalice();
-            lblCardNumberTitle.Font = myTNBFont.MuseoSans9();
+            lblCardNumberTitle.Font = myTNBFont.MuseoSans9_300();
             lblCardNumberTitle.TextAlignment = UITextAlignment.Left;
-            lblCardNumberTitle.Text = "Card No.";
+            lblCardNumberTitle.Text = "CARD NO.";
             lblCardNumberTitle.Hidden = true;
             viewCardNumber.AddSubview(lblCardNumberTitle);
 
             lblCardNumberError = new UILabel(new CGRect(0, 37, viewCardNumber.Frame.Width, 14));
             lblCardNumberError.TextColor = myTNBColor.Tomato();
-            lblCardNumberError.Font = myTNBFont.MuseoSans9();
+            lblCardNumberError.Font = myTNBFont.MuseoSans9_300();
             lblCardNumberError.TextAlignment = UITextAlignment.Left;
             lblCardNumberError.Text = "Invalid Card No.";
             lblCardNumberError.Hidden = true;
@@ -136,7 +158,7 @@ namespace myTNB
 
             txtFieldCardNumber = new UITextField(new CGRect(0, 12, viewCardNumber.Frame.Width - 30, 24));
             txtFieldCardNumber.TextColor = myTNBColor.TunaGrey();
-            txtFieldCardNumber.Font = myTNBFont.MuseoSans16();
+            txtFieldCardNumber.Font = myTNBFont.MuseoSans16_300();
             txtFieldCardNumber.TextAlignment = UITextAlignment.Left;
             txtFieldCardNumber.Placeholder = "Card No.";
             viewCardNumber.AddSubview(txtFieldCardNumber);
@@ -167,15 +189,15 @@ namespace myTNB
 
             lblNameTitle = new UILabel(new CGRect(0, 0, viewName.Frame.Width, 12));
             lblNameTitle.TextColor = myTNBColor.SilverChalice();
-            lblNameTitle.Font = myTNBFont.MuseoSans9();
+            lblNameTitle.Font = myTNBFont.MuseoSans9_300();
             lblNameTitle.TextAlignment = UITextAlignment.Left;
-            lblNameTitle.Text = "Name on Card";
+            lblNameTitle.Text = "NAME ON CARD";
             lblNameTitle.Hidden = true;
             viewName.AddSubview(lblNameTitle);
 
             lblNameError = new UILabel(new CGRect(0, 37, viewName.Frame.Width, 14));
             lblNameError.TextColor = myTNBColor.Tomato();
-            lblNameError.Font = myTNBFont.MuseoSans9();
+            lblNameError.Font = myTNBFont.MuseoSans9_300();
             lblNameError.TextAlignment = UITextAlignment.Left;
             lblNameError.Text = "Invalid Name";
             lblNameError.Hidden = true;
@@ -183,7 +205,7 @@ namespace myTNB
 
             txtFieldName = new UITextField(new CGRect(0, 12, viewName.Frame.Width, 24));
             txtFieldName.TextColor = myTNBColor.TunaGrey();
-            txtFieldName.Font = myTNBFont.MuseoSans16();
+            txtFieldName.Font = myTNBFont.MuseoSans16_300();
             txtFieldName.TextAlignment = UITextAlignment.Left;
             txtFieldName.Placeholder = "Name on Card";
             viewName.AddSubview(txtFieldName);
@@ -198,15 +220,15 @@ namespace myTNB
 
             lblCardExpiryTitle = new UILabel(new CGRect(0, 0, viewName.Frame.Width, 12));
             lblCardExpiryTitle.TextColor = myTNBColor.SilverChalice();
-            lblCardExpiryTitle.Font = myTNBFont.MuseoSans9();
+            lblCardExpiryTitle.Font = myTNBFont.MuseoSans9_300();
             lblCardExpiryTitle.TextAlignment = UITextAlignment.Left;
-            lblCardExpiryTitle.Text = "Card Expiry";
+            lblCardExpiryTitle.Text = "CARD EXPIRY";
             lblCardExpiryTitle.Hidden = true;
             viewCardExpiry.AddSubview(lblCardExpiryTitle);
 
             lblCardExpiryError = new UILabel(new CGRect(0, 37, viewName.Frame.Width, 14));
             lblCardExpiryError.TextColor = myTNBColor.Tomato();
-            lblCardExpiryError.Font = myTNBFont.MuseoSans9();
+            lblCardExpiryError.Font = myTNBFont.MuseoSans9_300();
             lblCardExpiryError.TextAlignment = UITextAlignment.Left;
             lblCardExpiryError.Text = "Invalid Card Expiration Date";
             lblCardExpiryError.Hidden = true;
@@ -214,7 +236,7 @@ namespace myTNB
 
             txtFieldCardExpiry = new UITextField(new CGRect(0, 12, viewName.Frame.Width, 24));
             txtFieldCardExpiry.TextColor = myTNBColor.TunaGrey();
-            txtFieldCardExpiry.Font = myTNBFont.MuseoSans16();
+            txtFieldCardExpiry.Font = myTNBFont.MuseoSans16_300();
             txtFieldCardExpiry.TextAlignment = UITextAlignment.Left;
             txtFieldCardExpiry.Placeholder = "Card Expiry (MM/YY)";
             viewCardExpiry.AddSubview(txtFieldCardExpiry);
@@ -263,7 +285,7 @@ namespace myTNB
 
             lblCVVTitle = new UILabel(new CGRect(0, 0, viewName.Frame.Width, 12));
             lblCVVTitle.TextColor = myTNBColor.SilverChalice();
-            lblCVVTitle.Font = myTNBFont.MuseoSans9();
+            lblCVVTitle.Font = myTNBFont.MuseoSans9_300();
             lblCVVTitle.TextAlignment = UITextAlignment.Left;
             lblCVVTitle.Text = "CVV";
             lblCVVTitle.Hidden = true;
@@ -271,15 +293,15 @@ namespace myTNB
 
             lblCVVError = new UILabel(new CGRect(0, 37, viewName.Frame.Width, 14));
             lblCVVError.TextColor = myTNBColor.Tomato();
-            lblCVVError.Font = myTNBFont.MuseoSans9();
+            lblCVVError.Font = myTNBFont.MuseoSans9_300();
             lblCVVError.TextAlignment = UITextAlignment.Left;
-            lblCVVError.Text = "Invalid CVV";
+            lblCVVError.Text = "Invalid CVV.";
             lblCVVError.Hidden = true;
             viewCVV.AddSubview(lblCVVError);
 
             txtFieldCVV = new UITextField(new CGRect(0, 12, viewName.Frame.Width, 24));
             txtFieldCVV.TextColor = myTNBColor.TunaGrey();
-            txtFieldCVV.Font = myTNBFont.MuseoSans16();
+            txtFieldCVV.Font = myTNBFont.MuseoSans16_300();
             txtFieldCVV.TextAlignment = UITextAlignment.Left;
             txtFieldCVV.Placeholder = "CVV";
             viewCVV.AddSubview(txtFieldCVV);
@@ -288,7 +310,7 @@ namespace myTNB
             {
                 var theTextField = (UITextField)textField;
 
-                if (theTextField.Text.Length == 4 && range.Length == 0)
+                if (theTextField.Text.Length == MaxCvvLength && range.Length == 0)
                 {
                     return false;
                 }
@@ -309,7 +331,7 @@ namespace myTNB
             btnCheckBox.SetTitleColor(myTNBColor.FreshGreen(), UIControlState.Normal);
             btnCheckBox.BackgroundColor = UIColor.Clear;
             btnCheckBox.Layer.CornerRadius = 5.0f;
-            View.AddSubview(btnCheckBox);
+            ScrollView.AddSubview(btnCheckBox);
             //btnCheckBox.Hidden = true;
 
             btnCheckBox.TouchUpInside += (sender, e) =>
@@ -330,19 +352,20 @@ namespace myTNB
             lblCheckBoxTitle.TextColor = myTNBColor.TunaGrey();
             lblCheckBoxTitle.Font = myTNBFont.MuseoSans14();
             lblCheckBoxTitle.TextAlignment = UITextAlignment.Left;
-            lblCheckBoxTitle.Text = "Do you want to save this card?";
-            View.AddSubview(lblCheckBoxTitle);
+            lblCheckBoxTitle.Text = "SaveCCTickBox".Translate();
+            ScrollView.AddSubview(lblCheckBoxTitle);
             //lblCheckBoxTitle.Hidden = true;
 
             btnNext = new UIButton(UIButtonType.Custom);
-            btnNext.Frame = new CGRect(18, View.Frame.Height - (DeviceHelper.IsIphoneX() ? 156 : 132), View.Frame.Width - 36, 48);
+            btnNext.Frame = new CGRect(18, View.Frame.Height - DeviceHelper.GetScaledHeight(133), View.Frame.Width - 36, DeviceHelper.GetScaledHeight(48));
             btnNext.SetTitle("Next", UIControlState.Normal);
-            btnNext.Font = myTNBFont.MuseoSans16();
+            btnNext.Font = myTNBFont.MuseoSans16_500();
             btnNext.Layer.CornerRadius = 5.0f;
             btnNext.BackgroundColor = myTNBColor.SilverChalice();
             btnNext.Enabled = false;
             btnNext.TouchUpInside += (sender, e) =>
             {
+                RemoveCachedAccountRecords();
                 NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
                 {
                     InvokeOnMainThread(() =>
@@ -353,8 +376,7 @@ namespace myTNB
                         }
                         else
                         {
-                            Console.WriteLine("No Network");
-                            var alert = UIAlertController.Create("No Data Connection", "Please check your data connection and try again.", UIAlertControllerStyle.Alert);
+                            var alert = UIAlertController.Create("ErrNoNetworkTitle".Translate(), "ErrNoNetworkMsg".Translate(), UIAlertControllerStyle.Alert);
                             alert.AddAction(UIAlertAction.Create("Ok", UIAlertActionStyle.Cancel, null));
                             PresentViewController(alert, animated: true, completionHandler: null);
                         }
@@ -362,11 +384,11 @@ namespace myTNB
                 });
             };
 
-            View.AddSubview(viewCardNumber);
-            View.AddSubview(viewName);
-            View.AddSubview(viewCardExpiry);
-            View.AddSubview(viewCVV);
-            View.AddSubview(btnNext);
+            ScrollView.AddSubview(viewCardNumber);
+            ScrollView.AddSubview(viewName);
+            ScrollView.AddSubview(viewCardExpiry);
+            ScrollView.AddSubview(viewCVV);
+            ScrollView.AddSubview(btnNext);
 
             _textFieldHelper.CreateTextFieldLeftView(txtFieldCardNumber, "Card-Number");
             _textFieldHelper.CreateTextFieldLeftView(txtFieldName, "Name");
@@ -389,6 +411,18 @@ namespace myTNB
                                , viewLineCardExpiry, string.Empty);
             SetTextFieldEvents(txtFieldCVV, lblCVVTitle, lblCVVError
                                , viewLineCVV, string.Empty);
+        }
+
+        /// <summary>
+        /// Removes the cached account records.
+        /// </summary>
+        private void RemoveCachedAccountRecords()
+        {
+            foreach (var item in AccountsForPayment)
+            {
+                DataManager.DataManager.SharedInstance.DeleteDue(item.accNum);
+                DataManager.DataManager.SharedInstance.DeleteDetailsFromPaymentHistory(item.accNum);
+            }
         }
 
         internal void SetKeyboard(UITextField textField)
@@ -415,25 +449,33 @@ namespace myTNB
             textField.EditingDidBegin += (sender, e) =>
             {
                 lblTitle.Hidden = textField.Text.Length == 0;
+                textField.LeftViewMode = UITextFieldViewMode.Never;
+                viewLine.BackgroundColor = myTNBColor.PowerBlue();
             };
             textField.ShouldEndEditing = (sender) =>
             {
-                Console.WriteLine("Editing END");
                 lblTitle.Hidden = textField.Text.Length == 0;
+                bool isValid = textField.Text?.Length > 0;
                 if (textField == txtFieldCardNumber)
                 {
-                    bool isValid = ValidateCard(textField.Text.Replace(" ", ""));
-                    lblError.Hidden = isValid || textField.Text.Length == 0;
-                    viewLine.BackgroundColor = isValid || textField.Text.Length == 0 ? myTNBColor.PlatinumGrey() : myTNBColor.Tomato();
-                    textField.TextColor = isValid || textField.Text.Length == 0 ? myTNBColor.TunaGrey() : myTNBColor.Tomato();
+                    isValid = isValid && ValidateCard(textField.Text.Replace(" ", ""));
                 }
-                if (textField == txtFieldCardExpiry)
+                else if (textField == txtFieldName)
                 {
-                    bool isValid = IsValidExpiryDate();
-                    lblError.Hidden = isValid || textField.Text.Length == 0;
-                    viewLine.BackgroundColor = isValid || textField.Text.Length == 0 ? myTNBColor.PlatinumGrey() : myTNBColor.Tomato();
-                    textField.TextColor = isValid || textField.Text.Length == 0 ? myTNBColor.TunaGrey() : myTNBColor.Tomato();
+                    isValid = isValid && IsValidName(textField.Text);
                 }
+                else if (textField == txtFieldCardExpiry)
+                {
+                    isValid = isValid && IsValidExpiryDate();
+                }
+                else if (textField == txtFieldCVV)
+                {
+                    isValid = isValid && IsValidCVV(textField.Text);
+                }
+
+                lblError.Hidden = isValid;
+                viewLine.BackgroundColor = isValid ? myTNBColor.PlatinumGrey() : myTNBColor.Tomato();
+                textField.TextColor = isValid ? myTNBColor.TunaGrey() : myTNBColor.Tomato();
 
                 SetNextButtonEnable();
                 return true;
@@ -446,6 +488,11 @@ namespace myTNB
             textField.EditingDidBegin += (sender, e) =>
             {
                 lblTitle.Hidden = textField.Text.Length == 0;
+            };
+            textField.EditingDidEnd += (sender, e) =>
+            {
+                if (textField.Text.Length == 0)
+                    textField.LeftViewMode = UITextFieldViewMode.UnlessEditing;
             };
         }
 
@@ -497,9 +544,9 @@ namespace myTNB
             bool isValid = false;
 
             bool isCardValid = ValidateCard(txtFieldCardNumber.Text.Replace(" ", ""));
-            bool isNameValid = txtFieldName.Text.Length != 0;
+            bool isNameValid = IsValidName(txtFieldName.Text);
             bool isExpiryDateValid = IsValidExpiryDate();
-            bool isCVVValid = txtFieldCVV.Text.Length != 0;
+            bool isCVVValid = IsValidCVV(txtFieldCVV.Text);
 
             isValid = isCardValid && isNameValid && isExpiryDateValid && isCVVValid;
 
@@ -521,8 +568,9 @@ namespace myTNB
                     }
                     else
                     {
-                        string errMsg = "There is an error in the server, please try again.";
-                        if(_requestPayBill != null && _requestPayBill.d != null && !string.IsNullOrEmpty(_requestPayBill.d.message)){
+                        string errMsg = "DefaultServerErrorMessage".Translate();
+                        if (_requestPayBill != null && _requestPayBill.d != null && !string.IsNullOrEmpty(_requestPayBill.d.message))
+                        {
                             errMsg = _requestPayBill.d.message;
                         }
                         var alert = UIAlertController.Create(string.Empty, errMsg, UIAlertControllerStyle.Alert);
@@ -560,13 +608,19 @@ namespace myTNB
         {
             List<PaymentItemsModel> paymentItemList = new List<PaymentItemsModel>();
             PaymentItemsModel paymentItem;
+            int count = AccountsForPayment?.Count ?? 0;
+            string ownerName = count == 1 ? AccountsForPayment[0].accountOwnerName : string.Empty;
+
             foreach (var item in AccountsForPayment)
             {
                 paymentItem = new PaymentItemsModel();
+                paymentItem.AccountOwnerName = count > 1 ? item.accountOwnerName : DataManager.DataManager.SharedInstance.UserEntity[0].displayName;
                 paymentItem.AccountNo = item.accNum;
-                paymentItem.Amount = item.Amount.ToString();
+                paymentItem.Amount = item.Amount.ToString("N2", CultureInfo.InvariantCulture);
                 paymentItemList.Add(paymentItem);
             }
+
+            double numAmount = TextHelper.ParseStringToDouble(TotalAmount);
 
             return Task.Factory.StartNew(() =>
             {
@@ -574,7 +628,7 @@ namespace myTNB
                 object requestParameter = new
                 {
                     apiKeyID = TNBGlobal.API_KEY_ID,
-                    customerName = DataManager.DataManager.SharedInstance.UserEntity[0].displayName,
+                    customerName = count > 1 ? DataManager.DataManager.SharedInstance.UserEntity[0].displayName : ownerName,
                     accNum = DataManager.DataManager.SharedInstance.BillingAccountDetails.accNum,
                     email = DataManager.DataManager.SharedInstance.UserEntity[0].email,
                     phoneNo = DataManager.DataManager.SharedInstance.UserEntity[0].mobileNo != null ? DataManager.DataManager.SharedInstance.UserEntity[0].mobileNo : "",
@@ -582,7 +636,7 @@ namespace myTNB
                     platform = "2",
                     registeredCardId = "",
                     paymentMode = "CC",
-                    totalAmount = Double.Parse(TotalAmount),
+                    totalAmount = numAmount,
                     paymentItems = paymentItemList
                 };
                 _requestPayBill = serviceManager.RequestMultiPayBill("RequestMultiPayBill", requestParameter);
@@ -654,6 +708,41 @@ namespace myTNB
             return LuhnVerification(cardNo);
         }
 
+        /// <summary>
+        /// Checks if CVV is valid
+        /// </summary>
+        /// <returns><c>true</c>, if valid cvv was ised, <c>false</c> otherwise.</returns>
+        /// <param name="cvv">Cvv.</param>
+        private bool IsValidCVV(string cvv)
+        {
+            bool ret = false;
+
+            if (!string.IsNullOrWhiteSpace(cvv))
+            {
+                ret = _textFieldHelper.ValidateTextField(cvv, TNBGlobal.NumbersOnlyPattern)
+                                      && cvv.Length >= MinCvvLength;
+            }
+
+            return ret;
+        }
+
+        /// <summary>
+        /// Checks if name is valid
+        /// </summary>
+        /// <returns><c>true</c>, if valid name was ised, <c>false</c> otherwise.</returns>
+        /// <param name="name">Name.</param>
+        private bool IsValidName(string name)
+        {
+            bool ret = false;
+
+            if (!string.IsNullOrWhiteSpace(name))
+            {
+                ret = name.Length > 0;
+            }
+
+            return ret;
+        }
+
         internal string FormatCard(string cardNo)
         {
             string cardType = GetCardTypeByPreffix(cardNo);
@@ -688,8 +777,6 @@ namespace myTNB
 
             if (txtFieldCardNumber.Text == string.Empty)
             {
-                Console.WriteLine("Card field is empty!");
-
                 var alert = UIAlertController.Create("Empty card number", "Please enter valid card number and try again.", UIAlertControllerStyle.Alert);
                 alert.AddAction(UIAlertAction.Create("Ok", UIAlertActionStyle.Cancel, null));
                 PresentViewController(alert, animated: true, completionHandler: null);
@@ -735,9 +822,39 @@ namespace myTNB
         {
             RegisteredCardsDataModel tempCard = card;
             tempCard.ExposedDigits = card.LastDigits.Substring(0, 6) + card.LastDigits.Substring(card.LastDigits.Length - 4);
-            Console.WriteLine(tempCard.ExposedDigits);
 
             return tempCard.ExposedDigits;
         }
+
+        /// <summary>
+        /// Handles the keyboard notification.
+        /// </summary>
+        /// <param name="notification">Notification.</param>
+        private void OnKeyboardNotification(NSNotification notification)
+        {
+            if (!IsViewLoaded)
+                return;
+
+            bool visible = notification.Name == UIKeyboard.WillShowNotification;
+            UIView.BeginAnimations("AnimateForKeyboard");
+            UIView.SetAnimationBeginsFromCurrentState(true);
+            UIView.SetAnimationDuration(UIKeyboard.AnimationDurationFromNotification(notification));
+            UIView.SetAnimationCurve((UIViewAnimationCurve)UIKeyboard.AnimationCurveFromNotification(notification));
+
+            if (visible)
+            {
+                CGRect r = UIKeyboard.BoundsFromNotification(notification);
+                CGRect viewFrame = View.Bounds;
+                nfloat currentViewHeight = viewFrame.Height - r.Height;
+                ScrollView.Frame = new CGRect(ScrollView.Frame.X, ScrollView.Frame.Y, ScrollView.Frame.Width, currentViewHeight);
+            }
+            else
+            {
+                ScrollView.Frame = scrollViewFrame;
+            }
+
+            UIView.CommitAnimations();
+        }
+
     }
 }

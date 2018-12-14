@@ -11,11 +11,13 @@ namespace myTNB.Dashboard.DashboardComponents
     {
         UIView _parentView;
         ChartDataModelBase chartBaseData;
+        bool isRenewableAcct = false;
 
 
-        public ChartDataSource(UIView view, ChartDataModelBase chart)
+        public ChartDataSource(UIView view, ChartDataModelBase chart, bool isREAcct)
         {
             _parentView = view;
+            isRenewableAcct = isREAcct;
 
             ChartHelper.SortChartDataDescending(chart, out chartBaseData);
         }
@@ -82,7 +84,7 @@ namespace myTNB.Dashboard.DashboardComponents
             //if (chartData?.Count > 0)
             {
                 chartComponent?.SetFrameByMeterType(isNormalMeter);
-                chartComponent.ConstructSegmentViews(chartData, isNormalMeter, DataManager.DataManager.SharedInstance.CurrentChartMode);
+                chartComponent.ConstructSegmentViews(chartData, isNormalMeter, DataManager.DataManager.SharedInstance.CurrentChartMode, isRenewableAcct);
 
                 var rangeLabel = new UILabel()
                 {

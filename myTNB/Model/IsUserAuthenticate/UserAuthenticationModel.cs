@@ -1,4 +1,6 @@
-﻿namespace myTNB.Model
+﻿using Newtonsoft.Json;
+
+namespace myTNB.Model
 {
     public class UserAuthenticationModel
     {
@@ -12,5 +14,25 @@
         public string message { set; get; }
         public string identificationNo { set; get; }
         public string mobileNo { set; get; }
+        public string isPhoneVerified { set; get; }
+
+        [JsonIgnore]
+
+        public bool IsVerifiedPhone
+        {
+            get
+            {
+                bool ret = false;
+
+                if (!string.IsNullOrEmpty(isPhoneVerified))
+                {
+                    if(bool.TryParse(isPhoneVerified, out ret))
+                    {
+                        return ret;
+                    }
+                }
+                return ret;
+            }
+        }
     }
 }

@@ -72,7 +72,8 @@ namespace myTNB.Model
             set
             {
                 string nickName = ServiceCall.ValidateResponseItem(value);
-                if(!string.IsNullOrEmpty(nickName) && !string.IsNullOrWhiteSpace(nickName)){
+                if (!string.IsNullOrEmpty(nickName) && !string.IsNullOrWhiteSpace(nickName))
+                {
                     _accDesc = nickName;
                 }
             }
@@ -136,7 +137,7 @@ namespace myTNB.Model
             {
                 var res = true;
 
-                if(!string.IsNullOrEmpty(smartMeterCode))
+                if (!string.IsNullOrEmpty(smartMeterCode))
                 {
                     res = string.Compare(smartMeterCode, "0") == 0;
                 }

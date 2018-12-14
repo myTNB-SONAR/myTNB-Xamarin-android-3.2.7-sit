@@ -14,8 +14,16 @@ namespace myTNB
     [Register ("ReceiptViewController")]
     partial class ReceiptViewController
     {
+        [Outlet]
+        [GeneratedCode ("iOS Designer", "1.0")]
+        UIKit.UITableView tableViewReceipt { get; set; }
+
         void ReleaseDesignerOutlets ()
         {
+            if (tableViewReceipt != null) {
+                tableViewReceipt.Dispose ();
+                tableViewReceipt = null;
+            }
         }
     }
 }

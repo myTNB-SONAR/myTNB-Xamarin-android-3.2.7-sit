@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="387">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="76W-3G-VcO">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--myTNB Dashboard-->
+        <!--Dashboard View Controller-->
         <scene sceneID="386">
             <objects>
                 <viewController storyboardIdentifier="DashboardViewController" id="387" customClass="DashboardViewController" sceneMemberID="viewController">
@@ -23,12 +22,12 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view hidden="YES" tag="100" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MAx-X7-V4c">
-                                <rect key="frame" x="30.5" y="52" width="314.5" height="48"/>
+                                <rect key="frame" x="18" y="72" width="339" height="64"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Unable to fetch smart meter data! Please try later." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="17X-49-oNX">
-                                        <rect key="frame" x="16" y="16" width="282.5" height="16"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" tag="102" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Unable to fetch smart meter data! Please try later." textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="17X-49-oNX">
+                                        <rect key="frame" x="16" y="16" width="307" height="32"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="16" id="o2k-Yc-Wny"/>
+                                            <constraint firstAttribute="height" constant="32" id="o2k-Yc-Wny"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                         <nil key="textColor"/>
@@ -53,7 +52,7 @@
                                     <constraint firstItem="17X-49-oNX" firstAttribute="leading" secondItem="MAx-X7-V4c" secondAttribute="leading" constant="8" id="iJ0-B9-Gyq">
                                         <variation key="heightClass=regular-widthClass=compact" constant="16"/>
                                     </constraint>
-                                    <constraint firstAttribute="height" constant="48" id="kzN-Jx-V92"/>
+                                    <constraint firstAttribute="height" constant="64" id="kzN-Jx-V92"/>
                                     <constraint firstAttribute="trailing" secondItem="17X-49-oNX" secondAttribute="trailing" constant="8" id="xIn-uk-69h">
                                         <variation key="heightClass=regular-widthClass=compact" constant="16"/>
                                     </constraint>
@@ -86,14 +85,15 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="MAx-X7-V4c" firstAttribute="centerX" secondItem="388" secondAttribute="centerX" id="Wqp-AK-zoQ"/>
-                            <constraint firstItem="MAx-X7-V4c" firstAttribute="top" secondItem="388" secondAttribute="top" constant="52" id="zi4-fG-W4K"/>
+                            <constraint firstItem="MAx-X7-V4c" firstAttribute="leading" secondItem="388" secondAttribute="leading" constant="18" id="sG3-gp-hhN"/>
+                            <constraint firstAttribute="trailing" secondItem="MAx-X7-V4c" secondAttribute="trailing" constant="18" id="yTN-8v-xY0"/>
+                            <constraint firstItem="MAx-X7-V4c" firstAttribute="top" secondItem="388" secondAttribute="top" constant="72" id="zi4-fG-W4K"/>
                         </constraints>
                         <variation key="heightClass=regular-widthClass=compact">
                             <color key="backgroundColor" red="0.96862745098039216" green="0.96862745098039216" blue="0.96862745098039216" alpha="1" colorSpace="calibratedRGB"/>
                         </variation>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Dashboard" image="Tab-Dashboard" id="2103"/>
-                    <navigationItem key="navigationItem" title="myTNB Dashboard" id="404"/>
+                    <navigationItem key="navigationItem" id="404"/>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="toastMessage" destination="17X-49-oNX" id="aaj-Iz-iSn"/>
@@ -102,7 +102,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="389" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="262" y="-939"/>
+            <point key="canvasLocation" x="1200.8" y="-939.58019999999999"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="829">
@@ -125,13 +125,13 @@
             <objects>
                 <tabBarController storyboardIdentifier="HomeTabBarController" id="2036" customClass="HomeTabBarController" sceneMemberID="viewController">
                     <tabBar key="tabBar" contentMode="scaleToFill" id="2039">
-                        <rect key="frame" x="0.0" y="687" width="414" height="49"/>
+                        <rect key="frame" x="0.0" y="618" width="375" height="49"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     </tabBar>
                     <connections>
                         <outlet property="optionsTabBar" destination="2039" id="name-outlet-2039"/>
-                        <segue destination="387" kind="relationship" relationship="viewControllers" id="2104"/>
+                        <segue destination="76W-3G-VcO" kind="relationship" relationship="viewControllers" id="2104"/>
                         <segue destination="3082" kind="relationship" relationship="viewControllers" id="3177"/>
                         <segue destination="3096" kind="relationship" relationship="viewControllers" id="18630"/>
                         <segue destination="3089" kind="relationship" relationship="viewControllers" id="18689"/>
@@ -140,7 +140,7 @@
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2040" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-241" y="-295"/>
+            <point key="canvasLocation" x="-556" y="-296"/>
         </scene>
         <!--Title-->
         <scene sceneID="3081">
@@ -178,6 +178,66 @@
                                 </prototypes>
                                 <variation key="heightClass=regular-widthClass=compact" preservesSuperviewLayoutMargins="YES"/>
                             </tableView>
+                            <view hidden="YES" tag="100" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="27216">
+                                <rect key="frame" x="18" y="52" width="339" height="64"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" tag="102" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Our systems are currently undergoing a maintenance activity. Please see FAQs section for other payment options." textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="27217">
+                                        <rect key="frame" x="16" y="16" width="307" height="32"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="32" id="27222"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                        <variation key="default">
+                                            <mask key="constraints">
+                                                <exclude reference="27222"/>
+                                            </mask>
+                                        </variation>
+                                        <variation key="heightClass=regular-widthClass=compact">
+                                            <mask key="constraints">
+                                                <include reference="27222"/>
+                                            </mask>
+                                        </variation>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="64" id="27218"/>
+                                    <constraint firstItem="27217" firstAttribute="top" secondItem="27216" secondAttribute="top" constant="14" id="27219">
+                                        <variation key="heightClass=regular-widthClass=compact" constant="16"/>
+                                    </constraint>
+                                    <constraint firstItem="27217" firstAttribute="leading" secondItem="27216" secondAttribute="leading" constant="8" id="27220">
+                                        <variation key="heightClass=regular-widthClass=compact" constant="16"/>
+                                    </constraint>
+                                    <constraint firstAttribute="trailing" secondItem="27217" secondAttribute="trailing" constant="8" id="27221">
+                                        <variation key="heightClass=regular-widthClass=compact" constant="16"/>
+                                    </constraint>
+                                </constraints>
+                                <variation key="default">
+                                    <mask key="subviews">
+                                        <exclude reference="27217"/>
+                                    </mask>
+                                    <mask key="constraints">
+                                        <exclude reference="27218"/>
+                                        <exclude reference="27219"/>
+                                        <exclude reference="27220"/>
+                                        <exclude reference="27221"/>
+                                    </mask>
+                                </variation>
+                                <variation key="heightClass=regular-widthClass=compact">
+                                    <color key="backgroundColor" red="0.98823529409999999" green="0.76078431369999999" blue="0.17254901959999999" alpha="1" colorSpace="calibratedRGB"/>
+                                    <mask key="subviews">
+                                        <include reference="27217"/>
+                                    </mask>
+                                    <mask key="constraints">
+                                        <include reference="27218"/>
+                                        <include reference="27219"/>
+                                        <include reference="27220"/>
+                                        <include reference="27221"/>
+                                    </mask>
+                                </variation>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -189,6 +249,10 @@
                                 <variation key="heightClass=regular-widthClass=compact" constant="19"/>
                             </constraint>
                             <constraint firstItem="3080" firstAttribute="top" secondItem="5749" secondAttribute="bottom" constant="1" id="13612"/>
+                            <constraint firstItem="27216" firstAttribute="top" secondItem="3083" secondAttribute="top" constant="52" id="95P-8W-xgS"/>
+                            <constraint firstItem="27216" firstAttribute="leading" secondItem="3083" secondAttribute="leading" constant="18" id="9mb-cN-8kc"/>
+                            <constraint firstItem="27216" firstAttribute="centerX" secondItem="3083" secondAttribute="centerX" id="Ri1-OJ-kZF"/>
+                            <constraint firstAttribute="trailing" secondItem="27216" secondAttribute="trailing" constant="18" id="hb5-gw-2nC"/>
                         </constraints>
                         <variation key="default">
                             <mask key="subviews">
@@ -219,11 +283,13 @@
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="billTableView" destination="5749" id="name-outlet-5749"/>
+                        <outlet property="toastMessage" destination="27217" id="name-outlet-27217"/>
+                        <outlet property="toastView" destination="27216" id="name-outlet-27216"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3084" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="850" y="-890"/>
+            <point key="canvasLocation" x="1788" y="-890.10490000000004"/>
         </scene>
         <!--Feedback-->
         <scene sceneID="3088">
@@ -303,7 +369,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3098" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1448" y="-296"/>
+            <point key="canvasLocation" x="2386.4000000000001" y="-296.40179999999998"/>
         </scene>
         <!--More-->
         <scene sceneID="3102">
@@ -400,8 +466,197 @@
             </objects>
             <point key="canvasLocation" x="-1332" y="-1193"/>
         </scene>
+        <!--Dashboard Home View Controller-->
+        <scene sceneID="21892">
+            <objects>
+                <viewController storyboardIdentifier="DashboardHomeViewController" id="21893" customClass="DashboardHomeViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="21890"/>
+                        <viewControllerLayoutGuide type="bottom" id="21891"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="21894">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="23643">
+                                <rect key="frame" x="0.0" y="71" width="370" height="218"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="DashboardAccountCell" rowHeight="66" id="23644" customClass="DashboardAccountCell">
+                                        <rect key="frame" x="0.0" y="55.5" width="370" height="66"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="23644" id="23645">
+                                            <rect key="frame" x="0.0" y="0.0" width="370" height="65.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="23704">
+                                                    <rect key="frame" x="24" y="16" width="42" height="20.5"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="23705">
+                                                    <rect key="frame" x="24" y="37.5" width="42" height="20.5"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="23706">
+                                                    <rect key="frame" x="304" y="16" width="42" height="20.5"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="23707">
+                                                    <rect key="frame" x="304" y="37.5" width="42" height="20.5"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="24282">
+                                                    <rect key="frame" x="1" y="75" width="370" height="1"/>
+                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="1" id="x6r-oS-ogj"/>
+                                                    </constraints>
+                                                </view>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="IC-RE-Leaf-Green" translatesAutoresizingMaskIntoConstraints="NO" id="24883">
+                                                    <rect key="frame" x="71" y="13" width="24" height="24"/>
+                                                </imageView>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="24883" firstAttribute="top" secondItem="23645" secondAttribute="top" constant="13" id="2Sc-xj-3r0"/>
+                                                <constraint firstItem="23705" firstAttribute="top" secondItem="23704" secondAttribute="bottom" constant="1" id="F4U-qm-Uba"/>
+                                                <constraint firstItem="23704" firstAttribute="top" secondItem="23645" secondAttribute="top" constant="16" id="Gh2-We-jlN"/>
+                                                <constraint firstAttribute="trailing" secondItem="23707" secondAttribute="trailing" constant="24" id="IYr-Ol-LCl"/>
+                                                <constraint firstAttribute="trailing" secondItem="23706" secondAttribute="trailing" constant="24" id="M8a-4D-oji"/>
+                                                <constraint firstItem="24282" firstAttribute="trailing" secondItem="23645" secondAttribute="trailing" constant="1" id="TxS-Em-Vh3"/>
+                                                <constraint firstItem="24282" firstAttribute="leading" secondItem="23645" secondAttribute="leading" constant="1" id="XFa-VX-ORn"/>
+                                                <constraint firstItem="23706" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="24883" secondAttribute="trailing" constant="10" id="bHW-iP-baz"/>
+                                                <constraint firstItem="23707" firstAttribute="top" secondItem="23706" secondAttribute="bottom" constant="1" id="klp-hv-Nxf"/>
+                                                <constraint firstItem="23706" firstAttribute="top" secondItem="23645" secondAttribute="top" constant="16" id="okT-c9-SwP"/>
+                                                <constraint firstItem="24883" firstAttribute="leading" secondItem="23704" secondAttribute="trailing" constant="5" id="pb4-S0-RUM"/>
+                                                <constraint firstItem="24282" firstAttribute="top" secondItem="23705" secondAttribute="bottom" constant="17" id="qQA-W4-0Ot"/>
+                                                <constraint firstItem="23705" firstAttribute="leading" secondItem="23645" secondAttribute="leading" constant="24" id="qaP-cp-7fJ"/>
+                                                <constraint firstItem="23704" firstAttribute="leading" secondItem="23645" secondAttribute="leading" constant="24" id="sZr-Qh-nd1"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        <connections>
+                                            <outlet property="imgRe" destination="24883" id="name-outlet-24883"/>
+                                            <outlet property="lblAccountSubTitle" destination="23705" id="name-outlet-23705"/>
+                                            <outlet property="lblAccountTitle" destination="23704" id="name-outlet-23704"/>
+                                            <outlet property="lblAmountSubTitle" destination="23707" id="name-outlet-23707"/>
+                                            <outlet property="lblAmountTitle" destination="23706" id="name-outlet-23706"/>
+                                            <outlet property="viewLine" destination="24282" id="name-outlet-24282"/>
+                                        </connections>
+                                    </tableViewCell>
+                                </prototypes>
+                            </tableView>
+                            <view hidden="YES" tag="100" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="26545">
+                                <rect key="frame" x="34" y="52" width="307" height="64"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" tag="102" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="BRCM will be down for maintenance purpose" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="26546">
+                                        <rect key="frame" x="16" y="16" width="275" height="32"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="32" id="26551"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                        <variation key="default">
+                                            <mask key="constraints">
+                                                <exclude reference="26551"/>
+                                            </mask>
+                                        </variation>
+                                        <variation key="heightClass=regular-widthClass=compact">
+                                            <mask key="constraints">
+                                                <include reference="26551"/>
+                                            </mask>
+                                        </variation>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="64" id="26547"/>
+                                    <constraint firstItem="26546" firstAttribute="top" secondItem="26545" secondAttribute="top" constant="14" id="26548">
+                                        <variation key="heightClass=regular-widthClass=compact" constant="16"/>
+                                    </constraint>
+                                    <constraint firstItem="26546" firstAttribute="leading" secondItem="26545" secondAttribute="leading" constant="8" id="26549">
+                                        <variation key="heightClass=regular-widthClass=compact" constant="16"/>
+                                    </constraint>
+                                    <constraint firstAttribute="trailing" secondItem="26546" secondAttribute="trailing" constant="8" id="26550">
+                                        <variation key="heightClass=regular-widthClass=compact" constant="16"/>
+                                    </constraint>
+                                </constraints>
+                                <variation key="default">
+                                    <mask key="subviews">
+                                        <exclude reference="26546"/>
+                                    </mask>
+                                    <mask key="constraints">
+                                        <exclude reference="26547"/>
+                                        <exclude reference="26548"/>
+                                        <exclude reference="26549"/>
+                                        <exclude reference="26550"/>
+                                    </mask>
+                                </variation>
+                                <variation key="heightClass=regular-widthClass=compact">
+                                    <color key="backgroundColor" red="0.98823529409999999" green="0.76078431369999999" blue="0.17254901959999999" alpha="1" colorSpace="calibratedRGB"/>
+                                    <mask key="subviews">
+                                        <include reference="26546"/>
+                                    </mask>
+                                    <mask key="constraints">
+                                        <include reference="26547"/>
+                                        <include reference="26548"/>
+                                        <include reference="26549"/>
+                                        <include reference="26550"/>
+                                    </mask>
+                                </variation>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="26545" firstAttribute="top" secondItem="21890" secondAttribute="bottom" constant="32" id="0gv-ie-Vs3"/>
+                            <constraint firstItem="26545" firstAttribute="centerX" secondItem="21894" secondAttribute="centerX" id="MtK-OM-2pA"/>
+                            <constraint firstItem="26545" firstAttribute="leading" secondItem="21894" secondAttribute="leadingMargin" constant="18" id="VAY-eA-Upj"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="26545" secondAttribute="trailing" constant="18" id="ZWm-es-Af9"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="tableViewAccounts" destination="23643" id="name-outlet-23643"/>
+                        <outlet property="toastMessage" destination="26546" id="name-outlet-26546"/>
+                        <outlet property="toastView" destination="26545" id="name-outlet-26545"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="21895" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-471.19999999999999" y="484.40780000000001"/>
+        </scene>
+        <!--Dashboard-->
+        <scene sceneID="7Rc-LG-kEx">
+            <objects>
+                <navigationController storyboardIdentifier="DashboardNavigationController" automaticallyAdjustsScrollViewInsets="NO" id="76W-3G-VcO" customClass="DashboardNavigationController" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Dashboard" image="Tab-Dashboard" id="2103"/>
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="v1u-Z0-h8q">
+                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="387" kind="relationship" relationship="rootViewController" id="YjX-LF-uRj"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="lyc-AY-B9Q" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="261.60000000000002" y="-939.58019999999999"/>
+        </scene>
     </scenes>
     <resources>
+        <image name="IC-RE-Leaf-Green" width="24" height="24"/>
         <image name="Tab-Bill" width="25" height="25"/>
         <image name="Tab-Dashboard" width="25" height="25"/>
         <image name="Tab-Feedback" width="25" height="25"/>

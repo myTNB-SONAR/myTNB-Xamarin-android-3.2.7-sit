@@ -18,11 +18,11 @@ namespace myTNB
 
             lblAccountNumber = new UILabel(new CGRect(18, 16, cellWidth - 36, 18));
             lblAccountNumber.TextColor = myTNBColor.TunaGrey();
-            lblAccountNumber.Font = myTNBFont.MuseoSans14();
+            lblAccountNumber.Font = myTNBFont.MuseoSans14_500();
 
             lblAddress = new UILabel(new CGRect(18, 34, cellWidth - 36, 40));
             lblAddress.TextColor = myTNBColor.TunaGrey();
-            lblAddress.Font = myTNBFont.MuseoSans12();
+            lblAddress.Font = myTNBFont.MuseoSans12_300();
             lblAddress.Lines = 0;
             lblAddress.LineBreakMode = UILineBreakMode.WordWrap;
 

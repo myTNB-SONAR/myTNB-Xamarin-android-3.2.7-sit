@@ -1,4 +1,4 @@
-using Foundation;
+﻿using Foundation;
 using System;
 using UIKit;
 using myTNB.Dashboard.DashboardComponents;
@@ -10,6 +10,7 @@ using Newtonsoft.Json;
 using myTNB.SitecoreCMS.Model;
 using myTNB.SQLite.SQLiteDataManager;
 using System.Collections.Generic;
+using myTNB.Extensions;
 
 namespace myTNB
 {
@@ -24,6 +25,7 @@ namespace myTNB
         UILabel lblDetails;
 
         string _imageSize = string.Empty;
+        bool isPromoDetailScreen = false;
 
         public override void ViewDidLoad()
         {
@@ -31,51 +33,58 @@ namespace myTNB
             Console.WriteLine("PROMOTION DID LOAD");
             SetNavigationBar();
             promotionsTableView.Frame = new CGRect(0
-                                                   , DeviceHelper.IsIphoneX() ? 88 : 64
+                                                   , DeviceHelper.IsIphoneXUpResolution() ? 88 : 64
                                                    , View.Frame.Width
-                                                   , View.Frame.Height - 49 - (DeviceHelper.IsIphoneX() ? 88 : 64));
+                                                   , View.Frame.Height - 49 - (DeviceHelper.IsIphoneXUpResolution() ? 88 : 64));
         }
 
         public override void ViewWillAppear(bool animated)
         {
             base.ViewWillAppear(animated);
             Console.WriteLine("PROMOTION WILL APPEAR");
-            _imageSize = DeviceHelper.GetImageSize((int)View.Frame.Width);
-            promotionsTableView.Hidden = true;
-            promotionsTableView.Source = new PromotionsDataSource(this, new List<PromotionsModel>());
-            promotionsTableView.ReloadData();
-            //SetSubViews();
-            if (DataManager.DataManager.SharedInstance.IsPromotionFirstLoad)
+            if (!isPromoDetailScreen)
             {
-                NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
+                _imageSize = DeviceHelper.GetImageSize((int)View.Frame.Width);
+                promotionsTableView.Hidden = true;
+                promotionsTableView.Source = new PromotionsDataSource(this, new List<PromotionsModelV2>());
+                promotionsTableView.ReloadData();
+                if (DataManager.DataManager.SharedInstance.IsPromotionFirstLoad)
                 {
-                    InvokeOnMainThread(() =>
+                    NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
                     {
-                        if (NetworkUtility.isReachable)
+                        InvokeOnMainThread(() =>
                         {
-                            ActivityIndicator.Show();
-                            GetPromotions().ContinueWith(task =>
+                            if (NetworkUtility.isReachable)
                             {
-                                InvokeOnMainThread(() =>
+                                ActivityIndicator.Show();
+                                GetPromotions().ContinueWith(task =>
                                 {
-                                    SetSubViews();
-                                    ActivityIndicator.Hide();
+                                    InvokeOnMainThread(() =>
+                                    {
+                                        SetSubViews();
+                                        ActivityIndicator.Hide();
+                                    });
                                 });
-                            });
-                        }
-                        else
-                        {
-                            Console.WriteLine("No Network");
-                            var alert = UIAlertController.Create("No Data Connection", "Please check your data connection and try again.", UIAlertControllerStyle.Alert);
-                            alert.AddAction(UIAlertAction.Create("Ok", UIAlertActionStyle.Cancel, null));
-                            PresentViewController(alert, animated: true, completionHandler: null);
-                        }
+                            }
+                            else
+                            {
+                                Console.WriteLine("No Network");
+                                var alert = UIAlertController.Create("ErrNoNetworkTitle".Translate(), "ErrNoNetworkMsg".Translate(), UIAlertControllerStyle.Alert);
+                                alert.AddAction(UIAlertAction.Create("Ok", UIAlertActionStyle.Cancel, null));
+                                PresentViewController(alert, animated: true, completionHandler: null);
+                            }
+                        });
                     });
-                });
+                }
+                else
+                {
+                    SetSubViews();
+                }
             }
             else
             {
                 SetSubViews();
+                isPromoDetailScreen = false;
             }
         }
 
@@ -114,21 +123,47 @@ namespace myTNB
                         }
                     }
                 }
+                Console.WriteLine("*****isValidTimeStamp: " + isValidTimeStamp);
                 //isValidTimeStamp = true;
                 if (isValidTimeStamp)
                 {
                     string promotionsItems = iService.GetPromotionsItem();
+#if true
+                    PromotionsV2ResponseModel promotionResponse = JsonConvert.DeserializeObject<PromotionsV2ResponseModel>(promotionsItems);
+#else
                     PromotionsResponseModel promotionResponse = JsonConvert.DeserializeObject<PromotionsResponseModel>(promotionsItems);
+#endif
                     if (promotionResponse != null && promotionResponse.Status.Equals("Success")
                         && promotionResponse.Data != null && promotionResponse.Data.Count > 0)
                     {
                         PromotionsEntity wsManager = new PromotionsEntity();
-                        wsManager.DeleteTable();
+                        PromotionsEntity.DeleteTable();
                         wsManager.CreateTable();
-                        wsManager.InsertListOfItems(promotionResponse.Data);
+                        wsManager.InsertListOfItemsV2(SetValueForNullEndDate(promotionResponse.Data));
                     }
                 }
             });
+        }
+
+        /// <summary>
+        /// Sets the value for null end date.
+        /// </summary>
+        /// <returns>The value for null end date.</returns>
+        /// <param name="promotions">Promotions.</param>
+        private List<PromotionsModelV2> SetValueForNullEndDate(List<PromotionsModelV2> promotions)
+        {
+            List<PromotionsModelV2> promotionList = new List<PromotionsModelV2>();
+            foreach (var promo in promotions)
+            {
+                if (string.IsNullOrEmpty(promo.PromoEndDate))
+                {
+                    var nowDate = DateTime.Today.Date;
+                    DateTime endDate = nowDate.AddDays(90);
+                    promo.PromoEndDate = endDate.ToString("yyyyMMdd");
+                }
+                promotionList.Add(promo);
+            }
+            return promotionList;
         }
 
         internal void SetNavigationBar()
@@ -154,8 +189,8 @@ namespace myTNB
                 lblDetails.RemoveFromSuperview();
             }
             PromotionsEntity wsManager = new PromotionsEntity();
-            List<PromotionsModel> promotionList = new List<PromotionsModel>();
-            promotionList = wsManager.GetAllItems();
+            List<PromotionsModelV2> promotionList = new List<PromotionsModelV2>();
+            promotionList = wsManager.GetAllItemsV2();
             if (promotionList != null && promotionList.Count > 0)
             {
                 promotionsTableView.ClearsContextBeforeDrawing = true;
@@ -193,16 +228,26 @@ namespace myTNB
             View.AddSubviews(new UIView[] { imgViewNoPromotions, lblDetails });
         }
 
-        internal void OnPromotionItemSelect(PromotionsModel promotion)
+        internal void OnPromotionItemSelect(PromotionsModelV2 promotion)
         {
-            ActivityIndicator.Show();
+            //ActivityIndicator.Show();
             UIStoryboard storyBoard = UIStoryboard.FromName("PromotionDetails", null);
             PromotionDetailsViewController viewController =
                 storyBoard.InstantiateViewController("PromotionDetailsViewController") as PromotionDetailsViewController;
             viewController.Promotion = promotion;
+            viewController.OnDone = OnDone;
             var navController = new UINavigationController(viewController);
             PresentViewController(navController, true, null);
-            ActivityIndicator.Hide();
+            //ActivityIndicator.Hide();
         }
+
+        /// <summary>
+        /// Handler for on done.
+        /// </summary>
+        public void OnDone()
+        {
+            isPromoDetailScreen = true;
+        }
+
     }
 }

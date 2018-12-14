@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using CoreGraphics;
 using Foundation;
+using myTNB.Extensions;
 using myTNB.Model;
 using UIKit;
 
@@ -149,14 +150,14 @@ namespace myTNB.Registration.CustomerAccounts
 
                     lblSectionTitle.Text = _recordCount > 0
                         ? _recordCount.ToString() + " electricity supply account(s) found!"
-                        : "No records found. Please add an account.";
+                        : "NoAcctsFoundTitle".Translate();
 
                     var txtViewSubDetails = new UITextView(new CGRect(14, 36, tableView.Frame.Width - 30, 60));
-                    txtViewSubDetails.Font = myTNBFont.MuseoSans14();
+                    txtViewSubDetails.Font = myTNBFont.MuseoSans14_300();
                     txtViewSubDetails.TextColor = myTNBColor.TunaGrey();
                     txtViewSubDetails.UserInteractionEnabled = false;
                     txtViewSubDetails.BackgroundColor = UIColor.Clear;
-                    txtViewSubDetails.Text = "Give your accounts nicknames for your easy reference";
+                    txtViewSubDetails.Text = "NoAcctsFoundDesc".Translate();
 
                     view.AddSubview(txtViewSubDetails);
 
@@ -165,7 +166,7 @@ namespace myTNB.Registration.CustomerAccounts
                 if (_localAccounts != null && _localAccounts.Count > 0 && _linkedAccounts.Count == 0)
                 {
                     lblSectionTitle = new UILabel(new CGRect(18, 0, tableView.Frame.Width - 36, 40));
-                    lblSectionTitle.Text = "Additonal account(s)";
+                    lblSectionTitle.Text = "Additional account(s)";
                 }
             }
 
@@ -174,12 +175,12 @@ namespace myTNB.Registration.CustomerAccounts
                 if (_localAccounts != null && _localAccounts.Count > 0)
                 {
                     lblSectionTitle = new UILabel(new CGRect(18, 0, tableView.Frame.Width - 36, 40));
-                    lblSectionTitle.Text = "Additonal account(s)";
+                    lblSectionTitle.Text = "Additional account(s)";
                 }
             }
 
             lblSectionTitle.TextColor = myTNBColor.PowerBlue();
-            lblSectionTitle.Font = myTNBFont.MuseoSans16();
+            lblSectionTitle.Font = myTNBFont.MuseoSans16_500();
             lblSectionTitle.Lines = 0;
             lblSectionTitle.LineBreakMode = UILineBreakMode.WordWrap;
             view.AddSubview(lblSectionTitle);
@@ -250,7 +251,7 @@ namespace myTNB.Registration.CustomerAccounts
             };
 
             cell.NickNameTitle = "ACCOUNT NICKNAME";
-            cell.NicknameError = "Invalid characters. Use letters or numbers only.";
+            //cell.NicknameError = "Invalid characters. Use letters or numbers only.";
 
             UITextField txtFieldNickname = cell.NicknameTextField;
             UILabel title = cell.NickNameTitleLabel;
@@ -314,16 +315,19 @@ namespace myTNB.Registration.CustomerAccounts
             };
             textField.ShouldEndEditing = (sender) =>
             {
-                bool isValid = _txtFieldHelper.ValidateTextField(textField.Text, NAME_PATTERN);
-                error.Hidden = isValid || textField.Text.Length == 0;
-                error.Text = isValid || textField.Text.Length == 0
+                bool isFormatValid = !string.IsNullOrWhiteSpace(textField.Text) && _txtFieldHelper.ValidateTextField(textField.Text, TNBGlobal.ACCOUNT_NAME_PATTERN);
+                bool isUnique = DataManager.DataManager.SharedInstance.IsAccountNicknameUnique(textField.Text, cell.AccountNumber);
+                bool isValid = isFormatValid && isUnique;
+                error.Hidden = isValid;
+                error.Text = isValid
                     ? "e.g. My House, Parent's House"
-                    : "Invalid characters. Use letters or numbers only.";
-                error.TextColor = isValid || textField.Text.Length == 0
+                    : (!isFormatValid ? "AddAcctNicknameInvalidError".Translate() : "AcctNicknameInUseError".Translate());
+                error.TextColor = isValid
                     ? myTNBColor.TunaGrey()
                     : myTNBColor.Tomato();
-                line.BackgroundColor = isValid || textField.Text.Length == 0 ? myTNBColor.PlatinumGrey() : myTNBColor.Tomato();
-                textField.TextColor = isValid || textField.Text.Length == 0 ? myTNBColor.TunaGrey() : myTNBColor.Tomato();
+                line.BackgroundColor = isValid ? myTNBColor.PlatinumGrey() : myTNBColor.Tomato();
+                textField.TextColor = isValid ? myTNBColor.TunaGrey() : myTNBColor.Tomato();
+
                 return true;
             };
             textField.ShouldReturn = (sender) =>
@@ -335,6 +339,20 @@ namespace myTNB.Registration.CustomerAccounts
             {
                 title.Hidden = false;
                 error.Hidden = false;
+                line.BackgroundColor = myTNBColor.PowerBlue();
+            };
+            textField.EditingDidEnd += (sender, e) =>
+            {
+                _controller?.UpdateControlStates();
+            };
+            textField.ShouldChangeCharacters = (txtField, range, replacementString) =>
+            {
+                if (!string.IsNullOrEmpty(replacementString))
+                {
+                    return _txtFieldHelper.ValidateTextField(replacementString, TNBGlobal.ACCOUNT_NAME_PATTERN);
+                }
+
+                return true;
             };
         }
     }

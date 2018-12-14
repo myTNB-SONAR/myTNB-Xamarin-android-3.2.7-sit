@@ -1,4 +1,4 @@
-using Foundation;
+﻿using Foundation;
 using System;
 using UIKit;
 using CoreGraphics;
@@ -11,6 +11,7 @@ using System.Linq;
 using myTNB.Home.More.FindUs;
 using System.Threading.Tasks;
 using myTNB.Model;
+using myTNB.Extensions;
 
 namespace myTNB
 {
@@ -50,11 +51,10 @@ namespace myTNB
                 && !DataManager.DataManager.SharedInstance.IsSameStoreType)
             {
                 if (DataManager.DataManager.SharedInstance.LocationTypes != null
-                    && DataManager.DataManager.SharedInstance.LocationTypes.d != null
-                    && DataManager.DataManager.SharedInstance.LocationTypes.d.data != null)
+                    && DataManager.DataManager.SharedInstance.LocationTypes?.Count > 0)
                 {
                     _lblType.Text = DataManager.DataManager.SharedInstance.LocationTypes
-                        .d.data[DataManager.DataManager.SharedInstance.CurrentStoreTypeIndex].Description;
+                        [DataManager.DataManager.SharedInstance.CurrentStoreTypeIndex].Description;
                 }
                 else
                 {
@@ -204,7 +204,7 @@ namespace myTNB
 
         internal void AddSubViews()
         {
-            UIView viewSearch = new UIView(new CGRect(18, DeviceHelper.IsIphoneX() ? 104 : 80, View.Frame.Width - 36, 51));
+            UIView viewSearch = new UIView(new CGRect(18, DeviceHelper.IsIphoneXUpResolution() ? 104 : 80, View.Frame.Width - 36, 51));
             UITextField txtFieldSearch = new UITextField
             {
                 Frame = new CGRect(0, 12, viewSearch.Frame.Width, 24)
@@ -221,6 +221,8 @@ namespace myTNB
             _textFieldHelper.CreateTextFieldLeftView(txtFieldSearch, "IC-Field-Search");
             _textFieldHelper.SetKeyboard(txtFieldSearch);
             txtFieldSearch.ReturnKeyType = UIReturnKeyType.Search;
+            UIView viewLineSearch = new UIView(new CGRect(0, 36, viewSearch.Frame.Width, 1));
+            viewLineSearch.BackgroundColor = myTNBColor.PlatinumGrey();
             txtFieldSearch.ShouldReturn += (textField) =>
             {
                 Console.WriteLine("Searh tapped");
@@ -233,12 +235,20 @@ namespace myTNB
                 }
                 return false;
             };
-            UIView viewLineSearch = new UIView(new CGRect(0, 36, viewSearch.Frame.Width, 1));
-            viewLineSearch.BackgroundColor = myTNBColor.PlatinumGrey();
-
+            txtFieldSearch.EditingDidBegin += (sender, e) =>
+            {
+                viewLineSearch.BackgroundColor = myTNBColor.PowerBlue();
+                txtFieldSearch.LeftViewMode = UITextFieldViewMode.Never;
+            };
+            txtFieldSearch.EditingDidEnd += (sender, e) =>
+            {
+                viewLineSearch.BackgroundColor = myTNBColor.PlatinumGrey();
+                if (txtFieldSearch.Text.Length == 0)
+                    txtFieldSearch.LeftViewMode = UITextFieldViewMode.UnlessEditing;
+            };
             viewSearch.AddSubviews(new UIView[] { txtFieldSearch, viewLineSearch });
 
-            UIView viewShow = new UIView(new CGRect(18, DeviceHelper.IsIphoneX() ? 160 : 138, View.Frame.Width - 36, 51));
+            UIView viewShow = new UIView(new CGRect(18, DeviceHelper.IsIphoneXUpResolution() ? 160 : 138, View.Frame.Width - 36, 51));
             UILabel lblShow = new UILabel(new CGRect(0, 0, viewShow.Frame.Width, 12));
             lblShow.Text = "SHOW";
             lblShow.TextAlignment = UITextAlignment.Left;
@@ -308,7 +318,7 @@ namespace myTNB
                     else
                     {
                         Console.WriteLine("No Network");
-                        DisplayAlertMessage("No Data Connection", "Please check your data connection and try again.");
+                        DisplayAlertMessage("ErrNoNetworkTitle".Translate(), "ErrNoNetworkMsg".Translate());
                     }
                 });
             });
@@ -340,7 +350,7 @@ namespace myTNB
 
         internal void SetMapView()
         {
-            _mapView = new MKMapView(new CGRect(0, DeviceHelper.IsIphoneX() ? 160 : 138, View.Frame.Width, View.Frame.Height - (DeviceHelper.IsIphoneX() ? 162 : 137)));
+            _mapView = new MKMapView(new CGRect(0, DeviceHelper.IsIphoneXUpResolution() ? 160 : 138, View.Frame.Width, View.Frame.Height - (DeviceHelper.IsIphoneXUpResolution() ? 162 : 137)));
             _mapView.ShowsCompass = false;
             _mapView.GetViewForAnnotation = GetViewForAnnotation;
             SetUserLocation();

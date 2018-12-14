@@ -31,7 +31,9 @@ namespace myTNB.Model
                 return _isError.ToLower();
             }
         }
+
         public string message { set; get; }
+        public string StatusCode { set; get; }
 
         [JsonIgnore]
         public bool didSucceed

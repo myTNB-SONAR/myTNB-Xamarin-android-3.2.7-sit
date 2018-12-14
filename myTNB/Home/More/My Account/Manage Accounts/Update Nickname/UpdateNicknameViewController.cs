@@ -1,4 +1,4 @@
-using Foundation;
+﻿using Foundation;
 using System;
 using UIKit;
 using myTNB.Model;
@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using CoreGraphics;
 using myTNB.DataManager;
 using myTNB.SQLite.SQLiteDataManager;
+using myTNB.Extensions;
 
 namespace myTNB
 {
@@ -39,12 +40,13 @@ namespace myTNB
         {
             base.ViewWillAppear(animated);
             txtFieldName.Text = CustomerRecord.accDesc;
+            SetVisibility();
         }
 
         internal void SetSubviews()
         {
             //FullName 
-            UIView viewFullName = new UIView((new CGRect(18, DeviceHelper.IsIphoneX() ? 104 : 80, View.Frame.Width - 36, 51)));
+            UIView viewFullName = new UIView((new CGRect(18, DeviceHelper.IsIphoneXUpResolution() ? 104 : 80, View.Frame.Width - 36, 51)));
             viewFullName.BackgroundColor = UIColor.Clear;
 
             lblNameTitle = new UILabel(new CGRect(0, 0, viewFullName.Frame.Width, 12));
@@ -56,10 +58,10 @@ namespace myTNB
             viewFullName.AddSubview(lblNameTitle);
 
             lblNameError = new UILabel(new CGRect(0, 37, viewFullName.Frame.Width, 14));
-            lblNameError.Font = myTNBFont.MuseoSans9();
+            lblNameError.Font = myTNBFont.MuseoSans9_300();
             lblNameError.TextAlignment = UITextAlignment.Left;
             lblNameError.TextColor = myTNBColor.Tomato();
-            lblNameError.Text = "Invalid account nickname";
+            lblNameError.Text = "AcctNicknameInvalidError".Translate();
             lblNameError.Hidden = true;
 
             viewFullName.AddSubview(lblNameError);
@@ -86,6 +88,15 @@ namespace myTNB
             SetTextFieldEvents(txtFieldName, lblNameTitle, lblNameError, viewLineName, TNBGlobal.ACCOUNT_NAME_PATTERN);
         }
 
+        internal void SetVisibility()
+        {
+            if (txtFieldName.Text != string.Empty)
+            {
+                lblNameTitle.Hidden = false;
+                txtFieldName.LeftViewMode = UITextFieldViewMode.Never;
+            }
+        }
+
         internal void SetTextFieldEvents(UITextField textField, UILabel lblTitle, UILabel lblError, UIView viewLine, string pattern)
         {
             _textFieldHelper.SetKeyboard(textField);
@@ -106,13 +117,24 @@ namespace myTNB
             };
             textField.EditingDidBegin += (sender, e) => {
                 lblTitle.Hidden = textField.Text.Length == 0;
+                textField.LeftViewMode = UITextFieldViewMode.Never;
+                viewLine.BackgroundColor = myTNBColor.PowerBlue();
             };
             textField.ShouldEndEditing = (sender) => {
-                lblTitle.Hidden = textField.Text.Length == 0;
-                bool isValid = _textFieldHelper.ValidateTextField(textField.Text, pattern);
-                lblError.Hidden = isValid || textField.Text.Length == 0;
-                viewLine.BackgroundColor = isValid || textField.Text.Length == 0 ? myTNBColor.PlatinumGrey() : myTNBColor.Tomato();
-                textField.TextColor = isValid || textField.Text.Length == 0 ? myTNBColor.TunaGrey() : myTNBColor.Tomato();
+                lblTitle.Hidden = textField.Text?.Length == 0;
+
+                bool isFormatValid = !string.IsNullOrWhiteSpace(textField.Text) &&_textFieldHelper.ValidateTextField(textField.Text, pattern);
+                bool isUnique = DataManager.DataManager.SharedInstance.IsAccountNicknameUnique(textField.Text);
+                bool isValid = isFormatValid && isUnique;
+                lblError.Hidden = isValid;
+
+                if(!isValid)
+                {
+                    lblError.Text = !isFormatValid ? "AcctNicknameInvalidError".Translate() : "AcctNicknameInUseError".Translate();
+                }
+
+                viewLine.BackgroundColor = isValid ? myTNBColor.PlatinumGrey() : myTNBColor.Tomato();
+                textField.TextColor = isValid ? myTNBColor.TunaGrey() : myTNBColor.Tomato();
                 SetSaveButtonEnable();
                 return true;
             };
@@ -137,12 +159,19 @@ namespace myTNB
                     return true;
                 };
             }
+            textField.EditingDidEnd += (sender, e) =>
+            {
+                if (textField.Text.Length == 0)
+                    textField.LeftViewMode = UITextFieldViewMode.UnlessEditing;
+            };
         }
 
         internal void SetSaveButtonEnable()
         {
-            bool isValid = _textFieldHelper.ValidateTextField(txtFieldName.Text, TNBGlobal.ACCOUNT_NAME_PATTERN)
-                                           && !CustomerRecord.accDesc.Equals(txtFieldName.Text);
+            bool isValid = !string.IsNullOrWhiteSpace(txtFieldName.Text)
+                                           && _textFieldHelper.ValidateTextField(txtFieldName.Text, TNBGlobal.ACCOUNT_NAME_PATTERN)
+                                           && !CustomerRecord.accDesc.Equals(txtFieldName.Text)
+                                           && DataManager.DataManager.SharedInstance.IsAccountNicknameUnique(txtFieldName.Text);
             btnSave.Enabled = isValid;
             btnSave.BackgroundColor = isValid ? myTNBColor.FreshGreen() : myTNBColor.SilverChalice();
         }
@@ -167,11 +196,11 @@ namespace myTNB
         internal void AddSaveButton()
         {
             btnSave = new UIButton(UIButtonType.Custom);
-            btnSave.Frame = new CGRect(18, View.Frame.Height - (DeviceHelper.IsIphoneX() ? 96 : 72), View.Frame.Width - 36, 48);
+            btnSave.Frame = new CGRect(18, View.Frame.Height - (DeviceHelper.IsIphoneXUpResolution() ? 96 : DeviceHelper.GetScaledHeight(72)), View.Frame.Width - 36, DeviceHelper.GetScaledHeight(48));
             btnSave.Layer.CornerRadius = 4;
             btnSave.BackgroundColor = myTNBColor.SilverChalice();
             btnSave.SetTitle("Save", UIControlState.Normal);
-            btnSave.Font = myTNBFont.MuseoSans16();
+            btnSave.Font = myTNBFont.MuseoSans16_500();
             btnSave.SetTitleColor(UIColor.White, UIControlState.Normal);
             btnSave.Enabled = false;
             btnSave.TouchUpInside += (sender, e) =>
@@ -195,17 +224,25 @@ namespace myTNB
                                 uaManager.DeleteTable();
                                 uaManager.CreateTable();
                                 uaManager.InsertListOfItems(DataManager.DataManager.SharedInstance.AccountRecordsList);
+                                DataManager.DataManager.SharedInstance.UpdateDueAccountNickname(CustomerRecord.accNum, _newName);
+
+                                // updates the cache when user entity data is updated
+                                DataManager.DataManager.SharedInstance.RefreshDataFromAccountUpdate(true);
+
+                                int accountRecordIndex = DataManager.DataManager.SharedInstance.AccountRecordsList.d.FindIndex(x => x.accNum == CustomerRecord.accNum);
+                                DataManager.DataManager.SharedInstance.AccountRecordIndex = accountRecordIndex;
+
                                 DismissViewController(true, null);
                             }
                             else
                             {
-                                DisplayAlertMessage("Error", "Cannot update mobile number. Please try again.");
+                                DisplayAlertMessage("Error", "UpdateNicknameError".Translate());
                             }
                         }
                         else
                         {
                             Console.WriteLine("No Network");
-                            DisplayAlertMessage("No Data Connection", "Please check your data connection and try again.");
+                            DisplayAlertMessage("ErrNoNetworkTitle".Translate(), "ErrNoNetworkMsg".Translate());
                         }
                         ActivityIndicator.Hide();
                     });

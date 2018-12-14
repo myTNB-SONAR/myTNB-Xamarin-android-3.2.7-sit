@@ -5,6 +5,7 @@ using Foundation;
 using myTNB.DataManager;
 using myTNB.Model;
 using UIKit;
+using myTNB.Extensions;
 
 namespace myTNB.Login.ForgotPassword
 {
@@ -32,6 +33,8 @@ namespace myTNB.Login.ForgotPassword
         UIView viewShowConfirmPassword;
         UIView viewShowPassword;
 
+        UILabel lblTitle;
+
         TextFieldHelper _textFieldHelper = new TextFieldHelper();
         BaseResponseModel _changePasswordList = new BaseResponseModel();
         const string PASSWORD_PATTERN = @"(?!^[0-9]*$)(?!^[a-zA-Z]*$)^([a-zA-Z0-9]{8,})$";
@@ -58,6 +61,12 @@ namespace myTNB.Login.ForgotPassword
 
         internal void InitializeSubviews()
         {
+            lblTitle = new UILabel(new CGRect(18, 16, View.Frame.Width - 36, 18));
+            lblTitle.TextColor = myTNBColor.PowerBlue();
+            lblTitle.Font = myTNBFont.MuseoSans16_500();
+            lblTitle.Text = "Please enter your new password.";
+            View.AddSubview(lblTitle);
+
             lblDescription.TextColor = myTNBColor.TunaGrey();
             lblDescription.Font = myTNBFont.MuseoSans14();
             btnSubmit.Layer.CornerRadius = 5f;
@@ -71,7 +80,7 @@ namespace myTNB.Login.ForgotPassword
                 Frame = new CGRect(0, 0, viewPassword.Frame.Width, 12),
                 AttributedText = new NSAttributedString(
                     "PASSWORD"
-                    , font: myTNBFont.MuseoSans9()
+                    , font: myTNBFont.MuseoSans9_300()
                     , foregroundColor: myTNBColor.SilverChalice()
                     , strokeWidth: 0
                 ),
@@ -84,7 +93,7 @@ namespace myTNB.Login.ForgotPassword
                 Frame = new CGRect(0, 37, viewPassword.Frame.Width, 14),
                 AttributedText = new NSAttributedString(
                     "Password must have at least 8 alphanumeric characters."
-                    , font: myTNBFont.MuseoSans9()
+                    , font: myTNBFont.MuseoSans9_300()
                     , foregroundColor: myTNBColor.Tomato()
                     , strokeWidth: 0
                 ),
@@ -96,8 +105,8 @@ namespace myTNB.Login.ForgotPassword
             {
                 Frame = new CGRect(0, 12, viewPassword.Frame.Width - 30, 24),
                 AttributedPlaceholder = new NSAttributedString(
-                    "Password"
-                    , font: myTNBFont.MuseoSans16()
+                    "Enter new password"
+                    , font: myTNBFont.MuseoSans16_300()
                     , foregroundColor: myTNBColor.SilverChalice()
                     , strokeWidth: 0
                 ),
@@ -143,7 +152,7 @@ namespace myTNB.Login.ForgotPassword
                 Frame = new CGRect(0, 0, viewConfirmPassword.Frame.Width, 12),
                 AttributedText = new NSAttributedString(
                     "CONFIRM PASSWORD"
-                    , font: myTNBFont.MuseoSans9()
+                    , font: myTNBFont.MuseoSans9_300()
                     , foregroundColor: myTNBColor.SilverChalice()
                     , strokeWidth: 0
                 ),
@@ -153,7 +162,7 @@ namespace myTNB.Login.ForgotPassword
 
             lblConfirmPasswordError = new UILabel(new CGRect(0, 37, viewConfirmPassword.Frame.Width, 14));
             lblConfirmPasswordError.TextAlignment = UITextAlignment.Left;
-            lblConfirmPasswordError.Font = myTNBFont.MuseoSans9();
+            lblConfirmPasswordError.Font = myTNBFont.MuseoSans9_300();
             lblConfirmPasswordError.TextColor = myTNBColor.Tomato();
 
             viewConfirmPassword.AddSubview(lblConfirmPasswordError);
@@ -162,7 +171,7 @@ namespace myTNB.Login.ForgotPassword
             {
                 Frame = new CGRect(0, 12, viewConfirmPassword.Frame.Width - 30, 24),
                 AttributedPlaceholder = new NSAttributedString(
-                    "Confirm Password"
+                    "Confirm new password"
                     , font: myTNBFont.MuseoSans16()
                     , foregroundColor: myTNBColor.SilverChalice()
                     , strokeWidth: 0
@@ -202,7 +211,7 @@ namespace myTNB.Login.ForgotPassword
 
         internal void SetStaticFields()
         {
-            lblDescription.Text = "The new password will replace your current one. All account details remain unchanged.";
+            lblDescription.Text = "This new password will replace your current one. All account details remain unchanged.";
         }
 
         internal void SetViews()
@@ -215,7 +224,7 @@ namespace myTNB.Login.ForgotPassword
             btnSubmit.BackgroundColor = myTNBColor.PlatinumGrey();
             _textFieldHelper.CreateTextFieldLeftView(txtFieldPassword, "Password");
             _textFieldHelper.CreateTextFieldLeftView(txtFieldConfirmPassword, "Password");
-            btnSubmit.Frame = new CGRect(18, View.Frame.Height - (DeviceHelper.IsIphoneX() ? 184 : 130), View.Frame.Width - 36, 48);
+            btnSubmit.Frame = new CGRect(18, View.Frame.Height - (DeviceHelper.IsIphoneXUpResolution() ? 184 : DeviceHelper.GetScaledHeight(130)), View.Frame.Width - 36, DeviceHelper.GetScaledHeight(48));
         }
 
         internal void SetEvents()
@@ -237,7 +246,7 @@ namespace myTNB.Login.ForgotPassword
                         else
                         {
                             Console.WriteLine("No Network");
-                            DisplayAlertMessage("No Data Connection", "Please check your data connection and try again.");
+                            DisplayAlertMessage("ErrNoNetworkTitle".Translate(), "ErrNoNetworkMsg".Translate());
                             ActivityIndicator.Hide();
                         }
                     });
@@ -279,6 +288,8 @@ namespace myTNB.Login.ForgotPassword
             {
                 lblTitle.Hidden = textField.Text.Length == 0;
                 DisplayEyeIcon(textField);
+                textField.LeftViewMode = UITextFieldViewMode.Never;
+                viewLine.BackgroundColor = myTNBColor.PowerBlue();
             };
             textField.ShouldEndEditing = (sender) =>
             {
@@ -304,6 +315,11 @@ namespace myTNB.Login.ForgotPassword
             {
                 sender.ResignFirstResponder();
                 return false;
+            };
+            textField.EditingDidEnd += (sender, e) =>
+            {
+                if (textField.Text.Length == 0)
+                    textField.LeftViewMode = UITextFieldViewMode.UnlessEditing;
             };
         }
 

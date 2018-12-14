@@ -41,7 +41,15 @@ namespace myTNB.SitecoreCMS.Extensions
             if (item == null)
                 return string.Empty;
 
-            return item[fieldName].RawValue.Substring(0, 8);
+            var str = item[fieldName].RawValue;
+            int dateLength = 8;
+
+            if (!string.IsNullOrEmpty(str) && str.Length >= dateLength)
+            {
+                return item[fieldName].RawValue.Substring(0, dateLength);
+            }
+
+            return string.Empty;
         }
 
         public static string GetImageIDFromMediaField(this ISitecoreItem item, string mediafieldName)

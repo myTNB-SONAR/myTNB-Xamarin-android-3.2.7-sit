@@ -6,8 +6,10 @@ namespace myTNB
     {
 #if DEBUG || MASTER
         public static bool IsProduction = false;
+        public static int PromoOverlayDisplayIntervalDays = 1;
 #else
         public static bool IsProduction = true;
+        public static int PromoOverlayDisplayIntervalDays = 15;
 #endif
         public static bool IsChartEmissionEnabled = false;
         public static string OS = "ios";
@@ -15,9 +17,12 @@ namespace myTNB
         public static string DB_NAME = "myTNB.db";
 
         public static string API_KEY_ID = GetAPIKeyID();
+        public static string DEVICE_PLATFORM_IOS = "2";
         public static string SITECORE_URL = "https://sitecore.tnb.com.my/";
         public static string SITECORE_USERNAME = "api_user";
         public static string SITECORE_PASSWORD = "mytnbapiuser!3$@2";
+        public static string MobileNoPrefix = "+60";
+        public static int ToastZPosition = 1; //increment the value when showing on a component with higher z-position
 
         public static List<string> STORE_TYPE_LIST = new List<string>
         {
@@ -43,6 +48,10 @@ namespace myTNB
         public static string UNIT_EMISSION = "kg";
 
         public static string ACCOUNT_NAME_PATTERN = @"^[A-Za-z0-9 ]*$";
+        public static string AmountPattern = @"^[0-9.]*$";
+        public static string CustomerNamePattern = @"^[A-Za-z0-9 ]*$"; //@"(?i)^[a-z0-9]+(?:[ ]?[a-z0-9]+)*$"; 
+        public static string MobileNoPattern = @"^[0-9]*$";
+        public static string NumbersOnlyPattern = @"^[0-9]*$";
 
         /// <summary>
         /// Gets the payment URL.
@@ -64,10 +73,20 @@ namespace myTNB
                     : "9515F2FA-C267-42C9-8087-FABA77CB84DF";
         }
 
+#region Character Limits
+
         /// <summary>
-        /// The feedback max char count.
+        /// The input characters limits.
         /// </summary>
         public static int FeedbackMaxCharCount = 250;
+        public static int FEEDBACK_FIELD_MAX_HEIGHT = 113;
+        public static int AccountNumberLowCharLimit = 12;
+        public static int AccountNumberHighCharLimit = 14;
+        public static int PaymentMinAmnt = 1;
+        public static int MobileNumberMaxCharCount = 13;
+        public static int[] MobileNumberLimits = {9,10};
+
+#endregion
 
         /// <summary>
         /// UI Tags.
@@ -76,6 +95,8 @@ namespace myTNB
         {
             public static int RangeLabel = 2;
             public static int DashboardToast = 100;
+            public static int LoadingOverlay = 101;
+            public static int ToastMessageLabel = 102;
         }
 
         /// <summary>
@@ -87,6 +108,35 @@ namespace myTNB
             public static string NoSmartData = "201";
         }
 
+        /// <summary>
+        /// UI Text strings.
+        /// </summary>
+        public static class Texts
+        {
+            public static string InfoLoading = "We’ll be there in a flash…";
+        }
+
+        /// <summary>
+        /// System codes.
+        /// </summary>
+        public static class SystemCodes
+        {
+            public static string BCRM = "BCRM";
+            public static string PaymentCC = "PG_CC";
+            public static string PaymentFPX = "PG_FPX";
+            public static string SmartMeter = "SmartMeter";
+            public static string SSP = "SSP";
+        }
+
+        /// <summary>
+        /// Preference keys.
+        /// </summary>
+        public static class PreferenceKeys
+        {
+            public static string PhoneVerification = "isPhoneVerified";
+            public static string RememberEmail = "userEmail";
+            public static string LoginState = "isLogin";
+        }
 
     }
 }

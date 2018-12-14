@@ -64,7 +64,11 @@ namespace myTNB.Home.More.FAQ
             style.Alignment = UITextAlignment.Justified;
             NSError htmlAnswerError = null;
             NSAttributedString htmlAnswerPeriod = new NSAttributedString(answer
-                                                                           , new NSAttributedStringDocumentAttributes { DocumentType = NSDocumentType.HTML }
+                                                                           , new NSAttributedStringDocumentAttributes 
+                                                                                { 
+                                                                                    DocumentType = NSDocumentType.HTML,
+                                                                                    StringEncoding = NSStringEncoding.UTF8
+                                                                                }
                                                                            , ref htmlAnswerError);
             NSMutableAttributedString mutableHTMLAnswer = new NSMutableAttributedString(htmlAnswerPeriod);
 
@@ -122,7 +126,11 @@ namespace myTNB.Home.More.FAQ
             style.Alignment = UITextAlignment.Justified;
             NSError htmlAnswerError = null;
             NSAttributedString htmlAnswerPeriod = new NSAttributedString(content
-                                                                           , new NSAttributedStringDocumentAttributes { DocumentType = NSDocumentType.HTML }
+                                                                           , new NSAttributedStringDocumentAttributes
+                                                                               {
+                                                                                   DocumentType = NSDocumentType.HTML,
+                                                                                   StringEncoding = NSStringEncoding.UTF8
+                                                                               }
                                                                            , ref htmlAnswerError);
             NSMutableAttributedString mutableHTMLAnswer = new NSMutableAttributedString(htmlAnswerPeriod);
 

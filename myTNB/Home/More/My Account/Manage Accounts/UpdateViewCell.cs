@@ -28,7 +28,7 @@ namespace myTNB
             viewCTA = new UIView(new CGRect(cellWidth - 78, 23, 60, 16));
             lblCTA = new UILabel(new CGRect(0, 0, 60, 16));
             lblCTA.TextColor = myTNBColor.PowerBlue();
-            lblCTA.Font = myTNBFont.MuseoSans12();
+            lblCTA.Font = myTNBFont.MuseoSans12_500();
             lblCTA.TextAlignment = UITextAlignment.Right;
 
             viewCTA.AddSubview(lblCTA);

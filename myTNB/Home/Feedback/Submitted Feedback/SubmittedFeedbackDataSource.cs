@@ -22,16 +22,13 @@ namespace myTNB.Home.Feedback
             var cell = tableView.DequeueReusableCell("SubmittedFeedbackCell", indexPath) as SubmittedFeedbackCell;
             cell.SeparatorInset = new UIEdgeInsets(0, 0, 0, 0);
             cell.LayoutMargins = new UIEdgeInsets(0, 0, 0, 0);
-
+            cell.UpdateStyle();
             if (_submittedFeedbacks != null && _submittedFeedbacks.Count != 0) {
                 var feedback = _submittedFeedbacks[indexPath.Row];
 
                 cell.FeedbackTypeLabel.Text = feedback.FeedbackCategoryName;
                 cell.FeedbackDateLabel.Text = GetFormattedDate(feedback.DateCreated);
                 cell.FeedbackDetailsLabel.Text = feedback.FeedbackMessage;
-
-                cell.FeedbackDetailsLabel.TextColor = myTNBColor.SilverChalice();
-                cell.FeedbackDateLabel.TextColor = myTNBColor.SilverChalice();
 
                 if (feedback.FeedbackCategoryId == "1"){
                     cell.imgViewIcon.Image = UIImage.FromBundle("Feedback-Submitted-Bill");
@@ -52,7 +49,7 @@ namespace myTNB.Home.Feedback
 
         public override nfloat GetHeightForRow(UITableView tableView, NSIndexPath indexPath)
         {
-            return 56;
+            return 65f;
         }
 
         public override void RowSelected(UITableView tableView, NSIndexPath indexPath)

@@ -14,11 +14,9 @@ namespace myTNB.Home.More.FindUs.SelectStoreType
         public SelectStoreTypeDataSource(SelectStoreTypeViewController controller)
         {
             _controller = controller;
-            if (DataManager.DataManager.SharedInstance.LocationTypes != null
-               && DataManager.DataManager.SharedInstance.LocationTypes.d != null
-               && DataManager.DataManager.SharedInstance.LocationTypes.d.data != null)
+            if (DataManager.DataManager.SharedInstance.LocationTypes != null)
             {
-                _storeTypeList = DataManager.DataManager.SharedInstance.LocationTypes.d.data;
+                _storeTypeList = DataManager.DataManager.SharedInstance.LocationTypes;
             }
         }
 

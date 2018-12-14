@@ -1,4 +1,4 @@
-using Foundation;
+﻿using Foundation;
 using System;
 using UIKit;
 using myTNB.Dashboard.DashboardComponents;
@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using myTNB.Model;
 using System.Threading.Tasks;
 using System.Linq;
+using myTNB.Extensions;
 
 namespace myTNB
 {
@@ -40,10 +41,12 @@ namespace myTNB
         public override void ViewWillAppear(bool animated)
         {
             base.ViewWillAppear(animated);
-            SelectedNotificationTypeList = DataManager.DataManager.SharedInstance.NotificationTypeResponse.d.data;
-            SelectedNotificationChannelList = DataManager.DataManager.SharedInstance.NotificationChannelResponse.d.data;
 
-            notificationSettingsTableView.Source = new NotificationSettingsDataSource(this, NotificationSettingsTitle);
+            var rawItems = DataManager.DataManager.SharedInstance.NotificationTypeResponse?.d?.data;
+            SelectedNotificationTypeList = rawItems.FindAll(item => item?.ShowInPreference?.ToLower() == "true");
+            SelectedNotificationChannelList = DataManager.DataManager.SharedInstance.NotificationChannelResponse?.d?.data;
+
+            notificationSettingsTableView.Source = new NotificationSettingsDataSource(this, NotificationSettingsTitle, SelectedNotificationTypeList);
             notificationSettingsTableView.ReloadData();
         }
 
@@ -67,7 +70,7 @@ namespace myTNB
 
         internal void SetSubViews()
         {
-            notificationSettingsTableView.Frame = new CGRect(0, DeviceHelper.IsIphoneX() ? 88 : 64, View.Frame.Width, View.Frame.Height - 64);
+            notificationSettingsTableView.Frame = new CGRect(0, DeviceHelper.IsIphoneXUpResolution() ? 88 : 64, View.Frame.Width, View.Frame.Height - 64);
             notificationSettingsTableView.RowHeight = 54f;
             notificationSettingsTableView.SectionHeaderHeight = 66f;
             notificationSettingsTableView.SeparatorStyle = UITableViewCellSeparatorStyle.None;
@@ -104,8 +107,8 @@ namespace myTNB
                                 else
                                 {
                                     PushNotificationHelper.GetUserNotificationPreferences();
-                                    SelectedNotificationTypeList = DataManager.DataManager.SharedInstance.NotificationTypeResponse.d.data;
-                                    SelectedNotificationChannelList = DataManager.DataManager.SharedInstance.NotificationChannelResponse.d.data;
+                                    SelectedNotificationTypeList = DataManager.DataManager.SharedInstance.NotificationTypeResponse?.d?.data;
+                                    SelectedNotificationChannelList = DataManager.DataManager.SharedInstance.NotificationChannelResponse?.d?.data;
                                 }
                                 ActivityIndicator.Hide();
                             });
@@ -114,7 +117,7 @@ namespace myTNB
                     else
                     {
                         Console.WriteLine("No Network");
-                        DisplayAlertMessage("No Data Connection", "Please check your data connection and try again.");
+                        DisplayAlertMessage("ErrNoNetworkTitle".Translate(), "ErrNoNetworkMsg".Translate());
                         ActivityIndicator.Hide();
                     }
                 });

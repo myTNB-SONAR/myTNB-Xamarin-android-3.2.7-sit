@@ -4,6 +4,7 @@ using UIKit;
 using myTNB.Model;
 using System.Collections.Generic;
 using CoreGraphics;
+using myTNB.Extensions;
 
 namespace myTNB
 {
@@ -12,12 +13,12 @@ namespace myTNB
         public RequestPayBillResponseModel _requestPayBillResponseModel;
         public CardModel _card;
         public UIWebView _webView;
+        public UIView _barView;
         string _url = string.Empty;
         public bool _saveCardIsChecked = false;
         public bool _isNewCard = false;
         public int _platform = 2;
         public string _paymentMode = "CC";
-        public bool isFromFPXPayment = false;
         public string _cardCVV = String.Empty;
 
         public MakePaymentViewController(IntPtr handle) : base(handle)
@@ -30,39 +31,25 @@ namespace myTNB
             var appDelegate = UIApplication.SharedApplication.Delegate as AppDelegate;
             appDelegate._makePaymentVC = this;
 
+            NavigationItem.Title = (_paymentMode == "CC") ? "PaymentNavTitleCC".Translate() : "PaymentNavTitleFPX".Translate();
+
             AddBackButton();
             NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
             {
                 InvokeOnMainThread(() =>
                 {
-
-                    if (!isFromFPXPayment)
+                    if (NetworkUtility.isReachable)
                     {
-                        if (NetworkUtility.isReachable)
-                        {
-                            GetPaymentURL();
-                            if (_paymentMode == "CC")
-                            {
-                                SetSubviews();
-                            }
-                            else
-                            {
-                                DismissViewController(true, null);
-                            }
-                        }
-                        else
-                        {
-                            Console.WriteLine("No Network");
-                            var alert = UIAlertController.Create("No Data Connection", "Please check your data connection and try again.", UIAlertControllerStyle.Alert);
-                            alert.AddAction(UIAlertAction.Create("Ok", UIAlertActionStyle.Cancel, null));
-                            PresentViewController(alert, animated: true, completionHandler: null);
-                        }
+                        GetPaymentURL();
+                        SetSubviews();
                     }
                     else
                     {
-                        Console.WriteLine("From FPX");
+                        Console.WriteLine("No Network");
+                        var alert = UIAlertController.Create("ErrNoNetworkTitle".Translate(), "ErrNoNetworkMsg".Translate(), UIAlertControllerStyle.Alert);
+                        alert.AddAction(UIAlertAction.Create("Ok", UIAlertActionStyle.Cancel, null));
+                        PresentViewController(alert, animated: true, completionHandler: null);
                     }
-
                 });
             });
         }
@@ -80,6 +67,15 @@ namespace myTNB
             string nsURL = _url;
             _webView.LoadRequest(new NSUrlRequest(new Uri(_url)));
             View.AddSubview(_webView);
+
+            var statusBarHeight = UIApplication.SharedApplication.StatusBarFrame.Size.Height;
+            _barView = new UIView
+            {
+                Frame = new CGRect(0, 0, View.Frame.Width, statusBarHeight),
+                BackgroundColor = myTNBColor.GradientPurpleDarkElement(),
+                Hidden = true
+            };
+            View.AddSubview(_barView);
         }
 
         internal void AddBackButton()
@@ -87,15 +83,12 @@ namespace myTNB
             UIImage backImg = UIImage.FromBundle("Back-White");
             UIBarButtonItem btnBack = new UIBarButtonItem(backImg, UIBarButtonItemStyle.Done, (sender, e) =>
             {
-                NavigationController.PopViewController(true);
+                var okCancelAlertController = UIAlertController.Create("PaymentAlertTitle".Translate(), "PaymentAlertMsg".Translate(), UIAlertControllerStyle.Alert);
+                okCancelAlertController.AddAction(UIAlertAction.Create("Abort".Translate(), UIAlertActionStyle.Default, alert => NavigationController.PopViewController(true)));
+                okCancelAlertController.AddAction(UIAlertAction.Create("Cancel".Translate(), UIAlertActionStyle.Cancel, alert => Console.WriteLine("Cancel was clicked")));
+                PresentViewController(okCancelAlertController, animated: true, completionHandler: null);
             });
             NavigationItem.LeftBarButtonItem = btnBack;
-
-            var okCancelAlertController = UIAlertController.Create("Cancel Payment?", "Do you want to cancel ", UIAlertControllerStyle.Alert);
-
-            //Add Actions
-            okCancelAlertController.AddAction(UIAlertAction.Create("Okay", UIAlertActionStyle.Default, alert => Console.WriteLine("Okay was clicked")));
-            okCancelAlertController.AddAction(UIAlertAction.Create("Cancel", UIAlertActionStyle.Cancel, alert => Console.WriteLine("Cancel was clicked")));
         }
 
         internal void GetPaymentURL()
@@ -192,8 +185,34 @@ namespace myTNB
                 };
                 var tempURL = TNBGlobal.GetPaymentURL();
                 _url = serviceManager.GetPaymentURL(requestParams, tempURL);
-                UIApplication.SharedApplication.OpenUrl(new NSUrl(_url));
             }
         }
+
+        /// <summary>
+        /// Sets the status bar hidden for full screen.
+        /// </summary>
+        /// <param name="isHidden">If set to <c>true</c> is hidden.</param>
+        public void SetStatusBarHiddenForFullScreen(bool isHidden)
+        {
+            Console.WriteLine("debug: status bar height " + _barView.Frame.Height);
+            var statusBarHeight = _barView.Frame.Height;
+
+            if (!DeviceHelper.IsIphoneXUpResolution())
+            {
+                _webView.Frame = new CGRect(0, statusBarHeight * -1
+                                            , UIScreen.MainScreen.Bounds.Width
+                                            , UIScreen.MainScreen.Bounds.Height + statusBarHeight);
+            }
+            else
+            {
+                _webView.Frame = new CGRect(0, statusBarHeight * -1
+                                            , UIScreen.MainScreen.Bounds.Width
+                                            , UIScreen.MainScreen.Bounds.Height + statusBarHeight + 40);
+            }
+
+            _barView.Hidden = isHidden;
+        }
+
+
     }
 }

@@ -30,12 +30,35 @@ namespace myTNB
         {
             if (request.ToString().Contains("rating"))
             {
-                string rateString = request.ToString().Split('=')[1];
-                int rating = int.Parse(rateString);
+                string rateString = default(string);
+                string transId = default(string);
+                var url = request.Url;
+                var paramsStr = url.Host;
+
+                var parameters = paramsStr.Split('&');
+                foreach (var pair in parameters)
+                {
+                    var item = pair.Split('=');
+                    if (item.Length == 2)
+                    {
+                        var key = item[0];
+                        if (key == "rating")
+                        {
+                            rateString = item[1];
+                        }
+                        else if (key == "transid")
+                        {
+                            transId = item[1];
+                        }
+                    }
+                }
+
+
                 UIStoryboard storyBoard = UIStoryboard.FromName("Rating", null);
                 RatingViewController viewController =
                     storyBoard.InstantiateViewController("RatingViewController") as RatingViewController;
-                viewController.Rating = rating;
+                viewController.Rating = !string.IsNullOrEmpty(rateString) ? int.Parse(rateString) : 0;
+                viewController.TransId = transId;
                 var navController = new UINavigationController(viewController);
                 Controller.PresentViewController(navController, true, null);
                 loadingOverlay?.Hide();
@@ -52,7 +75,7 @@ namespace myTNB
             {
                 loadingOverlay?.Hide();
                 DataManager.DataManager.SharedInstance.IsPaymentDone = true;
-                Controller.DismissViewController(true, null);
+                ViewHelper.DismissControllersAndSelectTab(Controller, 0, true, true);
             }
 
             if (request.ToString().Contains("mytnbapp://action=recipt&transid")
@@ -70,7 +93,11 @@ namespace myTNB
                     viewController.MerchatTransactionID = transID;
                     viewController.isCCFlow = true;
                     var navController = new UINavigationController(viewController);
-                    Controller.NavigationController.PushViewController(viewController, true);
+
+                    var baseRootVc = UIApplication.SharedApplication.KeyWindow?.RootViewController;
+                    var topVc = AppDelegate.GetTopViewController(baseRootVc);
+                    topVc?.NavigationController?.PushViewController(viewController, true);
+                    //Controller.NavigationController.PushViewController(viewController, true);
                 }
                 loadingOverlay?.Hide();
             }
@@ -92,6 +119,7 @@ namespace myTNB
                                 Controller.NavigationController.NavigationBarHidden = false;
                         }
                         Controller.NavigationController.PopToViewController(vc, false);
+                        break;
                     }
                 }
             }
@@ -101,9 +129,6 @@ namespace myTNB
 
         public override void LoadStarted(UIWebView webView)
         {
-            Console.WriteLine("Started....");
-
-            var webUrl = webView.Request.Url;
 
             if (loadingOverlay == null)
             {
@@ -112,28 +137,36 @@ namespace myTNB
 
             if (!loadingOverlay.IsDescendantOfView(View))
             {
+                foreach (UIView view in View.Subviews)
+                {
+                    if (view.Tag == TNBGlobal.Tags.LoadingOverlay)
+                    {
+                        view.RemoveFromSuperview();
+                        break;
+                    }
+                }
                 View.AddSubview(loadingOverlay);
             }
         }
 
         public override void LoadingFinished(UIWebView webView)
         {
-            var webUrl = webView.Request.Url;
+            var webUrl = webView?.Request?.Url ?? default(NSUrl);
 
-            if (webUrl.ToString().Contains("/paystatusreceipt.aspx?")
-                || webUrl.ToString().Contains("/payMultiStatusReceipt.aspx?"))
+            if (webUrl != null)
             {
-                var makePaymentVC = Controller as MakePaymentViewController;
-                makePaymentVC.NavigationController.NavigationBarHidden = true;
-                makePaymentVC._webView.ScrollView.ScrollEnabled = false;
-                if (!DeviceHelper.IsIphoneX())
-                    makePaymentVC._webView.Frame = new CGRect(0, -20
-                                                              , UIScreen.MainScreen.Bounds.Width
-                                                              , UIScreen.MainScreen.Bounds.Height + 20);
-                else
-                    makePaymentVC._webView.Frame = new CGRect(0, -44
-                                                              , UIScreen.MainScreen.Bounds.Width
-                                                              , UIScreen.MainScreen.Bounds.Height + 84);
+                if ((webUrl.ToString().Contains("/paystatusreceipt.aspx")
+                     || webUrl.ToString().Contains("/payMultiStatusReceipt.aspx")) && !webUrl.ToString().Contains("RETURN_URL"))
+                {
+                    var makePaymentVC = Controller as MakePaymentViewController;
+                    if (makePaymentVC != null)
+                    {
+                        makePaymentVC.NavigationController?.SetNavigationBarHidden(true, false);
+                        makePaymentVC._webView.ScrollView.ScrollEnabled = true;
+                        makePaymentVC._webView.ScrollView.Bounces = false;
+                        makePaymentVC.SetStatusBarHiddenForFullScreen(false);
+                    }
+                }
             }
 
             loadingOverlay?.Hide();

@@ -52,7 +52,7 @@ namespace myTNB.Home.More.MyAccount.ManageAccounts
                 return cell;
             }else if(indexPath.Row == 2){
                 var cell = tableView.DequeueReusableCell("RemoveViewCell", indexPath) as RemoveViewCell;
-                cell.Frame = new CGRect(cell.Frame.X, cell.Frame.Y, tableView.Frame.Width, 88);
+                cell.Frame = new CGRect(cell.Frame.X, cell.Frame.Y, tableView.Frame.Width, DeviceHelper.GetScaledHeight(88));
                 cell.btnRemove.TouchUpInside += (sender, e) => {
                     _controller.OnRemoveAccount();
                 };
@@ -75,7 +75,7 @@ namespace myTNB.Home.More.MyAccount.ManageAccounts
             }
             else if (indexPath.Section == 2)
             {
-                rowHeight = 88;
+                rowHeight = DeviceHelper.GetScaledHeight(88);
             }
             return rowHeight;
         }

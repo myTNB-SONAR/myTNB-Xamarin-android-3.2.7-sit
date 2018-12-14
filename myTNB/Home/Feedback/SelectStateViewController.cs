@@ -15,7 +15,7 @@ namespace myTNB
         public SelectStateViewController (IntPtr handle) : base (handle)
         {
         }
-
+        public Action OnSelect { get; set; }
         public override void ViewDidLoad()
         {
             base.ViewDidLoad();

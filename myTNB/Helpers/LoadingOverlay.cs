@@ -1,6 +1,8 @@
 ﻿using System;
+using Airbnb.Lottie;
 using CoreGraphics;
 using UIKit;
+using static myTNB.TNBGlobal;
 
 namespace myTNB
 {
@@ -19,7 +21,17 @@ namespace myTNB
             // derive the center x and y
             nfloat centerX = Frame.Width / 2;
             nfloat centerY = Frame.Height / 2;
-
+            
+            this.Tag = TNBGlobal.Tags.LoadingOverlay;
+#if true
+            nfloat animationWidth = 48;
+            LOTAnimationView animation = LOTAnimationView.AnimationNamed("TNB_Logo");
+            animation.Frame = new CGRect(centerX - animationWidth / 2, centerY - animationWidth / 2, 
+                                         animationWidth, animationWidth);
+            animation.ContentMode = UIViewContentMode.ScaleAspectFit;
+            animation.LoopAnimation = true;             animation.Play();
+            AddSubview(animation);
+#else
             // create the activity spinner, center it horizontall and put it 5 points above center x
             UIActivityIndicatorView activitySpinner = new UIActivityIndicatorView(UIActivityIndicatorViewStyle.WhiteLarge);
             activitySpinner.Frame = new CGRect(
@@ -35,16 +47,19 @@ namespace myTNB
             // create and configure the "Loading Data" label
             UILabel loadingLabel = new UILabel(new CGRect(
                 centerX - (labelWidth / 2),
-                centerY + 20,
+                centerY + 5,
                 labelWidth,
                 labelHeight
                 ));
             loadingLabel.BackgroundColor = UIColor.Clear;
             loadingLabel.TextColor = UIColor.White;
-            loadingLabel.Text = "Loading...";
+            loadingLabel.Text = Texts.InfoLoading;
+            loadingLabel.Font = myTNBFont.MuseoSans14_300();
             loadingLabel.TextAlignment = UITextAlignment.Center;
             loadingLabel.AutoresizingMask = UIViewAutoresizing.All;
             AddSubview(loadingLabel);
+#endif
+
         }
 
         /// <summary>
@@ -76,6 +91,14 @@ namespace myTNB
 
             if (!loadingOverlay.IsDescendantOfView(currentWindow))
             {
+                foreach (UIView view in currentWindow.Subviews)
+                {
+                    if (view.Tag == TNBGlobal.Tags.LoadingOverlay)
+                    {
+                        view.RemoveFromSuperview();
+                        break;
+                    }
+                }
                 currentWindow.AddSubview(loadingOverlay);
             }
         }

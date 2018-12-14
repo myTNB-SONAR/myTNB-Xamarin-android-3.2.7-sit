@@ -1,10 +1,11 @@
-using Foundation;
+﻿using Foundation;
 using System;
 using UIKit;
 using CoreGraphics;
 using System.Threading.Tasks;
 using myTNB.Model;
 using CoreAnimation;
+using myTNB.Extensions;
 
 namespace myTNB
 {
@@ -32,8 +33,9 @@ namespace myTNB
 
         internal void SetSubView()
         {
-            UIView viewContent = new UIView(new CGRect(18, DeviceHelper.IsIphoneX() ? 60 : 36, View.Frame.Width - 36, 240));
+            UIView viewContent = new UIView(new CGRect(18, DeviceHelper.IsIphoneXUpResolution() ? 60 : 36, View.Frame.Width - 36, 240));
             viewContent.BackgroundColor = UIColor.White;
+            viewContent.Layer.CornerRadius = 5.0f;
 
             UIImageView imgLogo = new UIImageView(new CGRect((viewContent.Frame.Width / 2) - 75, 16, 150, 150));
             imgLogo.Image = UIImage.FromBundle("Logout-Logo");
@@ -48,7 +50,7 @@ namespace myTNB
             lblSubTitle.Font = myTNBFont.MuseoSans12();
             lblSubTitle.TextColor = myTNBColor.TunaGrey();
             lblSubTitle.TextAlignment = UITextAlignment.Center;
-            lblSubTitle.Text = "You are now logged out of your account.";
+            lblSubTitle.Text = "LogoutMessage".Translate();
 
             viewContent.AddSubviews(new UIView[] { imgLogo, lblThankYou, lblSubTitle });
             View.AddSubview(viewContent);
@@ -57,12 +59,12 @@ namespace myTNB
         internal void AddCTA()
         {
             UIButton btnCTA = new UIButton(UIButtonType.Custom);
-            btnCTA.Frame = new CGRect(18, View.Frame.Height - (DeviceHelper.IsIphoneX() ? 96 : 72), View.Frame.Width - 36, 48);
+            btnCTA.Frame = new CGRect(18, View.Frame.Height - (DeviceHelper.IsIphoneXUpResolution() ? 96 : 72), View.Frame.Width - 36, 48);
             btnCTA.Layer.CornerRadius = 4;
             btnCTA.Layer.BorderColor = myTNBColor.FreshGreen().CGColor;
             btnCTA.BackgroundColor = myTNBColor.FreshGreen();
             btnCTA.Layer.BorderWidth = 1;
-            btnCTA.SetTitle("Back to home", UIControlState.Normal);
+            btnCTA.SetTitle("BackToHome".Translate(), UIControlState.Normal);
             btnCTA.Font = myTNBFont.MuseoSans16();
             btnCTA.SetTitleColor(UIColor.White, UIControlState.Normal);
             btnCTA.TouchUpInside += (sender, e) =>
@@ -101,11 +103,14 @@ namespace myTNB
                 ServiceManager serviceManager = new ServiceManager();
                 object requestParameter = new
                 {
-                    apiKeyID = TNBGlobal.API_KEY_ID,
-                    email = DataManager.DataManager.SharedInstance.UserEntity[0].email,
-                    deviceId = DataManager.DataManager.SharedInstance.UDID
+                    ApiKeyID = TNBGlobal.API_KEY_ID,
+                    Email = DataManager.DataManager.SharedInstance.UserEntity[0].email,
+                    DeviceId = DataManager.DataManager.SharedInstance.UDID,
+                    AppVersion = AppVersionHelper.GetBuildVersion(),
+                    OsType = TNBGlobal.DEVICE_PLATFORM_IOS,
+                    OsVersion = DeviceHelper.GetOSVersion()
                 };
-                BaseResponseModel logoutResponse = serviceManager.BaseServiceCall("LogoutUser", requestParameter);
+                BaseResponseModel logoutResponse = serviceManager.BaseServiceCall("LogoutUser_V2", requestParameter);
             });
         }
 

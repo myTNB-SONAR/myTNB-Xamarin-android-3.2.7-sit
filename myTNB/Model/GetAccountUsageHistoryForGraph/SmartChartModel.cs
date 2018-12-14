@@ -14,6 +14,7 @@ namespace myTNB.Model
             status = model.status;
             message = model.message;
             __type = model.__type;
+            StatusCode = model.StatusCode;
         }
 
         public SmartChartDataModel data { set; get; }

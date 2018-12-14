@@ -5,40 +5,36 @@ using myTNB.Model;
 using UIKit;
 namespace myTNB.Registration
 {
-    public class AddAccountSuccessDataSource: UITableViewSource
+    public class AddAccountSuccessDataSource : UITableViewSource
     {
-        CustomerAccountRecordListModel GetStartedList = new CustomerAccountRecordListModel();
+        CustomerAccountRecordListModel _GetStartedList = new CustomerAccountRecordListModel();
 
-        public AddAccountSuccessDataSource()
+        public AddAccountSuccessDataSource(CustomerAccountRecordListModel getStartedList)
         {
-            Console.WriteLine("test");
-            GetStartedList.d = new List<CustomerAccountRecordModel>();
-            if(DataManager.DataManager.SharedInstance.AccountRecordsList != null
-               && DataManager.DataManager.SharedInstance.AccountRecordsList.d != null
-               && DataManager.DataManager.SharedInstance.AccountRecordsList.d.Count > 0
-               && DataManager.DataManager.SharedInstance.AccountsToBeAddedList != null
-               && DataManager.DataManager.SharedInstance.AccountsToBeAddedList.d != null){
-                GetStartedList.d = new List<CustomerAccountRecordModel>();
-                foreach(var item in DataManager.DataManager.SharedInstance.AccountsToBeAddedList.d){
-                    int index = DataManager.DataManager.SharedInstance.AccountRecordsList.d.FindIndex(x => x.accNum == item.accNum);
-                    if(index == -1){
-                        GetStartedList.d.Add(item);
-                    }
-                }
-            }else{
-                if(DataManager.DataManager.SharedInstance.AccountsToBeAddedList != null
-                   && DataManager.DataManager.SharedInstance.AccountsToBeAddedList.d != null){
-                    GetStartedList = DataManager.DataManager.SharedInstance.AccountsToBeAddedList;
-                }
+            if (getStartedList != null)
+            {
+                _GetStartedList = getStartedList;
+            }
+            else
+            {
+                _GetStartedList.d = new List<CustomerAccountRecordModel>();
             }
         }
 
         public override UITableViewCell GetCell(UITableView tableView, NSIndexPath indexPath)
         {
             var cell = tableView.DequeueReusableCell("SuccessfullyAddedAccountCell", indexPath) as SuccessfullyAddedAccountCell;
-            if (GetStartedList != null && GetStartedList.d != null && GetStartedList.d.Count != 0) {
-                CustomerAccountRecordModel account = new CustomerAccountRecordModel();
-                account = GetStartedList.d[indexPath.Row];
+            if (_GetStartedList?.d?.Count > 0)
+            {
+                CustomerAccountRecordModel account = indexPath.Row < _GetStartedList?.d?.Count
+                                                              ? _GetStartedList?.d[indexPath.Row]
+                                                              : new CustomerAccountRecordModel();
+                cell.NickNameLabel.TextColor = myTNBColor.TunaGrey();
+                cell.NickNameLabel.Font = myTNBFont.MuseoSans14_500();
+                cell.AccountNumberLabel.TextColor = myTNBColor.TunaGrey();
+                cell.AccountNumberLabel.Font = myTNBFont.MuseoSans12_300();
+                cell.AddressTextView.TextColor = myTNBColor.TunaGrey();
+                cell.AddressTextView.Font = myTNBFont.MuseoSans12_300();
                 cell.NickNameLabel.Text = account.accountNickName != null ? account.accountNickName : "";
                 cell.AccountNumberLabel.Text = account.accNum != null ? account.accNum : "";
                 cell.AddressTextView.Text = account.accountStAddress != null ? account.accountStAddress : "";
@@ -48,7 +44,7 @@ namespace myTNB.Registration
 
         public override nint RowsInSection(UITableView tableview, nint section)
         {
-            return GetStartedList.d.Count;
+            return _GetStartedList?.d?.Count ?? 0;
         }
     }
 }

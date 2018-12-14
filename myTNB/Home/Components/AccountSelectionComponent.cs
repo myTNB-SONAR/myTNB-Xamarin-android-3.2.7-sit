@@ -17,7 +17,7 @@ namespace myTNB.Dashboard.DashboardComponents
         public AccountSelectionComponent(UIView view)
         {
             _parentView = view;
-            if (DeviceHelper.IsIphoneX())
+            if (DeviceHelper.IsIphoneXUpResolution())
             {
                 yLocation = 80;
             }
@@ -25,19 +25,19 @@ namespace myTNB.Dashboard.DashboardComponents
 
         internal void CreateComponent()
         {
-            _viewAccountSelection = new UIView(new CGRect(0, yLocation, _parentView.Frame.Width, 16));
+            _viewAccountSelection = new UIView(new CGRect(0, yLocation, _parentView.Frame.Width, 20));
 
-            _imgLeaf = new UIImageView(new CGRect(0, 0, 16, 16));
-            _imgLeaf.Image = UIImage.FromBundle("IC-RE-Leaf-White");
+            _imgLeaf = new UIImageView(new CGRect(0, 0, 20, 20));
+            _imgLeaf.Image = UIImage.FromBundle("IC-RE-Leaf-Green");
             _imgLeaf.Hidden = true;
 
-            _lblAccountName = new UILabel(new CGRect(58, 0, _parentView.Frame.Width - 116, 16));
-            _lblAccountName.Font = myTNBFont.MuseoSans12();
+            _lblAccountName = new UILabel(new CGRect(58, 0, _parentView.Frame.Width - 116, 20));
+            _lblAccountName.Font = myTNBFont.MuseoSans16_500();
             _lblAccountName.TextAlignment = UITextAlignment.Center;
             _lblAccountName.TextColor = UIColor.White;
             _lblAccountName.Text = "- - -";
 
-            _viewDropDown = new UIView(new CGRect(0, 0, 16, 16));
+            _viewDropDown = new UIView(new CGRect(0, 0, 20, 20));
             _imgDropDown = new UIImageView(new CGRect(0, -1, 16, 16));
             _imgDropDown.Image = UIImage.FromBundle("Dropdown");
             _viewDropDown.AddSubview(_imgDropDown);
@@ -66,7 +66,7 @@ namespace myTNB.Dashboard.DashboardComponents
                 _viewAccountSelection.Frame = new CGRect(_parentView.Center.X - (_lblAccountName.Frame.Width / 2)
                                                          , yLocation
                                                          , _lblAccountName.Frame.Width
-                                                         , 16);
+                                                         , 20);
             }
         }
 
@@ -76,10 +76,10 @@ namespace myTNB.Dashboard.DashboardComponents
             if (isHidden)
             {
                 _lblAccountName.Frame = new CGRect(0, 0, _lblAccountName.Frame.Width, _lblAccountName.Frame.Height);
-                _viewDropDown.Frame = new CGRect(_lblAccountName.Frame.Width + 5, 0, 16, 16);
+                _viewDropDown.Frame = new CGRect(_lblAccountName.Frame.Width + 5, 0, 20, 20);
                 _viewAccountSelection.Frame = new CGRect(_parentView.Center.X - (_lblAccountName.Frame.Width + 21) / 2
                                                          , yLocation, _lblAccountName.Frame.Width + 21
-                                                         , 16);
+                                                         , 20);
             }
         }
 
@@ -99,11 +99,12 @@ namespace myTNB.Dashboard.DashboardComponents
                                           , _parentView.Frame.Width - 116
                                           , _lblAccountName.Frame.Height);
             double newWidth = Math.Ceiling(newSize.Width);
+            newWidth += 8;
             _lblAccountName.Frame = new CGRect(21, 0, newWidth, _lblAccountName.Frame.Height);
-            _viewDropDown.Frame = new CGRect(newWidth + 5 + 21, 0, 16, 16);
+            _viewDropDown.Frame = new CGRect(newWidth + 5 + 21, 0, 20, 20);
             _viewAccountSelection.Frame = new CGRect(_parentView.Center.X - (newWidth + 21 + 21) / 2
                                                      , yLocation, newWidth + 21 + 21
-                                                     , 16);
+                                                     , 20);
         }
     }
 }

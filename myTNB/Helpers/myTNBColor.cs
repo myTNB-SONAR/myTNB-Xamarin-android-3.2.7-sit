@@ -1,4 +1,5 @@
-﻿using UIKit;  namespace myTNB {
+﻿using System;
+using UIKit;  namespace myTNB {
     public static class myTNBColor
     {
         /// <summary>         /// A color with RGBA of (0.47, 0.19, 0.83, 1).         /// </summary>         public static UIColor GradientPurpleDarkElement()
@@ -44,9 +45,9 @@
             return new UIColor(red: 0.13f, green: 0.74f, blue: 0.30f, alpha: 1.0f);
         }
         /// <summary>         /// A color with RGBA of (0.29, 0.29, 0.29, 1).         /// </summary>
-		public static UIColor TunaGrey()
+		public static UIColor TunaGrey(float customAlpha = 1.0f)
         {
-            return new UIColor(red: 0.29f, green: 0.29f, blue: 0.29f, alpha: 1.0f);
+            return new UIColor(red: 73.0f / 255.0f, green: 73.0f / 255.0f, blue: 74.0f / 255.0f, alpha: customAlpha);
         }
         /// <summary>         /// A color with RGBA of (0.11, 0.47, 0.79, 1).         /// </summary>
 		public static UIColor PowerBlue()
@@ -55,4 +56,13 @@
         }
         /// <summary>         /// A color with RGBA of (0.97, 0.97, 0.97, 1).         /// </summary>         public static UIColor SectionGrey()         {             return new UIColor(red: 0.97f, green: 0.97f, blue: 0.97f, alpha: 1.0f);         }
         /// <summary>         /// A color with RGBA of (0.90, 0.90, 0.90, 1).         /// </summary>         public static UIColor SelectionGrey()         {             return new UIColor(red: 0.90f, green: 0.90f, blue: 0.90f, alpha: 1.0f);         }         /// <summary>         /// Selection semi transparent color.         /// </summary>         /// <returns>The semi transparent.</returns>         public static UIColor SelectionSemiTransparent()         {             return UIColor.FromRGBA(255, 255, 255, 60);         }
+
+        /// <summary>
+        /// Gray for lines
+        /// </summary>
+        /// <returns>The gray.</returns>
+        public static UIColor LinesGray()
+        {
+            return new UIColor(red: 0.85f, green: 0.85f, blue: 0.85f, alpha: 1.0f);
+        }
     } }

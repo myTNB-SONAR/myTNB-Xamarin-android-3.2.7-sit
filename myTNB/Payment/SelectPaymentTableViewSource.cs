@@ -3,6 +3,9 @@ using Foundation;
 using UIKit;
 using CoreGraphics;
 using myTNB.Model;
+using System.Globalization;
+using myTNB.Enums;
+using myTNB.Extensions;
 
 namespace myTNB.Payment.AddCard
 {
@@ -12,27 +15,41 @@ namespace myTNB.Payment.AddCard
         RegisteredCardsResponseModel _registeredCards = new RegisteredCardsResponseModel();
         RequestPayBillResponseModel _requestPayBill = new RequestPayBillResponseModel();
         SelectPaymentMethodViewController _selectPaymentMethodVC;
+        Action<SystemEnum> OnSelectUnavailablePaymentMethod;
 
-        public SelectPaymentTableViewSource(RegisteredCardsResponseModel registeredCards, RequestPayBillResponseModel requestPayBill, SelectPaymentMethodViewController selectPaymentMethodVC)
+        public SelectPaymentTableViewSource(RegisteredCardsResponseModel registeredCards, RequestPayBillResponseModel requestPayBill, SelectPaymentMethodViewController selectPaymentMethodVC,
+                                            Action<SystemEnum> onSelectUnavailablePaymentHandler)
         {
-            if (registeredCards != null && registeredCards.d != null)
+            if (registeredCards != null && registeredCards.d != null && registeredCards.d.data != null)
             {
                 _registeredCards = registeredCards;
             }
+            else
+            {
+                _registeredCards.d = new RegisteredCardsModel();
+                _registeredCards.d.data = new System.Collections.Generic.List<RegisteredCardsDataModel>();
+            }
 
-            if (requestPayBill != null && requestPayBill.d != null)
+            if (requestPayBill != null && requestPayBill.d != null && requestPayBill.d.data != null)
             {
                 _requestPayBill = requestPayBill;
             }
+            else
+            {
+                _requestPayBill.d = new RequestPayBillModel();
+                _requestPayBill.d.data = new RequestPayBillDataModel();
+            }
 
             _selectPaymentMethodVC = selectPaymentMethodVC;
+            OnSelectUnavailablePaymentMethod = onSelectUnavailablePaymentHandler;
+
         }
 
         public override UITableViewCell GetCell(UITableView tableView, NSIndexPath indexPath)
         {
             if (indexPath.Section == 0)
             {
-                var lastIndex = _registeredCards.d.isError.ToLower() == "false" && _registeredCards.d != null ? _registeredCards.d.data.Count : 0;
+                var lastIndex = _registeredCards?.d?.isError?.ToLower() == "false" && _registeredCards?.d != null ? _registeredCards?.d?.data?.Count : 0;
 
                 if (indexPath.Row == lastIndex)
                 {
@@ -103,7 +120,8 @@ namespace myTNB.Payment.AddCard
                 cell.BackgroundColor = myTNBColor.SectionGrey();
 
                 var lblTitle = new UILabel(new CGRect(65, 19, 150, 18));
-                lblTitle.Font = myTNBFont.MuseoSans14();
+                lblTitle.Font = myTNBFont.MuseoSans14_300();
+                lblTitle.TextColor = myTNBColor.TunaGrey();
                 lblTitle.Text = "Online Banking via FPX";
 
                 cell.AddSubview(lblTitle);
@@ -153,7 +171,7 @@ namespace myTNB.Payment.AddCard
             UIView view = new UIView(new CGRect(0, 0, tableView.Frame.Width, 30));
             view.BackgroundColor = myTNBColor.SectionGrey();
 
-            var lblSectionTitle = new UILabel(new CGRect(18, 0, tableView.Frame.Width, 24));
+            var lblSectionTitle = new UILabel(new CGRect(18, 6, tableView.Frame.Width, 24));
 
             lblSectionTitle.TextColor = myTNBColor.PowerBlue();
             lblSectionTitle.Font = myTNBFont.MuseoSans16();
@@ -175,13 +193,9 @@ namespace myTNB.Payment.AddCard
             {
                 var lastIndex = _registeredCards.d != null ? _registeredCards.d.data.Count : 0;
 
-                double amountValue = 0.0;
-                if (_selectPaymentMethodVC.txtFieldAmountValue.Text != string.Empty)
-                {
-                    double.TryParse(_selectPaymentMethodVC.txtFieldAmountValue.Text, out amountValue);
-                }
+                double amountValue = TextHelper.ParseStringToDouble(_selectPaymentMethodVC.txtFieldAmountValue.Text);
 
-                if (_selectPaymentMethodVC.txtFieldAmountValue.Text == string.Empty || amountValue == 0)
+                if (string.IsNullOrWhiteSpace(_selectPaymentMethodVC.txtFieldAmountValue.Text) || amountValue == 0)
                 {
                     var alert = UIAlertController.Create("Invalid Amount", "Kindly enter a non-zero/positive amount", UIAlertControllerStyle.Alert);
                     alert.AddAction(UIAlertAction.Create("Ok", UIAlertActionStyle.Cancel, null));
@@ -191,6 +205,12 @@ namespace myTNB.Payment.AddCard
                 {
                     if (indexPath.Section == 0)
                     {
+                        if (!DataManager.DataManager.SharedInstance.IsPaymentCreditCardAvailable)
+                        {
+                            OnSelectUnavailablePaymentMethod?.Invoke(SystemEnum.PaymentCreditCard);
+                            return;
+                        }
+
                         if (amountValue > 5000)
                         {
                             _selectPaymentMethodVC.DisplayPaymentThreshold();
@@ -219,6 +239,13 @@ namespace myTNB.Payment.AddCard
                     else
                     {
                         Console.WriteLine("FPX Tapped!");
+
+                        if (!DataManager.DataManager.SharedInstance.IsPaymentFPXAvailable)
+                        {
+                            OnSelectUnavailablePaymentMethod?.Invoke(SystemEnum.PaymentFPX);
+                            return;
+                        }
+
                         _selectPaymentMethodVC.ExecuteRequestPayBillCall(2, "FPX", "", false, _selectPaymentMethodVC.txtFieldAmountValue.Text);
 
                     }
@@ -226,9 +253,7 @@ namespace myTNB.Payment.AddCard
             }
             else
             {
-                var alert = UIAlertController.Create("No Data Connection"
-                                                     , "Please check your data connection and try again."
-                                                     , UIAlertControllerStyle.Alert);
+                var alert = UIAlertController.Create("ErrNoNetworkTitle".Translate(), "ErrNoNetworkMsg".Translate(), UIAlertControllerStyle.Alert);
                 alert.AddAction(UIAlertAction.Create("Ok", UIAlertActionStyle.Cancel, null));
                 _selectPaymentMethodVC.PresentViewController(alert, animated: true, completionHandler: null);
             }

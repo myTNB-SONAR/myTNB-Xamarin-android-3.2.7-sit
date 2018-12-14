@@ -5,6 +5,8 @@ using CoreGraphics;
 using System.Threading.Tasks;
 using myTNB.Model;
 using myTNB.DataManager;
+using myTNB.Extensions;
+using System.Timers;
 
 namespace myTNB
 {
@@ -31,11 +33,20 @@ namespace myTNB
         UITapGestureRecognizer _onResendPin;
 
         bool _isKeyboardDismissed = false;
+        bool _isTokenInvalid = false;
         string _token = string.Empty;
+
+        Timer timer;
+        const double INTERVAL = 1000f;
+        public int timerCtr = 30;
 
         public override void ViewDidLoad()
         {
             base.ViewDidLoad();
+            timer = new Timer();
+            timer.Interval = INTERVAL;
+            timer.Elapsed += TimerElapsed;
+            timer.AutoReset = true;
             AddBackButton();
             SetViews();
         }
@@ -59,17 +70,17 @@ namespace myTNB
 
         void SetViews()
         {
-            UILabel lblDescription = new UILabel(new CGRect(18, 16, View.Frame.Width - 36, 36));
-            lblDescription.Font = myTNBFont.MuseoSans14();
+            UILabel lblDescription = new UILabel(new CGRect(18, 8, View.Frame.Width - 36, 60));
+            lblDescription.Font = myTNBFont.MuseoSans16_300();
             lblDescription.TextColor = myTNBColor.TunaGrey();
             lblDescription.LineBreakMode = UILineBreakMode.WordWrap;
             lblDescription.Lines = 0;
-            lblDescription.Text = "Please enter the 4 digit code that was sent to " + EmailAddress;
+            lblDescription.Text = "Please enter the 4-digit code that was sent to " + EmailAddress;
             lblDescription.TextAlignment = UITextAlignment.Left;
             View.AddSubview(lblDescription);
 
             UILabel lblResendToken = new UILabel(new CGRect(18, 158, View.Frame.Width - 36, 16));
-            lblResendToken.Font = myTNBFont.MuseoSans12();
+            lblResendToken.Font = myTNBFont.MuseoSans12_300();
             lblResendToken.TextColor = myTNBColor.TunaGrey();
             lblResendToken.LineBreakMode = UILineBreakMode.WordWrap;
             lblResendToken.Lines = 0;
@@ -92,6 +103,7 @@ namespace myTNB
             _loadingImage = new UIImageView(new CGRect(14, 13, 24, 24));
             _resendLabel = new UILabel(new CGRect(41, 15, 100, 20));
             _segment = new UIView(new CGRect(0, 0, 0, height));
+            _segment.Layer.CornerRadius = 5.0f;
             _loadingView.AddSubview(_segment);
             _loadingView.AddSubview(_loadingImage);
             _loadingView.AddSubview(_resendLabel);
@@ -110,7 +122,7 @@ namespace myTNB
             UIView viewLine;
             _viewTokenFieldContainer = new UIView(new CGRect(66, 70, View.Frame.Width - 132, 40));
             _lblError = new UILabel(new CGRect(0, _viewTokenFieldContainer.Frame.Height - 14, _viewTokenFieldContainer.Frame.Width, 14));
-            _lblError.Font = myTNBFont.MuseoSans9();
+            _lblError.Font = myTNBFont.MuseoSans9_300();
             _lblError.TextColor = myTNBColor.Tomato();
             _lblError.TextAlignment = UITextAlignment.Left;
             _lblError.Text = "Invalid code.";
@@ -123,7 +135,7 @@ namespace myTNB
                 txtFieldToken = new UITextField(new CGRect(xLocation, 0, txtFieldWidth, 24));
                 txtFieldToken.Placeholder = "-";
                 txtFieldToken.TextColor = myTNBColor.TunaGrey();
-                txtFieldToken.Font = myTNBFont.MuseoSans16();
+                txtFieldToken.Font = myTNBFont.MuseoSans16_300();
                 txtFieldToken.Tag = index + 1;
                 txtFieldToken.KeyboardType = UIKeyboardType.NumberPad;
                 txtFieldToken.AutocorrectionType = UITextAutocorrectionType.No;
@@ -137,11 +149,12 @@ namespace myTNB
                     return newLength <= 1;
                 };
                 _textFieldHelper.CreateDoneButton(txtFieldToken);
-                SetTextFieldEvents(txtFieldToken);
 
                 viewLine = new UIView(new CGRect(xLocation, 25, txtFieldWidth, 1));
                 viewLine.BackgroundColor = myTNBColor.PlatinumGrey();
-                viewLine.Tag = 6;
+                viewLine.Tag = index + 5;
+
+                SetTextFieldEvents(txtFieldToken, viewLine);
 
                 _viewTokenFieldContainer.AddSubview(viewLine);
                 _viewTokenFieldContainer.AddSubview(txtFieldToken);
@@ -151,25 +164,46 @@ namespace myTNB
             _viewTokenFieldContainer.AddSubview(_lblError);
             View.AddSubview(_viewTokenFieldContainer);
         }
+        /// <summary>
+        /// Method to execute label update when timer lapses
+        /// </summary>
+        /// <param name="sender">Sender.</param>
+        /// <param name="e">E.</param>
+        private void TimerElapsed(object sender, ElapsedEventArgs e)
+        {
+            if (timerCtr > 0)
+            {
+                InvokeOnMainThread(() =>
+                {
+                    _resendLabel.Text = string.Format("ResendBtnTimerTxt".Translate(), timerCtr);
+                });
+                timerCtr = timerCtr - 1;
+            }
+            else
+            {
+                timer.Enabled = false;
+            }
+        }
 
         void AnimateResendView()
         {
+            timerCtr = 30;
+            _resendLabel.Text = string.Format("ResendBtnTimerTxt".Translate(), timerCtr);
+            _resendLabel.TextColor = myTNBColor.FreshGreen();
+            timer.Enabled = true;
             UIView.Animate(30, 1, UIViewAnimationOptions.CurveEaseOut, () =>
             {
                 _segment.Frame = new CGRect(0, 0, 140, 48);
                 //Fresh green with 24% opacity
                 _segment.BackgroundColor = new UIColor(red: 0.13f, green: 0.74f, blue: 0.30f, alpha: 0.24f);
                 _loadingImage.Image = _loadingImg;
-                _resendLabel.Text = "Resend (30)";
-                _resendLabel.TextColor = myTNBColor.FreshGreen();
             }, () =>
             {
                 _segment.Frame = new CGRect(0, 0, 140, 48);
                 _segment.BackgroundColor = myTNBColor.FreshGreen();
-                _segment.Layer.CornerRadius = 5.0f;
                 _loadingImage.Frame = new CGRect(25, 13, 24, 24);
                 _resendLabel.Frame = new CGRect(55, 15, 85, 20);
-                _resendLabel.Text = "Resend";
+                _resendLabel.Text = "ResendBtnTxt".Translate();
                 _resendLabel.TextColor = UIColor.White;
                 _loadingImage.Image = _loadedImg;
                 _loadingView.AddGestureRecognizer(_onResendPin);
@@ -188,7 +222,7 @@ namespace myTNB
             txtFieldToken4.Text = string.Empty;
         }
 
-        void SetTextFieldEvents(UITextField textField)
+        void SetTextFieldEvents(UITextField textField, UIView viewLine)
         {
             textField.EditingChanged += (sender, e) =>
             {
@@ -202,11 +236,16 @@ namespace myTNB
                         UIResponder nextResponder = textField.Superview.ViewWithTag(nextTag);
                         nextResponder.BecomeFirstResponder();
                         _isKeyboardDismissed = false;
+                        UIView vLine = _viewTokenFieldContainer.ViewWithTag((int)textField.Tag + 5) as UIView;
+                        vLine.BackgroundColor = myTNBColor.PowerBlue();
                     }
                 }
                 ValidateFields(_isKeyboardDismissed);
+                IsPinInvalid();
+                UpdateTextFieldColor();
             };
             textField.EditingDidBegin += (sender, e) =>
+                viewLine.BackgroundColor = myTNBColor.PowerBlue();
             {
             };
             textField.ShouldEndEditing = (sender) =>
@@ -217,6 +256,10 @@ namespace myTNB
             {
                 sender.ResignFirstResponder();
                 return false;
+            };
+            textField.EditingDidEnd += (sender, e) =>
+            {
+                viewLine.BackgroundColor = myTNBColor.PlatinumGrey();
             };
         }
 
@@ -229,7 +272,7 @@ namespace myTNB
 
             UILabel lblPinSent = new UILabel(new CGRect(16, 16, _viewPinSent.Frame.Width - 32, 32));
             lblPinSent.TextAlignment = UITextAlignment.Left;
-            lblPinSent.Font = myTNBFont.MuseoSans12();
+            lblPinSent.Font = myTNBFont.MuseoSans12_300();
             lblPinSent.TextColor = myTNBColor.TunaGrey();
             lblPinSent.Text = "An email containing the activation pin has been sent to your email Address.";
             lblPinSent.Lines = 0;
@@ -261,6 +304,37 @@ namespace myTNB
             PresentViewController(alert, animated: true, completionHandler: null);
         }
 
+        /// <summary>
+        /// Updates the color of the text field based on OTP validity input
+        /// </summary>
+        internal void UpdateTextFieldColor()
+        {
+            for (int i = 0; i < 4; i++)
+            {
+                UITextField txtField = _viewTokenFieldContainer.ViewWithTag(i + 1) as UITextField;
+                txtField.TextColor = (_isTokenInvalid) ? myTNBColor.Tomato() : myTNBColor.TunaGrey();
+
+                if (_isTokenInvalid)
+                {
+                    UIView viewLine = _viewTokenFieldContainer.ViewWithTag(i + 5) as UIView;
+                    viewLine.BackgroundColor = myTNBColor.Tomato();
+                }
+            }
+
+            if (_isTokenInvalid)
+                _isTokenInvalid = false;
+        }
+        /// <summary>
+        /// Determines when to hide/show the error message based on OTP validity input
+        /// </summary>
+        internal void IsPinInvalid()
+        {
+            if (_isTokenInvalid)
+                _lblError.Hidden = false;
+            else
+                _lblError.Hidden = true;
+        }
+
         void ValidateFields(bool isKeyboardDismissed)
         {
             UITextField txtFieldToken1 = _viewTokenFieldContainer.ViewWithTag(1) as UITextField;
@@ -283,7 +357,7 @@ namespace myTNB
                         }
                         else
                         {
-                            DisplayAlertView("No Data Connection", "Please check your data connection and try again.");
+                            DisplayAlertView("ErrNoNetworkTitle".Translate(), "ErrNoNetworkMsg".Translate());
                             ActivityIndicator.Hide();
                         }
                     });
@@ -365,7 +439,10 @@ namespace myTNB
                     }
                     else
                     {
-                        DisplayAlertView("Reset password with token error.", _resetCodeList.d.message);
+                        DisplayAlertView("Reset password with token error.", _resetCodeList?.d?.message);
+                        _isTokenInvalid = true;
+                        IsPinInvalid();
+                        UpdateTextFieldColor();
                     }
 
                     ActivityIndicator.Hide();

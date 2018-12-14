@@ -5,6 +5,7 @@ using UIKit;
 using CoreGraphics;
 using Foundation;
 using System.Drawing;
+using myTNB.Extensions;
 
 namespace myTNB.Registration
 {
@@ -19,6 +20,7 @@ namespace myTNB.Registration
         UITextField txtFieldConfirmPassword;
         UITextView txtViewDetails;
         UIButton btnRegister;
+        UIView btnRegisterContainer;
 
         UIView viewLineName;
         UIView viewLineICNo;
@@ -54,7 +56,8 @@ namespace myTNB.Registration
 
         UIView viewShowConfirmPassword;
         UIView viewShowPassword;
-
+        UIScrollView ScrollView;
+        CGRect scrollViewFrame;
         public RegistrationViewController(IntPtr handle) : base(handle)
         {
         }
@@ -69,7 +72,6 @@ namespace myTNB.Registration
         string _mobileNo = string.Empty;
 
         const string EMAIL_PATTERN = @"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$";
-        const string NAME_PATTERN = @"^[A-Za-z0-9 _]*[A-Za-z0-9][A-Za-z0-9 \-\\_ _]*$";
         const string PASSWORD_PATTERN = @"(?!^[0-9]*$)(?!^[a-zA-Z]*$)^([a-zA-Z0-9]{8,})$";
         const string MOBILE_NO_PATTERN = @"^[0-9 \+]+$";
         const string IC_NO_PATTERN = @"^[a-zA-Z0-9]+$";
@@ -85,6 +87,8 @@ namespace myTNB.Registration
             SetVisibility();
             SetEvents();
             SetViews();
+            NSNotificationCenter.DefaultCenter.AddObserver(UIKeyboard.WillHideNotification, OnKeyboardNotification);
+            NSNotificationCenter.DefaultCenter.AddObserver(UIKeyboard.WillShowNotification, OnKeyboardNotification);
         }
 
         public override void ViewWillAppear(bool animated)
@@ -103,7 +107,7 @@ namespace myTNB.Registration
         {
 
             //Scrollview
-            var ScrollView = new UIScrollView(new CGRect(0, 0, View.Frame.Width, View.Frame.Height));
+            ScrollView = new UIScrollView(new CGRect(0, 0, View.Frame.Width, View.Frame.Height));
             ScrollView.BackgroundColor = UIColor.Clear;
             View.AddSubview(ScrollView);
 
@@ -141,7 +145,7 @@ namespace myTNB.Registration
             {
                 Frame = new CGRect(0, 12, viewFullName.Frame.Width, 24),
                 AttributedPlaceholder = new NSAttributedString(
-                    "Full name"
+                    "Full Name"
                     , font: myTNBFont.MuseoSans16()
                     , foregroundColor: myTNBColor.SilverChalice()
                     , strokeWidth: 0
@@ -297,7 +301,7 @@ namespace myTNB.Registration
             {
                 Frame = new CGRect(0, 37, viewEmail.Frame.Width, 14),
                 AttributedText = new NSAttributedString(
-                    "Invalid email address"
+                    "Invalid email address."
                     , font: myTNBFont.MuseoSans9()
                     , foregroundColor: myTNBColor.Tomato()
                     , strokeWidth: 0
@@ -432,10 +436,12 @@ namespace myTNB.Registration
                 if (txtFieldPassword.SecureTextEntry)
                 {
                     txtFieldPassword.SecureTextEntry = false;
+                    imgShowPassword.Image = UIImage.FromBundle("IC-Action-Hide-Password");
                 }
                 else
                 {
                     txtFieldPassword.SecureTextEntry = true;
+                    imgShowPassword.Image = UIImage.FromBundle("IC-Action-Show-Password");
                 }
             }));
             viewPassword.AddSubview(viewShowPassword);
@@ -492,10 +498,12 @@ namespace myTNB.Registration
                 if (txtFieldConfirmPassword.SecureTextEntry)
                 {
                     txtFieldConfirmPassword.SecureTextEntry = false;
+                    imgShowConfirmPassword.Image = UIImage.FromBundle("IC-Action-Hide-Password");
                 }
                 else
                 {
                     txtFieldConfirmPassword.SecureTextEntry = true;
+                    imgShowConfirmPassword.Image = UIImage.FromBundle("IC-Action-Show-Password");
                 }
             }));
             viewConfirmPassword.AddSubview(viewShowConfirmPassword);
@@ -541,20 +549,54 @@ namespace myTNB.Registration
             });
             txtViewDetails.AddGestureRecognizer(tap);
 
+            btnRegisterContainer = new UIView(new CGRect(0, (View.Frame.Height - DeviceHelper.GetScaledHeight(145)), View.Frame.Width, DeviceHelper.GetScaledHeight(100)));
+            btnRegisterContainer.BackgroundColor = UIColor.White;
+            View.AddSubview(btnRegisterContainer);
+
             //Register button
             btnRegister = new UIButton(UIButtonType.Custom);
-            btnRegister.Frame = new CGRect(18, 552, View.Frame.Width - 36, 48);
+            btnRegister.Frame = new CGRect(18, DeviceHelper.GetScaledHeight(18), btnRegisterContainer.Frame.Width - 36, 48);
             btnRegister.SetTitle("Register", UIControlState.Normal);
             btnRegister.Font = myTNBFont.MuseoSans16();
             btnRegister.Layer.CornerRadius = 5.0f;
             btnRegister.BackgroundColor = myTNBColor.FreshGreen();
+            btnRegisterContainer.AddSubview(btnRegister);
 
             //Scrollview content size
-            ScrollView.ContentSize = new CGRect(0f, 0f, View.Frame.Width, 900f).Size;
+            var addtlHeight = DeviceHelper.IsIphone5() ? 120 : 20;
+            ScrollView.ContentSize = new CGRect(0f, 0f, View.Frame.Width, UIScreen.MainScreen.Bounds.Height + addtlHeight).Size;
 
             //ScrollView main subviews
             ScrollView.AddSubviews(new UIView[] {viewFullName,  viewICNumber,viewMobileNumber, viewEmail
-                ,viewConfirmEmail, viewPassword , viewConfirmPassword, txtViewDetails , btnRegister});
+                ,viewConfirmEmail, viewPassword , viewConfirmPassword, txtViewDetails });
+
+            scrollViewFrame = ScrollView.Frame;
+        }
+
+        void OnKeyboardNotification(NSNotification notification)
+        {
+            if (!IsViewLoaded)
+                return;
+
+            bool visible = notification.Name == UIKeyboard.WillShowNotification;
+            UIView.BeginAnimations("AnimateForKeyboard");
+            UIView.SetAnimationBeginsFromCurrentState(true);
+            UIView.SetAnimationDuration(UIKeyboard.AnimationDurationFromNotification(notification));
+            UIView.SetAnimationCurve((UIViewAnimationCurve)UIKeyboard.AnimationCurveFromNotification(notification));
+
+            if (visible)
+            {
+                CGRect r = UIKeyboard.BoundsFromNotification(notification);
+                CGRect viewFrame = View.Bounds;
+                nfloat currentViewHeight = viewFrame.Height - r.Height;
+                ScrollView.Frame = new CGRect(ScrollView.Frame.X, ScrollView.Frame.Y, ScrollView.Frame.Width, currentViewHeight);
+            }
+            else
+            {
+                ScrollView.Frame = scrollViewFrame;
+            }
+
+            UIView.CommitAnimations();
         }
 
         internal void SetViews()
@@ -607,9 +649,9 @@ namespace myTNB.Registration
                 ActivityIndicator.Show();
                 _eMail = txtFieldEmail.Text;
                 _password = txtFieldPassword.Text;
-                _fullName = txtFieldName.Text;
+                _fullName = txtFieldName.Text?.Trim();
                 _icNo = txtFieldICNo.Text;
-                _mobileNo = txtFieldMobileNo.Text.Replace(" ", string.Empty);
+                _mobileNo = _textFieldHelper.TrimAllSpaces(txtFieldMobileNo.Text);
 
                 DataManager.DataManager.SharedInstance.User.Email = _eMail;
                 DataManager.DataManager.SharedInstance.User.Password = _password;
@@ -627,7 +669,7 @@ namespace myTNB.Registration
                         }
                         else
                         {
-                            DisplayAlertView("No Data Connection", "Please check your data connection and try again.");
+                            DisplayAlertView("ErrNoNetworkTitle".Translate(), "ErrNoNetworkMsg".Translate());
                             ActivityIndicator.Hide();
                         }
                     });
@@ -636,7 +678,7 @@ namespace myTNB.Registration
             };
 
             SetTextFieldEvents(txtFieldName, lblNameTitle, lblNameError
-                               , viewLineName, lblNameHint, NAME_PATTERN);
+                               , viewLineName, lblNameHint, TNBGlobal.CustomerNamePattern);
             SetTextFieldEvents(txtFieldICNo, lblICNoTitle, lblICNoError
                                , viewLineICNo, lblICNoHint, IC_NO_PATTERN);
             SetTextFieldEvents(txtFieldMobileNo, lblMobileNoTitle, lblMobileNoError
@@ -687,12 +729,14 @@ namespace myTNB.Registration
                 {
                     if (textField.Text.Length == 0)
                     {
-                        textField.Text += "+60 ";
+                        textField.Text += TNBGlobal.MobileNoPrefix;
                     }
                 }
                 lblHint.Hidden = lblError.Hidden ? textField.Text.Length == 0 : true;
                 lblTitle.Hidden = textField.Text.Length == 0;
+                viewLine.BackgroundColor = myTNBColor.PowerBlue();
                 DisplayEyeIcon(textField);
+                textField.LeftViewMode = UITextFieldViewMode.Never;
             };
             textField.ShouldEndEditing = (sender) =>
             {
@@ -708,7 +752,7 @@ namespace myTNB.Registration
                     isValid = isValid && isMatch;
                 }
                 //Handling for Confirm Password
-                if (textField == txtFieldConfirmPassword)
+                else if (textField == txtFieldConfirmPassword)
                 {
                     bool isMatch = txtFieldPassword.Text.Equals(txtFieldConfirmPassword.Text);
                     string err = isValid ? "Your password and confirmation password do not match."
@@ -716,18 +760,23 @@ namespace myTNB.Registration
                     lblError.Text = err;
                     isValid = isValid && isMatch;
                 }
-                if (textField == txtFieldMobileNo)
+                else if (textField == txtFieldMobileNo)
                 {
                     if (textField.Text.Length < 4)
                     {
                         textField.Text = string.Empty;
                     }
+                    isValid = isValid && _textFieldHelper.ValidateMobileNumberLength(textField.Text);
+                }
+                else if (textField == txtFieldName)
+                {
+                    isValid = isValid && !string.IsNullOrWhiteSpace(textField.Text);
                 }
                 DisplayEyeIcon(textField);
-                lblError.Hidden = isValid || textField.Text.Length == 0;
+                lblError.Hidden = isValid;
                 lblHint.Hidden = true;
-                viewLine.BackgroundColor = isValid || textField.Text.Length == 0 ? myTNBColor.PlatinumGrey() : myTNBColor.Tomato();
-                textField.TextColor = isValid || textField.Text.Length == 0 ? myTNBColor.TunaGrey() : myTNBColor.Tomato();
+                viewLine.BackgroundColor = isValid ? myTNBColor.PlatinumGrey() : myTNBColor.Tomato();
+                textField.TextColor = isValid ? myTNBColor.TunaGrey() : myTNBColor.Tomato();
 
                 return true;
             };
@@ -747,33 +796,54 @@ namespace myTNB.Registration
             {
                 if (textField == txtFieldMobileNo)
                 {
-                    string content = ((UITextField)txtField).Text;
-                    string preffix = string.Empty;
-                    if (content.Length == 1)
+                    bool isCharValid = _textFieldHelper.ValidateTextField(replacementString, TNBGlobal.MobileNoPattern);
+                    if (!isCharValid)
                     {
-                        preffix = content.Substring(0, 1);
-                        if (preffix.Equals("+") && replacementString.Equals(string.Empty))
-                        {
-                            return false;
-                        }
+                        return false;
                     }
-                    return true;
+
+                    if (range.Location >= TNBGlobal.MobileNoPrefix.Length)
+                    {
+                        string content = _textFieldHelper.TrimAllSpaces(((UITextField)txtField).Text);
+                        var count = content.Length + replacementString.Length - range.Length;
+                        return count <= TNBGlobal.MobileNumberMaxCharCount;
+                    }
+                    return false;
+                }
+                else if (textField == txtFieldName)
+                {
+                    bool isCharValid = !string.IsNullOrEmpty(replacementString) 
+                                              ? _textFieldHelper.ValidateTextField(replacementString, pattern)
+                                              : true;
+                    if (!isCharValid)
+                    {
+                        return false;
+                    }
                 }
                 return true;
+            };
+            textField.EditingDidEnd += (sender, e) =>
+            {
+                if (textField.Text.Length == 0)
+                    textField.LeftViewMode = UITextFieldViewMode.UnlessEditing;
             };
         }
 
         internal void SetRegisterButtonEnable()
         {
+            bool isValidName = _textFieldHelper.ValidateTextField(txtFieldName.Text, TNBGlobal.CustomerNamePattern)
+                && !string.IsNullOrWhiteSpace(txtFieldName.Text);
             bool isValidICNo = _textFieldHelper.ValidateTextField(txtFieldICNo.Text, IC_NO_PATTERN);
-            bool isValidMobileNo = _textFieldHelper.ValidateTextField(txtFieldMobileNo.Text, MOBILE_NO_PATTERN);
+            bool isValidMobileNo = _textFieldHelper.ValidateTextField(txtFieldMobileNo.Text, MOBILE_NO_PATTERN)
+                && _textFieldHelper.ValidateMobileNumberLength(txtFieldMobileNo.Text);
             bool isValidEmail = _textFieldHelper.ValidateTextField(txtFieldEmail.Text, EMAIL_PATTERN)
                 && _textFieldHelper.ValidateTextField(txtFieldConfirmEmail.Text, EMAIL_PATTERN)
                 && txtFieldEmail.Text.Equals(txtFieldConfirmEmail.Text);
             bool isValidPassword = _textFieldHelper.ValidateTextField(txtFieldPassword.Text, PASSWORD_PATTERN)
                 && _textFieldHelper.ValidateTextField(txtFieldConfirmPassword.Text, PASSWORD_PATTERN)
                 && txtFieldPassword.Text.Equals(txtFieldConfirmPassword.Text);
-            bool isValid = isValidICNo
+            bool isValid = isValidName 
+                && isValidICNo
                 && isValidMobileNo
                 && isValidEmail
                 && isValidPassword;
@@ -792,7 +862,7 @@ namespace myTNB.Registration
                         if (_smsToken.d.isError.Equals("false") && _smsToken.d.status.Equals("success"))
                         {
                             UIStoryboard storyBoard = UIStoryboard.FromName("Registration", null);
-                            UIViewController viewController = storyBoard.InstantiateViewController("VerifyPinViewController") as UIViewController;
+                            VerifyPinViewController viewController = storyBoard.InstantiateViewController("VerifyPinViewController") as VerifyPinViewController;
                             this.NavigationController.PushViewController(viewController, true);
                             ActivityIndicator.Hide();
                         }
@@ -828,7 +898,7 @@ namespace myTNB.Registration
                     userEmail = _eMail,
                     mobileNo = _mobileNo
                 };
-                _smsToken = serviceManager.SendRegistrationTokenSMS("SendRegistrationTokenSMS", requestParameter);
+                _smsToken = serviceManager.SendRegistrationTokenSMS("SendRegistrationTokenSMS_V2", requestParameter);
             });
         }
 

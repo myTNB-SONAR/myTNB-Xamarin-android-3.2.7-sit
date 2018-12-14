@@ -5,7 +5,9 @@ using Firebase.CloudMessaging;
 using Firebase.Core;
 using Firebase.InstanceID;
 using Foundation;
+using myTNB.Dashboard;
 using myTNB.Model;
+using myTNB.PushNotification;
 using UIKit;
 
 namespace myTNB
@@ -39,6 +41,54 @@ namespace myTNB
         {
             Messaging.SharedInstance.ShouldEstablishDirectChannel = true;
         }
+
+        /// <summary>
+        /// Handles the push notification.
+        /// </summary>
+        public static void HandlePushNotification()
+        {
+            if (DataManager.DataManager.SharedInstance.IsFromPushNotification)
+            {
+                DataManager.DataManager.SharedInstance.IsFromPushNotification = false;
+                DataManager.DataManager.SharedInstance.NotificationNeedsUpdate = true;
+
+                UIStoryboard storyBoard = UIStoryboard.FromName("PushNotification", null);
+                var viewController = storyBoard.InstantiateViewController("PushNotificationViewController") as PushNotificationViewController;
+                var navController = new UINavigationController(viewController);
+
+                var baseRootVc = UIApplication.SharedApplication.KeyWindow?.RootViewController;
+                var topVc = AppDelegate.GetTopViewController(baseRootVc);
+
+                Console.WriteLine("topVc: " + topVc.GetType().ToString());
+
+                if(!(topVc is DashboardHomeViewController) && !(topVc is DashboardViewController))
+                {
+                    var tabBar = ViewHelper.DismissControllersAndSelectTab(topVc, 0, false, true);
+
+                    if (tabBar != null)
+                    {
+                        var selVc = tabBar.SelectedViewController as DashboardNavigationController;
+                        if (selVc != null)
+                        {
+                            var vc = selVc.ViewControllers[0];
+
+                            if ((vc is DashboardHomeViewController) || (vc is DashboardViewController))
+                            {
+                                vc.PresentViewController(navController, true, null);
+                            }
+                        }
+                    }
+
+                }
+                else
+                {
+                    topVc.PresentViewController(navController, true, null);
+                }
+
+            }
+        }
+
+
         /// <summary>
         /// Gets the notifications.
         /// </summary>
@@ -121,15 +171,14 @@ namespace myTNB
                 {
                     apiKeyID = TNBGlobal.API_KEY_ID
                 };
-                DataManager.DataManager.SharedInstance.NotificationGeneralTypes = serviceManager.GetNotificationTypes("GetAppNotificationTypes", requestParameter);
+                var response = serviceManager.GetNotificationTypes("GetAppNotificationTypes", requestParameter);
+                DataManager.DataManager.SharedInstance.NotificationGeneralTypes = response?.d?.data;
                 NotificationPreferenceModel allNotificationItem = new NotificationPreferenceModel();
                 allNotificationItem.Title = "All notifications";
                 allNotificationItem.Id = "all";
-                if (DataManager.DataManager.SharedInstance.NotificationGeneralTypes != null
-                   && DataManager.DataManager.SharedInstance.NotificationGeneralTypes.d != null
-                   && DataManager.DataManager.SharedInstance.NotificationGeneralTypes.d.data != null)
+                if (DataManager.DataManager.SharedInstance.NotificationGeneralTypes != null)
                 {
-                    DataManager.DataManager.SharedInstance.NotificationGeneralTypes.d.data.Insert(0, allNotificationItem);
+                    DataManager.DataManager.SharedInstance.NotificationGeneralTypes.Insert(0, allNotificationItem);
                 }
             });
         }

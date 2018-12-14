@@ -44,7 +44,7 @@ namespace myTNB.Dashboard.DashboardComponents
 
         internal void CreateComponent()
         {
-            if (DeviceHelper.IsIphoneX())
+            if (DeviceHelper.IsIphoneXUpResolution())
             {
                 _viewHeight += 24;
             }

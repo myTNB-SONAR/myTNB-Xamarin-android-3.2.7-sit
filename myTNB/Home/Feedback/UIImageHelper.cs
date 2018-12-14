@@ -55,8 +55,8 @@ namespace myTNB.Home.Feedback
 
         public UIImage ResizeImage(UIImage image)
         {
-            UIGraphics.BeginImageContextWithOptions(new CGSize(image.Size.Width / 20, image.Size.Height / 20), false, 0.0f);
-            image.Draw(new CGRect(0, 0, image.Size.Width / 20, image.Size.Height / 20));
+            UIGraphics.BeginImageContextWithOptions(new CGSize(image.Size.Width / 5, image.Size.Height / 5), false, 0.0f);
+            image.Draw(new CGRect(0, 0, image.Size.Width / 5, image.Size.Height / 5));
             UIImage newImage = UIGraphics.GetImageFromCurrentImageContext();
             UIGraphics.EndImageContext();
             return newImage;

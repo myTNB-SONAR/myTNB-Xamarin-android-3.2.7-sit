@@ -54,6 +54,24 @@
                     public const string PublishedDate = "PublishedDate";
                 }
 
+                public struct PromotionsV2
+                {
+                    public const string GeneralLink = "GeneralLink";
+                    public const string SubText = "SubText";
+                    public const string Text = "Text";
+                    public const string Title = "Title";
+                    public const string HeaderContent = "HeaderContent";
+                    public const string BodyContent = "BodyContent";
+                    public const string FooterContent = "FooterContent";
+                    public const string PortraitImage = "PortraitImage";
+                    public const string LandscapeImage = "LandscapeImage";
+                    public const string PromoStartDate = "PromoStartDate";
+                    public const string PromoEndDate = "PromoEndDate";
+                    public const string PublishedDate = "PublishedDate";
+                    public const string isPromoExpired = "isPromoExpired";
+                    public const string ShowAtAppLaunch = "ShowAtAppLaunch";
+                }
+
                 public struct FAQs
                 {
                     public const string Question = "Question";
@@ -80,7 +98,8 @@
 
             public struct ItemPath
             {
-                public const string Promotions = "/sitecore/content/myTNBapp/Contents/Promotions";
+                public const string Promotions = "/sitecore/content/myTNBapp/Contents/PromotionsV2";
+                public const string PromotionsV2 = "/sitecore/content/myTNBapp/Contents/PromotionsV2";
                 public const string FAQs = "/sitecore/content/myTNBapp/Contents/FrequentlyAskedQuestions";
 
                 public const string Timestamp = "/sitecore/content/myTNBapp/Timestamp";

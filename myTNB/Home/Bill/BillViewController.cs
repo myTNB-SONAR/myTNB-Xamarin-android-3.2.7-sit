@@ -10,12 +10,14 @@ using CoreAnimation;
 using System.Globalization;
 using myTNB.DataManager;
 using Foundation;
+using myTNB.Extensions;
+using myTNB.Enums;
 
 namespace myTNB
 {
     public partial class BillViewController : UIViewController
     {
-        const string CURRENCY = "RM";
+        const string CURRENCY = "RM ";
 
         UILabel _lblAmount;
         UIView _viewAmount;
@@ -32,13 +34,18 @@ namespace myTNB
         UILabel _lblAccountName;
         UILabel _lblAccountNumber;
         UITextView _txtViewAddress;
+        UILabel _lblCurrentChargesTitle;
         UILabel _lblCurrentChargesValue;
+        UILabel _lblOutstandingChargesTitle;
         UILabel _lblOutstandingChargesValue;
+        UILabel _lblTotalPayableTitle;
         UILabel _lblTotalPayableValue;
         UILabel _lblHistoryHeader;
 
         UILabel _lblCurrentBillHeader;
         UILabel _lblTotalDueAmountTitle;
+        UILabel _lblDueDateTitle;
+        UIView _lineView;
         UIView _viewCharges;
 
         UIImageView _imgLeaf;
@@ -48,13 +55,17 @@ namespace myTNB
         BillHistoryResponseModel _billingHistory = new BillHistoryResponseModel();
         AccountSelectionComponent _accountSelectionComponent;
         TitleBarComponent titleBarComponent;
+        DueAmountResponseModel _dueAmount = new DueAmountResponseModel();
 
         public UserNotificationDataModel NotificationInfo = new UserNotificationDataModel();
         public bool IsFromNavigation = false;
         bool _paymentNeedsUpdate = false;
-
+        bool isAnimating = false;
         bool isREAccount = false;
         bool isOwnedAccount = false;
+        bool isBcrmAvailable = true;
+        bool isFromReceiptScreen = false;
+        nfloat headerMarginY = 15.0f;
 
         public BillViewController(IntPtr handle) : base(handle)
         {
@@ -82,6 +93,18 @@ namespace myTNB
         public override void ViewWillAppear(bool animated)
         {
             base.ViewWillAppear(animated);
+            if (!isFromReceiptScreen)
+            {
+                InitializeValues();
+            }
+            else
+            {
+                isFromReceiptScreen = false;
+            }
+        }
+
+        void InitializeValues()
+        {
             InitializedSubviews();
             titleBarComponent.SetBackVisibility(!IsFromNavigation);
             DataManager.DataManager.SharedInstance.selectedTag = 0;
@@ -90,12 +113,18 @@ namespace myTNB
                 _lblAmount.Text = "0.00";
             }
 
-            isREAccount = DataManager.DataManager.SharedInstance.SelectedAccount.accountCategoryId != null
-                                     ? DataManager.DataManager.SharedInstance.SelectedAccount.accountCategoryId.Equals("2")
-                                     : false;
+            isREAccount = DataManager.DataManager.SharedInstance.SelectedAccount.IsREAccount;
             isOwnedAccount = DataManager.DataManager.SharedInstance.SelectedAccount.IsOwnedAccount;
+            isBcrmAvailable = DataManager.DataManager.SharedInstance.IsBcrmAvailable;
 
             SetDetailsView();
+
+            if (!isREAccount && isBcrmAvailable && !DataManager.DataManager.SharedInstance.IsPaymentCreditCardAvailable
+                                     && !DataManager.DataManager.SharedInstance.IsPaymentFPXAvailable)
+            {
+                ShowToast();
+            }
+
             if (!ServiceCall.HasAccountList())
             {
                 _billingHistory = new BillHistoryResponseModel();
@@ -113,18 +142,18 @@ namespace myTNB
                     {
                         if (NetworkUtility.isReachable)
                         {
-                            ActivityIndicator.Show();
+                            //ActivityIndicator.Show();
                             if (ServiceCall.HasAccountList() && ServiceCall.HasSelectedAccount())
                             {
                                 _paymentNeedsUpdate = true;
                                 if (DataManager.DataManager.SharedInstance.IsBillUpdateNeeded)
                                 {
-                                    ExecuteGetBillAccountDetailsCall();
+                                    LoadBillingAccountDetails();
                                 }
                                 else
                                 {
                                     DataManager.DataManager.SharedInstance.IsBillUpdateNeeded = true;
-                                    ExecuteGetBillHistoryCall();
+                                    LoadBillHistory();
                                 }
                             }
                             else
@@ -134,7 +163,7 @@ namespace myTNB
                                 AdjustFrames();
                                 ToggleButtons();
                                 SetButtonPayEnable();
-                                ActivityIndicator.Hide();
+                                //ActivityIndicator.Hide();
                             }
                         }
                         else
@@ -153,6 +182,27 @@ namespace myTNB
             SetEvents();
         }
 
+        /// <summary>
+        /// Shows the toast.
+        /// </summary>
+        private void ShowToast()
+        {
+            var status = DataManager.DataManager.SharedInstance.SystemStatus?.Find(x => x.SystemType == SystemEnum.BCRM);
+            if (status != null && !string.IsNullOrEmpty(status?.DowntimeTextMessage))
+            {
+                View.BringSubviewToFront(toastView);
+                ToastHelper.ShowToast(toastView, ref isAnimating, status?.DowntimeTextMessage);
+            }
+        }
+
+        /// <summary>
+        /// Handler for on done.
+        /// </summary>
+        public void OnDone()
+        {
+            isFromReceiptScreen = true;
+        }
+
         void SetDetailsView()
         {
             if (_lblCurrentBillHeader != null)
@@ -166,22 +216,74 @@ namespace myTNB
 
             if (isREAccount)
             {
-                _viewCharges.RemoveFromSuperview();
-                _lblTotalDueAmountTitle.Frame = new CGRect(18, 20, 160, 18);
-                _viewAmount.Frame = new CGRect(View.Frame.Width - 120, 14, 0, 24);
-                _headerView.Frame = new RectangleF(0, 0, (float)View.Frame.Width, 393);
-                _btnPay.Frame = new CGRect(18, 54, View.Frame.Width - 36, 48);
-                _historyHeaderView.Frame = new RectangleF(0, 297, (float)View.Frame.Width, 48);
+                if (_btnPay != null)
+                {
+                    _btnPay.RemoveFromSuperview();
+                }
+                //_viewCharges.RemoveFromSuperview();
+#if true
+                _viewCharges.Hidden = true;
+#else
+                _lblCurrentChargesTitle.Text = "CurrentAmountRE".Translate();
+                _lblOutstandingChargesTitle.Text = "OutstandingAmountRE".Translate();
+
+#endif
+                _lblTotalDueAmountTitle.Text = "TotalRE".Translate();
+                _btnBills.SetTitle("PaymentAdviceInfo".Translate(), UIControlState.Normal);
+                _lblTotalPayableTitle.Hidden = true;
+                _lblTotalPayableValue.Hidden = true;
+
+                AdjustFrameSetY(_lblTotalDueAmountTitle, _viewCharges.Frame.Y + headerMarginY + 3);
+                AdjustFrameSetY(_lblDueDateTitle, _lblTotalDueAmountTitle.Frame.GetMaxY() + 3);
+                AdjustFrameSetY(_viewAmount, _viewCharges.Frame.Y + headerMarginY);
+                //AdjustFrameHeight(_viewCharges, adjHeight * -1.0f);
+                //AdjustFrameSetY(_lineView, _lblOutstandingChargesTitle.Frame.GetMaxY() + headerMarginY);
+                //AdjustFrameSetY(_lblTotalDueAmountTitle, _viewCharges.Frame.GetMaxY() + headerMarginY + 6);
+                //AdjustFrameSetY(_viewAmount, _viewCharges.Frame.GetMaxY() + headerMarginY);
+                //_lblTotalDueAmountTitle.Frame = new CGRect(18, 20, 160, 18);
+                //_viewAmount.Frame = new CGRect(View.Frame.Width - 120, 14, 0, 24);
+                //_headerView.Frame = new RectangleF(0, 0, (float)View.Frame.Width, 393);
+                //_btnPay.Frame = new CGRect(18, 54, View.Frame.Width - 36, 48);
+                //_historyHeaderView.Frame = new RectangleF(0, 297, (float)View.Frame.Width, 48);
+
+                var adjY = (_viewCharges.Frame.Height + _btnPay.Frame.Height + headerMarginY * 2) * -1.0f;
+                AdjustFrameHeight(_currentBillDetailsView, adjY);
+                AdjustFrameAddY(_historyHeaderView, adjY);
+                AdjustFrameAddY(_historySelectionView, adjY);
+                AdjustFrameHeight(_headerView, adjY);
+                billTableView.TableHeaderView = _headerView;
 
             }
             else
             {
-                _currentBillDetailsView.AddSubview(_viewCharges);
-                _lblTotalDueAmountTitle.Frame = new CGRect(18, 136, 160, 18);
-                _viewAmount.Frame = new CGRect(View.Frame.Width - 120, 130, 0, 24);
-                _headerView.Frame = new RectangleF(0, 0, (float)View.Frame.Width, 509);
-                _btnPay.Frame = new CGRect(18, 170, View.Frame.Width - 36, 48);
+                //_currentBillDetailsView.AddSubview(_viewCharges);
+                _lblCurrentChargesTitle.Text = "CurrentAmount".Translate();
+                _lblOutstandingChargesTitle.Text = "OutstandingAmount".Translate();
+                _lblTotalDueAmountTitle.Text = "Total".Translate();
+                _btnBills.SetTitle("BillsInfo".Translate(), UIControlState.Normal);
+                _viewCharges.Hidden = false;
+                _lblTotalPayableTitle.Hidden = false;
+                _lblTotalPayableValue.Hidden = false;
+                //AdjustFrameHeight(_viewCharges, adjHeight);
+                //AdjustFrameSetY(_lineView, _lblTotalPayableValue.Frame.GetMaxY() + headerMarginY);
+                AdjustFrameSetY(_lblTotalDueAmountTitle, _viewCharges.Frame.GetMaxY() + headerMarginY * 2 + 3);
+                AdjustFrameSetY(_viewAmount, _viewCharges.Frame.GetMaxY() + headerMarginY * 2);
+                //_lblTotalDueAmountTitle.Frame = new CGRect(18, 136, 160, 18);
+                //_viewAmount.Frame = new CGRect(View.Frame.Width - 120, 130, 0, 24);
+                //_headerView.Frame = new RectangleF(0, 0, (float)View.Frame.Width, 509);
+                _btnPay.Frame = new CGRect(18, 180, View.Frame.Width - 36, 48);
                 _historyHeaderView.Frame = new RectangleF(0, 413, (float)View.Frame.Width, 48);
+
+                _headerView.Frame = new CGRect(0, 0, View.Frame.Width, 509);
+                _currentBillDetailsView.Frame = new RectangleF(0, 170, (float)View.Frame.Width, 218);
+                _historyHeaderView.Frame = new RectangleF(0, 413, (float)View.Frame.Width, 48);
+
+                if (_btnPay != null)
+                {
+                    _btnPay.RemoveFromSuperview();
+                }
+
+                _currentBillDetailsView.AddSubview(_btnPay);
             }
         }
 
@@ -192,7 +294,10 @@ namespace myTNB
             {
                 isEnabled = true;//DataManager.DataManager.SharedInstance.BillingAccountDetails.amCustBal > 0;
             }
-            if (!ServiceCall.HasAccountList())
+            if (!ServiceCall.HasAccountList() 
+                || (!isBcrmAvailable)
+                || (isBcrmAvailable && !DataManager.DataManager.SharedInstance.IsPaymentCreditCardAvailable
+                   && !DataManager.DataManager.SharedInstance.IsPaymentFPXAvailable) )
             {
                 isEnabled = false;
             }
@@ -210,13 +315,10 @@ namespace myTNB
             titleBarComponent.SetNotificationVisibility(true);
 
             titleBarComponent.SetBackVisibility(!IsFromNavigation);
+
             titleBarComponent.SetBackAction(new UITapGestureRecognizer(() =>
             {
-                UIStoryboard storyBoard = UIStoryboard.FromName("PushNotification", null);
-                NotificationDetailsViewController viewController =
-                    storyBoard.InstantiateViewController("NotificationDetailsViewController") as NotificationDetailsViewController;
-                viewController.NotificationInfo = NotificationInfo;
-                NavigationController.PushViewController(viewController, true);
+                NavigationController?.PopViewController(true);
             }));
 
             headerView.AddSubview(titleBarView);
@@ -230,22 +332,39 @@ namespace myTNB
 
         void ExecuteGetBillHistoryCall()
         {
+            ActivityIndicator.Show();
             GetBillHistory().ContinueWith(task =>
             {
-                InvokeOnMainThread(() =>
+                if(_billingHistory?.d?.didSucceed == true && _billingHistory?.d?.data != null 
+                   && _billingHistory?.d?.data?.Count > 0)
                 {
-                    InitializeBillTableView();
-                    SetupContent();
-                    AdjustFrames();
-                    ToggleButtons();
-                    SetButtonPayEnable();
-                    ActivityIndicator.Hide();
-                });
+                    DataManager.DataManager.SharedInstance.SaveToBillHistory(_billingHistory.d, DataManager.DataManager.SharedInstance.SelectedAccount.accNum);
+                }
+                InvokeOnMainThread(DisplayBillHistory);
             });
         }
 
+        /// <summary>
+        /// Displaies the bill history.
+        /// </summary>
+        private void DisplayBillHistory()
+        {
+            InitializeBillTableView();
+            SetupContent();
+            AdjustFrames();
+            ToggleButtons();
+            SetButtonPayEnable();
+            ActivityIndicator.Hide();
+        }
+
+
         Task GetBillHistory()
         {
+            var emailAddress = string.Empty;
+            if (DataManager.DataManager.SharedInstance.UserEntity?.Count > 0)
+            {
+                emailAddress = DataManager.DataManager.SharedInstance.UserEntity[0]?.email;
+            }
             return Task.Factory.StartNew(() =>
             {
                 ServiceManager serviceManager = new ServiceManager();
@@ -254,7 +373,7 @@ namespace myTNB
                     apiKeyID = TNBGlobal.API_KEY_ID,
                     accNum = DataManager.DataManager.SharedInstance.SelectedAccount.accNum,
                     isOwner = DataManager.DataManager.SharedInstance.SelectedAccount.isOwned,
-                    email = DataManager.DataManager.SharedInstance.UserEntity[0].email
+                    email = emailAddress
                 };
                 _billingHistory = serviceManager.GetBillHistory("GetBillHistory", requestParameter);
             });
@@ -262,80 +381,229 @@ namespace myTNB
 
         Task GetPaymentHistory()
         {
+            var emailAddress = string.Empty;
+            if (DataManager.DataManager.SharedInstance.UserEntity?.Count > 0)
+            {
+                emailAddress = DataManager.DataManager.SharedInstance.UserEntity[0]?.email;
+            }
+            return Task.Factory.StartNew(() =>
+            {
+                ServiceManager serviceManager = new ServiceManager();
+                object requestParameter;
+
+                if (!isREAccount)
+                {
+                    requestParameter = new
+                    {
+                        apiKeyID = TNBGlobal.API_KEY_ID,
+                        accNum = DataManager.DataManager.SharedInstance.SelectedAccount.accNum,//220706336302
+                        isOwner = DataManager.DataManager.SharedInstance.SelectedAccount.isOwned,
+                        email = emailAddress
+                    };
+                }
+                else
+                {
+                    requestParameter = new
+                    {
+                        ApiKeyID = TNBGlobal.API_KEY_ID,
+                        AccountNumber = DataManager.DataManager.SharedInstance.SelectedAccount.accNum,//220706336302
+                        IsOwner = DataManager.DataManager.SharedInstance.SelectedAccount.isOwned,
+                        Email = emailAddress
+                    };
+                }
+
+                _paymentHistory = serviceManager.GetPaymentHistory(!isREAccount ? "GetPaymentHistory" : "GetREPaymentHistory", requestParameter);
+            });
+        }
+
+        void SetupContent()
+        {
+            _accountSelectionComponent?.SetAccountName(DataManager.DataManager.SharedInstance.SelectedAccount?.accDesc);
+            if (IsFromNavigation)
+            {
+                _accountSelectionComponent?.SetDropdownVisibility(IsFromNavigation);
+            }
+            else
+            {
+                _accountSelectionComponent?.SetDropdownVisibility(false);//ServiceCall.GetAccountListCount() > 1 ? IsFromNavigation : true);
+            }
+            _accountSelectionComponent?.SetLeafVisibility(!isREAccount);
+
+            _lblAccountName.Text = DataManager.DataManager.SharedInstance.CurrentSelectedAccountIndex < DataManager.DataManager.SharedInstance.AccountRecordsList?.d?.Count
+                ? DataManager.DataManager.SharedInstance.AccountRecordsList?.d[DataManager.DataManager.SharedInstance.CurrentSelectedAccountIndex]?.ownerName
+                : string.Empty;
+            _lblAccountNumber.Text = DataManager.DataManager.SharedInstance.SelectedAccount?.accNum;
+
+            if (NetworkUtility.isReachable)
+            {
+                _txtViewAddress.Text = DataManager.DataManager.SharedInstance.SelectedAccount?.accountStAddress;
+
+                NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
+                {
+                    InvokeOnMainThread(async () =>
+                    {
+                        await LoadAmountDue();
+                        var currentAmt = DataManager.DataManager.SharedInstance.BillingAccountDetails?.amCurrentChg ?? 0;
+                        var outstandingAmt = DataManager.DataManager.SharedInstance.BillingAccountDetails?.amOutstandingChg ?? 0;
+                        var payableAmt = DataManager.DataManager.SharedInstance.BillingAccountDetails?.amPayableChg ?? 0;
+                        var balanceAmt = DataManager.DataManager.SharedInstance.BillingAccountDetails?.amCustBal ?? 0;
+
+                        var current = !isREAccount ? currentAmt : ChartHelper.UpdateValueForRE(currentAmt);
+                        var outstanding = !isREAccount ? outstandingAmt : ChartHelper.UpdateValueForRE(outstandingAmt);
+                        var payable = !isREAccount ? payableAmt : ChartHelper.UpdateValueForRE(payableAmt);
+                        var balance = !isREAccount ? balanceAmt : ChartHelper.UpdateValueForRE(balanceAmt);
+
+                        _lblCurrentChargesValue.Text = CURRENCY + current.ToString("N2", CultureInfo.InvariantCulture);
+                        _lblOutstandingChargesValue.Text = CURRENCY + outstanding.ToString("N2", CultureInfo.InvariantCulture);
+                        _lblTotalPayableValue.Text = CURRENCY + payable.ToString("N2", CultureInfo.InvariantCulture);
+                        _lblAmount.Text = balance.ToString("N2", CultureInfo.InvariantCulture);
+                        AdjustFrames();
+                    });
+                });
+            }
+            else
+            {
+                _txtViewAddress.Text = string.Empty;
+                _lblCurrentChargesValue.Text = CURRENCY + "0.00";
+                _lblOutstandingChargesValue.Text = CURRENCY + "0.00";
+                _lblTotalPayableValue.Text = CURRENCY + "0.00";
+                _lblAmount.Text = "0.00";
+            }
+
+            _imgLeaf.Hidden = !isREAccount;
+            _lblHistoryHeader.Text = isREAccount ? "REPaymentSectionHeader".Translate() : "Bill / Payment History";
+
+            //if (!isOwnedAccount)
+            //{
+            //    ShowNonOwnerView();
+            //}
+        }
+        /// <summary>
+        /// Loads the amount due of the selected account.
+        /// </summary>
+        private async Task LoadAmountDue()
+        {
+            var due = DataManager.DataManager.SharedInstance.GetDue(DataManager.DataManager.SharedInstance.SelectedAccount.accNum);
+            string _dateDue;
+            double _amountDue;
+            double _dueIncrementDays;
+
+            if (due != null)
+            {
+                _amountDue = due.amountDue;
+                _dateDue = due.billDueDate;
+                _dueIncrementDays = due.IncrementREDueDateByDays;
+                SetAmountInBillingDetails(_amountDue);
+                SetBillAndPaymentDetails(_dateDue, _dueIncrementDays);
+            }
+            else
+            {
+                await GetAccountDueAmount().ContinueWith(dueTask =>
+                {
+                    InvokeOnMainThread(() =>
+                    {
+                        if (_dueAmount != null && _dueAmount.d != null
+                            && _dueAmount.d.isError.Equals("false"))
+                        {
+                            _amountDue = _dueAmount.d.data.amountDue;
+                            _dateDue = _dueAmount.d.data.billDueDate;
+                            _dueIncrementDays = _dueAmount.d.data.IncrementREDueDateByDays;
+                            SetAmountInBillingDetails(_amountDue);
+                            SaveDueToCache(_dueAmount.d.data);
+                            SetBillAndPaymentDetails(_dateDue, _dueIncrementDays);
+                        }
+                    });
+                });
+            }
+        }
+        /// <summary>
+        /// Gets the account due amount if no cached data
+        /// </summary>
+        /// <returns>The account due amount.</returns>
+        internal Task GetAccountDueAmount()
+        {
             return Task.Factory.StartNew(() =>
             {
                 ServiceManager serviceManager = new ServiceManager();
                 object requestParameter = new
                 {
                     apiKeyID = TNBGlobal.API_KEY_ID,
-                    accNum = DataManager.DataManager.SharedInstance.SelectedAccount.accNum,//220706336302
-                    isOwner = DataManager.DataManager.SharedInstance.SelectedAccount.isOwned,
-                    email = DataManager.DataManager.SharedInstance.UserEntity[0].email
+                    accNum = DataManager.DataManager.SharedInstance.SelectedAccount.accNum
                 };
-                _paymentHistory = serviceManager.GetPaymentHistory("GetPaymentHistory", requestParameter);
+                _dueAmount = serviceManager.GetAccountDueAmount("GetAccountDueAmount", requestParameter);
             });
         }
-
-        void SetupContent()
+        /// <summary>
+        /// Sets the amount in billing details in the cache
+        /// </summary>
+        /// <param name="amount">Amount.</param>
+        void SetAmountInBillingDetails(double amount)
         {
-            _accountSelectionComponent.SetAccountName(DataManager.DataManager.SharedInstance.SelectedAccount.accDesc);
-            if (IsFromNavigation)
+            if (DataManager.DataManager.SharedInstance.BillingAccountDetails != null)
             {
-                _accountSelectionComponent.SetDropdownVisibility(IsFromNavigation);
+                DataManager.DataManager.SharedInstance
+                           .BillingAccountDetails.amCustBal = amount;
+            }
+        }
+        /// <summary>
+        /// Saves the due to cache.
+        /// </summary>
+        /// <param name="model">Model.</param>
+        private void SaveDueToCache(DueAmountDataModel model)
+        {
+            var acct = DataManager.DataManager.SharedInstance.SelectedAccount;
+            var item = new DueAmountDataModel
+            {
+                accNum = acct.accNum,
+                accNickName = acct.accountNickName,
+                IsReAccount = acct.IsREAccount,
+                amountDue = model.amountDue,
+                billDueDate = model.billDueDate,
+                IncrementREDueDateByDays = model.IncrementREDueDateByDays
+            };
+            DataManager.DataManager.SharedInstance.SaveDue(item);
+        }
+        /// <summary>
+        /// Sets the bill and payment details.
+        /// </summary>
+        /// <param name="dateDue">Date due.</param>
+        /// <param name="incrementDays">Increment days.</param>
+        internal void SetBillAndPaymentDetails(string dateDue, double incrementDays)
+        {
+            var balanceAmt = DataManager.DataManager.SharedInstance.BillingAccountDetails?.amCustBal ?? 0;
+            var balance = !isREAccount ? balanceAmt : ChartHelper.UpdateValueForRE(balanceAmt);
+            string dateString = (!string.IsNullOrEmpty(dateDue) && balance > 0) ? dateDue : string.Empty;
+
+            string formattedDate = string.Empty;
+            string prefix = string.Empty;
+            if (string.IsNullOrEmpty(dateString) || dateString.ToUpper().Equals("N/A")
+               || (DataManager.DataManager.SharedInstance.SelectedAccount.IsNormalMeter && !isBcrmAvailable))
+            {
+                formattedDate = "--";
             }
             else
             {
-                _accountSelectionComponent.SetDropdownVisibility(false);//ServiceCall.GetAccountListCount() > 1 ? IsFromNavigation : true);
-            }
-            _accountSelectionComponent.SetLeafVisibility(!isREAccount);
-
-            _lblAccountName.Text = DataManager.DataManager.SharedInstance.AccountRecordsList
-                .d[DataManager.DataManager.SharedInstance.CurrentSelectedAccountIndex].ownerName;
-            _lblAccountNumber.Text = DataManager.DataManager.SharedInstance.SelectedAccount.accNum;
-            _txtViewAddress.Text = NetworkUtility.isReachable ? DataManager.DataManager.SharedInstance.SelectedAccount.accountStAddress : string.Empty;
-
-            _lblCurrentChargesValue.Text = NetworkUtility.isReachable ? DataManager.DataManager.SharedInstance.BillingAccountDetails.amCurrentChg.ToString("N2", CultureInfo.InvariantCulture) : "0.00";
-            _lblOutstandingChargesValue.Text = NetworkUtility.isReachable ? DataManager.DataManager.SharedInstance.BillingAccountDetails.amOutstandingChg.ToString("N2", CultureInfo.InvariantCulture) : "0.00";
-            _lblTotalPayableValue.Text = NetworkUtility.isReachable ? DataManager.DataManager.SharedInstance.BillingAccountDetails.amPayableChg.ToString("N2", CultureInfo.InvariantCulture) : "0.00";
-            _lblAmount.Text = NetworkUtility.isReachable ? DataManager.DataManager.SharedInstance.BillingAccountDetails.amCustBal.ToString("N2", CultureInfo.InvariantCulture) : "0.00";
-
-            _imgLeaf.Hidden = !isREAccount;
-            _lblHistoryHeader.Text = isREAccount ? "Payment Advice History" : "Bill / Payment History";
-            if (isREAccount)
-            {
-                _headerView.Frame = new CGRect(0, 0, View.Frame.Width, 509 - 116 - 48 - 48);
-                _currentBillDetailsView.Frame = new RectangleF(0, 170, (float)View.Frame.Width, 218 - 116 - 48);
-                _historyHeaderView.Frame = new RectangleF(0, 413 - 116 - 48, (float)View.Frame.Width, 48);
-                if (_historySelectionView != null)
+                if (isREAccount && incrementDays > 0)
                 {
-                    _historySelectionView.RemoveFromSuperview();
+                    try
+                    {
+                        var format = @"dd/MM/yyyy";
+                        DateTime dueD = DateTime.ParseExact(dateString, format, System.Globalization.CultureInfo.InvariantCulture);
+                        dueD = dueD.AddDays(incrementDays);
+                        dateString = dueD.ToString(format);
+                    }
+                    catch (FormatException)
+                    {
+                        Console.WriteLine("Unable to parse '{0}'", dateString);
+                    }
                 }
-                if (_btnPay != null)
-                {
-                    _btnPay.RemoveFromSuperview();
-                }
-            }
-            else
-            {
-                _headerView.Frame = new CGRect(0, 0, View.Frame.Width, 509);
-                _currentBillDetailsView.Frame = new RectangleF(0, 170, (float)View.Frame.Width, 218);
-                _historyHeaderView.Frame = new RectangleF(0, 413, (float)View.Frame.Width, 48);
-                if (_historySelectionView != null)
-                {
-                    _historySelectionView.RemoveFromSuperview();
-                }
-                if (_btnPay != null)
-                {
-                    _btnPay.RemoveFromSuperview();
-                }
-                _headerView.AddSubview(_historySelectionView);
-                _currentBillDetailsView.AddSubview(_btnPay);
+                formattedDate = DateHelper.GetFormattedDate(dateString, "dd MMM yyyy");
+                prefix = isREAccount ? "By " : string.Empty;
             }
 
-            //if (!isOwnedAccount)
-            //{
-            //    ShowNonOwnerView();
-            //}
+            string dueDate = prefix + formattedDate;
+
+            _lblDueDateTitle.Text = dueDate;
         }
 
         void InitializeBillTableView()
@@ -369,7 +637,7 @@ namespace myTNB
             _headerView.AddSubview(accountDetailsView);
 
             _lblAccountName = new UILabel(new CGRect(18, 16, View.Frame.Width - 36, 18));
-            _lblAccountName.Font = myTNBFont.MuseoSans14();
+            _lblAccountName.Font = myTNBFont.MuseoSans14_500();
             _lblAccountName.TextAlignment = UITextAlignment.Left;
             _lblAccountName.TextColor = myTNBColor.TunaGrey();
             _lblAccountName.BackgroundColor = UIColor.Clear;
@@ -417,18 +685,18 @@ namespace myTNB
             _currentBillDetailsView.BackgroundColor = UIColor.White;
             _headerView.AddSubview(_currentBillDetailsView);
 
-            _viewCharges = new UIView(new CGRect(0, 0, View.Frame.Width, 113));
+            _viewCharges = new UIView(new CGRect(0, 0, View.Frame.Width, 113 - headerMarginY));
             _viewCharges.BackgroundColor = UIColor.White;
-            //_currentBillDetailsView.AddSubview(_viewCharges);
+            _currentBillDetailsView.AddSubview(_viewCharges);
 
-            #region _viewCharges
-            var lblCurrentChargesTitle = new UILabel(new CGRect(18, 16, 119, 16));
-            lblCurrentChargesTitle.Font = myTNBFont.MuseoSans12();
-            lblCurrentChargesTitle.TextAlignment = UITextAlignment.Left;
-            lblCurrentChargesTitle.Text = "Current Charges";
-            lblCurrentChargesTitle.TextColor = myTNBColor.TunaGrey();
-            lblCurrentChargesTitle.BackgroundColor = UIColor.Clear;
-            _viewCharges.AddSubview(lblCurrentChargesTitle);
+#region _viewCharges
+            _lblCurrentChargesTitle = new UILabel(new CGRect(18, 16, 119, 16));
+            _lblCurrentChargesTitle.Font = myTNBFont.MuseoSans12();
+            _lblCurrentChargesTitle.TextAlignment = UITextAlignment.Left;
+            _lblCurrentChargesTitle.Text = "Current Charges";
+            _lblCurrentChargesTitle.TextColor = myTNBColor.TunaGrey();
+            _lblCurrentChargesTitle.BackgroundColor = UIColor.Clear;
+            _viewCharges.AddSubview(_lblCurrentChargesTitle);
 
             _lblCurrentChargesValue = new UILabel(new CGRect(137, 16, View.Frame.Width - 155, 16));
             _lblCurrentChargesValue.Font = myTNBFont.MuseoSans12();
@@ -437,13 +705,13 @@ namespace myTNB
             _lblCurrentChargesValue.BackgroundColor = UIColor.Clear;
             _viewCharges.AddSubview(_lblCurrentChargesValue);
 
-            var lblOutstandingChargesTitle = new UILabel(new CGRect(18, 48, 119, 16));
-            lblOutstandingChargesTitle.Font = myTNBFont.MuseoSans12();
-            lblOutstandingChargesTitle.TextAlignment = UITextAlignment.Left;
-            lblOutstandingChargesTitle.Text = "Oustanding Charges";
-            lblOutstandingChargesTitle.TextColor = myTNBColor.TunaGrey();
-            lblOutstandingChargesTitle.BackgroundColor = UIColor.Clear;
-            _viewCharges.AddSubview(lblOutstandingChargesTitle);
+            _lblOutstandingChargesTitle = new UILabel(new CGRect(18, 48, 119, 16));
+            _lblOutstandingChargesTitle.Font = myTNBFont.MuseoSans12();
+            _lblOutstandingChargesTitle.TextAlignment = UITextAlignment.Left;
+            _lblOutstandingChargesTitle.Text = "Oustanding Charges";
+            _lblOutstandingChargesTitle.TextColor = myTNBColor.TunaGrey();
+            _lblOutstandingChargesTitle.BackgroundColor = UIColor.Clear;
+            _viewCharges.AddSubview(_lblOutstandingChargesTitle);
 
             _lblOutstandingChargesValue = new UILabel(new CGRect(137, 48, View.Frame.Width - 155, 16));
             _lblOutstandingChargesValue.Font = myTNBFont.MuseoSans12();
@@ -452,41 +720,47 @@ namespace myTNB
             _lblOutstandingChargesValue.BackgroundColor = UIColor.Clear;
             _viewCharges.AddSubview(_lblOutstandingChargesValue);
 
-            var lblTotalPayableTitle = new UILabel(new CGRect(18, 80, 119, 16));
-            lblTotalPayableTitle.Font = myTNBFont.MuseoSans12();
-            lblTotalPayableTitle.TextAlignment = UITextAlignment.Left;
-            lblTotalPayableTitle.Text = "Total Payable";
-            lblTotalPayableTitle.TextColor = myTNBColor.TunaGrey();
-            lblTotalPayableTitle.BackgroundColor = UIColor.Clear;
-            _viewCharges.AddSubview(lblTotalPayableTitle);
+            _lblTotalPayableTitle = new UILabel(new CGRect(18, _lblOutstandingChargesTitle.Frame.GetMaxY() + headerMarginY, 119, 16));
+            _lblTotalPayableTitle.Font = myTNBFont.MuseoSans12();
+            _lblTotalPayableTitle.TextAlignment = UITextAlignment.Left;
+            _lblTotalPayableTitle.Text = "Total Payable";
+            _lblTotalPayableTitle.TextColor = myTNBColor.TunaGrey();
+            _lblTotalPayableTitle.BackgroundColor = UIColor.Clear;
+            _viewCharges.AddSubview(_lblTotalPayableTitle);
 
-            _lblTotalPayableValue = new UILabel(new CGRect(137, 80, View.Frame.Width - 155, 16));
+            _lblTotalPayableValue = new UILabel(new CGRect(137, _lblOutstandingChargesTitle.Frame.GetMaxY() + headerMarginY, View.Frame.Width - 155, 16));
             _lblTotalPayableValue.Font = myTNBFont.MuseoSans12();
             _lblTotalPayableValue.TextAlignment = UITextAlignment.Right;
-            _lblTotalPayableValue.Text = "0.70";
+            //_lblTotalPayableValue.Text = "0.00";
             _lblTotalPayableValue.TextColor = myTNBColor.TunaGrey();
             _lblTotalPayableValue.BackgroundColor = UIColor.Clear;
             _viewCharges.AddSubview(_lblTotalPayableValue);
 
-            var lineView = new UIView(new RectangleF(18, 112, (float)View.Frame.Width - 36, 1));
-            lineView.BackgroundColor = UIColor.LightGray;
-            _viewCharges.AddSubview(lineView);
-            #endregion
+            _lineView = new UIView(new CGRect(18, _lblTotalPayableValue.Frame.GetMaxY() + headerMarginY, (float)View.Frame.Width - 36, 1));
+            _lineView.BackgroundColor = UIColor.LightGray;
+            _viewCharges.AddSubview(_lineView);
+#endregion
 
-            _lblTotalDueAmountTitle = new UILabel(new CGRect(18, 136, 160, 18));
-            _lblTotalDueAmountTitle.Font = myTNBFont.MuseoSans14();
+            _lblTotalDueAmountTitle = new UILabel(new CGRect(18, _viewCharges.Frame.GetMaxY() + headerMarginY + 3, 160, 18));
+            _lblTotalDueAmountTitle.Font = myTNBFont.MuseoSans14_500();
             _lblTotalDueAmountTitle.TextAlignment = UITextAlignment.Left;
             _lblTotalDueAmountTitle.Text = "Total Amount Due";
             _lblTotalDueAmountTitle.TextColor = myTNBColor.TunaGrey();
             _lblTotalDueAmountTitle.BackgroundColor = UIColor.Clear;
             _currentBillDetailsView.AddSubview(_lblTotalDueAmountTitle);
 
-            _viewAmount = new UIView(new CGRect(View.Frame.Width - 120, 130, 0, 24));             var lblCurrency = new UILabel(new CGRect(0, 6, 24, 18));             lblCurrency.Font = myTNBFont.MuseoSans14();             lblCurrency.TextColor = myTNBColor.TunaGrey();             lblCurrency.TextAlignment = UITextAlignment.Right;             lblCurrency.Text = CURRENCY;
+            _lblDueDateTitle = new UILabel(new CGRect(18, _lblTotalDueAmountTitle.Frame.GetMaxY() + 16, _currentBillDetailsView.Frame.Width - 20, 14));
+            _lblDueDateTitle.Font = myTNBFont.MuseoSans11_300();
+            _lblDueDateTitle.TextColor = myTNBColor.SilverChalice();
+            _lblDueDateTitle.TextAlignment = UITextAlignment.Left;
+            _currentBillDetailsView.AddSubview(_lblDueDateTitle);
+
+            _viewAmount = new UIView(new CGRect(View.Frame.Width - 120, _viewCharges.Frame.GetMaxY() + headerMarginY, 0, 24));             var lblCurrency = new UILabel(new CGRect(0, 6, 24, 18));             lblCurrency.Font = myTNBFont.MuseoSans14();             lblCurrency.TextColor = myTNBColor.TunaGrey();             lblCurrency.TextAlignment = UITextAlignment.Right;             lblCurrency.Text = CURRENCY;
             _viewAmount.BackgroundColor = UIColor.Clear;             _viewAmount.AddSubview(lblCurrency);              _lblAmount = new UILabel(new CGRect(24, 0, 75, 24));             _lblAmount.Font = myTNBFont.MuseoSans24();             _lblAmount.TextColor = myTNBColor.TunaGrey();             _lblAmount.TextAlignment = UITextAlignment.Right;             //_lblAmount.Text = "0.00";
             _lblAmount.BackgroundColor = UIColor.Clear;             _viewAmount.AddSubview(_lblAmount);              _currentBillDetailsView.AddSubview(_viewAmount);
 
             _btnPay = new UIButton(UIButtonType.Custom);
-            _btnPay.Frame = new CGRect(18, 170, View.Frame.Width - 36, 48);
+            _btnPay.Frame = new CGRect(18, 180, View.Frame.Width - 36, 48);
             _btnPay.SetTitle("Pay", UIControlState.Normal);
             _btnPay.SetTitleColor(UIColor.White, UIControlState.Normal);
             _btnPay.TitleLabel.Font = myTNBFont.MuseoSans16();
@@ -503,7 +777,7 @@ namespace myTNB
             _lblHistoryHeader = new UILabel(new CGRect(18, 24, View.Frame.Width - 36, 18));
             _lblHistoryHeader.Font = myTNBFont.MuseoSans16();
             _lblHistoryHeader.TextAlignment = UITextAlignment.Left;
-            _lblHistoryHeader.Text = isREAccount ? "Payment Advice History" : "Bill / Payment History";
+            _lblHistoryHeader.Text = isREAccount ? "REPaymentSectionHeader".Translate() : "Bill / Payment History";
             _lblHistoryHeader.TextColor = myTNBColor.PowerBlue();
             _lblHistoryHeader.BackgroundColor = UIColor.Clear;
             _historyHeaderView.AddSubview(_lblHistoryHeader);
@@ -533,6 +807,8 @@ namespace myTNB
             MakeTopCornerRadius(_btnPayment);
             _btnPayment.Tag = 1;
             _historySelectionView.AddSubview(_btnPayment);
+
+            _headerView.AddSubview(_historySelectionView);
 
             //BillTableView Header
             /*var footerView = new UIView(new RectangleF(0, 0, (float)View.Frame.Width, 62));
@@ -567,21 +843,33 @@ namespace myTNB
             _txtViewAddress.Hidden = true;
             float adjY = ((float)_txtViewAddress.Frame.Height + 16.0f) * -1.0f;
 
-            AdjustFrameY(_currentBillHeaderView, adjY);
-            AdjustFrameY(_currentBillDetailsView, adjY);
-            AdjustFrameY(_historyHeaderView, adjY);
-            AdjustFrameY(_historySelectionView, adjY);
+            AdjustFrameAddY(_currentBillHeaderView, adjY);
+            AdjustFrameAddY(_currentBillDetailsView, adjY);
+            AdjustFrameAddY(_historyHeaderView, adjY);
+            AdjustFrameAddY(_historySelectionView, adjY);
 
-            var temp = _headerView.Frame;
-            temp.Height += adjY;
-            _headerView.Frame = temp;
+            AdjustFrameHeight(_headerView, adjY);
             billTableView.TableHeaderView = _headerView;
         }
 
-        private void AdjustFrameY(UIView adjView, float adjY)
+        private void AdjustFrameAddY(UIView adjView, nfloat adjY)
         {
             var temp = adjView.Frame;
             temp.Y += adjY;
+            adjView.Frame = temp;
+        }
+
+        private void AdjustFrameSetY(UIView adjView, nfloat adjY)
+        {
+            var temp = adjView.Frame;
+            temp.Y = adjY;
+            adjView.Frame = temp;
+        }
+
+        private void AdjustFrameHeight(UIView adjView, nfloat adjY)
+        {
+            var temp = adjView.Frame;
+            temp.Height += adjY;
             adjView.Frame = temp;
         }
 
@@ -649,9 +937,7 @@ namespace myTNB
                         else
                         {
                             Console.WriteLine("No Network");
-                            var alert = UIAlertController.Create("No Data Connection"
-                                                                 , "Please check your data connection and try again."
-                                                                 , UIAlertControllerStyle.Alert);
+                            var alert = UIAlertController.Create("ErrNoNetworkTitle".Translate(), "ErrNoNetworkMsg".Translate(), UIAlertControllerStyle.Alert);
                             alert.AddAction(UIAlertAction.Create("Ok", UIAlertActionStyle.Cancel, null));
                             PresentViewController(alert, animated: true, completionHandler: null);
                         }
@@ -670,31 +956,14 @@ namespace myTNB
 
             if (_paymentNeedsUpdate && !isBillSelected)
             {
-                NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
-                {
-                    InvokeOnMainThread(() =>
-                    {
-                        if (NetworkUtility.isReachable)
-                        {
-                            ActivityIndicator.Show();
-                            GetPaymentHistory().ContinueWith(task =>
-                            {
-                                InvokeOnMainThread(() =>
-                                {
-                                    _paymentNeedsUpdate = false;
-                                    InitializeBillTableView();
-                                    ActivityIndicator.Hide();
-                                });
-                            });
-                        }
-                    });
-                });
+                LoadPaymentHistory();
             }
             else
             {
                 InitializeBillTableView();
             }
         }
+
 
         internal void ViewReceipt(string merchantTransactionID)
         {
@@ -708,13 +977,14 @@ namespace myTNB
                         ReceiptViewController viewController =
                             storyBoard.InstantiateViewController("ReceiptViewController") as ReceiptViewController;
                         viewController.MerchatTransactionID = merchantTransactionID;//"MYTN201801041414";//
+                        viewController.OnDone = OnDone;
                         var navController = new UINavigationController(viewController);
                         PresentViewController(navController, true, null);
                     }
                     else
                     {
                         Console.WriteLine("No Network");
-                        var alert = UIAlertController.Create("No Data Connection", "Please check your data connection and try again.", UIAlertControllerStyle.Alert);
+                        var alert = UIAlertController.Create("ErrNoNetworkTitle".Translate(), "ErrNoNetworkMsg".Translate(), UIAlertControllerStyle.Alert);
                         alert.AddAction(UIAlertAction.Create("Ok", UIAlertActionStyle.Cancel, null));
                         PresentViewController(alert, animated: true, completionHandler: null);
                     }
@@ -722,8 +992,102 @@ namespace myTNB
             });
         }
 
+        /// <summary>
+        /// Loads the payment history.
+        /// </summary>
+        private void LoadPaymentHistory()
+        {
+            var cachedDetails = DataManager.DataManager.SharedInstance.GetCachedPaymentHistory(DataManager.DataManager.SharedInstance.SelectedAccount.accNum);
+
+            if (cachedDetails != null)
+            {
+                _paymentHistory = new PaymentHistoryResponseModel();
+                _paymentHistory.d = cachedDetails;
+                DisplayPaymentHistory();
+            }
+            else
+            {
+                NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
+                {
+                    InvokeOnMainThread(() =>
+                    {
+                        if (NetworkUtility.isReachable)
+                        {
+                            ActivityIndicator.Show();
+                            GetPaymentHistory().ContinueWith(task =>
+                            {
+                                if(_paymentHistory?.d?.didSucceed == true && _paymentHistory?.d?.data?.Count > 0)
+                                {
+                                    DataManager.DataManager.SharedInstance.SaveToPaymentHistory(_paymentHistory.d, DataManager.DataManager.SharedInstance.SelectedAccount.accNum);
+                                }
+                                InvokeOnMainThread(DisplayPaymentHistory);
+                            });
+                        }
+                    });
+                });
+            }
+
+        }
+
+        /// <summary>
+        /// Displays the payment history.
+        /// </summary>
+        private void DisplayPaymentHistory()
+        {
+            _paymentNeedsUpdate = false;
+            InitializeBillTableView();
+            ActivityIndicator.Hide();
+        }
+
+        /// <summary>
+        /// Loads the billing account details.
+        /// </summary>
+        private void LoadBillingAccountDetails()
+        {
+            if (isREAccount)
+            {
+                ExecuteGetBillAccountDetailsCall();
+            }
+            else
+            {
+                var cachedDetails = DataManager.DataManager.SharedInstance.GetCachedBillingAccountDetails(DataManager.DataManager.SharedInstance.SelectedAccount.accNum);
+
+                if (cachedDetails != null)
+                {
+                    DataManager.DataManager.SharedInstance.BillingAccountDetails = cachedDetails;
+                    LoadBillHistory();
+                }
+                else
+                {
+                    ExecuteGetBillAccountDetailsCall();
+                }
+            }
+        }
+
+        /// <summary>
+        /// Loads the bill history.
+        /// </summary>
+        private void LoadBillHistory()
+        {
+            var cachedDetails = DataManager.DataManager.SharedInstance.GetCachedBillHistory(DataManager.DataManager.SharedInstance.SelectedAccount.accNum);
+
+            if (cachedDetails != null)
+            {
+                _billingHistory = new BillHistoryResponseModel();
+                _billingHistory.d = cachedDetails;
+                DisplayBillHistory();
+            }
+            else
+            {
+                ExecuteGetBillHistoryCall();
+            }
+
+        }
+
+
         void ExecuteGetBillAccountDetailsCall()
         {
+            ActivityIndicator.Show();
             GetBillingAccountDetails().ContinueWith(task =>
             {
                 InvokeOnMainThread(() =>
@@ -731,8 +1095,13 @@ namespace myTNB
                     if (_billingAccountDetailsList != null && _billingAccountDetailsList.d != null
                         && _billingAccountDetailsList.d.data != null)
                     {
-                        DataManager.DataManager.SharedInstance.BillingAccountDetails = _billingAccountDetailsList.d.data;
-                        ExecuteGetBillHistoryCall();
+                        var billDetails = _billingAccountDetailsList.d.data;
+                        DataManager.DataManager.SharedInstance.BillingAccountDetails = billDetails;
+                        if (!isREAccount)
+                        {
+                            DataManager.DataManager.SharedInstance.SaveToBillingAccounts(billDetails, billDetails.accNum);
+                        }
+                        LoadBillHistory();
                     }
                     else
                     {

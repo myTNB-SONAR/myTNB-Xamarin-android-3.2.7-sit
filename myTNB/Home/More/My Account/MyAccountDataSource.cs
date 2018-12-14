@@ -5,6 +5,7 @@ using CoreGraphics;
 using Foundation;
 using myTNB.Model;
 using UIKit;
+using myTNB.Extensions;
 
 namespace myTNB.Home.More.MyAccount
 {
@@ -16,8 +17,8 @@ namespace myTNB.Home.More.MyAccount
         {
             _controller = controller;
             if (DataManager.DataManager.SharedInstance.RegisteredCards != null
-               && DataManager.DataManager.SharedInstance.RegisteredCards.d != null
-               && DataManager.DataManager.SharedInstance.RegisteredCards.d.isError.ToLower().Equals("false"))
+                && DataManager.DataManager.SharedInstance.RegisteredCards.d != null
+                && DataManager.DataManager.SharedInstance.RegisteredCards?.d?.didSucceed == true)
             {
                 _registeredCards = DataManager.DataManager.SharedInstance.RegisteredCards;
             }
@@ -57,7 +58,7 @@ namespace myTNB.Home.More.MyAccount
             }
             else if (section == 1)
             {
-                return DataManager.DataManager.SharedInstance.AccountRecordsList.d != null
+                return DataManager.DataManager.SharedInstance.AccountRecordsList?.d != null
                                   ? DataManager.DataManager.SharedInstance.AccountRecordsList.d.Count
                                       : 0;
             }
@@ -87,30 +88,37 @@ namespace myTNB.Home.More.MyAccount
             {
                 var cell = tableView.DequeueReusableCell("AccountDetailsViewCell", indexPath) as AccountDetailsViewCell;
                 cell.Frame = new CGRect(cell.Frame.X, cell.Frame.Y, tableView.Frame.Width, 64);
-                cell.lblTitle.Text = DetailContent[indexPath.Row];
+
+                var detailCount = DetailContent?.Count ?? 0;
+                cell.lblTitle.Text = indexPath.Row < detailCount ? DetailContent[indexPath.Row] : string.Empty;
                 cell.viewCTA.Hidden = true;
                 cell.lblDetail.TextColor = myTNBColor.SilverChalice();
+
+                var userInfo = DataManager.DataManager.SharedInstance.UserEntity?.Count > 0 
+                                          ? DataManager.DataManager.SharedInstance.UserEntity[0]
+                                          : new SQLite.SQLiteDataManager.UserEntity();
                 if (indexPath.Row == 0)
                 {
-                    cell.lblDetail.Text = DataManager.DataManager.SharedInstance.UserEntity[0].displayName;
+                    cell.lblDetail.Text = userInfo?.displayName;
                 }
                 else if (indexPath.Row == 1)
                 {
-                    string icNo = DataManager.DataManager.SharedInstance.UserEntity[0].identificationNo;
+                    string icNo = userInfo?.identificationNo;
                     if (!string.IsNullOrEmpty(icNo) && icNo.Length > 4)
                     {
-                        icNo = icNo.Substring(icNo.Length - 4).PadLeft(icNo.Length, '•');
+                        string lastDigit = icNo.Substring(icNo.Length - 4);
+                        icNo = "ICNoMask".Translate() + lastDigit;
                     }
                     string maskedICNo = icNo;
                     cell.lblDetail.Text = maskedICNo;
                 }
                 else if (indexPath.Row == 2)
                 {
-                    cell.lblDetail.Text = DataManager.DataManager.SharedInstance.UserEntity[0].email;
+                    cell.lblDetail.Text = userInfo?.email;
                 }
                 else if (indexPath.Row == 3)
                 {
-                    cell.lblDetail.Text = DataManager.DataManager.SharedInstance.UserEntity[0].mobileNo;
+                    cell.lblDetail.Text = userInfo?.mobileNo;
                     cell.lblDetail.TextColor = myTNBColor.TunaGrey();
                     cell.lblCTA.Text = "Update";
                     cell.viewCTA.Hidden = false;
@@ -129,14 +137,15 @@ namespace myTNB.Home.More.MyAccount
                 }
                 else if (indexPath.Row == 5)
                 {
-                    cell.lblDetail.Text = _registeredCards.d.data.Count.ToString();
+                    var cardCount = _registeredCards?.d?.data?.Count ?? 0;
+                    cell.lblDetail.Text = cardCount.ToString();
                     cell.lblDetail.TextColor = myTNBColor.TunaGrey();
                     cell.lblCTA.Text = "Manage";
                     UITapGestureRecognizer manageCards = new UITapGestureRecognizer(() =>
                     {
                         _controller.ManageRegisteredCards();
                     });
-                    if (_registeredCards.d.data.Count > 0)
+                    if (cardCount > 0)
                     {
                         cell.viewCTA.AddGestureRecognizer(manageCards);
                     }
@@ -144,11 +153,11 @@ namespace myTNB.Home.More.MyAccount
                     {
                         cell.viewCTA.AddGestureRecognizer(new UITapGestureRecognizer(() => { }));
                     }
-                    cell.lblCTA.TextColor = _registeredCards.d.data.Count > 0
+                    cell.lblCTA.TextColor = cardCount > 0
                         ? myTNBColor.PowerBlue() : myTNBColor.SilverChalice();
                     cell.viewCTA.Hidden = false;
                 }
-                cell.viewLine.Hidden = !(indexPath.Row < DetailContent.Count - 1);
+                cell.viewLine.Hidden = !(indexPath.Row < detailCount - 1);
                 cell.SelectionStyle = UITableViewCellSelectionStyle.None;
                 return cell;
             }
@@ -204,7 +213,7 @@ namespace myTNB.Home.More.MyAccount
         {
             if (DataManager.DataManager.SharedInstance.AccountRecordsList != null
                && DataManager.DataManager.SharedInstance.AccountRecordsList.d != null
-               && DataManager.DataManager.SharedInstance.AccountRecordsList.d.Count - 1 >= index)
+               && index < DataManager.DataManager.SharedInstance.AccountRecordsList?.d?.Count )
             {
                 return DataManager.DataManager.SharedInstance.AccountRecordsList.d[index];
             }

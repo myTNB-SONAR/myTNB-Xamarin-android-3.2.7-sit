@@ -16,6 +16,8 @@ namespace myTNB.SQLite.SQLiteDataManager
 
         public string DateUpdated { get; set; }
 
+        public bool IsRefreshNeeded { get; set; }
+
         #endregion
 
         /// <summary>
@@ -24,7 +26,7 @@ namespace myTNB.SQLite.SQLiteDataManager
         public static void CreateTable()
         {
             SQLiteHelper._db.CreateTable<ChartEntity>();
-            List<SQLiteConnection.ColumnInfo> info = SQLiteHelper._db.GetTableInfo("ChartEntity");
+            List<SQLiteConnection.ColumnInfo> info = SQLiteHelper._db.GetTableInfo("UsageHistory");
         }
         /// <summary>
         /// Inserts the item.
@@ -81,6 +83,22 @@ namespace myTNB.SQLite.SQLiteDataManager
             catch (Exception e)
             {
                 Console.WriteLine("Error in Reading from Table : {0}", e.Message);
+            }
+        }
+
+        /// <summary>
+        /// Updates the item.
+        /// </summary>
+        /// <param name="item">Item.</param>
+        public static void UpdateItem(ChartEntity item)
+        {
+            try
+            {
+                int newRecord = SQLiteHelper._db.Update(item);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Error in Update Item in Table : {0}", e.Message);
             }
         }
 

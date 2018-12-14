@@ -5,6 +5,7 @@ using CoreAnimation;
 using CoreGraphics;
 using myTNB.Home.Components;
 using UIKit;
+using myTNB.Extensions;
 
 namespace myTNB.Dashboard.DashboardComponents
 {
@@ -22,7 +23,8 @@ namespace myTNB.Dashboard.DashboardComponents
         UIImageView _mask;
         CGRect origViewFrame;
         int paymentViewHiddenState = -1;
-        float height = 136;
+        float height = 136f;
+        float adjustment;
 
         const string CURRENCY = "RM";
 
@@ -35,6 +37,7 @@ namespace myTNB.Dashboard.DashboardComponents
 
         internal void CreateComponent(double yLocation)
         {
+
             _viewPaymentContainer = new UIView(new CGRect(0, yLocation, _parentView.Frame.Width, height));
             _viewPaymentContainer.BackgroundColor = UIColor.White;
             _viewPaymentContainer.Alpha = 1f;
@@ -58,29 +61,29 @@ namespace myTNB.Dashboard.DashboardComponents
 
         internal void CreatePaymentLabels()
         {
-            _lblPaymentTitle = new UILabel(new CGRect(17, 16, _viewPaymentContainer.Frame.Width - 20, 18));
-            _lblPaymentTitle.Font = myTNBFont.MuseoSans14();
+            _lblPaymentTitle = new UILabel(new CGRect(17, 16 + adjustment, _viewPaymentContainer.Frame.Width - 20, 18));
+            _lblPaymentTitle.Font = myTNBFont.MuseoSans16_500();
             _lblPaymentTitle.TextColor = myTNBColor.TunaGrey();
             _lblPaymentTitle.TextAlignment = UITextAlignment.Left;
-            _lblPaymentTitle.Text = "Total Amount Due";
+            _lblPaymentTitle.Text = "AmountNormalAccount".Translate();
             _viewPaymentContainer.AddSubview(_lblPaymentTitle);
 
-            _lblDate = new UILabel(new CGRect(17, 34, _viewPaymentContainer.Frame.Width - 20, 14));
-            _lblDate.Font = myTNBFont.MuseoSans9();
+            _lblDate = new UILabel(new CGRect(17, _lblPaymentTitle.Frame.GetMaxY() + 4, _viewPaymentContainer.Frame.Width - 20, 14));
+            _lblDate.Font = myTNBFont.MuseoSans12_300();
             _lblDate.TextColor = myTNBColor.SilverChalice();
             _lblDate.TextAlignment = UITextAlignment.Left;
             _viewPaymentContainer.AddSubview(_lblDate);
 
-            _viewAmount = new UIView(new CGRect(0, 20, 0, 24));
+            _viewAmount = new UIView(new CGRect(0, 23 + adjustment, 0, 24));
             _lblCurrency = new UILabel(new CGRect(0, 6, 24, 18));
-            _lblCurrency.Font = myTNBFont.MuseoSans14();
+            _lblCurrency.Font = myTNBFont.MuseoSans14_500();
             _lblCurrency.TextColor = myTNBColor.TunaGrey();
             _lblCurrency.TextAlignment = UITextAlignment.Right;
             _lblCurrency.Text = CURRENCY;
             _viewAmount.AddSubview(_lblCurrency);
 
             _lblAmount = new UILabel(new CGRect(24, 0, 75, 24));
-            _lblAmount.Font = myTNBFont.MuseoSans24();
+            _lblAmount.Font = myTNBFont.MuseoSans24_300();
             _lblAmount.TextColor = myTNBColor.TunaGrey();
             _lblAmount.TextAlignment = UITextAlignment.Right;
             _lblAmount.Text = "0.00";
@@ -94,23 +97,23 @@ namespace myTNB.Dashboard.DashboardComponents
         internal void CreatePaymentButtons()
         {
             _btnViewBill = new UIButton(UIButtonType.Custom);
-            _btnViewBill.Frame = new CGRect(17, 64, (_viewPaymentContainer.Frame.Width / 2) - 19, 48);
+            _btnViewBill.Frame = new CGRect(17, _lblDate.Frame.GetMaxY() + 12, (_viewPaymentContainer.Frame.Width / 2) - 19, 48);
             _btnViewBill.Layer.CornerRadius = 4;
             _btnViewBill.Layer.BorderColor = myTNBColor.FreshGreen().CGColor;
             _btnViewBill.Layer.BorderWidth = 1;
-            _btnViewBill.SetTitle("View Bill", UIControlState.Normal);
-            _btnViewBill.Font = myTNBFont.MuseoSans16();
+            _btnViewBill.SetTitle("Current Bill", UIControlState.Normal);
+            _btnViewBill.Font = myTNBFont.MuseoSans16_500();
             _btnViewBill.SetTitleColor(myTNBColor.FreshGreen(), UIControlState.Normal);
             _viewPaymentContainer.AddSubview(_btnViewBill);
 
             _btnPay = new UIButton(UIButtonType.Custom);
-            _btnPay.Frame = new CGRect(_btnViewBill.Frame.Width + 21, 64, (_viewPaymentContainer.Frame.Width / 2) - 19, 48);
+            _btnPay.Frame = new CGRect(_btnViewBill.Frame.Width + 21, _lblDate.Frame.GetMaxY() + 12, (_viewPaymentContainer.Frame.Width / 2) - 19, 48);
             _btnPay.Layer.CornerRadius = 4;
             _btnPay.Layer.BackgroundColor = myTNBColor.FreshGreen().CGColor;
             _btnPay.Layer.BorderColor = myTNBColor.FreshGreen().CGColor;
             _btnPay.Layer.BorderWidth = 1;
             _btnPay.SetTitle("Pay", UIControlState.Normal);
-            _btnPay.Font = myTNBFont.MuseoSans16();
+            _btnPay.Font = myTNBFont.MuseoSans16_500();
             _viewPaymentContainer.AddSubview(_btnPay);
         }
 
@@ -124,16 +127,20 @@ namespace myTNB.Dashboard.DashboardComponents
                 x = 17;
                 width = _viewPaymentContainer.Frame.Width - 34;
             }
-            _btnPay.Frame = new CGRect(x, 58, width, 48);
+            _btnPay.Frame = new CGRect(x, _lblDate.Frame.GetMaxY() + 12, width, 48);
         }
 
         public void SetREAccountButton()
         {
             _btnPay.Hidden = true;
             _btnViewBill.SetTitle("View Payment Advice", UIControlState.Normal);
-            _btnViewBill.Frame = new CGRect(18, 64, _viewPaymentContainer.Frame.Width - 36, 48);
+            _btnViewBill.Frame = new CGRect(18, _lblDate.Frame.GetMaxY() + 12, _viewPaymentContainer.Frame.Width - 36, 48);
         }
 
+        /// <summary>
+        /// Sets the pay button enabled property.
+        /// </summary>
+        /// <param name="isEnable">If set to <c>true</c> is enable.</param>
         public void SetPayButtonEnable(bool isEnable)
         {
             _btnPay.Enabled = isEnable;
@@ -141,8 +148,31 @@ namespace myTNB.Dashboard.DashboardComponents
             _btnPay.Layer.BorderColor = isEnable ? myTNBColor.FreshGreen().CGColor : myTNBColor.SilverChalice().CGColor;
         }
 
+        /// <summary>
+        /// Sets the bill button enabled property.
+        /// </summary>
+        /// <param name="isEnable">If set to <c>true</c> is enable.</param>
+        public void SetBillButtonEnable(bool isEnable)
+        {
+            _btnViewBill.Enabled = isEnable;
+            _btnViewBill.SetTitleColor(isEnable ? myTNBColor.FreshGreen() : myTNBColor.SilverChalice(), UIControlState.Normal);
+            _btnViewBill.Layer.BorderColor = isEnable ? myTNBColor.FreshGreen().CGColor : myTNBColor.SilverChalice().CGColor;
+        }
+
         public UIView GetUI()
         {
+            adjustment = 0;
+            if (DeviceHelper.IsIphoneXUpResolution())
+            {
+                adjustment = 20f;
+            }
+            else if (DeviceHelper.IsIphone6UpResolution())
+            {
+                adjustment = 10f;
+            }
+
+            height = height + (adjustment * 2);
+
             var yLocation = _parentView.Bounds.Height - height;
             return GetUI(yLocation);
         }
@@ -181,14 +211,26 @@ namespace myTNB.Dashboard.DashboardComponents
             }
         }
 
-        public void SetAmount(string amount)
+        /// <summary>
+        /// Sets the amount.
+        /// </summary>
+        /// <param name="amount">Amount.</param>
+        /// <param name="isREAccount">If set to <c>true</c> is REA ccount.</param>
+        public void SetAmount(string amount, bool isREAccount = false)
         {
             if (!string.IsNullOrEmpty(amount))
             {
-                double value = Double.Parse(amount, CultureInfo.InvariantCulture);
-                string valueForDisplay = value.ToString("N2", CultureInfo.InvariantCulture);
-                _lblAmount.Text = valueForDisplay;
-                AdjustFrames();
+                if (double.TryParse(amount, out double value))
+                {
+                    if (isREAccount)
+                    {
+                        value = ChartHelper.UpdateValueForRE(value);
+                    }
+
+                    string valueForDisplay = value.ToString("N2", CultureInfo.InvariantCulture);
+                    _lblAmount.Text = valueForDisplay;
+                    AdjustFrames();
+                }
             }
         }
 
@@ -230,10 +272,12 @@ namespace myTNB.Dashboard.DashboardComponents
                         temp.Y = _parentView.Frame.Height;
 
                         _viewPaymentContainer.Frame = temp;
+                        SetMaskHidden(true);
                     }
                     else
                     {
                         _viewPaymentContainer.Frame = origViewFrame;
+                        SetMaskHidden(false);
                     }
                         
                 }
@@ -249,7 +293,7 @@ namespace myTNB.Dashboard.DashboardComponents
             CGSize newSize = LabelHelper.GetLabelSize(_lblAmount, _viewPaymentContainer.Frame.Width / 2, _lblAmount.Frame.Height);
             double newWidth = Math.Ceiling(newSize.Width);
             _lblAmount.Frame = new CGRect(24, 0, newWidth, _lblAmount.Frame.Height);
-            _viewAmount.Frame = new CGRect(_viewPaymentContainer.Frame.Width - (newWidth + 24 + 17), 23, newWidth + 24, 24);
+            _viewAmount.Frame = new CGRect(_viewPaymentContainer.Frame.Width - (newWidth + 24 + 17), 23 + adjustment, newWidth + 24, 24);
         }
 
         /// <summary>

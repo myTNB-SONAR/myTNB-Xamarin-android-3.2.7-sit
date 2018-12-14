@@ -1,6 +1,9 @@
 ﻿using Carousels;
+using myTNB.Extensions;
 using myTNB.Home.Components;
 using UIKit;
+using CoreGraphics;
+using myTNB.Enums;
 
 namespace myTNB.Dashboard.DashboardComponents
 {
@@ -23,9 +26,11 @@ namespace myTNB.Dashboard.DashboardComponents
         public NoAccountComponent _noAccountComponent;
         public NoDataConnectionComponent _noDataConnectionComponent;
         public GetAccessComponent _getAccessComponent;
+        public SystemDownComponent _bcrmDownComponent;
         EstimatedReadingComponent _estimatedReadingComponent;
         public SmartMeterComponent _smartMeterComponent;
         public ChartCompanionComponent _chartCompanionComponent;
+        public ActivityIndicatorComponent _componentActivity;
         public UIView _viewChartCompanion;
         public UIView _viewSmartMeter;
         public UIView _viewChart;
@@ -36,6 +41,7 @@ namespace myTNB.Dashboard.DashboardComponents
         public UIScrollView _dashboardScrollView;
         public iCarousel _chartCarousel;
         public ChartDataSource _chartDataSource;
+        public DashboardModeEnum _dashboardMode;
 
         internal void RemoveAllSubviews()
         {
@@ -49,16 +55,25 @@ namespace myTNB.Dashboard.DashboardComponents
             }
         }
 
-        public void ConstructInitialView()
+        public void ConstructInitialView(bool isNormalMeter, bool isFromForeground)
         {
+            _dashboardMode = DashboardModeEnum.Default;
+
             RemoveAllSubviews();
 
+            bool isFullScreen = true;// !(isNormalMeter && DeviceHelper.IsIphoneXUpResolution());
+            float percentage = isFullScreen ? 1.0f : 0.68f;
             _billAndPaymentComponent = new BillAndPaymentComponent(_parentView);
-            _billAndPaymentView = _billAndPaymentComponent.GetUI();
-            float gradientHeight = (float)(_parentView.Frame.Height - _billAndPaymentView.Frame.Height);
-            _gradientViewComponent = new GradientViewComponent(_parentView, true, gradientHeight);//(_parentView, 0.68f);
-
+            _gradientViewComponent = new GradientViewComponent(_parentView, percentage);
             _gradientView = _gradientViewComponent.GetUI();
+            _billAndPaymentView = !isFullScreen ? _billAndPaymentComponent.GetUI(_gradientView.Frame.Height)
+                                                : _billAndPaymentComponent.GetUI();
+            //_billAndPaymentView = _billAndPaymentComponent.GetUI();
+
+            //float gradientHeight = (float)(_parentView.Frame.Height - _billAndPaymentView.Frame.Height);
+            //_gradientViewComponent = new GradientViewComponent(_parentView, true, gradientHeight);//(_parentView, 0.68f);
+
+
             //Add Title Bar
             _titleBarComponent = new TitleBarComponent(_gradientView);
             _gradientView.AddSubview(_titleBarComponent.GetUI());
@@ -73,8 +88,12 @@ namespace myTNB.Dashboard.DashboardComponents
 
             _parentView.AddSubview(_billAndPaymentView);
 
-            ActivityIndicatorComponent gradientActivity = new ActivityIndicatorComponent(_gradientView);
-            gradientActivity.Show();
+            _componentActivity = new ActivityIndicatorComponent(_gradientView);
+            //if (!isFromForeground)
+            //{
+            //    ActivityIndicatorComponent gradientActivity = new ActivityIndicatorComponent(_gradientView);
+            //    gradientActivity.Show();
+            //}
         }
 
         /// <summary>
@@ -83,9 +102,11 @@ namespace myTNB.Dashboard.DashboardComponents
         /// <param name="isNormalMeter">If set to <c>true</c> is normal meter.</param>
         public void ConstructChartDashboard(bool isNormalMeter)
         {
+            _dashboardMode = DashboardModeEnum.Chart;
+
             RemoveAllSubviews();
 
-            bool isFullScreen = !(isNormalMeter && DeviceHelper.IsIphoneXUpResolution());
+            bool isFullScreen = true;// !(isNormalMeter && DeviceHelper.IsIphoneXUpResolution());
             float percentage = isFullScreen ? 1.0f : 0.68f;
 
             _gradientViewComponent = new GradientViewComponent(_parentView, percentage);
@@ -106,6 +127,10 @@ namespace myTNB.Dashboard.DashboardComponents
                                                 : _billAndPaymentComponent.GetUI();
 
             int yLocation = !DeviceHelper.IsIphoneXUpResolution() ? 85 : 109;
+            if(DeviceHelper.IsIphone6UpResolution())
+            {
+                yLocation += 15;
+            }
             double contentHeight = _parentView.Frame.Height - yLocation;
             double frameHeight = _parentView.Frame.Height * 0.68f;
             _dashboardScrollView = new UIScrollView(new CoreGraphics.CGRect(0, yLocation, _gradientView.Frame.Width, contentHeight))
@@ -188,14 +213,24 @@ namespace myTNB.Dashboard.DashboardComponents
 
         public void ConstructNoAccountDashboard()
         {
+            _dashboardMode = DashboardModeEnum.NoAccount;
+
             RemoveAllSubviews();
 
-            _billAndPaymentComponent = new BillAndPaymentComponent(_parentView);
-            _billAndPaymentView = _billAndPaymentComponent.GetUI();
+            bool isFullScreen = true;// !DeviceHelper.IsIphoneXUpResolution();
+            float percentage = isFullScreen ? 1.0f : 0.68f;
 
-            float gradientHeight = (float)(_parentView.Frame.Height - _billAndPaymentView.Frame.Height);
-            _gradientViewComponent = new GradientViewComponent(_parentView, true, gradientHeight);//(_parentView, true, 314);
+            _gradientViewComponent = new GradientViewComponent(_parentView, percentage);
             _gradientView = _gradientViewComponent.GetUI();
+            _billAndPaymentComponent = new BillAndPaymentComponent(_parentView);
+            _billAndPaymentView = !isFullScreen ? _billAndPaymentComponent.GetUI(_gradientView.Frame.Height)
+                                                : _billAndPaymentComponent.GetUI();
+
+            //_billAndPaymentView = _billAndPaymentComponent.GetUI();
+            //float gradientHeight = (float)(_parentView.Frame.Height - _billAndPaymentView.Frame.Height);
+            //_gradientViewComponent = new GradientViewComponent(_parentView, true, gradientHeight);//(_parentView, true, 314);
+            //_gradientView = _gradientViewComponent.GetUI();
+
             //Add Title Bar
             _titleBarComponent = new TitleBarComponent(_gradientView);
             _gradientView.AddSubview(_titleBarComponent.GetUI());
@@ -213,14 +248,25 @@ namespace myTNB.Dashboard.DashboardComponents
 
         public void ConstructNoDataConnectionDashboard()
         {
+            _dashboardMode = DashboardModeEnum.NoDataConnection;
+
             RemoveAllSubviews();
 
-            _billAndPaymentComponent = new BillAndPaymentComponent(_parentView);
-            _billAndPaymentView = _billAndPaymentComponent.GetUI();
-
-            float gradientHeight = (float)(_parentView.Frame.Height - _billAndPaymentView.Frame.Height);
-            _gradientViewComponent = new GradientViewComponent(_parentView, true, gradientHeight); // (_parentView, 0.68f);
+            bool isFullScreen = true;// !DeviceHelper.IsIphoneXUpResolution();
+            float percentage = isFullScreen ? 1.0f : 0.68f;
+            _gradientViewComponent = new GradientViewComponent(_parentView, percentage);
             _gradientView = _gradientViewComponent.GetUI();
+            _billAndPaymentComponent = new BillAndPaymentComponent(_parentView);
+            _billAndPaymentView = !isFullScreen ? _billAndPaymentComponent.GetUI(_gradientView.Frame.Height)
+                                                : _billAndPaymentComponent.GetUI();
+
+            //_billAndPaymentComponent = new BillAndPaymentComponent(_parentView);
+            //_billAndPaymentView = _billAndPaymentComponent.GetUI();
+
+            //float gradientHeight = (float)(_parentView.Frame.Height - _billAndPaymentView.Frame.Height);
+            //_gradientViewComponent = new GradientViewComponent(_parentView, true, gradientHeight); // (_parentView, 0.68f);
+            //_gradientView = _gradientViewComponent.GetUI();
+
             //Add Title Bar
             _titleBarComponent = new TitleBarComponent(_gradientView);
             _gradientView.AddSubview(_titleBarComponent.GetUI());
@@ -259,9 +305,11 @@ namespace myTNB.Dashboard.DashboardComponents
         /// <param name="isNormalMeter">If set to <c>true</c> is normal meter.</param>
         public void ConstructGetAccessDashboard(bool isNormalMeter)
         {
+            _dashboardMode = DashboardModeEnum.GetAccess;
+
             RemoveAllSubviews();
 
-            bool isFullScreen = !(isNormalMeter && DeviceHelper.IsIphoneXUpResolution());
+            bool isFullScreen = true;// !(isNormalMeter && DeviceHelper.IsIphoneXUpResolution());
             float percentage = isFullScreen ? 1.0f : 0.68f;
 
             _gradientViewComponent = new GradientViewComponent(_parentView, percentage);
@@ -271,7 +319,7 @@ namespace myTNB.Dashboard.DashboardComponents
 
             // bill and payment
             _billAndPaymentComponent = new BillAndPaymentComponent(_parentView);
-            _billAndPaymentView = !isFullScreen ? _billAndPaymentComponent.GetUI(_gradientViewComponent.GetUI().Frame.Height)
+            _billAndPaymentView = !isFullScreen ? _billAndPaymentComponent.GetUI(_gradientView.Frame.Height)
                                                 : _billAndPaymentComponent.GetUI();
 
             //Add Title Bar
@@ -293,9 +341,63 @@ namespace myTNB.Dashboard.DashboardComponents
             _parentView.AddSubview(_billAndPaymentView);
         }
 
+        /// <summary>
+        /// Constructs the BCRM Down dashboard.
+        /// </summary>
+        public void ConstructBCRMDownDashboard()
+        {
+            if(_dashboardMode == DashboardModeEnum.BcrmDown)
+            {
+                return;
+            }
+
+            _dashboardMode = DashboardModeEnum.BcrmDown;
+
+            RemoveAllSubviews();
+
+            bool isFullScreen = true;// !DeviceHelper.IsIphoneXUpResolution();
+            float percentage = isFullScreen ? 1.0f : 0.68f;
+
+            _gradientViewComponent = new GradientViewComponent(_parentView, percentage);
+            _gradientView = _gradientViewComponent.GetUI();
+            _billAndPaymentComponent = new BillAndPaymentComponent(_parentView);
+            _billAndPaymentView = !isFullScreen ? _billAndPaymentComponent.GetUI(_gradientView.Frame.Height)
+                                                : _billAndPaymentComponent.GetUI();
+
+            //Add Title Bar
+            _titleBarComponent = new TitleBarComponent(_gradientView);
+            _gradientView.AddSubview(_titleBarComponent.GetUI());
+
+            //Add account selection
+            _accountSelectionComponent = new AccountSelectionComponent(_gradientView);
+            UIView accountSelectionView = _accountSelectionComponent.GetUI();
+            _gradientView.AddSubview(accountSelectionView);
+
+            //Add UsageHistory
+            _usageHistoryComponent = new UsageHistoryComponent(_gradientView);
+            _gradientView.AddSubview(_usageHistoryComponent.GetUI());
+            _usageHistoryComponent.ToggleNavigationVisibility(true);
+            _usageHistoryComponent.SetDateRange("NotAvailable".Translate());
+            int locY = (int) accountSelectionView.Frame.GetMaxY() + 15;
+            _usageHistoryComponent.SetFrameCustomLocationY(locY);
+
+            //Add BCRM down view
+            _bcrmDownComponent = new SystemDownComponent(_gradientView, false);
+            _gradientView.AddSubview(_bcrmDownComponent.GetUI());
+
+            _parentView.AddSubview(_gradientView);
+
+            _billAndPaymentComponent.SetPayButtonEnable(false);
+            _billAndPaymentComponent.SetBillButtonEnable(false);
+            _parentView.AddSubview(_billAndPaymentView);
+        }
+
         public void ConstructEstiamtedDashboard()
         {
+            _dashboardMode = DashboardModeEnum.Estimated;
+
             RemoveAllSubviews();
+
             _gradientViewComponent = new GradientViewComponent(_parentView, 0.68f);
             _gradientView = _gradientViewComponent.GetUI();
             //Add Title Bar
@@ -340,6 +442,8 @@ namespace myTNB.Dashboard.DashboardComponents
         /// </summary>
         public void ConstructSmartMeterDashboard()
         {
+            _dashboardMode = DashboardModeEnum.SmartMeter;
+
             RemoveAllSubviews();
 
             _gradientViewComponent = new GradientViewComponent(_parentView, 1.0f);

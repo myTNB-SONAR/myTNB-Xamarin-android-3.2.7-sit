@@ -169,7 +169,7 @@ namespace myTNB
             _textFieldHelper.CreateTextFieldLeftView(txtFieldICNo, "IC");
             _textFieldHelper.CreateDoneButton(txtFieldICNo);
 
-            SetTextFieldEvents(txtFieldName, lblNameTitle, lblNameError, viewLineName, NAME_PATTERN);
+            SetTextFieldEvents(txtFieldName, lblNameTitle, lblNameError, viewLineName, TNBGlobal.CustomerNamePattern);
             SetTextFieldEvents(txtFieldICNo, lblICNoTitle, lblICNoError, viewLineICNo, IC_NO_PATTERN);
         }
 
@@ -189,6 +189,8 @@ namespace myTNB
             };
             textField.EditingDidBegin += (sender, e) => {
                 lblTitle.Hidden = textField.Text.Length == 0;
+                textField.LeftViewMode = UITextFieldViewMode.Never;
+                viewLine.BackgroundColor = myTNBColor.PowerBlue();
             };
             textField.ShouldEndEditing = (sender) => {
                 lblTitle.Hidden = textField.Text.Length == 0;
@@ -207,14 +209,18 @@ namespace myTNB
             };
             textField.EditingDidBegin += (sender, e) => {
                 lblTitle.Hidden = false;
-                //Todo: Clear placeholder?
+            };
+            textField.EditingDidEnd += (sender, e) =>
+            {
+                if (textField.Text.Length == 0)
+                    textField.LeftViewMode = UITextFieldViewMode.UnlessEditing;
             };
         }
 
         internal void SetGetAccessButtonEnable()
         {
             bool isValidICNo = _textFieldHelper.ValidateTextField(txtFieldICNo.Text, IC_NO_PATTERN);
-            bool isValidName = _textFieldHelper.ValidateTextField(txtFieldName.Text, NAME_PATTERN);
+            bool isValidName = _textFieldHelper.ValidateTextField(txtFieldName.Text, TNBGlobal.CustomerNamePattern);
             bool isValid = isValidICNo && isValidName;
             _btnGetAccess.Enabled = isValid;
             _btnGetAccess.BackgroundColor = isValid ? myTNBColor.FreshGreen() : myTNBColor.SilverChalice();

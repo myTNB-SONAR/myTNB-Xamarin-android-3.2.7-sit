@@ -27,7 +27,7 @@ namespace myTNB
         public override void ViewWillAppear(bool animated)
         {
             base.ViewWillAppear(animated);
-            selectNotificationTableView.Source = new SelectNotificationDataSource(this, DataManager.DataManager.SharedInstance.NotificationGeneralTypes.d.data);
+            selectNotificationTableView.Source = new SelectNotificationDataSource(this, DataManager.DataManager.SharedInstance.NotificationGeneralTypes);
             selectNotificationTableView.ReloadData();
         }
 

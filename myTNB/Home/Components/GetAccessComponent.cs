@@ -22,7 +22,7 @@ namespace myTNB.Dashboard.DashboardComponents
             {
                 mainYLocation = 136;
             }
-            _viewGetAccess = new UIView(new CGRect(0, mainYLocation, _parentView.Frame.Width, 244));
+            _viewGetAccess = new UIView(new CGRect(0, mainYLocation, _parentView.Frame.Width, DeviceHelper.GetScaledHeight(254)));
 
             int yLocation = -20;
             if (_parentView.Frame.Width == 320)
@@ -35,15 +35,15 @@ namespace myTNB.Dashboard.DashboardComponents
             }
 
             var imgWidth = _viewGetAccess.Frame.Width * .51;
-            var xLocation = _viewGetAccess.Frame.Width / 2 - imgWidth / 2;
-            UIImageView imgViewEmpty = new UIImageView(new CGRect(xLocation, yLocation, imgWidth, imgWidth));
+            var xLocation = _viewGetAccess.Frame.Width / 2 - DeviceHelper.GetScaledWidth((float)imgWidth) / 2;
+            UIImageView imgViewEmpty = new UIImageView(new CGRect(xLocation, yLocation, DeviceHelper.GetScaledWidth((float)imgWidth), DeviceHelper.GetScaledHeight((float)imgWidth)));
             imgViewEmpty.Image = UIImage.FromBundle("Get-Access");
             imgViewEmpty.ContentMode = UIViewContentMode.ScaleAspectFit;
             _viewGetAccess.AddSubview(imgViewEmpty);
 
             _lblTitle = new UILabel(new CGRect(10, imgViewEmpty.Frame.GetMaxY() + 1, _viewGetAccess.Frame.Width - 20, 16));
             _lblTitle.TextAlignment = UITextAlignment.Center;
-            _lblTitle.Font = myTNBFont.MuseoSans12_300();
+            _lblTitle.Font = myTNBFont.MuseoSans14_500();
             _lblTitle.Text = "View usage history";
             _lblTitle.TextColor = UIColor.White;
             _viewGetAccess.AddSubview(_lblTitle);
@@ -52,7 +52,7 @@ namespace myTNB.Dashboard.DashboardComponents
             _lblSubtitle.TextAlignment = UITextAlignment.Center;
             //_lblSubtitle.Text = "You will require permission from the owner to view usage and transaction details.";
             _lblSubtitle.Text = "Only electricity account owners\r\nmay view usage and transaction details.";
-            _lblSubtitle.Font = myTNBFont.MuseoSans9();
+            _lblSubtitle.Font = myTNBFont.MuseoSans11_300();
             _lblSubtitle.Lines = 2;
             _lblSubtitle.TextColor = UIColor.White;
             _lblSubtitle.LineBreakMode = UILineBreakMode.WordWrap;

@@ -73,7 +73,7 @@ namespace myTNB.SQLite.SQLiteDataManager
             List<UserAccountsEntity> itemList = new List<UserAccountsEntity>();
             try
             {
-                itemList = SQLiteHelper._db.Query<UserAccountsEntity>("select * from UserAccountsEntity");
+                itemList = SQLiteHelper._db.Query<UserAccountsEntity>("select * from UserAccountsEntity order by accountCategoryId desc, accountNickName collate nocase asc");
             }
             catch (Exception e)
             {

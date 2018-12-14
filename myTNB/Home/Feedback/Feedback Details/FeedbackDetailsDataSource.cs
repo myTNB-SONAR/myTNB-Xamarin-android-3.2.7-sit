@@ -25,118 +25,154 @@ namespace myTNB.Home.Feedback.FeedbackDetails
 
         public override nint RowsInSection(UITableView tableview, nint section)
         {
-            if (_feedbackDetails.FeedbackCategoryId == "1")
+            int rowSection = 0;
+            string feedbackCatId = _feedbackDetails.FeedbackCategoryId;
+            switch (feedbackCatId)
             {
-                return 6;
+                case "1":
+                case "3":
+                    {
+                        rowSection = 6;
+                        break;
+                    }
+                case "2":
+                    {
+                        rowSection = 8;
+                        break;
+                    }
+                default:
+                    {
+                        rowSection = 0;
+                        break;
+                    }
             }
-            else if (_feedbackDetails.FeedbackCategoryId == "2")
-            {
-                return 8;
-            }
-            else if (_feedbackDetails.FeedbackCategoryId == "3")
-            {
-                return 6;
-            }
-            else
-            {
-                return 0;
-            }
+            return rowSection;
         }
 
         public override UITableViewCell GetCell(UITableView tableView, NSIndexPath indexPath)
         {
-            var cell = tableView.DequeueReusableCell("feedbackDetailsViewCell", indexPath);
-            UILabel lblTitle = new UILabel(new CGRect(18, 16, tableView.Frame.Width - 36, 14));
-            lblTitle.Font = myTNBFont.MuseoSans9();
-            lblTitle.TextColor = myTNBColor.SilverChalice();
-
-            UILabel lblValue = new UILabel(new CGRect(18, 30, tableView.Frame.Width - 36, 18));
-            lblValue.Font = myTNBFont.MuseoSans14();
-            lblValue.TextColor = myTNBColor.TunaGrey();
-            lblValue.Lines = 0;
-            lblValue.LineBreakMode = UILineBreakMode.WordWrap;
-
-            if (indexPath.Row == 0)
+            if (indexPath.Row != 5 && indexPath.Row != 7)
             {
-                lblTitle.Text = "FEEDBACK ID";
-                lblValue.Text = _feedbackDetails.ServiceReqNo;
-            }
-            else if (indexPath.Row == 1)
-            {
-                lblTitle.Text = "FEEDBACK STATUS";
-                lblValue.Text = _feedbackDetails.StatusDesc;
+                var cell = tableView.DequeueReusableCell("feedbackDetailsCell", indexPath) as FeedbackDetailsViewCell;
 
+                int rowIndex = indexPath.Row;
+                switch (rowIndex)
+                {
+                    case 0:
+                        {
+                            cell.lblTitle.Text = "FEEDBACK ID";
+                            cell.lblValue.Text = _feedbackDetails.ServiceReqNo;
+                            break;
+                        }
+                    case 1:
+                        {
+                            cell.lblTitle.Text = "FEEDBACK STATUS";
+                            cell.lblValue.Text = _feedbackDetails.StatusDesc;
 
-                if (_feedbackDetails.StatusCode == "CL01")
-                {
-                    //Created
-                    lblValue.TextColor = myTNBColor.PowerBlue();
-                }
-                    else if (_feedbackDetails.StatusCode == "CL02")
-                {
-                    //In Progress
-                    lblValue.TextColor = myTNBColor.SunGlow();
-                }
-                    else if (_feedbackDetails.StatusCode == "CL03")
-                {
-                    //Completed
-                    lblValue.TextColor = myTNBColor.FreshGreen();
+                            string statusCode = _feedbackDetails.StatusCode;
+                            switch (statusCode)
+                            {
+                                case "CL01":
+                                    {
+                                        //Created
+                                        cell.lblValue.TextColor = myTNBColor.PowerBlue();
+                                        break;
+                                    }
+                                case "CL02":
+                                    {
+                                        //In Progress
+                                        cell.lblValue.TextColor = myTNBColor.SunGlow();
+                                        break;
+                                    }
+                                case "CL03":
+                                case "CL04":
+                                    {
+                                        //Completed
+                                        cell.lblValue.TextColor = myTNBColor.FreshGreen();
+                                        break;
+                                    }
+                                case "CL06":
+                                    {
+                                        //Cancelled
+                                        cell.lblValue.TextColor = myTNBColor.Tomato();
+                                        break;
+                                    }
+                            }
 
-                }
-                    else if (_feedbackDetails.StatusCode == "CL04")
-                {
-                    //Completed
-                    lblValue.TextColor = myTNBColor.FreshGreen();
+                            break;
+                        }
+                    case 2:
+                        {
+                            cell.lblTitle.Text = "FEEDBACK DATE & TIME";
+                            cell.lblValue.Text = GetFormattedDate(_feedbackDetails.DateCreated);
+                            break;
+                        }
+                    case 3:
+                        {
+                            cell.lblTitle.Text = "FEEDBACK DATE & TIME";
+                            cell.lblValue.Text = GetFormattedDate(_feedbackDetails.DateCreated);
 
-                }
-                    else if (_feedbackDetails.StatusCode == "CL05")
-                {
-                    
-                } 
-                    else if (_feedbackDetails.StatusCode == "CL06")
-                {
-                    //Cancelled
-                    lblValue.TextColor = myTNBColor.Tomato();
+                            string feedbackCatId = _feedbackDetails.FeedbackCategoryId;
+                            switch (feedbackCatId)
+                            {
+                                case "1":
+                                    {
+                                        cell.lblTitle.Text = "ACCOUNT NO.";
+                                        cell.lblValue.Text = _feedbackDetails.AccountNum;
+                                        break;
+                                    }
+                                case "2":
+                                    {
+                                        cell.lblTitle.Text = "STATE";
+                                        cell.lblValue.Text = _feedbackDetails.StateName;
+                                        break;
+                                    }
+                                case "3":
+                                    {
+                                        cell.lblTitle.Text = "FEEDBACK TYPE";
+                                        cell.lblValue.Text = _feedbackDetails.FeedbackTypeName;
+                                        break;
+                                    }
+                            }
+
+                            break;
+                        }
+                    case 4:
+                        {
+                            string feedbackCatId = _feedbackDetails.FeedbackCategoryId;
+                            switch (feedbackCatId)
+                            {
+                                case "1":
+                                case "3":
+                                    {
+                                        cell.lblTitle.Text = "FEEDBACK";
+                                        cell.lblValue.Text = _feedbackDetails.FeedbackMessage;
+                                        CGSize newSize = GetLabelSize(_feedbackDetails.FeedbackMessage);
+                                        cell.lblValue.Frame = new CGRect(18, 30, tableView.Frame.Width - 36, newSize.Height);
+                                        break;
+                                    }
+                                default:
+                                    {
+                                        cell.lblTitle.Text = "LOCATION / STREET NAME";
+                                        cell.lblValue.Text = _feedbackDetails.Location;
+                                        break;
+                                    }
+                            }
+
+                            break;
+                        }
+                    case 6:
+                        {
+                            cell.lblTitle.Text = "FEEDBACK";
+                            cell.lblValue.Text = _feedbackDetails.FeedbackMessage;
+                            CGSize newSize = GetLabelSize(_feedbackDetails.FeedbackMessage);
+                            cell.lblValue.Frame = new CGRect(18, 30, tableView.Frame.Width - 36, newSize.Height);
+                            break;
+                        }
                 }
 
-            }
-            else if (indexPath.Row == 2)
-            {
-                lblTitle.Text = "FEEDBACK DATE & TIME";
-                lblValue.Text = GetFormattedDate(_feedbackDetails.DateCreated);
-            }
-            else if (indexPath.Row == 3)
-            {
-                if (_feedbackDetails.FeedbackCategoryId == "1")
-                {
-                    lblTitle.Text = "ACCOUNT NO.";
-                    lblValue.Text = _feedbackDetails.AccountNum;
-                }
-                else if (_feedbackDetails.FeedbackCategoryId == "2")
-                {
-                    lblTitle.Text = "STATE";
-                    lblValue.Text = _feedbackDetails.StateName;
-                }
-                else if (_feedbackDetails.FeedbackCategoryId == "3")
-                {
-                    lblTitle.Text = "FEEDBACK TYPE";
-                    lblValue.Text = _feedbackDetails.FeedbackTypeName;
-                }
-            }
-            else if (indexPath.Row == 4)
-            {
-                if (_feedbackDetails.FeedbackCategoryId == "1" || _feedbackDetails.FeedbackCategoryId == "3")
-                {
-                    lblTitle.Text = "FEEDBACK";
-                    lblValue.Text = _feedbackDetails.FeedbackMessage;
-                    CGSize newSize = GetLabelSize(_feedbackDetails.FeedbackMessage);
-                    lblValue.Frame = new CGRect(18, 30, tableView.Frame.Width - 36, newSize.Height);
-                }
-                else
-                {
-                    lblTitle.Text = "LOCATION / STREET NAME";
-                    lblValue.Text = _feedbackDetails.Location;
-                }
+                cell.SelectionStyle = UITableViewCellSelectionStyle.None;
+                return cell;
             }
             else if (indexPath.Row == 5)
             {
@@ -144,8 +180,8 @@ namespace myTNB.Home.Feedback.FeedbackDetails
                 {
                     if (_feedbackDetails.FeedbackImage != null && _feedbackDetails.FeedbackImage.Count > 0)
                     {
-                        lblTitle.Text = "PHOTO / SCREENSHOT";
-                        UIScrollView imgScrollView = new UIScrollView(new CGRect(18, 31, tableView.Frame.Width - 36, 94));
+                        var cell = tableView.DequeueReusableCell("feedbackDetailsImageCell", indexPath) as FeedbackDetailsViewImageCell;
+                        cell.lblTitle.Text = "PHOTO / SCREENSHOT";
                         int x = 0;
                         UIImageHelper imgHelper = new UIImageHelper();
                         foreach (var item in _feedbackDetails.FeedbackImage)
@@ -158,32 +194,29 @@ namespace myTNB.Home.Feedback.FeedbackDetails
                                 _controller.OnImageClick(imgView.Image, item.fileName);
                             }));
                             viewContainer.AddSubview(imgView);
-                            imgScrollView.AddSubview(viewContainer);
+                            cell.imgScrollView.AddSubview(viewContainer);
                             x += 94 + 7;
                         }
-                        imgScrollView.ContentSize = new CGSize(x, 94);
-                        cell.AddSubview(imgScrollView);
+                        cell.imgScrollView.ContentSize = new CGSize(x, 94);
+                        cell.SelectionStyle = UITableViewCellSelectionStyle.None;
+                        return cell;
                     }
                 }
                 else
                 {
-                    lblTitle.Text = "POLE NO.";
-                    lblValue.Text = _feedbackDetails.PoleNum;
+                    var cell = tableView.DequeueReusableCell("feedbackDetailsCell", indexPath) as FeedbackDetailsViewCell;
+                    cell.lblTitle.Text = "POLE NO.";
+                    cell.lblValue.Text = _feedbackDetails.PoleNum;
+                    cell.SelectionStyle = UITableViewCellSelectionStyle.None;
+                    return cell;
                 }
-            }
-            else if (indexPath.Row == 6)
-            {
-                lblTitle.Text = "FEEDBACK";
-                lblValue.Text = _feedbackDetails.FeedbackMessage;
-                CGSize newSize = GetLabelSize(_feedbackDetails.FeedbackMessage);
-                lblValue.Frame = new CGRect(18, 30, tableView.Frame.Width - 36, newSize.Height);
             }
             else if (indexPath.Row == 7)
             {
                 if (_feedbackDetails.FeedbackImage != null && _feedbackDetails.FeedbackImage.Count > 0)
                 {
-                    lblTitle.Text = "PHOTO / SCREENSHOT";
-                    UIScrollView imgScrollView = new UIScrollView(new CGRect(18, 31, tableView.Frame.Width - 36, 94));
+                    var cell = tableView.DequeueReusableCell("feedbackDetailsImageCell", indexPath) as FeedbackDetailsViewImageCell;
+                    cell.lblTitle.Text = "PHOTO / SCREENSHOT";
                     int x = 0;
                     UIImageHelper imgHelper = new UIImageHelper();
                     foreach (var item in _feedbackDetails.FeedbackImage)
@@ -196,81 +229,85 @@ namespace myTNB.Home.Feedback.FeedbackDetails
                             _controller.OnImageClick(imgView.Image, item.fileName);
                         }));
                         viewContainer.AddSubview(imgView);
-                        imgScrollView.AddSubview(viewContainer);
+                        cell.imgScrollView.AddSubview(viewContainer);
                         x += 94 + 7;
 
                     }
-                    imgScrollView.ContentSize = new CGSize(x, 94);
-                    cell.AddSubview(imgScrollView);
+                    cell.imgScrollView.ContentSize = new CGSize(x, 94);
+                    cell.SelectionStyle = UITableViewCellSelectionStyle.None;
+                    return cell;
                 }
             }
-            cell.SelectionStyle = UITableViewCellSelectionStyle.None;
-            cell.AddSubviews(new UIView[] { lblTitle, lblValue });
-            return cell;
+            return new UITableViewCell();
         }
 
         public override nfloat GetHeightForRow(UITableView tableView, NSIndexPath indexPath)
         {
-            if (indexPath.Row == 0)
+            nfloat rowHeight = 50f;
+
+            int rowIndex = indexPath.Row;
+            switch (rowIndex)
             {
-                return 50;
+                case 4:
+                    {
+                        if (_feedbackDetails.FeedbackCategoryId == "2")
+                        {
+                            rowHeight = 50f;
+                        }
+                        else
+                        {
+                            CGSize newSize = GetLabelSize(_feedbackDetails.FeedbackMessage);
+                            rowHeight = newSize.Height + 32f;
+                        }
+                        break;
+                    }
+                case 5:
+                    {
+                        if (_feedbackDetails.FeedbackCategoryId == "2")
+                        {
+                            rowHeight = 50f;
+                        }
+                        else
+                        {
+                            rowHeight = 130f;
+                        }
+                        break;
+                    }
+                case 6:
+                    {
+                        CGSize newSize = GetLabelSize(_feedbackDetails.FeedbackMessage);
+                        rowHeight = newSize.Height + 32f;
+                        break;
+                    }
+                case 7:
+                    {
+                        rowHeight = 136f;
+                        break;
+                    }
+                default:
+                    {
+                        rowHeight = 50f;
+                        break;
+                    }
             }
-            else if (indexPath.Row == 1)
-            {
-                return 50;
-            }
-            else if (indexPath.Row == 2)
-            {
-                return 50;
-            }
-            else if (indexPath.Row == 3)
-            {
-                return 50;
-            }
-            else if (indexPath.Row == 4)
-            {
-                if (_feedbackDetails.FeedbackCategoryId == "2")
-                {
-                    return 50;
-                }
-                else
-                {
-                    CGSize newSize = GetLabelSize(_feedbackDetails.FeedbackMessage);
-                    return newSize.Height + 32;
-                }
-            }
-            else if (indexPath.Row == 5)
-            {
-                if (_feedbackDetails.FeedbackCategoryId == "2")
-                {
-                    return 50;
-                }
-                else
-                {
-                    return 130;
-                }
-            }
-            else if (indexPath.Row == 6)
-            {
-                CGSize newSize = GetLabelSize(_feedbackDetails.FeedbackMessage);
-                return newSize.Height + 32;
-            }
-            else if (indexPath.Row == 6)
-            {
-                return 130;
-            }
-            return 50;
+
+            return rowHeight;
         }
 
-        CGSize GetLabelSize(string text)
+        private CGSize GetLabelSize(string text)
         {
-            UILabel label = new UILabel(new CGRect(18, 0, UIApplication.SharedApplication.KeyWindow.Frame.Width - 36, 1000));
+#if true
+            var str = new NSString(text);
+            return str.GetSizeUsingAttributes(new UIStringAttributes { Font = myTNBFont.MuseoSans14() });
+#else
+            UILabel label = new UILabel(new CGRect(18, 0, UIApplication.SharedApplication.KeyWindow.Frame.Width - 36, float.MaxValue));
             label.Font = myTNBFont.MuseoSans14();
             label.TextColor = myTNBColor.TunaGrey();
             label.Lines = 0;
             label.LineBreakMode = UILineBreakMode.WordWrap;
             label.Text = text;
-            return label.Text.StringSize(label.Font, new SizeF((float)label.Frame.Width, 1000F));
+            return label.Text.StringSize(label.Font, new SizeF((float)label.Frame.Width, float.MaxValue));
+#endif
         }
 
         internal string GetFormattedDate(string DateCreated)

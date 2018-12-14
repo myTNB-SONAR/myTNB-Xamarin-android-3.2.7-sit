@@ -64,14 +64,22 @@ namespace myTNB.SitecoreCMS.Services
 
         public string GetPromotionsItem()
         {
+#if true
+            PromotionsV2Service service = new PromotionsV2Service();
+#else
             PromotionsService service = new PromotionsService();
+#endif
             var data = service.GetPromotionsService(OS, ImageSize, WebsiteUrl, Language);
             var resp = CheckData(data.ToList<object>());
             return JsonConvert.SerializeObject(resp);
         }
         public string GetPromotionsTimestampItem()
         {
+#if true
+            PromotionsV2Service service = new PromotionsV2Service();
+#else
             PromotionsService service = new PromotionsService();
+#endif
             var data = service.GetTimestamp(WebsiteUrl, Language);
             var listData = AddDataToList(data);
             var resp = CheckData(listData);

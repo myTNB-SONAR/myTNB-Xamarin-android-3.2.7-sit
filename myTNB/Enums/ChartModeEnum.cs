@@ -5,6 +5,7 @@ namespace myTNB.Enums
     {
         Cost = 0,
         Usage,
-        Emission
+        Emission,
+        REUsage
     }
 }

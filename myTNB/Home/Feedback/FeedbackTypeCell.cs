@@ -9,6 +9,14 @@ namespace myTNB
         public FeedbackTypeCell (IntPtr handle) : base (handle)
         {
         }
+        /// <summary>
+        /// Updates the style.
+        /// </summary>
+        public void UpdateStyle()
+        {
+            lblFeedbackType.Font = myTNBFont.MuseoSans16_300();
+            lblFeedbackType.TextColor = myTNBColor.TunaGrey();
+        }
 
         public UILabel FeedbackTypeLabel
         {

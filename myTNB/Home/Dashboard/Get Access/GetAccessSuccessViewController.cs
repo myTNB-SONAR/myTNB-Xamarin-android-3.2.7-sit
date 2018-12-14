@@ -3,6 +3,7 @@ using System;
 using UIKit;
 using CoreAnimation;
 using CoreGraphics;
+using myTNB.Extensions;
 
 namespace myTNB
 {
@@ -119,7 +120,7 @@ namespace myTNB
 
             btnBackToDashboard = new UIButton(UIButtonType.Custom);
             btnBackToDashboard.Frame = new CGRect(18, View.Frame.Height - 72, View.Frame.Width - 36, 48);
-            btnBackToDashboard.SetTitle("Back to Dashboard", UIControlState.Normal);
+            btnBackToDashboard.SetTitle("BackToDshbrd".Translate(), UIControlState.Normal);
             btnBackToDashboard.Font = myTNBFont.MuseoSans16();
             btnBackToDashboard.Layer.CornerRadius = 4.0f;
             btnBackToDashboard.BackgroundColor = myTNBColor.FreshGreen();

@@ -19,7 +19,7 @@ namespace myTNB.Dashboard.DashboardComponents
         internal void CreateComponent()
         {
             int yLocation = 181;
-            if (DeviceHelper.IsIphoneX())
+            if (DeviceHelper.IsIphoneXUpResolution())
             {
                 yLocation = 205;
             }
@@ -30,15 +30,15 @@ namespace myTNB.Dashboard.DashboardComponents
 
             _lblNoDataTitle = new UILabel(new CGRect(0, 0, _viewNoDataConnection.Frame.Width, 16));
             _lblNoDataTitle.TextAlignment = UITextAlignment.Center;
-            _lblNoDataTitle.Font = myTNBFont.MuseoSans12();
+            _lblNoDataTitle.Font = myTNBFont.MuseoSans14_500();
             _lblNoDataTitle.Text = "Sorry, we could not load your usage chart";
             _lblNoDataTitle.TextColor = UIColor.White;
             viewContent.AddSubview(_lblNoDataTitle);
 
             _lblNoDataSubtitle = new UILabel(new CGRect(0, 16, _viewNoDataConnection.Frame.Width, 14));
             _lblNoDataSubtitle.TextAlignment = UITextAlignment.Center;
-            _lblNoDataSubtitle.Font = myTNBFont.MuseoSans9();
-            _lblNoDataSubtitle.Text = "Please check your internet connection.";
+            _lblNoDataSubtitle.Font = myTNBFont.MuseoSans13_300();
+            _lblNoDataSubtitle.Text = "Please check your Internet connection.";
             _lblNoDataSubtitle.TextColor = UIColor.White;
             viewContent.AddSubview(_lblNoDataSubtitle);
 
@@ -48,7 +48,7 @@ namespace myTNB.Dashboard.DashboardComponents
             _btnRefresh.Layer.BorderColor = UIColor.White.CGColor;
             _btnRefresh.Layer.BorderWidth = 1;
             _btnRefresh.SetTitle("Tap to refresh", UIControlState.Normal);
-            _btnRefresh.Font = myTNBFont.MuseoSans16();
+            _btnRefresh.Font = myTNBFont.MuseoSans18_500();
             _btnRefresh.SetTitleColor(UIColor.White, UIControlState.Normal);
             viewContent.AddSubview(_btnRefresh);
 

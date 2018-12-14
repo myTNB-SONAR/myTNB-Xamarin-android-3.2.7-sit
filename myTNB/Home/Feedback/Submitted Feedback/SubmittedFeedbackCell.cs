@@ -15,6 +15,18 @@ namespace myTNB
 
             AddSubview(imgViewIcon);
         }
+        /// <summary>
+        /// Updates the style.
+        /// </summary>
+        public void UpdateStyle()
+        {
+            lblFeedbackType.Font = myTNBFont.MuseoSans14_300();
+            lblFeedbackType.TextColor = myTNBColor.TunaGrey();
+            lblDetails.Font = myTNBFont.MuseoSans9_300();
+            lblDetails.TextColor = myTNBColor.SilverChalice();
+            lblDate.Font = myTNBFont.MuseoSans9_300();
+            lblDate.TextColor = myTNBColor.SilverChalice();
+        }
 
         public UILabel FeedbackTypeLabel
         {

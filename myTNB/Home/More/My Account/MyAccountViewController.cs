@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using UIKit;
 using myTNB.Dashboard.DashboardComponents;
 using CoreGraphics;
@@ -7,6 +7,8 @@ using myTNB.Model;
 using myTNB.Home.More.MyAccount;
 using myTNB.DataManager;
 using myTNB.Registration.CustomerAccounts;
+using myTNB.Extensions;
+using myTNB.SQLite.SQLiteDataManager;
 
 namespace myTNB
 {
@@ -23,7 +25,7 @@ namespace myTNB
         {
             base.ViewDidLoad();
             SetNavigationBar();
-            myAccountTableView.Frame = new CGRect(0, DeviceHelper.IsIphoneX() ? 88 : 64, View.Frame.Width, View.Frame.Height - 64);
+            myAccountTableView.Frame = new CGRect(0, DeviceHelper.IsIphoneXUpResolution() ? 88 : 64, View.Frame.Width, View.Frame.Height - 64);
             myAccountTableView.SeparatorStyle = UITableViewCellSeparatorStyle.None;
         }
 
@@ -35,12 +37,6 @@ namespace myTNB
             {
                 Task[] taskList = new Task[] { ServiceCall.GetCustomerBillingAccountList() };
                 Task.WaitAll(taskList);
-                if (DataManager.DataManager.SharedInstance.CustomerAccounts != null
-                   && DataManager.DataManager.SharedInstance.CustomerAccounts.d != null
-                   && DataManager.DataManager.SharedInstance.CustomerAccounts.d.data != null)
-                {
-                    DataManager.DataManager.SharedInstance.AccountRecordsList.d = DataManager.DataManager.SharedInstance.CustomerAccounts.d.data;
-                }
             }
             myAccountTableView.Source = new MyAccountDataSource(this);
             myAccountTableView.ReloadData();
@@ -75,12 +71,12 @@ namespace myTNB
             btnLogout.Layer.BorderColor = myTNBColor.FreshGreen().CGColor;
             btnLogout.BackgroundColor = myTNBColor.FreshGreen();
             btnLogout.Layer.BorderWidth = 1;
-            btnLogout.SetTitle("Log out", UIControlState.Normal);
+            btnLogout.SetTitle("Logout".Translate(), UIControlState.Normal);
             btnLogout.Font = myTNBFont.MuseoSans16();
             btnLogout.SetTitleColor(UIColor.White, UIControlState.Normal);
             btnLogout.TouchUpInside += (sender, e) =>
             {
-                var alert = UIAlertController.Create("Logout", "Are you sure you want to logout from this device?", UIAlertControllerStyle.Alert);
+                var alert = UIAlertController.Create("Logout".Translate(), "LogoutConfirmation".Translate(), UIAlertControllerStyle.Alert);
                 alert.AddAction(UIAlertAction.Create("Ok", UIAlertActionStyle.Default, (obj) =>
                 {
                     UIStoryboard storyBoard = UIStoryboard.FromName("Logout", null);
@@ -104,7 +100,7 @@ namespace myTNB
             btnAddAccount.Layer.BorderColor = myTNBColor.FreshGreen().CGColor;
             btnAddAccount.BackgroundColor = UIColor.White;
             btnAddAccount.Layer.BorderWidth = 1;
-            btnAddAccount.SetTitle("Add another account", UIControlState.Normal);
+            btnAddAccount.SetTitle("AddAnotherAccount".Translate(), UIControlState.Normal);
             btnAddAccount.Font = myTNBFont.MuseoSans16();
             btnAddAccount.SetTitleColor(myTNBColor.FreshGreen(), UIControlState.Normal);
             btnAddAccount.TouchUpInside += (sender, e) =>
@@ -116,7 +112,6 @@ namespace myTNB
                     {
                         if (NetworkUtility.isReachable)
                         {
-                            Console.WriteLine("Add account button tapped");
                             UIStoryboard storyBoard = UIStoryboard.FromName("AccountRecords", null);
                             AccountsViewController viewController = storyBoard.InstantiateViewController("AccountsViewController") as AccountsViewController;
                             viewController.isDashboardFlow = true;
@@ -126,14 +121,13 @@ namespace myTNB
                         }
                         else
                         {
-                            Console.WriteLine("No Network");
-                            DisplayAlertMessage("No Data Connection", "Please check your data connection and try again.");
+                            DisplayAlertMessage("ErrNoNetworkTitle".Translate(), "ErrNoNetworkMsg".Translate());
                         }
                         ActivityIndicator.Hide();
                     });
                 });
             };
-            if (DataManager.DataManager.SharedInstance.AccountRecordsList.d.Count > 0)
+            if (DataManager.DataManager.SharedInstance.AccountRecordsList?.d?.Count > 0)
             {
                 viewLogout.Frame = new CGRect(0, 80, View.Frame.Width, 88);
                 viewFooter.Frame = new CGRect(0, 0, myAccountTableView.Frame.Width, 168);
@@ -145,20 +139,20 @@ namespace myTNB
                 viewFooter.Frame = new CGRect(0, 0, myAccountTableView.Frame.Width, 230);
                 UILabel lblTitle = new UILabel(new CGRect(93, 16, myAccountTableView.Frame.Width - 186, 16));
                 lblTitle.TextColor = myTNBColor.TunaGrey();
-                lblTitle.Font = myTNBFont.MuseoSans12();
+                lblTitle.Font = myTNBFont.MuseoSans12_500();
                 lblTitle.Text = "No Electricity Account";
                 lblTitle.TextAlignment = UITextAlignment.Center;
 
-                UILabel lblDetails = new UILabel(new CGRect(93, 32, myAccountTableView.Frame.Width - 186, 36));
+                UILabel lblDetails = new UILabel(new CGRect(0, 32, myAccountTableView.Frame.Width, 36));
                 lblDetails.TextColor = myTNBColor.TunaGrey();
-                lblDetails.Font = myTNBFont.MuseoSans9();
+                lblDetails.Font = myTNBFont.MuseoSans9_300();
                 lblDetails.Text = "Add your existing TNB Electricity Supply Account\r\nto view usage and transaction details.";
                 lblDetails.Lines = 0;
                 lblDetails.LineBreakMode = UILineBreakMode.WordWrap;
                 lblDetails.TextAlignment = UITextAlignment.Center;
 
                 btnAddAccount.Frame = new CGRect(90, 76, myAccountTableView.Frame.Width - 180, 48);
-                btnAddAccount.SetTitle("Add account", UIControlState.Normal);
+                btnAddAccount.SetTitle("AddAcct".Translate(), UIControlState.Normal);
                 viewLogout.Frame = new CGRect(0, 140, View.Frame.Width, 88);
                 viewFooter.AddSubviews(new UIView[] { lblTitle, lblDetails, btnAddAccount, viewLogout });
             }
@@ -225,9 +219,7 @@ namespace myTNB
                     }
                     else
                     {
-                        Console.WriteLine("No Network");
-                        DisplayAlertMessage("No Data Connection", "Please check your data connection and try again.");
-
+                        DisplayAlertMessage("ErrNoNetworkTitle".Translate(), "ErrNoNetworkMsg".Translate());
                     }
                     ActivityIndicator.Hide();
                 });
@@ -240,7 +232,8 @@ namespace myTNB
             UIStoryboard storyBoard = UIStoryboard.FromName("ManageAccounts", null);
             ManageAccountsViewController viewController =
                 storyBoard.InstantiateViewController("ManageAccountsViewController") as ManageAccountsViewController;
-            viewController.AccountRecordIndex = accountRecordIndex;
+            //viewController.AccountRecordIndex = accountRecordIndex;
+            DataManager.DataManager.SharedInstance.AccountRecordIndex = accountRecordIndex;
             var navController = new UINavigationController(viewController);
             PresentViewController(navController, true, null);
             ActivityIndicator.Hide();

@@ -1,10 +1,11 @@
-using System;
+﻿using System;
 using UIKit;
 using myTNB.Dashboard.SelectAccounts;
 using myTNB.Model;
 using System.Threading.Tasks;
 using CoreGraphics;
 using myTNB.Registration.CustomerAccounts;
+using myTNB.Extensions;
 
 namespace myTNB
 {
@@ -22,7 +23,7 @@ namespace myTNB
                                                        , 0
                                                        , View.Frame.Width
                                                        , View.Frame.Height
-                                                            - (DeviceHelper.IsIphoneX()
+                                                            - (DeviceHelper.IsIphoneXUpResolution()
                                                                ? 64 + 72 + 24
                                                                : 64 + 72));
             accountRecordsTableView.Source = new SelectAccountsDataSource(this);
@@ -38,7 +39,7 @@ namespace myTNB
             UIImage backImg = UIImage.FromBundle("Back-White");
             UIBarButtonItem btnBack = new UIBarButtonItem(backImg, UIBarButtonItemStyle.Done, (sender, e) =>
             {
-                DataManager.DataManager.SharedInstance.IsSameAccount = true;
+                //DataManager.DataManager.SharedInstance.IsSameAccount = true;
                 this.DismissViewController(true, null);
             });
             this.NavigationItem.LeftBarButtonItem = btnBack;
@@ -47,8 +48,8 @@ namespace myTNB
         void AddCTAButton()
         {
             UIButton btnAddAccount = new UIButton(UIButtonType.Custom);
-            btnAddAccount.Frame = new CGRect(18, View.Frame.Height - (DeviceHelper.IsIphoneX() ? 152 : 128), View.Frame.Width - 36, 48);
-            btnAddAccount.SetTitle("Add Another Account", UIControlState.Normal);
+            btnAddAccount.Frame = new CGRect(18, View.Frame.Height - (DeviceHelper.IsIphoneXUpResolution() ? 152 : 128), View.Frame.Width - 36, 48);
+            btnAddAccount.SetTitle("AddAnotherAccount".Translate(), UIControlState.Normal);
             btnAddAccount.Font = myTNBFont.MuseoSans16();
             btnAddAccount.Layer.CornerRadius = 5.0f;
             btnAddAccount.BackgroundColor = myTNBColor.FreshGreen();
@@ -73,7 +74,7 @@ namespace myTNB
                         else
                         {
                             Console.WriteLine("No Network");
-                            var alert = UIAlertController.Create("No Data Connection", "Please check your data connection and try again.", UIAlertControllerStyle.Alert);
+                            var alert = UIAlertController.Create("ErrNoNetworkTitle".Translate(), "ErrNoNetworkMsg".Translate(), UIAlertControllerStyle.Alert);
                             alert.AddAction(UIAlertAction.Create("Ok", UIAlertActionStyle.Cancel, null));
                             PresentViewController(alert, animated: true, completionHandler: null);
                         }
@@ -81,6 +82,32 @@ namespace myTNB
                     });
                 });
             };
+        }
+
+        /// <summary>
+        /// Loads the billing account details.
+        /// </summary>
+        public void LoadBillingAccountDetails()
+        {
+            if (DataManager.DataManager.SharedInstance.SelectedAccount.IsREAccount)
+            {
+                ExecuteGetBillAccountDetailsCall();
+            }
+            else
+            {
+                var cachedDetails = DataManager.DataManager.SharedInstance.GetCachedBillingAccountDetails(DataManager.DataManager.SharedInstance.SelectedAccount.accNum);
+
+                if (cachedDetails != null)
+                {
+                    DataManager.DataManager.SharedInstance.BillingAccountDetails = cachedDetails;
+                    DataManager.DataManager.SharedInstance.IsBillUpdateNeeded = false;
+                    this.DismissViewController(true, null);
+                }
+                else
+                {
+                    ExecuteGetBillAccountDetailsCall();
+                }
+            }
         }
 
         internal void ExecuteGetBillAccountDetailsCall()
@@ -101,6 +128,11 @@ namespace myTNB
                                 {
                                     DataManager.DataManager.SharedInstance.BillingAccountDetails = _billingAccountDetailsList.d.data;
                                     DataManager.DataManager.SharedInstance.IsBillUpdateNeeded = false;
+                                    if (!DataManager.DataManager.SharedInstance.SelectedAccount.IsREAccount)
+                                    {
+                                        DataManager.DataManager.SharedInstance.SaveToBillingAccounts(DataManager.DataManager.SharedInstance.BillingAccountDetails,
+                                                                                                     DataManager.DataManager.SharedInstance.SelectedAccount.accNum);
+                                    }
                                     this.DismissViewController(true, null);
                                 }
                                 else
@@ -118,7 +150,7 @@ namespace myTNB
                     else
                     {
                         Console.WriteLine("No Network");
-                        var alert = UIAlertController.Create("No Data Connection", "Please check your data connection and try again.", UIAlertControllerStyle.Alert);
+                        var alert = UIAlertController.Create("ErrNoNetworkTitle".Translate(), "ErrNoNetworkMsg".Translate(), UIAlertControllerStyle.Alert);
                         alert.AddAction(UIAlertAction.Create("Ok", UIAlertActionStyle.Cancel, null));
                         PresentViewController(alert, animated: true, completionHandler: null);
                     }

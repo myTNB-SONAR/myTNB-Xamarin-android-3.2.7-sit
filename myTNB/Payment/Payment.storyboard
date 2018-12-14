@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="212">
-    <device id="retina4_0" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="212">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -13,7 +10,7 @@
             <objects>
                 <navigationController id="212" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="214">
-                        <rect key="frame" x="0.0" y="20" width="320" height="44"/>
+                        <rect key="frame" x="0.0" y="20" width="414" height="50"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
@@ -33,7 +30,7 @@
                         <viewControllerLayoutGuide type="bottom" id="474"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="477">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="1393">
@@ -200,8 +197,74 @@
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
+                            <view hidden="YES" tag="100" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="32762">
+                                <rect key="frame" x="18" y="58" width="378" height="64"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" tag="102" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="PG_CC will be down for maintenance purpose" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="32763">
+                                        <rect key="frame" x="16" y="16" width="346" height="32"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="32" id="32768"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                        <variation key="default">
+                                            <mask key="constraints">
+                                                <exclude reference="32768"/>
+                                            </mask>
+                                        </variation>
+                                        <variation key="heightClass=regular-widthClass=compact">
+                                            <mask key="constraints">
+                                                <include reference="32768"/>
+                                            </mask>
+                                        </variation>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="64" id="32764"/>
+                                    <constraint firstItem="32763" firstAttribute="top" secondItem="32762" secondAttribute="top" constant="14" id="32765">
+                                        <variation key="heightClass=regular-widthClass=compact" constant="16"/>
+                                    </constraint>
+                                    <constraint firstItem="32763" firstAttribute="leading" secondItem="32762" secondAttribute="leading" constant="8" id="32766">
+                                        <variation key="heightClass=regular-widthClass=compact" constant="16"/>
+                                    </constraint>
+                                    <constraint firstAttribute="trailing" secondItem="32763" secondAttribute="trailing" constant="8" id="32767">
+                                        <variation key="heightClass=regular-widthClass=compact" constant="16"/>
+                                    </constraint>
+                                </constraints>
+                                <variation key="default">
+                                    <mask key="subviews">
+                                        <exclude reference="32763"/>
+                                    </mask>
+                                    <mask key="constraints">
+                                        <exclude reference="32764"/>
+                                        <exclude reference="32765"/>
+                                        <exclude reference="32766"/>
+                                        <exclude reference="32767"/>
+                                    </mask>
+                                </variation>
+                                <variation key="heightClass=regular-widthClass=compact">
+                                    <color key="backgroundColor" red="0.98823529409999999" green="0.76078431369999999" blue="0.17254901959999999" alpha="1" colorSpace="calibratedRGB"/>
+                                    <mask key="subviews">
+                                        <include reference="32763"/>
+                                    </mask>
+                                    <mask key="constraints">
+                                        <include reference="32764"/>
+                                        <include reference="32765"/>
+                                        <include reference="32766"/>
+                                        <include reference="32767"/>
+                                    </mask>
+                                </variation>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="32762" firstAttribute="centerX" secondItem="477" secondAttribute="centerX" id="FVP-g1-zuy"/>
+                            <constraint firstItem="32762" firstAttribute="leading" secondItem="477" secondAttribute="leading" constant="18" id="LoV-WW-6Mz"/>
+                            <constraint firstItem="32762" firstAttribute="top" secondItem="473" secondAttribute="bottom" constant="-12" id="X4S-5x-lnw"/>
+                            <constraint firstAttribute="trailing" secondItem="32762" secondAttribute="trailing" constant="18" id="ibU-Qg-D2p"/>
+                        </constraints>
                         <variation key="default">
                             <mask key="subviews">
                                 <exclude reference="1393"/>
@@ -216,48 +279,51 @@
                     <navigationItem key="navigationItem" title="Select Payment Method" id="690"/>
                     <connections>
                         <outlet property="selectPaymentTableView" destination="1393" id="name-outlet-1393"/>
+                        <outlet property="toastMessage" destination="32763" id="name-outlet-32763"/>
+                        <outlet property="toastView" destination="32762" id="name-outlet-32762"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="478" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="250" y="-130"/>
         </scene>
+        <!--Select Bill(s)-->
         <scene sceneID="30570">
             <objects>
-                <viewController id="30571" sceneMemberID="viewController" customClass="SelectBillsViewController" storyboardIdentifier="SelectBillsViewController" useStoryboardIdentifierAsRestorationIdentifier="YES">
+                <viewController storyboardIdentifier="SelectBillsViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="30571" customClass="SelectBillsViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="30568"/>
                         <viewControllerLayoutGuide type="bottom" id="30569"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="30572">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <subviews>
-                            <view contentMode="scaleToFill" id="30719" translatesAutoresizingMaskIntoConstraints="NO">
-                                <rect key="frame" x="0.0" y="432" width="320" height="136"/>
-                                <color key="backgroundColor" colorSpace="calibratedWhite" white="0.666666666666667" alpha="1"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="30719">
+                                <rect key="frame" x="4" y="600" width="406" height="136"/>
                                 <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="32133" translatesAutoresizingMaskIntoConstraints="NO">
-                                        <rect key="frame" x="18" y="60" width="284" height="52"/>
-                                        <state key="normal" title="Pay bill (0)"/>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="32133">
+                                        <rect key="frame" x="18" y="60" width="370" height="52"/>
                                         <constraints>
-                                            <constraint id="32136" firstItem="32133" firstAttribute="height" constant="52"/>
+                                            <constraint firstAttribute="height" constant="52" id="32136"/>
                                         </constraints>
+                                        <state key="normal" title="Pay Bill"/>
                                     </button>
                                 </subviews>
+                                <color key="backgroundColor" white="0.66666666666666696" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint id="30724" firstItem="30719" firstAttribute="height" constant="136"/>
-                                    <constraint id="32134" firstItem="32133" firstAttribute="leading" secondItem="30719" secondAttribute="leading" constant="18"/>
-                                    <constraint id="32135" firstItem="30719" firstAttribute="trailing" secondItem="32133" secondAttribute="trailing" constant="18"/>
-                                    <constraint id="32137" firstItem="30719" firstAttribute="bottom" secondItem="32133" secondAttribute="bottom" constant="24"/>
+                                    <constraint firstAttribute="height" constant="136" id="30724"/>
+                                    <constraint firstItem="32133" firstAttribute="leading" secondItem="30719" secondAttribute="leading" constant="18" id="32134"/>
+                                    <constraint firstAttribute="trailing" secondItem="32133" secondAttribute="trailing" constant="18" id="32135"/>
+                                    <constraint firstAttribute="bottom" secondItem="32133" secondAttribute="bottom" constant="24" id="32137"/>
                                 </constraints>
                             </view>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="30720" translatesAutoresizingMaskIntoConstraints="NO" fixedFrame="YES">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="30720">
                                 <rect key="frame" x="0.0" y="64" width="320" height="368"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="31571" customClass="SelectBillsTableViewCell" reuseIdentifier="SelectBillsTableViewCell" restorationIdentifier="SelectBillsTableViewCell">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="SelectBillsTableViewCell" selectionStyle="default" indentationWidth="10" reuseIdentifier="SelectBillsTableViewCell" id="31571" customClass="SelectBillsTableViewCell">
                                         <rect key="frame" x="0.0" y="28" width="320" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="31571" id="31572">
@@ -266,35 +332,36 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                 </prototypes>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </tableView>
                         </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint id="30723" firstItem="30719" firstAttribute="bottom" secondItem="30572" secondAttribute="bottom"/>
-                            <constraint id="30725" firstItem="30719" firstAttribute="trailing" secondItem="30572" secondAttribute="trailingMargin" constant="16"/>
-                            <constraint id="30726" firstItem="30572" firstAttribute="leadingMargin" secondItem="30719" secondAttribute="leading" constant="16"/>
+                            <constraint firstItem="30719" firstAttribute="bottom" secondItem="30572" secondAttribute="bottom" id="30723"/>
+                            <constraint firstItem="30719" firstAttribute="trailing" secondItem="30572" secondAttribute="trailingMargin" constant="16" id="30725"/>
+                            <constraint firstAttribute="leadingMargin" secondItem="30719" secondAttribute="leading" constant="16" id="30726"/>
                         </constraints>
                     </view>
-                    <navigationItem title="Select Bill(s)" id="30715" key="navigationItem"/>
+                    <navigationItem key="navigationItem" title="Select Bill(s)" id="30715"/>
                     <connections>
-                        <outlet property="SelectBillsTableView" destination="30720" id="name-outlet-30720"/>
                         <outlet property="BottomContainerView" destination="30719" id="name-outlet-30719"/>
                         <outlet property="BtnPayBill" destination="32133" id="name-outlet-32133"/>
+                        <outlet property="SelectBillsTableView" destination="30720" id="name-outlet-30720"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="30573" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="997" y="-129"/>
         </scene>
+        <!--Navigation Controller-->
         <scene sceneID="30593">
             <objects>
                 <navigationController id="30594" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="30596">
-                        <rect key="frame" x="0.0" y="20" width="320" height="44"/>
+                        <rect key="frame" x="0.0" y="20" width="414" height="50"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
-                        <segue id="30716" destination="30571" kind="relationship" relationship="rootViewController"/>
+                        <segue destination="30571" kind="relationship" relationship="rootViewController" id="30716"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="30597" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -304,125 +371,5 @@
     </scenes>
     <resources>
         <image name="IC-Action-Add-Card" width="24" height="24"/>
-        <image name="app_logo" width="44" height="44"/>
-        <image name="email_white" width="24" height="24"/>
-        <image name="Back-White" width="24" height="24"/>
-        <image name="Cancel-White" width="24" height="24"/>
-        <image name="Next-White" width="24" height="24"/>
-        <image name="Calculator" width="32" height="32"/>
-        <image name="Supply" width="32" height="32"/>
-        <image name="Feedback" width="32" height="32"/>
-        <image name="Loaded" width="24" height="24"/>
-        <image name="Loading" width="24" height="24"/>
-        <image name="Email" width="24" height="24"/>
-        <image name="Account-Number" width="24" height="24"/>
-        <image name="IC" width="24" height="24"/>
-        <image name="Label" width="24" height="24"/>
-        <image name="Mobile-White" width="24" height="24"/>
-        <image name="Mobile" width="24" height="24"/>
-        <image name="Name-White" width="24" height="24"/>
-        <image name="Name" width="24" height="24"/>
-        <image name="Billing" width="150" height="150"/>
-        <image name="Dashboard" width="150" height="150"/>
-        <image name="Payment" width="150" height="150"/>
-        <image name="App-Launch" width="320" height="568"/>
-        <image name="Logo" width="44" height="44"/>
-        <image name="Delete" width="24" height="24"/>
-        <image name="Check-Green" width="30" height="28"/>
-        <image name="X-Red" width="30" height="32"/>
-        <image name="Scan" width="24" height="24"/>
-        <image name="Circle-With-Check-Green" width="105" height="105"/>
-        <image name="Logo-Title" width="200" height="44"/>
-        <image name="Tagline" width="113.333336" height="30"/>
-        <image name="Notification" width="24" height="24"/>
-        <image name="Download" width="24" height="24"/>
-        <image name="Table-Tick" width="24" height="24"/>
-        <image name="Arrow-Left" width="16" height="16"/>
-        <image name="Arrow-Right" width="16" height="16"/>
-        <image name="Camera" width="24" height="24"/>
-        <image name="Card-Number" width="24" height="24"/>
-        <image name="Card-Expiry" width="24" height="24"/>
-        <image name="Card-CVV" width="24" height="24"/>
-        <image name="Dropdown" width="16" height="16"/>
-        <image name="Get-Access" width="150" height="150"/>
-        <image name="Empty-Dashboard" width="120" height="120"/>
-        <image name="Notification-Unread" width="16" height="16"/>
-        <image name="Notification-Delete" width="24" height="24"/>
-        <image name="Checkbox-Active" width="24" height="24"/>
-        <image name="Checkbox-Inactive" width="24" height="24"/>
-        <image name="IC-Action-Checkbox-Active" width="24" height="24"/>
-        <image name="IC-Action-Checkbox-InActive" width="24" height="24"/>
-        <image name="IC-Action-Expand" width="24" height="24"/>
-        <image name="IC-Action-Tick" width="24" height="24"/>
-        <image name="IC-Action-Edit" width="24" height="24"/>
-        <image name="IC-Action-Delete" width="24" height="24"/>
-        <image name="IC-Payment-Card-Mastercard" width="24" height="24"/>
-        <image name="IC-Payment-Card-Visa" width="24" height="24"/>
-        <image name="IC-Payment-FPX" width="24" height="24"/>
-        <image name="Notification-New" width="24" height="24"/>
-        <image name="Call" width="24" height="24"/>
-        <image name="Logout-Logo" width="150" height="150"/>
-        <image name="IC-Action-Rating-Active" width="32" height="32"/>
-        <image name="IC-Action-Rating-Inactive" width="32" height="32"/>
-        <image name="IC-Field-Search" width="24" height="24"/>
-        <image name="IC-Button-Map-Center" width="24" height="24"/>
-        <image name="IC-Header-Share" width="24" height="24"/>
-        <image name="IC-Action-Dropdown" width="24" height="24"/>
-        <image name="Map-Kedai-Tenaga" width="32" height="32"/>
-        <image name="Map-Convenient-Store" width="32" height="32"/>
-        <image name="Find_Account_Number" width="284" height="121"/>
-        <image name="Promo-Ads" width="321" height="198"/>
-        <image name="Direction" width="24" height="24"/>
-        <image name="Notification-Empty" width="150" height="150"/>
-        <image name="Card-Empty" width="150" height="150"/>
-        <image name="IC-Feedback" width="24" height="24"/>
-        <image name="IC-FieldCoordinates" width="24" height="24"/>
-        <image name="IC-Action-Location" width="24" height="24"/>
-        <image name="IC-FieldFeedback" width="24" height="24"/>
-        <image name="Faulty-TNB-Lamp" width="320" height="121"/>
-        <image name="Locate-Blue" width="32" height="32"/>
-        <image name="Feedback-Blue" width="24" height="24"/>
-        <image name="IC-Field-Text" width="24" height="24"/>
-        <image name="Red-Cross" width="122" height="122"/>
-        <image name="Loading-Circle" width="44" height="44"/>
-        <image name="Notification-New-Bill" width="24" height="24"/>
-        <image name="Notification-Bill-Due" width="24" height="24"/>
-        <image name="Notification-Reconnection" width="24" height="24"/>
-        <image name="Notification-Disconnection" width="24" height="24"/>
-        <image name="Notification-Dunning" width="24" height="24"/>
-        <image name="Password-Old" width="24" height="24"/>
-        <image name="Password" width="24" height="24"/>
-        <image name="password_white" width="24" height="24"/>
-        <image name="IC-Display-Prelogin" width="150" height="100"/>
-        <image name="Feedback-Bill" width="48" height="48"/>
-        <image name="Feedback-Header" width="320" height="126"/>
-        <image name="Feedback-Others" width="48" height="48"/>
-        <image name="Feedback-Streetlamp" width="48" height="48"/>
-        <image name="Feedback-Submitted" width="48" height="48"/>
-        <image name="Feedback-Submitted-Bill" width="24" height="24"/>
-        <image name="Feedback-Submitted-Others" width="24" height="24"/>
-        <image name="Feedback-Submitted-Streetlamp" width="24" height="24"/>
-        <image name="App-Launch-Gradient" width="320" height="568"/>
-        <image name="Tab-Feedback" width="25" height="25"/>
-        <image name="Tab-Promotions" width="25" height="25"/>
-        <image name="Tab-Dashboard" width="25" height="25"/>
-        <image name="Tab-More" width="25" height="25"/>
-        <image name="Payment-Checkbox-Active" width="24" height="24"/>
-        <image name="Payment-Checkbox-Inactive" width="24" height="24"/>
-        <image name="Tab-Bill" width="25" height="25"/>
-        <image name="IC-Action-Show-Password" width="24" height="24"/>
-        <image name="IC-Payment-Card-Amex" width="24" height="24"/>
-        <image name="IC-Empty-Promotion" width="150" height="150"/>
-        <image name="Notification-Promo" width="24" height="24"/>
-        <image name="Notification-Banner-Bill-Due" width="320" height="150"/>
-        <image name="Notification-Banner-New-Bill" width="320" height="150"/>
-        <image name="Notification-Banner-Disconnection" width="320" height="150"/>
-        <image name="Notification-Banner-Dunning" width="320" height="150"/>
-        <image name="Notification-Banner-Reconnection" width="320" height="150"/>
-        <image name="Tab-Promotions-Unread-Inactive" width="25" height="25"/>
-        <image name="Tab-Promotions-Unread-Active" width="25" height="25"/>
-        <image name="IC-RE-Leaf-White" width="16" height="16"/>
-        <image name="IC-RE-Leaf-Green" width="24" height="24"/>
-        <image name="IC-Action-Show-PasswordWhite" width="24" height="24"/>
     </resources>
 </document>

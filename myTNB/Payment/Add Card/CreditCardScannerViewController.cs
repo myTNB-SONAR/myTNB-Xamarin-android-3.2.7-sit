@@ -36,8 +36,8 @@ namespace myTNB.Payment.AddCard
 
         internal void SetSubviews()
         {
-            UILabel lblDescription = new UILabel(new CGRect(18, 16, View.Frame.Width - 36, 36));
-            lblDescription.Font = myTNBFont.MuseoSans14();
+            UILabel lblDescription = new UILabel(new CGRect(18, 16, View.Frame.Width - 36, 60));
+            lblDescription.Font = myTNBFont.MuseoSans16_300();
             lblDescription.TextColor = myTNBColor.TunaGrey();
             lblDescription.LineBreakMode = UILineBreakMode.WordWrap;
             lblDescription.Lines = 0;
@@ -46,7 +46,7 @@ namespace myTNB.Payment.AddCard
             View.AddSubview(lblDescription);
 
             CardIOView cardIOView = new CardIOView();
-            cardIOView.Frame = new CGRect(0, 70, View.Frame.Width, View.Frame.Height - 130);
+            cardIOView.Frame = new CGRect(0, lblDescription.Frame.GetMaxY() + 10, View.Frame.Width, View.Frame.Height - 130);
             cardIOView.HideCardIOLogo = true;
             cardIOView.Delegate = new CardIODelegate(this);
             View.AddSubview(cardIOView);

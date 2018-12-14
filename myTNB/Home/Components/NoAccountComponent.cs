@@ -1,6 +1,7 @@
 ﻿using System;
 using CoreGraphics;
 using UIKit;
+using myTNB.Extensions;
 
 namespace myTNB.Dashboard.DashboardComponents
 {
@@ -18,13 +19,13 @@ namespace myTNB.Dashboard.DashboardComponents
 
         internal void CreateComponent()
         {
-            int yLocation = 56;
-            if (DeviceHelper.IsIphoneX())
+            float yLocation = DeviceHelper.GetScaledHeight(70);
+            if (DeviceHelper.IsIphoneXUpResolution())
             {
                 yLocation = 80;
             }
             _viewNoAccount = new UIView();
-            _viewNoAccount.Frame = new CGRect(0, yLocation, _parentView.Frame.Width, _parentView.Frame.Height - 156);//(DeviceHelper.IsIphoneX() ? 32 : 56));
+            _viewNoAccount.Frame = new CGRect(0, yLocation, _parentView.Frame.Width, _parentView.Frame.Height - 156);//(DeviceHelper.IsIphoneXUpResolution() ? 32 : 56));
 
             float topSpace = -15;
             if (_parentView.Frame.Width == 414)
@@ -40,7 +41,7 @@ namespace myTNB.Dashboard.DashboardComponents
 
             _lblTitle = new UILabel(new CGRect(10, imgViewEmpty.Frame.GetMaxY() + 20, _viewNoAccount.Frame.Width - 20, 16));
             _lblTitle.TextAlignment = UITextAlignment.Center;
-            _lblTitle.Font = myTNBFont.MuseoSans12();
+            _lblTitle.Font = myTNBFont.MuseoSans14_500();
             _lblTitle.Text = "No Electricity Account";
             _lblTitle.TextColor = UIColor.White;
             _viewNoAccount.AddSubview(_lblTitle);
@@ -49,8 +50,8 @@ namespace myTNB.Dashboard.DashboardComponents
             xLocation = _viewNoAccount.Frame.Width / 2 - subWidth / 2;
             _lblSubtitle = new UILabel(new CGRect(xLocation, _lblTitle.Frame.GetMaxY() + 2, subWidth, 28));
             _lblSubtitle.TextAlignment = UITextAlignment.Center;
-            _lblSubtitle.Text = string.Format("Add your existing TNB Electricity Supply Account{0}to view usage and transaction details.", Environment.NewLine);
-            _lblSubtitle.Font = myTNBFont.MuseoSans9();
+            _lblSubtitle.Text = string.Format("DshbrdNoAccountMsg".Translate(), Environment.NewLine);
+            _lblSubtitle.Font = myTNBFont.MuseoSans11_300();
             _lblSubtitle.Lines = 2;
             _lblSubtitle.TextColor = UIColor.White;
             _lblSubtitle.LineBreakMode = UILineBreakMode.WordWrap;
@@ -61,8 +62,8 @@ namespace myTNB.Dashboard.DashboardComponents
             _btnAddAccount.Layer.CornerRadius = 4;
             _btnAddAccount.Layer.BorderColor = UIColor.White.CGColor;
             _btnAddAccount.Layer.BorderWidth = 1;
-            _btnAddAccount.SetTitle("Add account", UIControlState.Normal);
-            _btnAddAccount.Font = myTNBFont.MuseoSans16();
+            _btnAddAccount.SetTitle("AddAcct".Translate(), UIControlState.Normal);
+            _btnAddAccount.Font = myTNBFont.MuseoSans18_500();
             _btnAddAccount.SetTitleColor(UIColor.White, UIControlState.Normal);
             _viewNoAccount.AddSubview(_btnAddAccount);
         }

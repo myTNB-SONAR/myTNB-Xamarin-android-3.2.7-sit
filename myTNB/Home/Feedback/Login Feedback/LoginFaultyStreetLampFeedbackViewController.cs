@@ -9,6 +9,8 @@ using Location;
 using myTNB.Home.Feedback;
 using System.Collections.Generic;
 using System.Drawing;
+using myTNB.Customs;
+using myTNB.Extensions;
 
 namespace myTNB
 {
@@ -19,6 +21,7 @@ namespace myTNB
         UILabel _lblStateError;
         UILabel _lblState;
         UIView _viewLineState;
+        UIImageView imgViewState;
 
         UIView _viewLocation;
         UILabel _lblLocationTitle;
@@ -36,8 +39,10 @@ namespace myTNB
         UILabel _lblFeedbackTitle;
         UILabel _lblFeedbackSubTitle;
         UILabel _lblFeedbackError;
-        UITextField _txtFieldFeedback;
         UIView _viewLineFeedback;
+        UIImageView _iconFeedback;
+        UIView _viewUploadPhoto;
+        UILabel _lblPhotoTitle;
 
         UITextField _txtFieldMobileNo;
         UILabel _lblMobileNoTitle;
@@ -46,16 +51,19 @@ namespace myTNB
         UIView _viewLineMobileNo;
 
         UILabel lblMobileNoHint;
-
+        UIView _btnSubmitContainer;
         UIButton _btnSubmit;
+        UIImageView imgViewFaultyLamp;
 
+        UITapGestureRecognizer _tapImage;
+
+        FeedbackTextView _feedbackTextView = new FeedbackTextView();
         TextFieldHelper _textFieldHelper = new TextFieldHelper();
         SubmitFeedbackResponseModel _submitFeedback = new SubmitFeedbackResponseModel();
         public static LocationManager _locManager { get; set; }
 
         const string ANY_PATTERN = @".*";
         const string EMAIL_PATTERN = @"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$";
-        const string NAME_PATTERN = @"^[A-Za-z0-9 _]*[A-Za-z0-9][A-Za-z0-9 \-\\_ _]*$";
         const string MOBILE_NO_PATTERN = @"^[0-9 \+]+$";
         const string IC_NO_PATTERN = @"^[a-zA-Z0-9]+$";
 
@@ -75,12 +83,22 @@ namespace myTNB
         int capturedImageCount = 0;
         int imageCount = 0;
         const int MAX_IMAGE = 2;
+        const float ZERO_MARGIN = 0f;
+        const float TXTVIEW_DEFAULT_MARGIN = 24f;
 
         float _viewMobileNoYCoord = 336f;
         float _viewFeedbackYCoord = 336f;
         float _lblPhotoTitleYCoord = 393f;
         float _imageContainerScrollYCoord = 414f;
-        float _btnSubmitYCoord = 531f;
+        float _btnSubmitYCoord = 640f;
+
+        float _viewPhotoYCoord = 478f;
+        float _feedbackMargin = 3f;
+        float _universalMargin = 7f;
+        float _objMargin = 15f;
+        float _viewPhotoMargin = 345f;
+        float _scrollViewHeight = 0.0f;
+        float _feedbackFieldHeight = 38f;
 
         public LoginFaultyStreetLampFeedbackViewController(IntPtr handle) : base(handle)
         {
@@ -99,12 +117,38 @@ namespace myTNB
         public override void ViewDidAppear(bool animated)
         {
             base.ViewDidAppear(animated);
-            if (DataManager.DataManager.SharedInstance.StatesForFeedBack != null
-                && DataManager.DataManager.SharedInstance.StatesForFeedBack.d != null
-                && DataManager.DataManager.SharedInstance.StatesForFeedBack.d.data != null
-                && DataManager.DataManager.SharedInstance.StatesForFeedBack.d.data.Count > 0)
+
+            var currIndex = DataManager.DataManager.SharedInstance.CurrentSelectedStateForFeedbackIndex;
+            if (currIndex > -1)
             {
-                _lblState.Text = DataManager.DataManager.SharedInstance.StatesForFeedBack.d.data[DataManager.DataManager.SharedInstance.CurrentSelectedStateForFeedbackIndex].StateName;
+                if (DataManager.DataManager.SharedInstance.StatesForFeedBack != null
+                && currIndex < DataManager.DataManager.SharedInstance.StatesForFeedBack?.Count)
+                {
+                    _lblState.Text = DataManager.DataManager.SharedInstance.StatesForFeedBack[currIndex].StateName;
+                    _lblStateTitle.Hidden = false;
+                    imgViewState.Hidden = true;
+                    var frame = new CGRect();
+                    frame = _lblState.Frame;
+                    frame.X = ZERO_MARGIN;
+                    _lblState.Frame = frame;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Validates the state.
+        /// </summary>
+        public void ValidateState()
+        {
+            if (DataManager.DataManager.SharedInstance.CurrentSelectedStateForFeedbackIndex > -1)
+            {
+                _viewLineState.BackgroundColor = myTNBColor.PlatinumGrey();
+                _lblStateError.Hidden = true;
+            }
+            else
+            {
+                _viewLineState.BackgroundColor = myTNBColor.Tomato();
+                _lblStateError.Hidden = false;
             }
         }
 
@@ -117,7 +161,7 @@ namespace myTNB
 
             //Photo Header
             imgViewFaultyLampHeight = (View.Frame.Width * 121) / 320;
-            var imgViewFaultyLamp = new UIImageView(new CGRect(0, 0, View.Frame.Width, imgViewFaultyLampHeight));
+            imgViewFaultyLamp = new UIImageView(new CGRect(0, 0, View.Frame.Width, imgViewFaultyLampHeight));
             imgViewFaultyLamp.Image = UIImage.FromBundle("Faulty-TNB-Lamp");
             ScrollView.AddSubview(imgViewFaultyLamp);
 
@@ -125,7 +169,7 @@ namespace myTNB
             var lblReport = new UILabel(new CGRect(18, 23 + imgViewFaultyLampHeight, View.Frame.Width - 36, 18));
             lblReport.Text = "Reporting faulty street lamps?";
             lblReport.TextColor = myTNBColor.PowerBlue();
-            lblReport.Font = myTNBFont.MuseoSans16();
+            lblReport.Font = myTNBFont.MuseoSans16_500();
             ScrollView.AddSubview(lblReport);
 
             //Terms Details
@@ -134,7 +178,7 @@ namespace myTNB
             var firstAttributes = new UIStringAttributes
             {
                 ForegroundColor = myTNBColor.TunaGrey(),
-                Font = myTNBFont.MuseoSans14()
+                Font = myTNBFont.MuseoSans14_300()
             };
             var secondAttributes = new UIStringAttributes
             {
@@ -162,7 +206,7 @@ namespace myTNB
                 Frame = new CGRect(0, 0, _viewState.Frame.Width, 12),
                 AttributedText = new NSAttributedString(
                                                     "STATE",
-                                                       font: myTNBFont.MuseoSans9(),
+                                                       font: myTNBFont.MuseoSans11_300(),
                                                     foregroundColor: myTNBColor.SilverChalice(),
                                                     strokeWidth: 0
                                                    ),
@@ -175,7 +219,7 @@ namespace myTNB
                 Frame = new CGRect(0, 37, _viewState.Frame.Width, 14),
                 AttributedText = new NSAttributedString(
                                             "Invalid state",
-                                               font: myTNBFont.MuseoSans9(),
+                                               font: myTNBFont.MuseoSans11_300(),
                                             foregroundColor: myTNBColor.Tomato(),
                                             strokeWidth: 0
                                            ),
@@ -184,14 +228,14 @@ namespace myTNB
             _viewState.AddSubview(_lblStateError);
 
 
-            UIImageView imgViewState = new UIImageView(new CGRect(0, 12, 24, 24));
+            imgViewState = new UIImageView(new CGRect(0, 12, 24, 24));
             imgViewState.Image = UIImage.FromBundle("IC-FieldCoordinates");
             _viewState.AddSubview(imgViewState);
 
             _lblState = new UILabel(new CGRect(30, 12, _viewState.Frame.Width, 24));
             _lblState.AttributedText = new NSAttributedString(
                                             "State",
-                                               font: myTNBFont.MuseoSans16(),
+                                               font: myTNBFont.MuseoSans18_300(),
                                             foregroundColor: myTNBColor.SilverChalice(),
                                             strokeWidth: 0
             );
@@ -211,7 +255,8 @@ namespace myTNB
                 UIStoryboard storyBoard = UIStoryboard.FromName("FeedbackTableView", null);
                 SelectStateViewController selectStateVC =
                     storyBoard.InstantiateViewController("SelectStateViewController") as SelectStateViewController;
-                selectStateVC._statesForFeedbackList = DataManager.DataManager.SharedInstance.StatesForFeedBack.d.data;
+                selectStateVC._statesForFeedbackList = DataManager.DataManager.SharedInstance.StatesForFeedBack;
+                selectStateVC.OnSelect = ValidateState;
                 NavigationController.PushViewController(selectStateVC, true);
 
             });
@@ -227,7 +272,7 @@ namespace myTNB
                 Frame = new CGRect(0, 0, _viewLocation.Frame.Width, 12),
                 AttributedText = new NSAttributedString(
                                                     "LOCATION / STREET NAME",
-                                                       font: myTNBFont.MuseoSans9(),
+                                                       font: myTNBFont.MuseoSans11_300(),
                                                     foregroundColor: myTNBColor.SilverChalice(),
                                                     strokeWidth: 0
                                                    ),
@@ -240,7 +285,7 @@ namespace myTNB
                 Frame = new CGRect(0, 37, _viewLocation.Frame.Width, 14),
                 AttributedText = new NSAttributedString(
                                         "Invalid location / Street name",
-                                           font: myTNBFont.MuseoSans9(),
+                                           font: myTNBFont.MuseoSans11_300(),
                                         foregroundColor: myTNBColor.Tomato(),
                                         strokeWidth: 0
                                        ),
@@ -253,7 +298,7 @@ namespace myTNB
                 Frame = new CGRect(0, 12, _viewLocation.Frame.Width, 24),
                 AttributedPlaceholder = new NSAttributedString(
                                                      "Location / Street Name",
-                                                       font: myTNBFont.MuseoSans16(),
+                                                       font: myTNBFont.MuseoSans18_300(),
                                                         foregroundColor: myTNBColor.SilverChalice(),
                                                        strokeWidth: 0
                                                     ),
@@ -275,7 +320,7 @@ namespace myTNB
                 Frame = new CGRect(0, 0, _viewPole.Frame.Width, 12),
                 AttributedText = new NSAttributedString(
                                                     "POLE NO.",
-                                                       font: myTNBFont.MuseoSans9(),
+                                                       font: myTNBFont.MuseoSans11_300(),
                                                     foregroundColor: myTNBColor.SilverChalice(),
                                                     strokeWidth: 0
                                                    ),
@@ -288,7 +333,7 @@ namespace myTNB
                 Frame = new CGRect(0, 37, _viewPole.Frame.Width, 14),
                 AttributedText = new NSAttributedString(
                                         "Invalid pole no.",
-                                           font: myTNBFont.MuseoSans9(),
+                                           font: myTNBFont.MuseoSans11_300(),
                                         foregroundColor: myTNBColor.Tomato(),
                                         strokeWidth: 0
                                        ),
@@ -301,7 +346,7 @@ namespace myTNB
                 Frame = new CGRect(0, 12, _viewPole.Frame.Width, 24),
                 AttributedPlaceholder = new NSAttributedString(
                                                      "Pole no.",
-                                                       font: myTNBFont.MuseoSans16(),
+                                                       font: myTNBFont.MuseoSans18_300(),
                                                         foregroundColor: myTNBColor.SilverChalice(),
                                                        strokeWidth: 0
                                                     ),
@@ -314,12 +359,19 @@ namespace myTNB
             _viewPole.AddSubview(_viewLinePole);
 
             //Elbert
-            if (DataManager.DataManager.SharedInstance.UserEntity[0].mobileNo == null || DataManager.DataManager.SharedInstance.UserEntity[0].mobileNo == string.Empty)
+            var mobileNo = string.Empty;
+            if (DataManager.DataManager.SharedInstance.UserEntity?.Count > 0)
+            {
+                mobileNo = DataManager.DataManager.SharedInstance.UserEntity[0]?.mobileNo;
+            }
+            if (string.IsNullOrWhiteSpace(mobileNo))
             {
                 _viewFeedbackYCoord += 67f;
+                _viewPhotoYCoord += 67f;
                 _lblPhotoTitleYCoord += 67f;
                 _imageContainerScrollYCoord += 67f;
                 _btnSubmitYCoord += 67;
+                _viewPhotoMargin += 67f;
 
                 //Mobile no.
                 _viewMobileNo = new UIView((new CGRect(18, _viewMobileNoYCoord + imgViewFaultyLampHeight, View.Frame.Width - 36, 51)));
@@ -330,7 +382,7 @@ namespace myTNB
                     Frame = new CGRect(0, 0, _viewMobileNo.Frame.Width, 12),
                     AttributedText = new NSAttributedString(
                                                         "MOBILE NO.",
-                                                           font: myTNBFont.MuseoSans9(),
+                                                           font: myTNBFont.MuseoSans11_300(),
                                                         foregroundColor: myTNBColor.SilverChalice(),
                                                         strokeWidth: 0
                                                        ),
@@ -343,7 +395,7 @@ namespace myTNB
                     Frame = new CGRect(0, 37, _viewMobileNo.Frame.Width, 14),
                     AttributedText = new NSAttributedString(
                                             "Invalid mobile no.",
-                                               font: myTNBFont.MuseoSans9(),
+                                               font: myTNBFont.MuseoSans11_300(),
                                             foregroundColor: myTNBColor.Tomato(),
                                             strokeWidth: 0
                                            ),
@@ -356,7 +408,7 @@ namespace myTNB
                     Frame = new CGRect(0, 37, _viewMobileNo.Frame.Width, 14),
                     AttributedText = new NSAttributedString(
                     "Please include the country code of your phone number.",
-                    font: myTNBFont.MuseoSans9(),
+                    font: myTNBFont.MuseoSans11_300(),
                     foregroundColor: myTNBColor.TunaGrey(),
                     strokeWidth: 0
                 ),
@@ -370,7 +422,7 @@ namespace myTNB
                     Frame = new CGRect(0, 12, _viewMobileNo.Frame.Width, 24),
                     AttributedPlaceholder = new NSAttributedString(
                                                          "Mobile no.",
-                                                           font: myTNBFont.MuseoSans16(),
+                                                           font: myTNBFont.MuseoSans18_300(),
                                                             foregroundColor: myTNBColor.SilverChalice(),
                                                            strokeWidth: 0
                                                         ),
@@ -405,7 +457,7 @@ namespace myTNB
                 Frame = new CGRect(0, 0, _viewFeedback.Frame.Width, 12),
                 AttributedText = new NSAttributedString(
                                                     "FEEDBACK",
-                                                       font: myTNBFont.MuseoSans9(),
+                                                       font: myTNBFont.MuseoSans11_300(),
                                                     foregroundColor: myTNBColor.SilverChalice(),
                                                     strokeWidth: 0
                                                    ),
@@ -413,65 +465,95 @@ namespace myTNB
             };
             _viewFeedback.AddSubview(_lblFeedbackTitle);
 
+            _feedbackTextView = new FeedbackTextView
+            {
+                Frame = new CGRect(TXTVIEW_DEFAULT_MARGIN, 12, View.Frame.Width - 60, 36),
+                Editable = true,
+                Font = myTNBFont.MuseoSans18_300(),
+                TextAlignment = UITextAlignment.Left,
+                TextColor = myTNBColor.TunaGrey(),
+                BackgroundColor = UIColor.Clear,
+                EnablesReturnKeyAutomatically = true,
+                TranslatesAutoresizingMaskIntoConstraints = true,
+                ScrollEnabled = true,
+            };
+
+            _iconFeedback = new UIImageView(new CGRect(0, _feedbackTextView.Frame.Height / 2, 24, 24))
+            {
+                Image = UIImage.FromBundle("IC-Feedback")
+            };
+
+            _feedbackTextView.SetPlaceholder("Feedback");
+            _feedbackTextView.CreateDoneButton();
+            _viewFeedback.AddSubview(_feedbackTextView);
+            _viewFeedback.AddSubview(_iconFeedback);
+
+            _viewUploadPhoto = new UIView((new CGRect(18, imgViewFaultyLamp.Frame.GetMaxY() + _viewPhotoMargin + _feedbackTextView.Frame.GetMaxY(), View.Frame.Width - 36, 180)))
+            {
+                BackgroundColor = UIColor.Clear
+            };
+
             _lblFeedbackError = new UILabel
             {
-                Frame = new CGRect(0, 37, _viewFeedback.Frame.Width, 14),
+                Frame = new CGRect(0, 0, _viewUploadPhoto.Frame.Width - 36, 14),
                 AttributedText = new NSAttributedString(
                                         "Invalid feedback",
-                                           font: myTNBFont.MuseoSans9(),
+                                           font: myTNBFont.MuseoSans11_300(),
                                         foregroundColor: myTNBColor.Tomato(),
                                         strokeWidth: 0
                                        ),
                 TextAlignment = UITextAlignment.Left
             };
-            _viewFeedback.AddSubview(_lblFeedbackError);
+            _viewUploadPhoto.AddSubview(_lblFeedbackError);
 
-            _txtFieldFeedback = new UITextField
+            _viewLineFeedback = new UIView((new CGRect(0, _feedbackTextView.Frame.GetMaxY() + _feedbackMargin, _viewFeedback.Frame.Width, 1)))
             {
-                Frame = new CGRect(0, 12, _viewFeedback.Frame.Width, 24),
-                AttributedPlaceholder = new NSAttributedString(
-                                                     "Feedback",
-                                                       font: myTNBFont.MuseoSans16(),
-                                                        foregroundColor: myTNBColor.SilverChalice(),
-                                                       strokeWidth: 0
-                                                    ),
-                TextColor = myTNBColor.TunaGrey()
+                BackgroundColor = myTNBColor.PlatinumGrey()
             };
-            _viewFeedback.AddSubview(_txtFieldFeedback);
-
-            _viewLineFeedback = new UIView((new CGRect(0, 36, _viewFeedback.Frame.Width, 1)));
-            _viewLineFeedback.BackgroundColor = myTNBColor.PlatinumGrey();
             _viewFeedback.AddSubview(_viewLineFeedback);
 
-            _lblFeedbackSubTitle = new UILabel(new CGRect(18, _viewFeedback.Frame.Y + 40, View.Frame.Width - 36, 14));
-            _lblFeedbackSubTitle.TextColor = myTNBColor.SilverChalice();
-            _lblFeedbackSubTitle.Font = myTNBFont.MuseoSans9();
-            HandleFeedbackTextChange();
-            ScrollView.AddSubview(_lblFeedbackSubTitle);
+            _lblFeedbackSubTitle = new UILabel(new CGRect(0, 0, _viewUploadPhoto.Frame.Width - 36, 14))
+            {
+                TextColor = myTNBColor.SilverChalice(),
+                Font = myTNBFont.MuseoSans11_300()
+            };
+            _viewUploadPhoto.AddSubview(_lblFeedbackSubTitle);
+            HandleFeedbackTextViewChange();
 
-            //Photo/s Title
-            var lblPhotoTitle = new UILabel(new CGRect(18, _lblPhotoTitleYCoord + imgViewFaultyLampHeight, View.Frame.Width - 36, 14));
-            lblPhotoTitle.Text = "ATTACH PHOTO / SCREENSHOT (OPTIONAL)";
-            lblPhotoTitle.TextColor = myTNBColor.SilverChalice();
-            lblPhotoTitle.Font = myTNBFont.MuseoSans9();
-            ScrollView.AddSubview(lblPhotoTitle);
+            _lblPhotoTitle = new UILabel(new CGRect(0, _lblFeedbackSubTitle.Frame.GetMaxY() + _objMargin, View.Frame.Width - 36, 14))
+            {
+                Text = "ATTACH PHOTO / SCREENSHOT (OPTIONAL)",
+                TextColor = myTNBColor.SilverChalice(),
+                Font = myTNBFont.MuseoSans11_300()
+            };
+            _viewUploadPhoto.AddSubview(_lblPhotoTitle);
 
-            var lblPhotoSubTitle = new UILabel(new CGRect(18, lblPhotoTitle.Frame.Y + 116, View.Frame.Width - 36, 14));
-            lblPhotoSubTitle.Text = "Max 2 files";
-            lblPhotoSubTitle.TextColor = myTNBColor.SilverChalice();
-            lblPhotoSubTitle.Font = myTNBFont.MuseoSans9();
-            ScrollView.AddSubview(lblPhotoSubTitle);
+            var lblPhotoSubTitle = new UILabel(new CGRect(0, _lblFeedbackSubTitle.Frame.GetMaxY() + 135, View.Frame.Width - 36, 14))
+            {
+                Text = "Max 2 files",
+                TextColor = myTNBColor.SilverChalice(),
+                Font = myTNBFont.MuseoSans11_300()
+            };
+            _viewUploadPhoto.AddSubview(lblPhotoSubTitle);
+
+            _btnSubmitContainer = new UIView(new CGRect(0, (View.Frame.Height - DeviceHelper.GetScaledHeight(145)), View.Frame.Width, DeviceHelper.GetScaledHeight(100)));
+            _btnSubmitContainer.BackgroundColor = UIColor.White;
+            View.AddSubview(_btnSubmitContainer);
 
             //Submit Button
             _btnSubmit = new UIButton(UIButtonType.Custom);
-            _btnSubmit.Frame = new CGRect(18, _btnSubmitYCoord + imgViewFaultyLampHeight, View.Frame.Width - 36, 48);
+            _btnSubmit.Frame = new CGRect(18, DeviceHelper.GetScaledHeight(18), _btnSubmitContainer.Frame.Width - 36, 48);
             _btnSubmit.SetTitle("Submit", UIControlState.Normal);
-            _btnSubmit.Font = myTNBFont.MuseoSans16();
+            _btnSubmit.Font = myTNBFont.MuseoSans16_500();
             _btnSubmit.Layer.CornerRadius = 5.0f;
             _btnSubmit.BackgroundColor = myTNBColor.FreshGreen();
             _btnSubmit.TouchUpInside += (sender, e) =>
             {
-                ExecuteSubmitFeedback();
+                ValidateState();
+                if (DataManager.DataManager.SharedInstance.CurrentSelectedStateForFeedbackIndex > -1)
+                {
+                    ExecuteSubmitFeedback();
+                }
             };
 
             //ScrollView main subviews
@@ -479,18 +561,19 @@ namespace myTNB
             ScrollView.AddSubview(_viewLocation);
             ScrollView.AddSubview(_viewPole);
             ScrollView.AddSubview(_viewFeedback);
-            ScrollView.AddSubview(_btnSubmit);
-
-            //Scrollview content size
-            ScrollView.ContentSize = new CGRect(0f, 0f, View.Frame.Width, 1000f).Size;
+            ScrollView.AddSubview(_viewUploadPhoto);
 
             _textFieldHelper.CreateTextFieldLeftView(_txtFieldLocation, "IC-FieldCoordinates");
             CreateTextFieldRightView(_txtFieldLocation, "IC-Action-Location");
             _textFieldHelper.CreateTextFieldLeftView(_txtFieldPole, "Account-Number");
-            _textFieldHelper.CreateTextFieldLeftView(_txtFieldFeedback, "IC-Feedback");
 
             _btnSubmit.Enabled = false;
             _btnSubmit.BackgroundColor = myTNBColor.SilverChalice();
+
+            _btnSubmitContainer.AddSubview(_btnSubmit);
+
+            _scrollViewHeight = (float)((_viewUploadPhoto.Frame.GetMaxY() + (_btnSubmitContainer.Frame.Height + 50f)));
+            ScrollView.ContentSize = new CGRect(0f, 0f, View.Frame.Width, _scrollViewHeight).Size;
         }
 
         public void CreateTextFieldRightView(UITextField textField, String imageName)
@@ -553,6 +636,8 @@ namespace myTNB
         internal void SetVisibility()
         {
             _lblStateTitle.Hidden = true;
+            imgViewState.Hidden = false;
+
             _lblLocationTitle.Hidden = true;
             _lblPoleTitle.Hidden = true;
             _lblFeedbackTitle.Hidden = true;
@@ -567,23 +652,18 @@ namespace myTNB
         {
             bool isValidLocation = _textFieldHelper.ValidateTextField(_txtFieldLocation.Text, ANY_PATTERN) && _txtFieldLocation.Text.Length != 0;
             bool isValidPole = _textFieldHelper.ValidateTextField(_txtFieldPole.Text, ANY_PATTERN);
-            bool isValidFeedback = _textFieldHelper.ValidateTextField(_txtFieldFeedback.Text, ANY_PATTERN) && _txtFieldFeedback.Text.Length != 0;
+            bool isValidFeedback = _feedbackTextView.ValidateTextView(_feedbackTextView.Text, ANY_PATTERN) && _feedbackTextView.Text.Length != 0;
 
             bool isValid = false;
 
-            if (DataManager.DataManager.SharedInstance.UserEntity[0].mobileNo == null || DataManager.DataManager.SharedInstance.UserEntity[0].mobileNo == string.Empty)
-            {
-                bool isValidMobileNo = _textFieldHelper.ValidateTextField(_txtFieldMobileNo.Text, MOBILE_NO_PATTERN) && _txtFieldMobileNo.Text.Length != 0;
-                isValid = isValidLocation
-                     && isValidPole
-                     && isValidFeedback
-                    && isValidMobileNo;
-            }
-            else
-            {
-                isValid = isValidLocation
+            isValid = isValidLocation
                      && isValidPole
                      && isValidFeedback;
+            if (DataManager.DataManager.SharedInstance.UserEntity[0].mobileNo == null || DataManager.DataManager.SharedInstance.UserEntity[0].mobileNo == string.Empty)
+            {
+                bool isValidMobileNo = _textFieldHelper.ValidateTextField(_txtFieldMobileNo.Text, MOBILE_NO_PATTERN)
+                                                       && _textFieldHelper.ValidateMobileNumberLength(_txtFieldMobileNo.Text);
+                isValid = isValid && isValidMobileNo;
             }
 
             _btnSubmit.Enabled = isValid;
@@ -598,9 +678,102 @@ namespace myTNB
             SetTextFieldEvents(_txtFieldPole, _lblPoleTitle
                                , _lblPoleError, _viewLinePole
                                , null, ANY_PATTERN);
-            SetTextFieldEvents(_txtFieldFeedback, _lblFeedbackTitle
+            SetTextViewEvents(_feedbackTextView, _lblFeedbackTitle
                                , _lblFeedbackError, _viewLineFeedback
                                , null, ANY_PATTERN);
+        }
+
+        /// <summary>
+        /// Sets the text view events.
+        /// </summary>
+        /// <param name="textView">Text view.</param>
+        /// <param name="lblTitle">Lbl title.</param>
+        /// <param name="lblError">Lbl error.</param>
+        /// <param name="viewLine">View line.</param>
+        /// <param name="lblHint">Lbl hint.</param>
+        /// <param name="pattern">Pattern.</param>
+        internal void SetTextViewEvents(FeedbackTextView textView, UILabel lblTitle
+                                         , UILabel lblError, UIView viewLine
+                                         , UILabel lblHint, string pattern)
+        {
+            if (lblHint == null)
+            {
+                lblHint = new UILabel();
+            }
+            _feedbackTextView.SetKeyboard();
+            textView.Changed += (sender, e) => {
+                FeedbackTextView txtView = sender as FeedbackTextView;
+                if (txtView == _feedbackTextView)
+                {
+                    HandleFeedbackTextViewChange();
+
+                    var frame = new CGRect();
+                    frame = _feedbackTextView.Frame;
+                    frame.Height = _feedbackTextView.ContentSize.Height <= TNBGlobal.FEEDBACK_FIELD_MAX_HEIGHT ? _feedbackTextView.ContentSize.Height : TNBGlobal.FEEDBACK_FIELD_MAX_HEIGHT;
+                    _feedbackTextView.Frame = frame;
+                    ScrollView.ContentSize = new CGRect(0f, 0f, View.Frame.Width, _scrollViewHeight + _feedbackTextView.Frame.Height - _feedbackFieldHeight).Size;
+                    _viewFeedback.Frame = ViewHelper.UpdateFeedbackViewYCoord((float)(_viewFeedbackYCoord + imgViewFaultyLampHeight), 0f, _viewFeedback, (float)(51f + _feedbackTextView.Frame.Height));
+                    _viewLineFeedback.Frame = ViewHelper.UpdateFeedbackViewYCoord((float)_feedbackTextView.Frame.GetMaxY(), _feedbackMargin, _viewLineFeedback, (float)_viewLineFeedback.Frame.Height);
+                    _viewUploadPhoto.Frame = ViewHelper.UpdateFeedbackViewYCoord((float)(imgViewFaultyLamp.Frame.GetMaxY() + _feedbackTextView.Frame.GetMaxY()), _viewPhotoMargin, _viewUploadPhoto, (float)_viewUploadPhoto.Frame.Height);
+
+                    if (txtView.Text.Length > 0)
+                    {
+                        _feedbackTextView.SetPlaceholderHidden(true);
+                    }
+                    else
+                    {
+                        _feedbackTextView.SetPlaceholderHidden(false);
+                    }
+                }
+                lblHint.Hidden = lblError.Hidden ? _feedbackTextView.Text.Length == 0 : true;
+                lblTitle.Hidden = _feedbackTextView.Text.Length == 0;
+                SubmitButtonEnable();
+            };
+            textView.ShouldBeginEditing = (sender) =>
+            {
+                var frame = new CGRect();
+                frame = _feedbackTextView.Frame;
+                _iconFeedback.Hidden = true;
+                frame.X = ZERO_MARGIN;
+                _feedbackTextView.Frame = frame;
+                viewLine.BackgroundColor = myTNBColor.PowerBlue();
+                lblError.Hidden = true;
+                _lblFeedbackSubTitle.Hidden = false;
+                textView.TextColor = myTNBColor.TunaGrey();
+                return true;
+            };
+            textView.ShouldEndEditing = (sender) =>
+            {
+                lblTitle.Hidden = textView.Text.Length == 0;
+                bool isValid = _feedbackTextView.ValidateTextView(textView.Text, pattern);
+
+                lblError.Hidden = isValid || textView.Text.Length == 0;
+                _lblFeedbackSubTitle.Hidden = !lblError.Hidden;
+                lblHint.Hidden = true;
+                viewLine.BackgroundColor = isValid || textView.Text.Length == 0 ? myTNBColor.PlatinumGrey() : myTNBColor.Tomato();
+                textView.TextColor = isValid || textView.Text.Length == 0 ? myTNBColor.TunaGrey() : myTNBColor.Tomato();
+
+                if (textView.Text.Length == 0)
+                {
+                    var frame = new CGRect();
+                    frame = _feedbackTextView.Frame;
+                    frame.X = 24f;
+                    _feedbackTextView.Frame = frame;
+                    _iconFeedback.Hidden = false;
+                    _feedbackTextView.SetPlaceholderHidden(false);
+                }
+
+                return true;
+            };
+            textView.ShouldChangeText += (txtView, range, replacementString) =>
+            {
+                if (txtView == _feedbackTextView)
+                {
+                    var newLength = textView.Text.Length + replacementString.Length - range.Length;
+                    return newLength <= TNBGlobal.FeedbackMaxCharCount;
+                }
+                return true;
+            };
         }
 
         internal void SetTextFieldEvents(UITextField textField, UILabel lblTitle
@@ -615,10 +788,6 @@ namespace myTNB
             textField.EditingChanged += (sender, e) =>
             {
                 UITextField txtField = sender as UITextField;
-                if (txtField == _txtFieldFeedback)
-                {
-                    HandleFeedbackTextChange();
-                }
                 lblHint.Hidden = lblError.Hidden ? textField.Text.Length == 0 : true;
                 lblTitle.Hidden = textField.Text.Length == 0;
                 SubmitButtonEnable();
@@ -629,28 +798,34 @@ namespace myTNB
                 {
                     if (textField.Text.Length == 0)
                     {
-                        textField.Text += "+60 ";
+                        textField.Text += TNBGlobal.MobileNoPrefix;
                     }
                 }
                 lblHint.Hidden = lblError.Hidden ? textField.Text.Length == 0 : true;
                 lblTitle.Hidden = textField.Text.Length == 0;
+                textField.LeftViewMode = UITextFieldViewMode.Never;
+                viewLine.BackgroundColor = myTNBColor.PowerBlue();
             };
             textField.ShouldEndEditing = (sender) =>
             {
+                bool isValid = true;
+                bool isEmptyAllowed = true;
                 if (textField == _txtFieldMobileNo)
                 {
                     if (textField.Text.Length < 4)
                     {
                         textField.Text = string.Empty;
                     }
+                    isValid = _textFieldHelper.ValidateMobileNumberLength(textField.Text);
+                    isEmptyAllowed = false;
                 }
                 lblTitle.Hidden = textField.Text.Length == 0;
-                bool isValid = _textFieldHelper.ValidateTextField(textField.Text, pattern);
-
-                lblError.Hidden = isValid || textField.Text.Length == 0;
+                isValid = isValid && _textFieldHelper.ValidateTextField(textField.Text, pattern);
+                bool isNormal = isValid || (textField.Text.Length == 0 && isEmptyAllowed);
+                lblError.Hidden = isNormal;
                 lblHint.Hidden = true;
-                viewLine.BackgroundColor = isValid || textField.Text.Length == 0 ? myTNBColor.PlatinumGrey() : myTNBColor.Tomato();
-                textField.TextColor = isValid || textField.Text.Length == 0 ? myTNBColor.TunaGrey() : myTNBColor.Tomato();
+                viewLine.BackgroundColor = isNormal ? myTNBColor.PlatinumGrey() : myTNBColor.Tomato();
+                textField.TextColor = isNormal ? myTNBColor.TunaGrey() : myTNBColor.Tomato();
 
                 return true;
             };
@@ -670,24 +845,24 @@ namespace myTNB
             {
                 if (txtField == _txtFieldMobileNo)
                 {
-                    string content = ((UITextField)txtField).Text;
-                    string preffix = string.Empty;
-                    if (content.Length == 1)
+                    bool isCharValid = _textFieldHelper.ValidateTextField(replacementString, TNBGlobal.MobileNoPattern);
+                    if (!isCharValid)
+                        return false;
+
+                    if (range.Location >= TNBGlobal.MobileNoPrefix.Length)
                     {
-                        preffix = content.Substring(0, 1);
-                        if (preffix.Equals("+") && replacementString.Equals(string.Empty))
-                        {
-                            return false;
-                        }
+                        string content = _textFieldHelper.TrimAllSpaces(((UITextField)txtField).Text);
+                        var count = content.Length + replacementString.Length - range.Length;
+                        return count <= TNBGlobal.MobileNumberMaxCharCount;
                     }
-                    return true;
-                }
-                else if (txtField == _txtFieldFeedback)
-                {
-                    var newLength = textField.Text.Length + replacementString.Length - range.Length;
-                    return newLength <= TNBGlobal.FeedbackMaxCharCount;
+                    return false;
                 }
                 return true;
+            };
+            textField.EditingDidEnd += (sender, e) =>
+            {
+                if (textField.Text.Length == 0)
+                    textField.LeftViewMode = UITextFieldViewMode.UnlessEditing;
             };
         }
 
@@ -710,19 +885,25 @@ namespace myTNB
                     if (NetworkUtility.isReachable)
                     {
                         ActivityIndicator.Show();
-                        _feedbackMessage = _txtFieldFeedback.Text;
-                        _stateID = DataManager.DataManager.SharedInstance.StatesForFeedBack.d.data[DataManager
+                        _feedbackMessage = _feedbackTextView.Text;
+                        _stateID = DataManager.DataManager.SharedInstance.StatesForFeedBack[DataManager
                             .DataManager.SharedInstance.CurrentSelectedStateForFeedbackIndex].StateId;
                         _location = _txtFieldLocation.Text;
                         _poleNumber = _txtFieldPole.Text;
 
-                        if (DataManager.DataManager.SharedInstance.UserEntity[0].mobileNo == null || DataManager.DataManager.SharedInstance.UserEntity[0].mobileNo == string.Empty)
+                        var mobileNo = string.Empty;
+                        if (DataManager.DataManager.SharedInstance.UserEntity?.Count > 0)
                         {
-                            _mobileNo = _txtFieldMobileNo.Text;
+                            mobileNo = DataManager.DataManager.SharedInstance.UserEntity[0]?.mobileNo;
+                        }
+
+                        if (string.IsNullOrWhiteSpace(mobileNo))
+                        {
+                            _mobileNo = _textFieldHelper.TrimAllSpaces(_txtFieldMobileNo.Text);
                         }
                         else
                         {
-                            _mobileNo = DataManager.DataManager.SharedInstance.UserEntity[0].mobileNo;
+                            _mobileNo = mobileNo;
                         }
 
                         _capturedImageList = new List<ImageDataModel>();
@@ -767,6 +948,7 @@ namespace myTNB
                                 }
                                 else
                                 {
+                                    ToastHelper.DisplayAlertView(this, "SubmitFeedbackErrTitle".Translate(), _submitFeedback?.d?.message);
                                     UIStoryboard storyBoard = UIStoryboard.FromName("Feedback", null);
                                     SubmitFeedbackFailedViewController submitFeedbackFailedVC =
                                         storyBoard.InstantiateViewController("SubmitFeedbackFailedViewController") as SubmitFeedbackFailedViewController;
@@ -779,7 +961,7 @@ namespace myTNB
                     else
                     {
                         Console.WriteLine("No Network");
-                        var alert = UIAlertController.Create("No Data Connection", "Please check your data connection and try again.", UIAlertControllerStyle.Alert);
+                        var alert = UIAlertController.Create("ErrNoNetworkTitle".Translate(), "ErrNoNetworkMsg".Translate(), UIAlertControllerStyle.Alert);
                         alert.AddAction(UIAlertAction.Create("Ok", UIAlertActionStyle.Cancel, null));
                         PresentViewController(alert, animated: true, completionHandler: null);
                     }
@@ -793,11 +975,12 @@ namespace myTNB
             {
                 if (imageContainerScroll == null)
                 {
-                    imageContainerScroll = new UIScrollView(new CGRect(18, _imageContainerScrollYCoord + imgViewFaultyLampHeight, View.Frame.Width - 36, 94));
+                    imageContainerScroll = new UIScrollView(new CGRect(0, _lblPhotoTitle.Frame.GetMaxY() + _universalMargin, View.Frame.Width - 36, 94));
                     imageContainerScroll.ScrollEnabled = true;
                     imageContainerScroll.Bounces = false;
                     imageContainerScroll.DirectionalLockEnabled = true;
-                    ScrollView.AddSubview(imageContainerScroll);
+                    //ScrollView.AddSubview(imageContainerScroll);
+                    _viewUploadPhoto.AddSubview(imageContainerScroll);
                 }
 
                 UIViewWithDashedLinerBorder dashedLineView = new UIViewWithDashedLinerBorder();
@@ -812,8 +995,13 @@ namespace myTNB
 
                 dashedLineView.AddSubview(imgViewAdd);
 
-                dashedLineView.AddGestureRecognizer(new UITapGestureRecognizer(() =>
+                _tapImage = new UITapGestureRecognizer(() =>
                 {
+                    if (imageCount >= MAX_IMAGE)
+                    {
+                        return;
+                    }
+
                     UIImagePickerController imgPicker = new UIImagePickerController();
                     ImagePickerDelegate imgPickerDelegate = new ImagePickerDelegate(this);
                     imgPickerDelegate.Type = Enums.FeedbackCategory.LoginFaultyStreetLamp;
@@ -837,7 +1025,9 @@ namespace myTNB
                     var cancelAction = UIAlertAction.Create("Cancel", UIAlertActionStyle.Cancel, null);
                     alert.AddAction(cancelAction);
                     PresentViewController(alert, animated: true, completionHandler: null);
-                }));
+                });
+
+                dashedLineView.AddGestureRecognizer(_tapImage);
 
                 imageContainerScroll.AddSubview(dashedLineView);
                 imageWidth += 18 + 94;
@@ -867,11 +1057,13 @@ namespace myTNB
             capturedImageView.Image = image;
             capturedImageView.Tag = 1;
 
-            UIImageView imgDelete = new UIImageView(new CGRect(65, 5, 24, 24));
+            UIView imgView = new UIView(new CGRect(65, 0, 29, 29));
+            imgView.BackgroundColor = UIColor.Clear;
+            UIImageView imgDelete = new UIImageView(new CGRect(2, 2, 24, 24));
             imgDelete.Image = UIImage.FromBundle("Delete");
-
             imageCount++;
-            view.AddGestureRecognizer(new UITapGestureRecognizer(() =>
+            imgView.AddSubview(imgDelete);
+            imgView.AddGestureRecognizer(new UITapGestureRecognizer(() =>
             {
                 view.RemoveFromSuperview();
                 RepositionImageContent();
@@ -883,7 +1075,8 @@ namespace myTNB
                 }
             }));
 
-            view.AddSubviews(new UIView[] { capturedImageView, imgDelete });
+            view.AddSubviews(new UIView[] { capturedImageView, imgView });
+            view.RemoveGestureRecognizer(_tapImage);
             AddImageContainer();
 
             ActivityIndicator.Hide();
@@ -891,6 +1084,9 @@ namespace myTNB
 
         Task SubmitFeedback()
         {
+            var user = DataManager.DataManager.SharedInstance.UserEntity?.Count > 0
+                                  ? DataManager.DataManager.SharedInstance.UserEntity[0]
+                                  : new SQLite.SQLiteDataManager.UserEntity();
             return Task.Factory.StartNew(() =>
             {
                 ServiceManager serviceManager = new ServiceManager();
@@ -900,9 +1096,9 @@ namespace myTNB
                     feedbackCategoryId = "2",
                     feedbackTypeId = string.Empty,
                     accountNum = string.Empty,
-                    name = DataManager.DataManager.SharedInstance.UserEntity[0].displayName,
+                    name = user?.displayName,
                     phoneNum = _mobileNo,
-                    email = DataManager.DataManager.SharedInstance.UserEntity[0].email,
+                    email = user?.email,
                     deviceId = DataManager.DataManager.SharedInstance.UDID,
                     feedbackMesage = _feedbackMessage,
                     stateId = _stateID,
@@ -939,9 +1135,9 @@ namespace myTNB
         /// <summary>
         /// Handles the feedback text change.
         /// </summary>
-        private void HandleFeedbackTextChange()
+        private void HandleFeedbackTextViewChange()
         {
-            int charCount = TNBGlobal.FeedbackMaxCharCount - _txtFieldFeedback.Text.Length;
+            int charCount = TNBGlobal.FeedbackMaxCharCount - _feedbackTextView.Text.Length;
             string text = string.Format("{0} character{1} left", charCount, charCount != 1 ? "s" : string.Empty);
             _lblFeedbackSubTitle.Text = text;
         }

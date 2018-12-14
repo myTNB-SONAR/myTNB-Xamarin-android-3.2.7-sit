@@ -19,7 +19,7 @@
                         <viewControllerLayoutGuide type="bottom" id="203"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="206">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
@@ -37,13 +37,13 @@
                         <viewControllerLayoutGuide type="bottom" id="218"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="221">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="574">
-                                <rect key="frame" x="18" y="595" width="343" height="48"/>
+                                <rect key="frame" x="22" y="659" width="374" height="53"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="48" id="5475"/>
+                                    <constraint firstAttribute="height" constant="53" id="5475"/>
                                 </constraints>
                                 <state key="normal" title="Login">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -62,10 +62,10 @@
                                 </variation>
                             </button>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="2275">
-                                <rect key="frame" x="165.5" y="56" width="44" height="44"/>
+                                <rect key="frame" x="182.5" y="56" width="49" height="50"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="44" id="2376"/>
-                                    <constraint firstAttribute="width" constant="44" id="2388"/>
+                                    <constraint firstAttribute="height" constant="50" id="2376"/>
+                                    <constraint firstAttribute="width" constant="49" id="2388"/>
                                 </constraints>
                                 <variation key="default">
                                     <mask key="constraints">
@@ -81,7 +81,7 @@
                                 </variation>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Welcome back!" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2605">
-                                <rect key="frame" x="16" y="100" width="343" height="44"/>
+                                <rect key="frame" x="20" y="106" width="374" height="44"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="21" id="2652">
                                         <variation key="heightClass=regular-widthClass=compact" constant="44"/>
@@ -102,7 +102,7 @@
                                 </variation>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="myTNB Account Login" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2996">
-                                <rect key="frame" x="16" y="144" width="343" height="24"/>
+                                <rect key="frame" x="20" y="150" width="374" height="24"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="21" id="3168">
                                         <variation key="heightClass=regular-widthClass=compact" constant="24"/>
@@ -123,7 +123,7 @@
                                 </variation>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Don't have a myTNB account?" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6175">
-                                <rect key="frame" x="18" y="542" width="343" height="16"/>
+                                <rect key="frame" x="22" y="611" width="374" height="16"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="16" id="6185"/>
                                 </constraints>
@@ -142,7 +142,7 @@
                                 </variation>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6187">
-                                <rect key="frame" x="105.5" y="558" width="166" height="16"/>
+                                <rect key="frame" x="125" y="627" width="166" height="16"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="16" id="6188"/>
                                     <constraint firstAttribute="width" constant="166" id="6189"/>
@@ -166,10 +166,10 @@
                                 </variation>
                             </button>
                             <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="58187">
-                                <rect key="frame" x="18" y="32" width="339" height="48"/>
+                                <rect key="frame" x="22" y="32" width="370" height="48"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Invalid Email or Password" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="58268">
-                                        <rect key="frame" x="16" y="16" width="307" height="16"/>
+                                        <rect key="frame" x="16" y="16" width="338" height="16"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="16" id="58475"/>
                                         </constraints>
@@ -226,10 +226,10 @@
                                 </variation>
                             </view>
                             <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="59333">
-                                <rect key="frame" x="18" y="32" width="339" height="64"/>
+                                <rect key="frame" x="22" y="32" width="370" height="64"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="An email to reset your password has been sent to email@email.com" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="59444">
-                                        <rect key="frame" x="16" y="16" width="307" height="32"/>
+                                        <rect key="frame" x="16" y="16" width="338" height="32"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="32" id="60015"/>
                                         </constraints>
@@ -289,12 +289,12 @@
                             <constraint firstItem="2605" firstAttribute="leading" secondItem="221" secondAttribute="leadingMargin" id="2628"/>
                             <constraint firstItem="2605" firstAttribute="trailing" secondItem="221" secondAttribute="trailingMargin" id="2640"/>
                             <constraint firstItem="2605" firstAttribute="top" secondItem="221" secondAttribute="top" constant="129" id="2664">
-                                <variation key="heightClass=regular-widthClass=compact" constant="100"/>
+                                <variation key="heightClass=regular-widthClass=compact" constant="106"/>
                             </constraint>
                             <constraint firstItem="2996" firstAttribute="leading" secondItem="221" secondAttribute="leadingMargin" id="3144"/>
                             <constraint firstItem="2996" firstAttribute="trailing" secondItem="2605" secondAttribute="trailing" id="3156"/>
                             <constraint firstItem="2996" firstAttribute="top" secondItem="221" secondAttribute="top" constant="141" id="3180">
-                                <variation key="heightClass=regular-widthClass=compact" constant="144"/>
+                                <variation key="heightClass=regular-widthClass=compact" constant="150"/>
                             </constraint>
                             <constraint firstItem="574" firstAttribute="leading" secondItem="221" secondAttribute="leadingMargin" constant="2" id="5451"/>
                             <constraint firstItem="574" firstAttribute="trailing" secondItem="221" secondAttribute="trailingMargin" constant="2" id="5463"/>

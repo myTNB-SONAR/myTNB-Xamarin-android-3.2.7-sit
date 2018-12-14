@@ -21,8 +21,8 @@ namespace myTNB
             AccountsTableView.RowHeight = 56f;
             AccountsTableView.TableFooterView = new UIView(new CGRect(0, 0, 0, 0));
 
-            AccountsTableView.ScrollEnabled = AccountsTableView.ContentSize.Height < AccountsTableView.Frame.Size.Height ? false : true;
-
+            //AccountsTableView.ScrollEnabled = AccountsTableView.ContentSize.Height < AccountsTableView.Frame.Size.Height ? false : true;
+            AccountsTableView.ScrollEnabled = true;
             this.NavigationItem.HidesBackButton = true;
             AddBackButton();
         }

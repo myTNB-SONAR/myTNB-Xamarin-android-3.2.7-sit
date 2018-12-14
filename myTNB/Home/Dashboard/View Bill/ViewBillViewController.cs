@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using myTNB.Model;
 using System.Drawing;
+using myTNB.Extensions;
 
 namespace myTNB
 {
@@ -21,13 +22,16 @@ namespace myTNB
         string _url = string.Empty;
         string _pdfFilePath = string.Empty;
         string _titleSuffix = "Bill";
+        string _formattedDate = string.Empty;
+
         public int selectedIndex = -1;
+        public Action OnDone;
 
         public override void ViewDidLoad()
         {
             base.ViewDidLoad();
             NavigationItem.HidesBackButton = true;
-            GetFilePath();
+
             _titleSuffix = DataManager.DataManager.SharedInstance.SelectedAccount.accountCategoryId.Equals("2")
                                       ? "Advice" : "Bill";
             SetNavigationItems();
@@ -42,7 +46,7 @@ namespace myTNB
                     else
                     {
                         Console.WriteLine("No Network");
-                        var alert = UIAlertController.Create("No Data Connection", "Please check your data connection and try again.", UIAlertControllerStyle.Alert);
+                        var alert = UIAlertController.Create("ErrNoNetworkTitle".Translate(), "ErrNoNetworkMsg".Translate(), UIAlertControllerStyle.Alert);
                         alert.AddAction(UIAlertAction.Create("Ok", UIAlertActionStyle.Cancel, null));
                         PresentViewController(alert, animated: true, completionHandler: null);
                     }
@@ -56,6 +60,7 @@ namespace myTNB
             NavigationItem.Title = _titleSuffix;
             UIBarButtonItem btnBack = new UIBarButtonItem(UIImage.FromBundle("Back-White"), UIBarButtonItemStyle.Done, (sender, e) =>
             {
+                OnDone?.Invoke();
                 DismissViewController(true, null);
             });
             NavigationItem.LeftBarButtonItem = btnBack;
@@ -67,6 +72,7 @@ namespace myTNB
                     if (File.Exists(_pdfFilePath))
                     {
                         var viewer = UIDocumentInteractionController.FromUrl(NSUrl.FromFilename(_pdfFilePath));
+                        UIBarButtonItem.AppearanceWhenContainedIn(new[] { typeof(UINavigationBar) }).TintColor = UIColor.White;
                         viewer.PresentOpenInMenu(new RectangleF(0, -260, 320, 320), this.View, true);
                     }
                     else
@@ -81,6 +87,7 @@ namespace myTNB
                             {
                                 ActivityIndicator.Hide();
                                 var viewer = UIDocumentInteractionController.FromUrl(NSUrl.FromFilename(_pdfFilePath));
+                                UIBarButtonItem.AppearanceWhenContainedIn(new[] { typeof(UINavigationBar) }).TintColor = UIColor.White;
                                 viewer.PresentOpenInMenu(new RectangleF(0, -260, 320, 320), this.View, true);
                             });
                         };
@@ -96,13 +103,9 @@ namespace myTNB
             _webViewBill = new UIWebView(new CGRect(0, 0, View.Frame.Width, View.Frame.Height));
             //_webViewBill = new UIWebView(new CGRect(0, 64, UIScreen.MainScreen.Bounds.Width, UIScreen.MainScreen.Bounds.Height));
             _webViewBill.Delegate = new WebViewDelegate(View);
-            if(!string.IsNullOrEmpty(_url)){
-                string nsURL = _url;
-                if (File.Exists(_pdfFilePath))
-                {
-                    nsURL = _pdfFilePath;
-                }
-                _webViewBill.LoadRequest(new NSUrlRequest(new NSUrl(nsURL)));
+            if (!string.IsNullOrEmpty(_url))
+            {
+                _webViewBill.LoadRequest(new NSUrlRequest(new NSUrl(_url)));
                 _webViewBill.ScrollView.Delegate = new ScrollViewDelegate(_webViewBill.ScrollView);
                 _webViewBill.ScalesPageToFit = true;
             }
@@ -112,30 +115,30 @@ namespace myTNB
         internal void GetUrlString()
         {
             ServiceManager serviceManager = new ServiceManager();
-            if (_billHistory != null && _billHistory.d != null && _billHistory.d.data != null)
+            if (_billHistory != null && _billHistory?.d != null && _billHistory?.d?.data != null && _billHistory?.d?.data?.Count > 0)
             {
                 Dictionary<string, string> requestParams = new Dictionary<string, string>(){
                 {"apiKeyID", TNBGlobal.API_KEY_ID},
-                {"accNum", DataManager.DataManager.SharedInstance.BillingAccountDetails.accNum},
-                {"billingNo", selectedIndex > -1
+                {"accNum", DataManager.DataManager.SharedInstance.SelectedAccount.accNum},
+                {"billingNo", selectedIndex > -1 && selectedIndex < _billHistory.d.data.Count
                     ? _billHistory.d.data[selectedIndex].BillingNo
                     : _billHistory.d.data[0].BillingNo}
             };
                 _url = serviceManager.GetPDFServiceURL(selectedIndex > -1 ? "GetBillPDFByBillNo" : "GetBillPDF", requestParams);
             }
-            Console.WriteLine(_url);
         }
 
         internal void GetFilePath()
         {
-            string pdfFileName = DataManager.DataManager.SharedInstance.BillingAccountDetails.accNum + DateHelper.GetFormattedDate(DataManager.DataManager.SharedInstance.BillingAccountDetails.dateBill
-                , "MMMyyyy") + ".pdf";
+            string pdfFileName = DataManager.DataManager.SharedInstance.SelectedAccount.accNum + _formattedDate + ".pdf";
             string documentsPath = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
             _pdfFilePath = Path.Combine(documentsPath, pdfFileName);
         }
 
         internal void ExecuteGetBillHistoryCall()         {             GetBillHistory().ContinueWith(task =>             {                 InvokeOnMainThread(() =>
-                {                     GetUrlString();                     SetSubviews();                     SetNavigationTitle();                 });             });         } 
+                {
+                    SetNavigationTitle();
+                    GetFilePath();                     GetUrlString();                     SetSubviews();                 });             });         } 
         internal Task GetBillHistory()
         {
             return Task.Factory.StartNew(() =>
@@ -156,12 +159,14 @@ namespace myTNB
         {
             string billDate = string.Empty;
             string formattedDate = string.Empty;
-            if (_billHistory != null && _billHistory.d != null && _billHistory.d.data != null)
+            if (_billHistory != null && _billHistory?.d != null
+                && _billHistory?.d?.data != null && _billHistory?.d?.data?.Count > 0)
             {
-                billDate = selectedIndex > -1
-                ? _billHistory.d.data[selectedIndex].DtBill
-                : _billHistory.d.data[0].DtBill;
+                billDate = selectedIndex > -1 && selectedIndex < _billHistory?.d?.data?.Count
+                    ? _billHistory?.d?.data[selectedIndex]?.DtBill
+                    : _billHistory?.d?.data[0]?.DtBill;
                 formattedDate = DateHelper.GetFormattedDate(billDate, "MMM yyyy");
+                _formattedDate = DateHelper.GetFormattedDate(billDate, "MMMyyyy");
             }
             NavigationItem.Title = string.Format("{0} {1}", formattedDate, _titleSuffix);
         }

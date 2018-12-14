@@ -1,4 +1,5 @@
-﻿<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\Xamarin.Build.Download.0.4.11\build\Xamarin.Build.Download.props" Condition="Exists('..\packages\Xamarin.Build.Download.0.4.11\build\Xamarin.Build.Download.props')" />
   <Import Project="..\packages\Xamarin.Build.Download.0.4.6\build\Xamarin.Build.Download.props" Condition="Exists('..\packages\Xamarin.Build.Download.0.4.6\build\Xamarin.Build.Download.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -41,7 +42,6 @@
     <MtouchArch>ARMv7, ARM64</MtouchArch>
     <MtouchHttpClientHandler>HttpClientHandler</MtouchHttpClientHandler>
     <PlatformTarget>x86</PlatformTarget>
-    <CodesignProvision>TNB_ACN_Distribution</CodesignProvision>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhoneSimulator' ">
     <Optimize>true</Optimize>
@@ -54,7 +54,6 @@
     <MtouchArch>x86_64</MtouchArch>
     <MtouchHttpClientHandler>HttpClientHandler</MtouchHttpClientHandler>
     <PlatformTarget>x86</PlatformTarget>
-    <CodesignProvision>TNB_ACN_Distribution</CodesignProvision>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhone' ">
     <DebugSymbols>true</DebugSymbols>
@@ -64,7 +63,7 @@
     <DefineConstants>DEBUG;ENABLE_TEST_CLOUD;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <CodesignKey>iPhone Developer: Reynette Anne Anoos (6TXJ2645GT)</CodesignKey>
+    <CodesignKey>iPhone Developer</CodesignKey>
     <DeviceSpecificBuild>true</DeviceSpecificBuild>
     <MtouchDebug>true</MtouchDebug>
     <MtouchNoSymbolStrip>true</MtouchNoSymbolStrip>
@@ -91,7 +90,6 @@
     <MtouchArch>ARMv7, ARM64</MtouchArch>
     <MtouchHttpClientHandler>HttpClientHandler</MtouchHttpClientHandler>
     <PlatformTarget>x86</PlatformTarget>
-    <CodesignProvision>TNB_ACN_Distribution</CodesignProvision>
     <MtouchVerbosity>2</MtouchVerbosity>
     <OnDemandResourcesInitialInstallTags></OnDemandResourcesInitialInstallTags>
     <OnDemandResourcesPrefetchOrder></OnDemandResourcesPrefetchOrder>
@@ -108,16 +106,12 @@
     <MtouchArch>x86_64</MtouchArch>
     <MtouchHttpClientHandler>HttpClientHandler</MtouchHttpClientHandler>
     <PlatformTarget>x86</PlatformTarget>
-    <CodesignProvision>TNB_ACN_Distribution</CodesignProvision>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
     <Reference Include="Xamarin.iOS" />
-    <Reference Include="RestSharp">
-      <HintPath>..\packages\RestSharp.105.2.3\lib\Xamarin.iOS10\RestSharp.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.IO.Compression" />
     <Reference Include="System.Net.Http" />
@@ -158,21 +152,6 @@
       <HintPath>..\packages\Sitecore.MobileSDK.PasswordProvider.1.3.0\lib\Xamarin.iOS10\Sitecore.MobileSDK.PasswordProvider.iOS.UnifiedAPI.dll</HintPath>
     </Reference>
     <Reference Include="System.Xml.Linq" />
-    <Reference Include="SQLitePCLRaw.core">
-      <HintPath>..\packages\SQLitePCLRaw.core.1.1.5\lib\Xamarin.iOS10\SQLitePCLRaw.core.dll</HintPath>
-    </Reference>
-    <Reference Include="SQLitePCLRaw.provider.sqlite3">
-      <HintPath>..\packages\SQLitePCLRaw.provider.sqlite3.ios_unified.1.1.5\lib\Xamarin.iOS10\SQLitePCLRaw.provider.sqlite3.dll</HintPath>
-    </Reference>
-    <Reference Include="SQLitePCLRaw.batteries_green">
-      <HintPath>..\packages\SQLitePCLRaw.bundle_green.1.1.5\lib\Xamarin.iOS10\SQLitePCLRaw.batteries_green.dll</HintPath>
-    </Reference>
-    <Reference Include="SQLitePCLRaw.batteries_v2">
-      <HintPath>..\packages\SQLitePCLRaw.bundle_green.1.1.5\lib\Xamarin.iOS10\SQLitePCLRaw.batteries_v2.dll</HintPath>
-    </Reference>
-    <Reference Include="SQLite-net">
-      <HintPath>..\packages\sqlite-net-pcl.1.4.118\lib\netstandard1.1\SQLite-net.dll</HintPath>
-    </Reference>
     <Reference Include="ZXing.Net.Mobile.Core">
       <HintPath>..\packages\ZXing.Net.Mobile.2.1.47\lib\Xamarin.iOS10\ZXing.Net.Mobile.Core.dll</HintPath>
     </Reference>
@@ -207,14 +186,58 @@
     <Reference Include="iCarousel.iOS">
       <HintPath>..\packages\Xamarin.iCarousel.1.8.3\lib\Xamarin.iOS\iCarousel.iOS.dll</HintPath>
     </Reference>
+    <Reference Include="Lottie.iOS">
+      <HintPath>..\packages\Com.Airbnb.iOS.Lottie.2.5.4\lib\xamarinios10\Lottie.iOS.dll</HintPath>
+    </Reference>
+    <Reference Include="Facebook.CoreKit">
+      <HintPath>..\packages\Xamarin.Facebook.CoreKit.iOS.4.35.0\lib\Xamarin.iOS10\Facebook.CoreKit.dll</HintPath>
+    </Reference>
+    <Reference Include="Facebook.LoginKit">
+      <HintPath>..\packages\Xamarin.Facebook.LoginKit.iOS.4.35.0\lib\Xamarin.iOS10\Facebook.LoginKit.dll</HintPath>
+    </Reference>
+    <Reference Include="Facebook.MarketingKit">
+      <HintPath>..\packages\Xamarin.Facebook.MarketingKit.iOS.4.35.0\lib\Xamarin.iOS10\Facebook.MarketingKit.dll</HintPath>
+    </Reference>
+    <Reference Include="Facebook.MessengerShareKit">
+      <HintPath>..\packages\Xamarin.Facebook.MessengerShareKit.iOS.1.3.2\lib\Xamarin.iOS10\Facebook.MessengerShareKit.dll</HintPath>
+    </Reference>
+    <Reference Include="Facebook.PlacesKit">
+      <HintPath>..\packages\Xamarin.Facebook.PlacesKit.iOS.4.35.0\lib\Xamarin.iOS10\Facebook.PlacesKit.dll</HintPath>
+    </Reference>
+    <Reference Include="Facebook.ShareKit">
+      <HintPath>..\packages\Xamarin.Facebook.ShareKit.iOS.4.35.0\lib\Xamarin.iOS10\Facebook.ShareKit.dll</HintPath>
+    </Reference>
+    <Reference Include="Firebase.Crashlytics">
+      <HintPath>..\packages\Xamarin.Firebase.iOS.Crashlytics.3.10.9\lib\Xamarin.iOS10\Firebase.Crashlytics.dll</HintPath>
+    </Reference>
+    <Reference Include="RestSharp">
+      <HintPath>..\packages\RestSharp.106.5.4\lib\netstandard2.0\RestSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="SQLitePCLRaw.core">
+      <HintPath>..\packages\SQLitePCLRaw.core.1.1.11\lib\Xamarin.iOS10\SQLitePCLRaw.core.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="SQLitePCLRaw.provider.sqlite3">
+      <HintPath>..\packages\SQLitePCLRaw.provider.sqlite3.ios_unified.1.1.11\lib\Xamarin.iOS10\SQLitePCLRaw.provider.sqlite3.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="SQLitePCLRaw.batteries_green">
+      <HintPath>..\packages\SQLitePCLRaw.bundle_green.1.1.11\lib\Xamarin.iOS10\SQLitePCLRaw.batteries_green.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="SQLitePCLRaw.batteries_v2">
+      <HintPath>..\packages\SQLitePCLRaw.bundle_green.1.1.11\lib\Xamarin.iOS10\SQLitePCLRaw.batteries_v2.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="SQLite-net">
+      <HintPath>..\packages\sqlite-net-pcl.1.5.231\lib\netstandard1.1\SQLite-net.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Contents.json" />
     <ImageAsset Include="Assets.xcassets\app_logo.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\app_logo.imageset\app_logo.png" />
-    <ImageAsset Include="Assets.xcassets\app_logo.imageset\app_logo%402x.png" />
-    <ImageAsset Include="Assets.xcassets\app_logo.imageset\app_logo%403x.png" />
     <ImageAsset Include="Assets.xcassets\email_white.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\email_white.imageset\Email-white.png" />
     <ImageAsset Include="Assets.xcassets\email_white.imageset\Email-white%402x.png" />
@@ -439,9 +462,6 @@
     <ImageAsset Include="Assets.xcassets\Call.imageset\ic_display_call%402x.png" />
     <ImageAsset Include="Assets.xcassets\Call.imageset\ic_display_call%403x.png" />
     <ImageAsset Include="Assets.xcassets\Logout-Logo.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Logout-Logo.imageset\icLogoutLogo.png" />
-    <ImageAsset Include="Assets.xcassets\Logout-Logo.imageset\icLogoutLogo%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Logout-Logo.imageset\icLogoutLogo%403x.png" />
     <ImageAsset Include="Assets.xcassets\IC-Action-Rating-Active.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\IC-Action-Rating-Inactive.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\IC-Action-Rating-Active.imageset\icActionRatingsActive.png" />
@@ -478,17 +498,8 @@
     <ImageAsset Include="Assets.xcassets\Find_Account_Number.imageset\img_register_acct no.png" />
     <ImageAsset Include="Assets.xcassets\Find_Account_Number.imageset\img_register_acct no%402x.png" />
     <ImageAsset Include="Assets.xcassets\Find_Account_Number.imageset\img_register_acct no%403x.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-40x40.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-Small%402x.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-Small%403x.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-Small-40%402x.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-Small-60%403x.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-20x20.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-Small.png" />
     <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-76.png" />
     <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-76%402x.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-83.5%402x.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-1024x1024.png" />
     <ImageAsset Include="Assets.xcassets\Direction.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Direction.imageset\ic_button_direction.png" />
     <ImageAsset Include="Assets.xcassets\Direction.imageset\ic_button_direction%402x.png" />
@@ -650,17 +661,12 @@
     <ImageAsset Include="Assets.xcassets\Payment-Checkbox-Active.imageset\ic_action_checkbox_active.png" />
     <ImageAsset Include="Assets.xcassets\Payment-Checkbox-Active.imageset\ic_action_checkbox_active%402x.png" />
     <ImageAsset Include="Assets.xcassets\Payment-Checkbox-Active.imageset\ic_action_checkbox_active%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Payment-Checkbox-Inactive.imageset\ic_action_checkbox_inactive.png" />
-    <ImageAsset Include="Assets.xcassets\Payment-Checkbox-Inactive.imageset\ic_action_checkbox_inactive%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Payment-Checkbox-Inactive.imageset\ic_action_checkbox_inactive%403x.png" />
     <ImageAsset Include="Assets.xcassets\Tab-Bill.imageset\ic_menu_bill.png" />
     <ImageAsset Include="Assets.xcassets\Tab-Bill.imageset\ic_menu_bill%402x.png" />
     <ImageAsset Include="Assets.xcassets\Tab-Bill.imageset\ic_menu_bill%403x.png" />
     <ImageAsset Include="Assets.xcassets\IC-Action-Show-Password.imageset\icActionShowPassword.png" />
     <ImageAsset Include="Assets.xcassets\IC-Action-Show-Password.imageset\icActionShowPassword%402x.png" />
     <ImageAsset Include="Assets.xcassets\IC-Action-Show-Password.imageset\icActionShowPassword%403x.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-60x60.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-120x120.png" />
     <ImageAsset Include="Assets.xcassets\IC-Empty-Promotion.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\IC-Empty-Promotion.imageset\icEmptyPromotions.png" />
     <ImageAsset Include="Assets.xcassets\IC-Empty-Promotion.imageset\icEmptyPromotions%402x.png" />
@@ -757,6 +763,90 @@
     <ImageAsset Include="Assets.xcassets\Empty-Chart-Data.imageset\bcrm-down.png" />
     <ImageAsset Include="Assets.xcassets\Empty-Chart-Data.imageset\bcrm-down%402x.png" />
     <ImageAsset Include="Assets.xcassets\Empty-Chart-Data.imageset\bcrm-down%403x.png" />
+    <ImageAsset Include="Assets.xcassets\IC-X-Gray.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\IC-X-Gray.imageset\Promotions-Cancel.png" />
+    <ImageAsset Include="Assets.xcassets\IC-X-Gray.imageset\Promotions-Cancel%402x.png" />
+    <ImageAsset Include="Assets.xcassets\IC-X-Gray.imageset\Promotions-Cancel%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Greeting-Morning.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Greeting-Morning.imageset\illustrationMorning.png" />
+    <ImageAsset Include="Assets.xcassets\Greeting-Morning.imageset\illustrationMorning%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Greeting-Morning.imageset\illustrationMorning%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Greeting-Afternoon.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Greeting-Afternoon.imageset\illustrationAfternoon.png" />
+    <ImageAsset Include="Assets.xcassets\Greeting-Afternoon.imageset\illustrationAfternoon%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Greeting-Afternoon.imageset\illustrationAfternoon%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Greeting-Evening.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Greeting-Evening.imageset\illustrationEvening.png" />
+    <ImageAsset Include="Assets.xcassets\Greeting-Evening.imageset\illustrationEvening%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Greeting-Evening.imageset\illustrationEvening%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Down-BCRM.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Down-BCRM.imageset\icSummarydashboardBcrmDown.png" />
+    <ImageAsset Include="Assets.xcassets\Down-BCRM.imageset\icSummarydashboardBcrmDown%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Down-BCRM.imageset\icSummarydashboardBcrmDown%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Maintenance.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Notification-Promotion.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Notification-Maintenance.imageset\icNotificationMaintenance.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Maintenance.imageset\icNotificationMaintenance%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Maintenance.imageset\icNotificationMaintenance%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Promotion.imageset\icMenuPromoToggled.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Promotion.imageset\icMenuPromoToggled%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Promotion.imageset\icMenuPromoToggled%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-News.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Notification-News.imageset\icNotificationNews2.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-News.imageset\icNotificationNews2%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-News.imageset\icNotificationNews2%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Banner-Maintenance.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Notification-Banner-Promotion.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Notification-Banner-News.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Notification-Banner-Maintenance.imageset\illustrationMaintenance.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Banner-Maintenance.imageset\illustrationMaintenance%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Banner-Maintenance.imageset\illustrationMaintenance%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Banner-Promotion.imageset\illustrationPromotions.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Banner-Promotion.imageset\illustrationPromotions%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Banner-Promotion.imageset\illustrationPromotions%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Banner-News.imageset\illustrationNews.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Banner-News.imageset\illustrationNews%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Banner-News.imageset\illustrationNews%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Receipt-Header.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Receipt-Header.imageset\TNB_Receipt_Logo-Header.png" />
+    <ImageAsset Include="Assets.xcassets\Receipt-Header.imageset\TNB_Receipt_Logo-Header%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Receipt-Header.imageset\TNB_Receipt_Logo-Header%403x.png" />
+    <ImageAsset Include="Assets.xcassets\IC-Action-Hide-PasswordWhite.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\IC-Action-Hide-PasswordWhite.imageset\ic_action_hide password_white.png" />
+    <ImageAsset Include="Assets.xcassets\IC-Action-Hide-PasswordWhite.imageset\ic_action_hide password_white%402x.png" />
+    <ImageAsset Include="Assets.xcassets\IC-Action-Hide-PasswordWhite.imageset\ic_action_hide password_white%403x.png" />
+    <ImageAsset Include="Assets.xcassets\app_logo.imageset\Logo.png" />
+    <ImageAsset Include="Assets.xcassets\app_logo.imageset\Logo%402x.png" />
+    <ImageAsset Include="Assets.xcassets\app_logo.imageset\Logo%403x.png" />
+    <ImageAsset Include="Assets.xcassets\IC-Action-Hide-Password.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\IC-Action-Hide-Password.imageset\ic_action_hide password_dark.png" />
+    <ImageAsset Include="Assets.xcassets\IC-Action-Hide-Password.imageset\ic_action_hide password_dark%402x.png" />
+    <ImageAsset Include="Assets.xcassets\IC-Action-Hide-Password.imageset\ic_action_hide password_dark%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Logout-Logo.imageset\ic_logout_logo.png" />
+    <ImageAsset Include="Assets.xcassets\Logout-Logo.imageset\ic_logout_logo%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Logout-Logo.imageset\ic_logout_logo%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Logo-Combined.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Logo-Combined.imageset\TNB Logo_White.png" />
+    <ImageAsset Include="Assets.xcassets\Logo-Combined.imageset\TNB Logo_White%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Logo-Combined.imageset\TNB Logo_White%403x.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-20%402x.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-60.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-29%402x.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-29%403x.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-80.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-120.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-180.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-20.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-29.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-167.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-1024.png" />
+    <ImageAsset Include="Assets.xcassets\Payment-Checkbox-Inactive.imageset\icActionCheckboxInactive.png" />
+    <ImageAsset Include="Assets.xcassets\Payment-Checkbox-Inactive.imageset\icActionCheckboxInactive%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Payment-Checkbox-Inactive.imageset\icActionCheckboxInactive%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Payment-Checkbox-White-Inactive.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Payment-Checkbox-White-Inactive.imageset\icActionCheckboxInactiveWhite.png" />
+    <ImageAsset Include="Assets.xcassets\Payment-Checkbox-White-Inactive.imageset\icActionCheckboxInactiveWhite%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Payment-Checkbox-White-Inactive.imageset\icActionCheckboxInactiveWhite%402x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -980,6 +1070,25 @@
     <Folder Include="Assets.xcassets\IC-CO2.imageset\" />
     <Folder Include="Assets.xcassets\Mask-View.imageset\" />
     <Folder Include="Assets.xcassets\Empty-Chart-Data.imageset\" />
+    <Folder Include="Resources\Base.lproj\" />
+    <Folder Include="Extensions\" />
+    <Folder Include="Assets.xcassets\IC-X-Gray.imageset\" />
+    <Folder Include="Customs\" />
+    <Folder Include="Assets.xcassets\Greeting-Morning.imageset\" />
+    <Folder Include="Assets.xcassets\Greeting-Afternoon.imageset\" />
+    <Folder Include="Assets.xcassets\Greeting-Evening.imageset\" />
+    <Folder Include="Assets.xcassets\Down-BCRM.imageset\" />
+    <Folder Include="Assets.xcassets\Notification-Maintenance.imageset\" />
+    <Folder Include="Assets.xcassets\Notification-Promotion.imageset\" />
+    <Folder Include="Assets.xcassets\Notification-News.imageset\" />
+    <Folder Include="Assets.xcassets\Notification-Banner-Maintenance.imageset\" />
+    <Folder Include="Assets.xcassets\Notification-Banner-Promotion.imageset\" />
+    <Folder Include="Assets.xcassets\Notification-Banner-News.imageset\" />
+    <Folder Include="Assets.xcassets\Receipt-Header.imageset\" />
+    <Folder Include="Assets.xcassets\IC-Action-Hide-PasswordWhite.imageset\" />
+    <Folder Include="Assets.xcassets\IC-Action-Hide-Password.imageset\" />
+    <Folder Include="Assets.xcassets\Logo-Combined.imageset\" />
+    <Folder Include="Assets.xcassets\Payment-Checkbox-White-Inactive.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -1633,20 +1742,82 @@
     <Compile Include="Helpers\ChartHelper.cs" />
     <Compile Include="Helpers\AppVersionHelper.cs" />
     <Compile Include="Helpers\ToastHelper.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <XamarinComponentReference Include="restsharp">
-      <Version>105.2.3</Version>
-      <Visible>False</Visible>
-    </XamarinComponentReference>
-    <XamarinComponentReference Include="firebaseioscloudmessaging">
-      <Version>2.0.4.0</Version>
-      <Visible>False</Visible>
-    </XamarinComponentReference>
-    <XamarinComponentReference Include="cardioios">
-      <Version>5.4.1.1</Version>
-      <Visible>False</Visible>
-    </XamarinComponentReference>
+    <Compile Include="Extensions\StringExtensions.cs" />
+    <Compile Include="Home\Promotions\PromotionsModalViewController.cs" />
+    <Compile Include="Home\Promotions\PromotionsModalViewController.designer.cs">
+      <DependentUpon>PromotionsModalViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Sitecore CMS\Model\PromotionsModelV2.cs" />
+    <Compile Include="Sitecore CMS\Service\PromotionsV2Service.cs" />
+    <Compile Include="Sitecore CMS\Model\PromotionsV2ResponseModel.cs" />
+    <Compile Include="Sitecore CMS\Model\PromotionsParentV2ResponseModel.cs" />
+    <Compile Include="Home\Promotions\PromotionsModalDataSource.cs" />
+    <Compile Include="Model\Feedback\FeedbackQuestionRequestModel.cs" />
+    <Compile Include="Model\Feedback\FeedbackQuestionModel.cs" />
+    <Compile Include="Model\Feedback\QuestionInputOption.cs" />
+    <Compile Include="Enums\QuestionTypeEnum.cs" />
+    <Compile Include="Enums\QuestionCategoryEnum.cs" />
+    <Compile Include="Rating\FeedbackInputCell.cs" />
+    <Compile Include="Rating\FeedbackInputCell.designer.cs">
+      <DependentUpon>FeedbackInputCell.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Rating\RatingDataSource.cs" />
+    <Compile Include="Helpers\ViewHelper.cs" />
+    <Compile Include="Model\SubmitFeedback\InputAnswerDetailsModel.cs" />
+    <Compile Include="Model\SubmitFeedback\InputAnswerModel.cs" />
+    <Compile Include="Customs\FeedbackTextView.cs" />
+    <Compile Include="Rating\RatingResultsViewController.cs" />
+    <Compile Include="Rating\RatingResultsViewController.designer.cs">
+      <DependentUpon>RatingResultsViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Helpers\TextHelper.cs" />
+    <Compile Include="Home\Dashboard\DashboardHomeViewController.cs" />
+    <Compile Include="Home\Dashboard\DashboardHomeViewController.designer.cs">
+      <DependentUpon>DashboardHomeViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Home\Dashboard\DashboardNavigationController.cs" />
+    <Compile Include="Home\Dashboard\DashboardNavigationController.designer.cs">
+      <DependentUpon>DashboardNavigationController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Model\GetAccountDueAmount\AmountDueStatusResponseModel.cs" />
+    <Compile Include="Home\Dashboard\DashboardAccountsDataSource.cs" />
+    <Compile Include="Home\Dashboard\DashboardAccountCell.cs" />
+    <Compile Include="Home\Dashboard\DashboardAccountCell.designer.cs">
+      <DependentUpon>DashboardAccountCell.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Home\Components\GreetingComponent.cs" />
+    <Compile Include="Enums\GreetingModeEnum.cs" />
+    <Compile Include="Enums\NotificationEnum.cs" />
+    <Compile Include="SQLite\SQLite Data Manager\DueEntity.cs" />
+    <Compile Include="SQLite\SQLite Data Manager\BillingAccountEntity.cs" />
+    <Compile Include="SQLite\SQLite Data Manager\BillHistoryEntity.cs" />
+    <Compile Include="SQLite\SQLite Data Manager\PaymentHistoryEntity.cs" />
+    <Compile Include="Model\MasterDataResponseModel.cs" />
+    <Compile Include="Model\MasterDataModel.cs" />
+    <Compile Include="Model\AppVersionModel.cs" />
+    <Compile Include="Onboarding\AppUpdateViewController.cs" />
+    <Compile Include="Onboarding\AppUpdateViewController.designer.cs">
+      <DependentUpon>AppUpdateViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Model\DowntimeDataModel.cs" />
+    <Compile Include="Enums\SystemEnum.cs" />
+    <Compile Include="Home\Components\SystemDownComponent.cs" />
+    <Compile Include="Home\Bill\Receipt\ReceiptTableViewDataSource.cs" />
+    <Compile Include="Home\Bill\Receipt\ReceiptTableViewCell.cs" />
+    <Compile Include="Home\Bill\Receipt\ReceiptTableViewCell.designer.cs">
+      <DependentUpon>ReceiptTableViewCell.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Model\PhoneVerificationStatusResponseModel.cs" />
+    <Compile Include="Model\PhoneVerificationStatusDataModel.cs" />
+    <Compile Include="Home\Feedback\Feedback Details\FeedbackDetailsViewImageCell.cs" />
+    <Compile Include="Home\Feedback\Feedback Details\FeedbackDetailsViewImageCell.designer.cs">
+      <DependentUpon>FeedbackDetailsViewImageCell.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Home\Feedback\Feedback Details\FeedbackDetailsViewCell.cs" />
+    <Compile Include="Home\Feedback\Feedback Details\FeedbackDetailsViewCell.designer.cs">
+      <DependentUpon>FeedbackDetailsViewCell.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Enums\DashboardModeEnum.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />
@@ -1658,6 +1829,9 @@
     <BundleResource Include="Resources\Fonts\MuseoSans-300.otf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </BundleResource>
+    <BundleResource Include="Resources\TNB_Logo.json" />
+    <BundleResource Include="Resources\Base.lproj\Localizable.strings" />
+    <BundleResource Include="Resources\tnbReceiptLogoHeader.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <Import Project="..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" />
@@ -1666,4 +1840,6 @@
   <Import Project="..\packages\Xamarin.Firebase.iOS.InstanceID.2.0.4\build\Xamarin.Firebase.iOS.InstanceID.targets" Condition="Exists('..\packages\Xamarin.Firebase.iOS.InstanceID.2.0.4\build\Xamarin.Firebase.iOS.InstanceID.targets')" />
   <Import Project="..\packages\Xamarin.Firebase.iOS.Analytics.4.0.4\build\Xamarin.Firebase.iOS.Analytics.targets" Condition="Exists('..\packages\Xamarin.Firebase.iOS.Analytics.4.0.4\build\Xamarin.Firebase.iOS.Analytics.targets')" />
   <Import Project="..\packages\Xamarin.Firebase.iOS.CloudMessaging.2.0.4\build\Xamarin.Firebase.iOS.CloudMessaging.targets" Condition="Exists('..\packages\Xamarin.Firebase.iOS.CloudMessaging.2.0.4\build\Xamarin.Firebase.iOS.CloudMessaging.targets')" />
+  <Import Project="..\packages\Xamarin.Build.Download.0.4.11\build\Xamarin.Build.Download.targets" Condition="Exists('..\packages\Xamarin.Build.Download.0.4.11\build\Xamarin.Build.Download.targets')" />
+  <Import Project="..\packages\Xamarin.Firebase.iOS.Crashlytics.3.10.9\build\Xamarin.Firebase.iOS.Crashlytics.targets" Condition="Exists('..\packages\Xamarin.Firebase.iOS.Crashlytics.3.10.9\build\Xamarin.Firebase.iOS.Crashlytics.targets')" />
 </Project>

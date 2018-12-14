@@ -12,10 +12,15 @@ namespace myTNB.Home.More.PushNotificationSettings
 
         NotificationSettingsViewController _controller;
         List<string> _keys = new List<string>();
-        public NotificationSettingsDataSource(NotificationSettingsViewController controller, List<string> keys)
+        List<NotificationPreferenceModel> _preferenceItems = new List<NotificationPreferenceModel>();
+        public NotificationSettingsDataSource(NotificationSettingsViewController controller, List<string> keys, List<NotificationPreferenceModel> preferenceItems)
         {
             _controller = controller;
             _keys = keys;
+            if (preferenceItems != null)
+            {
+                _preferenceItems = preferenceItems;
+            }
         }
 
         public override nint NumberOfSections(UITableView tableView)
@@ -27,7 +32,7 @@ namespace myTNB.Home.More.PushNotificationSettings
         {
             if (section == 0)
             {
-                return DataManager.DataManager.SharedInstance.NotificationTypeResponse.d.data.Count;
+                return _preferenceItems.Count;
             }
             else if (section == 1)
             {
@@ -60,7 +65,7 @@ namespace myTNB.Home.More.PushNotificationSettings
             bool isNotificationType = true;
             if (indexPath.Section == 0)
             {
-                items = DataManager.DataManager.SharedInstance.NotificationTypeResponse.d.data;
+                items = _preferenceItems;
             }
             else if (indexPath.Section == 1)
             {

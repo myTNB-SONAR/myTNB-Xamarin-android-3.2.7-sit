@@ -1,4 +1,4 @@
-using Foundation;
+﻿using Foundation;
 using System;
 using UIKit;
 using myTNB.Dashboard.DashboardComponents;
@@ -6,6 +6,7 @@ using CoreGraphics;
 using System.Threading.Tasks;
 using myTNB.Model;
 using myTNB.DataManager;
+using myTNB.Extensions;
 
 namespace myTNB
 {
@@ -63,7 +64,7 @@ namespace myTNB
         {
             //Password
             float additionalYValue = 0;
-            if (DeviceHelper.IsIphoneX())
+            if (DeviceHelper.IsIphoneXUpResolution())
             {
                 additionalYValue += 24;
             }
@@ -71,7 +72,7 @@ namespace myTNB
             viewPassword.BackgroundColor = UIColor.Clear;
 
             lblPasswordTitle = new UILabel(new CGRect(0, 0, viewPassword.Frame.Width, 12));
-            lblPasswordTitle.Text = "PASSWORD";
+            lblPasswordTitle.Text = "CURRENT PASSWORD";
             lblPasswordTitle.Font = myTNBFont.MuseoSans9_300();
             lblPasswordTitle.TextColor = myTNBColor.SilverChalice();
             lblPasswordTitle.Hidden = true;
@@ -87,7 +88,7 @@ namespace myTNB
             {
                 Frame = new CGRect(0, 12, viewPassword.Frame.Width - 30, 24),
                 AttributedPlaceholder = new NSAttributedString(
-                    "Password"
+                    "Current Password"
                     , font: myTNBFont.MuseoSans16_300()
                     , foregroundColor: myTNBColor.SilverChalice()
                     , strokeWidth: 0
@@ -261,6 +262,8 @@ namespace myTNB
             {
                 lblTitle.Hidden = textField.Text.Length == 0;
                 DisplayEyeIcon(textField);
+                textField.LeftViewMode = UITextFieldViewMode.Never;
+                viewLine.BackgroundColor = myTNBColor.PowerBlue();
             };
             textField.ShouldEndEditing = (sender) =>
             {
@@ -289,6 +292,11 @@ namespace myTNB
             {
                 sender.ResignFirstResponder();
                 return false;
+            };
+            textField.EditingDidEnd += (sender, e) =>
+            {
+                if (textField.Text.Length == 0)
+                    textField.LeftViewMode = UITextFieldViewMode.UnlessEditing;
             };
         }
 
@@ -326,7 +334,7 @@ namespace myTNB
         internal void AddSaveButton()
         {
             btnSave = new UIButton(UIButtonType.Custom);
-            btnSave.Frame = new CGRect(18, View.Frame.Height - (DeviceHelper.IsIphoneX() ? 96 : 72), View.Frame.Width - 36, 48);
+            btnSave.Frame = new CGRect(18, View.Frame.Height - (DeviceHelper.IsIphoneXUpResolution() ? 96 : DeviceHelper.GetScaledHeight(72)), View.Frame.Width - 36, DeviceHelper.GetScaledHeight(48));
             btnSave.Layer.CornerRadius = 4;
             btnSave.BackgroundColor = myTNBColor.SilverChalice();
             btnSave.SetTitle("Save", UIControlState.Normal);
@@ -364,7 +372,7 @@ namespace myTNB
                         else
                         {
                             Console.WriteLine("No Network");
-                            DisplayAlertMessage("No Data Connection", "Please check your data connection and try again.");
+                            DisplayAlertMessage("ErrNoNetworkTitle".Translate(), "ErrNoNetworkMsg".Translate());
                         }
                         ActivityIndicator.Hide();
                     });

@@ -21,7 +21,7 @@ namespace myTNB.Dashboard.DashboardComponents
             _viewUsageHistory = new UIView(new CGRect(0, 0, _parentView.Frame.Width, 18));
 
             _lblDateRange = new UILabel(new CGRect(0, 0, _viewUsageHistory.Frame.Width, 18));
-            _lblDateRange.Font = myTNBFont.MuseoSans12();
+            _lblDateRange.Font = myTNBFont.MuseoSans14_500();
             _lblDateRange.TextAlignment = UITextAlignment.Center;
             _lblDateRange.TextColor = myTNBColor.SunGlow();
             _lblDateRange.Text = "-".ToUpper();
@@ -54,11 +54,11 @@ namespace myTNB.Dashboard.DashboardComponents
 
             if (isNormalMeter)
             {
-                yLocation = 0;//!DeviceHelper.IsIphoneX() ? 80 : 104;
+                yLocation = 0;//!DeviceHelper.IsIphoneXUpResolution() ? 80 : 104;
             }
             else
             {
-                yLocation = !DeviceHelper.IsIphoneX() ? 32 : 40; //109 : 133;
+                yLocation = !DeviceHelper.IsIphoneXUpResolution() ? 32 : 40; //109 : 133;
             }
 
             var newFrame = _viewUsageHistory.Frame;
@@ -79,7 +79,7 @@ namespace myTNB.Dashboard.DashboardComponents
         internal void CreateNavigationArrows()
         {
             double width = 122; // selector width
-            double xLocation = (_parentView.Frame.Width / 2) - (width / 2) - 15;
+            double xLocation = (_parentView.Frame.Width / 2) - (width / 2) - 22;
             _viewLeft = new UIView(new CGRect(xLocation, 0, 16, 16));
             UIImageView imgViewLeft = new UIImageView(new CGRect(0, 0, 16, 16));
             imgViewLeft.Image = UIImage.FromBundle("Arrow-Left");

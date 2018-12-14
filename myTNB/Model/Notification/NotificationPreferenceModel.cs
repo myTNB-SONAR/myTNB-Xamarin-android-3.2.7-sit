@@ -10,5 +10,7 @@
         public string CreatedDate { set; get; }
         public string MasterId { set; get; }
         public string IsOpted { set; get; }
+        public string ShowInPreference { set; get; }
+        public string ShowInFilterList { set; get; }
     }
 }

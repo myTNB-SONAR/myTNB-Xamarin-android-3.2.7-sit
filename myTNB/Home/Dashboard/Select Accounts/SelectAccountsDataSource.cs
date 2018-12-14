@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using CoreGraphics;
 using Foundation;
@@ -9,14 +10,14 @@ namespace myTNB.Dashboard.SelectAccounts
 {
     public class SelectAccountsDataSource : UITableViewSource
     {
-        public CustomerAccountRecordListModel _accountList = new CustomerAccountRecordListModel();
+        List<CustomerAccountRecordModel> _accountList = new List<CustomerAccountRecordModel>();
         SelectAccountTableViewController _controller;
         public SelectAccountsDataSource(SelectAccountTableViewController controller)
         {
             _controller = controller;
             if (DataManager.DataManager.SharedInstance.AccountRecordsList != null && DataManager.DataManager.SharedInstance.AccountRecordsList.d != null)
             {
-                _accountList = DataManager.DataManager.SharedInstance.AccountRecordsList;
+                _accountList = DataManager.DataManager.SharedInstance.AccountRecordsList?.d ?? new List<CustomerAccountRecordModel>();
             }
         }
 
@@ -27,13 +28,13 @@ namespace myTNB.Dashboard.SelectAccounts
 
         public override nint RowsInSection(UITableView tableview, nint section)
         {
-            return _accountList.d != null ? _accountList.d.Count : 0;
+            return _accountList != null ? _accountList.Count : 0;
         }
 
         public override UITableViewCell GetCell(UITableView tableView, NSIndexPath indexPath)
         {
             CustomerAccountRecordModel item = new CustomerAccountRecordModel();
-            item = _accountList.d[indexPath.Row];
+            item = _accountList[indexPath.Row];
             nfloat cellWidth = UIApplication.SharedApplication.KeyWindow.Frame.Width;
             var cell = tableView.DequeueReusableCell("AccountsViewCell", indexPath) as AccountsViewCell;
 
@@ -48,7 +49,7 @@ namespace myTNB.Dashboard.SelectAccounts
             cell.imgLeaf.Hidden = !isREAccount;
 
             if (indexPath.Row == DataManager.DataManager.SharedInstance.CurrentSelectedAccountIndex
-               && item.accNum == _accountList.d[DataManager.DataManager.SharedInstance.CurrentSelectedAccountIndex].accNum)
+               && item.accNum == _accountList[DataManager.DataManager.SharedInstance.CurrentSelectedAccountIndex].accNum)
             {
                 cell.Accessory = UITableViewCellAccessory.None;
                 cell.AccessoryView = new UIView(new CGRect(0, 0, 24, 24));
@@ -71,7 +72,14 @@ namespace myTNB.Dashboard.SelectAccounts
 
         public override void RowSelected(UITableView tableView, NSIndexPath indexPath)
         {
-            DataManager.DataManager.SharedInstance.SelectedAccount = _accountList.d[indexPath.Row];
+#if true
+            var selected = _accountList[indexPath.Row];
+            DataManager.DataManager.SharedInstance.IsSameAccount = DataManager.DataManager.SharedInstance.GetAccountsCount() > 1
+                ? string.Compare(selected.accNum, DataManager.DataManager.SharedInstance.SelectedAccount?.accNum) == 0
+                : false;
+            DataManager.DataManager.SharedInstance.SelectAccount(selected.accNum);
+#else
+            DataManager.DataManager.SharedInstance.SelectedAccount = _accountList[indexPath.Row];
             DataManager.DataManager.SharedInstance.CurrentSelectedAccountIndex = indexPath.Row;
             if (DataManager.DataManager.SharedInstance.CurrentSelectedAccountIndex
                == DataManager.DataManager.SharedInstance.PreviousSelectedAccountIndex)
@@ -84,13 +92,14 @@ namespace myTNB.Dashboard.SelectAccounts
                            = DataManager.DataManager.SharedInstance.CurrentSelectedAccountIndex;
                 DataManager.DataManager.SharedInstance.IsSameAccount = false;
             }
+#endif
             if (DataManager.DataManager.SharedInstance.IsSameAccount)
             {
                 _controller.DismissViewController(true, null);
             }
             else
             {
-                _controller.ExecuteGetBillAccountDetailsCall();
+                _controller.LoadBillingAccountDetails();
             }
         }
 

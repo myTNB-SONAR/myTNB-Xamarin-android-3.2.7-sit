@@ -26,6 +26,10 @@ namespace myTNB
         [GeneratedCode ("iOS Designer", "1.0")]
         UIKit.UITextView txtViewAddress { get; set; }
 
+        [Outlet]
+        [GeneratedCode ("iOS Designer", "1.0")]
+        UIKit.UIView viewLine { get; set; }
+
         void ReleaseDesignerOutlets ()
         {
             if (lblAccountNumber != null) {
@@ -41,6 +45,11 @@ namespace myTNB
             if (txtViewAddress != null) {
                 txtViewAddress.Dispose ();
                 txtViewAddress = null;
+            }
+
+            if (viewLine != null) {
+                viewLine.Dispose ();
+                viewLine = null;
             }
         }
     }

@@ -14,6 +14,10 @@ namespace myTNB.SQLite
         {
             var dbPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), TNBGlobal.DB_NAME);
             _db = new SQLiteConnection(dbPath);
+
+#if DEBUG
+            Console.WriteLine("dbPath: " + dbPath);
+#endif
         }
     }
 }

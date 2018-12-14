@@ -3,6 +3,7 @@ using System;
 using UIKit;
 using CoreGraphics;
 using myTNB.Registration;
+using myTNB.Extensions;
 
 namespace myTNB
 {
@@ -15,6 +16,8 @@ namespace myTNB
         UILabel lblYesDescription;
         UILabel lblNo;
         UILabel lblNoDescription;
+        const float margin = 16f;
+        const float inlineMargin = 8f;
 
         public SelectAccountByICNumberViewController(IntPtr handle) : base(handle)
         {
@@ -30,15 +33,15 @@ namespace myTNB
 
         internal void InitializedSubviews()
         {
-            NavigationItem.Title = "Add Electricity Account";
+            NavigationItem.Title = "AddElectricityAccnt".Translate();
             View.BackgroundColor = myTNBColor.LightGrayBG();
 
             lblTitle = new UILabel
             {
-                Frame = new CGRect(18, 16, View.Frame.Width - 36, 42),
+                Frame = new CGRect(18, 16, View.Frame.Width - 36, 80),
                 AttributedText = new NSAttributedString(
-                    "Was this supply account registered with your IC no.?"
-                    , font: myTNBFont.MuseoSans16()
+                    "QuestionICRegistered".Translate()
+                    , font: myTNBFont.MuseoSans18_500()
                     , foregroundColor: myTNBColor.PowerBlue()
                     , strokeWidth: 0
                 ),
@@ -49,17 +52,17 @@ namespace myTNB
 
             viewYes = new UIView
             {
-                Frame = new CGRect(18, 68, View.Frame.Width - 36, 68),
+                Frame = new CGRect(18, lblTitle.Frame.GetMaxY() + inlineMargin, View.Frame.Width - (margin * 2), 100),
                 BackgroundColor = UIColor.White,
             };
             viewYes.Layer.CornerRadius = 4.0f;
 
             lblYes = new UILabel
             {
-                Frame = new CGRect(34, 84, 26, 18),
+                Frame = new CGRect(margin, margin, viewYes.Frame.Width - (margin * 2), 18),
                 AttributedText = new NSAttributedString(
-                    "Yes,"
-                    , font: myTNBFont.MuseoSans14()
+                    "Yes".Translate() + ","
+                    , font: myTNBFont.MuseoSans16_500()
                     , foregroundColor: myTNBColor.TunaGrey()
                     , strokeWidth: 0
                 ),
@@ -68,41 +71,10 @@ namespace myTNB
 
             lblYesDescription = new UILabel
             {
-                Frame = new CGRect(34, 104, View.Frame.Width - 68, 18),
+                Frame = new CGRect(margin, lblYes.Frame.GetMaxY() + inlineMargin, viewYes.Frame.Width - (margin * 2), 40),
                 AttributedText = new NSAttributedString(
-                    "I'm the owner of the supply account."
-                    , font: myTNBFont.MuseoSans14_300()
-                    , foregroundColor: myTNBColor.TunaGrey()
-                    , strokeWidth: 0
-                ),
-                TextAlignment = UITextAlignment.Left,
-            };
-
-            viewNo = new UIView
-            {
-                Frame = new CGRect(18, 144, View.Frame.Width - 36, 86),
-                BackgroundColor = UIColor.White
-            };
-            viewNo.Layer.CornerRadius = 4.0f;
-
-            lblNo = new UILabel
-            {
-                Frame = new CGRect(34, 152, 23, 18),
-                AttributedText = new NSAttributedString(
-                    "No,"
-                    , font: myTNBFont.MuseoSans14()
-                    , foregroundColor: myTNBColor.TunaGrey()
-                    , strokeWidth: 0
-                ),
-                TextAlignment = UITextAlignment.Left,
-            };
-
-            lblNoDescription = new UILabel
-            {
-                Frame = new CGRect(34, 172, View.Frame.Width - 68, 38),
-                AttributedText = new NSAttributedString(
-                    "I’m renting this place / it belongs to my parents."
-                    , font: myTNBFont.MuseoSans14_300()
+                    "AnswerForOwner".Translate()
+                    , font: myTNBFont.MuseoSans16_300()
                     , foregroundColor: myTNBColor.TunaGrey()
                     , strokeWidth: 0
                 ),
@@ -111,13 +83,46 @@ namespace myTNB
                 LineBreakMode = UILineBreakMode.WordWrap
             };
 
+            viewYes.AddSubviews(new UIView[] { lblYes, lblYesDescription });
+
+            viewNo = new UIView
+            {
+                Frame = new CGRect(18, viewYes.Frame.GetMaxY() + inlineMargin, View.Frame.Width - (margin * 2), 100),
+                BackgroundColor = UIColor.White
+            };
+            viewNo.Layer.CornerRadius = 4.0f;
+
+            lblNo = new UILabel
+            {
+                Frame = new CGRect(margin, margin, viewNo.Frame.Width - (margin * 2), 18),
+                AttributedText = new NSAttributedString(
+                    "No".Translate() + ","
+                    , font: myTNBFont.MuseoSans16_500()
+                    , foregroundColor: myTNBColor.TunaGrey()
+                    , strokeWidth: 0
+                ),
+                TextAlignment = UITextAlignment.Left,
+            };
+
+            lblNoDescription = new UILabel
+            {
+                Frame = new CGRect(margin, lblNo.Frame.GetMaxY() + inlineMargin, viewNo.Frame.Width - (margin * 2), 40),
+                AttributedText = new NSAttributedString(
+                    "AnswerForNonOwner".Translate()
+                    , font: myTNBFont.MuseoSans16_300()
+                    , foregroundColor: myTNBColor.TunaGrey()
+                    , strokeWidth: 0
+                ),
+                TextAlignment = UITextAlignment.Left,
+                Lines = 0,
+                LineBreakMode = UILineBreakMode.WordWrap
+            };
+
+            viewNo.AddSubviews(new UIView[] { lblNo, lblNoDescription });
+
             View.AddSubview(lblTitle);
             View.AddSubview(viewYes);
             View.AddSubview(viewNo);
-            View.AddSubview(lblYes);
-            View.AddSubview(lblYesDescription);
-            View.AddSubview(lblNo);
-            View.AddSubview(lblNoDescription);
         }
 
         internal void AddBackButton()

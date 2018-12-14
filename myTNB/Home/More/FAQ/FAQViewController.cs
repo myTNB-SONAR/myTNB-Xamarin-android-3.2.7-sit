@@ -10,6 +10,7 @@ using myTNB.SitecoreCMS.Model;
 using Foundation;
 using myTNB.SQLite.SQLiteDataManager;
 using System.Collections.Generic;
+using myTNB.Extensions;
 
 namespace myTNB
 {
@@ -17,6 +18,7 @@ namespace myTNB
     {
         FAQModel _faq = new FAQModel();
         string _imageSize = string.Empty;
+        public string faqId;
         public FAQViewController(IntPtr handle) : base(handle)
         {
         }
@@ -52,6 +54,10 @@ namespace myTNB
                                 {
                                     tableviewFAQ.Source = new FAQDataSource(faqList, true);
                                     tableviewFAQ.ReloadData();
+                                    if (!string.IsNullOrEmpty(faqId))
+                                    {
+                                        ScrollToRow(faqList, faqId);
+                                    }
                                 }
                                 else
                                 {
@@ -66,12 +72,27 @@ namespace myTNB
                     else
                     {
                         Console.WriteLine("No Network");
-                        var alert = UIAlertController.Create("No Data Connection", "Please check your data connection and try again.", UIAlertControllerStyle.Alert);
+                        var alert = UIAlertController.Create("ErrNoNetworkTitle".Translate(), "ErrNoNetworkMsg".Translate(), UIAlertControllerStyle.Alert);
                         alert.AddAction(UIAlertAction.Create("Ok", UIAlertActionStyle.Cancel, null));
                         PresentViewController(alert, animated: true, completionHandler: null);
                     }
                 });
             });
+        }
+        /// <summary>
+        /// Scrolls to specific table row based on faqID parameter.
+        /// </summary>
+        /// <param name="faqList">FAQ list.</param>
+        /// <param name="fId">F identifier.</param>
+        private void ScrollToRow(List<FAQsModel> faqList, string fId)
+        {
+            int sectionIndex = faqList.FindIndex(x => x.ID == fId);
+
+            if (sectionIndex > -1)
+            {
+                NSIndexPath path = NSIndexPath.FromRowSection(0, sectionIndex);
+                tableviewFAQ.ScrollToRow(path, UITableViewScrollPosition.Top, false);
+            }
         }
 
         void SetNavigationBar()

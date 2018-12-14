@@ -11,6 +11,7 @@ using myTNB.Login.ForgotPassword;
 using myTNB.SQLite.SQLiteDataManager;
 using myTNB.DataManager;
 using System.Collections.Generic;
+using myTNB.Extensions;
 
 namespace myTNB
 {
@@ -26,6 +27,7 @@ namespace myTNB
         string _eMail = string.Empty;
         string _password = string.Empty;
         bool isAnimating = false;
+        bool IsRememberMe = true;
 
         UserAuthenticationResponseModel _authenticationList = new UserAuthenticationResponseModel();
         BillingAccountDetailsResponseModel _billingAccountDetailsList = new BillingAccountDetailsResponseModel();
@@ -33,6 +35,7 @@ namespace myTNB
 
         UIView viewEmail;
         UIView viewPassword;
+        UIView viewRememberMe;
 
         UILabel lblEmailTitle;
         UILabel lblPasswordTitle;
@@ -42,6 +45,13 @@ namespace myTNB
 
         UIView viewForgotPassword;
         UIView viewShowPassword;
+
+        UIView viewLineEmail;
+        UIView viewLinePassword;
+
+        UIView viewCheckBox;
+        UIImageView imgViewCheckBox;
+        UILabel lblRememberMe;
 
         public LoginViewController (IntPtr handle) : base (handle)
         {
@@ -91,7 +101,7 @@ namespace myTNB
 
             lblEmailTitle = new UILabel(new CGRect(0,0,viewEmail.Frame.Width, 12));
             lblEmailTitle.TextAlignment = UITextAlignment.Left;
-            lblEmailTitle.Font = myTNBFont.MuseoSans9();
+            lblEmailTitle.Font = myTNBFont.MuseoSans9_300();
             lblEmailTitle.TextColor = myTNBColor.LightGray();
             lblEmailTitle.Text = "EMAIL";
 
@@ -100,17 +110,18 @@ namespace myTNB
                 Frame = new CGRect(0, 12, viewEmail.Frame.Width, 24),
                 AttributedPlaceholder = new NSAttributedString(
                     "Email",
-                    font: myTNBFont.MuseoSans16(),
+                    font: myTNBFont.MuseoSans18_300(),
                     foregroundColor: myTNBColor.LightGray(),
                     strokeWidth: 0
                 ),
                 TextColor = UIColor.White
             };
             txtFieldEmail.KeyboardType = UIKeyboardType.EmailAddress;
+            txtFieldEmail.TintColor = myTNBColor.SunGlow();
             _textFieldHelper.CreateTextFieldLeftView(txtFieldEmail, "email_white");
             _textFieldHelper.SetKeyboard(txtFieldEmail);
 
-            UIView viewLineEmail = new UIView((new CGRect(0, 36, viewEmail.Frame.Width, 1)));
+            viewLineEmail = new UIView((new CGRect(0, 36, viewEmail.Frame.Width, 1)));
             viewLineEmail.BackgroundColor = UIColor.White;
 
             viewEmail.AddSubviews(new UIView[] { lblEmailTitle, txtFieldEmail, viewLineEmail });
@@ -119,7 +130,7 @@ namespace myTNB
 
             lblPasswordTitle = new UILabel(new CGRect(0, 0, viewPassword.Frame.Width, 12));
             lblPasswordTitle.TextAlignment = UITextAlignment.Left;
-            lblPasswordTitle.Font = myTNBFont.MuseoSans9();
+            lblPasswordTitle.Font = myTNBFont.MuseoSans9_300();
             lblPasswordTitle.TextColor = myTNBColor.LightGray();
             lblPasswordTitle.Text = "PASSWORD";
 
@@ -128,25 +139,26 @@ namespace myTNB
                 Frame = new CGRect(0, 12, viewPassword.Frame.Width - 30, 24),
                 AttributedPlaceholder = new NSAttributedString(
                     "Password",
-                    font: myTNBFont.MuseoSans16(),
+                    font: myTNBFont.MuseoSans18_300(),
                     foregroundColor: myTNBColor.LightGray(),
                     strokeWidth: 0
                 ),
                 TextColor = UIColor.White
             };
             txtFieldPassword.KeyboardType = UIKeyboardType.Default;
+            txtFieldPassword.TintColor = myTNBColor.SunGlow();
             txtFieldPassword.SecureTextEntry = true;
             _textFieldHelper.SetKeyboard(txtFieldPassword);
             _textFieldHelper.CreateTextFieldLeftView(txtFieldPassword, "password_white");
 
-            UIView viewLinePassword = new UIView((new CGRect(0, 36, viewPassword.Frame.Width, 1)));
+            viewLinePassword = new UIView((new CGRect(0, 36, viewPassword.Frame.Width, 1)));
             viewLinePassword.BackgroundColor = UIColor.White;
 
             viewForgotPassword = new UIView(new CGRect(0, 37, viewPassword.Frame.Width, 16));
             UILabel lblForgetPassword = new UILabel(new CGRect(0, 0, viewForgotPassword.Frame.Width, 16));
             lblForgetPassword.TextAlignment = UITextAlignment.Right;
-            lblForgetPassword.Font = myTNBFont.MuseoSans12();
-            lblForgetPassword.TextColor = myTNBColor.LightGray();
+            lblForgetPassword.Font = myTNBFont.MuseoSans12_500();
+            lblForgetPassword.TextColor = UIColor.White;
             lblForgetPassword.Text = "Forgot password?";
             viewForgotPassword.AddSubview(lblForgetPassword);
 
@@ -160,17 +172,64 @@ namespace myTNB
                 if (txtFieldPassword.SecureTextEntry)
                 {
                     txtFieldPassword.SecureTextEntry = false;
+                    imgShowPassword.Image = UIImage.FromBundle("IC-Action-Hide-PasswordWhite");
                 }
                 else
                 {
                     txtFieldPassword.SecureTextEntry = true;
+                    imgShowPassword.Image = UIImage.FromBundle("IC-Action-Show-PasswordWhite");
                 }
             }));
 
             viewPassword.AddSubviews(new UIView[] { lblPasswordTitle, txtFieldPassword
                 , viewLinePassword, viewForgotPassword, viewShowPassword });
 
-            View.AddSubviews(new UIView[]{viewEmail, viewPassword});
+            var sharedPreference = NSUserDefaults.StandardUserDefaults;
+            var emailString = sharedPreference.StringForKey(TNBGlobal.PreferenceKeys.RememberEmail);
+            if (!string.IsNullOrEmpty(emailString))
+            {
+                txtFieldEmail.Text = emailString;
+                txtFieldEmail.LeftViewMode = UITextFieldViewMode.Never;
+            }
+            viewRememberMe = new UIView(new CGRect(18, viewPassword.Frame.GetMaxY() + DeviceHelper.GetScaledHeight(20), View.Frame.Width - 36, 25));
+
+            viewCheckBox = new UIView(new CGRect(0, 0, 24, 24));
+            imgViewCheckBox = new UIImageView(new CGRect(0, 0, 24, 24));
+            imgViewCheckBox.Image = UIImage.FromBundle("Payment-Checkbox-Active");
+            viewCheckBox.AddSubview(imgViewCheckBox);
+
+            viewCheckBox.AddGestureRecognizer(new UITapGestureRecognizer(() =>
+            {
+                IsRememberMe = !IsRememberMe;
+                imgViewCheckBox.Image = UIImage.FromBundle(IsRememberMe
+                                                             ? "Payment-Checkbox-Active"
+                                                             : "Payment-Checkbox-White-Inactive");
+            }));
+
+            lblRememberMe = new UILabel(new CGRect(viewCheckBox.Frame.Width + 6, 4, viewRememberMe.Frame.Width, 16));
+            lblRememberMe.Font = myTNBFont.MuseoSans12_500();
+            lblRememberMe.TextColor = UIColor.White;
+            lblRememberMe.Text = "RememberMeLbl".Translate();
+
+            viewRememberMe.AddSubviews(new UIView[]{ viewCheckBox, lblRememberMe });
+
+            View.AddSubviews(new UIView[]{viewEmail, viewPassword, viewRememberMe});
+        }
+        /// <summary>
+        /// Method to remember or not the email based user selection when logging in
+        /// </summary>
+        private void RememberMe()
+        {
+            var sharedPreference = NSUserDefaults.StandardUserDefaults;
+            if (IsRememberMe)
+            {
+                sharedPreference.SetString(_eMail, TNBGlobal.PreferenceKeys.RememberEmail);
+            }
+            else
+            {
+                sharedPreference.SetString(string.Empty, TNBGlobal.PreferenceKeys.RememberEmail);
+            }
+            sharedPreference.Synchronize();
         }
 
 		void SetupSuperViewBackground()
@@ -204,12 +263,21 @@ namespace myTNB
 
 			txtFieldEmail.EditingDidBegin += (sender, e) => {
                 lblEmailTitle.Hidden = txtFieldEmail.Text.Length == 0;
+                viewLineEmail.BackgroundColor = myTNBColor.SunGlow();
+                txtFieldEmail.LeftViewMode = UITextFieldViewMode.Never;
 			};
 
 			txtFieldEmail.ShouldEndEditing = (sender) => {
                 lblEmailTitle.Hidden = txtFieldEmail.Text.Length == 0;
 				return true;
 			};
+
+            txtFieldEmail.EditingDidEnd += (sender, e) =>
+            {
+                viewLineEmail.BackgroundColor = UIColor.White;
+                if (txtFieldEmail.Text.Length == 0)
+                    txtFieldEmail.LeftViewMode = UITextFieldViewMode.UnlessEditing;
+            };
 
             txtFieldEmail.ShouldReturn = (sender) =>
             {
@@ -230,7 +298,9 @@ namespace myTNB
 			txtFieldPassword.EditingDidBegin += (sender, e) => {
                 lblPasswordTitle.Hidden = txtFieldPassword.Text.Length == 0;
                 viewShowPassword.Hidden = txtFieldPassword.Text.Length == 0;
-			};
+                viewLinePassword.BackgroundColor = myTNBColor.SunGlow();
+                txtFieldPassword.LeftViewMode = UITextFieldViewMode.Never;
+            };
 
 			txtFieldPassword.ShouldEndEditing = (sender) => {
                 lblPasswordTitle.Hidden = txtFieldPassword.Text.Length == 0;
@@ -238,9 +308,16 @@ namespace myTNB
 				return true;
 			};
 
-			txtFieldPassword.ShouldReturn = (sender) => {
+            txtFieldPassword.EditingDidEnd += (sender, e) =>
+            {
+                viewLinePassword.BackgroundColor = UIColor.White;
+                if (txtFieldPassword.Text.Length == 0)
+                    txtFieldPassword.LeftViewMode = UITextFieldViewMode.UnlessEditing;
+            };
+
+            txtFieldPassword.ShouldReturn = (sender) => {
 				sender.ResignFirstResponder();
-				return false;
+                return false;
 			};
 
 			txtFieldPassword.ShouldBeginEditing = (sender) => {
@@ -314,12 +391,13 @@ namespace myTNB
 					if (NetworkUtility.isReachable)
 					{
                         ActivityIndicator.Show();
+                        RememberMe();
                         ExecuteLoginCall();
 					}
 					else
 					{
                         Console.WriteLine("No Network");
-                        var alert = UIAlertController.Create("No Data Connection", "Please check your data connection and try again.", UIAlertControllerStyle.Alert);
+                        var alert = UIAlertController.Create("ErrNoNetworkTitle".Translate(), "ErrNoNetworkMsg".Translate(), UIAlertControllerStyle.Alert);
                         alert.AddAction(UIAlertAction.Create("Ok", UIAlertActionStyle.Cancel, null));
                         PresentViewController(alert, animated: true, completionHandler: null);
 					}
@@ -361,9 +439,20 @@ namespace myTNB
                             }
                             else
                             {
-                                sharedPreference.SetBool(true, "isLogin");
-                                sharedPreference.Synchronize();
-                                ExecuteGetCutomerRecordsCall();
+                                //TODO: RRA, remove temp code isVerified. 
+                                //bool isVerified = false;
+                                //if (isVerified)
+                                if (userAuthenticationModel.data.IsVerifiedPhone)
+                                {
+                                    sharedPreference.SetBool(true, TNBGlobal.PreferenceKeys.LoginState);
+                                    sharedPreference.SetBool(true, TNBGlobal.PreferenceKeys.PhoneVerification);
+                                    sharedPreference.Synchronize();
+                                    ExecuteGetCutomerRecordsCall();
+                                }
+                                else
+                                {
+                                    ShowUpdateMobileNumber(false);
+                                }
                             }
                         }
                         else
@@ -379,22 +468,31 @@ namespace myTNB
             });
         }
 
+        /// <summary>
+        /// Shows the update mobile number.
+        /// </summary>
+        /// <param name="willHideBackButton">If set to <c>true</c> will hide back button.</param>
+        private void ShowUpdateMobileNumber(bool willHideBackButton)         {             UIStoryboard storyBoard = UIStoryboard.FromName("UpdateMobileNumber", null);             UpdateMobileNumberViewController viewController =                 storyBoard.InstantiateViewController("UpdateMobileNumberViewController") as UpdateMobileNumberViewController;
+            viewController.WillHideBackButton = willHideBackButton;
+            viewController.IsFromLogin = true;             var navController = new UINavigationController(viewController);             PresentViewController(navController, true, null);
+            ActivityIndicator.Hide();         }
+
         Task Login(){
             return Task.Factory.StartNew(() => {
                 var sharedPreference = NSUserDefaults.StandardUserDefaults;
                 DataManager.DataManager.SharedInstance.FCMToken = sharedPreference.StringForKey("FCMToken");
                 DataManager.DataManager.SharedInstance.UDID = UIDevice.CurrentDevice.IdentifierForVendor.ToString();
 				ServiceManager serviceManager = new ServiceManager();
-				object requestParameter = new
-				{
+                object requestParameter = new
+                {
                     userName = _eMail,
                     password = _password,
                     apiKeyID = TNBGlobal.API_KEY_ID,
-					ipAddress = TNBGlobal.API_KEY_ID,
-					clientType = TNBGlobal.API_KEY_ID,
-					activeUserName = TNBGlobal.API_KEY_ID,
-					devicePlatform = TNBGlobal.API_KEY_ID,
-					deviceVersion = TNBGlobal.API_KEY_ID,
+                    ipAddress = TNBGlobal.API_KEY_ID,
+                    clientType = AppVersionHelper.GetBuildVersion(),
+                    activeUserName = TNBGlobal.API_KEY_ID,
+                    devicePlatform = TNBGlobal.DEVICE_PLATFORM_IOS,
+                    deviceVersion = DeviceHelper.GetOSVersion(),
                     deviceCordova = TNBGlobal.API_KEY_ID,
                     deviceId = DataManager.DataManager.SharedInstance.UDID,
                     fcmToken = DataManager.DataManager.SharedInstance.FCMToken != null
@@ -407,51 +505,7 @@ namespace myTNB
 			});
         }
 
-        void ExecuteGetCutomerRecordsCall()
-        {
-            ServiceCall.GetCustomerBillingAccountList().ContinueWith(task =>
-            {
-                InvokeOnMainThread(() =>
-                {
-                    if(DataManager.DataManager.SharedInstance.CustomerAccounts != null 
-                       && DataManager.DataManager.SharedInstance.CustomerAccounts.d != null
-                       && DataManager.DataManager.SharedInstance.CustomerAccounts.d.data != null){
-                        DataManager.DataManager.SharedInstance.AccountRecordsList.d 
-                                   = DataManager.DataManager.SharedInstance.CustomerAccounts.d.data;
-                    }
 
-                    if (DataManager.DataManager.SharedInstance.AccountRecordsList != null
-                        && DataManager.DataManager.SharedInstance.AccountRecordsList.d != null)
-                    {
-                        UserAccountsEntity uaManager = new UserAccountsEntity();
-                        uaManager.DeleteTable();
-                        uaManager.CreateTable();
-                        uaManager.InsertListOfItems(DataManager.DataManager.SharedInstance.AccountRecordsList);
-                    }
-
-                    if(DataManager.DataManager.SharedInstance.AccountRecordsList != null
-                       && DataManager.DataManager.SharedInstance.AccountRecordsList.d != null){
-                        if(DataManager.DataManager.SharedInstance.AccountRecordsList.d.Count > 0){
-                            DataManager.DataManager.SharedInstance.SelectedAccount = DataManager.DataManager.SharedInstance.AccountRecordsList.d[0];
-                            ExecuteGetBillAccountDetailsCall();
-                        }else{
-                            UIStoryboard storyBoard = UIStoryboard.FromName("Dashboard", null);
-                            UIViewController loginVC = storyBoard.InstantiateViewController("HomeTabBarController") as UIViewController;
-                            ShowViewController(loginVC, this);
-                            ActivityIndicator.Hide();
-                        }
-                    }else{
-                        DataManager.DataManager.SharedInstance.AccountRecordsList = new CustomerAccountRecordListModel();
-                        DataManager.DataManager.SharedInstance.AccountRecordsList.d = new List<CustomerAccountRecordModel>();
-
-                        UIStoryboard storyBoard = UIStoryboard.FromName("Dashboard", null);
-                        UIViewController loginVC = storyBoard.InstantiateViewController("HomeTabBarController") as UIViewController;
-                        ShowViewController(loginVC, this);
-                        ActivityIndicator.Hide();
-                    }
-                });
-            });
-        }
 
         void ExecuteGetBillAccountDetailsCall()
         {
@@ -463,6 +517,12 @@ namespace myTNB
                     {
                         PushNotificationHelper.GetNotifications();
                         DataManager.DataManager.SharedInstance.BillingAccountDetails = _billingAccountDetailsList.d.data;
+                        if (!DataManager.DataManager.SharedInstance.SelectedAccount.IsREAccount)
+                        {
+                            DataManager.DataManager.SharedInstance.SaveToBillingAccounts(DataManager.DataManager.SharedInstance.BillingAccountDetails,
+                                                                                         DataManager.DataManager.SharedInstance.SelectedAccount.accNum);
+                        }
+
                         UIStoryboard storyBoard = UIStoryboard.FromName("Dashboard", null);
                         UIViewController loginVC = storyBoard.InstantiateViewController("HomeTabBarController") as UIViewController;
                         ShowViewController(loginVC, this);
@@ -504,7 +564,7 @@ namespace myTNB
 
         void SetupFonts() {
             //Labels
-            lblWelcome.Font = myTNBFont.MuseoSans24();             lblAccountLogin.Font = myTNBFont.MuseoSans16();             lblNoAccount.Font = myTNBFont.MuseoSans12();              //Buttons             btnRegister.TitleLabel.Font = myTNBFont.MuseoSans12();             btnLogin.TitleLabel.Font = myTNBFont.MuseoSans16();         }
+            lblWelcome.Font = myTNBFont.MuseoSans26_500();             lblAccountLogin.Font = myTNBFont.MuseoSans18_300();             lblNoAccount.Font = myTNBFont.MuseoSans12_300();              //Buttons             btnRegister.TitleLabel.Font = myTNBFont.MuseoSans12_500();             btnLogin.TitleLabel.Font = myTNBFont.MuseoSans16_500();         }
 
         void HideDialog() {
 			if (viewErrorDialog.Hidden == false)
@@ -545,7 +605,7 @@ namespace myTNB
 			btnBack.TranslatesAutoresizingMaskIntoConstraints = false;
 			View.AddSubview(btnBack);
 			View.AddConstraints(
-                btnBack.AtTopOf(View, DeviceHelper.IsIphoneX() ? 50 : 26)
+                btnBack.AtTopOf(View, DeviceHelper.IsIphoneXUpResolution() ? 50 : 26)
                 , btnBack.AtLeftOf(View, 18)
                 , btnBack.Width().EqualTo(24)
                 , btnBack.Height().EqualTo(24)
@@ -558,11 +618,8 @@ namespace myTNB
 
 		void OnDismiss()
 		{
-            UIStoryboard loginStoryboard = UIStoryboard.FromName("Login", null);
-            UIViewController preloginVC = (UIViewController)loginStoryboard.InstantiateViewController("PreloginViewController");
-            preloginVC.ModalTransitionStyle = UIModalTransitionStyle.CrossDissolve;
-            PresentViewController(preloginVC, true, null);
-		}
+            this.DismissViewController(true, null);
+        }
 
         void DisplayPage(string storyboardName, string storyboardID){
             UIStoryboard storyBoard = UIStoryboard.FromName(storyboardName, null);
@@ -570,6 +627,60 @@ namespace myTNB
                 storyBoard.InstantiateViewController(storyboardID) as UIViewController;
             var navController = new UINavigationController(viewController);
             PresentViewController(navController, true, null);
+        }
+
+        void ExecuteGetCutomerRecordsCall()
+        {
+            ServiceCall.GetCustomerBillingAccountList().ContinueWith(task =>
+            {
+                InvokeOnMainThread(() =>
+                {
+                    if (DataManager.DataManager.SharedInstance.CustomerAccounts != null
+                       && DataManager.DataManager.SharedInstance.CustomerAccounts.d != null
+                       && DataManager.DataManager.SharedInstance.CustomerAccounts.d.data != null)
+                    {
+                        DataManager.DataManager.SharedInstance.AccountRecordsList.d
+                                   = DataManager.DataManager.SharedInstance.CustomerAccounts.d.data;
+                    }
+
+                    if (DataManager.DataManager.SharedInstance.AccountRecordsList != null
+                        && DataManager.DataManager.SharedInstance.AccountRecordsList.d != null)
+                    {
+                        UserAccountsEntity uaManager = new UserAccountsEntity();
+                        uaManager.DeleteTable();
+                        uaManager.CreateTable();
+                        uaManager.InsertListOfItems(DataManager.DataManager.SharedInstance.AccountRecordsList);
+                        DataManager.DataManager.SharedInstance.AccountRecordsList = uaManager.GetCustomerAccountRecordList();
+                    }
+
+                    if (DataManager.DataManager.SharedInstance.AccountRecordsList != null
+                       && DataManager.DataManager.SharedInstance.AccountRecordsList.d != null)
+                    {
+                        if (DataManager.DataManager.SharedInstance.AccountRecordsList.d.Count > 0)
+                        {
+                            DataManager.DataManager.SharedInstance.SelectedAccount = DataManager.DataManager.SharedInstance.AccountRecordsList.d[0];
+                            ExecuteGetBillAccountDetailsCall();
+                        }
+                        else
+                        {
+                            UIStoryboard storyBoard = UIStoryboard.FromName("Dashboard", null);
+                            UIViewController loginVC = storyBoard.InstantiateViewController("HomeTabBarController") as UIViewController;
+                            ShowViewController(loginVC, this);
+                            ActivityIndicator.Hide();
+                        }
+                    }
+                    else
+                    {
+                        DataManager.DataManager.SharedInstance.AccountRecordsList = new CustomerAccountRecordListModel();
+                        DataManager.DataManager.SharedInstance.AccountRecordsList.d = new List<CustomerAccountRecordModel>();
+
+                        UIStoryboard storyBoard = UIStoryboard.FromName("Dashboard", null);
+                        UIViewController loginVC = storyBoard.InstantiateViewController("HomeTabBarController") as UIViewController;
+                        ShowViewController(loginVC, this);
+                        ActivityIndicator.Hide();
+                    }
+                });
+            });
         }
     }
 }

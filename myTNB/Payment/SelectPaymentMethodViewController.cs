@@ -3,10 +3,14 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using CoreGraphics;
 using myTNB.Dashboard.DashboardComponents;
+using myTNB.Enums;
 using myTNB.Model;
 using myTNB.Model.RequestPayBill;
 using myTNB.Payment.AddCard;
 using UIKit;
+using myTNB.Extensions;
+using Foundation;
+using System.Globalization;
 
 namespace myTNB
 {
@@ -38,10 +42,11 @@ namespace myTNB
         public override void ViewDidLoad()
         {
             base.ViewDidLoad();
+
             AddBackButton();
 
             var headerView = new UIView(new CGRect(0, 0, (float)View.Frame.Width, 100));
-            headerView.BackgroundColor = myTNBColor.SectionGrey();
+            headerView.BackgroundColor = UIColor.White;
             selectPaymentTableView.Frame = new CGRect(0, 0, View.Frame.Width, View.Frame.Height - 64);
             selectPaymentTableView.TableHeaderView = headerView;
 
@@ -53,14 +58,14 @@ namespace myTNB
 
             var lblAmountTitle = new UILabel(new CGRect(18, 20, View.Frame.Width, 12));
             lblAmountTitle.TextColor = myTNBColor.SilverChalice();
-            lblAmountTitle.Font = myTNBFont.MuseoSans9();
+            lblAmountTitle.Font = myTNBFont.MuseoSans9_300();
             lblAmountTitle.TextAlignment = UITextAlignment.Left;
             lblAmountTitle.Text = "TOTAL AMOUNT (RM)";
             headerView.AddSubview(lblAmountTitle);
 
             txtFieldAmountValue = new UITextField(new CGRect(18, 40, View.Frame.Width - 36, 24));
             txtFieldAmountValue.TextColor = myTNBColor.TunaGrey();
-            txtFieldAmountValue.Font = myTNBFont.MuseoSans16();
+            txtFieldAmountValue.Font = myTNBFont.MuseoSans16_300();
             //txtFieldAmountValue.Text = DataManager.DataManager.SharedInstance.BillingAccountDetails.amCustBal.ToString();
             txtFieldAmountValue.Text = TotalAmount;
             txtFieldAmountValue.TextAlignment = UITextAlignment.Right;
@@ -75,20 +80,30 @@ namespace myTNB
             lineView.BackgroundColor = myTNBColor.PlatinumGrey();
             headerView.AddSubview(lineView);
 
-            /*NSNotificationCenter.DefaultCenter.AddObserver(UIKeyboard.DidShowNotification, (NSNotification obj) =>
-            {
-                var userInfo = obj.UserInfo;
-                NSValue keyboardFrame = userInfo.ValueForKey(UIKeyboard.FrameEndUserInfoKey) as NSValue;
-                CGRect keyboardRectangle = keyboardFrame.CGRectValue;
-                Console.WriteLine("height: " + keyboardRectangle.Height);
-            });
-            */
+            NSNotificationCenter.DefaultCenter.AddObserver(UIKeyboard.WillShowNotification, OnKeyboardNotification);
         }
 
         public override void ViewWillAppear(bool animated)
         {
             base.ViewWillAppear(animated);
+
+            // to show toast on top of navigation bar
+            if (NavigationController != null && NavigationController.NavigationBar != null)
+            {
+                NavigationController.NavigationBar.Layer.ZPosition = -1;
+            }
+
             ExecuteGetRegisteredCardsCall();
+        }
+
+        public override void ViewWillDisappear(bool animated)
+        {
+            base.ViewWillDisappear(animated);
+
+            if (NavigationController != null && NavigationController.NavigationBar != null)
+            {
+                NavigationController.NavigationBar.Layer.ZPosition = 0;
+            }
         }
 
         public override void ViewDidDisappear(bool animated)
@@ -111,7 +126,7 @@ namespace myTNB
         {
             if (NavigationController != null && NavigationController.NavigationBar != null)
             {
-                NavigationController.NavigationBar.Hidden = true;
+                NavigationController.SetNavigationBarHidden(true, false);
             }
             GradientViewComponent gradientViewComponent = new GradientViewComponent(View, true, 64, true);
             UIView headerView = gradientViewComponent.GetUI();
@@ -175,6 +190,8 @@ namespace myTNB
 
         internal void ExecuteRequestPayBillCall(int thePlatform, string thePaymentMode, string cardID, bool isNewCard, string amountDue)
         {
+            RemoveCachedAccountRecords();
+
             ActivityIndicator.Show();
             /*
             RequestPayBill(thePlatform, thePaymentMode, cardID, isNewCard, amountDue).ContinueWith(task =>
@@ -206,7 +223,7 @@ namespace myTNB
                     }
                     else
                     {
-                        string errMsg = "There is an error in the server, please try again.";
+                        string errMsg = "DefaultServerErrorMessage".Translate();
                         if (_requestPayBill != null && _requestPayBill.d != null && !string.IsNullOrEmpty(_requestPayBill.d.message))
                         {
                             errMsg = _requestPayBill.d.message;
@@ -246,40 +263,74 @@ namespace myTNB
         {
             List<PaymentItemsModel> paymentItemList = new List<PaymentItemsModel>();
             PaymentItemsModel paymentItem;
+            int count = AccountsForPayment?.Count ?? 0;
+            string ownerName = count == 1 ? AccountsForPayment[0].accountOwnerName : string.Empty;
+
             foreach (var item in AccountsForPayment)
             {
                 paymentItem = new PaymentItemsModel();
+                paymentItem.AccountOwnerName = count > 1 ? item.accountOwnerName : DataManager.DataManager.SharedInstance.UserEntity[0].displayName;
                 paymentItem.AccountNo = item.accNum;
-                paymentItem.Amount = item.Amount.ToString();
+                paymentItem.Amount = item.Amount.ToString("N2", CultureInfo.InvariantCulture);
                 paymentItemList.Add(paymentItem);
             }
 
+            double numAmount = TextHelper.ParseStringToDouble(TotalAmount);
+
+            ServiceManager serviceManager = new ServiceManager();
+            object requestParameter = new
+            {
+                apiKeyID = TNBGlobal.API_KEY_ID,
+                customerName = count > 1 ? DataManager.DataManager.SharedInstance.UserEntity[0].displayName : ownerName,
+                accNum = DataManager.DataManager.SharedInstance.BillingAccountDetails.accNum,
+                email = DataManager.DataManager.SharedInstance.UserEntity[0].email,
+                phoneNo = DataManager.DataManager.SharedInstance.UserEntity[0].mobileNo != null ? DataManager.DataManager.SharedInstance.UserEntity[0].mobileNo : "",
+                sspUserId = DataManager.DataManager.SharedInstance.User.UserID,
+                platform = thePlatform,
+                registeredCardId = cardID,
+                paymentMode = thePaymentMode,
+                totalAmount = numAmount,
+                paymentItems = paymentItemList
+            };
+
             return Task.Factory.StartNew(() =>
             {
-                ServiceManager serviceManager = new ServiceManager();
-                object requestParameter = new
-                {
-                    apiKeyID = TNBGlobal.API_KEY_ID,
-                    customerName = DataManager.DataManager.SharedInstance.UserEntity[0].displayName,
-                    accNum = DataManager.DataManager.SharedInstance.BillingAccountDetails.accNum,
-                    email = DataManager.DataManager.SharedInstance.UserEntity[0].email,
-                    phoneNo = DataManager.DataManager.SharedInstance.UserEntity[0].mobileNo != null ? DataManager.DataManager.SharedInstance.UserEntity[0].mobileNo : "",
-                    sspUserId = DataManager.DataManager.SharedInstance.User.UserID,
-                    platform = thePlatform,
-                    registeredCardId = cardID,
-                    paymentMode = thePaymentMode,
-                    totalAmount = Convert.ToDouble(TotalAmount),
-                    paymentItems = paymentItemList
-                };
                 _requestPayBill = serviceManager.RequestMultiPayBill("RequestMultiPayBill", requestParameter);
             });
         }
 
         internal void InitializedTableView()
         {
-            selectPaymentTableView.Source = new SelectPaymentTableViewSource(_registeredCards, _requestPayBill, this);
+            selectPaymentTableView.Source = new SelectPaymentTableViewSource(_registeredCards, _requestPayBill,
+                                                                             this, OnSelectUnavailablePaymentMethod);
             selectPaymentTableView.BackgroundColor = myTNBColor.SectionGrey();
             selectPaymentTableView.ReloadData();
+        }
+
+        /// <summary>
+        /// Handles the selection of unavailable payment method.
+        /// </summary>
+        /// <param name="methodType">Method type.</param>
+        private void OnSelectUnavailablePaymentMethod(SystemEnum methodType)
+        {
+            ShowError(methodType);
+        }
+
+        /// <summary>
+        /// Shows the error message.
+        /// </summary>
+        private void ShowError(SystemEnum methodType)
+        {
+            string errMsg = "DefaultServerErrorMessage".Translate();
+            var status = DataManager.DataManager.SharedInstance.SystemStatus?.Find(x => x.SystemType == methodType);
+            if (status != null && !string.IsNullOrEmpty(status?.DowntimeTextMessage))
+            {
+                errMsg = status?.DowntimeTextMessage;
+            }
+
+            var alert = UIAlertController.Create(string.Empty, errMsg, UIAlertControllerStyle.Alert);
+            alert.AddAction(UIAlertAction.Create("Ok", UIAlertActionStyle.Cancel, null));
+            PresentViewController(alert, animated: true, completionHandler: null);
         }
 
         internal void NavigateToVC(RequestPayBillResponseModel requestPayBillResponseModel, int platform, string paymentMode)
@@ -307,14 +358,14 @@ namespace myTNB
             viewCVVBackground = new UIView(new CGRect(0
                                                              , 0
                                                              , View.Frame.Width
-                                                             , UIScreen.MainScreen.Bounds.Height - (GetKeyboardHeight() + 175)));
+                                                             , UIScreen.MainScreen.Bounds.Height - 175));
             viewCVVBackground.BackgroundColor = UIColor.Black;
             viewCVVBackground.Alpha = 0.75F;
             UIWindow currentWindow = UIApplication.SharedApplication.KeyWindow;
             currentWindow.AddSubview(viewCVVBackground);
 
             viewCVVContainer = new UIView(new CGRect(0
-                                                     , View.Frame.Height - GetKeyboardHeight() - 175
+                                                     , View.Frame.Height - 175
                                                      , View.Frame.Width
                                                      , 175));
             viewCVVContainer.BackgroundColor = UIColor.White;
@@ -390,28 +441,40 @@ namespace myTNB
             View.AddSubview(viewCVVContainer);
         }
 
-        int GetKeyboardHeight()
+        /// <summary>
+        /// Handles the keyboard notification.
+        /// </summary>
+        /// <param name="notification">Notification.</param>
+        private void OnKeyboardNotification(NSNotification notification)
         {
-            int deviceHeight = (int)UIScreen.MainScreen.NativeBounds.Height;
-            int height = 226;
-            if (deviceHeight == 1136)
+            if (!IsViewLoaded)
+                return;
+
+            bool visible = notification.Name == UIKeyboard.WillShowNotification;
+            UIView.BeginAnimations("AnimateForKeyboard");
+            UIView.SetAnimationBeginsFromCurrentState(true);
+            UIView.SetAnimationDuration(UIKeyboard.AnimationDurationFromNotification(notification));
+            UIView.SetAnimationCurve((UIViewAnimationCurve)UIKeyboard.AnimationCurveFromNotification(notification));
+
+            if (visible)
             {
-                height = 216;
+                CGRect r = UIKeyboard.BoundsFromNotification(notification);
+                CGRect viewFrame = View.Bounds;
+                nfloat currentViewHeight = viewFrame.Height - r.Height;
+
+                UIWindow currentWindow = UIApplication.SharedApplication.KeyWindow;
+
+                if (viewCVVContainer != null && viewCVVContainer.IsDescendantOfView(View))
+                {
+                    ViewHelper.AdjustFrameSetHeight(viewCVVBackground, UIScreen.MainScreen.Bounds.Height - (r.Height + 175));
+                    ViewHelper.AdjustFrameSetY(viewCVVContainer, View.Frame.Height - r.Height - 175);
+                }
+
             }
-            else if (deviceHeight == 1334)
-            {
-                height = 216;
-            }
-            else if (deviceHeight == 2208)
-            {
-                height = 226;
-            }
-            else if (deviceHeight == 2436)
-            {
-                height = 291;
-            }
-            return height;
+
+            UIView.CommitAnimations();
         }
+
 
         internal void SetTextFieldEvents(UITextField textField)
         {
@@ -481,15 +544,16 @@ namespace myTNB
                             viewCVVContainer.RemoveFromSuperview();
                             viewCVVBackground.Hidden = true;
                             viewCVVBackground.RemoveFromSuperview();
+
                             _isAMEX = false;
-                            Console.WriteLine("CVV: " + cvv);
+
                             ActivityIndicator.Hide();
                             _cardCVV = cvv;
                             ExecuteRequestPayBillCall(2, "CC", _selectedSavedCardID, false, txtFieldAmountValue.Text);
                         }
                         else
                         {
-                            var alert = UIAlertController.Create("No Data Connection", "Please check your data connection and try again.", UIAlertControllerStyle.Alert);
+                            var alert = UIAlertController.Create("ErrNoNetworkTitle".Translate(), "ErrNoNetworkMsg".Translate(), UIAlertControllerStyle.Alert);
                             alert.AddAction(UIAlertAction.Create("Ok", UIAlertActionStyle.Cancel, null));
                             PresentViewController(alert, true, null);
                             ActivityIndicator.Hide();
@@ -498,5 +562,18 @@ namespace myTNB
                 });
             }
         }
+
+        /// <summary>
+        /// Removes the cached account records.
+        /// </summary>
+        private void RemoveCachedAccountRecords()
+        {
+            foreach (var item in AccountsForPayment)
+            {
+                DataManager.DataManager.SharedInstance.DeleteDue(item.accNum);
+                DataManager.DataManager.SharedInstance.DeleteDetailsFromPaymentHistory(item.accNum);
+            }
+        }
+
     }
 }

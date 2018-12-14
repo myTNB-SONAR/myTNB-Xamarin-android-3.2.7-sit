@@ -15,6 +15,15 @@
         public string GeneralLinkText { set; get; }
         public string ID { set; get; }
         public bool IsRead { set; get; }
+
+        public string HeaderContent { set; get; }
+        public string BodyContent { set; get; }
+        public string FooterContent { set; get; }
+        public string PortraitImage { set; get; }
+        public string LandscapeImage { set; get; }
+        public string PromoStartDate { set; get; }
+        public string PromoEndDate { set; get; }
+        public bool IsPromoExpired { set; get; }
     }
 
     public class PromotionParentModel

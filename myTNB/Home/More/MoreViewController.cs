@@ -1,4 +1,4 @@
-using Foundation;
+﻿using Foundation;
 using System;
 using UIKit;
 using myTNB.Dashboard.DashboardComponents;
@@ -9,6 +9,7 @@ using myTNB.Registration;
 using myTNB.DataManager;
 using System.Threading.Tasks;
 using myTNB.Model;
+using myTNB.Extensions;
 
 namespace myTNB
 {
@@ -20,7 +21,7 @@ namespace myTNB
 
         Dictionary<string, List<string>> _itemsDictionary = new Dictionary<string, List<string>>(){
             {"Settings", new List<string>{"My Account", "Notifications"}}
-            , {"Help & Support", new List<string>{"Find Us", "Call Us (Outages & Breakdown)", "Call Us (Billing Enquiries)", "Understand Your Bill", "FAQ", "Terms and Conditions"}}
+            , {"Help & Support", new List<string>{"Find Us", "Call Us (Outages & Breakdown)", "Call Us (Billing Enquiries)", "FAQ", "Terms & Conditions"}}
             , {"Share", new List<string>{"Share this app", "Rate this app"}}
         };
 
@@ -43,19 +44,21 @@ namespace myTNB
             base.ViewDidAppear(animated);
         }
 
-        void UpdateDictionary(){
-            if(_itemsDictionary.ContainsKey("Help & Support") && IsValidWeblinks()){
-                int cloIndex = DataManager.DataManager.SharedInstance.WebLinks.d.data.FindIndex(x => x.Code.ToLower().Equals("tnbclo"));
-                int cleIndex = DataManager.DataManager.SharedInstance.WebLinks.d.data.FindIndex(x => x.Code.ToLower().Equals("tnbcle"));
-                if(cloIndex > -1 && cleIndex > -1){
+        void UpdateDictionary()
+        {
+            if (_itemsDictionary.ContainsKey("Help & Support") && IsValidWeblinks())
+            {
+                int cloIndex = DataManager.DataManager.SharedInstance.WebLinks.FindIndex(x => x.Code.ToLower().Equals("tnbclo"));
+                int cleIndex = DataManager.DataManager.SharedInstance.WebLinks.FindIndex(x => x.Code.ToLower().Equals("tnbcle"));
+                if (cloIndex > -1 && cleIndex > -1)
+                {
                     List<string> helpAndSupportList = new List<string>
                     {
                         "Find Us"
-                        , DataManager.DataManager.SharedInstance.WebLinks.d.data[cloIndex].Title
-                        , DataManager.DataManager.SharedInstance.WebLinks.d.data[cleIndex].Title
-                        , "Understand Your Bill"
+                        , DataManager.DataManager.SharedInstance.WebLinks[cloIndex].Title
+                        , DataManager.DataManager.SharedInstance.WebLinks[cleIndex].Title
                         , "FAQ"
-                        , "Terms and Conditions"
+                        , "Terms & Conditions"
                     };
                     _itemsDictionary["Help & Support"] = helpAndSupportList;
                 }
@@ -73,7 +76,7 @@ namespace myTNB
             headerView.AddSubview(titleBarView);
             View.AddSubview(headerView);
 
-            moreTableView.Frame = new CGRect(0, DeviceHelper.IsIphoneX() ? 88 : 64, View.Frame.Width, View.Frame.Height - 64 - 49);
+            moreTableView.Frame = new CGRect(0, DeviceHelper.IsIphoneXUpResolution() ? 88 : 64, View.Frame.Width, View.Frame.Height - 64 - 49);
             moreTableView.RowHeight = 50f;
             moreTableView.SectionHeaderHeight = 48f;
             moreTableView.SeparatorStyle = UITableViewCellSeparatorStyle.None;
@@ -119,17 +122,19 @@ namespace myTNB
                                     {
                                         CallCustomerService("tnbclo");
                                     }
-                                    else if(row == 2){
+                                    else if (row == 2)
+                                    {
                                         CallCustomerService("tnbcle");
                                     }
+                                    //else if (row == 3)
+                                    //{
+                                    //    ShowBrowser("bill");
+                                    //}
                                     else if (row == 3)
                                     {
-                                        ShowBrowser("bill");
-                                    }
-                                    else if(row == 4){
                                         GoToFAQ();
                                     }
-                                    else if (row == 5)
+                                    else if (row == 4)
                                     {
                                         GoToTermsAndCondition();
                                     }
@@ -156,7 +161,7 @@ namespace myTNB
                     else
                     {
                         Console.WriteLine("No Network");
-                        DisplayAlertMessage("No Data Connection", "Please check your data connection and try again.");
+                        DisplayAlertMessage("ErrNoNetworkTitle".Translate(), "ErrNoNetworkMsg".Translate());
                     }
                 });
             });
@@ -180,13 +185,13 @@ namespace myTNB
             ActivityIndicator.Show();
             PushNotificationHelper.GetUserNotificationPreferences();
             if (DataManager.DataManager.SharedInstance.NotificationTypeResponse != null
-                && DataManager.DataManager.SharedInstance.NotificationTypeResponse.d != null
-                && DataManager.DataManager.SharedInstance.NotificationTypeResponse.d.isError == "false"
-                && DataManager.DataManager.SharedInstance.NotificationTypeResponse.d.status == "success"
+                && DataManager.DataManager.SharedInstance.NotificationTypeResponse?.d != null
+                && DataManager.DataManager.SharedInstance.NotificationTypeResponse?.d?.status == "success"
+                && DataManager.DataManager.SharedInstance.NotificationTypeResponse?.d?.didSucceed == true
                 && DataManager.DataManager.SharedInstance.NotificationChannelResponse != null
-                && DataManager.DataManager.SharedInstance.NotificationChannelResponse.d != null
-                && DataManager.DataManager.SharedInstance.NotificationChannelResponse.d.isError == "false"
-                && DataManager.DataManager.SharedInstance.NotificationChannelResponse.d.status == "success")
+                && DataManager.DataManager.SharedInstance.NotificationChannelResponse?.d != null
+                && DataManager.DataManager.SharedInstance.NotificationChannelResponse?.d?.status == "success"
+                && DataManager.DataManager.SharedInstance.NotificationChannelResponse?.d?.didSucceed == true)
             {
                 UIStoryboard storyBoard = UIStoryboard.FromName("NotificationSettings", null);
                 NotificationSettingsViewController viewController = storyBoard.InstantiateViewController("NotificationSettingsViewController") as NotificationSettingsViewController;
@@ -196,8 +201,22 @@ namespace myTNB
             }
             else
             {
-                DisplayAlertMessage("Error", DataManager.DataManager.SharedInstance.NotificationTypeResponse.d.message
-                                    + " " + DataManager.DataManager.SharedInstance.NotificationChannelResponse.d.message);
+                string errorMessage = string.Empty;
+                if (DataManager.DataManager.SharedInstance.NotificationTypeResponse?.d?.didSucceed == false
+                    && !string.IsNullOrWhiteSpace(DataManager.DataManager.SharedInstance.NotificationTypeResponse?.d?.message))
+                {
+                    errorMessage = DataManager.DataManager.SharedInstance.NotificationTypeResponse?.d?.message;
+                }
+                else if (DataManager.DataManager.SharedInstance.NotificationChannelResponse?.d?.didSucceed == false
+                    && !string.IsNullOrWhiteSpace(DataManager.DataManager.SharedInstance.NotificationChannelResponse?.d?.message))
+                {
+                    errorMessage = DataManager.DataManager.SharedInstance.NotificationChannelResponse?.d?.message;
+                }
+                else
+                {
+                    errorMessage = "DefaultErrorMessage".Translate();
+                }
+                DisplayAlertMessage("ErrorTitle".Translate(), errorMessage);
                 ActivityIndicator.Hide();
             }
         }
@@ -247,21 +266,18 @@ namespace myTNB
 
         bool IsValidWeblinks()
         {
-            return DataManager.DataManager.SharedInstance.WebLinks != null
-                              && DataManager.DataManager.SharedInstance.WebLinks.d != null
-                              && DataManager.DataManager.SharedInstance.WebLinks.d.data != null
-                              && DataManager.DataManager.SharedInstance.WebLinks.d.isError.Equals("false");
+            return DataManager.DataManager.SharedInstance.WebLinks != null;
         }
 
         void ShowBrowser(string code)
         {
             if (IsValidWeblinks())
             {
-                int index = DataManager.DataManager.SharedInstance.WebLinks.d.data.FindIndex(x => x.Code.Equals(code));
+                int index = DataManager.DataManager.SharedInstance.WebLinks.FindIndex(x => x.Code.ToLower().Equals(code.ToLower()));
                 if (index > -1)
                 {
-                    string title = DataManager.DataManager.SharedInstance.WebLinks.d.data[index].Title;
-                    string url = DataManager.DataManager.SharedInstance.WebLinks.d.data[index].Url;
+                    string title = DataManager.DataManager.SharedInstance.WebLinks[index].Title;
+                    string url = DataManager.DataManager.SharedInstance.WebLinks[index].Url;
                     UIStoryboard storyBoard = UIStoryboard.FromName("Browser", null);
                     BrowserViewController viewController =
                         storyBoard.InstantiateViewController("BrowserViewController") as BrowserViewController;
@@ -282,10 +298,10 @@ namespace myTNB
         {
             if (IsValidWeblinks())
             {
-                int index = DataManager.DataManager.SharedInstance.WebLinks.d.data.FindIndex(x => x.Code.Equals(code.ToLower()));
+                int index = DataManager.DataManager.SharedInstance.WebLinks.FindIndex(x => x.Code.ToLower().Equals(code.ToLower()));
                 if (index > -1)
                 {
-                    string number = DataManager.DataManager.SharedInstance.WebLinks.d.data[index].Url;
+                    string number = DataManager.DataManager.SharedInstance.WebLinks[index].Url;
                     if (!string.IsNullOrEmpty(number) && !string.IsNullOrWhiteSpace(number))
                     {
                         NSUrl url = new NSUrl(new Uri("tel:" + number).AbsoluteUri);
@@ -303,10 +319,10 @@ namespace myTNB
         {
             if (IsValidWeblinks())
             {
-                int index = DataManager.DataManager.SharedInstance.WebLinks.d.data.FindIndex(x => x.Code.Equals("ios"));
+                int index = DataManager.DataManager.SharedInstance.WebLinks.FindIndex(x => x.Code.ToLower().Equals("ios"));
                 if (index > -1)
                 {
-                    string url = DataManager.DataManager.SharedInstance.WebLinks.d.data[index].Url;
+                    string url = DataManager.DataManager.SharedInstance.WebLinks[index].Url;
                     if (!string.IsNullOrEmpty(url) && !string.IsNullOrWhiteSpace(url))
                     {
                         UIApplication.SharedApplication.OpenUrl(new NSUrl(string.Format(url)));
@@ -323,15 +339,16 @@ namespace myTNB
         {
             if (IsValidWeblinks())
             {
-                int index = DataManager.DataManager.SharedInstance.WebLinks.d.data.FindIndex(x => x.Code.Equals("ios"));
+                int index = DataManager.DataManager.SharedInstance.WebLinks?.FindIndex(x => x.Code.ToLower().Equals("ios")) ?? -1;
                 if (index > -1)
                 {
                     var message = NSObject.FromObject("New myTNB app is now available in App Store.");
-                    string url = DataManager.DataManager.SharedInstance.WebLinks.d.data[index].Url;
+                    string url = DataManager.DataManager.SharedInstance.WebLinks[index].Url;
                     var item = NSObject.FromObject(url);
                     var activityItems = new NSObject[] { message, item };
                     UIActivity[] applicationActivities = null;
                     var activityController = new UIActivityViewController(activityItems, applicationActivities);
+                    UIBarButtonItem.AppearanceWhenContainedIn(new[] { typeof(UINavigationBar) }).TintColor = UIColor.White;
                     PresentViewController(activityController, true, null);
                     return;
                 }

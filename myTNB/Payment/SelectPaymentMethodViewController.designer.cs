@@ -18,11 +18,29 @@ namespace myTNB
         [GeneratedCode ("iOS Designer", "1.0")]
         UIKit.UITableView selectPaymentTableView { get; set; }
 
+        [Outlet]
+        [GeneratedCode ("iOS Designer", "1.0")]
+        UIKit.UILabel toastMessage { get; set; }
+
+        [Outlet]
+        [GeneratedCode ("iOS Designer", "1.0")]
+        UIKit.UIView toastView { get; set; }
+
         void ReleaseDesignerOutlets ()
         {
             if (selectPaymentTableView != null) {
                 selectPaymentTableView.Dispose ();
                 selectPaymentTableView = null;
+            }
+
+            if (toastMessage != null) {
+                toastMessage.Dispose ();
+                toastMessage = null;
+            }
+
+            if (toastView != null) {
+                toastView.Dispose ();
+                toastView = null;
             }
         }
     }

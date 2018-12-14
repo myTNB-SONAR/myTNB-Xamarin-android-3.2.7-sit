@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using UIKit;
 using CoreGraphics;
 using myTNB.Dashboard.DashboardComponents;
@@ -6,6 +6,7 @@ using myTNB.Home.More.MyAccount.ManageCards;
 using myTNB.Model;
 using System.Threading.Tasks;
 using myTNB.DataManager;
+using myTNB.Extensions;
 
 namespace myTNB
 {
@@ -28,7 +29,7 @@ namespace myTNB
             base.ViewDidLoad();
             SetNavigationBar();
             SetSubviews();
-            manageCardsTableView.Frame = new CGRect(0, DeviceHelper.IsIphoneX() ? 156 : 132, View.Frame.Width, View.Frame.Height - 132);
+            manageCardsTableView.Frame = new CGRect(0, DeviceHelper.IsIphoneXUpResolution() ? 156 : 132, View.Frame.Width, View.Frame.Height - 132);
             manageCardsTableView.SeparatorStyle = UITableViewCellSeparatorStyle.None;
         }
 
@@ -60,7 +61,7 @@ namespace myTNB
 
         internal void SetSubviews()
         {
-            _lblTitle = new UILabel(new CGRect(18, DeviceHelper.IsIphoneX() ? 104 : 80, View.Frame.Width - 36, 36));
+            _lblTitle = new UILabel(new CGRect(18, DeviceHelper.IsIphoneXUpResolution() ? 104 : 80, View.Frame.Width - 36, 36));
             _lblTitle.Font = myTNBFont.MuseoSans14_300();
             _lblTitle.TextColor = myTNBColor.TunaGrey();
             _lblTitle.Lines = 0;
@@ -141,7 +142,7 @@ namespace myTNB
                     else
                     {
                         Console.WriteLine("No Network");
-                        DisplayAlertMessage("No Data Connection", "Please check your data connection and try again.");
+                        DisplayAlertMessage("ErrNoNetworkTitle".Translate(), "ErrNoNetworkMsg".Translate());
                         ActivityIndicator.Hide();
                     }
                 });
@@ -174,8 +175,8 @@ namespace myTNB
                     _imgNoCards.Image = UIImage.FromBundle("Card-Empty");
                     _lblNoCards = new UILabel(new CGRect(44, 344, View.Frame.Width - 88, 60));
                     _lblNoCards.TextAlignment = UITextAlignment.Center;
-                    _lblNoCards.Text = "No credit/debit cards stored.\r\nYou may only add a credit/ debit card\r\nduring payment.";
-                    _lblNoCards.Font = myTNBFont.MuseoSans12();
+                    _lblNoCards.Text = "No credit/debit cards stored.\r\nYou may only add a credit/debit card\r\nduring payment.";
+                    _lblNoCards.Font = myTNBFont.MuseoSans12_300();
                     _lblNoCards.TextColor = myTNBColor.SilverChalice();
                     _lblNoCards.Lines = 3;
                     View.AddSubviews(new UIView[] { _imgNoCards, _lblNoCards });

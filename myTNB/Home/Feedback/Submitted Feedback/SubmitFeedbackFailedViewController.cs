@@ -3,6 +3,7 @@ using System;
 using UIKit;
 using CoreAnimation;
 using CoreGraphics;
+using myTNB.Extensions;
 
 namespace myTNB
 {
@@ -75,7 +76,7 @@ namespace myTNB
             //Back to Dashboard Button
             _btnDashBoard = new UIButton(UIButtonType.Custom);
             _btnDashBoard.Frame = new CGRect(18, View.Frame.Height - 118, View.Frame.Width - 36, 48);
-            _btnDashBoard.SetTitle("Back to Dashboard", UIControlState.Normal);
+            _btnDashBoard.SetTitle("BackToDshbrd".Translate(), UIControlState.Normal);
             _btnDashBoard.Layer.CornerRadius = 5.0f;
             _btnDashBoard.Layer.BorderWidth = 1.0f;
             _btnDashBoard.Layer.BorderColor = UIColor.White.CGColor;

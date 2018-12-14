@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Foundation;
 using CoreGraphics;
 using myTNB.DataManager;
+using myTNB.Extensions;
 
 namespace myTNB
 {
@@ -43,16 +44,16 @@ namespace myTNB
         {
             lblTitle.Frame = new CGRect(18, 19, View.Frame.Width - 36, 18);
             lblTitle.TextColor = myTNBColor.PowerBlue();
-            lblTitle.Font = myTNBFont.MuseoSans16();
+            lblTitle.Font = myTNBFont.MuseoSans16_500();
             lblTitle.Text = "Please enter your email.";
 
             lblDescription.Frame = new CGRect(18, 40, View.Frame.Width - 36, 36);
             lblDescription.TextColor = myTNBColor.TunaGrey();
-            lblDescription.Font = myTNBFont.MuseoSans14();
+            lblDescription.Font = myTNBFont.MuseoSans14_300();
             lblDescription.TextAlignment = UITextAlignment.Left;
             lblDescription.Lines = 0;
             lblDescription.LineBreakMode = UILineBreakMode.WordWrap;
-            lblDescription.Text = "A 4 digit verification code will be sent to this email address.";
+            lblDescription.Text = "A 4-digit verification code will be sent to this email address.";
 
             btnSubmit.Layer.CornerRadius = 5f;
 
@@ -61,13 +62,13 @@ namespace myTNB
             viewEmail.BackgroundColor = UIColor.Clear;
 
             lblEmailTitle = new UILabel(new CGRect(0, 0, viewEmail.Frame.Width, 12));
-            lblEmailTitle.Font = myTNBFont.MuseoSans9();
+            lblEmailTitle.Font = myTNBFont.MuseoSans9_300();
             lblEmailTitle.TextColor = myTNBColor.SilverChalice();
             lblEmailTitle.Text = "EMAIL";
             lblEmailTitle.TextAlignment = UITextAlignment.Left;
 
             lblEmailError = new UILabel(new CGRect(0, 37, viewEmail.Frame.Width, 14));
-            lblEmailError.Font = myTNBFont.MuseoSans9();
+            lblEmailError.Font = myTNBFont.MuseoSans9_300();
             lblEmailError.TextColor = myTNBColor.Tomato();
             lblEmailError.Text = "Invalid email address";
             lblEmailError.TextAlignment = UITextAlignment.Left;
@@ -75,7 +76,7 @@ namespace myTNB
             txtFieldEmail = new UITextField(new CGRect(0, 12, viewEmail.Frame.Width, 24));
             txtFieldEmail.AttributedPlaceholder = new NSAttributedString(
                 "Email"
-                , font: myTNBFont.MuseoSans16()
+                , font: myTNBFont.MuseoSans16_300()
                 , foregroundColor: myTNBColor.SilverChalice()
                 , strokeWidth: 0
             );
@@ -99,7 +100,7 @@ namespace myTNB
             lblEmailError.Hidden = true;
             btnSubmit.Enabled = false;
             btnSubmit.BackgroundColor = myTNBColor.PlatinumGrey();
-            btnSubmit.Frame = new CGRect(18, View.Frame.Height - (DeviceHelper.IsIphoneX() ? 184 : 136), View.Frame.Width - 36, 48);
+            btnSubmit.Frame = new CGRect(18, View.Frame.Height - (DeviceHelper.IsIphoneXUpResolution() ? 184 : DeviceHelper.GetScaledHeight(136)), View.Frame.Width - 36, DeviceHelper.GetScaledHeight(48));
         }
 
         internal void SetEvents()
@@ -119,7 +120,7 @@ namespace myTNB
                         else
                         {
                             Console.WriteLine("No Network");
-                            DisplayAlertMessage("No Data Connection", "Please check your data connection and try again.");
+                            DisplayAlertMessage("ErrNoNetworkTitle".Translate(), "ErrNoNetworkMsg".Translate());
                             ActivityIndicator.Hide();
                         }
                     });
@@ -147,6 +148,8 @@ namespace myTNB
             textField.EditingDidBegin += (sender, e) =>
             {
                 textFieldTitle.Hidden = textField.Text.Length == 0;
+                viewLine.BackgroundColor = myTNBColor.PowerBlue();
+                textField.LeftViewMode = UITextFieldViewMode.Never;
             };
             textField.ShouldEndEditing = (sender) =>
             {
@@ -166,6 +169,11 @@ namespace myTNB
             textField.EditingDidBegin += (sender, e) =>
             {
                 textFieldTitle.Hidden = false;
+            };
+            textField.EditingDidEnd += (sender, e) =>
+            {
+                if (textField.Text.Length == 0)
+                    textField.LeftViewMode = UITextFieldViewMode.UnlessEditing;
             };
         }
 

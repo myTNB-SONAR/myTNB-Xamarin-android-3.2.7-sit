@@ -118,6 +118,10 @@ namespace myTNB
             }
             catch (JsonSerializationException)
             { }
+            catch (JsonReaderException ex)
+            {
+                Console.WriteLine(ex);
+            }
             return new ChartModel();
         }
 
@@ -159,6 +163,10 @@ namespace myTNB
             {
                 Console.WriteLine(ex);
             }
+            catch(JsonReaderException ex)
+            {
+                Console.WriteLine(ex);
+            }
             return new SmartChartModel();
         }
 
@@ -171,11 +179,14 @@ namespace myTNB
         {
             try
             {
-                var model = jToken.ToObject<BaseModel>();
-                if (model != null)
+                if (jToken != null)
                 {
-                    resp = model;
-                    return model.didSucceed;
+                    var model = jToken.ToObject<BaseModel>();
+                    if (model != null)
+                    {
+                        resp = model;
+                        return model.didSucceed;
+                    }
                 }
             }
             catch (JsonSerializationException ex)
@@ -187,6 +198,170 @@ namespace myTNB
                 Console.WriteLine("General JSON parsing error");
             }
             return false;
+        }
+
+        /// <summary>
+        /// Gets the rate us questions.
+        /// </summary>
+        /// <returns>The rate us questions.</returns>
+        /// <param name="suffix">Suffix.</param>
+        /// <param name="requestParams">Request parameters.</param>
+        public FeedbackQuestionRequestModel GetRateUsQuestions(string suffix, object requestParams)
+        {
+            BaseService baseService = new BaseService();
+            RestResponse rawResponse = baseService.ExecuteWebservice(suffix, requestParams, APIVersion.V5);
+
+            try
+            {
+                if (!string.IsNullOrEmpty(rawResponse.Content))
+                {
+                    var jsonData = JObject.Parse(rawResponse.Content);
+                    var contentData = jsonData["d"];
+
+                    var responseBase = new BaseModel();
+                    if (IsValidResponse(contentData, ref responseBase))
+                    {
+                        var model = contentData.ToObject<FeedbackQuestionRequestModel>();
+
+                        if (model != null)
+                        {
+                            return model;
+                        }
+                    }
+                    else
+                    {
+                        return new FeedbackQuestionRequestModel(responseBase);
+                    }
+                }
+            }
+            catch (JsonSerializationException ex)
+            {
+                Console.WriteLine(ex);
+            }
+            return new FeedbackQuestionRequestModel();
+        }
+
+        /// <summary>
+        /// Gets the linked accounts summary info.
+        /// </summary>
+        /// <returns>The linked accounts summary info.</returns>
+        /// <param name="suffix">Suffix.</param>
+        /// <param name="requestParams">Request parameters.</param>
+        public AmountDueStatusResponseModel GetLinkedAccountsSummaryInfo(string suffix, object requestParams)
+        {
+            BaseService baseService = new BaseService();
+            RestResponse rawResponse = baseService.ExecuteWebservice(suffix, requestParams, APIVersion.V5);
+
+            try
+            {
+                if (!string.IsNullOrEmpty(rawResponse.Content))
+                {
+                    var jsonData = JObject.Parse(rawResponse.Content);
+                    var contentData = jsonData["d"];
+
+                    var responseBase = new BaseModel();
+                    if (IsValidResponse(contentData, ref responseBase))
+                    {
+                        var model = contentData.ToObject<AmountDueStatusResponseModel>();
+
+                        if (model != null)
+                        {
+                            return model;
+                        }
+                    }
+                    else
+                    {
+                        return new AmountDueStatusResponseModel(responseBase);
+                    }
+                }
+            }
+            catch (JsonSerializationException ex)
+            {
+                Console.WriteLine(ex);
+            }
+            return new AmountDueStatusResponseModel();
+        }
+
+        /// <summary>
+        /// Gets the app launch master data.
+        /// </summary>
+        /// <returns>The app launch master data.</returns>
+        /// <param name="suffix">Suffix.</param>
+        /// <param name="requestParams">Request parameters.</param>
+        public MasterDataResponseModel GetAppLaunchMasterData(string suffix, object requestParams)
+        {
+            BaseService baseService = new BaseService();
+            RestResponse rawResponse = baseService.ExecuteWebservice(suffix, requestParams, APIVersion.V5);
+
+            try
+            {
+                if (!string.IsNullOrEmpty(rawResponse.Content))
+                {
+                    var jsonData = JObject.Parse(rawResponse.Content);
+                    var contentData = jsonData["d"];
+
+                    var responseBase = new BaseModel();
+                    if (IsValidResponse(contentData, ref responseBase))
+                    {
+                        var model = contentData.ToObject<MasterDataResponseModel>();
+
+                        if (model != null)
+                        {
+                            return model;
+                        }
+                    }
+                    else
+                    {
+                        return new MasterDataResponseModel(responseBase);
+                    }
+                }
+            }
+            catch (JsonSerializationException ex)
+            {
+                Console.WriteLine(ex);
+            }
+            return new MasterDataResponseModel();
+        }
+
+        /// <summary>
+        /// Gets the phone verification status.
+        /// </summary>
+        /// <returns>The phone verification status.</returns>
+        /// <param name="suffix">Suffix.</param>
+        /// <param name="requestParams">Request parameters.</param>
+        public PhoneVerificationStatusResponseModel GetPhoneVerificationStatus(string suffix, object requestParams)
+        {
+            BaseService baseService = new BaseService();
+            RestResponse rawResponse = baseService.ExecuteWebservice(suffix, requestParams, APIVersion.V5);
+
+            try
+            {
+                if (!string.IsNullOrEmpty(rawResponse.Content))
+                {
+                    var jsonData = JObject.Parse(rawResponse.Content);
+                    var contentData = jsonData["d"];
+
+                    var responseBase = new BaseModel();
+                    if (IsValidResponse(contentData, ref responseBase))
+                    {
+                        var model = contentData.ToObject<PhoneVerificationStatusResponseModel>();
+
+                        if (model != null)
+                        {
+                            return model;
+                        }
+                    }
+                    else
+                    {
+                        return new PhoneVerificationStatusResponseModel(responseBase);
+                    }
+                }
+            }
+            catch (JsonSerializationException ex)
+            {
+                Console.WriteLine(ex);
+            }
+            return new PhoneVerificationStatusResponseModel();
         }
 
         /// <summary>

@@ -51,16 +51,16 @@ namespace myTNB
             viewContainer.AddSubview(imgViewCheck);
 
             var lblFeedback = new UILabel(new CGRect(0, 80, viewContainer.Frame.Width, 18));
-            lblFeedback.Font = myTNBFont.MuseoSans16();
+            lblFeedback.Font = myTNBFont.MuseoSans16_500();
             lblFeedback.TextColor = myTNBColor.PowerBlue();
             lblFeedback.Text = "Feedback Successful";
             lblFeedback.TextAlignment = UITextAlignment.Center;
             viewContainer.AddSubview(lblFeedback);
 
             var lblThankYou = new UILabel(new CGRect(0, 98, viewContainer.Frame.Width, 16));
-            lblThankYou.Font = myTNBFont.MuseoSans12();
+            lblThankYou.Font = myTNBFont.MuseoSans12_300();
             lblThankYou.TextColor = myTNBColor.TunaGrey();
-            lblThankYou.Text = "Thank you for your feedback";
+            lblThankYou.Text = "Thank you for your feedback.";
             lblThankYou.TextAlignment = UITextAlignment.Center;
             viewContainer.AddSubview(lblThankYou);
 
@@ -70,7 +70,7 @@ namespace myTNB
 
             var lblFeedbackDateTitleWidth = ((viewContainer.Frame.Width - 28) * 2) / 3;
             var lblFeedbackDateTitle = new UILabel(new CGRect(14, 147, lblFeedbackDateTitleWidth, 14));
-            lblFeedbackDateTitle.Font = myTNBFont.MuseoSans9();
+            lblFeedbackDateTitle.Font = myTNBFont.MuseoSans9_300();
             lblFeedbackDateTitle.TextColor = myTNBColor.SilverChalice();
             lblFeedbackDateTitle.Text = "FEEDBACK DATE & TIME";
             lblFeedbackDateTitle.TextAlignment = UITextAlignment.Left;
@@ -78,14 +78,14 @@ namespace myTNB
 
             var lblFeedbackIDTitleWidth = (viewContainer.Frame.Width - 28) / 3;
             var lblFeedbackIDTitle = new UILabel(new CGRect(lblFeedbackDateTitleWidth + 14, 147, lblFeedbackIDTitleWidth, 14));
-            lblFeedbackIDTitle.Font = myTNBFont.MuseoSans9();
+            lblFeedbackIDTitle.Font = myTNBFont.MuseoSans9_300();
             lblFeedbackIDTitle.TextColor = myTNBColor.SilverChalice();
             lblFeedbackIDTitle.Text = "FEEDBACK ID";
             lblFeedbackIDTitle.TextAlignment = UITextAlignment.Right;
             viewContainer.AddSubview(lblFeedbackIDTitle);
 
             _lblFeedbackDateValue = new UILabel(new CGRect(14, 161, lblFeedbackDateTitleWidth, 18));
-            _lblFeedbackDateValue.Font = myTNBFont.MuseoSans14();
+            _lblFeedbackDateValue.Font = myTNBFont.MuseoSans14_300();
             _lblFeedbackDateValue.TextColor = myTNBColor.TunaGrey();
             string createdDate = GetDate();
             _lblFeedbackDateValue.Text = createdDate;
@@ -93,7 +93,7 @@ namespace myTNB
             viewContainer.AddSubview(_lblFeedbackDateValue);
 
             _lblFeedbackIDValue = new UILabel(new CGRect(lblFeedbackDateTitleWidth + 14, 161, lblFeedbackIDTitleWidth, 18));
-            _lblFeedbackIDValue.Font = myTNBFont.MuseoSans14();
+            _lblFeedbackIDValue.Font = myTNBFont.MuseoSans14_300();
             _lblFeedbackIDValue.TextColor = myTNBColor.TunaGrey();
             _lblFeedbackIDValue.Text = ServiceReqNo;
             _lblFeedbackIDValue.TextAlignment = UITextAlignment.Right;
@@ -101,9 +101,9 @@ namespace myTNB
 
             //Back to Feedback Button
             _btnBackToFeedback = new UIButton(UIButtonType.Custom);
-            _btnBackToFeedback.Frame = new CGRect(18, View.Frame.Height - 64, View.Frame.Width - 36, 48);
+            _btnBackToFeedback.Frame = new CGRect(18, View.Frame.Height - DeviceHelper.GetScaledHeight(64), View.Frame.Width - 36, DeviceHelper.GetScaledHeight(48));
             _btnBackToFeedback.SetTitle("Back to Feedback", UIControlState.Normal);
-            _btnBackToFeedback.Font = myTNBFont.MuseoSans16();
+            _btnBackToFeedback.Font = myTNBFont.MuseoSans16_500();
             _btnBackToFeedback.Layer.CornerRadius = 5.0f;
             _btnBackToFeedback.BackgroundColor = myTNBColor.FreshGreen();
             View.AddSubview(_btnBackToFeedback);

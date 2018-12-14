@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Linq;
 using CoreGraphics;
 using Foundation;
+using myTNB.Model;
 using UIKit;
 
 namespace myTNB.Home.More.FindUs.LocationDetails
@@ -157,12 +158,7 @@ namespace myTNB.Home.More.FindUs.LocationDetails
                 var cell = tableView.DequeueReusableCell("ServicesViewCell", indexPath) as ServicesViewCell;
                 cell.SelectionStyle = UITableViewCellSelectionStyle.None;
                 cell.lblTitle.Text = "SERVICES";
-                string services = string.Empty;
-                GetServices(ref services);
-                cell.lblValue.Text = services;
-                CGSize newSize = GetLabelSize(cell.lblValue, cell.lblValue.Frame.Width, 1000);
-                cell.lblValue.Frame = new CGRect(cell.lblValue.Frame.X, cell.lblValue.Frame.Y
-                                                 , cell.lblValue.Frame.Width, newSize.Height);
+                cell.AddSubview(RenderServicesListCell());
                 return cell;
             }
             return null;
@@ -226,6 +222,45 @@ namespace myTNB.Home.More.FindUs.LocationDetails
                 rowHeight = newSize.Height + 60;
             }
             return rowHeight;
+        }
+        /// <summary>
+        /// Renders the services list cell.
+        /// </summary>
+        /// <returns>The services list cell.</returns>
+        public UIView RenderServicesListCell()
+        {
+            nfloat lblYPos = 0f;
+            nfloat lblHeight = 14.4f;
+            nfloat lblXPos = 10f;
+            UIView viewContent = new UIView(new CGRect(18, 30, 282, 300));
+
+            for (int i = 0; i < _annotation.KTItem.Services.Count; i++)
+            {
+                string str = _annotation.KTItem.Services[i].Title;
+                CGSize strSize = GetLabelSize(str, false);
+                Console.WriteLine("strSize: " + strSize);
+
+                UIView innerView = new UIView(new CGRect(0, lblYPos, 282, strSize.Height));
+
+                UILabel lblDot = new UILabel(new CGRect(lblXPos, 0, 5, lblHeight));
+                lblDot.TextColor = myTNBColor.TunaGrey();
+                lblDot.Font = myTNBFont.MuseoSans12_300();
+                lblDot.Text = "•";
+
+                UILabel lblVal = new UILabel(new CGRect(lblXPos + 15, 0, innerView.Frame.Width, strSize.Height));
+                lblVal.TextColor = myTNBColor.TunaGrey();
+                lblVal.Font = myTNBFont.MuseoSans12_300();
+                lblVal.LineBreakMode = UILineBreakMode.WordWrap;
+                lblVal.Lines = 0;
+                lblVal.Text = str;
+
+                innerView.AddSubviews(lblDot, lblVal);
+                viewContent.AddSubview(innerView);
+
+                lblYPos = lblYPos + strSize.Height;
+            }
+
+            return viewContent;
         }
 
         void GetOperatingHours(ref string day, ref string time)

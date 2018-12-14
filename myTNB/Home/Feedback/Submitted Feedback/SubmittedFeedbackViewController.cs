@@ -4,6 +4,7 @@ using myTNB.Home.Feedback;
 using System.Threading.Tasks;
 using myTNB.Model;
 using CoreGraphics;
+using myTNB.Extensions;
 
 namespace myTNB
 {
@@ -110,9 +111,7 @@ namespace myTNB
                                 }
                                 else
                                 {
-                                    var alert = UIAlertController.Create("Error", "Feedback details not available.", UIAlertControllerStyle.Alert);
-                                    alert.AddAction(UIAlertAction.Create("Ok", UIAlertActionStyle.Cancel, null));
-                                    PresentViewController(alert, animated: true, completionHandler: null);
+                                    ToastHelper.DisplayAlertView(this, "ErrorTitle".Translate(), _feedbackDetails?.d?.message);
                                 }
                                 ActivityIndicator.Hide();
                             });
@@ -121,7 +120,7 @@ namespace myTNB
                     else
                     {
                         Console.WriteLine("No Network");
-                        var alert = UIAlertController.Create("No Data Connection", "Please check your data connection and try again.", UIAlertControllerStyle.Alert);
+                        var alert = UIAlertController.Create("ErrNoNetworkTitle".Translate(), "ErrNoNetworkMsg".Translate(), UIAlertControllerStyle.Alert);
                         alert.AddAction(UIAlertAction.Create("Ok", UIAlertActionStyle.Cancel, null));
                         PresentViewController(alert, animated: true, completionHandler: null);
                     }

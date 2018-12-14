@@ -58,10 +58,10 @@ namespace myTNB.Registration
         {
             UILabel lblDescription = new UILabel
             {
-                Frame = new CGRect(16, 16, View.Frame.Width - 32, 36),
+                Frame = new CGRect(16, 16, View.Frame.Width - 32, 60),
                 AttributedText = new NSAttributedString(
                     "Scan the barcode on your bill to retrieve account details.",
-                    font: myTNBFont.MuseoSans14(),
+                    font: myTNBFont.MuseoSans16_300(),
                     foregroundColor: myTNBColor.TunaGrey(),
                     strokeWidth: 0
                 ),
@@ -115,7 +115,7 @@ namespace myTNB.Registration
             scanOverlayView.AddSubview(rightLayer);
             scanOverlayView.AddSubview(bottomLayer);
 
-            scannerView = new ZXingScannerView(new CGRect(0, 70, View.Frame.Width, View.Frame.Height - 70));
+            scannerView = new ZXingScannerView(new CGRect(0, lblDescription.Frame.GetMaxY() + 10, View.Frame.Width, View.Frame.Height - 70));
             scannerView.AutoresizingMask = UIViewAutoresizing.FlexibleWidth | UIViewAutoresizing.FlexibleHeight;
             scannerView.UseCustomOverlayView = true;
             scannerView.CustomOverlayView = scanOverlayView;

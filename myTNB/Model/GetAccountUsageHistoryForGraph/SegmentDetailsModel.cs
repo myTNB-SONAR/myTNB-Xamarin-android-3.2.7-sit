@@ -1,10 +1,13 @@
-﻿namespace myTNB.Model
+﻿using System.Globalization;
+
+namespace myTNB.Model
 {
     public class SegmentDetailsModel
     {
         string _amount = "0";
         string _consumption = "0";
         string _co2 = "0";
+        string _usage = "0";
         string _isEstimatedReading = "false";
 
         public string Date { set; get; }
@@ -14,10 +17,10 @@
         {
             set
             {
-                double parsedAmount = 0;
-                if (double.TryParse(value, out parsedAmount))
+                if(!string.IsNullOrWhiteSpace(value))
                 {
-                    _amount = value;
+                    double parsedAmount = TextHelper.ParseStringToDouble(value);
+                    _amount = parsedAmount.ToString(CultureInfo.InvariantCulture);
                 }
                 else
                 {
@@ -33,10 +36,10 @@
         {
             set
             {
-                double parsedAmount = 0;
-                if (double.TryParse(value, out parsedAmount))
+                if (!string.IsNullOrWhiteSpace(value))
                 {
-                    _consumption = value;
+                    double parsedAmount = TextHelper.ParseStringToDouble(value);
+                    _consumption = parsedAmount.ToString(CultureInfo.InvariantCulture);
                 }
                 else
                 {
@@ -52,10 +55,10 @@
         {
             set
             {
-                double parsedAmount = 0;
-                if (double.TryParse(value, out parsedAmount))
+                if (!string.IsNullOrWhiteSpace(value))
                 {
-                    _co2 = value;
+                    double parsedAmount = TextHelper.ParseStringToDouble(value);
+                    _co2 = parsedAmount.ToString(CultureInfo.InvariantCulture);
                 }
                 else
                 {
@@ -67,6 +70,27 @@
                 return _co2 ?? "0";
             }
         }
+
+        public string Usage
+        {
+            set
+            {
+                if (!string.IsNullOrWhiteSpace(value))
+                {
+                    double parsedAmount = TextHelper.ParseStringToDouble(value);
+                    _usage = parsedAmount.ToString(CultureInfo.InvariantCulture);
+                }
+                else
+                {
+                    _usage = "0";
+                }
+            }
+            get
+            {
+                return _usage ?? "0";
+            }
+        }
+
         public string IsEstimatedReading 
         {
             set

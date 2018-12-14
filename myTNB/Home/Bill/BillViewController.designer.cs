@@ -18,11 +18,29 @@ namespace myTNB
         [GeneratedCode ("iOS Designer", "1.0")]
         UIKit.UITableView billTableView { get; set; }
 
+        [Outlet]
+        [GeneratedCode ("iOS Designer", "1.0")]
+        UIKit.UILabel toastMessage { get; set; }
+
+        [Outlet]
+        [GeneratedCode ("iOS Designer", "1.0")]
+        UIKit.UIView toastView { get; set; }
+
         void ReleaseDesignerOutlets ()
         {
             if (billTableView != null) {
                 billTableView.Dispose ();
                 billTableView = null;
+            }
+
+            if (toastMessage != null) {
+                toastMessage.Dispose ();
+                toastMessage = null;
+            }
+
+            if (toastView != null) {
+                toastView.Dispose ();
+                toastView = null;
             }
         }
     }

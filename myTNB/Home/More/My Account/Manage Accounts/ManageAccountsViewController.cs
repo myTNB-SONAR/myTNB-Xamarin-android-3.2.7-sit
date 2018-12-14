@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using UIKit;
 using myTNB.Dashboard.DashboardComponents;
 using myTNB.Model;
@@ -7,6 +7,7 @@ using CoreGraphics;
 using System.Threading.Tasks;
 using myTNB.SQLite.SQLiteDataManager;
 using myTNB.DataManager;
+using myTNB.Extensions;
 
 namespace myTNB
 {
@@ -20,24 +21,26 @@ namespace myTNB
         UILabel _lblNotificationDetails;
 
         public CustomerAccountRecordModel CustomerRecord = new CustomerAccountRecordModel();
-        public int AccountRecordIndex = -1;
+        //public int AccountRecordIndex = -1;
         BaseResponseModel _removeAccount = new BaseResponseModel();
 
         public override void ViewDidLoad()
         {
             base.ViewDidLoad();
             SetNavigationBar();
-            manageAccountsTableView.Frame = new CGRect(0, DeviceHelper.IsIphoneX() ? 88 : 64, View.Frame.Width, 232);
+            manageAccountsTableView.Frame = new CGRect(0, DeviceHelper.IsIphoneXUpResolution() ? 88 : DeviceHelper.GetScaledHeight(64), View.Frame.Width, DeviceHelper.GetScaledHeight(232));
             manageAccountsTableView.SeparatorStyle = UITableViewCellSeparatorStyle.None;
         }
 
         public override void ViewWillAppear(bool animated)
         {
             base.ViewWillAppear(animated);
-            if(AccountRecordIndex > -1 
+            if(DataManager.DataManager.SharedInstance.AccountRecordIndex > -1 
                && DataManager.DataManager.SharedInstance.AccountRecordsList != null
-               && DataManager.DataManager.SharedInstance.AccountRecordsList.d != null){
-                CustomerRecord = DataManager.DataManager.SharedInstance.AccountRecordsList.d[AccountRecordIndex];
+               && DataManager.DataManager.SharedInstance.AccountRecordsList.d != null
+               && DataManager.DataManager.SharedInstance.AccountRecordIndex < DataManager.DataManager.SharedInstance.AccountRecordsList?.d?.Count)
+            {
+                CustomerRecord = DataManager.DataManager.SharedInstance.AccountRecordsList.d[DataManager.DataManager.SharedInstance.AccountRecordIndex];
             }
             InitializeNotificationMessage();
             if (DataManager.DataManager.SharedInstance.IsNickNameUpdated)
@@ -57,7 +60,7 @@ namespace myTNB
             UIView headerView = gradientViewComponent.GetUI();
             TitleBarComponent titleBarComponent = new TitleBarComponent(headerView);
             UIView titleBarView = titleBarComponent.GetUI();
-            titleBarComponent.SetTitle("Manage Supply Account(s)");
+            titleBarComponent.SetTitle("ManageAcctNavTitle".Translate());
             titleBarComponent.SetNotificationVisibility(true);
             titleBarComponent.SetBackVisibility(false);
             titleBarComponent.SetBackAction(new UITapGestureRecognizer(() => {
@@ -111,16 +114,12 @@ namespace myTNB
             });
         }
 
-        internal void OnRemoveAccount(){
-            string message = string.Empty; 
-            if(CustomerRecord.isOwned.ToLower() == "true"){
-                message = string.Format("You are about to remove {0}, Account No. {1}.\r\n\r\nAccess of all users associating with this accout will also be removed.\r\n\r\nVisit the Self - Service Portal or Kedai Tenaga to close your Supply Account.", CustomerRecord.accDesc, CustomerRecord.accNum);
-            }else{
-                message = string.Format("You are about to remove {0}, Account No. {1}.\r\n\r\nVisit the Self - Service Portal or Kedai Tenaga to close your Supply Account.", CustomerRecord.accDesc, CustomerRecord.accNum);
-            }
+        internal void OnRemoveAccount()
+        {
+            string message = string.Format("ManageAcctRemoveMsg".Translate(), CustomerRecord.accDesc, CustomerRecord.accNum);
 
-            var alert = UIAlertController.Create("Remove Account", message, UIAlertControllerStyle.Alert);
-            alert.AddAction(UIAlertAction.Create("Ok", UIAlertActionStyle.Default, (obj) => {
+            var alert = UIAlertController.Create("ManageAcctRemoveTitle".Translate(), message, UIAlertControllerStyle.Alert);
+            alert.AddAction(UIAlertAction.Create("ManageAcctRemoveOk".Translate(), UIAlertActionStyle.Default, (obj) => {
                 ActivityIndicator.Show();
                 NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
                 {
@@ -132,7 +131,7 @@ namespace myTNB
                         else
                         {
                             Console.WriteLine("No Network");
-                            DisplayAlertMessage("No Data Connection", "Please check your data connection and try again.");
+                            DisplayAlertMessage("ErrNoNetworkTitle".Translate(), "ErrNoNetworkMsg".Translate());
                             ActivityIndicator.Hide();
                         }
 
@@ -160,29 +159,44 @@ namespace myTNB
                         {
                             DataManager.DataManager.SharedInstance.DeleteAccountUsageHistory(CustomerRecord.accNum);
                             DataManager.DataManager.SharedInstance.AccountRecordsList.d.RemoveAt(index);
-                            if(!ServiceCall.HasAccountList()){
-                                DataManager.DataManager.SharedInstance.SelectedAccount = new CustomerAccountRecordModel();
-                            }
+
                             UserAccountsEntity uaManager = new UserAccountsEntity();
                             uaManager.DeleteTable();
                             uaManager.CreateTable();
                             uaManager.InsertListOfItems(DataManager.DataManager.SharedInstance.AccountRecordsList);
-                            DataManager.DataManager.SharedInstance.CurrentSelectedAccountIndex = 0;
-                            DataManager.DataManager.SharedInstance.PreviousSelectedAccountIndex = 0;
-                            DataManager.DataManager.SharedInstance.SelectedAccount = 
-                                DataManager.DataManager.SharedInstance.AccountRecordsList.d[0];
-                            DataManager.DataManager.SharedInstance.IsSameAccount = false;
 
+                            // updates the cache when user entity data is updated
+                            DataManager.DataManager.SharedInstance.RefreshDataFromAccountUpdate();
+
+                            DataManager.DataManager.SharedInstance.AccountsDeleted.Add(CustomerRecord.accNum);
+                            DataManager.DataManager.SharedInstance.DeleteDue(CustomerRecord.accNum);
+                            DataManager.DataManager.SharedInstance.DeleteDetailsFromBillingAccount(CustomerRecord.accNum);
+                            DataManager.DataManager.SharedInstance.DeleteDetailsFromBillHistory(CustomerRecord.accNum);
+                            DataManager.DataManager.SharedInstance.DeleteDetailsFromPaymentHistory(CustomerRecord.accNum);
                         }
                         DismissViewController(true, null);
+                    }
+                    else
+                    {
+                        string msg = _removeAccount?.d?.message;
+                        var alert = UIAlertController.Create(string.Empty, !string.IsNullOrEmpty(msg) ? msg : "DefaultServerErrorMessage".Translate(), UIAlertControllerStyle.Alert);
+                        alert.AddAction(UIAlertAction.Create("Ok", UIAlertActionStyle.Cancel, null));
+                        PresentViewController(alert, animated: true, completionHandler: null);
                     }
                     ActivityIndicator.Hide();
                 });
             });
         }
 
+
         internal Task RemoveTNBAccountForUserFav()
         {
+            var emailAddress = string.Empty;
+            if (DataManager.DataManager.SharedInstance.UserEntity?.Count > 0)
+            {
+                emailAddress = DataManager.DataManager.SharedInstance.UserEntity[0]?.email;
+            }
+
             return Task.Factory.StartNew(() =>
             {
                 ServiceManager serviceManager = new ServiceManager();
@@ -197,7 +211,7 @@ namespace myTNB
                     deviceCordova = TNBGlobal.API_KEY_ID,
                     userID = DataManager.DataManager.SharedInstance.User.UserID,
                     accNum = CustomerRecord.accNum,
-                    email = DataManager.DataManager.SharedInstance.UserEntity[0].email
+                    email = emailAddress
                 };
                 _removeAccount = serviceManager.BaseServiceCall("RemoveTNBAccountForUserFav", requestParameter);
             });

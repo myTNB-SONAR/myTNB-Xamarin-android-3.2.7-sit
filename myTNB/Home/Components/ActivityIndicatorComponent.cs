@@ -1,6 +1,8 @@
 ﻿using System;
+using Airbnb.Lottie;
 using CoreGraphics;
 using UIKit;
+using static myTNB.TNBGlobal;
 
 namespace myTNB.Home.Components
 {
@@ -25,6 +27,16 @@ namespace myTNB.Home.Components
             nfloat centerX = _viewActivityIndicator.Frame.Width / 2;
             nfloat centerY = _viewActivityIndicator.Frame.Height / 2;
 
+#if true
+            nfloat animationWidth = 48;
+            LOTAnimationView animation = LOTAnimationView.AnimationNamed("TNB_Logo");
+            animation.Frame = new CGRect(centerX - animationWidth / 2, centerY - animationWidth / 2,
+                                         animationWidth, animationWidth);
+            animation.ContentMode = UIViewContentMode.ScaleAspectFit;
+            animation.LoopAnimation = true;
+            animation.Play();
+            _viewActivityIndicator.AddSubview(animation);
+#else
             UIActivityIndicatorView activityIndicator = new UIActivityIndicatorView(UIActivityIndicatorViewStyle.WhiteLarge);
             activityIndicator.Frame = new CGRect(
                 centerX - (activityIndicator.Frame.Width / 2)
@@ -49,17 +61,21 @@ namespace myTNB.Home.Components
             );
             lblLoading.BackgroundColor = UIColor.Clear;
             lblLoading.TextColor = UIColor.White;
-            lblLoading.Text = "Loading...";
+            lblLoading.Text = Texts.InfoLoading;
+            lblLoading.Font = myTNBFont.MuseoSans14_300();
             lblLoading.TextAlignment = UITextAlignment.Center;
             lblLoading.AutoresizingMask = UIViewAutoresizing.All;
+            _viewActivityIndicator.AddSubview(lblLoading);
+#endif
 
-            _viewActivityIndicator.AddSubviews(new UIView[] { activityIndicator, lblLoading });
+            //_viewActivityIndicator.AddSubviews(new UIView[] { activityIndicator, lblLoading });
 
             View.AddSubview(_viewActivityIndicator);
         }
 
         public void Show()
         {
+            View.BringSubviewToFront(_viewActivityIndicator);
             _viewActivityIndicator.Hidden = false;
         }
 

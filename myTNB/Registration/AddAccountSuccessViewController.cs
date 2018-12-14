@@ -7,11 +7,20 @@ using CoreGraphics;
 using myTNB.Model;
 using myTNB.SQLite.SQLiteDataManager;
 using System.Collections.Generic;
+using myTNB.Extensions;
+using System.Linq;
 
 namespace myTNB
 {
     public partial class AddAccountSuccessViewController : UIViewController
     {
+        public int AccountsAddedCount = 0;
+        public bool IsDashboardFlow = false;
+        const float TopPadding = 48f;
+        const float RowHeight = 115f;
+        const float HeaderViewHeight = 170f;
+        CustomerAccountRecordListModel GetStartedList = new CustomerAccountRecordListModel();
+
         public AddAccountSuccessViewController(IntPtr handle) : base(handle)
         {
         }
@@ -21,72 +30,98 @@ namespace myTNB
             base.ViewDidLoad();
             SetupSuperViewBackground();
 
-            AccountsTableView.Source = new AddAccountSuccessDataSource();
+            AccountsTableView.Frame = new CGRect(16, TopPadding, View.Frame.Width - 32, DeviceHelper.GetScaledHeight(HeaderViewHeight));
+            AccountsTableView.Source = new AddAccountSuccessDataSource(GetStartedList);
             AccountsTableView.Layer.CornerRadius = 4f;
-            AccountsTableView.RowHeight = 101f;
-            AccountsTableView.BackgroundColor = UIColor.Clear;
+            AccountsTableView.RowHeight = RowHeight;
+            AccountsTableView.BackgroundColor = UIColor.White;
+            AccountsTableView.SeparatorStyle = UITableViewCellSeparatorStyle.None;
+            AccountsTableView.Bounces = false;
 
-            var headerView = new UIView((new CGRect(16, 16, View.Frame.Width - 32, 190)));
+            var headerView = new UIView((new CGRect(0, 0, View.Frame.Width - 32, DeviceHelper.GetScaledHeight(HeaderViewHeight))));
             headerView.BackgroundColor = UIColor.White;
-            UIView viewClose = new UIView(new CGRect(headerView.Frame.Width - 59, 18, 25, 25));
-
-            var imgViewClose = new UIImageView(UIImage.FromBundle("Delete"))
-            {
-                Frame = new CGRect(0, 0, 25, 25),
-                ContentMode = UIViewContentMode.ScaleAspectFill
-            };
-            viewClose.AddSubview(imgViewClose);
-            viewClose.AddGestureRecognizer(new UITapGestureRecognizer(() =>
-            {
-                GetStarted();
-            }));
 
             var imgViewSuccess = new UIImageView(UIImage.FromBundle("Circle-With-Check-Green"))
             {
-                Frame = new CGRect(headerView.Frame.Width / 2 - 25, 49, 50, 50),
+                Frame = new CGRect((headerView.Frame.Width / 2) - DeviceHelper.GetScaledWidth(25), 49, DeviceHelper.GetScaledWidth(50), DeviceHelper.GetScaledHeight(50)),
                 ContentMode = UIViewContentMode.ScaleAspectFill
             };
 
             var lblPasswordSuccess = new UILabel
             {
-                Frame = new CGRect(18, 109, headerView.Frame.Width - 36, 18),
+                Frame = new CGRect(DeviceHelper.GetScaledWidth(18), DeviceHelper.GetScaledHeight(109), headerView.Frame.Width - 36, 18),
                 AttributedText = new NSAttributedString(
-                    "Add Accounts Successful"
-                    , font: myTNBFont.MuseoSans16()
+                    "Add Account(s) Successful"
+                    , font: myTNBFont.MuseoSans18_500()
                     , foregroundColor: myTNBColor.PowerBlue()
                     , strokeWidth: 0
                 ),
                 TextAlignment = UITextAlignment.Center,
             };
 
-            UIView viewLine = new UIView((new CGRect(16, 176, headerView.Frame.Width - 32, 1)));
-            viewLine.BackgroundColor = myTNBColor.PlatinumGrey();
-
-            headerView.AddSubview(viewClose);
             headerView.AddSubview(imgViewSuccess);
             headerView.AddSubview(lblPasswordSuccess);
-            headerView.AddSubview(viewLine);
 
             AccountsTableView.TableHeaderView = headerView;
 
-            var footerView = new UIView((new CGRect(0, 16, View.Frame.Width - 32, 84)));
-            footerView.Layer.CornerRadius = 4.0f;
-            footerView.BackgroundColor = UIColor.Clear;
+            btnStart.SetTitle("Done", UIControlState.Normal);
+            btnStart.SetTitleColor(UIColor.White, UIControlState.Normal);
+            btnStart.BackgroundColor = myTNBColor.FreshGreen();
+            btnStart.Font = myTNBFont.MuseoSans16_500();
 
-            var btnGetStarted = new UIButton(UIButtonType.Custom);
-            btnGetStarted.Frame = new CGRect(0, 18, View.Frame.Width - 36, 48);
-            btnGetStarted.SetTitle("Get Started", UIControlState.Normal);
-            btnGetStarted.SetTitleColor(UIColor.White, UIControlState.Normal);
-            btnGetStarted.BackgroundColor = myTNBColor.FreshGreen();
-            btnGetStarted.Layer.CornerRadius = 5.0f;
-            footerView.AddSubview(btnGetStarted);
-
-            btnGetStarted.TouchUpInside += (object sender, EventArgs e) =>
+            btnStart.TouchUpInside += (object sender, EventArgs e) =>
             {
                 GetStarted();
             };
 
-            AccountsTableView.TableFooterView = footerView;
+            float maxTableHeight = (float)(View.Frame.Height - btnStart.Frame.Height - DeviceHelper.GetScaledHeight(TopPadding * 2));
+            float tableHeight = (float)AccountsTableView.Frame.Height;
+            if (GetStartedList != null && GetStartedList?.d != null && GetStartedList?.d?.Count > 0)
+            {
+                tableHeight += (RowHeight * GetStartedList.d.Count);
+                if (tableHeight > maxTableHeight)
+                {
+                    tableHeight = maxTableHeight;
+                }
+                ViewHelper.AdjustFrameSetHeight(AccountsTableView, tableHeight);
+            }
+        }
+
+        public override void ViewDidAppear(bool animated)
+        {
+            base.ViewDidAppear(animated);
+
+        }
+
+        /// <summary>
+        /// Creates the newly added list.
+        /// </summary>
+        public void CreateNewlyAddedList()
+        {
+            GetStartedList.d = new List<CustomerAccountRecordModel>();
+            if (DataManager.DataManager.SharedInstance.AccountRecordsList != null
+               && DataManager.DataManager.SharedInstance.AccountRecordsList?.d != null
+               && DataManager.DataManager.SharedInstance.AccountRecordsList?.d?.Count > 0
+               && DataManager.DataManager.SharedInstance.AccountsToBeAddedList != null
+               && DataManager.DataManager.SharedInstance.AccountsToBeAddedList?.d != null)
+            {
+                foreach (var item in DataManager.DataManager.SharedInstance.AccountsToBeAddedList.d)
+                {
+                    int index = DataManager.DataManager.SharedInstance.AccountRecordsList.d.FindIndex(x => x.accNum == item.accNum);
+                    if (index == -1)
+                    {
+                        GetStartedList.d.Add(item);
+                    }
+                }
+            }
+            else
+            {
+                if (DataManager.DataManager.SharedInstance.AccountsToBeAddedList != null
+                   && DataManager.DataManager.SharedInstance.AccountsToBeAddedList.d != null)
+                {
+                    GetStartedList = DataManager.DataManager.SharedInstance.AccountsToBeAddedList;
+                }
+            }
         }
 
         internal void GetStarted()
@@ -102,8 +137,7 @@ namespace myTNB
                     }
                     else
                     {
-                        Console.WriteLine("No Network");
-                        var alert = UIAlertController.Create("No Data Connection", "Please check your data connection and try again.", UIAlertControllerStyle.Alert);
+                        var alert = UIAlertController.Create("ErrNoNetworkTitle".Translate(), "ErrNoNetworkMsg".Translate(), UIAlertControllerStyle.Alert);
                         alert.AddAction(UIAlertAction.Create("Ok", UIAlertActionStyle.Cancel, null));
                         PresentViewController(alert, animated: true, completionHandler: null);
                         ActivityIndicator.Hide();
@@ -112,44 +146,47 @@ namespace myTNB
             });
         }
 
+
         internal void ExecuteGetCustomerRecordsCall()
         {
-            if (DataManager.DataManager.SharedInstance.AccountsToBeAddedList != null
-               && DataManager.DataManager.SharedInstance.AccountsToBeAddedList.d != null)
-            {
-                if(DataManager.DataManager.SharedInstance.AccountRecordsList == null
-                   || DataManager.DataManager.SharedInstance.AccountRecordsList.d == null){
-                    DataManager.DataManager.SharedInstance.AccountRecordsList = new CustomerAccountRecordListModel();
-                    DataManager.DataManager.SharedInstance.AccountRecordsList.d = new List<CustomerAccountRecordModel>();
-                }
-                foreach (var item in DataManager.DataManager.SharedInstance.AccountsToBeAddedList.d)
-                {
-                    int itemIndex = DataManager.DataManager.SharedInstance.AccountRecordsList
-                                               .d.FindIndex(x => x.accNum.Equals(item.accNum));
-                    if(itemIndex == -1){
-                        DataManager.DataManager.SharedInstance.AccountRecordsList.d.Add(item);
-                    }
-                }
-            }
-            UserAccountsEntity uaManager = new UserAccountsEntity();
-            if (DataManager.DataManager.SharedInstance.AccountRecordsList != null
-                && DataManager.DataManager.SharedInstance.AccountRecordsList.d != null)
-            {
-                uaManager.DeleteTable();
-                uaManager.CreateTable();
-                uaManager.InsertListOfItems(DataManager.DataManager.SharedInstance.AccountRecordsList);
-            }
 
             if (DataManager.DataManager.SharedInstance.AccountRecordsList != null
                && DataManager.DataManager.SharedInstance.AccountRecordsList.d != null)
             {
                 DataManager.DataManager.SharedInstance.IsSameAccount = false;
-                DataManager.DataManager.SharedInstance.SelectedAccount = DataManager.DataManager.SharedInstance.AccountRecordsList.d[0];
+                DataManager.DataManager.SharedInstance.SelectedAccount = DataManager.DataManager.SharedInstance.AccountRecordsList?.d?.Count > 0
+                    ? DataManager.DataManager.SharedInstance.AccountRecordsList.d.First()
+                    : new CustomerAccountRecordModel();
                 DataManager.DataManager.SharedInstance.CurrentSelectedAccountIndex = 0;
                 DataManager.DataManager.SharedInstance.PreviousSelectedAccountIndex = 0;
+                DataManager.DataManager.SharedInstance.AccountsAddedCount = AccountsAddedCount;
+
+#if true // CREATE_TABBAR
+                if (IsDashboardFlow)
+                {
+                    var baseRootVc = UIApplication.SharedApplication.KeyWindow?.RootViewController;
+                    var topVc = AppDelegate.GetTopViewController(baseRootVc);
+                    ViewHelper.DismissControllersAndSelectTab(this, 0, true, true);
+
+                    var newtopVc = AppDelegate.GetTopViewController(baseRootVc);
+                    var newPresenting = newtopVc?.PresentingViewController;
+                    if (!(newPresenting is HomeTabBarController))
+                    {
+                        Console.WriteLine("newPresenting = " + newPresenting.GetType().ToString());
+                    }
+                }
+                else
+                {
+                    UIStoryboard storyBoard = UIStoryboard.FromName("Dashboard", null);
+                    UIViewController homeVc = storyBoard.InstantiateViewController("HomeTabBarController") as UIViewController;
+                    PresentViewController(homeVc, true, null);
+                }
+
+#else
                 UIStoryboard storyBoard = UIStoryboard.FromName("Dashboard", null);
                 UIViewController loginVC = storyBoard.InstantiateViewController("HomeTabBarController") as UIViewController;
                 PresentViewController(loginVC, true, null);
+#endif
                 ActivityIndicator.Hide();
             }
             else

@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using myTNB.Model;
 using System.Globalization;
 using System.Drawing;
+using myTNB.Extensions;
 
 namespace myTNB
 {
@@ -51,7 +52,6 @@ namespace myTNB
                 var userInfo = obj.UserInfo;
                 NSValue keyboardFrame = userInfo.ValueForKey(UIKeyboard.FrameEndUserInfoKey) as NSValue;
                 CGRect keyboardRectangle = keyboardFrame.CGRectValue;
-                Console.WriteLine("height: " + keyboardRectangle.Height);
                 SelectBillsTableView.Frame = new CGRect(0
                                                         , 0
                                                         , View.Frame.Width
@@ -78,15 +78,67 @@ namespace myTNB
             {
                 if (isViewDidLoad)
                 {
-                    ActivityIndicator.Show();
                     SetDefaultTableFrame();
                     ResetValues();
                     GetAccountsForDisplay();
                     List<string> accountsForQuery = GetAccountsForQuery(0, 5);
-                    OnGetMultiAccountDueAmountServiceCall(accountsForQuery);
+                    UpdateFromCachedDues(accountsForQuery);
+                    if (accountsForQuery?.Count > 0)
+                    {
+                        ActivityIndicator.Show();
+                        OnGetMultiAccountDueAmountServiceCall(accountsForQuery);
+                    }
+                    else
+                    {
+                        UpdateDuesDisplay();
+                    }
                     isViewDidLoad = false;
                 }
             }
+        }
+
+        /// <summary>
+        /// Updates from cached dues.
+        /// </summary>
+        /// <param name="accountsForQuery">Accounts for query.</param>
+        private void UpdateFromCachedDues(List<string> accountsForQuery)
+        {
+            var acctsToRemove = new List<string>();
+
+            foreach (var accNum in accountsForQuery)
+            {
+                var acct = DataManager.DataManager.SharedInstance.GetDue(accNum);
+                if (acct != null)
+                {
+                    // update due values
+                    int itemIndex = _accounts.FindIndex(x => x.accNum.Equals(accNum));
+                    if (itemIndex > -1)
+                    {
+                        _accounts[itemIndex].Amount = acct.amountDue;
+                        _accounts[itemIndex].AmountDue = acct.amountDue;
+
+                        acctsToRemove.Add(accNum);
+
+                        int displayIndex = _accountsForDisplay.FindIndex(x => x.accNum.Equals(accNum));
+
+                        if (displayIndex > -1)
+                        {
+                            _accountsForDisplay[itemIndex].Amount = acct.amountDue;
+                            _accountsForDisplay[itemIndex].AmountDue = acct.amountDue;
+                        }
+                        else
+                        {
+                            _accountsForDisplay.Add(_accounts[itemIndex]);
+                        }
+                    }
+                }
+            }
+
+            if (acctsToRemove?.Count > 0)
+            {
+                accountsForQuery.RemoveAll(x => acctsToRemove.FindIndex(removeItem => removeItem == x) > -1);
+            }
+
         }
 
         void SetDefaultTableFrame()
@@ -163,12 +215,20 @@ namespace myTNB
 
         void OnLoadMore()
         {
-            ActivityIndicator.Show();
             View.EndEditing(true);
             lastStartIndex += (loadMoreCount > 0 ? 4 : 5);
             lastEndIndex = lastStartIndex + 4;
             List<string> accountsForQuery = GetAccountsForQuery(lastStartIndex, lastEndIndex);
-            OnGetMultiAccountDueAmountServiceCall(accountsForQuery);
+            UpdateFromCachedDues(accountsForQuery);
+            if (accountsForQuery?.Count > 0)
+            {
+                ActivityIndicator.Show();
+                OnGetMultiAccountDueAmountServiceCall(accountsForQuery);
+            }
+            else
+            {
+                UpdateDuesDisplay();
+            }
             loadMoreCount++;
         }
 
@@ -188,12 +248,19 @@ namespace myTNB
                     }else{
                         hasInvalidSelection = true;
                     }*/
+
+                    if (item.Amount < TNBGlobal.PaymentMinAmnt)
+                    {
+                        hasInvalidSelection = true;
+                    }
+
                     totalAmount += item.Amount;
                 }
             }
             _lblTotalAmountValue.Text = totalAmount.ToString("N2", CultureInfo.InvariantCulture);
             AdjustAmountFrame();
-            BtnPayBill.SetTitle(string.Format("Pay bill ({0})", selectedAccountCount.ToString()), UIControlState.Normal);
+            var title = (selectedAccountCount > 0) ? string.Format("PayBillBtnMltple".Translate(), selectedAccountCount.ToString()) : "PayBillBtnSngle".Translate();
+            BtnPayBill.SetTitle(title, UIControlState.Normal);
 
             bool isValid = (selectedAccountCount > 0 && totalAmount > 0) && !hasInvalidSelection;
 
@@ -219,24 +286,14 @@ namespace myTNB
                                     && _multiAccountDueAmount.d.data != null)
                                 {
                                     UpdateAccountListWithAmount();
-                                    InitializedTableView();
-                                    UpDateTotalAmount();
-                                    SetDefaultTableFrame();
-                                    if (_accounts.Count == _accountsForDisplay.Count)
-                                    {
-                                        SelectBillsTableView.TableFooterView = null;
-                                    }
-                                    else
-                                    {
-                                        _viewFooter.Hidden = false;
-                                        SelectBillsTableView.TableFooterView = _viewFooter;
-                                    }
+                                    UpdateDuesDisplay();
                                     ActivityIndicator.Hide();
                                 }
                                 else
                                 {
                                     UpDateTotalAmount();
-                                    var alert = UIAlertController.Create("Error in Response", "There is an error in the server, please try again.", UIAlertControllerStyle.Alert);
+                                    string msg = _multiAccountDueAmount?.d?.message;
+                                    var alert = UIAlertController.Create(string.Empty, !string.IsNullOrEmpty(msg) ? msg : "DefaultServerErrorMessage".Translate(), UIAlertControllerStyle.Alert);
                                     alert.AddAction(UIAlertAction.Create("Ok", UIAlertActionStyle.Cancel, null));
                                     PresentViewController(alert, animated: true, completionHandler: null);
                                     ActivityIndicator.Hide();
@@ -247,13 +304,32 @@ namespace myTNB
                     else
                     {
                         Console.WriteLine("No Network");
-                        var alert = UIAlertController.Create("No Data Connection", "Please check your data connection and try again.", UIAlertControllerStyle.Alert);
+                        var alert = UIAlertController.Create("ErrNoNetworkTitle".Translate(), "ErrNoNetworkMsg".Translate(), UIAlertControllerStyle.Alert);
                         alert.AddAction(UIAlertAction.Create("Ok", UIAlertActionStyle.Cancel, null));
                         PresentViewController(alert, animated: true, completionHandler: null);
                         ActivityIndicator.Hide();
                     }
                 });
             });
+        }
+
+        /// <summary>
+        /// Updates the dues display.
+        /// </summary>
+        private void UpdateDuesDisplay()
+        {
+            InitializedTableView();
+            UpDateTotalAmount();
+            SetDefaultTableFrame();
+            if (_accounts.Count == _accountsForDisplay.Count)
+            {
+                SelectBillsTableView.TableFooterView = null;
+            }
+            else
+            {
+                _viewFooter.Hidden = false;
+                SelectBillsTableView.TableFooterView = _viewFooter;
+            }
         }
 
         internal void InitializedTableView()
@@ -268,7 +344,7 @@ namespace myTNB
             BtnPayBill.BackgroundColor = myTNBColor.SilverChalice();
             BtnPayBill.Layer.CornerRadius = 4.0f;
             BtnPayBill.SetTitleColor(UIColor.White, UIControlState.Normal);
-            BtnPayBill.TitleLabel.Font = myTNBFont.MuseoSans16();
+            BtnPayBill.TitleLabel.Font = myTNBFont.MuseoSans16_500();
             BtnPayBill.TouchUpInside += (sender, e) =>
             {
                 _accountsForPayment = new List<CustomerAccountRecordModel>();
@@ -294,18 +370,18 @@ namespace myTNB
 
             UILabel lblTotalAmountTitle = new UILabel(new CGRect(0, 6, 120, 18));
             lblTotalAmountTitle.TextColor = myTNBColor.TunaGrey();
-            lblTotalAmountTitle.Font = myTNBFont.MuseoSans14();
+            lblTotalAmountTitle.Font = myTNBFont.MuseoSans14_500();
             lblTotalAmountTitle.Text = "Total Amount";
 
             _lblCurrency = new UILabel(new CGRect(0, 6, 24, 18));
             _lblCurrency.TextColor = myTNBColor.TunaGrey();
-            _lblCurrency.Font = myTNBFont.MuseoSans14();
+            _lblCurrency.Font = myTNBFont.MuseoSans14_500();
             _lblCurrency.Text = "RM";
             _lblCurrency.TextAlignment = UITextAlignment.Right;
 
             _lblTotalAmountValue = new UILabel(new CGRect(0, 0, (View.Frame.Width - 36) / 2, 24));
             _lblTotalAmountValue.TextColor = myTNBColor.TunaGrey();
-            _lblTotalAmountValue.Font = myTNBFont.MuseoSans24_300();
+            _lblTotalAmountValue.Font = myTNBFont.MuseoSans24_500();
             _lblTotalAmountValue.Text = "0.00";
             _lblTotalAmountValue.TextAlignment = UITextAlignment.Right;
 
@@ -342,7 +418,7 @@ namespace myTNB
                                                     , 0
                                                     , newSize.Width
                                                     , 24);
-            _lblCurrency.Frame = new CGRect(_lblTotalAmountValue.Frame.X - 24
+            _lblCurrency.Frame = new CGRect(_lblTotalAmountValue.Frame.X - 27
                                             , _lblCurrency.Frame.Y
                                             , _lblCurrency.Frame.Width
                                             , _lblCurrency.Frame.Height);

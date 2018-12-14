@@ -44,7 +44,7 @@ namespace myTNB.PushNotification
 
         public override void RowSelected(UITableView tableView, NSIndexPath indexPath)
         {
-            _controller.ExecuteGetNotificationDetailedInfoCall(_data[indexPath.Row].Id);
+            _controller.ExecuteGetNotificationDetailedInfoCall(_data[indexPath.Row]);
         }
 
         internal string GetDate(string createdDate)
@@ -82,6 +82,18 @@ namespace myTNB.PushNotification
             else if (id == "05")
             {
                 return "Notification-Reconnection";
+            }
+            else if (id == "97")
+            {
+                return "Notification-Promotion";
+            }
+            else if (id == "98")
+            {
+                return "Notification-News";
+            }
+            else if (id == "99")
+            {
+                return "Notification-Maintenance";
             }
             else
             {

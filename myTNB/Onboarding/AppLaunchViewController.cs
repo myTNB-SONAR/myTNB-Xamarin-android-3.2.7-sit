@@ -10,6 +10,8 @@ using myTNB.SitecoreCMS.Model;
 using myTNB.SitecoreCMS.Services;
 using myTNB.SQLite.SQLiteDataManager;
 using myTNB.SQLite;
+using myTNB.DataManager;
+using System.Collections.Generic;
 
 namespace myTNB
 {
@@ -28,15 +30,15 @@ namespace myTNB
         {
             base.ViewDidLoad();
             imgViewAppLaunch = new UIImageView(UIImage.FromBundle("App-Launch-Gradient"));
-            var imgViewLogo = new UIImageView(UIImage.FromBundle("Logo"));
-            var imgViewLogoTitle = new UIImageView(UIImage.FromBundle("Logo-Title"));
-            var imgViewTagline = new UIImageView(UIImage.FromBundle("Tagline"));
+            var imgViewLogo = new UIImageView(UIImage.FromBundle("Logo-Combined"));
+            //var imgViewLogoTitle = new UIImageView(UIImage.FromBundle("Logo-Title"));
+            //var imgViewTagline = new UIImageView(UIImage.FromBundle("Tagline"));
             //containerView = new UIView();
 
             View.AddSubview(imgViewAppLaunch);
             View.AddSubview(imgViewLogo);
-            View.AddSubview(imgViewLogoTitle);
-            View.AddSubview(imgViewTagline);
+            //View.AddSubview(imgViewLogoTitle);
+            //View.AddSubview(imgViewTagline);
             //View.AddSubview(containerView);  
 
             View.SubviewsDoNotTranslateAutoresizingMaskIntoConstraints();
@@ -47,20 +49,20 @@ namespace myTNB
                 imgViewAppLaunch.AtLeftOf(View, 0),
                 imgViewAppLaunch.AtRightOf(View, 0),
 
-                imgViewLogo.AtTopOf(View, 200),
+                imgViewLogo.AtTopOf(View, DeviceHelper.GetScaledHeight(200)),
                 imgViewLogo.WithSameCenterX(View),
-                imgViewLogo.Height().EqualTo(120),
-                imgViewLogo.Width().EqualTo(120),
+                imgViewLogo.Height().EqualTo(168),
+                imgViewLogo.Width().EqualTo(198)
 
-                imgViewLogoTitle.AtTopOf(imgViewLogo, 100),
-                imgViewLogoTitle.WithSameCenterX(View),
-                imgViewLogoTitle.Height().EqualTo(42),
-                imgViewLogoTitle.Width().EqualTo(198),
+            //imgViewLogoTitle.AtTopOf(imgViewLogo, 100),
+            //imgViewLogoTitle.WithSameCenterX(View),
+            //imgViewLogoTitle.Height().EqualTo(42),
+            //imgViewLogoTitle.Width().EqualTo(198),
 
-                imgViewTagline.AtTopOf(imgViewLogo, 130),
-                imgViewTagline.WithSameCenterX(View),
-                imgViewTagline.Height().EqualTo(25),
-                imgViewTagline.Width().EqualTo(113)
+            //imgViewTagline.AtTopOf(imgViewLogo, 130),
+            //imgViewTagline.WithSameCenterX(View),
+            //imgViewTagline.Height().EqualTo(25),
+            //imgViewTagline.Width().EqualTo(113)
             //containerView.AtTopOf(View, 0),
             //containerView.AtBottomOf(View, 0),
             //containerView.AtLeftOf(View, 0),
@@ -68,7 +70,7 @@ namespace myTNB
             );
             //Create DB
             SQLiteHelper.CreateDB();
-
+            CreateCacheTables();
         }
 
         public override void ViewDidLayoutSubviews()
@@ -97,10 +99,14 @@ namespace myTNB
             UIApplication.SharedApplication.NetworkActivityIndicatorVisible = true;
             NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
             {
-                InvokeOnMainThread(() =>
+                InvokeOnMainThread(async () =>
                 {
                     if (NetworkUtility.isReachable)
                     {
+#if true
+                        GetUserEntity();
+                        await LoadMasterData();
+#else
                         Task[] taskList = new Task[] {
                             GetWebLinks()
                             , GetLocationTypes()
@@ -110,7 +116,24 @@ namespace myTNB
                             , PushNotificationHelper.GetAppNotificationTypes()
                         };
                         Task.WaitAll(taskList);
-                        ExecuteSiteCoreCall();
+#endif
+                        if (!IsAppUpdateRequired())
+                        {
+                            ExecuteSiteCoreCall();
+                        }
+                        else
+                        {
+                            // show force update
+                            UIStoryboard storyBoard = UIStoryboard.FromName("Onboarding", null);
+                            var viewController =
+                                storyBoard.InstantiateViewController("AppUpdateViewController") as AppUpdateViewController;
+                            var navController = new UINavigationController(viewController);
+                            navController.ModalPresentationStyle = UIModalPresentationStyle.OverFullScreen;
+                            navController.SetNavigationBarHidden(true, false);
+                            PresentViewController(navController, false, null);
+                            UIApplication.SharedApplication.NetworkActivityIndicatorVisible = false;
+                        }
+
                     }
                     else
                     {
@@ -118,7 +141,7 @@ namespace myTNB
                         UIApplication.SharedApplication.NetworkActivityIndicatorVisible = false;
                         UserAccountsEntity uaManager = new UserAccountsEntity();
                         CustomerAccountRecordListModel accountRecords = uaManager.GetCustomerAccountRecordList();
-                        if (accountRecords != null && accountRecords.d != null)
+                        if (accountRecords != null && accountRecords?.d != null)
                         {
                             DataManager.DataManager.SharedInstance.AccountRecordsList = accountRecords;
                             if (accountRecords.d.Count > 0)
@@ -127,10 +150,10 @@ namespace myTNB
                             }
                         }
                         var sharedPreference = NSUserDefaults.StandardUserDefaults;
-                        GetUserEntity();
-                        var isLogin = sharedPreference.BoolForKey("isLogin");
+
+                        var isLogin = sharedPreference.BoolForKey(TNBGlobal.PreferenceKeys.LoginState);
                         var shouldUpdateDb = IsDbUpdateNeeded();
-                        if (isLogin && !shouldUpdateDb && DataManager.DataManager.SharedInstance.UserEntity != null && DataManager.DataManager.SharedInstance.UserEntity.Count > 0)
+                        if (isLogin && !shouldUpdateDb && DataManager.DataManager.SharedInstance.UserEntity != null && DataManager.DataManager.SharedInstance.UserEntity?.Count > 0)
                         {
                             DataManager.DataManager.SharedInstance.User.UserID = DataManager.DataManager.SharedInstance.UserEntity[0].userID;
                             ShowDashboard();
@@ -147,6 +170,75 @@ namespace myTNB
                     }
                 });
             });
+        }
+
+        /// <summary>
+        /// Checks if app update is required.
+        /// </summary>
+        /// <returns><c>true</c>, if app update required was ised, <c>false</c> otherwise.</returns>
+        private bool IsAppUpdateRequired()
+        {
+            bool res = false;
+            if (!string.IsNullOrWhiteSpace(DataManager.DataManager.SharedInstance.LatestAppVersion))
+            {
+                // if latest app version is higher
+                res = string.CompareOrdinal(DataManager.DataManager.SharedInstance.LatestAppVersion, AppVersionHelper.GetAppShortVersion()) > 0;
+            }
+            return res;
+        }
+
+        /// <summary>
+        /// Loads the master data.
+        /// </summary>
+        /// <returns>The master data.</returns>
+        private async Task LoadMasterData()
+        {
+            var response = await ServiceCall.GetAppLaunchMasterData();
+            if (response.didSucceed)
+            {
+                var data = response.data;
+
+                var iOSIndex = data?.AppVersions?.FindIndex(x => x.IsIos) ?? -1;
+                DataManager.DataManager.SharedInstance.LatestAppVersion = (iOSIndex > -1) ? data.AppVersions[iOSIndex].Version : string.Empty;
+
+                DataManager.DataManager.SharedInstance.SystemStatus = data?.SystemStatus ?? new List<DowntimeDataModel>();
+                DataManager.DataManager.SharedInstance.SetSystemsAvailability();
+
+                DataManager.DataManager.SharedInstance.WebLinks = data?.WebLinks ?? new List<WebLinksDataModel>();
+
+                DataManager.DataManager.SharedInstance.LocationTypes = data?.LocationTypes ?? new List<LocationTypeDataModel>();
+                if (data?.LocationTypes != null)
+                {
+                    LocationTypeDataModel allLocationModel = new LocationTypeDataModel();
+                    allLocationModel.Id = "all";
+                    allLocationModel.Title = "All";
+                    allLocationModel.Description = "All";
+                    if (DataManager.DataManager.SharedInstance.LocationTypes != null)
+                    {
+                        DataManager.DataManager.SharedInstance.LocationTypes.Insert(0, allLocationModel);
+                    }
+                }
+
+                DataManager.DataManager.SharedInstance.StatesForFeedBack = data?.States ?? new List<StatesForFeedbackDataModel>();
+
+                DataManager.DataManager.SharedInstance.FeedbackCategory = data?.FeedbackCategories ?? new List<FeedbackCategoryDataModel>();
+
+                DataManager.DataManager.SharedInstance.OtherFeedbackType = data?.FeedbackTypes ?? new List<OtherFeedbackTypeDataModel>();
+
+                var rawNotifGeneralTypes = data?.NotificationTypes ?? new List<NotificationPreferenceModel>();
+                DataManager.DataManager.SharedInstance.NotificationGeneralTypes = rawNotifGeneralTypes.FindAll(item => item?.ShowInFilterList?.ToLower() == "true") ?? new List<NotificationPreferenceModel>();
+
+                if (data?.NotificationTypes != null)
+                {
+                    NotificationPreferenceModel allNotificationItem = new NotificationPreferenceModel();
+                    allNotificationItem.Title = "All notifications";
+                    allNotificationItem.Id = "all";
+                    if (DataManager.DataManager.SharedInstance.NotificationGeneralTypes != null)
+                    {
+                        DataManager.DataManager.SharedInstance.NotificationGeneralTypes.Insert(0, allNotificationItem);
+                    }
+                }
+            }
         }
 
         internal void GetUserEntity()
@@ -174,11 +266,12 @@ namespace myTNB
         internal void ShowDashboard()
         {
             var sharedPreference = NSUserDefaults.StandardUserDefaults;
-            var isLogin = sharedPreference.BoolForKey("isLogin");
-            if(isLogin){
+            var isLogin = sharedPreference.BoolForKey(TNBGlobal.PreferenceKeys.LoginState);
+            if (isLogin)
+            {
                 PushNotificationHelper.GetNotifications();
             }
-            DataManager.DataManager.SharedInstance.CreateUsageHistoryTable();
+
             UIStoryboard storyBoard = UIStoryboard.FromName("Dashboard", null);
             UIViewController loginVC = storyBoard.InstantiateViewController("HomeTabBarController") as UIViewController;
             ShowViewController(loginVC, this);
@@ -192,21 +285,32 @@ namespace myTNB
             _imageSize = DeviceHelper.GetImageSize((int)View.Frame.Width);
             GetWalkthroughScreens().ContinueWith(task =>
             {
-                InvokeOnMainThread(() =>
+                InvokeOnMainThread(async () =>
                 {
                     if (isWalkthroughDone)
                     {
-                        var isLogin = sharedPreference.BoolForKey("isLogin");
+
+                        var isLogin = sharedPreference.BoolForKey(TNBGlobal.PreferenceKeys.LoginState);
                         var shouldUpdateDb = IsDbUpdateNeeded();
-                        if (isLogin && !shouldUpdateDb 
-                            && DataManager.DataManager.SharedInstance.UserEntity != null && DataManager.DataManager.SharedInstance.UserEntity.Count > 0)
+                        if (isLogin && !shouldUpdateDb
+                            && DataManager.DataManager.SharedInstance.UserEntity != null && DataManager.DataManager.SharedInstance.UserEntity?.Count > 0)
                         {
-                            DataManager.DataManager.SharedInstance.User.UserID = DataManager.DataManager.SharedInstance.UserEntity[0].userID;
-                            ExecuteGetCutomerRecordsCall();
+                            DataManager.DataManager.SharedInstance.User.UserID = DataManager.DataManager.SharedInstance.UserEntity[0]?.userID;
+
+                            bool isPhoneVerified = await GetPhoneVerificationStatus();
+
+                            if (isPhoneVerified)
+                            {
+                                ExecuteGetCutomerRecordsCall();
+                            }
+                            else
+                            {
+                                ShowUpdateMobileNumber(true);
+                            }
                         }
                         else
                         {
-                            if(shouldUpdateDb)
+                            if (shouldUpdateDb)
                             {
                                 DataManager.DataManager.SharedInstance.ClearLoginState();
                             }
@@ -221,6 +325,18 @@ namespace myTNB
                     }
                 });
             });
+        }
+
+        /// <summary>
+        /// Creates the cache tables.
+        /// </summary>
+        private void CreateCacheTables()
+        {
+            DataManager.DataManager.SharedInstance.CreateDuesTable();
+            DataManager.DataManager.SharedInstance.CreateUsageHistoryTable();
+            DataManager.DataManager.SharedInstance.CreateBillingAccountsTable();
+            DataManager.DataManager.SharedInstance.CreateBillHistoryTable();
+            DataManager.DataManager.SharedInstance.CreatePaymentHistoryTable();
         }
 
         internal Task GetWalkthroughScreens()
@@ -296,15 +412,15 @@ namespace myTNB
             UserAccountsEntity uaManager = new UserAccountsEntity();
             DataManager.DataManager.SharedInstance.AccountRecordsList = uaManager.GetCustomerAccountRecordList();
             if (DataManager.DataManager.SharedInstance.AccountRecordsList != null
-                       && DataManager.DataManager.SharedInstance.AccountRecordsList.d != null
-                       && DataManager.DataManager.SharedInstance.AccountRecordsList.d.Count > 0)
+                       && DataManager.DataManager.SharedInstance.AccountRecordsList?.d != null
+                       && DataManager.DataManager.SharedInstance.AccountRecordsList?.d?.Count > 0)
             {
                 DataManager.DataManager.SharedInstance.SelectedAccount = DataManager.DataManager.SharedInstance.AccountRecordsList.d[0];
                 ExecuteGetBillAccountDetailsCall();
             }
             else if (DataManager.DataManager.SharedInstance.AccountRecordsList != null
-              && DataManager.DataManager.SharedInstance.AccountRecordsList.d != null
-              && DataManager.DataManager.SharedInstance.AccountRecordsList.d.Count == 0)
+              && DataManager.DataManager.SharedInstance.AccountRecordsList?.d != null
+              && DataManager.DataManager.SharedInstance.AccountRecordsList?.d?.Count == 0)
             {
                 ShowDashboard();
                 UIApplication.SharedApplication.NetworkActivityIndicatorVisible = false;
@@ -317,16 +433,70 @@ namespace myTNB
             }
         }
 
+        /// <summary>
+        /// Checks if the phone is verified.
+        /// </summary>
+        /// <returns>The phone is verified.</returns>
+        private async Task<bool> GetPhoneVerificationStatus()
+        {
+            var sharedPreference = NSUserDefaults.StandardUserDefaults;
+            bool isVerified = sharedPreference.BoolForKey(TNBGlobal.PreferenceKeys.PhoneVerification);
+
+            if (!isVerified)
+            {
+                var response = await ServiceCall.GetPhoneVerificationStatus();
+
+                if (response?.didSucceed == true && response?.data != null)
+                {
+                    isVerified = response.data.IsVerified;
+
+                    if (isVerified)
+                    {
+                        sharedPreference.SetBool(true, TNBGlobal.PreferenceKeys.PhoneVerification);
+                        sharedPreference.Synchronize();
+                    }
+                }
+                else
+                {
+                    isVerified = true;
+                }
+
+            }
+
+            return isVerified;
+        }
+
+        /// <summary>
+        /// Shows the update mobile number.
+        /// </summary>
+        /// <param name="willHideBackButton">If set to <c>true</c> will hide back button.</param>
+        private void ShowUpdateMobileNumber(bool willHideBackButton)
+        {
+            UIStoryboard storyBoard = UIStoryboard.FromName("UpdateMobileNumber", null);
+            UpdateMobileNumberViewController viewController =
+                storyBoard.InstantiateViewController("UpdateMobileNumberViewController") as UpdateMobileNumberViewController;
+            viewController.WillHideBackButton = willHideBackButton;
+            viewController.IsFromLogin = true;
+            var navController = new UINavigationController(viewController);
+            PresentViewController(navController, true, null);
+            ActivityIndicator.Hide();
+        }
+
         internal void ExecuteGetBillAccountDetailsCall()
         {
             GetBillingAccountDetails().ContinueWith(task =>
             {
                 InvokeOnMainThread(() =>
                 {
-                    if (_billingAccountDetailsList != null && _billingAccountDetailsList.d != null
-                       && _billingAccountDetailsList.d.data != null)
+                    if (_billingAccountDetailsList != null && _billingAccountDetailsList?.d != null
+                        && _billingAccountDetailsList?.d?.data != null && _billingAccountDetailsList?.d?.didSucceed == true)
                     {
                         DataManager.DataManager.SharedInstance.BillingAccountDetails = _billingAccountDetailsList.d.data;
+                        if (!DataManager.DataManager.SharedInstance.SelectedAccount.IsREAccount)
+                        {
+                            DataManager.DataManager.SharedInstance.SaveToBillingAccounts(DataManager.DataManager.SharedInstance.BillingAccountDetails,
+                                                                                         DataManager.DataManager.SharedInstance.SelectedAccount.accNum);
+                        }
                         ShowDashboard();
                         UIApplication.SharedApplication.NetworkActivityIndicatorVisible = false;
                     }
@@ -369,7 +539,8 @@ namespace myTNB
                 {
                     apiKeyID = TNBGlobal.API_KEY_ID
                 };
-                DataManager.DataManager.SharedInstance.WebLinks = serviceManager.GetWebLinks("GetWebLinks", requestParameter);
+                var response = serviceManager.GetWebLinks("GetWebLinks", requestParameter);
+                DataManager.DataManager.SharedInstance.WebLinks = response?.d?.data;
             });
         }
 
@@ -382,16 +553,15 @@ namespace myTNB
                 {
                     apiKeyID = TNBGlobal.API_KEY_ID
                 };
-                DataManager.DataManager.SharedInstance.LocationTypes = serviceManager.GetLocationTypes("GetLocationTypes", requestParameter);
+                var response = serviceManager.GetLocationTypes("GetLocationTypes", requestParameter);
+                DataManager.DataManager.SharedInstance.LocationTypes = response?.d?.data;
                 LocationTypeDataModel allLocationModel = new LocationTypeDataModel();
                 allLocationModel.Id = "all";
                 allLocationModel.Title = "All";
                 allLocationModel.Description = "All";
-                if (DataManager.DataManager.SharedInstance.LocationTypes != null
-                   && DataManager.DataManager.SharedInstance.LocationTypes.d != null
-                   && DataManager.DataManager.SharedInstance.LocationTypes.d.data != null)
+                if (DataManager.DataManager.SharedInstance.LocationTypes != null)
                 {
-                    DataManager.DataManager.SharedInstance.LocationTypes.d.data.Insert(0, allLocationModel);
+                    DataManager.DataManager.SharedInstance.LocationTypes.Insert(0, allLocationModel);
                 }
             });
         }
@@ -405,7 +575,8 @@ namespace myTNB
                 {
                     apiKeyID = TNBGlobal.API_KEY_ID
                 };
-                DataManager.DataManager.SharedInstance.StatesForFeedBack = serviceManager.GetStatesForFeedback("GetStatesForFeedback", requestParameter);
+                var response = serviceManager.GetStatesForFeedback("GetStatesForFeedback", requestParameter);
+                DataManager.DataManager.SharedInstance.StatesForFeedBack = response?.d?.data;
             });
         }
 
@@ -418,7 +589,8 @@ namespace myTNB
                 {
                     apiKeyID = TNBGlobal.API_KEY_ID
                 };
-                DataManager.DataManager.SharedInstance.FeedbackCategory = serviceManager.GetFeedbackCategory("GetFeedbackCategory", requestParameter);
+                var response = serviceManager.GetFeedbackCategory("GetFeedbackCategory", requestParameter);
+                DataManager.DataManager.SharedInstance.FeedbackCategory = response?.d?.data;
             });
         }
 
@@ -431,7 +603,8 @@ namespace myTNB
                 {
                     apiKeyID = TNBGlobal.API_KEY_ID
                 };
-                DataManager.DataManager.SharedInstance.OtherFeedbackType = serviceManager.GetOtherFeedbackType("GetOtherFeedbackType", requestParameter);
+                var response = serviceManager.GetOtherFeedbackType("GetOtherFeedbackType", requestParameter);
+                DataManager.DataManager.SharedInstance.OtherFeedbackType = response?.d?.data;
             });
         }
 
@@ -442,6 +615,10 @@ namespace myTNB
         /// <returns><c>true</c>, if db update needed was ised, <c>false</c> otherwise.</returns>
         public bool IsDbUpdateNeeded()
         {
+#if true
+            // temporary turn off
+            return false;
+#else
             bool res = true;
             string versionOfLastRunKey = "VersionOfLastRun";
             var sharedPreference = NSUserDefaults.StandardUserDefaults;
@@ -457,6 +634,7 @@ namespace myTNB
             sharedPreference.Synchronize();
 
             return res;
+#endif
         }
     }
 }

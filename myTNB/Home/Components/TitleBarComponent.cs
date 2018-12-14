@@ -23,7 +23,7 @@ namespace myTNB.Dashboard.DashboardComponents
         internal void CreateComponent()
         {
             int yLocation = 26;
-            if (DeviceHelper.IsIphoneX())
+            if (DeviceHelper.IsIphoneXUpResolution())
             {
                 yLocation = 50;
             }
@@ -38,10 +38,9 @@ namespace myTNB.Dashboard.DashboardComponents
             _viewTitleBar.AddSubview(_viewBack);
 
             _lblTitle = new UILabel(new CGRect(58, 0, _parentView.Frame.Width - 116, HEIGHT));
-            _lblTitle.Font = myTNBFont.MuseoSans16(); ;
+            _lblTitle.Font = myTNBFont.MuseoSans16_500(); ;
             _lblTitle.TextAlignment = UITextAlignment.Center;
             _lblTitle.TextColor = UIColor.White;
-            _lblTitle.Text = "Welcome";
             _viewTitleBar.AddSubview(_lblTitle);
 
             _viewNotification = new UIView(new CGRect(_parentView.Frame.Width - 48, 0, 24, HEIGHT));

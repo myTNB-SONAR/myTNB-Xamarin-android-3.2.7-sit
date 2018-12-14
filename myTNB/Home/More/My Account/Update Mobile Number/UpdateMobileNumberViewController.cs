@@ -1,4 +1,4 @@
-using Foundation;
+﻿using Foundation;
 using System;
 using UIKit;
 using myTNB.Dashboard.DashboardComponents;
@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 using myTNB.Model;
 using myTNB.SQLite.SQLiteDataManager;
 using myTNB.DataManager;
+using myTNB.Extensions;
+using myTNB.Registration;
+using System.Linq;
 
 namespace myTNB
 {
@@ -15,9 +18,10 @@ namespace myTNB
         public UpdateMobileNumberViewController(IntPtr handle) : base(handle)
         {
         }
-        const string MOBILE_NO_PATTERN = @"^[0-9]+$";
+        const string MOBILE_NO_PATTERN = @"^[0-9 \+]+$";
         UILabel lblMobileNoTitle;
         UILabel lblMobileNoError;
+        UILabel lblMobileNoHint;
         UITextField txtFieldMobileNo;
         UIView viewLineMobileNo;
         UIButton btnSave;
@@ -26,30 +30,69 @@ namespace myTNB
         TextFieldHelper _textFieldHelper = new TextFieldHelper();
         string _mobileNo = string.Empty;
 
+        public bool WillHideBackButton = false;
+        public bool IsFromLogin = false;
+        bool isAnimating = false;
+        string _navTitle;
+
         public override void ViewDidLoad()
         {
             base.ViewDidLoad();
             SetNavigationBar();
             AddSaveButton();
             SetSubviews();
+
+            if (IsFromLogin)
+            {
+                View.BringSubviewToFront(toastView);
+                ToastHelper.ShowToast(toastView, ref isAnimating);
+            }
         }
 
-        public override void ViewWillAppear(bool animated)
-        {
-            base.ViewWillAppear(animated);
-            txtFieldMobileNo.Text = DataManager.DataManager.SharedInstance.UserEntity[0].mobileNo;
-        }
+		public override void ViewWillAppear(bool animated)
+		{
+			base.ViewWillAppear(animated);
+			NavigationController.NavigationBar.Hidden = true;
+
+            string mobileNo = DataManager.DataManager.SharedInstance.UserEntity?.Count > 0
+                                         ? _textFieldHelper.TrimAllSpaces(DataManager.DataManager.SharedInstance.UserEntity[0]?.mobileNo)
+                                         : string.Empty;
+			txtFieldMobileNo.Text = _textFieldHelper.FormatMobileNo(mobileNo);
+			SetVisibility();
+			SetSaveButtonEnable();
+		}
 
         internal void SetSubviews()
         {
-            UIView viewMobileNumber = new UIView((new CGRect(18, DeviceHelper.IsIphoneX() ? 104 : 80, View.Frame.Width - 36, 51)));
+            nfloat marginY = 16;
+            UILabel info;
+            UIView viewMobileNumber;
+            if (IsFromLogin)
+            {
+                info = new UILabel
+                {
+                    Frame = new CGRect(18, DeviceHelper.IsIphoneXUpResolution() ? 104 : 80, View.Frame.Width - 36, 36),
+                    LineBreakMode = UILineBreakMode.WordWrap,
+                    Lines = 0,
+                    Font = myTNBFont.MuseoSans14_300(),
+                    TextColor = myTNBColor.TunaGrey(),
+                    Text = "VerifyMobilePrompt".Translate()
+                };
+                View.AddSubview(info);
+                viewMobileNumber = new UIView((new CGRect(18, info.Frame.GetMaxY() + marginY, View.Frame.Width - 36, 51)));
+            }
+            else
+            {
+                viewMobileNumber = new UIView((new CGRect(18, (DeviceHelper.IsIphoneXUpResolution() ? 104 : 80), View.Frame.Width - 36, 51)));
+            }
+
             viewMobileNumber.BackgroundColor = UIColor.Clear;
 
             lblMobileNoTitle = new UILabel
             {
                 Frame = new CGRect(0, 0, viewMobileNumber.Frame.Width, 12),
                 AttributedText = new NSAttributedString("MOBILE NO."
-                                                        , font: myTNBFont.MuseoSans9()
+                                                        , font: myTNBFont.MuseoSans9_300()
                                                         , foregroundColor: myTNBColor.SilverChalice()
                                                         , strokeWidth: 0
                                                    ),
@@ -62,7 +105,7 @@ namespace myTNB
             {
                 Frame = new CGRect(0, 37, viewMobileNumber.Frame.Width, 14),
                 AttributedText = new NSAttributedString("Invalid mobile no."
-                                                        , font: myTNBFont.MuseoSans9()
+                                                        , font: myTNBFont.MuseoSans9_300()
                                                         , foregroundColor: myTNBColor.Tomato()
                                                         , strokeWidth: 0
                                                        ),
@@ -71,18 +114,32 @@ namespace myTNB
             lblMobileNoError.Hidden = true;
             viewMobileNumber.AddSubview(lblMobileNoError);
 
+            lblMobileNoHint = new UILabel
+            {
+                Frame = new CGRect(0, 37, viewMobileNumber.Frame.Width, 14),
+                AttributedText = new NSAttributedString(
+                    "Example: +6012 345 6789",
+                    font: myTNBFont.MuseoSans9_300(),
+                    foregroundColor: myTNBColor.TunaGrey(),
+                    strokeWidth: 0
+                ),
+                TextAlignment = UITextAlignment.Left
+            };
+            lblMobileNoHint.Hidden = true;
+            viewMobileNumber.AddSubview(lblMobileNoHint);
+
             txtFieldMobileNo = new UITextField
             {
                 Frame = new CGRect(0, 12, viewMobileNumber.Frame.Width, 24),
                 AttributedPlaceholder = new NSAttributedString("Mobile No."
-                                                               , font: myTNBFont.MuseoSans16()
+                                                               , font: myTNBFont.MuseoSans16_300()
                                                                , foregroundColor: myTNBColor.SilverChalice()
                                                                , strokeWidth: 0
                                                               ),
                 TextColor = myTNBColor.TunaGrey()
             };
             _textFieldHelper.CreateDoneButton(txtFieldMobileNo);
-            txtFieldMobileNo.KeyboardType = UIKeyboardType.PhonePad;
+            txtFieldMobileNo.KeyboardType = UIKeyboardType.NumberPad;
             _textFieldHelper.CreateTextFieldLeftView(txtFieldMobileNo, "Mobile");
             viewMobileNumber.AddSubview(txtFieldMobileNo);
 
@@ -90,11 +147,20 @@ namespace myTNB
             viewLineMobileNo.BackgroundColor = myTNBColor.PlatinumGrey();
             viewMobileNumber.AddSubview(viewLineMobileNo);
             View.AddSubview(viewMobileNumber);
-            SetTextFieldEvents(txtFieldMobileNo, lblMobileNoTitle, lblMobileNoError, viewLineMobileNo, MOBILE_NO_PATTERN);
+            SetTextFieldEvents(txtFieldMobileNo, lblMobileNoTitle, lblMobileNoError, viewLineMobileNo, lblMobileNoHint, MOBILE_NO_PATTERN);
+        }
+
+        internal void SetVisibility()
+        {
+            if (txtFieldMobileNo.Text != string.Empty)
+            {
+                lblMobileNoTitle.Hidden = false;
+                txtFieldMobileNo.LeftViewMode = UITextFieldViewMode.Never;
+            }
         }
 
         internal void SetTextFieldEvents(UITextField textField, UILabel lblTitle
-                                         , UILabel lblError, UIView viewLine, string pattern)
+                                         , UILabel lblError, UIView viewLine, UILabel lblHint, string pattern)
         {
             _textFieldHelper.SetKeyboard(textField);
             textField.EditingChanged += (sender, e) =>
@@ -104,14 +170,31 @@ namespace myTNB
             textField.EditingDidBegin += (sender, e) =>
             {
                 lblTitle.Hidden = textField.Text.Length == 0;
+
+                if (textField == txtFieldMobileNo)
+                {
+                    if (textField.Text.Length == 0)
+                    {
+						textField.Text += TNBGlobal.MobileNoPrefix;
+                    }
+                }
+                lblHint.Hidden = lblError.Hidden ? textField.Text.Length == 0 : true;
+                viewLine.BackgroundColor = myTNBColor.PowerBlue();
             };
             textField.ShouldEndEditing = (sender) =>
             {
+                lblHint.Hidden = true;
                 lblTitle.Hidden = textField.Text.Length == 0;
                 bool isValid = _textFieldHelper.ValidateTextField(textField.Text.Replace("+", string.Empty), pattern);
-                lblError.Hidden = isValid || textField.Text.Length == 0;
-                viewLine.BackgroundColor = isValid || textField.Text.Length == 0 ? myTNBColor.PlatinumGrey() : myTNBColor.Tomato();
-                textField.TextColor = isValid || textField.Text.Length == 0 ? myTNBColor.TunaGrey() : myTNBColor.Tomato();
+
+                if (textField == txtFieldMobileNo)
+                {
+                    isValid = isValid && _textFieldHelper.ValidateMobileNumberLength(textField.Text);
+                }
+
+                lblError.Hidden = isValid;
+                viewLine.BackgroundColor = isValid ? myTNBColor.PlatinumGrey() : myTNBColor.Tomato();
+                textField.TextColor = isValid ? myTNBColor.TunaGrey() : myTNBColor.Tomato();
                 SetSaveButtonEnable();
                 return true;
             };
@@ -124,12 +207,45 @@ namespace myTNB
             {
                 lblTitle.Hidden = false;
             };
+            textField.ShouldChangeCharacters += (txtField, range, replacementString) =>
+            {
+                if (textField == txtFieldMobileNo)
+                {
+                    bool isCharValid = _textFieldHelper.ValidateTextField(replacementString, TNBGlobal.MobileNoPattern);
+                    if (!isCharValid)
+                        return false;
+                   
+                    if (range.Location >= TNBGlobal.MobileNoPrefix.Length)
+					{
+                        string content = _textFieldHelper.TrimAllSpaces(((UITextField)txtField).Text);
+                        var count = content.Length + replacementString.Length - range.Length;
+                        return count <= TNBGlobal.MobileNumberMaxCharCount;
+                    }
+                    return false;
+                }
+                return true;
+            };
         }
 
         internal void SetSaveButtonEnable()
         {
-            bool isValidMobileNo = _textFieldHelper.ValidateTextField(txtFieldMobileNo.Text.Replace("+", string.Empty), MOBILE_NO_PATTERN)
-                                                   && !DataManager.DataManager.SharedInstance.UserEntity[0].mobileNo.Equals(txtFieldMobileNo.Text);
+            bool isValidMobileNo;
+
+            var textStr = txtFieldMobileNo.Text?.Trim();
+            if (IsFromLogin) 
+            {
+                isValidMobileNo = _textFieldHelper.ValidateTextField(textStr.Replace("+", string.Empty), MOBILE_NO_PATTERN);
+            } else 
+            {
+                string mobileNo = DataManager.DataManager.SharedInstance.UserEntity?.Count > 0
+                                         ? _textFieldHelper.TrimAllSpaces(DataManager.DataManager.SharedInstance.UserEntity[0]?.mobileNo)
+                                         : string.Empty;
+                isValidMobileNo = _textFieldHelper.ValidateTextField(textStr.Replace("+", string.Empty), MOBILE_NO_PATTERN)
+                                                   && !mobileNo.Equals(_textFieldHelper.TrimAllSpaces(txtFieldMobileNo.Text));
+            }
+
+            isValidMobileNo = isValidMobileNo && _textFieldHelper.ValidateMobileNumberLength(textStr);
+
             btnSave.Enabled = isValidMobileNo;
             btnSave.BackgroundColor = isValidMobileNo ? myTNBColor.FreshGreen() : myTNBColor.SilverChalice();
         }
@@ -141,9 +257,10 @@ namespace myTNB
             UIView headerView = gradientViewComponent.GetUI();
             TitleBarComponent titleBarComponent = new TitleBarComponent(headerView);
             UIView titleBarView = titleBarComponent.GetUI();
-            titleBarComponent.SetTitle("Update Mobile Number");
+            _navTitle = IsFromLogin ? "NavTitleNotVerified".Translate() : "NavTitleVerified".Translate();
+            titleBarComponent.SetTitle(_navTitle);
             titleBarComponent.SetNotificationVisibility(true);
-            titleBarComponent.SetBackVisibility(false);
+            titleBarComponent.SetBackVisibility(WillHideBackButton);
             titleBarComponent.SetBackAction(new UITapGestureRecognizer(() =>
             {
                 DismissViewController(true, null);
@@ -155,50 +272,75 @@ namespace myTNB
         internal void AddSaveButton()
         {
             btnSave = new UIButton(UIButtonType.Custom);
-            btnSave.Frame = new CGRect(18, View.Frame.Height - (DeviceHelper.IsIphoneX() ? 96 : 72), View.Frame.Width - 36, 48);
+            btnSave.Frame = new CGRect(18, View.Frame.Height - (DeviceHelper.IsIphoneXUpResolution() ? 96 : DeviceHelper.GetScaledHeight(72)), View.Frame.Width - 36, DeviceHelper.GetScaledHeight(48));
             btnSave.Layer.CornerRadius = 4;
             btnSave.BackgroundColor = myTNBColor.SilverChalice();
-            btnSave.SetTitle("Save", UIControlState.Normal);
-            btnSave.Font = myTNBFont.MuseoSans16();
+            btnSave.SetTitle("Next", UIControlState.Normal);
+            btnSave.Font = myTNBFont.MuseoSans16_500();
             btnSave.SetTitleColor(UIColor.White, UIControlState.Normal);
-            btnSave.Enabled = false;
-            btnSave.TouchUpInside += (sender, e) =>
+            btnSave.TouchUpInside += async (sender, e) =>
             {
                 ActivityIndicator.Show();
-                _mobileNo = txtFieldMobileNo.Text;
-                NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
+                _mobileNo = txtFieldMobileNo.Text.Replace(" ", string.Empty);
+                BaseResponseModel response = await ServiceCall.SendUpdatePhoneTokenSMS(_mobileNo);
+
+                if (ServiceCall.ValidateBaseResponse(response))
                 {
-                    InvokeOnMainThread(() =>
+                    DataManager.DataManager.SharedInstance.User.MobileNo = _mobileNo;
+                    UIStoryboard storyBoard = UIStoryboard.FromName("Registration", null);
+                    var viewController = storyBoard.InstantiateViewController("VerifyPinViewController") as VerifyPinViewController;
+                    viewController.IsMobileVerification = true;
+                    viewController.IsFromLogin = IsFromLogin;
+                    this.NavigationController.PushViewController(viewController, true);
+                    ActivityIndicator.Hide();
+                }
+                else
+                {
+                    ActivityIndicator.Hide();
+                    DisplayAlertMessage("Error", IsFromLogin ? "ErrorVerifyDevice".Translate() : "ErrorMobileNumberUpdate".Translate());
+                }
+            };
+            View.AddSubview(btnSave);
+        }
+
+        private void SaveMobileNumber()
+        {
+            ActivityIndicator.Show();
+
+            NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
+            {
+                InvokeOnMainThread(() =>
+                {
+                    if (NetworkUtility.isReachable)
                     {
-                        if (NetworkUtility.isReachable)
+                        Task[] taskList = new Task[] { ServiceCall.UpdatePhoneNumber(_mobileNo, "", IsFromLogin) };
+                        Task.WaitAll(taskList);
+                        if (ServiceCall.ValidateBaseResponse(_saveResponse))
                         {
-                            Task[] taskList = new Task[] { Save() };
-                            Task.WaitAll(taskList);
-                            if (ServiceCall.ValidateBaseResponse(_saveResponse))
+                            DataManager.DataManager.SharedInstance.UserEntity[0].mobileNo = _mobileNo;
+                            if (!IsFromLogin)
                             {
-                                DataManager.DataManager.SharedInstance.UserEntity[0].mobileNo = _mobileNo;
                                 DataManager.DataManager.SharedInstance.IsMobileNumberUpdated = true;
-                                UserEntity userEntity = new UserEntity();
-                                userEntity.Reset();
-                                userEntity.InsertItem(DataManager.DataManager.SharedInstance.UserEntity[0]);
-                                DataManager.DataManager.SharedInstance.UserEntity = userEntity.GetAllItems();
-                                DismissViewController(true, null);
                             }
-                            else
-                            {
-                                DisplayAlertMessage("Error", "Cannot update mobile number. Please try again.");
-                            }
+                            UserEntity userEntity = new UserEntity();
+                            userEntity.Reset();
+                            userEntity.InsertItem(DataManager.DataManager.SharedInstance.UserEntity[0]);
+                            DataManager.DataManager.SharedInstance.UserEntity = userEntity.GetAllItems();
+                            DismissViewController(true, null);
                         }
                         else
                         {
-                            Console.WriteLine("No Network");
-                            DisplayAlertMessage("No Data Connection", "Please check your data connection and try again.");
+                            DisplayAlertMessage("Error", "Cannot update mobile number. Please try again.");
                         }
-                        ActivityIndicator.Hide();
-                    });
+                    }
+                    else
+                    {
+                        Console.WriteLine("No Network");
+                        DisplayAlertMessage("ErrNoNetworkTitle".Translate(), "ErrNoNetworkMsg".Translate());
+                    }
+                    ActivityIndicator.Hide();
                 });
-            };
-            View.AddSubview(btnSave);
+            });
         }
 
         internal void DisplayAlertMessage(string title, string message)
@@ -208,21 +350,6 @@ namespace myTNB
             PresentViewController(alert, animated: true, completionHandler: null);
         }
 
-        internal Task Save()
-        {
-            return Task.Factory.StartNew(() =>
-            {
-                ServiceManager serviceManager = new ServiceManager();
-                object requestParameter = new
-                {
-                    apiKeyID = TNBGlobal.API_KEY_ID,
-                    sspUserId = DataManager.DataManager.SharedInstance.UserEntity[0].userID,
-                    email = DataManager.DataManager.SharedInstance.UserEntity[0].email,
-                    oldPhoneNumber = DataManager.DataManager.SharedInstance.UserEntity[0].mobileNo,
-                    newPhoneNumber = _mobileNo
-                };
-                _saveResponse = serviceManager.BaseServiceCall("UpdatePhoneNumber", requestParameter);
-            });
-        }
+
     }
 }

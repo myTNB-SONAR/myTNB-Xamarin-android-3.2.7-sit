@@ -42,15 +42,14 @@ namespace myTNB
         internal void OnSelectStoreType()
         {
             if (DataManager.DataManager.SharedInstance.LocationTypes != null
-              && DataManager.DataManager.SharedInstance.LocationTypes.d != null
-              && DataManager.DataManager.SharedInstance.LocationTypes.d.data != null)
+                && DataManager.DataManager.SharedInstance.CurrentStoreTypeIndex < DataManager.DataManager.SharedInstance.LocationTypes?.Count)
             {
                 DataManager.DataManager.SharedInstance.SelectedLocationTypeID
                            = DataManager.DataManager.SharedInstance.LocationTypes
-                    .d.data[DataManager.DataManager.SharedInstance.CurrentStoreTypeIndex].Id;
+                    [DataManager.DataManager.SharedInstance.CurrentStoreTypeIndex].Id;
                 DataManager.DataManager.SharedInstance.SelectedLocationTypeTitle
                            = DataManager.DataManager.SharedInstance.LocationTypes
-                    .d.data[DataManager.DataManager.SharedInstance.CurrentStoreTypeIndex].Title;
+                    [DataManager.DataManager.SharedInstance.CurrentStoreTypeIndex].Title;
             }
             DataManager.DataManager.SharedInstance.isLocationSearch = false;
             DismissViewController(true, null);

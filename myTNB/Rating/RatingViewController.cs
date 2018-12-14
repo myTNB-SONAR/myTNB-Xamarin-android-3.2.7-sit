@@ -2,122 +2,139 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using CoreGraphics;
+using Foundation;
+using myTNB.Customs;
 using myTNB.Dashboard.DashboardComponents;
+using myTNB.DataManager;
+using myTNB.Enums;
 using myTNB.Model;
 using UIKit;
+using myTNB.Extensions;
 
 namespace myTNB
 {
     public partial class RatingViewController : UIViewController
     {
+        UIView _headerView;
+
+        string _message = string.Empty;
+        nfloat _contentHeight;
+        List<FeedbackQuestionModel> displayedQuestions;
+
+        public int Rating = 5;
+        public string TransId;
+
         public RatingViewController(IntPtr handle) : base(handle)
         {
         }
-
-        TextFieldHelper _textFieldHelper = new TextFieldHelper();
-        Dictionary<int, string> _rateValueDictionary = new Dictionary<int, string>(){
-            {1, "Very Bad"}
-            , {2, "Poor"}
-            , {3, "Ok"}
-            , {4, "Good"}
-            , {5, "Excellent"}
-        };
-
-        UIView _viewRating;
-        UILabel _lblRateTitle;
-        UITextField _txtFieldComments;
-
-        string _message = string.Empty;
-
-        public int Rating = 5;
 
         public override void ViewDidLoad()
         {
             base.ViewDidLoad();
             SetNavigationBar();
             SetSubViews();
+
+            NSNotificationCenter.DefaultCenter.AddObserver(UIKeyboard.DidShowNotification, (NSNotification obj) =>
+            {
+                var userInfo = obj.UserInfo;
+                NSValue keyboardFrame = userInfo.ValueForKey(UIKeyboard.FrameEndUserInfoKey) as NSValue;
+                CGRect keyboardRectangle = keyboardFrame.CGRectValue;
+
+                tableViewRating.Frame = new CGRect(0
+                                                        , 0
+                                                        , View.Frame.Width
+                                                        , View.Frame.Height - (keyboardRectangle.Height));
+            });
+            NSNotificationCenter.DefaultCenter.AddObserver(UIKeyboard.DidHideNotification, (NSNotification obj) =>
+            {
+                SetDefaultTableFrame();
+            });
+        }
+
+        public override void ViewWillAppear(bool animated)
+        {
+            base.ViewWillAppear(animated);
+
+            NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
+            {
+                InvokeOnMainThread(async () =>
+                {
+                    if (NetworkUtility.isReachable)
+                    {
+                        await LoadQuestions();
+                    }
+                });
+            });
         }
 
         void SetNavigationBar()
         {
             NavigationController.NavigationBar.Hidden = true;
             GradientViewComponent gradientViewComponent = new GradientViewComponent(View, true, 64, true);
-            UIView headerView = gradientViewComponent.GetUI();
-            TitleBarComponent titleBarComponent = new TitleBarComponent(headerView);
+            _headerView = gradientViewComponent.GetUI();
+            TitleBarComponent titleBarComponent = new TitleBarComponent(_headerView);
             UIView titleBarView = titleBarComponent.GetUI();
             titleBarComponent.SetTitle("Rating");
             titleBarComponent.SetNotificationVisibility(true);
-            titleBarComponent.SetBackVisibility(true);
-            headerView.AddSubview(titleBarView);
-            View.AddSubview(headerView);
+            titleBarComponent.SetBackVisibility(false);
+            titleBarComponent.SetBackAction(new UITapGestureRecognizer(() =>
+            {
+                this.DismissViewController(true, null);
+            }));
+            _headerView.AddSubview(titleBarView);
+            View.AddSubview(_headerView);
         }
 
         void SetSubViews()
         {
-            UILabel lblTitle = new UILabel(new CGRect(18, 104, View.Frame.Width - 36, 18));
-            lblTitle.Font = myTNBFont.MuseoSans16();
-            lblTitle.TextColor = myTNBColor.PowerBlue();
-            lblTitle.TextAlignment = UITextAlignment.Center;
-            lblTitle.Text = "Please rate your payment experience.";
+            SetDefaultTableFrame();
+            //tableViewRating.RowHeight = 200; //140;
+            tableViewRating.RowHeight = UITableView.AutomaticDimension;
+            tableViewRating.EstimatedRowHeight = 140;
+            tableViewRating.SeparatorStyle = UITableViewCellSeparatorStyle.None;
+            //tableViewRating.AllowsSelection = false;
+        }
 
-            _lblRateTitle = new UILabel(new CGRect(42, 146, View.Frame.Width - 82, 16));
-            _lblRateTitle.Font = myTNBFont.MuseoSans12();
-            _lblRateTitle.TextColor = myTNBColor.TunaGrey();
-            _lblRateTitle.TextAlignment = UITextAlignment.Center;
-            _lblRateTitle.Text = _rateValueDictionary[Rating];
+        private void SetDefaultTableFrame()
+        {
+            nfloat svHeight = View.Frame.Height - _headerView.Frame.Height;
+            _contentHeight = svHeight;
+            tableViewRating.Frame = new CGRect(0, _headerView.Frame.Height, View.Frame.Width, svHeight);
+        }
 
-            _viewRating = new UIView(new CGRect((View.Frame.Width / 2) - 92, 168, 184, 32));
-            CreateRatingSubViews();
-
-            _txtFieldComments = new UITextField(new CGRect(34, 248, View.Frame.Width - 68, 24));
-            _txtFieldComments.AttributedPlaceholder = new Foundation.NSAttributedString(
-                "Comments"
-                , font: myTNBFont.MuseoSans16()
-                , foregroundColor: myTNBColor.SilverChalice()
-            );
-            _txtFieldComments.TextColor = myTNBColor.SilverChalice();
-            _textFieldHelper.CreateTextFieldLeftView(_txtFieldComments, "IC-Field-Text");
-            _textFieldHelper.SetKeyboard(_txtFieldComments);
-            _txtFieldComments.KeyboardType = UIKeyboardType.Default;
-            _txtFieldComments.ShouldReturn = (sender) =>
-            {
-                sender.ResignFirstResponder();
-                return false;
-            };
-
-            UIView viewLine = new UIView(new CGRect(34, 273, View.Frame.Width - 68, 1));
-            viewLine.BackgroundColor = myTNBColor.SilverChalice();
+        private void AddSubmitButton()
+        {
+            UIView viewFooter = new UIView(new CGRect(0, 0, tableViewRating.Frame.Width, 48 + 32));
 
             UIButton btnCTA = new UIButton(UIButtonType.Custom);
-            btnCTA.Frame = new CGRect(18, View.Frame.Height - 72, View.Frame.Width - 36, 48);
+            btnCTA.Frame = new CGRect(18, 10, tableViewRating.Frame.Width - 36, DeviceHelper.GetScaledHeight(48));
             btnCTA.Layer.CornerRadius = 4;
             btnCTA.Layer.BorderColor = myTNBColor.FreshGreen().CGColor;
             btnCTA.BackgroundColor = myTNBColor.FreshGreen();
             btnCTA.Layer.BorderWidth = 1;
             btnCTA.SetTitle("Submit", UIControlState.Normal);
-            btnCTA.Font = myTNBFont.MuseoSans16();
+            btnCTA.Font = myTNBFont.MuseoSans16_500();
             btnCTA.SetTitleColor(UIColor.White, UIControlState.Normal);
             btnCTA.TouchUpInside += (sender, e) =>
             {
+                if (!AreRepliesComplete(displayedQuestions))
+                {
+                    // todo: RRA, disable submit button
+                    Console.WriteLine("Rate us mandatory fields incomplete");
+                    return;
+                }
+
                 NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
                {
                    InvokeOnMainThread(() =>
                    {
                        if (NetworkUtility.isReachable)
                        {
-                           _message = _txtFieldComments.Text;
-                           SubmitExperienceRating().ContinueWith(task =>
-                           {
-                               InvokeOnMainThread(() =>
-                               {
-                                   DisplayDashboard();
-                               });
-                           });
+                           SubmitRatings(displayedQuestions);
                        }
                        else
                        {
-                           Console.WriteLine("No Network");
-                           var alert = UIAlertController.Create("No Data Connection", "Please check your data connection and try again.", UIAlertControllerStyle.Alert);
+                           var alert = UIAlertController.Create("ErrNoNetworkTitle".Translate(), "ErrNoNetworkMsg".Translate(), UIAlertControllerStyle.Alert);
                            alert.AddAction(UIAlertAction.Create("Ok", UIAlertActionStyle.Cancel, null));
                            PresentViewController(alert, animated: true, completionHandler: null);
                        }
@@ -125,55 +142,69 @@ namespace myTNB
                });
             };
 
-            View.AddSubviews(new UIView[] { lblTitle, _lblRateTitle, _viewRating, _txtFieldComments, viewLine, btnCTA });
+            viewFooter.AddSubview(btnCTA);
+
+            tableViewRating.TableFooterView = viewFooter;
         }
 
-        void CreateRatingSubViews()
+        /// <summary>
+        /// Checks if the replies complete.
+        /// </summary>
+        /// <returns><c>true</c>, if replies complete was ared, <c>false</c> otherwise.</returns>
+        /// <param name="questions">Questions.</param>
+        private bool AreRepliesComplete(List<FeedbackQuestionModel> questions)
         {
-            UIView viewStar;
-            UIImageView imgStar;
-            int xLocation = 0;
-            for (int i = 0; i < 5; i++)
+#if DEBUG
+            foreach (var item in questions)
             {
-                viewStar = new UIView(new CGRect(xLocation, 0, 32, 32));
-                imgStar = new UIImageView(new CGRect(0, 0, 32, 32));
-                imgStar.Image = UIImage.FromBundle("IC-Action-Rating-Active");
-                viewStar.AddSubview(imgStar);
-                int index = i;
-                viewStar.AddGestureRecognizer(new UITapGestureRecognizer(() =>
-                {
-                    ChooseRating(index);
-                }));
-                _viewRating.AddSubview(viewStar);
-                xLocation += 32 + 6;
+                Console.WriteLine("question: {0} answer: {1}", item.Question, item.Answer);
             }
-            ChooseRating(Rating - 1);
+#endif
+
+            var emptyMandatory = questions.FindAll(item => item.Active && item.Mandatory && string.IsNullOrEmpty(item.Answer));
+            var emptyCount = emptyMandatory?.Count ?? 0;
+            Console.WriteLine("mandatory empty fields: " + emptyMandatory?.Count.ToString());
+
+            return emptyCount == 0;
         }
 
-        void ChooseRating(int index)
+
+        /// <summary>
+        /// Loads the questions.
+        /// </summary>
+        /// <returns>The questions.</returns>
+        private async Task LoadQuestions()
         {
-            Rating = index + 1;
-            _lblRateTitle.Text = _rateValueDictionary[Rating];
-            UIImageView imgView;
-            for (int i = 0; i < 5; i++)
+            ActivityIndicator.Show();
+            var response = await ServiceCall.GetRateUsQuestions(QuestionCategoryEnum.Payment);
+
+            if (response.didSucceed)
             {
-                imgView = _viewRating.Subviews[i].Subviews[0] as UIImageView;
-                if (i <= index)
-                {
-                    imgView.Image = UIImage.FromBundle("IC-Action-Rating-Active");
-                }
-                else
-                {
-                    imgView.Image = UIImage.FromBundle("IC-Action-Rating-Inactive");
-                }
+                displayedQuestions = response.FeedbackQuestions?.FindAll(x => x.Active);
+                tableViewRating.Source = new RatingDataSource(displayedQuestions, Rating);
+                tableViewRating.ReloadData();
+                AddSubmitButton();
             }
+            else
+            {
+                displayedQuestions = new List<FeedbackQuestionModel>();
+            }
+
+            ActivityIndicator.Hide();
         }
 
-        void DisplayDashboard()
+
+        /// <summary>
+        /// Displaies the dashboard.
+        /// </summary>
+        private void OnRatingCompleted()
         {
-            UIStoryboard storyBoard = UIStoryboard.FromName("Dashboard", null);
-            UIViewController loginVC = storyBoard.InstantiateViewController("HomeTabBarController") as UIViewController;
-            ShowViewController(loginVC, this);
+            var vc = this.Storyboard.InstantiateViewController("RatingResultsViewController") as RatingResultsViewController;
+            if (vc != null)
+            {
+                this.NavigationController?.PushViewController(vc, true);
+                return;
+            }
         }
 
         Task SubmitExperienceRating()
@@ -192,5 +223,34 @@ namespace myTNB
                 BaseResponseModel response = serviceManager.BaseServiceCall("SubmitExperienceRating", requestParameter);
             });
         }
+
+        /// <summary>
+        /// Submits the ratings.
+        /// </summary>
+        /// <param name="questions">Questions.</param>
+        private void SubmitRatings(List<FeedbackQuestionModel> questions)
+        {
+            var answerDetails = new List<InputAnswerDetailsModel>();
+
+            foreach (var item in questions)
+            {
+                var answer = new InputAnswerDetailsModel(item);
+                answerDetails.Add(answer);
+            }
+
+            var inputAnswer = new InputAnswerModel
+            {
+                ReferenceId = !string.IsNullOrEmpty(TransId) ? TransId : string.Empty,
+                Email = DataManager.DataManager.SharedInstance.UserEntity[0].email,
+                DeviceId = DataManager.DataManager.SharedInstance.UDID,
+                InputAnswerDetails = answerDetails
+            };
+
+            ServiceCall.SubmitRateUs(inputAnswer).ContinueWith(task =>
+            {
+                InvokeOnMainThread(OnRatingCompleted);
+            });
+        }
+
     }
 }

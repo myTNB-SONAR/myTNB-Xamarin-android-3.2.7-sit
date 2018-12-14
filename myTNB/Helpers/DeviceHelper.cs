@@ -5,6 +5,12 @@ namespace myTNB
     public static class DeviceHelper
     {
         /// <summary>
+        /// iPhone 5s screen Base values 
+        /// </summary>
+        const float baseScreenWidth = 320f;
+        const float baseScreenHeight = 568f;
+
+        /// <summary>
         /// Gets the size of the image.
         /// </summary>
         /// <returns>The image size.</returns>
@@ -44,6 +50,15 @@ namespace myTNB
         {
             return UIScreen.MainScreen.NativeBounds.Height == 2436;
         }
+        /// <summary>
+        /// Checks if device is iPhone 6 and higher resolution
+        /// </summary>
+        /// <returns><c>true</c>, if iPhone 6 and higher resolution, <c>false</c> otherwise.</returns>
+        public static bool IsIphone6UpResolution()
+        {
+            return UIScreen.MainScreen.NativeBounds.Height >= 1334;
+        }
+
         /// <summary>
         /// Checks if device is iPhone 5/5s
         /// </summary>
@@ -109,6 +124,35 @@ namespace myTNB
         public static float GetScaledSizeByWidth(float percentage, double containerWidth)
         {
             return (float)containerWidth * (percentage / 100);
+        }
+        /// <summary>
+        /// Gets the scaled width.
+        /// </summary>
+        /// <returns>The scaled width.</returns>
+        /// <param name="width">Width.</param>
+        public static float GetScaledWidth(float width)
+        {
+            float screenWidth = (float)UIScreen.MainScreen.Bounds.Width;
+            return width * (screenWidth / baseScreenWidth);
+        }
+        /// <summary>
+        /// Gets the scaled height.
+        /// </summary>
+        /// <returns>The scaled height.</returns>
+        /// <param name="height">Height.</param>
+        public static float GetScaledHeight(float height)
+        {
+            float adj = IsIphoneXUpResolution() ? 0.8f : 1;
+            float screenHeight = (float)UIScreen.MainScreen.Bounds.Height;
+            return height * (screenHeight / baseScreenHeight) * adj;
+        }
+        /// <summary>
+        /// Gets the OS Version.
+        /// </summary>
+        /// <returns>The OSV ersion.</returns>
+        public static string GetOSVersion()
+        {
+            return UIDevice.CurrentDevice.SystemVersion;
         }
     }
 }

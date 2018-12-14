@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Globalization;
+
 namespace myTNB.Model
 {
     public class RealTimeMetrics
@@ -18,10 +20,11 @@ namespace myTNB.Model
             }
             set
             {
-                double parsedAmount = 0;
-                if (double.TryParse(value, out parsedAmount))
+
+                if (!string.IsNullOrWhiteSpace(value))
                 {
-                    _currentCharges = value;
+                    double parsedAmount = TextHelper.ParseStringToDouble(value);
+                    _currentCharges = parsedAmount.ToString(CultureInfo.InvariantCulture);
                 }
                 else
                 {
@@ -46,10 +49,10 @@ namespace myTNB.Model
             }
             set
             {
-                double parsedAmount = 0;
-                if (double.TryParse(value, out parsedAmount))
+                if (!string.IsNullOrWhiteSpace(value))
                 {
-                    _currentUsageKWH = value;
+                    double parsedAmount = TextHelper.ParseStringToDouble(value);
+                    _currentUsageKWH = parsedAmount.ToString(CultureInfo.InvariantCulture);
                 }
                 else
                 {

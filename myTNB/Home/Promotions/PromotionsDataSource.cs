@@ -11,8 +11,8 @@ namespace myTNB.Home.Promotions
     public class PromotionsDataSource : UITableViewSource
     {
         PromotionsViewController _controller;
-        List<PromotionsModel> _promotionList = new List<PromotionsModel>();
-        public PromotionsDataSource(PromotionsViewController controller, List<PromotionsModel> promotionList)
+        List<PromotionsModelV2> _promotionList = new List<PromotionsModelV2>();
+        public PromotionsDataSource(PromotionsViewController controller, List<PromotionsModelV2> promotionList)
         {
             _controller = controller;
             _promotionList = promotionList;
@@ -30,27 +30,29 @@ namespace myTNB.Home.Promotions
 
         public override UITableViewCell GetCell(UITableView tableView, NSIndexPath indexPath)
         {
-            PromotionsModel promotion = _promotionList[indexPath.Row];
+            var promotion = _promotionList[indexPath.Row];
             var cell = tableView.DequeueReusableCell("PromotionsViewCell", indexPath) as PromotionsViewCell;
 
-            ActivityIndicatorComponent _activityIndicator = new ActivityIndicatorComponent(cell.viewBanner);
-            _activityIndicator.Show();
-
-            NSUrl url = new NSUrl(promotion.Image);
-            NSUrlSession session = NSUrlSession
-                .FromConfiguration(NSUrlSessionConfiguration.DefaultSessionConfiguration);
-            NSUrlSessionDataTask dataTask = session.CreateDataTask(url, (data, response, error) =>
+            if (promotion.LandscapeImage != null)
             {
-                if (error == null && response != null && data != null)
+                ActivityIndicatorComponent _activityIndicator = new ActivityIndicatorComponent(cell.viewBanner);
+                _activityIndicator.Show();
+                NSUrl url = new NSUrl(promotion.LandscapeImage);//Image);
+                NSUrlSession session = NSUrlSession
+                    .FromConfiguration(NSUrlSessionConfiguration.DefaultSessionConfiguration);
+                NSUrlSessionDataTask dataTask = session.CreateDataTask(url, (data, response, error) =>
                 {
-                    InvokeOnMainThread(() =>
+                    if (error == null && response != null && data != null)
                     {
-                        cell.imgBanner.Image = UIImage.LoadFromData(data);
-                        _activityIndicator.Hide();
-                    });
-                }
-            });
-            dataTask.Resume();
+                        InvokeOnMainThread(() =>
+                        {
+                            cell.imgBanner.Image = UIImage.LoadFromData(data);
+                            _activityIndicator.Hide();
+                        });
+                    }
+                });
+                dataTask.Resume();
+            }
 
             cell.lblTitle.Text = promotion.Title;
             cell.lblDetails.Text = promotion.Text;
@@ -63,14 +65,15 @@ namespace myTNB.Home.Promotions
 
         public override void RowSelected(UITableView tableView, NSIndexPath indexPath)
         {
-            ActivityIndicator.Show();
+            //ActivityIndicator.Show();
             _promotionList[indexPath.Row].IsRead = true;
-            PromotionsEntity wsManager = new PromotionsEntity();
-            wsManager.DeleteTable();
-            wsManager.CreateTable();
-            wsManager.InsertListOfItems(_promotionList);
-            var test = wsManager.GetAllItems();
-            ActivityIndicator.Hide();
+            DataManager.DataManager.SharedInstance.UpdatePromosDb(_promotionList);
+            //PromotionsEntity wsManager = new PromotionsEntity();
+            //wsManager.DeleteTable();
+            //wsManager.CreateTable();
+            //wsManager.InsertListOfItemsV2(_promotionList);
+            //var test = wsManager.GetAllItemsV2();
+            //ActivityIndicator.Hide();
             _controller.OnPromotionItemSelect(_promotionList[indexPath.Row]);
         }
 

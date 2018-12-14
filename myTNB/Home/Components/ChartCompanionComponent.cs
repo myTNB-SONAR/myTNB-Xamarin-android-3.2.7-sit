@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Linq;
 using CoreGraphics;
 using Foundation;
@@ -58,7 +59,7 @@ namespace myTNB.Dashboard.DashboardComponents
             {
                 _yLocation += 12; // 24 margin
             }
-            _baseView = new UIView(new CGRect(margin, _yLocation, _parentView.Frame.Width - (margin*2), 171));
+            _baseView = new UIView(new CGRect(margin, _yLocation, _parentView.Frame.Width - (margin * 2), 171));
 
             double center = _baseView.Frame.Width / 2;
             double btnWidth = 64;
@@ -72,7 +73,7 @@ namespace myTNB.Dashboard.DashboardComponents
 
 
             _amountBtn = new UIButton();
-            _amountBtn.Frame = new CGRect(center - margin - (btnWidth*2 + btnOffset) / 2, 0, btnWidth, 26);
+            _amountBtn.Frame = new CGRect(center - margin - (btnWidth * 2 + btnOffset) / 2, 0, btnWidth, 26);
             _amountBtn.SetAttributedTitle(CreateAttributedTitle(TxtCurrency, UIColor.White), UIControlState.Selected);
             _amountBtn.SetAttributedTitle(CreateAttributedTitle(TxtCurrency, myTNBColor.SelectionSemiTransparent()), UIControlState.Normal);
             //_amountBtn.SetTitleColor(UIColor.White, UIControlState.Normal);
@@ -104,7 +105,7 @@ namespace myTNB.Dashboard.DashboardComponents
             _emissionBtn.Layer.CornerRadius = 13.0f;
             _chartModeView.AddSubview(_emissionBtn);
 
-            if(!TNBGlobal.IsChartEmissionEnabled)
+            if (!TNBGlobal.IsChartEmissionEnabled)
             {
                 _emissionBtn.Hidden = true;
             }
@@ -165,7 +166,7 @@ namespace myTNB.Dashboard.DashboardComponents
         /// <param name="handler">Handler.</param>
         public void AddChartModeHandler(ChartModeEnum chartMode, EventHandler handler)
         {
-            switch(chartMode)
+            switch (chartMode)
             {
                 default:
                 case ChartModeEnum.Cost:
@@ -253,12 +254,19 @@ namespace myTNB.Dashboard.DashboardComponents
                         _metricCmp1.Icon.Image = UIImage.FromBundle("IC-Charges");
                         _metricCmp1.TitleLabel.Text = TxtCurrentCharges;
                         _metricCmp1.SubTitleLabel.Text = TxtAsOf + _usageMetrics?.StatsByCost?.AsOf;
-                        _metricCmp1.ValueLabel.AttributedText = CreateValuePairString(_usageMetrics?.StatsByCost?.CurrentCharges, TNBGlobal.UNIT_CURRENCY + " ", true);
-
+                        var currCharges = _usageMetrics?.StatsByCost?.CurrentCharges ?? "0";
+                        if (!string.IsNullOrEmpty(currCharges))
+                        {
+                            _metricCmp1.ValueLabel.AttributedText = TextHelper.CreateValuePairString(currCharges, TNBGlobal.UNIT_CURRENCY + " ", true, myTNBFont.MuseoSans16_300(), UIColor.White, myTNBFont.MuseoSans12_300(), UIColor.White);
+                        }
                         _metricCmp2.Icon.Image = UIImage.FromBundle("IC-Cost");
                         _metricCmp2.TitleLabel.Text = TxtProjectedCost;
                         _metricCmp2.SubTitleLabel.Text = TxtForCurrentMonth;
-                        _metricCmp2.ValueLabel.AttributedText = CreateValuePairString(_usageMetrics?.StatsByCost?.ProjectedCost, TNBGlobal.UNIT_CURRENCY + " ", true);
+                        var prjctdCost = _usageMetrics?.StatsByCost?.ProjectedCost ?? "0";
+                        if (!string.IsNullOrEmpty(prjctdCost))
+                        {
+                            _metricCmp2.ValueLabel.AttributedText = TextHelper.CreateValuePairString(prjctdCost, TNBGlobal.UNIT_CURRENCY + " ", true, myTNBFont.MuseoSans16_300(), UIColor.White, myTNBFont.MuseoSans12_300(), UIColor.White);
+                        }
                         _metricCmp2.ValuePairIcon.Image = null;
                         _metricCmp2.SetHidden(false);
                     }
@@ -268,8 +276,11 @@ namespace myTNB.Dashboard.DashboardComponents
                         _metricCmp1.Icon.Image = UIImage.FromBundle("IC-Energy-Usage");
                         _metricCmp1.TitleLabel.Text = TxtCurrentUsage;
                         _metricCmp1.SubTitleLabel.Text = TxtAsOf + _usageMetrics?.StatsByUsage?.AsOf;
-                        _metricCmp1.ValueLabel.AttributedText = CreateValuePairString(_usageMetrics?.StatsByUsage?.CurrentUsageKWH, " " + TNBGlobal.UNIT_ENERGY, false);
-
+                        var currUsageKWH = _usageMetrics?.StatsByUsage?.CurrentUsageKWH ?? "0";
+                        if (!string.IsNullOrEmpty(currUsageKWH))
+                        {
+                            _metricCmp1.ValueLabel.AttributedText = TextHelper.CreateValuePairString(TextHelper.ParseStringToDouble(currUsageKWH).ToString("N2", CultureInfo.InvariantCulture), " " + TNBGlobal.UNIT_ENERGY, false, myTNBFont.MuseoSans16_300(), UIColor.White, myTNBFont.MuseoSans12_300(), UIColor.White);
+                        }
                         _metricCmp2.Icon.Image = UIImage.FromBundle("IC-Avg-Elec-Usage");
                         _metricCmp2.TitleLabel.Text = TxtAverageUsage;
                         _metricCmp2.SubTitleLabel.Text = TxtVsLastMonth;
@@ -278,7 +289,7 @@ namespace myTNB.Dashboard.DashboardComponents
                         bool hasChange;
                         bool isUp;
                         GetUsageComparisonAttributes(_usageMetrics?.StatsByUsage?.UsageComparedToPrevious, out value, out hasChange, out isUp);
-                        _metricCmp2.ValueLabel.AttributedText = CreateValuePairString(value, "%", false);
+                        _metricCmp2.ValueLabel.AttributedText = TextHelper.CreateValuePairString(value, "%", false, myTNBFont.MuseoSans16_300(), UIColor.White, myTNBFont.MuseoSans12_300(), UIColor.White);
                         _metricCmp2.ValuePairIcon.Image = isUp ? UIImage.FromBundle("Arrow-Up") : UIImage.FromBundle("Arrow-Down");
                         _metricCmp2.ValuePairIcon.Hidden = !hasChange;
                         _metricCmp2.SetHidden(false);
@@ -290,15 +301,14 @@ namespace myTNB.Dashboard.DashboardComponents
                         _metricCmp1.Icon.Image = UIImage.FromBundle("IC-CO2");
                         _metricCmp1.TitleLabel.Text = TxtCurrentEmission;
                         _metricCmp1.SubTitleLabel.Text = TxtAsOf + _usageMetrics?.StatsByCo2?.First()?.AsOf;
-                        string value = _usageMetrics?.StatsByCo2?.Count > 0 ? 
-                                                     _usageMetrics?.StatsByCo2?.Sum(item => double.Parse(item.Quantity)).ToString() : "0";
-                        _metricCmp1.ValueLabel.AttributedText = CreateValuePairString(value, " " + TNBGlobal.UNIT_EMISSION, false);
-
+                        string value = _usageMetrics?.StatsByCo2?.Count > 0 ?
+                                                     _usageMetrics?.StatsByCo2?.Sum(item => TextHelper.ParseStringToDouble(item.Quantity)).ToString() : "0";
+                        _metricCmp1.ValueLabel.AttributedText = TextHelper.CreateValuePairString(value, " " + TNBGlobal.UNIT_EMISSION, false, myTNBFont.MuseoSans16_300(), UIColor.White, myTNBFont.MuseoSans12_300(), UIColor.White);
                         _metricCmp2.SetHidden(true);
                     }
                     break;
             }
-            
+
 
         }
 
@@ -328,9 +338,9 @@ namespace myTNB.Dashboard.DashboardComponents
             hasChange = false;
             isUp = false;
 
-            if(!string.IsNullOrEmpty(inputText))
+            if (!string.IsNullOrEmpty(inputText))
             {
-                var num = double.Parse(inputText);
+                var num = TextHelper.ParseStringToDouble(inputText);
                 isUp = num > 0;
                 hasChange = num != 0;// inputText != "0";
 
@@ -346,34 +356,10 @@ namespace myTNB.Dashboard.DashboardComponents
         private NSAttributedString CreateAttributedTitle(string text, UIColor textColor)
         {
             return new NSAttributedString(
-                text ?? string.Empty, 
+                text ?? string.Empty,
                 font: myTNBFont.MuseoSans12(),
                 foregroundColor: textColor);
         }
-
-        /// <summary>
-        /// Creates the value pair string.
-        /// </summary>
-        /// <returns>The value pair string.</returns>
-        /// <param name="valueText">Value text.</param>
-        /// <param name="pairText">Pair text.</param>
-        /// <param name="isValuePositionRight">If set to <c>true</c> is value position right.</param>
-        private NSMutableAttributedString CreateValuePairString(string valueText, string pairText, bool isValuePositionRight)
-        {
-            var attrStringValue = new NSMutableAttributedString(valueText ?? "0", font: myTNBFont.MuseoSans16_300(),
-                                                            foregroundColor: UIColor.White);
-            var attrStringPair = new NSMutableAttributedString(pairText ?? "0", font: myTNBFont.MuseoSans12_300(),
-                                                            foregroundColor: UIColor.White);
-            if(isValuePositionRight)
-            {
-                attrStringPair.Append(attrStringValue);
-                return attrStringPair;
-            }
-
-            attrStringValue.Append(attrStringPair);
-            return attrStringValue;
-        }
-
     }
 
 }

@@ -13,6 +13,7 @@
             status = model.status;
             message = model.message;
             __type = model.__type;
+            StatusCode = model.StatusCode;
         }
 
         public ChartDataModel data { set; get; }

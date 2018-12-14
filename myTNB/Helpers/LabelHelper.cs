@@ -2,6 +2,7 @@
 using System.Drawing;
 using System.Text.RegularExpressions;
 using CoreGraphics;
+using Foundation;
 using UIKit;
 
 namespace myTNB
@@ -53,5 +54,21 @@ namespace myTNB
         {
             return label.Text.StringSize(label.Font, new SizeF((float)width, (float)height));
         }
+
+        /// <summary>
+        /// Creates the attributed string.
+        /// </summary>
+        /// <returns>The attributed string.</returns>
+        /// <param name="text">Text.</param>
+        /// <param name="font">Font.</param>
+        /// <param name="textColor">Text color.</param>
+        public static NSAttributedString CreateAttributedString(string text, UIFont font,  UIColor textColor)
+        {
+            return new NSAttributedString(
+                text ?? string.Empty,
+                font: font,
+                foregroundColor: textColor);
+        }
+
     }
 }
