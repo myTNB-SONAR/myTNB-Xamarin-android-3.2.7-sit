@@ -1,7 +1,7 @@
 
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "myTNB", "myTNB\myTNB.csproj", "{54B23CE8-FC60-45C7-BBDC-4A52EA3AF336}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "myTNB", "myTNB.iOS\myTNB.csproj", "{54B23CE8-FC60-45C7-BBDC-4A52EA3AF336}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
