@@ -61,7 +61,6 @@
     <DefineConstants>TRACE;DEVELOP</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>PdbOnly</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
@@ -77,6 +76,20 @@
     <DebugType>full</DebugType>
     <DebugSymbols>true</DebugSymbols>
     <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Master|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Master</OutputPath>
+    <DefineConstants>TRACE;DEVELOP;MASTER</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>PdbOnly</DebugType>
+    <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <AndroidUseSharedRuntime>false</AndroidUseSharedRuntime>
+    <AndroidSupportedAbis>armeabi;armeabi-v7a;x86;x86_64;arm64-v8a</AndroidSupportedAbis>
+    <AndroidLinkMode>SdkOnly</AndroidLinkMode>
+    <MandroidI18n>West</MandroidI18n>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="AFollestad.MaterialDialogs.Core, Version=0.9.4.4, Culture=neutral, processorArchitecture=MSIL">
@@ -4282,6 +4295,12 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\values\facebook-strings.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\myTNB.Mobile\myTNB.Mobile.csproj">
+      <Project>{A27A3842-1A8F-47F0-B333-94875BC922ED}</Project>
+      <Name>myTNB.Mobile</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <Import Project="..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" />
