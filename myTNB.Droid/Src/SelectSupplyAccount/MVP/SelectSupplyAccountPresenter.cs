@@ -1,0 +1,286 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+using Android.App;
+using Android.Content;
+using Android.OS;
+using Android.Runtime;
+using Android.Views;
+using Android.Widget;
+using myTNB_Android.Src.Database.Model;
+using System.Threading;
+using myTNB_Android.Src.Utils;
+using System.Net.Http;
+using Refit;
+using myTNB_Android.Src.myTNBMenu.Api;
+using myTNB_Android.Src.myTNBMenu.Models;
+using System.Net;
+using NSubstitute;
+using System.Threading.Tasks;
+using myTNB_Android.Src.AddAccount.Models;
+using Newtonsoft.Json;
+using Android.Util;
+
+namespace myTNB_Android.Src.SelectSupplyAccount.MVP
+{
+    public class SelectSupplyAccountPresenter : SelectSupplyAccountContract.IUserActionsListener
+    {
+        CancellationTokenSource cts;
+        private SelectSupplyAccountContract.IView mView;
+
+        public SelectSupplyAccountPresenter(SelectSupplyAccountContract.IView mView )
+        {
+            this.mView = mView;
+            this.mView.SetPresenter(this);
+        }
+
+        public void OnSelectAccount(CustomerBillingAccount selectedCustomerBilling)
+        {
+            try {
+            ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
+            if (!UsageHistoryEntity.IsSMDataUpdated(selectedCustomerBilling.AccNum))
+            {
+                UsageHistoryEntity storedEntity = UsageHistoryEntity.GetItemByAccountNo(selectedCustomerBilling.AccNum);
+                AccountDataEntity accountEntity = AccountDataEntity.GetItemByAccountNo(selectedCustomerBilling.AccNum);
+                if (storedEntity != null && accountEntity != null)
+                {
+                    CustomerBillingAccount.RemoveSelected();
+                    CustomerBillingAccount.Update(selectedCustomerBilling.AccNum, true);
+                    AccountDetailsResponse accountDetailsResponse = JsonConvert.DeserializeObject<AccountDetailsResponse>(accountEntity.JsonResponse);
+                    AccountData accountData = AccountData.Copy(accountDetailsResponse.Data.AccountData, true);
+                    accountData.AccountNum = accountData.AccountNum == null ? selectedCustomerBilling.AccNum : accountData.AccountNum;
+                    accountData.AccountNickName = selectedCustomerBilling.AccDesc;
+                    accountData.AccountName = selectedCustomerBilling.OwnerName;
+                    accountData.AddStreet = selectedCustomerBilling.AccountStAddress;
+                    accountData.AccountCategoryId = selectedCustomerBilling.AccountCategoryId;
+                    UsageHistoryResponse storedSMData = JsonConvert.DeserializeObject<UsageHistoryResponse>(storedEntity.JsonResponse);
+                    this.mView.ShowDashboardChart(storedSMData, accountData);
+                }
+                else
+                {
+                    LoadDataUsage(selectedCustomerBilling);
+                }
+            }
+            else
+            {
+                LoadDataUsage(selectedCustomerBilling);
+            }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+
+        private async void LoadDataUsage(CustomerBillingAccount customerBillingAccount)
+        {
+            cts = new CancellationTokenSource();
+            if (mView.IsActive()) {
+            this.mView.ShowProgressDialog();
+            }
+#if STUB
+            var api = Substitute.For<IUsageHistoryApi>();
+            var detailedAccountApi = Substitute.For<IDetailedCustomerAccount>();
+
+            api.DoQuery(new myTNBMenu.Requests.UsageHistoryRequest(Constants.APP_CONFIG.API_KEY_ID) {
+                AccountNum = customerBillingAccount.AccNum
+            }, cts.Token)
+            .ReturnsForAnyArgs(
+                Task.Run<UsageHistoryResponse>(
+                    () => JsonConvert.DeserializeObject<UsageHistoryResponse>(this.mView.GetUsageHistoryStub())
+                ));
+
+            detailedAccountApi.GetDetailedAccount(new AddAccount.Requests.AccountDetailsRequest()
+            {
+                apiKeyID = Constants.APP_CONFIG.API_KEY_ID,
+                CANum = customerBillingAccount.AccNum
+            })
+            .ReturnsForAnyArgs(
+                Task.Run<AccountDetailsResponse>(
+                    () => JsonConvert.DeserializeObject<AccountDetailsResponse>(this.mView.GetAccountDetailsStub(customerBillingAccount.AccNum))
+                ));
+
+
+            api.GetDetailedAccount(new AddAccount.Requests.AccountDetailsRequest()
+            {
+                apiKeyID = Constants.APP_CONFIG.API_KEY_ID,
+                CANum = customerBillingAccount.AccNum
+            })
+            .ReturnsForAnyArgs(
+                Task.Run<AccountDetailsResponse>(
+                    () => JsonConvert.DeserializeObject<AccountDetailsResponse>(this.mView.GetAccountDetailsStub(customerBillingAccount.AccNum))
+                ));
+
+            //api.GetDetailedAccount(new AddAccount.Requests.AccountDetailsRequest()
+            //{
+            //    apiKeyID = Constants.APP_CONFIG.API_KEY_ID,
+            //    CANum = "220163099904"
+            //})
+            //    .ReturnsForAnyArgs(
+            //        Task.Run<AccountDetailsResponse>(
+            //            () => JsonConvert.DeserializeObject<AccountDetailsResponse>(this.mView.GetAccountDetailsStub("220163099904"))
+            //        ));
+
+            //api.GetDetailedAccount(new AddAccount.Requests.AccountDetailsRequest()
+            //{
+            //    apiKeyID = Constants.APP_CONFIG.API_KEY_ID,
+            //    CANum = "220223313703"
+            //})
+            //.ReturnsForAnyArgs(
+            //    Task.Run<AccountDetailsResponse>(
+            //        () => JsonConvert.DeserializeObject<AccountDetailsResponse>(this.mView.GetAccountDetailsStub("220223313703"))
+            //    ));
+
+            //api.GetDetailedAccount(new AddAccount.Requests.AccountDetailsRequest()
+            //{
+            //    apiKeyID = Constants.APP_CONFIG.API_KEY_ID,
+            //    CANum = "220595158104"
+            //})
+            //.ReturnsForAnyArgs(
+            //    Task.Run<AccountDetailsResponse>(
+            //        () => JsonConvert.DeserializeObject<AccountDetailsResponse>(this.mView.GetAccountDetailsStub("220595158104"))
+            //    ));
+#elif DEBUG
+            var httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
+            var api = RestService.For<IUsageHistoryApi>(httpClient);
+            var detailedAccountApi = RestService.For<IDetailedCustomerAccount>(httpClient);
+#elif DEVELOP
+            var api = RestService.For<IUsageHistoryApi>(Constants.SERVER_URL.END_POINT);
+            var detailedAccountApi = RestService.For<IDetailedCustomerAccount>(Constants.SERVER_URL.END_POINT);
+
+//            api.DoQuery(new myTNBMenu.Requests.UsageHistoryRequest(Constants.APP_CONFIG.API_KEY_ID)
+//            {
+//                AccountNum = customerBillingAccount.AccNum
+//            }, cts.Token)
+//            .ReturnsForAnyArgs(
+//                Task.Run<UsageHistoryResponse>(
+//                    () => JsonConvert.DeserializeObject<UsageHistoryResponse>(this.mView.GetUsageHistoryStub())
+//                ));
+//
+#else
+            var api = RestService.For<IUsageHistoryApi>(Constants.SERVER_URL.END_POINT);
+            var detailedAccountApi = RestService.For<IDetailedCustomerAccount>(Constants.SERVER_URL.END_POINT);
+#endif
+
+            try
+            {
+
+
+                var response = await api.DoQuery(new myTNBMenu.Requests.UsageHistoryRequest(Constants.APP_CONFIG.API_KEY_ID)
+                {
+                    AccountNum = customerBillingAccount.AccNum
+                }, cts.Token);
+
+                /*** Save Usage History For the Day***/
+                UsageHistoryEntity smUsageModel = new UsageHistoryEntity();
+                smUsageModel.Timestamp = DateTime.Now.ToLocalTime();
+                smUsageModel.JsonResponse = JsonConvert.SerializeObject(response);
+                smUsageModel.AccountNo = customerBillingAccount.AccNum;
+                UsageHistoryEntity.InsertItem(smUsageModel);                
+                /*****/
+
+                if (response != null && response.Data.Status.Equals("success") && !response.Data.IsError)
+                {
+
+                    var customerBillingDetails = await detailedAccountApi.GetDetailedAccount(new AddAccount.Requests.AccountDetailsRequest()
+                    {
+                        apiKeyID = Constants.APP_CONFIG.API_KEY_ID,
+                        CANum = customerBillingAccount.AccNum
+                    } , cts.Token);
+
+                    if (mView.IsActive())
+                    {
+                        this.mView.HideShowProgressDialog();
+                    }
+
+                    if (!customerBillingDetails.Data.IsError)
+                    {
+                        /*** Save account data For the Day***/
+                        AccountDataEntity accountModel = new AccountDataEntity();
+                        accountModel.Timestamp = DateTime.Now.ToLocalTime();
+                        accountModel.JsonResponse = JsonConvert.SerializeObject(customerBillingDetails);
+                        accountModel.AccountNo = customerBillingAccount.AccNum;
+                        AccountDataEntity.InsertItem(accountModel);
+                        /*****/
+
+                        CustomerBillingAccount.RemoveSelected();
+                        CustomerBillingAccount.Update(customerBillingAccount.AccNum, true);
+                        AccountData accountData = AccountData.Copy(customerBillingDetails.Data.AccountData, true);
+                        accountData.AccountNickName = customerBillingAccount.AccDesc;
+                        accountData.AccountName = customerBillingAccount.OwnerName;
+                        accountData.AddStreet = customerBillingAccount.AccountStAddress;
+                        accountData.AccountCategoryId = customerBillingAccount.AccountCategoryId;
+                        this.mView.ShowDashboardChart(response, accountData);
+                    }
+                    else
+                    {
+                        // TODO : SHOW ERROR WHEN NO BILLING IS RETURNED
+                        this.mView.ShowQueryError(customerBillingDetails.Data.Message);
+                    }
+
+
+                } else {
+                    if (mView.IsActive())
+                    {
+                        this.mView.HideShowProgressDialog();
+                    }
+                }
+
+
+            }
+            catch (System.OperationCanceledException e)
+            {
+                if (mView.IsActive()) {
+                    this.mView.HideShowProgressDialog();    
+                }
+                // ADD OPERATION CANCELLED HERE
+                Log.Debug("SelectSupplyAccountPresenter", e.Message + " " + e.StackTrace);
+                this.mView.ShowRetryOptionsCancelledException(e);
+                Utility.LoggingNonFatalError(e);
+            }
+            catch (ApiException apiException)
+            {
+                if (mView.IsActive())
+                {
+                    this.mView.HideShowProgressDialog();
+                }
+                // ADD HTTP CONNECTION EXCEPTION HERE
+                Log.Debug("SelectSupplyAccountPresenter", apiException.Message + " " + apiException.StackTrace);
+                this.mView.ShowRetryOptionsApiException(apiException);
+                Utility.LoggingNonFatalError(apiException);
+            }
+            catch (Exception e)
+            {
+                if (mView.IsActive())
+                {
+                    this.mView.HideShowProgressDialog();
+                }
+                // ADD UNKNOWN EXCEPTION HERE
+                if (!this.mView.HasInternetConnection())
+                {
+                    CustomerBillingAccount.RemoveSelected();
+                    CustomerBillingAccount.Update(customerBillingAccount.AccNum, true);
+                    this.mView.ShowNoInternetConnection();
+                }
+                else
+                {
+                    Log.Debug("SelectSupplyAccountPresenter" , e.Message + " " + e.StackTrace);
+                    this.mView.ShowRetryOptionsUnknownException(e);
+                }
+                Utility.LoggingNonFatalError(e);
+            }
+
+
+        }
+
+        public void Start()
+        {
+            List<CustomerBillingAccount> custBAList = CustomerBillingAccount.List();
+
+            this.mView.ShowList(custBAList);
+        }
+    }
+}

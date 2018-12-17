@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/rootView">
+    <include
+        layout="@layout/toolbar"
+        android:id="@+id/toolbar" />
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:paddingLeft="18dp"
+        android:paddingRight="22dp">
+        <TextView
+            android:id="@+id/txtNotificationTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="15dp"
+            android:paddingBottom="15dp"
+            android:text="@string/notification_detail_new_bill_title"
+            android:textColor="@color/powerBlue"
+            android:textSize="16sp" />
+        <TextView
+            android:id="@+id/txtNotificationSubTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="15dp"
+            android:paddingBottom="15dp"
+            android:text="@string/notification_detail_new_bill_sub_title"
+            android:textColor="@color/tunaGrey"
+            android:textSize="14sp" />
+        <TextView
+            android:id="@+id/txtAccountNumberTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Account Number"
+            android:textColor="@color/tunaGrey"
+            android:textSize="14sp" />
+        <TextView
+            android:id="@+id/txtAccountNumberContent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:text="Account Number Content"
+            android:textSize="14sp" />
+        <TextView
+            android:id="@+id/txtTotalOutstandingAmtTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/notification_detail_new_bill_total_amt_title"
+            android:textColor="@color/tunaGrey"
+            android:textSize="14sp" />
+        <TextView
+            android:id="@+id/txtTotalOutstandingAmtContent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:text="@string/notification_detail_new_bill_total_amt_content"
+            android:textSize="14sp" />
+        <TextView
+            android:id="@+id/txtNotificationDetailsPaymentDueTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/notification_detail_new_bill_payment_due_title"
+            android:textColor="@color/tunaGrey"
+            android:textSize="14sp" />
+        <TextView
+            android:id="@+id/txtNotificationDetailsPaymentDueContent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:text="@string/notification_detail_new_bill_payment_due_content"
+            android:textSize="14sp" />
+        <TextView
+            android:id="@+id/txtNotificationDetailsSubContent1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="15dp"
+            android:paddingBottom="15dp"
+            android:text="@string/notification_detail_new_bill_subcontent_1"
+            android:textColor="@color/tunaGrey"
+            android:textSize="14sp" />
+        <TextView
+            android:id="@+id/txtNotificationDetailsSubContent2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="15dp"
+            android:text="@string/notification_detail_new_bill_subcontent_2"
+            android:textColor="@color/tunaGrey"
+            android:textSize="14sp" />
+        <TextView
+            android:id="@+id/txtNotificationDetailsSubContent3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/notification_detail_new_bill_subcontent_3"
+            android:textColor="@color/powerBlue"
+            android:textSize="12sp" />
+        <FrameLayout
+            android:layout_height="match_parent"
+            android:layout_width="match_parent">
+            <LinearLayout
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:weightSum="1"
+                android:paddingBottom="8dp"
+                android:paddingTop="8dp"
+                android:layout_gravity="bottom">
+                <Button
+                    android:id="@+id/btnViewDetails"
+                    android:text="@string/notification_detail_new_bill_btn_view_details"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    style="@style/LightButton"
+                    android:textAllCaps="false" />
+                <Button
+                    android:id="@+id/btnPay"
+                    android:text="@string/notification_detail_new_bill_btn_pay"
+                    android:layout_width="match_parent"
+                    android:layout_weight="0.5"
+                    android:layout_height="wrap_content"
+                    style="@style/DarkButton1"
+                    android:textAllCaps="false" />
+            </LinearLayout>
+        </FrameLayout>
+    </LinearLayout>
+</LinearLayout>

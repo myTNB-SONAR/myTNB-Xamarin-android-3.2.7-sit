@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <!-- See values-v21 for App.BaseTheme in Styles.xml this is for backward compatibility -->
+  <style name="Theme.Login" parent="@style/App.ScreenTheme">
+    <item name="android:windowBackground">@drawable/GradientBackground</item>
+    <item name="android:windowNoTitle">true</item>
+    <item name="android:alertDialogTheme">@style/DialogTheme</item>
+  </style>
+</resources>

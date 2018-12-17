@@ -1,0 +1,58 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+using Android.App;
+using Android.Content;
+using Android.OS;
+using Android.Runtime;
+using Android.Views;
+using Android.Widget;
+using Android.Support.V7.Widget;
+using Android.Support.Design.Widget;
+using myTNB_Android.Src.Base.Activity;
+using myTNB_Android.Src.Utils;
+
+namespace myTNB_Android.Src.FindUs.Adapter
+{
+    public class ServiceListAdapter : RecyclerView.Adapter
+    {
+        BaseAppCompatActivity mActivity;
+        List<string> services = new List<string>();
+
+        public override int ItemCount => services.Count;
+
+
+        public ServiceListAdapter(BaseAppCompatActivity activity, List<string> data)
+        {
+            this.mActivity = activity;
+            this.services.AddRange(data);
+        }
+
+        public override void OnBindViewHolder(RecyclerView.ViewHolder holder, int position)
+        {
+            ServiceListViewHolder h = holder as ServiceListViewHolder;
+            TextViewUtils.SetMuseoSans300Typeface(h.ServiceLabel);
+            h.ServiceLabel.Text = services[position];
+        }
+
+        public override RecyclerView.ViewHolder OnCreateViewHolder(ViewGroup parent, int viewType)
+        {
+            var id = Resource.Layout.ServiceListItemView;
+            var itemView = LayoutInflater.From(parent.Context).Inflate(id, parent, false);
+            return new ServiceListViewHolder(itemView);
+        }
+
+        public class ServiceListViewHolder : RecyclerView.ViewHolder
+        {
+            public TextView ServiceLabel { get; private set; }
+
+            public ServiceListViewHolder(View itemView) : base(itemView)
+            {
+                ServiceLabel = itemView.FindViewById<TextView>(Resource.Id.text_service);
+            }
+
+        }
+    }
+}

@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:segmentedgroup="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_alignParentBottom="true"
+    android:layout_centerHorizontal="true"
+    android:id="@+id/rootView">
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:weightSum="1">
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.7"
+            android:padding="18dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginLeft="42dp"
+                android:layout_marginRight="42dp"
+                android:gravity="center"
+                android:id="@+id/linearLayout2">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_empty_dashboard"
+                    android:alpha="0.3"
+                    android:id="@+id/imageView2"
+                    android:layout_marginBottom="@dimen/_9sdp" />
+                <TextView
+                    android:id="@+id/dashboard_chartview_no_access_title"
+                    android:text="@string/dashboard_chartview_no_access_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    android:gravity="center_vertical" />
+                <TextView
+                    android:id="@+id/dashboard_chartview_no_access_content"
+                    android:text="@string/dashboard_chartview_no_access_content"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:textSize="12sp"
+                    android:gravity="center" />
+                <Button
+                    android:id="@+id/btnGetAccess"
+                    android:text="@string/dashboard_chartview_no_access_get_access"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAllCaps="false"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    style="@style/Theme.LearnMoreButton"
+                    android:layout_marginLeft="@dimen/_20sdp"
+                    android:layout_marginRight="@dimen/_20sdp"
+                    android:layout_marginBottom="@dimen/_10sdp"
+                    android:paddingLeft="37dp"
+                    android:paddingRight="37dp"
+                    android:paddingTop="12dp"
+                    android:paddingBottom="12dp"
+                    android:visibility="gone" />
+            </LinearLayout>
+        </FrameLayout>
+        <LinearLayout
+            android:layout_height="0dp"
+            android:layout_width="match_parent"
+            android:layout_weight="0.3"
+            android:orientation="vertical"
+            android:background="@color/white"
+            android:paddingLeft="@dimen/_8sdp"
+            android:paddingRight="@dimen/_8sdp">
+            <ProgressBar
+                android:id="@+id/progressBar"
+                style="?android:attr/progressBarStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone" />
+            <RelativeLayout
+                android:id="@+id/totalPayableLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:minHeight="25px"
+                android:minWidth="25px"
+                android:paddingBottom="5dp"
+                android:paddingTop="5dp"
+                android:visibility="visible">
+                <TextView
+                    android:id="@+id/txtTotalPayableTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:text="@string/total_amount_due"
+                    android:textColor="@color/tunaGrey"
+                    android:textSize="16sp" />
+                <TextView
+                    android:id="@+id/txtTotalPayable"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentTop="true"
+                    android:text="0.00"
+                    android:textColor="@color/tunaGrey"
+                    android:textSize="24sp" />
+                <TextView
+                    android:id="@+id/txtTotalPayableCurrency"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@+id/txtTotalPayable"
+                    android:layout_alignBottom="@+id/txtTotalPayable"
+                    android:layout_toLeftOf="@+id/txtTotalPayable"
+                    android:layout_toStartOf="@+id/txtTotalPayable"
+                    android:text="RM"
+                    android:textColor="@color/tunaGrey"
+                    android:textSize="14sp" />
+                <TextView
+                    android:id="@+id/txtDueDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_below="@+id/txtTotalPayableTitle"
+                    android:text="Due 6 Sep 2017"
+                    android:textSize="11sp"
+                    android:textColor="@color/silverChalice" />
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:weightSum="1">
+                <Button
+                    android:id="@+id/btnViewBill"
+                    android:text="@string/dashboard_chartview_view_bill"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:textAllCaps="false"
+                    android:layout_marginRight="2dp"
+                    style="@style/Theme.ViewBill" />
+                <Button
+                    android:id="@+id/btnPay"
+                    android:text="@string/dashboard_chartview_pay"
+                    android:layout_width="match_parent"
+                    android:layout_weight="0.5"
+                    android:layout_height="wrap_content"
+                    android:textAllCaps="false"
+                    android:layout_marginLeft="2dp"
+                    style="@style/Theme.PayButton" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</android.support.design.widget.CoordinatorLayout>

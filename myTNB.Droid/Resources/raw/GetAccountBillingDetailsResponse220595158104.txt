@@ -1,0 +1,36 @@
+﻿{
+    "d": {
+        "__type": "mytnbapp.service.models.BillingAccountStatus",
+        "data": {
+            "accNum": "220595158104",
+            "accName": "GOH CHUI HON",
+            "accICNo": null,
+            "accICNoNew": "631209015360",
+            "accComNo": null,
+            "amDeposit": 0,
+            "amCurrentChg": 69.2,
+            "amOutstandingChg": 0,
+            "amPayableChg": 0,
+            "amLastPay": 69.2,
+            "dateBill": "24/07/2017",
+            "datePymtDue": "23/08/2017",
+            "dateLastPay": "06/08/2017",
+            "sttSupply": "Active",
+            "addStreet": "JLN MAYA 3/7, HORIZON HILLS, 79100, NUSAJAYA",
+            "addArea": null,
+            "addTown": null,
+            "addState": null,
+            "stnName": "PK Johor Bahru",
+            "stnAddStreet": null,
+            "stnAddArea": null,
+            "stnAddTown": null,
+            "stnAddState": null,
+            "amCustBal": 0,
+            "isError": "false",
+            "message": ""
+        },
+        "status": "success",
+        "isError": "false",
+        "message": "successful"
+    }
+}

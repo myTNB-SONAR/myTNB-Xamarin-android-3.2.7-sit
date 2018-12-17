@@ -1,0 +1,37 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+using Android.App;
+using Android.Content;
+using Android.OS;
+using Android.Runtime;
+using Android.Views;
+using Android.Widget;
+using Newtonsoft.Json;
+
+namespace myTNB_Android.Src.NotificationDetails.Requests
+{
+    public class NotificationDetailsDeleteRequestV2
+    {
+        [JsonProperty("ApiKeyID")]
+        public string ApiKeyID { get; set; }
+
+        [JsonProperty("NotificationId")]
+        public string NotificationId { get; set; }
+
+        [JsonProperty("NotificationType")]
+        public string NotificationType { get; set; }
+
+        [JsonProperty("Email")]
+        public string Email { get; set; }
+
+        [JsonProperty("DeviceId")]
+        public string DeviceId { get; set; }
+
+        [JsonProperty("SSPUserId")]
+        public string SSPUserId { get; set; }
+
+    }
+}

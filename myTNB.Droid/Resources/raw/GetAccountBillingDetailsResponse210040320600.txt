@@ -1,0 +1,36 @@
+﻿{
+    "d": {
+        "__type": "mytnbapp.service.models.BillingAccountStatus",
+        "data": {
+            "accNum": "210040320600",
+            "accName": "MOHD NOREFFENDY BIN JAYAH",
+            "accICNo": null,
+            "accICNoNew": "841214085297",
+            "accComNo": null,
+            "amDeposit": 0,
+            "amCurrentChg": 0,
+            "amOutstandingChg": -5.91,
+            "amPayableChg": -12.45,
+            "amLastPay": 100,
+            "dateBill": "18/07/2017",
+            "datePymtDue": "17/08/2017",
+            "dateLastPay": "25/05/2017",
+            "sttSupply": "Active",
+            "addStreet": "JLN 7/2F, SEK 7, 43650, BANDAR BARU BANGI",
+            "addArea": null,
+            "addTown": null,
+            "addState": null,
+            "stnName": "PK Bangi",
+            "stnAddStreet": null,
+            "stnAddArea": null,
+            "stnAddTown": null,
+            "stnAddState": null,
+            "amCustBal": -100.02,
+            "isError": "false",
+            "message": ""
+        },
+        "status": "success",
+        "isError": "false",
+        "message": "successful"
+    }
+}

@@ -1,0 +1,1358 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="app_name">myTNB</string>
+  <!-- Launch Activity-->
+  <string name="launch">Launch</string>
+  <string name="text_app_version">App Version </string>
+  <!-- End of Launch Activity-->
+
+  <!-- OnBoarding Activity -->
+  <string name="onboarding">OnBoarding</string>
+  <string name="skip">Skip</string>
+  <string name="tenaga_nasional">TENAGA NASIONAL</string>
+  <string name="app_slogan">Better. Brighter.</string>
+  <string name="app_developer">Crafted by Accenture</string>
+  <string name="welcome">Welcome to MyTNB</string>
+  <string name="walkthrough_done">Done</string>
+  <!-- End of OnBoarding Activity -->
+  
+  <!-- App Launch Snackbar -->
+  <string name="app_launch_http_exception_error">Something went wrong, Please try again.</string>
+  <string name="app_launch_unknown_exception_error">Something went wrong, Please try again.</string>
+  <string name="app_launch_http_exception_btn_retry">Retry</string>
+  <string name="app_launch_unknown_exception_btn_retry">Retry</string>
+  <string name="app_launch_device_not_supported_title">Sorry myTnB app cannot proceed.</string>
+  <string name="app_launch_device_not_supported_content">Device is not supported.</string>
+  <string name="app_launch_device_not_supported_btn_close">Close</string>
+  <!-- End of App Launch Snackbar-->
+
+  <!-- Walk Through-->
+  <string name="walkthrough_1_heading">Track your usage</string>
+  <string name="walkthrough_1_content">Find all the information you need about your usage in a single screen.</string>
+  <string name="walkthrough_2_heading">View your bill</string>
+  <string name="walkthrough_2_content">Contribute to a greener environment by viewing your e-bill on the app!</string>
+  <string name="walkthrough_3_heading">Pay your bills</string>
+  <string name="walkthrough_3_content">Make your payments at home or on-the-go. No more late charges!</string>
+  <!--- End of Walk Through -->
+
+  <!-- PreLogin -->
+  <string name="prelogin">PreLogin</string>
+  <string name="prelogin_login_to_manage_account">Manage your account now!</string>
+  <string name="prelogin_welcome">Welcome</string>
+  <string name="prelogin_btn_login">Login</string>
+  <string name="prelogin_btn_register">Register</string>
+  <string name="prelogin_what_would_you_like_today">What would you like to do today?</string>
+  <string name="prelogin_select_location">Find Us</string>
+  <string name="prelogin_feedback">Feedback</string>
+  <string name="prelogin_call_us">Call Us</string>
+  <string name="prelogin_promotion">Promotion</string>
+  <string name="quick_access">Quick Access</string>
+  <string name="login_to_enjoy_more_features">Log in to enjoy more features!</string>
+  <!-- End Of Prelogin -->
+
+
+
+  <!-- Login Activity -->
+  <string name="email_hint">Email</string>
+  <string name="password_hint">Password</string>
+  <string name="login">Login</string>
+  <string name="login_forget_password">Forgot password?</string>
+  <string name="welcome_back">Welcome back!</string>
+  <string name="account_login">myTNB Account Login</string>
+  <string name="login_no_account">Don\'t have a myTNB account?</string>
+  <string name="login_register_account">Register for an account</string>
+  <string name="login_remember_me">Remember email</string>
+  <!-- End Login Activity -->
+
+
+  <!-- Login Dialog -->
+  <string name="login_alert_dialog_title">Logging In...</string>
+  <string name="login_alert_dialog_message">Please wait...</string>
+  <string name="login_alert_dialog_negative_button">Cancel</string>
+  <!-- End Login Dialog -->
+
+
+  <!-- Login Error Messages -->
+  <string name="login_validation_email_empty_error">Email field is required.</string>
+  <string name="login_validation_password_empty_error">Password field is required.</string>
+  <string name="login_validation_email_invalid_error">Invalid email format.</string>
+  <string name="login_validation_password_empty_error">Password field is required.</string>
+  <string name="login_validation_email_password_invalid_error">Invalid email or password.</string>
+  <string name="login_validation_snackbar_btn_close">Close</string>
+
+
+  <string name="login_cancelled_exception_error">Something went wrong, Please try again.</string>
+  <string name="login_api_exception_error">Something went wrong, Please try again.</string>
+  <string name="login_unknown_exception_error">Something went wrong, Please try again.</string>
+
+  <!-- End Login Error Messages -->
+
+
+  <!-- Login Error Buttons -->
+  <string name="login_cancelled_exception_btn_retry">Retry</string>
+  <string name="login_api_exception_btn_retry">Retry</string>
+  <string name="login_unknown_exception_btn_retry">Retry</string>
+  <!-- End Login Error Buttons-->
+
+  <!-- Registration Form -->
+  <string name="registration_activity_title">Register</string>
+  <string name="registration_form_btn_register">Register</string>
+  <string name="registration_form_registration">Registration</string>
+  <string name="registration_form_get_verification_code">Get A Code</string>
+  <string name="registration_form_verification_code_hint">Verification Code</string>
+  <string name="registration_form_full_name_hint">Full name</string>
+  <string name="registration_form_ic_no_hint">IC / POC / Passport No.</string>
+  <string name="registration_form_mobile_no_hint">Mobile No.</string>
+  <string name="registration_form_email_hint">Email</string>
+  <string name="registration_form_password_hint">Password</string>
+  <string name="registration_form_confirm_email_hint">Confirm Email</string>
+  <string name="registration_form_confirm_password_hint">Confirm New Password</string>
+  <string name="registration_form_registration_pin_info">Please enter your 4-digit activation pin to complete your registration</string>
+  <string name="registration_form_terms_conditions">By registering, you are agreeing to the <font color='#1c79ca'>TNB Terms and Conditions, User Agreement and Privacy policy.</font> </string>
+  <string name="registration_form_password_format_hint">PASSWORD MUST HAVE AT LEAST 8 ALPHANUMERIC CHARACTERS.</string>
+  <!-- End of Registration Form -->
+
+  <string name="terms_conditions_activity_title">Terms &amp; Conditions</string>
+  
+  <!-- Registration Form Errors-->
+  <string name="registration_form_errors_empty_fullname">Invalid fullname</string>
+  <string name="registration_form_errors_empty_icno">Invalid IC / ROC / Passport No.</string>
+  <string name="registration_form_errors_invalid_icno">Invalid IC / ROC / Passport No.</string>
+  <string name="registration_form_errors_empty_mobile_no">Invalid mobile no.</string>
+  <string name="registration_form_errors_invalid_mobile_no">Invalid mobile no.</string>
+  <string name="registration_form_errors_empty_email">Invalid email address.</string>
+  <string name="registration_form_errors_invalid_email">Invalid email address.</string>
+  <string name="registration_form_errors_empty_confirm_email">Invalid confirm email.</string>
+  <string name="registration_form_errors_not_equal_confirm_email">Your email and confirmation email do not match.</string>
+  <string name="registration_form_errors_empty_password">Invalid password.</string>
+  <string name="registration_form_errors_empty_confirm_password">Invalid confirm password.</string>
+  <string name="registration_form_errors_password_must_have_atleas6_chars">Password must have at least 6 alphanumeric characters.</string>
+  <string name="registration_form_errors_password_must_have_atleas8_chars">Password must have at least 8 alphanumeric characters.</string>
+  <string name="registration_form_errors_not_equal_confirm_password">Your password and confirmation password do not match.</string>
+  <string name="registration_form_errors_empty_verification_code">Invalid verification code.</string>
+  <string name="registration_form_errors_invalid_verification_code">Invalid verification code.</string>
+  <!-- End of Registration Form Errors-->
+  
+  <!-- Verification Alert Dialog-->
+  <string name="verification_alert_dialog_title">Getting Code</string>
+  <string name="verification_alert_dialog_message">Getting Code...</string>
+  <string name="verification_success_alert_dialog_title">Get Verification Success</string>
+  <string name="verification_success_btn_close">Close</string>
+  <!-- End of Verification Alert Dialog-->
+  
+  <!--Registration OTP Screen-->
+  <string name="registration_validation_empty_error_1">Invalid pin.</string>
+  <string name="registration_validation_empty_error_2">Invalid pin.</string>
+  <string name="registration_validation_empty_error_3">Invalid pin.</string>
+  <string name="registration_validation_empty_error_4">Invalid pin.</string>
+  <string name="registration_validation_progress_title">Verifying Registration...</string>
+  <string name="registration_validation_progress_content">Please wait while we are verifying the token and completing your registration</string>
+  <!--End Registration OTP Screen-->
+
+  <!-- Verification Alert Dialog-->
+  <string name="registration_alert_dialog_title">Registering User</string>
+  <string name="registration_alert_dialog_message">Registering User...</string>
+  <string name="registration_success_alert_dialog_title">Registration Success</string>
+  <string name="registration_success_btn_close">Close</string>
+  <string name="registration_failed_btn_close">Close</string>
+  <!-- End of Verification Alert Dialog-->
+
+  <!-- Registration Alert Dialog-->
+  <string name="registration_alert_dialog_title">Registering User</string>
+  <string name="registration_alert_dialog_message">Registering User...</string>
+  <string name="registration_cancelled_exception_error">Something went wrong, Please try again.</string>
+  <string name="registration_api_exception_error">Something went wrong, Please try again.</string>
+  <string name="registration_unknown_exception_error">Something went wrong, Please try again.</string>
+
+  <string name="registration_cancelled_exception_btn_retry">Retry</string>
+  <string name="registration_api_exception_btn_retry">Retry</string>
+  <string name="registration_unknown_exception_btn_retry">Retry</string>
+
+  <!-- End of Registration Alert Dialog-->
+
+  
+  
+ 
+  <!-- Forget Password-->
+  <string name="forget_password_activity_title">Reset Password</string>
+  <string name="forget_password_toolbar_text_title">Reset Password</string>
+  <string name="forget_password_enter_email_primary_text">Please enter your email.</string>
+  <string name="forget_password_info_secondary_text">A 4-digit verification code will be sent to this email address.</string>
+  <string name="forget_password_email_hint">Email</string>
+  <string name="forget_password_empty_email_error">Email field is required.</string>
+  <string name="forget_password_invalid_email_error">Invalid email address.</string>
+  <string name="forget_password_btn_submit">Submit</string>
+  <string name="forget_password_get_verification_code">Get A Code</string>
+  <string name="forget_password_verification_code_hint">Verification Code</string>
+  <string name="forget_password_verification_code_text">Please enter the 4-digit code that was sent to %1$s</string>
+  <string name="forget_password_verification_code_email_not_received_text">Didn’t receive the email?</string>
+  <string name="forget_password_verfication_code_activity_title">Enter Code</string>
+  <string name="forget_password_validation_progress_title">Verifying Code</string>
+  <string name="forget_password_validation_progress_message">Please wait ...</string>
+  <!-- End of Forget Password-->
+  
+  <!-- Forget Password messages-->
+  <string name="forget_password_empty_email_error">Email field is required.</string>
+  <string name="forget_password_invalid_email_error">Invalid email format.</string>
+  <string name="forget_password_empty_code_error">Verification code is empty.</string>
+  <string name="forget_password_btn_close">Close</string>
+  <!-- End of Forget Password messages-->
+  
+  <!-- Forget Password alert dialog-->
+  <string name="forget_password_progress_dialog_title">Reset Code</string>
+  <string name="forget_password_progress_dialog_message">Resetting Code...</string>
+  <string name="forget_password_progress_dialog_btn_cancel">Cancel</string>
+
+  <string name="forget_password_get_code_progress_dialog_title">Sending Email</string>
+  <string name="forget_password_get_code_progress_dialog_message">Please wait...</string>
+  <string name="forget_password_get_code_progress_dialog_btn_cancel">Cancel</string>
+  <!-- End of Forget Password alert dialog-->
+  
+  <!-- Forget Password Exceptions -->
+  <string name="forget_password_cancelled_exception_error">Something went wrong, Please try again.</string>
+  <string name="forget_password_api_exception_error">Something went wrong, Please try again.</string>
+  <string name="forget_password_unknown_exception_error">Something went wrong, Please try again.</string>
+  <string name="forget_password_cancelled_exception_btn_retry">Retry</string>
+  <string name="forget_password_api_exception_btn_retry">Retry</string>
+  <string name="forget_password_unknown_exception_btn_retry">Retry</string>
+  <!-- End Forget Password Exceptions-->
+
+  <!-- Add/Link Account -->
+  <string name="account_info_non_owner">I may not have the rights to view all information related to this electricity supply account.</string>
+  <string name="add_account_user_view_title">I may only view:</string>
+  <string name="add_account_outstanding_payment">Outstanding payment</string>
+  <string name="add_account_current_bill">Usage graph</string>
+  <string name="add_account_bill_history">Payment history</string>
+  <string name="add_account_all_transaction_details">Current bill </string>
+  <string name="add_account_usage_history">Past bills</string>
+
+  <string name="account_info_owner">I have the rights to view all information related to this electricity supply account.</string>
+  <string name="suppy_account_question_one">Was this electricity supply account registered with your IC / ROC / Passport No.?</string>
+  <string name="suppy_account_question_two">Do you have rights to view all information related to this electricity supply account?</string>
+
+  <string name="yes">Yes,</string>
+  <string name="owner_constrain">I\'m the owner of this electricity supply account.</string>
+  <string name="no">No,</string>
+  <string name="non_owner_constrain">I\'m renting this place / it belongs to my parents.</string>
+
+
+  
+  <string name="add_account_where_is_my_account">Where is my account no.?</string>
+  <!-- End of Add/Link Account -->
+  
+  <!-- Dashboard -->
+  <string name="dashboard_activity_title"></string>
+  <string-array name="house_selection">
+
+    <item>My House</item>
+    <item>My Other House</item>
+    <item>My Other Rented House</item>
+  </string-array>
+  <!-- End of Dashboard-->
+
+  <!-- Registration Validation -->
+  <string name="registration_validation_activity_title">Verify Pin</string>
+  <string name="registration_validation_pin_info">Please enter the 4-digit activation pin that was sent to +60 12 345 6789</string>
+  <string name="registration_validation_pin_info_wildcard">Please enter the 4-digit activation pin that was sent to %1$s</string>
+  <string name="registration_validation_btn_resend">Resend</string>
+  <string name="registration_validation_please_wait">Please wait...</string>
+  <string name="registration_validation_cancelled_exception_error">Something went wrong, Please try again.</string>
+  <string name="registration_validation_api_exception_error">Something went wrong, Please try again.</string>
+  <string name="registration_validation_unknown_exception_error">Something went wrong, Please try again.</string>
+  <string name="registration_validation_cancelled_exception_btn_close">Close</string>
+  <string name="registration_validation_api_exception_btn_close">Close</string>
+  <string name="registration_validation_unknown_exception_btn_close">Close</string>
+  <string name="registration_validation_snackbar_btn_close">Close</string>
+  <string name="registration_validation_snackbar_sms_sent_msg">An SMS containing the activation pin has been sent to your number.</string>
+  <!-- End of Registration Validation -->
+
+
+  <!-- Forget Password Verification Code Exceptions -->
+  <string name="forget_password_code_cancelled_exception_error">Something went wrong, Please try again.</string>
+  <string name="forget_password_code_api_exception_error">Something went wrong, Please try again.</string>
+  <string name="forget_password_code_unknown_exception_error">Something went wrong, Please try again.</string>
+  <string name="forget_password_code_cancelled_exception_btn_retry">Retry</string>
+  <string name="forget_password_code_api_exception_btn_retry">Retry</string>
+  <string name="forget_password_code_unknown_exception_btn_retry">Retry</string>
+  <!-- End Forget Password Verification Code Exceptions-->
+  
+  <!--Reset Password-->
+  <string name="reset_password_activity_title">Reset Password</string>
+  <string name="reset_password_title_info">This new password will replace your current one. All account details remain unchanged.</string>
+  <string name="reset_password_old_password_hint">Old Password</string>
+  <string name="reset_password_new_password_hint">New Password</string>
+  <string name="reset_password_new_confirm_password_hint">Confirm New Password</string>
+  <string name="reset_password_btn_submit">Submit</string>
+  <!--End of Reset Password-->
+  
+  <!-- Reset Password Error Messages-->
+  <string name="reset_password_empty_current_password_error">Current password is empty.</string>
+  <string name="reset_password_empty_new_password_error">New password is empty.</string>
+  <string name="reset_password_empty_confirm_new_password_error">Confirm new password is empty.</string>
+  <string name="reset_password_password_must_have_atleas6_chars">Password must have at least 6 alphanumeric characters.</string>
+  <string name="reset_password_confirm_password_does_not_match_error">Your password and confirmation password do not match.</string>
+  <!-- End Reset Password Error Messages-->
+
+  <!-- Reset Password Exception Messages-->
+  <string name="reset_password_cancelled_exception_error">Something went wrong, Please try again.</string>
+  <string name="reset_password_api_exception_error">Something went wrong, Please try again.</string>
+  <string name="reset_password_unknown_exception_error">Something went wrong, Please try again.</string>
+  <!-- End Reset Password Exception Messages-->
+
+
+  <!-- Reset Password Error Buttons -->
+  <string name="reset_password_cancelled_exception_btn_retry">Retry</string>
+  <string name="reset_password_api_exception_btn_retry">Retry</string>
+  <string name="reset_password_unknown_exception_btn_retry">Retry</string>
+  <!-- End Reset Password Error Buttons-->
+
+
+  <!-- Reset Password Dialog -->
+  <string name="reset_password_alert_dialog_title">Resetting Password...</string>
+  <string name="reset_password_alert_dialog_message">Resetting Password...</string>
+  <string name="reset_password_alert_dialog_negative_button">Cancel</string>
+  <!-- End Reset Password Dialog -->
+  
+  <!-- REset Password Snackbar-->
+  <string name="reset_password_validation_snackbar_btn_close">Close</string>
+
+  <!--End Reset Password Snackbar-->
+  
+  
+  <!--Password Reset Success-->
+  <string name="reset_password_success_title_info">Password Reset Successful</string>
+  <string name="reset_password_success_content_info">Your password has been successfully reset. You may proceed to login with the new password.</string>
+  <string name="reset_password_success_btn_login">Login</string>
+  <!--End Password Reset Success-->
+
+  <string name="tnc_title">myTNB Terms and Conditons of Use</string>
+
+  <string name="tnc_version">Version []</string>
+
+  <string name="tnc_html">
+    <![CDATA[<p>Your Agreement with TNB comprises the General Terms and Conditions ("General Terms"), Service Specific Terms &amp; Conditions applicable to you, the TNB Group Privacy Statement and the TNB Fair Usage Policy (“Agreement”). These are all located on our official website at www.tnb.com.my/tnc/personal and www.tnb.com.my/pdpa. Alternatively please visit your nearest Kedai Tenaga for hard copies.</p>
+
+<p>This Summary highlights some of the important terms of the Agreement. When you purchase the TNB Service(s), the Agreement in its entirety (and not just this Summary) applies to you. Please read and understand the contents of the Agreement in its entirety. Terms used in this Summary will have the same meaning as defined in the General Terms. In the event of any inconsistency or conflict between the Summary and the General Terms, the General Terms will prevail.</p>
+
+<p><b>Your Personal Information:</b><br/>
+We will process your Personal Information pursuant to the Personal Data Protection Act 2010 and the Maxis Group Privacy Statement. These explain your rights to and our usage of your Personal Information. Our Maxis Group Privacy Statement is found at all our Maxis Centres and our website at www.maxis.com.my/pdpa. Call us at 1800 82 1123 or 74922123 or e-mail us at customercare@maxis.com.my if you need a copy.<br/><br/>
+
+Your obligations when you use the Service(s): You must:<br/><p>
+
+<p><ul>
+<li>comply with the Agreement in its entirety; comply with all applicable laws of Malaysia and instructions issued by us;</li>
+	<li>promptly pay Charges in full without deduction and protect Our Equipment;</li>
+	<li>not disclose your Log-On Details to others;</li>
+	<li>not use the Service(s):-</li>
+	<li>to send spam, unsolicited messages (including SMS’ and emails), and messages against public interest;
+    	<ul><li>for re-sale unless permitted by Maxis;</li>
+			<li>for fraudulent, unlawful and improper purpose such as gambling, vice, infringement of intellectual property rights, publishing any defamatory or abusive material; and</li>
+		<li>for any activity which is likely to cause Network congestion.</li></ul>
+    
+    </li></ul></p>
+
+<p>The Service(s) we supply, our liability and what you can expect of us:<br/><br/>
+
+Our Service(s) may not be available everywhere. Please check Our Network coverage area on our official website at maxis.com.my/network . Whilst we will make every attempt to provide a fault free service, the Service(s) are not fault free from Matters beyond Our Control. We are not liable to you or any other party, in contract, tort (including negligence), or otherwise for any loss or damage that you may suffer in connection with the Service(s).
+</p>
+
+<p><b>Change of Service plan:</b><br/>
+Request for a change of Service plan is based on our approval and at your cost.</p>
+
+<p><b>Good and Services Tax ("GST") Provisions:</b><br/>
+We will provide you with a tax invoice if GST is applicable.</p>
+
+<p><b>When we can suspend or terminate your Service(s):</b><br/>
+We may suspend or terminate your Service(s) in a number of circumstances, including where you breach Our Agreement, late payment, Network related issues (including emergencies), or use the Service(s) for improper purposes or for damaging our Network. If the Service(s) is/are suspended or terminated, you must still pay all outstanding Charges and charges for Service(s) reconnection.</p>
+
+<p><b>What we can do in relation to the Service(s):</b><br/>
+We may from time to time make any changes, including revising the Charges. Changes will be notified via Maxis’ official website.</p>
+
+
+<p><b>Complaints:</b><br/>
+We appreciate any feedback about our Service(s), and are committed to resolving problems or complaints quickly. If you have any concerns, please contact us at 1-800-82-1123 or dial 123 from your mobile.<br/><br/>
+
+You acknowledge that you have been provided with and have read and understood the Agreement in its entirety, and you agree to the terms and conditions of the Agreement.</p>]]></string>
+  
+  
+  <!-- Add Account Error Messages-->
+  <string name="add_account_invalid_account_no">Invalid account no.</string>
+  <string name="add_account_invalid_account_nickname_characters">Invalid characters. Use letters or numbers only.</string>
+  <string name="add_account_invalid_ic_no">Invalid IC / ROC / Passport No.</string>
+  <string name="add_account_invalid_mothers_maiden_name_characters">Invalid characters.</string>
+  <string name="add_account_invalid_barcode">Invalid barcode.</string>
+  <string name="add_account_duplicate_account_nickname">Nickname already used. Please create a new one.</string>
+  <!-- End Add Account Error Messages-->
+
+  <!-- Add Account Exceptions-->
+  <string name="add_account_link_cancelled_exception_btn_retry">Retry</string>
+  <string name="add_account_link_api_exception_btn_retry">Retry</string>
+  <string name="add_account_link_unknown_exception_btn_retry">Retry</string>
+
+  <string name="add_account_link_cancelled_exception_error">Something went wrong, Please try again.</string>
+  <string name="add_account_link_api_exception_error">Something went wrong, Please try again.</string>
+  <string name="add_account_link_unknown_exception_error">Something went wrong, Please try again.</string>
+  <string name="add_account_link_account_limit_wildcard">You can add upto %1$s account(s) at one time</string>
+  <!--End Add Account Exceptions-->
+  
+   <!-- Add Account Form -->
+  <string name="add_account_form_account_no">Account No.</string>
+  <string name="add_account_form_account_type">ACCOUNT TYPE</string>
+  <string name="add_account_form_account_nickname">Account Nickname</string>
+  <string name="add_account_form_owners_ic_no">Owner\'s IC / Passport No.</string>
+  <string name="add_account_form_owners_roc_no">ROC No.</string>
+  <string name="add_account_form_owners_maiden_name">Owner\'s Mother\'s Name</string>
+  <string name="where_is_my_account_no">Where is my account no. ?</string>
+  <string name="where_is_my_account_no_text">Your 12 digit account no. can be found on the top left corner of your monthly paper bill.</string>
+  <string name="add_electricity_account_title">Add Electricity Account</string>
+  <string name="no_account_found">No accounts found! Please add an account</string>
+  <string name="account_nickname_info">Give your accounts nicknames for your easy reference.</string>
+  <!-- End of Add Account Form-->
+
+  <!-- Barcode -->
+  <string name="barcode_activity_title">Add Electricity Account</string>
+  <string name="barcode_form_barcode_title">Scan the barcode on your bill to retrieve account details.</string>
+  <!-- End Barcode-->
+
+  <!-- Barcode Error Message-->
+  <string name="barcode_form_invalid_barcode">Invalid barcode.</string>
+  <!-- End Barcode Error Message-->
+
+  <string name="barcode_form_btn_snackbar_close">Close</string>
+  
+  <!-- Dashboard Menu-->
+  <string name="menu_dashboard">Dashboard</string>
+  <string name="menu_bills">Bills</string>
+  <string name="menu_promotions">Promotions</string>
+  <string name="menu_feedback">Feedback</string>
+  <string name="menu_more">More</string>
+  <!-- End of Dashboard Menu-->
+
+  <!-- Dashboard Notification Toolbar Menu -->
+  <string name="ic_notification_unread_title">Unread notification</string>
+  <string name="ic_notification_title">Notification</string>
+  <!-- End Dashboard Notification Toolbar Menu-->
+  
+  <!-- Dashboard Activity -->
+  <string name="dashboard_activity_account_name_sample">Account Name Sample Sample Sample Sample</string>
+  <string name="dashboard_activity_progress_title">Retrieving Data</string>
+  <string name="dashboard_activity_progress_content">Please wait...</string>
+  <!-- End of Dashboard Activity-->
+  
+  <!-- Dashboard ChartView -->
+  <string name="dashboard_chartview_hour">Hour</string>
+  <string name="dashboard_chartview_day">Day</string>
+  <string name="dashboard_chartview_month">Month</string>
+  <string name="dashboard_chartview_usage_history">Usage History</string>
+  <string name="dashboard_chartview_range_example">31 Jul 2017 - 6 Aug 2017</string>
+  <string name="dashboard_chartview_address_sample">----</string>
+
+  <string name="dashboard_chartview_view_bill">Current Bill</string>
+  <string name="dashboard_chartview_pay">Pay</string>
+  <string name="dashboard_chart_view_payment_advice">View Payment Advice</string>
+  <string name="dashboard_chartview_total_payable_title">Total Payable</string>
+  <string name="dashboard_chartview_total_payable_currency">RM</string>
+  <string name="dashboard_chartview_total_payable">192.70</string>
+
+  <string name="dashboard_chartview_no_data_title">No more estimated bills.</string>
+  <string name="dashboard_chartview_no_data_content">Get a Smart Meter to track your energy usage!</string>
+  <string name="dashboard_chartview_no_data_learnmore">Coming Soon</string>
+
+  <string name="dashboard_chartview_no_internet_title">Sorry, we could not load your usage chart</string>
+  <string name="dashboard_chartview_no_internet_content">Please check your internet connection.</string>
+  <string name="dashboard_chartview_no_internet_tap_refresh">Tap to refresh</string>
+
+  <string name="dashboard_chartview_due_date_not_available">--</string>
+  <string name="dashboard_chartview_due_date_wildcard">%1$s</string>
+  <string name="dashboard_chartview_by_date_wildcard">By %1$s</string>
+
+  <string name="dashboard_chart_cancelled_exception_error">Something went wrong, Please try again.</string>
+  <string name="dashboard_chart_api_exception_error">Something went wrong, Please try again.</string>
+  <string name="dashboard_chart_unknown_exception_error">Something went wrong, Please try again.</string>
+  <string name="dashboard_chart_cancelled_exception_btn_retry">Retry</string>
+  <string name="dashboard_chart_api_exception_btn_retry">Retry</string>
+  <string name="dashboard_chart_unknown_exception_btn_retry">Retry</string>
+
+  <!-- End of DAshboard ChartView-->
+
+  <!-- Dashboard ChartView -->
+  <string name="dashboard_chartview_no_day_data_available">Not Available</string>
+  <string name="dashboard_chartview_data_not_available_no_internet">Not available, Please check your internet connection.</string>
+  <string name="dashboard_chartview_data_not_available_no_internet_btn_close">Close</string>
+  <!-- End Dashboard ChartView-->
+
+  <string name="status_bar_notification_info_overflow"></string>
+
+
+  <string name="dashboard_chartview_no_access_pay">Pay</string>
+  <string name="dashboard_chartview_no_access_get_access">Get Access</string>
+
+  <string name="dashboard_chartview_no_access_title">View usage history</string>
+  <string name="dashboard_chartview_no_access_content">
+    <![CDATA[
+    Only electricity account owners \n\t
+    may view usage and transaction details.
+    ]]>
+  </string>
+
+  <string name="response_sample">
+    <![CDATA[
+    {
+    "d": "{\"status\":\"\",\"isError\":\"true\",\"message\":\"Not found\",\"data\":null}"
+    }
+    ]]>
+
+  </string>
+
+  <!-- Dashboard No Account-->
+  <string name="dashboard_chartview_no_account_total_payable_title">Total Payable</string>
+  <string name="dashboard_chartview_no_account_total_payable_currency">RM</string>
+  <string name="dashboard_chartview_no_account_total_payable">0.00</string>
+  <string name="dashboard_chartview_no_account_title">No Electricity Account</string>
+  <string name="dashboard_chartview_no_account_content">
+    <![CDATA[
+    Add your existing TNB Electricity Supply Account \n
+    to view usage and transaction details.
+    ]]>
+  </string>
+  <string name="dashboard_chartview_no_account_add_account">Add account</string>
+
+  <string name="dashboard_chartview_no_account_pay">Pay</string>
+
+  <!-- End Dashboard No Account-->
+  
+  <!-- Dashboard Select Supply Account-->
+  <string name="dashboard_select_supply_account_activity_title">Select Electricity Account</string>
+  <string name="dashboard_select_supply_account_dummy_row_string">Supply Account Name Sample</string>
+  <string name="dashboard_select_supply_account_dialog_progress_title">Retrieving Data</string>
+  <string name="dashboard_select_supply_account_dialog_progress_content">Please wait...</string>
+  
+  <!-- End of Dashboard Select Supply Account-->
+
+  <!-- Select Supply Account Snackbar-->
+  <string name="select_supply_activity_cancelled_exception_error">Something went wrong, Please try again.</string>
+  <string name="select_supply_activity_api_exception_error">Something went wrong, Please try again.</string>
+  <string name="select_supply_activity_unknown_exception_error">Something went wrong, Please try again.</string>
+
+
+  <string name="select_supply_activity_cancelled_exception_btn_close">Close</string>
+  <string name="select_supply_activity_api_exception_btn_close">Close</string>
+  <string name="select_supply_activity_unknown_exception_btn_close">Close</string>
+  <!-- End Select Supply Account Snackbar-->
+
+  <!-- View Bill PDF-->
+  <string name="viewbill_activity_title">View Bill</string>
+  <!-- End View Bill PDF-->
+
+  <string name="bill_menu_current_bill">Current Bill</string>
+  <!--Menu Activity Titles-->
+  <string name="bill_menu_activity_title">Bills</string>
+  <string name="promotion_menu_activity_title">Promotions</string>
+  <string name="feedback_menu_activity_title">Feedback</string>
+  <string name="more_menu_activity_title">More</string>
+  <string name="dashboard_menu_activity_title"></string>
+  <string name="bill_menu_btn_bills">Bills</string>
+  <string name="bill_menu_btn_payment">Payment</string>
+  <!--End of Menu Activity Titles-->
+  
+  
+  
+  <!-- Billing List Fragment-->
+
+  <string name="billing_list_fragment_footer_text">For more Bill / Payment History, visit myTNB Self-Service Portal.</string>
+  <string name="billing_list_fragment_footer_text1"><![CDATA[<a href="www.mytnb.com.my"> www.mytnb.com.my </a>]]></string>
+  <string name="billing_list_fragment_footer_text2"><![CDATA[\n\nOnly electricity account owners 
+\nmay view full usage and transaction details.!]]></string>
+  <!--End Billing List Fragment-->
+
+  <!-- Payment List Fragment-->
+  <string name="payment_list_fragment_footer_text">For more Bill / Payment History, visit myTNB Self-Service Portal.</string>
+  <string name="payment_list_fragment_footer_text1"><![CDATA[<a href="www.mytnb.com.my"> www.mytnb.com.my </a>]]></string>
+  <!--End Payment List Fragment-->
+  
+  <!--Bill Menu-->
+  <string name="bill_menu_payment_history">Bill/Payment History</string>
+  <string name="bill_menu_payment_advice_history">Payment Advice / Payment History</string>
+  <string name="bill_menu_payment_advice">Payment Advice</string>
+  <!--End of Bill Menu-->
+  
+  <!--Get Access-->
+  <string name="get_access_form_btn_get_access">Get Access</string>
+  <string name="get_access_form_owner_ic_no">Owner\'s IC no.</string>
+  <string name="get_access_form_owner_maiden_name">Owner\’s mother\'s maiden name</string>
+  <string name="get_access_activity_title">Get Access</string>
+  <!--End of Get Access-->
+  
+  <!-- Get Access Form Error-->
+  <string name="get_access_form_empty_ic_no_error">Owner\'s IC no. is empty.</string>
+  <string name="get_access_form_empty_maiden_name_error">Owner\’s mother\'s maiden name is empty.</string>
+  <!-- End Get Access Form Error-->
+
+  <!--Get Access Success -->
+  <string name="get_access_success_title_info">Add Account Successful</string>
+  <string name="get_access_success_btn_dashboard">Back to Dashboard</string>
+  <string name="get_access_success_txt_account_name">Rental House</string>
+  <string name="get_access_success_txt_account_no">220229065432</string>
+  <string name="get_access_success_txt_address">136, Jalan Rukun 12, Taman Gembira, 58200 Kuala Lumpur, Wilayah Persekutuan Kuala Lumpur, Malaysia</string>
+
+  <!--End Get Access Success-->
+
+  <!--- Make Payment -->
+  <string name="select_payment_method">Select Payment Method</string>
+  <string name="total_amount">TOTAL AMOUNT(RM)</string>
+  <string name="credit_debit_card">Credit / Debit Card</string>
+  <string name="add_card">Add Card</string>
+  <string name="other_payment_methods">Other Payment Methods</string>
+  <string name="card_payment">Card Payment</string>
+  <string name="fpx_online_payment">Online Banking via FPX</string>
+  <string name="save_card_question">I want to save this card for future use.</string>	
+  <string name="cvv_info_3_digit">Please enter the 3-digit CVV/CVC located at the back of your credit card.</string>
+  <string name="cvv_info_4_digit">Please enter the 4-digit CVV/CVC located at the front of your credit card.</string>
+  <string name="getregisteredcards_progress_title">Get Registered Cards</string>
+  <string name="getregisteredcards_progress_message">Please wait while we are fetching registered card(s) details.</string>
+  <string name="initiate_payment_progress_title">Payment</string>
+  <string name="initiate_payment_progress_message">Please wait while we are initiating payment.</string>
+  <!-- end Make Payment -->
+  
+  <!-- Add Card String-->
+  <string name="add_card_info">Only credit / debit cards issued in Malaysia are accepted</string>
+  <string name="card_no">Card No.</string>
+  <string name="name_on_card">Name on Card</string>
+  <string name="card_exp_date">Card Expiry(MM/YY)</string>
+  <string name="cvv">CVV</string>
+  <string name="next">Next</string>
+  <string name="credit_card_masked">
+    <h1>&#x25cf;&#x25cf;&#x25cf;&#x25cf; &#x25cf;&#x25cf;&#x25cf;&#x25cf; &#x25cf;&#x25cf;&#x25cf;&#x25cf; </h1>
+  </string>
+  <!-- -->
+  
+  <!-- Error/Information/Dialog-->
+  <string name="error_service_down">We are facing some issue with server, Please try again later</string>
+  <string name="receipt_dear_customer">Dear Customer,</string>
+  <string name="receipt_payment_thank_you">Thank you for using myTNB.</string>
+  <string name="receipt_payment_succesful">We are pleased to inform you that the following online payment via Credit / Debit card is successful.</string>
+  <string name="receipt_payment_succesful_fpx">We are pleased to inform you that the following online payment via FPX is successful.</string>
+  <string name="receipt_reference_number">REFERENCE NUMBER</string>
+  <string name="receipt_date">TRANSACTION DATE</string>
+  <string name="receipt_amount">AMOUNT (RM)</string>
+  <string name="receipt_from_account">From Account :</string>
+  <string name="receipt_account_number">ACCOUNT NUMBER</string>
+  <string name="receipt_account_holder_name">"ACCOUNT HOLDER's NAME"</string>
+  <string name="receipt_account_amount">Amount (RM)</string>
+  <string name="receipt_transaction_method">TRANSACTION METHOD</string>
+  <string name="receipt_transcation_id">TRANSACTION ID</string>
+  <string name="receipt_thank_you">Thank you for using myTNB.</string>
+
+  <string name="mp_receipt_payment_succesful">Thank you for using myTNB.<![CDATA[<br></br>]]> We are pleased to inform you that the following online payment via Credit / Debit card is successful.</string>
+  <string name="mp_receipt_reference_number">Reference<![CDATA[<br></br>]]> Number :</string>
+  <string name="mp_receipt_date">Transaction<![CDATA[<br></br>]]>Date :</string>
+  <string name="mp_receipt_amount">Amount :</string>
+  <string name="mp_receipt_from_account">From Account :</string>
+  <string name="mp_receipt_account_number">Account<![CDATA[<br></br>]]>Number :</string>
+  <string name="mp_receipt_transaction_method">Transaction<![CDATA[<br></br>]]>Method :</string>
+  <string name="mp_receipt_transcation_id">Transaction ID :</string>
+  <string name="mp_receipt_thank_you">Thank you for using myTNB.</string>
+  
+ 
+  <!--Notification-->
+  <string name="notification_activity_title">Notifications</string>
+  <string name="notification_selection_title">All notifications</string>
+  <string name="notification_activity_empty_txt_content">No notifications yet.</string>
+
+  <string name="notification_activity_cancelled_exception_error">Something went wrong, Please try again.</string>
+  <string name="notification_activity_api_exception_error">Something went wrong, Please try again.</string>
+  <string name="notification_activity_unknown_exception_error">Something went wrong, Please try again.</string>
+  <string name="notification_activity_notification_removed">Notification removed.</string>
+  
+
+  <string name="notification_activity_cancelled_exception_btn_close">Close</string>
+  <string name="notification_activity_api_exception_btn_close">Close</string>
+  <string name="notification_activity_unknown_exception_btn_close">Close</string>
+  <string name="notification_activity_notification_removed_btn_close">Close</string>
+  <string name="notification_activity_progress_title">Retrieving Item</string>
+  <string name="notification_activity_progress_content">Please wait...</string>
+
+  <string name="notification_activity_query_progress_title">Retrieving Notifications</string>
+  <string name="notification_activity_query_progress_content">Please wait...</string>
+  <!--End Of NOtification-->
+  
+  <!--Select NOtification-->
+  <string name="select_notification_activity_title">Select Notification</string>
+  <!--End Select Notifiaction-->
+  
+  <!--Notification Settings-->
+  <string name="notification_settings_activity_title">Notifications Settings</string>
+  <string name="notification_settings_type_title">Select the type of notifications you wish to receive from TNB</string>
+  <string name="notification_settings_channel_title">Select how you wish to receive your notifications</string>
+
+  <!--End Notification Settings -->
+
+  <!--More Fragment-->
+  <string name="more_fragment_settings_title">Settings</string>
+  <string name="more_fragment_settings_my_account">My Account</string>
+  <string name="more_fragment_settings_notifications">Notifications</string>
+  <string name="more_fragment_help_support_title">Help &amp; Support</string>
+  <string name="more_fragment_help_support_find_us">Find Us</string>
+  <string name="more_fragment_help_support_call_us">Call Us (Outages &amp; Breakdown)</string>
+  <string name="more_fragment_help_support_call_us_1">Call Us (Billing Enquiries)</string>
+  <string name="more_fragment_help_support_understand_bill">Understand Your Bill</string>
+  <string name="more_fragment_help_support_faq">FAQ</string>
+  <string name="more_fragment_help_support_TC">Terms &amp; Conditions</string>
+  <string name="more_fragment_share_title">Share</string>
+  <string name="more_fragment_share_share_this_app">Share this app</string>
+  <string name="more_fragment_share_rate_this_app">Rate this app</string>
+
+  <string name="more_fragment_progress_title">Retrieving Data</string>
+  <string name="more_fragment_progress_content">Please wait...</string>
+  
+  <string name="more_fragment_share_via">Share via</string>
+  <!--End More Fragment-->
+
+
+
+  <!-- More Error Messages -->
+
+  <string name="more_cancelled_exception_error">Something went wrong, Please try again.</string>
+  <string name="more_api_exception_error">Something went wrong, Please try again.</string>
+  <string name="more_unknown_exception_error">Something went wrong, Please try again.</string>
+
+  <!-- End More Error Messages -->
+
+  <!-- More Error Buttons -->
+  <string name="more_menu_cancelled_exception_btn_close">Close</string>
+  <string name="more_menu_api_exception_btn_close">Close</string>
+  <string name="more_menu_unknown_exception_btn_close">Close</string>
+  <!-- End More Error Buttons-->
+  
+  <!--Notification Settings Error Message-->
+  <string name="notification_settings_cancelled_exception_error">Unable to update your preferences. Please try later</string>
+  <string name="notification_settings_api_exception_error">Unable to update your preferences. Please try later</string>
+  <string name="notification_settings_unknown_exception_error">Unable to update your preferences. Please try later</string>
+  <!--End Notification settings Error Message-->
+  
+  <!--Notification Settings Buttons-->
+  <string name="notification_settings_cancelled_exception_btn_close">Close</string>
+  <string name="notification_settings_api_exception_btn_close">Close</string>
+  <string name="notification_settings_unknown_exception_btn_close">Close</string>
+  <!--End Notification Settings button-->
+  
+  <!--Notification Filter -->
+  <string name="notification_filter_activity_title">Select Notification</string>
+  <string name="notification_filter_all_notifications_selection">All notifications</string>
+  <!--End Notification Filter-->
+  
+  <!--Notification Detail-->
+  <string name="notification_detail_activity_title">Notification Details</string>
+  <string name="notification_detail_new_bill_activity_title">New Bill</string>
+  <string name="notification_detail_view_bill_view_details_activity_title">Bills</string>
+  <string name="ic_delete_notification_title">Delete Notification</string>
+  <string name="notification_detail_remove_progress_title">Removing Item</string>
+  <string name="notification_detail_remove_progress_content">Please wait...</string>
+
+  <string name="notification_detail_retrieval_progress_title">Retrieving Item</string>
+  <string name="notification_detail_retrieval_progress_content">Please wait...</string>
+
+  <string name="notification_detail_cancelled_exception_error">Something went wrong, Please try again.</string>
+  <string name="notification_detail_api_exception_error">Something went wrong, Please try again.</string>
+  <string name="notification_detail_unknown_exception_error">Something went wrong, Please try again.</string>
+                             
+  <string name="notification_detail_cancelled_exception_btn_close">Close</string>
+  <string name="notification_detail_api_exception_btn_close">Close</string>
+  <string name="notification_detail_unknown_exception_btn_close">Close</string>
+
+  <string name="notification_detail_new_bill_title">Your Oct bill is ready for viewing.</string>
+  <string name="notification_detail_new_bill_sub_title">Your latest electricity bill dated 22/09/17 is ready for viewing. </string>
+  <string name="notification_detail_new_bill_total_amt_title">Total Outstanding Amount</string>
+  <string name="notification_detail_new_bill_total_amt_content">RM195.99</string>
+  <string name="notification_detail_new_bill_payment_due_title">Payment Due</string>
+  <string name="notification_detail_new_bill_payment_due_content">16/10/17</string>
+  <string name="notification_detail_new_bill_subcontent_1">Please make payment promptly to avoid supply disruption.</string>
+  <string name="notification_detail_new_bill_subcontent_2">Go green and paperless!</string>
+  <string name="notification_detail_new_bill_subcontent_3">Subscribe to e-Bill now!</string>
+
+
+  <string name="notification_detail_remove_notification_dialog_title">Delete notification</string>
+  <string name="notification_detail_remove_notification_dialog_content">Are you sure you want to delete?</string>
+  <string name="notification_detail_remove_notification_positive_btn">OK</string>
+  <string name="notification_detail_remove_notification_negative_btn">Cancel</string>
+
+  <string name="notification_detail_new_bill_title_wildcard">Your %1$s bill is ready for viewing.</string>
+  <string name="notification_detail_new_bill_sub_title_wildcard">Your latest electricity bill dated %1$s is ready for viewing. </string>
+
+  <string name="notification_detail_new_bill_btn_view_details">View Details</string>
+  <string name="notification_detail_new_bill_btn_pay">Pay</string>
+  <!--End Notification Detail-->
+
+  <!--My Account-->
+  <string name="my_account_activity_title">My Account</string>
+  <string name="my_account_title">myTNB Account</string>
+  <string name="my_account_hint_name">NAME</string>
+  <string name="my_account_hint_ic_no">IC / ROC / PASSPORT NO.</string>
+  <string name="my_account_hint_email">EMAIL</string>
+  <string name="my_account_hint_mobile_no">MOBILE NO</string>
+  <string name="my_account_hint_password">PASSWORD</string>
+  <string name="my_account_hint_cards">CREDIT/DEBIT CARDS</string>
+
+  <string name="my_account_cancelled_exception_error">Something went wrong, Please try again.</string>
+  <string name="my_account_api_exception_error">Something went wrong, Please try again.</string>
+  <string name="my_account_unknown_exception_error">Something went wrong, Please try again.</string>
+  <string name="my_account_cancelled_exception_btn_close">Close</string>
+  <string name="my_account_api_exception_btn_close">Close</string>
+  <string name="my_account_unknown_exception_btn_close">Close</string>
+  
+  <string name="my_account_supply_account_title">TNB Electricity Supply Accounts</string>
+  <string name="my_account_btn_add_another_account">Add Another Account</string>
+  <string name="my_account_btn_logout">Log Out</string>
+
+  <string name="my_account_account_retrieval_progress_title">Getting your account</string>
+  <string name="my_account_account_retrieval_progress_content">This may take a while as we retrieve your TNB account.</string>
+
+  <string name="my_account_dummy_password">••••••••••••</string>
+  <string name="my_account_successful_update_mobile_no">Your mobile number has been updated successfully.</string>
+  <string name="my_account_successful_update_mobile_no_btn">Close</string>
+
+  <string name="my_account_successful_update_password">Your password has been updated successfully.</string>
+  <string name="my_account_successful_update_password_btn">Close</string>
+
+  <string name="my_account_successful_remove_supply_account">Your supply account has been removed from myTNB account.</string>
+  <string name="my_account_successful_remove_supply_account_btn">Close</string>
+
+  <string name="my_account_ic_no_mask">•••••• •• </string>
+  <!--End of My Account-->
+
+    <!-- Feedback -->
+  <string name="feedback_menu_contact_careline">Contact Careline</string>
+  <string name="feedback_menu_send_feedback_title">Send Feedback</string>
+  <string name="feedback_menu_billing_payment">Bill Related</string>
+  <string name="feedback_menu_power_outages">Power Outages</string>
+  <string name="feedback_menu_faulty_street_lamps">Faulty Street Lamps</string>
+  <string name="feedback_menu_others">Others</string>
+  <string name="feedback_menu_view_feedback_title">View Feedback</string>
+  <string name="feedback_menu_pending">Pending</string>
+  <string name="feedback_menu_archived">Archived</string>
+  <string name="feedback_menu_view_submitted_feedback">Submitted Feedback</string>
+
+  <string name="feedback_menu_billing_payment_subcontent">Lodge your bill and account issues here.</string>
+  <string name="feedback_menu_faulty_street_lamps_subcontent">Spot a faulty street lamp? Report it here.</string>
+  <string name="feedback_menu_others_subcontent">Suggestions, complaints, and other enquiries.</string>
+  <string name="feedback_menu_view_submitted_feedback_content">View status updates on your feedback here.</string>
+  <string name="feedback_character_left"> characters left</string>
+  <string name="feedback_total_character_left">250 characters left</string>
+  <!-- End of Feedback-->
+
+
+
+  <!-- Manage Cards-->
+  <string name="manage_cards_activity_title">Manage Credit / Debit Cards</string>
+  <string name="manage_cards_title">You may only add a new credit / debit card when making payment.</string>
+  <string name="manage_cards_card_prefix">●●●● ●●●● ●●●● </string>
+  <string name="manage_cards_card_remove_successfully_wildcard">Credit / debit card ending with %1$s has been removed successfully.</string>
+  <string name="manage_cards_no_cards">No credit/debit cards stored. You may only add a credit/debit card during payment.</string>
+
+  <string name="manage_cards_progress_title">Removing Credit / Debit Card</string>
+  <string name="manage_cards_progress_content">Please wait</string>
+  <string name="manage_cards_remove_content_wildcard">You are about to remove credit / debit card ending with %1$s.</string>
+  <string name="manage_cards_remove_dialog_title">Remove Credit / Debit Card</string>
+  <string name="manage_cards_btn_cancel">Cancel</string>
+  <string name="manage_cards_btn_ok">Ok</string>
+  <string name="manage_cards_btn_close">Close</string>
+  <!-- End Manage Cards-->
+  
+  <!--Update Mobile -->
+  <string name="update_mobile_activity_title">Update Mobile No.</string>
+  <string name="update_mobile_mobile_no">Mobile No.</string>
+  <string name="verify_mobile_no">Verify Device</string>
+  <string name="verify_mobile_no_info">For security purpose, please enter your mobile number to verify this device.</string>
+  <string name="verfiy_mobile_validation_pin_info_wildcard">An OTP has been sent to %1$s, please enter it below</string>
+
+
+  <string name="update_mobile_cancelled_exception_error">Something went wrong, Please try again.</string>
+  <string name="update_mobile_api_exception_error">Something went wrong, Please try again.</string>
+  <string name="update_mobile_unknown_exception_error">Something went wrong, Please try again.</string>
+  <string name="update_mobile_cancelled_exception_btn_close">Close</string>
+  <string name="update_mobile_api_exception_btn_close">Close</string>
+  <string name="update_mobile_unknown_exception_btn_close">Close</string>
+  <string name="update_mobile_mobile_no_error">Invalid mobile no.</string>
+  <string name="update_mobile_mobile_empty_error">Empty mobile no.</string>
+
+  <string name="update_mobile_progress_title">Updating Mobile</string>
+  <string name="update_mobile_progress_content">Please wait...</string>
+  <string name="update_mobile_btn_save">Save</string>
+  <!--End of Update Mobile-->
+  
+  
+  <!--Update Password-->
+  <string name="update_password_activity_title">Update Password</string>
+  <string name="update_password_empty_current_password">Current password is empty.</string>
+  <string name="update_password_empty_new_password">New password is empty.</string>
+  <string name="update_password_empty_confirm_new_password">Current new password is empty.</string>
+  <string name="update_password_invalid_current_password">Invalid old password.</string>
+  <string name="update_password_invalid_new_password">Password must have at least 8 alphanumeric characters.</string>
+  <string name="update_password_invalid_confirm_password">Your password and confirmation password do not match.</string>
+
+  <string name="update_password_cancelled_exception_error">Something went wrong, Please try again.</string>
+  <string name="update_password_api_exception_error">Something went wrong, Please try again.</string>
+  <string name="update_password_unknown_exception_error">Something went wrong, Please try again.</string>
+  <string name="update_password_cancelled_exception_btn_close">Close</string>
+  <string name="update_password_api_exception_btn_close">Close</string>
+  <string name="update_password_unknown_exception_btn_close">Close</string>
+
+  <string name="update_password_progress_title">Updating Password</string>
+  <string name="update_password_progress_content">Please wait...</string>
+  <string name="update_password_btn_save">Save</string>
+  <!--End Update Password-->
+
+
+  <!-- Manage Supply Account-->
+  <string name="manage_supply_account_activity_title">Manage Electricity Account</string>
+  <string name="manage_supply_account_nickname">Account Nickname</string>
+  <string name="manage_supply_update_account_nickname">Update</string>
+  <string name="manage_supply_account_btn_remove">Remove This Account</string>
+  <string name="manage_supply_account_update_nickname_success">Account nickname has been updated successfully.</string>
+
+  <string name="manage_supply_cancelled_exception_error">Something went wrong, Please try again.</string>
+  <string name="manage_supply_api_exception_error">Something went wrong, Please try again.</string>
+  <string name="manage_supply_unknown_exception_error">Something went wrong, Please try again.</string>
+  <string name="manage_supply_cancelled_exception_btn_close">Close</string>
+  <string name="manage_supply_api_exception_btn_close">Close</string>
+  <string name="manage_supply_unknown_exception_btn_close">Close</string>
+
+  <string name="manage_supply_account_remove_progress_title">Removing Account</string>
+  <string name="manage_supply_account_remove_progress_content">Please wait...</string>
+  <string name="manage_supply_account_remove_dialog_title">Remove Account</string>
+  <string name="manage_supply_account_remove_dialog_content_wildcard">You are about to remove %1$s, Account No. %2$s from the app.
+    <![CDATA[\n\nNote: This does not close your electricity supply account. Visit the Self-Service Portal or Kedai Tenaga to close your electricity supply account.]]></string>
+  <string name="manage_supply_account_remove_dialog_btn_cancel">Cancel</string>
+  <string name="manage_supply_account_remove_dialog_btn_ok">Ok</string>
+  <string name="manage_supply_account_btn_close">Close</string>
+
+
+  <string name="manage_supply_account_cancelled_exception_error">Something went wrong, Please try again.</string>
+  <string name="manage_supply_account_api_exception_error">Something went wrong, Please try again.</string>
+  <string name="manage_supply_account_unknown_exception_error">Something went wrong, Please try again.</string>
+  <string name="manage_supply_account_cancelled_exception_btn_close">Close</string>
+  <string name="manage_supply_account_api_exception_btn_close">Close</string>
+  <string name="manage_supply_account_unknown_exception_btn_close">Close</string>
+  <string name="manage_supply_account_removed_success">Your electricity supply account has been removed from myTNB account.</string>
+  <!-- End of Manage Supply Account-->
+  
+  <!-- Update Account Nickname -->
+  <string name="update_account_activity_title">Update Account Nickname</string>
+  <string name="update_account_hint_account_nickname">Account Nickname</string>
+  <string name="update_account_empty_nickname_error">Nickname is empty.</string>
+  <string name="update_account_progress_title">Updating Account Nickname</string>
+  
+  <string name="update_account_progress_content">Please wait...</string>
+  <string name="update_account_btn_save">Save</string>
+  <!--End Update Account Nickname -->
+
+  <!-- Logout -->
+  <string name="logout_activity_title">Log Out</string>
+  <string name="logout_rate_txt_title_info">Thank you for using myTNB.</string>
+  <string name="logout_rate_txt_rate">Please rate your experience with us.</string>
+  <string name="logout_rate_btn_submit">Submit</string>
+  <string name="logout_end_txt_content">You are now logged out of myTNB app.</string>
+  <string name="logout_end_btn_back_to_home">Back to Home</string>
+
+  <string name="logout_rate_cancelled_exception_error">Something went wrong, Please try again.</string>
+  <string name="logout_rate_api_exception_error">Something went wrong, Please try again.</string>
+  <string name="logout_rate_unknown_exception_error">Something went wrong, Please try again.</string>
+  <string name="logout_rate_cancelled_exception_btn_close">Close</string>
+  <string name="logout_rate_api_exception_btn_close">Close</string>
+  <string name="logout_rate_unknown_exception_btn_close">Close</string>
+
+  <string name="logout_rate_progress_title">Logging out</string>
+  <string name="logout_rate_progress_content">Please wait...</string>
+  <string name="logout_rate_btn_close">Save</string>
+  <string name="logout_app_question">Are you sure you want to log out from myTNB app?</string>
+  <!--End of Logout-->
+  <!-- Runtime Permissions-->
+  <string name="runtime_permission_sms_received_rationale">Allows myTnB app to receive and process SMS messages specifically the myTnB registration token only.</string>
+  <string name="runtime_permission_camera_rationale">Allows myTnB app to scan credit card and account bar code.</string>
+  <string name="runtime_permission_phone_rationale">This permission is required to allow us to identify your device unique ID . Your data privacy is of utmost importance to us. Please press \'Allow\' in next permission request dialog.</string>
+  <string name="runtime_permission_storage_rationale">Allows myTnB app to write files in the storage (eg. pdf generator).</string>
+  <string name="runtime_permission_location_rationale">Allows myTnB app to access location to show nearby stores.</string>
+
+  <string name="runtime_permission_dialog_camera_title">Camera access needs permission.</string>
+  <string name="runtime_permission_dialog_phone_title">myTNB App requests your permission.</string>
+  <string name="runtime_permission_dialog_storage_title">Storage access needs permission.</string>
+  <string name="runtime_permission_dialog_location_title">Location access needs permission.</string>
+  <string name="runtime_permission_dialog_btn_close">Close</string>
+  <string name="runtime_permission_dialog_btn_show">Show</string>
+  <!--End of Runtime Permissions-->
+  
+  
+  <!--Web Link-->
+  <string name="weblink_activity_title">Weblink</string>
+  <!--End of WebLink-->
+
+
+  <!--Feedback  Bill Related-->
+  <string name="bill_related_activity_title">Bill Related</string>
+  <string name="bill_related_select_account_activity_title">Select Account</string>
+  <string name="bill_related_fullname_hint">Full name</string>
+  <string name="bill_related_mobile_no_hint">Mobile No.</string>
+  <string name="bill_related_email_hint">Email</string>
+  <string name="bill_related_account_no_hint">Account No.</string>
+  <string name="bill_related_feedback">Feedback</string>
+  <string name="bill_related_screenshot_title">Attach Photo / Screenshot (Optional)</string>
+  <string name="bill_related_screenshot_detailed_title">Photo / Screenshot</string>
+  <string name="bill_related_btn_submit">Submit</string>
+  <string name="bill_related_feedback_text">I made an online payment on 12 Aug 2016 but i received a new bill on 9 Sept 2016, but the bill amount was not deducted as the payment made. Please check and get back to me.</string>
+  <string name="bill_related_feedback_select_images">Select Image</string>
+  <string name="bill_related_feedback_selection_take_photo">Take Photo</string>
+  <string name="bill_related_feedback_selection_choose_from_library">Choose from Library</string>
+  <string name="bill_related_feedback_selection_cancel">Cancel</string>
+  <string name="bill_related_feedback_selection_option_title">Select Options</string>
+
+  <string name="bill_related_feedback_empty_fullname_error">Invalid fullname.</string>
+  <string name="bill_related_feedback_empty_mobile_error">Invalid mobile no.</string>
+  <string name="bill_related_feedback_invalid_mobile_error">Invalid mobile no.</string>
+  <string name="bill_related_feedback_empty_email_error">Invalid email address.</string>
+  <string name="bill_related_feedback_invalid_email_error">Invalid email address.</string>
+  <string name="bill_related_feedback_empty_account_no_error">Invalid account no.</string>
+  <string name="bill_related_feedback_invalid_account_no_error">Invalid account no.</string>
+  <string name="bill_related_feedback_empty_feedback_error">Invalid feedback.</string>
+
+  <string name="bill_related_feedback_id">FEEDBACK ID</string>
+  <string name="bill_related_feedback_status">FEEDBACK STATUS</string>
+  <string name="bill_related_feedback_date_time">FEEDBACK DATE &amp; TIME</string>
+  <string name="bill_related_feedback_max_image_hint">MAX 2 FILES</string>
+
+  <string name="bill_related_feedback_max_feedback_characters">Max of 250 characters</string>
+  <!--End Feedback  Bill Related-->
+
+  <!-- Feedback Bill Related Dialog -->
+  <string name="feedback_submit_dialog_title">Submitting Feedback</string>
+  <string name="feedback_submit_dialog_message">Please wait...</string>
+  <string name="feedback_submit_dialog_negative_button">Cancel</string>
+  <!-- End Feedback  Bill Related Dialog -->
+
+  <!-- Feedback Success-->
+  <string name="feedback_successful_txt_title">Feedback Successful</string>
+  <string name="feedback_successful_txt_content">Thank you for your feedback.</string>
+  <string name="feedback_successful_transaction_schedule_hint">Feedback Date &amp; Time</string>
+  <string name="feedback_successful_transaction_feedback_id_hint">Feedback Id</string>
+  <string name="feedback_successful_transaction_schedule_dummy">06 Aug 2017  9:41 am</string>
+  <string name="feedback_successful_transaction_feedback_id_dummy">49RC827</string>
+  <string name="feedback_successful_transaction_btn_back_to_feedback">Back to Feedback</string>
+  <!--End Feedback Success-->
+
+  <!--Feedback Fail-->
+  <string name="feedback_unsuccessful_txt_title">Feedback Unsuccessful</string>
+  <string name="feedback_unsuccessful_txt_content">
+    <![CDATA[Your feedback didn’t go through. \n\t
+Please try again later.]]>
+  </string>
+  <string name="feedback_unsuccessful_btn_back_to_dashboard">Back to dashboard</string>
+  <string name="feedback_unsuccessful_btn_try_again">Try again</string>
+  <!--End Of Feedback Fail-->
+  
+ 
+  
+  
+  <!--Payment Rating Success-->
+  <string name="payment_success_experience_rating_activity_title">Rating</string>
+  <string name="payment_success_experience_rating_txt_title">Please rate your payment experience.</string>
+  <string name="payment_success_experience_rating_txt_content_0">No rating</string>
+  <string name="payment_success_experience_rating_txt_content_1">Very bad</string>
+  <string name="payment_success_experience_rating_txt_content_2">Poor</string>
+  <string name="payment_success_experience_rating_txt_content_3">OK</string>
+  <string name="payment_success_experience_rating_txt_content_4">Good</string>
+  <string name="payment_success_experience_rating_txt_content_5">Excellent!</string>
+  <string name="payment_success_experience_rating_btn_submit">Submit</string>
+  <string name="payment_success_experience_rating_txt_comments">Comments</string>
+  <string name="payment_success_experience_rating_title">Rate this app</string>
+  <string name="payment_success_experience_rating_message">Please wait while we are processing your request...</string>
+  <string name="payment_success_experience_rating_thank_you">Thank You!!</string>
+  <string name="payment_success_experience_rating_thank_you_message">Our goal is to improve our service any way we can, Thank you for submitting your feedback</string>
+  <string name="payment_success_experience_rating_sorry">Sorry!!</string>
+  <string name="payment_success_experience_rating_sorry_message">We are unable to process your request. Please try again</string>
+  <string name="error_empty_rating">No rating! Please rate us before you click submit.</string>
+  <!--End Payment Rating Success-->
+  
+  
+  <!-- Google API key DEBUG -->
+  <!--<string name="google_maps_api_key">AIzaSyB5Mof93PK0qrvk2m2OuSZ_EU0BKyk2Ahw</string>
+  <string name="google_maps_search_api_key">AIzaSyBTQqvewO-ArL0zmy0oduL323nX_b31PJ0</string>
+  <string name="google_maps_reverse_geocode_api_key">AIzaSyCGEjfrhvUr6gH1qA7n3lQyfQuT2eCsemk</string>-->
+
+  <!-- Google API key DEVELOP -->
+  <!--<string name="google_maps_api_key">AIzaSyCZzh-bA9mIo5JMExvPVNFP0AioVA5VF9E</string>
+  <string name="google_maps_search_api_key">AIzaSyBTQqvewO-ArL0zmy0oduL323nX_b31PJ0</string>
+  <string name="google_maps_reverse_geocode_api_key">AIzaSyCGEjfrhvUr6gH1qA7n3lQyfQuT2eCsemk</string>-->
+
+  <!-- Google API key RELEASE -->
+  <string name="google_maps_api_key">AIzaSyBgTiBFKnfLJM4PV7DTqc0MqPt6rfW4Tq0</string>
+  <string name="google_maps_search_api_key">AIzaSyBTQqvewO-ArL0zmy0oduL323nX_b31PJ0</string>
+  <string name="google_maps_reverse_geocode_api_key">AIzaSyCGEjfrhvUr6gH1qA7n3lQyfQuT2eCsemk</string>
+
+  <!--Feedback  Faulty Street Lamps-->
+  <string name="faulty_street_lamps_activity_title">Faulty TNB Street Lamp</string>
+  <string name="faulty_street_lamps_txt_title">Reporting faulty street lamps?</string>
+  <string name="faulty_street_lamps_txt_content"><![CDATA[You may only report faulty TNB street lamps. Look out for TNB’s blue and red or the logo as shown above. Use the pole no. (e.g. <b>17493 8E 1</b>) to specify the lamp.]]></string>
+  <string name="faulty_street_lamps_fullname_hint">Full name</string>
+  <string name="faulty_street_lamps_mobile_no_hint">Mobile No.</string>
+  <string name="faulty_street_lamps_email_hint">Email</string>
+  <string name="faulty_street_lamps_state_hint">State</string>
+  <string name="faulty_street_lamps_location_hint">Location / Street Name</string>
+  <string name="faulty_street_lamps_pole_no_hint">Pole No.</string>
+  <string name="faulty_street_lamps_feedback">Feedback</string>
+  <string name="faulty_street_lamps_screenshot_title">Attach Photo / Screenshot (Optional)</string>
+  <string name="faulty_street_lamps_screenshot_detailed_title">Photo / Screenshot</string>
+  <string name="faulty_street_lamps_btn_submit">Submit</string>
+  <string name="faulty_street_lamps_feedback_text">I made an online payment on 12 Aug 2016 but i received a new bill on 9 Sept 2016, but the bill amount was not deducted as the payment made. Please check and get back to me.</string>
+  <string name="faulty_street_lamps_feedback_id">FEEDBACK ID</string>
+  <string name="faulty_street_lamps_feedback_date_time">FEEDBACK DATE &amp; TIME</string>
+  <string name="faulty_street_lamps_status">FEEDBACK STATUS</string>
+  <string name="faulty_street_lamps_feedback_runtime_permission_location_rationale">You current location may be used to help us find the faulty TNB street lamp</string>
+  <string name="faulty_street_lamps_feedback_runtime_permission_dialog_location_title">
+    Allow “myTNB” to Access
+    Your Location While You Use
+    the App?.</string>
+  <string name="faulty_street_lamps_feedback_runtime_permission_dialog_btn_ok">OK</string>
+  <string name="faulty_street_lamps_feedback_runtime_permission_dialog_btn_cancel">Cancel</string>
+
+
+  <string name="faulty_street_lamps_feedback_empty_fullname_error">Invalid fullname.</string>
+  <string name="faulty_street_lamps_feedback_empty_mobile_error">Invalid mobile no.</string>
+  <string name="faulty_street_lamps_feedback_invalid_mobile_error">Invalid mobile no.</string>
+  <string name="faulty_street_lamps_feedback_empty_email_error">Invalid email address.</string>
+  <string name="faulty_street_lamps_feedback_invalid_email_error">Invalid email address.</string>
+  <string name="faulty_street_lamps_feedback_empty_location_error">Invalid location.</string>
+  <string name="faulty_street_lamps_feedback_empty_pole_no_error">Invalid pole no.</string>
+  <string name="faulty_street_lamps_feedback_invalid_pole_no_error">Invalid pole no.</string>
+  <string name="faulty_street_lamps_feedback_empty_feedback_error">Invalid feedback.</string>
+
+  <string name="faulty_street_lamps_feedback_location_hint">e.g. Jalan Timur</string>
+  <string name="faulty_street_lamps_feedback_pole_no_hint">e.g. 17493 8E 1</string>
+  <string name="faulty_street_lamps_feedback_feedback_hint">Include location description e.g. street lamp behind the mosque</string>
+  <string name="faulty_street_lamps_feedback_max_image_hint">Max 2 files</string>
+  <string name="faulty_street_lamps_feedback_max_feedback_characters">Max of 250 characters</string>
+  <!--End Feedback  Faulty Street Lamps-->
+
+
+
+  <!--Feedback  Others -->
+  <string name="feedback_others_activity_title">Others</string>
+  <string name="feedback_others_fullname_hint">Full name</string>
+  <string name="feedback_others_mobile_no_hint">Mobile No.</string>
+  <string name="feedback_others_email_hint">Email</string>
+  <string name="feedback_others_feedback_type_hint">Feedback Type</string>
+  <string name="feedback_others_feedback">Feedback</string>
+  <string name="feedback_others_screenshot_title">Attach Photo / Screenshot (Optional)</string>
+  <string name="feedback_others_screenshot_detailed_title">Photo / Screenshot</string>
+  <string name="feedback_others_btn_submit">Submit</string>
+  <string name="feedback_others_feedback_text">I made an online payment on 12 Aug 2016 but i received a new bill on 9 Sept 2016, but the bill amount was not deducted as the payment made. Please check and get back to me.</string>
+  <string name="feedback_others_feedback_id">FEEDBACK ID</string>
+  <string name="feedback_others_feedback_status">FEEDBACK STATUS</string>
+  <string name="feedback_others_feedback_date_time">FEEDBACK DATE &amp; TIME</string>
+  <string name="feedback_others_feedback_max_image_hint">Max 2 files</string>
+  <string name="feedback_others_feedback_max_feedback_characters">Max of 250 characters</string>
+
+  <string name="feedback_others_feedback_empty_feedback_error">Invalid feedback.</string>
+  <string name="feedback_others_feedback_empty_mobile_error">Invalid mobile no.</string>
+  <string name="feedback_others_feedback_invalid_mobile_error">Invalid mobile no.</string>
+   
+  <!--End Feedback  Others -->
+  
+  <!--Select Feedback State-->
+  <string name="select_feedback_state_activity_title">Select Feedback State</string>
+  <!--End Select FEedback State-->
+
+  <!--Select Feedback Type-->
+  <string name="select_feedback_type_activity_title">Select Feedback Type</string>
+  <!--End Select FEedback Type-->
+  
+  <!--Submitted Feedback-->
+  <string name="select_submitted_feedback_activity_title">Submitted Feedback</string>
+  <string name="select_submitted_feedback_dialog_title">Retrieving submitted feedback.</string>
+  <string name="select_submitted_feedback_dialog_content">Please wait...</string>
+  <string name="select_submitted_feedback_empty_string">
+    <![CDATA[
+    You have not submitted\n
+    any feedback.
+    ]]>
+  </string>
+  <!--End Submitted Feedback-->
+
+  <!--Bills Payment Tab-->
+  <string name="bills_payment_no_internet_txt_content">Unable to load. Check your internet connection or try again later.</string>
+  <string name="bills_payment_no_bills_txt_content">Yay! No bills! You will be notified when your bill is ready.</string>
+  <string name="bills_payment_no_payment_txt_content">No payments yet! Payments made will be shown here.</string>
+  <!--End Bills PAyment TAb-->
+  
+  <!--Promotions menu -->
+  <string name="promotions_menu_snackbar_error_no_internet">Please check your internet connection.</string>
+  <string name="promotions_menu_snackbar_error_btn">Try again</string>
+  <!--End Promotions menu-->
+  
+  <!--Smart Meter Learn More -->
+  <string name="smart_meter_learn_more_activity_title">Smart Meter</string>
+  <string name="smart_meter_learn_more_snackbar_error_no_internet">Please check your internet connection.</string>
+  <string name="smart_meter_learn_more_snackbar_error_btn">Try again</string>
+  <!--End Smart Meter Learn More -->
+
+  <!--Feedback FullImage View-->
+  <string name="feedback_full_image_activity_title">Fullscreen Image</string>
+  <!--End Feedback FullImage View-->
+
+  <string name="feedback_image_name_convention">%1$s-MYTNB-%2$s</string>
+
+   <!--FAQ-->
+    <string name="faq_activity_title">FAQ</string>
+    <string name="faq_1_title">What is myTNB mobile app?</string>
+    <string name="faq_1_content">myTNB mobile app is a digital service to manage your TNB electricity account. View and pay your electricity bills anytime, anywhere, and manage your TNB account on the go!</string>
+
+
+    <string name="faq_2_title">What’s new on this app?</string>
+    <string name="faq_2_content">New features include a personalized, interactive Dashboard with a detailed view of your usage for the past 6 months, multiple account views, faster in-app payment with your credit cards, and a stress-free way to submit feedback.</string>
+
+    <string name="faq_3_title">I have an existing myTNB account, can I use the same account?</string>
+    <string name="faq_3_content">Yes, you certainly can! myTNB mobile app and myTNB Portal uses the same set of credentials (user ID and password).</string>
+
+    <string name="faq_4_title">Where can I find my bill account number?</string>
+    <string name="faq_4_content">Your 12 – digit account number can be found on the top left corner of your monthly paper bill.</string>
+
+    <string name="faq_5_title">I am renting my home, how can I view more usage and account details?</string>
+    <string name="faq_5_content">You would need to add your TNB electricity account as an owner. To do this, you need the IC number registered to the TNB account of the place you are renting.</string>
+
+    <string name="faq_6_title">I am a landlord and would like my tenants to manage their electricity bills with ease.</string>
+    <string name="faq_6_content">That’s great! Your tenants are welcome to download and use myTNB mobile app, but for them to view usage and enjoy full functionalities of the app, they would need to add the TNB electricity account as owners. You can help them out by providing the IC number registered to the TNB electricity account. </string>
+
+    <string name="faq_7_title">I would like to pay for my family’s electricity bills through the app. How do I do this?</string>
+    <string name="faq_7_content">You can add your family members’ TNB accounts and manage them through the app. On your Dashboard, tap on the dropdown button above the usage graph to access the add account function, or go to ‘My Account’ under ‘More’ on the navigation bar. Keep in mind that you will need the IC number registered to the TNB account in order to view full usage details.</string>
+
+    <string name="faq_8_title">Can I add multiple TNB electricity accounts?</string>
+    <string name="faq_8_content">Yes. You can add multiple accounts through the add account function. On your Dashboard, tap on the dropdown button above the usage graph to access the add account function, or go to ‘My Account’ under ‘More’ on the navigation bar.</string>
+
+    <string name="faq_9_title">How do I check my electricity bill in myTNB mobile app?</string>
+    <string name="faq_9_content">You can check your bill by tapping on ‘View Bill’ on your Dashboard. Alternatively, go to the ‘Bills’ tab on the navigation bar to view your bill and payment history.</string>
+
+    <string name="faq_10_title">How do I pay my bills through myTNB mobile app?</string>
+    <string name="faq_10_content">Paying bills through myTNB mobile app is quick and easy. Simply tap on the ‘Pay’ button on your Dashboard and make a payment either with your credit card or through FPX (bank transfer).</string>
+
+    <string name="faq_11_title">Can I pay more than my outstanding amount?</string>
+    <string name="faq_11_content">Yes. The excess amount will be reflected in your next bill. </string>
+
+    <string name="faq_12_title">What is the maximum amount I can pay in one transaction on the app?</string>
+    <string name="faq_12_content">You may pay up to RM5,000 in a single transaction via credit/debit card. You may also pay via FPX (bank transfer) if the transaction is more than RM5000.</string>
+
+    <string name="faq_13_title">Can I view my usage history beyond 6 months?</string>
+    <string name="faq_13_content"><![CDATA[You will be able to view your usage history up to 6 months. Similarly on myTNB Portal at <a href="www.mytnb.com.my"> www.mytnb.com.my </a> you can retrieve information of your TNB electricity account, including usage and billing history of up to 6 months.]]></string>
+
+    <string name="faq_14_title">How current is the account information?</string>
+    <string name="faq_14_content">Account information is up to date to the current day.</string>
+
+    <string name="faq_15_title">Can I view my feedback status in the app?</string>
+    <string name="faq_15_content">You may view the feedback status when we roll out the new feature around mid-February 2018. For now, you will receive a SMS notification informing you of the update. The submitted feedback can be found under the ‘Feedback’ tab on the navigation bar.</string>
+
+    <string name="faq_16_title">How can I contact TNB?</string>
+    <string name="faq_16_content"><![CDATA[Getting in touch has never been easier. Call us on 15454 for Outages & Breakdowns and 1-300-88-5454 for Billing & General enquiries about your account. You can also drop us an email at tnbcareline@tnb.com.my or message us on Facebook at <a href="http://www.facebook.com/TNBCareline">http://www.facebook.com/TNBCareline</a>. Alternatively, navigate to ‘Feedback’ on the navigation bar to send an enquiry to our team.]]></string>
+
+    <string name="faq_17_title">Is my personal data safe?</string>
+    <string name="faq_17_content">Absolutely. Your privacy is of utmost importance to us, therefore we employ the latest internet security technology to ensure the safety and confidentiality of your data.</string>
+
+    <string name="faq_18_title">After I have added my account in SSP, I cannot see my account on myTNB mobile app. How do I resolve this? </string>
+    <string name="faq_18_content">If your account is added in SSP simultaneously when you are logged in on myTNB mobile app, please kindly logout of the mobile app and login again to retry.</string>
+
+    <string name="faq_19_title">Can I see multiple accounts in myTNB app and myTNB portal?</string>
+    <string name="faq_19_content">Yes, both myTNB app and myTNB portal share the same login information. The account and billing information is real time.</string>
+
+    <string name="faq_20_title">I love this app! Managing my TNB account has never been easier. How can I thank you?</string>
+    <string name="faq_20_content">Thank you! You can share myTNB mobile app with your friends and family, and rate us on the Apple App Store or Google Play Store. </string>
+
+
+
+    <!--END OF FAQ-->
+  
+  <!--- Multiple accounts payment -->
+  <string name="select_bills_title">Select Bill(s)</string>
+  <string name="load_more">Load More</string>
+  <string name="getdueamount_progress_title">Retrieving account(s)</string>
+  <string name="getdueamount_progress_message">Please wait while we are fetching account(s) details.</string>
+  <string name="error_invalid_amount">Minimum amount cannot be lower than RM1.00</string>
+  <string name="error_amount_range">Total amount should be between RM1.00 - RM4999.99</string>
+  <string name="error_less_than_original_amount">Total amount should be greater than {0}</string>
+  <string name="error_credit_card_limit">You will be able to pay an amount more than 5000 only using FPX</string>
+  <string name="error_select_5_accounts">You can pay only 5 accounts at one time..</string>
+  <string name="text_pay_bill">Pay Bill</string>
+  <string name="total_amount_due">Amount Due</string>
+	<string name="total_amount_due_bill">Total Amount Due</string>
+  <string name="text_total_amount">Total Amount</string>
+  <string name="error_abort_payment">Are you sure you want to abort payment?</string>
+  <!--- End of Multiple accounts payment-->
+
+  <string name="title_current_payment_advice">Current Payment Advice</string>
+  <string name="title_payment_advice_amount">My Earnings</string>
+  <string name="title_payment_total_receivable">My Earnings</string>
+  
+  <!-- Smart meter -->
+  <string name="dashboard_chartview_year">Year</string>
+  <string name="current_charges">Current charges</string>
+  <string name="as_of">As of</string>
+  <string name="projected_cost">Projected cost</string>
+  <string name="for_current_month">For current month</string>
+  <string name="current_usage">Current usage</string>
+  <string name="vs_last_month">Vs. last month</string>
+  <string name="avg_elec_usage">Avg. electric usage</string>
+  <string name="current_emission">Current emission</string>
+  <string name="text_rm">RM</string>
+  <string name="text_kwh">Usage</string>
+  <string name="text_co2">CO2</string>
+  <string name="avg_electric_usage_up"><![CDATA[<font style="color:#ffffff">&#8593;</font>]]></string>
+  <string name="avg_electric_usage_down"><![CDATA[<font style="color:#ffffff">&#8595;</font>]]></string>
+  <string name="dashboard_smart_meter_data_error">Unable to fetch smart meter data! Please try later</string>
+  <string name="dashboard_smart_meter_no_data_error">Welcome to your Smart Meter Dashboard. You’ll see your usage here soon.</string>
+  <string name="dashboard_smart_meter_available_soon">Available Soon</string>
+
+  <string name="loading_text">We’ll be there in a flash…</string>
+  
+  <!-- Dashboard promotion -->
+  <string name="btn_skip">Skip</string>
+  <string name="btn_details">Details</string>
+  
+  <!--- Rate Us Feedback -->
+  <string name="rating_txt_comments_hint">I would like to suggest</string>
+  <string name="rating_thank_you_message">Your rating will help us serve you better.</string>
+  <string name="rating_thank_you">Thank You</string>
+
+  <!--- Facebook application config-->
+  <string name="facebook_app_id">1820273008266041</string>
+
+  <!--- App Update -->
+  <string name="update_dialog_title">New Update Available</string>
+  <string name="update_dialog_message">To continue using myTNB app, please update to the latest version.</string>
+  <string name="update_now">Update Now</string>
+  
+  <!--Summary Dashboard-->
+  <string name="greeting_text_morning">Good Morning,</string>
+  <string name="greeting_text_afternoon">Good Afternoon,</string>
+  <string name="greeting_text_evening">Good Evening,</string>
+	<string name="load_more_accounts">Load More Accounts</string>
+  <string name="malaysia_currency">RM</string>
+  <string name="add_another_account">Add Another Account</string>
+	<string name="all_accounts">All Accounts</string>
+
+	<!-- View Bill-->
+	<string name="receipt_title">Payment Receipt</string>
+	<string name="receipt_total_amount">Total Amount (RM)</string>
+	<string name="receipt_note_text">Note: This receipt is computer generated and no signature is required.</string>
+    <string name="no_internet_connection">Please check your internet connection.</string>
+
+	<string name="account_number_validation_error">Please enter a valid 12-digit or 14-digit account no.</string>
+
+	<string name="add_account_number_validation_error">Please enter a valid 12-digit account no.</string>
+
+	<string name="name_error">Name should not contain special characters.</string> 
+
+	<!-- Crashlytics -->
+	<string name="com.crashlytics.android.build_id">v1.1.0</string>
+
+
+	<string name="invalid_charac">Invalid characters. Use letters or numbers only.</string>
+
+	<string name="name_validation_digits">abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789</string>
+	<string name="invalid_state">Invalid State</string>
+
+</resources>

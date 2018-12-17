@@ -1,0 +1,118 @@
+﻿{
+    "d": {
+        "__type": "mytnbapp.service.models.BillingAccountListStatus",
+        "data": [
+            {
+                "accNum": "210040320600",
+                "userAccountID": null,
+                "accDesc": "MOHD NOREFFENDY BIN JAYAH",
+                "icNum": null,
+                "amCurrentChg": -100.02,
+                "isRegistered": "True",
+                "isOwned": "True",
+                "isPaid": "True",
+                "isError": "false",
+                "message": null
+            },
+            {
+                "accNum": "220126150004",
+                "userAccountID": null,
+                "accDesc": "PKNS",
+                "icNum": null,
+                "amCurrentChg": 0,
+                "isRegistered": "True",
+                "isOwned": "True",
+                "isPaid": "True",
+                "isError": "false",
+                "message": null
+            },
+            {
+                "accNum": "220130881800",
+                "userAccountID": null,
+                "accDesc": "KOSMINAH BINTI SUPPAH",
+                "icNum": null,
+                "amCurrentChg": 217.3,
+                "isRegistered": "True",
+                "isOwned": "True",
+                "isPaid": "True",
+                "isError": "false",
+                "message": null
+            },
+            {
+                "accNum": "220136555409",
+                "userAccountID": null,
+                "accDesc": "ZURAIDAH BT OSMAN",
+                "icNum": null,
+                "amCurrentChg": 27,
+                "isRegistered": "True",
+                "isOwned": "True",
+                "isPaid": "True",
+                "isError": "false",
+                "message": null
+            },
+            {
+                "accNum": "220280837809",
+                "userAccountID": null,
+                "accDesc": "MIMI MAISARA BINTI A JALIL",
+                "icNum": null,
+                "amCurrentChg": 1897.55,
+                "isRegistered": "True",
+                "isOwned": "True",
+                "isPaid": "True",
+                "isError": "false",
+                "message": null
+            },
+            {
+                "accNum": "220272777303",
+                "userAccountID": null,
+                "accDesc": "ZARINA BINTI KHAIRUDDIN",
+                "icNum": null,
+                "amCurrentChg": 30.3,
+                "isRegistered": "True",
+                "isOwned": "True",
+                "isPaid": "True",
+                "isError": "false",
+                "message": null
+            },
+            {
+                "accNum": "220147054010",
+                "userAccountID": null,
+                "accDesc": "SAADAH BT DAUD",
+                "icNum": null,
+                "amCurrentChg": 10.1,
+                "isRegistered": "True",
+                "isOwned": "True",
+                "isPaid": "True",
+                "isError": "false",
+                "message": null
+            },
+            {
+                "accNum": "220231662807",
+                "userAccountID": null,
+                "accDesc": "MOHAMED AZIM BIN HAJI YUSOF",
+                "icNum": null,
+                "amCurrentChg": -0.2,
+                "isRegistered": "False",
+                "isOwned": "False",
+                "isPaid": "True",
+                "isError": "false",
+                "message": null
+            },
+            {
+                "accNum": "220164535604",
+                "userAccountID": null,
+                "accDesc": "ZURAIDAH BT OSMAN",
+                "icNum": null,
+                "amCurrentChg": 347.55,
+                "isRegistered": "True",
+                "isOwned": "True",
+                "isPaid": "True",
+                "isError": "false",
+                "message": null
+            }
+        ],
+        "status": "success",
+        "isError": "false",
+        "message": "Successful"
+    }
+}

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/rootView">
+    <FrameLayout
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:background="@color/greyBackground">
+        <LinearLayout
+            android:id="@+id/no_promotion_layout"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:visibility="gone"
+            android:orientation="vertical">
+            <ImageView
+                android:id="@+id/no_promotion_img"
+                android:layout_height="120dp"
+                android:layout_width="120dp"
+                android:src="@drawable/ic_empty_promotions"
+                android:scaleType="fitXY" />
+            <TextView
+                android:text="No promotions currently"
+                android:id="@+id/no_promotion_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:singleLine="true"
+                android:ellipsize="marquee"
+                android:textColor="@color/tunaGrey" />
+            <TextView
+                android:text="Check back later!"
+                android:id="@+id/no_promotion_info"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:singleLine="true"
+                android:ellipsize="marquee"
+                android:textColor="@color/tunaGrey" />
+        </LinearLayout>
+      <android.support.v7.widget.RecyclerView
+           android:id="@+id/promotion_list_recycler_view"
+           android:scrollbars="vertical"
+           android:layout_width="match_parent"
+           android:layout_height="match_parent"
+           android:background="@color/lightGrey"
+           android:layout_marginBottom="8dp" />
+      <ProgressBar
+          android:id="@+id/progressBar"
+          android:layout_width="48dp"
+          android:layout_height="48dp"
+          android:layout_gravity="center"
+          android:layout_marginRight="5dp" />
+    </FrameLayout>
+</LinearLayout>

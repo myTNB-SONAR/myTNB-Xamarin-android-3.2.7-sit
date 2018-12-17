@@ -1,0 +1,82 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<resources>
+  <color name="toolBar_gradientTopFill">#2a97fb</color>
+  <color name="toolBar_gradientBottomFill">#7730d3</color>
+  <!--<color name="accentColor"></color>-->
+
+  <color name="statusBar_gradientTopFill">#2a97fb</color>
+  <color name="statusBar_gradientBottomFill">#7730d3</color>
+
+  <color name="bg_gradientTopFill">#2a97fb</color>
+  <color name="bg_gradientBottomFill">#7730d3</color>
+
+
+  <color name="loginBtnColor">#20bd4c</color>
+  <color name="resendBtnColor">#20bd4c</color>
+
+  <color name="topFill">#2a97fb</color>
+  <color name="gradientPurple">#7730d3</color>
+
+  <color name="white">#FFFFFF</color>
+
+  <color name="errorColor">#e44b21</color>
+
+  <color name="silverChalice">#a6a6a6</color>
+  <color name="silverChaliceWithAplha">#E5E5E5</color>
+
+  <color name="tunaGrey">#49494a</color>
+
+  <color name="powerBlue">#1c79ca</color>
+
+  <color name="freshGreen">#20bd4c</color>
+
+  <!-- Color Accent -->
+  <color name="sunGlow">#fecc39</color>
+  <!-- End of Color Accent-->
+
+  <color name="greyBackground">#F9F9F9</color>
+
+  <color name="blue">#1C79CA</color>
+
+  <color name="black">#000000</color>
+
+  <color name="lightGrey">#F9F9F9</color>
+
+  <color name="hoverGrey">#C8C8C8</color>
+
+  <color name="platinumGrey">#e4e4e4</color>
+
+  <color name="closeButtonColor">#4a4a4a</color>
+
+  <color name="barCodeErrorColor">#e44b21</color>
+  <color name="barCodeSuccessColor">#6dbe5b</color>
+
+  <color name="barchartColor">#77a3ea</color>
+  <color name="barchartColorHighlighted">#b1c8ed</color>
+
+  <color name="dialogButtonColor">#009688</color>
+  <color name="switchColorEnabled">#009688</color>
+  <color name="switchColorDisabled">#e4e4e4</color>
+
+  <color name="permissionButtonColor">#0076ff</color>
+
+  <color name="tomato">#e23219</color>
+
+  <!--Feedback Status Color-->
+  <color name="createdColor">@color/powerBlue</color>
+  <color name="completedColor">@color/freshGreen</color>
+  <color name="inProgressColor">@color/sunGlow</color>
+  <color name="cancelledColor">@color/tomato</color>
+  <!--End Feedback Status Color-->
+
+
+  <color name="tunagrey">#49494A</color>
+  <color name="silverchalice">#A6A6A6</color>
+  <color name="receiptline">#E4E4E4</color>
+	<color name="receipt_note_text">#8B8B8B</color>
+	<color name="white_two">#D8D8D8</color>
+
+    <color name="resend_progress">#C9EFD4</color>
+	
+	
+</resources>

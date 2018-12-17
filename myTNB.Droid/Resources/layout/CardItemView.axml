@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+    <Button
+        android:background="@drawable/solid_border_background"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="xxxx-xxxx-xxxx-xxxx"
+        android:textColor="@color/tunaGrey"
+        android:maxLines="1"
+        android:drawableLeft="@drawable/master"
+        android:drawablePadding="4dp"
+        android:paddingTop="18dp"
+        android:paddingLeft="18dp"
+        android:paddingBottom="18dp"
+        android:gravity="center_vertical|left"
+        android:id="@+id/btnCard" />
+</LinearLayout>

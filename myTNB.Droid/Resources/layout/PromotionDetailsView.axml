@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:minWidth="25px"
+    android:minHeight="25px">
+    <include
+        layout="@layout/toolbar"
+        android:id="@+id/toolbar" />
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:overScrollMode="never"
+        android:fillViewport="true">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingBottom="50dp"
+            android:background="@color/greyBackground">
+            <FrameLayout
+                android:id="@+id/frameLayout"
+                android:layout_height="180dp"
+                android:layout_width="match_parent">
+                <ImageView
+                    android:id="@+id/promotion_img"
+                    android:layout_width="match_parent"
+                    android:scaleType="fitXY"
+                    android:layout_height="match_parent" />
+                <ProgressBar
+                    android:id="@+id/progressBar"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_gravity="center"
+                    android:layout_marginRight="5dp" />
+            </FrameLayout>
+            <LinearLayout
+                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:paddingBottom="8dp"
+                android:paddingTop="8dp"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp">
+                <TextView
+                    android:text="Enrol your bills with Auto PayBills"
+                    android:id="@+id/promotion_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="18sp"
+                    android:paddingTop="12dp"
+                    android:paddingBottom="2dp"
+                    android:textColor="@color/powerBlue" />
+                <TextView
+                    android:text="Life is brighter when you can win 100% Cash Back of up to RM500 on your TNB Bills with Maybank American Express® Card."
+                    android:id="@+id/promotion_description"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="16sp"
+                    android:paddingBottom="12dp"
+                    android:visibility="gone"
+                    android:textColor="@color/tunaGrey" />
+                <TextView
+                    android:text="Campaign Period"
+                    android:id="@+id/promotion_campaign_period_label"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:paddingTop="8dp"
+                    android:visibility="gone"
+                    android:linksClickable="true"
+                    android:textColor="@color/tunaGrey" />
+                <TextView
+                    android:text="Campaign Period Details"
+                    android:id="@+id/promotion_campaign_period"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="16sp"
+                    android:paddingBottom="12dp"
+                    android:linksClickable="true"
+                    android:textColorLink="@color/powerBlue"
+                    android:textColor="@color/tunaGrey" />
+                <TextView
+                    android:text="Prizes"
+                    android:id="@+id/promotion_prizes_label"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:paddingTop="8dp"
+                    android:visibility="gone"
+                    android:textColor="@color/tunaGrey" />
+                <TextView
+                    android:text="Prizes Details"
+                    android:id="@+id/promotion_prizes"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="16sp"
+                    android:paddingBottom="12dp"
+                    android:linksClickable="true"
+                    android:textColorLink="@color/powerBlue"
+                    android:textColor="@color/tunaGrey" />
+                <TextView
+                    android:text="For more information on how to enrol and usage terms, read Auto PayBills."
+                    android:id="@+id/promotion_more_info"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="14sp"
+                    android:paddingBottom="12dp"
+                    android:linksClickable="true"
+                    android:textColorLink="@color/powerBlue"
+                    android:textColor="@color/tunaGrey" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

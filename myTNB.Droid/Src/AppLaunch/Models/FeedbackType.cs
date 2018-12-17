@@ -1,0 +1,38 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+using Android.App;
+using Android.Content;
+using Android.OS;
+using Android.Runtime;
+using Android.Views;
+using Android.Widget;
+using myTNB_Android.Src.Database.Model;
+using Newtonsoft.Json;
+
+namespace myTNB_Android.Src.AppLaunch.Models
+{
+    public class FeedbackType
+    {
+        [JsonProperty("FeedbackTypeId")]
+        public string FeedbackTypeId { get; set; }
+
+        [JsonProperty("FeedbackTypeName")]
+        public string FeedbackTypeName { get; set; }
+
+        [JsonProperty("IsSelected")]
+        public bool IsSelected{ get; set; }
+
+        internal static FeedbackType Copy(FeedbackTypeEntity entity)
+        {
+            return new FeedbackType()
+            {
+                FeedbackTypeId = entity.Id,
+                FeedbackTypeName = entity.Name,
+                IsSelected = entity.IsSelected
+            };
+        }
+    }
+}

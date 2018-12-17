@@ -1,0 +1,36 @@
+﻿{
+    "d": {
+        "__type": "mytnbapp.service.models.BillingAccountStatus",
+        "data": {
+            "accNum": "220164535604",
+            "accName": "ZURAIDAH BT OSMAN",
+            "accICNo": null,
+            "accICNoNew": "570212105846",
+            "accComNo": null,
+            "amDeposit": 0,
+            "amCurrentChg": 336.55,
+            "amOutstandingChg": 14,
+            "amPayableChg": 350.55,
+            "amLastPay": 302.85,
+            "dateBill": "05/08/2017",
+            "datePymtDue": "04/09/2017",
+            "dateLastPay": "01/08/2017",
+            "sttSupply": "Active",
+            "addStreet": "JLN MERANTI, TMN KELUMPANG, 44100, KALUMPANG",
+            "addArea": null,
+            "addTown": null,
+            "addState": null,
+            "stnName": "PK Rawang",
+            "stnAddStreet": null,
+            "stnAddArea": null,
+            "stnAddTown": null,
+            "stnAddState": null,
+            "amCustBal": 347.55,
+            "isError": "false",
+            "message": ""
+        },
+        "status": "success",
+        "isError": "false",
+        "message": "successful"
+    }
+}

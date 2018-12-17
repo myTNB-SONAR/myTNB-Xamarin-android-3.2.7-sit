@@ -1,0 +1,36 @@
+﻿{
+    "d": {
+        "__type": "mytnbapp.service.models.BillingAccountStatus",
+        "data": {
+            "accNum": "220280837809",
+            "accName": "MIMI MAISARA BINTI A JALIL",
+            "accICNo": null,
+            "accICNoNew": "830414015222",
+            "accComNo": null,
+            "amDeposit": 0,
+            "amCurrentChg": 47.28,
+            "amOutstandingChg": 1833.45,
+            "amPayableChg": 1897.55,
+            "amLastPay": 0,
+            "dateBill": "20/07/2017",
+            "datePymtDue": "19/08/2017",
+            "dateLastPay": "N/A",
+            "sttSupply": "Active",
+            "addStreet": "JLN RHU 2/1, BDR HILLPARK, 42300, BANDAR PUNCAK ALAM",
+            "addArea": null,
+            "addTown": null,
+            "addState": null,
+            "stnName": "PK Rawang",
+            "stnAddStreet": null,
+            "stnAddArea": null,
+            "stnAddTown": null,
+            "stnAddState": null,
+            "amCustBal": 1897.55,
+            "isError": "false",
+            "message": ""
+        },
+        "status": "success",
+        "isError": "false",
+        "message": "successful"
+    }
+}

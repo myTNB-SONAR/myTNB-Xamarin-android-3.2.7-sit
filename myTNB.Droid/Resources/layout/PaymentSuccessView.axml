@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_alignParentBottom="true"
+    android:layout_centerHorizontal="true"
+    android:id="@+id/rootView">
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="18dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@color/white"
+                android:paddingLeft="12dp"
+                android:paddingRight="16dp"
+                android:paddingTop="16dp">
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:id="@+id/btnClose"
+                    android:layout_gravity="right" />
+                <ImageView
+                    android:layout_width="49.6dp"
+                    android:layout_height="49.6dp"
+                    android:id="@+id/reset_password_success_icon"
+                    android:layout_gravity="center_horizontal"
+                    android:padding="7.2dp" />
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:textSize="16sp"
+                    android:textColor="@color/blue"
+                    android:text="Payment Successful"
+                    android:id="@+id/txtTitleInfo"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="10.2dp" />
+                <View
+                    android:id="@+id/view2"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginLeft="14dp"
+                    android:layout_marginRight="14dp"
+                    android:layout_marginTop="15dp" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginLeft="14dp"
+                    android:layout_marginRight="14dp"
+                    android:weightSum="1">
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_weight="0.5">
+                        <TextView
+                            android:layout_height="wrap_content"
+                            android:layout_width="match_parent"
+                            android:textSize="14sp"
+                            android:textColor="@color/tunaGrey"
+                            android:text="TRX Date &amp; Time"
+                            android:id="@+id/lblTrxDateTime"
+                            android:gravity="center_horizontal" />
+                        <TextView
+                            android:layout_height="wrap_content"
+                            android:layout_width="match_parent"
+                            android:textSize="16sp"
+                            android:textColor="@color/tunaGrey"
+                            android:text="DD-MM-YYYY 00:00"
+                            android:id="@+id/txtTrxDateTime"
+                            android:gravity="center_horizontal" />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_weight="0.5">
+                        <TextView
+                            android:layout_height="wrap_content"
+                            android:layout_width="match_parent"
+                            android:textSize="14sp"
+                            android:textColor="@color/tunaGrey"
+                            android:text="TRX ID"
+                            android:id="@+id/lblTrxID"
+                            android:gravity="center_horizontal" />
+                        <TextView
+                            android:layout_height="wrap_content"
+                            android:layout_width="match_parent"
+                            android:textSize="16sp"
+                            android:textColor="@color/tunaGrey"
+                            android:text="T00000000"
+                            android:id="@+id/txtTrxId"
+                            android:gravity="center_horizontal" />
+                    </LinearLayout>
+                </LinearLayout>
+                <View
+                    android:id="@+id/view3"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginLeft="14dp"
+                    android:layout_marginRight="14dp"
+                    android:layout_marginTop="15dp" />
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recyclerViewPaymentDetails"
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:layout_marginLeft="14dp"
+                    android:layout_marginRight="14dp"
+                    android:layout_marginTop="15dp" />
+                <View
+                    android:id="@+id/view4"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginLeft="14dp"
+                    android:layout_marginRight="14dp"
+                    android:layout_marginTop="15dp" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="15dp"
+                    android:weightSum="1">
+                    <TextView
+                        android:layout_height="wrap_content"
+                        android:layout_width="0dp"
+                        android:layout_weight="0.5"
+                        android:textSize="18sp"
+                        android:textColor="@color/tunaGrey"
+                        android:text="Total Paid (RM)"
+                        android:id="@+id/lblTotalAmount"
+                        android:gravity="center_horizontal" />
+                    <TextView
+                        android:layout_height="wrap_content"
+                        android:layout_width="0dp"
+                        android:layout_weight="0.5"
+                        android:textSize="24sp"
+                        android:textColor="@color/tunaGrey"
+                        android:text="000.00"
+                        android:id="@+id/txtTotalAmount"
+                        android:gravity="center_horizontal" />
+                </LinearLayout>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_gravity="bottom"
+                android:id="@+id/linearLayout4">
+                <Button
+                    android:id="@+id/btnViewReceipt"
+                    android:text="View Receipt"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    style="@style/Theme.LoginButton"
+                    android:layout_gravity="center_horizontal" />
+            </LinearLayout>
+        </FrameLayout>
+    </LinearLayout>
+</android.support.design.widget.CoordinatorLayout>

@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_alignParentBottom="true"
+    android:layout_centerHorizontal="true"
+    android:id="@+id/rootView">
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="18dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="279dp"
+                android:orientation="vertical"
+                android:background="@drawable/GetAccessSuccessWhiteBackground"
+                android:paddingLeft="12dp"
+                android:paddingRight="16dp"
+                android:paddingTop="16dp">
+                <ImageView
+                    android:src="@drawable/ic_action_delete"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:id="@+id/btnClose"
+                    android:layout_gravity="right" />
+                <ImageView
+                    android:layout_width="49.6dp"
+                    android:layout_height="49.6dp"
+                    android:id="@+id/get_access_success_icon"
+                    android:layout_gravity="center_horizontal"
+                    android:src="@drawable/ic_display_successful" />
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:textSize="16sp"
+                    android:textColor="@color/powerBlue"
+                    android:text="@string/get_access_success_title_info"
+                    android:id="@+id/txtTitleInfo"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="10.2dp" />
+                <View
+                    android:id="@+id/view2"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/platinumGrey"
+                    android:layout_marginLeft="14dp"
+                    android:layout_marginRight="14dp"
+                    android:layout_marginTop="15dp" />
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:textSize="14sp"
+                    android:textColor="@color/tunaGrey"
+                    android:text="@string/get_access_success_txt_account_name"
+                    android:id="@+id/txtAccountName"
+                    android:layout_marginTop="15dp"
+                    android:maxLines="1" />
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:textSize="14sp"
+                    android:textColor="@color/tunaGrey"
+                    android:text="@string/get_access_success_txt_account_no"
+                    android:id="@+id/txtAccountNum"
+                    android:layout_marginTop="15dp"
+                    android:maxLines="1" />
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:textSize="14sp"
+                    android:textColor="@color/tunaGrey"
+                    android:text="@string/get_access_success_txt_address"
+                    android:id="@+id/txtAddress"
+                    android:layout_marginTop="15dp"
+                    android:maxLines="5" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_gravity="bottom"
+                android:id="@+id/linearLayout4">
+                <Button
+                    android:id="@+id/btnDashboard"
+                    android:text="@string/get_access_success_btn_dashboard"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    style="@style/Theme.LoginButton"
+                    android:layout_gravity="center_horizontal" />
+            </LinearLayout>
+        </FrameLayout>
+    </LinearLayout>
+</android.support.design.widget.CoordinatorLayout>

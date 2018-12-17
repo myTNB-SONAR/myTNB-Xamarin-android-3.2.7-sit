@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:background="@color/white"
+    android:layout_height="wrap_content">
+    <View
+        android:layout_height="1dp"
+        android:layout_width="match_parent"
+        android:background="@color/hoverGrey" />
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp">
+        <TextView
+            android:id="@+id/text_account_label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:textColor="@color/tunaGrey"
+            android:text="Account Name"
+            android:layout_marginTop="8dp" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:textColor="@color/tunaGrey"
+            android:id="@+id/text_account_number"
+            android:text="2000000100001" />
+        <TextView
+            android:layout_width="match_parent"
+            android:singleLine="true"
+            android:layout_height="wrap_content"
+            android:id="@+id/text_account_address"
+            android:textSize="12dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="4dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:maxLines="4"
+            android:inputType="textMultiLine"
+            android:lines="3"
+            android:textColor="@color/tunaGrey"
+            android:visibility="visible"
+            android:text="Account Address" />
+    </LinearLayout>
+    <View
+        android:id="@+id/bottom_line"
+        android:layout_height="1dp"
+        android:layout_width="match_parent"
+        android:layout_marginTop="15dp"
+        android:background="@color/hoverGrey" />
+</LinearLayout>

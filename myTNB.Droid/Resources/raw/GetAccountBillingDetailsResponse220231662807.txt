@@ -1,0 +1,36 @@
+﻿{
+    "d": {
+        "__type": "mytnbapp.service.models.BillingAccountStatus",
+        "data": {
+            "accNum": "220231662807",
+            "accName": "MOHAMED AZIM BIN HAJI YUSOF",
+            "accICNo": null,
+            "accICNoNew": "630916035497",
+            "accComNo": null,
+            "amDeposit": 0,
+            "amCurrentChg": 492.95,
+            "amOutstandingChg": 0,
+            "amPayableChg": 0,
+            "amLastPay": 1310,
+            "dateBill": "14/07/2017",
+            "datePymtDue": "13/08/2017",
+            "dateLastPay": "25/07/2017",
+            "sttSupply": "Active",
+            "addStreet": "JLN SERI PUTRA 9/1, BDR SERI PUTRA, 43000, KAJANG",
+            "addArea": null,
+            "addTown": null,
+            "addState": null,
+            "stnName": "PK Bangi",
+            "stnAddStreet": null,
+            "stnAddArea": null,
+            "stnAddTown": null,
+            "stnAddState": null,
+            "amCustBal": -0.2,
+            "isError": "false",
+            "message": ""
+        },
+        "status": "success",
+        "isError": "false",
+        "message": "successful"
+    }
+}

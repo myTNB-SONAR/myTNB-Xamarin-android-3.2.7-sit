@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:background="@color/white"
+    android:layout_marginBottom="8dp"
+    android:layout_marginTop="8dp"
+    android:elevation="1dp"
+    android:layout_height="wrap_content">
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:weightSum="1">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="0dp"
+            android:layout_weight="0.8"
+            android:layout_height="wrap_content">
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/account_label_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginStart="8dp"
+                app:hintTextAppearance="@style/TextInputLayout.TextAppearance.LightBackground"
+                app:errorTextAppearance="@style/TextInputLayoutFeedbackCount"
+                android:layout_marginEnd="8dp">
+                <EditText
+                    android:id="@+id/text_account_label"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="16sp"
+                    android:drawableLeft="@drawable/placeholder_name"
+                    android:digits="@string/name_validation_digits"
+                    android:hint="@string/add_account_form_account_nickname" />
+            </android.support.design.widget.TextInputLayout>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:textSize="14sp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:textColor="@color/tunaGrey"
+                android:id="@+id/text_account_number"
+                android:text="2000000100001" />
+            <TextView
+                android:layout_width="match_parent"
+                android:singleLine="true"
+                android:layout_height="match_parent"
+                android:id="@+id/text_account_address"
+                android:textSize="12sp"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginBottom="8dp"
+                android:maxLines="4"
+                android:inputType="textMultiLine"
+                android:lines="3"
+                android:textColor="@color/tunaGrey"
+                android:text="Account Address" />
+        </LinearLayout>
+        <ImageView
+            android:id="@+id/delete"
+            android:layout_weight="0.2"
+            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:scaleType="fitCenter"
+            android:layout_gravity="center"
+            android:tint="@color/tunaGrey"
+            android:src="@drawable/ic_close" />
+    </LinearLayout>
+</LinearLayout>

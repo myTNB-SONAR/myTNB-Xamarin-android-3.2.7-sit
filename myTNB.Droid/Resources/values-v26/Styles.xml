@@ -1,0 +1,81 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<resources>
+
+
+  <style name="App.BaseTheme" parent="@style/Theme.AppCompat.Light.NoActionBar">
+
+    <!-- Gradient Status Bar -->
+    <!--<item name="android:statusBarColor">@drawable/GradientToolBar</item>-->
+    <!-- End Gradient Status Bar -->
+
+    <!-- Window Background-->
+    <item name="android:windowBackground">@drawable/GradientBackground</item>
+    <!-- End Window Background-->
+
+    <!-- Material Color -->
+    <!-- Material Color Primary -->
+     <item name="android:colorPrimary">@color/topFill</item> 
+    <!-- Material Color Primary Dark -->
+     <item name="android:colorPrimary">@color/gradientPurple</item> 
+    <!-- Override the color of UI controls -->
+    <item name="android:colorAccent">@color/sunGlow</item>
+    <!-- End Material Color -->
+
+    <item name="android:colorControlNormal">@color/white</item>
+    <item name="android:colorControlHighlight">@color/sunGlow</item>
+    <item name="android:colorControlActivated">@color/sunGlow</item>
+    <item name="android:textColorHint">@color/white</item>
+
+    <!-- Override Window Action Bar-->
+    <item name="android:windowActionBar">false</item>
+    <!-- End Override Window Action Bar-->
+
+    <!-- Override Window No Title -->
+    <item name="android:windowNoTitle">true</item>
+    <!-- End Override Window No Title -->
+
+    <!-- Override Status Bar-->
+    <item name="android:statusBarColor">@android:color/transparent</item>
+    <!-- End Override Status Bar-->
+
+    <item name="android:textColorPrimary">@color/white</item>
+    <item name="android:textColorSecondary">@color/white</item>
+
+    <item name="android:editTextStyle">@style/App_EditTextStyle</item>
+    <item name="editTextStyle">@style/App_EditTextStyle</item>
+
+    <item name="android:windowActionBarOverlay">true</item>
+  </style>
+
+  <style name="TextInputLayoutBottomHint" parent="@android:style/TextAppearance.Medium">    
+    <item name="android:textColor">@color/tunaGrey</item>
+    <item name="android:textSize">12sp</item>
+  </style>
+
+  <style name="TextInputLayoutBottomErrorHint" parent="@android:style/TextAppearance.Medium">
+    <item name="android:textColor">@color/errorColor</item>
+    <item name="android:textSize">12sp</item>
+  </style>
+
+  <style name="App_EditTextStyle" parent="@android:style/Widget.EditText">
+    <item name="android:importantForAutofill">noExcludeDescendants</item>
+  </style>
+
+  <style name="LoadingOverlyDialogStyle" parent="@android:Theme.Dialog">
+    <item name="android:windowFrame">@null</item>
+    <item name="android:windowBackground">@android:color/transparent</item>
+    <item name="android:windowIsFloating">true</item>
+    <item name="android:windowContentOverlay">@null</item>
+    <item name="android:windowTitleStyle">@null</item>
+    <item name="android:windowFullscreen">true</item>
+    <item name="android:windowAnimationStyle">@android:style/Animation.Dialog</item>
+    <item name="android:windowSoftInputMode">stateUnspecified|adjustPan</item>
+    <item name="android:backgroundDimEnabled">true</item>
+    <item name="android:background">@android:color/transparent</item>
+    <item name="android:windowMinWidthMajor">96%</item>
+    <item name="android:windowMinWidthMinor">96%</item>
+    <item name="android:windowFullscreen">true</item>
+    <item name="android:windowTranslucentStatus">true</item>
+    <item name="android:windowNoTitle">true</item>
+  </style>
+</resources>

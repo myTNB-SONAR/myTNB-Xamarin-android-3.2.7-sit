@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="480dp"
+    app:cardCornerRadius="8dp"
+    android:layout_margin="5dp"
+    android:elevation="10dp">
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:weightSum="10">
+        <FrameLayout
+            android:id="@+id/layout_image_holder"
+            android:layout_height="0dp"
+            android:layout_width="match_parent"
+            android:layout_weight="9">
+            <ImageView
+                android:id="@+id/image_promotion"
+                android:layout_gravity="center"
+                android:layout_height="match_parent"
+                android:scaleType="fitXY"
+                android:layout_width="match_parent" />
+            <ImageButton
+                android:id="@+id/btnPromoClose"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_gravity="right|top"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:layout_marginRight="@dimen/_8sdp"
+                android:src="@drawable/ic_promo_close"
+                android:background="@android:color/transparent"
+                android:scaleType="fitCenter" />
+        </FrameLayout>
+        <LinearLayout
+            android:id="@+id/layout_btn_holder"
+            android:layout_height="0dp"
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:weightSum="1"
+            android:background="#D8D8D8"
+            android:orientation="horizontal">
+            <Button
+                android:id="@+id/btnPromoSkip"
+                android:layout_height="match_parent"
+                android:layout_width="0dp"
+                android:textSize="14sp"
+                android:textColor="@color/powerBlue"
+                android:background="@color/white"
+                android:text="@string/btn_skip"
+                android:textAllCaps="false"
+                android:gravity="center"
+                android:layout_marginRight="0.5dp"
+                android:layout_weight="0.5" />
+            <Button
+                android:id="@+id/btnPromoDetails"
+                android:layout_height="match_parent"
+                android:layout_width="0dp"
+                android:textSize="14sp"
+                android:textColor="@color/powerBlue"
+                android:layout_marginLeft="0.5dp"
+                android:textAllCaps="false"
+                android:background="@color/white"
+                android:gravity="center"
+                android:text="@string/btn_details"
+                android:layout_weight="0.5" />
+        </LinearLayout>
+    </LinearLayout>
+</android.support.v7.widget.CardView>

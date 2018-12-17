@@ -1,0 +1,132 @@
+﻿using System;
+using Android.Runtime;
+using Android.Text;
+using Android.Views;
+using Android.Widget;
+using Java.Lang;
+using static Android.Views.View;
+using Java.Util.Regex;
+using Android.Support.Design.Widget;
+
+namespace myTNB_Android.Src.Utils
+{
+
+    
+    public class RestrictTextChangeListener : Java.Lang.Object, ITextWatcher
+    {
+
+        private string mPreviousValue;
+        private int mCursorPosition;
+        private bool mRestoringPreviousValueFlag;
+        private int mDigitsAfterZero;
+        private EditText mEditText;
+        private TextInputLayout _txtLayout;
+        private string _hint;
+
+        public RestrictTextChangeListener(EditText editText, TextInputLayout txt, int digitsAfterZero)
+        {
+            mDigitsAfterZero = digitsAfterZero;
+            mEditText = editText;
+            mPreviousValue = "";
+            mRestoringPreviousValueFlag = false;
+            _txtLayout = txt;
+            _hint = _txtLayout.Hint;
+            mEditText.FocusChange += EditTextOnFocusChanged;
+        }
+        
+
+        public void AfterTextChanged(IEditable s)
+        {
+            if (mEditText == null)
+            {
+                return;
+            }
+            if (!string.IsNullOrEmpty(s.ToString()))
+            {
+
+                if (!string.IsNullOrEmpty(_hint))
+                {
+                    _txtLayout.Hint = _hint.ToUpper();
+                }
+            }
+            else
+            {
+                if (!string.IsNullOrEmpty(_hint))
+                {
+                    _txtLayout.Hint = "";
+                    mEditText.Hint = _hint;
+                }
+            }
+        }
+
+        public void BeforeTextChanged(ICharSequence s, int start, int count, int after)
+        {
+            if (!mRestoringPreviousValueFlag)
+            {
+                mPreviousValue = s.ToString();
+                mCursorPosition = mEditText.SelectionStart;
+            }
+        }
+
+        public void OnTextChanged(ICharSequence s, int start, int before, int count)
+        {
+            if (!mRestoringPreviousValueFlag)
+            {
+
+                if (!isValid(s.ToString()))
+                {
+                    mRestoringPreviousValueFlag = true;
+                    restorePreviousValue();
+                }
+
+            }
+            else
+            {
+                mRestoringPreviousValueFlag = false;
+            }
+
+        }
+
+        private void restorePreviousValue()
+        {
+            mEditText.Text = mPreviousValue;
+            mEditText.SetSelection(mCursorPosition);
+        }
+
+        private bool isValid(string s)
+        {
+            Pattern patternWithDot = Pattern.Compile("^[\\-\\+\\s]*[0-9]*((\\.[0-9]{0," + mDigitsAfterZero + "})?)||(\\.)?");
+            Pattern patternWithComma = Pattern.Compile("^[\\-\\+\\s]*[0-9]*((,[0-9]{0," + mDigitsAfterZero + "})?)||(,)?");
+
+            Matcher matcherDot = patternWithDot.Matcher(s);
+            Matcher matcherComa = patternWithComma.Matcher(s);
+
+            return matcherDot.Matches() || matcherComa.Matches();
+        }
+
+        private void EditTextOnFocusChanged(object sender, FocusChangeEventArgs focusChangedEventArgs)
+        {
+            if (focusChangedEventArgs.HasFocus)
+            {
+                //if (_leftDrawable != null)
+                //{
+                //    _editText.SetCompoundDrawables(_leftDrawable, null, _rightDrawable, null);
+                //}
+                if (!string.IsNullOrEmpty(_hint) && string.IsNullOrEmpty(mEditText.Text.ToString()))
+                {
+                    _txtLayout.Hint = _hint.ToUpper();
+                    mEditText.Hint = "";
+                }
+            }
+            else
+            {
+                if (!string.IsNullOrEmpty(_hint) && string.IsNullOrEmpty(mEditText.Text.ToString()))
+                {
+                    _txtLayout.Hint = "";
+                    mEditText.Hint = _hint;
+                }
+            }
+        }
+    }
+    
+}

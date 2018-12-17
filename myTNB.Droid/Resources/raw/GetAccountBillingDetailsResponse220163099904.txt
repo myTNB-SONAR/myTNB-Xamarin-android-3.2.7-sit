@@ -1,0 +1,36 @@
+﻿{
+    "d": {
+        "__type": "mytnbapp.service.models.BillingAccountStatus",
+        "data": {
+            "accNum": "220163099904",
+            "accName": "BEST FORM BRAKE MANUFACTURE SDN. BHD.",
+            "accICNo": null,
+            "accICNoNew": "472055T",
+            "accComNo": null,
+            "amDeposit": 0,
+            "amCurrentChg": 4704.42,
+            "amOutstandingChg": 0,
+            "amPayableChg": 4710.4,
+            "amLastPay": 83.45,
+            "dateBill": "17/07/2017",
+            "datePymtDue": "16/08/2017",
+            "dateLastPay": "25/07/2017",
+            "sttSupply": "Active",
+            "addStreet": "JLN BJ 6, TMN PERINDUSTRIAN BELMAS JOHAN, 48000, RAWANG",
+            "addArea": null,
+            "addTown": null,
+            "addState": null,
+            "stnName": "PK Rawang",
+            "stnAddStreet": null,
+            "stnAddArea": null,
+            "stnAddTown": null,
+            "stnAddState": null,
+            "amCustBal": 4710.4,
+            "isError": "false",
+            "message": ""
+        },
+        "status": "success",
+        "isError": "false",
+        "message": "successful"
+    }
+}

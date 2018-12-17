@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<!--For all properties see: http://developer.android.com/guide/topics/resources/menu-resource.html-->
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+       xmlns:app="http://schemas.android.com/apk/res-auto">
+
+  <item android:id="@+id/action_share_promotion"
+         android:showAsAction="always"         
+         android:icon="@drawable/ic_header_share"
+         app:showAsAction="always"/>
+
+</menu>
+
+<!-- Code to implement into Activity:
+
+Android.Widget.SearchView searchView;
+public override bool OnCreateOptionsMenu(IMenu menu)
+{
+  this.MenuInflater.Inflate(Resource.Menu.DashboardToolbarMenu, menu);
+
+
+  return base.OnCreateOptionsMenu(menu);
+}
+
+-->

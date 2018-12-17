@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<resources>
+  <style name="Theme.TnC" parent="@style/App.ScreenTheme">
+    <!-- Window Background-->
+    <item name="android:windowBackground">@drawable/HorizontalGradientBackground</item>
+    <!-- End Window Background-->
+    <item name="android:windowNoTitle">true</item>
+    <item name="android:alertDialogTheme">@style/DialogTheme</item>
+  </style>  
+</resources>

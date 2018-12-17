@@ -1,0 +1,36 @@
+﻿{
+    "d": {
+        "__type": "mytnbapp.service.models.BillingAccountStatus",
+        "data": {
+            "accNum": "220223313703",
+            "accName": "VASAKY A/P BANGARU",
+            "accICNo": null,
+            "accICNoNew": "490604075228",
+            "accComNo": null,
+            "amDeposit": 0,
+            "amCurrentChg": 48.75,
+            "amOutstandingChg": 0,
+            "amPayableChg": 0,
+            "amLastPay": 142.15,
+            "dateBill": "19/07/2017",
+            "datePymtDue": "18/08/2017",
+            "dateLastPay": "05/08/2017",
+            "sttSupply": "Active",
+            "addStreet": "JLN BK 6F, BDR KINRARA, 47180, PUCHONG",
+            "addArea": null,
+            "addTown": null,
+            "addState": null,
+            "stnName": "PC Subang Jaya",
+            "stnAddStreet": null,
+            "stnAddArea": null,
+            "stnAddTown": null,
+            "stnAddState": null,
+            "amCustBal": 0,
+            "isError": "false",
+            "message": ""
+        },
+        "status": "success",
+        "isError": "false",
+        "message": "successful"
+    }
+}

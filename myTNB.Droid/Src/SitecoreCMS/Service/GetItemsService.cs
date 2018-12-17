@@ -1,0 +1,143 @@
+﻿using myTNB.SitecoreCM.Services;
+using myTNB.SitecoreCMS.Model;
+using Newtonsoft.Json;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace myTNB.SitecoreCMS.Services
+{
+    public class GetItemsService
+    {
+        private static string OS { get; set; }
+        private static string ImageSize { get; set; }
+        private static string WebsiteUrl { get; set; }
+        private static string Language { get; set; }
+
+        public GetItemsService(string os, string imageSize, string websiteUrl, string language = "en")
+        {
+            OS = os;
+            ImageSize = imageSize;
+            WebsiteUrl = websiteUrl;
+            Language = language;
+        }
+
+        public string GetWalkthroughScreenItems()
+        {
+            WalkthroughScreenService service = new WalkthroughScreenService();
+            var data = service.GetWalkthroughScreens(OS, ImageSize, WebsiteUrl, Language);
+            var resp = CheckData(data.ToList<object>());
+            return JsonConvert.SerializeObject(resp);
+        }
+
+        public string GetPreLoginPromoItem()
+        {
+            PreLoginPromoService service = new PreLoginPromoService();
+            var data = service.GetPreLoginPromo(OS, ImageSize, WebsiteUrl, Language);
+            var listData = AddDataToList(data);
+            var resp = CheckData(listData);
+            return JsonConvert.SerializeObject(resp);
+        }
+
+        public string GetFullRTEPagesItems()
+        {
+            FullRTEPagesService service = new FullRTEPagesService();
+            var data = service.GetFullRTEPages(WebsiteUrl, Language);
+            var resp = CheckData(data.ToList<object>());
+            return JsonConvert.SerializeObject(resp);
+        }
+
+        public string GetEnergyTipsItems()
+        {
+            EnergyTipsService service = new EnergyTipsService();
+            var data = service.GetEnergyTips(OS, ImageSize, WebsiteUrl, Language);
+            var resp = CheckData(data.ToList<object>());
+            return JsonConvert.SerializeObject(resp);
+        }
+
+        public string GetLocationsItems()
+        {
+            LocationsService service = new LocationsService();
+            var data = service.GetLocations(WebsiteUrl, Language);
+            var resp = CheckData(data.ToList<object>());
+            return JsonConvert.SerializeObject(resp);
+        }
+
+        public string GetPromotionsItem()
+        {
+            PromotionsService service = new PromotionsService();
+            var data = service.GetPromotionsService(OS, ImageSize, WebsiteUrl, Language);
+            var resp = CheckData(data.ToList<object>());
+            return JsonConvert.SerializeObject(resp);
+        }
+
+        public string GetPromotionsV2Item()
+        {
+            PromotionsV2Service service = new PromotionsV2Service();
+            var data = service.GetPromotionsService(OS, ImageSize, WebsiteUrl, Language);
+            var resp = CheckData(data.ToList<object>());
+            return JsonConvert.SerializeObject(resp);
+        }
+
+        public string GetPromotionsTimestampItem()
+        {
+            PromotionsService service = new PromotionsService();
+            var data = service.GetTimestamp(WebsiteUrl, Language);
+            var listData = AddDataToList(data);
+            var resp = CheckData(listData);
+            return JsonConvert.SerializeObject(resp);
+        }
+        public string GetFAQsItem()
+        {
+            FAQsService service = new FAQsService();
+            var data = service.GetFAQsService(OS, ImageSize, WebsiteUrl, Language);
+            var resp = CheckData(data.ToList<object>());
+            return JsonConvert.SerializeObject(resp);
+        }
+        public string GetFAQsTimestampItem()
+        {
+            FAQsService service = new FAQsService();
+            var data = service.GetTimestamp(WebsiteUrl, Language);
+            var listData = AddDataToList(data);
+            var resp = CheckData(listData);
+            return JsonConvert.SerializeObject(resp);
+        }
+
+        public string GetTimestampItem()
+        {
+            TimestampService service = new TimestampService();
+            var data = service.GetTimestamp(WebsiteUrl, Language);
+            var listData = AddDataToList(data);
+            var resp = CheckData(listData);
+            return JsonConvert.SerializeObject(resp);
+        }
+
+        private BaseModel CheckData(List<object> data)
+        {
+            BaseModel bm = new BaseModel();
+            bool isAnyIdNull = true;
+            foreach (var item in data)
+            {
+                var type = item.GetType();
+                var prop = type.GetProperty("ID");
+                var field = type.GetField("ID");
+                var value = prop == null ? field.GetValue(item) : prop.GetValue(item);
+                bool isNull = value == null;
+                isAnyIdNull = isAnyIdNull && isNull;
+            }
+
+            if (!isAnyIdNull)
+            {
+                bm.Status = "Success";
+                bm.Data = data.ToList<object>();
+            }
+            return bm;
+        }
+
+        private List<object> AddDataToList(object data)
+        {
+            List<object> listData = new List<object>();
+            listData.Add(data);
+            return listData;
+        }
+    }
+}

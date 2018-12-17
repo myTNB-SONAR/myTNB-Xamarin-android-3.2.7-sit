@@ -1,0 +1,40 @@
+﻿{
+    "d": [
+        {
+            "__type": "Billing.BillingRegListSSP",
+            "accNum": "220163099904",
+            "userAccountID": null,
+            "accDesc": "MANUFACTURE SDN. BHD. BEST FORM BRAKE",
+            "icNum": null,
+            "amCurrentChg": 4710.4,
+            "isRegistered": "False",
+            "isPaid": "False",
+            "isError": "false",
+            "message": null
+        },
+        {
+            "__type": "Billing.BillingRegListSSP",
+            "accNum": "220223313703",
+            "userAccountID": null,
+            "accDesc": "VASAKY A/P BANGARU",
+            "icNum": null,
+            "amCurrentChg": 0,
+            "isRegistered": "True",
+            "isPaid": "True",
+            "isError": "false",
+            "message": null
+        },
+        {
+            "__type": "Billing.BillingRegListSSP",
+            "accNum": "220595158104",
+            "userAccountID": null,
+            "accDesc": "GOH CHUI HON",
+            "icNum": null,
+            "amCurrentChg": 0,
+            "isRegistered": "True",
+            "isPaid": "True",
+            "isError": "false",
+            "message": null
+        }
+    ]
+}

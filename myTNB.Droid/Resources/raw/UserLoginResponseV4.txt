@@ -1,0 +1,15 @@
+﻿{
+    "d": [
+        {
+            "__type": "iCoreEntity3.iUser",
+            "userID": "64e59d46-9936-429e-93d5-b08c0ed0f106",
+            "displayName": "Eunice Loraine",
+            "userName": "montecillodavid.acn@gmail.com",
+            "email": "montecillodavid.acn@gmail.com",
+            "dateCreated": "",
+            "lastLoginDate": "10/26/2017 1:39:34 PM",
+            "isError": "false",
+            "message": "Login is successful"
+        }
+    ]
+}

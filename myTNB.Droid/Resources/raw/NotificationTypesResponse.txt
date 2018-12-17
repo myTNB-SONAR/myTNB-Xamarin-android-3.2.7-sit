@@ -1,0 +1,60 @@
+﻿{
+    "d": {
+        "__type": "mytnbapp.service.models.NotificationTypesStatus",
+        "data": [
+            {
+                "Id": "1000004",
+                "Title": "Billing & Payment",
+                "Code": "BP",
+                "PreferenceMode": "M",
+                "Type": "ANNOUNCEMENT",
+                "CreatedDate": "11/7/2017 4:37:57 PM",
+                "MasterId": null,
+                "IsOpted": null
+            },
+            {
+                "Id": "1000005",
+                "Title": "Account Related Matters",
+                "Code": "ACC",
+                "PreferenceMode": "M",
+                "Type": "ANNOUNCEMENT",
+                "CreatedDate": "11/7/2017 4:37:57 PM",
+                "MasterId": null,
+                "IsOpted": null
+            },
+            {
+                "Id": "1000006",
+                "Title": "Power Outages",
+                "Code": "PO",
+                "PreferenceMode": "M",
+                "Type": "ANNOUNCEMENT",
+                "CreatedDate": "11/7/2017 4:37:57 PM",
+                "MasterId": null,
+                "IsOpted": null
+            },
+            {
+                "Id": "1000007",
+                "Title": "Promotions",
+                "Code": "PRO",
+                "PreferenceMode": "O",
+                "Type": "ANNOUNCEMENT",
+                "CreatedDate": "11/7/2017 4:37:57 PM",
+                "MasterId": null,
+                "IsOpted": null
+            },
+            {
+                "Id": "1000008",
+                "Title": "Rewards",
+                "Code": "REW",
+                "PreferenceMode": "O",
+                "Type": "ANNOUNCEMENT",
+                "CreatedDate": "11/7/2017 4:37:57 PM",
+                "MasterId": null,
+                "IsOpted": null
+            }
+        ],
+        "status": "success",
+        "isError": "false",
+        "message": "Successful"
+    }
+}
