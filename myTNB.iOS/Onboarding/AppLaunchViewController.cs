@@ -12,6 +12,7 @@ using myTNB.SQLite.SQLiteDataManager;
 using myTNB.SQLite;
 using myTNB.DataManager;
 using System.Collections.Generic;
+using myTNB.Mobile.Business;
 
 namespace myTNB
 {
@@ -444,11 +445,19 @@ namespace myTNB
 
             if (!isVerified)
             {
-                var response = await ServiceCall.GetPhoneVerificationStatus();
-
-                if (response?.didSucceed == true && response?.data != null)
+                string userEmail = string.Empty;
+                string sspId = string.Empty;
+                if (DataManager.DataManager.SharedInstance.UserEntity != null && DataManager.DataManager.SharedInstance.UserEntity.Count > 0)
                 {
-                    isVerified = response.data.IsVerified;
+                    userEmail = DataManager.DataManager.SharedInstance.UserEntity[0]?.email;
+                    sspId = DataManager.DataManager.SharedInstance.UserEntity[0]?.userID;
+                }
+
+                var response = await ApiManager.Instance.GetPhoneVerificationStatus(userEmail, sspId, DataManager.DataManager.SharedInstance.UDID);
+
+                if (response?.d?.didSucceed == true && response?.d?.data != null)
+                {
+                    isVerified = response.d.data.IsVerified;
 
                     if (isVerified)
                     {
