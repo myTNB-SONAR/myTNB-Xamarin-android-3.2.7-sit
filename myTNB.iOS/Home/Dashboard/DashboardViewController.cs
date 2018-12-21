@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Carousels;
@@ -172,8 +172,9 @@ namespace myTNB.Dashboard
                 {
                     InvokeOnMainThread(() =>
                     {
-                        if (_dueAmount != null && _dueAmount.d != null
-                            && _dueAmount.d.isError.Equals("false"))
+                        if (_dueAmount != null && _dueAmount?.d != null
+                            && _dueAmount?.d?.didSucceed == true
+                            && _dueAmount?.d?.data != null)
                         {
                             _amountDue = _dueAmount.d.data.amountDue;
                             _dateDue = _dueAmount.d.data.billDueDate;
@@ -377,8 +378,8 @@ namespace myTNB.Dashboard
             if (_dashboardMainComponent._accountSelectionComponent != null)
             {
                 if (DataManager.DataManager.SharedInstance.AccountRecordsList != null
-                   && DataManager.DataManager.SharedInstance.AccountRecordsList.d != null
-                   && DataManager.DataManager.SharedInstance.AccountRecordsList.d.Count > 0)
+                   && DataManager.DataManager.SharedInstance.AccountRecordsList?.d != null
+                   && DataManager.DataManager.SharedInstance.AccountRecordsList?.d?.Count > 0)
                 {
                     UITapGestureRecognizer accountSelectionGesture = new UITapGestureRecognizer(() =>
                     {

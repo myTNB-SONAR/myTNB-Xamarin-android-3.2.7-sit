@@ -1,5 +1,6 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using myTNB.Model;
 using myTNB.SitecoreCMS.Model;
 using myTNB.SQLite.SQLiteDataManager;
@@ -46,23 +47,26 @@ namespace myTNB
             pageData.Add(payment);
         }
 
-        public void SetPageData()
+        public Task SetPageData()
         {
-            WalkthroughScreensEntity wsManager = new WalkthroughScreensEntity();
-            List<WalkthroughScreensModel> walkThroughScreenList = wsManager.GetAllItems();
-            if (walkThroughScreenList.Count > 0)
+            return Task.Factory.StartNew(() =>
             {
-                pageData = new List<OnboardingModel>();
-                foreach (var entity in walkThroughScreenList)
+                WalkthroughScreensEntity wsManager = new WalkthroughScreensEntity();
+                List<WalkthroughScreensModel> walkThroughScreenList = wsManager.GetAllItems();
+                if (walkThroughScreenList.Count > 0)
                 {
-                    OnboardingModel item = new OnboardingModel();
-                    item.Title = entity.Text;
-                    item.Message = entity.SubText;
-                    item.ImageName = entity.Image;
-                    item.IsSitecoreData = true;
-                    pageData.Add(item);
+                    pageData = new List<OnboardingModel>();
+                    foreach (var entity in walkThroughScreenList)
+                    {
+                        OnboardingModel item = new OnboardingModel();
+                        item.Title = entity.Text;
+                        item.Message = entity.SubText;
+                        item.ImageName = entity.Image;
+                        item.IsSitecoreData = true;
+                        pageData.Add(item);
+                    }
                 }
-            }
+            });
         }
 
         public OnboardingDataViewController GetViewController(int index, UIStoryboard storyboard)

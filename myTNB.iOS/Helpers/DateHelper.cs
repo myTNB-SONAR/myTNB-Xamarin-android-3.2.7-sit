@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Globalization;
 
 namespace myTNB
@@ -123,7 +123,20 @@ namespace myTNB
         /// <param name="date">Date.</param>
         public static string FormatToUtc(DateTime date)
         {
-            return date.ToString(CultureInfo.CurrentCulture.DateTimeFormat.UniversalSortableDateTimePattern);
+            string formattedDate = string.Empty;
+            try
+            {
+                if (date != null)
+                {
+                    formattedDate = date.ToString(CultureInfo.CurrentCulture.DateTimeFormat.UniversalSortableDateTimePattern);
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Error in formatting date: " + e.Message);
+            }
+
+            return formattedDate;
         }
 
         /// <summary>

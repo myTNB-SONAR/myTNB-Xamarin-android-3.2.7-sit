@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using UIKit;
 using CoreGraphics;
 using myTNB.Model;
@@ -51,7 +51,7 @@ namespace myTNB
         public RegisteredCardsResponseModel _registeredCards;
         bool _cardAlreadySaved = false;
         public List<CustomerAccountRecordModel> AccountsForPayment = new List<CustomerAccountRecordModel>();
-        public string TotalAmount = string.Empty;
+        public double TotalAmount = 0.00;
 
         Dictionary<string, int[]> cardFormatPattern = new Dictionary<string, int[]>
         {
@@ -616,11 +616,9 @@ namespace myTNB
                 paymentItem = new PaymentItemsModel();
                 paymentItem.AccountOwnerName = count > 1 ? item.accountOwnerName : DataManager.DataManager.SharedInstance.UserEntity[0].displayName;
                 paymentItem.AccountNo = item.accNum;
-                paymentItem.Amount = item.Amount.ToString("N2", CultureInfo.InvariantCulture);
+                paymentItem.Amount = item.Amount.ToString(CultureInfo.InvariantCulture);
                 paymentItemList.Add(paymentItem);
             }
-
-            double numAmount = TextHelper.ParseStringToDouble(TotalAmount);
 
             return Task.Factory.StartNew(() =>
             {
@@ -636,7 +634,7 @@ namespace myTNB
                     platform = "2",
                     registeredCardId = "",
                     paymentMode = "CC",
-                    totalAmount = numAmount,
+                    totalAmount = TotalAmount,
                     paymentItems = paymentItemList
                 };
                 _requestPayBill = serviceManager.RequestMultiPayBill("RequestMultiPayBill", requestParameter);

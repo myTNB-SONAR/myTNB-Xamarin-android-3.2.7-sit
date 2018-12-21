@@ -51,7 +51,7 @@ namespace myTNB
                     viewController.isCCFlow = false;
                     var navController = new UINavigationController(viewController);
 
-                    if(!(topVc is ReceiptViewController))
+                    if (!(topVc is ReceiptViewController))
                     {
                         topVc?.PresentViewController(navController, true, null);
                     }
@@ -71,7 +71,7 @@ namespace myTNB
                     if (_selectBillsVC != null)
                     {
                         viewController.AccountsForPayment = _selectBillsVC._accountsForPayment;
-                        viewController.TotalAmount = _selectBillsVC._lblTotalAmountValue.Text;
+                        viewController.TotalAmount = _selectBillsVC.totalAmount;
                         _selectBillsVC.PresentViewController(navController, true, null);
                     }
                     else if (_dashboardVC != null)
@@ -83,10 +83,12 @@ namespace myTNB
 
             if (url.ToString().Contains("mytnbapp://action=dashboard"))
             {
-                if (_makePaymentVC != null){
+                if (_makePaymentVC != null)
+                {
                     _makePaymentVC.DismissViewController(true, null);
                 }
-                if(_selectBillsVC != null){
+                if (_selectBillsVC != null)
+                {
                     _selectBillsVC.DismissViewController(true, null);
                 }
 
@@ -183,13 +185,14 @@ namespace myTNB
             DataManager.DataManager.SharedInstance.FCMToken = sharedPreference.StringForKey("FCMToken");
             DataManager.DataManager.SharedInstance.UDID = UIDevice.CurrentDevice.IdentifierForVendor.ToString();
             SetupNavigationBar();
-           
+
             // Register your app for remote notifications.
             if (UIDevice.CurrentDevice.CheckSystemVersion(10, 0))
             {
                 // iOS 10 or later
                 var authOptions = UNAuthorizationOptions.Alert | UNAuthorizationOptions.Badge | UNAuthorizationOptions.Sound;
-                UNUserNotificationCenter.Current.RequestAuthorization(authOptions, (granted, error) => {
+                UNUserNotificationCenter.Current.RequestAuthorization(authOptions, (granted, error) =>
+                {
                     Console.WriteLine("isGranted: " + granted);
                     DataManager.DataManager.SharedInstance.IsRegisteredForRemoteNotification = granted;
                 });
@@ -253,16 +256,16 @@ namespace myTNB
 
         public static nfloat GetStatusBarHeight()
         {
-          var statusBarSize = UIApplication.SharedApplication.StatusBarFrame.Size;
-          return (nfloat)Math.Min(statusBarSize.Height, statusBarSize.Width);
+            var statusBarSize = UIApplication.SharedApplication.StatusBarFrame.Size;
+            return (nfloat)Math.Min(statusBarSize.Height, statusBarSize.Width);
         }
-       
+
         internal void SetupNavigationBar()
         {
             UIApplication.SharedApplication.SetStatusBarStyle(UIStatusBarStyle.LightContent, true);
 
             //Set the default frame of Navigation Bar
-            var navigationBarFrame = new CGRect(0,0, UIScreen.MainScreen.Bounds.Size.Width, 64);
+            var navigationBarFrame = new CGRect(0, 0, UIScreen.MainScreen.Bounds.Size.Width, 64);
 
             //Setup the colors that will be use
             var startColor = myTNBColor.GradientPurpleDarkElement();
@@ -271,13 +274,13 @@ namespace myTNB
             //Create an instance of gradient layer with custom setup
             var gradientLayer = new CAGradientLayer
             {
-              Frame =
+                Frame =
                     new CGRect(navigationBarFrame.X, navigationBarFrame.Y, navigationBarFrame.Width,
                        navigationBarFrame.Height + AppDelegate.GetStatusBarHeight()),
-             Colors = new CGColor[] { startColor.CGColor, endColor.CGColor },
-               StartPoint = new CGPoint(x: 0.0, y: 0.5),
-              EndPoint = new CGPoint(x: 1.0, y: 0.5)
-            } ;
+                Colors = new CGColor[] { startColor.CGColor, endColor.CGColor },
+                StartPoint = new CGPoint(x: 0.0, y: 0.5),
+                EndPoint = new CGPoint(x: 1.0, y: 0.5)
+            };
 
             // Render the gradient to UIImage
             UIGraphics.BeginImageContext(gradientLayer.Bounds.Size);

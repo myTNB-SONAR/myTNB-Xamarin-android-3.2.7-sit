@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using CoreGraphics;
 using Foundation;
@@ -25,27 +25,27 @@ namespace myTNB.Registration.CustomerAccounts
         public AccountRecordDataSource(CustomerAccountRecordListModel accountList, AccountsViewController controller)
         {
             _controller = controller;
-            if (accountList != null && accountList.d != null)
+            if (accountList != null && accountList?.d != null)
             {
                 _accountList = accountList;
             }
 
             if (DataManager.DataManager.SharedInstance.AccountsToBeAddedList != null
-                && DataManager.DataManager.SharedInstance.AccountsToBeAddedList.d != null)
+                && DataManager.DataManager.SharedInstance.AccountsToBeAddedList?.d != null)
             {
                 foreach (var account in DataManager.DataManager.SharedInstance.AccountsToBeAddedList.d)
                 {
                     if (account.isLocal == false)
                     {
-                        _linkedAccounts.Add(account);
+                        _linkedAccounts?.Add(account);
                     }
                     else
                     {
-                        _localAccounts.Add(account);
+                        _localAccounts?.Add(account);
                     }
                 }
 
-                if (_linkedAccounts.Count > 0 && _localAccounts.Count > 0)
+                if (_linkedAccounts?.Count > 0 && _localAccounts?.Count > 0)
                 {
                     _sectionCount = 2;
                 }
@@ -58,8 +58,8 @@ namespace myTNB.Registration.CustomerAccounts
             {
                 _sectionCount = 1;
             }
-            _recordCount = _linkedAccounts != null
-                     ? _linkedAccounts.Count : 0;
+            _recordCount = (int)(_linkedAccounts != null
+                     ? _linkedAccounts?.Count : 0);
         }
 
         public override nint NumberOfSections(UITableView tableView)
@@ -69,14 +69,14 @@ namespace myTNB.Registration.CustomerAccounts
 
         public override nint RowsInSection(UITableView tableview, nint section)
         {
-            if (_linkedAccounts.Count == 0 && _localAccounts.Count == 0)
+            if (_linkedAccounts?.Count == 0 && _localAccounts?.Count == 0)
             {
                 if (section == 0)
                 {
                     return _linkedAccounts != null ? _linkedAccounts.Count : 0;
                 }
             }
-            else if (_linkedAccounts.Count > 0 && _localAccounts.Count > 0)
+            else if (_linkedAccounts?.Count > 0 && _localAccounts?.Count > 0)
             {
                 if (section == 0)
                 {
@@ -87,14 +87,14 @@ namespace myTNB.Registration.CustomerAccounts
                     return _localAccounts != null ? _localAccounts.Count : 0;
                 }
             }
-            else if (_linkedAccounts.Count == 0 && _localAccounts.Count > 0)
+            else if (_linkedAccounts?.Count == 0 && _localAccounts?.Count > 0)
             {
                 if (section == 0)
                 {
                     return _localAccounts != null ? _localAccounts.Count : 0;
                 }
             }
-            else if (_linkedAccounts.Count > 0 && _localAccounts.Count == 0)
+            else if (_linkedAccounts?.Count > 0 && _localAccounts?.Count == 0)
             {
                 if (section == 0)
                 {
@@ -108,12 +108,12 @@ namespace myTNB.Registration.CustomerAccounts
         {
             if (section == 0)
             {
-                if ((_linkedAccounts != null && _linkedAccounts.Count > 0 && _localAccounts.Count >= 0) || (_linkedAccounts != null && _linkedAccounts.Count == 0 && _localAccounts.Count == 0))
+                if ((_linkedAccounts != null && _linkedAccounts?.Count > 0 && _localAccounts?.Count >= 0) || (_linkedAccounts != null && _linkedAccounts?.Count == 0 && _localAccounts?.Count == 0))
                 {
                     return 92;
                 }
 
-                if (_localAccounts != null && _localAccounts.Count > 0 && _linkedAccounts.Count == 0)
+                if (_localAccounts != null && _localAccounts?.Count > 0 && _linkedAccounts?.Count == 0)
                 {
                     return 30;
                 }
@@ -121,7 +121,7 @@ namespace myTNB.Registration.CustomerAccounts
 
             if (section == 1)
             {
-                if (_localAccounts != null && _localAccounts.Count > 0)
+                if (_localAccounts != null && _localAccounts?.Count > 0)
                 {
                     return 30;
                 }
@@ -136,46 +136,55 @@ namespace myTNB.Registration.CustomerAccounts
 
         public override UIView GetViewForHeader(UITableView tableView, nint section)
         {
-            UIView view = new UIView(new CGRect(0, 0, tableView.Frame.Width, 100));
-            view.BackgroundColor = myTNBColor.SectionGrey();
+            UIView view = new UIView(new CGRect(0, 0, tableView.Frame.Width, 100))
+            {
+                BackgroundColor = myTNBColor.SectionGrey()
+            };
 
             var lblSectionTitle = new UILabel(new CGRect(18, 0, tableView.Frame.Width - 36, 40));
 
             if (section == 0)
             {
-                if ((_linkedAccounts != null && _linkedAccounts.Count > 0 && _localAccounts.Count >= 0)
-                    || (_linkedAccounts != null && _linkedAccounts.Count == 0 && _localAccounts.Count == 0))
+                if ((_linkedAccounts != null && _linkedAccounts?.Count > 0 && _localAccounts?.Count >= 0)
+                    || (_linkedAccounts != null && _linkedAccounts?.Count == 0 && _localAccounts?.Count == 0))
                 {
-                    lblSectionTitle = new UILabel(new CGRect(18, 0, tableView.Frame.Width - 36, 40));
-
-                    lblSectionTitle.Text = _recordCount > 0
+                    lblSectionTitle = new UILabel(new CGRect(18, 0, tableView.Frame.Width - 36, 40))
+                    {
+                        Text = _recordCount > 0
                         ? _recordCount.ToString() + " electricity supply account(s) found!"
-                        : "NoAcctsFoundTitle".Translate();
+                        : "NoAcctsFoundTitle".Translate()
+                    };
 
-                    var txtViewSubDetails = new UITextView(new CGRect(14, 36, tableView.Frame.Width - 30, 60));
-                    txtViewSubDetails.Font = myTNBFont.MuseoSans14_300();
-                    txtViewSubDetails.TextColor = myTNBColor.TunaGrey();
-                    txtViewSubDetails.UserInteractionEnabled = false;
-                    txtViewSubDetails.BackgroundColor = UIColor.Clear;
-                    txtViewSubDetails.Text = "NoAcctsFoundDesc".Translate();
+                    var txtViewSubDetails = new UITextView(new CGRect(14, 36, tableView.Frame.Width - 30, 60))
+                    {
+                        Font = myTNBFont.MuseoSans14_300(),
+                        TextColor = myTNBColor.TunaGrey(),
+                        UserInteractionEnabled = false,
+                        BackgroundColor = UIColor.Clear,
+                        Text = "NoAcctsFoundDesc".Translate()
+                    };
 
                     view.AddSubview(txtViewSubDetails);
 
                 }
 
-                if (_localAccounts != null && _localAccounts.Count > 0 && _linkedAccounts.Count == 0)
+                if (_localAccounts != null && _localAccounts?.Count > 0 && _linkedAccounts?.Count == 0)
                 {
-                    lblSectionTitle = new UILabel(new CGRect(18, 0, tableView.Frame.Width - 36, 40));
-                    lblSectionTitle.Text = "Additional account(s)";
+                    lblSectionTitle = new UILabel(new CGRect(18, 0, tableView.Frame.Width - 36, 40))
+                    {
+                        Text = "Additional account(s)"
+                    };
                 }
             }
 
             if (section == 1)
             {
-                if (_localAccounts != null && _localAccounts.Count > 0)
+                if (_localAccounts != null && _localAccounts?.Count > 0)
                 {
-                    lblSectionTitle = new UILabel(new CGRect(18, 0, tableView.Frame.Width - 36, 40));
-                    lblSectionTitle.Text = "Additional account(s)";
+                    lblSectionTitle = new UILabel(new CGRect(18, 0, tableView.Frame.Width - 36, 40))
+                    {
+                        Text = "Additional account(s)"
+                    };
                 }
             }
 
@@ -199,7 +208,7 @@ namespace myTNB.Registration.CustomerAccounts
 
             if (indexPath.Section == 0)
             {
-                if (_linkedAccounts != null && _linkedAccounts.Count > 0 && _localAccounts.Count >= 0)
+                if (_linkedAccounts != null && _linkedAccounts?.Count > 0 && _localAccounts?.Count >= 0)
                 {
                     linkedAcount = _linkedAccounts[indexPath.Row];
                     cell.AccountNumber = linkedAcount.accNum != null ? linkedAcount.accNum : "";
@@ -210,7 +219,7 @@ namespace myTNB.Registration.CustomerAccounts
                     acount = linkedAcount;
                     cell.Tag = 0;
                 }
-                if (_localAccounts != null && _localAccounts.Count > 0 && _linkedAccounts.Count == 0)
+                if (_localAccounts != null && _localAccounts?.Count > 0 && _linkedAccounts?.Count == 0)
                 {
                     localAcount = _localAccounts[indexPath.Row];
                     cell.AccountNumber = localAcount.accNum != null ? localAcount.accNum : "";
@@ -225,7 +234,7 @@ namespace myTNB.Registration.CustomerAccounts
 
             if (indexPath.Section == 1)
             {
-                if (_localAccounts != null && _localAccounts.Count > 0)
+                if (_localAccounts != null && _localAccounts?.Count > 0)
                 {
                     localAcount = _localAccounts[indexPath.Row];
                     cell.AccountNumber = localAcount.accNum != null ? localAcount.accNum : "";
@@ -290,15 +299,20 @@ namespace myTNB.Registration.CustomerAccounts
             {
                 title.Hidden = textField.Text.Length == 0;
                 error.Hidden = false;
-                int index = DataManager.DataManager.SharedInstance.AccountsToBeAddedList.d.FindIndex(x => x.accNum == cell.AccountNumber);
-                if (index > -1)
+                if (DataManager.DataManager.SharedInstance.AccountsToBeAddedList != null
+                    && DataManager.DataManager.SharedInstance.AccountsToBeAddedList?.d != null
+                    && DataManager.DataManager.SharedInstance.AccountsToBeAddedList?.d?.Count > 0)
                 {
-                    DataManager.DataManager.SharedInstance.AccountsToBeAddedList.d[index].accountNickName = textField.Text;
-                    DataManager.DataManager.SharedInstance.AccountsToBeAddedList.d[index].accDesc = textField.Text;
+                    int index = DataManager.DataManager.SharedInstance.AccountsToBeAddedList.d.FindIndex(x => x.accNum == cell.AccountNumber);
+                    if (index > -1)
+                    {
+                        DataManager.DataManager.SharedInstance.AccountsToBeAddedList.d[index].accountNickName = textField.Text;
+                        DataManager.DataManager.SharedInstance.AccountsToBeAddedList.d[index].accDesc = textField.Text;
+                    }
                 }
                 if (cell.Tag == 1)
                 {
-                    int localIndex = _localAccounts.FindIndex(x => x.accNum == cell.AccountNumber);
+                    int localIndex = (int)_localAccounts?.FindIndex(x => x.accNum == cell.AccountNumber);
                     if (localIndex > -1)
                     {
                         _localAccounts[localIndex].accDesc = textField.Text;
@@ -306,7 +320,7 @@ namespace myTNB.Registration.CustomerAccounts
                 }
                 if (cell.Tag == 0)
                 {
-                    int linkedIndex = _linkedAccounts.FindIndex(x => x.accNum == cell.AccountNumber);
+                    int linkedIndex = (int)_linkedAccounts?.FindIndex(x => x.accNum == cell.AccountNumber);
                     if (linkedIndex > -1)
                     {
                         _linkedAccounts[linkedIndex].accDesc = textField.Text;

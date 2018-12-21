@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Text.RegularExpressions;
 using CoreGraphics;
 using Foundation;
@@ -28,98 +28,103 @@ namespace myTNB
                                              , NSUrlRequest request
                                              , UIWebViewNavigationType navigationType)
         {
-            if (request.ToString().Contains("rating"))
+            if (request != null)
             {
-                string rateString = default(string);
-                string transId = default(string);
-                var url = request.Url;
-                var paramsStr = url.Host;
-
-                var parameters = paramsStr.Split('&');
-                foreach (var pair in parameters)
+                if (request.ToString().Contains("rating"))
                 {
-                    var item = pair.Split('=');
-                    if (item.Length == 2)
+                    string rateString = default(string);
+                    string transId = default(string);
+                    var url = request.Url;
+                    var paramsStr = url?.Host;
+
+                    var parameters = paramsStr?.Split('&');
+                    if (parameters.Length > 0)
                     {
-                        var key = item[0];
-                        if (key == "rating")
+                        foreach (var pair in parameters)
                         {
-                            rateString = item[1];
-                        }
-                        else if (key == "transid")
-                        {
-                            transId = item[1];
+                            var item = pair?.Split('=');
+                            if (item.Length == 2)
+                            {
+                                var key = item[0];
+                                if (key == "rating")
+                                {
+                                    rateString = item[1];
+                                }
+                                else if (key == "transid")
+                                {
+                                    transId = item[1];
+                                }
+                            }
                         }
                     }
-                }
 
-
-                UIStoryboard storyBoard = UIStoryboard.FromName("Rating", null);
-                RatingViewController viewController =
-                    storyBoard.InstantiateViewController("RatingViewController") as RatingViewController;
-                viewController.Rating = !string.IsNullOrEmpty(rateString) ? int.Parse(rateString) : 0;
-                viewController.TransId = transId;
-                var navController = new UINavigationController(viewController);
-                Controller.PresentViewController(navController, true, null);
-                loadingOverlay?.Hide();
-            }
-            if (request.ToString().Contains("intent://intent/#Intent;")
-               && Controller != null)
-            {
-                Controller.DismissViewController(true, null);
-                loadingOverlay?.Hide();
-            }
-
-            if (request.ToString().Contains("mytnbapp://action=dashboard")
-                && Controller != null)
-            {
-                loadingOverlay?.Hide();
-                DataManager.DataManager.SharedInstance.IsPaymentDone = true;
-                ViewHelper.DismissControllersAndSelectTab(Controller, 0, true, true);
-            }
-
-            if (request.ToString().Contains("mytnbapp://action=recipt&transid")
-                && Controller != null)
-            {
-                string absoluteURL = request.ToString();
-                Regex regex = new Regex("\\btransid.*\\b");
-                Match match = regex.Match(absoluteURL);
-                if (match.Success)
-                {
-                    string transID = match.Value.Replace("transid=", "");
-                    UIStoryboard storyBoard = UIStoryboard.FromName("Receipt", null);
-                    ReceiptViewController viewController =
-                        storyBoard.InstantiateViewController("ReceiptViewController") as ReceiptViewController;
-                    viewController.MerchatTransactionID = transID;
-                    viewController.isCCFlow = true;
+                    UIStoryboard storyBoard = UIStoryboard.FromName("Rating", null);
+                    RatingViewController viewController =
+                        storyBoard.InstantiateViewController("RatingViewController") as RatingViewController;
+                    viewController.Rating = !string.IsNullOrEmpty(rateString) ? int.Parse(rateString) : 0;
+                    viewController.TransId = transId;
                     var navController = new UINavigationController(viewController);
-
-                    var baseRootVc = UIApplication.SharedApplication.KeyWindow?.RootViewController;
-                    var topVc = AppDelegate.GetTopViewController(baseRootVc);
-                    topVc?.NavigationController?.PushViewController(viewController, true);
-                    //Controller.NavigationController.PushViewController(viewController, true);
+                    Controller.PresentViewController(navController, true, null);
+                    loadingOverlay?.Hide();
                 }
-                loadingOverlay?.Hide();
-            }
-
-            if (request.ToString().Contains("mytnbapp://action=payoptions")
-                && Controller != null)
-            {
-                loadingOverlay?.Hide();
-
-                var appDelegate = UIApplication.SharedApplication.Delegate as AppDelegate;
-
-                foreach (var vc in Controller.NavigationController.ViewControllers)
+                if (request.ToString().Contains("intent://intent/#Intent;")
+                   && Controller != null)
                 {
-                    if (vc is SelectPaymentMethodViewController)
+                    Controller.DismissViewController(true, null);
+                    loadingOverlay?.Hide();
+                }
+
+                if (request.ToString().Contains("mytnbapp://action=dashboard")
+                    && Controller != null)
+                {
+                    loadingOverlay?.Hide();
+                    DataManager.DataManager.SharedInstance.IsPaymentDone = true;
+                    ViewHelper.DismissControllersAndSelectTab(Controller, 0, true, true);
+                }
+
+                if (request.ToString().Contains("mytnbapp://action=recipt&transid")
+                    && Controller != null)
+                {
+                    string absoluteURL = request.ToString();
+                    Regex regex = new Regex("\\btransid.*\\b");
+                    Match match = regex.Match(absoluteURL);
+                    if (match.Success)
                     {
-                        if (Controller.NavigationController != null)
+                        string transID = match.Value.Replace("transid=", "");
+                        UIStoryboard storyBoard = UIStoryboard.FromName("Receipt", null);
+                        ReceiptViewController viewController =
+                            storyBoard.InstantiateViewController("ReceiptViewController") as ReceiptViewController;
+                        viewController.MerchatTransactionID = transID;
+                        viewController.isCCFlow = true;
+                        var navController = new UINavigationController(viewController);
+
+                        var baseRootVc = UIApplication.SharedApplication.KeyWindow?.RootViewController;
+                        var topVc = AppDelegate.GetTopViewController(baseRootVc);
+                        topVc?.NavigationController?.PushViewController(viewController, true);
+                        //Controller.NavigationController.PushViewController(viewController, true);
+                    }
+                    loadingOverlay?.Hide();
+                }
+
+                if (request.ToString().Contains("mytnbapp://action=payoptions")
+                    && Controller != null)
+                {
+                    loadingOverlay?.Hide();
+
+                    var appDelegate = UIApplication.SharedApplication.Delegate as AppDelegate;
+
+                    foreach (var vc in Controller.NavigationController.ViewControllers)
+                    {
+                        if (vc is SelectPaymentMethodViewController)
                         {
-                            if (Controller.NavigationController.NavigationBarHidden == true)
-                                Controller.NavigationController.NavigationBarHidden = false;
+                            if (Controller.NavigationController != null)
+                            {
+                                if (Controller.NavigationController.NavigationBarHidden == true)
+                                    Controller.NavigationController.NavigationBarHidden = false;
+                            }
+                            Controller.NavigationController.PopToViewController(vc, false);
+                            break;
                         }
-                        Controller.NavigationController.PopToViewController(vc, false);
-                        break;
                     }
                 }
             }

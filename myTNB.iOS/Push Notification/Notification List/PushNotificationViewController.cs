@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -169,8 +169,8 @@ namespace myTNB.PushNotification
                                         notificationTitle = notifResult[0]?.Title;
                                     }
                                     _detailedInfo.d.data.NotificationTitle = notificationTitle;
-                                    viewController.NotificationInfo = _detailedInfo.d.data;
-                                    NavigationController.PushViewController(viewController, true);
+                                    viewController.NotificationInfo = _detailedInfo?.d?.data;
+                                    NavigationController?.PushViewController(viewController, true);
                                 }
                                 ActivityIndicator.Hide();
                             });
@@ -188,6 +188,14 @@ namespace myTNB.PushNotification
 
         internal Task GetNotificationDetailedInfo(UserNotificationDataModel dataModel)
         {
+            var emailAddress = string.Empty;
+            var userId = string.Empty;
+            if (DataManager.DataManager.SharedInstance.UserEntity?.Count > 0)
+            {
+                emailAddress = DataManager.DataManager.SharedInstance.UserEntity[0]?.email;
+                userId = DataManager.DataManager.SharedInstance.UserEntity[0]?.userID;
+            }
+
             return Task.Factory.StartNew(() =>
             {
                 ServiceManager serviceManager = new ServiceManager();
@@ -196,9 +204,9 @@ namespace myTNB.PushNotification
                     ApiKeyID = TNBGlobal.API_KEY_ID,
                     NotificationId = dataModel.Id,
                     NotificationType = dataModel.NotificationType,
-                    Email = DataManager.DataManager.SharedInstance.UserEntity[0].email,
+                    Email = emailAddress,
                     DeviceId = DataManager.DataManager.SharedInstance.UDID,
-                    SSPUserId = DataManager.DataManager.SharedInstance.UserEntity[0].userID
+                    SSPUserId = userId
                 };
                 _detailedInfo = serviceManager.GetNotificationDetailedInfo("GetNotificationDetailedInfo_V2", requestParameter);
             });

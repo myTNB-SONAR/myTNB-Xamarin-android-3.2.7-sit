@@ -37,6 +37,7 @@ namespace myTNB
         int lastStartIndex = 0;
         int lastEndIndex = 0;
         bool isViewDidLoad = false;
+        public double totalAmount = 0.00;
 
         public override void ViewDidLoad()
         {
@@ -234,7 +235,7 @@ namespace myTNB
 
         internal void UpDateTotalAmount()
         {
-            double totalAmount = 0;
+            totalAmount = 0;
             int selectedAccountCount = 0;
             bool hasInvalidSelection = false;
             foreach (var item in _accountsForDisplay)
@@ -359,7 +360,7 @@ namespace myTNB
                 SelectPaymentMethodViewController viewController =
                     storyBoard.InstantiateViewController("SelectPaymentMethodViewController") as SelectPaymentMethodViewController;
                 viewController.AccountsForPayment = _accountsForPayment;
-                viewController.TotalAmount = _lblTotalAmountValue.Text;
+                viewController.TotalAmount = totalAmount;
                 var navController = new UINavigationController(viewController);
                 PresentViewController(navController, true, null);
             };

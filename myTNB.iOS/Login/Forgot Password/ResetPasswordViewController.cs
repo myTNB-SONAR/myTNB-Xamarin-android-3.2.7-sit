@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Threading.Tasks;
 using CoreGraphics;
 using Foundation;
@@ -366,7 +366,7 @@ namespace myTNB.Login.ForgotPassword
                         PasswordResetSuccessViewController viewController =
                             storyBoard.InstantiateViewController("PasswordResetSuccessViewController") as PasswordResetSuccessViewController;
                         viewController.IsChangePassword = true;
-                        NavigationController.PushViewController(viewController, false);
+                        NavigationController?.PushViewController(viewController, false);
                     }
                     else
                     {

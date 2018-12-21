@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using CoreGraphics;
 using Foundation;
 using UIKit;
@@ -55,63 +55,71 @@ namespace myTNB.Dashboard.DashboardComponents
             var bcrm = DataManager.DataManager.SharedInstance.SystemStatus?.Find(x => x.SystemType == Enums.SystemEnum.BCRM);
             var bcrmMsg = bcrm?.DowntimeMessage ?? "BRCM will be down for maintenance purpose";
 
-            NSError htmlError = null;
-            NSAttributedString htmlBody = TextHelper.ConvertToHtmlWithFont(bcrmMsg, ref htmlError, myTNBFont.FONTNAME_300, 12f);
-            NSMutableAttributedString mutableDowntime = new NSMutableAttributedString(htmlBody);
-
-            NSMutableParagraphStyle msgParagraphStyle = new NSMutableParagraphStyle();
-            msgParagraphStyle.Alignment = UITextAlignment.Center;
-
-            UIStringAttributes msgAttributes = new UIStringAttributes
+            try
             {
-                ForegroundColor = UIColor.White,
-                ParagraphStyle = msgParagraphStyle
-            };
+                NSError htmlError = null;
+                NSAttributedString htmlBody = TextHelper.ConvertToHtmlWithFont(bcrmMsg, ref htmlError, myTNBFont.FONTNAME_300, 12f);
+                NSMutableAttributedString mutableDowntime = new NSMutableAttributedString(htmlBody);
 
-            UIStringAttributes linkAttributes = new UIStringAttributes
+                NSMutableParagraphStyle msgParagraphStyle = new NSMutableParagraphStyle();
+                msgParagraphStyle.Alignment = UITextAlignment.Center;
+
+                UIStringAttributes msgAttributes = new UIStringAttributes
+                {
+                    ForegroundColor = UIColor.White,
+                    ParagraphStyle = msgParagraphStyle
+                };
+
+                UIStringAttributes linkAttributes = new UIStringAttributes
+                {
+                    Font = myTNBFont.MuseoSans12_300(),
+                    ForegroundColor = UIColor.White,
+                    UnderlineStyle = NSUnderlineStyle.Single,
+                    BackgroundColor = UIColor.Clear
+                };
+
+                mutableDowntime.AddAttributes(msgAttributes, new NSRange(0, htmlBody.Length));
+
+                _txtView = new UITextView(new CGRect(msgXLoc, imgGraphic.Frame.GetMaxY() + 31f, msgWidth, 90f));
+                _txtView.BackgroundColor = UIColor.Clear;
+                _txtView.Editable = false;
+                _txtView.ScrollEnabled = false;
+                _txtView.Selectable = false;
+                _txtView.AttributedText = mutableDowntime;
+                _txtView.WeakLinkTextAttributes = linkAttributes.Dictionary;
+                _txtView.UserInteractionEnabled = true;
+                _txtView.AddGestureRecognizer(
+                    new UITapGestureRecognizer(() =>
+                    {
+                        string str = bcrmMsg.ToString();
+                        if (str.Contains("faqid"))
+                        {
+                            var startStr = str.Substring(str.IndexOf('{'));
+                            string faqId = startStr?.Split('"')[0];
+                            if (!string.IsNullOrEmpty(faqId))
+                            {
+                                ViewHelper.GoToFAQScreenWithId(faqId);
+                            }
+                        }
+                        else if (str.Contains("http") || str.Contains("https"))
+                        {
+                            var startStr = str.Substring(str.IndexOf('"') + 1);
+                            string url = startStr?.Split('"')[0];
+                            if (!string.IsNullOrEmpty(url))
+                            {
+                                ViewHelper.OpenBrowserWithUrl(url);
+                            }
+                        }
+                    }));
+
+                _baseView.AddSubview(_txtView);
+            }
+            catch (Exception e)
             {
-                Font = myTNBFont.MuseoSans12_300(),
-                ForegroundColor = UIColor.White,
-                UnderlineStyle = NSUnderlineStyle.Single,
-                BackgroundColor = UIColor.Clear
-            };
+                Console.WriteLine("Error: " + e.Message);
+            }
 
-            mutableDowntime.AddAttributes(msgAttributes, new NSRange(0, htmlBody.Length));
-
-            _txtView = new UITextView(new CGRect(msgXLoc, imgGraphic.Frame.GetMaxY() + 31f, msgWidth, 90f));
-            _txtView.BackgroundColor = UIColor.Clear;
-            _txtView.Editable = false;
-            _txtView.ScrollEnabled = false;
-            _txtView.Selectable = false;
-            _txtView.AttributedText = mutableDowntime;
-            _txtView.WeakLinkTextAttributes = linkAttributes.Dictionary;
-            _txtView.UserInteractionEnabled = true;
-            _txtView.AddGestureRecognizer(
-                new UITapGestureRecognizer(() => {
-                    string str = bcrmMsg.ToString();
-                    if (str.Contains("faqid"))
-                    {
-                        var startStr = str.Substring(str.IndexOf('{'));
-                        string faqId = startStr?.Split('"')[0];
-                        if (!string.IsNullOrEmpty(faqId))
-                        {
-                            ViewHelper.GoToFAQScreenWithId(faqId);
-                        }
-                    }
-                    else if (str.Contains("http") || str.Contains("https"))
-                    {
-                        var startStr = str.Substring(str.IndexOf('"') + 1);
-                        string url = startStr?.Split('"')[0];
-                        if (!string.IsNullOrEmpty(url))
-                        {
-                            ViewHelper.OpenBrowserWithUrl(url);
-                        }
-                    }
-                }));
-
-            _baseView.AddSubview(_txtView);
-
-            if(_isHeaderMode)
+            if (_isHeaderMode)
             {
                 _baseView.Frame = new CGRect(0, 0, baseWidth, _txtView.Frame.GetMaxY() + 29f);
             }

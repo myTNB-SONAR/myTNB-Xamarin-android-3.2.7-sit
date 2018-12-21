@@ -23,7 +23,7 @@ namespace myTNB
         RegisteredCardsResponseModel _registeredCards = new RegisteredCardsResponseModel();
         RequestPayBillResponseModel _requestPayBill = new RequestPayBillResponseModel();
         TitleBarComponent titleBarComponent;
-        public string TotalAmount = string.Empty;
+        public double TotalAmount = 0.00;
         public UserNotificationDataModel NotificationInfo = new UserNotificationDataModel();
         public List<CustomerAccountRecordModel> AccountsForPayment = new List<CustomerAccountRecordModel>();
         public bool IsFromNavigation = false;
@@ -67,7 +67,7 @@ namespace myTNB
             txtFieldAmountValue.TextColor = myTNBColor.TunaGrey();
             txtFieldAmountValue.Font = myTNBFont.MuseoSans16_300();
             //txtFieldAmountValue.Text = DataManager.DataManager.SharedInstance.BillingAccountDetails.amCustBal.ToString();
-            txtFieldAmountValue.Text = TotalAmount;
+            txtFieldAmountValue.Text = TotalAmount.ToString("N2", CultureInfo.InvariantCulture); ;
             txtFieldAmountValue.TextAlignment = UITextAlignment.Right;
             txtFieldAmountValue.KeyboardType = UIKeyboardType.DecimalPad;
             txtFieldAmountValue.Enabled = false;
@@ -271,11 +271,9 @@ namespace myTNB
                 paymentItem = new PaymentItemsModel();
                 paymentItem.AccountOwnerName = count > 1 ? item.accountOwnerName : DataManager.DataManager.SharedInstance.UserEntity[0].displayName;
                 paymentItem.AccountNo = item.accNum;
-                paymentItem.Amount = item.Amount.ToString("N2", CultureInfo.InvariantCulture);
+                paymentItem.Amount = item.Amount.ToString(CultureInfo.InvariantCulture);
                 paymentItemList.Add(paymentItem);
             }
-
-            double numAmount = TextHelper.ParseStringToDouble(TotalAmount);
 
             ServiceManager serviceManager = new ServiceManager();
             object requestParameter = new
@@ -289,7 +287,7 @@ namespace myTNB
                 platform = thePlatform,
                 registeredCardId = cardID,
                 paymentMode = thePaymentMode,
-                totalAmount = numAmount,
+                totalAmount = TotalAmount,
                 paymentItems = paymentItemList
             };
 

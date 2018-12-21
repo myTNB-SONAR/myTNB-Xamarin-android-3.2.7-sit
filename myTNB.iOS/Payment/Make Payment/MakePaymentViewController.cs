@@ -5,6 +5,7 @@ using myTNB.Model;
 using System.Collections.Generic;
 using CoreGraphics;
 using myTNB.Extensions;
+using System.Threading.Tasks;
 
 namespace myTNB
 {
@@ -40,8 +41,10 @@ namespace myTNB
                 {
                     if (NetworkUtility.isReachable)
                     {
-                        GetPaymentURL();
-                        SetSubviews();
+                        GetPaymentURL().ContinueWith(task =>
+                        {
+                            InvokeOnMainThread(SetSubviews);
+                        });
                     }
                     else
                     {
@@ -61,21 +64,23 @@ namespace myTNB
 
         internal void SetSubviews()
         {
-            _webView = new UIWebView(new CGRect(0, 0, View.Frame.Width, View.Frame.Height));
-            _webView.BackgroundColor = UIColor.White;
-            _webView.Delegate = new WebViewDelegate(View, this);
-            string nsURL = _url;
-            _webView.LoadRequest(new NSUrlRequest(new Uri(_url)));
-            View.AddSubview(_webView);
-
-            var statusBarHeight = UIApplication.SharedApplication.StatusBarFrame.Size.Height;
-            _barView = new UIView
+            if (!string.IsNullOrEmpty(_url))
             {
-                Frame = new CGRect(0, 0, View.Frame.Width, statusBarHeight),
-                BackgroundColor = myTNBColor.GradientPurpleDarkElement(),
-                Hidden = true
-            };
-            View.AddSubview(_barView);
+                _webView = new UIWebView(new CGRect(0, 0, View.Frame.Width, View.Frame.Height));
+                _webView.BackgroundColor = UIColor.White;
+                _webView.Delegate = new WebViewDelegate(View, this);
+                _webView.LoadRequest(new NSUrlRequest(new Uri(_url)));
+                View.AddSubview(_webView);
+
+                var statusBarHeight = UIApplication.SharedApplication.StatusBarFrame.Size.Height;
+                _barView = new UIView
+                {
+                    Frame = new CGRect(0, 0, View.Frame.Width, statusBarHeight),
+                    BackgroundColor = myTNBColor.GradientPurpleDarkElement(),
+                    Hidden = true
+                };
+                View.AddSubview(_barView);
+            }
         }
 
         internal void AddBackButton()
@@ -91,101 +96,102 @@ namespace myTNB
             NavigationItem.LeftBarButtonItem = btnBack;
         }
 
-        internal void GetPaymentURL()
+        /// <summary>
+        /// Gets the payment URL.
+        /// </summary>
+        /// <returns>The payment URL.</returns>
+        internal Task GetPaymentURL()
         {
-            ServiceManager serviceManager = new ServiceManager();
-
-            if (_isNewCard == true && _saveCardIsChecked == false && _paymentMode == "CC")
+            return Task.Factory.StartNew(() =>
             {
-                Dictionary<string, string> requestParams = new Dictionary<string, string>(){
-                    { "MERCHANTID" , _requestPayBillResponseModel.d.data.payMerchantID},
-                    { "MERCHANT_TRANID" , _requestPayBillResponseModel.d.data.payMerchant_transID},
-                    { "PAYMENT_METHOD" , _requestPayBillResponseModel.d.data.payMethod},
-                    { "CURRENCYCODE" , _requestPayBillResponseModel.d.data.payCurrencyCode},
-                    { "AMOUNT" , _requestPayBillResponseModel.d.data.payAmount},
-                    { "CUSTNAME" , _requestPayBillResponseModel.d.data.payCustName},
-                    { "CUSTEMAIL" , _requestPayBillResponseModel.d.data.payCustEmail},
-                    { "RETURN_URL" , _requestPayBillResponseModel.d.data.payReturnUrl},
-                    { "SIGNATURE" , _requestPayBillResponseModel.d.data.paySign},
-                    { "MPARAM1" , _requestPayBillResponseModel.d.data.payMParam},
-                    { "TRANSACTIONTYPE", "1"},
-                    { "CARDNO" ,_card.CardNo},
-                    { "CARDNAME" , _card.CardName},
-                    { "CARDTYPE" , _card.CardType},
-                    { "EXPIRYMONTH" , _card.ExpiryMonth},
-                    { "EXPIRYYEAR" , _card.ExpiryYear},
-                    { "CARDCVC" , _card.CardCVV},
-                    { "DESCRIPTION" , _requestPayBillResponseModel.d.data.payProdDesc}
-            };
-                _url = serviceManager.GetPaymentURL(requestParams, _requestPayBillResponseModel.d.data.action);
+                ServiceManager serviceManager = new ServiceManager();
 
-            }
-            else if (_isNewCard == true && _saveCardIsChecked == true && _paymentMode == "CC")
-            {
-                Dictionary<string, string> requestParams = new Dictionary<string, string>(){
-                    { "MERCHANTID" , _requestPayBillResponseModel.d.data.payMerchantID},
-                    { "MERCHANT_TRANID" , _requestPayBillResponseModel.d.data.payMerchant_transID},
-                    { "PAYMENT_METHOD" , _requestPayBillResponseModel.d.data.payMethod},
-                    { "CURRENCYCODE" , _requestPayBillResponseModel.d.data.payCurrencyCode},
-                    { "AMOUNT" , _requestPayBillResponseModel.d.data.payAmount},
-                    { "CUSTNAME" , _requestPayBillResponseModel.d.data.payCustName},
-                    { "CUSTEMAIL" , _requestPayBillResponseModel.d.data.payCustEmail},
-                    { "DESCRIPTION" , _requestPayBillResponseModel.d.data.payProdDesc},
-                    { "RETURN_URL" , _requestPayBillResponseModel.d.data.payReturnUrl},
-                    { "SIGNATURE" , _requestPayBillResponseModel.d.data.paySign},
-                    { "MPARAM1" , _requestPayBillResponseModel.d.data.payMParam},
+                if (_isNewCard == true && _saveCardIsChecked == false && _paymentMode == "CC")
+                {
+                    Dictionary<string, string> requestParams = new Dictionary<string, string>(){
+                    { "MERCHANTID" , _requestPayBillResponseModel?.d?.data?.payMerchantID},
+                    { "MERCHANT_TRANID" , _requestPayBillResponseModel?.d?.data?.payMerchant_transID},
+                    { "PAYMENT_METHOD" , _requestPayBillResponseModel?.d?.data?.payMethod},
+                    { "CURRENCYCODE" , _requestPayBillResponseModel?.d?.data?.payCurrencyCode},
+                    { "AMOUNT" , _requestPayBillResponseModel?.d?.data?.payAmount},
+                    { "CUSTNAME" , _requestPayBillResponseModel?.d?.data?.payCustName},
+                    { "CUSTEMAIL" , _requestPayBillResponseModel?.d?.data?.payCustEmail},
+                    { "RETURN_URL" , _requestPayBillResponseModel?.d?.data?.payReturnUrl},
+                    { "SIGNATURE" , _requestPayBillResponseModel?.d?.data?.paySign},
+                    { "MPARAM1" , _requestPayBillResponseModel?.d?.data?.payMParam},
                     { "TRANSACTIONTYPE", "1"},
-                    { "CARDNO" ,_card.CardNo},
-                    { "CARDNAME" , _card.CardName},
-                    { "CARDTYPE" , _card.CardType},
-                    { "EXPIRYMONTH" , _card.ExpiryMonth},
-                    { "EXPIRYYEAR" , _card.ExpiryYear},
-                    { "CARDCVC" , _card.CardCVV},
+                    { "CARDNO" ,_card?.CardNo},
+                    { "CARDNAME" , _card?.CardName},
+                    { "CARDTYPE" , _card?.CardType},
+                    { "EXPIRYMONTH" , _card?.ExpiryMonth},
+                    { "EXPIRYYEAR" , _card?.ExpiryYear},
+                    { "CARDCVC" , _card?.CardCVV},
+                    { "DESCRIPTION" , _requestPayBillResponseModel?.d?.data?.payProdDesc}
+                    };
+                    _url = serviceManager.GetPaymentURL(requestParams, _requestPayBillResponseModel?.d?.data?.action);
+
+                }
+                else if (_isNewCard == true && _saveCardIsChecked == true && _paymentMode == "CC")
+                {
+                    Dictionary<string, string> requestParams = new Dictionary<string, string>(){
+                    { "MERCHANTID" , _requestPayBillResponseModel?.d?.data?.payMerchantID},
+                    { "MERCHANT_TRANID" , _requestPayBillResponseModel?.d?.data?.payMerchant_transID},
+                    { "PAYMENT_METHOD" , _requestPayBillResponseModel?.d?.data?.payMethod},
+                    { "CURRENCYCODE" , _requestPayBillResponseModel?.d?.data?.payCurrencyCode},
+                    { "AMOUNT" , _requestPayBillResponseModel?.d?.data?.payAmount},
+                    { "CUSTNAME" , _requestPayBillResponseModel?.d?.data?.payCustName},
+                    { "CUSTEMAIL" , _requestPayBillResponseModel?.d?.data?.payCustEmail},
+                    { "DESCRIPTION" , _requestPayBillResponseModel?.d?.data?.payProdDesc},
+                    { "RETURN_URL" , _requestPayBillResponseModel?.d?.data?.payReturnUrl},
+                    { "SIGNATURE" , _requestPayBillResponseModel?.d?.data?.paySign},
+                    { "MPARAM1" , _requestPayBillResponseModel?.d?.data?.payMParam},
+                    { "TRANSACTIONTYPE", "1"},
+                    { "CARDNO" ,_card?.CardNo},
+                    { "CARDNAME" , _card?.CardName},
+                    { "CARDTYPE" , _card?.CardType},
+                    { "EXPIRYMONTH" , _card?.ExpiryMonth},
+                    { "EXPIRYYEAR" , _card?.ExpiryYear},
+                    { "CARDCVC" , _card?.CardCVV},
                     { "PYMT_IND" , "tokenization"},
                     { "PYMT_CRITERIA" , "registration"}
-            };
-                _url = serviceManager.GetPaymentURL(requestParams, _requestPayBillResponseModel.d.data.action);
-            }
-            else if (_isNewCard == false && _paymentMode == "CC")
-            {
-                Dictionary<string, string> requestParams = new Dictionary<string, string>(){
-                    { "MERCHANTID" , _requestPayBillResponseModel.d.data.payMerchantID},
-                    { "MERCHANT_TRANID" , _requestPayBillResponseModel.d.data.payMerchant_transID},
-                    { "PAYMENT_METHOD" , _requestPayBillResponseModel.d.data.payMethod},
-                    { "CURRENCYCODE" , _requestPayBillResponseModel.d.data.payCurrencyCode},
-                    { "AMOUNT" , _requestPayBillResponseModel.d.data.payAmount},
-                    { "CUSTNAME" , _requestPayBillResponseModel.d.data.payCustName},
-                    { "CUSTEMAIL" , _requestPayBillResponseModel.d.data.payCustEmail},
-                    { "DESCRIPTION" , _requestPayBillResponseModel.d.data.payProdDesc},
-                    { "RETURN_URL" , _requestPayBillResponseModel.d.data.payReturnUrl},
-                    { "SIGNATURE" , _requestPayBillResponseModel.d.data.paySign},
-                    { "MPARAM1" , _requestPayBillResponseModel.d.data.payMParam},
+                    };
+                    _url = serviceManager.GetPaymentURL(requestParams, _requestPayBillResponseModel?.d?.data?.action);
+                }
+                else if (_isNewCard == false && _paymentMode == "CC")
+                {
+                    Dictionary<string, string> requestParams = new Dictionary<string, string>(){
+                    { "MERCHANTID" , _requestPayBillResponseModel?.d?.data?.payMerchantID},
+                    { "MERCHANT_TRANID" , _requestPayBillResponseModel?.d?.data?.payMerchant_transID},
+                    { "PAYMENT_METHOD" , _requestPayBillResponseModel?.d?.data?.payMethod},
+                    { "CURRENCYCODE" , _requestPayBillResponseModel?.d?.data?.payCurrencyCode},
+                    { "AMOUNT" , _requestPayBillResponseModel?.d?.data?.payAmount},
+                    { "CUSTNAME" , _requestPayBillResponseModel?.d?.data?.payCustName},
+                    { "CUSTEMAIL" , _requestPayBillResponseModel?.d?.data?.payCustEmail},
+                    { "DESCRIPTION" , _requestPayBillResponseModel?.d?.data?.payProdDesc},
+                    { "RETURN_URL" , _requestPayBillResponseModel?.d?.data?.payReturnUrl},
+                    { "SIGNATURE" , _requestPayBillResponseModel?.d?.data?.paySign},
+                    { "MPARAM1" , _requestPayBillResponseModel?.d?.data?.payMParam},
                     { "TRANSACTIONTYPE", "1"},
                     { "PYMT_IND" , "tokenization"},
                     { "PYMT_CRITERIA" , "payment"},
-                    //{ "CARDNO" ,_card.CardNo},
-                    //{ "CARDNAME" , _card.CardName},
-                    //{ "CARDTYPE" , _card.CardType},
-                    //{ "EXPIRYMONTH" , _card.ExpiryMonth},
-                    //{ "EXPIRYYEAR" , _card.ExpiryYear},
                     { "CARDCVC" , _cardCVV},
-                    { "PYMT_TOKEN", _requestPayBillResponseModel.d.data.tokenizedHashCodeCC}
-
-            };
-                _url = serviceManager.GetPaymentURL(requestParams, _requestPayBillResponseModel.d.data.action);
-            }
-            else if (_paymentMode == "FPX")
-            {
-                string param3 = _requestPayBillResponseModel.d.data.payAccounts == null
-                                                            ? "0" : "1";
-                Dictionary<string, string> requestParams = new Dictionary<string, string>(){
+                    { "PYMT_TOKEN", _requestPayBillResponseModel?.d?.data?.tokenizedHashCodeCC}
+                    };
+                    _url = serviceManager.GetPaymentURL(requestParams, _requestPayBillResponseModel?.d?.data?.action);
+                }
+                else if (_paymentMode == "FPX")
+                {
+                    string param3 = _requestPayBillResponseModel?.d?.data?.payAccounts == null
+                                                                ? "0" : "1";
+                    Dictionary<string, string> requestParams = new Dictionary<string, string>(){
                     { "Param1" , "3"},
-                    {"Param2", _requestPayBillResponseModel.d.data.payMerchant_transID},
+                    {"Param2", _requestPayBillResponseModel?.d?.data?.payMerchant_transID},
                     {"Param3", param3}
-                };
-                var tempURL = TNBGlobal.GetPaymentURL();
-                _url = serviceManager.GetPaymentURL(requestParams, tempURL);
-            }
+                    };
+                    var tempURL = TNBGlobal.GetPaymentURL();
+                    _url = serviceManager.GetPaymentURL(requestParams, tempURL);
+                }
+            });
         }
 
         /// <summary>
@@ -194,7 +200,6 @@ namespace myTNB
         /// <param name="isHidden">If set to <c>true</c> is hidden.</param>
         public void SetStatusBarHiddenForFullScreen(bool isHidden)
         {
-            Console.WriteLine("debug: status bar height " + _barView.Frame.Height);
             var statusBarHeight = _barView.Frame.Height;
 
             if (!DeviceHelper.IsIphoneXUpResolution())

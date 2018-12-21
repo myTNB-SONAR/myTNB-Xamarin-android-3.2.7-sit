@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using myTNB.Model;
 using SQLite;
@@ -12,8 +12,15 @@ namespace myTNB.SQLite.SQLiteDataManager
         /// </summary>
         public void CreateTable()
         {
-            SQLiteHelper._db.CreateTable<UserEntity>();
-            List<SQLiteConnection.ColumnInfo> info = SQLiteHelper._db.GetTableInfo("UserEntity");
+            try
+            {
+                SQLiteHelper._db.CreateTable<UserEntity>();
+                List<SQLiteConnection.ColumnInfo> info = SQLiteHelper._db.GetTableInfo("UserEntity");
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Error in Create Table : {0}", e.Message);
+            }
         }
         /// <summary>
         /// Inserts the item.
@@ -23,8 +30,13 @@ namespace myTNB.SQLite.SQLiteDataManager
         {
             try
             {
-                int newRecord = SQLiteHelper._db.InsertOrReplace(item);
-                Console.WriteLine("Insert Record: {0}", newRecord);
+                if (item != null)
+                {
+                    int newRecord = SQLiteHelper._db.InsertOrReplace(item);
+#if DEBUG
+                    Console.WriteLine("Insert Record: {0}", newRecord);
+#endif
+                }
             }
             catch (Exception e)
             {
