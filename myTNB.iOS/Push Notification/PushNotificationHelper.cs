@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Firebase.CloudMessaging;
@@ -47,47 +47,50 @@ namespace myTNB
         /// </summary>
         public static void HandlePushNotification()
         {
-            if (DataManager.DataManager.SharedInstance.IsFromPushNotification)
+            try
             {
-                DataManager.DataManager.SharedInstance.IsFromPushNotification = false;
-                DataManager.DataManager.SharedInstance.NotificationNeedsUpdate = true;
-
-                UIStoryboard storyBoard = UIStoryboard.FromName("PushNotification", null);
-                var viewController = storyBoard.InstantiateViewController("PushNotificationViewController") as PushNotificationViewController;
-                var navController = new UINavigationController(viewController);
-
-                var baseRootVc = UIApplication.SharedApplication.KeyWindow?.RootViewController;
-                var topVc = AppDelegate.GetTopViewController(baseRootVc);
-
-                Console.WriteLine("topVc: " + topVc.GetType().ToString());
-
-                if(!(topVc is DashboardHomeViewController) && !(topVc is DashboardViewController))
+                if (DataManager.DataManager.SharedInstance.IsFromPushNotification)
                 {
-                    var tabBar = ViewHelper.DismissControllersAndSelectTab(topVc, 0, false, true);
+                    DataManager.DataManager.SharedInstance.IsFromPushNotification = false;
+                    DataManager.DataManager.SharedInstance.NotificationNeedsUpdate = true;
 
-                    if (tabBar != null)
+                    UIStoryboard storyBoard = UIStoryboard.FromName("PushNotification", null);
+                    var viewController = storyBoard.InstantiateViewController("PushNotificationViewController") as PushNotificationViewController;
+                    var navController = new UINavigationController(viewController);
+
+                    var baseRootVc = UIApplication.SharedApplication.KeyWindow?.RootViewController;
+                    var topVc = AppDelegate.GetTopViewController(baseRootVc);
+
+                    if (!(topVc is DashboardHomeViewController) && !(topVc is DashboardViewController))
                     {
-                        var selVc = tabBar.SelectedViewController as DashboardNavigationController;
-                        if (selVc != null)
-                        {
-                            var vc = selVc.ViewControllers[0];
+                        var tabBar = ViewHelper.DismissControllersAndSelectTab(topVc, 0, false, true);
 
-                            if ((vc is DashboardHomeViewController) || (vc is DashboardViewController))
+                        if (tabBar != null)
+                        {
+                            if (tabBar.SelectedViewController is DashboardNavigationController selVc)
                             {
-                                vc.PresentViewController(navController, true, null);
+                                var vc = selVc.ViewControllers[0];
+
+                                if ((vc is DashboardHomeViewController) || (vc is DashboardViewController))
+                                {
+                                    vc.PresentViewController(navController, true, null);
+                                }
                             }
                         }
+
+                    }
+                    else
+                    {
+                        topVc.PresentViewController(navController, true, null);
                     }
 
                 }
-                else
-                {
-                    topVc.PresentViewController(navController, true, null);
-                }
-
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Error: " + e.Message);
             }
         }
-
 
         /// <summary>
         /// Gets the notifications.

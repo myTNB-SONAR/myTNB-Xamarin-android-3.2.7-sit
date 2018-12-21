@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using myTNB.Enums;
 using myTNB.Model;
@@ -15,11 +15,17 @@ namespace myTNB.DataManager
         {
             return Task.Factory.StartNew(() =>
             {
+                var emailAddress = string.Empty;
+                if (DataManager.SharedInstance.UserEntity?.Count > 0)
+                {
+                    emailAddress = DataManager.SharedInstance.UserEntity[0].email;
+                }
+
                 ServiceManager serviceManager = new ServiceManager();
                 object requestParameter = new
                 {
                     apiKeyID = TNBGlobal.API_KEY_ID,
-                    email = DataManager.SharedInstance.UserEntity[0].email
+                    email = emailAddress
                 };
                 DataManager.SharedInstance.RegisteredCards = serviceManager
                     .GetRegisteredCards("GetRegisteredCards", requestParameter);
@@ -35,10 +41,15 @@ namespace myTNB.DataManager
             return Task.Factory.StartNew(() =>
             {
                 ServiceManager serviceManager = new ServiceManager();
+                var userId = string.Empty;
+                if (DataManager.SharedInstance.UserEntity?.Count > 0)
+                {
+                    userId = DataManager.SharedInstance.UserEntity[0].userID;
+                }
                 object requestParameter = new
                 {
                     apiKeyID = TNBGlobal.API_KEY_ID,
-                    userID = DataManager.SharedInstance.UserEntity[0].userID
+                    userID = userId
                 };
                 DataManager.SharedInstance.CustomerAccounts = serviceManager
                     .GetCustomerBillingAccountList("GetCustomerBillingAccountList", requestParameter);
@@ -53,8 +64,8 @@ namespace myTNB.DataManager
         public static bool ValidateBaseResponse(BaseResponseModel response)
         {
             return response != null
-                && response.d != null
-                && response.d.isError.ToLower().Equals("false");
+                && response?.d != null
+                && response?.d?.didSucceed == true;
         }
 
         /// <summary>
@@ -78,8 +89,8 @@ namespace myTNB.DataManager
         public static bool HasAccountList()
         {
             bool hasAccount = DataManager.SharedInstance.AccountRecordsList != null
-                              && DataManager.SharedInstance.AccountRecordsList.d != null
-                              && DataManager.SharedInstance.AccountRecordsList.d.Count > 0;
+                              && DataManager.SharedInstance.AccountRecordsList?.d != null
+                              && DataManager.SharedInstance.AccountRecordsList?.d?.Count > 0;
             return hasAccount;
         }
 
@@ -89,7 +100,7 @@ namespace myTNB.DataManager
         /// <returns>The account list count.</returns>
         public static int GetAccountListCount()
         {
-            return HasAccountList() ? DataManager.SharedInstance.AccountRecordsList.d.Count : 0;
+            return (int)(HasAccountList() ? DataManager.SharedInstance.AccountRecordsList?.d?.Count : 0);
         }
 
         /// <summary>
@@ -110,6 +121,13 @@ namespace myTNB.DataManager
         {
             ServiceManager serviceManager = new ServiceManager();
             BaseResponseModel response;
+            var userId = string.Empty;
+            var emailAddress = string.Empty;
+            if (DataManager.SharedInstance.UserEntity?.Count > 0)
+            {
+                userId = DataManager.SharedInstance.UserEntity[0].userID;
+                emailAddress = DataManager.SharedInstance.UserEntity[0].email;
+            }
             object requestParameter = new
             {
                 apiKeyID = TNBGlobal.API_KEY_ID,
@@ -119,10 +137,10 @@ namespace myTNB.DataManager
                 devicePlatform = TNBGlobal.API_KEY_ID,
                 deviceVersion = TNBGlobal.API_KEY_ID,
                 deviceCordova = TNBGlobal.API_KEY_ID,
-                username = DataManager.SharedInstance.UserEntity[0].email,
-                userEmail = DataManager.SharedInstance.UserEntity[0].email,
+                username = emailAddress,
+                userEmail = emailAddress,
                 mobileNo = mobileNumber,
-                sspUserId = DataManager.SharedInstance.UserEntity[0].userID
+                sspUserId = userId
             };
             response = await Task.Run(() =>
             {
@@ -143,12 +161,21 @@ namespace myTNB.DataManager
         {
             BaseResponseModel response;
             ServiceManager serviceManager = new ServiceManager();
+            var userId = string.Empty;
+            var emailAddress = string.Empty;
+            var phoneNumber = string.Empty;
+            if (DataManager.SharedInstance.UserEntity?.Count > 0)
+            {
+                userId = DataManager.SharedInstance.UserEntity[0].userID;
+                emailAddress = DataManager.SharedInstance.UserEntity[0].email;
+                phoneNumber = DataManager.SharedInstance.UserEntity[0].mobileNo;
+            }
             object requestParameter = new
             {
                 apiKeyID = TNBGlobal.API_KEY_ID,
-                sspUserId = DataManager.SharedInstance.UserEntity[0].userID,
-                email = DataManager.SharedInstance.UserEntity[0].email,
-                oldPhoneNumber = isFromLogin ? string.Empty : DataManager.SharedInstance.UserEntity[0].mobileNo,
+                sspUserId = userId,
+                email = emailAddress,
+                oldPhoneNumber = isFromLogin ? string.Empty : phoneNumber,
                 newPhoneNumber = mobileNumber,
                 token = tokenStr
             };
@@ -239,7 +266,7 @@ namespace myTNB.DataManager
 
             if (DataManager.SharedInstance.UserEntity?.Count > 0)
             {
-                userId = DataManager.SharedInstance.UserEntity[0]?.userID;
+                userId = DataManager.SharedInstance.UserEntity[0].userID;
             }
 
             object requestParameter = new

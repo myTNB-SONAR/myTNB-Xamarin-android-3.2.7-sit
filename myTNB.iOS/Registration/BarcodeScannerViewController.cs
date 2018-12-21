@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using CoreGraphics;
@@ -158,59 +158,65 @@ namespace myTNB.Registration
 
         public override void ViewDidAppear(bool animated)
         {
-            scannerView.OnScannerSetupComplete += HandleOnScannerSetupComplete;
+            try
+            {
+                scannerView.OnScannerSetupComplete += HandleOnScannerSetupComplete;
 
-            originalStatusBarStyle = UIApplication.SharedApplication.StatusBarStyle;
+                originalStatusBarStyle = UIApplication.SharedApplication.StatusBarStyle;
 
-            if (UIDevice.CurrentDevice.CheckSystemVersion(7, 0))
-            {
-                UIApplication.SharedApplication.StatusBarStyle = UIStatusBarStyle.Default;
-                SetNeedsStatusBarAppearanceUpdate();
-            }
-            else
-            {
-                UIApplication.SharedApplication.SetStatusBarStyle(UIStatusBarStyle.BlackTranslucent, false);
-            }
-            Console.WriteLine("Starting to scan...");
-            Task.Factory.StartNew(() =>
-            {
-                BeginInvokeOnMainThread(() => scannerView.StartScanning(result =>
+                if (UIDevice.CurrentDevice.CheckSystemVersion(7, 0))
                 {
+                    UIApplication.SharedApplication.StatusBarStyle = UIStatusBarStyle.Default;
+                    SetNeedsStatusBarAppearanceUpdate();
+                }
+                else
+                {
+                    UIApplication.SharedApplication.SetStatusBarStyle(UIStatusBarStyle.BlackTranslucent, false);
+                }
 
-                    if (!ContinuousScanning)
+                Task.Factory.StartNew(() =>
+                {
+                    BeginInvokeOnMainThread(() => scannerView.StartScanning(result =>
                     {
-                        string accountNumber = result.ToString();
-                        Console.WriteLine("Stopping scan... " + accountNumber);
-                        if (accountNumber.Length > 12)
+                        if (!ContinuousScanning)
                         {
-                            accountNumber = accountNumber.Substring(0, 12);
-                        }
-                        Regex regex = new Regex(ACCOUNT_NO_PATTERN);
-                        Match match = regex.Match(accountNumber);
-                        if (match.Success)
-                        {
-                            InvokeOnMainThread(() =>
+                            if (result != null)
                             {
-                                Console.WriteLine("Success");
-                                scanLayerView.Layer.BorderColor = myTNBColor.FreshGreen().CGColor;
-                                lblScanStatus.Hidden = true;
+                                string accountNumber = result.ToString();
+                                if (!string.IsNullOrEmpty(accountNumber) && accountNumber?.Length > 12)
+                                {
+                                    accountNumber = accountNumber.Substring(0, 12);
+                                }
+                                Regex regex = new Regex(ACCOUNT_NO_PATTERN);
+                                Match match = regex.Match(accountNumber);
+                                if (match.Success)
+                                {
+                                    InvokeOnMainThread(() =>
+                                    {
+                                        scanLayerView.Layer.BorderColor = myTNBColor.FreshGreen().CGColor;
+                                        lblScanStatus.Hidden = true;
 
-                                DataManager.DataManager.SharedInstance.AccountNumber = accountNumber;
-                                this.NavigationController.PopViewController(true);
-                            });
+                                        DataManager.DataManager.SharedInstance.AccountNumber = accountNumber;
+                                        this.NavigationController?.PopViewController(true);
+                                    });
+                                }
+                                else
+                                {
+                                    InvokeOnMainThread(() =>
+                                    {
+                                        scanLayerView.Layer.BorderColor = myTNBColor.Tomato().CGColor;
+                                        lblScanStatus.Hidden = false;
+                                    });
+                                }
+                            }
                         }
-                        else
-                        {
-                            InvokeOnMainThread(() =>
-                            {
-                                Console.WriteLine("Fail");
-                                scanLayerView.Layer.BorderColor = myTNBColor.Tomato().CGColor;
-                                lblScanStatus.Hidden = false;
-                            });
-                        }
-                    }
-                }, this.ScanningOptions));
-            });
+                    }, this.ScanningOptions));
+                });
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Error: " + e.Message);
+            }
         }
 
         public override void ViewDidDisappear(bool animated)

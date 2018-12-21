@@ -28,103 +28,126 @@ namespace myTNB
         {
             base.ViewDidLoad();
             ModelController = new ModelController();
-            ModelController.SetPageData();
-
-            // Configure the page view controller and add it as a child view controller.
-            PageViewController = new UIPageViewController(UIPageViewControllerTransitionStyle.Scroll, UIPageViewControllerNavigationOrientation.Horizontal, UIPageViewControllerSpineLocation.Min);
-            PageViewController.WeakDelegate = this;
-            var startingViewController = ModelController.GetViewController(0, Storyboard);
-            var viewControllers = new UIViewController[] { startingViewController };
-            PageViewController.SetViewControllers(viewControllers, UIPageViewControllerNavigationDirection.Forward, false, null);
-
-            PageViewController.WeakDataSource = ModelController;
-
-            AddChildViewController(PageViewController);
-            View.AddSubview(PageViewController.View);
-
-            // Set the page view controller's bounds using an inset rect so that self's view is visible around the edges of the pages.
-            var pageViewRect = View.Bounds;
-            if (UIDevice.CurrentDevice.UserInterfaceIdiom == UIUserInterfaceIdiom.Pad)
-                pageViewRect = new CGRect(pageViewRect.X + 20, pageViewRect.Y + 20, pageViewRect.Width - 40, pageViewRect.Height - 40);
-            PageViewController.View.Frame = pageViewRect;
-
-            PageViewController.DidMoveToParentViewController(this);
-
-            // Add the page view controller's gesture recognizers to the book view controller's view so that the gestures are started more easily.
-            View.GestureRecognizers = PageViewController.GestureRecognizers;
-
-
-            UIButton btnSkip = new UIButton(UIButtonType.Custom);
-            btnSkip.Frame = new CGRect(0f, 0f, 0f, 0f);
-            btnSkip.SetTitle("Skip", UIControlState.Normal);
-            //btnSkip.Layer.CornerRadius = 5.0f;
-            //btnSkip.Layer.BorderWidth = 1.0f;
-            //btnSkip.Layer.BorderColor = UIColor.White.CGColor;
-            btnSkip.BackgroundColor = UIColor.Clear;
-            btnSkip.TitleLabel.Font = myTNBFont.MuseoSans14();
-            btnSkip.TitleLabel.TextAlignment = UITextAlignment.Left;
-            View.AddSubview(btnSkip);
-            btnSkip.TouchUpInside += (sender, e) =>
+            ModelController.SetPageData().ContinueWith(task =>
             {
-                OnSkip();
-            };
+                InvokeOnMainThread(() =>
+                {
+                    try
+                    {
+                        // Configure the page view controller and add it as a child view controller.
+                        PageViewController = new UIPageViewController(UIPageViewControllerTransitionStyle.Scroll, UIPageViewControllerNavigationOrientation.Horizontal, UIPageViewControllerSpineLocation.Min)
+                        {
+                            WeakDelegate = this
+                        };
+                        var startingViewController = ModelController?.GetViewController(0, Storyboard);
+                        if (startingViewController != null)
+                        {
+                            var viewControllers = new UIViewController[] { startingViewController };
+                            PageViewController.SetViewControllers(viewControllers, UIPageViewControllerNavigationDirection.Forward, false, null);
+                            PageViewController.WeakDataSource = ModelController;
 
-            UIButton btnDone = new UIButton(UIButtonType.Custom);
-            btnDone.Frame = new CGRect(0f, 0f, 0f, 0f);
-            btnDone.SetTitle("Done", UIControlState.Normal);
-            btnDone.BackgroundColor = UIColor.Clear;
-            btnDone.TitleLabel.Font = myTNBFont.MuseoSans14();
-            btnDone.TitleLabel.TextAlignment = UITextAlignment.Right;
-            View.AddSubview(btnDone);
-            btnDone.TouchUpInside += (sender, e) =>
-            {
-                OnSkip();
-            };
+                            AddChildViewController(PageViewController);
+                            View.AddSubview(PageViewController.View);
 
-            btnDone.Hidden = true;
+                            // Set the page view controller's bounds using an inset rect so that self's view is visible around the edges of the pages.
+                            var pageViewRect = View.Bounds;
+                            if (UIDevice.CurrentDevice.UserInterfaceIdiom == UIUserInterfaceIdiom.Pad)
+                                pageViewRect = new CGRect(pageViewRect.X + 20, pageViewRect.Y + 20, pageViewRect.Width - 40, pageViewRect.Height - 40);
+                            PageViewController.View.Frame = pageViewRect;
 
-            UIView viewNext = new UIView(new CGRect(0, 0, 24, 24));
-            UIImageView imgViewNext = new UIImageView(new CGRect(0, 0, 24, 24));
-            imgViewNext.Image = UIImage.FromBundle("Next-White");
-            viewNext.AddSubview(imgViewNext);
+                            PageViewController.DidMoveToParentViewController(this);
 
-            UITapGestureRecognizer onNextTap = new UITapGestureRecognizer(() =>
-            {
-                //Todo: Next function
-                ModelController.isNextTapped = true;
-                int index = ModelController.currentIndex + 1;
-                btnSkip.Hidden = index == ModelController.pageData.Count - 1;
-                btnDone.Hidden = index != ModelController.pageData.Count - 1;
-                viewNext.Hidden = index == ModelController.pageData.Count - 1;
-                var nextVC = ModelController.GetViewController(index, Storyboard);
-                var vc = new UIViewController[] { nextVC };
-                PageViewController.SetViewControllers(vc, UIPageViewControllerNavigationDirection.Forward, false, null);
+                            // Add the page view controller's gesture recognizers to the book view controller's view so that the gestures are started more easily.
+                            View.GestureRecognizers = PageViewController.GestureRecognizers;
+
+
+                            UIButton btnSkip = new UIButton(UIButtonType.Custom)
+                            {
+                                Frame = new CGRect(0f, 0f, 0f, 0f)
+                            };
+                            btnSkip.SetTitle("Skip", UIControlState.Normal);
+                            btnSkip.BackgroundColor = UIColor.Clear;
+                            btnSkip.TitleLabel.Font = myTNBFont.MuseoSans14();
+                            btnSkip.TitleLabel.TextAlignment = UITextAlignment.Left;
+                            View.AddSubview(btnSkip);
+                            btnSkip.TouchUpInside += (sender, e) =>
+                            {
+                                OnSkip();
+                            };
+
+                            UIButton btnDone = new UIButton(UIButtonType.Custom)
+                            {
+                                Frame = new CGRect(0f, 0f, 0f, 0f)
+                            };
+                            btnDone.SetTitle("Done", UIControlState.Normal);
+                            btnDone.BackgroundColor = UIColor.Clear;
+                            btnDone.TitleLabel.Font = myTNBFont.MuseoSans14();
+                            btnDone.TitleLabel.TextAlignment = UITextAlignment.Right;
+                            View.AddSubview(btnDone);
+                            btnDone.TouchUpInside += (sender, e) =>
+                            {
+                                OnSkip();
+                            };
+
+                            btnDone.Hidden = true;
+
+                            UIView viewNext = new UIView(new CGRect(0, 0, 24, 24));
+                            UIImageView imgViewNext = new UIImageView(new CGRect(0, 0, 24, 24))
+                            {
+                                Image = UIImage.FromBundle("Next-White")
+                            };
+                            viewNext.AddSubview(imgViewNext);
+
+                            UITapGestureRecognizer onNextTap = new UITapGestureRecognizer(() =>
+                            {
+                                if (ModelController?.pageData != null && ModelController?.pageData?.Count > 0)
+                                {
+                                    //Todo: Next function
+                                    ModelController.isNextTapped = true;
+                                    int index = ModelController.currentIndex + 1;
+                                    btnSkip.Hidden = index == ModelController.pageData.Count - 1;
+                                    btnDone.Hidden = index != ModelController.pageData.Count - 1;
+                                    viewNext.Hidden = index == ModelController.pageData.Count - 1;
+                                    var nextVC = ModelController.GetViewController(index, Storyboard);
+                                    if (nextVC != null)
+                                    {
+                                        var vc = new UIViewController[] { nextVC };
+                                        PageViewController.SetViewControllers(vc, UIPageViewControllerNavigationDirection.Forward, false, null);
+                                    }
+                                }
+                            });
+                            viewNext.AddGestureRecognizer(onNextTap);
+                            View.AddSubview(viewNext);
+
+                            View.AddConstraints(
+                                btnSkip.AtLeftOf(View, 18),
+                                btnSkip.AtBottomOf(View, 19),
+                                btnSkip.Width().EqualTo(50),
+                                btnSkip.Height().EqualTo(18),
+
+                                btnDone.AtRightOf(View, 18),
+                                btnDone.AtBottomOf(View, 19),
+                                btnDone.Width().EqualTo(50),
+                                btnDone.Height().EqualTo(18),
+
+                                viewNext.AtRightOf(View, 19),
+                                viewNext.AtBottomOf(View, 16),
+                                viewNext.Width().EqualTo(24),
+                                viewNext.Height().EqualTo(24)
+                            );
+                            View.SubviewsDoNotTranslateAutoresizingMaskIntoConstraints();
+
+                            ModelController.btnDone = btnDone;
+                            ModelController.btnSkip = btnSkip;
+                            ModelController.viewNext = viewNext;
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine("Error: " + e.Message);
+                    }
+                });
             });
-            viewNext.AddGestureRecognizer(onNextTap);
-            View.AddSubview(viewNext);
-
-            View.AddConstraints(
-                btnSkip.AtLeftOf(View, 18),
-                btnSkip.AtBottomOf(View, 19),
-                btnSkip.Width().EqualTo(50),
-                btnSkip.Height().EqualTo(18),
-
-                btnDone.AtRightOf(View, 18),
-                btnDone.AtBottomOf(View, 19),
-                btnDone.Width().EqualTo(50),
-                btnDone.Height().EqualTo(18),
-
-                viewNext.AtRightOf(View, 19),
-                viewNext.AtBottomOf(View, 16),
-                viewNext.Width().EqualTo(24),
-                viewNext.Height().EqualTo(24)
-            );
-            View.SubviewsDoNotTranslateAutoresizingMaskIntoConstraints();
-
-
-            ModelController.btnDone = btnDone;
-            ModelController.btnSkip = btnSkip;
-            ModelController.viewNext = viewNext;
         }
 
         public override void ViewDidLayoutSubviews()

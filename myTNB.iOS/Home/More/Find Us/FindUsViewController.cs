@@ -53,8 +53,11 @@ namespace myTNB
                 if (DataManager.DataManager.SharedInstance.LocationTypes != null
                     && DataManager.DataManager.SharedInstance.LocationTypes?.Count > 0)
                 {
-                    _lblType.Text = DataManager.DataManager.SharedInstance.LocationTypes
+                    if (DataManager.DataManager.SharedInstance.CurrentStoreTypeIndex < DataManager.DataManager.SharedInstance.LocationTypes.Count)
+                    {
+                        _lblType.Text = DataManager.DataManager.SharedInstance.LocationTypes
                         [DataManager.DataManager.SharedInstance.CurrentStoreTypeIndex].Description;
+                    }
                 }
                 else
                 {
@@ -118,9 +121,9 @@ namespace myTNB
             {
                 InvokeOnMainThread(() =>
                 {
-                    if (_locations != null && _locations.d != null && _locations.d.data != null)
+                    if (_locations != null && _locations?.d != null && _locations?.d?.data != null)
                     {
-                        if (_locations.d.data.Count() > 0)
+                        if (_locations.d.data?.Count() > 0)
                         {
                             foreach (var item in _locations.d.data)
                             {
@@ -128,9 +131,11 @@ namespace myTNB
                                     new CLLocationCoordinate2D(item.Latitude, item.Longitude)
                                     , item.Title
                                     , item.Address
-                                );
-                                annotation.is7E = false;
-                                annotation.KTItem = item;
+                                )
+                                {
+                                    is7E = false,
+                                    KTItem = item
+                                };
                                 _mapView.AddAnnotation(annotation);
                             }
                             ReCenterMap(_locations.d.data[0].Latitude, _locations.d.data[0].Longitude);
@@ -172,15 +177,17 @@ namespace myTNB
                             )
                             , item.Name
                             , item.Placemark.Title
-                        );
-                        annotation.is7E = true;
-                        annotation.ConvinientStoreItem = item;
+                        )
+                        {
+                            is7E = true,
+                            ConvinientStoreItem = item
+                        };
                         _mapView.AddAnnotation(annotation);
                     }
-                    if (isRecenter && _convinientStoreList != null && _convinientStoreList.Count > 0)
+                    if (isRecenter && _convinientStoreList != null && _convinientStoreList?.Count > 0)
                     {
-                        ReCenterMap(_convinientStoreList[0].Placemark.Coordinate.Latitude
-                                    , _convinientStoreList[0].Placemark.Coordinate.Longitude);
+                        ReCenterMap((double)_convinientStoreList[0].Placemark.Coordinate.Latitude
+                                    , (double)_convinientStoreList[0].Placemark.Coordinate.Longitude);
                     }
                 }
                 else
@@ -221,8 +228,10 @@ namespace myTNB
             _textFieldHelper.CreateTextFieldLeftView(txtFieldSearch, "IC-Field-Search");
             _textFieldHelper.SetKeyboard(txtFieldSearch);
             txtFieldSearch.ReturnKeyType = UIReturnKeyType.Search;
-            UIView viewLineSearch = new UIView(new CGRect(0, 36, viewSearch.Frame.Width, 1));
-            viewLineSearch.BackgroundColor = myTNBColor.PlatinumGrey();
+            UIView viewLineSearch = new UIView(new CGRect(0, 36, viewSearch.Frame.Width, 1))
+            {
+                BackgroundColor = myTNBColor.PlatinumGrey()
+            };
             txtFieldSearch.ShouldReturn += (textField) =>
             {
                 Console.WriteLine("Searh tapped");
@@ -249,23 +258,31 @@ namespace myTNB
             viewSearch.AddSubviews(new UIView[] { txtFieldSearch, viewLineSearch });
 
             UIView viewShow = new UIView(new CGRect(18, DeviceHelper.IsIphoneXUpResolution() ? 160 : 138, View.Frame.Width - 36, 51));
-            UILabel lblShow = new UILabel(new CGRect(0, 0, viewShow.Frame.Width, 12));
-            lblShow.Text = "SHOW";
-            lblShow.TextAlignment = UITextAlignment.Left;
-            lblShow.TextColor = myTNBColor.SilverChalice();
-            lblShow.Font = myTNBFont.MuseoSans9();
+            UILabel lblShow = new UILabel(new CGRect(0, 0, viewShow.Frame.Width, 12))
+            {
+                Text = "SHOW",
+                TextAlignment = UITextAlignment.Left,
+                TextColor = myTNBColor.SilverChalice(),
+                Font = myTNBFont.MuseoSans9()
+            };
 
-            _lblType = new UILabel(new CGRect(0, 12, viewShow.Frame.Width, 24));
-            _lblType.Text = "All";
-            _lblType.TextAlignment = UITextAlignment.Left;
-            _lblType.TextColor = myTNBColor.TunaGrey();
-            _lblType.Font = myTNBFont.MuseoSans16();
+            _lblType = new UILabel(new CGRect(0, 12, viewShow.Frame.Width, 24))
+            {
+                Text = "All",
+                TextAlignment = UITextAlignment.Left,
+                TextColor = myTNBColor.TunaGrey(),
+                Font = myTNBFont.MuseoSans16()
+            };
 
-            UIImageView imgDropDown = new UIImageView(new CGRect(viewShow.Frame.Width - 30, 12, 24, 24));
-            imgDropDown.Image = UIImage.FromBundle("IC-Action-Dropdown");
+            UIImageView imgDropDown = new UIImageView(new CGRect(viewShow.Frame.Width - 30, 12, 24, 24))
+            {
+                Image = UIImage.FromBundle("IC-Action-Dropdown")
+            };
 
-            UIView viewLineShow = new UIView(new CGRect(0, 36, viewShow.Frame.Width, 1));
-            viewLineShow.BackgroundColor = myTNBColor.PlatinumGrey();
+            UIView viewLineShow = new UIView(new CGRect(0, 36, viewShow.Frame.Width, 1))
+            {
+                BackgroundColor = myTNBColor.PlatinumGrey()
+            };
 
             viewShow.AddSubviews(new UIView[] { lblShow, _lblType, imgDropDown, viewLineShow });
 
@@ -317,7 +334,6 @@ namespace myTNB
                     }
                     else
                     {
-                        Console.WriteLine("No Network");
                         DisplayAlertMessage("ErrNoNetworkTitle".Translate(), "ErrNoNetworkMsg".Translate());
                     }
                 });
@@ -350,9 +366,11 @@ namespace myTNB
 
         internal void SetMapView()
         {
-            _mapView = new MKMapView(new CGRect(0, DeviceHelper.IsIphoneXUpResolution() ? 160 : 138, View.Frame.Width, View.Frame.Height - (DeviceHelper.IsIphoneXUpResolution() ? 162 : 137)));
-            _mapView.ShowsCompass = false;
-            _mapView.GetViewForAnnotation = GetViewForAnnotation;
+            _mapView = new MKMapView(new CGRect(0, DeviceHelper.IsIphoneXUpResolution() ? 160 : 138, View.Frame.Width, View.Frame.Height - (DeviceHelper.IsIphoneXUpResolution() ? 162 : 137)))
+            {
+                ShowsCompass = false,
+                GetViewForAnnotation = GetViewForAnnotation
+            };
             SetUserLocation();
             CreateLocationIcon();
             View.AddSubview(_mapView);
@@ -362,14 +380,18 @@ namespace myTNB
         {
             _viewLocation = new UIView(new CGRect(_mapView.Frame.Width - 67, _mapView.Frame.Height - 75, 50, 50));
 
-            UIImageView imgLocation = new UIImageView(new CGRect(13, 13, 24, 24));
-            imgLocation.Image = UIImage.FromBundle("IC-Button-Map-Center");
+            UIImageView imgLocation = new UIImageView(new CGRect(13, 13, 24, 24))
+            {
+                Image = UIImage.FromBundle("IC-Button-Map-Center")
+            };
 
             UIBezierPath path = new UIBezierPath();
             path.AddArc(new CGPoint(25, 25), 24, 0, (nfloat)Math.PI * 2, true);
-            CAShapeLayer shapeLayer = new CAShapeLayer();
-            shapeLayer.Path = path.CGPath;
-            shapeLayer.FillColor = UIColor.White.CGColor;
+            CAShapeLayer shapeLayer = new CAShapeLayer
+            {
+                Path = path.CGPath,
+                FillColor = UIColor.White.CGColor
+            };
 
             _viewLocation.Layer.AddSublayer(shapeLayer);
             _viewLocation.AddSubview(imgLocation);
@@ -398,7 +420,7 @@ namespace myTNB
                    || e.Status == CLAuthorizationStatus.AuthorizedWhenInUse
                    || e.Status == CLAuthorizationStatus.AuthorizedAlways)
                 {
-                    if (_locationManager != null && _locationManager.Location != null)
+                    if (_locationManager != null && _locationManager?.Location != null)
                     {
                         CLLocationCoordinate2D coords = new CLLocationCoordinate2D(_locationManager.Location.Coordinate.Latitude, _locationManager.Location.Coordinate.Longitude);
                         MKCoordinateSpan span = new MKCoordinateSpan(MilesToLatitudeDegrees(1), MilesToLongitudeDegrees(1, coords.Latitude));
@@ -484,8 +506,8 @@ namespace myTNB
                 object requestParameter = new
                 {
                     apiKeyID = TNBGlobal.API_KEY_ID,
-                    latitude = _locationManager.Location.Coordinate.Latitude.ToString(),//"3.1365952399077304",//
-                    longitude = _locationManager.Location.Coordinate.Longitude.ToString(),//"101.69228553771973",//
+                    latitude = _locationManager?.Location.Coordinate.Latitude.ToString(),//"3.1365952399077304",//
+                    longitude = _locationManager?.Location.Coordinate.Longitude.ToString(),//"101.69228553771973",//
                     locationType = locType,
                     keyword = isSearch ? _searchLoc : string.Empty
                 };

@@ -64,23 +64,34 @@ namespace myTNB
             UIView viewBanner = new UIView(new CGRect(0, 0, View.Frame.Width, View.Frame.Width / 1.777));
             UIImageView imgBanner = new UIImageView(new CGRect(0, 0, View.Frame.Width, View.Frame.Width / 1.777));
             viewBanner.AddSubview(imgBanner);
-            ActivityIndicatorComponent _activityIndicator = new ActivityIndicatorComponent(viewBanner);
-            _activityIndicator.Show();
-            NSUrl url = new NSUrl(Promotion.LandscapeImage);
-            NSUrlSession session = NSUrlSession
-                .FromConfiguration(NSUrlSessionConfiguration.DefaultSessionConfiguration);
-            NSUrlSessionDataTask dataTask = session.CreateDataTask(url, (data, response, error) =>
+
+            if (!string.IsNullOrWhiteSpace(Promotion.LandscapeImage))
             {
-                if (error == null && response != null && data != null)
+                try
                 {
-                    InvokeOnMainThread(() =>
+                    ActivityIndicatorComponent _activityIndicator = new ActivityIndicatorComponent(viewBanner);
+                    _activityIndicator.Show();
+                    NSUrl url = new NSUrl(Promotion.LandscapeImage);
+                    NSUrlSession session = NSUrlSession
+                        .FromConfiguration(NSUrlSessionConfiguration.DefaultSessionConfiguration);
+                    NSUrlSessionDataTask dataTask = session.CreateDataTask(url, (data, response, error) =>
                     {
-                        imgBanner.Image = UIImage.LoadFromData(data);
-                        _activityIndicator.Hide();
+                        if (error == null && response != null && data != null)
+                        {
+                            InvokeOnMainThread(() =>
+                            {
+                                imgBanner.Image = UIImage.LoadFromData(data);
+                                _activityIndicator.Hide();
+                            });
+                        }
                     });
+                    dataTask.Resume();
                 }
-            });
-            dataTask.Resume();
+                catch (Exception e)
+                {
+                    Console.WriteLine("Image load Error: " + e.Message);
+                }
+            }
 
             UILabel lblTitle = new UILabel(new CGRect(18, viewBanner.Frame.Height + 16, View.Frame.Width - 36, 18));
             lblTitle.TextAlignment = UITextAlignment.Left;

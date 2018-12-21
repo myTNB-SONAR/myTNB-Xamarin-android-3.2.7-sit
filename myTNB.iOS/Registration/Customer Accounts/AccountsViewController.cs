@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Threading.Tasks;
@@ -146,9 +146,9 @@ namespace myTNB.Registration.CustomerAccounts
 
         internal void SetRecordCount()
         {
-            int recordCount = DataManager.DataManager.SharedInstance.AccountRecordsList != null
-                                         && DataManager.DataManager.SharedInstance.AccountRecordsList.d != null
-                                         ? DataManager.DataManager.SharedInstance.AccountRecordsList.d.Count : 0;
+            int recordCount = (int)(DataManager.DataManager.SharedInstance.AccountRecordsList != null
+                                         && DataManager.DataManager.SharedInstance.AccountRecordsList?.d != null
+                                         ? DataManager.DataManager.SharedInstance.AccountRecordsList?.d?.Count : 0);
             lblDetails.Hidden = false;
             lblDetails.Text = recordCount > 0 ? recordCount.ToString() + " electricity supply accounts found!" : "NoAcctsFoundDesc".Translate();
             lblSubDetails.Hidden = recordCount == 0;
@@ -170,8 +170,8 @@ namespace myTNB.Registration.CustomerAccounts
                         if (NetworkUtility.isReachable)
                         {
                             if (DataManager.DataManager.SharedInstance.AccountsToBeAddedList != null
-                               && DataManager.DataManager.SharedInstance.AccountsToBeAddedList.d != null
-                               && DataManager.DataManager.SharedInstance.AccountsToBeAddedList.d.Count > 0)
+                               && DataManager.DataManager.SharedInstance.AccountsToBeAddedList?.d != null
+                               && DataManager.DataManager.SharedInstance.AccountsToBeAddedList?.d?.Count > 0)
                             {
                                 if (IsEmptyNicknameExist())
                                 {
@@ -187,7 +187,7 @@ namespace myTNB.Registration.CustomerAccounts
                             else
                             {
                                 if (DataManager.DataManager.SharedInstance.AccountRecordsList == null
-                                   || DataManager.DataManager.SharedInstance.AccountRecordsList.d == null)
+                                   || DataManager.DataManager.SharedInstance.AccountRecordsList?.d == null)
                                 {
                                     DataManager.DataManager.SharedInstance.AccountRecordsList = new CustomerAccountRecordListModel();
                                     DataManager.DataManager.SharedInstance.AccountRecordsList.d = new List<CustomerAccountRecordModel>();
@@ -278,7 +278,7 @@ namespace myTNB.Registration.CustomerAccounts
 
         internal bool IsEmptyNicknameExist()
         {
-            for (int i = 0; i < DataManager.DataManager.SharedInstance.AccountsToBeAddedList.d.Count; i++)
+            for (int i = 0; i < DataManager.DataManager.SharedInstance.AccountsToBeAddedList?.d?.Count; i++)
             {
                 CustomerAccountRecordModel acc = DataManager.DataManager.SharedInstance.AccountsToBeAddedList.d[i];
                 if (string.IsNullOrEmpty(acc.accountNickName) || string.IsNullOrWhiteSpace(acc.accountNickName))
@@ -296,9 +296,9 @@ namespace myTNB.Registration.CustomerAccounts
             {
                 InvokeOnMainThread(() =>
                 {
-                    if (_customerAccountResponseModel.d != null
-                       && _customerAccountResponseModel.d.isError == "false"
-                       && _customerAccountResponseModel.d.status == "success")
+                    if (_customerAccountResponseModel?.d != null
+                       && _customerAccountResponseModel?.d?.didSucceed == true
+                       && _customerAccountResponseModel?.d?.status == "success")
                     {
                         DataManager.DataManager.SharedInstance.AccountsToBeAddedList.d = _customerAccountResponseModel?.d?.data;
                         int currentCount = ServiceCall.GetAccountListCount();
@@ -312,8 +312,8 @@ namespace myTNB.Registration.CustomerAccounts
                         SetAccountTable();
                         accountRecordsTableView.Hidden = false;
                         if (DataManager.DataManager.SharedInstance.AccountsToBeAddedList != null
-                            && DataManager.DataManager.SharedInstance.AccountsToBeAddedList.d != null
-                            && DataManager.DataManager.SharedInstance.AccountsToBeAddedList.d.Count == 0)
+                            && DataManager.DataManager.SharedInstance.AccountsToBeAddedList?.d != null
+                            && DataManager.DataManager.SharedInstance.AccountsToBeAddedList?.d?.Count == 0)
                         {
                             NavigateToPage("AccountRecords", "SelectAccountByICNumberViewController");
                         }
@@ -337,8 +337,8 @@ namespace myTNB.Registration.CustomerAccounts
                         }
                         else
                         {
-                            var message = !string.IsNullOrWhiteSpace(_customerAccountResponseModel?.d?.message) 
-                                                 ? _customerAccountResponseModel?.d?.message 
+                            var message = !string.IsNullOrWhiteSpace(_customerAccountResponseModel?.d?.message)
+                                                 ? _customerAccountResponseModel?.d?.message
                                                  : "DefaultErrorMessage".Translate();
                             ToastHelper.DisplayAlertView(this, "ErrorTitle".Translate(), message, (obj) =>
                             {
@@ -411,30 +411,29 @@ namespace myTNB.Registration.CustomerAccounts
 
         internal void ExecuteAddMultipleSupplyAccountsToUserReg()
         {
-            Console.WriteLine(DataManager.DataManager.SharedInstance.AccountsToBeAddedList.d);
             NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
             {
                 InvokeOnMainThread(() =>
                 {
                     if (NetworkUtility.isReachable)
                     {
-                        DisplayProgessView(DataManager.DataManager.SharedInstance.AccountsToBeAddedList.d.Count);
+                        DisplayProgessView((int)DataManager.DataManager.SharedInstance.AccountsToBeAddedList?.d?.Count);
                         AddMultipleSupplyAccountsToUserReg().ContinueWith(task =>
                         {
                             InvokeOnMainThread(() =>
                             {
-                                if (_addMultipleSupplyAccountsResponseModel != null && _addMultipleSupplyAccountsResponseModel.d != null
-                                    && _addMultipleSupplyAccountsResponseModel.d.data != null && _addMultipleSupplyAccountsResponseModel.d.isError.Equals("false"))
+                                if (_addMultipleSupplyAccountsResponseModel != null && _addMultipleSupplyAccountsResponseModel?.d != null
+                                    && _addMultipleSupplyAccountsResponseModel?.d?.data != null && _addMultipleSupplyAccountsResponseModel?.d?.didSucceed == true)
                                 {
-                                    var count = DataManager.DataManager.SharedInstance.AccountsToBeAddedList.d.Count;
-                                    DataManager.DataManager.SharedInstance.AccountsToBeAddedList.d = _addMultipleSupplyAccountsResponseModel.d.data;
+                                    var count = DataManager.DataManager.SharedInstance.AccountsToBeAddedList?.d?.Count;
+                                    DataManager.DataManager.SharedInstance.AccountsToBeAddedList.d = _addMultipleSupplyAccountsResponseModel?.d?.data;
 
                                     UIStoryboard storyBoard = UIStoryboard.FromName("Registration", null);
                                     AddAccountSuccessViewController addAccountSuccessVC = storyBoard.InstantiateViewController("AddAccountSuccessViewController") as AddAccountSuccessViewController;
                                     addAccountSuccessVC.CreateNewlyAddedList();
                                     AddRecords();
 
-                                    addAccountSuccessVC.AccountsAddedCount = count;
+                                    addAccountSuccessVC.AccountsAddedCount = (int)count;
                                     addAccountSuccessVC.IsDashboardFlow = isDashboardFlow;
                                     PresentViewController(addAccountSuccessVC, true, null);
                                     HideProgressView();
@@ -466,15 +465,15 @@ namespace myTNB.Registration.CustomerAccounts
         {
 
             if (DataManager.DataManager.SharedInstance.AccountsToBeAddedList != null
-               && DataManager.DataManager.SharedInstance.AccountsToBeAddedList.d != null)
+               && DataManager.DataManager.SharedInstance.AccountsToBeAddedList?.d != null)
             {
                 if (DataManager.DataManager.SharedInstance.AccountRecordsList == null
-                   || DataManager.DataManager.SharedInstance.AccountRecordsList.d == null)
+                   || DataManager.DataManager.SharedInstance.AccountRecordsList?.d == null)
                 {
                     DataManager.DataManager.SharedInstance.AccountRecordsList = new CustomerAccountRecordListModel();
                     DataManager.DataManager.SharedInstance.AccountRecordsList.d = new List<CustomerAccountRecordModel>();
                 }
-                foreach (var item in DataManager.DataManager.SharedInstance.AccountsToBeAddedList.d)
+                foreach (var item in DataManager.DataManager.SharedInstance.AccountsToBeAddedList?.d)
                 {
                     int itemIndex = DataManager.DataManager.SharedInstance.AccountRecordsList
                                                .d.FindIndex(x => x.accNum.Equals(item.accNum));
@@ -486,7 +485,7 @@ namespace myTNB.Registration.CustomerAccounts
             }
             UserAccountsEntity uaManager = new UserAccountsEntity();
             if (DataManager.DataManager.SharedInstance.AccountRecordsList != null
-                && DataManager.DataManager.SharedInstance.AccountRecordsList.d != null)
+                && DataManager.DataManager.SharedInstance.AccountRecordsList?.d != null)
             {
                 uaManager.DeleteTable();
                 uaManager.CreateTable();
@@ -566,7 +565,7 @@ namespace myTNB.Registration.CustomerAccounts
             UIStoryboard storyBoard = UIStoryboard.FromName(storyboardName, null);
             UIViewController viewController =
                 storyBoard.InstantiateViewController(viewControllerName) as UIViewController;
-            NavigationController.PushViewController(viewController, true);
+            NavigationController?.PushViewController(viewController, true);
         }
 
         internal void InitializedSubviews()

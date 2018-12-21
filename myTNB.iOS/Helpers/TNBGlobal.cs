@@ -73,7 +73,7 @@ namespace myTNB
                     : "9515F2FA-C267-42C9-8087-FABA77CB84DF";
         }
 
-#region Character Limits
+        #region Character Limits
 
         /// <summary>
         /// The input characters limits.
@@ -84,9 +84,9 @@ namespace myTNB
         public static int AccountNumberHighCharLimit = 14;
         public static int PaymentMinAmnt = 1;
         public static int MobileNumberMaxCharCount = 13;
-        public static int[] MobileNumberLimits = {9,10};
+        public static int[] MobileNumberLimits = { 9, 10 };
 
-#endregion
+        #endregion
 
         /// <summary>
         /// UI Tags.
