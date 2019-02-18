@@ -137,10 +137,16 @@ namespace myTNB
 
         internal void NavigateToPage(string storyboardName, string viewControllerName)
         {
-            UIStoryboard storyBoard = UIStoryboard.FromName(storyboardName, null);
-            UIViewController viewController =
-                storyBoard.InstantiateViewController(viewControllerName) as UIViewController;
-            NavigationController.PushViewController(viewController, true);
+            if (!string.IsNullOrEmpty(storyboardName) && !string.IsNullOrEmpty(viewControllerName))
+            {
+                UIStoryboard storyBoard = UIStoryboard.FromName(storyboardName, null);
+                UIViewController viewController =
+                    storyBoard.InstantiateViewController(viewControllerName) as UIViewController;
+                if (viewController != null)
+                {
+                    NavigationController?.PushViewController(viewController, true);
+                }
+            }
         }
 
         internal void SetUpGestures()

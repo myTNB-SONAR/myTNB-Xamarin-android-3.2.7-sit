@@ -208,7 +208,10 @@ namespace myTNB
             Rating = index + 1;
             questionCache.Answer = Rating.ToString();
 
-            lblRateTitle.Text = choices[index].InputOptionValues;
+            if (index > -1)
+            {
+                lblRateTitle.Text = choices[index].InputOptionValues;
+            }
 
             for (int i = 0; i < count; i++)
             {
@@ -303,7 +306,8 @@ namespace myTNB
         private void SetTextViewEvents(FeedbackTextView textView, UIView lineView)
         {
             feedbackTextView.SetKeyboard();
-            textView.Changed += (sender, e) => {
+            textView.Changed += (sender, e) =>
+            {
                 FeedbackTextView txtView = sender as FeedbackTextView;
                 if (txtView == feedbackTextView)
                 {

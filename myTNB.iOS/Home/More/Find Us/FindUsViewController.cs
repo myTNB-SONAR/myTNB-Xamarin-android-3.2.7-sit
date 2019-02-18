@@ -123,14 +123,14 @@ namespace myTNB
                 {
                     if (_locations != null && _locations?.d != null && _locations?.d?.data != null)
                     {
-                        if (_locations.d.data?.Count() > 0)
+                        if (_locations.d.data.Any())
                         {
                             foreach (var item in _locations.d.data)
                             {
                                 AnnotationModel annotation = new AnnotationModel(
-                                    new CLLocationCoordinate2D(item.Latitude, item.Longitude)
-                                    , item.Title
-                                    , item.Address
+                                    new CLLocationCoordinate2D((double)item?.Latitude, (double)item?.Longitude)
+                                    , item?.Title
+                                    , item?.Address
                                 )
                                 {
                                     is7E = false,

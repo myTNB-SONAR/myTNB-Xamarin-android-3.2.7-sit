@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Text.RegularExpressions;
 using CoreGraphics;
 using Foundation;
@@ -61,7 +61,8 @@ namespace myTNB
                     UIStoryboard storyBoard = UIStoryboard.FromName("Rating", null);
                     RatingViewController viewController =
                         storyBoard.InstantiateViewController("RatingViewController") as RatingViewController;
-                    viewController.Rating = !string.IsNullOrEmpty(rateString) ? int.Parse(rateString) : 0;
+                    //viewController.Rating = !string.IsNullOrEmpty(rateString) ? int.Parse(rateString) : 0;
+                    viewController.Rating = 0;
                     viewController.TransId = transId;
                     var navController = new UINavigationController(viewController);
                     Controller.PresentViewController(navController, true, null);

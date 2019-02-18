@@ -45,6 +45,8 @@ namespace myTNB
         bool isViewDidLoad = false;
         bool isAnimating = false;
         bool isBcrmAvailable = true;
+        bool isTimeOut = false;
+        List<string> accountsToRefresh;
 
         public DashboardHomeViewController(IntPtr handle) : base(handle)
         {
@@ -218,6 +220,7 @@ namespace myTNB
 
             _greetingComponent = new GreetingComponent(tableViewAccounts);
             _greetingView = _greetingComponent.GetUI();
+            _greetingComponent.OnRefresh = OnRefresh;
 
             _sysDownComponent = new SystemDownComponent(tableViewAccounts, true);
             _sysDownView = _sysDownComponent.GetUI();
@@ -232,6 +235,7 @@ namespace myTNB
 
             if (isBcrmAvailable)
             {
+                _greetingView = _greetingComponent.GetUI(isTimeOut);
                 SetGreeting();
                 maxHeaderHeight = _greetingView.Frame.Height + 1f;
                 _viewHeader.Frame = new CGRect(0, 0, _greetingView.Frame.Width, _greetingView.Frame.Height + 1f);
@@ -239,6 +243,8 @@ namespace myTNB
             }
             else
             {
+                _sysDownComponent = new SystemDownComponent(tableViewAccounts, true);
+                _sysDownView = _sysDownComponent.GetUI();
                 maxHeaderHeight = _sysDownView.Frame.Height + 1f;
                 _viewHeader.Frame = new CGRect(0, 0, _sysDownView.Frame.Width, _sysDownView.Frame.Height + 1f);
                 _viewHeader.AddSubview(_sysDownView);
@@ -332,7 +338,6 @@ namespace myTNB
             _viewLoadMore.Hidden = true;
             _viewFooter.AddSubview(_viewLoadMore);
 
-
             // add account button
 
             btnAdd = new UIButton(UIButtonType.Custom);
@@ -424,6 +429,28 @@ namespace myTNB
         }
 
         /// <summary>
+        /// On refresh.
+        /// </summary>
+        private void OnRefresh()
+        {
+            Console.WriteLine("Tap to refresh on click");
+            NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
+            {
+                InvokeOnMainThread(async () =>
+                {
+                    if (NetworkUtility.isReachable)
+                    {
+                        ActivityIndicator.Show();
+
+                        await GetAccountsSummary(accountsToRefresh, false);
+
+                        ActivityIndicator.Hide();
+                    }
+                });
+            });
+        }
+
+        /// <summary>
         /// Updates the load more display.
         /// </summary>
         private void UpdateLoadMoreDisplay()
@@ -472,18 +499,49 @@ namespace myTNB
                 var response = await ServiceCall.GetLinkedAccountsSummaryInfo(accounts);
                 res = response.didSucceed;
 
+                if (willGetNew)
+                {
+                    loadedAccountsCount += accounts.Count;
+                }
+
                 if (response.didSucceed && response.AccountDues?.Count > 0)
                 {
-                    if (willGetNew)
-                    {
-                        loadedAccountsCount += accounts.Count;
-                    }
+                    //Console.WriteLine("GetLinkedAccountsSummaryInfo SUCCESS!");
                     UpdateDisplayedAccounts(response.AccountDues);
-                    tableViewAccounts.SeparatorStyle = UITableViewCellSeparatorStyle.SingleLine;
-                    tableViewAccounts.SeparatorColor = UIColor.FromWhiteAlpha(1, 0.4f);
+                    isTimeOut = false;
+                    if (accountsToRefresh != null)
+                    {
+                        if (accountsToRefresh.Count > 0)
+                        {
+                            accountsToRefresh.Clear();
+                        }
+                    }
+                    UpdateHeader();
                     UpdateLoadMoreDisplay();
-                    InitializeAccountsTable();
                 }
+                else
+                {
+                    //Console.WriteLine("GetLinkedAccountsSummaryInfo FAILED!");
+                    if (accountsToRefresh != null)
+                    {
+                        List<string> combinedList = accountsToRefresh.Union(accounts).ToList();
+                        accountsToRefresh = combinedList;
+                    }
+                    else
+                    {
+                        accountsToRefresh = accounts;
+                    }
+                    isTimeOut = true;
+                    UpdateHeader();
+                    // hide load more
+                    _viewLoadMore.Hidden = true;
+                    ViewHelper.AdjustFrameSetY(btnAdd, verticalMargin);
+                    ViewHelper.AdjustFrameSetHeight(_viewFooter, addAccountHeight);
+                }
+
+                tableViewAccounts.SeparatorStyle = UITableViewCellSeparatorStyle.SingleLine;
+                tableViewAccounts.SeparatorColor = UIColor.FromWhiteAlpha(1, 0.4f);
+                InitializeAccountsTable();
                 ActivityIndicator.Hide();
             }
 
@@ -706,7 +764,10 @@ namespace myTNB
             }
             else if (shouldReload)
             {
-                UpdateLoadMoreDisplay();
+                if (!isTimeOut)
+                {
+                    UpdateLoadMoreDisplay();
+                }
                 InitializeAccountsTable();
             }
 

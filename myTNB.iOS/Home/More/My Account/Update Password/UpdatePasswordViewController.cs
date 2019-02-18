@@ -16,7 +16,7 @@ namespace myTNB
         {
         }
 
-        const string PASSWORD_PATTERN = @"(?!^[0-9]*$)(?!^[a-zA-Z]*$)^([a-zA-Z0-9]{8,})$";
+        const string PASSWORD_PATTERN = @"^.{8,}$"; // @"(?!^[0-9]*$)(?!^[a-zA-Z]*$)^([a-zA-Z0-9]{8,})$";
 
         BaseResponseModel _saveResponse = new BaseResponseModel();
         TextFieldHelper _textFieldHelper = new TextFieldHelper();
@@ -235,7 +235,8 @@ namespace myTNB
             SetTextFieldEvents(txtFieldConfirmNewPassword, lblConfirmNewPasswordTitle, lblConfirmNewPasswordError, viewLineConfirmNewPassword, PASSWORD_PATTERN);
         }
 
-        void DisplayEyeIcon(UITextField textField){
+        void DisplayEyeIcon(UITextField textField)
+        {
             if (textField == txtFieldPassword)
             {
                 viewShowPassword.Hidden = textField.Text.Length == 0;
@@ -277,7 +278,8 @@ namespace myTNB
                     lblError.Text = err;
                     isValid = isValid && isMatch;
                 }
-                if(textField == txtFieldPassword){
+                if (textField == txtFieldPassword)
+                {
                     isValid = true;
                 }
                 DisplayEyeIcon(textField);
@@ -362,11 +364,12 @@ namespace myTNB
                             }
                             else
                             {
-                                lblPasswordError.Hidden = false;
-                                viewLinePassword.BackgroundColor = myTNBColor.Tomato();
-                                txtFieldPassword.TextColor = myTNBColor.Tomato();
-                                btnSave.Enabled = false;
-                                btnSave.BackgroundColor = myTNBColor.SilverChalice();
+                                //lblPasswordError.Hidden = false;
+                                //viewLinePassword.BackgroundColor = myTNBColor.Tomato();
+                                //txtFieldPassword.TextColor = myTNBColor.Tomato();
+                                //btnSave.Enabled = false;
+                                //btnSave.BackgroundColor = myTNBColor.SilverChalice();
+                                DisplayAlertMessage("Update Password Error", _saveResponse?.d?.message);
                             }
                         }
                         else
@@ -383,6 +386,10 @@ namespace myTNB
 
         internal void DisplayAlertMessage(string title, string message)
         {
+            if (string.IsNullOrWhiteSpace(message))
+            {
+                message = "DefaultErrorMessage".Translate();
+            }
             var alert = UIAlertController.Create(title, message, UIAlertControllerStyle.Alert);
             alert.AddAction(UIAlertAction.Create("Ok", UIAlertActionStyle.Cancel, null));
             PresentViewController(alert, animated: true, completionHandler: null);

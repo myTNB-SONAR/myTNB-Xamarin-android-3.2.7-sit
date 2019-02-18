@@ -258,7 +258,7 @@ namespace myTNB.DataManager
         /// <param name="accNum">Acc number.</param>
         public void SelectAccount(string accNum)
         {
-            if(string.Compare(accNum, SelectedAccount?.accNum) != 0)
+            if (string.Compare(accNum, SelectedAccount?.accNum) != 0)
             {
                 var index = AccountRecordsList?.d?.FindIndex(x => x.accNum == accNum) ?? -1;
                 if (index > -1)
@@ -316,7 +316,7 @@ namespace myTNB.DataManager
             if (res && AccountsToBeAddedList?.d?.Count > 0)
             {
                 index = AccountsToBeAddedList?.d?.FindIndex(item => string.Compare(item.accountNickName?.Trim(), accountNickname) == 0
-                                                            && string.Compare(item.accNum?.Trim(), accountNumber) != 0) 
+                                                            && string.Compare(item.accNum?.Trim(), accountNumber) != 0)
                                               ?? -1;
                 res = index < 0;
             }

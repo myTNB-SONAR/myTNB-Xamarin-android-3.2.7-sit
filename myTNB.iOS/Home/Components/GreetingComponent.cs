@@ -12,6 +12,10 @@ namespace myTNB.Dashboard.DashboardComponents
         UIView baseView;
         UILabel greetingMessage;
         UIImageView greetingImage;
+        UILabel _lblMsg;
+        UIButton _btnRefresh;
+
+        public Action OnRefresh { get; set; }
 
         public GreetingComponent(UIView parent)
         {
@@ -21,7 +25,7 @@ namespace myTNB.Dashboard.DashboardComponents
         /// <summary>
         /// Creates the component.
         /// </summary>
-        private void CreateComponent()
+        private void CreateComponent(bool isTimeOut = false)
         {
             var topMargin = 20f;
             greetingMessage = new UILabel
@@ -41,19 +45,58 @@ namespace myTNB.Dashboard.DashboardComponents
                 ContentMode = UIViewContentMode.ScaleAspectFit,
             };
 
-            baseView = new UIView(new CGRect(0, 0, parentView.Frame.Width, topMargin + greetingMessage.Frame.Height + greetingImage.Frame.Height));
+            var addtlHeight = 0f;
+            if (isTimeOut)
+            {
+                _lblMsg = new UILabel
+                {
+                    Frame = new CGRect(25, greetingImage.Frame.GetMaxY() + 10f, parentView.Frame.Width - 50, 50),
+                    Font = myTNBFont.MuseoSans12_300(),
+                    TextColor = UIColor.White,
+                    TextAlignment = UITextAlignment.Center,
+                    Lines = 0,
+                    Text = "TimeOutMsg".Translate(),
+                    BackgroundColor = UIColor.Clear
+                };
+
+                _btnRefresh = new UIButton(UIButtonType.Custom)
+                {
+                    Frame = new CGRect(25, _lblMsg.Frame.GetMaxY(), parentView.Frame.Width - 50, 44f)
+                };
+                _btnRefresh.Layer.CornerRadius = 4;
+                _btnRefresh.Layer.BorderColor = UIColor.White.CGColor;
+                _btnRefresh.BackgroundColor = UIColor.Clear;
+                _btnRefresh.Layer.BorderWidth = 1;
+                _btnRefresh.SetTitle("RefreshBtn".Translate(), UIControlState.Normal);
+                _btnRefresh.Font = myTNBFont.MuseoSans18_300();
+                _btnRefresh.SetTitleColor(UIColor.White, UIControlState.Normal);
+                _btnRefresh.TouchUpInside += (sender, e) =>
+                {
+                    OnRefresh?.Invoke();
+                };
+
+                addtlHeight = (float)(_lblMsg.Frame.Height + _btnRefresh.Frame.Height + topMargin);
+            }
+
+            baseView = new UIView(new CGRect(0, 0, parentView.Frame.Width, topMargin + greetingMessage.Frame.Height + greetingImage.Frame.Height + addtlHeight));
 
             baseView.AddSubview(greetingMessage);
             baseView.AddSubview(greetingImage);
+
+            if (isTimeOut)
+            {
+                baseView.AddSubview(_lblMsg);
+                baseView.AddSubview(_btnRefresh);
+            }
         }
 
         /// <summary>
         /// Gets the user interface.
         /// </summary>
         /// <returns>The user interface.</returns>
-        public UIView GetUI()
+        public UIView GetUI(bool isTimeOut = false)
         {
-            CreateComponent();
+            CreateComponent(isTimeOut);
             return baseView;
         }
 
@@ -66,7 +109,7 @@ namespace myTNB.Dashboard.DashboardComponents
         public void SetMode(GreetingMode textMode, GreetingMode imageMode, string customerName)
         {
             string message = string.Empty;
-            switch(textMode)
+            switch (textMode)
             {
                 case GreetingMode.Morning:
                     message = "GoodMorningGreeting".Translate();

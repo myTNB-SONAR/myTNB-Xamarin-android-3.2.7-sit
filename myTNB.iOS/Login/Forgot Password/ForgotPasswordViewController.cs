@@ -214,8 +214,7 @@ namespace myTNB
                         EnterCodeViewController viewController =
                             storyBoard.InstantiateViewController("EnterCodeViewController") as EnterCodeViewController;
                         viewController.EmailAddress = _email;
-                        var navController = new UINavigationController(viewController);
-                        PresentViewController(navController, true, null);
+                        NavigationController?.PushViewController(viewController, true);
                     }
                     else
                     {

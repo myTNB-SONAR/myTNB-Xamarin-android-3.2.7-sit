@@ -37,15 +37,14 @@ namespace myTNB
             SetNavigationItems();
             NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
             {
-                InvokeOnMainThread(() =>
+                InvokeOnMainThread(async () =>
                 {
                     if (NetworkUtility.isReachable)
                     {
-                        ExecuteGetBillHistoryCall();
+                        await ExecuteGetBillHistoryCall();
                     }
                     else
                     {
-                        Console.WriteLine("No Network");
                         var alert = UIAlertController.Create("ErrNoNetworkTitle".Translate(), "ErrNoNetworkMsg".Translate(), UIAlertControllerStyle.Alert);
                         alert.AddAction(UIAlertAction.Create("Ok", UIAlertActionStyle.Cancel, null));
                         PresentViewController(alert, animated: true, completionHandler: null);
@@ -67,7 +66,7 @@ namespace myTNB
 
             UIBarButtonItem btnDownload = new UIBarButtonItem(UIImage.FromBundle("IC-Header-Share"), UIBarButtonItemStyle.Done, (sender, e) =>
             {
-                if (!string.IsNullOrEmpty(_url))
+                if (!string.IsNullOrEmpty(_pdfFilePath))
                 {
                     if (File.Exists(_pdfFilePath))
                     {
@@ -77,21 +76,34 @@ namespace myTNB
                     }
                     else
                     {
-                        ActivityIndicator.Show();
-                        var webClient = new WebClient();
-                        webClient.DownloadDataCompleted += (s, args) =>
+                        try
                         {
-                            var data = args.Result;
-                            File.WriteAllBytes(_pdfFilePath, data);
-                            InvokeOnMainThread(() =>
+                            ActivityIndicator.Show();
+                            var webClient = new WebClient();
+                            webClient.DownloadDataCompleted += (s, args) =>
                             {
-                                ActivityIndicator.Hide();
-                                var viewer = UIDocumentInteractionController.FromUrl(NSUrl.FromFilename(_pdfFilePath));
-                                UIBarButtonItem.AppearanceWhenContainedIn(new[] { typeof(UINavigationBar) }).TintColor = UIColor.White;
-                                viewer.PresentOpenInMenu(new RectangleF(0, -260, 320, 320), this.View, true);
-                            });
-                        };
-                        webClient.DownloadDataAsync(new Uri(_url));
+                                var data = args?.Result;
+                                if (data != null)
+                                {
+                                    File.WriteAllBytes(_pdfFilePath, data);
+                                    InvokeOnMainThread(() =>
+                                    {
+                                        ActivityIndicator.Hide();
+                                        var viewer = UIDocumentInteractionController.FromUrl(NSUrl.FromFilename(_pdfFilePath));
+                                        UIBarButtonItem.AppearanceWhenContainedIn(new[] { typeof(UINavigationBar) }).TintColor = UIColor.White;
+                                        viewer?.PresentOpenInMenu(new RectangleF(0, -260, 320, 320), this.View, true);
+                                    });
+                                }
+                            };
+                            if (!string.IsNullOrEmpty(_url))
+                            {
+                                webClient.DownloadDataAsync(new Uri(_url));
+                            }
+                        }
+                        catch (Exception err)
+                        {
+                            Console.WriteLine("Error: " + err.Message);
+                        }
                     }
                 }
             });
@@ -100,9 +112,10 @@ namespace myTNB
 
         internal void SetSubviews()
         {
-            _webViewBill = new UIWebView(new CGRect(0, 0, View.Frame.Width, View.Frame.Height));
-            //_webViewBill = new UIWebView(new CGRect(0, 64, UIScreen.MainScreen.Bounds.Width, UIScreen.MainScreen.Bounds.Height));
-            _webViewBill.Delegate = new WebViewDelegate(View);
+            _webViewBill = new UIWebView(new CGRect(0, 0, View.Frame.Width, View.Frame.Height))
+            {
+                Delegate = new WebViewDelegate(View)
+            };
             if (!string.IsNullOrEmpty(_url))
             {
                 _webViewBill.LoadRequest(new NSUrlRequest(new NSUrl(_url)));
@@ -112,20 +125,23 @@ namespace myTNB
             View.AddSubview(_webViewBill);
         }
 
-        internal void GetUrlString()
+        internal Task GetUrlString()
         {
-            ServiceManager serviceManager = new ServiceManager();
-            if (_billHistory != null && _billHistory?.d != null && _billHistory?.d?.data != null && _billHistory?.d?.data?.Count > 0)
+            return Task.Factory.StartNew(() =>
             {
-                Dictionary<string, string> requestParams = new Dictionary<string, string>(){
-                {"apiKeyID", TNBGlobal.API_KEY_ID},
-                {"accNum", DataManager.DataManager.SharedInstance.SelectedAccount.accNum},
-                {"billingNo", selectedIndex > -1 && selectedIndex < _billHistory.d.data.Count
+                ServiceManager serviceManager = new ServiceManager();
+                if (_billHistory != null && _billHistory?.d != null && _billHistory?.d?.data != null && _billHistory?.d?.data?.Count > 0)
+                {
+                    Dictionary<string, string> requestParams = new Dictionary<string, string>(){
+                    {"apiKeyID", TNBGlobal.API_KEY_ID},
+                    {"accNum", DataManager.DataManager.SharedInstance.SelectedAccount.accNum},
+                    {"billingNo", selectedIndex > -1 && selectedIndex < _billHistory.d.data.Count
                     ? _billHistory.d.data[selectedIndex].BillingNo
                     : _billHistory.d.data[0].BillingNo}
-            };
-                _url = serviceManager.GetPDFServiceURL(selectedIndex > -1 ? "GetBillPDFByBillNo" : "GetBillPDF", requestParams);
-            }
+                    };
+                    _url = serviceManager.GetPDFServiceURL(selectedIndex > -1 ? "GetBillPDFByBillNo" : "GetBillPDF", requestParams);
+                }
+            });
         }
 
         internal void GetFilePath()
@@ -135,21 +151,31 @@ namespace myTNB
             _pdfFilePath = Path.Combine(documentsPath, pdfFileName);
         }
 
-        internal void ExecuteGetBillHistoryCall()         {             GetBillHistory().ContinueWith(task =>             {                 InvokeOnMainThread(() =>
+        private async Task ExecuteGetBillHistoryCall()         {             await GetBillHistory().ContinueWith(task =>             {                 InvokeOnMainThread(async () =>
                 {
                     SetNavigationTitle();
-                    GetFilePath();                     GetUrlString();                     SetSubviews();                 });             });         } 
+                    GetFilePath();
+                    await GetUrlString().ContinueWith(getURLTask =>
+                    {
+                        InvokeOnMainThread(SetSubviews);
+                    });
+                });             });         } 
         internal Task GetBillHistory()
         {
             return Task.Factory.StartNew(() =>
             {
                 ServiceManager serviceManager = new ServiceManager();
+                var emailAddress = string.Empty;
+                if (DataManager.DataManager.SharedInstance.UserEntity?.Count > 0)
+                {
+                    emailAddress = DataManager.DataManager.SharedInstance.UserEntity[0]?.email;
+                }
                 object requestParameter = new
                 {
                     apiKeyID = TNBGlobal.API_KEY_ID,
                     accNum = DataManager.DataManager.SharedInstance.SelectedAccount.accNum,
                     isOwner = DataManager.DataManager.SharedInstance.SelectedAccount.isOwned,
-                    email = DataManager.DataManager.SharedInstance.UserEntity[0].email
+                    email = emailAddress
                 };
                 _billHistory = serviceManager.GetBillHistory("GetBillHistory", requestParameter);
             });

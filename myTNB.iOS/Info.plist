@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>CFBundleShortVersionString</key>
-	<string>1.1.1</string>
+	<string>1.1.3</string>
 	<key>CFBundleVersion</key>
-	<string>1.1.0.5</string>
+	<string>1.1.3.6</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>MinimumOSVersion</key>
@@ -35,7 +35,7 @@
 		<string>Fonts/MuseoSans-300.otf</string>
 	</array>
 	<key>NSCameraUsageDescription</key>
-	<string>Can we use your camera?</string>
+	<string>Enable myTNB to access your camera roll to upload photos and save ones you’ve taken with the app.</string>
 	<key>CFBundleName</key>
 	<string>myTNB</string>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
@@ -47,7 +47,7 @@
 		<string>remote-notification</string>
 	</array>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Can we access your photo library?</string>
+	<string>Enable myTNB to access your camera roll to upload photos and save ones you’ve taken with the app.</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
@@ -89,6 +89,8 @@ to find Kedai Tenaga nearby.</string>
 	<key>NSAppTransportSecurity</key>
 	<dict>
 		<key>NSAllowsArbitraryLoads</key>
+		<false/>
+		<key>NSAllowsArbitraryLoadsInWebContent</key>
 		<true/>
 	</dict>
 </dict>

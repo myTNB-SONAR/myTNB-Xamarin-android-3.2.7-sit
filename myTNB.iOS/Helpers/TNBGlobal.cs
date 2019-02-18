@@ -47,7 +47,7 @@ namespace myTNB
         public static string UNIT_ENERGY = "kWh";
         public static string UNIT_EMISSION = "kg";
 
-        public static string ACCOUNT_NAME_PATTERN = @"^[A-Za-z0-9 ]*$";
+        public static string ACCOUNT_NAME_PATTERN = @"^.*$"; //@"^[A-Za-z0-9 ]*$";
         public static string AmountPattern = @"^[0-9.]*$";
         public static string CustomerNamePattern = @"^[A-Za-z0-9 ]*$"; //@"(?i)^[a-z0-9]+(?:[ ]?[a-z0-9]+)*$"; 
         public static string MobileNoPattern = @"^[0-9]*$";

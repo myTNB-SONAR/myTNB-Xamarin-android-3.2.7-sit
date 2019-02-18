@@ -84,20 +84,23 @@ namespace myTNB.Home.Promotions
 
         string GetFormattedDate(string rawDate)
         {
-            string formattedDate = rawDate;
-            try
+            string formattedDate = string.Empty;
+            if (!string.IsNullOrEmpty(rawDate))
             {
-                int year = Int32.Parse(rawDate.Substring(0, 4));
-                int month = Int32.Parse(rawDate.Substring(4, 2));
-                int day = Int32.Parse(rawDate.Substring(6, 2));
+                try
+                {
+                    int year = Int32.Parse(rawDate.Substring(0, 4));
+                    int month = Int32.Parse(rawDate.Substring(4, 2));
+                    int day = Int32.Parse(rawDate.Substring(6, 2));
 
-                DateTime dt = new DateTime(year, month, day);
-                formattedDate = dt.ToString("dd MMM yyyy");
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("Parse Error: " + e.Message);
-                formattedDate = rawDate;
+                    DateTime dt = new DateTime(year, month, day);
+                    formattedDate = dt.ToString("dd MMM yyyy", System.Globalization.CultureInfo.InvariantCulture);
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("Parse Error: " + e.Message);
+                    formattedDate = rawDate;
+                }
             }
             return formattedDate;
         }

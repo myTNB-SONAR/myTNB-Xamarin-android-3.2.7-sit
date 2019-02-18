@@ -127,16 +127,17 @@ namespace myTNB.Dashboard.DashboardComponents
                                                 : _billAndPaymentComponent.GetUI();
 
             int yLocation = !DeviceHelper.IsIphoneXUpResolution() ? 85 : 109;
-            if(DeviceHelper.IsIphone6UpResolution())
+            if (DeviceHelper.IsIphone6UpResolution())
             {
                 yLocation += 15;
             }
             double contentHeight = _parentView.Frame.Height - yLocation;
             double frameHeight = _parentView.Frame.Height * 0.68f;
+            double addtlHeight = DeviceHelper.IsIphone5() ? 100 : 50;
             _dashboardScrollView = new UIScrollView(new CoreGraphics.CGRect(0, yLocation, _gradientView.Frame.Width, contentHeight))
             {
                 BackgroundColor = UIColor.Clear,
-                ContentSize = new CoreGraphics.CGSize(_gradientView.Frame.Width, contentHeight + 50),
+                ContentSize = new CoreGraphics.CGSize(_gradientView.Frame.Width, contentHeight + addtlHeight),
                 Bounces = false
             };
 
@@ -346,7 +347,7 @@ namespace myTNB.Dashboard.DashboardComponents
         /// </summary>
         public void ConstructBCRMDownDashboard()
         {
-            if(_dashboardMode == DashboardModeEnum.BcrmDown)
+            if (_dashboardMode == DashboardModeEnum.BcrmDown)
             {
                 return;
             }
@@ -378,7 +379,7 @@ namespace myTNB.Dashboard.DashboardComponents
             _gradientView.AddSubview(_usageHistoryComponent.GetUI());
             _usageHistoryComponent.ToggleNavigationVisibility(true);
             _usageHistoryComponent.SetDateRange("NotAvailable".Translate());
-            int locY = (int) accountSelectionView.Frame.GetMaxY() + 15;
+            int locY = (int)accountSelectionView.Frame.GetMaxY() + 15;
             _usageHistoryComponent.SetFrameCustomLocationY(locY);
 
             //Add BCRM down view

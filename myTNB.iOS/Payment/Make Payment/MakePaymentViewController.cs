@@ -37,11 +37,11 @@ namespace myTNB
             AddBackButton();
             NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
             {
-                InvokeOnMainThread(() =>
+                InvokeOnMainThread(async () =>
                 {
                     if (NetworkUtility.isReachable)
                     {
-                        GetPaymentURL().ContinueWith(task =>
+                        await GetPaymentURL().ContinueWith(task =>
                         {
                             InvokeOnMainThread(SetSubviews);
                         });
@@ -69,7 +69,16 @@ namespace myTNB
                 _webView = new UIWebView(new CGRect(0, 0, View.Frame.Width, View.Frame.Height));
                 _webView.BackgroundColor = UIColor.White;
                 _webView.Delegate = new WebViewDelegate(View, this);
-                _webView.LoadRequest(new NSUrlRequest(new Uri(_url)));
+
+                try
+                {
+                    _webView.LoadRequest(new NSUrlRequest(new Uri(_url)));
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("Error: " + e.Message);
+                }
+
                 View.AddSubview(_webView);
 
                 var statusBarHeight = UIApplication.SharedApplication.StatusBarFrame.Size.Height;
@@ -89,11 +98,14 @@ namespace myTNB
             UIBarButtonItem btnBack = new UIBarButtonItem(backImg, UIBarButtonItemStyle.Done, (sender, e) =>
             {
                 var okCancelAlertController = UIAlertController.Create("PaymentAlertTitle".Translate(), "PaymentAlertMsg".Translate(), UIAlertControllerStyle.Alert);
-                okCancelAlertController.AddAction(UIAlertAction.Create("Abort".Translate(), UIAlertActionStyle.Default, alert => NavigationController.PopViewController(true)));
+                okCancelAlertController.AddAction(UIAlertAction.Create("Abort".Translate(), UIAlertActionStyle.Default, alert => NavigationController?.PopViewController(true)));
                 okCancelAlertController.AddAction(UIAlertAction.Create("Cancel".Translate(), UIAlertActionStyle.Cancel, alert => Console.WriteLine("Cancel was clicked")));
                 PresentViewController(okCancelAlertController, animated: true, completionHandler: null);
             });
-            NavigationItem.LeftBarButtonItem = btnBack;
+            if (NavigationItem != null)
+            {
+                NavigationItem.LeftBarButtonItem = btnBack;
+            }
         }
 
         /// <summary>

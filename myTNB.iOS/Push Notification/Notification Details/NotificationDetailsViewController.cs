@@ -241,24 +241,33 @@ namespace myTNB
             CGSize newTitleSize = GetLabelSize(lblTitle, lblTitle.Frame.Width, 100f);
             lblTitle.Frame = new CGRect(lblTitle.Frame.X, lblTitle.Frame.Y, lblTitle.Frame.Width, newTitleSize.Height);
 
-            //UILabel lblDetails = new UILabel(new CGRect(18, (DeviceHelper.IsIphoneXUpResolution() ? 120 :96) + newTitleSize.Height, View.Frame.Width - 36, 36));
-            UILabel lblDetails = new UILabel(new CGRect(18
-                                                        , DeviceHelper.GetScaledSizeByHeight(4.2f)
-                                                        + lblTitle.Frame.Y
-                                                        + lblTitle.Frame.Height
-                                                        , View.Frame.Width - 36
-                                                        , 36));
-            lblDetails.Text = NotificationInfo.Message;
-            lblDetails.Font = myTNBFont.MuseoSans14_300();
-            lblDetails.Lines = 0;
-            lblDetails.LineBreakMode = UILineBreakMode.WordWrap;
-            lblDetails.TextColor = myTNBColor.TunaGrey();
+            var lblDetailsHeight = 0f;
+            if (NotificationInfo.BCRMNotificationType != Enums.BCRMNotificationEnum.Maintenance && NotificationInfo.BCRMNotificationType != Enums.BCRMNotificationEnum.News)
+            {
+                lblDetailsHeight = DeviceHelper.GetScaledHeight(240) - 48;
+            }
+            else
+            {
+                lblDetailsHeight = DeviceHelper.GetScaledHeight(270);
+            }
+            UITextView txtDetails = new UITextView(new CGRect(18
+                                                    , DeviceHelper.GetScaledSizeByHeight(4.2f)
+                                                    + lblTitle.Frame.Y
+                                                    + lblTitle.Frame.Height
+                                                    , View.Frame.Width - 36
+                                                    , lblDetailsHeight))
+            {
 
-            CGSize newDetailsSize = GetLabelSize(lblDetails, lblDetails.Frame.Width, 100f);
-            lblDetails.Frame = new CGRect(lblDetails.Frame.X, lblDetails.Frame.Y, lblDetails.Frame.Width, newDetailsSize.Height);
+                Text = NotificationInfo.Message,
+                Font = myTNBFont.MuseoSans14_300(),
+                Editable = false,
+                ScrollEnabled = true,
+                TextColor = myTNBColor.TunaGrey()
+            };
 
-            View.AddSubviews(new UIView[] { imgViewHeader, lblTitle, lblDetails });
+            View.AddSubviews(new UIView[] { imgViewHeader, lblTitle, txtDetails });
         }
+
         /// <summary>
         /// Sets the sub views for normal notification.
         /// </summary>

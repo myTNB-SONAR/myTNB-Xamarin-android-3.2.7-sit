@@ -1,4 +1,4 @@
-using SQLite;
+﻿using SQLite;
 using System.Collections.Generic;
 using myTNB.SitecoreCMS.Model;
 using System;

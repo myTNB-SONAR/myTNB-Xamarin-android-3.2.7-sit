@@ -28,7 +28,8 @@ namespace myTNB.Payment.AddCard
 
         internal void SetNavigationItems()
         {
-            UIBarButtonItem btnBack = new UIBarButtonItem(UIImage.FromBundle("Back-White"), UIBarButtonItemStyle.Done, (sender, e) => {
+            UIBarButtonItem btnBack = new UIBarButtonItem(UIImage.FromBundle("Back-White"), UIBarButtonItemStyle.Done, (sender, e) =>
+            {
                 this.NavigationController.PopViewController(true);
             });
             NavigationItem.LeftBarButtonItem = btnBack;
@@ -53,26 +54,25 @@ namespace myTNB.Payment.AddCard
 
         }
 
-        class CardIODelegate : CardIOViewDelegate{
+        class CardIODelegate : CardIOViewDelegate
+        {
             UIViewController _controller;
-            public CardIODelegate (UIViewController controller){
+            public CardIODelegate(UIViewController controller)
+            {
                 _controller = controller;
             }
             public override void DidScanCard(CardIOView cardIOView, CreditCardInfo cardInfo)
             {
-                if (cardInfo == null)
-                {
-                    Console.WriteLine("Cancelled");
-                }
-                else
+                if (cardInfo != null)
                 {
                     DataManager.DataManager.SharedInstance.CreditCardInfo.CreditCardNumber = cardInfo.CardNumber;
                     DataManager.DataManager.SharedInstance.CreditCardInfo.CardHolderName = cardInfo.CardholderName;
                     DataManager.DataManager.SharedInstance.CreditCardInfo.ExpiryDate = cardInfo.ExpiryMonth + "/" + cardInfo.ExpiryYear;
                     DataManager.DataManager.SharedInstance.CreditCardInfo.CVV = cardInfo.Cvv;
                     DataManager.DataManager.SharedInstance.CreditCardInfo.CardType = cardInfo.CardType.ToString();
-                    _controller.NavigationController.PopViewController(true);
+                    _controller?.NavigationController?.PopViewController(true);
                 }
+
             }
         }
     }

@@ -14,7 +14,7 @@ namespace myTNB
 {
     public partial class LoginBillRelatedFeedbackViewController : UIViewController
     {
-        public LoginBillRelatedFeedbackViewController (IntPtr handle) : base (handle)
+        public LoginBillRelatedFeedbackViewController(IntPtr handle) : base(handle)
         {
         }
         const string ANY_PATTERN = @".*";
@@ -94,16 +94,20 @@ namespace myTNB
         public override void ViewDidAppear(bool animated)
         {
             base.ViewDidAppear(animated);
-            if(_accountList != null && _accountList.Count > 0){
+            if (_accountList != null && _accountList.Count > 0)
+            {
                 //_lblAccountNumber.Text = _accountList[DataManager.DataManager.SharedInstance.CurrentSelectedFeedAccountNoIndex];
                 var index = DataManager.DataManager.SharedInstance.CurrentSelectedFeedAccountNoIndex;
                 _lblAccountNumber.Text = DataManager.DataManager.SharedInstance.AccountRecordsList.d[index].accNum + " - " + DataManager.DataManager.SharedInstance.AccountRecordsList.d[index].accDesc;
             }
         }
 
-        internal void InitializedAccountList() {
-            if (DataManager.DataManager.SharedInstance.AccountRecordsList.d != null && DataManager.DataManager.SharedInstance.AccountRecordsList.d.Count != 0) {
-                foreach (var account in DataManager.DataManager.SharedInstance.AccountRecordsList.d) {
+        internal void InitializedAccountList()
+        {
+            if (DataManager.DataManager.SharedInstance.AccountRecordsList.d != null && DataManager.DataManager.SharedInstance.AccountRecordsList.d.Count != 0)
+            {
+                foreach (var account in DataManager.DataManager.SharedInstance.AccountRecordsList.d)
+                {
                     _accountList.Add(account.accNum);
                 }
             }
@@ -290,7 +294,7 @@ namespace myTNB
             {
                 Image = UIImage.FromBundle("IC-Feedback")
             };
-           
+
             _feedbackTextView.SetPlaceholder("Feedback");
             _feedbackTextView.CreateDoneButton();
             _viewFeedback.AddSubview(_feedbackTextView);
@@ -389,12 +393,13 @@ namespace myTNB
                 lblHint = new UILabel();
             }
             _feedbackTextView.SetKeyboard();
-            textView.Changed += (sender, e) => {
+            textView.Changed += (sender, e) =>
+            {
                 FeedbackTextView txtView = sender as FeedbackTextView;
                 if (txtView == _feedbackTextView)
                 {
                     HandleFeedbackTextViewChange();
-                   
+
                     var frame = new CGRect();
                     frame = _feedbackTextView.Frame;
                     frame.Height = _feedbackTextView.ContentSize.Height <= TNBGlobal.FEEDBACK_FIELD_MAX_HEIGHT ? _feedbackTextView.ContentSize.Height : TNBGlobal.FEEDBACK_FIELD_MAX_HEIGHT;
@@ -567,7 +572,7 @@ namespace myTNB
             isValid = isValidAccountNo && isValidFeedback;
             if (DataManager.DataManager.SharedInstance.UserEntity[0].mobileNo == null || DataManager.DataManager.SharedInstance.UserEntity[0].mobileNo == string.Empty)
             {
-                bool isValidMobileNo = _textFieldHelper.ValidateTextField(_txtFieldMobileNo.Text, MOBILE_NO_PATTERN) 
+                bool isValidMobileNo = _textFieldHelper.ValidateTextField(_txtFieldMobileNo.Text, MOBILE_NO_PATTERN)
                                                        && _textFieldHelper.ValidateMobileNumberLength(_txtFieldMobileNo.Text);
                 isValid = isValid && isValidMobileNo;
             }
@@ -576,13 +581,15 @@ namespace myTNB
             _btnSubmit.BackgroundColor = isValid ? myTNBColor.FreshGreen() : myTNBColor.SilverChalice();
         }
 
-        internal void SetEvents() {
+        internal void SetEvents()
+        {
 
             SetTextViewEvents(_feedbackTextView, _lblFeedbackTitle
                               , _lblFeedbackError, _viewLineFeedback
                               , null, ANY_PATTERN);
 
-            _btnSubmit.TouchUpInside += (sender, e) => {
+            _btnSubmit.TouchUpInside += (sender, e) =>
+            {
                 NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
                 {
                     InvokeOnMainThread(() =>
@@ -590,7 +597,12 @@ namespace myTNB
                         if (NetworkUtility.isReachable)
                         {
                             ActivityIndicator.Show();
-                            _accountNumber = _accountList[DataManager.DataManager.SharedInstance.CurrentSelectedFeedAccountNoIndex];
+                            if (_accountList.Count > 0)
+                            {
+                                var indx = DataManager.DataManager.SharedInstance.CurrentSelectedFeedAccountNoIndex;
+                                _accountNumber = indx > -1 ? _accountList[indx] : _accountList[0];
+                            }
+
                             _feedbackMessage = _feedbackTextView.Text;
 
                             var mobileNo = string.Empty;
@@ -605,7 +617,7 @@ namespace myTNB
                             }
                             else
                             {
-                                _mobileNo = DataManager.DataManager.SharedInstance.UserEntity[0].mobileNo;
+                                _mobileNo = mobileNo;
                             }
 
                             _capturedImageList = new List<ImageDataModel>();
@@ -635,17 +647,21 @@ namespace myTNB
 
                             SubmitFeedback().ContinueWith(task =>
                             {
-                                InvokeOnMainThread(() => {
-                                    if(_submitFeedback != null && _submitFeedback.d != null
-                                       && _submitFeedback.d.isError.Equals("false")
-                                       && _submitFeedback.d.data != null){
+                                InvokeOnMainThread(() =>
+                                {
+                                    if (_submitFeedback != null && _submitFeedback?.d != null
+                                       && _submitFeedback?.d?.didSucceed == true
+                                       && _submitFeedback?.d?.data != null)
+                                    {
                                         UIStoryboard storyBoard = UIStoryboard.FromName("Feedback", null);
                                         SubmitFeedbackSuccessViewController submitFeedbackSuccessVC =
                                             storyBoard.InstantiateViewController("SubmitFeedbackSuccessViewController") as SubmitFeedbackSuccessViewController;
                                         submitFeedbackSuccessVC.ServiceReqNo = _submitFeedback.d.data.ServiceReqNo;
                                         submitFeedbackSuccessVC.DateCreated = _submitFeedback.d.data.DateCreated;
                                         NavigationController.PushViewController(submitFeedbackSuccessVC, true);
-                                    }else{
+                                    }
+                                    else
+                                    {
                                         ToastHelper.DisplayAlertView(this, "SubmitFeedbackErrTitle".Translate(), _submitFeedback?.d?.message);
                                         UIStoryboard storyBoard = UIStoryboard.FromName("Feedback", null);
                                         SubmitFeedbackFailedViewController submitFeedbackFailedVC =
@@ -705,8 +721,9 @@ namespace myTNB
             });
             this.NavigationItem.LeftBarButtonItem = btnBack;
         }
-       
-        internal void AddImageContainer(){
+
+        internal void AddImageContainer()
+        {
             if (capturedImageCount < MAX_IMAGE)
             {
                 if (imageContainerScroll == null)
@@ -771,10 +788,13 @@ namespace myTNB
             }
         }
 
-        internal void RepositionImageContent(){
+        internal void RepositionImageContent()
+        {
             imageWidth = 0;
-            foreach(UIView view in imageContainerScroll.Subviews){
-                if(view.Tag == 10){
+            foreach (UIView view in imageContainerScroll.Subviews)
+            {
+                if (view.Tag == 10)
+                {
                     view.Frame = new CGRect(imageWidth, 0, 94, 94);
                     imageWidth += 18 + 94;
                 }
@@ -814,12 +834,14 @@ namespace myTNB
             ActivityIndicator.Hide();
         }
 
-        Task SubmitFeedback(){
+        Task SubmitFeedback()
+        {
             var user = DataManager.DataManager.SharedInstance.UserEntity?.Count > 0
                                   ? DataManager.DataManager.SharedInstance.UserEntity[0]
                                   : new SQLite.SQLiteDataManager.UserEntity();
 
-            return Task.Factory.StartNew(() => {
+            return Task.Factory.StartNew(() =>
+            {
                 ServiceManager serviceManager = new ServiceManager();
                 object requestParameter = new
                 {
