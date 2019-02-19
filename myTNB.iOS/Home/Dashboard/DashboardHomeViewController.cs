@@ -61,6 +61,23 @@ namespace myTNB
             DataManager.DataManager.SharedInstance.SummaryNeedsRefresh = true;
             LoadContents();
             NSNotificationCenter.DefaultCenter.AddObserver(UIApplication.WillEnterForegroundNotification, HandleAppWillEnterForeground);
+            NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
+            {
+                InvokeOnMainThread(async () =>
+                {
+                    if (NetworkUtility.isReachable)
+                    {
+                        await PushNotificationHelper.GetNotifications();
+                        UpdateNotificationIcon();
+                    }
+                    else
+                    {
+                        var alert = UIAlertController.Create("ErrNoNetworkTitle".Translate(), "ErrNoNetworkMsg".Translate(), UIAlertControllerStyle.Alert);
+                        alert.AddAction(UIAlertAction.Create("Ok", UIAlertActionStyle.Cancel, null));
+                        PresentViewController(alert, animated: true, completionHandler: null);
+                    }
+                });
+            });
         }
 
         /// <summary>
@@ -82,8 +99,7 @@ namespace myTNB
 
             UpdateHeader();
 
-            _titleBarComponent?.SetNotificationImage(
-                    DataManager.DataManager.SharedInstance.HasNewNotification ? "Notification-New" : "Notification");
+            UpdateNotificationIcon();
 
             if (isViewDidLoad)
             {
@@ -96,7 +112,14 @@ namespace myTNB
             }
 
         }
-
+        /// <summary>
+        /// Updates the notification icon.
+        /// </summary>
+        private void UpdateNotificationIcon()
+        {
+            _titleBarComponent?.SetNotificationImage(
+                    DataManager.DataManager.SharedInstance.HasNewNotification ? "Notification-New" : "Notification");
+        }
 
         private void Initialize()
         {
@@ -353,10 +376,13 @@ namespace myTNB
             {
                 UIStoryboard storyBoard = UIStoryboard.FromName("AccountRecords", null);
                 var viewController = storyBoard.InstantiateViewController("AccountsViewController") as AccountsViewController;
-                viewController.isDashboardFlow = true;
-                viewController._needsUpdate = true;
-                var navController = new UINavigationController(viewController);
-                PresentViewController(navController, true, null);
+                if (viewController != null)
+                {
+                    viewController.isDashboardFlow = true;
+                    viewController._needsUpdate = true;
+                    var navController = new UINavigationController(viewController);
+                    PresentViewController(navController, true, null);
+                }
             };
 
             _viewFooter.AddSubview(btnAdd);
@@ -578,10 +604,12 @@ namespace myTNB
                 DataManager.DataManager.SharedInstance.IsSameAccount = false;
                 UIStoryboard storyBoard = UIStoryboard.FromName("Dashboard", null);
                 var vc = storyBoard.InstantiateViewController("DashboardViewController") as DashboardViewController;
-                vc.ShouldShowBackButton = true;
-                ShowViewController(vc, null);
+                if (vc != null)
+                {
+                    vc.ShouldShowBackButton = true;
+                    ShowViewController(vc, null);
+                }
             }
-
         }
 
         /// <summary>

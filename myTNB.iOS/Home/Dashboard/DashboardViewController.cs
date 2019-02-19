@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Carousels;
@@ -52,6 +52,27 @@ namespace myTNB.Dashboard
             NavigationItem?.SetHidesBackButton(true, false);
             _dashboardMainComponent = new DashboardMainComponent(View);
             NSNotificationCenter.DefaultCenter.AddObserver(UIApplication.WillEnterForegroundNotification, HandleAppWillEnterForeground);
+            NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
+            {
+                InvokeOnMainThread(async () =>
+                {
+                    if (NetworkUtility.isReachable)
+                    {
+                        await PushNotificationHelper.GetNotifications();
+                        if (_dashboardMainComponent._titleBarComponent != null)
+                        {
+                            _dashboardMainComponent._titleBarComponent.SetNotificationImage(
+                                DataManager.DataManager.SharedInstance.HasNewNotification ? "Notification-New" : "Notification");
+                        }
+                    }
+                    else
+                    {
+                        var alert = UIAlertController.Create("ErrNoNetworkTitle".Translate(), "ErrNoNetworkMsg".Translate(), UIAlertControllerStyle.Alert);
+                        alert.AddAction(UIAlertAction.Create("Ok", UIAlertActionStyle.Cancel, null));
+                        PresentViewController(alert, animated: true, completionHandler: null);
+                    }
+                });
+            });
         }
 
         internal void HandleAppWillEnterForeground(NSNotification notification)
@@ -566,9 +587,12 @@ namespace myTNB.Dashboard
                                 UIStoryboard storyBoard = UIStoryboard.FromName("Payment", null);
                                 SelectBillsViewController selectBillsVC =
                                     storyBoard.InstantiateViewController("SelectBillsViewController") as SelectBillsViewController;
-                                selectBillsVC.SelectedAccountDueAmount = _amountDue;
-                                var navController = new UINavigationController(selectBillsVC);
-                                PresentViewController(navController, true, null);
+                                if (selectBillsVC != null)
+                                {
+                                    selectBillsVC.SelectedAccountDueAmount = _amountDue;
+                                    var navController = new UINavigationController(selectBillsVC);
+                                    PresentViewController(navController, true, null);
+                                }
                             }
                             else
                             {
@@ -591,9 +615,12 @@ namespace myTNB.Dashboard
                                 UIStoryboard storyBoard = UIStoryboard.FromName("ViewBill", null);
                                 ViewBillViewController viewController =
                                     storyBoard.InstantiateViewController("ViewBillViewController") as ViewBillViewController;
-                                viewController.OnDone = OnViewDone;
-                                var navController = new UINavigationController(viewController);
-                                PresentViewController(navController, true, null);
+                                if (viewController != null)
+                                {
+                                    viewController.OnDone = OnViewDone;
+                                    var navController = new UINavigationController(viewController);
+                                    PresentViewController(navController, true, null);
+                                }
                             }
                             else
                             {
@@ -615,10 +642,13 @@ namespace myTNB.Dashboard
                     UIStoryboard storyBoard = UIStoryboard.FromName("AccountRecords", null);
                     AccountsViewController viewController =
                         storyBoard.InstantiateViewController("AccountsViewController") as AccountsViewController;
-                    viewController.isDashboardFlow = true;
-                    viewController._needsUpdate = true;
-                    var navController = new UINavigationController(viewController);
-                    PresentViewController(navController, true, null);
+                    if (viewController != null)
+                    {
+                        viewController.isDashboardFlow = true;
+                        viewController._needsUpdate = true;
+                        var navController = new UINavigationController(viewController);
+                        PresentViewController(navController, true, null);
+                    }
                 };
             }
 
@@ -939,39 +969,42 @@ namespace myTNB.Dashboard
             if (isNormalMeter)
             {
                 ChartDataModel model = chartModelBase as ChartDataModel;
-                if (isMonthView)
+                if (model != null)
                 {
-                    chartData = model.ByMonth.Months;
-                    dateRange = model.ByMonth.Range;
+                    if (isMonthView)
+                    {
+                        chartData = model.ByMonth.Months;
+                        dateRange = model.ByMonth.Range;
+                    }
+                    else if (model.ByDay?.Count > 0 && DataManager.DataManager.SharedInstance.CurrentChartIndex < model.ByDay?.Count)
+                    {
+                        chartData = model.ByDay[DataManager.DataManager.SharedInstance.CurrentChartIndex].Days;
+                        dateRange = model.ByDay[DataManager.DataManager.SharedInstance.CurrentChartIndex].Range;
+                    }
                 }
-                else if (model.ByDay?.Count > 0 && DataManager.DataManager.SharedInstance.CurrentChartIndex < model.ByDay?.Count)
-                {
-                    chartData = model.ByDay[DataManager.DataManager.SharedInstance.CurrentChartIndex].Days;
-                    dateRange = model.ByDay[DataManager.DataManager.SharedInstance.CurrentChartIndex].Range;
-                }
-
             }
             else
             {
                 SmartChartDataModel model = chartModelBase as SmartChartDataModel;
-
-                if (isMonthView)
+                if (model != null)
                 {
-                    if (model.ByMonth?.Count > 0 && DataManager.DataManager.SharedInstance.CurrentChartIndex < model.ByMonth?.Count)
+                    if (isMonthView)
                     {
-                        chartData = model.ByMonth[DataManager.DataManager.SharedInstance.CurrentChartIndex].Months;
-                        dateRange = model.ByMonth[DataManager.DataManager.SharedInstance.CurrentChartIndex].Range;
+                        if (model.ByMonth?.Count > 0 && DataManager.DataManager.SharedInstance.CurrentChartIndex < model.ByMonth?.Count)
+                        {
+                            chartData = model.ByMonth[DataManager.DataManager.SharedInstance.CurrentChartIndex].Months;
+                            dateRange = model.ByMonth[DataManager.DataManager.SharedInstance.CurrentChartIndex].Range;
+                        }
+
+                    }
+                    else if (model.ByDay?.Count > 0 && DataManager.DataManager.SharedInstance.CurrentChartIndex < model.ByDay?.Count)
+                    {
+                        chartData = model.ByDay[DataManager.DataManager.SharedInstance.CurrentChartIndex].Days;
+                        dateRange = model.ByDay[DataManager.DataManager.SharedInstance.CurrentChartIndex].Range;
                     }
 
+                    smartMeterMetric = model.OtherUsageMetrics;
                 }
-                else if (model.ByDay?.Count > 0 && DataManager.DataManager.SharedInstance.CurrentChartIndex < model.ByDay?.Count)
-                {
-                    chartData = model.ByDay[DataManager.DataManager.SharedInstance.CurrentChartIndex].Days;
-                    dateRange = model.ByDay[DataManager.DataManager.SharedInstance.CurrentChartIndex].Range;
-                }
-
-                smartMeterMetric = model.OtherUsageMetrics;
-
             }
 
             if (chartData == null)
@@ -1142,7 +1175,7 @@ namespace myTNB.Dashboard
             iCarousel currentCarousel = _dashboardMainComponent._chartCarousel;
             if (currentCarousel?.CurrentItemView?.ViewWithTag(TNBGlobal.Tags.RangeLabel) is UILabel rangeLabel)
             {
-                _dashboardMainComponent._usageHistoryComponent.SetDateRange(rangeLabel.Text);
+                _dashboardMainComponent._usageHistoryComponent.SetDateRange(rangeLabel?.Text);
             }
         }
 

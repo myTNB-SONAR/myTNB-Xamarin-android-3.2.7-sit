@@ -75,15 +75,15 @@ namespace myTNB
         void AddLocationImage()
         {
             string imgPath = string.Empty;
-            if (Annotation.is7E)
+            if ((bool)Annotation?.is7E)
             {
-                if (DataManager.DataManager.SharedInstance.LocationTypes != null)
+                if (DataManager.DataManager.SharedInstance.LocationTypes != null && DataManager.DataManager.SharedInstance.LocationTypes?.Count > 0)
                 {
                     int index = DataManager.DataManager.SharedInstance.LocationTypes.FindIndex(x => x.Title.Equals("7E"));
                     if (index > -1)
                     {
-                       if(!string.IsNullOrEmpty(DataManager.DataManager.SharedInstance.LocationTypes[index].ImagePath)
-                          && !string.IsNullOrWhiteSpace(DataManager.DataManager.SharedInstance.LocationTypes[index].ImagePath))
+                        if (!string.IsNullOrEmpty(DataManager.DataManager.SharedInstance.LocationTypes[index]?.ImagePath)
+                           && !string.IsNullOrWhiteSpace(DataManager.DataManager.SharedInstance.LocationTypes[index]?.ImagePath))
                         {
                             imgPath = DataManager.DataManager.SharedInstance.LocationTypes[index].ImagePath;
                         }
@@ -92,21 +92,21 @@ namespace myTNB
             }
             else
             {
-                if (Annotation.KTItem != null
-                   && !string.IsNullOrEmpty(Annotation.KTItem.ImagePath)
-                   && !string.IsNullOrWhiteSpace(Annotation.KTItem.ImagePath))
+                if (Annotation?.KTItem != null
+                   && !string.IsNullOrEmpty(Annotation?.KTItem.ImagePath)
+                   && !string.IsNullOrWhiteSpace(Annotation?.KTItem.ImagePath))
                 {
-                    imgPath = Annotation.KTItem.ImagePath;
+                    imgPath = Annotation?.KTItem.ImagePath;
                 }
                 else
                 {
-                    if (DataManager.DataManager.SharedInstance.LocationTypes != null)
+                    if (DataManager.DataManager.SharedInstance.LocationTypes != null && DataManager.DataManager.SharedInstance.LocationTypes?.Count > 0)
                     {
                         int index = DataManager.DataManager.SharedInstance.LocationTypes.FindIndex(x => x.Title.Equals("KT"));
                         if (index > -1)
                         {
-                            if (!string.IsNullOrEmpty(DataManager.DataManager.SharedInstance.LocationTypes[index].ImagePath)
-                            && !string.IsNullOrWhiteSpace(DataManager.DataManager.SharedInstance.LocationTypes[index].ImagePath))
+                            if (!string.IsNullOrEmpty(DataManager.DataManager.SharedInstance.LocationTypes[index]?.ImagePath)
+                            && !string.IsNullOrWhiteSpace(DataManager.DataManager.SharedInstance.LocationTypes[index]?.ImagePath))
                             {
                                 imgPath = DataManager.DataManager.SharedInstance.LocationTypes[index].ImagePath;
                             }

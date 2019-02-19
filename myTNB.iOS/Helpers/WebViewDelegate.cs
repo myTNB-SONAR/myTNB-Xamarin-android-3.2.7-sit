@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Text.RegularExpressions;
 using CoreGraphics;
 using Foundation;
@@ -38,21 +38,27 @@ namespace myTNB
                     var paramsStr = url?.Host;
 
                     var parameters = paramsStr?.Split('&');
-                    if (parameters.Length > 0)
+                    if (parameters != null)
                     {
-                        foreach (var pair in parameters)
+                        if (parameters.Length > 0)
                         {
-                            var item = pair?.Split('=');
-                            if (item.Length == 2)
+                            foreach (var pair in parameters)
                             {
-                                var key = item[0];
-                                if (key == "rating")
+                                var item = pair?.Split('=');
+                                if (item != null)
                                 {
-                                    rateString = item[1];
-                                }
-                                else if (key == "transid")
-                                {
-                                    transId = item[1];
+                                    if (item.Length == 2)
+                                    {
+                                        var key = item[0];
+                                        if (key == "rating")
+                                        {
+                                            rateString = item[1];
+                                        }
+                                        else if (key == "transid")
+                                        {
+                                            transId = item[1];
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -61,11 +67,14 @@ namespace myTNB
                     UIStoryboard storyBoard = UIStoryboard.FromName("Rating", null);
                     RatingViewController viewController =
                         storyBoard.InstantiateViewController("RatingViewController") as RatingViewController;
-                    //viewController.Rating = !string.IsNullOrEmpty(rateString) ? int.Parse(rateString) : 0;
-                    viewController.Rating = 0;
-                    viewController.TransId = transId;
-                    var navController = new UINavigationController(viewController);
-                    Controller.PresentViewController(navController, true, null);
+                    if (viewController != null)
+                    {
+                        //viewController.Rating = !string.IsNullOrEmpty(rateString) ? int.Parse(rateString) : 0;
+                        viewController.Rating = 0;
+                        viewController.TransId = transId;
+                        var navController = new UINavigationController(viewController);
+                        Controller.PresentViewController(navController, true, null);
+                    }
                     loadingOverlay?.Hide();
                 }
                 if (request.ToString().Contains("intent://intent/#Intent;")

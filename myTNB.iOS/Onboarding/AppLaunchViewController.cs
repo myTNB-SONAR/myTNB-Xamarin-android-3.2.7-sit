@@ -269,66 +269,58 @@ namespace myTNB
 
         internal void ShowDashboard()
         {
-            var sharedPreference = NSUserDefaults.StandardUserDefaults;
-            var isLogin = sharedPreference.BoolForKey(TNBGlobal.PreferenceKeys.LoginState);
-            if (isLogin)
-            {
-                PushNotificationHelper.GetNotifications();
-            }
-
             UIStoryboard storyBoard = UIStoryboard.FromName("Dashboard", null);
             UIViewController loginVC = storyBoard.InstantiateViewController("HomeTabBarController") as UIViewController;
             ShowViewController(loginVC, this);
         }
 
-        internal void ExecuteSiteCoreCall()
+        internal async void ExecuteSiteCoreCall()
         {
             var sharedPreference = NSUserDefaults.StandardUserDefaults;
             var isWalkthroughDone = sharedPreference.BoolForKey("isWalkthroughDone");
             GetUserEntity();
-            _imageSize = DeviceHelper.GetImageSize((int)View.Frame.Width);
-            GetWalkthroughScreens().ContinueWith(task =>
+            if (isWalkthroughDone)
             {
-                InvokeOnMainThread(async () =>
+                var isLogin = sharedPreference.BoolForKey(TNBGlobal.PreferenceKeys.LoginState);
+                var shouldUpdateDb = IsDbUpdateNeeded();
+                if (isLogin && !shouldUpdateDb
+                    && DataManager.DataManager.SharedInstance.UserEntity != null && DataManager.DataManager.SharedInstance.UserEntity?.Count > 0)
                 {
-                    if (isWalkthroughDone)
+                    DataManager.DataManager.SharedInstance.User.UserID = DataManager.DataManager.SharedInstance.UserEntity[0]?.userID;
+
+                    bool isPhoneVerified = await GetPhoneVerificationStatus();
+
+                    if (isPhoneVerified)
                     {
-
-                        var isLogin = sharedPreference.BoolForKey(TNBGlobal.PreferenceKeys.LoginState);
-                        var shouldUpdateDb = IsDbUpdateNeeded();
-                        if (isLogin && !shouldUpdateDb
-                            && DataManager.DataManager.SharedInstance.UserEntity != null && DataManager.DataManager.SharedInstance.UserEntity?.Count > 0)
-                        {
-                            DataManager.DataManager.SharedInstance.User.UserID = DataManager.DataManager.SharedInstance.UserEntity[0]?.userID;
-
-                            bool isPhoneVerified = await GetPhoneVerificationStatus();
-
-                            if (isPhoneVerified)
-                            {
-                                ExecuteGetCutomerRecordsCall();
-                            }
-                            else
-                            {
-                                ShowUpdateMobileNumber(true);
-                            }
-                        }
-                        else
-                        {
-                            if (shouldUpdateDb)
-                            {
-                                DataManager.DataManager.SharedInstance.ClearLoginState();
-                            }
-                            ShowPrelogin();
-                            UIApplication.SharedApplication.NetworkActivityIndicatorVisible = false;
-                        }
+                        ExecuteGetCutomerRecordsCall();
                     }
                     else
                     {
-                        ShowOnboarding();
-                        UIApplication.SharedApplication.NetworkActivityIndicatorVisible = false;
+                        ShowUpdateMobileNumber(true);
                     }
-                });
-            });
+                }
+                else
+                {
+                    if (shouldUpdateDb)
+                    {
+                        DataManager.DataManager.SharedInstance.ClearLoginState();
+                    }
+                    ShowPrelogin();
+                    UIApplication.SharedApplication.NetworkActivityIndicatorVisible = false;
+                }
+            }
+            else
+            {
+                _imageSize = DeviceHelper.GetImageSize((int)View.Frame.Width);
+                await GetWalkthroughScreens().ContinueWith(task =>
+                   {
+                       InvokeOnMainThread(() =>
+                       {
+                           ShowOnboarding();
+                           UIApplication.SharedApplication.NetworkActivityIndicatorVisible = false;
+                       });
+                   });
+            }
         }
 
         /// <summary>
@@ -420,7 +412,6 @@ namespace myTNB
                        && DataManager.DataManager.SharedInstance.AccountRecordsList?.d?.Count > 0)
             {
                 DataManager.DataManager.SharedInstance.SelectedAccount = DataManager.DataManager.SharedInstance.AccountRecordsList.d[0];
-                //ExecuteGetBillAccountDetailsCall();
                 ShowDashboard();
                 UIApplication.SharedApplication.NetworkActivityIndicatorVisible = false;
             }
@@ -481,10 +472,13 @@ namespace myTNB
             UIStoryboard storyBoard = UIStoryboard.FromName("UpdateMobileNumber", null);
             UpdateMobileNumberViewController viewController =
                 storyBoard.InstantiateViewController("UpdateMobileNumberViewController") as UpdateMobileNumberViewController;
-            viewController.WillHideBackButton = willHideBackButton;
-            viewController.IsFromLogin = true;
-            var navController = new UINavigationController(viewController);
-            PresentViewController(navController, true, null);
+            if (viewController != null)
+            {
+                viewController.WillHideBackButton = willHideBackButton;
+                viewController.IsFromLogin = true;
+                var navController = new UINavigationController(viewController);
+                PresentViewController(navController, true, null);
+            }
             ActivityIndicator.Hide();
         }
 

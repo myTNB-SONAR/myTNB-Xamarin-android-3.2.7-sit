@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using UIKit;
 using myTNB.Dashboard.DashboardComponents;
 using myTNB.Model;
@@ -86,7 +86,7 @@ namespace myTNB
                 alert.AddAction(UIAlertAction.Create("Ok", UIAlertActionStyle.Default, (obj) =>
                 {
                     ActivityIndicator.Show();
-                    InvokeOnMainThread(() =>
+                    InvokeOnMainThread(async () =>
                     {
                         if (NetworkUtility.isReachable)
                         {
@@ -97,7 +97,7 @@ namespace myTNB
                                 && _deleteNotificationResponse?.d?.didSucceed == true)
                             {
                                 DataManager.DataManager.SharedInstance.IsNotificationDeleted = true;
-                                PushNotificationHelper.GetNotifications();
+                                await PushNotificationHelper.GetNotifications();
                                 NavigationController?.PopViewController(true);
                             }
                             else
@@ -365,9 +365,12 @@ namespace myTNB
             UIStoryboard storyBoard = UIStoryboard.FromName("PromotionDetails", null);
             PromotionDetailsViewController viewController =
                 storyBoard.InstantiateViewController("PromotionDetailsViewController") as PromotionDetailsViewController;
-            viewController.Promotion = promotion;
-            var navController = new UINavigationController(viewController);
-            PresentViewController(navController, true, null);
+            if (viewController != null)
+            {
+                viewController.Promotion = promotion;
+                var navController = new UINavigationController(viewController);
+                PresentViewController(navController, true, null);
+            }
         }
         /// <summary>
         /// Method to navigate to promotion tab
@@ -485,19 +488,25 @@ namespace myTNB
             if (vc == "BillViewController")
             {
                 BillViewController billVC = storyBoard.InstantiateViewController(vc) as BillViewController;
-                billVC.NotificationInfo = NotificationInfo;
-                billVC.IsFromNavigation = true;
-                NavigationController?.PushViewController(billVC, true);
+                if (billVC != null)
+                {
+                    billVC.NotificationInfo = NotificationInfo;
+                    billVC.IsFromNavigation = true;
+                    NavigationController?.PushViewController(billVC, true);
+                }
             }
             else
             {
                 SelectBillsViewController selectBillsVC =
                     storyBoard.InstantiateViewController("SelectBillsViewController") as SelectBillsViewController;
-                selectBillsVC.SelectedAccountDueAmount = (double)(_dueAmount != null && _dueAmount?.d != null
+                if (selectBillsVC != null)
+                {
+                    selectBillsVC.SelectedAccountDueAmount = (double)(_dueAmount != null && _dueAmount?.d != null
                                                                   && _dueAmount?.d?.data != null
                                                                   && _dueAmount?.d?.didSucceed == true ? _dueAmount?.d?.data.amountDue : 0);
-                var navController = new UINavigationController(selectBillsVC);
-                PresentViewController(navController, true, null);
+                    var navController = new UINavigationController(selectBillsVC);
+                    PresentViewController(navController, true, null);
+                }
             }
         }
     }

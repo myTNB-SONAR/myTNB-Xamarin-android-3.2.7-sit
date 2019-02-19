@@ -1,4 +1,4 @@
-﻿using Foundation;
+using Foundation;
 using System;
 using UIKit;
 using myTNB.Dashboard.DashboardComponents;
@@ -43,8 +43,11 @@ namespace myTNB
             base.ViewWillAppear(animated);
 
             var rawItems = DataManager.DataManager.SharedInstance.NotificationTypeResponse?.d?.data;
-            SelectedNotificationTypeList = rawItems.FindAll(item => item?.ShowInPreference?.ToLower() == "true");
-            SelectedNotificationChannelList = DataManager.DataManager.SharedInstance.NotificationChannelResponse?.d?.data;
+            if (rawItems != null && rawItems?.Count > 0)
+            {
+                SelectedNotificationTypeList = rawItems.FindAll(item => item?.ShowInPreference?.ToLower() == "true");
+                SelectedNotificationChannelList = DataManager.DataManager.SharedInstance.NotificationChannelResponse?.d?.data;
+            }
 
             notificationSettingsTableView.Source = new NotificationSettingsDataSource(this, NotificationSettingsTitle, SelectedNotificationTypeList);
             notificationSettingsTableView.ReloadData();

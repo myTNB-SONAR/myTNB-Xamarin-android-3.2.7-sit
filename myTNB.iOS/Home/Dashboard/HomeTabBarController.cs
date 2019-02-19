@@ -95,11 +95,14 @@ namespace myTNB
                     UIStoryboard storyBoard = UIStoryboard.FromName("PromotionDetails", null);
                     var viewController =
                         storyBoard.InstantiateViewController("PromotionsModalViewController") as PromotionsModalViewController;
-                    viewController.Promotions = filtered;
-                    viewController.OnModalDone = OnPromotionsModalDone;
-                    var navController = new UINavigationController(viewController);
-                    navController.ModalPresentationStyle = UIModalPresentationStyle.OverFullScreen;
-                    PresentViewController(navController, true, null);
+                    if (viewController != null)
+                    {
+                        viewController.Promotions = filtered;
+                        viewController.OnModalDone = OnPromotionsModalDone;
+                        var navController = new UINavigationController(viewController);
+                        navController.ModalPresentationStyle = UIModalPresentationStyle.OverFullScreen;
+                        PresentViewController(navController, true, null);
+                    }
                 }
             }
 

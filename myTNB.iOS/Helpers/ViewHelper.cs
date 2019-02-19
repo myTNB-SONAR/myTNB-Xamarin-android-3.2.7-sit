@@ -105,7 +105,7 @@ namespace myTNB
                 var topVc = AppDelegate.GetTopViewController(baseRootVc);
 
                 HomeTabBarController tabBar = null;
-                if (topVc.ParentViewController is HomeTabBarController)
+                if (topVc != null && topVc.ParentViewController is HomeTabBarController)
                 {
                     tabBar = topVc.ParentViewController as HomeTabBarController;
                 }
@@ -122,8 +122,10 @@ namespace myTNB
 
                         if (vc is UINavigationController)
                         {
-                            var nav = vc as UINavigationController;
-                            nav.PopToRootViewController(false);
+                            if (vc is UINavigationController nav)
+                            {
+                                nav.PopToRootViewController(false);
+                            }
                         }
                         else
                         {
@@ -131,12 +133,10 @@ namespace myTNB
                         }
 
                         vc = vc?.PresentingViewController;
-
                     }
 
                     tabBar = vc as HomeTabBarController;
                 }
-
 
                 if (tabBar != null)
                 {
@@ -145,10 +145,12 @@ namespace myTNB
                     if (willPopToRootOnSelect)
                     {
                         var selectedVc = tabBar.SelectedViewController;
-                        if (selectedVc is UINavigationController)
+                        if (selectedVc != null && selectedVc is UINavigationController)
                         {
-                            var nav = selectedVc as UINavigationController;
-                            nav.PopToRootViewController(false);
+                            if (selectedVc is UINavigationController nav)
+                            {
+                                nav.PopToRootViewController(false);
+                            }
                         }
                     }
 

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Firebase.CloudMessaging;
@@ -61,29 +61,33 @@ namespace myTNB
                     var baseRootVc = UIApplication.SharedApplication.KeyWindow?.RootViewController;
                     var topVc = AppDelegate.GetTopViewController(baseRootVc);
 
-                    if (!(topVc is DashboardHomeViewController) && !(topVc is DashboardViewController))
+                    if (topVc != null)
                     {
-                        var tabBar = ViewHelper.DismissControllersAndSelectTab(topVc, 0, false, true);
-
-                        if (tabBar != null)
+                        if (!(topVc is DashboardHomeViewController) && !(topVc is DashboardViewController))
                         {
-                            if (tabBar.SelectedViewController is DashboardNavigationController selVc)
-                            {
-                                var vc = selVc.ViewControllers[0];
+                            var tabBar = ViewHelper.DismissControllersAndSelectTab(topVc, 0, false, true);
 
-                                if ((vc is DashboardHomeViewController) || (vc is DashboardViewController))
+                            if (tabBar != null)
+                            {
+                                if (tabBar.SelectedViewController is DashboardNavigationController selVc)
                                 {
-                                    vc.PresentViewController(navController, true, null);
+                                    if (selVc != null && selVc.ViewControllers.Length > 0)
+                                    {
+                                        var vc = selVc.ViewControllers[0];
+
+                                        if ((vc is DashboardHomeViewController) || (vc is DashboardViewController))
+                                        {
+                                            vc.PresentViewController(navController, true, null);
+                                        }
+                                    }
                                 }
                             }
                         }
-
+                        else
+                        {
+                            topVc.PresentViewController(navController, true, null);
+                        }
                     }
-                    else
-                    {
-                        topVc.PresentViewController(navController, true, null);
-                    }
-
                 }
             }
             catch (Exception e)
@@ -91,15 +95,18 @@ namespace myTNB
                 Console.WriteLine("Error: " + e.Message);
             }
         }
-
         /// <summary>
         /// Gets the notifications.
         /// </summary>
-        public static void GetNotifications()
+        /// <returns>The notif.</returns>
+        public static async Task<bool> GetNotifications()
         {
-            Task.WaitAll(new Task[] { GetUserNotifications() });
-            if (_userNotifications != null && _userNotifications.d != null
-               && _userNotifications.d.isError.ToLower() == "false" && _userNotifications.d.status.ToLower() == "success")
+            bool res = false;
+            await GetUserNotifications();
+            res = _userNotifications?.d?.didSucceed == true;
+
+            if (_userNotifications != null && _userNotifications?.d != null
+                && _userNotifications?.d?.didSucceed == true && _userNotifications?.d?.status?.ToLower() == "success")
             {
                 DataManager.DataManager.SharedInstance.UserNotifications = _userNotifications.d.data;
                 DataManager.DataManager.SharedInstance.NotificationNeedsUpdate = false;
@@ -119,6 +126,8 @@ namespace myTNB
             }
             int unreadCount = GetNotificationCount();
             UIApplication.SharedApplication.ApplicationIconBadgeNumber = unreadCount;
+
+            return res;
         }
         /// <summary>
         /// Gets the notification count.

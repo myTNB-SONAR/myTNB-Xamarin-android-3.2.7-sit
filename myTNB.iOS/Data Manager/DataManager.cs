@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Foundation;
@@ -423,7 +423,10 @@ namespace myTNB.DataManager
                 if (entity != null)
                 {
                     model = JsonConvert.DeserializeObject<SmartChartDataModel>(entity.Data);
-                    lastUpdate = DateTime.Parse(entity.DateUpdated).ToLocalTime();
+                    if (!string.IsNullOrEmpty(entity.DateUpdated))
+                    {
+                        lastUpdate = DateTime.Parse(entity.DateUpdated, System.Globalization.CultureInfo.InvariantCulture).ToLocalTime();
+                    }
                     isRefreshNeeded = entity.IsRefreshNeeded;
                 }
             }
@@ -448,7 +451,10 @@ namespace myTNB.DataManager
                 if (entity != null)
                 {
                     model = JsonConvert.DeserializeObject<ChartDataModel>(entity.Data);
-                    lastUpdate = DateTime.Parse(entity.DateUpdated).ToLocalTime();
+                    if (!string.IsNullOrEmpty(entity.DateUpdated))
+                    {
+                        lastUpdate = DateTime.Parse(entity.DateUpdated, System.Globalization.CultureInfo.InvariantCulture).ToLocalTime();
+                    }
                     isRefreshNeeded = entity.IsRefreshNeeded;
                 }
             }
@@ -633,7 +639,10 @@ namespace myTNB.DataManager
                 if (entity != null)
                 {
                     model = JsonConvert.DeserializeObject<BillingAccountDetailsDataModel>(entity.Data);
-                    lastUpdate = DateTime.Parse(entity.DateUpdated).ToLocalTime();
+                    if (!string.IsNullOrEmpty(entity.DateUpdated))
+                    {
+                        lastUpdate = DateTime.Parse(entity.DateUpdated, System.Globalization.CultureInfo.InvariantCulture).ToLocalTime();
+                    }
                     isRefreshNeeded = entity.IsRefreshNeeded;
                 }
             }
@@ -737,7 +746,10 @@ namespace myTNB.DataManager
                 if (entity != null)
                 {
                     model = JsonConvert.DeserializeObject<BillHistoryModel>(entity.Data);
-                    lastUpdate = DateTime.Parse(entity.DateUpdated).ToLocalTime();
+                    if (!string.IsNullOrEmpty(entity.DateUpdated))
+                    {
+                        lastUpdate = DateTime.Parse(entity.DateUpdated, System.Globalization.CultureInfo.InvariantCulture).ToLocalTime();
+                    }
                     isRefreshNeeded = entity.IsRefreshNeeded;
                 }
             }
@@ -841,7 +853,10 @@ namespace myTNB.DataManager
                 if (entity != null)
                 {
                     model = JsonConvert.DeserializeObject<PaymentHistoryModel>(entity.Data);
-                    lastUpdate = DateTime.Parse(entity.DateUpdated).ToLocalTime();
+                    if (!string.IsNullOrEmpty(entity.DateUpdated))
+                    {
+                        lastUpdate = DateTime.Parse(entity.DateUpdated, System.Globalization.CultureInfo.InvariantCulture).ToLocalTime();
+                    }
                     isRefreshNeeded = entity.IsRefreshNeeded;
                 }
             }

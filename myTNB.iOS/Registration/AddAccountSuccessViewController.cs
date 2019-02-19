@@ -164,16 +164,16 @@ namespace myTNB
 #if true // CREATE_TABBAR
                 if (IsDashboardFlow)
                 {
-                    var baseRootVc = UIApplication.SharedApplication.KeyWindow?.RootViewController;
-                    var topVc = AppDelegate.GetTopViewController(baseRootVc);
+                    //var baseRootVc = UIApplication.SharedApplication.KeyWindow?.RootViewController;
+                    //var topVc = AppDelegate.GetTopViewController(baseRootVc);
                     ViewHelper.DismissControllersAndSelectTab(this, 0, true, true);
 
-                    var newtopVc = AppDelegate.GetTopViewController(baseRootVc);
-                    var newPresenting = newtopVc?.PresentingViewController;
-                    if (!(newPresenting is HomeTabBarController))
-                    {
-                        Console.WriteLine("newPresenting = " + newPresenting.GetType().ToString());
-                    }
+                    //var newtopVc = AppDelegate.GetTopViewController(baseRootVc);
+                    //var newPresenting = newtopVc?.PresentingViewController;
+                    //if (!(newPresenting is HomeTabBarController))
+                    //{
+                    //    Console.WriteLine("newPresenting = " + newPresenting.GetType().ToString());
+                    //}
                 }
                 else
                 {

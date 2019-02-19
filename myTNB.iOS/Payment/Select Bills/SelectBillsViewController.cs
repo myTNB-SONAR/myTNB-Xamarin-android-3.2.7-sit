@@ -46,7 +46,10 @@ namespace myTNB
             InitializedSubViews();
             AddBackButton();
             var appDelegate = UIApplication.SharedApplication.Delegate as AppDelegate;
-            appDelegate._selectBillsVC = this;
+            if (appDelegate != null)
+            {
+                appDelegate._selectBillsVC = this;
+            }
             NSNotificationCenter.DefaultCenter.AddObserver(UIKeyboard.DidShowNotification, (NSNotification obj) =>
             {
                 Console.WriteLine("Keyboard Show");

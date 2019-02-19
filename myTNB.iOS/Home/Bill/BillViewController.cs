@@ -770,9 +770,24 @@ namespace myTNB
             _lblDueDateTitle.TextAlignment = UITextAlignment.Left;
             _currentBillDetailsView.AddSubview(_lblDueDateTitle);
 
-            _viewAmount = new UIView(new CGRect(View.Frame.Width - 120, _viewCharges.Frame.GetMaxY() + headerMarginY, 0, 24));             var lblCurrency = new UILabel(new CGRect(0, 6, 24, 18));             lblCurrency.Font = myTNBFont.MuseoSans14();             lblCurrency.TextColor = myTNBColor.TunaGrey();             lblCurrency.TextAlignment = UITextAlignment.Right;             lblCurrency.Text = CURRENCY;
-            _viewAmount.BackgroundColor = UIColor.Clear;             _viewAmount.AddSubview(lblCurrency);              _lblAmount = new UILabel(new CGRect(24, 0, 75, 24));             _lblAmount.Font = myTNBFont.MuseoSans24();             _lblAmount.TextColor = myTNBColor.TunaGrey();             _lblAmount.TextAlignment = UITextAlignment.Right;             //_lblAmount.Text = "0.00";
-            _lblAmount.BackgroundColor = UIColor.Clear;             _viewAmount.AddSubview(_lblAmount);              _currentBillDetailsView.AddSubview(_viewAmount);
+            _viewAmount = new UIView(new CGRect(View.Frame.Width - 120, _viewCharges.Frame.GetMaxY() + headerMarginY, 0, 24));
+            var lblCurrency = new UILabel(new CGRect(0, 6, 24, 18));
+            lblCurrency.Font = myTNBFont.MuseoSans14();
+            lblCurrency.TextColor = myTNBColor.TunaGrey();
+            lblCurrency.TextAlignment = UITextAlignment.Right;
+            lblCurrency.Text = CURRENCY;
+            _viewAmount.BackgroundColor = UIColor.Clear;
+            _viewAmount.AddSubview(lblCurrency);
+
+            _lblAmount = new UILabel(new CGRect(24, 0, 75, 24));
+            _lblAmount.Font = myTNBFont.MuseoSans24();
+            _lblAmount.TextColor = myTNBColor.TunaGrey();
+            _lblAmount.TextAlignment = UITextAlignment.Right;
+            //_lblAmount.Text = "0.00";
+            _lblAmount.BackgroundColor = UIColor.Clear;
+            _viewAmount.AddSubview(_lblAmount);
+
+            _currentBillDetailsView.AddSubview(_viewAmount);
 
             _btnPay = new UIButton(UIButtonType.Custom);
             _btnPay.Frame = new CGRect(18, 180, View.Frame.Width - 36, 48);
@@ -901,8 +916,18 @@ namespace myTNB
             btn.Layer.Mask = maskLayer;
         }
 
-        CGSize GetLabelSize(UILabel label, nfloat width, nfloat height)         {             return label.Text.StringSize(label.Font, new SizeF((float)width, (float)height));         }          void AdjustFrames()
-        {             CGSize newSize = GetLabelSize(_lblAmount, View.Frame.Width / 2, _lblAmount.Frame.Height);             double newWidth = Math.Ceiling(newSize.Width);             _lblAmount.Frame = new CGRect(24, 0, newWidth, _lblAmount.Frame.Height);             _viewAmount.Frame = new CGRect(View.Frame.Width - (newWidth + 24 + 17), _viewAmount.Frame.Y, newWidth + 24, 24);         }
+        CGSize GetLabelSize(UILabel label, nfloat width, nfloat height)
+        {
+            return label.Text.StringSize(label.Font, new SizeF((float)width, (float)height));
+        }
+
+        void AdjustFrames()
+        {
+            CGSize newSize = GetLabelSize(_lblAmount, View.Frame.Width / 2, _lblAmount.Frame.Height);
+            double newWidth = Math.Ceiling(newSize.Width);
+            _lblAmount.Frame = new CGRect(24, 0, newWidth, _lblAmount.Frame.Height);
+            _viewAmount.Frame = new CGRect(View.Frame.Width - (newWidth + 24 + 17), _viewAmount.Frame.Y, newWidth + 24, 24);
+        }
 
         void SetEvents()
         {
@@ -945,9 +970,12 @@ namespace myTNB
                             UIStoryboard storyBoard = UIStoryboard.FromName("Payment", null);
                             SelectBillsViewController selectBillsVC =
                                 storyBoard.InstantiateViewController("SelectBillsViewController") as SelectBillsViewController;
-                            selectBillsVC.SelectedAccountDueAmount = DataManager.DataManager.SharedInstance.BillingAccountDetails.amCustBal;
-                            var navController = new UINavigationController(selectBillsVC);
-                            PresentViewController(navController, true, null);
+                            if (selectBillsVC != null)
+                            {
+                                selectBillsVC.SelectedAccountDueAmount = DataManager.DataManager.SharedInstance.BillingAccountDetails.amCustBal;
+                                var navController = new UINavigationController(selectBillsVC);
+                                PresentViewController(navController, true, null);
+                            }
                         }
                         else
                         {
@@ -991,10 +1019,13 @@ namespace myTNB
                         UIStoryboard storyBoard = UIStoryboard.FromName("Receipt", null);
                         ReceiptViewController viewController =
                             storyBoard.InstantiateViewController("ReceiptViewController") as ReceiptViewController;
-                        viewController.MerchatTransactionID = merchantTransactionID;//"MYTN201801041414";//
-                        viewController.OnDone = OnDone;
-                        var navController = new UINavigationController(viewController);
-                        PresentViewController(navController, true, null);
+                        if (viewController != null)
+                        {
+                            viewController.MerchatTransactionID = merchantTransactionID;//"MYTN201801041414";//
+                            viewController.OnDone = OnDone;
+                            var navController = new UINavigationController(viewController);
+                            PresentViewController(navController, true, null);
+                        }
                     }
                     else
                     {

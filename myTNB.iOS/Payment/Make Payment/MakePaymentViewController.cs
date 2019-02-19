@@ -30,7 +30,10 @@ namespace myTNB
         {
             base.ViewDidLoad();
             var appDelegate = UIApplication.SharedApplication.Delegate as AppDelegate;
-            appDelegate._makePaymentVC = this;
+            if (appDelegate != null)
+            {
+                appDelegate._makePaymentVC = this;
+            }
 
             NavigationItem.Title = (_paymentMode == "CC") ? "PaymentNavTitleCC".Translate() : "PaymentNavTitleFPX".Translate();
 

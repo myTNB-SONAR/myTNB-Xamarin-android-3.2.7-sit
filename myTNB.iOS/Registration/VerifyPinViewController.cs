@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using myTNB.Model;
 using myTNB.Registration.CustomerAccounts;
 using UIKit;
@@ -92,9 +92,12 @@ namespace myTNB.Registration
             UIStoryboard storyBoard = UIStoryboard.FromName("AccountRecords", null);
             AccountsViewController viewController =
                 storyBoard.InstantiateViewController("AccountsViewController") as AccountsViewController;
-            viewController._needsUpdate = true;
-            viewController.isDashboardFlow = false;
-            NavigationController?.PushViewController(viewController, true);
+            if (viewController != null)
+            {
+                viewController._needsUpdate = true;
+                viewController.isDashboardFlow = false;
+                NavigationController?.PushViewController(viewController, true);
+            }
         }
 
         internal void AddBackButton()
@@ -206,13 +209,25 @@ namespace myTNB.Registration
         internal void ClearTokenField()
         {
             UITextField txtFieldToken1 = _viewTokenFieldContainer.ViewWithTag(1) as UITextField;
-            txtFieldToken1.Text = string.Empty;
+            if (txtFieldToken1 != null)
+            {
+                txtFieldToken1.Text = string.Empty;
+            }
             UITextField txtFieldToken2 = _viewTokenFieldContainer.ViewWithTag(2) as UITextField;
-            txtFieldToken2.Text = string.Empty;
+            if (txtFieldToken2 != null)
+            {
+                txtFieldToken2.Text = string.Empty;
+            }
             UITextField txtFieldToken3 = _viewTokenFieldContainer.ViewWithTag(3) as UITextField;
-            txtFieldToken3.Text = string.Empty;
+            if (txtFieldToken3 != null)
+            {
+                txtFieldToken3.Text = string.Empty;
+            }
             UITextField txtFieldToken4 = _viewTokenFieldContainer.ViewWithTag(4) as UITextField;
-            txtFieldToken4.Text = string.Empty;
+            if (txtFieldToken4 != null)
+            {
+                txtFieldToken4.Text = string.Empty;
+            }
         }
         /// <summary>
         /// Updates the color of the text field based on OTP validity input
@@ -222,12 +237,18 @@ namespace myTNB.Registration
             for (int i = 0; i < 4; i++)
             {
                 UITextField txtField = _viewTokenFieldContainer.ViewWithTag(i + 1) as UITextField;
-                txtField.TextColor = (_isTokenInvalid) ? myTNBColor.Tomato() : myTNBColor.TunaGrey();
+                if (txtField != null)
+                {
+                    txtField.TextColor = (_isTokenInvalid) ? myTNBColor.Tomato() : myTNBColor.TunaGrey();
+                }
 
                 if (_isTokenInvalid)
                 {
                     UIView viewLine = _viewTokenFieldContainer.ViewWithTag(i + 5) as UIView;
-                    viewLine.BackgroundColor = myTNBColor.Tomato();
+                    if (viewLine != null)
+                    {
+                        viewLine.BackgroundColor = myTNBColor.Tomato();
+                    }
                 }
             }
 
@@ -252,70 +273,73 @@ namespace myTNB.Registration
             UITextField txtFieldToken3 = _viewTokenFieldContainer.ViewWithTag(3) as UITextField;
             UITextField txtFieldToken4 = _viewTokenFieldContainer.ViewWithTag(4) as UITextField;
 
-            if (!string.IsNullOrEmpty(txtFieldToken1.Text) && !string.IsNullOrEmpty(txtFieldToken2.Text)
-               && !string.IsNullOrEmpty(txtFieldToken3.Text) && !string.IsNullOrEmpty(txtFieldToken4.Text) && isKeyboardDismissed)
+            if (txtFieldToken1 != null && txtFieldToken2 != null && txtFieldToken3 != null && txtFieldToken4 != null)
             {
-                ActivityIndicator.Show();
-                NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
+                if (!string.IsNullOrEmpty(txtFieldToken1.Text) && !string.IsNullOrEmpty(txtFieldToken2.Text)
+               && !string.IsNullOrEmpty(txtFieldToken3.Text) && !string.IsNullOrEmpty(txtFieldToken4.Text) && isKeyboardDismissed)
                 {
-                    InvokeOnMainThread(async () =>
+                    ActivityIndicator.Show();
+                    NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
                     {
-                        if (NetworkUtility.isReachable)
+                        InvokeOnMainThread(async () =>
                         {
-                            _token = txtFieldToken1.Text + txtFieldToken2.Text + txtFieldToken3.Text + txtFieldToken4.Text;
-                            if (!IsMobileVerification)
+                            if (NetworkUtility.isReachable)
                             {
-                                ExecuteRegisterUserCall();
-                            }
-                            else
-                            {
-                                var response = await ServiceCall.UpdatePhoneNumber(_mobileNo, _token, IsFromLogin);
-
-                                if (response?.d?.didSucceed == true)
+                                _token = txtFieldToken1.Text + txtFieldToken2.Text + txtFieldToken3.Text + txtFieldToken4.Text;
+                                if (!IsMobileVerification)
                                 {
-                                    DataManager.DataManager.SharedInstance.UserEntity[0].mobileNo = _mobileNo;
-                                    if (!IsFromLogin)
-                                    {
-                                        DataManager.DataManager.SharedInstance.IsMobileNumberUpdated = true;
-                                    }
-                                    UserEntity userEntity = new UserEntity();
-                                    userEntity.Reset();
-                                    userEntity.InsertItem(DataManager.DataManager.SharedInstance.UserEntity[0]);
-                                    DataManager.DataManager.SharedInstance.UserEntity = userEntity.GetAllItems();
-
-                                    if (IsFromLogin)
-                                    {
-                                        var sharedPreference = NSUserDefaults.StandardUserDefaults;
-                                        sharedPreference.SetBool(true, TNBGlobal.PreferenceKeys.LoginState);
-                                        sharedPreference.SetBool(true, TNBGlobal.PreferenceKeys.PhoneVerification);
-                                        sharedPreference.Synchronize();
-                                        ExecuteGetCutomerRecordsCall();
-                                    }
-                                    else
-                                    {
-                                        DismissViewController(true, null);
-                                        ActivityIndicator.Hide();
-                                    }
-
+                                    ExecuteRegisterUserCall();
                                 }
                                 else
                                 {
-                                    _isTokenInvalid = true;
-                                    IsPinInvalid();
-                                    DisplayAlertView("OTPErrTtle".Translate(), response?.d?.message);
-                                    UpdateTextFieldColor();
-                                    ActivityIndicator.Hide();
-                                }
-                            }
+                                    var response = await ServiceCall.UpdatePhoneNumber(_mobileNo, _token, IsFromLogin);
 
-                        }
-                        else
-                        {
-                            DisplayRegistrationAlertView("ErrNoNetworkTitle".Translate(), "ErrNoNetworkMsg".Translate());
-                            ActivityIndicator.Hide();
-                        }
+                                    if (response?.d?.didSucceed == true)
+                                    {
+                                        DataManager.DataManager.SharedInstance.UserEntity[0].mobileNo = _mobileNo;
+                                        if (!IsFromLogin)
+                                        {
+                                            DataManager.DataManager.SharedInstance.IsMobileNumberUpdated = true;
+                                        }
+                                        UserEntity userEntity = new UserEntity();
+                                        userEntity.Reset();
+                                        userEntity.InsertItem(DataManager.DataManager.SharedInstance.UserEntity[0]);
+                                        DataManager.DataManager.SharedInstance.UserEntity = userEntity.GetAllItems();
+
+                                        if (IsFromLogin)
+                                        {
+                                            var sharedPreference = NSUserDefaults.StandardUserDefaults;
+                                            sharedPreference.SetBool(true, TNBGlobal.PreferenceKeys.LoginState);
+                                            sharedPreference.SetBool(true, TNBGlobal.PreferenceKeys.PhoneVerification);
+                                            sharedPreference.Synchronize();
+                                            ExecuteGetCutomerRecordsCall();
+                                        }
+                                        else
+                                        {
+                                            DismissViewController(true, null);
+                                            ActivityIndicator.Hide();
+                                        }
+
+                                    }
+                                    else
+                                    {
+                                        _isTokenInvalid = true;
+                                        IsPinInvalid();
+                                        DisplayAlertView("OTPErrTtle".Translate(), response?.d?.message);
+                                        UpdateTextFieldColor();
+                                        ActivityIndicator.Hide();
+                                    }
+                                }
+
+                            }
+                            else
+                            {
+                                DisplayRegistrationAlertView("ErrNoNetworkTitle".Translate(), "ErrNoNetworkMsg".Translate());
+                                ActivityIndicator.Hide();
+                            }
+                        });
                     });
-                });
+                }
             }
         }
 
@@ -654,7 +678,7 @@ namespace myTNB.Registration
                             var sharedPreference = NSUserDefaults.StandardUserDefaults;
                             sharedPreference.SetBool(true, TNBGlobal.PreferenceKeys.LoginState);
                             sharedPreference.Synchronize();
-                            PushNotificationHelper.GetNotifications();
+                            //PushNotificationHelper.GetNotifications();
                             DataManager.DataManager.SharedInstance.User.Password = string.Empty;
                             ShowAccountsVC();
                         }
@@ -766,7 +790,7 @@ namespace myTNB.Registration
                     if (_billingAccountDetailsList != null && _billingAccountDetailsList?.d != null
                         && _billingAccountDetailsList?.d?.data != null)
                     {
-                        PushNotificationHelper.GetNotifications();
+                        //PushNotificationHelper.GetNotifications();
                         DataManager.DataManager.SharedInstance.BillingAccountDetails = _billingAccountDetailsList?.d?.data;
                         UIStoryboard storyBoard = UIStoryboard.FromName("Dashboard", null);
                         UIViewController loginVC = storyBoard.InstantiateViewController("HomeTabBarController") as UIViewController;
