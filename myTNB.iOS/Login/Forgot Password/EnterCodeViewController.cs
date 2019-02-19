@@ -435,7 +435,7 @@ namespace myTNB
                             storyBoard.InstantiateViewController("PasswordResetSuccessViewController") as PasswordResetSuccessViewController;
                         viewController.IsChangePassword = false;
                         viewController.EmailAddress = EmailAddress;
-                        NavigationController.PushViewController(viewController, false);
+                        NavigationController?.PushViewController(viewController, false);
                     }
                     else
                     {

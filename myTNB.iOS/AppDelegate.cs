@@ -183,7 +183,7 @@ namespace myTNB
             // If not required for your application you can safely delete this method
             var sharedPreference = NSUserDefaults.StandardUserDefaults;
             DataManager.DataManager.SharedInstance.FCMToken = sharedPreference.StringForKey("FCMToken");
-            DataManager.DataManager.SharedInstance.UDID = UIDevice.CurrentDevice.IdentifierForVendor.ToString();
+            DataManager.DataManager.SharedInstance.UDID = UIDevice.CurrentDevice.IdentifierForVendor.AsString();
             SetupNavigationBar();
 
             // Register your app for remote notifications.
@@ -229,7 +229,7 @@ namespace myTNB
         {
             // Use this method to release shared resources, save user data, invalidate timers and store the application state.
             // If your application supports background exection this method is called instead of WillTerminate when the user quits.
-        
+
             //Messaging.SharedInstance.Disconnect();
             Messaging.SharedInstance.ShouldEstablishDirectChannel = false;
             Console.WriteLine("Disconnected from FCM");

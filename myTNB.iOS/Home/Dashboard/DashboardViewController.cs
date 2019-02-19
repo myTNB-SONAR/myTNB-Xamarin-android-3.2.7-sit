@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Carousels;
@@ -23,6 +23,7 @@ namespace myTNB.Dashboard
 
         DashboardMainComponent _dashboardMainComponent;
         DueAmountResponseModel _dueAmount = new DueAmountResponseModel();
+        BillingAccountDetailsResponseModel _billingAccountDetailsList = new BillingAccountDetailsResponseModel();
         bool isAnimating = false;
 
         double _amountDue = 0;
@@ -42,10 +43,13 @@ namespace myTNB.Dashboard
             base.ViewDidLoad();
             // Perform any additional setup after loading the view, typically from a nib.
             var appDelegate = UIApplication.SharedApplication.Delegate as AppDelegate;
-            appDelegate._dashboardVC = this;
+            if (appDelegate != null)
+            {
+                appDelegate._dashboardVC = this;
+            }
             DataManager.DataManager.SharedInstance.IsPreloginFeedback = false;
-            NavigationController.SetNavigationBarHidden(true, false);
-            NavigationItem.SetHidesBackButton(true, false);
+            NavigationController?.SetNavigationBarHidden(true, false);
+            NavigationItem?.SetHidesBackButton(true, false);
             _dashboardMainComponent = new DashboardMainComponent(View);
             NSNotificationCenter.DefaultCenter.AddObserver(UIApplication.WillEnterForegroundNotification, HandleAppWillEnterForeground);
         }
@@ -168,6 +172,23 @@ namespace myTNB.Dashboard
             }
             else
             {
+                await GetBillingAccountDetails().ContinueWith(task =>
+                {
+                    InvokeOnMainThread(() =>
+                    {
+                        if (_billingAccountDetailsList != null && _billingAccountDetailsList?.d != null
+                            && _billingAccountDetailsList?.d?.data != null)
+                        {
+                            var billDetails = _billingAccountDetailsList.d.data;
+                            DataManager.DataManager.SharedInstance.BillingAccountDetails = billDetails;
+                            if (!isREAccount)
+                            {
+                                DataManager.DataManager.SharedInstance.SaveToBillingAccounts(billDetails, billDetails.accNum);
+                            }
+                        }
+                    });
+                });
+
                 await GetAccountDueAmount().ContinueWith(dueTask =>
                 {
                     InvokeOnMainThread(() =>
@@ -260,8 +281,38 @@ namespace myTNB.Dashboard
             }
             else
             {
+                var sharedPreference = NSUserDefaults.StandardUserDefaults;
+                var appShortVersion = sharedPreference.StringForKey("appShortVersion");
+                var appBuildVersion = sharedPreference.StringForKey("appBuildVersion");
+                bool updateCache = false;
+
+                if (!string.IsNullOrEmpty(appShortVersion) && !string.IsNullOrEmpty(appBuildVersion))
+                {
+                    if (appShortVersion == AppVersionHelper.GetAppShortVersion())
+                    {
+                        if (appBuildVersion != AppVersionHelper.GetBuildVersion())
+                        {
+                            updateCache = true;
+                            sharedPreference.SetString(AppVersionHelper.GetAppShortVersion(), "appShortVersion");
+                            sharedPreference.SetString(AppVersionHelper.GetBuildVersion(), "appBuildVersion");
+                        }
+                    }
+                    else
+                    {
+                        updateCache = true;
+                        sharedPreference.SetString(AppVersionHelper.GetAppShortVersion(), "appShortVersion");
+                        sharedPreference.SetString(AppVersionHelper.GetBuildVersion(), "appBuildVersion");
+                    }
+                }
+                else
+                {
+                    updateCache = true;
+                    sharedPreference.SetString(AppVersionHelper.GetAppShortVersion(), "appShortVersion");
+                    sharedPreference.SetString(AppVersionHelper.GetBuildVersion(), "appBuildVersion");
+                }
+
                 SmartChartDataModel cachedData = GetCachedSmartChartData(accNum);
-                if (cachedData != null)
+                if (cachedData != null && !updateCache)
                 {
                     isResultSuccess = true;
                     ChartHelper.RemoveExcessSmartMonthData(ref cachedData);
@@ -316,12 +367,10 @@ namespace myTNB.Dashboard
                 SaveAccountChartData();
             }
 
-
             InvokeOnMainThread(() =>
-           {
-               RenderDisplay(errorMessage);
-           });
-
+            {
+                RenderDisplay(errorMessage);
+            });
         }
 
         /// <summary>
@@ -405,6 +454,7 @@ namespace myTNB.Dashboard
                     {
                         DataManager.DataManager.SharedInstance.IsMontView = selector.SelectedSegment != 0;
                         DataManager.DataManager.SharedInstance.CurrentChartIndex = 0;
+                        _dashboardMainComponent._chartCompanionComponent.ShowMessage(DataManager.DataManager.SharedInstance.IsMontView);
                         DisplayCurrentChart();
                         OnUpdateSmartChartIndex(false, false);
                     };
@@ -1180,7 +1230,7 @@ namespace myTNB.Dashboard
             _dashboardMainComponent?._componentActivity?.Show();
             chartResponse = await Task.Run(() =>
             {
-                return serviceManager.GetSmartMeterAccountData("GetSmartMeterAccountData_V2", requestParameter);
+                return serviceManager.GetSmartMeterAccountData("GetSmartMeterAccountData_V3", requestParameter);
             });
 
             _dashboardMainComponent?._componentActivity?.Hide();
@@ -1266,6 +1316,23 @@ namespace myTNB.Dashboard
 #else
             DisplayCurrentChart();
 #endif
+        }
+        /// <summary>
+        /// Gets the billing account details.
+        /// </summary>
+        /// <returns>The billing account details.</returns>
+        Task GetBillingAccountDetails()
+        {
+            return Task.Factory.StartNew(() =>
+            {
+                ServiceManager serviceManager = new ServiceManager();
+                object requestParameter = new
+                {
+                    apiKeyID = TNBGlobal.API_KEY_ID,
+                    CANum = DataManager.DataManager.SharedInstance.SelectedAccount.accNum
+                };
+                _billingAccountDetailsList = serviceManager.GetBillingAccountDetails("GetBillingAccountDetails", requestParameter);
+            });
         }
 
     }

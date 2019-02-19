@@ -32,11 +32,11 @@ namespace myTNB.Home.More.PushNotificationSettings
         {
             if (section == 0)
             {
-                return _preferenceItems.Count;
+                return _preferenceItems?.Count ?? 0;
             }
             else if (section == 1)
             {
-                return DataManager.DataManager.SharedInstance.NotificationChannelResponse.d.data.Count;
+                return DataManager.DataManager.SharedInstance.NotificationChannelResponse?.d?.data?.Count ?? 0;
             }
             else
             {
@@ -48,12 +48,14 @@ namespace myTNB.Home.More.PushNotificationSettings
         {
             UITableViewCell cell = new UITableViewCell(UITableViewCellStyle.Default, "SectionCell");
             cell.Frame = new CGRect(cell.Frame.X, cell.Frame.Y, cell.Frame.Width, 66);
-            UILabel lblTitle = new UILabel(new CGRect(18, 16, cell.Frame.Width - 36, 40));
-            lblTitle.TextColor = myTNBColor.PowerBlue();
-            lblTitle.Font = myTNBFont.MuseoSans16();
-            lblTitle.Text = _keys[(int)section];
-            lblTitle.Lines = 0;
-            lblTitle.LineBreakMode = UILineBreakMode.WordWrap;
+            UILabel lblTitle = new UILabel(new CGRect(18, 16, cell.Frame.Width - 36, 40))
+            {
+                TextColor = myTNBColor.PowerBlue(),
+                Font = myTNBFont.MuseoSans16(),
+                Text = _keys[(int)section],
+                Lines = 0,
+                LineBreakMode = UILineBreakMode.WordWrap
+            };
             cell.AddSubview(lblTitle);
             cell.BackgroundColor = myTNBColor.SectionGrey();
             return cell;
@@ -70,7 +72,7 @@ namespace myTNB.Home.More.PushNotificationSettings
             else if (indexPath.Section == 1)
             {
                 isNotificationType = false;
-                items = DataManager.DataManager.SharedInstance.NotificationChannelResponse.d.data;
+                items = DataManager.DataManager.SharedInstance.NotificationChannelResponse?.d?.data;
             }
 
             var cell = tableView.DequeueReusableCell("notificationSettingsCell", indexPath) as NotificationSettingsViewCell;
@@ -95,13 +97,19 @@ namespace myTNB.Home.More.PushNotificationSettings
             cell.Tag = cell.Tag == 0 ? 1 : 0;
             if (isNotificationType)
             {
-                _controller.SelectedNotificationTypeList[index].IsOpted = cell.Tag == 1 ? "true" : "false";
-                _controller.ExecuteSaveUserNotificationPreferenceCall(isNotificationType, _controller.SelectedNotificationTypeList[index]);
+                if (_controller != null && index > -1)
+                {
+                    _controller.SelectedNotificationTypeList[index].IsOpted = cell.Tag == 1 ? "true" : "false";
+                    _controller.ExecuteSaveUserNotificationPreferenceCall(isNotificationType, _controller.SelectedNotificationTypeList[index]);
+                }
             }
             else
             {
-                _controller.SelectedNotificationChannelList[index].IsOpted = cell.Tag == 1 ? "true" : "false";
-                _controller.ExecuteSaveUserNotificationPreferenceCall(isNotificationType, _controller.SelectedNotificationChannelList[index]);
+                if (_controller != null && index > -1)
+                {
+                    _controller.SelectedNotificationChannelList[index].IsOpted = cell.Tag == 1 ? "true" : "false";
+                    _controller.ExecuteSaveUserNotificationPreferenceCall(isNotificationType, _controller.SelectedNotificationChannelList[index]);
+                }
             }
         }
 

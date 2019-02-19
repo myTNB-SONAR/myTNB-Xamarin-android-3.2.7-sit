@@ -160,9 +160,12 @@ namespace myTNB
             UIImage backImg = UIImage.FromBundle("Back-White");
             UIBarButtonItem btnBack = new UIBarButtonItem(backImg, UIBarButtonItemStyle.Done, (sender, e) =>
             {
-                this.NavigationController.PopViewController(true);
+                this.NavigationController?.PopViewController(true);
             });
-            this.NavigationItem.LeftBarButtonItem = btnBack;
+            if (this.NavigationItem != null)
+            {
+                this.NavigationItem.LeftBarButtonItem = btnBack;
+            }
         }
 
         internal void NavigateToPage(string storyboardName, string viewControllerName, bool isOwner)

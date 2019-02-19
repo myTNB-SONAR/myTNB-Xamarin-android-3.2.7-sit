@@ -468,7 +468,8 @@ namespace myTNB
                 lblHint = new UILabel();
             }
             _feedbackTextView.SetKeyboard();
-            textView.Changed += (sender, e) => {
+            textView.Changed += (sender, e) =>
+            {
                 FeedbackTextView txtView = sender as FeedbackTextView;
                 if (txtView == _feedbackTextView)
                 {
@@ -596,7 +597,7 @@ namespace myTNB
                     isValid = isValid && _textFieldHelper.ValidateAccountNumberLength(textField.Text);
                     isEmptyAllowed = false;
                 }
-                else if(textField == _txtFieldFullName)
+                else if (textField == _txtFieldFullName)
                 {
                     isValid = isValid && !string.IsNullOrWhiteSpace(textField.Text);
                     isEmptyAllowed = false;
@@ -626,7 +627,7 @@ namespace myTNB
             {
                 string content = _textFieldHelper.TrimAllSpaces(((UITextField)txtField).Text);
                 var count = content.Length + replacementString.Length - range.Length;
-                bool isCharValid = !string.IsNullOrEmpty(replacementString) 
+                bool isCharValid = !string.IsNullOrEmpty(replacementString)
                                           ? _textFieldHelper.ValidateTextField(replacementString, pattern)
                                           : true;
                 if (txtField == _txtFieldMobileNo)
@@ -744,9 +745,9 @@ namespace myTNB
                             {
                                 InvokeOnMainThread(() =>
                                 {
-                                    if (_submitFeedback != null && _submitFeedback.d != null
-                                       && _submitFeedback.d.isError.Equals("false")
-                                       && _submitFeedback.d.data != null)
+                                    if (_submitFeedback != null && _submitFeedback?.d != null
+                                       && _submitFeedback?.d?.didSucceed == true
+                                       && _submitFeedback?.d?.data != null)
                                     {
                                         UIStoryboard storyBoard = UIStoryboard.FromName("Feedback", null);
                                         SubmitFeedbackSuccessViewController submitFeedbackSuccessVC =

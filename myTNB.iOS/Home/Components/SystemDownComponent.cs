@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using CoreGraphics;
 using Foundation;
 using UIKit;
@@ -43,9 +43,11 @@ namespace myTNB.Dashboard.DashboardComponents
             var imgHeight = imgWidth * origImgHeightRatio;
 
             var xLocation = baseWidth / 2.0f - imgWidth / 2.0f;
-            UIImageView imgGraphic = new UIImageView(new CGRect(xLocation, yLocation, imgWidth, imgHeight));
-            imgGraphic.Image = UIImage.FromBundle("Down-BCRM");
-            imgGraphic.ContentMode = UIViewContentMode.ScaleAspectFit;
+            UIImageView imgGraphic = new UIImageView(new CGRect(xLocation, yLocation, imgWidth, imgHeight))
+            {
+                Image = UIImage.FromBundle("Down-BCRM"),
+                ContentMode = UIViewContentMode.ScaleAspectFit
+            };
             _baseView.AddSubview(imgGraphic);
 
             var horizontalMargin = 34.0f;
@@ -61,8 +63,10 @@ namespace myTNB.Dashboard.DashboardComponents
                 NSAttributedString htmlBody = TextHelper.ConvertToHtmlWithFont(bcrmMsg, ref htmlError, myTNBFont.FONTNAME_300, 12f);
                 NSMutableAttributedString mutableDowntime = new NSMutableAttributedString(htmlBody);
 
-                NSMutableParagraphStyle msgParagraphStyle = new NSMutableParagraphStyle();
-                msgParagraphStyle.Alignment = UITextAlignment.Center;
+                NSMutableParagraphStyle msgParagraphStyle = new NSMutableParagraphStyle
+                {
+                    Alignment = UITextAlignment.Center
+                };
 
                 UIStringAttributes msgAttributes = new UIStringAttributes
                 {
@@ -78,36 +82,52 @@ namespace myTNB.Dashboard.DashboardComponents
                     BackgroundColor = UIColor.Clear
                 };
 
-                mutableDowntime.AddAttributes(msgAttributes, new NSRange(0, htmlBody.Length));
-
-                _txtView = new UITextView(new CGRect(msgXLoc, imgGraphic.Frame.GetMaxY() + 31f, msgWidth, 90f));
-                _txtView.BackgroundColor = UIColor.Clear;
-                _txtView.Editable = false;
-                _txtView.ScrollEnabled = false;
-                _txtView.Selectable = false;
-                _txtView.AttributedText = mutableDowntime;
+                _txtView = new UITextView(new CGRect(msgXLoc, imgGraphic.Frame.GetMaxY() + 31f, msgWidth, 90f))
+                {
+                    BackgroundColor = UIColor.Clear,
+                    Editable = false,
+                    ScrollEnabled = false,
+                    Selectable = false
+                };
+                if (htmlBody != null)
+                {
+                    if (mutableDowntime != null)
+                    {
+                        mutableDowntime.AddAttributes(msgAttributes, new NSRange(0, htmlBody.Length));
+                        _txtView.AttributedText = mutableDowntime;
+                    }
+                }
                 _txtView.WeakLinkTextAttributes = linkAttributes.Dictionary;
                 _txtView.UserInteractionEnabled = true;
                 _txtView.AddGestureRecognizer(
                     new UITapGestureRecognizer(() =>
                     {
-                        string str = bcrmMsg.ToString();
-                        if (str.Contains("faqid"))
+                        string str = bcrmMsg;
+                        if (!string.IsNullOrEmpty(str))
                         {
-                            var startStr = str.Substring(str.IndexOf('{'));
-                            string faqId = startStr?.Split('"')[0];
-                            if (!string.IsNullOrEmpty(faqId))
+                            if (str.Contains("faqid"))
                             {
-                                ViewHelper.GoToFAQScreenWithId(faqId);
+                                var startStr = str.Substring(str.IndexOf('{'));
+                                if (!string.IsNullOrEmpty(startStr))
+                                {
+                                    string faqId = startStr?.Split('"')[0];
+                                    if (!string.IsNullOrEmpty(faqId))
+                                    {
+                                        ViewHelper.GoToFAQScreenWithId(faqId);
+                                    }
+                                }
                             }
-                        }
-                        else if (str.Contains("http") || str.Contains("https"))
-                        {
-                            var startStr = str.Substring(str.IndexOf('"') + 1);
-                            string url = startStr?.Split('"')[0];
-                            if (!string.IsNullOrEmpty(url))
+                            else if (str.Contains("http") || str.Contains("https"))
                             {
-                                ViewHelper.OpenBrowserWithUrl(url);
+                                var startStr = str.Substring(str.IndexOf('"') + 1);
+                                if (!string.IsNullOrEmpty(startStr))
+                                {
+                                    string url = startStr?.Split('"')[0];
+                                    if (!string.IsNullOrEmpty(url))
+                                    {
+                                        ViewHelper.OpenBrowserWithUrl(url);
+                                    }
+                                }
                             }
                         }
                     }));

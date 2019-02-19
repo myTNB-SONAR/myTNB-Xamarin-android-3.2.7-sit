@@ -498,9 +498,6 @@
     <ImageAsset Include="Assets.xcassets\Map-Convenient-Store.imageset\ic_button_map_pin_convenient_store%402x.png" />
     <ImageAsset Include="Assets.xcassets\Map-Convenient-Store.imageset\ic_button_map_pin_convenient_store%403x.png" />
     <ImageAsset Include="Assets.xcassets\Find_Account_Number.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Find_Account_Number.imageset\img_register_acct no.png" />
-    <ImageAsset Include="Assets.xcassets\Find_Account_Number.imageset\img_register_acct no%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Find_Account_Number.imageset\img_register_acct no%403x.png" />
     <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-76.png" />
     <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-76%402x.png" />
     <ImageAsset Include="Assets.xcassets\Direction.imageset\Contents.json" />
@@ -850,6 +847,9 @@
     <ImageAsset Include="Assets.xcassets\Payment-Checkbox-White-Inactive.imageset\icActionCheckboxInactiveWhite.png" />
     <ImageAsset Include="Assets.xcassets\Payment-Checkbox-White-Inactive.imageset\icActionCheckboxInactiveWhite%403x.png" />
     <ImageAsset Include="Assets.xcassets\Payment-Checkbox-White-Inactive.imageset\icActionCheckboxInactiveWhite%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Find_Account_Number.imageset\new-bill copy.png" />
+    <ImageAsset Include="Assets.xcassets\Find_Account_Number.imageset\new-bill copy%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Find_Account_Number.imageset\new-bill copy%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />

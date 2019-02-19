@@ -4,6 +4,7 @@ using System.Linq;
 using CoreGraphics;
 using Foundation;
 using myTNB.Enums;
+using myTNB.Extensions;
 using myTNB.Model;
 using UIKit;
 
@@ -22,6 +23,9 @@ namespace myTNB.Dashboard.DashboardComponents
         UIButton _consumptionBtn;
         UIButton _emissionBtn;
         UsageMetrics _usageMetrics;
+        UIView _msgLabelView;
+        UILabel _messageLabel;
+        UIView _msgViewLine;
         double _yLocation;
 
         private const string TxtCurrentCharges = "Current charges";
@@ -71,6 +75,27 @@ namespace myTNB.Dashboard.DashboardComponents
             attr.TextColor = UIColor.White;
             _chartModeView = new UIView(new CGRect(margin, _baseView.Frame.Height - 26, _baseView.Frame.Width, 26));
 
+            _msgLabelView = new UIView(new CGRect(0, _baseView.Frame.Height - 112, _baseView.Frame.Width, 59));
+            _messageLabel = new UILabel
+            {
+                Frame = new CGRect(7, 13, _msgLabelView.Frame.Width - 14, 32),
+                Font = myTNBFont.MuseoSans12_300(),
+                TextColor = UIColor.White,
+                Lines = 2,
+                LineBreakMode = UILineBreakMode.TailTruncation,
+                TextAlignment = UITextAlignment.Left,
+                Text = "SmartMeterMessage".Translate()
+            };
+            _msgLabelView.AddSubview(_messageLabel);
+            _msgViewLine = new UIView(new CGRect(0, _msgLabelView.Frame.Height - 1,
+                                                    _msgLabelView.Frame.Width, 1))
+            {
+                BackgroundColor = myTNBColor.SelectionSemiTransparent()
+            };
+            _msgLabelView.AddSubview(_msgViewLine);
+            _msgLabelView.Hidden = true;
+
+            _baseView.AddSubview(_msgLabelView);
 
             _amountBtn = new UIButton();
             _amountBtn.Frame = new CGRect(center - margin - (btnWidth * 2 + btnOffset) / 2, 0, btnWidth, 26);
@@ -146,6 +171,24 @@ namespace myTNB.Dashboard.DashboardComponents
             _metricView2 = _metricCmp2.GetUI();
             _baseView.AddSubview(_metricView2);
 
+        }
+
+        /// <summary>
+        /// Shows the message label for the Smart Meter graph in Monthly view.
+        /// </summary>
+        /// <param name="flag">If set to <c>true</c> flag.</param>
+        public void ShowMessage(bool flag)
+        {
+            _msgLabelView.Hidden = flag;
+            CGRect baseFrame = _baseView.Frame;
+            CGRect chartFrame = _chartModeView.Frame;
+            CGRect labelMsgFrame = _msgLabelView.Frame;
+            baseFrame.Height = flag ? 171 : 230;
+            _baseView.Frame = baseFrame;
+            chartFrame = new CGRect(18, _baseView.Frame.Height - 26, _baseView.Frame.Width, 26);
+            labelMsgFrame = new CGRect(0, _baseView.Frame.Height - 112, _baseView.Frame.Width, 59);
+            _chartModeView.Frame = chartFrame;
+            _msgLabelView.Frame = labelMsgFrame;
         }
 
 

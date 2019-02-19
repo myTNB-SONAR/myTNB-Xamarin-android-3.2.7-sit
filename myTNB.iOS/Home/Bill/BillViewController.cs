@@ -33,7 +33,7 @@ namespace myTNB
 
         UILabel _lblAccountName;
         UILabel _lblAccountNumber;
-        UITextView _txtViewAddress;
+        UILabel _lblViewAddress;
         UILabel _lblCurrentChargesTitle;
         UILabel _lblCurrentChargesValue;
         UILabel _lblOutstandingChargesTitle;
@@ -294,10 +294,10 @@ namespace myTNB
             {
                 isEnabled = true;//DataManager.DataManager.SharedInstance.BillingAccountDetails.amCustBal > 0;
             }
-            if (!ServiceCall.HasAccountList() 
+            if (!ServiceCall.HasAccountList()
                 || (!isBcrmAvailable)
                 || (isBcrmAvailable && !DataManager.DataManager.SharedInstance.IsPaymentCreditCardAvailable
-                   && !DataManager.DataManager.SharedInstance.IsPaymentFPXAvailable) )
+                   && !DataManager.DataManager.SharedInstance.IsPaymentFPXAvailable))
             {
                 isEnabled = false;
             }
@@ -335,7 +335,7 @@ namespace myTNB
             ActivityIndicator.Show();
             GetBillHistory().ContinueWith(task =>
             {
-                if(_billingHistory?.d?.didSucceed == true && _billingHistory?.d?.data != null 
+                if (_billingHistory?.d?.didSucceed == true && _billingHistory?.d?.data != null
                    && _billingHistory?.d?.data?.Count > 0)
                 {
                     DataManager.DataManager.SharedInstance.SaveToBillHistory(_billingHistory.d, DataManager.DataManager.SharedInstance.SelectedAccount.accNum);
@@ -436,7 +436,7 @@ namespace myTNB
 
             if (NetworkUtility.isReachable)
             {
-                _txtViewAddress.Text = DataManager.DataManager.SharedInstance.SelectedAccount?.accountStAddress;
+                _lblViewAddress.Text = DataManager.DataManager.SharedInstance.SelectedAccount?.accountStAddress;
 
                 NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
                 {
@@ -463,7 +463,7 @@ namespace myTNB
             }
             else
             {
-                _txtViewAddress.Text = string.Empty;
+                _lblViewAddress.Text = string.Empty;
                 _lblCurrentChargesValue.Text = CURRENCY + "0.00";
                 _lblOutstandingChargesValue.Text = CURRENCY + "0.00";
                 _lblTotalPayableValue.Text = CURRENCY + "0.00";
@@ -498,12 +498,28 @@ namespace myTNB
             }
             else
             {
+                await GetBillingAccountDetails().ContinueWith(task =>
+                 {
+                     InvokeOnMainThread(() =>
+                     {
+                         if (_billingAccountDetailsList != null && _billingAccountDetailsList?.d != null
+                             && _billingAccountDetailsList?.d?.data != null)
+                         {
+                             var billDetails = _billingAccountDetailsList.d.data;
+                             DataManager.DataManager.SharedInstance.BillingAccountDetails = billDetails;
+                             if (!isREAccount)
+                             {
+                                 DataManager.DataManager.SharedInstance.SaveToBillingAccounts(billDetails, billDetails.accNum);
+                             }
+                         }
+                     });
+                 });
                 await GetAccountDueAmount().ContinueWith(dueTask =>
                 {
                     InvokeOnMainThread(() =>
                     {
-                        if (_dueAmount != null && _dueAmount.d != null
-                            && _dueAmount.d.isError.Equals("false"))
+                        if (_dueAmount != null && _dueAmount?.d != null
+                            && _dueAmount?.d?.didSucceed == true)
                         {
                             _amountDue = _dueAmount.d.data.amountDue;
                             _dateDue = _dueAmount.d.data.billDueDate;
@@ -650,16 +666,15 @@ namespace myTNB
             _lblAccountNumber.BackgroundColor = UIColor.Clear;
             accountDetailsView.AddSubview(_lblAccountNumber);
 
-            _txtViewAddress = new UITextView(new CGRect(18, 66, View.Frame.Width - 36, 32));
-            _txtViewAddress.Font = myTNBFont.MuseoSans12_300();
-            _txtViewAddress.TextAlignment = UITextAlignment.Left;
-            _txtViewAddress.TextColor = myTNBColor.TunaGrey();
-            _txtViewAddress.BackgroundColor = UIColor.Clear;
-            _txtViewAddress.TextContainerInset = new UIEdgeInsets(0, -4, 0, 0);
-            _txtViewAddress.UserInteractionEnabled = false;
-            _txtViewAddress.Editable = false;
-            _txtViewAddress.ScrollEnabled = false;
-            accountDetailsView.AddSubview(_txtViewAddress);
+            _lblViewAddress = new UILabel(new CGRect(18, 50, View.Frame.Width - 36, 72));
+            _lblViewAddress.Font = myTNBFont.MuseoSans12_300();
+            _lblViewAddress.TextAlignment = UITextAlignment.Left;
+            _lblViewAddress.Lines = 0;
+            _lblViewAddress.LineBreakMode = UILineBreakMode.TailTruncation;
+            _lblViewAddress.TextColor = myTNBColor.TunaGrey();
+            _lblViewAddress.BackgroundColor = UIColor.Clear;
+            _lblViewAddress.UserInteractionEnabled = false;
+            accountDetailsView.AddSubview(_lblViewAddress);
 
             //RE Account Leaf
             _imgLeaf = new UIImageView(new CGRect(View.Frame.Width - 42, 16, 24, 24));
@@ -689,7 +704,7 @@ namespace myTNB
             _viewCharges.BackgroundColor = UIColor.White;
             _currentBillDetailsView.AddSubview(_viewCharges);
 
-#region _viewCharges
+            #region _viewCharges
             _lblCurrentChargesTitle = new UILabel(new CGRect(18, 16, 119, 16));
             _lblCurrentChargesTitle.Font = myTNBFont.MuseoSans12();
             _lblCurrentChargesTitle.TextAlignment = UITextAlignment.Left;
@@ -739,7 +754,7 @@ namespace myTNB
             _lineView = new UIView(new CGRect(18, _lblTotalPayableValue.Frame.GetMaxY() + headerMarginY, (float)View.Frame.Width - 36, 1));
             _lineView.BackgroundColor = UIColor.LightGray;
             _viewCharges.AddSubview(_lineView);
-#endregion
+            #endregion
 
             _lblTotalDueAmountTitle = new UILabel(new CGRect(18, _viewCharges.Frame.GetMaxY() + headerMarginY + 3, 160, 18));
             _lblTotalDueAmountTitle.Font = myTNBFont.MuseoSans14_500();
@@ -840,8 +855,8 @@ namespace myTNB
         /// </summary>
         public void ShowNonOwnerView()
         {
-            _txtViewAddress.Hidden = true;
-            float adjY = ((float)_txtViewAddress.Frame.Height + 16.0f) * -1.0f;
+            _lblViewAddress.Hidden = true;
+            float adjY = ((float)_lblViewAddress.Frame.Height + 16.0f) * -1.0f;
 
             AdjustFrameAddY(_currentBillHeaderView, adjY);
             AdjustFrameAddY(_currentBillDetailsView, adjY);
@@ -1016,7 +1031,7 @@ namespace myTNB
                             ActivityIndicator.Show();
                             GetPaymentHistory().ContinueWith(task =>
                             {
-                                if(_paymentHistory?.d?.didSucceed == true && _paymentHistory?.d?.data?.Count > 0)
+                                if (_paymentHistory?.d?.didSucceed == true && _paymentHistory?.d?.data?.Count > 0)
                                 {
                                     DataManager.DataManager.SharedInstance.SaveToPaymentHistory(_paymentHistory.d, DataManager.DataManager.SharedInstance.SelectedAccount.accNum);
                                 }
@@ -1092,8 +1107,8 @@ namespace myTNB
             {
                 InvokeOnMainThread(() =>
                 {
-                    if (_billingAccountDetailsList != null && _billingAccountDetailsList.d != null
-                        && _billingAccountDetailsList.d.data != null)
+                    if (_billingAccountDetailsList != null && _billingAccountDetailsList?.d != null
+                        && _billingAccountDetailsList?.d?.data != null)
                     {
                         var billDetails = _billingAccountDetailsList.d.data;
                         DataManager.DataManager.SharedInstance.BillingAccountDetails = billDetails;

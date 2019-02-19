@@ -72,7 +72,7 @@ namespace myTNB.Registration
         string _mobileNo = string.Empty;
 
         const string EMAIL_PATTERN = @"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$";
-        const string PASSWORD_PATTERN = @"(?!^[0-9]*$)(?!^[a-zA-Z]*$)^([a-zA-Z0-9]{8,})$";
+        const string PASSWORD_PATTERN = @"^.{8,}$"; //@"(?!^[0-9]*$)(?!^[a-zA-Z]*$)^([a-zA-Z0-9]{8,})$";
         const string MOBILE_NO_PATTERN = @"^[0-9 \+]+$";
         const string IC_NO_PATTERN = @"^[a-zA-Z0-9]+$";
         const string TOKEN_PATTERN = @"^[0-9]{4,4}$";
@@ -812,7 +812,7 @@ namespace myTNB.Registration
                 }
                 else if (textField == txtFieldName)
                 {
-                    bool isCharValid = !string.IsNullOrEmpty(replacementString) 
+                    bool isCharValid = !string.IsNullOrEmpty(replacementString)
                                               ? _textFieldHelper.ValidateTextField(replacementString, pattern)
                                               : true;
                     if (!isCharValid)
@@ -842,7 +842,7 @@ namespace myTNB.Registration
             bool isValidPassword = _textFieldHelper.ValidateTextField(txtFieldPassword.Text, PASSWORD_PATTERN)
                 && _textFieldHelper.ValidateTextField(txtFieldConfirmPassword.Text, PASSWORD_PATTERN)
                 && txtFieldPassword.Text.Equals(txtFieldConfirmPassword.Text);
-            bool isValid = isValidName 
+            bool isValid = isValidName
                 && isValidICNo
                 && isValidMobileNo
                 && isValidEmail

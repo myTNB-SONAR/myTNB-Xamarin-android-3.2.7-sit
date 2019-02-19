@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using CoreGraphics;
 using Foundation;
@@ -255,7 +255,7 @@ namespace myTNB.Registration.CustomerAccounts
                 var okCancelAlertController = UIAlertController.Create("Remove Account", alertMessage, UIAlertControllerStyle.Alert);
                 okCancelAlertController.AddAction(UIAlertAction.Create("OK", UIAlertActionStyle.Default, alert => RemoveAccount(acount)));
                 okCancelAlertController.AddAction(UIAlertAction.Create("Cancel", UIAlertActionStyle.Cancel, alert => Console.WriteLine("Cancel was clicked")));
-                _controller.PresentViewController(okCancelAlertController, true, null);
+                _controller?.PresentViewController(okCancelAlertController, true, null);
 
             };
 
@@ -282,8 +282,16 @@ namespace myTNB.Registration.CustomerAccounts
 
         internal void RemoveAccount(CustomerAccountRecordModel theAccount)
         {
-            DataManager.DataManager.SharedInstance.AccountsToBeAddedList.d.Remove(theAccount);
-            _controller.SetAccountTable();
+            if (theAccount != null)
+            {
+                if (DataManager.DataManager.SharedInstance.AccountsToBeAddedList != null
+                && DataManager.DataManager.SharedInstance.AccountsToBeAddedList?.d != null
+                && DataManager.DataManager.SharedInstance.AccountsToBeAddedList?.d?.Count > 0)
+                {
+                    DataManager.DataManager.SharedInstance.AccountsToBeAddedList.d.Remove(theAccount);
+                    _controller?.SetAccountTable();
+                }
+            }
         }
 
         internal void SetTextField(UITextField textField, UILabel title, UILabel error

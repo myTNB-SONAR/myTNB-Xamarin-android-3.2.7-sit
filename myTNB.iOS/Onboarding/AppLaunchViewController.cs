@@ -12,7 +12,6 @@ using myTNB.SQLite.SQLiteDataManager;
 using myTNB.SQLite;
 using myTNB.DataManager;
 using System.Collections.Generic;
-using myTNB.Mobile.Business;
 
 namespace myTNB
 {
@@ -72,6 +71,10 @@ namespace myTNB
             //Create DB
             SQLiteHelper.CreateDB();
             CreateCacheTables();
+
+            // clear cache data on App Launch
+            BillingAccountEntity.DeleteTable();
+            PaymentHistoryEntity.DeleteTable();
         }
 
         public override void ViewDidLayoutSubviews()
@@ -417,7 +420,9 @@ namespace myTNB
                        && DataManager.DataManager.SharedInstance.AccountRecordsList?.d?.Count > 0)
             {
                 DataManager.DataManager.SharedInstance.SelectedAccount = DataManager.DataManager.SharedInstance.AccountRecordsList.d[0];
-                ExecuteGetBillAccountDetailsCall();
+                //ExecuteGetBillAccountDetailsCall();
+                ShowDashboard();
+                UIApplication.SharedApplication.NetworkActivityIndicatorVisible = false;
             }
             else if (DataManager.DataManager.SharedInstance.AccountRecordsList != null
               && DataManager.DataManager.SharedInstance.AccountRecordsList?.d != null
@@ -445,19 +450,11 @@ namespace myTNB
 
             if (!isVerified)
             {
-                string userEmail = string.Empty;
-                string sspId = string.Empty;
-                if (DataManager.DataManager.SharedInstance.UserEntity != null && DataManager.DataManager.SharedInstance.UserEntity.Count > 0)
-                {
-                    userEmail = DataManager.DataManager.SharedInstance.UserEntity[0]?.email;
-                    sspId = DataManager.DataManager.SharedInstance.UserEntity[0]?.userID;
-                }
+                var response = await ServiceCall.GetPhoneVerificationStatus();
 
-                var response = await ApiManager.Instance.GetPhoneVerificationStatus(userEmail, sspId, DataManager.DataManager.SharedInstance.UDID);
-
-                if (response?.d?.didSucceed == true && response?.d?.data != null)
+                if (response?.didSucceed == true && response?.data != null)
                 {
-                    isVerified = response.d.data.IsVerified;
+                    isVerified = response.data.IsVerified;
 
                     if (isVerified)
                     {

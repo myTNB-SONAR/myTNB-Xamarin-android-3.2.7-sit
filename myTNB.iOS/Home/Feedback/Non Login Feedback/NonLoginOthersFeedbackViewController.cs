@@ -503,7 +503,8 @@ namespace myTNB
                 lblHint = new UILabel();
             }
             _feedbackTextView.SetKeyboard();
-            textView.Changed += (sender, e) => {
+            textView.Changed += (sender, e) =>
+            {
                 FeedbackTextView txtView = sender as FeedbackTextView;
                 if (txtView == _feedbackTextView)
                 {
@@ -797,9 +798,9 @@ namespace myTNB
                         {
                             InvokeOnMainThread(() =>
                             {
-                                if (_submitFeedback != null && _submitFeedback.d != null
-                                   && _submitFeedback.d.isError.Equals("false")
-                                   && _submitFeedback.d.data != null)
+                                if (_submitFeedback != null && _submitFeedback?.d != null
+                                   && _submitFeedback?.d?.didSucceed == true
+                                   && _submitFeedback?.d?.data != null)
                                 {
                                     UIStoryboard storyBoard = UIStoryboard.FromName("Feedback", null);
                                     SubmitFeedbackSuccessViewController submitFeedbackSuccessVC =

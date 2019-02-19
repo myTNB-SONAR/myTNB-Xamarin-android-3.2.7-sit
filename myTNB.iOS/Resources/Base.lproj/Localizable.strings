@@ -113,3 +113,6 @@
 "NoAcctsFoundTitle" = "No accounts found!";
 "NoAcctsFoundDesc" = "Please tap on the button below to add your TNB electricity account.";
 "DefaultErrorMessage" = "Sorry, something went wrong. Please try again later.";
+"SmartMeterMessage" = "Note: Your usage above is before applicable taxes/additional charges.";
+"RefreshBtn" = "Refresh";
+"TimeOutMsg" = "We can't get your account details at the moment. Please refresh this page.";
