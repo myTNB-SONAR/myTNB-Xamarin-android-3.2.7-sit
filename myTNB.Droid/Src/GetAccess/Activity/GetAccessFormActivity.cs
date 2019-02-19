@@ -18,7 +18,6 @@ using myTNB_Android.Src.GetAccess.MVP;
 using myTNB_Android.Src.GetAccessSuccess.Activity;
 using Newtonsoft.Json;
 using myTNB_Android.Src.myTNBMenu.Models;
-using System.Runtime;
 
 namespace myTNB_Android.Src.GetAccess.Activity
 {
@@ -95,47 +94,19 @@ namespace myTNB_Android.Src.GetAccess.Activity
         {
             base.OnCreate(savedInstanceState);
 
-            try
-            {
-                this.mPresenter = new GetAccessFormPresenter(this);
+            this.mPresenter = new GetAccessFormPresenter(this);
 
-                TextViewUtils.SetMuseoSans300Typeface(txtIcNo, txtMaidenName);
-                TextViewUtils.SetMuseoSans500Typeface(btnGetAccess);
+            TextViewUtils.SetMuseoSans300Typeface(txtIcNo , txtMaidenName);
+            TextViewUtils.SetMuseoSans500Typeface(btnGetAccess);
 
-                selectedAccount = JsonConvert.DeserializeObject<AccountData>(Intent.Extras.GetString(Constants.SELECTED_ACCOUNT));
-            } catch(Exception e) {
-                Utility.LoggingNonFatalError(e);
-            }
+            selectedAccount = JsonConvert.DeserializeObject<AccountData>(Intent.Extras.GetString(Constants.SELECTED_ACCOUNT));
         }
-
-
         [OnClick(Resource.Id.btnGetAccess)]
         void OnBtnGetAccess(object sender, EventArgs eventArgs)
         {
-            try {
             string icno = txtIcNo.Text;
             string maiden_name = txtMaidenName.Text;
             this.userActionsListener.OnGetAccess(icno , maiden_name);
-        } catch(Exception e) {
-                Utility.LoggingNonFatalError(e);
-            }
-        }
-
-        public override void OnTrimMemory(TrimMemory level)
-        {
-            base.OnTrimMemory(level);
-
-            switch (level)
-            {
-                case TrimMemory.RunningLow:
-                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
-                    GC.Collect();
-                    break;
-                default:
-                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
-                    GC.Collect();
-                    break;
-            }
         }
     }
 }

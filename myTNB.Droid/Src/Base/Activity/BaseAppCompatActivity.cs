@@ -19,7 +19,6 @@ using Android.Support.Design.Widget;
 using AlertDialog = Android.App.AlertDialog;
 using HockeyApp.Android;
 using Constants = myTNB_Android.Src.Utils.Constants;
-using System.Runtime;
 
 namespace myTNB_Android.Src.Base.Activity
 {
@@ -340,23 +339,6 @@ namespace myTNB_Android.Src.Base.Activity
         public virtual void Ready()
         {
 
-        }
-
-        public override void OnTrimMemory(TrimMemory level)
-        {
-            base.OnTrimMemory(level);
-
-            switch (level)
-            {
-                case TrimMemory.RunningLow:
-                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
-                    GC.Collect();
-                    break;
-                default:
-                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
-                    GC.Collect();
-                    break;
-            }
         }
     }
 }

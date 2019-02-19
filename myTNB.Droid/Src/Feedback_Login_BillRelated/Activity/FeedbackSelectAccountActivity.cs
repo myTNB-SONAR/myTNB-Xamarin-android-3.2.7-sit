@@ -17,7 +17,6 @@ using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.Utils;
 using Newtonsoft.Json;
 using myTNB_Android.Src.Database.Model;
-using System.Runtime;
 
 namespace myTNB_Android.Src.Feedback_Login_BillRelated.Activity
 {
@@ -81,24 +80,6 @@ namespace myTNB_Android.Src.Feedback_Login_BillRelated.Activity
             resultIntent.PutExtra(Constants.SELECTED_ACCOUNT , JsonConvert.SerializeObject(accountData));
             SetResult(Result.Ok, resultIntent);
             Finish();
-        }
-
-
-        public override void OnTrimMemory(TrimMemory level)
-        {
-            base.OnTrimMemory(level);
-
-            switch (level)
-            {
-                case TrimMemory.RunningLow:
-                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
-                    GC.Collect();
-                    break;
-                default:
-                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
-                    GC.Collect();
-                    break;
-            }
         }
     }
 }

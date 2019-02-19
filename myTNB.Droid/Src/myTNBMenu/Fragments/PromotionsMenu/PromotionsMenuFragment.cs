@@ -82,14 +82,13 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.PromotionsMenu
             }
             catch (ClassCastException e)
             {
-                Utility.LoggingNonFatalError(e);
+
             }
             base.OnAttach(context);
         }
         private Snackbar mErrorNoInternet;
         public void ShowErrorMessageNoInternet(string failingUrl)
         {
-            try {
             if (mErrorNoInternet != null && mErrorNoInternet.IsShown)
             {
                 mErrorNoInternet.Dismiss();
@@ -105,11 +104,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.PromotionsMenu
             tv.SetMaxLines(5);
 
             mErrorNoInternet.Show();
-        }
-            catch (System.Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
         }
 
         class PromotionsWebViewClient : WebViewClient

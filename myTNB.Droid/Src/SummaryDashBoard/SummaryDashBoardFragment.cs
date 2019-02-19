@@ -71,9 +71,6 @@ namespace myTNB_Android.Src.SummaryDashBoard
         [BindView(Resource.Id.layout_content)]
         LinearLayout layoutContent;
 
-        [BindView(Resource.Id.summaryFooter)]
-        TextView addAcount;
-
         List<SummaryDashBoardDetails> itemList = null;
 
         SummaryDashboardPresenter presenter = null;
@@ -113,7 +110,7 @@ namespace myTNB_Android.Src.SummaryDashBoard
             }
             catch (ClassCastException e)
             {
-                Utility.LoggingNonFatalError(e);
+
             }
 
         }
@@ -135,7 +132,7 @@ namespace myTNB_Android.Src.SummaryDashBoard
             }
             catch (ClassCastException e)
             {
-                Utility.LoggingNonFatalError(e);
+
             }
         }
 
@@ -185,12 +182,13 @@ namespace myTNB_Android.Src.SummaryDashBoard
             return base.OnOptionsItemSelected(item);
         }
 
-
+        [BindView(Resource.Id.summaryFooter)]
+        TextView addAcount;
         
         public override void OnViewCreated(View view, Bundle savedInstanceState)
         {
             base.OnViewCreated(view, savedInstanceState);
-            try {
+
             activity = ((DashboardActivity)Activity);
 
             TextViewUtils.SetMuseoSans500Typeface(greetingTxt, loadMore, userNameTxt);
@@ -265,9 +263,6 @@ namespace myTNB_Android.Src.SummaryDashBoard
                 }
 
             };
-        } catch(System.Exception e) {
-                Utility.LoggingNonFatalError(e);
-            }
         }
 
 
@@ -275,7 +270,6 @@ namespace myTNB_Android.Src.SummaryDashBoard
 
 
         private void loadData() {
-            try {
             //listener.FetchUserData();
             if (HasNetworkConnection()) {
                 DownTimeEntity bcrmDownTime = DownTimeEntity.GetByCode(Constants.BCRM_SYSTEM);
@@ -302,11 +296,7 @@ namespace myTNB_Android.Src.SummaryDashBoard
             } else {
                 ShowNoInternetSnackbar();
             }
-            }
-            catch (System.Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
+
         }
 
        
@@ -323,31 +313,20 @@ namespace myTNB_Android.Src.SummaryDashBoard
 
         public void ShowProgressDialog()
         {
-            try
-            {
-                if (loadingOverlay != null && loadingOverlay.IsShowing)
-                {
-                    loadingOverlay.Dismiss();
-                }
-
-                loadingOverlay = new LoadingOverlay(this.Activity, Resource.Style.LoadingOverlyDialogStyle);
-                loadingOverlay.Show();
-            } catch(System.Exception e) {
-                Utility.LoggingNonFatalError(e);
-            }
-        }
-
-        public void HideProgressDialog()
-        {
-            try {
             if (loadingOverlay != null && loadingOverlay.IsShowing)
             {
                 loadingOverlay.Dismiss();
             }
-            }
-            catch (System.Exception e)
+
+            loadingOverlay = new LoadingOverlay(this.Activity, Resource.Style.LoadingOverlyDialogStyle);
+            loadingOverlay.Show();
+        }
+
+        public void HideProgressDialog()
+        {
+            if (loadingOverlay != null && loadingOverlay.IsShowing)
             {
-                Utility.LoggingNonFatalError(e);
+                loadingOverlay.Dismiss();
             }
         }
 

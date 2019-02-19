@@ -85,19 +85,16 @@ namespace myTNB_Android.Src.NotificationSettings.MVP
             {
                 // ADD OPERATION CANCELLED HERE
                 this.mView.ShowRetryOptionsCancelledException(e, item, position);
-                Utility.LoggingNonFatalError(e);
             }
             catch (ApiException apiException)
             {
                 // ADD HTTP CONNECTION EXCEPTION HERE
                 this.mView.ShowRetryOptionsApiException(apiException, item, position);
-                Utility.LoggingNonFatalError(apiException);
             }
             catch (Exception e)
             {
                 // ADD UNKNOWN EXCEPTION HERE
                 this.mView.ShowRetryOptionsUnknownException(e, item, position);
-                Utility.LoggingNonFatalError(e);
             }
         }
 
@@ -159,19 +156,16 @@ namespace myTNB_Android.Src.NotificationSettings.MVP
             {
                 // ADD OPERATION CANCELLED HERE
                 this.mView.ShowRetryOptionsCancelledException(e, item, position);
-                Utility.LoggingNonFatalError(e);
             }
             catch (ApiException apiException)
             {
                 // ADD HTTP CONNECTION EXCEPTION HERE
                 this.mView.ShowRetryOptionsApiException(apiException, item, position);
-                Utility.LoggingNonFatalError(apiException);
             }
             catch (Exception e)
             {
                 // ADD UNKNOWN EXCEPTION HERE
                 this.mView.ShowRetryOptionsUnknownException(e, item, position);
-                Utility.LoggingNonFatalError(e);
             }
 
 
@@ -180,7 +174,7 @@ namespace myTNB_Android.Src.NotificationSettings.MVP
         public void Start()
         {
             // LOAD TYPES / CHANNELS NOTIFICATIONS LIST
-            try {
+
             ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
             List<UserNotificationChannelEntity> channelsList = UserNotificationChannelEntity.ListAllActive();
             List<UserNotificationTypesEntity> typesList = UserNotificationTypesEntity.ListAllActive();
@@ -207,11 +201,6 @@ namespace myTNB_Android.Src.NotificationSettings.MVP
 
             this.mView.ShowNotificationTypesList(typeUserPrefList);
             this.mView.ShowNotificationChannelList(channelUserPrefList);
-            }
-            catch (Exception ex)
-            {
-                Utility.LoggingNonFatalError(ex);
-            }
         }
     }
 }

@@ -37,7 +37,6 @@ namespace myTNB_Android.Src.Notifications.MVP
 
         public void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
         {
-            try {
             if (requestCode == Constants.NOTIFICATION_DETAILS_REQUEST_CODE)
             {
                 if (resultCode == Result.Ok)
@@ -62,19 +61,12 @@ namespace myTNB_Android.Src.Notifications.MVP
                     this.ShowFilteredList();
                 }
             }
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
         }
 
         public async void OnSelectedNotificationItem(UserNotificationData userNotification, int position)
         {
             cts = new CancellationTokenSource();
-            if (mView.IsActive()) {
             this.mView.ShowProgress();
-            }
             ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
 #if DEBUG
             var httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
@@ -94,11 +86,6 @@ namespace myTNB_Android.Src.Notifications.MVP
                     SSPUserId = UserEntity.GetActive().UserID
                 }, cts.Token);
 
-                if (mView.IsActive())
-                {
-                    this.mView.HideProgress();
-                }
-
                 if (!detailNotificationResponse.Data.IsError)
                 {
                     UserNotificationEntity.UpdateIsRead(detailNotificationResponse.Data.Data.Id , true);
@@ -114,34 +101,21 @@ namespace myTNB_Android.Src.Notifications.MVP
             }
             catch (System.OperationCanceledException e)
             {
-                if (mView.IsActive())
-                {
-                    this.mView.HideProgress();
-                }
                 // ADD OPERATION CANCELLED HERE
                 this.mView.ShowRetryOptionsCancelledException(e);
-                Utility.LoggingNonFatalError(e);
             }
             catch (ApiException apiException)
             {
-                if (mView.IsActive())
-                {
-                    this.mView.HideProgress();
-                }
                 // ADD HTTP CONNECTION EXCEPTION HERE
                 this.mView.ShowRetryOptionsApiException(apiException);
-                Utility.LoggingNonFatalError(apiException);
             }
             catch (Exception e)
             {
-                if (mView.IsActive())
-                {
-                    this.mView.HideProgress();
-                }
                 // ADD UNKNOWN EXCEPTION HERE
                 this.mView.ShowRetryOptionsUnknownException(e);
-                Utility.LoggingNonFatalError(e);
             }
+
+            this.mView.HideProgress();
 
         }
 
@@ -153,10 +127,7 @@ namespace myTNB_Android.Src.Notifications.MVP
         public async void QueryOnLoad(string deviceId)
         {
             cts = new CancellationTokenSource();
-            if (mView.IsActive())
-            {
-                this.mView.ShowQueryProgress();
-            }
+            this.mView.ShowQueryProgress();
 #if DEBUG
             var httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
             var api = RestService.For<INotificationApi>(httpClient);
@@ -177,10 +148,6 @@ namespace myTNB_Android.Src.Notifications.MVP
                 }, cts.Token);
 
 
-            if (mView.IsActive())
-                {
-                    this.mView.HideQueryProgress();
-                }
 
                 if (!appNotificationChannelsResponse.Data.IsError)
                 {
@@ -235,21 +202,13 @@ namespace myTNB_Android.Src.Notifications.MVP
             catch (ApiException apiException)
             {
 
-            if (mView.IsActive())
-                {
-                    this.mView.HideQueryProgress();
-                }
-                Utility.LoggingNonFatalError(apiException);
             }
             catch (Exception e)
             {
 
-            if (mView.IsActive())
-                {
-                    this.mView.HideQueryProgress();
-                }
-                Utility.LoggingNonFatalError(e);
             }
+
+            this.mView.HideQueryProgress();
 
         }
 
@@ -262,7 +221,6 @@ namespace myTNB_Android.Src.Notifications.MVP
 
         void ShowFilteredList()
         {
-            try {
             NotificationFilterEntity filter = NotificationFilterEntity.GetActive();
             List<UserNotificationEntity> entities = UserNotificationEntity.ListAllActive();
             if (!filter.Id.Equals(Constants.ZERO_INDEX_FILTER))
@@ -285,11 +243,6 @@ namespace myTNB_Android.Src.Notifications.MVP
             }
 
             this.mView.ShowNotificationsList(listOfNotifications);
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
         }
     }
 }

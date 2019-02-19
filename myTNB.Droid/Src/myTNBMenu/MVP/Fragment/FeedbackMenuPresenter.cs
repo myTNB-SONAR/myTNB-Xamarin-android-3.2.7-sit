@@ -57,10 +57,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
         public async void OnRetry()
         {
             cts = new CancellationTokenSource();
-            if (mView.IsActive())
-            {
-                this.mView.ShowProgressDialog();
-            }
+            this.mView.ShowProgressDialog();
 #if DEBUG
             var httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
             var feedbackApi = RestService.For<IFeedbackApi>(httpClient);
@@ -115,7 +112,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                 }
                 // ADD OPERATION CANCELLED HERE
                 this.mView.ShowRetryOptionsCancelledException(e);
-                Utility.LoggingNonFatalError(e);
             }
             catch (ApiException apiException)
             {
@@ -125,7 +121,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                     this.mView.HideProgressDialog();
                 }
                 this.mView.ShowRetryOptionsApiException(apiException);
-                Utility.LoggingNonFatalError(apiException);
             }
             catch (Exception e)
             {
@@ -135,7 +130,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                 }
                 // ADD UNKNOWN EXCEPTION HERE
                 this.mView.ShowRetryOptionsUnknownException(e);
-                Utility.LoggingNonFatalError(e);
+
             }
 
 
@@ -148,76 +143,71 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
 
         public void Start()
         {
-            try
+            if (FeedbackCategoryEntity.HasRecords())
             {
-                if (FeedbackCategoryEntity.HasRecords())
-                {
-                    List<FeedbackCategoryEntity> feedbackCategoryList = FeedbackCategoryEntity.GetActiveList();
-                    this.mView.ShowFeedbackMenu(feedbackCategoryList);
-                }
-                // TODO : 
-                //            cts = new CancellationTokenSource();
-                //            this.mView.ShowProgressDialog();
-                //#if DEBUG
-                //            var httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
-                //            var feedbackApi = RestService.For<IFeedbackApi>(httpClient);
-                //#else
-
-                //            var feedbackApi = RestService.For<IFeedbackApi>(Constants.SERVER_URL.END_POINT);
-                //#endif
-                //            ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
-                //            try
-                //            {
-                //                string email = string.Empty;
-                //                if (UserEntity.IsCurrentlyActive())
-                //                {
-                //                    email = UserEntity.GetActive().Email;
-                //                }
-                //                var submittedFeedbackResponse = await feedbackApi.GetSubmittedFeedbackList(new Base.Request.SubmittedFeedbackRequest()
-                //                {
-                //                    ApiKeyId = Constants.APP_CONFIG.API_KEY_ID,
-                //                    Email = email,
-                //                    DeviceId = this.mView.GetDeviceId()
-
-                //                }, cts.Token);
-                //                if (!submittedFeedbackResponse.Data.IsError)
-                //                {
-                //                    SubmittedFeedbackEntity.Remove();
-                //                    foreach (SubmittedFeedback sf in submittedFeedbackResponse.Data.Data)
-                //                    {
-                //                        SubmittedFeedbackEntity.InsertOrReplace(sf);
-
-                //                    }
-
-                //                    int count = SubmittedFeedbackEntity.Count();
-                //                    this.mView.ShowSubmittedFeedbackCount(count);
-                //                }
-                //                else
-                //                {
-                //                    this.mView.ShowRetryOptionsCancelledException(null);
-                //                }
-
-                //            }
-                //            catch (System.OperationCanceledException e)
-                //            {
-                //                // ADD OPERATION CANCELLED HERE
-                //                this.mView.ShowRetryOptionsCancelledException(e);
-                //            }
-                //            catch (ApiException apiException)
-                //            {
-                //                // ADD HTTP CONNECTION EXCEPTION HERE
-                //                this.mView.ShowRetryOptionsApiException(apiException);
-                //            }
-                //            catch (Exception e)
-                //            {
-                //                // ADD UNKNOWN EXCEPTION HERE
-                //                this.mView.ShowRetryOptionsUnknownException(e);
-                //            }
-
-                //            this.mView.HideProgressDialog();
-            } catch(Exception e) {
-                Utility.LoggingNonFatalError(e);
+                List<FeedbackCategoryEntity> feedbackCategoryList = FeedbackCategoryEntity.GetActiveList();
+                this.mView.ShowFeedbackMenu(feedbackCategoryList);
             }
+            // TODO : 
+//            cts = new CancellationTokenSource();
+//            this.mView.ShowProgressDialog();
+//#if DEBUG
+//            var httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
+//            var feedbackApi = RestService.For<IFeedbackApi>(httpClient);
+//#else
+
+//            var feedbackApi = RestService.For<IFeedbackApi>(Constants.SERVER_URL.END_POINT);
+//#endif
+//            ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
+//            try
+//            {
+//                string email = string.Empty;
+//                if (UserEntity.IsCurrentlyActive())
+//                {
+//                    email = UserEntity.GetActive().Email;
+//                }
+//                var submittedFeedbackResponse = await feedbackApi.GetSubmittedFeedbackList(new Base.Request.SubmittedFeedbackRequest()
+//                {
+//                    ApiKeyId = Constants.APP_CONFIG.API_KEY_ID,
+//                    Email = email,
+//                    DeviceId = this.mView.GetDeviceId()
+
+//                }, cts.Token);
+//                if (!submittedFeedbackResponse.Data.IsError)
+//                {
+//                    SubmittedFeedbackEntity.Remove();
+//                    foreach (SubmittedFeedback sf in submittedFeedbackResponse.Data.Data)
+//                    {
+//                        SubmittedFeedbackEntity.InsertOrReplace(sf);
+
+//                    }
+
+//                    int count = SubmittedFeedbackEntity.Count();
+//                    this.mView.ShowSubmittedFeedbackCount(count);
+//                }
+//                else
+//                {
+//                    this.mView.ShowRetryOptionsCancelledException(null);
+//                }
+
+//            }
+//            catch (System.OperationCanceledException e)
+//            {
+//                // ADD OPERATION CANCELLED HERE
+//                this.mView.ShowRetryOptionsCancelledException(e);
+//            }
+//            catch (ApiException apiException)
+//            {
+//                // ADD HTTP CONNECTION EXCEPTION HERE
+//                this.mView.ShowRetryOptionsApiException(apiException);
+//            }
+//            catch (Exception e)
+//            {
+//                // ADD UNKNOWN EXCEPTION HERE
+//                this.mView.ShowRetryOptionsUnknownException(e);
+//            }
+
+//            this.mView.HideProgressDialog();
 
         }
     }

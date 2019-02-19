@@ -12,7 +12,6 @@ using Android.Widget;
 using myTNB_Android.Src.Base.Activity;
 using Android.Content.PM;
 using CheeseBind;
-using System.Runtime;
 
 namespace myTNB_Android.Src.SelectNotification.Activity
 {
@@ -40,23 +39,6 @@ namespace myTNB_Android.Src.SelectNotification.Activity
             base.OnCreate(savedInstanceState);
 
             // Create your application here
-        }
-
-        public override void OnTrimMemory(TrimMemory level)
-        {
-            base.OnTrimMemory(level);
-
-            switch (level)
-            {
-                case TrimMemory.RunningLow:
-                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
-                    GC.Collect();
-                    break;
-                default:
-                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
-                    GC.Collect();
-                    break;
-            }
         }
     }
 }

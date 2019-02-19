@@ -15,7 +15,6 @@ using CheeseBind;
 using myTNB_Android.Src.Utils;
 using myTNB_Android.Src.PreLogin.Activity;
 using Android.Preferences;
-using System.Runtime;
 
 namespace myTNB_Android.Src.LogoutEnd.Activity
 {
@@ -65,24 +64,6 @@ namespace myTNB_Android.Src.LogoutEnd.Activity
             Intent PreLoginIntent = new Intent(this, typeof(PreLoginActivity));
             PreLoginIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
             StartActivity(PreLoginIntent);
-        }
-
-
-        public override void OnTrimMemory(TrimMemory level)
-        {
-            base.OnTrimMemory(level);
-
-            switch (level)
-            {
-                case TrimMemory.RunningLow:
-                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
-                    GC.Collect();
-                    break;
-                default:
-                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
-                    GC.Collect();
-                    break;
-            }
         }
     }
 }

@@ -55,14 +55,10 @@ namespace myTNB_Android.Src.Login.MVP
 
         public void CancelLogin()
         {
-            try {
             if (cts != null && cts.Token.CanBeCanceled)
             {
                 cts.Cancel();
-                if (mView.IsActive())
-                {
-                    this.mView.HideProgressDialog();
-                }
+                this.mView.HideProgressDialog();
             }
             else
             {
@@ -70,11 +66,6 @@ namespace myTNB_Android.Src.Login.MVP
             }
 
             this.mView.EnableLoginButton();
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
         }
 
         public async void LoginAsync(string username, string password , string deviceId, bool rememberMe)
@@ -99,11 +90,7 @@ namespace myTNB_Android.Src.Login.MVP
             }
 
             this.mView.DisableLoginButton();
-
-            if (mView.IsActive())
-            {
-                this.mView.ShowProgressDialog();
-            }
+            this.mView.ShowProgressDialog();
 
             ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
 #if STUB
@@ -182,13 +169,10 @@ namespace myTNB_Android.Src.Login.MVP
 
                 }, cts.Token);
 
-
-
                 if (userResponse.Data.IsError || userResponse.Data.Status.Equals("failed"))
                 {
                     if (this.mView.IsActive())
                     {
-                        this.mView.HideProgressDialog();
                         this.mView.ShowInvalidEmailPasswordError(userResponse.Data.Message);
                     }
                 }
@@ -215,7 +199,6 @@ namespace myTNB_Android.Src.Login.MVP
                     {
                         if (this.mView.IsActive())
                         {
-                                this.mView.HideProgressDialog();
                             this.mView.ShowResetPassword(username , password);
                         }
                     }
@@ -234,10 +217,6 @@ namespace myTNB_Android.Src.Login.MVP
                             DeviceId = deviceId,
                             FcmToken = fcmToken
                         };
-
-                        if (mView.IsActive()) {
-                        this.mView.HideProgressDialog();
-                        }
                         this.mView.ShowUpdatePhoneNumber(loginRequest, userResponse.Data.User.MobileNo);
                     }
                     else
@@ -370,11 +349,7 @@ namespace myTNB_Android.Src.Login.MVP
                                     }
                                     catch (Exception e)
                                     {
-                                        if (mView.IsActive()) {
-                                            this.mView.HideProgressDialog();
-                                        }
                                         Log.Error("API Exception", e.StackTrace);
-                                        Utility.LoggingNonFatalError(e);
                                     }
                                 }).ContinueWith((Task previous) =>
                                 {
@@ -406,7 +381,6 @@ namespace myTNB_Android.Src.Login.MVP
                                         catch (Exception e)
                                         {
                                             Log.Error("API Exception", e.StackTrace);
-                                            Utility.LoggingNonFatalError(e);
                                         }
                                     }).ContinueWith((Task previous) => {
                                     }, cts.Token);
@@ -414,12 +388,7 @@ namespace myTNB_Android.Src.Login.MVP
                             }
                             catch (Exception e)
                             {
-                                if (mView.IsActive())
-                                {
-                                    this.mView.HideProgressDialog();
-                                }
                                 Log.Error("DB Exception", e.StackTrace);
-                                Utility.LoggingNonFatalError(e);
                             }
 
 
@@ -431,10 +400,6 @@ namespace myTNB_Android.Src.Login.MVP
                             //UserSessions.SavePhoneVerified(mSharedPref, true);
                             this.mView.ShowDashboard();
 
-                        }
-                        if (this.mView.IsActive())
-                        {
-                            this.mView.HideProgressDialog();
                         }
                     }
 
@@ -449,20 +414,16 @@ namespace myTNB_Android.Src.Login.MVP
                 // ADD OPERATION CANCELLED HERE
                 if (this.mView.IsActive())
                 {
-                    this.mView.HideProgressDialog();
                     this.mView.ShowRetryOptionsCancelledException(e);
                 }
-                Utility.LoggingNonFatalError(e);
             } 
             catch (ApiException apiException)
             {
                 // ADD HTTP CONNECTION EXCEPTION HERE
                 if (this.mView.IsActive())
                 {
-                    this.mView.HideProgressDialog();
                     this.mView.ShowRetryOptionsApiException(apiException);
                 }
-                Utility.LoggingNonFatalError(apiException);
             }
             catch (Exception e)
             {
@@ -470,17 +431,15 @@ namespace myTNB_Android.Src.Login.MVP
                 Log.Debug(TAG , "Stack " +  e.StackTrace);
                 if (this.mView.IsActive())
                 {
-                    this.mView.HideProgressDialog();
                     this.mView.ShowRetryOptionsUnknownException(e);
 
                 }
-                Utility.LoggingNonFatalError(e);
             }
 
             if (this.mView.IsActive())
             {
                 this.mView.EnableLoginButton();
-                //this.mView.HideProgressDialog();
+                this.mView.HideProgressDialog();
             }
 
 

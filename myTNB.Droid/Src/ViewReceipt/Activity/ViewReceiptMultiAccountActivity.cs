@@ -78,7 +78,7 @@ namespace myTNB_Android.Src.ViewReceipt.Activity
 
         public bool IsActive()
         {
-            return Window.DecorView.RootView.IsShown && !IsFinishing;
+            throw new NotImplementedException();
         }
 
 

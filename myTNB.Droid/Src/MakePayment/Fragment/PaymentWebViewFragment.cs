@@ -83,8 +83,6 @@ namespace myTNB_Android.Src.MakePayment.Fragment
         {
             // Use this to return your custom view for this Fragment
             View rootView = inflater.Inflate(Resource.Layout.PaymentWebView, container, false);
-
-            try {
             mainView = rootView.FindViewById<FrameLayout>(Resource.Id.rootView);
             var metrics = Resources.DisplayMetrics;
             var widthInDp = ConvertPixelsToDp(metrics.WidthPixels);
@@ -223,11 +221,6 @@ namespace myTNB_Android.Src.MakePayment.Fragment
                 }
             }
             mWebView.PostUrl(action, EncodingUtils.GetBytes(data, "base64"));
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
             
             return rootView;
             

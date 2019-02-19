@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Runtime;
 using System.Text;
 using Android;
 using Android.App;
@@ -124,7 +123,6 @@ namespace myTNB_Android.Src.ViewReceipt.Activity
         {
             base.OnCreate(savedInstanceState);
 
-            try {
             mPresenter = new ViewReceiptMultiAccountNewDesignPresenter(this);
             // Create your application here
 
@@ -149,11 +147,6 @@ namespace myTNB_Android.Src.ViewReceipt.Activity
             this.iPresenter.GetReceiptDetails(apiKeyID, merchantTransId);
             } else {
                 ShowErrorMessage(GetString(Resource.String.no_internet_connection));
-            }
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
             }
         }
 
@@ -187,7 +180,6 @@ namespace myTNB_Android.Src.ViewReceipt.Activity
 
         private void WriteGrayContent(PdfPTable tableLayout)
         {
-            try {
             tableLayout.WidthPercentage = 100;
 
             PdfPCell cell = new PdfPCell(new Phrase(null, null))
@@ -201,11 +193,6 @@ namespace myTNB_Android.Src.ViewReceipt.Activity
                 FixedHeight = 2,
             };
             tableLayout.AddCell(cell);
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
         }
 
         public void createPDF(GetMultiReceiptByTransIdResponse response)
@@ -425,7 +412,6 @@ namespace myTNB_Android.Src.ViewReceipt.Activity
                                 downloadClicked = false;
                                 mProgressBar.Visibility = ViewStates.Gone;
                                 HideGetReceiptDialog();
-                                Utility.LoggingNonFatalError(e);
                             }
                         });
                     }
@@ -445,7 +431,7 @@ namespace myTNB_Android.Src.ViewReceipt.Activity
             //{
             //    this.mGetReceiptDialog.Show();
             //}
-            try {
+
             if (loadingOverlay != null && loadingOverlay.IsShowing)
             {
                 loadingOverlay.Dismiss();
@@ -453,11 +439,6 @@ namespace myTNB_Android.Src.ViewReceipt.Activity
 
             loadingOverlay = new LoadingOverlay(this, Resource.Style.LoadingOverlyDialogStyle);
             loadingOverlay.Show();
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
         }
 
         public void HideGetReceiptDialog()
@@ -466,15 +447,10 @@ namespace myTNB_Android.Src.ViewReceipt.Activity
             //{
             //    this.mGetReceiptDialog.Dismiss();
             //}
-            try {
+
             if (loadingOverlay != null && loadingOverlay.IsShowing)
             {
                 loadingOverlay.Dismiss();
-            }
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
             }
         }
 
@@ -507,12 +483,11 @@ namespace myTNB_Android.Src.ViewReceipt.Activity
 
         public bool IsActive()
         {
-            return Window.DecorView.RootView.IsShown && !IsFinishing;
+            throw new NotImplementedException();
         }
 
         public void OnShowReceiptDetails(GetMultiReceiptByTransIdResponse response)
         {
-            try {
             this.response = response;
             if (response != null) {
                 if (response.receipt.Status.Equals("success"))
@@ -566,11 +541,6 @@ namespace myTNB_Android.Src.ViewReceipt.Activity
 
                 }          
             }
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
         }
 
             public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Permission[] grantResults)
@@ -586,24 +556,6 @@ namespace myTNB_Android.Src.ViewReceipt.Activity
                     });
 
                 }
-            }
-        }
-
-
-        public override void OnTrimMemory(TrimMemory level)
-        {
-            base.OnTrimMemory(level);
-
-            switch (level)
-            {
-                case TrimMemory.RunningLow:
-                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
-                    GC.Collect();
-                    break;
-                default:
-                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
-                    GC.Collect();
-                    break;
             }
         }
         

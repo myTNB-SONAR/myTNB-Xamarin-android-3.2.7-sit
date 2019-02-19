@@ -36,10 +36,8 @@ namespace myTNB_Android.Src.ManageCards.MVP
         public async void OnRemove(CreditCardData Data, int position)
         {
             cts = new CancellationTokenSource();
-            if (mView.IsActive())
-            {
-                this.mView.ShowProgressDialog();
-            }
+            this.mView.ShowProgressDialog();
+            
 
             ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
 #if DEBUG || STUB
@@ -57,11 +55,6 @@ namespace myTNB_Android.Src.ManageCards.MVP
                     RegisteredCardId = Data.Id
                 } , cts.Token);
 
-                if (mView.IsActive())
-                {
-                    this.mView.HideProgressDialog();
-                }
-
                 if (!removeCardsResponse.Data.IsError)
                 {
                     this.mView.ShowRemoveSuccess(Data , position);
@@ -73,34 +66,21 @@ namespace myTNB_Android.Src.ManageCards.MVP
             }
             catch (System.OperationCanceledException e)
             {
-                if (mView.IsActive())
-                {
-                    this.mView.HideProgressDialog();
-                }
+
                 this.mView.ShowRetryOptionsCancelledException(e);
-                Utility.LoggingNonFatalError(e);
             }
             catch (ApiException apiException)
             {
-                if (mView.IsActive())
-                {
-                    this.mView.HideProgressDialog();
-                }
                 // ADD HTTP CONNECTION EXCEPTION HERE
                 this.mView.ShowRetryOptionsApiException(apiException);
-                Utility.LoggingNonFatalError(apiException);
             }
             catch (Exception e)
             {
-                if (mView.IsActive())
-                {
-                    this.mView.HideProgressDialog();
-                }
                 // ADD UNKNOWN EXCEPTION HERE
                 this.mView.ShowRetryOptionsUnknownException(e);
-                Utility.LoggingNonFatalError(e);
             }
 
+            this.mView.HideProgressDialog();
         }
 
         public void OnRemoveStay(CreditCardData RemovedCard , int position)

@@ -57,7 +57,6 @@ namespace myTNB_Android.Src.Notifications.Adapter
             {
                 viewHolder = convertView.Tag as NotificationViewHolder;
             }
-            try {
             Date d = null;
             try
             {
@@ -65,7 +64,7 @@ namespace myTNB_Android.Src.Notifications.Adapter
             }
             catch (Java.Text.ParseException e)
             {
-                    Utility.LoggingNonFatalError(e);
+
             }
 
             if (d != null)
@@ -152,11 +151,7 @@ namespace myTNB_Android.Src.Notifications.Adapter
             viewHolder.txtNotificationTitle.Text = notificationData.Title;
 
             viewHolder.txtNotificationContent.Text = notificationData.Message;
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
+
             return convertView;
         }
 

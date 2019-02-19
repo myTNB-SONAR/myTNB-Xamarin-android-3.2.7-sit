@@ -46,12 +46,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.MVP
 
         public async void GetMultiAccountDueAmountAsync(string apiKeyId, List<string> accounts)
         {
-            try
-            {
-            //if (mView.IsActive()) {
             this.mView.ShowProgressDialog();
-            //}
-
 #if DEBUG || STUB
             var httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
             var api = RestService.For<MPGetAccountsDueAmountApi>(httpClient);
@@ -59,7 +54,8 @@ namespace myTNB_Android.Src.MultipleAccountPayment.MVP
             var api = RestService.For<MPGetAccountsDueAmountApi>(Constants.SERVER_URL.END_POINT);
 #endif
             //var api = RestService.For<GetRegisteredCardsApi>(Constants.SERVER_URL.END_POINT);
-           
+            try
+            {
                 List<MPAccount> storeAccounts = new List<MPAccount>();
                 bool getDetailsFromApi = false;
                 foreach (string account in accounts)
@@ -88,10 +84,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.MVP
                 if (getDetailsFromApi)
                 {
                     MPAccountDueResponse result = await api.GetMultiAccountDueAmount(new MPGetAccountDueAmountRequest(apiKeyId, accounts));
-                    //if (mView.IsActive())
-                    //{
-                        this.mView.HideProgressDialog();
-                    //}
+                    this.mView.HideProgressDialog();
                     if (result.accountDueAmountResponse != null && !result.accountDueAmountResponse.IsError)
                     {
                         this.mView.GetAccountDueAmountResult(result);
@@ -104,21 +97,14 @@ namespace myTNB_Android.Src.MultipleAccountPayment.MVP
                 }
                 else
                 {
-                    //if (mView.IsActive())
-                    //{
-                        this.mView.HideProgressDialog();
-                    //}
+                    this.mView.HideProgressDialog();
                     this.mView.GetAccountDueAmountResult(storeAccounts);
                 }
             }
             catch (Exception e)
             {
                 Log.Debug(TAG, e.StackTrace);
-                if (mView.IsActive())
-                {
-                    this.mView.HideProgressDialog();
-                }
-                Utility.LoggingNonFatalError(e);
+                this.mView.HideProgressDialog();
                 this.mView.ShowError("Something went wrong, Please try again.");
             }
 

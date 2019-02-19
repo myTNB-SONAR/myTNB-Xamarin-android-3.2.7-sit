@@ -15,7 +15,6 @@ using myTNB_Android.Src.ResetPasswordSuccess.MVP;
 using CheeseBind;
 using myTNB_Android.Src.Utils;
 using myTNB_Android.Src.Login.Activity;
-using System.Runtime;
 
 namespace myTNB_Android.Src.ResetPasswordSuccess.Activity
 {
@@ -44,18 +43,13 @@ namespace myTNB_Android.Src.ResetPasswordSuccess.Activity
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-            try {
+
             // Create your application here
             mPresenter = new ResetPasswordSuccessPresenter(this);
 
             TextViewUtils.SetMuseoSans500Typeface(txtTitleInfo);
             TextViewUtils.SetMuseoSans300Typeface(txtContentInfo);
             TextViewUtils.SetMuseoSans500Typeface(btnLogin);
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
         }
 
 
@@ -98,23 +92,6 @@ namespace myTNB_Android.Src.ResetPasswordSuccess.Activity
         void OnClose(object sender, EventArgs eventArgs)
         {
             this.userActionsListener.OnClose();
-        }
-
-        public override void OnTrimMemory(TrimMemory level)
-        {
-            base.OnTrimMemory(level);
-
-            switch (level)
-            {
-                case TrimMemory.RunningLow:
-                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
-                    GC.Collect();
-                    break;
-                default:
-                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
-                    GC.Collect();
-                    break;
-            }
         }
     }
 }

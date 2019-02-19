@@ -17,7 +17,6 @@ using myTNB_Android.Src.ForgetPassword.MVP;
 using Refit;
 using myTNB_Android.Src.Utils;
 using Android.Preferences;
-using System.Runtime;
 
 namespace myTNB_Android.Src.ForgetPassword.Activity
 {
@@ -140,33 +139,28 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
         {
             base.OnCreate(savedInstanceState);
 
-            try
-            {
-                // Create your application here
-                mPresenter = new ForgetPasswordPresenter(this, PreferenceManager.GetDefaultSharedPreferences(this));
-                mProgressDialog = new AlertDialog.Builder(this)
-                   .SetTitle(GetString(Resource.String.forget_password_progress_dialog_title))
-                   .SetMessage(GetString(Resource.String.forget_password_progress_dialog_message))
-                   .SetCancelable(false)
-                   .Create();
+            // Create your application here
+            mPresenter = new ForgetPasswordPresenter(this , PreferenceManager.GetDefaultSharedPreferences(this));
+            mProgressDialog = new AlertDialog.Builder(this)
+               .SetTitle(GetString(Resource.String.forget_password_progress_dialog_title))
+               .SetMessage(GetString(Resource.String.forget_password_progress_dialog_message))
+               .SetCancelable(false)
+               .Create();
 
-                mVerificationProgressDialog = new AlertDialog.Builder(this)
-                   .SetTitle(GetString(Resource.String.forget_password_get_code_progress_dialog_title))
-                   .SetMessage(GetString(Resource.String.forget_password_get_code_progress_dialog_message))
-                   .SetCancelable(false)
-                   .Create();
+            mVerificationProgressDialog = new AlertDialog.Builder(this)
+               .SetTitle(GetString(Resource.String.forget_password_get_code_progress_dialog_title))
+               .SetMessage(GetString(Resource.String.forget_password_get_code_progress_dialog_message))
+               .SetCancelable(false)
+               .Create();
 
 
-                TextViewUtils.SetMuseoSans500Typeface(txtEmailTitle);
+            TextViewUtils.SetMuseoSans500Typeface(txtEmailTitle);
 
-                TextViewUtils.SetMuseoSans300Typeface(txtEmailLinkInfo, txtEmail, txtVerificationCode, txtGetACode);
+            TextViewUtils.SetMuseoSans300Typeface(txtEmailLinkInfo  , txtEmail , txtVerificationCode , txtGetACode);
 
-                TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutEmail, textInputLayoutVerificationCode);
+            TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutEmail , textInputLayoutVerificationCode);
 
-                TextViewUtils.SetMuseoSans500Typeface(btnSubmit);
-            } catch(Exception e) {
-                Utility.LoggingNonFatalError(e);
-            }
+            TextViewUtils.SetMuseoSans500Typeface(btnSubmit);
         }
 
         //[OnClick(Resource.Id.btnSubmit)]
@@ -196,27 +190,17 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
 
         public void ShowProgressDialog()
         {
-            try {
             if (mProgressDialog != null && !mProgressDialog.IsShowing)
             {
                 mProgressDialog.Show();
-            }
-        } catch(Exception e) {
-                Utility.LoggingNonFatalError(e);
             }
         }
 
         public void HideProgressDialog()
         {
-            try {
             if (mProgressDialog != null && mProgressDialog.IsShowing)
             {
                 mProgressDialog.Dismiss();
-            }
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
             }
         }
 
@@ -290,29 +274,17 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
 
         public void ShowGetCodeProgressDialog()
         {
-            try {
             if (mVerificationProgressDialog != null && !mVerificationProgressDialog.IsShowing)
             {
                 mVerificationProgressDialog.Show();
-            }
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
             }
         }
 
         public void HideGetCodeProgressDialog()
         {
-            try {
             if (mVerificationProgressDialog != null && mVerificationProgressDialog.IsShowing)
             {
                 mVerificationProgressDialog.Dismiss();
-            }
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
             }
         }
 
@@ -386,35 +358,17 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
 
         public void StartProgress()
         {
-            //throw new NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public void EnableResendButton()
         {
-            //throw new NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public void DisableResendButton()
         {
-            //throw new NotImplementedException();
-        }
-
-
-        public override void OnTrimMemory(TrimMemory level)
-        {
-            base.OnTrimMemory(level);
-
-            switch (level)
-            {
-                case TrimMemory.RunningLow:
-                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
-                    GC.Collect();
-                    break;
-                default:
-                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
-                    GC.Collect();
-                    break;
-            }
+            throw new NotImplementedException();
         }
     }
 }

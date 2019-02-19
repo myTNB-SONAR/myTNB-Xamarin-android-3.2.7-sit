@@ -33,7 +33,6 @@ using Android.Support.V4.Content;
 using myTNB_Android.Src.LogoutEnd.Activity;
 using myTNB_Android.Src.Login.Activity;
 using myTNB_Android.Src.UpdateMobileNo.Activity;
-using System.Runtime;
 
 namespace myTNB_Android.Src.AppLaunch.Activity
 {
@@ -64,69 +63,64 @@ namespace myTNB_Android.Src.AppLaunch.Activity
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-
-            try
+            mPresenter = new AppLaunchPresenter(this , PreferenceManager.GetDefaultSharedPreferences(this));
+           
+            if (Intent != null && Intent.Extras != null && Intent.Extras.ContainsKey("Email"))
             {
-                mPresenter = new AppLaunchPresenter(this, PreferenceManager.GetDefaultSharedPreferences(this));
-
-                if (Intent != null && Intent.Extras != null && Intent.Extras.ContainsKey("Email"))
-                {
-                    string email = Intent.Extras.GetString("Email");
-                    UserSessions.SetHasNotification(PreferenceManager.GetDefaultSharedPreferences(this));
-                    UserSessions.SaveUserEmailNotification(PreferenceManager.GetDefaultSharedPreferences(this), email);
-                }
-
-
-
-                Log.Debug(TAG, "InstanceID token: " + FirebaseInstanceId.Instance.Token);
-                if (FirebaseTokenEntity.HasLatest())
-                {
-                    var tokenEntity = FirebaseTokenEntity.GetLatest();
-                    if (tokenEntity != null)
-                    {
-                        Log.Debug(TAG, "Refresh token: " + tokenEntity.FBToken);
-                    }
-                }
-
-                TextViewUtils.SetMuseoSans300Typeface(txt_app_version);
-                //try
-                //{
-
-                //    PackageInfo info = this.PackageManager.GetPackageInfo("com.mytnb.mytnb", Android.Content.PM.PackageInfoFlags.Activities);
-                //    if (info != null)
-                //    {
-                //        txt_app_version.Text = GetString(Resource.String.text_app_version) +" "+ info.VersionName;
-                //    }
-                //}
-                //catch (System.Exception e)
-                //{
-                //    Log.Debug("Package Manager", e.StackTrace);
-                //    txt_app_version.Visibility = ViewStates.Gone;
-                //}
-                //Hide version number text from splash 
-                txt_app_version.Visibility = ViewStates.Gone;
-
-                appUpdateDialog = new MaterialDialog.Builder(this)
-                    .CustomView(Resource.Layout.AppUpdateDialog, false)
-                    .Cancelable(false)
-                    .CanceledOnTouchOutside(false)
-                    .Build();
-
-                View dialogView = appUpdateDialog.Window.DecorView;
-                dialogView.SetBackgroundResource(Android.Resource.Color.Transparent);
-
-                TextView txtDialogTitle = appUpdateDialog.FindViewById<TextView>(Resource.Id.txtTitle);
-                TextView txtDialogMessage = appUpdateDialog.FindViewById<TextView>(Resource.Id.txtMessage);
-                TextView btnUpdateNow = appUpdateDialog.FindViewById<TextView>(Resource.Id.txtUpdate);
-                TextViewUtils.SetMuseoSans300Typeface(txtDialogMessage);
-                TextViewUtils.SetMuseoSans500Typeface(txtDialogTitle, btnUpdateNow);
-                btnUpdateNow.Click += delegate
-                {
-                    OnAppUpdateClick();
-                };
-            } catch(Exception e) {
-                Utility.LoggingNonFatalError(e);
+                string email = Intent.Extras.GetString("Email");
+                UserSessions.SetHasNotification(PreferenceManager.GetDefaultSharedPreferences(this));
+                UserSessions.SaveUserEmailNotification(PreferenceManager.GetDefaultSharedPreferences(this), email);
             }
+            
+        
+
+            Log.Debug(TAG, "InstanceID token: " + FirebaseInstanceId.Instance.Token);
+            if (FirebaseTokenEntity.HasLatest())
+            {
+                var tokenEntity = FirebaseTokenEntity.GetLatest();
+                if (tokenEntity != null)
+                {
+                    Log.Debug(TAG, "Refresh token: " + tokenEntity.FBToken);
+                }
+            }
+
+            TextViewUtils.SetMuseoSans300Typeface(txt_app_version);
+            //try
+            //{
+                
+            //    PackageInfo info = this.PackageManager.GetPackageInfo("com.mytnb.mytnb", Android.Content.PM.PackageInfoFlags.Activities);
+            //    if (info != null)
+            //    {
+            //        txt_app_version.Text = GetString(Resource.String.text_app_version) +" "+ info.VersionName;
+            //    }
+            //}
+            //catch (System.Exception e)
+            //{
+            //    Log.Debug("Package Manager", e.StackTrace);
+            //    txt_app_version.Visibility = ViewStates.Gone;
+            //}
+            //Hide version number text from splash 
+            txt_app_version.Visibility = ViewStates.Gone;
+
+            appUpdateDialog = new MaterialDialog.Builder(this)
+                .CustomView(Resource.Layout.AppUpdateDialog, false)
+                .Cancelable(false)
+                .CanceledOnTouchOutside(false)
+                .Build();
+
+            View dialogView = appUpdateDialog.Window.DecorView;
+            dialogView.SetBackgroundResource(Android.Resource.Color.Transparent);
+
+            TextView txtDialogTitle = appUpdateDialog.FindViewById<TextView>(Resource.Id.txtTitle);
+            TextView txtDialogMessage = appUpdateDialog.FindViewById<TextView>(Resource.Id.txtMessage);
+            TextView btnUpdateNow = appUpdateDialog.FindViewById<TextView>(Resource.Id.txtUpdate);
+            TextViewUtils.SetMuseoSans300Typeface(txtDialogMessage);
+            TextViewUtils.SetMuseoSans500Typeface(txtDialogTitle, btnUpdateNow);
+            btnUpdateNow.Click += delegate
+            {
+                OnAppUpdateClick();
+            };
+
         }
 
 
@@ -435,24 +429,6 @@ namespace myTNB_Android.Src.AppLaunch.Activity
             updateMobileNo.PutExtra(Constants.FROM_APP_LAUNCH, true);
             updateMobileNo.PutExtra("PhoneNumber", phoneNumber);
             StartActivity(updateMobileNo);
-        }
-
-
-        public override void OnTrimMemory(TrimMemory level)
-        {
-            base.OnTrimMemory(level);
-
-            switch (level)
-            {
-                case TrimMemory.RunningLow:
-                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
-                    GC.Collect();
-                    break;
-                default:
-                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
-                    GC.Collect();
-                    break;
-            }
         }
     }
 }

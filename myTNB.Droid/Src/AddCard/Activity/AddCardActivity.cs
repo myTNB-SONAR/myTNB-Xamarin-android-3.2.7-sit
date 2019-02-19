@@ -21,7 +21,6 @@ using Newtonsoft.Json;
 using Card.IO;
 using AFollestad.MaterialDialogs;
 using Android.Support.V4.Content;
-using System.Runtime;
 
 namespace myTNB_Android.Src.AddCard.Activity
 {
@@ -141,30 +140,21 @@ namespace myTNB_Android.Src.AddCard.Activity
         {
             string cardNo = txtCardNo.Text.Replace(" ", "");
 
-            try
+            textInputLayoutCardNo.Error = null;
+            if (String.IsNullOrEmpty(cardNo) || cardNo.Length < 15)
             {
-                textInputLayoutCardNo.Error = null;
-                if (String.IsNullOrEmpty(cardNo) || cardNo.Length < 15)
-                {
-                    DisableSaveButton();
-                    if (!String.IsNullOrEmpty(cardNo) && cardNo.Length < 15)
-                    {
-                        textInputLayoutCardNo.Error = "Invalid Card No.";
-                    }
-                    //ShowErrorMessage("Invalid Card Number", "Please enter valid card number");
+                DisableSaveButton();
+                if (!String.IsNullOrEmpty(cardNo) && cardNo.Length < 15) {
+                    textInputLayoutCardNo.Error = "Invalid Card No.";   
                 }
-                else if (!LuhnVerification(cardNo))
-                {
-                    DisableSaveButton();
-                    textInputLayoutCardNo.Error = "Invalid Card No.";
-                    //ShowErrorMessage("Invalid Card Number", "Please enter valid card number");
-                }
-                else
-                {
-                    EnableSaveButton();
-                }
-            } catch(Exception ex) {
-                Utility.LoggingNonFatalError(ex);
+                //ShowErrorMessage("Invalid Card Number", "Please enter valid card number");
+            } else if (!LuhnVerification(cardNo))
+            {
+                DisableSaveButton();
+                textInputLayoutCardNo.Error = "Invalid Card No.";
+                //ShowErrorMessage("Invalid Card Number", "Please enter valid card number");
+            } else {
+                EnableSaveButton();
             }
         }
 
@@ -172,7 +162,7 @@ namespace myTNB_Android.Src.AddCard.Activity
         private void NameTextChange(object sender, Android.Text.TextChangedEventArgs e)
         {
             
-            try {
+
             string name = txtNameOfCard.Text.Trim();
 
             if (String.IsNullOrEmpty(name))
@@ -184,17 +174,11 @@ namespace myTNB_Android.Src.AddCard.Activity
             {
                 EnableSaveButton();
             }
-            }
-            catch (Exception ex)
-            {
-                Utility.LoggingNonFatalError(ex);
-            }
         }
 
         [Preserve]
         private void ExpTextChange(object sender, Android.Text.TextChangedEventArgs e)
         {
-            try {
             string exp = txtCardExpDate.Text.Trim();
 
             textInputLayoutCardExpDate.Error = null;
@@ -210,17 +194,12 @@ namespace myTNB_Android.Src.AddCard.Activity
             {
                 EnableSaveButton();
             }
-            }
-            catch (Exception ex)
-            {
-                Utility.LoggingNonFatalError(ex);
-            }
+
         }
 
         [Preserve]
         private void CvvTextChange(object sender, Android.Text.TextChangedEventArgs e)
         {
-            try {
             string cvv = txtCVV.Text.Trim();
             textInputLayoutCVV.Error = null;
             if (String.IsNullOrEmpty(cvv) || cvv.Length < 3)
@@ -237,11 +216,7 @@ namespace myTNB_Android.Src.AddCard.Activity
             {
                 EnableSaveButton();
             }
-            }
-            catch (Exception ex)
-            {
-                Utility.LoggingNonFatalError(ex);
-            }
+
         }
         
 
@@ -265,7 +240,6 @@ namespace myTNB_Android.Src.AddCard.Activity
             string exp = txtCardExpDate.Text;
             string cvv = txtCVV.Text;
 
-            try {
             if (String.IsNullOrEmpty(cardNo) || cardNo.Length < 15)
             {
                 DisableSaveButton();
@@ -312,11 +286,6 @@ namespace myTNB_Android.Src.AddCard.Activity
             else{
                 btnNext.Enabled = true;
                 btnNext.Background = ContextCompat.GetDrawable(this, Resource.Drawable.green_button_background);
-            }
-            }
-            catch (Exception ex)
-            {
-                Utility.LoggingNonFatalError(ex);
             }
         }
 
@@ -395,7 +364,7 @@ namespace myTNB_Android.Src.AddCard.Activity
 
         protected override void OnActivityResult(int requestCode, Result result, Intent data)
         {
-            try {
+           
             if (requestCode == REQUEST_SCAN && data != null
                 && data.HasExtra(CardIOActivity.ExtraScanResult))
             {
@@ -415,11 +384,6 @@ namespace myTNB_Android.Src.AddCard.Activity
             else
             {
                 Toast.MakeText(this, "Unable to scan card! Please try again...", ToastLength.Long).Show();
-            }
-            }
-            catch (Exception ex)
-            {
-                Utility.LoggingNonFatalError(ex);
             }
         }
 
@@ -457,23 +421,6 @@ namespace myTNB_Android.Src.AddCard.Activity
             isValid = sumOfDigits % 10 == 0;
             Console.WriteLine("isValid: " + isValid);
             return isValid;
-        }
-
-        public override void OnTrimMemory(TrimMemory level)
-        {
-            base.OnTrimMemory(level);
-
-            switch (level)
-            {
-                case TrimMemory.RunningLow:
-                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
-                    GC.Collect();
-                    break;
-                default:
-                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
-                    GC.Collect();
-                    break;
-            }
         }
 
     }

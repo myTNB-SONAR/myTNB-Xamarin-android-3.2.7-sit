@@ -19,7 +19,6 @@ using myTNB_Android.Src.Utils;
 using AFollestad.MaterialDialogs;
 using Android.Text;
 using myTNB_Android.Src.Utils.Custom.ProgressDialog;
-using System.Runtime;
 
 namespace myTNB_Android.Src.UpdatePassword.Activity
 {
@@ -66,7 +65,7 @@ namespace myTNB_Android.Src.UpdatePassword.Activity
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-            try {
+
             TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutConfirmPassword,
                 txtInputLayoutCurrentPassword,
                 txtInputLayoutNewPassword);
@@ -95,16 +94,11 @@ namespace myTNB_Android.Src.UpdatePassword.Activity
 
             this.mPresenter = new UpdatePasswordPresenter(this);
             this.userActionsListener.Start();
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
         }
 
         private void TextChange(object sender, TextChangedEventArgs e)
         {
-            try {
+
             string currentPassword = txtCurrentPassword.Text;
             string newPassword = txtNewPassword.Text;
             string confirmPassword = txtConfirmPassword.Text;
@@ -141,26 +135,15 @@ namespace myTNB_Android.Src.UpdatePassword.Activity
             {
                 txtInputLayoutConfirmPassword.PasswordVisibilityToggleEnabled = false;
             }
-            }
-            catch (Exception ex)
-            {
-                Utility.LoggingNonFatalError(ex);
-            }
         }
 
         [OnClick(Resource.Id.btnSave)]
         void OnSave(object sender, EventArgs eventArgs)
         {
-            try {
             string currentPassword = txtCurrentPassword.Text;
             string newPassword = txtNewPassword.Text;
             string confirmPassword = txtConfirmPassword.Text;
             this.userActionsListener.OnSave(currentPassword , newPassword , confirmPassword);
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
         }
 
         public bool IsActive()
@@ -285,7 +268,6 @@ namespace myTNB_Android.Src.UpdatePassword.Activity
             //{
             //    progress.Show();
             //}
-            try {
             if (loadingOverlay != null && loadingOverlay.IsShowing)
             {
                 loadingOverlay.Dismiss();
@@ -293,12 +275,6 @@ namespace myTNB_Android.Src.UpdatePassword.Activity
 
             loadingOverlay = new LoadingOverlay(this, Resource.Style.LoadingOverlyDialogStyle);
             loadingOverlay.Show();
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
-
         }
 
         public void HideProgress()
@@ -307,15 +283,9 @@ namespace myTNB_Android.Src.UpdatePassword.Activity
             //{
             //    progress.Dismiss();
             //}
-            try {
             if (loadingOverlay != null && loadingOverlay.IsShowing)
             {
                 loadingOverlay.Dismiss();
-            }
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
             }
         }
 
@@ -340,24 +310,6 @@ namespace myTNB_Android.Src.UpdatePassword.Activity
         {
             SetResult(Result.Ok);
             Finish();
-        }
-
-
-        public override void OnTrimMemory(TrimMemory level)
-        {
-            base.OnTrimMemory(level);
-
-            switch (level)
-            {
-                case TrimMemory.RunningLow:
-                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
-                    GC.Collect();
-                    break;
-                default:
-                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
-                    GC.Collect();
-                    break;
-            }
         }
     }
 }

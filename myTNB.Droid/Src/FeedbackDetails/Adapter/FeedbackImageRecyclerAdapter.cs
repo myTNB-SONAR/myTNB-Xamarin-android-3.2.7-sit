@@ -18,7 +18,6 @@ using Square.Picasso;
 using Android.Graphics;
 using Android.Graphics.Drawables;
 using Android.Support.V4.Graphics.Drawable;
-using myTNB_Android.Src.Utils;
 
 namespace myTNB_Android.Src.FeedbackDetails.Adapter
 {
@@ -49,7 +48,6 @@ namespace myTNB_Android.Src.FeedbackDetails.Adapter
 
         public override void OnBindViewHolder(RecyclerView.ViewHolder holder, int position)
         {
-            try {
             AttachedImage image = GetItemObject(position);
             var viewHolder = holder as FeedbackPreLoginImageViewHolder;
             Picasso.With(viewHolder.ItemView.Context)
@@ -71,11 +69,6 @@ namespace myTNB_Android.Src.FeedbackDetails.Adapter
                         {
 
                         });
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
         }
 
    

@@ -59,7 +59,6 @@ namespace myTNB_Android.Src.WalkThrough.Fragment
 
             // Use this to return your custom view for this Fragment
             View rootView = inflater.Inflate(Resource.Layout.WalkThroughContentView, container, false);
-            try {
             TextView txtHeading = (TextView)rootView.FindViewById(Resource.Id.heading);
             txtHeading.Text = heading;
             TextView txtContent = (TextView)rootView.FindViewById(Resource.Id.content);
@@ -77,11 +76,6 @@ namespace myTNB_Android.Src.WalkThrough.Fragment
 
             TextViewUtils.SetMuseoSans300Typeface( txtContent);
             TextViewUtils.SetMuseoSans500Typeface( txtHeading);
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
             return rootView;
         }
     }

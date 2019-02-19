@@ -86,7 +86,6 @@ namespace myTNB_Android.Src.WalkThrough.MVP
             }catch(Exception e)
             {
                 Log.Error("API Exception", e.StackTrace);
-                Utility.LoggingNonFatalError(e);
             }
         }
 
@@ -115,7 +114,6 @@ namespace myTNB_Android.Src.WalkThrough.MVP
                 }
                 catch (Exception e)
                 {
-                    Utility.LoggingNonFatalError(e);
                     Log.Error("API Exception", e.StackTrace);
                 }
             });
@@ -149,7 +147,6 @@ namespace myTNB_Android.Src.WalkThrough.MVP
                 catch (Exception e)
                 {
                     Log.Error("API Exception", e.StackTrace);
-                    Utility.LoggingNonFatalError(e);
                 }
             });
         }

@@ -12,7 +12,6 @@ using Android.Widget;
 using myTNB_Android.Src.AppLaunch.Models;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.SelectFeedbackState.MVP;
-using myTNB_Android.Src.Utils;
 
 namespace myTNB_Android.Src.SelectFeedbackType.MVP
 {
@@ -28,21 +27,15 @@ namespace myTNB_Android.Src.SelectFeedbackType.MVP
 
         public void OnSelect(FeedbackType feedbackType)
         {
-            try {
             FeedbackTypeEntity.RemoveActive();
             FeedbackTypeEntity.SetSelected(feedbackType.FeedbackTypeId);
 
             this.mView.ShowSelectedSuccess(feedbackType);
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
         }
 
         public void Start()
         {
-            try {
+
             var list = new List<FeedbackType>();
             var entityList = FeedbackTypeEntity.GetActiveList();
             foreach (FeedbackTypeEntity entity in entityList)
@@ -55,11 +48,6 @@ namespace myTNB_Android.Src.SelectFeedbackType.MVP
                 });
             }
             this.mView.ShowList(list);
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
         }
     }
 }

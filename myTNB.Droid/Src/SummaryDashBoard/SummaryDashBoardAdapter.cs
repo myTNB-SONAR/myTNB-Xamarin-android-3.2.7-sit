@@ -209,7 +209,7 @@ namespace myTNB_Android.Src.SummaryDashBoard
             LinearLayout mAdapterLayout;
 
             private ISummaryListener iSummaryListener = null;
-            private SummaryDashBoardDetails summaryDashBoardDetails = new SummaryDashBoardDetails();
+            private SummaryDashBoardDetails summaryDashBoardDetails = null;
 
             DecimalFormat decimalFormat = new DecimalFormat("#,###,###,###,##0.00");
 
@@ -240,13 +240,7 @@ namespace myTNB_Android.Src.SummaryDashBoard
             {
                 switch(v.Id) {
                     case Resource.Id.adapterLayout:
-                        if (summaryDashBoardDetails != null) {
-                            iSummaryListener.OnClick(summaryDashBoardDetails);
-                        } else {
-                            iSummaryListener.OnClick(null);
-                        }
-
-
+                        iSummaryListener.OnClick(summaryDashBoardDetails);
                         break;
                 }
             }
@@ -343,7 +337,7 @@ namespace myTNB_Android.Src.SummaryDashBoard
                     }
                     catch (ParseException e)
                     {
-                        Utility.LoggingNonFatalError(e);
+
                     }
                     string dt = dateFormatter.Format(d);
 

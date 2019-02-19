@@ -100,12 +100,9 @@ namespace myTNB_Android.Src.AddAccount.Fragment
             //{
             //    mAddAccountProgressDialog.Dismiss();
             //}
-            if (IsActive())
+            if(loadingOverlay != null && loadingOverlay.IsShowing)
             {
-                if (loadingOverlay != null && loadingOverlay.IsShowing)
-                {
-                    loadingOverlay.Dismiss();
-                }
+                loadingOverlay.Dismiss();
             }
         }
 
@@ -303,49 +300,41 @@ namespace myTNB_Android.Src.AddAccount.Fragment
 
         public override void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
         {
-            try
+            base.OnActivityResult(requestCode, resultCode, data);
+            if (requestCode == Constants.BARCODE_REQUEST_CODE)
             {
-                base.OnActivityResult(requestCode, resultCode, data);
-                if (requestCode == Constants.BARCODE_REQUEST_CODE)
+                if (resultCode == Result.Ok)
                 {
-                    if (resultCode == Result.Ok)
-                    {
 
-                        string barcodeResultText = data.GetStringExtra(Constants.BARCODE_RESULT);
-                        edtAccountNo.Text = barcodeResultText;
+                    string barcodeResultText = data.GetStringExtra(Constants.BARCODE_RESULT);
+                    edtAccountNo.Text = barcodeResultText;
 
-                    }
                 }
-                else if (requestCode == SELECT_ACCOUNT_TYPE_REQ_CODE)
+            }else if (requestCode == SELECT_ACCOUNT_TYPE_REQ_CODE) { 
+                   
+                if(resultCode == Result.Ok)
                 {
-
-                    if (resultCode == Result.Ok)
+                    selectedAccountType = JsonConvert.DeserializeObject<AccountType>(data.GetStringExtra("selectedAccountType"));
+                    if(selectedAccountType != null)
                     {
-                        selectedAccountType = JsonConvert.DeserializeObject<AccountType>(data.GetStringExtra("selectedAccountType"));
-                        if (selectedAccountType != null)
+                        accountType.Text = selectedAccountType.Type;
+                        if (selectedAccountType.Id.Equals("1"))
                         {
-                            accountType.Text = selectedAccountType.Type;
-                            if (selectedAccountType.Id.Equals("1"))
-                            {
-                                edtOwnerMotherName.Visibility = ViewStates.Visible;
-                                textInputLayoutOwnerIC.Hint = Activity.GetString(Resource.String.add_account_form_owners_ic_no);
-                            }
-                            else
-                            {
-                                edtOwnerMotherName.Visibility = ViewStates.Gone;
-                                textInputLayoutOwnerIC.Hint = Activity.GetString(Resource.String.add_account_form_owners_roc_no);
-                            }
+                            edtOwnerMotherName.Visibility = ViewStates.Visible;
+                            textInputLayoutOwnerIC.Hint = Activity.GetString(Resource.String.add_account_form_owners_ic_no);
+                        }
+                        else
+                        {
+                            edtOwnerMotherName.Visibility = ViewStates.Gone;
+                            textInputLayoutOwnerIC.Hint = Activity.GetString(Resource.String.add_account_form_owners_roc_no);
                         }
                     }
                 }
-            } catch(Exception e) {
-                Utility.LoggingNonFatalError(e);
             }
         }
 
         public void CallAddAccountService()
         {
-            try {
             string apiKeyID = Constants.APP_CONFIG.API_KEY_ID;
             string userID = UserEntity.GetActive().UserID;
             string email = UserEntity.GetActive().Email;
@@ -357,14 +346,10 @@ namespace myTNB_Android.Src.AddAccount.Fragment
             bool owner = isOwner;
             string suppliedMotherName = edtOwnerMotherName.Text;
             this.userActionsListener.AddAccount(apiKeyID, userID, email, tnbBillAccountNum, tnbAccountHolderICNum, tnbAccountContractNum, type, des, owner, suppliedMotherName);
-        } catch(Exception e) {
-                Utility.LoggingNonFatalError(e);
-            }
         }
 
         public void CallValidateAccountService()
         {
-            try {
             string apiKeyID = Constants.APP_CONFIG.API_KEY_ID;
             //string userID = UserEntity.GetActive().UserID;
             //string email = UserEntity.GetActive().Email;
@@ -382,11 +367,6 @@ namespace myTNB_Android.Src.AddAccount.Fragment
             {
                 edtAccountNo.Error = "Account already added";
                 edtAccountNo.RequestFocus();
-            }
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
             }
         }
 
@@ -460,11 +440,9 @@ namespace myTNB_Android.Src.AddAccount.Fragment
             //{
             //    mAddAccountProgressDialog.Show();
             //}
-            if (IsActive()) {
             if(loadingOverlay != null)
             {
                 loadingOverlay.Show();
-            }
             }
         }
 

@@ -39,7 +39,6 @@ namespace myTNB_Android.Src.Feedback_PreLogin_Others.MVP
 
         public void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
         {
-            try {
             if (requestCode == Constants.REQUEST_ATTACHED_CAMERA_IMAGE)
             {
                 if (resultCode == Result.Ok)
@@ -71,33 +70,21 @@ namespace myTNB_Android.Src.Feedback_PreLogin_Others.MVP
                     this.mView.ShowSelectedFeedbackType(selectedType);
                 }
             }
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
         }
 
         private async void OnSaveCameraImage(string tempImagePath, string fileName)
         {
-            try {
             this.mView.DisableSubmitButton();
             this.mView.ShowLoadingImage();
             string resultFilePath = await this.mView.SaveCameraImage(tempImagePath, fileName);
             this.mView.UpdateAdapter(resultFilePath, fileName);
             this.mView.HideLoadingImage();
             this.mView.EnableSubmitButton();
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
         }
 
 
         private async void OnSaveGalleryImage(Android.Net.Uri selectedImage, string fileName)
         {
-            try {
             this.mView.DisableSubmitButton();
             this.mView.ShowLoadingImage();
             string resultFilePath = await this.mView.SaveGalleryImage(selectedImage, FileUtils.TEMP_IMAGE_FOLDER, fileName);
@@ -106,11 +93,6 @@ namespace myTNB_Android.Src.Feedback_PreLogin_Others.MVP
             this.mView.UpdateAdapter(resultFilePath, fileName);
             this.mView.HideLoadingImage();
             this.mView.EnableSubmitButton();
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
         }
 
 
@@ -179,10 +161,7 @@ namespace myTNB_Android.Src.Feedback_PreLogin_Others.MVP
                 return;
             }
 
-            if (mView.IsActive()) {
             this.mView.ShowProgressDialog();
-            }
-
             ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
 #if DEBUG
             var httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
@@ -226,11 +205,6 @@ namespace myTNB_Android.Src.Feedback_PreLogin_Others.MVP
 
                 var preLoginFeedbackResponse = await preloginFeedbackApi.SubmitFeedback(request, cts.Token);
 
-                if (mView.IsActive())
-                {
-                    this.mView.HideProgressDialog();
-                }
-
                 if (!preLoginFeedbackResponse.Data.IsError)
                 {
                     SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
@@ -257,51 +231,33 @@ namespace myTNB_Android.Src.Feedback_PreLogin_Others.MVP
 
             catch (System.OperationCanceledException e)
             {
-                if (mView.IsActive())
-                {
-                    this.mView.HideProgressDialog();
-                }
                 //this.mView.ShowFail();
                 this.mView.OnSubmitError();
-                Utility.LoggingNonFatalError(e);
+
             }
             catch (ApiException apiException)
             {
-                if (mView.IsActive())
-                {
-                    this.mView.HideProgressDialog();
-                }
                 //this.mView.ShowFail();
                 this.mView.OnSubmitError();
-                Utility.LoggingNonFatalError(apiException);
             }
             catch (Exception e)
             {
-                if (mView.IsActive())
-                {
-                    this.mView.HideProgressDialog();
-                }
                 //this.mView.ShowFail();
                 this.mView.OnSubmitError();
-                Utility.LoggingNonFatalError(e);
             }
 
+            this.mView.HideProgressDialog();
 
         }
 
         public void Start()
         {
-            try
-            {
-                // TODO: IMPL SHOW FEEDBACK TYPE
-                this.mView.DisableSubmitButton();
-                FeedbackTypeEntity.ResetSelected();
-                FeedbackTypeEntity entity = FeedbackTypeEntity.GetFirstOrSelected();
-                FeedbackTypeEntity.SetSelected(entity.Id);
-                this.mView.ShowSelectedFeedbackType(FeedbackType.Copy(entity));
-            } catch(Exception e) {
-                Utility.LoggingNonFatalError(e);
-            }
+            // TODO: IMPL SHOW FEEDBACK TYPE
+            this.mView.DisableSubmitButton();
+            FeedbackTypeEntity.ResetSelected();
+            FeedbackTypeEntity entity = FeedbackTypeEntity.GetFirstOrSelected();
+            FeedbackTypeEntity.SetSelected(entity.Id);
+            this.mView.ShowSelectedFeedbackType(FeedbackType.Copy(entity));
         }
 
         public void OnSelectFeedbackType()
@@ -313,7 +269,7 @@ namespace myTNB_Android.Src.Feedback_PreLogin_Others.MVP
         {
             //if (!TextUtils.IsEmpty(fullname) && !TextUtils.IsEmpty(mobile_no) && !TextUtils.IsEmpty(email)  && !TextUtils.IsEmpty(feedback))
             //{
-            try {
+
             this.mView.ClearErrors();
             if (TextUtils.IsEmpty(fullname))
             {
@@ -377,9 +333,6 @@ namespace myTNB_Android.Src.Feedback_PreLogin_Others.MVP
 
 
                 this.mView.EnableSubmitButton();
-        } catch(Exception e) {
-                Utility.LoggingNonFatalError(e);
-            }
             //}
             //else
             //{

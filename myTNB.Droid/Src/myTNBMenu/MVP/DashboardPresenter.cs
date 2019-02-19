@@ -58,9 +58,9 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
         {
             this.mView = mView;
             this.mSharedPref = preferences;
-            this.mView?.SetPresenter(this);
+            this.mView.SetPresenter(this);
 
-            //Console.WriteLine("UserID {0}" + UserEntity.GetActive().UserID);
+            Console.WriteLine("UserID {0}" + UserEntity.GetActive().UserID);
             
         }
 
@@ -84,7 +84,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 
         public void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
         {
-            try {
             if (requestCode == Constants.SELECT_ACCOUNT_REQUEST_CODE)
             {
                 if (resultCode == Result.Ok)
@@ -297,11 +296,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                     }
                 }
 
-            }
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
             }
         }
 
@@ -639,7 +633,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                 // ADD OPERATION CANCELLED HERE
                 //this.mView.ShowRetryOptionsCancelledException(e);
                 //this.mView.ShowOwnerNoInternetConnection(accountSelected.AccDesc);
-                Utility.LoggingNonFatalError(e);
             }
             catch (ApiException apiException)
             {
@@ -651,8 +644,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                     this.mView.HideProgressDialog();
                     this.mView.ShowOwnerDashboardNoInternetConnection(accountSelected.AccDesc);
                 }
-
-                Utility.LoggingNonFatalError(apiException);
             }
             catch (Exception e)
             {
@@ -665,7 +656,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                     this.mView.HideProgressDialog();
                     this.mView.ShowOwnerDashboardNoInternetConnection(accountSelected.AccDesc);
                 }
-                Utility.LoggingNonFatalError(e);
             }
 
             //if (this.mView.IsActive())
@@ -683,10 +673,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
             /****/
 
             cts = new CancellationTokenSource();
-            if (mView.IsActive()) {
-                this.mView.ShowProgressDialog();    
-            }
-
+            this.mView.ShowProgressDialog();
 #if STUB
             var api = Substitute.For<IUsageHistoryApi>();
 
@@ -824,7 +811,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                 //this.mView.ShowOwnerNoInternetConnection(accountSelected.AccDesc);
                 smDataError = true;
                 LoadUsageHistory(accountSelected);
-                Utility.LoggingNonFatalError(e);
             }
             catch (ApiException apiException)
             {
@@ -840,7 +826,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                     //this.mView.ShowOwnerDashboardNoInternetConnection(accountSelected.AccDesc);
 
                 }
-                Utility.LoggingNonFatalError(apiException);
             }
             catch (Exception e)
             {
@@ -853,9 +838,9 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                     smDataError = true;
                     LoadUsageHistory(accountSelected);
 
-                }
 
-                Utility.LoggingNonFatalError(e);
+
+                }
             }
 
         }
@@ -922,10 +907,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 
                 if (customerBillingDetails == null)
                 {
-                    if (mView.IsActive())
-                    {
-                        this.mView.ShowProgressDialog();
-                    }
+                    this.mView.ShowProgressDialog();
                     customerBillingDetails = await detailedAccountApi.GetDetailedAccount(new AddAccount.Requests.AccountDetailsRequest()
 
                     {
@@ -970,7 +952,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                 {
                     this.mView.HideProgressDialog();
                 }
-                Utility.LoggingNonFatalError(e);
                 //this.mView.ShowRetryOptionsCancelledException(e);
             }
             catch (ApiException apiException)
@@ -981,7 +962,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                     this.mView.HideProgressDialog();
                 }
                 //this.mView.ShowRetryOptionsApiException(apiException);
-                Utility.LoggingNonFatalError(apiException);
             }
             catch (Exception e)
             {
@@ -992,8 +972,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                     this.mView.HideProgressDialog();
                 }
                 //this.mView.ShowRetryOptionsUnknownException(e);
-
-                Utility.LoggingNonFatalError(e);
             }
 
 
@@ -1050,7 +1028,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                 {
                     Log.Error("API Exception", e.StackTrace);
                     mView.ShowPromotionTimestamp(false);
-                    Utility.LoggingNonFatalError(e);
                 }
             }).ContinueWith((Task previous) => {
             }, cts.Token);
@@ -1085,7 +1062,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                 {
                     Log.Error("API Exception", e.StackTrace);
                     mView.ShowPromotion(true);
-                    Utility.LoggingNonFatalError(e);
                 }
             }).ContinueWith((Task previous) => {
             }, cts.Token);
@@ -1114,7 +1090,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
             {
                 Log.Error("DB Exception", e.StackTrace);
                 mView.OnSavedTimeStamp(null);
-                Utility.LoggingNonFatalError(e);
             }
         }
 
@@ -1122,135 +1097,125 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
         public void OnAccountSelectDashBoard()
         {
             DashboardActivity.GO_TO_INNER_DASHBOARD = true;
-            List<CustomerBillingAccount> accountList = new List<CustomerBillingAccount>();
-            accountList = CustomerBillingAccount.List();
+            List<CustomerBillingAccount> accountList = CustomerBillingAccount.List();
             this.mView.ShowAccountName();
             this.mView.SetToolbarTitle(Resource.String.dashboard_menu_activity_title);
             currentBottomNavigationMenu = Resource.Id.menu_dashboard;
-            try
+            if (accountList != null && accountList.Count > 0)
             {
-                if (accountList != null && accountList.Count > 0)
+                if (CustomerBillingAccount.HasSelected())
                 {
-                    if (CustomerBillingAccount.HasSelected())
+                    CustomerBillingAccount selected = CustomerBillingAccount.GetSelected();
+
+                    if (selected != null && !string.IsNullOrEmpty(selected.AccDesc)) {
+                        
+                    /** Smart meter account check **/
+                    if (!selected.SmartMeterCode.Equals("0"))// && selected.isOwned)
                     {
-                        CustomerBillingAccount selected = CustomerBillingAccount.GetSelected();
-
-                        if (selected != null && !string.IsNullOrEmpty(selected.AccDesc))
+                        if (!SMUsageHistoryEntity.IsSMDataUpdated(selected.AccNum))
                         {
-
-                            /** Smart meter account check **/
-                            if (!selected.SmartMeterCode.Equals("0"))// && selected.isOwned)
+                            //Get stored data
+                            SMUsageHistoryEntity storedEntity = SMUsageHistoryEntity.GetItemByAccountNo(selected.AccNum);
+                            SMUsageHistoryResponse storedSMData = null;
+                            if (storedEntity != null)
                             {
-                                if (!SMUsageHistoryEntity.IsSMDataUpdated(selected.AccNum))
-                                {
-                                    //Get stored data
-                                    SMUsageHistoryEntity storedEntity = SMUsageHistoryEntity.GetItemByAccountNo(selected.AccNum);
-                                    SMUsageHistoryResponse storedSMData = new SMUsageHistoryResponse();
-                                    if (storedEntity != null)
-                                    {
-                                        storedSMData = JsonConvert.DeserializeObject<SMUsageHistoryResponse>(storedEntity.JsonResponse);
-                                    }
-                                    if (storedSMData != null && storedSMData.Data != null && storedSMData.Data.SMUsageHistoryData != null)
-                                    {
-                                        this.mView.ShowAccountName();
-                                        this.mView.SetToolbarTitle(Resource.String.dashboard_menu_activity_title);
-                                        this.mView.ShowSMChart(storedSMData.Data.SMUsageHistoryData, AccountData.Copy(selected, true));
-                                    }
-                                    else
-                                    {
-                                        LoadSMUsageHistory(selected);
-                                    }
-                                }
-                                else
-                                {
-                                    LoadSMUsageHistory(selected);
-                                }
+                                storedSMData = JsonConvert.DeserializeObject<SMUsageHistoryResponse>(storedEntity.JsonResponse);
+                            }
+                            if (storedSMData != null && storedSMData.Data != null && storedSMData.Data.SMUsageHistoryData != null)
+                            {
+                                this.mView.ShowAccountName();
+                                this.mView.SetToolbarTitle(Resource.String.dashboard_menu_activity_title);
+                                this.mView.ShowSMChart(storedSMData.Data.SMUsageHistoryData, AccountData.Copy(selected, true));
                             }
                             else
                             {
-                                if (!UsageHistoryEntity.IsSMDataUpdated(selected.AccNum))
-                                {
-                                    UsageHistoryEntity storedEntity = UsageHistoryEntity.GetItemByAccountNo(selected.AccNum);
-                                    if (storedEntity != null)
-                                    {
-                                        CustomerBillingAccount.RemoveSelected();
-                                        CustomerBillingAccount.Update(selected.AccNum, true);
-                                        usageHistoryResponse = JsonConvert.DeserializeObject<UsageHistoryResponse>(storedEntity.JsonResponse);
-                                        LoadUsageHistory(selected);
-                                    }
-                                    else
-                                    {
-                                        LoadUsageHistory(selected);
-                                    }
-                                }
-                                else
-                                {
-                                    LoadUsageHistory(selected);
-                                }
+                                LoadSMUsageHistory(selected);
                             }
-
-                            if (selected.AccountCategoryId.Equals("2"))
-                            {
-                                this.mView.ShowREAccount(true);
-                            }
-                            else
-                            {
-                                this.mView.EnableDropDown(true);
-                            }
-                            if (!string.IsNullOrEmpty(selected.AccDesc))
-                            {
-                                this.mView.SetAccountName(selected.AccDesc);
-                            }
+                        }
+                        else
+                        {
+                            LoadSMUsageHistory(selected);
                         }
                     }
                     else
                     {
-                        CustomerBillingAccount.SetSelected(accountList[0].AccNum);
-                        CustomerBillingAccount selected = CustomerBillingAccount.GetSelected();
-                        if (selected != null && !string.IsNullOrEmpty(selected.AccNum))
+                        if (!UsageHistoryEntity.IsSMDataUpdated(selected.AccNum))
                         {
-                            if (!selected.SmartMeterCode.Equals("0"))
+                            UsageHistoryEntity storedEntity = UsageHistoryEntity.GetItemByAccountNo(selected.AccNum);
+                            if (storedEntity != null)
                             {
-                                LoadSMUsageHistory(selected);
+                                CustomerBillingAccount.RemoveSelected();
+                                CustomerBillingAccount.Update(selected.AccNum, true);
+                                usageHistoryResponse = JsonConvert.DeserializeObject<UsageHistoryResponse>(storedEntity.JsonResponse);
+                                LoadUsageHistory(selected);
                             }
                             else
                             {
                                 LoadUsageHistory(selected);
                             }
-
-                            if (selected.AccountCategoryId.Equals("2"))
-                            {
-                                this.mView.ShowREAccount(true);
-                            }
-                            else
-                            {
-                                this.mView.EnableDropDown(true);
-                            }
-                            if (!string.IsNullOrEmpty(selected.AccDesc))
-                            {
-                                this.mView.SetAccountName(selected.AccDesc);
-                            }
-
+                        }
+                        else
+                        {
+                            LoadUsageHistory(selected);
                         }
                     }
 
+                    if (selected.AccountCategoryId.Equals("2"))
+                    {
+                        this.mView.ShowREAccount(true);
+                    }
+                    else
+                    {
+                        this.mView.EnableDropDown(true);
+                    }
+                        if (!string.IsNullOrEmpty(selected.AccDesc))
+                        {
+                            this.mView.SetAccountName(selected.AccDesc);
+                        }
+                    }
                 }
                 else
                 {
-                    // 5
-                    this.mView.HideAccountName();
-                    this.mView.ShowNoAccountDashboardChartMenu();
-                    this.mView.DisableBillMenu();
+                    CustomerBillingAccount.SetSelected(accountList[0].AccNum);
+                    CustomerBillingAccount selected = CustomerBillingAccount.GetSelected();
+                    if (selected != null && !string.IsNullOrEmpty(selected.AccNum)) {
+                    if (!selected.SmartMeterCode.Equals("0"))
+                    {
+                        LoadSMUsageHistory(selected);
+                    }
+                    else
+                    {
+                        LoadUsageHistory(selected);
+                    }
+
+                    if (selected.AccountCategoryId.Equals("2"))
+                    {
+                        this.mView.ShowREAccount(true);
+                    }
+                    else
+                    {
+                        this.mView.EnableDropDown(true);
+                    }
+                        if (!string.IsNullOrEmpty(selected.AccDesc)) {
+                            this.mView.SetAccountName(selected.AccDesc);        
+                        }
+                    
+                    }
                 }
-            } catch(Exception e) {
-                Utility.LoggingNonFatalError(e);
+
+            }
+            else
+            {
+                // 5
+                this.mView.HideAccountName();
+                this.mView.ShowNoAccountDashboardChartMenu();
+                this.mView.DisableBillMenu();
             }
             //currentBottomNavigationMenu = Resource.Id.menu_dashboard;
         }
 
 
-        public void OnStartDashboard() {
-            try {
+        public void OnStartDashboard(){
             ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
 
             List<CustomerBillingAccount> accountList = CustomerBillingAccount.List();
@@ -1409,11 +1374,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                 // 5
                 this.mView.ShowNoAccountDashboardChartMenu();
                 this.mView.DisableBillMenu();
-            }
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
             }
         }
 

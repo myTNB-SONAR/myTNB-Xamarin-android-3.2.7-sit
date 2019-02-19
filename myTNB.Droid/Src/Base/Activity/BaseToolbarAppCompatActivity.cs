@@ -12,7 +12,6 @@ using Android.Widget;
 using CheeseBind;
 using Toolbar = Android.Support.V7.Widget.Toolbar;
 using myTNB_Android.Src.Utils;
-using System.Runtime;
 
 namespace myTNB_Android.Src.Base.Activity
 {
@@ -109,24 +108,6 @@ namespace myTNB_Android.Src.Base.Activity
                 toolbar = FindViewById<Toolbar>(Resource.Id.toolbar);
                 TextView txtTitle = toolbar.FindViewById<TextView>(Resource.Id.toolbar_title);
                 txtTitle.Text = title;
-            }
-        }
-
-
-        public override void OnTrimMemory(TrimMemory level)
-        {
-            base.OnTrimMemory(level);
-
-            switch (level)
-            {
-                case TrimMemory.RunningLow:
-                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
-                    GC.Collect();
-                    break;
-                default:
-                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
-                    GC.Collect();
-                    break;
             }
         }
     }

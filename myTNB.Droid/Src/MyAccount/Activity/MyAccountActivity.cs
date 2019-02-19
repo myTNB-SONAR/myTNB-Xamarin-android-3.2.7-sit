@@ -131,68 +131,64 @@ namespace myTNB_Android.Src.MyAccount.Activity
         {
             base.OnCreate(savedInstanceState);
 
-            try
+
+            accountRetrieverDialog = new MaterialDialog.Builder(this)
+                .Title(GetString(Resource.String.my_account_account_retrieval_progress_title))
+                .Content(GetString(Resource.String.my_account_account_retrieval_progress_content))
+                .Progress(true, 0)
+                .Cancelable(false)
+                .Build();
+
+            logoutProgressDialog = new MaterialDialog.Builder(this)
+                .Title(GetString(Resource.String.logout_activity_title))
+                .Content(GetString(Resource.String.logout_app_question))
+                .PositiveText(GetString(Resource.String.manage_cards_btn_ok))
+                .NeutralText(GetString(Resource.String.bill_related_feedback_selection_cancel))
+                .OnPositive((dialog, which) => this.userActionsListener.OnLogout(this.DeviceId()))
+                .OnNeutral((dialog, which) => dialog.Dismiss())
+                .Build();
+
+
+            // Create your application here
+            TextViewUtils.SetMuseoSans300Typeface(textInputLayoutFullName,
+                textInputLayoutIcNo,
+                txtInputLayoutEmail,
+                txtInputLayoutMobileNo,
+                txtInputLayoutCards,
+                txtInputLayoutPassword);
+            TextViewUtils.SetMuseoSans300Typeface(txtFullName,
+                txtIcNo,
+                txtEmail,
+                txtMobileNo,
+                txtCards,
+                txtMyAccountNoAccountContent,
+                txtPassword);
+            TextViewUtils.SetMuseoSans500Typeface(txtMyAccountTitle,
+                btnAddAnotherAccount,
+                btnLogout,
+                btnAddAccount,
+                txtMyAccountNoAccountTitle,
+                btnTextUpdatePassword,
+                btnTextUpdateMobileNo,
+                btnTextUpdateCards,
+                txtTnBSupplyAccountTitle);
+
+            adapter = new MyAccountAdapter(this , false);
+            listView.Adapter = adapter;
+            listView.SetNoScroll();
+            listView.ItemClick += ListView_ItemClick;
+
+            mPresenter = new MyAccountPresenter(this);
+            this.userActionsListener.Start();
+
+            Bundle extras = Intent.Extras;
+            if(extras != null && extras.ContainsKey(Constants.FORCE_UPDATE_PHONE_NO))
             {
-                accountRetrieverDialog = new MaterialDialog.Builder(this)
-                    .Title(GetString(Resource.String.my_account_account_retrieval_progress_title))
-                    .Content(GetString(Resource.String.my_account_account_retrieval_progress_content))
-                    .Progress(true, 0)
-                    .Cancelable(false)
-                    .Build();
-
-                logoutProgressDialog = new MaterialDialog.Builder(this)
-                    .Title(GetString(Resource.String.logout_activity_title))
-                    .Content(GetString(Resource.String.logout_app_question))
-                    .PositiveText(GetString(Resource.String.manage_cards_btn_ok))
-                    .NeutralText(GetString(Resource.String.bill_related_feedback_selection_cancel))
-                    .OnPositive((dialog, which) => this.userActionsListener.OnLogout(this.DeviceId()))
-                    .OnNeutral((dialog, which) => dialog.Dismiss())
-                    .Build();
-
-
-                // Create your application here
-                TextViewUtils.SetMuseoSans300Typeface(textInputLayoutFullName,
-                    textInputLayoutIcNo,
-                    txtInputLayoutEmail,
-                    txtInputLayoutMobileNo,
-                    txtInputLayoutCards,
-                    txtInputLayoutPassword);
-                TextViewUtils.SetMuseoSans300Typeface(txtFullName,
-                    txtIcNo,
-                    txtEmail,
-                    txtMobileNo,
-                    txtCards,
-                    txtMyAccountNoAccountContent,
-                    txtPassword);
-                TextViewUtils.SetMuseoSans500Typeface(txtMyAccountTitle,
-                    btnAddAnotherAccount,
-                    btnLogout,
-                    btnAddAccount,
-                    txtMyAccountNoAccountTitle,
-                    btnTextUpdatePassword,
-                    btnTextUpdateMobileNo,
-                    btnTextUpdateCards,
-                    txtTnBSupplyAccountTitle);
-
-                adapter = new MyAccountAdapter(this, false);
-                listView.Adapter = adapter;
-                listView.SetNoScroll();
-                listView.ItemClick += ListView_ItemClick;
-
-                mPresenter = new MyAccountPresenter(this);
-                this.userActionsListener.Start();
-
-                Bundle extras = Intent.Extras;
-                if (extras != null && extras.ContainsKey(Constants.FORCE_UPDATE_PHONE_NO))
+                if (extras.GetBoolean(Constants.FORCE_UPDATE_PHONE_NO))
                 {
-                    if (extras.GetBoolean(Constants.FORCE_UPDATE_PHONE_NO))
-                    {
-                        UserEntity entity = UserEntity.GetActive();
-                        ShowMobileUpdateSuccess(entity.MobileNo);
-                    }
+                    UserEntity entity = UserEntity.GetActive();
+                    ShowMobileUpdateSuccess(entity.MobileNo);
                 }
-            } catch(Exception e) {
-                Utility.LoggingNonFatalError(e);
             }
         }
         [Preserve]
@@ -340,7 +336,6 @@ namespace myTNB_Android.Src.MyAccount.Activity
             //    accountRetrieverDialog.Dismiss();
             //}
             //accountRetrieverDialog.Show();
-            try {
             if (loadingOverlay != null && loadingOverlay.IsShowing)
             {
                 loadingOverlay.Dismiss();
@@ -348,11 +343,6 @@ namespace myTNB_Android.Src.MyAccount.Activity
 
             loadingOverlay = new LoadingOverlay(this, Resource.Style.LoadingOverlyDialogStyle);
             loadingOverlay.Show();
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
         }
 
         public void HideShowProgressDialog()
@@ -361,15 +351,9 @@ namespace myTNB_Android.Src.MyAccount.Activity
             //{
             //    accountRetrieverDialog.Dismiss();
             //}
-            try {
             if (loadingOverlay != null && loadingOverlay.IsShowing)
             {
                 loadingOverlay.Dismiss();
-            }
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
             }
         }
 
@@ -385,16 +369,10 @@ namespace myTNB_Android.Src.MyAccount.Activity
 
         public void ShowAccountList(List<CustomerBillingAccount> accountList)
         {
-            try {
             adapter.AddAll(accountList);
             adapter.NotifyDataSetChanged();
             listView.SetNoScroll();
             btnAddAnotherAccount.Visibility = ViewStates.Visible;
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
         }
 
         public void ShowEmptyAccount()
@@ -407,7 +385,7 @@ namespace myTNB_Android.Src.MyAccount.Activity
         {
             txtFullName.Text = user.DisplayName;
 
-            try {
+          
 
             if (user.IdentificationNo.Count() >= 4)
             {
@@ -424,11 +402,7 @@ namespace myTNB_Android.Src.MyAccount.Activity
             txtMobileNo.Text = user.MobileNo;
             txtPassword.Text = GetString(Resource.String.my_account_dummy_password);
             txtCards.Text = string.Format("{0}" , numOfCards);
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
+
         }
 
         protected override void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
@@ -486,12 +460,12 @@ namespace myTNB_Android.Src.MyAccount.Activity
 
         public void ShowGetCardsProgressDialog()
         {
-            //throw new NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public void HideGetCardsProgressDialog()
         {
-            //throw new NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public void ShowRemovedSupplyAccountSuccess(AccountData accountData, int position)
@@ -542,7 +516,6 @@ namespace myTNB_Android.Src.MyAccount.Activity
             //{
             //    logoutProgressDialog.Show();
             //}
-            try {
             if (loadingOverlay != null && loadingOverlay.IsShowing)
             {
                 loadingOverlay.Dismiss();
@@ -550,11 +523,6 @@ namespace myTNB_Android.Src.MyAccount.Activity
 
             loadingOverlay = new LoadingOverlay(this, Resource.Style.LoadingOverlyDialogStyle);
             loadingOverlay.Show();
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
         }
 
         public void HideLogoutProgressDialog()
@@ -563,15 +531,9 @@ namespace myTNB_Android.Src.MyAccount.Activity
             //{
             //    logoutProgressDialog.Dismiss();
             //}
-            try {
             if (loadingOverlay != null && loadingOverlay.IsShowing)
             {
                 loadingOverlay.Dismiss();
-            }
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
             }
         }
 

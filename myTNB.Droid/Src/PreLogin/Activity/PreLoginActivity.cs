@@ -25,7 +25,6 @@ using myTNB.SitecoreCMS.Model;
 using Android.Graphics;
 using Android.Util;
 using System.Net;
-using System.Runtime;
 
 namespace myTNB_Android.Src.PreLogin.Activity
 {
@@ -76,18 +75,13 @@ namespace myTNB_Android.Src.PreLogin.Activity
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-            try {
             mPresenter = new PreLoginPresenter(this);
             TextViewUtils.SetMuseoSans500Typeface(txtWelcome);
 
             TextViewUtils.SetMuseoSans300Typeface(txtManageAccount , txtLikeToday , txtLocation , txtFeedback , txtCallUs, txtPromotion);
 
             TextViewUtils.SetMuseoSans500Typeface(btnLogin , btnRegister);
-            }
-            catch (Exception ex)
-            {
-                Utility.LoggingNonFatalError(ex);
-            }
+
             /** Enable/Disable Sitecore **/
             //if (MyTNBApplication.siteCoreUpdated)
             //{
@@ -130,49 +124,25 @@ namespace myTNB_Android.Src.PreLogin.Activity
         [OnClick(Resource.Id.btnLogin)]
         void OnLogin(object sender, EventArgs eventArgs)
         {
-            try {
             this.userActionsListener.NavigateToLogin();
-            }
-            catch (Exception ex)
-            {
-                Utility.LoggingNonFatalError(ex);
-            }
         }
 
         [OnClick(Resource.Id.btnRegister)]
         void OnRegister(object sender, EventArgs eventArgs)
         {
-            try {
             this.userActionsListener.NavigateToRegister();
-            }
-            catch (Exception ex)
-            {
-                Utility.LoggingNonFatalError(ex);
-            }
         }
 
         [OnClick(Resource.Id.txtFindUs)]
         void OnFindUs(object sender, EventArgs eventArgs)
         {
-            try {
             this.userActionsListener.NavigateToFindUs();
-            }
-            catch (Exception ex)
-            {
-                Utility.LoggingNonFatalError(ex);
-            }
         }
 
         [OnClick(Resource.Id.txtCallUs)]
         void OnCallUs(object sender, EventArgs eventArgs)
         {
-            try {
             this.userActionsListener.NavigateToCallUs();
-            }
-            catch (Exception ex)
-            {
-                Utility.LoggingNonFatalError(ex);
-            }
         }
 
 
@@ -180,13 +150,7 @@ namespace myTNB_Android.Src.PreLogin.Activity
         [OnClick(Resource.Id.txtFeedback)]
         void OnFeedback(object sender , EventArgs eventArgs)
         {
-            try {
             this.userActionsListener.NavigateToFeedback();
-            }
-            catch (Exception ex)
-            {
-                Utility.LoggingNonFatalError(ex);
-            }
         }
 
         public void ShowPreLoginPromotion(bool success)
@@ -230,7 +194,6 @@ namespace myTNB_Android.Src.PreLogin.Activity
                 catch (Exception e)
                 {
                     Log.Error("API Exception", e.StackTrace);
-                    Utility.LoggingNonFatalError(e);
                 }
             }
 
@@ -259,31 +222,8 @@ namespace myTNB_Android.Src.PreLogin.Activity
 
         public void GetDataFromSiteCore()
         {
-            try {
             progressBar.Visibility = ViewStates.Visible;
             this.userActionsListener.OnGetPreLoginPromo();
-            }
-            catch (Exception ex)
-            {
-                Utility.LoggingNonFatalError(ex);
-            }
-        }
-
-        public override void OnTrimMemory(TrimMemory level)
-        {
-            base.OnTrimMemory(level);
-
-            switch (level)
-            {
-                case TrimMemory.RunningLow:
-                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
-                    GC.Collect();
-                    break;
-                default:
-                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
-                    GC.Collect();
-                    break;
-            }
         }
     }
 }

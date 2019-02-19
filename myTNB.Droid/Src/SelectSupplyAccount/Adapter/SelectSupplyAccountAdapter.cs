@@ -52,7 +52,7 @@ namespace myTNB_Android.Src.Dashboard.Adapter
                 vh = convertView.Tag as AccountListViewHolder;
 
             }
-            try {
+
             CustomerBillingAccount item = GetItemObject(position);
             vh.txtSupplyAccountName.Text = item.AccDesc;
 
@@ -74,11 +74,7 @@ namespace myTNB_Android.Src.Dashboard.Adapter
                 vh.imageActionIcon.Visibility = ViewStates.Invisible;
 
             }
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
+
             return convertView;
         }
 

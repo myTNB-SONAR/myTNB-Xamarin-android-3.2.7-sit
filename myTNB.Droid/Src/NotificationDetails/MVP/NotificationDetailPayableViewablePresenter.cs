@@ -36,10 +36,7 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
         public async void OnPayment(Models.NotificationDetails notificationDetails)
         {
             cts = new CancellationTokenSource();
-            if (mView.IsActive())
-            {
-                this.mView.ShowRetrievalProgress();
-            }
+            this.mView.ShowRetrievalProgress();
             ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
 #if DEBUG
             var httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
@@ -55,10 +52,6 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                     CANum = notificationDetails.AccountNum
                 }, cts.Token);
 
-                if (mView.IsActive())
-                {
-                    this.mView.HideRetrievalProgress();
-                }
 
                 if (!customerBillingDetails.Data.IsError)
                 {
@@ -79,38 +72,20 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
             }
             catch (System.OperationCanceledException e)
             {
-                if (mView.IsActive())
-                {
-                    this.mView.HideRetrievalProgress();
-                }
                 // ADD OPERATION CANCELLED HERE
                 this.mView.ShowRetryOptionsCancelledException(e);
-                Utility.LoggingNonFatalError(e);
             }
             catch (ApiException apiException)
             {
-                if (mView.IsActive())
-                {
-                    this.mView.HideRetrievalProgress();
-                }
                 // ADD HTTP CONNECTION EXCEPTION HERE
                 this.mView.ShowRetryOptionsApiException(apiException);
-                Utility.LoggingNonFatalError(apiException);
             }
             catch (Exception e)
             {
-                if (mView.IsActive())
-                {
-                    this.mView.HideRetrievalProgress();
-                }
                 // ADD UNKNOWN EXCEPTION HERE
                 this.mView.ShowRetryOptionsUnknownException(e);
-                Utility.LoggingNonFatalError(e);
             }
-            if (mView.IsActive())
-            {
-                this.mView.HideRetrievalProgress();
-            }
+            this.mView.HideRetrievalProgress();
         }
 
         public async void OnViewDetails(Models.NotificationDetails notificationDetails)
@@ -155,19 +130,16 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
             {
                 // ADD OPERATION CANCELLED HERE
                 this.mView.ShowRetryOptionsCancelledException(e);
-                Utility.LoggingNonFatalError(e);
             }
             catch (ApiException apiException)
             {
                 // ADD HTTP CONNECTION EXCEPTION HERE
                 this.mView.ShowRetryOptionsApiException(apiException);
-                Utility.LoggingNonFatalError(apiException);
             }
             catch (Exception e)
             {
                 // ADD UNKNOWN EXCEPTION HERE
                 this.mView.ShowRetryOptionsUnknownException(e);
-                Utility.LoggingNonFatalError(e);
             }
             this.mView.HideRetrievalProgress();
         }

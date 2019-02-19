@@ -42,11 +42,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
         public async void OnLoadAmount(string accountNum)
         {
             cts = new CancellationTokenSource();
-
-            if (mView.IsActive()) {
             this.mView.ShowAmountProgress();
-            }
-
             this.mView.DisablePayButton();
             ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
 #if DEBUG
@@ -96,7 +92,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                     this.mView.ShowRetryOptionsCancelledException(e);
 
                 }
-                Utility.LoggingNonFatalError(e);
+                
             }
             catch (ApiException apiException)
             {
@@ -106,7 +102,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                     this.mView.HideAmountProgress();
                     this.mView.ShowRetryOptionsApiException(apiException);
                 }
-                Utility.LoggingNonFatalError(apiException);
+                
             }
             catch (Exception e)
             {
@@ -116,7 +112,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                     this.mView.HideAmountProgress();
                     this.mView.ShowRetryOptionsUnknownException(e);
                 }
-                Utility.LoggingNonFatalError(e);
+                
             }
 
 
@@ -220,7 +216,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                 {
                     this.mView.ShowNoInternetSnackbar();
                 }
-                Utility.LoggingNonFatalError(e);
             }
             catch (ApiException apiException)
             {
@@ -231,7 +226,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                 {
                     this.mView.ShowNoInternetSnackbar();
                 }
-                Utility.LoggingNonFatalError(apiException);
             }
             catch (Exception e)
             {
@@ -242,7 +236,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                 {
                     this.mView.ShowNoInternetSnackbar();
                 }
-                Utility.LoggingNonFatalError(e);
             }
 
             this.mView.ShowViewBill();

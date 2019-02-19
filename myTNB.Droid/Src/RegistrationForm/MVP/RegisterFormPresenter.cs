@@ -48,8 +48,6 @@ namespace myTNB_Android.Src.RegistrationForm.MVP
 
         public void CheckRequiredFields(string fullname, string icno, string mobile_no, string email, string confirm_email, string password, string confirm_password)
         {
-
-            try {
             if (!TextUtils.IsEmpty(fullname) && !TextUtils.IsEmpty(icno) && !TextUtils.IsEmpty(mobile_no) && !TextUtils.IsEmpty(email) && !TextUtils.IsEmpty(confirm_email) && !TextUtils.IsEmpty(password) && !TextUtils.IsEmpty(confirm_password) )
             {
 
@@ -123,11 +121,6 @@ namespace myTNB_Android.Src.RegistrationForm.MVP
             {
                 this.mView.DisableRegisterButton();
             }
-            }
-            catch (System.Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
         }
 
         public void GoBack()
@@ -142,6 +135,7 @@ namespace myTNB_Android.Src.RegistrationForm.MVP
 
         public async void OnAcquireToken(string fullname, string icno, string mobile_no, string email, string confirm_email, string password, string confirm_password)
         {
+
             registerCts = new CancellationTokenSource();
             this.mView.ClearAllErrorFields();
             if (TextUtils.IsEmpty(fullname))
@@ -284,20 +278,17 @@ namespace myTNB_Android.Src.RegistrationForm.MVP
                 Log.Debug(TAG, "Cancelled Exception");
                 // ADD OPERATION CANCELLED HERE
                 this.mView.ShowRetryOptionsCancelledException(e);
-                Utility.LoggingNonFatalError(e);
             }
             catch (ApiException apiException)
             {
                 // ADD HTTP CONNECTION EXCEPTION HERE
                 this.mView.ShowRetryOptionsApiException(apiException);
-                Utility.LoggingNonFatalError(apiException);
             }
             catch (System.Exception e)
             {
                 // ADD UNKNOWN EXCEPTION HERE
                 Log.Debug(TAG, "Stack " + e.StackTrace);
                 this.mView.ShowRetryOptionsUnknownException(e);
-                Utility.LoggingNonFatalError(e);
             }
 
 
@@ -308,7 +299,6 @@ namespace myTNB_Android.Src.RegistrationForm.MVP
 
         public void Start()
         {
-            try {
             this.mView.DisableRegisterButton();
             this.mView.ClearFields();
 
@@ -326,24 +316,12 @@ namespace myTNB_Android.Src.RegistrationForm.MVP
 
 
             }
-
-            }
-            catch (System.Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
         }
 
         public bool CheckPasswordIsValid(string password)
         {
             bool isValid = false;
-            try {
             isValid = hasNumber.IsMatch(password) && hasUpperChar.IsMatch(password) && hasMinimum8Chars.IsMatch(password);
-            }
-            catch (System.Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
             return isValid;
         }
 

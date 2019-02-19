@@ -14,7 +14,6 @@ using CheeseBind;
 using myTNB_Android.Src.Utils;
 using Android.Content.PM;
 using Android.Text;
-using System.Runtime;
 
 namespace myTNB_Android.Src.FAQ.Activity
 {
@@ -226,24 +225,6 @@ namespace myTNB_Android.Src.FAQ.Activity
                 txtFaq13Content.TextFormatted = Html.FromHtml(GetString(Resource.String.faq_13_content));
                 txtFaq16Content.TextFormatted = Html.FromHtml(GetString(Resource.String.faq_16_content));
 
-            }
-        }
-
-
-        public override void OnTrimMemory(TrimMemory level)
-        {
-            base.OnTrimMemory(level);
-
-            switch (level)
-            {
-                case TrimMemory.RunningLow:
-                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
-                    GC.Collect();
-                    break;
-                default:
-                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
-                    GC.Collect();
-                    break;
             }
         }
     }

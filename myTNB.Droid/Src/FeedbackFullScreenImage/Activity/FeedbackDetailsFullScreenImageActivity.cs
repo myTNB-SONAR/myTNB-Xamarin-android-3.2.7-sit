@@ -16,7 +16,6 @@ using Newtonsoft.Json;
 using myTNB_Android.Src.Utils;
 using CheeseBind;
 using Square.Picasso;
-using System.Runtime;
 
 namespace myTNB_Android.Src.FeedbackFullScreenImage.Activity
 {
@@ -49,54 +48,31 @@ namespace myTNB_Android.Src.FeedbackFullScreenImage.Activity
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
-            try
-            {
-                attachedImage = JsonConvert.DeserializeObject<AttachedImage>(Intent.Extras.GetString(Constants.SELECTED_FEEDBACK_DETAIL_IMAGE));
+            attachedImage = JsonConvert.DeserializeObject<AttachedImage>(Intent.Extras.GetString(Constants.SELECTED_FEEDBACK_DETAIL_IMAGE));
 
-                base.OnCreate(savedInstanceState);
-                imgFeedback.Visibility = ViewStates.Visible;
-                // Create your application here
-                //Picasso.With(this)
-                //    .Load(new Java.IO.File(attachedImage.Path))
-                //    .Fit()
-                //    .Into(imgFeedback , delegate 
-                //    {
-                //        if (imgProgress != null)
-                //        {
-                //            imgProgress.Visibility = ViewStates.Gone;
-                //        }
-                //        if (imgFeedback != null)
-                //        {
-                //            imgFeedback.Visibility = ViewStates.Visible;
-                //        }
+            base.OnCreate(savedInstanceState);
+            imgFeedback.Visibility = ViewStates.Visible;
+            // Create your application here
+            //Picasso.With(this)
+            //    .Load(new Java.IO.File(attachedImage.Path))
+            //    .Fit()
+            //    .Into(imgFeedback , delegate 
+            //    {
+            //        if (imgProgress != null)
+            //        {
+            //            imgProgress.Visibility = ViewStates.Gone;
+            //        }
+            //        if (imgFeedback != null)
+            //        {
+            //            imgFeedback.Visibility = ViewStates.Visible;
+            //        }
 
-                //    } , delegate { } );
+            //    } , delegate { } );
 
-                Picasso.With(this)
-                    .Load(new Java.IO.File(attachedImage.Path))
-                    .Fit()
-                    .Into(imgFeedback);
-            } catch(Exception e) {
-                Utility.LoggingNonFatalError(e);
-            }
-        }
-
-
-        public override void OnTrimMemory(TrimMemory level)
-        {
-            base.OnTrimMemory(level);
-
-            switch (level)
-            {
-                case TrimMemory.RunningLow:
-                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
-                    GC.Collect();
-                    break;
-                default:
-                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
-                    GC.Collect();
-                    break;
-            }
+            Picasso.With(this)
+                .Load(new Java.IO.File(attachedImage.Path))
+                .Fit()
+                .Into(imgFeedback);
         }
     }
 }

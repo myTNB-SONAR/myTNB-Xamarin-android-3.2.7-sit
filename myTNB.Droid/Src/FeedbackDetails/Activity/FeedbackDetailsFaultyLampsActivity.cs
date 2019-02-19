@@ -25,7 +25,6 @@ using myTNB_Android.Src.Database.Model;
 using Android.Preferences;
 using myTNB_Android.Src.FeedbackFullScreenImage.Activity;
 using Android.Support.V4.Content;
-using System.Runtime;
 
 namespace myTNB_Android.Src.FeedbackDetails.Activity
 {
@@ -120,7 +119,6 @@ namespace myTNB_Android.Src.FeedbackDetails.Activity
 
         public void ShowImages(List<AttachedImage> list)
         {
-            try {
             adapter.AddAll(list);
             if (list.Count <= 0)
             {
@@ -129,11 +127,6 @@ namespace myTNB_Android.Src.FeedbackDetails.Activity
             else
             {
                 txtRelatedScreenshotTitle.Visibility = ViewStates.Visible;
-            }
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
             }
         }
 
@@ -144,7 +137,6 @@ namespace myTNB_Android.Src.FeedbackDetails.Activity
 
         public void ShowInputData(string feedbackId, string feedbackStatus, string feedbackCode, string dateTime, string state, string location, string pole_no, string feedback)
         {
-            try {
             txtFeedbackId.Text = feedbackId;
            
             txtFeedbackStatus.Text = feedbackStatus;
@@ -174,18 +166,12 @@ namespace myTNB_Android.Src.FeedbackDetails.Activity
             txtLocation.Text = location;
             txtPoleNo.Text = pole_no;
             txtFeedback.Text = feedback;
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
         }
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
 
-            try {
             string selectedFeedback = UserSessions.GetSelectedFeedback(PreferenceManager.GetDefaultSharedPreferences(this));
             submittedFeedback = JsonConvert.DeserializeObject<SubmittedFeedbackDetails>(selectedFeedback);
 
@@ -201,11 +187,7 @@ namespace myTNB_Android.Src.FeedbackDetails.Activity
 
             mPresenter = new FeedbackDetailsFaultyLampsPresenter(this , submittedFeedback);
             this.userActionsListener.Start();
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
+
 
         }
 
@@ -215,23 +197,6 @@ namespace myTNB_Android.Src.FeedbackDetails.Activity
             var fullImageIntent = new Intent(this, typeof(FeedbackDetailsFullScreenImageActivity));
             fullImageIntent.PutExtra(Constants.SELECTED_FEEDBACK_DETAIL_IMAGE, JsonConvert.SerializeObject(selectedImage));
             StartActivity(fullImageIntent);
-        }
-
-        public override void OnTrimMemory(TrimMemory level)
-        {
-            base.OnTrimMemory(level);
-
-            switch (level)
-            {
-                case TrimMemory.RunningLow:
-                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
-                    GC.Collect();
-                    break;
-                default:
-                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
-                    GC.Collect();
-                    break;
-            }
         }
     }
 }

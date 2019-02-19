@@ -156,44 +156,37 @@ namespace myTNB_Android.Src.AddAccount
 
         public void populateData(NewAccount item) {
             this.item = item;
-            try
+
+            AccountNumber.Text = this.item.accountNumber;
+            //TextViewUtils.SetMuseoSans300Typeface(vh.AccountNumber);
+            AccountAddress.Text = this.item.accountAddress;
+            //TextViewUtils.SetMuseoSans300Typeface(vh.AccountAddress);
+            if (this.item.accountLabel.Equals(EG_ACCOUNT_LABEL))
             {
-                AccountNumber.Text = this.item.accountNumber;
-                //TextViewUtils.SetMuseoSans300Typeface(vh.AccountNumber);
-                AccountAddress.Text = this.item.accountAddress;
-                //TextViewUtils.SetMuseoSans300Typeface(vh.AccountAddress);
-                if (this.item.accountLabel.Equals(EG_ACCOUNT_LABEL))
+                AccountLabel.Hint = this.item.accountLabel;
+            }
+            else
+            {
+                AccountLabel.Text = this.item.accountLabel;
+            }
+            TextViewUtils.SetMuseoSans500Typeface(AccountLabel);
+            AccountLabel.AfterTextChanged += (sender, args) =>
+            {
+                textInputLayoutAccountLabel.Error = null;
+                item.accountLabel = AccountLabel.Text.Trim();
+                if (!string.IsNullOrEmpty(item.accountLabel))
                 {
-                    AccountLabel.Hint = this.item.accountLabel;
-                }
-                else
-                {
-                    AccountLabel.Text = this.item.accountLabel;
-                }
-                TextViewUtils.SetMuseoSans500Typeface(AccountLabel);
-                AccountLabel.AfterTextChanged += (sender, args) =>
-                {
-                    textInputLayoutAccountLabel.Error = null;
-                    item.accountLabel = AccountLabel.Text.Trim();
-                    if (!string.IsNullOrEmpty(item.accountLabel))
+                    if (!Utility.isAlphaNumeric(item.accountLabel))
                     {
-                        if (!Utility.isAlphaNumeric(item.accountLabel))
-                        {
-                            textInputLayoutAccountLabel.Error = context.GetString(Resource.String.invalid_charac);
-                        }
-                        else
-                        {
-                            textInputLayoutAccountLabel.Error = "e.g. My House, Parent's House";
-                        }
-                    }
-                    else
+                        textInputLayoutAccountLabel.Error = context.GetString(Resource.String.invalid_charac);
+                    } else
                     {
                         textInputLayoutAccountLabel.Error = "e.g. My House, Parent's House";
                     }
-                };
-            } catch(Exception e) {
-                Utility.LoggingNonFatalError(e);
-            }
+                } else {
+                    textInputLayoutAccountLabel.Error = "e.g. My House, Parent's House";
+                }
+            };
         }
 
     }

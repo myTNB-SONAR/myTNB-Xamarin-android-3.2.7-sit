@@ -50,15 +50,9 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Adapter
 
         public void AddAccounts(List<MPAccount> _accountList)
         {
-            try {
             accountList = accountList.Concat(_accountList).ToList();
             //this.NotifyDataSetChanged();
             this.NotifyItemRangeInserted(accountList.Count, _accountList.Count);
-            }
-            catch (System.Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
         }
 
         public override int ItemCount => accountList.Count;
@@ -66,7 +60,6 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Adapter
         public override void OnBindViewHolder(RecyclerView.ViewHolder holder, int position)
         {
             SelectAccountListViewHolder vh = holder as SelectAccountListViewHolder;
-            try {
             TextViewUtils.SetMuseoSans300Typeface(vh.AccountLabel, vh.AccountNumber, vh.AccountAddress);
             TextViewUtils.SetMuseoSans300Typeface(vh.AmountLabel);
             TextViewUtils.SetMuseoSans300Typeface(vh.Amount);
@@ -99,16 +92,10 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Adapter
                 }
             };
             vh.SelectAccountView.Checked = item.isSelected;
-            }
-            catch (System.Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
         }
 
         public void ValidateHolder(MPAccount item,int position, SelectAccountListViewHolder vh)
         {
-            try {
             if (!string.IsNullOrEmpty(vh.Amount.Text))
             {
                 double newAmount = double.Parse(vh.Amount.Text);
@@ -155,11 +142,6 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Adapter
                 vh.SelectAccountView.Checked = false;
                 CheckChanged(this, position);
             }
-            }
-            catch (System.Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
         }
 
 
@@ -172,7 +154,6 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Adapter
 
         void OnClick(SelectAccountListViewHolder sender, int position)
         {
-            try {
             MPAccount item = accountList[position];
             if (GetSelectedAccounts().Count == 5 && sender.SelectAccountView.Checked)
             {
@@ -188,11 +169,6 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Adapter
                 sender.SelectAccountView.Checked = isChecked;
                 //CheckChanged(this, position);
                 ValidateHolder(item, position, sender);
-            }
-            }
-            catch (System.Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
             }
         }
 
@@ -246,7 +222,6 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Adapter
         public List<MPAccount> GetSelectedAccounts()
         {
             List<MPAccount> selectedStores = new List<MPAccount>();
-            try {
             if (accountList != null)
             {
                 for (int i = 0; i < accountList.Count; i++)
@@ -258,29 +233,18 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Adapter
                     }
                 }
             }
-            }
-            catch (System.Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
             return selectedStores;
         }
 
         public bool IsAllAmountValid()
         {
             bool flag = true;
-            try {
             foreach(MPAccount item in GetSelectedAccounts())
             {
                 if (!item.isValidAmount)
                 {
                     flag = false;
                 }
-            }
-            }
-            catch (System.Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
             }
             return flag;
         }

@@ -14,7 +14,6 @@ using Android.Content.PM;
 using myTNB_Android.Src.AddAccount.Fragment;
 using Android.Util;
 using ZXing.Mobile;
-using System.Runtime;
 
 namespace myTNB_Android.Src.AddAccount.Activity
 {
@@ -108,23 +107,6 @@ namespace myTNB_Android.Src.AddAccount.Activity
         public override string ToolbarTitle()
         {
             return GetString(Resource.String.add_electricity_account_title);
-        }
-
-        public override void OnTrimMemory(TrimMemory level)
-        {
-            base.OnTrimMemory(level);
-
-            switch (level)
-            {
-                case TrimMemory.RunningLow:
-                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
-                    GC.Collect();
-                    break;
-                default:
-                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
-                    GC.Collect();
-                    break;
-            }
         }
 
     }

@@ -42,10 +42,5 @@ namespace myTNB_Android.Src.Utils
             }
             return false;
         }
-
-
-        public static void LoggingNonFatalError(Exception e) {
-            Crashlytics.Crashlytics.LogException(new Java.Lang.Throwable(e.ToString()));
-        }
     }
 }

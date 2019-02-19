@@ -38,9 +38,8 @@ namespace myTNB_Android.Src.LogoutRate.MVP
             ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
             cts = new CancellationTokenSource();
 
-            if (mView.IsActive()) {
             this.mView.ShowProgressDialog();
-            }
+
  
 
 
@@ -60,11 +59,6 @@ namespace myTNB_Android.Src.LogoutRate.MVP
                     Email = userEntity.Email,
                     DeviceId = deviceId
                 } , cts.Token);
-
-                if (mView.IsActive())
-                {
-                    this.mView.HideProgressDialog();
-                }
 
                 if (!logoutResponse.Data.IsError)
                 {
@@ -90,37 +84,24 @@ namespace myTNB_Android.Src.LogoutRate.MVP
             }
             catch (System.OperationCanceledException e)
             {
-                if (mView.IsActive())
-                {
-                    this.mView.HideProgressDialog();
-                }
 
                 // ADD OPERATION CANCELLED HERE
                 this.mView.ShowRetryOptionsCancelledException(e);
-                Utility.LoggingNonFatalError(e);
             }
             catch (ApiException apiException)
             {
-                if (mView.IsActive())
-                {
-                    this.mView.HideProgressDialog();
-                }
                 // ADD HTTP CONNECTION EXCEPTION HERE
                 this.mView.ShowRetryOptionsApiException(apiException);
-                Utility.LoggingNonFatalError(apiException);
             }
             catch (Exception e)
             {
-                if (mView.IsActive())
-                {
-                    this.mView.HideProgressDialog();
-                }
                 // ADD UNKNOWN EXCEPTION HERE
 
                 this.mView.ShowRetryOptionsUnknownException(e);
-                Utility.LoggingNonFatalError(e);
             }
 
+
+            this.mView.HideProgressDialog();
         }
 
         public void Start()

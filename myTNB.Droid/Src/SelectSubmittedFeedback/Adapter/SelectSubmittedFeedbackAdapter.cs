@@ -57,7 +57,6 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.Adapter
                 vh = convertView.Tag as SubmitFeedbackViewHolder;
             }
 
-            try {
             SubmittedFeedback item = GetItemObject(position);
 
             Date d = null;
@@ -70,7 +69,6 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.Adapter
             catch (Java.Text.ParseException e)
             {
                 vh.txtFeedbackDate.Text = "NA";
-                    Utility.LoggingNonFatalError(e);
             }
 
             vh.txtFeedbackTitle.Text = item.FeedbackCategoryName;
@@ -88,11 +86,7 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.Adapter
             {
                 vh.imgFeedback.SetImageDrawable(ContextCompat.GetDrawable(context, Resource.Drawable.ic_feedback_submitted_others));
             }
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
+
             return convertView;
         }
 

@@ -77,9 +77,7 @@ namespace myTNB_Android.Src.UpdateNickname.MVP
             }
 
             cts = new CancellationTokenSource();
-            if (mView.IsActive()) {
             this.mView.ShowProgressDialog();
-            }
 
 #if DEBUG || STUB
             var httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
@@ -99,11 +97,6 @@ namespace myTNB_Android.Src.UpdateNickname.MVP
                     OldAccountNickName = oldAccountNickName,
                     NewAccountNickName = newAccountNickName
                 } , cts.Token);
-
-                if (mView.IsActive())
-                {
-                    this.mView.HideProgressDialog();
-                }
 
                 if (!updateNickNameResponse.Data.IsError)
                 {
@@ -125,39 +118,23 @@ namespace myTNB_Android.Src.UpdateNickname.MVP
             }
             catch (System.OperationCanceledException e)
             {
-                if (mView.IsActive())
-                {
-                    this.mView.HideProgressDialog();
-                }
                 this.mView.ShowRetryOptionsCancelledException(e);
-                Utility.LoggingNonFatalError(e);
             }
             catch (ApiException apiException)
             {
-                if (mView.IsActive())
-                {
-                    this.mView.HideProgressDialog();
-                }
                 // ADD HTTP CONNECTION EXCEPTION HERE
                 this.mView.ShowRetryOptionsApiException(apiException);
-                Utility.LoggingNonFatalError(apiException);
             }
             catch (Exception e)
             {
-                if (mView.IsActive())
-                {
-                    this.mView.HideProgressDialog();
-                }
                 // ADD UNKNOWN EXCEPTION HERE
                 this.mView.ShowRetryOptionsUnknownException(e);
-                Utility.LoggingNonFatalError(e);
             }
-
+            this.mView.HideProgressDialog();
         }
 
         public void OnVerifyNickName(string accountNo, string newAccountNickname)
         {
-            try {
             this.mView.ClearError();
 
             if (TextUtils.IsEmpty(newAccountNickname))
@@ -183,27 +160,17 @@ namespace myTNB_Android.Src.UpdateNickname.MVP
             {
                 this.mView.EnableSaveButton();
             }
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
         }
 
         public void Start()
         {
-            try {
             this.mView.DisableSaveButton();
             CustomerBillingAccount customerBillingAccount = CustomerBillingAccount.FindByAccNum(accountData.AccountNum);
             if (customerBillingAccount != null && !TextUtils.IsEmpty(customerBillingAccount.AccDesc))
             {
                 this.mView.ShowNickname(customerBillingAccount.AccDesc);
             }
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
+            
         }
     }
 }

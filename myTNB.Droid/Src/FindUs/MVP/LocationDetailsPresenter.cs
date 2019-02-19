@@ -70,16 +70,15 @@ namespace myTNB_Android.Src.FindUs.MVP
             {
                 
                 Log.Debug(TAG, cancelledException.StackTrace);
-                Utility.LoggingNonFatalError(cancelledException);
             }
             catch (ApiException apiException)
             {
-                Utility.LoggingNonFatalError(apiException);
+                
                 Log.Debug(TAG, apiException.StackTrace);
             }
             catch (Exception unknownException)
             {
-                Utility.LoggingNonFatalError(unknownException);
+                
                 Log.Debug(TAG, unknownException.StackTrace);
             }
         }

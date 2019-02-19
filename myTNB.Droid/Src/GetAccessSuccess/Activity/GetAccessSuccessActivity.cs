@@ -16,7 +16,6 @@ using myTNB_Android.Src.Utils;
 using myTNB_Android.Src.myTNBMenu.Activity;
 using myTNB_Android.Src.myTNBMenu.Models;
 using Newtonsoft.Json;
-using System.Runtime;
 
 namespace myTNB_Android.Src.GetAccessSuccess.Activity
 {
@@ -51,8 +50,6 @@ namespace myTNB_Android.Src.GetAccessSuccess.Activity
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-
-            try {
             TextViewUtils.SetMuseoSans500Typeface(txtTitleInfo , txtAccountName, btnDashboard);
             TextViewUtils.SetMuseoSans300Typeface(txtAccountName , txtAddress);
 
@@ -61,11 +58,6 @@ namespace myTNB_Android.Src.GetAccessSuccess.Activity
             txtAccountName.Text = selectedAccount.AccountName;
             txtAccountNum.Text = selectedAccount.AccountNum;
             txtAddress.Text = selectedAccount.AddStreet;
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
         }
 
         [OnClick(Resource.Id.btnDashboard)]
@@ -74,25 +66,6 @@ namespace myTNB_Android.Src.GetAccessSuccess.Activity
             Intent DashboardIntent = new Intent(this , typeof(DashboardActivity));
             DashboardIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
             StartActivity(DashboardIntent);
-        }
-
-
-
-        public override void OnTrimMemory(TrimMemory level)
-        {
-            base.OnTrimMemory(level);
-
-            switch (level)
-            {
-                case TrimMemory.RunningLow:
-                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
-                    GC.Collect();
-                    break;
-                default:
-                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
-                    GC.Collect();
-                    break;
-            }
         }
     }
 }

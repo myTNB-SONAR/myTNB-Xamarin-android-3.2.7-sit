@@ -149,7 +149,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         private Snackbar mNoInternetSnackbar;
         public void ShowNoInternetSnackbar()
         {
-            try {
             if (mNoInternetSnackbar != null && mNoInternetSnackbar.IsShown)
             {
                 mNoInternetSnackbar.Dismiss();
@@ -162,11 +161,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             }
             );
             mNoInternetSnackbar.Show();
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
         }
     }
 }

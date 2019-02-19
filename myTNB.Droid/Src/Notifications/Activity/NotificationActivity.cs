@@ -22,7 +22,6 @@ using Newtonsoft.Json;
 using Android.Runtime;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.Utils.Custom.ProgressDialog;
-using System.Runtime;
 
 namespace myTNB_Android.Src.Notifications.Activity
 {
@@ -96,7 +95,7 @@ namespace myTNB_Android.Src.Notifications.Activity
         {
             base.OnCreate(savedInstanceState);
 
-            try {
+
 
             mProgressDialog = new MaterialDialog.Builder(this)
                 .Title(GetString(Resource.String.notification_activity_progress_title))
@@ -138,22 +137,14 @@ namespace myTNB_Android.Src.Notifications.Activity
             {
                 this.userActionsListener.QueryOnLoad(this.DeviceId());
             }
-        } catch(Exception e) {
-                Utility.LoggingNonFatalError(e);
-            }
+   
 
         }
         [OnItemClick(Resource.Id.notification_listview)]
         void OnItemClick(object sender , AbsListView.ItemClickEventArgs args)
         {
-            try {
             UserNotificationData data = notificationAdapter.GetItemObject(args.Position);
             this.userActionsListener.OnSelectedNotificationItem(data , args.Position);
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
         }
 
         public void ShowProgress()
@@ -162,7 +153,6 @@ namespace myTNB_Android.Src.Notifications.Activity
             //{
             //    mProgressDialog.Show();
             //}
-            try {
             if (loadingOverlay != null && loadingOverlay.IsShowing)
             {
                 loadingOverlay.Dismiss();
@@ -170,9 +160,6 @@ namespace myTNB_Android.Src.Notifications.Activity
 
             loadingOverlay = new LoadingOverlay(this, Resource.Style.LoadingOverlyDialogStyle);
             loadingOverlay.Show();
-        } catch(Exception e) {
-                Utility.LoggingNonFatalError(e);
-            }
         }
 
         public void HideProgress()
@@ -181,13 +168,9 @@ namespace myTNB_Android.Src.Notifications.Activity
             //{
             //    mProgressDialog.Dismiss();
             //}
-            try {
             if (loadingOverlay != null && loadingOverlay.IsShowing)
             {
                 loadingOverlay.Dismiss();
-            }
-        } catch(Exception e) {
-                Utility.LoggingNonFatalError(e);
             }
         }
 
@@ -253,41 +236,24 @@ namespace myTNB_Android.Src.Notifications.Activity
 
         protected override void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
         {
-            try {
             base.OnActivityResult(requestCode, resultCode, data);
             this.userActionsListener.OnActivityResult(requestCode , resultCode , data);
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
         }
 
         public void UpdateIsReadNotificationItem(int position , bool isRead )
         {
-            try {
             UserNotificationData userNotificationData = notificationAdapter.GetItemObject(position);
             userNotificationData.IsRead = isRead;
             notificationAdapter.Update(position, userNotificationData);
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
         }
 
         public void UpdateIsDeleteNotificationItem(int position, bool isDelete)
         {
-            try {
             UserNotificationData userNotificationData = notificationAdapter.GetItemObject(position);
             notificationAdapter.Remove(position);
-        } catch(Exception e) {
-                Utility.LoggingNonFatalError(e);
-            }
+
 
         }
-
-
         private Snackbar mNotificationRemoved;
         public void ShowNotificationRemoved()
         {
@@ -347,7 +313,6 @@ namespace myTNB_Android.Src.Notifications.Activity
             //{
             //    mQueryProgressDialog.Show();
             //}
-            try {
             if (loadingOverlay != null && loadingOverlay.IsShowing)
             {
                 loadingOverlay.Dismiss();
@@ -355,9 +320,6 @@ namespace myTNB_Android.Src.Notifications.Activity
 
             loadingOverlay = new LoadingOverlay(this, Resource.Style.LoadingOverlyDialogStyle);
             loadingOverlay.Show();
-        } catch(Exception e) {
-                Utility.LoggingNonFatalError(e);
-            }
         }
 
         public void HideQueryProgress()
@@ -366,38 +328,15 @@ namespace myTNB_Android.Src.Notifications.Activity
             //{
             //    mQueryProgressDialog.Dismiss();
             //}
-            try
+            if (loadingOverlay != null && loadingOverlay.IsShowing)
             {
-                if (loadingOverlay != null && loadingOverlay.IsShowing)
-                {
-                    loadingOverlay.Dismiss();
-                }
-            } catch(Exception e) {
-                Utility.LoggingNonFatalError(e);
+                loadingOverlay.Dismiss();
             }
         }
 
         public string GetDeviceId()
         {
             return this.DeviceId();
-        }
-
-
-        public override void OnTrimMemory(TrimMemory level)
-        {
-            base.OnTrimMemory(level);
-
-            switch (level)
-            {
-                case TrimMemory.RunningLow:
-                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
-                    GC.Collect();
-                    break;
-                default:
-                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
-                    GC.Collect();
-                    break;
-            }
         }
     }
 }

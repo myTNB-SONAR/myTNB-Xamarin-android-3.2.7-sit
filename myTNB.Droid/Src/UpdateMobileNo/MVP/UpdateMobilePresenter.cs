@@ -59,9 +59,7 @@ namespace myTNB_Android.Src.UpdateMobileNo.MVP
                 return;
             }
 
-            if (mView.IsActive()) {
             this.mView.ShowProgress();
-            }
 
             ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
             cts = new CancellationTokenSource();
@@ -84,11 +82,6 @@ namespace myTNB_Android.Src.UpdateMobileNo.MVP
                     NewPhoneNumber = newPhoneNumber
                 } , cts.Token);
 
-                if (mView.IsActive())
-                {
-                    this.mView.HideProgress();
-                }
-
                 if (!updateMobileResponse.Data.IsError)
                 {
                     this.mView.ShowSuccess(newPhoneNumber);
@@ -101,35 +94,22 @@ namespace myTNB_Android.Src.UpdateMobileNo.MVP
             }
             catch (System.OperationCanceledException e)
             {
-                if (mView.IsActive())
-                {
-                    this.mView.HideProgress();
-                }
+
                 // ADD OPERATION CANCELLED HERE
                 this.mView.ShowRetryOptionsCancelledException(e);
-                Utility.LoggingNonFatalError(e);
             }
             catch (ApiException apiException)
             {
-                if (mView.IsActive())
-                {
-                    this.mView.HideProgress();
-                }
                 // ADD HTTP CONNECTION EXCEPTION HERE
                 this.mView.ShowRetryOptionsApiException(apiException);
-                Utility.LoggingNonFatalError(apiException);
             }
             catch (Exception e)
             {
-                if (mView.IsActive())
-                {
-                    this.mView.HideProgress();
-                }
                 // ADD UNKNOWN EXCEPTION HERE
                 this.mView.ShowRetryOptionsUnknownException(e);
-                Utility.LoggingNonFatalError(e);
             }
 
+            this.mView.HideProgress();
 
         }
 
@@ -173,9 +153,8 @@ namespace myTNB_Android.Src.UpdateMobileNo.MVP
                 user_email = entity.Email;
             }
 
-            if (mView.IsActive()) {
             this.mView.ShowProgress();
-            }
+
 
             ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
             cts = new CancellationTokenSource();
@@ -204,11 +183,6 @@ namespace myTNB_Android.Src.UpdateMobileNo.MVP
                     mobileNo = newPhoneNumber
                 }, cts.Token);
 
-                if (mView.IsActive())
-                {
-                    this.mView.HideProgress();
-                }
-
                 if (!updateMobileResponse.Data.IsError)
                 {
                     this.mView.ShowSuccess(newPhoneNumber);
@@ -220,41 +194,26 @@ namespace myTNB_Android.Src.UpdateMobileNo.MVP
             }
             catch (System.OperationCanceledException e)
             {
-                if (mView.IsActive())
-                {
-                    this.mView.HideProgress();
-                }
+
                 // ADD OPERATION CANCELLED HERE
                 this.mView.ShowRetryOptionsCancelledException(e);
-                Utility.LoggingNonFatalError(e);
             }
             catch (ApiException apiException)
             {
-                if (mView.IsActive())
-                {
-                    this.mView.HideProgress();
-                }
                 // ADD HTTP CONNECTION EXCEPTION HERE
                 this.mView.ShowRetryOptionsApiException(apiException);
-                Utility.LoggingNonFatalError(apiException);
             }
             catch (Exception e)
             {
-                if (mView.IsActive())
-                {
-                    this.mView.HideProgress();
-                }
                 // ADD UNKNOWN EXCEPTION HERE
                 this.mView.ShowRetryOptionsUnknownException(e);
-                Utility.LoggingNonFatalError(e);
             }
 
-
+            this.mView.HideProgress();
         }
 
         public void OnVerifyMobile(string mobileNo, bool isForceUpdate)
         {
-            try {
             if (TextUtils.IsEmpty(mobileNo))
             {
                 return;
@@ -272,11 +231,6 @@ namespace myTNB_Android.Src.UpdateMobileNo.MVP
             }
 
             this.mView.EnableSaveButton();
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
         }
 
         public void Start()

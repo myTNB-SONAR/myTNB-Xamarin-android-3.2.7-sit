@@ -49,7 +49,6 @@ namespace myTNB_Android.Src.SelectFeedbackType.Adapter
 
             }
 
-            try {
             FeedbackType item = GetItemObject(position);
             vh.txtFeedbackType.Text = item.FeedbackTypeName;
 
@@ -63,11 +62,7 @@ namespace myTNB_Android.Src.SelectFeedbackType.Adapter
                 vh.imageActionIcon.Visibility = ViewStates.Gone;
 
             }
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
+
 
             return convertView;
         }

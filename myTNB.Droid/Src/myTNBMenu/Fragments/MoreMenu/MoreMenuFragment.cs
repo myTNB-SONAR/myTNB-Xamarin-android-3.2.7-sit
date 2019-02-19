@@ -147,7 +147,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.MoreMenu
             {
                 Log.Debug("Package Manager", e.StackTrace);
                 txt_app_version.Visibility = ViewStates.Gone;
-                Utility.LoggingNonFatalError(e);
             }
 
             Bundle extras = Arguments;
@@ -275,7 +274,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.MoreMenu
         private Snackbar mCancelledExceptionSnackBar;
         public void ShowRetryOptionsCancelledException(System.OperationCanceledException operationCanceledException)
         {
-            try {
             if (mCancelledExceptionSnackBar != null && mCancelledExceptionSnackBar.IsShown)
             {
                 mCancelledExceptionSnackBar.Dismiss();
@@ -288,17 +286,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.MoreMenu
             }
             );
             mCancelledExceptionSnackBar.Show();
-            }
-            catch (System.Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
+
         }
 
         private Snackbar mApiExcecptionSnackBar;
         public void ShowRetryOptionsApiException(ApiException apiException)
         {
-            try {
             if (mApiExcecptionSnackBar != null && mApiExcecptionSnackBar.IsShown)
             {
                 mApiExcecptionSnackBar.Dismiss();
@@ -312,17 +305,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.MoreMenu
             }
             );
             mApiExcecptionSnackBar.Show();
-            }
-            catch (System.Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
-        }
 
+        }
         private Snackbar mUknownExceptionSnackBar;
         public void ShowRetryOptionsUnknownException(System.Exception exception)
         {
-            try {
             if (mUknownExceptionSnackBar != null && mUknownExceptionSnackBar.IsShown)
             {
                 mUknownExceptionSnackBar.Dismiss();
@@ -337,11 +324,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.MoreMenu
             }
             );
             mUknownExceptionSnackBar.Show();
-            }
-            catch (System.Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
+
         }
 
         public void ShowNotificationsProgressDialog()
@@ -359,7 +342,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.MoreMenu
             //    .Build();
 
             //notificationsProgressDialog.Show();'
-            try {
+
             if (loadingOverlay != null && loadingOverlay.IsShowing)
             {
                 loadingOverlay.Dismiss();
@@ -367,11 +350,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.MoreMenu
 
             loadingOverlay = new LoadingOverlay(Activity, Resource.Style.LoadingOverlyDialogStyle);
             loadingOverlay.Show();
-            }
-            catch (System.Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
         }
 
         public void HideNotificationsProgressDialog()
@@ -380,15 +358,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.MoreMenu
             //{
             //    notificationsProgressDialog.Dismiss();
             //}
-            try {
             if (loadingOverlay != null && loadingOverlay.IsShowing)
             {
                 loadingOverlay.Dismiss();
-            }
-            }
-            catch (System.Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
             }
         }
 
@@ -494,7 +466,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.MoreMenu
             }
             catch (System.Exception e)
             {
-                Utility.LoggingNonFatalError(e);
                 if (entity.OpenWith.Equals("APP"))
                 {
                     Intent weblink = new Intent(this.Activity, typeof(WeblinkActivity));

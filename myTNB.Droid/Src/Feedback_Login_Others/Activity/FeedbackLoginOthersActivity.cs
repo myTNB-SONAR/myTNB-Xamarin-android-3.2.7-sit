@@ -37,7 +37,6 @@ using Java.Util;
 using Android.Preferences;
 using Android.Text;
 using myTNB_Android.Src.Utils.Custom.ProgressDialog;
-using System.Runtime;
 
 namespace myTNB_Android.Src.Feedback_Login_Others.Activity
 {
@@ -227,7 +226,6 @@ namespace myTNB_Android.Src.Feedback_Login_Others.Activity
         [OnClick(Resource.Id.btnSubmit)]
         void OnSubmit(object sender, EventArgs e)
         {
-            try {
             btnSubmit.Enabled = false;
             Handler h = new Handler();
             Action myAction = () =>
@@ -247,11 +245,7 @@ namespace myTNB_Android.Src.Feedback_Login_Others.Activity
             {
                 this.userActionsListener.OnSubmit(this.DeviceId(), currentFeedbackType, feedback, attachedImages);
             }
-            }
-            catch (Exception ex)
-            {
-                Utility.LoggingNonFatalError(ex);
-            }
+            
         }
 
         [OnClick(Resource.Id.feedbackTypeLayout)]
@@ -391,12 +385,10 @@ namespace myTNB_Android.Src.Feedback_Login_Others.Activity
 
         public Task<string> SaveCameraImage(string tempImagePath, string fileName)
         {
-            
             return Task.Run<string>(() =>
             {
                 return FileUtils.ProcessCameraImage(this, tempImagePath, fileName);
             });
-           
         }
 
         public Task<string> SaveGalleryImage(Android.Net.Uri selectedImage, string pTempImagePath, string pFileName)
@@ -409,7 +401,6 @@ namespace myTNB_Android.Src.Feedback_Login_Others.Activity
 
         public void ShowLoadingImage()
         {
-            try {
             int position = adapter.ItemCount - 1;
             AttachedImage attachImage = adapter.GetItemObject(position);
             if (attachImage != null && attachImage.ViewType == Constants.VIEW_TYPE_DUMMY_RECORD)
@@ -417,16 +408,10 @@ namespace myTNB_Android.Src.Feedback_Login_Others.Activity
                 attachImage.IsLoading = true;
                 adapter.Update(position, attachImage);
             }
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
         }
 
         public void HideLoadingImage()
         {
-            try {
             int position = adapter.ItemCount - 1;
             AttachedImage attachImage = adapter.GetItemObject(position);
             if (attachImage != null && attachImage.ViewType == Constants.VIEW_TYPE_DUMMY_RECORD)
@@ -434,42 +419,30 @@ namespace myTNB_Android.Src.Feedback_Login_Others.Activity
                 attachImage.IsLoading = false;
                 adapter.Update(position, attachImage);
             }
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
         }
 
         public void UpdateAdapter(string pFilePath, string pFileName)
         {
-            try
+            adapter.Update(adapter.ItemCount - 1, new AttachedImage()
             {
-                adapter.Update(adapter.ItemCount - 1, new AttachedImage()
-                {
-                    ViewType = Constants.VIEW_TYPE_REAL_RECORD,
-                    Name = pFileName,
-                    Path = pFilePath
+                ViewType = Constants.VIEW_TYPE_REAL_RECORD,
+                Name = pFileName,
+                Path = pFilePath
 
-                });
-                if (adapter.ItemCount < 2)
-                {
-                    adapter.Add(new AttachedImage()
-                    {
-                        ViewType = Constants.VIEW_TYPE_DUMMY_RECORD
-                    });
-                }
-            }
-            catch (Exception e)
+            });
+            if (adapter.ItemCount < 2)
             {
-                Utility.LoggingNonFatalError(e);
+                adapter.Add(new AttachedImage()
+                {
+                    ViewType = Constants.VIEW_TYPE_DUMMY_RECORD
+                });
             }
         }
 
 
         private void FeedBackCharacCount()
         {
-            try {
+
             string feedback = txtFeedback.Text;
             int char_count = 0;
 
@@ -486,11 +459,6 @@ namespace myTNB_Android.Src.Feedback_Login_Others.Activity
             else
             {
                 txtInputLayoutFeedback.Error = GetString(Resource.String.feedback_total_character_left);
-            }
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
             }
         }
 
@@ -517,7 +485,6 @@ namespace myTNB_Android.Src.Feedback_Login_Others.Activity
             //{
             //    submitDialog.Show();
             //}
-            try {
             if (loadingOverlay != null && loadingOverlay.IsShowing)
             {
                 loadingOverlay.Dismiss();
@@ -525,9 +492,6 @@ namespace myTNB_Android.Src.Feedback_Login_Others.Activity
 
             loadingOverlay = new LoadingOverlay(this, Resource.Style.LoadingOverlyDialogStyle);
             loadingOverlay.Show();
-        } catch(Exception e) {
-                Utility.LoggingNonFatalError(e);
-            }
         }
 
         public void HideProgressDialog()
@@ -536,14 +500,9 @@ namespace myTNB_Android.Src.Feedback_Login_Others.Activity
             //{
             //    submitDialog.Dismiss();
             //}
-            try
+            if (loadingOverlay != null && loadingOverlay.IsShowing)
             {
-                if (loadingOverlay != null && loadingOverlay.IsShowing)
-                {
-                    loadingOverlay.Dismiss();
-                }
-            } catch(Exception e) {
-                Utility.LoggingNonFatalError(e);
+                loadingOverlay.Dismiss();
             }
         }
 
@@ -568,30 +527,27 @@ namespace myTNB_Android.Src.Feedback_Login_Others.Activity
 
         public Task<AttachedImageRequest> SaveImage(AttachedImage attachedImage)
         {
-            
-                return Task.Run<AttachedImageRequest>(() =>
+            return Task.Run<AttachedImageRequest>(() =>
+            {
+                BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+
+                Bitmap bitmap = BitmapFactory.DecodeFile(attachedImage.Path, bmOptions);
+
+                byte[] imageBytes = FileUtils.Get(this, bitmap);
+                int size = imageBytes.Length;
+                string hexString = HttpUtility.UrlEncode(FileUtils.ByteArrayToString(imageBytes), Encoding.UTF8);
+                if (bitmap != null && !bitmap.IsRecycled)
                 {
-                    BitmapFactory.Options bmOptions = new BitmapFactory.Options();
-
-                    Bitmap bitmap = BitmapFactory.DecodeFile(attachedImage.Path, bmOptions);
-
-                    byte[] imageBytes = FileUtils.Get(this, bitmap);
-                    int size = imageBytes.Length;
-                    string hexString = HttpUtility.UrlEncode(FileUtils.ByteArrayToString(imageBytes), Encoding.UTF8);
-                    if (bitmap != null && !bitmap.IsRecycled)
-                    {
-                        bitmap.Recycle();
-                    }
-                    Console.WriteLine(string.Format("Hex string {0}", hexString));
-                    return new AttachedImageRequest()
-                    {
-                        ImageHex = hexString,
-                        FileSize = size,
-                        FileName = attachedImage.Name
-                    };
-
-                });
-            
+                    bitmap.Recycle();
+                }
+                Console.WriteLine(string.Format("Hex string {0}", hexString));
+                return new AttachedImageRequest()
+                {
+                    ImageHex = hexString,
+                    FileSize = size,
+                    FileName = attachedImage.Name
+                };
+            });
         }
 
         public void EnableSubmitButton()
@@ -700,24 +656,6 @@ namespace myTNB_Android.Src.Feedback_Login_Others.Activity
             tv.SetMaxLines(5);
 
             mErrorMessageSnackBar.Show();
-        }
-
-
-        public override void OnTrimMemory(TrimMemory level)
-        {
-            base.OnTrimMemory(level);
-
-            switch (level)
-            {
-                case TrimMemory.RunningLow:
-                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
-                    GC.Collect();
-                    break;
-                default:
-                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
-                    GC.Collect();
-                    break;
-            }
         }
     }
 }

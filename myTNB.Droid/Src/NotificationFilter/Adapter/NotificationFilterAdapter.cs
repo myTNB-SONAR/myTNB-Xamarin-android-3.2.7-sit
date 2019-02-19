@@ -58,7 +58,7 @@ namespace myTNB_Android.Src.NotificationFilter.Adapter
             {
                 viewHolder = convertView.Tag as NotificationFilterViewHolder;
             }
-            try {
+
             viewHolder.txtNotificationTitle.Text = data.Title;
             if (data.IsSelected)
             {
@@ -69,11 +69,7 @@ namespace myTNB_Android.Src.NotificationFilter.Adapter
                 viewHolder.notificationActionIcon.SetImageDrawable(null);
 
             }
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
+
             return convertView;
         }
 

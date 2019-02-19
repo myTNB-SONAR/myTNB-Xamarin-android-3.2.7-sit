@@ -71,12 +71,11 @@ namespace myTNB_Android.Src.ViewReceipt.Activity
 
         public bool IsActive()
         {
-            return Window.DecorView.RootView.IsShown && !IsFinishing;
+            throw new NotImplementedException();
         }
 
         public void OnShowReceiptDetails(GetReceiptResponse response)
         {
-            try {
             if(response != null)
             {
                 if (response.receipt.Status.Equals("success"))
@@ -110,11 +109,6 @@ namespace myTNB_Android.Src.ViewReceipt.Activity
                 {
                     ShowErrorMessage(response.receipt.Message);
                 }
-            }
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
             }
         }
 
@@ -161,7 +155,7 @@ namespace myTNB_Android.Src.ViewReceipt.Activity
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-            try {
+
             mPresenter = new ViewReceiptPresenter(this);
             webView = FindViewById<WebView>(Resource.Id.webView);
             baseView = FindViewById<FrameLayout>(Resource.Id.rootView);
@@ -181,11 +175,6 @@ namespace myTNB_Android.Src.ViewReceipt.Activity
             string apiKeyID = Constants.APP_CONFIG.API_KEY_ID;
             string merchantTransId = Intent.Extras.GetString("merchantTransId");
             this.userActionsListener.GetReceiptDetails(apiKeyID, merchantTransId);
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
         }
 
         public override bool OnCreateOptionsMenu(IMenu menu)
@@ -208,7 +197,6 @@ namespace myTNB_Android.Src.ViewReceipt.Activity
 
         public void OnDownloadPDF()
         {
-            
             if (downloadClicked)
             {
                 mProgressBar.Visibility = ViewStates.Visible;
@@ -277,11 +265,9 @@ namespace myTNB_Android.Src.ViewReceipt.Activity
                         Log.Debug("ViewReceiptActivity", e.StackTrace);
                         downloadClicked = false;
                         mProgressBar.Visibility = ViewStates.Gone;
-                            Utility.LoggingNonFatalError(e);
                     }
                 });
             }
-            
         }
 
         public class MyTNBWebViewClient : WebViewClient

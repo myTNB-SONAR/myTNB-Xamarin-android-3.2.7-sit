@@ -23,7 +23,6 @@ using myTNB_Android.Src.myTNBMenu.Activity;
 using Android.Util;
 using myTNB_Android.Src.ResetPasswordSuccess.Activity;
 using Android.Text;
-using System.Runtime;
 
 namespace myTNB_Android.Src.ResetPassword.Activity
 {
@@ -69,7 +68,7 @@ namespace myTNB_Android.Src.ResetPassword.Activity
             base.OnCreate(savedInstanceState);
 
             // Create your application here
-            try {
+
             mPresenter = new ResetPasswordPresenter(this , PreferenceManager.GetDefaultSharedPreferences(this));
 
             TextViewUtils.SetMuseoSans500Typeface(btnSubmit);
@@ -98,15 +97,10 @@ namespace myTNB_Android.Src.ResetPassword.Activity
             txtNewPassword.TextChanged += TextChange;
             txtConfirmNewPassword.TextChanged += TextChange;
         }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
-        }
 
         private void TextChange(object sender, TextChangedEventArgs e)
         {
-            try {
+
             string newPassword = txtNewPassword.Text;
             string confirmPassword = txtConfirmNewPassword.Text;
 
@@ -132,11 +126,6 @@ namespace myTNB_Android.Src.ResetPassword.Activity
             else
             {
                 txtInputLayoutConfirmNewPassword.PasswordVisibilityToggleEnabled = false;
-            }
-        }
-            catch (Exception ex)
-            {
-                Utility.LoggingNonFatalError(ex);
             }
         }
 
@@ -174,29 +163,17 @@ namespace myTNB_Android.Src.ResetPassword.Activity
 
         public void ShowProgressDialog()
         {
-            try {
             if (mProgressDialog != null && !mProgressDialog.IsShowing)
             {
                 mProgressDialog.Show();
-            }
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
             }
         }
 
         public void HideProgressDialog()
         {
-            try {
             if (mProgressDialog != null && mProgressDialog.IsShowing)
             {
                 mProgressDialog.Dismiss();
-            }
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
             }
         }
         private Snackbar mSnackBar;
@@ -319,15 +296,9 @@ namespace myTNB_Android.Src.ResetPassword.Activity
         [OnClick(Resource.Id.btnSubmit)]
         void OnSubmit(object sender , EventArgs eventArgs)
         {
-            try {
             string newPassword = txtNewPassword.Text;
             string confirmPassword = txtConfirmNewPassword.Text;
             this.userActionsListener.Submit(Constants.APP_CONFIG.API_KEY_ID, newPassword , confirmPassword , enteredPassword, enteredUserName, this.DeviceId());
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
         }
 
         public void ClearErrorMessages()
@@ -338,7 +309,7 @@ namespace myTNB_Android.Src.ResetPassword.Activity
 
         public override void OnBackPressed()
         {
-            try {
+            
             if (fromActivity != null && (fromActivity.Equals(LaunchViewActivity.TAG) || fromActivity.Equals(LoginActivity.TAG)))
             {
                 // TODO : START ACTIVITY DASHBOARD
@@ -357,11 +328,6 @@ namespace myTNB_Android.Src.ResetPassword.Activity
             {
                 base.OnBackPressed();
             }
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
         }
 
         public void ShowResetPasswordSuccess()
@@ -379,7 +345,6 @@ namespace myTNB_Android.Src.ResetPassword.Activity
 
         public void ShowNotificationCount(int count)
         {
-            try {
             if (count <= 0)
             {
                 ME.Leolin.Shortcutbadger.ShortcutBadger.RemoveCount(this.ApplicationContext);
@@ -388,29 +353,6 @@ namespace myTNB_Android.Src.ResetPassword.Activity
             {
                 ME.Leolin.Shortcutbadger.ShortcutBadger.ApplyCount(this.ApplicationContext, count);
             }
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
         }
-
-        public override void OnTrimMemory(TrimMemory level)
-        {
-            base.OnTrimMemory(level);
-
-            switch (level)
-            {
-                case TrimMemory.RunningLow:
-                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
-                    GC.Collect();
-                    break;
-                default:
-                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
-                    GC.Collect();
-                    break;
-            }
-        }
-
     }
 }

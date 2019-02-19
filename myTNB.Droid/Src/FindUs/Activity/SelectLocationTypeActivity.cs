@@ -15,8 +15,6 @@ using myTNB_Android.Src.FindUs.Models;
 using myTNB_Android.Src.FindUs.Adapter;
 using Newtonsoft.Json;
 using myTNB_Android.Src.Database.Model;
-using System.Runtime;
-using myTNB_Android.Src.Utils;
 
 namespace myTNB_Android.Src.FindUs.Activity
 {
@@ -47,42 +45,36 @@ namespace myTNB_Android.Src.FindUs.Activity
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-            try
-            {
-                selectedLocationType = JsonConvert.DeserializeObject<LocationType>(Intent.Extras.GetString("selectedLocationType"));
+            selectedLocationType = JsonConvert.DeserializeObject<LocationType>(Intent.Extras.GetString("selectedLocationType"));
 
-                if (selectedLocationType != null)
+            if(selectedLocationType != null)
+            {
+                SetToolBarTitle(selectedLocationType.Description);
+                if(LocationTypesEntity.HasRecord())
                 {
-                    SetToolBarTitle(selectedLocationType.Description);
-                    if (LocationTypesEntity.HasRecord())
+                    foreach(LocationType type in LocationTypesEntity.GetLocationTypes())
                     {
-                        foreach (LocationType type in LocationTypesEntity.GetLocationTypes())
+                        LocationType newType = new LocationType()
                         {
-                            LocationType newType = new LocationType()
-                            {
-                                Id = type.Id,
-                                Title = type.Title,
-                                Description = type.Description,
-                                ImagePath = type.ImagePath,
-                                IsSelected = selectedLocationType.Id.Equals(type.Id) ? true : false
-                            };
-                            locationTypes.Add(newType);
-                        }
+                            Id = type.Id,
+                            Title = type.Title,
+                            Description = type.Description,
+                            ImagePath = type.ImagePath,
+                            IsSelected = selectedLocationType.Id.Equals(type.Id) ? true : false
+                        };
+                        locationTypes.Add(newType);
                     }
                 }
-
-                locationTypeAdapter = new LocationTypeAdapter(this, locationTypes);
-                listView = FindViewById<ListView>(Resource.Id.list_view);
-                listView.Adapter = locationTypeAdapter;
-
-                listView.ItemClick += OnItemClick;
             }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);  
 
-            }
+            locationTypeAdapter = new LocationTypeAdapter(this, locationTypes);
+            listView = FindViewById<ListView>(Resource.Id.list_view);
+            listView.Adapter = locationTypeAdapter;
+
+            listView.ItemClick += OnItemClick;
+
         }
+
         internal void OnItemClick(object sender, AdapterView.ItemClickEventArgs e)
         {
             selectedLocationType = locationTypeAdapter.GetItemObject(e.Position);
@@ -91,24 +83,6 @@ namespace myTNB_Android.Src.FindUs.Activity
             map_activity.PutExtra("selectedLocationType", JsonConvert.SerializeObject(selectedLocationType));
             SetResult(Result.Ok, map_activity);
             Finish();
-        }
-
-
-        public override void OnTrimMemory(TrimMemory level)
-        {
-            base.OnTrimMemory(level);
-
-            switch (level)
-            {
-                case TrimMemory.RunningLow:
-                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
-                    GC.Collect();
-                    break;
-                default:
-                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
-                    GC.Collect();
-                    break;
-            }
         }
     }
 }

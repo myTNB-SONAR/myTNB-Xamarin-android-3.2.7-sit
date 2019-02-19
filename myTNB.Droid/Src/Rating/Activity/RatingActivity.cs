@@ -15,7 +15,6 @@ using myTNB_Android.Src.Rating.Fargment;
 using Android.Util;
 using myTNB_Android.Src.Rating.Model;
 using myTNB_Android.Src.Utils;
-using System.Runtime;
 
 namespace myTNB_Android.Src.Rating.Activity
 {
@@ -49,7 +48,6 @@ namespace myTNB_Android.Src.Rating.Activity
 
         public void ShowToolBar()
         {
-            try {
             if (appBarLayout != null)
             {
                 TypedValue tv = new TypedValue();
@@ -65,16 +63,10 @@ namespace myTNB_Android.Src.Rating.Activity
 
                 frameContainer.LayoutParameters = lp;
             }
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
         }
 
         public void HideToolBar()
         {
-            try {
             if (appBarLayout != null)
             {
                 appBarLayout.Visibility = ViewStates.Gone;
@@ -83,17 +75,11 @@ namespace myTNB_Android.Src.Rating.Activity
 
                 frameContainer.LayoutParameters = lp;
             }
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
         }
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-            try {
             appBarLayout = FindViewById<Android.Support.Design.Widget.AppBarLayout>(Resource.Id.appBar);
             toolbar = FindViewById<Android.Support.V7.Widget.Toolbar>(Resource.Id.toolbar);
             frameContainer = FindViewById<FrameLayout>(Resource.Id.fragment_container);
@@ -119,11 +105,6 @@ namespace myTNB_Android.Src.Rating.Activity
             }
 
             OnLoadMainFragment();
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
         }
 
         public void OnLoadMainFragment()
@@ -157,7 +138,6 @@ namespace myTNB_Android.Src.Rating.Activity
 
         public override void OnBackPressed()
         {
-            try {
             int count = this.FragmentManager.BackStackEntryCount;
             Log.Debug("OnBackPressed", "fragment stack count :" + count);
             if (currentFragment is ThankYouFragment || currentFragment is SubmitRatingFragment)
@@ -167,30 +147,6 @@ namespace myTNB_Android.Src.Rating.Activity
             else
             {
                 this.FragmentManager.PopBackStack();
-            }
-
-        }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
-        }
-
-
-        public override void OnTrimMemory(TrimMemory level)
-        {
-            base.OnTrimMemory(level);
-
-            switch (level)
-            {
-                case TrimMemory.RunningLow:
-                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
-                    GC.Collect();
-                    break;
-                default:
-                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
-                    GC.Collect();
-                    break;
             }
         }
     }

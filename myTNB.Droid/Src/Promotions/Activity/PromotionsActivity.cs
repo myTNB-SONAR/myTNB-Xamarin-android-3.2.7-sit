@@ -23,7 +23,6 @@ using Android.Graphics;
 using myTNB.SQLite.SQLiteDataManager;
 using Android.Util;
 using Square.Picasso;
-using System.Runtime;
 
 namespace myTNB_Android.Src.Promotions.Activity
 {
@@ -76,7 +75,7 @@ namespace myTNB_Android.Src.Promotions.Activity
         {
 
             base.OnCreate(savedInstanceState);
-            try {
+
             // Create your application here
             model = JsonConvert.DeserializeObject<PromotionsModelV2>(Intent.Extras.GetString("Promotion"));
             TextViewUtils.SetMuseoSans300Typeface(textPromotionTitle, textPromotionDes, textCampaign, textPrizes, textPromotionInfo);
@@ -120,11 +119,6 @@ namespace myTNB_Android.Src.Promotions.Activity
                     GetImageAsync(imgPromotion, mProgressBar, model);
                 }
             }
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
         }
 
         public override bool OnCreateOptionsMenu(IMenu menu)
@@ -153,7 +147,6 @@ namespace myTNB_Android.Src.Promotions.Activity
 
         public async Task GetImageAsync(ImageView icon, ProgressBar progressBar, PromotionsModelV2 item)
         {
-            try {
             progressBar.Visibility = ViewStates.Visible;
             CancellationTokenSource cts = new CancellationTokenSource();
             Bitmap imageBitmap = null;
@@ -168,17 +161,11 @@ namespace myTNB_Android.Src.Promotions.Activity
             }
 
             progressBar.Visibility = ViewStates.Gone;
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
         }
 
         private Android.Graphics.Bitmap GetImageBitmapFromUrl(ImageView icon, string url)
         {
             Android.Graphics.Bitmap image = null;
-            try {
             using (WebClient webClient = new WebClient())
             {
                 var imageBytes = webClient.DownloadData(url);
@@ -187,11 +174,6 @@ namespace myTNB_Android.Src.Promotions.Activity
                     image = BitmapFactory.DecodeByteArray(imageBytes, 0, imageBytes.Length);
                 }
             }
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
             return image;
         }
 
@@ -199,24 +181,6 @@ namespace myTNB_Android.Src.Promotions.Activity
         {
             base.OnBackPressed();
             SetResult(Result.Ok);
-        }
-
-
-        public override void OnTrimMemory(TrimMemory level)
-        {
-            base.OnTrimMemory(level);
-
-            switch (level)
-            {
-                case TrimMemory.RunningLow:
-                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
-                    GC.Collect();
-                    break;
-                default:
-                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
-                    GC.Collect();
-                    break;
-            }
         }
 
     }

@@ -22,7 +22,6 @@ using myTNB_Android.Src.Utils.Custom.ProgressDialog;
 using Newtonsoft.Json;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.Login.Requests;
-using System.Runtime;
 
 namespace myTNB_Android.Src.UpdateMobileNo.Activity
 {
@@ -62,7 +61,6 @@ namespace myTNB_Android.Src.UpdateMobileNo.Activity
         {
             base.OnCreate(savedInstanceState);
 
-            try {
             Intent intent = Intent;
             
             if (intent != null)
@@ -82,7 +80,6 @@ namespace myTNB_Android.Src.UpdateMobileNo.Activity
                 {
                     fromAppLaunch = intent.GetBooleanExtra(Constants.FROM_APP_LAUNCH, false);
                 }
-
             }
 
 
@@ -154,12 +151,6 @@ namespace myTNB_Android.Src.UpdateMobileNo.Activity
                 lblVerifyMobileNo.Visibility = ViewStates.Gone;
                 SetToolBarTitle(GetString(Resource.String.update_mobile_activity_title));
             }
-
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
         }
         [Preserve]
         private void TxtMobileNo_TextChanged(object sender, Android.Text.TextChangedEventArgs e)
@@ -181,15 +172,9 @@ namespace myTNB_Android.Src.UpdateMobileNo.Activity
             //{
             //    progress.Dismiss();
             //}
-            try {
             if (loadingOverlay != null && loadingOverlay.IsShowing)
             {
                 loadingOverlay.Dismiss();
-            }
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
             }
         }
 
@@ -246,7 +231,6 @@ namespace myTNB_Android.Src.UpdateMobileNo.Activity
             //{
             //    progress.Show();
             //}
-            try {
             if (loadingOverlay != null && loadingOverlay.IsShowing)
             {
                 loadingOverlay.Dismiss();
@@ -254,11 +238,6 @@ namespace myTNB_Android.Src.UpdateMobileNo.Activity
 
             loadingOverlay = new LoadingOverlay(this, Resource.Style.LoadingOverlyDialogStyle);
             loadingOverlay.Show();
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
         }
 
         private Snackbar mCancelledExceptionSnackBar;
@@ -360,17 +339,11 @@ namespace myTNB_Android.Src.UpdateMobileNo.Activity
 
         protected override void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
         {
-            try {
             base.OnActivityResult(requestCode, resultCode, data);
             if(requestCode == Constants.REQUEST_VERIFICATION_SMS_TOEKN_CODE && resultCode == Result.Ok)
             {
                 SetResult(Result.Ok);
                 Finish();
-            }
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
             }
         }
 
@@ -378,24 +351,6 @@ namespace myTNB_Android.Src.UpdateMobileNo.Activity
         public void ShowEmptyMobileNoError()
         {
             txtInputLayoutMobileNo.Error = GetString(Resource.String.bill_related_feedback_empty_mobile_error);
-        }
-
-
-        public override void OnTrimMemory(TrimMemory level)
-        {
-            base.OnTrimMemory(level);
-
-            switch (level)
-            {
-                case TrimMemory.RunningLow:
-                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
-                    GC.Collect();
-                    break;
-                default:
-                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
-                    GC.Collect();
-                    break;
-            }
         }
     }
 }

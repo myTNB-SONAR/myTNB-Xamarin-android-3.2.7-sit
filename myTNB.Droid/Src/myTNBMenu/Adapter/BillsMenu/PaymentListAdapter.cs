@@ -41,8 +41,6 @@ namespace myTNB_Android.Src.myTNBMenu.Adapter.BillsMenu
 
         public override View GetView(int position, View convertView, ViewGroup parent)
         {
-
-            try {
             SimpleDateFormat dateParser = new SimpleDateFormat("dd/MM/yyyy");
             SimpleDateFormat dateFormatter = new SimpleDateFormat("dd MMM");
             SimpleDateFormat billDateFormatter = new SimpleDateFormat("MMM yyyy");
@@ -70,7 +68,7 @@ namespace myTNB_Android.Src.myTNBMenu.Adapter.BillsMenu
             }
             catch (Java.Text.ParseException e)
             {
-                    Utility.LoggingNonFatalError(e);
+
             }
 
             //vh.txtPayment.Text = "RM " + payableFormatter.Format(PaymentHistoryV5.AmtPaid);
@@ -98,9 +96,7 @@ namespace myTNB_Android.Src.myTNBMenu.Adapter.BillsMenu
 
             TextViewUtils.SetMuseoSans500Typeface(vh.txtPayment , vh.txtDate , vh.txtAmtPayable);
             TextViewUtils.SetMuseoSans300Typeface(vh.txtPaymentFrom);
-            } catch(Exception e) {
-                Utility.LoggingNonFatalError(e);
-            }
+
             return convertView;
         }
 

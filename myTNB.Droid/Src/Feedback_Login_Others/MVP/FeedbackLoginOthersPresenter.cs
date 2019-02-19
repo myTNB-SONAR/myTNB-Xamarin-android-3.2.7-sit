@@ -40,77 +40,60 @@ namespace myTNB_Android.Src.Feedback_Login_Others.MVP
 
         public void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
         {
-            try
+            if (requestCode == Constants.REQUEST_ATTACHED_CAMERA_IMAGE)
             {
-                if (requestCode == Constants.REQUEST_ATTACHED_CAMERA_IMAGE)
+                if (resultCode == Result.Ok)
                 {
-                    if (resultCode == Result.Ok)
-                    {
-                        // TODO : ADD PROGRESS
-                        string fileName = string.Format("{0}.jpeg", Guid.NewGuid());
-                        string tempImagePath = this.mView.GetTemporaryImageFilePath(FileUtils.TEMP_IMAGE_FOLDER, string.Format("{0}.jpeg", "temporaryImage"));
-                        OnSaveCameraImage(tempImagePath, fileName);
+                    // TODO : ADD PROGRESS
+                    string fileName = string.Format("{0}.jpeg", Guid.NewGuid());
+                    string tempImagePath = this.mView.GetTemporaryImageFilePath(FileUtils.TEMP_IMAGE_FOLDER, string.Format("{0}.jpeg", "temporaryImage"));
+                    OnSaveCameraImage(tempImagePath, fileName);
 
-                        GC.Collect();
-                    }
-                }
-                else if (requestCode == Constants.RUNTIME_PERMISSION_GALLERY_REQUEST_CODE)
-                {
-                    if (resultCode == Result.Ok)
-                    {
-                        Android.Net.Uri selectedImage = data.Data;
-                        string fileName = string.Format("{0}.jpeg", Guid.NewGuid());
-
-                        OnSaveGalleryImage(selectedImage, fileName);
-                        GC.Collect();
-                    }
-                }
-                else if (requestCode == Constants.SELECT_FEEDBACK_TYPE)
-                {
-                    if (resultCode == Result.Ok)
-                    {
-                        FeedbackType selectedType = JsonConvert.DeserializeObject<FeedbackType>(data.Extras.GetString(Constants.SELECTED_FEEDBACK_TYPE));
-                        this.mView.ShowSelectedFeedbackType(selectedType);
-                    }
+                    GC.Collect();
                 }
             }
-            catch (Exception e)
+            else if (requestCode == Constants.RUNTIME_PERMISSION_GALLERY_REQUEST_CODE)
             {
-                Utility.LoggingNonFatalError(e);
+                if (resultCode == Result.Ok)
+                {
+                    Android.Net.Uri selectedImage = data.Data;
+                    string fileName = string.Format("{0}.jpeg", Guid.NewGuid());
+
+                    OnSaveGalleryImage(selectedImage, fileName);
+                    GC.Collect();
+                }
+            }
+            else if (requestCode == Constants.SELECT_FEEDBACK_TYPE)
+            {
+                if (resultCode == Result.Ok)
+                {
+                    FeedbackType selectedType = JsonConvert.DeserializeObject<FeedbackType>(data.Extras.GetString(Constants.SELECTED_FEEDBACK_TYPE));
+                    this.mView.ShowSelectedFeedbackType(selectedType);
+                }
             }
         }
 
         private async void OnSaveCameraImage(string tempImagePath, string fileName)
         {
-            try {
             this.mView.DisableSubmitButton();
             this.mView.ShowLoadingImage();
             string resultFilePath = await this.mView.SaveCameraImage(tempImagePath, fileName);
             this.mView.UpdateAdapter(resultFilePath, fileName);
             this.mView.HideLoadingImage();
             this.mView.EnableSubmitButton();
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
         }
 
 
         private async void OnSaveGalleryImage(Android.Net.Uri selectedImage, string fileName)
         {
-            try {
             this.mView.DisableSubmitButton();
             this.mView.ShowLoadingImage();
             string resultFilePath = await this.mView.SaveGalleryImage(selectedImage, FileUtils.TEMP_IMAGE_FOLDER, fileName);
+
+
             this.mView.UpdateAdapter(resultFilePath, fileName);
             this.mView.HideLoadingImage();
             this.mView.EnableSubmitButton();
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
         }
 
 
@@ -138,10 +121,7 @@ namespace myTNB_Android.Src.Feedback_Login_Others.MVP
                 return;
             }
 
-            if (mView.IsActive()) {
             this.mView.ShowProgressDialog();
-            }
-
             ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
 #if DEBUG
             var httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
@@ -186,11 +166,6 @@ namespace myTNB_Android.Src.Feedback_Login_Others.MVP
 
                 var preLoginFeedbackResponse = await preloginFeedbackApi.SubmitFeedback(request, cts.Token);
 
-                if (mView.IsActive())
-                {
-                    this.mView.HideProgressDialog();
-                }
-
                 if (!preLoginFeedbackResponse.Data.IsError)
                 {
                     SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
@@ -217,59 +192,42 @@ namespace myTNB_Android.Src.Feedback_Login_Others.MVP
 
             catch (System.OperationCanceledException e)
             {
-                if (mView.IsActive())
-                {
-                    this.mView.HideProgressDialog();
-                }
                 //this.mView.ShowFail();
                 this.mView.OnSubmitError();
-                Utility.LoggingNonFatalError(e);
+
             }
             catch (ApiException apiException)
             {
-                if (mView.IsActive())
-                {
-                    this.mView.HideProgressDialog();
-                }
                 //this.mView.ShowFail();
                 this.mView.OnSubmitError();
-                Utility.LoggingNonFatalError(apiException);
             }
             catch (Exception e)
             {
-                if (mView.IsActive())
-                {
-                    this.mView.HideProgressDialog();
-                }
                 //this.mView.ShowFail();
                 this.mView.OnSubmitError();
-                Utility.LoggingNonFatalError(e);
             }
+
+            this.mView.HideProgressDialog();
 
         }
 
         public void Start()
         {
-            try
-            {
-                // TODO: IMPL SHOW FEEDBACK TYPE
-                this.mView.DisableSubmitButton();
-                FeedbackTypeEntity.ResetSelected();
-                FeedbackTypeEntity entity = FeedbackTypeEntity.GetFirstOrSelected();
-                FeedbackTypeEntity.SetSelected(entity.Id);
-                this.mView.ShowSelectedFeedbackType(FeedbackType.Copy(entity));
+            // TODO: IMPL SHOW FEEDBACK TYPE
+            this.mView.DisableSubmitButton();
+            FeedbackTypeEntity.ResetSelected();
+            FeedbackTypeEntity entity = FeedbackTypeEntity.GetFirstOrSelected();
+            FeedbackTypeEntity.SetSelected(entity.Id);
+            this.mView.ShowSelectedFeedbackType(FeedbackType.Copy(entity));
 
-                UserEntity userEntity = UserEntity.GetActive();
-                if (TextUtils.IsEmpty(userEntity.MobileNo))
-                {
-                    this.mView.ShowMobileNo();
-                }
-                else
-                {
-                    this.mView.HideMobileNo();
-                }
-            } catch(Exception e) {
-                Utility.LoggingNonFatalError(e);
+            UserEntity userEntity = UserEntity.GetActive();
+            if (TextUtils.IsEmpty(userEntity.MobileNo))
+            {
+                this.mView.ShowMobileNo();
+            }
+            else
+            {
+                this.mView.HideMobileNo();
             }
         }
 
@@ -310,11 +268,9 @@ namespace myTNB_Android.Src.Feedback_Login_Others.MVP
                 this.mView.ShowInvalidMobileNoError();
                 return;
             }
+            
 
-            if (mView.IsActive()) {
             this.mView.ShowProgressDialog();
-            }
-
             ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
 #if DEBUG
             var httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
@@ -359,11 +315,6 @@ namespace myTNB_Android.Src.Feedback_Login_Others.MVP
 
                 var preLoginFeedbackResponse = await preloginFeedbackApi.SubmitFeedback(request, cts.Token);
 
-                if (mView.IsActive())
-                {
-                    this.mView.HideProgressDialog();
-                }
-
                 if (!preLoginFeedbackResponse.Data.IsError)
                 {
                     SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
@@ -390,35 +341,22 @@ namespace myTNB_Android.Src.Feedback_Login_Others.MVP
 
             catch (System.OperationCanceledException e)
             {
-                if (mView.IsActive())
-                {
-                    this.mView.HideProgressDialog();
-                }
                 //this.mView.ShowFail();
                 this.mView.OnSubmitError();
-                Utility.LoggingNonFatalError(e);
+
             }
             catch (ApiException apiException)
             {
-                if (mView.IsActive())
-                {
-                    this.mView.HideProgressDialog();
-                }
                 //this.mView.ShowFail();
                 this.mView.OnSubmitError();
-                Utility.LoggingNonFatalError(apiException);
             }
             catch (Exception e)
             {
-                if (mView.IsActive())
-                {
-                    this.mView.HideProgressDialog();
-                }
                 //this.mView.ShowFail();
                 this.mView.OnSubmitError();
-                Utility.LoggingNonFatalError(e);
             }
 
+            this.mView.HideProgressDialog();
         }
 
         public void CheckRequiredFields(string mobile_no, string feedback)

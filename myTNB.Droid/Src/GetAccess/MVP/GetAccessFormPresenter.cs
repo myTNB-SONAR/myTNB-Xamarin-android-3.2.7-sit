@@ -10,7 +10,6 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using Android.Text;
-using myTNB_Android.Src.Utils;
 
 namespace myTNB_Android.Src.GetAccess.MVP
 {
@@ -26,23 +25,18 @@ namespace myTNB_Android.Src.GetAccess.MVP
 
         public void OnGetAccess(string icno, string maiden_name)
         {
-            try
+            if (TextUtils.IsEmpty(icno))
             {
-                if (TextUtils.IsEmpty(icno))
-                {
-                    this.mView.ShowEmptyICNo();
-                    return;
-                }
-
-                if (TextUtils.IsEmpty(maiden_name))
-                {
-                    this.mView.ShowEmptyMaidenName();
-                    return;
-                }
-                this.mView.ShowSuccess();
-            } catch(Exception e) {
-                Utility.LoggingNonFatalError(e);
+                this.mView.ShowEmptyICNo();
+                return;
             }
+
+            if (TextUtils.IsEmpty(maiden_name))
+            {
+                this.mView.ShowEmptyMaidenName();
+                return;
+            }
+            this.mView.ShowSuccess();
         }
 
         public void Start()

@@ -9277,9 +9277,6 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f0d008e
 			public const int title_template = 2131558542;
 			
-			// aapt resource value: 0x7f0d0323
-			public const int tncWebView = 2131559203;
-			
 			// aapt resource value: 0x7f0d00b0
 			public const int toolbar = 2131558576;
 			
@@ -10092,6 +10089,9 @@ namespace myTNB_Android
 			
 			// aapt resource value: 0x7f0d02ab
 			public const int txt_notification_name = 2131559083;
+			
+			// aapt resource value: 0x7f0d0323
+			public const int txt_tnc_html = 2131559203;
 			
 			// aapt resource value: 0x7f0d0321
 			public const int txt_tnc_title = 2131559201;

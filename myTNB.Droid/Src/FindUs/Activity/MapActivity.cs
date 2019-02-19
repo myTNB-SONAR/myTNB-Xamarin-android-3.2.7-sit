@@ -33,7 +33,6 @@ using Android.Net;
 using Android.Views.InputMethods;
 using static Java.Util.ResourceBundle;
 using myTNB_Android.Src.Utils.Custom.ProgressDialog;
-using System.Runtime;
 
 namespace myTNB_Android.Src.FindUs.Activity
 {
@@ -142,7 +141,6 @@ namespace myTNB_Android.Src.FindUs.Activity
             //{
             //    this.mGetLocationsDialog.Show();
             //}
-            try {
             if (loadingOverlay != null && loadingOverlay.IsShowing)
             {
                 loadingOverlay.Dismiss();
@@ -150,12 +148,7 @@ namespace myTNB_Android.Src.FindUs.Activity
 
             loadingOverlay = new LoadingOverlay(this, Resource.Style.LoadingOverlyDialogStyle);
             loadingOverlay.Show();
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
 
-            }
             //progressBar.Visibility = ViewStates.Invisible;
         }
 
@@ -304,16 +297,9 @@ namespace myTNB_Android.Src.FindUs.Activity
             //{
             //    this.mGetLocationsDialog.Dismiss();
             //}
-            try {
             if (loadingOverlay != null && loadingOverlay.IsShowing)
             {
                 loadingOverlay.Dismiss();
-            }
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-
             }
             //progressBar.Visibility = ViewStates.Gone;
         }
@@ -517,7 +503,6 @@ namespace myTNB_Android.Src.FindUs.Activity
                     // e.printStackTrace();
                     Log.Error("Error : Location",
                             "Impossible to connect to LocationManager", e);
-                    Utility.LoggingNonFatalError(e);
                 }
 
 
@@ -557,7 +542,6 @@ namespace myTNB_Android.Src.FindUs.Activity
         /// </summary>
         public void FindClickedItem(LatLng clickedItem)
         {
-            try {
             LocationData locationData = null;
             GoogleApiResult googleApiResult = null;
 
@@ -570,12 +554,6 @@ namespace myTNB_Android.Src.FindUs.Activity
                 detailsView.PutExtra("KT", JsonConvert.SerializeObject(locationData));
                 detailsView.PutExtra("imagePath", selectedLocationType.ImagePath);
                 StartActivity(detailsView);
-            }
-        }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);  
-
             }
             //else if (googleApiResult != null)
             //{
@@ -592,7 +570,6 @@ namespace myTNB_Android.Src.FindUs.Activity
         protected override void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
         {
             base.OnActivityResult(requestCode, resultCode, data);
-            try {
             if(resultCode == Result.Ok)
             {
                 if(requestCode == SELECT_LOCATION_TYPE_CODE)
@@ -607,12 +584,6 @@ namespace myTNB_Android.Src.FindUs.Activity
                         }
                     }
                 }
-            }
-        }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);  
-
             }
         }
 
@@ -732,15 +703,11 @@ namespace myTNB_Android.Src.FindUs.Activity
             }
             catch (UnauthorizedAccessException exception)
             {
-                Utility.LoggingNonFatalError(exception);
                 return "Location is disabled in user Phone Settings";
-
             }
             catch (Exception ex)
             {
-                Utility.LoggingNonFatalError(ex);
                 return ex.Message;
-
             }
             return userAddress.ToString();
         }
@@ -763,23 +730,6 @@ namespace myTNB_Android.Src.FindUs.Activity
         public void OnStatusChanged(string provider, [GeneratedEnum] Availability status, Bundle extras)
         {
             //throw new NotImplementedException();
-        }
-
-        public override void OnTrimMemory(TrimMemory level)
-        {
-            base.OnTrimMemory(level);
-
-            switch (level)
-            {
-                case TrimMemory.RunningLow:
-                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
-                    GC.Collect();
-                    break;
-                default:
-                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
-                    GC.Collect();
-                    break;
-            }
         }
     }
 }

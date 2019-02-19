@@ -941,8 +941,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         internal float GetMaxDaysValues()
         {
             float val = 0;
-            try {
-
             foreach (UsageHistoryData.ByDayData ByDay in selectedHistoryData.ByDay)
             {
                 foreach (UsageHistoryData.ByDayData.DayData dayData in ByDay.Days)
@@ -956,19 +954,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             if (val == 0){
                 val = 1;
             }
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
             return val;
         }
 
         internal float GetMaxMonthValues()
         {
             float val = 0;
-            try {
-
             foreach (UsageHistoryData.ByMonthData.MonthData MonthData in selectedHistoryData.ByMonth.Months)
             {
                 if (Math.Abs(MonthData.Amount) > val)
@@ -978,11 +969,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             }
             if(val == 0){
                 val = 1;
-            }
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
             }
             return val;
         }
@@ -1028,7 +1014,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         private Snackbar mNoInternetSnackbar;
         public void ShowNoInternetSnackbar()
         {
-            try {
             if (mNoInternetSnackbar != null && mNoInternetSnackbar.IsShown)
             {
                 mNoInternetSnackbar.Dismiss();
@@ -1041,11 +1026,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             }
             );
             mNoInternetSnackbar.Show();
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
         }
 
         public void ShowNotification()
@@ -1055,39 +1035,31 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
         public void ShowAmountProgress()
         {
-            try {
             progressBar.Visibility = ViewStates.Visible;
             totalPayableLayout.Visibility = ViewStates.Gone;
 
-        } catch(Exception e) {
-                Utility.LoggingNonFatalError(e);
-            }
+
         }
 
         public void HideAmountProgress()
         {
-            try {
             progressBar.Visibility = ViewStates.Gone;
             totalPayableLayout.Visibility = ViewStates.Visible;
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
+
         }
 
 
 
         public void ShowAmountDue(AccountDueAmount accountDueAmount)
         {
-            try {   
+            
             Date d = null;
             try
             {
                 d = dateParser.Parse(accountDueAmount.BillDueDate);
             }catch (ParseException e)
             {
-                    Utility.LoggingNonFatalError(e);
+
             }
 
             if (d != null)
@@ -1144,15 +1116,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             {
                 txtDueDate.Text = GetString(Resource.String.dashboard_chartview_due_date_not_available);
             }
-        } catch(Exception e) {
-                Utility.LoggingNonFatalError(e);
-            }
         }
 
         private Snackbar mCancelledExceptionSnackBar;
         public void ShowRetryOptionsCancelledException(System.OperationCanceledException operationCanceledException)
         {
-            try {
             if (mCancelledExceptionSnackBar != null && mCancelledExceptionSnackBar.IsShown)
             {
                 mCancelledExceptionSnackBar.Dismiss();
@@ -1166,42 +1134,30 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             }
             );
             mCancelledExceptionSnackBar.Show();
-        } catch(Exception e) {
-                Utility.LoggingNonFatalError(e);
-            }
 
         }
 
         private Snackbar mApiExcecptionSnackBar;
         public void ShowRetryOptionsApiException(ApiException apiException)
         {
-            try
+            if (mApiExcecptionSnackBar != null && mApiExcecptionSnackBar.IsShown)
             {
-                if (mApiExcecptionSnackBar != null && mApiExcecptionSnackBar.IsShown)
-                {
-                    mApiExcecptionSnackBar.Dismiss();
-                }
-
-                mApiExcecptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.dashboard_chart_api_exception_error), Snackbar.LengthIndefinite)
-                .SetAction(GetString(Resource.String.dashboard_chart_api_exception_btn_retry), delegate
-                {
-
-                    mApiExcecptionSnackBar.Dismiss();
-                    this.userActionsListener.OnLoadAmount(selectedAccount.AccountNum);
-                }
-                );
-                mApiExcecptionSnackBar.Show();
+                mApiExcecptionSnackBar.Dismiss();
             }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
+
+            mApiExcecptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.dashboard_chart_api_exception_error), Snackbar.LengthIndefinite)
+            .SetAction(GetString(Resource.String.dashboard_chart_api_exception_btn_retry), delegate {
+
+                mApiExcecptionSnackBar.Dismiss();
+                this.userActionsListener.OnLoadAmount(selectedAccount.AccountNum);
             }
+            );
+            mApiExcecptionSnackBar.Show();
 
         }
         private Snackbar mUknownExceptionSnackBar;
         public void ShowRetryOptionsUnknownException(Exception exception)
         {
-            try {
             if (mUknownExceptionSnackBar != null && mUknownExceptionSnackBar.IsShown)
             {
                 mUknownExceptionSnackBar.Dismiss();
@@ -1217,17 +1173,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             }
             );
             mUknownExceptionSnackBar.Show();
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
+
         }
 
         private Snackbar mSmartMeterError;
         public void ShowUnableToFecthSmartMeterData(string errorMsg)
         {
-            try {
             if (mSmartMeterError != null && mSmartMeterError.IsShown)
             {
                 mSmartMeterError.Dismiss();
@@ -1240,11 +1191,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 }
             );
             mSmartMeterError.Show();
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
+
         }
 
         public void EnablePayButton()
@@ -1262,7 +1209,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
         public void ShowLearnMore(Weblink weblink)
         {
-            try {
+
             if (weblink.OpenWith.Equals("APP"))
             {
                 Intent smartMeterINtent = new Intent(this.Activity , typeof(SmartMeterLearnMoreActivity));
@@ -1274,11 +1221,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 var uri = Android.Net.Uri.Parse(weblink.Url);
                 var intent = new Intent(Intent.ActionView, uri);
                 StartActivity(intent);
-            }
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
             }
         }
     }

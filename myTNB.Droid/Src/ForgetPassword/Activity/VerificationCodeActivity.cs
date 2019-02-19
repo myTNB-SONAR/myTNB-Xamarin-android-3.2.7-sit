@@ -25,7 +25,6 @@ using myTNB_Android.Src.AddAccount.Activity;
 using myTNB_Android.Src.ForgetPassword.MVP;
 using Android.Preferences;
 using myTNB_Android.Src.Utils.Custom.ProgressDialog;
-using System.Runtime;
 
 namespace myTNB_Android.Src.ForgetPassword.Activity
 {
@@ -90,7 +89,7 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-            try {
+
             mPresenter = new ForgetPasswordPresenter(this, PreferenceManager.GetDefaultSharedPreferences(this));
 
             mVerificationProgressDialog = new MaterialDialog.Builder(this)
@@ -122,73 +121,45 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
             };
 
             this.userActionsListener.Start();
-        }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
+
             //ShowSuccess("An SMS containing activation pin has been send to your number.");
         }
         
 
         private void TxtNumber_1_TextChanged(object sender, Android.Text.TextChangedEventArgs e)
         {
-            try {
             if (e.Text.Count() == 1)
             {
                 txtNumber_1.ClearFocus();
                 txtNumber_2.RequestFocus();
             }
             CheckValidPin();
-            }
-            catch (Exception ex)
-            {
-                Utility.LoggingNonFatalError(ex);
-            }
         }
 
 
         private void TxtNumber_2_TextChanged(object sender, Android.Text.TextChangedEventArgs e)
         {
-            try {
             if (e.Text.Count() == 1)
             {
                 txtNumber_2.ClearFocus();
                 txtNumber_3.RequestFocus();
             }
             CheckValidPin();
-            }
-            catch (Exception ex)
-            {
-                Utility.LoggingNonFatalError(ex);
-            }
         }
 
         private void TxtNumber_3_TextChanged(object sender, Android.Text.TextChangedEventArgs e)
         {
-            try {
             if (e.Text.Count() == 1)
             {
                 txtNumber_3.ClearFocus();
                 txtNumber_4.RequestFocus();
             }
             CheckValidPin();
-            }
-            catch (Exception ex)
-            {
-                Utility.LoggingNonFatalError(ex);
-            }
         }
 
         private void TxtNumber_4_TextChanged(object sender, Android.Text.TextChangedEventArgs e)
         {
-            try {
             CheckValidPin();
-            }
-            catch (Exception ex)
-            {
-                Utility.LoggingNonFatalError(ex);
-            }
         }
 
         private void CheckValidPin()
@@ -197,7 +168,6 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
             string txt_2 = txtNumber_2.Text;
             string txt_3 = txtNumber_3.Text;
             string txt_4 = txtNumber_4.Text;
-            try {
             if (TextUtils.IsEmpty(txt_1) || !TextUtils.IsDigitsOnly(txt_1))
             {
                 return;
@@ -225,11 +195,6 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
 
             string code = txt_1 + "" + txt_2 + "" + txt_3 + "" + txt_4;
             this.userActionsListener.Submit(Constants.APP_CONFIG.API_KEY_ID, email, email, code);
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
         }
 
         [OnClick(Resource.Id.re_send_btn)]
@@ -323,7 +288,6 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
             //{
             //    mVerificationProgressDialog.Show();
             //}
-            try {
             if (loadingOverlay != null && loadingOverlay.IsShowing)
             {
                 loadingOverlay.Dismiss();
@@ -331,11 +295,6 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
 
             loadingOverlay = new LoadingOverlay(this, Resource.Style.LoadingOverlyDialogStyle);
             loadingOverlay.Show();
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
         }
 
         public void HideProgressDialog()
@@ -344,15 +303,9 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
             //{
             //    mVerificationProgressDialog.Dismiss();
             //}
-            try {
             if (loadingOverlay != null && loadingOverlay.IsShowing)
             {
                 loadingOverlay.Dismiss();
-            }
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
             }
         }
 
@@ -483,7 +436,6 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
 
         void ProgressGenerator.OnProgressListener.OnComplete()
         {
-            try {
             btnResend.Text = GetString(Resource.String.registration_validation_btn_resend) + "(30)";
             //btnResend.SetCompoundDrawablesWithIntrinsicBounds(GetDrawable(Resource.Drawable.ic_button_resend_loaded), null, null, null);
             btnResend.Visibility = ViewStates.Gone;
@@ -493,11 +445,6 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
             btnResend.SetTextColor(Resources.GetColor(Resource.Color.freshGreen));
             progressGenerator.Progress = 0;
             this.userActionsListener.OnComplete();
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
         }
 
 
@@ -524,18 +471,13 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
 
         public void StartProgress()
         {
-            try {
             OnCompleteResend.Visibility = ViewStates.Gone;
             btnResend.Visibility = ViewStates.Visible;
             btnResend.SetCompoundDrawablesWithIntrinsicBounds(GetDrawable(Resource.Drawable.ic_button_resend_loading), null, null, null);
             btnResend.SetTextColor(Resources.GetColor(Resource.Color.freshGreen));
             progressGenerator.Progress = 0;
             progressGenerator.Start(btnResend, this);
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
+
         }
 
         public void EnableResendButton()
@@ -548,24 +490,6 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
         {
             btnResend.Enabled = false;
             btnResend.Clickable = false;
-        }
-
-
-        public override void OnTrimMemory(TrimMemory level)
-        {
-            base.OnTrimMemory(level);
-
-            switch (level)
-            {
-                case TrimMemory.RunningLow:
-                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
-                    GC.Collect();
-                    break;
-                default:
-                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
-                    GC.Collect();
-                    break;
-            }
         }
     }
 }

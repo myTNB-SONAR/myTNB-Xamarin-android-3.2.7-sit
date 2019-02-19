@@ -18,7 +18,6 @@ using myTNB_Android.Src.Utils;
 using Android.Support.Design.Widget;
 using myTNB_Android.Src.Notifications.Models;
 using myTNB_Android.Src.Utils.Custom.ProgressDialog;
-using System.Runtime;
 
 namespace myTNB_Android.Src.NotificationDetails.Activity.Base
 {
@@ -41,7 +40,6 @@ namespace myTNB_Android.Src.NotificationDetails.Activity.Base
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
-            try {
             Bundle extras = Intent.Extras;
             notificationDetails = JsonConvert.DeserializeObject<NotificationDetails.Models.NotificationDetails>(extras.GetString(Constants.SELECTED_NOTIFICATION_DETAIL_ITEM));
             userNotificationData = JsonConvert.DeserializeObject<UserNotificationData>(extras.GetString(Constants.SELECTED_NOTIFICATION_LIST_ITEM));
@@ -59,11 +57,6 @@ namespace myTNB_Android.Src.NotificationDetails.Activity.Base
 
 
             this.mPresenter = new NotificationDetailPresenter(this);
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
         }
 
         protected override void OnStart()
@@ -128,7 +121,6 @@ namespace myTNB_Android.Src.NotificationDetails.Activity.Base
             //{
             //    mProgressDialog.Show();
             //}
-            try {
             if (loadingOverlay != null && loadingOverlay.IsShowing)
             {
                 loadingOverlay.Dismiss();
@@ -136,11 +128,6 @@ namespace myTNB_Android.Src.NotificationDetails.Activity.Base
 
             loadingOverlay = new LoadingOverlay(this, Resource.Style.LoadingOverlyDialogStyle);
             loadingOverlay.Show();
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
         }
 
         public void HideRemovingProgress()
@@ -149,15 +136,9 @@ namespace myTNB_Android.Src.NotificationDetails.Activity.Base
             //{
             //    mProgressDialog.Dismiss();
             //}
-            try {
             if (loadingOverlay != null && loadingOverlay.IsShowing)
             {
                 loadingOverlay.Dismiss();
-            }
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
             }
         }
 
@@ -248,23 +229,6 @@ namespace myTNB_Android.Src.NotificationDetails.Activity.Base
         public string GetDeviceId()
         {
             return this.DeviceId();
-        }
-
-        public override void OnTrimMemory(TrimMemory level)
-        {
-            base.OnTrimMemory(level);
-
-            switch (level)
-            {
-                case TrimMemory.RunningLow:
-                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
-                    GC.Collect();
-                    break;
-                default:
-                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
-                    GC.Collect();
-                    break;
-            }
         }
     }
 }

@@ -39,7 +39,6 @@ using Java.Text;
 using Java.Util;
 using Android.Preferences;
 using myTNB_Android.Src.Utils.Custom.ProgressDialog;
-using System.Runtime;
 
 namespace myTNB_Android.Src.Feedback_PreLogin_BillRelated.Activity
 {
@@ -121,7 +120,7 @@ namespace myTNB_Android.Src.Feedback_PreLogin_BillRelated.Activity
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-            try {
+
 
             // Create your application here
             submitDialog = new MaterialDialog.Builder(this)
@@ -198,15 +197,11 @@ namespace myTNB_Android.Src.Feedback_PreLogin_BillRelated.Activity
 
             //txtInputLayoutFullName.Error = null;
             txtFullName.ClearFocus();
-        } catch(System.Exception e) {
-                Utility.LoggingNonFatalError(e);
-            }
 
         }
         [Preserve]
         private void TxtFeedback_TextChanged(object sender, TextChangedEventArgs e)
         {
-            try {
             string fullname = txtFullName.Text.Trim();
             string mobile_no = txtMobileNo.Text.Trim();
             string email = txtEmail.Text.Trim();
@@ -216,17 +211,12 @@ namespace myTNB_Android.Src.Feedback_PreLogin_BillRelated.Activity
             FeedBackCharacCount();
 
             this.userActionsListener.CheckRequiredFields(fullname, mobile_no, email, account_no, feedback);
-            }
-            catch (System.Exception ex)
-            {
-                Utility.LoggingNonFatalError(ex);
-            }
         }
 
 
         private void FeedBackCharacCount()
         {
-            try {
+
             string feedback = txtFeedback.Text;
             int char_count = 0;
 
@@ -244,79 +234,55 @@ namespace myTNB_Android.Src.Feedback_PreLogin_BillRelated.Activity
             {
                 txtInputLayoutFeedback.Error = GetString(Resource.String.feedback_total_character_left);
             }
-        } catch(System.Exception e) {
-                Utility.LoggingNonFatalError(e);
-            }
         }
 
         [Preserve]
         private void TxtAccountNo_TextChanged(object sender, TextChangedEventArgs e)
         {
-            try {
             string fullname = txtFullName.Text.Trim();
             string mobile_no = txtMobileNo.Text.Trim();
             string email = txtEmail.Text.Trim();
             string account_no = txtAccountNo.Text.Trim();
             string feedback = txtFeedback.Text;
             this.userActionsListener.CheckRequiredFields(fullname, mobile_no, email, account_no, feedback);
-        } catch(System.Exception ex) {
-                Utility.LoggingNonFatalError(ex);
-            }
         }
 
         [Preserve]
         private void TxtEmail_TextChanged(object sender, TextChangedEventArgs e)
         {
-            try {
             string fullname = txtFullName.Text.Trim();
             string mobile_no = txtMobileNo.Text.Trim();
             string email = txtEmail.Text.Trim();
             string account_no = txtAccountNo.Text.Trim();
             string feedback = txtFeedback.Text;
             this.userActionsListener.CheckRequiredFields(fullname, mobile_no, email, account_no, feedback);
-        } catch(System.Exception ex) {
-                Utility.LoggingNonFatalError(ex);
-            }
         }
 
         [Preserve]
         private void TxtMobileNo_TextChanged(object sender, TextChangedEventArgs e)
         {
-            try {
             string fullname = txtFullName.Text.Trim();
             string mobile_no = txtMobileNo.Text.Trim();
             string email = txtEmail.Text.Trim();
             string account_no = txtAccountNo.Text.Trim();
             string feedback = txtFeedback.Text;
             this.userActionsListener.CheckRequiredFields(fullname, mobile_no, email, account_no, feedback);
-            }
-            catch (System.Exception ex)
-            {
-                Utility.LoggingNonFatalError(ex);
-            }
         }
 
         [Preserve]
         private void TxtFullName_TextChanged(object sender, TextChangedEventArgs e)
         {
-            try {
             string fullname = txtFullName.Text.Trim();
             string mobile_no = txtMobileNo.Text.Trim();
             string email = txtEmail.Text.Trim();
             string account_no = txtAccountNo.Text.Trim();
             string feedback = txtFeedback.Text;
             this.userActionsListener.CheckRequiredFields(fullname , mobile_no , email, account_no , feedback);
-            }
-            catch (System.Exception ex)
-            {
-                Utility.LoggingNonFatalError(ex);
-            }
         }
 
         [OnClick(Resource.Id.btnSubmit)]
         void OnSubmit(object sender, EventArgs e)
         {
-            try {
             btnSubmit.Enabled = false;
             Handler h = new Handler();
             Action myAction = () =>
@@ -334,16 +300,10 @@ namespace myTNB_Android.Src.Feedback_PreLogin_BillRelated.Activity
 
 
             this.userActionsListener.OnSubmit(this.DeviceId() , fullname , mobile_no , email , account_no , feedback , attachedImages);
-            }
-            catch (System.Exception ex)
-            {
-                Utility.LoggingNonFatalError(ex);
-            }
         }
 
         private void Adapter_RemoveClickEvent(object sender, int e)
         {
-            try {
             adapter.Remove(e);
             if (adapter.GetAllImages().Count == 1 && adapter.ItemCount == 1)
             {
@@ -363,47 +323,38 @@ namespace myTNB_Android.Src.Feedback_PreLogin_BillRelated.Activity
                     });
                 }
             }
-            }
-            catch (System.Exception ex)
-            {
-                Utility.LoggingNonFatalError(ex);
-            }
+
         }
 
         private AlertDialog _ChooseDialog;
         private void Adapter_AddClickEvent(object sender, int e)
         {
-            try
-            {
-                string[] items = { GetString(Resource.String.bill_related_feedback_selection_take_photo) ,
+            string[] items = { GetString(Resource.String.bill_related_feedback_selection_take_photo) ,
                                GetString(Resource.String.bill_related_feedback_selection_choose_from_library) ,
                                GetString(Resource.String.bill_related_feedback_selection_cancel)};
 
-                AlertDialog.Builder builder = new AlertDialog.Builder(this)
-                    .SetTitle(GetString(Resource.String.bill_related_feedback_selection_option_title));
-                builder.SetItems(items, (lsender, args) =>
-                   {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this)
+                .SetTitle(GetString(Resource.String.bill_related_feedback_selection_option_title));
+            builder.SetItems(items,  ( lsender , args) =>
+                {
 
 
 
-                       if (items[args.Which].Equals(GetString(Resource.String.bill_related_feedback_selection_take_photo)))
-                       {
-                           this.userActionsListener.OnAttachPhotoCamera();
-                       }
-                       else if (items[args.Which].Equals(GetString(Resource.String.bill_related_feedback_selection_choose_from_library)))
-                       {
-                           this.userActionsListener.OnAttachPhotoGallery();
-                       }
-                       else if (items[args.Which].Equals(GetString(Resource.String.bill_related_feedback_selection_cancel)))
-                       {
-                           _ChooseDialog.Dismiss();
-                       }
-                   }
-                );
-                _ChooseDialog = builder.Show();
-            } catch(System.Exception ex) {
-                Utility.LoggingNonFatalError(ex);
-            }
+                    if (items[args.Which].Equals(GetString(Resource.String.bill_related_feedback_selection_take_photo)))
+                    {
+                        this.userActionsListener.OnAttachPhotoCamera();
+                    }
+                    else if (items[args.Which].Equals(GetString(Resource.String.bill_related_feedback_selection_choose_from_library)))
+                    {
+                        this.userActionsListener.OnAttachPhotoGallery();
+                    }
+                    else if (items[args.Which].Equals(GetString(Resource.String.bill_related_feedback_selection_cancel)))
+                    {
+                        _ChooseDialog.Dismiss();
+                    }
+                }
+            );
+            _ChooseDialog = builder.Show();
         }
 
         protected override void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
@@ -468,27 +419,22 @@ namespace myTNB_Android.Src.Feedback_PreLogin_BillRelated.Activity
 
         public Task<string> SaveCameraImage(string tempImagePath, string fileName)
         {
-            
-                
             return Task.Run<string>(() =>
             {
                 return FileUtils.ProcessCameraImage(this, tempImagePath, fileName);
             });
-           
         }
 
         public Task<string> SaveGalleryImage(Android.Net.Uri selectedImage, string pTempImagePath, string pFileName)
         {
-            
             return Task.Run<string>(() => {
                 return FileUtils.ProcessGalleryImage(this, selectedImage, pTempImagePath, pFileName);
             });
-           
+
         }
 
         public void ShowLoadingImage()
         {
-            try {
             int position = adapter.ItemCount - 1;
             AttachedImage attachImage = adapter.GetItemObject(position);
             if (attachImage != null && attachImage.ViewType == Constants.VIEW_TYPE_DUMMY_RECORD)
@@ -496,16 +442,10 @@ namespace myTNB_Android.Src.Feedback_PreLogin_BillRelated.Activity
                 attachImage.IsLoading = true;
                 adapter.Update(position , attachImage);
             }
-            }
-            catch (System.Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
         }
 
         public void HideLoadingImage()
         {
-            try {
             int position = adapter.ItemCount - 1;
             AttachedImage attachImage = adapter.GetItemObject(position);
             if (attachImage != null && attachImage.ViewType == Constants.VIEW_TYPE_DUMMY_RECORD)
@@ -513,16 +453,10 @@ namespace myTNB_Android.Src.Feedback_PreLogin_BillRelated.Activity
                 attachImage.IsLoading = false;
                 adapter.Update(position, attachImage);
             }
-            }
-            catch (System.Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
         }
 
         public void UpdateAdapter(string pFilePath, string pFileName)
         {
-            try {
             adapter.Update(adapter.ItemCount - 1, new AttachedImage()
             {
                 ViewType = Constants.VIEW_TYPE_REAL_RECORD,
@@ -536,11 +470,6 @@ namespace myTNB_Android.Src.Feedback_PreLogin_BillRelated.Activity
                 {
                     ViewType = Constants.VIEW_TYPE_DUMMY_RECORD
                 });
-            }
-            }
-            catch (System.Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
             }
         }
 
@@ -614,7 +543,6 @@ namespace myTNB_Android.Src.Feedback_PreLogin_BillRelated.Activity
             //{
             //    submitDialog.Show();
             //}
-            try {
             if (loadingOverlay != null && loadingOverlay.IsShowing)
             {
                 loadingOverlay.Dismiss();
@@ -622,9 +550,6 @@ namespace myTNB_Android.Src.Feedback_PreLogin_BillRelated.Activity
 
             loadingOverlay = new LoadingOverlay(this, Resource.Style.LoadingOverlyDialogStyle);
             loadingOverlay.Show();
-        } catch(System.Exception e) {
-                Utility.LoggingNonFatalError(e);
-            }
         }
 
         public void HideProgressDialog()
@@ -633,15 +558,9 @@ namespace myTNB_Android.Src.Feedback_PreLogin_BillRelated.Activity
             //{
             //    submitDialog.Dismiss();
             //}
-            try {
             if (loadingOverlay != null && loadingOverlay.IsShowing)
             {
                 loadingOverlay.Dismiss();
-            }
-            }
-            catch (System.Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
             }
         }
 
@@ -666,29 +585,27 @@ namespace myTNB_Android.Src.Feedback_PreLogin_BillRelated.Activity
 
         public Task<AttachedImageRequest> SaveImage(AttachedImage attachedImage)
         {
-            
-                return Task.Run<AttachedImageRequest>(() =>
-               {
-                   BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+            return Task.Run<AttachedImageRequest>( () => 
+            {
+                BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+                
+                Bitmap bitmap = BitmapFactory.DecodeFile(attachedImage.Path, bmOptions);
 
-                   Bitmap bitmap = BitmapFactory.DecodeFile(attachedImage.Path, bmOptions);
-
-                   byte[] imageBytes = FileUtils.Get(this, bitmap);
-                   int size = imageBytes.Length;
-                   string hexString = HttpUtility.UrlEncode(FileUtils.ByteArrayToString(imageBytes), Encoding.UTF8);
-                   if (bitmap != null && !bitmap.IsRecycled)
-                   {
-                       bitmap.Recycle();
-                   }
-                   Console.WriteLine(string.Format("Hex string {0}", hexString));
-                   return new AttachedImageRequest()
-                   {
-                       ImageHex = hexString,
-                       FileSize = size,
-                       FileName = attachedImage.Name
-                   };
-               });
-
+                byte[] imageBytes = FileUtils.Get(this , bitmap);
+                int size = imageBytes.Length;
+                string hexString = HttpUtility.UrlEncode(FileUtils.ByteArrayToString(imageBytes) , Encoding.UTF8);
+                if (bitmap != null && !bitmap.IsRecycled)
+                {
+                    bitmap.Recycle();
+                }
+                Console.WriteLine(string.Format("Hex string {0}" , hexString));
+                return new AttachedImageRequest()
+                {
+                    ImageHex = hexString,
+                    FileSize = size,
+                    FileName = attachedImage.Name
+                };
+            });
         }
 
         public void EnableSubmitButton()
@@ -698,7 +615,7 @@ namespace myTNB_Android.Src.Feedback_PreLogin_BillRelated.Activity
             string email = txtEmail.Text.Trim();
             string account_no = txtAccountNo.Text.Trim();
             string feedback = txtFeedback.Text.Trim();
-            try {
+
             if (TextUtils.IsEmpty(fullname) || TextUtils.IsEmpty(mobile_no) || TextUtils.IsEmpty(email) || TextUtils.IsEmpty(account_no))
             {
                 DisableSubmitButton();
@@ -713,11 +630,6 @@ namespace myTNB_Android.Src.Feedback_PreLogin_BillRelated.Activity
 
             btnSubmit.Enabled = true;
             btnSubmit.Background = ContextCompat.GetDrawable(this, Resource.Drawable.green_button_background);
-            }
-            catch (System.Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
         }
 
         public void DisableSubmitButton()
@@ -795,23 +707,6 @@ namespace myTNB_Android.Src.Feedback_PreLogin_BillRelated.Activity
             tv.SetMaxLines(5);
 
             mErrorMessageSnackBar.Show();
-        }
-
-        public override void OnTrimMemory(TrimMemory level)
-        {
-            base.OnTrimMemory(level);
-
-            switch (level)
-            {
-                case TrimMemory.RunningLow:
-                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
-                    GC.Collect();
-                    break;
-                default:
-                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
-                    GC.Collect();
-                    break;
-            }
         }
     }
 }

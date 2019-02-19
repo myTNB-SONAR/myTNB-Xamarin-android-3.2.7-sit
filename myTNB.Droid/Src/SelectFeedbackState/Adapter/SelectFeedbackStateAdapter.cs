@@ -48,7 +48,7 @@ namespace myTNB_Android.Src.SelectFeedbackState.Adapter
                 vh = convertView.Tag as FeedbackStateViewHolder;
 
             }
-            try {
+
             FeedbackState item = GetItemObject(position);
             vh.txtFeedbackState.Text = item.StateName;
 
@@ -61,11 +61,7 @@ namespace myTNB_Android.Src.SelectFeedbackState.Adapter
                 vh.imageActionIcon.Visibility = ViewStates.Gone;
 
             }
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
+
             return convertView;
         }
 

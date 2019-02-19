@@ -72,9 +72,8 @@ namespace myTNB_Android.Src.UpdatePassword.MVP
             }
             ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
             UserEntity userEntity = UserEntity.GetActive();
-            if (mView.IsActive()) {
             this.mView.ShowProgress();
-            }
+
 #if DEBUG || STUB
             var httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
             var updatePasswordApi = RestService.For<IUpdatePasswordApi>(httpClient);
@@ -99,11 +98,6 @@ namespace myTNB_Android.Src.UpdatePassword.MVP
                     DeviceCordova = Constants.APP_CONFIG.API_KEY_ID
                 } , cts.Token);
 
-                if (mView.IsActive())
-                {
-                    this.mView.HideProgress();
-                }
-
                 if (!updatePasswordResponse.Data.IsError)
                 {
                     this.mView.ShowSuccess();
@@ -115,36 +109,23 @@ namespace myTNB_Android.Src.UpdatePassword.MVP
             }
             catch (System.OperationCanceledException e)
             {
-                if (mView.IsActive())
-                {
-                    this.mView.HideProgress();
-                }
+
                 // ADD OPERATION CANCELLED HERE
                 this.mView.ShowRetryOptionsCancelledException(e);
-                Utility.LoggingNonFatalError(e);
             }
             catch (ApiException apiException)
             {
-                if (mView.IsActive())
-                {
-                    this.mView.HideProgress();
-                }
                 // ADD HTTP CONNECTION EXCEPTION HERE
                 this.mView.ShowRetryOptionsApiException(apiException);
-                Utility.LoggingNonFatalError(apiException);
             }
             catch (Exception e)
             {
-                if (mView.IsActive())
-                {
-                    this.mView.HideProgress();
-                }
                 // ADD UNKNOWN EXCEPTION HERE
                 this.mView.ShowRetryOptionsUnknownException(e);
-                Utility.LoggingNonFatalError(e);
             }
 
 
+            this.mView.HideProgress();
         }
 
         public void Start()

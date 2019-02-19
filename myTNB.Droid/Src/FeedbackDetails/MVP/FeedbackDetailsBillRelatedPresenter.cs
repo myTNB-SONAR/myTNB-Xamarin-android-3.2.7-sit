@@ -31,7 +31,7 @@ namespace myTNB_Android.Src.FeedbackDetails.MVP
         SimpleDateFormat simpleDateTimeParser = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
         SimpleDateFormat simpleDateTimeFormat = new SimpleDateFormat("dd MMM yyyy h:mm a");
 
-        public FeedbackDetailsBillRelatedPresenter(FeedbackDetailsContract.BillRelated.IView mView, SubmittedFeedbackDetails feedbackDetails)
+        public FeedbackDetailsBillRelatedPresenter(FeedbackDetailsContract.BillRelated.IView mView , SubmittedFeedbackDetails feedbackDetails)
         {
             this.mView = mView;
             this.mView.SetPresenter(this);
@@ -40,63 +40,54 @@ namespace myTNB_Android.Src.FeedbackDetails.MVP
 
         public async void Start()
         {
+            List<AttachedImage> attachImageList = new List<AttachedImage>();
+            foreach (ImageResponse image in feedbackDetails.ImageList)
+            {
+                if (!TextUtils.IsEmpty(image.ImageHex))
+                {
+                    try
+                    {
+                        Bitmap bitmap = await FileUtils.GetImageFromHexAsync(image.ImageHex, image.FileSize);
+                        string filePath = await FileUtils.SaveAsync(bitmap, FileUtils.IMAGE_FOLDER, image.FileName);
+                        var attachImage = new AttachedImage()
+                        {
+                            Path = filePath,
+                            Name = image.FileName
+                        };
+                        attachImageList.Add(attachImage);
+                    }
+                    catch (Exception e)
+                    {
+
+                    }
+                }
+
+
+
+            }
+            Date d = null;
+            string dateTime = string.Empty;
             try
             {
-                List<AttachedImage> attachImageList = new List<AttachedImage>();
-                foreach (ImageResponse image in feedbackDetails.ImageList)
-                {
-                    if (!TextUtils.IsEmpty(image.ImageHex))
-                    {
-                        try
-                        {
-                            Bitmap bitmap = await FileUtils.GetImageFromHexAsync(image.ImageHex, image.FileSize);
-                            string filePath = await FileUtils.SaveAsync(bitmap, FileUtils.IMAGE_FOLDER, image.FileName);
-                            var attachImage = new AttachedImage()
-                            {
-                                Path = filePath,
-                                Name = image.FileName
-                            };
-                            attachImageList.Add(attachImage);
-                        }
-                        catch (Exception e)
-                        {
-                            Utility.LoggingNonFatalError(e);
-                        }
-                    }
-
-
-
-                }
-                Date d = null;
-                string dateTime = string.Empty;
-                try
-                {
-                    d = simpleDateTimeParser.Parse(feedbackDetails.DateCreated);
-                    dateTime = simpleDateTimeFormat.Format(d);
-                }
-                catch (Java.Text.ParseException e)
-                {
-                    dateTime = "NA";
-                    Utility.LoggingNonFatalError(e);
-                }
-                string accountNum = feedbackDetails.AccountNum;
-                if (UserEntity.IsCurrentlyActive())
-                {
-                    CustomerBillingAccount customerBillingAccount = CustomerBillingAccount.FindByAccNum(accountNum);
-                    if (customerBillingAccount != null)
-                    {
-                        accountNum = string.Format("{0} - {1}", accountNum, customerBillingAccount.AccDesc);
-                    }
-                }
-
-                this.mView.ShowInputData(feedbackDetails.ServiceReqNo, feedbackDetails.StatusDesc, feedbackDetails.StatusCode, dateTime, accountNum, feedbackDetails.FeedbackMessage);
-                this.mView.ShowImages(attachImageList);
-
+                d = simpleDateTimeParser.Parse(feedbackDetails.DateCreated);
+                dateTime = simpleDateTimeFormat.Format(d);
             }
-            catch (Exception e)
+            catch (Java.Text.ParseException e)
             {
-                Utility.LoggingNonFatalError(e);
+                dateTime = "NA";
             }
+            string accountNum = feedbackDetails.AccountNum;
+            if (UserEntity.IsCurrentlyActive())
+            {
+                CustomerBillingAccount customerBillingAccount = CustomerBillingAccount.FindByAccNum(accountNum);
+                if (customerBillingAccount != null)
+                {
+                    accountNum = string.Format("{0} - {1}", accountNum, customerBillingAccount.AccDesc);
+                }
+            }
+
+            this.mView.ShowInputData(feedbackDetails.ServiceReqNo , feedbackDetails.StatusDesc , feedbackDetails.StatusCode, dateTime , accountNum, feedbackDetails.FeedbackMessage);
+            this.mView.ShowImages(attachImageList);
         }
     }
 }

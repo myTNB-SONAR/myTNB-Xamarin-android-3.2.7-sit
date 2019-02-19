@@ -43,36 +43,28 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
 
         public void OnBillTab()
         {
-            try
+
+            if (billsHistoryResponseV5 != null && !billsHistoryResponseV5.Data.IsError && billsHistoryResponseV5.Data.Status.Equals("success"))
             {
-                if (billsHistoryResponseV5 != null && !billsHistoryResponseV5.Data.IsError && billsHistoryResponseV5.Data.Status.Equals("success"))
+                this.mView.ShowBillsList(billsHistoryResponseV5);
+            }
+            else
+            {
+                if (!BillHistoryEntity.IsSMDataUpdated(selectedAccount.AccountNum))
                 {
-                    this.mView.ShowBillsList(billsHistoryResponseV5);
-                }
-                else
-                {
-                    if (!BillHistoryEntity.IsSMDataUpdated(selectedAccount.AccountNum))
+                    BillHistoryEntity storedEntity = BillHistoryEntity.GetItemByAccountNo(selectedAccount.AccountNum);
+                    if (storedEntity != null)
                     {
-                        BillHistoryEntity storedEntity = BillHistoryEntity.GetItemByAccountNo(selectedAccount.AccountNum);
-                        if (storedEntity != null)
+                        billsHistoryResponseV5 = JsonConvert.DeserializeObject<BillHistoryResponseV5>(storedEntity.JsonResponse);
+                        if (billsHistoryResponseV5.Data.BillHistory != null && billsHistoryResponseV5.Data.BillHistory.Count() > 0)
                         {
-                            billsHistoryResponseV5 = JsonConvert.DeserializeObject<BillHistoryResponseV5>(storedEntity.JsonResponse);
-                            if (billsHistoryResponseV5.Data.BillHistory != null && billsHistoryResponseV5.Data.BillHistory.Count() > 0)
-                            {
-                                this.mView.ShowBillsList(billsHistoryResponseV5);
-                            }
-                            else
-                            {
-                                LoadingBillsHistory();
-                            }
-                            if (this.mView.IsActive())
-                            {
-                                this.mView.EnableTabs();
-                            }
-                        }
-                        else
-                        {
+                            this.mView.ShowBillsList(billsHistoryResponseV5);
+                        }else{
                             LoadingBillsHistory();
+                        }
+                        if (this.mView.IsActive())
+                        {
+                            this.mView.EnableTabs();
                         }
                     }
                     else
@@ -80,14 +72,15 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                         LoadingBillsHistory();
                     }
                 }
-            } catch(Exception e) {
-                Utility.LoggingNonFatalError(e);
+                else
+                {
+                    LoadingBillsHistory();
+                }
             }
         }
 
         public void OnPaymentTab()
         {
-            try {
             if (selectedAccount.AccountCategoryId.Equals("2"))
             {
                 if (paymentHistoryREResponse != null && !paymentHistoryREResponse.Data.IsError && paymentHistoryREResponse.Data.Status.Equals("success"))
@@ -154,11 +147,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                     
                 }
             }
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
         }
 
         public void OnPay()
@@ -178,7 +166,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
 
         public void Start()
         {
-            try {
             // NO IMPL
             this.mView.DisableTabs();
             ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
@@ -213,11 +200,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
             else
             {
                 this.mView.ShowNormalAccount();
-            }
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
             }
        }
 
@@ -283,8 +265,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                 {
                     this.mView.ShowNoInternet();
                 }
-
-                Utility.LoggingNonFatalError(e);
             }
             catch (ApiException apiException)
             {
@@ -295,8 +275,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                 {
                     this.mView.ShowNoInternet();
                 }
-
-                Utility.LoggingNonFatalError(apiException);
             }
             catch (Exception e)
             {
@@ -307,7 +285,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                 {
                     this.mView.ShowNoInternet();
                 }
-                Utility.LoggingNonFatalError(e);
             }
         }
 
@@ -375,7 +352,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                 {
                     this.mView.ShowNoInternet();
                 }
-                Utility.LoggingNonFatalError(e);
             }
             catch (ApiException apiException)
             {
@@ -386,7 +362,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                 {
                     this.mView.ShowNoInternet();
                 }
-                Utility.LoggingNonFatalError(apiException);
             }
             catch (Exception e)
             {
@@ -397,8 +372,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                 {
                     this.mView.ShowNoInternet();
                 }
-
-                Utility.LoggingNonFatalError(e);
             }
         }
 
@@ -468,8 +441,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                 {
                     this.mView.ShowNoInternet();
                 }
-
-                Utility.LoggingNonFatalError(e);
             }
             catch (ApiException apiException)
             {
@@ -480,8 +451,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                 {
                     this.mView.ShowNoInternet();
                 }
-
-                Utility.LoggingNonFatalError(apiException);
             }
             catch (Exception e)
             {
@@ -492,8 +461,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                 {
                     this.mView.ShowNoInternet();
                 }
-
-                Utility.LoggingNonFatalError(e);
             }
         }
     }

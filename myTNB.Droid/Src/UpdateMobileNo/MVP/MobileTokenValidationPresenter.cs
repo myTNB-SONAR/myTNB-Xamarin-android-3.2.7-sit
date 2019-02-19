@@ -88,11 +88,7 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
                 this.mView.ShowEmptyErrorPin_4();
                 return;
             }
-
-            if (mView.IsActive())
-            {
-                this.mView.ShowRegistrationProgress();
-            }
+            this.mView.ShowRegistrationProgress();
             this.mView.DisableResendButton();
             this.mView.ClearErrors();
 
@@ -134,11 +130,6 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
                     token = string.Format("{0}{1}{2}{3}", num1, num2, num3, num4)
                 },cts.Token );
 
-                if (mView.IsActive())
-                {
-                    this.mView.HideRegistrationProgress();
-                }
-
                 if (!verifyTokenResponse.Data.IsError){
                     //this.mView.ShowDashboardMyAccount();
                     /// call login service 
@@ -167,42 +158,29 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
             }
             catch (System.OperationCanceledException e)
             {
-                if (mView.IsActive())
-                {
-                    this.mView.HideRegistrationProgress();
-                }
                 Log.Debug(TAG, "Cancelled Exception");
                 // ADD OPERATION CANCELLED HERE
                 this.mView.ShowRetryOptionsCancelledException(e);
-                Utility.LoggingNonFatalError(e);
             }
             catch (ApiException apiException)
             {
-                if (mView.IsActive())
-                {
-                    this.mView.HideRegistrationProgress();
-                }
                 // ADD HTTP CONNECTION EXCEPTION HERE
                 this.mView.ShowRetryOptionsApiException(apiException);
-                Utility.LoggingNonFatalError(apiException);
             }
             catch (Exception e)
             {
-                if (mView.IsActive())
-                {
-                    this.mView.HideRegistrationProgress();
-                }
                 // ADD UNKNOWN EXCEPTION HERE
                 Log.Debug(TAG, "Stack " + e.StackTrace);
                 this.mView.ShowRetryOptionsUnknownException(e);
-                Utility.LoggingNonFatalError(e);
             }
+
+            this.mView.HideRegistrationProgress();
 
         }
 
         public void OnRequestPermissionsResult(int requestCode, string[] permissions, Permission[] grantResults)
         {
-            try {
+
             // SILENTLY DIE , SMS RECEIVE IS ONLY OPTIONAL
             if (requestCode == Constants.RUNTIME_PERMISSION_SMS_REQUEST_CODE)
             {
@@ -214,11 +192,6 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
                     //}
                 }
                
-            }
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
             }
         }
 
@@ -289,20 +262,17 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
                 Log.Debug(TAG, "Cancelled Exception");
                 // ADD OPERATION CANCELLED HERE
                 this.mView.ShowRetryOptionsCancelledException(e);
-                Utility.LoggingNonFatalError(e);
             }
             catch (ApiException apiException)
             {
                 // ADD HTTP CONNECTION EXCEPTION HERE
                 this.mView.ShowRetryOptionsApiException(apiException);
-                Utility.LoggingNonFatalError(apiException);
             }
             catch (Exception e)
             {
                 // ADD UNKNOWN EXCEPTION HERE
                 Log.Debug(TAG, "Stack " + e.StackTrace);
                 this.mView.ShowRetryOptionsUnknownException(e);
-                Utility.LoggingNonFatalError(e);
             }
 
 
@@ -310,7 +280,7 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
 
         public void Start()
         {
-            try {
+
             bool isGranted = this.mView.IsGrantedSMSReceivePermission();
             if (!isGranted)
             {
@@ -326,11 +296,6 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
 
             this.mView.DisableResendButton();
             this.mView.StartProgress();
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
         }
 
         public async void CallLoginServce(UserAuthenticationRequest request, string newPhone)
@@ -338,9 +303,7 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
             cts = new CancellationTokenSource();
             ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
 
-            if (mView.IsActive()) {
             this.mView.ShowRegistrationProgress();
-            }
 #if DEBUG
             var httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
             var api = RestService.For<IAuthenticateUser>(httpClient);
@@ -359,10 +322,8 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
 
                 if (userResponse.Data.IsError || userResponse.Data.Status.Equals("failed"))
                 {
-                    if (mView.IsActive())
-                    {
-                        this.mView.HideRegistrationProgress();
-                    }
+
+                    this.mView.HideRegistrationProgress();
                     this.mView.ShowRetryLoginUnknownException(userResponse.Data.Message);
                 }
                 else
@@ -429,11 +390,6 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
 
                         }, cts.Token);
 
-                        if (mView.IsActive())
-                        {
-                            this.mView.HideRegistrationProgress();
-                        }
-
                         if (!userNotificationResponse.Data.IsError)
                         {
                             foreach (UserNotification userNotification in userNotificationResponse.Data.Data)
@@ -447,11 +403,6 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
                         }
                         UserSessions.SavePhoneVerified(mSharedPref, true);
                         this.mView.ShowDashboardMyAccount();
-                    } else {
-                        if (mView.IsActive())
-                        {
-                            this.mView.HideRegistrationProgress();
-                        }
                     }
                 }
             }
@@ -464,7 +415,6 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
                     this.mView.HideRegistrationProgress();
                     this.mView.ShowRetryLoginUnknownException(e.StackTrace);
                 }
-                Utility.LoggingNonFatalError(e);
             }
             catch (ApiException apiException)
             {
@@ -474,7 +424,6 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
                     this.mView.HideRegistrationProgress();
                     this.mView.ShowRetryLoginUnknownException(apiException.StackTrace);
                 }
-                Utility.LoggingNonFatalError(apiException);
             }
             catch (Exception e)
             {
@@ -485,7 +434,6 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
                     this.mView.HideRegistrationProgress();
                     this.mView.ShowRetryLoginUnknownException(e.StackTrace);
                 }
-                Utility.LoggingNonFatalError(e);
             }
         }
 
@@ -494,9 +442,8 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
             cts = new CancellationTokenSource();
             ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
 
-            if (mView.IsActive()) {
             this.mView.ShowRegistrationProgress();
-                }
+
 #if DEBUG
             var httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
             var api = RestService.For<INotificationApi>(httpClient);
@@ -562,17 +509,9 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
                         }
                     }
                     UserSessions.SavePhoneVerified(mSharedPref, true);
-                    if (mView.IsActive())
-                    {
-                        this.mView.HideRegistrationProgress();
-                    }
+                    this.mView.HideRegistrationProgress();
                     this.mView.ShowDashboard();
 
-                } else {
-                    if (mView.IsActive())
-                    {
-                        this.mView.HideRegistrationProgress();
-                    }
                 }
 
             }
@@ -585,7 +524,6 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
                     this.mView.HideRegistrationProgress();
                     this.mView.ShowRetryLoginUnknownException(e.StackTrace);
                 }
-                Utility.LoggingNonFatalError(e);
             }
             catch (ApiException apiException)
             {
@@ -595,7 +533,6 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
                     this.mView.HideRegistrationProgress();
                     this.mView.ShowRetryLoginUnknownException(apiException.StackTrace);
                 }
-                Utility.LoggingNonFatalError(apiException);
             }
             catch (Exception e)
             {
@@ -606,7 +543,6 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
                     this.mView.HideRegistrationProgress();
                     this.mView.ShowRetryLoginUnknownException(e.StackTrace);
                 }
-                Utility.LoggingNonFatalError(e);
             }
         }
         }

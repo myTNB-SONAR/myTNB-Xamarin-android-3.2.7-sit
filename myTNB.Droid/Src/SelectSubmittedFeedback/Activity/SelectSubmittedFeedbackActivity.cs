@@ -23,7 +23,6 @@ using myTNB_Android.Src.FeedbackDetails.Activity;
 using Newtonsoft.Json;
 using Android.Preferences;
 using myTNB_Android.Src.Utils.Custom.ProgressDialog;
-using System.Runtime;
 
 namespace myTNB_Android.Src.SelectSubmittedFeedback.Activity
 {
@@ -58,7 +57,7 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.Activity
             base.OnCreate(savedInstanceState);
 
             // Create your application here
-            try {
+
             progressDialog = new MaterialDialog.Builder(this)
                 .Title(Resource.String.select_submitted_feedback_dialog_title)
                 .Content(Resource.String.select_submitted_feedback_dialog_content)
@@ -74,11 +73,6 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.Activity
 
             mPresenter = new SelectSubmittedFeedbackPresenter(this , PreferenceManager.GetDefaultSharedPreferences(this));
             this.userActionsListener.Start();
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
         }
 
 
@@ -86,14 +80,8 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.Activity
         [OnItemClick(Resource.Id.listView)]
         void OnItemClick(object sender, AdapterView.ItemClickEventArgs e)
         {
-            try {
             SubmittedFeedback feedback = adapter.GetItemObject(e.Position);
             this.userActionsListener.OnSelect(feedback);
-            }
-            catch (Exception ex)
-            {
-                Utility.LoggingNonFatalError(ex);
-            }
         }
 
 
@@ -129,7 +117,6 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.Activity
             //{
             //    progressDialog.Show();
             //}
-            try {
             if (loadingOverlay != null && loadingOverlay.IsShowing)
             {
                 loadingOverlay.Dismiss();
@@ -137,11 +124,6 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.Activity
 
             loadingOverlay = new LoadingOverlay(this, Resource.Style.LoadingOverlyDialogStyle);
             loadingOverlay.Show();
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
         }
 
         public void HideProgressDialog()
@@ -150,15 +132,9 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.Activity
             //{
             //    progressDialog.Dismiss();
             //}
-            try {
             if (loadingOverlay != null && loadingOverlay.IsShowing)
             {
                 loadingOverlay.Dismiss();
-            }
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
             }
         }
 
@@ -270,24 +246,6 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.Activity
             btn.SetTextColor(Android.Graphics.Color.Yellow);
             bcrmExceptionSnackBar.Show();
 
-        }
-
-
-        public override void OnTrimMemory(TrimMemory level)
-        {
-            base.OnTrimMemory(level);
-
-            switch (level)
-            {
-                case TrimMemory.RunningLow:
-                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
-                    GC.Collect();
-                    break;
-                default:
-                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
-                    GC.Collect();
-                    break;
-            }
         }
     }
 }

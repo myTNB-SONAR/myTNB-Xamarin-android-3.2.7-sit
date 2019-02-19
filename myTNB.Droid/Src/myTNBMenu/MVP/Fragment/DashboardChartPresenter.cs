@@ -37,7 +37,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
 
         public void OnArrowBackClick()
         {
-            try {
             if (this.mView.GetCurrentParentIndex() == (this.mView.GetMaxParentIndex() - 1))
             {
                 this.mView.EnableLeftArrow(false);
@@ -65,16 +64,11 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
             {
                 this.mView.EnableRightArrow(true);
             }
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
+
         }
 
         public void OnArrowForwardClick()
         {
-            try {
             if (this.mView.GetCurrentParentIndex() == 0)
             {
                 this.mView.EnableRightArrow(false);
@@ -103,16 +97,10 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
             {
                 this.mView.EnableLeftArrow(true);
             }
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
         }
 
         public void OnByDay()
         {
-            try {
             if (!this.mView.HasNoInternet())
             {
                 this.mView.SetCurrentParentIndex(0);
@@ -128,28 +116,19 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                     this.mView.ShowNotAvailableDayData();
                 }
             }
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
+
          
         }
 
         public void OnByMonth()
         {
-            try {
             if (!this.mView.HasNoInternet())
             {
                 this.mView.EnableLeftArrow(false);
                 this.mView.EnableRightArrow(false);
                 this.mView.ShowByMonth();
             }
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
+
         }
 
         public void OnLearnMore()
@@ -164,10 +143,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
         public async void OnLoadAmount(string accountNum)
         {
             cts = new CancellationTokenSource();
-            if (mView.IsActive())
-            {
-                this.mView.ShowAmountProgress();
-            }
+            this.mView.ShowAmountProgress();
             //this.mView.DisablePayButton();
             ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
 #if DEBUG
@@ -217,7 +193,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                     this.mView.ShowRetryOptionsCancelledException(e);
 
                 }
-                Utility.LoggingNonFatalError(e);
+
             }
             catch (ApiException apiException)
             {
@@ -227,7 +203,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                     this.mView.HideAmountProgress();
                     this.mView.ShowRetryOptionsApiException(apiException);
                 }
-                Utility.LoggingNonFatalError(apiException);
+
             }
             catch (Exception e)
             {
@@ -237,7 +213,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                     this.mView.HideAmountProgress();
                     this.mView.ShowRetryOptionsUnknownException(e);
                 }
-                Utility.LoggingNonFatalError(e);
+
             }
 
 
@@ -364,7 +340,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                 {
                     this.mView.ShowNoInternet();
                 }
-                Utility.LoggingNonFatalError(e);
             }
             catch (ApiException apiException)
             {
@@ -375,7 +350,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                 {
                     this.mView.ShowNoInternet();
                 }
-                Utility.LoggingNonFatalError(apiException);
             }
             catch (Exception e)
             {
@@ -386,7 +360,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                 {
                     this.mView.ShowNoInternet();
                 }
-                Utility.LoggingNonFatalError(e);
             }
 
             this.mView.ShowViewBill();

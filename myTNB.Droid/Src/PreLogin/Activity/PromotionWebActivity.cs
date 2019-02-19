@@ -43,7 +43,6 @@ namespace myTNB_Android.Src.PreLogin.Activity
         {
             base.OnCreate(savedInstanceState);
 
-            try {
             string webLink = Intent.Extras.GetString(Constants.PROMOTIONS_LINK);
 
             webView = FindViewById<WebView>(Resource.Id.webView);
@@ -55,11 +54,6 @@ namespace myTNB_Android.Src.PreLogin.Activity
             webView.SetWebViewClient(new MyTNBWebViewClient(this, mProgressBar));
 
             webView.LoadUrl(webLink);
-            }
-            catch (Exception ex)
-            {
-                Utility.LoggingNonFatalError(ex);
-            }
         }
 
         public class MyTNBWebViewClient : WebViewClient

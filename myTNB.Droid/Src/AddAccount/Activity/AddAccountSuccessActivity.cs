@@ -18,7 +18,6 @@ using Android.Content.PM;
 using Newtonsoft.Json;
 using myTNB_Android.Src.AddAccount.Adapter;
 using myTNB_Android.Src.Utils;
-using System.Runtime;
 
 namespace myTNB_Android.Src.AddAccount.Activity
 {
@@ -93,23 +92,6 @@ namespace myTNB_Android.Src.AddAccount.Activity
             Intent DashboardIntent = new Intent(this, typeof(DashboardActivity));
             DashboardIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
             StartActivity(DashboardIntent);
-        }
-
-        public override void OnTrimMemory(TrimMemory level)
-        {
-            base.OnTrimMemory(level);
-
-            switch (level)
-            {
-                case TrimMemory.RunningLow:
-                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
-                    GC.Collect();
-                    break;
-                default:
-                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
-                    GC.Collect();
-                    break;
-            }
         }
     }
 }

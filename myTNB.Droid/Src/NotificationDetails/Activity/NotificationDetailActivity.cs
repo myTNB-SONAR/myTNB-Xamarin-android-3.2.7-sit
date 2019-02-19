@@ -30,7 +30,6 @@ using myTNB_Android.Src.Utils.Custom.ProgressDialog;
 using myTNB.SQLite.SQLiteDataManager;
 using myTNB_Android.Src.Promotions.Activity;
 using myTNB_Android.Src.myTNBMenu.Activity;
-using System.Runtime;
 
 namespace myTNB_Android.Src.NotificationDetails.Activity
 {
@@ -109,7 +108,6 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
             //{
             //    retrievalDialog.Show();
             //}
-            try {
             if (loadingOverlay != null && loadingOverlay.IsShowing)
             {
                 loadingOverlay.Dismiss();
@@ -117,11 +115,6 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
 
             loadingOverlay = new LoadingOverlay(this, Resource.Style.LoadingOverlyDialogStyle);
             loadingOverlay.Show();
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
         }
 
         public void HideRetrievalProgress()
@@ -130,15 +123,9 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
             //{
             //    retrievalDialog.Dismiss();
             //}
-            try {
             if (loadingOverlay != null && loadingOverlay.IsShowing)
             {
                 loadingOverlay.Dismiss();
-            }
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
             }
         }
 
@@ -146,8 +133,6 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-
-            try {
             retrievalDialog = new MaterialDialog.Builder(this)
             .Title(GetString(Resource.String.notification_detail_retrieval_progress_title))
             .Content(GetString(Resource.String.notification_detail_retrieval_progress_content))
@@ -232,29 +217,17 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
 
             }
         }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
-        }
 
 
         [OnClick(Resource.Id.btnPay)]
         void OnPay(object sender, EventArgs eventArgs)
         {
-            try {
             this.userActionsListener.OnPayment(notificationDetails);
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
         }
 
         [OnClick(Resource.Id.btnViewDetails)]
         void OnViewDetails(object sender, EventArgs eventArgs)
         {
-            try {
             if (notificationDetails.BCRMNotificationTypeId.Equals("97"))
             {
                 this.userActionsListener.OnViewPromotion(notificationDetails);
@@ -262,11 +235,6 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
             else
             {
                 this.userActionsListener.OnViewDetails(notificationDetails);
-            }
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
             }
         }
 
@@ -297,24 +265,6 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
                 dashbaord_activity.PutExtra(Constants.PROMOTION_NOTIFICATION_VIEW, true);
                 dashbaord_activity.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
                 StartActivity(dashbaord_activity);
-            }
-        }
-
-
-        public override void OnTrimMemory(TrimMemory level)
-        {
-            base.OnTrimMemory(level);
-
-            switch (level)
-            {
-                case TrimMemory.RunningLow:
-                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
-                    GC.Collect();
-                    break;
-                default:
-                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
-                    GC.Collect();
-                    break;
             }
         }
     }

@@ -123,10 +123,7 @@ namespace myTNB_Android.Src.Feedback_Login_BillRelated.MVP
 
 
             cts = new CancellationTokenSource();
-
-            if (mView.IsActive()) {
             this.mView.ShowProgressDialog();
-            }
 
             ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
 
@@ -174,11 +171,6 @@ namespace myTNB_Android.Src.Feedback_Login_BillRelated.MVP
 
                 var preLoginFeedbackResponse = await preloginFeedbackApi.SubmitFeedback(request, cts.Token);
 
-                if (mView.IsActive())
-                {
-                    this.mView.HideProgressDialog();
-                }
-
                 if (!preLoginFeedbackResponse.Data.IsError)
                 {
                     SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
@@ -208,112 +200,85 @@ namespace myTNB_Android.Src.Feedback_Login_BillRelated.MVP
 
             catch (System.OperationCanceledException e)
             {
-                if (mView.IsActive())
-                {
-                    this.mView.HideProgressDialog();
-                }
                 //this.mView.ShowFail();
                 this.mView.OnSubmitError();
-                Utility.LoggingNonFatalError(e);
 
             }
             catch (ApiException apiException)
             {
-                if (mView.IsActive())
-                {
-                    this.mView.HideProgressDialog();
-                }
                 //this.mView.ShowFail();
                 this.mView.OnSubmitError();
-                Utility.LoggingNonFatalError(apiException);
             }
             catch (Exception e)
             {
-                if (mView.IsActive())
-                {
-                    this.mView.HideProgressDialog();
-                }
                 //this.mView.ShowFail();
                 this.mView.OnSubmitError();
-                Utility.LoggingNonFatalError(e);
             }
-
+            this.mView.HideProgressDialog();
         }
 
         public void Start()
         {
-            try
+            // TODO: REPLACE WITH THE FIRST 
+            this.mView.DisableSubmitButton();
+            if (selectedCustomerBillingAccount != null)
             {
-                // TODO: REPLACE WITH THE FIRST 
-                this.mView.DisableSubmitButton();
-                if (selectedCustomerBillingAccount != null)
-                {
-                    this.mView.ShowSelectedAccount(selectedCustomerBillingAccount);
-                }
-                else
-                {
-                    CustomerBillingAccount customerBillingAccount = CustomerBillingAccount.GetSelectedOrFirst();
-                    if (customerBillingAccount != null)
-                    {
-                        this.mView.ShowSelectedAccount(customerBillingAccount);
-                    }
-
-                }
-
-                UserEntity userEntity = UserEntity.GetActive();
-                if (TextUtils.IsEmpty(userEntity.MobileNo))
-                {
-                    this.mView.ShowMobileNo();
-                }
-                else
-                {
-                    this.mView.HideMobileNo();
-                }
-            } catch(Exception e) {
-                Utility.LoggingNonFatalError(e);
+                this.mView.ShowSelectedAccount(selectedCustomerBillingAccount);
             }
+            else
+            {
+                CustomerBillingAccount customerBillingAccount = CustomerBillingAccount.GetSelectedOrFirst();
+                if (customerBillingAccount != null)
+                {
+                    this.mView.ShowSelectedAccount(customerBillingAccount);
+                }
+
+            }
+
+            UserEntity userEntity = UserEntity.GetActive();
+            if (TextUtils.IsEmpty(userEntity.MobileNo))
+            {
+                this.mView.ShowMobileNo();
+            }
+            else
+            {
+                this.mView.HideMobileNo();
+            }
+
             
         }
 
         public void OnSelectAccount()
         {
-            try
+            if (CustomerBillingAccount.HasItems())
             {
-                if (CustomerBillingAccount.HasItems())
+                if (selectedCustomerBillingAccount != null)
                 {
-                    if (selectedCustomerBillingAccount != null)
-                    {
-                        this.mView.ShowSelectAccount(AccountData.Copy(selectedCustomerBillingAccount, true));
-                    }
-                    else
-                    {
-                        CustomerBillingAccount customerBillingAccount = CustomerBillingAccount.GetFirst();
-                        this.mView.ShowSelectAccount(AccountData.Copy(customerBillingAccount, true));
-                    }
-
+                    this.mView.ShowSelectAccount(AccountData.Copy(selectedCustomerBillingAccount, true));
                 }
-            } catch(Exception e) {
-                Utility.LoggingNonFatalError(e);
+                else
+                {
+                    CustomerBillingAccount customerBillingAccount = CustomerBillingAccount.GetFirst();
+                    this.mView.ShowSelectAccount(AccountData.Copy(customerBillingAccount, true));
+                }
+
             }
+
            
         }
 
         public void CheckRequiredFields(string feedback)
         {
-            try
+
+            this.mView.ClearErrors();
+            if (!TextUtils.IsEmpty(feedback) && !feedback.Equals(" "))
             {
-                this.mView.ClearErrors();
-                if (!TextUtils.IsEmpty(feedback) && !feedback.Equals(" "))
-                {
-                    this.mView.EnableSubmitButton();
-                }
-                else
-                {
-                    //this.mView.ShowEmptyFeedbackError();
-                    this.mView.DisableSubmitButton();
-                }
-            } catch(Exception e) {
-                Utility.LoggingNonFatalError(e);
+                this.mView.EnableSubmitButton();
+            }
+            else
+            {
+                //this.mView.ShowEmptyFeedbackError();
+                this.mView.DisableSubmitButton();
             }
         }
 
@@ -354,10 +319,7 @@ namespace myTNB_Android.Src.Feedback_Login_BillRelated.MVP
             }
 
             cts = new CancellationTokenSource();
-
-            if (mView.IsActive()) {
             this.mView.ShowProgressDialog();
-            }
 
             ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
 
@@ -404,11 +366,6 @@ namespace myTNB_Android.Src.Feedback_Login_BillRelated.MVP
 
                 var preLoginFeedbackResponse = await preloginFeedbackApi.SubmitFeedback(request, cts.Token);
 
-                if (mView.IsActive())
-                {
-                    this.mView.HideProgressDialog();
-                }
-
                 if (!preLoginFeedbackResponse.Data.IsError)
                 {
                     SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
@@ -437,35 +394,21 @@ namespace myTNB_Android.Src.Feedback_Login_BillRelated.MVP
 
             catch (System.OperationCanceledException e)
             {
-                if (mView.IsActive())
-                {
-                    this.mView.HideProgressDialog();
-                }
                 //this.mView.ShowFail();
                 this.mView.OnSubmitError();
-                Utility.LoggingNonFatalError(e);
+
             }
             catch (ApiException apiException)
             {
-                if (mView.IsActive())
-                {
-                    this.mView.HideProgressDialog();
-                }
                 //this.mView.ShowFail();
                 this.mView.OnSubmitError();
-                Utility.LoggingNonFatalError(apiException);
             }
             catch (Exception e)
             {
-                if (mView.IsActive())
-                {
-                    this.mView.HideProgressDialog();
-                }
                 //this.mView.ShowFail();
                 this.mView.OnSubmitError();
-                Utility.LoggingNonFatalError(e);
             }
-
+            this.mView.HideProgressDialog();
         }
 
         public void CheckRequiredFields(string mobile_no, string feedback)
@@ -474,24 +417,21 @@ namespace myTNB_Android.Src.Feedback_Login_BillRelated.MVP
 
 
             //{
-            try
-            {
-                this.mView.ClearErrors();
 
-                if (TextUtils.IsEmpty(feedback) && feedback.Equals(" "))
-                {
-                    //this.mView.ShowEmptyFeedbackError();    
-                    this.mView.DisableSubmitButton();
-                    return;
-                }
+            this.mView.ClearErrors();
+
+            if (TextUtils.IsEmpty(feedback) && feedback.Equals(" ")) {
+                //this.mView.ShowEmptyFeedbackError();    
+                this.mView.DisableSubmitButton();
+                return;
+            }
 
 
-                if (TextUtils.IsEmpty(mobile_no))
-                {
-                    this.mView.ShowEmptyMobileNoError();
-                    this.mView.DisableSubmitButton();
-                    return;
-                }
+            if (TextUtils.IsEmpty(mobile_no)) {
+                this.mView.ShowEmptyMobileNoError();
+                this.mView.DisableSubmitButton();
+                return;
+            }
 
                 if (!PhoneNumberUtils.IsGlobalPhoneNumber(mobile_no))
                 {
@@ -516,9 +456,6 @@ namespace myTNB_Android.Src.Feedback_Login_BillRelated.MVP
 
 
                 this.mView.EnableSubmitButton();
-            } catch(Exception e) {
-                Utility.LoggingNonFatalError(e);
-            }
             //}
             //else
             //{

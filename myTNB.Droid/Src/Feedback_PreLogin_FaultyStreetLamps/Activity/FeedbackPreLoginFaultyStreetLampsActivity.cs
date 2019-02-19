@@ -35,7 +35,6 @@ using Java.Text;
 using Java.Util;
 using Android.Preferences;
 using myTNB_Android.Src.Utils.Custom.ProgressDialog;
-using System.Runtime;
 
 namespace myTNB_Android.Src.Feedback_PreLogin_FaultyStreetLamps.Activity
 {
@@ -129,99 +128,93 @@ namespace myTNB_Android.Src.Feedback_PreLogin_FaultyStreetLamps.Activity
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
+            // Create your application here
+            submitDialog = new MaterialDialog.Builder(this)
+                .Title(Resource.String.feedback_submit_dialog_title)
+                .Content(Resource.String.feedback_submit_dialog_message)
+                .Progress(true, 0)
+                .Cancelable(false)
+                .Build();
 
-            try
+            TextViewUtils.SetMuseoSans300Typeface(txtMaxImageContent,txtRelatedScreenshotTitle, txtFeedbackContent, txtFullName, txtMobileNo, txtEmail, txtState, txtLocation, txtPoleNo, txtFeedback , txtMaxCharacters);
+            TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutFullName, txtInputLayoutEmail, txtInputLayoutFeedback, txtInputLayoutLocation, txtInputLayoutMobileNo, txtInputLayoutPoleNo, txtInputLayoutState);
+            TextViewUtils.SetMuseoSans500Typeface(txtFeedbackTitle, btnSubmit);
+
+
+
+            if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
             {
-                // Create your application here
-                submitDialog = new MaterialDialog.Builder(this)
-                    .Title(Resource.String.feedback_submit_dialog_title)
-                    .Content(Resource.String.feedback_submit_dialog_message)
-                    .Progress(true, 0)
-                    .Cancelable(false)
-                    .Build();
+                txtFeedbackContent.TextFormatted = Html.FromHtml(GetString(Resource.String.faulty_street_lamps_txt_content), Html.FromHtmlModeLegacy);
+            }
+            else
+            {
+                txtFeedbackContent.TextFormatted = Html.FromHtml(GetString(Resource.String.faulty_street_lamps_txt_content));
+            }
 
-                TextViewUtils.SetMuseoSans300Typeface(txtMaxImageContent, txtRelatedScreenshotTitle, txtFeedbackContent, txtFullName, txtMobileNo, txtEmail, txtState, txtLocation, txtPoleNo, txtFeedback, txtMaxCharacters);
-                TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutFullName, txtInputLayoutEmail, txtInputLayoutFeedback, txtInputLayoutLocation, txtInputLayoutMobileNo, txtInputLayoutPoleNo, txtInputLayoutState);
-                TextViewUtils.SetMuseoSans500Typeface(txtFeedbackTitle, btnSubmit);
+            adapter = new FeedbackPreLoginFaultyStreetLampsRecyclerAdapter(true);
+            adapter.Insert(new Base.Models.AttachedImage()
+            {
+                ViewType = Constants.VIEW_TYPE_DUMMY_RECORD
+            });
+            layoutManager = new GridLayoutManager(this, Constants.GRID_IMAGE_COUNT);
+            recyclerView.SetLayoutManager(layoutManager);
+            recyclerView.SetAdapter(adapter);
 
+            adapter.AddClickEvent += Adapter_AddClickEvent;
+            adapter.RemoveClickEvent += Adapter_RemoveClickEvent;
 
-
-                if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
-                {
-                    txtFeedbackContent.TextFormatted = Html.FromHtml(GetString(Resource.String.faulty_street_lamps_txt_content), Html.FromHtmlModeLegacy);
-                }
-                else
-                {
-                    txtFeedbackContent.TextFormatted = Html.FromHtml(GetString(Resource.String.faulty_street_lamps_txt_content));
-                }
-
-                adapter = new FeedbackPreLoginFaultyStreetLampsRecyclerAdapter(true);
-                adapter.Insert(new Base.Models.AttachedImage()
-                {
-                    ViewType = Constants.VIEW_TYPE_DUMMY_RECORD
-                });
-                layoutManager = new GridLayoutManager(this, Constants.GRID_IMAGE_COUNT);
-                recyclerView.SetLayoutManager(layoutManager);
-                recyclerView.SetAdapter(adapter);
-
-                adapter.AddClickEvent += Adapter_AddClickEvent;
-                adapter.RemoveClickEvent += Adapter_RemoveClickEvent;
-
-                txtState.EnableClick();
-                txtLocation.SetOnTouchListener(this);
-                //txtState.SetOnTouchListener(this);
+            txtState.EnableClick();
+            txtLocation.SetOnTouchListener(this);
+            //txtState.SetOnTouchListener(this);
 
 #if DEBUG
-                //txtFullName.Text = "David Montecillo";
-                //txtMobileNo.Text = "09498899648";
-                //txtEmail.Text = "montecillodavid.acn@gmail.com";
-                //txtLocation.Text = "Jalan Timur";
-                //txtPoleNo.Text = "17493 8E 1";
-                //txtFeedback.Text = GetString(Resource.String.bill_related_feedback_text);
+            //txtFullName.Text = "David Montecillo";
+            //txtMobileNo.Text = "09498899648";
+            //txtEmail.Text = "montecillodavid.acn@gmail.com";
+            //txtLocation.Text = "Jalan Timur";
+            //txtPoleNo.Text = "17493 8E 1";
+            //txtFeedback.Text = GetString(Resource.String.bill_related_feedback_text);
 #endif
 
+           
+
+            //txtMobileNo.FocusChange += (object sender, View.FocusChangeEventArgs e) =>
+            //{
+            //    if (e.HasFocus)
+            //    {
+            //        if (string.IsNullOrEmpty(txtMobileNo.Text))
+            //        {
+            //            txtMobileNo.Append("+60");
+            //        }
+            //    }
+            //};
 
 
-                //txtMobileNo.FocusChange += (object sender, View.FocusChangeEventArgs e) =>
-                //{
-                //    if (e.HasFocus)
-                //    {
-                //        if (string.IsNullOrEmpty(txtMobileNo.Text))
-                //        {
-                //            txtMobileNo.Append("+60");
-                //        }
-                //    }
-                //};
 
+            txtFullName.AddTextChangedListener(new InputFilterFormField(txtFullName, txtInputLayoutFullName));
+            txtMobileNo.AddTextChangedListener(new InputFilterFormField(txtMobileNo, txtInputLayoutMobileNo));
+            txtEmail.AddTextChangedListener(new InputFilterFormField(txtEmail, txtInputLayoutEmail));
+            txtFeedback.AddTextChangedListener(new InputFilterFormField(txtFeedback, txtInputLayoutFeedback));
+            txtPoleNo.AddTextChangedListener(new InputFilterFormField(txtPoleNo, txtInputLayoutPoleNo));
+            txtState.AddTextChangedListener(new InputFilterFormField(txtState, txtInputLayoutState));
+            txtLocation.AddTextChangedListener(new InputFilterFormField(txtLocation, txtInputLayoutLocation));
 
+            mPresenter = new FeedbackPreLoginFaultyStreetLampsPresenter(this);
+            this.userActionsListener.Start();
 
-                txtFullName.AddTextChangedListener(new InputFilterFormField(txtFullName, txtInputLayoutFullName));
-                txtMobileNo.AddTextChangedListener(new InputFilterFormField(txtMobileNo, txtInputLayoutMobileNo));
-                txtEmail.AddTextChangedListener(new InputFilterFormField(txtEmail, txtInputLayoutEmail));
-                txtFeedback.AddTextChangedListener(new InputFilterFormField(txtFeedback, txtInputLayoutFeedback));
-                txtPoleNo.AddTextChangedListener(new InputFilterFormField(txtPoleNo, txtInputLayoutPoleNo));
-                txtState.AddTextChangedListener(new InputFilterFormField(txtState, txtInputLayoutState));
-                txtLocation.AddTextChangedListener(new InputFilterFormField(txtLocation, txtInputLayoutLocation));
-
-                mPresenter = new FeedbackPreLoginFaultyStreetLampsPresenter(this);
-                this.userActionsListener.Start();
-
-                if (string.IsNullOrEmpty(txtMobileNo.Text))
-                {
-                    txtMobileNo.Append("+60");
-                }
-                txtMobileNo.SetFilters(new Android.Text.IInputFilter[] { new InputFilterPhoneNumber() });
-
-                txtFullName.TextChanged += TxtFullName_TextChanged;
-                txtMobileNo.TextChanged += TxtMobileNo_TextChanged;
-                txtEmail.TextChanged += TxtEmail_TextChanged;
-                txtLocation.TextChanged += TxtLocation_TextChanged;
-                txtFeedback.TextChanged += TxtFeedback_TextChanged;
-                txtFeedback.SetOnTouchListener(this);
-                txtInputLayoutFeedback.Error = GetString(Resource.String.feedback_total_character_left);
-            } catch(Exception e) {
-                Utility.LoggingNonFatalError(e);
+            if (string.IsNullOrEmpty(txtMobileNo.Text))
+            {
+                txtMobileNo.Append("+60");
             }
+            txtMobileNo.SetFilters(new Android.Text.IInputFilter[] { new InputFilterPhoneNumber() });
+
+            txtFullName.TextChanged += TxtFullName_TextChanged;
+            txtMobileNo.TextChanged += TxtMobileNo_TextChanged;
+            txtEmail.TextChanged += TxtEmail_TextChanged;
+            txtLocation.TextChanged += TxtLocation_TextChanged;
+            txtFeedback.TextChanged += TxtFeedback_TextChanged;
+            txtFeedback.SetOnTouchListener(this);
+            txtInputLayoutFeedback.Error = GetString(Resource.String.feedback_total_character_left);
 
             //txtState.Text = Constants.SELECT_STATE;
         }
@@ -251,21 +244,15 @@ namespace myTNB_Android.Src.Feedback_PreLogin_FaultyStreetLamps.Activity
             //{
             //    txtInputLayoutFeedback.Error = GetString(Resource.String.feedback_total_character_left);
             //}
-            try {
+
             FeedBackCharacCount();
 
             this.userActionsListener.CheckRequiredFields(fullname, mobile_no, email, location, feedback, state);
-            }
-            catch (Exception ex)
-            {
-                Utility.LoggingNonFatalError(ex);
-            }
         }
 
         [Preserve]
         private void TxtLocation_TextChanged(object sender, TextChangedEventArgs e)
         {
-            try {
             string fullname = txtFullName.Text.Trim();
             string mobile_no = txtMobileNo.Text.Trim();
             string email = txtEmail.Text.Trim();
@@ -273,15 +260,11 @@ namespace myTNB_Android.Src.Feedback_PreLogin_FaultyStreetLamps.Activity
             string feedback = txtFeedback.Text;
             string state = txtState.Text.Trim();
             this.userActionsListener.CheckRequiredFields(fullname, mobile_no, email, location, feedback, state);
-        } catch(Exception ex) {
-                Utility.LoggingNonFatalError(ex);
-            }
         }
 
         [Preserve]
         private void TxtEmail_TextChanged(object sender, TextChangedEventArgs e)
         {
-            try {
             string fullname = txtFullName.Text.Trim();
             string mobile_no = txtMobileNo.Text.Trim();
             string email = txtEmail.Text.Trim();
@@ -289,16 +272,10 @@ namespace myTNB_Android.Src.Feedback_PreLogin_FaultyStreetLamps.Activity
             string feedback = txtFeedback.Text;
             string state = txtState.Text.Trim();
             this.userActionsListener.CheckRequiredFields(fullname, mobile_no, email, location, feedback, state);
-            }
-            catch (Exception ex)
-            {
-                Utility.LoggingNonFatalError(ex);
-            }
         }
         [Preserve]
         private void TxtMobileNo_TextChanged(object sender, TextChangedEventArgs e)
         {
-            try {
             string fullname = txtFullName.Text.Trim();
             string mobile_no = txtMobileNo.Text.Trim();
             string email = txtEmail.Text.Trim();
@@ -306,17 +283,11 @@ namespace myTNB_Android.Src.Feedback_PreLogin_FaultyStreetLamps.Activity
             string feedback = txtFeedback.Text;
             string state = txtState.Text.Trim();
             this.userActionsListener.CheckRequiredFields(fullname, mobile_no, email, location, feedback, state);
-            }
-            catch (Exception ex)
-            {
-                Utility.LoggingNonFatalError(ex);
-            }
         }
 
         [Preserve]
         private void TxtFullName_TextChanged(object sender, TextChangedEventArgs e)
         {
-            try {
             string fullname = txtFullName.Text.Trim();
             string mobile_no = txtMobileNo.Text.Trim();
             string email = txtEmail.Text.Trim();
@@ -324,11 +295,6 @@ namespace myTNB_Android.Src.Feedback_PreLogin_FaultyStreetLamps.Activity
             string feedback = txtFeedback.Text;
             string state = txtState.Text.Trim();
             this.userActionsListener.CheckRequiredFields(fullname , mobile_no , email , location , feedback, state);
-            }
-            catch (Exception ex)
-            {
-                Utility.LoggingNonFatalError(ex);
-            }
         }
 
         public bool IsActive()
@@ -367,7 +333,6 @@ namespace myTNB_Android.Src.Feedback_PreLogin_FaultyStreetLamps.Activity
 
         public bool OnTouch(View v, MotionEvent e)
         {
-            try {
             const int DRAWABLE_LEFT = 0;
             const int DRAWABLE_TOP = 1;
             const int DRAWABLE_RIGHT = 2;
@@ -421,18 +386,12 @@ namespace myTNB_Android.Src.Feedback_PreLogin_FaultyStreetLamps.Activity
                     }
                 }
             }
-            }
-            catch (Exception ex)
-            {
-                Utility.LoggingNonFatalError(ex);
-            }
             return false;
         }
 
         private AlertDialog _ChooseDialog;
         private void Adapter_AddClickEvent(object sender, int e)
         {
-            try {
             string[] items = { GetString(Resource.String.bill_related_feedback_selection_take_photo) ,
                                GetString(Resource.String.bill_related_feedback_selection_choose_from_library) ,
                                GetString(Resource.String.bill_related_feedback_selection_cancel)};
@@ -459,16 +418,10 @@ namespace myTNB_Android.Src.Feedback_PreLogin_FaultyStreetLamps.Activity
             }
             );
             _ChooseDialog = builder.Show();
-            }
-            catch (Exception ex)
-            {
-                Utility.LoggingNonFatalError(ex);
-            }
         }
         [OnClick(Resource.Id.btnSubmit)]
         void OnSubmit(object sender, EventArgs eventArgs)
         {
-            try {
             btnSubmit.Enabled = false;
             Handler h = new Handler();
             Action myAction = () =>
@@ -486,11 +439,6 @@ namespace myTNB_Android.Src.Feedback_PreLogin_FaultyStreetLamps.Activity
             string feedback = txtFeedback.Text.Trim();
 
             this.userActionsListener.OnSubmit(this.DeviceId(), fullName, mobileNo, email, currentFeedbackState, locationName, poleNo, feedback, adapter.GetAllImages());
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
         }
 
 
@@ -516,7 +464,6 @@ namespace myTNB_Android.Src.Feedback_PreLogin_FaultyStreetLamps.Activity
 
         private void Adapter_RemoveClickEvent(object sender, int e)
         {
-            try {
             adapter.Remove(e);
             if (adapter.GetAllImages().Count == 1 && adapter.ItemCount == 1)
             {
@@ -536,11 +483,6 @@ namespace myTNB_Android.Src.Feedback_PreLogin_FaultyStreetLamps.Activity
                     });
                 }
             }
-            }
-            catch (Exception ex)
-            {
-                Utility.LoggingNonFatalError(ex);
-            }
         }
 
         protected override void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
@@ -552,7 +494,7 @@ namespace myTNB_Android.Src.Feedback_PreLogin_FaultyStreetLamps.Activity
 
         public void ClearErrors()
         {
-            try {
+
             //txtInputLayoutFeedback.SetErrorTextAppearance(Resource.Style.TextErrorAppearance);
             txtInputLayoutFeedback.SetErrorTextAppearance(Resource.Style.TextInputLayoutFeedbackCount);
             txtInputLayoutLocation.SetErrorTextAppearance(Resource.Style.TextErrorAppearance);
@@ -575,17 +517,13 @@ namespace myTNB_Android.Src.Feedback_PreLogin_FaultyStreetLamps.Activity
             TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutFullName, txtInputLayoutEmail, txtInputLayoutFeedback, txtInputLayoutLocation, txtInputLayoutMobileNo, txtInputLayoutPoleNo, txtInputLayoutState);
 
             FeedBackCharacCount();
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
+
         }
 
 
         private void FeedBackCharacCount()
         {
-            try {
+
             string feedback = txtFeedback.Text;
             int char_count = 0;
 
@@ -602,11 +540,6 @@ namespace myTNB_Android.Src.Feedback_PreLogin_FaultyStreetLamps.Activity
             else
             {
                 txtInputLayoutFeedback.Error = GetString(Resource.String.feedback_total_character_left);
-            }
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
             }
         }
 
@@ -627,7 +560,7 @@ namespace myTNB_Android.Src.Feedback_PreLogin_FaultyStreetLamps.Activity
             string email = txtEmail.Text.Trim();
             string location = txtLocation.Text.Trim();
             string feedback = txtFeedback.Text.Trim();
-            try {
+
             if (TextUtils.IsEmpty(fullname) || TextUtils.IsEmpty(mobile_no) || TextUtils.IsEmpty(email) || TextUtils.IsEmpty(location))
             {
                 DisableSubmitButton();
@@ -642,11 +575,6 @@ namespace myTNB_Android.Src.Feedback_PreLogin_FaultyStreetLamps.Activity
 
             btnSubmit.Enabled = true;
             btnSubmit.Background = ContextCompat.GetDrawable(this, Resource.Drawable.green_button_background);
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
         }
 
         public void DisableSubmitButton()
@@ -663,7 +591,6 @@ namespace myTNB_Android.Src.Feedback_PreLogin_FaultyStreetLamps.Activity
 
         public void ShowLoadingImage()
         {
-            try {
             int position = adapter.ItemCount - 1;
             AttachedImage attachImage = adapter.GetItemObject(position);
             if (attachImage != null && attachImage.ViewType == Constants.VIEW_TYPE_DUMMY_RECORD)
@@ -671,25 +598,16 @@ namespace myTNB_Android.Src.Feedback_PreLogin_FaultyStreetLamps.Activity
                 attachImage.IsLoading = true;
                 adapter.Update(position, attachImage);
             }
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
         }
 
         public void HideLoadingImage()
         {
-            try {
             int position = adapter.ItemCount - 1;
             AttachedImage attachImage = adapter.GetItemObject(position);
             if (attachImage != null && attachImage.ViewType == Constants.VIEW_TYPE_DUMMY_RECORD)
             {
                 attachImage.IsLoading = false;
                 adapter.Update(position, attachImage);
-            }
-        } catch(Exception e) {
-                Utility.LoggingNonFatalError(e);
             }
         }
 
@@ -735,7 +653,6 @@ namespace myTNB_Android.Src.Feedback_PreLogin_FaultyStreetLamps.Activity
                     FileSize = size,
                     FileName = attachedImage.Name
                 };
-               
             });
         }
 
@@ -849,7 +766,6 @@ namespace myTNB_Android.Src.Feedback_PreLogin_FaultyStreetLamps.Activity
             //{
             //    submitDialog.Show();
             //}
-            try {
             if (loadingOverlay != null && loadingOverlay.IsShowing)
             {
                 loadingOverlay.Dismiss();
@@ -857,11 +773,6 @@ namespace myTNB_Android.Src.Feedback_PreLogin_FaultyStreetLamps.Activity
 
             loadingOverlay = new LoadingOverlay(this, Resource.Style.LoadingOverlyDialogStyle);
             loadingOverlay.Show();
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
         }
 
         public void HideProgressDialog()
@@ -870,21 +781,14 @@ namespace myTNB_Android.Src.Feedback_PreLogin_FaultyStreetLamps.Activity
             //{
             //    submitDialog.Dismiss();
             //}
-            try {
             if (loadingOverlay != null && loadingOverlay.IsShowing)
             {
                 loadingOverlay.Dismiss();
-            }
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
             }
         }
 
         public void ShowState(FeedbackState feedbackState)
         {
-            try {
             if (feedbackState != null)
             {
                 this.currentFeedbackState = feedbackState;
@@ -898,18 +802,12 @@ namespace myTNB_Android.Src.Feedback_PreLogin_FaultyStreetLamps.Activity
                     ShowEmptyStateError();
                 }
             }
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
         }
 
 
 
         public void UpdateAdapter(string pFilePath, string pFileName)
         {
-            try {
             adapter.Update(adapter.ItemCount - 1, new AttachedImage()
             {
                 ViewType = Constants.VIEW_TYPE_REAL_RECORD,
@@ -923,11 +821,6 @@ namespace myTNB_Android.Src.Feedback_PreLogin_FaultyStreetLamps.Activity
                 {
                     ViewType = Constants.VIEW_TYPE_DUMMY_RECORD
                 });
-            }
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
             }
         }
 
@@ -1012,22 +905,5 @@ namespace myTNB_Android.Src.Feedback_PreLogin_FaultyStreetLamps.Activity
             txtInputLayoutState.Error = GetString(Resource.String.invalid_state);
         }
 
-
-        public override void OnTrimMemory(TrimMemory level)
-        {
-            base.OnTrimMemory(level);
-
-            switch (level)
-            {
-                case TrimMemory.RunningLow:
-                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
-                    GC.Collect();
-                    break;
-                default:
-                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
-                    GC.Collect();
-                    break;
-            }
-        }
     }
 }

@@ -29,7 +29,6 @@ using Android;
 using AFollestad.MaterialDialogs;
 using myTNB_Android.Src.Utils.Custom.ProgressDialog;
 using Android.Preferences;
-using System.Runtime;
 
 namespace myTNB_Android.Src.RegisterValidation
 {
@@ -91,7 +90,7 @@ namespace myTNB_Android.Src.RegisterValidation
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-            try {
+
             registrationDialog = new MaterialDialog.Builder(this)
                 .Title(Resource.String.registration_validation_progress_title)
                 .Content(Resource.String.registration_validation_progress_content)
@@ -130,11 +129,6 @@ namespace myTNB_Android.Src.RegisterValidation
                 GetString(Resource.String.registration_validation_snackbar_sms_sent_msg), 
                 Snackbar.LengthLong);
             mPinSentInfo.Show();
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
         }
 
 
@@ -144,67 +138,42 @@ namespace myTNB_Android.Src.RegisterValidation
 
         private void TxtNumber_1_TextChanged(object sender, Android.Text.TextChangedEventArgs e)
         {
-            try {
             if (e.Text.Count() == 1)
             {
                 txtNumber_1.ClearFocus();
                 txtNumber_2.RequestFocus();
             }
             CheckValidPin();
-            }
-            catch (Exception ex)
-            {
-                Utility.LoggingNonFatalError(ex);
-            }
         }
 
 
         private void TxtNumber_2_TextChanged(object sender, Android.Text.TextChangedEventArgs e)
         {
-            try {
             if (e.Text.Count() == 1)
             {
                 txtNumber_2.ClearFocus();
                 txtNumber_3.RequestFocus();
             }
             CheckValidPin();
-            }
-            catch (Exception ex)
-            {
-                Utility.LoggingNonFatalError(ex);
-            }
         }
 
         private void TxtNumber_3_TextChanged(object sender, Android.Text.TextChangedEventArgs e)
         {
-            try {
             if (e.Text.Count() == 1)
             {
                 txtNumber_3.ClearFocus();
                 txtNumber_4.RequestFocus();
             }
             CheckValidPin();
-            }
-            catch (Exception ex)
-            {
-                Utility.LoggingNonFatalError(ex);
-            }
         }
 
         private void TxtNumber_4_TextChanged(object sender, Android.Text.TextChangedEventArgs e)
         {
-            try {
             CheckValidPin();
-            }
-            catch (Exception ex)
-            {
-                Utility.LoggingNonFatalError(ex);
-            }
         }
 
         private void CheckValidPin()
         {
-            try {
             string txt_1 = txtNumber_1.Text.Trim();
             string txt_2 = txtNumber_2.Text.Trim();
             string txt_3 = txtNumber_3.Text.Trim();
@@ -230,24 +199,13 @@ namespace myTNB_Android.Src.RegisterValidation
             }
 
             this.userActionsListener.OnRegister(txt_1 , txt_2 , txt_3 , txt_4 , this.DeviceId());
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
         }
 
         protected override void OnPause()
         {
-            try {
             if (pinDisplayerSMSReceiver != null)
             {
                 UnregisterReceiver(pinDisplayerSMSReceiver);
-            }
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
             }
             base.OnPause();
         }
@@ -255,30 +213,19 @@ namespace myTNB_Android.Src.RegisterValidation
         protected override void OnResume()
         {
             base.OnResume();
-            try {
             if (pinDisplayerSMSReceiver != null)
             {
                 RegisterReceiver(pinDisplayerSMSReceiver , new IntentFilter("com.myTNB.smsReceiver"));
             }
             this.userActionsListener.Start();
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
+            
         }
 
         protected override void OnDestroy()
         {
-            try {
             if (progressGenerator != null)
             {
                 progressGenerator.OnDestroy();
-            }
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
             }
             base.OnDestroy();
         }
@@ -287,13 +234,9 @@ namespace myTNB_Android.Src.RegisterValidation
         void OnResend(object sender , EventArgs eventArgs)
         {
             // TODO : UPDATE THIS TO RESEND ASYNC
-            try {
+           
             this.userActionsListener.ResendAsync();
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
+           
             
         }
 
@@ -301,7 +244,6 @@ namespace myTNB_Android.Src.RegisterValidation
 
         void ProgressGenerator.OnProgressListener.OnComplete()
         {
-            try {
             btnResend.Text = GetString(Resource.String.registration_validation_btn_resend) + "(30)";
             //btnResend.SetCompoundDrawablesWithIntrinsicBounds(GetDrawable(Resource.Drawable.ic_button_resend_loaded) , null , null , null );
             //btnResend.SetTextColor(Resources.GetColor(Resource.Color.white));
@@ -312,11 +254,6 @@ namespace myTNB_Android.Src.RegisterValidation
             btnResend.SetTextColor(Resources.GetColor(Resource.Color.freshGreen));
             progressGenerator.Progress = 0;
             this.userActionsListener.OnComplete();
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
         }
 
 
@@ -342,17 +279,17 @@ namespace myTNB_Android.Src.RegisterValidation
 
         public void ShowInvalidPin()
         {
-            //throw new NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public void ShowResendPin()
         {
-            //throw new NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public void ShowSMSPinInfo()
         {
-            //throw new NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public override int GetHashCode()
@@ -392,18 +329,12 @@ namespace myTNB_Android.Src.RegisterValidation
 
         public void StartProgress()
         {
-            try {
             OnCompleteResend.Visibility = ViewStates.Gone;
             btnResend.Visibility = ViewStates.Visible;
             btnResend.SetCompoundDrawablesWithIntrinsicBounds(GetDrawable(Resource.Drawable.ic_button_resend_loading), null, null, null);
             btnResend.SetTextColor(Resources.GetColor(Resource.Color.freshGreen));
             progressGenerator.Progress = 0;
             progressGenerator.Start(btnResend , this);
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
         }
 
         public void EnableResendButton()
@@ -426,13 +357,7 @@ namespace myTNB_Android.Src.RegisterValidation
             //    btnResend.SetTextColor(Resources.GetColor(Resource.Color.white));
 
             //}
-            try {
             btnResend.Text = GetString(Resource.String.registration_validation_btn_resend) + "(" + Math.Abs(count-30) + ")";
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
         }
 
         public void ShowEmptyErrorPin_1()
@@ -608,8 +533,6 @@ namespace myTNB_Android.Src.RegisterValidation
             //{
             //    registrationDialog.Show();
             //}
-
-            try {
             if (loadingOverlay != null && loadingOverlay.IsShowing)
             {
                 loadingOverlay.Dismiss();
@@ -617,11 +540,6 @@ namespace myTNB_Android.Src.RegisterValidation
 
             loadingOverlay = new LoadingOverlay(this, Resource.Style.LoadingOverlyDialogStyle);
             loadingOverlay.Show();
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
         }
 
         public void HideRegistrationProgress()
@@ -630,21 +548,14 @@ namespace myTNB_Android.Src.RegisterValidation
             //{
             //    registrationDialog.Dismiss();
             //}
-            try {
             if (loadingOverlay != null && loadingOverlay.IsShowing)
             {
                 loadingOverlay.Dismiss();
-            }
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
             }
         }
 
         public void ShowNotificationCount(int count)
         {
-            try {
             if (count <= 0)
             {
                 ME.Leolin.Shortcutbadger.ShortcutBadger.RemoveCount(this.ApplicationContext);
@@ -652,29 +563,6 @@ namespace myTNB_Android.Src.RegisterValidation
             else
             {
                 ME.Leolin.Shortcutbadger.ShortcutBadger.ApplyCount(this.ApplicationContext, count);
-            }
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
-        }
-
-
-        public override void OnTrimMemory(TrimMemory level)
-        {
-            base.OnTrimMemory(level);
-
-            switch (level)
-            {
-                case TrimMemory.RunningLow:
-                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
-                    GC.Collect();
-                    break;
-                default:
-                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
-                    GC.Collect();
-                    break;
             }
         }
     }

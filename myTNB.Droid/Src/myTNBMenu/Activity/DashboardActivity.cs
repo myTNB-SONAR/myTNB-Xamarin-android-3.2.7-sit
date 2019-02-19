@@ -46,7 +46,6 @@ using myTNB_Android.Src.SummaryDashBoard;
 using myTNB_Android.Src.SummaryDashBoard.SummaryListener;
 using myTNB_Android.Src.Database.Model;
 using Firebase;
-using System.Runtime;
 
 namespace myTNB_Android.Src.myTNBMenu.Activity
 {
@@ -219,11 +218,11 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             //    this.userActionsListener.OnMenuSelect(Resource.Id.menu_more);
             //}
 
-            Bundle extras = Intent?.Extras;
+            Bundle extras = Intent.Extras;
             if (extras != null && extras.ContainsKey(Constants.PROMOTION_NOTIFICATION_VIEW))
             {
                 bottomNavigationView.Menu.FindItem(Resource.Id.menu_promotion).SetChecked(true);
-                this.userActionsListener?.OnMenuSelect(Resource.Id.menu_promotion);
+                this.userActionsListener.OnMenuSelect(Resource.Id.menu_promotion);
             }
 
             //List<AccountData> accountList = new List<AccountData>()
@@ -257,7 +256,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
 
             // TODO : ADD DRAWABLE RIGHT IF ACCOUNTS IN DATABASE IS GREATER THAN 1
-            this.userActionsListener?.OnNotificationCount();
+            this.userActionsListener.OnNotificationCount();
 
         }
 
@@ -376,12 +375,12 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
         public void ShowOwnerNonSmartMeterDay()
         {
-            //throw new NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public void ShowOwnerNonSmartMeterMonth()
         {
-            //throw new NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public void ShowNonOWner(AccountData selectedAccount)
@@ -660,7 +659,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             //    .Build();
 
             //materialDialog.Show();
-            try {
+
             if (loadingOverlay != null && loadingOverlay.IsShowing)
             {
                 loadingOverlay.Dismiss();
@@ -668,9 +667,6 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
             loadingOverlay = new LoadingOverlay(this, Resource.Style.LoadingOverlyDialogStyle);
             loadingOverlay.Show();
-        } catch(Exception e) {
-                Utility.LoggingNonFatalError(e);
-            }
         }
 
         public void HideProgressDialog()
@@ -682,14 +678,12 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             //Handler h = new Handler();
             //Action myAction = () =>
             //{
-            try {
             if (IsActive()) {
             if (loadingOverlay != null && loadingOverlay.IsShowing)
             {
                 loadingOverlay.Dismiss();
             }
             }
-        
             //};
             //h.PostDelayed(myAction, 1000);
 
@@ -722,11 +716,6 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                         urlSchemaCalled = false;
                     }
                 }
-            }
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
             }
         }
 
@@ -997,25 +986,6 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             
             mPresenter.OnAccountSelectDashBoard();
         }
-
-
-        public override void OnTrimMemory(TrimMemory level)
-        {
-            base.OnTrimMemory(level);
-
-            switch (level)
-            {
-                case TrimMemory.RunningLow:
-                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
-                    GC.Collect();
-                    break;
-                default:
-                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
-                    GC.Collect();
-                    break;
-            }
-        }
-
 
     }
 }

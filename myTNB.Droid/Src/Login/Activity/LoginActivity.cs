@@ -27,7 +27,6 @@ using myTNB_Android.Src.UpdateMobileNo.Activity;
 using myTNB_Android.Src.Utils.Custom.ProgressDialog;
 using myTNB_Android.Src.Login.Requests;
 using Newtonsoft.Json;
-using System.Runtime;
 
 namespace myTNB_Android.Src.Login.Activity
 {
@@ -87,7 +86,6 @@ namespace myTNB_Android.Src.Login.Activity
         {
             base.OnCreate(savedInstanceState);
 
-            try {
             // Create your application here
             mPresenter = new LoginPresenter(this , PreferenceManager.GetDefaultSharedPreferences(this));
             mProgressDialog = new AlertDialog.Builder(this)
@@ -117,14 +115,10 @@ namespace myTNB_Android.Src.Login.Activity
             ISharedPreferences sharedPreferences = PreferenceManager.GetDefaultSharedPreferences(this);
             string savedEmail = UserSessions.GetUserEmail(sharedPreferences);
             txtEmail.Append(savedEmail);
-        } catch(Exception e) {
-                Utility.LoggingNonFatalError(e);
-            }
         }
 
         private void TextChange(object sender, TextChangedEventArgs e)
         {
-            try {
             string password = txtPassword.Text;
             if (!string.IsNullOrEmpty(password))
             {
@@ -135,11 +129,6 @@ namespace myTNB_Android.Src.Login.Activity
             else
             {
                 txtInputLayoutPassword.PasswordVisibilityToggleEnabled = false;
-            }
-            }
-            catch (Exception ex)
-            {
-                Utility.LoggingNonFatalError(ex);
             }
         }
 
@@ -159,13 +148,9 @@ namespace myTNB_Android.Src.Login.Activity
             //{
             //    mProgressDialog.Dismiss();
             //}
-            try {
             if (loadingOverlay != null && loadingOverlay.IsShowing)
             {
                 loadingOverlay.Dismiss();
-            }
-        } catch(Exception e) {
-                Utility.LoggingNonFatalError(e);
             }
         }
 
@@ -175,7 +160,6 @@ namespace myTNB_Android.Src.Login.Activity
             //{
             //    mProgressDialog.Show();
             //}
-            try {
             if (loadingOverlay != null && loadingOverlay.IsShowing)
             {
                 loadingOverlay.Dismiss();
@@ -183,9 +167,6 @@ namespace myTNB_Android.Src.Login.Activity
 
             loadingOverlay = new LoadingOverlay(this, Resource.Style.LoadingOverlyDialogStyle);
             loadingOverlay.Show();
-        } catch(Exception e) {
-                Utility.LoggingNonFatalError(e);
-            }
         }
 
 
@@ -259,15 +240,9 @@ namespace myTNB_Android.Src.Login.Activity
         [OnClick(Resource.Id.btnLogin)]
         void OnLogin(object sender, EventArgs e)
         {
-            try {
             string email = txtEmail.Text.ToString().Trim();
             string password = txtPassword.Text;
             this.userActionsListener.LoginAsync(email , password , this.DeviceId(), chkRemeberMe.Checked);
-            }
-            catch (Exception ex)
-            {
-                Utility.LoggingNonFatalError(ex);
-            }
         }
 
         [OnClick(Resource.Id.txtForgotPassword)]
@@ -382,66 +357,53 @@ namespace myTNB_Android.Src.Login.Activity
 
         public string GetCustomerAccountsStub()
         {
-            
+            var inputStream = Resources.OpenRawResource(Resource.Raw.GetCustomerBillingAccountListResponse);
             var stringContent = string.Empty;
-            try {
-                var inputStream = Resources.OpenRawResource(Resource.Raw.GetCustomerBillingAccountListResponse);
+
             using (StreamReader sr = new StreamReader(inputStream))
             {
                 stringContent = sr.ReadToEnd();
             }
-        } catch(Exception e) {
-                Utility.LoggingNonFatalError(e);
-            }
+
             return stringContent;
         }
 
         public string GetLoginResponseStubV4()
         {
-            
+            var inputStream = Resources.OpenRawResource(Resource.Raw.UserLoginResponseV4);
             var stringContent = string.Empty;
-            try {
-                var inputStream = Resources.OpenRawResource(Resource.Raw.UserLoginResponseV4);
+
             using (StreamReader sr = new StreamReader(inputStream))
             {
                 stringContent = sr.ReadToEnd();
             }
-        } catch(Exception e) {
-                Utility.LoggingNonFatalError(e);
-            }
+
             return stringContent;
         }
 
         public string GetLoginResponseStubV5()
         {
-            
+            var inputStream = Resources.OpenRawResource(Resource.Raw.UserLoginResponseV5);
             var stringContent = string.Empty;
-            try {
-                var inputStream = Resources.OpenRawResource(Resource.Raw.UserLoginResponseV5);
+
             using (StreamReader sr = new StreamReader(inputStream))
             {
                 stringContent = sr.ReadToEnd();
             }
-        } catch(Exception e) {
-                Utility.LoggingNonFatalError(e);
-            }
+
             return stringContent;
         }
 
         public string GetCustomerAccountsStubV5()
         {
+            var inputStream = Resources.OpenRawResource(Resource.Raw.GetCustomerBillingAccountListResponseV5);
             var stringContent = string.Empty;
-            try
-            {
-                var inputStream = Resources.OpenRawResource(Resource.Raw.GetCustomerBillingAccountListResponseV5);
 
-                using (StreamReader sr = new StreamReader(inputStream))
-                {
-                    stringContent = sr.ReadToEnd();
-                }
-            } catch(Exception e) {
-                Utility.LoggingNonFatalError(e);
+            using (StreamReader sr = new StreamReader(inputStream))
+            {
+                stringContent = sr.ReadToEnd();
             }
+
             return stringContent;
         }
 
@@ -470,25 +432,6 @@ namespace myTNB_Android.Src.Login.Activity
             updateMobileNo.PutExtra("LoginRequest", JsonConvert.SerializeObject(request));
             updateMobileNo.PutExtra("PhoneNumber", phoneNumber);
             StartActivity(updateMobileNo);
-        }
-
-
-
-        public override void OnTrimMemory(TrimMemory level)
-        {
-            base.OnTrimMemory(level);
-
-            switch (level)
-            {
-                case TrimMemory.RunningLow:
-                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
-                    GC.Collect();
-                    break;
-                default:
-                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
-                    GC.Collect();
-                    break;
-            }
         }
     }
 }

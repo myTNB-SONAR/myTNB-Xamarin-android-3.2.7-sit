@@ -96,7 +96,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             base.OnCreate(savedInstanceState);
             Bundle extras = Arguments;
 
-            if (extras != null && extras.Size() > 0 && extras.ContainsKey(Constants.SELECTED_ACCOUNT))
+            if (extras.ContainsKey(Constants.SELECTED_ACCOUNT))
             {
                 selectedAccount = JsonConvert.DeserializeObject<AccountData>(extras.GetString(Constants.SELECTED_ACCOUNT));
             }
@@ -114,8 +114,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         public override void OnViewCreated(View view, Bundle savedInstanceState)
         {
             base.OnViewCreated(view, savedInstanceState);
-
-            try {
             TextViewUtils.SetMuseoSans300Typeface(txtContent, txtTotalPayable , txtDueDate);
             TextViewUtils.SetMuseoSans500Typeface(txtTitle , btnGetAccess , btnPay , txtTotalPayableTitle , txtTotalPayableCurrency);
 
@@ -245,12 +243,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 };
 
             }
-
-        }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
         }
 
         private IMenu menu;
@@ -361,7 +353,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         private Snackbar mNoInternetSnackbar;
         public void ShowNoInternetSnackbar()
         {
-            try {
             if (mNoInternetSnackbar != null && mNoInternetSnackbar.IsShown)
             {
                 mNoInternetSnackbar.Dismiss();
@@ -374,118 +365,96 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             }
             );
             mNoInternetSnackbar.Show();
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
         }
 
         public void ShowAmountProgress()
         {
-            try {
             progressBar.Visibility = ViewStates.Visible;
             totalPayableLayout.Visibility = ViewStates.Gone;
 
-        }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
+
         }
 
         public void HideAmountProgress()
         {
-            try {
             progressBar.Visibility = ViewStates.Gone;
             totalPayableLayout.Visibility = ViewStates.Visible;
 
-        }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
+
         }
 
         public void ShowAmountDue(AccountDueAmount accountDueAmount)
         {
+            
+            Date d = null;
             try
             {
-                Date d = null;
-                try
-                {
-                    d = dateParser.Parse(accountDueAmount.BillDueDate);
-                }
-                catch (ParseException e)
-                {
-                    Utility.LoggingNonFatalError(e);
-                }
+                d = dateParser.Parse(accountDueAmount.BillDueDate);
+            }
+            catch (ParseException e)
+            {
 
-                if (d != null)
+            }
+
+            if (d != null)
+            {
+                if (selectedAccount != null)
                 {
-                    if (selectedAccount != null)
+                    if (selectedAccount.AccountCategoryId.Equals("2"))
                     {
-                        if (selectedAccount.AccountCategoryId.Equals("2"))
+                        selectedAccount.AmtCustBal = accountDueAmount.AmountDue;
+                        double calAmt = selectedAccount.AmtCustBal * -1;
+                        if (calAmt <= 0)
                         {
-                            selectedAccount.AmtCustBal = accountDueAmount.AmountDue;
-                            double calAmt = selectedAccount.AmtCustBal * -1;
-                            if (calAmt <= 0)
-                            {
-                                calAmt = 0.00;
-                            }
-                            else
-                            {
-                                calAmt = Math.Abs(selectedAccount.AmtCustBal);
-                            }
-                            txtTotalPayable.Text = decimalFormat.Format(calAmt);
-
-
-                            int incrementDays = int.Parse(accountDueAmount.IncrementREDueDateByDays == null ? "0" : accountDueAmount.IncrementREDueDateByDays);
-                            Constants.RE_ACCOUNT_DATE_INCREMENT_DAYS = incrementDays;
-                            Calendar c = Calendar.Instance;
-                            c.Time = d;
-                            c.Add(CalendarField.Date, incrementDays);
-                            Date newDate = c.Time;
-                            if (calAmt == 0.00)
-                            {
-                                txtDueDate.Text = "--";
-                            }
-                            else
-                            {
-                                txtDueDate.Text = GetString(Resource.String.dashboard_chartview_by_date_wildcard, dateFormatter.Format(newDate));
-                            }
+                            calAmt = 0.00;
                         }
                         else
                         {
-                            txtTotalPayable.Text = decimalFormat.Format(accountDueAmount.AmountDue);
-                            selectedAccount.AmtCustBal = accountDueAmount.AmountDue;
-                            double calAmt = selectedAccount.AmtCustBal;
-                            if (calAmt <= 0.00)
-                            {
-                                txtDueDate.Text = "--";
-                            }
-                            else
-                            {
-                                txtDueDate.Text = GetString(Resource.String.dashboard_chartview_due_date_wildcard, dateFormatter.Format(d));
-                            }
+                            calAmt = Math.Abs(selectedAccount.AmtCustBal);
+                        }
+                        txtTotalPayable.Text = decimalFormat.Format(calAmt);
+                        
+
+                        int incrementDays = int.Parse(accountDueAmount.IncrementREDueDateByDays == null ? "0" : accountDueAmount.IncrementREDueDateByDays);
+                        Constants.RE_ACCOUNT_DATE_INCREMENT_DAYS = incrementDays;
+                        Calendar c = Calendar.Instance;
+                        c.Time = d;
+                        c.Add(CalendarField.Date, incrementDays);
+                        Date newDate = c.Time;
+                        if (calAmt == 0.00)
+                        {
+                            txtDueDate.Text = "--";
+                        }
+                        else
+                        {
+                            txtDueDate.Text = GetString(Resource.String.dashboard_chartview_by_date_wildcard, dateFormatter.Format(newDate));
+                        }
+                    }
+                    else
+                    {
+                        txtTotalPayable.Text = decimalFormat.Format(accountDueAmount.AmountDue);
+                        selectedAccount.AmtCustBal = accountDueAmount.AmountDue;
+                        double calAmt = selectedAccount.AmtCustBal;
+                        if (calAmt <= 0.00)
+                        {
+                            txtDueDate.Text = "--";
+                        }
+                        else
+                        {
+                            txtDueDate.Text = GetString(Resource.String.dashboard_chartview_due_date_wildcard, dateFormatter.Format(d));
                         }
                     }
                 }
-                else
-                {
-                    txtDueDate.Text = GetString(Resource.String.dashboard_chartview_due_date_not_available);
-                }
             }
-            catch (Exception e)
+            else
             {
-                Utility.LoggingNonFatalError(e);
+                txtDueDate.Text = GetString(Resource.String.dashboard_chartview_due_date_not_available);
             }
         }
 
         private Snackbar mCancelledExceptionSnackBar;
         public void ShowRetryOptionsCancelledException(System.OperationCanceledException operationCanceledException)
         {
-            try {
             if (mCancelledExceptionSnackBar != null && mCancelledExceptionSnackBar.IsShown)
             {
                 mCancelledExceptionSnackBar.Dismiss();
@@ -499,17 +468,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             }
             );
             mCancelledExceptionSnackBar.Show();
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
+
         }
 
         private Snackbar mApiExcecptionSnackBar;
         public void ShowRetryOptionsApiException(ApiException apiException)
         {
-            try {
             if (mApiExcecptionSnackBar != null && mApiExcecptionSnackBar.IsShown)
             {
                 mApiExcecptionSnackBar.Dismiss();
@@ -523,16 +487,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             }
             );
             mApiExcecptionSnackBar.Show();
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
+
         }
         private Snackbar mUknownExceptionSnackBar;
         public void ShowRetryOptionsUnknownException(Exception exception)
         {
-            try {
             if (mUknownExceptionSnackBar != null && mUknownExceptionSnackBar.IsShown)
             {
                 mUknownExceptionSnackBar.Dismiss();
@@ -548,11 +507,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             }
             );
             mUknownExceptionSnackBar.Show();
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
+
         }
 
         public void EnablePayButton()
@@ -570,7 +525,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
         public void ShowViewBill(BillHistoryV5 selectedBill)
         {
-            try {
             btnViewBill.Enabled = false;
             Handler h = new Handler();
             Action myAction = () =>
@@ -588,11 +542,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             viewBill.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccount));
             viewBill.PutExtra(Constants.SELECTED_BILL, JsonConvert.SerializeObject(selectedBill));
             StartActivity(viewBill);
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
         }
     }
 }

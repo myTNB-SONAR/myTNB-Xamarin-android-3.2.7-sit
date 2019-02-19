@@ -36,7 +36,6 @@ using System.Net.Http;
 using myTNB_Android.Src.myTNBMenu.Api;
 using Refit;
 using myTNB_Android.Src.myTNBMenu.Requests;
-using System.Runtime;
 
 namespace myTNB_Android.Src.ViewBill.Activity
 {
@@ -75,7 +74,7 @@ namespace myTNB_Android.Src.ViewBill.Activity
         SimpleDateFormat simpleDateParser = new SimpleDateFormat("dd/MM/yyyy");
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MMM yyyy");
 
-        //[BindView(Resource.Id.pdfviewercontrol)]
+        [BindView(Resource.Id.pdfviewercontrol)]
         SfPdfViewer pdfViewer;
 
         private LoadingOverlay loadingOverlay;
@@ -128,7 +127,6 @@ namespace myTNB_Android.Src.ViewBill.Activity
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
-            try {
             selectedAccount = JsonConvert.DeserializeObject<AccountData>(Intent.Extras.GetString(Constants.SELECTED_ACCOUNT));
             if (Intent.Extras.ContainsKey(Constants.SELECTED_BILL))
             {
@@ -188,11 +186,6 @@ namespace myTNB_Android.Src.ViewBill.Activity
                     RequestPermissions(new string[] { Manifest.Permission.WriteExternalStorage }, Constants.RUNTIME_PERMISSION_STORAGE_REQUEST_CODE);
                 }
             });
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
             
         }
 
@@ -289,7 +282,6 @@ namespace myTNB_Android.Src.ViewBill.Activity
 
         public async Task GetPDF()
         {
-            try {
             //mProgressBar.Visibility = ViewStates.Visible;
             if (loadingOverlay != null && loadingOverlay.IsShowing)
             {
@@ -321,11 +313,7 @@ namespace myTNB_Android.Src.ViewBill.Activity
             {
                 loadingOverlay.Dismiss();
             }
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
+
 
 
         }
@@ -338,7 +326,7 @@ namespace myTNB_Android.Src.ViewBill.Activity
 
             try
             {
-                if (!String.IsNullOrEmpty(getPDFUrl) && !String.IsNullOrEmpty(selectedAccount?.AccountNum))
+                if (!String.IsNullOrEmpty(getPDFUrl) && !String.IsNullOrEmpty(selectedAccount.AccountNum))
                 {
                     using (WebClient client = new WebClient())
                     {
@@ -348,21 +336,18 @@ namespace myTNB_Android.Src.ViewBill.Activity
                             Directory.CreateDirectory(directory);
                         }
 
-                        string filename = selectedAccount?.AccountNum + ".pdf";
-                        if (!string.IsNullOrEmpty(selectedBill?.NrBill))
+                        string filename = selectedAccount.AccountNum + ".pdf";
+                        if (!string.IsNullOrEmpty(selectedBill.NrBill))
                         {
-                            filename = selectedAccount?.AccountNum +"_"+ selectedBill?.NrBill + ".pdf";
+                            filename = selectedAccount.AccountNum +"_"+ selectedBill.NrBill + ".pdf";
                         }
                         path = System.IO.Path.Combine(directory, filename);
 
-                        if (!string.IsNullOrEmpty(path)) {
-                            if (File.Exists(path))
-                            {
-                                File.Delete(path);
-                            }
-                            client.DownloadFile(getPDFUrl, path);    
+                        if (File.Exists(path))
+                        {
+                            File.Delete(path);
                         }
-
+                        client.DownloadFile(getPDFUrl, path);
                     }
                 }
             }
@@ -371,7 +356,6 @@ namespace myTNB_Android.Src.ViewBill.Activity
                 Log.Debug("ViewBillActivity", e.StackTrace);
                 downloadClicked = false;
                 mProgressBar.Visibility = ViewStates.Gone;
-                Utility.LoggingNonFatalError(e);
             }
            // }
             return path;
@@ -393,7 +377,6 @@ namespace myTNB_Android.Src.ViewBill.Activity
             catch(Exception e)
             {
                 Log.Debug("ViewBillActivity", e.StackTrace);
-                Utility.LoggingNonFatalError(e);
             }
 
         }
@@ -444,23 +427,6 @@ namespace myTNB_Android.Src.ViewBill.Activity
                     });
 
                 }
-            }
-        }
-
-        public override void OnTrimMemory(TrimMemory level)
-        {
-            base.OnTrimMemory(level);
-
-            switch (level)
-            {
-                case TrimMemory.RunningLow:
-                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
-                    GC.Collect();
-                    break;
-                default:
-                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
-                    GC.Collect();
-                    break;
             }
         }
     }

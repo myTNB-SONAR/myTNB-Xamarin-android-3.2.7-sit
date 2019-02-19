@@ -11,7 +11,6 @@ using Android.Views;
 using Android.Widget;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.NotificationFilter.Models;
-using myTNB_Android.Src.Utils;
 
 namespace myTNB_Android.Src.NotificationFilter.MVP
 {
@@ -28,7 +27,6 @@ namespace myTNB_Android.Src.NotificationFilter.MVP
 
         public void OnSelectFilterItem(NotificationFilterData notificationFilterData, int position)
         {
-            try {
             NotificationFilterEntity.UnSelectAll();
             int row = NotificationFilterEntity.SelectItem(notificationFilterData.Id);
             if (row > 0)
@@ -39,16 +37,10 @@ namespace myTNB_Android.Src.NotificationFilter.MVP
             {
                 // TODO : SHOW ERROR CANNOT SELECT
             }
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
         }
 
         public void Start()
         {
-            try {
             //
             List<NotificationFilterEntity> entityList = NotificationFilterEntity.List();
             List<NotificationFilterData> filterList = new List<NotificationFilterData>();
@@ -57,11 +49,6 @@ namespace myTNB_Android.Src.NotificationFilter.MVP
                 filterList.Add(NotificationFilterData.Get(entity));
             }
             this.mView.ShowNotificationList(filterList);
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
         }
     }
 }

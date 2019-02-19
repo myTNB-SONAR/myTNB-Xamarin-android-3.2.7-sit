@@ -142,7 +142,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.FeedbackMenu
             }
             catch (ClassCastException e)
             {
-                Utility.LoggingNonFatalError(e);
+
             }
             base.OnAttach(context);
         }
@@ -261,8 +261,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.FeedbackMenu
             //{
             //    progressDialog.Show();
             //}
-
-            try {
             if (loadingOverlay != null && loadingOverlay.IsShowing)
             {
                 loadingOverlay.Dismiss();
@@ -270,11 +268,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.FeedbackMenu
 
             loadingOverlay = new LoadingOverlay(Activity.ApplicationContext, Resource.Style.LoadingOverlyDialogStyle);
             loadingOverlay.Show();
-            }
-            catch (System.Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
         }
 
         public void HideProgressDialog()
@@ -283,16 +276,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.FeedbackMenu
             //{
             //    progressDialog.Dismiss();
             //}
-            try
+            if (loadingOverlay != null && loadingOverlay.IsShowing)
             {
-                if (loadingOverlay != null && loadingOverlay.IsShowing)
-                {
-                    loadingOverlay.Dismiss();
-                }
-            }
-            catch (System.Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
+                loadingOverlay.Dismiss();
             }
         }
 
@@ -355,7 +341,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.FeedbackMenu
 
         public void ShowFeedbackMenu(List<FeedbackCategoryEntity> feedbackCategory)
         {
-                try {
             billRelatedConstraint.Visibility = ViewStates.Gone;
             faultyStreetLampsContraint.Visibility = ViewStates.Gone;
             othersContraint.Visibility = ViewStates.Gone;
@@ -381,11 +366,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.FeedbackMenu
                 }
                 
             }
-            }
-            catch (System.Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
         }
 
         public override bool CameraPermissionRequired()
@@ -408,8 +388,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.FeedbackMenu
         Snackbar mErrorMessageSnackBar;
         public void OnBCRMDownTimeErrorMessage(string message = null)
         {
-
-            try {
             if (mErrorMessageSnackBar != null && mErrorMessageSnackBar.IsShown)
             {
                 mErrorMessageSnackBar.Dismiss();
@@ -435,11 +413,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.FeedbackMenu
             tv.SetMaxLines(5);
             v.SetPadding(0, 0, 0, 50);
             mErrorMessageSnackBar.Show();
-            }
-            catch (System.Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
         }
     }
 }

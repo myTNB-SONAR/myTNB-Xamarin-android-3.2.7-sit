@@ -21,7 +21,6 @@ using myTNB_Android.Src.MultipleAccountPayment.Model;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.SummaryDashBoard.Models;
 using myTNB_Android.Src.Base.Api;
-using System.Runtime;
 
 namespace myTNB_Android.Src.MultipleAccountPayment.Activity
 {
@@ -96,7 +95,6 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
             base.OnCreate(savedInstanceState);
             // Create your application here
 
-            try {
             appBarLayout = FindViewById<Android.Support.Design.Widget.AppBarLayout>(Resource.Id.appBar);
             toolbar = FindViewById<Android.Support.V7.Widget.Toolbar>(Resource.Id.toolbar);
             frameContainer = FindViewById<FrameLayout>(Resource.Id.fragment_container);
@@ -106,11 +104,6 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
             total = Intent.Extras.GetString("TOTAL");
 
             OnLoadMainFragment();
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
             //Android.App.Fragment selectPaymentFragment = new SelectPaymentMethodFragment();
             //Bundle bundle = new Bundle();
             //bundle.PutString(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccount));
@@ -151,39 +144,26 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
 
         internal void SetPaymentReceiptFlag(bool flag, SummaryDashBordRequest summaryDashBoardRequest)
         {
-            try {
             paymentReceiptGenerated = flag;
             if (paymentReceiptGenerated) {
                 if (ConnectionUtils.HasInternetConnection(this)) {
                     SummaryDashBaordUpdate(summaryDashBoardRequest);    
                 }
-                }
-        }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
+
             }
         }
 
         public void ClearBackStack()
         {
-            try {
             FragmentManager manager = this.FragmentManager;
             if (manager.BackStackEntryCount > 0)
             {
                 manager.PopBackStack(FragmentManager.GetBackStackEntryAt(0).Id, FragmentManager.PopBackStackInclusive);
             }
         }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
-        }
-
 
         public override void OnBackPressed()
         {
-            try {
             int count = this.FragmentManager.BackStackEntryCount;
             Log.Debug("OnBackPressed", "fragment stack count :" + count);
             if (count == 0 || paymentReceiptGenerated)
@@ -218,60 +198,31 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
                     this.FragmentManager.PopBackStack();
                 }
             }
-        }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
 
         }
 
         public void SummaryDashBaordUpdate(SummaryDashBordRequest summaryDashBoardRequest)
         {
-            try {
             if (summaryDashBoardRequest != null)
             {
                 if (summaryDashBoardRequest.AccNum != null && summaryDashBoardRequest.AccNum.Count() > 0)
                      SummaryDashBoardApiCall.GetSummaryDetails(summaryDashBoardRequest);
             }
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
         }
 
         public override void Finish()
         {
-            
+            base.Finish();
             if (paymentReceiptGenerated)
             {
-                SelectAccountsActivity.selectAccountsActivity?.SetResult(Result.Ok);
+                SelectAccountsActivity.selectAccountsActivity.SetResult(Result.Ok);
             }
             else
             {
-                SelectAccountsActivity.selectAccountsActivity?.SetResult(Result.Canceled);
+                SelectAccountsActivity.selectAccountsActivity.SetResult(Result.Canceled);
             }
             //SelectAccountsActivity.selectAccountsActivity.Finish();
-            base.Finish();
-        }
 
-
-        public override void OnTrimMemory(TrimMemory level)
-        {
-            base.OnTrimMemory(level);
-
-            switch (level)
-            {
-                case TrimMemory.RunningLow:
-                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
-                    GC.Collect();
-                    break;
-                default:
-                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
-                    GC.Collect();
-                    break;
-            }
         }
 
     }

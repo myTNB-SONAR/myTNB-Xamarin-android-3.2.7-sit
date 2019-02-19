@@ -19,7 +19,6 @@ using myTNB_Android.Src.Utils;
 using myTNB_Android.Src.myTNBMenu.Models;
 using Newtonsoft.Json;
 using AFollestad.MaterialDialogs;
-using System.Runtime;
 
 namespace myTNB_Android.Src.MakePayment.Activity
 {
@@ -56,14 +55,9 @@ namespace myTNB_Android.Src.MakePayment.Activity
             base.OnCreate(savedInstanceState);
             // Create your application here
 
-            try
-            {
-                selectedAccount = JsonConvert.DeserializeObject<AccountData>(Intent.Extras.GetString(Constants.SELECTED_ACCOUNT));
+            selectedAccount = JsonConvert.DeserializeObject<AccountData>(Intent.Extras.GetString(Constants.SELECTED_ACCOUNT));
 
-                OnLoadMainFragment();
-            } catch(Exception e) {
-                Utility.LoggingNonFatalError(e);
-            }
+            OnLoadMainFragment();
             //Android.App.Fragment selectPaymentFragment = new SelectPaymentMethodFragment();
             //Bundle bundle = new Bundle();
             //bundle.PutString(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccount));
@@ -115,7 +109,6 @@ namespace myTNB_Android.Src.MakePayment.Activity
 
         public override void OnBackPressed()
         {
-            try {
             int count = this.FragmentManager.BackStackEntryCount;
             Log.Debug("OnBackPressed", "fragment stack count :" + count);
             if (count == 0 || paymentReceiptGenerated)
@@ -147,31 +140,8 @@ namespace myTNB_Android.Src.MakePayment.Activity
                     this.FragmentManager.PopBackStack();
                 }
             }
-        } catch(Exception e) {
-                Utility.LoggingNonFatalError(e);
-            }
 
-        }
-
-
-        public override void OnTrimMemory(TrimMemory level)
-        {
-            base.OnTrimMemory(level);
-
-            switch (level)
-            {
-                case TrimMemory.RunningLow:
-                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
-                    GC.Collect();
-                    break;
-                default:
-                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
-                    GC.Collect();
-                    break;
-            }
         }
 
     }
-
-
 }

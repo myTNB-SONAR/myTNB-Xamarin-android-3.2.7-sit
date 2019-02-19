@@ -70,49 +70,46 @@ namespace myTNB_Android.Src.AppLaunch.MVP
         {
             Log.Debug(TAG, "Start()");
 
-            try
-            {
 
-                // load accounts here
-                int resultCode = this.mView.PlayServicesResultCode();
-                if (resultCode != ConnectionResult.Success)
+
+            // load accounts here
+            int resultCode = this.mView.PlayServicesResultCode();
+            if (resultCode != ConnectionResult.Success)
+            {
+                if (GoogleApiAvailability.Instance.IsUserResolvableError(resultCode))
                 {
-                    if (GoogleApiAvailability.Instance.IsUserResolvableError(resultCode))
-                    {
-                        this.mView.ShowPlayServicesErrorDialog(resultCode);
-                    }
-                    else
-                    {
-                        this.mView.ShowDeviceNotSupported();
-                    }
+                    this.mView.ShowPlayServicesErrorDialog(resultCode);
                 }
                 else
                 {
-
-                    //bool isGranted = this.mView.IsGrantedSMSReceivePermission();
-                    //if (!isGranted)
-                    //{
-                    //    if (this.mView.ShouldShowSMSReceiveRationale())
-                    //    {
-                    //        this.mView.ShowSMSPermissionRationale();
-                    //    }
-                    //    else
-                    //    {
-                    //        this.mView.RequestSMSPermission();
-                    //    }
-
-
-                    //}
-
-
-                    Console.WriteLine("GooglePlayServices is Installed");
-                    ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
-
-                    LoadAccounts();
+                    this.mView.ShowDeviceNotSupported();
                 }
-            } catch(Exception e) {
-                Utility.LoggingNonFatalError(e);
             }
+            else
+            {
+
+                //bool isGranted = this.mView.IsGrantedSMSReceivePermission();
+                //if (!isGranted)
+                //{
+                //    if (this.mView.ShouldShowSMSReceiveRationale())
+                //    {
+                //        this.mView.ShowSMSPermissionRationale();
+                //    }
+                //    else
+                //    {
+                //        this.mView.RequestSMSPermission();
+                //    }
+
+
+                //}
+
+
+                Console.WriteLine("GooglePlayServices is Installed");
+                ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
+
+                LoadAccounts();
+            }
+
         }
 
         private async void LoadAccounts()
@@ -326,7 +323,6 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                              catch (Exception e)
                              {
                                  Log.Error("API Exception", e.StackTrace);
-                                Utility.LoggingNonFatalError(e);
                              }
                          }).ContinueWith((Task previous) =>
                          {
@@ -358,7 +354,6 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                                 catch (Exception e)
                                 {
                                     Log.Error("API Exception", e.StackTrace);
-                                    Utility.LoggingNonFatalError(e);
                                 }
                             }).ContinueWith((Task previous) => {
                             }, cts.Token);
@@ -367,7 +362,6 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                     catch (Exception e)
                     {
                         Log.Error("DB Exception", e.StackTrace);
-                        Utility.LoggingNonFatalError(e);
                     }
 
                     ///<summary>
@@ -417,7 +411,6 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                         catch (System.Exception e)
                         {
                             Log.Debug("Package Manager", e.StackTrace);
-                            Utility.LoggingNonFatalError(e);
                         }
                     }
                     else
@@ -433,20 +426,15 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                         {
                             foreach (AppVersionList versionList in masterDataResponse.Data.MasterData.AppVersionList)
                             {
-                                int serverVerison;
                                 if (versionList.Platform.Equals("1") || versionList.Platform.Equals("Android"))
                                 {
                                     if (string.IsNullOrEmpty(versionList.Version))
                                     {
                                         appUpdateAvailable = false;
                                     }
-                                    else if (int.TryParse(versionList.Version, out serverVerison))
+                                    else if (!versionList.Version.Equals(DeviceIdUtils.GetAppVersionName()))
                                     {
-                                        serverVerison = int.Parse(versionList.Version);
-                                        if (serverVerison < DeviceIdUtils.GetAppVersionCode())
-                                        {
-                                            appUpdateAvailable = true;
-                                        }
+                                        appUpdateAvailable = true;
                                     }
                                 }
                             }
@@ -597,19 +585,16 @@ namespace myTNB_Android.Src.AppLaunch.MVP
             {
                 //Log.Debug(TAG, "Api Exception " + apiException.GetContentAs<string>());
                 //Log.Debug(TAG, "Api Exception " + apiException.StatusCode);
-                //Log.Debug(TAG, "Api Exception " + apiException);
+                //Log.Debug(TAG, "Api Exception " + apiException.Message);
                 this.mView.ShowRetryOptionApiException(apiException);
-                Utility.LoggingNonFatalError(apiException);
             }
             catch (Newtonsoft.Json.JsonReaderException e)
             {
                 this.mView.ShowRetryOptionUknownException(e);
-                Utility.LoggingNonFatalError(e);
             }
             catch (Exception e)
             {
                 this.mView.ShowRetryOptionUknownException(e);
-                Utility.LoggingNonFatalError(e);
             }
 
         }
@@ -666,7 +651,6 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                 {
                     Log.Error("API Exception", e.StackTrace);
                     mView.OnTimeStampRecieved(null);
-                    Utility.LoggingNonFatalError(e);
                 }
             });
         }
@@ -694,7 +678,6 @@ namespace myTNB_Android.Src.AppLaunch.MVP
             {
                 Log.Error("API Exception", e.StackTrace);
                 this.mView.OnSavedTimeStampRecievd(null);
-                Utility.LoggingNonFatalError(e);
             }
         }
 

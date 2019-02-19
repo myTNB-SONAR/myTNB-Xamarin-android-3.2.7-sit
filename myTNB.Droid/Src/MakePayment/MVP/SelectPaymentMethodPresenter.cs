@@ -46,10 +46,7 @@ namespace myTNB_Android.Src.MakePayment.MVP
 
         public async void InitiatePaymentRequestAsync(string apiKeyID, string custName, string accNum, string payAm, string custEmail, string custPhone, string sspUserID, string platform, string paymentMode, string registeredCardId)
         {
-            if (mView.IsActive()) {
             this.mView.ShowPaymentRequestDialog();
-            }
-
             var api = RestService.For<RequestPaymentApi>(Constants.SERVER_URL.END_POINT);
 
             //var httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
@@ -59,10 +56,7 @@ namespace myTNB_Android.Src.MakePayment.MVP
             try
             {
                 InitiatePaymentResponse result = await api.InitiatePayment(new InitiatePaymentRequestV3(apiKeyID, custName, accNum, payAm, custEmail, custPhone, sspUserID, platform, paymentMode, registeredCardId));
-                if (mView.IsActive())
-                {
-                    this.mView.HidePaymentRequestDialog();
-                }
+                this.mView.HidePaymentRequestDialog();
                 this.mView.SaveInitiatePaymentResponse(result);
             }
             catch (System.OperationCanceledException e)
@@ -70,35 +64,24 @@ namespace myTNB_Android.Src.MakePayment.MVP
                 Log.Debug(TAG, "Cancelled Exception");
                 // ADD OPERATION CANCELLED HERE
                 //this.mView.ShowRetryOptionsCancelledException(e);
-                if (mView.IsActive())
-                {
-                    this.mView.HidePaymentRequestDialog();
-                }
+                this.mView.HidePaymentRequestDialog();
                 this.mView.ShowErrorMessage("We are facing some issue with server, Please try again later");
-                Utility.LoggingNonFatalError(e);
             }
             catch (ApiException apiException)
             {
                 // ADD HTTP CONNECTION EXCEPTION HERE
                 //this.mView.ShowRetryOptionsApiException(apiException);
                 Log.Debug(TAG, "Stack " + apiException.StackTrace);
-                if (mView.IsActive())
-                {
-                    this.mView.HidePaymentRequestDialog();
-                }
+                this.mView.HidePaymentRequestDialog();
                 this.mView.ShowErrorMessage("We are facing some issue with server, Please try again later");
-                Utility.LoggingNonFatalError(apiException);
             }
             catch (Exception e)
             {
                 // ADD UNKNOWN EXCEPTION HERE
                 Log.Debug(TAG, "Stack " + e.StackTrace);
                 //this.mView.ShowRetryOptionsUnknownException(e);
-                if (mView.IsActive())
-                {
-                    this.mView.HidePaymentRequestDialog();
-                }
-                Utility.LoggingNonFatalError(e);
+                this.mView.HidePaymentRequestDialog();
+
             }
            
         }
@@ -109,25 +92,13 @@ namespace myTNB_Android.Src.MakePayment.MVP
         }
 
         public async void InitiateSubmitPaymentAsync(string apiKeyID, string merchantId, string accNum, string payAm, string custName, string custEmail, string custPhone, string mParam1, string des, string cardNo, string cardName, string expM, string expY, string cvv){
-            try {
-            if (mView.IsActive())
-            {
-                this.mView.ShowPaymentRequestDialog();
-            }
+            this.mView.ShowPaymentRequestDialog();
             var api = RestService.For<SubmitPaymentApi>(Constants.SERVER_URL.END_POINT);
             // TODO : UPDATE TO V5
             var result = await api.SubmitPayment(new SubmitPaymentRequestPG(apiKeyID, merchantId, accNum, payAm, custName, custEmail, custPhone, mParam1, des, cardNo, cardName, expM, expY, cvv));
             Log.Debug(TAG, "Submit Payment : " + result.ToString());
-            if (mView.IsActive())
-            {
-                this.mView.HidePaymentRequestDialog();
-            }
+            this.mView.HidePaymentRequestDialog();
             this.mView.InitiateWebView(result.ToString());
-        }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
         }
 
         public void GetRegisterdCards(string apiKeyID, string email)
@@ -138,11 +109,7 @@ namespace myTNB_Android.Src.MakePayment.MVP
 
         public async void GetRegisteredCardsAsync(string apiKeyId, string email)
         {
-            if (mView.IsActive())
-            {
-                this.mView.ShowGetRegisteredCardDialog();
-            }
-
+            this.mView.ShowGetRegisteredCardDialog();
 #if DEBUG || STUB
             var httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
             var api = RestService.For<GetRegisteredCardsApi>(httpClient);
@@ -153,21 +120,13 @@ namespace myTNB_Android.Src.MakePayment.MVP
             try
             {
                 GetRegisteredCardsResponse result = await api.GetRegisteredCards(new GetRegisteredCardsRequest(apiKeyId, email));
-                if (mView.IsActive())
-                {
-                    this.mView.HideGetRegisteredCardDialog();
-                }
+                this.mView.HideGetRegisteredCardDialog();
                 this.mView.GetRegisterCardsResult(result);
-
             } catch(Exception e)
             {
                 Log.Debug(TAG, e.StackTrace);
-                if (mView.IsActive())
-                {
-                    this.mView.HideGetRegisteredCardDialog();
-                }
+                this.mView.HideGetRegisteredCardDialog();
                 this.mView.ShowErrorMessage("Unable to fetch card information");
-                Utility.LoggingNonFatalError(e);
             }
             
         }

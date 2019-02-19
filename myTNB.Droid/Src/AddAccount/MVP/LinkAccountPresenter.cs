@@ -49,25 +49,16 @@ namespace myTNB_Android.Src.AddAccount.MVP
 
         private async void GetCustomerAccounts(string apiID, string userId)
         {
-            if (mView.IsActive())
-            {
-                this.mView.ShowGetAccountsProgressDialog();
-            }
+            this.mView.ShowGetAccountsProgressDialog();
             var api = RestService.For<GetCustomerAccounts>(Constants.SERVER_URL.END_POINT);
-            try
-            {
-                UserEntity user = UserEntity.GetActive();
-                // TODO : UPDATE TO V5
-                var result = await api.GetCustomerAccountV5(new GetCustomerAccountsRequest(apiID, user.UserID));
-                //Log.Debug(TAG, " : "+result.response);
-                if (mView.IsActive())
-                {
-                    this.mView.HideGetAccountsProgressDialog();
-                }
-                this.mView.ShowAccountList(result.D.AccountListData);
-            } catch(Exception e) {
-                Utility.LoggingNonFatalError(e);
-            }
+            UserEntity user = UserEntity.GetActive();
+            // TODO : UPDATE TO V5
+            var result = await api.GetCustomerAccountV5(new GetCustomerAccountsRequest(apiID, user.UserID));
+            //Log.Debug(TAG, " : "+result.response);
+
+            this.mView.HideGetAccountsProgressDialog();
+            this.mView.ShowAccountList(result.D.AccountListData);
+
             
         }
 
@@ -93,10 +84,7 @@ namespace myTNB_Android.Src.AddAccount.MVP
         private async void GetCustomerAccountsByIC(string apiKeyID, string currentAccountList, string email, string identificationNo)
         {
             try {
-                if (mView.IsActive())
-                {
-                    this.mView.ShowGetAccountsProgressDialog();
-                }
+            this.mView.ShowGetAccountsProgressDialog();
             var api = RestService.For<GetCustomerAccountsForICNumApi>(Constants.SERVER_URL.END_POINT);
             // TODO : UPDATE TO V5
             var result = await api.GetCustomerAccountByIc(new GetBCRMAccountRequest(apiKeyID, currentAccountList, email, identificationNo));
@@ -104,10 +92,7 @@ namespace myTNB_Android.Src.AddAccount.MVP
 
             if (result.Data.IsError)
             {
-                    if (mView.IsActive())
-                    {
-                        this.mView.HideGetAccountsProgressDialog();
-                    }
+                this.mView.HideGetAccountsProgressDialog();
                 if (result.Data.Status.Equals("failed"))
                 {
                     this.mView.ShowBCRMDownException(result.Data.Message);
@@ -120,39 +105,23 @@ namespace myTNB_Android.Src.AddAccount.MVP
             }
             else
             {
-                    if (mView.IsActive())
-                    {
-                        this.mView.HideGetAccountsProgressDialog();
-                    }
+                this.mView.HideGetAccountsProgressDialog();
                 this.mView.ShowBCRMAccountList(result.Data.BCRMAccountList);
-
             }
             } catch (System.OperationCanceledException cancelledException)
             {
-                if (mView.IsActive())
-                {
-                    mView.HideGetAccountsProgressDialog();
-                }
+                mView.HideGetAccountsProgressDialog();
                 this.mView.ShowErrorMessage();
-                Utility.LoggingNonFatalError(cancelledException);
             }
             catch (ApiException apiException)
             {
-                if (mView.IsActive())
-                {
-                    mView.HideGetAccountsProgressDialog();
-                }
+                mView.HideGetAccountsProgressDialog();
                 this.mView.ShowErrorMessage();
-                Utility.LoggingNonFatalError(apiException);
             }
             catch (Exception unknownException)
             {
-                if (mView.IsActive())
-                {
-                    mView.HideGetAccountsProgressDialog();
-                }
+                mView.HideGetAccountsProgressDialog();
                 this.mView.ShowErrorMessage();
-                Utility.LoggingNonFatalError(unknownException);
             }
 
 
@@ -167,10 +136,7 @@ namespace myTNB_Android.Src.AddAccount.MVP
         private async void AddMultipleAccountsAsync(string apiKeyId, string sspUserID, string email, List<Models.AddAccount> accounts)
         {
             try {
-                if (mView.IsActive())
-                {
-                    mView.ShowAddingAccountProgressDialog();
-                }
+            mView.ShowAddingAccountProgressDialog();
 
 #if DEBUG
             var httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
@@ -187,75 +153,52 @@ namespace myTNB_Android.Src.AddAccount.MVP
 
                 if (result.response.IsError)
                 {
-                    if (mView.IsActive())
-                    {
-                        mView.HideAddingAccountProgressDialog();
-                    }
+                    mView.HideAddingAccountProgressDialog();
                     mView.ShowAddAccountFail(result.response.Message);                    
                 }
                 else
                 {
-                    if (mView.IsActive())
-                    {
-                        mView.HideAddingAccountProgressDialog();
-                    }
+                    mView.HideAddingAccountProgressDialog();
                     mView.ShowAddAccountSuccess(result.response);
                 }
 
             }
             catch (System.OperationCanceledException cancelledException)
             {
-                if (mView.IsActive())
-                {
-                    mView.HideAddingAccountProgressDialog();
-                }
+                mView.HideAddingAccountProgressDialog();
                 this.mView.ShowErrorMessage();
-                Utility.LoggingNonFatalError(cancelledException);
             }
             catch (ApiException apiException)
             {
-                if (mView.IsActive())
-                {
-                    mView.HideAddingAccountProgressDialog();
-                }
+                mView.HideAddingAccountProgressDialog();
                 this.mView.ShowErrorMessage();
-                Utility.LoggingNonFatalError(apiException);
             }
             catch (Exception unknownException)
             {
-                if (mView.IsActive())
-                {
-                    mView.HideAddingAccountProgressDialog();
-                }
+                mView.HideAddingAccountProgressDialog();
                 this.mView.ShowErrorMessage();
-                Utility.LoggingNonFatalError(unknownException);
             }
 
         }
 
         public void InsertingInSummarydashBoard(List<CustomerBillingAccount> customerBillingAccounts)
         {
-            try
-            {
+            
                 SummaryDashBordRequest summaryDashBoardRequest = new SummaryDashBordRequest();
-                List<string> account = new List<string>();
+            List<string> account = new List<string>();
 
-                foreach (var customer in customerBillingAccounts)
-                {
-                    account.Add(customer.AccNum);
-                }
+            foreach(var customer in customerBillingAccounts) {
+                account.Add(customer.AccNum);
+            }
+                
 
-
-                UserEntity user = UserEntity.GetActive();
-
+            UserEntity user = UserEntity.GetActive();
+                
                 summaryDashBoardRequest.AccNum = account;
-                summaryDashBoardRequest.SspUserId = user.UserID;
+            summaryDashBoardRequest.SspUserId = user.UserID;
                 summaryDashBoardRequest.ApiKeyId = Constants.APP_CONFIG.API_KEY_ID;
 
-                CallSummaryAPI(summaryDashBoardRequest);
-            } catch(Exception e) {
-                Utility.LoggingNonFatalError(e);
-            }
+            CallSummaryAPI(summaryDashBoardRequest);
         }
 
         private async void CallSummaryAPI(SummaryDashBordRequest summaryDashBoardRequest) {

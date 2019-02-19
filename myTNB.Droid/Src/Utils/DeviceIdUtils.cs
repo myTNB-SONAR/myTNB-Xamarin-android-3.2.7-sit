@@ -149,7 +149,7 @@ namespace myTNB_Android.Src.Utils
             }
             catch (Exception e)
             {
-                Utility.LoggingNonFatalError(e);
+
             }
             return "";
         }
