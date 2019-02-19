@@ -24,6 +24,7 @@ using System.IO;
 using AFollestad.MaterialDialogs;
 using myTNB_Android.Src.AddAccount.Activity;
 using myTNB_Android.Src.Utils.Custom.ProgressDialog;
+using System.Runtime;
 
 namespace myTNB_Android.Src.SelectSupplyAccount.Activity
 {
@@ -129,6 +130,8 @@ namespace myTNB_Android.Src.SelectSupplyAccount.Activity
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
+
+            try {
             mPresenter = new SelectSupplyAccountPresenter(this);
 
             accountListAdapter = new SelectSupplyAccountAdapter(this , true);
@@ -143,12 +146,24 @@ namespace myTNB_Android.Src.SelectSupplyAccount.Activity
             };
             TextViewUtils.SetMuseoSans500Typeface(done);
             this.userActionsListener.Start();
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
+
         [Preserve]
         internal void OnItemClick(object sender , AdapterView.ItemClickEventArgs e)
         {
+            try {
             CustomerBillingAccount customerAccount = accountListAdapter.GetItemObject(e.Position);
             this.userActionsListener.OnSelectAccount(customerAccount);
+            }
+            catch (Exception ex)
+            {
+                Utility.LoggingNonFatalError(ex);
+            }
         }
 
         private Snackbar mSnackBarError;
@@ -193,6 +208,7 @@ namespace myTNB_Android.Src.SelectSupplyAccount.Activity
             //    .Build();
 
             //materialDialog.Show();
+            try {
             if (loadingOverlay != null && loadingOverlay.IsShowing)
             {
                 loadingOverlay.Dismiss();
@@ -200,6 +216,11 @@ namespace myTNB_Android.Src.SelectSupplyAccount.Activity
 
             loadingOverlay = new LoadingOverlay(this, Resource.Style.LoadingOverlyDialogStyle);
             loadingOverlay.Show();
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public void HideShowProgressDialog()
@@ -208,9 +229,15 @@ namespace myTNB_Android.Src.SelectSupplyAccount.Activity
             //{
             //    materialDialog.Dismiss();
             //}
+            try {
             if (loadingOverlay != null && loadingOverlay.IsShowing)
             {
                 loadingOverlay.Dismiss();
+            }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
             }
         }
 
@@ -301,6 +328,24 @@ namespace myTNB_Android.Src.SelectSupplyAccount.Activity
         public bool HasInternetConnection()
         {
             return ConnectionUtils.HasInternetConnection(this);
+        }
+
+
+            public override void OnTrimMemory(TrimMemory level)
+        {
+            base.OnTrimMemory(level);
+
+            switch (level)
+            {
+                case TrimMemory.RunningLow:
+                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
+                    GC.Collect();
+                    break;
+                default:
+                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
+                    GC.Collect();
+                    break;
+            }
         }
     }
 }

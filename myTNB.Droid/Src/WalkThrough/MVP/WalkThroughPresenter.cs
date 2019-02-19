@@ -47,16 +47,28 @@ namespace myTNB_Android.Src.WalkThrough.MVP
 
         public void NavigateNextScreen()
         {
+            try {
             int index = this.mView.GetCurrentItem() + 1;
             this.mView.ShowNext(index);
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public void OnPageSelected(int position)
         {
+            try {
             int index = position + 1;
             if (index == this.mView.GetTotalItems() )
             {
                 this.mView.ShowDone();
+            }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
             }
         }
 
@@ -86,6 +98,7 @@ namespace myTNB_Android.Src.WalkThrough.MVP
             }catch(Exception e)
             {
                 Log.Error("API Exception", e.StackTrace);
+                Utility.LoggingNonFatalError(e);
             }
         }
 
@@ -114,6 +127,7 @@ namespace myTNB_Android.Src.WalkThrough.MVP
                 }
                 catch (Exception e)
                 {
+                    Utility.LoggingNonFatalError(e);
                     Log.Error("API Exception", e.StackTrace);
                 }
             });
@@ -147,6 +161,7 @@ namespace myTNB_Android.Src.WalkThrough.MVP
                 catch (Exception e)
                 {
                     Log.Error("API Exception", e.StackTrace);
+                    Utility.LoggingNonFatalError(e);
                 }
             });
         }

@@ -15,6 +15,8 @@ using CheeseBind;
 using myTNB_Android.Src.NotificationFilter.Adapter;
 using myTNB_Android.Src.NotificationFilter.MVP;
 using myTNB_Android.Src.NotificationFilter.Models;
+using myTNB_Android.Src.Utils;
+using System.Runtime;
 
 namespace myTNB_Android.Src.NotificationFilter.Activity
 {
@@ -61,27 +63,63 @@ namespace myTNB_Android.Src.NotificationFilter.Activity
         [OnItemClick(Resource.Id.notification_listview)]
         void OnSelectItem(object sender , AbsListView.ItemClickEventArgs e)
         {
+            try {
             NotificationFilterData data = adapter.GetItemObject(e.Position);
             this.userActionsListener.OnSelectFilterItem(data , e.Position);
+            }
+            catch (Exception ex)
+            {
+                Utility.LoggingNonFatalError(ex);
+            }
         }
 
         public void ShowSelectedFilterItem(NotificationFilterData notificationFilterData, int position)
         {
+            try {
             adapter.DisableAll();
             notificationFilterData.IsSelected = true;
             adapter.Update(position , notificationFilterData);
             SetResult(Result.Ok);
             Finish();
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
+            try {
             adapter = new NotificationFilterAdapter(this , true);
             notificationListView.Adapter = adapter;
             // Create your application here
             this.mPresenter = new NotificationFilterPresenter(this);
             this.userActionsListener.Start();
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+
+        public override void OnTrimMemory(TrimMemory level)
+        {
+            base.OnTrimMemory(level);
+
+            switch (level)
+            {
+                case TrimMemory.RunningLow:
+                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
+                    GC.Collect();
+                    break;
+                default:
+                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
+                    GC.Collect();
+                    break;
+            }
         }
     }
 }

@@ -36,13 +36,14 @@ namespace myTNB_Android.Src.FAQ.MVP
             try
             {
                 FAQsParentEntity wtManager = new FAQsParentEntity();
-                List<FAQsParentEntity> items = wtManager.GetAllItems();
-                if (items != null)
+                List<FAQsParentEntity> items = new List<FAQsParentEntity>();
+                items = wtManager.GetAllItems();
+                if (items != null && items.Count() > 0)
                 {
                     FAQsParentEntity entity = items[0];
-                    if (entity != null)
+                    if (entity != null && !string.IsNullOrEmpty(entity?.Timestamp))
                     {
-                        mView.OnSavedTimeStamp(entity.Timestamp);
+                        mView.OnSavedTimeStamp(entity?.Timestamp);
                     }
                 }
                 else
@@ -54,6 +55,7 @@ namespace myTNB_Android.Src.FAQ.MVP
             {
                 Log.Error("DB Exception", e.StackTrace);
                 mView.OnSavedTimeStamp(null);
+                Utility.LoggingNonFatalError(e);
             }
         }
 
@@ -86,6 +88,7 @@ namespace myTNB_Android.Src.FAQ.MVP
                 {
                     Log.Error("API Exception", e.StackTrace);
                     mView.ShowFAQ(false);
+                    Utility.LoggingNonFatalError(e);
                 }
             }).ContinueWith((Task previous) => {
             }, cts.Token);
@@ -120,6 +123,7 @@ namespace myTNB_Android.Src.FAQ.MVP
                 {
                     Log.Error("API Exception", e.StackTrace);
                     mView.ShowFAQTimestamp(false);
+                    Utility.LoggingNonFatalError(e);
                 }
             }).ContinueWith((Task previous) => {
             }, cts.Token);

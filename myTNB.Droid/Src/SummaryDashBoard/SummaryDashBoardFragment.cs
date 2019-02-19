@@ -71,6 +71,18 @@ namespace myTNB_Android.Src.SummaryDashBoard
         [BindView(Resource.Id.layout_content)]
         LinearLayout layoutContent;
 
+        [BindView(Resource.Id.summaryFooter)]
+        TextView addAcount;
+
+        [BindView(Resource.Id.layout_refresh)]
+        LinearLayout layoutRefresh;
+
+        [BindView(Resource.Id.btnTapRefresh)]
+        Button btnRefresh;
+
+        [BindView(Resource.Id.txtRefreshMessage)]
+        TextView txtRefreshMessage;
+
         List<SummaryDashBoardDetails> itemList = null;
 
         SummaryDashboardPresenter presenter = null;
@@ -110,7 +122,7 @@ namespace myTNB_Android.Src.SummaryDashBoard
             }
             catch (ClassCastException e)
             {
-
+                Utility.LoggingNonFatalError(e);
             }
 
         }
@@ -132,7 +144,7 @@ namespace myTNB_Android.Src.SummaryDashBoard
             }
             catch (ClassCastException e)
             {
-
+                Utility.LoggingNonFatalError(e);
             }
         }
 
@@ -182,18 +194,17 @@ namespace myTNB_Android.Src.SummaryDashBoard
             return base.OnOptionsItemSelected(item);
         }
 
-        [BindView(Resource.Id.summaryFooter)]
-        TextView addAcount;
+
         
         public override void OnViewCreated(View view, Bundle savedInstanceState)
         {
             base.OnViewCreated(view, savedInstanceState);
-
+            try {
             activity = ((DashboardActivity)Activity);
 
             TextViewUtils.SetMuseoSans500Typeface(greetingTxt, loadMore, userNameTxt);
-            TextViewUtils.SetMuseoSans500Typeface(addAcount);
-            TextViewUtils.SetMuseoSans300Typeface(txtDowntimeMessage);
+                TextViewUtils.SetMuseoSans500Typeface(addAcount, btnRefresh);
+                TextViewUtils.SetMuseoSans300Typeface(txtDowntimeMessage, txtRefreshMessage);
 
             reAccRecyclerView.SetLayoutManager(new LinearLayoutManager(this.Activity));
             normalRecyclerView.SetLayoutManager(new LinearLayoutManager(this.Activity));
@@ -211,8 +222,31 @@ namespace myTNB_Android.Src.SummaryDashBoard
                 listener.DoLoadMoreAccount();
             } else {
                 ShowNoInternetSnackbar();
+
             }
             };
+
+                btnRefresh.Click += delegate {
+                    btnRefresh.Enabled = false;
+                    btnRefresh.Clickable = false;
+                    Handler h = new Handler();
+                    Action myAction = () =>
+                    {
+                        btnRefresh.Enabled = true;
+                        btnRefresh.Clickable = true;
+                    };
+                    h.PostDelayed(myAction, 2000);
+
+                    if (HasNetworkConnection())
+                    {
+                        ShowProgressDialog();
+                        this.listener.RefreshAccountSummary();
+                    }
+                    else
+                    {
+                        ShowNoInternetSnackbar();
+                    }
+                };
 
 
             addAcount.Click += delegate {
@@ -263,6 +297,9 @@ namespace myTNB_Android.Src.SummaryDashBoard
                 }
 
             };
+        } catch(System.Exception e) {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
 
@@ -270,6 +307,7 @@ namespace myTNB_Android.Src.SummaryDashBoard
 
 
         private void loadData() {
+            try {
             //listener.FetchUserData();
             if (HasNetworkConnection()) {
                 DownTimeEntity bcrmDownTime = DownTimeEntity.GetByCode(Constants.BCRM_SYSTEM);
@@ -289,14 +327,19 @@ namespace myTNB_Android.Src.SummaryDashBoard
                 else
                 {
                     downtimeLayout.Visibility = ViewStates.Gone;
-                    greetingLayout.Visibility = ViewStates.Visible;
+                        greetingLayout.Visibility = ViewStates.Visible;
+                        layoutRefresh.Visibility = ViewStates.Gone;
                 }
                 listener.FetchAccountSummary();    
 
             } else {
                 ShowNoInternetSnackbar();
             }
-
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
        
@@ -313,20 +356,31 @@ namespace myTNB_Android.Src.SummaryDashBoard
 
         public void ShowProgressDialog()
         {
-            if (loadingOverlay != null && loadingOverlay.IsShowing)
+            try
             {
-                loadingOverlay.Dismiss();
-            }
+                if (loadingOverlay != null && loadingOverlay.IsShowing)
+                {
+                    loadingOverlay.Dismiss();
+                }
 
-            loadingOverlay = new LoadingOverlay(this.Activity, Resource.Style.LoadingOverlyDialogStyle);
-            loadingOverlay.Show();
+                loadingOverlay = new LoadingOverlay(this.Activity, Resource.Style.LoadingOverlyDialogStyle);
+                loadingOverlay.Show();
+            } catch(System.Exception e) {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public void HideProgressDialog()
         {
+            try {
             if (loadingOverlay != null && loadingOverlay.IsShowing)
             {
                 loadingOverlay.Dismiss();
+            }
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
             }
         }
 
@@ -404,13 +458,23 @@ namespace myTNB_Android.Src.SummaryDashBoard
                 mNoInternetSnackbar.Dismiss();
             }
 
-            mNoInternetSnackbar = Snackbar.Make(rootView, GetString(Resource.String.no_internet_connection), Snackbar.LengthIndefinite)
+            mNoInternetSnackbar = Snackbar.Make(rootView, GetString(Resource.String.no_internet_connection), Snackbar.LengthShort)
             .SetAction(GetString(Resource.String.dashboard_chartview_data_not_available_no_internet_btn_close), delegate {
 
                 mNoInternetSnackbar.Dismiss();
             }
             );
             mNoInternetSnackbar.Show();
+            ShowRefreshSummaryDashboard(true);
+            layoutContent.Visibility = ViewStates.Visible;
+            listener.LoadEmptySummaryDetails();
+        }
+
+
+        public void ShowRefreshSummaryDashboard(bool yesno)
+        {
+        
+            layoutRefresh.Visibility = yesno ? ViewStates.Visible : ViewStates.Gone;
         }
 
         public void SetGreetingImageAndText(eGreeting greeting, string text)

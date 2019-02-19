@@ -20,6 +20,7 @@ using CheeseBind;
 using myTNB.SQLite.SQLiteDataManager;
 using myTNB_Android.Src.Utils.Custom.ProgressDialog;
 using myTNB_Android.Src.Utils;
+using System.Runtime;
 
 namespace myTNB_Android.Src.FAQ.Activity
 {
@@ -50,16 +51,21 @@ namespace myTNB_Android.Src.FAQ.Activity
 
         public void HideProgressBar()
         {
-            //mProgressBar.Visibility = ViewStates.Gone;
-            if(loadingOverlay != null && loadingOverlay.IsShowing)
+            try
             {
-                loadingOverlay.Dismiss();
+                //mProgressBar.Visibility = ViewStates.Gone;
+                if (loadingOverlay != null && loadingOverlay.IsShowing)
+                {
+                    loadingOverlay.Dismiss();
+                }
+            } catch(Exception e) {
+                Utility.LoggingNonFatalError(e);
             }
         }
 
         public bool IsActive()
         {
-            throw new NotImplementedException();
+            return Window.DecorView.RootView.IsShown && !IsFinishing;
         }
 
         public override int ResourceId()
@@ -120,9 +126,15 @@ namespace myTNB_Android.Src.FAQ.Activity
         public void ShowProgressBar()
         {
             //mProgressBar.Visibility = ViewStates.Visible;
+            try {
             if(loadingOverlay != null)
             {
                 loadingOverlay.Show();
+            }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
             }
         }
 
@@ -130,22 +142,28 @@ namespace myTNB_Android.Src.FAQ.Activity
         {
             base.OnCreate(savedInstanceState);
             mPresenter = new FAQPresenter(this);
-
-            Bundle extras = Intent.Extras;
-            if (extras != null && extras.ContainsKey(Constants.FAQ_ID_PARAM))
+            try
             {
-                FAQ_ID = extras.GetString(Constants.FAQ_ID_PARAM);
+                Bundle extras = Intent.Extras;
+                if (extras != null && extras.ContainsKey(Constants.FAQ_ID_PARAM))
+                {
+                    FAQ_ID = extras.GetString(Constants.FAQ_ID_PARAM);
+                }
+
+                layoutManager = new LinearLayoutManager(this, LinearLayoutManager.Vertical, false);
+                mFAQRecyclerView.SetLayoutManager(layoutManager);
+                adapter = new FAQListAdapter(this, faqs);
+                mFAQRecyclerView.SetAdapter(adapter);
+
+                loadingOverlay = new LoadingOverlay(this, Resource.Style.LoadingOverlyDialogStyle);
+                mProgressBar.Visibility = ViewStates.Gone;
+                ShowProgressBar();
+                this.userActionsListener.GetSavedFAQTimeStamp();
+            } catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
             }
 
-            layoutManager = new LinearLayoutManager(this, LinearLayoutManager.Vertical, false);
-            mFAQRecyclerView.SetLayoutManager(layoutManager);
-            adapter = new FAQListAdapter(this, faqs);
-            mFAQRecyclerView.SetAdapter(adapter);
-
-            loadingOverlay = new LoadingOverlay(this, Resource.Style.LoadingOverlyDialogStyle);
-            mProgressBar.Visibility = ViewStates.Gone;
-            ShowProgressBar();
-            this.userActionsListener.GetSavedFAQTimeStamp();
         }
 
         public void OnSavedTimeStamp(string savedTimeStamp)
@@ -159,6 +177,7 @@ namespace myTNB_Android.Src.FAQ.Activity
 
         public void ShowFAQTimestamp(bool success)
         {
+            try {
             if (success)
             {
                 FAQsParentEntity wtManager = new FAQsParentEntity();
@@ -183,6 +202,28 @@ namespace myTNB_Android.Src.FAQ.Activity
             else
             {
                 ShowFAQ(false);
+            }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public override void OnTrimMemory(TrimMemory level)
+        {
+            base.OnTrimMemory(level);
+
+            switch (level)
+            {
+                case TrimMemory.RunningLow:
+                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
+                    GC.Collect();
+                    break;
+                default:
+                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
+                    GC.Collect();
+                    break;
             }
         }
     }

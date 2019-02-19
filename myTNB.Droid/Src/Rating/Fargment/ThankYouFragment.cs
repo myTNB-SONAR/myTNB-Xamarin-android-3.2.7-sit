@@ -33,6 +33,7 @@ namespace myTNB_Android.Src.Rating.Fargment
         {
             View rootView = inflater.Inflate(Resource.Layout.FeedbackSuccessView, container, false);
 
+            try {
             ratingActivity = ((RatingActivity) Activity);
 
             coordinatorLayout = rootView.FindViewById<CoordinatorLayout>(Resource.Id.rootView);
@@ -67,6 +68,11 @@ namespace myTNB_Android.Src.Rating.Fargment
                 StartActivity(DashboardIntent);
             };
 
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
             return rootView;
         }
     }

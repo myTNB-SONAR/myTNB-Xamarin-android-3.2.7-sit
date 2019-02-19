@@ -38,7 +38,10 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.MVP
         public async void OnSelect(SubmittedFeedback submittedFeedback)
         {
             cts = new CancellationTokenSource();
-            this.mView.ShowProgressDialog();
+            if (mView.IsActive())
+            {
+                this.mView.ShowProgressDialog();
+            }
 #if DEBUG
             var httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
             var feedbackApi = RestService.For<IFeedbackApi>(httpClient);
@@ -54,6 +57,11 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.MVP
                     ApiKeyId = Constants.APP_CONFIG.API_KEY_ID,
                     ServiceReqNo = submittedFeedback.FeedbackId
                 }, cts.Token);
+
+                if (mView.IsActive())
+                {
+                    this.mView.HideProgressDialog();
+                }
 
                 if (!detailsResponse.Data.IsError)
                 {
@@ -87,21 +95,35 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.MVP
             }
             catch (System.OperationCanceledException e)
             {
+                if (mView.IsActive())
+                {
+                    this.mView.HideProgressDialog();
+                }
                 // ADD OPERATION CANCELLED HERE
                 this.mView.ShowRetryOptionsCancelledException(e);
+                Utility.LoggingNonFatalError(e);
             }
             catch (ApiException apiException)
             {
+                if (mView.IsActive())
+                {
+                    this.mView.HideProgressDialog();
+                }
                 // ADD HTTP CONNECTION EXCEPTION HERE
                 this.mView.ShowRetryOptionsApiException(apiException);
+                Utility.LoggingNonFatalError(apiException);
             }
             catch (Exception e)
             {
+                if (mView.IsActive())
+                {
+                    this.mView.HideProgressDialog();
+                }
                 // ADD UNKNOWN EXCEPTION HERE
                 this.mView.ShowRetryOptionsUnknownException(e);
+                Utility.LoggingNonFatalError(e);
             }
 
-            this.mView.HideProgressDialog();
 
         }
 
@@ -110,7 +132,10 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.MVP
         {
 
             cts = new CancellationTokenSource();
+
+            //if (mView.IsActive()) {
             this.mView.ShowProgressDialog();
+            //}
 #if DEBUG
             var httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
             var feedbackApi = RestService.For<IFeedbackApi>(httpClient);
@@ -132,6 +157,12 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.MVP
                         DeviceId = deviceId
 
                     }, cts.Token);
+
+                    //if (mView.IsActive())
+                    //{
+                        this.mView.HideProgressDialog();
+                    //}
+
                     if (!submittedFeedbackResponse.Data.IsError)
                     {
                         foreach (SubmittedFeedback sf in submittedFeedbackResponse.Data.Data)
@@ -146,6 +177,7 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.MVP
                     }
                     else
                     {
+                       
                         this.mView.ShowRetryOptionsCancelledException(null);
                     }
                 }
@@ -158,6 +190,12 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.MVP
                         DeviceId = deviceId
 
                     }, cts.Token);
+
+                    //if (mView.IsActive())
+                    //{
+                        this.mView.HideProgressDialog();
+                    //}
+
                     if (!submittedFeedbackResponse.Data.IsError)
                     {
                         foreach (SubmittedFeedback sf in submittedFeedbackResponse.Data.Data)
@@ -180,22 +218,39 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.MVP
             }
             catch (System.OperationCanceledException e)
             {
+                if (mView.IsActive())
+                {
+                    this.mView.HideProgressDialog();
+                }
                 // ADD OPERATION CANCELLED HERE
                 this.mView.ShowRetryOptionsCancelledException(e);
+                Utility.LoggingNonFatalError(e);
             }
             catch (ApiException apiException)
             {
+                if (mView.IsActive())
+                {
+                    this.mView.HideProgressDialog();
+                }
                 // ADD HTTP CONNECTION EXCEPTION HERE
                 this.mView.ShowRetryOptionsApiException(apiException);
+                Utility.LoggingNonFatalError(apiException);
             }
             catch (Exception e)
             {
+                if (mView.IsActive())
+                {
+                    this.mView.HideProgressDialog();
+                }
                 // ADD UNKNOWN EXCEPTION HERE
                 this.mView.ShowRetryOptionsUnknownException(e);
+                Utility.LoggingNonFatalError(e);
             }
 
-            this.mView.HideProgressDialog();
-
+            if (mView.IsActive())
+            {
+                this.mView.HideProgressDialog();
+            }
 
         }
 

@@ -29,6 +29,7 @@ using Android.Net;
 using Android.Views.InputMethods;
 using Java.Text;
 using myTNB_Android.Src.Utils.Custom.ProgressDialog;
+using System.Runtime;
 
 namespace myTNB_Android.Src.MultipleAccountPayment.Activity
 {
@@ -107,10 +108,21 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
         {
             base.OnCreate(savedInstanceState);
 
+            try {
             // Create your application here
             mPresenter = new MPSelectAccountsPresenter(this);
             selectAccountsActivity = this;
-            selectedAccount = JsonConvert.DeserializeObject<AccountData>(Intent.Extras.GetString(Constants.SELECTED_ACCOUNT));
+
+                Bundle extras = Intent.Extras;
+
+                if (extras != null)
+                {
+                    if (extras.ContainsKey(Constants.SELECTED_ACCOUNT))
+                    {
+                        //selectedAccount = JsonConvert.DeserializeObject<AccountData>(Intent.Extras.GetString(Constants.SELECTED_ACCOUNT));
+                        selectedAccount = DeSerialze<AccountData>(extras.GetString(Constants.SELECTED_ACCOUNT));
+                    }
+                }
 
             registerdAccounts = CustomerBillingAccount.List();
             var found = registerdAccounts.Where(x => x.AccNum == selectedAccount.AccountNum).FirstOrDefault();
@@ -197,10 +209,16 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
             btnPayBill.RequestFocus();
             InputMethodManager inputMethodManager = this.GetSystemService(Context.InputMethodService) as InputMethodManager;
             inputMethodManager.HideSoftInputFromWindow(rootView.WindowToken, 0);
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         private void ValidateAccountListAdapter()
         {
+            try {
             //adapter = new SelectAccountListAdapter(this, accountList);
             //layoutManager = new LinearLayoutManager(this, LinearLayoutManager.Vertical, false);
             //accountListRecyclerView.SetLayoutManager(layoutManager);
@@ -209,10 +227,16 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
             adapter.AddAccounts(accountList);
             //adapter.CheckChanged += OnCheckChanged;
             UpdateTotal(adapter.GetSelectedAccounts());
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         void OnCheckChanged(object sender, int position)
         {
+            try {
             if (position == -1)
             {
                 ShowError(this.GetString(Resource.String.error_select_5_accounts));
@@ -223,10 +247,16 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
                 Log.Debug("Selected Accounts", " List " + list);
                 UpdateTotal(list);
             }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public void UpdateTotal(List<MPAccount> selectedAccounts)
         {
+            try {
             double total = 0;
             foreach (MPAccount account in selectedAccounts)
             {
@@ -243,11 +273,17 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
                 btnPayBill.Text = this.GetString(Resource.String.text_pay_bill);
                 DisablePayButton();
             }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
             //IsValidAmount(total);
         }
 
         public void ShowError(string messge)
         {
+            try {
             if (mErrorMessageSnackBar != null && mErrorMessageSnackBar.IsShown)
             {
                 mErrorMessageSnackBar.Dismiss();
@@ -261,10 +297,16 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
             tv.SetMaxLines(5);
 
             mErrorMessageSnackBar.Show();
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public void NavigateToPayment()
         {
+            try {
             if (adapter.IsAllAmountValid())
             {
                 ///<remarks>
@@ -281,26 +323,49 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
             {
                 Log.Debug(TAG, "Enter valid amount.");
             }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public void IsValidAmount(double amt)
         {
+            try {
             if (amt > 5000)
             {
                 ShowError(this.GetString(Resource.String.error_credit_card_limit));
+            }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
             }
         }
 
         public void DisablePayButton()
         {
+            try {
             btnPayBill.Enabled = false;
             btnPayBill.Background = ContextCompat.GetDrawable(this, Resource.Drawable.silver_chalice_button_background);
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public void EnablePayButton()
         {
+            try {
             btnPayBill.Enabled = true;
             btnPayBill.Background = ContextCompat.GetDrawable(this, Resource.Drawable.green_button_background);
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public void ShowProgressDialog()
@@ -309,6 +374,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
             //{
             //    this.mGetDueAmountDialog.Show();
             //}
+            try {
             if (loadingOverlay != null && loadingOverlay.IsShowing)
             {
                 loadingOverlay.Dismiss();
@@ -316,6 +382,11 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
 
             loadingOverlay = new LoadingOverlay(this, Resource.Style.LoadingOverlyDialogStyle);
             loadingOverlay.Show();
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public void HideProgressDialog()
@@ -324,15 +395,22 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
             //{
             //    this.mGetDueAmountDialog.Dismiss();
             //}
+            try {
             if (loadingOverlay != null && loadingOverlay.IsShowing)
             {
                 loadingOverlay.Dismiss();
+            }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
             }
         }
 
         public void GetAccountDueAmountResult(MPAccountDueResponse response)
         {
             //            List<CustomerBillingAccount> registerdAccounts = CustomerBillingAccount.List();
+            try {
             if (response != null)
             {
                 if (response.accountDueAmountResponse.accounts != null)
@@ -383,10 +461,16 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
                     }
                 }
             }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public void GetAccountDueAmountResult(List<MPAccount> accounts)
         {
+            try {
             //            List<CustomerBillingAccount> registerdAccounts = CustomerBillingAccount.List();
             if (accounts != null)
             {
@@ -412,11 +496,17 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
                         textLoadMore.Visibility = ViewStates.Gone;
                     }
             }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public List<CustomerBillingAccount> GetMoreCustomerAccounts(int index)
         {
             List<CustomerBillingAccount> accountsToReturn = new List<CustomerBillingAccount>();
+            try {
             if (registerdAccounts.Count <= 4 && index == 0)
             {
                 accountsToReturn.AddRange(registerdAccounts);
@@ -442,12 +532,17 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
                     }
                 }
             }
-
+        }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
             return accountsToReturn;
         }
 
         public bool IsNetworkAvailable()
         {
+            try {
             ConnectivityManager connectivity = (ConnectivityManager)(Application.Context.ApplicationContext).GetSystemService(Context.ConnectivityService);
             if (connectivity != null)
             {
@@ -460,11 +555,17 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
                         }
 
             }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
             return false;
         }
 
         protected override void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
         {
+            try {
             //base.OnActivityResult(requestCode, resultCode, data);
             if (requestCode == PaymentActivity.SELECT_PAYMENT_ACTIVITY_CODE)
             {
@@ -473,6 +574,35 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
                     Finish();
                 }
             }
-        }   
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+
+        public override void OnTrimMemory(TrimMemory level)
+        {
+            try {
+            base.OnTrimMemory(level);
+
+            switch (level)
+            {
+                case TrimMemory.RunningLow:
+                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
+                    GC.Collect();
+                    break;
+                default:
+                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
+                    GC.Collect();
+                    break;
+            }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
     }
 }

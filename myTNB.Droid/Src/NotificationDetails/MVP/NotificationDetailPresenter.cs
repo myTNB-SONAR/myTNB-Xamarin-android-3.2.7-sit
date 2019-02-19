@@ -38,7 +38,9 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
 
         public async void OnRemoveNotification(NotificationDetails.Models.NotificationDetails notificationDetails)
         {
+            if (mView.IsActive()) {
             this.mView.ShowRemovingProgress();
+            }
             cts = new CancellationTokenSource();
             ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
 #if DEBUG 
@@ -60,6 +62,11 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                     SSPUserId = UserEntity.GetActive().UserID
                 } , cts.Token);
 
+                if (mView.IsActive())
+                {
+                    this.mView.HideRemovingProgress();
+                }
+
                 if (!notificationDeleteResponse.Data.IsError)
                 {
                     UserNotificationEntity.UpdateIsDeleted(notificationDetails.Id , true);
@@ -72,20 +79,35 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
             }
             catch (System.OperationCanceledException e)
             {
+                if (mView.IsActive())
+                {
+                    this.mView.HideRemovingProgress();
+                }
                 // ADD OPERATION CANCELLED HERE
                 this.mView.ShowRetryOptionsCancelledException(e);
+                Utility.LoggingNonFatalError(e);
             }
             catch (ApiException apiException)
             {
+                if (mView.IsActive())
+                {
+                    this.mView.HideRemovingProgress();
+                }
                 // ADD HTTP CONNECTION EXCEPTION HERE
                 this.mView.ShowRetryOptionsApiException(apiException);
+                Utility.LoggingNonFatalError(apiException);
             }
             catch (Exception e)
             {
+                if (mView.IsActive())
+                {
+                    this.mView.HideRemovingProgress();
+                }
                 // ADD UNKNOWN EXCEPTION HERE
                 this.mView.ShowRetryOptionsUnknownException(e);
+                Utility.LoggingNonFatalError(e);
             }
-            this.mView.HideRemovingProgress();
+
         }
 
         public void OnViewDetails()

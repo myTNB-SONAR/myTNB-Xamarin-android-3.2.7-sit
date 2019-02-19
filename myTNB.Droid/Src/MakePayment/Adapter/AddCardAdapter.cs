@@ -60,6 +60,7 @@ namespace myTNB_Android.Src.MakePayment.Adapter
         {
             var view = convertView ?? activity.LayoutInflater.Inflate(
             Resource.Layout.CardItemView, parent, false);
+            try {
             Button cardView = view.FindViewById<Button>(Resource.Id.btnCard);
             cardView.Click += delegate
             {
@@ -97,7 +98,9 @@ namespace myTNB_Android.Src.MakePayment.Adapter
                 cardView.SetCompoundDrawablesWithIntrinsicBounds(Resource.Drawable.ic_payment_card_jcb,
                     0, 0, 0);
             }
-
+        } catch(System.Exception ex) {
+                Utility.LoggingNonFatalError(ex);
+            }
             return view;
         }
     }

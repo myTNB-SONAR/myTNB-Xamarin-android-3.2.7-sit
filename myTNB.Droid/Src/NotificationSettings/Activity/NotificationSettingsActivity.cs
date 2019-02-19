@@ -20,6 +20,7 @@ using Android.Support.Design.Widget;
 using Refit;
 using AFollestad.MaterialDialogs;
 using Android.Support.V7.Widget;
+using System.Runtime;
 
 namespace myTNB_Android.Src.NotificationSettings.Activity
 {
@@ -92,7 +93,7 @@ namespace myTNB_Android.Src.NotificationSettings.Activity
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-
+            try {
             // Create your application here
             Console.WriteLine("NotificationSettingsActivity OnCreate");
 
@@ -118,20 +119,36 @@ namespace myTNB_Android.Src.NotificationSettings.Activity
 
             mPresenter = new NotificationSettingsPresenter(this);
             this.userActionsListener.Start();
+            }
+            catch (Exception ex)
+            {
+                Utility.LoggingNonFatalError(ex);
+            }
 
         }
 
         private void ChannelAdapter_ClickEvent(object sender, int e)
         {
+            try {
             NotificationChannelUserPreference userPreference = channelAdapter.GetItemObject(e);
             this.userActionsListener.OnChannelItemClick(userPreference, e);
+            }
+            catch (Exception ex)
+            {
+                Utility.LoggingNonFatalError(ex);
+            }
         }
 
         private void TypeAdapter_ClickEvent(object sender, int e)
         {
+            try {
             NotificationTypeUserPreference userPreference = typeAdapter.GetItemObject(e);
             this.userActionsListener.OnTypeItemClick(userPreference, e, this.DeviceId());
-
+            }
+            catch (Exception ex)
+            {
+                Utility.LoggingNonFatalError(ex);
+            }
         }
 
         //[OnItemClick(Resource.Id.notificationTypeListView)]
@@ -327,6 +344,25 @@ namespace myTNB_Android.Src.NotificationSettings.Activity
             }
             );
             mUknownExceptionSnackBar.Show();
+        }
+
+
+
+        public override void OnTrimMemory(TrimMemory level)
+        {
+            base.OnTrimMemory(level);
+
+            switch (level)
+            {
+                case TrimMemory.RunningLow:
+                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
+                    GC.Collect();
+                    break;
+                default:
+                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
+                    GC.Collect();
+                    break;
+            }
         }
     }
 }

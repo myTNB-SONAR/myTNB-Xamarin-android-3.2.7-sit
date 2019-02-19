@@ -36,22 +36,27 @@ namespace myTNB_Android.Src.FAQ.Adapter
 
         public override void OnBindViewHolder(RecyclerView.ViewHolder holder, int position)
         {
-            FAQListViewHolder vh = holder as FAQListViewHolder;
-
-            FAQsModel model = faqList[position];
-            vh.Question.Text = model.Question;
-
-            if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.N)
+            try
             {
-                vh.Answer.TextFormatted = Html.FromHtml(model.Answer, FromHtmlOptions.ModeLegacy);
-            }
-            else
-            {
-                vh.Answer.TextFormatted = Html.FromHtml(model.Answer);
-            }
+                FAQListViewHolder vh = holder as FAQListViewHolder;
 
-            TextViewUtils.SetMuseoSans500Typeface(vh.Question);
-            TextViewUtils.SetMuseoSans300Typeface(vh.Answer);
+                FAQsModel model = faqList[position];
+                vh.Question.Text = model.Question;
+
+                if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.N)
+                {
+                    vh.Answer.TextFormatted = Html.FromHtml(model.Answer, FromHtmlOptions.ModeLegacy);
+                }
+                else
+                {
+                    vh.Answer.TextFormatted = Html.FromHtml(model.Answer);
+                }
+
+                TextViewUtils.SetMuseoSans500Typeface(vh.Question);
+                TextViewUtils.SetMuseoSans300Typeface(vh.Answer);
+            } catch(Exception e) {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public override RecyclerView.ViewHolder OnCreateViewHolder(ViewGroup parent, int viewType)

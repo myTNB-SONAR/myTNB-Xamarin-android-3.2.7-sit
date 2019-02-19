@@ -203,6 +203,16 @@ namespace myTNB_Android.Src.Utils
             editor.Apply();
         }
 
+        public static int GetPrevAppVersionCode(ISharedPreferences preferences) {
+            return preferences.GetInt("PREV_APP_VERSION_CODE", 0);
+        }
+
+        public static void SetAppVersionCode(ISharedPreferences preferences, int appVersionCode) {
+            ISharedPreferencesEditor editor = preferences.Edit();
+            editor.PutInt("PREV_APP_VERSION_CODE", appVersionCode);
+            editor.Apply();
+        }
+
         public static string GetUserEmail(ISharedPreferences preferences)
         {
             return preferences.GetString("loginEmail", "");

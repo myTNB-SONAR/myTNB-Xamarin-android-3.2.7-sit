@@ -100,9 +100,12 @@ namespace myTNB_Android.Src.AddAccount.Fragment
             //{
             //    mAddAccountProgressDialog.Dismiss();
             //}
-            if(loadingOverlay != null && loadingOverlay.IsShowing)
+            if (IsActive())
             {
-                loadingOverlay.Dismiss();
+                if (loadingOverlay != null && loadingOverlay.IsShowing)
+                {
+                    loadingOverlay.Dismiss();
+                }
             }
         }
 
@@ -138,54 +141,56 @@ namespace myTNB_Android.Src.AddAccount.Fragment
             // return inflater.Inflate(Resource.Layout.YourFragment, container, false);
 
             View mainView = inflater.Inflate(Resource.Layout.AddAccountFormView, container, false);
-            ownerDetailsLayout = mainView.FindViewById<LinearLayout>(Resource.Id.owner_details_layout);
-            rootView = mainView.FindViewById<LinearLayout>(Resource.Id.rootView);
-            edtAccountNo = mainView.FindViewById<EditText>(Resource.Id.account_no_edittext);
-            edtAccountLabel = mainView.FindViewById<EditText>(Resource.Id.account_label_edittext);
-            edtOwnersIC = mainView.FindViewById<EditText>(Resource.Id.owner_ic_no_edittext);
-            edtOwnerMotherName = mainView.FindViewById<EditText>(Resource.Id.owner_mother_maiden_name_edittext);
-
-            textInputLayoutAccountNo = mainView.FindViewById<TextInputLayout>(Resource.Id.account_no_layout);
-            textInputLayoutAccountLabel = mainView.FindViewById<TextInputLayout>(Resource.Id.account_label_layout);
-            textInputLayoutMotherMaidenName = mainView.FindViewById<TextInputLayout>(Resource.Id.owner_mother_maiden_name_layout);
-            textInputLayoutOwnerIC = mainView.FindViewById<TextInputLayout>(Resource.Id.owner_ic_no_layout);
-            txtAccountType = mainView.FindViewById<TextView>(Resource.Id.txtAccountType);
-
-            accountType = mainView.FindViewById<TextView>(Resource.Id.selector_account_type);
-
-            TextViewUtils.SetMuseoSans300Typeface(edtAccountLabel
-                , edtAccountNo
-                , edtOwnersIC
-                , edtOwnerMotherName);
-
-            TextViewUtils.SetMuseoSans300Typeface(textInputLayoutAccountNo
-                , textInputLayoutAccountLabel
-                , textInputLayoutMotherMaidenName
-                , textInputLayoutOwnerIC);
-
-            TextViewUtils.SetMuseoSans300Typeface(txtAccountType, accountType);
-
-            if (isOwner || hasRights)
+            try
             {
-                isOwner = true;
-                ownerDetailsLayout.Visibility = ViewStates.Visible;
-            }
-            else
-            {
-                ownerDetailsLayout.Visibility = ViewStates.Gone;
-            }
+                ownerDetailsLayout = mainView.FindViewById<LinearLayout>(Resource.Id.owner_details_layout);
+                rootView = mainView.FindViewById<LinearLayout>(Resource.Id.rootView);
+                edtAccountNo = mainView.FindViewById<EditText>(Resource.Id.account_no_edittext);
+                edtAccountLabel = mainView.FindViewById<EditText>(Resource.Id.account_label_edittext);
+                edtOwnersIC = mainView.FindViewById<EditText>(Resource.Id.owner_ic_no_edittext);
+                edtOwnerMotherName = mainView.FindViewById<EditText>(Resource.Id.owner_mother_maiden_name_edittext);
 
-            addAccount = rootView.FindViewById<Button>(Resource.Id.btnAddAccount);
-            TextViewUtils.SetMuseoSans500Typeface(addAccount);
-            addAccount.Click += delegate
-            {
+                textInputLayoutAccountNo = mainView.FindViewById<TextInputLayout>(Resource.Id.account_no_layout);
+                textInputLayoutAccountLabel = mainView.FindViewById<TextInputLayout>(Resource.Id.account_label_layout);
+                textInputLayoutMotherMaidenName = mainView.FindViewById<TextInputLayout>(Resource.Id.owner_mother_maiden_name_layout);
+                textInputLayoutOwnerIC = mainView.FindViewById<TextInputLayout>(Resource.Id.owner_ic_no_layout);
+                txtAccountType = mainView.FindViewById<TextView>(Resource.Id.txtAccountType);
+
+                accountType = mainView.FindViewById<TextView>(Resource.Id.selector_account_type);
+
+                TextViewUtils.SetMuseoSans300Typeface(edtAccountLabel
+                    , edtAccountNo
+                    , edtOwnersIC
+                    , edtOwnerMotherName);
+
+                TextViewUtils.SetMuseoSans300Typeface(textInputLayoutAccountNo
+                    , textInputLayoutAccountLabel
+                    , textInputLayoutMotherMaidenName
+                    , textInputLayoutOwnerIC);
+
+                TextViewUtils.SetMuseoSans300Typeface(txtAccountType, accountType);
+
+                if (isOwner || hasRights)
+                {
+                    isOwner = true;
+                    ownerDetailsLayout.Visibility = ViewStates.Visible;
+                }
+                else
+                {
+                    ownerDetailsLayout.Visibility = ViewStates.Gone;
+                }
+
+                addAccount = rootView.FindViewById<Button>(Resource.Id.btnAddAccount);
+                TextViewUtils.SetMuseoSans500Typeface(addAccount);
+                addAccount.Click += delegate
+                {
                 //CallAddAccountService();
                 CallValidateAccountService();
-            };
+                };
 
-            scan = rootView.FindViewById<ImageButton>(Resource.Id.scan);
-            scan.Click += async delegate
-            {
+                scan = rootView.FindViewById<ImageButton>(Resource.Id.scan);
+                scan.Click += async delegate
+                {
                 //var scanner = new ZXing.Mobile.MobileBarcodeScanner();
                 //var result = await scanner.Scan();
 
@@ -194,100 +199,118 @@ namespace myTNB_Android.Src.AddAccount.Fragment
                 //    edtAccountNo.Text = result.Text;
                 //}
 
-                Intent barcodeIntent = new Intent(Activity , typeof(BarcodeActivity));
-                StartActivityForResult(barcodeIntent , Constants.BARCODE_REQUEST_CODE);
-                
-            };
+                Intent barcodeIntent = new Intent(Activity, typeof(BarcodeActivity));
+                    StartActivityForResult(barcodeIntent, Constants.BARCODE_REQUEST_CODE);
 
-            btnWhereIsMyAccountNo = rootView.FindViewById<TextView>(Resource.Id.btnWhereIsMyAccountNo);
-            btnWhereIsMyAccountNo.Click += async delegate 
-            {
-                dialogWhereMyAccountNo = new MaterialDialog.Builder(Activity)
-                .CustomView(Resource.Layout.WhereIsMyAccountView, false)
-                .Cancelable(true)
-                .PositiveText("Got it!")
-                .PositiveColor(Resource.Color.blue)
-                .Build();
+                };
 
-                View view = dialogWhereMyAccountNo.View;
-                if(view != null)
+                btnWhereIsMyAccountNo = rootView.FindViewById<TextView>(Resource.Id.btnWhereIsMyAccountNo);
+                btnWhereIsMyAccountNo.Click += async delegate
                 {
-                    TextView titleText = view.FindViewById<TextView>(Resource.Id.textDialogTitle);
-                    TextView infoText = view.FindViewById<TextView>(Resource.Id.textDialogInfo);
-                    if(titleText != null && infoText != null)
+                    dialogWhereMyAccountNo = new MaterialDialog.Builder(Activity)
+                    .CustomView(Resource.Layout.WhereIsMyAccountView, false)
+                    .Cancelable(true)
+                    .PositiveText("Got it!")
+                    .PositiveColor(Resource.Color.blue)
+                    .Build();
+
+                    View view = dialogWhereMyAccountNo.View;
+                    if (view != null)
                     {
-                        TextViewUtils.SetMuseoSans500Typeface(titleText);
-                        TextViewUtils.SetMuseoSans300Typeface(infoText);
-                    }
-                }
-                dialogWhereMyAccountNo.Show();
-            };
-
-            AccountType Individual = new AccountType();
-            Individual.Id = "1";
-            Individual.Type = "Residential";
-            Individual.IsSelected = true;
-            selectedAccountType = Individual;
-            accountType.Text = selectedAccountType.Type;
-            accountType.Click += async delegate
-            {
-                Intent accountType = new Intent(Activity, typeof(SelectAccountActivity));
-                accountType.PutExtra("selectedAccountType", JsonConvert.SerializeObject(selectedAccountType));
-                StartActivityForResult(accountType, SELECT_ACCOUNT_TYPE_REQ_CODE);
-            };
-
-            edtAccountNo.TextChanged += TextChange;
-            edtAccountLabel.TextChanged += TextChange;
-            //textInputLayoutAccountLabel.Error = "e.g. My House, Parent's House";
-            edtOwnersIC.TextChanged += TextChange;
-
-            edtAccountNo.AddTextChangedListener(new InputFilterFormField(edtAccountNo, textInputLayoutAccountNo));
-            edtAccountLabel.AddTextChangedListener(new InputFilterFormField(edtAccountLabel, textInputLayoutAccountLabel));
-            edtOwnersIC.AddTextChangedListener(new InputFilterFormField(edtOwnersIC, textInputLayoutOwnerIC));
-
-            edtAccountLabel.FocusChange += (sender, e) => {
-                textInputLayoutAccountLabel.Error = null;
-                string accountLabel = edtAccountLabel.Text.Trim();
-                if (e.HasFocus)
-                {
-                    
-                    if (!string.IsNullOrEmpty(accountLabel))
+                        TextView titleText = view.FindViewById<TextView>(Resource.Id.textDialogTitle);
+                        TextView infoText = view.FindViewById<TextView>(Resource.Id.textDialogInfo);
+                        if (titleText != null && infoText != null)
                         {
-                        if (!Utility.isAlphaNumeric(accountLabel))
+                            TextViewUtils.SetMuseoSans500Typeface(titleText);
+                            TextViewUtils.SetMuseoSans300Typeface(infoText);
+                        }
+                    }
+                    dialogWhereMyAccountNo.Show();
+                };
+
+                AccountType Individual = new AccountType();
+                Individual.Id = "1";
+                Individual.Type = "Residential";
+                Individual.IsSelected = true;
+                selectedAccountType = Individual;
+                accountType.Text = selectedAccountType.Type;
+                accountType.Click += async delegate
+                {
+                    Intent accountType = new Intent(Activity, typeof(SelectAccountActivity));
+                    accountType.PutExtra("selectedAccountType", JsonConvert.SerializeObject(selectedAccountType));
+                    StartActivityForResult(accountType, SELECT_ACCOUNT_TYPE_REQ_CODE);
+                };
+
+                edtAccountNo.TextChanged += TextChange;
+                edtAccountLabel.TextChanged += TextChange;
+                //textInputLayoutAccountLabel.Error = "e.g. My House, Parent's House";
+                edtOwnersIC.TextChanged += TextChange;
+
+                edtAccountNo.AddTextChangedListener(new InputFilterFormField(edtAccountNo, textInputLayoutAccountNo));
+                edtAccountLabel.AddTextChangedListener(new InputFilterFormField(edtAccountLabel, textInputLayoutAccountLabel));
+                edtOwnersIC.AddTextChangedListener(new InputFilterFormField(edtOwnersIC, textInputLayoutOwnerIC));
+
+                edtAccountLabel.FocusChange += (sender, e) =>
+                {
+                    textInputLayoutAccountLabel.Error = null;
+                    string accountLabel = edtAccountLabel.Text.Trim();
+                    if (e.HasFocus)
+                    {
+
+                        if (!string.IsNullOrEmpty(accountLabel))
+                        {
+                            if (!Utility.isAlphaNumeric(accountLabel))
                             {
-                            ShowEnterValidAccountName();
+                                ShowEnterValidAccountName();
                             }
                             else
                             {
-                            textInputLayoutAccountLabel.SetErrorTextAppearance(Resource.Style.TextInputLayoutFeedbackCount);
+                                textInputLayoutAccountLabel.SetErrorTextAppearance(Resource.Style.TextInputLayoutFeedbackCount);
                                 textInputLayoutAccountLabel.Error = "e.g. My House, Parent's House";
                             }
                         }
                         else
                         {
-                        textInputLayoutAccountLabel.SetErrorTextAppearance(Resource.Style.TextInputLayoutFeedbackCount);
+                            textInputLayoutAccountLabel.SetErrorTextAppearance(Resource.Style.TextInputLayoutFeedbackCount);
                             textInputLayoutAccountLabel.Error = "e.g. My House, Parent's House";
                         }
 
-                }
-                else
-                {
-                    
+                    }
+                    else
+                    {
+
                         if (!string.IsNullOrEmpty(accountLabel))
                         {
                             if (!Utility.isAlphaNumeric(accountLabel))
                             {
-                            ShowEnterValidAccountName();
+                                ShowEnterValidAccountName();
                             }
                         }
 
 
+                    }
+                };
+
+                if (Android.OS.Build.Manufacturer.ToLower() == "samsung")
+                {
+                    edtAccountNo.LongClick += (object sender, View.LongClickEventArgs e) => onLongClick(sender, e);
+                    edtAccountLabel.LongClick += (object sender, View.LongClickEventArgs e) => onLongClick(sender, e);
+                    edtOwnersIC.LongClick += (object sender, View.LongClickEventArgs e) => onLongClick(sender, e);
+                    edtOwnerMotherName.LongClick += (object sender, View.LongClickEventArgs e) => onLongClick(sender, e);
                 }
-            };
 
-
-            this.userActionsListener.Start();
+                this.userActionsListener.Start();
+            } catch(Exception e) {
+                Utility.LoggingNonFatalError(e);
+            }
             return rootView;
+        }
+
+
+        private bool onLongClick(object sender, View.LongClickEventArgs e)
+        {
+            // Code to execute on item click.
+            return true;
         }
 
         private void TextChange(object sender, TextChangedEventArgs e)
@@ -300,41 +323,49 @@ namespace myTNB_Android.Src.AddAccount.Fragment
 
         public override void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
         {
-            base.OnActivityResult(requestCode, resultCode, data);
-            if (requestCode == Constants.BARCODE_REQUEST_CODE)
+            try
             {
-                if (resultCode == Result.Ok)
+                base.OnActivityResult(requestCode, resultCode, data);
+                if (requestCode == Constants.BARCODE_REQUEST_CODE)
                 {
-
-                    string barcodeResultText = data.GetStringExtra(Constants.BARCODE_RESULT);
-                    edtAccountNo.Text = barcodeResultText;
-
-                }
-            }else if (requestCode == SELECT_ACCOUNT_TYPE_REQ_CODE) { 
-                   
-                if(resultCode == Result.Ok)
-                {
-                    selectedAccountType = JsonConvert.DeserializeObject<AccountType>(data.GetStringExtra("selectedAccountType"));
-                    if(selectedAccountType != null)
+                    if (resultCode == Result.Ok)
                     {
-                        accountType.Text = selectedAccountType.Type;
-                        if (selectedAccountType.Id.Equals("1"))
+
+                        string barcodeResultText = data.GetStringExtra(Constants.BARCODE_RESULT);
+                        edtAccountNo.Text = barcodeResultText;
+
+                    }
+                }
+                else if (requestCode == SELECT_ACCOUNT_TYPE_REQ_CODE)
+                {
+
+                    if (resultCode == Result.Ok)
+                    {
+                        selectedAccountType = JsonConvert.DeserializeObject<AccountType>(data.GetStringExtra("selectedAccountType"));
+                        if (selectedAccountType != null)
                         {
-                            edtOwnerMotherName.Visibility = ViewStates.Visible;
-                            textInputLayoutOwnerIC.Hint = Activity.GetString(Resource.String.add_account_form_owners_ic_no);
-                        }
-                        else
-                        {
-                            edtOwnerMotherName.Visibility = ViewStates.Gone;
-                            textInputLayoutOwnerIC.Hint = Activity.GetString(Resource.String.add_account_form_owners_roc_no);
+                            accountType.Text = selectedAccountType.Type;
+                            if (selectedAccountType.Id.Equals("1"))
+                            {
+                                edtOwnerMotherName.Visibility = ViewStates.Visible;
+                                textInputLayoutOwnerIC.Hint = Activity.GetString(Resource.String.add_account_form_owners_ic_no);
+                            }
+                            else
+                            {
+                                edtOwnerMotherName.Visibility = ViewStates.Gone;
+                                textInputLayoutOwnerIC.Hint = Activity.GetString(Resource.String.add_account_form_owners_roc_no);
+                            }
                         }
                     }
                 }
+            } catch(Exception e) {
+                Utility.LoggingNonFatalError(e);
             }
         }
 
         public void CallAddAccountService()
         {
+            try {
             string apiKeyID = Constants.APP_CONFIG.API_KEY_ID;
             string userID = UserEntity.GetActive().UserID;
             string email = UserEntity.GetActive().Email;
@@ -346,10 +377,14 @@ namespace myTNB_Android.Src.AddAccount.Fragment
             bool owner = isOwner;
             string suppliedMotherName = edtOwnerMotherName.Text;
             this.userActionsListener.AddAccount(apiKeyID, userID, email, tnbBillAccountNum, tnbAccountHolderICNum, tnbAccountContractNum, type, des, owner, suppliedMotherName);
+        } catch(Exception e) {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public void CallValidateAccountService()
         {
+            try {
             string apiKeyID = Constants.APP_CONFIG.API_KEY_ID;
             //string userID = UserEntity.GetActive().UserID;
             //string email = UserEntity.GetActive().Email;
@@ -367,6 +402,11 @@ namespace myTNB_Android.Src.AddAccount.Fragment
             {
                 edtAccountNo.Error = "Account already added";
                 edtAccountNo.RequestFocus();
+            }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
             }
         }
 
@@ -440,9 +480,11 @@ namespace myTNB_Android.Src.AddAccount.Fragment
             //{
             //    mAddAccountProgressDialog.Show();
             //}
+            if (IsActive()) {
             if(loadingOverlay != null)
             {
                 loadingOverlay.Show();
+            }
             }
         }
 
@@ -531,7 +573,12 @@ namespace myTNB_Android.Src.AddAccount.Fragment
 
             }
 
-            mUknownExceptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.add_account_link_unknown_exception_error), Snackbar.LengthIndefinite)
+            string msg = "Something went wrong, Please try again.";
+            if (IsAdded) {
+                msg = GetString(Resource.String.add_account_link_unknown_exception_error);
+            }
+
+            mUknownExceptionSnackBar = Snackbar.Make(rootView, msg, Snackbar.LengthIndefinite)
             .SetAction(GetString(Resource.String.add_account_link_unknown_exception_btn_retry), delegate {
 
                 mUknownExceptionSnackBar.Dismiss();

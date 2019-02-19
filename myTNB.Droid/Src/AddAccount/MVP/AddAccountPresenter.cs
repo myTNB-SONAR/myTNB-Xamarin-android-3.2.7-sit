@@ -47,55 +47,60 @@ namespace myTNB_Android.Src.AddAccount.MVP
 
         public void AddAccount(string apiKeyId, string userID, string email, string tnbBillAcctNo, string tnbAcctHolderIC, string tnbAcctContractNo, string type, string des, bool isOwner, string suppliedMotherName)
         {
-            if (TextUtils.IsEmpty(tnbBillAcctNo))
+            try
             {
-                mView.ShowEmptyAccountNumberError();
-                return;
-            }
-
-            if (TextUtils.IsEmpty(des))
-            {
-                mView.ShowEmptyAccountNickNameError();
-                return;
-            }
-
-            if (isOwner)
-            {
-                if (TextUtils.IsEmpty(tnbAcctHolderIC))
+                if (TextUtils.IsEmpty(tnbBillAcctNo))
                 {
-                    mView.ShowEmptyOwnerIcNumberError();
+                    mView.ShowEmptyAccountNumberError();
                     return;
                 }
 
-                /*if (TextUtils.IsEmpty(tnbBillAcctNo))
+                if (TextUtils.IsEmpty(des))
                 {
-                    mView.ShowEmptyMothersMaidenNameError();
+                    mView.ShowEmptyAccountNickNameError();
                     return;
-                }*/
-            }
+                }
 
-            if(tnbBillAcctNo.Length != 12 &&  tnbBillAcctNo.Length !=  14)
-            {
-                mView.ShowInvalidAccountNumberError();
-                //mView.ShowEmptyAccountNumberError();
-                return;
-            }
-
-            List<CustomerBillingAccount> accounts = CustomerBillingAccount.List();
-            if(accounts != null && accounts.Count > 0 && !TextUtils.IsEmpty(des))
-            {
-                foreach(CustomerBillingAccount item in accounts)
+                if (isOwner)
                 {
-                    if (item.AccDesc.ToLower().Equals(des.ToString().ToLower()))
+                    if (TextUtils.IsEmpty(tnbAcctHolderIC))
                     {
-                        mView.ShowSameAccountNameError();
+                        mView.ShowEmptyOwnerIcNumberError();
                         return;
                     }
-                }
-            }
 
-            ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
-            AddAccountAsync(apiKeyId, userID, email, tnbBillAcctNo, tnbAcctHolderIC, tnbAcctContractNo, type, des, isOwner, suppliedMotherName);
+                    /*if (TextUtils.IsEmpty(tnbBillAcctNo))
+                    {
+                        mView.ShowEmptyMothersMaidenNameError();
+                        return;
+                    }*/
+                }
+
+                if (tnbBillAcctNo.Length != 12 && tnbBillAcctNo.Length != 14)
+                {
+                    mView.ShowInvalidAccountNumberError();
+                    //mView.ShowEmptyAccountNumberError();
+                    return;
+                }
+
+                List<CustomerBillingAccount> accounts = CustomerBillingAccount.List();
+                if (accounts != null && accounts.Count > 0 && !TextUtils.IsEmpty(des))
+                {
+                    foreach (CustomerBillingAccount item in accounts)
+                    {
+                        if (item.AccDesc.ToLower().Equals(des.ToString().ToLower()))
+                        {
+                            mView.ShowSameAccountNameError();
+                            return;
+                        }
+                    }
+                }
+
+                ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
+                AddAccountAsync(apiKeyId, userID, email, tnbBillAcctNo, tnbAcctHolderIC, tnbAcctContractNo, type, des, isOwner, suppliedMotherName);
+            } catch(Exception e) {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         private async void AddAccountAsync(string apiKeyId, string userID, string email, string tnbBillAcctNo, string tnbAcctHolderIC, string tnbAcctContractNo, string type, string des, bool isOwner, string suppliedMotherName)
@@ -122,29 +127,46 @@ namespace myTNB_Android.Src.AddAccount.MVP
                 if (result.response[0].isError)
                 {
                     mView.ShowAddAccountFail(result.response[0].message);
+                    if (mView.IsActive()) {
                     mView.HideAddingAccountProgressDialog();
+                    }
                 }
                 else
                 {
                     mView.ClearText();
-                    mView.HideAddingAccountProgressDialog();
+                    if (mView.IsActive())
+                    {
+                        mView.HideAddingAccountProgressDialog();
+                    }
                     mView.ShowAddAccountSuccess(result.response[0].message);
                 }
 
             }catch (System.OperationCanceledException cancelledException)
             {
-                mView.HideAddingAccountProgressDialog();
+                if (mView.IsActive())
+                {
+                    mView.HideAddingAccountProgressDialog();
+                }
                 this.mView.ShowRetryOptionsCancelledException(cancelledException);
+                Utility.LoggingNonFatalError(cancelledException);
             }
             catch (ApiException apiException)
             {
-                mView.HideAddingAccountProgressDialog();
+                if (mView.IsActive())
+                {
+                    mView.HideAddingAccountProgressDialog();
+                }
                 this.mView.ShowRetryOptionsApiException(apiException);
+                Utility.LoggingNonFatalError(apiException);
             }
             catch (Exception unknownException)
             {
-                mView.HideAddingAccountProgressDialog();
+                if (mView.IsActive())
+                {
+                    mView.HideAddingAccountProgressDialog();
+                }
                 this.mView.ShowRetryOptionsUnknownException(unknownException);
+                Utility.LoggingNonFatalError(unknownException);
             }
             
             
@@ -152,44 +174,50 @@ namespace myTNB_Android.Src.AddAccount.MVP
 
         public void ValidateAccount(string apiKeyId, string accountNum, string accountType, string userIdentificationNum, string suppliedMotherName, bool isOwner, string accountLabel)
         {
-            if (TextUtils.IsEmpty(accountNum))
+            try
             {
-                mView.ShowEmptyAccountNumberError();
-                return;
-            }
-
-            //Removed mother's name validation check
-            if (isOwner)
-            {
-                if (TextUtils.IsEmpty(userIdentificationNum) && accountType.Equals("1"))
+                if (TextUtils.IsEmpty(accountNum))
                 {
-                    mView.ShowEmptyOwnerIcNumberError();
+                    mView.ShowEmptyAccountNumberError();
                     return;
                 }
-            }
 
-            if (TextUtils.IsEmpty(accountLabel))
-            {
-                mView.ShowEmptyAccountNickNameError();
-                return;
-            }
+                //Removed mother's name validation check
+                if (isOwner)
+                {
+                    if (TextUtils.IsEmpty(userIdentificationNum) && accountType.Equals("1"))
+                    {
+                        mView.ShowEmptyOwnerIcNumberError();
+                        return;
+                    }
+                }
 
-            if (!Utility.AddAccountNumberValidation(accountNum.Length))
+                if (TextUtils.IsEmpty(accountLabel))
+                {
+                    mView.ShowEmptyAccountNickNameError();
+                    return;
+                }
+
+                if (!Utility.AddAccountNumberValidation(accountNum.Length))
                 {
                     mView.ShowInvalidAccountNumberError();
-                return;
+                    return;
                 }
 
 
-            if (!Utility.isAlphaNumeric(accountLabel)) {
-                mView.ShowEnterValidAccountName();
-                return;
+                //if (!Utility.isAlphaNumeric(accountLabel))
+                //{
+                //    mView.ShowEnterValidAccountName();
+                //    return;
+                //}
+
+
+
+                ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
+                ValidateAccountAsync(apiKeyId, accountNum, accountType, userIdentificationNum, suppliedMotherName, isOwner, accountLabel);
+            } catch(Exception e ){
+                Utility.LoggingNonFatalError(e);
             }
-
-
-
-            ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
-            ValidateAccountAsync(apiKeyId, accountNum, accountType, userIdentificationNum, suppliedMotherName, isOwner, accountLabel);
         }
 
 
@@ -213,7 +241,10 @@ namespace myTNB_Android.Src.AddAccount.MVP
             {
                 
                 var result = await api.ValidateManualAccount(new ValidateManualAccountRequest(apiKeyId, accountNum, accountType, userIdentificationNum, suppliedMotherName, isOwner));
-                mView.HideAddingAccountProgressDialog();
+                if (mView.IsActive())
+                {
+                    mView.HideAddingAccountProgressDialog();
+                }
                 if (result.validation.IsError)
                 {
                     mView.ShowAddAccountFail(result.validation.Message);
@@ -236,55 +267,74 @@ namespace myTNB_Android.Src.AddAccount.MVP
             }
             catch (System.OperationCanceledException cancelledException)
             {
-                mView.HideAddingAccountProgressDialog();
+                if (mView.IsActive())
+                {
+                    mView.HideAddingAccountProgressDialog();
+                }
                 this.mView.ShowRetryOptionsCancelledException(cancelledException);
+                Utility.LoggingNonFatalError(cancelledException);
             }
             catch (ApiException apiException)
             {
-                mView.HideAddingAccountProgressDialog();
+                if (mView.IsActive())
+                {
+                    mView.HideAddingAccountProgressDialog();
+                }
                 this.mView.ShowRetryOptionsApiException(apiException);
+                Utility.LoggingNonFatalError(apiException);
             }
             catch (Exception unknownException)
             {
-                mView.HideAddingAccountProgressDialog();
+                if (mView.IsActive())
+                {
+                    mView.HideAddingAccountProgressDialog();
+                }
                 this.mView.ShowRetryOptionsUnknownException(unknownException);
+                Utility.LoggingNonFatalError(unknownException);
             }
 
         }
 
         public void CheckRequiredFields(string accountno, string accountNickName, bool isOwner, string ownerIC)
         {
-            mView.RemoveNameErrorMessage();
-            mView.RemoveNumberErrorMessage();
-            if (!TextUtils.IsEmpty(accountno) && !TextUtils.IsEmpty(accountNickName))
+            try
             {
+                mView.RemoveNameErrorMessage();
+                mView.RemoveNumberErrorMessage();
+                if (!TextUtils.IsEmpty(accountno) && !TextUtils.IsEmpty(accountNickName))
+                {
 
-                if (isOwner && TextUtils.IsEmpty(ownerIC) || !Utility.AddAccountNumberValidation(accountno.Length))
-                {
-                    if(!Utility.AddAccountNumberValidation(accountno.Length))
+                    if (isOwner && TextUtils.IsEmpty(ownerIC) || !Utility.AddAccountNumberValidation(accountno.Length))
                     {
-                        mView.ShowInvalidAccountNumberError();
-                    }
-                    mView.DisableAddAccountButton();
-                }
-                else if (!TextUtils.IsEmpty(accountNickName))
-                {
-                    List<CustomerBillingAccount> accounts = CustomerBillingAccount.List();
-                    bool accountNameExsist = false;
-                    if (accounts != null && accounts.Count > 0)
-                    {
-                        foreach (CustomerBillingAccount item in accounts)
+                        if (!Utility.AddAccountNumberValidation(accountno.Length))
                         {
-                            if (!string.IsNullOrEmpty(item.AccDesc) && item.AccDesc.ToLower().Trim().Equals(accountNickName.ToString().ToLower().Trim()))
-                            {
-                                accountNameExsist = true;
-                                break;
-                            }
+                            mView.ShowInvalidAccountNumberError();
                         }
-                        if (accountNameExsist)
+                        mView.DisableAddAccountButton();
+                    }
+                    else if (!TextUtils.IsEmpty(accountNickName))
+                    {
+                        List<CustomerBillingAccount> accounts = CustomerBillingAccount.List();
+                        bool accountNameExsist = false;
+                        if (accounts != null && accounts.Count > 0)
                         {
-                            mView.DisableAddAccountButton();
-                            mView.ShowSameAccountNameError();
+                            foreach (CustomerBillingAccount item in accounts)
+                            {
+                                if (!string.IsNullOrEmpty(item.AccDesc) && item.AccDesc.ToLower().Trim().Equals(accountNickName.ToString().ToLower().Trim()))
+                                {
+                                    accountNameExsist = true;
+                                    break;
+                                }
+                            }
+                            if (accountNameExsist)
+                            {
+                                mView.DisableAddAccountButton();
+                                mView.ShowSameAccountNameError();
+                            }
+                            else
+                            {
+                                mView.EnableAddAccountButton();
+                            }
                         }
                         else
                         {
@@ -293,17 +343,15 @@ namespace myTNB_Android.Src.AddAccount.MVP
                     }
                     else
                     {
-                        mView.EnableAddAccountButton();
+                        mView.DisableAddAccountButton();
                     }
                 }
                 else
                 {
                     mView.DisableAddAccountButton();
                 }
-            }
-            else
-            {
-                mView.DisableAddAccountButton();
+            } catch(Exception e) {
+                Utility.LoggingNonFatalError(e);
             }
         }
 

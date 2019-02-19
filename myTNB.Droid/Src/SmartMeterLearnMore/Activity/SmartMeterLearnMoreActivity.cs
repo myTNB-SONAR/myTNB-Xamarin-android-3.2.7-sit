@@ -17,6 +17,7 @@ using myTNB_Android.Src.AppLaunch.Models;
 using Android.Support.Design.Widget;
 using myTNB_Android.Src.Utils;
 using Newtonsoft.Json;
+using System.Runtime;
 
 namespace myTNB_Android.Src.SmartMeterLearnMore.Activity
 {
@@ -53,11 +54,16 @@ namespace myTNB_Android.Src.SmartMeterLearnMore.Activity
             base.OnCreate(savedInstanceState);
 
             // Create your application here
-
+            try {
             webLink = JsonConvert.DeserializeObject<Weblink>(Intent.Extras.GetString(Constants.SMART_METER_LINK));
             webView.Settings.JavaScriptEnabled = true;
             webView.SetWebViewClient(new SmartMeterLearnMoreWebClient(this, mProgressBar, webLink, webView));
             webView.LoadUrl(webLink.Url);
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         private Snackbar mErrorNoInternet;
@@ -126,6 +132,27 @@ namespace myTNB_Android.Src.SmartMeterLearnMore.Activity
             {
                 progressBar.Visibility = ViewStates.Gone;
                 webView.Visibility = ViewStates.Visible;
+            }
+
+
+              
+        }
+
+
+        public override void OnTrimMemory(TrimMemory level)
+        {
+            base.OnTrimMemory(level);
+
+            switch (level)
+            {
+                case TrimMemory.RunningLow:
+                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
+                    GC.Collect();
+                    break;
+                default:
+                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
+                    GC.Collect();
+                    break;
             }
         }
     }

@@ -83,7 +83,10 @@ namespace myTNB_Android.Src.ResetPassword.MVP
             }
 
             this.mView.DisableSubmitButton();
+
+            if (mView.IsActive()) {
             this.mView.ShowProgressDialog();
+            }
 
             ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
 
@@ -113,6 +116,10 @@ namespace myTNB_Android.Src.ResetPassword.MVP
 
                 if (changePasswordResponse.Data.IsError)
                 {
+                    if (mView.IsActive())
+                    {
+                        this.mView.HideProgressDialog();
+                    }
                     string message = changePasswordResponse.Data.Message;
                     this.mView.ShowErrorMessage(message);
                 }
@@ -199,6 +206,11 @@ namespace myTNB_Android.Src.ResetPassword.MVP
 
                             }, cts.Token);
 
+                            if (mView.IsActive())
+                            {
+                                this.mView.HideProgressDialog();
+                            }
+
                             if (!userNotificationResponse.Data.IsError)
                             {
                                 foreach (UserNotification userNotification in userNotificationResponse.Data.Data)
@@ -210,11 +222,20 @@ namespace myTNB_Android.Src.ResetPassword.MVP
                             this.mView.ShowNotificationCount(UserNotificationEntity.Count());
                             this.mView.ShowResetPasswordSuccess();
 
+                        } else {
+                            if (mView.IsActive())
+                            {
+                                this.mView.HideProgressDialog();
+                            }
                         }
 
                     }
                     else
                     {
+                        if (mView.IsActive())
+                        {
+                            this.mView.HideProgressDialog();
+                        }
                         this.mView.ShowErrorMessage(userResponse.Data.Message);
                     }
 
@@ -222,27 +243,48 @@ namespace myTNB_Android.Src.ResetPassword.MVP
             }
             catch (System.OperationCanceledException cancelledException)
             {
+                if (mView.IsActive())
+                {
+                    this.mView.HideProgressDialog();
+                }
                 this.mView.ShowRetryOptionsCancelledException(cancelledException);
+                Utility.LoggingNonFatalError(cancelledException);
             }
             catch (ApiException apiException)
             {
+                if (mView.IsActive())
+                {
+                    this.mView.HideProgressDialog();
+                }
                 this.mView.ShowRetryOptionsApiException(apiException);
+                Utility.LoggingNonFatalError(apiException);
             }
             catch (Exception exception)
             {
+                if (mView.IsActive())
+                {
+                    this.mView.HideProgressDialog();
+                }
                 this.mView.ShowRetryOptionsUnknownException(exception);
+                Utility.LoggingNonFatalError(exception);
             }
 
 
 
             this.mView.EnableSubmitButton();
-            this.mView.HideProgressDialog();
+
         }
 
         public bool CheckPasswordIsValid(string password)
         {
-            bool isValid = false;
-            isValid = hasNumber.IsMatch(password) && hasUpperChar.IsMatch(password) && hasMinimum8Chars.IsMatch(password);
+            
+                bool isValid = false;
+            try
+            {
+                isValid = hasNumber.IsMatch(password) && hasUpperChar.IsMatch(password) && hasMinimum8Chars.IsMatch(password);
+            } catch(Exception e) {
+                Utility.LoggingNonFatalError(e);
+            }
             return isValid;
         }
     }

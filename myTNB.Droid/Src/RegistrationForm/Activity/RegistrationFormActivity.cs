@@ -23,6 +23,7 @@ using Newtonsoft.Json;
 using myTNB_Android.Src.RegistrationForm.Models;
 using Android.Support.V4.Content;
 using Android;
+using System.Runtime;
 
 namespace myTNB_Android.Src.RegistrationForm.Activity
 {
@@ -98,6 +99,9 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
+
+
+            try {
             this.mPresenter = new RegisterFormPresenter(this);
 
 
@@ -168,6 +172,11 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
 
             txtMobileNumber.Append("+60");
             txtMobileNumber.SetFilters(new Android.Text.IInputFilter[] { new InputFilterPhoneNumber() });
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
 
             //#if DEBUG
             //            txtFullName.Text = "David Montecillo";
@@ -183,6 +192,7 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
 
         private void TextChange(object sender, TextChangedEventArgs e)
         {
+            try {
             string fullname = txtFullName.Text.ToString().Trim();
             string ic_no = txtICNumber.Text.ToString().Trim();
             string mobile_no = txtMobileNumber.Text.ToString().Trim();
@@ -214,6 +224,11 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
             else
             {
                 textInputLayoutConfirmPassword.PasswordVisibilityToggleEnabled = false;
+            }
+            }
+            catch (Exception ex)
+            {
+                Utility.LoggingNonFatalError(ex);
             }
         }
 
@@ -338,14 +353,20 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
         [OnClick(Resource.Id.btnRegister)]
         void OnRegister(object sender, EventArgs eventArgs)
         {
-            string fullname = txtFullName.Text.ToString().Trim();
+            try {
+            string fName = txtFullName.Text.ToString().Trim();
             string ic_no = txtICNumber.Text.ToString().Trim();
             string mobile_no = txtMobileNumber.Text.ToString().Trim();
-            string email = txtEmail.Text.ToString().Trim();
+            string eml_str = txtEmail.Text.ToString().Trim();
             string confirm_email = txtConfirmEmail.Text.ToString().Trim();
             string password = txtPassword.Text;
             string confirm_password = txtConfirmPassword.Text;
-            this.userActionsListener.OnAcquireToken(fullname, ic_no, mobile_no, email, confirm_email, password, confirm_password);
+                this.userActionsListener.OnAcquireToken(fName, ic_no, mobile_no, eml_str, confirm_email, password, confirm_password);
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
 
@@ -361,33 +382,57 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
 
         public void ShowVerificationCodeProgressDialog()
         {
+            try {
             if (this.mVerificationProgressDialog != null && !this.mVerificationProgressDialog.IsShowing)
             {
                 this.mVerificationProgressDialog.Show();
+            }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
             }
         }
 
         public void HideVerificationCodeProgressDialog()
         {
+            try {
             if (this.mVerificationProgressDialog != null && this.mVerificationProgressDialog.IsShowing)
             {
                 this.mVerificationProgressDialog.Dismiss();
+            }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
             }
         }
 
         public void ShowRegistrationProgressDialog()
         {
+            try {
             if (this.mRegistrationProgressDialog != null && !this.mRegistrationProgressDialog.IsShowing)
             {
                 this.mRegistrationProgressDialog.Show();
+            }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
             }
         }
 
         public void HideRegistrationProgressDialog()
         {
+            try {
             if (this.mRegistrationProgressDialog != null && this.mRegistrationProgressDialog.IsShowing)
             {
                 this.mRegistrationProgressDialog.Dismiss();
+            }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
             }
         }
 
@@ -553,8 +598,14 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
 
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Permission[] grantResults)
         {
+            try {
             base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
             this.userActionsListener.OnRequestPermissionsResult(requestCode, permissions, grantResults);
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public void RequestSMSPermission()
@@ -607,6 +658,24 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
         public void ClearFullNameError()
         {
             textInputLayoutFullName.Error = null;
+        }
+
+
+        public override void OnTrimMemory(TrimMemory level)
+        {
+            base.OnTrimMemory(level);
+
+            switch (level)
+            {
+                case TrimMemory.RunningLow:
+                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
+                    GC.Collect();
+                    break;
+                default:
+                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
+                    GC.Collect();
+                    break;
+            }
         }
         
     }

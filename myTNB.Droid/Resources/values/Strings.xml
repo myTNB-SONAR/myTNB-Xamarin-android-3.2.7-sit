@@ -107,7 +107,7 @@
   <string name="registration_form_password_hint">Password</string>
   <string name="registration_form_confirm_email_hint">Confirm Email</string>
   <string name="registration_form_confirm_password_hint">Confirm New Password</string>
-  <string name="registration_form_registration_pin_info">Please enter your 4-digit actiation pin to complete your registration</string>
+  <string name="registration_form_registration_pin_info">Please enter your 4-digit activation pin to complete your registration</string>
   <string name="registration_form_terms_conditions">By registering, you are agreeing to the <font color='#1c79ca'>TNB Terms and Conditions, User Agreement and Privacy policy.</font> </string>
   <string name="registration_form_password_format_hint">PASSWORD MUST HAVE AT LEAST 8 ALPHANUMERIC CHARACTERS.</string>
   <!-- End of Registration Form -->
@@ -1347,12 +1347,17 @@ Please try again later.]]>
 	<string name="name_error">Name should not contain special characters.</string> 
 
 	<!-- Crashlytics -->
-	<string name="com.crashlytics.android.build_id">v1.0.13</string>
+	<string name="com.crashlytics.android.build_id">v1.1.1.8</string>
 
 
 	<string name="invalid_charac">Invalid characters. Use letters or numbers only.</string>
 
 	<string name="name_validation_digits">abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789</string>
 	<string name="invalid_state">Invalid State</string>
+
+	<string name="note_text_sm">Note: Your usage above is before applicable taxes/additional charges.</string>
+    
+    <string name="summary_dashboard_error_refresh">We can’t get your account details at the moment. Please refresh this page.</string>
+    <string name="text_refresh">Refresh</string>
 
 </resources>

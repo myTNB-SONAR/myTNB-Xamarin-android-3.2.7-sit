@@ -22,7 +22,7 @@ using Android.Support.Design.Widget;
 using Newtonsoft.Json;
 using myTNB_Android.Src.RegistrationForm.Models;
 using Refit;
-using myTNB_Android.Src.RegisterValidation.Receivers;
+
 using Android.Text;
 using Android.Support.V4.Content;
 using Android;
@@ -32,6 +32,7 @@ using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.myTNBMenu.Activity;
 using myTNB_Android.Src.Login.Requests;
 using Android.Preferences;
+using System.Runtime;
 
 namespace myTNB_Android.Src.UpdateMobileNo
 {
@@ -86,7 +87,7 @@ namespace myTNB_Android.Src.UpdateMobileNo
         [BindView(Resource.Id.txtInputLayoutNumber_4)]
         TextInputLayout txtInputLayoutNumber_4;
 
-        PinDisplayerSMSReceiver pinDisplayerSMSReceiver;
+        //PinDisplayerSMSReceiver pinDisplayerSMSReceiver;
 
         MaterialDialog registrationDialog;
         private LoadingOverlay loadingOverlay;
@@ -102,7 +103,7 @@ namespace myTNB_Android.Src.UpdateMobileNo
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-
+            try {
             registrationDialog = new MaterialDialog.Builder(this)
                 .Title(Resource.String.registration_validation_progress_title)
                 .Content(Resource.String.registration_validation_progress_content)
@@ -112,10 +113,13 @@ namespace myTNB_Android.Src.UpdateMobileNo
 
             Bundle extras = Intent.Extras;
 
-            if (!extras.IsEmpty)
+                if (extras != null)
             {
-                newPhoneNo = extras.GetString(Constants.NEW_PHONE_NO);
-                loginRequest = JsonConvert.DeserializeObject<UserAuthenticationRequest>(extras.GetString("LoginRequest"));
+                    if (extras.ContainsKey("LoginRequest")) {
+                //loginRequest = JsonConvert.DeserializeObject<UserAuthenticationRequest>(extras.GetString("LoginRequest"));
+                        loginRequest = DeSerialze<UserAuthenticationRequest>(extras.GetString("LoginRequest"));
+                    }
+                    newPhoneNo = extras.GetString(Constants.NEW_PHONE_NO);
                 fromAppLaunch = extras.GetBoolean(Constants.FROM_APP_LAUNCH, false);
                 verifyPhone = extras.GetBoolean(Constants.FORCE_UPDATE_PHONE_NO, false);
             }
@@ -141,12 +145,17 @@ namespace myTNB_Android.Src.UpdateMobileNo
             txtNumber_3.TextChanged += TxtNumber_3_TextChanged;
             txtNumber_4.TextChanged += TxtNumber_4_TextChanged;
 
-            pinDisplayerSMSReceiver = new PinDisplayerSMSReceiver(txtNumber_1 , txtNumber_2 , txtNumber_3 , txtNumber_4);
+            //pinDisplayerSMSReceiver = new PinDisplayerSMSReceiver(txtNumber_1 , txtNumber_2 , txtNumber_3 , txtNumber_4);
 
             Snackbar mPinSentInfo = Snackbar.Make(rootView,
                 GetString(Resource.String.registration_validation_snackbar_sms_sent_msg),
                 Snackbar.LengthLong);
             mPinSentInfo.Show();
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
 
@@ -156,33 +165,51 @@ namespace myTNB_Android.Src.UpdateMobileNo
 
         private void TxtNumber_1_TextChanged(object sender, Android.Text.TextChangedEventArgs e)
         {
+            try {
             if (e.Text.Count() == 1)
             {
                 txtNumber_1.ClearFocus();
                 txtNumber_2.RequestFocus();
             }
             CheckValidPin();
+            }
+            catch (Exception ex)
+            {
+                Utility.LoggingNonFatalError(ex);
+            }
         }
 
 
         private void TxtNumber_2_TextChanged(object sender, Android.Text.TextChangedEventArgs e)
         {
+            try {
             if (e.Text.Count() == 1)
             {
                 txtNumber_2.ClearFocus();
                 txtNumber_3.RequestFocus();
             }
             CheckValidPin();
+            }
+            catch (Exception ex)
+            {
+                Utility.LoggingNonFatalError(ex);
+            }
         }
 
         private void TxtNumber_3_TextChanged(object sender, Android.Text.TextChangedEventArgs e)
         {
+            try {
             if (e.Text.Count() == 1)
             {
                 txtNumber_3.ClearFocus();
                 txtNumber_4.RequestFocus();
             }
             CheckValidPin();
+            }
+            catch (Exception ex)
+            {
+                Utility.LoggingNonFatalError(ex);
+            }
         }
 
         private void TxtNumber_4_TextChanged(object sender, Android.Text.TextChangedEventArgs e)
@@ -192,6 +219,7 @@ namespace myTNB_Android.Src.UpdateMobileNo
 
         private void CheckValidPin()
         {
+            try {
             string txt_1 = txtNumber_1.Text;
             string txt_2 = txtNumber_2.Text;
             string txt_3 = txtNumber_3.Text;
@@ -217,33 +245,56 @@ namespace myTNB_Android.Src.UpdateMobileNo
             }
 
             this.userActionsListener.OnVerifyToken(txt_1 , txt_2 , txt_3 , txt_4 , newPhoneNo, loginRequest, fromAppLaunch, verifyPhone);
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         protected override void OnPause()
         {
-            if (pinDisplayerSMSReceiver != null)
-            {
-                UnregisterReceiver(pinDisplayerSMSReceiver);
-            }
             base.OnPause();
+            //try {
+            //if (pinDisplayerSMSReceiver != null)
+            //{
+            //    UnregisterReceiver(pinDisplayerSMSReceiver);
+            //}
+            
+            //}
+            //catch (Exception e)
+            //{
+            //    Utility.LoggingNonFatalError(e);
+            //}
         }
 
         protected override void OnResume()
         {
+            try {
             base.OnResume();
-            if (pinDisplayerSMSReceiver != null)
-            {
-                RegisterReceiver(pinDisplayerSMSReceiver , new IntentFilter("com.myTNB.smsReceiver"));
-            }
+            //if (pinDisplayerSMSReceiver != null)
+            //{
+            //    RegisterReceiver(pinDisplayerSMSReceiver , new IntentFilter("com.myTNB.smsReceiver"));
+            //}
             this.userActionsListener.Start();
-            
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         protected override void OnDestroy()
         {
+            try {
             if (progressGenerator != null)
             {
                 progressGenerator.OnDestroy();
+            }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
             }
             base.OnDestroy();
         }
@@ -260,6 +311,7 @@ namespace myTNB_Android.Src.UpdateMobileNo
 
         void ProgressGenerator.OnProgressListener.OnComplete()
         {
+            try {
             btnResend.Text = GetString(Resource.String.registration_validation_btn_resend) + "(30)";
             //btnResend.SetCompoundDrawablesWithIntrinsicBounds(GetDrawable(Resource.Drawable.ic_button_resend_loaded) , null , null , null );
             btnResend.Visibility = ViewStates.Gone;
@@ -269,6 +321,11 @@ namespace myTNB_Android.Src.UpdateMobileNo
             btnResend.SetTextColor(Resources.GetColor(Resource.Color.freshGreen));
             progressGenerator.Progress = 0;
             this.userActionsListener.OnComplete();
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
 
@@ -294,17 +351,17 @@ namespace myTNB_Android.Src.UpdateMobileNo
 
         public void ShowInvalidPin()
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         public void ShowResendPin()
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         public void ShowSMSPinInfo()
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         public override int GetHashCode()
@@ -549,6 +606,7 @@ namespace myTNB_Android.Src.UpdateMobileNo
             //{
             //    registrationDialog.Show();
             //}
+            try {
             if (loadingOverlay != null && loadingOverlay.IsShowing)
             {
                 loadingOverlay.Dismiss();
@@ -556,6 +614,11 @@ namespace myTNB_Android.Src.UpdateMobileNo
 
             loadingOverlay = new LoadingOverlay(this, Resource.Style.LoadingOverlyDialogStyle);
             loadingOverlay.Show();
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public void HideRegistrationProgress()
@@ -564,14 +627,21 @@ namespace myTNB_Android.Src.UpdateMobileNo
             //{
             //    registrationDialog.Dismiss();
             //}
+            try {
             if (loadingOverlay != null && loadingOverlay.IsShowing)
             {
                 loadingOverlay.Dismiss();
+            }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
             }
         }
 
         public void ShowNotificationCount(int count)
         {
+            try {
             if (count <= 0)
             {
                 ME.Leolin.Shortcutbadger.ShortcutBadger.RemoveCount(this.ApplicationContext);
@@ -579,6 +649,11 @@ namespace myTNB_Android.Src.UpdateMobileNo
             else
             {
                 ME.Leolin.Shortcutbadger.ShortcutBadger.ApplyCount(this.ApplicationContext, count);
+            }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
             }
         }
 
@@ -621,6 +696,23 @@ namespace myTNB_Android.Src.UpdateMobileNo
             Intent DashboardIntent = new Intent(this, typeof(DashboardActivity));
             DashboardIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
             StartActivity(DashboardIntent);
+        }
+
+        public override void OnTrimMemory(TrimMemory level)
+        {
+            base.OnTrimMemory(level);
+
+            switch (level)
+            {
+                case TrimMemory.RunningLow:
+                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
+                    GC.Collect();
+                    break;
+                default:
+                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
+                    GC.Collect();
+                    break;
+            }
         }
     }
 }

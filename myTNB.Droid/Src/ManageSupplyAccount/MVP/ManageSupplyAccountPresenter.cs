@@ -34,6 +34,7 @@ namespace myTNB_Android.Src.ManageSupplyAccount.MVP
 
         public void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
         {
+            try {
             if (requestCode == Constants.UPDATE_NICKNAME_REQUEST)
             {
                 if (resultCode == Result.Ok)
@@ -42,14 +43,21 @@ namespace myTNB_Android.Src.ManageSupplyAccount.MVP
                     this.mView.ShowUpdateSuccessNickname(accountData);
                 }
             }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public async void OnRemoveAccount(AccountData accountData)
         {
             cts = new CancellationTokenSource();
 
+            if(mView.IsActive()) {
             this.mView.ShowRemoveProgress();
-            
+            }
+
 #if DEBUG || STUB
             var httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
             var api = RestService.For<IManageSupplyAccountApi>(httpClient);
@@ -73,6 +81,11 @@ namespace myTNB_Android.Src.ManageSupplyAccount.MVP
                     DeviceVersion = Constants.APP_CONFIG.API_KEY_ID,
                     DeviceCordova = Constants.APP_CONFIG.API_KEY_ID
                 } , cts.Token);
+
+                if (mView.IsActive())
+                {
+                    this.mView.HideRemoveProgress();
+                }
 
                 if (!removeSupplyAccountApi.Data.IsError)
                 {
@@ -108,23 +121,35 @@ namespace myTNB_Android.Src.ManageSupplyAccount.MVP
             }
             catch (System.OperationCanceledException e)
             {
+                if (mView.IsActive())
+                {
+                    this.mView.HideRemoveProgress();
+                }
                 // ADD OPERATION CANCELLED HERE
                 this.mView.ShowRetryOptionsCancelledException(e);
+                Utility.LoggingNonFatalError(e);
             }
             catch (ApiException apiException)
             {
+                if (mView.IsActive())
+                {
+                    this.mView.HideRemoveProgress();
+                }
                 // ADD HTTP CONNECTION EXCEPTION HERE
                 this.mView.ShowRetryOptionsApiException(apiException);
+                Utility.LoggingNonFatalError(apiException);
             }
             catch (Exception e)
             {
+                if (mView.IsActive())
+                {
+                    this.mView.HideRemoveProgress();
+                }
                 // ADD UNKNOWN EXCEPTION HERE
                 this.mView.ShowRetryOptionsUnknownException(e);
+                Utility.LoggingNonFatalError(e);
             }
 
-
-            this.mView.HideRemoveProgress();
-            
         }
 
         public void OnUpdateNickname()
@@ -135,8 +160,14 @@ namespace myTNB_Android.Src.ManageSupplyAccount.MVP
         public void Start()
         {
             //
-            CustomerBillingAccount customerBillingAccount = CustomerBillingAccount.FindByAccNum(accountData.AccountNum);
-            this.mView.ShowNickname(customerBillingAccount.AccDesc);
+            if (accountData != null && !string.IsNullOrEmpty(accountData?.AccountNum)) {
+                CustomerBillingAccount customerBillingAccount = new CustomerBillingAccount();
+                customerBillingAccount = CustomerBillingAccount.FindByAccNum(accountData?.AccountNum);
+                if (customerBillingAccount != null) {
+                    this.mView.ShowNickname(customerBillingAccount?.AccDesc);        
+                }
+            }
+
         }
     }
 }

@@ -33,6 +33,7 @@ using Android.Support.V4.Content;
 using myTNB_Android.Src.LogoutEnd.Activity;
 using myTNB_Android.Src.Login.Activity;
 using myTNB_Android.Src.UpdateMobileNo.Activity;
+using System.Runtime;
 
 namespace myTNB_Android.Src.AppLaunch.Activity
 {
@@ -45,10 +46,10 @@ namespace myTNB_Android.Src.AppLaunch.Activity
     public class LaunchViewActivity : BaseAppCompatActivity , AppLaunchContract.IView
     {
         [BindView(Resource.Id.rootView)]
-        CoordinatorLayout rootView;
+        RelativeLayout rootView;
 
-        [BindView(Resource.Id.txt_app_version)]
-        TextView txt_app_version;
+        //[BindView(Resource.Id.txt_app_version)]
+        //TextView txt_app_version;
 
         public static readonly string TAG = typeof(LaunchViewActivity).Name;
         private AppLaunchPresenter mPresenter;
@@ -60,67 +61,57 @@ namespace myTNB_Android.Src.AppLaunch.Activity
 
         MaterialDialog appUpdateDialog;
 
+        public static bool MAKE_INITIAL_CALL = true;
+
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-            mPresenter = new AppLaunchPresenter(this , PreferenceManager.GetDefaultSharedPreferences(this));
-           
-            if (Intent != null && Intent.Extras != null && Intent.Extras.ContainsKey("Email"))
-            {
-                string email = Intent.Extras.GetString("Email");
-                UserSessions.SetHasNotification(PreferenceManager.GetDefaultSharedPreferences(this));
-                UserSessions.SaveUserEmailNotification(PreferenceManager.GetDefaultSharedPreferences(this), email);
-            }
-            
-        
 
-            Log.Debug(TAG, "InstanceID token: " + FirebaseInstanceId.Instance.Token);
-            if (FirebaseTokenEntity.HasLatest())
+            try
             {
-                var tokenEntity = FirebaseTokenEntity.GetLatest();
-                if (tokenEntity != null)
-                {
-                    Log.Debug(TAG, "Refresh token: " + tokenEntity.FBToken);
-                }
-            }
-
-            TextViewUtils.SetMuseoSans300Typeface(txt_app_version);
-            //try
-            //{
                 
-            //    PackageInfo info = this.PackageManager.GetPackageInfo("com.mytnb.mytnb", Android.Content.PM.PackageInfoFlags.Activities);
-            //    if (info != null)
-            //    {
-            //        txt_app_version.Text = GetString(Resource.String.text_app_version) +" "+ info.VersionName;
-            //    }
-            //}
-            //catch (System.Exception e)
-            //{
-            //    Log.Debug("Package Manager", e.StackTrace);
-            //    txt_app_version.Visibility = ViewStates.Gone;
-            //}
-            //Hide version number text from splash 
-            txt_app_version.Visibility = ViewStates.Gone;
 
-            appUpdateDialog = new MaterialDialog.Builder(this)
-                .CustomView(Resource.Layout.AppUpdateDialog, false)
-                .Cancelable(false)
-                .CanceledOnTouchOutside(false)
-                .Build();
+                if (Intent != null && Intent.Extras != null && Intent.Extras.ContainsKey("Email"))
+                {
+                    string email = Intent.Extras.GetString("Email");
+                    UserSessions.SetHasNotification(PreferenceManager.GetDefaultSharedPreferences(this));
+                    UserSessions.SaveUserEmailNotification(PreferenceManager.GetDefaultSharedPreferences(this), email);
+                }
 
-            View dialogView = appUpdateDialog.Window.DecorView;
-            dialogView.SetBackgroundResource(Android.Resource.Color.Transparent);
 
-            TextView txtDialogTitle = appUpdateDialog.FindViewById<TextView>(Resource.Id.txtTitle);
-            TextView txtDialogMessage = appUpdateDialog.FindViewById<TextView>(Resource.Id.txtMessage);
-            TextView btnUpdateNow = appUpdateDialog.FindViewById<TextView>(Resource.Id.txtUpdate);
-            TextViewUtils.SetMuseoSans300Typeface(txtDialogMessage);
-            TextViewUtils.SetMuseoSans500Typeface(txtDialogTitle, btnUpdateNow);
-            btnUpdateNow.Click += delegate
-            {
-                OnAppUpdateClick();
-            };
+                //mPresenter = new AppLaunchPresenter(this, PreferenceManager.GetDefaultSharedPreferences(this));
+                //Log.Debug(TAG, "InstanceID token: " + FirebaseInstanceId.Instance.Token);
+                //if (FirebaseTokenEntity.HasLatest())
+                //{
+                //    var tokenEntity = FirebaseTokenEntity.GetLatest();
+                //    if (tokenEntity != null)
+                //    {
+                //        Log.Debug(TAG, "Refresh token: " + tokenEntity.FBToken);
+                //    }
+                //}
 
+                ////TextViewUtils.SetMuseoSans300Typeface(txt_app_version);
+                //try
+                //{
+
+                //    PackageInfo info = this.PackageManager.GetPackageInfo("com.mytnb.mytnb", Android.Content.PM.PackageInfoFlags.Activities);
+                //    if (info != null)
+                //    {
+                //        txt_app_version.Text = GetString(Resource.String.text_app_version) +" "+ info.VersionName;
+                //    }
+                //}
+                //catch (System.Exception e)
+                //{
+                //    Log.Debug("Package Manager", e.StackTrace);
+                //    txt_app_version.Visibility = ViewStates.Gone;
+                //}
+                //Hide version number text from splash 
+                ////txt_app_version.Visibility = ViewStates.Gone;
+
+
+            } catch(Exception e) {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
 
@@ -155,14 +146,18 @@ namespace myTNB_Android.Src.AppLaunch.Activity
 
         public void ShowWalkThrough()
         {
+            try {
             userActionsListener.GetSavedTimeStamp();
             //RunOnUiThread(() => StartActivity(typeof(WalkThroughActivity)));
-            
+            } catch(Exception e) {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         private Snackbar mApiExcecptionSnackBar;
         public void ShowRetryOptionApiException(ApiException apiException)
         {
+            try {
             // TODO : PROVIDE EXCEPTION DESCRIPTION
             // TODO : SHOW SNACKBAR ERROR MESSAGE
             if (mApiExcecptionSnackBar != null && mApiExcecptionSnackBar.IsShown)
@@ -182,11 +177,17 @@ namespace myTNB_Android.Src.AppLaunch.Activity
                 );
                 mApiExcecptionSnackBar.Show();
             }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         private Snackbar mUnknownExceptionSnackBar;
         public void ShowRetryOptionUknownException(Exception unkownException)
         {
+            try {
             // TODO : PROVIDE EXCEPTION DESCRIPTION
             // TODO : SHOW SNACKBAR ERROR MESSAGE
             if (mUnknownExceptionSnackBar != null && mUnknownExceptionSnackBar.IsShown)
@@ -205,6 +206,11 @@ namespace myTNB_Android.Src.AppLaunch.Activity
                 }
                 );
                 mUnknownExceptionSnackBar.Show();
+            }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
             }
         }
 
@@ -238,6 +244,7 @@ namespace myTNB_Android.Src.AppLaunch.Activity
 
         public void ShowDeviceNotSupported()
         {
+            try {
             new MaterialDialog.Builder(this)
                 .Title(GetString(Resource.String.app_launch_device_not_supported_title))
                 .Content(GetString(Resource.String.app_launch_device_not_supported_content))
@@ -248,11 +255,22 @@ namespace myTNB_Android.Src.AppLaunch.Activity
                     Finish();
                 })
                 .Show();
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public async void ShowPlayServicesIsAvailable()
         {
+            try {
             await GoogleApiAvailability.Instance.MakeGooglePlayServicesAvailableAsync(this);
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public int PlayServicesResultCode()
@@ -262,15 +280,26 @@ namespace myTNB_Android.Src.AppLaunch.Activity
 
         public void ShowPlayServicesErrorDialog(int resultCode)
         {
+            try {
             GoogleApiAvailability.Instance.GetErrorDialog(this , resultCode , Constants.PLAY_SERVICES_RESOLUTION_REQUEST).Show();
             hasBeenCalled = true;
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         protected override void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
         {
+            try {
             base.OnActivityResult(requestCode, resultCode, data);
             this.userActionsListener.OnActivityResult(requestCode , resultCode , data);
-            
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public override bool TelephonyPermissionRequired()
@@ -282,14 +311,42 @@ namespace myTNB_Android.Src.AppLaunch.Activity
         /// Starts the process(access api) when view is rendered fully and runtime permission is already allowed
         /// </summary>
         public override void Ready()
-        {
+ {
             base.Ready();
-            if (!hasBeenCalled)
-            {
-                userActionsListener.Start();
-                hasBeenCalled = true;
-            }
+        }
 
+
+        protected override void OnStart()
+        {
+            base.OnStart();
+
+            try
+            {
+                if (ConnectionUtils.HasInternetConnection(this)) {
+                mPresenter = new AppLaunchPresenter(this, PreferenceManager.GetDefaultSharedPreferences(this));
+                Log.Debug(TAG, "InstanceID token: " + FirebaseInstanceId.Instance.Token);
+                if (FirebaseTokenEntity.HasLatest())
+                {
+                    var tokenEntity = FirebaseTokenEntity.GetLatest();
+                    if (tokenEntity != null)
+                    {
+                        Log.Debug(TAG, "Refresh token: " + tokenEntity.FBToken);
+                    }
+                }
+                
+                if (!hasBeenCalled)
+                {
+                    userActionsListener.Start();
+                    hasBeenCalled = true;
+                }
+                } else {
+                    ShowNoInternetSnackbar();
+                }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public void ShowNotification()
@@ -301,6 +358,7 @@ namespace myTNB_Android.Src.AppLaunch.Activity
 
         public void ShowNotificationCount(int count)
         {
+            try {
             if (count <= 0)
             {
                 ME.Leolin.Shortcutbadger.ShortcutBadger.RemoveCount(this.ApplicationContext);
@@ -309,20 +367,31 @@ namespace myTNB_Android.Src.AppLaunch.Activity
             {
                 ME.Leolin.Shortcutbadger.ShortcutBadger.ApplyCount(this.ApplicationContext, count);
             }
-            
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public void OnSavedTimeStampRecievd(string timestamp)
         {
+            try {
             if (timestamp != null)
             {
                 savedTimeStamp = timestamp;
             }
             this.userActionsListener.OnGetTimeStamp();
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public void OnTimeStampRecieved(string timestamp)
         {
+            try {
             if (timestamp != null)
             {
                 if (timestamp.Equals(savedTimeStamp))
@@ -339,6 +408,11 @@ namespace myTNB_Android.Src.AppLaunch.Activity
                 MyTNBApplication.siteCoreUpdated = true;
             }
             RunOnUiThread(() => StartActivity(typeof(WalkThroughActivity)));
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public void OnSiteCoreServiceFailed(string message)
@@ -349,17 +423,30 @@ namespace myTNB_Android.Src.AppLaunch.Activity
 
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Permission[] grantResults)
         {
+            try {
             base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
             this.userActionsListener.OnRequestPermissionsResult(requestCode, permissions, grantResults);
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public void RequestSMSPermission()
         {
+            try {
             RequestPermissions(new string[] { Manifest.Permission.ReceiveSms }, Constants.RUNTIME_PERMISSION_SMS_REQUEST_CODE);
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
         private Snackbar mSnackBar;
         public void ShowSMSPermissionRationale()
         {
+            try {
             if (mSnackBar != null && mSnackBar.IsShown)
             {
                 mSnackBar.Dismiss();
@@ -383,6 +470,11 @@ namespace myTNB_Android.Src.AppLaunch.Activity
                 }
                 mSnackBar.Show();
             }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public bool IsGrantedSMSReceivePermission()
@@ -397,21 +489,56 @@ namespace myTNB_Android.Src.AppLaunch.Activity
 
         public void ShowLogout()
         {
+            try {
             ME.Leolin.Shortcutbadger.ShortcutBadger.RemoveCount(this.ApplicationContext);
             Intent logout = new Intent(this, typeof(LoginActivity));
             StartActivity(logout);
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public void ShowUpdateAvailable()
         {
-            if(appUpdateDialog != null)
-            {
+            try {
+            //if(appUpdateDialog != null)
+            //{
+
+
+                appUpdateDialog = new MaterialDialog.Builder(this)
+                    .CustomView(Resource.Layout.AppUpdateDialog, false)
+                    .Cancelable(false)
+                    .CanceledOnTouchOutside(false)
+                    .Build();
+
+                View dialogView = appUpdateDialog.Window.DecorView;
+                dialogView.SetBackgroundResource(Android.Resource.Color.Transparent);
+
+                TextView txtDialogTitle = appUpdateDialog.FindViewById<TextView>(Resource.Id.txtTitle);
+                TextView txtDialogMessage = appUpdateDialog.FindViewById<TextView>(Resource.Id.txtMessage);
+                TextView btnUpdateNow = appUpdateDialog.FindViewById<TextView>(Resource.Id.txtUpdate);
+                TextViewUtils.SetMuseoSans300Typeface(txtDialogMessage);
+                TextViewUtils.SetMuseoSans500Typeface(txtDialogTitle, btnUpdateNow);
+                btnUpdateNow.Click += delegate
+                {
+                    OnAppUpdateClick();
+                };
+
+                if (IsActive())
                 appUpdateDialog.Show();
+            //}
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
             }
         }
 
         public void OnAppUpdateClick()
         {
+            try {
             WeblinkEntity weblinkEntity = WeblinkEntity.GetByCode("DROID");
             if (weblinkEntity != null)
             {
@@ -419,16 +546,69 @@ namespace myTNB_Android.Src.AppLaunch.Activity
                 Intent intent = new Intent(Intent.ActionView, uri);
                 StartActivity(intent);
             }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public void ShowUpdatePhoneNumber(string phoneNumber)
         {
+            try {
             Intent updateMobileNo = new Intent(this, typeof(UpdateMobileActivity));
             //updateMobileNo.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
             updateMobileNo.PutExtra(Constants.FORCE_UPDATE_PHONE_NO, true);
             updateMobileNo.PutExtra(Constants.FROM_APP_LAUNCH, true);
             updateMobileNo.PutExtra("PhoneNumber", phoneNumber);
             StartActivity(updateMobileNo);
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+
+        public override void OnTrimMemory(TrimMemory level)
+        {
+            try {
+            base.OnTrimMemory(level);
+
+            switch (level)
+            {
+                case TrimMemory.RunningLow:
+                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
+                    GC.Collect();
+                    break;
+                default:
+                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
+                    GC.Collect();
+                    break;
+            }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+
+        private Snackbar mNoInternetSnackbar;
+        public void ShowNoInternetSnackbar()
+        {
+            if (mNoInternetSnackbar != null && mNoInternetSnackbar.IsShown)
+            {
+                mNoInternetSnackbar.Dismiss();
+            }
+
+            mNoInternetSnackbar = Snackbar.Make(rootView, GetString(Resource.String.no_internet_connection), Snackbar.LengthIndefinite)
+            .SetAction(GetString(Resource.String.dashboard_chartview_data_not_available_no_internet_btn_close), delegate {
+
+                mNoInternetSnackbar.Dismiss();
+            }
+            );
+            mNoInternetSnackbar.Show();
         }
     }
 }

@@ -35,6 +35,7 @@ using Java.Util;
 using Android.Preferences;
 using Android.Text;
 using myTNB_Android.Src.Utils.Custom.ProgressDialog;
+using System.Runtime;
 
 namespace myTNB_Android.Src.Feedback_PreLogin_Others.Activity
 {
@@ -108,7 +109,7 @@ namespace myTNB_Android.Src.Feedback_PreLogin_Others.Activity
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-
+            try {
             submitDialog = new MaterialDialog.Builder(this)
                 .Title(Resource.String.feedback_submit_dialog_title)
                 .Content(Resource.String.feedback_submit_dialog_message)
@@ -168,12 +169,15 @@ namespace myTNB_Android.Src.Feedback_PreLogin_Others.Activity
             txtFeedback.TextChanged += TxtFeedback_TextChanged;
             txtFeedback.SetOnTouchListener(this);
             txtInputLayoutFeedback.Error = GetString(Resource.String.feedback_total_character_left);
-
+        } catch (Exception e) {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         [Preserve]
         private void TxtFeedback_TextChanged(object sender, Android.Text.TextChangedEventArgs e)
         {
+            try {
             string fullname = txtFullName.Text.Trim();
             string email = txtEmail.Text.Trim();
             string mobile_no = txtMobileNo.Text.Trim();
@@ -182,36 +186,52 @@ namespace myTNB_Android.Src.Feedback_PreLogin_Others.Activity
             FeedBackCharacCount();
 
             this.userActionsListener.CheckRequiredFields(fullname, mobile_no, email, feedback);
+        } catch (Exception ex) {
+                Utility.LoggingNonFatalError(ex);
+            }
         }
 
         [Preserve]
         private void TxtMobileNo_TextChanged(object sender, Android.Text.TextChangedEventArgs e)
         {
+            try {
             string fullname = txtFullName.Text.Trim();
             string email = txtEmail.Text.Trim();
             string mobile_no = txtMobileNo.Text.Trim();
             string feedback = txtFeedback.Text;
             this.userActionsListener.CheckRequiredFields(fullname, mobile_no, email, feedback);
+        } catch (Exception ex) {
+                Utility.LoggingNonFatalError(ex);
+            }
         }
 
         [Preserve]
         private void TxtEmail_TextChanged(object sender, Android.Text.TextChangedEventArgs e)
         {
+            try {
             string fullname = txtFullName.Text.Trim();
             string email = txtEmail.Text.Trim();
             string mobile_no = txtMobileNo.Text.Trim();
             string feedback = txtFeedback.Text;
             this.userActionsListener.CheckRequiredFields(fullname, mobile_no, email, feedback);
+        } catch (Exception ex) {
+                Utility.LoggingNonFatalError(ex);
+            }
         }
 
         [Preserve]
         private void TxtFullName_TextChanged(object sender, Android.Text.TextChangedEventArgs e)
         {
+            try {
+                
             string fullname = txtFullName.Text.Trim();
             string email = txtEmail.Text.Trim();
             string mobile_no = txtMobileNo.Text.Trim();
             string feedback = txtFeedback.Text;
             this.userActionsListener.CheckRequiredFields(fullname , mobile_no , email , feedback);
+        } catch (Exception ex) {
+                Utility.LoggingNonFatalError(ex);
+            }
         }
 
         public bool OnTouch(View v, MotionEvent e)
@@ -220,6 +240,7 @@ namespace myTNB_Android.Src.Feedback_PreLogin_Others.Activity
             const int DRAWABLE_TOP = 1;
             const int DRAWABLE_RIGHT = 2;
             const int DRAWABLE_BOTTOM = 3;
+            try {
             if (v is EditText)
             {
                 EditText eTxtView = v as EditText;
@@ -247,6 +268,9 @@ namespace myTNB_Android.Src.Feedback_PreLogin_Others.Activity
                 }
 
             }
+        } catch (Exception ex) {
+                Utility.LoggingNonFatalError(ex);
+            }
             return false;
         }
 
@@ -264,6 +288,7 @@ namespace myTNB_Android.Src.Feedback_PreLogin_Others.Activity
         [OnClick(Resource.Id.btnSubmit)]
         void OnSubmit(object sender, EventArgs e)
         {
+            try {
             btnSubmit.Enabled = false;
             Handler h = new Handler();
             Action myAction = () =>
@@ -280,6 +305,11 @@ namespace myTNB_Android.Src.Feedback_PreLogin_Others.Activity
 
 
             this.userActionsListener.OnSubmit(this.DeviceId(), fullname, mobile_no, email, currentFeedbackType, feedback, attachedImages);
+            }
+            catch (Exception ex)
+            {
+                Utility.LoggingNonFatalError(ex);
+            }
         }
 
 
@@ -306,6 +336,7 @@ namespace myTNB_Android.Src.Feedback_PreLogin_Others.Activity
 
         private void Adapter_RemoveClickEvent(object sender, int e)
         {
+            try {
             adapter.Remove(e);
             if (adapter.GetAllImages().Count == 1 && adapter.ItemCount == 1)
             {
@@ -325,11 +356,17 @@ namespace myTNB_Android.Src.Feedback_PreLogin_Others.Activity
                     });
                 }
             }
+            }
+            catch (Exception ex)
+            {
+                Utility.LoggingNonFatalError(ex);
+            }
         }
 
         private AlertDialog _ChooseDialog;
         private void Adapter_AddClickEvent(object sender, int e)
         {
+            try {
             string[] items = { GetString(Resource.String.bill_related_feedback_selection_take_photo) ,
                                GetString(Resource.String.bill_related_feedback_selection_choose_from_library) ,
                                GetString(Resource.String.bill_related_feedback_selection_cancel)};
@@ -356,6 +393,11 @@ namespace myTNB_Android.Src.Feedback_PreLogin_Others.Activity
             }
             );
             _ChooseDialog = builder.Show();
+            }
+            catch (Exception ex)
+            {
+                Utility.LoggingNonFatalError(ex);
+            }
         }
 
         protected override void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
@@ -410,7 +452,7 @@ namespace myTNB_Android.Src.Feedback_PreLogin_Others.Activity
 
         public void ShowMaximumAttachPhotosAllowed()
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         public string GetTemporaryImageFilePath(string pFolder, string pFileName)
@@ -436,6 +478,7 @@ namespace myTNB_Android.Src.Feedback_PreLogin_Others.Activity
 
         public void ShowLoadingImage()
         {
+            try {
             int position = adapter.ItemCount - 1;
             AttachedImage attachImage = adapter.GetItemObject(position);
             if (attachImage != null && attachImage.ViewType == Constants.VIEW_TYPE_DUMMY_RECORD)
@@ -443,10 +486,16 @@ namespace myTNB_Android.Src.Feedback_PreLogin_Others.Activity
                 attachImage.IsLoading = true;
                 adapter.Update(position, attachImage);
             }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public void HideLoadingImage()
         {
+            try {
             int position = adapter.ItemCount - 1;
             AttachedImage attachImage = adapter.GetItemObject(position);
             if (attachImage != null && attachImage.ViewType == Constants.VIEW_TYPE_DUMMY_RECORD)
@@ -454,10 +503,16 @@ namespace myTNB_Android.Src.Feedback_PreLogin_Others.Activity
                 attachImage.IsLoading = false;
                 adapter.Update(position, attachImage);
             }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public void UpdateAdapter(string pFilePath, string pFileName)
         {
+            try {
             adapter.Update(adapter.ItemCount - 1, new AttachedImage()
             {
                 ViewType = Constants.VIEW_TYPE_REAL_RECORD,
@@ -471,6 +526,11 @@ namespace myTNB_Android.Src.Feedback_PreLogin_Others.Activity
                 {
                     ViewType = Constants.VIEW_TYPE_DUMMY_RECORD
                 });
+            }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
             }
         }
 
@@ -525,7 +585,7 @@ namespace myTNB_Android.Src.Feedback_PreLogin_Others.Activity
 
             string feedback = txtFeedback.Text;
             int char_count = 0;
-
+            try {
             if (!string.IsNullOrEmpty(feedback))
             {
                 char_count = feedback.Length;
@@ -540,6 +600,11 @@ namespace myTNB_Android.Src.Feedback_PreLogin_Others.Activity
             {
                 txtInputLayoutFeedback.Error = GetString(Resource.String.feedback_total_character_left);
             }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public void ShowProgressDialog()
@@ -548,6 +613,7 @@ namespace myTNB_Android.Src.Feedback_PreLogin_Others.Activity
             //{
             //    submitDialog.Show();
             //}
+            try {
             if (loadingOverlay != null && loadingOverlay.IsShowing)
             {
                 loadingOverlay.Dismiss();
@@ -555,6 +621,9 @@ namespace myTNB_Android.Src.Feedback_PreLogin_Others.Activity
 
             loadingOverlay = new LoadingOverlay(this, Resource.Style.LoadingOverlyDialogStyle);
             loadingOverlay.Show();
+        } catch (Exception e) {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public void HideProgressDialog()
@@ -563,9 +632,13 @@ namespace myTNB_Android.Src.Feedback_PreLogin_Others.Activity
             //{
             //    submitDialog.Dismiss();
             //}
+            try {
             if (loadingOverlay != null && loadingOverlay.IsShowing)
             {
                 loadingOverlay.Dismiss();
+            }
+        } catch (Exception e) {
+                Utility.LoggingNonFatalError(e);
             }
         }
 
@@ -611,6 +684,7 @@ namespace myTNB_Android.Src.Feedback_PreLogin_Others.Activity
                     FileSize = size,
                     FileName = attachedImage.Name
                 };
+           
             });
         }
 
@@ -620,7 +694,7 @@ namespace myTNB_Android.Src.Feedback_PreLogin_Others.Activity
             string email = txtEmail.Text.Trim();
             string mobile_no = txtMobileNo.Text.Trim();
             string feedback = txtFeedback.Text.Trim();
-
+            try {
             if (TextUtils.IsEmpty(fullname) || TextUtils.IsEmpty(email) || TextUtils.IsEmpty(mobile_no))
             {
                 DisableSubmitButton();
@@ -635,6 +709,11 @@ namespace myTNB_Android.Src.Feedback_PreLogin_Others.Activity
 
             btnSubmit.Enabled = true;
             btnSubmit.Background = ContextCompat.GetDrawable(this, Resource.Drawable.green_button_background);
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public void DisableSubmitButton()
@@ -709,6 +788,24 @@ namespace myTNB_Android.Src.Feedback_PreLogin_Others.Activity
             tv.SetMaxLines(5);
 
             mErrorMessageSnackBar.Show();
+        }
+
+
+        public override void OnTrimMemory(TrimMemory level)
+        {
+            base.OnTrimMemory(level);
+
+            switch (level)
+            {
+                case TrimMemory.RunningLow:
+                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
+                    GC.Collect();
+                    break;
+                default:
+                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
+                    GC.Collect();
+                    break;
+            }
         }
 
     }

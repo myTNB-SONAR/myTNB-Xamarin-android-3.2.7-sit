@@ -26,6 +26,7 @@ using Android.Support.V7.Widget;
 using System.Threading.Tasks;
 using System.Threading;
 using Java.Net;
+using System.Runtime;
 
 namespace myTNB_Android.Src.FindUs.Activity
 {
@@ -112,7 +113,7 @@ namespace myTNB_Android.Src.FindUs.Activity
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-            
+            try {
             mPresenter = new LocationDetailsPresenter(this);
             GoogelApiKey = GetString(Resource.String.google_maps_search_api_key);
             cts = new CancellationTokenSource();
@@ -124,21 +125,26 @@ namespace myTNB_Android.Src.FindUs.Activity
             layoutOpeningHours.NestedScrollingEnabled = false;
             layoutServices.NestedScrollingEnabled = false;
 
-            string KT = Intent.Extras.GetString("KT");
-            string store = Intent.Extras.GetString("store");
-            string title = Intent.Extras.GetString("Title");
-            mImagePath = Intent.Extras.GetString("imagePath");
+                Bundle extras = Intent.Extras;
+
+                if (extras != null) {
+                    string KT = extras.GetString("KT");
+                    string store = extras.GetString("store");
+                    string title = extras.GetString("Title");
+                    mImagePath = extras.GetString("imagePath");
 
             if (!String.IsNullOrEmpty(KT))
             {
-                locationData = JsonConvert.DeserializeObject<LocationData>(KT);
+                //locationData = JsonConvert.DeserializeObject<LocationData>(KT);
+                    locationData = DeSerialze<LocationData>(KT);
                 RunOnUiThread(() => {
                     InitView(locationData);
                 });
             }
             if (!String.IsNullOrEmpty(store))
             {
-                googleApiResult = JsonConvert.DeserializeObject<GoogleApiResult>(store);
+                //googleApiResult = JsonConvert.DeserializeObject<GoogleApiResult>(store);
+                    googleApiResult = DeSerialze<GoogleApiResult>(store);
                 RunOnUiThread(() => {
                     InitView(googleApiResult);
                     });
@@ -148,6 +154,7 @@ namespace myTNB_Android.Src.FindUs.Activity
                 SetToolBarTitle(title);
             }
 
+                }
             TextViewUtils.SetMuseoSans500Typeface(txtTitle);
             TextViewUtils.SetMuseoSans300Typeface(txtAddress);
             TextViewUtils.SetMuseoSans300Typeface(lblAddress, lblPhone, lblOepningHours, lblServices);
@@ -157,11 +164,17 @@ namespace myTNB_Android.Src.FindUs.Activity
             {
                 LaunchMapIntent(mLat, mLng);
             };
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
 
+            }
         }
 
         public void InitView(Object obj)
         {
+            try {
             if(obj is LocationData)
             {
                 LocationData data = (LocationData)obj;
@@ -288,6 +301,12 @@ namespace myTNB_Android.Src.FindUs.Activity
 
                 this.userActionsListener.GetLocationDetailsFromGoogle(result.place_id, GoogelApiKey, cts);                
             }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+
+            }
         }
 
         public override void OnBackPressed()
@@ -297,6 +316,7 @@ namespace myTNB_Android.Src.FindUs.Activity
 
         public async Task GetImageAsync(ImageView icon, string url)
         {
+            try {
             mImageProgressBar.Visibility = ViewStates.Visible;
             await Task.Run(() =>
             {
@@ -309,11 +329,18 @@ namespace myTNB_Android.Src.FindUs.Activity
             }
             mImageProgressBar.Visibility = ViewStates.Gone;
         }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);  
+
+            }
+        }
 
 
         private Bitmap GetImageBitmapFromUrl(ImageView icon, string url)
         {
             Bitmap image = null;
+            try {
             using (WebClient webClient = new WebClient())
             {
                 var imageBytes = webClient.DownloadData(url);
@@ -321,6 +348,12 @@ namespace myTNB_Android.Src.FindUs.Activity
                 {
                     image = BitmapFactory.DecodeByteArray(imageBytes, 0, imageBytes.Length);
                 }
+            }
+        }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);  
+
             }
             return image;
         }
@@ -339,7 +372,7 @@ namespace myTNB_Android.Src.FindUs.Activity
             }
             catch(Exception e)
             {
-
+                Utility.LoggingNonFatalError(e);
             }
         }
 
@@ -377,6 +410,23 @@ namespace myTNB_Android.Src.FindUs.Activity
             }
             
             base.OnDestroy();
+        }
+
+        public override void OnTrimMemory(TrimMemory level)
+        {
+            base.OnTrimMemory(level);
+
+            switch (level)
+            {
+                case TrimMemory.RunningLow:
+                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
+                    GC.Collect();
+                    break;
+                default:
+                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
+                    GC.Collect();
+                    break;
+            }
         }
     }
 }

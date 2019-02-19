@@ -17,6 +17,7 @@ using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.Utils;
 using Newtonsoft.Json;
 using myTNB_Android.Src.Database.Model;
+using System.Runtime;
 
 namespace myTNB_Android.Src.Feedback_Login_BillRelated.Activity
 {
@@ -47,7 +48,16 @@ namespace myTNB_Android.Src.Feedback_Login_BillRelated.Activity
         {
             base.OnCreate(savedInstanceState);
 
-            previouslySelected = JsonConvert.DeserializeObject<AccountData>(Intent.Extras.GetString(Constants.SELECTED_ACCOUNT));
+            Bundle extras = Intent.Extras;
+
+            if (extras != null)
+            {
+                if (extras.ContainsKey(Constants.SELECTED_ACCOUNT))
+                {
+                    //previouslySelected = JsonConvert.DeserializeObject<AccountData>(Intent.Extras.GetString(Constants.SELECTED_ACCOUNT));
+                    previouslySelected = DeSerialze<AccountData>(extras.GetString(Constants.SELECTED_ACCOUNT));
+                }
+            }
 
             feedbackSelectAdapter = new FeedbackSelectAccountAdapter(this);
             listView.Adapter = feedbackSelectAdapter;
@@ -80,6 +90,24 @@ namespace myTNB_Android.Src.Feedback_Login_BillRelated.Activity
             resultIntent.PutExtra(Constants.SELECTED_ACCOUNT , JsonConvert.SerializeObject(accountData));
             SetResult(Result.Ok, resultIntent);
             Finish();
+        }
+
+
+        public override void OnTrimMemory(TrimMemory level)
+        {
+            base.OnTrimMemory(level);
+
+            switch (level)
+            {
+                case TrimMemory.RunningLow:
+                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
+                    GC.Collect();
+                    break;
+                default:
+                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
+                    GC.Collect();
+                    break;
+            }
         }
     }
 }

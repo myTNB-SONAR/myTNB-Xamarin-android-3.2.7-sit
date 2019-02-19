@@ -14,6 +14,7 @@ using myTNB_Android.Src.Base.Adapter;
 using Android.Support.V7.Widget;
 using CheeseBind;
 using Android.Text;
+using myTNB_Android.Src.Utils;
 
 namespace myTNB_Android.Src.ManageCards.Adapter
 {
@@ -37,8 +38,8 @@ namespace myTNB_Android.Src.ManageCards.Adapter
         public override void OnBindViewHolder(RecyclerView.ViewHolder holder, int position)
         {
             ManageCardsViewHolder viewHolder = holder as ManageCardsViewHolder;
+            try {
             CreditCardData item = GetItemObject(position);
-
 
             string lastDigit = item.LastDigits.Substring(item.LastDigits.Length - 4);
             string html = "<![CDATA[" + viewHolder.ItemView.Context.GetString(Resource.String.credit_card_masked) + lastDigit + "]]>";
@@ -71,7 +72,11 @@ namespace myTNB_Android.Src.ManageCards.Adapter
                 viewHolder.txtCardNumber.SetCompoundDrawablesWithIntrinsicBounds(Resource.Drawable.ic_payment_card_jcb,
                     0, 0, 0);
             }
-
+        }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public override RecyclerView.ViewHolder OnCreateViewHolder(ViewGroup parent, int viewType)

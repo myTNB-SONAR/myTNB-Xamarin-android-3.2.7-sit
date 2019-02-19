@@ -91,6 +91,7 @@ namespace myTNB_Android.Src.PreLogin.MVP
                 catch (Exception e)
                 {
                     Log.Error("API Exception", e.StackTrace);
+                    Utility.LoggingNonFatalError(e);
                 }
             });
         }

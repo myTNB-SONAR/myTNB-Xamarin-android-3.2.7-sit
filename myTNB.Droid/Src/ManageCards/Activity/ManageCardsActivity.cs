@@ -23,6 +23,7 @@ using myTNB_Android.Src.Utils;
 using Newtonsoft.Json;
 using static AFollestad.MaterialDialogs.MaterialDialog;
 using myTNB_Android.Src.Utils.Custom.ProgressDialog;
+using System.Runtime;
 
 namespace myTNB_Android.Src.ManageCards.Activity
 {
@@ -69,34 +70,47 @@ namespace myTNB_Android.Src.ManageCards.Activity
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
+            try
+            {
+                Bundle extras = Intent.Extras;
 
-            string cardsListString = Intent.Extras.GetString(Constants.CREDIT_CARD_LIST);
-            cardsList = JsonConvert.DeserializeObject<List<CreditCardData>>(cardsListString);
+                if (extras != null)
+                {
+                    if (extras.ContainsKey(Constants.CREDIT_CARD_LIST))
+                    {
+                        string cardsListString = extras.GetString(Constants.CREDIT_CARD_LIST);
+                        //cardsList = JsonConvert.DeserializeObject<List<CreditCardData>>(cardsListString);
+                        cardsList = DeSerialze<List<CreditCardData>>(cardsListString);
+                    }
+                }
 
-            Console.WriteLine("Card List " + cardsListString);
+                //Console.WriteLine("Card List " + cardsListString);
 
-            progress = new MaterialDialog.Builder(this)
-                .Title(GetString(Resource.String.manage_cards_progress_title))
-                .Content(GetString(Resource.String.manage_cards_progress_content))
-                .Progress(true, 0)
-                .Cancelable(false)
-                .Build();
+                progress = new MaterialDialog.Builder(this)
+                    .Title(GetString(Resource.String.manage_cards_progress_title))
+                    .Content(GetString(Resource.String.manage_cards_progress_content))
+                    .Progress(true, 0)
+                    .Cancelable(false)
+                    .Build();
 
-            mAdapter = new ManageCardsAdapter(true);
-            mAdapter.RemoveClick += MAdapter_RemoveClick;
-            mLayoutManager = new LinearLayoutManager(this);
-            mRecyclerView.SetLayoutManager(mLayoutManager);
-            mRecyclerView.SetAdapter(mAdapter);
+                mAdapter = new ManageCardsAdapter(true);
+                mAdapter.RemoveClick += MAdapter_RemoveClick;
+                mLayoutManager = new LinearLayoutManager(this);
+                mRecyclerView.SetLayoutManager(mLayoutManager);
+                mRecyclerView.SetAdapter(mAdapter);
 
-            TextViewUtils.SetMuseoSans300Typeface(txtManageCardsTitle, txtEmptyCard);
+                TextViewUtils.SetMuseoSans300Typeface(txtManageCardsTitle, txtEmptyCard);
 
-            mPresenter = new ManageCardsPresenter(this);
-            this.userActionsListener.Start();
+                mPresenter = new ManageCardsPresenter(this);
+                this.userActionsListener.Start();
+            } catch(Exception e) {
+                Utility.LoggingNonFatalError(e);
+            }
         }
         [Preserve]
         private void MAdapter_RemoveClick(object sender, int e)
         {
-
+            try {
             if (removeDialog != null && removeDialog.IsShowing)
             {
                 removeDialog.Dismiss();
@@ -118,7 +132,9 @@ namespace myTNB_Android.Src.ManageCards.Activity
                 })
                 .Show()
                 ;
-
+        } catch(Exception ex) {
+                Utility.LoggingNonFatalError(ex);
+            }
             
             
         }
@@ -140,6 +156,7 @@ namespace myTNB_Android.Src.ManageCards.Activity
 
         public void ShowCards()
         {
+            try {
             if (cardsList.Count == 0)
             {
                 layoutEmptyCards.Visibility = ViewStates.Visible;
@@ -150,6 +167,11 @@ namespace myTNB_Android.Src.ManageCards.Activity
                 layoutCards.Visibility = ViewStates.Visible;
                 layoutEmptyCards.Visibility = ViewStates.Gone;
                 mAdapter.AddAll(cardsList);
+            }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
             }
         }
 
@@ -164,6 +186,7 @@ namespace myTNB_Android.Src.ManageCards.Activity
             //{
             //    progress.Show();
             //}
+            try {
             if (loadingOverlay != null && loadingOverlay.IsShowing)
             {
                 loadingOverlay.Dismiss();
@@ -171,6 +194,11 @@ namespace myTNB_Android.Src.ManageCards.Activity
 
             loadingOverlay = new LoadingOverlay(this, Resource.Style.LoadingOverlyDialogStyle);
             loadingOverlay.Show();
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public void HideProgressDialog()
@@ -179,14 +207,21 @@ namespace myTNB_Android.Src.ManageCards.Activity
             //{
             //    progress.Dismiss();
             //}
+            try {
             if (loadingOverlay != null && loadingOverlay.IsShowing)
             {
                 loadingOverlay.Dismiss();
+            }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
             }
         }
 
         public void ShowRemoveSuccess(CreditCardData RemovedCard , int position)
         {
+            try {
             cardsList.RemoveAt(position);
             if (cardsList.Count == 0)
             {
@@ -202,7 +237,11 @@ namespace myTNB_Android.Src.ManageCards.Activity
                 SetResult(Result.Ok, creditCard);
                 Finish();
             }
-
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         private Snackbar mCancelledExceptionSnackBar;
@@ -289,5 +328,24 @@ namespace myTNB_Android.Src.ManageCards.Activity
                         }
                        ).Show();
         }
+
+
+        public override void OnTrimMemory(TrimMemory level)
+        {
+            base.OnTrimMemory(level);
+
+            switch (level)
+            {
+                case TrimMemory.RunningLow:
+                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
+                    GC.Collect();
+                    break;
+                default:
+                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
+                    GC.Collect();
+                    break;
+            }
+        }
+
     }
 }

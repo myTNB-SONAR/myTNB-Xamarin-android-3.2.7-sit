@@ -42,6 +42,7 @@ namespace myTNB_Android.Src.MyAccount.MVP
 
         public void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
         {
+            try {
             if (requestCode == Constants.UPDATE_MOBILE_NO_REQUEST)
             {
                 if (resultCode == Result.Ok)
@@ -96,6 +97,13 @@ namespace myTNB_Android.Src.MyAccount.MVP
 
                 }
             }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+
+        
         }
 
         public void OnAddAccount()
@@ -108,8 +116,10 @@ namespace myTNB_Android.Src.MyAccount.MVP
             ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
             cts = new CancellationTokenSource();
 
-            this.mView.ShowLogoutProgressDialog();
 
+            if (mView.IsActive()) {
+            this.mView.ShowLogoutProgressDialog();
+            }
 
 
 
@@ -134,6 +144,11 @@ namespace myTNB_Android.Src.MyAccount.MVP
                         OsType = Constants.DEVICE_PLATFORM,
                         OsVersion = DeviceIdUtils.GetAndroidVersion()
                     }, cts.Token);
+
+                    if (mView.IsActive())
+                    {
+                        this.mView.HideLogoutProgressDialog();
+                    }
 
                     if (!logoutResponse.Data.IsError)
                     {
@@ -163,24 +178,35 @@ namespace myTNB_Android.Src.MyAccount.MVP
             }
             catch (System.OperationCanceledException e)
             {
-
+                if (mView.IsActive())
+                {
+                    this.mView.HideLogoutProgressDialog();
+                }
                 // ADD OPERATION CANCELLED HERE
                 this.mView.ShowRetryOptionsCancelledException(e);
+                Utility.LoggingNonFatalError(e);
             }
             catch (ApiException apiException)
             {
+                if (mView.IsActive())
+                {
+                    this.mView.HideLogoutProgressDialog();
+                }
                 // ADD HTTP CONNECTION EXCEPTION HERE
                 this.mView.ShowRetryOptionsApiException(apiException);
+                Utility.LoggingNonFatalError(apiException);
             }
             catch (Exception e)
             {
+                if (mView.IsActive())
+                {
+                    this.mView.HideLogoutProgressDialog();
+                }
                 // ADD UNKNOWN EXCEPTION HERE
-
                 this.mView.ShowRetryOptionsUnknownException(e);
+                Utility.LoggingNonFatalError(e);
             }
 
-
-            this.mView.HideLogoutProgressDialog();
         }
 
         public void OnManageCards()
@@ -256,6 +282,7 @@ namespace myTNB_Android.Src.MyAccount.MVP
         public void Start()
         {
             //
+            try {
             ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
             if (CustomerBillingAccount.Enumerate().Count() > 0)
             {
@@ -278,12 +305,22 @@ namespace myTNB_Android.Src.MyAccount.MVP
 
             LoadCards();
 
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+
         }
 
         private async void LoadCards()
         {
             cts = new CancellationTokenSource();
+
+            if (mView.IsActive()) {
             this.mView.ShowProgressDialog();
+            }
+
             UserEntity userEntity = UserEntity.GetActive();
 #if DEBUG || STUB
             var httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
@@ -297,6 +334,11 @@ namespace myTNB_Android.Src.MyAccount.MVP
                         Constants.APP_CONFIG.API_KEY_ID,
                         userEntity.Email
                     ));
+
+                if (mView.IsActive())
+                {
+                    this.mView.HideShowProgressDialog();
+                }
 
                 if (!cardsApiResponse.Data.IsError)
                 {
@@ -324,21 +366,34 @@ namespace myTNB_Android.Src.MyAccount.MVP
             }
             catch (System.OperationCanceledException e)
             {
+                if (mView.IsActive())
+                {
+                    this.mView.HideShowProgressDialog();
+                }
                 // ADD OPERATION CANCELLED HERE
                 this.mView.ShowRetryOptionsCancelledException(e);
+                Utility.LoggingNonFatalError(e);
             }
             catch (ApiException apiException)
             {
+                if (mView.IsActive())
+                {
+                    this.mView.HideShowProgressDialog();
+                }
                 // ADD HTTP CONNECTION EXCEPTION HERE
                 this.mView.ShowRetryOptionsApiException(apiException);
+                Utility.LoggingNonFatalError(apiException);
             }
             catch (Exception e)
             {
+                if (mView.IsActive())
+                {
+                    this.mView.HideShowProgressDialog();
+                }
                 // ADD UNKNOWN EXCEPTION HERE
                 this.mView.ShowRetryOptionsUnknownException(e);
+                Utility.LoggingNonFatalError(e);
             }
-
-            this.mView.HideShowProgressDialog();
 
         }
     }

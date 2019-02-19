@@ -43,7 +43,10 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
 
         private async void LoadAllUserPrefNotifications(string deviceId)
         {
-            this.mView.ShowNotificationsProgressDialog();
+            if (mView.IsActive())
+            {
+                this.mView.ShowNotificationsProgressDialog();
+            }
             cts = new CancellationTokenSource();
             ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
 #if DEBUG
@@ -120,6 +123,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                     this.mView.HideNotificationsProgressDialog();
                 }
                 this.mView.ShowRetryOptionsCancelledException(e);
+                Utility.LoggingNonFatalError(e);
             }
             catch (ApiException apiException)
             {
@@ -129,6 +133,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                     this.mView.HideNotificationsProgressDialog();
                 }
                 this.mView.ShowRetryOptionsApiException(apiException);
+                Utility.LoggingNonFatalError(apiException);
             }
             catch (Exception e)
             {
@@ -139,7 +144,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                     this.mView.HideNotificationsProgressDialog();
                 }
                 this.mView.ShowRetryOptionsUnknownException(e);
-
+                Utility.LoggingNonFatalError(e);
             }
 
 

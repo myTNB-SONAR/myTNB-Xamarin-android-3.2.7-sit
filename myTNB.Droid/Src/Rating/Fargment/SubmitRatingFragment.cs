@@ -60,7 +60,7 @@ namespace myTNB_Android.Src.Rating.Fargment
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
             View mainView = inflater.Inflate(Resource.Layout.SubmitRatingView, container, false);
-
+            try {
             mPresenter = new SubmitRatingPresenter(this);
             ratingActivity = ((RatingActivity)Activity);
 
@@ -101,7 +101,11 @@ namespace myTNB_Android.Src.Rating.Fargment
                     this.userActionsListener.PrepareSubmitRateUsRequest(merchantTransId, deviceID, adapter.GetInputAnswers());
                 }
             };
-
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
             return mainView;
         }
 
@@ -112,6 +116,7 @@ namespace myTNB_Android.Src.Rating.Fargment
 
         void OnRatingUpdate(object sender, int position)
         {
+            try {
             if(adapter != null)
             {
                 if (adapter.IsAllQuestionAnswered())
@@ -122,6 +127,11 @@ namespace myTNB_Android.Src.Rating.Fargment
                 {
                     DisableSubmitButton();
                 }
+            }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
             }
         }
 
@@ -147,7 +157,7 @@ namespace myTNB_Android.Src.Rating.Fargment
 
         public bool IsActive()
         {
-            throw new NotImplementedException();
+            return IsVisible;
         }
 
         public void ShowError(string exception)
@@ -164,6 +174,7 @@ namespace myTNB_Android.Src.Rating.Fargment
 
         public void ShowGetQuestionSuccess(GetRateUsQuestionsResponse response)
         {
+            try {
             if(response != null)
             {
                 if(response.feedbackQuestionStatus.rateUsQuestionList.Count > 0)
@@ -178,10 +189,16 @@ namespace myTNB_Android.Src.Rating.Fargment
                     adapter.NotifyDataSetChanged();
                 }
             }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public void ShowProgressDialog()
         {
+            try {
             if (loadingOverlay != null && loadingOverlay.IsShowing)
             {
                 loadingOverlay.Dismiss();
@@ -189,6 +206,11 @@ namespace myTNB_Android.Src.Rating.Fargment
 
             loadingOverlay = new LoadingOverlay(Activity, Resource.Style.LoadingOverlyDialogStyle);
             loadingOverlay.Show();
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public void ShowRetryOptionsUnknownException(Exception exception)

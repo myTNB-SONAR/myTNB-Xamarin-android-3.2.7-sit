@@ -55,11 +55,11 @@
                         android:layout_height="32dp"
                         android:layout_width="32dp"
                         android:src="@drawable/scan"
-                        android:layout_gravity="right|bottom"
+                        android:layout_gravity="right|top"
                         android:background="@drawable/selector_pressable"
                         android:scaleType="centerCrop"
                         android:layout_marginRight="10dp"
-                        android:layout_marginBottom="10dp" />
+                        android:layout_marginTop="14dp" />
                 </FrameLayout>
                 <TextView
                     android:text="@string/add_account_where_is_my_account"
@@ -87,7 +87,6 @@
                         android:layout_height="wrap_content"
                         android:drawableLeft="@drawable/placeholder_name"
                         android:inputType="text"
-                        android:digits="@string/name_validation_digits"
                         android:id="@+id/account_label_edittext" />
                 </android.support.design.widget.TextInputLayout>
                 <TextView

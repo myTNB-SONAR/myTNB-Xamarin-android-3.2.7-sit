@@ -38,6 +38,7 @@ namespace myTNB_Android.Src.FeedbackDetails.MVP
 
         public async void Start()
         {
+            try {
             List<AttachedImage> attachImageList = new List<AttachedImage>();
             foreach (ImageResponse image in feedbackDetails.ImageList)
             {
@@ -58,7 +59,7 @@ namespace myTNB_Android.Src.FeedbackDetails.MVP
                     }
                     catch (Exception e)
                     {
-
+                            Utility.LoggingNonFatalError(e);
                     }
                 }
 
@@ -77,11 +78,17 @@ namespace myTNB_Android.Src.FeedbackDetails.MVP
             catch (Java.Text.ParseException e)
             {
                 dateTime = "NA";
+                    Utility.LoggingNonFatalError(e);
             }
 
             this.mView.ShowInputData(feedbackDetails.ServiceReqNo, feedbackDetails.StatusDesc, feedbackDetails.StatusCode, dateTime, feedbackDetails.FeedbackTypeName , feedbackDetails.FeedbackMessage);
 
             this.mView.ShowImages(attachImageList);
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
     }
 }

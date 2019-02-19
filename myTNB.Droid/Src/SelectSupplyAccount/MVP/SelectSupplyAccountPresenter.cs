@@ -38,6 +38,7 @@ namespace myTNB_Android.Src.SelectSupplyAccount.MVP
 
         public void OnSelectAccount(CustomerBillingAccount selectedCustomerBilling)
         {
+            try {
             ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
             if (!UsageHistoryEntity.IsSMDataUpdated(selectedCustomerBilling.AccNum))
             {
@@ -66,13 +67,20 @@ namespace myTNB_Android.Src.SelectSupplyAccount.MVP
             {
                 LoadDataUsage(selectedCustomerBilling);
             }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
 
         private async void LoadDataUsage(CustomerBillingAccount customerBillingAccount)
         {
             cts = new CancellationTokenSource();
+            if (mView.IsActive()) {
             this.mView.ShowProgressDialog();
+            }
 #if STUB
             var api = Substitute.For<IUsageHistoryApi>();
             var detailedAccountApi = Substitute.For<IDetailedCustomerAccount>();
@@ -183,6 +191,10 @@ namespace myTNB_Android.Src.SelectSupplyAccount.MVP
                         CANum = customerBillingAccount.AccNum
                     } , cts.Token);
 
+                    if (mView.IsActive())
+                    {
+                        this.mView.HideShowProgressDialog();
+                    }
 
                     if (!customerBillingDetails.Data.IsError)
                     {
@@ -210,11 +222,13 @@ namespace myTNB_Android.Src.SelectSupplyAccount.MVP
                     }
 
 
+                } else {
+                    if (mView.IsActive())
+                    {
+                        this.mView.HideShowProgressDialog();
+                    }
                 }
-                if (mView.IsActive())
-                {
-                    this.mView.HideShowProgressDialog();
-                }
+
 
             }
             catch (System.OperationCanceledException e)
@@ -225,6 +239,7 @@ namespace myTNB_Android.Src.SelectSupplyAccount.MVP
                 // ADD OPERATION CANCELLED HERE
                 Log.Debug("SelectSupplyAccountPresenter", e.Message + " " + e.StackTrace);
                 this.mView.ShowRetryOptionsCancelledException(e);
+                Utility.LoggingNonFatalError(e);
             }
             catch (ApiException apiException)
             {
@@ -235,6 +250,7 @@ namespace myTNB_Android.Src.SelectSupplyAccount.MVP
                 // ADD HTTP CONNECTION EXCEPTION HERE
                 Log.Debug("SelectSupplyAccountPresenter", apiException.Message + " " + apiException.StackTrace);
                 this.mView.ShowRetryOptionsApiException(apiException);
+                Utility.LoggingNonFatalError(apiException);
             }
             catch (Exception e)
             {
@@ -254,6 +270,7 @@ namespace myTNB_Android.Src.SelectSupplyAccount.MVP
                     Log.Debug("SelectSupplyAccountPresenter" , e.Message + " " + e.StackTrace);
                     this.mView.ShowRetryOptionsUnknownException(e);
                 }
+                Utility.LoggingNonFatalError(e);
             }
 
 

@@ -20,6 +20,7 @@ using myTNB_Android.Src.Utils;
 using Android.Support.Design.Widget;
 using Android.Support.V4.Content;
 using Android;
+using System.Runtime;
 
 namespace myTNB_Android.Src.Barcode.Activity
 {
@@ -241,6 +242,23 @@ namespace myTNB_Android.Src.Barcode.Activity
         public void HideInvalidBarCodeError()
         {
            
+        }
+
+        public override void OnTrimMemory(TrimMemory level)
+        {
+            base.OnTrimMemory(level);
+
+            switch (level)
+            {
+                case TrimMemory.RunningLow:
+                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
+                    GC.Collect();
+                    break;
+                default:
+                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
+                    GC.Collect();
+                    break;
+            }
         }
     }
 }

@@ -19,6 +19,7 @@ using Android.Support.Design.Widget;
 using Refit;
 using AFollestad.MaterialDialogs;
 using myTNB_Android.Src.Utils.Custom.ProgressDialog;
+using System.Runtime;
 
 namespace myTNB_Android.Src.LogoutRate.Activity
 {
@@ -72,7 +73,7 @@ namespace myTNB_Android.Src.LogoutRate.Activity
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-
+            try {
             progress = new MaterialDialog.Builder(this)
             .Title(GetString(Resource.String.logout_rate_progress_title))
             .Content(GetString(Resource.String.logout_rate_progress_content))
@@ -86,7 +87,9 @@ namespace myTNB_Android.Src.LogoutRate.Activity
             // Create your application here
 
             mPresenter = new LogoutRatePresenter(this);
-            
+        } catch(Exception e) {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         [OnClick(Resource.Id.btnSubmit)]
@@ -164,6 +167,7 @@ namespace myTNB_Android.Src.LogoutRate.Activity
             //{
             //    progress.Show();
             //}
+            try {
             if (loadingOverlay != null && loadingOverlay.IsShowing)
             {
                 loadingOverlay.Dismiss();
@@ -171,6 +175,11 @@ namespace myTNB_Android.Src.LogoutRate.Activity
 
             loadingOverlay = new LoadingOverlay(this, Resource.Style.LoadingOverlyDialogStyle);
             loadingOverlay.Show();
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public void HideProgressDialog()
@@ -179,9 +188,13 @@ namespace myTNB_Android.Src.LogoutRate.Activity
             //{
             //    progress.Dismiss();
             //}
+            try {
             if (loadingOverlay != null && loadingOverlay.IsShowing)
             {
                 loadingOverlay.Dismiss();
+            }
+        } catch(Exception e) {
+                Utility.LoggingNonFatalError(e);
             }
         }
 
@@ -206,6 +219,24 @@ namespace myTNB_Android.Src.LogoutRate.Activity
         {
             base.Ready();
             this.userActionsListener.Start();
+        }
+
+
+        public override void OnTrimMemory(TrimMemory level)
+        {
+            base.OnTrimMemory(level);
+
+            switch (level)
+            {
+                case TrimMemory.RunningLow:
+                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
+                    GC.Collect();
+                    break;
+                default:
+                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
+                    GC.Collect();
+                    break;
+            }
         }
     }
 }

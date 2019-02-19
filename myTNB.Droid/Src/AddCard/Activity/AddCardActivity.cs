@@ -21,6 +21,7 @@ using Newtonsoft.Json;
 using Card.IO;
 using AFollestad.MaterialDialogs;
 using Android.Support.V4.Content;
+using System.Runtime;
 
 namespace myTNB_Android.Src.AddCard.Activity
 {
@@ -72,65 +73,79 @@ namespace myTNB_Android.Src.AddCard.Activity
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
+            try
+            {
+                this.mPresenter = new AddCardPresenter(this);
 
-            this.mPresenter = new AddCardPresenter(this);
+                Bundle extras = Intent.Extras;
 
-            registerdCards = JsonConvert.DeserializeObject<List<myTNB_Android.Src.MakePayment.Models.CreditCard>>(Intent.Extras.GetString("registeredCards"));
+                if (extras != null)
+                {
+                    if (extras.ContainsKey("registeredCards"))
+                    {
+                        //registerdCards = JsonConvert.DeserializeObject<List<myTNB_Android.Src.MakePayment.Models.CreditCard>>(Intent.Extras.GetString("registeredCards"));
+                        registerdCards = DeSerialze<List<myTNB_Android.Src.MakePayment.Models.CreditCard>>(extras.GetString("registeredCards"));
+                    }
+                }
+                rootView = FindViewById<FrameLayout>(Resource.Id.rootView);
+                txtTitle = FindViewById<TextView>(Resource.Id.txtInfoTitle);
+                textInputLayoutCardNo = FindViewById<TextInputLayout>(Resource.Id.textInputLayoutCardNo);
+                textInputLayoutNameOfCard = FindViewById<TextInputLayout>(Resource.Id.textInputLayoutNameOnCard);
+                textInputLayoutCardExpDate = FindViewById<TextInputLayout>(Resource.Id.textInputLayoutCardExpDate);
+                textInputLayoutCVV = FindViewById<TextInputLayout>(Resource.Id.textInputLayoutCardCVV);
 
-            rootView = FindViewById<FrameLayout>(Resource.Id.rootView);
-            txtTitle = FindViewById<TextView>(Resource.Id.txtInfoTitle);
-            textInputLayoutCardNo = FindViewById<TextInputLayout>(Resource.Id.textInputLayoutCardNo);
-            textInputLayoutNameOfCard = FindViewById<TextInputLayout>(Resource.Id.textInputLayoutNameOnCard);
-            textInputLayoutCardExpDate = FindViewById<TextInputLayout>(Resource.Id.textInputLayoutCardExpDate);
-            textInputLayoutCVV = FindViewById<TextInputLayout>(Resource.Id.textInputLayoutCardCVV);
+                txtCardNo = FindViewById<EditText>(Resource.Id.txtCardNo);
+                txtNameOfCard = FindViewById<EditText>(Resource.Id.txtNameOnCard);
+                txtCardExpDate = FindViewById<EditText>(Resource.Id.txtCardExpDate);
+                txtCVV = FindViewById<EditText>(Resource.Id.txtCardCVV);
 
-            txtCardNo = FindViewById<EditText>(Resource.Id.txtCardNo);
-            txtNameOfCard = FindViewById<EditText>(Resource.Id.txtNameOnCard);
-            txtCardExpDate = FindViewById<EditText>(Resource.Id.txtCardExpDate);
-            txtCVV = FindViewById<EditText>(Resource.Id.txtCardCVV);
+                TextViewUtils.SetMuseoSans300Typeface(txtTitle);
+                TextViewUtils.SetMuseoSans300Typeface(txtCardNo, txtNameOfCard, txtCardExpDate, txtCVV);
+                TextViewUtils.SetMuseoSans300Typeface(textInputLayoutCardNo, textInputLayoutNameOfCard, textInputLayoutCardExpDate, textInputLayoutCVV);
 
-            TextViewUtils.SetMuseoSans300Typeface(txtTitle);
-            TextViewUtils.SetMuseoSans300Typeface(txtCardNo, txtNameOfCard, txtCardExpDate, txtCVV);
-            TextViewUtils.SetMuseoSans300Typeface(textInputLayoutCardNo, textInputLayoutNameOfCard, textInputLayoutCardExpDate, textInputLayoutCVV);
-            
 
-            txtCardNo.AddTextChangedListener(new InputFilterCreditCard(txtCardNo));
-            txtCardExpDate.SetFilters(new Android.Text.IInputFilter[] { new InputFilterExpDate(txtCardExpDate), new InputFilterLengthFilter(5) });
-            txtCardNo.AddTextChangedListener(new InputFilterFormField(txtCardNo, textInputLayoutCardNo));
-            txtCardExpDate.AddTextChangedListener(new InputFilterFormField(txtCardExpDate, textInputLayoutCardExpDate));
-            txtNameOfCard.AddTextChangedListener(new InputFilterFormField(txtNameOfCard, textInputLayoutNameOfCard));
-            txtCVV.AddTextChangedListener(new InputFilterFormField(txtCVV, textInputLayoutCVV));
+                txtCardNo.AddTextChangedListener(new InputFilterCreditCard(txtCardNo));
+                txtCardExpDate.SetFilters(new Android.Text.IInputFilter[] { new InputFilterExpDate(txtCardExpDate), new InputFilterLengthFilter(5) });
+                txtCardNo.AddTextChangedListener(new InputFilterFormField(txtCardNo, textInputLayoutCardNo));
+                txtCardExpDate.AddTextChangedListener(new InputFilterFormField(txtCardExpDate, textInputLayoutCardExpDate));
+                txtNameOfCard.AddTextChangedListener(new InputFilterFormField(txtNameOfCard, textInputLayoutNameOfCard));
+                txtCVV.AddTextChangedListener(new InputFilterFormField(txtCVV, textInputLayoutCVV));
 
-            btnNext = FindViewById<Button>(Resource.Id.btnNext);
-            btnNext.Click += delegate {
-                //ValidateCardDetails();
-                DoSaveCard();
-            };
+                btnNext = FindViewById<Button>(Resource.Id.btnNext);
+                btnNext.Click += delegate
+                {
+                    //ValidateCardDetails();
+                    DoSaveCard();
+                };
 
-            btnScan = FindViewById<ImageButton>(Resource.Id.scan);
-            btnScan.Click += delegate {
-                OnScanCard();
-            };
+                btnScan = FindViewById<ImageButton>(Resource.Id.scan);
+                btnScan.Click += delegate
+                {
+                    OnScanCard();
+                };
 
-            saveCard = FindViewById<CheckBox>(Resource.Id.chk_save_card);
+                saveCard = FindViewById<CheckBox>(Resource.Id.chk_save_card);
 
-            TextViewUtils.SetMuseoSans300Typeface(saveCard);
-            TextViewUtils.SetMuseoSans500Typeface(btnNext);
+                TextViewUtils.SetMuseoSans300Typeface(saveCard);
+                TextViewUtils.SetMuseoSans500Typeface(btnNext);
 
-            /* string cardNo = txtCardNo.Text.Replace(" ", "");
-            string name = txtNameOfCard.Text;
-            string exp = txtCardExpDate.Text;
-            string cvv = txtCVV.Text;*/
+                /* string cardNo = txtCardNo.Text.Replace(" ", "");
+                string name = txtNameOfCard.Text;
+                string exp = txtCardExpDate.Text;
+                string cvv = txtCVV.Text;*/
 
-            //txtFeedback.TextChanged += TextChanged;
+                //txtFeedback.TextChanged += TextChanged;
 
-            txtCardNo.TextChanged += CardTextChange;
+                txtCardNo.TextChanged += CardTextChange;
 
-            txtNameOfCard.TextChanged += NameTextChange;
+                txtNameOfCard.TextChanged += NameTextChange;
 
-            txtCardExpDate.TextChanged += ExpTextChange;
+                txtCardExpDate.TextChanged += ExpTextChange;
 
-            txtCVV.TextChanged += CvvTextChange;
+                txtCVV.TextChanged += CvvTextChange;
+            } catch(Exception e) {
+                Utility.LoggingNonFatalError(e);
+            }
 
         }
 
@@ -140,21 +155,30 @@ namespace myTNB_Android.Src.AddCard.Activity
         {
             string cardNo = txtCardNo.Text.Replace(" ", "");
 
-            textInputLayoutCardNo.Error = null;
-            if (String.IsNullOrEmpty(cardNo) || cardNo.Length < 15)
+            try
             {
-                DisableSaveButton();
-                if (!String.IsNullOrEmpty(cardNo) && cardNo.Length < 15) {
-                    textInputLayoutCardNo.Error = "Invalid Card No.";   
+                textInputLayoutCardNo.Error = null;
+                if (String.IsNullOrEmpty(cardNo) || cardNo.Length < 15)
+                {
+                    DisableSaveButton();
+                    if (!String.IsNullOrEmpty(cardNo) && cardNo.Length < 15)
+                    {
+                        textInputLayoutCardNo.Error = "Invalid Card No.";
+                    }
+                    //ShowErrorMessage("Invalid Card Number", "Please enter valid card number");
                 }
-                //ShowErrorMessage("Invalid Card Number", "Please enter valid card number");
-            } else if (!LuhnVerification(cardNo))
-            {
-                DisableSaveButton();
-                textInputLayoutCardNo.Error = "Invalid Card No.";
-                //ShowErrorMessage("Invalid Card Number", "Please enter valid card number");
-            } else {
-                EnableSaveButton();
+                else if (!LuhnVerification(cardNo))
+                {
+                    DisableSaveButton();
+                    textInputLayoutCardNo.Error = "Invalid Card No.";
+                    //ShowErrorMessage("Invalid Card Number", "Please enter valid card number");
+                }
+                else
+                {
+                    EnableSaveButton();
+                }
+            } catch(Exception ex) {
+                Utility.LoggingNonFatalError(ex);
             }
         }
 
@@ -162,7 +186,7 @@ namespace myTNB_Android.Src.AddCard.Activity
         private void NameTextChange(object sender, Android.Text.TextChangedEventArgs e)
         {
             
-
+            try {
             string name = txtNameOfCard.Text.Trim();
 
             if (String.IsNullOrEmpty(name))
@@ -174,11 +198,17 @@ namespace myTNB_Android.Src.AddCard.Activity
             {
                 EnableSaveButton();
             }
+            }
+            catch (Exception ex)
+            {
+                Utility.LoggingNonFatalError(ex);
+            }
         }
 
         [Preserve]
         private void ExpTextChange(object sender, Android.Text.TextChangedEventArgs e)
         {
+            try {
             string exp = txtCardExpDate.Text.Trim();
 
             textInputLayoutCardExpDate.Error = null;
@@ -194,12 +224,17 @@ namespace myTNB_Android.Src.AddCard.Activity
             {
                 EnableSaveButton();
             }
-
+            }
+            catch (Exception ex)
+            {
+                Utility.LoggingNonFatalError(ex);
+            }
         }
 
         [Preserve]
         private void CvvTextChange(object sender, Android.Text.TextChangedEventArgs e)
         {
+            try {
             string cvv = txtCVV.Text.Trim();
             textInputLayoutCVV.Error = null;
             if (String.IsNullOrEmpty(cvv) || cvv.Length < 3)
@@ -216,7 +251,11 @@ namespace myTNB_Android.Src.AddCard.Activity
             {
                 EnableSaveButton();
             }
-
+            }
+            catch (Exception ex)
+            {
+                Utility.LoggingNonFatalError(ex);
+            }
         }
         
 
@@ -240,6 +279,7 @@ namespace myTNB_Android.Src.AddCard.Activity
             string exp = txtCardExpDate.Text;
             string cvv = txtCVV.Text;
 
+            try {
             if (String.IsNullOrEmpty(cardNo) || cardNo.Length < 15)
             {
                 DisableSaveButton();
@@ -287,6 +327,11 @@ namespace myTNB_Android.Src.AddCard.Activity
                 btnNext.Enabled = true;
                 btnNext.Background = ContextCompat.GetDrawable(this, Resource.Drawable.green_button_background);
             }
+            }
+            catch (Exception ex)
+            {
+                Utility.LoggingNonFatalError(ex);
+            }
         }
 
 
@@ -301,16 +346,21 @@ namespace myTNB_Android.Src.AddCard.Activity
         }
 
         private void DoSaveCard() {
-            string cardNo = txtCardNo.Text.Replace(" ", "");
-            string name = txtNameOfCard.Text;
-            string exp = txtCardExpDate.Text;
-            string cvv = txtCVV.Text;
+            try
+            {
+                string cardNo = txtCardNo.Text.Replace(" ", "");
+                string name = txtNameOfCard.Text;
+                string exp = txtCardExpDate.Text;
+                string cvv = txtCVV.Text;
 
-            CardDetails card = new CardDetails(cardNo, name, exp, cvv, saveCard.Checked);
-            Intent finishIntent = new Intent();
-            finishIntent.PutExtra("extra", JsonConvert.SerializeObject(card));
-            SetResult(Result.Ok, finishIntent);
-            Finish();
+                CardDetails card = new CardDetails(cardNo, name, exp, cvv, saveCard.Checked);
+                Intent finishIntent = new Intent();
+                finishIntent.PutExtra("extra", JsonConvert.SerializeObject(card));
+                SetResult(Result.Ok, finishIntent);
+                Finish();
+            } catch (Exception e) {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public void AddCreditCard()
@@ -364,7 +414,7 @@ namespace myTNB_Android.Src.AddCard.Activity
 
         protected override void OnActivityResult(int requestCode, Result result, Intent data)
         {
-           
+            try {
             if (requestCode == REQUEST_SCAN && data != null
                 && data.HasExtra(CardIOActivity.ExtraScanResult))
             {
@@ -384,6 +434,11 @@ namespace myTNB_Android.Src.AddCard.Activity
             else
             {
                 Toast.MakeText(this, "Unable to scan card! Please try again...", ToastLength.Long).Show();
+            }
+            }
+            catch (Exception ex)
+            {
+                Utility.LoggingNonFatalError(ex);
             }
         }
 
@@ -421,6 +476,23 @@ namespace myTNB_Android.Src.AddCard.Activity
             isValid = sumOfDigits % 10 == 0;
             Console.WriteLine("isValid: " + isValid);
             return isValid;
+        }
+
+        public override void OnTrimMemory(TrimMemory level)
+        {
+            base.OnTrimMemory(level);
+
+            switch (level)
+            {
+                case TrimMemory.RunningLow:
+                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
+                    GC.Collect();
+                    break;
+                default:
+                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
+                    GC.Collect();
+                    break;
+            }
         }
 
     }

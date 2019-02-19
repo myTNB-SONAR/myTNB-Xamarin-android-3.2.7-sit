@@ -52,6 +52,7 @@
                             android:focusable="false"
                             android:focusableInTouchMode="false"
                             android:singleLine="true"
+                            android:importantForAutofill="noExcludeDescendants"
                             android:inputType="numberDecimal"
                             android:editable="false"
                             android:id="@+id/amount_edittext" />

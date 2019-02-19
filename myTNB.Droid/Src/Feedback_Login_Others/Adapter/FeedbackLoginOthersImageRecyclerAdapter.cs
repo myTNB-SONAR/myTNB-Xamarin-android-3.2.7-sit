@@ -61,45 +61,50 @@ namespace myTNB_Android.Src.Feedback_Login_Others.Adapter
 
         public override void OnBindViewHolder(RecyclerView.ViewHolder holder, int position)
         {
-            AttachedImage image = GetItemObject(position);
-            if (holder is FeedbackPreLoginImageViewHolder)
+            try
             {
-                // the actual image
-                var viewHolder = holder as FeedbackPreLoginImageViewHolder;
-                Picasso.With(viewHolder.ItemView.Context)
-                    .Load(new Java.IO.File(image.Path))
-                    .Fit()
-                    .Into(viewHolder.imageView
-                            , delegate
-                            {
-                                Bitmap imageBitmap = ((BitmapDrawable)viewHolder.imageView.Drawable).Bitmap;
-                                if (imageBitmap != null && !imageBitmap.IsRecycled)
-                                {
-                                    RoundedBitmapDrawable imageDrawable = RoundedBitmapDrawableFactory.Create(viewHolder.ItemView.Context.Resources, imageBitmap);
-                                    imageDrawable.CornerRadius = 5f;
-                                    viewHolder.imageView.SetImageDrawable(imageDrawable);
-
-                                }
-                            }
-                            , delegate
-                            {
-
-                            });
-            }
-            else
-            {
-                // the dummy view
-                var viewHolder = holder as FeedbackPreLoginDummyViewHolder;
-                if (image.IsLoading)
+                AttachedImage image = GetItemObject(position);
+                if (holder is FeedbackPreLoginImageViewHolder)
                 {
-                    viewHolder.btnAdd.Visibility = ViewStates.Gone;
-                    viewHolder.progressBar.Visibility = ViewStates.Visible;
+                    // the actual image
+                    var viewHolder = holder as FeedbackPreLoginImageViewHolder;
+                    Picasso.With(viewHolder.ItemView.Context)
+                        .Load(new Java.IO.File(image.Path))
+                        .Fit()
+                        .Into(viewHolder.imageView
+                                , delegate
+                                {
+                                    Bitmap imageBitmap = ((BitmapDrawable)viewHolder.imageView.Drawable).Bitmap;
+                                    if (imageBitmap != null && !imageBitmap.IsRecycled)
+                                    {
+                                        RoundedBitmapDrawable imageDrawable = RoundedBitmapDrawableFactory.Create(viewHolder.ItemView.Context.Resources, imageBitmap);
+                                        imageDrawable.CornerRadius = 5f;
+                                        viewHolder.imageView.SetImageDrawable(imageDrawable);
+
+                                    }
+                                }
+                                , delegate
+                                {
+
+                                });
                 }
                 else
                 {
-                    viewHolder.btnAdd.Visibility = ViewStates.Visible;
-                    viewHolder.progressBar.Visibility = ViewStates.Gone;
+                    // the dummy view
+                    var viewHolder = holder as FeedbackPreLoginDummyViewHolder;
+                    if (image.IsLoading)
+                    {
+                        viewHolder.btnAdd.Visibility = ViewStates.Gone;
+                        viewHolder.progressBar.Visibility = ViewStates.Visible;
+                    }
+                    else
+                    {
+                        viewHolder.btnAdd.Visibility = ViewStates.Visible;
+                        viewHolder.progressBar.Visibility = ViewStates.Gone;
+                    }
                 }
+            } catch (Exception e) {
+                Utility.LoggingNonFatalError(e);
             }
         }
 

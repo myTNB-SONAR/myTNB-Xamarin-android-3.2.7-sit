@@ -19,6 +19,7 @@ using myTNB_Android.Src.Utils;
 using Newtonsoft.Json;
 using myTNB_Android.Src.SelectFeedbackType.MVP;
 using myTNB_Android.Src.SelectFeedbackType.Adapter;
+using System.Runtime;
 
 namespace myTNB_Android.Src.SelectFeedbackType.Activity
 {
@@ -42,7 +43,7 @@ namespace myTNB_Android.Src.SelectFeedbackType.Activity
             base.OnCreate(savedInstanceState);
 
             // Create your application here
-
+            try {
             mPresenter = new SelectFeedbackTypePresenter(this);
 
             adapter = new SelectFeedbackTypeAdapter(this, true);
@@ -51,13 +52,24 @@ namespace myTNB_Android.Src.SelectFeedbackType.Activity
 
             mPresenter = new SelectFeedbackTypePresenter(this);
             this.userActionsListener.Start();
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         [OnItemClick(Resource.Id.listView)]
         void OnItemClick(object sender, AdapterView.ItemClickEventArgs eventArgs)
         {
+            try {
             FeedbackType newType = adapter.GetItemObject(eventArgs.Position);
             this.userActionsListener.OnSelect(newType);
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public bool IsActive()
@@ -91,6 +103,24 @@ namespace myTNB_Android.Src.SelectFeedbackType.Activity
             successIntent.PutExtra(Constants.SELECTED_FEEDBACK_TYPE, JsonConvert.SerializeObject(feedbackType));
             SetResult(Result.Ok , successIntent);
             Finish();
+        }
+
+
+        public override void OnTrimMemory(TrimMemory level)
+        {
+            base.OnTrimMemory(level);
+
+            switch (level)
+            {
+                case TrimMemory.RunningLow:
+                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
+                    GC.Collect();
+                    break;
+                default:
+                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
+                    GC.Collect();
+                    break;
+            }
         }
 
     }

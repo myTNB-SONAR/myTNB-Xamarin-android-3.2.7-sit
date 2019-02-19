@@ -21,6 +21,8 @@ using myTNB_Android.Src.MultipleAccountPayment.Model;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.SummaryDashBoard.Models;
 using myTNB_Android.Src.Base.Api;
+using System.Runtime;
+using System.IO;
 
 namespace myTNB_Android.Src.MultipleAccountPayment.Activity
 {
@@ -95,15 +97,37 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
             base.OnCreate(savedInstanceState);
             // Create your application here
 
+            try {
             appBarLayout = FindViewById<Android.Support.Design.Widget.AppBarLayout>(Resource.Id.appBar);
             toolbar = FindViewById<Android.Support.V7.Widget.Toolbar>(Resource.Id.toolbar);
             frameContainer = FindViewById<FrameLayout>(Resource.Id.fragment_container);
             coordinatorLayout = FindViewById<Android.Support.Design.Widget.CoordinatorLayout>(Resource.Id.coordinatorLayout);
-            selectedAccount = JsonConvert.DeserializeObject<AccountData>(Intent.Extras.GetString(Constants.SELECTED_ACCOUNT));
-            accounts = JsonConvert.DeserializeObject<List<MPAccount>>(Intent.Extras.GetString("PAYMENT_ITEMS"));
-            total = Intent.Extras.GetString("TOTAL");
+                Bundle extras = Intent.Extras;
 
+                if (extras != null)
+                {
+                    if (extras.ContainsKey(Constants.SELECTED_ACCOUNT))
+                    {
+                        //selectedAccount = JsonConvert.DeserializeObject<AccountData>(extras.GetString(Constants.SELECTED_ACCOUNT));
+
+                        selectedAccount = DeSerialze<AccountData>(extras.GetString(Constants.SELECTED_ACCOUNT));
+                  
+                    }
+
+                    if (extras.ContainsKey("PAYMENT_ITEMS"))
+                    {
+                        //accounts = JsonConvert.DeserializeObject<List<MPAccount>>(extras.GetString("PAYMENT_ITEMS"));
+
+                        accounts = DeSerialze<List<MPAccount>>(extras.GetString("PAYMENT_ITEMS"));
+                    }
+                    total = Intent.Extras.GetString("TOTAL");
+                }
             OnLoadMainFragment();
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
             //Android.App.Fragment selectPaymentFragment = new SelectPaymentMethodFragment();
             //Bundle bundle = new Bundle();
             //bundle.PutString(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccount));
@@ -130,40 +154,56 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
 
         public void OnLoadMainFragment()
         {
-            Android.App.Fragment selectPaymentFragment = new MPSelectPaymentMethodFragment();
-            Bundle bundle = new Bundle();
-            bundle.PutString(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccount));
-            bundle.PutString("PAYMENT_ITEMS", JsonConvert.SerializeObject(accounts));
-            bundle.PutString("TOTAL", total);
-            selectPaymentFragment.Arguments = bundle;
-            var fragmentTransaction = FragmentManager.BeginTransaction();
-            fragmentTransaction.Add(Resource.Id.fragment_container, selectPaymentFragment);
-            fragmentTransaction.Commit();
-            currentFragment = selectPaymentFragment;
+            if (!IsFinishing && !IsDestroyed)
+            {
+                Android.App.Fragment selectPaymentFragment = new MPSelectPaymentMethodFragment();
+                Bundle bundle = new Bundle();
+                bundle.PutString(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccount));
+                bundle.PutString("PAYMENT_ITEMS", JsonConvert.SerializeObject(accounts));
+                bundle.PutString("TOTAL", total);
+                selectPaymentFragment.Arguments = bundle;
+                var fragmentTransaction = FragmentManager.BeginTransaction();
+                fragmentTransaction.Add(Resource.Id.fragment_container, selectPaymentFragment);
+                fragmentTransaction.Commit();
+                currentFragment = selectPaymentFragment;
+            }
         }
 
         internal void SetPaymentReceiptFlag(bool flag, SummaryDashBordRequest summaryDashBoardRequest)
         {
+            try {
             paymentReceiptGenerated = flag;
             if (paymentReceiptGenerated) {
                 if (ConnectionUtils.HasInternetConnection(this)) {
                     SummaryDashBaordUpdate(summaryDashBoardRequest);    
                 }
-
+                }
+        }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
             }
         }
 
         public void ClearBackStack()
         {
+            try {
             FragmentManager manager = this.FragmentManager;
             if (manager.BackStackEntryCount > 0)
             {
                 manager.PopBackStack(FragmentManager.GetBackStackEntryAt(0).Id, FragmentManager.PopBackStackInclusive);
             }
         }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
 
         public override void OnBackPressed()
         {
+            try {
             int count = this.FragmentManager.BackStackEntryCount;
             Log.Debug("OnBackPressed", "fragment stack count :" + count);
             if (count == 0 || paymentReceiptGenerated)
@@ -198,31 +238,60 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
                     this.FragmentManager.PopBackStack();
                 }
             }
+        }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
 
         }
 
         public void SummaryDashBaordUpdate(SummaryDashBordRequest summaryDashBoardRequest)
         {
+            try {
             if (summaryDashBoardRequest != null)
             {
                 if (summaryDashBoardRequest.AccNum != null && summaryDashBoardRequest.AccNum.Count() > 0)
                      SummaryDashBoardApiCall.GetSummaryDetails(summaryDashBoardRequest);
             }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public override void Finish()
         {
-            base.Finish();
+            
             if (paymentReceiptGenerated)
             {
-                SelectAccountsActivity.selectAccountsActivity.SetResult(Result.Ok);
+                SelectAccountsActivity.selectAccountsActivity?.SetResult(Result.Ok);
             }
             else
             {
-                SelectAccountsActivity.selectAccountsActivity.SetResult(Result.Canceled);
+                SelectAccountsActivity.selectAccountsActivity?.SetResult(Result.Canceled);
             }
             //SelectAccountsActivity.selectAccountsActivity.Finish();
+            base.Finish();
+        }
 
+
+        public override void OnTrimMemory(TrimMemory level)
+        {
+            base.OnTrimMemory(level);
+
+            switch (level)
+            {
+                case TrimMemory.RunningLow:
+                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
+                    GC.Collect();
+                    break;
+                default:
+                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
+                    GC.Collect();
+                    break;
+            }
         }
 
     }

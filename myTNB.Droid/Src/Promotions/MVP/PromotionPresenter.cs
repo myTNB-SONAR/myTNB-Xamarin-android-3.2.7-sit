@@ -61,6 +61,7 @@ namespace myTNB_Android.Src.Promotions.MVP
                 {
                     Log.Error("API Exception", e.StackTrace);
                     mView.ShowPromotionTimestamp(false);
+                    Utility.LoggingNonFatalError(e);
                 }
             }).ContinueWith((Task previous) => {
             }, cts.Token);
@@ -95,6 +96,7 @@ namespace myTNB_Android.Src.Promotions.MVP
                 {
                     Log.Error("API Exception", e.StackTrace);
                     mView.ShowPromotion(true);
+                    Utility.LoggingNonFatalError(e);
                 }
             }).ContinueWith((Task previous) => {
             }, cts.Token);
@@ -110,11 +112,12 @@ namespace myTNB_Android.Src.Promotions.MVP
             try
             {
                 PromotionsParentEntityV2 wtManager = new PromotionsParentEntityV2();
-                List<PromotionsParentEntityV2> items = wtManager.GetAllItems();
-                if (items != null)
+                List<PromotionsParentEntityV2> items = new List<PromotionsParentEntityV2>();
+                items = wtManager.GetAllItems();
+                if (items != null && items.Count() > 0)
                 {
                     PromotionsParentEntityV2 entity = items[0];
-                    if (entity != null)
+                    if (entity != null && !string.IsNullOrEmpty(entity.Timestamp))
                     {
                         mView.OnSavedTimeStamp(entity.Timestamp);
                     }
@@ -127,6 +130,7 @@ namespace myTNB_Android.Src.Promotions.MVP
             {
                 Log.Error("DB Exception", e.StackTrace);
                 mView.OnSavedTimeStamp(null);
+                Utility.LoggingNonFatalError(e);
             }
         }
     }

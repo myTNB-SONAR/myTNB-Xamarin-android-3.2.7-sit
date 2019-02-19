@@ -81,7 +81,10 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
                 this.mView.ShowEmptyErrorPin_4();
                 return;
             }
-            this.mView.ShowRegistrationProgress();
+            if (mView.IsActive())
+            {
+                this.mView.ShowRegistrationProgress();
+            }
             this.mView.DisableResendButton();
             this.mView.ClearErrors();
 
@@ -144,6 +147,10 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
 
                     if (userResponse.Data.IsError || userResponse.Data.Status.Equals("failed"))
                     {
+                        if (mView.IsActive())
+                        {
+                            this.mView.HideRegistrationProgress();
+                        }
                         this.mView.ShowError(userResponse.Data.Message);
                     }
                     else
@@ -178,15 +185,30 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
                                     int newRecord = UserNotificationEntity.InsertOrReplace(userNotification);
                                 }
                             }
+
+                            if (mView.IsActive())
+                            {
+                                this.mView.HideRegistrationProgress();
+                            }
+
                             this.mView.ShowNotificationCount(UserNotificationEntity.Count());
                             this.mView.ShowAccountListActivity();
                             UserSessions.SavePhoneVerified(mSharedPref, true);
+                        } else {
+                            if (mView.IsActive())
+                            {
+                                this.mView.HideRegistrationProgress();
+                            }
                         }
                     }
 
                 }
                 else
                 {
+                    if (mView.IsActive())
+                    {
+                        this.mView.HideRegistrationProgress();
+                    }
                     // TODO : ADD REGISTRATION ERROR
                     string message = userRegistrationResponse.userRegistration.Message;
                     this.mView.ShowError(message);
@@ -196,21 +218,35 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
             {
                 Log.Debug(TAG, "Cancelled Exception");
                 // ADD OPERATION CANCELLED HERE
+                if (mView.IsActive())
+                {
+                    this.mView.HideRegistrationProgress();
+                }
                 this.mView.ShowRetryOptionsCancelledException(e);
+                Utility.LoggingNonFatalError(e);
             }
             catch (ApiException apiException)
             {
                 // ADD HTTP CONNECTION EXCEPTION HERE
+                if (mView.IsActive())
+                {
+                    this.mView.HideRegistrationProgress();
+                }
                 this.mView.ShowRetryOptionsApiException(apiException);
+                Utility.LoggingNonFatalError(apiException);
             }
             catch (Exception e)
             {
                 // ADD UNKNOWN EXCEPTION HERE
                 Log.Debug(TAG, "Stack " + e.StackTrace);
+                if (mView.IsActive())
+                {
+                    this.mView.HideRegistrationProgress();
+                }
                 this.mView.ShowRetryOptionsUnknownException(e);
+                Utility.LoggingNonFatalError(e);
             }
 
-            this.mView.HideRegistrationProgress();
 
         }
 
@@ -220,14 +256,16 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
             // SILENTLY DIE , SMS RECEIVE IS ONLY OPTIONAL
             if (requestCode == Constants.RUNTIME_PERMISSION_SMS_REQUEST_CODE)
             {
-                if (grantResults[0] == Permission.Denied)
+                if (Utility.IsPermissionHasCount(grantResults))
                 {
-                    //if (this.mView.ShouldShowSMSReceiveRationale())
-                    //{
-                    //    this.mView.ShowSMSPermissionRationale();
-                    //}
+                    if (grantResults[0] == Permission.Denied)
+                    {
+                        //if (this.mView.ShouldShowSMSReceiveRationale())
+                        //{
+                        //    this.mView.ShowSMSPermissionRationale();
+                        //}
+                    }
                 }
-               
             }
         }
 
@@ -276,17 +314,20 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
                 Log.Debug(TAG, "Cancelled Exception");
                 // ADD OPERATION CANCELLED HERE
                 this.mView.ShowRetryOptionsCancelledException(e);
+                Utility.LoggingNonFatalError(e);
             }
             catch (ApiException apiException)
             {
                 // ADD HTTP CONNECTION EXCEPTION HERE
                 this.mView.ShowRetryOptionsApiException(apiException);
+                Utility.LoggingNonFatalError(apiException);
             }
             catch (Exception e)
             {
                 // ADD UNKNOWN EXCEPTION HERE
                 Log.Debug(TAG, "Stack " + e.StackTrace);
                 this.mView.ShowRetryOptionsUnknownException(e);
+                Utility.LoggingNonFatalError(e);
             }
 
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using myTNB.SitecoreCMS.Model;
 using System;
 using myTNB_Android.Src.Utils;
+using myTNB_Android.Src.Database;
 
 namespace myTNB.SQLite.SQLiteDataManager
 {
@@ -10,18 +11,24 @@ namespace myTNB.SQLite.SQLiteDataManager
     {
         public void CreateTable()
         {
-            var db = new SQLiteConnection(Constants.DB_PATH);
-            List<SQLiteConnection.ColumnInfo> info = db.GetTableInfo("TimeStampEntity");
-            db.CreateTable<TimeStampEntity>();
+            //using(var db = new SQLiteConnection(Constants.DB_PATH))
+            //{
+            var db = DBHelper.GetSQLiteConnection();
+                List<SQLiteConnection.ColumnInfo> info = db.GetTableInfo("TimeStampEntity");
+                db.CreateTable<TimeStampEntity>();
+            //}
         }
 
         public void InsertItem(TimeStampEntity item)
         {
             try
             {
-                var db = new SQLiteConnection(Constants.DB_PATH);
-                int newRecord = db.InsertOrReplace(item);
-                Console.WriteLine("Insert Record: {0}", newRecord );
+                //using (var db = new SQLiteConnection(Constants.DB_PATH))
+                //{
+                var db = DBHelper.GetSQLiteConnection();
+                    int newRecord = db.InsertOrReplace(item);
+                    Console.WriteLine("Insert Record: {0}", newRecord);
+                //}
             }
             catch (Exception e)
             {
@@ -47,8 +54,11 @@ namespace myTNB.SQLite.SQLiteDataManager
             List<TimeStampEntity> itemList = new List<TimeStampEntity>();
             try
             {
-                var db = new SQLiteConnection(Constants.DB_PATH);
-                itemList = db.Query<TimeStampEntity>("select * from TimeStampEntity");
+                //using (var db = new SQLiteConnection(Constants.DB_PATH))
+                //{
+                var db = DBHelper.GetSQLiteConnection();
+                    itemList = db.Query<TimeStampEntity>("select * from TimeStampEntity");
+                //}
             }catch(Exception e){
                 Console.WriteLine("Error in Get All Items : {0}", e.Message);
             }
@@ -58,8 +68,11 @@ namespace myTNB.SQLite.SQLiteDataManager
         public void DeleteTable(){
             try
             {
-                var db = new SQLiteConnection(Constants.DB_PATH);
-                db.DeleteAll<TimeStampEntity>();
+                //using (var db = new SQLiteConnection(Constants.DB_PATH))
+                //{
+                var db = DBHelper.GetSQLiteConnection();
+                    db.DeleteAll<TimeStampEntity>();
+                //}
             }
             catch (Exception e)
             {

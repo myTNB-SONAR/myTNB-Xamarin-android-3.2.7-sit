@@ -22,6 +22,7 @@ using myTNB_Android.Src.FeedbackDetails.MVP;
 using Android.Preferences;
 using myTNB_Android.Src.FeedbackFullScreenImage.Activity;
 using Android.Support.V4.Content;
+using System.Runtime;
 
 namespace myTNB_Android.Src.FeedbackDetails.Activity
 {
@@ -114,39 +115,45 @@ namespace myTNB_Android.Src.FeedbackDetails.Activity
 
         public void ShowInputData(string feedbackId, string feedbackStatus, string feedbackCode, string dateTime, string accountNoName, string feedback)
         {
-            txtFeedbackId.Text = feedbackId;
-            txtFeedbackStatus.Text = feedbackStatus;
+            try
+            {
+                txtFeedbackId.Text = feedbackId;
+                txtFeedbackStatus.Text = feedbackStatus;
 
-            if (feedbackCode.Equals("CL01"))
-            {
-                txtFeedbackStatus.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this , Resource.Color.createdColor)));
-            }
-            else if (feedbackCode.Equals("CL02"))
-            {
-                txtFeedbackStatus.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.inProgressColor)));
-            }
-            else if (feedbackCode.Equals("CL03"))
-            {
-                txtFeedbackStatus.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.completedColor)));
-            }
-            else if (feedbackCode.Equals("CL04"))
-            {
-                txtFeedbackStatus.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.completedColor)));
-            }
-            else if (feedbackCode.Equals("CL06"))
-            {
-                txtFeedbackStatus.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.cancelledColor)));
-            }
+                if (feedbackCode.Equals("CL01"))
+                {
+                    txtFeedbackStatus.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.createdColor)));
+                }
+                else if (feedbackCode.Equals("CL02"))
+                {
+                    txtFeedbackStatus.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.inProgressColor)));
+                }
+                else if (feedbackCode.Equals("CL03"))
+                {
+                    txtFeedbackStatus.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.completedColor)));
+                }
+                else if (feedbackCode.Equals("CL04"))
+                {
+                    txtFeedbackStatus.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.completedColor)));
+                }
+                else if (feedbackCode.Equals("CL06"))
+                {
+                    txtFeedbackStatus.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.cancelledColor)));
+                }
 
-            txtFeedbackDateTime.Text = dateTime;
-            txtAccountNo.Text = accountNoName;
-            txtFeedback.Text = feedback;
+                txtFeedbackDateTime.Text = dateTime;
+                txtAccountNo.Text = accountNoName;
+                txtFeedback.Text = feedback;
+            } catch(Exception e) {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
 
+            try {
             // Create your application here
             string selectedFeedback = UserSessions.GetSelectedFeedback(PreferenceManager.GetDefaultSharedPreferences(this));
             submittedFeedback = JsonConvert.DeserializeObject<SubmittedFeedbackDetails>(selectedFeedback);
@@ -162,6 +169,11 @@ namespace myTNB_Android.Src.FeedbackDetails.Activity
 
             mPresenter = new FeedbackDetailsBillRelatedPresenter(this , submittedFeedback);
             this.userActionsListener.Start();
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
 
         }
 
@@ -171,6 +183,23 @@ namespace myTNB_Android.Src.FeedbackDetails.Activity
             var fullImageIntent = new Intent(this , typeof(FeedbackDetailsFullScreenImageActivity));
             fullImageIntent.PutExtra(Constants.SELECTED_FEEDBACK_DETAIL_IMAGE , JsonConvert.SerializeObject(selectedImage));
             StartActivity(fullImageIntent);
+        }
+
+        public override void OnTrimMemory(TrimMemory level)
+        {
+            base.OnTrimMemory(level);
+
+            switch (level)
+            {
+                case TrimMemory.RunningLow:
+                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
+                    GC.Collect();
+                    break;
+                default:
+                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
+                    GC.Collect();
+                    break;
+            }
         }
     }
 }

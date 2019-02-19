@@ -16,6 +16,7 @@ using myTNB_Android.Src.AddAccount.Models;
 using myTNB_Android.Src.AddAccount.Adapter;
 using Newtonsoft.Json;
 using myTNB_Android.Src.AddAccount.Activity;
+using System.Runtime;
 
 namespace myTNB_Android.Src.AddAccount.Fragment
 {
@@ -35,7 +36,15 @@ namespace myTNB_Android.Src.AddAccount.Fragment
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-            selectedAccountType = JsonConvert.DeserializeObject<AccountType>(Intent.Extras.GetString("selectedAccountType"));
+            Bundle extras = Intent.Extras;
+
+            if (extras != null)
+            {
+                if (extras.ContainsKey("selectedAccountType")) {
+                    //selectedAccountType = JsonConvert.DeserializeObject<AccountType>(extras.GetString("selectedAccountType"));
+                    selectedAccountType = DeSerialze<AccountType>(extras.GetString("selectedAccountType"));
+                }
+            }
 
             AccountType Residential = new AccountType();
             Residential.Id = "1";
@@ -106,6 +115,24 @@ namespace myTNB_Android.Src.AddAccount.Fragment
         public override int ResourceId()
         {
             return Resource.Layout.SelectAccountTypeView;
+        }
+
+
+        public override void OnTrimMemory(TrimMemory level)
+        {
+            base.OnTrimMemory(level);
+
+            switch (level)
+            {
+                case TrimMemory.RunningLow:
+                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
+                    GC.Collect();
+                    break;
+                default:
+                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
+                    GC.Collect();
+                    break;
+            }
         }
     }
 }

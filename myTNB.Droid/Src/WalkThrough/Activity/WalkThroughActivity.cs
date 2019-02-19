@@ -24,6 +24,7 @@ using Android.Support.V4.Content.Res;
 using Android.Graphics;
 using myTNB.SQLite.SQLiteDataManager;
 using myTNB.SitecoreCMS.Model;
+using System.Runtime;
 
 namespace myTNB_Android.Src.WalkThrough
 {
@@ -33,7 +34,7 @@ namespace myTNB_Android.Src.WalkThrough
               , Icon = "@drawable/ic_launcher"
        , LaunchMode = LaunchMode.SingleInstance
        , ScreenOrientation = ScreenOrientation.Portrait
-       , Theme = "@style/Theme.Launch")]
+              , Theme = "@style/Theme.Dashboard")]
     public class WalkThroughActivity : BaseAppCompatActivity , WalkThroughContract.IView , ViewPager.IOnPageChangeListener
     {
 
@@ -90,6 +91,7 @@ namespace myTNB_Android.Src.WalkThrough
 
         public void ShowNext(int index)
         {
+            try {
             if (index == viewPager.ChildCount)
             {
                 userActionsListener.NavigatePrelogin();
@@ -98,7 +100,9 @@ namespace myTNB_Android.Src.WalkThrough
             {
                 viewPager.SetCurrentItem(index % viewPager.ChildCount, true);
             }
-
+        } catch(Exception e) {
+                Utility.LoggingNonFatalError(e);
+            }
             
         }
 
@@ -116,7 +120,7 @@ namespace myTNB_Android.Src.WalkThrough
         {
             base.OnCreate(savedInstanceState);
 
-
+            try {
             mPresenter = new WalkThroughPresenter(this , PreferenceManager.GetDefaultSharedPreferences(this));
 
             //Deck deckOne = new Deck();
@@ -161,10 +165,16 @@ namespace myTNB_Android.Src.WalkThrough
             {
                 ShowWalkThroughData(true);
             }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         private void buildCircles()
         {
+            try {
             float scale = this.Resources.DisplayMetrics.Density;
             int padding = (int)(3 * scale + 0.5f);
             for (int i = 0; i < pagerAdapter.Count; i++) {
@@ -177,10 +187,16 @@ namespace myTNB_Android.Src.WalkThrough
             }
 
             setIndicator(0);
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         private void setIndicator(int index)
         {
+            try {
             if (index < pagerAdapter.Count)
             {
                 for (int i = 0; i < pagerAdapter.Count; i++)
@@ -197,6 +213,11 @@ namespace myTNB_Android.Src.WalkThrough
                         //circle.setColorFilter(ResourcesCompat.getCoFFlor(getResources(), android.R.color.transparent, null));
                     }
                 }
+            }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
             }
         }
 
@@ -247,6 +268,7 @@ namespace myTNB_Android.Src.WalkThrough
 
         public void OnTimeStampRecieved(string timestamp)
         {
+            try {
             if(timestamp != null)
             {
                 if (timestamp.Equals(savedTimeStamp))
@@ -265,10 +287,16 @@ namespace myTNB_Android.Src.WalkThrough
                 MyTNBApplication.siteCoreUpdated = true;
                 this.userActionsListener.OnGetWalkThroughData();
             }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public void ShowWalkThroughData(bool success)
         {
+            try {
             if (success)
             {
                 WalkthroughScreensEntity wtManager = new WalkthroughScreensEntity();
@@ -328,15 +356,26 @@ namespace myTNB_Android.Src.WalkThrough
                 mProgressBar.Visibility = ViewStates.Gone;
                 txtErrorMessage.Visibility = ViewStates.Visible;
             }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public void OnSavedTimeStampRecievd(string timestamp)
         {
+            try {
             if(timestamp != null)
             {
                 savedTimeStamp = timestamp;
             }
             this.userActionsListener.OnGetTimeStamp();
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public void OnSiteCoreServiceFailed(string message)
@@ -346,6 +385,8 @@ namespace myTNB_Android.Src.WalkThrough
 
         public Deck[] GetDefaultData()
         {
+            Deck[] deckParam = new Deck[3];
+            try {
             Deck deckOne = new Deck();
             deckOne.imageId = Resource.Drawable.dashboard;
             deckOne.heading = Resources.GetString(Resource.String.walkthrough_1_heading);
@@ -361,13 +402,36 @@ namespace myTNB_Android.Src.WalkThrough
             deckThree.heading = Resources.GetString(Resource.String.walkthrough_3_heading);
             deckThree.content = Resources.GetString(Resource.String.walkthrough_3_content);
 
-            Deck[] deckParam = new Deck[3];
+            
             deckParam[0] = deckOne;
             deckParam[1] = deckTwo;
             deckParam[2] = deckThree;
             walkThroughDeck = new WalkThroughDeck(deckParam);
-
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
             return deckParam;
+        }
+
+
+
+        public override void OnTrimMemory(TrimMemory level)
+        {
+            base.OnTrimMemory(level);
+
+            switch (level)
+            {
+                case TrimMemory.RunningLow:
+                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
+                    GC.Collect();
+                    break;
+                default:
+                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
+                    GC.Collect();
+                    break;
+            }
         }
     }
 }

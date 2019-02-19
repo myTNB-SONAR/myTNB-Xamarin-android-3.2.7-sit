@@ -22,6 +22,7 @@ using AFollestad.MaterialDialogs;
 using Refit;
 using Android.Util;
 using myTNB_Android.Src.Utils.Custom.ProgressDialog;
+using System.Runtime;
 
 namespace myTNB_Android.Src.ManageSupplyAccount.Activity
 {
@@ -65,29 +66,47 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-            accountData = JsonConvert.DeserializeObject<AccountData>(Intent.Extras.GetString(Constants.SELECTED_ACCOUNT));
-            position = Intent.Extras.GetInt(Constants.SELECTED_ACCOUNT_POSITION);
 
-            progress = new MaterialDialog.Builder(this)
-                .Title(Resource.String.manage_supply_account_remove_progress_title)
-                .Content(Resource.String.manage_supply_account_remove_progress_content)
-                .Progress(true , 0)
-                .Cancelable(false)
-                .Build();
+            try
+            {
 
-            TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutNickName);
-            TextViewUtils.SetMuseoSans300Typeface(txtAccountAddress , txtNickName);
-            TextViewUtils.SetMuseoSans500Typeface(txtAccountNumber , btnTextUpdateNickName);
-            TextViewUtils.SetMuseoSans500Typeface(btnRemoveAccount);
+                Bundle extras = Intent.Extras;
 
-            txtAccountNumber.Text = accountData.AccountNum;
-            txtAccountAddress.Text = accountData.AddStreet;
+                if (extras != null)
+                {
+                    if (extras.ContainsKey(Constants.SELECTED_ACCOUNT))
+                    {
+                        //accountData = JsonConvert.DeserializeObject<AccountData>(Intent.Extras.GetString(Constants.SELECTED_ACCOUNT));
+                        accountData = DeSerialze<AccountData>(extras.GetString(Constants.SELECTED_ACCOUNT));
 
-            txtNickName.Text = accountData.AccountNickName;
+                    }
+                    position = extras.GetInt(Constants.SELECTED_ACCOUNT_POSITION);
+                }
 
 
-            mPresenter = new ManageSupplyAccountPresenter(this , accountData);
-            this.userActionsListener.Start();
+                progress = new MaterialDialog.Builder(this)
+                    .Title(Resource.String.manage_supply_account_remove_progress_title)
+                    .Content(Resource.String.manage_supply_account_remove_progress_content)
+                    .Progress(true, 0)
+                    .Cancelable(false)
+                    .Build();
+
+                TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutNickName);
+                TextViewUtils.SetMuseoSans300Typeface(txtAccountAddress, txtNickName);
+                TextViewUtils.SetMuseoSans500Typeface(txtAccountNumber, btnTextUpdateNickName);
+                TextViewUtils.SetMuseoSans500Typeface(btnRemoveAccount);
+
+                txtAccountNumber.Text = accountData.AccountNum;
+                txtAccountAddress.Text = accountData.AddStreet;
+
+                txtNickName.Text = accountData.AccountNickName;
+
+
+                mPresenter = new ManageSupplyAccountPresenter(this, accountData);
+                this.userActionsListener.Start();
+            } catch(Exception e) {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         [OnClick(Resource.Id.btnTextUpdateNickName)]
@@ -99,7 +118,7 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
         [OnClick(Resource.Id.btnRemoveAccount)]
         void OnClickRemoveAccount(object sender, EventArgs eventArgs)
         {
-
+            try {
             if (removeDialog != null && removeDialog.IsShowing)
             {
                 removeDialog.Dismiss();
@@ -120,7 +139,9 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
                 })
                 .Show()
                 ;
-
+        } catch(Exception e) {
+                Utility.LoggingNonFatalError(e);
+            }
             //int titleId = Resources.GetIdentifier("alertTitle", "id", "android");
             //TextView txtTitle = removeDialog.FindViewById<TextView>(titleId);
             //txtTitle.SetTextSize(ComplexUnitType.Sp ,17);
@@ -172,6 +193,7 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
 
         public void ShowUpdateSuccessNickname(AccountData accountData)
         {
+            try {
             this.accountData = accountData;
             txtNickName.Text = accountData.AccountNickName;
 
@@ -184,6 +206,11 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
                          }
             ).Show();
             SetResult(Result.Ok);
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public void ShowRemoveProgress()
@@ -192,6 +219,7 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
             //{
             //    progress.Show();
             //}
+            try {
             if (loadingOverlay != null && loadingOverlay.IsShowing)
             {
                 loadingOverlay.Dismiss();
@@ -199,6 +227,11 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
 
             loadingOverlay = new LoadingOverlay(this, Resource.Style.LoadingOverlyDialogStyle);
             loadingOverlay.Show();
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public void HideRemoveProgress()
@@ -207,9 +240,15 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
             //{
             //    progress.Dismiss();
             //}
+            try {
             if (loadingOverlay != null && loadingOverlay.IsShowing)
             {
                 loadingOverlay.Dismiss();
+            }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
             }
         }
 
@@ -283,6 +322,24 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
         public void ShowNickname(string nickname)
         {
             txtNickName.Text = nickname;
+        }
+
+
+        public override void OnTrimMemory(TrimMemory level)
+        {
+            base.OnTrimMemory(level);
+
+            switch (level)
+            {
+                case TrimMemory.RunningLow:
+                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
+                    GC.Collect();
+                    break;
+                default:
+                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
+                    GC.Collect();
+                    break;
+            }
         }
     }
 }

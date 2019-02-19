@@ -46,6 +46,7 @@ namespace myTNB_Android.Src.NotificationSettings.Adapter
 
         public override void OnBindViewHolder(RecyclerView.ViewHolder holder, int position)
         {
+            try {
             var userPref = GetItemObject(position);
             var viewHolder = holder as NotificationChannelViewHolder;
             viewHolder.txtNotificationTitle.Text = userPref.Title;
@@ -67,6 +68,11 @@ namespace myTNB_Android.Src.NotificationSettings.Adapter
             else
             {
                 viewHolder.notificationActionSwitch.Enabled = true;
+            }
+            }
+            catch (Exception ex)
+            {
+                Utility.LoggingNonFatalError(ex);
             }
         }
 

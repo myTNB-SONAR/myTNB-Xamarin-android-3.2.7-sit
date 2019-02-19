@@ -71,7 +71,7 @@ namespace myTNB_Android.Src.Promotions.Fragments
         public override void OnViewCreated(View view, Bundle savedInstanceState)
         {
             base.OnViewCreated(view, savedInstanceState);
-
+            try {
             layoutManager = new LinearLayoutManager(Activity, LinearLayoutManager.Vertical, false);
             mPromotionRecyclerView.SetLayoutManager(layoutManager);
             adapter = new PromotionListAdapter(Activity, promotions);
@@ -89,6 +89,11 @@ namespace myTNB_Android.Src.Promotions.Fragments
 
             loadingOverlay = new LoadingOverlay(Activity, Resource.Style.LoadingOverlyDialogStyle);
             loadingOverlay.Show();
+            }
+            catch (Exception ex)
+            {
+                Utility.LoggingNonFatalError(ex);
+            }
         }
 
         public override int ResourceId()
@@ -100,6 +105,7 @@ namespace myTNB_Android.Src.Promotions.Fragments
         {
             Activity.RunOnUiThread(() =>
             {
+                try {
                 if (loadingOverlay != null && loadingOverlay.IsShowing)
                 {
                     loadingOverlay.Dismiss();
@@ -127,11 +133,17 @@ namespace myTNB_Android.Src.Promotions.Fragments
                     noPromotionLayout.Visibility = ViewStates.Visible;
                     mPromotionRecyclerView.Visibility = ViewStates.Gone;
                 }
+                }
+                catch (Exception ex)
+                {
+                    Utility.LoggingNonFatalError(ex);
+                }
             });
         }
 
         void OnItemClick(object sender, int position)
         {
+            try {
             PromotionsModelV2 model = promotions[position];
             PromotionsEntityV2 wtManager = new PromotionsEntityV2()
             {
@@ -155,6 +167,11 @@ namespace myTNB_Android.Src.Promotions.Fragments
             details_activity.PutExtra("Promotion", JsonConvert.SerializeObject(model));
             //Activity.StartActivity(details_activity);
             Activity.StartActivity(details_activity);
+            }
+            catch (Exception ex)
+            {
+                Utility.LoggingNonFatalError(ex);
+            }
         }
 
             public void SetPresenter(PromotionContract.IUserActionsListener userActionListener)
@@ -179,20 +196,27 @@ namespace myTNB_Android.Src.Promotions.Fragments
 
         public void OnSavedTimeStamp(string mSavedTimeStamp)
         {
+            try {
             if(mSavedTimeStamp != null)
             {
                 this.savedTimeStamp = mSavedTimeStamp;
             }
             this.userActionsListener.OnGetPromotionsTimeStamp();
+            }
+            catch (Exception ex)
+            {
+                Utility.LoggingNonFatalError(ex);
+            }
         }
 
         public void ShowPromotionTimestamp(bool success)
         {
+            try {
             if (success)
             {
                 PromotionsParentEntityV2 wtManager = new PromotionsParentEntityV2();
                 List<PromotionsParentEntityV2> items = wtManager.GetAllItems();
-                if (items != null)
+                    if (items != null && items.Count() > 0)
                 {
                     PromotionsParentEntityV2 entity = items[0];
                     if (entity != null)
@@ -213,6 +237,11 @@ namespace myTNB_Android.Src.Promotions.Fragments
             {
                 ShowPromotion(false);
             }
+            }
+            catch (Exception ex)
+            {
+                Utility.LoggingNonFatalError(ex);
+            }
         }
 
         public override void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
@@ -223,6 +252,7 @@ namespace myTNB_Android.Src.Promotions.Fragments
         public override void OnResume()
         {
             base.OnResume();
+            try {
             PromotionsEntityV2 wtManager = new PromotionsEntityV2();
             List<PromotionsEntityV2> items = wtManager.GetAllItems();
             if (items != null)
@@ -233,6 +263,11 @@ namespace myTNB_Android.Src.Promotions.Fragments
                 mPromotionRecyclerView.SetAdapter(adapter);
                 adapter.ItemClick += OnItemClick;
                 adapter.NotifyDataSetChanged();
+            }
+            }
+            catch (Exception ex)
+            {
+                Utility.LoggingNonFatalError(ex);
             }
         }
     }

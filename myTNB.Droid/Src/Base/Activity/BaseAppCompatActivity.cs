@@ -19,6 +19,9 @@ using Android.Support.Design.Widget;
 using AlertDialog = Android.App.AlertDialog;
 using HockeyApp.Android;
 using Constants = myTNB_Android.Src.Utils.Constants;
+using System.Runtime;
+using System.IO;
+using Newtonsoft.Json;
 
 namespace myTNB_Android.Src.Base.Activity
 {
@@ -29,6 +32,9 @@ namespace myTNB_Android.Src.Base.Activity
     {
         private AlertDialog rationaleDialog;
         public abstract int ResourceId();
+
+        public bool EnforceMissingMemberHandling { get; private set; }
+        public bool IgnoreNullValues { get; private set; }
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -129,63 +135,77 @@ namespace myTNB_Android.Src.Base.Activity
 
             if (requestCode == Constants.RUNTIME_PERMISSION_CAMERA_REQUEST_CODE)
             {
-                if (grantResults[0] == Permission.Denied)
+                if (Utility.IsPermissionHasCount(grantResults))
                 {
-                    
+                    if (grantResults[0] == Permission.Denied)
+                    {
+
+                    }
                 }
             }
             else if (requestCode == Constants.RUNTIME_PERMISSION_PHONE_REQUEST_CODE)
             {
-                if (grantResults[0] == Permission.Denied)
+                if (Utility.IsPermissionHasCount(grantResults))
                 {
+                    if (grantResults[0] == Permission.Denied)
+                    {
 
+                    }
                 }
             }
             else if (requestCode == Constants.RUNTIME_PERMISSION_STORAGE_REQUEST_CODE)
             {
-                if (grantResults[0] == Permission.Denied)
+                if (Utility.IsPermissionHasCount(grantResults))
                 {
-                   
+                    if (grantResults[0] == Permission.Denied)
+                    {
+
+                    }
                 }
             }
             else if (requestCode == Constants.RUNTIME_PERMISSION_LOCATION_REQUEST_CODE)
             {
-                if (grantResults[0] == Permission.Denied)
+                if (Utility.IsPermissionHasCount(grantResults))
                 {
-                    if (!LocationPermissionRequired())
+                    if (grantResults[0] == Permission.Denied)
                     {
-                        if (ShouldShowRequestPermissionRationale(Manifest.Permission.AccessFineLocation) || ShouldShowRequestPermissionRationale(Manifest.Permission.AccessCoarseLocation))
+                        if (!LocationPermissionRequired())
                         {
-                            ShowRationale(LocationTitleRationale(), 
-                                LocationContentRationale(), 
-                                Constants.RUNTIME_PERMISSION_LOCATION_REQUEST_CODE , 
-                                Resource.String.faulty_street_lamps_feedback_runtime_permission_dialog_btn_ok , delegate {
-                                    rationaleDialog.Dismiss();
-                                    if (requestCode == Constants.RUNTIME_PERMISSION_CAMERA_REQUEST_CODE)
+                            if (ShouldShowRequestPermissionRationale(Manifest.Permission.AccessFineLocation) || ShouldShowRequestPermissionRationale(Manifest.Permission.AccessCoarseLocation))
+                            {
+                                ShowRationale(LocationTitleRationale(),
+                                    LocationContentRationale(),
+                                    Constants.RUNTIME_PERMISSION_LOCATION_REQUEST_CODE,
+                                    Resource.String.faulty_street_lamps_feedback_runtime_permission_dialog_btn_ok, delegate
                                     {
-                                        RequestPermissions(new string[] { Manifest.Permission.Camera, Manifest.Permission.Flashlight }, Constants.RUNTIME_PERMISSION_CAMERA_REQUEST_CODE);
+                                        rationaleDialog.Dismiss();
+                                        if (requestCode == Constants.RUNTIME_PERMISSION_CAMERA_REQUEST_CODE)
+                                        {
+                                            RequestPermissions(new string[] { Manifest.Permission.Camera, Manifest.Permission.Flashlight }, Constants.RUNTIME_PERMISSION_CAMERA_REQUEST_CODE);
 
-                                    }
-                                    else if (requestCode == Constants.RUNTIME_PERMISSION_PHONE_REQUEST_CODE)
+                                        }
+                                        else if (requestCode == Constants.RUNTIME_PERMISSION_PHONE_REQUEST_CODE)
+                                        {
+                                            RequestPermissions(new string[] { Manifest.Permission.ReadPhoneState }, Constants.RUNTIME_PERMISSION_PHONE_REQUEST_CODE);
+
+                                        }
+                                        else if (requestCode == Constants.RUNTIME_PERMISSION_STORAGE_REQUEST_CODE)
+                                        {
+                                            RequestPermissions(new string[] { Manifest.Permission.WriteExternalStorage, Manifest.Permission.ReadExternalStorage }, Constants.RUNTIME_PERMISSION_STORAGE_REQUEST_CODE);
+
+                                        }
+                                        else if (requestCode == Constants.RUNTIME_PERMISSION_LOCATION_REQUEST_CODE)
+                                        {
+                                            RequestPermissions(new string[] { Manifest.Permission.AccessFineLocation, Manifest.Permission.AccessCoarseLocation }, Constants.RUNTIME_PERMISSION_STORAGE_REQUEST_CODE);
+
+                                        }
+                                    },
+                                    Resource.String.faulty_street_lamps_feedback_runtime_permission_dialog_btn_ok, delegate
                                     {
-                                        RequestPermissions(new string[] { Manifest.Permission.ReadPhoneState }, Constants.RUNTIME_PERMISSION_PHONE_REQUEST_CODE);
+                                        rationaleDialog.Dismiss();
+                                    });
 
-                                    }
-                                    else if (requestCode == Constants.RUNTIME_PERMISSION_STORAGE_REQUEST_CODE)
-                                    {
-                                        RequestPermissions(new string[] { Manifest.Permission.WriteExternalStorage, Manifest.Permission.ReadExternalStorage }, Constants.RUNTIME_PERMISSION_STORAGE_REQUEST_CODE);
-
-                                    }
-                                    else if (requestCode == Constants.RUNTIME_PERMISSION_LOCATION_REQUEST_CODE)
-                                    {
-                                        RequestPermissions(new string[] { Manifest.Permission.AccessFineLocation, Manifest.Permission.AccessCoarseLocation }, Constants.RUNTIME_PERMISSION_STORAGE_REQUEST_CODE);
-
-                                    }
-                                } ,
-                                Resource.String.faulty_street_lamps_feedback_runtime_permission_dialog_btn_ok , delegate {
-                                    rationaleDialog.Dismiss();
-                                });
-
+                            }
                         }
                     }
                 }
@@ -339,6 +359,52 @@ namespace myTNB_Android.Src.Base.Activity
         public virtual void Ready()
         {
 
+        }
+
+        public override void OnTrimMemory(TrimMemory level)
+        {
+            base.OnTrimMemory(level);
+
+            switch (level)
+            {
+                case TrimMemory.RunningLow:
+                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
+                    GC.Collect();
+                    break;
+                default:
+                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
+                    GC.Collect();
+                    break;
+            }
+        }
+
+
+
+        protected TResult DeSerialze<TResult>(string responseStream)
+        {
+            byte[] jsonBytes = Encoding.UTF8.GetBytes(responseStream.ToCharArray());
+            using (var stream = new MemoryStream(jsonBytes))
+            {
+                return Deserialize<TResult>(stream);
+            }
+        }
+
+        private TResult Deserialize<TResult>(Stream responseStream)
+        {
+            using (var sr = new StreamReader(responseStream))
+            {
+                using (var reader = new JsonTextReader(sr))
+                {
+                    var serializer = new JsonSerializer
+                    {
+                        MissingMemberHandling =
+                            EnforceMissingMemberHandling ? MissingMemberHandling.Error : MissingMemberHandling.Ignore,
+                        NullValueHandling = IgnoreNullValues ? NullValueHandling.Ignore : NullValueHandling.Include
+                    };
+
+                    return serializer.Deserialize<TResult>(reader);
+                }
+            }
         }
     }
 }

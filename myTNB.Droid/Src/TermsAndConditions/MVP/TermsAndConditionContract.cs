@@ -25,6 +25,8 @@ namespace myTNB_Android.Src.TermsAndConditions.MVP
             /// </summary>
             /// <param name="success"></param>
             void ShowTermsAndCondition(bool success);
+
+            void HideProgressBar();
         }
 
 

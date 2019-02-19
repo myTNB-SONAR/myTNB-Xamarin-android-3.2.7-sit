@@ -32,6 +32,7 @@ namespace myTNB_Android.Src.FindUs.Adapter
 
         public override void OnBindViewHolder(RecyclerView.ViewHolder holder, int position)
         {
+            try {
             PhoneListViewHolder h = holder as PhoneListViewHolder;
             if (numbers.Count > 1)
             {
@@ -68,10 +69,17 @@ namespace myTNB_Android.Src.FindUs.Adapter
                     }
                     catch (Exception e)
                     {
-
+                            Utility.LoggingNonFatalError(e);
                     }
                 };
             }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+
+            }
+
         }
 
         public override RecyclerView.ViewHolder OnCreateViewHolder(ViewGroup parent, int viewType)

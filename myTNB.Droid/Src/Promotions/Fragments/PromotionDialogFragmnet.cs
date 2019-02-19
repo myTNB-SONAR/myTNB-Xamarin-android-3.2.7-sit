@@ -18,6 +18,7 @@ using Newtonsoft.Json;
 using myTNB.SQLite.SQLiteDataManager;
 using myTNB_Android.Src.Promotions.Activity;
 using Me.Relex;
+using myTNB_Android.Src.Utils;
 
 namespace myTNB_Android.Src.Promotions.Fragments
 {
@@ -45,29 +46,36 @@ namespace myTNB_Android.Src.Promotions.Fragments
             
             View rootView = inflater.Inflate(Resource.Layout.promotion_dialog, container, false);
 
-            pager = (ViewPager) rootView.FindViewById(Resource.Id.promotionPager);
-            indicator = (CircleIndicator)rootView.FindViewById(Resource.Id.indicator);
+            try
+            {
 
-            promotions = JsonConvert.DeserializeObject<List<PromotionsModelV2>>(Arguments.GetString("promotions"));
+                pager = (ViewPager)rootView.FindViewById(Resource.Id.promotionPager);
+                indicator = (CircleIndicator)rootView.FindViewById(Resource.Id.indicator);
 
-            adapter = new PromotionPagerAdapter(mContext, promotions);
-            pager.Adapter = adapter;
-            adapter.DetailsClicked += OnDetailsClick;
-            adapter.CloseClicked += OnCloseClick;
-            adapter.RefreshIndicator += OnRefreshIndicator;
-            adapter.NotifyDataSetChanged();
+                promotions = JsonConvert.DeserializeObject<List<PromotionsModelV2>>(Arguments.GetString("promotions"));
 
-            pager.SetClipToPadding(false);
-            pager.SetPadding(50, 0, 50, 0);
-            pager.PageMargin = 50;
-            pager.SetOnPageChangeListener(this);
-            indicator.SetViewPager(pager);
-            UpdatePromotionAsSeen(0);
+                adapter = new PromotionPagerAdapter(mContext, promotions);
+                pager.Adapter = adapter;
+                adapter.DetailsClicked += OnDetailsClick;
+                adapter.CloseClicked += OnCloseClick;
+                adapter.RefreshIndicator += OnRefreshIndicator;
+                adapter.NotifyDataSetChanged();
+
+                pager.SetClipToPadding(false);
+                pager.SetPadding(50, 0, 50, 0);
+                pager.PageMargin = 50;
+                pager.SetOnPageChangeListener(this);
+                indicator.SetViewPager(pager);
+                UpdatePromotionAsSeen(0);
+            } catch(Exception ex) {
+                Utility.LoggingNonFatalError(ex);
+            }
             return rootView;
         }
 
         void OnDetailsClick(object sender, int position)
         {
+            try {
             if (promotions.Count > 0)
             {
                 PromotionsModelV2 model = promotions[position];
@@ -94,6 +102,11 @@ namespace myTNB_Android.Src.Promotions.Fragments
                 details_activity.PutExtra("Promotion", JsonConvert.SerializeObject(model));
                 //Activity.StartActivity(details_activity);
                 mContext.StartActivity(details_activity);
+            }
+            }
+            catch (Exception ex)
+            {
+                Utility.LoggingNonFatalError(ex);
             }
             //this.Dismiss();
         }
@@ -125,15 +138,22 @@ namespace myTNB_Android.Src.Promotions.Fragments
 
         public void OnPageSelected(int position)
         {
+            try {
             //Update all records as Shown
             if (promotions.Count > 0) {
                 UpdatePromotionAsSeen(position);
                 promotions[position].PromoShown = true;
             }
+            }
+            catch (Exception ex)
+            {
+                Utility.LoggingNonFatalError(ex);
+            }
         }
 
         public void UpdatePromotionAsSeen(int position)
         {
+            try {
             PromotionsModelV2 model = promotions[position];
             PromotionsEntityV2 entity = new PromotionsEntityV2()
             {
@@ -154,6 +174,11 @@ namespace myTNB_Android.Src.Promotions.Fragments
             };
             PromotionsEntityV2 wtManger = new PromotionsEntityV2();
             wtManger.UpdateItemAsShown(entity);
+            }
+            catch (Exception ex)
+            {
+                Utility.LoggingNonFatalError(ex);
+            }
         }
     }
 }

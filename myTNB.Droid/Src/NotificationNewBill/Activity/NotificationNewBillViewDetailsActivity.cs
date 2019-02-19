@@ -39,8 +39,12 @@ namespace myTNB_Android.Src.NotificationNewBill.Activity
         {
             base.OnCreate(savedInstanceState);
             Bundle extras = Intent.Extras;
-            selectedAccount = JsonConvert.DeserializeObject<AccountData>(extras.GetString(Constants.SELECTED_ACCOUNT));
-            
+            if (extras != null) {
+                //selectedAccount = JsonConvert.DeserializeObject<AccountData>(extras.GetString(Constants.SELECTED_ACCOUNT));
+                if (extras.ContainsKey(Constants.SELECTED_ACCOUNT)) {
+                    selectedAccount = DeSerialze<AccountData>(extras.GetString(Constants.SELECTED_ACCOUNT));
+                }
+            }
             // Create your application here
 
             FragmentManager.BeginTransaction()

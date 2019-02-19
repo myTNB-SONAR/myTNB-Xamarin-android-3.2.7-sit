@@ -48,7 +48,10 @@ namespace myTNB_Android.Src.FindUs.MVP
         {
             cts = new CancellationTokenSource();
 
+            if (mView.IsActive()) {
             this.mView.ShowGetLocationsDialog();
+                }
+
             // TODO : UPDATE Replace string with Constants.SERVER_URL
 
 #if DEBUG
@@ -83,29 +86,47 @@ namespace myTNB_Android.Src.FindUs.MVP
 
                 if (result.D != null && result.D.IsError)
                 {
-                    this.mView.HideGetLocationsDialog();
+                    if (mView.IsActive())
+                    {
+                        this.mView.HideGetLocationsDialog();
+                    }
                     this.mView.ShowGetLocationsError(result.D.Message);
                 }
                 else
                 {
-                    this.mView.HideGetLocationsDialog();
+                    if (mView.IsActive())
+                    {
+                        this.mView.HideGetLocationsDialog();
+                    }
                     this.mView.ShowGetLocationsSuccess(result, results);
                 }
             }
             catch (System.OperationCanceledException cancelledException)
             {
-                this.mView.HideGetLocationsDialog();
+                if (mView.IsActive())
+                {
+                    this.mView.HideGetLocationsDialog();
+                }
                 this.mView.ShowGetLocationsError("Something went wrong! Please try again later");
+                Utility.LoggingNonFatalError(cancelledException);
             }
             catch (ApiException apiException)
             {
-                this.mView.HideGetLocationsDialog();
+                if (mView.IsActive())
+                {
+                    this.mView.HideGetLocationsDialog();
+                }
                 this.mView.ShowGetLocationsError("Something went wrong! Please try again later");
+                Utility.LoggingNonFatalError(apiException);
             }
             catch (Exception unknownException)
             {
-                this.mView.HideGetLocationsDialog();
+                if (mView.IsActive())
+                {
+                    this.mView.HideGetLocationsDialog();
+                }
                 this.mView.ShowGetLocationsError("Something went wrong! Please try again later");
+                Utility.LoggingNonFatalError(unknownException);
             }
         }
 
@@ -120,7 +141,10 @@ namespace myTNB_Android.Src.FindUs.MVP
         {
             cts = new CancellationTokenSource();
 
-            this.mView.ShowGetLocationsDialog();
+            if (mView.IsActive())
+            {
+                this.mView.ShowGetLocationsDialog();
+            }
             // TODO : UPDATE Replace string with Constants.SERVER_URL
 
 #if DEBUG
@@ -151,28 +175,46 @@ namespace myTNB_Android.Src.FindUs.MVP
 
                 if (result.D != null && result.D.IsError)
                 {
-                    this.mView.HideGetLocationsDialog();
+                    if (mView.IsActive())
+                    {
+                        this.mView.HideGetLocationsDialog();
+                    }
                 }
                 else
                 {
-                    this.mView.HideGetLocationsDialog();
+                    if (mView.IsActive())
+                    {
+                        this.mView.HideGetLocationsDialog();
+                    }
                     this.mView.ShowGetLocationsSuccess(result, results);
                 }
             }
             catch (System.OperationCanceledException cancelledException)
             {
-                this.mView.HideGetLocationsDialog();
+                if (mView.IsActive())
+                {
+                    this.mView.HideGetLocationsDialog();
+                }
                 Log.Debug(TAG, cancelledException.StackTrace);
+                Utility.LoggingNonFatalError(cancelledException);
             }
             catch (ApiException apiException)
             {
-                this.mView.HideGetLocationsDialog();
+                if (mView.IsActive())
+                {
+                    this.mView.HideGetLocationsDialog();
+                }
                 Log.Debug(TAG, apiException.StackTrace);
+                Utility.LoggingNonFatalError(apiException);
             }
             catch (Exception unknownException)
             {
-                this.mView.HideGetLocationsDialog();
+                if (mView.IsActive())
+                {
+                    this.mView.HideGetLocationsDialog();
+                }
                 Log.Debug(TAG, unknownException.StackTrace);
+                Utility.LoggingNonFatalError(unknownException);
             }
         }
     }

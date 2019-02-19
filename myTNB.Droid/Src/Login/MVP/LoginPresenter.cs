@@ -55,10 +55,14 @@ namespace myTNB_Android.Src.Login.MVP
 
         public void CancelLogin()
         {
+            try {
             if (cts != null && cts.Token.CanBeCanceled)
             {
                 cts.Cancel();
-                this.mView.HideProgressDialog();
+                if (mView.IsActive())
+                {
+                    this.mView.HideProgressDialog();
+                }
             }
             else
             {
@@ -66,31 +70,40 @@ namespace myTNB_Android.Src.Login.MVP
             }
 
             this.mView.EnableLoginButton();
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
-        public async void LoginAsync(string username, string password , string deviceId, bool rememberMe)
+        public async void LoginAsync(string usrNme, string pwd , string deviceId, bool rememberMe)
         {
             cts = new CancellationTokenSource();
-            if (TextUtils.IsEmpty(username))
+            if (TextUtils.IsEmpty(usrNme))
             {
                 this.mView.ShowEmptyEmailError();
                 return;
             }
 
-            if (!Patterns.EmailAddress.Matcher(username).Matches())
+            if (!Patterns.EmailAddress.Matcher(usrNme).Matches())
             {
                 this.mView.ShowInvalidEmailError();
                 return;
             }
 
-            if (TextUtils.IsEmpty(password))
+            if (TextUtils.IsEmpty(pwd))
             {
                 this.mView.ShowEmptyPasswordError();
                 return;
             }
 
             this.mView.DisableLoginButton();
-            this.mView.ShowProgressDialog();
+
+            if (mView.IsActive())
+            {
+                this.mView.ShowProgressDialog();
+            }
 
             ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
 #if STUB
@@ -153,8 +166,8 @@ namespace myTNB_Android.Src.Login.MVP
 
                 var userResponse = await api.DoLogin(new UserAuthenticationRequest(Constants.APP_CONFIG.API_KEY_ID)
                 {
-                    UserName = username,
-                    Password = password,
+                    UserName = usrNme,
+                    Password = pwd,
                     IpAddress = Constants.APP_CONFIG.API_KEY_ID,
                     ClientType = DeviceIdUtils.GetAppVersionName(),
                     ActiveUserName = Constants.APP_CONFIG.API_KEY_ID,
@@ -169,10 +182,13 @@ namespace myTNB_Android.Src.Login.MVP
 
                 }, cts.Token);
 
+
+
                 if (userResponse.Data.IsError || userResponse.Data.Status.Equals("failed"))
                 {
                     if (this.mView.IsActive())
                     {
+                        this.mView.HideProgressDialog();
                         this.mView.ShowInvalidEmailPasswordError(userResponse.Data.Message);
                     }
                 }
@@ -185,7 +201,7 @@ namespace myTNB_Android.Src.Login.MVP
 
                     if (rememberMe)
                     {
-                        UserSessions.SaveUserEmail(mSharedPref, username);
+                        UserSessions.SaveUserEmail(mSharedPref, usrNme);
                     }
                     else
                     {
@@ -199,15 +215,16 @@ namespace myTNB_Android.Src.Login.MVP
                     {
                         if (this.mView.IsActive())
                         {
-                            this.mView.ShowResetPassword(username , password);
+                                this.mView.HideProgressDialog();
+                            this.mView.ShowResetPassword(usrNme , pwd);
                         }
                     }
                     else if (!userResponse.Data.User.isPhoneVerified)
                     {
                         UserAuthenticationRequest loginRequest = new UserAuthenticationRequest(Constants.APP_CONFIG.API_KEY_ID)
                         {
-                            UserName = username,
-                            Password = password,
+                            UserName = usrNme,
+                            Password = pwd,
                             IpAddress = Constants.APP_CONFIG.API_KEY_ID,
                             ClientType = DeviceIdUtils.GetAppVersionName(),
                             ActiveUserName = userResponse.Data.User.UserId,
@@ -217,6 +234,10 @@ namespace myTNB_Android.Src.Login.MVP
                             DeviceId = deviceId,
                             FcmToken = fcmToken
                         };
+
+                        if (mView.IsActive()) {
+                        this.mView.HideProgressDialog();
+                        }
                         this.mView.ShowUpdatePhoneNumber(loginRequest, userResponse.Data.User.MobileNo);
                     }
                     else
@@ -349,7 +370,11 @@ namespace myTNB_Android.Src.Login.MVP
                                     }
                                     catch (Exception e)
                                     {
+                                        if (mView.IsActive()) {
+                                            this.mView.HideProgressDialog();
+                                        }
                                         Log.Error("API Exception", e.StackTrace);
+                                        Utility.LoggingNonFatalError(e);
                                     }
                                 }).ContinueWith((Task previous) =>
                                 {
@@ -381,6 +406,7 @@ namespace myTNB_Android.Src.Login.MVP
                                         catch (Exception e)
                                         {
                                             Log.Error("API Exception", e.StackTrace);
+                                            Utility.LoggingNonFatalError(e);
                                         }
                                     }).ContinueWith((Task previous) => {
                                     }, cts.Token);
@@ -388,7 +414,12 @@ namespace myTNB_Android.Src.Login.MVP
                             }
                             catch (Exception e)
                             {
+                                if (mView.IsActive())
+                                {
+                                    this.mView.HideProgressDialog();
+                                }
                                 Log.Error("DB Exception", e.StackTrace);
+                                Utility.LoggingNonFatalError(e);
                             }
 
 
@@ -400,6 +431,10 @@ namespace myTNB_Android.Src.Login.MVP
                             //UserSessions.SavePhoneVerified(mSharedPref, true);
                             this.mView.ShowDashboard();
 
+                        }
+                        if (this.mView.IsActive())
+                        {
+                            this.mView.HideProgressDialog();
                         }
                     }
 
@@ -414,16 +449,20 @@ namespace myTNB_Android.Src.Login.MVP
                 // ADD OPERATION CANCELLED HERE
                 if (this.mView.IsActive())
                 {
+                    this.mView.HideProgressDialog();
                     this.mView.ShowRetryOptionsCancelledException(e);
                 }
+                Utility.LoggingNonFatalError(e);
             } 
             catch (ApiException apiException)
             {
                 // ADD HTTP CONNECTION EXCEPTION HERE
                 if (this.mView.IsActive())
                 {
+                    this.mView.HideProgressDialog();
                     this.mView.ShowRetryOptionsApiException(apiException);
                 }
+                Utility.LoggingNonFatalError(apiException);
             }
             catch (Exception e)
             {
@@ -431,15 +470,17 @@ namespace myTNB_Android.Src.Login.MVP
                 Log.Debug(TAG , "Stack " +  e.StackTrace);
                 if (this.mView.IsActive())
                 {
+                    this.mView.HideProgressDialog();
                     this.mView.ShowRetryOptionsUnknownException(e);
 
                 }
+                Utility.LoggingNonFatalError(e);
             }
 
             if (this.mView.IsActive())
             {
                 this.mView.EnableLoginButton();
-                this.mView.HideProgressDialog();
+                //this.mView.HideProgressDialog();
             }
 
 

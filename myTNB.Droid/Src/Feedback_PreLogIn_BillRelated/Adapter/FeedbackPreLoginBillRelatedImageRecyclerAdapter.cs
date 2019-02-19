@@ -44,12 +44,16 @@ namespace myTNB_Android.Src.Feedback_PreLogIn_BillRelated.Adapter
         public List<AttachedImage> GetAllImages()
         {
             List<AttachedImage> attachList = new List<AttachedImage>();
+            try {
             foreach (AttachedImage image in itemList)
             {
                 if (image.ViewType == Constants.VIEW_TYPE_REAL_RECORD)
                 {
                     attachList.Add(image);
                 }
+            }
+        } catch(System.Exception e) {
+                Utility.LoggingNonFatalError(e);
             }
             return attachList;
         }
@@ -61,6 +65,7 @@ namespace myTNB_Android.Src.Feedback_PreLogIn_BillRelated.Adapter
 
         public override void OnBindViewHolder(RecyclerView.ViewHolder holder, int position)
         {
+            try {
             AttachedImage image = GetItemObject(position);
             if (holder is FeedbackPreLoginImageViewHolder)
             {
@@ -100,6 +105,9 @@ namespace myTNB_Android.Src.Feedback_PreLogIn_BillRelated.Adapter
                     viewHolder.btnAdd.Visibility = ViewStates.Visible;
                     viewHolder.progressBar.Visibility = ViewStates.Gone;
                 }
+            }
+        } catch(System.Exception e) {
+                Utility.LoggingNonFatalError(e);
             }
         }
 

@@ -15,6 +15,7 @@ using CheeseBind;
 using myTNB_Android.Src.Utils;
 using Java.Text;
 using Java.Util;
+using System.Runtime;
 
 namespace myTNB_Android.Src.FeedbackSuccess.Activity
 {
@@ -62,41 +63,63 @@ namespace myTNB_Android.Src.FeedbackSuccess.Activity
             base.OnCreate(savedInstanceState);
 
             // Create your application here
-
-            Bundle extras = Intent.Extras;
-            if (extras != null )
-            {
-                date = extras.GetString(Constants.RESPONSE_FEEDBACK_DATE);
-                feedbackId = extras.GetString(Constants.RESPONSE_FEEDBACK_ID);
-            }
-
-            TextViewUtils.SetMuseoSans300Typeface(txtContentInfo , txtFeedbackIdContent, txtTransactionScheduleContent);
-            TextViewUtils.SetMuseoSans500Typeface(txtTitleInfo , txtFeedbackIdTitle, txtTransactionScheduleTitle ,btnBackToFeedback);
-
-            
-            txtFeedbackIdContent.Text = feedbackId;
-
-            Date d = null;
-
             try
             {
-                d = simpleDateTimeParser.Parse(date);
-            }
-            catch (Java.Text.ParseException e)
-            {
+                Bundle extras = Intent.Extras;
+                if (extras != null)
+                {
+                    date = extras.GetString(Constants.RESPONSE_FEEDBACK_DATE);
+                    feedbackId = extras.GetString(Constants.RESPONSE_FEEDBACK_ID);
+                }
 
+                TextViewUtils.SetMuseoSans300Typeface(txtContentInfo, txtFeedbackIdContent, txtTransactionScheduleContent);
+                TextViewUtils.SetMuseoSans500Typeface(txtTitleInfo, txtFeedbackIdTitle, txtTransactionScheduleTitle, btnBackToFeedback);
+
+
+                txtFeedbackIdContent.Text = feedbackId;
+
+                Date d = null;
+
+                try
+                {
+                    d = simpleDateTimeParser.Parse(date);
+                }
+                catch (Java.Text.ParseException e)
+                {
+                    Utility.LoggingNonFatalError(e);
+                }
+
+                if (d != null)
+                {
+                    txtTransactionScheduleContent.Text = simpleDateTimeFormat.Format(d);
+                }
+            } catch(Exception e) {
+                Utility.LoggingNonFatalError(e);
             }
 
-            if (d != null)
-            {
-                txtTransactionScheduleContent.Text = simpleDateTimeFormat.Format(d);
-            }
         }
 
         [OnClick(Resource.Id.btnBackToFeedback)]
         void OnBack(object sender , EventArgs eventArgs)
         {
             Finish();
+        }
+
+        public override void OnTrimMemory(TrimMemory level)
+        {
+            base.OnTrimMemory(level);
+
+            switch (level)
+            {
+                case TrimMemory.RunningLow:
+                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
+                    GC.Collect();
+                    break;
+                default:
+                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
+                    GC.Collect();
+                    break;
+            }
         }
     }
 }

@@ -40,6 +40,7 @@ namespace myTNB_Android.Src.Rating.Adapter
 
         public override void OnBindViewHolder(RecyclerView.ViewHolder holder, int position)
         {
+            try {
             RateUsQuestionViewHolder vh = holder as RateUsQuestionViewHolder;
             RateUsQuestion question = questions[position];
             if(question != null)
@@ -54,7 +55,7 @@ namespace myTNB_Android.Src.Rating.Adapter
                     vh.txtInputLayoutComments.Visibility = ViewStates.Gone;
                     vh.txtComments.Visibility = ViewStates.Gone;
 
-                    vh.ratingBar.Rating = SelectedRating;
+                    //vh.ratingBar.Rating = SelectedRating;
                     if(SelectedRating != 0 && SelectedRating < 6)
                     {
                         vh.txtContentInfo.Text = question.InputOptionValueList[SelectedRating-1].InputOptionValues;
@@ -65,7 +66,7 @@ namespace myTNB_Android.Src.Rating.Adapter
                         int Rating = ((int)e.Rating);
                         if (Rating == 0)
                         {
-                            question.IsQuestionAnswered = true;
+                                question.IsQuestionAnswered = false;
                             vh.txtContentInfo.Text = "";
                         }
                         else if (Rating == 1)
@@ -125,7 +126,11 @@ namespace myTNB_Android.Src.Rating.Adapter
                     };
                 }
             }
-
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
             
         }
 
@@ -137,6 +142,7 @@ namespace myTNB_Android.Src.Rating.Adapter
         public bool IsAllQuestionAnswered()
         {
             bool flag = true;
+            try {
             foreach(RateUsQuestion item in questions)
             {
                 if (!item.IsQuestionAnswered && item.IsMandatory)
@@ -145,12 +151,18 @@ namespace myTNB_Android.Src.Rating.Adapter
                     break;
                 }
             }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
             return flag;
         }
 
         public List<InputAnswerDetails> GetInputAnswers()
         {
             List<InputAnswerDetails> inputAnswers = new List<InputAnswerDetails>();
+            try {
             if (IsAllQuestionAnswered())
             {
                 foreach(RateUsQuestion ques in questions)
@@ -161,6 +173,11 @@ namespace myTNB_Android.Src.Rating.Adapter
                     item.MultilineInput = string.IsNullOrEmpty(ques.InputAnswer) == true ? "" : ques.InputAnswer;
                     inputAnswers.Add(item);
                 }
+            }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
             }
             return inputAnswers;
         }

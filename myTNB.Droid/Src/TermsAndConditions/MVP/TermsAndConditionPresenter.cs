@@ -38,6 +38,7 @@ namespace myTNB_Android.Src.TermsAndConditions.MVP
                     string density = DPUtils.GetDeviceDensity(Application.Context);
                     GetItemsService getItemsService = new GetItemsService(SiteCoreConfig.OS, density, SiteCoreConfig.SITECORE_URL, SiteCoreConfig.DEFAULT_LANGUAGE);
                     string json = getItemsService.GetFullRTEPagesItems();
+                    //json = json.Replace("\\", string.Empty).Replace("\\n", string.Empty);
                     FullRTEPagesResponseModel responseModel = JsonConvert.DeserializeObject<FullRTEPagesResponseModel>(json);
                     if (responseModel.Status.Equals("Success"))
                     {
@@ -56,6 +57,8 @@ namespace myTNB_Android.Src.TermsAndConditions.MVP
                 catch (Exception e)
                 {
                     Log.Error("API Exception", e.StackTrace);
+                    mView.HideProgressBar();
+                    Utility.LoggingNonFatalError(e);
                 }
             });
         }

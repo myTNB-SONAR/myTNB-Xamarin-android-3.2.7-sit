@@ -11,6 +11,7 @@ using Android.Views;
 using Android.Widget;
 using myTNB_Android.Src.AppLaunch.Models;
 using myTNB_Android.Src.Database.Model;
+using myTNB_Android.Src.Utils;
 
 namespace myTNB_Android.Src.SelectFeedbackState.MVP
 {
@@ -26,15 +27,21 @@ namespace myTNB_Android.Src.SelectFeedbackState.MVP
 
         public void OnSelect(FeedbackState feedbackState)
         {
+            try {
             FeedbackStateEntity.RemoveActive();
             FeedbackStateEntity.SetSelected(feedbackState.StateId);
 
             this.mView.ShowSelectedSuccess(feedbackState);
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public void Start()
         {
-
+            try {
             var list = new List<FeedbackState>();
             var entityList = FeedbackStateEntity.GetActiveList();
             foreach (FeedbackStateEntity entity in entityList)
@@ -48,6 +55,11 @@ namespace myTNB_Android.Src.SelectFeedbackState.MVP
             }
             List<FeedbackState> SortedList = list.OrderBy(o => o.StateName).ToList();
             this.mView.ShowList(SortedList);
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
     }
 }

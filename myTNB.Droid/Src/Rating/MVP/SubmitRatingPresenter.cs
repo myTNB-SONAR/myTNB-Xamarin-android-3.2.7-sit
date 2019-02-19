@@ -45,8 +45,9 @@ namespace myTNB_Android.Src.Rating.MVP
         public async void GetRateUsQuestions(string questionCategoryID)
         {
             cts = new CancellationTokenSource();
+            if (mView.IsActive()) {
             this.mView.ShowProgressDialog();
-
+            }
             ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
 
 #if DEBUG
@@ -63,7 +64,10 @@ namespace myTNB_Android.Src.Rating.MVP
                    QuestionCategoryId = questionCategoryID
                 }, cts.Token);
 
-                this.mView.HideProgressDialog();
+                if (mView.IsActive())
+                {
+                    this.mView.HideProgressDialog();
+                }
 
                 if (questionRespone.feedbackQuestionStatus.IsError)
                 {
@@ -78,20 +82,32 @@ namespace myTNB_Android.Src.Rating.MVP
             {
                 Log.Debug(TAG, "Cancelled Exception");
                 // ADD OPERATION CANCELLED HERE
-                this.mView.HideProgressDialog();
+                if (mView.IsActive())
+                {
+                    this.mView.HideProgressDialog();
+                }
+                Utility.LoggingNonFatalError(e);
             }
             catch (ApiException apiException)
             {
                 // ADD HTTP CONNECTION EXCEPTION HERE
                 Log.Debug(TAG, "Api Exception" + apiException.Message);
-                this.mView.HideProgressDialog();
+                if (mView.IsActive())
+                {
+                    this.mView.HideProgressDialog();
+                }
+                Utility.LoggingNonFatalError(apiException);
             }
             catch (System.Exception e)
             {
                 // ADD UNKNOWN EXCEPTION HERE
                 Log.Debug(TAG, "Stack " + e.StackTrace);
-                this.mView.HideProgressDialog();
+                if (mView.IsActive())
+                {
+                    this.mView.HideProgressDialog();
+                }
                 this.mView.ShowRetryOptionsUnknownException(e);
+                Utility.LoggingNonFatalError(e);
             }
         }
 
@@ -120,6 +136,7 @@ namespace myTNB_Android.Src.Rating.MVP
             }catch(Exception e)
             {
                 Log.Debug(TAG, e.StackTrace);
+                Utility.LoggingNonFatalError(e);
             }
         }
 
@@ -131,7 +148,10 @@ namespace myTNB_Android.Src.Rating.MVP
         public async void SubmitRateUs(SubmitRateUsRequest submitRateUsRequest)
         {
              cts = new CancellationTokenSource();
-            this.mView.ShowProgressDialog();
+            if (mView.IsActive())
+            {
+                this.mView.ShowProgressDialog();
+            }
 
             ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
 
@@ -145,7 +165,10 @@ namespace myTNB_Android.Src.Rating.MVP
             {
                 var submitRateUsResponse = await api.SubmitRateUs(submitRateUsRequest, cts.Token);
 
-                this.mView.HideProgressDialog();
+                if (mView.IsActive())
+                {
+                    this.mView.HideProgressDialog();
+                }
 
                 if (submitRateUsResponse.submitRateUsResult.IsError)
                 {
@@ -160,20 +183,32 @@ namespace myTNB_Android.Src.Rating.MVP
             {
                 Log.Debug(TAG, "Cancelled Exception");
                 // ADD OPERATION CANCELLED HERE
-                this.mView.HideProgressDialog();
+                if (mView.IsActive())
+                {
+                    this.mView.HideProgressDialog();
+                }
+                Utility.LoggingNonFatalError(e);
             }
             catch (ApiException apiException)
             {
                 // ADD HTTP CONNECTION EXCEPTION HERE
                 Log.Debug(TAG, "Api Exception" + apiException.Message);
-                this.mView.HideProgressDialog();
+                if (mView.IsActive())
+                {
+                    this.mView.HideProgressDialog();
+                }
+                Utility.LoggingNonFatalError(apiException);
             }
             catch (System.Exception e)
             {
                 // ADD UNKNOWN EXCEPTION HERE
                 Log.Debug(TAG, "Stack " + e.StackTrace);
-                this.mView.HideProgressDialog();
+                if (mView.IsActive())
+                {
+                    this.mView.HideProgressDialog();
+                }
                 this.mView.ShowRetryOptionsUnknownException(e);
+                Utility.LoggingNonFatalError(e);
             }
         }
     }

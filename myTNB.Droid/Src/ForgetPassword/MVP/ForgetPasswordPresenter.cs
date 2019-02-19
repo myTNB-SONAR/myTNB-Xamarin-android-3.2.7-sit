@@ -43,7 +43,10 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
                 return;
             }
 
-            this.mView.ShowGetCodeProgressDialog();
+            if (mView.IsActive())
+            {
+                this.mView.ShowGetCodeProgressDialog();
+            }
 
             ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
 
@@ -68,6 +71,10 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
                    apiKeyId,
                    apiKeyId), cts.Token);
 
+                if (mView.IsActive())
+                {
+                    this.mView.HideGetCodeProgressDialog();
+                }
 
                 if (forgetPasswordResponse.response.IsError)
                 {
@@ -83,21 +90,36 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
             }
             catch (OperationCanceledException e)
             {
+                if (mView.IsActive())
+                {
+                    this.mView.HideGetCodeProgressDialog();
+                }
                 // CANCLLED
                 this.mView.ShowRetryOptionsCodeCancelledException(e);
+                Utility.LoggingNonFatalError(e);
             }
             catch (ApiException e)
             {
+                if (mView.IsActive())
+                {
+                    this.mView.HideGetCodeProgressDialog();
+                }
                 // API EXCEPTION
                 this.mView.ShowRetryOptionsCodeApiException(e);
+                Utility.LoggingNonFatalError(e);
             }
             catch (Exception e)
             {
+                if (mView.IsActive())
+                {
+                    this.mView.HideGetCodeProgressDialog();
+                }
                 // UNKNOWN EXCEPTION
                 this.mView.ShowRetryOptionsCodeUnknownException(e);
+                Utility.LoggingNonFatalError(e);
             }
 
-            this.mView.HideGetCodeProgressDialog();
+
         }
 
         public void OnComplete()
@@ -137,8 +159,10 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
             }
 
             this.mView.DisableSubmitButton();
-            this.mView.ShowProgressDialog();
 
+            if (mView.IsActive()) {
+            this.mView.ShowProgressDialog();
+            }
             ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
 
 #if DEBUG
@@ -162,6 +186,10 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
                    apiKeyId,
                    apiKeyId), cts.Token);
 
+                if (mView.IsActive())
+                {
+                    this.mView.HideProgressDialog();
+                }
 
                 if (forgetPasswordResponse.response.IsError)
                 {
@@ -182,23 +210,37 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
             }
             catch (OperationCanceledException e)
             {
+                if (mView.IsActive())
+                {
+                    this.mView.HideProgressDialog();
+                }
                 // CANCLLED
                 this.mView.ShowRetryOptionsCancelledException(e);
+                Utility.LoggingNonFatalError(e);
             }
             catch (ApiException e)
             {
+                if (mView.IsActive())
+                {
+                    this.mView.HideProgressDialog();
+                }
                 // API EXCEPTION
                 this.mView.ShowRetryOptionsApiException(e);
+                Utility.LoggingNonFatalError(e);
             }
             catch (Exception e)
             {
+                if (mView.IsActive())
+                {
+                    this.mView.HideProgressDialog();
+                }
                 // UNKNOWN EXCEPTION
                 this.mView.ShowRetryOptionsUnknownException(e);
+                Utility.LoggingNonFatalError(e);
             }
 
 
             this.mView.EnableSubmitButton();
-            this.mView.HideProgressDialog();
 
         }
     }

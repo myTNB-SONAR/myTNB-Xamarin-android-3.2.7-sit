@@ -25,6 +25,7 @@ using Java.Util;
 using myTNB_Android.Src.AddAccount.Fragment;
 using myTNB_Android.Src.MultipleAccountPayment.Activity;
 using myTNB_Android.Src.Utils.Custom.ProgressDialog;
+using System.Runtime;
 
 namespace myTNB_Android.Src.NotificationDetails.Activity
 {
@@ -129,6 +130,7 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
             //{
             //    retrievalDialog.Show();
             //}
+            try {
             if (loadingOverlay != null && loadingOverlay.IsShowing)
             {
                 loadingOverlay.Dismiss();
@@ -136,6 +138,9 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
 
             loadingOverlay = new LoadingOverlay(this, Resource.Style.LoadingOverlyDialogStyle);
             loadingOverlay.Show();
+        } catch(Exception e) {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public void HideRetrievalProgress()
@@ -144,9 +149,15 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
             //{
             //    retrievalDialog.Dismiss();
             //}
+            try {
             if (loadingOverlay != null && loadingOverlay.IsShowing)
             {
                 loadingOverlay.Dismiss();
+            }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
             }
         }
 
@@ -154,6 +165,8 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
+
+            try {
             retrievalDialog = new MaterialDialog.Builder(this)
             .Title(GetString(Resource.String.notification_detail_retrieval_progress_title))
             .Content(GetString(Resource.String.notification_detail_retrieval_progress_content))
@@ -181,19 +194,35 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
 
             this.newBillPresenter = new NotificationDetailNewBillPresenter(this);
             this.newBillUserActionsListener.Start();
-
+        } catch(Exception e) {
+                Utility.LoggingNonFatalError(e);
+            }
 
         }
+
+
         [OnClick(Resource.Id.btnPay)]
         void OnPay(object sender, EventArgs eventArgs)
         {
+            try {
             this.newBillUserActionsListener.OnPayment(notificationDetails);
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         [OnClick(Resource.Id.btnViewDetails)]
         void OnViewDetails(object sender, EventArgs eventArgs)
         {
+            try {
             this.newBillUserActionsListener.OnViewDetails(notificationDetails);
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public override void ShowAccountNumber()
@@ -203,6 +232,7 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
 
         public void ShowMonthWildCard()
         {
+            try {
             // TODO : ADD Month Name to notification_detail_new_bill_title_wildcard 
             if (notificationDetails.AccountDetails != null)
             {
@@ -212,7 +242,7 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
                     d = dateParser.Parse(notificationDetails.AccountDetails.BillDate);
                 }catch (ParseException pe)
                 {
-
+                        Utility.LoggingNonFatalError(pe);
                 }
                 if (d != null)
                 {
@@ -220,33 +250,66 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
                 }
                 
             }
+        } catch(Exception e) {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public void ShowBillDatedWildcard()
         {
+            try {
             // TODO : ADD Bill date to notification_detail_new_bill_sub_title_wildcard
             if (notificationDetails.AccountDetails != null)
             {
                 txtNotificationSubTitle.Text = GetString(Resource.String.notification_detail_new_bill_sub_title_wildcard, notificationDetails.AccountDetails.BillDate);
             }
-           
+        } catch(Exception e) {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public void ShowTotalOutstandingAmtWildcard()
         {
+            try {
             // TODO : ADD Outstanding Amt 
             if (notificationDetails.AccountDetails != null)
             {
                 txtTotalOutstandingAmtContent.Text = "RM" + numberFormatter.Format(notificationDetails.AccountDetails.AmountPayable);
             }
+        } catch(Exception e) {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public void ShowPaymentDueWildcard()
         {
-            // TODO : ADD PAyment Due
-            if (notificationDetails.AccountDetails != null)
+            try
             {
-                txtNotificationDetailsPaymentDueContent.Text = notificationDetails.AccountDetails.PaymentDueDate;
+                // TODO : ADD PAyment Due
+                if (notificationDetails.AccountDetails != null)
+                {
+                    txtNotificationDetailsPaymentDueContent.Text = notificationDetails.AccountDetails.PaymentDueDate;
+                }
+            } catch(Exception e) {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+
+        public override void OnTrimMemory(TrimMemory level)
+        {
+            base.OnTrimMemory(level);
+
+            switch (level)
+            {
+                case TrimMemory.RunningLow:
+                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
+                    GC.Collect();
+                    break;
+                default:
+                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
+                    GC.Collect();
+                    break;
             }
         }
     }

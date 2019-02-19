@@ -27,7 +27,6 @@
                 android:layout_height="wrap_content"
                 android:drawableLeft="@drawable/placeholder_name"
                 android:drawablePadding="6dp"
-                android:digits="@string/name_validation_digits"
                 android:hint="@string/update_account_hint_account_nickname"
                 android:inputType="text"
                 android:maxLines="1" />

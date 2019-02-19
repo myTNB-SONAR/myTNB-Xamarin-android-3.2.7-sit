@@ -27,6 +27,7 @@ using AFollestad.MaterialDialogs;
 using myTNB_Android.Src.Utils.Custom.ProgressDialog;
 using myTNB_Android.Src.Base.Api;
 using myTNB_Android.Src.SummaryDashBoard.Models;
+using System.Runtime;
 
 namespace myTNB_Android.Src.AddAccount.Activity
 {
@@ -109,6 +110,8 @@ namespace myTNB_Android.Src.AddAccount.Activity
             //{
             //    this.mGetAccountsProgressDialog.Show();
             //}
+            try {
+            if (IsActive()) {
             if (loadingOverlay != null && loadingOverlay.IsShowing)
             {
                 loadingOverlay.Dismiss();
@@ -116,6 +119,12 @@ namespace myTNB_Android.Src.AddAccount.Activity
 
             loadingOverlay = new LoadingOverlay(this, Resource.Style.LoadingOverlyDialogStyle);
             loadingOverlay.Show();
+            }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public void HideGetAccountsProgressDialog()
@@ -124,14 +133,24 @@ namespace myTNB_Android.Src.AddAccount.Activity
             //{
             //    this.mGetAccountsProgressDialog.Dismiss();
             //}
-            if (loadingOverlay != null && loadingOverlay.IsShowing)
+            try {
+            if (IsActive())
             {
-                loadingOverlay.Dismiss();
+                if (loadingOverlay != null && loadingOverlay.IsShowing)
+                {
+                    loadingOverlay.Dismiss();
+                }
+            }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
             }
         }
 
         public void ShowAccountList(List<Account> response)
         {
+            try {
             if (response != null)
             { 
             if (response.Count > 0)
@@ -193,10 +212,16 @@ namespace myTNB_Android.Src.AddAccount.Activity
                     mNoAccountFoundDialog.Show();
                 }
             }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         void OnItemClick(object sender, int position)
         {
+            try {
             NewAccount item = accountList[position];
             mDeleteDialog = new AlertDialog.Builder(this)
               .SetTitle("Remove Account")
@@ -224,10 +249,16 @@ namespace myTNB_Android.Src.AddAccount.Activity
             {
                 mDeleteDialog.Show();
             }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         void OnAdditionalItemClick(object sender, int position)
         {
+            try {
             NewAccount item = additionalAccountList[position];
             mDeleteDialog = new AlertDialog.Builder(this)
               .SetTitle("Remove Account")
@@ -259,6 +290,11 @@ namespace myTNB_Android.Src.AddAccount.Activity
             {
                 mDeleteDialog.Show();
             }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public void ShowAddAnotherAccountScreen()
@@ -269,87 +305,92 @@ namespace myTNB_Android.Src.AddAccount.Activity
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-
-            // Create your application here
-            mPresenter = new LinkAccountPresenter(this);
-
-            mGetAccountsProgressDialog = new AlertDialog.Builder(this)
-               .SetTitle("Loading..")
-               .SetMessage("Please wait while we are fetching account details")
-               .SetCancelable(false)
-               .Create();
-
-            if (Intent.HasExtra("fromDashboard"))
+            try
             {
-                fromDashboard = Intent.Extras.GetBoolean("fromDashboard", false);
-            }
+                // Create your application here
+                mPresenter = new LinkAccountPresenter(this);
 
-            TextViewUtils.SetMuseoSans500Typeface(textNoOfAcoount);
-            TextViewUtils.SetMuseoSans300Typeface(labelAccountLabel);
+                mGetAccountsProgressDialog = new AlertDialog.Builder(this)
+                   .SetTitle("Loading..")
+                   .SetMessage("Please wait while we are fetching account details")
+                   .SetCancelable(false)
+                   .Create();
 
-            adapter = new AccountListAdapter(this, accountList);
-            layoutManager = new LinearLayoutManager(this, LinearLayoutManager.Vertical, false);
-            accountListRecyclerView.SetLayoutManager(layoutManager);
-            accountListRecyclerView.SetAdapter(adapter);
-
-            additionalAdapter = new AdditionalAccountListAdapter(this, additionalAccountList);
-            layoutManager2 = new LinearLayoutManager(this, LinearLayoutManager.Vertical, false);
-            additionalAccountListRecyclerView.SetLayoutManager(layoutManager2);
-            additionalAccountListRecyclerView.SetAdapter(additionalAdapter);
-
-
-            //Get apiId and userId from the bundle
-            string email = UserEntity.GetActive().UserID;
-            string idNumber = UserEntity.GetActive().IdentificationNo; // Get IC number from registration;
-            string currentLinkedAccounts = "";
-            List<CustomerBillingAccount> savedAccounts = CustomerBillingAccount.List();
-            int numberOfAccounts = savedAccounts.Count();
-            for(int i=0; i < numberOfAccounts; i++)
-            {
-                currentLinkedAccounts += savedAccounts[i].AccNum;
-                if(i != numberOfAccounts-1)
+                if (Intent.HasExtra("fromDashboard"))
                 {
-                    currentLinkedAccounts += ",";
+                    fromDashboard = Intent.Extras.GetBoolean("fromDashboard", false);
                 }
 
-            }
-                //userActionsListener.GetAccounts(userID, apiID);
-            userActionsListener.GetAccountByIC(Constants.APP_CONFIG.API_KEY_ID, currentLinkedAccounts, email, idNumber);
+                TextViewUtils.SetMuseoSans500Typeface(textNoOfAcoount);
+                TextViewUtils.SetMuseoSans300Typeface(labelAccountLabel);
 
-            done = FindViewById<Button>(Resource.Id.btnAddAnotherAccount);
-            done.Click += delegate
-            {
-                ShowAddAnotherAccountScreen();
+                adapter = new AccountListAdapter(this, accountList);
+                layoutManager = new LinearLayoutManager(this, LinearLayoutManager.Vertical, false);
+                accountListRecyclerView.SetLayoutManager(layoutManager);
+                accountListRecyclerView.SetAdapter(adapter);
 
-            };
+                additionalAdapter = new AdditionalAccountListAdapter(this, additionalAccountList);
+                layoutManager2 = new LinearLayoutManager(this, LinearLayoutManager.Vertical, false);
+                additionalAccountListRecyclerView.SetLayoutManager(layoutManager2);
+                additionalAccountListRecyclerView.SetAdapter(additionalAdapter);
 
-            Button confirm = FindViewById<Button>(Resource.Id.btnConfirm);
-            confirm.Click += delegate
-            {
-                int totalAccountAdded = adapter.GetAccountList().Count() + additionalAdapter.GetAccountList().Count();
-                if (adapter.ItemCount == 0 && additionalAdapter.ItemCount == 0)
+
+                //Get apiId and userId from the bundle
+                string email = UserEntity.GetActive().UserID;
+                string idNumber = UserEntity.GetActive().IdentificationNo; // Get IC number from registration;
+                string currentLinkedAccounts = "";
+                List<CustomerBillingAccount> savedAccounts = new List<CustomerBillingAccount>();
+                savedAccounts = CustomerBillingAccount.List();
+                int numberOfAccounts = savedAccounts.Count();
+                for (int i = 0; i < numberOfAccounts; i++)
                 {
+                    currentLinkedAccounts += savedAccounts[i].AccNum;
+                    if (i != numberOfAccounts - 1)
+                    {
+                        currentLinkedAccounts += ",";
+                    }
+
+                }
+                //userActionsListener.GetAccounts(userID, apiID);
+                userActionsListener.GetAccountByIC(Constants.APP_CONFIG.API_KEY_ID, currentLinkedAccounts, email, idNumber);
+
+                done = FindViewById<Button>(Resource.Id.btnAddAnotherAccount);
+                done.Click += delegate
+                {
+                    ShowAddAnotherAccountScreen();
+
+                };
+
+                Button confirm = FindViewById<Button>(Resource.Id.btnConfirm);
+                confirm.Click += delegate
+                {
+                    int totalAccountAdded = adapter.GetAccountList().Count() + additionalAdapter.GetAccountList().Count();
+                    if (adapter.ItemCount == 0 && additionalAdapter.ItemCount == 0)
+                    {
                     //ShowNoAccountAddedError("No account added. Please click Add Another account button to add electricity account.");
                     this.userActionsListener.OnConfirm(accountList);
-                }
-                else if(totalAccountAdded > Constants.ADD_ACCOUNT_LIMIT)
-                {
-                    string errorLimit = GetString(Resource.String.add_account_link_account_limit_wildcard, Constants.ADD_ACCOUNT_LIMIT.ToString());
-                    ShowErrorMessage(errorLimit);
-                }
-                else
-                {
-                    CallAddMultileAccountsService();
-                }
+                    }
+                    else if (totalAccountAdded > Constants.ADD_ACCOUNT_LIMIT)
+                    {
+                        string errorLimit = GetString(Resource.String.add_account_link_account_limit_wildcard, Constants.ADD_ACCOUNT_LIMIT.ToString());
+                        ShowErrorMessage(errorLimit);
+                    }
+                    else
+                    {
+                        CallAddMultileAccountsService();
+                    }
 
 
                 // TODO : START ACTIVITY DASHBOARD
 
                 //this.userActionsListener.OnConfirm(accountList);
-                
+
             };
 
-            TextViewUtils.SetMuseoSans500Typeface(done, confirm);
+                TextViewUtils.SetMuseoSans500Typeface(done, confirm);
+            } catch(Exception e) {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         protected override void OnResume()
@@ -401,6 +442,7 @@ namespace myTNB_Android.Src.AddAccount.Activity
 
         public void ShowBCRMAccountList(List<BCRMAccount> response)
         {
+            try {
             if (response != null)
             {
                 ACCOUNT_COUNT = CustomerBillingAccount.List().Count() + 1;
@@ -457,10 +499,16 @@ namespace myTNB_Android.Src.AddAccount.Activity
                 textNoOfAcoount.Text = "No Accounts Found!";
                 ShowAddAnotherAccountScreen();
             }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public void CallAddMultileAccountsService()
         {
+            try {
             List<NewAccount> newList = adapter.GetAccountList();
             List<NewAccount> additionalList = additionalAdapter.GetAccountList();
             //if (ValidateLinkAccountList(newList) && ValidateLinkAccountList(additionalList) && ValidateAccountNames(newList, additionalList) && ValidateAddtionalAccountNames(additionalList, newList))
@@ -501,11 +549,18 @@ namespace myTNB_Android.Src.AddAccount.Activity
             {
                 ShowErrorMessage("Please enter valid account label.");
             }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public bool ValidateLinkAccountList(List<NewAccount> list)
         {
             bool flag = true;
+            try {
+
             foreach (NewAccount item in list)
             {
                 if(item.accountLabel.Equals(EG_ACCOUNT_LABEL) || item.accountLabel.Contains("eg.") || item.accountLabel.Contains("(") || item.accountLabel.Contains(")") || String.IsNullOrEmpty(item.accountLabel))
@@ -513,13 +568,20 @@ namespace myTNB_Android.Src.AddAccount.Activity
                     flag = false;
                 }
             }
-
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
             return flag;
         }
 
         public bool ValidateAccountNames(List<NewAccount> list, List<NewAccount> addtionalList)
         {
+
             bool flag = true;
+            try {
+
             List<CustomerBillingAccount> accounts = CustomerBillingAccount.List();
             int index = 0;
             int additioanlIndex = 0;
@@ -543,16 +605,16 @@ namespace myTNB_Android.Src.AddAccount.Activity
                         break;
                     }
 
-                    if (!Utility.isAlphaNumeric(item.accountLabel))
-                    {
-                        flag = false;
-                        AccountListViewHolder vh = (AccountListViewHolder)accountListRecyclerView.FindViewHolderForAdapterPosition(currentItemIndex);
-                        if (vh != null)
-                        {
-                            vh.textInputLayoutAccountLabel.Error = GetString(Resource.String.invalid_charac);
-                        }
-                        break;
-                    }
+                    //if (!Utility.isAlphaNumeric(item.accountLabel))
+                    //{
+                    //    flag = false;
+                    //    AccountListViewHolder vh = (AccountListViewHolder)accountListRecyclerView.FindViewHolderForAdapterPosition(currentItemIndex);
+                    //    if (vh != null)
+                    //    {
+                    //        vh.textInputLayoutAccountLabel.Error = GetString(Resource.String.invalid_charac);
+                    //    }
+                    //    break;
+                    //}
 
                     foreach (CustomerBillingAccount savedItem in accounts)
                     {
@@ -623,96 +685,34 @@ namespace myTNB_Android.Src.AddAccount.Activity
                 }
                 currentItemIndex++;
             }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
             return flag;
         }
 
         public bool ValidateAddtionalAccountNames(List<NewAccount> aditionallist, List<NewAccount> newlist)
         {
             bool flag = true;
-            List<CustomerBillingAccount> accounts = CustomerBillingAccount.List();
-            int index = 0;
-            int newlistIndex = 0;
-            int currentItemIndex = 0;
-            foreach (NewAccount item in aditionallist)
+            try
             {
-                if (!string.IsNullOrEmpty(item.accountLabel))
+                List<CustomerBillingAccount> accounts = CustomerBillingAccount.List();
+                int index = 0;
+                int newlistIndex = 0;
+                int currentItemIndex = 0;
+                foreach (NewAccount item in aditionallist)
                 {
-
-                    if (item.accountLabel.Equals(EG_ACCOUNT_LABEL) || item.accountLabel.Contains("eg.") || item.accountLabel.Contains("(") || item.accountLabel.Contains(")") || String.IsNullOrEmpty(item.accountLabel))
+                    if (!string.IsNullOrEmpty(item.accountLabel))
                     {
-                        flag = false;
-                        if (currentItemIndex < aditionallist.Count())
-                        {
-                            AdditionalAccountViewHolder vh = (AdditionalAccountViewHolder)additionalAccountListRecyclerView.FindViewHolderForAdapterPosition(currentItemIndex);
-                            if (vh != null)
-                            {
-                                vh.textInputLayoutAccountLabel.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
-                                vh.textInputLayoutAccountLabel.Error = GetString(Resource.String.add_account_duplicate_account_nickname);
-                            }
-                        }
-                        break;
-                    }
 
-                    if (!Utility.isAlphaNumeric(item.accountLabel))
-                    {
-                        flag = false;
-                        AdditionalAccountViewHolder vh = (AdditionalAccountViewHolder)additionalAccountListRecyclerView.FindViewHolderForAdapterPosition(currentItemIndex);
-                        if (vh != null)
-                        {
-                            vh.textInputLayoutAccountLabel.Error = GetString(Resource.String.invalid_charac);
-                        }
-                        break;
-                    }
-
-                    foreach (CustomerBillingAccount savedItem in accounts)
-                    {
-                        if (savedItem.AccDesc.ToLower().Trim().Equals(item.accountLabel.ToString().ToLower().Trim()))
+                        if (item.accountLabel.Equals(EG_ACCOUNT_LABEL) || item.accountLabel.Contains("eg.") || item.accountLabel.Contains("(") || item.accountLabel.Contains(")") || String.IsNullOrEmpty(item.accountLabel))
                         {
                             flag = false;
-                            if (index < aditionallist.Count()) {
-                                AdditionalAccountViewHolder vh = (AdditionalAccountViewHolder)additionalAccountListRecyclerView.FindViewHolderForAdapterPosition(index);
-                                if(vh != null)
-                                {
-                                    vh.textInputLayoutAccountLabel.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
-                                    vh.textInputLayoutAccountLabel.Error = GetString(Resource.String.add_account_duplicate_account_nickname);
-                                }
-                            }
-                            break;
-                        }
-                        index++;
-                    }
-
-                    int itemOccurance = 0;
-                    foreach (NewAccount addiAccount in aditionallist)
-                    {
-                        if (addiAccount.accountLabel.ToLower().Trim().Equals(item.accountLabel.ToString().ToLower().Trim()))
-                        {
-                            itemOccurance++;   
-                        }
-                    }
-                    if(itemOccurance > 1)
-                    {
-                        flag = false;
-                        if (currentItemIndex < aditionallist.Count())
-                        {
-                            AdditionalAccountViewHolder vh = (AdditionalAccountViewHolder)additionalAccountListRecyclerView.FindViewHolderForAdapterPosition(currentItemIndex);
-                            if (vh != null)
+                            if (currentItemIndex < aditionallist.Count())
                             {
-                                vh.textInputLayoutAccountLabel.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
-                                vh.textInputLayoutAccountLabel.Error = GetString(Resource.String.add_account_duplicate_account_nickname);
-                            }
-                        }
-                        break;
-                    }
-
-                    foreach (NewAccount addiAccount in newlist)
-                    {
-                        if (addiAccount.accountLabel.ToLower().Trim().Equals(item.accountLabel.ToString().ToLower().Trim()))
-                        {
-                            flag = false;
-                            if (newlistIndex < newlist.Count())
-                            {
-                                AccountListViewHolder vh = (AccountListViewHolder)accountListRecyclerView.FindViewHolderForAdapterPosition(newlistIndex);
+                                AdditionalAccountViewHolder vh = (AdditionalAccountViewHolder)additionalAccountListRecyclerView.FindViewHolderForAdapterPosition(currentItemIndex);
                                 if (vh != null)
                                 {
                                     vh.textInputLayoutAccountLabel.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
@@ -721,15 +721,89 @@ namespace myTNB_Android.Src.AddAccount.Activity
                             }
                             break;
                         }
-                        newlistIndex++;
+
+                        //if (!Utility.isAlphaNumeric(item.accountLabel))
+                        //{
+                        //    flag = false;
+                        //    AdditionalAccountViewHolder vh = (AdditionalAccountViewHolder)additionalAccountListRecyclerView.FindViewHolderForAdapterPosition(currentItemIndex);
+                        //    if (vh != null)
+                        //    {
+                        //        vh.textInputLayoutAccountLabel.Error = GetString(Resource.String.invalid_charac);
+                        //    }
+                        //    break;
+                        //}
+
+                        foreach (CustomerBillingAccount savedItem in accounts)
+                        {
+                            if (savedItem.AccDesc.ToLower().Trim().Equals(item.accountLabel.ToString().ToLower().Trim()))
+                            {
+                                flag = false;
+                                if (index < aditionallist.Count())
+                                {
+                                    AdditionalAccountViewHolder vh = (AdditionalAccountViewHolder)additionalAccountListRecyclerView.FindViewHolderForAdapterPosition(index);
+                                    if (vh != null)
+                                    {
+                                        vh.textInputLayoutAccountLabel.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
+                                        vh.textInputLayoutAccountLabel.Error = GetString(Resource.String.add_account_duplicate_account_nickname);
+                                    }
+                                }
+                                break;
+                            }
+                            index++;
+                        }
+
+                        int itemOccurance = 0;
+                        foreach (NewAccount addiAccount in aditionallist)
+                        {
+                            if (addiAccount.accountLabel.ToLower().Trim().Equals(item.accountLabel.ToString().ToLower().Trim()))
+                            {
+                                itemOccurance++;
+                            }
+                        }
+                        if (itemOccurance > 1)
+                        {
+                            flag = false;
+                            if (currentItemIndex < aditionallist.Count())
+                            {
+                                AdditionalAccountViewHolder vh = (AdditionalAccountViewHolder)additionalAccountListRecyclerView.FindViewHolderForAdapterPosition(currentItemIndex);
+                                if (vh != null)
+                                {
+                                    vh.textInputLayoutAccountLabel.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
+                                    vh.textInputLayoutAccountLabel.Error = GetString(Resource.String.add_account_duplicate_account_nickname);
+                                }
+                            }
+                            break;
+                        }
+
+                        foreach (NewAccount addiAccount in newlist)
+                        {
+                            if (addiAccount.accountLabel.ToLower().Trim().Equals(item.accountLabel.ToString().ToLower().Trim()))
+                            {
+                                flag = false;
+                                if (newlistIndex < newlist.Count())
+                                {
+                                    AccountListViewHolder vh = (AccountListViewHolder)accountListRecyclerView.FindViewHolderForAdapterPosition(newlistIndex);
+                                    if (vh != null)
+                                    {
+                                        vh.textInputLayoutAccountLabel.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
+                                        vh.textInputLayoutAccountLabel.Error = GetString(Resource.String.add_account_duplicate_account_nickname);
+                                    }
+                                }
+                                break;
+                            }
+                            newlistIndex++;
+                        }
                     }
+                    else
+                    {
+                        flag = false;
+                        break;
+                    }
+                    currentItemIndex++;
                 }
-                else
-                {
-                    flag = false;
-                    break;
-                }
-                currentItemIndex++;
+
+            } catch(Exception e) {
+                Utility.LoggingNonFatalError(e);
             }
             return flag;
         }
@@ -772,6 +846,7 @@ namespace myTNB_Android.Src.AddAccount.Activity
 
         protected override void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
         {
+            try {
             //base.OnActivityResult(requestCode, resultCode, data);
             if(requestCode == ADD_ACCOUNT_REQUEST_CODE)
             {
@@ -824,12 +899,17 @@ namespace myTNB_Android.Src.AddAccount.Activity
                     }
                 }
             }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public void ShowAddAccountSuccess(AddMultipleAccountResponse.Response response)
         {
 
-            
+            try {
             int ctr = 0;
             bool hasAlreadyExistingSelected = CustomerBillingAccount.HasSelected();
 
@@ -946,6 +1026,11 @@ namespace myTNB_Android.Src.AddAccount.Activity
             Intent sucessIntent = new Intent(this, typeof(AddAccountSuccessActivity));
             sucessIntent.PutExtra("Accounts", JsonConvert.SerializeObject(finalAccountList));
             StartActivity(sucessIntent);
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public void ShowAddAccountFail(string errorMessage)
@@ -971,6 +1056,8 @@ namespace myTNB_Android.Src.AddAccount.Activity
 
         public void ShowAddingAccountProgressDialog()
         {
+            try {
+            if (IsActive()) {
             mAddAccountProgressDialog = new MaterialDialog.Builder(this)
                 .CustomView(Resource.Layout.CustomDialogLayout, false)
                 .Cancelable(true)
@@ -997,13 +1084,28 @@ namespace myTNB_Android.Src.AddAccount.Activity
             {
                 mAddAccountProgressDialog.Show();
             }
+            }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public void HideAddingAccountProgressDialog()
         {
-            if (mAddAccountProgressDialog != null && mAddAccountProgressDialog.IsShowing)
+            try {
+            if (IsActive())
             {
-                mAddAccountProgressDialog.Dismiss();
+                if (mAddAccountProgressDialog != null && mAddAccountProgressDialog.IsShowing)
+                {
+                    mAddAccountProgressDialog.Dismiss();
+                }
+            }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
             }
         }
 
@@ -1115,6 +1217,23 @@ namespace myTNB_Android.Src.AddAccount.Activity
                 ShowDashboard();
             else
                 this.Finish();
+        }
+
+        public override void OnTrimMemory(TrimMemory level)
+        {
+            base.OnTrimMemory(level);
+
+            switch (level)
+            {
+                case TrimMemory.RunningLow:
+                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
+                    GC.Collect();
+                    break;
+                default:
+                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
+                    GC.Collect();
+                    break;
+            }
         }
     }
 }

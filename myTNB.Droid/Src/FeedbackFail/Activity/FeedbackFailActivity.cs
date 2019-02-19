@@ -15,6 +15,7 @@ using CheeseBind;
 using myTNB_Android.Src.Utils;
 using myTNB_Android.Src.myTNBMenu.Activity;
 using myTNB_Android.Src.Database.Model;
+using System.Runtime;
 
 namespace myTNB_Android.Src.FeedbackFail.Activity
 {
@@ -67,6 +68,24 @@ namespace myTNB_Android.Src.FeedbackFail.Activity
             var dashboardIntent = new Intent(this , typeof(DashboardActivity));
             dashboardIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
             StartActivity(dashboardIntent);
+        }
+
+
+        public override void OnTrimMemory(TrimMemory level)
+        {
+            base.OnTrimMemory(level);
+
+            switch (level)
+            {
+                case TrimMemory.RunningLow:
+                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
+                    GC.Collect();
+                    break;
+                default:
+                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
+                    GC.Collect();
+                    break;
+            }
         }
     }
 }

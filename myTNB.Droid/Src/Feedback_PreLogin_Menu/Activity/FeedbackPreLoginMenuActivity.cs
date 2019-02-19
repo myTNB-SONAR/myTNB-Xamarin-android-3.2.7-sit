@@ -25,6 +25,7 @@ using Android.Support.Design.Widget;
 using myTNB_Android.Src.Database.Model;
 using Android.Support.Constraints;
 using myTNB_Android.Src.Utils.Custom.ProgressDialog;
+using System.Runtime;
 
 namespace myTNB_Android.Src.Feedback_PreLogin_Menu.Activity
 {
@@ -106,7 +107,7 @@ namespace myTNB_Android.Src.Feedback_PreLogin_Menu.Activity
 
             // Create your application here
 
-
+            try {
             progressDialog = new MaterialDialog.Builder(this)
                 .Title(Resource.String.select_submitted_feedback_dialog_title)
                 .Content(Resource.String.select_submitted_feedback_dialog_content)
@@ -127,6 +128,9 @@ namespace myTNB_Android.Src.Feedback_PreLogin_Menu.Activity
 
             mPresenter = new FeedbackPreLoginMenuPresenter(this , this.DeviceId());
             this.userActionsListener.Start();
+        } catch (Exception e) {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
 
@@ -219,6 +223,7 @@ namespace myTNB_Android.Src.Feedback_PreLogin_Menu.Activity
             //{
             //    progressDialog.Show();
             //}
+            try {
             if (loadingOverlay != null && loadingOverlay.IsShowing)
             {
                 loadingOverlay.Dismiss();
@@ -226,6 +231,9 @@ namespace myTNB_Android.Src.Feedback_PreLogin_Menu.Activity
 
             loadingOverlay = new LoadingOverlay(this, Resource.Style.LoadingOverlyDialogStyle);
             loadingOverlay.Show();
+        } catch (Exception e) {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public void HideProgressDialog()
@@ -234,9 +242,13 @@ namespace myTNB_Android.Src.Feedback_PreLogin_Menu.Activity
             //{
             //    progressDialog.Dismiss();
             //}
+            try {
             if (loadingOverlay != null && loadingOverlay.IsShowing)
             {
                 loadingOverlay.Dismiss();
+            }
+        } catch (Exception e) {
+                Utility.LoggingNonFatalError(e);
             }
         }
 
@@ -316,30 +328,35 @@ namespace myTNB_Android.Src.Feedback_PreLogin_Menu.Activity
 
         public void ShowFeedbackMenu(List<FeedbackCategoryEntity> feedbackCategory)
         {
-            billRelatedConstraint.Visibility = ViewStates.Gone;
-            faultyStreetLampsContraint.Visibility = ViewStates.Gone;
-            othersContraint.Visibility = ViewStates.Gone;
-            spaceBillRelated.Visibility = ViewStates.Gone;
-            spaceFaultyStreetLamps.Visibility = ViewStates.Gone;
-            spaceOthers.Visibility = ViewStates.Gone;
-            foreach (FeedbackCategoryEntity fc in feedbackCategory)
+            try
             {
-                if (fc.Id.Equals("1"))
+                billRelatedConstraint.Visibility = ViewStates.Gone;
+                faultyStreetLampsContraint.Visibility = ViewStates.Gone;
+                othersContraint.Visibility = ViewStates.Gone;
+                spaceBillRelated.Visibility = ViewStates.Gone;
+                spaceFaultyStreetLamps.Visibility = ViewStates.Gone;
+                spaceOthers.Visibility = ViewStates.Gone;
+                foreach (FeedbackCategoryEntity fc in feedbackCategory)
                 {
-                    billRelatedConstraint.Visibility = ViewStates.Visible;
-                    spaceBillRelated.Visibility = ViewStates.Visible;
-                }
-                else if (fc.Id.Equals("2"))
-                {
-                    faultyStreetLampsContraint.Visibility = ViewStates.Visible;
-                    spaceFaultyStreetLamps.Visibility = ViewStates.Visible;
-                }
-                else if (fc.Id.Equals("3"))
-                {
-                    othersContraint.Visibility = ViewStates.Visible;
-                    spaceOthers.Visibility = ViewStates.Visible;
-                }
+                    if (fc.Id.Equals("1"))
+                    {
+                        billRelatedConstraint.Visibility = ViewStates.Visible;
+                        spaceBillRelated.Visibility = ViewStates.Visible;
+                    }
+                    else if (fc.Id.Equals("2"))
+                    {
+                        faultyStreetLampsContraint.Visibility = ViewStates.Visible;
+                        spaceFaultyStreetLamps.Visibility = ViewStates.Visible;
+                    }
+                    else if (fc.Id.Equals("3"))
+                    {
+                        othersContraint.Visibility = ViewStates.Visible;
+                        spaceOthers.Visibility = ViewStates.Visible;
+                    }
 
+                }
+            } catch (Exception e) {
+                Utility.LoggingNonFatalError(e);
             }
         }
 
@@ -392,6 +409,24 @@ namespace myTNB_Android.Src.Feedback_PreLogin_Menu.Activity
             mErrorMessageSnackBar.Show();
         }
 
+
+
+        public override void OnTrimMemory(TrimMemory level)
+        {
+            base.OnTrimMemory(level);
+
+            switch (level)
+            {
+                case TrimMemory.RunningLow:
+                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
+                    GC.Collect();
+                    break;
+                default:
+                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
+                    GC.Collect();
+                    break;
+            }
+        }
 
     }
 }

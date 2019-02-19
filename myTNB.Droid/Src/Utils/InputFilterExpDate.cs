@@ -67,7 +67,17 @@ namespace myTNB_Android.Src.Utils
                         {
                             return empty;
                         }
+                        int edtLength = _editText.Text.ToString().Length;
+                        if (edtLength >= dstart) {
+                            dstart = edtLength - dstart;
+                        } else {
+                            if (dstart > 0) {
+                                dstart = dstart - 1;    
+                            } else if (dstart < 0) {
+                                dstart = 0;
+                            }
 
+                        }
                         string temp = source.ToString().Insert(dstart, value: "/");
                         return new Java.Lang.String(temp);
                     }

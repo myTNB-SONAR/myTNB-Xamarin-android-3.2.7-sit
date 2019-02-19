@@ -16,6 +16,7 @@ using myTNB_Android.Src.Utils;
 using myTNB_Android.Src.myTNBMenu.Activity;
 using myTNB_Android.Src.myTNBMenu.Models;
 using Newtonsoft.Json;
+using System.Runtime;
 
 namespace myTNB_Android.Src.GetAccessSuccess.Activity
 {
@@ -50,14 +51,29 @@ namespace myTNB_Android.Src.GetAccessSuccess.Activity
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
+
+            try {
             TextViewUtils.SetMuseoSans500Typeface(txtTitleInfo , txtAccountName, btnDashboard);
             TextViewUtils.SetMuseoSans300Typeface(txtAccountName , txtAddress);
 
-            selectedAccount = JsonConvert.DeserializeObject<AccountData>(Intent.Extras.GetString(Constants.SELECTED_ACCOUNT));
+                Bundle extras = Intent.Extras;
 
+                if (extras != null)
+                {
+                    if (extras.ContainsKey(Constants.SELECTED_ACCOUNT))
+                    {
+                        //selectedAccount = JsonConvert.DeserializeObject<AccountData>(Intent.Extras.GetString(Constants.SELECTED_ACCOUNT));
+                        selectedAccount = DeSerialze<AccountData>(extras.GetString(Constants.SELECTED_ACCOUNT));
+                    }
+                }
             txtAccountName.Text = selectedAccount.AccountName;
             txtAccountNum.Text = selectedAccount.AccountNum;
             txtAddress.Text = selectedAccount.AddStreet;
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         [OnClick(Resource.Id.btnDashboard)]
@@ -66,6 +82,25 @@ namespace myTNB_Android.Src.GetAccessSuccess.Activity
             Intent DashboardIntent = new Intent(this , typeof(DashboardActivity));
             DashboardIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
             StartActivity(DashboardIntent);
+        }
+
+
+
+        public override void OnTrimMemory(TrimMemory level)
+        {
+            base.OnTrimMemory(level);
+
+            switch (level)
+            {
+                case TrimMemory.RunningLow:
+                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
+                    GC.Collect();
+                    break;
+                default:
+                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
+                    GC.Collect();
+                    break;
+            }
         }
     }
 }

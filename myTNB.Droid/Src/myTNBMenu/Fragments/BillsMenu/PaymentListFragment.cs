@@ -94,17 +94,17 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.BillsMenu
                 }
             }
 
-            if (responseData != null && responseData.Data.PaymentHistory != null && responseData.Data.PaymentHistory.Count > 0)
+            if (responseData != null && responseData.Data != null && responseData.Data.PaymentHistory != null && responseData.Data.PaymentHistory.Count > 0)
             {
                 paymentListAdapter.AddAll(responseData.Data.PaymentHistory);
             }
 
-            if (responseDataRE != null && responseDataRE.Data.PaymentHistoryRE != null && responseDataRE.Data.PaymentHistoryRE.Count > 0)
+            if (responseDataRE != null && responseDataRE.Data != null && responseDataRE.Data.PaymentHistoryRE != null && responseDataRE.Data.PaymentHistoryRE.Count > 0)
             {
                 rePaymentListAdapter.AddAll(responseDataRE.Data.PaymentHistoryRE);
             }
 
-            listView.SetNoScroll();
+            listView?.SetNoScroll();
 
             listView.ItemClick += ListView_ItemClick;
 
@@ -139,10 +139,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.BillsMenu
                 else
                 {
                     PaymentHistoryV5 selectedPayment = paymentListAdapter.GetItemObject(e.Position);
-                    if (!String.IsNullOrEmpty(selectedPayment.MechantTransId))
+                    if (!String.IsNullOrEmpty(selectedPayment?.MechantTransId))
                     {
                         Intent viewReceipt = new Intent(this.Activity, typeof(ViewReceiptMultiAccountNewDesignActivty));
-                        viewReceipt.PutExtra("merchantTransId", selectedPayment.MechantTransId);
+                        viewReceipt.PutExtra("merchantTransId", selectedPayment?.MechantTransId);
                         StartActivity(viewReceipt);
                     }
                 }

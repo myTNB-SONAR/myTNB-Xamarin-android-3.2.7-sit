@@ -51,8 +51,9 @@ namespace myTNB_Android.Src.PaymentSuccessExperienceRating.MVP
         public async void SubmitRatingAsync(string rating, string message, string ratingFor)
         {
             cts = new CancellationTokenSource();
+            if (mView.IsActive()) {
             this.mView.ShowProgressDialog();
-
+            }
 
 #if DEBUG || STUB
             var httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
@@ -72,7 +73,10 @@ namespace myTNB_Android.Src.PaymentSuccessExperienceRating.MVP
                     ratingFor = ratingFor
                 }, cts.Token);
 
-                this.mView.HideProgressDialog();
+                if (mView.IsActive())
+                {
+                    this.mView.HideProgressDialog();
+                }
                 if (!response.Data.IsError)
                 {
                     this.mView.ShowSubmitRatingSuccess(response);
@@ -84,20 +88,32 @@ namespace myTNB_Android.Src.PaymentSuccessExperienceRating.MVP
             }
             catch (System.OperationCanceledException e)
             {
-                this.mView.HideProgressDialog();
+                if (mView.IsActive())
+                {
+                    this.mView.HideProgressDialog();
+                }
                 this.mView.ShowErrorMessage("Something went wrong! Please try again later");
+                Utility.LoggingNonFatalError(e);
             }
             catch (ApiException apiException)
             {
                 // ADD HTTP CONNECTION EXCEPTION HERE
-                this.mView.HideProgressDialog();
+                if (mView.IsActive())
+                {
+                    this.mView.HideProgressDialog();
+                }
                 this.mView.ShowErrorMessage("Please check your internet connection."); 
+                Utility.LoggingNonFatalError(apiException);
             }
             catch (Exception e)
             {
                 // ADD UNKNOWN EXCEPTION HERE
-                this.mView.HideProgressDialog();
+                if (mView.IsActive())
+                {
+                    this.mView.HideProgressDialog();
+                }
                 this.mView.ShowErrorMessage("Please check your internet connection.");
+                Utility.LoggingNonFatalError(e);
             }
         }
     }

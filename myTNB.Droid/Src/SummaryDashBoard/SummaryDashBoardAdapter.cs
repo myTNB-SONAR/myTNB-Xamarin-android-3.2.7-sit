@@ -209,7 +209,7 @@ namespace myTNB_Android.Src.SummaryDashBoard
             LinearLayout mAdapterLayout;
 
             private ISummaryListener iSummaryListener = null;
-            private SummaryDashBoardDetails summaryDashBoardDetails = null;
+            private SummaryDashBoardDetails summaryDashBoardDetails = new SummaryDashBoardDetails();
 
             DecimalFormat decimalFormat = new DecimalFormat("#,###,###,###,##0.00");
 
@@ -238,52 +238,127 @@ namespace myTNB_Android.Src.SummaryDashBoard
 
             public void OnClick(View v)
             {
-                switch(v.Id) {
+                switch (v.Id)
+                {
                     case Resource.Id.adapterLayout:
-                        iSummaryListener.OnClick(summaryDashBoardDetails);
+                        try
+                        {
+                            if (summaryDashBoardDetails != null)
+                            {
+                                iSummaryListener.OnClick(summaryDashBoardDetails);
+                            }
+                            else
+                            {
+                                iSummaryListener.OnClick(null);
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            Utility.LoggingNonFatalError(e);
+                        }
+
                         break;
                 }
             }
 
 
-            public void PopulateData(SummaryDashBoardDetails summaryDashBoardDetails) {
-                this.summaryDashBoardDetails = summaryDashBoardDetails;
-                SetAcountName(summaryDashBoardDetails.AccName);
-                SetAmountText(summaryDashBoardDetails.AmountDue, summaryDashBoardDetails.AccType);
-                SetAcountNumber(summaryDashBoardDetails.AccNumber);
-                SetDueDate(summaryDashBoardDetails.BillDueDate, summaryDashBoardDetails.AmountDue, summaryDashBoardDetails);
-
+            public void PopulateData(SummaryDashBoardDetails summaryDashBoardDetails)
+            {
+                try
+                {
+                    this.summaryDashBoardDetails = summaryDashBoardDetails;
+                    SetAcountName(summaryDashBoardDetails.AccName);
+                    SetAmountText(summaryDashBoardDetails.AmountDue, summaryDashBoardDetails.AccType);
+                    SetAcountNumber(summaryDashBoardDetails.AccNumber);
+                    SetDueDate(summaryDashBoardDetails.BillDueDate, summaryDashBoardDetails.AmountDue, summaryDashBoardDetails);
+                }
+                catch (Exception e)
+                {
+                    Utility.LoggingNonFatalError(e);
+                }
             }
 
             public void SetAcountName(String accountName)
             {
-                accountNameText.Text = "";
-
-                if (!string.IsNullOrEmpty(accountName))
+                try
                 {
-                    accountNameText.Text = accountName;
+                    accountNameText.Text = "";
+
+                    if (!string.IsNullOrEmpty(accountName))
+                    {
+                        accountNameText.Text = accountName;
+                    }
+                }
+                catch (Exception e)
+                {
+                    Utility.LoggingNonFatalError(e);
                 }
             }
 
 
             public void SetAcountNumber(String accountNumberValue)
             {
-                accountNumberText.Text = "";
-
-                if (!string.IsNullOrEmpty(accountNumberValue))
+                try
                 {
-                    accountNumberText.Text = accountNumberValue;
+                    accountNumberText.Text = "";
+
+                    if (!string.IsNullOrEmpty(accountNumberValue))
+                    {
+                        accountNumberText.Text = accountNumberValue;
+                    }
+                }
+                catch (Exception e)
+                {
+                    Utility.LoggingNonFatalError(e);
                 }
             }
 
             public void SetAmountText(String amount, String accType)
             {
-                if (!string.IsNullOrEmpty(amount))
+                try
                 {
-                    
-                    if (accType.Equals("2"))
+                    if (!string.IsNullOrEmpty(amount))
                     {
-                        double amt = Convert.ToDouble(amount);
+
+                        if (accType.Equals("2"))
+                        {
+                            double amt = Convert.ToDouble(amount);
+                            amt = amt * -1;
+                            if (amt <= 0)
+                            {
+                                amt = 0.00;
+                            }
+                            else
+                            {
+                                amt = Math.Abs(amt);
+                            }
+                            amountText.Text = " " + decimalFormat.Format(amt);
+                        }
+                        else
+                        {
+                            double amt = Convert.ToDouble(amount);
+                            amountText.Text = " " + decimalFormat.Format(amt);
+                        }
+
+                    }
+                    else
+                    {
+                        amountText.Text = " 0.00";
+                    }
+                }
+                catch (Exception e)
+                {
+                    Utility.LoggingNonFatalError(e);
+                }
+            }
+
+            public void SetDueDate(String dueDateValue, String amount, SummaryDashBoardDetails summaryDashBoardDetails)
+            {
+                try
+                {
+                    double amt = Convert.ToDouble(amount);
+                    if (summaryDashBoardDetails.AccType.Equals("2"))
+                    {
                         amt = amt * -1;
                         if (amt <= 0)
                         {
@@ -293,82 +368,58 @@ namespace myTNB_Android.Src.SummaryDashBoard
                         {
                             amt = Math.Abs(amt);
                         }
-                        amountText.Text = " " + decimalFormat.Format(amt);
-                    }
-                    else
-                    {
-                        double amt = Convert.ToDouble(amount);
-                        amountText.Text = " " + decimalFormat.Format(amt);
                     }
 
-                }
-                else
-                {
-                    amountText.Text = " 0.00";
-                }
-                
-            }
 
-            public void SetDueDate(String dueDateValue, String amount, SummaryDashBoardDetails summaryDashBoardDetails)
-            {
-                double amt = Convert.ToDouble(amount);
-                if (summaryDashBoardDetails.AccType.Equals("2"))
-                {
-                    amt = amt * -1;
-                    if (amt <= 0)
+                    dueDate.Text = "--";
+
+                    if (!string.IsNullOrEmpty(dueDateValue) && amt > 0)
                     {
-                        amt = 0.00;
-                    }
-                    else
-                    {
-                        amt = Math.Abs(amt);
-                    }
-                }
-                
-
-                dueDate.Text = "--";
-
-                if (!string.IsNullOrEmpty(dueDateValue) && amt > 0)
-                {
-                    Date d = null;
-                    try
-                    {
-                        d = dateParser.Parse(dueDateValue);
-                    }
-                    catch (ParseException e)
-                    {
-
-                    }
-                    string dt = dateFormatter.Format(d);
-
-                    //DateTime dt = Convert.ToDateTime(dueDateValue);
-                    //dueDate.Text = dt.ToString("dd MMM");
-
-                    if (summaryDashBoardDetails.AccType.Equals("2"))
-                    {
-                        int incrementDays = int.Parse(summaryDashBoardDetails.IncrementREDueDateByDays == null ? "0" : summaryDashBoardDetails.IncrementREDueDateByDays);
-                        Calendar c = Calendar.Instance;
-                        c.Time = d;
-                        c.Add(CalendarField.Date, incrementDays);
-                        Date newDate = c.Time;
-                        if (amt == 0.00)
+                        Date d = null;
+                        try
                         {
-                            dueDate.Text = "--";
+                            d = dateParser.Parse(dueDateValue);
+                        }
+                        catch (ParseException e)
+                        {
+                            Utility.LoggingNonFatalError(e);
+                        }
+                        string dt = dateFormatter.Format(d);
+
+                        //DateTime dt = Convert.ToDateTime(dueDateValue);
+                        //dueDate.Text = dt.ToString("dd MMM");
+
+                        if (summaryDashBoardDetails.AccType.Equals("2"))
+                        {
+                            int incrementDays = int.Parse(summaryDashBoardDetails.IncrementREDueDateByDays == null ? "0" : summaryDashBoardDetails.IncrementREDueDateByDays);
+                            Calendar c = Calendar.Instance;
+                            c.Time = d;
+                            c.Add(CalendarField.Date, incrementDays);
+                            Date newDate = c.Time;
+                            if (amt == 0.00)
+                            {
+                                dueDate.Text = "--";
+                            }
+                            else
+                            {
+                                string dtnewDate = dateFormatter.Format(newDate);
+                                dueDate.Text = dtnewDate;
+                            }
                         }
                         else
                         {
-                            string dtnewDate = dateFormatter.Format(newDate);
-                            dueDate.Text = dtnewDate;
+                            dueDate.Text = dt;
                         }
-                    }
-                    else
-                    {
-                        dueDate.Text = dt;
-                    }
-                    
-                }
-            }
 
+                    }
+
+                }
+                catch (Exception e)
+                {
+                    Utility.LoggingNonFatalError(e);
+                }
+
+            }
         }
 
 
@@ -390,24 +441,34 @@ namespace myTNB_Android.Src.SummaryDashBoard
 
 
             public void SetHeaderText(String headertext) {
+                    try {
                 headerTextValue.Text = "";
 
                 if (!string.IsNullOrEmpty(headertext)) {
                     headerTextValue.Text = headertext;    
                 }
-
+                    }
+                    catch (Exception e)
+                    {
+                        Utility.LoggingNonFatalError(e);
+                    }
             }
 
 
             public void SetRightText(String righttext)
             {
+                    try {
                 rightTextValue.Text = "";
 
                 if (!string.IsNullOrEmpty(righttext))
                 {
                     rightTextValue.Text = righttext;
                 }
-
+                    }
+                    catch (Exception e)
+                    {
+                        Utility.LoggingNonFatalError(e);
+                    }
             }
         }
 

@@ -18,6 +18,7 @@ using Android.Content.PM;
 using Newtonsoft.Json;
 using myTNB_Android.Src.AddAccount.Adapter;
 using myTNB_Android.Src.Utils;
+using System.Runtime;
 
 namespace myTNB_Android.Src.AddAccount.Activity
 {
@@ -57,16 +58,22 @@ namespace myTNB_Android.Src.AddAccount.Activity
             accountListRecyclerView.SetLayoutManager(layoutManager);
             accountListRecyclerView.SetAdapter(adapter);
 
-            if (Intent.Extras != null)
+            Bundle extras = Intent.Extras;
+
+            if (extras != null)
             {
-                accountList = JsonConvert.DeserializeObject<List<NewAccount>>(Intent.Extras.GetString("Accounts"));
-                if (accountList != null)
+                if (extras.ContainsKey("Accounts")) {
+                    //accountList = JsonConvert.DeserializeObject<List<NewAccount>>(extras.GetString("Accounts"));
+                    accountList = DeSerialze<List<NewAccount>>(extras.GetString("Accounts"));
+                }
+            }
+                if (accountList != null && accountList.Count() > 0)
                 {
                     adapter = new AddedAccountsAdapter(this, accountList);
                     accountListRecyclerView.SetAdapter(adapter);
                     adapter.NotifyDataSetChanged();
                 }
-            }
+            
 
             Button done = FindViewById<Button>(Resource.Id.btnGetStarted);
             done.Click += delegate
@@ -92,6 +99,23 @@ namespace myTNB_Android.Src.AddAccount.Activity
             Intent DashboardIntent = new Intent(this, typeof(DashboardActivity));
             DashboardIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
             StartActivity(DashboardIntent);
+        }
+
+        public override void OnTrimMemory(TrimMemory level)
+        {
+            base.OnTrimMemory(level);
+
+            switch (level)
+            {
+                case TrimMemory.RunningLow:
+                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
+                    GC.Collect();
+                    break;
+                default:
+                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
+                    GC.Collect();
+                    break;
+            }
         }
     }
 }

@@ -39,6 +39,7 @@ namespace myTNB_Android.Src.Utils.Custom.Scanner
 
         public ZxingOverlayViewOverride(Context context) : base(context)
         {
+            try {
             this.SetWillNotDraw(false);
             // Initialize these once for performance rather than calling them every time in onDraw().
             paint = new Paint(PaintFlags.AntiAlias);
@@ -58,10 +59,16 @@ namespace myTNB_Android.Src.Utils.Custom.Scanner
 
             //scanner = scannerInstance;
             BottomTextColor = Android.Graphics.Color.ParseColor("#e44b21");
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         Rect GetFramingRect(Canvas canvas)
         {
+            
             int width = canvas.Width * 15 / 16;
 
             int height = canvas.Height * 4 / 10;
@@ -80,7 +87,7 @@ namespace myTNB_Android.Src.Utils.Custom.Scanner
 
         protected override void OnMeasure(int widthMeasureSpec, int heightMeasureSpec)
         {
-
+            try {
             // Try for a width based on our minimum
             int minw = PaddingLeft + PaddingRight + SuggestedMinimumWidth;
             int w = ResolveSizeAndState(minw, widthMeasureSpec, 1);
@@ -89,11 +96,16 @@ namespace myTNB_Android.Src.Utils.Custom.Scanner
             int h = ResolveSizeAndState(MeasureSpec.GetSize(w), heightMeasureSpec, 0);
 
             base.OnMeasure(widthMeasureSpec, heightMeasureSpec);
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         protected override void OnDraw(Canvas canvas)
         {
-
+            try {
             var scale = this.Context.Resources.DisplayMetrics.Density;
 
             var frame = GetFramingRect(canvas);
@@ -263,22 +275,40 @@ namespace myTNB_Android.Src.Utils.Custom.Scanner
                                       frame.Right - CANVAS_SQUARE_SIZE,
                                       frame.Bottom - POINT_SIZE);
             base.OnDraw(canvas);
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public override void Invalidate()
         {
+            try {
             Log.Debug("Invalidate" , "Invalidated!");
             base.Invalidate();
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public void DrawResultBitmap(Android.Graphics.Bitmap barcode)
         {
+            try {
             resultBitmap = barcode;
             Invalidate();
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public void AddPossibleResultPoint(ZXing.ResultPoint point)
         {
+            try {
             var points = possibleResultPoints;
 
             lock (points)
@@ -289,6 +319,11 @@ namespace myTNB_Android.Src.Utils.Custom.Scanner
                 {
                     points.RemoveRange(0, size - MAX_RESULT_POINTS / 2);
                 }
+            }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
             }
         }
     }

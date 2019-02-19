@@ -21,6 +21,7 @@ using Refit;
 using AFollestad.MaterialDialogs;
 using Android.Support.V4.Content;
 using myTNB_Android.Src.Utils.Custom.ProgressDialog;
+using System.Runtime;
 
 namespace myTNB_Android.Src.UpdateNickname.Activity
 {
@@ -52,10 +53,17 @@ namespace myTNB_Android.Src.UpdateNickname.Activity
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-            if (Intent.Extras.ContainsKey(Constants.SELECTED_ACCOUNT))
+
+            try {
+                Bundle extras = Intent.Extras;
+
+                if (extras !=  null) {
+                if (extras.ContainsKey(Constants.SELECTED_ACCOUNT))
             {
-                accountData = JsonConvert.DeserializeObject<AccountData>(Intent.Extras.GetString(Constants.SELECTED_ACCOUNT));
+                //accountData = JsonConvert.DeserializeObject<AccountData>(Intent.Extras.GetString(Constants.SELECTED_ACCOUNT));
+                        accountData = DeSerialze<AccountData>(extras.GetString(Constants.SELECTED_ACCOUNT));
             }
+                }
 
 
             progress = new MaterialDialog.Builder(this)
@@ -85,25 +93,42 @@ namespace myTNB_Android.Src.UpdateNickname.Activity
 
             txtAccountNickname.TextChanged += TxtAccountNickname_TextChanged;
 
-
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
 
         }
+
+
         [Preserve]
         private void TxtAccountNickname_TextChanged(object sender, Android.Text.TextChangedEventArgs e)
         {
+            try {
             string newAccountNickName = txtAccountNickname.Text;
             this.userActionsListener.OnVerifyNickName(accountData.AccountNum , newAccountNickName);
+            }
+            catch (Exception ex)
+            {
+                Utility.LoggingNonFatalError(ex);
+            }
         }
 
         [OnClick(Resource.Id.btnSave)]
         void OnClickSave(object sender , EventArgs eventArgs)
         {
-
+            try {
             string newNickName = txtAccountNickname.Text;
             string oldNickname = accountData.AccountNickName;
             string accountNo = accountData.AccountNum;
 
             this.userActionsListener.OnUpdateNickName(accountNo , oldNickname , newNickName);
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public void HideProgressDialog()
@@ -112,9 +137,16 @@ namespace myTNB_Android.Src.UpdateNickname.Activity
             //{
             //    progress.Dismiss();
             //}
+
+            try {
             if (loadingOverlay != null && loadingOverlay.IsShowing)
             {
                 loadingOverlay.Dismiss();
+            }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
             }
         }
 
@@ -154,6 +186,7 @@ namespace myTNB_Android.Src.UpdateNickname.Activity
             //{
             //    progress.Show();
             //}
+            try {
             if (loadingOverlay != null && loadingOverlay.IsShowing)
             {
                 loadingOverlay.Dismiss();
@@ -161,6 +194,11 @@ namespace myTNB_Android.Src.UpdateNickname.Activity
 
             loadingOverlay = new LoadingOverlay(this, Resource.Style.LoadingOverlyDialogStyle);
             loadingOverlay.Show();
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public void ShowResponseError(string error)
@@ -265,6 +303,24 @@ namespace myTNB_Android.Src.UpdateNickname.Activity
         public void ClearError(){
             txtInputLayoutAccountNickname.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
             txtInputLayoutAccountNickname.Error = "";
+        }
+
+
+        public override void OnTrimMemory(TrimMemory level)
+        {
+            base.OnTrimMemory(level);
+
+            switch (level)
+            {
+                case TrimMemory.RunningLow:
+                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
+                    GC.Collect();
+                    break;
+                default:
+                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
+                    GC.Collect();
+                    break;
+            }
         }
     }
 }
