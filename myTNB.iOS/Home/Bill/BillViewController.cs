@@ -49,6 +49,7 @@ namespace myTNB
         UIView _viewCharges;
 
         UIImageView _imgLeaf;
+        UIRefreshControl refreshControl;
 
         BillingAccountDetailsResponseModel _billingAccountDetailsList = new BillingAccountDetailsResponseModel();
         PaymentHistoryResponseModel _paymentHistory = new PaymentHistoryResponseModel();
@@ -66,6 +67,7 @@ namespace myTNB
         bool isBcrmAvailable = true;
         bool isFromReceiptScreen = false;
         nfloat headerMarginY = 15.0f;
+        bool isRefreshing = false;
 
         public BillViewController(IntPtr handle) : base(handle)
         {
@@ -81,6 +83,7 @@ namespace myTNB
             }
             SetSubviews();
             NSNotificationCenter.DefaultCenter.AddObserver(UIApplication.WillEnterForegroundNotification, HandleAppWillEnterForeground);
+            refreshControl = new UIRefreshControl();
         }
 
         void HandleAppWillEnterForeground(NSNotification notification)
@@ -634,6 +637,8 @@ namespace myTNB
                                                                        , NetworkUtility.isReachable
                                                                        , isREAccount
                                                                        , isOwnedAccount);
+                    refreshControl.ValueChanged += PullDownTorefresh;
+                    billTableView.AddSubview(refreshControl);
                     billTableView.ReloadData();
                 });
             });
@@ -1174,6 +1179,82 @@ namespace myTNB
                 };
                 _billingAccountDetailsList = serviceManager.GetBillingAccountDetails("GetBillingAccountDetails", requestParameter);
             });
+        }
+
+        /// <summary>
+        /// Pulls down to refresh.
+        /// </summary>
+        /// <param name="sender">Sender.</param>
+        /// <param name="e">E.</param>
+        private async void PullDownTorefresh(object sender, EventArgs e)
+        {
+            if (!isRefreshing)
+            {
+                await RefreshScreen();
+            }
+        }
+
+        /// <summary>
+        /// Refreshes the screen.
+        /// </summary>
+        /// <returns>The screen.</returns>
+        private async Task RefreshScreen()
+        {
+            string _dateDue;
+            double _amountDue;
+            double _dueIncrementDays;
+            isRefreshing = true;
+            await GetBillingAccountDetails().ContinueWith(task =>
+            {
+                InvokeOnMainThread(() =>
+                {
+                    if (_billingAccountDetailsList != null && _billingAccountDetailsList?.d != null
+                        && _billingAccountDetailsList?.d?.data != null)
+                    {
+                        var billDetails = _billingAccountDetailsList.d.data;
+                        DataManager.DataManager.SharedInstance.BillingAccountDetails = billDetails;
+                        if (!isREAccount)
+                        {
+                            DataManager.DataManager.SharedInstance.SaveToBillingAccounts(billDetails, billDetails.accNum);
+                        }
+                    }
+                });
+            });
+            await GetAccountDueAmount().ContinueWith(dueTask =>
+            {
+                InvokeOnMainThread(() =>
+                {
+                    if (_dueAmount != null && _dueAmount?.d != null
+                        && _dueAmount?.d?.didSucceed == true)
+                    {
+                        _amountDue = _dueAmount.d.data.amountDue;
+                        _dateDue = _dueAmount.d.data.billDueDate;
+                        _dueIncrementDays = _dueAmount.d.data.IncrementREDueDateByDays;
+                        SetAmountInBillingDetails(_amountDue);
+                        SaveDueToCache(_dueAmount.d.data);
+                        SetBillAndPaymentDetails(_dateDue, _dueIncrementDays);
+                    }
+                });
+            });
+
+            var currentAmt = DataManager.DataManager.SharedInstance.BillingAccountDetails?.amCurrentChg ?? 0;
+            var outstandingAmt = DataManager.DataManager.SharedInstance.BillingAccountDetails?.amOutstandingChg ?? 0;
+            var payableAmt = DataManager.DataManager.SharedInstance.BillingAccountDetails?.amPayableChg ?? 0;
+            var balanceAmt = DataManager.DataManager.SharedInstance.BillingAccountDetails?.amCustBal ?? 0;
+
+            var current = !isREAccount ? currentAmt : ChartHelper.UpdateValueForRE(currentAmt);
+            var outstanding = !isREAccount ? outstandingAmt : ChartHelper.UpdateValueForRE(outstandingAmt);
+            var payable = !isREAccount ? payableAmt : ChartHelper.UpdateValueForRE(payableAmt);
+            var balance = !isREAccount ? balanceAmt : ChartHelper.UpdateValueForRE(balanceAmt);
+
+            _lblCurrentChargesValue.Text = CURRENCY + current.ToString("N2", CultureInfo.InvariantCulture);
+            _lblOutstandingChargesValue.Text = CURRENCY + outstanding.ToString("N2", CultureInfo.InvariantCulture);
+            _lblTotalPayableValue.Text = CURRENCY + payable.ToString("N2", CultureInfo.InvariantCulture);
+            _lblAmount.Text = balance.ToString("N2", CultureInfo.InvariantCulture);
+
+            AdjustFrames();
+            isRefreshing = false;
+            refreshControl.EndRefreshing();
         }
     }
 }
