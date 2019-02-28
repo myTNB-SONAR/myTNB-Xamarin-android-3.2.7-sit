@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using Carousels;
 using CoreGraphics;
@@ -38,6 +39,8 @@ namespace myTNB.Dashboard
 
         public bool ShouldShowBackButton = false;
 
+        bool isRefreshing = false;
+
         public override void ViewDidLoad()
         {
             base.ViewDidLoad();
@@ -50,7 +53,10 @@ namespace myTNB.Dashboard
             DataManager.DataManager.SharedInstance.IsPreloginFeedback = false;
             NavigationController?.SetNavigationBarHidden(true, false);
             NavigationItem?.SetHidesBackButton(true, false);
-            _dashboardMainComponent = new DashboardMainComponent(View);
+            _dashboardMainComponent = new DashboardMainComponent(View)
+            {
+                PullDownTorefresh = PullDownTorefresh
+            };
             NSNotificationCenter.DefaultCenter.AddObserver(UIApplication.WillEnterForegroundNotification, HandleAppWillEnterForeground);
             NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
             {
@@ -730,7 +736,10 @@ namespace myTNB.Dashboard
 
             if (_dashboardMainComponent._dashboardScrollView != null)
             {
-                _dashboardMainComponent._dashboardScrollView.Scrolled += OnScrollDashboard;
+                if (!DataManager.DataManager.SharedInstance.SelectedAccount.IsNormalMeter)
+                {
+                    _dashboardMainComponent._dashboardScrollView.Scrolled += OnScrollDashboard;
+                }
             }
 
         }
@@ -1111,7 +1120,7 @@ namespace myTNB.Dashboard
             }
             if (_dashboardMainComponent._dashboardScrollView != null)
             {
-                _dashboardMainComponent._dashboardScrollView.ScrollEnabled = !isNormalMeter;
+                //_dashboardMainComponent._dashboardScrollView.ScrollEnabled = !isNormalMeter;
             }
             if (_dashboardMainComponent._chartCarousel != null)
             {
@@ -1314,23 +1323,20 @@ namespace myTNB.Dashboard
         /// <param name="e">E.</param>
         private void OnScrollDashboard(object sender, EventArgs e)
         {
-            UIScrollView scrollView = sender as UIScrollView;
-            if (scrollView != null)
+            if (sender is UIScrollView scrollView)
             {
-                //Console.WriteLine("RRA: scroll: _lastContentOffset:{0}, currentOffset:{1}", _lastContentOffset, scrollView.ContentOffset.Y);
-                if (_lastContentOffset < 0 || _lastContentOffset < scrollView.ContentOffset.Y)
+                var scrollHeight = scrollView.Frame.Size.Height;
+                var contentYoffset = scrollView.ContentOffset.Y;
+                var distanceFromBottom = scrollView.ContentSize.Height - contentYoffset;
+
+                if (distanceFromBottom <= scrollHeight)
                 {
-                    //Pulling down
                     _dashboardMainComponent._billAndPaymentComponent.SetComponentHidden(true);
                 }
-                else if (_lastContentOffset > scrollView.ContentOffset.Y)
+                else
                 {
-                    //Pulling up
                     _dashboardMainComponent._billAndPaymentComponent.SetComponentHidden(false);
                 }
-
-                _lastContentOffset = scrollView.ContentOffset.Y;
-
             }
         }
 
@@ -1365,6 +1371,63 @@ namespace myTNB.Dashboard
                     CANum = DataManager.DataManager.SharedInstance.SelectedAccount.accNum
                 };
                 _billingAccountDetailsList = serviceManager.GetBillingAccountDetails("GetBillingAccountDetails", requestParameter);
+            });
+        }
+
+        /// <summary>
+        /// Pulls down to refresh.
+        /// </summary>
+        /// <param name="sender">Sender.</param>
+        /// <param name="e">E.</param>
+        private void PullDownTorefresh(object sender, EventArgs e)
+        {
+            if (!isRefreshing)
+            {
+                Debug.WriteLine("PullDownTorefresh");
+                RefreshScreen();
+            }
+        }
+
+        /// <summary>
+        /// Refreshes the screen.
+        /// </summary>
+        /// <returns>The screen.</returns>
+        private void RefreshScreen()
+        {
+            isRefreshing = true;
+            NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
+            {
+                InvokeOnMainThread(async () =>
+                {
+                    if (NetworkUtility.isReachable)
+                    {
+                        await GetAccountDueAmount().ContinueWith(dueTask =>
+                        {
+                            InvokeOnMainThread(() =>
+                            {
+                                if (_dueAmount != null && _dueAmount?.d != null
+                                    && _dueAmount?.d?.didSucceed == true
+                                    && _dueAmount?.d?.data != null)
+                                {
+                                    _amountDue = _dueAmount.d.data.amountDue;
+                                    _dateDue = _dueAmount.d.data.billDueDate;
+                                    _dueIncrementDays = _dueAmount.d.data.IncrementREDueDateByDays;
+                                    SetAmountInBillingDetails(_amountDue);
+                                    SaveDueToCache(_dueAmount.d.data);
+                                }
+                                SetBillAndPaymentDetails();
+                            });
+                        });
+                    }
+                    else
+                    {
+                        var alert = UIAlertController.Create("ErrNoNetworkTitle".Translate(), "ErrNoNetworkMsg".Translate(), UIAlertControllerStyle.Alert);
+                        alert.AddAction(UIAlertAction.Create("Ok", UIAlertActionStyle.Cancel, null));
+                        PresentViewController(alert, animated: true, completionHandler: null);
+                    }
+                    isRefreshing = false;
+                    _dashboardMainComponent._refreshControl.EndRefreshing();
+                });
             });
         }
 
