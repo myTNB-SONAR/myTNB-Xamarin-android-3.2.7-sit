@@ -30,7 +30,7 @@ namespace myTNB
         {
             base.ViewDidLoad();
             imgViewAppLaunch = new UIImageView(UIImage.FromBundle("App-Launch-Gradient"));
-            var imgViewLogo = new UIImageView(UIImage.FromBundle("Logo-Combined"));
+            var imgViewLogo = new UIImageView(UIImage.FromBundle("New-Launch-Logo"));
             //var imgViewLogoTitle = new UIImageView(UIImage.FromBundle("Logo-Title"));
             //var imgViewTagline = new UIImageView(UIImage.FromBundle("Tagline"));
             //containerView = new UIView();
@@ -42,6 +42,7 @@ namespace myTNB
             //View.AddSubview(containerView);  
 
             View.SubviewsDoNotTranslateAutoresizingMaskIntoConstraints();
+            var heightMargin = ((float)UIScreen.MainScreen.Bounds.Height / 2) - (DeviceHelper.GetScaledHeight(220) / 2);
 
             View.AddConstraints(
                 imgViewAppLaunch.AtTopOf(View, 0),
@@ -49,10 +50,10 @@ namespace myTNB
                 imgViewAppLaunch.AtLeftOf(View, 0),
                 imgViewAppLaunch.AtRightOf(View, 0),
 
-                imgViewLogo.AtTopOf(View, DeviceHelper.GetScaledHeight(200)),
+                imgViewLogo.AtTopOf(View, heightMargin),
                 imgViewLogo.WithSameCenterX(View),
-                imgViewLogo.Height().EqualTo(168),
-                imgViewLogo.Width().EqualTo(198)
+                imgViewLogo.Height().EqualTo(DeviceHelper.GetScaledHeight(220)),
+                imgViewLogo.Width().EqualTo(DeviceHelper.GetScaledHeight(220))
 
             //imgViewLogoTitle.AtTopOf(imgViewLogo, 100),
             //imgViewLogoTitle.WithSameCenterX(View),
