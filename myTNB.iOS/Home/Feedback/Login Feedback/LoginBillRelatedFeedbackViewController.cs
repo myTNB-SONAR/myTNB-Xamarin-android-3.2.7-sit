@@ -98,13 +98,13 @@ namespace myTNB
             {
                 //_lblAccountNumber.Text = _accountList[DataManager.DataManager.SharedInstance.CurrentSelectedFeedAccountNoIndex];
                 var index = DataManager.DataManager.SharedInstance.CurrentSelectedFeedAccountNoIndex;
-                _lblAccountNumber.Text = DataManager.DataManager.SharedInstance.AccountRecordsList.d[index].accNum + " - " + DataManager.DataManager.SharedInstance.AccountRecordsList.d[index].accDesc;
+                _lblAccountNumber.Text = DataManager.DataManager.SharedInstance.AccountRecordsList?.d[index]?.accNum + " - " + DataManager.DataManager.SharedInstance.AccountRecordsList?.d[index]?.accDesc;
             }
         }
 
         internal void InitializedAccountList()
         {
-            if (DataManager.DataManager.SharedInstance.AccountRecordsList.d != null && DataManager.DataManager.SharedInstance.AccountRecordsList.d.Count != 0)
+            if (DataManager.DataManager.SharedInstance.AccountRecordsList?.d != null && DataManager.DataManager.SharedInstance.AccountRecordsList?.d?.Count != 0)
             {
                 foreach (var account in DataManager.DataManager.SharedInstance.AccountRecordsList.d)
                 {
@@ -570,13 +570,15 @@ namespace myTNB
             bool isValid = false;
 
             isValid = isValidAccountNo && isValidFeedback;
-            if (DataManager.DataManager.SharedInstance.UserEntity[0].mobileNo == null || DataManager.DataManager.SharedInstance.UserEntity[0].mobileNo == string.Empty)
+            if (DataManager.DataManager.SharedInstance.UserEntity?.Count > 0)
             {
-                bool isValidMobileNo = _textFieldHelper.ValidateTextField(_txtFieldMobileNo.Text, MOBILE_NO_PATTERN)
-                                                       && _textFieldHelper.ValidateMobileNumberLength(_txtFieldMobileNo.Text);
-                isValid = isValid && isValidMobileNo;
+                if (string.IsNullOrEmpty(DataManager.DataManager.SharedInstance.UserEntity[0].mobileNo))
+                {
+                    bool isValidMobileNo = _textFieldHelper.ValidateTextField(_txtFieldMobileNo.Text, MOBILE_NO_PATTERN)
+                                                           && _textFieldHelper.ValidateMobileNumberLength(_txtFieldMobileNo.Text);
+                    isValid = isValid && isValidMobileNo;
+                }
             }
-
             _btnSubmit.Enabled = isValid;
             _btnSubmit.BackgroundColor = isValid ? myTNBColor.FreshGreen() : myTNBColor.SilverChalice();
         }
@@ -658,7 +660,7 @@ namespace myTNB
                                             storyBoard.InstantiateViewController("SubmitFeedbackSuccessViewController") as SubmitFeedbackSuccessViewController;
                                         submitFeedbackSuccessVC.ServiceReqNo = _submitFeedback.d.data.ServiceReqNo;
                                         submitFeedbackSuccessVC.DateCreated = _submitFeedback.d.data.DateCreated;
-                                        NavigationController.PushViewController(submitFeedbackSuccessVC, true);
+                                        NavigationController?.PushViewController(submitFeedbackSuccessVC, true);
                                     }
                                     else
                                     {
@@ -666,7 +668,7 @@ namespace myTNB
                                         UIStoryboard storyBoard = UIStoryboard.FromName("Feedback", null);
                                         SubmitFeedbackFailedViewController submitFeedbackFailedVC =
                                             storyBoard.InstantiateViewController("SubmitFeedbackFailedViewController") as SubmitFeedbackFailedViewController;
-                                        NavigationController.PushViewController(submitFeedbackFailedVC, true);
+                                        NavigationController?.PushViewController(submitFeedbackFailedVC, true);
                                     }
                                     ActivityIndicator.Hide();
                                 });
@@ -689,9 +691,9 @@ namespace myTNB
                 SelectAccountNoViewController selectAccountNoVC =
                     storyBoard.InstantiateViewController("SelectAccountNoViewController") as SelectAccountNoViewController;
                 var navController = new UINavigationController(selectAccountNoVC);
-                NavigationController.PushViewController(selectAccountNoVC, true);
+                NavigationController?.PushViewController(selectAccountNoVC, true);
             });
-            _viewAccountNumber.AddGestureRecognizer(tapAccountNo);
+            _viewAccountNumber?.AddGestureRecognizer(tapAccountNo);
 
         }
 

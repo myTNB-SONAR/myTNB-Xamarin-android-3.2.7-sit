@@ -8,6 +8,7 @@ using myTNB.Dashboard.DashboardComponents;
 using myTNB.Home.Components;
 using CoreLocation;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace myTNB
 {
@@ -114,22 +115,33 @@ namespace myTNB
                     }
                 }
             }
-            NSUrl url = new NSUrl(imgPath);
-            NSUrlSession session = NSUrlSession
-                .FromConfiguration(NSUrlSessionConfiguration.DefaultSessionConfiguration);
-            NSUrlSessionDataTask dataTask = session.CreateDataTask(url, (data, response, error) =>
-            {
-                if (error == null && response != null && data != null)
-                {
-                    InvokeOnMainThread(() =>
-                    {
-                        _imgLocation.Image = UIImage.LoadFromData(data);
-                        _activityIndicator.Hide();
-                    });
 
+            try
+            {
+                if (!string.IsNullOrEmpty(imgPath))
+                {
+                    NSUrl url = new NSUrl(imgPath);
+                    NSUrlSession session = NSUrlSession
+                        .FromConfiguration(NSUrlSessionConfiguration.DefaultSessionConfiguration);
+                    NSUrlSessionDataTask dataTask = session.CreateDataTask(url, (data, response, error) =>
+                    {
+                        if (error == null && response != null && data != null)
+                        {
+                            InvokeOnMainThread(() =>
+                            {
+                                _imgLocation.Image = UIImage.LoadFromData(data);
+                                _activityIndicator.Hide();
+                            });
+
+                        }
+                    });
+                    dataTask.Resume();
                 }
-            });
-            dataTask.Resume();
+            }
+            catch (Exception err)
+            {
+                Debug.WriteLine("Error: " + err.Message);
+            }
         }
 
         void SetTableView()

@@ -116,7 +116,7 @@ namespace myTNB
                 {
                     // update due values
                     int itemIndex = _accounts.FindIndex(x => x.accNum.Equals(accNum));
-                    if (itemIndex > -1)
+                    if (itemIndex > -1 && itemIndex < _accounts.Count)
                     {
                         _accounts[itemIndex].Amount = acct.amountDue;
                         _accounts[itemIndex].AmountDue = acct.amountDue;
@@ -127,8 +127,11 @@ namespace myTNB
 
                         if (displayIndex > -1)
                         {
-                            _accountsForDisplay[itemIndex].Amount = acct.amountDue;
-                            _accountsForDisplay[itemIndex].AmountDue = acct.amountDue;
+                            if (itemIndex > -1 && itemIndex < _accountsForDisplay.Count)
+                            {
+                                _accountsForDisplay[itemIndex].Amount = acct.amountDue;
+                                _accountsForDisplay[itemIndex].AmountDue = acct.amountDue;
+                            }
                         }
                         else
                         {

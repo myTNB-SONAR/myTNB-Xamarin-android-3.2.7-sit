@@ -105,9 +105,9 @@ namespace myTNB
                 var topVc = AppDelegate.GetTopViewController(baseRootVc);
 
                 HomeTabBarController tabBar = null;
-                if (topVc != null && topVc.ParentViewController is HomeTabBarController)
+                if (topVc != null && topVc?.ParentViewController is HomeTabBarController)
                 {
-                    tabBar = topVc.ParentViewController as HomeTabBarController;
+                    tabBar = topVc?.ParentViewController as HomeTabBarController;
                 }
                 else
                 {
@@ -116,7 +116,7 @@ namespace myTNB
                     {
                         if (vc is HomeTabBarController)
                         {
-                            vc.DismissViewController(willAnimateDismiss, dismissCompletionHandler);
+                            vc?.DismissViewController(willAnimateDismiss, dismissCompletionHandler);
                             break;
                         }
 
@@ -124,12 +124,12 @@ namespace myTNB
                         {
                             if (vc is UINavigationController nav)
                             {
-                                nav.PopToRootViewController(false);
+                                nav?.PopToRootViewController(false);
                             }
                         }
                         else
                         {
-                            vc.DismissViewController(false, null);
+                            vc?.DismissViewController(false, null);
                         }
 
                         vc = vc?.PresentingViewController;
@@ -140,7 +140,7 @@ namespace myTNB
 
                 if (tabBar != null)
                 {
-                    tabBar.SelectedIndex = tabIndexToSelect;
+                    tabBar.SelectedIndex = (tabIndexToSelect > -1) ? tabIndexToSelect : 0;
 
                     if (willPopToRootOnSelect)
                     {
@@ -149,7 +149,7 @@ namespace myTNB
                         {
                             if (selectedVc is UINavigationController nav)
                             {
-                                nav.PopToRootViewController(false);
+                                nav?.PopToRootViewController(false);
                             }
                         }
                     }

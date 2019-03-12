@@ -65,22 +65,20 @@ namespace myTNB
                     }
 
                     UIStoryboard storyBoard = UIStoryboard.FromName("Rating", null);
-                    RatingViewController viewController =
-                        storyBoard.InstantiateViewController("RatingViewController") as RatingViewController;
-                    if (viewController != null)
+                    if (storyBoard.InstantiateViewController("RatingViewController") is RatingViewController viewController)
                     {
                         //viewController.Rating = !string.IsNullOrEmpty(rateString) ? int.Parse(rateString) : 0;
                         viewController.Rating = 0;
                         viewController.TransId = transId;
                         var navController = new UINavigationController(viewController);
-                        Controller.PresentViewController(navController, true, null);
+                        Controller?.PresentViewController(navController, true, null);
                     }
                     loadingOverlay?.Hide();
                 }
                 if (request.ToString().Contains("intent://intent/#Intent;")
                    && Controller != null)
                 {
-                    Controller.DismissViewController(true, null);
+                    Controller?.DismissViewController(true, null);
                     loadingOverlay?.Hide();
                 }
 
@@ -123,16 +121,18 @@ namespace myTNB
 
                     var appDelegate = UIApplication.SharedApplication.Delegate as AppDelegate;
 
-                    foreach (var vc in Controller.NavigationController.ViewControllers)
+                    foreach (var vc in Controller?.NavigationController.ViewControllers)
                     {
                         if (vc is SelectPaymentMethodViewController)
                         {
-                            if (Controller.NavigationController != null)
+                            if (Controller?.NavigationController != null)
                             {
-                                if (Controller.NavigationController.NavigationBarHidden == true)
+                                if (Controller?.NavigationController?.NavigationBarHidden == true)
+                                {
                                     Controller.NavigationController.NavigationBarHidden = false;
+                                }
                             }
-                            Controller.NavigationController.PopToViewController(vc, false);
+                            Controller?.NavigationController?.PopToViewController(vc, false);
                             break;
                         }
                     }

@@ -95,7 +95,7 @@ namespace myTNB.Home.Bill
                     if (HasBill())
                     {
                         var cell = tableView.DequeueReusableCell(CELLIDENTIFIER, indexPath) as BillTableViewCell;
-                        BillHistoryDataModel billHistoryModel = indexPath.Row < _billHistory?.d?.data?.Count 
+                        BillHistoryDataModel billHistoryModel = indexPath.Row < _billHistory?.d?.data?.Count
                                                                          ? _billHistory.d.data[indexPath.Row]
                                                                          : new BillHistoryDataModel();
 
@@ -260,46 +260,49 @@ namespace myTNB.Home.Bill
         /// <param name="cell">Cell.</param>
         private void CreatePaymentCell(int row, BillTableViewCell cell)
         {
-            PaymentHistoryDataModel paymentHistoryModel = _paymentHistory.d.data[row];
-            cell.AdjustYlocation(false);
-            cell.lblTitle.Text = "Payment";
-            cell.viewLine.Hidden = !(row < _paymentHistory.d.data.Count - 1);
-
-            if (!_isREAccount)
+            if (row > -1 && row < _paymentHistory?.d?.data.Count)
             {
-                cell.imgArrow.Hidden = paymentHistoryModel.NmPBranch != "myTNB Mobile App" ? true : false;
+                PaymentHistoryDataModel paymentHistoryModel = _paymentHistory?.d?.data[row];
+                cell.AdjustYlocation(false);
+                cell.lblTitle.Text = "Payment";
+                cell.viewLine.Hidden = !(row < _paymentHistory?.d?.data?.Count - 1);
 
-                var strDate = paymentHistoryModel.DtEvent ?? string.Empty;
-                var date = string.IsNullOrEmpty(strDate) || strDate.ToLower().Equals("n/a")
-                                              ? "N/A"
-                                              : DateHelper.GetFormattedDate(paymentHistoryModel.DtEvent, "dd MMM");
-                string details = string.IsNullOrEmpty(paymentHistoryModel.NmPBranch) || string.IsNullOrWhiteSpace(paymentHistoryModel.NmPBranch)
-                                         ? string.Empty : "via " + paymentHistoryModel.NmPBranch;
+                if (!_isREAccount)
+                {
+                    cell.imgArrow.Hidden = paymentHistoryModel.NmPBranch != "myTNB Mobile App" ? true : false;
 
-                cell.lblDate.Text = date;
+                    var strDate = paymentHistoryModel.DtEvent ?? string.Empty;
+                    var date = string.IsNullOrEmpty(strDate) || strDate.ToLower().Equals("n/a")
+                                                  ? "N/A"
+                                                  : DateHelper.GetFormattedDate(paymentHistoryModel.DtEvent, "dd MMM");
+                    string details = string.IsNullOrEmpty(paymentHistoryModel.NmPBranch) || string.IsNullOrWhiteSpace(paymentHistoryModel.NmPBranch)
+                                             ? string.Empty : "via " + paymentHistoryModel.NmPBranch;
 
-                cell.lblDetails.Text = details;
-                cell.lblDetails.Hidden = false;
+                    cell.lblDate.Text = date;
 
-                double amountDbl = TextHelper.ParseStringToDouble(paymentHistoryModel.AmPaid);
-                cell.lblAmount.Text = TNBGlobal.UNIT_CURRENCY + " " + amountDbl.ToString("N2", CultureInfo.InvariantCulture);
-            }
-            else
-            {
-                cell.imgArrow.Hidden = true;
+                    cell.lblDetails.Text = details;
+                    cell.lblDetails.Hidden = false;
 
-                var strDate = paymentHistoryModel.PaidDate ?? string.Empty;
-                var date = string.IsNullOrEmpty(strDate) || strDate.ToLower().Equals("n/a")
-                                              ? "N/A"
-                                              : DateHelper.GetFormattedDate(paymentHistoryModel.PaidDate, "dd MMM");
-                string details = "Payment From".Translate();
+                    double amountDbl = TextHelper.ParseStringToDouble(paymentHistoryModel.AmPaid);
+                    cell.lblAmount.Text = TNBGlobal.UNIT_CURRENCY + " " + amountDbl.ToString("N2", CultureInfo.InvariantCulture);
+                }
+                else
+                {
+                    cell.imgArrow.Hidden = true;
 
-                cell.lblDate.Text = date;
-                cell.lblDetails.Text = details;
-                cell.lblDetails.Hidden = false;
+                    var strDate = paymentHistoryModel.PaidDate ?? string.Empty;
+                    var date = string.IsNullOrEmpty(strDate) || strDate.ToLower().Equals("n/a")
+                                                  ? "N/A"
+                                                  : DateHelper.GetFormattedDate(paymentHistoryModel.PaidDate, "dd MMM");
+                    string details = "Payment From".Translate();
 
-                double amountDbl = TextHelper.ParseStringToDouble(paymentHistoryModel.Amount);
-                cell.lblAmount.Text = TNBGlobal.UNIT_CURRENCY + " " + amountDbl.ToString("N2", CultureInfo.InvariantCulture);
+                    cell.lblDate.Text = date;
+                    cell.lblDetails.Text = details;
+                    cell.lblDetails.Hidden = false;
+
+                    double amountDbl = TextHelper.ParseStringToDouble(paymentHistoryModel.Amount);
+                    cell.lblAmount.Text = TNBGlobal.UNIT_CURRENCY + " " + amountDbl.ToString("N2", CultureInfo.InvariantCulture);
+                }
             }
         }
     }
