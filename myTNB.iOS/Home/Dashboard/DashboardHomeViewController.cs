@@ -94,7 +94,7 @@ namespace myTNB
         {
             if (DataManager.DataManager.SharedInstance.IsLoggedIn())
             {
-                ViewWillAppear(true);
+                //RefreshScreen();
             }
         }
 
@@ -157,7 +157,7 @@ namespace myTNB
             tableViewAccounts.RowHeight = UITableView.AutomaticDimension;
             tableViewAccounts.EstimatedRowHeight = 66;
             tableViewAccounts.SeparatorStyle = UITableViewCellSeparatorStyle.None;
-            tableViewAccounts.Bounces = true;
+            tableViewAccounts.Bounces = false;
             tableViewAccounts.SectionFooterHeight = 0;
             View.BringSubviewToFront(tableViewAccounts);
 
@@ -405,45 +405,80 @@ namespace myTNB
         /// </summary>
         /// <param name="sender">Sender.</param>
         /// <param name="e">Event args.</param>
+        //public void OnTableViewAccountsScrolled(object sender, EventArgs e) removed as part of removal of pull down to refresh
+        //{
+        //    var tableHeight = tableViewAccounts.Frame.Size.Height;
+        //    var contentYoffset = tableViewAccounts.ContentOffset.Y;
+        //    var distanceFromBottom = tableViewAccounts.ContentSize.Height - contentYoffset;
+
+        //    if (distanceFromBottom >= tableHeight && (tableViewAccounts.ContentOffset.Y >= 0 || (int)Math.Ceiling(tableViewAccounts.TableHeaderView.Frame.Height) != (int)Math.Ceiling(maxHeaderHeight)))
+        //    {
+        //        if (!isRefreshing)
+        //        {
+        //            var scrollDiff = tableViewAccounts.ContentOffset.Y - previousScrollOffset;
+        //            var isScrollingDown = scrollDiff > 0;
+        //            var isScrollingUp = scrollDiff < 0;
+
+        //            var newHeight = headerHeight;
+        //            if (tableViewAccounts.ContentOffset.Y <= 0 && (int)Math.Ceiling(tableViewAccounts.TableHeaderView.Frame.Height) == (int)Math.Ceiling(maxHeaderHeight))
+        //            {
+        //                newHeight = maxHeaderHeight;
+        //            }
+        //            else if (isScrollingDown)
+        //            {
+        //                newHeight = (float)Math.Max(minHeaderHeight, headerHeight - Math.Abs(scrollDiff));
+        //            }
+        //            else if (isScrollingUp)
+        //            {
+        //                newHeight = (float)Math.Min(maxHeaderHeight, headerHeight + Math.Abs(scrollDiff));
+        //            }
+
+        //            if (newHeight != headerHeight)
+        //            {
+        //                headerHeight = newHeight;
+        //                ViewHelper.AdjustFrameSetHeight(_viewHeader, headerHeight);
+        //                tableViewAccounts.TableHeaderView = _viewHeader;
+        //            }
+        //            previousScrollOffset = tableViewAccounts.ContentOffset.Y;
+        //        }
+        //    }
+        //}
+
+        /// <summary>
+        /// Handles the table view accounts scrolled event.
+        /// </summary>
+        /// <param name="sender">Sender.</param>
+        /// <param name="e">Event args.</param>
         public void OnTableViewAccountsScrolled(object sender, EventArgs e)
         {
-            var tableHeight = tableViewAccounts.Frame.Size.Height;
-            var contentYoffset = tableViewAccounts.ContentOffset.Y;
-            var distanceFromBottom = tableViewAccounts.ContentSize.Height - contentYoffset;
+            var scrollDiff = tableViewAccounts.ContentOffset.Y - previousScrollOffset;
+            var isScrollingDown = scrollDiff > 0;
+            var isScrollingUp = scrollDiff < 0;
 
-            if (distanceFromBottom >= tableHeight && (tableViewAccounts.ContentOffset.Y >= 0 || (int)Math.Ceiling(tableViewAccounts.TableHeaderView.Frame.Height) != (int)Math.Ceiling(maxHeaderHeight)))
+            var newHeight = headerHeight;
+
+            if (tableViewAccounts.ContentOffset.Y == 0)
             {
-                if (!isRefreshing)
-                {
-                    var scrollDiff = tableViewAccounts.ContentOffset.Y - previousScrollOffset;
-                    var isScrollingDown = scrollDiff > 0;
-                    var isScrollingUp = scrollDiff < 0;
-
-                    var newHeight = headerHeight;
-                    if (tableViewAccounts.ContentOffset.Y <= 0 && (int)Math.Ceiling(tableViewAccounts.TableHeaderView.Frame.Height) == (int)Math.Ceiling(maxHeaderHeight))
-                    {
-                        newHeight = maxHeaderHeight;
-                    }
-                    else if (isScrollingDown)
-                    {
-                        newHeight = (float)Math.Max(minHeaderHeight, headerHeight - Math.Abs(scrollDiff));
-                    }
-                    else if (isScrollingUp)
-                    {
-                        newHeight = (float)Math.Min(maxHeaderHeight, headerHeight + Math.Abs(scrollDiff));
-                    }
-
-                    if (newHeight != headerHeight)
-                    {
-                        headerHeight = newHeight;
-                        ViewHelper.AdjustFrameSetHeight(_viewHeader, headerHeight);
-                        tableViewAccounts.TableHeaderView = _viewHeader;
-                    }
-                    previousScrollOffset = tableViewAccounts.ContentOffset.Y;
-                }
+                newHeight = maxHeaderHeight;
             }
-        }
+            else if (isScrollingDown)
+            {
+                newHeight = (float)Math.Max(minHeaderHeight, headerHeight - Math.Abs(scrollDiff));
+            }
+            else if (isScrollingUp)
+            {
+                newHeight = (float)Math.Min(maxHeaderHeight, headerHeight + Math.Abs(scrollDiff));
+            }
 
+            if (newHeight != headerHeight)
+            {
+                headerHeight = newHeight;
+                ViewHelper.AdjustFrameSetHeight(_viewHeader, headerHeight);
+                tableViewAccounts.TableHeaderView = _viewHeader;
+            }
+
+            previousScrollOffset = tableViewAccounts.ContentOffset.Y;
+        }
 
         /// <summary>
         /// Handles the load more.
@@ -599,7 +634,7 @@ namespace myTNB
         private void InitializeAccountsTable()
         {
             tableViewAccounts.Source = new DashboardAccountsDataSource(displayedAccounts, OnAccountRowSelected, OnTableViewAccountsScrolled);
-            tableViewAccounts.AddSubview(refreshControl);
+            //tableViewAccounts.AddSubview(refreshControl); removed pull down to refresh
             tableViewAccounts.ReloadData();
         }
 
@@ -973,7 +1008,16 @@ namespace myTNB
         {
             isRefreshing = true;
             DataManager.DataManager.SharedInstance.SummaryNeedsRefresh = true;
-            LoadContents(false, true);
+
+            var baseVc = UIApplication.SharedApplication.KeyWindow?.RootViewController;
+            var topVc = AppDelegate.GetTopViewController(baseVc);
+            bool hideLoadingIndicator = false;
+            if (!(topVc is DashboardHomeViewController))
+            {
+                hideLoadingIndicator = true;
+            }
+
+            LoadContents(false, hideLoadingIndicator);
         }
     }
 }

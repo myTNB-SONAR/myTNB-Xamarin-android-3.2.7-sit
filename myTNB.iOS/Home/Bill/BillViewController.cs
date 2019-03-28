@@ -638,7 +638,7 @@ namespace myTNB
                                                                        , isREAccount
                                                                        , isOwnedAccount);
                     refreshControl.ValueChanged += PullDownTorefresh;
-                    billTableView.AddSubview(refreshControl);
+                    //billTableView.AddSubview(refreshControl); removed pull down to refresh
                     billTableView.ReloadData();
                 });
             });
