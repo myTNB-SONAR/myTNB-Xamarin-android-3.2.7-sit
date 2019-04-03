@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Globalization;
 
 namespace myTNB
@@ -15,7 +15,7 @@ namespace myTNB
         /// <param name="format">Format.</param>
         public static string GetFormattedDate(string dateString, string format)
         {
-            return GetDate(dateString).ToString(format);
+            return GetDate(dateString).ToString(format, System.Globalization.CultureInfo.InvariantCulture);
         }
         /// <summary>
         /// Gets the formatted date.
@@ -27,7 +27,7 @@ namespace myTNB
         public static string GetFormattedDate(string dateString, string format, bool isNotification)
         {
             _isNotification = isNotification;
-            return GetDate(dateString).ToString(format);
+            return GetDate(dateString).ToString(format, System.Globalization.CultureInfo.InvariantCulture);
         }
         /// <summary>
         /// Gets the formatted date.
@@ -38,7 +38,7 @@ namespace myTNB
         /// <param name="format">Format.</param>
         public static string GetFormattedDate(string dateString, char separator, string format)
         {
-            return GetDate(dateString, separator).ToString(format);
+            return GetDate(dateString, separator).ToString(format, System.Globalization.CultureInfo.InvariantCulture);
         }
 
         static DateTime GetDate(string dateString)

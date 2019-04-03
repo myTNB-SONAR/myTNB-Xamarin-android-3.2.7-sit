@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -30,22 +30,8 @@ namespace myTNB.PushNotification
             SetSubViews();
         }
 
-        public override void ViewWillAppear(bool animated)
+        private void UpdateNotificationDisplay()
         {
-            base.ViewWillAppear(animated);
-            if (_viewDelete == null)
-            {
-                InitializeDeleteSuccessView();
-            }
-            if (DataManager.DataManager.SharedInstance.IsNotificationDeleted)
-            {
-                ShowDeleteNotification();
-            }
-            if (DataManager.DataManager.SharedInstance.NotificationNeedsUpdate)
-            {
-                PushNotificationHelper.GetNotifications();
-            }
-
             string filterID = "all";
             if (DataManager.DataManager.SharedInstance.CurrentSelectedNotificationTypeIndex < DataManager.DataManager.SharedInstance.NotificationGeneralTypes?.Count)
             {
@@ -57,16 +43,16 @@ namespace myTNB.PushNotification
             List<UserNotificationDataModel> notifications = new List<UserNotificationDataModel>();
             if (DataManager.DataManager.SharedInstance.UserNotifications.Count > 0)
             {
+                var format = @"M/d/yyyy h:mm:ss tt";
                 if (filterID == "all")
                 {
                     notifications = DataManager.DataManager.SharedInstance.UserNotifications
-                                           .Where(x => x.IsDeleted.ToLower() == "false").ToList();
+                    .Where(x => x.IsDeleted.ToLower() == "false").OrderByDescending(o => DateTime.ParseExact(o.CreatedDate, format, System.Globalization.CultureInfo.InvariantCulture)).ThenBy(t => t.Title).ToList();
                 }
                 else
                 {
                     notifications = DataManager.DataManager.SharedInstance.UserNotifications
-                                               .Where(x => x.IsDeleted.ToLower() == "false"
-                                                      && x.NotificationTypeId == filterID).ToList();
+                    .Where(x => x.IsDeleted.ToLower() == "false" && x.NotificationTypeId == filterID).OrderByDescending(o => DateTime.ParseExact(o.CreatedDate, format, System.Globalization.CultureInfo.InvariantCulture)).ThenBy(t => t.Title).ToList();
                 }
                 if (_imgNoNotification != null && _lblNoNotification != null)
                 {
@@ -96,6 +82,57 @@ namespace myTNB.PushNotification
                 _lblNoNotification.Hidden = false;
             }
         }
+        /// <summary>
+        /// Gets the user notif.
+        /// </summary>
+        //private async void GetUserNotif()
+        //{
+        //    ActivityIndicator.Show();
+        //    await PushNotificationHelper.GetNotifications();
+        //    UpdateNotificationDisplay();
+        //    ActivityIndicator.Hide();
+        //}
+
+        public override void ViewWillAppear(bool animated)
+        {
+            base.ViewWillAppear(animated);
+            if (_viewDelete == null)
+            {
+                InitializeDeleteSuccessView();
+            }
+            if (DataManager.DataManager.SharedInstance.IsNotificationDeleted)
+            {
+                ShowDeleteNotification();
+            }
+            if (DataManager.DataManager.SharedInstance.NotificationNeedsUpdate)
+            {
+                NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
+                {
+                    InvokeOnMainThread(async () =>
+                    {
+                        if (NetworkUtility.isReachable)
+                        {
+                            ActivityIndicator.Show();
+                            await PushNotificationHelper.GetNotifications();
+                            UpdateNotificationDisplay();
+                            ActivityIndicator.Hide();
+                        }
+                        else
+                        {
+                            var alert = UIAlertController.Create("ErrNoNetworkTitle".Translate(), "ErrNoNetworkMsg".Translate(), UIAlertControllerStyle.Alert);
+                            alert.AddAction(UIAlertAction.Create("Ok", UIAlertActionStyle.Cancel, null));
+                            PresentViewController(alert, animated: true, completionHandler: null);
+                        }
+                    });
+                });
+            }
+            else
+            {
+                UpdateNotificationDisplay();
+            }
+        }
+
+
 
         internal void SetNavigationBar()
         {
@@ -151,14 +188,14 @@ namespace myTNB.PushNotification
                     {
                         GetNotificationDetailedInfo(dataModel).ContinueWith(task =>
                         {
-                            InvokeOnMainThread(() =>
+                            InvokeOnMainThread(async () =>
                             {
                                 if (_detailedInfo != null && _detailedInfo?.d != null
                                     && _detailedInfo?.d?.didSucceed == true
                                    && _detailedInfo?.d?.status.ToLower() == "success"
                                    && _detailedInfo?.d?.data != null)
                                 {
-                                    DataManager.DataManager.SharedInstance.NotificationNeedsUpdate = true;
+                                    DataManager.DataManager.SharedInstance.NotificationNeedsUpdate = false;
                                     UIStoryboard storyBoard = UIStoryboard.FromName("PushNotification", null);
                                     NotificationDetailsViewController viewController =
                                         storyBoard.InstantiateViewController("NotificationDetailsViewController") as NotificationDetailsViewController;
@@ -173,6 +210,8 @@ namespace myTNB.PushNotification
                                     NavigationController?.PushViewController(viewController, true);
                                 }
                                 ActivityIndicator.Hide();
+                                await PushNotificationHelper.GetNotifications();
+                                UpdateNotificationDisplay();
                             });
                         });
                     }

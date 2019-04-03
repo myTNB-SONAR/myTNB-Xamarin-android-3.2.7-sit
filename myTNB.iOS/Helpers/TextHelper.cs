@@ -1,7 +1,9 @@
-﻿using System;
+using System;
 using System.Globalization;
 using Foundation;
 using UIKit;
+using System.Security;
+using System.Runtime.InteropServices;
 
 namespace myTNB
 {
@@ -18,9 +20,12 @@ namespace myTNB
         {
             var htmlStr = string.Format(@"{0}<body>{1}</body>", styleCss, htmlContent);
             NSString nsstr = new NSString(htmlStr, NSStringEncoding.Unicode);
-            NSAttributedString attributedString = new NSAttributedString(htmlStr, 
-                                                                         new NSAttributedStringDocumentAttributes { DocumentType = NSDocumentType.HTML, 
-                                                                                                                    StringEncoding = NSStringEncoding.UTF8 },
+            NSAttributedString attributedString = new NSAttributedString(htmlStr,
+                                                                         new NSAttributedStringDocumentAttributes
+                                                                         {
+                                                                             DocumentType = NSDocumentType.HTML,
+                                                                             StringEncoding = NSStringEncoding.UTF8
+                                                                         },
                                                                          ref htmlCampaignPeriodError);
             return attributedString;
         }
@@ -33,7 +38,7 @@ namespace myTNB
         /// <param name="htmlCampaignPeriodError">Html campaign period error.</param>
         /// <param name="fontName">Font name.</param>
         /// <param name="fontSize">Font size.</param>
-        public static NSAttributedString ConvertToHtmlWithFont(string htmlContent, ref NSError htmlCampaignPeriodError, 
+        public static NSAttributedString ConvertToHtmlWithFont(string htmlContent, ref NSError htmlCampaignPeriodError,
                                                                string fontName, float fontSize)
         {
             var styleCss = string.Format("<style>body{{font-family: '{0}'; font-size:{1}px; }}</style>", fontName, fontSize);
@@ -90,6 +95,49 @@ namespace myTNB
             }
 
             return 0;
+        }
+
+        /// <summary>
+        /// Converts the string to secure string.
+        /// </summary>
+        /// <returns>The string to secure string.</returns>
+        /// <param name="str">String.</param>
+        public static SecureString ConvertStringToSecureString(string str)
+        {
+            SecureString secureString = new SecureString();
+            if (!string.IsNullOrWhiteSpace(str))
+            {
+                foreach (char ch in str)
+                {
+                    secureString.AppendChar(ch);
+                }
+            }
+            return secureString;
+        }
+
+        /// <summary>
+        /// Converts the secure string to string.
+        /// </summary>
+        /// <returns>The secure string to string.</returns>
+        /// <param name="secureString">Secure string.</param>
+        public static string ConvertSecureStringToString(SecureString secureString)
+        {
+            string str = string.Empty;
+            IntPtr valuePtr = IntPtr.Zero;
+            if (secureString != null)
+            {
+                try
+                {
+                    valuePtr = Marshal.SecureStringToGlobalAllocUnicode(secureString);
+                    str = Marshal.PtrToStringUni(valuePtr);
+                    return str;
+                }
+                finally
+                {
+                    Marshal.ZeroFreeGlobalAllocUnicode(valuePtr);
+                }
+            }
+            return str;
         }
     }
 }

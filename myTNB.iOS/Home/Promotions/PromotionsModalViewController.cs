@@ -43,9 +43,9 @@ namespace myTNB
             base.ViewDidLoad();
 
             NavigationController.NavigationBar.Hidden = true;
-            View.BackgroundColor = myTNBColor.TunaGrey(0.6f); 
+            View.BackgroundColor = myTNBColor.TunaGrey(0.6f);
 
-            double carHeight = View.Frame.Width > 512 ? 840 : 420; 
+            double carHeight = View.Frame.Width > 512 ? 840 : 420;
             var locY = (View.Bounds.Height / 2) - (carHeight / 2);
             promoCarousel = new iCarousel(new CGRect(0, locY, View.Bounds.Width, carHeight))
             {
@@ -55,7 +55,8 @@ namespace myTNB
                 BackgroundColor = UIColor.Clear
             };
 
-            promoCarousel.GetValue = (sender, option, value) => {
+            promoCarousel.GetValue = (sender, option, value) =>
+            {
 
                 if (option == iCarouselOption.Spacing)
                 {
@@ -65,7 +66,7 @@ namespace myTNB
                 return value;
             };
 
-            promoCarousel.CurrentItemIndexChanged += (sender, e) => 
+            promoCarousel.CurrentItemIndexChanged += (sender, e) =>
             {
                 UpdateShownDate();
             };
@@ -164,10 +165,13 @@ namespace myTNB
             UIStoryboard storyBoard = UIStoryboard.FromName("PromotionDetails", null);
             PromotionDetailsViewController viewController =
                 storyBoard.InstantiateViewController("PromotionDetailsViewController") as PromotionDetailsViewController;
-            viewController.Promotion = promotion;
-            viewController.OnDone = OnDone;
-            var navController = new UINavigationController(viewController);
-            PresentViewController(navController, true, null);
+            if (viewController != null)
+            {
+                viewController.Promotion = promotion;
+                viewController.OnDone = OnDone;
+                var navController = new UINavigationController(viewController);
+                PresentViewController(navController, true, null);
+            }
             ActivityIndicator.Hide();
         }
 

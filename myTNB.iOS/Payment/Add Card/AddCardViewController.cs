@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using UIKit;
 using CoreGraphics;
 using myTNB.Model;
@@ -659,15 +659,15 @@ namespace myTNB
                 card.ExpiryMonth = txtFieldCardExpiry.Text.Substring(0, 2);
                 card.ExpiryYear = 20 + txtFieldCardExpiry.Text.Substring(3, 2);
             }
-
-            makePaymentVC._card = card;
-            makePaymentVC._requestPayBillResponseModel = requestPayBillResponseModel;
-            makePaymentVC._isNewCard = true;
-            makePaymentVC._saveCardIsChecked = btnCheckBox.Selected;
-            makePaymentVC._paymentMode = "CC";
-
-            var navController = new UINavigationController(makePaymentVC);
-            NavigationController.PushViewController(makePaymentVC, true);
+            if (makePaymentVC != null)
+            {
+                makePaymentVC._card = card;
+                makePaymentVC._requestPayBillResponseModel = requestPayBillResponseModel;
+                makePaymentVC._isNewCard = true;
+                makePaymentVC._saveCardIsChecked = btnCheckBox.Selected;
+                makePaymentVC._paymentMode = "CC";
+                NavigationController.PushViewController(makePaymentVC, true);
+            }
         }
 
         internal string GetCardTypeByPreffix(string cardPreffix)

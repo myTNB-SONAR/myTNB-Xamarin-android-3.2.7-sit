@@ -97,7 +97,12 @@ namespace myTNB
                             };
                             if (!string.IsNullOrEmpty(_url))
                             {
-                                webClient.DownloadDataAsync(new Uri(_url));
+                                bool result = Uri.TryCreate(_url, UriKind.Absolute, out Uri uriResult)
+                                    && (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps);
+                                if (result)
+                                {
+                                    webClient.DownloadDataAsync(new Uri(_url));
+                                }
                             }
                         }
                         catch (Exception err)
@@ -151,7 +156,11 @@ namespace myTNB
             _pdfFilePath = Path.Combine(documentsPath, pdfFileName);
         }
 
-        private async Task ExecuteGetBillHistoryCall()         {             await GetBillHistory().ContinueWith(task =>             {                 InvokeOnMainThread(async () =>
+        private async Task ExecuteGetBillHistoryCall()
+        {
+            await GetBillHistory().ContinueWith(task =>
+            {
+                InvokeOnMainThread(async () =>
                 {
                     SetNavigationTitle();
                     GetFilePath();
@@ -159,7 +168,10 @@ namespace myTNB
                     {
                         InvokeOnMainThread(SetSubviews);
                     });
-                });             });         } 
+                });
+            });
+        }
+
         internal Task GetBillHistory()
         {
             return Task.Factory.StartNew(() =>

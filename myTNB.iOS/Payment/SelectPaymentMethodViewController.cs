@@ -11,6 +11,7 @@ using UIKit;
 using myTNB.Extensions;
 using Foundation;
 using System.Globalization;
+using System.Security;
 
 namespace myTNB
 {
@@ -37,7 +38,7 @@ namespace myTNB
 
         string _selectedSavedCardType = string.Empty;
         string _selectedSavedCardID = string.Empty;
-        string _cardCVV = string.Empty;
+        SecureString _cardCVVStr;
 
         public override void ViewDidLoad()
         {
@@ -336,14 +337,15 @@ namespace myTNB
             UIStoryboard storyBoard = UIStoryboard.FromName("MakePayment", null);
             MakePaymentViewController makePaymentVC =
                 storyBoard.InstantiateViewController("MakePaymentViewController") as MakePaymentViewController;
-            makePaymentVC._requestPayBillResponseModel = requestPayBillResponseModel;
-            makePaymentVC._isNewCard = false;
-            makePaymentVC._platform = platform;
-            makePaymentVC._paymentMode = paymentMode;
-            makePaymentVC._cardCVV = _cardCVV;
-
-            var navController = new UINavigationController(makePaymentVC);
-            NavigationController.PushViewController(makePaymentVC, true);
+            if (makePaymentVC != null)
+            {
+                makePaymentVC._requestPayBillResponseModel = requestPayBillResponseModel;
+                makePaymentVC._isNewCard = false;
+                makePaymentVC._platform = platform;
+                makePaymentVC._paymentMode = paymentMode;
+                makePaymentVC._cardCVV = TextHelper.ConvertSecureStringToString(_cardCVVStr);
+                NavigationController.PushViewController(makePaymentVC, true);
+            }
         }
 
         internal void ShowCVVField(string cardType, string cardID)
@@ -515,49 +517,58 @@ namespace myTNB
             UITextField txtFieldCVV3 = viewCVVWrapper.ViewWithTag(3) as UITextField;
             UITextField txtFieldCVV4 = viewCVVWrapper.ViewWithTag(4) as UITextField;
 
-            if (!string.IsNullOrEmpty(txtFieldCVV1.Text) && !string.IsNullOrEmpty(txtFieldCVV2.Text)
-                && !string.IsNullOrEmpty(txtFieldCVV3.Text) && isKeyboardDismissed)
+            if (txtFieldCVV1 != null && txtFieldCVV2 != null && txtFieldCVV3 != null)
             {
-                string cvv = txtFieldCVV1.Text + txtFieldCVV2.Text + txtFieldCVV3.Text;
-                if (_isAMEX)
+                if (!string.IsNullOrEmpty(txtFieldCVV1.Text) && !string.IsNullOrEmpty(txtFieldCVV2.Text)
+                && !string.IsNullOrEmpty(txtFieldCVV3.Text) && isKeyboardDismissed)
                 {
-                    if (!string.IsNullOrEmpty(txtFieldCVV4.Text))
-                    {
-                        cvv += txtFieldCVV4.Text;
-                    }
-                    else
-                    {
-                        return;
-                    }
-                }
-                ActivityIndicator.Show();
-                NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
-                {
-                    InvokeOnMainThread(() =>
-                    {
-                        if (NetworkUtility.isReachable)
-                        {
-                            View.EndEditing(true);
-                            viewCVVContainer.Hidden = true;
-                            viewCVVContainer.RemoveFromSuperview();
-                            viewCVVBackground.Hidden = true;
-                            viewCVVBackground.RemoveFromSuperview();
+                    SecureString cvv = new SecureString();
+                    cvv = TextHelper.ConvertStringToSecureString(txtFieldCVV1.Text + txtFieldCVV2.Text + txtFieldCVV3.Text);
 
-                            _isAMEX = false;
-
-                            ActivityIndicator.Hide();
-                            _cardCVV = cvv;
-                            ExecuteRequestPayBillCall(2, "CC", _selectedSavedCardID, false, txtFieldAmountValue.Text);
-                        }
-                        else
+                    if (_isAMEX)
+                    {
+                        if (txtFieldCVV4 != null)
                         {
-                            var alert = UIAlertController.Create("ErrNoNetworkTitle".Translate(), "ErrNoNetworkMsg".Translate(), UIAlertControllerStyle.Alert);
-                            alert.AddAction(UIAlertAction.Create("Ok", UIAlertActionStyle.Cancel, null));
-                            PresentViewController(alert, true, null);
-                            ActivityIndicator.Hide();
+                            if (!string.IsNullOrEmpty(txtFieldCVV4.Text))
+                            {
+                                cvv = TextHelper.ConvertStringToSecureString(TextHelper.ConvertSecureStringToString(cvv) + txtFieldCVV4.Text);
+                            }
+                            else
+                            {
+                                return;
+                            }
                         }
+                    }
+                    ActivityIndicator.Show();
+                    NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
+                    {
+                        InvokeOnMainThread(() =>
+                        {
+                            if (NetworkUtility.isReachable)
+                            {
+                                View.EndEditing(true);
+                                viewCVVContainer.Hidden = true;
+                                viewCVVContainer.RemoveFromSuperview();
+                                viewCVVBackground.Hidden = true;
+                                viewCVVBackground.RemoveFromSuperview();
+
+                                _isAMEX = false;
+
+                                ActivityIndicator.Hide();
+                                _cardCVVStr = new SecureString();
+                                _cardCVVStr = cvv;
+                                ExecuteRequestPayBillCall(2, "CC", _selectedSavedCardID, false, txtFieldAmountValue.Text);
+                            }
+                            else
+                            {
+                                var alert = UIAlertController.Create("ErrNoNetworkTitle".Translate(), "ErrNoNetworkMsg".Translate(), UIAlertControllerStyle.Alert);
+                                alert.AddAction(UIAlertAction.Create("Ok", UIAlertActionStyle.Cancel, null));
+                                PresentViewController(alert, true, null);
+                                ActivityIndicator.Hide();
+                            }
+                        });
                     });
-                });
+                }
             }
         }
 

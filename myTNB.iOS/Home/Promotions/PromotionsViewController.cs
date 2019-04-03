@@ -1,4 +1,4 @@
-﻿using Foundation;
+using Foundation;
 using System;
 using UIKit;
 using myTNB.Dashboard.DashboardComponents;
@@ -234,10 +234,13 @@ namespace myTNB
             UIStoryboard storyBoard = UIStoryboard.FromName("PromotionDetails", null);
             PromotionDetailsViewController viewController =
                 storyBoard.InstantiateViewController("PromotionDetailsViewController") as PromotionDetailsViewController;
-            viewController.Promotion = promotion;
-            viewController.OnDone = OnDone;
-            var navController = new UINavigationController(viewController);
-            PresentViewController(navController, true, null);
+            if (viewController != null)
+            {
+                viewController.Promotion = promotion;
+                viewController.OnDone = OnDone;
+                var navController = new UINavigationController(viewController);
+                PresentViewController(navController, true, null);
+            }
             //ActivityIndicator.Hide();
         }
 

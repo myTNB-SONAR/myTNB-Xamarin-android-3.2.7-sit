@@ -4,12 +4,14 @@ using myTNB.Home.Components;
 using UIKit;
 using CoreGraphics;
 using myTNB.Enums;
+using System;
 
 namespace myTNB.Dashboard.DashboardComponents
 {
     public class DashboardMainComponent
     {
         UIView _parentView;
+        //public UIRefreshControl _refreshControl;
         public DashboardMainComponent(UIView view)
         {
             _parentView = view;
@@ -42,6 +44,8 @@ namespace myTNB.Dashboard.DashboardComponents
         public iCarousel _chartCarousel;
         public ChartDataSource _chartDataSource;
         public DashboardModeEnum _dashboardMode;
+
+        public EventHandler PullDownTorefresh;
 
         internal void RemoveAllSubviews()
         {
@@ -140,6 +144,13 @@ namespace myTNB.Dashboard.DashboardComponents
                 ContentSize = new CoreGraphics.CGSize(_gradientView.Frame.Width, contentHeight + addtlHeight),
                 Bounces = false
             };
+
+            //_refreshControl = new UIRefreshControl
+            //{
+            //    TintColor = UIColor.White
+            //};
+            //_refreshControl.ValueChanged += PullDownTorefresh;
+            //_dashboardScrollView.AddSubview(_refreshControl); removed pull down to refresh
 
             //Add UsageHistory
             _usageHistoryComponent = new UsageHistoryComponent(_dashboardScrollView);

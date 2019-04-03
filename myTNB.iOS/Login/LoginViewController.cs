@@ -486,10 +486,20 @@ namespace myTNB
         /// Shows the update mobile number.
         /// </summary>
         /// <param name="willHideBackButton">If set to <c>true</c> will hide back button.</param>
-        private void ShowUpdateMobileNumber(bool willHideBackButton)         {             UIStoryboard storyBoard = UIStoryboard.FromName("UpdateMobileNumber", null);             UpdateMobileNumberViewController viewController =                 storyBoard.InstantiateViewController("UpdateMobileNumberViewController") as UpdateMobileNumberViewController;
-            viewController.WillHideBackButton = willHideBackButton;
-            viewController.IsFromLogin = true;             var navController = new UINavigationController(viewController);             PresentViewController(navController, true, null);
-            ActivityIndicator.Hide();         }
+        private void ShowUpdateMobileNumber(bool willHideBackButton)
+        {
+            UIStoryboard storyBoard = UIStoryboard.FromName("UpdateMobileNumber", null);
+            UpdateMobileNumberViewController viewController =
+                storyBoard.InstantiateViewController("UpdateMobileNumberViewController") as UpdateMobileNumberViewController;
+            if (viewController != null)
+            {
+                viewController.WillHideBackButton = willHideBackButton;
+                viewController.IsFromLogin = true;
+                var navController = new UINavigationController(viewController);
+                PresentViewController(navController, true, null);
+            }
+            ActivityIndicator.Hide();
+        }
 
         Task Login(){
             return Task.Factory.StartNew(() => {
@@ -529,7 +539,6 @@ namespace myTNB
                     if (_billingAccountDetailsList != null && _billingAccountDetailsList?.d != null
                         && _billingAccountDetailsList?.d?.data != null)
                     {
-                        PushNotificationHelper.GetNotifications();
                         DataManager.DataManager.SharedInstance.BillingAccountDetails = _billingAccountDetailsList.d.data;
                         if (!DataManager.DataManager.SharedInstance.SelectedAccount.IsREAccount)
                         {
@@ -568,7 +577,9 @@ namespace myTNB
             });
         }
 
-        void SetupSubViews(){             //Setup Corner Radius             btnLogin.Layer.CornerRadius = 5;
+        void SetupSubViews(){
+            //Setup Corner Radius
+            btnLogin.Layer.CornerRadius = 5;
             viewErrorDialog.Layer.CornerRadius = 5;
             viewNotifDialog.Layer.CornerRadius = 5;
 
@@ -578,7 +589,14 @@ namespace myTNB
 
         void SetupFonts() {
             //Labels
-            lblWelcome.Font = myTNBFont.MuseoSans26_500();             lblAccountLogin.Font = myTNBFont.MuseoSans18_300();             lblNoAccount.Font = myTNBFont.MuseoSans12_300();              //Buttons             btnRegister.TitleLabel.Font = myTNBFont.MuseoSans12_500();             btnLogin.TitleLabel.Font = myTNBFont.MuseoSans16_500();         }
+            lblWelcome.Font = myTNBFont.MuseoSans26_500();
+            lblAccountLogin.Font = myTNBFont.MuseoSans18_300();
+            lblNoAccount.Font = myTNBFont.MuseoSans12_300();
+
+            //Buttons
+            btnRegister.TitleLabel.Font = myTNBFont.MuseoSans12_500();
+            btnLogin.TitleLabel.Font = myTNBFont.MuseoSans16_500();
+        }
 
         void HideDialog() {
 			if (viewErrorDialog.Hidden == false)
@@ -675,9 +693,6 @@ namespace myTNB
                             if (DataManager.DataManager.SharedInstance.AccountRecordsList?.d?.Count > 0)
                             {
                                 DataManager.DataManager.SharedInstance.SelectedAccount = DataManager.DataManager.SharedInstance.AccountRecordsList.d[0];
-                                //ExecuteGetBillAccountDetailsCall();
-
-                                PushNotificationHelper.GetNotifications();
                                 UIStoryboard storyBoard = UIStoryboard.FromName("Dashboard", null);
                                 UIViewController loginVC = storyBoard.InstantiateViewController("HomeTabBarController") as UIViewController;
                                 ShowViewController(loginVC, this);

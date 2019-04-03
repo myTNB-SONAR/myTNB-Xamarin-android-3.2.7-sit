@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using myTNB.Model;
@@ -92,7 +92,6 @@ namespace myTNB
         public override UIViewController GetNextViewController(UIPageViewController pageViewController, UIViewController referenceViewController)
         {
             int index = IndexOf((OnboardingDataViewController)referenceViewController);
-            Console.WriteLine("Next: " + index);
             currentIndex = index;
             btnSkip.Hidden = index == pageData.Count - 1;
             btnDone.Hidden = index != pageData.Count - 1;

@@ -312,12 +312,18 @@ namespace myTNB
             for (int i = 0; i < 4; i++)
             {
                 UITextField txtField = _viewTokenFieldContainer.ViewWithTag(i + 1) as UITextField;
-                txtField.TextColor = (_isTokenInvalid) ? myTNBColor.Tomato() : myTNBColor.TunaGrey();
+                if (txtField != null)
+                {
+                    txtField.TextColor = (_isTokenInvalid) ? myTNBColor.Tomato() : myTNBColor.TunaGrey();
+                }
 
                 if (_isTokenInvalid)
                 {
                     UIView viewLine = _viewTokenFieldContainer.ViewWithTag(i + 5) as UIView;
-                    viewLine.BackgroundColor = myTNBColor.Tomato();
+                    if (viewLine != null)
+                    {
+                        viewLine.BackgroundColor = myTNBColor.Tomato();
+                    }
                 }
             }
 
@@ -342,26 +348,29 @@ namespace myTNB
             UITextField txtFieldToken3 = _viewTokenFieldContainer.ViewWithTag(3) as UITextField;
             UITextField txtFieldToken4 = _viewTokenFieldContainer.ViewWithTag(4) as UITextField;
 
-            if (!string.IsNullOrEmpty(txtFieldToken1.Text) && !string.IsNullOrEmpty(txtFieldToken2.Text)
-               && !string.IsNullOrEmpty(txtFieldToken3.Text) && !string.IsNullOrEmpty(txtFieldToken4.Text) && isKeyboardDismissed)
+            if (txtFieldToken1 != null && txtFieldToken2 != null && txtFieldToken3 != null && txtFieldToken4 != null)
             {
-                ActivityIndicator.Show();
-                NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
+                if (!string.IsNullOrEmpty(txtFieldToken1.Text) && !string.IsNullOrEmpty(txtFieldToken2.Text)
+               && !string.IsNullOrEmpty(txtFieldToken3.Text) && !string.IsNullOrEmpty(txtFieldToken4.Text) && isKeyboardDismissed)
                 {
-                    InvokeOnMainThread(() =>
+                    ActivityIndicator.Show();
+                    NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
                     {
-                        if (NetworkUtility.isReachable)
+                        InvokeOnMainThread(() =>
                         {
-                            _token = txtFieldToken1.Text + txtFieldToken2.Text + txtFieldToken3.Text + txtFieldToken4.Text;
-                            ExecuteResetPasswordWithTokenCall();
-                        }
-                        else
-                        {
-                            DisplayAlertView("ErrNoNetworkTitle".Translate(), "ErrNoNetworkMsg".Translate());
-                            ActivityIndicator.Hide();
-                        }
+                            if (NetworkUtility.isReachable)
+                            {
+                                _token = txtFieldToken1.Text + txtFieldToken2.Text + txtFieldToken3.Text + txtFieldToken4.Text;
+                                ExecuteResetPasswordWithTokenCall();
+                            }
+                            else
+                            {
+                                DisplayAlertView("ErrNoNetworkTitle".Translate(), "ErrNoNetworkMsg".Translate());
+                                ActivityIndicator.Hide();
+                            }
+                        });
                     });
-                });
+                }
             }
         }
 

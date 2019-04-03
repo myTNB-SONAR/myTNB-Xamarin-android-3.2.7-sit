@@ -1,4 +1,4 @@
-﻿using Foundation;
+using Foundation;
 using System;
 using UIKit;
 using CoreGraphics;
@@ -63,7 +63,6 @@ namespace myTNB
 
         const string ANY_PATTERN = @".*";
         const string EMAIL_PATTERN = @"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$";
-        const string PASSWORD_PATTERN = @".*";
         const string MOBILE_NO_PATTERN = @"^[0-9 \+]+$";
         const string IC_NO_PATTERN = @"^[a-zA-Z0-9]+$";
         const string ACCOUNT_NO_PATTERN = @"^[0-9]{12,14}$";

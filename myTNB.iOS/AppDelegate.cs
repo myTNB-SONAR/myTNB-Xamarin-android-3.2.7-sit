@@ -47,15 +47,16 @@ namespace myTNB
                     UIStoryboard storyBoard = UIStoryboard.FromName("Receipt", null);
                     ReceiptViewController viewController =
                         storyBoard.InstantiateViewController("ReceiptViewController") as ReceiptViewController;
-                    viewController.MerchatTransactionID = transID;
-                    viewController.isCCFlow = false;
-                    var navController = new UINavigationController(viewController);
-
-                    if (!(topVc is ReceiptViewController))
+                    if (viewController != null)
                     {
-                        topVc?.PresentViewController(navController, true, null);
+                        viewController.MerchatTransactionID = transID;
+                        viewController.isCCFlow = false;
+                        var navController = new UINavigationController(viewController);
+                        if (!(topVc is ReceiptViewController))
+                        {
+                            topVc?.PresentViewController(navController, true, null);
+                        }
                     }
-
                 }
             }
 
@@ -66,17 +67,19 @@ namespace myTNB
                     UIStoryboard storyBoard = UIStoryboard.FromName("Payment", null);
                     SelectPaymentMethodViewController viewController =
                         storyBoard.InstantiateViewController("SelectPaymentMethodViewController") as SelectPaymentMethodViewController;
-                    var navController = new UINavigationController(viewController);
-
-                    if (_selectBillsVC != null)
+                    if (viewController != null)
                     {
-                        viewController.AccountsForPayment = _selectBillsVC._accountsForPayment;
-                        viewController.TotalAmount = _selectBillsVC.totalAmount;
-                        _selectBillsVC.PresentViewController(navController, true, null);
-                    }
-                    else if (_dashboardVC != null)
-                    {
-                        _dashboardVC.PresentViewController(navController, true, null);
+                        var navController = new UINavigationController(viewController);
+                        if (_selectBillsVC != null)
+                        {
+                            viewController.AccountsForPayment = _selectBillsVC._accountsForPayment;
+                            viewController.TotalAmount = _selectBillsVC.totalAmount;
+                            _selectBillsVC.PresentViewController(navController, true, null);
+                        }
+                        else if (_dashboardVC != null)
+                        {
+                            _dashboardVC.PresentViewController(navController, true, null);
+                        }
                     }
                 }
             }
@@ -128,14 +131,16 @@ namespace myTNB
                     UIStoryboard storyBoard = UIStoryboard.FromName("Rating", null);
                     RatingViewController viewController =
                         storyBoard.InstantiateViewController("RatingViewController") as RatingViewController;
-                    viewController.Rating = !string.IsNullOrEmpty(rateString) ? int.Parse(rateString) : 0;
-                    viewController.TransId = transId;
+                    if (viewController != null)
+                    {
+                        viewController.Rating = !string.IsNullOrEmpty(rateString) ? int.Parse(rateString) : 0;
+                        viewController.TransId = transId;
 
 
-                    var navController = new UINavigationController(viewController);
-                    topVc?.PresentViewController(navController, true, null);
+                        var navController = new UINavigationController(viewController);
+                        topVc?.PresentViewController(navController, true, null);
+                    }
                 }
-
             }
 
             bool fbHandled = ApplicationDelegate.SharedInstance.OpenUrl(app, url, options);

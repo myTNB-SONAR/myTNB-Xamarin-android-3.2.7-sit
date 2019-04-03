@@ -1,4 +1,4 @@
-﻿using Foundation;
+using Foundation;
 using System;
 using UIKit;
 using myTNB.Dashboard.DashboardComponents;
@@ -243,9 +243,12 @@ namespace myTNB
             UIStoryboard storyBoard = UIStoryboard.FromName("Registration", null);
             TermsAndConditionViewController viewController =
                 storyBoard.InstantiateViewController("TermsAndConditionViewController") as TermsAndConditionViewController;
-            viewController.isPresentedVC = true;
-            var navController = new UINavigationController(viewController);
-            PresentViewController(navController, true, null);
+            if (viewController != null)
+            {
+                viewController.isPresentedVC = true;
+                var navController = new UINavigationController(viewController);
+                PresentViewController(navController, true, null);
+            }
         }
 
         void GoToFAQ()
@@ -281,11 +284,14 @@ namespace myTNB
                     UIStoryboard storyBoard = UIStoryboard.FromName("Browser", null);
                     BrowserViewController viewController =
                         storyBoard.InstantiateViewController("BrowserViewController") as BrowserViewController;
-                    viewController.NavigationTitle = title;
-                    viewController.URL = url;
-                    viewController.IsDelegateNeeded = false;
-                    var navController = new UINavigationController(viewController);
-                    PresentViewController(navController, true, null);
+                    if (viewController != null)
+                    {
+                        viewController.NavigationTitle = title;
+                        viewController.URL = url;
+                        viewController.IsDelegateNeeded = false;
+                        var navController = new UINavigationController(viewController);
+                        PresentViewController(navController, true, null);
+                    }
                     return;
                 }
             }

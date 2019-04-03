@@ -175,8 +175,11 @@ namespace myTNB
                 storyBoard.InstantiateViewController(viewControllerName) as UIViewController;
             AddAccountViewController addAccountVC =
             storyBoard.InstantiateViewController("AddAccountViewController") as AddAccountViewController;
-            addAccountVC.isOwner = isOwner;
-            NavigationController.PushViewController(addAccountVC, true);
+            if (addAccountVC != null)
+            {
+                addAccountVC.isOwner = isOwner;
+                NavigationController.PushViewController(addAccountVC, true);
+            }
         }
 
         internal void SetUpGestures()

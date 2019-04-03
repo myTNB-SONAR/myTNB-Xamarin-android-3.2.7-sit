@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Threading.Tasks;
 using CoreGraphics;
 using Foundation;
@@ -365,12 +365,18 @@ namespace myTNB.Login.ForgotPassword
                         UIStoryboard storyBoard = UIStoryboard.FromName("ForgotPassword", null);
                         PasswordResetSuccessViewController viewController =
                             storyBoard.InstantiateViewController("PasswordResetSuccessViewController") as PasswordResetSuccessViewController;
-                        viewController.IsChangePassword = true;
-                        NavigationController?.PushViewController(viewController, false);
+                        if (viewController != null)
+                        {
+                            viewController.IsChangePassword = true;
+                            NavigationController?.PushViewController(viewController, false);
+                        }
                     }
                     else
                     {
-                        DisplayAlertMessage("Error", _changePasswordList.d.message);
+                        var message = !string.IsNullOrWhiteSpace(_changePasswordList?.d?.message)
+                                                 ? _changePasswordList?.d?.message
+                                                 : "DefaultErrorMessage".Translate();
+                        DisplayAlertMessage("ErrorTitle".Translate(), message);
                     }
                     ActivityIndicator.Hide();
                 });

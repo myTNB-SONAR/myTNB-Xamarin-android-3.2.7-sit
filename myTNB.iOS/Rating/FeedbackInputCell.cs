@@ -216,13 +216,16 @@ namespace myTNB
             for (int i = 0; i < count; i++)
             {
                 imgView = viewRating.Subviews[i].Subviews[0] as UIImageView;
-                if (i <= index)
+                if (imgView != null)
                 {
-                    imgView.Image = UIImage.FromBundle("IC-Action-Rating-Active");
-                }
-                else
-                {
-                    imgView.Image = UIImage.FromBundle("IC-Action-Rating-Inactive");
+                    if (i <= index)
+                    {
+                        imgView.Image = UIImage.FromBundle("IC-Action-Rating-Active");
+                    }
+                    else
+                    {
+                        imgView.Image = UIImage.FromBundle("IC-Action-Rating-Inactive");
+                    }
                 }
             }
         }

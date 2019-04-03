@@ -496,6 +496,9 @@ namespace myTNB
             return Task.Factory.StartNew(() =>
             {
                 string locType = "KT";
+                string latt = _locationManager?.Location.Coordinate.Latitude.ToString() ?? string.Empty;
+                string longt = _locationManager?.Location.Coordinate.Longitude.ToString() ?? string.Empty;
+
                 if (!isSearch)
                 {
                     locType = DataManager.DataManager.SharedInstance.SelectedLocationTypeTitle == "All"
@@ -506,8 +509,8 @@ namespace myTNB
                 object requestParameter = new
                 {
                     apiKeyID = TNBGlobal.API_KEY_ID,
-                    latitude = _locationManager?.Location.Coordinate.Latitude.ToString(),//"3.1365952399077304",//
-                    longitude = _locationManager?.Location.Coordinate.Longitude.ToString(),//"101.69228553771973",//
+                    latitude = latt,//"3.1365952399077304",//
+                    longitude = longt,//"101.69228553771973",//
                     locationType = locType,
                     keyword = isSearch ? _searchLoc : string.Empty
                 };
