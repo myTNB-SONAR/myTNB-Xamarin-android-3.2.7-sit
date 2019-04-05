@@ -112,6 +112,7 @@ namespace myTNB.DataManager
 
         //Payment
         public bool IsPaymentDone = false;
+        private List<string> AccountNumbersForPaymentList;
 
         public static DataManager SharedInstance
         {
@@ -906,6 +907,31 @@ namespace myTNB.DataManager
             if (!string.IsNullOrEmpty(key))
             {
                 PaymentHistoryEntity.DeleteItem(key);
+            }
+        }
+
+        public void SetAccountNumberForPayment(string accountNumber)
+        {
+            if (AccountNumbersForPaymentList == null)
+            {
+                AccountNumbersForPaymentList = new List<string>();
+            }
+            AccountNumbersForPaymentList.Add(accountNumber);
+        }
+
+        public bool IsPaidAccountNumber(string accountNumber) {
+            if (AccountNumbersForPaymentList == null)
+            {
+                return false;
+            }
+            return AccountNumbersForPaymentList.Contains(accountNumber);
+        }
+
+        public void ClearPaidList()
+        {
+            if (AccountNumbersForPaymentList != null)
+            {
+                AccountNumbersForPaymentList.Clear();
             }
         }
 
