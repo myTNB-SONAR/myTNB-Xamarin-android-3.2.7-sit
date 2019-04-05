@@ -910,6 +910,10 @@ namespace myTNB.DataManager
             }
         }
 
+        /// <summary>
+        /// Sets the account number for payment.
+        /// </summary>
+        /// <param name="accountNumber">Account number.</param>
         public void SetAccountNumberForPayment(string accountNumber)
         {
             if (AccountNumbersForPaymentList == null)
@@ -919,6 +923,11 @@ namespace myTNB.DataManager
             AccountNumbersForPaymentList.Add(accountNumber);
         }
 
+        /// <summary>
+        /// Ises the paid account number.
+        /// </summary>
+        /// <returns><c>true</c>, if paid account number was ised, <c>false</c> otherwise.</returns>
+        /// <param name="accountNumber">Account number.</param>
         public bool IsPaidAccountNumber(string accountNumber) {
             if (AccountNumbersForPaymentList == null)
             {
@@ -927,6 +936,9 @@ namespace myTNB.DataManager
             return AccountNumbersForPaymentList.Contains(accountNumber);
         }
 
+        /// <summary>
+        /// Clears the paid list.
+        /// </summary>
         public void ClearPaidList()
         {
             if (AccountNumbersForPaymentList != null)
