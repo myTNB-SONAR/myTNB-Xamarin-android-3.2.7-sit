@@ -67,7 +67,7 @@ namespace myTNB
             {
                 cell = new DashboardAccountCell(CellIdentifier);
             }
-                
+
             if (IsIndexPathValid(indexPath))
             {
                 var accts = DisplayedAccounts[keys[indexPath.Section]];
@@ -107,7 +107,7 @@ namespace myTNB
         {
             int sectionCount = keys?.Count ?? 0;
             int rowCount = 0;
-            if(section < sectionCount)
+            if (section < sectionCount)
             {
                 var key = keys[(int)section];
                 if (DisplayedAccounts.ContainsKey(key))
@@ -160,9 +160,9 @@ namespace myTNB
         public override UIView GetViewForHeader(UITableView tableView, nint section)
         {
             var title = keys[(int)section];
-            var amountTitle = string.Compare(title, "REAccountsSectionHeader".Translate()) == 0
-                                    ? "REAccountsSectionSubHeader".Translate()
-                                    : "NormalAccountsSectionSubHeader".Translate();
+            var amountTitle = string.Compare(title, "Dashboard_RESectionHeader".Translate()) == 0
+                                    ? "Dashboard_RESectionSubHeader".Translate()
+                                    : "Dashboard_SectionHeader".Translate();
             float sectionHeight = 36.0f;
 
             UIView sectionView = new UIView(new CGRect(0, 0, tableView.Bounds.Width, sectionHeight));
@@ -184,9 +184,7 @@ namespace myTNB
                 TextColor = UIColor.White,
                 TextAlignment = UITextAlignment.Right
             };
-
             sectionView.AddSubviews(new UIView[] { lblTitle, lblAmountTitle });
-
             return sectionView;
         }
 
@@ -217,7 +215,6 @@ namespace myTNB
                     }
                 }
             }
-
             return res;
         }
 
@@ -229,6 +226,5 @@ namespace myTNB
         {
             OnTableViewScroll?.Invoke(scrollView, null);
         }
-
     }
 }

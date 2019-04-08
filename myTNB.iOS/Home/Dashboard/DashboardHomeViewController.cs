@@ -78,9 +78,7 @@ namespace myTNB
                     }
                     else
                     {
-                        var alert = UIAlertController.Create("ErrNoNetworkTitle".Translate(), "ErrNoNetworkMsg".Translate(), UIAlertControllerStyle.Alert);
-                        alert.AddAction(UIAlertAction.Create("Ok", UIAlertActionStyle.Cancel, null));
-                        PresentViewController(alert, animated: true, completionHandler: null);
+                        ErrorHandler.DisplayNoDataAlert(this);
                     }
                 });
             });
@@ -137,7 +135,7 @@ namespace myTNB
 
             _titleBarComponent = new TitleBarComponent(_gradientView);
             UIView titleBarView = _titleBarComponent.GetUI();
-            _titleBarComponent.SetTitle("AllAccountsHeader".Translate());
+            _titleBarComponent.SetTitle("Dashboard_AllAccounts".Translate());
             _titleBarComponent.SetNotificationVisibility(false);
             _titleBarComponent.SetBackVisibility(true);
 
@@ -152,8 +150,8 @@ namespace myTNB
                 tbvHeight -= 35.0f;
             }
 
-            tableViewAccounts.Frame = new CGRect(0, titleBarView.Frame.GetMaxY() + 1,
-                                                 View.Bounds.Width, tbvHeight);
+            tableViewAccounts.Frame = new CGRect(0, titleBarView.Frame.GetMaxY() + 1
+                , View.Bounds.Width, tbvHeight);
             tableViewAccounts.RowHeight = UITableView.AutomaticDimension;
             tableViewAccounts.EstimatedRowHeight = 66;
             tableViewAccounts.SeparatorStyle = UITableViewCellSeparatorStyle.None;
@@ -184,10 +182,8 @@ namespace myTNB
                             }
                             else
                             {
-                                Console.WriteLine("No Network");
-                                var alert = UIAlertController.Create("ErrNoNetworkTitle".Translate(), "ErrNoNetworkMsg".Translate(), UIAlertControllerStyle.Alert);
-                                alert.AddAction(UIAlertAction.Create("Ok", UIAlertActionStyle.Cancel, null));
-                                PresentViewController(alert, animated: true, completionHandler: null);
+                                Debug.WriteLine("No Network");
+                                ErrorHandler.DisplayNoDataAlert(this);
                             }
                         });
                     });
@@ -229,9 +225,7 @@ namespace myTNB
                             {
                                 DataManager.DataManager.SharedInstance.AccountsAddedCount = 0;
                             }
-
                         }
-
                     }
                 });
             });
@@ -348,7 +342,7 @@ namespace myTNB
             btnLoad.Layer.BorderColor = UIColor.Clear.CGColor;
             btnLoad.BackgroundColor = UIColor.Clear;
             btnLoad.Layer.BorderWidth = 1;
-            btnLoad.SetTitle("LoadMoreAccounts".Translate(), UIControlState.Normal);
+            btnLoad.SetTitle("Dashboard_LoadMoreAccounts".Translate(), UIControlState.Normal);
             btnLoad.Font = myTNBFont.MuseoSans14_300();
             btnLoad.SetTitleColor(UIColor.White, UIControlState.Normal);
             btnLoad.TouchUpInside += OnLoadMore;
@@ -375,7 +369,7 @@ namespace myTNB
             btnAdd.Layer.BorderColor = UIColor.White.CGColor;
             btnAdd.BackgroundColor = UIColor.Clear;
             btnAdd.Layer.BorderWidth = 1;
-            btnAdd.SetTitle("AddAnotherAccount".Translate(), UIControlState.Normal);
+            btnAdd.SetTitle("Common_AddAnotherAccount".Translate(), UIControlState.Normal);
             btnAdd.Font = myTNBFont.MuseoSans16_300();
             btnAdd.SetTitleColor(UIColor.White, UIControlState.Normal);
             btnAdd.TouchUpInside += (sender, e) =>
@@ -494,9 +488,7 @@ namespace myTNB
                     if (NetworkUtility.isReachable)
                     {
                         ActivityIndicator.Show();
-
                         await LoadDues();
-
                         ActivityIndicator.Hide();
                     }
                 });
@@ -508,7 +500,7 @@ namespace myTNB
         /// </summary>
         private void OnRefresh()
         {
-            Console.WriteLine("Tap to refresh on click");
+            Debug.WriteLine("Tap to refresh on click");
             NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
             {
                 InvokeOnMainThread(async () =>
@@ -516,9 +508,7 @@ namespace myTNB
                     if (NetworkUtility.isReachable)
                     {
                         ActivityIndicator.Show();
-
                         await GetAccountsSummary(accountsToRefresh, false);
-
                         ActivityIndicator.Hide();
                     }
                 });
@@ -544,7 +534,6 @@ namespace myTNB
                 ViewHelper.AdjustFrameSetY(btnAdd, _viewLoadMore.Frame.GetMaxY() + verticalMargin);
                 ViewHelper.AdjustFrameSetHeight(_viewFooter, _viewLoadMore.Frame.GetMaxY() + addAccountHeight);
             }
-
             tableViewAccounts.TableFooterView = _viewFooter;
         }
 
@@ -555,9 +544,7 @@ namespace myTNB
         private async Task LoadDues(int accountsToAdd = 0, bool pullDown = false)
         {
             var accounts = GetAccountsToLoad(accountsToAdd);
-
             await GetAccountsSummary(accounts, true, pullDown);
-
         }
 
         /// <summary>
@@ -584,7 +571,7 @@ namespace myTNB
 
                 if (response.didSucceed && response.AccountDues?.Count > 0)
                 {
-                    //Console.WriteLine("GetLinkedAccountsSummaryInfo SUCCESS!");
+                    //Debug.WriteLine("GetLinkedAccountsSummaryInfo SUCCESS!");
                     UpdateDisplayedAccounts(response.AccountDues);
                     isTimeOut = false;
                     if (accountsToRefresh != null)
@@ -599,7 +586,7 @@ namespace myTNB
                 }
                 else
                 {
-                    //Console.WriteLine("GetLinkedAccountsSummaryInfo FAILED!");
+                    //Debug.WriteLine("GetLinkedAccountsSummaryInfo FAILED!");
                     if (accountsToRefresh != null)
                     {
                         List<string> combinedList = accountsToRefresh.Union(accounts).ToList();
@@ -624,7 +611,6 @@ namespace myTNB
                 isRefreshing = false;
                 refreshControl.EndRefreshing();
             }
-
             return res;
         }
 
@@ -698,11 +684,11 @@ namespace myTNB
 
 
                 // check if new RE accounts added since last load
-                var reKey = "REAccountsSectionHeader".Translate();
+                var reKey = "Dashboard_RESectionHeader".Translate();
                 GetRequestedAccountsByType(reKey, reAccts, accountsToGet, ref added, accounts, accountsToAdd, accountsToAddRe);
 
                 // add normal
-                var normalKey = "NormalAccountsSectionHeader".Translate();
+                var normalKey = "Dashboard_SectionHeader".Translate();
                 GetRequestedAccountsByType(normalKey, normalAccts, accountsToGet, ref added, accounts, accountsToAdd, accountsToAddRe);
 
                 AddToDisplayedAccounts(reKey, accountsToAddRe);
@@ -722,8 +708,8 @@ namespace myTNB
         /// <param name="accounts">Accounts.</param>
         /// <param name="accountsToAdd">Accounts to add.</param>
         /// <param name="accountsToAddRe">Accounts to add re.</param>
-        private void GetRequestedAccountsByType(string key, List<CustomerAccountRecordModel> allAcctsByType, int accountsToGet, ref int added,
-                                                List<string> accounts, List<DueAmountDataModel> accountsToAdd, List<DueAmountDataModel> accountsToAddRe)
+        private void GetRequestedAccountsByType(string key, List<CustomerAccountRecordModel> allAcctsByType, int accountsToGet
+            , ref int added, List<string> accounts, List<DueAmountDataModel> accountsToAdd, List<DueAmountDataModel> accountsToAddRe)
         {
             List<DueAmountDataModel> currAccts = new List<DueAmountDataModel>();
             if (displayedAccounts.ContainsKey(key))
@@ -739,7 +725,6 @@ namespace myTNB
                 {
                     accounts.Add(acct.accNum);
                     AddToRequestedAccounts(acct, accountsToAdd, accountsToAddRe);
-
                     added++;
                 }
             }
@@ -751,8 +736,8 @@ namespace myTNB
         /// <param name="acct">Acct.</param>
         /// <param name="accountsToAdd">Accounts to add.</param>
         /// <param name="accountsToAddRe">Accounts to add re.</param>
-        private void AddToRequestedAccounts(CustomerAccountRecordModel acct, List<DueAmountDataModel> accountsToAdd,
-                                           List<DueAmountDataModel> accountsToAddRe)
+        private void AddToRequestedAccounts(CustomerAccountRecordModel acct
+            , List<DueAmountDataModel> accountsToAdd, List<DueAmountDataModel> accountsToAddRe)
         {
             var item = new DueAmountDataModel
             {
@@ -789,7 +774,7 @@ namespace myTNB
                 }
                 else
                 {
-                    var reKey = "REAccountsSectionHeader".Translate();
+                    var reKey = "Dashboard_RESectionHeader".Translate();
                     if (string.Compare(key, reKey) == 0 && displayedAccounts.Keys.Count > 0)
                     {
                         var firstKey = displayedAccounts.Keys.ElementAt(0);
@@ -804,7 +789,6 @@ namespace myTNB
                     {
                         displayedAccounts.Add(key.Translate(), accountsToAdd);
                     }
-
                 }
             }
         }
@@ -853,9 +837,7 @@ namespace myTNB
                 }
                 InitializeAccountsTable();
             }
-
             return removedCount;
-
         }
 
         /// <summary>
@@ -967,7 +949,6 @@ namespace myTNB
                     loadedAccountsCount = 0;
                 }
             }
-
             return removedAccounts;
         }
 
@@ -1016,7 +997,6 @@ namespace myTNB
             {
                 hideLoadingIndicator = true;
             }
-
             LoadContents(false, hideLoadingIndicator);
         }
     }

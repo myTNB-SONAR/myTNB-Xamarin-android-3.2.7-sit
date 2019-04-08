@@ -76,14 +76,28 @@
 "Component_VsLastMonth"="Vs. last month";
 "Component_WelcomeToSmartMeter"="Welcome to your Smart Meter Dashboard.";
 
+/*Dashboard*/
+"Dashboard_AllAccounts"="All Accounts";
+"Dashboard_DateRangeAvailableSoon"="Available Soon";
+"Dashboard_DateRangeNotAvailable"="";
+"Dashboard_LoadMoreAccounts" = "Load More Accounts";
+"Dashboard_RESectionHeader"="Renewable Energy";
+"Dashboard_RESectionSubHeader"="My Earnings";
+"Dashboard_SectionHeader"="Accounts";
+
+
+
 /*Error*/
 "Error_BCRMMessage"="BRCM will be down for maintenance purpose";
 "Error_CheckInternetMessage"="Please check your Internet connection.";
 "Error_DefaultMessage" = "Sorry, something went wrong. Please try again later.";
 "Error_DefaultTitle"="Error";
+"Error_GetSmartMeterDataMessage" = "Unable to fetch smart meter data! Please try later.";
 "Error_NoNetworkMsg" = "Please check your internet connection and try again.";
 "Error_NoNetworkTitle" = "No Internet Connection";
 "Error_TimeOut" = "We can't get your account details at the moment. Please refresh this page.";
+
+
 
 /*Get Access*/
 "GetAccess_RequestedToOwnerMessage"="Access Requested to the Owner";

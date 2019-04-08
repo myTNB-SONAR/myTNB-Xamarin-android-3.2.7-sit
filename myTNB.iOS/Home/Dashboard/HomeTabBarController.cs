@@ -8,6 +8,7 @@ using myTNB.SitecoreCMS.Model;
 using myTNB.SQLite.SQLiteDataManager;
 using Newtonsoft.Json;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace myTNB
 {
@@ -22,7 +23,7 @@ namespace myTNB
         public override void ViewDidLoad()
         {
             base.ViewDidLoad();
-            Console.WriteLine("HOME DID LOAD");
+            Debug.WriteLine("HOME DID LOAD");
             TabBar.Translucent = false;
             TabBar.BackgroundColor = UIColor.White;
 
@@ -41,7 +42,7 @@ namespace myTNB
         public override void ViewWillAppear(bool animated)
         {
             base.ViewWillAppear(animated);
-            Console.WriteLine("HOME WILL APPEAR");
+            Debug.WriteLine("HOME WILL APPEAR");
             UITabBarItem[] vcs = TabBar.Items;
             vcs[1].Enabled = ServiceCall.HasAccountList();
             UpdatePromotionTabBarIcon();
@@ -157,7 +158,6 @@ namespace myTNB
             {
                 res = true;
             }
-
             return res;
         }
 
@@ -180,7 +180,6 @@ namespace myTNB
                     res = false;
                 }
             }
-
             return res;
         }
 
@@ -200,11 +199,9 @@ namespace myTNB
                     if (!string.IsNullOrEmpty(shownStr))
                     {
                         return DateHelper.GetDateWithoutSeparator(shownStr);
-
                     }
                 }
             }
-
             return default(DateTime);
         }
 
@@ -261,7 +258,7 @@ namespace myTNB
         bool HasUnreadPromotion(List<PromotionsModelV2> promotionList)
         {
             int index = promotionList.FindIndex(x => x.IsRead == false);
-            Console.WriteLine("HasUnreadPromotion: " + (index > -1).ToString());
+            Debug.WriteLine("HasUnreadPromotion: " + (index > -1).ToString());
             return index > -1;
         }
 
@@ -280,7 +277,6 @@ namespace myTNB
                             InvokeOnMainThread(() =>
                             {
                                 UpdatePromotionTabBarIcon();
-
                                 ShowPromotionsModal();
                             });
                         });
@@ -349,7 +345,7 @@ namespace myTNB
                 if (isValidTimeStamp)
                 {
                     string promotionsItems = iService.GetPromotionsItem();
-                    Console.WriteLine("debug: promo items: " + promotionsItems);
+                    Debug.WriteLine("debug: promo items: " + promotionsItems);
 #if true
                     PromotionsV2ResponseModel promotionResponse = JsonConvert.DeserializeObject<PromotionsV2ResponseModel>(promotionsItems);
 #else
@@ -364,7 +360,6 @@ namespace myTNB
                         wsManager.InsertListOfItemsV2(SetValueForNullEndDate(promotionResponse.Data));
                     }
                 }
-
             });
         }
     }

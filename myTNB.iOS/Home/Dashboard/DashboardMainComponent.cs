@@ -389,7 +389,7 @@ namespace myTNB.Dashboard.DashboardComponents
             _usageHistoryComponent = new UsageHistoryComponent(_gradientView);
             _gradientView.AddSubview(_usageHistoryComponent.GetUI());
             _usageHistoryComponent.ToggleNavigationVisibility(true);
-            _usageHistoryComponent.SetDateRange("NotAvailable".Translate());
+            _usageHistoryComponent.SetDateRange("Dashboard_DateRangeNotAvailable".Translate());
             int locY = (int)accountSelectionView.Frame.GetMaxY() + 15;
             _usageHistoryComponent.SetFrameCustomLocationY(locY);
 
@@ -474,7 +474,7 @@ namespace myTNB.Dashboard.DashboardComponents
             _gradientView.AddSubview(_usageHistoryComponent.GetUI());
             int yLocation = !DeviceHelper.IsIphoneXUpResolution() ? 85 : 109;
             _usageHistoryComponent.SetFrameCustomLocationY(yLocation);
-            _usageHistoryComponent.SetDateRange("Available Soon");
+            _usageHistoryComponent.SetDateRange("Dashboard_DateRangeAvailableSoon".Translate());
             _usageHistoryComponent.ToggleNavigationVisibility(true);
 
             //Add Selector Bar
