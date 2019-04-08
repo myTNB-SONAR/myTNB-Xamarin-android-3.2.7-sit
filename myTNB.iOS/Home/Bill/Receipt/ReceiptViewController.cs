@@ -31,7 +31,6 @@ namespace myTNB
         const float LBL_WIDTH_PADDING = INNER_PADDING * 2;
 
         ReceiptResponseModel _receipt = new ReceiptResponseModel();
-        //UIWebView _webViewReceipt;
         string _pdfFilePath = string.Empty;
 
         public string MerchatTransactionID = string.Empty;
@@ -55,15 +54,15 @@ namespace myTNB
             Task.WaitAll(taskList);
             if (_receipt != null && _receipt?.d != null && _receipt?.d?.data != null && _receipt?.d?.didSucceed == true)
             {
+                tableViewReceipt.Hidden = false;
                 paymentMethod = _receipt?.d?.data?.payMethod;
                 CreatePDF();
                 SetSubviews();
             }
             else
             {
-                var alert = UIAlertController.Create("PDFNoReceipt".Translate(), "", UIAlertControllerStyle.Alert);
-                alert.AddAction(UIAlertAction.Create("Ok", UIAlertActionStyle.Cancel, null));
-                PresentViewController(alert, animated: true, completionHandler: null);
+                tableViewReceipt.Hidden = true;
+                ErrorHandler.DisplayGenericError(this, "Receipt_NoReceipt".Translate(), string.Empty);
             }
             ActivityIndicator.Hide();
         }
@@ -75,7 +74,7 @@ namespace myTNB
             UIView headerView = gradientViewComponent.GetUI();
             TitleBarComponent titleBarComponent = new TitleBarComponent(headerView);
             UIView titleBarView = titleBarComponent.GetUI();
-            titleBarComponent.SetTitle("PDFNavTitle".Translate());
+            titleBarComponent.SetTitle("Receipt_Title".Translate());
             titleBarComponent.SetNotificationVisibility(false);
             titleBarComponent.SetNotificationImage("IC-Header-Share");
             titleBarComponent.SetNotificationAction(new UITapGestureRecognizer(() =>
@@ -109,23 +108,9 @@ namespace myTNB
 
         internal void SetSubviews()
         {
-            //if (_webViewReceipt != null)
-            //{
-            //    _webViewReceipt.RemoveFromSuperview();
-            //}
-            //_webViewReceipt = new UIWebView(new CGRect(0, DeviceHelper.IsIphoneXUpResolution() ? 86 : 64, View.Frame.Width, View.Frame.Height - (DeviceHelper.IsIphoneXUpResolution() ? 86 : 64)));
-            //_webViewReceipt.Delegate = new WebViewDelegate(View);
-            //string nsURL = _pdfFilePath;
-            //if (File.Exists(_pdfFilePath))
-            //{
-            //    nsURL = _pdfFilePath;
-            //}
-            //_webViewReceipt.LoadRequest(new NSUrlRequest(new NSUrl(nsURL)));
-            //_webViewReceipt.ScalesPageToFit = true;
-            //View.AddSubview(_webViewReceipt);
-
             View.BackgroundColor = myTNBColor.SilverChalice();
-            tableViewReceipt.Frame = new CGRect(0 + PADDING, DeviceHelper.IsIphoneXUpResolution() ? 86 + PADDING : 64 + PADDING, View.Frame.Width - (PADDING * 2), View.Frame.Height - (DeviceHelper.IsIphoneXUpResolution() ? 86 + PADDING : 64 + PADDING));
+            tableViewReceipt.Frame = new CGRect(0 + PADDING, DeviceHelper.IsIphoneXUpResolution() ? 86 + PADDING
+                : 64 + PADDING, View.Frame.Width - (PADDING * 2), View.Frame.Height - (DeviceHelper.IsIphoneXUpResolution() ? 86 + PADDING : 64 + PADDING));
             tableViewReceipt.BackgroundColor = myTNBColor.SilverChalice();
             tableViewReceipt.SeparatorStyle = UITableViewCellSeparatorStyle.None;
 
@@ -134,25 +119,24 @@ namespace myTNB
 
             UIImageView imageView = new UIImageView(new CGRect(0, 0, _headerView.Frame.Width, DeviceHelper.GetScaledHeight(80)));
             imageView.Image = UIImage.FromBundle("Receipt-Header");
-            //imageView.ContentMode = UIViewContentMode.ScaleToFill;
 
             UILabel paymentTitle = new UILabel(new CGRect(INNER_PADDING, imageView.Frame.GetMaxY() + INNER_PADDING, _headerView.Frame.Width - LBL_WIDTH_PADDING, 26));
             paymentTitle.TextAlignment = UITextAlignment.Left;
             paymentTitle.Font = myTNBFont.MuseoSans20_500();
             paymentTitle.TextColor = myTNBColor.PowerBlue();
-            paymentTitle.Text = "PDFTitle".Translate();
+            paymentTitle.Text = "Receipt_Title".Translate();
 
             UILabel msgTitle = new UILabel(new CGRect(INNER_PADDING, paymentTitle.Frame.GetMaxY() + INNER_PADDING, _headerView.Frame.Width - LBL_WIDTH_PADDING, 16));
             msgTitle.TextAlignment = UITextAlignment.Left;
             msgTitle.Font = myTNBFont.MuseoSans14_500();
             msgTitle.TextColor = myTNBColor.TunaGrey();
-            msgTitle.Text = "PDFSalutation".Translate();
+            msgTitle.Text = "Receipt_Salutation".Translate();
 
             UILabel msgBody = new UILabel(new CGRect(INNER_PADDING, msgTitle.Frame.GetMaxY() + INNER_PADDING, _headerView.Frame.Width - LBL_WIDTH_PADDING, 80));
             msgBody.TextAlignment = UITextAlignment.Left;
             msgBody.Font = myTNBFont.MuseoSans14_500();
             msgBody.TextColor = myTNBColor.TunaGrey();
-            msgBody.Text = string.Format("PDFMessageFull".Translate(), paymentMethod);
+            msgBody.Text = string.Format("Receipt_MessageFull".Translate(), paymentMethod);
             msgBody.Lines = 0;
             msgBody.LineBreakMode = UILineBreakMode.WordWrap;
 
@@ -163,7 +147,7 @@ namespace myTNB
             lblReference.TextAlignment = UITextAlignment.Left;
             lblReference.Font = myTNBFont.MuseoSans10_500();
             lblReference.TextColor = myTNBColor.SilverChalice();
-            lblReference.Text = "PDFRefNumber".Translate();
+            lblReference.Text = "Receipt_ReferenceNumber".Translate().ToUpper();
 
             UILabel lblReferenceValue = new UILabel(new CGRect(INNER_PADDING, lblReference.Frame.GetMaxY(), _headerView.Frame.Width - LBL_WIDTH_PADDING, 16));
             lblReferenceValue.TextAlignment = UITextAlignment.Left;
@@ -183,7 +167,7 @@ namespace myTNB
             lblTrxDate.TextAlignment = UITextAlignment.Left;
             lblTrxDate.Font = myTNBFont.MuseoSans10_500();
             lblTrxDate.TextColor = myTNBColor.SilverChalice();
-            lblTrxDate.Text = "PDFTrnxDate".Translate();
+            lblTrxDate.Text = "Receipt_TrnDate".Translate();
 
             UILabel lblTrxDateValue = new UILabel(new CGRect(INNER_PADDING, lblTrxDate.Frame.GetMaxY(), _footerView.Frame.Width - LBL_WIDTH_PADDING, 16));
             lblTrxDateValue.TextAlignment = UITextAlignment.Left;
@@ -198,7 +182,7 @@ namespace myTNB
             lblTrxID.TextAlignment = UITextAlignment.Left;
             lblTrxID.Font = myTNBFont.MuseoSans10_500();
             lblTrxID.TextColor = myTNBColor.SilverChalice();
-            lblTrxID.Text = "PDFTrnxId".Translate();
+            lblTrxID.Text = "Receipt_TrnId".Translate();
 
             UILabel lblTrxIDValue = new UILabel(new CGRect(INNER_PADDING, lblTrxID.Frame.GetMaxY(), _footerView.Frame.Width - LBL_WIDTH_PADDING, 16));
             lblTrxIDValue.TextAlignment = UITextAlignment.Left;
@@ -213,7 +197,7 @@ namespace myTNB
             lblTrxMethod.TextAlignment = UITextAlignment.Left;
             lblTrxMethod.Font = myTNBFont.MuseoSans10_500();
             lblTrxMethod.TextColor = myTNBColor.SilverChalice();
-            lblTrxMethod.Text = "PDFTrnxMethod".Translate();
+            lblTrxMethod.Text = "Receipt_TrnMethod".Translate();
 
             UILabel lblTrxMethodValue = new UILabel(new CGRect(INNER_PADDING, lblTrxMethod.Frame.GetMaxY(), _footerView.Frame.Width - LBL_WIDTH_PADDING, 16));
             lblTrxMethodValue.TextAlignment = UITextAlignment.Left;
@@ -228,7 +212,7 @@ namespace myTNB
             lblTotalAmount.TextAlignment = UITextAlignment.Left;
             lblTotalAmount.Font = myTNBFont.MuseoSans14_500();
             lblTotalAmount.TextColor = myTNBColor.TunaGrey();
-            lblTotalAmount.Text = "PDFTotalAmount".Translate();
+            lblTotalAmount.Text = "Common_TotalAmount".Translate();
 
             UILabel lblTotalAmountValue = new UILabel(new CGRect(INNER_PADDING, lblTotalAmount.Frame.GetMaxY(), _footerView.Frame.Width - LBL_WIDTH_PADDING, 26));
             lblTotalAmountValue.TextAlignment = UITextAlignment.Left;
@@ -243,7 +227,7 @@ namespace myTNB
             lblNote.TextAlignment = UITextAlignment.Left;
             lblNote.Font = myTNBFont.MuseoSans10_500();
             lblNote.TextColor = myTNBColor.SilverChalice();
-            lblNote.Text = "PDFNote".Translate();
+            lblNote.Text = "Receipt_Note".Translate();
             lblNote.Lines = 0;
             lblNote.LineBreakMode = UILineBreakMode.WordWrap;
 
@@ -267,7 +251,7 @@ namespace myTNB
 
         internal void CreatePDF()
         {
-            string pdfFileName = string.Format("Receipt-{0}.pdf", _receipt?.d?.data?.referenceNum);
+            string pdfFileName = string.Format("Receipt_Filename".Translate(), _receipt?.d?.data?.referenceNum);
             string documentsPath = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
             _pdfFilePath = Path.Combine(documentsPath, pdfFileName);
             if (File.Exists(_pdfFilePath))
@@ -304,18 +288,18 @@ namespace myTNB
             document.Add(new Paragraph(Environment.NewLine, titleFont));
             document.Add(new Paragraph(Environment.NewLine, titleFont));
             document.Add(new Paragraph(Environment.NewLine, detailsFont));
-            document.Add(new Paragraph("PDFTitle".Translate(), titleFont));
+            document.Add(new Paragraph("Receipt_Title".Translate(), titleFont));
             document.Add(new Paragraph(Environment.NewLine, titleFont));
-            document.Add(new Paragraph("PDFSalutation".Translate(), detailsFont));
+            document.Add(new Paragraph("Receipt_Salutation".Translate(), detailsFont));
             document.Add(new Paragraph(Environment.NewLine, detailsFont));
-            document.Add(new Paragraph("PDFMessagePartOne".Translate(), detailsFont));
-            document.Add(new Paragraph(string.Format("PDFMessagePartTwo".Translate(), paymentMethod), detailsFont));
+            document.Add(new Paragraph("Receipt_MessagePartOne".Translate(), detailsFont));
+            document.Add(new Paragraph(string.Format("Receipt_MessagePartTwo".Translate(), paymentMethod), detailsFont));
 
             document.Add(new Paragraph(Environment.NewLine, titleFont));
             document.Add(grayLine);
             document.Add(new Paragraph(Environment.NewLine, labelFont));
-#if true
-            document.Add(new Paragraph("PDFRefNumber".Translate(), labelFont));
+
+            document.Add(new Paragraph("Receipt_ReferenceNumber".Translate(), labelFont));
             document.Add(new Paragraph(_receipt?.d?.data?.referenceNum, detailsFont));
 
             document.Add(new Paragraph(Environment.NewLine, titleFont));
@@ -324,13 +308,13 @@ namespace myTNB
 
             foreach (var item in _receipt?.d?.data?.accMultiPay)
             {
-                document.Add(new Paragraph("PDFAcctNumber".Translate(), labelFont));
+                document.Add(new Paragraph("Common_AccountNumber".Translate().ToUpper(), labelFont));
                 document.Add(new Paragraph(item.accountNum, detailsFont));
                 document.Add(new Paragraph(Environment.NewLine, labelFont));
-                document.Add(new Paragraph("PDFAcctName".Translate(), labelFont));
+                document.Add(new Paragraph("Receipt_AccountName".Translate().ToUpper(), labelFont));
                 document.Add(new Paragraph(!string.IsNullOrEmpty(item.AccountOwnerName) ? item.AccountOwnerName : Environment.NewLine, detailsFont));
                 document.Add(new Paragraph(Environment.NewLine, labelFont));
-                document.Add(new Paragraph("PDFAmnt".Translate(), labelFont));
+                document.Add(new Paragraph("Common_Amount(RM)".Translate().ToUpper(), labelFont));
                 document.Add(new Paragraph(item.itmAmt, detailsFont));
 
                 document.Add(new Paragraph(Environment.NewLine, titleFont));
@@ -338,38 +322,35 @@ namespace myTNB
                 document.Add(new Paragraph(Environment.NewLine, labelFont));
             }
 
-            document.Add(new Paragraph("PDFTrnxDate".Translate(), labelFont));
+            document.Add(new Paragraph("Receipt_TrnDate".Translate(), labelFont));
             document.Add(new Paragraph(_receipt?.d?.data?.payTransDate, detailsFont));
 
             document.Add(new Paragraph(Environment.NewLine, titleFont));
             document.Add(grayLine);
             document.Add(new Paragraph(Environment.NewLine, labelFont));
 
-            document.Add(new Paragraph("PDFTrnxId".Translate(), labelFont));
+            document.Add(new Paragraph("Receipt_TrnId".Translate(), labelFont));
             document.Add(new Paragraph(_receipt?.d?.data?.payTransID, detailsFont));
 
             document.Add(new Paragraph(Environment.NewLine, titleFont));
             document.Add(grayLine);
             document.Add(new Paragraph(Environment.NewLine, labelFont));
 
-            document.Add(new Paragraph("PDFTrnxMethod".Translate(), labelFont));
+            document.Add(new Paragraph("Receipt_TrnMethod".Translate(), labelFont));
             document.Add(new Paragraph(_receipt?.d?.data?.payMethod, detailsFont));
 
             document.Add(new Paragraph(Environment.NewLine, titleFont));
             document.Add(grayLine);
             document.Add(new Paragraph(Environment.NewLine, labelFont));
 
-            document.Add(new Paragraph("PDFTotalAmount".Translate(), detailsFont));
+            document.Add(new Paragraph("Common_TotalAmount".Translate(), detailsFont));
             document.Add(new Paragraph(_receipt?.d?.data?.payAmt, totalAmounFont));
 
             document.Add(new Paragraph(Environment.NewLine, titleFont));
             document.Add(grayLine);
             document.Add(new Paragraph(Environment.NewLine, labelFont));
 
-            document.Add(new Paragraph("PDFNote".Translate(), labelFont));
-#else
-            WriteContent(writer, baseFont, document);
-#endif
+            document.Add(new Paragraph("Receipt_Note".Translate(), labelFont));
 
             document.Close();
             writer.Close();
@@ -395,196 +376,6 @@ namespace myTNB
                 FixedHeight = 2,
             };
             tableLayout.AddCell(cell);
-        }
-
-        /// <summary>
-        /// Writes the content table top.
-        /// </summary>
-        /// <param name="tableLayout">Table layout.</param>
-        /// <param name="pdfFont">Pdf font.</param>
-        private void WriteContentTableTop(PdfPTable tableLayout, Font pdfFont)
-        {
-            float[] widths = { 39, 5, 56 };
-
-            tableLayout.SetWidths(widths);
-            tableLayout.WidthPercentage = 100;
-
-            AddCellToBody(tableLayout, "Reference Number", pdfFont);
-            AddCellToBody(tableLayout, ":", pdfFont);
-            AddCellToBody(tableLayout, _receipt.d.data.referenceNum, pdfFont);
-
-            AddCellToBody(tableLayout, "Transaction Date", pdfFont);
-            AddCellToBody(tableLayout, ":", pdfFont);
-            AddCellToBody(tableLayout, _receipt.d.data.payTransDate, pdfFont);
-
-            AddCellToBody(tableLayout, "Amount (RM)", pdfFont);
-            AddCellToBody(tableLayout, ":", pdfFont);
-            AddCellToBody(tableLayout, _receipt.d.data.payAmt, pdfFont);
-
-        }
-
-        /// <summary>
-        /// Writes the content table account list.
-        /// </summary>
-        /// <param name="tableLayout">Table layout.</param>
-        /// <param name="pdfFont">Pdf font.</param>
-        private void WriteContentTableAccountList(PdfPTable tableLayout, Font pdfFont)
-        {
-            float[] widths = { 39, 5, 56 };
-
-            tableLayout.SetWidths(widths);
-            tableLayout.WidthPercentage = 100;
-
-            foreach (var item in _receipt.d.data.accMultiPay)
-            {
-                AddCellToBody(tableLayout, "Account Number", pdfFont);
-                AddCellToBody(tableLayout, ":", pdfFont);
-                AddCellToBody(tableLayout, item.accountNum, pdfFont);
-
-                AddCellToBody(tableLayout, "Name", pdfFont);
-                AddCellToBody(tableLayout, ":", pdfFont);
-                AddCellToBody(tableLayout, !string.IsNullOrEmpty(item.AccountOwnerName) ? item.AccountOwnerName : Environment.NewLine, pdfFont);
-
-                AddCellToBody(tableLayout, "Amount (RM)", pdfFont);
-                AddCellToBody(tableLayout, ":", pdfFont);
-                AddCellToBody(tableLayout, item.itmAmt, pdfFont);
-
-                AddCellToBody(tableLayout, Environment.NewLine, pdfFont);
-                AddCellToBody(tableLayout, Environment.NewLine, pdfFont);
-                AddCellToBody(tableLayout, Environment.NewLine, pdfFont);
-            }
-        }
-
-        /// <summary>
-        /// Writes the content table bottom.
-        /// </summary>
-        /// <param name="tableLayout">Table layout.</param>
-        /// <param name="pdfFont">Pdf font.</param>
-        private void WriteContentTableBottom(PdfPTable tableLayout, Font pdfFont)
-        {
-            float[] widths = { 39, 5, 56 };
-
-            tableLayout.SetWidths(widths);
-            tableLayout.WidthPercentage = 100;
-
-            AddCellToBody(tableLayout, "Transaction Method", pdfFont);
-            AddCellToBody(tableLayout, ":", pdfFont);
-            AddCellToBody(tableLayout, _receipt.d.data.payMethod, pdfFont);
-
-            AddCellToBody(tableLayout, "Transaction ID", pdfFont);
-            AddCellToBody(tableLayout, ":", pdfFont);
-            AddCellToBody(tableLayout, _receipt.d.data.payTransID, pdfFont);
-        }
-
-        /// <summary>
-        /// Adds the cell to body.
-        /// </summary>
-        /// <param name="tableLayout">Table layout.</param>
-        /// <param name="cellText">Cell text.</param>
-        /// <param name="pdfFont">Pdf font.</param>
-        private static void AddCellToBody(PdfPTable tableLayout, string cellText, Font pdfFont)
-        {
-            PdfPCell cell = new PdfPCell(new Phrase(cellText, pdfFont))
-            {
-                HorizontalAlignment = Element.ALIGN_LEFT,
-                PaddingLeft = 0,
-                PaddingTop = 5,
-                PaddingRight = 5,
-                PaddingBottom = 5,
-                BackgroundColor = iTextSharp.text.Color.WHITE,
-                Border = 0
-            };
-            tableLayout.AddCell(cell);
-
-        }
-
-        /// <summary>
-        /// Writes the content by fixed location. Legacy.
-        /// </summary>
-        /// <param name="writer">Writer.</param>
-        /// <param name="baseFont">Base font.</param>
-        /// <param name="document">Document.</param>
-        private void WriteContent(PdfWriter writer, BaseFont baseFont, Document document)
-        {
-            PdfContentByte cb = writer.DirectContent;
-            cb.BeginText();
-            cb.SetFontAndSize(baseFont, 24);
-
-            cb.SetTextMatrix(20, 600); cb.ShowText("Reference");
-            cb.SetTextMatrix(20, 570); cb.ShowText("Number");
-            cb.SetTextMatrix(200, 590); cb.ShowText(":");
-            cb.SetTextMatrix(220, 590); cb.ShowText(_receipt.d.data.referenceNum);
-
-            cb.SetTextMatrix(20, 540); cb.ShowText("Transaction");
-            cb.SetTextMatrix(20, 510); cb.ShowText("Date");
-            cb.SetTextMatrix(200, 530); cb.ShowText(":");
-            cb.SetTextMatrix(220, 530); cb.ShowText(_receipt.d.data.payTransDate);
-
-            cb.SetTextMatrix(20, 480); cb.ShowText("Amount");
-            cb.SetTextMatrix(200, 480); cb.ShowText(":");
-            cb.SetTextMatrix(220, 480); cb.ShowText(_receipt.d.data.payAmt);
-
-            cb.SetTextMatrix(20, 440); cb.ShowText("From Account");
-            cb.SetTextMatrix(200, 440); cb.ShowText(":");
-            cb.SetTextMatrix(220, 440); cb.ShowText(_receipt.d.data.customerName);
-
-            cb.SetTextMatrix(20, 400); cb.ShowText("Account");
-            cb.SetTextMatrix(20, 370); cb.ShowText("Number");
-
-            int xLocation = 390;
-            if (_receipt.d.data.accMultiPay.Count > 1)
-            {
-                xLocation = xLocation - 20;
-                cb.SetTextMatrix(200, xLocation); cb.ShowText(":");
-                foreach (var item in _receipt.d.data.accMultiPay)
-                {
-                    cb.SetTextMatrix(ACCNUM_X_LOC, xLocation); cb.ShowText(item.accountNum);
-                    cb.SetTextMatrix(AMT_X_LOC, xLocation); cb.ShowText(item.itmAmt);
-                    xLocation = xLocation - 30;
-                    if (xLocation <= 50)
-                    {
-                        SetNewPage(ref document, ref cb, ref xLocation, baseFont);
-                    }
-                }
-                xLocation = xLocation + 30;
-            }
-            else
-            {
-                cb.SetTextMatrix(200, 390); cb.ShowText(":");
-                if (_receipt.d.data.accMultiPay.Count == 1)
-                {
-                    cb.SetTextMatrix(220, 390); cb.ShowText(_receipt.d.data.accMultiPay[0].accountNum);
-                }
-            }
-
-            if (xLocation <= 50 || (xLocation - 80) <= 50)
-            {
-                SetNewPage(ref document, ref cb, ref xLocation, baseFont);
-            }
-
-            cb.SetTextMatrix(20, xLocation - 50); cb.ShowText("Transaction");
-            cb.SetTextMatrix(20, xLocation - 80); cb.ShowText("Method");
-            cb.SetTextMatrix(200, xLocation - 60); cb.ShowText(":");
-            cb.SetTextMatrix(220, xLocation - 60); cb.ShowText(_receipt.d.data.payMethod);
-            xLocation = xLocation - 80;
-
-            if (xLocation <= 50 || (xLocation - 30) <= 50)
-            {
-                SetNewPage(ref document, ref cb, ref xLocation, baseFont);
-            }
-
-            cb.SetTextMatrix(20, xLocation - 30); cb.ShowText("Transaction ID");
-            cb.SetTextMatrix(200, xLocation - 30); cb.ShowText(":");
-            cb.SetTextMatrix(220, xLocation - 30); cb.ShowText(_receipt.d.data.payTransID);
-            xLocation = xLocation - 30;
-
-            if (xLocation - 80 == 0)
-            {
-                SetNewPage(ref document, ref cb, ref xLocation, baseFont);
-            }
-            cb.SetTextMatrix(20, xLocation - 80); cb.ShowText("Thank you for using myTNB.");
-
-            cb.EndText();
         }
 
         internal Task GetReceipt()

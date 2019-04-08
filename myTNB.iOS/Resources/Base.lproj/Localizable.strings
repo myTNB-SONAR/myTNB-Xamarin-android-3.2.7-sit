@@ -6,6 +6,45 @@
   Copyright © 2018 myTNB. All rights reserved.
 */
 
+
+/*Common*/
+"Common_AccountNumber"="Account Number";
+"Common_Amount(RM)" = "Amount (RM)";
+"Common_Ok"="Ok";
+"Common_TotalAmount" = "Total Amount (RM)";
+
+
+
+/*ERROR*/
+"Error_DefaultMessage" = "Sorry, something went wrong. Please try again later.";
+"Error_DefaultTitle"="Error";
+"Error_NoNetworkMsg" = "Please check your internet connection and try again.";
+"Error_NoNetworkTitle" = "No Internet Connection";
+
+
+
+
+/*Receipt*/
+"Receipt_AccountName"="Account Holder's Name";
+"Receipt_Filename"="Receipt-{0}.pdf";
+"Receipt_MessageFull" = "Thank you for using myTNB.\nWe are pleased to inform you that the following online payment via {0} is Successful:";
+"Receipt_MessagePartOne" = "Thank you for using myTNB.";
+"Receipt_MessagePartTwo" = "We are pleased to inform you that the following online payment via {0} is Successful:";
+"Receipt_NoReceipt" = "No Receipt Found";
+"Receipt_Note" = "NOTE: This receipt is computer generated and no signature is required.";
+"Receipt_ReferenceNumber" = "Reference Number";
+"Receipt_Salutation" = "Dear Customer,";
+"Receipt_Title" = "Payment Receipt";
+"Receipt_TrnDate" = "TRANSACTION DATE";
+"Receipt_TrnId" = "TRANSACTION ID";
+"Receipt_TrnMethod" = "TRANSACTION METHOD";
+
+
+
+
+
+
+
 "AmountRE" = "My Earnings";
 "AmountNormalAccount" = "Amount Due";
 "REPaymentSectionHeader" = "Payment Advice / Payment History";

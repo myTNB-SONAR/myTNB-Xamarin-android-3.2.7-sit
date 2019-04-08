@@ -1,5 +1,4 @@
 using CoreGraphics;
-using Foundation;
 using System;
 using UIKit;
 using myTNB.Extensions;
@@ -27,18 +26,18 @@ namespace myTNB
             lblAcctNo.TextAlignment = UITextAlignment.Left;
             lblAcctNo.Font = myTNBFont.MuseoSans10_500();
             lblAcctNo.TextColor = myTNBColor.SilverChalice();
-            lblAcctNo.Text = "PDFAcctNumber".Translate();
+            lblAcctNo.Text = "Common_AccountNumber".Translate().ToUpper();
 
             lblAcctNoValue = new UILabel(new CGRect(INNER_PADDING, lblAcctNo.Frame.GetMaxY(), cellWidth - LBL_WIDTH_PADDING, 16));
             lblAcctNoValue.TextAlignment = UITextAlignment.Left;
             lblAcctNoValue.Font = myTNBFont.MuseoSans14_500();
             lblAcctNoValue.TextColor = myTNBColor.TunaGrey();
 
-            lblAcctName = new UILabel(new CGRect(INNER_PADDING, lblAcctNoValue.Frame.GetMaxY()  + INNER_PADDING, cellWidth - LBL_WIDTH_PADDING, 16));
+            lblAcctName = new UILabel(new CGRect(INNER_PADDING, lblAcctNoValue.Frame.GetMaxY() + INNER_PADDING, cellWidth - LBL_WIDTH_PADDING, 16));
             lblAcctName.TextAlignment = UITextAlignment.Left;
             lblAcctName.Font = myTNBFont.MuseoSans10_500();
             lblAcctName.TextColor = myTNBColor.SilverChalice();
-            lblAcctName.Text = "PDFAcctName".Translate();
+            lblAcctName.Text = "Receipt_AccountName".Translate().ToUpper();
 
             lblAcctNameValue = new UILabel(new CGRect(INNER_PADDING, lblAcctName.Frame.GetMaxY(), cellWidth - LBL_WIDTH_PADDING, 16));
             lblAcctNameValue.TextAlignment = UITextAlignment.Left;
@@ -49,7 +48,7 @@ namespace myTNB
             lblAmount.TextAlignment = UITextAlignment.Left;
             lblAmount.Font = myTNBFont.MuseoSans10_500();
             lblAmount.TextColor = myTNBColor.SilverChalice();
-            lblAmount.Text = "PDFAmnt".Translate();
+            lblAmount.Text = "Common_Amount(RM)".Translate().ToUpper();
 
             lblAmountValue = new UILabel(new CGRect(INNER_PADDING, lblAmount.Frame.GetMaxY(), cellWidth - LBL_WIDTH_PADDING, 16));
             lblAmountValue.TextAlignment = UITextAlignment.Left;

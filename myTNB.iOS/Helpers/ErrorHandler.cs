@@ -1,0 +1,58 @@
+﻿using myTNB.Extensions;
+using UIKit;
+
+namespace myTNB
+{
+    public static class ErrorHandler
+    {
+        /// <summary>
+        /// Displays the no data alert.
+        /// </summary>
+        /// <param name="controller">Controller.</param>
+        public static void DisplayNoDataAlert(UIViewController controller)
+        {
+            var alert = UIAlertController.Create("Error_NoNetworkMsg".Translate(), "Error_NoNetworkTitle".Translate(), UIAlertControllerStyle.Alert);
+            alert.AddAction(UIAlertAction.Create("Common_Ok".Translate(), UIAlertActionStyle.Cancel, null));
+            controller.PresentViewController(alert, animated: true, completionHandler: null);
+        }
+
+        /// <summary>
+        /// Displays the service error.
+        /// </summary>
+        /// <param name="controller">Controller.</param>
+        /// <param name="message">Message.</param>
+        public static void DisplayServiceError(UIViewController controller, string message)
+        {
+            string title = "Error_DefaultTitle".Translate();
+            if (string.IsNullOrWhiteSpace(message) || string.IsNullOrEmpty(message))
+            {
+                message = "Error_DefaultMessage".Translate();
+            }
+            DisplayAlert(controller, title, message);
+        }
+
+        /// <summary>
+        /// Displays the generic error.
+        /// </summary>
+        /// <param name="controller">Controller.</param>
+        /// <param name="title">Title.</param>
+        /// <param name="message">Message.</param>
+        public static void DisplayGenericError(UIViewController controller, string title, string message)
+        {
+            DisplayAlert(controller, title, message);
+        }
+
+        /// <summary>
+        /// Displays the alert.
+        /// </summary>
+        /// <param name="controller">Controller.</param>
+        /// <param name="title">Title.</param>
+        /// <param name="message">Message.</param>
+        private static void DisplayAlert(UIViewController controller, string title, string message)
+        {
+            var alert = UIAlertController.Create(title, message, UIAlertControllerStyle.Alert);
+            alert.AddAction(UIAlertAction.Create("Common_Ok".Translate(), UIAlertActionStyle.Cancel, null));
+            controller.PresentViewController(alert, animated: true, completionHandler: null);
+        }
+    }
+}
