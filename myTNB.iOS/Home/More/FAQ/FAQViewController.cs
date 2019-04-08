@@ -11,6 +11,7 @@ using Foundation;
 using myTNB.SQLite.SQLiteDataManager;
 using System.Collections.Generic;
 using myTNB.Extensions;
+using System.Diagnostics;
 
 namespace myTNB
 {
@@ -71,10 +72,8 @@ namespace myTNB
                     }
                     else
                     {
-                        Console.WriteLine("No Network");
-                        var alert = UIAlertController.Create("ErrNoNetworkTitle".Translate(), "ErrNoNetworkMsg".Translate(), UIAlertControllerStyle.Alert);
-                        alert.AddAction(UIAlertAction.Create("Ok", UIAlertActionStyle.Cancel, null));
-                        PresentViewController(alert, animated: true, completionHandler: null);
+                        Debug.WriteLine("No Network");
+                        ErrorHandler.DisplayNoDataAlert(this);
                     }
                 });
             });
@@ -170,7 +169,7 @@ namespace myTNB
             }
             catch (Exception e)
             {
-                Console.WriteLine("ERROR: " + e.Message);
+                Debug.WriteLine("ERROR: " + e.Message);
                 _faq = new FAQModel();
             }
         }
