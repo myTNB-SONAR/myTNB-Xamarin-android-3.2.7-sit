@@ -9,7 +9,7 @@ namespace myTNB
 {
     public partial class GetAccessSuccessViewController : UIViewController
     {
-        public GetAccessSuccessViewController (IntPtr handle) : base (handle)
+        public GetAccessSuccessViewController(IntPtr handle) : base(handle)
         {
         }
 
@@ -65,7 +65,7 @@ namespace myTNB
             {
                 Frame = new CGRect(18, 143, View.Frame.Width - 36, 18),
                 AttributedText = new NSAttributedString(
-                             "Access Requested to the Owner",
+                             "GetAccess_RequestedToOwnerMessage".Translate(),
                     font: myTNBFont.MuseoSans16(),
                              foregroundColor: myTNBColor.PowerBlue(),
                              strokeWidth: 0
@@ -120,7 +120,7 @@ namespace myTNB
 
             btnBackToDashboard = new UIButton(UIButtonType.Custom);
             btnBackToDashboard.Frame = new CGRect(18, View.Frame.Height - 72, View.Frame.Width - 36, 48);
-            btnBackToDashboard.SetTitle("BackToDshbrd".Translate(), UIControlState.Normal);
+            btnBackToDashboard.SetTitle("Common_BackToDashboard".Translate(), UIControlState.Normal);
             btnBackToDashboard.Font = myTNBFont.MuseoSans16();
             btnBackToDashboard.Layer.CornerRadius = 4.0f;
             btnBackToDashboard.BackgroundColor = myTNBColor.FreshGreen();
@@ -146,7 +146,8 @@ namespace myTNB
 
         internal void SetEvents()
         {
-            btnBackToDashboard.TouchUpInside += (sender, e) => {
+            btnBackToDashboard.TouchUpInside += (sender, e) =>
+            {
                 this.DismissViewController(false, null);
             };
         }

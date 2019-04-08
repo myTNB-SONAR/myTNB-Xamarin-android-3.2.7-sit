@@ -63,7 +63,7 @@ namespace myTNB.Dashboard.DashboardComponents
             _btnGetAccess.Layer.CornerRadius = 4;
             _btnGetAccess.Layer.BorderColor = UIColor.White.CGColor;
             _btnGetAccess.Layer.BorderWidth = 1;
-            _btnGetAccess.SetTitle("Component_GetAccess".Translate(), UIControlState.Normal);
+            _btnGetAccess.SetTitle("Common_GetAccess".Translate(), UIControlState.Normal);
             _btnGetAccess.Font = myTNBFont.MuseoSans16();
             _btnGetAccess.SetTitleColor(UIColor.White, UIControlState.Normal);
             //_viewGetAccess.AddSubview(_btnGetAccess);

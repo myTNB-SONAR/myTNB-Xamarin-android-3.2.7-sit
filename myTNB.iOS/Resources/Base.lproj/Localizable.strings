@@ -34,6 +34,10 @@
 "Common_AddAccount"="Add Account";
 "Common_Amount(RM)" = "Amount (RM)";
 "Common_AmountDue"="Amount Due";
+"Common_BackToDashboard" = "Back to Dashboard";
+"Common_GetAccess"="Get Access";
+"Common_ICNumber"="Owner's IC No.";
+"Common_MaidenName"="Owner’s mother's maiden name";
 "Common_Month"="Month";
 "Common_NA"="N/A";
 "Common_NoAccount"="No Electricity Account";
@@ -56,7 +60,6 @@
 "Component_CurrentUsage"="Current usage";
 "Component_EstimatedReading"="*Estimated Reading";
 "Component_ForCurrentMonth"="For current month";
-"Component_GetAccess"="Get Access";
 "Component_GetAccessMessage"="Only electricity account owners\r\nmay view usage and transaction details.";
 "Component_GreetingAfternoon"="Good Afternoon";
 "Component_GreetingEvening"="Good Evening";
@@ -80,6 +83,13 @@
 "Error_NoNetworkMsg" = "Please check your internet connection and try again.";
 "Error_NoNetworkTitle" = "No Internet Connection";
 "Error_TimeOut" = "We can't get your account details at the moment. Please refresh this page.";
+
+/*Get Access*/
+"GetAccess_RequestedToOwnerMessage"="Access Requested to the Owner";
+
+/*Invalid*/
+"Invalid_ICNo"="Invalid IC number";
+"Invalid_MaidenName"="Invalid maiden name";
 
 /*Receipt*/
 "Receipt_AccountName"="Account Holder's Name";

@@ -1,6 +1,7 @@
 using System;
 using CoreGraphics;
 using Foundation;
+using myTNB.Extensions;
 using UIKit;
 
 namespace myTNB
@@ -62,7 +63,7 @@ namespace myTNB
             {
                 Frame = new CGRect(0, 0, viewICNumber.Frame.Width, 12),
                 AttributedText = new NSAttributedString(
-                    "Owner's IC No.",
+                    "Common_ICNumber".Translate(),
                     font: myTNBFont.MuseoSans9(),
                     foregroundColor: myTNBColor.SilverChalice(),
                     strokeWidth: 0
@@ -76,7 +77,7 @@ namespace myTNB
             {
                 Frame = new CGRect(0, 37, viewICNumber.Frame.Width, 14),
                 AttributedText = new NSAttributedString(
-                    "Invalid IC no.",
+                    "Invalid_ICNo".Translate(),
                     font: myTNBFont.MuseoSans9(),
                     foregroundColor: myTNBColor.Tomato(),
                     strokeWidth: 0
@@ -90,7 +91,7 @@ namespace myTNB
             {
                 Frame = new CGRect(0, 12, viewICNumber.Frame.Width, 24),
                 AttributedPlaceholder = new NSAttributedString(
-                    "Owner's IC No.",
+                    "Common_ICNumber".Translate(),
                     font: myTNBFont.MuseoSans16(),
                     foregroundColor: myTNBColor.SilverChalice(),
                     strokeWidth: 0
@@ -112,7 +113,7 @@ namespace myTNB
             {
                 Frame = new CGRect(0, 0, viewName.Frame.Width, 12),
                 AttributedText = new NSAttributedString(
-                    "Owner’s mother's maiden name",
+                    "Common_MaidenName".Translate(),
                     font: myTNBFont.MuseoSans9(),
                     foregroundColor: myTNBColor.SilverChalice(),
                     strokeWidth: 0
@@ -126,7 +127,7 @@ namespace myTNB
             {
                 Frame = new CGRect(0, 37, viewName.Frame.Width, 14),
                 AttributedText = new NSAttributedString(
-                    "Invalid maiden name",
+                    "Invalid_MaidenName".Translate(),
                     font: myTNBFont.MuseoSans9(),
                     foregroundColor: myTNBColor.Tomato(),
                     strokeWidth: 0
@@ -140,7 +141,7 @@ namespace myTNB
             {
                 Frame = new CGRect(0, 12, viewName.Frame.Width, 24),
                 AttributedPlaceholder = new NSAttributedString(
-                    "Owner’s mother's maiden name",
+                    "Common_MaidenName".Translate(),
                     font: myTNBFont.MuseoSans16(),
                     foregroundColor: myTNBColor.SilverChalice(),
                     strokeWidth: 0
@@ -155,7 +156,7 @@ namespace myTNB
 
             _btnGetAccess = new UIButton(UIButtonType.Custom);
             _btnGetAccess.Frame = new CGRect(18, View.Frame.Height - 132, View.Frame.Width - 36, 48);
-            _btnGetAccess.SetTitle("Get Access", UIControlState.Normal);
+            _btnGetAccess.SetTitle("Common_GetAccess".Translate(), UIControlState.Normal);
             _btnGetAccess.Font = myTNBFont.MuseoSans16();
             _btnGetAccess.Layer.CornerRadius = 5.0f;
             _btnGetAccess.BackgroundColor = myTNBColor.SilverChalice();
