@@ -12,13 +12,12 @@ using myTNB.DataManager;
 using Foundation;
 using myTNB.Extensions;
 using myTNB.Enums;
+using System.Diagnostics;
 
 namespace myTNB
 {
     public partial class BillViewController : UIViewController
     {
-        const string CURRENCY = "RM ";
-
         UILabel _lblAmount;
         UIView _viewAmount;
 
@@ -88,7 +87,7 @@ namespace myTNB
 
         void HandleAppWillEnterForeground(NSNotification notification)
         {
-            Console.WriteLine("HandleAppWillEnterForeground");
+            Debug.WriteLine("HandleAppWillEnterForeground");
             DataManager.DataManager.SharedInstance.IsBillUpdateNeeded = true;
             ViewWillAppear(true);
         }
@@ -113,7 +112,7 @@ namespace myTNB
             DataManager.DataManager.SharedInstance.selectedTag = 0;
             if (_lblAmount != null)
             {
-                _lblAmount.Text = "0.00";
+                _lblAmount.Text = TNBGlobal.DEFAULT_VALUE;
             }
 
             isREAccount = DataManager.DataManager.SharedInstance.SelectedAccount.IsREAccount;
@@ -171,13 +170,14 @@ namespace myTNB
                         }
                         else
                         {
-                            Console.WriteLine("No Network");
+                            Debug.WriteLine("No Network");
                             _billingHistory = new BillHistoryResponseModel();
                             _paymentHistory = new PaymentHistoryResponseModel();
                             InitializeBillTableView();
                             SetupContent();
                             AdjustFrames();
                             ToggleButtons();
+                            ErrorHandler.DisplayNoDataAlert(this);
                         }
                     });
                 });
@@ -210,11 +210,11 @@ namespace myTNB
         {
             if (_lblCurrentBillHeader != null)
             {
-                _lblCurrentBillHeader.Text = isREAccount ? "Current Payment Advice" : "Current Bill";
+                _lblCurrentBillHeader.Text = isREAccount ? "Bill_CurrentPaymentAdvice".Translate() : "Bill_CurrentBill".Translate();
             }
             if (_lblTotalDueAmountTitle != null)
             {
-                _lblTotalDueAmountTitle.Text = isREAccount ? "Payment Advice Amount" : "Total Amount Due";
+                _lblTotalDueAmountTitle.Text = isREAccount ? "Bill_PaymentAdviceAmount".Translate() : "Common_TotalAmountDue".Translate();
             }
 
             if (isREAccount)
@@ -227,12 +227,12 @@ namespace myTNB
 #if true
                 _viewCharges.Hidden = true;
 #else
-                _lblCurrentChargesTitle.Text = "CurrentAmountRE".Translate();
-                _lblOutstandingChargesTitle.Text = "OutstandingAmountRE".Translate();
+                _lblCurrentChargesTitle.Text = "Bill_RECurrentAmount".Translate();
+                _lblOutstandingChargesTitle.Text = "Bill_REOutstandingAmount".Translate();
 
 #endif
-                _lblTotalDueAmountTitle.Text = "TotalRE".Translate();
-                _btnBills.SetTitle("PaymentAdviceInfo".Translate(), UIControlState.Normal);
+                _lblTotalDueAmountTitle.Text = "Bill_MyEarnings".Translate();
+                _btnBills.SetTitle("Bill_PaymentAdviceInfo".Translate(), UIControlState.Normal);
                 _lblTotalPayableTitle.Hidden = true;
                 _lblTotalPayableValue.Hidden = true;
 
@@ -260,10 +260,10 @@ namespace myTNB
             else
             {
                 //_currentBillDetailsView.AddSubview(_viewCharges);
-                _lblCurrentChargesTitle.Text = "CurrentAmount".Translate();
-                _lblOutstandingChargesTitle.Text = "OutstandingAmount".Translate();
-                _lblTotalDueAmountTitle.Text = "Total".Translate();
-                _btnBills.SetTitle("BillsInfo".Translate(), UIControlState.Normal);
+                _lblCurrentChargesTitle.Text = "Bill_CurrentCharges".Translate();
+                _lblOutstandingChargesTitle.Text = "Bill_OutstandingCharges".Translate();
+                _lblTotalDueAmountTitle.Text = "Common_TotalAmountDue".Translate();
+                _btnBills.SetTitle("Bill_Bills".Translate(), UIControlState.Normal);
                 _viewCharges.Hidden = false;
                 _lblTotalPayableTitle.Hidden = false;
                 _lblTotalPayableValue.Hidden = false;
@@ -314,7 +314,7 @@ namespace myTNB
             UIView headerView = gradientViewComponent.GetUI();
             titleBarComponent = new TitleBarComponent(headerView);
             UIView titleBarView = titleBarComponent.GetUI();
-            titleBarComponent.SetTitle("Bills");
+            titleBarComponent.SetTitle("Bill_Bills".Translate());
             titleBarComponent.SetNotificationVisibility(true);
 
             titleBarComponent.SetBackVisibility(!IsFromNavigation);
@@ -456,9 +456,9 @@ namespace myTNB
                         var payable = !isREAccount ? payableAmt : ChartHelper.UpdateValueForRE(payableAmt);
                         var balance = !isREAccount ? balanceAmt : ChartHelper.UpdateValueForRE(balanceAmt);
 
-                        _lblCurrentChargesValue.Text = CURRENCY + current.ToString("N2", CultureInfo.InvariantCulture);
-                        _lblOutstandingChargesValue.Text = CURRENCY + outstanding.ToString("N2", CultureInfo.InvariantCulture);
-                        _lblTotalPayableValue.Text = CURRENCY + payable.ToString("N2", CultureInfo.InvariantCulture);
+                        _lblCurrentChargesValue.Text = string.Format("{0} {1}", TNBGlobal.UNIT_CURRENCY, current.ToString("N2", CultureInfo.InvariantCulture));
+                        _lblOutstandingChargesValue.Text = string.Format("{0} {1}", TNBGlobal.UNIT_CURRENCY, outstanding.ToString("N2", CultureInfo.InvariantCulture));
+                        _lblTotalPayableValue.Text = string.Format("{0} {1}", TNBGlobal.UNIT_CURRENCY, payable.ToString("N2", CultureInfo.InvariantCulture));
                         _lblAmount.Text = balance.ToString("N2", CultureInfo.InvariantCulture);
                         AdjustFrames();
                     });
@@ -467,14 +467,14 @@ namespace myTNB
             else
             {
                 _lblViewAddress.Text = string.Empty;
-                _lblCurrentChargesValue.Text = CURRENCY + "0.00";
-                _lblOutstandingChargesValue.Text = CURRENCY + "0.00";
-                _lblTotalPayableValue.Text = CURRENCY + "0.00";
-                _lblAmount.Text = "0.00";
+                _lblCurrentChargesValue.Text = string.Format("{0} {1}", TNBGlobal.UNIT_CURRENCY, TNBGlobal.DEFAULT_VALUE);
+                _lblOutstandingChargesValue.Text = string.Format("{0} {1}", TNBGlobal.UNIT_CURRENCY, TNBGlobal.DEFAULT_VALUE);
+                _lblTotalPayableValue.Text = string.Format("{0} {1}", TNBGlobal.UNIT_CURRENCY, TNBGlobal.DEFAULT_VALUE);
+                _lblAmount.Text = TNBGlobal.DEFAULT_VALUE;
             }
 
             _imgLeaf.Hidden = !isREAccount;
-            _lblHistoryHeader.Text = isREAccount ? "REPaymentSectionHeader".Translate() : "Bill / Payment History";
+            _lblHistoryHeader.Text = isREAccount ? "Bill_REPaymentSectionHeader".Translate() : "Bill_PaymentSectionHeader".Translate();
 
             //if (!isOwnedAccount)
             //{
@@ -613,11 +613,11 @@ namespace myTNB
                     }
                     catch (FormatException)
                     {
-                        Console.WriteLine("Unable to parse '{0}'", dateString);
+                        Debug.WriteLine("Unable to parse '{0}'", dateString);
                     }
                 }
                 formattedDate = DateHelper.GetFormattedDate(dateString, "dd MMM yyyy");
-                prefix = isREAccount ? "By " : string.Empty;
+                prefix = isREAccount ? string.Format("{0} ", "Bill_By".Translate()) : string.Empty;
             }
 
             string dueDate = prefix + formattedDate;
@@ -695,7 +695,7 @@ namespace myTNB
             _lblCurrentBillHeader = new UILabel(new CGRect(18, 24, View.Frame.Width - 36, 18));
             _lblCurrentBillHeader.Font = myTNBFont.MuseoSans16();
             _lblCurrentBillHeader.TextAlignment = UITextAlignment.Left;
-            _lblCurrentBillHeader.Text = "Current Bill";
+            _lblCurrentBillHeader.Text = "Bill_CurrentBill".Translate();
             _lblCurrentBillHeader.TextColor = myTNBColor.PowerBlue();
             _lblCurrentBillHeader.BackgroundColor = UIColor.Clear;
             _currentBillHeaderView.AddSubview(_lblCurrentBillHeader);
@@ -713,7 +713,7 @@ namespace myTNB
             _lblCurrentChargesTitle = new UILabel(new CGRect(18, 16, 119, 16));
             _lblCurrentChargesTitle.Font = myTNBFont.MuseoSans12();
             _lblCurrentChargesTitle.TextAlignment = UITextAlignment.Left;
-            _lblCurrentChargesTitle.Text = "Current Charges";
+            _lblCurrentChargesTitle.Text = "Bill_CurrentCharges".ToUpper();
             _lblCurrentChargesTitle.TextColor = myTNBColor.TunaGrey();
             _lblCurrentChargesTitle.BackgroundColor = UIColor.Clear;
             _viewCharges.AddSubview(_lblCurrentChargesTitle);
@@ -728,7 +728,7 @@ namespace myTNB
             _lblOutstandingChargesTitle = new UILabel(new CGRect(18, 48, 119, 16));
             _lblOutstandingChargesTitle.Font = myTNBFont.MuseoSans12();
             _lblOutstandingChargesTitle.TextAlignment = UITextAlignment.Left;
-            _lblOutstandingChargesTitle.Text = "Oustanding Charges";
+            _lblOutstandingChargesTitle.Text = "Bill_OutstandingCharges".ToUpper();
             _lblOutstandingChargesTitle.TextColor = myTNBColor.TunaGrey();
             _lblOutstandingChargesTitle.BackgroundColor = UIColor.Clear;
             _viewCharges.AddSubview(_lblOutstandingChargesTitle);
@@ -743,7 +743,7 @@ namespace myTNB
             _lblTotalPayableTitle = new UILabel(new CGRect(18, _lblOutstandingChargesTitle.Frame.GetMaxY() + headerMarginY, 119, 16));
             _lblTotalPayableTitle.Font = myTNBFont.MuseoSans12();
             _lblTotalPayableTitle.TextAlignment = UITextAlignment.Left;
-            _lblTotalPayableTitle.Text = "Total Payable";
+            _lblTotalPayableTitle.Text = "Bill_TotalPayable".Translate();
             _lblTotalPayableTitle.TextColor = myTNBColor.TunaGrey();
             _lblTotalPayableTitle.BackgroundColor = UIColor.Clear;
             _viewCharges.AddSubview(_lblTotalPayableTitle);
@@ -751,7 +751,7 @@ namespace myTNB
             _lblTotalPayableValue = new UILabel(new CGRect(137, _lblOutstandingChargesTitle.Frame.GetMaxY() + headerMarginY, View.Frame.Width - 155, 16));
             _lblTotalPayableValue.Font = myTNBFont.MuseoSans12();
             _lblTotalPayableValue.TextAlignment = UITextAlignment.Right;
-            //_lblTotalPayableValue.Text = "0.00";
+            //_lblTotalPayableValue.Text = TNBGlobal.DEFAULT_VALUE;
             _lblTotalPayableValue.TextColor = myTNBColor.TunaGrey();
             _lblTotalPayableValue.BackgroundColor = UIColor.Clear;
             _viewCharges.AddSubview(_lblTotalPayableValue);
@@ -764,7 +764,7 @@ namespace myTNB
             _lblTotalDueAmountTitle = new UILabel(new CGRect(18, _viewCharges.Frame.GetMaxY() + headerMarginY + 3, 160, 18));
             _lblTotalDueAmountTitle.Font = myTNBFont.MuseoSans14_500();
             _lblTotalDueAmountTitle.TextAlignment = UITextAlignment.Left;
-            _lblTotalDueAmountTitle.Text = "Total Amount Due";
+            _lblTotalDueAmountTitle.Text = "Common_TotalAmountDue".Translate();
             _lblTotalDueAmountTitle.TextColor = myTNBColor.TunaGrey();
             _lblTotalDueAmountTitle.BackgroundColor = UIColor.Clear;
             _currentBillDetailsView.AddSubview(_lblTotalDueAmountTitle);
@@ -780,7 +780,7 @@ namespace myTNB
             lblCurrency.Font = myTNBFont.MuseoSans14();
             lblCurrency.TextColor = myTNBColor.TunaGrey();
             lblCurrency.TextAlignment = UITextAlignment.Right;
-            lblCurrency.Text = CURRENCY;
+            lblCurrency.Text = string.Format("{0} ", TNBGlobal.UNIT_CURRENCY);
             _viewAmount.BackgroundColor = UIColor.Clear;
             _viewAmount.AddSubview(lblCurrency);
 
@@ -788,7 +788,7 @@ namespace myTNB
             _lblAmount.Font = myTNBFont.MuseoSans24();
             _lblAmount.TextColor = myTNBColor.TunaGrey();
             _lblAmount.TextAlignment = UITextAlignment.Right;
-            //_lblAmount.Text = "0.00";
+            //_lblAmount.Text = TNBGlobal.DEFAULT_VALUE;
             _lblAmount.BackgroundColor = UIColor.Clear;
             _viewAmount.AddSubview(_lblAmount);
 
@@ -796,7 +796,7 @@ namespace myTNB
 
             _btnPay = new UIButton(UIButtonType.Custom);
             _btnPay.Frame = new CGRect(18, 180, View.Frame.Width - 36, 48);
-            _btnPay.SetTitle("Pay", UIControlState.Normal);
+            _btnPay.SetTitle("Bill_Pay".Translate(), UIControlState.Normal);
             _btnPay.SetTitleColor(UIColor.White, UIControlState.Normal);
             _btnPay.TitleLabel.Font = myTNBFont.MuseoSans16();
             _btnPay.BackgroundColor = myTNBColor.SilverChalice();
@@ -812,7 +812,7 @@ namespace myTNB
             _lblHistoryHeader = new UILabel(new CGRect(18, 24, View.Frame.Width - 36, 18));
             _lblHistoryHeader.Font = myTNBFont.MuseoSans16();
             _lblHistoryHeader.TextAlignment = UITextAlignment.Left;
-            _lblHistoryHeader.Text = isREAccount ? "REPaymentSectionHeader".Translate() : "Bill / Payment History";
+            _lblHistoryHeader.Text = isREAccount ? "Bill_REPaymentSectionHeader".Translate() : "Bill_PaymentSectionHeader".Translate();
             _lblHistoryHeader.TextColor = myTNBColor.PowerBlue();
             _lblHistoryHeader.BackgroundColor = UIColor.Clear;
             _historyHeaderView.AddSubview(_lblHistoryHeader);
@@ -825,7 +825,7 @@ namespace myTNB
 
             _btnBills = new UIButton(UIButtonType.Custom);
             _btnBills.Frame = new CGRect(0, 0, btnWidth, 48);
-            _btnBills.SetTitle("Bills", UIControlState.Normal);
+            _btnBills.SetTitle("Bill_Bills".Translate(), UIControlState.Normal);
             _btnBills.SetTitleColor(myTNBColor.PowerBlue(), UIControlState.Normal);
             _btnBills.TitleLabel.Font = myTNBFont.MuseoSans16();
             _btnBills.BackgroundColor = UIColor.White;
@@ -835,7 +835,7 @@ namespace myTNB
 
             _btnPayment = new UIButton(UIButtonType.Custom);
             _btnPayment.Frame = new CGRect(_btnBills.Frame.Width, 0, btnWidth, 48);
-            _btnPayment.SetTitle("Payment", UIControlState.Normal);
+            _btnPayment.SetTitle("Common_Payment".Translate(), UIControlState.Normal);
             _btnPayment.SetTitleColor(UIColor.LightGray, UIControlState.Normal);
             _btnPayment.TitleLabel.Font = myTNBFont.MuseoSans16();
             _btnPayment.BackgroundColor = myTNBColor.SelectionGrey();
@@ -984,10 +984,8 @@ namespace myTNB
                         }
                         else
                         {
-                            Console.WriteLine("No Network");
-                            var alert = UIAlertController.Create("ErrNoNetworkTitle".Translate(), "ErrNoNetworkMsg".Translate(), UIAlertControllerStyle.Alert);
-                            alert.AddAction(UIAlertAction.Create("Ok", UIAlertActionStyle.Cancel, null));
-                            PresentViewController(alert, animated: true, completionHandler: null);
+                            Debug.WriteLine("No Network");
+                            ErrorHandler.DisplayNoDataAlert(this);
                         }
                     });
                 });
@@ -1034,10 +1032,8 @@ namespace myTNB
                     }
                     else
                     {
-                        Console.WriteLine("No Network");
-                        var alert = UIAlertController.Create("ErrNoNetworkTitle".Translate(), "ErrNoNetworkMsg".Translate(), UIAlertControllerStyle.Alert);
-                        alert.AddAction(UIAlertAction.Create("Ok", UIAlertActionStyle.Cancel, null));
-                        PresentViewController(alert, animated: true, completionHandler: null);
+                        Debug.WriteLine("No Network");
+                        ErrorHandler.DisplayNoDataAlert(this);
                     }
                 });
             });
@@ -1158,9 +1154,7 @@ namespace myTNB
                     {
                         DataManager.DataManager.SharedInstance.IsSameAccount = true;
                         DataManager.DataManager.SharedInstance.BillingAccountDetails = new BillingAccountDetailsDataModel();
-                        var alert = UIAlertController.Create("Error in Response", "There is an error in the server, please try again.", UIAlertControllerStyle.Alert);
-                        alert.AddAction(UIAlertAction.Create("Ok", UIAlertActionStyle.Cancel, null));
-                        PresentViewController(alert, animated: true, completionHandler: null);
+                        ErrorHandler.DisplayServiceError(this, _billingAccountDetailsList?.d?.message);
                         ActivityIndicator.Hide();
                     }
                 });
@@ -1247,9 +1241,9 @@ namespace myTNB
             var payable = !isREAccount ? payableAmt : ChartHelper.UpdateValueForRE(payableAmt);
             var balance = !isREAccount ? balanceAmt : ChartHelper.UpdateValueForRE(balanceAmt);
 
-            _lblCurrentChargesValue.Text = CURRENCY + current.ToString("N2", CultureInfo.InvariantCulture);
-            _lblOutstandingChargesValue.Text = CURRENCY + outstanding.ToString("N2", CultureInfo.InvariantCulture);
-            _lblTotalPayableValue.Text = CURRENCY + payable.ToString("N2", CultureInfo.InvariantCulture);
+            _lblCurrentChargesValue.Text = string.Format("{0} {1}", TNBGlobal.UNIT_CURRENCY, current.ToString("N2", CultureInfo.InvariantCulture));
+            _lblOutstandingChargesValue.Text = string.Format("{0} {1}", TNBGlobal.UNIT_CURRENCY, outstanding.ToString("N2", CultureInfo.InvariantCulture));
+            _lblTotalPayableValue.Text = string.Format("{0} {1}", TNBGlobal.UNIT_CURRENCY, payable.ToString("N2", CultureInfo.InvariantCulture));
             _lblAmount.Text = balance.ToString("N2", CultureInfo.InvariantCulture);
 
             AdjustFrames();

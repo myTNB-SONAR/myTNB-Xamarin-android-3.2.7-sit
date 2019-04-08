@@ -6,23 +6,43 @@
   Copyright © 2018 myTNB. All rights reserved.
 */
 
+/*Bill*/
+"Bill_Advice"="Advice";
+"Bill_Bills"="Bills";
+"Bill_By"="By";
+"Bill_CurrentBill"="Current Bill";
+"Bill_CurrentCharges" = "Current Charges";
+"Bill_CurrentPaymentAdvice"="Current Payment Advice";
+"Bill_MyEarnings" = "My Earnings";
+"Bill_NoBill"="Yay! No bills! You will be notified\nwhen your bill is ready.";
+"Bill_NoDataConnection"="Unable to load. Check your\ninternet connection or try again later.";
+"Bill_NoPayment"="No payments yet! Payments\nmade will be shown here.";
+"Bill_OutstandingCharges" = "Outstanding Charges";
+"Bill_Pay"="Pay";
+"Bill_PaymentAdviceAmount"="Payment Advice Amount";
+"Bill_PaymentAdviceInfo" = "Payment Advice"; 
+"Bill_PaymentFrom" = "From TNB";
+"Bill_PaymentSectionHeader"="Bill / Payment History";
+"Bill_RECurrentAmount" = "Current Amount";
+"Bill_REOutstandingAmount" = "Outstanding Amount";
+"Bill_REPaymentSectionHeader" = "Payment Advice / Payment History";
+"Bill_TotalPayable"="Total Payable";
+"Bill_Via"="via";
 
 /*Common*/
 "Common_AccountNumber"="Account Number";
 "Common_Amount(RM)" = "Amount (RM)";
+"Common_NA"="N/A";
 "Common_Ok"="Ok";
+"Common_Payment"="Payment";
 "Common_TotalAmount" = "Total Amount (RM)";
-
-
+"Common_TotalAmountDue"="Total Amount Due";
 
 /*ERROR*/
 "Error_DefaultMessage" = "Sorry, something went wrong. Please try again later.";
 "Error_DefaultTitle"="Error";
 "Error_NoNetworkMsg" = "Please check your internet connection and try again.";
 "Error_NoNetworkTitle" = "No Internet Connection";
-
-
-
 
 /*Receipt*/
 "Receipt_AccountName"="Account Holder's Name";

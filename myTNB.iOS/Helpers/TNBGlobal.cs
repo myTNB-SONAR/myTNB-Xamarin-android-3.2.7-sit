@@ -138,5 +138,7 @@ namespace myTNB
             public static string LoginState = "isLogin";
         }
 
+        public static string DEFAULT_VALUE = "0.00";
+
     }
 }
