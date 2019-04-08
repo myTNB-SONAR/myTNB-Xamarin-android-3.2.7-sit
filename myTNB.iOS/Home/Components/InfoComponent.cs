@@ -81,8 +81,8 @@ namespace myTNB.Dashboard.DashboardComponents
             _baseView.AddSubview(ValueLabel);
             _baseView.AddSubview(ValuePairIcon);
 
-            UIView viewLine = new UIView(new CGRect(0, _baseView.Frame.Height - 1,
-                                                    _baseView.Frame.Width, 1))
+            UIView viewLine = new UIView(new CGRect(0, _baseView.Frame.Height - 1
+                , _baseView.Frame.Width, 1))
             {
                 BackgroundColor = myTNBColor.SelectionSemiTransparent()
             };

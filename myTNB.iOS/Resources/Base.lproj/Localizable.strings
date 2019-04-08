@@ -31,18 +31,55 @@
 
 /*Common*/
 "Common_AccountNumber"="Account Number";
+"Common_AddAccount"="Add Account";
 "Common_Amount(RM)" = "Amount (RM)";
+"Common_AmountDue"="Amount Due";
+"Common_Month"="Month";
 "Common_NA"="N/A";
+"Common_NoAccount"="No Electricity Account";
 "Common_Ok"="Ok";
+"Common_Pay"="Pay";
 "Common_Payment"="Payment";
+"Common_Refresh"="Refresh";
 "Common_TotalAmount" = "Total Amount (RM)";
 "Common_TotalAmountDue"="Total Amount Due";
+"Common_Year"="Year";
 
-/*ERROR*/
+/*Component*/
+"Component_AsOf"="As of";
+"Component_AverageElectricUsage"="Avg. electric usage";
+"Component_CannotLoadChart"="Sorry, we could not load your usage chart";
+"Component_CO2"="CO²";
+"Component_CurrentBill"="Current Bill";
+"Component_CurrentCharges"="Current charges";
+"Component_CurrentEmission"="Current emission";
+"Component_CurrentUsage"="Current usage";
+"Component_EstimatedReading"="*Estimated Reading";
+"Component_ForCurrentMonth"="For current month";
+"Component_GetAccess"="Get Access";
+"Component_GetAccessMessage"="Only electricity account owners\r\nmay view usage and transaction details.";
+"Component_GreetingAfternoon"="Good Afternoon";
+"Component_GreetingEvening"="Good Evening";
+"Component_GreetingMorning"="Good Morning";
+"Component_NoAccountMessage" = "Add your existing TNB Electricity Supply Account{0}to view usage and transaction details.";
+"Component_ProjectedCost"="Projected cost";
+"Component_SeeSmartMeter"="You’ll see your usage here soon.";
+"Component_SmartMeterMessage" = "Note: Your usage above is before applicable taxes/additional charges.";
+"Component_TapToRefresh"="Tap to refresh";
+"Component_Usage"="Usage";
+"Component_ViewPaymentAdvice"="View Payment Advice";
+"Component_ViewUsageHistory"="View usage history";
+"Component_VsLastMonth"="Vs. last month";
+"Component_WelcomeToSmartMeter"="Welcome to your Smart Meter Dashboard.";
+
+/*Error*/
+"Error_BCRMMessage"="BRCM will be down for maintenance purpose";
+"Error_CheckInternetMessage"="Please check your Internet connection.";
 "Error_DefaultMessage" = "Sorry, something went wrong. Please try again later.";
 "Error_DefaultTitle"="Error";
 "Error_NoNetworkMsg" = "Please check your internet connection and try again.";
 "Error_NoNetworkTitle" = "No Internet Connection";
+"Error_TimeOut" = "We can't get your account details at the moment. Please refresh this page.";
 
 /*Receipt*/
 "Receipt_AccountName"="Account Holder's Name";

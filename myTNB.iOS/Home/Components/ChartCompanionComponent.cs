@@ -28,18 +28,6 @@ namespace myTNB.Dashboard.DashboardComponents
         UIView _msgViewLine;
         double _yLocation;
 
-        private const string TxtCurrentCharges = "Current charges";
-        private const string TxtProjectedCost = "Projected cost";
-        private const string TxtAsOf = "As of ";
-        private const string TxtForCurrentMonth = "For current month ";
-        private const string TxtCurrentUsage = "Current usage";
-        private const string TxtAverageUsage = "Avg. electric usage";
-        private const string TxtVsLastMonth = "Vs. last month";
-        private const string TxtCurrentEmission = "Current emission";
-        private const string TxtCurrency = "RM";
-        private const string TxtUsage = "Usage";
-        private const string TxtEmission = "CO2";
-
         public ChartCompanionComponent(UIView view)
         {
             _parentView = view;
@@ -84,7 +72,7 @@ namespace myTNB.Dashboard.DashboardComponents
                 Lines = 2,
                 LineBreakMode = UILineBreakMode.TailTruncation,
                 TextAlignment = UITextAlignment.Left,
-                Text = "SmartMeterMessage".Translate()
+                Text = "Component_SmartMeterMessage".Translate()
             };
             _msgLabelView.AddSubview(_messageLabel);
             _msgViewLine = new UIView(new CGRect(0, _msgLabelView.Frame.Height - 1,
@@ -99,8 +87,8 @@ namespace myTNB.Dashboard.DashboardComponents
 
             _amountBtn = new UIButton();
             _amountBtn.Frame = new CGRect(center - margin - (btnWidth * 2 + btnOffset) / 2, 0, btnWidth, 26);
-            _amountBtn.SetAttributedTitle(CreateAttributedTitle(TxtCurrency, UIColor.White), UIControlState.Selected);
-            _amountBtn.SetAttributedTitle(CreateAttributedTitle(TxtCurrency, myTNBColor.SelectionSemiTransparent()), UIControlState.Normal);
+            _amountBtn.SetAttributedTitle(CreateAttributedTitle(TNBGlobal.UNIT_CURRENCY, UIColor.White), UIControlState.Selected);
+            _amountBtn.SetAttributedTitle(CreateAttributedTitle(TNBGlobal.UNIT_CURRENCY, myTNBColor.SelectionSemiTransparent()), UIControlState.Normal);
             //_amountBtn.SetTitleColor(UIColor.White, UIControlState.Normal);
             _amountBtn.BackgroundColor = UIColor.Clear;
             _amountBtn.Layer.BorderWidth = 1.0f;
@@ -110,8 +98,8 @@ namespace myTNB.Dashboard.DashboardComponents
 
             _consumptionBtn = new UIButton();
             _consumptionBtn.Frame = new CGRect(_amountBtn.Frame.GetMaxX() + btnOffset, 0, btnWidth, 26);
-            _consumptionBtn.SetAttributedTitle(CreateAttributedTitle(TxtUsage, UIColor.White), UIControlState.Selected);
-            _consumptionBtn.SetAttributedTitle(CreateAttributedTitle(TxtUsage, myTNBColor.SelectionSemiTransparent()), UIControlState.Normal);
+            _consumptionBtn.SetAttributedTitle(CreateAttributedTitle("Component_Usage".Translate(), UIColor.White), UIControlState.Selected);
+            _consumptionBtn.SetAttributedTitle(CreateAttributedTitle("Component_Usage".Translate(), myTNBColor.SelectionSemiTransparent()), UIControlState.Normal);
             //_consumptionBtn.SetTitleColor(UIColor.White, UIControlState.Normal);
             _consumptionBtn.BackgroundColor = UIColor.Clear;
             _consumptionBtn.Layer.BorderWidth = 1.0f;
@@ -121,8 +109,8 @@ namespace myTNB.Dashboard.DashboardComponents
 
             _emissionBtn = new UIButton();
             _emissionBtn.Frame = new CGRect(center + 80, 0, btnWidth, 26);
-            _emissionBtn.SetAttributedTitle(CreateAttributedTitle(TxtEmission, UIColor.White), UIControlState.Selected);
-            _emissionBtn.SetAttributedTitle(CreateAttributedTitle(TxtEmission, myTNBColor.SelectionSemiTransparent()), UIControlState.Normal);
+            _emissionBtn.SetAttributedTitle(CreateAttributedTitle("Component_CO2".Translate(), UIColor.White), UIControlState.Selected);
+            _emissionBtn.SetAttributedTitle(CreateAttributedTitle("Component_CO2".Translate(), myTNBColor.SelectionSemiTransparent()), UIControlState.Normal);
             //_emissionBtn.SetTitleColor(UIColor.White, UIControlState.Normal);
             _emissionBtn.BackgroundColor = UIColor.Clear;
             _emissionBtn.Layer.BorderWidth = 1.0f;
@@ -157,20 +145,19 @@ namespace myTNB.Dashboard.DashboardComponents
             // metrics
             _metricCmp1 = new InfoComponent(_baseView);
             _metricCmp1.Icon.Image = UIImage.FromBundle("IC-Charges");
-            _metricCmp1.TitleLabel.Text = TxtCurrentCharges;
-            _metricCmp1.SubTitleLabel.Text = TxtAsOf;
-            _metricCmp1.ValueLabel.Text = "RM 0";
+            _metricCmp1.TitleLabel.Text = "Component_CurrentCharges".Translate();
+            _metricCmp1.SubTitleLabel.Text = string.Format("{0} ", "Component_AsOf".Translate());
+            _metricCmp1.ValueLabel.Text = string.Format("{0} {1}", TNBGlobal.UNIT_CURRENCY, TNBGlobal.ZERO);
             _metricView1 = _metricCmp1.GetUI();
             _baseView.AddSubview(_metricView1);
 
             _metricCmp2 = new InfoComponent(_baseView, new CGRect(0, _metricView1.Frame.Y + _metricView1.Frame.Height + 1, _baseView.Frame.Width, 58));
             _metricCmp2.Icon.Image = UIImage.FromBundle("IC-Cost");
-            _metricCmp2.TitleLabel.Text = TxtProjectedCost;
-            _metricCmp2.SubTitleLabel.Text = TxtForCurrentMonth;
-            _metricCmp2.ValueLabel.Text = "RM 0";
+            _metricCmp2.TitleLabel.Text = "Component_ProjectedCost".Translate();
+            _metricCmp2.SubTitleLabel.Text = string.Format("{0} ", "Component_ForCurrentMonth".Translate());
+            _metricCmp2.ValueLabel.Text = string.Format("{0} {1}", TNBGlobal.UNIT_CURRENCY, TNBGlobal.ZERO);
             _metricView2 = _metricCmp2.GetUI();
             _baseView.AddSubview(_metricView2);
-
         }
 
         /// <summary>
@@ -222,7 +209,6 @@ namespace myTNB.Dashboard.DashboardComponents
                     _emissionBtn.TouchUpInside += handler;
                     break;
             }
-
         }
 
         /// <summary>
@@ -268,9 +254,7 @@ namespace myTNB.Dashboard.DashboardComponents
                         _emissionBtn.BackgroundColor = myTNBColor.SelectionSemiTransparent();
                     }
                     break;
-
             }
-
             UpdateMetricsDisplay(chartMode);
         }
 
@@ -295,20 +279,22 @@ namespace myTNB.Dashboard.DashboardComponents
                 case ChartModeEnum.Cost:
                     {
                         _metricCmp1.Icon.Image = UIImage.FromBundle("IC-Charges");
-                        _metricCmp1.TitleLabel.Text = TxtCurrentCharges;
-                        _metricCmp1.SubTitleLabel.Text = TxtAsOf + _usageMetrics?.StatsByCost?.AsOf;
-                        var currCharges = _usageMetrics?.StatsByCost?.CurrentCharges ?? "0";
+                        _metricCmp1.TitleLabel.Text = "Component_CurrentCharges".Translate();
+                        _metricCmp1.SubTitleLabel.Text = string.Format("{0} ", "Component_AsOf".Translate()) + _usageMetrics?.StatsByCost?.AsOf;
+                        var currCharges = _usageMetrics?.StatsByCost?.CurrentCharges ?? TNBGlobal.ZERO;
                         if (!string.IsNullOrEmpty(currCharges))
                         {
-                            _metricCmp1.ValueLabel.AttributedText = TextHelper.CreateValuePairString(currCharges, TNBGlobal.UNIT_CURRENCY + " ", true, myTNBFont.MuseoSans16_300(), UIColor.White, myTNBFont.MuseoSans12_300(), UIColor.White);
+                            _metricCmp1.ValueLabel.AttributedText = TextHelper.CreateValuePairString(currCharges, TNBGlobal.UNIT_CURRENCY + " "
+                                , true, myTNBFont.MuseoSans16_300(), UIColor.White, myTNBFont.MuseoSans12_300(), UIColor.White);
                         }
                         _metricCmp2.Icon.Image = UIImage.FromBundle("IC-Cost");
-                        _metricCmp2.TitleLabel.Text = TxtProjectedCost;
-                        _metricCmp2.SubTitleLabel.Text = TxtForCurrentMonth;
-                        var prjctdCost = _usageMetrics?.StatsByCost?.ProjectedCost ?? "0";
+                        _metricCmp2.TitleLabel.Text = "Component_ProjectedCost".Translate();
+                        _metricCmp2.SubTitleLabel.Text = string.Format("{0} ", "Component_ForCurrentMonth".Translate());
+                        var prjctdCost = _usageMetrics?.StatsByCost?.ProjectedCost ?? TNBGlobal.ZERO;
                         if (!string.IsNullOrEmpty(prjctdCost))
                         {
-                            _metricCmp2.ValueLabel.AttributedText = TextHelper.CreateValuePairString(prjctdCost, TNBGlobal.UNIT_CURRENCY + " ", true, myTNBFont.MuseoSans16_300(), UIColor.White, myTNBFont.MuseoSans12_300(), UIColor.White);
+                            _metricCmp2.ValueLabel.AttributedText = TextHelper.CreateValuePairString(prjctdCost, TNBGlobal.UNIT_CURRENCY + " "
+                                , true, myTNBFont.MuseoSans16_300(), UIColor.White, myTNBFont.MuseoSans12_300(), UIColor.White);
                         }
                         _metricCmp2.ValuePairIcon.Image = null;
                         _metricCmp2.SetHidden(false);
@@ -317,22 +303,24 @@ namespace myTNB.Dashboard.DashboardComponents
                 case ChartModeEnum.Usage:
                     {
                         _metricCmp1.Icon.Image = UIImage.FromBundle("IC-Energy-Usage");
-                        _metricCmp1.TitleLabel.Text = TxtCurrentUsage;
-                        _metricCmp1.SubTitleLabel.Text = TxtAsOf + _usageMetrics?.StatsByUsage?.AsOf;
-                        var currUsageKWH = _usageMetrics?.StatsByUsage?.CurrentUsageKWH ?? "0";
+                        _metricCmp1.TitleLabel.Text = "Component_CurrentUsage".Translate();
+                        _metricCmp1.SubTitleLabel.Text = string.Format("{0} ", "Component_AsOf".Translate()) + _usageMetrics?.StatsByUsage?.AsOf;
+                        var currUsageKWH = _usageMetrics?.StatsByUsage?.CurrentUsageKWH ?? TNBGlobal.ZERO;
                         if (!string.IsNullOrEmpty(currUsageKWH))
                         {
-                            _metricCmp1.ValueLabel.AttributedText = TextHelper.CreateValuePairString(TextHelper.ParseStringToDouble(currUsageKWH).ToString("N2", CultureInfo.InvariantCulture), " " + TNBGlobal.UNIT_ENERGY, false, myTNBFont.MuseoSans16_300(), UIColor.White, myTNBFont.MuseoSans12_300(), UIColor.White);
+                            _metricCmp1.ValueLabel.AttributedText = TextHelper.CreateValuePairString(TextHelper.ParseStringToDouble(currUsageKWH).ToString("N2"
+                                , CultureInfo.InvariantCulture), " " + TNBGlobal.UNIT_ENERGY, false, myTNBFont.MuseoSans16_300()
+                                , UIColor.White, myTNBFont.MuseoSans12_300(), UIColor.White);
                         }
                         _metricCmp2.Icon.Image = UIImage.FromBundle("IC-Avg-Elec-Usage");
-                        _metricCmp2.TitleLabel.Text = TxtAverageUsage;
-                        _metricCmp2.SubTitleLabel.Text = TxtVsLastMonth;
+                        _metricCmp2.TitleLabel.Text = "Component_AverageElectricUsage".Translate();
+                        _metricCmp2.SubTitleLabel.Text = "Component_VsLastMonth".Translate();
 
                         string value;
                         bool hasChange;
                         bool isUp;
                         GetUsageComparisonAttributes(_usageMetrics?.StatsByUsage?.UsageComparedToPrevious, out value, out hasChange, out isUp);
-                        _metricCmp2.ValueLabel.AttributedText = TextHelper.CreateValuePairString(value, "%", false, myTNBFont.MuseoSans16_300(), UIColor.White, myTNBFont.MuseoSans12_300(), UIColor.White);
+                        _metricCmp2.ValueLabel.AttributedText = TextHelper.CreateValuePairString(value, TNBGlobal.PERCENTAGE, false, myTNBFont.MuseoSans16_300(), UIColor.White, myTNBFont.MuseoSans12_300(), UIColor.White);
                         _metricCmp2.ValuePairIcon.Image = isUp ? UIImage.FromBundle("Arrow-Up") : UIImage.FromBundle("Arrow-Down");
                         _metricCmp2.ValuePairIcon.Hidden = !hasChange;
                         _metricCmp2.SetHidden(false);
@@ -342,17 +330,16 @@ namespace myTNB.Dashboard.DashboardComponents
                 case ChartModeEnum.Emission:
                     {
                         _metricCmp1.Icon.Image = UIImage.FromBundle("IC-CO2");
-                        _metricCmp1.TitleLabel.Text = TxtCurrentEmission;
-                        _metricCmp1.SubTitleLabel.Text = TxtAsOf + _usageMetrics?.StatsByCo2?.First()?.AsOf;
+                        _metricCmp1.TitleLabel.Text = "Component_CurrentEmission".Translate();
+                        _metricCmp1.SubTitleLabel.Text = string.Format("{0} ", "Component_AsOf".Translate()) + _usageMetrics?.StatsByCo2?.First()?.AsOf;
                         string value = _usageMetrics?.StatsByCo2?.Count > 0 ?
-                                                     _usageMetrics?.StatsByCo2?.Sum(item => TextHelper.ParseStringToDouble(item.Quantity)).ToString() : "0";
-                        _metricCmp1.ValueLabel.AttributedText = TextHelper.CreateValuePairString(value, " " + TNBGlobal.UNIT_EMISSION, false, myTNBFont.MuseoSans16_300(), UIColor.White, myTNBFont.MuseoSans12_300(), UIColor.White);
+                                                     _usageMetrics?.StatsByCo2?.Sum(item => TextHelper.ParseStringToDouble(item.Quantity)).ToString() : TNBGlobal.ZERO;
+                        _metricCmp1.ValueLabel.AttributedText = TextHelper.CreateValuePairString(value, " " + TNBGlobal.UNIT_EMISSION
+                            , false, myTNBFont.MuseoSans16_300(), UIColor.White, myTNBFont.MuseoSans12_300(), UIColor.White);
                         _metricCmp2.SetHidden(true);
                     }
                     break;
             }
-
-
         }
 
         /// <summary>
@@ -377,7 +364,7 @@ namespace myTNB.Dashboard.DashboardComponents
         /// <param name="isUp">If set to <c>true</c> is up.</param>
         private void GetUsageComparisonAttributes(string inputText, out string value, out bool hasChange, out bool isUp)
         {
-            value = "0";
+            value = TNBGlobal.ZERO;
             hasChange = false;
             isUp = false;
 
@@ -404,5 +391,4 @@ namespace myTNB.Dashboard.DashboardComponents
                 foregroundColor: textColor);
         }
     }
-
 }

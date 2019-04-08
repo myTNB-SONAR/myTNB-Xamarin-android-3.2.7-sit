@@ -2,7 +2,6 @@
 using Airbnb.Lottie;
 using CoreGraphics;
 using UIKit;
-using static myTNB.TNBGlobal;
 
 namespace myTNB.Home.Components
 {

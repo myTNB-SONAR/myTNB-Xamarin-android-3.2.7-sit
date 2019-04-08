@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Drawing;
 using System.Globalization;
-using CoreAnimation;
 using CoreGraphics;
 using myTNB.Home.Components;
 using UIKit;
@@ -25,8 +23,6 @@ namespace myTNB.Dashboard.DashboardComponents
         int paymentViewHiddenState = -1;
         float height = 136f;
         float adjustment;
-
-        const string CURRENCY = "RM";
 
         public ActivityIndicatorComponent _activity;
 
@@ -65,7 +61,7 @@ namespace myTNB.Dashboard.DashboardComponents
             _lblPaymentTitle.Font = myTNBFont.MuseoSans16_500();
             _lblPaymentTitle.TextColor = myTNBColor.TunaGrey();
             _lblPaymentTitle.TextAlignment = UITextAlignment.Left;
-            _lblPaymentTitle.Text = "AmountNormalAccount".Translate();
+            _lblPaymentTitle.Text = "Common_AmountDue".Translate();
             _viewPaymentContainer.AddSubview(_lblPaymentTitle);
 
             _lblDate = new UILabel(new CGRect(17, _lblPaymentTitle.Frame.GetMaxY() + 4, _viewPaymentContainer.Frame.Width - 20, 14));
@@ -79,14 +75,14 @@ namespace myTNB.Dashboard.DashboardComponents
             _lblCurrency.Font = myTNBFont.MuseoSans14_500();
             _lblCurrency.TextColor = myTNBColor.TunaGrey();
             _lblCurrency.TextAlignment = UITextAlignment.Right;
-            _lblCurrency.Text = CURRENCY;
+            _lblCurrency.Text = TNBGlobal.UNIT_CURRENCY;
             _viewAmount.AddSubview(_lblCurrency);
 
             _lblAmount = new UILabel(new CGRect(24, 0, 75, 24));
             _lblAmount.Font = myTNBFont.MuseoSans24_300();
             _lblAmount.TextColor = myTNBColor.TunaGrey();
             _lblAmount.TextAlignment = UITextAlignment.Right;
-            _lblAmount.Text = "0.00";
+            _lblAmount.Text = TNBGlobal.DEFAULT_VALUE;
             _viewAmount.AddSubview(_lblAmount);
 
             _viewPaymentContainer.AddSubview(_viewAmount);
@@ -101,7 +97,7 @@ namespace myTNB.Dashboard.DashboardComponents
             _btnViewBill.Layer.CornerRadius = 4;
             _btnViewBill.Layer.BorderColor = myTNBColor.FreshGreen().CGColor;
             _btnViewBill.Layer.BorderWidth = 1;
-            _btnViewBill.SetTitle("Current Bill", UIControlState.Normal);
+            _btnViewBill.SetTitle("Component_CurrentBill".Translate(), UIControlState.Normal);
             _btnViewBill.Font = myTNBFont.MuseoSans16_500();
             _btnViewBill.SetTitleColor(myTNBColor.FreshGreen(), UIControlState.Normal);
             _viewPaymentContainer.AddSubview(_btnViewBill);
@@ -112,7 +108,7 @@ namespace myTNB.Dashboard.DashboardComponents
             _btnPay.Layer.BackgroundColor = myTNBColor.FreshGreen().CGColor;
             _btnPay.Layer.BorderColor = myTNBColor.FreshGreen().CGColor;
             _btnPay.Layer.BorderWidth = 1;
-            _btnPay.SetTitle("Pay", UIControlState.Normal);
+            _btnPay.SetTitle("Common_Pay".Translate(), UIControlState.Normal);
             _btnPay.Font = myTNBFont.MuseoSans16_500();
             _viewPaymentContainer.AddSubview(_btnPay);
         }
@@ -133,7 +129,7 @@ namespace myTNB.Dashboard.DashboardComponents
         public void SetREAccountButton()
         {
             _btnPay.Hidden = true;
-            _btnViewBill.SetTitle("View Payment Advice", UIControlState.Normal);
+            _btnViewBill.SetTitle("Component_ViewPaymentAdvice".Translate(), UIControlState.Normal);
             _btnViewBill.Frame = new CGRect(18, _lblDate.Frame.GetMaxY() + 12, _viewPaymentContainer.Frame.Width - 36, 48);
         }
 
@@ -259,7 +255,9 @@ namespace myTNB.Dashboard.DashboardComponents
         {
             int isHiddenInt = isHidden ? 0 : 1;
             if (paymentViewHiddenState != -1 && isHiddenInt == paymentViewHiddenState)
+            {
                 return;
+            }
 
             paymentViewHiddenState = isHiddenInt;
 
@@ -279,11 +277,9 @@ namespace myTNB.Dashboard.DashboardComponents
                         _viewPaymentContainer.Frame = origViewFrame;
                         SetMaskHidden(false);
                     }
-                        
+
                 }
-                , () =>
-                {
-                }
+                , () => { }
             );
 
         }

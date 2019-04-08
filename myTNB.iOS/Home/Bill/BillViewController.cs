@@ -598,7 +598,7 @@ namespace myTNB
             if (string.IsNullOrEmpty(dateString) || dateString.ToUpper().Equals("N/A")
                || (DataManager.DataManager.SharedInstance.SelectedAccount.IsNormalMeter && !isBcrmAvailable))
             {
-                formattedDate = "--";
+                formattedDate = TNBGlobal.EMPTY_DATE;
             }
             else
             {

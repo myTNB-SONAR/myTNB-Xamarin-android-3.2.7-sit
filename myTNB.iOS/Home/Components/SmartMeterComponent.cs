@@ -1,4 +1,5 @@
 ﻿using CoreGraphics;
+using myTNB.Extensions;
 using UIKit;
 namespace myTNB.Dashboard.DashboardComponents
 {
@@ -32,14 +33,14 @@ namespace myTNB.Dashboard.DashboardComponents
             _lblSmartMeterTitle = new UILabel(new CGRect(0, 0, _viewSmartMeter.Frame.Width, 16));
             _lblSmartMeterTitle.TextAlignment = UITextAlignment.Center;
             _lblSmartMeterTitle.Font = myTNBFont.MuseoSans12_300();
-            _lblSmartMeterTitle.Text = "Welcome to your Smart Meter Dashboard.";
+            _lblSmartMeterTitle.Text = "Component_WelcomeToSmartMeter".Translate();
             _lblSmartMeterTitle.TextColor = UIColor.White;
             viewContent.AddSubview(_lblSmartMeterTitle);
 
             _lblSmartMeterSubtitle = new UILabel(new CGRect(0, _lblSmartMeterTitle.Frame.GetMaxY() + 1, _viewSmartMeter.Frame.Width, 16));
             _lblSmartMeterSubtitle.TextAlignment = UITextAlignment.Center;
             _lblSmartMeterSubtitle.Font = myTNBFont.MuseoSans12_300();
-            _lblSmartMeterSubtitle.Text = "You’ll see your usage here soon.";
+            _lblSmartMeterSubtitle.Text = "Component_SeeSmartMeter".Translate();
             _lblSmartMeterSubtitle.TextColor = UIColor.White;
             viewContent.AddSubview(_lblSmartMeterSubtitle);
 

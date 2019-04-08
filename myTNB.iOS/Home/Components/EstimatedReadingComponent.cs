@@ -1,4 +1,5 @@
 ﻿using CoreGraphics;
+using myTNB.Extensions;
 using UIKit;
 namespace myTNB.Dashboard.DashboardComponents
 {
@@ -17,7 +18,7 @@ namespace myTNB.Dashboard.DashboardComponents
             _lblTitle.Font = myTNBFont.MuseoSans9();
             _lblTitle.TextColor = UIColor.White;
             _lblTitle.TextAlignment = UITextAlignment.Center;
-            _lblTitle.Text = "*Estimated reading";
+            _lblTitle.Text = "Component_EstimatedReading".Translate();
         }
 
         public UILabel GetUI()

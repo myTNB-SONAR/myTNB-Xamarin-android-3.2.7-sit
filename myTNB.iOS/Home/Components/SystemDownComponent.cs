@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using CoreGraphics;
 using Foundation;
+using myTNB.Extensions;
 using UIKit;
 
 namespace myTNB.Dashboard.DashboardComponents
@@ -56,7 +57,7 @@ namespace myTNB.Dashboard.DashboardComponents
             var msgXLoc = baseWidth / 2.0f - msgWidth / 2.0f;
 
             var bcrm = DataManager.DataManager.SharedInstance.SystemStatus?.Find(x => x.SystemType == Enums.SystemEnum.BCRM);
-            var bcrmMsg = bcrm?.DowntimeMessage ?? "BRCM will be down for maintenance purpose";
+            var bcrmMsg = bcrm?.DowntimeMessage ?? "Error_BCRMMessage".Translate();
 
             NSMutableParagraphStyle msgParagraphStyle = new NSMutableParagraphStyle
             {
@@ -157,6 +158,5 @@ namespace myTNB.Dashboard.DashboardComponents
             CreateComponent();
             return _baseView;
         }
-
     }
 }

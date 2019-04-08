@@ -23,7 +23,7 @@ namespace myTNB.Dashboard.DashboardComponents
             _lblAddress.TextColor = UIColor.White;
             _lblAddress.Lines = 0;
             _lblAddress.LineBreakMode = UILineBreakMode.TailTruncation;
-            _lblAddress.Text = "- - -";
+            _lblAddress.Text = TNBGlobal.EMPTY_ADDRESS;
             _parentView.AddSubview(_lblAddress);
         }
 
