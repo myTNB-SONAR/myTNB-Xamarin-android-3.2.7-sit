@@ -11,9 +11,7 @@ namespace myTNB
         /// <param name="controller">Controller.</param>
         public static void DisplayNoDataAlert(UIViewController controller)
         {
-            var alert = UIAlertController.Create("Error_NoNetworkMsg".Translate(), "Error_NoNetworkTitle".Translate(), UIAlertControllerStyle.Alert);
-            alert.AddAction(UIAlertAction.Create("Common_Ok".Translate(), UIAlertActionStyle.Cancel, null));
-            controller.PresentViewController(alert, animated: true, completionHandler: null);
+            DisplayAlert(controller, "Error_NoNetworkTitle".Translate(), "Error_NoNetworkMsg".Translate());
         }
 
         /// <summary>

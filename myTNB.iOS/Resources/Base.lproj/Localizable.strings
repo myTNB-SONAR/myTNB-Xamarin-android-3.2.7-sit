@@ -32,6 +32,7 @@
 /*Common*/
 "Common_AccountNumber"="Account Number";
 "Common_AddAccount"="Add Account";
+"Common_AddAnotherAccount"="Add Another Account";
 "Common_Amount(RM)" = "Amount (RM)";
 "Common_AmountDue"="Amount Due";
 "Common_BackToDashboard" = "Back to Dashboard";
@@ -106,7 +107,8 @@
 "Receipt_TrnId" = "TRANSACTION ID";
 "Receipt_TrnMethod" = "TRANSACTION METHOD";
 
-
+/*Select Account*/
+"SelectAccount_Title"="Select Electricity Account";
 
 
 
