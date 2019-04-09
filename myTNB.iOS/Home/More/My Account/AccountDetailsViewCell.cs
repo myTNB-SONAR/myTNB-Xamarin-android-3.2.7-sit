@@ -1,4 +1,3 @@
-using Foundation;
 using System;
 using UIKit;
 using CoreGraphics;
@@ -12,7 +11,7 @@ namespace myTNB
         public UIView viewCTA;
         public UILabel lblCTA;
         public UIView viewLine;
-        public AccountDetailsViewCell (IntPtr handle) : base (handle)
+        public AccountDetailsViewCell(IntPtr handle) : base(handle)
         {
             nfloat cellWidth = UIApplication.SharedApplication.KeyWindow.Frame.Width;
             nfloat cellHeight = 64;

@@ -38,18 +38,24 @@
 "Common_AmountDue"="Amount Due";
 "Common_BackToDashboard" = "Back to Dashboard";
 "Common_Cancel"="Cancel";
+"Common_Cards"="Credit / Debit Cards";
 "Common_ConfirmPassword"="Confirm Password";
 "Common_CurrentPassword"="Current Password";
+"Common_Email"="Email";
 "Common_GetAccess"="Get Access";
 "Common_ICNumber"="Owner's IC No.";
+"Common_ICROCPassportNumber"="IC / ROC / Passport No.";
 "Common_MaidenName"="Owner’s mother's maiden name";
+"Common_Manage"="Manage";
 "Common_MobileNumber"="Mobile No.";
 "Common_Month"="Month";
+"Common_Name"="Name";
 "Common_NA"="N/A";
 "Common_NewPassword"="New Password";
 "Common_Next"="Next";
 "Common_NoAccount"="No Electricity Account";
 "Common_Ok"="Ok";
+"Common_Password"="Password";
 "Common_Pay"="Pay";
 "Common_Payment"="Payment";
 "Common_Refresh"="Refresh";
@@ -192,6 +198,19 @@
 "More_ShareThisApp"="Share this app";
 "More_Title"="More";
 "More_TnC"="Terms & Conditions";
+
+/*My Account*/
+"MyAccount_AddAccountDetails"="Add your existing TNB Electricity Supply Account\r\nto view usage and transaction details.";
+"MyAccount_ICNumberMask" = "•••••• •• ";
+"MyAccount_Logout"="Logout";
+"MyAccount_LogoutConfirmation" = "Are you sure you want to log out from myTNB app?";
+"MyAccount_MyTNBAccount"="myTNB Account";
+"MyAccount_Title"="My Account";
+"MyAccount_TNBSupplyAccount"="TNB Electricity Supply Account";
+"MyAccount_UpdatedMobileNumber"="Your mobile number has been updated successfully.";
+"MyAccount_UpdatedPassword"="Your password has been updated successfully.";
+"MyAccount_UpdatedTNBAccount"="Your electricity supply account has been removed from myTNB account.";
+
 
 /*Receipt*/
 "Receipt_AccountName"="Account Holder's Name";
