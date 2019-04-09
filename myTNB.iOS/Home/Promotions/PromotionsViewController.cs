@@ -10,7 +10,7 @@ using Newtonsoft.Json;
 using myTNB.SitecoreCMS.Model;
 using myTNB.SQLite.SQLiteDataManager;
 using System.Collections.Generic;
-
+using System.Diagnostics;
 
 namespace myTNB
 {
@@ -30,18 +30,16 @@ namespace myTNB
         public override void ViewDidLoad()
         {
             base.ViewDidLoad();
-            Console.WriteLine("PROMOTION DID LOAD");
+            Debug.WriteLine("PROMOTION DID LOAD");
             SetNavigationBar();
-            promotionsTableView.Frame = new CGRect(0
-                                                   , DeviceHelper.IsIphoneXUpResolution() ? 88 : 64
-                                                   , View.Frame.Width
-                                                   , View.Frame.Height - 49 - (DeviceHelper.IsIphoneXUpResolution() ? 88 : 64));
+            promotionsTableView.Frame = new CGRect(0, DeviceHelper.IsIphoneXUpResolution() ? 88 : 64
+                , View.Frame.Width, View.Frame.Height - 49 - (DeviceHelper.IsIphoneXUpResolution() ? 88 : 64));
         }
 
         public override void ViewWillAppear(bool animated)
         {
             base.ViewWillAppear(animated);
-            Console.WriteLine("PROMOTION WILL APPEAR");
+            Debug.WriteLine("PROMOTION WILL APPEAR");
             if (!isPromoDetailScreen)
             {
                 _imageSize = DeviceHelper.GetImageSize((int)View.Frame.Width);
@@ -68,10 +66,7 @@ namespace myTNB
                             }
                             else
                             {
-                                Console.WriteLine("No Network");
-                                var alert = UIAlertController.Create("ErrNoNetworkTitle".Translate(), "ErrNoNetworkMsg".Translate(), UIAlertControllerStyle.Alert);
-                                alert.AddAction(UIAlertAction.Create("Ok", UIAlertActionStyle.Cancel, null));
-                                PresentViewController(alert, animated: true, completionHandler: null);
+                                ErrorHandler.DisplayNoDataAlert(this);
                             }
                         });
                     });
@@ -123,7 +118,7 @@ namespace myTNB
                         }
                     }
                 }
-                Console.WriteLine("*****isValidTimeStamp: " + isValidTimeStamp);
+                Debug.WriteLine("*****isValidTimeStamp: " + isValidTimeStamp);
                 //isValidTimeStamp = true;
                 if (isValidTimeStamp)
                 {
@@ -172,7 +167,7 @@ namespace myTNB
             UIView headerView = gradientViewComponent.GetUI();
             TitleBarComponent titleBarComponent = new TitleBarComponent(headerView);
             UIView titleBarView = titleBarComponent.GetUI();
-            titleBarComponent.SetTitle("Promotions");
+            titleBarComponent.SetTitle("Promotion_Title".Translate());
             titleBarComponent.SetNotificationVisibility(true);
             headerView.AddSubview(titleBarView);
             View.AddSubview(headerView);
@@ -210,16 +205,13 @@ namespace myTNB
         void SetNoPromotionScreen()
         {
             imgViewNoPromotions = new UIImageView(new CGRect(DeviceHelper.GetScaledSizeByWidth(26.6f)
-                                                                         , DeviceHelper.GetScaledSizeByHeight(32.6f)
-                                                                         , DeviceHelper.GetScaledSizeByWidth(46.9f)
-                                                                         , DeviceHelper.GetScaledSizeByHeight(26.4f)));
+                , DeviceHelper.GetScaledSizeByHeight(32.6f), DeviceHelper.GetScaledSizeByWidth(46.9f)
+                , DeviceHelper.GetScaledSizeByHeight(26.4f)));
             imgViewNoPromotions.Image = UIImage.FromBundle(("IC-Empty-Promotion"));
 
-            lblDetails = new UILabel(new CGRect(44
-                                                        , DeviceHelper.GetScaledSizeByHeight(61.8f)
-                                                        , View.Frame.Width - 88
-                                                       , 32));
-            lblDetails.Text = "No promotions currently.\r\nCheck back later!";
+            lblDetails = new UILabel(new CGRect(44, DeviceHelper.GetScaledSizeByHeight(61.8f)
+                , View.Frame.Width - 88, 32));
+            lblDetails.Text = "Promotion_NoPromotion".Translate();
             lblDetails.TextColor = myTNBColor.SilverChalice();
             lblDetails.Font = myTNBFont.MuseoSans12();
             lblDetails.Lines = 2;
@@ -251,6 +243,5 @@ namespace myTNB
         {
             isPromoDetailScreen = true;
         }
-
     }
 }

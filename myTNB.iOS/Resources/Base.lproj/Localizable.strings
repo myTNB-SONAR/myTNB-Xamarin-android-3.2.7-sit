@@ -41,6 +41,7 @@
 "Common_Cards"="Credit / Debit Cards";
 "Common_ConfirmPassword"="Confirm Password";
 "Common_CurrentPassword"="Current Password";
+"Common_Details"="Details";
 "Common_Email"="Email";
 "Common_GetAccess"="Get Access";
 "Common_ICNumber"="Owner's IC No.";
@@ -60,6 +61,7 @@
 "Common_Payment"="Payment";
 "Common_Refresh"="Refresh";
 "Common_Save"="Save";
+"Common_Skip"="Skip";
 "Common_TotalAmount" = "Total Amount (RM)";
 "Common_TotalAmountDue"="Total Amount Due";
 "Common_Update"="Update";
@@ -215,6 +217,10 @@
 "Notification_Channel"="Select how you wish to receive your notifications";
 "Notification_Title"="Notifications Settings";
 "Notification_Type"="Select the type of notifications you wish to receive from TNB";
+
+/*Promotion*/
+"Promotion_NoPromotion"="No promotions currently.\r\nCheck back later!";
+"Promotion_Title"="Promotions";
 
 /*Receipt*/
 "Receipt_AccountName"="Account Holder's Name";

@@ -1,6 +1,5 @@
 using Carousels;
 using CoreGraphics;
-using Foundation;
 using myTNB.SitecoreCMS.Model;
 using myTNB.SQLite.SQLiteDataManager;
 using System;
@@ -30,7 +29,6 @@ namespace myTNB
                 {
                     promoCache.AddRange(promos);
                 }
-
             }
         }
 
@@ -57,12 +55,10 @@ namespace myTNB
 
             promoCarousel.GetValue = (sender, option, value) =>
             {
-
                 if (option == iCarouselOption.Spacing)
                 {
                     return value * 1.1f;
                 }
-
                 return value;
             };
 
@@ -78,13 +74,11 @@ namespace myTNB
             promoCarousel.DataSource = promoDataSource;
             UpdateShownDate();
             View.AddSubview(promoCarousel);
-
         }
 
         public override void ViewWillDisappear(bool animated)
         {
             base.ViewWillDisappear(animated);
-
             DataManager.DataManager.SharedInstance.UpdatePromosDb(promoCache);
         }
 
@@ -118,7 +112,6 @@ namespace myTNB
                 {
                     item.IsRead = promo.IsRead;
                 }
-
                 ShowDetails(promo);
                 RemoveTappedPromoItem();
             }
@@ -130,7 +123,6 @@ namespace myTNB
         public void OnDone()
         {
             DataManager.DataManager.SharedInstance.UpdatePromosDb(promoCache);
-
             if (Promotions.Count == 0)
             {
                 DismissViewController(true, null);
@@ -144,7 +136,6 @@ namespace myTNB
         private void HandleSkip()
         {
             RemoveTappedPromoItem();
-
             if (Promotions.Count == 0)
             {
                 OnDone();
@@ -208,6 +199,5 @@ namespace myTNB
                 }
             }
         }
-
     }
 }

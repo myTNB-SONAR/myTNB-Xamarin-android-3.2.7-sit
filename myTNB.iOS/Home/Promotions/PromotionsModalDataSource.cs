@@ -48,7 +48,7 @@ namespace myTNB
             view.Layer.CornerRadius = 6.0f;
 
             UIImageView imgView = new UIImageView(new CGRect(0, 0, carWidth, itemHeight));
-            
+
             view.AddSubview(imgView);
 
             if (promotion.PortraitImage != null)
@@ -75,14 +75,16 @@ namespace myTNB
 
             UIButton btnSkip = new UIButton(UIButtonType.Custom);
             btnSkip.Frame = new CGRect(0, view.Frame.Height - buttonHeight, buttonWidth, buttonHeight);
-            btnSkip.SetAttributedTitle(LabelHelper.CreateAttributedString("Skip", myTNBFont.MuseoSans14_300(), myTNBColor.PowerBlue()), UIControlState.Normal);
+            btnSkip.SetAttributedTitle(LabelHelper.CreateAttributedString("Common_Skip".Translate()
+                , myTNBFont.MuseoSans14_300(), myTNBColor.PowerBlue()), UIControlState.Normal);
             btnSkip.BackgroundColor = UIColor.White;
             btnSkip.TouchDown += OnTapSkip;
             view.AddSubview(btnSkip);
 
             UIButton btnDetails = new UIButton(UIButtonType.Custom);
-            btnDetails.Frame = new CGRect(view.Frame.Width - buttonWidth, view.Frame.Height - buttonHeight, buttonWidth , buttonHeight);
-            btnDetails.SetAttributedTitle(LabelHelper.CreateAttributedString("Details", myTNBFont.MuseoSans14_300(), myTNBColor.PowerBlue()), UIControlState.Normal);
+            btnDetails.Frame = new CGRect(view.Frame.Width - buttonWidth, view.Frame.Height - buttonHeight, buttonWidth, buttonHeight);
+            btnDetails.SetAttributedTitle(LabelHelper.CreateAttributedString("Common_Details".Translate()
+                , myTNBFont.MuseoSans14_300(), myTNBColor.PowerBlue()), UIControlState.Normal);
             btnDetails.BackgroundColor = UIColor.White;
             btnDetails.TouchDown += OnTapDetails;
             view.AddSubview(btnDetails);
