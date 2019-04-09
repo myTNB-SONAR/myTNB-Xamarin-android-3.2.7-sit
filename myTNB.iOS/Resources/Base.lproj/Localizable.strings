@@ -145,8 +145,14 @@
 "Manage_UpdateNicknameSuccess"="Account nickname has been updated successfully.";
 "Manage_UpdateNicknameTitle"="Update Account Nickname";
 
-
-
+/*Manage Cards*/
+"Manage_AddCardMessage"="You may only add a new credit / debit card when making payment.";
+"Manage_CardsDebitTitle"="Manage Credit / Debit Cards";
+"Manage_CardNotRemovedMessage"="Credit / Debit Card ending with {0} was not removed. Please try again.";
+"Manage_CardRemovedSuccessMessage"="Credit / debit card ending with {0} has been removed successfully.";
+"Manage_NoSavedCards"="No credit/debit cards stored.\r\nYou may only add a credit/debit card\r\nduring payment.";
+"Manage_RemoveCardMessage"="You are about to remove credit / debit card ending with {0}.";
+"Manage_RemoveCardTitle"="Remove Credit / Debit Card";
 
 /*More*/
 "More_AppVersion"="App Version";

@@ -10,7 +10,7 @@ namespace myTNB
         public UILabel lblCardNo;
         UIImageView imgViewX;
 
-        public ManageCardViewCell (IntPtr handle) : base (handle)
+        public ManageCardViewCell(IntPtr handle) : base(handle)
         {
             nfloat cellWidth = UIApplication.SharedApplication.KeyWindow.Frame.Width;
             nfloat cellHeight = 58;
@@ -25,7 +25,7 @@ namespace myTNB
             imgViewX = new UIImageView(new CGRect(cellWidth - 58, 16, 24, 24));
             imgViewX.Image = UIImage.FromBundle("IC-Action-Delete");
 
-            AddSubviews(new UIView[]{imgViewCC, lblCardNo, imgViewX});
+            AddSubviews(new UIView[] { imgViewCC, lblCardNo, imgViewX });
 
         }
     }
