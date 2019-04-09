@@ -1,15 +1,14 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using CoreGraphics;
 using Foundation;
-using myTNB.Customs;
 using myTNB.Dashboard.DashboardComponents;
 using myTNB.DataManager;
 using myTNB.Enums;
 using myTNB.Model;
 using UIKit;
-
 
 namespace myTNB
 {
@@ -39,11 +38,7 @@ namespace myTNB
                 var userInfo = obj.UserInfo;
                 NSValue keyboardFrame = userInfo.ValueForKey(UIKeyboard.FrameEndUserInfoKey) as NSValue;
                 CGRect keyboardRectangle = keyboardFrame.CGRectValue;
-
-                tableViewRating.Frame = new CGRect(0
-                                                        , 0
-                                                        , View.Frame.Width
-                                                        , View.Frame.Height - (keyboardRectangle.Height));
+                tableViewRating.Frame = new CGRect(0, 0, View.Frame.Width, View.Frame.Height - (keyboardRectangle.Height));
             });
             NSNotificationCenter.DefaultCenter.AddObserver(UIKeyboard.DidHideNotification, (NSNotification obj) =>
             {
@@ -74,7 +69,7 @@ namespace myTNB
             _headerView = gradientViewComponent.GetUI();
             TitleBarComponent titleBarComponent = new TitleBarComponent(_headerView);
             UIView titleBarView = titleBarComponent.GetUI();
-            titleBarComponent.SetTitle("Rating");
+            titleBarComponent.SetTitle("Rating_Title".Translate());
             titleBarComponent.SetNotificationVisibility(true);
             titleBarComponent.SetBackVisibility(false);
             titleBarComponent.SetBackAction(new UITapGestureRecognizer(() =>
@@ -112,15 +107,15 @@ namespace myTNB
             btnCTA.Layer.BorderColor = myTNBColor.FreshGreen().CGColor;
             btnCTA.BackgroundColor = myTNBColor.FreshGreen();
             btnCTA.Layer.BorderWidth = 1;
-            btnCTA.SetTitle("Submit", UIControlState.Normal);
+            btnCTA.SetTitle("Common_Submit".Translate(), UIControlState.Normal);
             btnCTA.Font = myTNBFont.MuseoSans16_500();
             btnCTA.SetTitleColor(UIColor.White, UIControlState.Normal);
             btnCTA.TouchUpInside += (sender, e) =>
             {
                 if (!AreRepliesComplete(displayedQuestions))
                 {
-                    // todo: RRA, disable submit button
-                    Console.WriteLine("Rate us mandatory fields incomplete");
+                    // TODO: RRA, disable submit button
+                    Debug.WriteLine("Rate us mandatory fields incomplete");
                     return;
                 }
 
@@ -134,16 +129,12 @@ namespace myTNB
                        }
                        else
                        {
-                           var alert = UIAlertController.Create("ErrNoNetworkTitle".Translate(), "ErrNoNetworkMsg".Translate(), UIAlertControllerStyle.Alert);
-                           alert.AddAction(UIAlertAction.Create("Ok", UIAlertActionStyle.Cancel, null));
-                           PresentViewController(alert, animated: true, completionHandler: null);
+                           ErrorHandler.DisplayNoDataAlert(this);
                        }
                    });
                });
             };
-
             viewFooter.AddSubview(btnCTA);
-
             tableViewRating.TableFooterView = viewFooter;
         }
 
@@ -157,14 +148,12 @@ namespace myTNB
 #if DEBUG
             foreach (var item in questions)
             {
-                Console.WriteLine("question: {0} answer: {1}", item.Question, item.Answer);
+                Debug.WriteLine("question: {0} answer: {1}", item.Question, item.Answer);
             }
 #endif
-
             var emptyMandatory = questions.FindAll(item => item.Active && item.Mandatory && string.IsNullOrEmpty(item.Answer));
             var emptyCount = emptyMandatory?.Count ?? 0;
-            Console.WriteLine("mandatory empty fields: " + emptyMandatory?.Count.ToString());
-
+            Debug.WriteLine("mandatory empty fields: " + emptyMandatory?.Count.ToString());
             return emptyCount == 0;
         }
 
@@ -218,7 +207,7 @@ namespace myTNB
                     email = DataManager.DataManager.SharedInstance.UserEntity[0].email,
                     rating = Rating.ToString(),
                     message = _message,
-                    ratingFor = "PAY"
+                    ratingFor = "Common_Pay".Translate().ToUpper()
                 };
                 BaseResponseModel response = serviceManager.BaseServiceCall("SubmitExperienceRating", requestParameter);
             });
@@ -251,6 +240,5 @@ namespace myTNB
                 InvokeOnMainThread(OnRatingCompleted);
             });
         }
-
     }
 }

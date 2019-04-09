@@ -4,7 +4,6 @@ using Foundation;
 using System;
 using UIKit;
 
-
 namespace myTNB
 {
     public partial class RatingResultsViewController : UIViewController
@@ -22,7 +21,6 @@ namespace myTNB
             InitiliazeViews();
             SetEvents();
             this.NavigationController.NavigationBarHidden = true;
-
         }
 
         internal void SetupSuperViewBackground()
@@ -51,14 +49,14 @@ namespace myTNB
             var lblFeedback = new UILabel(new CGRect(0, imgViewCheck.Frame.GetMaxY() + 5, viewContainer.Frame.Width, 18));
             lblFeedback.Font = myTNBFont.MuseoSans16();
             lblFeedback.TextColor = myTNBColor.PowerBlue();
-            lblFeedback.Text = "Thank you.";
+            lblFeedback.Text = "Rating_ThankYou".Translate();
             lblFeedback.TextAlignment = UITextAlignment.Center;
             viewContainer.AddSubview(lblFeedback);
 
             var lblDetail = new UILabel(new CGRect(0, lblFeedback.Frame.GetMaxY() + 1, viewContainer.Frame.Width, 16));
             lblDetail.Font = myTNBFont.MuseoSans12();
             lblDetail.TextColor = myTNBColor.TunaGrey();
-            lblDetail.Text = "Your rating will help us serve you better.";
+            lblDetail.Text = "Rating_Description".Translate();
             lblDetail.TextAlignment = UITextAlignment.Center;
             viewContainer.AddSubview(lblDetail);
 
@@ -72,12 +70,11 @@ namespace myTNB
             //Back to Dashboard Button
             _btnDashBoard = new UIButton(UIButtonType.Custom);
             _btnDashBoard.Frame = new CGRect(18, View.Frame.Height - 64, View.Frame.Width - 36, 48);
-            _btnDashBoard.SetTitle("BackToDshbrd".Translate(), UIControlState.Normal);
+            _btnDashBoard.SetTitle("Common_BackToDashboard".Translate(), UIControlState.Normal);
             _btnDashBoard.Font = myTNBFont.MuseoSans16();
             _btnDashBoard.Layer.CornerRadius = 5.0f;
             _btnDashBoard.BackgroundColor = myTNBColor.FreshGreen();
             View.AddSubview(_btnDashBoard);
-
         }
 
         internal void SetEvents()
@@ -105,7 +102,6 @@ namespace myTNB
                 ShowViewController(vc, this);
 #endif
             };
-
         }
     }
 }

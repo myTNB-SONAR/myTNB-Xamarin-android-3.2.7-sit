@@ -62,6 +62,7 @@
 "Common_Refresh"="Refresh";
 "Common_Save"="Save";
 "Common_Skip"="Skip";
+"Common_Submit"="Submit";
 "Common_TotalAmount" = "Total Amount (RM)";
 "Common_TotalAmountDue"="Total Amount Due";
 "Common_Update"="Update";
@@ -221,6 +222,15 @@
 /*Promotion*/
 "Promotion_NoPromotion"="No promotions currently.\r\nCheck back later!";
 "Promotion_Title"="Promotions";
+
+/*Rating*/
+"Rating_CharacterLeft"="character left";	/*Singular*/
+"Rating_CharactersLeft"="characters left";	/*Plural*/
+"Rating_Comments"="Comments";
+"Rating_Description"="Your rating will help us serve you better.";
+"Rating_ThankYou"="Thank you.";
+"Rating_Title"="Rating";
+
 
 /*Receipt*/
 "Receipt_AccountName"="Account Holder's Name";

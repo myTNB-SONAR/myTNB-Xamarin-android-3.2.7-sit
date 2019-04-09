@@ -51,8 +51,8 @@ namespace myTNB
         private void Initialize()
         {
             var parentViewWidth = ContentView.Bounds.Width - horizontalMargin * 2;
-            parentView = new UIView(new CGRect(horizontalMargin, verticalMargin,
-                                               parentViewWidth, ContentView.Bounds.Height - verticalMargin * 2));
+            parentView = new UIView(new CGRect(horizontalMargin, verticalMargin
+                , parentViewWidth, ContentView.Bounds.Height - verticalMargin * 2));
             parentView.UserInteractionEnabled = false;
             SelectionStyle = UITableViewCellSelectionStyle.None;
 
@@ -127,8 +127,6 @@ namespace myTNB
                     }
                     break;
             }
-
-
         }
 
         /// <summary>
@@ -188,7 +186,6 @@ namespace myTNB
                 containerView.AddSubview(viewStar);
                 xLocation += 32 + 6;
             }
-
         }
 
         /// <summary>
@@ -218,14 +215,7 @@ namespace myTNB
                 imgView = viewRating.Subviews[i].Subviews[0] as UIImageView;
                 if (imgView != null)
                 {
-                    if (i <= index)
-                    {
-                        imgView.Image = UIImage.FromBundle("IC-Action-Rating-Active");
-                    }
-                    else
-                    {
-                        imgView.Image = UIImage.FromBundle("IC-Action-Rating-Inactive");
-                    }
+                    imgView.Image = UIImage.FromBundle(i <= index ? "IC-Action-Rating-Active" : "IC-Action-Rating-Inactive");
                 }
             }
         }
@@ -263,7 +253,7 @@ namespace myTNB
                 Font = myTNBFont.MuseoSans9_300()
             };
 
-            feedbackTextView.SetPlaceholder("Comments");
+            feedbackTextView.SetPlaceholder("Rating_Comments".Translate());
             feedbackTextView.CreateDoneButton();
 
 #if false
@@ -293,9 +283,7 @@ namespace myTNB
 
             viewLine = new UIView(new CGRect(0, feedbackTextView.Frame.GetMaxY() + 1, textWidth, 1));
             viewLine.BackgroundColor = myTNBColor.SilverChalice();
-
             commentView.AddSubviews(new UIView[] { feedbackTextView, lblFeedbackSubTitle, iconFeedback, viewLine });
-
             ContentView.AddSubview(commentView);
             SetTextViewEvents(feedbackTextView, viewLine);
             HandleFeedbackTextViewChange();
@@ -345,7 +333,6 @@ namespace myTNB
                         questionCache.Answer = feedbackTextView.Text;
                     }
                 }
-
             };
             textView.ShouldEndEditing = (sender) =>
             {
@@ -367,7 +354,6 @@ namespace myTNB
                 viewLine.BackgroundColor = myTNBColor.PowerBlue();
                 return true;
             };
-
         }
 
         /// <summary>
@@ -376,10 +362,8 @@ namespace myTNB
         private void HandleFeedbackTextViewChange()
         {
             int charCount = TNBGlobal.FeedbackMaxCharCount - feedbackTextView.Text.Length;
-            string text = string.Format("{0} character{1} left", charCount, charCount != 1 ? "s" : string.Empty);
-            lblFeedbackSubTitle.Text = text;
+            lblFeedbackSubTitle.Text = string.Format("{0} {1}", charCount, charCount > 1
+                ? "Rating_CharactersLeft".Translate() : "Rating_CharacterLeft".Translate());
         }
-
     }
-
 }
