@@ -93,8 +93,12 @@
 "Error_DefaultMessage" = "Sorry, something went wrong. Please try again later.";
 "Error_DefaultTitle"="Error";
 "Error_GetSmartMeterDataMessage" = "Unable to fetch smart meter data! Please try later.";
+"Error_LinkNotAvailable"="Links are not available right now. Please try again later.";
 "Error_NoNetworkMsg" = "Please check your internet connection and try again.";
 "Error_NoNetworkTitle" = "No Internet Connection";
+"Error_RatingNotAvailable"="Rating is not available right now. Please try again later.";
+"Error_ShareNotAvailable"="Sharing is not available right now. Please try again later.";
+"Error_TelephoneNumberNotAvailable"="Number is not available right now. Please try again later.";
 "Error_TimeOut" = "We can't get your account details at the moment. Please refresh this page.";
 
 /*Find Us*/
@@ -122,6 +126,23 @@
 /*Invalid*/
 "Invalid_ICNo"="Invalid IC number";
 "Invalid_MaidenName"="Invalid maiden name";
+
+/*More*/
+"More_AppVersion"="App Version";
+"More_CallUsBilling"="Call Us (Billing Enquiries)";
+"More_CallUsOutagesAndBreakdown"="Call Us (Outages & Breakdown)";
+"More_FAQ"="FAQ";
+"More_FindUs"="Find Us";
+"More_HelpAndSupport"="Help & Support";
+"More_MyAccount"="My Account";
+"More_Notifications"="Notifications";
+"More_RateThisApp"="Rate this app";
+"More_Settings"="Settings";
+"More_Share"="Share";
+"More_ShareMessage"="New myTNB app is now available in App Store.";
+"More_ShareThisApp"="Share this app";
+"More_Title"="More";
+"More_TnC"="Terms & Conditions";
 
 /*Receipt*/
 "Receipt_AccountName"="Account Holder's Name";
