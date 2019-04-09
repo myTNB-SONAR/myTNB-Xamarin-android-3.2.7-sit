@@ -8,12 +8,11 @@ using CoreGraphics;
 using myTNB.DataManager;
 using myTNB.SQLite.SQLiteDataManager;
 
-
 namespace myTNB
 {
     public partial class UpdateNicknameViewController : UIViewController
     {
-        public UpdateNicknameViewController (IntPtr handle) : base (handle)
+        public UpdateNicknameViewController(IntPtr handle) : base(handle)
         {
         }
 
@@ -50,7 +49,7 @@ namespace myTNB
             viewFullName.BackgroundColor = UIColor.Clear;
 
             lblNameTitle = new UILabel(new CGRect(0, 0, viewFullName.Frame.Width, 12));
-            lblNameTitle.Text = "ACCOUNT NICKNAME";
+            lblNameTitle.Text = "Common_AccountNickname".Translate().ToUpper();
             lblNameTitle.Font = myTNBFont.MuseoSans9_300();
             lblNameTitle.TextColor = myTNBColor.SilverChalice();
             lblNameTitle.Hidden = true;
@@ -61,7 +60,7 @@ namespace myTNB
             lblNameError.Font = myTNBFont.MuseoSans9_300();
             lblNameError.TextAlignment = UITextAlignment.Left;
             lblNameError.TextColor = myTNBColor.Tomato();
-            lblNameError.Text = "AcctNicknameInvalidError".Translate();
+            lblNameError.Text = "Invalid_AccountNickname".Translate();
             lblNameError.Hidden = true;
 
             viewFullName.AddSubview(lblNameError);
@@ -70,7 +69,7 @@ namespace myTNB
             {
                 Frame = new CGRect(0, 12, viewFullName.Frame.Width, 24),
                 AttributedPlaceholder = new NSAttributedString(
-                    "Account Nickname"
+                    "Common_AccountNickname".Translate()
                     , font: myTNBFont.MuseoSans16_300()
                     , foregroundColor: myTNBColor.SilverChalice()
                     , strokeWidth: 0
@@ -100,7 +99,8 @@ namespace myTNB
         internal void SetTextFieldEvents(UITextField textField, UILabel lblTitle, UILabel lblError, UIView viewLine, string pattern)
         {
             _textFieldHelper.SetKeyboard(textField);
-            textField.EditingChanged += (sender, e) => {
+            textField.EditingChanged += (sender, e) =>
+            {
                 lblTitle.Hidden = textField.Text.Length == 0;
 
                 if (sender == txtFieldName)
@@ -115,22 +115,24 @@ namespace myTNB
                     }
                 }
             };
-            textField.EditingDidBegin += (sender, e) => {
+            textField.EditingDidBegin += (sender, e) =>
+            {
                 lblTitle.Hidden = textField.Text.Length == 0;
                 textField.LeftViewMode = UITextFieldViewMode.Never;
                 viewLine.BackgroundColor = myTNBColor.PowerBlue();
             };
-            textField.ShouldEndEditing = (sender) => {
+            textField.ShouldEndEditing = (sender) =>
+            {
                 lblTitle.Hidden = textField.Text?.Length == 0;
 
-                bool isFormatValid = !string.IsNullOrWhiteSpace(textField.Text) &&_textFieldHelper.ValidateTextField(textField.Text, pattern);
+                bool isFormatValid = !string.IsNullOrWhiteSpace(textField.Text) && _textFieldHelper.ValidateTextField(textField.Text, pattern);
                 bool isUnique = DataManager.DataManager.SharedInstance.IsAccountNicknameUnique(textField.Text);
                 bool isValid = isFormatValid && isUnique;
                 lblError.Hidden = isValid;
 
-                if(!isValid)
+                if (!isValid)
                 {
-                    lblError.Text = !isFormatValid ? "AcctNicknameInvalidError".Translate() : "AcctNicknameInUseError".Translate();
+                    lblError.Text = !isFormatValid ? "Invalid_AccountNickname".Translate() : "AcctInvalid_AccountNicknameInUse".Translate();
                 }
 
                 viewLine.BackgroundColor = isValid ? myTNBColor.PlatinumGrey() : myTNBColor.Tomato();
@@ -143,7 +145,8 @@ namespace myTNB
                 sender.ResignFirstResponder();
                 return false;
             };
-            textField.EditingDidBegin += (sender, e) => {
+            textField.EditingDidBegin += (sender, e) =>
+            {
                 lblTitle.Hidden = false;
             };
 
@@ -183,10 +186,11 @@ namespace myTNB
             UIView headerView = gradientViewComponent.GetUI();
             TitleBarComponent titleBarComponent = new TitleBarComponent(headerView);
             UIView titleBarView = titleBarComponent.GetUI();
-            titleBarComponent.SetTitle("Update Account Nickname");
+            titleBarComponent.SetTitle("Manage_UpdateNicknameTitle".Translate());
             titleBarComponent.SetNotificationVisibility(true);
             titleBarComponent.SetBackVisibility(false);
-            titleBarComponent.SetBackAction(new UITapGestureRecognizer(() => {
+            titleBarComponent.SetBackAction(new UITapGestureRecognizer(() =>
+            {
                 DismissViewController(true, null);
             }));
             headerView.AddSubview(titleBarView);
@@ -196,10 +200,11 @@ namespace myTNB
         internal void AddSaveButton()
         {
             btnSave = new UIButton(UIButtonType.Custom);
-            btnSave.Frame = new CGRect(18, View.Frame.Height - (DeviceHelper.IsIphoneXUpResolution() ? 96 : DeviceHelper.GetScaledHeight(72)), View.Frame.Width - 36, DeviceHelper.GetScaledHeight(48));
+            btnSave.Frame = new CGRect(18, View.Frame.Height - (DeviceHelper.IsIphoneXUpResolution() 
+                ? 96 : DeviceHelper.GetScaledHeight(72)), View.Frame.Width - 36, DeviceHelper.GetScaledHeight(48));
             btnSave.Layer.CornerRadius = 4;
             btnSave.BackgroundColor = myTNBColor.SilverChalice();
-            btnSave.SetTitle("Save", UIControlState.Normal);
+            btnSave.SetTitle("Common_Save".Translate(), UIControlState.Normal);
             btnSave.Font = myTNBFont.MuseoSans16_500();
             btnSave.SetTitleColor(UIColor.White, UIControlState.Normal);
             btnSave.Enabled = false;
@@ -236,26 +241,18 @@ namespace myTNB
                             }
                             else
                             {
-                                DisplayAlertMessage("Error", "UpdateNicknameError".Translate());
+                                ErrorHandler.DisplayServiceError(this, "Error_UpdateNickname".Translate());
                             }
                         }
                         else
                         {
-                            Console.WriteLine("No Network");
-                            DisplayAlertMessage("ErrNoNetworkTitle".Translate(), "ErrNoNetworkMsg".Translate());
+                            ErrorHandler.DisplayNoDataAlert(this);
                         }
                         ActivityIndicator.Hide();
                     });
                 });
             };
             View.AddSubview(btnSave);
-        }
-
-        internal void DisplayAlertMessage(string title, string message)
-        {
-            var alert = UIAlertController.Create(title, message, UIAlertControllerStyle.Alert);
-            alert.AddAction(UIAlertAction.Create("Ok", UIAlertActionStyle.Cancel, null));
-            PresentViewController(alert, animated: true, completionHandler: null);
         }
 
         internal Task Save()

@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using myTNB.Model;
 using CoreAnimation;
 
-
 namespace myTNB
 {
     public partial class LogoutViewController : UIViewController
@@ -43,14 +42,14 @@ namespace myTNB
             UILabel lblThankYou = new UILabel(new CGRect(0, 182, viewContent.Frame.Width, 18));
             lblThankYou.TextColor = myTNBColor.PowerBlue();
             lblThankYou.Font = myTNBFont.MuseoSans16();
-            lblThankYou.Text = "Thank you for using myTNB.";
+            lblThankYou.Text = "Logout_ThankYouMessage".Translate();
             lblThankYou.TextAlignment = UITextAlignment.Center;
 
             UILabel lblSubTitle = new UILabel(new CGRect(24, 200, viewContent.Frame.Width - 48, 16));
             lblSubTitle.Font = myTNBFont.MuseoSans12();
             lblSubTitle.TextColor = myTNBColor.TunaGrey();
             lblSubTitle.TextAlignment = UITextAlignment.Center;
-            lblSubTitle.Text = "LogoutMessage".Translate();
+            lblSubTitle.Text = "Logout_Message".Translate();
 
             viewContent.AddSubviews(new UIView[] { imgLogo, lblThankYou, lblSubTitle });
             View.AddSubview(viewContent);
@@ -64,7 +63,7 @@ namespace myTNB
             btnCTA.Layer.BorderColor = myTNBColor.FreshGreen().CGColor;
             btnCTA.BackgroundColor = myTNBColor.FreshGreen();
             btnCTA.Layer.BorderWidth = 1;
-            btnCTA.SetTitle("BackToHome".Translate(), UIControlState.Normal);
+            btnCTA.SetTitle("Logout_BackToHome".Translate(), UIControlState.Normal);
             btnCTA.Font = myTNBFont.MuseoSans16();
             btnCTA.SetTitleColor(UIColor.White, UIControlState.Normal);
             btnCTA.TouchUpInside += (sender, e) =>
@@ -112,13 +111,6 @@ namespace myTNB
                 };
                 BaseResponseModel logoutResponse = serviceManager.BaseServiceCall("LogoutUser_V2", requestParameter);
             });
-        }
-
-        internal void DisplayAlertMessage(string title, string message)
-        {
-            var alert = UIAlertController.Create(title, message, UIAlertControllerStyle.Alert);
-            alert.AddAction(UIAlertAction.Create("Ok", UIAlertActionStyle.Cancel, null));
-            PresentViewController(alert, animated: true, completionHandler: null);
         }
 
         internal void SetupSuperViewBackground()

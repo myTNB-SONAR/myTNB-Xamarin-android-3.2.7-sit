@@ -6,8 +6,6 @@ using myTNB.Home.More.MyAccount.ManageAccounts;
 using CoreGraphics;
 using System.Threading.Tasks;
 using myTNB.SQLite.SQLiteDataManager;
-using myTNB.DataManager;
-
 
 namespace myTNB
 {
@@ -28,7 +26,8 @@ namespace myTNB
         {
             base.ViewDidLoad();
             SetNavigationBar();
-            manageAccountsTableView.Frame = new CGRect(0, DeviceHelper.IsIphoneXUpResolution() ? 88 : DeviceHelper.GetScaledHeight(64), View.Frame.Width, DeviceHelper.GetScaledHeight(232));
+            manageAccountsTableView.Frame = new CGRect(0, DeviceHelper.IsIphoneXUpResolution()
+                ? 88 : DeviceHelper.GetScaledHeight(64), View.Frame.Width, DeviceHelper.GetScaledHeight(232));
             manageAccountsTableView.SeparatorStyle = UITableViewCellSeparatorStyle.None;
         }
 
@@ -45,7 +44,7 @@ namespace myTNB
             InitializeNotificationMessage();
             if (DataManager.DataManager.SharedInstance.IsNickNameUpdated)
             {
-                _lblNotificationDetails.Text = "Account nickname has been updated successfully.";
+                _lblNotificationDetails.Text = "Manage_UpdateNicknameSuccess".Translate();
                 ShowNotificationMessage();
                 DataManager.DataManager.SharedInstance.IsNickNameUpdated = false;
             }
@@ -60,7 +59,7 @@ namespace myTNB
             UIView headerView = gradientViewComponent.GetUI();
             TitleBarComponent titleBarComponent = new TitleBarComponent(headerView);
             UIView titleBarView = titleBarComponent.GetUI();
-            titleBarComponent.SetTitle("ManageAcctNavTitle".Translate());
+            titleBarComponent.SetTitle("Manage_ManageElectricityAccount".Translate());
             titleBarComponent.SetNotificationVisibility(true);
             titleBarComponent.SetBackVisibility(false);
             titleBarComponent.SetBackAction(new UITapGestureRecognizer(() =>
@@ -97,7 +96,7 @@ namespace myTNB
                 _lblNotificationDetails.TextAlignment = UITextAlignment.Left;
                 _lblNotificationDetails.Font = myTNBFont.MuseoSans12();
                 _lblNotificationDetails.TextColor = myTNBColor.TunaGrey();
-                _lblNotificationDetails.Text = "- - -";
+                _lblNotificationDetails.Text = TNBGlobal.EMPTY_ADDRESS;
                 _lblNotificationDetails.Lines = 0;
                 _lblNotificationDetails.LineBreakMode = UILineBreakMode.WordWrap;
 
@@ -123,10 +122,10 @@ namespace myTNB
 
         internal void OnRemoveAccount()
         {
-            string message = string.Format("ManageAcctRemoveMsg".Translate(), CustomerRecord.accDesc, CustomerRecord.accNum);
-
-            var alert = UIAlertController.Create("ManageAcctRemoveTitle".Translate(), message, UIAlertControllerStyle.Alert);
-            alert.AddAction(UIAlertAction.Create("ManageAcctRemoveOk".Translate(), UIAlertActionStyle.Default, (obj) =>
+            var alert = UIAlertController.Create("Manage_RemoveAccount".Translate()
+                , string.Format("Manage_RemoveAccountMessage".Translate(), CustomerRecord.accDesc, CustomerRecord.accNum)
+                , UIAlertControllerStyle.Alert);
+            alert.AddAction(UIAlertAction.Create("Common_Ok".Translate(), UIAlertActionStyle.Default, (obj) =>
             {
                 ActivityIndicator.Show();
                 NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
@@ -139,15 +138,14 @@ namespace myTNB
                         }
                         else
                         {
-                            Console.WriteLine("No Network");
-                            DisplayAlertMessage("ErrNoNetworkTitle".Translate(), "ErrNoNetworkMsg".Translate());
+                            ErrorHandler.DisplayNoDataAlert(this);
                             ActivityIndicator.Hide();
                         }
 
                     });
                 });
             }));
-            alert.AddAction(UIAlertAction.Create("Cancel", UIAlertActionStyle.Cancel, (obj) =>
+            alert.AddAction(UIAlertAction.Create("Common_Cancel".Translate(), UIAlertActionStyle.Cancel, (obj) =>
             {
 
             }));
@@ -188,10 +186,7 @@ namespace myTNB
                     }
                     else
                     {
-                        string msg = _removeAccount?.d?.message;
-                        var alert = UIAlertController.Create(string.Empty, !string.IsNullOrEmpty(msg) ? msg : "DefaultServerErrorMessage".Translate(), UIAlertControllerStyle.Alert);
-                        alert.AddAction(UIAlertAction.Create("Ok", UIAlertActionStyle.Cancel, null));
-                        PresentViewController(alert, animated: true, completionHandler: null);
+                        ErrorHandler.DisplayServiceError(this, _removeAccount?.d?.message);
                     }
                     ActivityIndicator.Hide();
                 });
@@ -225,13 +220,6 @@ namespace myTNB
                 };
                 _removeAccount = serviceManager.BaseServiceCall("RemoveTNBAccountForUserFav", requestParameter);
             });
-        }
-
-        internal void DisplayAlertMessage(string title, string message)
-        {
-            var alert = UIAlertController.Create(title, message, UIAlertControllerStyle.Alert);
-            alert.AddAction(UIAlertAction.Create("Ok", UIAlertActionStyle.Cancel, null));
-            PresentViewController(alert, animated: true, completionHandler: null);
         }
     }
 }

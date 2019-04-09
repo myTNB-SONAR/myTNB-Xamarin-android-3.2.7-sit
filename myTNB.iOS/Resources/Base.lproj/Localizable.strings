@@ -30,6 +30,7 @@
 "Bill_Via"="via";
 
 /*Common*/
+"Common_AccountNickname"="Account Nickname";
 "Common_AccountNumber"="Account Number";
 "Common_AddAccount"="Add Account";
 "Common_AddAnotherAccount"="Add Another Account";
@@ -47,8 +48,10 @@
 "Common_Pay"="Pay";
 "Common_Payment"="Payment";
 "Common_Refresh"="Refresh";
+"Common_Save"="Save";
 "Common_TotalAmount" = "Total Amount (RM)";
 "Common_TotalAmountDue"="Total Amount Due";
+"Common_Update"="Update";
 "Common_Warning"="Warning";
 "Common_Year"="Year";
 
@@ -100,6 +103,7 @@
 "Error_ShareNotAvailable"="Sharing is not available right now. Please try again later.";
 "Error_TelephoneNumberNotAvailable"="Number is not available right now. Please try again later.";
 "Error_TimeOut" = "We can't get your account details at the moment. Please refresh this page.";
+"Error_UpdateNickname"="Cannot update nickname. Please try again.";
 
 /*Find Us*/
 "FindUs_Address"="Address";
@@ -124,8 +128,25 @@
 "GetAccess_RequestedToOwnerMessage"="Access Requested to the Owner";
 
 /*Invalid*/
+"Invalid_AccountNickname" = "Invalid account nickname";
+"AcctInvalid_AccountNicknameInUse" = "Nickname already used. Please create a new one.";
 "Invalid_ICNo"="Invalid IC number";
 "Invalid_MaidenName"="Invalid maiden name";
+
+/*Logout*/
+"Logout_BackToHome" = "Back to Home";
+"Logout_Message" = "You are now logged out of myTNB app.";
+"Logout_ThankYouMessage"="Thank you for using myTNB.";
+
+/*Manage Account*/
+"Manage_ManageElectricityAccount" = "Manage Electricity Account";
+"Manage_RemoveAccount" = "Remove This Account";
+"Manage_RemoveAccountMessage" = "You are about to remove {0}, Account No. {1} from the app.\r\n\r\nNote: This does not close your electricity supply account. Visit www.mytnb.com.my or Kedai Tenaga to close your electricity supply account.";
+"Manage_UpdateNicknameSuccess"="Account nickname has been updated successfully.";
+"Manage_UpdateNicknameTitle"="Update Account Nickname";
+
+
+
 
 /*More*/
 "More_AppVersion"="App Version";

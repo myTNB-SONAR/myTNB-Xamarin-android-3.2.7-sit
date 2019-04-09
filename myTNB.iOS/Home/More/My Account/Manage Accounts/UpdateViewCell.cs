@@ -11,7 +11,7 @@ namespace myTNB
         public UIView viewCTA;
         public UILabel lblCTA;
         public UIView viewLine;
-        public UpdateViewCell(IntPtr handle) : base (handle)
+        public UpdateViewCell(IntPtr handle) : base(handle)
         {
             nfloat cellWidth = UIApplication.SharedApplication.KeyWindow.Frame.Width;
             nfloat cellHeight = 62;

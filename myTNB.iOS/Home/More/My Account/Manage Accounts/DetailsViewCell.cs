@@ -10,7 +10,7 @@ namespace myTNB
         public UILabel lblAddress;
         public UIView viewLine;
 
-        public DetailsViewCell (IntPtr handle) : base (handle)
+        public DetailsViewCell(IntPtr handle) : base(handle)
         {
             nfloat cellWidth = UIApplication.SharedApplication.KeyWindow.Frame.Width;
             nfloat cellHeight = 82;

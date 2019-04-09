@@ -2,7 +2,6 @@ using System;
 using UIKit;
 using CoreGraphics;
 
-
 namespace myTNB
 {
     public partial class RemoveViewCell : UITableViewCell
@@ -20,7 +19,7 @@ namespace myTNB
             btnRemove.Layer.BorderColor = myTNBColor.FreshGreen().CGColor;
             btnRemove.BackgroundColor = UIColor.White;
             btnRemove.Layer.BorderWidth = 1;
-            btnRemove.SetTitle("ManageAcctRemoveBtn".Translate(), UIControlState.Normal);
+            btnRemove.SetTitle("Manage_RemoveAccount".Translate(), UIControlState.Normal);
             btnRemove.Font = myTNBFont.MuseoSans16_500();
             btnRemove.SetTitleColor(myTNBColor.FreshGreen(), UIControlState.Normal);
             AddSubview(btnRemove);
