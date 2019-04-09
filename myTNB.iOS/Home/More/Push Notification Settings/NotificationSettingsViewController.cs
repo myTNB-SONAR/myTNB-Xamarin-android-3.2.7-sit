@@ -1,4 +1,3 @@
-using Foundation;
 using System;
 using UIKit;
 using myTNB.Dashboard.DashboardComponents;
@@ -7,8 +6,6 @@ using myTNB.Home.More.PushNotificationSettings;
 using System.Collections.Generic;
 using myTNB.Model;
 using System.Threading.Tasks;
-using System.Linq;
-
 
 namespace myTNB
 {
@@ -20,8 +17,8 @@ namespace myTNB
 
         internal List<string> NotificationSettingsTitle = new List<string>
         {
-            "Select the type of notifications you wish to receive from TNB",
-            "Select how you wish to receive your notifications"
+            "Notification_Type".Translate(),
+            "Notification_Channel".Translate()
         };
 
         NotificationPreferenceUpdateResponseModel _notificationPreferenceUpdate = new NotificationPreferenceUpdateResponseModel();
@@ -60,7 +57,7 @@ namespace myTNB
             UIView headerView = gradientViewComponent.GetUI();
             TitleBarComponent titleBarComponent = new TitleBarComponent(headerView);
             UIView titleBarView = titleBarComponent.GetUI();
-            titleBarComponent.SetTitle("Notifications Settings");
+            titleBarComponent.SetTitle("Notification_Title".Translate());
             titleBarComponent.SetNotificationVisibility(true);
             titleBarComponent.SetBackVisibility(false);
             titleBarComponent.SetBackAction(new UITapGestureRecognizer(() =>
@@ -73,18 +70,12 @@ namespace myTNB
 
         internal void SetSubViews()
         {
-            notificationSettingsTableView.Frame = new CGRect(0, DeviceHelper.IsIphoneXUpResolution() ? 88 : 64, View.Frame.Width, View.Frame.Height - 64);
+            notificationSettingsTableView.Frame = new CGRect(0, DeviceHelper.IsIphoneXUpResolution()
+                ? 88 : 64, View.Frame.Width, View.Frame.Height - 64);
             notificationSettingsTableView.RowHeight = 54f;
             notificationSettingsTableView.SectionHeaderHeight = 66f;
             notificationSettingsTableView.SeparatorStyle = UITableViewCellSeparatorStyle.None;
             notificationSettingsTableView.BackgroundColor = myTNBColor.SectionGrey();
-        }
-
-        internal void DisplayAlertMessage(string title, string message)
-        {
-            var alert = UIAlertController.Create(title, message, UIAlertControllerStyle.Alert);
-            alert.AddAction(UIAlertAction.Create("Ok", UIAlertActionStyle.Cancel, null));
-            PresentViewController(alert, animated: true, completionHandler: null);
         }
 
         internal void ExecuteSaveUserNotificationPreferenceCall(bool isNotificationType, NotificationPreferenceModel preference)
@@ -105,7 +96,7 @@ namespace myTNB
                                    || _notificationPreferenceUpdate.d.isError.ToLower() == "true"
                                     || _notificationPreferenceUpdate.d.status.ToLower() != "success")
                                 {
-                                    DisplayAlertMessage("Error", "Unable to update your preferences. Please try later");
+                                    ErrorHandler.DisplayServiceError(this, _notificationPreferenceUpdate?.d?.message);
                                 }
                                 else
                                 {
@@ -119,8 +110,7 @@ namespace myTNB
                     }
                     else
                     {
-                        Console.WriteLine("No Network");
-                        DisplayAlertMessage("ErrNoNetworkTitle".Translate(), "ErrNoNetworkMsg".Translate());
+                        ErrorHandler.DisplayNoDataAlert(this);
                         ActivityIndicator.Hide();
                     }
                 });

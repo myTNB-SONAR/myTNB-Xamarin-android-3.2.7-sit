@@ -211,6 +211,10 @@
 "MyAccount_UpdatedPassword"="Your password has been updated successfully.";
 "MyAccount_UpdatedTNBAccount"="Your electricity supply account has been removed from myTNB account.";
 
+/*Notifications*/
+"Notification_Channel"="Select how you wish to receive your notifications";
+"Notification_Title"="Notifications Settings";
+"Notification_Type"="Select the type of notifications you wish to receive from TNB";
 
 /*Receipt*/
 "Receipt_AccountName"="Account Holder's Name";
