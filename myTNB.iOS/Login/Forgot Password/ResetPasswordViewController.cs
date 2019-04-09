@@ -5,7 +5,7 @@ using Foundation;
 using myTNB.DataManager;
 using myTNB.Model;
 using UIKit;
-using myTNB.Extensions;
+
 
 namespace myTNB.Login.ForgotPassword
 {

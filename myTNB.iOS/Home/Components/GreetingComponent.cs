@@ -1,7 +1,7 @@
 ﻿using System;
 using CoreGraphics;
 using myTNB.Enums;
-using myTNB.Extensions;
+
 using UIKit;
 
 namespace myTNB.Dashboard.DashboardComponents

@@ -6,7 +6,7 @@ using CoreGraphics;
 using System.Drawing;
 using System.Threading.Tasks;
 using myTNB.PushNotification;
-using myTNB.Extensions;
+
 using myTNB.SQLite.SQLiteDataManager;
 using myTNB.SitecoreCMS.Model;
 

@@ -7,7 +7,7 @@ using myTNB.Model;
 using myTNB.Home.More.MyAccount;
 using myTNB.DataManager;
 using myTNB.Registration.CustomerAccounts;
-using myTNB.Extensions;
+
 using myTNB.SQLite.SQLiteDataManager;
 
 namespace myTNB

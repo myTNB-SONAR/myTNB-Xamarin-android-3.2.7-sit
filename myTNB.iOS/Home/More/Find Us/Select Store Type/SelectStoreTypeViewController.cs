@@ -1,8 +1,6 @@
-using Foundation;
 using System;
 using UIKit;
 using myTNB.Home.More.FindUs.SelectStoreType;
-using System.Collections.Generic;
 
 namespace myTNB
 {

@@ -1,5 +1,5 @@
 ﻿using CoreGraphics;
-using myTNB.Extensions;
+
 using UIKit;
 
 namespace myTNB.Dashboard.DashboardComponents

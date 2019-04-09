@@ -3,7 +3,7 @@ using System;
 using UIKit;
 using CoreGraphics;
 using myTNB.Registration;
-using myTNB.Extensions;
+
 
 namespace myTNB
 {

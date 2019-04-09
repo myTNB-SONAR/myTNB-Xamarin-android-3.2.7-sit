@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using CoreGraphics;
 using Foundation;
-using myTNB.Extensions;
+
 using UIKit;
 
 namespace myTNB.Dashboard.DashboardComponents

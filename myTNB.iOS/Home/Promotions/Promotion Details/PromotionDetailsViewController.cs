@@ -6,7 +6,7 @@ using System.Drawing;
 using myTNB.SitecoreCMS.Model;
 using myTNB.Home.Components;
 using System.Collections.Generic;
-using myTNB.Extensions;
+
 using System.Diagnostics;
 
 namespace myTNB

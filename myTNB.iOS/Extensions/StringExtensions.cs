@@ -1,6 +1,6 @@
 ﻿using Foundation;
 
-namespace myTNB.Extensions
+namespace myTNB
 {
     public static class StringExtensions
     {

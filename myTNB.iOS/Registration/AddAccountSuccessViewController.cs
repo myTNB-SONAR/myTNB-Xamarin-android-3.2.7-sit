@@ -7,7 +7,6 @@ using CoreGraphics;
 using myTNB.Model;
 using myTNB.SQLite.SQLiteDataManager;
 using System.Collections.Generic;
-using myTNB.Extensions;
 using System.Linq;
 
 namespace myTNB

@@ -1,4 +1,4 @@
-﻿using myTNB.Extensions;
+﻿
 using UIKit;
 
 namespace myTNB

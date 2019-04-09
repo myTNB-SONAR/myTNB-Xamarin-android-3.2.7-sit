@@ -11,7 +11,6 @@ using System.Linq;
 using myTNB.Home.More.FindUs;
 using System.Threading.Tasks;
 using myTNB.Model;
-using myTNB.Extensions;
 
 namespace myTNB
 {
@@ -142,12 +141,12 @@ namespace myTNB
                         }
                         else
                         {
-                            DisplayAlertMessage("0 Locations", "No Kedai Tenaga Found");
+                            ErrorHandler.DisplayGenericError(this, "FindUs_ZeroLocations".Translate(), "FindUs_NoKTFound".Translate());
                         }
                     }
                     else
                     {
-                        DisplayAlertMessage("0 Locations", "No Kedai Tenaga Found");
+                        ErrorHandler.DisplayGenericError(this, "FindUs_ZeroLocations".Translate(), "FindUs_NoKTFound".Translate());
                     }
                     _ktSearchDone = true;
                     HideActivityIndicator();
@@ -166,7 +165,6 @@ namespace myTNB
             {
                 if (response != null && error == null)
                 {
-                    Console.WriteLine(response);
                     _convinientStoreList = response.MapItems.ToList();
                     foreach (MKMapItem item in _convinientStoreList)
                     {
@@ -192,7 +190,7 @@ namespace myTNB
                 }
                 else
                 {
-                    DisplayAlertMessage("0 Locations", "No 7-Eleven Found");
+                    ErrorHandler.DisplayGenericError(this, "FindUs_ZeroLocations".Translate(), "FindUs_No711Found".Translate());
                 }
                 _711SearchDone = true;
                 HideActivityIndicator();
@@ -217,7 +215,7 @@ namespace myTNB
                 Frame = new CGRect(0, 12, viewSearch.Frame.Width, 24)
                 ,
                 AttributedPlaceholder = new NSAttributedString(
-                    "Search Kedai Tenaga by road name, area"
+                    "FindUs_Search".Translate()
                     , font: myTNBFont.MuseoSans16()
                     , foregroundColor: myTNBColor.SilverChalice()
                     , strokeWidth: 0
@@ -234,7 +232,6 @@ namespace myTNB
             };
             txtFieldSearch.ShouldReturn += (textField) =>
             {
-                Console.WriteLine("Searh tapped");
                 ((UITextField)textField).ResignFirstResponder();
 
                 _searchLoc = ((UITextField)textField).Text;
@@ -260,7 +257,7 @@ namespace myTNB
             UIView viewShow = new UIView(new CGRect(18, DeviceHelper.IsIphoneXUpResolution() ? 160 : 138, View.Frame.Width - 36, 51));
             UILabel lblShow = new UILabel(new CGRect(0, 0, viewShow.Frame.Width, 12))
             {
-                Text = "SHOW",
+                Text = "FindUs_Show".Translate().ToUpper(),
                 TextAlignment = UITextAlignment.Left,
                 TextColor = myTNBColor.SilverChalice(),
                 Font = myTNBFont.MuseoSans9()
@@ -268,7 +265,7 @@ namespace myTNB
 
             _lblType = new UILabel(new CGRect(0, 12, viewShow.Frame.Width, 24))
             {
-                Text = "All",
+                Text = "FindUs_All".ToUpper(),
                 TextAlignment = UITextAlignment.Left,
                 TextColor = myTNBColor.TunaGrey(),
                 Font = myTNBFont.MuseoSans16()
@@ -334,7 +331,7 @@ namespace myTNB
                     }
                     else
                     {
-                        DisplayAlertMessage("ErrNoNetworkTitle".Translate(), "ErrNoNetworkMsg".Translate());
+                        ErrorHandler.DisplayNoDataAlert(this);
                     }
                 });
             });
@@ -347,7 +344,7 @@ namespace myTNB
             UIView headerView = gradientViewComponent.GetUI();
             TitleBarComponent titleBarComponent = new TitleBarComponent(headerView);
             UIView titleBarView = titleBarComponent.GetUI();
-            titleBarComponent.SetTitle("Find Us");
+            titleBarComponent.SetTitle("FindUs_FindUs".Translate());
             titleBarComponent.SetNotificationVisibility(true);
             titleBarComponent.SetBackVisibility(false);
             titleBarComponent.SetBackAction(new UITapGestureRecognizer(() =>
@@ -356,7 +353,7 @@ namespace myTNB
                 DataManager.DataManager.SharedInstance.CurrentStoreTypeIndex = 0;
                 DataManager.DataManager.SharedInstance.PreviousStoreTypeIndex = 0;
                 DataManager.DataManager.SharedInstance.SelectedLocationTypeID = "all";
-                DataManager.DataManager.SharedInstance.SelectedLocationTypeTitle = "All";
+                DataManager.DataManager.SharedInstance.SelectedLocationTypeTitle = "FindUs_All".Translate();
                 DataManager.DataManager.SharedInstance.IsSameStoreType = false;
                 DismissViewController(true, null);
             }));
@@ -366,7 +363,8 @@ namespace myTNB
 
         internal void SetMapView()
         {
-            _mapView = new MKMapView(new CGRect(0, DeviceHelper.IsIphoneXUpResolution() ? 160 : 138, View.Frame.Width, View.Frame.Height - (DeviceHelper.IsIphoneXUpResolution() ? 162 : 137)))
+            _mapView = new MKMapView(new CGRect(0, DeviceHelper.IsIphoneXUpResolution() ? 160 
+                : 138, View.Frame.Width, View.Frame.Height - (DeviceHelper.IsIphoneXUpResolution() ? 162 : 137)))
             {
                 ShowsCompass = false,
                 GetViewForAnnotation = GetViewForAnnotation
@@ -482,13 +480,6 @@ namespace myTNB
                 }));
             }
             return annotationView;
-        }
-
-        internal void DisplayAlertMessage(string title, string message)
-        {
-            var alert = UIAlertController.Create(title, message, UIAlertControllerStyle.Alert);
-            alert.AddAction(UIAlertAction.Create("Ok", UIAlertActionStyle.Cancel, null));
-            PresentViewController(alert, animated: true, completionHandler: null);
         }
 
         Task GetLocations(bool isSearch)

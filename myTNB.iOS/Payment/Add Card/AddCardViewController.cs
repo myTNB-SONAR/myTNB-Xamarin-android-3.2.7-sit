@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Linq;
 using myTNB.Model.RequestPayBill;
-using myTNB.Extensions;
+
 using Foundation;
 using System.Globalization;
 

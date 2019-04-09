@@ -5,7 +5,7 @@ using CoreGraphics;
 using Foundation;
 using myTNB.Model;
 using UIKit;
-using myTNB.Extensions;
+
 
 namespace myTNB.Home.More.MyAccount
 {

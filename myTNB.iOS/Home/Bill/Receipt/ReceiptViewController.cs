@@ -9,7 +9,7 @@ using CoreGraphics;
 using myTNB.Model;
 using System.Drawing;
 using System.Threading.Tasks;
-using myTNB.Extensions;
+
 using myTNB.Home.Bill.Receipt;
 
 namespace myTNB

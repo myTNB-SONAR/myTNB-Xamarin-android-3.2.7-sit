@@ -4,7 +4,6 @@ using System.Drawing;
 using System.Linq;
 using CoreGraphics;
 using Foundation;
-using myTNB.Model;
 using UIKit;
 
 namespace myTNB.Home.More.FindUs.LocationDetails
@@ -29,7 +28,7 @@ namespace myTNB.Home.More.FindUs.LocationDetails
             _dataDictionary.Add("ADDRESS", _annotation.Subtitle);
             if (_annotation.is7E)
             {
-                _dataDictionary.Add("PHONE", _annotation.ConvinientStoreItem.PhoneNumber);
+                _dataDictionary.Add("FindUs_Phone".Translate(), _annotation.ConvinientStoreItem.PhoneNumber);
             }
             else
             {
@@ -39,12 +38,12 @@ namespace myTNB.Home.More.FindUs.LocationDetails
                     foreach (var item in _annotation.KTItem.Phones)
                     {
                         phoneCount++;
-                        _dataDictionary.Add(string.Format("PHONE {0}", phoneCount), item.PhoneNumber);
+                        _dataDictionary.Add(string.Format("{0} {1}", "FindUs_Phone".Translate(), phoneCount), item.PhoneNumber);
                     }
                 }
                 else
                 {
-                    _dataDictionary.Add("PHONE", _annotation.KTItem.Phones[0].PhoneNumber);
+                    _dataDictionary.Add("FindUs_Phone".Translate(), _annotation.KTItem.Phones[0].PhoneNumber);
                 }
 
             }
@@ -80,7 +79,7 @@ namespace myTNB.Home.More.FindUs.LocationDetails
             {
                 var cell = tableView.DequeueReusableCell("AddressViewCell", indexPath) as AddressViewCell;
                 cell.SelectionStyle = UITableViewCellSelectionStyle.None;
-                cell.lblTitle.Text = "ADDRESS";
+                cell.lblTitle.Text = "FindUs_Address".Translate().ToUpper();
                 cell.lblValue.Text = _annotation.Subtitle;
                 CGSize newSize = GetLabelSize(cell.lblValue, cell.lblValue.Frame.Width, 1000);
                 cell.lblValue.Frame = new CGRect(cell.lblValue.Frame.X, cell.lblValue.Frame.Y
@@ -96,7 +95,7 @@ namespace myTNB.Home.More.FindUs.LocationDetails
                                                        , cell.viewDirections.Frame.Height);
                 return cell;
             }
-            else if (key.ToLower().Contains("phone"))
+            else if (key.ToLower().Contains("FindUs_Phone".Translate().ToLower()))
             {
                 var cell = tableView.DequeueReusableCell("ContactUsViewCell", indexPath) as ContactUsViewCell;
                 cell.SelectionStyle = UITableViewCellSelectionStyle.None;
@@ -128,10 +127,10 @@ namespace myTNB.Home.More.FindUs.LocationDetails
             {
                 var cell = tableView.DequeueReusableCell("OpeningHoursViewCell", indexPath) as OpeningHoursViewCell;
                 cell.SelectionStyle = UITableViewCellSelectionStyle.None;
-                cell.lblTitle.Text = "OPENING HOURS";
+                cell.lblTitle.Text = "FindUs_OpeningHours".Translate().ToUpper();
                 if (_annotation.is7E)
                 {
-                    cell.lbl7EOperation.Text = "Open 24 hours";
+                    cell.lbl7EOperation.Text = "FindUs_Open24Hours".Translate();
                 }
                 else
                 {
@@ -157,7 +156,7 @@ namespace myTNB.Home.More.FindUs.LocationDetails
             {
                 var cell = tableView.DequeueReusableCell("ServicesViewCell", indexPath) as ServicesViewCell;
                 cell.SelectionStyle = UITableViewCellSelectionStyle.None;
-                cell.lblTitle.Text = "SERVICES";
+                cell.lblTitle.Text = "FindUs_Services".Translate().ToUpper();
                 cell.AddSubview(RenderServicesListCell());
                 return cell;
             }
@@ -204,7 +203,7 @@ namespace myTNB.Home.More.FindUs.LocationDetails
                 string services = string.Empty;
                 if (_annotation.is7E)
                 {
-                    services += "•\tPayment of electricity bills and other utility bills";
+                    services += "FindUs_ServicesDescription".Translate();
                 }
                 else
                 {
@@ -238,7 +237,6 @@ namespace myTNB.Home.More.FindUs.LocationDetails
             {
                 string str = _annotation.KTItem.Services[i].Title;
                 CGSize strSize = GetLabelSize(str, false);
-                Console.WriteLine("strSize: " + strSize);
 
                 UIView innerView = new UIView(new CGRect(0, lblYPos, 282, strSize.Height));
 
@@ -282,7 +280,7 @@ namespace myTNB.Home.More.FindUs.LocationDetails
         {
             if (_annotation.is7E)
             {
-                services = "•\tPayment of electricity bills and other utility bills";
+                services = "FindUs_ServicesDescription".Translate();
             }
             else
             {

@@ -5,7 +5,7 @@ using UIKit;
 using CoreGraphics;
 using Foundation;
 using System.Drawing;
-using myTNB.Extensions;
+
 
 namespace myTNB.Registration
 {

@@ -4,7 +4,7 @@ using System.Globalization;
 using Foundation;
 using myTNB.Model;
 using UIKit;
-using myTNB.Extensions;
+
 
 namespace myTNB.Payment.SelectBills
 {

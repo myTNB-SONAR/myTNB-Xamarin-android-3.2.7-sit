@@ -9,7 +9,7 @@ using Foundation;
 using myTNB.SQLite.SQLiteDataManager;
 using System.Drawing;
 using myTNB.Dashboard.DashboardComponents;
-using myTNB.Extensions;
+
 using myTNB.DataManager;
 using System.Timers;
 

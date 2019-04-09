@@ -6,7 +6,7 @@ using Foundation;
 using myTNB.Model;
 using myTNB.Registration.CustomerAccounts;
 using UIKit;
-using myTNB.Extensions;
+
 
 namespace myTNB.Registration
 {

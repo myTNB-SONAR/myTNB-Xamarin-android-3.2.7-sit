@@ -1,5 +1,5 @@
 ﻿using Foundation; using System; using UIKit; using CoreAnimation; using CoreGraphics; using System.Drawing;
-using myTNB.Extensions; 
+ 
 namespace myTNB {     public partial class PasswordResetSuccessViewController : UIViewController     {         UIButton btnLogin;         UIView viewContainer;          public bool IsChangePassword = false;         public PasswordResetSuccessViewController(IntPtr handle) : base(handle) { }         public string EmailAddress = string.Empty;          public override void ViewDidLoad()         {             base.ViewDidLoad();              SetupSuperViewBackground();             if (IsChangePassword)
             {                 InitializedSuccessSubviews();             }
             else

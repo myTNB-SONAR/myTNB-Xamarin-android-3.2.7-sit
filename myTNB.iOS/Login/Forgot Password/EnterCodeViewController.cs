@@ -5,7 +5,7 @@ using CoreGraphics;
 using System.Threading.Tasks;
 using myTNB.Model;
 using myTNB.DataManager;
-using myTNB.Extensions;
+
 using System.Timers;
 
 namespace myTNB

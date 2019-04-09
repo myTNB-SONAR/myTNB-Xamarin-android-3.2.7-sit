@@ -5,7 +5,7 @@ using myTNB.Model;
 using System.Threading.Tasks;
 using CoreGraphics;
 using myTNB.Registration.CustomerAccounts;
-using myTNB.Extensions;
+
 using System.Diagnostics;
 
 namespace myTNB

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using CoreGraphics;
 using myTNB.DataManager;
 using myTNB.SQLite.SQLiteDataManager;
-using myTNB.Extensions;
+
 
 namespace myTNB
 {

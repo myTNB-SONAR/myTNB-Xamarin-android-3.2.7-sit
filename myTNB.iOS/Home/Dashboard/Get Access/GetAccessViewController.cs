@@ -1,7 +1,7 @@
 using System;
 using CoreGraphics;
 using Foundation;
-using myTNB.Extensions;
+
 using UIKit;
 
 namespace myTNB

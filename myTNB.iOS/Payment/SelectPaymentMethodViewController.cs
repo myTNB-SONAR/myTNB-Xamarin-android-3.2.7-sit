@@ -8,7 +8,7 @@ using myTNB.Model;
 using myTNB.Model.RequestPayBill;
 using myTNB.Payment.AddCard;
 using UIKit;
-using myTNB.Extensions;
+
 using Foundation;
 using System.Globalization;
 using System.Security;

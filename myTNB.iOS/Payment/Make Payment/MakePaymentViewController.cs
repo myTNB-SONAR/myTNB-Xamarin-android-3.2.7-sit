@@ -4,7 +4,7 @@ using UIKit;
 using myTNB.Model;
 using System.Collections.Generic;
 using CoreGraphics;
-using myTNB.Extensions;
+
 using System.Threading.Tasks;
 
 namespace myTNB

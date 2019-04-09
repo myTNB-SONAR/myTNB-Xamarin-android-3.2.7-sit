@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using myTNB.Model;
 using myTNB.SQLite.SQLiteDataManager;
 using myTNB.DataManager;
-using myTNB.Extensions;
+
 using myTNB.Registration;
 using System.Linq;
 

@@ -5,7 +5,7 @@ using CoreGraphics;
 using myTNB.Model;
 using System.Globalization;
 using myTNB.Enums;
-using myTNB.Extensions;
+
 
 namespace myTNB.Payment.AddCard
 {

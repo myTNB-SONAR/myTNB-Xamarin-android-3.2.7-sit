@@ -8,7 +8,6 @@ using Foundation;
 using myTNB.DataManager;
 using myTNB.Model;
 using UIKit;
-using myTNB.Extensions;
 using myTNB.SQLite.SQLiteDataManager;
 
 namespace myTNB.Registration.CustomerAccounts
