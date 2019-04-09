@@ -38,11 +38,16 @@
 "Common_AmountDue"="Amount Due";
 "Common_BackToDashboard" = "Back to Dashboard";
 "Common_Cancel"="Cancel";
+"Common_ConfirmPassword"="Confirm Password";
+"Common_CurrentPassword"="Current Password";
 "Common_GetAccess"="Get Access";
 "Common_ICNumber"="Owner's IC No.";
 "Common_MaidenName"="Owner’s mother's maiden name";
+"Common_MobileNumber"="Mobile No.";
 "Common_Month"="Month";
 "Common_NA"="N/A";
+"Common_NewPassword"="New Password";
+"Common_Next"="Next";
 "Common_NoAccount"="No Electricity Account";
 "Common_Ok"="Ok";
 "Common_Pay"="Pay";
@@ -97,6 +102,8 @@
 "Error_DefaultTitle"="Error";
 "Error_GetSmartMeterDataMessage" = "Unable to fetch smart meter data! Please try later.";
 "Error_LinkNotAvailable"="Links are not available right now. Please try again later.";
+"Error_MobileNumberUpdate" = "Cannot update mobile number. Please try again.";
+"Error_MismatchedPassword"="Your password and confirmation password do not match.";
 "Error_NoNetworkMsg" = "Please check your internet connection and try again.";
 "Error_NoNetworkTitle" = "No Internet Connection";
 "Error_RatingNotAvailable"="Rating is not available right now. Please try again later.";
@@ -104,6 +111,7 @@
 "Error_TelephoneNumberNotAvailable"="Number is not available right now. Please try again later.";
 "Error_TimeOut" = "We can't get your account details at the moment. Please refresh this page.";
 "Error_UpdateNickname"="Cannot update nickname. Please try again.";
+"Error_VerifyDevice" = "Cannot verify device. Please try again.";
 
 /*Find Us*/
 "FindUs_Address"="Address";
@@ -127,11 +135,17 @@
 /*Get Access*/
 "GetAccess_RequestedToOwnerMessage"="Access Requested to the Owner";
 
+/*Hint*/
+"Hint_MobileNumberExample"="Example: +6012 345 6789";
+"Hint_Password"="Password must have at least 8 alphanumeric characters.";
+
 /*Invalid*/
 "Invalid_AccountNickname" = "Invalid account nickname";
 "AcctInvalid_AccountNicknameInUse" = "Nickname already used. Please create a new one.";
 "Invalid_ICNo"="Invalid IC number";
 "Invalid_MaidenName"="Invalid maiden name";
+"Invalid_MobileNumber"="Invalid mobile number";
+"Invalid_OldPassword"="Invalid Old Password";
 
 /*Logout*/
 "Logout_BackToHome" = "Back to Home";
@@ -153,6 +167,14 @@
 "Manage_NoSavedCards"="No credit/debit cards stored.\r\nYou may only add a credit/debit card\r\nduring payment.";
 "Manage_RemoveCardMessage"="You are about to remove credit / debit card ending with {0}.";
 "Manage_RemoveCardTitle"="Remove Credit / Debit Card";
+
+/*Manage Mobile Number*/
+"Manage_VerifyMobileNumber"="For security purpose, please enter your mobile number to verify this device.";
+"Manage_MobileNumberNotVerifiedTitle" = "Verify Device";
+"Manage_MobileNumberVerifiedTitle" = "Update Mobile No.";
+
+/*Manage Password*/
+"Manage_PasswordTitle"="Update Password";
 
 /*More*/
 "More_AppVersion"="App Version";
