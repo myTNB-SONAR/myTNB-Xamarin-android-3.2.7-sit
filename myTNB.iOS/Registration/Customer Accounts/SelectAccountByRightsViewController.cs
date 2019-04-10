@@ -5,7 +5,6 @@ using CoreGraphics;
 using myTNB.Registration;
 using System.Collections.Generic;
 
-
 namespace myTNB
 {
     public partial class SelectAccountByRightsViewController : UIViewController
@@ -20,11 +19,11 @@ namespace myTNB
 
         List<string> rightsList = new List<string>()
             {
-                "OutstandingPymnt".Translate()
-                , "UsageGraph".Translate()
-                , "PaymntHstry".Translate()
-                , "CurrentBill".Translate()
-                , "PastBills".Translate()
+                "Registration_OutstandingPayment".Translate()
+                , "Registration_UsageGraph".Translate()
+                , "Registration_PaymentHistory".Translate()
+                , "Registration_CurrentBill".Translate()
+                , "Registration_PastBills".Translate()
             };
 
         List<UIImage> imageList = new List<UIImage>()
@@ -40,7 +39,6 @@ namespace myTNB
         {
         }
 
-
         public override void ViewDidLoad()
         {
             base.ViewDidLoad();
@@ -51,14 +49,14 @@ namespace myTNB
 
         internal void InitializedSubviews()
         {
-            NavigationItem.Title = "Add Electricity Account";
+            NavigationItem.Title = "Common_AddElectricityAccount".Translate();
             View.BackgroundColor = myTNBColor.LightGrayBG();
 
             lblTitle = new UILabel
             {
                 Frame = new CGRect(18, 16, View.Frame.Width - 36, 90),
                 AttributedText = new NSAttributedString(
-                    "Do you have the rights to view all information related to this electricity supply account?"
+                    "Registration_RightsQuestion".Translate()
                     , font: myTNBFont.MuseoSans18_500()
                     , foregroundColor: myTNBColor.PowerBlue()
                     , strokeWidth: 0
@@ -76,8 +74,7 @@ namespace myTNB
             lblYes = new UILabel
             {
                 Frame = new CGRect(16, 16, viewYes.Frame.Width - 32, 18),
-                AttributedText = new NSAttributedString(
-                    "Yes,"
+                AttributedText = new NSAttributedString(string.Format("{0},", "Common_Yes".Translate())
                     , font: myTNBFont.MuseoSans16_500()
                     , foregroundColor: myTNBColor.TunaGrey()
                     , strokeWidth: 0
@@ -89,7 +86,7 @@ namespace myTNB
             {
                 Frame = new CGRect(16, 34, viewYes.Frame.Width - 32, 60),
                 AttributedText = new NSAttributedString(
-                    "I have the rights to view all information related to this electricity supply account."
+                    "Registration_RightsAnswer".Translate()
                     , font: myTNBFont.MuseoSans16_300()
                     , foregroundColor: myTNBColor.TunaGrey()
                     , strokeWidth: 0
@@ -109,30 +106,24 @@ namespace myTNB
             lblNo = new UILabel
             {
                 Frame = new CGRect(16, 16, viewNo.Frame.Width - 32, 18),
-                AttributedText = new NSAttributedString(
-                             "No,",
-                               font: myTNBFont.MuseoSans16_500(),
-                             foregroundColor: myTNBColor.TunaGrey(),
-                             strokeWidth: 0
-                            ),
+                AttributedText = new NSAttributedString(string.Format("{0},", "Common_No".Translate())
+                    , font: myTNBFont.MuseoSans16_500()
+                    , foregroundColor: myTNBColor.TunaGrey()
+                    , strokeWidth: 0),
                 TextAlignment = UITextAlignment.Left,
             };
 
             lblNoDescription = new UILabel
             {
                 Frame = new CGRect(16, 34, viewNo.Frame.Width - 32, 90),
-                AttributedText = new NSAttributedString(
-                    "I may not have the rights to view all information related to this electricity supply account.\r\n\r\nI may only view:",
-                               font: myTNBFont.MuseoSans16_300(),
-                             foregroundColor: myTNBColor.TunaGrey(),
-                             strokeWidth: 0
-                            ),
+                AttributedText = new NSAttributedString("Registration_NoRightsAnswer".Translate()
+                    , font: myTNBFont.MuseoSans16_300()
+                    , foregroundColor: myTNBColor.TunaGrey()
+                    , strokeWidth: 0),
                 TextAlignment = UITextAlignment.Left,
                 Lines = 0,
                 LineBreakMode = UILineBreakMode.WordWrap
             };
-
-
 
             viewNo.AddSubviews(new UIView[] { lblNo, lblNoDescription });
             int yLocation = 131;

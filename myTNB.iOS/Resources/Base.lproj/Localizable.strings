@@ -305,9 +305,9 @@
 "Receipt_TrnMethod" = "TRANSACTION METHOD";
 
 /*Registration*/
-"Registration_AddingAccountMessage"="This may take a while as we are\r\nadding your TNB account.";		/*Single*/
+"Registration_AddingAccountMessage"="This may take a while as we are\r\nadding your TNB account.";		/*Singular*/
 "Registration_AddingAccountsMessage"="This may take a while as we are\r\nadding your TNB accounts.";	/*Plural*/
-"Registration_AddingAccountTitle"="Adding {0} Account";		/*Single*/
+"Registration_AddingAccountTitle"="Adding {0} Account";		/*Singular*/
 "Registration_AddingAccountsTitle"="Adding {0} Accounts";	/*Plural*/
 "Registration_AdditionalAccounts"="Additional account(s)";
 "Registration_AnswerForNonOwner" = "I’m renting this place / it belongs to my parents.";
