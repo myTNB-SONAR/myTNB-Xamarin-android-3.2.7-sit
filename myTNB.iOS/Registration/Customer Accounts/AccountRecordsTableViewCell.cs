@@ -5,9 +5,9 @@ namespace myTNB.Registration.CustomerAccounts
 {
     public partial class AccountRecordsTableViewCell : UITableViewCell
     {
-		public AccountRecordsTableViewCell(IntPtr handle) : base (handle)
+        public AccountRecordsTableViewCell(IntPtr handle) : base(handle)
         {
-		}
+        }
 
         public UIButton DeleteButton
         {
@@ -19,64 +19,79 @@ namespace myTNB.Registration.CustomerAccounts
 
         public string NickNameTitle
         {
-            set{
+            set
+            {
                 lblNickNameTitle.Text = value;
             }
-            get{
+            get
+            {
                 return lblNickNameTitle.Text;
             }
         }
 
-        public UILabel NickNameTitleLabel{
-            get{
+        public UILabel NickNameTitleLabel
+        {
+            get
+            {
                 return lblNickNameTitle;
             }
         }
 
-        public string NicknameError{
-            set{
+        public string NicknameError
+        {
+            set
+            {
                 lblNicknameError.Text = value;
             }
-            get{
+            get
+            {
                 return lblNicknameError.Text;
             }
         }
-		public UILabel NickNameErrorLabel
-		{
-			get
-			{
-				return lblNicknameError;
-			}
-		}
+        public UILabel NickNameErrorLabel
+        {
+            get
+            {
+                return lblNicknameError;
+            }
+        }
 
         public string AccountNumber
         {
-            set{
+            set
+            {
                 lblAccountNo.Text = value;
             }
-            get{
+            get
+            {
                 return lblAccountNo.Text;
             }
         }
 
         public string Address
         {
-            set{
+            set
+            {
                 lblAddress.Text = value;
-            }    
-            get{
+            }
+            get
+            {
                 return lblAddress.Text;
             }
         }
 
-        public UITextField NicknameTextField{
-            get{
+        public UITextField NicknameTextField
+        {
+            get
+            {
                 return txtFieldNickname;
             }
         }
 
-        public UIView LineView{
-            get{
+        public UIView LineView
+        {
+            get
+            {
                 return lineView;
             }
         }

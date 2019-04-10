@@ -31,10 +31,12 @@
 
 /*Common*/
 "Common_Abort"="Abort";
+"Common_Account"="Account";
 "Common_AccountNickname"="Account Nickname";
 "Common_AccountNumber"="Account Number";
 "Common_AddAccount"="Add Account";
 "Common_AddAnotherAccount"="Add Another Account";
+"Common_AddElectricityAccount"="Add Electricity Account";
 "Common_Amount(RM)" = "Amount (RM)";
 "Common_AmountDue"="Amount Due";
 "Common_Back"="Back";
@@ -43,6 +45,7 @@
 "Common_CardExpiry"="Card Expiry";
 "Common_CardNumber"="Card Number";
 "Common_Cards"="Credit / Debit Cards";
+"Common_Confirm"="Confirm";
 "Common_ConfirmPassword"="Confirm Password";
 "Common_CurrentPassword"="Current Password";
 "Common_CVV"="CVV";
@@ -60,6 +63,7 @@
 "Common_NameOnCard"="Name on Card";
 "Common_NewPassword"="New Password";
 "Common_Next"="Next";
+"Common_No"="No";
 "Common_NoAccount"="No Electricity Account";
 "Common_Ok"="Ok";
 "Common_Password"="Password";
@@ -75,6 +79,7 @@
 "Common_Update"="Update";
 "Common_Warning"="Warning";
 "Common_Year"="Year";
+"Common_Yes"="Yes";
 
 /*Component*/
 "Component_AsOf"="As of";
@@ -156,6 +161,7 @@
 /*Hint*/
 "Hint_CardExpiry"="Card Expiry (MM/YY)";
 "Hint_MobileNumberExample"="Example: +6012 345 6789";
+"Hint_Nickname"="e.g. My House, Parent's House";
 "Hint_Password"="Password must have at least 8 alphanumeric characters.";
 
 /*Invalid*/
@@ -165,11 +171,13 @@
 "Invalid_AmountTitle"="Invalid Amount";
 "Invalid_CardExpiry"="Invalid card expiration date";
 "Invalid_CardNumber"="Invalid Card Number";
+"Invalid_Characters" = "Invalid characters. Use letters or numbers only.";
 "Invalid_CVV"="Invalid CVV";
 "Invalid_ICNo"="Invalid IC number";
 "Invalid_MaidenName"="Invalid maiden name";
 "Invalid_MobileNumber"="Invalid mobile number";
 "Invalid_NameOnCard"="Invalid Name";
+"Invalid_NicknameEntry"="Account nickname cannot be empty. Please enter valid nickname and try adding your account again.";
 "Invalid_OldPassword"="Invalid Old Password";
 "Invalid_PayAmount" = "Minimum amount cannot be lower than RM1.00";
 
@@ -295,6 +303,30 @@
 "Receipt_TrnDate" = "TRANSACTION DATE";
 "Receipt_TrnId" = "TRANSACTION ID";
 "Receipt_TrnMethod" = "TRANSACTION METHOD";
+
+/*Registration*/
+"Registration_AddingAccountMessage"="This may take a while as we are\r\nadding your TNB account.";		/*Single*/
+"Registration_AddingAccountsMessage"="This may take a while as we are\r\nadding your TNB accounts.";	/*Plural*/
+"Registration_AddingAccountTitle"="Adding {0} Account";		/*Single*/
+"Registration_AddingAccountsTitle"="Adding {0} Accounts";	/*Plural*/
+"Registration_AdditionalAccounts"="Additional account(s)";
+"Registration_AnswerForNonOwner" = "I’m renting this place / it belongs to my parents.";
+"Registration_AnswerForOwner" = "I'm the owner of this electricity supply account.";
+"Registration_CurrentBill" = "Current bill";
+"Registration_NickNameEmptyMessage"="Account nickname cannot be empty. Please enter valid nickname and try adding your account again.";
+"Registration_NoAccountsFoundMessage"="Please tap on the button below to add your TNB electricity account.";
+"Registration_NoAccountsTitle" = "No accounts found!";
+"Registration_NoRightsAnswer"="I may not have the rights to view all information related to this electricity supply account.\r\n\r\nI may only view:";
+"Registration_OutstandingPayment" = "Outstanding payment";
+"Registration_PastBills" = "Past bills";
+"Registration_PaymentHistory" = "Payment history";
+"Registration_QuestionICRegistered" = "Was this electricity supply account registered with your IC / ROC / Passport No.?";
+"Registration_RemoveAccountMessage"="You are about to remove {0}, account number {1}.";
+"Registration_RemoveAccountTitle"="Remove Account";
+"Registration_RightsAnswer"="I have the rights to view all information related to this electricity supply account.";
+"Registration_RightsQuestion"="Do you have the rights to view all information related to this electricity supply account?";
+"Registration_SupplyAccountCount"="electricity supply account(s) found!";
+"Registration_UsageGraph" = "Usage graph";
 
 /*Select Account*/
 "SelectAccount_Title"="Select Electricity Account";

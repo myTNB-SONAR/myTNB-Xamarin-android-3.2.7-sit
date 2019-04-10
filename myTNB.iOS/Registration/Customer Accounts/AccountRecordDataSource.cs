@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using CoreGraphics;
 using Foundation;
 using myTNB.Model;
@@ -150,8 +151,8 @@ namespace myTNB.Registration.CustomerAccounts
                     lblSectionTitle = new UILabel(new CGRect(18, 0, tableView.Frame.Width - 36, 40))
                     {
                         Text = _recordCount > 0
-                        ? _recordCount.ToString() + " electricity supply account(s) found!"
-                        : "NoAcctsFoundTitle".Translate()
+                        ? string.Format("{0} {1}", _recordCount.ToString(), "Registration_SupplyAccountCount".Translate())
+                        : "Registration_NoAccountsTitle".Translate()
                     };
 
                     var txtViewSubDetails = new UITextView(new CGRect(14, 36, tableView.Frame.Width - 30, 60))
@@ -160,7 +161,7 @@ namespace myTNB.Registration.CustomerAccounts
                         TextColor = myTNBColor.TunaGrey(),
                         UserInteractionEnabled = false,
                         BackgroundColor = UIColor.Clear,
-                        Text = "NoAcctsFoundDesc".Translate()
+                        Text = "Registration_NoAccountsFoundMessage".Translate()
                     };
 
                     view.AddSubview(txtViewSubDetails);
@@ -171,7 +172,7 @@ namespace myTNB.Registration.CustomerAccounts
                 {
                     lblSectionTitle = new UILabel(new CGRect(18, 0, tableView.Frame.Width - 36, 40))
                     {
-                        Text = "Additional account(s)"
+                        Text = "Registration_AdditionalAccounts".Translate()
                     };
                 }
             }
@@ -182,7 +183,7 @@ namespace myTNB.Registration.CustomerAccounts
                 {
                     lblSectionTitle = new UILabel(new CGRect(18, 0, tableView.Frame.Width - 36, 40))
                     {
-                        Text = "Additional account(s)"
+                        Text = "Registration_AdditionalAccounts".Translate()
                     };
                 }
             }
@@ -210,9 +211,9 @@ namespace myTNB.Registration.CustomerAccounts
                 if (_linkedAccounts != null && _linkedAccounts?.Count > 0 && _localAccounts?.Count >= 0)
                 {
                     linkedAcount = _linkedAccounts[indexPath.Row];
-                    cell.AccountNumber = linkedAcount.accNum != null ? linkedAcount.accNum : "";
-                    cell.Address = linkedAcount.accountStAddress != null ? linkedAcount.accountStAddress : "";
-                    cell.NicknameTextField.Text = linkedAcount.accDesc != null ? linkedAcount.accDesc : "";
+                    cell.AccountNumber = linkedAcount.accNum != null ? linkedAcount.accNum : string.Empty;
+                    cell.Address = linkedAcount.accountStAddress != null ? linkedAcount.accountStAddress : string.Empty;
+                    cell.NicknameTextField.Text = linkedAcount.accDesc != null ? linkedAcount.accDesc : string.Empty;
                     cell.DeleteButton.RemoveTarget(null, null, UIControlEvent.TouchUpInside);
 
                     acount = linkedAcount;
@@ -221,9 +222,9 @@ namespace myTNB.Registration.CustomerAccounts
                 if (_localAccounts != null && _localAccounts?.Count > 0 && _linkedAccounts?.Count == 0)
                 {
                     localAcount = _localAccounts[indexPath.Row];
-                    cell.AccountNumber = localAcount.accNum != null ? localAcount.accNum : "";
-                    cell.Address = localAcount.accountStAddress != null ? localAcount.accountStAddress : "";
-                    cell.NicknameTextField.Text = localAcount.accountNickName != null ? localAcount.accountNickName : "";
+                    cell.AccountNumber = localAcount.accNum != null ? localAcount.accNum : string.Empty;
+                    cell.Address = localAcount.accountStAddress != null ? localAcount.accountStAddress : string.Empty;
+                    cell.NicknameTextField.Text = localAcount.accountNickName != null ? localAcount.accountNickName : string.Empty;
                     cell.DeleteButton.RemoveTarget(null, null, UIControlEvent.TouchUpInside);
 
                     acount = localAcount;
@@ -236,9 +237,9 @@ namespace myTNB.Registration.CustomerAccounts
                 if (_localAccounts != null && _localAccounts?.Count > 0)
                 {
                     localAcount = _localAccounts[indexPath.Row];
-                    cell.AccountNumber = localAcount.accNum != null ? localAcount.accNum : "";
-                    cell.Address = localAcount.accountStAddress != null ? localAcount.accountStAddress : "";
-                    cell.NicknameTextField.Text = localAcount.accDesc != null ? localAcount.accDesc : "";
+                    cell.AccountNumber = localAcount.accNum != null ? localAcount.accNum : string.Empty;
+                    cell.Address = localAcount.accountStAddress != null ? localAcount.accountStAddress : string.Empty;
+                    cell.NicknameTextField.Text = localAcount.accDesc != null ? localAcount.accDesc : string.Empty;
                     cell.DeleteButton.RemoveTarget(null, null, UIControlEvent.TouchUpInside);
                     acount = localAcount;
                 }
@@ -247,18 +248,17 @@ namespace myTNB.Registration.CustomerAccounts
 
             cell.DeleteButton.TouchUpInside += (object sender, EventArgs e) =>
             {
-                var nickName = acount.accDesc != null ? acount.accDesc : "";
-                var accountNumber = acount.accNum != null ? acount.accNum : "";
-                var alertMessage = "You are about to remove " + nickName + ", " + "account no. " + accountNumber;
-
-                var okCancelAlertController = UIAlertController.Create("Remove Account", alertMessage, UIAlertControllerStyle.Alert);
-                okCancelAlertController.AddAction(UIAlertAction.Create("OK", UIAlertActionStyle.Default, alert => RemoveAccount(acount)));
-                okCancelAlertController.AddAction(UIAlertAction.Create("Cancel", UIAlertActionStyle.Cancel, alert => Console.WriteLine("Cancel was clicked")));
+                var nickName = acount.accDesc != null ? acount.accDesc : string.Empty;
+                var accountNumber = acount.accNum != null ? acount.accNum : string.Empty;
+                var okCancelAlertController = UIAlertController.Create("Registration_RemoveAccountTitle".Translate()
+                    , string.Format("Registration_RemoveAccountMessage".Translate(), nickName, accountNumber)
+                    , UIAlertControllerStyle.Alert);
+                okCancelAlertController.AddAction(UIAlertAction.Create("Common_Ok".Translate(), UIAlertActionStyle.Default, alert => RemoveAccount(acount)));
+                okCancelAlertController.AddAction(UIAlertAction.Create("Common_Cancel".Translate(), UIAlertActionStyle.Cancel, alert => Debug.WriteLine("Cancel was clicked")));
                 _controller?.PresentViewController(okCancelAlertController, true, null);
-
             };
 
-            cell.NickNameTitle = "ACCOUNT NICKNAME";
+            cell.NickNameTitle = "Common_AccountNickname".Translate().ToUpper();
             //cell.NicknameError = "Invalid characters. Use letters or numbers only.";
 
             UITextField txtFieldNickname = cell.NicknameTextField;
@@ -270,7 +270,7 @@ namespace myTNB.Registration.CustomerAccounts
             error.Hidden = true;
             line.BackgroundColor = myTNBColor.PlatinumGrey();
             txtFieldNickname.TextColor = myTNBColor.TunaGrey();
-            error.Text = "e.g. My House, Parent's House";
+            error.Text = "Hint_Nickname".Translate();
             error.TextColor = myTNBColor.SilverChalice();
             SetTextField(txtFieldNickname, title, error, line, cell);
 
@@ -340,15 +340,11 @@ namespace myTNB.Registration.CustomerAccounts
                 bool isUnique = DataManager.DataManager.SharedInstance.IsAccountNicknameUnique(textField.Text, cell.AccountNumber);
                 bool isValid = isFormatValid && isUnique;
                 error.Hidden = isValid;
-                error.Text = isValid
-                    ? "e.g. My House, Parent's House"
-                    : (!isFormatValid ? "AddAcctNicknameInvalidError".Translate() : "AcctNicknameInUseError".Translate());
-                error.TextColor = isValid
-                    ? myTNBColor.TunaGrey()
-                    : myTNBColor.Tomato();
+                error.Text = isValid ? "Hint_Nickname".Translate()
+                    : (!isFormatValid ? "Invalid_Characters".Translate() : "Invalid_AccountNicknameInUse".Translate());
+                error.TextColor = isValid ? myTNBColor.TunaGrey() : myTNBColor.Tomato();
                 line.BackgroundColor = isValid ? myTNBColor.PlatinumGrey() : myTNBColor.Tomato();
                 textField.TextColor = isValid ? myTNBColor.TunaGrey() : myTNBColor.Tomato();
-
                 return true;
             };
             textField.ShouldReturn = (sender) =>
@@ -372,7 +368,6 @@ namespace myTNB.Registration.CustomerAccounts
                 {
                     return _txtFieldHelper.ValidateTextField(replacementString, TNBGlobal.ACCOUNT_NAME_PATTERN);
                 }
-
                 return true;
             };
         }

@@ -33,14 +33,14 @@ namespace myTNB
 
         internal void InitializedSubviews()
         {
-            NavigationItem.Title = "AddElectricityAccnt".Translate();
+            NavigationItem.Title = "Common_AddElectricityAccount".Translate();
             View.BackgroundColor = myTNBColor.LightGrayBG();
 
             lblTitle = new UILabel
             {
                 Frame = new CGRect(18, 16, View.Frame.Width - 36, 80),
                 AttributedText = new NSAttributedString(
-                    "QuestionICRegistered".Translate()
+                    "Registration_QuestionICRegistered".Translate()
                     , font: myTNBFont.MuseoSans18_500()
                     , foregroundColor: myTNBColor.PowerBlue()
                     , strokeWidth: 0
@@ -60,8 +60,7 @@ namespace myTNB
             lblYes = new UILabel
             {
                 Frame = new CGRect(margin, margin, viewYes.Frame.Width - (margin * 2), 18),
-                AttributedText = new NSAttributedString(
-                    "Yes".Translate() + ","
+                AttributedText = new NSAttributedString(string.Format("{0},", "Common_Yes".Translate())
                     , font: myTNBFont.MuseoSans16_500()
                     , foregroundColor: myTNBColor.TunaGrey()
                     , strokeWidth: 0
@@ -73,7 +72,7 @@ namespace myTNB
             {
                 Frame = new CGRect(margin, lblYes.Frame.GetMaxY() + inlineMargin, viewYes.Frame.Width - (margin * 2), 40),
                 AttributedText = new NSAttributedString(
-                    "AnswerForOwner".Translate()
+                    "Registration_AnswerForOwner".Translate()
                     , font: myTNBFont.MuseoSans16_300()
                     , foregroundColor: myTNBColor.TunaGrey()
                     , strokeWidth: 0
@@ -95,8 +94,7 @@ namespace myTNB
             lblNo = new UILabel
             {
                 Frame = new CGRect(margin, margin, viewNo.Frame.Width - (margin * 2), 18),
-                AttributedText = new NSAttributedString(
-                    "No".Translate() + ","
+                AttributedText = new NSAttributedString(string.Format("{0},", "Common_No".Translate())
                     , font: myTNBFont.MuseoSans16_500()
                     , foregroundColor: myTNBColor.TunaGrey()
                     , strokeWidth: 0
@@ -108,7 +106,7 @@ namespace myTNB
             {
                 Frame = new CGRect(margin, lblNo.Frame.GetMaxY() + inlineMargin, viewNo.Frame.Width - (margin * 2), 40),
                 AttributedText = new NSAttributedString(
-                    "AnswerForNonOwner".Translate()
+                    "Registration_AnswerForNonOwner".Translate()
                     , font: myTNBFont.MuseoSans16_300()
                     , foregroundColor: myTNBColor.TunaGrey()
                     , strokeWidth: 0
