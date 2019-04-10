@@ -54,7 +54,6 @@ namespace myTNB.PushNotification
             return cell;
         }
 
-
         public override void RowSelected(UITableView tableView, NSIndexPath indexPath)
         {
             DataManager.DataManager.SharedInstance.CurrentSelectedNotificationTypeIndex = indexPath.Row;

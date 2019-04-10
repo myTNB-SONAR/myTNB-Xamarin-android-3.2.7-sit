@@ -7,7 +7,6 @@ using myTNB.Dashboard.DashboardComponents;
 using myTNB.Model;
 using UIKit;
 
-
 namespace myTNB.PushNotification
 {
     public partial class PushNotificationViewController : UIViewController
@@ -33,10 +32,13 @@ namespace myTNB.PushNotification
         private void UpdateNotificationDisplay()
         {
             string filterID = "all";
-            if (DataManager.DataManager.SharedInstance.CurrentSelectedNotificationTypeIndex < DataManager.DataManager.SharedInstance.NotificationGeneralTypes?.Count)
+            if (DataManager.DataManager.SharedInstance.CurrentSelectedNotificationTypeIndex
+                < DataManager.DataManager.SharedInstance.NotificationGeneralTypes?.Count)
             {
-                _notificationSelectionComponent.SetAccountName(DataManager.DataManager.SharedInstance.NotificationGeneralTypes[DataManager.DataManager.SharedInstance.CurrentSelectedNotificationTypeIndex].Title);
-                filterID = DataManager.DataManager.SharedInstance.NotificationGeneralTypes[DataManager.DataManager.SharedInstance.CurrentSelectedNotificationTypeIndex].Id;
+                _notificationSelectionComponent.SetAccountName(DataManager.DataManager.SharedInstance
+                    .NotificationGeneralTypes[DataManager.DataManager.SharedInstance.CurrentSelectedNotificationTypeIndex].Title);
+                filterID = DataManager.DataManager.SharedInstance.NotificationGeneralTypes[DataManager
+                    .DataManager.SharedInstance.CurrentSelectedNotificationTypeIndex].Id;
             }
 
 
@@ -47,12 +49,14 @@ namespace myTNB.PushNotification
                 if (filterID == "all")
                 {
                     notifications = DataManager.DataManager.SharedInstance.UserNotifications
-                    .Where(x => x.IsDeleted.ToLower() == "false").OrderByDescending(o => DateTime.ParseExact(o.CreatedDate, format, System.Globalization.CultureInfo.InvariantCulture)).ThenBy(t => t.Title).ToList();
+                    .Where(x => x.IsDeleted.ToLower() == "false").OrderByDescending(o => DateTime.ParseExact(o.CreatedDate
+                    , format, System.Globalization.CultureInfo.InvariantCulture)).ThenBy(t => t.Title).ToList();
                 }
                 else
                 {
                     notifications = DataManager.DataManager.SharedInstance.UserNotifications
-                    .Where(x => x.IsDeleted.ToLower() == "false" && x.NotificationTypeId == filterID).OrderByDescending(o => DateTime.ParseExact(o.CreatedDate, format, System.Globalization.CultureInfo.InvariantCulture)).ThenBy(t => t.Title).ToList();
+                    .Where(x => x.IsDeleted.ToLower() == "false" && x.NotificationTypeId == filterID).OrderByDescending(o => DateTime.ParseExact(o.CreatedDate
+                    , format, System.Globalization.CultureInfo.InvariantCulture)).ThenBy(t => t.Title).ToList();
                 }
                 if (_imgNoNotification != null && _lblNoNotification != null)
                 {
@@ -72,7 +76,7 @@ namespace myTNB.PushNotification
                     _imgNoNotification.Image = UIImage.FromBundle("Notification-Empty");
                     _lblNoNotification = new UILabel(new CGRect(44, 352, View.Frame.Width - 88, 16));
                     _lblNoNotification.TextAlignment = UITextAlignment.Center;
-                    _lblNoNotification.Text = "No notifications yet.";
+                    _lblNoNotification.Text = "PushNotification_NoNotification".Translate();
                     _lblNoNotification.Font = myTNBFont.MuseoSans12();
                     _lblNoNotification.TextColor = myTNBColor.SilverChalice();
                     View.AddSubviews(new UIView[] { _imgNoNotification, _lblNoNotification });
@@ -82,16 +86,6 @@ namespace myTNB.PushNotification
                 _lblNoNotification.Hidden = false;
             }
         }
-        /// <summary>
-        /// Gets the user notif.
-        /// </summary>
-        //private async void GetUserNotif()
-        //{
-        //    ActivityIndicator.Show();
-        //    await PushNotificationHelper.GetNotifications();
-        //    UpdateNotificationDisplay();
-        //    ActivityIndicator.Hide();
-        //}
 
         public override void ViewWillAppear(bool animated)
         {
@@ -119,9 +113,7 @@ namespace myTNB.PushNotification
                         }
                         else
                         {
-                            var alert = UIAlertController.Create("ErrNoNetworkTitle".Translate(), "ErrNoNetworkMsg".Translate(), UIAlertControllerStyle.Alert);
-                            alert.AddAction(UIAlertAction.Create("Ok", UIAlertActionStyle.Cancel, null));
-                            PresentViewController(alert, animated: true, completionHandler: null);
+                            ErrorHandler.DisplayNoDataAlert(this);
                         }
                     });
                 });
@@ -141,7 +133,7 @@ namespace myTNB.PushNotification
             UIView headerView = gradientViewComponent.GetUI();
             TitleBarComponent titleBarComponent = new TitleBarComponent(headerView);
             UIView titleBarView = titleBarComponent.GetUI();
-            titleBarComponent.SetTitle("Notifications");
+            titleBarComponent.SetTitle("PushNotification_Title".Translate());
             titleBarComponent.SetNotificationVisibility(true);
             titleBarComponent.SetBackVisibility(false);
             titleBarComponent.SetBackAction(new UITapGestureRecognizer(() =>
@@ -153,7 +145,8 @@ namespace myTNB.PushNotification
             _notificationSelectionComponent = new AccountSelectionComponent(headerView);
             UIView accountSelectionView = _notificationSelectionComponent.GetUI();
 
-            if (DataManager.DataManager.SharedInstance.CurrentSelectedNotificationTypeIndex < DataManager.DataManager.SharedInstance.NotificationGeneralTypes?.Count)
+            if (DataManager.DataManager.SharedInstance.CurrentSelectedNotificationTypeIndex
+                < DataManager.DataManager.SharedInstance.NotificationGeneralTypes?.Count)
             {
                 _notificationSelectionComponent.SetAccountName(DataManager.DataManager.SharedInstance.NotificationGeneralTypes[DataManager.DataManager.SharedInstance.CurrentSelectedNotificationTypeIndex].Title);
             }
@@ -166,7 +159,6 @@ namespace myTNB.PushNotification
                 PresentViewController(navController, true, null);
             }));
             headerView.AddSubview(accountSelectionView);
-
             View.AddSubview(headerView);
         }
 
@@ -217,8 +209,7 @@ namespace myTNB.PushNotification
                     }
                     else
                     {
-                        Console.WriteLine("No Network");
-                        DisplayAlertMessage("ErrNoNetworkTitle".Translate(), "ErrNoNetworkMsg".Translate());
+                        ErrorHandler.DisplayNoDataAlert(this);
                         ActivityIndicator.Hide();
                     }
                 });
@@ -251,13 +242,6 @@ namespace myTNB.PushNotification
             });
         }
 
-        internal void DisplayAlertMessage(string title, string message)
-        {
-            var alert = UIAlertController.Create(title, message, UIAlertControllerStyle.Alert);
-            alert.AddAction(UIAlertAction.Create("Ok", UIAlertActionStyle.Cancel, null));
-            PresentViewController(alert, true, null);
-        }
-
         internal void InitializeDeleteSuccessView()
         {
             _viewDelete = new UIView(new CGRect(18, 32, View.Frame.Width - 36, 48));
@@ -269,7 +253,7 @@ namespace myTNB.PushNotification
             lblDeleteDetails.TextAlignment = UITextAlignment.Left;
             lblDeleteDetails.Font = myTNBFont.MuseoSans12();
             lblDeleteDetails.TextColor = myTNBColor.TunaGrey();
-            lblDeleteDetails.Text = "Notification removed.";
+            lblDeleteDetails.Text = "PushNotification_NotificationRemoved".Translate();
             lblDeleteDetails.Lines = 0;
             lblDeleteDetails.LineBreakMode = UILineBreakMode.WordWrap;
 

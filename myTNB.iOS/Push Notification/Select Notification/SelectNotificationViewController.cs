@@ -34,7 +34,7 @@ namespace myTNB
         internal void SetNavigationBar()
         {
             NavigationItem.HidesBackButton = true;
-            NavigationItem.Title = "Select Notification";
+            NavigationItem.Title = "PushNotification_SelectNotification".Translate();
             UIImage backImg = UIImage.FromBundle("Back-White");
             UIBarButtonItem btnBack = new UIBarButtonItem(backImg, UIBarButtonItemStyle.Done, (sender, e) =>
             {

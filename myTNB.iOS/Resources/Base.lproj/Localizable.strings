@@ -223,6 +223,18 @@
 "Promotion_NoPromotion"="No promotions currently.\r\nCheck back later!";
 "Promotion_Title"="Promotions";
 
+/*Push Notification*/
+"PushNotification_AllNotifications"="All Notifications";
+"PushNotification_DeleteMessage"="Are you sure you want to delete this notification?";
+"PushNotification_DeleteTitle"="Delete Notification";
+"PushNotification_NoNotification"="No notifications yet.";
+"PushNotification_NotificationRemoved"="Notification removed.";
+"PushNotification_SelectNotification"="Select Notification";
+"PushNotification_Title"="Notifications";
+"PushNotification_ViewDetails"="View Details";
+"PushNotification_ViewPromotion" = "View Promotion";
+
+
 /*Rating*/
 "Rating_CharacterLeft"="character left";	/*Singular*/
 "Rating_CharactersLeft"="characters left";	/*Plural*/

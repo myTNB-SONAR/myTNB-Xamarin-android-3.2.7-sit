@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using Foundation;
 using myTNB.Model;
 using UIKit;
@@ -56,7 +57,7 @@ namespace myTNB.PushNotification
             }
             catch (Exception e)
             {
-                Console.WriteLine("Error in date parsing: " + e.Message);
+                Debug.WriteLine("Error in date parsing: " + e.Message);
             }
             return string.Empty;
         }
@@ -99,7 +100,6 @@ namespace myTNB.PushNotification
             {
                 return string.Empty;
             }
-
         }
     }
 }
