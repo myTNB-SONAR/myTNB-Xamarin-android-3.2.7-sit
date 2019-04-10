@@ -132,7 +132,7 @@ namespace myTNB
 
                 if (!isValid)
                 {
-                    lblError.Text = !isFormatValid ? "Invalid_AccountNickname".Translate() : "AcctInvalid_AccountNicknameInUse".Translate();
+                    lblError.Text = !isFormatValid ? "Invalid_AccountNickname".Translate() : "Invalid_AccountNicknameInUse".Translate();
                 }
 
                 viewLine.BackgroundColor = isValid ? myTNBColor.PlatinumGrey() : myTNBColor.Tomato();
@@ -241,12 +241,12 @@ namespace myTNB
                             }
                             else
                             {
-                                ErrorHandler.DisplayServiceError(this, "Error_UpdateNickname".Translate());
+                                AlertHandler.DisplayServiceError(this, "Error_UpdateNickname".Translate());
                             }
                         }
                         else
                         {
-                            ErrorHandler.DisplayNoDataAlert(this);
+                            AlertHandler.DisplayNoDataAlert(this);
                         }
                         ActivityIndicator.Hide();
                     });

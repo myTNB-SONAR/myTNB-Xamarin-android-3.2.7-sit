@@ -138,7 +138,7 @@ namespace myTNB
                         }
                         else
                         {
-                            ErrorHandler.DisplayNoDataAlert(this);
+                            AlertHandler.DisplayNoDataAlert(this);
                             ActivityIndicator.Hide();
                         }
 
@@ -186,7 +186,7 @@ namespace myTNB
                     }
                     else
                     {
-                        ErrorHandler.DisplayServiceError(this, _removeAccount?.d?.message);
+                        AlertHandler.DisplayServiceError(this, _removeAccount?.d?.message);
                     }
                     ActivityIndicator.Hide();
                 });

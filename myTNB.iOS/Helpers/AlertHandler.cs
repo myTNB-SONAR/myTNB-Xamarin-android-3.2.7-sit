@@ -3,7 +3,7 @@ using UIKit;
 
 namespace myTNB
 {
-    public static class ErrorHandler
+    public static class AlertHandler
     {
         /// <summary>
         /// Displays the no data alert.
@@ -35,7 +35,7 @@ namespace myTNB
         /// <param name="controller">Controller.</param>
         /// <param name="title">Title.</param>
         /// <param name="message">Message.</param>
-        public static void DisplayGenericError(UIViewController controller, string title, string message)
+        public static void DisplayGenericAlert(UIViewController controller, string title, string message)
         {
             DisplayAlert(controller, title, message);
         }

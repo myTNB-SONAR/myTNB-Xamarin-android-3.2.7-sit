@@ -113,7 +113,7 @@ namespace myTNB.PushNotification
                         }
                         else
                         {
-                            ErrorHandler.DisplayNoDataAlert(this);
+                            AlertHandler.DisplayNoDataAlert(this);
                         }
                     });
                 });
@@ -209,7 +209,7 @@ namespace myTNB.PushNotification
                     }
                     else
                     {
-                        ErrorHandler.DisplayNoDataAlert(this);
+                        AlertHandler.DisplayNoDataAlert(this);
                         ActivityIndicator.Hide();
                     }
                 });

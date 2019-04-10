@@ -62,7 +62,7 @@ namespace myTNB
             else
             {
                 tableViewReceipt.Hidden = true;
-                ErrorHandler.DisplayGenericError(this, "Receipt_NoReceipt".Translate(), string.Empty);
+                AlertHandler.DisplayGenericAlert(this, "Receipt_NoReceipt".Translate(), string.Empty);
             }
             ActivityIndicator.Hide();
         }
@@ -212,7 +212,7 @@ namespace myTNB
             lblTotalAmount.TextAlignment = UITextAlignment.Left;
             lblTotalAmount.Font = myTNBFont.MuseoSans14_500();
             lblTotalAmount.TextColor = myTNBColor.TunaGrey();
-            lblTotalAmount.Text = "Common_TotalAmount".Translate();
+            lblTotalAmount.Text = "Common_TotalAmount(RM)".Translate();
 
             UILabel lblTotalAmountValue = new UILabel(new CGRect(INNER_PADDING, lblTotalAmount.Frame.GetMaxY(), _footerView.Frame.Width - LBL_WIDTH_PADDING, 26));
             lblTotalAmountValue.TextAlignment = UITextAlignment.Left;
@@ -343,7 +343,7 @@ namespace myTNB
             document.Add(grayLine);
             document.Add(new Paragraph(Environment.NewLine, labelFont));
 
-            document.Add(new Paragraph("Common_TotalAmount".Translate(), detailsFont));
+            document.Add(new Paragraph("Common_TotalAmount(RM)".Translate(), detailsFont));
             document.Add(new Paragraph(_receipt?.d?.data?.payAmt, totalAmounFont));
 
             document.Add(new Paragraph(Environment.NewLine, titleFont));

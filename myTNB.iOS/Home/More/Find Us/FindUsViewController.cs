@@ -141,12 +141,12 @@ namespace myTNB
                         }
                         else
                         {
-                            ErrorHandler.DisplayGenericError(this, "FindUs_ZeroLocations".Translate(), "FindUs_NoKTFound".Translate());
+                            AlertHandler.DisplayGenericAlert(this, "FindUs_ZeroLocations".Translate(), "FindUs_NoKTFound".Translate());
                         }
                     }
                     else
                     {
-                        ErrorHandler.DisplayGenericError(this, "FindUs_ZeroLocations".Translate(), "FindUs_NoKTFound".Translate());
+                        AlertHandler.DisplayGenericAlert(this, "FindUs_ZeroLocations".Translate(), "FindUs_NoKTFound".Translate());
                     }
                     _ktSearchDone = true;
                     HideActivityIndicator();
@@ -190,7 +190,7 @@ namespace myTNB
                 }
                 else
                 {
-                    ErrorHandler.DisplayGenericError(this, "FindUs_ZeroLocations".Translate(), "FindUs_No711Found".Translate());
+                    AlertHandler.DisplayGenericAlert(this, "FindUs_ZeroLocations".Translate(), "FindUs_No711Found".Translate());
                 }
                 _711SearchDone = true;
                 HideActivityIndicator();
@@ -331,7 +331,7 @@ namespace myTNB
                     }
                     else
                     {
-                        ErrorHandler.DisplayNoDataAlert(this);
+                        AlertHandler.DisplayNoDataAlert(this);
                     }
                 });
             });

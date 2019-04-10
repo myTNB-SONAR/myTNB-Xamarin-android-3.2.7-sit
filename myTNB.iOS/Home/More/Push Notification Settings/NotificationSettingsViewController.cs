@@ -96,7 +96,7 @@ namespace myTNB
                                    || _notificationPreferenceUpdate.d.isError.ToLower() == "true"
                                     || _notificationPreferenceUpdate.d.status.ToLower() != "success")
                                 {
-                                    ErrorHandler.DisplayServiceError(this, _notificationPreferenceUpdate?.d?.message);
+                                    AlertHandler.DisplayServiceError(this, _notificationPreferenceUpdate?.d?.message);
                                 }
                                 else
                                 {
@@ -110,7 +110,7 @@ namespace myTNB
                     }
                     else
                     {
-                        ErrorHandler.DisplayNoDataAlert(this);
+                        AlertHandler.DisplayNoDataAlert(this);
                         ActivityIndicator.Hide();
                     }
                 });

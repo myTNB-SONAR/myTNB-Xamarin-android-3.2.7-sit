@@ -348,12 +348,12 @@ namespace myTNB
                                 //txtFieldPassword.TextColor = myTNBColor.Tomato();
                                 //btnSave.Enabled = false;
                                 //btnSave.BackgroundColor = myTNBColor.SilverChalice();
-                                ErrorHandler.DisplayServiceError(this, _saveResponse?.d?.message);
+                                AlertHandler.DisplayServiceError(this, _saveResponse?.d?.message);
                             }
                         }
                         else
                         {
-                            ErrorHandler.DisplayNoDataAlert(this);
+                            AlertHandler.DisplayNoDataAlert(this);
                         }
                         ActivityIndicator.Hide();
                     });

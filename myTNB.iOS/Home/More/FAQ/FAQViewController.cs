@@ -73,7 +73,7 @@ namespace myTNB
                     else
                     {
                         Debug.WriteLine("No Network");
-                        ErrorHandler.DisplayNoDataAlert(this);
+                        AlertHandler.DisplayNoDataAlert(this);
                     }
                 });
             });

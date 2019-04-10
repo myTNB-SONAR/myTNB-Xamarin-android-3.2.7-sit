@@ -3,7 +3,6 @@ using System;
 using UIKit;
 using CoreGraphics;
 
-
 namespace myTNB
 {
     public partial class SelectBillsTableViewCell : UITableViewCell
@@ -34,7 +33,7 @@ namespace myTNB
             _lblAccountNo.Font = myTNBFont.MuseoSans12_300();
 
             _txtViewAddress = new UITextView(new CGRect(18, 66, this.Frame.Width - 36 - 40, 32));
-            _txtViewAddress.Text = "No. 3 Jalan Melur, 12 Taman Melur, 68000 Ampang, Selangor"; //For Testing
+            _txtViewAddress.Text = string.Empty;//"No. 3 Jalan Melur, 12 Taman Melur, 68000 Ampang, Selangor"; //For Testing
             _txtViewAddress.Font = myTNBFont.MuseoSans12_300();
             _txtViewAddress.TextAlignment = UITextAlignment.Left;
             _txtViewAddress.TextColor = myTNBColor.TunaGrey();
@@ -57,12 +56,10 @@ namespace myTNB
             UILabel lblAmountTitle = new UILabel
             {
                 Frame = new CGRect(0, 0, viewAmount.Frame.Width, 12),
-                AttributedText = new NSAttributedString(
-                                                    "AMOUNT (RM)",
-                                                       font: myTNBFont.MuseoSans9_300(),
-                                                    foregroundColor: myTNBColor.SilverChalice(),
-                                                    strokeWidth: 0
-                                                   ),
+                AttributedText = new NSAttributedString("Common_Amount(RM)".Translate().ToUpper(),
+                    font: myTNBFont.MuseoSans9_300(),
+                    foregroundColor: myTNBColor.SilverChalice(),
+                    strokeWidth: 0),
                 TextAlignment = UITextAlignment.Left
             };
             viewAmount.AddSubview(lblAmountTitle);
@@ -70,7 +67,7 @@ namespace myTNB
             _lblAmountError = new UILabel(new CGRect(0, 37, viewAmount.Frame.Width, 14));
             _lblAmountError.TextColor = myTNBColor.Tomato();
             _lblAmountError.Font = myTNBFont.MuseoSans9_300();
-            _lblAmountError.Text = "SelectBillInvalidAmount".Translate();
+            _lblAmountError.Text = "Invalid_PayAmount".Translate();
             _lblAmountError.TextAlignment = UITextAlignment.Left;
             _lblAmountError.Hidden = true;
             viewAmount.AddSubview(_lblAmountError);
@@ -78,12 +75,10 @@ namespace myTNB
             _txtFieldAmount = new UITextField
             {
                 Frame = new CGRect(0, 12, viewAmount.Frame.Width, 24),
-                AttributedPlaceholder = new NSAttributedString(
-                                                     "0.00",
+                AttributedPlaceholder = new NSAttributedString(TNBGlobal.DEFAULT_VALUE,
                     font: myTNBFont.MuseoSans16_300(),
-                                                        foregroundColor: myTNBColor.SilverChalice(),
-                                                       strokeWidth: 0
-                                                    ),
+                    foregroundColor: myTNBColor.SilverChalice(),
+                    strokeWidth: 0),
                 TextColor = myTNBColor.TunaGrey()
             };
             _txtFieldAmount.KeyboardType = UIKeyboardType.DecimalPad;

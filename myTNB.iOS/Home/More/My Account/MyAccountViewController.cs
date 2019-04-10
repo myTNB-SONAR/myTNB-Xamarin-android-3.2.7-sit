@@ -119,7 +119,7 @@ namespace myTNB
                         }
                         else
                         {
-                            ErrorHandler.DisplayNoDataAlert(this);
+                            AlertHandler.DisplayNoDataAlert(this);
                         }
                         ActivityIndicator.Hide();
                     });
@@ -210,7 +210,7 @@ namespace myTNB
                     }
                     else
                     {
-                        ErrorHandler.DisplayNoDataAlert(this);
+                        AlertHandler.DisplayNoDataAlert(this);
                     }
                     ActivityIndicator.Hide();
                 });

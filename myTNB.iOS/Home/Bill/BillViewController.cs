@@ -177,7 +177,7 @@ namespace myTNB
                             SetupContent();
                             AdjustFrames();
                             ToggleButtons();
-                            ErrorHandler.DisplayNoDataAlert(this);
+                            AlertHandler.DisplayNoDataAlert(this);
                         }
                     });
                 });
@@ -985,7 +985,7 @@ namespace myTNB
                         else
                         {
                             Debug.WriteLine("No Network");
-                            ErrorHandler.DisplayNoDataAlert(this);
+                            AlertHandler.DisplayNoDataAlert(this);
                         }
                     });
                 });
@@ -1033,7 +1033,7 @@ namespace myTNB
                     else
                     {
                         Debug.WriteLine("No Network");
-                        ErrorHandler.DisplayNoDataAlert(this);
+                        AlertHandler.DisplayNoDataAlert(this);
                     }
                 });
             });
@@ -1154,7 +1154,7 @@ namespace myTNB
                     {
                         DataManager.DataManager.SharedInstance.IsSameAccount = true;
                         DataManager.DataManager.SharedInstance.BillingAccountDetails = new BillingAccountDetailsDataModel();
-                        ErrorHandler.DisplayServiceError(this, _billingAccountDetailsList?.d?.message);
+                        AlertHandler.DisplayServiceError(this, _billingAccountDetailsList?.d?.message);
                         ActivityIndicator.Hide();
                     }
                 });

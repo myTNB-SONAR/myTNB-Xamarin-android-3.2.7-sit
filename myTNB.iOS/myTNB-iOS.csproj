@@ -1826,7 +1826,7 @@
       <DependentUpon>FeedbackDetailsViewCell.cs</DependentUpon>
     </Compile>
     <Compile Include="Enums\DashboardModeEnum.cs" />
-    <Compile Include="Helpers\ErrorHandler.cs" />
+    <Compile Include="Helpers\AlertHandler.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />

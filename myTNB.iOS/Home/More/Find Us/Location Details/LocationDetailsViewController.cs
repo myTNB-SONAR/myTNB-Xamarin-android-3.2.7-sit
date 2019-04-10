@@ -211,7 +211,7 @@ namespace myTNB
             }
             else
             {
-                ErrorHandler.DisplayGenericError(this, "Common_Warning".Translate(), "FindUs_NoSupportedApplication".Translate());
+                AlertHandler.DisplayGenericAlert(this, "Common_Warning".Translate(), "FindUs_NoSupportedApplication".Translate());
             }
         }
     }

@@ -129,7 +129,7 @@ namespace myTNB
                        }
                        else
                        {
-                           ErrorHandler.DisplayNoDataAlert(this);
+                           AlertHandler.DisplayNoDataAlert(this);
                        }
                    });
                });

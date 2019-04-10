@@ -74,7 +74,7 @@ namespace myTNB.Dashboard
                     }
                     else
                     {
-                        ErrorHandler.DisplayNoDataAlert(this);
+                        AlertHandler.DisplayNoDataAlert(this);
                     }
                 });
             });
@@ -142,7 +142,7 @@ namespace myTNB.Dashboard
                     else
                     {
                         Debug.WriteLine("No Network");
-                        ErrorHandler.DisplayNoDataAlert(this);
+                        AlertHandler.DisplayNoDataAlert(this);
                         _dashboardMainComponent.ConstructNoDataConnectionDashboard();
                         SetEventsAndText();
                     }
@@ -598,7 +598,7 @@ namespace myTNB.Dashboard
                             else
                             {
                                 Debug.WriteLine("No Network");
-                                ErrorHandler.DisplayNoDataAlert(this);
+                                AlertHandler.DisplayNoDataAlert(this);
                             }
                         });
                     });
@@ -623,7 +623,7 @@ namespace myTNB.Dashboard
                             }
                             else
                             {
-                                ErrorHandler.DisplayNoDataAlert(this);
+                                AlertHandler.DisplayNoDataAlert(this);
                             }
                         });
                     });
@@ -677,7 +677,7 @@ namespace myTNB.Dashboard
                             else
                             {
                                 Debug.WriteLine("No Network");
-                                ErrorHandler.DisplayNoDataAlert(this);
+                                AlertHandler.DisplayNoDataAlert(this);
                             }
                         });
                     });
@@ -712,7 +712,7 @@ namespace myTNB.Dashboard
                             else
                             {
                                 Debug.WriteLine("No Network");
-                                ErrorHandler.DisplayNoDataAlert(this);
+                                AlertHandler.DisplayNoDataAlert(this);
                             }
                         });
                     });

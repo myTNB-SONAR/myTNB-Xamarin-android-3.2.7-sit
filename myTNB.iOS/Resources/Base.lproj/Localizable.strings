@@ -30,17 +30,22 @@
 "Bill_Via"="via";
 
 /*Common*/
+"Common_Abort"="Abort";
 "Common_AccountNickname"="Account Nickname";
 "Common_AccountNumber"="Account Number";
 "Common_AddAccount"="Add Account";
 "Common_AddAnotherAccount"="Add Another Account";
 "Common_Amount(RM)" = "Amount (RM)";
 "Common_AmountDue"="Amount Due";
+"Common_Back"="Back";
 "Common_BackToDashboard" = "Back to Dashboard";
 "Common_Cancel"="Cancel";
+"Common_CardExpiry"="Card Expiry";
+"Common_CardNumber"="Card Number";
 "Common_Cards"="Credit / Debit Cards";
 "Common_ConfirmPassword"="Confirm Password";
 "Common_CurrentPassword"="Current Password";
+"Common_CVV"="CVV";
 "Common_Details"="Details";
 "Common_Email"="Email";
 "Common_GetAccess"="Get Access";
@@ -50,8 +55,9 @@
 "Common_Manage"="Manage";
 "Common_MobileNumber"="Mobile No.";
 "Common_Month"="Month";
-"Common_Name"="Name";
 "Common_NA"="N/A";
+"Common_Name"="Name";
+"Common_NameOnCard"="Name on Card";
 "Common_NewPassword"="New Password";
 "Common_Next"="Next";
 "Common_NoAccount"="No Electricity Account";
@@ -63,7 +69,8 @@
 "Common_Save"="Save";
 "Common_Skip"="Skip";
 "Common_Submit"="Submit";
-"Common_TotalAmount" = "Total Amount (RM)";
+"Common_TotalAmount" = "Total Amount";
+"Common_TotalAmount(RM)" = "Total Amount (RM)";
 "Common_TotalAmountDue"="Total Amount Due";
 "Common_Update"="Update";
 "Common_Warning"="Warning";
@@ -109,6 +116,8 @@
 "Error_CheckInternetMessage"="Please check your Internet connection.";
 "Error_DefaultMessage" = "Sorry, something went wrong. Please try again later.";
 "Error_DefaultTitle"="Error";
+"Error_EmptyCardNumberMessage"="Please enter valid card number and try again.";
+"Error_EmptyCardNumberTitle"="Empty Card Number";
 "Error_GetSmartMeterDataMessage" = "Unable to fetch smart meter data! Please try later.";
 "Error_LinkNotAvailable"="Links are not available right now. Please try again later.";
 "Error_MobileNumberUpdate" = "Cannot update mobile number. Please try again.";
@@ -145,16 +154,24 @@
 "GetAccess_RequestedToOwnerMessage"="Access Requested to the Owner";
 
 /*Hint*/
+"Hint_CardExpiry"="Card Expiry (MM/YY)";
 "Hint_MobileNumberExample"="Example: +6012 345 6789";
 "Hint_Password"="Password must have at least 8 alphanumeric characters.";
 
 /*Invalid*/
 "Invalid_AccountNickname" = "Invalid account nickname";
-"AcctInvalid_AccountNicknameInUse" = "Nickname already used. Please create a new one.";
+"Invalid_AccountNicknameInUse" = "Nickname already used. Please create a new one.";
+"Invalid_AmountMessage"="Kindly enter a non-zero/positive amount";
+"Invalid_AmountTitle"="Invalid Amount";
+"Invalid_CardExpiry"="Invalid card expiration date";
+"Invalid_CardNumber"="Invalid Card Number";
+"Invalid_CVV"="Invalid CVV";
 "Invalid_ICNo"="Invalid IC number";
 "Invalid_MaidenName"="Invalid maiden name";
 "Invalid_MobileNumber"="Invalid mobile number";
+"Invalid_NameOnCard"="Invalid Name";
 "Invalid_OldPassword"="Invalid Old Password";
+"Invalid_PayAmount" = "Minimum amount cannot be lower than RM1.00";
 
 /*Logout*/
 "Logout_BackToHome" = "Back to Home";
@@ -219,6 +236,27 @@
 "Notification_Title"="Notifications Settings";
 "Notification_Type"="Select the type of notifications you wish to receive from TNB";
 
+/*Payment*/
+"Payment_AbortTitle" = "Abort Payment!";
+"Payment_AbortMessage" = "Are you sure you want to abort payment?";
+"Payment_AcceptedCards"="Only credit / debit cards issued in Malaysia are accepted.";
+"Payment_AddCard"="Add Card";
+"Payment_AlreadySavedCardMessage"="Seems like you are paying with an already saved Credit / Debit Card. Do you want to continue?";
+"Payment_CVVFourDigitMessage"="Please enter the 4-digit CVV/CVC located at the front of your credit card.";
+"Payment_CVVThreeDigitMessage"="Please enter the 3-digit CVV/CVC located at the back of your credit card.";
+"Payment_EnterOTP" = "Enter OTP";
+"Payment_LoadMore"="Load More";
+"Payment_MaxCCAmount"="For payments more than RM 5000, please use FPX payment mode.";
+"Payment_Multiple" = "Pay Bill ({0})";
+"Payment_OnlineBanking" = "Online Banking";
+"Payment_OnlineBankingViaFPX" = "Online Banking via FPX";
+"Payment_OtherMethods"="Other Payment Methods";
+"Payment_SaveCardMessage" = "I want to save this card for future use.";
+"Payment_ScanMessage"="Scan the front of your credit / debit card to retrieve card details.";
+"Payment_SelectMethodTitle"="Select Payment Method";
+"Payment_Single" = "Pay Bill";
+"Payment_ValidCard"="Valid card number";
+
 /*Promotion*/
 "Promotion_NoPromotion"="No promotions currently.\r\nCheck back later!";
 "Promotion_Title"="Promotions";
@@ -233,7 +271,6 @@
 "PushNotification_Title"="Notifications";
 "PushNotification_ViewDetails"="View Details";
 "PushNotification_ViewPromotion" = "View Promotion";
-
 
 /*Rating*/
 "Rating_CharacterLeft"="character left";	/*Singular*/
@@ -265,6 +302,15 @@
 /*View Bill*/
 "ViewBill_Advice"="Advice";
 "ViewBill_Title"="Bill";
+
+
+
+
+
+
+
+
+
 
 
 

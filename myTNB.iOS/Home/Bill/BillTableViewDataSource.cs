@@ -217,7 +217,7 @@ namespace myTNB.Home.Bill
             }
             else
             {
-                ErrorHandler.DisplayNoDataAlert(_billViewController);
+                AlertHandler.DisplayNoDataAlert(_billViewController);
             }
         }
 

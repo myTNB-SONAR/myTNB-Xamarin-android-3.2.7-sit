@@ -42,7 +42,7 @@ namespace myTNB.Payment.AddCard
             lblDescription.TextColor = myTNBColor.TunaGrey();
             lblDescription.LineBreakMode = UILineBreakMode.WordWrap;
             lblDescription.Lines = 0;
-            lblDescription.Text = "Scan the front of your credit / debit card to retrieve card details.";
+            lblDescription.Text = "Payment_ScanMessage".Translate();
             lblDescription.TextAlignment = UITextAlignment.Left;
             View.AddSubview(lblDescription);
 

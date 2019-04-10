@@ -164,7 +164,7 @@ namespace myTNB
                     }
                     else
                     {
-                        ErrorHandler.DisplayNoDataAlert(this);
+                        AlertHandler.DisplayNoDataAlert(this);
                     }
                 });
             });
@@ -215,7 +215,7 @@ namespace myTNB
                 {
                     errorMessage = DataManager.DataManager.SharedInstance.NotificationChannelResponse?.d?.message;
                 }
-                ErrorHandler.DisplayServiceError(this, errorMessage);
+                AlertHandler.DisplayServiceError(this, errorMessage);
                 ActivityIndicator.Hide();
             }
         }
@@ -287,7 +287,7 @@ namespace myTNB
                     return;
                 }
             }
-            ErrorHandler.DisplayServiceError(this, "Error_LinkNotAvailable".Translate());
+            AlertHandler.DisplayServiceError(this, "Error_LinkNotAvailable".Translate());
         }
 
         void CallCustomerService(string code)
@@ -306,7 +306,7 @@ namespace myTNB
                     }
                 }
             }
-            ErrorHandler.DisplayServiceError(this, "Error_TelephoneNumberNotAvailable".Translate());
+            AlertHandler.DisplayServiceError(this, "Error_TelephoneNumberNotAvailable".Translate());
         }
 
         void OpenAppStore()
@@ -324,7 +324,7 @@ namespace myTNB
                     }
                 }
             }
-            ErrorHandler.DisplayServiceError(this, "Error_RatingNotAvailable".Translate());
+            AlertHandler.DisplayServiceError(this, "Error_RatingNotAvailable".Translate());
         }
 
         void Share()
@@ -345,7 +345,7 @@ namespace myTNB
                     return;
                 }
             }
-            ErrorHandler.DisplayServiceError(this, "Error_ShareNotAvailable".Translate());
+            AlertHandler.DisplayServiceError(this, "Error_ShareNotAvailable".Translate());
         }
     }
 }

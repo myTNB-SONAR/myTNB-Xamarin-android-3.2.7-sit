@@ -102,12 +102,12 @@ namespace myTNB
                             }
                             else
                             {
-                                ErrorHandler.DisplayServiceError(this, _deleteNotificationResponse?.d?.message);
+                                AlertHandler.DisplayServiceError(this, _deleteNotificationResponse?.d?.message);
                             }
                         }
                         else
                         {
-                            ErrorHandler.DisplayNoDataAlert(this);
+                            AlertHandler.DisplayNoDataAlert(this);
                         }
                         ActivityIndicator.Hide();
                     });
@@ -168,12 +168,12 @@ namespace myTNB
                             {
                                 DataManager.DataManager.SharedInstance.IsSameAccount = true;
                                 DataManager.DataManager.SharedInstance.BillingAccountDetails = new BillingAccountDetailsDataModel();
-                                ErrorHandler.DisplayServiceError(this, _billingAccountDetailsList?.d?.message);
+                                AlertHandler.DisplayServiceError(this, _billingAccountDetailsList?.d?.message);
                             }
                         }
                         else
                         {
-                            ErrorHandler.DisplayNoDataAlert(this);
+                            AlertHandler.DisplayNoDataAlert(this);
                         }
                         ActivityIndicator.Hide();
                     });
