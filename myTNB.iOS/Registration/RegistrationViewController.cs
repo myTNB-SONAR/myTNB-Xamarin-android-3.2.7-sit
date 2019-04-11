@@ -6,32 +6,38 @@ using CoreGraphics;
 using Foundation;
 using System.Drawing;
 
-
 namespace myTNB.Registration
 {
     public partial class RegistrationViewController : UIViewController
     {
-        UITextField txtFieldName;
-        UITextField txtFieldICNo;
+        UITextField txtFieldName, txtFieldICNo, txtFieldMobileNo, txtFieldEmail
+            , txtFieldConfirmEmail, txtFieldPassword, txtFieldConfirmPassword;
+        /*UITextField txtFieldICNo;
         UITextField txtFieldMobileNo;
         UITextField txtFieldEmail;
         UITextField txtFieldConfirmEmail;
         UITextField txtFieldPassword;
         UITextField txtFieldConfirmPassword;
+       */
         UITextView txtViewDetails;
+
         UIButton btnRegister;
         UIView btnRegisterContainer;
 
-        UIView viewLineName;
-        UIView viewLineICNo;
+        UIView viewLineName, viewLineICNo, viewLineMobileNo, viewLineEmail, viewLineConfirmEmail
+            , viewLinePassword, viewLineConfirmPassword;
+        /*UIView viewLineICNo;
         UIView viewLineMobileNo;
         UIView viewLineEmail;
         UIView viewLineConfirmEmail;
         UIView viewLinePassword;
-        UIView viewLineConfirmPassword;
+        UIView viewLineConfirmPassword;*/
 
-        UILabel lblNameTitle;
-        UILabel lblICNoTitle;
+        UILabel lblNameTitle, lblICNoTitle, lblMobileNoTitle, lblEmailTitle
+            , lblConfirmEmailTitle, lblPasswordTitle, lblConfirmPasswordTitle
+            , lblNameError, lblICNoError, lblMobileNoError, lblEmailError
+            , lblConfirmEmailError, lblPasswordError, lblConfirmPasswordError;
+        /*UILabel lblICNoTitle;
         UILabel lblMobileNoTitle;
         UILabel lblEmailTitle;
         UILabel lblConfirmEmailTitle;
@@ -44,18 +50,20 @@ namespace myTNB.Registration
         UILabel lblEmailError;
         UILabel lblConfirmEmailError;
         UILabel lblPasswordError;
-        UILabel lblConfirmPasswordError;
+        UILabel lblConfirmPasswordError;*/
 
-        UILabel lblNameHint;
-        UILabel lblICNoHint;
+        UILabel lblNameHint, lblICNoHint, lblMobileNoHint, lblEmailHint, lblConfirmEmailHint
+            , lblPasswordHint, lblConfirmPasswordHint;
+        /*UILabel lblICNoHint;
         UILabel lblMobileNoHint;
         UILabel lblEmailHint;
         UILabel lblConfirmEmailHint;
         UILabel lblPasswordHint;
         UILabel lblConfirmPasswordHint;
+        */
 
-        UIView viewShowConfirmPassword;
-        UIView viewShowPassword;
+        UIView viewShowConfirmPassword, viewShowPassword;
+        //UIView viewShowPassword;
         UIScrollView ScrollView;
         CGRect scrollViewFrame;
         public RegistrationViewController(IntPtr handle) : base(handle)
@@ -119,7 +127,7 @@ namespace myTNB.Registration
             {
                 Frame = new CGRect(0, 0, viewFullName.Frame.Width, 12),
                 AttributedText = new NSAttributedString(
-                    "FULL NAME"
+                    "Common_Fullname".Translate().ToUpper()
                     , font: myTNBFont.MuseoSans9()
                     , foregroundColor: myTNBColor.SilverChalice()
                     , strokeWidth: 0
@@ -132,7 +140,7 @@ namespace myTNB.Registration
             {
                 Frame = new CGRect(0, 37, viewFullName.Frame.Width, 14),
                 AttributedText = new NSAttributedString(
-                    "Invalid full name"
+                    "Invalid_Fullname".Translate()
                     , font: myTNBFont.MuseoSans9()
                     , foregroundColor: myTNBColor.Tomato()
                     , strokeWidth: 0
@@ -145,7 +153,7 @@ namespace myTNB.Registration
             {
                 Frame = new CGRect(0, 12, viewFullName.Frame.Width, 24),
                 AttributedPlaceholder = new NSAttributedString(
-                    "Full Name"
+                    "Common_Fullname".Translate()
                     , font: myTNBFont.MuseoSans16()
                     , foregroundColor: myTNBColor.SilverChalice()
                     , strokeWidth: 0
@@ -166,7 +174,7 @@ namespace myTNB.Registration
             {
                 Frame = new CGRect(0, 0, viewICNumber.Frame.Width, 12),
                 AttributedText = new NSAttributedString(
-                    "IC, ROC or PASSPORT NO."
+                    "Common_ICROCPassportNumber".Translate().ToUpper()
                     , font: myTNBFont.MuseoSans9()
                     , foregroundColor: myTNBColor.SilverChalice()
                     , strokeWidth: 0
@@ -179,7 +187,7 @@ namespace myTNB.Registration
             {
                 Frame = new CGRect(0, 37, viewICNumber.Frame.Width, 14),
                 AttributedText = new NSAttributedString(
-                    "Invalid IC, ROC or Passport No."
+                    "Invalid_ICROCPassportNumber".Translate()
                     , font: myTNBFont.MuseoSans9()
                     , foregroundColor: myTNBColor.Tomato()
                     , strokeWidth: 0
@@ -206,7 +214,7 @@ namespace myTNB.Registration
             {
                 Frame = new CGRect(0, 12, viewICNumber.Frame.Width, 24),
                 AttributedPlaceholder = new NSAttributedString(
-                    "IC, ROC or Passport No."
+                    "Common_ICROCPassportNumber".Translate()
                     , font: myTNBFont.MuseoSans16()
                     , foregroundColor: myTNBColor.SilverChalice()
                     , strokeWidth: 0
@@ -227,7 +235,7 @@ namespace myTNB.Registration
             {
                 Frame = new CGRect(0, 0, viewMobileNumber.Frame.Width, 12),
                 AttributedText = new NSAttributedString(
-                    "MOBILE NO."
+                    "Common_MobileNumber".Translate().ToUpper()
                     , font: myTNBFont.MuseoSans9()
                     , foregroundColor: myTNBColor.SilverChalice()
                     , strokeWidth: 0
@@ -240,7 +248,7 @@ namespace myTNB.Registration
             {
                 Frame = new CGRect(0, 37, viewMobileNumber.Frame.Width, 14),
                 AttributedText = new NSAttributedString(
-                    "Invalid mobile no."
+                    "Invalid_MobileNumber".Translate()
                     , font: myTNBFont.MuseoSans9()
                     , foregroundColor: myTNBColor.Tomato()
                     , strokeWidth: 0
@@ -253,7 +261,7 @@ namespace myTNB.Registration
             {
                 Frame = new CGRect(0, 37, viewMobileNumber.Frame.Width, 14),
                 AttributedText = new NSAttributedString(
-                    "Please include the country code of your phone number.",
+                    "Hint_MobileNumber".Translate(),
                     font: myTNBFont.MuseoSans9(),
                     foregroundColor: myTNBColor.TunaGrey(),
                     strokeWidth: 0
@@ -267,7 +275,7 @@ namespace myTNB.Registration
             {
                 Frame = new CGRect(0, 12, viewMobileNumber.Frame.Width, 24),
                 AttributedPlaceholder = new NSAttributedString(
-                    "Mobile No."
+                    "Common_MobileNumber".Translate()
                     , font: myTNBFont.MuseoSans16()
                     , foregroundColor: myTNBColor.SilverChalice()
                     , strokeWidth: 0
@@ -288,7 +296,7 @@ namespace myTNB.Registration
             {
                 Frame = new CGRect(0, 0, viewEmail.Frame.Width, 12),
                 AttributedText = new NSAttributedString(
-                    "EMAIL"
+                    "Common_Email".Translate().ToUpper()
                     , font: myTNBFont.MuseoSans9()
                     , foregroundColor: myTNBColor.SilverChalice()
                     , strokeWidth: 0
@@ -301,7 +309,7 @@ namespace myTNB.Registration
             {
                 Frame = new CGRect(0, 37, viewEmail.Frame.Width, 14),
                 AttributedText = new NSAttributedString(
-                    "Invalid email address."
+                    "Invalid_Email".Translate()
                     , font: myTNBFont.MuseoSans9()
                     , foregroundColor: myTNBColor.Tomato()
                     , strokeWidth: 0
@@ -315,7 +323,7 @@ namespace myTNB.Registration
             {
                 Frame = new CGRect(0, 12, viewEmail.Frame.Width, 24),
                 AttributedPlaceholder = new NSAttributedString(
-                    "Email"
+                    "Common_Email".Translate()
                     , font: myTNBFont.MuseoSans16()
                     , foregroundColor: myTNBColor.SilverChalice()
                     , strokeWidth: 0
@@ -336,7 +344,7 @@ namespace myTNB.Registration
             {
                 Frame = new CGRect(0, 0, viewConfirmEmail.Frame.Width, 12),
                 AttributedText = new NSAttributedString(
-                    "CONFIRM EMAIL"
+                    "Common_ConfirmEmail".Translate().ToUpper()
                     , font: myTNBFont.MuseoSans9()
                     , foregroundColor: myTNBColor.SilverChalice()
                     , strokeWidth: 0
@@ -355,7 +363,7 @@ namespace myTNB.Registration
             {
                 Frame = new CGRect(0, 12, viewConfirmEmail.Frame.Width, 24),
                 AttributedPlaceholder = new NSAttributedString(
-                    "Confirm Email"
+                    "Common_ConfirmEmail".Translate()
                     , font: myTNBFont.MuseoSans16()
                     , foregroundColor: myTNBColor.SilverChalice()
                     , strokeWidth: 0
@@ -376,7 +384,7 @@ namespace myTNB.Registration
             {
                 Frame = new CGRect(0, 0, viewPassword.Frame.Width, 12),
                 AttributedText = new NSAttributedString(
-                    "PASSWORD"
+                    "Common_Password".Translate().ToUpper()
                     , font: myTNBFont.MuseoSans9()
                     , foregroundColor: myTNBColor.SilverChalice()
                     , strokeWidth: 0
@@ -389,7 +397,7 @@ namespace myTNB.Registration
             {
                 Frame = new CGRect(0, 37, viewPassword.Frame.Width, 14),
                 AttributedText = new NSAttributedString(
-                    "Password must have at least 8 alphanumeric characters."
+                    "Hint_Password".Translate()
                     , font: myTNBFont.MuseoSans9()
                     , foregroundColor: myTNBColor.Tomato()
                     , strokeWidth: 0
@@ -402,7 +410,7 @@ namespace myTNB.Registration
             {
                 Frame = new CGRect(0, 37, viewPassword.Frame.Width, 14),
                 AttributedText = new NSAttributedString(
-                    "Password must have at least 8 alphanumeric characters."
+                    "Hint_Password".Translate()
                     , font: myTNBFont.MuseoSans9()
                     , foregroundColor: myTNBColor.TunaGrey()
                     , strokeWidth: 0
@@ -416,7 +424,7 @@ namespace myTNB.Registration
             {
                 Frame = new CGRect(0, 12, viewPassword.Frame.Width - 30, 24),
                 AttributedPlaceholder = new NSAttributedString(
-                    "Password"
+                    "Common_Password".Translate()
                     , font: myTNBFont.MuseoSans16()
                     , foregroundColor: myTNBColor.SilverChalice()
                     , strokeWidth: 0
@@ -458,7 +466,7 @@ namespace myTNB.Registration
             {
                 Frame = new CGRect(0, 0, viewConfirmPassword.Frame.Width, 12),
                 AttributedText = new NSAttributedString(
-                    "CONFIRM PASSWORD"
+                    "Common_ConfirmPassword".Translate().ToUpper()
                     , font: myTNBFont.MuseoSans9()
                     , foregroundColor: myTNBColor.SilverChalice()
                     , strokeWidth: 0
@@ -478,7 +486,7 @@ namespace myTNB.Registration
             {
                 Frame = new CGRect(0, 12, viewConfirmPassword.Frame.Width - 30, 24),
                 AttributedPlaceholder = new NSAttributedString(
-                    "Confirm Password"
+                    "Common_ConfirmPassword".Translate()
                     , font: myTNBFont.MuseoSans16()
                     , foregroundColor: myTNBColor.SilverChalice()
                     , strokeWidth: 0
@@ -495,16 +503,9 @@ namespace myTNB.Registration
             viewShowConfirmPassword.AddSubview(imgShowConfirmPassword);
             viewConfirmPassword.AddGestureRecognizer(new UITapGestureRecognizer(() =>
             {
-                if (txtFieldConfirmPassword.SecureTextEntry)
-                {
-                    txtFieldConfirmPassword.SecureTextEntry = false;
-                    imgShowConfirmPassword.Image = UIImage.FromBundle("IC-Action-Hide-Password");
-                }
-                else
-                {
-                    txtFieldConfirmPassword.SecureTextEntry = true;
-                    imgShowConfirmPassword.Image = UIImage.FromBundle("IC-Action-Show-Password");
-                }
+                txtFieldConfirmPassword.SecureTextEntry = !txtFieldConfirmPassword.SecureTextEntry;
+                imgShowConfirmPassword.Image = UIImage.FromBundle(txtFieldConfirmPassword.SecureTextEntry
+                    ? "IC-Action-Hide-Password" : "IC-Action-Show-Password");
             }));
             viewConfirmPassword.AddSubview(viewShowConfirmPassword);
 
@@ -520,7 +521,7 @@ namespace myTNB.Registration
 
             //Terms Details
             txtViewDetails = new UITextView(new CGRect(18, 485, View.Frame.Width - 36, 51));
-            var attributedString = new NSMutableAttributedString("By registering, you are agreeing to the TNB Terms and Conditions, User Agreement and Privacy policy.");
+            var attributedString = new NSMutableAttributedString("Registration_RegisterNote".Translate());
             var firstAttributes = new UIStringAttributes
             {
                 ForegroundColor = myTNBColor.TunaGrey(),
@@ -549,14 +550,15 @@ namespace myTNB.Registration
             });
             txtViewDetails.AddGestureRecognizer(tap);
 
-            btnRegisterContainer = new UIView(new CGRect(0, (View.Frame.Height - DeviceHelper.GetScaledHeight(145)), View.Frame.Width, DeviceHelper.GetScaledHeight(100)));
+            btnRegisterContainer = new UIView(new CGRect(0, (View.Frame.Height - DeviceHelper.GetScaledHeight(145))
+                , View.Frame.Width, DeviceHelper.GetScaledHeight(100)));
             btnRegisterContainer.BackgroundColor = UIColor.White;
             View.AddSubview(btnRegisterContainer);
 
             //Register button
             btnRegister = new UIButton(UIButtonType.Custom);
             btnRegister.Frame = new CGRect(18, DeviceHelper.GetScaledHeight(18), btnRegisterContainer.Frame.Width - 36, 48);
-            btnRegister.SetTitle("Register", UIControlState.Normal);
+            btnRegister.SetTitle("Common_Register".Translate(), UIControlState.Normal);
             btnRegister.Font = myTNBFont.MuseoSans16();
             btnRegister.Layer.CornerRadius = 5.0f;
             btnRegister.BackgroundColor = myTNBColor.FreshGreen();
@@ -669,7 +671,7 @@ namespace myTNB.Registration
                         }
                         else
                         {
-                            DisplayAlertView("ErrNoNetworkTitle".Translate(), "ErrNoNetworkMsg".Translate());
+                            AlertHandler.DisplayNoDataAlert(this);
                             ActivityIndicator.Hide();
                         }
                     });
@@ -746,8 +748,8 @@ namespace myTNB.Registration
                 if (textField == txtFieldConfirmEmail)
                 {
                     bool isMatch = txtFieldEmail.Text.Equals(txtFieldConfirmEmail.Text);
-                    string err = isValid ? "Your email and confirmation email do not match."
-                        : "Invalid email address.";
+                    string err = isValid ? "Error_MismatchedEmail".Translate()
+                        : "Invalid_Email".Translate();
                     lblError.Text = err;
                     isValid = isValid && isMatch;
                 }
@@ -755,8 +757,8 @@ namespace myTNB.Registration
                 else if (textField == txtFieldConfirmPassword)
                 {
                     bool isMatch = txtFieldPassword.Text.Equals(txtFieldConfirmPassword.Text);
-                    string err = isValid ? "Your password and confirmation password do not match."
-                        : "Password must have at least 8 alphanumeric characters.";
+                    string err = isValid ? "Error_MismatchedPassword".Translate()
+                        : "Hint_Password".Translate();
                     lblError.Text = err;
                     isValid = isValid && isMatch;
                 }
@@ -813,8 +815,7 @@ namespace myTNB.Registration
                 else if (textField == txtFieldName)
                 {
                     bool isCharValid = !string.IsNullOrEmpty(replacementString)
-                                              ? _textFieldHelper.ValidateTextField(replacementString, pattern)
-                                              : true;
+                        ? _textFieldHelper.ValidateTextField(replacementString, pattern) : true;
                     if (!isCharValid)
                     {
                         return false;
@@ -868,12 +869,12 @@ namespace myTNB.Registration
                         }
                         else
                         {
-                            DisplayAlertView("Registration Token Failed", _smsToken.d.message);
+                            AlertHandler.DisplayGenericAlert(this, "Error_RegistraionTokenTitle".Translate(), _smsToken?.d?.message);
                         }
                     }
                     else
                     {
-                        DisplayAlertView("Registration Token Failed", "Error in response.");
+                        AlertHandler.DisplayGenericAlert(this, "Error_RegistraionTokenTitle".Translate(), _smsToken?.d?.message);
                     }
                     ActivityIndicator.Hide();
                 });
@@ -900,13 +901,6 @@ namespace myTNB.Registration
                 };
                 _smsToken = serviceManager.SendRegistrationTokenSMS("SendRegistrationTokenSMS_V2", requestParameter);
             });
-        }
-
-        internal void DisplayAlertView(string title, string message)
-        {
-            var alert = UIAlertController.Create(title, message, UIAlertControllerStyle.Alert);
-            alert.AddAction(UIAlertAction.Create("Ok", UIAlertActionStyle.Cancel, null));
-            PresentViewController(alert, animated: true, completionHandler: null);
         }
 
         void CreateDoneButton(UITextField textField)

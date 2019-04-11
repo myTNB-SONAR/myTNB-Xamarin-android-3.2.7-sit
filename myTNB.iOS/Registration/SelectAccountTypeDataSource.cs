@@ -14,8 +14,8 @@ namespace myTNB.Registration
         public SelectAccountTypeDataSource(SelectAccountTypeViewController controller)
         {
             _controller = controller;
-            _accountTypes.Add("Residential");
-            _accountTypes.Add("Commercial");
+            _accountTypes.Add("Registration_Residential".Translate());
+            _accountTypes.Add("Registration_Commercial".Translate());
         }
 
         public override UITableViewCell GetCell(UITableView tableView, NSIndexPath indexPath)

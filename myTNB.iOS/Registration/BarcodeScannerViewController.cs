@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using CoreGraphics;
@@ -36,7 +37,7 @@ namespace myTNB.Registration
 
         public override void ViewDidLoad()
         {
-            NavigationItem.Title = "Add Electricity Account";
+            NavigationItem.Title = "Common_AddElectricityAccount".Translate();
             ActivityIndicator.Show();
             UIApplication.SharedApplication.StatusBarOrientation = UIInterfaceOrientation.Portrait;
             this.NavigationItem.HidesBackButton = true;
@@ -60,7 +61,7 @@ namespace myTNB.Registration
             {
                 Frame = new CGRect(16, 16, View.Frame.Width - 32, 60),
                 AttributedText = new NSAttributedString(
-                    "Scan the barcode on your bill to retrieve account details.",
+                    "Registration_ScanMessage".Translate(),
                     font: myTNBFont.MuseoSans16_300(),
                     foregroundColor: myTNBColor.TunaGrey(),
                     strokeWidth: 0
@@ -99,7 +100,7 @@ namespace myTNB.Registration
             {
                 Frame = new CGRect(0, (overlayHeight / 2) + 20, overlayWidth, 16),
                 AttributedText = new NSAttributedString(
-                    "Invalid barcode.",
+                    "Invalid_Barcode".Translate(),
                     font: myTNBFont.MuseoSans12(),
                     foregroundColor: myTNBColor.Tomato(),
                     strokeWidth: 0
@@ -215,7 +216,7 @@ namespace myTNB.Registration
             }
             catch (Exception e)
             {
-                Console.WriteLine("Error: " + e.Message);
+                Debug.WriteLine("Error: " + e.Message);
             }
         }
 

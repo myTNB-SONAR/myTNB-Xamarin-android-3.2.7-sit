@@ -1,4 +1,3 @@
-using Foundation;
 using System;
 using UIKit;
 using myTNB.Registration;
@@ -8,7 +7,7 @@ namespace myTNB
 {
     public partial class SelectAccountTypeViewController : UIViewController
     {
-        public SelectAccountTypeViewController (IntPtr handle) : base (handle)
+        public SelectAccountTypeViewController(IntPtr handle) : base(handle)
         {
         }
 
@@ -17,7 +16,7 @@ namespace myTNB
             base.ViewDidLoad();
 
             SelectAccounTypeTableView.Source = new SelectAccountTypeDataSource(this);
-            SelectAccounTypeTableView.TableFooterView = new UIView(new CGRect (0, 0, 0, 0));
+            SelectAccounTypeTableView.TableFooterView = new UIView(new CGRect(0, 0, 0, 0));
 
             SelectAccounTypeTableView.ScrollEnabled = SelectAccounTypeTableView.ContentSize.Height < SelectAccounTypeTableView.Frame.Size.Height ? false : true;
 
@@ -28,7 +27,8 @@ namespace myTNB
         internal void AddBackButton()
         {
             UIImage backImg = UIImage.FromBundle("Back-White");
-            UIBarButtonItem btnBack = new UIBarButtonItem(backImg, UIBarButtonItemStyle.Done, (sender, e) => {
+            UIBarButtonItem btnBack = new UIBarButtonItem(backImg, UIBarButtonItemStyle.Done, (sender, e) =>
+            {
                 this.NavigationController.PopViewController(true);
             });
             this.NavigationItem.LeftBarButtonItem = btnBack;

@@ -22,10 +22,6 @@ namespace myTNB
         public static void DisplayServiceError(UIViewController controller, string message)
         {
             string title = "Error_DefaultTitle".Translate();
-            if (string.IsNullOrWhiteSpace(message) || string.IsNullOrEmpty(message))
-            {
-                message = "Error_DefaultMessage".Translate();
-            }
             DisplayAlert(controller, title, message);
         }
 
@@ -48,6 +44,10 @@ namespace myTNB
         /// <param name="message">Message.</param>
         private static void DisplayAlert(UIViewController controller, string title, string message)
         {
+            if (string.IsNullOrWhiteSpace(message) || string.IsNullOrEmpty(message))
+            {
+                message = "Error_DefaultMessage".Translate();
+            }
             var alert = UIAlertController.Create(title, message, UIAlertControllerStyle.Alert);
             alert.AddAction(UIAlertAction.Create("Common_Ok".Translate(), UIAlertActionStyle.Cancel, null));
             controller.PresentViewController(alert, animated: true, completionHandler: null);

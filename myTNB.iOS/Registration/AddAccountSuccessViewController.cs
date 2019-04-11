@@ -5,7 +5,6 @@ using CoreAnimation;
 using myTNB.Registration;
 using CoreGraphics;
 using myTNB.Model;
-using myTNB.SQLite.SQLiteDataManager;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -49,8 +48,7 @@ namespace myTNB
             var lblPasswordSuccess = new UILabel
             {
                 Frame = new CGRect(DeviceHelper.GetScaledWidth(18), DeviceHelper.GetScaledHeight(109), headerView.Frame.Width - 36, 18),
-                AttributedText = new NSAttributedString(
-                    "Add Account(s) Successful"
+                AttributedText = new NSAttributedString("Registration_AddAccountSuccessMessage".Translate()
                     , font: myTNBFont.MuseoSans18_500()
                     , foregroundColor: myTNBColor.PowerBlue()
                     , strokeWidth: 0
@@ -63,7 +61,7 @@ namespace myTNB
 
             AccountsTableView.TableHeaderView = headerView;
 
-            btnStart.SetTitle("Done", UIControlState.Normal);
+            btnStart.SetTitle("Common_Done".Translate(), UIControlState.Normal);
             btnStart.SetTitleColor(UIColor.White, UIControlState.Normal);
             btnStart.BackgroundColor = myTNBColor.FreshGreen();
             btnStart.Font = myTNBFont.MuseoSans16_500();
@@ -136,9 +134,7 @@ namespace myTNB
                     }
                     else
                     {
-                        var alert = UIAlertController.Create("ErrNoNetworkTitle".Translate(), "ErrNoNetworkMsg".Translate(), UIAlertControllerStyle.Alert);
-                        alert.AddAction(UIAlertAction.Create("Ok", UIAlertActionStyle.Cancel, null));
-                        PresentViewController(alert, animated: true, completionHandler: null);
+                        AlertHandler.DisplayNoDataAlert(this);
                         ActivityIndicator.Hide();
                     }
                 });
@@ -180,7 +176,6 @@ namespace myTNB
                     UIViewController homeVc = storyBoard.InstantiateViewController("HomeTabBarController") as UIViewController;
                     PresentViewController(homeVc, true, null);
                 }
-
 #else
                 UIStoryboard storyBoard = UIStoryboard.FromName("Dashboard", null);
                 UIViewController loginVC = storyBoard.InstantiateViewController("HomeTabBarController") as UIViewController;
@@ -190,9 +185,7 @@ namespace myTNB
             }
             else
             {
-                var alert = UIAlertController.Create("Error in fetching account list.", "There is an error in the server, please try again.", UIAlertControllerStyle.Alert);
-                alert.AddAction(UIAlertAction.Create("Ok", UIAlertActionStyle.Cancel, null));
-                PresentViewController(alert, animated: true, completionHandler: null);
+                AlertHandler.DisplayServiceError(this, string.Empty);
             }
             ActivityIndicator.Hide();
         }

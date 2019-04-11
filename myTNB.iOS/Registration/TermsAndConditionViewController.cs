@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using CoreGraphics;
-using CoreText;
 using Foundation;
 using myTNB.SitecoreCMS.Model;
 using myTNB.SQLite.SQLiteDataManager;
@@ -31,8 +31,7 @@ namespace myTNB.Registration
         {
             NSError error = null;
             NSAttributedString htmlString = new NSAttributedString(GetContent()
-                                                                   , new NSAttributedStringDocumentAttributes { DocumentType = NSDocumentType.HTML }
-                                                                   , ref error);
+                , new NSAttributedStringDocumentAttributes { DocumentType = NSDocumentType.HTML }, ref error);
             NSMutableAttributedString mutableHTMLString = new NSMutableAttributedString(htmlString);
             NSMutableParagraphStyle style = new NSMutableParagraphStyle();
             style.Alignment = UITextAlignment.Justified;
@@ -60,7 +59,7 @@ namespace myTNB.Registration
 
         void AddBackButton()
         {
-            Title = "Terms & Conditions";
+            Title = "Registration_TnCTitle".Translate();
             NavigationItem.HidesBackButton = true;
             UIImage backImg = UIImage.FromBundle("Back-White");
             UIBarButtonItem btnBack = new UIBarButtonItem(backImg, UIBarButtonItemStyle.Done, (sender, e) =>
@@ -86,7 +85,7 @@ namespace myTNB.Registration
             }
             catch (Exception e)
             {
-                Console.WriteLine("ERROR>>>>>> " + e.Message);
+                Debug.WriteLine("ERROR>>>>>> " + e.Message);
             }
             return tncStatement;
         }

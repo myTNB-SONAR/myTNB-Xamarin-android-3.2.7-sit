@@ -60,7 +60,7 @@ namespace myTNB.Registration
             if (IsMobileVerification)
             {
                 NavigationItem.SetHidesBackButton(true, false);
-                NavigationItem.Title = "VerifyPinTitle".Translate();
+                NavigationItem.Title = "Registration_VerifyPinTitle".Translate();
             }
 
             timer = new Timer();
@@ -120,7 +120,7 @@ namespace myTNB.Registration
                 Font = myTNBFont.MuseoSans9_300(),
                 TextColor = myTNBColor.Tomato(),
                 TextAlignment = UITextAlignment.Left,
-                Text = "Invalid PIN",
+                Text = "Invalid_Pin".Translate(),
                 Hidden = true
             };
             float txtFieldWidth = ((float)_viewTokenFieldContainer.Frame.Width - 36) / 4;
@@ -325,8 +325,8 @@ namespace myTNB.Registration
                                     {
                                         _isTokenInvalid = true;
                                         IsPinInvalid();
-                                        DisplayAlertView("OTPErrTtle".Translate(), response?.d?.message);
                                         UpdateTextFieldColor();
+                                        AlertHandler.DisplayGenericAlert(this, "Error_OTPTitle".Translate(), response?.d?.message);
                                         ActivityIndicator.Hide();
                                     }
                                 }
@@ -334,7 +334,7 @@ namespace myTNB.Registration
                             }
                             else
                             {
-                                DisplayRegistrationAlertView("ErrNoNetworkTitle".Translate(), "ErrNoNetworkMsg".Translate());
+                                DisplayRegistrationAlertView("Error_NoNetworkTitle".Translate(), "Error_NoNetworkMsg".Translate());
                                 ActivityIndicator.Hide();
                             }
                         });
@@ -356,7 +356,8 @@ namespace myTNB.Registration
                 LineBreakMode = UILineBreakMode.WordWrap,
                 Lines = 0
             };
-            var desc = !IsMobileVerification ? "EnterOTPRegistration".Translate() : "EnterOTPMobileUpdate".Translate();
+            var desc = !IsMobileVerification ? "Registration_OTPRegistration".Translate()
+                : "Registration_OTPMobileUpdate".Translate();
             lblDescription.Text = string.Format(desc, _mobileNo);
             lblDescription.TextAlignment = UITextAlignment.Left;
             _commonView.AddSubview(lblDescription);
@@ -367,7 +368,7 @@ namespace myTNB.Registration
                 TextColor = myTNBColor.TunaGrey(),
                 LineBreakMode = UILineBreakMode.WordWrap,
                 Lines = 0,
-                Text = "Didn’t receive the SMS?",
+                Text = "Registration_SMSNotReceived".Translate(),
                 TextAlignment = UITextAlignment.Center
             };
             _commonView.AddSubview(lblResendToken);
@@ -431,7 +432,7 @@ namespace myTNB.Registration
                         }
                         else
                         {
-                            DisplayAlertView("Verify Mobile Number Token Failed", _smsToken?.d?.message);
+                            AlertHandler.DisplayGenericAlert(this, "Error_OTPTitle".Translate(), _smsToken?.d?.message);
                         }
                     }
                 });
@@ -460,12 +461,12 @@ namespace myTNB.Registration
                                     }
                                     else
                                     {
-                                        DisplayAlertView("Registration Token Failed", _smsToken?.d?.message);
+                                        AlertHandler.DisplayGenericAlert(this, "Error_RegistraionTokenTitle".Translate(), _smsToken?.d?.message);
                                     }
                                 }
                                 else
                                 {
-                                    DisplayAlertView("Registration Token Failed", "Error in response.");
+                                    AlertHandler.DisplayGenericAlert(this, "Error_RegistraionTokenTitle".Translate(), _smsToken?.d?.message);
                                 }
                                 ActivityIndicator.Hide();
                             });
@@ -473,7 +474,7 @@ namespace myTNB.Registration
                     }
                     else
                     {
-                        DisplayAlertView("ErrNoNetworkTitle".Translate(), "ErrNoNetworkMsg".Translate());
+                        AlertHandler.DisplayNoDataAlert(this);
                         ActivityIndicator.Hide();
                     }
                 });
@@ -502,29 +503,17 @@ namespace myTNB.Registration
             });
         }
 
-        internal void DisplayAlertView(string title, string message)
-        {
-            if (string.IsNullOrWhiteSpace(message))
-            {
-                message = "DefaultErrorMessage".Translate();
-            }
-
-            var alert = UIAlertController.Create(title, message, UIAlertControllerStyle.Alert);
-            alert.AddAction(UIAlertAction.Create("Ok", UIAlertActionStyle.Cancel, null));
-            PresentViewController(alert, animated: true, completionHandler: null);
-        }
-
         internal void DisplayRegistrationAlertView(string title, string message)
         {
             var alert = UIAlertController.Create(title, message, UIAlertControllerStyle.Alert);
-            alert.AddAction(UIAlertAction.Create("Cancel", UIAlertActionStyle.Cancel, (obj) =>
+            alert.AddAction(UIAlertAction.Create("Common_Cancel".Translate(), UIAlertActionStyle.Cancel, (obj) =>
             {
                 UIStoryboard storyBoard = UIStoryboard.FromName("Registration", null);
                 UIViewController viewController =
                     storyBoard.InstantiateViewController("RegistrationViewController") as UIViewController;
                 NavigationController?.PushViewController(viewController, true);
             }));
-            alert.AddAction(UIAlertAction.Create("Retry", UIAlertActionStyle.Default, (obj) =>
+            alert.AddAction(UIAlertAction.Create("Common_Retry".Translate(), UIAlertActionStyle.Default, (obj) =>
             {
                 ValidateFields(_isKeyboardDismissed);
             }));
@@ -568,7 +557,7 @@ namespace myTNB.Registration
         internal void AnimateResendView()
         {
             timerCtr = 30;
-            _resendLabel.Text = string.Format("ResendBtnTimerTxt".Translate(), timerCtr);
+            _resendLabel.Text = string.Format("Registration_ResendTimer".Translate(), timerCtr);
             _resendLabel.TextColor = myTNBColor.FreshGreen();
             timer.Enabled = true;
             UIView.Animate(30, 1, UIViewAnimationOptions.CurveEaseOut, () =>
@@ -583,7 +572,7 @@ namespace myTNB.Registration
                 _segment.BackgroundColor = myTNBColor.FreshGreen();
                 _loadingImage.Frame = new CGRect(25, 13, 24, 24);
                 _resendLabel.Frame = new CGRect(55, 15, 85, 20);
-                _resendLabel.Text = "ResendBtnTxt".Translate();
+                _resendLabel.Text = "Registration_Resend".Translate();
                 _resendLabel.TextColor = UIColor.White;
                 _loadingImage.Image = _loadedImg;
                 _loadingView.AddGestureRecognizer(_onResendPin);
@@ -609,14 +598,14 @@ namespace myTNB.Registration
                             //DataManager.DataManager.SharedInstance.User.ICNo = DataManager.DataManager.SharedInstance.User.ICNo;
                             //ExecuteLoginCall();
 
-                            DisplayAlertView("Registration Error", newUser?.message);
+                            AlertHandler.DisplayGenericAlert(this, "Error_Registration".Translate(), newUser?.message);
                             ClearTokenField();
                             ActivityIndicator.Hide();
                         }
                     }
                     else
                     {
-                        DisplayAlertView("Registration Error", "DefaultErrorMessage".Translate());
+                        AlertHandler.DisplayGenericAlert(this, "Error_Registration".Translate(), _registerAccountList?.d?.message);
                         ClearTokenField();
                         ActivityIndicator.Hide();
                     }
@@ -684,14 +673,14 @@ namespace myTNB.Registration
                         }
                         else
                         {
-                            DisplayAlertView("Login Error", _authenticationList?.d?.message);
+                            AlertHandler.DisplayGenericAlert(this, "Error_Login".Translate(), _authenticationList?.d?.message);
                             ClearTokenField();
                         }
                         ActivityIndicator.Hide();
                     }
                     else
                     {
-                        DisplayAlertView("Registration Error", "DefaultErrorMessage".Translate());
+                        AlertHandler.DisplayGenericAlert(this, "Error_Registration".Translate(), _authenticationList?.d?.message);
                         ClearTokenField();
                     }
                     ActivityIndicator.Hide();
@@ -800,9 +789,7 @@ namespace myTNB.Registration
                     else
                     {
                         DataManager.DataManager.SharedInstance.BillingAccountDetails = new BillingAccountDetailsDataModel();
-                        var alert = UIAlertController.Create("Unable to Login", "Something went wrong. Please try again later.", UIAlertControllerStyle.Alert);
-                        alert.AddAction(UIAlertAction.Create("Ok", UIAlertActionStyle.Cancel, null));
-                        PresentViewController(alert, animated: true, completionHandler: null);
+                        AlertHandler.DisplayServiceError(this, _billingAccountDetailsList?.d?.message);
                     }
                     ActivityIndicator.Hide();
                 });
@@ -840,7 +827,7 @@ namespace myTNB.Registration
                 TextAlignment = UITextAlignment.Left,
                 Font = myTNBFont.MuseoSans12_300(),
                 TextColor = myTNBColor.TunaGrey(),
-                Text = "An SMS containing the activation pin has been sent to your number.",
+                Text = "Registration_SMSMessage".Translate(),
                 Lines = 0,
                 LineBreakMode = UILineBreakMode.WordWrap
             };
