@@ -4,6 +4,7 @@ using UIKit;
 using CoreGraphics;
 using CoreAnimation;
 using Cirrious.FluentLayouts.Touch;
+using System.Diagnostics;
 
 namespace myTNB
 {
@@ -65,7 +66,7 @@ namespace myTNB
                             {
                                 Frame = new CGRect(0f, 0f, 0f, 0f)
                             };
-                            btnSkip.SetTitle("Skip", UIControlState.Normal);
+                            btnSkip.SetTitle("Onboarding_Skip".Translate(), UIControlState.Normal);
                             btnSkip.BackgroundColor = UIColor.Clear;
                             btnSkip.TitleLabel.Font = myTNBFont.MuseoSans14();
                             btnSkip.TitleLabel.TextAlignment = UITextAlignment.Left;
@@ -79,7 +80,7 @@ namespace myTNB
                             {
                                 Frame = new CGRect(0f, 0f, 0f, 0f)
                             };
-                            btnDone.SetTitle("Done", UIControlState.Normal);
+                            btnDone.SetTitle("Common_Done".Translate(), UIControlState.Normal);
                             btnDone.BackgroundColor = UIColor.Clear;
                             btnDone.TitleLabel.Font = myTNBFont.MuseoSans14();
                             btnDone.TitleLabel.TextAlignment = UITextAlignment.Right;
@@ -144,7 +145,7 @@ namespace myTNB
                     }
                     catch (Exception e)
                     {
-                        Console.WriteLine("Error: " + e.Message);
+                        Debug.WriteLine("Error: " + e.Message);
                     }
                 });
             });

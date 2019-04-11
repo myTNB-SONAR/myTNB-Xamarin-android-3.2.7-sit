@@ -39,6 +39,7 @@
 "Common_AddAccount"="Add Account";
 "Common_AddAnotherAccount"="Add Another Account";
 "Common_AddElectricityAccount"="Add Electricity Account";
+"Common_All"="All";
 "Common_Amount(RM)" = "Amount (RM)";
 "Common_AmountDue"="Amount Due";
 "Common_Back"="Back";
@@ -153,7 +154,6 @@
 
 /*Find Us*/
 "FindUs_Address"="Address";
-"FindUs_All"="All";
 "FindUs_FindUs"="Find Us";
 "FindUs_No711Found"="No 7-Eleven Found";
 "FindUs_NoKTFound"="No Kedai Tenaga Found";
@@ -268,6 +268,17 @@
 "Notification_Channel"="Select how you wish to receive your notifications";
 "Notification_Title"="Notifications Settings";
 "Notification_Type"="Select the type of notifications you wish to receive from TNB";
+
+/*Onboarding*/
+"Onboarding_BillingMessage"="Contribute to a greener environment by viewing your e-bill on the app";
+"Onboarding_BillingTitle"="View your bill";
+"Onboarding_NewUpdateTitle" = "New Update Available";
+"Onboarding_PaymentMessage"="Make your payments at home or on-to-go. No more late charges!";
+"Onboarding_PaymentTitle"="Pay your bills";
+"Onboarding_Skip"="Skip";
+"Onboarding_UpdateNow" = "Update Now";
+"Onboarding_UsageMessage"="Find all the information you need about your usage in a single screen";
+"Onboarding_UsageTitle"="Track your usage";
 
 /*Payment*/
 "Payment_AbortTitle" = "Abort Payment!";

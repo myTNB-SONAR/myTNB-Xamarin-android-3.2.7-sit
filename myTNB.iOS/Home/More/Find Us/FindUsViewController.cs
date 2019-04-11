@@ -265,7 +265,7 @@ namespace myTNB
 
             _lblType = new UILabel(new CGRect(0, 12, viewShow.Frame.Width, 24))
             {
-                Text = "FindUs_All".ToUpper(),
+                Text = "Common_All".ToUpper(),
                 TextAlignment = UITextAlignment.Left,
                 TextColor = myTNBColor.TunaGrey(),
                 Font = myTNBFont.MuseoSans16()
@@ -353,7 +353,7 @@ namespace myTNB
                 DataManager.DataManager.SharedInstance.CurrentStoreTypeIndex = 0;
                 DataManager.DataManager.SharedInstance.PreviousStoreTypeIndex = 0;
                 DataManager.DataManager.SharedInstance.SelectedLocationTypeID = "all";
-                DataManager.DataManager.SharedInstance.SelectedLocationTypeTitle = "FindUs_All".Translate();
+                DataManager.DataManager.SharedInstance.SelectedLocationTypeTitle = "Common_All".Translate();
                 DataManager.DataManager.SharedInstance.IsSameStoreType = false;
                 DismissViewController(true, null);
             }));

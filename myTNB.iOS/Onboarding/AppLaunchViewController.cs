@@ -138,11 +138,9 @@ namespace myTNB
                             PresentViewController(navController, false, null);
                             UIApplication.SharedApplication.NetworkActivityIndicatorVisible = false;
                         }
-
                     }
                     else
                     {
-                        Console.WriteLine("No Network");
                         UIApplication.SharedApplication.NetworkActivityIndicatorVisible = false;
                         UserAccountsEntity uaManager = new UserAccountsEntity();
                         CustomerAccountRecordListModel accountRecords = uaManager.GetCustomerAccountRecordList();
@@ -216,8 +214,8 @@ namespace myTNB
                 {
                     LocationTypeDataModel allLocationModel = new LocationTypeDataModel();
                     allLocationModel.Id = "all";
-                    allLocationModel.Title = "All";
-                    allLocationModel.Description = "All";
+                    allLocationModel.Title = "Common_All".Translate();
+                    allLocationModel.Description = "Common_All".Translate();
                     if (DataManager.DataManager.SharedInstance.LocationTypes != null)
                     {
                         DataManager.DataManager.SharedInstance.LocationTypes.Insert(0, allLocationModel);
@@ -236,7 +234,7 @@ namespace myTNB
                 if (data?.NotificationTypes != null)
                 {
                     NotificationPreferenceModel allNotificationItem = new NotificationPreferenceModel();
-                    allNotificationItem.Title = "All notifications";
+                    allNotificationItem.Title = "PushNotification_AllNotifications".Translate();
                     allNotificationItem.Id = "all";
                     if (DataManager.DataManager.SharedInstance.NotificationGeneralTypes != null)
                     {
@@ -397,20 +395,13 @@ namespace myTNB
             });
         }
 
-        internal void DisplayAlertView(string title, string message)
-        {
-            var alert = UIAlertController.Create(title, message, UIAlertControllerStyle.Alert);
-            alert.AddAction(UIAlertAction.Create("Ok", UIAlertActionStyle.Cancel, null));
-            PresentViewController(alert, animated: true, completionHandler: null);
-        }
-
         internal void ExecuteGetCutomerRecordsCall()
         {
             UserAccountsEntity uaManager = new UserAccountsEntity();
             DataManager.DataManager.SharedInstance.AccountRecordsList = uaManager.GetCustomerAccountRecordList();
             if (DataManager.DataManager.SharedInstance.AccountRecordsList != null
-                       && DataManager.DataManager.SharedInstance.AccountRecordsList?.d != null
-                       && DataManager.DataManager.SharedInstance.AccountRecordsList?.d?.Count > 0)
+                && DataManager.DataManager.SharedInstance.AccountRecordsList?.d != null
+                && DataManager.DataManager.SharedInstance.AccountRecordsList?.d?.Count > 0)
             {
                 DataManager.DataManager.SharedInstance.SelectedAccount = DataManager.DataManager.SharedInstance.AccountRecordsList.d[0];
                 ShowDashboard();
@@ -505,8 +496,9 @@ namespace myTNB
                     {
                         DataManager.DataManager.SharedInstance.ClearLoginState();
                         DataManager.DataManager.SharedInstance.BillingAccountDetails = new BillingAccountDetailsDataModel();
-                        var alert = UIAlertController.Create("Error in fetching account details.", "There is an error in the server, please login again.", UIAlertControllerStyle.Alert);
-                        alert.AddAction(UIAlertAction.Create("Ok", UIAlertActionStyle.Cancel, (obj) =>
+                        string errorMessage = _billingAccountDetailsList?.d?.message ?? "Error_DefaultMessage".Translate();
+                        var alert = UIAlertController.Create("Error_DefaultTitle".Translate(), errorMessage, UIAlertControllerStyle.Alert);
+                        alert.AddAction(UIAlertAction.Create("Common_Ok".Translate(), UIAlertActionStyle.Cancel, (obj) =>
                         {
                             ShowPrelogin();
                         }));
@@ -558,8 +550,8 @@ namespace myTNB
                 DataManager.DataManager.SharedInstance.LocationTypes = response?.d?.data;
                 LocationTypeDataModel allLocationModel = new LocationTypeDataModel();
                 allLocationModel.Id = "all";
-                allLocationModel.Title = "All";
-                allLocationModel.Description = "All";
+                allLocationModel.Title = "Common_All".Translate();
+                allLocationModel.Description = "Common_All".Translate();
                 if (DataManager.DataManager.SharedInstance.LocationTypes != null)
                 {
                     DataManager.DataManager.SharedInstance.LocationTypes.Insert(0, allLocationModel);

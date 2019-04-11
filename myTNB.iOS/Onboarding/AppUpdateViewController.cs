@@ -1,5 +1,4 @@
 using Foundation;
-
 using System;
 using UIKit;
 
@@ -7,7 +6,7 @@ namespace myTNB
 {
     public partial class AppUpdateViewController : UIViewController
     {
-        public AppUpdateViewController (IntPtr handle) : base (handle)
+        public AppUpdateViewController(IntPtr handle) : base(handle)
         {
         }
 
@@ -15,10 +14,10 @@ namespace myTNB
         {
             base.ViewDidLoad();
 
-            var titleStr = @"<p style=""text-align:center;""><strong>" + "NewUpdateTitle".Translate() + "</strong></p>";
+            var titleStr = @"<p style=""text-align:center;""><strong>" + "Onboarding_NewUpdateTitle".Translate() + "</strong></p>";
             NSError htmlError = null;
-            NSAttributedString attrString = TextHelper.ConvertToHtmlWithFont(titleStr, ref htmlError,
-                                                                                         myTNBFont.FONTNAME_300, 14f);
+            NSAttributedString attrString = TextHelper.ConvertToHtmlWithFont(titleStr
+                , ref htmlError, myTNBFont.FONTNAME_300, 14f);
             lblTitle.AttributedText = attrString;
             lblTitle.TextColor = myTNBColor.TunaGrey();
 
@@ -26,7 +25,7 @@ namespace myTNB
             lblMessage.TextColor = myTNBColor.TunaGrey();
             lblMessage.Lines = 0;
 
-            btnUpdate.SetTitle("NewUpdateAction".Translate(), UIControlState.Normal);
+            btnUpdate.SetTitle("Onboarding_UpdateNow".Translate(), UIControlState.Normal);
             btnUpdate.SetTitleColor(myTNBColor.PowerBlue(), UIControlState.Normal);
             btnUpdate.Font = myTNBFont.MuseoSans16_300();
             btnUpdate.BackgroundColor = UIColor.Clear;
@@ -57,7 +56,6 @@ namespace myTNB
 
                 }
             }
-
         }
     }
 }

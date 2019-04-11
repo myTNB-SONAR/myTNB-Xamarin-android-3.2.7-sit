@@ -3,6 +3,7 @@ using System;
 using UIKit;
 using myTNB.Model;
 using CoreGraphics;
+using System.Diagnostics;
 
 namespace myTNB
 {
@@ -67,7 +68,7 @@ namespace myTNB
                     }
                     catch (Exception e)
                     {
-                        Console.WriteLine("Image load Error: " + e.Message);
+                        Debug.WriteLine("Image load Error: " + e.Message);
                         imgLogo = UIImage.FromBundle(string.Empty);
                     }                 }             }             else             {
                 if (string.IsNullOrEmpty(DataObject.ImageName) || string.IsNullOrWhiteSpace(DataObject.ImageName))
