@@ -860,7 +860,7 @@ namespace myTNB
                     var acct = accts[i];
 
                     var acctCached = DataManager.DataManager.SharedInstance.GetDue(acct.accNum);
-                    if (acctCached == null)
+                    if (acctCached == null || DataManager.DataManager.SharedInstance.IsPaidAccountNumber(acct.accNum))
                     {
                         // get latest if not in cache
                         acctsToGetLatestDues.Add(acct.accNum);
@@ -878,7 +878,7 @@ namespace myTNB
                 }
 
             } // key
-
+            DataManager.DataManager.SharedInstance.ClearPaidList();
             return acctsToGetLatestDues;
         }
 
