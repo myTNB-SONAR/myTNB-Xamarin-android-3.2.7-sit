@@ -132,6 +132,7 @@
 "Error_DefaultTitle"="Error";
 "Error_DuplicateAccountMessage"="This account number is already added on the list";
 "Error_DuplicateAccountTitle"="Duplicate Account";
+"Error_EmailRequired"="Email field is required.";
 "Error_EmptyCardNumberMessage"="Please enter valid card number and try again.";
 "Error_EmptyCardNumberTitle"="Empty Card Number";
 "Error_GetSmartMeterDataMessage" = "Unable to fetch smart meter data! Please try later.";
@@ -143,6 +144,7 @@
 "Error_NoNetworkMsg" = "Please check your internet connection and try again.";
 "Error_NoNetworkTitle" = "No Internet Connection";
 "Error_OTPTitle" = "Verify Mobile Number Token Failed";
+"Error_PasswordRequired"="Password field is required.";
 "Error_RatingNotAvailable"="Rating is not available right now. Please try again later.";
 "Error_Registration"="Registration Error";
 "Error_RegistraionTokenTitle"="Registration Token Failed";
@@ -209,6 +211,8 @@
 "Invalid_ROCNo"="Invalid ROC No.";
 
 /*Login*/
+"Login_AccountLogin"="myTNB Account Login";
+"Login_CallUs"="Call Us";
 "Login_ChangePasswordNote"="This new password will replace your current one. All account details remain unchanged.";
 "Login_CodeSentToEmailMessage"="A 4-digit verification code will be sent to this email address.";
 "Login_CodeSentToMessage"="Please enter the 4-digit code that was sent to {0}";
@@ -218,16 +222,26 @@
 "Login_EnterEmail"="Please enter your email.";
 "Login_EnterNewPassword"="Enter new password";
 "Login_EnterPassword"="Please enter your new password.";
+"Login_Feedback"="Feedback";
+"Login_FindUs"="Find Us";
+"Login_ForgotPassword"="Forgot password?";
 "Login_Login"="Login";
+"Login_ManageYourAccount"="Manage your account now!";
+"Login_Note"="Log in to enjoy more features!";
+"Login_NoTNBAccount"="Don't have a myTNB account?";
 "Login_PasswordResetSuccess"="Password Reset Successful";
 "Login_PinSentMessage"="An email containing the activation pin has been sent to your email Address.";
 "Login_ProceedToLogin"="Your password has been changed successfully. You may proceed to login with the new password.";
 "Login_ProceedToLoginTitle" = "Proceed to Login";
+"Login_Promotions"="Promotions";
+"Login_QuickAccess"="Quick Access";
+"Login_RememberMe" = "Remember email";
+"Login_RegisterForAccount"="Register for an account";
 "Login_Resend" = "Resend";
 "Login_ResendTimer" = "Resend ({0})";
 "Login_ResetPasswordTitle"="Reset Password";
 "Login_TemporaryPasswordLoginMessage"="Log in using the 8-digit temporary\r\npassword that was sent to\r\n{0}.\r\n\r\nYou may change your password\r\nafter logging in.";
-
+"Login_Welcome"="Welcome";
 
 /*Logout*/
 "Logout_BackToHome" = "Back to Home";
