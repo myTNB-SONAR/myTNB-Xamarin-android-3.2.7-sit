@@ -164,6 +164,7 @@ namespace myTNB
             lastStartIndex = 0;
             lastEndIndex = 0;
             loadMoreCount = 0;
+            DataManager.DataManager.SharedInstance.ClearPaidList();
         }
 
         void UpdateAccountListWithAmount()
@@ -360,8 +361,10 @@ namespace myTNB
                     if (item.IsAccountSelected)
                     {
                         _accountsForPayment.Add(item);
+                        DataManager.DataManager.SharedInstance.SetAccountNumberForPayment(item.accNum);
                     }
                 }
+
                 UIStoryboard storyBoard = UIStoryboard.FromName("Payment", null);
                 SelectPaymentMethodViewController viewController =
                     storyBoard.InstantiateViewController("SelectPaymentMethodViewController") as SelectPaymentMethodViewController;
