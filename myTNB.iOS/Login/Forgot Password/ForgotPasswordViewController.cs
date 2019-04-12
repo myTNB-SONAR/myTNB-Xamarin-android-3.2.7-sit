@@ -6,7 +6,6 @@ using Foundation;
 using CoreGraphics;
 using myTNB.DataManager;
 
-
 namespace myTNB
 {
     public partial class ForgotPasswordViewController : UIViewController
@@ -31,7 +30,7 @@ namespace myTNB
         public override void ViewDidLoad()
         {
             base.ViewDidLoad();
-            this.Title = "Reset Password";
+            this.Title = "Login_ResetPasswordTitle".Translate();
             this.NavigationItem.HidesBackButton = true;
 
             InitializedSubViews();
@@ -45,7 +44,7 @@ namespace myTNB
             lblTitle.Frame = new CGRect(18, 19, View.Frame.Width - 36, 18);
             lblTitle.TextColor = myTNBColor.PowerBlue();
             lblTitle.Font = myTNBFont.MuseoSans16_500();
-            lblTitle.Text = "Please enter your email.";
+            lblTitle.Text = "Login_EnterEmail".Translate();
 
             lblDescription.Frame = new CGRect(18, 40, View.Frame.Width - 36, 36);
             lblDescription.TextColor = myTNBColor.TunaGrey();
@@ -53,7 +52,7 @@ namespace myTNB
             lblDescription.TextAlignment = UITextAlignment.Left;
             lblDescription.Lines = 0;
             lblDescription.LineBreakMode = UILineBreakMode.WordWrap;
-            lblDescription.Text = "A 4-digit verification code will be sent to this email address.";
+            lblDescription.Text = "Login_CodeSentToEmailMessage".Translate();
 
             btnSubmit.Layer.CornerRadius = 5f;
 
@@ -64,18 +63,18 @@ namespace myTNB
             lblEmailTitle = new UILabel(new CGRect(0, 0, viewEmail.Frame.Width, 12));
             lblEmailTitle.Font = myTNBFont.MuseoSans9_300();
             lblEmailTitle.TextColor = myTNBColor.SilverChalice();
-            lblEmailTitle.Text = "EMAIL";
+            lblEmailTitle.Text = "Common_Email".Translate().ToUpper();
             lblEmailTitle.TextAlignment = UITextAlignment.Left;
 
             lblEmailError = new UILabel(new CGRect(0, 37, viewEmail.Frame.Width, 14));
             lblEmailError.Font = myTNBFont.MuseoSans9_300();
             lblEmailError.TextColor = myTNBColor.Tomato();
-            lblEmailError.Text = "Invalid email address";
+            lblEmailError.Text = "Invalid_Email".Translate();
             lblEmailError.TextAlignment = UITextAlignment.Left;
 
             txtFieldEmail = new UITextField(new CGRect(0, 12, viewEmail.Frame.Width, 24));
             txtFieldEmail.AttributedPlaceholder = new NSAttributedString(
-                "Email"
+                "Common_Email".Translate().ToUpper()
                 , font: myTNBFont.MuseoSans16_300()
                 , foregroundColor: myTNBColor.SilverChalice()
                 , strokeWidth: 0
@@ -99,8 +98,10 @@ namespace myTNB
             lblEmailTitle.Hidden = true;
             lblEmailError.Hidden = true;
             btnSubmit.Enabled = false;
+            btnSubmit.SetTitle("Common_Submit".Translate(), UIControlState.Normal);
             btnSubmit.BackgroundColor = myTNBColor.PlatinumGrey();
-            btnSubmit.Frame = new CGRect(18, View.Frame.Height - (DeviceHelper.IsIphoneXUpResolution() ? 184 : DeviceHelper.GetScaledHeight(136)), View.Frame.Width - 36, DeviceHelper.GetScaledHeight(48));
+            btnSubmit.Frame = new CGRect(18, View.Frame.Height - (DeviceHelper.IsIphoneXUpResolution()
+                ? 184 : DeviceHelper.GetScaledHeight(136)), View.Frame.Width - 36, DeviceHelper.GetScaledHeight(48));
         }
 
         internal void SetEvents()
@@ -119,8 +120,7 @@ namespace myTNB
                         }
                         else
                         {
-                            Console.WriteLine("No Network");
-                            DisplayAlertMessage("ErrNoNetworkTitle".Translate(), "ErrNoNetworkMsg".Translate());
+                            AlertHandler.DisplayNoDataAlert(this);
                             ActivityIndicator.Hide();
                         }
                     });
@@ -218,14 +218,7 @@ namespace myTNB
                     }
                     else
                     {
-                        string errorMsg = "Error in sending reset code.";
-                        if (_resetCodeList != null && _resetCodeList.d != null
-                           && !string.IsNullOrEmpty(_resetCodeList.d.message)
-                           && !string.IsNullOrWhiteSpace(_resetCodeList.d.message))
-                        {
-                            errorMsg = _resetCodeList.d.message;
-                        }
-                        DisplayAlertMessage("Error", errorMsg);
+                        AlertHandler.DisplayServiceError(this, _resetCodeList?.d?.message);
                     }
                     ActivityIndicator.Hide();
                 });
@@ -251,13 +244,6 @@ namespace myTNB
                 };
                 _resetCodeList = serviceManager.BaseServiceCall("SendResetPasswordCode", requestParameter);
             });
-        }
-
-        internal void DisplayAlertMessage(string title, string message)
-        {
-            var alert = UIAlertController.Create(title, message, UIAlertControllerStyle.Alert);
-            alert.AddAction(UIAlertAction.Create("Ok", UIAlertActionStyle.Cancel, null));
-            PresentViewController(alert, animated: true, completionHandler: null);
         }
     }
 }

@@ -192,6 +192,7 @@
 "Invalid_CardExpiry"="Invalid card expiration date";
 "Invalid_CardNumber"="Invalid Card Number";
 "Invalid_Characters" = "Invalid characters. Use letters or numbers only.";
+"Invalid_Code"="Invalid code";
 "Invalid_CVV"="Invalid CVV";
 "Invalid_Email"="Invalid email address";
 "Invalid_Fullname"="Invalid full name";
@@ -202,9 +203,31 @@
 "Invalid_NameOnCard"="Invalid Name";
 "Invalid_NicknameEntry"="Account nickname cannot be empty. Please enter valid nickname and try adding your account again.";
 "Invalid_OldPassword"="Invalid Old Password";
+"Invalid_Password"="Password must have at least 8 alphanumeric characters.";
 "Invalid_PayAmount" = "Minimum amount cannot be lower than RM1.00";
 "Invalid_Pin"="Invalid PIN";
 "Invalid_ROCNo"="Invalid ROC No.";
+
+/*Login*/
+"Login_ChangePasswordNote"="This new password will replace your current one. All account details remain unchanged.";
+"Login_CodeSentToEmailMessage"="A 4-digit verification code will be sent to this email address.";
+"Login_CodeSentToMessage"="Please enter the 4-digit code that was sent to {0}";
+"Login_ConfirmNewPassword"="Confirm new password";
+"Login_EmailNotReceived"="Didn’t receive the email?";
+"Login_EnterCode" = "Enter Code";
+"Login_EnterEmail"="Please enter your email.";
+"Login_EnterNewPassword"="Enter new password";
+"Login_EnterPassword"="Please enter your new password.";
+"Login_Login"="Login";
+"Login_PasswordResetSuccess"="Password Reset Successful";
+"Login_PinSentMessage"="An email containing the activation pin has been sent to your email Address.";
+"Login_ProceedToLogin"="Your password has been changed successfully. You may proceed to login with the new password.";
+"Login_ProceedToLoginTitle" = "Proceed to Login";
+"Login_Resend" = "Resend";
+"Login_ResendTimer" = "Resend ({0})";
+"Login_ResetPasswordTitle"="Reset Password";
+"Login_TemporaryPasswordLoginMessage"="Log in using the 8-digit temporary\r\npassword that was sent to\r\n{0}.\r\n\r\nYou may change your password\r\nafter logging in.";
+
 
 /*Logout*/
 "Logout_BackToHome" = "Back to Home";

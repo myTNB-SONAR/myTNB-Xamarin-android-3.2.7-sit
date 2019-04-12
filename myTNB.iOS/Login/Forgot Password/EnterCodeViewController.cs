@@ -5,7 +5,6 @@ using CoreGraphics;
 using System.Threading.Tasks;
 using myTNB.Model;
 using myTNB.DataManager;
-
 using System.Timers;
 
 namespace myTNB
@@ -60,6 +59,7 @@ namespace myTNB
         internal void AddBackButton()
         {
             NavigationItem.HidesBackButton = true;
+            NavigationItem.Title = "Login_EnterCode".Translate();
             UIImage backImg = UIImage.FromBundle("Back-White");
             UIBarButtonItem btnBack = new UIBarButtonItem(backImg, UIBarButtonItemStyle.Done, (sender, e) =>
             {
@@ -75,7 +75,7 @@ namespace myTNB
             lblDescription.TextColor = myTNBColor.TunaGrey();
             lblDescription.LineBreakMode = UILineBreakMode.WordWrap;
             lblDescription.Lines = 0;
-            lblDescription.Text = "Please enter the 4-digit code that was sent to " + EmailAddress;
+            lblDescription.Text = string.Format("Login_CodeSentToMessage".Translate(), EmailAddress);
             lblDescription.TextAlignment = UITextAlignment.Left;
             View.AddSubview(lblDescription);
 
@@ -84,7 +84,7 @@ namespace myTNB
             lblResendToken.TextColor = myTNBColor.TunaGrey();
             lblResendToken.LineBreakMode = UILineBreakMode.WordWrap;
             lblResendToken.Lines = 0;
-            lblResendToken.Text = "Didn’t receive the email?";
+            lblResendToken.Text = "Login_EmailNotReceived".Translate();
             lblResendToken.TextAlignment = UITextAlignment.Center;
             View.AddSubview(lblResendToken);
 
@@ -109,7 +109,6 @@ namespace myTNB
             _loadingView.AddSubview(_resendLabel);
             _onResendPin = new UITapGestureRecognizer(() =>
             {
-                Console.WriteLine("ON TAP RESEND");
                 ClearTokenField();
                 ExecuteSendResetPasswordCodeCall();
             });
@@ -125,7 +124,7 @@ namespace myTNB
             _lblError.Font = myTNBFont.MuseoSans9_300();
             _lblError.TextColor = myTNBColor.Tomato();
             _lblError.TextAlignment = UITextAlignment.Left;
-            _lblError.Text = "Invalid code.";
+            _lblError.Text = "Invalid_Code".Translate();
             _lblError.Hidden = true;
             float txtFieldWidth = ((float)_viewTokenFieldContainer.Frame.Width - 36) / 4;
             float xLocation = 0;
@@ -188,7 +187,7 @@ namespace myTNB
         void AnimateResendView()
         {
             timerCtr = 30;
-            _resendLabel.Text = string.Format("ResendBtnTimerTxt".Translate(), timerCtr);
+            _resendLabel.Text = string.Format("Login_ResendTimer".Translate(), timerCtr);
             _resendLabel.TextColor = myTNBColor.FreshGreen();
             timer.Enabled = true;
             UIView.Animate(30, 1, UIViewAnimationOptions.CurveEaseOut, () =>
@@ -203,7 +202,7 @@ namespace myTNB
                 _segment.BackgroundColor = myTNBColor.FreshGreen();
                 _loadingImage.Frame = new CGRect(25, 13, 24, 24);
                 _resendLabel.Frame = new CGRect(55, 15, 85, 20);
-                _resendLabel.Text = "ResendBtnTxt".Translate();
+                _resendLabel.Text = "Login_Resend".Translate();
                 _resendLabel.TextColor = UIColor.White;
                 _loadingImage.Image = _loadedImg;
                 _loadingView.AddGestureRecognizer(_onResendPin);
@@ -274,7 +273,7 @@ namespace myTNB
             lblPinSent.TextAlignment = UITextAlignment.Left;
             lblPinSent.Font = myTNBFont.MuseoSans12_300();
             lblPinSent.TextColor = myTNBColor.TunaGrey();
-            lblPinSent.Text = "An email containing the activation pin has been sent to your email Address.";
+            lblPinSent.Text = "Login_PinSentMessage".Translate();
             lblPinSent.Lines = 0;
             lblPinSent.LineBreakMode = UILineBreakMode.WordWrap;
 
@@ -328,17 +327,16 @@ namespace myTNB
             }
 
             if (_isTokenInvalid)
+            {
                 _isTokenInvalid = false;
+            }
         }
         /// <summary>
         /// Determines when to hide/show the error message based on OTP validity input
         /// </summary>
         internal void IsPinInvalid()
         {
-            if (_isTokenInvalid)
-                _lblError.Hidden = false;
-            else
-                _lblError.Hidden = true;
+            _lblError.Hidden = !_isTokenInvalid;
         }
 
         void ValidateFields(bool isKeyboardDismissed)
@@ -365,7 +363,7 @@ namespace myTNB
                             }
                             else
                             {
-                                DisplayAlertView("ErrNoNetworkTitle".Translate(), "ErrNoNetworkMsg".Translate());
+                                AlertHandler.DisplayNoDataAlert(this);
                                 ActivityIndicator.Hide();
                             }
                         });
@@ -398,7 +396,7 @@ namespace myTNB
                     }
                     else
                     {
-                        DisplayAlertView("Error", "Error in sending reset code.");
+                        AlertHandler.DisplayServiceError(this, _resetCodeList?.d?.message);
                     }
                     ActivityIndicator.Hide();
                 });
@@ -448,10 +446,10 @@ namespace myTNB
                     }
                     else
                     {
-                        DisplayAlertView("Reset password with token error.", _resetCodeList?.d?.message);
                         _isTokenInvalid = true;
                         IsPinInvalid();
                         UpdateTextFieldColor();
+                        AlertHandler.DisplayServiceError(this, _resetCodeList?.d?.message);
                     }
 
                     ActivityIndicator.Hide();

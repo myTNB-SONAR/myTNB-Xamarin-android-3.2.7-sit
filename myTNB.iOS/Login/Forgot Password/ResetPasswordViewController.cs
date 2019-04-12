@@ -64,7 +64,7 @@ namespace myTNB.Login.ForgotPassword
             lblTitle = new UILabel(new CGRect(18, 16, View.Frame.Width - 36, 18));
             lblTitle.TextColor = myTNBColor.PowerBlue();
             lblTitle.Font = myTNBFont.MuseoSans16_500();
-            lblTitle.Text = "Please enter your new password.";
+            lblTitle.Text = "Login_EnterPassword".Translate();
             View.AddSubview(lblTitle);
 
             lblDescription.TextColor = myTNBColor.TunaGrey();
@@ -79,7 +79,7 @@ namespace myTNB.Login.ForgotPassword
             {
                 Frame = new CGRect(0, 0, viewPassword.Frame.Width, 12),
                 AttributedText = new NSAttributedString(
-                    "PASSWORD"
+                    "Common_Password".Translate().ToUpper()
                     , font: myTNBFont.MuseoSans9_300()
                     , foregroundColor: myTNBColor.SilverChalice()
                     , strokeWidth: 0
@@ -92,7 +92,7 @@ namespace myTNB.Login.ForgotPassword
             {
                 Frame = new CGRect(0, 37, viewPassword.Frame.Width, 14),
                 AttributedText = new NSAttributedString(
-                    "Password must have at least 8 alphanumeric characters."
+                    "Hint_Password".Translate()
                     , font: myTNBFont.MuseoSans9_300()
                     , foregroundColor: myTNBColor.Tomato()
                     , strokeWidth: 0
@@ -105,7 +105,7 @@ namespace myTNB.Login.ForgotPassword
             {
                 Frame = new CGRect(0, 12, viewPassword.Frame.Width - 30, 24),
                 AttributedPlaceholder = new NSAttributedString(
-                    "Enter new password"
+                    "Login_EnterNewPassword".Translate()
                     , font: myTNBFont.MuseoSans16_300()
                     , foregroundColor: myTNBColor.SilverChalice()
                     , strokeWidth: 0
@@ -128,14 +128,7 @@ namespace myTNB.Login.ForgotPassword
             viewShowPassword.AddSubview(imgShowPassword);
             viewShowPassword.AddGestureRecognizer(new UITapGestureRecognizer(() =>
             {
-                if (txtFieldPassword.SecureTextEntry)
-                {
-                    txtFieldPassword.SecureTextEntry = false;
-                }
-                else
-                {
-                    txtFieldPassword.SecureTextEntry = true;
-                }
+                txtFieldPassword.SecureTextEntry = !txtFieldPassword.SecureTextEntry;
             }));
             viewPassword.AddSubview(viewShowPassword);
 
@@ -151,7 +144,7 @@ namespace myTNB.Login.ForgotPassword
             {
                 Frame = new CGRect(0, 0, viewConfirmPassword.Frame.Width, 12),
                 AttributedText = new NSAttributedString(
-                    "CONFIRM PASSWORD"
+                    "Common_ConfirmPassword".Translate().ToUpper()
                     , font: myTNBFont.MuseoSans9_300()
                     , foregroundColor: myTNBColor.SilverChalice()
                     , strokeWidth: 0
@@ -171,7 +164,7 @@ namespace myTNB.Login.ForgotPassword
             {
                 Frame = new CGRect(0, 12, viewConfirmPassword.Frame.Width - 30, 24),
                 AttributedPlaceholder = new NSAttributedString(
-                    "Confirm new password"
+                    "Login_ConfirmNewPassword".Translate()
                     , font: myTNBFont.MuseoSans16()
                     , foregroundColor: myTNBColor.SilverChalice()
                     , strokeWidth: 0
@@ -211,7 +204,7 @@ namespace myTNB.Login.ForgotPassword
 
         internal void SetStaticFields()
         {
-            lblDescription.Text = "This new password will replace your current one. All account details remain unchanged.";
+            lblDescription.Text = "Login_ChangePasswordNote".Translate();
         }
 
         internal void SetViews()
@@ -224,7 +217,8 @@ namespace myTNB.Login.ForgotPassword
             btnSubmit.BackgroundColor = myTNBColor.PlatinumGrey();
             _textFieldHelper.CreateTextFieldLeftView(txtFieldPassword, "Password");
             _textFieldHelper.CreateTextFieldLeftView(txtFieldConfirmPassword, "Password");
-            btnSubmit.Frame = new CGRect(18, View.Frame.Height - (DeviceHelper.IsIphoneXUpResolution() ? 184 : DeviceHelper.GetScaledHeight(130)), View.Frame.Width - 36, DeviceHelper.GetScaledHeight(48));
+            btnSubmit.Frame = new CGRect(18, View.Frame.Height - (DeviceHelper.IsIphoneXUpResolution()
+                ? 184 : DeviceHelper.GetScaledHeight(130)), View.Frame.Width - 36, DeviceHelper.GetScaledHeight(48));
         }
 
         internal void SetEvents()
@@ -245,8 +239,7 @@ namespace myTNB.Login.ForgotPassword
                         }
                         else
                         {
-                            Console.WriteLine("No Network");
-                            DisplayAlertMessage("ErrNoNetworkTitle".Translate(), "ErrNoNetworkMsg".Translate());
+                            AlertHandler.DisplayNoDataAlert(this);
                             ActivityIndicator.Hide();
                         }
                     });
@@ -276,31 +269,31 @@ namespace myTNB.Login.ForgotPassword
             }
         }
 
-        internal void SetTextFieldEvents(UITextField textField, UILabel lblTitle, UILabel lblError, UIView viewLine, string pattern)
+        internal void SetTextFieldEvents(UITextField textField, UILabel labelTitle, UILabel lblError, UIView viewLine, string pattern)
         {
             SetKeyboard(textField);
             textField.EditingChanged += (sender, e) =>
             {
-                lblTitle.Hidden = textField.Text.Length == 0;
+                labelTitle.Hidden = textField.Text.Length == 0;
                 DisplayEyeIcon(textField);
             };
             textField.EditingDidBegin += (sender, e) =>
             {
-                lblTitle.Hidden = textField.Text.Length == 0;
+                labelTitle.Hidden = textField.Text.Length == 0;
                 DisplayEyeIcon(textField);
                 textField.LeftViewMode = UITextFieldViewMode.Never;
                 viewLine.BackgroundColor = myTNBColor.PowerBlue();
             };
             textField.ShouldEndEditing = (sender) =>
             {
-                lblTitle.Hidden = textField.Text.Length == 0;
+                labelTitle.Hidden = textField.Text.Length == 0;
                 bool isValid = _textFieldHelper.ValidateTextField(textField.Text, pattern);
                 //Handling for Confirm Password
                 if (textField == txtFieldConfirmPassword)
                 {
                     bool isMatch = txtFieldPassword.Text.Equals(txtFieldConfirmPassword.Text);
-                    string errMsg = isValid ? "Your password and confirmation password do not match."
-                        : "Password must have at least 8 alphanumeric characters.";
+                    string errMsg = isValid ? "Error_MismatchedPassword".Translate()
+                        : "Hint_Password".Translate();
                     lblError.Text = errMsg;
                     isValid = isValid && isMatch;
                 }
@@ -319,7 +312,9 @@ namespace myTNB.Login.ForgotPassword
             textField.EditingDidEnd += (sender, e) =>
             {
                 if (textField.Text.Length == 0)
+                {
                     textField.LeftViewMode = UITextFieldViewMode.UnlessEditing;
+                }
             };
         }
 
@@ -373,10 +368,7 @@ namespace myTNB.Login.ForgotPassword
                     }
                     else
                     {
-                        var message = !string.IsNullOrWhiteSpace(_changePasswordList?.d?.message)
-                                                 ? _changePasswordList?.d?.message
-                                                 : "DefaultErrorMessage".Translate();
-                        DisplayAlertMessage("ErrorTitle".Translate(), message);
+                        AlertHandler.DisplayServiceError(this, _changePasswordList?.d?.message);
                     }
                     ActivityIndicator.Hide();
                 });
@@ -405,13 +397,6 @@ namespace myTNB.Login.ForgotPassword
                 };
                 _changePasswordList = serviceManager.BaseServiceCall("ChangeNewPassword", requestParameter);
             });
-        }
-
-        internal void DisplayAlertMessage(string title, string message)
-        {
-            var alert = UIAlertController.Create(title, message, UIAlertControllerStyle.Alert);
-            alert.AddAction(UIAlertAction.Create("Ok", UIAlertActionStyle.Cancel, null));
-            PresentViewController(alert, animated: true, completionHandler: null);
         }
     }
 }
