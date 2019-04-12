@@ -1097,7 +1097,7 @@
     <Folder Include="Assets.xcassets\Logo-Combined.imageset\" />
     <Folder Include="Assets.xcassets\Payment-Checkbox-White-Inactive.imageset\" />
     <Folder Include="Assets.xcassets\New-Launch-Logo.imageset\" />
-    <Folder Include="Home\Feedback\FeedbackV2\" />
+    <Folder Include="Home\Feedback\Feedback Entry\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -1828,6 +1828,10 @@
     </Compile>
     <Compile Include="Enums\DashboardModeEnum.cs" />
     <Compile Include="Helpers\AlertHandler.cs" />
+    <Compile Include="Home\Feedback\Feedback Entry\FeedbackEntryViewController.cs" />
+    <Compile Include="Home\Feedback\Feedback Entry\FeedbackEntryViewController.designer.cs">
+      <DependentUpon>FeedbackEntryViewController.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />
