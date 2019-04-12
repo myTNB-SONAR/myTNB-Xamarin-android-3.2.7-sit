@@ -1097,6 +1097,7 @@
     <Folder Include="Assets.xcassets\Logo-Combined.imageset\" />
     <Folder Include="Assets.xcassets\Payment-Checkbox-White-Inactive.imageset\" />
     <Folder Include="Assets.xcassets\New-Launch-Logo.imageset\" />
+    <Folder Include="Home\Feedback\FeedbackV2\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />

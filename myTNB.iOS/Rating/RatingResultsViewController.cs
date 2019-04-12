@@ -91,7 +91,7 @@ namespace myTNB
                 var newPresenting = newtopVc?.PresentingViewController;
                 if (!(newPresenting is HomeTabBarController))
                 {
-                    Console.WriteLine("newPresenting = " + newPresenting.GetType().ToString());
+                    Debug.WriteLine("newPresenting = " + newPresenting.GetType().ToString());
                     //UIStoryboard storyBoard = UIStoryboard.FromName("Dashboard", null);
                     //var vc = storyBoard.InstantiateViewController("HomeTabBarController") as UIViewController;
                     //ShowViewController(vc, this);

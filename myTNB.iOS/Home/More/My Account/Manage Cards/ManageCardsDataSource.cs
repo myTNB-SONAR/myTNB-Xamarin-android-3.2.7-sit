@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using CoreGraphics;
 using Foundation;
 using myTNB.Model;
@@ -101,7 +102,7 @@ namespace myTNB.Home.More.MyAccount.ManageCards
 
         internal string FormatCard(string cardNo, string cardType)
         {
-            Console.WriteLine("cardType: " + cardType);
+            Debug.WriteLine("cardType: " + cardType);
             if(string.IsNullOrEmpty(cardType)){
                 return cardNo;
             }

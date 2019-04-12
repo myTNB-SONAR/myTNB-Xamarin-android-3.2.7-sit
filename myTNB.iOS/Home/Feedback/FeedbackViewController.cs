@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using myTNB.Model;
 using System.Collections.Generic;
 
-
 namespace myTNB
 {
     public partial class FeedbackViewController : UIViewController
@@ -29,11 +28,12 @@ namespace myTNB
             {
                 feedbackTableView.Frame = new CGRect(0, 0, View.Frame.Width, View.Frame.Height - (114 - 64));
                 AddBackButton();
-                this.Title = "Feedback";
+                this.Title = "Feedback_Title".Translate();
             }
             else
             {
-                feedbackTableView.Frame = new CGRect(0, DeviceHelper.IsIphoneXUpResolution() ? 88 : 64, View.Frame.Width, View.Frame.Height - (114));
+                feedbackTableView.Frame = new CGRect(0, DeviceHelper.IsIphoneXUpResolution() 
+                    ? 88 : 64, View.Frame.Width, View.Frame.Height - (114));
                 SetNavigationBar();
             }
         }
@@ -45,7 +45,8 @@ namespace myTNB
             _email = string.Empty;
             if (!DataManager.DataManager.SharedInstance.IsPreloginFeedback)
             {
-                if (DataManager.DataManager.SharedInstance.UserEntity != null && DataManager.DataManager.SharedInstance.UserEntity.Count > 0)
+                if (DataManager.DataManager.SharedInstance.UserEntity != null 
+                    && DataManager.DataManager.SharedInstance.UserEntity.Count > 0)
                 {
                     _email = DataManager.DataManager.SharedInstance.UserEntity[0]?.email;
                 }
@@ -79,7 +80,8 @@ namespace myTNB
                                 feedbackTableView.BackgroundColor = myTNBColor.LightGrayBG();
                                 feedbackTableView.RowHeight = 80f;
                                 feedbackTableView.SeparatorStyle = UITableViewCellSeparatorStyle.None;
-                                feedbackTableView.Source = new FeedbackDataSource(this, _submittedFeedback?.d?.data, isFromPreLogin, DataManager.DataManager.SharedInstance.IsBcrmAvailable);
+                                feedbackTableView.Source = new FeedbackDataSource(this, _submittedFeedback?.d?.data
+                                    , isFromPreLogin, DataManager.DataManager.SharedInstance.IsBcrmAvailable);
                                 feedbackTableView.ReloadData();
                                 feedbackTableView.TableFooterView = new UIView();
                                 feedbackTableView.ScrollEnabled = feedbackTableView.ContentSize.Height > feedbackTableView.Frame.Height;
@@ -89,13 +91,10 @@ namespace myTNB
                     }
                     else
                     {
-                        var alert = UIAlertController.Create("ErrNoNetworkTitle".Translate(), "ErrNoNetworkMsg".Translate(), UIAlertControllerStyle.Alert);
-                        alert.AddAction(UIAlertAction.Create("Ok", UIAlertActionStyle.Cancel, null));
-                        PresentViewController(alert, animated: true, completionHandler: null);
+                        AlertHandler.DisplayNoDataAlert(this);
                     }
                 });
             });
-
         }
 
         internal void AddBackButton()
@@ -114,7 +113,7 @@ namespace myTNB
             UIView headerView = gradientViewComponent.GetUI();
             TitleBarComponent titleBarComponent = new TitleBarComponent(headerView);
             UIView titleBarView = titleBarComponent.GetUI();
-            titleBarComponent.SetTitle("Feedback");
+            titleBarComponent.SetTitle("Feedback_Title".Translate());
             titleBarComponent.SetNotificationVisibility(true);
             headerView.AddSubview(titleBarView);
             View.AddSubview(headerView);

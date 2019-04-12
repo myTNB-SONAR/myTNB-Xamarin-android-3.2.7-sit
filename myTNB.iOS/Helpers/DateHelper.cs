@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.Globalization;
 
 namespace myTNB
@@ -78,7 +79,7 @@ namespace myTNB
             }
             catch (Exception e)
             {
-                Console.WriteLine("Error in parsing date: " + e.Message);
+                Debug.WriteLine("Error in parsing date: " + e.Message);
             }
             return formattedDate;
         }
@@ -111,7 +112,7 @@ namespace myTNB
             }
             catch (Exception e)
             {
-                Console.WriteLine("Error in parsing date: " + e.Message);
+                Debug.WriteLine("Error in parsing date: " + e.Message);
             }
             return addDate;
         }
@@ -133,7 +134,7 @@ namespace myTNB
             }
             catch (Exception e)
             {
-                Console.WriteLine("Error in formatting date: " + e.Message);
+                Debug.WriteLine("Error in formatting date: " + e.Message);
             }
 
             return formattedDate;
@@ -162,7 +163,7 @@ namespace myTNB
             }
             catch (Exception e)
             {
-                Console.WriteLine("Parse Error: " + e.Message);
+                Debug.WriteLine("Parse Error: " + e.Message);
             }
             return date;
         }

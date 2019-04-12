@@ -154,6 +154,9 @@
 "Error_UpdateNickname"="Cannot update nickname. Please try again.";
 "Error_VerifyDevice" = "Cannot verify device. Please try again.";
 
+/*Feedback*/
+"Feedback_Title"="Feedback";
+
 /*Find Us*/
 "FindUs_Address"="Address";
 "FindUs_FindUs"="Find Us";

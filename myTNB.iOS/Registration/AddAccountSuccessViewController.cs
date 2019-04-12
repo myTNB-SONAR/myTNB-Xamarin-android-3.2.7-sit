@@ -167,7 +167,7 @@ namespace myTNB
                     //var newPresenting = newtopVc?.PresentingViewController;
                     //if (!(newPresenting is HomeTabBarController))
                     //{
-                    //    Console.WriteLine("newPresenting = " + newPresenting.GetType().ToString());
+                    //    Debug.WriteLine("newPresenting = " + newPresenting.GetType().ToString());
                     //}
                 }
                 else

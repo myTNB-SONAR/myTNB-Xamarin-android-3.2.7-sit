@@ -10,6 +10,7 @@ using myTNB.Dashboard;
 using Facebook.CoreKit;
 using Firebase.Core;
 using Firebase.Crashlytics;
+using System.Diagnostics;
 
 namespace myTNB
 {
@@ -135,8 +136,6 @@ namespace myTNB
                     {
                         viewController.Rating = !string.IsNullOrEmpty(rateString) ? int.Parse(rateString) : 0;
                         viewController.TransId = transId;
-
-
                         var navController = new UINavigationController(viewController);
                         topVc?.PresentViewController(navController, true, null);
                     }
@@ -198,7 +197,7 @@ namespace myTNB
                 var authOptions = UNAuthorizationOptions.Alert | UNAuthorizationOptions.Badge | UNAuthorizationOptions.Sound;
                 UNUserNotificationCenter.Current.RequestAuthorization(authOptions, (granted, error) =>
                 {
-                    Console.WriteLine("isGranted: " + granted);
+                    Debug.WriteLine("Push Notification Permission: " + granted);
                     DataManager.DataManager.SharedInstance.IsRegisteredForRemoteNotification = granted;
                 });
 
@@ -237,7 +236,7 @@ namespace myTNB
 
             //Messaging.SharedInstance.Disconnect();
             Messaging.SharedInstance.ShouldEstablishDirectChannel = false;
-            Console.WriteLine("Disconnected from FCM");
+            Debug.WriteLine("Disconnected from FCM");
         }
 
         public override void WillEnterForeground(UIApplication application)
@@ -320,14 +319,14 @@ namespace myTNB
 
             // Do your magic to handle the notification data
             Messaging.SharedInstance.AppDidReceiveMessage(userInfo);
-            Console.WriteLine(userInfo);
+            Debug.WriteLine(userInfo);
 
             if (DataManager.DataManager.SharedInstance.IsLoggedIn())
             {
                 DataManager.DataManager.SharedInstance.IsFromPushNotification = true;
             }
 
-            Console.WriteLine("debug: DidReceiveRemoteNotification");
+            Debug.WriteLine("debug: DidReceiveRemoteNotification");
 
         }
 
@@ -336,36 +335,36 @@ namespace myTNB
         public void WillPresentNotification(UNUserNotificationCenter center, UNNotification notification, Action<UNNotificationPresentationOptions> completionHandler)
         {
             // Do your magic to handle the notification data
-            Console.WriteLine(notification?.Request?.Content?.UserInfo);
+            Debug.WriteLine(notification?.Request?.Content?.UserInfo);
             if (DataManager.DataManager.SharedInstance.IsLoggedIn())
             {
                 DataManager.DataManager.SharedInstance.IsFromPushNotification = true;
             }
-            Console.WriteLine("debug: WillPresentNotification");
+            Debug.WriteLine("debug: WillPresentNotification");
 
         }
 
         // Receive data message on iOS 10 devices.
         public void ApplicationReceivedRemoteMessage(RemoteMessage remoteMessage)
         {
-            Console.WriteLine(remoteMessage?.AppData);
+            Debug.WriteLine(remoteMessage?.AppData);
             if (DataManager.DataManager.SharedInstance.IsLoggedIn())
             {
                 DataManager.DataManager.SharedInstance.IsFromPushNotification = true;
             }
-            Console.WriteLine("debug: ApplicationReceivedRemoteMessage");
+            Debug.WriteLine("debug: ApplicationReceivedRemoteMessage");
 
         }
 
         [Export("userNotificationCenter:didReceiveNotificationResponse:withCompletionHandler:")]
         public void DidReceiveNotificationResponse(UNUserNotificationCenter center, UNNotificationResponse response, Action completionHandler)
         {
-            Console.WriteLine(response?.Notification?.Request?.Content?.UserInfo);
+            Debug.WriteLine(response?.Notification?.Request?.Content?.UserInfo);
             if (DataManager.DataManager.SharedInstance.IsLoggedIn())
             {
                 DataManager.DataManager.SharedInstance.IsFromPushNotification = true;
             }
-            Console.WriteLine("debug: DidReceiveNotificationResponse");
+            Debug.WriteLine("debug: DidReceiveNotificationResponse");
 
             completionHandler?.Invoke();
         }

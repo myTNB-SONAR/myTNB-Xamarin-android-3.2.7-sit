@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using CoreGraphics;
 using Foundation;
 using UIKit;
@@ -171,7 +172,7 @@ namespace myTNB
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Error in DismissControllersAndSelectTab: " + ex.Message);
+                Debug.WriteLine("Error in DismissControllersAndSelectTab: " + ex.Message);
             }
 
             return null;
