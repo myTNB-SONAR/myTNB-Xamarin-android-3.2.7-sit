@@ -21,20 +21,26 @@ namespace myTNB
         public string FeedbackID = string.Empty;
         public bool IsLoggedIn;
 
-        const float VIEW_PHOTO_MARGIN = 20f;
-        const float UNIVERSAL_MARGIN = 7f;
+        const string ANY_PATTERN = @".*";
         const int MAX_IMAGE = 2;
+        const float TXTVIEW_DEFAULT_MARGIN = 24f;
+        const float UNIVERSAL_MARGIN = 7f;
+        const float VIEW_PHOTO_MARGIN = 20f;
 
         int imageWidth = 0;
         int capturedImageCount = 0;
         int imageCount = 0;
 
         //Widgets
-        UIView _btnSubmitContainer, _viewUploadPhoto, _nonLoginWidgets;
-        UILabel _lblPhotoTitle;
+        UIView _btnSubmitContainer, _viewUploadPhoto, _nonLoginWidgets, _viewFeedback
+            , _viewLineFeedback;
+        UILabel _lblPhotoTitle, _lblFeedbackTitle, _lblFeedbackSubTitle, _lblFeedbackError;
+        UIImageView _iconFeedback;
         UIButton _btnSubmit;
         UIScrollView _svContainer, imageContainerScroll;
         UITapGestureRecognizer _tapImage;
+
+        FeedbackTextView _feedbackTextView;
 
         public override void ViewDidLoad()
         {
@@ -46,6 +52,7 @@ namespace myTNB
             {
                 AddNonLoginCommonWidgets();
             }
+            CreateCommentSection();
             //Should be the last to add
             CreatePhotoUploadWidget();
             UpdateContentSize();
@@ -104,7 +111,7 @@ namespace myTNB
         void CreatePhotoUploadWidget()
         {
             //Photo View
-            _viewUploadPhoto = new UIView((new CGRect(18, (nfloat)(GetNonLoginWidgetHeight() + VIEW_PHOTO_MARGIN)
+            _viewUploadPhoto = new UIView((new CGRect(18, (nfloat)(GetPhotoWidgetYCoordinate() + VIEW_PHOTO_MARGIN)
                 , View.Frame.Width - 36, 180)))
             {
                 BackgroundColor = UIColor.Clear
@@ -129,6 +136,14 @@ namespace myTNB
             _viewUploadPhoto.AddSubviews(new UIView[] { _lblPhotoTitle, lblPhotoSubTitle });
             _svContainer.AddSubview(_viewUploadPhoto);
             AddImageContainer();
+        }
+
+        nfloat GetPhotoWidgetYCoordinate()
+        {
+            nfloat yCoord = 0.0f;
+            yCoord = GetNonLoginWidgetHeight();
+            yCoord += _viewFeedback?.Frame.Height ?? 0;
+            return yCoord;
         }
 
         void AddImageContainer()
@@ -167,9 +182,11 @@ namespace myTNB
                     }
 
                     UIImagePickerController imgPicker = new UIImagePickerController();
-                    ImagePickerDelegate imgPickerDelegate = new ImagePickerDelegate(this);
-                    //imgPickerDelegate.Type = Enums.FeedbackCategory.LoginOthers;
-                    imgPickerDelegate.DashedLineView = dashedLineView;
+                    ImagePickerDelegate imgPickerDelegate = new ImagePickerDelegate(this)
+                    {
+                        //imgPickerDelegate.Type = Enums.FeedbackCategory.LoginOthers;
+                        DashedLineView = dashedLineView
+                    };
                     imgPicker.Delegate = imgPickerDelegate;
 
                     var alert = UIAlertController.Create(null, null, UIAlertControllerStyle.ActionSheet);
@@ -259,13 +276,188 @@ namespace myTNB
 
         void UpdateContentSize()
         {
-            float scrollViewHeight = (float)((float)_viewUploadPhoto?.Frame.Height + GetNonLoginWidgetHeight());
-            _svContainer.ContentSize = new CGRect(0f, 0f, View.Frame.Width, scrollViewHeight).Size;
+            //float scrollViewHeight = (float)(_viewFeedback?.Frame.Height + _viewUploadPhoto?.Frame.Height + GetNonLoginWidgetHeight());
+            _svContainer.ContentSize = new CGRect(0f, 0f, View.Frame.Width, GetScrollHeight()).Size;
         }
 
         nfloat GetNonLoginWidgetHeight()
         {
             return _nonLoginWidgets?.Frame.Height ?? 0;
+        }
+
+        void CreateCommentSection()
+        {
+            _viewFeedback = new UIView((new CGRect(18, GetCommentSectionYCoordinate(), View.Frame.Width - 36, 51)))
+            {
+                BackgroundColor = UIColor.Clear
+            };
+
+            _lblFeedbackTitle = new UILabel
+            {
+                Frame = new CGRect(0, 0, _viewFeedback.Frame.Width, 12),
+                AttributedText = new NSAttributedString("Feedback_Title".Translate().ToUpper()
+                    , font: myTNBFont.MuseoSans11_300()
+                    , foregroundColor: myTNBColor.SilverChalice()
+                    , strokeWidth: 0),
+                TextAlignment = UITextAlignment.Left,
+                Hidden = true
+            };
+
+            _feedbackTextView = new FeedbackTextView
+            {
+                Frame = new CGRect(TXTVIEW_DEFAULT_MARGIN, 12, View.Frame.Width - 60, 36),
+                Editable = true,
+                Font = myTNBFont.MuseoSans18_300(),
+                TextAlignment = UITextAlignment.Left,
+                TextColor = myTNBColor.TunaGrey(),
+                BackgroundColor = UIColor.Clear,
+                EnablesReturnKeyAutomatically = true,
+                TranslatesAutoresizingMaskIntoConstraints = true,
+                ScrollEnabled = true,
+            };
+
+            _iconFeedback = new UIImageView(new CGRect(0, _feedbackTextView.Frame.Height / 2, 24, 24))
+            {
+                Image = UIImage.FromBundle("IC-Feedback")
+            };
+
+            _feedbackTextView.SetPlaceholder("Feedback_Title".Translate());
+            _feedbackTextView.CreateDoneButton();
+
+            _feedbackTextView.ShouldChangeText = (txtView, range, replacementString) =>
+            {
+                var newLength = txtView.Text.Length + replacementString.Length - range.Length;
+                return newLength <= 250;
+            };
+
+            _lblFeedbackError = new UILabel
+            {
+                Frame = new CGRect(0, _feedbackTextView.Frame.Height, _feedbackTextView.Frame.Width - 36, 14),
+                AttributedText = new NSAttributedString("Invalid_Feedback".Translate()
+                    , font: myTNBFont.MuseoSans11_300()
+                    , foregroundColor: myTNBColor.Tomato()
+                    , strokeWidth: 0),
+                TextAlignment = UITextAlignment.Left,
+                Hidden = true
+            };
+
+            _viewLineFeedback = new UIView((new CGRect(0, _feedbackTextView.Frame.GetMaxY() + 3f, _viewFeedback.Frame.Width, 1)))
+            {
+                BackgroundColor = myTNBColor.PlatinumGrey()
+            };
+
+            _lblFeedbackSubTitle = new UILabel(new CGRect(0, _viewLineFeedback.Frame.GetMaxY(), _feedbackTextView.Frame.Width - 36, 14))
+            {
+                TextColor = myTNBColor.SilverChalice(),
+                Font = myTNBFont.MuseoSans11_300()
+            };
+
+            _viewFeedback.AddSubviews(new UIView[] { _lblFeedbackTitle, _feedbackTextView
+                , _iconFeedback, _lblFeedbackError, _viewLineFeedback, _lblFeedbackSubTitle});
+            SetTextViewEvents(_feedbackTextView, _lblFeedbackTitle, _lblFeedbackError,
+                 _viewLineFeedback, null, ANY_PATTERN);
+            _svContainer.AddSubview(_viewFeedback);
+        }
+
+        internal void SetTextViewEvents(FeedbackTextView textView, UILabel lblTitle
+            , UILabel lblError, UIView viewLine, UILabel lblHint, string pattern)
+        {
+            if (lblHint == null)
+            {
+                lblHint = new UILabel();
+            }
+            _feedbackTextView.SetKeyboard();
+            textView.Changed += (sender, e) =>
+            {
+                FeedbackTextView txtView = sender as FeedbackTextView;
+                if (txtView == _feedbackTextView)
+                {
+                    HandleFeedbackTextViewChange();
+                    var frame = new CGRect();
+                    frame = _feedbackTextView.Frame;
+                    frame.Height = _feedbackTextView.ContentSize.Height <= TNBGlobal.FEEDBACK_FIELD_MAX_HEIGHT
+                        ? _feedbackTextView.ContentSize.Height : TNBGlobal.FEEDBACK_FIELD_MAX_HEIGHT;
+                    _feedbackTextView.Frame = frame;
+                    _svContainer.ContentSize = new CGRect(0f, 0f, View.Frame.Width, GetScrollHeight() + _feedbackTextView.Frame.Height - 38f).Size;
+                    _viewFeedback.Frame = ViewHelper.UpdateFeedbackViewYCoord((float)GetCommentSectionYCoordinate(), 0f
+                        , _viewFeedback, (float)(51f + _feedbackTextView.Frame.Height));
+                    _viewLineFeedback.Frame = ViewHelper.UpdateFeedbackViewYCoord((float)_feedbackTextView.Frame.GetMaxY()
+                        , 3f, _viewLineFeedback, (float)_viewLineFeedback.Frame.Height);
+                    _lblFeedbackSubTitle.Frame = ViewHelper.UpdateFeedbackViewYCoord((float)_viewLineFeedback.Frame.GetMaxY()
+                        , 3f, _lblFeedbackSubTitle, (float)_lblFeedbackSubTitle.Frame.Height);
+                    _viewUploadPhoto.Frame = ViewHelper.UpdateFeedbackViewYCoord((float)(_viewFeedback.Frame.Y + _viewFeedback.Frame.Height)
+                        , 0f, _viewUploadPhoto, (float)_viewUploadPhoto.Frame.Height);
+
+                    _feedbackTextView.SetPlaceholderHidden(txtView.Text.Length > 0);
+                }
+                lblHint.Hidden = !lblError.Hidden || _feedbackTextView.Text.Length == 0;
+                lblTitle.Hidden = _feedbackTextView.Text.Length == 0;
+                //SubmitButtonEnable();
+            };
+            textView.ShouldBeginEditing = (sender) =>
+            {
+                var frame = new CGRect();
+                frame = _feedbackTextView.Frame;
+                _iconFeedback.Hidden = true;
+                frame.X = 0.0f;
+                _feedbackTextView.Frame = frame;
+                viewLine.BackgroundColor = myTNBColor.PowerBlue();
+                lblError.Hidden = true;
+                _lblFeedbackSubTitle.Hidden = false;
+                textView.TextColor = myTNBColor.TunaGrey();
+                return true;
+            };
+            textView.ShouldEndEditing = (sender) =>
+            {
+                lblTitle.Hidden = textView.Text.Length == 0;
+                bool isValid = _feedbackTextView.ValidateTextView(textView.Text, pattern);
+
+                lblError.Hidden = isValid || textView.Text.Length == 0;
+                _lblFeedbackSubTitle.Hidden = !lblError.Hidden;
+                lblHint.Hidden = true;
+                viewLine.BackgroundColor = isValid || textView.Text.Length == 0 ? myTNBColor.PlatinumGrey() : myTNBColor.Tomato();
+                textView.TextColor = isValid || textView.Text.Length == 0 ? myTNBColor.TunaGrey() : myTNBColor.Tomato();
+
+                if (textView.Text.Length == 0)
+                {
+                    var frame = new CGRect();
+                    frame = _feedbackTextView.Frame;
+                    frame.X = 24f;
+                    _feedbackTextView.Frame = frame;
+                    _iconFeedback.Hidden = false;
+                    _feedbackTextView.SetPlaceholderHidden(false);
+                }
+
+                return true;
+            };
+            textView.ShouldChangeText += (txtView, range, replacementString) =>
+            {
+                if (txtView == _feedbackTextView)
+                {
+                    var newLength = textView.Text.Length + replacementString.Length - range.Length;
+                    return newLength <= TNBGlobal.FeedbackMaxCharCount;
+                }
+                return true;
+            };
+        }
+
+        private void HandleFeedbackTextViewChange()
+        {
+            int charCount = TNBGlobal.FeedbackMaxCharCount - _feedbackTextView.Text.Length;
+            string text = string.Format("{0} character{1} left", charCount, charCount != 1 ? "s" : string.Empty);
+            _lblFeedbackSubTitle.Text = text;
+        }
+
+        nfloat GetCommentSectionYCoordinate()
+        {
+            nfloat yCoord = 0.0f;
+            yCoord = _nonLoginWidgets?.Frame.Height ?? 0;
+            return yCoord;
+        }
+
+        nfloat GetScrollHeight()
+        {
+            return (nfloat)((_viewUploadPhoto.Frame.GetMaxY() + (_btnSubmitContainer.Frame.Height + 50f)));
         }
     }
 }

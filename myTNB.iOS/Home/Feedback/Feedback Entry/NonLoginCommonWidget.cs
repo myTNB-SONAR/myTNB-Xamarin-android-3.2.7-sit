@@ -124,7 +124,6 @@ namespace myTNB.Home.Feedback.FeedbackEntry
                 TextColor = myTNBColor.TunaGrey()
             };
             _txtFieldMobileNo.KeyboardType = UIKeyboardType.NumberPad;
-            _textFieldHelper.CreateDoneButton(_txtFieldMobileNo);
 
             _viewLineMobileNo = new UIView((new CGRect(0, 36, _viewMobileNo.Frame.Width, 1)))
             {
@@ -183,6 +182,10 @@ namespace myTNB.Home.Feedback.FeedbackEntry
             _viewEmail.AddSubviews(new UIView[] { _lblEmailTitle, _lblEmailError
                 , _txtFieldEmail, _viewLineEmail });
 
+            _textFieldHelper.CreateDoneButton(_txtFieldMobileNo);
+            _textFieldHelper.CreateTextFieldLeftView(_txtFieldFullName, "Name");
+            _textFieldHelper.CreateTextFieldLeftView(_txtFieldMobileNo, "Mobile");
+            _textFieldHelper.CreateTextFieldLeftView(_txtFieldEmail, "Email");
             SetValidationEvents();
         }
 
