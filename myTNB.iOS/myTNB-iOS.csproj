@@ -1832,6 +1832,8 @@
     <Compile Include="Home\Feedback\Feedback Entry\FeedbackEntryViewController.designer.cs">
       <DependentUpon>FeedbackEntryViewController.cs</DependentUpon>
     </Compile>
+    <Compile Include="Home\Feedback\Feedback Entry\OtherFeedbackComponent.cs" />
+    <Compile Include="Home\Feedback\Feedback Entry\NonLoginCommonWidget.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />

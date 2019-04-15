@@ -155,6 +155,10 @@
 "Error_VerifyDevice" = "Cannot verify device. Please try again.";
 
 /*Feedback*/
+"Feedback_AttachPhotoMessage"="ATTACH PHOTO / SCREENSHOT (OPTIONAL)";
+"Feedback_Camera"="Camera";
+"Feedback_CameraRoll"="Camera Roll";
+"Feedback_MaxFiles"="Max 2 files";
 "Feedback_Title"="Feedback";
 
 /*Find Us*/

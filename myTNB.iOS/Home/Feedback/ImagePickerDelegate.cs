@@ -14,6 +14,8 @@ namespace myTNB.Home.Feedback
         NonLoginFaultyStreetLampFeedbackViewController _nonloginFaultyLampFeedbackController;
         NonLoginOthersFeedbackViewController _nonLoginOthersFeedbackViewController;
 
+        FeedbackEntryViewController _feedbackEntryViewController;
+
         public UIViewWithDashedLinerBorder DashedLineView;
         public FeedbackCategory Type;
 
@@ -42,6 +44,12 @@ namespace myTNB.Home.Feedback
             _nonLoginOthersFeedbackViewController = controller;
         }
 
+
+        public ImagePickerDelegate(FeedbackEntryViewController controller)
+        {
+            _feedbackEntryViewController = controller;
+        }
+
         public override void FinishedPickingMedia(UIImagePickerController picker, NSDictionary info)
         {
             var image = info.ValueForKey(new NSString("UIImagePickerControllerOriginalImage")) as UIImage;
@@ -56,7 +64,8 @@ namespace myTNB.Home.Feedback
 
         void AddImageToView(UIImage image)
         {
-            if (Type == FeedbackCategory.LoginBillRelated)
+            _feedbackEntryViewController.AddImage(image, DashedLineView);
+            /*if (Type == FeedbackCategory.LoginBillRelated)
             {
                 _loginBillFeedbackController.AddImage(image, DashedLineView);
             }
@@ -79,12 +88,13 @@ namespace myTNB.Home.Feedback
             else if (Type == FeedbackCategory.NonLoginOthers)
             {
                 _nonLoginOthersFeedbackViewController.AddImage(image, DashedLineView);
-            }
+            }*/
         }
 
         void DismissScreen()
         {
-            if (Type == FeedbackCategory.LoginBillRelated)
+            _feedbackEntryViewController.DismissViewController(true, null);
+            /*if (Type == FeedbackCategory.LoginBillRelated)
             {
                 _loginBillFeedbackController.DismissViewController(true, null);
             }
@@ -107,7 +117,7 @@ namespace myTNB.Home.Feedback
             else if (Type == FeedbackCategory.NonLoginOthers)
             {
                 _nonLoginOthersFeedbackViewController.DismissViewController(true, null);
-            }
+            }*/
         }
     }
 }
