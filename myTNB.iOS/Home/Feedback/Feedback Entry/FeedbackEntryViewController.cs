@@ -32,7 +32,7 @@ namespace myTNB
         int imageCount = 0;
 
         //Widgets
-        UIView _btnSubmitContainer, _viewUploadPhoto, _nonLoginWidgets, _viewFeedback
+        UIView _btnSubmitContainer, _viewUploadPhoto, _feedbackCategoryView, _viewFeedback
             , _viewLineFeedback;
         UILabel _lblPhotoTitle, _lblFeedbackTitle, _lblFeedbackSubTitle, _lblFeedbackError;
         UIImageView _iconFeedback;
@@ -42,18 +42,17 @@ namespace myTNB
 
         FeedbackTextView _feedbackTextView;
         OtherFeedbackComponent _otherFeedbackComponent;
+        BillRelatedFeedbackComponent _billRelatedFeedbackComponent;
 
         public override void ViewDidLoad()
         {
             base.ViewDidLoad();
             _otherFeedbackComponent = new OtherFeedbackComponent(this);
+            _billRelatedFeedbackComponent = new BillRelatedFeedbackComponent(this);
             SetHeader();
             AddScrollView();
             AddCTA();
-            if (!IsLoggedIn)
-            {
-                AddNonLoginCommonWidgets();
-            }
+            InitializeFeedbackComponents();
             CreateCommentSection();
             //Should be the last to add
             CreatePhotoUploadWidget();
@@ -108,7 +107,7 @@ namespace myTNB
             _btnSubmit.BackgroundColor = myTNBColor.SilverChalice();
             _btnSubmit.TouchUpInside += (sender, e) =>
             {
-                //ExecuteSubmitFeedback();
+                ExecuteSubmitFeedback();
             };
             _btnSubmitContainer.AddSubview(_btnSubmit);
             View.AddSubview(_btnSubmitContainer);
@@ -147,7 +146,7 @@ namespace myTNB
         nfloat GetPhotoWidgetYCoordinate()
         {
             nfloat yCoord = 0.0f;
-            yCoord = GetNonLoginWidgetHeight();
+            yCoord = GetFeedbackCategoryViewHeight();
             yCoord += _viewFeedback?.Frame.Height ?? 0;
             return yCoord;
         }
@@ -273,21 +272,10 @@ namespace myTNB
             ActivityIndicator.Hide();
         }
 
-        void AddNonLoginCommonWidgets()
-        {
-            _nonLoginWidgets = _otherFeedbackComponent.GetComponent();
-            _svContainer.AddSubview(_nonLoginWidgets);
-        }
-
         void UpdateContentSize()
         {
             //float scrollViewHeight = (float)(_viewFeedback?.Frame.Height + _viewUploadPhoto?.Frame.Height + GetNonLoginWidgetHeight());
             _svContainer.ContentSize = new CGRect(0f, 0f, View.Frame.Width, GetScrollHeight()).Size;
-        }
-
-        nfloat GetNonLoginWidgetHeight()
-        {
-            return _nonLoginWidgets?.Frame.Height ?? 0;
         }
 
         void CreateCommentSection()
@@ -457,13 +445,35 @@ namespace myTNB
         nfloat GetCommentSectionYCoordinate()
         {
             nfloat yCoord = 0.0f;
-            yCoord = _nonLoginWidgets?.Frame.Height ?? 0;
+            yCoord = _feedbackCategoryView?.Frame.Height ?? 0;
             return yCoord;
         }
 
         nfloat GetScrollHeight()
         {
             return (nfloat)((_viewUploadPhoto.Frame.GetMaxY() + (_btnSubmitContainer.Frame.Height + 50f)));
+        }
+
+        void InitializeFeedbackComponents()
+        {
+            if (string.Compare(FeedbackID, "1") == 0)
+            {
+                _feedbackCategoryView = _billRelatedFeedbackComponent.GetComponent();
+            }
+            else if (string.Compare(FeedbackID, "2") == 0)
+            {
+
+            }
+            else
+            {
+                _feedbackCategoryView = _otherFeedbackComponent.GetComponent();
+            }
+            _svContainer.AddSubview(_feedbackCategoryView);
+        }
+
+        nfloat GetFeedbackCategoryViewHeight()
+        {
+            return _feedbackCategoryView?.Frame.Height ?? 0;
         }
 
         internal UITapGestureRecognizer GetFeedbackTypeGestureRecognizer()
@@ -481,10 +491,39 @@ namespace myTNB
         internal void SetButtonEnable()
         {
             bool isValidFeedback = _feedbackTextView.ValidateTextView(_feedbackTextView.Text, ANY_PATTERN) && _feedbackTextView.Text.Length != 0;
-            bool isValidFields = _otherFeedbackComponent.IsValidEntry();
+            bool isValidFields = false;
+            if (string.Compare(FeedbackID, "1") == 0)
+            {
+                isValidFields = _billRelatedFeedbackComponent.IsValidEntry();
+            }
+            else if (string.Compare(FeedbackID, "2") == 0)
+            {
+
+            }
+            else
+            {
+                isValidFields = _otherFeedbackComponent.IsValidEntry();
+            }
             bool isValid = isValidFields && isValidFeedback;
             _btnSubmit.Enabled = isValid;
             _btnSubmit.BackgroundColor = isValid ? myTNBColor.FreshGreen() : myTNBColor.SilverChalice();
+        }
+
+        void ExecuteSubmitFeedback()
+        {
+            NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
+            {
+                InvokeOnMainThread(() =>
+                {
+                    if (NetworkUtility.isReachable)
+                    {
+                    }
+                    else
+                    {
+                        AlertHandler.DisplayNoDataAlert(this);
+                    }
+                });
+            });
         }
     }
 }

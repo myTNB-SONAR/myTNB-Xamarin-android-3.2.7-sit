@@ -23,7 +23,7 @@ namespace myTNB.Home.Feedback.FeedbackEntry
 
         void ConstructOtherFeedbackWidget()
         {
-            _mainContainer = new UIView(new CGRect(0, 0, _controller.View.Frame.Width, 500));
+            _mainContainer = new UIView(new CGRect(0, 0, _controller.View.Frame.Width, 0));
             if (_controller.IsLoggedIn)
             {
                 ConstructLoginComponent();
@@ -36,7 +36,9 @@ namespace myTNB.Home.Feedback.FeedbackEntry
 
         void ConstructLoginComponent()
         {
-
+            ConstructFeedbackType();
+            _mainContainer.AddSubviews(new UIView[] { _viewFeedbackType });
+            _mainContainer.Frame = new CGRect(0, 0, _controller.View.Frame.Width, 18 + 51);
         }
 
         void ConstructNonLoginComponent()
@@ -52,7 +54,8 @@ namespace myTNB.Home.Feedback.FeedbackEntry
         void ConstructFeedbackType()
         {
             //Feedback Type
-            _viewFeedbackType = new UIView((new CGRect(18, 217, _controller.View.Frame.Width - 36, 51)))
+            _viewFeedbackType = new UIView((new CGRect(18, _controller.IsLoggedIn ? 16 : 217
+                , _controller.View.Frame.Width - 36, 51)))
             {
                 BackgroundColor = UIColor.Clear
             };
@@ -126,20 +129,16 @@ namespace myTNB.Home.Feedback.FeedbackEntry
             }
         }
 
-        void SetButtonEnabled()
+        public bool IsValidEntry()
         {
             if (_controller.IsLoggedIn)
             {
+                return true;
             }
             else
             {
-                _controller.SetButtonEnable();
+                return _nonLoginCommonWidgets.IsValidEntry();
             }
-        }
-
-        public bool IsValidEntry()
-        {
-            return _nonLoginCommonWidgets.IsValidEntry();
         }
     }
 }

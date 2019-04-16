@@ -1834,6 +1834,7 @@
     </Compile>
     <Compile Include="Home\Feedback\Feedback Entry\OtherFeedbackComponent.cs" />
     <Compile Include="Home\Feedback\Feedback Entry\NonLoginCommonWidget.cs" />
+    <Compile Include="Home\Feedback\Feedback Entry\BillRelatedFeedbackComponent.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />
