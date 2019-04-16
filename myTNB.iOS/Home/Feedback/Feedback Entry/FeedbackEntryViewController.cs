@@ -43,12 +43,14 @@ namespace myTNB
         FeedbackTextView _feedbackTextView;
         OtherFeedbackComponent _otherFeedbackComponent;
         BillRelatedFeedbackComponent _billRelatedFeedbackComponent;
+        StreetLampFeedbackComponent _streetLampRelatedFeedbackComponent;
 
         public override void ViewDidLoad()
         {
             base.ViewDidLoad();
             _otherFeedbackComponent = new OtherFeedbackComponent(this);
             _billRelatedFeedbackComponent = new BillRelatedFeedbackComponent(this);
+            _streetLampRelatedFeedbackComponent = new StreetLampFeedbackComponent(this);
             SetHeader();
             AddScrollView();
             AddCTA();
@@ -466,7 +468,7 @@ namespace myTNB
             }
             else if (string.Compare(FeedbackID, "2") == 0)
             {
-
+                _feedbackCategoryView = _streetLampRelatedFeedbackComponent.GetComponent();
             }
             else
             {
@@ -514,7 +516,7 @@ namespace myTNB
             }
             else if (string.Compare(FeedbackID, "2") == 0)
             {
-
+                isValidFields = _streetLampRelatedFeedbackComponent.IsValidEntry();
             }
             else
             {

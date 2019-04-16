@@ -160,6 +160,8 @@
 "Feedback_CameraRoll"="Camera Roll";
 "Feedback_CharacterLeft"="{0} character left";		/*Singular*/
 "Feedback_CharactersLeft"="{0} characters left";	/*Plural*/
+"Feedback_FaultyLampMessage"="You may only report faulty TNB street lamps. Look out for TNB’s blue and red or the logo as shown above. Use the pole no. (e.g. 17493 8E 1) to specify the lamp.";
+"Feedback_FaultyLampTitle"="Reporting faulty street lamps?";
 "Feedback_MaxFiles"="Max 2 files";
 "Feedback_Title"="Feedback";
 "Feedback_Type"="Feedback Type";
