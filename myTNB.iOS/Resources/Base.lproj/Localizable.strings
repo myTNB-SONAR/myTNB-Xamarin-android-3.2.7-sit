@@ -194,7 +194,7 @@
 "Hint_Password"="Password must have at least 8 alphanumeric characters.";
 
 /*Invalid*/
-"Invalid_AccountLength"="Please enter a valid 12-digit account no.";
+"Invalid_AccountLength"="Please enter a valid 12-digit or 14-digit account number";
 "Invalid_AccountNickname" = "Invalid account nickname";
 "Invalid_AccountNicknameInUse" = "Nickname already used. Please create a new one.";
 "Invalid_AccountType"="Invalid Account Type";

@@ -13,7 +13,7 @@ namespace myTNB.Home.Feedback.FeedbackEntry
         const string ACCOUNT_NO_PATTERN = @"^[0-9]{12,14}$";
 
         UIView _mainContainer, _nonLoginWidgets, _viewAccountNo, _viewLineAccountNo;
-        UILabel _lblAccountNoTitle, _lblAccountNoError;
+        UILabel _lblAccountNoTitle, _lblAccountNoError, _lblAccountNumber;
         UITextField _txtFieldAccountNo;
 
         NonLoginCommonWidget _nonLoginCommonWidgets;
@@ -38,7 +38,9 @@ namespace myTNB.Home.Feedback.FeedbackEntry
 
         void ConstructLoginComponent()
         {
-
+            ConstructAccountNumberSelector();
+            _mainContainer.AddSubviews(new UIView[] { _viewAccountNo });
+            _mainContainer.Frame = new CGRect(0, 0, _controller.View.Frame.Width, (18 + 51));
         }
 
         void ConstructNonLoginComponent()
@@ -49,6 +51,70 @@ namespace myTNB.Home.Feedback.FeedbackEntry
             ConstructAccountNumberField();
             _mainContainer.AddSubviews(new UIView[] { _nonLoginWidgets, _viewAccountNo });
             _mainContainer.Frame = new CGRect(0, 0, _controller.View.Frame.Width, (18 + 51) * 4);
+        }
+
+        void ConstructAccountNumberSelector()
+        {
+            _viewAccountNo = new UIView((new CGRect(18, 16, _controller.View.Frame.Width - 36, 51)))
+            {
+                BackgroundColor = UIColor.Clear
+            };
+
+            _lblAccountNoTitle = new UILabel
+            {
+                Frame = new CGRect(0, 0, _viewAccountNo.Frame.Width, 12),
+                AttributedText = new NSAttributedString("Common_AccountNo".Translate().ToUpper()
+                    , font: myTNBFont.MuseoSans11_300()
+                    , foregroundColor: myTNBColor.SilverChalice()
+                    , strokeWidth: 0),
+                TextAlignment = UITextAlignment.Left,
+                Hidden = true
+            };
+
+            _lblAccountNoError = new UILabel
+            {
+                Frame = new CGRect(0, 37, _viewAccountNo.Frame.Width, 14),
+                AttributedText = new NSAttributedString("Invalid_AccountLength".Translate()
+                    , font: myTNBFont.MuseoSans11_300()
+                    , foregroundColor: myTNBColor.Tomato()
+                    , strokeWidth: 0),
+                TextAlignment = UITextAlignment.Left,
+                Hidden = true
+            };
+
+            UIImageView imgViewAccountNumber = new UIImageView(new CGRect(0, 12, 24, 24))
+            {
+                Image = UIImage.FromBundle("Account-Number")
+            };
+            _viewAccountNo.AddSubview(imgViewAccountNumber);
+
+            _lblAccountNumber = new UILabel(new CGRect(30, 12, _viewAccountNo.Frame.Width - 30, 24))
+            {
+                Font = myTNBFont.MuseoSans16_300(),
+                TextColor = myTNBColor.TunaGrey(),
+                AttributedText = new NSAttributedString("Common_AccountNo".Translate()
+                , font: myTNBFont.MuseoSans16()
+                , foregroundColor: myTNBColor.SilverChalice()
+                , strokeWidth: 0
+            )
+            };
+            _viewAccountNo.AddSubview(_lblAccountNumber);
+
+            UIImageView imgDropDown = new UIImageView(new CGRect(_viewAccountNo.Frame.Width - 30, 12, 24, 24))
+            {
+                Image = UIImage.FromBundle("IC-Action-Dropdown")
+            };
+            _viewAccountNo.AddSubview(imgDropDown);
+
+            _viewLineAccountNo = new UIView((new CGRect(0, 36, _viewAccountNo.Frame.Width, 1)))
+            {
+                BackgroundColor = myTNBColor.PlatinumGrey()
+            };
+
+            _viewAccountNo.AddSubviews(new UIView[] { _lblAccountNoTitle, _lblAccountNoError
+                ,imgViewAccountNumber, _lblAccountNumber, _viewLineAccountNo });
+
+            _viewAccountNo?.AddGestureRecognizer(_controller.GetAccountNumberGestureRecognizer());
         }
 
         void ConstructAccountNumberField()
@@ -178,6 +244,17 @@ namespace myTNB.Home.Feedback.FeedbackEntry
                     && _textFieldHelper.ValidateAccountNumberLength(_txtFieldAccountNo.Text);
                 return _nonLoginCommonWidgets.IsValidEntry() && isValidAccountNo;
             }
+        }
+
+        public void SetSelectedAccountNumber()
+        {
+            var index = DataManager.DataManager.SharedInstance.CurrentSelectedFeedAccountNoIndex;
+            if (DataManager.DataManager.SharedInstance.AccountRecordsList?.d == null)
+            {
+                return;
+            }
+            _lblAccountNumber.Text = string.Format("{0} - {1}", DataManager.DataManager.SharedInstance.AccountRecordsList?.d[index]?.accNum
+                , DataManager.DataManager.SharedInstance.AccountRecordsList?.d[index]?.accDesc);
         }
     }
 }

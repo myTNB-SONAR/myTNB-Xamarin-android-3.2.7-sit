@@ -62,6 +62,10 @@ namespace myTNB
         public override void ViewDidAppear(bool animated)
         {
             base.ViewDidAppear(animated);
+            if (string.Compare(FeedbackID, "1") == 0)
+            {
+                _billRelatedFeedbackComponent.SetSelectedAccountNumber();
+            }
             if (string.Compare(FeedbackID, "3") == 0)
             {
                 _otherFeedbackComponent.SetFeedbackType();
@@ -486,6 +490,18 @@ namespace myTNB
                feedbackTypeVC._feedbackTypeList = DataManager.DataManager.SharedInstance.OtherFeedbackType;
                NavigationController.PushViewController(feedbackTypeVC, true);
            });
+        }
+
+        internal UITapGestureRecognizer GetAccountNumberGestureRecognizer()
+        {
+            return new UITapGestureRecognizer(() =>
+            {
+                UIStoryboard storyBoard = UIStoryboard.FromName("FeedbackTableView", null);
+                SelectAccountNoViewController selectAccountNoVC =
+                    storyBoard.InstantiateViewController("SelectAccountNoViewController") as SelectAccountNoViewController;
+                var navController = new UINavigationController(selectAccountNoVC);
+                NavigationController?.PushViewController(selectAccountNoVC, true);
+            });
         }
 
         internal void SetButtonEnable()
