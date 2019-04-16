@@ -158,8 +158,11 @@
 "Feedback_AttachPhotoMessage"="ATTACH PHOTO / SCREENSHOT (OPTIONAL)";
 "Feedback_Camera"="Camera";
 "Feedback_CameraRoll"="Camera Roll";
+"Feedback_CharacterLeft"="{0} character left";		/*Singular*/
+"Feedback_CharactersLeft"="{0} characters left";	/*Plural*/
 "Feedback_MaxFiles"="Max 2 files";
 "Feedback_Title"="Feedback";
+"Feedback_Type"="Feedback Type";
 
 /*Find Us*/
 "FindUs_Address"="Address";
@@ -205,6 +208,7 @@
 "Invalid_CVV"="Invalid CVV";
 "Invalid_Email"="Invalid email address";
 "Invalid_Feedback"="Invalid feedback";
+"Invalid_FeedbackType"="Invalid feedback type";
 "Invalid_Fullname"="Invalid full name";
 "Invalid_ICNo"="Invalid IC number";
 "Invalid_ICROCPassportNumber"="Invalid IC, ROC or Passport No.";

@@ -41,10 +41,12 @@ namespace myTNB
         UITapGestureRecognizer _tapImage;
 
         FeedbackTextView _feedbackTextView;
+        OtherFeedbackComponent _otherFeedbackComponent;
 
         public override void ViewDidLoad()
         {
             base.ViewDidLoad();
+            _otherFeedbackComponent = new OtherFeedbackComponent(this);
             SetHeader();
             AddScrollView();
             AddCTA();
@@ -61,6 +63,10 @@ namespace myTNB
         public override void ViewDidAppear(bool animated)
         {
             base.ViewDidAppear(animated);
+            if (string.Compare(FeedbackID, "3") == 0)
+            {
+                _otherFeedbackComponent.SetFeedbackType();
+            }
         }
 
         void SetHeader()
@@ -269,8 +275,7 @@ namespace myTNB
 
         void AddNonLoginCommonWidgets()
         {
-            NonLoginCommonWidget _nonLoginCommonWidgets = new NonLoginCommonWidget(View);
-            _nonLoginWidgets = _nonLoginCommonWidgets.GetCommonWidgets();
+            _nonLoginWidgets = _otherFeedbackComponent.GetComponent();
             _svContainer.AddSubview(_nonLoginWidgets);
         }
 
@@ -393,6 +398,7 @@ namespace myTNB
                 lblHint.Hidden = !lblError.Hidden || _feedbackTextView.Text.Length == 0;
                 lblTitle.Hidden = _feedbackTextView.Text.Length == 0;
                 //SubmitButtonEnable();
+                SetButtonEnable();
             };
             textView.ShouldBeginEditing = (sender) =>
             {
@@ -441,11 +447,11 @@ namespace myTNB
             };
         }
 
-        private void HandleFeedbackTextViewChange()
+        void HandleFeedbackTextViewChange()
         {
             int charCount = TNBGlobal.FeedbackMaxCharCount - _feedbackTextView.Text.Length;
-            string text = string.Format("{0} character{1} left", charCount, charCount != 1 ? "s" : string.Empty);
-            _lblFeedbackSubTitle.Text = text;
+            _lblFeedbackSubTitle.Text = string.Format(charCount > 1 ? "Feedback_CharactersLeft".Translate()
+                : "Feedback_CharacterLeft".Translate(), charCount);
         }
 
         nfloat GetCommentSectionYCoordinate()
@@ -458,6 +464,27 @@ namespace myTNB
         nfloat GetScrollHeight()
         {
             return (nfloat)((_viewUploadPhoto.Frame.GetMaxY() + (_btnSubmitContainer.Frame.Height + 50f)));
+        }
+
+        internal UITapGestureRecognizer GetFeedbackTypeGestureRecognizer()
+        {
+            return new UITapGestureRecognizer(() =>
+           {
+               UIStoryboard storyBoard = UIStoryboard.FromName("FeedbackTableView", null);
+               FeedbackTypeViewController feedbackTypeVC =
+                   storyBoard.InstantiateViewController("FeedbackTypeViewController") as FeedbackTypeViewController;
+               feedbackTypeVC._feedbackTypeList = DataManager.DataManager.SharedInstance.OtherFeedbackType;
+               NavigationController.PushViewController(feedbackTypeVC, true);
+           });
+        }
+
+        internal void SetButtonEnable()
+        {
+            bool isValidFeedback = _feedbackTextView.ValidateTextView(_feedbackTextView.Text, ANY_PATTERN) && _feedbackTextView.Text.Length != 0;
+            bool isValidFields = _otherFeedbackComponent.IsValidEntry();
+            bool isValid = isValidFields && isValidFeedback;
+            _btnSubmit.Enabled = isValid;
+            _btnSubmit.BackgroundColor = isValid ? myTNBColor.FreshGreen() : myTNBColor.SilverChalice();
         }
     }
 }

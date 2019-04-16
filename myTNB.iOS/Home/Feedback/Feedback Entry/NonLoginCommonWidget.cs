@@ -8,7 +8,10 @@ namespace myTNB.Home.Feedback.FeedbackEntry
     public class NonLoginCommonWidget
     {
         readonly TextFieldHelper _textFieldHelper = new TextFieldHelper();
+        Action _validateFunction;
+
         const string EMAIL_PATTERN = @"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$";
+        const string MOBILE_NO_PATTERN = @"^[0-9 \+]+$";
 
         UIView View, _viewFullName, _viewLineFullName, _viewMobileNo, _viewLineMobileNo
             , _viewEmail, _viewLineEmail, _parentView;
@@ -194,7 +197,7 @@ namespace myTNB.Home.Feedback.FeedbackEntry
             SetTextFieldEvents(_txtFieldFullName, _lblFullNameTitle, _lblFullNameError
                 , _viewLineFullName, null, TNBGlobal.CustomerNamePattern);
             SetTextFieldEvents(_txtFieldMobileNo, _lblMobileNoTitle, _lblMobileNoError
-                , _viewLineMobileNo, _lblMobileNoHint, TNBGlobal.MobileNoPattern);
+                , _viewLineMobileNo, _lblMobileNoHint, MOBILE_NO_PATTERN);
             SetTextFieldEvents(_txtFieldEmail, _lblEmailTitle, _lblEmailError
                 , _viewLineEmail, null, EMAIL_PATTERN);
         }
@@ -213,6 +216,7 @@ namespace myTNB.Home.Feedback.FeedbackEntry
                 lblHint.Hidden = !lblError.Hidden || textField.Text.Length == 0;
                 lblTitle.Hidden = textField.Text.Length == 0;
                 //SubmitButtonEnable();
+                Validate();
             };
             textField.EditingDidBegin += (sender, e) =>
             {
@@ -249,6 +253,7 @@ namespace myTNB.Home.Feedback.FeedbackEntry
                 lblHint.Hidden = true;
                 viewLine.BackgroundColor = isNormal ? myTNBColor.PlatinumGrey() : myTNBColor.Tomato();
                 textField.TextColor = isNormal ? myTNBColor.TunaGrey() : myTNBColor.Tomato();
+                Validate();
                 return true;
             };
             textField.ShouldReturn = (sender) =>
@@ -297,9 +302,24 @@ namespace myTNB.Home.Feedback.FeedbackEntry
             return _parentView;
         }
 
-        public bool IsEntryValid()
+        public bool IsValidEntry()
         {
-            return false;
+            bool isValidFullName = _textFieldHelper.ValidateTextField(_txtFieldFullName.Text
+                , TNBGlobal.CustomerNamePattern) && !string.IsNullOrWhiteSpace(_txtFieldFullName.Text);
+            bool isValidMobileNo = _textFieldHelper.ValidateTextField(_txtFieldMobileNo.Text, MOBILE_NO_PATTERN)
+                                                   && _textFieldHelper.ValidateMobileNumberLength(_txtFieldMobileNo.Text);
+            bool isValidEmail = _textFieldHelper.ValidateTextField(_txtFieldEmail.Text, EMAIL_PATTERN);
+            return isValidFullName && isValidMobileNo && isValidEmail;
+        }
+
+        public void SetValidationMethod(Action fn)
+        {
+            _validateFunction = fn;
+        }
+
+        void Validate()
+        {
+            _validateFunction?.Invoke();
         }
     }
 }
