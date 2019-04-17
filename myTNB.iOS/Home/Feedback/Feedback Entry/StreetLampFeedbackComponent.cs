@@ -271,6 +271,7 @@ namespace myTNB.Home.Feedback.FeedbackEntry
                 lblHint.Hidden = lblError.Hidden ? textField.Text.Length == 0 : true;
                 lblTitle.Hidden = textField.Text.Length == 0;
                 //SubmitButtonEnable();
+                _controller.SetButtonEnable();
             };
             textField.EditingDidBegin += (sender, e) =>
             {
@@ -306,7 +307,7 @@ namespace myTNB.Home.Feedback.FeedbackEntry
                 lblHint.Hidden = true;
                 viewLine.BackgroundColor = isNormal ? myTNBColor.PlatinumGrey() : myTNBColor.Tomato();
                 textField.TextColor = isNormal ? myTNBColor.TunaGrey() : myTNBColor.Tomato();
-
+                _controller.SetButtonEnable();
                 return true;
             };
             textField.ShouldReturn = (sender) =>
@@ -449,11 +450,18 @@ namespace myTNB.Home.Feedback.FeedbackEntry
         {
             if (_controller.IsLoggedIn)
             {
-                return true;
+                return _textFieldHelper.ValidateTextField(_txtFieldLocation.Text, ANY_PATTERN)
+                    && _txtFieldLocation.Text.Length != 0
+                    && _textFieldHelper.ValidateTextField(_txtFieldPole.Text, ANY_PATTERN)
+                    && _txtFieldPole.Text.Length != 0;
             }
             else
             {
-                return _feedbackCommonWidgets.IsValidEntry();
+                bool isValid = _textFieldHelper.ValidateTextField(_txtFieldLocation.Text, ANY_PATTERN)
+                    && _txtFieldLocation.Text.Length != 0
+                    && _textFieldHelper.ValidateTextField(_txtFieldPole.Text, ANY_PATTERN)
+                    && _txtFieldPole.Text.Length != 0;
+                return _feedbackCommonWidgets.IsValidEntry() && isValid;
             }
         }
     }
