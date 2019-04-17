@@ -30,16 +30,63 @@
             android:textColor="@color/white"
             android:textSize="12sp" />
 
+            <LinearLayout
+        android:id="@+id/notificationSelectAllHeader"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+            android:background="@color/white">
+
+        <LinearLayout
+            android:id="@+id/notificationSelectAll"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingLeft="10dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp">
+
+
+            <CheckBox
+                android:id="@+id/checkBox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:checked="false"
+                android:text=""
+                android:buttonTint="@color/material_grey_600"/>
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Select All" />
+
+        </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/material_grey_600"/>
+    </LinearLayout>
+
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <ListView
+            <!-- <ListView
                 android:id="@+id/notification_listview"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@color/white"
-                android:visibility="visible" />
+                android:visibility="visible" /> -->
+
+            <android.support.v7.widget.RecyclerView
+              android:id="@+id/notification_recyclerView"
+              android:scrollbars="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/white"/>
 
 
             <LinearLayout

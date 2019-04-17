@@ -23,21 +23,25 @@ using Android.Runtime;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.Utils.Custom.ProgressDialog;
 using System.Runtime;
+using Android.Support.V7.Widget;
 
 namespace myTNB_Android.Src.Notifications.Activity
 {
     [Activity(Label = "@string/notification_activity_title"
-      //, MainLauncher = true
+              //, MainLauncher = true
               , Icon = "@drawable/ic_launcher"
       , ScreenOrientation = ScreenOrientation.Portrait
       , Theme = "@style/Theme.Notification")]
-    public class NotificationActivity : BaseToolbarAppCompatActivity  , NotificationContract.IView
+    public class NotificationActivity : BaseToolbarAppCompatActivity, NotificationContract.IView
     {
         [BindView(Resource.Id.rootView)]
         CoordinatorLayout rootView;
 
-        [BindView(Resource.Id.notification_listview)]
-        ListView notificationListView;
+        // [BindView(Resource.Id.notification_listview)]`
+        // ListView notificationListView;
+
+        [BindView(Resource.Id.notification_recyclerView)]
+        RecyclerView notificationRecyclerView;
 
         [BindView(Resource.Id.txt_notification_name)]
         TextView txtNotificationName;
@@ -48,12 +52,13 @@ namespace myTNB_Android.Src.Notifications.Activity
         [BindView(Resource.Id.emptyLayout)]
         LinearLayout emptyLayout;
 
-        NotificationAdapter notificationAdapter;
+        //NotificationAdapter notificationAdapter;
+        NotificationRecyclerAdapter notificationRecyclerAdapter;
 
         NotificationContract.IUserActionsListener userActionsListener;
         NotificationPresenter mPresenter;
 
-        MaterialDialog mProgressDialog , mQueryProgressDialog;
+        MaterialDialog mProgressDialog, mQueryProgressDialog;
         private LoadingOverlay loadingOverlay;
 
         public bool IsActive()
@@ -76,7 +81,7 @@ namespace myTNB_Android.Src.Notifications.Activity
             return true;
         }
         [OnClick(Resource.Id.txt_notification_name)]
-        void OnNotificationFilter(object sender , EventArgs eventArgs)
+        void OnNotificationFilter(object sender, EventArgs eventArgs)
         {
             this.userActionsListener.OnShowNotificationFilter();
         }
@@ -84,76 +89,91 @@ namespace myTNB_Android.Src.Notifications.Activity
         public void ShowNotificationFilter()
         {
             Intent notificationFilter = new Intent(this, typeof(NotificationFilterActivity));
-            StartActivityForResult(notificationFilter , Constants.NOTIFICATION_FILTER_REQUEST_CODE);
+            StartActivityForResult(notificationFilter, Constants.NOTIFICATION_FILTER_REQUEST_CODE);
         }
 
         public void ShowNotificationsList(List<UserNotificationData> userNotificationList)
         {
-            notificationAdapter.AddAll(userNotificationList);
+            notificationRecyclerAdapter.AddAll(userNotificationList);
         }
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
 
-            try {
-
-            mProgressDialog = new MaterialDialog.Builder(this)
-                .Title(GetString(Resource.String.notification_activity_progress_title))
-                .Content(GetString(Resource.String.notification_activity_progress_content))
-                .Cancelable(false)
-                .Progress(true, 0)
-                .Build();
-
-            mQueryProgressDialog = new MaterialDialog.Builder(this)
-                .Title(GetString(Resource.String.notification_activity_query_progress_title))
-                .Content(GetString(Resource.String.notification_activity_query_progress_content))
-                .Cancelable(false)
-                .Progress(true, 0)
-                .Build();
-
-            TextViewUtils.SetMuseoSans500Typeface(txtNotificationName);
-            TextViewUtils.SetMuseoSans300Typeface(txtNotificationsContent);
-
-            this.mPresenter = new NotificationPresenter(this);
-            notificationAdapter = new NotificationAdapter(this, true);
-            notificationListView.Adapter = notificationAdapter;
-            notificationListView.EmptyView = emptyLayout;
-
-            int count = UserNotificationEntity.Count();
-            if (count == 0)
+            try
             {
-                ME.Leolin.Shortcutbadger.ShortcutBadger.RemoveCount(this.ApplicationContext);
-            }
-            else
-            {
-                ME.Leolin.Shortcutbadger.ShortcutBadger.ApplyCount(this.ApplicationContext, count);
-            }
+
+                mProgressDialog = new MaterialDialog.Builder(this)
+                    .Title(GetString(Resource.String.notification_activity_progress_title))
+                    .Content(GetString(Resource.String.notification_activity_progress_content))
+                    .Cancelable(false)
+                    .Progress(true, 0)
+                    .Build();
+
+                mQueryProgressDialog = new MaterialDialog.Builder(this)
+                    .Title(GetString(Resource.String.notification_activity_query_progress_title))
+                    .Content(GetString(Resource.String.notification_activity_query_progress_content))
+                    .Cancelable(false)
+                    .Progress(true, 0)
+                    .Build();
+
+                TextViewUtils.SetMuseoSans500Typeface(txtNotificationName);
+                TextViewUtils.SetMuseoSans300Typeface(txtNotificationsContent);
+
+                this.mPresenter = new NotificationPresenter(this);
+                //notificationAdapter = new NotificationAdapter(this, true);
+                //notificationListView.Adapter = notificationAdapter;
+                //notificationListView.EmptyView = emptyLayout;
+                LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+                notificationRecyclerView.SetLayoutManager(layoutManager);
+
+                DividerItemDecoration mDividerItemDecoration = new DividerItemDecoration(notificationRecyclerView.Context,
+                DividerItemDecoration.Vertical);
+                notificationRecyclerView.AddItemDecoration(mDividerItemDecoration);
+
+                notificationRecyclerAdapter = new NotificationRecyclerAdapter(this, true);
+                notificationRecyclerView.SetAdapter(notificationRecyclerAdapter);
 
 
-            this.userActionsListener.Start();
 
-            Bundle extras = Intent.Extras;
-            if (extras != null && extras.ContainsKey(Constants.HAS_NOTIFICATION) && extras.GetBoolean(Constants.HAS_NOTIFICATION))
-            {
-                this.userActionsListener.QueryOnLoad(this.DeviceId());
-            }
-        } catch(Exception e) {
-                Utility.LoggingNonFatalError(e);
-            }
+                int count = UserNotificationEntity.Count();
+                if (count == 0)
+                {
+                    ME.Leolin.Shortcutbadger.ShortcutBadger.RemoveCount(this.ApplicationContext);
+                }
+                else
+                {
+                    ME.Leolin.Shortcutbadger.ShortcutBadger.ApplyCount(this.ApplicationContext, count);
+                }
 
-        }
-        [OnItemClick(Resource.Id.notification_listview)]
-        void OnItemClick(object sender , AbsListView.ItemClickEventArgs args)
-        {
-            try {
-            UserNotificationData data = notificationAdapter.GetItemObject(args.Position);
-            this.userActionsListener.OnSelectedNotificationItem(data , args.Position);
+
+                this.userActionsListener.Start();
+
+                Bundle extras = Intent.Extras;
+                if (extras != null && extras.ContainsKey(Constants.HAS_NOTIFICATION) && extras.GetBoolean(Constants.HAS_NOTIFICATION))
+                {
+                    this.userActionsListener.QueryOnLoad(this.DeviceId());
+                }
             }
             catch (Exception e)
             {
                 Utility.LoggingNonFatalError(e);
             }
+
+        }
+        //[OnItemClick(Resource.Id.notification_listview)]
+        void OnItemClick(object sender, AbsListView.ItemClickEventArgs args)
+        {
+            //try
+            //{
+            //    UserNotificationData data = notificationAdapter.GetItemObject(args.Position);
+            //    this.userActionsListener.OnSelectedNotificationItem(data, args.Position);
+            //}
+            //catch (Exception e)
+            //{
+            //    Utility.LoggingNonFatalError(e);
+            //}
         }
 
         public void ShowProgress()
@@ -162,15 +182,18 @@ namespace myTNB_Android.Src.Notifications.Activity
             //{
             //    mProgressDialog.Show();
             //}
-            try {
-            if (loadingOverlay != null && loadingOverlay.IsShowing)
+            try
             {
-                loadingOverlay.Dismiss();
-            }
+                if (loadingOverlay != null && loadingOverlay.IsShowing)
+                {
+                    loadingOverlay.Dismiss();
+                }
 
-            loadingOverlay = new LoadingOverlay(this, Resource.Style.LoadingOverlyDialogStyle);
-            loadingOverlay.Show();
-        } catch(Exception e) {
+                loadingOverlay = new LoadingOverlay(this, Resource.Style.LoadingOverlyDialogStyle);
+                loadingOverlay.Show();
+            }
+            catch (Exception e)
+            {
                 Utility.LoggingNonFatalError(e);
             }
         }
@@ -181,12 +204,15 @@ namespace myTNB_Android.Src.Notifications.Activity
             //{
             //    mProgressDialog.Dismiss();
             //}
-            try {
-            if (loadingOverlay != null && loadingOverlay.IsShowing)
+            try
             {
-                loadingOverlay.Dismiss();
+                if (loadingOverlay != null && loadingOverlay.IsShowing)
+                {
+                    loadingOverlay.Dismiss();
+                }
             }
-        } catch(Exception e) {
+            catch (Exception e)
+            {
                 Utility.LoggingNonFatalError(e);
             }
         }
@@ -253,9 +279,10 @@ namespace myTNB_Android.Src.Notifications.Activity
 
         protected override void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
         {
-            try {
-            base.OnActivityResult(requestCode, resultCode, data);
-            this.userActionsListener.OnActivityResult(requestCode , resultCode , data);
+            try
+            {
+                base.OnActivityResult(requestCode, resultCode, data);
+                this.userActionsListener.OnActivityResult(requestCode, resultCode, data);
             }
             catch (Exception e)
             {
@@ -263,27 +290,31 @@ namespace myTNB_Android.Src.Notifications.Activity
             }
         }
 
-        public void UpdateIsReadNotificationItem(int position , bool isRead )
+        public void UpdateIsReadNotificationItem(int position, bool isRead)
         {
-            try {
-            UserNotificationData userNotificationData = notificationAdapter.GetItemObject(position);
-            userNotificationData.IsRead = isRead;
-            notificationAdapter.Update(position, userNotificationData);
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
+            //try
+            //{
+            //    UserNotificationData userNotificationData = notificationAdapter.GetItemObject(position);
+            //    userNotificationData.IsRead = isRead;
+            //    notificationAdapter.Update(position, userNotificationData);
+            //}
+            //catch (Exception e)
+            //{
+            //    Utility.LoggingNonFatalError(e);
+            //}
         }
 
         public void UpdateIsDeleteNotificationItem(int position, bool isDelete)
         {
-            try {
-            UserNotificationData userNotificationData = notificationAdapter.GetItemObject(position);
-            notificationAdapter.Remove(position);
-        } catch(Exception e) {
-                Utility.LoggingNonFatalError(e);
-            }
+            //try
+            //{
+            //    UserNotificationData userNotificationData = notificationAdapter.GetItemObject(position);
+            //    notificationAdapter.Remove(position);
+            //}
+            //catch (Exception e)
+            //{
+            //    Utility.LoggingNonFatalError(e);
+            //}
 
         }
 
@@ -308,14 +339,17 @@ namespace myTNB_Android.Src.Notifications.Activity
 
         public void ClearAdapter()
         {
-            notificationAdapter.Clear();
+            //notificationAdapter.Clear();
         }
 
         public void ShowNotificationFilterName(string filterName)
         {
-            if (!string.IsNullOrEmpty(filterName)) {
-                txtNotificationName.Text = filterName;    
-            } else {
+            if (!string.IsNullOrEmpty(filterName))
+            {
+                txtNotificationName.Text = filterName;
+            }
+            else
+            {
                 txtNotificationName.Text = "";
             }
 
@@ -352,15 +386,18 @@ namespace myTNB_Android.Src.Notifications.Activity
             //{
             //    mQueryProgressDialog.Show();
             //}
-            try {
-            if (loadingOverlay != null && loadingOverlay.IsShowing)
+            try
             {
-                loadingOverlay.Dismiss();
-            }
+                if (loadingOverlay != null && loadingOverlay.IsShowing)
+                {
+                    loadingOverlay.Dismiss();
+                }
 
-            loadingOverlay = new LoadingOverlay(this, Resource.Style.LoadingOverlyDialogStyle);
-            loadingOverlay.Show();
-        } catch(Exception e) {
+                loadingOverlay = new LoadingOverlay(this, Resource.Style.LoadingOverlyDialogStyle);
+                loadingOverlay.Show();
+            }
+            catch (Exception e)
+            {
                 Utility.LoggingNonFatalError(e);
             }
         }
@@ -377,7 +414,9 @@ namespace myTNB_Android.Src.Notifications.Activity
                 {
                     loadingOverlay.Dismiss();
                 }
-            } catch(Exception e) {
+            }
+            catch (Exception e)
+            {
                 Utility.LoggingNonFatalError(e);
             }
         }
