@@ -155,6 +155,8 @@
 "Error_VerifyDevice" = "Cannot verify device. Please try again.";
 
 /*Feedback*/
+"Feedback_AccessMessage"="Turn On Location Services to allow \"myTNB\" to determine your location";
+"Feedback_AccessTitle"="Location Access is not allowed";
 "Feedback_AttachPhotoMessage"="ATTACH PHOTO / SCREENSHOT (OPTIONAL)";
 "Feedback_Camera"="Camera";
 "Feedback_CameraRoll"="Camera Roll";
@@ -162,7 +164,11 @@
 "Feedback_CharactersLeft"="{0} characters left";	/*Plural*/
 "Feedback_FaultyLampMessage"="You may only report faulty TNB street lamps. Look out for TNB’s blue and red or the logo as shown above. Use the pole no. (e.g. 17493 8E 1) to specify the lamp.";
 "Feedback_FaultyLampTitle"="Reporting faulty street lamps?";
+"Feedback_Location"="Location / Street Name";
 "Feedback_MaxFiles"="Max 2 files";
+"Feedback_PoleNumber"="Pole No.";
+"Feedback_GoToSettings"="Go to Settings";
+"Feedback_State"="State";
 "Feedback_Title"="Feedback";
 "Feedback_Type"="Feedback Type";
 
@@ -214,6 +220,7 @@
 "Invalid_Fullname"="Invalid full name";
 "Invalid_ICNo"="Invalid IC number";
 "Invalid_ICROCPassportNumber"="Invalid IC, ROC or Passport No.";
+"Invalid_Location"="Invalid location / Street name";
 "Invalid_MaidenName"="Invalid maiden name";
 "Invalid_MobileNumber"="Invalid mobile number";
 "Invalid_NameOnCard"="Invalid Name";
@@ -222,7 +229,9 @@
 "Invalid_Password"="Password must have at least 8 alphanumeric characters.";
 "Invalid_PayAmount" = "Minimum amount cannot be lower than RM1.00";
 "Invalid_Pin"="Invalid PIN";
+"Invalid_PoleNumber"="Invalid pole number";
 "Invalid_ROCNo"="Invalid ROC No.";
+"Invalid_State"="Invalid state";
 
 /*Login*/
 "Login_AccountLogin"="myTNB Account Login";

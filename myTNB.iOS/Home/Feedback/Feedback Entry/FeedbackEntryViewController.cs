@@ -68,7 +68,11 @@ namespace myTNB
             {
                 _billRelatedFeedbackComponent.SetSelectedAccountNumber();
             }
-            if (string.Compare(FeedbackID, "3") == 0)
+            else if (string.Compare(FeedbackID, "2") == 0)
+            {
+                _streetLampRelatedFeedbackComponent.SetState();
+            }
+            else if (string.Compare(FeedbackID, "3") == 0)
             {
                 _otherFeedbackComponent.SetFeedbackType();
             }
@@ -503,6 +507,19 @@ namespace myTNB
                     storyBoard.InstantiateViewController("SelectAccountNoViewController") as SelectAccountNoViewController;
                 var navController = new UINavigationController(selectAccountNoVC);
                 NavigationController?.PushViewController(selectAccountNoVC, true);
+            });
+        }
+
+        internal UITapGestureRecognizer GetStateGestureRecognizer()
+        {
+            return new UITapGestureRecognizer(() =>
+            {
+                UIStoryboard storyBoard = UIStoryboard.FromName("FeedbackTableView", null);
+                SelectStateViewController selectStateVC =
+                    storyBoard.InstantiateViewController("SelectStateViewController") as SelectStateViewController;
+                selectStateVC._statesForFeedbackList = DataManager.DataManager.SharedInstance.StatesForFeedBack;
+                selectStateVC.OnSelect = _streetLampRelatedFeedbackComponent.ValidateState;
+                NavigationController.PushViewController(selectStateVC, true);
             });
         }
 

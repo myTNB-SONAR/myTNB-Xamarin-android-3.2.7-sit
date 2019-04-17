@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Diagnostics;
 using CoreGraphics;
+using CoreLocation;
 using Foundation;
+using Location;
 using UIKit;
 
 namespace myTNB.Home.Feedback.FeedbackEntry
@@ -8,9 +11,19 @@ namespace myTNB.Home.Feedback.FeedbackEntry
     public class StreetLampFeedbackComponent
     {
         readonly FeedbackEntryViewController _controller;
+        readonly TextFieldHelper _textFieldHelper = new TextFieldHelper();
+
+        const string ANY_PATTERN = @".*";
+
+        LocationManager _locManager { get; set; }
 
         NonLoginCommonWidget _nonLoginCommonWidgets;
-        UIView _mainContainer, _bannerContainer, _nonLoginWidgets;
+        UIView _mainContainer, _bannerContainer, _nonLoginWidgets, _viewState, _viewLineState
+            , _detailsContainer, _viewLocation, _viewLineLocation, _viewPole, _viewLinePole;
+        UILabel _lblStateTitle, _lblStateError, _lblState, _lblLocationTitle, _lblLocationError
+            , _lblPoleTitle, _lblPoleError;
+        UIImageView imgViewState;
+        UITextField _txtFieldLocation, _txtFieldPole;
 
         nfloat imgViewFaultyLampHeight;
 
@@ -23,6 +36,10 @@ namespace myTNB.Home.Feedback.FeedbackEntry
         {
             _mainContainer = new UIView(new CGRect(0, 0, _controller.View.Frame.Width, 0));
             ConstructBanner();
+            _detailsContainer = new UIView(new CGRect(0, _bannerContainer.Frame.Height
+                , _controller.View.Frame.Width, (18 + 51) * 3));
+            ConstructDetailFields();
+            _mainContainer.AddSubview(_bannerContainer);
             if (_controller.IsLoggedIn)
             {
                 ConstructLoginComponent();
@@ -35,8 +52,9 @@ namespace myTNB.Home.Feedback.FeedbackEntry
 
         void ConstructLoginComponent()
         {
-            _mainContainer.AddSubviews(new UIView[] { _bannerContainer });
-            _mainContainer.Frame = new CGRect(0, 0, _controller.View.Frame.Width, _bannerContainer.Frame.Height); //(18 + 51));
+            _mainContainer.AddSubviews(new UIView[] { _detailsContainer });
+            _mainContainer.Frame = new CGRect(0, 0, _controller.View.Frame.Width
+                , _bannerContainer.Frame.Height + _detailsContainer.Frame.Height); //(18 + 51));
         }
 
         void ConstructNonLoginComponent()
@@ -44,15 +62,15 @@ namespace myTNB.Home.Feedback.FeedbackEntry
             _nonLoginCommonWidgets = new NonLoginCommonWidget(_controller.View);
             _nonLoginWidgets = _nonLoginCommonWidgets.GetCommonWidgets();
             _nonLoginCommonWidgets.SetValidationMethod(_controller.SetButtonEnable);
-            _mainContainer.AddSubviews(new UIView[] { _bannerContainer, _nonLoginWidgets });
-            _mainContainer.Frame = new CGRect(0, 0, _controller.View.Frame.Width, ((18 + 51) * 3) + _bannerContainer.Frame.Height);
+            _mainContainer.AddSubviews(new UIView[] { _nonLoginWidgets, _detailsContainer });
+            _mainContainer.Frame = new CGRect(0, 0, _controller.View.Frame.Width, _nonLoginWidgets.Frame.Height + _bannerContainer.Frame.Height + _bannerContainer.Frame.Height);
         }
 
         void ConstructBanner()
         {
             //Photo Header
             imgViewFaultyLampHeight = (_controller.View.Frame.Width * 121) / 320;
-            _bannerContainer = new UIView(new CGRect(0, 0, _controller.View.Frame.Width, (imgViewFaultyLampHeight + 23 + 18 + 47 + 78)));
+            _bannerContainer = new UIView(new CGRect(0, 0, _controller.View.Frame.Width, (imgViewFaultyLampHeight + 47 + 78)));
             UIImageView imgViewFaultyLamp = new UIImageView(new CGRect(0, 0, _controller.View.Frame.Width, imgViewFaultyLampHeight))
             {
                 Image = UIImage.FromBundle("Faulty-TNB-Lamp")
@@ -91,6 +109,348 @@ namespace myTNB.Home.Feedback.FeedbackEntry
             txtViewDetails.TextContainerInset = new UIEdgeInsets(0, -4, 0, 0);
 
             _bannerContainer.AddSubviews(new UIView[] { imgViewFaultyLamp, lblReport, txtViewDetails });
+        }
+
+        void ConstructDetailFields()
+        {
+            //State
+            _viewState = new UIView((new CGRect(18, 16, _controller.View.Frame.Width - 36, 51)))
+            {
+                BackgroundColor = UIColor.Clear
+            };
+
+            _lblStateTitle = new UILabel
+            {
+                Frame = new CGRect(0, 0, _viewState.Frame.Width, 12),
+                AttributedText = new NSAttributedString("Feedback_State".Translate().ToUpper()
+                    , font: myTNBFont.MuseoSans11_300()
+                    , foregroundColor: myTNBColor.SilverChalice()
+                    , strokeWidth: 0),
+                TextAlignment = UITextAlignment.Left,
+                Hidden = true
+            };
+
+            _lblStateError = new UILabel
+            {
+                Frame = new CGRect(0, 37, _viewState.Frame.Width, 14),
+                AttributedText = new NSAttributedString("Invalid_State".Translate()
+                    , font: myTNBFont.MuseoSans11_300()
+                    , foregroundColor: myTNBColor.Tomato()
+                    , strokeWidth: 0),
+                TextAlignment = UITextAlignment.Left,
+                Hidden = true
+            };
+
+            imgViewState = new UIImageView(new CGRect(0, 12, 24, 24))
+            {
+                Image = UIImage.FromBundle("IC-FieldCoordinates")
+            };
+
+            _lblState = new UILabel(new CGRect(30, 12, _viewState.Frame.Width, 24))
+            {
+                AttributedText = new NSAttributedString("Feedback_State".Translate()
+                    , font: myTNBFont.MuseoSans18_300()
+                    , foregroundColor: myTNBColor.SilverChalice()
+                    , strokeWidth: 0)
+            };
+
+            UIImageView imgDropDown = new UIImageView(new CGRect(_viewState.Frame.Width - 30, 12, 24, 24))
+            {
+                Image = UIImage.FromBundle("IC-Action-Dropdown")
+            };
+
+            _viewLineState = new UIView((new CGRect(0, 36, _viewState.Frame.Width, 1)))
+            {
+                BackgroundColor = myTNBColor.PlatinumGrey()
+            };
+
+            _viewState.AddSubviews(new UIView[] { _lblStateTitle, _lblStateError, imgViewState
+                , _lblState, imgDropDown, _viewLineState });
+            _viewState.AddGestureRecognizer(_controller.GetStateGestureRecognizer());
+
+            //Location Street/Name
+            _viewLocation = new UIView((new CGRect(18, 83, _controller.View.Frame.Width - 36, 51)))
+            {
+                BackgroundColor = UIColor.Clear
+            };
+
+            _lblLocationTitle = new UILabel
+            {
+                Frame = new CGRect(0, 0, _viewLocation.Frame.Width, 12),
+                AttributedText = new NSAttributedString("Feedback_Location".Translate().ToUpper()
+                    , font: myTNBFont.MuseoSans11_300()
+                    , foregroundColor: myTNBColor.SilverChalice()
+                    , strokeWidth: 0),
+                TextAlignment = UITextAlignment.Left,
+                Hidden = true
+            };
+
+            _lblLocationError = new UILabel
+            {
+                Frame = new CGRect(0, 37, _viewLocation.Frame.Width, 14),
+                AttributedText = new NSAttributedString("Invalid_Location".Translate()
+                    , font: myTNBFont.MuseoSans11_300()
+                    , foregroundColor: myTNBColor.Tomato()
+                    , strokeWidth: 0),
+                TextAlignment = UITextAlignment.Left,
+                Hidden = true
+            };
+
+            _txtFieldLocation = new UITextField
+            {
+                Frame = new CGRect(0, 12, _viewLocation.Frame.Width, 24),
+                AttributedPlaceholder = new NSAttributedString("Feedback_Location".Translate()
+                    , font: myTNBFont.MuseoSans18_300()
+                    , foregroundColor: myTNBColor.SilverChalice()
+                    , strokeWidth: 0),
+                TextColor = myTNBColor.TunaGrey()
+            };
+
+            _viewLineLocation = new UIView((new CGRect(0, 36, _viewLocation.Frame.Width, 1)))
+            {
+                BackgroundColor = myTNBColor.PlatinumGrey()
+            };
+
+            _viewLocation.AddSubviews(new UIView[] { _lblLocationTitle, _lblLocationError
+                , _txtFieldLocation, _viewLineLocation });
+
+            //Pole Number
+            _viewPole = new UIView((new CGRect(18, 150, _controller.View.Frame.Width - 36, 51)))
+            {
+                BackgroundColor = UIColor.Clear
+            };
+
+            _lblPoleTitle = new UILabel
+            {
+                Frame = new CGRect(0, 0, _viewPole.Frame.Width, 12),
+                AttributedText = new NSAttributedString("Feedback_PoleNumber".Translate().ToUpper()
+                    , font: myTNBFont.MuseoSans11_300()
+                    , foregroundColor: myTNBColor.SilverChalice()
+                    , strokeWidth: 0),
+                TextAlignment = UITextAlignment.Left,
+                Hidden = true
+            };
+
+            _lblPoleError = new UILabel
+            {
+                Frame = new CGRect(0, 37, _viewPole.Frame.Width, 14),
+                AttributedText = new NSAttributedString("Invalid_PoleNumber".Translate()
+                    , font: myTNBFont.MuseoSans11_300()
+                    , foregroundColor: myTNBColor.Tomato()
+                    , strokeWidth: 0),
+                TextAlignment = UITextAlignment.Left,
+                Hidden = true
+            };
+
+            _txtFieldPole = new UITextField
+            {
+                Frame = new CGRect(0, 12, _viewPole.Frame.Width, 24),
+                AttributedPlaceholder = new NSAttributedString("Feedback_PoleNumber".Translate()
+                    , font: myTNBFont.MuseoSans18_300()
+                    , foregroundColor: myTNBColor.SilverChalice()
+                    , strokeWidth: 0),
+                TextColor = myTNBColor.TunaGrey()
+            };
+
+            _viewLinePole = new UIView((new CGRect(0, 36, _viewPole.Frame.Width, 1)))
+            {
+                BackgroundColor = myTNBColor.PlatinumGrey()
+            };
+
+            _viewPole.AddSubviews(new UIView[] { _lblPoleTitle, _lblPoleError, _txtFieldPole, _viewLinePole });
+            _detailsContainer.AddSubviews(new UIView[] { _viewState, _viewLocation, _viewPole });
+
+            _textFieldHelper.CreateTextFieldLeftView(_txtFieldLocation, "IC-FieldCoordinates");
+            CreateTextFieldRightView(_txtFieldLocation, "IC-Action-Location");
+            _textFieldHelper.CreateTextFieldLeftView(_txtFieldPole, "Account-Number");
+            SetTextFieldEvents(_txtFieldLocation, _lblLocationTitle
+                              , _lblLocationError, _viewLineLocation
+                              , null, ANY_PATTERN);
+            SetTextFieldEvents(_txtFieldPole, _lblPoleTitle
+                               , _lblPoleError, _viewLinePole
+                               , null, ANY_PATTERN);
+        }
+
+        internal void SetTextFieldEvents(UITextField textField, UILabel lblTitle
+                                         , UILabel lblError, UIView viewLine
+                                         , UILabel lblHint, string pattern)
+        {
+            if (lblHint == null)
+            {
+                lblHint = new UILabel();
+            }
+            _textFieldHelper.SetKeyboard(textField);
+            textField.EditingChanged += (sender, e) =>
+            {
+                UITextField txtField = sender as UITextField;
+                lblHint.Hidden = lblError.Hidden ? textField.Text.Length == 0 : true;
+                lblTitle.Hidden = textField.Text.Length == 0;
+                //SubmitButtonEnable();
+            };
+            textField.EditingDidBegin += (sender, e) =>
+            {
+                /*if (textField == _txtFieldMobileNo)
+                {
+                    if (textField.Text.Length == 0)
+                    {
+                        textField.Text += TNBGlobal.MobileNoPrefix;
+                    }
+                }*/
+                lblHint.Hidden = lblError.Hidden ? textField.Text.Length == 0 : true;
+                lblTitle.Hidden = textField.Text.Length == 0;
+                textField.LeftViewMode = UITextFieldViewMode.Never;
+                viewLine.BackgroundColor = myTNBColor.PowerBlue();
+            };
+            textField.ShouldEndEditing = (sender) =>
+            {
+                bool isValid = true;
+                bool isEmptyAllowed = true;
+                /*if (textField == _txtFieldMobileNo)
+                {
+                    if (textField.Text.Length < 4)
+                    {
+                        textField.Text = string.Empty;
+                    }
+                    isValid = _textFieldHelper.ValidateMobileNumberLength(textField.Text);
+                    isEmptyAllowed = false;
+                }*/
+                lblTitle.Hidden = textField.Text.Length == 0;
+                isValid = isValid && _textFieldHelper.ValidateTextField(textField.Text, pattern);
+                bool isNormal = isValid || (textField.Text.Length == 0 && isEmptyAllowed);
+                lblError.Hidden = isNormal;
+                lblHint.Hidden = true;
+                viewLine.BackgroundColor = isNormal ? myTNBColor.PlatinumGrey() : myTNBColor.Tomato();
+                textField.TextColor = isNormal ? myTNBColor.TunaGrey() : myTNBColor.Tomato();
+
+                return true;
+            };
+            textField.ShouldReturn = (sender) =>
+            {
+                /*if (textField == _txtFieldMobileNo)
+                {
+                    if (textField.Text.Length < 4)
+                    {
+                        textField.Text = string.Empty;
+                    }
+                }*/
+                sender.ResignFirstResponder();
+                return false;
+            };
+            textField.ShouldChangeCharacters += (txtField, range, replacementString) =>
+            {
+                /*if (txtField == _txtFieldMobileNo)
+                {
+                    bool isCharValid = _textFieldHelper.ValidateTextField(replacementString, TNBGlobal.MobileNoPattern);
+                    if (!isCharValid)
+                        return false;
+
+                    if (range.Location >= TNBGlobal.MobileNoPrefix.Length)
+                    {
+                        string content = _textFieldHelper.TrimAllSpaces(((UITextField)txtField).Text);
+                        var count = content.Length + replacementString.Length - range.Length;
+                        return count <= TNBGlobal.MobileNumberMaxCharCount;
+                    }
+                    return false;
+                }*/
+                return true;
+            };
+            textField.EditingDidEnd += (sender, e) =>
+            {
+                if (textField.Text.Length == 0)
+                    textField.LeftViewMode = UITextFieldViewMode.UnlessEditing;
+            };
+        }
+
+        public void ValidateState()
+        {
+            _lblStateError.Hidden = DataManager.DataManager.SharedInstance.CurrentSelectedStateForFeedbackIndex > -1;
+            _viewLineState.BackgroundColor = DataManager.DataManager.SharedInstance.CurrentSelectedStateForFeedbackIndex > -1
+                ? myTNBColor.PlatinumGrey() : myTNBColor.Tomato();
+        }
+
+        void CreateTextFieldRightView(UITextField textField, String imageName)
+        {
+            var rightView = new UIView((new CGRect(0, 0, 24, 24)));
+
+            var imgForRightView = new UIImageView(UIImage.FromBundle(imageName));
+            rightView.AddSubview(imgForRightView);
+
+            rightView.Frame = new CGRect(rightView.Frame.X, rightView.Frame.Y, rightView.Frame.Width, rightView.Frame.Height);
+            rightView.ContentMode = UIViewContentMode.Center;
+            textField.RightView = rightView;
+            textField.RightViewMode = UITextFieldViewMode.Always;
+
+            UITapGestureRecognizer tapLocation = new UITapGestureRecognizer(() =>
+            {
+                _locManager = new LocationManager();
+                _locManager.StartLocationUpdates();
+                var isFirstCall = false;
+                _locManager.LocMgr.AuthorizationChanged += (sender, e) =>
+                {
+
+                    if (e.Status == CLAuthorizationStatus.Authorized
+                        || e.Status == CLAuthorizationStatus.AuthorizedWhenInUse
+                        || e.Status == CLAuthorizationStatus.AuthorizedAlways)
+                    {
+                        CLLocation location = _locManager.LocMgr.Location;
+
+                        CLGeocoder geoCoder = new CLGeocoder();
+                        geoCoder.ReverseGeocodeLocation(location, (CLPlacemark[] placemarks, NSError error) =>
+                        {
+                            var reverseGeocodedAddress = string.Format("{0} {1} {2} {3} {4}"
+                                , placemarks[0].Thoroughfare
+                                , placemarks[0].Locality
+                                , placemarks[0].AdministrativeArea
+                                , placemarks[0].PostalCode
+                                , placemarks[0].Country);
+                            _txtFieldLocation.Text = reverseGeocodedAddress;
+                            //SubmitButtonEnable();
+                        });
+                    }
+                    else if (e.Status == CLAuthorizationStatus.NotDetermined)
+                    {
+                        _locManager.LocMgr.RequestWhenInUseAuthorization();
+                        isFirstCall = true;
+                    }
+                    else if (e.Status == CLAuthorizationStatus.Denied && !isFirstCall)
+                    {
+                        var alertTitle = "Feedback_AccessTitle".Translate();
+                        var alertMessage = "Feedback_AccessMessage".Translate();
+                        var okCancelAlertController = UIAlertController.Create(alertTitle, alertMessage
+                            , UIAlertControllerStyle.Alert);
+                        okCancelAlertController.AddAction(UIAlertAction.Create("Common_Cancel".Translate()
+                            , UIAlertActionStyle.Cancel, alert => Debug.WriteLine("Cancel was clicked")));
+                        okCancelAlertController.AddAction(UIAlertAction.Create("Feedback_GoToSettings".Translate()
+                            , UIAlertActionStyle.Default, alert => NavigateToSettings()));
+                        _controller.PresentViewController(okCancelAlertController, true, null);
+                    }
+                };
+            });
+            rightView.AddGestureRecognizer(tapLocation);
+        }
+
+        void NavigateToSettings()
+        {
+            UIApplication.SharedApplication.OpenUrl(new NSUrl(UIApplication.OpenSettingsUrlString));
+        }
+
+        public void SetState()
+        {
+            var currIndex = DataManager.DataManager.SharedInstance.CurrentSelectedStateForFeedbackIndex;
+            if (currIndex > -1)
+            {
+                if (DataManager.DataManager.SharedInstance.StatesForFeedBack != null
+                    && currIndex < DataManager.DataManager.SharedInstance.StatesForFeedBack?.Count)
+                {
+                    _lblState.Text = DataManager.DataManager.SharedInstance.StatesForFeedBack[currIndex].StateName;
+                    _lblStateTitle.Hidden = false;
+                    imgViewState.Hidden = true;
+                    var frame = new CGRect();
+                    frame = _lblState.Frame;
+                    frame.X = 0;
+                    _lblState.Frame = frame;
+                }
+            }
         }
 
         public UIView GetComponent()
