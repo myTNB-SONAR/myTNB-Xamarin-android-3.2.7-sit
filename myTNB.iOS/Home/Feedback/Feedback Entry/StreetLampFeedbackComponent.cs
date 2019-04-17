@@ -4,6 +4,7 @@ using CoreGraphics;
 using CoreLocation;
 using Foundation;
 using Location;
+using myTNB.Enums;
 using UIKit;
 
 namespace myTNB.Home.Feedback.FeedbackEntry
@@ -17,8 +18,8 @@ namespace myTNB.Home.Feedback.FeedbackEntry
 
         LocationManager _locManager { get; set; }
 
-        FeedbackCommonWidgets _nonLoginCommonWidgets;
-        UIView _mainContainer, _bannerContainer, _nonLoginWidgets, _viewState, _viewLineState
+        FeedbackCommonWidgets _feedbackCommonWidgets;
+        UIView _mainContainer, _bannerContainer, _commonWidgets, _viewState, _viewLineState
             , _detailsContainer, _viewLocation, _viewLineLocation, _viewPole, _viewLinePole;
         UILabel _lblStateTitle, _lblStateError, _lblState, _lblLocationTitle, _lblLocationError
             , _lblPoleTitle, _lblPoleError;
@@ -34,6 +35,7 @@ namespace myTNB.Home.Feedback.FeedbackEntry
 
         void ConstructOtherFeedbackWidget()
         {
+            _feedbackCommonWidgets = new FeedbackCommonWidgets(_controller.View);
             _mainContainer = new UIView(new CGRect(0, 0, _controller.View.Frame.Width, 0));
             ConstructBanner();
             _detailsContainer = new UIView(new CGRect(0, _bannerContainer.Frame.Height
@@ -59,16 +61,15 @@ namespace myTNB.Home.Feedback.FeedbackEntry
 
         void ConstructNonLoginComponent()
         {
-            _nonLoginCommonWidgets = new FeedbackCommonWidgets(_controller.View);
-            _nonLoginWidgets = _nonLoginCommonWidgets.GetCommonWidgets();
-            _nonLoginCommonWidgets.SetValidationMethod(_controller.SetButtonEnable);
-            _nonLoginWidgets.Frame = new CGRect(0, _bannerContainer.Frame.Height
-                , _nonLoginWidgets.Frame.Width, _nonLoginWidgets.Frame.Height);
-            _detailsContainer.Frame = new CGRect(0, _bannerContainer.Frame.Height + _nonLoginWidgets.Frame.Height
+            _commonWidgets = _feedbackCommonWidgets.GetCommonWidgets();
+            _feedbackCommonWidgets.SetValidationMethod(_controller.SetButtonEnable);
+            _commonWidgets.Frame = new CGRect(0, _bannerContainer.Frame.Height
+                , _commonWidgets.Frame.Width, _commonWidgets.Frame.Height);
+            _detailsContainer.Frame = new CGRect(0, _bannerContainer.Frame.Height + _commonWidgets.Frame.Height
                 , _detailsContainer.Frame.Width, _detailsContainer.Frame.Height);
-            _mainContainer.AddSubviews(new UIView[] { _nonLoginWidgets, _detailsContainer });
+            _mainContainer.AddSubviews(new UIView[] { _commonWidgets, _detailsContainer });
             _mainContainer.Frame = new CGRect(0, 0, _controller.View.Frame.Width
-                , _nonLoginWidgets.Frame.Height + _bannerContainer.Frame.Height + _detailsContainer.Frame.Height);
+                , _commonWidgets.Frame.Height + _bannerContainer.Frame.Height + _detailsContainer.Frame.Height);
         }
 
         void ConstructBanner()
@@ -127,10 +128,7 @@ namespace myTNB.Home.Feedback.FeedbackEntry
             _lblStateTitle = new UILabel
             {
                 Frame = new CGRect(0, 0, _viewState.Frame.Width, 12),
-                AttributedText = new NSAttributedString("Feedback_State".Translate().ToUpper()
-                    , font: myTNBFont.MuseoSans11_300()
-                    , foregroundColor: myTNBColor.SilverChalice()
-                    , strokeWidth: 0),
+                AttributedText = _feedbackCommonWidgets.GetAttributedString("Feedback_State", AttributedStringType.Title),
                 TextAlignment = UITextAlignment.Left,
                 Hidden = true
             };
@@ -138,10 +136,7 @@ namespace myTNB.Home.Feedback.FeedbackEntry
             _lblStateError = new UILabel
             {
                 Frame = new CGRect(0, 37, _viewState.Frame.Width, 14),
-                AttributedText = new NSAttributedString("Invalid_State".Translate()
-                    , font: myTNBFont.MuseoSans11_300()
-                    , foregroundColor: myTNBColor.Tomato()
-                    , strokeWidth: 0),
+                AttributedText = _feedbackCommonWidgets.GetAttributedString("Invalid_State", AttributedStringType.Error),
                 TextAlignment = UITextAlignment.Left,
                 Hidden = true
             };
@@ -182,10 +177,7 @@ namespace myTNB.Home.Feedback.FeedbackEntry
             _lblLocationTitle = new UILabel
             {
                 Frame = new CGRect(0, 0, _viewLocation.Frame.Width, 12),
-                AttributedText = new NSAttributedString("Feedback_Location".Translate().ToUpper()
-                    , font: myTNBFont.MuseoSans11_300()
-                    , foregroundColor: myTNBColor.SilverChalice()
-                    , strokeWidth: 0),
+                AttributedText = _feedbackCommonWidgets.GetAttributedString("Feedback_Location", AttributedStringType.Title),
                 TextAlignment = UITextAlignment.Left,
                 Hidden = true
             };
@@ -193,10 +185,7 @@ namespace myTNB.Home.Feedback.FeedbackEntry
             _lblLocationError = new UILabel
             {
                 Frame = new CGRect(0, 37, _viewLocation.Frame.Width, 14),
-                AttributedText = new NSAttributedString("Invalid_Location".Translate()
-                    , font: myTNBFont.MuseoSans11_300()
-                    , foregroundColor: myTNBColor.Tomato()
-                    , strokeWidth: 0),
+                AttributedText = _feedbackCommonWidgets.GetAttributedString("Invalid_Location", AttributedStringType.Error),
                 TextAlignment = UITextAlignment.Left,
                 Hidden = true
             };
@@ -228,10 +217,7 @@ namespace myTNB.Home.Feedback.FeedbackEntry
             _lblPoleTitle = new UILabel
             {
                 Frame = new CGRect(0, 0, _viewPole.Frame.Width, 12),
-                AttributedText = new NSAttributedString("Feedback_PoleNumber".Translate().ToUpper()
-                    , font: myTNBFont.MuseoSans11_300()
-                    , foregroundColor: myTNBColor.SilverChalice()
-                    , strokeWidth: 0),
+                AttributedText = _feedbackCommonWidgets.GetAttributedString("Feedback_PoleNumber", AttributedStringType.Title),
                 TextAlignment = UITextAlignment.Left,
                 Hidden = true
             };
@@ -239,10 +225,7 @@ namespace myTNB.Home.Feedback.FeedbackEntry
             _lblPoleError = new UILabel
             {
                 Frame = new CGRect(0, 37, _viewPole.Frame.Width, 14),
-                AttributedText = new NSAttributedString("Invalid_PoleNumber".Translate()
-                    , font: myTNBFont.MuseoSans11_300()
-                    , foregroundColor: myTNBColor.Tomato()
-                    , strokeWidth: 0),
+                AttributedText = _feedbackCommonWidgets.GetAttributedString("Invalid_PoleNumber", AttributedStringType.Error),
                 TextAlignment = UITextAlignment.Left,
                 Hidden = true
             };
@@ -268,17 +251,14 @@ namespace myTNB.Home.Feedback.FeedbackEntry
             _textFieldHelper.CreateTextFieldLeftView(_txtFieldLocation, "IC-FieldCoordinates");
             CreateTextFieldRightView(_txtFieldLocation, "IC-Action-Location");
             _textFieldHelper.CreateTextFieldLeftView(_txtFieldPole, "Account-Number");
-            SetTextFieldEvents(_txtFieldLocation, _lblLocationTitle
-                              , _lblLocationError, _viewLineLocation
-                              , null, ANY_PATTERN);
-            SetTextFieldEvents(_txtFieldPole, _lblPoleTitle
-                               , _lblPoleError, _viewLinePole
-                               , null, ANY_PATTERN);
+            SetTextFieldEvents(_txtFieldLocation, _lblLocationTitle, _lblLocationError
+                , _viewLineLocation, null, ANY_PATTERN);
+            SetTextFieldEvents(_txtFieldPole, _lblPoleTitle, _lblPoleError, _viewLinePole
+                , null, ANY_PATTERN);
         }
 
-        internal void SetTextFieldEvents(UITextField textField, UILabel lblTitle
-                                         , UILabel lblError, UIView viewLine
-                                         , UILabel lblHint, string pattern)
+        internal void SetTextFieldEvents(UITextField textField, UILabel lblTitle, UILabel lblError
+            , UIView viewLine, UILabel lblHint, string pattern)
         {
             if (lblHint == null)
             {
@@ -445,7 +425,8 @@ namespace myTNB.Home.Feedback.FeedbackEntry
             if (currIndex > -1)
             {
                 if (DataManager.DataManager.SharedInstance.StatesForFeedBack != null
-                    && currIndex < DataManager.DataManager.SharedInstance.StatesForFeedBack?.Count)
+                    && currIndex < DataManager.DataManager.SharedInstance.StatesForFeedBack?.Count
+                    && _lblState != null && imgViewState != null)
                 {
                     _lblState.Text = DataManager.DataManager.SharedInstance.StatesForFeedBack[currIndex].StateName;
                     _lblStateTitle.Hidden = false;
@@ -472,7 +453,7 @@ namespace myTNB.Home.Feedback.FeedbackEntry
             }
             else
             {
-                return _nonLoginCommonWidgets.IsValidEntry();
+                return _feedbackCommonWidgets.IsValidEntry();
             }
         }
     }

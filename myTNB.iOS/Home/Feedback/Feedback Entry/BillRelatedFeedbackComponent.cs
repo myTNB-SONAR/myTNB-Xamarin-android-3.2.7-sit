@@ -1,6 +1,7 @@
 ﻿using System;
 using CoreGraphics;
 using Foundation;
+using myTNB.Enums;
 using UIKit;
 
 namespace myTNB.Home.Feedback.FeedbackEntry
@@ -12,11 +13,11 @@ namespace myTNB.Home.Feedback.FeedbackEntry
 
         const string ACCOUNT_NO_PATTERN = @"^[0-9]{12,14}$";
 
-        UIView _mainContainer, _nonLoginWidgets, _viewAccountNo, _viewLineAccountNo;
+        UIView _mainContainer, _commonWidgets, _viewAccountNo, _viewLineAccountNo;
         UILabel _lblAccountNoTitle, _lblAccountNoError, _lblAccountNumber;
         UITextField _txtFieldAccountNo;
 
-        FeedbackCommonWidgets _nonLoginCommonWidgets;
+        FeedbackCommonWidgets _feedbackCommonWidgets;
 
         public BillRelatedFeedbackComponent(FeedbackEntryViewController viewController)
         {
@@ -25,6 +26,7 @@ namespace myTNB.Home.Feedback.FeedbackEntry
 
         void ConstructOtherFeedbackWidget()
         {
+            _feedbackCommonWidgets = new FeedbackCommonWidgets(_controller.View);
             _mainContainer = new UIView(new CGRect(0, 0, _controller.View.Frame.Width, 0));
             if (_controller.IsLoggedIn)
             {
@@ -45,11 +47,10 @@ namespace myTNB.Home.Feedback.FeedbackEntry
 
         void ConstructNonLoginComponent()
         {
-            _nonLoginCommonWidgets = new FeedbackCommonWidgets(_controller.View);
-            _nonLoginWidgets = _nonLoginCommonWidgets.GetCommonWidgets();
-            _nonLoginCommonWidgets.SetValidationMethod(_controller.SetButtonEnable);
+            _commonWidgets = _feedbackCommonWidgets.GetCommonWidgets();
+            _feedbackCommonWidgets.SetValidationMethod(_controller.SetButtonEnable);
             ConstructAccountNumberField();
-            _mainContainer.AddSubviews(new UIView[] { _nonLoginWidgets, _viewAccountNo });
+            _mainContainer.AddSubviews(new UIView[] { _commonWidgets, _viewAccountNo });
             _mainContainer.Frame = new CGRect(0, 0, _controller.View.Frame.Width, (18 + 51) * 4);
         }
 
@@ -63,10 +64,7 @@ namespace myTNB.Home.Feedback.FeedbackEntry
             _lblAccountNoTitle = new UILabel
             {
                 Frame = new CGRect(0, 0, _viewAccountNo.Frame.Width, 12),
-                AttributedText = new NSAttributedString("Common_AccountNo".Translate().ToUpper()
-                    , font: myTNBFont.MuseoSans11_300()
-                    , foregroundColor: myTNBColor.SilverChalice()
-                    , strokeWidth: 0),
+                AttributedText = _feedbackCommonWidgets.GetAttributedString("Common_AccountNo", AttributedStringType.Title),
                 TextAlignment = UITextAlignment.Left,
                 Hidden = true
             };
@@ -74,10 +72,7 @@ namespace myTNB.Home.Feedback.FeedbackEntry
             _lblAccountNoError = new UILabel
             {
                 Frame = new CGRect(0, 37, _viewAccountNo.Frame.Width, 14),
-                AttributedText = new NSAttributedString("Invalid_AccountLength".Translate()
-                    , font: myTNBFont.MuseoSans11_300()
-                    , foregroundColor: myTNBColor.Tomato()
-                    , strokeWidth: 0),
+                AttributedText = _feedbackCommonWidgets.GetAttributedString("Invalid_AccountLength", AttributedStringType.Error),
                 TextAlignment = UITextAlignment.Left,
                 Hidden = true
             };
@@ -127,10 +122,7 @@ namespace myTNB.Home.Feedback.FeedbackEntry
             _lblAccountNoTitle = new UILabel
             {
                 Frame = new CGRect(0, 0, _viewAccountNo.Frame.Width, 12),
-                AttributedText = new NSAttributedString("Common_AccountNo".Translate().ToUpper()
-                    , font: myTNBFont.MuseoSans11_300()
-                    , foregroundColor: myTNBColor.SilverChalice()
-                    , strokeWidth: 0),
+                AttributedText = _feedbackCommonWidgets.GetAttributedString("Common_AccountNo", AttributedStringType.Title),
                 TextAlignment = UITextAlignment.Left,
                 Hidden = true
             };
@@ -138,10 +130,7 @@ namespace myTNB.Home.Feedback.FeedbackEntry
             _lblAccountNoError = new UILabel
             {
                 Frame = new CGRect(0, 37, _viewAccountNo.Frame.Width, 14),
-                AttributedText = new NSAttributedString("Invalid_AccountLength".Translate()
-                    , font: myTNBFont.MuseoSans11_300()
-                    , foregroundColor: myTNBColor.Tomato()
-                    , strokeWidth: 0),
+                AttributedText = _feedbackCommonWidgets.GetAttributedString("Invalid_AccountLength", AttributedStringType.Error),
                 TextAlignment = UITextAlignment.Left,
                 Hidden = true
             };
@@ -242,7 +231,7 @@ namespace myTNB.Home.Feedback.FeedbackEntry
             {
                 bool isValidAccountNo = _textFieldHelper.ValidateTextField(_txtFieldAccountNo.Text, ACCOUNT_NO_PATTERN)
                     && _textFieldHelper.ValidateAccountNumberLength(_txtFieldAccountNo.Text);
-                return _nonLoginCommonWidgets.IsValidEntry() && isValidAccountNo;
+                return _feedbackCommonWidgets.IsValidEntry() && isValidAccountNo;
             }
         }
 

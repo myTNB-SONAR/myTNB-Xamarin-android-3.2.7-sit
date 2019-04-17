@@ -2,17 +2,18 @@
 using System.Collections.Generic;
 using CoreGraphics;
 using Foundation;
+using myTNB.Enums;
 using UIKit;
 
 namespace myTNB.Home.Feedback.FeedbackEntry
 {
     public class OtherFeedbackComponent
     {
-        UIView _mainContainer, _nonLoginWidgets, _viewFeedbackType, _viewLineFeedbackType;
+        UIView _mainContainer, _commonWidgets, _viewFeedbackType, _viewLineFeedbackType;
         UILabel _lblFeedbackTypeTitle, _lblFeedbackTypeError, _lblFeedbackType;
         UIImageView imgViewAccountNumber;
 
-        FeedbackCommonWidgets _nonLoginCommonWidgets;
+        FeedbackCommonWidgets _feedbackCommonWidgets;
 
         readonly FeedbackEntryViewController _controller;
 
@@ -23,6 +24,7 @@ namespace myTNB.Home.Feedback.FeedbackEntry
 
         void ConstructOtherFeedbackWidget()
         {
+            _feedbackCommonWidgets = new FeedbackCommonWidgets(_controller.View);
             _mainContainer = new UIView(new CGRect(0, 0, _controller.View.Frame.Width, 0));
             if (_controller.IsLoggedIn)
             {
@@ -43,11 +45,10 @@ namespace myTNB.Home.Feedback.FeedbackEntry
 
         void ConstructNonLoginComponent()
         {
-            _nonLoginCommonWidgets = new FeedbackCommonWidgets(_controller.View);
-            _nonLoginWidgets = _nonLoginCommonWidgets.GetCommonWidgets();
-            _nonLoginCommonWidgets.SetValidationMethod(_controller.SetButtonEnable);
+            _commonWidgets = _feedbackCommonWidgets.GetCommonWidgets();
+            _feedbackCommonWidgets.SetValidationMethod(_controller.SetButtonEnable);
             ConstructFeedbackType();
-            _mainContainer.AddSubviews(new UIView[] { _nonLoginWidgets, _viewFeedbackType });
+            _mainContainer.AddSubviews(new UIView[] { _commonWidgets, _viewFeedbackType });
             _mainContainer.Frame = new CGRect(0, 0, _controller.View.Frame.Width, (18 + 51) * 4);
         }
 
@@ -63,20 +64,14 @@ namespace myTNB.Home.Feedback.FeedbackEntry
             _lblFeedbackTypeTitle = new UILabel
             {
                 Frame = new CGRect(0, 0, _viewFeedbackType.Frame.Width, 12),
-                AttributedText = new NSAttributedString("Feedback_Type".Translate().ToUpper()
-                    , font: myTNBFont.MuseoSans11_300()
-                    , foregroundColor: myTNBColor.SilverChalice()
-                    , strokeWidth: 0),
+                AttributedText = _feedbackCommonWidgets.GetAttributedString("Feedback_Type", AttributedStringType.Title),
                 TextAlignment = UITextAlignment.Left
             };
 
             _lblFeedbackTypeError = new UILabel
             {
                 Frame = new CGRect(0, 37, _viewFeedbackType.Frame.Width, 14),
-                AttributedText = new NSAttributedString("Invalid_FeedbackType".Translate()
-                    , font: myTNBFont.MuseoSans11_300()
-                    , foregroundColor: myTNBColor.Tomato()
-                    , strokeWidth: 0),
+                AttributedText = _feedbackCommonWidgets.GetAttributedString("Invalid_FeedbackType", AttributedStringType.Error),
                 TextAlignment = UITextAlignment.Left,
                 Hidden = true
             };
@@ -137,7 +132,7 @@ namespace myTNB.Home.Feedback.FeedbackEntry
             }
             else
             {
-                return _nonLoginCommonWidgets.IsValidEntry();
+                return _feedbackCommonWidgets.IsValidEntry();
             }
         }
     }

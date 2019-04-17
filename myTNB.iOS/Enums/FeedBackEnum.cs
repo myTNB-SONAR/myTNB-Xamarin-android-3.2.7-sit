@@ -9,4 +9,11 @@
         NonLoginFaultyStreetLamp,
         NonLoginOthers
     }
+
+    public enum AttributedStringType
+    {
+        Error,
+        Hint,
+        Title
+    }
 }
