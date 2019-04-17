@@ -5,7 +5,7 @@ using UIKit;
 
 namespace myTNB.Home.Feedback.FeedbackEntry
 {
-    public class NonLoginCommonWidget
+    public class FeedbackCommonWidgets
     {
         readonly TextFieldHelper _textFieldHelper = new TextFieldHelper();
         Action _validateFunction;
@@ -19,7 +19,7 @@ namespace myTNB.Home.Feedback.FeedbackEntry
             , _lblMobileNoHint, _lblEmailTitle, _lblEmailError;
         UITextField _txtFieldFullName, _txtFieldMobileNo, _txtFieldEmail;
 
-        public NonLoginCommonWidget(UIView view)
+        public FeedbackCommonWidgets(UIView view)
         {
             View = view;
         }

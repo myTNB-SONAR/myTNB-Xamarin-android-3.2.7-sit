@@ -12,7 +12,7 @@ namespace myTNB.Home.Feedback.FeedbackEntry
         UILabel _lblFeedbackTypeTitle, _lblFeedbackTypeError, _lblFeedbackType;
         UIImageView imgViewAccountNumber;
 
-        NonLoginCommonWidget _nonLoginCommonWidgets;
+        FeedbackCommonWidgets _nonLoginCommonWidgets;
 
         readonly FeedbackEntryViewController _controller;
 
@@ -43,7 +43,7 @@ namespace myTNB.Home.Feedback.FeedbackEntry
 
         void ConstructNonLoginComponent()
         {
-            _nonLoginCommonWidgets = new NonLoginCommonWidget(_controller.View);
+            _nonLoginCommonWidgets = new FeedbackCommonWidgets(_controller.View);
             _nonLoginWidgets = _nonLoginCommonWidgets.GetCommonWidgets();
             _nonLoginCommonWidgets.SetValidationMethod(_controller.SetButtonEnable);
             ConstructFeedbackType();

@@ -16,7 +16,7 @@ namespace myTNB.Home.Feedback.FeedbackEntry
         UILabel _lblAccountNoTitle, _lblAccountNoError, _lblAccountNumber;
         UITextField _txtFieldAccountNo;
 
-        NonLoginCommonWidget _nonLoginCommonWidgets;
+        FeedbackCommonWidgets _nonLoginCommonWidgets;
 
         public BillRelatedFeedbackComponent(FeedbackEntryViewController viewController)
         {
@@ -45,7 +45,7 @@ namespace myTNB.Home.Feedback.FeedbackEntry
 
         void ConstructNonLoginComponent()
         {
-            _nonLoginCommonWidgets = new NonLoginCommonWidget(_controller.View);
+            _nonLoginCommonWidgets = new FeedbackCommonWidgets(_controller.View);
             _nonLoginWidgets = _nonLoginCommonWidgets.GetCommonWidgets();
             _nonLoginCommonWidgets.SetValidationMethod(_controller.SetButtonEnable);
             ConstructAccountNumberField();
@@ -88,7 +88,7 @@ namespace myTNB.Home.Feedback.FeedbackEntry
             };
             _viewAccountNo.AddSubview(imgViewAccountNumber);
 
-            _lblAccountNumber = new UILabel(new CGRect(30, 12, _viewAccountNo.Frame.Width - 30, 24))
+            _lblAccountNumber = new UILabel(new CGRect(30, 12, _viewAccountNo.Frame.Width - 60, 24))
             {
                 Font = myTNBFont.MuseoSans16_300(),
                 TextColor = myTNBColor.TunaGrey(),

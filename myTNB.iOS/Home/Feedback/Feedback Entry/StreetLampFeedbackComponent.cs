@@ -17,7 +17,7 @@ namespace myTNB.Home.Feedback.FeedbackEntry
 
         LocationManager _locManager { get; set; }
 
-        NonLoginCommonWidget _nonLoginCommonWidgets;
+        FeedbackCommonWidgets _nonLoginCommonWidgets;
         UIView _mainContainer, _bannerContainer, _nonLoginWidgets, _viewState, _viewLineState
             , _detailsContainer, _viewLocation, _viewLineLocation, _viewPole, _viewLinePole;
         UILabel _lblStateTitle, _lblStateError, _lblState, _lblLocationTitle, _lblLocationError
@@ -59,11 +59,16 @@ namespace myTNB.Home.Feedback.FeedbackEntry
 
         void ConstructNonLoginComponent()
         {
-            _nonLoginCommonWidgets = new NonLoginCommonWidget(_controller.View);
+            _nonLoginCommonWidgets = new FeedbackCommonWidgets(_controller.View);
             _nonLoginWidgets = _nonLoginCommonWidgets.GetCommonWidgets();
             _nonLoginCommonWidgets.SetValidationMethod(_controller.SetButtonEnable);
+            _nonLoginWidgets.Frame = new CGRect(0, _bannerContainer.Frame.Height
+                , _nonLoginWidgets.Frame.Width, _nonLoginWidgets.Frame.Height);
+            _detailsContainer.Frame = new CGRect(0, _bannerContainer.Frame.Height + _nonLoginWidgets.Frame.Height
+                , _detailsContainer.Frame.Width, _detailsContainer.Frame.Height);
             _mainContainer.AddSubviews(new UIView[] { _nonLoginWidgets, _detailsContainer });
-            _mainContainer.Frame = new CGRect(0, 0, _controller.View.Frame.Width, _nonLoginWidgets.Frame.Height + _bannerContainer.Frame.Height + _bannerContainer.Frame.Height);
+            _mainContainer.Frame = new CGRect(0, 0, _controller.View.Frame.Width
+                , _nonLoginWidgets.Frame.Height + _bannerContainer.Frame.Height + _detailsContainer.Frame.Height);
         }
 
         void ConstructBanner()
@@ -296,7 +301,7 @@ namespace myTNB.Home.Feedback.FeedbackEntry
                         textField.Text += TNBGlobal.MobileNoPrefix;
                     }
                 }*/
-                lblHint.Hidden = lblError.Hidden ? textField.Text.Length == 0 : true;
+                lblHint.Hidden = !lblError.Hidden || textField.Text.Length == 0;
                 lblTitle.Hidden = textField.Text.Length == 0;
                 textField.LeftViewMode = UITextFieldViewMode.Never;
                 viewLine.BackgroundColor = myTNBColor.PowerBlue();
