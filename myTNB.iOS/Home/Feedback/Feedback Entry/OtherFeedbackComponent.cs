@@ -64,14 +64,14 @@ namespace myTNB.Home.Feedback.FeedbackEntry
             _lblFeedbackTypeTitle = new UILabel
             {
                 Frame = new CGRect(0, 0, _viewFeedbackType.Frame.Width, 12),
-                AttributedText = _feedbackCommonWidgets.GetAttributedString("Feedback_Type", AttributedStringType.Title),
+                AttributedText = AttributedStringUtility.GetAttributedString("Feedback_Type", AttributedStringUtility.AttributedStringType.Title),
                 TextAlignment = UITextAlignment.Left
             };
 
             _lblFeedbackTypeError = new UILabel
             {
                 Frame = new CGRect(0, 37, _viewFeedbackType.Frame.Width, 14),
-                AttributedText = _feedbackCommonWidgets.GetAttributedString("Invalid_FeedbackType", AttributedStringType.Error),
+                AttributedText = AttributedStringUtility.GetAttributedString("Invalid_FeedbackType", AttributedStringUtility.AttributedStringType.Error),
                 TextAlignment = UITextAlignment.Left,
                 Hidden = true
             };
@@ -83,10 +83,8 @@ namespace myTNB.Home.Feedback.FeedbackEntry
 
             _lblFeedbackType = new UILabel(new CGRect(30, 12, _viewFeedbackType.Frame.Width, 24))
             {
-                AttributedText = new NSAttributedString("Feedback_Type".Translate()
-                    , font: myTNBFont.MuseoSans18_300()
-                    , foregroundColor: myTNBColor.SilverChalice()
-                    , strokeWidth: 0),//Noted: Temp Number, will create a list for this later.
+                AttributedText = AttributedStringUtility.GetAttributedString("Feedback_Type", AttributedStringUtility.AttributedStringType.Value),
+                //Noted: Temp Number, will create a list for this later.
                 Font = myTNBFont.MuseoSans18_300(),
                 TextColor = myTNBColor.TunaGrey()
             };

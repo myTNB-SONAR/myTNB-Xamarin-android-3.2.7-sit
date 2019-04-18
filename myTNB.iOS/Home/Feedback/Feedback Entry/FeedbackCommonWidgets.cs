@@ -42,7 +42,7 @@ namespace myTNB.Home.Feedback.FeedbackEntry
             _lblFullNameTitle = new UILabel
             {
                 Frame = new CGRect(0, 0, _viewFullName.Frame.Width, 12),
-                AttributedText = GetAttributedString("Common_Fullname", AttributedStringType.Title),
+                AttributedText = AttributedStringUtility.GetAttributedString("Common_Fullname", AttributedStringUtility.AttributedStringType.Title),
                 TextAlignment = UITextAlignment.Left,
                 Hidden = true
             };
@@ -50,7 +50,7 @@ namespace myTNB.Home.Feedback.FeedbackEntry
             _lblFullNameError = new UILabel
             {
                 Frame = new CGRect(0, 37, _viewFullName.Frame.Width, 14),
-                AttributedText = GetAttributedString("Invalid_Fullname", AttributedStringType.Error),
+                AttributedText = AttributedStringUtility.GetAttributedString("Invalid_Fullname", AttributedStringUtility.AttributedStringType.Error),
                 TextAlignment = UITextAlignment.Left,
                 Hidden = true
             };
@@ -58,10 +58,7 @@ namespace myTNB.Home.Feedback.FeedbackEntry
             _txtFieldFullName = new UITextField
             {
                 Frame = new CGRect(0, 12, _viewFullName.Frame.Width, 24),
-                AttributedPlaceholder = new NSAttributedString("Common_Fullname".Translate()
-                    , font: myTNBFont.MuseoSans18_300()
-                    , foregroundColor: myTNBColor.SilverChalice()
-                    , strokeWidth: 0),
+                AttributedPlaceholder = AttributedStringUtility.GetAttributedString("Common_Fullname", AttributedStringUtility.AttributedStringType.Value),
                 TextColor = myTNBColor.TunaGrey()
             };
 
@@ -141,7 +138,7 @@ namespace myTNB.Home.Feedback.FeedbackEntry
             _lblEmailTitle = new UILabel
             {
                 Frame = new CGRect(0, 0, _viewEmail.Frame.Width, 12),
-                AttributedText = GetAttributedString("Common_Email", AttributedStringType.Title),
+                AttributedText = AttributedStringUtility.GetAttributedString("Common_Email", AttributedStringUtility.AttributedStringType.Title),
                 TextAlignment = UITextAlignment.Left,
                 Hidden = true
             };
@@ -150,7 +147,7 @@ namespace myTNB.Home.Feedback.FeedbackEntry
             _lblEmailError = new UILabel
             {
                 Frame = new CGRect(0, 37, _viewEmail.Frame.Width, 14),
-                AttributedText = GetAttributedString("Invalid_Email", AttributedStringType.Error),
+                AttributedText = AttributedStringUtility.GetAttributedString("Invalid_Email", AttributedStringUtility.AttributedStringType.Error),
                 TextAlignment = UITextAlignment.Left,
                 Hidden = true
             };
@@ -159,10 +156,7 @@ namespace myTNB.Home.Feedback.FeedbackEntry
             _txtFieldEmail = new UITextField
             {
                 Frame = new CGRect(0, 12, _viewEmail.Frame.Width, 24),
-                AttributedPlaceholder = new NSAttributedString("Common_Email".Translate()
-                    , font: myTNBFont.MuseoSans18_300()
-                    , foregroundColor: myTNBColor.SilverChalice()
-                    , strokeWidth: 0),
+                AttributedPlaceholder = AttributedStringUtility.GetAttributedString("Common_Email", AttributedStringUtility.AttributedStringType.Value),
                 TextColor = myTNBColor.TunaGrey()
             };
             _txtFieldEmail.KeyboardType = UIKeyboardType.EmailAddress;
@@ -296,7 +290,7 @@ namespace myTNB.Home.Feedback.FeedbackEntry
             _lblMobileNoTitle = new UILabel
             {
                 Frame = new CGRect(0, 0, _viewMobileNo.Frame.Width, 12),
-                AttributedText = GetAttributedString("Common_MobileNumber", AttributedStringType.Title),
+                AttributedText = AttributedStringUtility.GetAttributedString("Common_MobileNumber", AttributedStringUtility.AttributedStringType.Title),
                 TextAlignment = UITextAlignment.Left,
                 Hidden = true
             };
@@ -304,7 +298,7 @@ namespace myTNB.Home.Feedback.FeedbackEntry
             _lblMobileNoError = new UILabel
             {
                 Frame = new CGRect(0, 37, _viewMobileNo.Frame.Width, 14),
-                AttributedText = GetAttributedString("Invalid_MobileNumber", AttributedStringType.Error),
+                AttributedText = AttributedStringUtility.GetAttributedString("Invalid_MobileNumber", AttributedStringUtility.AttributedStringType.Error),
                 TextAlignment = UITextAlignment.Left,
                 Hidden = true
             };
@@ -312,7 +306,7 @@ namespace myTNB.Home.Feedback.FeedbackEntry
             _lblMobileNoHint = new UILabel
             {
                 Frame = new CGRect(0, 37, _viewMobileNo.Frame.Width, 14),
-                AttributedText = GetAttributedString("Hint_MobileNumber", AttributedStringType.Hint),
+                AttributedText = AttributedStringUtility.GetAttributedString("Hint_MobileNumber", AttributedStringUtility.AttributedStringType.Hint),
                 TextAlignment = UITextAlignment.Left
             };
             _lblMobileNoHint.Hidden = true;
@@ -320,10 +314,7 @@ namespace myTNB.Home.Feedback.FeedbackEntry
             _txtFieldMobileNo = new UITextField
             {
                 Frame = new CGRect(0, 12, _viewMobileNo.Frame.Width, 24),
-                AttributedPlaceholder = new NSAttributedString("Common_MobileNumber".Translate()
-                    , font: myTNBFont.MuseoSans18_300()
-                    , foregroundColor: myTNBColor.SilverChalice()
-                    , strokeWidth: 0),
+                AttributedPlaceholder = AttributedStringUtility.GetAttributedString("Common_MobileNumber", AttributedStringUtility.AttributedStringType.Value),
                 TextColor = myTNBColor.TunaGrey()
             };
             _txtFieldMobileNo.KeyboardType = UIKeyboardType.NumberPad;
@@ -370,24 +361,6 @@ namespace myTNB.Home.Feedback.FeedbackEntry
         public void SetValidationMethod(Action fn)
         {
             _validateFunction = fn;
-        }
-
-        public NSAttributedString GetAttributedString(string str, AttributedStringType type)
-        {
-            UIColor fgroundColor = myTNBColor.SilverChalice();
-            if (type == AttributedStringType.Hint)
-            {
-                fgroundColor = myTNBColor.TunaGrey();
-            }
-            else if (type == AttributedStringType.Error)
-            {
-                fgroundColor = myTNBColor.Tomato();
-            }
-            string txt = type == AttributedStringType.Title ? str.Translate().ToUpper() : str.Translate();
-            return new NSAttributedString(txt
-                , font: myTNBFont.MuseoSans11_300()
-                , foregroundColor: fgroundColor
-                , strokeWidth: 0);
         }
 
         void Validate()

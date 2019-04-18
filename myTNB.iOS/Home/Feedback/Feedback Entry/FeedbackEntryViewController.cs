@@ -177,15 +177,19 @@ namespace myTNB
                     _viewUploadPhoto.AddSubview(imageContainerScroll);
                 }
 
-                UIViewWithDashedLinerBorder dashedLineView = new UIViewWithDashedLinerBorder();
-                dashedLineView.Frame = new CGRect(imageWidth, 0, 94, 94);
-                dashedLineView.BackgroundColor = UIColor.White;
+                UIViewWithDashedLinerBorder dashedLineView = new UIViewWithDashedLinerBorder
+                {
+                    Frame = new CGRect(imageWidth, 0, 94, 94),
+                    BackgroundColor = UIColor.White
+                };
                 dashedLineView.Layer.CornerRadius = 5.0f;
                 dashedLineView.Tag = 10;
 
-                UIImageView imgViewAdd = new UIImageView(new CGRect(35, 35, 24, 24));
-                imgViewAdd.Image = UIImage.FromBundle("IC-Action-Add-Card");
-                imgViewAdd.Tag = 0;
+                UIImageView imgViewAdd = new UIImageView(new CGRect(35, 35, 24, 24))
+                {
+                    Image = UIImage.FromBundle("IC-Action-Add-Card"),
+                    Tag = 0
+                };
 
                 dashedLineView.AddSubview(imgViewAdd);
 
@@ -298,10 +302,7 @@ namespace myTNB
             _lblFeedbackTitle = new UILabel
             {
                 Frame = new CGRect(0, 0, _viewFeedback.Frame.Width, 12),
-                AttributedText = new NSAttributedString("Feedback_Title".Translate().ToUpper()
-                    , font: myTNBFont.MuseoSans11_300()
-                    , foregroundColor: myTNBColor.SilverChalice()
-                    , strokeWidth: 0),
+                AttributedText = AttributedStringUtility.GetAttributedString("Feedback_Title", AttributedStringUtility.AttributedStringType.Title),
                 TextAlignment = UITextAlignment.Left,
                 Hidden = true
             };
@@ -336,10 +337,7 @@ namespace myTNB
             _lblFeedbackError = new UILabel
             {
                 Frame = new CGRect(0, _feedbackTextView.Frame.Height, _feedbackTextView.Frame.Width - 36, 14),
-                AttributedText = new NSAttributedString("Invalid_Feedback".Translate()
-                    , font: myTNBFont.MuseoSans11_300()
-                    , foregroundColor: myTNBColor.Tomato()
-                    , strokeWidth: 0),
+                AttributedText = AttributedStringUtility.GetAttributedString("Invalid_Feedback", AttributedStringUtility.AttributedStringType.Error),
                 TextAlignment = UITextAlignment.Left,
                 Hidden = true
             };
@@ -526,7 +524,7 @@ namespace myTNB
         internal void SetButtonEnable()
         {
             bool isValidFeedback = _feedbackTextView.ValidateTextView(_feedbackTextView.Text, ANY_PATTERN) && _feedbackTextView.Text.Length != 0;
-            bool isValidFields = false;
+            bool isValidFields;
             if (string.Compare(FeedbackID, "1") == 0)
             {
                 isValidFields = _billRelatedFeedbackComponent.IsValidEntry();

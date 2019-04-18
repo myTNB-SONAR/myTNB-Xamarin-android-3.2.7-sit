@@ -4,7 +4,6 @@ using CoreGraphics;
 using CoreLocation;
 using Foundation;
 using Location;
-using myTNB.Enums;
 using UIKit;
 
 namespace myTNB.Home.Feedback.FeedbackEntry
@@ -16,7 +15,7 @@ namespace myTNB.Home.Feedback.FeedbackEntry
 
         const string ANY_PATTERN = @".*";
 
-        LocationManager _locManager { get; set; }
+        private LocationManager LocManager { get; set; }
 
         FeedbackCommonWidgets _feedbackCommonWidgets;
         UIView _mainContainer, _bannerContainer, _commonWidgets, _viewState, _viewLineState
@@ -128,7 +127,7 @@ namespace myTNB.Home.Feedback.FeedbackEntry
             _lblStateTitle = new UILabel
             {
                 Frame = new CGRect(0, 0, _viewState.Frame.Width, 12),
-                AttributedText = _feedbackCommonWidgets.GetAttributedString("Feedback_State", AttributedStringType.Title),
+                AttributedText = AttributedStringUtility.GetAttributedString("Feedback_State", AttributedStringUtility.AttributedStringType.Title),
                 TextAlignment = UITextAlignment.Left,
                 Hidden = true
             };
@@ -136,7 +135,7 @@ namespace myTNB.Home.Feedback.FeedbackEntry
             _lblStateError = new UILabel
             {
                 Frame = new CGRect(0, 37, _viewState.Frame.Width, 14),
-                AttributedText = _feedbackCommonWidgets.GetAttributedString("Invalid_State", AttributedStringType.Error),
+                AttributedText = AttributedStringUtility.GetAttributedString("Invalid_State", AttributedStringUtility.AttributedStringType.Error),
                 TextAlignment = UITextAlignment.Left,
                 Hidden = true
             };
@@ -148,10 +147,7 @@ namespace myTNB.Home.Feedback.FeedbackEntry
 
             _lblState = new UILabel(new CGRect(30, 12, _viewState.Frame.Width, 24))
             {
-                AttributedText = new NSAttributedString("Feedback_State".Translate()
-                    , font: myTNBFont.MuseoSans18_300()
-                    , foregroundColor: myTNBColor.SilverChalice()
-                    , strokeWidth: 0)
+                AttributedText = AttributedStringUtility.GetAttributedString("Feedback_State", AttributedStringUtility.AttributedStringType.Value)
             };
 
             UIImageView imgDropDown = new UIImageView(new CGRect(_viewState.Frame.Width - 30, 12, 24, 24))
@@ -177,7 +173,7 @@ namespace myTNB.Home.Feedback.FeedbackEntry
             _lblLocationTitle = new UILabel
             {
                 Frame = new CGRect(0, 0, _viewLocation.Frame.Width, 12),
-                AttributedText = _feedbackCommonWidgets.GetAttributedString("Feedback_Location", AttributedStringType.Title),
+                AttributedText = AttributedStringUtility.GetAttributedString("Feedback_Location", AttributedStringUtility.AttributedStringType.Title),
                 TextAlignment = UITextAlignment.Left,
                 Hidden = true
             };
@@ -185,7 +181,7 @@ namespace myTNB.Home.Feedback.FeedbackEntry
             _lblLocationError = new UILabel
             {
                 Frame = new CGRect(0, 37, _viewLocation.Frame.Width, 14),
-                AttributedText = _feedbackCommonWidgets.GetAttributedString("Invalid_Location", AttributedStringType.Error),
+                AttributedText = AttributedStringUtility.GetAttributedString("Invalid_Location", AttributedStringUtility.AttributedStringType.Error),
                 TextAlignment = UITextAlignment.Left,
                 Hidden = true
             };
@@ -193,10 +189,7 @@ namespace myTNB.Home.Feedback.FeedbackEntry
             _txtFieldLocation = new UITextField
             {
                 Frame = new CGRect(0, 12, _viewLocation.Frame.Width, 24),
-                AttributedPlaceholder = new NSAttributedString("Feedback_Location".Translate()
-                    , font: myTNBFont.MuseoSans18_300()
-                    , foregroundColor: myTNBColor.SilverChalice()
-                    , strokeWidth: 0),
+                AttributedPlaceholder = AttributedStringUtility.GetAttributedString("Feedback_Location", AttributedStringUtility.AttributedStringType.Value),
                 TextColor = myTNBColor.TunaGrey()
             };
 
@@ -217,7 +210,7 @@ namespace myTNB.Home.Feedback.FeedbackEntry
             _lblPoleTitle = new UILabel
             {
                 Frame = new CGRect(0, 0, _viewPole.Frame.Width, 12),
-                AttributedText = _feedbackCommonWidgets.GetAttributedString("Feedback_PoleNumber", AttributedStringType.Title),
+                AttributedText = AttributedStringUtility.GetAttributedString("Feedback_PoleNumber", AttributedStringUtility.AttributedStringType.Title),
                 TextAlignment = UITextAlignment.Left,
                 Hidden = true
             };
@@ -225,7 +218,7 @@ namespace myTNB.Home.Feedback.FeedbackEntry
             _lblPoleError = new UILabel
             {
                 Frame = new CGRect(0, 37, _viewPole.Frame.Width, 14),
-                AttributedText = _feedbackCommonWidgets.GetAttributedString("Invalid_PoleNumber", AttributedStringType.Error),
+                AttributedText = AttributedStringUtility.GetAttributedString("Invalid_PoleNumber", AttributedStringUtility.AttributedStringType.Error),
                 TextAlignment = UITextAlignment.Left,
                 Hidden = true
             };
@@ -233,10 +226,7 @@ namespace myTNB.Home.Feedback.FeedbackEntry
             _txtFieldPole = new UITextField
             {
                 Frame = new CGRect(0, 12, _viewPole.Frame.Width, 24),
-                AttributedPlaceholder = new NSAttributedString("Feedback_PoleNumber".Translate()
-                    , font: myTNBFont.MuseoSans18_300()
-                    , foregroundColor: myTNBColor.SilverChalice()
-                    , strokeWidth: 0),
+                AttributedPlaceholder = AttributedStringUtility.GetAttributedString("Feedback_PoleNumber", AttributedStringUtility.AttributedStringType.Value),
                 TextColor = myTNBColor.TunaGrey()
             };
 
@@ -268,7 +258,7 @@ namespace myTNB.Home.Feedback.FeedbackEntry
             textField.EditingChanged += (sender, e) =>
             {
                 UITextField txtField = sender as UITextField;
-                lblHint.Hidden = lblError.Hidden ? textField.Text.Length == 0 : true;
+                lblHint.Hidden = !lblError.Hidden || textField.Text.Length == 0;
                 lblTitle.Hidden = textField.Text.Length == 0;
                 //SubmitButtonEnable();
                 _controller.SetButtonEnable();
@@ -368,17 +358,17 @@ namespace myTNB.Home.Feedback.FeedbackEntry
 
             UITapGestureRecognizer tapLocation = new UITapGestureRecognizer(() =>
             {
-                _locManager = new LocationManager();
-                _locManager.StartLocationUpdates();
+                LocManager = new LocationManager();
+                LocManager.StartLocationUpdates();
                 var isFirstCall = false;
-                _locManager.LocMgr.AuthorizationChanged += (sender, e) =>
+                LocManager.LocMgr.AuthorizationChanged += (sender, e) =>
                 {
 
                     if (e.Status == CLAuthorizationStatus.Authorized
                         || e.Status == CLAuthorizationStatus.AuthorizedWhenInUse
                         || e.Status == CLAuthorizationStatus.AuthorizedAlways)
                     {
-                        CLLocation location = _locManager.LocMgr.Location;
+                        CLLocation location = LocManager.LocMgr.Location;
 
                         CLGeocoder geoCoder = new CLGeocoder();
                         geoCoder.ReverseGeocodeLocation(location, (CLPlacemark[] placemarks, NSError error) =>
@@ -391,11 +381,12 @@ namespace myTNB.Home.Feedback.FeedbackEntry
                                 , placemarks[0].Country);
                             _txtFieldLocation.Text = reverseGeocodedAddress;
                             //SubmitButtonEnable();
+                            _controller.SetButtonEnable();
                         });
                     }
                     else if (e.Status == CLAuthorizationStatus.NotDetermined)
                     {
-                        _locManager.LocMgr.RequestWhenInUseAuthorization();
+                        LocManager.LocMgr.RequestWhenInUseAuthorization();
                         isFirstCall = true;
                     }
                     else if (e.Status == CLAuthorizationStatus.Denied && !isFirstCall)

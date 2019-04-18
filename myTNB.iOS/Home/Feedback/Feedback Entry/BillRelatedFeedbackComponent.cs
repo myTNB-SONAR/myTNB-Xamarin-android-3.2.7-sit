@@ -64,7 +64,7 @@ namespace myTNB.Home.Feedback.FeedbackEntry
             _lblAccountNoTitle = new UILabel
             {
                 Frame = new CGRect(0, 0, _viewAccountNo.Frame.Width, 12),
-                AttributedText = _feedbackCommonWidgets.GetAttributedString("Common_AccountNo", AttributedStringType.Title),
+                AttributedText = AttributedStringUtility.GetAttributedString("Common_AccountNo", AttributedStringUtility.AttributedStringType.Title),
                 TextAlignment = UITextAlignment.Left,
                 Hidden = true
             };
@@ -72,7 +72,7 @@ namespace myTNB.Home.Feedback.FeedbackEntry
             _lblAccountNoError = new UILabel
             {
                 Frame = new CGRect(0, 37, _viewAccountNo.Frame.Width, 14),
-                AttributedText = _feedbackCommonWidgets.GetAttributedString("Invalid_AccountLength", AttributedStringType.Error),
+                AttributedText = AttributedStringUtility.GetAttributedString("Invalid_AccountLength", AttributedStringUtility.AttributedStringType.Error),
                 TextAlignment = UITextAlignment.Left,
                 Hidden = true
             };
@@ -122,7 +122,7 @@ namespace myTNB.Home.Feedback.FeedbackEntry
             _lblAccountNoTitle = new UILabel
             {
                 Frame = new CGRect(0, 0, _viewAccountNo.Frame.Width, 12),
-                AttributedText = _feedbackCommonWidgets.GetAttributedString("Common_AccountNo", AttributedStringType.Title),
+                AttributedText = AttributedStringUtility.GetAttributedString("Common_AccountNo", AttributedStringUtility.AttributedStringType.Title),
                 TextAlignment = UITextAlignment.Left,
                 Hidden = true
             };
@@ -130,7 +130,7 @@ namespace myTNB.Home.Feedback.FeedbackEntry
             _lblAccountNoError = new UILabel
             {
                 Frame = new CGRect(0, 37, _viewAccountNo.Frame.Width, 14),
-                AttributedText = _feedbackCommonWidgets.GetAttributedString("Invalid_AccountLength", AttributedStringType.Error),
+                AttributedText = AttributedStringUtility.GetAttributedString("Invalid_AccountLength", AttributedStringUtility.AttributedStringType.Error),
                 TextAlignment = UITextAlignment.Left,
                 Hidden = true
             };
@@ -138,10 +138,7 @@ namespace myTNB.Home.Feedback.FeedbackEntry
             _txtFieldAccountNo = new UITextField
             {
                 Frame = new CGRect(0, 12, _viewAccountNo.Frame.Width, 24),
-                AttributedPlaceholder = new NSAttributedString("Common_AccountNo".Translate()
-                    , font: myTNBFont.MuseoSans18_300()
-                    , foregroundColor: myTNBColor.SilverChalice()
-                    , strokeWidth: 0),
+                AttributedPlaceholder = AttributedStringUtility.GetAttributedString("Common_AccountNo", AttributedStringUtility.AttributedStringType.Value),
                 TextColor = myTNBColor.TunaGrey()
             };
             _txtFieldAccountNo.KeyboardType = UIKeyboardType.NumberPad;

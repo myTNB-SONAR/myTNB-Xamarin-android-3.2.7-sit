@@ -1836,6 +1836,7 @@
     <Compile Include="Home\Feedback\Feedback Entry\FeedbackCommonWidgets.cs" />
     <Compile Include="Home\Feedback\Feedback Entry\BillRelatedFeedbackComponent.cs" />
     <Compile Include="Home\Feedback\Feedback Entry\StreetLampFeedbackComponent.cs" />
+    <Compile Include="Helpers\AttributedStringUtility.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />
