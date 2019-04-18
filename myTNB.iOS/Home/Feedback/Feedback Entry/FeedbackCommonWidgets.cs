@@ -1,7 +1,5 @@
 ﻿using System;
 using CoreGraphics;
-using Foundation;
-using myTNB.Enums;
 using UIKit;
 
 namespace myTNB.Home.Feedback.FeedbackEntry
@@ -72,63 +70,7 @@ namespace myTNB.Home.Feedback.FeedbackEntry
 
             //Mobile no.
             _viewMobileNo = GetMobileNumberWidget();
-            /* _viewMobileNo = new UIView((new CGRect(18, 83, View.Frame.Width - 36, 51)))
-             {
-                 BackgroundColor = UIColor.Clear
-             };
 
-             _lblMobileNoTitle = new UILabel
-             {
-                 Frame = new CGRect(0, 0, _viewMobileNo.Frame.Width, 12),
-                 AttributedText = new NSAttributedString("Common_MobileNumber".Translate().ToUpper()
-                     , font: myTNBFont.MuseoSans11_300()
-                     , foregroundColor: myTNBColor.SilverChalice()
-                     , strokeWidth: 0),
-                 TextAlignment = UITextAlignment.Left,
-                 Hidden = true
-             };
-
-             _lblMobileNoError = new UILabel
-             {
-                 Frame = new CGRect(0, 37, _viewMobileNo.Frame.Width, 14),
-                 AttributedText = new NSAttributedString("Invalid_MobileNumber".Translate()
-                     , font: myTNBFont.MuseoSans11_300()
-                     , foregroundColor: myTNBColor.Tomato()
-                     , strokeWidth: 0),
-                 TextAlignment = UITextAlignment.Left,
-                 Hidden = true
-             };
-
-             _lblMobileNoHint = new UILabel
-             {
-                 Frame = new CGRect(0, 37, _viewMobileNo.Frame.Width, 14),
-                 AttributedText = new NSAttributedString("Hint_MobileNumber".Translate()
-                     , font: myTNBFont.MuseoSans11_300()
-                     , foregroundColor: myTNBColor.TunaGrey()
-                     , strokeWidth: 0),
-                 TextAlignment = UITextAlignment.Left
-             };
-             _lblMobileNoHint.Hidden = true;
-
-             _txtFieldMobileNo = new UITextField
-             {
-                 Frame = new CGRect(0, 12, _viewMobileNo.Frame.Width, 24),
-                 AttributedPlaceholder = new NSAttributedString("Common_MobileNumber".Translate()
-                     , font: myTNBFont.MuseoSans18_300()
-                     , foregroundColor: myTNBColor.SilverChalice()
-                     , strokeWidth: 0),
-                 TextColor = myTNBColor.TunaGrey()
-             };
-             _txtFieldMobileNo.KeyboardType = UIKeyboardType.NumberPad;
-
-             _viewLineMobileNo = new UIView((new CGRect(0, 36, _viewMobileNo.Frame.Width, 1)))
-             {
-                 BackgroundColor = myTNBColor.PlatinumGrey()
-             };
-
-             _viewMobileNo.AddSubviews(new UIView[] { _lblMobileNoTitle, _lblMobileNoError
-                 , _lblMobileNoHint, _txtFieldMobileNo , _viewLineMobileNo });
-             */
             //Email
             _viewEmail = new UIView((new CGRect(18, 150, View.Frame.Width - 36, 51)))
             {
@@ -195,7 +137,6 @@ namespace myTNB.Home.Feedback.FeedbackEntry
                 UITextField txtField = sender as UITextField;
                 lblHint.Hidden = !lblError.Hidden || textField.Text.Length == 0;
                 lblTitle.Hidden = textField.Text.Length == 0;
-                //SubmitButtonEnable();
                 Validate();
             };
             textField.EditingDidBegin += (sender, e) =>

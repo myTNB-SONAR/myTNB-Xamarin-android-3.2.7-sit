@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using CoreGraphics;
-using Foundation;
 using UIKit;
 
 namespace myTNB.Home.Feedback.FeedbackEntry
@@ -12,7 +10,7 @@ namespace myTNB.Home.Feedback.FeedbackEntry
         UILabel _lblFeedbackTypeTitle, _lblFeedbackTypeError, _lblFeedbackType;
         UIImageView imgViewAccountNumber;
 
-        FeedbackCommonWidgets _feedbackCommonWidgets;
+        public FeedbackCommonWidgets _feedbackCommonWidgets;
 
         readonly FeedbackEntryViewController _controller;
 

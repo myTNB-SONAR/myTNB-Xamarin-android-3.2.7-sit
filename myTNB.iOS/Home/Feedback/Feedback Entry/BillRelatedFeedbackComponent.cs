@@ -1,7 +1,6 @@
 ﻿using System;
 using CoreGraphics;
 using Foundation;
-using myTNB.Enums;
 using UIKit;
 
 namespace myTNB.Home.Feedback.FeedbackEntry

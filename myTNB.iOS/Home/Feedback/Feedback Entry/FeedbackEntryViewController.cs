@@ -9,6 +9,7 @@ using myTNB.Model;
 using System.Drawing;
 using myTNB.Customs;
 using myTNB.Home.Feedback.FeedbackEntry;
+using System.Diagnostics;
 
 namespace myTNB
 {
@@ -557,6 +558,24 @@ namespace myTNB
                 {
                     if (NetworkUtility.isReachable)
                     {
+                        object requestParameter = new
+                        {
+                            apiKeyID = TNBGlobal.API_KEY_ID,
+                            feedbackCategoryId = FeedbackID,
+                            feedbackTypeId = DataManager.DataManager.SharedInstance.OtherFeedbackType[DataManager.DataManager.SharedInstance.CurrentSelectedFeedbackTypeIndex].FeedbackTypeId,
+                            accountNum = string.Empty,
+                            name = string.Empty,
+                            phoneNum = string.Empty,
+                            email = string.Empty,
+                            deviceId = DataManager.DataManager.SharedInstance.UDID,
+                            feedbackMesage = _feedbackTextView.Text, //Common
+                            stateId = string.Empty,
+                            location = string.Empty,
+                            poleNum = string.Empty,
+                            images = GetImageList() //Common
+                        };
+
+                        Debug.WriteLine("test");
                     }
                     else
                     {
@@ -564,6 +583,36 @@ namespace myTNB
                     }
                 });
             });
+        }
+
+        List<ImageDataModel> GetImageList()
+        {
+            List<ImageDataModel> capturedImageList = new List<ImageDataModel>();
+            UIImageHelper _imageHelper = new UIImageHelper();
+            ImageDataModel imgData;
+            UIImageView imgView;
+            UIImage resizedImage;
+
+            foreach (UIView view in imageContainerScroll.Subviews)
+            {
+                if (view.Tag == 10)
+                {
+                    for (int i = 0; i < view.Subviews.Length; i++)
+                    {
+                        if (view.Subviews[i].Tag == 1)
+                        {
+                            imgData = new ImageDataModel();
+                            imgView = view.Subviews[i] as UIImageView;
+                            resizedImage = _imageHelper.ResizeImage(imgView.Image);
+                            imgData.imageHex = _imageHelper.ConvertImageToHex(resizedImage);
+                            imgData.filesize = _imageHelper.GetImageFileSize(resizedImage).ToString();
+                            imgData.fileName = FeedbackFileNameHelper.GenerateFileName();
+                            capturedImageList.Add(imgData);
+                        }
+                    }
+                }
+            }
+            return capturedImageList;
         }
     }
 }

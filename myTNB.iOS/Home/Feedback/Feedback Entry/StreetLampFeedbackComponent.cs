@@ -270,18 +270,10 @@ namespace myTNB.Home.Feedback.FeedbackEntry
                 UITextField txtField = sender as UITextField;
                 lblHint.Hidden = !lblError.Hidden || textField.Text.Length == 0;
                 lblTitle.Hidden = textField.Text.Length == 0;
-                //SubmitButtonEnable();
                 _controller.SetButtonEnable();
             };
             textField.EditingDidBegin += (sender, e) =>
             {
-                /*if (textField == _txtFieldMobileNo)
-                {
-                    if (textField.Text.Length == 0)
-                    {
-                        textField.Text += TNBGlobal.MobileNoPrefix;
-                    }
-                }*/
                 lblHint.Hidden = !lblError.Hidden || textField.Text.Length == 0;
                 lblTitle.Hidden = textField.Text.Length == 0;
                 textField.LeftViewMode = UITextFieldViewMode.Never;
@@ -291,15 +283,6 @@ namespace myTNB.Home.Feedback.FeedbackEntry
             {
                 bool isValid = true;
                 bool isEmptyAllowed = true;
-                /*if (textField == _txtFieldMobileNo)
-                {
-                    if (textField.Text.Length < 4)
-                    {
-                        textField.Text = string.Empty;
-                    }
-                    isValid = _textFieldHelper.ValidateMobileNumberLength(textField.Text);
-                    isEmptyAllowed = false;
-                }*/
                 lblTitle.Hidden = textField.Text.Length == 0;
                 isValid = isValid && _textFieldHelper.ValidateTextField(textField.Text, pattern);
                 bool isNormal = isValid || (textField.Text.Length == 0 && isEmptyAllowed);
@@ -312,32 +295,11 @@ namespace myTNB.Home.Feedback.FeedbackEntry
             };
             textField.ShouldReturn = (sender) =>
             {
-                /*if (textField == _txtFieldMobileNo)
-                {
-                    if (textField.Text.Length < 4)
-                    {
-                        textField.Text = string.Empty;
-                    }
-                }*/
                 sender.ResignFirstResponder();
                 return false;
             };
             textField.ShouldChangeCharacters += (txtField, range, replacementString) =>
             {
-                /*if (txtField == _txtFieldMobileNo)
-                {
-                    bool isCharValid = _textFieldHelper.ValidateTextField(replacementString, TNBGlobal.MobileNoPattern);
-                    if (!isCharValid)
-                        return false;
-
-                    if (range.Location >= TNBGlobal.MobileNoPrefix.Length)
-                    {
-                        string content = _textFieldHelper.TrimAllSpaces(((UITextField)txtField).Text);
-                        var count = content.Length + replacementString.Length - range.Length;
-                        return count <= TNBGlobal.MobileNumberMaxCharCount;
-                    }
-                    return false;
-                }*/
                 return true;
             };
             textField.EditingDidEnd += (sender, e) =>
@@ -356,9 +318,9 @@ namespace myTNB.Home.Feedback.FeedbackEntry
 
         void CreateTextFieldRightView(UITextField textField, String imageName)
         {
-            var rightView = new UIView((new CGRect(0, 0, 24, 24)));
+            UIView rightView = new UIView((new CGRect(0, 0, 24, 24)));
 
-            var imgForRightView = new UIImageView(UIImage.FromBundle(imageName));
+            UIImageView imgForRightView = new UIImageView(UIImage.FromBundle(imageName));
             rightView.AddSubview(imgForRightView);
 
             rightView.Frame = new CGRect(rightView.Frame.X, rightView.Frame.Y, rightView.Frame.Width, rightView.Frame.Height);
@@ -370,7 +332,7 @@ namespace myTNB.Home.Feedback.FeedbackEntry
             {
                 LocManager = new LocationManager();
                 LocManager.StartLocationUpdates();
-                var isFirstCall = false;
+                bool isFirstCall = false;
                 LocManager.LocMgr.AuthorizationChanged += (sender, e) =>
                 {
 
@@ -390,7 +352,6 @@ namespace myTNB.Home.Feedback.FeedbackEntry
                                 , placemarks[0].PostalCode
                                 , placemarks[0].Country);
                             _txtFieldLocation.Text = reverseGeocodedAddress;
-                            //SubmitButtonEnable();
                             _controller.SetButtonEnable();
                         });
                     }
