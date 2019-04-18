@@ -27,6 +27,7 @@ namespace myTNB.Home.Feedback.FeedbackEntry
         void ConstructOtherFeedbackWidget()
         {
             _feedbackCommonWidgets = new FeedbackCommonWidgets(_controller.View);
+            _feedbackCommonWidgets.SetValidationMethod(_controller.SetButtonEnable);
             _mainContainer = new UIView(new CGRect(0, 0, _controller.View.Frame.Width, 0));
             if (_controller.IsLoggedIn)
             {
@@ -41,14 +42,22 @@ namespace myTNB.Home.Feedback.FeedbackEntry
         void ConstructLoginComponent()
         {
             ConstructAccountNumberSelector();
-            _mainContainer.AddSubviews(new UIView[] { _viewAccountNo });
-            _mainContainer.Frame = new CGRect(0, 0, _controller.View.Frame.Width, (18 + 51));
+            _mainContainer.AddSubview(_viewAccountNo);
+            nfloat mobileNumberHeight = 0.0f;
+            if (!_controller.isMobileNumberAvailable)
+            {
+                _commonWidgets = _feedbackCommonWidgets.GetMobileNumberComponent();
+                mobileNumberHeight = _commonWidgets.Frame.Height;
+                _commonWidgets.Frame = new CGRect(_commonWidgets.Frame.X, _viewAccountNo.Frame.Height + _viewAccountNo.Frame.X + 14
+                    , _commonWidgets.Frame.Width, _commonWidgets.Frame.Height);
+                _mainContainer.AddSubview(_commonWidgets);
+            }
+            _mainContainer.Frame = new CGRect(0, 0, _controller.View.Frame.Width, 18 + 51 + mobileNumberHeight);
         }
 
         void ConstructNonLoginComponent()
         {
             _commonWidgets = _feedbackCommonWidgets.GetCommonWidgets();
-            _feedbackCommonWidgets.SetValidationMethod(_controller.SetButtonEnable);
             ConstructAccountNumberField();
             _mainContainer.AddSubviews(new UIView[] { _commonWidgets, _viewAccountNo });
             _mainContainer.Frame = new CGRect(0, 0, _controller.View.Frame.Width, (18 + 51) * 4);
@@ -222,7 +231,7 @@ namespace myTNB.Home.Feedback.FeedbackEntry
         {
             if (_controller.IsLoggedIn)
             {
-                return true;
+                return _controller.isMobileNumberAvailable || _feedbackCommonWidgets.IsValidMobileNumber();
             }
             else
             {

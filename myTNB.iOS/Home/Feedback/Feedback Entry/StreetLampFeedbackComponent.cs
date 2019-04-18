@@ -35,6 +35,7 @@ namespace myTNB.Home.Feedback.FeedbackEntry
         void ConstructOtherFeedbackWidget()
         {
             _feedbackCommonWidgets = new FeedbackCommonWidgets(_controller.View);
+            _feedbackCommonWidgets.SetValidationMethod(_controller.SetButtonEnable);
             _mainContainer = new UIView(new CGRect(0, 0, _controller.View.Frame.Width, 0));
             ConstructBanner();
             _detailsContainer = new UIView(new CGRect(0, _bannerContainer.Frame.Height
@@ -53,15 +54,24 @@ namespace myTNB.Home.Feedback.FeedbackEntry
 
         void ConstructLoginComponent()
         {
-            _mainContainer.AddSubviews(new UIView[] { _detailsContainer });
+            _mainContainer.AddSubview(_detailsContainer);
+            nfloat mobileNumberHeight = 0.0f;
+            if (!_controller.isMobileNumberAvailable)
+            {
+                _commonWidgets = _feedbackCommonWidgets.GetMobileNumberComponent();
+                mobileNumberHeight = _commonWidgets.Frame.Height;
+                _commonWidgets.Frame = new CGRect(_commonWidgets.Frame.X, _detailsContainer.Frame.Height
+                        + _detailsContainer.Frame.X + 14 + _bannerContainer.Frame.Height
+                    , _commonWidgets.Frame.Width, _commonWidgets.Frame.Height);
+                _mainContainer.AddSubview(_commonWidgets);
+            }
             _mainContainer.Frame = new CGRect(0, 0, _controller.View.Frame.Width
-                , _bannerContainer.Frame.Height + _detailsContainer.Frame.Height); //(18 + 51));
+                , _bannerContainer.Frame.Height + _detailsContainer.Frame.Height + mobileNumberHeight);
         }
 
         void ConstructNonLoginComponent()
         {
             _commonWidgets = _feedbackCommonWidgets.GetCommonWidgets();
-            _feedbackCommonWidgets.SetValidationMethod(_controller.SetButtonEnable);
             _commonWidgets.Frame = new CGRect(0, _bannerContainer.Frame.Height
                 , _commonWidgets.Frame.Width, _commonWidgets.Frame.Height);
             _detailsContainer.Frame = new CGRect(0, _bannerContainer.Frame.Height + _commonWidgets.Frame.Height
@@ -444,7 +454,8 @@ namespace myTNB.Home.Feedback.FeedbackEntry
                 return _textFieldHelper.ValidateTextField(_txtFieldLocation.Text, ANY_PATTERN)
                     && _txtFieldLocation.Text.Length != 0
                     && _textFieldHelper.ValidateTextField(_txtFieldPole.Text, ANY_PATTERN)
-                    && _txtFieldPole.Text.Length != 0;
+                    && _txtFieldPole.Text.Length != 0
+                    && (_controller.isMobileNumberAvailable || _feedbackCommonWidgets.IsValidMobileNumber());
             }
             else
             {

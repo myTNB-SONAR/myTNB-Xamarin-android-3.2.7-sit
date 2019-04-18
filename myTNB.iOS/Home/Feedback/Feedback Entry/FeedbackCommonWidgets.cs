@@ -169,9 +169,7 @@ namespace myTNB.Home.Feedback.FeedbackEntry
             _viewEmail.AddSubviews(new UIView[] { _lblEmailTitle, _lblEmailError
                 , _txtFieldEmail, _viewLineEmail });
 
-            _textFieldHelper.CreateDoneButton(_txtFieldMobileNo);
             _textFieldHelper.CreateTextFieldLeftView(_txtFieldFullName, "Name");
-            _textFieldHelper.CreateTextFieldLeftView(_txtFieldMobileNo, "Mobile");
             _textFieldHelper.CreateTextFieldLeftView(_txtFieldEmail, "Email");
             SetValidationEvents();
         }
@@ -180,8 +178,6 @@ namespace myTNB.Home.Feedback.FeedbackEntry
         {
             SetTextFieldEvents(_txtFieldFullName, _lblFullNameTitle, _lblFullNameError
                 , _viewLineFullName, null, TNBGlobal.CustomerNamePattern);
-            SetTextFieldEvents(_txtFieldMobileNo, _lblMobileNoTitle, _lblMobileNoError
-                , _viewLineMobileNo, _lblMobileNoHint, MOBILE_NO_PATTERN);
             SetTextFieldEvents(_txtFieldEmail, _lblEmailTitle, _lblEmailError
                 , _viewLineEmail, null, EMAIL_PATTERN);
         }
@@ -327,12 +323,19 @@ namespace myTNB.Home.Feedback.FeedbackEntry
             _viewMobileNo.AddSubviews(new UIView[] { _lblMobileNoTitle, _lblMobileNoError
                 , _lblMobileNoHint, _txtFieldMobileNo , _viewLineMobileNo });
 
+            _textFieldHelper.CreateDoneButton(_txtFieldMobileNo);
+            _textFieldHelper.CreateTextFieldLeftView(_txtFieldMobileNo, "Mobile");
+            SetTextFieldEvents(_txtFieldMobileNo, _lblMobileNoTitle, _lblMobileNoError
+                , _viewLineMobileNo, _lblMobileNoHint, MOBILE_NO_PATTERN);
             return _viewMobileNo;
         }
 
         public UIView GetMobileNumberComponent()
         {
-            return GetMobileNumberWidget();
+            UIView mobileNumberWidget = GetMobileNumberWidget();
+            mobileNumberWidget.Frame = new CGRect(mobileNumberWidget.Frame.X, 18
+                , mobileNumberWidget.Frame.Width, mobileNumberWidget.Frame.Height + 18);
+            return mobileNumberWidget;
         }
 
         public UIView GetCommonWidgets()
@@ -346,16 +349,9 @@ namespace myTNB.Home.Feedback.FeedbackEntry
         {
             bool isValidFullName = _textFieldHelper.ValidateTextField(_txtFieldFullName.Text
                 , TNBGlobal.CustomerNamePattern) && !string.IsNullOrWhiteSpace(_txtFieldFullName.Text);
-            bool isValidMobileNo = _textFieldHelper.ValidateTextField(_txtFieldMobileNo.Text, MOBILE_NO_PATTERN)
-                && _textFieldHelper.ValidateMobileNumberLength(_txtFieldMobileNo.Text);
+            bool isValidMobileNo = IsValidMobileNumber();
             bool isValidEmail = _textFieldHelper.ValidateTextField(_txtFieldEmail.Text, EMAIL_PATTERN);
             return isValidFullName && isValidMobileNo && isValidEmail;
-        }
-
-        public bool SsValidMobileNumber()
-        {
-            return _textFieldHelper.ValidateTextField(_txtFieldMobileNo.Text, MOBILE_NO_PATTERN)
-                && _textFieldHelper.ValidateMobileNumberLength(_txtFieldMobileNo.Text);
         }
 
         public void SetValidationMethod(Action fn)
@@ -366,6 +362,27 @@ namespace myTNB.Home.Feedback.FeedbackEntry
         void Validate()
         {
             _validateFunction?.Invoke();
+        }
+
+        public bool IsValidMobileNumber()
+        {
+            return _textFieldHelper.ValidateTextField(_txtFieldMobileNo.Text, MOBILE_NO_PATTERN)
+                && _textFieldHelper.ValidateMobileNumberLength(_txtFieldMobileNo.Text);
+        }
+
+        public string GetEmail()
+        {
+            return _txtFieldEmail.Text ?? string.Empty;
+        }
+
+        public string GetMobileNumber()
+        {
+            return _txtFieldMobileNo.Text ?? string.Empty;
+        }
+
+        public string GetFullName()
+        {
+            return _txtFieldFullName.Text ?? string.Empty;
         }
     }
 }

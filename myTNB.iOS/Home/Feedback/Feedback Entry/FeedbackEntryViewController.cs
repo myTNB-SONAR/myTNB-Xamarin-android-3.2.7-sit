@@ -20,6 +20,7 @@ namespace myTNB
 
         public string FeedbackID = string.Empty;
         public bool IsLoggedIn;
+        public bool isMobileNumberAvailable;
 
         const string ANY_PATTERN = @".*";
         const int MAX_IMAGE = 2;
@@ -48,6 +49,7 @@ namespace myTNB
         public override void ViewDidLoad()
         {
             base.ViewDidLoad();
+            CheckMobileNumber();
             _otherFeedbackComponent = new OtherFeedbackComponent(this);
             _billRelatedFeedbackComponent = new BillRelatedFeedbackComponent(this);
             _streetLampRelatedFeedbackComponent = new StreetLampFeedbackComponent(this);
@@ -76,6 +78,13 @@ namespace myTNB
             {
                 _otherFeedbackComponent.SetFeedbackType();
             }
+        }
+
+        void CheckMobileNumber()
+        {
+            isMobileNumberAvailable = DataManager.DataManager.SharedInstance.UserEntity?.Count > 0
+                && !string.IsNullOrWhiteSpace(DataManager.DataManager.SharedInstance.UserEntity[0]?.mobileNo)
+                && !string.IsNullOrEmpty(DataManager.DataManager.SharedInstance.UserEntity[0]?.mobileNo);
         }
 
         void SetHeader()
@@ -452,9 +461,7 @@ namespace myTNB
 
         nfloat GetCommentSectionYCoordinate()
         {
-            nfloat yCoord = 0.0f;
-            yCoord = _feedbackCategoryView?.Frame.Height ?? 0;
-            return yCoord;
+            return _feedbackCategoryView?.Frame.Height ?? 0.0f;
         }
 
         nfloat GetScrollHeight()

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using CoreGraphics;
 using Foundation;
-using myTNB.Enums;
 using UIKit;
 
 namespace myTNB.Home.Feedback.FeedbackEntry
@@ -25,6 +24,7 @@ namespace myTNB.Home.Feedback.FeedbackEntry
         void ConstructOtherFeedbackWidget()
         {
             _feedbackCommonWidgets = new FeedbackCommonWidgets(_controller.View);
+            _feedbackCommonWidgets.SetValidationMethod(_controller.SetButtonEnable);
             _mainContainer = new UIView(new CGRect(0, 0, _controller.View.Frame.Width, 0));
             if (_controller.IsLoggedIn)
             {
@@ -39,14 +39,22 @@ namespace myTNB.Home.Feedback.FeedbackEntry
         void ConstructLoginComponent()
         {
             ConstructFeedbackType();
-            _mainContainer.AddSubviews(new UIView[] { _viewFeedbackType });
-            _mainContainer.Frame = new CGRect(0, 0, _controller.View.Frame.Width, 18 + 51);
+            _mainContainer.AddSubview(_viewFeedbackType);
+            nfloat mobileNumberHeight = 0.0f;
+            if (!_controller.isMobileNumberAvailable)
+            {
+                _commonWidgets = _feedbackCommonWidgets.GetMobileNumberComponent();
+                mobileNumberHeight = _commonWidgets.Frame.Height;
+                _commonWidgets.Frame = new CGRect(_commonWidgets.Frame.X, _viewFeedbackType.Frame.Height + _viewFeedbackType.Frame.X + 14
+                    , _commonWidgets.Frame.Width, _commonWidgets.Frame.Height);
+                _mainContainer.AddSubview(_commonWidgets);
+            }
+            _mainContainer.Frame = new CGRect(0, 0, _controller.View.Frame.Width, 18 + 51 + mobileNumberHeight);
         }
 
         void ConstructNonLoginComponent()
         {
             _commonWidgets = _feedbackCommonWidgets.GetCommonWidgets();
-            _feedbackCommonWidgets.SetValidationMethod(_controller.SetButtonEnable);
             ConstructFeedbackType();
             _mainContainer.AddSubviews(new UIView[] { _commonWidgets, _viewFeedbackType });
             _mainContainer.Frame = new CGRect(0, 0, _controller.View.Frame.Width, (18 + 51) * 4);
@@ -126,7 +134,7 @@ namespace myTNB.Home.Feedback.FeedbackEntry
         {
             if (_controller.IsLoggedIn)
             {
-                return true;
+                return _controller.isMobileNumberAvailable || _feedbackCommonWidgets.IsValidMobileNumber();
             }
             else
             {
