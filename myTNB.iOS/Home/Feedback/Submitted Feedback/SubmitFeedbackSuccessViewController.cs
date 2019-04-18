@@ -3,6 +3,7 @@ using System;
 using UIKit;
 using CoreAnimation;
 using CoreGraphics;
+using System.Diagnostics;
 
 namespace myTNB
 {
@@ -32,77 +33,99 @@ namespace myTNB
         {
             var startColor = myTNBColor.GradientPurpleDarkElement();
             var endColor = myTNBColor.GradientPurpleLightElement();
-            var gradientLayer = new CAGradientLayer();
-            gradientLayer.Colors = new[] { startColor.CGColor, endColor.CGColor };
-            gradientLayer.Locations = new NSNumber[] { 0, 1 };
-            gradientLayer.Frame = View.Bounds;
+            CAGradientLayer gradientLayer = new CAGradientLayer
+            {
+                Colors = new[] { startColor.CGColor, endColor.CGColor },
+                Locations = new NSNumber[] { 0, 1 },
+                Frame = View.Bounds
+            };
             View.Layer.InsertSublayer(gradientLayer, 0);
         }
 
         internal void InitilizedViews()
         {
-            var viewContainer = new UIView((new CGRect(18, 36, View.Frame.Width - 36, 203)));
-            viewContainer.BackgroundColor = UIColor.White;
+            var viewContainer = new UIView((new CGRect(18, 36, View.Frame.Width - 36, 203)))
+            {
+                BackgroundColor = UIColor.White
+            };
             viewContainer.Layer.CornerRadius = 4f;
             View.AddSubview(viewContainer);
 
-            UIImageView imgViewCheck = new UIImageView(new CGRect((viewContainer.Frame.Width - 50) / 2, 16, 50, 50));
-            imgViewCheck.Image = UIImage.FromBundle("Circle-With-Check-Green");
+            UIImageView imgViewCheck = new UIImageView(new CGRect((viewContainer.Frame.Width - 50) / 2, 16, 50, 50))
+            {
+                Image = UIImage.FromBundle("Circle-With-Check-Green")
+            };
             viewContainer.AddSubview(imgViewCheck);
 
-            var lblFeedback = new UILabel(new CGRect(0, 80, viewContainer.Frame.Width, 18));
-            lblFeedback.Font = myTNBFont.MuseoSans16_500();
-            lblFeedback.TextColor = myTNBColor.PowerBlue();
-            lblFeedback.Text = "Feedback Successful";
-            lblFeedback.TextAlignment = UITextAlignment.Center;
+            var lblFeedback = new UILabel(new CGRect(0, 80, viewContainer.Frame.Width, 18))
+            {
+                Font = myTNBFont.MuseoSans16_500(),
+                TextColor = myTNBColor.PowerBlue(),
+                Text = "Feedback_Successful".Translate(),
+                TextAlignment = UITextAlignment.Center
+            };
             viewContainer.AddSubview(lblFeedback);
 
-            var lblThankYou = new UILabel(new CGRect(0, 98, viewContainer.Frame.Width, 16));
-            lblThankYou.Font = myTNBFont.MuseoSans12_300();
-            lblThankYou.TextColor = myTNBColor.TunaGrey();
-            lblThankYou.Text = "Thank you for your feedback.";
-            lblThankYou.TextAlignment = UITextAlignment.Center;
+            var lblThankYou = new UILabel(new CGRect(0, 98, viewContainer.Frame.Width, 16))
+            {
+                Font = myTNBFont.MuseoSans12_300(),
+                TextColor = myTNBColor.TunaGrey(),
+                Text = "Feedback_SuccessfulMessage".Translate(),
+                TextAlignment = UITextAlignment.Center
+            };
             viewContainer.AddSubview(lblThankYou);
 
-            var viewLine = new UIView((new CGRect(14, 130, viewContainer.Frame.Width - 28, 1)));
-            viewLine.BackgroundColor = myTNBColor.LightGrayBG();
+            var viewLine = new UIView((new CGRect(14, 130, viewContainer.Frame.Width - 28, 1)))
+            {
+                BackgroundColor = myTNBColor.LightGrayBG()
+            };
             viewContainer.AddSubview(viewLine);
 
             var lblFeedbackDateTitleWidth = ((viewContainer.Frame.Width - 28) * 2) / 3;
-            var lblFeedbackDateTitle = new UILabel(new CGRect(14, 147, lblFeedbackDateTitleWidth, 14));
-            lblFeedbackDateTitle.Font = myTNBFont.MuseoSans9_300();
-            lblFeedbackDateTitle.TextColor = myTNBColor.SilverChalice();
-            lblFeedbackDateTitle.Text = "FEEDBACK DATE & TIME";
-            lblFeedbackDateTitle.TextAlignment = UITextAlignment.Left;
+            var lblFeedbackDateTitle = new UILabel(new CGRect(14, 147, lblFeedbackDateTitleWidth, 14))
+            {
+                Font = myTNBFont.MuseoSans9_300(),
+                TextColor = myTNBColor.SilverChalice(),
+                Text = "Feedback_DateTimeTitle".Translate().ToUpper(),
+                TextAlignment = UITextAlignment.Left
+            };
             viewContainer.AddSubview(lblFeedbackDateTitle);
 
             var lblFeedbackIDTitleWidth = (viewContainer.Frame.Width - 28) / 3;
-            var lblFeedbackIDTitle = new UILabel(new CGRect(lblFeedbackDateTitleWidth + 14, 147, lblFeedbackIDTitleWidth, 14));
-            lblFeedbackIDTitle.Font = myTNBFont.MuseoSans9_300();
-            lblFeedbackIDTitle.TextColor = myTNBColor.SilverChalice();
-            lblFeedbackIDTitle.Text = "FEEDBACK ID";
-            lblFeedbackIDTitle.TextAlignment = UITextAlignment.Right;
+            var lblFeedbackIDTitle = new UILabel(new CGRect(lblFeedbackDateTitleWidth + 14, 147, lblFeedbackIDTitleWidth, 14))
+            {
+                Font = myTNBFont.MuseoSans9_300(),
+                TextColor = myTNBColor.SilverChalice(),
+                Text = "Feedback_ID".Translate().ToUpper(),
+                TextAlignment = UITextAlignment.Right
+            };
             viewContainer.AddSubview(lblFeedbackIDTitle);
 
-            _lblFeedbackDateValue = new UILabel(new CGRect(14, 161, lblFeedbackDateTitleWidth, 18));
-            _lblFeedbackDateValue.Font = myTNBFont.MuseoSans14_300();
-            _lblFeedbackDateValue.TextColor = myTNBColor.TunaGrey();
+            _lblFeedbackDateValue = new UILabel(new CGRect(14, 161, lblFeedbackDateTitleWidth, 18))
+            {
+                Font = myTNBFont.MuseoSans14_300(),
+                TextColor = myTNBColor.TunaGrey()
+            };
             string createdDate = GetDate();
             _lblFeedbackDateValue.Text = createdDate;
             _lblFeedbackDateValue.TextAlignment = UITextAlignment.Left;
             viewContainer.AddSubview(_lblFeedbackDateValue);
 
-            _lblFeedbackIDValue = new UILabel(new CGRect(lblFeedbackDateTitleWidth + 14, 161, lblFeedbackIDTitleWidth, 18));
-            _lblFeedbackIDValue.Font = myTNBFont.MuseoSans14_300();
-            _lblFeedbackIDValue.TextColor = myTNBColor.TunaGrey();
-            _lblFeedbackIDValue.Text = ServiceReqNo;
-            _lblFeedbackIDValue.TextAlignment = UITextAlignment.Right;
+            _lblFeedbackIDValue = new UILabel(new CGRect(lblFeedbackDateTitleWidth + 14, 161, lblFeedbackIDTitleWidth, 18))
+            {
+                Font = myTNBFont.MuseoSans14_300(),
+                TextColor = myTNBColor.TunaGrey(),
+                Text = ServiceReqNo,
+                TextAlignment = UITextAlignment.Right
+            };
             viewContainer.AddSubview(_lblFeedbackIDValue);
 
             //Back to Feedback Button
-            _btnBackToFeedback = new UIButton(UIButtonType.Custom);
-            _btnBackToFeedback.Frame = new CGRect(18, View.Frame.Height - DeviceHelper.GetScaledHeight(64), View.Frame.Width - 36, DeviceHelper.GetScaledHeight(48));
-            _btnBackToFeedback.SetTitle("Back to Feedback", UIControlState.Normal);
+            _btnBackToFeedback = new UIButton(UIButtonType.Custom)
+            {
+                Frame = new CGRect(18, View.Frame.Height - DeviceHelper.GetScaledHeight(64), View.Frame.Width - 36, DeviceHelper.GetScaledHeight(48))
+            };
+            _btnBackToFeedback.SetTitle("Feedback_BackToFeedback".Translate(), UIControlState.Normal);
             _btnBackToFeedback.Font = myTNBFont.MuseoSans16_500();
             _btnBackToFeedback.Layer.CornerRadius = 5.0f;
             _btnBackToFeedback.BackgroundColor = myTNBColor.FreshGreen();
@@ -135,7 +158,7 @@ namespace myTNB
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
+                Debug.WriteLine(e.Message);
                 return string.Empty;
             }
         }

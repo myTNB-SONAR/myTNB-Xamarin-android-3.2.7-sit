@@ -1,4 +1,3 @@
-using Foundation;
 using System;
 using UIKit;
 using CoreGraphics;
@@ -12,7 +11,7 @@ namespace myTNB
     {
         public List<StatesForFeedbackDataModel> _statesForFeedbackList = new List<StatesForFeedbackDataModel>();
 
-        public SelectStateViewController (IntPtr handle) : base (handle)
+        public SelectStateViewController(IntPtr handle) : base(handle)
         {
         }
         public Action OnSelect { get; set; }
@@ -24,7 +23,7 @@ namespace myTNB
             StateTableView.RowHeight = 56f;
             StateTableView.TableFooterView = new UIView(new CGRect(0, 0, 0, 0));
 
-            StateTableView.ScrollEnabled = StateTableView.ContentSize.Height < StateTableView.Frame.Size.Height ? false : true;
+            StateTableView.ScrollEnabled = StateTableView.ContentSize.Height >= StateTableView.Frame.Size.Height;
 
             this.NavigationItem.HidesBackButton = true;
             AddBackButton();
@@ -33,7 +32,8 @@ namespace myTNB
         internal void AddBackButton()
         {
             UIImage backImg = UIImage.FromBundle("Back-White");
-            UIBarButtonItem btnBack = new UIBarButtonItem(backImg, UIBarButtonItemStyle.Done, (sender, e) => {
+            UIBarButtonItem btnBack = new UIBarButtonItem(backImg, UIBarButtonItemStyle.Done, (sender, e) =>
+            {
                 this.NavigationController.PopViewController(true);
             });
             this.NavigationItem.LeftBarButtonItem = btnBack;

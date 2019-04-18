@@ -7,11 +7,11 @@ using UIKit;
 
 namespace myTNB.Home.Feedback
 {
-    public class SelectFeedbackTypeDataSource: UITableViewSource
+    public class SelectFeedbackTypeDataSource : UITableViewSource
     {
 
         FeedbackTypeViewController _controller;
-        List<OtherFeedbackTypeDataModel>  _feedbackTypeList = new List<OtherFeedbackTypeDataModel>();
+        List<OtherFeedbackTypeDataModel> _feedbackTypeList = new List<OtherFeedbackTypeDataModel>();
 
         public SelectFeedbackTypeDataSource(FeedbackTypeViewController controller, List<OtherFeedbackTypeDataModel> feedbackTypeList)
         {
@@ -33,10 +33,14 @@ namespace myTNB.Home.Feedback
             {
                 cell.Accessory = UITableViewCellAccessory.None;
                 cell.AccessoryView = new UIView(new CGRect(0, 0, 24, 24));
-                UIImageView imgViewTick = new UIImageView(new CGRect(0, 0, 24, 24));
-                imgViewTick.Image = UIImage.FromBundle("Table-Tick");
+                UIImageView imgViewTick = new UIImageView(new CGRect(0, 0, 24, 24))
+                {
+                    Image = UIImage.FromBundle("Table-Tick")
+                };
                 cell.AccessoryView.AddSubview(imgViewTick);
-            } else {
+            }
+            else
+            {
                 if (cell != null && cell.AccessoryView != null && cell.AccessoryView.Subviews != null)
                 {
                     foreach (var subView in cell.AccessoryView.Subviews)
@@ -60,7 +64,5 @@ namespace myTNB.Home.Feedback
             DataManager.DataManager.SharedInstance.CurrentSelectedFeedbackTypeIndex = indexPath.Row;
             _controller.NavigationController.PopViewController(true);
         }
-
-
     }
 }

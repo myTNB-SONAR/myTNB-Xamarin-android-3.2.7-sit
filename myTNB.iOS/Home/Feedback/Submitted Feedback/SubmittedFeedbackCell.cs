@@ -1,4 +1,3 @@
-using Foundation;
 using System;
 using UIKit;
 using CoreGraphics;
@@ -9,15 +8,13 @@ namespace myTNB
     {
         public UIImageView imgViewIcon;
 
-        public SubmittedFeedbackCell (IntPtr handle) : base (handle)
+        public SubmittedFeedbackCell(IntPtr handle) : base(handle)
         {
             imgViewIcon = new UIImageView(new CGRect(16, 18, 24, 24));
 
             AddSubview(imgViewIcon);
         }
-        /// <summary>
-        /// Updates the style.
-        /// </summary>
+
         public void UpdateStyle()
         {
             lblFeedbackType.Font = myTNBFont.MuseoSans14_300();

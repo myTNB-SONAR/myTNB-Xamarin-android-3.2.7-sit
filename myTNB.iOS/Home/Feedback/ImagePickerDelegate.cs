@@ -65,59 +65,11 @@ namespace myTNB.Home.Feedback
         void AddImageToView(UIImage image)
         {
             _feedbackEntryViewController.AddImage(image, DashedLineView);
-            /*if (Type == FeedbackCategory.LoginBillRelated)
-            {
-                _loginBillFeedbackController.AddImage(image, DashedLineView);
-            }
-            else if (Type == FeedbackCategory.LoginFaultyStreetLamp)
-            {
-                _loginFaultyLampFeedbackController.AddImage(image, DashedLineView);
-            }
-            else if (Type == FeedbackCategory.LoginOthers)
-            {
-                _loginOthersFeedbackController.AddImage(image, DashedLineView);
-            }
-            else if (Type == FeedbackCategory.NonLoginBillRelated)
-            {
-                _nonLoginBillFeedbackController.AddImage(image, DashedLineView);
-            }
-            else if (Type == FeedbackCategory.NonLoginFaultyStreetLamp)
-            {
-                _nonloginFaultyLampFeedbackController.AddImage(image, DashedLineView);
-            }
-            else if (Type == FeedbackCategory.NonLoginOthers)
-            {
-                _nonLoginOthersFeedbackViewController.AddImage(image, DashedLineView);
-            }*/
         }
 
         void DismissScreen()
         {
             _feedbackEntryViewController.DismissViewController(true, null);
-            /*if (Type == FeedbackCategory.LoginBillRelated)
-            {
-                _loginBillFeedbackController.DismissViewController(true, null);
-            }
-            else if (Type == FeedbackCategory.LoginFaultyStreetLamp)
-            {
-                _loginFaultyLampFeedbackController.DismissViewController(true, null);
-            }
-            else if (Type == FeedbackCategory.LoginOthers)
-            {
-                _loginOthersFeedbackController.DismissViewController(true, null);
-            }
-            else if (Type == FeedbackCategory.NonLoginBillRelated)
-            {
-                _nonLoginBillFeedbackController.DismissViewController(true, null);
-            }
-            else if (Type == FeedbackCategory.NonLoginFaultyStreetLamp)
-            {
-                _nonloginFaultyLampFeedbackController.DismissViewController(true, null);
-            }
-            else if (Type == FeedbackCategory.NonLoginOthers)
-            {
-                _nonLoginOthersFeedbackViewController.DismissViewController(true, null);
-            }*/
         }
     }
 }

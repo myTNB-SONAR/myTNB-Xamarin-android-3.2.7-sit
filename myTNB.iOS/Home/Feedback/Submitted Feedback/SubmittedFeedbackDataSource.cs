@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using Foundation;
 using myTNB.Model;
 using UIKit;
 
 namespace myTNB.Home.Feedback
 {
-    public class SubmittedFeedbackDataSource: UITableViewSource
+    public class SubmittedFeedbackDataSource : UITableViewSource
     {
         SubmittedFeedbackViewController _controller;
         List<SubmittedFeedbackDataModel> _submittedFeedbacks = new List<SubmittedFeedbackDataModel>();
@@ -23,18 +24,24 @@ namespace myTNB.Home.Feedback
             cell.SeparatorInset = new UIEdgeInsets(0, 0, 0, 0);
             cell.LayoutMargins = new UIEdgeInsets(0, 0, 0, 0);
             cell.UpdateStyle();
-            if (_submittedFeedbacks != null && _submittedFeedbacks.Count != 0) {
+            if (_submittedFeedbacks != null && _submittedFeedbacks.Count != 0)
+            {
                 var feedback = _submittedFeedbacks[indexPath.Row];
 
                 cell.FeedbackTypeLabel.Text = feedback.FeedbackCategoryName;
                 cell.FeedbackDateLabel.Text = GetFormattedDate(feedback.DateCreated);
                 cell.FeedbackDetailsLabel.Text = feedback.FeedbackMessage;
 
-                if (feedback.FeedbackCategoryId == "1"){
+                if (feedback.FeedbackCategoryId == "1")
+                {
                     cell.imgViewIcon.Image = UIImage.FromBundle("Feedback-Submitted-Bill");
-                } else if (feedback.FeedbackCategoryId == "2") {
+                }
+                else if (feedback.FeedbackCategoryId == "2")
+                {
                     cell.imgViewIcon.Image = UIImage.FromBundle("Feedback-Submitted-Streetlamp");
-                } else if (feedback.FeedbackCategoryId == "3") {
+                }
+                else if (feedback.FeedbackCategoryId == "3")
+                {
                     cell.imgViewIcon.Image = UIImage.FromBundle("Feedback-Submitted-Others");
                 }
             }
@@ -65,7 +72,7 @@ namespace myTNB.Home.Feedback
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
+                Debug.WriteLine(e.Message);
                 return string.Empty;
             }
         }

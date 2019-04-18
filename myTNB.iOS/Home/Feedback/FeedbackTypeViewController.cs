@@ -1,4 +1,3 @@
-using Foundation;
 using System;
 using UIKit;
 using System.Collections.Generic;
@@ -12,7 +11,7 @@ namespace myTNB
     {
         public List<OtherFeedbackTypeDataModel> _feedbackTypeList = new List<OtherFeedbackTypeDataModel>();
 
-        public FeedbackTypeViewController (IntPtr handle) : base (handle)
+        public FeedbackTypeViewController(IntPtr handle) : base(handle)
         {
         }
 
@@ -24,7 +23,7 @@ namespace myTNB
             FeedbackTypeTableView.RowHeight = 56f;
             FeedbackTypeTableView.TableFooterView = new UIView(new CGRect(0, 0, 0, 0));
 
-            FeedbackTypeTableView.ScrollEnabled = FeedbackTypeTableView.ContentSize.Height < FeedbackTypeTableView.Frame.Size.Height ? false : true;
+            FeedbackTypeTableView.ScrollEnabled = FeedbackTypeTableView.ContentSize.Height >= FeedbackTypeTableView.Frame.Size.Height;
 
             this.NavigationItem.HidesBackButton = true;
             AddBackButton();
@@ -33,7 +32,8 @@ namespace myTNB
         internal void AddBackButton()
         {
             UIImage backImg = UIImage.FromBundle("Back-White");
-            UIBarButtonItem btnBack = new UIBarButtonItem(backImg, UIBarButtonItemStyle.Done, (sender, e) => {
+            UIBarButtonItem btnBack = new UIBarButtonItem(backImg, UIBarButtonItemStyle.Done, (sender, e) =>
+            {
                 this.NavigationController.PopViewController(true);
             });
             this.NavigationItem.LeftBarButtonItem = btnBack;

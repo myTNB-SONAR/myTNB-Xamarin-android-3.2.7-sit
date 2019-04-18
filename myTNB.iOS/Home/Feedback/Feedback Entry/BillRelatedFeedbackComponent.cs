@@ -250,5 +250,33 @@ namespace myTNB.Home.Feedback.FeedbackEntry
             _lblAccountNumber.Text = string.Format("{0} - {1}", DataManager.DataManager.SharedInstance.AccountRecordsList?.d[index]?.accNum
                 , DataManager.DataManager.SharedInstance.AccountRecordsList?.d[index]?.accDesc);
         }
+
+        public string GetAccountNumber()
+        {
+            if (_controller.IsLoggedIn)
+            {
+                var index = DataManager.DataManager.SharedInstance.CurrentSelectedFeedAccountNoIndex;
+                return DataManager.DataManager.SharedInstance.AccountRecordsList?.d[index]?.accNum ?? string.Empty;
+            }
+            else
+            {
+                return _txtFieldAccountNo.Text ?? string.Empty;
+            }
+        }
+
+        public string GetEmail()
+        {
+            return _feedbackCommonWidgets.GetEmail();
+        }
+
+        public string GetMobileNumber()
+        {
+            return _feedbackCommonWidgets.GetMobileNumber();
+        }
+
+        public string GetFullName()
+        {
+            return _feedbackCommonWidgets.GetFullName();
+        }
     }
 }

@@ -427,5 +427,42 @@ namespace myTNB.Home.Feedback.FeedbackEntry
                 return _feedbackCommonWidgets.IsValidEntry() && isValid;
             }
         }
+
+        public string GetEmail()
+        {
+            return _feedbackCommonWidgets.GetEmail();
+        }
+
+        public string GetMobileNumber()
+        {
+            return _feedbackCommonWidgets.GetMobileNumber();
+        }
+
+        public string GetFullName()
+        {
+            return _feedbackCommonWidgets.GetFullName();
+        }
+
+        public string GetState()
+        {
+            if (DataManager.DataManager.SharedInstance.StatesForFeedBack != null && DataManager
+                    .DataManager.SharedInstance.CurrentSelectedStateForFeedbackIndex > -1)
+            {
+                return DataManager.DataManager.SharedInstance.StatesForFeedBack?[DataManager
+                    .DataManager.SharedInstance.CurrentSelectedStateForFeedbackIndex]?.StateId ?? string.Empty;
+            }
+            return string.Empty;
+        }
+
+        public string GetLocation()
+        {
+
+            return _txtFieldLocation?.Text ?? string.Empty;
+        }
+
+        public string GetPoleNumber()
+        {
+            return _txtFieldPole?.Text ?? string.Empty;
+        }
     }
 }

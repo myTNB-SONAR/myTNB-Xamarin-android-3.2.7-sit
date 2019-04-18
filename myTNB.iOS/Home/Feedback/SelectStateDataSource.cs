@@ -7,7 +7,7 @@ using UIKit;
 
 namespace myTNB.Home.Feedback
 {
-    public class SelectStateDataSource: UITableViewSource
+    public class SelectStateDataSource : UITableViewSource
     {
         SelectStateViewController _controller;
         List<StatesForFeedbackDataModel> _statesForFeedbackList = new List<StatesForFeedbackDataModel>();
@@ -28,14 +28,16 @@ namespace myTNB.Home.Feedback
 
             cell.StateForFeedbackLabel.Text = _statesForFeedbackList[indexPath.Row].StateName;
 
-            if (indexPath.Row == DataManager.DataManager.SharedInstance.CurrentSelectedStateForFeedbackIndex) 
+            if (indexPath.Row == DataManager.DataManager.SharedInstance.CurrentSelectedStateForFeedbackIndex)
             {
                 cell.Accessory = UITableViewCellAccessory.None;
                 cell.AccessoryView = new UIView(new CGRect(0, 0, 24, 24));
                 UIImageView imgViewTick = new UIImageView(new CGRect(0, 0, 24, 24));
                 imgViewTick.Image = UIImage.FromBundle("Table-Tick");
                 cell.AccessoryView.AddSubview(imgViewTick);
-            } else {
+            }
+            else
+            {
                 if (cell != null && cell.AccessoryView != null && cell.AccessoryView.Subviews != null)
                 {
                     foreach (var subView in cell.AccessoryView.Subviews)

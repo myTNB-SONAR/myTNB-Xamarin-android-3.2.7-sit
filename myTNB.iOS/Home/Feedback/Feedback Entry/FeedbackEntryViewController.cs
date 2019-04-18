@@ -47,6 +47,8 @@ namespace myTNB
         BillRelatedFeedbackComponent _billRelatedFeedbackComponent;
         StreetLampFeedbackComponent _streetLampRelatedFeedbackComponent;
 
+        SubmitFeedbackResponseModel _submitFeedback;
+
         public override void ViewDidLoad()
         {
             base.ViewDidLoad();
@@ -213,7 +215,6 @@ namespace myTNB
                     UIImagePickerController imgPicker = new UIImagePickerController();
                     ImagePickerDelegate imgPickerDelegate = new ImagePickerDelegate(this)
                     {
-                        //imgPickerDelegate.Type = Enums.FeedbackCategory.LoginOthers;
                         DashedLineView = dashedLineView
                     };
                     imgPicker.Delegate = imgPickerDelegate;
@@ -298,7 +299,6 @@ namespace myTNB
 
         void UpdateContentSize()
         {
-            //float scrollViewHeight = (float)(_viewFeedback?.Frame.Height + _viewUploadPhoto?.Frame.Height + GetNonLoginWidgetHeight());
             _svContainer.ContentSize = new CGRect(0f, 0f, View.Frame.Width, GetScrollHeight()).Size;
         }
 
@@ -403,7 +403,6 @@ namespace myTNB
                 }
                 lblHint.Hidden = !lblError.Hidden || _feedbackTextView.Text.Length == 0;
                 lblTitle.Hidden = _feedbackTextView.Text.Length == 0;
-                //SubmitButtonEnable();
                 SetButtonEnable();
             };
             textView.ShouldBeginEditing = (sender) =>
@@ -558,30 +557,69 @@ namespace myTNB
                 {
                     if (NetworkUtility.isReachable)
                     {
-                        object requestParameter = new
+                        _submitFeedback = new SubmitFeedbackResponseModel();
+                        SubmitFeedback().ContinueWith(task =>
                         {
-                            apiKeyID = TNBGlobal.API_KEY_ID,
-                            feedbackCategoryId = FeedbackID,
-                            feedbackTypeId = DataManager.DataManager.SharedInstance.OtherFeedbackType[DataManager.DataManager.SharedInstance.CurrentSelectedFeedbackTypeIndex].FeedbackTypeId,
-                            accountNum = string.Empty,
-                            name = string.Empty,
-                            phoneNum = string.Empty,
-                            email = string.Empty,
-                            deviceId = DataManager.DataManager.SharedInstance.UDID,
-                            feedbackMesage = _feedbackTextView.Text, //Common
-                            stateId = string.Empty,
-                            location = string.Empty,
-                            poleNum = string.Empty,
-                            images = GetImageList() //Common
-                        };
-
-                        Debug.WriteLine("test");
+                            InvokeOnMainThread(() =>
+                            {
+                                UIStoryboard storyBoard = UIStoryboard.FromName("Feedback", null);
+                                if (_submitFeedback != null && _submitFeedback?.d != null
+                                   && _submitFeedback?.d?.didSucceed == true
+                                   && _submitFeedback?.d?.data != null)
+                                {
+                                    SubmitFeedbackSuccessViewController submitFeedbackSuccessVC =
+                                        storyBoard.InstantiateViewController("SubmitFeedbackSuccessViewController") as SubmitFeedbackSuccessViewController;
+                                    submitFeedbackSuccessVC.ServiceReqNo = _submitFeedback.d.data.ServiceReqNo;
+                                    submitFeedbackSuccessVC.DateCreated = _submitFeedback.d.data.DateCreated;
+                                    NavigationController.PushViewController(submitFeedbackSuccessVC, true);
+                                }
+                                else
+                                {
+                                    //Todo: Confirm if this will go to error page or just a popup?
+                                    ToastHelper.DisplayAlertView(this, "Error_FeedbackTitle".Translate(), _submitFeedback?.d?.message ?? "Error_DefaultMessage".Translate());
+                                    SubmitFeedbackFailedViewController submitFeedbackFailedVC =
+                                        storyBoard.InstantiateViewController("SubmitFeedbackFailedViewController") as SubmitFeedbackFailedViewController;
+                                    NavigationController.PushViewController(submitFeedbackFailedVC, true);
+                                }
+                                ActivityIndicator.Hide();
+                            });
+                        });
                     }
                     else
                     {
                         AlertHandler.DisplayNoDataAlert(this);
                     }
                 });
+            });
+        }
+
+        object GetRequestParameters()
+        {
+            return new
+            {
+                apiKeyID = TNBGlobal.API_KEY_ID, //Common
+                feedbackCategoryId = FeedbackID,
+                feedbackTypeId = GetFeedbackTypeID(),
+                accountNum = GetAccountNumber(),
+                name = GetName(),
+                phoneNum = GetMobileNumber(),
+                email = GetEmailAddress(),
+                deviceId = DataManager.DataManager.SharedInstance.UDID, //Common
+                feedbackMesage = _feedbackTextView.Text, //Common
+                stateId = GetState(),
+                location = GetLocation(),
+                poleNum = GetPoleNumber(),
+                images = GetImageList() //Common
+            };
+        }
+
+        Task SubmitFeedback()
+        {
+            object requestParameter = GetRequestParameters();
+            return Task.Factory.StartNew(() =>
+            {
+                ServiceManager serviceManager = new ServiceManager();
+                _submitFeedback = serviceManager.SubmitFeedback("SubmitFeedback", requestParameter);
             });
         }
 
@@ -613,6 +651,131 @@ namespace myTNB
                 }
             }
             return capturedImageList;
+        }
+
+        string GetFeedbackTypeID()
+        {
+            if (string.Compare(FeedbackID, "3") == 0
+                && DataManager.DataManager.SharedInstance.OtherFeedbackType != null)
+            {
+                return DataManager.DataManager.SharedInstance.OtherFeedbackType[DataManager.DataManager
+                    .SharedInstance.CurrentSelectedFeedbackTypeIndex]?.FeedbackTypeId ?? string.Empty;
+            }
+            return string.Empty;
+        }
+
+        string GetAccountNumber()
+        {
+            if (string.Compare(FeedbackID, "1") == 0)
+            {
+                return _billRelatedFeedbackComponent.GetAccountNumber() ?? string.Empty;
+            }
+            return string.Empty;
+        }
+
+        string GetName()
+        {
+            if (IsLoggedIn)
+            {
+                var user = DataManager.DataManager.SharedInstance.UserEntity?.Count > 0
+                    ? DataManager.DataManager.SharedInstance.UserEntity[0]
+                    : new SQLite.SQLiteDataManager.UserEntity();
+                return user?.userName ?? string.Empty;
+            }
+            else
+            {
+                if (string.Compare(FeedbackID, "1") == 0)
+                {
+                    return _billRelatedFeedbackComponent.GetFullName();
+                }
+                else if (string.Compare(FeedbackID, "2") == 0)
+                {
+                    return _streetLampRelatedFeedbackComponent.GetFullName();
+                }
+                else
+                {
+                    return _otherFeedbackComponent.GetFullName();
+                }
+            }
+        }
+
+        string GetMobileNumber()
+        {
+            if (IsLoggedIn && isMobileNumberAvailable)
+            {
+                var user = DataManager.DataManager.SharedInstance.UserEntity?.Count > 0
+                    ? DataManager.DataManager.SharedInstance.UserEntity[0]
+                    : new SQLite.SQLiteDataManager.UserEntity();
+                return user?.mobileNo ?? string.Empty;
+            }
+            else
+            {
+                if (string.Compare(FeedbackID, "1") == 0)
+                {
+                    return _billRelatedFeedbackComponent.GetMobileNumber();
+                }
+                else if (string.Compare(FeedbackID, "2") == 0)
+                {
+                    return _streetLampRelatedFeedbackComponent.GetMobileNumber();
+                }
+                else
+                {
+                    return _otherFeedbackComponent.GetMobileNumber();
+                }
+            }
+        }
+
+        string GetEmailAddress()
+        {
+            if (IsLoggedIn)
+            {
+                var user = DataManager.DataManager.SharedInstance.UserEntity?.Count > 0
+                    ? DataManager.DataManager.SharedInstance.UserEntity[0]
+                    : new SQLite.SQLiteDataManager.UserEntity();
+                return user?.email ?? string.Empty;
+            }
+            else
+            {
+                if (string.Compare(FeedbackID, "1") == 0)
+                {
+                    return _billRelatedFeedbackComponent.GetEmail();
+                }
+                else if (string.Compare(FeedbackID, "2") == 0)
+                {
+                    return _streetLampRelatedFeedbackComponent.GetEmail();
+                }
+                else
+                {
+                    return _otherFeedbackComponent.GetEmail();
+                }
+            }
+        }
+
+        string GetState()
+        {
+            if (string.Compare(FeedbackID, "2") == 0)
+            {
+                return _streetLampRelatedFeedbackComponent.GetState();
+            }
+            return string.Empty;
+        }
+
+        string GetLocation()
+        {
+            if (string.Compare(FeedbackID, "2") == 0)
+            {
+                return _streetLampRelatedFeedbackComponent.GetLocation();
+            }
+            return string.Empty;
+        }
+
+        string GetPoleNumber()
+        {
+            if (string.Compare(FeedbackID, "2") == 0)
+            {
+                return _streetLampRelatedFeedbackComponent.GetPoleNumber();
+            }
+            return string.Empty;
         }
     }
 }

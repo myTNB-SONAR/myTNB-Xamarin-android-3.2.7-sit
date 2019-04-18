@@ -10,7 +10,7 @@ namespace myTNB.Home.Feedback.FeedbackEntry
         UILabel _lblFeedbackTypeTitle, _lblFeedbackTypeError, _lblFeedbackType;
         UIImageView imgViewAccountNumber;
 
-        public FeedbackCommonWidgets _feedbackCommonWidgets;
+        FeedbackCommonWidgets _feedbackCommonWidgets;
 
         readonly FeedbackEntryViewController _controller;
 
@@ -138,6 +138,21 @@ namespace myTNB.Home.Feedback.FeedbackEntry
             {
                 return _feedbackCommonWidgets.IsValidEntry();
             }
+        }
+
+        public string GetEmail()
+        {
+            return _feedbackCommonWidgets.GetEmail();
+        }
+
+        public string GetMobileNumber()
+        {
+            return _feedbackCommonWidgets.GetMobileNumber();
+        }
+
+        public string GetFullName()
+        {
+            return _feedbackCommonWidgets.GetFullName();
         }
     }
 }

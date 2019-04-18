@@ -1,4 +1,3 @@
-using Foundation;
 using System;
 using UIKit;
 using CoreGraphics;
@@ -8,14 +7,14 @@ namespace myTNB
 {
     public partial class SelectAccountNoViewController : UIViewController
     {
-        public SelectAccountNoViewController (IntPtr handle) : base (handle)
+        public SelectAccountNoViewController(IntPtr handle) : base(handle)
         {
         }
 
         public override void ViewDidLoad()
         {
             base.ViewDidLoad();
-            this.Title = "Select Account No";
+            this.Title = "Feedback_SelectAccountNumber".Translate();
 
             AccountsTableView.Source = new SelectAccountNoDataSource(this);
             AccountsTableView.RowHeight = 56f;
@@ -30,12 +29,11 @@ namespace myTNB
         internal void AddBackButton()
         {
             UIImage backImg = UIImage.FromBundle("Back-White");
-            UIBarButtonItem btnBack = new UIBarButtonItem(backImg, UIBarButtonItemStyle.Done, (sender, e) => {
+            UIBarButtonItem btnBack = new UIBarButtonItem(backImg, UIBarButtonItemStyle.Done, (sender, e) =>
+            {
                 this.NavigationController.PopViewController(true);
             });
             this.NavigationItem.LeftBarButtonItem = btnBack;
         }
-
- 
     }
 }

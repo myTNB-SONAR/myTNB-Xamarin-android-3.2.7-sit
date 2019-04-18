@@ -85,6 +85,7 @@
 "Common_TotalAmount" = "Total Amount";
 "Common_TotalAmount(RM)" = "Total Amount (RM)";
 "Common_TotalAmountDue"="Total Amount Due";
+"Common_TryAgain"="Try Again";
 "Common_Update"="Update";
 "Common_Warning"="Warning";
 "Common_Year"="Year";
@@ -135,6 +136,7 @@
 "Error_EmailRequired"="Email field is required.";
 "Error_EmptyCardNumberMessage"="Please enter valid card number and try again.";
 "Error_EmptyCardNumberTitle"="Empty Card Number";
+"Error_FeedbackTitle" = "Submit Feedback Failed";
 "Error_GetSmartMeterDataMessage" = "Unable to fetch smart meter data! Please try later.";
 "Error_LinkNotAvailable"="Links are not available right now. Please try again later.";
 "Error_Login"="Login Error";
@@ -158,19 +160,33 @@
 "Feedback_AccessMessage"="Turn On Location Services to allow \"myTNB\" to determine your location";
 "Feedback_AccessTitle"="Location Access is not allowed";
 "Feedback_AttachPhotoMessage"="ATTACH PHOTO / SCREENSHOT (OPTIONAL)";
+"Feedback_BackToFeedback"="Back to Feedback";
+"Feedback_BillSubTitle"="Lodge your bill and account issues here.";
 "Feedback_Camera"="Camera";
 "Feedback_CameraRoll"="Camera Roll";
 "Feedback_CharacterLeft"="{0} character left";		/*Singular*/
 "Feedback_CharactersLeft"="{0} characters left";	/*Plural*/
+"Feedback_DateTimeTitle"="Feedback Date & Time";
 "Feedback_FaultyLampMessage"="You may only report faulty TNB street lamps. Look out for TNB’s blue and red or the logo as shown above. Use the pole no. (e.g. 17493 8E 1) to specify the lamp.";
 "Feedback_FaultyLampTitle"="Reporting faulty street lamps?";
+"Feedback_ID"="Feedback ID";
 "Feedback_Location"="Location / Street Name";
 "Feedback_MaxFiles"="Max 2 files";
+"Feedback_NoFeedbackSubmittedMessage"="You have not submittted\r\nany feedback.";
+"Feedback_OthersSubtitle"="Suggestions, complaints, and other inquiries";
 "Feedback_PoleNumber"="Pole No.";
 "Feedback_GoToSettings"="Go to Settings";
+"Feedback_SelectAccountNumber"="Select Account No.";
 "Feedback_State"="State";
+"Feedback_StreetLampSubTitle"="Spot a faulty street lamp? Report it here.";
+"Feedback_SubmittedFeedbackSubTitle"="View status updates on your feedback here.";
+"Feedback_SubmittedFeedbackTitle"="Submitted Feedback";
+"Feedback_Successful"="Feedback Successful";
+"Feedback_SuccessfulMessage"="Thank you for your feedback.";
 "Feedback_Title"="Feedback";
 "Feedback_Type"="Feedback Type";
+"Feedback_Unsuccessful"="Feedback Unsuccessful";
+"Feedback_UnsuccessfulMessage"="Your feedback didn't go through.";
 
 /*Find Us*/
 "FindUs_Address"="Address";
