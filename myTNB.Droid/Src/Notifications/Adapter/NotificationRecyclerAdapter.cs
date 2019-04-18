@@ -154,7 +154,10 @@ namespace myTNB_Android.Src.Notifications.Adapter
             return new NotificationRecyclerViewHolder(LayoutInflater.From(parent.Context).Inflate(Resource.Layout.NotificationRow, parent, false));
         }
 
-
+        public void RemoveItem(int position)
+        {
+            Remove(position);
+        }
 
         class NotificationRecyclerViewHolder : BaseRecyclerViewHolder
         {

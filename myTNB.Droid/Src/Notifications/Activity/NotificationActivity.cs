@@ -24,6 +24,7 @@ using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.Utils.Custom.ProgressDialog;
 using System.Runtime;
 using Android.Support.V7.Widget;
+using Android.Support.V7.Widget.Helper;
 
 namespace myTNB_Android.Src.Notifications.Activity
 {
@@ -134,8 +135,10 @@ namespace myTNB_Android.Src.Notifications.Activity
 
                 notificationRecyclerAdapter = new NotificationRecyclerAdapter(this, true);
                 notificationRecyclerView.SetAdapter(notificationRecyclerAdapter);
+                NotificationSimpleCallback notificationSimpleCallback = new NotificationSimpleCallback(notificationRecyclerAdapter,0, ItemTouchHelper.Left);
 
-
+                ItemTouchHelper itemTouchHelper = new ItemTouchHelper(notificationSimpleCallback);
+                itemTouchHelper.AttachToRecyclerView(notificationRecyclerView);
 
                 int count = UserNotificationEntity.Count();
                 if (count == 0)
