@@ -6,6 +6,438 @@
   Copyright © 2018 myTNB. All rights reserved.
 */
 
+/*Bill*/
+"Bill_Advice"="Advice";
+"Bill_Bills"="Bills";
+"Bill_By"="By";
+"Bill_CurrentBill"="Current Bill";
+"Bill_CurrentCharges" = "Current Charges";
+"Bill_CurrentPaymentAdvice"="Current Payment Advice";
+"Bill_MyEarnings" = "My Earnings";
+"Bill_NoBill"="Yay! No bills! You will be notified\nwhen your bill is ready.";
+"Bill_NoDataConnection"="Unable to load. Check your\ninternet connection or try again later.";
+"Bill_NoPayment"="No payments yet! Payments\nmade will be shown here.";
+"Bill_OutstandingCharges" = "Outstanding Charges";
+"Bill_Pay"="Pay";
+"Bill_PaymentAdviceAmount"="Payment Advice Amount";
+"Bill_PaymentAdviceInfo" = "Payment Advice"; 
+"Bill_PaymentFrom" = "From TNB";
+"Bill_PaymentSectionHeader"="Bill / Payment History";
+"Bill_RECurrentAmount" = "Current Amount";
+"Bill_REOutstandingAmount" = "Outstanding Amount";
+"Bill_REPaymentSectionHeader" = "Payment Advice / Payment History";
+"Bill_TotalPayable"="Total Payable";
+"Bill_Via"="via";
+
+/*Common*/
+"Common_Abort"="Abort";
+"Common_Account"="Account";
+"Common_AccountNickname"="Account Nickname";
+"Common_AccountNo"="Account No.";
+"Common_AccountNumber"="Account Number";
+"Common_AccountType"="Account Type";
+"Common_AddAccount"="Add Account";
+"Common_AddAnotherAccount"="Add Another Account";
+"Common_AddElectricityAccount"="Add Electricity Account";
+"Common_All"="All";
+"Common_Amount(RM)" = "Amount (RM)";
+"Common_AmountDue"="Amount Due";
+"Common_Back"="Back";
+"Common_BackToDashboard" = "Back to Dashboard";
+"Common_Cancel"="Cancel";
+"Common_CardExpiry"="Card Expiry";
+"Common_CardNumber"="Card Number";
+"Common_Cards"="Credit / Debit Cards";
+"Common_Confirm"="Confirm";
+"Common_ConfirmEmail"="Confirm Email";
+"Common_ConfirmPassword"="Confirm Password";
+"Common_CurrentPassword"="Current Password";
+"Common_CVV"="CVV";
+"Common_Details"="Details";
+"Common_Done"="Done";
+"Common_Email"="Email";
+"Common_Fullname"="Fullname";
+"Common_GetAccess"="Get Access";
+"Common_ICNumber"="Owner's IC No.";
+"Common_ICROCPassportNumber"="IC / ROC / Passport No.";
+"Common_MaidenName"="Owner’s mother's maiden name";
+"Common_Manage"="Manage";
+"Common_MobileNumber"="Mobile No.";
+"Common_Month"="Month";
+"Common_NA"="N/A";
+"Common_Name"="Name";
+"Common_NameOnCard"="Name on Card";
+"Common_NewPassword"="New Password";
+"Common_Next"="Next";
+"Common_No"="No";
+"Common_NoAccount"="No Electricity Account";
+"Common_Ok"="Ok";
+"Common_Password"="Password";
+"Common_Pay"="Pay";
+"Common_Payment"="Payment";
+"Common_Refresh"="Refresh";
+"Common_Register"="Register";
+"Common_Retry"="Retry";
+"Common_ROCNo"="ROC No.";
+"Common_Save"="Save";
+"Common_Skip"="Skip";
+"Common_Submit"="Submit";
+"Common_TotalAmount" = "Total Amount";
+"Common_TotalAmount(RM)" = "Total Amount (RM)";
+"Common_TotalAmountDue"="Total Amount Due";
+"Common_Update"="Update";
+"Common_Warning"="Warning";
+"Common_Year"="Year";
+"Common_Yes"="Yes";
+
+/*Component*/
+"Component_AsOf"="As of";
+"Component_AverageElectricUsage"="Avg. electric usage";
+"Component_CannotLoadChart"="Sorry, we could not load your usage chart";
+"Component_CO2"="CO²";
+"Component_CurrentBill"="Current Bill";
+"Component_CurrentCharges"="Current charges";
+"Component_CurrentEmission"="Current emission";
+"Component_CurrentUsage"="Current usage";
+"Component_EstimatedReading"="*Estimated Reading";
+"Component_ForCurrentMonth"="For current month";
+"Component_GetAccessMessage"="Only electricity account owners\r\nmay view usage and transaction details.";
+"Component_GreetingAfternoon"="Good Afternoon";
+"Component_GreetingEvening"="Good Evening";
+"Component_GreetingMorning"="Good Morning";
+"Component_NoAccountMessage" = "Add your existing TNB Electricity Supply Account{0}to view usage and transaction details.";
+"Component_ProjectedCost"="Projected cost";
+"Component_SeeSmartMeter"="You’ll see your usage here soon.";
+"Component_SmartMeterMessage" = "Note: Your usage above is before applicable taxes/additional charges.";
+"Component_TapToRefresh"="Tap to refresh";
+"Component_Usage"="Usage";
+"Component_ViewPaymentAdvice"="View Payment Advice";
+"Component_ViewUsageHistory"="View usage history";
+"Component_VsLastMonth"="Vs. last month";
+"Component_WelcomeToSmartMeter"="Welcome to your Smart Meter Dashboard.";
+
+/*Dashboard*/
+"Dashboard_AllAccounts"="All Accounts";
+"Dashboard_DateRangeAvailableSoon"="Available Soon";
+"Dashboard_DateRangeNotAvailable"="";
+"Dashboard_LoadMoreAccounts" = "Load More Accounts";
+"Dashboard_RESectionHeader"="Renewable Energy";
+"Dashboard_RESectionSubHeader"="My Earnings";
+"Dashboard_SectionHeader"="Accounts";
+
+/*Error*/
+"Error_BCRMMessage"="BRCM will be down for maintenance purpose";
+"Error_CheckInternetMessage"="Please check your Internet connection.";
+"Error_DefaultMessage" = "Sorry, something went wrong. Please try again later.";
+"Error_DefaultTitle"="Error";
+"Error_DuplicateAccountMessage"="This account number is already added on the list";
+"Error_DuplicateAccountTitle"="Duplicate Account";
+"Error_EmailRequired"="Email field is required.";
+"Error_EmptyCardNumberMessage"="Please enter valid card number and try again.";
+"Error_EmptyCardNumberTitle"="Empty Card Number";
+"Error_GetSmartMeterDataMessage" = "Unable to fetch smart meter data! Please try later.";
+"Error_LinkNotAvailable"="Links are not available right now. Please try again later.";
+"Error_Login"="Login Error";
+"Error_MismatchedEmail"="Your email and confirmation email do not match.";
+"Error_MismatchedPassword"="Your password and confirmation password do not match.";
+"Error_MobileNumberUpdate" = "Cannot update mobile number. Please try again.";
+"Error_NoNetworkMsg" = "Please check your internet connection and try again.";
+"Error_NoNetworkTitle" = "No Internet Connection";
+"Error_OTPTitle" = "Verify Mobile Number Token Failed";
+"Error_PasswordRequired"="Password field is required.";
+"Error_RatingNotAvailable"="Rating is not available right now. Please try again later.";
+"Error_Registration"="Registration Error";
+"Error_RegistraionTokenTitle"="Registration Token Failed";
+"Error_ShareNotAvailable"="Sharing is not available right now. Please try again later.";
+"Error_TelephoneNumberNotAvailable"="Number is not available right now. Please try again later.";
+"Error_TimeOut" = "We can't get your account details at the moment. Please refresh this page.";
+"Error_UpdateNickname"="Cannot update nickname. Please try again.";
+"Error_VerifyDevice" = "Cannot verify device. Please try again.";
+
+/*Feedback*/
+"Feedback_Title"="Feedback";
+
+/*Find Us*/
+"FindUs_Address"="Address";
+"FindUs_FindUs"="Find Us";
+"FindUs_No711Found"="No 7-Eleven Found";
+"FindUs_NoKTFound"="No Kedai Tenaga Found";
+"FindUs_MapSelection"="Map Selection";
+"FindUs_NoSupportedApplication"="No supported map application is installed.";
+"FindUs_Open24Hours"="Open 24 Hours";
+"FindUs_OpenIn"="Open in";
+"FindUs_OpeningHours"="OPENING HOURS";
+"FindUs_Phone"="Phone";
+"FindUs_Search"="Search Kedai Tenaga by road name, area";
+"FindUs_SelectApplication"="Select navigation application.";
+"FindUs_Services"="Services";
+"FindUs_ServicesDescription"="•\tPayment of electricity bills and other utility bills";
+"FindUs_Show"="Show";
+"FindUs_ZeroLocations"="0 Locations";
+
+/*Get Access*/
+"GetAccess_RequestedToOwnerMessage"="Access Requested to the Owner";
+
+/*Hint*/
+"Hint_BusinessNickname" = "e.g. Bangsar Shopping Centre Branch";
+"Hint_CardExpiry"="Card Expiry (MM/YY)";
+"Hint_MobileNumber"="Please include the country code of your phone number.";
+"Hint_MobileNumberExample"="Example: +6012 345 6789";
+"Hint_Nickname"="e.g. My House, Parent's House";
+"Hint_Password"="Password must have at least 8 alphanumeric characters.";
+
+/*Invalid*/
+"Invalid_AccountLength"="Please enter a valid 12-digit account no.";
+"Invalid_AccountNickname" = "Invalid account nickname";
+"Invalid_AccountNicknameInUse" = "Nickname already used. Please create a new one.";
+"Invalid_AccountType"="Invalid Account Type";
+"Invalid_AmountMessage"="Kindly enter a non-zero/positive amount";
+"Invalid_AmountTitle"="Invalid Amount";
+"Invalid_Barcode"="Invalid barcode.";
+"Invalid_CardExpiry"="Invalid card expiration date";
+"Invalid_CardNumber"="Invalid Card Number";
+"Invalid_Characters" = "Invalid characters. Use letters or numbers only.";
+"Invalid_Code"="Invalid code";
+"Invalid_CVV"="Invalid CVV";
+"Invalid_Email"="Invalid email address";
+"Invalid_Fullname"="Invalid full name";
+"Invalid_ICNo"="Invalid IC number";
+"Invalid_ICROCPassportNumber"="Invalid IC, ROC or Passport No.";
+"Invalid_MaidenName"="Invalid maiden name";
+"Invalid_MobileNumber"="Invalid mobile number";
+"Invalid_NameOnCard"="Invalid Name";
+"Invalid_NicknameEntry"="Account nickname cannot be empty. Please enter valid nickname and try adding your account again.";
+"Invalid_OldPassword"="Invalid Old Password";
+"Invalid_Password"="Password must have at least 8 alphanumeric characters.";
+"Invalid_PayAmount" = "Minimum amount cannot be lower than RM1.00";
+"Invalid_Pin"="Invalid PIN";
+"Invalid_ROCNo"="Invalid ROC No.";
+
+/*Login*/
+"Login_AccountLogin"="myTNB Account Login";
+"Login_CallUs"="Call Us";
+"Login_ChangePasswordNote"="This new password will replace your current one. All account details remain unchanged.";
+"Login_CodeSentToEmailMessage"="A 4-digit verification code will be sent to this email address.";
+"Login_CodeSentToMessage"="Please enter the 4-digit code that was sent to {0}";
+"Login_ConfirmNewPassword"="Confirm new password";
+"Login_EmailNotReceived"="Didn’t receive the email?";
+"Login_EnterCode" = "Enter Code";
+"Login_EnterEmail"="Please enter your email.";
+"Login_EnterNewPassword"="Enter new password";
+"Login_EnterPassword"="Please enter your new password.";
+"Login_Feedback"="Feedback";
+"Login_FindUs"="Find Us";
+"Login_ForgotPassword"="Forgot password?";
+"Login_Login"="Login";
+"Login_ManageYourAccount"="Manage your account now!";
+"Login_Note"="Log in to enjoy more features!";
+"Login_NoTNBAccount"="Don't have a myTNB account?";
+"Login_PasswordResetSuccess"="Password Reset Successful";
+"Login_PinSentMessage"="An email containing the activation pin has been sent to your email Address.";
+"Login_ProceedToLogin"="Your password has been changed successfully. You may proceed to login with the new password.";
+"Login_ProceedToLoginTitle" = "Proceed to Login";
+"Login_Promotions"="Promotions";
+"Login_QuickAccess"="Quick Access";
+"Login_RememberMe" = "Remember email";
+"Login_RegisterForAccount"="Register for an account";
+"Login_Resend" = "Resend";
+"Login_ResendTimer" = "Resend ({0})";
+"Login_ResetPasswordTitle"="Reset Password";
+"Login_TemporaryPasswordLoginMessage"="Log in using the 8-digit temporary\r\npassword that was sent to\r\n{0}.\r\n\r\nYou may change your password\r\nafter logging in.";
+"Login_Welcome"="Welcome";
+
+/*Logout*/
+"Logout_BackToHome" = "Back to Home";
+"Logout_Message" = "You are now logged out of myTNB app.";
+"Logout_ThankYouMessage"="Thank you for using myTNB.";
+
+/*Manage Account*/
+"Manage_ManageElectricityAccount" = "Manage Electricity Account";
+"Manage_RemoveAccount" = "Remove This Account";
+"Manage_RemoveAccountMessage" = "You are about to remove {0}, Account No. {1} from the app.\r\n\r\nNote: This does not close your electricity supply account. Visit www.mytnb.com.my or Kedai Tenaga to close your electricity supply account.";
+"Manage_UpdateNicknameSuccess"="Account nickname has been updated successfully.";
+"Manage_UpdateNicknameTitle"="Update Account Nickname";
+
+/*Manage Cards*/
+"Manage_AddCardMessage"="You may only add a new credit / debit card when making payment.";
+"Manage_CardsDebitTitle"="Manage Credit / Debit Cards";
+"Manage_CardNotRemovedMessage"="Credit / Debit Card ending with {0} was not removed. Please try again.";
+"Manage_CardRemovedSuccessMessage"="Credit / debit card ending with {0} has been removed successfully.";
+"Manage_NoSavedCards"="No credit/debit cards stored.\r\nYou may only add a credit/debit card\r\nduring payment.";
+"Manage_RemoveCardMessage"="You are about to remove credit / debit card ending with {0}.";
+"Manage_RemoveCardTitle"="Remove Credit / Debit Card";
+
+/*Manage Mobile Number*/
+"Manage_VerifyMobileNumber"="For security purpose, please enter your mobile number to verify this device.";
+"Manage_MobileNumberNotVerifiedTitle" = "Verify Device";
+"Manage_MobileNumberVerifiedTitle" = "Update Mobile No.";
+
+/*Manage Password*/
+"Manage_PasswordTitle"="Update Password";
+
+/*More*/
+"More_AppVersion"="App Version";
+"More_CallUsBilling"="Call Us (Billing Enquiries)";
+"More_CallUsOutagesAndBreakdown"="Call Us (Outages & Breakdown)";
+"More_FAQ"="FAQ";
+"More_FindUs"="Find Us";
+"More_HelpAndSupport"="Help & Support";
+"More_MyAccount"="My Account";
+"More_Notifications"="Notifications";
+"More_RateThisApp"="Rate this app";
+"More_Settings"="Settings";
+"More_Share"="Share";
+"More_ShareMessage"="New myTNB app is now available in App Store.";
+"More_ShareThisApp"="Share this app";
+"More_Title"="More";
+"More_TnC"="Terms & Conditions";
+
+/*My Account*/
+"MyAccount_AddAccountDetails"="Add your existing TNB Electricity Supply Account\r\nto view usage and transaction details.";
+"MyAccount_ICNumberMask" = "•••••• •• ";
+"MyAccount_Logout"="Logout";
+"MyAccount_LogoutConfirmation" = "Are you sure you want to log out from myTNB app?";
+"MyAccount_MyTNBAccount"="myTNB Account";
+"MyAccount_Title"="My Account";
+"MyAccount_TNBSupplyAccount"="TNB Electricity Supply Account";
+"MyAccount_UpdatedMobileNumber"="Your mobile number has been updated successfully.";
+"MyAccount_UpdatedPassword"="Your password has been updated successfully.";
+"MyAccount_UpdatedTNBAccount"="Your electricity supply account has been removed from myTNB account.";
+
+/*Notifications*/
+"Notification_Channel"="Select how you wish to receive your notifications";
+"Notification_Title"="Notifications Settings";
+"Notification_Type"="Select the type of notifications you wish to receive from TNB";
+
+/*Onboarding*/
+"Onboarding_BillingMessage"="Contribute to a greener environment by viewing your e-bill on the app";
+"Onboarding_BillingTitle"="View your bill";
+"Onboarding_NewUpdateTitle" = "New Update Available";
+"Onboarding_PaymentMessage"="Make your payments at home or on-to-go. No more late charges!";
+"Onboarding_PaymentTitle"="Pay your bills";
+"Onboarding_Skip"="Skip";
+"Onboarding_UpdateNow" = "Update Now";
+"Onboarding_UsageMessage"="Find all the information you need about your usage in a single screen";
+"Onboarding_UsageTitle"="Track your usage";
+
+/*Payment*/
+"Payment_AbortTitle" = "Abort Payment!";
+"Payment_AbortMessage" = "Are you sure you want to abort payment?";
+"Payment_AcceptedCards"="Only credit / debit cards issued in Malaysia are accepted.";
+"Payment_AddCard"="Add Card";
+"Payment_AlreadySavedCardMessage"="Seems like you are paying with an already saved Credit / Debit Card. Do you want to continue?";
+"Payment_CVVFourDigitMessage"="Please enter the 4-digit CVV/CVC located at the front of your credit card.";
+"Payment_CVVThreeDigitMessage"="Please enter the 3-digit CVV/CVC located at the back of your credit card.";
+"Payment_EnterOTP" = "Enter OTP";
+"Payment_LoadMore"="Load More";
+"Payment_MaxCCAmount"="For payments more than RM 5000, please use FPX payment mode.";
+"Payment_Multiple" = "Pay Bill ({0})";
+"Payment_OnlineBanking" = "Online Banking";
+"Payment_OnlineBankingViaFPX" = "Online Banking via FPX";
+"Payment_OtherMethods"="Other Payment Methods";
+"Payment_SaveCardMessage" = "I want to save this card for future use.";
+"Payment_ScanMessage"="Scan the front of your credit / debit card to retrieve card details.";
+"Payment_SelectMethodTitle"="Select Payment Method";
+"Payment_Single" = "Pay Bill";
+"Payment_ValidCard"="Valid card number";
+
+/*Promotion*/
+"Promotion_NoPromotion"="No promotions currently.\r\nCheck back later!";
+"Promotion_Title"="Promotions";
+
+/*Push Notification*/
+"PushNotification_AllNotifications"="All Notifications";
+"PushNotification_DeleteMessage"="Are you sure you want to delete this notification?";
+"PushNotification_DeleteTitle"="Delete Notification";
+"PushNotification_NoNotification"="No notifications yet.";
+"PushNotification_NotificationRemoved"="Notification removed.";
+"PushNotification_SelectNotification"="Select Notification";
+"PushNotification_Title"="Notifications";
+"PushNotification_ViewDetails"="View Details";
+"PushNotification_ViewPromotion" = "View Promotion";
+
+/*Rating*/
+"Rating_CharacterLeft"="character left";    /*Singular*/
+"Rating_CharactersLeft"="characters left";  /*Plural*/
+"Rating_Comments"="Comments";
+"Rating_Description"="Your rating will help us serve you better.";
+"Rating_ThankYou"="Thank you.";
+"Rating_Title"="Rating";
+
+/*Receipt*/
+"Receipt_AccountName"="Account Holder's Name";
+"Receipt_Filename"="Receipt-{0}.pdf";
+"Receipt_MessageFull" = "Thank you for using myTNB.\nWe are pleased to inform you that the following online payment via {0} is Successful:";
+"Receipt_MessagePartOne" = "Thank you for using myTNB.";
+"Receipt_MessagePartTwo" = "We are pleased to inform you that the following online payment via {0} is Successful:";
+"Receipt_NoReceipt" = "No Receipt Found";
+"Receipt_Note" = "NOTE: This receipt is computer generated and no signature is required.";
+"Receipt_ReferenceNumber" = "Reference Number";
+"Receipt_Salutation" = "Dear Customer,";
+"Receipt_Title" = "Payment Receipt";
+"Receipt_TrnDate" = "TRANSACTION DATE";
+"Receipt_TrnId" = "TRANSACTION ID";
+"Receipt_TrnMethod" = "TRANSACTION METHOD";
+
+/*Registration*/
+"Registration_AccountNumberLocation"="Your 12-digit account no. can be found on the top left corner of your monthly paper bill.";
+"Registration_AddAccountSuccessMessage"="Add Account(s) Successful";
+"Registration_AddingAccountMessage"="This may take a while as we are\r\nadding your TNB account.";      /*Singular*/
+"Registration_AddingAccountsMessage"="This may take a while as we are\r\nadding your TNB accounts.";    /*Plural*/
+"Registration_AddingAccountTitle"="Adding {0} Account";     /*Singular*/
+"Registration_AddingAccountsTitle"="Adding {0} Accounts";   /*Plural*/
+"Registration_AdditionalAccounts"="Additional account(s)";
+"Registration_AnswerForNonOwner" = "I’m renting this place / it belongs to my parents.";
+"Registration_AnswerForOwner" = "I'm the owner of this electricity supply account.";
+"Registration_Commercial"="Commercial";
+"Registration_CurrentBill" = "Current bill";
+"Registration_GotIt"="Got It!";
+"Registration_NickNameEmptyMessage"="Account nickname cannot be empty. Please enter valid nickname and try adding your account again.";
+"Registration_NoAccountsFoundMessage"="Please tap on the button below to add your TNB electricity account.";
+"Registration_NoAccountsTitle" = "No accounts found!";
+"Registration_NoRightsAnswer"="I may not have the rights to view all information related to this electricity supply account.\r\n\r\nI may only view:";
+"Registration_OTPMobileUpdate" = "An OTP has been sent to {0}, please enter it below.";
+"Registration_OTPRegistration" = "Please enter the 4-digit activation pin that was sent to {0}.";
+"Registration_OutstandingPayment" = "Outstanding payment";
+"Registration_PastBills" = "Past bills";
+"Registration_PaymentHistory" = "Payment history";
+"Registration_QuestionICRegistered" = "Was this electricity supply account registered with your IC / ROC / Passport No.?";
+"Registration_RegisterNote"="By registering, you are agreeing to the TNB Terms and Conditions, User Agreement and Privacy policy.";
+"Registration_RemoveAccountMessage"="You are about to remove {0}, account number {1}.";
+"Registration_RemoveAccountTitle"="Remove Account";
+"Registration_Resend" = "Resend";
+"Registration_ResendTimer" = "Resend ({0})";
+"Registration_Residential"="Residential";
+"Registration_RightsAnswer"="I have the rights to view all information related to this electricity supply account.";
+"Registration_RightsQuestion"="Do you have the rights to view all information related to this electricity supply account?";
+"Registration_ScanMessage"="Scan the barcode on your bill to retrieve account details.";
+"Registration_SMSMessage"="An SMS containing the activation pin has been sent to your number.";
+"Registration_SMSNotReceived"="Didn’t receive the SMS?";
+"Registration_SupplyAccountCount"="electricity supply account(s) found!";
+"Registration_TnCTitle"="Terms & Conditions";
+"Registration_UsageGraph" = "Usage graph";
+"Registration_VerifyPinTitle" = "Verify Pin";
+"Registration_WhereIsMyAccountNumber"="Where is my account no.?";
+
+/*Select Account*/
+"SelectAccount_Title"="Select Electricity Account";
+
+/*View Bill*/
+"ViewBill_Advice"="Advice";
+"ViewBill_Title"="Bill";
+
+
+
+
+
+
+
+
+
+
+
+
+
 "AmountRE" = "My Earnings";
 "AmountNormalAccount" = "Amount Due";
 "REPaymentSectionHeader" = "Payment Advice / Payment History";
