@@ -1837,6 +1837,10 @@
     <Compile Include="Home\Feedback\Feedback Entry\BillRelatedFeedbackComponent.cs" />
     <Compile Include="Home\Feedback\Feedback Entry\StreetLampFeedbackComponent.cs" />
     <Compile Include="Helpers\AttributedStringUtility.cs" />
+    <Compile Include="Home\Feedback\Feedback Entry\FeedbackEntryStatus.cs" />
+    <Compile Include="Home\Feedback\Feedback Entry\FeedbackEntryStatus.designer.cs">
+      <DependentUpon>FeedbackEntryStatus.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />

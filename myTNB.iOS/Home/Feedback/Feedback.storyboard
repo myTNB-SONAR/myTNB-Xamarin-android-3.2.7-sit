@@ -1,115 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="864">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="5235">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
         <!--Navigation Controller-->
-        <scene sceneID="863">
-            <objects>
-                <navigationController id="864" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="866">
-                        <rect key="frame" x="0.0" y="20" width="414" height="50"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <connections>
-                        <segue destination="873" kind="relationship" relationship="rootViewController" id="1135"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="867" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="43" y="12"/>
-        </scene>
         <!--Bill Related-->
-        <scene sceneID="872">
-            <objects>
-                <viewController storyboardIdentifier="LoginBillRelatedFeedbackViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="873" customClass="LoginBillRelatedFeedbackViewController" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="870"/>
-                        <viewControllerLayoutGuide type="bottom" id="871"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="874">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                    </view>
-                    <navigationItem key="navigationItem" title="Bill Related" id="1134"/>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="875" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="492" y="16"/>
-        </scene>
         <!--Navigation Controller-->
-        <scene sceneID="2023">
-            <objects>
-                <navigationController id="2024" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="2026">
-                        <rect key="frame" x="0.0" y="20" width="414" height="50"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <connections>
-                        <segue destination="2233" kind="relationship" relationship="rootViewController" id="2333"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="2027" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="48" y="642"/>
-        </scene>
         <!--Faulty TNB Street Lamp-->
-        <scene sceneID="2232">
-            <objects>
-                <viewController storyboardIdentifier="LoginFaultyStreetLampFeedbackViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="2233" customClass="LoginFaultyStreetLampFeedbackViewController" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="2230"/>
-                        <viewControllerLayoutGuide type="bottom" id="2231"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="2234">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                    </view>
-                    <navigationItem key="navigationItem" title="Faulty TNB Street Lamp" id="2332"/>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="2235" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="493" y="639"/>
-        </scene>
         <!--Navigation Controller-->
-        <scene sceneID="2944">
-            <objects>
-                <navigationController id="2945" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="2947">
-                        <rect key="frame" x="0.0" y="20" width="414" height="50"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <connections>
-                        <segue destination="3245" kind="relationship" relationship="rootViewController" id="3357"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="2948" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="56" y="1282"/>
-        </scene>
         <!--Others-->
-        <scene sceneID="3244">
-            <objects>
-                <viewController storyboardIdentifier="LoginOthersFeedbackViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="3245" customClass="LoginOthersFeedbackViewController" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="3242"/>
-                        <viewControllerLayoutGuide type="bottom" id="3243"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="3246">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                    </view>
-                    <navigationItem key="navigationItem" title="Others" id="3356"/>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="3247" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="488" y="1277"/>
-        </scene>
         <!--Navigation Controller-->
         <scene sceneID="5234">
             <objects>
@@ -213,82 +114,16 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5246" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-436" y="18"/>
+            <point key="canvasLocation" x="-205" y="21"/>
         </scene>
         <!--Navigation Controller-->
-        <scene sceneID="6062">
-            <objects>
-                <navigationController id="6063" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="6065">
-                        <rect key="frame" x="0.0" y="20" width="414" height="50"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <connections>
-                        <segue destination="7648" kind="relationship" relationship="rootViewController" id="7740"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="6066" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="928" y="9"/>
-        </scene>
         <!--Bill Related-->
-        <scene sceneID="7647">
-            <objects>
-                <viewController storyboardIdentifier="NonLoginBillRelatedFeedbackViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="7648" customClass="NonLoginBillRelatedFeedbackViewController" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="7645"/>
-                        <viewControllerLayoutGuide type="bottom" id="7646"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="7649">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                    </view>
-                    <navigationItem key="navigationItem" title="Bill Related" id="7739"/>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="7650" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1310" y="7"/>
-        </scene>
         <!--Navigation Controller-->
-        <scene sceneID="7757">
-            <objects>
-                <navigationController id="7758" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="7760">
-                        <rect key="frame" x="0.0" y="20" width="414" height="50"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <connections>
-                        <segue destination="8438" kind="relationship" relationship="rootViewController" id="8776"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="7761" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="933" y="635"/>
-        </scene>
         <!--Faulty TNB Street Lamp-->
-        <scene sceneID="8437">
-            <objects>
-                <viewController storyboardIdentifier="NonLoginFaultyStreetLampFeedbackViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="8438" customClass="NonLoginFaultyStreetLampFeedbackViewController" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="8435"/>
-                        <viewControllerLayoutGuide type="bottom" id="8436"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="8439">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                    </view>
-                    <navigationItem key="navigationItem" title="Faulty TNB Street Lamp" id="8775"/>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="8440" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1309" y="636"/>
-        </scene>
         <!--Title-->
         <scene sceneID="9772">
             <objects>
-                <viewController storyboardIdentifier="SubmitFeedbackSuccessViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="9773" customClass="SubmitFeedbackSuccessViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="FeedbackEntryStatus" useStoryboardIdentifierAsRestorationIdentifier="YES" id="9773" customClass="FeedbackEntryStatus" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="9770"/>
                         <viewControllerLayoutGuide type="bottom" id="9771"/>
@@ -302,27 +137,9 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="9775" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-434" y="635"/>
+            <point key="canvasLocation" x="-218" y="869"/>
         </scene>
         <!--Title-->
-        <scene sceneID="9815">
-            <objects>
-                <viewController storyboardIdentifier="SubmitFeedbackFailedViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="9816" customClass="SubmitFeedbackFailedViewController" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="9813"/>
-                        <viewControllerLayoutGuide type="bottom" id="9814"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="9817">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                    </view>
-                    <navigationItem key="navigationItem" title="Title" id="9943"/>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="9818" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-437" y="1260"/>
-        </scene>
         <!--Navigation Controller-->
         <scene sceneID="11061">
             <objects>
@@ -337,59 +154,11 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="11065" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-840" y="632"/>
+            <point key="canvasLocation" x="-872" y="875"/>
         </scene>
         <!--Navigation Controller-->
-        <scene sceneID="11377">
-            <objects>
-                <navigationController id="11378" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="11380">
-                        <rect key="frame" x="0.0" y="20" width="414" height="50"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <connections>
-                        <segue destination="9816" kind="relationship" relationship="rootViewController" id="11588"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="11381" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-839" y="1263"/>
-        </scene>
         <!--Navigation Controller-->
-        <scene sceneID="12312">
-            <objects>
-                <navigationController id="12313" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="12315">
-                        <rect key="frame" x="0.0" y="20" width="414" height="50"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <connections>
-                        <segue destination="12649" kind="relationship" relationship="rootViewController" id="12719"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="12316" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="934" y="1272"/>
-        </scene>
         <!--Others-->
-        <scene sceneID="12648">
-            <objects>
-                <viewController storyboardIdentifier="NonLoginOthersFeedbackViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="12649" customClass="NonLoginOthersFeedbackViewController" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="12646"/>
-                        <viewControllerLayoutGuide type="bottom" id="12647"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="12650">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                    </view>
-                    <navigationItem key="navigationItem" title="Others" id="12718"/>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="12651" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1314" y="1263"/>
-        </scene>
         <scene sceneID="13387">
             <objects>
                 <navigationController id="13388" sceneMemberID="viewController">
@@ -403,7 +172,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="13392" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="52" y="-882"/>
+            <point key="canvasLocation" x="-832" y="-855"/>
         </scene>
         <scene sceneID="13393">
             <objects>
@@ -421,7 +190,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="13398" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="564" y="-894"/>
+            <point key="canvasLocation" x="-214" y="-854"/>
         </scene>
     </scenes>
 </document>

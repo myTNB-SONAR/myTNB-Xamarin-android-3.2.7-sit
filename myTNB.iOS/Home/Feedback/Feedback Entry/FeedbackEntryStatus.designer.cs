@@ -1,4 +1,4 @@
-// WARNING
+﻿// WARNING
 //
 // This file has been generated automatically by Visual Studio from the outlets and
 // actions declared in your storyboard file.
@@ -9,21 +9,13 @@ using System;
 using System.CodeDom.Compiler;
 using UIKit;
 
-namespace myTNB
+namespace myTNB.Home.Feedback.FeedbackEntry
 {
-    [Register ("StateCell")]
-    partial class StateCell
+    [Register ("FeedbackEntryStatus")]
+    partial class FeedbackEntryStatus
     {
-        [Outlet]
-        [GeneratedCode ("iOS Designer", "1.0")]
-        UIKit.UILabel lblState { get; set; }
-
         void ReleaseDesignerOutlets ()
         {
-            if (lblState != null) {
-                lblState.Dispose ();
-                lblState = null;
-            }
         }
     }
 }
