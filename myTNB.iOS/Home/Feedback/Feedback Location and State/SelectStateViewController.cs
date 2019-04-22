@@ -38,7 +38,5 @@ namespace myTNB
             });
             this.NavigationItem.LeftBarButtonItem = btnBack;
         }
-
-
     }
 }

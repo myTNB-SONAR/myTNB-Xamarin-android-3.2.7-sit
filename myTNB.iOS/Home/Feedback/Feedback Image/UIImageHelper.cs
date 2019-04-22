@@ -50,7 +50,7 @@ namespace myTNB.Home.Feedback
             catch (Exception e)
             {
                 Debug.WriteLine(e.Message);
-                return UIImage.FromBundle("");
+                return UIImage.FromBundle(string.Empty);
             }
         }
 

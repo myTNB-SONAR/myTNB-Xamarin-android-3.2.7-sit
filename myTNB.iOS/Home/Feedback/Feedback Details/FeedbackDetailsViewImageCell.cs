@@ -10,7 +10,7 @@ namespace myTNB
         public UILabel lblValue;
         public UIScrollView imgScrollView;
 
-        public FeedbackDetailsViewImageCell (IntPtr handle) : base (handle)
+        public FeedbackDetailsViewImageCell(IntPtr handle) : base(handle)
         {
             nfloat cellWidth = UIApplication.SharedApplication.KeyWindow.Frame.Width;
 

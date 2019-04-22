@@ -41,7 +41,8 @@ namespace myTNB
 
                 if (index >= 0)
                 {
-                    FeedbackDetails.AccountNum = FeedbackDetails.AccountNum + " - " + DataManager.DataManager.SharedInstance.AccountRecordsList.d[index].accDesc;
+                    FeedbackDetails.AccountNum = string.Format("{0} - {1}", FeedbackDetails?.AccountNum
+                        , DataManager.DataManager.SharedInstance?.AccountRecordsList?.d[index]?.accDesc);
                 }
             }
         }
@@ -60,23 +61,29 @@ namespace myTNB
 
         internal void OnImageClick(UIImage image, string fileName)
         {
-            viewContainer = new UIView(UIScreen.MainScreen.Bounds);
-            viewContainer.BackgroundColor = UIColor.Black;
+            viewContainer = new UIView(UIScreen.MainScreen.Bounds)
+            {
+                BackgroundColor = UIColor.Black
+            };
 
-            UILabel lblFileName = new UILabel(new CGRect(0, DeviceHelper.IsIphoneXUpResolution() ? 44 : 0, viewContainer.Frame.Width, 24));
-            lblFileName.BackgroundColor = UIColor.Black;
-            lblFileName.Font = myTNBFont.MuseoSans16();
-            lblFileName.TextColor = UIColor.White;
-            lblFileName.TextAlignment = UITextAlignment.Center;
-            lblFileName.Text = fileName;
+            UILabel lblFileName = new UILabel(new CGRect(0, DeviceHelper.IsIphoneXUpResolution() ? 44 : 0, viewContainer.Frame.Width, 24))
+            {
+                BackgroundColor = UIColor.Black,
+                Font = myTNBFont.MuseoSans16(),
+                TextColor = UIColor.White,
+                TextAlignment = UITextAlignment.Center,
+                Text = fileName
+            };
 
             UIView viewClose = new UIView(new CGRect(viewContainer.Frame.Width - 70, DeviceHelper.IsIphoneXUpResolution() ? 44 : 0, 60, 24));
-            UILabel lblClose = new UILabel(new CGRect(0, 0, 60, 24));
-            lblClose.BackgroundColor = UIColor.Black;
-            lblClose.Font = myTNBFont.MuseoSans16();
-            lblClose.TextColor = UIColor.White;
-            lblClose.TextAlignment = UITextAlignment.Right;
-            lblClose.Text = "Close";
+            UILabel lblClose = new UILabel(new CGRect(0, 0, 60, 24))
+            {
+                BackgroundColor = UIColor.Black,
+                Font = myTNBFont.MuseoSans16(),
+                TextColor = UIColor.White,
+                TextAlignment = UITextAlignment.Right,
+                Text = "Common_Close".Translate()
+            };
             viewClose.AddSubview(lblClose);
             viewClose.AddGestureRecognizer(new UITapGestureRecognizer(() =>
             {
@@ -132,10 +139,11 @@ namespace myTNB
             }
 
             UIImageView imgView = new UIImageView(new CGRect((viewContainer.Frame.Width / 2) - (imgWidth / 2)
-                                                             , ((viewContainer.Frame.Height - (DeviceHelper.IsIphoneXUpResolution() ? 44 : 24)) / 2) - (imgHeight / 2)
-                                                             , imgWidth
-                                                             , imgHeight));
-            imgView.Image = image;
+                , ((viewContainer.Frame.Height - (DeviceHelper.IsIphoneXUpResolution() ? 44 : 24)) / 2) - (imgHeight / 2)
+                , imgWidth, imgHeight))
+            {
+                Image = image
+            };
 
             viewContainer.AddSubviews(new UIView[] { lblFileName, viewClose, imgView });
 
