@@ -36,7 +36,12 @@ namespace myTNB
                 UpdatePromotions();
                 DataManager.DataManager.SharedInstance.IsPromotionFirstLoad = true;
             }
-
+            UITabBarItem[] tabbarItem = TabBar.Items;
+            tabbarItem[0].Title = "Tabbar_Dashboard".Translate();
+            tabbarItem[1].Title = "Tabbar_Bills".Translate();
+            tabbarItem[2].Title = "Tabbar_Promotions".Translate();
+            tabbarItem[3].Title = "Tabbar_Feedback".Translate();
+            tabbarItem[4].Title = "Tabbar_More".Translate();
         }
 
         public override void ViewWillAppear(bool animated)
