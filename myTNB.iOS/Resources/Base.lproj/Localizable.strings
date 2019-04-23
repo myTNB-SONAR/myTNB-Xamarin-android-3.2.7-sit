@@ -422,6 +422,13 @@
 /*Select Account*/
 "SelectAccount_Title"="Select Electricity Account";
 
+/*Tabbar*/
+"Tabbar_Bills"="Bills";
+"Tabbar_Dashboard"="Dashboard";
+"Tabbar_Feedback"="Feedback";
+"Tabbar_More"="More";
+"Tabbar_Promotions"="Promotions";
+
 /*View Bill*/
 "ViewBill_Advice"="Advice";
 "ViewBill_Title"="Bill";
