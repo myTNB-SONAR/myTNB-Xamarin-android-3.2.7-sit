@@ -62,13 +62,13 @@ namespace myTNB.Login.ForgotPassword
         internal void InitializeSubviews()
         {
             lblTitle = new UILabel(new CGRect(18, 16, View.Frame.Width - 36, 18));
-            lblTitle.TextColor = myTNBColor.PowerBlue();
-            lblTitle.Font = myTNBFont.MuseoSans16_500();
+            lblTitle.TextColor = MyTNBColor.PowerBlue;
+            lblTitle.Font = MyTNBFont.MuseoSans16_500;
             lblTitle.Text = "Login_EnterPassword".Translate();
             View.AddSubview(lblTitle);
 
-            lblDescription.TextColor = myTNBColor.TunaGrey();
-            lblDescription.Font = myTNBFont.MuseoSans14();
+            lblDescription.TextColor = MyTNBColor.TunaGrey();
+            lblDescription.Font = MyTNBFont.MuseoSans14;
             btnSubmit.Layer.CornerRadius = 5f;
 
             #region Password
@@ -80,8 +80,8 @@ namespace myTNB.Login.ForgotPassword
                 Frame = new CGRect(0, 0, viewPassword.Frame.Width, 12),
                 AttributedText = new NSAttributedString(
                     "Common_Password".Translate().ToUpper()
-                    , font: myTNBFont.MuseoSans9_300()
-                    , foregroundColor: myTNBColor.SilverChalice()
+                    , font: MyTNBFont.MuseoSans9_300
+                    , foregroundColor: MyTNBColor.SilverChalice
                     , strokeWidth: 0
                 ),
                 TextAlignment = UITextAlignment.Left
@@ -93,8 +93,8 @@ namespace myTNB.Login.ForgotPassword
                 Frame = new CGRect(0, 37, viewPassword.Frame.Width, 14),
                 AttributedText = new NSAttributedString(
                     "Hint_Password".Translate()
-                    , font: myTNBFont.MuseoSans9_300()
-                    , foregroundColor: myTNBColor.Tomato()
+                    , font: MyTNBFont.MuseoSans9_300
+                    , foregroundColor: MyTNBColor.Tomato
                     , strokeWidth: 0
                 ),
                 TextAlignment = UITextAlignment.Left
@@ -106,11 +106,11 @@ namespace myTNB.Login.ForgotPassword
                 Frame = new CGRect(0, 12, viewPassword.Frame.Width - 30, 24),
                 AttributedPlaceholder = new NSAttributedString(
                     "Login_EnterNewPassword".Translate()
-                    , font: myTNBFont.MuseoSans16_300()
-                    , foregroundColor: myTNBColor.SilverChalice()
+                    , font: MyTNBFont.MuseoSans16_300
+                    , foregroundColor: MyTNBColor.SilverChalice
                     , strokeWidth: 0
                 ),
-                TextColor = myTNBColor.TunaGrey()
+                TextColor = MyTNBColor.TunaGrey()
             };
             txtFieldPassword.KeyboardType = UIKeyboardType.Default;
             txtFieldPassword.ReturnKeyType = UIReturnKeyType.Done;
@@ -118,7 +118,7 @@ namespace myTNB.Login.ForgotPassword
             viewPassword.AddSubview(txtFieldPassword);
 
             viewLinePassword = new UIView((new CGRect(0, 36, viewPassword.Frame.Width, 1)));
-            viewLinePassword.BackgroundColor = myTNBColor.PlatinumGrey();
+            viewLinePassword.BackgroundColor = MyTNBColor.PlatinumGrey;
             viewPassword.AddSubview(viewLinePassword);
 
             viewShowPassword = new UIView(new CGRect(viewPassword.Frame.Width - 30, 12, 24, 24));
@@ -145,8 +145,8 @@ namespace myTNB.Login.ForgotPassword
                 Frame = new CGRect(0, 0, viewConfirmPassword.Frame.Width, 12),
                 AttributedText = new NSAttributedString(
                     "Common_ConfirmPassword".Translate().ToUpper()
-                    , font: myTNBFont.MuseoSans9_300()
-                    , foregroundColor: myTNBColor.SilverChalice()
+                    , font: MyTNBFont.MuseoSans9_300
+                    , foregroundColor: MyTNBColor.SilverChalice
                     , strokeWidth: 0
                 ),
                 TextAlignment = UITextAlignment.Left
@@ -155,8 +155,8 @@ namespace myTNB.Login.ForgotPassword
 
             lblConfirmPasswordError = new UILabel(new CGRect(0, 37, viewConfirmPassword.Frame.Width, 14));
             lblConfirmPasswordError.TextAlignment = UITextAlignment.Left;
-            lblConfirmPasswordError.Font = myTNBFont.MuseoSans9_300();
-            lblConfirmPasswordError.TextColor = myTNBColor.Tomato();
+            lblConfirmPasswordError.Font = MyTNBFont.MuseoSans9_300;
+            lblConfirmPasswordError.TextColor = MyTNBColor.Tomato;
 
             viewConfirmPassword.AddSubview(lblConfirmPasswordError);
 
@@ -165,11 +165,11 @@ namespace myTNB.Login.ForgotPassword
                 Frame = new CGRect(0, 12, viewConfirmPassword.Frame.Width - 30, 24),
                 AttributedPlaceholder = new NSAttributedString(
                     "Login_ConfirmNewPassword".Translate()
-                    , font: myTNBFont.MuseoSans16()
-                    , foregroundColor: myTNBColor.SilverChalice()
+                    , font: MyTNBFont.MuseoSans16
+                    , foregroundColor: MyTNBColor.SilverChalice
                     , strokeWidth: 0
                 ),
-                TextColor = myTNBColor.TunaGrey()
+                TextColor = MyTNBColor.TunaGrey()
             };
             txtFieldConfirmPassword.KeyboardType = UIKeyboardType.Default;
             txtFieldConfirmPassword.ReturnKeyType = UIReturnKeyType.Done;
@@ -177,7 +177,7 @@ namespace myTNB.Login.ForgotPassword
             viewConfirmPassword.AddSubview(txtFieldConfirmPassword);
 
             viewLineConfirmPassword = new UIView((new CGRect(0, 36, viewConfirmPassword.Frame.Width, 1)));
-            viewLineConfirmPassword.BackgroundColor = myTNBColor.PlatinumGrey();
+            viewLineConfirmPassword.BackgroundColor = MyTNBColor.PlatinumGrey;
             viewConfirmPassword.AddSubview(viewLineConfirmPassword);
 
             viewShowConfirmPassword = new UIView(new CGRect(viewConfirmPassword.Frame.Width - 30, 12, 24, 24));
@@ -214,7 +214,7 @@ namespace myTNB.Login.ForgotPassword
             lblConfirmPasswordTitle.Hidden = true;
             lblConfirmPasswordError.Hidden = true;
             btnSubmit.Enabled = false;
-            btnSubmit.BackgroundColor = myTNBColor.PlatinumGrey();
+            btnSubmit.BackgroundColor = MyTNBColor.PlatinumGrey;
             _textFieldHelper.CreateTextFieldLeftView(txtFieldPassword, "Password");
             _textFieldHelper.CreateTextFieldLeftView(txtFieldConfirmPassword, "Password");
             btnSubmit.Frame = new CGRect(18, View.Frame.Height - (DeviceHelper.IsIphoneXUpResolution()
@@ -282,7 +282,7 @@ namespace myTNB.Login.ForgotPassword
                 labelTitle.Hidden = textField.Text.Length == 0;
                 DisplayEyeIcon(textField);
                 textField.LeftViewMode = UITextFieldViewMode.Never;
-                viewLine.BackgroundColor = myTNBColor.PowerBlue();
+                viewLine.BackgroundColor = MyTNBColor.PowerBlue;
             };
             textField.ShouldEndEditing = (sender) =>
             {
@@ -299,8 +299,8 @@ namespace myTNB.Login.ForgotPassword
                 }
                 DisplayEyeIcon(textField);
                 lblError.Hidden = isValid || textField.Text.Length == 0;
-                viewLine.BackgroundColor = isValid || textField.Text.Length == 0 ? myTNBColor.PlatinumGrey() : myTNBColor.Tomato();
-                textField.TextColor = isValid || textField.Text.Length == 0 ? myTNBColor.TunaGrey() : myTNBColor.Tomato();
+                viewLine.BackgroundColor = isValid || textField.Text.Length == 0 ? MyTNBColor.PlatinumGrey : MyTNBColor.Tomato;
+                textField.TextColor = isValid || textField.Text.Length == 0 ? MyTNBColor.TunaGrey() : MyTNBColor.Tomato;
                 SetSubmitButtonEnable();
                 return true;
             };
@@ -324,7 +324,7 @@ namespace myTNB.Login.ForgotPassword
                 && _textFieldHelper.ValidateTextField(txtFieldConfirmPassword.Text, PASSWORD_PATTERN)
                 && txtFieldPassword.Text.Equals(txtFieldConfirmPassword.Text);
             btnSubmit.Enabled = isValid;
-            btnSubmit.BackgroundColor = isValid ? myTNBColor.FreshGreen() : myTNBColor.SilverChalice();
+            btnSubmit.BackgroundColor = isValid ? MyTNBColor.FreshGreen : MyTNBColor.SilverChalice;
         }
 
         internal void AddBackButton()

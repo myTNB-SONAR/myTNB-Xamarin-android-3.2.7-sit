@@ -13,8 +13,8 @@ namespace myTNB
         {
             get
             {
-                lblAccountNumber.Font = myTNBFont.MuseoSans16_300();
-                lblAccountNumber.TextColor = myTNBColor.TunaGrey();
+                lblAccountNumber.Font = MyTNBFont.MuseoSans16_300;
+                lblAccountNumber.TextColor = MyTNBColor.TunaGrey();
                 return lblAccountNumber;
             }
         }

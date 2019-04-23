@@ -10,8 +10,6 @@ namespace myTNB.Home.Feedback.FeedbackEntry
         readonly FeedbackEntryViewController _controller;
         readonly TextFieldHelper _textFieldHelper = new TextFieldHelper();
 
-        const string ACCOUNT_NO_PATTERN = @"^[0-9]{12,14}$";
-
         UIView _mainContainer, _commonWidgets, _viewAccountNo, _viewLineAccountNo;
         UILabel _lblAccountNoTitle, _lblAccountNoError, _lblAccountNumber;
         UITextField _txtFieldAccountNo;
@@ -93,11 +91,11 @@ namespace myTNB.Home.Feedback.FeedbackEntry
 
             _lblAccountNumber = new UILabel(new CGRect(30, 12, _viewAccountNo.Frame.Width - 60, 24))
             {
-                Font = myTNBFont.MuseoSans16_300(),
-                TextColor = myTNBColor.TunaGrey(),
+                Font = MyTNBFont.MuseoSans16_300,
+                TextColor = MyTNBColor.TunaGrey(),
                 AttributedText = new NSAttributedString("Common_AccountNo".Translate()
-                , font: myTNBFont.MuseoSans16()
-                , foregroundColor: myTNBColor.SilverChalice()
+                , font: MyTNBFont.MuseoSans16
+                , foregroundColor: MyTNBColor.SilverChalice
                 , strokeWidth: 0
             )
             };
@@ -111,7 +109,7 @@ namespace myTNB.Home.Feedback.FeedbackEntry
 
             _viewLineAccountNo = new UIView((new CGRect(0, 36, _viewAccountNo.Frame.Width, 1)))
             {
-                BackgroundColor = myTNBColor.PlatinumGrey()
+                BackgroundColor = MyTNBColor.PlatinumGrey
             };
 
             _viewAccountNo.AddSubviews(new UIView[] { _lblAccountNoTitle, _lblAccountNoError
@@ -147,14 +145,14 @@ namespace myTNB.Home.Feedback.FeedbackEntry
             {
                 Frame = new CGRect(0, 12, _viewAccountNo.Frame.Width, 24),
                 AttributedPlaceholder = AttributedStringUtility.GetAttributedString("Common_AccountNo", AttributedStringUtility.AttributedStringType.Value),
-                TextColor = myTNBColor.TunaGrey()
+                TextColor = MyTNBColor.TunaGrey()
             };
             _txtFieldAccountNo.KeyboardType = UIKeyboardType.NumberPad;
             _textFieldHelper.CreateDoneButton(_txtFieldAccountNo);
 
             _viewLineAccountNo = new UIView((new CGRect(0, 36, _viewAccountNo.Frame.Width, 1)))
             {
-                BackgroundColor = myTNBColor.PlatinumGrey()
+                BackgroundColor = MyTNBColor.PlatinumGrey
             };
 
             _viewAccountNo.AddSubviews(new UIView[] { _lblAccountNoTitle, _lblAccountNoError
@@ -162,7 +160,7 @@ namespace myTNB.Home.Feedback.FeedbackEntry
 
             _textFieldHelper.CreateTextFieldLeftView(_txtFieldAccountNo, "Account-Number");
             SetTextFieldEvents(_txtFieldAccountNo, _lblAccountNoTitle, _lblAccountNoError
-                , _viewLineAccountNo, null, ACCOUNT_NO_PATTERN);
+                , _viewLineAccountNo, null, TNBGlobal.ACCOUNT_NO_PATTERN);
         }
 
         void SetTextFieldEvents(UITextField textField, UILabel lblTitle, UILabel lblError
@@ -185,7 +183,7 @@ namespace myTNB.Home.Feedback.FeedbackEntry
                 lblHint.Hidden = !lblError.Hidden || textField.Text.Length == 0;
                 lblTitle.Hidden = textField.Text.Length == 0;
                 textField.LeftViewMode = UITextFieldViewMode.Never;
-                viewLine.BackgroundColor = myTNBColor.PowerBlue();
+                viewLine.BackgroundColor = MyTNBColor.PowerBlue;
             };
             textField.ShouldEndEditing = (sender) =>
             {
@@ -197,8 +195,8 @@ namespace myTNB.Home.Feedback.FeedbackEntry
                 bool isNormal = isValid || (textField.Text.Length == 0 && isEmptyAllowed);
                 lblError.Hidden = isNormal;
                 lblHint.Hidden = true;
-                viewLine.BackgroundColor = isNormal ? myTNBColor.PlatinumGrey() : myTNBColor.Tomato();
-                textField.TextColor = isNormal ? myTNBColor.TunaGrey() : myTNBColor.Tomato();
+                viewLine.BackgroundColor = isNormal ? MyTNBColor.PlatinumGrey : MyTNBColor.Tomato;
+                textField.TextColor = isNormal ? MyTNBColor.TunaGrey() : MyTNBColor.Tomato;
                 _controller.SetButtonEnable();
                 return true;
             };
@@ -234,7 +232,7 @@ namespace myTNB.Home.Feedback.FeedbackEntry
             }
             else
             {
-                bool isValidAccountNo = _textFieldHelper.ValidateTextField(_txtFieldAccountNo.Text, ACCOUNT_NO_PATTERN)
+                bool isValidAccountNo = _textFieldHelper.ValidateTextField(_txtFieldAccountNo.Text, TNBGlobal.ACCOUNT_NO_PATTERN)
                     && _textFieldHelper.ValidateAccountNumberLength(_txtFieldAccountNo.Text);
                 return _feedbackCommonWidgets.IsValidEntry() && isValidAccountNo;
             }

@@ -50,16 +50,16 @@ namespace myTNB
 
             lblNameTitle = new UILabel(new CGRect(0, 0, viewFullName.Frame.Width, 12));
             lblNameTitle.Text = "Common_AccountNickname".Translate().ToUpper();
-            lblNameTitle.Font = myTNBFont.MuseoSans9_300();
-            lblNameTitle.TextColor = myTNBColor.SilverChalice();
+            lblNameTitle.Font = MyTNBFont.MuseoSans9_300;
+            lblNameTitle.TextColor = MyTNBColor.SilverChalice;
             lblNameTitle.Hidden = true;
 
             viewFullName.AddSubview(lblNameTitle);
 
             lblNameError = new UILabel(new CGRect(0, 37, viewFullName.Frame.Width, 14));
-            lblNameError.Font = myTNBFont.MuseoSans9_300();
+            lblNameError.Font = MyTNBFont.MuseoSans9_300;
             lblNameError.TextAlignment = UITextAlignment.Left;
-            lblNameError.TextColor = myTNBColor.Tomato();
+            lblNameError.TextColor = MyTNBColor.Tomato;
             lblNameError.Text = "Invalid_AccountNickname".Translate();
             lblNameError.Hidden = true;
 
@@ -70,17 +70,17 @@ namespace myTNB
                 Frame = new CGRect(0, 12, viewFullName.Frame.Width, 24),
                 AttributedPlaceholder = new NSAttributedString(
                     "Common_AccountNickname".Translate()
-                    , font: myTNBFont.MuseoSans16_300()
-                    , foregroundColor: myTNBColor.SilverChalice()
+                    , font: MyTNBFont.MuseoSans16_300
+                    , foregroundColor: MyTNBColor.SilverChalice
                     , strokeWidth: 0
                 ),
-                TextColor = myTNBColor.TunaGrey()
+                TextColor = MyTNBColor.TunaGrey()
             };
             _textFieldHelper.CreateTextFieldLeftView(txtFieldName, "Name");
             viewFullName.AddSubview(txtFieldName);
 
             viewLineName = new UIView((new CGRect(0, 36, viewFullName.Frame.Width, 1)));
-            viewLineName.BackgroundColor = myTNBColor.PlatinumGrey();
+            viewLineName.BackgroundColor = MyTNBColor.PlatinumGrey;
             viewFullName.AddSubview(viewLineName);
 
             View.AddSubview(viewFullName);
@@ -119,7 +119,7 @@ namespace myTNB
             {
                 lblTitle.Hidden = textField.Text.Length == 0;
                 textField.LeftViewMode = UITextFieldViewMode.Never;
-                viewLine.BackgroundColor = myTNBColor.PowerBlue();
+                viewLine.BackgroundColor = MyTNBColor.PowerBlue;
             };
             textField.ShouldEndEditing = (sender) =>
             {
@@ -135,8 +135,8 @@ namespace myTNB
                     lblError.Text = !isFormatValid ? "Invalid_AccountNickname".Translate() : "Invalid_AccountNicknameInUse".Translate();
                 }
 
-                viewLine.BackgroundColor = isValid ? myTNBColor.PlatinumGrey() : myTNBColor.Tomato();
-                textField.TextColor = isValid ? myTNBColor.TunaGrey() : myTNBColor.Tomato();
+                viewLine.BackgroundColor = isValid ? MyTNBColor.PlatinumGrey : MyTNBColor.Tomato;
+                textField.TextColor = isValid ? MyTNBColor.TunaGrey() : MyTNBColor.Tomato;
                 SetSaveButtonEnable();
                 return true;
             };
@@ -176,7 +176,7 @@ namespace myTNB
                                            && !CustomerRecord.accDesc.Equals(txtFieldName.Text)
                                            && DataManager.DataManager.SharedInstance.IsAccountNicknameUnique(txtFieldName.Text);
             btnSave.Enabled = isValid;
-            btnSave.BackgroundColor = isValid ? myTNBColor.FreshGreen() : myTNBColor.SilverChalice();
+            btnSave.BackgroundColor = isValid ? MyTNBColor.FreshGreen : MyTNBColor.SilverChalice;
         }
 
         internal void SetNavigationBar()
@@ -200,12 +200,12 @@ namespace myTNB
         internal void AddSaveButton()
         {
             btnSave = new UIButton(UIButtonType.Custom);
-            btnSave.Frame = new CGRect(18, View.Frame.Height - (DeviceHelper.IsIphoneXUpResolution() 
+            btnSave.Frame = new CGRect(18, View.Frame.Height - (DeviceHelper.IsIphoneXUpResolution()
                 ? 96 : DeviceHelper.GetScaledHeight(72)), View.Frame.Width - 36, DeviceHelper.GetScaledHeight(48));
             btnSave.Layer.CornerRadius = 4;
-            btnSave.BackgroundColor = myTNBColor.SilverChalice();
+            btnSave.BackgroundColor = MyTNBColor.SilverChalice;
             btnSave.SetTitle("Common_Save".Translate(), UIControlState.Normal);
-            btnSave.Font = myTNBFont.MuseoSans16_500();
+            btnSave.Font = MyTNBFont.MuseoSans16_500;
             btnSave.SetTitleColor(UIColor.White, UIControlState.Normal);
             btnSave.Enabled = false;
             btnSave.TouchUpInside += (sender, e) =>

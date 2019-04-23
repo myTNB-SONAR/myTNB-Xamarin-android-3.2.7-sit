@@ -75,26 +75,26 @@ namespace myTNB.Home.Feedback.FeedbackDetails
                                 case "CL01":
                                     {
                                         //Created
-                                        cell.lblValue.TextColor = myTNBColor.PowerBlue();
+                                        cell.lblValue.TextColor = MyTNBColor.PowerBlue;
                                         break;
                                     }
                                 case "CL02":
                                     {
                                         //In Progress
-                                        cell.lblValue.TextColor = myTNBColor.SunGlow();
+                                        cell.lblValue.TextColor = MyTNBColor.SunGlow;
                                         break;
                                     }
                                 case "CL03":
                                 case "CL04":
                                     {
                                         //Completed
-                                        cell.lblValue.TextColor = myTNBColor.FreshGreen();
+                                        cell.lblValue.TextColor = MyTNBColor.FreshGreen;
                                         break;
                                     }
                                 case "CL06":
                                     {
                                         //Cancelled
-                                        cell.lblValue.TextColor = myTNBColor.Tomato();
+                                        cell.lblValue.TextColor = MyTNBColor.Tomato;
                                         break;
                                     }
                             }
@@ -295,10 +295,10 @@ namespace myTNB.Home.Feedback.FeedbackDetails
         {
 #if true
             var str = new NSString(text);
-            return str.GetSizeUsingAttributes(new UIStringAttributes { Font = myTNBFont.MuseoSans14() });
+            return str.GetSizeUsingAttributes(new UIStringAttributes { Font = MyTNBFont.MuseoSans14 });
 #else
             UILabel label = new UILabel(new CGRect(18, 0, UIApplication.SharedApplication.KeyWindow.Frame.Width - 36, float.MaxValue));
-            label.Font = myTNBFont.MuseoSans14();
+            label.Font = myTNBFont.MuseoSans14;
             label.TextColor = myTNBColor.TunaGrey();
             label.Lines = 0;
             label.LineBreakMode = UILineBreakMode.WordWrap;

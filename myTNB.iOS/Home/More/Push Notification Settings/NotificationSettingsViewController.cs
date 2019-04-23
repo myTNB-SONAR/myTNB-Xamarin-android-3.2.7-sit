@@ -75,7 +75,7 @@ namespace myTNB
             notificationSettingsTableView.RowHeight = 54f;
             notificationSettingsTableView.SectionHeaderHeight = 66f;
             notificationSettingsTableView.SeparatorStyle = UITableViewCellSeparatorStyle.None;
-            notificationSettingsTableView.BackgroundColor = myTNBColor.SectionGrey();
+            notificationSettingsTableView.BackgroundColor = MyTNBColor.SectionGrey;
         }
 
         internal void ExecuteSaveUserNotificationPreferenceCall(bool isNotificationType, NotificationPreferenceModel preference)

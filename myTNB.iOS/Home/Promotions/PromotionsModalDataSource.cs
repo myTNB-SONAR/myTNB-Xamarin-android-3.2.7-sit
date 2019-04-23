@@ -76,7 +76,7 @@ namespace myTNB
             UIButton btnSkip = new UIButton(UIButtonType.Custom);
             btnSkip.Frame = new CGRect(0, view.Frame.Height - buttonHeight, buttonWidth, buttonHeight);
             btnSkip.SetAttributedTitle(LabelHelper.CreateAttributedString("Common_Skip".Translate()
-                , myTNBFont.MuseoSans14_300(), myTNBColor.PowerBlue()), UIControlState.Normal);
+                , MyTNBFont.MuseoSans14_300, MyTNBColor.PowerBlue), UIControlState.Normal);
             btnSkip.BackgroundColor = UIColor.White;
             btnSkip.TouchDown += OnTapSkip;
             view.AddSubview(btnSkip);
@@ -84,7 +84,7 @@ namespace myTNB
             UIButton btnDetails = new UIButton(UIButtonType.Custom);
             btnDetails.Frame = new CGRect(view.Frame.Width - buttonWidth, view.Frame.Height - buttonHeight, buttonWidth, buttonHeight);
             btnDetails.SetAttributedTitle(LabelHelper.CreateAttributedString("Common_Details".Translate()
-                , myTNBFont.MuseoSans14_300(), myTNBColor.PowerBlue()), UIControlState.Normal);
+                , MyTNBFont.MuseoSans14_300, MyTNBColor.PowerBlue), UIControlState.Normal);
             btnDetails.BackgroundColor = UIColor.White;
             btnDetails.TouchDown += OnTapDetails;
             view.AddSubview(btnDetails);
@@ -107,7 +107,7 @@ namespace myTNB
             view.BringSubviewToFront(exitViewContainer);
 
             UIView lineView = new UIView(new CGRect(btnSkip.Frame.Width + 1, view.Frame.Height - buttonHeight, 1, buttonHeight));
-            lineView.BackgroundColor = myTNBColor.LinesGray();
+            lineView.BackgroundColor = MyTNBColor.LinesGray;
             view.AddSubview(lineView);
 
             return view;

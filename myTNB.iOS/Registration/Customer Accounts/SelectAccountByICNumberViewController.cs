@@ -34,15 +34,15 @@ namespace myTNB
         internal void InitializedSubviews()
         {
             NavigationItem.Title = "Common_AddElectricityAccount".Translate();
-            View.BackgroundColor = myTNBColor.LightGrayBG();
+            View.BackgroundColor = MyTNBColor.LightGrayBG;
 
             lblTitle = new UILabel
             {
                 Frame = new CGRect(18, 16, View.Frame.Width - 36, 80),
                 AttributedText = new NSAttributedString(
                     "Registration_QuestionICRegistered".Translate()
-                    , font: myTNBFont.MuseoSans18_500()
-                    , foregroundColor: myTNBColor.PowerBlue()
+                    , font: MyTNBFont.MuseoSans18_500
+                    , foregroundColor: MyTNBColor.PowerBlue
                     , strokeWidth: 0
                 ),
                 TextAlignment = UITextAlignment.Left,
@@ -61,8 +61,8 @@ namespace myTNB
             {
                 Frame = new CGRect(margin, margin, viewYes.Frame.Width - (margin * 2), 18),
                 AttributedText = new NSAttributedString(string.Format("{0},", "Common_Yes".Translate())
-                    , font: myTNBFont.MuseoSans16_500()
-                    , foregroundColor: myTNBColor.TunaGrey()
+                    , font: MyTNBFont.MuseoSans16_500
+                    , foregroundColor: MyTNBColor.TunaGrey()
                     , strokeWidth: 0
                 ),
                 TextAlignment = UITextAlignment.Left,
@@ -73,8 +73,8 @@ namespace myTNB
                 Frame = new CGRect(margin, lblYes.Frame.GetMaxY() + inlineMargin, viewYes.Frame.Width - (margin * 2), 40),
                 AttributedText = new NSAttributedString(
                     "Registration_AnswerForOwner".Translate()
-                    , font: myTNBFont.MuseoSans16_300()
-                    , foregroundColor: myTNBColor.TunaGrey()
+                    , font: MyTNBFont.MuseoSans16_300
+                    , foregroundColor: MyTNBColor.TunaGrey()
                     , strokeWidth: 0
                 ),
                 TextAlignment = UITextAlignment.Left,
@@ -95,8 +95,8 @@ namespace myTNB
             {
                 Frame = new CGRect(margin, margin, viewNo.Frame.Width - (margin * 2), 18),
                 AttributedText = new NSAttributedString(string.Format("{0},", "Common_No".Translate())
-                    , font: myTNBFont.MuseoSans16_500()
-                    , foregroundColor: myTNBColor.TunaGrey()
+                    , font: MyTNBFont.MuseoSans16_500
+                    , foregroundColor: MyTNBColor.TunaGrey()
                     , strokeWidth: 0
                 ),
                 TextAlignment = UITextAlignment.Left,
@@ -107,8 +107,8 @@ namespace myTNB
                 Frame = new CGRect(margin, lblNo.Frame.GetMaxY() + inlineMargin, viewNo.Frame.Width - (margin * 2), 40),
                 AttributedText = new NSAttributedString(
                     "Registration_AnswerForNonOwner".Translate()
-                    , font: myTNBFont.MuseoSans16_300()
-                    , foregroundColor: myTNBColor.TunaGrey()
+                    , font: MyTNBFont.MuseoSans16_300
+                    , foregroundColor: MyTNBColor.TunaGrey()
                     , strokeWidth: 0
                 ),
                 TextAlignment = UITextAlignment.Left,

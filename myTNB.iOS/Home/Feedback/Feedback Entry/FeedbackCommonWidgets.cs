@@ -57,12 +57,12 @@ namespace myTNB.Home.Feedback.FeedbackEntry
             {
                 Frame = new CGRect(0, 12, _viewFullName.Frame.Width, 24),
                 AttributedPlaceholder = AttributedStringUtility.GetAttributedString("Common_Fullname", AttributedStringUtility.AttributedStringType.Value),
-                TextColor = myTNBColor.TunaGrey()
+                TextColor = MyTNBColor.TunaGrey()
             };
 
             _viewLineFullName = new UIView((new CGRect(0, 36, _viewFullName.Frame.Width, 1)))
             {
-                BackgroundColor = myTNBColor.PlatinumGrey()
+                BackgroundColor = MyTNBColor.PlatinumGrey
             };
 
             _viewFullName.AddSubviews(new UIView[] { _lblFullNameTitle, _lblFullNameError
@@ -99,14 +99,14 @@ namespace myTNB.Home.Feedback.FeedbackEntry
             {
                 Frame = new CGRect(0, 12, _viewEmail.Frame.Width, 24),
                 AttributedPlaceholder = AttributedStringUtility.GetAttributedString("Common_Email", AttributedStringUtility.AttributedStringType.Value),
-                TextColor = myTNBColor.TunaGrey()
+                TextColor = MyTNBColor.TunaGrey()
             };
             _txtFieldEmail.KeyboardType = UIKeyboardType.EmailAddress;
             _viewEmail.AddSubview(_txtFieldEmail);
 
             _viewLineEmail = new UIView((new CGRect(0, 36, _viewEmail.Frame.Width, 1)))
             {
-                BackgroundColor = myTNBColor.PlatinumGrey()
+                BackgroundColor = MyTNBColor.PlatinumGrey
             };
             _viewEmail.AddSubviews(new UIView[] { _lblEmailTitle, _lblEmailError
                 , _txtFieldEmail, _viewLineEmail });
@@ -151,7 +151,7 @@ namespace myTNB.Home.Feedback.FeedbackEntry
                 lblHint.Hidden = !lblError.Hidden || textField.Text.Length == 0;
                 lblTitle.Hidden = textField.Text.Length == 0;
                 textField.LeftViewMode = UITextFieldViewMode.Never;
-                viewLine.BackgroundColor = myTNBColor.PowerBlue();
+                viewLine.BackgroundColor = MyTNBColor.PowerBlue;
             };
             textField.ShouldEndEditing = (sender) =>
             {
@@ -172,8 +172,8 @@ namespace myTNB.Home.Feedback.FeedbackEntry
                 bool isNormal = isValid || (textField.Text.Length == 0 && isEmptyAllowed);
                 lblError.Hidden = isNormal;
                 lblHint.Hidden = true;
-                viewLine.BackgroundColor = isNormal ? myTNBColor.PlatinumGrey() : myTNBColor.Tomato();
-                textField.TextColor = isNormal ? myTNBColor.TunaGrey() : myTNBColor.Tomato();
+                viewLine.BackgroundColor = isNormal ? MyTNBColor.PlatinumGrey : MyTNBColor.Tomato;
+                textField.TextColor = isNormal ? MyTNBColor.TunaGrey() : MyTNBColor.Tomato;
                 Validate();
                 return true;
             };
@@ -252,13 +252,13 @@ namespace myTNB.Home.Feedback.FeedbackEntry
             {
                 Frame = new CGRect(0, 12, _viewMobileNo.Frame.Width, 24),
                 AttributedPlaceholder = AttributedStringUtility.GetAttributedString("Common_MobileNumber", AttributedStringUtility.AttributedStringType.Value),
-                TextColor = myTNBColor.TunaGrey()
+                TextColor = MyTNBColor.TunaGrey()
             };
             _txtFieldMobileNo.KeyboardType = UIKeyboardType.NumberPad;
 
             _viewLineMobileNo = new UIView((new CGRect(0, 36, _viewMobileNo.Frame.Width, 1)))
             {
-                BackgroundColor = myTNBColor.PlatinumGrey()
+                BackgroundColor = MyTNBColor.PlatinumGrey
             };
 
             _viewMobileNo.AddSubviews(new UIView[] { _lblMobileNoTitle, _lblMobileNoError

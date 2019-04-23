@@ -123,10 +123,10 @@ namespace myTNB
                 Frame = new CGRect(18, DeviceHelper.GetScaledHeight(18), _btnSubmitContainer.Frame.Width - 36, 48)
             };
             _btnSubmit.SetTitle("Common_Submit".Translate(), UIControlState.Normal);
-            _btnSubmit.Font = myTNBFont.MuseoSans18_300();
+            _btnSubmit.Font = MyTNBFont.MuseoSans18_300;
             _btnSubmit.Layer.CornerRadius = 5.0f;
             _btnSubmit.Enabled = false;
-            _btnSubmit.BackgroundColor = myTNBColor.SilverChalice();
+            _btnSubmit.BackgroundColor = MyTNBColor.SilverChalice;
             _btnSubmit.TouchUpInside += (sender, e) =>
             {
                 ExecuteSubmitFeedback();
@@ -148,8 +148,8 @@ namespace myTNB
             _lblPhotoTitle = new UILabel(new CGRect(0, 0, View.Frame.Width - 36, 14))
             {
                 Text = "Feedback_AttachPhotoMessage".Translate(),
-                TextColor = myTNBColor.SilverChalice(),
-                Font = myTNBFont.MuseoSans11_300()
+                TextColor = MyTNBColor.SilverChalice,
+                Font = MyTNBFont.MuseoSans11_300
             };
             _viewUploadPhoto.AddSubview(_lblPhotoTitle);
 
@@ -157,8 +157,8 @@ namespace myTNB
                 , View.Frame.Width - 36, 14))
             {
                 Text = "Feedback_MaxFiles".Translate(),
-                TextColor = myTNBColor.SilverChalice(),
-                Font = myTNBFont.MuseoSans11_300()
+                TextColor = MyTNBColor.SilverChalice,
+                Font = MyTNBFont.MuseoSans11_300
             };
             _viewUploadPhoto.AddSubviews(new UIView[] { _lblPhotoTitle, lblPhotoSubTitle });
             _svContainer.AddSubview(_viewUploadPhoto);
@@ -321,9 +321,9 @@ namespace myTNB
             {
                 Frame = new CGRect(TXTVIEW_DEFAULT_MARGIN, 12, View.Frame.Width - 60, 36),
                 Editable = true,
-                Font = myTNBFont.MuseoSans18_300(),
+                Font = MyTNBFont.MuseoSans18_300,
                 TextAlignment = UITextAlignment.Left,
-                TextColor = myTNBColor.TunaGrey(),
+                TextColor = MyTNBColor.TunaGrey(),
                 BackgroundColor = UIColor.Clear,
                 EnablesReturnKeyAutomatically = true,
                 TranslatesAutoresizingMaskIntoConstraints = true,
@@ -354,13 +354,13 @@ namespace myTNB
 
             _viewLineFeedback = new UIView((new CGRect(0, _feedbackTextView.Frame.GetMaxY() + 3f, _viewFeedback.Frame.Width, 1)))
             {
-                BackgroundColor = myTNBColor.PlatinumGrey()
+                BackgroundColor = MyTNBColor.PlatinumGrey
             };
 
             _lblFeedbackSubTitle = new UILabel(new CGRect(0, _viewLineFeedback.Frame.GetMaxY(), _feedbackTextView.Frame.Width - 36, 14))
             {
-                TextColor = myTNBColor.SilverChalice(),
-                Font = myTNBFont.MuseoSans11_300()
+                TextColor = MyTNBColor.SilverChalice,
+                Font = MyTNBFont.MuseoSans11_300
             };
 
             _viewFeedback.AddSubviews(new UIView[] { _lblFeedbackTitle, _feedbackTextView
@@ -412,10 +412,10 @@ namespace myTNB
                 _iconFeedback.Hidden = true;
                 frame.X = 0.0f;
                 _feedbackTextView.Frame = frame;
-                viewLine.BackgroundColor = myTNBColor.PowerBlue();
+                viewLine.BackgroundColor = MyTNBColor.PowerBlue;
                 lblError.Hidden = true;
                 _lblFeedbackSubTitle.Hidden = false;
-                textView.TextColor = myTNBColor.TunaGrey();
+                textView.TextColor = MyTNBColor.TunaGrey();
                 return true;
             };
             textView.ShouldEndEditing = (sender) =>
@@ -426,8 +426,8 @@ namespace myTNB
                 lblError.Hidden = isValid || textView.Text.Length == 0;
                 _lblFeedbackSubTitle.Hidden = !lblError.Hidden;
                 lblHint.Hidden = true;
-                viewLine.BackgroundColor = isValid || textView.Text.Length == 0 ? myTNBColor.PlatinumGrey() : myTNBColor.Tomato();
-                textView.TextColor = isValid || textView.Text.Length == 0 ? myTNBColor.TunaGrey() : myTNBColor.Tomato();
+                viewLine.BackgroundColor = isValid || textView.Text.Length == 0 ? MyTNBColor.PlatinumGrey : MyTNBColor.Tomato;
+                textView.TextColor = isValid || textView.Text.Length == 0 ? MyTNBColor.TunaGrey() : MyTNBColor.Tomato;
 
                 if (textView.Text.Length == 0)
                 {
@@ -546,7 +546,7 @@ namespace myTNB
             }
             bool isValid = isValidFields && isValidFeedback;
             _btnSubmit.Enabled = isValid;
-            _btnSubmit.BackgroundColor = isValid ? myTNBColor.FreshGreen() : myTNBColor.SilverChalice();
+            _btnSubmit.BackgroundColor = isValid ? MyTNBColor.FreshGreen : MyTNBColor.SilverChalice;
         }
 
         void ExecuteSubmitFeedback()

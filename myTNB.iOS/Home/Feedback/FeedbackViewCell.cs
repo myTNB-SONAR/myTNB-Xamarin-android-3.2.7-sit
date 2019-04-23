@@ -3,20 +3,20 @@ using System; using UIKit; using CoreGraphics;  namespace myTNB {   
                 Image = UIImage.FromBundle("Feedback-Submitted-Others")
             };              lblTitle = new UILabel(new CGRect(80, 16, cellWidth - 96, 16))
             {
-                TextColor = myTNBColor.PowerBlue(),
-                Font = myTNBFont.MuseoSans16_500()
+                TextColor = MyTNBColor.PowerBlue,
+                Font = MyTNBFont.MuseoSans16_500
             };              lblSubtTitle = new UILabel(new CGRect(80, 38, cellWidth - 96, 16))
             {
-                TextColor = myTNBColor.TunaGrey(),
-                Font = myTNBFont.MuseoSans12_300()
+                TextColor = MyTNBColor.TunaGrey(),
+                Font = MyTNBFont.MuseoSans12_300
             };              lblCount = new UILabel(new CGRect(cellWidth - 38, 16, 20, 16))
             {
-                TextColor = myTNBColor.PowerBlue(),
+                TextColor = MyTNBColor.PowerBlue,
                 TextAlignment = UITextAlignment.Right,
-                Font = myTNBFont.MuseoSans12(),
+                Font = MyTNBFont.MuseoSans12,
                 Hidden = true
             };              viewLine = new UIView(new CGRect(0, cellHeight - 7, cellWidth, 7))
             {
-                BackgroundColor = myTNBColor.SectionGrey(),
+                BackgroundColor = MyTNBColor.SectionGrey,
                 Hidden = false
             };              AddSubviews(new UIView[] { imgViewIcon, lblTitle, lblSubtTitle, lblCount, viewLine });         }     } }

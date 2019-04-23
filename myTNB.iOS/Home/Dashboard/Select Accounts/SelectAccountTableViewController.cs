@@ -51,9 +51,9 @@ namespace myTNB
             UIButton btnAddAccount = new UIButton(UIButtonType.Custom);
             btnAddAccount.Frame = new CGRect(18, View.Frame.Height - (DeviceHelper.IsIphoneXUpResolution() ? 152 : 128), View.Frame.Width - 36, 48);
             btnAddAccount.SetTitle("Common_AddAnotherAccount".Translate(), UIControlState.Normal);
-            btnAddAccount.Font = myTNBFont.MuseoSans16();
+            btnAddAccount.Font = MyTNBFont.MuseoSans16;
             btnAddAccount.Layer.CornerRadius = 5.0f;
-            btnAddAccount.BackgroundColor = myTNBColor.FreshGreen();
+            btnAddAccount.BackgroundColor = MyTNBColor.FreshGreen;
             View.AddSubview(btnAddAccount);
             btnAddAccount.TouchUpInside += (sender, e) =>
             {

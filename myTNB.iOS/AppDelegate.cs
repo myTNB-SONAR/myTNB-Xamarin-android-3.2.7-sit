@@ -272,8 +272,8 @@ namespace myTNB
             var navigationBarFrame = new CGRect(0, 0, UIScreen.MainScreen.Bounds.Size.Width, 64);
 
             //Setup the colors that will be use
-            var startColor = myTNBColor.GradientPurpleDarkElement();
-            var endColor = myTNBColor.GradientPurpleLightElement();
+            var startColor = MyTNBColor.GradientPurpleDarkElement;
+            var endColor = MyTNBColor.GradientPurpleLightElement;
 
             //Create an instance of gradient layer with custom setup
             var gradientLayer = new CAGradientLayer
@@ -299,7 +299,7 @@ namespace myTNB
             UINavigationBar.Appearance.SetTitleTextAttributes(new UITextAttributes()
             {
                 TextColor = UIColor.White,
-                Font = myTNBFont.MuseoSans16()
+                Font = MyTNBFont.MuseoSans16
             });
 
             //Setup the Navigation Bar tint color 

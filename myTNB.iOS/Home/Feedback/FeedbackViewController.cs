@@ -77,7 +77,7 @@ namespace myTNB
                                 viewHeader.AddSubview(imgViewBackgroundPhoto);
                                 feedbackTableView.TableHeaderView = viewHeader;
 
-                                feedbackTableView.BackgroundColor = myTNBColor.LightGrayBG();
+                                feedbackTableView.BackgroundColor = MyTNBColor.LightGrayBG;
                                 feedbackTableView.RowHeight = 80f;
                                 feedbackTableView.SeparatorStyle = UITableViewCellSeparatorStyle.None;
                                 feedbackTableView.Source = new FeedbackDataSource(this, _submittedFeedback?.d?.data

@@ -61,7 +61,7 @@ namespace myTNB.Home.Components
             lblLoading.BackgroundColor = UIColor.Clear;
             lblLoading.TextColor = UIColor.White;
             lblLoading.Text = Texts.InfoLoading;
-            lblLoading.Font = myTNBFont.MuseoSans14_300();
+            lblLoading.Font = myTNBFont.MuseoSans14_300;
             lblLoading.TextAlignment = UITextAlignment.Center;
             lblLoading.AutoresizingMask = UIViewAutoresizing.All;
             _viewActivityIndicator.AddSubview(lblLoading);

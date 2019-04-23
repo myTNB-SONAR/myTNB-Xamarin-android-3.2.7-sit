@@ -9,20 +9,18 @@ namespace myTNB
         const string CONTENT_TYPE = "Content-Type";
         const string APPLICATION_JSON = "application/json";
         const int TIMEOUT = 60000;
-
-        int DOMAINTYPE = TNBGlobal.IsProduction ? 1 : 0; // Set to 1 for Prod
+        readonly int DOMAINTYPE = TNBGlobal.IsProduction ? 1 : 0; // Set to 1 for Prod
         bool _isPayment = false;
         string _paymentURL = string.Empty;
-
-        string[] _domain = new string[]{
+        readonly string[] _domain = new string[]{
             "https://mobiletestingws.tnb.com.my",
             "https://mytnbapp.tnb.com.my"
         };
-        string[] _endpointDevURL = new string[]{
+        readonly string[] _endpointDevURL = new string[]{
             "/v4/my_billingssp.asmx/",
             "/v5/my_billingssp.asmx/"
         };
-        string[] _endpointProdURL = new string[]{
+        readonly string[] _endpointProdURL = new string[]{
             "/v4/my_BillingSSP.asmx/",
             "/v5/my_BillingSSP.asmx/"
         };
@@ -51,12 +49,16 @@ namespace myTNB
             string domain = _domain[DOMAINTYPE];
             string url = domain + GetURLEndpoint(version) + suffix;
 
-            var client = new RestClient(url);
-            client.Timeout = TIMEOUT;
+            var client = new RestClient(url)
+            {
+                Timeout = TIMEOUT
+            };
 
-            var request = new RestRequest();
-            request.Method = Method.POST;
-            request.Timeout = TIMEOUT;
+            var request = new RestRequest
+            {
+                Method = Method.POST,
+                Timeout = TIMEOUT
+            };
             request.AddHeader(CONTENT_TYPE, APPLICATION_JSON);
             request.AddJsonBody(requestParams);
 

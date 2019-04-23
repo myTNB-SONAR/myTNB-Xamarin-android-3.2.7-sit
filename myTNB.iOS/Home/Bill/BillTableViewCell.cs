@@ -20,28 +20,28 @@ namespace myTNB
 
             lblDate = new UILabel(new CGRect(DeviceHelper.GetScaledSizeByWidth(5.6F), 17, 50, 16));
             lblDate.TextAlignment = UITextAlignment.Left;
-            lblDate.Font = myTNBFont.MuseoSans14_500();
-            lblDate.TextColor = myTNBColor.TunaGrey();
+            lblDate.Font = MyTNBFont.MuseoSans14_500;
+            lblDate.TextColor = MyTNBColor.TunaGrey();
 
             lblTitle = new UILabel(new CGRect(DeviceHelper.GetScaledSizeByWidth(25F), 17, 115, 16));
             lblTitle.TextAlignment = UITextAlignment.Left;
-            lblTitle.Font = myTNBFont.MuseoSans14_500();
-            lblTitle.TextColor = myTNBColor.TunaGrey();
+            lblTitle.Font = MyTNBFont.MuseoSans14_500;
+            lblTitle.TextColor = MyTNBColor.TunaGrey();
 
             lblDetails = new UILabel(new CGRect(DeviceHelper.GetScaledSizeByWidth(25F), 33, 115, 14));
             lblDetails.TextAlignment = UITextAlignment.Left;
-            lblDetails.Font = myTNBFont.MuseoSans11_300();
-            lblDetails.TextColor = myTNBColor.SilverChalice();
+            lblDetails.Font = MyTNBFont.MuseoSans11_300;
+            lblDetails.TextColor = MyTNBColor.SilverChalice;
 
             lblAmount = new UILabel(new CGRect(DeviceHelper.GetScaledSizeByWidth(62F), 17, 100, 16));
             lblAmount.TextAlignment = UITextAlignment.Left;
-            lblAmount.Font = myTNBFont.MuseoSans14_500();
-            lblAmount.TextColor = myTNBColor.TunaGrey();
+            lblAmount.Font = MyTNBFont.MuseoSans14_500;
+            lblAmount.TextColor = MyTNBColor.TunaGrey();
 
             imgArrow = new UIImageView(new CGRect(DeviceHelper.GetScaledSizeByWidth(92F), 23, 16, 16));
             imgArrow.Image = UIImage.FromBundle("Arrow-Right-Black");
             viewLine = new UIView(new CGRect(0, cellHeight - 1, cellWidth, 1));
-            viewLine.BackgroundColor = myTNBColor.PlatinumGrey();
+            viewLine.BackgroundColor = MyTNBColor.PlatinumGrey;
 
             AddSubviews(new UIView[]{lblDate, lblTitle, lblDetails
                 , lblAmount, imgArrow, viewLine});

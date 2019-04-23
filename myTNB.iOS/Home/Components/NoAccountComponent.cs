@@ -41,7 +41,7 @@ namespace myTNB.Dashboard.DashboardComponents
 
             _lblTitle = new UILabel(new CGRect(10, imgViewEmpty.Frame.GetMaxY() + 20, _viewNoAccount.Frame.Width - 20, 16));
             _lblTitle.TextAlignment = UITextAlignment.Center;
-            _lblTitle.Font = myTNBFont.MuseoSans14_500();
+            _lblTitle.Font = MyTNBFont.MuseoSans14_500;
             _lblTitle.Text = "Common_NoAccount".Translate();
             _lblTitle.TextColor = UIColor.White;
             _viewNoAccount.AddSubview(_lblTitle);
@@ -51,7 +51,7 @@ namespace myTNB.Dashboard.DashboardComponents
             _lblSubtitle = new UILabel(new CGRect(xLocation, _lblTitle.Frame.GetMaxY() + 2, subWidth, 28));
             _lblSubtitle.TextAlignment = UITextAlignment.Center;
             _lblSubtitle.Text = string.Format("Component_NoAccountMessage".Translate(), Environment.NewLine);
-            _lblSubtitle.Font = myTNBFont.MuseoSans11_300();
+            _lblSubtitle.Font = MyTNBFont.MuseoSans11_300;
             _lblSubtitle.Lines = 2;
             _lblSubtitle.TextColor = UIColor.White;
             _lblSubtitle.LineBreakMode = UILineBreakMode.WordWrap;
@@ -63,7 +63,7 @@ namespace myTNB.Dashboard.DashboardComponents
             _btnAddAccount.Layer.BorderColor = UIColor.White.CGColor;
             _btnAddAccount.Layer.BorderWidth = 1;
             _btnAddAccount.SetTitle("Common_AddAccount".Translate(), UIControlState.Normal);
-            _btnAddAccount.Font = myTNBFont.MuseoSans18_500();
+            _btnAddAccount.Font = MyTNBFont.MuseoSans18_500;
             _btnAddAccount.SetTitleColor(UIColor.White, UIControlState.Normal);
             _viewNoAccount.AddSubview(_btnAddAccount);
         }

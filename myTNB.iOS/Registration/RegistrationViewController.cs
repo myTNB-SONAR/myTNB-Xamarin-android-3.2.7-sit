@@ -82,7 +82,6 @@ namespace myTNB.Registration
         const string EMAIL_PATTERN = @"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$";
         const string PASSWORD_PATTERN = @"^.{8,}$"; //@"(?!^[0-9]*$)(?!^[a-zA-Z]*$)^([a-zA-Z0-9]{8,})$";
         const string MOBILE_NO_PATTERN = @"^[0-9 \+]+$";
-        const string IC_NO_PATTERN = @"^[a-zA-Z0-9]+$";
         const string TOKEN_PATTERN = @"^[0-9]{4,4}$";
 
         public override void ViewDidLoad()
@@ -128,8 +127,8 @@ namespace myTNB.Registration
                 Frame = new CGRect(0, 0, viewFullName.Frame.Width, 12),
                 AttributedText = new NSAttributedString(
                     "Common_Fullname".Translate().ToUpper()
-                    , font: myTNBFont.MuseoSans9()
-                    , foregroundColor: myTNBColor.SilverChalice()
+                    , font: MyTNBFont.MuseoSans9
+                    , foregroundColor: MyTNBColor.SilverChalice
                     , strokeWidth: 0
                 ),
                 TextAlignment = UITextAlignment.Left
@@ -141,8 +140,8 @@ namespace myTNB.Registration
                 Frame = new CGRect(0, 37, viewFullName.Frame.Width, 14),
                 AttributedText = new NSAttributedString(
                     "Invalid_Fullname".Translate()
-                    , font: myTNBFont.MuseoSans9()
-                    , foregroundColor: myTNBColor.Tomato()
+                    , font: MyTNBFont.MuseoSans9
+                    , foregroundColor: MyTNBColor.Tomato
                     , strokeWidth: 0
                 ),
                 TextAlignment = UITextAlignment.Left
@@ -154,16 +153,16 @@ namespace myTNB.Registration
                 Frame = new CGRect(0, 12, viewFullName.Frame.Width, 24),
                 AttributedPlaceholder = new NSAttributedString(
                     "Common_Fullname".Translate()
-                    , font: myTNBFont.MuseoSans16()
-                    , foregroundColor: myTNBColor.SilverChalice()
+                    , font: MyTNBFont.MuseoSans16
+                    , foregroundColor: MyTNBColor.SilverChalice
                     , strokeWidth: 0
                 ),
-                TextColor = myTNBColor.TunaGrey()
+                TextColor = MyTNBColor.TunaGrey()
             };
             viewFullName.AddSubview(txtFieldName);
 
             viewLineName = new UIView((new CGRect(0, 36, viewFullName.Frame.Width, 1)));
-            viewLineName.BackgroundColor = myTNBColor.PlatinumGrey();
+            viewLineName.BackgroundColor = MyTNBColor.PlatinumGrey;
             viewFullName.AddSubview(viewLineName);
 
             //IC Number
@@ -175,8 +174,8 @@ namespace myTNB.Registration
                 Frame = new CGRect(0, 0, viewICNumber.Frame.Width, 12),
                 AttributedText = new NSAttributedString(
                     "Common_ICROCPassportNumber".Translate().ToUpper()
-                    , font: myTNBFont.MuseoSans9()
-                    , foregroundColor: myTNBColor.SilverChalice()
+                    , font: MyTNBFont.MuseoSans9
+                    , foregroundColor: MyTNBColor.SilverChalice
                     , strokeWidth: 0
                 ),
                 TextAlignment = UITextAlignment.Left
@@ -188,8 +187,8 @@ namespace myTNB.Registration
                 Frame = new CGRect(0, 37, viewICNumber.Frame.Width, 14),
                 AttributedText = new NSAttributedString(
                     "Invalid_ICROCPassportNumber".Translate()
-                    , font: myTNBFont.MuseoSans9()
-                    , foregroundColor: myTNBColor.Tomato()
+                    , font: MyTNBFont.MuseoSans9
+                    , foregroundColor: MyTNBColor.Tomato
                     , strokeWidth: 0
                 ),
                 TextAlignment = UITextAlignment.Left
@@ -201,7 +200,7 @@ namespace myTNB.Registration
                 Frame = new CGRect(0, 37, viewICNumber.Frame.Width, 14),
                 AttributedText = new NSAttributedString(
                     "IC, ROC or Passport No.",
-                    font: myTNBFont.MuseoSans9(),
+                    font: myTNBFont.MuseoSans9,
                     foregroundColor: myTNBColor.TunaGrey(),
                     strokeWidth: 0
                 ),
@@ -215,16 +214,16 @@ namespace myTNB.Registration
                 Frame = new CGRect(0, 12, viewICNumber.Frame.Width, 24),
                 AttributedPlaceholder = new NSAttributedString(
                     "Common_ICROCPassportNumber".Translate()
-                    , font: myTNBFont.MuseoSans16()
-                    , foregroundColor: myTNBColor.SilverChalice()
+                    , font: MyTNBFont.MuseoSans16
+                    , foregroundColor: MyTNBColor.SilverChalice
                     , strokeWidth: 0
                 ),
-                TextColor = myTNBColor.TunaGrey()
+                TextColor = MyTNBColor.TunaGrey()
             };
             viewICNumber.AddSubview(txtFieldICNo);
 
             viewLineICNo = new UIView((new CGRect(0, 36, viewICNumber.Frame.Width, 1)));
-            viewLineICNo.BackgroundColor = myTNBColor.PlatinumGrey();
+            viewLineICNo.BackgroundColor = MyTNBColor.PlatinumGrey;
             viewICNumber.AddSubview(viewLineICNo);
 
             //Mobile Number
@@ -236,8 +235,8 @@ namespace myTNB.Registration
                 Frame = new CGRect(0, 0, viewMobileNumber.Frame.Width, 12),
                 AttributedText = new NSAttributedString(
                     "Common_MobileNumber".Translate().ToUpper()
-                    , font: myTNBFont.MuseoSans9()
-                    , foregroundColor: myTNBColor.SilverChalice()
+                    , font: MyTNBFont.MuseoSans9
+                    , foregroundColor: MyTNBColor.SilverChalice
                     , strokeWidth: 0
                 ),
                 TextAlignment = UITextAlignment.Left
@@ -249,8 +248,8 @@ namespace myTNB.Registration
                 Frame = new CGRect(0, 37, viewMobileNumber.Frame.Width, 14),
                 AttributedText = new NSAttributedString(
                     "Invalid_MobileNumber".Translate()
-                    , font: myTNBFont.MuseoSans9()
-                    , foregroundColor: myTNBColor.Tomato()
+                    , font: MyTNBFont.MuseoSans9
+                    , foregroundColor: MyTNBColor.Tomato
                     , strokeWidth: 0
                 ),
                 TextAlignment = UITextAlignment.Left
@@ -262,8 +261,8 @@ namespace myTNB.Registration
                 Frame = new CGRect(0, 37, viewMobileNumber.Frame.Width, 14),
                 AttributedText = new NSAttributedString(
                     "Hint_MobileNumber".Translate(),
-                    font: myTNBFont.MuseoSans9(),
-                    foregroundColor: myTNBColor.TunaGrey(),
+                    font: MyTNBFont.MuseoSans9,
+                    foregroundColor: MyTNBColor.TunaGrey(),
                     strokeWidth: 0
                 ),
                 TextAlignment = UITextAlignment.Left
@@ -276,16 +275,16 @@ namespace myTNB.Registration
                 Frame = new CGRect(0, 12, viewMobileNumber.Frame.Width, 24),
                 AttributedPlaceholder = new NSAttributedString(
                     "Common_MobileNumber".Translate()
-                    , font: myTNBFont.MuseoSans16()
-                    , foregroundColor: myTNBColor.SilverChalice()
+                    , font: MyTNBFont.MuseoSans16
+                    , foregroundColor: MyTNBColor.SilverChalice
                     , strokeWidth: 0
                 ),
-                TextColor = myTNBColor.TunaGrey()
+                TextColor = MyTNBColor.TunaGrey()
             };
             viewMobileNumber.AddSubview(txtFieldMobileNo);
 
             viewLineMobileNo = new UIView((new CGRect(0, 36, viewMobileNumber.Frame.Width, 1)));
-            viewLineMobileNo.BackgroundColor = myTNBColor.PlatinumGrey();
+            viewLineMobileNo.BackgroundColor = MyTNBColor.PlatinumGrey;
             viewMobileNumber.AddSubview(viewLineMobileNo);
 
             //Eeeend
@@ -297,8 +296,8 @@ namespace myTNB.Registration
                 Frame = new CGRect(0, 0, viewEmail.Frame.Width, 12),
                 AttributedText = new NSAttributedString(
                     "Common_Email".Translate().ToUpper()
-                    , font: myTNBFont.MuseoSans9()
-                    , foregroundColor: myTNBColor.SilverChalice()
+                    , font: MyTNBFont.MuseoSans9
+                    , foregroundColor: MyTNBColor.SilverChalice
                     , strokeWidth: 0
                 ),
                 TextAlignment = UITextAlignment.Left
@@ -310,8 +309,8 @@ namespace myTNB.Registration
                 Frame = new CGRect(0, 37, viewEmail.Frame.Width, 14),
                 AttributedText = new NSAttributedString(
                     "Invalid_Email".Translate()
-                    , font: myTNBFont.MuseoSans9()
-                    , foregroundColor: myTNBColor.Tomato()
+                    , font: MyTNBFont.MuseoSans9
+                    , foregroundColor: MyTNBColor.Tomato
                     , strokeWidth: 0
                 ),
                 TextAlignment = UITextAlignment.Left
@@ -324,16 +323,16 @@ namespace myTNB.Registration
                 Frame = new CGRect(0, 12, viewEmail.Frame.Width, 24),
                 AttributedPlaceholder = new NSAttributedString(
                     "Common_Email".Translate()
-                    , font: myTNBFont.MuseoSans16()
-                    , foregroundColor: myTNBColor.SilverChalice()
+                    , font: MyTNBFont.MuseoSans16
+                    , foregroundColor: MyTNBColor.SilverChalice
                     , strokeWidth: 0
                 ),
-                TextColor = myTNBColor.TunaGrey()
+                TextColor = MyTNBColor.TunaGrey()
             };
             viewEmail.AddSubview(txtFieldEmail);
 
             viewLineEmail = new UIView((new CGRect(0, 36, viewEmail.Frame.Width, 1)));
-            viewLineEmail.BackgroundColor = myTNBColor.PlatinumGrey();
+            viewLineEmail.BackgroundColor = MyTNBColor.PlatinumGrey;
             viewEmail.AddSubview(viewLineEmail);
 
             //Confirm Email
@@ -345,8 +344,8 @@ namespace myTNB.Registration
                 Frame = new CGRect(0, 0, viewConfirmEmail.Frame.Width, 12),
                 AttributedText = new NSAttributedString(
                     "Common_ConfirmEmail".Translate().ToUpper()
-                    , font: myTNBFont.MuseoSans9()
-                    , foregroundColor: myTNBColor.SilverChalice()
+                    , font: MyTNBFont.MuseoSans9
+                    , foregroundColor: MyTNBColor.SilverChalice
                     , strokeWidth: 0
                 ),
                 TextAlignment = UITextAlignment.Left
@@ -354,9 +353,9 @@ namespace myTNB.Registration
             viewConfirmEmail.AddSubview(lblConfirmEmailTitle);
 
             lblConfirmEmailError = new UILabel(new CGRect(0, 37, viewConfirmEmail.Frame.Width, 14));
-            lblConfirmEmailError.Font = myTNBFont.MuseoSans9();
+            lblConfirmEmailError.Font = MyTNBFont.MuseoSans9;
             lblConfirmEmailError.TextAlignment = UITextAlignment.Left;
-            lblConfirmEmailError.TextColor = myTNBColor.Tomato();
+            lblConfirmEmailError.TextColor = MyTNBColor.Tomato;
             viewConfirmEmail.AddSubview(lblConfirmEmailError);
 
             txtFieldConfirmEmail = new UITextField
@@ -364,16 +363,16 @@ namespace myTNB.Registration
                 Frame = new CGRect(0, 12, viewConfirmEmail.Frame.Width, 24),
                 AttributedPlaceholder = new NSAttributedString(
                     "Common_ConfirmEmail".Translate()
-                    , font: myTNBFont.MuseoSans16()
-                    , foregroundColor: myTNBColor.SilverChalice()
+                    , font: MyTNBFont.MuseoSans16
+                    , foregroundColor: MyTNBColor.SilverChalice
                     , strokeWidth: 0
                 ),
-                TextColor = myTNBColor.TunaGrey()
+                TextColor = MyTNBColor.TunaGrey()
             };
             viewConfirmEmail.AddSubview(txtFieldConfirmEmail);
 
             viewLineConfirmEmail = new UIView((new CGRect(0, 36, viewConfirmEmail.Frame.Width, 1)));
-            viewLineConfirmEmail.BackgroundColor = myTNBColor.PlatinumGrey();
+            viewLineConfirmEmail.BackgroundColor = MyTNBColor.PlatinumGrey;
             viewConfirmEmail.AddSubview(viewLineConfirmEmail);
 
             //Password
@@ -385,8 +384,8 @@ namespace myTNB.Registration
                 Frame = new CGRect(0, 0, viewPassword.Frame.Width, 12),
                 AttributedText = new NSAttributedString(
                     "Common_Password".Translate().ToUpper()
-                    , font: myTNBFont.MuseoSans9()
-                    , foregroundColor: myTNBColor.SilverChalice()
+                    , font: MyTNBFont.MuseoSans9
+                    , foregroundColor: MyTNBColor.SilverChalice
                     , strokeWidth: 0
                 ),
                 TextAlignment = UITextAlignment.Left
@@ -398,8 +397,8 @@ namespace myTNB.Registration
                 Frame = new CGRect(0, 37, viewPassword.Frame.Width, 14),
                 AttributedText = new NSAttributedString(
                     "Hint_Password".Translate()
-                    , font: myTNBFont.MuseoSans9()
-                    , foregroundColor: myTNBColor.Tomato()
+                    , font: MyTNBFont.MuseoSans9
+                    , foregroundColor: MyTNBColor.Tomato
                     , strokeWidth: 0
                 ),
                 TextAlignment = UITextAlignment.Left
@@ -411,8 +410,8 @@ namespace myTNB.Registration
                 Frame = new CGRect(0, 37, viewPassword.Frame.Width, 14),
                 AttributedText = new NSAttributedString(
                     "Hint_Password".Translate()
-                    , font: myTNBFont.MuseoSans9()
-                    , foregroundColor: myTNBColor.TunaGrey()
+                    , font: MyTNBFont.MuseoSans9
+                    , foregroundColor: MyTNBColor.TunaGrey()
                     , strokeWidth: 0
                 ),
                 TextAlignment = UITextAlignment.Left
@@ -425,11 +424,11 @@ namespace myTNB.Registration
                 Frame = new CGRect(0, 12, viewPassword.Frame.Width - 30, 24),
                 AttributedPlaceholder = new NSAttributedString(
                     "Common_Password".Translate()
-                    , font: myTNBFont.MuseoSans16()
-                    , foregroundColor: myTNBColor.SilverChalice()
+                    , font: MyTNBFont.MuseoSans16
+                    , foregroundColor: MyTNBColor.SilverChalice
                     , strokeWidth: 0
                 ),
-                TextColor = myTNBColor.TunaGrey()
+                TextColor = MyTNBColor.TunaGrey()
             };
             txtFieldPassword.SecureTextEntry = true;
             viewPassword.AddSubview(txtFieldPassword);
@@ -455,7 +454,7 @@ namespace myTNB.Registration
             viewPassword.AddSubview(viewShowPassword);
 
             viewLinePassword = new UIView((new CGRect(0, 36, viewPassword.Frame.Width, 1)));
-            viewLinePassword.BackgroundColor = myTNBColor.PlatinumGrey();
+            viewLinePassword.BackgroundColor = MyTNBColor.PlatinumGrey;
             viewPassword.AddSubview(viewLinePassword);
 
             //Confirm Password
@@ -467,8 +466,8 @@ namespace myTNB.Registration
                 Frame = new CGRect(0, 0, viewConfirmPassword.Frame.Width, 12),
                 AttributedText = new NSAttributedString(
                     "Common_ConfirmPassword".Translate().ToUpper()
-                    , font: myTNBFont.MuseoSans9()
-                    , foregroundColor: myTNBColor.SilverChalice()
+                    , font: MyTNBFont.MuseoSans9
+                    , foregroundColor: MyTNBColor.SilverChalice
                     , strokeWidth: 0
                 ),
                 TextAlignment = UITextAlignment.Left
@@ -476,9 +475,9 @@ namespace myTNB.Registration
             viewConfirmPassword.AddSubview(lblConfirmPasswordTitle);
 
             lblConfirmPasswordError = new UILabel(new CGRect(0, 37, viewConfirmEmail.Frame.Width, 14));
-            lblConfirmPasswordError.Font = myTNBFont.MuseoSans9();
+            lblConfirmPasswordError.Font = MyTNBFont.MuseoSans9;
             lblConfirmPasswordError.TextAlignment = UITextAlignment.Left;
-            lblConfirmPasswordError.TextColor = myTNBColor.Tomato();
+            lblConfirmPasswordError.TextColor = MyTNBColor.Tomato;
 
             viewConfirmPassword.AddSubview(lblConfirmPasswordError);
 
@@ -487,11 +486,11 @@ namespace myTNB.Registration
                 Frame = new CGRect(0, 12, viewConfirmPassword.Frame.Width - 30, 24),
                 AttributedPlaceholder = new NSAttributedString(
                     "Common_ConfirmPassword".Translate()
-                    , font: myTNBFont.MuseoSans16()
-                    , foregroundColor: myTNBColor.SilverChalice()
+                    , font: MyTNBFont.MuseoSans16
+                    , foregroundColor: MyTNBColor.SilverChalice
                     , strokeWidth: 0
                 ),
-                TextColor = myTNBColor.TunaGrey()
+                TextColor = MyTNBColor.TunaGrey()
             };
             txtFieldConfirmPassword.SecureTextEntry = true;
             viewConfirmPassword.AddSubview(txtFieldConfirmPassword);
@@ -510,7 +509,7 @@ namespace myTNB.Registration
             viewConfirmPassword.AddSubview(viewShowConfirmPassword);
 
             viewLineConfirmPassword = new UIView((new CGRect(0, 36, viewConfirmPassword.Frame.Width, 1)));
-            viewLineConfirmPassword.BackgroundColor = myTNBColor.PlatinumGrey();
+            viewLineConfirmPassword.BackgroundColor = MyTNBColor.PlatinumGrey;
             viewConfirmPassword.AddSubview(viewLineConfirmPassword);
 
             //Set keyboard types
@@ -524,13 +523,13 @@ namespace myTNB.Registration
             var attributedString = new NSMutableAttributedString("Registration_RegisterNote".Translate());
             var firstAttributes = new UIStringAttributes
             {
-                ForegroundColor = myTNBColor.TunaGrey(),
-                Font = myTNBFont.MuseoSans12()
+                ForegroundColor = MyTNBColor.TunaGrey(),
+                Font = MyTNBFont.MuseoSans12
             };
             var secondAttributes = new UIStringAttributes
             {
-                ForegroundColor = myTNBColor.PowerBlue(),
-                Font = myTNBFont.MuseoSans12()
+                ForegroundColor = MyTNBColor.PowerBlue,
+                Font = MyTNBFont.MuseoSans12
             };
             attributedString.SetAttributes(firstAttributes.Dictionary, new NSRange(0, 39));
             attributedString.SetAttributes(secondAttributes.Dictionary, new NSRange(40, 60));
@@ -559,9 +558,9 @@ namespace myTNB.Registration
             btnRegister = new UIButton(UIButtonType.Custom);
             btnRegister.Frame = new CGRect(18, DeviceHelper.GetScaledHeight(18), btnRegisterContainer.Frame.Width - 36, 48);
             btnRegister.SetTitle("Common_Register".Translate(), UIControlState.Normal);
-            btnRegister.Font = myTNBFont.MuseoSans16();
+            btnRegister.Font = MyTNBFont.MuseoSans16;
             btnRegister.Layer.CornerRadius = 5.0f;
-            btnRegister.BackgroundColor = myTNBColor.FreshGreen();
+            btnRegister.BackgroundColor = MyTNBColor.FreshGreen;
             btnRegisterContainer.AddSubview(btnRegister);
 
             //Scrollview content size
@@ -612,7 +611,7 @@ namespace myTNB.Registration
             _textFieldHelper.CreateTextFieldLeftView(txtFieldConfirmPassword, "Password");
 
             btnRegister.Enabled = false;
-            btnRegister.BackgroundColor = myTNBColor.SilverChalice();
+            btnRegister.BackgroundColor = MyTNBColor.SilverChalice;
         }
 
         internal void SetVisibility()
@@ -682,7 +681,7 @@ namespace myTNB.Registration
             SetTextFieldEvents(txtFieldName, lblNameTitle, lblNameError
                                , viewLineName, lblNameHint, TNBGlobal.CustomerNamePattern);
             SetTextFieldEvents(txtFieldICNo, lblICNoTitle, lblICNoError
-                               , viewLineICNo, lblICNoHint, IC_NO_PATTERN);
+                               , viewLineICNo, lblICNoHint, TNBGlobal.IC_NO_PATTERN);
             SetTextFieldEvents(txtFieldMobileNo, lblMobileNoTitle, lblMobileNoError
                                , viewLineMobileNo, lblMobileNoHint, MOBILE_NO_PATTERN);
             SetTextFieldEvents(txtFieldEmail, lblEmailTitle, lblEmailError
@@ -736,7 +735,7 @@ namespace myTNB.Registration
                 }
                 lblHint.Hidden = lblError.Hidden ? textField.Text.Length == 0 : true;
                 lblTitle.Hidden = textField.Text.Length == 0;
-                viewLine.BackgroundColor = myTNBColor.PowerBlue();
+                viewLine.BackgroundColor = MyTNBColor.PowerBlue;
                 DisplayEyeIcon(textField);
                 textField.LeftViewMode = UITextFieldViewMode.Never;
             };
@@ -777,8 +776,8 @@ namespace myTNB.Registration
                 DisplayEyeIcon(textField);
                 lblError.Hidden = isValid;
                 lblHint.Hidden = true;
-                viewLine.BackgroundColor = isValid ? myTNBColor.PlatinumGrey() : myTNBColor.Tomato();
-                textField.TextColor = isValid ? myTNBColor.TunaGrey() : myTNBColor.Tomato();
+                viewLine.BackgroundColor = isValid ? MyTNBColor.PlatinumGrey : MyTNBColor.Tomato;
+                textField.TextColor = isValid ? MyTNBColor.TunaGrey() : MyTNBColor.Tomato;
 
                 return true;
             };
@@ -834,7 +833,7 @@ namespace myTNB.Registration
         {
             bool isValidName = _textFieldHelper.ValidateTextField(txtFieldName.Text, TNBGlobal.CustomerNamePattern)
                 && !string.IsNullOrWhiteSpace(txtFieldName.Text);
-            bool isValidICNo = _textFieldHelper.ValidateTextField(txtFieldICNo.Text, IC_NO_PATTERN);
+            bool isValidICNo = _textFieldHelper.ValidateTextField(txtFieldICNo.Text, TNBGlobal.IC_NO_PATTERN);
             bool isValidMobileNo = _textFieldHelper.ValidateTextField(txtFieldMobileNo.Text, MOBILE_NO_PATTERN)
                 && _textFieldHelper.ValidateMobileNumberLength(txtFieldMobileNo.Text);
             bool isValidEmail = _textFieldHelper.ValidateTextField(txtFieldEmail.Text, EMAIL_PATTERN)
@@ -849,7 +848,7 @@ namespace myTNB.Registration
                 && isValidEmail
                 && isValidPassword;
             btnRegister.Enabled = isValid;
-            btnRegister.BackgroundColor = isValid ? myTNBColor.FreshGreen() : myTNBColor.SilverChalice();
+            btnRegister.BackgroundColor = isValid ? MyTNBColor.FreshGreen : MyTNBColor.SilverChalice;
         }
 
         internal void ExecuteSendRegistrationTokenSMSCall()

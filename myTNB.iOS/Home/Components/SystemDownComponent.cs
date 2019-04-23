@@ -72,7 +72,7 @@ namespace myTNB.Dashboard.DashboardComponents
 
             UIStringAttributes linkAttributes = new UIStringAttributes
             {
-                Font = myTNBFont.MuseoSans12_300(),
+                Font = MyTNBFont.MuseoSans12_300,
                 ForegroundColor = UIColor.White,
                 UnderlineStyle = NSUnderlineStyle.Single,
                 BackgroundColor = UIColor.Clear
@@ -89,7 +89,7 @@ namespace myTNB.Dashboard.DashboardComponents
             NSError htmlError = null;
             try
             {
-                NSAttributedString htmlBody = TextHelper.ConvertToHtmlWithFont(bcrmMsg, ref htmlError, myTNBFont.FONTNAME_300, 12f);
+                NSAttributedString htmlBody = TextHelper.ConvertToHtmlWithFont(bcrmMsg, ref htmlError, MyTNBFont.FONTNAME_300, 12f);
                 if (htmlBody != null)
                 {
                     NSMutableAttributedString mutableDowntime = new NSMutableAttributedString(htmlBody);

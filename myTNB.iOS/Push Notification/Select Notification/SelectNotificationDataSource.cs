@@ -33,8 +33,8 @@ namespace myTNB.PushNotification
 
             var cell = tableView.DequeueReusableCell("selectNotificationCell", indexPath);
             cell.TextLabel.Text = _data[indexPath.Row].Title;
-            cell.TextLabel.TextColor = myTNBColor.TunaGrey();
-            cell.TextLabel.Font = myTNBFont.MuseoSans16();
+            cell.TextLabel.TextColor = MyTNBColor.TunaGrey();
+            cell.TextLabel.Font = MyTNBFont.MuseoSans16;
 
             if (indexPath.Row == DataManager.DataManager.SharedInstance.CurrentSelectedNotificationTypeIndex)
             {
@@ -46,7 +46,7 @@ namespace myTNB.PushNotification
             }
 
             UIView viewLine = new UIView(new CGRect(0, cell.Frame.Height - 1, cell.Frame.Width, 1));
-            viewLine.BackgroundColor = myTNBColor.PlatinumGrey();
+            viewLine.BackgroundColor = MyTNBColor.PlatinumGrey;
             cell.AddSubview(viewLine);
 
             cell.SelectionStyle = UITableViewCellSelectionStyle.None;

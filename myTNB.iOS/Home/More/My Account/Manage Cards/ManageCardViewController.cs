@@ -61,8 +61,8 @@ namespace myTNB
         internal void SetSubviews()
         {
             _lblTitle = new UILabel(new CGRect(18, DeviceHelper.IsIphoneXUpResolution() ? 104 : 80, View.Frame.Width - 36, 36));
-            _lblTitle.Font = myTNBFont.MuseoSans14_300();
-            _lblTitle.TextColor = myTNBColor.TunaGrey();
+            _lblTitle.Font = MyTNBFont.MuseoSans14_300;
+            _lblTitle.TextColor = MyTNBColor.TunaGrey();
             _lblTitle.Lines = 0;
             _lblTitle.LineBreakMode = UILineBreakMode.WordWrap;
             _lblTitle.Text = "Manage_AddCardMessage".Translate();
@@ -74,14 +74,14 @@ namespace myTNB
             if (_viewNotificationMsg == null)
             {
                 _viewNotificationMsg = new UIView(new CGRect(18, 32, View.Frame.Width - 36, 64));
-                _viewNotificationMsg.BackgroundColor = myTNBColor.SunGlow();
+                _viewNotificationMsg.BackgroundColor = MyTNBColor.SunGlow;
                 _viewNotificationMsg.Layer.CornerRadius = 2.0f;
                 _viewNotificationMsg.Hidden = true;
 
                 _lblNotificationDetails = new UILabel(new CGRect(16, 16, _viewNotificationMsg.Frame.Width - 32, 32));
                 _lblNotificationDetails.TextAlignment = UITextAlignment.Left;
-                _lblNotificationDetails.Font = myTNBFont.MuseoSans12();
-                _lblNotificationDetails.TextColor = myTNBColor.TunaGrey();
+                _lblNotificationDetails.Font = MyTNBFont.MuseoSans12;
+                _lblNotificationDetails.TextColor = MyTNBColor.TunaGrey();
                 _lblNotificationDetails.Text = TNBGlobal.EMPTY_ADDRESS;
                 _lblNotificationDetails.Lines = 0;
                 _lblNotificationDetails.LineBreakMode = UILineBreakMode.WordWrap;
@@ -174,8 +174,8 @@ namespace myTNB
                     _lblNoCards = new UILabel(new CGRect(44, 344, View.Frame.Width - 88, 60));
                     _lblNoCards.TextAlignment = UITextAlignment.Center;
                     _lblNoCards.Text = "Manage_NoSavedCards".Translate();
-                    _lblNoCards.Font = myTNBFont.MuseoSans12_300();
-                    _lblNoCards.TextColor = myTNBColor.SilverChalice();
+                    _lblNoCards.Font = MyTNBFont.MuseoSans12_300;
+                    _lblNoCards.TextColor = MyTNBColor.SilverChalice;
                     _lblNoCards.Lines = 3;
                     View.AddSubviews(new UIView[] { _imgNoCards, _lblNoCards });
                 }
@@ -198,7 +198,7 @@ namespace myTNB
             {
                 ExecuteRemoveAccount(index, lastDigits);
             }));
-            alert.AddAction(UIAlertAction.Create("Common_Cancel".Translate(), UIAlertActionStyle.Cancel, (obj) =>{}));
+            alert.AddAction(UIAlertAction.Create("Common_Cancel".Translate(), UIAlertActionStyle.Cancel, (obj) => { }));
             PresentViewController(alert, animated: true, completionHandler: null);
         }
 

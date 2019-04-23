@@ -56,9 +56,9 @@ namespace myTNB.Payment.SelectBills
             }));
 
             var isValidAmount = amountStatus.ContainsKey(acctNumber) ? amountStatus[acctNumber] : true;
-            cell._txtFieldAmount.TextColor = isValidAmount ? myTNBColor.TunaGrey() : myTNBColor.Tomato();
+            cell._txtFieldAmount.TextColor = isValidAmount ? MyTNBColor.TunaGrey() : MyTNBColor.Tomato;
             cell._lblAmountError.Hidden = isValidAmount;
-            cell._viewLineAmount.BackgroundColor = isValidAmount ? myTNBColor.PlatinumGrey() : myTNBColor.Tomato();
+            cell._viewLineAmount.BackgroundColor = isValidAmount ? MyTNBColor.PlatinumGrey : MyTNBColor.Tomato;
             SetTextField(cell._txtFieldAmount, cell._lblAmountError, cell);
             return cell;
         }
@@ -115,7 +115,7 @@ namespace myTNB.Payment.SelectBills
             };
             textField.EditingDidBegin += (sender, e) =>
             {
-                cell._viewLineAmount.BackgroundColor = myTNBColor.PowerBlue();
+                cell._viewLineAmount.BackgroundColor = MyTNBColor.PowerBlue;
                 int index = _accounts.FindIndex(x => x.accNum.Equals(cell._lblAccountNo.Text));
                 ShowErrorMessage(error, index, cell);
             };
@@ -225,13 +225,13 @@ namespace myTNB.Payment.SelectBills
             UIView viewLine = cell.ViewWithTag(0).ViewWithTag(1) as UIView;
             if (isError)
             {
-                cell._txtFieldAmount.TextColor = myTNBColor.Tomato();
-                viewLine.BackgroundColor = myTNBColor.Tomato();
+                cell._txtFieldAmount.TextColor = MyTNBColor.Tomato;
+                viewLine.BackgroundColor = MyTNBColor.Tomato;
             }
             else
             {
-                cell._txtFieldAmount.TextColor = myTNBColor.TunaGrey();
-                viewLine.BackgroundColor = (endEditing) ? myTNBColor.PlatinumGrey() : myTNBColor.PowerBlue();
+                cell._txtFieldAmount.TextColor = MyTNBColor.TunaGrey();
+                viewLine.BackgroundColor = (endEditing) ? MyTNBColor.PlatinumGrey : MyTNBColor.PowerBlue;
             }
         }
     }

@@ -41,8 +41,8 @@ namespace myTNB.Home.Feedback.FeedbackEntry
 
         void SetupSuperViewBackground()
         {
-            var startColor = myTNBColor.GradientPurpleDarkElement();
-            var endColor = myTNBColor.GradientPurpleLightElement();
+            var startColor = MyTNBColor.GradientPurpleDarkElement;
+            var endColor = MyTNBColor.GradientPurpleLightElement;
             CAGradientLayer gradientLayer = new CAGradientLayer
             {
                 Colors = new[] { startColor.CGColor, endColor.CGColor },
@@ -67,8 +67,8 @@ namespace myTNB.Home.Feedback.FeedbackEntry
 
             UILabel lblFeedback = new UILabel(new CGRect(0, 80, viewContainer.Frame.Width, 18))
             {
-                Font = IsSuccess ? myTNBFont.MuseoSans16_500() : myTNBFont.MuseoSans16(),
-                TextColor = myTNBColor.PowerBlue(),
+                Font = IsSuccess ? MyTNBFont.MuseoSans16_500 : MyTNBFont.MuseoSans16,
+                TextColor = MyTNBColor.PowerBlue,
                 Text = IsSuccess ? "Feedback_Successful".Translate() : "Feedback_Unsuccessful".Translate(),
                 TextAlignment = UITextAlignment.Center
             };
@@ -76,8 +76,8 @@ namespace myTNB.Home.Feedback.FeedbackEntry
             {
                 UILabel lblThankYou = new UILabel(new CGRect(0, 98, viewContainer.Frame.Width, 16))
                 {
-                    Font = myTNBFont.MuseoSans12_300(),
-                    TextColor = myTNBColor.TunaGrey(),
+                    Font = MyTNBFont.MuseoSans12_300,
+                    TextColor = MyTNBColor.TunaGrey(),
                     Text = "Feedback_SuccessfulMessage".Translate(),
                     TextAlignment = UITextAlignment.Center
                 };
@@ -86,7 +86,7 @@ namespace myTNB.Home.Feedback.FeedbackEntry
 
             UIView viewLine = new UIView((new CGRect(14, IsSuccess ? 130 : 114, viewContainer.Frame.Width - 28, 1)))
             {
-                BackgroundColor = myTNBColor.LightGrayBG()
+                BackgroundColor = MyTNBColor.LightGrayBG
             };
 
             viewContainer.AddSubviews(new UIView[] { imgViewStatus, lblFeedback, viewLine });
@@ -135,8 +135,8 @@ namespace myTNB.Home.Feedback.FeedbackEntry
             var lblFeedbackDateTitleWidth = ((viewContainer.Frame.Width - 28) * 2) / 3;
             var lblFeedbackDateTitle = new UILabel(new CGRect(14, 147, lblFeedbackDateTitleWidth, 14))
             {
-                Font = myTNBFont.MuseoSans9_300(),
-                TextColor = myTNBColor.SilverChalice(),
+                Font = MyTNBFont.MuseoSans9_300,
+                TextColor = MyTNBColor.SilverChalice,
                 Text = "Feedback_DateTimeTitle".Translate().ToUpper(),
                 TextAlignment = UITextAlignment.Left
             };
@@ -144,8 +144,8 @@ namespace myTNB.Home.Feedback.FeedbackEntry
             var lblFeedbackIDTitleWidth = (viewContainer.Frame.Width - 28) / 3;
             var lblFeedbackIDTitle = new UILabel(new CGRect(lblFeedbackDateTitleWidth + 14, 147, lblFeedbackIDTitleWidth, 14))
             {
-                Font = myTNBFont.MuseoSans9_300(),
-                TextColor = myTNBColor.SilverChalice(),
+                Font = MyTNBFont.MuseoSans9_300,
+                TextColor = MyTNBColor.SilverChalice,
                 Text = "Feedback_ID".Translate().ToUpper(),
                 TextAlignment = UITextAlignment.Right
             };
@@ -153,16 +153,16 @@ namespace myTNB.Home.Feedback.FeedbackEntry
             string createdDate = GetDate();
             UILabel lblFeedbackDateValue = new UILabel(new CGRect(14, 161, lblFeedbackDateTitleWidth, 18))
             {
-                Font = myTNBFont.MuseoSans14_300(),
-                TextColor = myTNBColor.TunaGrey(),
+                Font = MyTNBFont.MuseoSans14_300,
+                TextColor = MyTNBColor.TunaGrey(),
                 Text = createdDate,
                 TextAlignment = UITextAlignment.Left
             };
 
             UILabel _lblFeedbackIDValue = new UILabel(new CGRect(lblFeedbackDateTitleWidth + 14, 161, lblFeedbackIDTitleWidth, 18))
             {
-                Font = myTNBFont.MuseoSans14_300(),
-                TextColor = myTNBColor.TunaGrey(),
+                Font = MyTNBFont.MuseoSans14_300,
+                TextColor = MyTNBColor.TunaGrey(),
                 Text = ServiceRequestNumber ?? TNBGlobal.EMPTY_DATE,
                 TextAlignment = UITextAlignment.Right
             };
@@ -173,9 +173,9 @@ namespace myTNB.Home.Feedback.FeedbackEntry
                 Frame = new CGRect(18, View.Frame.Height - DeviceHelper.GetScaledHeight(64), View.Frame.Width - 36, DeviceHelper.GetScaledHeight(48))
             };
             btnBackToFeedback.SetTitle("Feedback_BackToFeedback".Translate(), UIControlState.Normal);
-            btnBackToFeedback.Font = myTNBFont.MuseoSans16_500();
+            btnBackToFeedback.Font = MyTNBFont.MuseoSans16_500;
             btnBackToFeedback.Layer.CornerRadius = 5.0f;
-            btnBackToFeedback.BackgroundColor = myTNBColor.FreshGreen();
+            btnBackToFeedback.BackgroundColor = MyTNBColor.FreshGreen;
             btnBackToFeedback.TouchUpInside += (sender, e) =>
             {
                 DismissViewController(true, null);
@@ -191,14 +191,14 @@ namespace myTNB.Home.Feedback.FeedbackEntry
         {
             viewContainer.AddSubviews(new UIView[] { new UILabel(new CGRect(0, 131, viewContainer.Frame.Width, 16))
                 {
-                    Font = myTNBFont.MuseoSans12(),
-                    TextColor = myTNBColor.TunaGrey(),
+                    Font = MyTNBFont.MuseoSans12,
+                    TextColor = MyTNBColor.TunaGrey(),
                     Text = "Feedback_UnsuccessfulMessage".Translate(),
                     TextAlignment = UITextAlignment.Center
                 }, new UILabel(new CGRect(0, 150, viewContainer.Frame.Width, 16))
                 {
-                    Font = myTNBFont.MuseoSans12(),
-                    TextColor = myTNBColor.TunaGrey(),
+                    Font = MyTNBFont.MuseoSans12,
+                    TextColor = MyTNBColor.TunaGrey(),
                     Text = "Error_DefaultMessage".Translate(),
                     TextAlignment = UITextAlignment.Center
                 }
@@ -225,9 +225,9 @@ namespace myTNB.Home.Feedback.FeedbackEntry
                 Frame = new CGRect(18, View.Frame.Height - 64, View.Frame.Width - 36, 48)
             };
             btnTryAgain.SetTitle("Common_TryAgain".Translate(), UIControlState.Normal);
-            btnTryAgain.Font = myTNBFont.MuseoSans16();
+            btnTryAgain.Font = MyTNBFont.MuseoSans16;
             btnTryAgain.Layer.CornerRadius = 5.0f;
-            btnTryAgain.BackgroundColor = myTNBColor.FreshGreen();
+            btnTryAgain.BackgroundColor = MyTNBColor.FreshGreen;
             btnTryAgain.TouchUpInside += (sender, e) =>
             {
                 this.NavigationController.NavigationBarHidden = false;

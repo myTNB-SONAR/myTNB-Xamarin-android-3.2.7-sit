@@ -31,8 +31,8 @@ namespace myTNB.Dashboard.DashboardComponents
             greetingMessage = new UILabel
             {
                 Frame = new CGRect(0, topMargin, parentView.Frame.Width, 50),
-                Font = myTNBFont.MuseoSans16_500(),
-                TextColor = myTNBColor.SunGlow(),
+                Font = MyTNBFont.MuseoSans16_500,
+                TextColor = MyTNBColor.SunGlow,
                 TextAlignment = UITextAlignment.Center,
                 Lines = 0,
             };
@@ -51,7 +51,7 @@ namespace myTNB.Dashboard.DashboardComponents
                 _lblMsg = new UILabel
                 {
                     Frame = new CGRect(25, greetingImage.Frame.GetMaxY() + 10f, parentView.Frame.Width - 50, 50),
-                    Font = myTNBFont.MuseoSans12_300(),
+                    Font = MyTNBFont.MuseoSans12_300,
                     TextColor = UIColor.White,
                     TextAlignment = UITextAlignment.Center,
                     Lines = 0,
@@ -68,7 +68,7 @@ namespace myTNB.Dashboard.DashboardComponents
                 _btnRefresh.BackgroundColor = UIColor.Clear;
                 _btnRefresh.Layer.BorderWidth = 1;
                 _btnRefresh.SetTitle("Common_Refresh".Translate(), UIControlState.Normal);
-                _btnRefresh.Font = myTNBFont.MuseoSans18_300();
+                _btnRefresh.Font = MyTNBFont.MuseoSans18_300;
                 _btnRefresh.SetTitleColor(UIColor.White, UIControlState.Normal);
                 _btnRefresh.TouchUpInside += (sender, e) =>
                 {

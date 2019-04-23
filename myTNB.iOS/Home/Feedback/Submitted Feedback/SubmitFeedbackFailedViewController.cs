@@ -27,8 +27,8 @@ namespace myTNB
 
         internal void SetupSuperViewBackground()
         {
-            var startColor = myTNBColor.GradientPurpleDarkElement();
-            var endColor = myTNBColor.GradientPurpleLightElement();
+            var startColor = MyTNBColor.GradientPurpleDarkElement;
+            var endColor = MyTNBColor.GradientPurpleLightElement;
             CAGradientLayer gradientLayer = new CAGradientLayer
             {
                 Colors = new[] { startColor.CGColor, endColor.CGColor },
@@ -55,8 +55,8 @@ namespace myTNB
 
             UILabel lblFeedback = new UILabel(new CGRect(0, 80, viewContainer.Frame.Width, 18))
             {
-                Font = myTNBFont.MuseoSans16(),
-                TextColor = myTNBColor.PowerBlue(),
+                Font = MyTNBFont.MuseoSans16,
+                TextColor = MyTNBColor.PowerBlue,
                 Text = "Feedback_Unsuccessful".Translate(),
                 TextAlignment = UITextAlignment.Center
             };
@@ -64,14 +64,14 @@ namespace myTNB
 
             UIView viewLine = new UIView((new CGRect(14, 114, viewContainer.Frame.Width - 28, 1)))
             {
-                BackgroundColor = myTNBColor.LightGrayBG()
+                BackgroundColor = MyTNBColor.LightGrayBG
             };
             viewContainer.AddSubview(viewLine);
 
             UILabel lblDetail = new UILabel(new CGRect(0, 131, viewContainer.Frame.Width, 16))
             {
-                Font = myTNBFont.MuseoSans12(),
-                TextColor = myTNBColor.TunaGrey(),
+                Font = MyTNBFont.MuseoSans12,
+                TextColor = MyTNBColor.TunaGrey(),
                 Text = "Feedback_UnsuccessfulMessage".Translate(),
                 TextAlignment = UITextAlignment.Center
             };
@@ -79,8 +79,8 @@ namespace myTNB
 
             UILabel lblSubDetail = new UILabel(new CGRect(0, 150, viewContainer.Frame.Width, 16))
             {
-                Font = myTNBFont.MuseoSans12(),
-                TextColor = myTNBColor.TunaGrey(),
+                Font = MyTNBFont.MuseoSans12,
+                TextColor = MyTNBColor.TunaGrey(),
                 Text = "Error_DefaultMessage".Translate(),
                 TextAlignment = UITextAlignment.Center
             };
@@ -104,9 +104,9 @@ namespace myTNB
                 Frame = new CGRect(18, View.Frame.Height - 64, View.Frame.Width - 36, 48)
             };
             _btnTryAgain.SetTitle("Common_TryAgain".Translate(), UIControlState.Normal);
-            _btnTryAgain.Font = myTNBFont.MuseoSans16();
+            _btnTryAgain.Font = MyTNBFont.MuseoSans16;
             _btnTryAgain.Layer.CornerRadius = 5.0f;
-            _btnTryAgain.BackgroundColor = myTNBColor.FreshGreen();
+            _btnTryAgain.BackgroundColor = MyTNBColor.FreshGreen;
             View.AddSubview(_btnTryAgain);
 
         }

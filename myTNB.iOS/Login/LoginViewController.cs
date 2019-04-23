@@ -89,8 +89,8 @@ namespace myTNB
             lblEmailTitle = new UILabel(new CGRect(0, 0, viewEmail.Frame.Width, 12))
             {
                 TextAlignment = UITextAlignment.Left,
-                Font = myTNBFont.MuseoSans9_300(),
-                TextColor = myTNBColor.LightGray(),
+                Font = MyTNBFont.MuseoSans9_300,
+                TextColor = MyTNBColor.LightGray,
                 Text = "Common_Email".Translate().ToUpper()
             };
 
@@ -99,14 +99,14 @@ namespace myTNB
                 Frame = new CGRect(0, 12, viewEmail.Frame.Width, 24),
                 AttributedPlaceholder = new NSAttributedString(
                     "Common_Email".Translate(),
-                    font: myTNBFont.MuseoSans18_300(),
-                    foregroundColor: myTNBColor.LightGray(),
+                    font: MyTNBFont.MuseoSans18_300,
+                    foregroundColor: MyTNBColor.LightGray,
                     strokeWidth: 0
                 ),
                 TextColor = UIColor.White
             };
             txtFieldEmail.KeyboardType = UIKeyboardType.EmailAddress;
-            txtFieldEmail.TintColor = myTNBColor.SunGlow();
+            txtFieldEmail.TintColor = MyTNBColor.SunGlow;
             _textFieldHelper.CreateTextFieldLeftView(txtFieldEmail, "email_white");
             _textFieldHelper.SetKeyboard(txtFieldEmail);
 
@@ -120,8 +120,8 @@ namespace myTNB
             lblPasswordTitle = new UILabel(new CGRect(0, 0, viewPassword.Frame.Width, 12))
             {
                 TextAlignment = UITextAlignment.Left,
-                Font = myTNBFont.MuseoSans9_300(),
-                TextColor = myTNBColor.LightGray(),
+                Font = MyTNBFont.MuseoSans9_300,
+                TextColor = MyTNBColor.LightGray,
                 Text = "Common_Password".Translate().ToUpper()
             };
 
@@ -130,14 +130,14 @@ namespace myTNB
                 Frame = new CGRect(0, 12, viewPassword.Frame.Width - 30, 24),
                 AttributedPlaceholder = new NSAttributedString(
                     "Common_Password".Translate(),
-                    font: myTNBFont.MuseoSans18_300(),
-                    foregroundColor: myTNBColor.LightGray(),
+                    font: MyTNBFont.MuseoSans18_300,
+                    foregroundColor: MyTNBColor.LightGray,
                     strokeWidth: 0
                 ),
                 TextColor = UIColor.White
             };
             txtFieldPassword.KeyboardType = UIKeyboardType.Default;
-            txtFieldPassword.TintColor = myTNBColor.SunGlow();
+            txtFieldPassword.TintColor = MyTNBColor.SunGlow;
             txtFieldPassword.SecureTextEntry = true;
             _textFieldHelper.SetKeyboard(txtFieldPassword);
             _textFieldHelper.CreateTextFieldLeftView(txtFieldPassword, "password_white");
@@ -151,7 +151,7 @@ namespace myTNB
             UILabel lblForgetPassword = new UILabel(new CGRect(0, 0, viewForgotPassword.Frame.Width, 16))
             {
                 TextAlignment = UITextAlignment.Right,
-                Font = myTNBFont.MuseoSans12_500(),
+                Font = MyTNBFont.MuseoSans12_500,
                 TextColor = UIColor.White,
                 Text = "Login_ForgotPassword".Translate()
             };
@@ -199,7 +199,7 @@ namespace myTNB
 
             lblRememberMe = new UILabel(new CGRect(viewCheckBox.Frame.Width + 6, 4, viewRememberMe.Frame.Width, 16))
             {
-                Font = myTNBFont.MuseoSans12_500(),
+                Font = MyTNBFont.MuseoSans12_500,
                 TextColor = UIColor.White,
                 Text = "Login_RememberMe".Translate()
             };
@@ -227,8 +227,8 @@ namespace myTNB
 
         void SetupSuperViewBackground()
         {
-            var startColor = myTNBColor.GradientPurpleDarkElement();
-            var endColor = myTNBColor.GradientPurpleLightElement();
+            var startColor = MyTNBColor.GradientPurpleDarkElement;
+            var endColor = MyTNBColor.GradientPurpleLightElement;
             var gradientLayer = new CAGradientLayer();
             gradientLayer.Colors = new[] { startColor.CGColor, endColor.CGColor };
             gradientLayer.Locations = new NSNumber[] { 0, 1 };
@@ -262,7 +262,7 @@ namespace myTNB
             txtFieldEmail.EditingDidBegin += (sender, e) =>
             {
                 lblEmailTitle.Hidden = txtFieldEmail.Text.Length == 0;
-                viewLineEmail.BackgroundColor = myTNBColor.SunGlow();
+                viewLineEmail.BackgroundColor = MyTNBColor.SunGlow;
                 txtFieldEmail.LeftViewMode = UITextFieldViewMode.Never;
             };
 
@@ -303,7 +303,7 @@ namespace myTNB
             {
                 lblPasswordTitle.Hidden = txtFieldPassword.Text.Length == 0;
                 viewShowPassword.Hidden = txtFieldPassword.Text.Length == 0;
-                viewLinePassword.BackgroundColor = myTNBColor.SunGlow();
+                viewLinePassword.BackgroundColor = MyTNBColor.SunGlow;
                 txtFieldPassword.LeftViewMode = UITextFieldViewMode.Never;
             };
 
@@ -599,17 +599,17 @@ namespace myTNB
         void SetupFonts()
         {
             //Labels
-            lblWelcome.Font = myTNBFont.MuseoSans26_500();
+            lblWelcome.Font = MyTNBFont.MuseoSans26_500;
             lblWelcome.Text = "Login_Welcome".Translate();
-            lblAccountLogin.Font = myTNBFont.MuseoSans18_300();
+            lblAccountLogin.Font = MyTNBFont.MuseoSans18_300;
             lblAccountLogin.Text = "Login_AccountLogin".Translate();
-            lblNoAccount.Font = myTNBFont.MuseoSans12_300();
+            lblNoAccount.Font = MyTNBFont.MuseoSans12_300;
             lblNoAccount.Text = "Login_NoTNBAccount".Translate();
 
             //Buttons
-            btnRegister.TitleLabel.Font = myTNBFont.MuseoSans12_500();
+            btnRegister.TitleLabel.Font = MyTNBFont.MuseoSans12_500;
             btnRegister.SetTitle("Login_RegisterForAccount".Translate(), UIControlState.Normal);
-            btnLogin.TitleLabel.Font = myTNBFont.MuseoSans16_500();
+            btnLogin.TitleLabel.Font = MyTNBFont.MuseoSans16_500;
             btnLogin.SetTitle("Login_Login".Translate(), UIControlState.Normal);
         }
 

@@ -138,7 +138,7 @@ namespace myTNB.Registration.CustomerAccounts
         {
             UIView view = new UIView(new CGRect(0, 0, tableView.Frame.Width, 100))
             {
-                BackgroundColor = myTNBColor.SectionGrey()
+                BackgroundColor = MyTNBColor.SectionGrey
             };
 
             var lblSectionTitle = new UILabel(new CGRect(18, 0, tableView.Frame.Width - 36, 40));
@@ -157,8 +157,8 @@ namespace myTNB.Registration.CustomerAccounts
 
                     var txtViewSubDetails = new UITextView(new CGRect(14, 36, tableView.Frame.Width - 30, 60))
                     {
-                        Font = myTNBFont.MuseoSans14_300(),
-                        TextColor = myTNBColor.TunaGrey(),
+                        Font = MyTNBFont.MuseoSans14_300,
+                        TextColor = MyTNBColor.TunaGrey(),
                         UserInteractionEnabled = false,
                         BackgroundColor = UIColor.Clear,
                         Text = "Registration_NoAccountsFoundMessage".Translate()
@@ -188,8 +188,8 @@ namespace myTNB.Registration.CustomerAccounts
                 }
             }
 
-            lblSectionTitle.TextColor = myTNBColor.PowerBlue();
-            lblSectionTitle.Font = myTNBFont.MuseoSans16_500();
+            lblSectionTitle.TextColor = MyTNBColor.PowerBlue;
+            lblSectionTitle.Font = MyTNBFont.MuseoSans16_500;
             lblSectionTitle.Lines = 0;
             lblSectionTitle.LineBreakMode = UILineBreakMode.WordWrap;
             view.AddSubview(lblSectionTitle);
@@ -203,7 +203,7 @@ namespace myTNB.Registration.CustomerAccounts
             CustomerAccountRecordModel acount = new CustomerAccountRecordModel();
 
             var cell = tableView.DequeueReusableCell("accountCell", indexPath) as AccountRecordsTableViewCell;
-            cell.SeparatorView.BackgroundColor = myTNBColor.SectionGrey();
+            cell.SeparatorView.BackgroundColor = MyTNBColor.SectionGrey;
 
 
             if (indexPath.Section == 0)
@@ -211,9 +211,9 @@ namespace myTNB.Registration.CustomerAccounts
                 if (_linkedAccounts != null && _linkedAccounts?.Count > 0 && _localAccounts?.Count >= 0)
                 {
                     linkedAcount = _linkedAccounts[indexPath.Row];
-                    cell.AccountNumber = linkedAcount.accNum != null ? linkedAcount.accNum : string.Empty;
-                    cell.Address = linkedAcount.accountStAddress != null ? linkedAcount.accountStAddress : string.Empty;
-                    cell.NicknameTextField.Text = linkedAcount.accDesc != null ? linkedAcount.accDesc : string.Empty;
+                    cell.AccountNumber = linkedAcount?.accNum ?? string.Empty;
+                    cell.Address = linkedAcount?.accountStAddress ?? string.Empty;
+                    cell.NicknameTextField.Text = linkedAcount?.accDesc ?? string.Empty;
                     cell.DeleteButton.RemoveTarget(null, null, UIControlEvent.TouchUpInside);
 
                     acount = linkedAcount;
@@ -222,9 +222,9 @@ namespace myTNB.Registration.CustomerAccounts
                 if (_localAccounts != null && _localAccounts?.Count > 0 && _linkedAccounts?.Count == 0)
                 {
                     localAcount = _localAccounts[indexPath.Row];
-                    cell.AccountNumber = localAcount.accNum != null ? localAcount.accNum : string.Empty;
-                    cell.Address = localAcount.accountStAddress != null ? localAcount.accountStAddress : string.Empty;
-                    cell.NicknameTextField.Text = localAcount.accountNickName != null ? localAcount.accountNickName : string.Empty;
+                    cell.AccountNumber = localAcount?.accNum ?? string.Empty;
+                    cell.Address = localAcount?.accountStAddress ?? string.Empty;
+                    cell.NicknameTextField.Text = localAcount?.accountNickName ?? string.Empty;
                     cell.DeleteButton.RemoveTarget(null, null, UIControlEvent.TouchUpInside);
 
                     acount = localAcount;
@@ -237,9 +237,9 @@ namespace myTNB.Registration.CustomerAccounts
                 if (_localAccounts != null && _localAccounts?.Count > 0)
                 {
                     localAcount = _localAccounts[indexPath.Row];
-                    cell.AccountNumber = localAcount.accNum != null ? localAcount.accNum : string.Empty;
-                    cell.Address = localAcount.accountStAddress != null ? localAcount.accountStAddress : string.Empty;
-                    cell.NicknameTextField.Text = localAcount.accDesc != null ? localAcount.accDesc : string.Empty;
+                    cell.AccountNumber = localAcount?.accNum ?? string.Empty;
+                    cell.Address = localAcount?.accountStAddress ?? string.Empty;
+                    cell.NicknameTextField.Text = localAcount?.accDesc ?? string.Empty;
                     cell.DeleteButton.RemoveTarget(null, null, UIControlEvent.TouchUpInside);
                     acount = localAcount;
                 }
@@ -248,8 +248,8 @@ namespace myTNB.Registration.CustomerAccounts
 
             cell.DeleteButton.TouchUpInside += (object sender, EventArgs e) =>
             {
-                var nickName = acount.accDesc != null ? acount.accDesc : string.Empty;
-                var accountNumber = acount.accNum != null ? acount.accNum : string.Empty;
+                var nickName = acount?.accDesc ?? string.Empty;
+                var accountNumber = acount?.accNum ?? string.Empty;
                 var okCancelAlertController = UIAlertController.Create("Registration_RemoveAccountTitle".Translate()
                     , string.Format("Registration_RemoveAccountMessage".Translate(), nickName, accountNumber)
                     , UIAlertControllerStyle.Alert);
@@ -268,10 +268,10 @@ namespace myTNB.Registration.CustomerAccounts
             title.Hidden = string.IsNullOrEmpty(txtFieldNickname.Text)
                             && string.IsNullOrWhiteSpace(txtFieldNickname.Text);
             error.Hidden = true;
-            line.BackgroundColor = myTNBColor.PlatinumGrey();
-            txtFieldNickname.TextColor = myTNBColor.TunaGrey();
+            line.BackgroundColor = MyTNBColor.PlatinumGrey;
+            txtFieldNickname.TextColor = MyTNBColor.TunaGrey();
             error.Text = "Hint_Nickname".Translate();
-            error.TextColor = myTNBColor.SilverChalice();
+            error.TextColor = MyTNBColor.SilverChalice;
             SetTextField(txtFieldNickname, title, error, line, cell);
 
             cell.SelectionStyle = UITableViewCellSelectionStyle.None;
@@ -342,9 +342,9 @@ namespace myTNB.Registration.CustomerAccounts
                 error.Hidden = isValid;
                 error.Text = isValid ? "Hint_Nickname".Translate()
                     : (!isFormatValid ? "Invalid_Characters".Translate() : "Invalid_AccountNicknameInUse".Translate());
-                error.TextColor = isValid ? myTNBColor.TunaGrey() : myTNBColor.Tomato();
-                line.BackgroundColor = isValid ? myTNBColor.PlatinumGrey() : myTNBColor.Tomato();
-                textField.TextColor = isValid ? myTNBColor.TunaGrey() : myTNBColor.Tomato();
+                error.TextColor = isValid ? MyTNBColor.TunaGrey() : MyTNBColor.Tomato;
+                line.BackgroundColor = isValid ? MyTNBColor.PlatinumGrey : MyTNBColor.Tomato;
+                textField.TextColor = isValid ? MyTNBColor.TunaGrey() : MyTNBColor.Tomato;
                 return true;
             };
             textField.ShouldReturn = (sender) =>
@@ -356,7 +356,7 @@ namespace myTNB.Registration.CustomerAccounts
             {
                 title.Hidden = false;
                 error.Hidden = false;
-                line.BackgroundColor = myTNBColor.PowerBlue();
+                line.BackgroundColor = MyTNBColor.PowerBlue;
             };
             textField.EditingDidEnd += (sender, e) =>
             {

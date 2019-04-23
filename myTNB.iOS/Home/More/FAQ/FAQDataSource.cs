@@ -39,13 +39,13 @@ namespace myTNB.Home.More.FAQ
         public override UIView GetViewForHeader(UITableView tableView, nint section)
         {
             string question = _isSiteCoreContent ? _siteCoreFaqList[(int)section].Question : _faqList[(int)section].title;
-            CGSize newSize = GetLabelSize(question, myTNBFont.MuseoSans16());
+            CGSize newSize = GetLabelSize(question, MyTNBFont.MuseoSans16);
             UIView view = new UIView(new CGRect(0, 0, tableView.Frame.Width, newSize.Height + 32));
-            view.BackgroundColor = myTNBColor.SectionGrey();
+            view.BackgroundColor = MyTNBColor.SectionGrey;
             UILabel lblSectionTitle = new UILabel(new CGRect(18, 16, tableView.Frame.Width - 36, newSize.Height));
             lblSectionTitle.Text = question;
-            lblSectionTitle.Font = myTNBFont.MuseoSans16();
-            lblSectionTitle.TextColor = myTNBColor.PowerBlue();
+            lblSectionTitle.Font = MyTNBFont.MuseoSans16;
+            lblSectionTitle.TextColor = MyTNBColor.PowerBlue;
             lblSectionTitle.Lines = 0;
             lblSectionTitle.LineBreakMode = UILineBreakMode.WordWrap;
             lblSectionTitle.TextAlignment = UITextAlignment.Left;
@@ -56,7 +56,7 @@ namespace myTNB.Home.More.FAQ
         public override UITableViewCell GetCell(UITableView tableView, NSIndexPath indexPath)
         {
             string answer = _isSiteCoreContent ? _siteCoreFaqList[indexPath.Section].Answer : _faqList[indexPath.Section].details;
-            CGSize newSize = GetLabelSize(answer, myTNBFont.MuseoSans14());
+            CGSize newSize = GetLabelSize(answer, MyTNBFont.MuseoSans14);
             nfloat cellWidth = UIApplication.SharedApplication.KeyWindow.Frame.Width;
             var cell = tableView.DequeueReusableCell("FAQViewCell", indexPath) as FAQViewCell;
 
@@ -74,16 +74,16 @@ namespace myTNB.Home.More.FAQ
 
             UIStringAttributes answerAttributes = new UIStringAttributes
             {
-                Font = myTNBFont.MuseoSans14(),
-                ForegroundColor = myTNBColor.TunaGrey()
+                Font = MyTNBFont.MuseoSans14,
+                ForegroundColor = MyTNBColor.TunaGrey()
             };
 
             UIStringAttributes linkAttributes = new UIStringAttributes
             {
-                ForegroundColor = myTNBColor.PowerBlue(),
-                Font = myTNBFont.MuseoSans14(),
+                ForegroundColor = MyTNBColor.PowerBlue,
+                Font = MyTNBFont.MuseoSans14,
                 UnderlineStyle = NSUnderlineStyle.Single,
-                UnderlineColor = myTNBColor.PowerBlue()
+                UnderlineColor = MyTNBColor.PowerBlue
             };
 
             mutableHTMLAnswer.AddAttributes(answerAttributes, new NSRange(0, htmlAnswerPeriod.Length));
@@ -111,8 +111,8 @@ namespace myTNB.Home.More.FAQ
         public override nfloat GetHeightForHeader(UITableView tableView, nint section)
         {
             return (_isSiteCoreContent
-                    ? GetLabelSize(_siteCoreFaqList[(int)section].Question, myTNBFont.MuseoSans16()).Height
-                    : GetLabelSize(_faqList[(int)section].title, myTNBFont.MuseoSans16()).Height) + 32;
+                    ? GetLabelSize(_siteCoreFaqList[(int)section].Question, MyTNBFont.MuseoSans16).Height
+                    : GetLabelSize(_faqList[(int)section].title, MyTNBFont.MuseoSans16).Height) + 32;
         }
 
         public override nfloat GetHeightForRow(UITableView tableView, NSIndexPath indexPath)
@@ -136,16 +136,16 @@ namespace myTNB.Home.More.FAQ
 
             UIStringAttributes answerAttributes = new UIStringAttributes
             {
-                Font = myTNBFont.MuseoSans14(),
-                ForegroundColor = myTNBColor.TunaGrey()
+                Font = MyTNBFont.MuseoSans14,
+                ForegroundColor = MyTNBColor.TunaGrey()
             };
 
             UIStringAttributes linkAttributes = new UIStringAttributes
             {
-                ForegroundColor = myTNBColor.PowerBlue(),
-                Font = myTNBFont.MuseoSans14(),
+                ForegroundColor = MyTNBColor.PowerBlue,
+                Font = MyTNBFont.MuseoSans14,
                 UnderlineStyle = NSUnderlineStyle.Single,
-                UnderlineColor = myTNBColor.PowerBlue()
+                UnderlineColor = MyTNBColor.PowerBlue
             };
 
             mutableHTMLAnswer.AddAttributes(answerAttributes, new NSRange(0, htmlAnswerPeriod.Length));

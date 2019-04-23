@@ -41,7 +41,7 @@ namespace myTNB
             base.ViewDidLoad();
 
             NavigationController.NavigationBar.Hidden = true;
-            View.BackgroundColor = myTNBColor.TunaGrey(0.6f);
+            View.BackgroundColor = MyTNBColor.TunaGrey(0.6f);
 
             double carHeight = View.Frame.Width > 512 ? 840 : 420;
             var locY = (View.Bounds.Height / 2) - (carHeight / 2);

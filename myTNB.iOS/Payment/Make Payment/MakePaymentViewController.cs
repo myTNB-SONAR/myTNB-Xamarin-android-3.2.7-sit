@@ -85,7 +85,7 @@ namespace myTNB
                 _barView = new UIView
                 {
                     Frame = new CGRect(0, 0, View.Frame.Width, statusBarHeight),
-                    BackgroundColor = myTNBColor.GradientPurpleDarkElement(),
+                    BackgroundColor = MyTNBColor.GradientPurpleDarkElement,
                     Hidden = true
                 };
                 View.AddSubview(_barView);
@@ -127,7 +127,7 @@ namespace myTNB
                     {"Param1", "3"},
                     {"Param2", _requestPayBillResponseModel?.d?.data?.payMerchant_transID},
                     {"Param3", param3}};
-                    var tempURL = TNBGlobal.GetPaymentURL();
+                    var tempURL = TNBGlobal.GetPaymentURL;
                     _url = serviceManager.GetPaymentURL(requestParams, tempURL);
                 }
                 else

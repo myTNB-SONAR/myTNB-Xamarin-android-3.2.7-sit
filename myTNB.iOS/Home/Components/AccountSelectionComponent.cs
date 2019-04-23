@@ -32,7 +32,7 @@ namespace myTNB.Dashboard.DashboardComponents
             _imgLeaf.Hidden = true;
 
             _lblAccountName = new UILabel(new CGRect(58, 0, _parentView.Frame.Width - 116, 20));
-            _lblAccountName.Font = myTNBFont.MuseoSans16_500();
+            _lblAccountName.Font = MyTNBFont.MuseoSans16_500;
             _lblAccountName.TextAlignment = UITextAlignment.Center;
             _lblAccountName.TextColor = UIColor.White;
             _lblAccountName.Text = "- - -";

@@ -28,12 +28,12 @@ namespace myTNB.Registration
             {
                 CustomerAccountRecordModel account = indexPath.Row < _GetStartedList?.d?.Count
                     ? _GetStartedList?.d[indexPath.Row] : new CustomerAccountRecordModel();
-                cell.NickNameLabel.TextColor = myTNBColor.TunaGrey();
-                cell.NickNameLabel.Font = myTNBFont.MuseoSans14_500();
-                cell.AccountNumberLabel.TextColor = myTNBColor.TunaGrey();
-                cell.AccountNumberLabel.Font = myTNBFont.MuseoSans12_300();
-                cell.AddressTextView.TextColor = myTNBColor.TunaGrey();
-                cell.AddressTextView.Font = myTNBFont.MuseoSans12_300();
+                cell.NickNameLabel.TextColor = MyTNBColor.TunaGrey();
+                cell.NickNameLabel.Font = MyTNBFont.MuseoSans14_500;
+                cell.AccountNumberLabel.TextColor = MyTNBColor.TunaGrey();
+                cell.AccountNumberLabel.Font = MyTNBFont.MuseoSans12_300;
+                cell.AddressTextView.TextColor = MyTNBColor.TunaGrey();
+                cell.AddressTextView.Font = MyTNBFont.MuseoSans12_300;
                 cell.NickNameLabel.Text = account.accountNickName != null ? account.accountNickName : string.Empty;
                 cell.AccountNumberLabel.Text = account.accNum != null ? account.accNum : string.Empty;
                 cell.AddressTextView.Text = account.accountStAddress != null ? account.accountStAddress : string.Empty;

@@ -343,7 +343,7 @@ namespace myTNB
             btnLoad.BackgroundColor = UIColor.Clear;
             btnLoad.Layer.BorderWidth = 1;
             btnLoad.SetTitle("Dashboard_LoadMoreAccounts".Translate(), UIControlState.Normal);
-            btnLoad.Font = myTNBFont.MuseoSans14_300();
+            btnLoad.Font = MyTNBFont.MuseoSans14_300;
             btnLoad.SetTitleColor(UIColor.White, UIControlState.Normal);
             btnLoad.TouchUpInside += OnLoadMore;
 
@@ -370,7 +370,7 @@ namespace myTNB
             btnAdd.BackgroundColor = UIColor.Clear;
             btnAdd.Layer.BorderWidth = 1;
             btnAdd.SetTitle("Common_AddAnotherAccount".Translate(), UIControlState.Normal);
-            btnAdd.Font = myTNBFont.MuseoSans16_300();
+            btnAdd.Font = MyTNBFont.MuseoSans16_300;
             btnAdd.SetTitleColor(UIColor.White, UIControlState.Normal);
             btnAdd.TouchUpInside += (sender, e) =>
             {

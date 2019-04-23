@@ -69,7 +69,7 @@ namespace myTNB
             UILabel lblFileName = new UILabel(new CGRect(0, DeviceHelper.IsIphoneXUpResolution() ? 44 : 0, viewContainer.Frame.Width, 24))
             {
                 BackgroundColor = UIColor.Black,
-                Font = myTNBFont.MuseoSans16(),
+                Font = MyTNBFont.MuseoSans16,
                 TextColor = UIColor.White,
                 TextAlignment = UITextAlignment.Center,
                 Text = fileName
@@ -79,7 +79,7 @@ namespace myTNB
             UILabel lblClose = new UILabel(new CGRect(0, 0, 60, 24))
             {
                 BackgroundColor = UIColor.Black,
-                Font = myTNBFont.MuseoSans16(),
+                Font = MyTNBFont.MuseoSans16,
                 TextColor = UIColor.White,
                 TextAlignment = UITextAlignment.Right,
                 Text = "Common_Close".Translate()

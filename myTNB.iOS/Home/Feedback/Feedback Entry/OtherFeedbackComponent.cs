@@ -91,8 +91,8 @@ namespace myTNB.Home.Feedback.FeedbackEntry
             {
                 AttributedText = AttributedStringUtility.GetAttributedString("Feedback_Type", AttributedStringUtility.AttributedStringType.Value),
                 //Noted: Temp Number, will create a list for this later.
-                Font = myTNBFont.MuseoSans18_300(),
-                TextColor = myTNBColor.TunaGrey()
+                Font = MyTNBFont.MuseoSans18_300,
+                TextColor = MyTNBColor.TunaGrey()
             };
 
             UIImageView imgDropDown = new UIImageView(new CGRect(_viewFeedbackType.Frame.Width - 30, 12, 24, 24))
@@ -102,7 +102,7 @@ namespace myTNB.Home.Feedback.FeedbackEntry
 
             _viewLineFeedbackType = new UIView((new CGRect(0, 36, _viewFeedbackType.Frame.Width, 1)))
             {
-                BackgroundColor = myTNBColor.PlatinumGrey()
+                BackgroundColor = MyTNBColor.PlatinumGrey
             };
 
             _viewFeedbackType.AddSubviews(new UIView[] { _lblFeedbackTypeTitle

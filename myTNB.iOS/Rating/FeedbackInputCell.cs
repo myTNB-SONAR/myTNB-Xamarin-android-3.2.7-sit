@@ -59,8 +59,8 @@ namespace myTNB
             lblNumber = new UILabel
             {
                 Frame = new CGRect(0, 0, 20, 18),
-                Font = myTNBFont.MuseoSans18_500(),
-                TextColor = myTNBColor.PowerBlue(),
+                Font = MyTNBFont.MuseoSans18_500,
+                TextColor = MyTNBColor.PowerBlue,
                 TextAlignment = UITextAlignment.Left,
                 Lines = 0
             };
@@ -70,8 +70,8 @@ namespace myTNB
             lblQuestion = new UILabel
             {
                 Frame = new CGRect(lblNumber.Frame.GetMaxX() + 5, 0, textWidth, 60),
-                Font = myTNBFont.MuseoSans18_500(),
-                TextColor = myTNBColor.PowerBlue(),
+                Font = MyTNBFont.MuseoSans18_500,
+                TextColor = MyTNBColor.PowerBlue,
                 TextAlignment = UITextAlignment.Left,
                 Lines = 0,
             };
@@ -141,8 +141,8 @@ namespace myTNB
             viewRating = new UIView(new CGRect((ratingView.Frame.Width / 2) - (starsViewWidth / 2), verticalMargin, starsViewWidth, 32));
 
             lblRateTitle = new UILabel(new CGRect(0, viewRating.Frame.GetMaxY() + verticalMargin, ratingView.Frame.Width, 16));
-            lblRateTitle.Font = myTNBFont.MuseoSans14_300();
-            lblRateTitle.TextColor = myTNBColor.TunaGrey();
+            lblRateTitle.Font = MyTNBFont.MuseoSans14_300;
+            lblRateTitle.TextColor = MyTNBColor.TunaGrey();
             lblRateTitle.TextAlignment = UITextAlignment.Center;
 
             ratingView.AddSubviews(new UIView[] { lblRateTitle, viewRating });
@@ -233,9 +233,9 @@ namespace myTNB
             {
                 Frame = new CGRect(24, 0, textWidth, 36),
                 Editable = true,
-                Font = myTNBFont.MuseoSans16_300(),
+                Font = MyTNBFont.MuseoSans16_300,
                 TextAlignment = UITextAlignment.Left,
-                TextColor = myTNBColor.TunaGrey(),
+                TextColor = MyTNBColor.TunaGrey(),
                 BackgroundColor = UIColor.Clear,
                 EnablesReturnKeyAutomatically = true,
                 TranslatesAutoresizingMaskIntoConstraints = true,
@@ -249,8 +249,8 @@ namespace myTNB
 
             lblFeedbackSubTitle = new UILabel(new CGRect(0, feedbackTextView.Frame.GetMaxY() + 3, textWidth, 16))
             {
-                TextColor = myTNBColor.SilverChalice(),
-                Font = myTNBFont.MuseoSans9_300()
+                TextColor = MyTNBColor.SilverChalice,
+                Font = MyTNBFont.MuseoSans9_300
             };
 
             feedbackTextView.SetPlaceholder("Rating_Comments".Translate());
@@ -259,10 +259,10 @@ namespace myTNB
 #if false
             txtFieldComments.AttributedPlaceholder = new Foundation.NSAttributedString(
                 "Comments"
-                , font: myTNBFont.MuseoSans16()
-                , foregroundColor: myTNBColor.SilverChalice()
+                , font: myTNBFont.MuseoSans16
+                , foregroundColor: myTNBColor.SilverChalice
             );
-            txtFieldComments.TextColor = myTNBColor.SilverChalice();
+            txtFieldComments.TextColor = myTNBColor.SilverChalice;
             _textFieldHelper.CreateTextFieldLeftView(txtFieldComments, "IC-Field-Text");
             _textFieldHelper.SetKeyboard(txtFieldComments);
             txtFieldComments.KeyboardType = UIKeyboardType.Default;
@@ -282,7 +282,7 @@ namespace myTNB
 #endif
 
             viewLine = new UIView(new CGRect(0, feedbackTextView.Frame.GetMaxY() + 1, textWidth, 1));
-            viewLine.BackgroundColor = myTNBColor.SilverChalice();
+            viewLine.BackgroundColor = MyTNBColor.SilverChalice;
             commentView.AddSubviews(new UIView[] { feedbackTextView, lblFeedbackSubTitle, iconFeedback, viewLine });
             ContentView.AddSubview(commentView);
             SetTextViewEvents(feedbackTextView, viewLine);
@@ -351,7 +351,7 @@ namespace myTNB
             };
             textView.ShouldBeginEditing = (sender) =>
             {
-                viewLine.BackgroundColor = myTNBColor.PowerBlue();
+                viewLine.BackgroundColor = MyTNBColor.PowerBlue;
                 return true;
             };
         }

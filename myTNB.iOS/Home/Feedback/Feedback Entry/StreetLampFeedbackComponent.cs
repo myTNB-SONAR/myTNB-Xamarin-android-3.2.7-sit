@@ -95,8 +95,8 @@ namespace myTNB.Home.Feedback.FeedbackEntry
             var lblReport = new UILabel(new CGRect(18, 23 + imgViewFaultyLampHeight, _controller.View.Frame.Width - 36, 18))
             {
                 Text = "Feedback_FaultyLampTitle".Translate(),
-                TextColor = myTNBColor.PowerBlue(),
-                Font = myTNBFont.MuseoSans16_500()
+                TextColor = MyTNBColor.PowerBlue,
+                Font = MyTNBFont.MuseoSans16_500
             };
 
             //Terms Details
@@ -104,12 +104,12 @@ namespace myTNB.Home.Feedback.FeedbackEntry
             NSMutableAttributedString attributedString = new NSMutableAttributedString("Feedback_FaultyLampMessage".Translate());
             UIStringAttributes firstAttributes = new UIStringAttributes
             {
-                ForegroundColor = myTNBColor.TunaGrey(),
-                Font = myTNBFont.MuseoSans14_300()
+                ForegroundColor = MyTNBColor.TunaGrey(),
+                Font = MyTNBFont.MuseoSans14_300
             };
             UIStringAttributes secondAttributes = new UIStringAttributes
             {
-                ForegroundColor = myTNBColor.TunaGrey(),
+                ForegroundColor = MyTNBColor.TunaGrey(),
                 Font = UIFont.BoldSystemFontOfSize(14)
 
             };
@@ -167,7 +167,7 @@ namespace myTNB.Home.Feedback.FeedbackEntry
 
             _viewLineState = new UIView((new CGRect(0, 36, _viewState.Frame.Width, 1)))
             {
-                BackgroundColor = myTNBColor.PlatinumGrey()
+                BackgroundColor = MyTNBColor.PlatinumGrey
             };
 
             _viewState.AddSubviews(new UIView[] { _lblStateTitle, _lblStateError, imgViewState
@@ -200,12 +200,12 @@ namespace myTNB.Home.Feedback.FeedbackEntry
             {
                 Frame = new CGRect(0, 12, _viewLocation.Frame.Width, 24),
                 AttributedPlaceholder = AttributedStringUtility.GetAttributedString("Feedback_Location", AttributedStringUtility.AttributedStringType.Value),
-                TextColor = myTNBColor.TunaGrey()
+                TextColor = MyTNBColor.TunaGrey()
             };
 
             _viewLineLocation = new UIView((new CGRect(0, 36, _viewLocation.Frame.Width, 1)))
             {
-                BackgroundColor = myTNBColor.PlatinumGrey()
+                BackgroundColor = MyTNBColor.PlatinumGrey
             };
 
             _viewLocation.AddSubviews(new UIView[] { _lblLocationTitle, _lblLocationError
@@ -237,12 +237,12 @@ namespace myTNB.Home.Feedback.FeedbackEntry
             {
                 Frame = new CGRect(0, 12, _viewPole.Frame.Width, 24),
                 AttributedPlaceholder = AttributedStringUtility.GetAttributedString("Feedback_PoleNumber", AttributedStringUtility.AttributedStringType.Value),
-                TextColor = myTNBColor.TunaGrey()
+                TextColor = MyTNBColor.TunaGrey()
             };
 
             _viewLinePole = new UIView((new CGRect(0, 36, _viewPole.Frame.Width, 1)))
             {
-                BackgroundColor = myTNBColor.PlatinumGrey()
+                BackgroundColor = MyTNBColor.PlatinumGrey
             };
 
             _viewPole.AddSubviews(new UIView[] { _lblPoleTitle, _lblPoleError, _txtFieldPole, _viewLinePole });
@@ -277,7 +277,7 @@ namespace myTNB.Home.Feedback.FeedbackEntry
                 lblHint.Hidden = !lblError.Hidden || textField.Text.Length == 0;
                 lblTitle.Hidden = textField.Text.Length == 0;
                 textField.LeftViewMode = UITextFieldViewMode.Never;
-                viewLine.BackgroundColor = myTNBColor.PowerBlue();
+                viewLine.BackgroundColor = MyTNBColor.PowerBlue;
             };
             textField.ShouldEndEditing = (sender) =>
             {
@@ -288,8 +288,8 @@ namespace myTNB.Home.Feedback.FeedbackEntry
                 bool isNormal = isValid || (textField.Text.Length == 0 && isEmptyAllowed);
                 lblError.Hidden = isNormal;
                 lblHint.Hidden = true;
-                viewLine.BackgroundColor = isNormal ? myTNBColor.PlatinumGrey() : myTNBColor.Tomato();
-                textField.TextColor = isNormal ? myTNBColor.TunaGrey() : myTNBColor.Tomato();
+                viewLine.BackgroundColor = isNormal ? MyTNBColor.PlatinumGrey : MyTNBColor.Tomato;
+                textField.TextColor = isNormal ? MyTNBColor.TunaGrey() : MyTNBColor.Tomato;
                 _controller.SetButtonEnable();
                 return true;
             };
@@ -313,7 +313,7 @@ namespace myTNB.Home.Feedback.FeedbackEntry
         {
             _lblStateError.Hidden = DataManager.DataManager.SharedInstance.CurrentSelectedStateForFeedbackIndex > -1;
             _viewLineState.BackgroundColor = DataManager.DataManager.SharedInstance.CurrentSelectedStateForFeedbackIndex > -1
-                ? myTNBColor.PlatinumGrey() : myTNBColor.Tomato();
+                ? MyTNBColor.PlatinumGrey : MyTNBColor.Tomato;
         }
 
         void CreateTextFieldRightView(UITextField textField, String imageName)

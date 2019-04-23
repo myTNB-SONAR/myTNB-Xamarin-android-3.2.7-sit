@@ -49,8 +49,8 @@ namespace myTNB
             {
                 Frame = new CGRect(DeviceHelper.GetScaledWidth(18), DeviceHelper.GetScaledHeight(109), headerView.Frame.Width - 36, 18),
                 AttributedText = new NSAttributedString("Registration_AddAccountSuccessMessage".Translate()
-                    , font: myTNBFont.MuseoSans18_500()
-                    , foregroundColor: myTNBColor.PowerBlue()
+                    , font: MyTNBFont.MuseoSans18_500
+                    , foregroundColor: MyTNBColor.PowerBlue
                     , strokeWidth: 0
                 ),
                 TextAlignment = UITextAlignment.Center,
@@ -63,8 +63,8 @@ namespace myTNB
 
             btnStart.SetTitle("Common_Done".Translate(), UIControlState.Normal);
             btnStart.SetTitleColor(UIColor.White, UIControlState.Normal);
-            btnStart.BackgroundColor = myTNBColor.FreshGreen();
-            btnStart.Font = myTNBFont.MuseoSans16_500();
+            btnStart.BackgroundColor = MyTNBColor.FreshGreen;
+            btnStart.Font = MyTNBFont.MuseoSans16_500;
 
             btnStart.TouchUpInside += (object sender, EventArgs e) =>
             {
@@ -192,8 +192,8 @@ namespace myTNB
 
         internal void SetupSuperViewBackground()
         {
-            var startColor = myTNBColor.GradientPurpleDarkElement();
-            var endColor = myTNBColor.GradientPurpleLightElement();
+            var startColor = MyTNBColor.GradientPurpleDarkElement;
+            var endColor = MyTNBColor.GradientPurpleLightElement;
             var gradientLayer = new CAGradientLayer();
             gradientLayer.Colors = new[] { startColor.CGColor, endColor.CGColor };
             gradientLayer.Locations = new NSNumber[] { 0, 1 };

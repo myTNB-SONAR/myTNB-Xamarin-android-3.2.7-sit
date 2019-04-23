@@ -24,19 +24,19 @@ namespace myTNB
 
             _lblName = new UILabel(new CGRect(18, 16, this.ContentView.Frame.Width - 36 - 40, 18));
             _lblName.Text = string.Empty;
-            _lblName.TextColor = myTNBColor.TunaGrey();
-            _lblName.Font = myTNBFont.MuseoSans14_500();
+            _lblName.TextColor = MyTNBColor.TunaGrey();
+            _lblName.Font = MyTNBFont.MuseoSans14_500;
 
             _lblAccountNo = new UILabel(new CGRect(18, 34, this.ContentView.Frame.Width - 36 - 40, 16));
             _lblAccountNo.Text = string.Empty;
-            _lblAccountNo.TextColor = myTNBColor.TunaGrey();
-            _lblAccountNo.Font = myTNBFont.MuseoSans12_300();
+            _lblAccountNo.TextColor = MyTNBColor.TunaGrey();
+            _lblAccountNo.Font = MyTNBFont.MuseoSans12_300;
 
             _txtViewAddress = new UITextView(new CGRect(18, 66, this.Frame.Width - 36 - 40, 32));
             _txtViewAddress.Text = string.Empty;//"No. 3 Jalan Melur, 12 Taman Melur, 68000 Ampang, Selangor"; //For Testing
-            _txtViewAddress.Font = myTNBFont.MuseoSans12_300();
+            _txtViewAddress.Font = MyTNBFont.MuseoSans12_300;
             _txtViewAddress.TextAlignment = UITextAlignment.Left;
-            _txtViewAddress.TextColor = myTNBColor.TunaGrey();
+            _txtViewAddress.TextColor = MyTNBColor.TunaGrey();
             _txtViewAddress.BackgroundColor = UIColor.Clear;
             _txtViewAddress.TextContainerInset = new UIEdgeInsets(0, -4, 0, 0);
             _txtViewAddress.UserInteractionEnabled = false;
@@ -57,16 +57,16 @@ namespace myTNB
             {
                 Frame = new CGRect(0, 0, viewAmount.Frame.Width, 12),
                 AttributedText = new NSAttributedString("Common_Amount(RM)".Translate().ToUpper(),
-                    font: myTNBFont.MuseoSans9_300(),
-                    foregroundColor: myTNBColor.SilverChalice(),
+                    font: MyTNBFont.MuseoSans9_300,
+                    foregroundColor: MyTNBColor.SilverChalice,
                     strokeWidth: 0),
                 TextAlignment = UITextAlignment.Left
             };
             viewAmount.AddSubview(lblAmountTitle);
 
             _lblAmountError = new UILabel(new CGRect(0, 37, viewAmount.Frame.Width, 14));
-            _lblAmountError.TextColor = myTNBColor.Tomato();
-            _lblAmountError.Font = myTNBFont.MuseoSans9_300();
+            _lblAmountError.TextColor = MyTNBColor.Tomato;
+            _lblAmountError.Font = MyTNBFont.MuseoSans9_300;
             _lblAmountError.Text = "Invalid_PayAmount".Translate();
             _lblAmountError.TextAlignment = UITextAlignment.Left;
             _lblAmountError.Hidden = true;
@@ -76,10 +76,10 @@ namespace myTNB
             {
                 Frame = new CGRect(0, 12, viewAmount.Frame.Width, 24),
                 AttributedPlaceholder = new NSAttributedString(TNBGlobal.DEFAULT_VALUE,
-                    font: myTNBFont.MuseoSans16_300(),
-                    foregroundColor: myTNBColor.SilverChalice(),
+                    font: MyTNBFont.MuseoSans16_300,
+                    foregroundColor: MyTNBColor.SilverChalice,
                     strokeWidth: 0),
-                TextColor = myTNBColor.TunaGrey()
+                TextColor = MyTNBColor.TunaGrey()
             };
             _txtFieldAmount.KeyboardType = UIKeyboardType.DecimalPad;
             new TextFieldHelper().SetKeyboard(_txtFieldAmount);
@@ -87,12 +87,12 @@ namespace myTNB
             viewAmount.AddSubview(_txtFieldAmount);
 
             _viewLineAmount = new UIView((new CGRect(0, 36, viewAmount.Frame.Width - 62, 1)));
-            _viewLineAmount.BackgroundColor = myTNBColor.PlatinumGrey();
+            _viewLineAmount.BackgroundColor = MyTNBColor.PlatinumGrey;
             _viewLineAmount.Tag = 1;
             viewAmount.AddSubview(_viewLineAmount);
 
             UIView viewSeparator = new UIView((new CGRect(0, 181, this.Frame.Width, 24)));
-            viewSeparator.BackgroundColor = myTNBColor.LightGrayBG();
+            viewSeparator.BackgroundColor = MyTNBColor.LightGrayBG;
 
             this.AddSubviews(_lblName, _lblAccountNo, _txtViewAddress, _viewCheckBox, viewAmount, viewSeparator);
         }

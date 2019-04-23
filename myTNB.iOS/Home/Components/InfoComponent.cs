@@ -47,19 +47,19 @@ namespace myTNB.Dashboard.DashboardComponents
 
             TitleLabel = new UILabel(new CGRect(Icon.Frame.X + Icon.Frame.Width + 10, topMargin, titleWidth, 18))
             {
-                Font = myTNBFont.MuseoSans14_300(),
+                Font = MyTNBFont.MuseoSans14_300,
                 TextColor = UIColor.White
             };
 
             SubTitleLabel = new UILabel(new CGRect(Icon.Frame.X + Icon.Frame.Width + 10, TitleLabel.Frame.Y + TitleLabel.Frame.Height, titleWidth, 16))
             {
-                Font = myTNBFont.MuseoSans12_300(),
+                Font = MyTNBFont.MuseoSans12_300,
                 TextColor = new UIColor(red: 1.0f, green: 1.0f, blue: 1.0f, alpha: 0.7f)
             };
 
             ValueLabel = new UILabel(new CGRect(_parentView.Frame.Width - valueWidth, topMargin + 6, valueWidth, 20))
             {
-                Font = myTNBFont.MuseoSans16_300(),
+                Font = MyTNBFont.MuseoSans16_300,
                 TextColor = UIColor.White,
                 TextAlignment = UITextAlignment.Right
             };
@@ -84,7 +84,7 @@ namespace myTNB.Dashboard.DashboardComponents
             UIView viewLine = new UIView(new CGRect(0, _baseView.Frame.Height - 1
                 , _baseView.Frame.Width, 1))
             {
-                BackgroundColor = myTNBColor.SelectionSemiTransparent()
+                BackgroundColor = MyTNBColor.SelectionSemiTransparent
             };
             _baseView.AddSubview(viewLine);
         }

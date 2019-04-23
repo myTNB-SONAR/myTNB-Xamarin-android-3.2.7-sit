@@ -13,8 +13,8 @@ namespace myTNB
         /// </summary>
         public void UpdateStyle()
         {
-            lblFeedbackType.Font = myTNBFont.MuseoSans16_300();
-            lblFeedbackType.TextColor = myTNBColor.TunaGrey();
+            lblFeedbackType.Font = MyTNBFont.MuseoSans16_300;
+            lblFeedbackType.TextColor = MyTNBColor.TunaGrey();
         }
 
         public UILabel FeedbackTypeLabel

@@ -62,7 +62,7 @@ namespace myTNB.Payment.AddCard
                     backgroundView.Frame = new CGRect(18, 5, tableView.Frame.Width - 36, 56);
                     //backgroundView.Layer.BorderColor = UIColor.Yellow.CGColor;
                     cell.AddSubview(backgroundView);
-                    cell.BackgroundColor = myTNBColor.SectionGrey();
+                    cell.BackgroundColor = MyTNBColor.SectionGrey;
                     cell.Layer.CornerRadius = 4.0f;
 
                     var imgAdd = new UIImageView(new CGRect(35, 20, 24, 24));
@@ -70,7 +70,7 @@ namespace myTNB.Payment.AddCard
                     cell.AddSubview(imgAdd);
 
                     var lblAddCard = new UILabel(new CGRect(65, 23, 70, 18));
-                    lblAddCard.Font = myTNBFont.MuseoSans14();
+                    lblAddCard.Font = MyTNBFont.MuseoSans14;
                     lblAddCard.Text = "Payment_AddCard".Translate();
                     lblAddCard.TextColor = UIColor.Gray;
                     cell.AddSubview(lblAddCard);
@@ -80,7 +80,7 @@ namespace myTNB.Payment.AddCard
                 {
                     const string CELLIDENTIFIER = "selectPaymentCell";
                     var cell = tableView.DequeueReusableCell(CELLIDENTIFIER, indexPath) as SelectPaymentCell;
-                    cell.BackgroundColor = myTNBColor.SectionGrey();
+                    cell.BackgroundColor = MyTNBColor.SectionGrey;
 
                     var card = _registeredCards.d.data[indexPath.Row];
                     var imgView = new UIImageView(new CGRect(35, 16, 24, 24));
@@ -103,7 +103,7 @@ namespace myTNB.Payment.AddCard
                     }
 
                     var lblCardNumber = new UILabel(new CGRect(65, 19, 150, 18));
-                    lblCardNumber.Font = myTNBFont.MuseoSans14();
+                    lblCardNumber.Font = MyTNBFont.MuseoSans14;
                     var ccNumber = card.LastDigits;
                     lblCardNumber.Text = "•••• •••• •••• " + ccNumber.Substring(ccNumber.Length - 4);
                     cell.AddSubview(lblCardNumber);
@@ -115,11 +115,11 @@ namespace myTNB.Payment.AddCard
                 const string CELLIDENTIFIER = "fpxCell";
 
                 var cell = tableView.DequeueReusableCell(CELLIDENTIFIER, indexPath) as fpxCell;
-                cell.BackgroundColor = myTNBColor.SectionGrey();
+                cell.BackgroundColor = MyTNBColor.SectionGrey;
 
                 var lblTitle = new UILabel(new CGRect(65, 19, 150, 18));
-                lblTitle.Font = myTNBFont.MuseoSans14_300();
-                lblTitle.TextColor = myTNBColor.TunaGrey();
+                lblTitle.Font = MyTNBFont.MuseoSans14_300;
+                lblTitle.TextColor = MyTNBColor.TunaGrey();
                 lblTitle.Text = "Payment_OnlineBankingViaFPX".Translate();
                 cell.AddSubview(lblTitle);
                 return cell;
@@ -158,10 +158,10 @@ namespace myTNB.Payment.AddCard
         public override UIView GetViewForHeader(UITableView tableView, nint section)
         {
             UIView view = new UIView(new CGRect(0, 0, tableView.Frame.Width, 30));
-            view.BackgroundColor = myTNBColor.SectionGrey();
+            view.BackgroundColor = MyTNBColor.SectionGrey;
             var lblSectionTitle = new UILabel(new CGRect(18, 6, tableView.Frame.Width, 24));
-            lblSectionTitle.TextColor = myTNBColor.PowerBlue();
-            lblSectionTitle.Font = myTNBFont.MuseoSans16();
+            lblSectionTitle.TextColor = MyTNBColor.PowerBlue;
+            lblSectionTitle.Font = MyTNBFont.MuseoSans16;
             lblSectionTitle.Text = section == 0 ? "Common_Cards".Translate() : "Payment_OtherMethods".Translate();
             view.AddSubview(lblSectionTitle);
             return view;

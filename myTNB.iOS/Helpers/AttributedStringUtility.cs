@@ -15,17 +15,17 @@ namespace myTNB
 
         public static NSAttributedString GetAttributedString(string str, AttributedStringType type)
         {
-            UIColor fgroundColor = myTNBColor.SilverChalice();
+            UIColor fgroundColor = MyTNBColor.SilverChalice;
             if (type == AttributedStringType.Hint)
             {
-                fgroundColor = myTNBColor.TunaGrey();
+                fgroundColor = MyTNBColor.TunaGrey();
             }
             else if (type == AttributedStringType.Error)
             {
-                fgroundColor = myTNBColor.Tomato();
+                fgroundColor = MyTNBColor.Tomato;
             }
             string txt = type == AttributedStringType.Title ? str.Translate().ToUpper() : str.Translate();
-            UIFont font = type == AttributedStringType.Value ? myTNBFont.MuseoSans18_300() : myTNBFont.MuseoSans11_300();
+            UIFont font = type == AttributedStringType.Value ? MyTNBFont.MuseoSans18_300 : MyTNBFont.MuseoSans11_300;
             return new NSAttributedString(txt
                 , font: font
                 , foregroundColor: fgroundColor

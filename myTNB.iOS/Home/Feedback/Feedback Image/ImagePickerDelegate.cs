@@ -11,25 +11,6 @@ namespace myTNB.Home.Feedback
         public UIViewWithDashedLinerBorder DashedLineView;
         public FeedbackCategory Type;
 
-        public ImagePickerDelegate(LoginBillRelatedFeedbackViewController controller)
-        {
-        }
-        public ImagePickerDelegate(LoginFaultyStreetLampFeedbackViewController controller)
-        {
-        }
-        public ImagePickerDelegate(LoginOthersFeedbackViewController controller)
-        {
-        }
-        public ImagePickerDelegate(NonLoginBillRelatedFeedbackViewController controller)
-        {
-        }
-        public ImagePickerDelegate(NonLoginFaultyStreetLampFeedbackViewController controller)
-        {
-        }
-        public ImagePickerDelegate(NonLoginOthersFeedbackViewController controller)
-        {
-        }
-
         public ImagePickerDelegate(FeedbackEntryViewController controller)
         {
             _feedbackEntryViewController = controller;

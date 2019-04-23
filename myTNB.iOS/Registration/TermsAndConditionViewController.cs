@@ -33,27 +33,31 @@ namespace myTNB.Registration
             NSAttributedString htmlString = new NSAttributedString(GetContent()
                 , new NSAttributedStringDocumentAttributes { DocumentType = NSDocumentType.HTML }, ref error);
             NSMutableAttributedString mutableHTMLString = new NSMutableAttributedString(htmlString);
-            NSMutableParagraphStyle style = new NSMutableParagraphStyle();
-            style.Alignment = UITextAlignment.Justified;
+            NSMutableParagraphStyle style = new NSMutableParagraphStyle
+            {
+                Alignment = UITextAlignment.Justified
+            };
             UIStringAttributes attributes = new UIStringAttributes
             {
-                Font = myTNBFont.MuseoSans12()
+                Font = MyTNBFont.MuseoSans12
             };
             UIStringAttributes linkAttributes = new UIStringAttributes
             {
-                ForegroundColor = myTNBColor.PowerBlue(),
-                Font = myTNBFont.MuseoSans12(),
+                ForegroundColor = MyTNBColor.PowerBlue,
+                Font = MyTNBFont.MuseoSans12,
                 UnderlineStyle = NSUnderlineStyle.Single,
-                UnderlineColor = myTNBColor.PowerBlue()
+                UnderlineColor = MyTNBColor.PowerBlue
             };
             mutableHTMLString.AddAttributes(attributes, new NSRange(0, htmlString.Length));
 
-            UITextView txtViewTNC = new UITextView(new CGRect(18, 10, View.Frame.Width - 36, View.Frame.Height - 50));
-            txtViewTNC.Editable = false;
-            txtViewTNC.ScrollEnabled = true;
-            txtViewTNC.TextAlignment = UITextAlignment.Justified;
-            txtViewTNC.AttributedText = mutableHTMLString;
-            txtViewTNC.WeakLinkTextAttributes = linkAttributes.Dictionary;
+            UITextView txtViewTNC = new UITextView(new CGRect(18, 10, View.Frame.Width - 36, View.Frame.Height - 50))
+            {
+                Editable = false,
+                ScrollEnabled = true,
+                TextAlignment = UITextAlignment.Justified,
+                AttributedText = mutableHTMLString,
+                WeakLinkTextAttributes = linkAttributes.Dictionary
+            };
             View.AddSubview(txtViewTNC);
         }
 

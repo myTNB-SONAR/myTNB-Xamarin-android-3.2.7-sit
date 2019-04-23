@@ -55,8 +55,8 @@ namespace myTNB
                         TextAlignment = UITextAlignment.Center,
                         Lines = 2,
                         Text = "Feedback_NoFeedbackSubmittedMessage".Translate(),
-                        Font = myTNBFont.MuseoSans12_300(),
-                        TextColor = myTNBColor.SilverChalice()
+                        Font = MyTNBFont.MuseoSans12_300,
+                        TextColor = MyTNBColor.SilverChalice
                     };
                     View.AddSubviews(new UIView[] { _imgNoFeedback, _lblNoFeedback });
                 }
