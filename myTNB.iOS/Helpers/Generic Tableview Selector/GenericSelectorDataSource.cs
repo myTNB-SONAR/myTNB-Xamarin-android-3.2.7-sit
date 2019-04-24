@@ -64,7 +64,7 @@ namespace myTNB
         {
             if (_controller?.OnSelect != null)
             {
-                _controller?.OnSelect();
+                _controller?.OnSelect(indexPath.Row);
             }
         }
     }

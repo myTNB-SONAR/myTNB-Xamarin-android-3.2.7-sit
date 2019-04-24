@@ -6,7 +6,7 @@ namespace myTNB
 {
     public partial class GenericSelectorViewController : UITableViewController
     {
-        public Action OnSelect;
+        public Action<int> OnSelect;
         public List<string> Items;
 
         public GenericSelectorViewController(IntPtr handle) : base(handle)

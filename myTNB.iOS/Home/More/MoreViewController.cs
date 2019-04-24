@@ -236,8 +236,8 @@ namespace myTNB
                 "Language_English".Translate()
                 , "Laguage_Malay".Translate()
             };
-            viewController.OnSelect = () => {
-                Debug.WriteLine("Tapped");
+            viewController.OnSelect = (int index) => {
+                Debug.WriteLine("Tapped: "+ index);
             };
             var navController = new UINavigationController(viewController);
             PresentViewController(navController, true, null);
