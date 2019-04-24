@@ -58,11 +58,13 @@ namespace myTNB
                     pageData = new List<OnboardingModel>();
                     foreach (var entity in walkThroughScreenList)
                     {
-                        OnboardingModel item = new OnboardingModel();
-                        item.Title = entity.Text;
-                        item.Message = entity.SubText;
-                        item.ImageName = entity.Image;
-                        item.IsSitecoreData = true;
+                        OnboardingModel item = new OnboardingModel
+                        {
+                            Title = entity.Text,
+                            Message = entity.SubText,
+                            ImageName = entity.Image,
+                            IsSitecoreData = true
+                        };
                         pageData.Add(item);
                     }
                 }
@@ -120,7 +122,7 @@ namespace myTNB
         public override nint GetPresentationCount(UIPageViewController pageViewController)
         {
             var appearance = UIPageControl.Appearance;
-            appearance.CurrentPageIndicatorTintColor = myTNBColor.SunGlow();
+            appearance.CurrentPageIndicatorTintColor = MyTNBColor.SunGlow;
             appearance.BackgroundColor = UIColor.Clear;
             appearance.PageIndicatorTintColor = UIColor.White;
             return pageData.Count;

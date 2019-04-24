@@ -1063,8 +1063,6 @@
     <Folder Include="Model\GetMultiAccountDueAmount\" />
     <Folder Include="Model\RequestPayBill\" />
     <Folder Include="Assets.xcassets\IC-Action-Show-PasswordWhite.imageset\" />
-    <Folder Include="Home\Feedback\Login Feedback\" />
-    <Folder Include="Home\Feedback\Non Login Feedback\" />
     <Folder Include="Home\Feedback\Submitted Feedback\" />
     <Folder Include="Assets.xcassets\Feedback-Empty.imageset\" />
     <Folder Include="Assets.xcassets\IC-Charges.imageset\" />
@@ -1097,8 +1095,11 @@
     <Folder Include="Assets.xcassets\Logo-Combined.imageset\" />
     <Folder Include="Assets.xcassets\Payment-Checkbox-White-Inactive.imageset\" />
     <Folder Include="Assets.xcassets\New-Launch-Logo.imageset\" />
-    <Folder Include="Home\Feedback\FeedbackV2\" />
-    <Folder Include="Helpers\Generic Tableview Selector\" />
+    <Folder Include="Home\Feedback\Feedback Entry\" />
+    <Folder Include="Home\Feedback\Feedback Type\" />
+    <Folder Include="Home\Feedback\Select Account\" />
+    <Folder Include="Home\Feedback\Feedback Location and State\" />
+    <Folder Include="Home\Feedback\Feedback Image\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -1143,7 +1144,7 @@
   <ItemGroup>
     <Compile Include="Main.cs" />
     <Compile Include="AppDelegate.cs" />
-    <Compile Include="Helpers\myTNBColor.cs" />
+    <Compile Include="Helpers\MyTNBColor.cs" />
     <Compile Include="Onboarding\AppLaunchViewController.cs" />
     <Compile Include="Onboarding\AppLaunchViewController.designer.cs">
       <DependentUpon>AppLaunchViewController.cs</DependentUpon>
@@ -1246,7 +1247,7 @@
     <Compile Include="Login\Forgot Password\PasswordResetSuccessViewController.designer.cs">
       <DependentUpon>PasswordResetSuccessViewController.cs</DependentUpon>
     </Compile>
-    <Compile Include="Helpers\myTNBFont.cs" />
+    <Compile Include="Helpers\MyTNBFont.cs" />
     <Compile Include="Payment\SelectPaymentMethodViewController.cs" />
     <Compile Include="Payment\SelectPaymentMethodViewController.designer.cs">
       <DependentUpon>SelectPaymentMethodViewController.cs</DependentUpon>
@@ -1563,20 +1564,10 @@
     <Compile Include="Rating\RatingViewController.designer.cs">
       <DependentUpon>RatingViewController.cs</DependentUpon>
     </Compile>
-    <Compile Include="Home\Feedback\ImagePickerDelegate.cs" />
     <Compile Include="Model\Feedback\SubmitFeedbackResponseModel.cs" />
     <Compile Include="Model\GetFeedbackCategory\FeedbackCategoryDataModel.cs" />
     <Compile Include="Model\GetFeedbackCategory\FeedbackCategoryModel.cs" />
     <Compile Include="Model\GetFeedbackCategory\FeedbackCategoryResponseModel.cs" />
-    <Compile Include="Home\Feedback\SelectAccountNoViewController.cs" />
-    <Compile Include="Home\Feedback\SelectAccountNoViewController.designer.cs">
-      <DependentUpon>SelectAccountNoViewController.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Home\Feedback\SelectAccountNoDataSource.cs" />
-    <Compile Include="Home\Feedback\FeedbackAccountCell.cs" />
-    <Compile Include="Home\Feedback\FeedbackAccountCell.designer.cs">
-      <DependentUpon>FeedbackAccountCell.cs</DependentUpon>
-    </Compile>
     <Compile Include="Model\SubmitFeedback\SubmitFeedbackDataModel.cs" />
     <Compile Include="Model\SubmitFeedback\SubmitFeedbackModel.cs" />
     <Compile Include="Model\SubmitFeedback\SubmitFeedbackResponseModel.cs" />
@@ -1599,28 +1590,6 @@
     <Compile Include="Model\GetSubmittedFeedbackDetails\SubmittedFeedbackDetailsModel.cs" />
     <Compile Include="Model\GetSubmittedFeedbackDetails\SubmittedFeedbackDetailsResponseModel.cs" />
     <Compile Include="Model\GetSubmittedFeedbackDetails\FeedbackImageModel.cs" />
-    <Compile Include="Home\Feedback\LocationUpdateEventArgs.cs" />
-    <Compile Include="Home\Feedback\LocationManager.cs" />
-    <Compile Include="Home\Feedback\SelectStateViewController.cs" />
-    <Compile Include="Home\Feedback\SelectStateViewController.designer.cs">
-      <DependentUpon>SelectStateViewController.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Home\Feedback\StateCell.cs" />
-    <Compile Include="Home\Feedback\StateCell.designer.cs">
-      <DependentUpon>StateCell.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Home\Feedback\FeedbackTypeViewController.cs" />
-    <Compile Include="Home\Feedback\FeedbackTypeViewController.designer.cs">
-      <DependentUpon>FeedbackTypeViewController.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Home\Feedback\FeedbackTypeCell.cs" />
-    <Compile Include="Home\Feedback\FeedbackTypeCell.designer.cs">
-      <DependentUpon>FeedbackTypeCell.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Home\Feedback\SelectStateDataSource.cs" />
-    <Compile Include="Home\Feedback\SelectFeedbackTypeDataSource.cs" />
-    <Compile Include="Home\Feedback\UIImageHelper.cs" />
-    <Compile Include="Home\Feedback\ImageDataModel.cs" />
     <Compile Include="Enums\FeedBackEnum.cs" />
     <Compile Include="Home\Feedback\Feedback Details\FeedbackDetailsViewController.cs" />
     <Compile Include="Home\Feedback\Feedback Details\FeedbackDetailsViewController.designer.cs">
@@ -1695,30 +1664,6 @@
     <Compile Include="Model\RequestPayBill\RequestPayBillResponseModel.cs" />
     <Compile Include="Model\RequestPayBill\PayAccountDataModel.cs" />
     <Compile Include="Model\RequestPayBill\PaymentItemsModel.cs" />
-    <Compile Include="Home\Feedback\Login Feedback\LoginBillRelatedFeedbackViewController.cs" />
-    <Compile Include="Home\Feedback\Login Feedback\LoginBillRelatedFeedbackViewController.designer.cs">
-      <DependentUpon>LoginBillRelatedFeedbackViewController.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Home\Feedback\Login Feedback\LoginFaultyStreetLampFeedbackViewController.cs" />
-    <Compile Include="Home\Feedback\Login Feedback\LoginFaultyStreetLampFeedbackViewController.designer.cs">
-      <DependentUpon>LoginFaultyStreetLampFeedbackViewController.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Home\Feedback\Login Feedback\LoginOthersFeedbackViewController.cs" />
-    <Compile Include="Home\Feedback\Login Feedback\LoginOthersFeedbackViewController.designer.cs">
-      <DependentUpon>LoginOthersFeedbackViewController.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Home\Feedback\Non Login Feedback\NonLoginBillRelatedFeedbackViewController.cs" />
-    <Compile Include="Home\Feedback\Non Login Feedback\NonLoginBillRelatedFeedbackViewController.designer.cs">
-      <DependentUpon>NonLoginBillRelatedFeedbackViewController.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Home\Feedback\Non Login Feedback\NonLoginFaultyStreetLampFeedbackViewController.cs" />
-    <Compile Include="Home\Feedback\Non Login Feedback\NonLoginFaultyStreetLampFeedbackViewController.designer.cs">
-      <DependentUpon>NonLoginFaultyStreetLampFeedbackViewController.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Home\Feedback\Non Login Feedback\NonLoginOthersFeedbackViewController.cs" />
-    <Compile Include="Home\Feedback\Non Login Feedback\NonLoginOthersFeedbackViewController.designer.cs">
-      <DependentUpon>NonLoginOthersFeedbackViewController.cs</DependentUpon>
-    </Compile>
     <Compile Include="Home\Feedback\Submitted Feedback\SubmitFeedbackFailedViewController.cs" />
     <Compile Include="Home\Feedback\Submitted Feedback\SubmitFeedbackFailedViewController.designer.cs">
       <DependentUpon>SubmitFeedbackFailedViewController.cs</DependentUpon>
@@ -1830,11 +1775,54 @@
     </Compile>
     <Compile Include="Enums\DashboardModeEnum.cs" />
     <Compile Include="Helpers\AlertHandler.cs" />
-    <Compile Include="Helpers\Generic Tableview Selector\GenericSelectorViewController.cs" />
-    <Compile Include="Helpers\Generic Tableview Selector\GenericSelectorViewController.designer.cs">
-      <DependentUpon>GenericSelectorViewController.cs</DependentUpon>
+    <Compile Include="Home\Feedback\Feedback Entry\FeedbackEntryViewController.cs" />
+    <Compile Include="Home\Feedback\Feedback Entry\FeedbackEntryViewController.designer.cs">
+      <DependentUpon>FeedbackEntryViewController.cs</DependentUpon>
     </Compile>
+    <Compile Include="Home\Feedback\Feedback Entry\OtherFeedbackComponent.cs" />
+    <Compile Include="Home\Feedback\Feedback Entry\FeedbackCommonWidgets.cs" />
+    <Compile Include="Home\Feedback\Feedback Entry\BillRelatedFeedbackComponent.cs" />
+    <Compile Include="Home\Feedback\Feedback Entry\StreetLampFeedbackComponent.cs" />
+    <Compile Include="Helpers\AttributedStringUtility.cs" />
+    <Compile Include="Home\Feedback\Feedback Entry\FeedbackEntryStatus.cs" />
+    <Compile Include="Home\Feedback\Feedback Entry\FeedbackEntryStatus.designer.cs">
+      <DependentUpon>FeedbackEntryStatus.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Home\Feedback\Feedback Type\FeedbackTypeCell.cs" />
+    <Compile Include="Home\Feedback\Feedback Type\FeedbackTypeCell.designer.cs">
+      <DependentUpon>FeedbackTypeCell.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Home\Feedback\Feedback Type\FeedbackTypeViewController.cs" />
+    <Compile Include="Home\Feedback\Feedback Type\FeedbackTypeViewController.designer.cs">
+      <DependentUpon>FeedbackTypeViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Home\Feedback\Feedback Type\SelectFeedbackTypeDataSource.cs" />
+    <Compile Include="Home\Feedback\Select Account\SelectAccountNoDataSource.cs" />
+    <Compile Include="Home\Feedback\Select Account\SelectAccountNoViewController.cs" />
+    <Compile Include="Home\Feedback\Select Account\SelectAccountNoViewController.designer.cs">
+      <DependentUpon>SelectAccountNoViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Home\Feedback\Select Account\FeedbackAccountCell.cs" />
+    <Compile Include="Home\Feedback\Select Account\FeedbackAccountCell.designer.cs">
+      <DependentUpon>FeedbackAccountCell.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Home\Feedback\Feedback Location and State\LocationManager.cs" />
+    <Compile Include="Home\Feedback\Feedback Location and State\LocationUpdateEventArgs.cs" />
+    <Compile Include="Home\Feedback\Feedback Location and State\SelectStateDataSource.cs" />
+    <Compile Include="Home\Feedback\Feedback Location and State\SelectStateViewController.cs" />
+    <Compile Include="Home\Feedback\Feedback Location and State\SelectStateViewController.designer.cs">
+      <DependentUpon>SelectStateViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Home\Feedback\Feedback Location and State\StateCell.cs" />
+    <Compile Include="Home\Feedback\Feedback Location and State\StateCell.designer.cs">
+      <DependentUpon>StateCell.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Home\Feedback\Feedback Image\ImageDataModel.cs" />
+    <Compile Include="Home\Feedback\Feedback Image\ImagePickerDelegate.cs" />
+    <Compile Include="Home\Feedback\Feedback Image\UIImageHelper.cs" />
     <Compile Include="Helpers\Generic Tableview Selector\GenericSelectorDataSource.cs" />
+    <Compile Include="Helpers\Generic Tableview Selector\GenericSelectorViewController.cs" />
+    <Compile Include="Helpers\Generic Tableview Selector\GenericSelectorViewController.designer.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />

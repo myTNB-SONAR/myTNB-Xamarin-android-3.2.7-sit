@@ -266,8 +266,8 @@ namespace myTNB
             bool isValid = (selectedAccountCount > 0 && totalAmount > 0) && !hasInvalidSelection;
 
             BtnPayBill.BackgroundColor = isValid
-                ? myTNBColor.FreshGreen()
-                : myTNBColor.SilverChalice();
+                ? MyTNBColor.FreshGreen
+                : MyTNBColor.SilverChalice;
             BtnPayBill.Enabled = isValid;
         }
 
@@ -336,10 +336,10 @@ namespace myTNB
 
         internal void InitializedSubViews()
         {
-            BtnPayBill.BackgroundColor = myTNBColor.SilverChalice();
+            BtnPayBill.BackgroundColor = MyTNBColor.SilverChalice;
             BtnPayBill.Layer.CornerRadius = 4.0f;
             BtnPayBill.SetTitleColor(UIColor.White, UIControlState.Normal);
-            BtnPayBill.TitleLabel.Font = myTNBFont.MuseoSans16_500();
+            BtnPayBill.TitleLabel.Font = MyTNBFont.MuseoSans16_500;
             BtnPayBill.TouchUpInside += (sender, e) =>
             {
                 _accountsForPayment = new List<CustomerAccountRecordModel>();
@@ -361,24 +361,24 @@ namespace myTNB
                 PresentViewController(navController, true, null);
             };
 
-            BottomContainerView.BackgroundColor = myTNBColor.LightGrayBG();
+            BottomContainerView.BackgroundColor = MyTNBColor.LightGrayBG;
 
             _viewAmount = new UIView(new CGRect(18, 20, View.Frame.Width - 36, 24));
 
             UILabel lblTotalAmountTitle = new UILabel(new CGRect(0, 6, 120, 18));
-            lblTotalAmountTitle.TextColor = myTNBColor.TunaGrey();
-            lblTotalAmountTitle.Font = myTNBFont.MuseoSans14_500();
+            lblTotalAmountTitle.TextColor = MyTNBColor.TunaGrey();
+            lblTotalAmountTitle.Font = MyTNBFont.MuseoSans14_500;
             lblTotalAmountTitle.Text = "Common_TotalAmount".Translate();
 
             _lblCurrency = new UILabel(new CGRect(0, 6, 24, 18));
-            _lblCurrency.TextColor = myTNBColor.TunaGrey();
-            _lblCurrency.Font = myTNBFont.MuseoSans14_500();
+            _lblCurrency.TextColor = MyTNBColor.TunaGrey();
+            _lblCurrency.Font = MyTNBFont.MuseoSans14_500;
             _lblCurrency.Text = TNBGlobal.UNIT_CURRENCY;
             _lblCurrency.TextAlignment = UITextAlignment.Right;
 
             _lblTotalAmountValue = new UILabel(new CGRect(0, 0, (View.Frame.Width - 36) / 2, 24));
-            _lblTotalAmountValue.TextColor = myTNBColor.TunaGrey();
-            _lblTotalAmountValue.Font = myTNBFont.MuseoSans24_500();
+            _lblTotalAmountValue.TextColor = MyTNBColor.TunaGrey();
+            _lblTotalAmountValue.Font = MyTNBFont.MuseoSans24_500;
             _lblTotalAmountValue.Text = TNBGlobal.DEFAULT_VALUE;
             _lblTotalAmountValue.TextAlignment = UITextAlignment.Right;
 
@@ -387,7 +387,7 @@ namespace myTNB
             BottomContainerView.AddSubview(_viewAmount);
 
             _viewFooter = new UIView(new CGRect(0, 0, View.Frame.Width, 40));
-            _viewFooter.BackgroundColor = myTNBColor.LightGrayBG();
+            _viewFooter.BackgroundColor = MyTNBColor.LightGrayBG;
             _viewFooter.AddGestureRecognizer(new UITapGestureRecognizer(() =>
             {
                 OnLoadMore();
@@ -395,8 +395,8 @@ namespace myTNB
             UILabel lblLoadMore = new UILabel(new CGRect(0, 0, _viewFooter.Frame.Width, 16));
             lblLoadMore.TextAlignment = UITextAlignment.Center;
             lblLoadMore.AttributedText = new NSAttributedString("Payment_LoadMore".Translate()
-                , font: myTNBFont.MuseoSans12_300()
-                , foregroundColor: myTNBColor.SilverChalice()
+                , font: MyTNBFont.MuseoSans12_300
+                , foregroundColor: MyTNBColor.SilverChalice
                 , strokeWidth: 0
                 , underlineStyle: NSUnderlineStyle.Single
             );

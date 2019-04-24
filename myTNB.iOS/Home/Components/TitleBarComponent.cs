@@ -38,7 +38,7 @@ namespace myTNB.Dashboard.DashboardComponents
             _viewTitleBar.AddSubview(_viewBack);
 
             _lblTitle = new UILabel(new CGRect(58, 0, _parentView.Frame.Width - 116, HEIGHT));
-            _lblTitle.Font = myTNBFont.MuseoSans16_500(); ;
+            _lblTitle.Font = MyTNBFont.MuseoSans16_500; ;
             _lblTitle.TextAlignment = UITextAlignment.Center;
             _lblTitle.TextColor = UIColor.White;
             _viewTitleBar.AddSubview(_lblTitle);

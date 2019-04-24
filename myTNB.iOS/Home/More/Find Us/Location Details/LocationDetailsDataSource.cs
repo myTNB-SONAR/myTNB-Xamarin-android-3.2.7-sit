@@ -241,13 +241,13 @@ namespace myTNB.Home.More.FindUs.LocationDetails
                 UIView innerView = new UIView(new CGRect(0, lblYPos, 282, strSize.Height));
 
                 UILabel lblDot = new UILabel(new CGRect(lblXPos, 0, 5, lblHeight));
-                lblDot.TextColor = myTNBColor.TunaGrey();
-                lblDot.Font = myTNBFont.MuseoSans12_300();
+                lblDot.TextColor = MyTNBColor.TunaGrey();
+                lblDot.Font = MyTNBFont.MuseoSans12_300;
                 lblDot.Text = "•";
 
                 UILabel lblVal = new UILabel(new CGRect(lblXPos + 15, 0, innerView.Frame.Width, strSize.Height));
-                lblVal.TextColor = myTNBColor.TunaGrey();
-                lblVal.Font = myTNBFont.MuseoSans12_300();
+                lblVal.TextColor = MyTNBColor.TunaGrey();
+                lblVal.Font = MyTNBFont.MuseoSans12_300;
                 lblVal.LineBreakMode = UILineBreakMode.WordWrap;
                 lblVal.Lines = 0;
                 lblVal.Text = str;
@@ -305,7 +305,7 @@ namespace myTNB.Home.More.FindUs.LocationDetails
         {
             float widthInset = hasRightIcon ? 78F : 36F;
             UILabel label = new UILabel(new CGRect(0, 0, UIApplication.SharedApplication.KeyWindow.Frame.Width - widthInset, 1000));
-            label.Font = myTNBFont.MuseoSans12();
+            label.Font = MyTNBFont.MuseoSans12;
             label.Text = text;
             return label.Text.StringSize(label.Font, new SizeF((float)label.Frame.Width, 1000F));
         }
@@ -313,7 +313,7 @@ namespace myTNB.Home.More.FindUs.LocationDetails
         CGSize GetTitleLabelSize(string text)
         {
             UILabel label = new UILabel(new CGRect(0, 0, UIApplication.SharedApplication.KeyWindow.Frame.Width - 36, 1000));
-            label.Font = myTNBFont.MuseoSans16();
+            label.Font = MyTNBFont.MuseoSans16;
             label.Lines = 0;
             label.LineBreakMode = UILineBreakMode.WordWrap;
             label.Text = text;

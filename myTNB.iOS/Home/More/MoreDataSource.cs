@@ -8,9 +8,9 @@ namespace myTNB.Home.More
 {
     public class MoreDataSource : UITableViewSource
     {
-        readonly MoreViewController _controller;
-        readonly Dictionary<string, List<string>> _data = new Dictionary<string, List<string>>();
-        readonly List<string> _keys = new List<string>();
+        MoreViewController _controller;
+        Dictionary<string, List<string>> _data = new Dictionary<string, List<string>>();
+        List<string> _keys = new List<string>();
         public MoreDataSource(MoreViewController controller, Dictionary<string, List<string>> data)
         {
             _controller = controller;
@@ -30,17 +30,13 @@ namespace myTNB.Home.More
 
         public override UIView GetViewForHeader(UITableView tableView, nint section)
         {
-            UIView view = new UIView(new CGRect(0, 0, tableView.Frame.Width, 48))
-            {
-                BackgroundColor = myTNBColor.SectionGrey()
-            };
+            UIView view = new UIView(new CGRect(0, 0, tableView.Frame.Width, 48));
+            view.BackgroundColor = MyTNBColor.SectionGrey;
 
-            var lblSectionTitle = new UILabel(new CGRect(18, 16, tableView.Frame.Width, 18))
-            {
-                Text = _keys[(int)section],
-                Font = myTNBFont.MuseoSans16(),
-                TextColor = myTNBColor.PowerBlue()
-            };
+            var lblSectionTitle = new UILabel(new CGRect(18, 16, tableView.Frame.Width, 18));
+            lblSectionTitle.Text = _keys[(int)section];
+            lblSectionTitle.Font = MyTNBFont.MuseoSans16;
+            lblSectionTitle.TextColor = MyTNBColor.PowerBlue;
             view.Add(lblSectionTitle);
 
             return view;
@@ -51,17 +47,15 @@ namespace myTNB.Home.More
             var cell = tableView.DequeueReusableCell("moreCell", indexPath);
             cell.Frame = new CGRect(cell.Frame.X, cell.Frame.Y, tableView.Frame.Width, 50);
             List<string> items = _data[_keys[(int)indexPath.Section]];
-            cell.TextLabel.TextColor = myTNBColor.TunaGrey();
+            cell.TextLabel.TextColor = MyTNBColor.TunaGrey();
             cell.TextLabel.Frame = new CGRect(18, 16, cell.Frame.Width - 36, 18);
-            cell.TextLabel.Font = myTNBFont.MuseoSans14_300();
+            cell.TextLabel.Font = MyTNBFont.MuseoSans14_300;
             cell.TextLabel.Text = items[indexPath.Row];
 
             if (indexPath.Row < items.Count - 1)
             {
-                UIView viewLine = new UIView(new CGRect(0, cell.Frame.Height - 1, cell.Frame.Width, 1))
-                {
-                    BackgroundColor = myTNBColor.PlatinumGrey()
-                };
+                UIView viewLine = new UIView(new CGRect(0, cell.Frame.Height - 1, cell.Frame.Width, 1));
+                viewLine.BackgroundColor = MyTNBColor.PlatinumGrey;
                 cell.AddSubview(viewLine);
             }
 

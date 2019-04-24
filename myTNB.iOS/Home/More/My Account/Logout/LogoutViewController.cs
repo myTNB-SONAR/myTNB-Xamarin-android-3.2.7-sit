@@ -40,14 +40,14 @@ namespace myTNB
             imgLogo.Image = UIImage.FromBundle("Logout-Logo");
 
             UILabel lblThankYou = new UILabel(new CGRect(0, 182, viewContent.Frame.Width, 18));
-            lblThankYou.TextColor = myTNBColor.PowerBlue();
-            lblThankYou.Font = myTNBFont.MuseoSans16();
+            lblThankYou.TextColor = MyTNBColor.PowerBlue;
+            lblThankYou.Font = MyTNBFont.MuseoSans16;
             lblThankYou.Text = "Logout_ThankYouMessage".Translate();
             lblThankYou.TextAlignment = UITextAlignment.Center;
 
             UILabel lblSubTitle = new UILabel(new CGRect(24, 200, viewContent.Frame.Width - 48, 16));
-            lblSubTitle.Font = myTNBFont.MuseoSans12();
-            lblSubTitle.TextColor = myTNBColor.TunaGrey();
+            lblSubTitle.Font = MyTNBFont.MuseoSans12;
+            lblSubTitle.TextColor = MyTNBColor.TunaGrey();
             lblSubTitle.TextAlignment = UITextAlignment.Center;
             lblSubTitle.Text = "Logout_Message".Translate();
 
@@ -60,11 +60,11 @@ namespace myTNB
             UIButton btnCTA = new UIButton(UIButtonType.Custom);
             btnCTA.Frame = new CGRect(18, View.Frame.Height - (DeviceHelper.IsIphoneXUpResolution() ? 96 : 72), View.Frame.Width - 36, 48);
             btnCTA.Layer.CornerRadius = 4;
-            btnCTA.Layer.BorderColor = myTNBColor.FreshGreen().CGColor;
-            btnCTA.BackgroundColor = myTNBColor.FreshGreen();
+            btnCTA.Layer.BorderColor = MyTNBColor.FreshGreen.CGColor;
+            btnCTA.BackgroundColor = MyTNBColor.FreshGreen;
             btnCTA.Layer.BorderWidth = 1;
             btnCTA.SetTitle("Logout_BackToHome".Translate(), UIControlState.Normal);
-            btnCTA.Font = myTNBFont.MuseoSans16();
+            btnCTA.Font = MyTNBFont.MuseoSans16;
             btnCTA.SetTitleColor(UIColor.White, UIControlState.Normal);
             btnCTA.TouchUpInside += (sender, e) =>
             {
@@ -115,8 +115,8 @@ namespace myTNB
 
         internal void SetupSuperViewBackground()
         {
-            var startColor = myTNBColor.GradientPurpleDarkElement();
-            var endColor = myTNBColor.GradientPurpleLightElement();
+            var startColor = MyTNBColor.GradientPurpleDarkElement;
+            var endColor = MyTNBColor.GradientPurpleLightElement;
             var gradientLayer = new CAGradientLayer();
             gradientLayer.Colors = new[] { startColor.CGColor, endColor.CGColor };
             gradientLayer.Locations = new NSNumber[] { 0, 1 };

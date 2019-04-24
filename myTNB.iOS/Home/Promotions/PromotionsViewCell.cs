@@ -28,18 +28,18 @@ namespace myTNB
             imgPromotionIcon.Image = UIImage.FromBundle("Notification-Promo");
 
             lblTitle = new UILabel(new CGRect(44, 16, cellWidth - (110 + 16 + 44), 18));
-            lblTitle.TextColor = myTNBColor.TunaGrey();
-            lblTitle.Font = myTNBFont.MuseoSans14();
+            lblTitle.TextColor = MyTNBColor.TunaGrey();
+            lblTitle.Font = MyTNBFont.MuseoSans14;
             lblTitle.TextAlignment = UITextAlignment.Left;
 
             lblDetails = new UILabel(new CGRect(44, 34, 180, 14));
-            lblDetails.TextColor = myTNBColor.SilverChalice();
-            lblDetails.Font = myTNBFont.MuseoSans9_300();
+            lblDetails.TextColor = MyTNBColor.SilverChalice;
+            lblDetails.Font = MyTNBFont.MuseoSans9_300;
             lblDetails.TextAlignment = UITextAlignment.Left;
 
             lblDate = new UILabel(new CGRect(cellWidth - 110, 16, 70, 14));
-            lblDate.TextColor = myTNBColor.SilverChalice();
-            lblDate.Font = myTNBFont.MuseoSans9_300();
+            lblDate.TextColor = MyTNBColor.SilverChalice;
+            lblDate.Font = MyTNBFont.MuseoSans9_300;
             lblDate.TextAlignment = UITextAlignment.Right;
 
             imgUnread = new UIImageView(new CGRect(cellWidth - 34, 16, 16, 16));

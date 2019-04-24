@@ -8,8 +8,6 @@ using CoreGraphics;
 using Foundation;
 using myTNB.SQLite.SQLiteDataManager;
 using System.Drawing;
-using myTNB.Dashboard.DashboardComponents;
-
 using myTNB.DataManager;
 using System.Timers;
 
@@ -117,8 +115,8 @@ namespace myTNB.Registration
             _viewTokenFieldContainer = new UIView(new CGRect(66, 70, View.Frame.Width - 132, 40));
             _lblError = new UILabel(new CGRect(0, _viewTokenFieldContainer.Frame.Height - 14, _viewTokenFieldContainer.Frame.Width, 14))
             {
-                Font = myTNBFont.MuseoSans9_300(),
-                TextColor = myTNBColor.Tomato(),
+                Font = MyTNBFont.MuseoSans9_300,
+                TextColor = MyTNBColor.Tomato,
                 TextAlignment = UITextAlignment.Left,
                 Text = "Invalid_Pin".Translate(),
                 Hidden = true
@@ -131,8 +129,8 @@ namespace myTNB.Registration
                 txtFieldToken = new UITextField(new CGRect(xLocation, 0, txtFieldWidth, 24))
                 {
                     Placeholder = "-",
-                    TextColor = myTNBColor.TunaGrey(),
-                    Font = myTNBFont.MuseoSans16(),
+                    TextColor = MyTNBColor.TunaGrey(),
+                    Font = MyTNBFont.MuseoSans16,
                     Tag = index + 1,
                     KeyboardType = UIKeyboardType.NumberPad,
                     AutocorrectionType = UITextAutocorrectionType.No,
@@ -150,7 +148,7 @@ namespace myTNB.Registration
 
                 viewLine = new UIView(new CGRect(xLocation, 25, txtFieldWidth, 1))
                 {
-                    BackgroundColor = myTNBColor.PlatinumGrey(),
+                    BackgroundColor = MyTNBColor.PlatinumGrey,
                     Tag = index + 5
                 };
 
@@ -180,7 +178,7 @@ namespace myTNB.Registration
                         nextResponder.BecomeFirstResponder();
                         _isKeyboardDismissed = false;
                         UIView vLine = _viewTokenFieldContainer.ViewWithTag((int)textField.Tag + 5) as UIView;
-                        vLine.BackgroundColor = myTNBColor.PowerBlue();
+                        vLine.BackgroundColor = MyTNBColor.PowerBlue;
                     }
                 }
                 ValidateFields(_isKeyboardDismissed);
@@ -189,7 +187,7 @@ namespace myTNB.Registration
             };
             textField.EditingDidBegin += (sender, e) =>
             {
-                viewLine.BackgroundColor = myTNBColor.PowerBlue();
+                viewLine.BackgroundColor = MyTNBColor.PowerBlue;
             };
             textField.ShouldEndEditing = (sender) =>
             {
@@ -202,7 +200,7 @@ namespace myTNB.Registration
             };
             textField.EditingDidEnd += (sender, e) =>
             {
-                viewLine.BackgroundColor = myTNBColor.PlatinumGrey();
+                viewLine.BackgroundColor = MyTNBColor.PlatinumGrey;
             };
         }
 
@@ -239,7 +237,7 @@ namespace myTNB.Registration
                 UITextField txtField = _viewTokenFieldContainer.ViewWithTag(i + 1) as UITextField;
                 if (txtField != null)
                 {
-                    txtField.TextColor = (_isTokenInvalid) ? myTNBColor.Tomato() : myTNBColor.TunaGrey();
+                    txtField.TextColor = (_isTokenInvalid) ? MyTNBColor.Tomato : MyTNBColor.TunaGrey();
                 }
 
                 if (_isTokenInvalid)
@@ -247,7 +245,7 @@ namespace myTNB.Registration
                     UIView viewLine = _viewTokenFieldContainer.ViewWithTag(i + 5) as UIView;
                     if (viewLine != null)
                     {
-                        viewLine.BackgroundColor = myTNBColor.Tomato();
+                        viewLine.BackgroundColor = MyTNBColor.Tomato;
                     }
                 }
             }
@@ -351,8 +349,8 @@ namespace myTNB.Registration
             _mobileNo = DataManager.DataManager.SharedInstance.User.MobileNo;
             UILabel lblDescription = new UILabel(new CGRect(18, 8, View.Frame.Width - 36, 60))
             {
-                Font = myTNBFont.MuseoSans16_300(),
-                TextColor = myTNBColor.TunaGrey(),
+                Font = MyTNBFont.MuseoSans16_300,
+                TextColor = MyTNBColor.TunaGrey(),
                 LineBreakMode = UILineBreakMode.WordWrap,
                 Lines = 0
             };
@@ -364,8 +362,8 @@ namespace myTNB.Registration
 
             UILabel lblResendToken = new UILabel(new CGRect(18, 158, View.Frame.Width - 36, 16))
             {
-                Font = myTNBFont.MuseoSans12_300(),
-                TextColor = myTNBColor.TunaGrey(),
+                Font = MyTNBFont.MuseoSans12_300,
+                TextColor = MyTNBColor.TunaGrey(),
                 LineBreakMode = UILineBreakMode.WordWrap,
                 Lines = 0,
                 Text = "Registration_SMSNotReceived".Translate(),
@@ -385,7 +383,7 @@ namespace myTNB.Registration
             };
             _loadingView.Layer.CornerRadius = 5.0f;
             _loadingView.Layer.BorderWidth = 1.0f;
-            _loadingView.Layer.BorderColor = myTNBColor.FreshGreen().CGColor;
+            _loadingView.Layer.BorderColor = MyTNBColor.FreshGreen.CGColor;
             _commonView.AddSubview(_loadingView);
 
             _loadingImage = new UIImageView(new CGRect(14, 13, 24, 24));
@@ -558,7 +556,7 @@ namespace myTNB.Registration
         {
             timerCtr = 30;
             _resendLabel.Text = string.Format("Registration_ResendTimer".Translate(), timerCtr);
-            _resendLabel.TextColor = myTNBColor.FreshGreen();
+            _resendLabel.TextColor = MyTNBColor.FreshGreen;
             timer.Enabled = true;
             UIView.Animate(30, 1, UIViewAnimationOptions.CurveEaseOut, () =>
             {
@@ -569,7 +567,7 @@ namespace myTNB.Registration
             }, () =>
             {
                 _segment.Frame = new CGRect(0, 0, 140, 48);
-                _segment.BackgroundColor = myTNBColor.FreshGreen();
+                _segment.BackgroundColor = MyTNBColor.FreshGreen;
                 _loadingImage.Frame = new CGRect(25, 13, 24, 24);
                 _resendLabel.Frame = new CGRect(55, 15, 85, 20);
                 _resendLabel.Text = "Registration_Resend".Translate();
@@ -817,7 +815,7 @@ namespace myTNB.Registration
         {
             _viewPinSent = new UIView(new CGRect(18, 32, View.Frame.Width - 36, 64))
             {
-                BackgroundColor = myTNBColor.SunGlow()
+                BackgroundColor = MyTNBColor.SunGlow
             };
             _viewPinSent.Layer.CornerRadius = 2.0f;
             _viewPinSent.Hidden = true;
@@ -825,8 +823,8 @@ namespace myTNB.Registration
             UILabel lblPinSent = new UILabel(new CGRect(16, 16, _viewPinSent.Frame.Width - 32, 32))
             {
                 TextAlignment = UITextAlignment.Left,
-                Font = myTNBFont.MuseoSans12_300(),
-                TextColor = myTNBColor.TunaGrey(),
+                Font = MyTNBFont.MuseoSans12_300,
+                TextColor = MyTNBColor.TunaGrey(),
                 Text = "Registration_SMSMessage".Translate(),
                 Lines = 0,
                 LineBreakMode = UILineBreakMode.WordWrap

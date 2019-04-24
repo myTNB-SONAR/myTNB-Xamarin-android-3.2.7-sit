@@ -32,7 +32,7 @@ namespace myTNB
             }
             else
             {
-                feedbackTableView.Frame = new CGRect(0, DeviceHelper.IsIphoneXUpResolution() 
+                feedbackTableView.Frame = new CGRect(0, DeviceHelper.IsIphoneXUpResolution()
                     ? 88 : 64, View.Frame.Width, View.Frame.Height - (114));
                 SetNavigationBar();
             }
@@ -45,7 +45,7 @@ namespace myTNB
             _email = string.Empty;
             if (!DataManager.DataManager.SharedInstance.IsPreloginFeedback)
             {
-                if (DataManager.DataManager.SharedInstance.UserEntity != null 
+                if (DataManager.DataManager.SharedInstance.UserEntity != null
                     && DataManager.DataManager.SharedInstance.UserEntity.Count > 0)
                 {
                     _email = DataManager.DataManager.SharedInstance.UserEntity[0]?.email;
@@ -77,7 +77,7 @@ namespace myTNB
                                 viewHeader.AddSubview(imgViewBackgroundPhoto);
                                 feedbackTableView.TableHeaderView = viewHeader;
 
-                                feedbackTableView.BackgroundColor = myTNBColor.LightGrayBG();
+                                feedbackTableView.BackgroundColor = MyTNBColor.LightGrayBG;
                                 feedbackTableView.RowHeight = 80f;
                                 feedbackTableView.SeparatorStyle = UITableViewCellSeparatorStyle.None;
                                 feedbackTableView.Source = new FeedbackDataSource(this, _submittedFeedback?.d?.data

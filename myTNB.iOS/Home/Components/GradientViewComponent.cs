@@ -50,8 +50,8 @@ namespace myTNB.Dashboard.DashboardComponents
             }
             float viewHeight = _isFixedHeight ? _viewHeight : ((float)_parentView.Frame.Height * _screenPercentage);
             _gradientView = new UIView(new CGRect(0, 0, _parentView.Frame.Width, viewHeight));
-            var startColor = myTNBColor.GradientPurpleDarkElement();
-            var endColor = myTNBColor.GradientPurpleLightElement();
+            var startColor = MyTNBColor.GradientPurpleDarkElement;
+            var endColor = MyTNBColor.GradientPurpleLightElement;
             var gradientLayer = new CAGradientLayer();
             gradientLayer.Colors = new[] { startColor.CGColor, endColor.CGColor };
             if (_isHorizontal)

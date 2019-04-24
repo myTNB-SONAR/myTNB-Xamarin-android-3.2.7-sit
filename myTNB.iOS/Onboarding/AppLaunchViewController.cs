@@ -85,14 +85,16 @@ namespace myTNB
 
         internal void SetupSuperViewBackground()
         {
-            var startColor = myTNBColor.GradientPurpleDarkElement();
-            var endColor = myTNBColor.GradientPurpleLightElement();
+            var startColor = MyTNBColor.GradientPurpleDarkElement;
+            var endColor = MyTNBColor.GradientPurpleLightElement;
 
-            var gradientLayer = new CAGradientLayer();
-            gradientLayer.Colors = new[] { startColor.CGColor, endColor.CGColor };
-            gradientLayer.Locations = new NSNumber[] { 0.0, 1.5 };
-            gradientLayer.Frame = View.Bounds;
-            gradientLayer.Opaque = false;
+            var gradientLayer = new CAGradientLayer
+            {
+                Colors = new[] { startColor.CGColor, endColor.CGColor },
+                Locations = new NSNumber[] { 0.0, 1.5 },
+                Frame = View.Bounds,
+                Opaque = false
+            };
             //containerView.Layer.InsertSublayer(gradientLayer, 0);
             //imgViewAppLaunch.AddSubview(containerView);
             //imgViewAppLaunch.BringSubviewToFront(containerView);

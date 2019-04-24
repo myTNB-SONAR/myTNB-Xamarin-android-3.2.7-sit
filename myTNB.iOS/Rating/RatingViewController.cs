@@ -104,11 +104,11 @@ namespace myTNB
             UIButton btnCTA = new UIButton(UIButtonType.Custom);
             btnCTA.Frame = new CGRect(18, 10, tableViewRating.Frame.Width - 36, DeviceHelper.GetScaledHeight(48));
             btnCTA.Layer.CornerRadius = 4;
-            btnCTA.Layer.BorderColor = myTNBColor.FreshGreen().CGColor;
-            btnCTA.BackgroundColor = myTNBColor.FreshGreen();
+            btnCTA.Layer.BorderColor = MyTNBColor.FreshGreen.CGColor;
+            btnCTA.BackgroundColor = MyTNBColor.FreshGreen;
             btnCTA.Layer.BorderWidth = 1;
             btnCTA.SetTitle("Common_Submit".Translate(), UIControlState.Normal);
-            btnCTA.Font = myTNBFont.MuseoSans16_500();
+            btnCTA.Font = MyTNBFont.MuseoSans16_500;
             btnCTA.SetTitleColor(UIColor.White, UIControlState.Normal);
             btnCTA.TouchUpInside += (sender, e) =>
             {

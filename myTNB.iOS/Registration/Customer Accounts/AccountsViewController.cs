@@ -48,8 +48,10 @@ namespace myTNB.Registration.CustomerAccounts
             UIImage backImg = UIImage.FromBundle("Back-White");
             UIBarButtonItem btnBack = new UIBarButtonItem(backImg, UIBarButtonItemStyle.Done, (sender, e) =>
             {
-                DataManager.DataManager.SharedInstance.AccountRecordsList = new CustomerAccountRecordListModel();
-                DataManager.DataManager.SharedInstance.AccountRecordsList.d = new List<CustomerAccountRecordModel>();
+                DataManager.DataManager.SharedInstance.AccountRecordsList = new CustomerAccountRecordListModel
+                {
+                    d = new List<CustomerAccountRecordModel>()
+                };
 
                 UIStoryboard storyBoard = UIStoryboard.FromName("Dashboard", null);
                 UIViewController loginVC = storyBoard.InstantiateViewController("HomeTabBarController") as UIViewController;
@@ -124,7 +126,7 @@ namespace myTNB.Registration.CustomerAccounts
         {
             accountRecordsTableView.Source = new AccountRecordDataSource(DataManager.DataManager.SharedInstance.AccountsToBeAddedList, this);
             accountRecordsTableView.SeparatorStyle = UITableViewCellSeparatorStyle.None;
-            accountRecordsTableView.BackgroundColor = myTNBColor.SectionGrey();
+            accountRecordsTableView.BackgroundColor = MyTNBColor.SectionGrey;
             accountRecordsTableView.ReloadData();
             int length = DataManager.DataManager.SharedInstance.AccountsToBeAddedList?.d?.Count ?? 0;
             btnAddAccount.Hidden = (length >= accountLimit);
@@ -149,7 +151,8 @@ namespace myTNB.Registration.CustomerAccounts
                                          && DataManager.DataManager.SharedInstance.AccountRecordsList?.d != null
                                          ? DataManager.DataManager.SharedInstance.AccountRecordsList?.d?.Count : 0);
             lblDetails.Hidden = false;
-            lblDetails.Text = recordCount > 0 ? string.Format("{0} {1}", recordCount.ToString(), "Registration_SupplyAccountCount".Translate())
+            lblDetails.Text = recordCount > 0 ? string.Format("{0} {1}", recordCount.ToString()
+                , "Registration_SupplyAccountCount".Translate())
                 : "Registration_NoAccountsFoundMessage".Translate();
             lblSubDetails.Hidden = recordCount == 0;
         }
@@ -259,7 +262,7 @@ namespace myTNB.Registration.CustomerAccounts
             }
 
             btnConfirm.Enabled = isValid;
-            btnConfirm.BackgroundColor = isValid ? myTNBColor.FreshGreen() : myTNBColor.SilverChalice();
+            btnConfirm.BackgroundColor = isValid ? MyTNBColor.FreshGreen : MyTNBColor.SilverChalice;
         }
 
         internal bool IsEmptyNicknameExist()
@@ -559,70 +562,75 @@ namespace myTNB.Registration.CustomerAccounts
             footerView.BackgroundColor = UIColor.Clear;
             accountRecordsTableView.TableFooterView = footerView;
 
-            btnAddAccount = new UIButton(UIButtonType.Custom);
-            btnAddAccount.Frame = new CGRect(18, 24, View.Frame.Width - 36, 48);
-            btnAddAccount.SetTitle("Common_AddAnotherAccount".Translate(), UIControlState.Normal);
-            btnAddAccount.SetTitleColor(myTNBColor.FreshGreen(), UIControlState.Normal);
-            btnAddAccount.BackgroundColor = UIColor.Clear;
+            btnAddAccount = new UIButton(UIButtonType.Custom)
+            {
+                Frame = new CGRect(18, 24, View.Frame.Width - 36, 48),
+                BackgroundColor = UIColor.Clear
+            };
             btnAddAccount.Layer.BorderWidth = 1.0f;
-            btnAddAccount.Layer.BorderColor = myTNBColor.FreshGreen().CGColor;
+            btnAddAccount.Layer.BorderColor = MyTNBColor.FreshGreen.CGColor;
             btnAddAccount.Layer.CornerRadius = 5.0f;
+            btnAddAccount.SetTitle("Common_AddAnotherAccount".Translate(), UIControlState.Normal);
+            btnAddAccount.SetTitleColor(MyTNBColor.FreshGreen, UIControlState.Normal);
             footerView.AddSubview(btnAddAccount);
 
-            btnConfirm = new UIButton(UIButtonType.Custom);
-            btnConfirm.Frame = new CGRect(18, 78, View.Frame.Width - 36, 48);
+            btnConfirm = new UIButton(UIButtonType.Custom)
+            {
+                Frame = new CGRect(18, 78, View.Frame.Width - 36, 48),
+                BackgroundColor = MyTNBColor.FreshGreen
+            };
+            btnConfirm.Layer.CornerRadius = 5.0f;
             btnConfirm.SetTitle("Common_Confirm".Translate(), UIControlState.Normal);
             btnConfirm.SetTitleColor(UIColor.White, UIControlState.Normal);
-            btnConfirm.BackgroundColor = myTNBColor.FreshGreen();
-            btnConfirm.Layer.CornerRadius = 5.0f;
             footerView.AddSubview(btnConfirm);
         }
 
         void DisplayProgessView(int count)
         {
-            string title = string.Format("Adding {0} Account", count);
-            string subTitle = "This may take a while as we are\r\nadding your TNB account.";
-            if (count > 1)
+            _progressView = new UIView(UIScreen.MainScreen.Bounds)
             {
-                title = string.Format("Adding {0} Accounts", count);
-                subTitle = "This may take a while as we are\r\nadding your TNB accounts.";
-            }
-            _progressView = new UIView(UIScreen.MainScreen.Bounds);
-            _progressView.BackgroundColor = new UIColor(0, .75F);
+                BackgroundColor = new UIColor(0, .75F)
+            };
 
             UIView progressContainer = new UIView(new CGRect((_progressView.Frame.Width / 2) - 127
-                                                             , (_progressView.Frame.Height / 2) - 87
-                                                             , 254
-                                                             , 174));
-            progressContainer.BackgroundColor = UIColor.White;
-            progressContainer.Alpha = 1F;
+                , (_progressView.Frame.Height / 2) - 87, 254, 174))
+            {
+                BackgroundColor = UIColor.White,
+                Alpha = 1F
+            };
             progressContainer.Layer.CornerRadius = 4;
 
             UILabel lblTitle = new UILabel(new CGRect(13, 23, progressContainer.Frame.Width - 26, 18));
-            lblTitle.Font = myTNBFont.MuseoSans16();
-            lblTitle.TextColor = myTNBColor.PowerBlue();
+            lblTitle.Font = MyTNBFont.MuseoSans16;
+            lblTitle.TextColor = MyTNBColor.PowerBlue;
             lblTitle.TextAlignment = UITextAlignment.Center;
             lblTitle.Text = string.Format(count > 1 ? "Registration_AddingAccountsTitle".Translate()
                 : "Registration_AddingAccountTitle".Translate(), count);
 
-            UIImageView imgLoading = new UIImageView(new CGRect(105, 57, 44, 44));
-            imgLoading.Image = UIImage.FromBundle("Loading-Circle");
+            UIImageView imgLoading = new UIImageView(new CGRect(105, 57, 44, 44))
+            {
+                Image = UIImage.FromBundle("Loading-Circle")
+            };
 
-            CABasicAnimation rotationAnimation = new CABasicAnimation();
-            rotationAnimation.KeyPath = "transform.rotation.z";
-            rotationAnimation.To = new NSNumber(Math.PI * 2);
-            rotationAnimation.Duration = 2;
-            rotationAnimation.Cumulative = true;
-            rotationAnimation.RepeatCount = float.MaxValue;
+            CABasicAnimation rotationAnimation = new CABasicAnimation
+            {
+                KeyPath = "transform.rotation.z",
+                To = new NSNumber(Math.PI * 2),
+                Duration = 2,
+                Cumulative = true,
+                RepeatCount = float.MaxValue
+            };
             imgLoading.Layer.AddAnimation(rotationAnimation, "rotationAnimation");
 
-            UILabel lblSubTitle = new UILabel(new CGRect(13, 112, progressContainer.Frame.Width - 26, 36));
-            lblSubTitle.Font = myTNBFont.MuseoSans14();
-            lblSubTitle.TextColor = myTNBColor.TunaGrey();
-            lblSubTitle.TextAlignment = UITextAlignment.Center;
-            lblSubTitle.Lines = 2;
-            lblSubTitle.Text = count > 1 ? "Registration_AddingAccountsMessage".Translate()
-                : "Registration_AddingAccountMessage".Translate();
+            UILabel lblSubTitle = new UILabel(new CGRect(13, 112, progressContainer.Frame.Width - 26, 36))
+            {
+                Font = MyTNBFont.MuseoSans14,
+                TextColor = MyTNBColor.TunaGrey(),
+                TextAlignment = UITextAlignment.Center,
+                Lines = 2,
+                Text = count > 1 ? "Registration_AddingAccountsMessage".Translate()
+                : "Registration_AddingAccountMessage".Translate()
+            };
 
             progressContainer.AddSubviews(new UIView[] { lblTitle, imgLoading, lblSubTitle });
             _progressView.AddSubview(progressContainer);

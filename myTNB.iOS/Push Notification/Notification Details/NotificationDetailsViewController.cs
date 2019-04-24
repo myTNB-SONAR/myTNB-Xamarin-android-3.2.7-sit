@@ -222,16 +222,16 @@ namespace myTNB
                 , View.Frame.Width - 36, 36));
 
             lblTitle.Text = NotificationInfo.Title;
-            lblTitle.Font = myTNBFont.MuseoSans16_500();
+            lblTitle.Font = MyTNBFont.MuseoSans16_500;
             lblTitle.Lines = 0;
             lblTitle.LineBreakMode = UILineBreakMode.WordWrap;
-            lblTitle.TextColor = myTNBColor.PowerBlue();
+            lblTitle.TextColor = MyTNBColor.PowerBlue;
 
             CGSize newTitleSize = GetLabelSize(lblTitle, lblTitle.Frame.Width, 100f);
             lblTitle.Frame = new CGRect(lblTitle.Frame.X, lblTitle.Frame.Y, lblTitle.Frame.Width, newTitleSize.Height);
 
             var lblDetailsHeight = 0f;
-            if (NotificationInfo.BCRMNotificationType != Enums.BCRMNotificationEnum.Maintenance 
+            if (NotificationInfo.BCRMNotificationType != Enums.BCRMNotificationEnum.Maintenance
                 && NotificationInfo.BCRMNotificationType != Enums.BCRMNotificationEnum.News)
             {
                 lblDetailsHeight = DeviceHelper.GetScaledHeight(240) - 48;
@@ -246,10 +246,10 @@ namespace myTNB
             {
 
                 Text = NotificationInfo.Message,
-                Font = myTNBFont.MuseoSans14_300(),
+                Font = MyTNBFont.MuseoSans14_300,
                 Editable = false,
                 ScrollEnabled = true,
-                TextColor = myTNBColor.TunaGrey()
+                TextColor = MyTNBColor.TunaGrey()
             };
 
             View.AddSubviews(new UIView[] { imgViewHeader, lblTitle, txtDetails });
@@ -260,7 +260,7 @@ namespace myTNB
         /// </summary>
         internal void SetSubViewsForNormalNotification()
         {
-            _viewCTA = new UIView(new CGRect(0, View.Frame.Height - (DeviceHelper.IsIphoneXUpResolution() 
+            _viewCTA = new UIView(new CGRect(0, View.Frame.Height - (DeviceHelper.IsIphoneXUpResolution()
                 ? 106 : DeviceHelper.GetScaledHeight(82)), View.Frame.Width, DeviceHelper.GetScaledHeight(82)));
 
             nfloat buttonWidth = (_viewCTA.Frame.Width / 2) - 20;
@@ -269,10 +269,10 @@ namespace myTNB
             btnViewDetails.Frame = new CGRect(18, 17, buttonWidth, 48);
             btnViewDetails.Layer.BorderWidth = 1.0f;
             btnViewDetails.Layer.CornerRadius = 4;
-            btnViewDetails.Layer.BorderColor = myTNBColor.FreshGreen().CGColor;
+            btnViewDetails.Layer.BorderColor = MyTNBColor.FreshGreen.CGColor;
             btnViewDetails.SetTitle("PushNotification_ViewDetails".Translate(), UIControlState.Normal);
-            btnViewDetails.Font = myTNBFont.MuseoSans16_500();
-            btnViewDetails.SetTitleColor(myTNBColor.FreshGreen(), UIControlState.Normal);
+            btnViewDetails.Font = MyTNBFont.MuseoSans16_500;
+            btnViewDetails.SetTitleColor(MyTNBColor.FreshGreen, UIControlState.Normal);
 
             btnViewDetails.TouchUpInside += (sender, e) =>
             {
@@ -289,11 +289,11 @@ namespace myTNB
             UIButton btnPay = new UIButton(UIButtonType.Custom);
             btnPay.Frame = new CGRect((_viewCTA.Frame.Width / 2 + 2), 17, buttonWidth, 48);
             btnPay.Layer.CornerRadius = 4;
-            btnPay.Layer.BackgroundColor = isEnabled ? myTNBColor.FreshGreen().CGColor : myTNBColor.SilverChalice().CGColor;
-            btnPay.Layer.BorderColor = isEnabled ? myTNBColor.FreshGreen().CGColor : myTNBColor.SilverChalice().CGColor;
+            btnPay.Layer.BackgroundColor = isEnabled ? MyTNBColor.FreshGreen.CGColor : MyTNBColor.SilverChalice.CGColor;
+            btnPay.Layer.BorderColor = isEnabled ? MyTNBColor.FreshGreen.CGColor : MyTNBColor.SilverChalice.CGColor;
             btnPay.Layer.BorderWidth = 1;
             btnPay.SetTitle("Common_Pay".Translate(), UIControlState.Normal);
-            btnPay.Font = myTNBFont.MuseoSans16_500();
+            btnPay.Font = MyTNBFont.MuseoSans16_500;
             btnPay.Enabled = isEnabled;
             btnPay.TouchUpInside += (sender, e) =>
             {
@@ -317,10 +317,10 @@ namespace myTNB
             btnViewPromotion.Frame = new CGRect(18, 17, buttonWidth, DeviceHelper.GetScaledHeight(48));
             btnViewPromotion.Layer.BorderWidth = 1.0f;
             btnViewPromotion.Layer.CornerRadius = 4;
-            btnViewPromotion.Layer.BorderColor = myTNBColor.FreshGreen().CGColor;
+            btnViewPromotion.Layer.BorderColor = MyTNBColor.FreshGreen.CGColor;
             btnViewPromotion.SetTitle("PushNotification_ViewPromotion".Translate(), UIControlState.Normal);
-            btnViewPromotion.Font = myTNBFont.MuseoSans16_500();
-            btnViewPromotion.SetTitleColor(myTNBColor.FreshGreen(), UIControlState.Normal);
+            btnViewPromotion.Font = MyTNBFont.MuseoSans16_500;
+            btnViewPromotion.SetTitleColor(MyTNBColor.FreshGreen, UIControlState.Normal);
 
             btnViewPromotion.TouchUpInside += (sender, e) =>
             {
@@ -444,7 +444,7 @@ namespace myTNB
         internal Task DeleteUserNotification(string id)
         {
             var user = DataManager.DataManager.SharedInstance.UserEntity?.Count > 0
-                ? DataManager.DataManager.SharedInstance.UserEntity[0]: new UserEntity();
+                ? DataManager.DataManager.SharedInstance.UserEntity[0] : new UserEntity();
             return Task.Factory.StartNew(() =>
             {
                 ServiceManager serviceManager = new ServiceManager();

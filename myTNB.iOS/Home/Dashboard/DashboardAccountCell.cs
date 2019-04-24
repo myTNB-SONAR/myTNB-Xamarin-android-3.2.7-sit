@@ -26,8 +26,8 @@ namespace myTNB
 
             var amount = !model.IsReAccount ? model.amountDue : ChartHelper.UpdateValueForRE(model.amountDue);
             lblAmountTitle.AttributedText = TextHelper.CreateValuePairString(amount.ToString("N2", CultureInfo.InvariantCulture)
-                , TNBGlobal.UNIT_CURRENCY + " ", true, myTNBFont.MuseoSans14_500()
-                , UIColor.White, myTNBFont.MuseoSans14_500(), UIColor.White);
+                , TNBGlobal.UNIT_CURRENCY + " ", true, MyTNBFont.MuseoSans14_500
+                , UIColor.White, MyTNBFont.MuseoSans14_500, UIColor.White);
 
             string formattedDate = string.Empty;
 
@@ -59,16 +59,16 @@ namespace myTNB
 
         private void UpdateStyle()
         {
-            lblAccountTitle.Font = myTNBFont.MuseoSans14_500();
+            lblAccountTitle.Font = MyTNBFont.MuseoSans14_500;
             lblAccountTitle.TextColor = UIColor.White;
 
-            lblAccountSubTitle.Font = myTNBFont.MuseoSans12_300();
+            lblAccountSubTitle.Font = MyTNBFont.MuseoSans12_300;
             lblAccountSubTitle.TextColor = new UIColor(red: 1.0f, green: 1.0f, blue: 1.0f, alpha: 0.7f);
 
-            lblAmountTitle.Font = myTNBFont.MuseoSans14_500();
+            lblAmountTitle.Font = MyTNBFont.MuseoSans14_500;
             lblAmountTitle.TextColor = UIColor.White;
 
-            lblAmountSubTitle.Font = myTNBFont.MuseoSans12_300();
+            lblAmountSubTitle.Font = MyTNBFont.MuseoSans12_300;
             lblAmountSubTitle.TextColor = new UIColor(red: 1.0f, green: 1.0f, blue: 1.0f, alpha: 0.7f);
 
             //viewLine.BackgroundColor = UIColor.FromWhiteAlpha(1, 0.3f);

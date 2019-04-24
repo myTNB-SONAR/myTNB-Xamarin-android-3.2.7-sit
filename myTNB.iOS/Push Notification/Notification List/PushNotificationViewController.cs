@@ -77,8 +77,8 @@ namespace myTNB.PushNotification
                     _lblNoNotification = new UILabel(new CGRect(44, 352, View.Frame.Width - 88, 16));
                     _lblNoNotification.TextAlignment = UITextAlignment.Center;
                     _lblNoNotification.Text = "PushNotification_NoNotification".Translate();
-                    _lblNoNotification.Font = myTNBFont.MuseoSans12();
-                    _lblNoNotification.TextColor = myTNBColor.SilverChalice();
+                    _lblNoNotification.Font = MyTNBFont.MuseoSans12;
+                    _lblNoNotification.TextColor = MyTNBColor.SilverChalice;
                     View.AddSubviews(new UIView[] { _imgNoNotification, _lblNoNotification });
                 }
                 pushNotificationTableView.Hidden = true;
@@ -245,14 +245,14 @@ namespace myTNB.PushNotification
         internal void InitializeDeleteSuccessView()
         {
             _viewDelete = new UIView(new CGRect(18, 32, View.Frame.Width - 36, 48));
-            _viewDelete.BackgroundColor = myTNBColor.SunGlow();
+            _viewDelete.BackgroundColor = MyTNBColor.SunGlow;
             _viewDelete.Layer.CornerRadius = 2.0f;
             _viewDelete.Hidden = true;
 
             UILabel lblDeleteDetails = new UILabel(new CGRect(16, 16, _viewDelete.Frame.Width - 32, 16));
             lblDeleteDetails.TextAlignment = UITextAlignment.Left;
-            lblDeleteDetails.Font = myTNBFont.MuseoSans12();
-            lblDeleteDetails.TextColor = myTNBColor.TunaGrey();
+            lblDeleteDetails.Font = MyTNBFont.MuseoSans12;
+            lblDeleteDetails.TextColor = MyTNBColor.TunaGrey();
             lblDeleteDetails.Text = "PushNotification_NotificationRemoved".Translate();
             lblDeleteDetails.Lines = 0;
             lblDeleteDetails.LineBreakMode = UILineBreakMode.WordWrap;

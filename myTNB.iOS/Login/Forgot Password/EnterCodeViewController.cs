@@ -71,8 +71,8 @@ namespace myTNB
         void SetViews()
         {
             UILabel lblDescription = new UILabel(new CGRect(18, 8, View.Frame.Width - 36, 60));
-            lblDescription.Font = myTNBFont.MuseoSans16_300();
-            lblDescription.TextColor = myTNBColor.TunaGrey();
+            lblDescription.Font = MyTNBFont.MuseoSans16_300;
+            lblDescription.TextColor = MyTNBColor.TunaGrey();
             lblDescription.LineBreakMode = UILineBreakMode.WordWrap;
             lblDescription.Lines = 0;
             lblDescription.Text = string.Format("Login_CodeSentToMessage".Translate(), EmailAddress);
@@ -80,8 +80,8 @@ namespace myTNB
             View.AddSubview(lblDescription);
 
             UILabel lblResendToken = new UILabel(new CGRect(18, 158, View.Frame.Width - 36, 16));
-            lblResendToken.Font = myTNBFont.MuseoSans12_300();
-            lblResendToken.TextColor = myTNBColor.TunaGrey();
+            lblResendToken.Font = MyTNBFont.MuseoSans12_300;
+            lblResendToken.TextColor = MyTNBColor.TunaGrey();
             lblResendToken.LineBreakMode = UILineBreakMode.WordWrap;
             lblResendToken.Lines = 0;
             lblResendToken.Text = "Login_EmailNotReceived".Translate();
@@ -98,7 +98,7 @@ namespace myTNB
             _loadingView.BackgroundColor = UIColor.White;
             _loadingView.Layer.CornerRadius = 5.0f;
             _loadingView.Layer.BorderWidth = 1.0f;
-            _loadingView.Layer.BorderColor = myTNBColor.FreshGreen().CGColor;
+            _loadingView.Layer.BorderColor = MyTNBColor.FreshGreen.CGColor;
             View.AddSubview(_loadingView);
             _loadingImage = new UIImageView(new CGRect(14, 13, 24, 24));
             _resendLabel = new UILabel(new CGRect(41, 15, 100, 20));
@@ -121,8 +121,8 @@ namespace myTNB
             UIView viewLine;
             _viewTokenFieldContainer = new UIView(new CGRect(66, 70, View.Frame.Width - 132, 40));
             _lblError = new UILabel(new CGRect(0, _viewTokenFieldContainer.Frame.Height - 14, _viewTokenFieldContainer.Frame.Width, 14));
-            _lblError.Font = myTNBFont.MuseoSans9_300();
-            _lblError.TextColor = myTNBColor.Tomato();
+            _lblError.Font = MyTNBFont.MuseoSans9_300;
+            _lblError.TextColor = MyTNBColor.Tomato;
             _lblError.TextAlignment = UITextAlignment.Left;
             _lblError.Text = "Invalid_Code".Translate();
             _lblError.Hidden = true;
@@ -133,8 +133,8 @@ namespace myTNB
                 int index = i;
                 txtFieldToken = new UITextField(new CGRect(xLocation, 0, txtFieldWidth, 24));
                 txtFieldToken.Placeholder = "-";
-                txtFieldToken.TextColor = myTNBColor.TunaGrey();
-                txtFieldToken.Font = myTNBFont.MuseoSans16_300();
+                txtFieldToken.TextColor = MyTNBColor.TunaGrey();
+                txtFieldToken.Font = MyTNBFont.MuseoSans16_300;
                 txtFieldToken.Tag = index + 1;
                 txtFieldToken.KeyboardType = UIKeyboardType.NumberPad;
                 txtFieldToken.AutocorrectionType = UITextAutocorrectionType.No;
@@ -150,7 +150,7 @@ namespace myTNB
                 _textFieldHelper.CreateDoneButton(txtFieldToken);
 
                 viewLine = new UIView(new CGRect(xLocation, 25, txtFieldWidth, 1));
-                viewLine.BackgroundColor = myTNBColor.PlatinumGrey();
+                viewLine.BackgroundColor = MyTNBColor.PlatinumGrey;
                 viewLine.Tag = index + 5;
 
                 SetTextFieldEvents(txtFieldToken, viewLine);
@@ -188,7 +188,7 @@ namespace myTNB
         {
             timerCtr = 30;
             _resendLabel.Text = string.Format("Login_ResendTimer".Translate(), timerCtr);
-            _resendLabel.TextColor = myTNBColor.FreshGreen();
+            _resendLabel.TextColor = MyTNBColor.FreshGreen;
             timer.Enabled = true;
             UIView.Animate(30, 1, UIViewAnimationOptions.CurveEaseOut, () =>
             {
@@ -199,7 +199,7 @@ namespace myTNB
             }, () =>
             {
                 _segment.Frame = new CGRect(0, 0, 140, 48);
-                _segment.BackgroundColor = myTNBColor.FreshGreen();
+                _segment.BackgroundColor = MyTNBColor.FreshGreen;
                 _loadingImage.Frame = new CGRect(25, 13, 24, 24);
                 _resendLabel.Frame = new CGRect(55, 15, 85, 20);
                 _resendLabel.Text = "Login_Resend".Translate();
@@ -236,7 +236,7 @@ namespace myTNB
                         nextResponder.BecomeFirstResponder();
                         _isKeyboardDismissed = false;
                         UIView vLine = _viewTokenFieldContainer.ViewWithTag((int)textField.Tag + 5) as UIView;
-                        vLine.BackgroundColor = myTNBColor.PowerBlue();
+                        vLine.BackgroundColor = MyTNBColor.PowerBlue;
                     }
                 }
                 ValidateFields(_isKeyboardDismissed);
@@ -244,7 +244,7 @@ namespace myTNB
                 UpdateTextFieldColor();
             };
             textField.EditingDidBegin += (sender, e) =>
-                viewLine.BackgroundColor = myTNBColor.PowerBlue();
+                viewLine.BackgroundColor = MyTNBColor.PowerBlue;
             {
             };
             textField.ShouldEndEditing = (sender) =>
@@ -258,21 +258,21 @@ namespace myTNB
             };
             textField.EditingDidEnd += (sender, e) =>
             {
-                viewLine.BackgroundColor = myTNBColor.PlatinumGrey();
+                viewLine.BackgroundColor = MyTNBColor.PlatinumGrey;
             };
         }
 
         void InitializeVerifyPinSentView()
         {
             _viewPinSent = new UIView(new CGRect(18, 32, View.Frame.Width - 36, 64));
-            _viewPinSent.BackgroundColor = myTNBColor.SunGlow();
+            _viewPinSent.BackgroundColor = MyTNBColor.SunGlow;
             _viewPinSent.Layer.CornerRadius = 2.0f;
             _viewPinSent.Hidden = true;
 
             UILabel lblPinSent = new UILabel(new CGRect(16, 16, _viewPinSent.Frame.Width - 32, 32));
             lblPinSent.TextAlignment = UITextAlignment.Left;
-            lblPinSent.Font = myTNBFont.MuseoSans12_300();
-            lblPinSent.TextColor = myTNBColor.TunaGrey();
+            lblPinSent.Font = MyTNBFont.MuseoSans12_300;
+            lblPinSent.TextColor = MyTNBColor.TunaGrey();
             lblPinSent.Text = "Login_PinSentMessage".Translate();
             lblPinSent.Lines = 0;
             lblPinSent.LineBreakMode = UILineBreakMode.WordWrap;
@@ -313,7 +313,7 @@ namespace myTNB
                 UITextField txtField = _viewTokenFieldContainer.ViewWithTag(i + 1) as UITextField;
                 if (txtField != null)
                 {
-                    txtField.TextColor = (_isTokenInvalid) ? myTNBColor.Tomato() : myTNBColor.TunaGrey();
+                    txtField.TextColor = (_isTokenInvalid) ? MyTNBColor.Tomato : MyTNBColor.TunaGrey();
                 }
 
                 if (_isTokenInvalid)
@@ -321,7 +321,7 @@ namespace myTNB
                     UIView viewLine = _viewTokenFieldContainer.ViewWithTag(i + 5) as UIView;
                     if (viewLine != null)
                     {
-                        viewLine.BackgroundColor = myTNBColor.Tomato();
+                        viewLine.BackgroundColor = MyTNBColor.Tomato;
                     }
                 }
             }

@@ -71,12 +71,12 @@ namespace myTNB.Home.More.MyAccount
         public override UIView GetViewForHeader(UITableView tableView, nint section)
         {
             UIView view = new UIView(new CGRect(0, 0, tableView.Frame.Width, 48));
-            view.BackgroundColor = myTNBColor.SectionGrey();
+            view.BackgroundColor = MyTNBColor.SectionGrey;
 
             var lblSectionTitle = new UILabel(new CGRect(18, 16, tableView.Frame.Width, 18));
             lblSectionTitle.Text = SectionTitle[(int)section];
-            lblSectionTitle.Font = myTNBFont.MuseoSans16();
-            lblSectionTitle.TextColor = myTNBColor.PowerBlue();
+            lblSectionTitle.Font = MyTNBFont.MuseoSans16;
+            lblSectionTitle.TextColor = MyTNBColor.PowerBlue;
             view.Add(lblSectionTitle);
 
             return view;
@@ -92,7 +92,7 @@ namespace myTNB.Home.More.MyAccount
                 var detailCount = DetailContent?.Count ?? 0;
                 cell.lblTitle.Text = indexPath.Row < detailCount ? DetailContent[indexPath.Row] : string.Empty;
                 cell.viewCTA.Hidden = true;
-                cell.lblDetail.TextColor = myTNBColor.SilverChalice();
+                cell.lblDetail.TextColor = MyTNBColor.SilverChalice;
 
                 var userInfo = DataManager.DataManager.SharedInstance.UserEntity?.Count > 0
                                           ? DataManager.DataManager.SharedInstance.UserEntity[0]
@@ -119,7 +119,7 @@ namespace myTNB.Home.More.MyAccount
                 else if (indexPath.Row == 3)
                 {
                     cell.lblDetail.Text = userInfo?.mobileNo;
-                    cell.lblDetail.TextColor = myTNBColor.TunaGrey();
+                    cell.lblDetail.TextColor = MyTNBColor.TunaGrey();
                     cell.lblCTA.Text = "Common_Update".Translate();
                     cell.viewCTA.Hidden = false;
                     cell.viewCTA.AddGestureRecognizer(new UITapGestureRecognizer(_controller.UpdateMobileNumber));
@@ -127,7 +127,7 @@ namespace myTNB.Home.More.MyAccount
                 else if (indexPath.Row == 4)
                 {
                     cell.lblDetail.Text = "••••••••••••••";
-                    cell.lblDetail.TextColor = myTNBColor.TunaGrey();
+                    cell.lblDetail.TextColor = MyTNBColor.TunaGrey();
                     cell.lblCTA.Text = "Common_Update".Translate();
                     cell.viewCTA.Hidden = false;
                     cell.viewCTA.AddGestureRecognizer(new UITapGestureRecognizer(() =>
@@ -139,7 +139,7 @@ namespace myTNB.Home.More.MyAccount
                 {
                     var cardCount = _registeredCards?.d?.data?.Count ?? 0;
                     cell.lblDetail.Text = cardCount.ToString();
-                    cell.lblDetail.TextColor = myTNBColor.TunaGrey();
+                    cell.lblDetail.TextColor = MyTNBColor.TunaGrey();
                     cell.lblCTA.Text = "Common_Manage".Translate();
                     UITapGestureRecognizer manageCards = new UITapGestureRecognizer(() =>
                     {
@@ -154,7 +154,7 @@ namespace myTNB.Home.More.MyAccount
                         cell.viewCTA.AddGestureRecognizer(new UITapGestureRecognizer(() => { }));
                     }
                     cell.lblCTA.TextColor = cardCount > 0
-                        ? myTNBColor.PowerBlue() : myTNBColor.SilverChalice();
+                        ? MyTNBColor.PowerBlue : MyTNBColor.SilverChalice;
                     cell.viewCTA.Hidden = false;
                 }
                 cell.viewLine.Hidden = !(indexPath.Row < detailCount - 1);

@@ -216,19 +216,19 @@ namespace myTNB
                 ,
                 AttributedPlaceholder = new NSAttributedString(
                     "FindUs_Search".Translate()
-                    , font: myTNBFont.MuseoSans16()
-                    , foregroundColor: myTNBColor.SilverChalice()
+                    , font: MyTNBFont.MuseoSans16
+                    , foregroundColor: MyTNBColor.SilverChalice
                     , strokeWidth: 0
                 )
                 ,
-                TextColor = myTNBColor.TunaGrey()
+                TextColor = MyTNBColor.TunaGrey()
             };
             _textFieldHelper.CreateTextFieldLeftView(txtFieldSearch, "IC-Field-Search");
             _textFieldHelper.SetKeyboard(txtFieldSearch);
             txtFieldSearch.ReturnKeyType = UIReturnKeyType.Search;
             UIView viewLineSearch = new UIView(new CGRect(0, 36, viewSearch.Frame.Width, 1))
             {
-                BackgroundColor = myTNBColor.PlatinumGrey()
+                BackgroundColor = MyTNBColor.PlatinumGrey
             };
             txtFieldSearch.ShouldReturn += (textField) =>
             {
@@ -243,12 +243,12 @@ namespace myTNB
             };
             txtFieldSearch.EditingDidBegin += (sender, e) =>
             {
-                viewLineSearch.BackgroundColor = myTNBColor.PowerBlue();
+                viewLineSearch.BackgroundColor = MyTNBColor.PowerBlue;
                 txtFieldSearch.LeftViewMode = UITextFieldViewMode.Never;
             };
             txtFieldSearch.EditingDidEnd += (sender, e) =>
             {
-                viewLineSearch.BackgroundColor = myTNBColor.PlatinumGrey();
+                viewLineSearch.BackgroundColor = MyTNBColor.PlatinumGrey;
                 if (txtFieldSearch.Text.Length == 0)
                     txtFieldSearch.LeftViewMode = UITextFieldViewMode.UnlessEditing;
             };
@@ -259,16 +259,16 @@ namespace myTNB
             {
                 Text = "FindUs_Show".Translate().ToUpper(),
                 TextAlignment = UITextAlignment.Left,
-                TextColor = myTNBColor.SilverChalice(),
-                Font = myTNBFont.MuseoSans9()
+                TextColor = MyTNBColor.SilverChalice,
+                Font = MyTNBFont.MuseoSans9
             };
 
             _lblType = new UILabel(new CGRect(0, 12, viewShow.Frame.Width, 24))
             {
                 Text = "Common_All".ToUpper(),
                 TextAlignment = UITextAlignment.Left,
-                TextColor = myTNBColor.TunaGrey(),
-                Font = myTNBFont.MuseoSans16()
+                TextColor = MyTNBColor.TunaGrey(),
+                Font = MyTNBFont.MuseoSans16
             };
 
             UIImageView imgDropDown = new UIImageView(new CGRect(viewShow.Frame.Width - 30, 12, 24, 24))
@@ -278,7 +278,7 @@ namespace myTNB
 
             UIView viewLineShow = new UIView(new CGRect(0, 36, viewShow.Frame.Width, 1))
             {
-                BackgroundColor = myTNBColor.PlatinumGrey()
+                BackgroundColor = MyTNBColor.PlatinumGrey
             };
 
             viewShow.AddSubviews(new UIView[] { lblShow, _lblType, imgDropDown, viewLineShow });
@@ -363,7 +363,7 @@ namespace myTNB
 
         internal void SetMapView()
         {
-            _mapView = new MKMapView(new CGRect(0, DeviceHelper.IsIphoneXUpResolution() ? 160 
+            _mapView = new MKMapView(new CGRect(0, DeviceHelper.IsIphoneXUpResolution() ? 160
                 : 138, View.Frame.Width, View.Frame.Height - (DeviceHelper.IsIphoneXUpResolution() ? 162 : 137)))
             {
                 ShowsCompass = false,

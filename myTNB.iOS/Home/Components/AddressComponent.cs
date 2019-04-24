@@ -18,7 +18,7 @@ namespace myTNB.Dashboard.DashboardComponents
 
             _lblAddress = new UILabel(new CGRect(42, _parentView.Frame.Height - 56
                                                 , _parentView.Frame.Width - 84, 72));
-            _lblAddress.Font = myTNBFont.MuseoSans12();
+            _lblAddress.Font = MyTNBFont.MuseoSans12;
             _lblAddress.TextAlignment = UITextAlignment.Center;
             _lblAddress.TextColor = UIColor.White;
             _lblAddress.Lines = 0;

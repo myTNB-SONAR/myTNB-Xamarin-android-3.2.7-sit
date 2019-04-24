@@ -88,14 +88,14 @@ namespace myTNB
             if (_viewNotificationMsg == null)
             {
                 _viewNotificationMsg = new UIView(new CGRect(18, 32, View.Frame.Width - 36, 64));
-                _viewNotificationMsg.BackgroundColor = myTNBColor.SunGlow();
+                _viewNotificationMsg.BackgroundColor = MyTNBColor.SunGlow;
                 _viewNotificationMsg.Layer.CornerRadius = 2.0f;
                 _viewNotificationMsg.Hidden = true;
 
                 _lblNotificationDetails = new UILabel(new CGRect(16, 16, _viewNotificationMsg.Frame.Width - 32, 32));
                 _lblNotificationDetails.TextAlignment = UITextAlignment.Left;
-                _lblNotificationDetails.Font = myTNBFont.MuseoSans12();
-                _lblNotificationDetails.TextColor = myTNBColor.TunaGrey();
+                _lblNotificationDetails.Font = MyTNBFont.MuseoSans12;
+                _lblNotificationDetails.TextColor = MyTNBColor.TunaGrey();
                 _lblNotificationDetails.Text = TNBGlobal.EMPTY_ADDRESS;
                 _lblNotificationDetails.Lines = 0;
                 _lblNotificationDetails.LineBreakMode = UILineBreakMode.WordWrap;

@@ -212,8 +212,8 @@ namespace myTNB
             lblDetails = new UILabel(new CGRect(44, DeviceHelper.GetScaledSizeByHeight(61.8f)
                 , View.Frame.Width - 88, 32));
             lblDetails.Text = "Promotion_NoPromotion".Translate();
-            lblDetails.TextColor = myTNBColor.SilverChalice();
-            lblDetails.Font = myTNBFont.MuseoSans12();
+            lblDetails.TextColor = MyTNBColor.SilverChalice;
+            lblDetails.Font = MyTNBFont.MuseoSans12;
             lblDetails.Lines = 2;
             lblDetails.TextAlignment = UITextAlignment.Center;
 

@@ -62,13 +62,12 @@ namespace myTNB
         /// <param name="text">Text.</param>
         /// <param name="font">Font.</param>
         /// <param name="textColor">Text color.</param>
-        public static NSAttributedString CreateAttributedString(string text, UIFont font,  UIColor textColor)
+        public static NSAttributedString CreateAttributedString(string text, UIFont font, UIColor textColor)
         {
             return new NSAttributedString(
                 text ?? string.Empty,
                 font: font,
                 foregroundColor: textColor);
         }
-
     }
 }

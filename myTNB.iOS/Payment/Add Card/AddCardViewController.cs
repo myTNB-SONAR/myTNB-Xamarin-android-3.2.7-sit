@@ -128,8 +128,8 @@ namespace myTNB
             scrollViewFrame = ScrollView.Frame;
 
             UILabel lblDescription = new UILabel(new CGRect(18, 16, View.Frame.Width - 36, 36));
-            lblDescription.Font = myTNBFont.MuseoSans14_300();
-            lblDescription.TextColor = myTNBColor.TunaGrey();
+            lblDescription.Font = MyTNBFont.MuseoSans14_300;
+            lblDescription.TextColor = MyTNBColor.TunaGrey();
             lblDescription.LineBreakMode = UILineBreakMode.WordWrap;
             lblDescription.Lines = 0;
             lblDescription.Text = "Payment_AcceptedCards".Translate();
@@ -141,30 +141,30 @@ namespace myTNB
             viewCardNumber.BackgroundColor = UIColor.Clear;
 
             lblCardNumberTitle = new UILabel(new CGRect(0, 0, viewCardNumber.Frame.Width, 12));
-            lblCardNumberTitle.TextColor = myTNBColor.SilverChalice();
-            lblCardNumberTitle.Font = myTNBFont.MuseoSans9_300();
+            lblCardNumberTitle.TextColor = MyTNBColor.SilverChalice;
+            lblCardNumberTitle.Font = MyTNBFont.MuseoSans9_300;
             lblCardNumberTitle.TextAlignment = UITextAlignment.Left;
             lblCardNumberTitle.Text = "Common_CardNumber".Translate().ToUpper();
             lblCardNumberTitle.Hidden = true;
             viewCardNumber.AddSubview(lblCardNumberTitle);
 
             lblCardNumberError = new UILabel(new CGRect(0, 37, viewCardNumber.Frame.Width, 14));
-            lblCardNumberError.TextColor = myTNBColor.Tomato();
-            lblCardNumberError.Font = myTNBFont.MuseoSans9_300();
+            lblCardNumberError.TextColor = MyTNBColor.Tomato;
+            lblCardNumberError.Font = MyTNBFont.MuseoSans9_300;
             lblCardNumberError.TextAlignment = UITextAlignment.Left;
             lblCardNumberError.Text = "Invalid_CardNumber".Translate();
             lblCardNumberError.Hidden = true;
             viewCardNumber.AddSubview(lblCardNumberError);
 
             txtFieldCardNumber = new UITextField(new CGRect(0, 12, viewCardNumber.Frame.Width - 30, 24));
-            txtFieldCardNumber.TextColor = myTNBColor.TunaGrey();
-            txtFieldCardNumber.Font = myTNBFont.MuseoSans16_300();
+            txtFieldCardNumber.TextColor = MyTNBColor.TunaGrey();
+            txtFieldCardNumber.Font = MyTNBFont.MuseoSans16_300;
             txtFieldCardNumber.TextAlignment = UITextAlignment.Left;
             txtFieldCardNumber.Placeholder = "Common_CardNumber".Translate();
             viewCardNumber.AddSubview(txtFieldCardNumber);
 
             viewLineCardNumber = new UIView((new CGRect(0, 36, viewCardNumber.Frame.Width, 1)));
-            viewLineCardNumber.BackgroundColor = myTNBColor.PlatinumGrey();
+            viewLineCardNumber.BackgroundColor = MyTNBColor.PlatinumGrey;
 
             UIView viewScanner = new UIView(new CGRect(viewCardNumber.Frame.Width - 30, 12, 24, 24));
             UIImageView scanner = new UIImageView(new CGRect(0, 0, 24, 24));
@@ -188,30 +188,30 @@ namespace myTNB
             viewName.BackgroundColor = UIColor.Clear;
 
             lblNameTitle = new UILabel(new CGRect(0, 0, viewName.Frame.Width, 12));
-            lblNameTitle.TextColor = myTNBColor.SilverChalice();
-            lblNameTitle.Font = myTNBFont.MuseoSans9_300();
+            lblNameTitle.TextColor = MyTNBColor.SilverChalice;
+            lblNameTitle.Font = MyTNBFont.MuseoSans9_300;
             lblNameTitle.TextAlignment = UITextAlignment.Left;
             lblNameTitle.Text = "Common_NameOnCard".Translate().ToUpper();
             lblNameTitle.Hidden = true;
             viewName.AddSubview(lblNameTitle);
 
             lblNameError = new UILabel(new CGRect(0, 37, viewName.Frame.Width, 14));
-            lblNameError.TextColor = myTNBColor.Tomato();
-            lblNameError.Font = myTNBFont.MuseoSans9_300();
+            lblNameError.TextColor = MyTNBColor.Tomato;
+            lblNameError.Font = MyTNBFont.MuseoSans9_300;
             lblNameError.TextAlignment = UITextAlignment.Left;
             lblNameError.Text = "Invalid_NameOnCard".Translate();
             lblNameError.Hidden = true;
             viewName.AddSubview(lblNameError);
 
             txtFieldName = new UITextField(new CGRect(0, 12, viewName.Frame.Width, 24));
-            txtFieldName.TextColor = myTNBColor.TunaGrey();
-            txtFieldName.Font = myTNBFont.MuseoSans16_300();
+            txtFieldName.TextColor = MyTNBColor.TunaGrey();
+            txtFieldName.Font = MyTNBFont.MuseoSans16_300;
             txtFieldName.TextAlignment = UITextAlignment.Left;
             txtFieldName.Placeholder = "Common_NameOnCard".Translate();
             viewName.AddSubview(txtFieldName);
 
             viewLineName = new UIView((new CGRect(0, 36, viewName.Frame.Width, 1)));
-            viewLineName.BackgroundColor = myTNBColor.PlatinumGrey();
+            viewLineName.BackgroundColor = MyTNBColor.PlatinumGrey;
             viewName.AddSubview(viewLineName);
 
             //Card Expiry 
@@ -219,24 +219,24 @@ namespace myTNB
             viewCardExpiry.BackgroundColor = UIColor.Clear;
 
             lblCardExpiryTitle = new UILabel(new CGRect(0, 0, viewName.Frame.Width, 12));
-            lblCardExpiryTitle.TextColor = myTNBColor.SilverChalice();
-            lblCardExpiryTitle.Font = myTNBFont.MuseoSans9_300();
+            lblCardExpiryTitle.TextColor = MyTNBColor.SilverChalice;
+            lblCardExpiryTitle.Font = MyTNBFont.MuseoSans9_300;
             lblCardExpiryTitle.TextAlignment = UITextAlignment.Left;
             lblCardExpiryTitle.Text = "Common_CardExpiry".Translate().ToUpper();
             lblCardExpiryTitle.Hidden = true;
             viewCardExpiry.AddSubview(lblCardExpiryTitle);
 
             lblCardExpiryError = new UILabel(new CGRect(0, 37, viewName.Frame.Width, 14));
-            lblCardExpiryError.TextColor = myTNBColor.Tomato();
-            lblCardExpiryError.Font = myTNBFont.MuseoSans9_300();
+            lblCardExpiryError.TextColor = MyTNBColor.Tomato;
+            lblCardExpiryError.Font = MyTNBFont.MuseoSans9_300;
             lblCardExpiryError.TextAlignment = UITextAlignment.Left;
             lblCardExpiryError.Text = "Invalid_CardExpiry".Translate();
             lblCardExpiryError.Hidden = true;
             viewCardExpiry.AddSubview(lblCardExpiryError);
 
             txtFieldCardExpiry = new UITextField(new CGRect(0, 12, viewName.Frame.Width, 24));
-            txtFieldCardExpiry.TextColor = myTNBColor.TunaGrey();
-            txtFieldCardExpiry.Font = myTNBFont.MuseoSans16_300();
+            txtFieldCardExpiry.TextColor = MyTNBColor.TunaGrey();
+            txtFieldCardExpiry.Font = MyTNBFont.MuseoSans16_300;
             txtFieldCardExpiry.TextAlignment = UITextAlignment.Left;
             txtFieldCardExpiry.Placeholder = "Hint_CardExpiry".Translate();
             viewCardExpiry.AddSubview(txtFieldCardExpiry);
@@ -276,7 +276,7 @@ namespace myTNB
             };
 
             viewLineCardExpiry = new UIView((new CGRect(0, 36, viewName.Frame.Width, 1)));
-            viewLineCardExpiry.BackgroundColor = myTNBColor.PlatinumGrey();
+            viewLineCardExpiry.BackgroundColor = MyTNBColor.PlatinumGrey;
             viewCardExpiry.AddSubview(viewLineCardExpiry);
 
             //CVV 
@@ -284,24 +284,24 @@ namespace myTNB
             viewCVV.BackgroundColor = UIColor.Clear;
 
             lblCVVTitle = new UILabel(new CGRect(0, 0, viewName.Frame.Width, 12));
-            lblCVVTitle.TextColor = myTNBColor.SilverChalice();
-            lblCVVTitle.Font = myTNBFont.MuseoSans9_300();
+            lblCVVTitle.TextColor = MyTNBColor.SilverChalice;
+            lblCVVTitle.Font = MyTNBFont.MuseoSans9_300;
             lblCVVTitle.TextAlignment = UITextAlignment.Left;
             lblCVVTitle.Text = "Common_CVV".Translate().ToUpper();
             lblCVVTitle.Hidden = true;
             viewCVV.AddSubview(lblCVVTitle);
 
             lblCVVError = new UILabel(new CGRect(0, 37, viewName.Frame.Width, 14));
-            lblCVVError.TextColor = myTNBColor.Tomato();
-            lblCVVError.Font = myTNBFont.MuseoSans9_300();
+            lblCVVError.TextColor = MyTNBColor.Tomato;
+            lblCVVError.Font = MyTNBFont.MuseoSans9_300;
             lblCVVError.TextAlignment = UITextAlignment.Left;
             lblCVVError.Text = "Invalid_CVV".Translate();
             lblCVVError.Hidden = true;
             viewCVV.AddSubview(lblCVVError);
 
             txtFieldCVV = new UITextField(new CGRect(0, 12, viewName.Frame.Width, 24));
-            txtFieldCVV.TextColor = myTNBColor.TunaGrey();
-            txtFieldCVV.Font = myTNBFont.MuseoSans16_300();
+            txtFieldCVV.TextColor = MyTNBColor.TunaGrey();
+            txtFieldCVV.Font = MyTNBFont.MuseoSans16_300;
             txtFieldCVV.TextAlignment = UITextAlignment.Left;
             txtFieldCVV.Placeholder = "Common_CVV".Translate();
             viewCVV.AddSubview(txtFieldCVV);
@@ -313,14 +313,14 @@ namespace myTNB
             };
 
             viewLineCVV = new UIView((new CGRect(0, 36, viewName.Frame.Width, 1)));
-            viewLineCVV.BackgroundColor = myTNBColor.PlatinumGrey();
+            viewLineCVV.BackgroundColor = MyTNBColor.PlatinumGrey;
             viewCVV.AddSubview(viewLineCVV);
 
             btnCheckBox = new UIButton(UIButtonType.Custom);
             btnCheckBox.Frame = new CGRect(18, 320, 24, 24);
             btnCheckBox.SetImage(UIImage.FromBundle("Payment-Checkbox-Inactive"), UIControlState.Normal);
             btnCheckBox.SetImage(UIImage.FromBundle("Payment-Checkbox-Active"), UIControlState.Selected);
-            btnCheckBox.SetTitleColor(myTNBColor.FreshGreen(), UIControlState.Normal);
+            btnCheckBox.SetTitleColor(MyTNBColor.FreshGreen, UIControlState.Normal);
             btnCheckBox.BackgroundColor = UIColor.Clear;
             btnCheckBox.Layer.CornerRadius = 5.0f;
             ScrollView.AddSubview(btnCheckBox);
@@ -341,8 +341,8 @@ namespace myTNB
             };
 
             var lblCheckBoxTitle = new UILabel(new CGRect(51, 324, View.Frame.Width - 69, 18));
-            lblCheckBoxTitle.TextColor = myTNBColor.TunaGrey();
-            lblCheckBoxTitle.Font = myTNBFont.MuseoSans14();
+            lblCheckBoxTitle.TextColor = MyTNBColor.TunaGrey();
+            lblCheckBoxTitle.Font = MyTNBFont.MuseoSans14;
             lblCheckBoxTitle.TextAlignment = UITextAlignment.Left;
             lblCheckBoxTitle.Text = "Payment_SaveCardMessage".Translate();
             ScrollView.AddSubview(lblCheckBoxTitle);
@@ -352,9 +352,9 @@ namespace myTNB
             btnNext.Frame = new CGRect(18, View.Frame.Height - DeviceHelper.GetScaledHeight(133)
                 , View.Frame.Width - 36, DeviceHelper.GetScaledHeight(48));
             btnNext.SetTitle("Common_Next".Translate(), UIControlState.Normal);
-            btnNext.Font = myTNBFont.MuseoSans16_500();
+            btnNext.Font = MyTNBFont.MuseoSans16_500;
             btnNext.Layer.CornerRadius = 5.0f;
-            btnNext.BackgroundColor = myTNBColor.SilverChalice();
+            btnNext.BackgroundColor = MyTNBColor.SilverChalice;
             btnNext.Enabled = false;
             btnNext.TouchUpInside += (sender, e) =>
             {
@@ -441,7 +441,7 @@ namespace myTNB
             {
                 lblTitle.Hidden = textField.Text.Length == 0;
                 textField.LeftViewMode = UITextFieldViewMode.Never;
-                viewLine.BackgroundColor = myTNBColor.PowerBlue();
+                viewLine.BackgroundColor = MyTNBColor.PowerBlue;
             };
             textField.ShouldEndEditing = (sender) =>
             {
@@ -465,8 +465,8 @@ namespace myTNB
                 }
 
                 lblError.Hidden = isValid;
-                viewLine.BackgroundColor = isValid ? myTNBColor.PlatinumGrey() : myTNBColor.Tomato();
-                textField.TextColor = isValid ? myTNBColor.TunaGrey() : myTNBColor.Tomato();
+                viewLine.BackgroundColor = isValid ? MyTNBColor.PlatinumGrey : MyTNBColor.Tomato;
+                textField.TextColor = isValid ? MyTNBColor.TunaGrey() : MyTNBColor.Tomato;
 
                 SetNextButtonEnable();
                 return true;
@@ -538,7 +538,7 @@ namespace myTNB
             bool isCVVValid = IsValidCVV(txtFieldCVV.Text);
             bool isValid = isCardValid && isNameValid && isExpiryDateValid && isCVVValid;
             btnNext.Enabled = isValid;
-            btnNext.BackgroundColor = isValid ? myTNBColor.FreshGreen() : myTNBColor.SilverChalice();
+            btnNext.BackgroundColor = isValid ? MyTNBColor.FreshGreen : MyTNBColor.SilverChalice;
         }
 
         internal void ExecuteRequestPayBillCall()

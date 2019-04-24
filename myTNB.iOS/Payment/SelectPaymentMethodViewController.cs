@@ -51,21 +51,21 @@ namespace myTNB
             selectPaymentTableView.TableHeaderView = headerView;
 
             var footerView = new UIView(new CGRect(0, 0, (float)View.Frame.Width, 50));
-            footerView.BackgroundColor = myTNBColor.SectionGrey();
+            footerView.BackgroundColor = MyTNBColor.SectionGrey;
             selectPaymentTableView.TableFooterView = footerView;
 
             //Credit Card Number 
 
             var lblAmountTitle = new UILabel(new CGRect(18, 20, View.Frame.Width, 12));
-            lblAmountTitle.TextColor = myTNBColor.SilverChalice();
-            lblAmountTitle.Font = myTNBFont.MuseoSans9_300();
+            lblAmountTitle.TextColor = MyTNBColor.SilverChalice;
+            lblAmountTitle.Font = MyTNBFont.MuseoSans9_300;
             lblAmountTitle.TextAlignment = UITextAlignment.Left;
             lblAmountTitle.Text = "Common_TotalAmount(RM)".Translate().ToUpper();
             headerView.AddSubview(lblAmountTitle);
 
             txtFieldAmountValue = new UITextField(new CGRect(18, 40, View.Frame.Width - 36, 24));
-            txtFieldAmountValue.TextColor = myTNBColor.TunaGrey();
-            txtFieldAmountValue.Font = myTNBFont.MuseoSans16_300();
+            txtFieldAmountValue.TextColor = MyTNBColor.TunaGrey();
+            txtFieldAmountValue.Font = MyTNBFont.MuseoSans16_300;
             //txtFieldAmountValue.Text = DataManager.DataManager.SharedInstance.BillingAccountDetails.amCustBal.ToString();
             txtFieldAmountValue.Text = TotalAmount.ToString("N2", CultureInfo.InvariantCulture); ;
             txtFieldAmountValue.TextAlignment = UITextAlignment.Right;
@@ -77,7 +77,7 @@ namespace myTNB
             headerView.AddSubview(txtFieldAmountValue);
 
             var lineView = new UIView((new CGRect(18, 66, View.Frame.Width - 36, 1)));
-            lineView.BackgroundColor = myTNBColor.PlatinumGrey();
+            lineView.BackgroundColor = MyTNBColor.PlatinumGrey;
             headerView.AddSubview(lineView);
 
             NSNotificationCenter.DefaultCenter.AddObserver(UIKeyboard.WillShowNotification, OnKeyboardNotification);
@@ -273,7 +273,7 @@ namespace myTNB
         {
             selectPaymentTableView.Source = new SelectPaymentTableViewSource(_registeredCards
                 , _requestPayBill, this, OnSelectUnavailablePaymentMethod);
-            selectPaymentTableView.BackgroundColor = myTNBColor.SectionGrey();
+            selectPaymentTableView.BackgroundColor = MyTNBColor.SectionGrey;
             selectPaymentTableView.ReloadData();
         }
 
@@ -335,9 +335,9 @@ namespace myTNB
 
             UIButton btnBack = new UIButton(UIButtonType.Custom);
             btnBack.Frame = new CGRect(6, 10, 60, 24);
-            btnBack.SetTitleColor(myTNBColor.PowerBlue(), UIControlState.Normal);
+            btnBack.SetTitleColor(MyTNBColor.PowerBlue, UIControlState.Normal);
             btnBack.SetTitle("Common_Back".Translate(), UIControlState.Normal);
-            btnBack.Font = myTNBFont.MuseoSans16();
+            btnBack.Font = MyTNBFont.MuseoSans16;
             btnBack.TouchUpInside += (sender, e) =>
             {
                 View.EndEditing(true);
@@ -349,8 +349,8 @@ namespace myTNB
             };
 
             UILabel lblCVVDetails = new UILabel(new CGRect(18, 60, viewCVVContainer.Frame.Width - 36, 40));
-            lblCVVDetails.Font = myTNBFont.MuseoSans14();
-            lblCVVDetails.TextColor = myTNBColor.TunaGrey();
+            lblCVVDetails.Font = MyTNBFont.MuseoSans14;
+            lblCVVDetails.TextColor = MyTNBColor.TunaGrey();
             lblCVVDetails.LineBreakMode = UILineBreakMode.WordWrap;
             lblCVVDetails.Lines = 2;
             lblCVVDetails.TextAlignment = UITextAlignment.Left;
@@ -370,8 +370,8 @@ namespace myTNB
                 int index = i;
                 txtFieldCVV = new UITextField(new CGRect(xLocation, 0, 44, 24));
                 txtFieldCVV.Placeholder = "-";
-                txtFieldCVV.TextColor = myTNBColor.TunaGrey();
-                txtFieldCVV.Font = myTNBFont.MuseoSans16();
+                txtFieldCVV.TextColor = MyTNBColor.TunaGrey();
+                txtFieldCVV.Font = MyTNBFont.MuseoSans16;
                 txtFieldCVV.Tag = index + 1;
                 txtFieldCVV.KeyboardType = UIKeyboardType.NumberPad;
                 txtFieldCVV.AutocorrectionType = UITextAutocorrectionType.No;
@@ -387,7 +387,7 @@ namespace myTNB
                 SetTextFieldEvents(txtFieldCVV);
 
                 viewLine = new UIView(new CGRect(xLocation, 25, 44, 1));
-                viewLine.BackgroundColor = myTNBColor.PlatinumGrey();
+                viewLine.BackgroundColor = MyTNBColor.PlatinumGrey;
                 viewLine.Tag = 6;
 
                 viewCVVWrapper.AddSubview(viewLine);

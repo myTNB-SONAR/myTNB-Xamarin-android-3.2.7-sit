@@ -85,8 +85,8 @@ namespace myTNB
             moreTableView.SeparatorStyle = UITableViewCellSeparatorStyle.None;
 
             UILabel lblAppVersion = new UILabel(new CGRect(18, 16, moreTableView.Frame.Width - 36, 14));
-            lblAppVersion.TextColor = myTNBColor.SilverChalice();
-            lblAppVersion.Font = myTNBFont.MuseoSans9_300();
+            lblAppVersion.TextColor = MyTNBColor.SilverChalice;
+            lblAppVersion.Font = MyTNBFont.MuseoSans9_300;
             lblAppVersion.Text = string.Format("{0} {1}", "More_AppVersion".Translate()
                 , NSBundle.MainBundle.ObjectForInfoDictionary("CFBundleShortVersionString").ToString());
 

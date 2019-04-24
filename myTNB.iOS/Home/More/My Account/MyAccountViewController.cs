@@ -65,11 +65,11 @@ namespace myTNB
             UIButton btnLogout = new UIButton(UIButtonType.Custom);
             btnLogout.Frame = new CGRect(18, 16, View.Frame.Width - 36, 48);
             btnLogout.Layer.CornerRadius = 4;
-            btnLogout.Layer.BorderColor = myTNBColor.FreshGreen().CGColor;
-            btnLogout.BackgroundColor = myTNBColor.FreshGreen();
+            btnLogout.Layer.BorderColor = MyTNBColor.FreshGreen.CGColor;
+            btnLogout.BackgroundColor = MyTNBColor.FreshGreen;
             btnLogout.Layer.BorderWidth = 1;
             btnLogout.SetTitle("MyAccount_Logout".Translate(), UIControlState.Normal);
-            btnLogout.Font = myTNBFont.MuseoSans16();
+            btnLogout.Font = MyTNBFont.MuseoSans16;
             btnLogout.SetTitleColor(UIColor.White, UIControlState.Normal);
             btnLogout.TouchUpInside += (sender, e) =>
             {
@@ -88,19 +88,19 @@ namespace myTNB
             };
 
             UIView viewLogout = new UIView();
-            viewLogout.BackgroundColor = myTNBColor.SectionGrey();
+            viewLogout.BackgroundColor = MyTNBColor.SectionGrey;
             viewLogout.AddSubview(btnLogout);
 
             UIView viewFooter = new UIView();
             UIButton btnAddAccount = new UIButton(UIButtonType.Custom);
             btnAddAccount.Frame = new CGRect(18, 16, myAccountTableView.Frame.Width - 36, 48);
             btnAddAccount.Layer.CornerRadius = 4;
-            btnAddAccount.Layer.BorderColor = myTNBColor.FreshGreen().CGColor;
+            btnAddAccount.Layer.BorderColor = MyTNBColor.FreshGreen.CGColor;
             btnAddAccount.BackgroundColor = UIColor.White;
             btnAddAccount.Layer.BorderWidth = 1;
             btnAddAccount.SetTitle("Common_AddAnotherAccount".Translate(), UIControlState.Normal);
-            btnAddAccount.Font = myTNBFont.MuseoSans16();
-            btnAddAccount.SetTitleColor(myTNBColor.FreshGreen(), UIControlState.Normal);
+            btnAddAccount.Font = MyTNBFont.MuseoSans16;
+            btnAddAccount.SetTitleColor(MyTNBColor.FreshGreen, UIControlState.Normal);
             btnAddAccount.TouchUpInside += (sender, e) =>
             {
                 ActivityIndicator.Show();
@@ -136,14 +136,14 @@ namespace myTNB
                 viewFooter = new UIView(new CGRect(0, 0, myAccountTableView.Frame.Width, 150));
                 viewFooter.Frame = new CGRect(0, 0, myAccountTableView.Frame.Width, 230);
                 UILabel lblTitle = new UILabel(new CGRect(93, 16, myAccountTableView.Frame.Width - 186, 16));
-                lblTitle.TextColor = myTNBColor.TunaGrey();
-                lblTitle.Font = myTNBFont.MuseoSans12_500();
+                lblTitle.TextColor = MyTNBColor.TunaGrey();
+                lblTitle.Font = MyTNBFont.MuseoSans12_500;
                 lblTitle.Text = "Common_NoAccount".Translate();
                 lblTitle.TextAlignment = UITextAlignment.Center;
 
                 UILabel lblDetails = new UILabel(new CGRect(0, 32, myAccountTableView.Frame.Width, 36));
-                lblDetails.TextColor = myTNBColor.TunaGrey();
-                lblDetails.Font = myTNBFont.MuseoSans9_300();
+                lblDetails.TextColor = MyTNBColor.TunaGrey();
+                lblDetails.Font = MyTNBFont.MuseoSans9_300;
                 lblDetails.Text = "MyAccount_AddAccountDetails".Translate();
                 lblDetails.Lines = 0;
                 lblDetails.LineBreakMode = UILineBreakMode.WordWrap;
@@ -235,14 +235,14 @@ namespace myTNB
             if (_viewNotificationMsg == null)
             {
                 _viewNotificationMsg = new UIView(new CGRect(18, 32, View.Frame.Width - 36, 64));
-                _viewNotificationMsg.BackgroundColor = myTNBColor.SunGlow();
+                _viewNotificationMsg.BackgroundColor = MyTNBColor.SunGlow;
                 _viewNotificationMsg.Layer.CornerRadius = 2.0f;
                 _viewNotificationMsg.Hidden = true;
 
                 _lblNotificationDetails = new UILabel(new CGRect(16, 16, _viewNotificationMsg.Frame.Width - 32, 32));
                 _lblNotificationDetails.TextAlignment = UITextAlignment.Left;
-                _lblNotificationDetails.Font = myTNBFont.MuseoSans12();
-                _lblNotificationDetails.TextColor = myTNBColor.TunaGrey();
+                _lblNotificationDetails.Font = MyTNBFont.MuseoSans12;
+                _lblNotificationDetails.TextColor = MyTNBColor.TunaGrey();
                 _lblNotificationDetails.Text = TNBGlobal.EMPTY_ADDRESS;
                 _lblNotificationDetails.Lines = 0;
                 _lblNotificationDetails.LineBreakMode = UILineBreakMode.WordWrap;

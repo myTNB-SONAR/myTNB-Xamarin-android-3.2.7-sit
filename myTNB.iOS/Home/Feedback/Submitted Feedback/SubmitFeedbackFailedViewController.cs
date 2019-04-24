@@ -23,60 +23,75 @@ namespace myTNB
             InitilizedViews();
             SetEvents();
             this.NavigationController.NavigationBarHidden = true;
-
         }
 
         internal void SetupSuperViewBackground()
         {
-            var startColor = myTNBColor.GradientPurpleDarkElement();
-            var endColor = myTNBColor.GradientPurpleLightElement();
-            var gradientLayer = new CAGradientLayer();
-            gradientLayer.Colors = new[] { startColor.CGColor, endColor.CGColor };
-            gradientLayer.Locations = new NSNumber[] { 0, 1 };
-            gradientLayer.Frame = View.Bounds;
+            var startColor = MyTNBColor.GradientPurpleDarkElement;
+            var endColor = MyTNBColor.GradientPurpleLightElement;
+            CAGradientLayer gradientLayer = new CAGradientLayer
+            {
+                Colors = new[] { startColor.CGColor, endColor.CGColor },
+                Locations = new NSNumber[] { 0, 1 },
+                Frame = View.Bounds
+            };
             View.Layer.InsertSublayer(gradientLayer, 0);
         }
 
         internal void InitilizedViews()
         {
-            var viewContainer = new UIView((new CGRect(18, 36, View.Frame.Width - 36, 203)));
-            viewContainer.BackgroundColor = UIColor.White;
+            UIView viewContainer = new UIView((new CGRect(18, 36, View.Frame.Width - 36, 203)))
+            {
+                BackgroundColor = UIColor.White
+            };
             viewContainer.Layer.CornerRadius = 4f;
             View.AddSubview(viewContainer);
 
-            UIImageView imgViewCheck = new UIImageView(new CGRect((viewContainer.Frame.Width - 64) / 2, 16, 64, 64));
-            imgViewCheck.Image = UIImage.FromBundle("Red-Cross");
+            UIImageView imgViewCheck = new UIImageView(new CGRect((viewContainer.Frame.Width - 64) / 2, 16, 64, 64))
+            {
+                Image = UIImage.FromBundle("Red-Cross")
+            };
             viewContainer.AddSubview(imgViewCheck);
 
-            var lblFeedback = new UILabel(new CGRect(0, 80, viewContainer.Frame.Width, 18));
-            lblFeedback.Font = myTNBFont.MuseoSans16();
-            lblFeedback.TextColor = myTNBColor.PowerBlue();
-            lblFeedback.Text = "Feedback Unsuccessful";
-            lblFeedback.TextAlignment = UITextAlignment.Center;
+            UILabel lblFeedback = new UILabel(new CGRect(0, 80, viewContainer.Frame.Width, 18))
+            {
+                Font = MyTNBFont.MuseoSans16,
+                TextColor = MyTNBColor.PowerBlue,
+                Text = "Feedback_Unsuccessful".Translate(),
+                TextAlignment = UITextAlignment.Center
+            };
             viewContainer.AddSubview(lblFeedback);
 
-            var viewLine = new UIView((new CGRect(14, 114, viewContainer.Frame.Width - 28, 1)));
-            viewLine.BackgroundColor = myTNBColor.LightGrayBG();
+            UIView viewLine = new UIView((new CGRect(14, 114, viewContainer.Frame.Width - 28, 1)))
+            {
+                BackgroundColor = MyTNBColor.LightGrayBG
+            };
             viewContainer.AddSubview(viewLine);
 
-            var lblDetail = new UILabel(new CGRect(0, 131, viewContainer.Frame.Width, 16));
-            lblDetail.Font = myTNBFont.MuseoSans12();
-            lblDetail.TextColor = myTNBColor.TunaGrey();
-            lblDetail.Text = "Your feedback didn't go through.";
-            lblDetail.TextAlignment = UITextAlignment.Center;
+            UILabel lblDetail = new UILabel(new CGRect(0, 131, viewContainer.Frame.Width, 16))
+            {
+                Font = MyTNBFont.MuseoSans12,
+                TextColor = MyTNBColor.TunaGrey(),
+                Text = "Feedback_UnsuccessfulMessage".Translate(),
+                TextAlignment = UITextAlignment.Center
+            };
             viewContainer.AddSubview(lblDetail);
 
-            var lblSubDetail = new UILabel(new CGRect(0, 150, viewContainer.Frame.Width, 16));
-            lblSubDetail.Font = myTNBFont.MuseoSans12();
-            lblSubDetail.TextColor = myTNBColor.TunaGrey();
-            lblSubDetail.Text = "Please try again later.";
-            lblSubDetail.TextAlignment = UITextAlignment.Center;
+            UILabel lblSubDetail = new UILabel(new CGRect(0, 150, viewContainer.Frame.Width, 16))
+            {
+                Font = MyTNBFont.MuseoSans12,
+                TextColor = MyTNBColor.TunaGrey(),
+                Text = "Error_DefaultMessage".Translate(),
+                TextAlignment = UITextAlignment.Center
+            };
             viewContainer.AddSubview(lblSubDetail);
 
             //Back to Dashboard Button
-            _btnDashBoard = new UIButton(UIButtonType.Custom);
-            _btnDashBoard.Frame = new CGRect(18, View.Frame.Height - 118, View.Frame.Width - 36, 48);
-            _btnDashBoard.SetTitle("BackToDshbrd".Translate(), UIControlState.Normal);
+            _btnDashBoard = new UIButton(UIButtonType.Custom)
+            {
+                Frame = new CGRect(18, View.Frame.Height - 118, View.Frame.Width - 36, 48)
+            };
+            _btnDashBoard.SetTitle("Common_BackToDashboard".Translate(), UIControlState.Normal);
             _btnDashBoard.Layer.CornerRadius = 5.0f;
             _btnDashBoard.Layer.BorderWidth = 1.0f;
             _btnDashBoard.Layer.BorderColor = UIColor.White.CGColor;
@@ -84,12 +99,14 @@ namespace myTNB
             View.AddSubview(_btnDashBoard);
 
             //Try Again Button
-            _btnTryAgain = new UIButton(UIButtonType.Custom);
-            _btnTryAgain.Frame = new CGRect(18, View.Frame.Height - 64, View.Frame.Width - 36, 48);
-            _btnTryAgain.SetTitle("Try Again", UIControlState.Normal);
-            _btnTryAgain.Font = myTNBFont.MuseoSans16();
+            _btnTryAgain = new UIButton(UIButtonType.Custom)
+            {
+                Frame = new CGRect(18, View.Frame.Height - 64, View.Frame.Width - 36, 48)
+            };
+            _btnTryAgain.SetTitle("Common_TryAgain".Translate(), UIControlState.Normal);
+            _btnTryAgain.Font = MyTNBFont.MuseoSans16;
             _btnTryAgain.Layer.CornerRadius = 5.0f;
-            _btnTryAgain.BackgroundColor = myTNBColor.FreshGreen();
+            _btnTryAgain.BackgroundColor = MyTNBColor.FreshGreen;
             View.AddSubview(_btnTryAgain);
 
         }

@@ -18,8 +18,8 @@ namespace myTNB.Customs
             placeholder = new UILabel(new CGRect(3, 0, this.Frame.Width, this.Frame.Height))
             {
                 Text = text,
-                TextColor = myTNBColor.SilverChalice(),
-                Font = myTNBFont.MuseoSans18_300(),
+                TextColor = MyTNBColor.SilverChalice,
+                Font = MyTNBFont.MuseoSans18_300,
             };
             AddSubview(placeholder);
         }

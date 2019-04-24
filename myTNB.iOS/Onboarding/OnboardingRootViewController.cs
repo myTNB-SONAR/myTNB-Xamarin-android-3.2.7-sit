@@ -68,7 +68,7 @@ namespace myTNB
                             };
                             btnSkip.SetTitle("Onboarding_Skip".Translate(), UIControlState.Normal);
                             btnSkip.BackgroundColor = UIColor.Clear;
-                            btnSkip.TitleLabel.Font = myTNBFont.MuseoSans14();
+                            btnSkip.TitleLabel.Font = MyTNBFont.MuseoSans14;
                             btnSkip.TitleLabel.TextAlignment = UITextAlignment.Left;
                             View.AddSubview(btnSkip);
                             btnSkip.TouchUpInside += (sender, e) =>
@@ -82,7 +82,7 @@ namespace myTNB
                             };
                             btnDone.SetTitle("Common_Done".Translate(), UIControlState.Normal);
                             btnDone.BackgroundColor = UIColor.Clear;
-                            btnDone.TitleLabel.Font = myTNBFont.MuseoSans14();
+                            btnDone.TitleLabel.Font = MyTNBFont.MuseoSans14;
                             btnDone.TitleLabel.TextAlignment = UITextAlignment.Right;
                             View.AddSubview(btnDone);
                             btnDone.TouchUpInside += (sender, e) =>
@@ -199,8 +199,8 @@ namespace myTNB
 
         internal void SetupSuperViewBackground()
         {
-            var startColor = myTNBColor.GradientPurpleDarkElement();
-            var endColor = myTNBColor.GradientPurpleLightElement();
+            var startColor = MyTNBColor.GradientPurpleDarkElement;
+            var endColor = MyTNBColor.GradientPurpleLightElement;
 
             var gradientLayer = new CAGradientLayer();
             gradientLayer.Colors = new[] { startColor.CGColor, endColor.CGColor };

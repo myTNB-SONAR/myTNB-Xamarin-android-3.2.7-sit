@@ -172,7 +172,7 @@ namespace myTNB
             {
                 Frame = new CGRect(horizontalMargin, 0, titleWidth, sectionView.Frame.Height),
                 Text = title,
-                Font = myTNBFont.MuseoSans14_500(),
+                Font = MyTNBFont.MuseoSans14_500,
                 TextColor = UIColor.White,
             };
 
@@ -180,7 +180,7 @@ namespace myTNB
             {
                 Frame = new CGRect(lblTitle.Frame.GetMaxX() + 1, 0, sectionView.Frame.Width - titleWidth - horizontalMargin * 2, sectionView.Frame.Height),
                 Text = amountTitle,
-                Font = myTNBFont.MuseoSans14_500(),
+                Font = MyTNBFont.MuseoSans14_500,
                 TextColor = UIColor.White,
                 TextAlignment = UITextAlignment.Right
             };
