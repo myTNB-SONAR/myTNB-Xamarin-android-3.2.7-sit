@@ -8,9 +8,9 @@ namespace myTNB.Home.More
 {
     public class MoreDataSource : UITableViewSource
     {
-        MoreViewController _controller;
-        Dictionary<string, List<string>> _data = new Dictionary<string, List<string>>();
-        List<string> _keys = new List<string>();
+        readonly MoreViewController _controller;
+        readonly Dictionary<string, List<string>> _data = new Dictionary<string, List<string>>();
+        readonly List<string> _keys = new List<string>();
         public MoreDataSource(MoreViewController controller, Dictionary<string, List<string>> data)
         {
             _controller = controller;
@@ -30,13 +30,17 @@ namespace myTNB.Home.More
 
         public override UIView GetViewForHeader(UITableView tableView, nint section)
         {
-            UIView view = new UIView(new CGRect(0, 0, tableView.Frame.Width, 48));
-            view.BackgroundColor = myTNBColor.SectionGrey();
+            UIView view = new UIView(new CGRect(0, 0, tableView.Frame.Width, 48))
+            {
+                BackgroundColor = myTNBColor.SectionGrey()
+            };
 
-            var lblSectionTitle = new UILabel(new CGRect(18, 16, tableView.Frame.Width, 18));
-            lblSectionTitle.Text = _keys[(int)section];
-            lblSectionTitle.Font = myTNBFont.MuseoSans16();
-            lblSectionTitle.TextColor = myTNBColor.PowerBlue();
+            var lblSectionTitle = new UILabel(new CGRect(18, 16, tableView.Frame.Width, 18))
+            {
+                Text = _keys[(int)section],
+                Font = myTNBFont.MuseoSans16(),
+                TextColor = myTNBColor.PowerBlue()
+            };
             view.Add(lblSectionTitle);
 
             return view;
@@ -54,8 +58,10 @@ namespace myTNB.Home.More
 
             if (indexPath.Row < items.Count - 1)
             {
-                UIView viewLine = new UIView(new CGRect(0, cell.Frame.Height - 1, cell.Frame.Width, 1));
-                viewLine.BackgroundColor = myTNBColor.PlatinumGrey();
+                UIView viewLine = new UIView(new CGRect(0, cell.Frame.Height - 1, cell.Frame.Width, 1))
+                {
+                    BackgroundColor = myTNBColor.PlatinumGrey()
+                };
                 cell.AddSubview(viewLine);
             }
 

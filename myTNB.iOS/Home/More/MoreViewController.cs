@@ -18,7 +18,7 @@ namespace myTNB
 
         Dictionary<string, List<string>> _itemsDictionary = new Dictionary<string, List<string>>(){
             {"More_Settings".Translate(), new List<string>{ "More_MyAccount".Translate()
-                , "More_Notifications".Translate()}}
+                , "More_Notifications".Translate(), "More_Language".Translate()}}
             , {"More_HelpAndSupport".Translate(), new List<string>{ "More_FindUs".Translate()
                 , "More_CallUsOutagesAndBreakdown".Translate()
                 , "More_CallUsBilling".Translate()
@@ -113,6 +113,10 @@ namespace myTNB
                                     else if (row == 1)
                                     {
                                         GetNotificationPreferences();
+                                    }
+                                    else
+                                    {
+                                        GoToLanguageSetting();
                                     }
                                     break;
                                 }
@@ -218,6 +222,11 @@ namespace myTNB
                 AlertHandler.DisplayServiceError(this, errorMessage);
                 ActivityIndicator.Hide();
             }
+        }
+
+        void GoToLanguageSetting()
+        {
+
         }
 
         void GoToMyAccount()

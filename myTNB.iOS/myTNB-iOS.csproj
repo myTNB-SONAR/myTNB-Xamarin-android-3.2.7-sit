@@ -1098,6 +1098,7 @@
     <Folder Include="Assets.xcassets\Payment-Checkbox-White-Inactive.imageset\" />
     <Folder Include="Assets.xcassets\New-Launch-Logo.imageset\" />
     <Folder Include="Home\Feedback\FeedbackV2\" />
+    <Folder Include="Helpers\Generic Tableview Selector\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -1132,6 +1133,7 @@
     <InterfaceDefinition Include="Home\Feedback\Feedback Details\FeedbackDetails.storyboard" />
     <InterfaceDefinition Include="Home\More\FAQ\FAQ.storyboard" />
     <InterfaceDefinition Include="Home\Promotions\Promotion Details\PromotionDetails.storyboard" />
+    <InterfaceDefinition Include="Helpers\Generic Tableview Selector\GenericSelector.storyboard" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Info.plist" />
@@ -1828,6 +1830,11 @@
     </Compile>
     <Compile Include="Enums\DashboardModeEnum.cs" />
     <Compile Include="Helpers\AlertHandler.cs" />
+    <Compile Include="Helpers\Generic Tableview Selector\GenericSelectorViewController.cs" />
+    <Compile Include="Helpers\Generic Tableview Selector\GenericSelectorViewController.designer.cs">
+      <DependentUpon>GenericSelectorViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Helpers\Generic Tableview Selector\GenericSelectorDataSource.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />
