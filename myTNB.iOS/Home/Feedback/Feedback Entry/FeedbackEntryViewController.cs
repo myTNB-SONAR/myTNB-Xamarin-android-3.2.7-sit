@@ -557,6 +557,7 @@ namespace myTNB
                 {
                     if (NetworkUtility.isReachable)
                     {
+                        ActivityIndicator.Show();
                         _submitFeedback = new SubmitFeedbackResponseModel();
                         SubmitFeedback().ContinueWith(task =>
                         {
