@@ -19,7 +19,6 @@ namespace myTNB.Home.Feedback.FeedbackEntry
 
         UIView viewContainer;
 
-
         public override void ViewDidLoad()
         {
             base.ViewDidLoad();
@@ -94,11 +93,11 @@ namespace myTNB.Home.Feedback.FeedbackEntry
             if (IsSuccess)
             {
                 AddSuccessDetails();
-            }
+            }/*
             else
             {
                 AddFailedDetails();
-            }
+            }*/
 
             View.AddSubview(viewContainer);
         }
@@ -187,7 +186,7 @@ namespace myTNB.Home.Feedback.FeedbackEntry
             View.AddSubview(btnBackToFeedback);
         }
 
-        void AddFailedDetails()
+        /*void AddFailedDetails()
         {
             viewContainer.AddSubviews(new UIView[] { new UILabel(new CGRect(0, 131, viewContainer.Frame.Width, 16))
                 {
@@ -235,6 +234,6 @@ namespace myTNB.Home.Feedback.FeedbackEntry
             };
 
             View.AddSubviews(new UIView[] { btnDashBoard, btnTryAgain });
-        }
+        }*/
     }
 }

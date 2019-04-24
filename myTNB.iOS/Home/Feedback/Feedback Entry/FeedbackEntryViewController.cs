@@ -562,37 +562,22 @@ namespace myTNB
                         {
                             InvokeOnMainThread(() =>
                             {
-                                UIStoryboard storyBoard = UIStoryboard.FromName("Feedback", null);
-                                FeedbackEntryStatus feedbackStatusVS = storyBoard.InstantiateViewController("FeedbackEntryStatus") as FeedbackEntryStatus;
-
                                 if (_submitFeedback != null && _submitFeedback?.d != null
                                    && _submitFeedback?.d?.didSucceed == true
                                    && _submitFeedback?.d?.data != null)
                                 {
+                                    UIStoryboard storyBoard = UIStoryboard.FromName("Feedback", null);
+                                    FeedbackEntryStatus feedbackStatusVS = storyBoard.InstantiateViewController("FeedbackEntryStatus") as FeedbackEntryStatus;
                                     feedbackStatusVS.IsSuccess = true;
                                     feedbackStatusVS.ServiceRequestNumber = _submitFeedback?.d?.data?.ServiceReqNo;
                                     feedbackStatusVS.DateCreated = _submitFeedback?.d?.data?.DateCreated;
-                                    /*SubmitFeedbackSuccessViewController submitFeedbackSuccessVC =
-                                        storyBoard.InstantiateViewController("SubmitFeedbackSuccessViewController") as SubmitFeedbackSuccessViewController;
-                                    submitFeedbackSuccessVC.ServiceReqNo = _submitFeedback.d.data.ServiceReqNo;
-                                    submitFeedbackSuccessVC.DateCreated = _submitFeedback.d.data.DateCreated;
-                                    NavigationController.PushViewController(submitFeedbackSuccessVC, true);
-                                    */
+                                    NavigationController.PushViewController(feedbackStatusVS, true);
                                 }
                                 else
                                 {
-                                    //Todo: Confirm if this will go to error page or just a popup?
-                                    //ToastHelper.DisplayAlertView(this, "Error_FeedbackTitle".Translate(), _submitFeedback?.d?.message ?? "Error_DefaultMessage".Translate());
-                                    feedbackStatusVS.IsSuccess = false;
-                                    /*
-                                         * SubmitFeedbackFailedViewController submitFeedbackFailedVC =
-                                            storyBoard.InstantiateViewController("SubmitFeedbackFailedViewController") as SubmitFeedbackFailedViewController;
-                                        NavigationController.PushViewController(submitFeedbackFailedVC, true);
-                                        */
+                                    AlertHandler.DisplayGenericAlert(this, "Error_FeedbackTitle".Translate()
+                                        , _submitFeedback?.d?.message ?? "Error_DefaultMessage".Translate());
                                 }
-
-
-                                NavigationController.PushViewController(feedbackStatusVS, true);
                                 ActivityIndicator.Hide();
                             });
                         });
