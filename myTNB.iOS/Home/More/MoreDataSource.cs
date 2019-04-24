@@ -30,13 +30,17 @@ namespace myTNB.Home.More
 
         public override UIView GetViewForHeader(UITableView tableView, nint section)
         {
-            UIView view = new UIView(new CGRect(0, 0, tableView.Frame.Width, 48));
-            view.BackgroundColor = MyTNBColor.SectionGrey;
+            UIView view = new UIView(new CGRect(0, 0, tableView.Frame.Width, 48))
+            {
+                BackgroundColor = MyTNBColor.SectionGrey
+            };
 
-            var lblSectionTitle = new UILabel(new CGRect(18, 16, tableView.Frame.Width, 18));
-            lblSectionTitle.Text = _keys[(int)section];
-            lblSectionTitle.Font = MyTNBFont.MuseoSans16;
-            lblSectionTitle.TextColor = MyTNBColor.PowerBlue;
+            var lblSectionTitle = new UILabel(new CGRect(18, 16, tableView.Frame.Width, 18))
+            {
+                Text = _keys[(int)section],
+                Font = MyTNBFont.MuseoSans16,
+                TextColor = MyTNBColor.PowerBlue
+            };
             view.Add(lblSectionTitle);
 
             return view;
@@ -54,9 +58,25 @@ namespace myTNB.Home.More
 
             if (indexPath.Row < items.Count - 1)
             {
-                UIView viewLine = new UIView(new CGRect(0, cell.Frame.Height - 1, cell.Frame.Width, 1));
-                viewLine.BackgroundColor = MyTNBColor.PlatinumGrey;
+                UIView viewLine = new UIView(new CGRect(0, cell.Frame.Height - 1, cell.Frame.Width, 1))
+                {
+                    BackgroundColor = MyTNBColor.PlatinumGrey
+                };
                 cell.AddSubview(viewLine);
+            }
+
+            //Language
+            if (indexPath.Section == 0 && indexPath.Row == 2)
+            {
+                UILabel lang = new UILabel(new CGRect(cell.Frame.Width - 56, 0, 56, 56))
+                {
+                    TextAlignment = UITextAlignment.Center,
+                    Font = MyTNBFont.MuseoSans14_300,
+                    TextColor = MyTNBColor.TunaGrey(),
+                    Text = DataManager.DataManager.SharedInstance.SupportedLanguage
+                    ?[DataManager.DataManager.SharedInstance.SelectedLanguage] ?? string.Empty
+                };
+                cell.AddSubview(lang);
             }
 
             cell.SelectionStyle = UITableViewCellSelectionStyle.None;

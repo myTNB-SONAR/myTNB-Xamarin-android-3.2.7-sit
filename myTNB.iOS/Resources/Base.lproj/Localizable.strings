@@ -252,6 +252,10 @@
 "Invalid_ROCNo"="Invalid ROC No.";
 "Invalid_State"="Invalid state";
 
+/*Laguage*/
+"Language_English"="English";
+"Laguage_Malay"="Bahasa Melayu";
+
 /*Login*/
 "Login_AccountLogin"="myTNB Account Login";
 "Login_CallUs"="Call Us";

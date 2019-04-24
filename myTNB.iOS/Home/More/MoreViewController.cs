@@ -7,6 +7,7 @@ using myTNB.Home.More;
 using System.Collections.Generic;
 using myTNB.Registration;
 using myTNB.DataManager;
+using System.Diagnostics;
 
 namespace myTNB
 {
@@ -226,7 +227,20 @@ namespace myTNB
 
         void GoToLanguageSetting()
         {
-
+            UIStoryboard storyBoard = UIStoryboard.FromName("GenericSelector", null);
+            GenericSelectorViewController viewController = (GenericSelectorViewController)storyBoard
+                .InstantiateViewController("GenericSelectorViewController");
+            viewController.Title = "More_Language".Translate();
+            viewController.Items = new List<string>()
+            {
+                "Language_English".Translate()
+                , "Laguage_Malay".Translate()
+            };
+            viewController.OnSelect = () => {
+                Debug.WriteLine("Tapped");
+            };
+            var navController = new UINavigationController(viewController);
+            PresentViewController(navController, true, null);
         }
 
         void GoToMyAccount()

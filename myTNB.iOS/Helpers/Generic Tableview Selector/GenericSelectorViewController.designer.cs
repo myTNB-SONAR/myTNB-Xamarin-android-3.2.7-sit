@@ -9,20 +9,20 @@ using System;
 using System.CodeDom.Compiler;
 using UIKit;
 
-namespace myTNB.Helpers.GenericTableviewSelector
+namespace myTNB
 {
     [Register ("GenericSelectorViewController")]
     partial class GenericSelectorViewController
     {
         [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
-        UIKit.UITableView selectStoreTypeTableView { get; set; }
+        UIKit.UITableView genericTableView { get; set; }
 
         void ReleaseDesignerOutlets ()
         {
-            if (selectStoreTypeTableView != null) {
-                selectStoreTypeTableView.Dispose ();
-                selectStoreTypeTableView = null;
+            if (genericTableView != null) {
+                genericTableView.Dispose ();
+                genericTableView = null;
             }
         }
     }

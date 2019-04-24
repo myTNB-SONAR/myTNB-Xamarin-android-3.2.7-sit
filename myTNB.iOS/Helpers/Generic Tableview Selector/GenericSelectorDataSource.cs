@@ -23,17 +23,49 @@ namespace myTNB
 
         public override nint RowsInSection(UITableView tableview, nint section)
         {
-            return 0;
+            return (nint)(_controller?.Items != null ? _controller.Items?.Count : 0);
         }
 
         public override UITableViewCell GetCell(UITableView tableView, NSIndexPath indexPath)
         {
-            return new UITableViewCell();
+            UITableViewCell cell = tableView.DequeueReusableCell("genericViewCell", indexPath);
+            cell.TextLabel.Text = _controller.Items[indexPath.Row];
+            cell.TextLabel.TextColor = MyTNBColor.TunaGrey();
+            cell.TextLabel.Font = MyTNBFont.MuseoSans16;
+            if (indexPath.Row == DataManager.DataManager.SharedInstance.SelectedLanguage)
+            {
+                cell.Accessory = UITableViewCellAccessory.None;
+                cell.AccessoryView = new UIView(new CGRect(0, 0, 24, 24));
+                UIImageView imgViewTick = new UIImageView(new CGRect(0, 0, 24, 24))
+                {
+                    Image = UIImage.FromBundle("Table-Tick")
+                };
+                cell.AccessoryView.AddSubview(imgViewTick);
+            }
+            else
+            {
+                if (cell != null && cell.AccessoryView != null && cell.AccessoryView.Subviews != null)
+                {
+                    foreach (var subView in cell.AccessoryView.Subviews)
+                    {
+                        subView.RemoveFromSuperview();
+                    }
+                }
+            }
+            UIView viewLine = new UIView(new CGRect(0, cell.Frame.Height - 1, tableView.Frame.Width, 1))
+            {
+                BackgroundColor = MyTNBColor.PlatinumGrey
+            };
+            cell.AddSubview(viewLine);
+            return cell;
         }
 
         public override void RowSelected(UITableView tableView, NSIndexPath indexPath)
         {
-
+            if (_controller?.OnSelect != null)
+            {
+                _controller?.OnSelect();
+            }
         }
     }
 }

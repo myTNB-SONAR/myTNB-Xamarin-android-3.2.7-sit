@@ -113,6 +113,13 @@ namespace myTNB.DataManager
         public bool IsPaymentDone = false;
         private List<string> AccountNumbersForPaymentList;
 
+        //Language
+        public int SelectedLanguage = 0;
+        public List<string> SupportedLanguage = new List<string>()
+        {
+            "EN", "MS"
+        };
+
         public static DataManager SharedInstance
         {
             get
