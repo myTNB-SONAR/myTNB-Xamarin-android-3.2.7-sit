@@ -88,6 +88,7 @@ namespace myTNB
             _titleBarComponent.SetTitle("Dashboard_AllAccounts".Translate());
             btnLoad.SetTitle("Dashboard_LoadMoreAccounts".Translate(), UIControlState.Normal);
             btnAdd.SetTitle("Common_AddAnotherAccount".Translate(), UIControlState.Normal);
+            DataManager.DataManager.SharedInstance.SummaryNeedsRefresh = true;
         }
 
         private void HandleAppWillEnterForeground(NSNotification notification)
