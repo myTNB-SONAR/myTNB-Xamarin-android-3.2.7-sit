@@ -8,6 +8,7 @@ namespace myTNB
     {
         public Action<int> OnSelect;
         public List<string> Items;
+        public int SelectedIndex = -1;
 
         public GenericSelectorViewController(IntPtr handle) : base(handle)
         {

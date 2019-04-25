@@ -1100,6 +1100,7 @@
     <Folder Include="Home\Feedback\Select Account\" />
     <Folder Include="Home\Feedback\Feedback Location and State\" />
     <Folder Include="Home\Feedback\Feedback Image\" />
+    <Folder Include="Home\More\Language\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -1823,6 +1824,7 @@
     <Compile Include="Helpers\Generic Tableview Selector\GenericSelectorDataSource.cs" />
     <Compile Include="Helpers\Generic Tableview Selector\GenericSelectorViewController.cs" />
     <Compile Include="Helpers\Generic Tableview Selector\GenericSelectorViewController.designer.cs" />
+    <Compile Include="Home\More\Language\LanguageSettings.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />

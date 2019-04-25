@@ -19,7 +19,7 @@ namespace myTNB
 
         Dictionary<string, List<string>> _itemsDictionary = new Dictionary<string, List<string>>(){
             {"More_Settings".Translate(), new List<string>{ "More_MyAccount".Translate()
-                , "More_Notifications".Translate(), "More_Language".Translate()}}
+                , "More_Notifications".Translate(), LanguageSettings.Title}}
             , {"More_HelpAndSupport".Translate(), new List<string>{ "More_FindUs".Translate()
                 , "More_CallUsOutagesAndBreakdown".Translate()
                 , "More_CallUsBilling".Translate()
@@ -230,15 +230,10 @@ namespace myTNB
             UIStoryboard storyBoard = UIStoryboard.FromName("GenericSelector", null);
             GenericSelectorViewController viewController = (GenericSelectorViewController)storyBoard
                 .InstantiateViewController("GenericSelectorViewController");
-            viewController.Title = "More_Language".Translate();
-            viewController.Items = new List<string>()
-            {
-                "Language_English".Translate()
-                , "Laguage_Malay".Translate()
-            };
-            viewController.OnSelect = (int index) => {
-                Debug.WriteLine("Tapped: "+ index);
-            };
+            viewController.Title = LanguageSettings.Title;
+            viewController.Items = LanguageSettings.SupportedLanguage;
+            viewController.OnSelect = LanguageSettings.OnSelect;
+            viewController.SelectedIndex = LanguageSettings.SelectedLangugageIndex;
             var navController = new UINavigationController(viewController);
             PresentViewController(navController, true, null);
         }

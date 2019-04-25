@@ -68,13 +68,16 @@ namespace myTNB.Home.More
             //Language
             if (indexPath.Section == 0 && indexPath.Row == 2)
             {
+                if (cell?.Subviews?.Length > 1)
+                {
+                    cell?.Subviews[1]?.RemoveFromSuperview();
+                }
                 UILabel lang = new UILabel(new CGRect(cell.Frame.Width - 56, 0, 56, 56))
                 {
                     TextAlignment = UITextAlignment.Center,
                     Font = MyTNBFont.MuseoSans14_300,
                     TextColor = MyTNBColor.TunaGrey(),
-                    Text = DataManager.DataManager.SharedInstance.SupportedLanguage
-                    ?[DataManager.DataManager.SharedInstance.SelectedLanguage] ?? string.Empty
+                    Text = LanguageSettings.SupportedLanguageCode[LanguageSettings.SelectedLangugageIndex]
                 };
                 cell.AddSubview(lang);
             }

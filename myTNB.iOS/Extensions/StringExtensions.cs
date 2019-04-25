@@ -11,7 +11,8 @@ namespace myTNB
         /// <param name="key">Key.</param>
         public static string Translate(this string key)
         {
-            return NSBundle.MainBundle.GetLocalizedString(key, "", "");
+            NSBundle languageBundle = LanguageSettings.LanguageBundle ?? NSBundle.MainBundle;
+            return languageBundle.GetLocalizedString(key, "", "");
         }
     }
 }

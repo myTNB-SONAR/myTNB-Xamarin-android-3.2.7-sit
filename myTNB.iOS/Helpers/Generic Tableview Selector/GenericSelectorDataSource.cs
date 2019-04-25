@@ -32,7 +32,7 @@ namespace myTNB
             cell.TextLabel.Text = _controller.Items[indexPath.Row];
             cell.TextLabel.TextColor = MyTNBColor.TunaGrey();
             cell.TextLabel.Font = MyTNBFont.MuseoSans16;
-            if (indexPath.Row == DataManager.DataManager.SharedInstance.SelectedLanguage)
+            if (_controller.SelectedIndex > -1 && indexPath.Row == _controller.SelectedIndex)
             {
                 cell.Accessory = UITableViewCellAccessory.None;
                 cell.AccessoryView = new UIView(new CGRect(0, 0, 24, 24));
@@ -65,6 +65,7 @@ namespace myTNB
             if (_controller?.OnSelect != null)
             {
                 _controller?.OnSelect(indexPath.Row);
+                _controller?.DismissViewController(true, null);
             }
         }
     }
