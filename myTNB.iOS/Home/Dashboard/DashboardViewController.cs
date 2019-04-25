@@ -50,6 +50,8 @@ namespace myTNB.Dashboard
             {
                 appDelegate._dashboardVC = this;
             }
+            NSNotificationCenter.DefaultCenter.AddObserver((Foundation.NSString)"LanguageDidChange", LanguageDidChange);
+            NSNotificationCenter.DefaultCenter.AddObserver(UIApplication.WillEnterForegroundNotification, HandleAppWillEnterForeground);
             DataManager.DataManager.SharedInstance.IsPreloginFeedback = false;
             NavigationController?.SetNavigationBarHidden(true, false);
             NavigationItem?.SetHidesBackButton(true, false);
@@ -58,7 +60,6 @@ namespace myTNB.Dashboard
             //{
             //    PullDownTorefresh = PullDownTorefresh
             //}; removed pull down to refresh
-            NSNotificationCenter.DefaultCenter.AddObserver(UIApplication.WillEnterForegroundNotification, HandleAppWillEnterForeground);
             NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
             {
                 InvokeOnMainThread(async () =>
@@ -78,6 +79,11 @@ namespace myTNB.Dashboard
                     }
                 });
             });
+        }
+
+        public void LanguageDidChange(NSNotification notification)
+        {
+            Debug.WriteLine("DEBUG >>> INNER DASHBOARD LanguageDidChange");
         }
 
         internal void HandleAppWillEnterForeground(NSNotification notification)

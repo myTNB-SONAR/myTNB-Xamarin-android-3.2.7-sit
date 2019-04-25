@@ -4,7 +4,6 @@ using myTNB.Dashboard;
 using myTNB.Dashboard.DashboardComponents;
 using myTNB.DataManager;
 using myTNB.Enums;
-
 using myTNB.Model;
 using myTNB.PushNotification;
 using myTNB.Registration.CustomerAccounts;
@@ -23,13 +22,9 @@ namespace myTNB
         GreetingComponent _greetingComponent;
         TitleBarComponent _titleBarComponent;
         SystemDownComponent _sysDownComponent;
-        UIView _gradientView;
-        UIView _greetingView;
-        UIView _sysDownView;
-        UIView _viewHeader;
-        UIView _viewFooter;
-        UIView _viewLoadMore;
-        UIButton btnAdd;
+        UIView _gradientView, _greetingView, _sysDownView, _viewHeader
+            , _viewFooter, _viewLoadMore;
+        UIButton btnAdd, btnLoad;
         UIRefreshControl refreshControl;
 
         Dictionary<string, List<DueAmountDataModel>> displayedAccounts = new Dictionary<string, List<DueAmountDataModel>>();
@@ -58,14 +53,17 @@ namespace myTNB
         public override void ViewDidLoad()
         {
             base.ViewDidLoad();
-            refreshControl = new UIRefreshControl();
-            refreshControl.TintColor = UIColor.White;
+            refreshControl = new UIRefreshControl
+            {
+                TintColor = UIColor.White
+            };
             refreshControl.ValueChanged += PullDownTorefresh;
             Initialize();
             SetEvents();
             isViewDidLoad = true;
             DataManager.DataManager.SharedInstance.SummaryNeedsRefresh = true;
             LoadContents();
+            NSNotificationCenter.DefaultCenter.AddObserver((Foundation.NSString)"LanguageDidChange", LanguageDidChange);
             NSNotificationCenter.DefaultCenter.AddObserver(UIApplication.WillEnterForegroundNotification, HandleAppWillEnterForeground);
             NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
             {
@@ -84,10 +82,14 @@ namespace myTNB
             });
         }
 
-        /// <summary>
-        /// Handles the app will enter foreground.
-        /// </summary>
-        /// <param name="notification">Notification.</param>
+        public void LanguageDidChange(NSNotification notification)
+        {
+            Debug.WriteLine("DEBUG >>> SUMMARY DASHBOARD LanguageDidChange");
+            _titleBarComponent.SetTitle("Dashboard_AllAccounts".Translate());
+            btnLoad.SetTitle("Dashboard_LoadMoreAccounts".Translate(), UIControlState.Normal);
+            btnAdd.SetTitle("Common_AddAnotherAccount".Translate(), UIControlState.Normal);
+        }
+
         private void HandleAppWillEnterForeground(NSNotification notification)
         {
             if (DataManager.DataManager.SharedInstance.IsLoggedIn())
@@ -100,9 +102,7 @@ namespace myTNB
         {
             base.ViewWillAppear(animated);
             isBcrmAvailable = DataManager.DataManager.SharedInstance.IsBcrmAvailable;
-
             UpdateHeader();
-
             UpdateNotificationIcon();
 
             if (isViewDidLoad)
@@ -213,14 +213,12 @@ namespace myTNB
 
                         int removedCount = await UpdateDues();
                         // limit if displayed accounts is greater than max per call
-                        var accountsToAdd = (loadedAccountsCount < MaxAccountsPerCall) ? 0 : Math.Max(DataManager.DataManager.SharedInstance.AccountsAddedCount, removedCount);
+                        int accountsToAdd = (loadedAccountsCount < MaxAccountsPerCall) ? 0
+                            : Math.Max(DataManager.DataManager.SharedInstance.AccountsAddedCount, removedCount);
 
-                        if (!fromWillAppear ||
-                            (fromWillAppear && (loadedAccountsCount < MaxAccountsPerCall
-                                                 || accountsToAdd > 0)))
+                        if (!fromWillAppear || (fromWillAppear && (loadedAccountsCount < MaxAccountsPerCall || accountsToAdd > 0)))
                         {
                             await LoadDues(accountsToAdd, pullDown);
-
                             if (DataManager.DataManager.SharedInstance.AccountsAddedCount > 0)
                             {
                                 DataManager.DataManager.SharedInstance.AccountsAddedCount = 0;
@@ -337,8 +335,10 @@ namespace myTNB
 
             var width = 140.0f;
             var posX = tableViewAccounts.Frame.Width / 2.0f - width / 2.0f;
-            UIButton btnLoad = new UIButton(UIButtonType.Custom);
-            btnLoad.Frame = new CGRect(posX, verticalMargin - 2, width, 20);
+            btnLoad = new UIButton(UIButtonType.Custom)
+            {
+                Frame = new CGRect(posX, verticalMargin - 2, width, 20)
+            };
             btnLoad.Layer.BorderColor = UIColor.Clear.CGColor;
             btnLoad.BackgroundColor = UIColor.Clear;
             btnLoad.Layer.BorderWidth = 1;
@@ -363,8 +363,10 @@ namespace myTNB
 
             // add account button
 
-            btnAdd = new UIButton(UIButtonType.Custom);
-            btnAdd.Frame = new CGRect(horizontalMargin, footerHeight + verticalMargin, tableViewAccounts.Frame.Width - horizontalMargin * 2, addHeight);
+            btnAdd = new UIButton(UIButtonType.Custom)
+            {
+                Frame = new CGRect(horizontalMargin, footerHeight + verticalMargin, tableViewAccounts.Frame.Width - horizontalMargin * 2, addHeight)
+            };
             btnAdd.Layer.CornerRadius = 4;
             btnAdd.Layer.BorderColor = UIColor.White.CGColor;
             btnAdd.BackgroundColor = UIColor.Clear;
@@ -781,9 +783,11 @@ namespace myTNB
                         var section = displayedAccounts[firstKey];
                         displayedAccounts.Remove(firstKey);
 
-                        displayedAccounts = new Dictionary<string, List<DueAmountDataModel>>();
-                        displayedAccounts.Add(key.Translate(), accountsToAdd);
-                        displayedAccounts.Add(firstKey, section);
+                        displayedAccounts = new Dictionary<string, List<DueAmountDataModel>>
+                        {
+                            { key.Translate(), accountsToAdd },
+                            { firstKey, section }
+                        };
                     }
                     else
                     {

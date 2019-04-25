@@ -9,17 +9,12 @@ namespace myTNB
     {
         const string LANGUAGE_KEY = "languageIndex";
         const string DID_USER_SET_KEY = "didUserSetLanguage";
-        readonly static List<string> _supportedLanguage = new List<string>()
-        {
-            "Language_English".Translate()
-            , "Language_Malay".Translate()
-        };
 
         readonly static List<string> _supportedLanguageCode = new List<string>()
         {
             "EN", "MS"
         };
-        
+
         static int _selectedLanguageIndex;
         static NSBundle _languageBundle;
 
@@ -27,7 +22,10 @@ namespace myTNB
         {
             get
             {
-                return _supportedLanguage;
+                return new List<string>(){
+                    "Language_English".Translate()
+                    , "Language_Malay".Translate()
+                };
             }
         }
 
@@ -89,11 +87,11 @@ namespace myTNB
             NSUserDefaults sharedPreference = NSUserDefaults.StandardUserDefaults;
             sharedPreference.SetBool(true, DID_USER_SET_KEY);
             sharedPreference.Synchronize();
+            NSNotificationCenter.DefaultCenter.PostNotificationName("LanguageDidChange", new NSObject());
         }
 
         public static void SetLanguage(int index)
         {
-            Debug.WriteLine("DEBUG >>> SetLanguage: " + index);
             index = index > -1 ? index : 0;
             SelectedLangugageIndex = index;
             string pathName = SupportedLanguageCode[index].ToLower();

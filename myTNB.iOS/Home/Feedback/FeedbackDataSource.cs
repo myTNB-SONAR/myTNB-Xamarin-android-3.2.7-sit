@@ -21,7 +21,7 @@ using myTNB.Model.Feedback; using UIKit;  namespace myTNB.Home.Feedback 
                 {                     cell.lblCount.Hidden = false;                     cell.lblCount.Text = _submittedFeedbackList.Count.ToString();                 }             }
             cell.SelectionStyle = UITableViewCellSelectionStyle.None;              return cell;         }
 
-        public override void RowSelected(UITableView tableView, NSIndexPath indexPath)         {             var feedback = _feedbacks[indexPath.Row];             if (indexPath.Row == 3)
+        public override void RowSelected(UITableView tableView, NSIndexPath indexPath)         {             var feedback = _feedbacks[indexPath.Row];             if (feedback.ID == "4")
             {
                 _controller.DisplaySubmittedFeedback();
             }

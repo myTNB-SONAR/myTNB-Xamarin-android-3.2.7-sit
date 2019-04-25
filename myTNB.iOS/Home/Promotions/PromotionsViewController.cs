@@ -23,6 +23,7 @@ namespace myTNB
         public bool IsDelegateNeeded = false;
         UIImageView imgViewNoPromotions;
         UILabel lblDetails;
+        TitleBarComponent _titleBarComponent;
 
         string _imageSize = string.Empty;
         bool isPromoDetailScreen = false;
@@ -31,9 +32,16 @@ namespace myTNB
         {
             base.ViewDidLoad();
             Debug.WriteLine("PROMOTION DID LOAD");
+            NSNotificationCenter.DefaultCenter.AddObserver((Foundation.NSString)"LanguageDidChange", LanguageDidChange);
             SetNavigationBar();
             promotionsTableView.Frame = new CGRect(0, DeviceHelper.IsIphoneXUpResolution() ? 88 : 64
                 , View.Frame.Width, View.Frame.Height - 49 - (DeviceHelper.IsIphoneXUpResolution() ? 88 : 64));
+        }
+
+        public void LanguageDidChange(NSNotification notification)
+        {
+            Debug.WriteLine("DEBUG >>> PROMOTIONS LanguageDidChange");
+            _titleBarComponent?.SetTitle("Promotion_Title".Translate());
         }
 
         public override void ViewWillAppear(bool animated)
@@ -165,10 +173,10 @@ namespace myTNB
         {
             GradientViewComponent gradientViewComponent = new GradientViewComponent(View, true, 64, true);
             UIView headerView = gradientViewComponent.GetUI();
-            TitleBarComponent titleBarComponent = new TitleBarComponent(headerView);
-            UIView titleBarView = titleBarComponent.GetUI();
-            titleBarComponent.SetTitle("Promotion_Title".Translate());
-            titleBarComponent.SetNotificationVisibility(true);
+            _titleBarComponent = new TitleBarComponent(headerView);
+            UIView titleBarView = _titleBarComponent.GetUI();
+            _titleBarComponent.SetTitle("Promotion_Title".Translate());
+            _titleBarComponent.SetNotificationVisibility(true);
             headerView.AddSubview(titleBarView);
             View.AddSubview(headerView);
         }
@@ -206,16 +214,20 @@ namespace myTNB
         {
             imgViewNoPromotions = new UIImageView(new CGRect(DeviceHelper.GetScaledSizeByWidth(26.6f)
                 , DeviceHelper.GetScaledSizeByHeight(32.6f), DeviceHelper.GetScaledSizeByWidth(46.9f)
-                , DeviceHelper.GetScaledSizeByHeight(26.4f)));
-            imgViewNoPromotions.Image = UIImage.FromBundle(("IC-Empty-Promotion"));
+                , DeviceHelper.GetScaledSizeByHeight(26.4f)))
+            {
+                Image = UIImage.FromBundle(("IC-Empty-Promotion"))
+            };
 
             lblDetails = new UILabel(new CGRect(44, DeviceHelper.GetScaledSizeByHeight(61.8f)
-                , View.Frame.Width - 88, 32));
-            lblDetails.Text = "Promotion_NoPromotion".Translate();
-            lblDetails.TextColor = MyTNBColor.SilverChalice;
-            lblDetails.Font = MyTNBFont.MuseoSans12;
-            lblDetails.Lines = 2;
-            lblDetails.TextAlignment = UITextAlignment.Center;
+                , View.Frame.Width - 88, 32))
+            {
+                Text = "Promotion_NoPromotion".Translate(),
+                TextColor = MyTNBColor.SilverChalice,
+                Font = MyTNBFont.MuseoSans12,
+                Lines = 2,
+                TextAlignment = UITextAlignment.Center
+            };
 
             View.AddSubviews(new UIView[] { imgViewNoPromotions, lblDetails });
         }

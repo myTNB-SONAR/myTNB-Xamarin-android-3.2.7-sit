@@ -17,29 +17,20 @@ namespace myTNB
         {
         }
 
-        Dictionary<string, List<string>> _itemsDictionary = new Dictionary<string, List<string>>(){
-            {"More_Settings".Translate(), new List<string>{ "More_MyAccount".Translate()
-                , "More_Notifications".Translate(), LanguageSettings.Title}}
-            , {"More_HelpAndSupport".Translate(), new List<string>{ "More_FindUs".Translate()
-                , "More_CallUsOutagesAndBreakdown".Translate()
-                , "More_CallUsBilling".Translate()
-                , "More_FAQ".Translate()
-                , "More_TnC".Translate()}}
-            , {"More_Share".Translate(), new List<string>{ "More_ShareThisApp".Translate()
-                , "More_RateThisApp".Translate()}}
-        };
+        TitleBarComponent _titleBarComponent;
+        UILabel _lblAppVersion;
 
         public override void ViewDidLoad()
         {
             base.ViewDidLoad();
+            NSNotificationCenter.DefaultCenter.AddObserver((Foundation.NSString)"LanguageDidChange", LanguageDidChange);
             SetSubviews();
         }
 
         public override void ViewWillAppear(bool animated)
         {
             base.ViewWillAppear(animated);
-            UpdateDictionary();
-            moreTableView.Source = new MoreDataSource(this, _itemsDictionary);
+            moreTableView.Source = new MoreDataSource(this, GetMoreList());
             moreTableView.ReloadData();
         }
 
@@ -48,8 +39,28 @@ namespace myTNB
             base.ViewDidAppear(animated);
         }
 
-        void UpdateDictionary()
+        public void LanguageDidChange(NSNotification notification)
         {
+            Debug.WriteLine("DEBUG >>> MORE LanguageDidChange");
+            _titleBarComponent?.SetTitle("More_Title".Translate());
+            _lblAppVersion.Text = string.Format("{0} {1}", "More_AppVersion".Translate()
+                , NSBundle.MainBundle.ObjectForInfoDictionary("CFBundleShortVersionString").ToString());
+        }
+
+
+        Dictionary<string, List<string>> GetMoreList()
+        {
+            Dictionary<string, List<string>> _itemsDictionary = new Dictionary<string, List<string>>(){
+                {"More_Settings".Translate(), new List<string>{ "More_MyAccount".Translate()
+                    , "More_Notifications".Translate(), LanguageSettings.Title}}
+                , {"More_HelpAndSupport".Translate(), new List<string>{ "More_FindUs".Translate()
+                    , "More_CallUsOutagesAndBreakdown".Translate()
+                    , "More_CallUsBilling".Translate()
+                    , "More_FAQ".Translate()
+                    , "More_TnC".Translate()}}
+                , {"More_Share".Translate(), new List<string>{ "More_ShareThisApp".Translate()
+                    , "More_RateThisApp".Translate()}}
+            };
             if (_itemsDictionary.ContainsKey("More_HelpAndSupport".Translate()) && IsValidWeblinks())
             {
                 int cloIndex = DataManager.DataManager.SharedInstance.WebLinks.FindIndex(x => x.Code.ToLower().Equals("tnbclo"));
@@ -67,31 +78,35 @@ namespace myTNB
                     _itemsDictionary["More_HelpAndSupport".Translate()] = helpAndSupportList;
                 }
             }
+            return _itemsDictionary;
         }
 
         void SetSubviews()
         {
             GradientViewComponent gradientViewComponent = new GradientViewComponent(View, true, 64, true);
             UIView headerView = gradientViewComponent.GetUI();
-            TitleBarComponent titleBarComponent = new TitleBarComponent(headerView);
-            UIView titleBarView = titleBarComponent.GetUI();
-            titleBarComponent.SetTitle("More_Title".Translate());
-            titleBarComponent.SetNotificationVisibility(true);
+            _titleBarComponent = new TitleBarComponent(headerView);
+            UIView titleBarView = _titleBarComponent.GetUI();
+            _titleBarComponent.SetTitle("More_Title".Translate());
+            _titleBarComponent.SetNotificationVisibility(true);
             headerView.AddSubview(titleBarView);
             View.AddSubview(headerView);
 
-            moreTableView.Frame = new CGRect(0, DeviceHelper.IsIphoneXUpResolution() ? 88 : 64, View.Frame.Width, View.Frame.Height - 64 - 49);
+            moreTableView.Frame = new CGRect(0, DeviceHelper.IsIphoneXUpResolution() ? 88 : 64
+                , View.Frame.Width, View.Frame.Height - 64 - 49);
             moreTableView.RowHeight = 50f;
             moreTableView.SectionHeaderHeight = 48f;
             moreTableView.SeparatorStyle = UITableViewCellSeparatorStyle.None;
 
-            UILabel lblAppVersion = new UILabel(new CGRect(18, 16, moreTableView.Frame.Width - 36, 14));
-            lblAppVersion.TextColor = MyTNBColor.SilverChalice;
-            lblAppVersion.Font = MyTNBFont.MuseoSans9_300;
-            lblAppVersion.Text = string.Format("{0} {1}", "More_AppVersion".Translate()
-                , NSBundle.MainBundle.ObjectForInfoDictionary("CFBundleShortVersionString").ToString());
+            _lblAppVersion = new UILabel(new CGRect(18, 16, moreTableView.Frame.Width - 36, 14))
+            {
+                TextColor = MyTNBColor.SilverChalice,
+                Font = MyTNBFont.MuseoSans9_300,
+                Text = string.Format("{0} {1}", "More_AppVersion".Translate()
+               , NSBundle.MainBundle.ObjectForInfoDictionary("CFBundleShortVersionString").ToString())
+            };
 
-            moreTableView.TableFooterView = lblAppVersion;
+            moreTableView.TableFooterView = _lblAppVersion;
         }
 
         internal void RenderSettingsScreen(int section, int row)

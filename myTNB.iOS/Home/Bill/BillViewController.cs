@@ -10,7 +10,6 @@ using CoreAnimation;
 using System.Globalization;
 using myTNB.DataManager;
 using Foundation;
-
 using myTNB.Enums;
 using System.Diagnostics;
 
@@ -18,35 +17,13 @@ namespace myTNB
 {
     public partial class BillViewController : UIViewController
     {
-        UILabel _lblAmount;
-        UIView _viewAmount;
-
-        UIView _headerView;
-        UIView _historySelectionView;
-        UIView _currentBillDetailsView;
-        UIView _currentBillHeaderView;
-        UIView _historyHeaderView;
-        UIButton _btnPayment;
-        UIButton _btnBills;
-        UIButton _btnPay;
-
-        UILabel _lblAccountName;
-        UILabel _lblAccountNumber;
-        UILabel _lblViewAddress;
-        UILabel _lblCurrentChargesTitle;
-        UILabel _lblCurrentChargesValue;
-        UILabel _lblOutstandingChargesTitle;
-        UILabel _lblOutstandingChargesValue;
-        UILabel _lblTotalPayableTitle;
-        UILabel _lblTotalPayableValue;
-        UILabel _lblHistoryHeader;
-
-        UILabel _lblCurrentBillHeader;
-        UILabel _lblTotalDueAmountTitle;
-        UILabel _lblDueDateTitle;
-        UIView _lineView;
-        UIView _viewCharges;
-
+        UIView _viewAmount, _headerView, _historySelectionView, _currentBillDetailsView
+            , _currentBillHeaderView, _historyHeaderView, _lineView, _viewCharges;
+        UIButton _btnPayment, _btnBills, _btnPay;
+        UILabel _lblAmount, _lblAccountName, _lblAccountNumber, _lblViewAddress
+            , _lblCurrentChargesTitle, _lblCurrentChargesValue, _lblOutstandingChargesTitle
+            , _lblOutstandingChargesValue, _lblTotalPayableTitle, _lblTotalPayableValue
+            , _lblHistoryHeader, _lblCurrentBillHeader, _lblTotalDueAmountTitle, _lblDueDateTitle;
         UIImageView _imgLeaf;
         UIRefreshControl refreshControl;
 
@@ -76,13 +53,20 @@ namespace myTNB
         public override void ViewDidLoad()
         {
             base.ViewDidLoad();
+            NSNotificationCenter.DefaultCenter.AddObserver((Foundation.NSString)"LanguageDidChange", LanguageDidChange);
+            NSNotificationCenter.DefaultCenter.AddObserver(UIApplication.WillEnterForegroundNotification, HandleAppWillEnterForeground);
             if (NavigationController != null && NavigationController.NavigationBar != null)
             {
                 NavigationController.NavigationBar.Hidden = true;
             }
             SetSubviews();
-            NSNotificationCenter.DefaultCenter.AddObserver(UIApplication.WillEnterForegroundNotification, HandleAppWillEnterForeground);
             refreshControl = new UIRefreshControl();
+        }
+
+        public void LanguageDidChange(NSNotification notification)
+        {
+            Debug.WriteLine("DEBUG >>> BILLS LanguageDidChange");
+            titleBarComponent?.SetTitle("Bill_Bills".Translate());
         }
 
         void HandleAppWillEnterForeground(NSNotification notification)
