@@ -19,9 +19,7 @@ namespace myTNB
         {
             "EN", "MS"
         };
-
-        readonly static string _languageTitle = "Language_Title".Translate();
-
+        
         static int _selectedLanguageIndex;
         static NSBundle _languageBundle;
 
@@ -45,7 +43,7 @@ namespace myTNB
         {
             get
             {
-                return _languageTitle;
+                return "Language_Title".Translate();
             }
         }
 
