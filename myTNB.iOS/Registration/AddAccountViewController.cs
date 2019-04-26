@@ -658,10 +658,19 @@ namespace myTNB.Registration
 
             UITapGestureRecognizer tapAccounType = new UITapGestureRecognizer(() =>
             {
-                UIStoryboard storyBoard = UIStoryboard.FromName("Registration", null);
-                SelectAccountTypeViewController viewController =
-                    storyBoard.InstantiateViewController("SelectAccountTypeViewController") as SelectAccountTypeViewController;
-                this.NavigationController.PushViewController(viewController, true);
+                UIStoryboard storyBoard = UIStoryboard.FromName("GenericSelector", null);
+                GenericSelectorViewController viewController = (GenericSelectorViewController)storyBoard
+                    .InstantiateViewController("GenericSelectorViewController");
+                viewController.Title = "Registration_SelectAccountType".Translate();
+                viewController.Items = new List<string>()
+                {
+                    "Registration_Residential".Translate()
+                    , "Registration_Commercial".Translate()
+                };
+                viewController.OnSelect = OnSelectAction;
+                viewController.SelectedIndex = DataManager.DataManager.SharedInstance.CurrentSelectedAccountTypeIndex;
+                var navController = new UINavigationController(viewController);
+                PresentViewController(navController, true, null);
             });
             viewAccountType.AddGestureRecognizer(tapAccounType);
 
@@ -771,6 +780,11 @@ namespace myTNB.Registration
             txtFieldAccountNo.KeyboardType = UIKeyboardType.NumberPad;
             //SetKeyboard(txtFieldMaidenName);
             _textFieldHelper.CreateDoneButton(txtFieldAccountNo);
+        }
+
+        void OnSelectAction(int index)
+        {
+            DataManager.DataManager.SharedInstance.CurrentSelectedAccountTypeIndex = index;
         }
 
         internal void SetKeyboard(UITextField textField)

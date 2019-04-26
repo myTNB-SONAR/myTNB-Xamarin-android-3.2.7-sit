@@ -1478,15 +1478,6 @@
     <Compile Include="Model\AddMultipleSupplyAccountsToUserReg\AddMultipleSupplyAccountsResponseModel.cs" />
     <Compile Include="Model\ValidateManualAccountLinking\ValidateManualAccountLinkingModel.cs" />
     <Compile Include="Model\ValidateManualAccountLinking\ValidateManualAccountLinkingResponseModel.cs" />
-    <Compile Include="Registration\SelectAccountTypeCell.cs" />
-    <Compile Include="Registration\SelectAccountTypeCell.designer.cs">
-      <DependentUpon>SelectAccountTypeCell.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Registration\SelectAccountTypeViewController.cs" />
-    <Compile Include="Registration\SelectAccountTypeViewController.designer.cs">
-      <DependentUpon>SelectAccountTypeViewController.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Registration\SelectAccountTypeDataSource.cs" />
     <Compile Include="Registration\AddAccountSuccessDataSource.cs" />
     <Compile Include="Registration\AddAccountSuccessViewController.cs" />
     <Compile Include="Registration\AddAccountSuccessViewController.designer.cs">

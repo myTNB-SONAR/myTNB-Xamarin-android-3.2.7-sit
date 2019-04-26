@@ -458,6 +458,7 @@
 "Registration_RightsAnswer"="I have the rights to view all information related to this electricity supply account.";
 "Registration_RightsQuestion"="Do you have the rights to view all information related to this electricity supply account?";
 "Registration_ScanMessage"="Scan the barcode on your bill to retrieve account details.";
+"Registration_SelectAccountType"="Select Account Type";
 "Registration_SMSMessage"="An SMS containing the activation pin has been sent to your number.";
 "Registration_SMSNotReceived"="Didn’t receive the SMS?";
 "Registration_SupplyAccountCount"="electricity supply account(s) found!";
