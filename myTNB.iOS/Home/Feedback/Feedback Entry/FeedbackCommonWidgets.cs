@@ -63,10 +63,7 @@ namespace myTNB.Home.Feedback.FeedbackEntry
                 TextColor = MyTNBColor.TunaGrey()
             };
 
-            _viewLineFullName = new UIView((new CGRect(0, 36, _viewFullName.Frame.Width, 1)))
-            {
-                BackgroundColor = MyTNBColor.PlatinumGrey
-            };
+            _viewLineFullName = GenericLine.GetLine(new CGRect(0, 36, _viewFullName.Frame.Width, 1));
 
             _viewFullName.AddSubviews(new UIView[] { _lblFullNameTitle, _lblFullNameError
                 , _txtFieldFullName, _viewLineFullName });
@@ -110,10 +107,7 @@ namespace myTNB.Home.Feedback.FeedbackEntry
             _txtFieldEmail.KeyboardType = UIKeyboardType.EmailAddress;
             _viewEmail.AddSubview(_txtFieldEmail);
 
-            _viewLineEmail = new UIView((new CGRect(0, 36, _viewEmail.Frame.Width, 1)))
-            {
-                BackgroundColor = MyTNBColor.PlatinumGrey
-            };
+            _viewLineEmail = GenericLine.GetLine(new CGRect(0, 36, _viewEmail.Frame.Width, 1));
             _viewEmail.AddSubviews(new UIView[] { _lblEmailTitle, _lblEmailError
                 , _txtFieldEmail, _viewLineEmail });
 
@@ -266,11 +260,7 @@ namespace myTNB.Home.Feedback.FeedbackEntry
             };
             _txtFieldMobileNo.KeyboardType = UIKeyboardType.NumberPad;
 
-            _viewLineMobileNo = new UIView((new CGRect(0, 36, _viewMobileNo.Frame.Width, 1)))
-            {
-                BackgroundColor = MyTNBColor.PlatinumGrey
-            };
-
+            _viewLineMobileNo = GenericLine.GetLine(new CGRect(0, 36, _viewMobileNo.Frame.Width, 1));
             _viewMobileNo.AddSubviews(new UIView[] { _lblMobileNoTitle, _lblMobileNoError
                 , _lblMobileNoHint, _txtFieldMobileNo , _viewLineMobileNo });
 

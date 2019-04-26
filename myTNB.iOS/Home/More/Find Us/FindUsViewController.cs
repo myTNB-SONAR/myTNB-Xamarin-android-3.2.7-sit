@@ -226,10 +226,8 @@ namespace myTNB
             _textFieldHelper.CreateTextFieldLeftView(txtFieldSearch, "IC-Field-Search");
             _textFieldHelper.SetKeyboard(txtFieldSearch);
             txtFieldSearch.ReturnKeyType = UIReturnKeyType.Search;
-            UIView viewLineSearch = new UIView(new CGRect(0, 36, viewSearch.Frame.Width, 1))
-            {
-                BackgroundColor = MyTNBColor.PlatinumGrey
-            };
+            UIView viewLineSearch = GenericLine.GetLine(new CGRect(0, 36, viewSearch.Frame.Width, 1));
+
             txtFieldSearch.ShouldReturn += (textField) =>
             {
                 ((UITextField)textField).ResignFirstResponder();

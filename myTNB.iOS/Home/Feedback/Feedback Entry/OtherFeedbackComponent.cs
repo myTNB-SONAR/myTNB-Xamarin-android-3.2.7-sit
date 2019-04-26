@@ -102,10 +102,7 @@ namespace myTNB.Home.Feedback.FeedbackEntry
                 Image = UIImage.FromBundle("IC-Action-Dropdown")
             };
 
-            _viewLineFeedbackType = new UIView((new CGRect(0, 36, _viewFeedbackType.Frame.Width, 1)))
-            {
-                BackgroundColor = MyTNBColor.PlatinumGrey
-            };
+            _viewLineFeedbackType = GenericLine.GetLine(new CGRect(0, 36, _viewFeedbackType.Frame.Width, 1));
 
             _viewFeedbackType.AddSubviews(new UIView[] { _lblFeedbackTypeTitle
                 , _lblFeedbackTypeError, imgViewAccountNumber, _lblFeedbackType

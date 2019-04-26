@@ -167,10 +167,7 @@ namespace myTNB.Home.Feedback.FeedbackEntry
                 Image = UIImage.FromBundle("IC-Action-Dropdown")
             };
 
-            _viewLineState = new UIView((new CGRect(0, 36, _viewState.Frame.Width, 1)))
-            {
-                BackgroundColor = MyTNBColor.PlatinumGrey
-            };
+            _viewLineState = GenericLine.GetLine(new CGRect(0, 36, _viewState.Frame.Width, 1));
 
             _viewState.AddSubviews(new UIView[] { _lblStateTitle, _lblStateError, imgViewState
                 , _lblState, imgDropDown, _viewLineState });
@@ -216,10 +213,7 @@ namespace myTNB.Home.Feedback.FeedbackEntry
                 TextColor = MyTNBColor.TunaGrey()
             };
 
-            _viewLineLocation = new UIView((new CGRect(0, 36, _viewLocation.Frame.Width, 1)))
-            {
-                BackgroundColor = MyTNBColor.PlatinumGrey
-            };
+            _viewLineLocation = GenericLine.GetLine(new CGRect(0, 36, _viewLocation.Frame.Width, 1));
 
             _viewLocation.AddSubviews(new UIView[] { _lblLocationTitle, _lblLocationError
                 , _txtFieldLocation, _viewLineLocation });
@@ -253,10 +247,7 @@ namespace myTNB.Home.Feedback.FeedbackEntry
                 TextColor = MyTNBColor.TunaGrey()
             };
 
-            _viewLinePole = new UIView((new CGRect(0, 36, _viewPole.Frame.Width, 1)))
-            {
-                BackgroundColor = MyTNBColor.PlatinumGrey
-            };
+            _viewLinePole = GenericLine.GetLine(new CGRect(0, 36, _viewPole.Frame.Width, 1));
 
             _viewPole.AddSubviews(new UIView[] { _lblPoleTitle, _lblPoleError, _txtFieldPole, _viewLinePole });
             _detailsContainer.AddSubviews(new UIView[] { _viewState, _viewLocation, _viewPole });

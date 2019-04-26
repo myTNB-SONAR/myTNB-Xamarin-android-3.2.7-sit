@@ -1098,6 +1098,7 @@
     <Folder Include="Home\Feedback\Feedback Location and State\" />
     <Folder Include="Home\Feedback\Feedback Image\" />
     <Folder Include="Home\More\Language\" />
+    <Folder Include="Helpers\Generic Line\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -1780,6 +1781,7 @@
     <Compile Include="Helpers\Generic Tableview Selector\GenericSelectorViewController.cs" />
     <Compile Include="Helpers\Generic Tableview Selector\GenericSelectorViewController.designer.cs" />
     <Compile Include="Home\More\Language\LanguageSettings.cs" />
+    <Compile Include="Helpers\Generic Line\GenericLine.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />
