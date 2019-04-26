@@ -284,7 +284,7 @@ namespace myTNB.Home.Feedback.FeedbackEntry
                 List<string> stateList = new List<string>();
                 foreach (StatesForFeedbackDataModel item in DataManager.DataManager.SharedInstance.StatesForFeedBack)
                 {
-                    stateList.Add(item.StateName);
+                    stateList.Add(item?.StateName ?? string.Empty);
                 }
                 return stateList;
             }

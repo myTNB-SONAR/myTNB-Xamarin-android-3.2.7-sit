@@ -940,7 +940,6 @@
     <Folder Include="Assets.xcassets\Notification-Promo.imageset\" />
     <Folder Include="Assets.xcassets\Notification-Unread.imageset\" />
     <Folder Include="Assets.xcassets\Notification-Weather.imageset\" />
-    <Folder Include="Push Notification\Select Notification\" />
     <Folder Include="Assets.xcassets\Notification-Delete.imageset\" />
     <Folder Include="Home\More\Push Notification Settings\" />
     <Folder Include="Assets.xcassets\Checkbox-Active.imageset\" />
@@ -1327,11 +1326,6 @@
     <Compile Include="Model\RegisteredCardsDataModel.cs" />
     <Compile Include="Model\RegisteredCardsModel.cs" />
     <Compile Include="Model\RegisteredCardsResponseModel.cs" />
-    <Compile Include="Push Notification\Select Notification\SelectNotificationDataSource.cs" />
-    <Compile Include="Push Notification\Select Notification\SelectNotificationViewController.cs" />
-    <Compile Include="Push Notification\Select Notification\SelectNotificationViewController.designer.cs">
-      <DependentUpon>SelectNotificationViewController.cs</DependentUpon>
-    </Compile>
     <Compile Include="Home\More\MoreDataSource.cs" />
     <Compile Include="Home\More\Push Notification Settings\NotificationSettingsViewController.cs" />
     <Compile Include="Home\More\Push Notification Settings\NotificationSettingsViewController.designer.cs">

@@ -152,14 +152,38 @@ namespace myTNB.PushNotification
             }
             _notificationSelectionComponent.SetSelectAccountEvent(new UITapGestureRecognizer(() =>
             {
-                UIStoryboard storyBoard = UIStoryboard.FromName("PushNotification", null);
-                SelectNotificationViewController viewController =
-                    storyBoard.InstantiateViewController("SelectNotificationViewController") as SelectNotificationViewController;
+                UIStoryboard storyBoard = UIStoryboard.FromName("GenericSelector", null);
+                GenericSelectorViewController viewController = (GenericSelectorViewController)storyBoard
+                    .InstantiateViewController("GenericSelectorViewController");
+                viewController.Title = "PushNotification_SelectNotification".Translate();
+                viewController.Items = GetNotificationTypeList();
+                viewController.OnSelect = OnSelectAction;
+                viewController.SelectedIndex = DataManager.DataManager.SharedInstance.CurrentSelectedNotificationTypeIndex;
                 var navController = new UINavigationController(viewController);
                 PresentViewController(navController, true, null);
             }));
             headerView.AddSubview(accountSelectionView);
             View.AddSubview(headerView);
+        }
+
+        void OnSelectAction(int index)
+        {
+            DataManager.DataManager.SharedInstance.CurrentSelectedNotificationTypeIndex = index;
+        }
+
+        List<string> GetNotificationTypeList()
+        {
+            if (DataManager.DataManager.SharedInstance.NotificationGeneralTypes != null
+                && DataManager.DataManager.SharedInstance.NotificationGeneralTypes.Count > 0)
+            {
+                List<string> feedbackList = new List<string>();
+                foreach (NotificationPreferenceModel item in DataManager.DataManager.SharedInstance.NotificationGeneralTypes)
+                {
+                    feedbackList.Add(item?.Title ?? string.Empty);
+                }
+                return feedbackList;
+            }
+            return new List<string>();
         }
 
         internal void SetSubViews()

@@ -138,7 +138,7 @@ namespace myTNB.Home.Feedback.FeedbackEntry
                 List<string> feedbackList = new List<string>();
                 foreach (OtherFeedbackTypeDataModel item in DataManager.DataManager.SharedInstance.OtherFeedbackType)
                 {
-                    feedbackList.Add(item.FeedbackTypeName);
+                    feedbackList.Add(item?.FeedbackTypeName ?? string.Empty);
                 }
                 return feedbackList;
             }
