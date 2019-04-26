@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using Foundation;
 using myTNB.Model;
 using UIKit;
@@ -29,16 +30,31 @@ namespace myTNB.PushNotification
         public override UITableViewCell GetCell(UITableView tableView, NSIndexPath indexPath)
         {
             UserNotificationDataModel notification = _data[indexPath.Row];
-            var cell = tableView.DequeueReusableCell("pushNotificationCell", indexPath) as NotificationViewCell;
-            cell.ClearsContextBeforeDrawing = true;
 
+            var cell = tableView.DequeueReusableCell("pushNotificationCell") as NotificationViewCell;
+            if (cell == null)
+            {
+                cell = new NotificationViewCell("pushNotificationCell");
+            }
+            cell.UpdateCell(_controller.isSelectionMode);
+            cell.ClearsContextBeforeDrawing = true;
             cell.imgIcon.Image = UIImage.FromBundle(GetIcon(notification.BCRMNotificationTypeId));
             cell.lblTitle.Text = notification.Title;
             cell.lblDetails.Text = notification.Message;
             cell.lblDate.Text = GetDate(notification.CreatedDate);
             cell.imgUnread.Hidden = notification.IsRead.ToLower() != "false";
-
             cell.SelectionStyle = UITableViewCellSelectionStyle.None;
+            cell.imgCheckbox.Image = UIImage.FromBundle(notification.IsSelected
+                                                        ? "Payment-Checkbox-Active"
+                                                        : "Payment-Checkbox-Inactive");
+            cell.viewCheckBox.AddGestureRecognizer(new UITapGestureRecognizer(() =>
+            {
+                notification.IsSelected = !notification.IsSelected;
+                cell.imgCheckbox.Image = UIImage.FromBundle(notification.IsSelected
+                                                             ? "Payment-Checkbox-Active"
+                                                             : "Payment-Checkbox-Inactive");
+            }));
+
             return cell;
         }
 
@@ -100,6 +116,43 @@ namespace myTNB.PushNotification
                 return string.Empty;
             }
 
+        }
+
+        public override void CommitEditingStyle(UITableView tableView, UITableViewCellEditingStyle editingStyle, Foundation.NSIndexPath indexPath)
+        {
+            switch (editingStyle)
+            {
+                case UITableViewCellEditingStyle.Delete:
+                    ActivityIndicator.Show();
+                    _controller.DeleteUserNotification(_data[indexPath.Row]).ContinueWith(task =>
+                    {
+                        InvokeOnMainThread(() =>
+                        {
+                            var deleteNotifResponse = _controller._deleteNotificationResponse;
+
+                            if (deleteNotifResponse != null && deleteNotifResponse?.d != null
+                                            && deleteNotifResponse?.d?.status?.ToLower() == "success"
+                                            && deleteNotifResponse?.d?.didSucceed == true)
+                            {
+                                _data.RemoveAt(indexPath.Row);
+                                tableView.DeleteRows(new NSIndexPath[] { indexPath }, UITableViewRowAnimation.Fade);
+                            }
+
+                            ActivityIndicator.Hide();
+                        });
+                    });
+                    break;
+                case UITableViewCellEditingStyle.None:
+                    break;
+            }
+        }
+        public override bool CanEditRow(UITableView tableView, NSIndexPath indexPath)
+        {
+            return true; // return false if you wish to disable editing for a specific indexPath or for all rows
+        }
+        public override string TitleForDeleteConfirmation(UITableView tableView, NSIndexPath indexPath)
+        {   // Optional - default text is 'Delete'
+            return "Delete";
         }
     }
 }

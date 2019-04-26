@@ -78,6 +78,11 @@ namespace myTNB.Dashboard.DashboardComponents
             _viewNotification.Hidden = isHidden;
         }
 
+        public void SetBackImage(string img)
+        {
+            _imgViewBack.Image = UIImage.FromBundle(img);
+        }
+
         public void SetBackAction(UITapGestureRecognizer tapGesture)
         {
             _viewBack.AddGestureRecognizer(tapGesture);

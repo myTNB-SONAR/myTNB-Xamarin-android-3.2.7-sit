@@ -7,6 +7,7 @@ using myTNB.Dashboard.DashboardComponents;
 using myTNB.Model;
 using UIKit;
 using myTNB.Extensions;
+using myTNB.SQLite.SQLiteDataManager;
 
 namespace myTNB.PushNotification
 {
@@ -18,10 +19,16 @@ namespace myTNB.PushNotification
 
         AccountSelectionComponent _notificationSelectionComponent;
         NotificationDetailedInfoResponseModel _detailedInfo = new NotificationDetailedInfoResponseModel();
+        UserNotificationDataModel NotificationInfo = new UserNotificationDataModel();
+        public DeleteNotificationResponseModel _deleteNotificationResponse = new DeleteNotificationResponseModel();
+        List<UserNotificationDataModel> notifications;
+        public bool isSelectionMode = false;
+        bool isAllSelected = false;
 
         UIView _viewDelete;
         UIImageView _imgNoNotification;
         UILabel _lblNoNotification;
+        UIView viewHeader;
 
         public override void ViewDidLoad()
         {
@@ -40,7 +47,7 @@ namespace myTNB.PushNotification
             }
 
 
-            List<UserNotificationDataModel> notifications = new List<UserNotificationDataModel>();
+            notifications = new List<UserNotificationDataModel>();
             if (DataManager.DataManager.SharedInstance.UserNotifications.Count > 0)
             {
                 var format = @"M/d/yyyy h:mm:ss tt";
@@ -82,16 +89,6 @@ namespace myTNB.PushNotification
                 _lblNoNotification.Hidden = false;
             }
         }
-        /// <summary>
-        /// Gets the user notif.
-        /// </summary>
-        //private async void GetUserNotif()
-        //{
-        //    ActivityIndicator.Show();
-        //    await PushNotificationHelper.GetNotifications();
-        //    UpdateNotificationDisplay();
-        //    ActivityIndicator.Hide();
-        //}
 
         public override void ViewWillAppear(bool animated)
         {
@@ -132,17 +129,36 @@ namespace myTNB.PushNotification
             }
         }
 
-
-
         internal void SetNavigationBar()
         {
             NavigationController.SetNavigationBarHidden(true, false);
             GradientViewComponent gradientViewComponent = new GradientViewComponent(View, true, 89, true);
             UIView headerView = gradientViewComponent.GetUI();
             TitleBarComponent titleBarComponent = new TitleBarComponent(headerView);
+
             UIView titleBarView = titleBarComponent.GetUI();
             titleBarComponent.SetTitle("Notifications");
-            titleBarComponent.SetNotificationVisibility(true);
+            titleBarComponent.SetNotificationVisibility(false);
+            titleBarComponent.SetNotificationImage("Notification-Delete");
+            titleBarComponent.SetNotificationAction(new UITapGestureRecognizer(() =>
+            {
+                if (!isSelectionMode)
+                {
+                    titleBarComponent.SetNotificationImage("Cancel-White");
+                    UpdateSelectAllFlags(false);
+                    viewHeader = null;
+                    CreateViewHeader();
+                    pushNotificationTableView.TableHeaderView = viewHeader;
+                }
+                else
+                {
+                    titleBarComponent.SetNotificationImage("Notification-Delete");
+                    pushNotificationTableView.TableHeaderView = null;
+                    isAllSelected = false;
+                }
+                isSelectionMode = !isSelectionMode;
+                pushNotificationTableView.ReloadData();
+            }));
             titleBarComponent.SetBackVisibility(false);
             titleBarComponent.SetBackAction(new UITapGestureRecognizer(() =>
             {
@@ -291,6 +307,85 @@ namespace myTNB.PushNotification
                 _viewDelete.Hidden = true;
                 DataManager.DataManager.SharedInstance.IsNotificationDeleted = false;
             });
+        }
+
+        internal Task DeleteUserNotification(UserNotificationDataModel dataModel)
+        {
+            var user = DataManager.DataManager.SharedInstance.UserEntity?.Count > 0
+                                  ? DataManager.DataManager.SharedInstance.UserEntity[0]
+                                  : new UserEntity();
+            return Task.Factory.StartNew(() =>
+            {
+                ServiceManager serviceManager = new ServiceManager();
+                object requestParameter = new
+                {
+                    ApiKeyID = TNBGlobal.API_KEY_ID,
+                    NotificationType = dataModel?.BCRMNotificationType,
+                    NotificationId = dataModel?.Id,
+                    Email = user?.email,
+                    DeviceId = DataManager.DataManager.SharedInstance.UDID,
+                    SSPUserId = user?.userID
+                };
+                _deleteNotificationResponse = serviceManager.DeleteUserNotification("DeleteUserNotification_V2", requestParameter);
+            });
+        }
+
+        /// <summary>
+        /// Creates the view header.
+        /// </summary>
+        internal void CreateViewHeader()
+        {
+            nfloat cellWidth = UIApplication.SharedApplication.KeyWindow.Frame.Width;
+            nfloat cellHeight = 66;
+
+            UIView viewCheckBox = new UIView(new CGRect(10, 22, 24, 24));
+            UIImageView imgCheckbox = new UIImageView(new CGRect(0, 0, 24, 24))
+            {
+                Image = UIImage.FromBundle("Payment-Checkbox-Inactive")
+            };
+            viewCheckBox.AddSubview(imgCheckbox);
+
+            viewCheckBox.AddGestureRecognizer(new UITapGestureRecognizer(() =>
+            {
+                isAllSelected = !isAllSelected;
+                imgCheckbox.Image = UIImage.FromBundle(isAllSelected
+                                                        ? "Payment-Checkbox-Active"
+                                                        : "Payment-Checkbox-Inactive");
+                UpdateSelectAllFlags(isAllSelected);
+            }));
+
+            UILabel lblTitle = new UILabel(new CGRect(45, 25, cellWidth - 96 - 60, 18))
+            {
+                TextColor = myTNBColor.TunaGrey(),
+                Font = myTNBFont.MuseoSans14(),
+                Text = "Select All"
+            };
+
+            UIView viewLine = new UIView(new CGRect(0, cellHeight - 1, cellWidth, 1))
+            {
+                BackgroundColor = myTNBColor.PlatinumGrey()
+            };
+
+            viewHeader = new UIView
+            {
+                ClipsToBounds = true,
+                Frame = new CGRect(0, 0, cellWidth, cellHeight),
+                BackgroundColor = UIColor.White
+            };
+            viewHeader.AddSubviews(new UIView[] { viewCheckBox, lblTitle, viewLine });
+        }
+
+        /// <summary>
+        /// Updates the select all flags.
+        /// </summary>
+        /// <param name="flag">If set to <c>true</c> flag.</param>
+        internal void UpdateSelectAllFlags(bool flag)
+        {
+            foreach (UserNotificationDataModel obj in notifications)
+            {
+                obj.IsSelected = flag;
+            }
+            pushNotificationTableView.ReloadData();
         }
     }
 }
