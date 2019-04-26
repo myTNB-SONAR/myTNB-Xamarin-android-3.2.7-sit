@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using CoreGraphics;
+using myTNB.Model;
 using UIKit;
 
 namespace myTNB.Home.Feedback.FeedbackEntry
@@ -109,7 +111,38 @@ namespace myTNB.Home.Feedback.FeedbackEntry
                 , _lblFeedbackTypeError, imgViewAccountNumber, _lblFeedbackType
                 , imgDropDown, _viewLineFeedbackType });
 
-            _viewFeedbackType.AddGestureRecognizer(_controller.GetFeedbackTypeGestureRecognizer());
+            _viewFeedbackType.AddGestureRecognizer(new UITapGestureRecognizer(() =>
+            {
+                UIStoryboard storyBoard = UIStoryboard.FromName("GenericSelector", null);
+                GenericSelectorViewController viewController = (GenericSelectorViewController)storyBoard
+                    .InstantiateViewController("GenericSelectorViewController");
+                viewController.Title = "Feedback_SelectFeedbackType".Translate();
+                viewController.Items = GetFeedbackTypeList();
+                viewController.OnSelect = OnSelectAction;
+                viewController.SelectedIndex = DataManager.DataManager.SharedInstance.CurrentSelectedFeedbackTypeIndex;
+                var navController = new UINavigationController(viewController);
+                _controller.PresentViewController(navController, true, null);
+            }));
+        }
+
+        void OnSelectAction(int index)
+        {
+            DataManager.DataManager.SharedInstance.CurrentSelectedFeedbackTypeIndex = index;
+        }
+
+        List<string> GetFeedbackTypeList()
+        {
+            if (DataManager.DataManager.SharedInstance.OtherFeedbackType != null
+                && DataManager.DataManager.SharedInstance.OtherFeedbackType.Count > 0)
+            {
+                List<string> feedbackList = new List<string>();
+                foreach (OtherFeedbackTypeDataModel item in DataManager.DataManager.SharedInstance.OtherFeedbackType)
+                {
+                    feedbackList.Add(item.FeedbackTypeName);
+                }
+                return feedbackList;
+            }
+            return new List<string>();
         }
 
         public UIView GetComponent()

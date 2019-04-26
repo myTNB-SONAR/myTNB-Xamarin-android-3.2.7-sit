@@ -207,6 +207,19 @@ namespace myTNB
             var response = await ServiceCall.GetAppLaunchMasterData();
             if (response.didSucceed)
             {
+                FeedbackCategoryDataModel fb2 = new FeedbackCategoryDataModel()
+                {
+                    FeedbackCategoryId = "2",
+                    FeedbackCategoryName = "Faulty TNB Street Lamp"
+                };
+                FeedbackCategoryDataModel fb3 = new FeedbackCategoryDataModel()
+                {
+                    FeedbackCategoryId = "3",
+                    FeedbackCategoryName = "Others"
+                };
+                response.data.FeedbackCategories.Add(fb2);
+                response.data.FeedbackCategories.Add(fb3);
+
                 var data = response.data;
 
                 var iOSIndex = data?.AppVersions?.FindIndex(x => x.IsIos) ?? -1;

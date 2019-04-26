@@ -172,7 +172,15 @@ namespace myTNB.Home.Feedback.FeedbackEntry
 
             _viewState.AddSubviews(new UIView[] { _lblStateTitle, _lblStateError, imgViewState
                 , _lblState, imgDropDown, _viewLineState });
-            _viewState.AddGestureRecognizer(_controller.GetStateGestureRecognizer());
+            _viewState.AddGestureRecognizer(new UITapGestureRecognizer(() =>
+            {
+                UIStoryboard storyBoard = UIStoryboard.FromName("FeedbackTableView", null);
+                SelectStateViewController selectStateVC =
+                    storyBoard.InstantiateViewController("SelectStateViewController") as SelectStateViewController;
+                selectStateVC._statesForFeedbackList = DataManager.DataManager.SharedInstance.StatesForFeedBack;
+                selectStateVC.OnSelect = _controller._streetLampRelatedFeedbackComponent.ValidateState;
+                _controller.NavigationController.PushViewController(selectStateVC, true);
+            }));
 
             //Location Street/Name
             _viewLocation = new UIView((new CGRect(18, 83, _controller.View.Frame.Width - 36, 51)))

@@ -45,7 +45,7 @@ namespace myTNB
         FeedbackTextView _feedbackTextView;
         OtherFeedbackComponent _otherFeedbackComponent;
         BillRelatedFeedbackComponent _billRelatedFeedbackComponent;
-        StreetLampFeedbackComponent _streetLampRelatedFeedbackComponent;
+        public StreetLampFeedbackComponent _streetLampRelatedFeedbackComponent;
 
         SubmitFeedbackResponseModel _submitFeedback;
 
@@ -489,43 +489,6 @@ namespace myTNB
         nfloat GetFeedbackCategoryViewHeight()
         {
             return _feedbackCategoryView?.Frame.Height ?? 0;
-        }
-
-        internal UITapGestureRecognizer GetFeedbackTypeGestureRecognizer()
-        {
-            return new UITapGestureRecognizer(() =>
-           {
-               UIStoryboard storyBoard = UIStoryboard.FromName("FeedbackTableView", null);
-               FeedbackTypeViewController feedbackTypeVC =
-                   storyBoard.InstantiateViewController("FeedbackTypeViewController") as FeedbackTypeViewController;
-               feedbackTypeVC._feedbackTypeList = DataManager.DataManager.SharedInstance.OtherFeedbackType;
-               NavigationController.PushViewController(feedbackTypeVC, true);
-           });
-        }
-
-        internal UITapGestureRecognizer GetAccountNumberGestureRecognizer()
-        {
-            return new UITapGestureRecognizer(() =>
-            {
-                UIStoryboard storyBoard = UIStoryboard.FromName("FeedbackTableView", null);
-                SelectAccountNoViewController selectAccountNoVC =
-                    storyBoard.InstantiateViewController("SelectAccountNoViewController") as SelectAccountNoViewController;
-                var navController = new UINavigationController(selectAccountNoVC);
-                NavigationController?.PushViewController(selectAccountNoVC, true);
-            });
-        }
-
-        internal UITapGestureRecognizer GetStateGestureRecognizer()
-        {
-            return new UITapGestureRecognizer(() =>
-            {
-                UIStoryboard storyBoard = UIStoryboard.FromName("FeedbackTableView", null);
-                SelectStateViewController selectStateVC =
-                    storyBoard.InstantiateViewController("SelectStateViewController") as SelectStateViewController;
-                selectStateVC._statesForFeedbackList = DataManager.DataManager.SharedInstance.StatesForFeedBack;
-                selectStateVC.OnSelect = _streetLampRelatedFeedbackComponent.ValidateState;
-                NavigationController.PushViewController(selectStateVC, true);
-            });
         }
 
         internal void SetButtonEnable()

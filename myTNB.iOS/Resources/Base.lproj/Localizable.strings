@@ -179,6 +179,7 @@
 "Feedback_PoleNumber"="Pole No.";
 "Feedback_GoToSettings"="Go to Settings";
 "Feedback_SelectAccountNumber"="Select Account No.";
+"Feedback_SelectFeedbackType"="Select Feedback Type";
 "Feedback_State"="State";
 "Feedback_Status"="Feedback Status";
 "Feedback_StreetLampSubTitle"="Spot a faulty street lamp? Report it here.";

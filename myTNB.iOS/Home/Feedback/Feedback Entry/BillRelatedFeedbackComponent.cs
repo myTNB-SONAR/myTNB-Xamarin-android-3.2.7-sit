@@ -115,7 +115,14 @@ namespace myTNB.Home.Feedback.FeedbackEntry
             _viewAccountNo.AddSubviews(new UIView[] { _lblAccountNoTitle, _lblAccountNoError
                 ,imgViewAccountNumber, _lblAccountNumber, _viewLineAccountNo });
 
-            _viewAccountNo?.AddGestureRecognizer(_controller.GetAccountNumberGestureRecognizer());
+            _viewAccountNo?.AddGestureRecognizer(new UITapGestureRecognizer(() =>
+            {
+                UIStoryboard storyBoard = UIStoryboard.FromName("FeedbackTableView", null);
+                SelectAccountNoViewController selectAccountNoVC =
+                    storyBoard.InstantiateViewController("SelectAccountNoViewController") as SelectAccountNoViewController;
+                var navController = new UINavigationController(selectAccountNoVC);
+                _controller.NavigationController?.PushViewController(selectAccountNoVC, true);
+            }));
         }
 
         void ConstructAccountNumberField()

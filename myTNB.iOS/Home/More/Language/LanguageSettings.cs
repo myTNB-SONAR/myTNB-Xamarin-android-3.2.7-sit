@@ -60,7 +60,6 @@ namespace myTNB
                 NSUserDefaults sharedPreference = NSUserDefaults.StandardUserDefaults;
                 sharedPreference.SetInt(value, LANGUAGE_KEY);
                 sharedPreference.Synchronize();
-                int index = (int)sharedPreference.IntForKey(LANGUAGE_KEY);
                 _selectedLanguageIndex = value;
             }
             get
