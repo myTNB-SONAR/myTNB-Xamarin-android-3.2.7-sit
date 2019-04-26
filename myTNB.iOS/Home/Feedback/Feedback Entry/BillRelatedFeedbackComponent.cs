@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using CoreGraphics;
 using Foundation;
+using myTNB.Model;
 using UIKit;
 
 namespace myTNB.Home.Feedback.FeedbackEntry
@@ -117,12 +119,36 @@ namespace myTNB.Home.Feedback.FeedbackEntry
 
             _viewAccountNo?.AddGestureRecognizer(new UITapGestureRecognizer(() =>
             {
-                UIStoryboard storyBoard = UIStoryboard.FromName("FeedbackTableView", null);
-                SelectAccountNoViewController selectAccountNoVC =
-                    storyBoard.InstantiateViewController("SelectAccountNoViewController") as SelectAccountNoViewController;
-                var navController = new UINavigationController(selectAccountNoVC);
-                _controller.NavigationController?.PushViewController(selectAccountNoVC, true);
+                UIStoryboard storyBoard = UIStoryboard.FromName("GenericSelector", null);
+                GenericSelectorViewController viewController = (GenericSelectorViewController)storyBoard
+                    .InstantiateViewController("GenericSelectorViewController");
+                viewController.Title = "Feedback_SelectAccountNumber".Translate();
+                viewController.Items = GetAccountList();
+                viewController.OnSelect = OnSelectAction;
+                viewController.SelectedIndex = DataManager.DataManager.SharedInstance.CurrentSelectedFeedAccountNoIndex;
+                var navController = new UINavigationController(viewController);
+                _controller.PresentViewController(navController, true, null);
             }));
+        }
+
+        void OnSelectAction(int index)
+        {
+            DataManager.DataManager.SharedInstance.CurrentSelectedFeedAccountNoIndex = index;
+        }
+
+        List<string> GetAccountList()
+        {
+            if (DataManager.DataManager.SharedInstance.AccountRecordsList.d != null
+                && DataManager.DataManager.SharedInstance.AccountRecordsList.d?.Count > 0)
+            {
+                List<string> accountList = new List<string>();
+                foreach (CustomerAccountRecordModel item in DataManager.DataManager.SharedInstance.AccountRecordsList?.d)
+                {
+                    accountList.Add(string.Format("{0} - {1}", item?.accNum ?? string.Empty, item?.accDesc ?? string.Empty));
+                }
+                return accountList;
+            }
+            return new List<string>();
         }
 
         void ConstructAccountNumberField()

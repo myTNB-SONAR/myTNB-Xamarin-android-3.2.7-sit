@@ -1096,7 +1096,6 @@
     <Folder Include="Assets.xcassets\Payment-Checkbox-White-Inactive.imageset\" />
     <Folder Include="Assets.xcassets\New-Launch-Logo.imageset\" />
     <Folder Include="Home\Feedback\Feedback Entry\" />
-    <Folder Include="Home\Feedback\Select Account\" />
     <Folder Include="Home\Feedback\Feedback Location and State\" />
     <Folder Include="Home\Feedback\Feedback Image\" />
     <Folder Include="Home\More\Language\" />
@@ -1130,7 +1129,6 @@
     <InterfaceDefinition Include="Home\More\Find Us\Location Details\LocationDetails.storyboard" />
     <InterfaceDefinition Include="Home\Feedback\Feedback.storyboard" />
     <InterfaceDefinition Include="Rating\Rating.storyboard" />
-    <InterfaceDefinition Include="Home\Feedback\FeedbackTableView.storyboard" />
     <InterfaceDefinition Include="Home\Feedback\Feedback Details\FeedbackDetails.storyboard" />
     <InterfaceDefinition Include="Home\More\FAQ\FAQ.storyboard" />
     <InterfaceDefinition Include="Home\Promotions\Promotion Details\PromotionDetails.storyboard" />
@@ -1787,15 +1785,6 @@
     <Compile Include="Home\Feedback\Feedback Entry\FeedbackEntryStatus.cs" />
     <Compile Include="Home\Feedback\Feedback Entry\FeedbackEntryStatus.designer.cs">
       <DependentUpon>FeedbackEntryStatus.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Home\Feedback\Select Account\SelectAccountNoDataSource.cs" />
-    <Compile Include="Home\Feedback\Select Account\SelectAccountNoViewController.cs" />
-    <Compile Include="Home\Feedback\Select Account\SelectAccountNoViewController.designer.cs">
-      <DependentUpon>SelectAccountNoViewController.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Home\Feedback\Select Account\FeedbackAccountCell.cs" />
-    <Compile Include="Home\Feedback\Select Account\FeedbackAccountCell.designer.cs">
-      <DependentUpon>FeedbackAccountCell.cs</DependentUpon>
     </Compile>
     <Compile Include="Home\Feedback\Feedback Location and State\LocationManager.cs" />
     <Compile Include="Home\Feedback\Feedback Location and State\LocationUpdateEventArgs.cs" />
