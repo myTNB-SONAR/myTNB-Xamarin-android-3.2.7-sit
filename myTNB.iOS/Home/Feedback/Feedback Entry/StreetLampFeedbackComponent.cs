@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using CoreGraphics;
 using CoreLocation;
 using Foundation;
 using Location;
+using myTNB.Model;
 using UIKit;
 
 namespace myTNB.Home.Feedback.FeedbackEntry
@@ -174,12 +176,15 @@ namespace myTNB.Home.Feedback.FeedbackEntry
                 , _lblState, imgDropDown, _viewLineState });
             _viewState.AddGestureRecognizer(new UITapGestureRecognizer(() =>
             {
-                UIStoryboard storyBoard = UIStoryboard.FromName("FeedbackTableView", null);
-                SelectStateViewController selectStateVC =
-                    storyBoard.InstantiateViewController("SelectStateViewController") as SelectStateViewController;
-                selectStateVC._statesForFeedbackList = DataManager.DataManager.SharedInstance.StatesForFeedBack;
-                selectStateVC.OnSelect = _controller._streetLampRelatedFeedbackComponent.ValidateState;
-                _controller.NavigationController.PushViewController(selectStateVC, true);
+                UIStoryboard storyBoard = UIStoryboard.FromName("GenericSelector", null);
+                GenericSelectorViewController viewController = (GenericSelectorViewController)storyBoard
+                    .InstantiateViewController("GenericSelectorViewController");
+                viewController.Title = "Feedback_SelectState".Translate();
+                viewController.Items = GetStateList();
+                viewController.OnSelect = OnSelectAction;
+                viewController.SelectedIndex = DataManager.DataManager.SharedInstance.CurrentSelectedStateForFeedbackIndex;
+                var navController = new UINavigationController(viewController);
+                _controller.PresentViewController(navController, true, null);
             }));
 
             //Location Street/Name
@@ -263,6 +268,27 @@ namespace myTNB.Home.Feedback.FeedbackEntry
                 , _viewLineLocation, null, ANY_PATTERN);
             SetTextFieldEvents(_txtFieldPole, _lblPoleTitle, _lblPoleError, _viewLinePole
                 , null, ANY_PATTERN);
+        }
+
+        void OnSelectAction(int index)
+        {
+            DataManager.DataManager.SharedInstance.CurrentSelectedStateForFeedbackIndex = index;
+            _controller._streetLampRelatedFeedbackComponent.ValidateState();
+        }
+
+        List<string> GetStateList()
+        {
+            if (DataManager.DataManager.SharedInstance.StatesForFeedBack != null
+                && DataManager.DataManager.SharedInstance.StatesForFeedBack.Count > 0)
+            {
+                List<string> stateList = new List<string>();
+                foreach (StatesForFeedbackDataModel item in DataManager.DataManager.SharedInstance.StatesForFeedBack)
+                {
+                    stateList.Add(item.StateName);
+                }
+                return stateList;
+            }
+            return new List<string>();
         }
 
         internal void SetTextFieldEvents(UITextField textField, UILabel lblTitle, UILabel lblError

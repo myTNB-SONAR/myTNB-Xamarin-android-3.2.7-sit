@@ -180,6 +180,7 @@
 "Feedback_GoToSettings"="MS-Go to Settings";
 "Feedback_SelectAccountNumber"="MS-Select Account No.";
 "Feedback_SelectFeedbackType"="MS-Select Feedback Type";
+"Feedback_SelectState"="MS-Select State";
 "Feedback_State"="MS-State";
 "Feedback_Status"="MS-Feedback Status";
 "Feedback_StreetLampSubTitle"="MS-Spot a faulty street lamp? Report it here.";

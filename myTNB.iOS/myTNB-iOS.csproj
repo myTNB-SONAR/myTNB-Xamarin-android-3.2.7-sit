@@ -1096,7 +1096,6 @@
     <Folder Include="Assets.xcassets\Payment-Checkbox-White-Inactive.imageset\" />
     <Folder Include="Assets.xcassets\New-Launch-Logo.imageset\" />
     <Folder Include="Home\Feedback\Feedback Entry\" />
-    <Folder Include="Home\Feedback\Feedback Type\" />
     <Folder Include="Home\Feedback\Select Account\" />
     <Folder Include="Home\Feedback\Feedback Location and State\" />
     <Folder Include="Home\Feedback\Feedback Image\" />
@@ -1789,15 +1788,6 @@
     <Compile Include="Home\Feedback\Feedback Entry\FeedbackEntryStatus.designer.cs">
       <DependentUpon>FeedbackEntryStatus.cs</DependentUpon>
     </Compile>
-    <Compile Include="Home\Feedback\Feedback Type\FeedbackTypeCell.cs" />
-    <Compile Include="Home\Feedback\Feedback Type\FeedbackTypeCell.designer.cs">
-      <DependentUpon>FeedbackTypeCell.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Home\Feedback\Feedback Type\FeedbackTypeViewController.cs" />
-    <Compile Include="Home\Feedback\Feedback Type\FeedbackTypeViewController.designer.cs">
-      <DependentUpon>FeedbackTypeViewController.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Home\Feedback\Feedback Type\SelectFeedbackTypeDataSource.cs" />
     <Compile Include="Home\Feedback\Select Account\SelectAccountNoDataSource.cs" />
     <Compile Include="Home\Feedback\Select Account\SelectAccountNoViewController.cs" />
     <Compile Include="Home\Feedback\Select Account\SelectAccountNoViewController.designer.cs">
@@ -1809,15 +1799,6 @@
     </Compile>
     <Compile Include="Home\Feedback\Feedback Location and State\LocationManager.cs" />
     <Compile Include="Home\Feedback\Feedback Location and State\LocationUpdateEventArgs.cs" />
-    <Compile Include="Home\Feedback\Feedback Location and State\SelectStateDataSource.cs" />
-    <Compile Include="Home\Feedback\Feedback Location and State\SelectStateViewController.cs" />
-    <Compile Include="Home\Feedback\Feedback Location and State\SelectStateViewController.designer.cs">
-      <DependentUpon>SelectStateViewController.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Home\Feedback\Feedback Location and State\StateCell.cs" />
-    <Compile Include="Home\Feedback\Feedback Location and State\StateCell.designer.cs">
-      <DependentUpon>StateCell.cs</DependentUpon>
-    </Compile>
     <Compile Include="Home\Feedback\Feedback Image\ImageDataModel.cs" />
     <Compile Include="Home\Feedback\Feedback Image\ImagePickerDelegate.cs" />
     <Compile Include="Home\Feedback\Feedback Image\UIImageHelper.cs" />
