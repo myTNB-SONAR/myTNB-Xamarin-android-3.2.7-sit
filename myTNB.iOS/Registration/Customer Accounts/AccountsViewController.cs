@@ -8,8 +8,8 @@ using Foundation;
 using myTNB.DataManager;
 using myTNB.Model;
 using UIKit;
-using myTNB.Extensions;
 using myTNB.SQLite.SQLiteDataManager;
+using System.Diagnostics;
 
 namespace myTNB.Registration.CustomerAccounts
 {
@@ -34,7 +34,7 @@ namespace myTNB.Registration.CustomerAccounts
             base.ViewDidLoad();
             // Perform any additional setup after loading the view, typically from a nib.
             NavigationItem.HidesBackButton = true;
-            NavigationItem.Title = "Add Electricity Account";
+            NavigationItem.Title = "Common_AddElectricityAccount".Translate();
             InitializedSubviews();
             SetStaticFields();
             SetEvents();
@@ -48,8 +48,10 @@ namespace myTNB.Registration.CustomerAccounts
             UIImage backImg = UIImage.FromBundle("Back-White");
             UIBarButtonItem btnBack = new UIBarButtonItem(backImg, UIBarButtonItemStyle.Done, (sender, e) =>
             {
-                DataManager.DataManager.SharedInstance.AccountRecordsList = new CustomerAccountRecordListModel();
-                DataManager.DataManager.SharedInstance.AccountRecordsList.d = new List<CustomerAccountRecordModel>();
+                DataManager.DataManager.SharedInstance.AccountRecordsList = new CustomerAccountRecordListModel
+                {
+                    d = new List<CustomerAccountRecordModel>()
+                };
 
                 UIStoryboard storyBoard = UIStoryboard.FromName("Dashboard", null);
                 UIViewController loginVC = storyBoard.InstantiateViewController("HomeTabBarController") as UIViewController;
@@ -96,9 +98,7 @@ namespace myTNB.Registration.CustomerAccounts
                         }
                         else
                         {
-                            var alert = UIAlertController.Create("ErrNoNetworkTitle".Translate(), "ErrNoNetworkMsg".Translate(), UIAlertControllerStyle.Alert);
-                            alert.AddAction(UIAlertAction.Create("Ok", UIAlertActionStyle.Cancel, null));
-                            PresentViewController(alert, animated: true, completionHandler: null);
+                            AlertHandler.DisplayNoDataAlert(this);
                             ActivityIndicator.Hide();
                         }
                     });
@@ -126,7 +126,7 @@ namespace myTNB.Registration.CustomerAccounts
         {
             accountRecordsTableView.Source = new AccountRecordDataSource(DataManager.DataManager.SharedInstance.AccountsToBeAddedList, this);
             accountRecordsTableView.SeparatorStyle = UITableViewCellSeparatorStyle.None;
-            accountRecordsTableView.BackgroundColor = myTNBColor.SectionGrey();
+            accountRecordsTableView.BackgroundColor = MyTNBColor.SectionGrey;
             accountRecordsTableView.ReloadData();
             int length = DataManager.DataManager.SharedInstance.AccountsToBeAddedList?.d?.Count ?? 0;
             btnAddAccount.Hidden = (length >= accountLimit);
@@ -142,7 +142,7 @@ namespace myTNB.Registration.CustomerAccounts
         internal void SetStaticFields()
         {
             SetRecordCount();
-            lblSubDetails.Text = "NoAcctsFoundDesc".Translate();
+            lblSubDetails.Text = "Registration_NoAccountsFoundMessage".Translate();
         }
 
         internal void SetRecordCount()
@@ -151,7 +151,9 @@ namespace myTNB.Registration.CustomerAccounts
                                          && DataManager.DataManager.SharedInstance.AccountRecordsList?.d != null
                                          ? DataManager.DataManager.SharedInstance.AccountRecordsList?.d?.Count : 0);
             lblDetails.Hidden = false;
-            lblDetails.Text = recordCount > 0 ? recordCount.ToString() + " electricity supply accounts found!" : "NoAcctsFoundDesc".Translate();
+            lblDetails.Text = recordCount > 0 ? string.Format("{0} {1}", recordCount.ToString()
+                , "Registration_SupplyAccountCount".Translate())
+                : "Registration_NoAccountsFoundMessage".Translate();
             lblSubDetails.Hidden = recordCount == 0;
         }
 
@@ -176,9 +178,7 @@ namespace myTNB.Registration.CustomerAccounts
                             {
                                 if (IsEmptyNicknameExist())
                                 {
-                                    var alert = UIAlertController.Create("Invalid Entry", "Account nickname cannot be empty. Please enter valid nickname and try adding your account again.", UIAlertControllerStyle.Alert);
-                                    alert.AddAction(UIAlertAction.Create("Ok", UIAlertActionStyle.Cancel, null));
-                                    PresentViewController(alert, animated: true, completionHandler: null);
+                                    AlertHandler.DisplayGenericAlert(this, string.Empty, "Invalid_NicknameEntry".Translate());
                                 }
                                 else
                                 {
@@ -215,9 +215,7 @@ namespace myTNB.Registration.CustomerAccounts
                         }
                         else
                         {
-                            var alert = UIAlertController.Create("ErrNoNetworkTitle".Translate(), "ErrNoNetworkMsg".Translate(), UIAlertControllerStyle.Alert);
-                            alert.AddAction(UIAlertAction.Create("Ok", UIAlertActionStyle.Cancel, null));
-                            PresentViewController(alert, animated: true, completionHandler: null);
+                            AlertHandler.DisplayNoDataAlert(this);
                         }
                     });
                 });
@@ -234,7 +232,8 @@ namespace myTNB.Registration.CustomerAccounts
             for (int i = 0; i < DataManager.DataManager.SharedInstance.AccountsToBeAddedList?.d?.Count; i++)
             {
                 var acc = DataManager.DataManager.SharedInstance.AccountsToBeAddedList.d[i];
-                bool isFormatValid = !string.IsNullOrWhiteSpace(acc.accountNickName) && txtFieldHelper.ValidateTextField(acc.accountNickName, TNBGlobal.ACCOUNT_NAME_PATTERN);
+                bool isFormatValid = !string.IsNullOrWhiteSpace(acc.accountNickName)
+                    && txtFieldHelper.ValidateTextField(acc.accountNickName, TNBGlobal.ACCOUNT_NAME_PATTERN);
                 bool isUnique = DataManager.DataManager.SharedInstance.IsAccountNicknameUnique(acc.accountNickName, acc.accNum);
                 isValid = isFormatValid && isUnique;
                 if (!isValid)
@@ -258,12 +257,12 @@ namespace myTNB.Registration.CustomerAccounts
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine("accounts table exception: " + ex.Message);
+                    Debug.WriteLine("accounts table exception: " + ex.Message);
                 }
             }
 
             btnConfirm.Enabled = isValid;
-            btnConfirm.BackgroundColor = isValid ? myTNBColor.FreshGreen() : myTNBColor.SilverChalice();
+            btnConfirm.BackgroundColor = isValid ? MyTNBColor.FreshGreen : MyTNBColor.SilverChalice;
         }
 
         internal bool IsEmptyNicknameExist()
@@ -295,8 +294,8 @@ namespace myTNB.Registration.CustomerAccounts
                         int index = currentCount + 1;
                         foreach (var item in DataManager.DataManager.SharedInstance.AccountsToBeAddedList?.d)
                         {
-                            item.accDesc = string.Format("Account {0}", index);
-                            item.accountNickName = string.Format("Account {0}", index);
+                            item.accDesc = string.Format("{0} {1}", "Common_Account".Translate(), index);
+                            item.accountNickName = string.Format("{0} {1}", "Common_Account".Translate(), index);
                             index++;
                         }
                         SetAccountTable();
@@ -312,7 +311,7 @@ namespace myTNB.Registration.CustomerAccounts
                     {
                         if (!isDashboardFlow)
                         {
-                            ToastHelper.DisplayAlertView(this, "ErrorTitle".Translate(), _customerAccountResponseModel?.d?.message, (obj) =>
+                            ToastHelper.DisplayAlertView(this, "Error_DefaultTitle".Translate(), _customerAccountResponseModel?.d?.message, (obj) =>
                             {
                                 if (DataManager.DataManager.SharedInstance.AccountRecordsList == null
                                    || DataManager.DataManager.SharedInstance.AccountRecordsList?.d == null)
@@ -328,9 +327,8 @@ namespace myTNB.Registration.CustomerAccounts
                         else
                         {
                             var message = !string.IsNullOrWhiteSpace(_customerAccountResponseModel?.d?.message)
-                                                 ? _customerAccountResponseModel?.d?.message
-                                                 : "DefaultErrorMessage".Translate();
-                            ToastHelper.DisplayAlertView(this, "ErrorTitle".Translate(), message, (obj) =>
+                                ? _customerAccountResponseModel?.d?.message : "Error_DefaultMessage".Translate();
+                            ToastHelper.DisplayAlertView(this, "Error_DefaultTitle".Translate(), message, (obj) =>
                             {
                                 DismissViewController(true, null);
                             });
@@ -347,7 +345,7 @@ namespace myTNB.Registration.CustomerAccounts
             {
                 ServiceManager serviceManager = new ServiceManager();
 
-                var currentLinkedAccountNumbers = "";
+                var currentLinkedAccountNumbers = string.Empty;
                 List<String> _linkedAccountNumbers = new List<string>();
 
                 if (DataManager.DataManager.SharedInstance.AccountRecordsList != null
@@ -371,7 +369,7 @@ namespace myTNB.Registration.CustomerAccounts
                             }
                             else
                             {
-                                currentLinkedAccountNumbers += acct.accNum + "";
+                                currentLinkedAccountNumbers += acct.accNum + string.Empty;
                             }
                         }
                         else if (linkedAccountList.Count == 1)
@@ -383,8 +381,7 @@ namespace myTNB.Registration.CustomerAccounts
                 }
 
                 var user = DataManager.DataManager.SharedInstance.UserEntity?.Count > 0
-                                      ? DataManager.DataManager.SharedInstance.UserEntity[0]
-                                      : default(UserEntity);
+                    ? DataManager.DataManager.SharedInstance.UserEntity[0] : default(UserEntity);
 
                 object requestParameter = new
                 {
@@ -413,13 +410,15 @@ namespace myTNB.Registration.CustomerAccounts
                             InvokeOnMainThread(() =>
                             {
                                 if (_addMultipleSupplyAccountsResponseModel != null && _addMultipleSupplyAccountsResponseModel?.d != null
-                                    && _addMultipleSupplyAccountsResponseModel?.d?.data != null && _addMultipleSupplyAccountsResponseModel?.d?.didSucceed == true)
+                                    && _addMultipleSupplyAccountsResponseModel?.d?.data != null
+                                    && _addMultipleSupplyAccountsResponseModel?.d?.didSucceed == true)
                                 {
                                     var count = DataManager.DataManager.SharedInstance.AccountsToBeAddedList?.d?.Count;
                                     DataManager.DataManager.SharedInstance.AccountsToBeAddedList.d = _addMultipleSupplyAccountsResponseModel?.d?.data;
 
                                     UIStoryboard storyBoard = UIStoryboard.FromName("Registration", null);
-                                    AddAccountSuccessViewController addAccountSuccessVC = storyBoard.InstantiateViewController("AddAccountSuccessViewController") as AddAccountSuccessViewController;
+                                    AddAccountSuccessViewController addAccountSuccessVC
+                                        = storyBoard.InstantiateViewController("AddAccountSuccessViewController") as AddAccountSuccessViewController;
                                     if (addAccountSuccessVC != null)
                                     {
                                         addAccountSuccessVC.CreateNewlyAddedList();
@@ -434,18 +433,14 @@ namespace myTNB.Registration.CustomerAccounts
                                 else
                                 {
                                     HideProgressView();
-                                    var alert = UIAlertController.Create("Unable to Add Accounts", "An error occured during account linking. Please try again later.", UIAlertControllerStyle.Alert);
-                                    alert.AddAction(UIAlertAction.Create("Ok", UIAlertActionStyle.Cancel, null));
-                                    PresentViewController(alert, animated: true, completionHandler: null);
+                                    AlertHandler.DisplayServiceError(this, _addMultipleSupplyAccountsResponseModel?.d?.message);
                                 }
                             });
                         });
                     }
                     else
                     {
-                        var alert = UIAlertController.Create("ErrNoNetworkTitle".Translate(), "ErrNoNetworkMsg".Translate(), UIAlertControllerStyle.Alert);
-                        alert.AddAction(UIAlertAction.Create("Ok", UIAlertActionStyle.Cancel, null));
-                        PresentViewController(alert, animated: true, completionHandler: null);
+                        AlertHandler.DisplayNoDataAlert(this);
                     }
                 });
             });
@@ -487,8 +482,6 @@ namespace myTNB.Registration.CustomerAccounts
                 // updates the cache when user entity data is updated
                 DataManager.DataManager.SharedInstance.RefreshDataFromAccountUpdate();
             }
-
-
         }
 
         internal Task AddMultipleSupplyAccountsToUserReg()
@@ -506,19 +499,18 @@ namespace myTNB.Registration.CustomerAccounts
                     {
                         billAccs.Add(new
                         {
-                            accNum = item.accNum ?? "",
+                            accNum = item.accNum ?? string.Empty,
                             accountTypeId = item.accountTypeId ?? "1",
-                            accountStAddress = item.accountStAddress ?? "",
-                            icNum = item.icNum ?? "",
+                            accountStAddress = item.accountStAddress ?? string.Empty,
+                            icNum = item.icNum ?? string.Empty,
                             item.isOwned,
-                            accountNickName = item.accountNickName ?? "",
-                            accountCategoryId = item.accountCategoryId ?? ""
+                            accountNickName = item.accountNickName ?? string.Empty,
+                            accountCategoryId = item.accountCategoryId ?? string.Empty
                         });
                     }
 
                     var user = DataManager.DataManager.SharedInstance.UserEntity?.Count > 0
-                                          ? DataManager.DataManager.SharedInstance.UserEntity[0]
-                                          : default(UserEntity);
+                        ? DataManager.DataManager.SharedInstance.UserEntity[0] : default(UserEntity);
 
                     object requestParams = new
                     {
@@ -570,68 +562,75 @@ namespace myTNB.Registration.CustomerAccounts
             footerView.BackgroundColor = UIColor.Clear;
             accountRecordsTableView.TableFooterView = footerView;
 
-            btnAddAccount = new UIButton(UIButtonType.Custom);
-            btnAddAccount.Frame = new CGRect(18, 24, View.Frame.Width - 36, 48);
-            btnAddAccount.SetTitle("AddAnotherAccount".Translate(), UIControlState.Normal);
-            btnAddAccount.SetTitleColor(myTNBColor.FreshGreen(), UIControlState.Normal);
-            btnAddAccount.BackgroundColor = UIColor.Clear;
+            btnAddAccount = new UIButton(UIButtonType.Custom)
+            {
+                Frame = new CGRect(18, 24, View.Frame.Width - 36, 48),
+                BackgroundColor = UIColor.Clear
+            };
             btnAddAccount.Layer.BorderWidth = 1.0f;
-            btnAddAccount.Layer.BorderColor = myTNBColor.FreshGreen().CGColor;
+            btnAddAccount.Layer.BorderColor = MyTNBColor.FreshGreen.CGColor;
             btnAddAccount.Layer.CornerRadius = 5.0f;
+            btnAddAccount.SetTitle("Common_AddAnotherAccount".Translate(), UIControlState.Normal);
+            btnAddAccount.SetTitleColor(MyTNBColor.FreshGreen, UIControlState.Normal);
             footerView.AddSubview(btnAddAccount);
 
-            btnConfirm = new UIButton(UIButtonType.Custom);
-            btnConfirm.Frame = new CGRect(18, 78, View.Frame.Width - 36, 48);
-            btnConfirm.SetTitle("Confirm", UIControlState.Normal);
-            btnConfirm.SetTitleColor(UIColor.White, UIControlState.Normal);
-            btnConfirm.BackgroundColor = myTNBColor.FreshGreen();
+            btnConfirm = new UIButton(UIButtonType.Custom)
+            {
+                Frame = new CGRect(18, 78, View.Frame.Width - 36, 48),
+                BackgroundColor = MyTNBColor.FreshGreen
+            };
             btnConfirm.Layer.CornerRadius = 5.0f;
+            btnConfirm.SetTitle("Common_Confirm".Translate(), UIControlState.Normal);
+            btnConfirm.SetTitleColor(UIColor.White, UIControlState.Normal);
             footerView.AddSubview(btnConfirm);
         }
 
         void DisplayProgessView(int count)
         {
-            string title = string.Format("Adding {0} Account", count);
-            string subTitle = "This may take a while as we are\r\nadding your TNB account.";
-            if (count > 1)
+            _progressView = new UIView(UIScreen.MainScreen.Bounds)
             {
-                title = string.Format("Adding {0} Accounts", count);
-                subTitle = "This may take a while as we are\r\nadding your TNB accounts.";
-            }
-            _progressView = new UIView(UIScreen.MainScreen.Bounds);
-            _progressView.BackgroundColor = new UIColor(0, .75F);
+                BackgroundColor = new UIColor(0, .75F)
+            };
 
             UIView progressContainer = new UIView(new CGRect((_progressView.Frame.Width / 2) - 127
-                                                             , (_progressView.Frame.Height / 2) - 87
-                                                             , 254
-                                                             , 174));
-            progressContainer.BackgroundColor = UIColor.White;
-            progressContainer.Alpha = 1F;
+                , (_progressView.Frame.Height / 2) - 87, 254, 174))
+            {
+                BackgroundColor = UIColor.White,
+                Alpha = 1F
+            };
             progressContainer.Layer.CornerRadius = 4;
 
             UILabel lblTitle = new UILabel(new CGRect(13, 23, progressContainer.Frame.Width - 26, 18));
-            lblTitle.Font = myTNBFont.MuseoSans16();
-            lblTitle.TextColor = myTNBColor.PowerBlue();
+            lblTitle.Font = MyTNBFont.MuseoSans16;
+            lblTitle.TextColor = MyTNBColor.PowerBlue;
             lblTitle.TextAlignment = UITextAlignment.Center;
-            lblTitle.Text = title;
+            lblTitle.Text = string.Format(count > 1 ? "Registration_AddingAccountsTitle".Translate()
+                : "Registration_AddingAccountTitle".Translate(), count);
 
-            UIImageView imgLoading = new UIImageView(new CGRect(105, 57, 44, 44));
-            imgLoading.Image = UIImage.FromBundle("Loading-Circle");
+            UIImageView imgLoading = new UIImageView(new CGRect(105, 57, 44, 44))
+            {
+                Image = UIImage.FromBundle("Loading-Circle")
+            };
 
-            CABasicAnimation rotationAnimation = new CABasicAnimation();
-            rotationAnimation.KeyPath = "transform.rotation.z";
-            rotationAnimation.To = new NSNumber(Math.PI * 2);
-            rotationAnimation.Duration = 2;
-            rotationAnimation.Cumulative = true;
-            rotationAnimation.RepeatCount = float.MaxValue;
+            CABasicAnimation rotationAnimation = new CABasicAnimation
+            {
+                KeyPath = "transform.rotation.z",
+                To = new NSNumber(Math.PI * 2),
+                Duration = 2,
+                Cumulative = true,
+                RepeatCount = float.MaxValue
+            };
             imgLoading.Layer.AddAnimation(rotationAnimation, "rotationAnimation");
 
-            UILabel lblSubTitle = new UILabel(new CGRect(13, 112, progressContainer.Frame.Width - 26, 36));
-            lblSubTitle.Font = myTNBFont.MuseoSans14();
-            lblSubTitle.TextColor = myTNBColor.TunaGrey();
-            lblSubTitle.TextAlignment = UITextAlignment.Center;
-            lblSubTitle.Lines = 2;
-            lblSubTitle.Text = subTitle;
+            UILabel lblSubTitle = new UILabel(new CGRect(13, 112, progressContainer.Frame.Width - 26, 36))
+            {
+                Font = MyTNBFont.MuseoSans14,
+                TextColor = MyTNBColor.TunaGrey(),
+                TextAlignment = UITextAlignment.Center,
+                Lines = 2,
+                Text = count > 1 ? "Registration_AddingAccountsMessage".Translate()
+                : "Registration_AddingAccountMessage".Translate()
+            };
 
             progressContainer.AddSubviews(new UIView[] { lblTitle, imgLoading, lblSubTitle });
             _progressView.AddSubview(progressContainer);

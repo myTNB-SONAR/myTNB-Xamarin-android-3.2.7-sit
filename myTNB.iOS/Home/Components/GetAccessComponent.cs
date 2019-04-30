@@ -1,4 +1,5 @@
 ﻿using CoreGraphics;
+
 using UIKit;
 
 namespace myTNB.Dashboard.DashboardComponents
@@ -43,16 +44,15 @@ namespace myTNB.Dashboard.DashboardComponents
 
             _lblTitle = new UILabel(new CGRect(10, imgViewEmpty.Frame.GetMaxY() + 1, _viewGetAccess.Frame.Width - 20, 16));
             _lblTitle.TextAlignment = UITextAlignment.Center;
-            _lblTitle.Font = myTNBFont.MuseoSans14_500();
-            _lblTitle.Text = "View usage history";
+            _lblTitle.Font = MyTNBFont.MuseoSans14_500;
+            _lblTitle.Text = "Component_ViewUsageHistory".Translate();
             _lblTitle.TextColor = UIColor.White;
             _viewGetAccess.AddSubview(_lblTitle);
 
             _lblSubtitle = new UILabel(new CGRect(0, _lblTitle.Frame.GetMaxY(), _viewGetAccess.Frame.Width, 28));
             _lblSubtitle.TextAlignment = UITextAlignment.Center;
-            //_lblSubtitle.Text = "You will require permission from the owner to view usage and transaction details.";
-            _lblSubtitle.Text = "Only electricity account owners\r\nmay view usage and transaction details.";
-            _lblSubtitle.Font = myTNBFont.MuseoSans11_300();
+            _lblSubtitle.Text = "Component_GetAccessMessage".Translate();
+            _lblSubtitle.Font = MyTNBFont.MuseoSans11_300;
             _lblSubtitle.Lines = 2;
             _lblSubtitle.TextColor = UIColor.White;
             _lblSubtitle.LineBreakMode = UILineBreakMode.WordWrap;
@@ -63,8 +63,8 @@ namespace myTNB.Dashboard.DashboardComponents
             _btnGetAccess.Layer.CornerRadius = 4;
             _btnGetAccess.Layer.BorderColor = UIColor.White.CGColor;
             _btnGetAccess.Layer.BorderWidth = 1;
-            _btnGetAccess.SetTitle("Get access", UIControlState.Normal);
-            _btnGetAccess.Font = myTNBFont.MuseoSans16();
+            _btnGetAccess.SetTitle("Common_GetAccess".Translate(), UIControlState.Normal);
+            _btnGetAccess.Font = MyTNBFont.MuseoSans16;
             _btnGetAccess.SetTitleColor(UIColor.White, UIControlState.Normal);
             //_viewGetAccess.AddSubview(_btnGetAccess);
         }

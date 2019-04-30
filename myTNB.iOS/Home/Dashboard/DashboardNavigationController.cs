@@ -1,4 +1,3 @@
-using Foundation;
 using myTNB.Dashboard;
 using System;
 using UIKit;
@@ -7,7 +6,7 @@ namespace myTNB
 {
     public partial class DashboardNavigationController : UINavigationController
     {
-        public DashboardNavigationController (IntPtr handle) : base (handle)
+        public DashboardNavigationController(IntPtr handle) : base(handle)
         {
         }
 

@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using Foundation;
 using myTNB.Enums;
 using myTNB.Model;
@@ -928,7 +927,8 @@ namespace myTNB.DataManager
         /// </summary>
         /// <returns><c>true</c>, if paid account number was ised, <c>false</c> otherwise.</returns>
         /// <param name="accountNumber">Account number.</param>
-        public bool IsPaidAccountNumber(string accountNumber) {
+        public bool IsPaidAccountNumber(string accountNumber)
+        {
             if (AccountNumbersForPaymentList == null)
             {
                 return false;

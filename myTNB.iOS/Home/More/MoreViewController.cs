@@ -7,9 +7,7 @@ using myTNB.Home.More;
 using System.Collections.Generic;
 using myTNB.Registration;
 using myTNB.DataManager;
-using System.Threading.Tasks;
-using myTNB.Model;
-using myTNB.Extensions;
+using System.Diagnostics;
 
 namespace myTNB
 {
@@ -19,23 +17,20 @@ namespace myTNB
         {
         }
 
-        Dictionary<string, List<string>> _itemsDictionary = new Dictionary<string, List<string>>(){
-            {"Settings", new List<string>{"My Account", "Notifications"}}
-            , {"Help & Support", new List<string>{"Find Us", "Call Us (Outages & Breakdown)", "Call Us (Billing Enquiries)", "FAQ", "Terms & Conditions"}}
-            , {"Share", new List<string>{"Share this app", "Rate this app"}}
-        };
+        TitleBarComponent _titleBarComponent;
+        UILabel _lblAppVersion;
 
         public override void ViewDidLoad()
         {
             base.ViewDidLoad();
+            NSNotificationCenter.DefaultCenter.AddObserver((Foundation.NSString)"LanguageDidChange", LanguageDidChange);
             SetSubviews();
         }
 
         public override void ViewWillAppear(bool animated)
         {
             base.ViewWillAppear(animated);
-            UpdateDictionary();
-            moreTableView.Source = new MoreDataSource(this, _itemsDictionary);
+            moreTableView.Source = new MoreDataSource(this, GetMoreList());
             moreTableView.ReloadData();
         }
 
@@ -44,9 +39,29 @@ namespace myTNB
             base.ViewDidAppear(animated);
         }
 
-        void UpdateDictionary()
+        public void LanguageDidChange(NSNotification notification)
         {
-            if (_itemsDictionary.ContainsKey("Help & Support") && IsValidWeblinks())
+            Debug.WriteLine("DEBUG >>> MORE LanguageDidChange");
+            _titleBarComponent?.SetTitle("More_Title".Translate());
+            _lblAppVersion.Text = string.Format("{0} {1}", "More_AppVersion".Translate()
+                , NSBundle.MainBundle.ObjectForInfoDictionary("CFBundleShortVersionString").ToString());
+        }
+
+
+        Dictionary<string, List<string>> GetMoreList()
+        {
+            Dictionary<string, List<string>> _itemsDictionary = new Dictionary<string, List<string>>(){
+                {"More_Settings".Translate(), new List<string>{ "More_MyAccount".Translate()
+                    , "More_Notifications".Translate(), LanguageSettings.Title}}
+                , {"More_HelpAndSupport".Translate(), new List<string>{ "More_FindUs".Translate()
+                    , "More_CallUsOutagesAndBreakdown".Translate()
+                    , "More_CallUsBilling".Translate()
+                    , "More_FAQ".Translate()
+                    , "More_TnC".Translate()}}
+                , {"More_Share".Translate(), new List<string>{ "More_ShareThisApp".Translate()
+                    , "More_RateThisApp".Translate()}}
+            };
+            if (_itemsDictionary.ContainsKey("More_HelpAndSupport".Translate()) && IsValidWeblinks())
             {
                 int cloIndex = DataManager.DataManager.SharedInstance.WebLinks.FindIndex(x => x.Code.ToLower().Equals("tnbclo"));
                 int cleIndex = DataManager.DataManager.SharedInstance.WebLinks.FindIndex(x => x.Code.ToLower().Equals("tnbcle"));
@@ -54,39 +69,44 @@ namespace myTNB
                 {
                     List<string> helpAndSupportList = new List<string>
                     {
-                        "Find Us"
+                        "More_FindUs".Translate()
                         , DataManager.DataManager.SharedInstance.WebLinks[cloIndex].Title
                         , DataManager.DataManager.SharedInstance.WebLinks[cleIndex].Title
-                        , "FAQ"
-                        , "Terms & Conditions"
+                        , "More_FAQ".Translate()
+                        , "More_TnC".Translate()
                     };
-                    _itemsDictionary["Help & Support"] = helpAndSupportList;
+                    _itemsDictionary["More_HelpAndSupport".Translate()] = helpAndSupportList;
                 }
             }
+            return _itemsDictionary;
         }
 
         void SetSubviews()
         {
             GradientViewComponent gradientViewComponent = new GradientViewComponent(View, true, 64, true);
             UIView headerView = gradientViewComponent.GetUI();
-            TitleBarComponent titleBarComponent = new TitleBarComponent(headerView);
-            UIView titleBarView = titleBarComponent.GetUI();
-            titleBarComponent.SetTitle("More");
-            titleBarComponent.SetNotificationVisibility(true);
+            _titleBarComponent = new TitleBarComponent(headerView);
+            UIView titleBarView = _titleBarComponent.GetUI();
+            _titleBarComponent.SetTitle("More_Title".Translate());
+            _titleBarComponent.SetNotificationVisibility(true);
             headerView.AddSubview(titleBarView);
             View.AddSubview(headerView);
 
-            moreTableView.Frame = new CGRect(0, DeviceHelper.IsIphoneXUpResolution() ? 88 : 64, View.Frame.Width, View.Frame.Height - 64 - 49);
+            moreTableView.Frame = new CGRect(0, DeviceHelper.IsIphoneXUpResolution() ? 88 : 64
+                , View.Frame.Width, View.Frame.Height - 64 - 49);
             moreTableView.RowHeight = 50f;
             moreTableView.SectionHeaderHeight = 48f;
             moreTableView.SeparatorStyle = UITableViewCellSeparatorStyle.None;
 
-            UILabel lblAppVersion = new UILabel(new CGRect(18, 16, moreTableView.Frame.Width - 36, 14));
-            lblAppVersion.TextColor = myTNBColor.SilverChalice();
-            lblAppVersion.Font = myTNBFont.MuseoSans9_300();
-            lblAppVersion.Text = "App Version " + NSBundle.MainBundle.ObjectForInfoDictionary("CFBundleShortVersionString").ToString();
+            _lblAppVersion = new UILabel(new CGRect(18, 16, moreTableView.Frame.Width - 36, 14))
+            {
+                TextColor = MyTNBColor.SilverChalice,
+                Font = MyTNBFont.MuseoSans9_300,
+                Text = string.Format("{0} {1}", "More_AppVersion".Translate()
+               , NSBundle.MainBundle.ObjectForInfoDictionary("CFBundleShortVersionString").ToString())
+            };
 
-            moreTableView.TableFooterView = lblAppVersion;
+            moreTableView.TableFooterView = _lblAppVersion;
         }
 
         internal void RenderSettingsScreen(int section, int row)
@@ -109,6 +129,10 @@ namespace myTNB
                                     else if (row == 1)
                                     {
                                         GetNotificationPreferences();
+                                    }
+                                    else
+                                    {
+                                        GoToLanguageSetting();
                                     }
                                     break;
                                 }
@@ -160,8 +184,7 @@ namespace myTNB
                     }
                     else
                     {
-                        Console.WriteLine("No Network");
-                        DisplayAlertMessage("ErrNoNetworkTitle".Translate(), "ErrNoNetworkMsg".Translate());
+                        AlertHandler.DisplayNoDataAlert(this);
                     }
                 });
             });
@@ -201,7 +224,7 @@ namespace myTNB
             }
             else
             {
-                string errorMessage = string.Empty;
+                string errorMessage = "Error_DefaultMessage".Translate();
                 if (DataManager.DataManager.SharedInstance.NotificationTypeResponse?.d?.didSucceed == false
                     && !string.IsNullOrWhiteSpace(DataManager.DataManager.SharedInstance.NotificationTypeResponse?.d?.message))
                 {
@@ -212,13 +235,22 @@ namespace myTNB
                 {
                     errorMessage = DataManager.DataManager.SharedInstance.NotificationChannelResponse?.d?.message;
                 }
-                else
-                {
-                    errorMessage = "DefaultErrorMessage".Translate();
-                }
-                DisplayAlertMessage("ErrorTitle".Translate(), errorMessage);
+                AlertHandler.DisplayServiceError(this, errorMessage);
                 ActivityIndicator.Hide();
             }
+        }
+
+        void GoToLanguageSetting()
+        {
+            UIStoryboard storyBoard = UIStoryboard.FromName("GenericSelector", null);
+            GenericSelectorViewController viewController = (GenericSelectorViewController)storyBoard
+                .InstantiateViewController("GenericSelectorViewController");
+            viewController.Title = LanguageSettings.Title;
+            viewController.Items = LanguageSettings.SupportedLanguage;
+            viewController.OnSelect = LanguageSettings.OnSelect;
+            viewController.SelectedIndex = LanguageSettings.SelectedLangugageIndex;
+            var navController = new UINavigationController(viewController);
+            PresentViewController(navController, true, null);
         }
 
         void GoToMyAccount()
@@ -260,13 +292,6 @@ namespace myTNB
             PresentViewController(navController, true, null);
         }
 
-        void DisplayAlertMessage(string title, string message)
-        {
-            var alert = UIAlertController.Create(title, message, UIAlertControllerStyle.Alert);
-            alert.AddAction(UIAlertAction.Create("Ok", UIAlertActionStyle.Cancel, null));
-            PresentViewController(alert, animated: true, completionHandler: null);
-        }
-
         bool IsValidWeblinks()
         {
             return DataManager.DataManager.SharedInstance.WebLinks != null;
@@ -295,9 +320,7 @@ namespace myTNB
                     return;
                 }
             }
-            var alert = UIAlertController.Create("Browser Error", "Links are not available right now. Please try again later.", UIAlertControllerStyle.Alert);
-            alert.AddAction(UIAlertAction.Create("Ok", UIAlertActionStyle.Cancel, null));
-            PresentViewController(alert, animated: true, completionHandler: null);
+            AlertHandler.DisplayServiceError(this, "Error_LinkNotAvailable".Translate());
         }
 
         void CallCustomerService(string code)
@@ -316,9 +339,7 @@ namespace myTNB
                     }
                 }
             }
-            var alert = UIAlertController.Create("Number Error", "Number is not available right now. Please try again later.", UIAlertControllerStyle.Alert);
-            alert.AddAction(UIAlertAction.Create("Ok", UIAlertActionStyle.Cancel, null));
-            PresentViewController(alert, animated: true, completionHandler: null);
+            AlertHandler.DisplayServiceError(this, "Error_TelephoneNumberNotAvailable".Translate());
         }
 
         void OpenAppStore()
@@ -336,9 +357,7 @@ namespace myTNB
                     }
                 }
             }
-            var alert = UIAlertController.Create("Rating Error", "Rating is not available right now. Please try again later.", UIAlertControllerStyle.Alert);
-            alert.AddAction(UIAlertAction.Create("Ok", UIAlertActionStyle.Cancel, null));
-            PresentViewController(alert, animated: true, completionHandler: null);
+            AlertHandler.DisplayServiceError(this, "Error_RatingNotAvailable".Translate());
         }
 
         void Share()
@@ -348,7 +367,7 @@ namespace myTNB
                 int index = DataManager.DataManager.SharedInstance.WebLinks?.FindIndex(x => x.Code.ToLower().Equals("ios")) ?? -1;
                 if (index > -1)
                 {
-                    var message = NSObject.FromObject("New myTNB app is now available in App Store.");
+                    var message = NSObject.FromObject("More_ShareMessage".Translate());
                     string url = DataManager.DataManager.SharedInstance.WebLinks[index].Url;
                     var item = NSObject.FromObject(url);
                     var activityItems = new NSObject[] { message, item };
@@ -359,9 +378,7 @@ namespace myTNB
                     return;
                 }
             }
-            var alert = UIAlertController.Create("Share Error", "Sharing is not available right now. Please try again later.", UIAlertControllerStyle.Alert);
-            alert.AddAction(UIAlertAction.Create("Ok", UIAlertActionStyle.Cancel, null));
-            PresentViewController(alert, animated: true, completionHandler: null);
+            AlertHandler.DisplayServiceError(this, "Error_ShareNotAvailable".Translate());
         }
     }
 }

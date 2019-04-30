@@ -40,7 +40,11 @@ namespace myTNB
         /// <returns><c>true</c>, if iPhone X, <c>false</c> otherwise.</returns>
         public static bool IsIphoneXUpResolution()
         {
-            return UIScreen.MainScreen.NativeBounds.Height >= 2436;
+            // xsmax    =   2688
+            // x & xs   =   2436
+            // xr       =   1792
+            return UIScreen.MainScreen.NativeBounds.Height >= 2436
+                || UIScreen.MainScreen.NativeBounds.Height == 1792;
         }
         /// <summary>
         /// Checks if device is iPhone X

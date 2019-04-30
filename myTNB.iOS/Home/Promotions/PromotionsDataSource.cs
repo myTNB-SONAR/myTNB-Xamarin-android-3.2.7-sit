@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using Foundation;
 using myTNB.Home.Components;
 using myTNB.SitecoreCMS.Model;
-using myTNB.SQLite.SQLiteDataManager;
 using UIKit;
 
 namespace myTNB.Home.Promotions
@@ -98,7 +98,7 @@ namespace myTNB.Home.Promotions
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine("Parse Error: " + e.Message);
+                    Debug.WriteLine("Parse Error: " + e.Message);
                     formattedDate = rawDate;
                 }
             }

@@ -1,7 +1,5 @@
-using Foundation;
 using System;
 using UIKit;
-using CoreGraphics;
 
 namespace myTNB
 {
@@ -13,6 +11,5 @@ namespace myTNB
         public SelectPaymentCell (IntPtr handle) : base (handle)
         {
         }
-
     }
 }

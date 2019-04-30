@@ -93,5 +93,12 @@ to find Kedai Tenaga nearby.</string>
 		<key>NSAllowsArbitraryLoadsInWebContent</key>
 		<true/>
 	</dict>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>en</string>
+	<key>CFBundleLocalizations</key>
+	<array>
+		<string>ms</string>
+		<string>en</string>
+	</array>
 </dict>
 </plist>

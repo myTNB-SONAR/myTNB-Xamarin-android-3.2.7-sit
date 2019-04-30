@@ -1,125 +1,22 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="864">
-    <device id="retina4_0" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="5235">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
         <!--Navigation Controller-->
-        <scene sceneID="863">
-            <objects>
-                <navigationController id="864" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="866">
-                        <rect key="frame" x="0.0" y="20" width="320" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <connections>
-                        <segue destination="873" kind="relationship" relationship="rootViewController" id="1135"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="867" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="41" y="21"/>
-        </scene>
         <!--Bill Related-->
-        <scene sceneID="872">
-            <objects>
-                <viewController storyboardIdentifier="LoginBillRelatedFeedbackViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="873" customClass="LoginBillRelatedFeedbackViewController" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="870"/>
-                        <viewControllerLayoutGuide type="bottom" id="871"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="874">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                    </view>
-                    <navigationItem key="navigationItem" title="Bill Related" id="1134"/>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="875" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="492" y="16"/>
-        </scene>
         <!--Navigation Controller-->
-        <scene sceneID="2023">
-            <objects>
-                <navigationController id="2024" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="2026">
-                        <rect key="frame" x="0.0" y="20" width="320" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <connections>
-                        <segue destination="2233" kind="relationship" relationship="rootViewController" id="2333"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="2027" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="48" y="642"/>
-        </scene>
         <!--Faulty TNB Street Lamp-->
-        <scene sceneID="2232">
-            <objects>
-                <viewController storyboardIdentifier="LoginFaultyStreetLampFeedbackViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="2233" customClass="LoginFaultyStreetLampFeedbackViewController" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="2230"/>
-                        <viewControllerLayoutGuide type="bottom" id="2231"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="2234">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                    </view>
-                    <navigationItem key="navigationItem" title="Faulty TNB Street Lamp" id="2332"/>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="2235" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="493" y="639"/>
-        </scene>
         <!--Navigation Controller-->
-        <scene sceneID="2944">
-            <objects>
-                <navigationController id="2945" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="2947">
-                        <rect key="frame" x="0.0" y="20" width="320" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <connections>
-                        <segue destination="3245" kind="relationship" relationship="rootViewController" id="3357"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="2948" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="56" y="1282"/>
-        </scene>
         <!--Others-->
-        <scene sceneID="3244">
-            <objects>
-                <viewController storyboardIdentifier="LoginOthersFeedbackViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="3245" customClass="LoginOthersFeedbackViewController" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="3242"/>
-                        <viewControllerLayoutGuide type="bottom" id="3243"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="3246">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                    </view>
-                    <navigationItem key="navigationItem" title="Others" id="3356"/>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="3247" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="488" y="1277"/>
-        </scene>
         <!--Navigation Controller-->
         <scene sceneID="5234">
             <objects>
                 <navigationController id="5235" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="5237">
-                        <rect key="frame" x="0.0" y="20" width="320" height="44"/>
+                        <rect key="frame" x="0.0" y="20" width="414" height="50"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
@@ -139,22 +36,22 @@
                         <viewControllerLayoutGuide type="bottom" id="5242"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="5245">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="5348">
-                                <rect key="frame" x="0.0" y="64" width="320" height="505"/>
+                                <rect key="frame" x="4" y="70" width="406" height="667"/>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="0.0" reuseIdentifier="SubmittedFeedbackCell" rowHeight="64" id="5349" customClass="SubmittedFeedbackCell">
-                                        <rect key="frame" x="0.0" y="28" width="320" height="64"/>
+                                        <rect key="frame" x="0.0" y="28" width="406" height="64"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="5349" id="5350">
-                                            <rect key="frame" x="0.0" y="0.0" width="320" height="63.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="406" height="63.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="6 Aug 2017" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5364">
-                                                    <rect key="frame" x="231" y="17" width="70" height="14"/>
+                                                    <rect key="frame" x="317" y="17" width="70" height="14"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="14" id="5367"/>
                                                         <constraint firstAttribute="width" constant="70" id="5368"/>
@@ -164,7 +61,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Bill Related" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5369">
-                                                    <rect key="frame" x="48" y="17" width="158" height="18"/>
+                                                    <rect key="frame" x="48" y="17" width="244" height="18"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="18" id="5373"/>
                                                     </constraints>
@@ -217,88 +114,22 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5246" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-436" y="18"/>
+            <point key="canvasLocation" x="-205" y="21"/>
         </scene>
         <!--Navigation Controller-->
-        <scene sceneID="6062">
-            <objects>
-                <navigationController id="6063" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="6065">
-                        <rect key="frame" x="0.0" y="20" width="320" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <connections>
-                        <segue destination="7648" kind="relationship" relationship="rootViewController" id="7740"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="6066" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="928" y="9"/>
-        </scene>
         <!--Bill Related-->
-        <scene sceneID="7647">
-            <objects>
-                <viewController storyboardIdentifier="NonLoginBillRelatedFeedbackViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="7648" customClass="NonLoginBillRelatedFeedbackViewController" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="7645"/>
-                        <viewControllerLayoutGuide type="bottom" id="7646"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="7649">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                    </view>
-                    <navigationItem key="navigationItem" title="Bill Related" id="7739"/>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="7650" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1310" y="7"/>
-        </scene>
         <!--Navigation Controller-->
-        <scene sceneID="7757">
-            <objects>
-                <navigationController id="7758" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="7760">
-                        <rect key="frame" x="0.0" y="20" width="320" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <connections>
-                        <segue destination="8438" kind="relationship" relationship="rootViewController" id="8776"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="7761" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="933" y="635"/>
-        </scene>
         <!--Faulty TNB Street Lamp-->
-        <scene sceneID="8437">
-            <objects>
-                <viewController storyboardIdentifier="NonLoginFaultyStreetLampFeedbackViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="8438" customClass="NonLoginFaultyStreetLampFeedbackViewController" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="8435"/>
-                        <viewControllerLayoutGuide type="bottom" id="8436"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="8439">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                    </view>
-                    <navigationItem key="navigationItem" title="Faulty TNB Street Lamp" id="8775"/>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="8440" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1309" y="636"/>
-        </scene>
         <!--Title-->
         <scene sceneID="9772">
             <objects>
-                <viewController storyboardIdentifier="SubmitFeedbackSuccessViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="9773" customClass="SubmitFeedbackSuccessViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="FeedbackEntryStatus" useStoryboardIdentifierAsRestorationIdentifier="YES" id="9773" customClass="FeedbackEntryStatus" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="9770"/>
                         <viewControllerLayoutGuide type="bottom" id="9771"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="9774">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </view>
@@ -306,33 +137,15 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="9775" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-434" y="635"/>
+            <point key="canvasLocation" x="-218" y="869"/>
         </scene>
         <!--Title-->
-        <scene sceneID="9815">
-            <objects>
-                <viewController storyboardIdentifier="SubmitFeedbackFailedViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="9816" customClass="SubmitFeedbackFailedViewController" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="9813"/>
-                        <viewControllerLayoutGuide type="bottom" id="9814"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="9817">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                    </view>
-                    <navigationItem key="navigationItem" title="Title" id="9943"/>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="9818" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-437" y="1260"/>
-        </scene>
         <!--Navigation Controller-->
         <scene sceneID="11061">
             <objects>
                 <navigationController id="11062" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="11064">
-                        <rect key="frame" x="0.0" y="20" width="320" height="44"/>
+                        <rect key="frame" x="0.0" y="20" width="414" height="50"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
@@ -341,163 +154,43 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="11065" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-840" y="632"/>
+            <point key="canvasLocation" x="-872" y="875"/>
         </scene>
         <!--Navigation Controller-->
-        <scene sceneID="11377">
-            <objects>
-                <navigationController id="11378" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="11380">
-                        <rect key="frame" x="0.0" y="20" width="320" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <connections>
-                        <segue destination="9816" kind="relationship" relationship="rootViewController" id="11588"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="11381" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-839" y="1263"/>
-        </scene>
         <!--Navigation Controller-->
-        <scene sceneID="12312">
-            <objects>
-                <navigationController id="12313" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="12315">
-                        <rect key="frame" x="0.0" y="20" width="320" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <connections>
-                        <segue destination="12649" kind="relationship" relationship="rootViewController" id="12719"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="12316" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="934" y="1272"/>
-        </scene>
         <!--Others-->
-        <scene sceneID="12648">
+        <scene sceneID="13387">
             <objects>
-                <viewController storyboardIdentifier="NonLoginOthersFeedbackViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="12649" customClass="NonLoginOthersFeedbackViewController" sceneMemberID="viewController">
+                <navigationController id="13388" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="13391">
+                        <rect key="frame" x="0.0" y="20" width="414" height="50"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue id="13508" destination="13390" kind="relationship" relationship="rootViewController"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="13392" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-832" y="-855"/>
+        </scene>
+        <scene sceneID="13393">
+            <objects>
+                <viewController storyboardIdentifier="FeedbackEntryViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="13390" customClass="FeedbackEntryViewController" sceneMemberID="viewController">
                     <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="12646"/>
-                        <viewControllerLayoutGuide type="bottom" id="12647"/>
+                        <viewControllerLayoutGuide type="top" id="13396"/>
+                        <viewControllerLayoutGuide type="bottom" id="13397"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="12650">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                    <view key="view" contentMode="scaleToFill" id="13395">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Others" id="12718"/>
+                    <navigationItem key="navigationItem" title="Title" id="13394"/>
                 </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="12651" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="13398" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1314" y="1263"/>
+            <point key="canvasLocation" x="-214" y="-854"/>
         </scene>
     </scenes>
-    <resources>
-        <image name="app_logo" width="44" height="44"/>
-        <image name="email_white" width="24" height="24"/>
-        <image name="Back-White" width="24" height="24"/>
-        <image name="Cancel-White" width="24" height="24"/>
-        <image name="Next-White" width="24" height="24"/>
-        <image name="Calculator" width="32" height="32"/>
-        <image name="Supply" width="32" height="32"/>
-        <image name="Feedback" width="32" height="32"/>
-        <image name="Loaded" width="24" height="24"/>
-        <image name="Loading" width="24" height="24"/>
-        <image name="Email" width="24" height="24"/>
-        <image name="Account-Number" width="24" height="24"/>
-        <image name="IC" width="24" height="24"/>
-        <image name="Label" width="24" height="24"/>
-        <image name="Mobile-White" width="24" height="24"/>
-        <image name="Mobile" width="24" height="24"/>
-        <image name="Name-White" width="24" height="24"/>
-        <image name="Name" width="24" height="24"/>
-        <image name="Billing" width="150" height="150"/>
-        <image name="Dashboard" width="150" height="150"/>
-        <image name="Payment" width="150" height="150"/>
-        <image name="App-Launch" width="320" height="568"/>
-        <image name="App-Launch-Gradient" width="750" height="1334"/>
-        <image name="Logo" width="44" height="44"/>
-        <image name="Delete" width="24" height="24"/>
-        <image name="Check-Green" width="30" height="28"/>
-        <image name="X-Red" width="30" height="32"/>
-        <image name="Scan" width="24" height="24"/>
-        <image name="Circle-With-Check-Green" width="105" height="105"/>
-        <image name="Logo-Title" width="200" height="44"/>
-        <image name="Tagline" width="113.333336" height="30"/>
-        <image name="Notification" width="24" height="24"/>
-        <image name="Tab-Dashboard" width="18" height="18"/>
-        <image name="Tab-Promotions" width="18" height="18"/>
-        <image name="Tab-Feedback" width="18" height="18"/>
-        <image name="Tab-More" width="18" height="18"/>
-        <image name="Download" width="24" height="24"/>
-        <image name="Table-Tick" width="24" height="24"/>
-        <image name="Tab-Bill" width="18" height="18"/>
-        <image name="Arrow-Left" width="16" height="16"/>
-        <image name="Arrow-Right" width="16" height="16"/>
-        <image name="Camera" width="24" height="24"/>
-        <image name="Card-Number" width="24" height="24"/>
-        <image name="Card-Expiry" width="24" height="24"/>
-        <image name="Card-CVV" width="24" height="24"/>
-        <image name="Dropdown" width="16" height="16"/>
-        <image name="Get-Access" width="150" height="150"/>
-        <image name="Empty-Dashboard" width="120" height="120"/>
-        <image name="Notification-Unread" width="16" height="16"/>
-        <image name="Notification-Delete" width="24" height="24"/>
-        <image name="Checkbox-Active" width="24" height="24"/>
-        <image name="Checkbox-Inactive" width="24" height="24"/>
-        <image name="IC-Action-Add-Card" width="24" height="24"/>
-        <image name="IC-Action-Checkbox-Active" width="24" height="24"/>
-        <image name="IC-Action-Checkbox-InActive" width="24" height="24"/>
-        <image name="IC-Action-Expand" width="24" height="24"/>
-        <image name="IC-Action-Tick" width="24" height="24"/>
-        <image name="IC-Action-Edit" width="24" height="24"/>
-        <image name="IC-Action-Delete" width="24" height="24"/>
-        <image name="IC-Payment-Card-Mastercard" width="24" height="24"/>
-        <image name="IC-Payment-Card-Visa" width="24" height="24"/>
-        <image name="IC-Payment-FPX" width="24" height="24"/>
-        <image name="Notification-New" width="24" height="24"/>
-        <image name="Call" width="24" height="24"/>
-        <image name="Logout-Logo" width="150" height="150"/>
-        <image name="IC-Action-Rating-Active" width="32" height="32"/>
-        <image name="IC-Action-Rating-Inactive" width="32" height="32"/>
-        <image name="IC-Field-Search" width="24" height="24"/>
-        <image name="IC-Button-Map-Center" width="24" height="24"/>
-        <image name="IC-Header-Share" width="24" height="24"/>
-        <image name="IC-Action-Dropdown" width="24" height="24"/>
-        <image name="Map-Kedai-Tenaga" width="32" height="32"/>
-        <image name="Map-Convenient-Store" width="32" height="32"/>
-        <image name="Find_Account_Number" width="284" height="121"/>
-        <image name="Promo-Ads" width="321" height="198"/>
-        <image name="Direction" width="24" height="24"/>
-        <image name="Notification-Empty" width="150" height="150"/>
-        <image name="Card-Empty" width="150" height="150"/>
-        <image name="IC-Feedback" width="24" height="24"/>
-        <image name="IC-FieldCoordinates" width="24" height="24"/>
-        <image name="IC-Action-Location" width="24" height="24"/>
-        <image name="IC-FieldFeedback" width="24" height="24"/>
-        <image name="Faulty-TNB-Lamp" width="320" height="121"/>
-        <image name="Locate-Blue" width="32" height="32"/>
-        <image name="Feedback-Blue" width="24" height="24"/>
-        <image name="IC-Field-Text" width="24" height="24"/>
-        <image name="Red-Cross" width="122" height="122"/>
-        <image name="Loading-Circle" width="44" height="44"/>
-        <image name="Notification-New-Bill" width="24" height="24"/>
-        <image name="Notification-Bill-Due" width="24" height="24"/>
-        <image name="Notification-Reconnection" width="24" height="24"/>
-        <image name="Notification-Disconnection" width="24" height="24"/>
-        <image name="Notification-Dunning" width="24" height="24"/>
-        <image name="Password-Old" width="24" height="24"/>
-        <image name="Password" width="24" height="24"/>
-        <image name="password_white" width="24" height="24"/>
-        <image name="IC-Action-Show-Password" width="24" height="24"/>
-        <image name="IC-Display-Prelogin" width="150" height="100"/>
-        <image name="Feedback-Bill" width="48" height="48"/>
-        <image name="Feedback-Header" width="320" height="126"/>
-        <image name="Feedback-Others" width="48" height="48"/>
-        <image name="Feedback-Streetlamp" width="48" height="48"/>
-        <image name="Feedback-Submitted" width="48" height="48"/>
-    </resources>
 </document>

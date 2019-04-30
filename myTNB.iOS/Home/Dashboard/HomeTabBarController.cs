@@ -8,6 +8,7 @@ using myTNB.SitecoreCMS.Model;
 using myTNB.SQLite.SQLiteDataManager;
 using Newtonsoft.Json;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace myTNB
 {
@@ -22,28 +23,32 @@ namespace myTNB
         public override void ViewDidLoad()
         {
             base.ViewDidLoad();
-            Console.WriteLine("HOME DID LOAD");
+            //Debug.WriteLine("HOME DID LOAD");
+            NSNotificationCenter.DefaultCenter.AddObserver((Foundation.NSString)"LanguageDidChange", LanguageDidChange);
+            NSNotificationCenter.DefaultCenter.AddObserver(UIApplication.DidBecomeActiveNotification, HandleAppDidBecomeActive);
             TabBar.Translucent = false;
             TabBar.BackgroundColor = UIColor.White;
-
+            SetTabbarTitle();
             ShouldSelectViewController += ShouldSelectTab;
-
-            NSNotificationCenter.DefaultCenter.AddObserver(UIApplication.DidBecomeActiveNotification, HandleAppDidBecomeActive);
-
             if (!DataManager.DataManager.SharedInstance.IsPromotionFirstLoad)
             {
                 UpdatePromotions();
                 DataManager.DataManager.SharedInstance.IsPromotionFirstLoad = true;
             }
+        }
 
+        public void LanguageDidChange(NSNotification notification)
+        {
+            Debug.WriteLine("DEBUG >>> HOME TAB BAR LanguageDidChange");
+            SetTabbarTitle();
         }
 
         public override void ViewWillAppear(bool animated)
         {
             base.ViewWillAppear(animated);
-            Console.WriteLine("HOME WILL APPEAR");
-            UITabBarItem[] vcs = TabBar.Items;
-            vcs[1].Enabled = ServiceCall.HasAccountList();
+            //Debug.WriteLine("HOME WILL APPEAR");
+            UITabBarItem[] tabbarItem = TabBar.Items;
+            tabbarItem[1].Enabled = ServiceCall.HasAccountList();
             UpdatePromotionTabBarIcon();
             DataManager.DataManager.SharedInstance.IsPreloginFeedback = false;
             PushNotificationHelper.HandlePushNotification();
@@ -56,6 +61,16 @@ namespace myTNB
         internal void HandleAppDidBecomeActive(NSNotification notification)
         {
             PushNotificationHelper.HandlePushNotification();
+        }
+
+        void SetTabbarTitle()
+        {
+            UITabBarItem[] tabbarItem = TabBar.Items;
+            tabbarItem[0].Title = "Tabbar_Dashboard".Translate();
+            tabbarItem[1].Title = "Tabbar_Bills".Translate();
+            tabbarItem[2].Title = "Tabbar_Promotions".Translate();
+            tabbarItem[3].Title = "Tabbar_Feedback".Translate();
+            tabbarItem[4].Title = "Tabbar_More".Translate();
         }
 
         public override void ItemSelected(UITabBar tabbar, UITabBarItem item)
@@ -157,7 +172,6 @@ namespace myTNB
             {
                 res = true;
             }
-
             return res;
         }
 
@@ -180,7 +194,6 @@ namespace myTNB
                     res = false;
                 }
             }
-
             return res;
         }
 
@@ -200,11 +213,9 @@ namespace myTNB
                     if (!string.IsNullOrEmpty(shownStr))
                     {
                         return DateHelper.GetDateWithoutSeparator(shownStr);
-
                     }
                 }
             }
-
             return default(DateTime);
         }
 
@@ -261,7 +272,7 @@ namespace myTNB
         bool HasUnreadPromotion(List<PromotionsModelV2> promotionList)
         {
             int index = promotionList.FindIndex(x => x.IsRead == false);
-            Console.WriteLine("HasUnreadPromotion: " + (index > -1).ToString());
+            //Debug.WriteLine("HasUnreadPromotion: " + (index > -1).ToString());
             return index > -1;
         }
 
@@ -280,7 +291,6 @@ namespace myTNB
                             InvokeOnMainThread(() =>
                             {
                                 UpdatePromotionTabBarIcon();
-
                                 ShowPromotionsModal();
                             });
                         });
@@ -349,7 +359,7 @@ namespace myTNB
                 if (isValidTimeStamp)
                 {
                     string promotionsItems = iService.GetPromotionsItem();
-                    Console.WriteLine("debug: promo items: " + promotionsItems);
+                    //Debug.WriteLine("debug: promo items: " + promotionsItems);
 #if true
                     PromotionsV2ResponseModel promotionResponse = JsonConvert.DeserializeObject<PromotionsV2ResponseModel>(promotionsItems);
 #else
@@ -364,7 +374,6 @@ namespace myTNB
                         wsManager.InsertListOfItemsV2(SetValueForNullEndDate(promotionResponse.Data));
                     }
                 }
-
             });
         }
     }

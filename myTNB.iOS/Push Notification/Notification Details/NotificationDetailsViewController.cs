@@ -5,8 +5,6 @@ using myTNB.Model;
 using CoreGraphics;
 using System.Drawing;
 using System.Threading.Tasks;
-using myTNB.PushNotification;
-using myTNB.Extensions;
 using myTNB.SQLite.SQLiteDataManager;
 using myTNB.SitecoreCMS.Model;
 
@@ -49,7 +47,8 @@ namespace myTNB
         /// </summary>
         internal void RenderButtons()
         {
-            if (NotificationInfo.BCRMNotificationType != Enums.BCRMNotificationEnum.Maintenance && NotificationInfo.BCRMNotificationType != Enums.BCRMNotificationEnum.News)
+            if (NotificationInfo.BCRMNotificationType != Enums.BCRMNotificationEnum.Maintenance
+                && NotificationInfo.BCRMNotificationType != Enums.BCRMNotificationEnum.News)
             {
                 if (NotificationInfo.BCRMNotificationType == Enums.BCRMNotificationEnum.Promotion)
                 {
@@ -82,8 +81,9 @@ namespace myTNB
             _titleBarComponent.SetNotificationImage("Notification-Delete");
             _titleBarComponent.SetNotificationAction(new UITapGestureRecognizer(() =>
             {
-                var alert = UIAlertController.Create("Delete Notification", "Are you sure you want to delete this notification?", UIAlertControllerStyle.Alert);
-                alert.AddAction(UIAlertAction.Create("Ok", UIAlertActionStyle.Default, (obj) =>
+                var alert = UIAlertController.Create("PushNotification_DeleteTitle".Translate()
+                    , "PushNotification_DeleteMessage".Translate(), UIAlertControllerStyle.Alert);
+                alert.AddAction(UIAlertAction.Create("Common_Ok".Translate(), UIAlertActionStyle.Default, (obj) =>
                 {
                     ActivityIndicator.Show();
                     InvokeOnMainThread(async () =>
@@ -102,21 +102,17 @@ namespace myTNB
                             }
                             else
                             {
-                                DisplayAlertMessage("ErrorTitle".Translate(), _deleteNotificationResponse?.d?.message);
+                                AlertHandler.DisplayServiceError(this, _deleteNotificationResponse?.d?.message);
                             }
-                            ActivityIndicator.Hide();
                         }
                         else
                         {
-                            DisplayAlertMessage("ErrNoNetworkTitle".Translate(), "ErrNoNetworkMsg".Translate());
-                            ActivityIndicator.Hide();
+                            AlertHandler.DisplayNoDataAlert(this);
                         }
+                        ActivityIndicator.Hide();
                     });
                 }));
-                alert.AddAction(UIAlertAction.Create("Cancel", UIAlertActionStyle.Cancel, (obj) =>
-                {
-
-                }));
+                alert.AddAction(UIAlertAction.Create("Common_Cancel".Translate(), UIAlertActionStyle.Cancel, (obj) => { }));
                 PresentViewController(alert, animated: true, completionHandler: null);
             }));
             _titleBarComponent.SetBackVisibility(false);
@@ -162,8 +158,8 @@ namespace myTNB
                                 DataManager.DataManager.SharedInstance.BillingAccountDetails = _billingAccountDetailsList.d.data;
                                 if (!DataManager.DataManager.SharedInstance.SelectedAccount.IsREAccount)
                                 {
-                                    DataManager.DataManager.SharedInstance.SaveToBillingAccounts(DataManager.DataManager.SharedInstance.BillingAccountDetails,
-                                                                                                 DataManager.DataManager.SharedInstance.SelectedAccount.accNum);
+                                    DataManager.DataManager.SharedInstance.SaveToBillingAccounts(DataManager.DataManager.SharedInstance.BillingAccountDetails
+                                        , DataManager.DataManager.SharedInstance.SelectedAccount.accNum);
                                 }
                                 string storyboardID = actionString == "BillViewController" ? "Dashboard" : "Payment";
                                 DisplayPage(storyboardID, actionString);
@@ -172,15 +168,12 @@ namespace myTNB
                             {
                                 DataManager.DataManager.SharedInstance.IsSameAccount = true;
                                 DataManager.DataManager.SharedInstance.BillingAccountDetails = new BillingAccountDetailsDataModel();
-                                var alert = UIAlertController.Create("Error in Response", "There is an error in the server, please try again.", UIAlertControllerStyle.Alert);
-                                alert.AddAction(UIAlertAction.Create("Ok", UIAlertActionStyle.Cancel, null));
-                                PresentViewController(alert, animated: true, completionHandler: null);
+                                AlertHandler.DisplayServiceError(this, _billingAccountDetailsList?.d?.message);
                             }
                         }
                         else
                         {
-                            Console.WriteLine("No Network");
-                            DisplayAlertMessage("ErrNoNetworkTitle".Translate(), "ErrNoNetworkMsg".Translate());
+                            AlertHandler.DisplayNoDataAlert(this);
                         }
                         ActivityIndicator.Hide();
                     });
@@ -220,29 +213,26 @@ namespace myTNB
         /// </summary>
         internal void SetSubViews()
         {
-            UIImageView imgViewHeader = new UIImageView(new CGRect(0
-                                                                   , DeviceHelper.IsIphoneXUpResolution() ? 88 : 64
-                                                                   , View.Frame.Width
-                                                                   , DeviceHelper.GetScaledSizeByHeight(25.5f)));
+            UIImageView imgViewHeader = new UIImageView(new CGRect(0, DeviceHelper.IsIphoneXUpResolution() ? 88 : 64
+                , View.Frame.Width, DeviceHelper.GetScaledSizeByHeight(25.5f)));
 
             imgViewHeader.Image = UIImage.FromBundle(GetBannerImage());
             //UILabel lblTitle = new UILabel(new CGRect(18, DeviceHelper.IsIphoneXUpResolution() ? 104 : 80, View.Frame.Width - 36, 36));
-            UILabel lblTitle = new UILabel(new CGRect(18
-                                                      , DeviceHelper.GetScaledSizeByHeight(40.5f)
-                                                      , View.Frame.Width - 36
-                                                      , 36));
+            UILabel lblTitle = new UILabel(new CGRect(18, DeviceHelper.GetScaledSizeByHeight(40.5f)
+                , View.Frame.Width - 36, 36));
 
             lblTitle.Text = NotificationInfo.Title;
-            lblTitle.Font = myTNBFont.MuseoSans16_500();
+            lblTitle.Font = MyTNBFont.MuseoSans16_500;
             lblTitle.Lines = 0;
             lblTitle.LineBreakMode = UILineBreakMode.WordWrap;
-            lblTitle.TextColor = myTNBColor.PowerBlue();
+            lblTitle.TextColor = MyTNBColor.PowerBlue;
 
             CGSize newTitleSize = GetLabelSize(lblTitle, lblTitle.Frame.Width, 100f);
             lblTitle.Frame = new CGRect(lblTitle.Frame.X, lblTitle.Frame.Y, lblTitle.Frame.Width, newTitleSize.Height);
 
             var lblDetailsHeight = 0f;
-            if (NotificationInfo.BCRMNotificationType != Enums.BCRMNotificationEnum.Maintenance && NotificationInfo.BCRMNotificationType != Enums.BCRMNotificationEnum.News)
+            if (NotificationInfo.BCRMNotificationType != Enums.BCRMNotificationEnum.Maintenance
+                && NotificationInfo.BCRMNotificationType != Enums.BCRMNotificationEnum.News)
             {
                 lblDetailsHeight = DeviceHelper.GetScaledHeight(240) - 48;
             }
@@ -251,18 +241,15 @@ namespace myTNB
                 lblDetailsHeight = DeviceHelper.GetScaledHeight(270);
             }
             UITextView txtDetails = new UITextView(new CGRect(18
-                                                    , DeviceHelper.GetScaledSizeByHeight(4.2f)
-                                                    + lblTitle.Frame.Y
-                                                    + lblTitle.Frame.Height
-                                                    , View.Frame.Width - 36
-                                                    , lblDetailsHeight))
+                , DeviceHelper.GetScaledSizeByHeight(4.2f) + lblTitle.Frame.Y + lblTitle.Frame.Height
+                , View.Frame.Width - 36, lblDetailsHeight))
             {
 
                 Text = NotificationInfo.Message,
-                Font = myTNBFont.MuseoSans14_300(),
+                Font = MyTNBFont.MuseoSans14_300,
                 Editable = false,
                 ScrollEnabled = true,
-                TextColor = myTNBColor.TunaGrey()
+                TextColor = MyTNBColor.TunaGrey()
             };
 
             View.AddSubviews(new UIView[] { imgViewHeader, lblTitle, txtDetails });
@@ -273,7 +260,8 @@ namespace myTNB
         /// </summary>
         internal void SetSubViewsForNormalNotification()
         {
-            _viewCTA = new UIView(new CGRect(0, View.Frame.Height - (DeviceHelper.IsIphoneXUpResolution() ? 106 : DeviceHelper.GetScaledHeight(82)), View.Frame.Width, DeviceHelper.GetScaledHeight(82)));
+            _viewCTA = new UIView(new CGRect(0, View.Frame.Height - (DeviceHelper.IsIphoneXUpResolution()
+                ? 106 : DeviceHelper.GetScaledHeight(82)), View.Frame.Width, DeviceHelper.GetScaledHeight(82)));
 
             nfloat buttonWidth = (_viewCTA.Frame.Width / 2) - 20;
             //Create CTA
@@ -281,10 +269,10 @@ namespace myTNB
             btnViewDetails.Frame = new CGRect(18, 17, buttonWidth, 48);
             btnViewDetails.Layer.BorderWidth = 1.0f;
             btnViewDetails.Layer.CornerRadius = 4;
-            btnViewDetails.Layer.BorderColor = myTNBColor.FreshGreen().CGColor;
-            btnViewDetails.SetTitle("View Details", UIControlState.Normal);
-            btnViewDetails.Font = myTNBFont.MuseoSans16_500();
-            btnViewDetails.SetTitleColor(myTNBColor.FreshGreen(), UIControlState.Normal);
+            btnViewDetails.Layer.BorderColor = MyTNBColor.FreshGreen.CGColor;
+            btnViewDetails.SetTitle("PushNotification_ViewDetails".Translate(), UIControlState.Normal);
+            btnViewDetails.Font = MyTNBFont.MuseoSans16_500;
+            btnViewDetails.SetTitleColor(MyTNBColor.FreshGreen, UIControlState.Normal);
 
             btnViewDetails.TouchUpInside += (sender, e) =>
             {
@@ -301,11 +289,11 @@ namespace myTNB
             UIButton btnPay = new UIButton(UIButtonType.Custom);
             btnPay.Frame = new CGRect((_viewCTA.Frame.Width / 2 + 2), 17, buttonWidth, 48);
             btnPay.Layer.CornerRadius = 4;
-            btnPay.Layer.BackgroundColor = isEnabled ? myTNBColor.FreshGreen().CGColor : myTNBColor.SilverChalice().CGColor;
-            btnPay.Layer.BorderColor = isEnabled ? myTNBColor.FreshGreen().CGColor : myTNBColor.SilverChalice().CGColor;
+            btnPay.Layer.BackgroundColor = isEnabled ? MyTNBColor.FreshGreen.CGColor : MyTNBColor.SilverChalice.CGColor;
+            btnPay.Layer.BorderColor = isEnabled ? MyTNBColor.FreshGreen.CGColor : MyTNBColor.SilverChalice.CGColor;
             btnPay.Layer.BorderWidth = 1;
-            btnPay.SetTitle("Pay", UIControlState.Normal);
-            btnPay.Font = myTNBFont.MuseoSans16_500();
+            btnPay.SetTitle("Common_Pay".Translate(), UIControlState.Normal);
+            btnPay.Font = MyTNBFont.MuseoSans16_500;
             btnPay.Enabled = isEnabled;
             btnPay.TouchUpInside += (sender, e) =>
             {
@@ -320,7 +308,8 @@ namespace myTNB
         /// </summary>
         internal void SetSubViewForPromotionNotification()
         {
-            _viewCTA = new UIView(new CGRect(0, View.Frame.Height - (DeviceHelper.IsIphoneXUpResolution() ? 106 : DeviceHelper.GetScaledHeight(82)), View.Frame.Width, DeviceHelper.GetScaledHeight(82)));
+            _viewCTA = new UIView(new CGRect(0, View.Frame.Height - (DeviceHelper.IsIphoneXUpResolution()
+                ? 106 : DeviceHelper.GetScaledHeight(82)), View.Frame.Width, DeviceHelper.GetScaledHeight(82)));
 
             nfloat buttonWidth = _viewCTA.Frame.Width - 36;
             //Create CTA
@@ -328,10 +317,10 @@ namespace myTNB
             btnViewPromotion.Frame = new CGRect(18, 17, buttonWidth, DeviceHelper.GetScaledHeight(48));
             btnViewPromotion.Layer.BorderWidth = 1.0f;
             btnViewPromotion.Layer.CornerRadius = 4;
-            btnViewPromotion.Layer.BorderColor = myTNBColor.FreshGreen().CGColor;
-            btnViewPromotion.SetTitle("NotifViewPromoBtn".Translate(), UIControlState.Normal);
-            btnViewPromotion.Font = myTNBFont.MuseoSans16_500();
-            btnViewPromotion.SetTitleColor(myTNBColor.FreshGreen(), UIControlState.Normal);
+            btnViewPromotion.Layer.BorderColor = MyTNBColor.FreshGreen.CGColor;
+            btnViewPromotion.SetTitle("PushNotification_ViewPromotion".Translate(), UIControlState.Normal);
+            btnViewPromotion.Font = MyTNBFont.MuseoSans16_500;
+            btnViewPromotion.SetTitleColor(MyTNBColor.FreshGreen, UIControlState.Normal);
 
             btnViewPromotion.TouchUpInside += (sender, e) =>
             {
@@ -435,7 +424,6 @@ namespace myTNB
             {
                 DataManager.DataManager.SharedInstance.SetChartRefreshStatus(NotificationInfo.AccountNum, true);
                 DataManager.DataManager.SharedInstance.SetBillHistoryRefreshStatus(NotificationInfo.AccountNum, true);
-
                 var index = DataManager.DataManager.SharedInstance.AccountRecordsList?.d?.FindIndex(x => x.accNum == NotificationInfo.AccountNum);
                 if (index > -1)
                 {
@@ -456,8 +444,7 @@ namespace myTNB
         internal Task DeleteUserNotification(string id)
         {
             var user = DataManager.DataManager.SharedInstance.UserEntity?.Count > 0
-                                  ? DataManager.DataManager.SharedInstance.UserEntity[0]
-                                  : new UserEntity();
+                ? DataManager.DataManager.SharedInstance.UserEntity[0] : new UserEntity();
             return Task.Factory.StartNew(() =>
             {
                 ServiceManager serviceManager = new ServiceManager();
@@ -472,14 +459,6 @@ namespace myTNB
                 };
                 _deleteNotificationResponse = serviceManager.DeleteUserNotification("DeleteUserNotification_V2", requestParameter);
             });
-        }
-
-        internal void DisplayAlertMessage(string title, string message)
-        {
-            var alertMsg = !string.IsNullOrWhiteSpace(message) ? message : "DefaultErrorMessage".Translate();
-            var alert = UIAlertController.Create(title, alertMsg, UIAlertControllerStyle.Alert);
-            alert.AddAction(UIAlertAction.Create("Ok", UIAlertActionStyle.Cancel, null));
-            PresentViewController(alert, true, null);
         }
 
         internal void DisplayPage(string storyboardID, string vc)
@@ -502,8 +481,7 @@ namespace myTNB
                 if (selectBillsVC != null)
                 {
                     selectBillsVC.SelectedAccountDueAmount = (double)(_dueAmount != null && _dueAmount?.d != null
-                                                                  && _dueAmount?.d?.data != null
-                                                                  && _dueAmount?.d?.didSucceed == true ? _dueAmount?.d?.data.amountDue : 0);
+                        && _dueAmount?.d?.data != null && _dueAmount?.d?.didSucceed == true ? _dueAmount?.d?.data.amountDue : 0);
                     var navController = new UINavigationController(selectBillsVC);
                     PresentViewController(navController, true, null);
                 }

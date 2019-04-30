@@ -46,8 +46,8 @@ namespace myTNB
                 if(lblMessage != null)
                 {
                     lblMessage.Text = message;
-                    lblMessage.Font = myTNBFont.MuseoSans12_300();
-                    lblMessage.TextColor = myTNBColor.TunaGrey();
+                    lblMessage.Font = MyTNBFont.MuseoSans12_300;
+                    lblMessage.TextColor = MyTNBColor.TunaGrey();
                 }
 
             }

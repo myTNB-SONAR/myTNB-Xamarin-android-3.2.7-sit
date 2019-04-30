@@ -19,8 +19,8 @@ namespace myTNB
             lblDescription = new UILabel(new CGRect(20, 182, cellWidth - 40, 32));
             lblDescription.Lines = 0;
             lblDescription.LineBreakMode = UILineBreakMode.WordWrap;
-            lblDescription.Font = myTNBFont.MuseoSans12();
-            lblDescription.TextColor = myTNBColor.SilverChalice();
+            lblDescription.Font = MyTNBFont.MuseoSans12;
+            lblDescription.TextColor = MyTNBColor.SilverChalice;
             lblDescription.TextAlignment = UITextAlignment.Center;
 
             this.SeparatorInset = new UIEdgeInsets(0, 0, 0, 0);

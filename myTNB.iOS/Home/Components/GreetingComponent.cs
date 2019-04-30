@@ -1,7 +1,7 @@
 ﻿using System;
 using CoreGraphics;
 using myTNB.Enums;
-using myTNB.Extensions;
+
 using UIKit;
 
 namespace myTNB.Dashboard.DashboardComponents
@@ -31,8 +31,8 @@ namespace myTNB.Dashboard.DashboardComponents
             greetingMessage = new UILabel
             {
                 Frame = new CGRect(0, topMargin, parentView.Frame.Width, 50),
-                Font = myTNBFont.MuseoSans16_500(),
-                TextColor = myTNBColor.SunGlow(),
+                Font = MyTNBFont.MuseoSans16_500,
+                TextColor = MyTNBColor.SunGlow,
                 TextAlignment = UITextAlignment.Center,
                 Lines = 0,
             };
@@ -51,11 +51,11 @@ namespace myTNB.Dashboard.DashboardComponents
                 _lblMsg = new UILabel
                 {
                     Frame = new CGRect(25, greetingImage.Frame.GetMaxY() + 10f, parentView.Frame.Width - 50, 50),
-                    Font = myTNBFont.MuseoSans12_300(),
+                    Font = MyTNBFont.MuseoSans12_300,
                     TextColor = UIColor.White,
                     TextAlignment = UITextAlignment.Center,
                     Lines = 0,
-                    Text = "TimeOutMsg".Translate(),
+                    Text = "Error_TimeOut".Translate(),
                     BackgroundColor = UIColor.Clear
                 };
 
@@ -67,8 +67,8 @@ namespace myTNB.Dashboard.DashboardComponents
                 _btnRefresh.Layer.BorderColor = UIColor.White.CGColor;
                 _btnRefresh.BackgroundColor = UIColor.Clear;
                 _btnRefresh.Layer.BorderWidth = 1;
-                _btnRefresh.SetTitle("RefreshBtn".Translate(), UIControlState.Normal);
-                _btnRefresh.Font = myTNBFont.MuseoSans18_300();
+                _btnRefresh.SetTitle("Common_Refresh".Translate(), UIControlState.Normal);
+                _btnRefresh.Font = MyTNBFont.MuseoSans18_300;
                 _btnRefresh.SetTitleColor(UIColor.White, UIControlState.Normal);
                 _btnRefresh.TouchUpInside += (sender, e) =>
                 {
@@ -78,7 +78,8 @@ namespace myTNB.Dashboard.DashboardComponents
                 addtlHeight = (float)(_lblMsg.Frame.Height + _btnRefresh.Frame.Height + topMargin);
             }
 
-            baseView = new UIView(new CGRect(0, 0, parentView.Frame.Width, topMargin + greetingMessage.Frame.Height + greetingImage.Frame.Height + addtlHeight));
+            baseView = new UIView(new CGRect(0, 0, parentView.Frame.Width
+                , topMargin + greetingMessage.Frame.Height + greetingImage.Frame.Height + addtlHeight));
 
             baseView.AddSubview(greetingMessage);
             baseView.AddSubview(greetingImage);
@@ -112,13 +113,13 @@ namespace myTNB.Dashboard.DashboardComponents
             switch (textMode)
             {
                 case GreetingMode.Morning:
-                    message = "GoodMorningGreeting".Translate();
+                    message = "Component_GreetingMorning".Translate();
                     break;
                 case GreetingMode.Afternoon:
-                    message = "GoodAfternoonGreeting".Translate();
+                    message = "Component_GreetingAfternoon".Translate();
                     break;
                 case GreetingMode.Evening:
-                    message = "GoodEveningGreeting".Translate();
+                    message = "Component_GreetingEvening".Translate();
                     break;
             }
 
@@ -137,6 +138,5 @@ namespace myTNB.Dashboard.DashboardComponents
                     break;
             }
         }
-
     }
 }

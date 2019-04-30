@@ -29,6 +29,7 @@ namespace myTNB
         public override void ViewDidLoad()
         {
             base.ViewDidLoad();
+            InitializeLanguage();
             imgViewAppLaunch = new UIImageView(UIImage.FromBundle("App-Launch-Gradient"));
             var imgViewLogo = new UIImageView(UIImage.FromBundle("New-Launch-Logo"));
             //var imgViewLogoTitle = new UIImageView(UIImage.FromBundle("Logo-Title"));
@@ -85,14 +86,16 @@ namespace myTNB
 
         internal void SetupSuperViewBackground()
         {
-            var startColor = myTNBColor.GradientPurpleDarkElement();
-            var endColor = myTNBColor.GradientPurpleLightElement();
+            var startColor = MyTNBColor.GradientPurpleDarkElement;
+            var endColor = MyTNBColor.GradientPurpleLightElement;
 
-            var gradientLayer = new CAGradientLayer();
-            gradientLayer.Colors = new[] { startColor.CGColor, endColor.CGColor };
-            gradientLayer.Locations = new NSNumber[] { 0.0, 1.5 };
-            gradientLayer.Frame = View.Bounds;
-            gradientLayer.Opaque = false;
+            var gradientLayer = new CAGradientLayer
+            {
+                Colors = new[] { startColor.CGColor, endColor.CGColor },
+                Locations = new NSNumber[] { 0.0, 1.5 },
+                Frame = View.Bounds,
+                Opaque = false
+            };
             //containerView.Layer.InsertSublayer(gradientLayer, 0);
             //imgViewAppLaunch.AddSubview(containerView);
             //imgViewAppLaunch.BringSubviewToFront(containerView);
@@ -138,11 +141,9 @@ namespace myTNB
                             PresentViewController(navController, false, null);
                             UIApplication.SharedApplication.NetworkActivityIndicatorVisible = false;
                         }
-
                     }
                     else
                     {
-                        Console.WriteLine("No Network");
                         UIApplication.SharedApplication.NetworkActivityIndicatorVisible = false;
                         UserAccountsEntity uaManager = new UserAccountsEntity();
                         CustomerAccountRecordListModel accountRecords = uaManager.GetCustomerAccountRecordList();
@@ -177,6 +178,11 @@ namespace myTNB
             });
         }
 
+        void InitializeLanguage()
+        {
+            LanguageSettings.InitializeLanguage();
+        }
+
         /// <summary>
         /// Checks if app update is required.
         /// </summary>
@@ -201,6 +207,19 @@ namespace myTNB
             var response = await ServiceCall.GetAppLaunchMasterData();
             if (response.didSucceed)
             {
+                FeedbackCategoryDataModel fb2 = new FeedbackCategoryDataModel()
+                {
+                    FeedbackCategoryId = "2",
+                    FeedbackCategoryName = "Faulty TNB Street Lamp"
+                };
+                FeedbackCategoryDataModel fb3 = new FeedbackCategoryDataModel()
+                {
+                    FeedbackCategoryId = "3",
+                    FeedbackCategoryName = "Others"
+                };
+                response.data.FeedbackCategories.Add(fb2);
+                response.data.FeedbackCategories.Add(fb3);
+
                 var data = response.data;
 
                 var iOSIndex = data?.AppVersions?.FindIndex(x => x.IsIos) ?? -1;
@@ -216,8 +235,8 @@ namespace myTNB
                 {
                     LocationTypeDataModel allLocationModel = new LocationTypeDataModel();
                     allLocationModel.Id = "all";
-                    allLocationModel.Title = "All";
-                    allLocationModel.Description = "All";
+                    allLocationModel.Title = "Common_All".Translate();
+                    allLocationModel.Description = "Common_All".Translate();
                     if (DataManager.DataManager.SharedInstance.LocationTypes != null)
                     {
                         DataManager.DataManager.SharedInstance.LocationTypes.Insert(0, allLocationModel);
@@ -236,7 +255,7 @@ namespace myTNB
                 if (data?.NotificationTypes != null)
                 {
                     NotificationPreferenceModel allNotificationItem = new NotificationPreferenceModel();
-                    allNotificationItem.Title = "All notifications";
+                    allNotificationItem.Title = "PushNotification_AllNotifications".Translate();
                     allNotificationItem.Id = "all";
                     if (DataManager.DataManager.SharedInstance.NotificationGeneralTypes != null)
                     {
@@ -397,20 +416,13 @@ namespace myTNB
             });
         }
 
-        internal void DisplayAlertView(string title, string message)
-        {
-            var alert = UIAlertController.Create(title, message, UIAlertControllerStyle.Alert);
-            alert.AddAction(UIAlertAction.Create("Ok", UIAlertActionStyle.Cancel, null));
-            PresentViewController(alert, animated: true, completionHandler: null);
-        }
-
         internal void ExecuteGetCutomerRecordsCall()
         {
             UserAccountsEntity uaManager = new UserAccountsEntity();
             DataManager.DataManager.SharedInstance.AccountRecordsList = uaManager.GetCustomerAccountRecordList();
             if (DataManager.DataManager.SharedInstance.AccountRecordsList != null
-                       && DataManager.DataManager.SharedInstance.AccountRecordsList?.d != null
-                       && DataManager.DataManager.SharedInstance.AccountRecordsList?.d?.Count > 0)
+                && DataManager.DataManager.SharedInstance.AccountRecordsList?.d != null
+                && DataManager.DataManager.SharedInstance.AccountRecordsList?.d?.Count > 0)
             {
                 DataManager.DataManager.SharedInstance.SelectedAccount = DataManager.DataManager.SharedInstance.AccountRecordsList.d[0];
                 ShowDashboard();
@@ -505,8 +517,9 @@ namespace myTNB
                     {
                         DataManager.DataManager.SharedInstance.ClearLoginState();
                         DataManager.DataManager.SharedInstance.BillingAccountDetails = new BillingAccountDetailsDataModel();
-                        var alert = UIAlertController.Create("Error in fetching account details.", "There is an error in the server, please login again.", UIAlertControllerStyle.Alert);
-                        alert.AddAction(UIAlertAction.Create("Ok", UIAlertActionStyle.Cancel, (obj) =>
+                        string errorMessage = _billingAccountDetailsList?.d?.message ?? "Error_DefaultMessage".Translate();
+                        var alert = UIAlertController.Create("Error_DefaultTitle".Translate(), errorMessage, UIAlertControllerStyle.Alert);
+                        alert.AddAction(UIAlertAction.Create("Common_Ok".Translate(), UIAlertActionStyle.Cancel, (obj) =>
                         {
                             ShowPrelogin();
                         }));
@@ -558,8 +571,8 @@ namespace myTNB
                 DataManager.DataManager.SharedInstance.LocationTypes = response?.d?.data;
                 LocationTypeDataModel allLocationModel = new LocationTypeDataModel();
                 allLocationModel.Id = "all";
-                allLocationModel.Title = "All";
-                allLocationModel.Description = "All";
+                allLocationModel.Title = "Common_All".Translate();
+                allLocationModel.Description = "Common_All".Translate();
                 if (DataManager.DataManager.SharedInstance.LocationTypes != null)
                 {
                     DataManager.DataManager.SharedInstance.LocationTypes.Insert(0, allLocationModel);

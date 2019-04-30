@@ -38,11 +38,11 @@ namespace myTNB.Payment.AddCard
         internal void SetSubviews()
         {
             UILabel lblDescription = new UILabel(new CGRect(18, 16, View.Frame.Width - 36, 60));
-            lblDescription.Font = myTNBFont.MuseoSans16_300();
-            lblDescription.TextColor = myTNBColor.TunaGrey();
+            lblDescription.Font = MyTNBFont.MuseoSans16_300;
+            lblDescription.TextColor = MyTNBColor.TunaGrey();
             lblDescription.LineBreakMode = UILineBreakMode.WordWrap;
             lblDescription.Lines = 0;
-            lblDescription.Text = "Scan the front of your credit / debit card to retrieve card details.";
+            lblDescription.Text = "Payment_ScanMessage".Translate();
             lblDescription.TextAlignment = UITextAlignment.Left;
             View.AddSubview(lblDescription);
 

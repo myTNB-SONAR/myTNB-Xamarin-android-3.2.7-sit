@@ -1,4 +1,5 @@
 ﻿using CoreGraphics;
+
 using UIKit;
 
 namespace myTNB.Dashboard.DashboardComponents
@@ -16,17 +17,17 @@ namespace myTNB.Dashboard.DashboardComponents
         internal void CreateComponent()
         {
             UITextAttributes attr = new UITextAttributes();
-            attr.Font = myTNBFont.MuseoSans12();
-            attr.TextColor = myTNBColor.SelectionSemiTransparent(); 
+            attr.Font = MyTNBFont.MuseoSans12;
+            attr.TextColor = MyTNBColor.SelectionSemiTransparent;
             UITextAttributes attrSelected = new UITextAttributes();
-            attrSelected.Font = myTNBFont.MuseoSans12();
+            attrSelected.Font = MyTNBFont.MuseoSans12;
             attrSelected.TextColor = UIColor.White;
             double width = 122;
             double xLocation = (_parentView.Frame.Width / 2) - (width / 2);
             _selectorBar = new UISegmentedControl(new CGRect(xLocation, 0, width, 26));
-            _selectorBar.InsertSegment("Month", 0, false);
-            _selectorBar.InsertSegment("Year", 1, false);
-            _selectorBar.TintColor = myTNBColor.SelectionSemiTransparent();
+            _selectorBar.InsertSegment("Common_Month".Translate(), 0, false);
+            _selectorBar.InsertSegment("Common_Year".Translate(), 1, false);
+            _selectorBar.TintColor = MyTNBColor.SelectionSemiTransparent;
             _selectorBar.SetTitleTextAttributes(attr, UIControlState.Normal);
             _selectorBar.SetTitleTextAttributes(attrSelected, UIControlState.Selected);
             _selectorBar.Layer.CornerRadius = 13.0f;

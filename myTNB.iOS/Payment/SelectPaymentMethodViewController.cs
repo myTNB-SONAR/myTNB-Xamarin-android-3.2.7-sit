@@ -8,7 +8,6 @@ using myTNB.Model;
 using myTNB.Model.RequestPayBill;
 using myTNB.Payment.AddCard;
 using UIKit;
-using myTNB.Extensions;
 using Foundation;
 using System.Globalization;
 using System.Security;
@@ -52,21 +51,21 @@ namespace myTNB
             selectPaymentTableView.TableHeaderView = headerView;
 
             var footerView = new UIView(new CGRect(0, 0, (float)View.Frame.Width, 50));
-            footerView.BackgroundColor = myTNBColor.SectionGrey();
+            footerView.BackgroundColor = MyTNBColor.SectionGrey;
             selectPaymentTableView.TableFooterView = footerView;
 
             //Credit Card Number 
 
             var lblAmountTitle = new UILabel(new CGRect(18, 20, View.Frame.Width, 12));
-            lblAmountTitle.TextColor = myTNBColor.SilverChalice();
-            lblAmountTitle.Font = myTNBFont.MuseoSans9_300();
+            lblAmountTitle.TextColor = MyTNBColor.SilverChalice;
+            lblAmountTitle.Font = MyTNBFont.MuseoSans9_300;
             lblAmountTitle.TextAlignment = UITextAlignment.Left;
-            lblAmountTitle.Text = "TOTAL AMOUNT (RM)";
+            lblAmountTitle.Text = "Common_TotalAmount(RM)".Translate().ToUpper();
             headerView.AddSubview(lblAmountTitle);
 
             txtFieldAmountValue = new UITextField(new CGRect(18, 40, View.Frame.Width - 36, 24));
-            txtFieldAmountValue.TextColor = myTNBColor.TunaGrey();
-            txtFieldAmountValue.Font = myTNBFont.MuseoSans16_300();
+            txtFieldAmountValue.TextColor = MyTNBColor.TunaGrey();
+            txtFieldAmountValue.Font = MyTNBFont.MuseoSans16_300;
             //txtFieldAmountValue.Text = DataManager.DataManager.SharedInstance.BillingAccountDetails.amCustBal.ToString();
             txtFieldAmountValue.Text = TotalAmount.ToString("N2", CultureInfo.InvariantCulture); ;
             txtFieldAmountValue.TextAlignment = UITextAlignment.Right;
@@ -78,7 +77,7 @@ namespace myTNB
             headerView.AddSubview(txtFieldAmountValue);
 
             var lineView = new UIView((new CGRect(18, 66, View.Frame.Width - 36, 1)));
-            lineView.BackgroundColor = myTNBColor.PlatinumGrey();
+            lineView.BackgroundColor = MyTNBColor.PlatinumGrey;
             headerView.AddSubview(lineView);
 
             NSNotificationCenter.DefaultCenter.AddObserver(UIKeyboard.WillShowNotification, OnKeyboardNotification);
@@ -133,7 +132,7 @@ namespace myTNB
             UIView headerView = gradientViewComponent.GetUI();
             titleBarComponent = new TitleBarComponent(headerView);
             UIView titleBarView = titleBarComponent.GetUI();
-            titleBarComponent.SetTitle("Select Payment Method");
+            titleBarComponent.SetTitle("Payment_SelectMethodTitle".Translate());
             titleBarComponent.SetNotificationVisibility(true);
             titleBarComponent.SetBackVisibility(false);
             titleBarComponent.SetBackAction(new UITapGestureRecognizer(() =>
@@ -182,33 +181,10 @@ namespace myTNB
             });
         }
 
-        internal void DisplayPaymentThreshold()
-        {
-            var alert = UIAlertController.Create(string.Empty, "For payments more than RM 5000, please use FPX payment mode.", UIAlertControllerStyle.Alert);
-            alert.AddAction(UIAlertAction.Create("Ok", UIAlertActionStyle.Cancel, null));
-            PresentViewController(alert, true, null);
-        }
-
         internal void ExecuteRequestPayBillCall(int thePlatform, string thePaymentMode, string cardID, bool isNewCard, string amountDue)
         {
             RemoveCachedAccountRecords();
-
             ActivityIndicator.Show();
-            /*
-            RequestPayBill(thePlatform, thePaymentMode, cardID, isNewCard, amountDue).ContinueWith(task =>
-            {
-                InvokeOnMainThread(() =>
-                {
-                    InitializedTableView();
-                    ActivityIndicator.Hide();
-                    if (isNewCard == false)
-                    {
-                        NavigateToVC(_requestPayBill, thePlatform, thePaymentMode);
-                    }
-
-                });
-            });*/
-
             RequestMultiPayBill(thePlatform, thePaymentMode, cardID, isNewCard, amountDue).ContinueWith(task =>
             {
                 InvokeOnMainThread(() =>
@@ -224,14 +200,7 @@ namespace myTNB
                     }
                     else
                     {
-                        string errMsg = "DefaultServerErrorMessage".Translate();
-                        if (_requestPayBill != null && _requestPayBill.d != null && !string.IsNullOrEmpty(_requestPayBill.d.message))
-                        {
-                            errMsg = _requestPayBill.d.message;
-                        }
-                        var alert = UIAlertController.Create(string.Empty, errMsg, UIAlertControllerStyle.Alert);
-                        alert.AddAction(UIAlertAction.Create("Ok", UIAlertActionStyle.Cancel, null));
-                        PresentViewController(alert, animated: true, completionHandler: null);
+                        AlertHandler.DisplayServiceError(this, _requestPayBill?.d?.message);
                     }
                     ActivityIndicator.Hide();
                 });
@@ -250,7 +219,8 @@ namespace myTNB
                     accNum = DataManager.DataManager.SharedInstance.BillingAccountDetails.accNum,
                     amount = amountDue,
                     email = DataManager.DataManager.SharedInstance.UserEntity[0].email,
-                    phoneNo = DataManager.DataManager.SharedInstance.UserEntity[0].mobileNo != null ? DataManager.DataManager.SharedInstance.UserEntity[0].mobileNo : "",
+                    phoneNo = DataManager.DataManager.SharedInstance.UserEntity[0].mobileNo != null
+                        ? DataManager.DataManager.SharedInstance.UserEntity[0].mobileNo : string.Empty,
                     sspUserId = DataManager.DataManager.SharedInstance.User.UserID,
                     platform = thePlatform,
                     registeredCardId = cardID,
@@ -283,7 +253,8 @@ namespace myTNB
                 customerName = count > 1 ? DataManager.DataManager.SharedInstance.UserEntity[0].displayName : ownerName,
                 accNum = DataManager.DataManager.SharedInstance.BillingAccountDetails.accNum,
                 email = DataManager.DataManager.SharedInstance.UserEntity[0].email,
-                phoneNo = DataManager.DataManager.SharedInstance.UserEntity[0].mobileNo != null ? DataManager.DataManager.SharedInstance.UserEntity[0].mobileNo : "",
+                phoneNo = DataManager.DataManager.SharedInstance.UserEntity[0].mobileNo != null
+                    ? DataManager.DataManager.SharedInstance.UserEntity[0].mobileNo : string.Empty,
                 sspUserId = DataManager.DataManager.SharedInstance.User.UserID,
                 platform = thePlatform,
                 registeredCardId = cardID,
@@ -300,9 +271,9 @@ namespace myTNB
 
         internal void InitializedTableView()
         {
-            selectPaymentTableView.Source = new SelectPaymentTableViewSource(_registeredCards, _requestPayBill,
-                                                                             this, OnSelectUnavailablePaymentMethod);
-            selectPaymentTableView.BackgroundColor = myTNBColor.SectionGrey();
+            selectPaymentTableView.Source = new SelectPaymentTableViewSource(_registeredCards
+                , _requestPayBill, this, OnSelectUnavailablePaymentMethod);
+            selectPaymentTableView.BackgroundColor = MyTNBColor.SectionGrey;
             selectPaymentTableView.ReloadData();
         }
 
@@ -326,10 +297,7 @@ namespace myTNB
             {
                 errMsg = status?.DowntimeTextMessage;
             }
-
-            var alert = UIAlertController.Create(string.Empty, errMsg, UIAlertControllerStyle.Alert);
-            alert.AddAction(UIAlertAction.Create("Ok", UIAlertActionStyle.Cancel, null));
-            PresentViewController(alert, animated: true, completionHandler: null);
+            AlertHandler.DisplayGenericAlert(this, string.Empty, errMsg);
         }
 
         internal void NavigateToVC(RequestPayBillResponseModel requestPayBillResponseModel, int platform, string paymentMode)
@@ -355,27 +323,21 @@ namespace myTNB
             //cardType = "A";
             _isAMEX = cardType.ToLower().Equals("a");
 
-            viewCVVBackground = new UIView(new CGRect(0
-                                                             , 0
-                                                             , View.Frame.Width
-                                                             , UIScreen.MainScreen.Bounds.Height - 175));
+            viewCVVBackground = new UIView(new CGRect(0, 0, View.Frame.Width, UIScreen.MainScreen.Bounds.Height - 175));
             viewCVVBackground.BackgroundColor = UIColor.Black;
             viewCVVBackground.Alpha = 0.75F;
             UIWindow currentWindow = UIApplication.SharedApplication.KeyWindow;
             currentWindow.AddSubview(viewCVVBackground);
 
-            viewCVVContainer = new UIView(new CGRect(0
-                                                     , View.Frame.Height - 175
-                                                     , View.Frame.Width
-                                                     , 175));
+            viewCVVContainer = new UIView(new CGRect(0, View.Frame.Height - 175, View.Frame.Width, 175));
             viewCVVContainer.BackgroundColor = UIColor.White;
             viewCVVContainer.Alpha = 1.0f;
 
             UIButton btnBack = new UIButton(UIButtonType.Custom);
             btnBack.Frame = new CGRect(6, 10, 60, 24);
-            btnBack.SetTitleColor(myTNBColor.PowerBlue(), UIControlState.Normal);
-            btnBack.SetTitle("Back", UIControlState.Normal);
-            btnBack.Font = myTNBFont.MuseoSans16();
+            btnBack.SetTitleColor(MyTNBColor.PowerBlue, UIControlState.Normal);
+            btnBack.SetTitle("Common_Back".Translate(), UIControlState.Normal);
+            btnBack.Font = MyTNBFont.MuseoSans16;
             btnBack.TouchUpInside += (sender, e) =>
             {
                 View.EndEditing(true);
@@ -387,13 +349,13 @@ namespace myTNB
             };
 
             UILabel lblCVVDetails = new UILabel(new CGRect(18, 60, viewCVVContainer.Frame.Width - 36, 40));
-            lblCVVDetails.Font = myTNBFont.MuseoSans14();
-            lblCVVDetails.TextColor = myTNBColor.TunaGrey();
+            lblCVVDetails.Font = MyTNBFont.MuseoSans14;
+            lblCVVDetails.TextColor = MyTNBColor.TunaGrey();
             lblCVVDetails.LineBreakMode = UILineBreakMode.WordWrap;
             lblCVVDetails.Lines = 2;
             lblCVVDetails.TextAlignment = UITextAlignment.Left;
-            lblCVVDetails.Text = _isAMEX ? "Please enter the 4-digit CVV/CVC located at the front of your credit card."
-                : "Please enter the 3-digit CVV/CVC located at the back of your credit card.";
+            lblCVVDetails.Text = _isAMEX ? "Payment_CVVFourDigitMessage".Translate()
+                : "Payment_CVVThreeDigitMessage".Translate();
 
             viewCVVWrapper = new UIView(new CGRect(0, 124, viewCVVContainer.Frame.Width, 26));
 
@@ -408,8 +370,8 @@ namespace myTNB
                 int index = i;
                 txtFieldCVV = new UITextField(new CGRect(xLocation, 0, 44, 24));
                 txtFieldCVV.Placeholder = "-";
-                txtFieldCVV.TextColor = myTNBColor.TunaGrey();
-                txtFieldCVV.Font = myTNBFont.MuseoSans16();
+                txtFieldCVV.TextColor = MyTNBColor.TunaGrey();
+                txtFieldCVV.Font = MyTNBFont.MuseoSans16;
                 txtFieldCVV.Tag = index + 1;
                 txtFieldCVV.KeyboardType = UIKeyboardType.NumberPad;
                 txtFieldCVV.AutocorrectionType = UITextAutocorrectionType.No;
@@ -425,7 +387,7 @@ namespace myTNB
                 SetTextFieldEvents(txtFieldCVV);
 
                 viewLine = new UIView(new CGRect(xLocation, 25, 44, 1));
-                viewLine.BackgroundColor = myTNBColor.PlatinumGrey();
+                viewLine.BackgroundColor = MyTNBColor.PlatinumGrey;
                 viewLine.Tag = 6;
 
                 viewCVVWrapper.AddSubview(viewLine);
@@ -461,9 +423,7 @@ namespace myTNB
                 CGRect r = UIKeyboard.BoundsFromNotification(notification);
                 CGRect viewFrame = View.Bounds;
                 nfloat currentViewHeight = viewFrame.Height - r.Height;
-
                 UIWindow currentWindow = UIApplication.SharedApplication.KeyWindow;
-
                 if (viewCVVContainer != null && viewCVVContainer.IsDescendantOfView(View))
                 {
                     ViewHelper.AdjustFrameSetHeight(viewCVVBackground, UIScreen.MainScreen.Bounds.Height - (r.Height + 175));
@@ -551,9 +511,7 @@ namespace myTNB
                                 viewCVVContainer.RemoveFromSuperview();
                                 viewCVVBackground.Hidden = true;
                                 viewCVVBackground.RemoveFromSuperview();
-
                                 _isAMEX = false;
-
                                 ActivityIndicator.Hide();
                                 _cardCVVStr = new SecureString();
                                 _cardCVVStr = cvv;
@@ -561,9 +519,7 @@ namespace myTNB
                             }
                             else
                             {
-                                var alert = UIAlertController.Create("ErrNoNetworkTitle".Translate(), "ErrNoNetworkMsg".Translate(), UIAlertControllerStyle.Alert);
-                                alert.AddAction(UIAlertAction.Create("Ok", UIAlertActionStyle.Cancel, null));
-                                PresentViewController(alert, true, null);
+                                AlertHandler.DisplayNoDataAlert(this);
                                 ActivityIndicator.Hide();
                             }
                         });
@@ -583,6 +539,5 @@ namespace myTNB
                 DataManager.DataManager.SharedInstance.DeleteDetailsFromPaymentHistory(item.accNum);
             }
         }
-
     }
 }

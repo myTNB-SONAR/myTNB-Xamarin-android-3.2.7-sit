@@ -17,26 +17,26 @@ namespace myTNB
             nfloat cellHeight = Frame.Height;
 
             lblTitle = new UILabel(new CGRect(18, 16, cellWidth - 36, 14));
-            lblTitle.TextColor = myTNBColor.SilverChalice();
-            lblTitle.Font = myTNBFont.MuseoSans9();
+            lblTitle.TextColor = MyTNBColor.SilverChalice;
+            lblTitle.Font = MyTNBFont.MuseoSans9;
 
             lblDay = new UILabel(new CGRect(18, 30, 150, 48));
-            lblDay.TextColor = myTNBColor.TunaGrey();
-            lblDay.Font = myTNBFont.MuseoSans12();
+            lblDay.TextColor = MyTNBColor.TunaGrey();
+            lblDay.Font = MyTNBFont.MuseoSans12;
             lblDay.Lines = 3;
 
             lblTime = new UILabel(new CGRect(168, 30, cellWidth - 186, 36));
-            lblTime.TextColor = myTNBColor.TunaGrey();
-            lblTime.Font = myTNBFont.MuseoSans12();
+            lblTime.TextColor = MyTNBColor.TunaGrey();
+            lblTime.Font = MyTNBFont.MuseoSans12;
             lblTime.TextAlignment = UITextAlignment.Right;
             lblTime.Lines = 2;
 
             lbl7EOperation = new UILabel(new CGRect(18, 30, cellWidth - 36, 16));
-            lbl7EOperation.TextColor = myTNBColor.TunaGrey();
-            lbl7EOperation.Font = myTNBFont.MuseoSans12();
+            lbl7EOperation.TextColor = MyTNBColor.TunaGrey();
+            lbl7EOperation.Font = MyTNBFont.MuseoSans12;
 
             viewLine = new UIView(new CGRect(0, cellHeight - 1, cellWidth, 1));
-            viewLine.BackgroundColor = myTNBColor.PlatinumGrey();
+            viewLine.BackgroundColor = MyTNBColor.PlatinumGrey;
             viewLine.Hidden = false;
 
             AddSubviews(new UIView[] { lblTitle, lblDay, lblTime, lbl7EOperation, viewLine });

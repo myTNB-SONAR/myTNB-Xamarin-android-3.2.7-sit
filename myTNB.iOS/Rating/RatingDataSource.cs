@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using Foundation;
-using myTNB.Customs;
 using myTNB.Model;
 using UIKit;
 
@@ -30,14 +29,11 @@ namespace myTNB
         {
             var cell = tableView.DequeueReusableCell(CellIdentifier) as FeedbackInputCell;
             var question = questions[indexPath.Row];
-
             if (cell == null)
             {
                 cell = new FeedbackInputCell(CellIdentifier);
             }
-
             cell.UpdateCell(question, indexPath.Row, defaultRating, tableView.Frame.Width);
-
             return cell;
         }
 
@@ -66,11 +62,8 @@ namespace myTNB
                 if (cell.QuestionType == Enums.QuestionTypeEnum.MultilineComment)
                 {
                     cell.feedbackTextView.BecomeFirstResponder();
-
                 }
-
             }
-
         }
 
         /// <summary>
@@ -88,10 +81,8 @@ namespace myTNB
                 {
                     questions[indexPath.Row].Answer = cell.feedbackTextView.Text;
                     cell.feedbackTextView.ResignFirstResponder();
-
                 }
             }
-
         }
 
         public override nfloat GetHeightForRow(UITableView tableView, NSIndexPath indexPath)
@@ -104,6 +95,5 @@ namespace myTNB
             }
             return 220f;
         }
-
     }
 }

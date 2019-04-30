@@ -25,24 +25,24 @@ namespace myTNB
             var dashboard = new OnboardingModel
             {
                 ImageName = "Dashboard",
-                Title = "Track your usage",
-                Message = "Find all the information you need about your usage in a single screen"
+                Title = "Onboarding_UsageTitle".Translate(),
+                Message = "Onboarding_UsageMessage".Translate()
             };
             pageData.Add(dashboard);
 
             var billing = new OnboardingModel
             {
                 ImageName = "Billing",
-                Title = "View your bill",
-                Message = "Contribute to a greener environment by viewing your e-bill on the app"
+                Title = "Onboarding_BillingTitle".Translate(),
+                Message = "Onboarding_BillingMessage".Translate()
             };
             pageData.Add(billing);
 
             var payment = new OnboardingModel
             {
                 ImageName = "Payment",
-                Title = "Pay your bills",
-                Message = "Make your payments at home or on-to-go. No more late charges!"
+                Title = "Onboarding_PaymentTitle".Translate(),
+                Message = "Onboarding_PaymentMessage".Translate()
             };
             pageData.Add(payment);
         }
@@ -58,11 +58,13 @@ namespace myTNB
                     pageData = new List<OnboardingModel>();
                     foreach (var entity in walkThroughScreenList)
                     {
-                        OnboardingModel item = new OnboardingModel();
-                        item.Title = entity.Text;
-                        item.Message = entity.SubText;
-                        item.ImageName = entity.Image;
-                        item.IsSitecoreData = true;
+                        OnboardingModel item = new OnboardingModel
+                        {
+                            Title = entity.Text,
+                            Message = entity.SubText,
+                            ImageName = entity.Image,
+                            IsSitecoreData = true
+                        };
                         pageData.Add(item);
                     }
                 }
@@ -120,7 +122,7 @@ namespace myTNB
         public override nint GetPresentationCount(UIPageViewController pageViewController)
         {
             var appearance = UIPageControl.Appearance;
-            appearance.CurrentPageIndicatorTintColor = myTNBColor.SunGlow();
+            appearance.CurrentPageIndicatorTintColor = MyTNBColor.SunGlow;
             appearance.BackgroundColor = UIColor.Clear;
             appearance.PageIndicatorTintColor = UIColor.White;
             return pageData.Count;

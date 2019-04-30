@@ -18,14 +18,14 @@ namespace myTNB.Home.More.PushNotificationSettings
             Frame = new CGRect(0, 0, cellWidth, cellHeight);
 
             lblTitle = new UILabel(new CGRect(18, 16, cellWidth - 36, 18));
-            lblTitle.TextColor = myTNBColor.TunaGrey();
-            lblTitle.Font = myTNBFont.MuseoSans14_300();
+            lblTitle.TextColor = MyTNBColor.TunaGrey();
+            lblTitle.Font = MyTNBFont.MuseoSans14_300;
 
             switchToggle = new UISwitch(new CGRect(cellWidth - 18 - 38, 10, 38, 23));
             switchToggle.Transform = CGAffineTransform.MakeScale(0.75f, 0.75f);
 
             viewLine = new UIView(new CGRect(0, cellHeight - 1, cellWidth, 1));
-            viewLine.BackgroundColor = myTNBColor.PlatinumGrey();
+            viewLine.BackgroundColor = MyTNBColor.PlatinumGrey;
             viewLine.Hidden = false;
 
             AddSubviews(new UIView[] { lblTitle, switchToggle, viewLine });

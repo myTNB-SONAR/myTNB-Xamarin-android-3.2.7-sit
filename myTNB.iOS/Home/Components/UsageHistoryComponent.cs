@@ -21,9 +21,9 @@ namespace myTNB.Dashboard.DashboardComponents
             _viewUsageHistory = new UIView(new CGRect(0, 0, _parentView.Frame.Width, 18));
 
             _lblDateRange = new UILabel(new CGRect(0, 0, _viewUsageHistory.Frame.Width, 18));
-            _lblDateRange.Font = myTNBFont.MuseoSans14_500();
+            _lblDateRange.Font = MyTNBFont.MuseoSans14_500;
             _lblDateRange.TextAlignment = UITextAlignment.Center;
-            _lblDateRange.TextColor = myTNBColor.SunGlow();
+            _lblDateRange.TextColor = MyTNBColor.SunGlow;
             _lblDateRange.Text = "-".ToUpper();
             _viewUsageHistory.AddSubview(_lblDateRange);
         }

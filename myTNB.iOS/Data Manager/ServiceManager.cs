@@ -7,6 +7,7 @@ using myTNB.Model.AddMultipleSupplyAccountsToUserReg;
 using myTNB.Model.GetMultiAccountDueAmount;
 using Newtonsoft.Json.Linq;
 using System;
+using System.Diagnostics;
 
 namespace myTNB
 {
@@ -120,7 +121,7 @@ namespace myTNB
             { }
             catch (JsonReaderException ex)
             {
-                Console.WriteLine(ex);
+                Debug.WriteLine(ex);
             }
             return new ChartModel();
         }
@@ -161,11 +162,11 @@ namespace myTNB
             }
             catch(JsonSerializationException ex)
             {
-                Console.WriteLine(ex);
+                Debug.WriteLine(ex);
             }
             catch(JsonReaderException ex)
             {
-                Console.WriteLine(ex);
+                Debug.WriteLine(ex);
             }
             return new SmartChartModel();
         }
@@ -191,11 +192,11 @@ namespace myTNB
             }
             catch (JsonSerializationException ex)
             {
-                Console.WriteLine(ex);
+                Debug.WriteLine(ex);
             }
             catch
             {
-                Console.WriteLine("General JSON parsing error");
+                Debug.WriteLine("General JSON parsing error");
             }
             return false;
         }
@@ -236,7 +237,7 @@ namespace myTNB
             }
             catch (JsonSerializationException ex)
             {
-                Console.WriteLine(ex);
+                Debug.WriteLine(ex);
             }
             return new FeedbackQuestionRequestModel();
         }
@@ -277,7 +278,7 @@ namespace myTNB
             }
             catch (JsonSerializationException ex)
             {
-                Console.WriteLine(ex);
+                Debug.WriteLine(ex);
             }
             return new AmountDueStatusResponseModel();
         }
@@ -318,7 +319,7 @@ namespace myTNB
             }
             catch (JsonSerializationException ex)
             {
-                Console.WriteLine(ex);
+                Debug.WriteLine(ex);
             }
             return new MasterDataResponseModel();
         }
@@ -359,7 +360,7 @@ namespace myTNB
             }
             catch (JsonSerializationException ex)
             {
-                Console.WriteLine(ex);
+                Debug.WriteLine(ex);
             }
             return new PhoneVerificationStatusResponseModel();
         }

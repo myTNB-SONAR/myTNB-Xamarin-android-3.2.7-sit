@@ -162,7 +162,7 @@ namespace myTNB.Dashboard.DashboardComponents
                 var lblY = (barHeight - barHeightByValues * Math.Abs(chartValueDbl) - lblOffset * maxLines);
                 UILabel lblCost = new UILabel(new CGRect(-15, lblY,
                                                          viewSegment.Frame.Width + 30, lblHeight * maxLines));
-                lblCost.Font = myTNBFont.MuseoSans10_500();
+                lblCost.Font = MyTNBFont.MuseoSans10_500;
                 lblCost.TextColor = UIColor.White;
                 lblCost.TextAlignment = UITextAlignment.Center;
                 lblCost.LineBreakMode = UILineBreakMode.TailTruncation;
@@ -183,7 +183,7 @@ namespace myTNB.Dashboard.DashboardComponents
                                                          , lblDateY
                                                          , viewSegment.Frame.Width
                                                          , 14));
-                lblDate.Font = myTNBFont.MuseoSans9_300();
+                lblDate.Font = MyTNBFont.MuseoSans9_300;
                 lblDate.TextColor = UIColor.FromWhiteAlpha(1.0f, 0.2f);
                 lblDate.TextAlignment = UITextAlignment.Center;
 
@@ -194,7 +194,7 @@ namespace myTNB.Dashboard.DashboardComponents
                 }
                 else if (index == chartData.Count - 1 || chartData[index + 1].Day == "1")
                 {
-                    dateString = segmentData.Day + " " + segmentData.Month;
+                    dateString = string.Format("{0} {1}", segmentData.Day, segmentData.Month);
                 }
                 else
                 {
@@ -211,8 +211,6 @@ namespace myTNB.Dashboard.DashboardComponents
                 });
                 double ht = barHeightByValues * Math.Abs(chartValueDbl);
                 double y = barBottomMargin + (barHeight - barHeightByValues * Math.Abs(chartValueDbl));
-                //Console.WriteLine("dbg " + " amt: " + Math.Abs(chartValueDbl) + " barMargin x: " + barMargin + " y: " + y);
-                //Console.WriteLine("dbg: barHeightByValues: " + barHeightByValues + " height: " + ht);
 
                 UIView.Animate(1, 0.3, UIViewAnimationOptions.CurveEaseOut
                     , () =>
@@ -328,7 +326,7 @@ namespace myTNB.Dashboard.DashboardComponents
 
             if (string.IsNullOrEmpty(str))
             {
-                str = "0";
+                str = TNBGlobal.ZERO;
             }
 
             return str;
@@ -453,6 +451,5 @@ namespace myTNB.Dashboard.DashboardComponents
             }
             OnSegmentClick(index);
         }
-
     }
 }

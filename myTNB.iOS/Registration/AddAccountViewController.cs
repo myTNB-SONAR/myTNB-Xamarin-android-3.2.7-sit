@@ -6,7 +6,6 @@ using Foundation;
 using myTNB.Model;
 using myTNB.Registration.CustomerAccounts;
 using UIKit;
-using myTNB.Extensions;
 
 namespace myTNB.Registration
 {
@@ -14,41 +13,18 @@ namespace myTNB.Registration
     {
         UIButton btnAddAccount;
 
-        UILabel lblAccountNoTitle;
-        UILabel lblAccountNoError;
+        UILabel lblAccountNoTitle, lblAccountNoError, lblNicknameTitle, lblNicknameError
+            , lblNicknameHint, lblICNoTitle, lblICNoError, lblAccountTypeTitle
+            , lblAccountTypeError, lblAccountType;
 
-        UILabel lblNicknameTitle;
-        UILabel lblNicknameError;
-        UILabel lblNicknameHint;
+        //UILabel lblMaidenNameTitle, lblMaidenNameError;
 
-        UILabel lblICNoTitle;
-        UILabel lblICNoError;
+        UIView viewAccountNo, viewNickname, viewICNo, viewAccountType, viewLineAccountNo
+            , viewLineNickname, viewLineICNo, viewLineAccountType, viewInfoContainer;
+        //UIView viewMaidenName, viewLineMaidenName;
 
-        //UILabel lblMaidenNameTitle;
-        //UILabel lblMaidenNameError;
-
-        UILabel lblAccountTypeTitle;
-        UILabel lblAccountTypeError;
-
-        UIView viewAccountNo;
-        UIView viewNickname;
-        UIView viewICNo;
-        //UIView viewMaidenName;
-        UIView viewAccountType;
-
-        UITextField txtFieldAccountNo;
-        UITextField txtFieldNickname;
-        UITextField txtFieldICNo;
+        UITextField txtFieldAccountNo, txtFieldNickname, txtFieldICNo;
         //UITextField txtFieldMaidenName;
-        UILabel lblAccountType;
-
-        UIView viewLineAccountNo;
-        UIView viewLineNickname;
-        UIView viewLineICNo;
-        //UIView viewLineMaidenName;
-        UIView viewLineAccountType;
-
-        UIView viewInfoContainer;
 
         public AddAccountViewController(IntPtr handle) : base(handle)
         {
@@ -59,8 +35,6 @@ namespace myTNB.Registration
         public bool isOwner = false;
 
         const string NAME_PATTERN = @"^[A-Za-z0-9 _]*[A-Za-z0-9][A-Za-z0-9 \-\\_ _]*$";
-        const string IC_NO_PATTERN = @"^[a-zA-Z0-9]+$";
-        const string ACCOUNT_NO_PATTERN = @"^[0-9]{12,14}$";
         const string ACCOUNT_TYPE_PATTERN = @"/^[-@./#&+\w\s]*$/";
 
         string _icNo = string.Empty;
@@ -73,7 +47,8 @@ namespace myTNB.Registration
         List<String> _accountTypeTitleList = new List<String>();
         List<String> _accountTypeValueList = new List<String>();
 
-        ValidateManualAccountLinkingResponseModel _validateManualAccountLinkingResponseModel = new ValidateManualAccountLinkingResponseModel();
+        ValidateManualAccountLinkingResponseModel _validateManualAccountLinkingResponseModel
+            = new ValidateManualAccountLinkingResponseModel();
         CustomerAccountRecordModel account = new CustomerAccountRecordModel();
 
         public override void ViewDidLoad()
@@ -81,7 +56,7 @@ namespace myTNB.Registration
             base.ViewDidLoad();
             // Perform any additional setup after loading the view, typically from a nib.
             NavigationItem.HidesBackButton = true;
-            NavigationItem.Title = "Add Electricity Account";
+            NavigationItem.Title = "Common_AddElectricityAccount".Translate();
             InitilizedAccountType();
             InitializedSubviews();
             AddBackButton();
@@ -89,7 +64,7 @@ namespace myTNB.Registration
             SetWidgetVisibility();
             SetViews();
             btnAddAccount.Enabled = false;
-            btnAddAccount.BackgroundColor = myTNBColor.SilverChalice();
+            btnAddAccount.BackgroundColor = MyTNBColor.SilverChalice;
             InitilizedAccountType();
         }
 
@@ -115,41 +90,27 @@ namespace myTNB.Registration
         internal void SetAccountType()
         {
             lblAccountType.Text = _accountTypeTitleList[DataManager.DataManager.SharedInstance.CurrentSelectedAccountTypeIndex];
-            //Do not delete any maiden name related codes. W
+            //Do not delete any maiden name related codes.
 
             if (_accountTypeValueList[DataManager.DataManager.SharedInstance.CurrentSelectedAccountTypeIndex] == "1")
             {
                 //viewMaidenName.Hidden = false;
-                lblICNoTitle.Text = "OWNER'S IC NO.";
-                lblICNoError.Text = "Invalid IC No.";
-                lblNicknameHint.AttributedText = new NSAttributedString(
-                    "AddAcctResNickNameHint".Translate(),
-                    font: myTNBFont.MuseoSans11_300(),
-                    foregroundColor: myTNBColor.TunaGrey(),
-                    strokeWidth: 0);
-                txtFieldICNo.AttributedPlaceholder = new NSAttributedString(
-                    "Owner's IC No."
-                    , font: myTNBFont.MuseoSans18_300()
-                    , foregroundColor: myTNBColor.SilverChalice()
-                    , strokeWidth: 0
-                );
+                lblICNoTitle.Text = "Common_ICNumber".Translate().ToUpper();
+                lblICNoError.Text = "Invalid_ICNo".Translate();
+                lblNicknameHint.AttributedText = AttributedStringUtility.GetAttributedString("Hint_Nickname"
+                    , AttributedStringUtility.AttributedStringType.Hint);
+                txtFieldICNo.AttributedPlaceholder = AttributedStringUtility.GetAttributedString("Common_ICNumber"
+                    , AttributedStringUtility.AttributedStringType.Value);
             }
             else
             {
                 //viewMaidenName.Hidden = true;
-                lblICNoTitle.Text = "ROC NO.";
-                lblICNoError.Text = "Invalid ROC No.";
-                lblNicknameHint.AttributedText = new NSAttributedString(
-                    "AddAcctComNickNameHint".Translate(),
-                    font: myTNBFont.MuseoSans11_300(),
-                    foregroundColor: myTNBColor.TunaGrey(),
-                    strokeWidth: 0);
-                txtFieldICNo.AttributedPlaceholder = new NSAttributedString(
-                    "ROC No."
-                    , font: myTNBFont.MuseoSans18_300()
-                    , foregroundColor: myTNBColor.SilverChalice()
-                    , strokeWidth: 0
-                );
+                lblICNoTitle.Text = "Common_ROCNo".Translate().ToUpper();
+                lblICNoError.Text = "Invalid_ROCNo".Translate();
+                lblNicknameHint.AttributedText = AttributedStringUtility.GetAttributedString("Hint_BusinessNickname"
+                    , AttributedStringUtility.AttributedStringType.Hint);
+                txtFieldICNo.AttributedPlaceholder = AttributedStringUtility.GetAttributedString("Common_ROCNo"
+                    , AttributedStringUtility.AttributedStringType.Value);
             }
             //viewMaidenName.Hidden = true;
         }
@@ -192,7 +153,7 @@ namespace myTNB.Registration
                 _accountNo = txtFieldAccountNo.Text;
                 _icNo = txtFieldICNo.Text;
                 _nickName = txtFieldNickname.Text;
-                _maidenName = "";//txtFieldMaidenName.Text;
+                _maidenName = string.Empty;//txtFieldMaidenName.Text;
                 _accountType = _accountTypeValueList[DataManager.DataManager.SharedInstance.CurrentSelectedAccountTypeIndex];
                 NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
                 {
@@ -219,28 +180,28 @@ namespace myTNB.Registration
                             }
                             else
                             {
-                                var alert = UIAlertController.Create("Duplicate Account", "This account number is already added on the list", UIAlertControllerStyle.Alert);
-                                alert.AddAction(UIAlertAction.Create("Ok", UIAlertActionStyle.Cancel, null));
-                                PresentViewController(alert, animated: true, completionHandler: null);
+                                AlertHandler.DisplayGenericAlert(this, "Error_DuplicateAccountTitle".Translate()
+                                    , "Error_DuplicateAccountMessage".Translate());
                                 ActivityIndicator.Hide();
                             }
                         }
                         else
                         {
-                            Console.WriteLine("No Network");
-                            var alert = UIAlertController.Create("ErrNoNetworkTitle".Translate(), "ErrNoNetworkMsg".Translate(), UIAlertControllerStyle.Alert);
-                            alert.AddAction(UIAlertAction.Create("Ok", UIAlertActionStyle.Cancel, null));
-                            PresentViewController(alert, animated: true, completionHandler: null);
+                            AlertHandler.DisplayNoDataAlert(this);
                             ActivityIndicator.Hide();
                         }
                     });
                 });
             };
 
-            SetTextFieldEvents(txtFieldAccountNo, lblAccountNoTitle, lblAccountNoError, viewLineAccountNo, ACCOUNT_NO_PATTERN);
-            SetTextFieldEvents(txtFieldNickname, lblNicknameTitle, lblNicknameError, viewLineNickname, TNBGlobal.ACCOUNT_NAME_PATTERN);
-            SetTextFieldEvents(txtFieldICNo, lblICNoTitle, lblICNoError, viewLineICNo, IC_NO_PATTERN);
-            //SetTextFieldEvents(txtFieldMaidenName, lblMaidenNameTitle, lblMaidenNameError, viewLineMaidenName, NAME_PATTERN);
+            SetTextFieldEvents(txtFieldAccountNo, lblAccountNoTitle, lblAccountNoError
+                , viewLineAccountNo, TNBGlobal.ACCOUNT_NO_PATTERN);
+            SetTextFieldEvents(txtFieldNickname, lblNicknameTitle, lblNicknameError
+                , viewLineNickname, TNBGlobal.ACCOUNT_NAME_PATTERN);
+            SetTextFieldEvents(txtFieldICNo, lblICNoTitle, lblICNoError
+                , viewLineICNo, TNBGlobal.IC_NO_PATTERN);
+            //SetTextFieldEvents(txtFieldMaidenName, lblMaidenNameTitle
+            //    , lblMaidenNameError, viewLineMaidenName, NAME_PATTERN);
         }
 
         internal void ExecuteValidateManualAccountLinking()
@@ -249,20 +210,22 @@ namespace myTNB.Registration
             {
                 InvokeOnMainThread(() =>
                 {
-                    if (_validateManualAccountLinkingResponseModel.d != null
-                        && _validateManualAccountLinkingResponseModel.d.isError == "false"
-                        && _validateManualAccountLinkingResponseModel.d.status == "success")
+                    if (_validateManualAccountLinkingResponseModel?.d != null
+                        && _validateManualAccountLinkingResponseModel?.d?.isError == "false"
+                        && _validateManualAccountLinkingResponseModel?.d?.status == "success")
                     {
-                        account = new CustomerAccountRecordModel();
-                        account.accNum = txtFieldAccountNo.Text;
-                        account.accDesc = txtFieldNickname.Text;
-                        account.accountNickName = txtFieldNickname.Text;
-                        account.accountTypeId = _accountTypeValueList[DataManager.DataManager.SharedInstance.CurrentSelectedAccountTypeIndex];
-                        account.icNum = txtFieldICNo.Text;
-                        account.accountStAddress = _validateManualAccountLinkingResponseModel.d.data.accountStAddress;
-                        account.accountCategoryId = _validateManualAccountLinkingResponseModel.d.data.accountCategoryId;
-                        account.isOwned = isOwner ? "TRUE" : "FALSE";
-                        account.isLocal = true;
+                        account = new CustomerAccountRecordModel
+                        {
+                            accNum = txtFieldAccountNo.Text,
+                            accDesc = txtFieldNickname.Text,
+                            accountNickName = txtFieldNickname.Text,
+                            accountTypeId = _accountTypeValueList[DataManager.DataManager.SharedInstance.CurrentSelectedAccountTypeIndex],
+                            icNum = txtFieldICNo.Text,
+                            accountStAddress = _validateManualAccountLinkingResponseModel.d.data.accountStAddress,
+                            accountCategoryId = _validateManualAccountLinkingResponseModel.d.data.accountCategoryId,
+                            isOwned = isOwner ? "TRUE" : "FALSE",
+                            isLocal = true
+                        };
 
                         if (DataManager.DataManager.SharedInstance.AccountsToBeAddedList == null
                               || DataManager.DataManager.SharedInstance.AccountsToBeAddedList.d == null)
@@ -277,23 +240,14 @@ namespace myTNB.Registration
                             if (vc is AccountsViewController)
                             {
                                 DataManager.DataManager.SharedInstance.CurrentSelectedAccountTypeIndex = 0;
-                                this.NavigationController.PopToViewController(vc, false);
+                                this.NavigationController?.PopToViewController(vc, false);
                             }
                         }
                     }
                     else
                     {
-                        if (_validateManualAccountLinkingResponseModel.d != null
-                             && _validateManualAccountLinkingResponseModel.d.message != null
-                           )
-                        {
-                            //var message = "Unable to add your account. Please try again"
-                            var alert = UIAlertController.Create("Unable to add account", _validateManualAccountLinkingResponseModel.d.message, UIAlertControllerStyle.Alert);
-                            alert.AddAction(UIAlertAction.Create("Ok", UIAlertActionStyle.Cancel, null));
-                            PresentViewController(alert, animated: true, completionHandler: null);
-                            ActivityIndicator.Hide();
-                        }
-
+                        AlertHandler.DisplayServiceError(this, _validateManualAccountLinkingResponseModel?.d?.message);
+                        ActivityIndicator.Hide();
                     }
                 });
             });
@@ -304,12 +258,12 @@ namespace myTNB.Registration
             return Task.Factory.StartNew(() =>
             {
                 ServiceManager serviceManager = new ServiceManager();
-                //Temporary workaround
-                string icNumber = isOwner ? _icNo : "";
-                string maidenName = "";//isOwner ? _maidenName : "";
+                //Workaround
+                string icNumber = isOwner ? _icNo : string.Empty;
+                string maidenName = string.Empty;//isOwner ? _maidenName : string.Empty;
                 if (_accountTypeValueList[DataManager.DataManager.SharedInstance.CurrentSelectedAccountTypeIndex] == "2")
                 {
-                    maidenName = "";
+                    maidenName = string.Empty;
                 }
                 object requestParameter = new
                 {
@@ -324,12 +278,12 @@ namespace myTNB.Registration
             });
         }
 
-        internal void SetTextFieldEvents(UITextField textField, UILabel textFieldTitle, UILabel textFieldError, UIView viewLine, string pattern)
+        internal void SetTextFieldEvents(UITextField textField, UILabel textFieldTitle
+            , UILabel textFieldError, UIView viewLine, string pattern)
         {
             textField.EditingChanged += (sender, e) =>
             {
                 textFieldTitle.Hidden = textField.Text.Length == 0;
-
                 if (sender == txtFieldNickname)
                 {
                     // remove auto period on consecutive space
@@ -339,7 +293,6 @@ namespace myTNB.Registration
                         System.Text.StringBuilder myStringBuilder = new System.Text.StringBuilder(txtFieldNickname.Text);
                         myStringBuilder.Replace(". ", "  ", index, 2);
                         txtFieldNickname.Text = myStringBuilder.ToString();
-                        
                     }
                 }
             };
@@ -347,8 +300,8 @@ namespace myTNB.Registration
             {
                 textFieldTitle.Hidden = textField.Text.Length == 0;
                 textField.LeftViewMode = UITextFieldViewMode.Never;
-                viewLine.BackgroundColor = myTNBColor.PowerBlue();
-                textField.TextColor = myTNBColor.TunaGrey();
+                viewLine.BackgroundColor = MyTNBColor.PowerBlue;
+                textField.TextColor = MyTNBColor.TunaGrey();
                 if (sender == txtFieldNickname)
                 {
                     lblNicknameHint.Hidden = false;
@@ -370,10 +323,12 @@ namespace myTNB.Registration
 
                     isValid = isFormatValid && isUnique;
 
-                    if(!isValid)
+                    if (!isValid)
                     {
-                        var errText = !isFormatValid ? "AddAcctNicknameInvalidError".Translate() : "AcctNicknameInUseError".Translate();
-                        textFieldError.AttributedText = new NSAttributedString(                                         errText,                                            font: myTNBFont.MuseoSans11_300(),                                         foregroundColor: myTNBColor.Tomato(),                                         strokeWidth: 0                                         );
+                        string errText = !isFormatValid ? "Invalid_Characters".Translate()
+                            : "Invalid_AccountNicknameInUse".Translate();
+                        textFieldError.AttributedText = AttributedStringUtility.GetAttributedString(errText
+                            , AttributedStringUtility.AttributedStringType.Error);
                     }
                 }
                 else if (isOwner && textField == txtFieldICNo)
@@ -386,9 +341,8 @@ namespace myTNB.Registration
                 {
                     lblNicknameHint.Hidden = true;
                 }
-
-                viewLine.BackgroundColor = isValid ? myTNBColor.PlatinumGrey() : myTNBColor.Tomato();
-                textField.TextColor = isValid ? myTNBColor.TunaGrey() : myTNBColor.Tomato();
+                viewLine.BackgroundColor = isValid ? MyTNBColor.PlatinumGrey : MyTNBColor.Tomato;
+                textField.TextColor = isValid ? MyTNBColor.TunaGrey() : MyTNBColor.Tomato;
                 SetAddAccountButtonEnable();
                 return true;
             };
@@ -403,7 +357,8 @@ namespace myTNB.Registration
                 {
                     if (!string.IsNullOrEmpty(replacementString))
                     {
-                        return _textFieldHelper.ValidateTextField(replacementString, TNBGlobal.ACCOUNT_NAME_PATTERN);
+                        return _textFieldHelper.ValidateTextField(replacementString
+                            , TNBGlobal.ACCOUNT_NAME_PATTERN);
                     }
                 }
                 else if (textField == txtFieldAccountNo)
@@ -416,10 +371,10 @@ namespace myTNB.Registration
                 {
                     if (!string.IsNullOrEmpty(replacementString))
                     {
-                        return _textFieldHelper.ValidateTextField(replacementString, IC_NO_PATTERN);
+                        return _textFieldHelper.ValidateTextField(replacementString
+                            , TNBGlobal.IC_NO_PATTERN);
                     }
                 }
-
                 return true;
             };
 
@@ -435,16 +390,18 @@ namespace myTNB.Registration
 
         internal void SetAddAccountButtonEnable()
         {
-            bool isAccountValid = _textFieldHelper.ValidateTextField(txtFieldAccountNo.Text, ACCOUNT_NO_PATTERN) && _textFieldHelper.ValidateTextFieldWithLength(txtFieldAccountNo.Text, TNBGlobal.AccountNumberLowCharLimit);
-            bool isAccountNameValid = !string.IsNullOrWhiteSpace(txtFieldNickname.Text) 
-                                             && _textFieldHelper.ValidateTextField(txtFieldNickname.Text, TNBGlobal.ACCOUNT_NAME_PATTERN)
-                                             && DataManager.DataManager.SharedInstance.IsAccountNicknameUnique(txtFieldNickname.Text);
+            bool isAccountValid = _textFieldHelper.ValidateTextField(txtFieldAccountNo.Text, TNBGlobal.ACCOUNT_NO_PATTERN)
+                && _textFieldHelper.ValidateTextFieldWithLength(txtFieldAccountNo.Text, TNBGlobal.AccountNumberLowCharLimit);
+            bool isAccountNameValid = !string.IsNullOrWhiteSpace(txtFieldNickname.Text)
+                && _textFieldHelper.ValidateTextField(txtFieldNickname.Text, TNBGlobal.ACCOUNT_NAME_PATTERN)
+                && DataManager.DataManager.SharedInstance.IsAccountNicknameUnique(txtFieldNickname.Text);
             bool isICNoValid = true;
             bool isMaidenNameValid = true;
 
             if (isOwner)
             {
-                isICNoValid = !string.IsNullOrWhiteSpace(txtFieldICNo.Text) && _textFieldHelper.ValidateTextField(txtFieldICNo.Text, IC_NO_PATTERN);
+                isICNoValid = !string.IsNullOrWhiteSpace(txtFieldICNo.Text)
+                    && _textFieldHelper.ValidateTextField(txtFieldICNo.Text, TNBGlobal.IC_NO_PATTERN);
                 //isMaidenNameValid = _textFieldHelper.ValidateTextField(txtFieldMaidenName.Text, NAME_PATTERN);
             }
             /*if (_accountTypeValueList[DataManager.DataManager.SharedInstance.CurrentSelectedAccountTypeIndex] == "2")
@@ -455,7 +412,7 @@ namespace myTNB.Registration
             bool isValid = isAccountValid && isAccountNameValid && isICNoValid && isMaidenNameValid;
 
             btnAddAccount.Enabled = isValid;
-            btnAddAccount.BackgroundColor = isValid ? myTNBColor.FreshGreen() : myTNBColor.SilverChalice();
+            btnAddAccount.BackgroundColor = isValid ? MyTNBColor.FreshGreen : MyTNBColor.SilverChalice;
         }
 
         internal void AddBackButton()
@@ -463,7 +420,7 @@ namespace myTNB.Registration
             UIImage backImg = UIImage.FromBundle("Back-White");
             UIBarButtonItem btnBack = new UIBarButtonItem(backImg, UIBarButtonItemStyle.Done, (sender, e) =>
             {
-                this.NavigationController.PopViewController(true);
+                this.NavigationController?.PopViewController(true);
             });
             this.NavigationItem.LeftBarButtonItem = btnBack;
         }
@@ -471,18 +428,16 @@ namespace myTNB.Registration
         internal void InitializedSubviews()
         {
             //Account No. 
-            viewAccountNo = new UIView((new CGRect(18, 16, View.Frame.Width - 36, 66)));
-            viewAccountNo.BackgroundColor = UIColor.Clear;
+            viewAccountNo = new UIView((new CGRect(18, 16, View.Frame.Width - 36, 66)))
+            {
+                BackgroundColor = UIColor.Clear
+            };
 
             lblAccountNoTitle = new UILabel
             {
                 Frame = new CGRect(0, 0, viewAccountNo.Frame.Width, 12),
-                AttributedText = new NSAttributedString(
-                                                    "ACCOUNT NO.",
-                    font: myTNBFont.MuseoSans11_300(),
-                                                    foregroundColor: myTNBColor.SilverChalice(),
-                                                    strokeWidth: 0
-                                                   ),
+                AttributedText = AttributedStringUtility.GetAttributedString("Common_AccountNo"
+                    , AttributedStringUtility.AttributedStringType.Title),
                 TextAlignment = UITextAlignment.Left
             };
             viewAccountNo.AddSubview(lblAccountNoTitle);
@@ -490,12 +445,8 @@ namespace myTNB.Registration
             lblAccountNoError = new UILabel
             {
                 Frame = new CGRect(0, 37, viewAccountNo.Frame.Width, 14),
-                AttributedText = new NSAttributedString(
-                                        "ErrInvalidAcct".Translate(),
-                                           font: myTNBFont.MuseoSans11_300(),
-                                        foregroundColor: myTNBColor.Tomato(),
-                                        strokeWidth: 0
-                                       ),
+                AttributedText = AttributedStringUtility.GetAttributedString("Invalid_AccountLength"
+                    , AttributedStringUtility.AttributedStringType.Error),
                 TextAlignment = UITextAlignment.Left
             };
             viewAccountNo.AddSubview(lblAccountNoError);
@@ -503,23 +454,23 @@ namespace myTNB.Registration
             txtFieldAccountNo = new UITextField
             {
                 Frame = new CGRect(0, 12, viewAccountNo.Frame.Width - 30, 24),
-                AttributedPlaceholder = new NSAttributedString(
-                                                     "Account No.",
-                                                       font: myTNBFont.MuseoSans18_300(),
-                                                        foregroundColor: myTNBColor.SilverChalice(),
-                                                       strokeWidth: 0
-                                                    ),
-                TextColor = myTNBColor.TunaGrey()
+                AttributedPlaceholder = AttributedStringUtility.GetAttributedString("Common_AccountNo"
+                    , AttributedStringUtility.AttributedStringType.Value),
+                TextColor = MyTNBColor.TunaGrey()
             };
             viewAccountNo.AddSubview(txtFieldAccountNo);
 
-            viewLineAccountNo = new UIView((new CGRect(0, 36, viewAccountNo.Frame.Width, 1)));
-            viewLineAccountNo.BackgroundColor = myTNBColor.PlatinumGrey();
+            viewLineAccountNo = new UIView((new CGRect(0, 36, viewAccountNo.Frame.Width, 1)))
+            {
+                BackgroundColor = MyTNBColor.PlatinumGrey
+            };
             viewAccountNo.AddSubview(viewLineAccountNo);
 
             UIView viewScanner = new UIView(new CGRect(viewAccountNo.Frame.Width - 30, 12, 24, 24));
-            UIImageView scanner = new UIImageView(new CGRect(0, 0, 24, 24));
-            scanner.Image = UIImage.FromBundle("Scan");
+            UIImageView scanner = new UIImageView(new CGRect(0, 0, 24, 24))
+            {
+                Image = UIImage.FromBundle("Scan")
+            };
 
             UITapGestureRecognizer tapScan = new UITapGestureRecognizer(() =>
             {
@@ -533,17 +484,15 @@ namespace myTNB.Registration
             viewAccountNo.AddSubview(viewScanner);
 
             UIView viewAccountInfo = new UIView(new CGRect((viewAccountNo.Frame.Width / 4)
-                                                           , 52
-                                                           , (viewAccountNo.Frame.Width / 4) * 3
-                                                           , 16));
+                , 52, (viewAccountNo.Frame.Width / 4) * 3, 16));
 
             UILabel lblAccountNoInfo = new UILabel
             {
                 Frame = new CGRect(0, 0, (viewAccountNo.Frame.Width / 4) * 3, 16),
                 AttributedText = new NSAttributedString(
-                    "Where is my account no.?",
-                    font: myTNBFont.MuseoSans14_500(),
-                    foregroundColor: myTNBColor.PowerBlue(),
+                    "Registration_WhereIsMyAccountNumber".Translate(),
+                    font: MyTNBFont.MuseoSans14_500,
+                    foregroundColor: MyTNBColor.PowerBlue,
                     strokeWidth: 0
                 ),
                 TextAlignment = UITextAlignment.Right
@@ -553,40 +502,50 @@ namespace myTNB.Registration
             {
                 if (viewInfoContainer == null)
                 {
-                    viewInfoContainer = new UIView(UIScreen.MainScreen.Bounds);
-                    viewInfoContainer.BackgroundColor = new UIColor(0, .75F);
-                    viewInfoContainer.Hidden = true;
+                    viewInfoContainer = new UIView(UIScreen.MainScreen.Bounds)
+                    {
+                        BackgroundColor = new UIColor(0, .75F),
+                        Hidden = true
+                    };
 
-                    UIView viewInfo = new UIView(new CGRect(18
-                                                            , (viewInfoContainer.Frame.Height / 2) - 147
-                                                            , viewInfoContainer.Frame.Width - 36
-                                                            , 294));
-                    viewInfo.BackgroundColor = UIColor.White;
-                    viewInfo.Alpha = 1F;
+                    UIView viewInfo = new UIView(new CGRect(18, (viewInfoContainer.Frame.Height / 2) - 147
+                        , viewInfoContainer.Frame.Width - 36, 294))
+                    {
+                        BackgroundColor = UIColor.White,
+                        Alpha = 1F
+                    };
                     viewInfo.Layer.CornerRadius = 4;
 
-                    UIImageView imgInfo = new UIImageView(new CGRect(0, 0, viewInfo.Frame.Width, 120));
-                    imgInfo.Image = UIImage.FromBundle("Find_Account_Number");
+                    UIImageView imgInfo = new UIImageView(new CGRect(0, 0, viewInfo.Frame.Width, 120))
+                    {
+                        Image = UIImage.FromBundle("Find_Account_Number")
+                    };
 
-                    UILabel lblTitle = new UILabel(new CGRect(16, 137, viewInfo.Frame.Width - 32, 20));
-                    lblTitle.TextAlignment = UITextAlignment.Left;
-                    lblTitle.TextColor = myTNBColor.TunaGrey();
-                    lblTitle.Font = myTNBFont.MuseoSans14_500();
-                    lblTitle.Text = "Where’s my account no.?";
+                    UILabel lblTitle = new UILabel(new CGRect(16, 137, viewInfo.Frame.Width - 32, 20))
+                    {
+                        TextAlignment = UITextAlignment.Left,
+                        TextColor = MyTNBColor.TunaGrey(),
+                        Font = MyTNBFont.MuseoSans14_500,
+                        Text = "Registration_WhereIsMyAccountNumber".Translate()
+                    };
 
-                    UILabel lblDetails = new UILabel(new CGRect(16, 162, viewInfo.Frame.Width - 32, 54));
-                    lblDetails.TextAlignment = UITextAlignment.Left;
-                    lblDetails.TextColor = myTNBColor.TunaGrey();
-                    lblDetails.Font = myTNBFont.MuseoSans14_500();
-                    lblDetails.Lines = 0;
-                    lblDetails.LineBreakMode = UILineBreakMode.WordWrap;
-                    lblDetails.Text = "Your 12-digit account no. can be found on the top left corner of your monthly paper bill.";
+                    UILabel lblDetails = new UILabel(new CGRect(16, 162, viewInfo.Frame.Width - 32, 54))
+                    {
+                        TextAlignment = UITextAlignment.Left,
+                        TextColor = MyTNBColor.TunaGrey(),
+                        Font = MyTNBFont.MuseoSans14_500,
+                        Lines = 0,
+                        LineBreakMode = UILineBreakMode.WordWrap,
+                        Text = "Registration_AccountNumberLocation".Translate()
+                    };
 
-                    UIButton btnDismiss = new UIButton(UIButtonType.Custom);
-                    btnDismiss.Frame = new CGRect(0, viewInfo.Frame.Height - 30, viewInfo.Frame.Width, 20);
-                    btnDismiss.SetTitle("Got It!", UIControlState.Normal);
-                    btnDismiss.SetTitleColor(myTNBColor.PowerBlue(), UIControlState.Normal);
-                    btnDismiss.Font = myTNBFont.MuseoSans16_500();
+                    UIButton btnDismiss = new UIButton(UIButtonType.Custom)
+                    {
+                        Frame = new CGRect(0, viewInfo.Frame.Height - 30, viewInfo.Frame.Width, 20)
+                    };
+                    btnDismiss.SetTitle("Registration_GotIt".Translate(), UIControlState.Normal);
+                    btnDismiss.SetTitleColor(MyTNBColor.PowerBlue, UIControlState.Normal);
+                    btnDismiss.Font = MyTNBFont.MuseoSans16_500;
                     btnDismiss.TouchUpInside += (sender, e) =>
                     {
                         viewInfoContainer.Hidden = true;
@@ -604,18 +563,16 @@ namespace myTNB.Registration
             viewAccountNo.AddSubview(viewAccountInfo);
 
             //Nickname
-            viewNickname = new UIView((new CGRect(18, 83, View.Frame.Width - 36, 51)));
-            viewNickname.BackgroundColor = UIColor.Clear;
+            viewNickname = new UIView((new CGRect(18, 83, View.Frame.Width - 36, 51)))
+            {
+                BackgroundColor = UIColor.Clear
+            };
 
             lblNicknameTitle = new UILabel
             {
                 Frame = new CGRect(0, 0, viewNickname.Frame.Width, 12),
-                AttributedText = new NSAttributedString(
-                                                    "ACCOUNT NICKNAME",
-                                                       font: myTNBFont.MuseoSans11_300(),
-                                                    foregroundColor: myTNBColor.SilverChalice(),
-                                                    strokeWidth: 0
-                                                   ),
+                AttributedText = AttributedStringUtility.GetAttributedString("Common_AccountNickname"
+                    , AttributedStringUtility.AttributedStringType.Title),
                 TextAlignment = UITextAlignment.Left
             };
             viewNickname.AddSubview(lblNicknameTitle);
@@ -623,12 +580,8 @@ namespace myTNB.Registration
             lblNicknameError = new UILabel
             {
                 Frame = new CGRect(0, 37, viewNickname.Frame.Width, 14),
-                AttributedText = new NSAttributedString(
-                                        "AddAcctNicknameInvalidError".Translate(),
-                                           font: myTNBFont.MuseoSans11_300(),
-                                        foregroundColor: myTNBColor.Tomato(),
-                                        strokeWidth: 0
-                                       ),
+                AttributedText = AttributedStringUtility.GetAttributedString("Invalid_Characters"
+                    , AttributedStringUtility.AttributedStringType.Error),
                 TextAlignment = UITextAlignment.Left
             };
             viewNickname.AddSubview(lblNicknameError);
@@ -636,12 +589,8 @@ namespace myTNB.Registration
             lblNicknameHint = new UILabel
             {
                 Frame = new CGRect(0, 37, viewNickname.Frame.Width, 14),
-                AttributedText = new NSAttributedString(
-                    "AddAcctComNickNameHint".Translate(),
-                                           font: myTNBFont.MuseoSans11_300(),
-                                            foregroundColor: myTNBColor.TunaGrey(),
-                                        strokeWidth: 0
-                                       ),
+                AttributedText = AttributedStringUtility.GetAttributedString("Hint_Nickname"
+                    , AttributedStringUtility.AttributedStringType.Hint),
                 TextAlignment = UITextAlignment.Left
             };
             viewNickname.AddSubview(lblNicknameHint);
@@ -649,33 +598,29 @@ namespace myTNB.Registration
             txtFieldNickname = new UITextField
             {
                 Frame = new CGRect(0, 12, viewNickname.Frame.Width, 24),
-                AttributedPlaceholder = new NSAttributedString(
-                                                     "Account Nickname",
-                                                       font: myTNBFont.MuseoSans18_300(),
-                                                        foregroundColor: myTNBColor.SilverChalice(),
-                                                       strokeWidth: 0
-                                                    ),
-                TextColor = myTNBColor.TunaGrey()
+                AttributedPlaceholder = AttributedStringUtility.GetAttributedString("Common_AccountNickname"
+                    , AttributedStringUtility.AttributedStringType.Value),
+                TextColor = MyTNBColor.TunaGrey()
             };
             viewNickname.AddSubview(txtFieldNickname);
 
-            viewLineNickname = new UIView((new CGRect(0, 36, viewNickname.Frame.Width, 1)));
-            viewLineNickname.BackgroundColor = myTNBColor.PlatinumGrey();
+            viewLineNickname = new UIView((new CGRect(0, 36, viewNickname.Frame.Width, 1)))
+            {
+                BackgroundColor = MyTNBColor.PlatinumGrey
+            };
             viewNickname.AddSubview(viewLineNickname);
 
             //AccountType
-            viewAccountType = new UIView((new CGRect(18, 150, View.Frame.Width - 36, 51)));
-            viewAccountType.BackgroundColor = UIColor.Clear;
+            viewAccountType = new UIView((new CGRect(18, 150, View.Frame.Width - 36, 51)))
+            {
+                BackgroundColor = UIColor.Clear
+            };
 
             lblAccountTypeTitle = new UILabel
             {
                 Frame = new CGRect(0, 0, viewAccountType.Frame.Width, 12),
-                AttributedText = new NSAttributedString(
-                                                    "ACCOUNT TYPE",
-                                                       font: myTNBFont.MuseoSans11_300(),
-                                                    foregroundColor: myTNBColor.SilverChalice(),
-                                                    strokeWidth: 0
-                                                   ),
+                AttributedText = AttributedStringUtility.GetAttributedString("Common_AccountType"
+                    , AttributedStringUtility.AttributedStringType.Title),
                 TextAlignment = UITextAlignment.Left
             };
             viewAccountType.AddSubview(lblAccountTypeTitle);
@@ -683,76 +628,91 @@ namespace myTNB.Registration
             lblAccountTypeError = new UILabel
             {
                 Frame = new CGRect(0, 37, viewAccountType.Frame.Width, 14),
-                AttributedText = new NSAttributedString(
-                                            "Invalid Account Type",
-                                               font: myTNBFont.MuseoSans11_300(),
-                                            foregroundColor: myTNBColor.Tomato(),
-                                            strokeWidth: 0
-                                           ),
+                AttributedText = AttributedStringUtility.GetAttributedString("Invalid_AccountType"
+                    , AttributedStringUtility.AttributedStringType.Error),
                 TextAlignment = UITextAlignment.Left
             };
             viewAccountType.AddSubview(lblAccountTypeError);
 
 
-            lblAccountType = new UILabel(new CGRect(0, 12, viewAccountType.Frame.Width, 24));
-            lblAccountType.Text = _accountTypeTitleList[DataManager.DataManager.SharedInstance.CurrentSelectedAccountTypeIndex];
-            lblAccountType.Font = myTNBFont.MuseoSans18_300();
-            lblAccountType.TextColor = myTNBColor.TunaGrey();
+            lblAccountType = new UILabel(new CGRect(0, 12, viewAccountType.Frame.Width, 24))
+            {
+                Text = _accountTypeTitleList[DataManager.DataManager.SharedInstance.CurrentSelectedAccountTypeIndex],
+                Font = MyTNBFont.MuseoSans18_300,
+                TextColor = MyTNBColor.TunaGrey()
+            };
 
             viewAccountType.AddSubview(lblAccountType);
 
-            UIImageView imgDropDown = new UIImageView(new CGRect(viewAccountType.Frame.Width - 30, 12, 24, 24));
-            imgDropDown.Image = UIImage.FromBundle("IC-Action-Dropdown");
+            UIImageView imgDropDown = new UIImageView(new CGRect(viewAccountType.Frame.Width - 30, 12, 24, 24))
+            {
+                Image = UIImage.FromBundle("IC-Action-Dropdown")
+            };
             viewAccountType.AddSubview(imgDropDown);
 
-            viewLineAccountType = new UIView((new CGRect(0, 36, viewAccountType.Frame.Width, 1)));
-            viewLineAccountType.BackgroundColor = myTNBColor.PlatinumGrey();
+            viewLineAccountType = new UIView((new CGRect(0, 36, viewAccountType.Frame.Width, 1)))
+            {
+                BackgroundColor = MyTNBColor.PlatinumGrey
+            };
             viewAccountType.AddSubview(viewLineAccountType);
 
             UITapGestureRecognizer tapAccounType = new UITapGestureRecognizer(() =>
             {
-                UIStoryboard storyBoard = UIStoryboard.FromName("Registration", null);
-                SelectAccountTypeViewController viewController =
-                    storyBoard.InstantiateViewController("SelectAccountTypeViewController") as SelectAccountTypeViewController;
-                this.NavigationController.PushViewController(viewController, true);
+                UIStoryboard storyBoard = UIStoryboard.FromName("GenericSelector", null);
+                GenericSelectorViewController viewController = (GenericSelectorViewController)storyBoard
+                    .InstantiateViewController("GenericSelectorViewController");
+                viewController.Title = "Registration_SelectAccountType".Translate();
+                viewController.Items = new List<string>()
+                {
+                    "Registration_Residential".Translate()
+                    , "Registration_Commercial".Translate()
+                };
+                viewController.OnSelect = OnSelectAction;
+                viewController.SelectedIndex = DataManager.DataManager.SharedInstance.CurrentSelectedAccountTypeIndex;
+                var navController = new UINavigationController(viewController);
+                PresentViewController(navController, true, null);
             });
             viewAccountType.AddGestureRecognizer(tapAccounType);
 
             //IC No.
-            viewICNo = new UIView((new CGRect(18, 217, View.Frame.Width - 36, 51)));
-            viewICNo.BackgroundColor = UIColor.Clear;
+            viewICNo = new UIView((new CGRect(18, 217, View.Frame.Width - 36, 51)))
+            {
+                BackgroundColor = UIColor.Clear
+            };
 
-            lblICNoTitle = new UILabel(new CGRect(0, 0, viewICNo.Frame.Width, 12));
-            lblICNoTitle.Font = myTNBFont.MuseoSans11_300();
-            lblICNoTitle.TextColor = myTNBColor.SilverChalice();
-            lblICNoTitle.Text = "OWNER'S IC NO.";
-            lblICNoTitle.TextAlignment = UITextAlignment.Left;
+            lblICNoTitle = new UILabel(new CGRect(0, 0, viewICNo.Frame.Width, 12))
+            {
+                Font = MyTNBFont.MuseoSans11_300,
+                TextColor = MyTNBColor.SilverChalice,
+                Text = "Common_ICNumber".Translate().ToUpper(),
+                TextAlignment = UITextAlignment.Left
+            };
 
             viewICNo.AddSubview(lblICNoTitle);
 
-            lblICNoError = new UILabel(new CGRect(0, 37, viewICNo.Frame.Width, 14));
-            lblICNoError.Font = myTNBFont.MuseoSans11_300();
-            lblICNoError.TextColor = myTNBColor.Tomato();
-            lblICNoError.Text = "Invalid IC No.";
-            lblICNoError.TextAlignment = UITextAlignment.Left;
+            lblICNoError = new UILabel(new CGRect(0, 37, viewICNo.Frame.Width, 14))
+            {
+                Font = MyTNBFont.MuseoSans11_300,
+                TextColor = MyTNBColor.Tomato,
+                Text = "Invalid_ICNo".Translate(),
+                TextAlignment = UITextAlignment.Left
+            };
 
             viewICNo.AddSubview(lblICNoError);
 
             txtFieldICNo = new UITextField
             {
                 Frame = new CGRect(0, 12, viewICNo.Frame.Width, 24),
-                AttributedPlaceholder = new NSAttributedString(
-                                                     "Owner's IC No.",
-                                                       font: myTNBFont.MuseoSans18_300(),
-                                                        foregroundColor: myTNBColor.SilverChalice(),
-                                                       strokeWidth: 0
-                                                    ),
-                TextColor = myTNBColor.TunaGrey()
+                AttributedPlaceholder = AttributedStringUtility.GetAttributedString("Common_ICNumber"
+                    , AttributedStringUtility.AttributedStringType.Value),
+                TextColor = MyTNBColor.TunaGrey()
             };
             viewICNo.AddSubview(txtFieldICNo);
 
-            viewLineICNo = new UIView((new CGRect(0, 36, viewICNo.Frame.Width, 1)));
-            viewLineICNo.BackgroundColor = myTNBColor.PlatinumGrey();
+            viewLineICNo = new UIView((new CGRect(0, 36, viewICNo.Frame.Width, 1)))
+            {
+                BackgroundColor = MyTNBColor.PlatinumGrey
+            };
             viewICNo.AddSubview(viewLineICNo);
 
             /*
@@ -763,12 +723,10 @@ namespace myTNB.Registration
             lblMaidenNameTitle = new UILabel
             {
                 Frame = new CGRect(0, 0, viewMaidenName.Frame.Width, 12),
-                AttributedText = new NSAttributedString(
-                    "OWNER'S MOTHER'S NAME",
-                                                       font: myTNBFont.MuseoSans9(),
-                                                    foregroundColor: myTNBColor.SilverChalice(),
-                                                    strokeWidth: 0
-                                                   ),
+                AttributedText = new NSAttributedString("OWNER'S MOTHER'S NAME"
+                    , font: myTNBFont.MuseoSans9
+                    , foregroundColor: myTNBColor.SilverChalice
+                    , strokeWidth: 0),
                 TextAlignment = UITextAlignment.Left
             };
             viewMaidenName.AddSubview(lblMaidenNameTitle);
@@ -776,12 +734,10 @@ namespace myTNB.Registration
             lblMaidenNameError = new UILabel
             {
                 Frame = new CGRect(0, 37, viewMaidenName.Frame.Width, 14),
-                AttributedText = new NSAttributedString(
-                                        "Invalid owner's mother's name",
-                                           font: myTNBFont.MuseoSans9(),
-                                        foregroundColor: myTNBColor.Tomato(),
-                                        strokeWidth: 0
-                                       ),
+                AttributedText = new NSAttributedString("Invalid owner's mother's name"
+                    , font: myTNBFont.MuseoSans9
+                    , foregroundColor: myTNBColor.Tomato
+                    , strokeWidth: 0),
                 TextAlignment = UITextAlignment.Left
             };
             viewMaidenName.AddSubview(lblMaidenNameError);
@@ -789,25 +745,26 @@ namespace myTNB.Registration
             txtFieldMaidenName = new UITextField
             {
                 Frame = new CGRect(0, 12, viewMaidenName.Frame.Width, 24),
-                AttributedPlaceholder = new NSAttributedString(
-                    "Owner’s mother’s name",
-                                                       font: myTNBFont.MuseoSans16(),
-                                                        foregroundColor: myTNBColor.SilverChalice(),
-                                                       strokeWidth: 0
-                                                    ),
+                AttributedPlaceholder = new NSAttributedString("Owner’s mother’s name"
+                    , font: myTNBFont.MuseoSans16
+                    , foregroundColor: myTNBColor.SilverChalice
+                    , strokeWidth: 0),
                 TextColor = myTNBColor.TunaGrey()
             };
             viewMaidenName.AddSubview(txtFieldMaidenName);
 
             viewLineMaidenName = new UIView((new CGRect(0, 36, viewMaidenName.Frame.Width, 1)));
-            viewLineMaidenName.BackgroundColor = myTNBColor.PlatinumGrey();
+            viewLineMaidenName.BackgroundColor = myTNBColor.PlatinumGrey;
             viewMaidenName.AddSubview(viewLineMaidenName);
             */
-            btnAddAccount = new UIButton(UIButtonType.Custom);
-            btnAddAccount.Frame = new CGRect(18, View.Frame.Height - (DeviceHelper.IsIphoneXUpResolution() ? 159 : 135), View.Frame.Width - 36, DeviceHelper.GetScaledHeight(48));
-            btnAddAccount.SetTitle("Add Account", UIControlState.Normal);
+            btnAddAccount = new UIButton(UIButtonType.Custom)
+            {
+                Frame = new CGRect(18, View.Frame.Height - (DeviceHelper.IsIphoneXUpResolution() ? 159 : 135)
+                , View.Frame.Width - 36, DeviceHelper.GetScaledHeight(48))
+            };
+            btnAddAccount.SetTitle("Common_AddAccount".Translate(), UIControlState.Normal);
             btnAddAccount.SetTitleColor(UIColor.White, UIControlState.Normal);
-            btnAddAccount.BackgroundColor = myTNBColor.FreshGreen();
+            btnAddAccount.BackgroundColor = MyTNBColor.FreshGreen;
             btnAddAccount.Layer.CornerRadius = 4.0f;
 
             View.AddSubview(viewAccountNo);
@@ -823,6 +780,11 @@ namespace myTNB.Registration
             txtFieldAccountNo.KeyboardType = UIKeyboardType.NumberPad;
             //SetKeyboard(txtFieldMaidenName);
             _textFieldHelper.CreateDoneButton(txtFieldAccountNo);
+        }
+
+        void OnSelectAction(int index)
+        {
+            DataManager.DataManager.SharedInstance.CurrentSelectedAccountTypeIndex = index;
         }
 
         internal void SetKeyboard(UITextField textField)

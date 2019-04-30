@@ -1,6 +1,6 @@
-using Foundation;
 using myTNB.Model;
 using System;
+using System.Diagnostics;
 using System.Globalization;
 using UIKit;
 
@@ -8,7 +8,7 @@ namespace myTNB
 {
     public partial class DashboardAccountCell : UITableViewCell
     {
-        public DashboardAccountCell (IntPtr handle) : base (handle)
+        public DashboardAccountCell(IntPtr handle) : base(handle)
         {
         }
 
@@ -25,16 +25,16 @@ namespace myTNB
             lblAccountSubTitle.Text = model.accNum;
 
             var amount = !model.IsReAccount ? model.amountDue : ChartHelper.UpdateValueForRE(model.amountDue);
-            lblAmountTitle.AttributedText = TextHelper.CreateValuePairString(amount.ToString("N2", CultureInfo.InvariantCulture), TNBGlobal.UNIT_CURRENCY + " ", true,
-                                                                             myTNBFont.MuseoSans14_500(), UIColor.White,
-                                                                             myTNBFont.MuseoSans14_500(), UIColor.White);
+            lblAmountTitle.AttributedText = TextHelper.CreateValuePairString(amount.ToString("N2", CultureInfo.InvariantCulture)
+                , TNBGlobal.UNIT_CURRENCY + " ", true, MyTNBFont.MuseoSans14_500
+                , UIColor.White, MyTNBFont.MuseoSans14_500, UIColor.White);
 
             string formattedDate = string.Empty;
 
             var dateString = amount > 0 ? model.billDueDate : string.Empty;
             if (string.IsNullOrEmpty(dateString) || dateString.ToUpper().Equals("N/A"))
             {
-                formattedDate = "--";
+                formattedDate = TNBGlobal.EMPTY_DATE;
             }
             else
             {
@@ -49,32 +49,29 @@ namespace myTNB
                     }
                     catch (FormatException)
                     {
-                        Console.WriteLine("Unable to parse '{0}'", dateString);
+                        Debug.WriteLine("Unable to parse '{0}'", dateString);
                     }
                 }
                 formattedDate = DateHelper.GetFormattedDate(dateString, "dd MMM");
             }
-
             lblAmountSubTitle.Text = formattedDate;
         }
 
         private void UpdateStyle()
         {
-            lblAccountTitle.Font = myTNBFont.MuseoSans14_500();
+            lblAccountTitle.Font = MyTNBFont.MuseoSans14_500;
             lblAccountTitle.TextColor = UIColor.White;
 
-            lblAccountSubTitle.Font = myTNBFont.MuseoSans12_300();
+            lblAccountSubTitle.Font = MyTNBFont.MuseoSans12_300;
             lblAccountSubTitle.TextColor = new UIColor(red: 1.0f, green: 1.0f, blue: 1.0f, alpha: 0.7f);
 
-            lblAmountTitle.Font = myTNBFont.MuseoSans14_500();
+            lblAmountTitle.Font = MyTNBFont.MuseoSans14_500;
             lblAmountTitle.TextColor = UIColor.White;
 
-            lblAmountSubTitle.Font = myTNBFont.MuseoSans12_300();
+            lblAmountSubTitle.Font = MyTNBFont.MuseoSans12_300;
             lblAmountSubTitle.TextColor = new UIColor(red: 1.0f, green: 1.0f, blue: 1.0f, alpha: 0.7f);
 
             //viewLine.BackgroundColor = UIColor.FromWhiteAlpha(1, 0.3f);
         }
-
-
     }
 }

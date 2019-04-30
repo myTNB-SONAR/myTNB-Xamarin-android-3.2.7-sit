@@ -72,7 +72,7 @@ namespace myTNB.PushNotification
             }
             catch (Exception e)
             {
-                Console.WriteLine("Error in date parsing: " + e.Message);
+                Debug.WriteLine("Error in date parsing: " + e.Message);
             }
             return string.Empty;
         }
@@ -115,7 +115,6 @@ namespace myTNB.PushNotification
             {
                 return string.Empty;
             }
-
         }
 
         public override void CommitEditingStyle(UITableView tableView, UITableViewCellEditingStyle editingStyle, Foundation.NSIndexPath indexPath)

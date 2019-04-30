@@ -3,12 +3,9 @@ using UIKit;
 using myTNB.Dashboard.DashboardComponents;
 using CoreGraphics;
 using System.Threading.Tasks;
-using myTNB.Model;
 using myTNB.Home.More.MyAccount;
 using myTNB.DataManager;
 using myTNB.Registration.CustomerAccounts;
-using myTNB.Extensions;
-using myTNB.SQLite.SQLiteDataManager;
 
 namespace myTNB
 {
@@ -44,19 +41,19 @@ namespace myTNB
             InitializeNotificationMessage();
             if (DataManager.DataManager.SharedInstance.IsMobileNumberUpdated)
             {
-                _lblNotificationDetails.Text = "Your mobile number has been updated successfully.";
+                _lblNotificationDetails.Text = "MyAccount_UpdatedMobileNumber".Translate();
                 ShowNotificationMessage();
                 DataManager.DataManager.SharedInstance.IsMobileNumberUpdated = false;
             }
             if (DataManager.DataManager.SharedInstance.IsAccountDeleted)
             {
-                _lblNotificationDetails.Text = "Your electricity supply account has been removed from myTNB account.";
+                _lblNotificationDetails.Text = "MyAccount_UpdatedTNBAccount".Translate();
                 ShowNotificationMessage();
                 DataManager.DataManager.SharedInstance.IsAccountDeleted = false;
             }
             if (DataManager.DataManager.SharedInstance.IsPasswordUpdated)
             {
-                _lblNotificationDetails.Text = "Your password has been updated successfully.";
+                _lblNotificationDetails.Text = "MyAccount_UpdatedPassword".Translate();
                 ShowNotificationMessage();
                 DataManager.DataManager.SharedInstance.IsPasswordUpdated = false;
             }
@@ -68,16 +65,17 @@ namespace myTNB
             UIButton btnLogout = new UIButton(UIButtonType.Custom);
             btnLogout.Frame = new CGRect(18, 16, View.Frame.Width - 36, 48);
             btnLogout.Layer.CornerRadius = 4;
-            btnLogout.Layer.BorderColor = myTNBColor.FreshGreen().CGColor;
-            btnLogout.BackgroundColor = myTNBColor.FreshGreen();
+            btnLogout.Layer.BorderColor = MyTNBColor.FreshGreen.CGColor;
+            btnLogout.BackgroundColor = MyTNBColor.FreshGreen;
             btnLogout.Layer.BorderWidth = 1;
-            btnLogout.SetTitle("Logout".Translate(), UIControlState.Normal);
-            btnLogout.Font = myTNBFont.MuseoSans16();
+            btnLogout.SetTitle("MyAccount_Logout".Translate(), UIControlState.Normal);
+            btnLogout.Font = MyTNBFont.MuseoSans16;
             btnLogout.SetTitleColor(UIColor.White, UIControlState.Normal);
             btnLogout.TouchUpInside += (sender, e) =>
             {
-                var alert = UIAlertController.Create("Logout".Translate(), "LogoutConfirmation".Translate(), UIAlertControllerStyle.Alert);
-                alert.AddAction(UIAlertAction.Create("Ok", UIAlertActionStyle.Default, (obj) =>
+                var alert = UIAlertController.Create("MyAccount_Logout".Translate()
+                    , "MyAccount_LogoutConfirmation".Translate(), UIAlertControllerStyle.Alert);
+                alert.AddAction(UIAlertAction.Create("Common_Ok".Translate(), UIAlertActionStyle.Default, (obj) =>
                 {
                     UIStoryboard storyBoard = UIStoryboard.FromName("Logout", null);
                     LogoutViewController viewController =
@@ -85,24 +83,24 @@ namespace myTNB
                     var navController = new UINavigationController(viewController);
                     PresentViewController(navController, true, null);
                 }));
-                alert.AddAction(UIAlertAction.Create("Cancel", UIAlertActionStyle.Cancel, null));
+                alert.AddAction(UIAlertAction.Create("Common_Cancel".Translate(), UIAlertActionStyle.Cancel, null));
                 PresentViewController(alert, animated: true, completionHandler: null);
             };
 
             UIView viewLogout = new UIView();
-            viewLogout.BackgroundColor = myTNBColor.SectionGrey();
+            viewLogout.BackgroundColor = MyTNBColor.SectionGrey;
             viewLogout.AddSubview(btnLogout);
 
             UIView viewFooter = new UIView();
             UIButton btnAddAccount = new UIButton(UIButtonType.Custom);
             btnAddAccount.Frame = new CGRect(18, 16, myAccountTableView.Frame.Width - 36, 48);
             btnAddAccount.Layer.CornerRadius = 4;
-            btnAddAccount.Layer.BorderColor = myTNBColor.FreshGreen().CGColor;
+            btnAddAccount.Layer.BorderColor = MyTNBColor.FreshGreen.CGColor;
             btnAddAccount.BackgroundColor = UIColor.White;
             btnAddAccount.Layer.BorderWidth = 1;
-            btnAddAccount.SetTitle("AddAnotherAccount".Translate(), UIControlState.Normal);
-            btnAddAccount.Font = myTNBFont.MuseoSans16();
-            btnAddAccount.SetTitleColor(myTNBColor.FreshGreen(), UIControlState.Normal);
+            btnAddAccount.SetTitle("Common_AddAnotherAccount".Translate(), UIControlState.Normal);
+            btnAddAccount.Font = MyTNBFont.MuseoSans16;
+            btnAddAccount.SetTitleColor(MyTNBColor.FreshGreen, UIControlState.Normal);
             btnAddAccount.TouchUpInside += (sender, e) =>
             {
                 ActivityIndicator.Show();
@@ -121,7 +119,7 @@ namespace myTNB
                         }
                         else
                         {
-                            DisplayAlertMessage("ErrNoNetworkTitle".Translate(), "ErrNoNetworkMsg".Translate());
+                            AlertHandler.DisplayNoDataAlert(this);
                         }
                         ActivityIndicator.Hide();
                     });
@@ -138,21 +136,21 @@ namespace myTNB
                 viewFooter = new UIView(new CGRect(0, 0, myAccountTableView.Frame.Width, 150));
                 viewFooter.Frame = new CGRect(0, 0, myAccountTableView.Frame.Width, 230);
                 UILabel lblTitle = new UILabel(new CGRect(93, 16, myAccountTableView.Frame.Width - 186, 16));
-                lblTitle.TextColor = myTNBColor.TunaGrey();
-                lblTitle.Font = myTNBFont.MuseoSans12_500();
-                lblTitle.Text = "No Electricity Account";
+                lblTitle.TextColor = MyTNBColor.TunaGrey();
+                lblTitle.Font = MyTNBFont.MuseoSans12_500;
+                lblTitle.Text = "Common_NoAccount".Translate();
                 lblTitle.TextAlignment = UITextAlignment.Center;
 
                 UILabel lblDetails = new UILabel(new CGRect(0, 32, myAccountTableView.Frame.Width, 36));
-                lblDetails.TextColor = myTNBColor.TunaGrey();
-                lblDetails.Font = myTNBFont.MuseoSans9_300();
-                lblDetails.Text = "Add your existing TNB Electricity Supply Account\r\nto view usage and transaction details.";
+                lblDetails.TextColor = MyTNBColor.TunaGrey();
+                lblDetails.Font = MyTNBFont.MuseoSans9_300;
+                lblDetails.Text = "MyAccount_AddAccountDetails".Translate();
                 lblDetails.Lines = 0;
                 lblDetails.LineBreakMode = UILineBreakMode.WordWrap;
                 lblDetails.TextAlignment = UITextAlignment.Center;
 
                 btnAddAccount.Frame = new CGRect(90, 76, myAccountTableView.Frame.Width - 180, 48);
-                btnAddAccount.SetTitle("AddAcct".Translate(), UIControlState.Normal);
+                btnAddAccount.SetTitle("Common_AddAccount".Translate(), UIControlState.Normal);
                 viewLogout.Frame = new CGRect(0, 140, View.Frame.Width, 88);
                 viewFooter.AddSubviews(new UIView[] { lblTitle, lblDetails, btnAddAccount, viewLogout });
             }
@@ -166,7 +164,7 @@ namespace myTNB
             UIView headerView = gradientViewComponent.GetUI();
             TitleBarComponent titleBarComponent = new TitleBarComponent(headerView);
             UIView titleBarView = titleBarComponent.GetUI();
-            titleBarComponent.SetTitle("My Account");
+            titleBarComponent.SetTitle("MyAccount_Title".Translate());
             titleBarComponent.SetNotificationVisibility(true);
             titleBarComponent.SetBackVisibility(false);
             titleBarComponent.SetBackAction(new UITapGestureRecognizer(() =>
@@ -175,13 +173,6 @@ namespace myTNB
             }));
             headerView.AddSubview(titleBarView);
             View.AddSubview(headerView);
-        }
-
-        internal void DisplayAlertMessage(string title, string message)
-        {
-            var alert = UIAlertController.Create(title, message, UIAlertControllerStyle.Alert);
-            alert.AddAction(UIAlertAction.Create("Ok", UIAlertActionStyle.Cancel, null));
-            PresentViewController(alert, animated: true, completionHandler: null);
         }
 
         internal void UpdateMobileNumber()
@@ -219,7 +210,7 @@ namespace myTNB
                     }
                     else
                     {
-                        DisplayAlertMessage("ErrNoNetworkTitle".Translate(), "ErrNoNetworkMsg".Translate());
+                        AlertHandler.DisplayNoDataAlert(this);
                     }
                     ActivityIndicator.Hide();
                 });
@@ -244,15 +235,15 @@ namespace myTNB
             if (_viewNotificationMsg == null)
             {
                 _viewNotificationMsg = new UIView(new CGRect(18, 32, View.Frame.Width - 36, 64));
-                _viewNotificationMsg.BackgroundColor = myTNBColor.SunGlow();
+                _viewNotificationMsg.BackgroundColor = MyTNBColor.SunGlow;
                 _viewNotificationMsg.Layer.CornerRadius = 2.0f;
                 _viewNotificationMsg.Hidden = true;
 
                 _lblNotificationDetails = new UILabel(new CGRect(16, 16, _viewNotificationMsg.Frame.Width - 32, 32));
                 _lblNotificationDetails.TextAlignment = UITextAlignment.Left;
-                _lblNotificationDetails.Font = myTNBFont.MuseoSans12();
-                _lblNotificationDetails.TextColor = myTNBColor.TunaGrey();
-                _lblNotificationDetails.Text = "- - -";
+                _lblNotificationDetails.Font = MyTNBFont.MuseoSans12;
+                _lblNotificationDetails.TextColor = MyTNBColor.TunaGrey();
+                _lblNotificationDetails.Text = TNBGlobal.EMPTY_ADDRESS;
                 _lblNotificationDetails.Lines = 0;
                 _lblNotificationDetails.LineBreakMode = UILineBreakMode.WordWrap;
 

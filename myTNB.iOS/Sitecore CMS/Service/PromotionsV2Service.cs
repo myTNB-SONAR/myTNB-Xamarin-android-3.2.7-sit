@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using myTNB.SitecoreCMS.Extensions;
@@ -51,7 +52,7 @@ namespace myTNB.SitecoreCMS.Service
                     ShowAtAppLaunch = item.GetCheckBoxValueFromField(Constants.Sitecore.Fields.PromotionsV2.ShowAtAppLaunch),
                     ID = item.Id,
                 };
-                System.Console.WriteLine("debug: insert success");
+                Debug.WriteLine("debug: insert success");
 
                 list.Add(listlItem);
             }
