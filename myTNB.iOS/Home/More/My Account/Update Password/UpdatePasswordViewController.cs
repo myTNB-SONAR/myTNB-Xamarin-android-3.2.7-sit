@@ -96,8 +96,7 @@ namespace myTNB
             };
             txtFieldPassword.SecureTextEntry = true;
 
-            viewLinePassword = new UIView((new CGRect(0, 36, viewPassword.Frame.Width, 1)));
-            viewLinePassword.BackgroundColor = MyTNBColor.PlatinumGrey;
+            viewLinePassword = GenericLine.GetLine(new CGRect(0, 36, viewPassword.Frame.Width, 1));
 
             viewShowPassword = new UIView(new CGRect(viewPassword.Frame.Width - 30, 12, 24, 24));
             viewShowPassword.Hidden = true;
@@ -139,13 +138,16 @@ namespace myTNB
             };
             txtFieldNewPassword.SecureTextEntry = true;
 
-            viewLineNewPassword = new UIView((new CGRect(0, 36, viewNewPassword.Frame.Width, 1)));
-            viewLineNewPassword.BackgroundColor = MyTNBColor.PlatinumGrey;
+            viewLineNewPassword = GenericLine.GetLine(new CGRect(0, 36, viewNewPassword.Frame.Width, 1));
 
-            viewShowNewPassword = new UIView(new CGRect(viewNewPassword.Frame.Width - 30, 12, 24, 24));
-            viewShowNewPassword.Hidden = true;
-            UIImageView imgShowNewPassword = new UIImageView(new CGRect(0, 0, 24, 24));
-            imgShowNewPassword.Image = UIImage.FromBundle("IC-Action-Show-Password");
+            viewShowNewPassword = new UIView(new CGRect(viewNewPassword.Frame.Width - 30, 12, 24, 24))
+            {
+                Hidden = true
+            };
+            UIImageView imgShowNewPassword = new UIImageView(new CGRect(0, 0, 24, 24))
+            {
+                Image = UIImage.FromBundle("IC-Action-Show-Password")
+            };
             viewShowNewPassword.AddSubview(imgShowNewPassword);
             viewShowNewPassword.AddGestureRecognizer(new UITapGestureRecognizer(() =>
             {
@@ -182,13 +184,16 @@ namespace myTNB
             };
             txtFieldConfirmNewPassword.SecureTextEntry = true;
 
-            viewLineConfirmNewPassword = new UIView((new CGRect(0, 36, viewConfirmPassword.Frame.Width, 1)));
-            viewLineConfirmNewPassword.BackgroundColor = MyTNBColor.PlatinumGrey;
+            viewLineConfirmNewPassword = GenericLine.GetLine(new CGRect(0, 36, viewConfirmPassword.Frame.Width, 1));
 
-            viewShowConfirmNewPassword = new UIView(new CGRect(viewConfirmPassword.Frame.Width - 30, 12, 24, 24));
-            viewShowConfirmNewPassword.Hidden = true;
-            UIImageView imgShowConfirmNewPassword = new UIImageView(new CGRect(0, 0, 24, 24));
-            imgShowConfirmNewPassword.Image = UIImage.FromBundle("IC-Action-Show-Password");
+            viewShowConfirmNewPassword = new UIView(new CGRect(viewConfirmPassword.Frame.Width - 30, 12, 24, 24))
+            {
+                Hidden = true
+            };
+            UIImageView imgShowConfirmNewPassword = new UIImageView(new CGRect(0, 0, 24, 24))
+            {
+                Image = UIImage.FromBundle("IC-Action-Show-Password")
+            };
             viewShowConfirmNewPassword.AddSubview(imgShowConfirmNewPassword);
             viewShowConfirmNewPassword.AddGestureRecognizer(new UITapGestureRecognizer(() =>
             {

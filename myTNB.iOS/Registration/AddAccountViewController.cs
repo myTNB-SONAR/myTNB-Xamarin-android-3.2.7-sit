@@ -460,10 +460,7 @@ namespace myTNB.Registration
             };
             viewAccountNo.AddSubview(txtFieldAccountNo);
 
-            viewLineAccountNo = new UIView((new CGRect(0, 36, viewAccountNo.Frame.Width, 1)))
-            {
-                BackgroundColor = MyTNBColor.PlatinumGrey
-            };
+            viewLineAccountNo = GenericLine.GetLine(new CGRect(0, 36, viewAccountNo.Frame.Width, 1));
             viewAccountNo.AddSubview(viewLineAccountNo);
 
             UIView viewScanner = new UIView(new CGRect(viewAccountNo.Frame.Width - 30, 12, 24, 24));
@@ -604,10 +601,7 @@ namespace myTNB.Registration
             };
             viewNickname.AddSubview(txtFieldNickname);
 
-            viewLineNickname = new UIView((new CGRect(0, 36, viewNickname.Frame.Width, 1)))
-            {
-                BackgroundColor = MyTNBColor.PlatinumGrey
-            };
+            viewLineNickname = GenericLine.GetLine(new CGRect(0, 36, viewNickname.Frame.Width, 1));
             viewNickname.AddSubview(viewLineNickname);
 
             //AccountType
@@ -650,10 +644,7 @@ namespace myTNB.Registration
             };
             viewAccountType.AddSubview(imgDropDown);
 
-            viewLineAccountType = new UIView((new CGRect(0, 36, viewAccountType.Frame.Width, 1)))
-            {
-                BackgroundColor = MyTNBColor.PlatinumGrey
-            };
+            viewLineAccountType = GenericLine.GetLine(new CGRect(0, 36, viewAccountType.Frame.Width, 1));
             viewAccountType.AddSubview(viewLineAccountType);
 
             UITapGestureRecognizer tapAccounType = new UITapGestureRecognizer(() =>
@@ -709,10 +700,7 @@ namespace myTNB.Registration
             };
             viewICNo.AddSubview(txtFieldICNo);
 
-            viewLineICNo = new UIView((new CGRect(0, 36, viewICNo.Frame.Width, 1)))
-            {
-                BackgroundColor = MyTNBColor.PlatinumGrey
-            };
+            viewLineICNo = GenericLine.GetLine(new CGRect(0, 36, viewICNo.Frame.Width, 1));
             viewICNo.AddSubview(viewLineICNo);
 
             /*

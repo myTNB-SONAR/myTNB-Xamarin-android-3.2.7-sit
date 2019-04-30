@@ -91,11 +91,7 @@ namespace myTNB.Registration
             lblNameTitle = GetTitleLabel("Common_Fullname");
             lblNameError = GetErrorLabel("Invalid_Fullname");
             txtFieldName = GetUITextField("Common_Fullname");
-
-            viewLineName = new UIView((new CGRect(0, 36, viewFullName.Frame.Width, 1)))
-            {
-                BackgroundColor = MyTNBColor.PlatinumGrey
-            };
+            viewLineName = GenericLine.GetLine(new CGRect(0, 36, viewFullName.Frame.Width, 1));
 
             viewFullName.AddSubviews(new UIView[] { lblNameTitle, lblNameError
                 , txtFieldName, viewLineName });
@@ -130,11 +126,7 @@ namespace myTNB.Registration
                     , AttributedStringUtility.AttributedStringType.Value),
                 TextColor = MyTNBColor.TunaGrey()
             };
-
-            viewLineICNo = new UIView((new CGRect(0, 36, viewICNumber.Frame.Width, 1)))
-            {
-                BackgroundColor = MyTNBColor.PlatinumGrey
-            };
+            viewLineICNo = GenericLine.GetLine(new CGRect(0, 36, viewICNumber.Frame.Width, 1));
             viewICNumber.AddSubviews(new UIView[] { lblICNoTitle, lblICNoError, txtFieldICNo, viewLineICNo });
 
             //Mobile Number
@@ -156,11 +148,7 @@ namespace myTNB.Registration
             };
 
             txtFieldMobileNo = GetUITextField("Common_MobileNumber");
-
-            viewLineMobileNo = new UIView((new CGRect(0, 36, viewMobileNumber.Frame.Width, 1)))
-            {
-                BackgroundColor = MyTNBColor.PlatinumGrey
-            };
+            viewLineMobileNo = GenericLine.GetLine(new CGRect(0, 36, viewMobileNumber.Frame.Width, 1));
             viewMobileNumber.AddSubviews(new UIView[] { lblMobileNoTitle, lblMobileNoError
                 , lblMobileNoHint, txtFieldMobileNo, viewLineMobileNo });
 
@@ -173,11 +161,7 @@ namespace myTNB.Registration
             lblEmailTitle = GetTitleLabel("Common_Email");
             lblEmailError = GetErrorLabel("Invalid_Email");
             txtFieldEmail = GetUITextField("Common_Email");
-
-            viewLineEmail = new UIView((new CGRect(0, 36, viewEmail.Frame.Width, 1)))
-            {
-                BackgroundColor = MyTNBColor.PlatinumGrey
-            };
+            viewLineEmail = GenericLine.GetLine(new CGRect(0, 36, viewEmail.Frame.Width, 1));
             viewEmail.AddSubviews(new UIView[] { lblEmailTitle, lblEmailError
                 , txtFieldEmail, viewLineEmail });
 
@@ -197,11 +181,7 @@ namespace myTNB.Registration
             };
 
             txtFieldConfirmEmail = GetUITextField("Common_ConfirmEmail");
-
-            viewLineConfirmEmail = new UIView((new CGRect(0, 36, viewConfirmEmail.Frame.Width, 1)))
-            {
-                BackgroundColor = MyTNBColor.PlatinumGrey
-            };
+            viewLineConfirmEmail = GenericLine.GetLine(new CGRect(0, 36, viewConfirmEmail.Frame.Width, 1));
             viewConfirmEmail.AddSubviews(new UIView[] { lblConfirmEmailTitle
                 , lblConfirmEmailError, txtFieldConfirmEmail, viewLineConfirmEmail });
 
@@ -247,11 +227,7 @@ namespace myTNB.Registration
                 imgShowPassword.Image = UIImage.FromBundle(txtFieldPassword.SecureTextEntry
                     ? "IC-Action-Hide-Password" : "IC-Action-Show-Password");
             }));
-
-            viewLinePassword = new UIView((new CGRect(0, 36, viewPassword.Frame.Width, 1)))
-            {
-                BackgroundColor = MyTNBColor.PlatinumGrey
-            };
+            viewLinePassword = GenericLine.GetLine(new CGRect(0, 36, viewPassword.Frame.Width, 1));
             viewPassword.AddSubviews(new UIView[] { lblPasswordTitle, lblPasswordError
                 , lblPasswordHint, txtFieldPassword, viewShowPassword, viewLinePassword });
 
@@ -294,11 +270,7 @@ namespace myTNB.Registration
                 imgShowConfirmPassword.Image = UIImage.FromBundle(txtFieldConfirmPassword.SecureTextEntry
                     ? "IC-Action-Hide-Password" : "IC-Action-Show-Password");
             }));
-
-            viewLineConfirmPassword = new UIView((new CGRect(0, 36, viewConfirmPassword.Frame.Width, 1)))
-            {
-                BackgroundColor = MyTNBColor.PlatinumGrey
-            };
+            viewLineConfirmPassword = GenericLine.GetLine(new CGRect(0, 36, viewConfirmPassword.Frame.Width, 1));
             viewConfirmPassword.AddSubview(viewLineConfirmPassword);
             viewConfirmPassword.AddSubviews(new UIView[] { lblConfirmPasswordTitle
                 , lblConfirmPasswordError, txtFieldConfirmPassword, viewShowConfirmPassword });

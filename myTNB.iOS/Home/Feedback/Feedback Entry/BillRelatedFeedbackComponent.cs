@@ -109,10 +109,7 @@ namespace myTNB.Home.Feedback.FeedbackEntry
             };
             _viewAccountNo.AddSubview(imgDropDown);
 
-            _viewLineAccountNo = new UIView((new CGRect(0, 36, _viewAccountNo.Frame.Width, 1)))
-            {
-                BackgroundColor = MyTNBColor.PlatinumGrey
-            };
+            _viewLineAccountNo = GenericLine.GetLine(new CGRect(0, 36, _viewAccountNo.Frame.Width, 1));
 
             _viewAccountNo.AddSubviews(new UIView[] { _lblAccountNoTitle, _lblAccountNoError
                 ,imgViewAccountNumber, _lblAccountNumber, _viewLineAccountNo });
@@ -183,11 +180,7 @@ namespace myTNB.Home.Feedback.FeedbackEntry
             _txtFieldAccountNo.KeyboardType = UIKeyboardType.NumberPad;
             _textFieldHelper.CreateDoneButton(_txtFieldAccountNo);
 
-            _viewLineAccountNo = new UIView((new CGRect(0, 36, _viewAccountNo.Frame.Width, 1)))
-            {
-                BackgroundColor = MyTNBColor.PlatinumGrey
-            };
-
+            _viewLineAccountNo = GenericLine.GetLine(new CGRect(0, 36, _viewAccountNo.Frame.Width, 1));
             _viewAccountNo.AddSubviews(new UIView[] { _lblAccountNoTitle, _lblAccountNoError
                 , _txtFieldAccountNo, _viewLineAccountNo });
 

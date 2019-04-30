@@ -141,8 +141,7 @@ namespace myTNB
             _textFieldHelper.CreateTextFieldLeftView(txtFieldMobileNo, "Mobile");
             viewMobileNumber.AddSubview(txtFieldMobileNo);
 
-            viewLineMobileNo = new UIView((new CGRect(0, 36, viewMobileNumber.Frame.Width, 1)));
-            viewLineMobileNo.BackgroundColor = MyTNBColor.PlatinumGrey;
+            viewLineMobileNo = GenericLine.GetLine(new CGRect(0, 36, viewMobileNumber.Frame.Width, 1));
             viewMobileNumber.AddSubview(viewLineMobileNo);
             View.AddSubview(viewMobileNumber);
             SetTextFieldEvents(txtFieldMobileNo, lblMobileNoTitle, lblMobileNoError, viewLineMobileNo, lblMobileNoHint, MOBILE_NO_PATTERN);
@@ -176,7 +175,7 @@ namespace myTNB
                         textField.Text += TNBGlobal.MobileNoPrefix;
                     }
                 }
-                lblHint.Hidden = lblError.Hidden ? textField.Text.Length == 0 : true;
+                lblHint.Hidden = !lblError.Hidden || textField.Text.Length == 0;
                 viewLine.BackgroundColor = MyTNBColor.PowerBlue;
             };
             textField.ShouldEndEditing = (sender) =>
