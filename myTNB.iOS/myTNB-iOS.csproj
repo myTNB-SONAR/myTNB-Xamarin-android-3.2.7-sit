@@ -854,6 +854,10 @@
     <ImageAsset Include="Assets.xcassets\New-Launch-Logo.imageset\New_Logo_SplashScreen%401x.png" />
     <ImageAsset Include="Assets.xcassets\New-Launch-Logo.imageset\New_Logo_SplashScreen%402x.png" />
     <ImageAsset Include="Assets.xcassets\New-Launch-Logo.imageset\New_Logo_SplashScreen%403x.png" />
+    <ImageAsset Include="Assets.xcassets\LogOut.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\LogOut.imageset\LogOut.png" />
+    <ImageAsset Include="Assets.xcassets\LogOut.imageset\LogOut%402x.png" />
+    <ImageAsset Include="Assets.xcassets\LogOut.imageset\LogOut%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -1094,6 +1098,7 @@
     <Folder Include="Assets.xcassets\Logo-Combined.imageset\" />
     <Folder Include="Assets.xcassets\Payment-Checkbox-White-Inactive.imageset\" />
     <Folder Include="Assets.xcassets\New-Launch-Logo.imageset\" />
+    <Folder Include="Assets.xcassets\LogOut.imageset\" />
     <Folder Include="Home\Feedback\Feedback Entry\" />
     <Folder Include="Home\Feedback\Feedback Location and State\" />
     <Folder Include="Home\Feedback\Feedback Image\" />
