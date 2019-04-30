@@ -43,9 +43,7 @@ namespace myTNB.Dashboard.SelectAccounts
             cell.lblAccountName.Frame = new CGRect(18, 16, newLabelSize.Width, 24);
 
             cell.imgLeaf.Frame = new CGRect(18 + cell.lblAccountName.Frame.Width + 6, 16, 24, 24);
-            bool isREAccount = item.accountCategoryId != null
-                                   ? item.accountCategoryId.Equals("2")
-                                   : false;
+            bool isREAccount = item.accountCategoryId != null && item.accountCategoryId.Equals("2");
             cell.imgLeaf.Hidden = !isREAccount;
 
             if (indexPath.Row == DataManager.DataManager.SharedInstance.CurrentSelectedAccountIndex
@@ -53,8 +51,10 @@ namespace myTNB.Dashboard.SelectAccounts
             {
                 cell.Accessory = UITableViewCellAccessory.None;
                 cell.AccessoryView = new UIView(new CGRect(0, 0, 24, 24));
-                UIImageView imgViewTick = new UIImageView(new CGRect(0, 0, 24, 24));
-                imgViewTick.Image = UIImage.FromBundle("Table-Tick");
+                UIImageView imgViewTick = new UIImageView(new CGRect(0, 0, 24, 24))
+                {
+                    Image = UIImage.FromBundle("Table-Tick")
+                };
                 cell.AccessoryView.AddSubview(imgViewTick);
             }
             else
@@ -75,8 +75,7 @@ namespace myTNB.Dashboard.SelectAccounts
 #if true
             var selected = _accountList[indexPath.Row];
             DataManager.DataManager.SharedInstance.IsSameAccount = DataManager.DataManager.SharedInstance.GetAccountsCount() > 1
-                ? string.Compare(selected.accNum, DataManager.DataManager.SharedInstance.SelectedAccount?.accNum) == 0
-                : false;
+                && string.Compare(selected.accNum, DataManager.DataManager.SharedInstance.SelectedAccount?.accNum) == 0;
             DataManager.DataManager.SharedInstance.SelectAccount(selected.accNum);
 #else
             DataManager.DataManager.SharedInstance.SelectedAccount = _accountList[indexPath.Row];

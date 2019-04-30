@@ -8,7 +8,6 @@ using Foundation;
 using myTNB.Dashboard.DashboardComponents;
 using myTNB.DataManager;
 using myTNB.Enums;
-
 using myTNB.Model;
 using myTNB.PushNotification;
 using myTNB.Registration.CustomerAccounts;

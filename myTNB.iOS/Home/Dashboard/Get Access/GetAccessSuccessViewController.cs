@@ -4,7 +4,6 @@ using UIKit;
 using CoreAnimation;
 using CoreGraphics;
 
-
 namespace myTNB
 {
     public partial class GetAccessSuccessViewController : UIViewController
@@ -73,8 +72,10 @@ namespace myTNB
                 TextAlignment = UITextAlignment.Center,
             };
 
-            UIView viewLine = new UIView((new CGRect(32, 176, View.Frame.Width - 64, 1)));
-            viewLine.BackgroundColor = MyTNBColor.PlatinumGrey;
+            UIView viewLine = new UIView((new CGRect(32, 176, View.Frame.Width - 64, 1)))
+            {
+                BackgroundColor = MyTNBColor.PlatinumGrey
+            };
 
             UILabel lblDescription = new UILabel
             {
@@ -118,8 +119,10 @@ namespace myTNB
                 TextAlignment = UITextAlignment.Left,
             };
 
-            btnBackToDashboard = new UIButton(UIButtonType.Custom);
-            btnBackToDashboard.Frame = new CGRect(18, View.Frame.Height - 72, View.Frame.Width - 36, 48);
+            btnBackToDashboard = new UIButton(UIButtonType.Custom)
+            {
+                Frame = new CGRect(18, View.Frame.Height - 72, View.Frame.Width - 36, 48)
+            };
             btnBackToDashboard.SetTitle("Common_BackToDashboard".Translate(), UIControlState.Normal);
             btnBackToDashboard.Font = MyTNBFont.MuseoSans16;
             btnBackToDashboard.Layer.CornerRadius = 4.0f;

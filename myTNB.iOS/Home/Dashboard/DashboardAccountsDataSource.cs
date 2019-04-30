@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using CoreGraphics;
 using Foundation;
-
 using myTNB.Model;
 using UIKit;
 
@@ -45,8 +44,8 @@ namespace myTNB
         /// <param name="accountsForDisplay">Accounts for display.</param>
         /// <param name="onSelectRow">On select row.</param>
         /// <param name="onScroll">On scroll.</param>
-        public DashboardAccountsDataSource(Dictionary<string, List<DueAmountDataModel>> accountsForDisplay,
-                                           Action<DueAmountDataModel> onSelectRow, EventHandler onScroll)
+        public DashboardAccountsDataSource(Dictionary<string, List<DueAmountDataModel>> accountsForDisplay
+            , Action<DueAmountDataModel> onSelectRow, EventHandler onScroll)
         {
             DisplayedAccounts = accountsForDisplay;
             OnRowSelected = onSelectRow;
@@ -93,7 +92,6 @@ namespace myTNB
                 {
                     OnRowSelected(acct);
                 }
-
             }
         }
 
@@ -161,8 +159,7 @@ namespace myTNB
         {
             var title = keys[(int)section];
             var amountTitle = string.Compare(title, "Dashboard_RESectionHeader".Translate()) == 0
-                                    ? "Dashboard_RESectionSubHeader".Translate()
-                                    : "Dashboard_SectionHeader".Translate();
+                ? "Dashboard_RESectionSubHeader".Translate() : "Dashboard_SectionHeader".Translate();
             float sectionHeight = 36.0f;
 
             UIView sectionView = new UIView(new CGRect(0, 0, tableView.Bounds.Width, sectionHeight));

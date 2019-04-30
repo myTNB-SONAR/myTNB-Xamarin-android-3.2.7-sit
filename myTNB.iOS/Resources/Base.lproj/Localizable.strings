@@ -214,6 +214,10 @@
 /*Get Access*/
 "GetAccess_RequestedToOwnerMessage"="Access Requested to the Owner";
 
+/*Global*/
+"Global_UnitEmission"="kg";
+"Global_UnitEnergy"="kWH";
+
 /*Hint*/
 "Hint_BusinessNickname" = "e.g. Bangsar Shopping Centre Branch";
 "Hint_CardExpiry"="Card Expiry (MM/YY)";
@@ -258,7 +262,6 @@
 "Language_English"="English";
 "Language_Malay"="Bahasa Melayu";
 "Language_Title"="Language";
-
 
 /*Login*/
 "Login_AccountLogin"="myTNB Account Login";

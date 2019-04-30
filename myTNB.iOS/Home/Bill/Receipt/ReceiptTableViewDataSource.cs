@@ -35,7 +35,7 @@ namespace myTNB.Home.Bill.Receipt
             var item = _receipt?.d?.data?.accMultiPay?[indexPath.Row];
             cell.lblAcctNoValue.Text = item?.accountNum;
             cell.lblAcctNameValue.Text = item?.AccountOwnerName ?? string.Empty;
-            cell.lblAmountValue.Text = item?.itmAmt;
+            cell.lblAmountValue.Text = item?.itmAmt ?? string.Empty;
             cell.SelectionStyle = UITableViewCellSelectionStyle.None;
             return cell;
         }

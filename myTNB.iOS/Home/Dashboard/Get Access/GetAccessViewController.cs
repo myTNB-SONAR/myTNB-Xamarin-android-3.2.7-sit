@@ -1,7 +1,6 @@
 using System;
 using CoreGraphics;
 using Foundation;
-
 using UIKit;
 
 namespace myTNB
@@ -59,8 +58,10 @@ namespace myTNB
         internal void SetSubViews()
         {
             //IC Number
-            UIView viewICNumber = new UIView((new CGRect(18, 16, View.Frame.Width - 36, 51)));
-            viewICNumber.BackgroundColor = UIColor.Clear;
+            UIView viewICNumber = new UIView((new CGRect(18, 16, View.Frame.Width - 36, 51)))
+            {
+                BackgroundColor = UIColor.Clear
+            };
 
             lblICNoTitle = new UILabel
             {
@@ -104,8 +105,7 @@ namespace myTNB
             txtFieldICNo.KeyboardType = UIKeyboardType.NumberPad;
             viewICNumber.AddSubview(txtFieldICNo);
 
-            viewLineICNo = new UIView((new CGRect(0, 36, viewICNumber.Frame.Width, 1)));
-            viewLineICNo.BackgroundColor = MyTNBColor.PlatinumGrey;
+            viewLineICNo = GenericLine.GetLine(new CGRect(0, 36, viewICNumber.Frame.Width, 1));
             viewICNumber.AddSubview(viewLineICNo);
 
             //FullName 
@@ -153,12 +153,13 @@ namespace myTNB
             };
             viewName.AddSubview(txtFieldName);
 
-            viewLineName = new UIView((new CGRect(0, 36, viewName.Frame.Width, 1)));
-            viewLineName.BackgroundColor = MyTNBColor.PlatinumGrey;
+            viewLineName = GenericLine.GetLine(new CGRect(0, 36, viewName.Frame.Width, 1));
             viewName.AddSubview(viewLineName);
 
-            _btnGetAccess = new UIButton(UIButtonType.Custom);
-            _btnGetAccess.Frame = new CGRect(18, View.Frame.Height - 132, View.Frame.Width - 36, 48);
+            _btnGetAccess = new UIButton(UIButtonType.Custom)
+            {
+                Frame = new CGRect(18, View.Frame.Height - 132, View.Frame.Width - 36, 48)
+            };
             _btnGetAccess.SetTitle("Common_GetAccess".Translate(), UIControlState.Normal);
             _btnGetAccess.Font = MyTNBFont.MuseoSans16;
             _btnGetAccess.Layer.CornerRadius = 5.0f;

@@ -20,13 +20,8 @@ namespace myTNB
         {
             base.ViewDidLoad();
             AddBackButton();
-            accountRecordsTableView.Frame = new CGRect(0
-                                                       , 0
-                                                       , View.Frame.Width
-                                                       , View.Frame.Height
-                                                            - (DeviceHelper.IsIphoneXUpResolution()
-                                                               ? 64 + 72 + 24
-                                                               : 64 + 72));
+            accountRecordsTableView.Frame = new CGRect(0, 0, View.Frame.Width
+                , View.Frame.Height - (DeviceHelper.IsIphoneXUpResolution() ? 64 + 72 + 24 : 64 + 72));
             accountRecordsTableView.Source = new SelectAccountsDataSource(this);
             accountRecordsTableView.ReloadData();
             accountRecordsTableView.SeparatorStyle = UITableViewCellSeparatorStyle.None;
@@ -48,8 +43,10 @@ namespace myTNB
 
         void AddCTAButton()
         {
-            UIButton btnAddAccount = new UIButton(UIButtonType.Custom);
-            btnAddAccount.Frame = new CGRect(18, View.Frame.Height - (DeviceHelper.IsIphoneXUpResolution() ? 152 : 128), View.Frame.Width - 36, 48);
+            UIButton btnAddAccount = new UIButton(UIButtonType.Custom)
+            {
+                Frame = new CGRect(18, View.Frame.Height - (DeviceHelper.IsIphoneXUpResolution() ? 152 : 128), View.Frame.Width - 36, 48)
+            };
             btnAddAccount.SetTitle("Common_AddAnotherAccount".Translate(), UIControlState.Normal);
             btnAddAccount.Font = MyTNBFont.MuseoSans16;
             btnAddAccount.Layer.CornerRadius = 5.0f;
@@ -129,8 +126,8 @@ namespace myTNB
                                     DataManager.DataManager.SharedInstance.IsBillUpdateNeeded = false;
                                     if (!DataManager.DataManager.SharedInstance.SelectedAccount.IsREAccount)
                                     {
-                                        DataManager.DataManager.SharedInstance.SaveToBillingAccounts(DataManager.DataManager.SharedInstance.BillingAccountDetails,
-                                                                                                     DataManager.DataManager.SharedInstance.SelectedAccount.accNum);
+                                        DataManager.DataManager.SharedInstance.SaveToBillingAccounts(DataManager.DataManager.SharedInstance.BillingAccountDetails
+                                            , DataManager.DataManager.SharedInstance.SelectedAccount.accNum);
                                     }
                                     this.DismissViewController(true, null);
                                 }

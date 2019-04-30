@@ -1,14 +1,13 @@
 ﻿using System;
 using CoreGraphics;
 using myTNB.Enums;
-
 using UIKit;
 
 namespace myTNB.Dashboard.DashboardComponents
 {
     public class GreetingComponent
     {
-        UIView parentView;
+        readonly UIView parentView;
         UIView baseView;
         UILabel greetingMessage;
         UIImageView greetingImage;

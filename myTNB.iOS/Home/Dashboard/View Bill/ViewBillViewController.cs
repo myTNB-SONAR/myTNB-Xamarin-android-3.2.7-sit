@@ -8,7 +8,6 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using myTNB.Model;
 using System.Drawing;
-
 using System.Diagnostics;
 
 namespace myTNB
@@ -34,7 +33,7 @@ namespace myTNB
             NavigationItem.HidesBackButton = true;
 
             _titleSuffix = DataManager.DataManager.SharedInstance.SelectedAccount.accountCategoryId.Equals("2")
-                                      ? "ViewBill_Advice".Translate() : "ViewBill_Title".Translate();
+                ? "ViewBill_Advice".Translate() : "ViewBill_Title".Translate();
             SetNavigationItems();
             NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
             {

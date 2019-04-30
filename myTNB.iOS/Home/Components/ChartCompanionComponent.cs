@@ -12,20 +12,12 @@ namespace myTNB.Dashboard.DashboardComponents
 {
     public class ChartCompanionComponent
     {
-        UIView _parentView;
-        UIView _baseView;
-        UIView _chartModeView;
-        UIView _metricView1;
-        UIView _metricView2;
-        InfoComponent _metricCmp1;
-        InfoComponent _metricCmp2;
-        UIButton _amountBtn;
-        UIButton _consumptionBtn;
-        UIButton _emissionBtn;
+        readonly UIView _parentView;
+        UIView _baseView, _chartModeView, _metricView1, _metricView2, _msgLabelView, _msgViewLine;
+        InfoComponent _metricCmp1, _metricCmp2;
+        UIButton _amountBtn, _consumptionBtn, _emissionBtn;
         UsageMetrics _usageMetrics;
-        UIView _msgLabelView;
         UILabel _messageLabel;
-        UIView _msgViewLine;
         double _yLocation;
 
         public ChartCompanionComponent(UIView view)
@@ -58,9 +50,11 @@ namespace myTNB.Dashboard.DashboardComponents
             double btnOffset = 12;
 
             // chart mode
-            UITextAttributes attr = new UITextAttributes();
-            attr.Font = MyTNBFont.MuseoSans12;
-            attr.TextColor = UIColor.White;
+            UITextAttributes attr = new UITextAttributes
+            {
+                Font = MyTNBFont.MuseoSans12,
+                TextColor = UIColor.White
+            };
             _chartModeView = new UIView(new CGRect(margin, _baseView.Frame.Height - 26, _baseView.Frame.Width, 26));
 
             _msgLabelView = new UIView(new CGRect(0, _baseView.Frame.Height - 112, _baseView.Frame.Width, 59));
@@ -85,8 +79,7 @@ namespace myTNB.Dashboard.DashboardComponents
 
             _baseView.AddSubview(_msgLabelView);
 
-            _amountBtn = new UIButton();
-            _amountBtn.Frame = new CGRect(center - margin - (btnWidth * 2 + btnOffset) / 2, 0, btnWidth, 26);
+            _amountBtn = new UIButton(new CGRect(center - margin - (btnWidth * 2 + btnOffset) / 2, 0, btnWidth, 26));
             _amountBtn.SetAttributedTitle(CreateAttributedTitle(TNBGlobal.UNIT_CURRENCY, UIColor.White), UIControlState.Selected);
             _amountBtn.SetAttributedTitle(CreateAttributedTitle(TNBGlobal.UNIT_CURRENCY, MyTNBColor.SelectionSemiTransparent), UIControlState.Normal);
             //_amountBtn.SetTitleColor(UIColor.White, UIControlState.Normal);
@@ -96,8 +89,7 @@ namespace myTNB.Dashboard.DashboardComponents
             _amountBtn.Layer.CornerRadius = 13.0f;
             _chartModeView.AddSubview(_amountBtn);
 
-            _consumptionBtn = new UIButton();
-            _consumptionBtn.Frame = new CGRect(_amountBtn.Frame.GetMaxX() + btnOffset, 0, btnWidth, 26);
+            _consumptionBtn = new UIButton(new CGRect(_amountBtn.Frame.GetMaxX() + btnOffset, 0, btnWidth, 26));
             _consumptionBtn.SetAttributedTitle(CreateAttributedTitle("Component_Usage".Translate(), UIColor.White), UIControlState.Selected);
             _consumptionBtn.SetAttributedTitle(CreateAttributedTitle("Component_Usage".Translate(), MyTNBColor.SelectionSemiTransparent), UIControlState.Normal);
             //_consumptionBtn.SetTitleColor(UIColor.White, UIControlState.Normal);
@@ -107,8 +99,7 @@ namespace myTNB.Dashboard.DashboardComponents
             _consumptionBtn.Layer.CornerRadius = 13.0f;
             _chartModeView.AddSubview(_consumptionBtn);
 
-            _emissionBtn = new UIButton();
-            _emissionBtn.Frame = new CGRect(center + 80, 0, btnWidth, 26);
+            _emissionBtn = new UIButton(new CGRect(center + 80, 0, btnWidth, 26));
             _emissionBtn.SetAttributedTitle(CreateAttributedTitle("Component_CO2".Translate(), UIColor.White), UIControlState.Selected);
             _emissionBtn.SetAttributedTitle(CreateAttributedTitle("Component_CO2".Translate(), MyTNBColor.SelectionSemiTransparent), UIControlState.Normal);
             //_emissionBtn.SetTitleColor(UIColor.White, UIControlState.Normal);
@@ -230,31 +221,10 @@ namespace myTNB.Dashboard.DashboardComponents
             _amountBtn.Selected = chartMode == ChartModeEnum.Cost;
             _emissionBtn.Selected = chartMode == ChartModeEnum.Emission;
 
-            switch (chartMode)
-            {
-                default:
-                case ChartModeEnum.Cost:
-                    {
-                        _consumptionBtn.BackgroundColor = UIColor.Clear;
-                        _amountBtn.BackgroundColor = MyTNBColor.SelectionSemiTransparent;
-                        _emissionBtn.BackgroundColor = UIColor.Clear;
-                    }
-                    break;
-                case ChartModeEnum.Usage:
-                    {
-                        _consumptionBtn.BackgroundColor = MyTNBColor.SelectionSemiTransparent;
-                        _amountBtn.BackgroundColor = UIColor.Clear;
-                        _emissionBtn.BackgroundColor = UIColor.Clear;
-                    }
-                    break;
-                case ChartModeEnum.Emission:
-                    {
-                        _consumptionBtn.BackgroundColor = UIColor.Clear;
-                        _amountBtn.BackgroundColor = UIColor.Clear;
-                        _emissionBtn.BackgroundColor = MyTNBColor.SelectionSemiTransparent;
-                    }
-                    break;
-            }
+            _consumptionBtn.BackgroundColor = chartMode == ChartModeEnum.Usage ? MyTNBColor.SelectionSemiTransparent : UIColor.Clear;
+            _amountBtn.BackgroundColor = chartMode == ChartModeEnum.Cost ? MyTNBColor.SelectionSemiTransparent : UIColor.Clear;
+            _emissionBtn.BackgroundColor = chartMode == ChartModeEnum.Emission ? MyTNBColor.SelectionSemiTransparent : UIColor.Clear;
+
             UpdateMetricsDisplay(chartMode);
         }
 
@@ -309,7 +279,7 @@ namespace myTNB.Dashboard.DashboardComponents
                         if (!string.IsNullOrEmpty(currUsageKWH))
                         {
                             _metricCmp1.ValueLabel.AttributedText = TextHelper.CreateValuePairString(TextHelper.ParseStringToDouble(currUsageKWH).ToString("N2"
-                                , CultureInfo.InvariantCulture), " " + TNBGlobal.UNIT_ENERGY, false, MyTNBFont.MuseoSans16_300
+                                , CultureInfo.InvariantCulture), " " + TNBGlobal.UNITENERGY, false, MyTNBFont.MuseoSans16_300
                                 , UIColor.White, MyTNBFont.MuseoSans12_300, UIColor.White);
                         }
                         _metricCmp2.Icon.Image = UIImage.FromBundle("IC-Avg-Elec-Usage");
@@ -332,9 +302,9 @@ namespace myTNB.Dashboard.DashboardComponents
                         _metricCmp1.Icon.Image = UIImage.FromBundle("IC-CO2");
                         _metricCmp1.TitleLabel.Text = "Component_CurrentEmission".Translate();
                         _metricCmp1.SubTitleLabel.Text = string.Format("{0} ", "Component_AsOf".Translate()) + _usageMetrics?.StatsByCo2?.First()?.AsOf;
-                        string value = _usageMetrics?.StatsByCo2?.Count > 0 ?
-                                                     _usageMetrics?.StatsByCo2?.Sum(item => TextHelper.ParseStringToDouble(item.Quantity)).ToString() : TNBGlobal.ZERO;
-                        _metricCmp1.ValueLabel.AttributedText = TextHelper.CreateValuePairString(value, " " + TNBGlobal.UNIT_EMISSION
+                        string value = _usageMetrics?.StatsByCo2?.Count > 0
+                            ? _usageMetrics?.StatsByCo2?.Sum(item => TextHelper.ParseStringToDouble(item.Quantity)).ToString() : TNBGlobal.ZERO;
+                        _metricCmp1.ValueLabel.AttributedText = TextHelper.CreateValuePairString(value, " " + TNBGlobal.UNITEMISSION
                             , false, MyTNBFont.MuseoSans16_300, UIColor.White, MyTNBFont.MuseoSans12_300, UIColor.White);
                         _metricCmp2.SetHidden(true);
                     }
@@ -373,7 +343,6 @@ namespace myTNB.Dashboard.DashboardComponents
                 var num = TextHelper.ParseStringToDouble(inputText);
                 isUp = num > 0;
                 hasChange = num != 0;// inputText != "0";
-
                 value = (num < 0) ? inputText.Substring(1) : inputText;
             }
         }

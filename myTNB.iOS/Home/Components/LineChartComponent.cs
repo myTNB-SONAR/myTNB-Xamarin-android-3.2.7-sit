@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using CoreGraphics;
 using UIKit;
 
@@ -10,7 +9,7 @@ namespace myTNB.Dashboard.DashboardComponents
     /// </summary>
     public class LineChartComponent : UIView
     {
-        List<CGPoint> _points;
+        readonly List<CGPoint> _points;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="T:myTNB.Dashboard.DashboardComponents.LineChartComponent"/> class.

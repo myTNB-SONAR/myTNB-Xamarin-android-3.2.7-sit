@@ -8,16 +8,14 @@ namespace myTNB.Dashboard.DashboardComponents
 {
     public class ChartDataSource : iCarouselDataSource
     {
-        UIView _parentView;
+        readonly UIView _parentView;
         ChartDataModelBase chartBaseData;
         bool isRenewableAcct = false;
-
 
         public ChartDataSource(UIView view, ChartDataModelBase chart, bool isREAcct)
         {
             _parentView = view;
             isRenewableAcct = isREAcct;
-
             ChartHelper.SortChartDataDescending(chart, out chartBaseData);
         }
 

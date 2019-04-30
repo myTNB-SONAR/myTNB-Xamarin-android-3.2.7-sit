@@ -1,12 +1,11 @@
 ﻿using CoreGraphics;
-
 using UIKit;
 
 namespace myTNB.Dashboard.DashboardComponents
 {
     public class SelectorComponent
     {
-        UIView _parentView;
+        readonly UIView _parentView;
         public UISegmentedControl _selectorBar;
 
         public SelectorComponent(UIView view)
@@ -16,12 +15,16 @@ namespace myTNB.Dashboard.DashboardComponents
 
         internal void CreateComponent()
         {
-            UITextAttributes attr = new UITextAttributes();
-            attr.Font = MyTNBFont.MuseoSans12;
-            attr.TextColor = MyTNBColor.SelectionSemiTransparent;
-            UITextAttributes attrSelected = new UITextAttributes();
-            attrSelected.Font = MyTNBFont.MuseoSans12;
-            attrSelected.TextColor = UIColor.White;
+            UITextAttributes attr = new UITextAttributes
+            {
+                Font = MyTNBFont.MuseoSans12,
+                TextColor = MyTNBColor.SelectionSemiTransparent
+            };
+            UITextAttributes attrSelected = new UITextAttributes
+            {
+                Font = MyTNBFont.MuseoSans12,
+                TextColor = UIColor.White
+            };
             double width = 122;
             double xLocation = (_parentView.Frame.Width / 2) - (width / 2);
             _selectorBar = new UISegmentedControl(new CGRect(xLocation, 0, width, 26));

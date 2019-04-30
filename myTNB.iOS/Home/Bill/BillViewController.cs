@@ -106,7 +106,7 @@ namespace myTNB
             SetDetailsView();
 
             if (!isREAccount && isBcrmAvailable && !DataManager.DataManager.SharedInstance.IsPaymentCreditCardAvailable
-                                     && !DataManager.DataManager.SharedInstance.IsPaymentFPXAvailable)
+                && !DataManager.DataManager.SharedInstance.IsPaymentFPXAvailable)
             {
                 ShowToast();
             }
@@ -300,9 +300,7 @@ namespace myTNB
             UIView titleBarView = titleBarComponent.GetUI();
             titleBarComponent.SetTitle("Bill_Bills".Translate());
             titleBarComponent.SetNotificationVisibility(true);
-
             titleBarComponent.SetBackVisibility(!IsFromNavigation);
-
             titleBarComponent.SetBackAction(new UITapGestureRecognizer(() =>
             {
                 NavigationController?.PopViewController(true);
@@ -616,11 +614,7 @@ namespace myTNB
                 InvokeOnMainThread(() =>
                 {
                     billTableView.Source = new BillTableViewDataSource(_billingHistory
-                                                                       , _paymentHistory
-                                                                       , this
-                                                                       , NetworkUtility.isReachable
-                                                                       , isREAccount
-                                                                       , isOwnedAccount);
+                        , _paymentHistory, this, NetworkUtility.isReachable, isREAccount, isOwnedAccount);
                     refreshControl.ValueChanged += PullDownTorefresh;
                     //billTableView.AddSubview(refreshControl); removed pull down to refresh
                     billTableView.ReloadData();
@@ -631,132 +625,170 @@ namespace myTNB
         void InitializedSubviews()
         {
             //BillTableView Header
-            _headerView = new UIView(new RectangleF(0, 0, (float)View.Frame.Width, 509));
-            _headerView.BackgroundColor = UIColor.White;
+            _headerView = new UIView(new RectangleF(0, 0, (float)View.Frame.Width, 509))
+            {
+                BackgroundColor = UIColor.White
+            };
             billTableView.SeparatorStyle = UITableViewCellSeparatorStyle.None;
             billTableView.TableHeaderView = _headerView;
 
             //Acount Details
-            var accountDetailsView = new UIView(new RectangleF(0, 0, (float)View.Frame.Width, 122));
-            accountDetailsView.BackgroundColor = UIColor.White;
+            var accountDetailsView = new UIView(new RectangleF(0, 0, (float)View.Frame.Width, 122))
+            {
+                BackgroundColor = UIColor.White
+            };
             _headerView.AddSubview(accountDetailsView);
 
-            _lblAccountName = new UILabel(new CGRect(18, 16, View.Frame.Width - 36, 18));
-            _lblAccountName.Font = MyTNBFont.MuseoSans14_500;
-            _lblAccountName.TextAlignment = UITextAlignment.Left;
-            _lblAccountName.TextColor = MyTNBColor.TunaGrey();
-            _lblAccountName.BackgroundColor = UIColor.Clear;
+            _lblAccountName = new UILabel(new CGRect(18, 16, View.Frame.Width - 36, 18))
+            {
+                Font = MyTNBFont.MuseoSans14_500,
+                TextAlignment = UITextAlignment.Left,
+                TextColor = MyTNBColor.TunaGrey(),
+                BackgroundColor = UIColor.Clear
+            };
             accountDetailsView.AddSubview(_lblAccountName);
 
-            _lblAccountNumber = new UILabel(new CGRect(18, 34, View.Frame.Width - 36, 16));
-            _lblAccountNumber.Font = MyTNBFont.MuseoSans12_300;
-            _lblAccountNumber.TextAlignment = UITextAlignment.Left;
-            _lblAccountNumber.TextColor = MyTNBColor.TunaGrey();
-            _lblAccountNumber.BackgroundColor = UIColor.Clear;
+            _lblAccountNumber = new UILabel(new CGRect(18, 34, View.Frame.Width - 36, 16))
+            {
+                Font = MyTNBFont.MuseoSans12_300,
+                TextAlignment = UITextAlignment.Left,
+                TextColor = MyTNBColor.TunaGrey(),
+                BackgroundColor = UIColor.Clear
+            };
             accountDetailsView.AddSubview(_lblAccountNumber);
 
-            _lblViewAddress = new UILabel(new CGRect(18, 50, View.Frame.Width - 36, 72));
-            _lblViewAddress.Font = MyTNBFont.MuseoSans12_300;
-            _lblViewAddress.TextAlignment = UITextAlignment.Left;
-            _lblViewAddress.Lines = 0;
-            _lblViewAddress.LineBreakMode = UILineBreakMode.TailTruncation;
-            _lblViewAddress.TextColor = MyTNBColor.TunaGrey();
-            _lblViewAddress.BackgroundColor = UIColor.Clear;
-            _lblViewAddress.UserInteractionEnabled = false;
+            _lblViewAddress = new UILabel(new CGRect(18, 50, View.Frame.Width - 36, 72))
+            {
+                Font = MyTNBFont.MuseoSans12_300,
+                TextAlignment = UITextAlignment.Left,
+                Lines = 0,
+                LineBreakMode = UILineBreakMode.TailTruncation,
+                TextColor = MyTNBColor.TunaGrey(),
+                BackgroundColor = UIColor.Clear,
+                UserInteractionEnabled = false
+            };
             accountDetailsView.AddSubview(_lblViewAddress);
 
             //RE Account Leaf
-            _imgLeaf = new UIImageView(new CGRect(View.Frame.Width - 42, 16, 24, 24));
-            _imgLeaf.Image = UIImage.FromBundle("IC-RE-Leaf-Green");
-            _imgLeaf.Hidden = true;
+            _imgLeaf = new UIImageView(new CGRect(View.Frame.Width - 42, 16, 24, 24))
+            {
+                Image = UIImage.FromBundle("IC-RE-Leaf-Green"),
+                Hidden = true
+            };
             accountDetailsView.AddSubview(_imgLeaf);
 
             //Current Bill Header
-            _currentBillHeaderView = new UIView(new RectangleF(0, 122, (float)View.Frame.Width, 48));
-            _currentBillHeaderView.BackgroundColor = MyTNBColor.SectionGrey;
+            _currentBillHeaderView = new UIView(new RectangleF(0, 122, (float)View.Frame.Width, 48))
+            {
+                BackgroundColor = MyTNBColor.SectionGrey
+            };
             _headerView.AddSubview(_currentBillHeaderView);
 
-            _lblCurrentBillHeader = new UILabel(new CGRect(18, 24, View.Frame.Width - 36, 18));
-            _lblCurrentBillHeader.Font = MyTNBFont.MuseoSans16;
-            _lblCurrentBillHeader.TextAlignment = UITextAlignment.Left;
-            _lblCurrentBillHeader.Text = "Bill_CurrentBill".Translate();
-            _lblCurrentBillHeader.TextColor = MyTNBColor.PowerBlue;
-            _lblCurrentBillHeader.BackgroundColor = UIColor.Clear;
+            _lblCurrentBillHeader = new UILabel(new CGRect(18, 24, View.Frame.Width - 36, 18))
+            {
+                Font = MyTNBFont.MuseoSans16,
+                TextAlignment = UITextAlignment.Left,
+                Text = "Bill_CurrentBill".Translate(),
+                TextColor = MyTNBColor.PowerBlue,
+                BackgroundColor = UIColor.Clear
+            };
             _currentBillHeaderView.AddSubview(_lblCurrentBillHeader);
 
             //Current Bill Details
-            _currentBillDetailsView = new UIView(new RectangleF(0, 170, (float)View.Frame.Width, 218));
-            _currentBillDetailsView.BackgroundColor = UIColor.White;
+            _currentBillDetailsView = new UIView(new RectangleF(0, 170, (float)View.Frame.Width, 218))
+            {
+                BackgroundColor = UIColor.White
+            };
             _headerView.AddSubview(_currentBillDetailsView);
 
-            _viewCharges = new UIView(new CGRect(0, 0, View.Frame.Width, 113 - headerMarginY));
-            _viewCharges.BackgroundColor = UIColor.White;
+            _viewCharges = new UIView(new CGRect(0, 0, View.Frame.Width, 113 - headerMarginY))
+            {
+                BackgroundColor = UIColor.White
+            };
             _currentBillDetailsView.AddSubview(_viewCharges);
 
             #region _viewCharges
-            _lblCurrentChargesTitle = new UILabel(new CGRect(18, 16, 119, 16));
-            _lblCurrentChargesTitle.Font = MyTNBFont.MuseoSans12;
-            _lblCurrentChargesTitle.TextAlignment = UITextAlignment.Left;
-            _lblCurrentChargesTitle.Text = "Bill_CurrentCharges".ToUpper();
-            _lblCurrentChargesTitle.TextColor = MyTNBColor.TunaGrey();
-            _lblCurrentChargesTitle.BackgroundColor = UIColor.Clear;
+            _lblCurrentChargesTitle = new UILabel(new CGRect(18, 16, 119, 16))
+            {
+                Font = MyTNBFont.MuseoSans12,
+                TextAlignment = UITextAlignment.Left,
+                Text = "Bill_CurrentCharges".ToUpper(),
+                TextColor = MyTNBColor.TunaGrey(),
+                BackgroundColor = UIColor.Clear
+            };
             _viewCharges.AddSubview(_lblCurrentChargesTitle);
 
-            _lblCurrentChargesValue = new UILabel(new CGRect(137, 16, View.Frame.Width - 155, 16));
-            _lblCurrentChargesValue.Font = MyTNBFont.MuseoSans12;
-            _lblCurrentChargesValue.TextAlignment = UITextAlignment.Right;
-            _lblCurrentChargesValue.TextColor = MyTNBColor.TunaGrey();
-            _lblCurrentChargesValue.BackgroundColor = UIColor.Clear;
+            _lblCurrentChargesValue = new UILabel(new CGRect(137, 16, View.Frame.Width - 155, 16))
+            {
+                Font = MyTNBFont.MuseoSans12,
+                TextAlignment = UITextAlignment.Right,
+                TextColor = MyTNBColor.TunaGrey(),
+                BackgroundColor = UIColor.Clear
+            };
             _viewCharges.AddSubview(_lblCurrentChargesValue);
 
-            _lblOutstandingChargesTitle = new UILabel(new CGRect(18, 48, 119, 16));
-            _lblOutstandingChargesTitle.Font = MyTNBFont.MuseoSans12;
-            _lblOutstandingChargesTitle.TextAlignment = UITextAlignment.Left;
-            _lblOutstandingChargesTitle.Text = "Bill_OutstandingCharges".ToUpper();
-            _lblOutstandingChargesTitle.TextColor = MyTNBColor.TunaGrey();
-            _lblOutstandingChargesTitle.BackgroundColor = UIColor.Clear;
+            _lblOutstandingChargesTitle = new UILabel(new CGRect(18, 48, 119, 16))
+            {
+                Font = MyTNBFont.MuseoSans12,
+                TextAlignment = UITextAlignment.Left,
+                Text = "Bill_OutstandingCharges".ToUpper(),
+                TextColor = MyTNBColor.TunaGrey(),
+                BackgroundColor = UIColor.Clear
+            };
             _viewCharges.AddSubview(_lblOutstandingChargesTitle);
 
-            _lblOutstandingChargesValue = new UILabel(new CGRect(137, 48, View.Frame.Width - 155, 16));
-            _lblOutstandingChargesValue.Font = MyTNBFont.MuseoSans12;
-            _lblOutstandingChargesValue.TextAlignment = UITextAlignment.Right;
-            _lblOutstandingChargesValue.TextColor = MyTNBColor.TunaGrey();
-            _lblOutstandingChargesValue.BackgroundColor = UIColor.Clear;
+            _lblOutstandingChargesValue = new UILabel(new CGRect(137, 48, View.Frame.Width - 155, 16))
+            {
+                Font = MyTNBFont.MuseoSans12,
+                TextAlignment = UITextAlignment.Right,
+                TextColor = MyTNBColor.TunaGrey(),
+                BackgroundColor = UIColor.Clear
+            };
             _viewCharges.AddSubview(_lblOutstandingChargesValue);
 
-            _lblTotalPayableTitle = new UILabel(new CGRect(18, _lblOutstandingChargesTitle.Frame.GetMaxY() + headerMarginY, 119, 16));
-            _lblTotalPayableTitle.Font = MyTNBFont.MuseoSans12;
-            _lblTotalPayableTitle.TextAlignment = UITextAlignment.Left;
-            _lblTotalPayableTitle.Text = "Bill_TotalPayable".Translate();
-            _lblTotalPayableTitle.TextColor = MyTNBColor.TunaGrey();
-            _lblTotalPayableTitle.BackgroundColor = UIColor.Clear;
+            _lblTotalPayableTitle = new UILabel(new CGRect(18, _lblOutstandingChargesTitle.Frame.GetMaxY() + headerMarginY, 119, 16))
+            {
+                Font = MyTNBFont.MuseoSans12,
+                TextAlignment = UITextAlignment.Left,
+                Text = "Bill_TotalPayable".Translate(),
+                TextColor = MyTNBColor.TunaGrey(),
+                BackgroundColor = UIColor.Clear
+            };
             _viewCharges.AddSubview(_lblTotalPayableTitle);
 
-            _lblTotalPayableValue = new UILabel(new CGRect(137, _lblOutstandingChargesTitle.Frame.GetMaxY() + headerMarginY, View.Frame.Width - 155, 16));
-            _lblTotalPayableValue.Font = MyTNBFont.MuseoSans12;
-            _lblTotalPayableValue.TextAlignment = UITextAlignment.Right;
-            //_lblTotalPayableValue.Text = TNBGlobal.DEFAULT_VALUE;
-            _lblTotalPayableValue.TextColor = MyTNBColor.TunaGrey();
-            _lblTotalPayableValue.BackgroundColor = UIColor.Clear;
+            _lblTotalPayableValue = new UILabel(new CGRect(137, _lblOutstandingChargesTitle.Frame.GetMaxY() + headerMarginY, View.Frame.Width - 155, 16))
+            {
+                Font = MyTNBFont.MuseoSans12,
+                TextAlignment = UITextAlignment.Right,
+                //_lblTotalPayableValue.Text = TNBGlobal.DEFAULT_VALUE;
+                TextColor = MyTNBColor.TunaGrey(),
+                BackgroundColor = UIColor.Clear
+            };
             _viewCharges.AddSubview(_lblTotalPayableValue);
 
-            _lineView = new UIView(new CGRect(18, _lblTotalPayableValue.Frame.GetMaxY() + headerMarginY, (float)View.Frame.Width - 36, 1));
-            _lineView.BackgroundColor = UIColor.LightGray;
+            _lineView = new UIView(new CGRect(18, _lblTotalPayableValue.Frame.GetMaxY() + headerMarginY, (float)View.Frame.Width - 36, 1))
+            {
+                BackgroundColor = UIColor.LightGray
+            };
             _viewCharges.AddSubview(_lineView);
             #endregion
 
-            _lblTotalDueAmountTitle = new UILabel(new CGRect(18, _viewCharges.Frame.GetMaxY() + headerMarginY + 3, 160, 18));
-            _lblTotalDueAmountTitle.Font = MyTNBFont.MuseoSans14_500;
-            _lblTotalDueAmountTitle.TextAlignment = UITextAlignment.Left;
-            _lblTotalDueAmountTitle.Text = "Common_TotalAmountDue".Translate();
-            _lblTotalDueAmountTitle.TextColor = MyTNBColor.TunaGrey();
-            _lblTotalDueAmountTitle.BackgroundColor = UIColor.Clear;
+            _lblTotalDueAmountTitle = new UILabel(new CGRect(18, _viewCharges.Frame.GetMaxY() + headerMarginY + 3, 160, 18))
+            {
+                Font = MyTNBFont.MuseoSans14_500,
+                TextAlignment = UITextAlignment.Left,
+                Text = "Common_TotalAmountDue".Translate(),
+                TextColor = MyTNBColor.TunaGrey(),
+                BackgroundColor = UIColor.Clear
+            };
             _currentBillDetailsView.AddSubview(_lblTotalDueAmountTitle);
 
-            _lblDueDateTitle = new UILabel(new CGRect(18, _lblTotalDueAmountTitle.Frame.GetMaxY() + 16, _currentBillDetailsView.Frame.Width - 20, 14));
-            _lblDueDateTitle.Font = MyTNBFont.MuseoSans11_300;
-            _lblDueDateTitle.TextColor = MyTNBColor.SilverChalice;
-            _lblDueDateTitle.TextAlignment = UITextAlignment.Left;
+            _lblDueDateTitle = new UILabel(new CGRect(18, _lblTotalDueAmountTitle.Frame.GetMaxY() + 16, _currentBillDetailsView.Frame.Width - 20, 14))
+            {
+                Font = MyTNBFont.MuseoSans11_300,
+                TextColor = MyTNBColor.SilverChalice,
+                TextAlignment = UITextAlignment.Left
+            };
             _currentBillDetailsView.AddSubview(_lblDueDateTitle);
 
             _viewAmount = new UIView(new CGRect(View.Frame.Width - 120, _viewCharges.Frame.GetMaxY() + headerMarginY, 0, 24));
@@ -789,26 +821,34 @@ namespace myTNB
             _currentBillDetailsView.AddSubview(_btnPay);
 
             //Bills and Payment History Header
-            _historyHeaderView = new UIView(new RectangleF(0, 413, (float)View.Frame.Width, 48));
-            _historyHeaderView.BackgroundColor = MyTNBColor.SectionGrey;
+            _historyHeaderView = new UIView(new RectangleF(0, 413, (float)View.Frame.Width, 48))
+            {
+                BackgroundColor = MyTNBColor.SectionGrey
+            };
             _headerView.AddSubview(_historyHeaderView);
 
-            _lblHistoryHeader = new UILabel(new CGRect(18, 24, View.Frame.Width - 36, 18));
-            _lblHistoryHeader.Font = MyTNBFont.MuseoSans16;
-            _lblHistoryHeader.TextAlignment = UITextAlignment.Left;
-            _lblHistoryHeader.Text = isREAccount ? "Bill_REPaymentSectionHeader".Translate() : "Bill_PaymentSectionHeader".Translate();
-            _lblHistoryHeader.TextColor = MyTNBColor.PowerBlue;
-            _lblHistoryHeader.BackgroundColor = UIColor.Clear;
+            _lblHistoryHeader = new UILabel(new CGRect(18, 24, View.Frame.Width - 36, 18))
+            {
+                Font = MyTNBFont.MuseoSans16,
+                TextAlignment = UITextAlignment.Left,
+                Text = isREAccount ? "Bill_REPaymentSectionHeader".Translate() : "Bill_PaymentSectionHeader".Translate(),
+                TextColor = MyTNBColor.PowerBlue,
+                BackgroundColor = UIColor.Clear
+            };
             _historyHeaderView.AddSubview(_lblHistoryHeader);
 
             //Bills and Payment History Selection Buttons
-            _historySelectionView = new UIView(new RectangleF(0, 461, (float)View.Frame.Width, 48));
-            _historySelectionView.BackgroundColor = MyTNBColor.SectionGrey;
+            _historySelectionView = new UIView(new RectangleF(0, 461, (float)View.Frame.Width, 48))
+            {
+                BackgroundColor = MyTNBColor.SectionGrey
+            };
 
             var btnWidth = (View.Frame.Width) / 2;
 
-            _btnBills = new UIButton(UIButtonType.Custom);
-            _btnBills.Frame = new CGRect(0, 0, btnWidth, 48);
+            _btnBills = new UIButton(UIButtonType.Custom)
+            {
+                Frame = new CGRect(0, 0, btnWidth, 48)
+            };
             _btnBills.SetTitle("Bill_Bills".Translate(), UIControlState.Normal);
             _btnBills.SetTitleColor(MyTNBColor.PowerBlue, UIControlState.Normal);
             _btnBills.TitleLabel.Font = MyTNBFont.MuseoSans16;
@@ -817,8 +857,10 @@ namespace myTNB
             _btnBills.Tag = 0;
             _historySelectionView.AddSubview(_btnBills);
 
-            _btnPayment = new UIButton(UIButtonType.Custom);
-            _btnPayment.Frame = new CGRect(_btnBills.Frame.Width, 0, btnWidth, 48);
+            _btnPayment = new UIButton(UIButtonType.Custom)
+            {
+                Frame = new CGRect(_btnBills.Frame.Width, 0, btnWidth, 48)
+            };
             _btnPayment.SetTitle("Common_Payment".Translate(), UIControlState.Normal);
             _btnPayment.SetTitleColor(UIColor.LightGray, UIControlState.Normal);
             _btnPayment.TitleLabel.Font = MyTNBFont.MuseoSans16;
@@ -895,8 +937,7 @@ namespace myTNB
         void MakeTopCornerRadius(UIButton btn)
         {
             var maskPath = UIBezierPath.FromRoundedRect(btn.Bounds
-                                                        , UIRectCorner.TopLeft | UIRectCorner.TopRight
-                                                        , new CGSize(10.0, 10.0));
+                , UIRectCorner.TopLeft | UIRectCorner.TopRight, new CGSize(10.0, 10.0));
             var maskLayer = new CAShapeLayer
             {
                 Frame = btn.Bounds,
