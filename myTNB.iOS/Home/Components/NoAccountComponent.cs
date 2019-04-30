@@ -2,7 +2,6 @@
 using CoreGraphics;
 using UIKit;
 
-
 namespace myTNB.Dashboard.DashboardComponents
 {
     public class NoAccountComponent
@@ -24,8 +23,8 @@ namespace myTNB.Dashboard.DashboardComponents
             {
                 yLocation = 80;
             }
-            _viewNoAccount = new UIView();
-            _viewNoAccount.Frame = new CGRect(0, yLocation, _parentView.Frame.Width, _parentView.Frame.Height - 156);//(DeviceHelper.IsIphoneXUpResolution() ? 32 : 56));
+            _viewNoAccount = new UIView(new CGRect(0, yLocation, _parentView.Frame.Width
+                , _parentView.Frame.Height - 156));//(DeviceHelper.IsIphoneXUpResolution() ? 32 : 56));
 
             float topSpace = -15;
             if (_parentView.Frame.Width == 414)
@@ -35,30 +34,38 @@ namespace myTNB.Dashboard.DashboardComponents
 
             var imgWidth = _viewNoAccount.Frame.Width * .4;
             var xLocation = _viewNoAccount.Frame.Width / 2 - imgWidth / 2;
-            UIImageView imgViewEmpty = new UIImageView(new CGRect(xLocation, topSpace, imgWidth, imgWidth));
-            imgViewEmpty.Image = UIImage.FromBundle("Empty-Dashboard");
+            UIImageView imgViewEmpty = new UIImageView(new CGRect(xLocation, topSpace, imgWidth, imgWidth))
+            {
+                Image = UIImage.FromBundle("Empty-Dashboard")
+            };
             _viewNoAccount.AddSubview(imgViewEmpty);
 
-            _lblTitle = new UILabel(new CGRect(10, imgViewEmpty.Frame.GetMaxY() + 20, _viewNoAccount.Frame.Width - 20, 16));
-            _lblTitle.TextAlignment = UITextAlignment.Center;
-            _lblTitle.Font = MyTNBFont.MuseoSans14_500;
-            _lblTitle.Text = "Common_NoAccount".Translate();
-            _lblTitle.TextColor = UIColor.White;
+            _lblTitle = new UILabel(new CGRect(10, imgViewEmpty.Frame.GetMaxY() + 20, _viewNoAccount.Frame.Width - 20, 16))
+            {
+                TextAlignment = UITextAlignment.Center,
+                Font = MyTNBFont.MuseoSans14_500,
+                Text = "Common_NoAccount".Translate(),
+                TextColor = UIColor.White
+            };
             _viewNoAccount.AddSubview(_lblTitle);
 
             var subWidth = _viewNoAccount.Frame.Width * .8;
             xLocation = _viewNoAccount.Frame.Width / 2 - subWidth / 2;
-            _lblSubtitle = new UILabel(new CGRect(xLocation, _lblTitle.Frame.GetMaxY() + 2, subWidth, 28));
-            _lblSubtitle.TextAlignment = UITextAlignment.Center;
-            _lblSubtitle.Text = string.Format("Component_NoAccountMessage".Translate(), Environment.NewLine);
-            _lblSubtitle.Font = MyTNBFont.MuseoSans11_300;
-            _lblSubtitle.Lines = 2;
-            _lblSubtitle.TextColor = UIColor.White;
-            _lblSubtitle.LineBreakMode = UILineBreakMode.WordWrap;
+            _lblSubtitle = new UILabel(new CGRect(xLocation, _lblTitle.Frame.GetMaxY() + 2, subWidth, 28))
+            {
+                TextAlignment = UITextAlignment.Center,
+                Text = string.Format("Component_NoAccountMessage".Translate(), Environment.NewLine),
+                Font = MyTNBFont.MuseoSans11_300,
+                Lines = 2,
+                TextColor = UIColor.White,
+                LineBreakMode = UILineBreakMode.WordWrap
+            };
             _viewNoAccount.AddSubview(_lblSubtitle);
 
-            _btnAddAccount = new UIButton(UIButtonType.Custom);
-            _btnAddAccount.Frame = new CGRect(90, _lblSubtitle.Frame.GetMaxY() + 16, _viewNoAccount.Frame.Width - 180, 48);
+            _btnAddAccount = new UIButton(UIButtonType.Custom)
+            {
+                Frame = new CGRect(90, _lblSubtitle.Frame.GetMaxY() + 16, _viewNoAccount.Frame.Width - 180, 48)
+            };
             _btnAddAccount.Layer.CornerRadius = 4;
             _btnAddAccount.Layer.BorderColor = UIColor.White.CGColor;
             _btnAddAccount.Layer.BorderWidth = 1;

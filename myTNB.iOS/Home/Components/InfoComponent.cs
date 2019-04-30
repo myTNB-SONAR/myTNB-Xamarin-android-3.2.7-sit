@@ -5,7 +5,7 @@ namespace myTNB.Dashboard.DashboardComponents
 {
     public class InfoComponent
     {
-        UIView _parentView;
+        readonly UIView _parentView;
         UIView _baseView;
         public UIImageView Icon;
         public UILabel TitleLabel;
@@ -107,6 +107,5 @@ namespace myTNB.Dashboard.DashboardComponents
         {
             _baseView.Hidden = isHidden;
         }
-
     }
 }

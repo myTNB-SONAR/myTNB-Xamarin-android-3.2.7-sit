@@ -12,16 +12,17 @@ namespace myTNB
         public NoDataViewCell(IntPtr handle) : base(handle)
         {
             nfloat cellWidth = UIApplication.SharedApplication.KeyWindow.Frame.Width;
-            nfloat cellHeight = Frame.Height;
 
             imgViewState = new UIImageView(new CGRect((cellWidth / 2) - 75, 16, 150, 150));
 
-            lblDescription = new UILabel(new CGRect(20, 182, cellWidth - 40, 32));
-            lblDescription.Lines = 0;
-            lblDescription.LineBreakMode = UILineBreakMode.WordWrap;
-            lblDescription.Font = MyTNBFont.MuseoSans12;
-            lblDescription.TextColor = MyTNBColor.SilverChalice;
-            lblDescription.TextAlignment = UITextAlignment.Center;
+            lblDescription = new UILabel(new CGRect(20, 182, cellWidth - 40, 32))
+            {
+                Lines = 0,
+                LineBreakMode = UILineBreakMode.WordWrap,
+                Font = MyTNBFont.MuseoSans12,
+                TextColor = MyTNBColor.SilverChalice,
+                TextAlignment = UITextAlignment.Center
+            };
 
             this.SeparatorInset = new UIEdgeInsets(0, 0, 0, 0);
             this.LayoutMargins = new UIEdgeInsets(0, 0, 0, 0);

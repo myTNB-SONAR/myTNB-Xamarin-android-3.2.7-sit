@@ -7,7 +7,7 @@ namespace myTNB.Dashboard.DashboardComponents
 {
     public class GradientViewComponent
     {
-        UIView _parentView;
+        readonly UIView _parentView;
         UIView _gradientView;
         float _screenPercentage;
         bool _isFixedHeight = false;
@@ -52,8 +52,10 @@ namespace myTNB.Dashboard.DashboardComponents
             _gradientView = new UIView(new CGRect(0, 0, _parentView.Frame.Width, viewHeight));
             var startColor = MyTNBColor.GradientPurpleDarkElement;
             var endColor = MyTNBColor.GradientPurpleLightElement;
-            var gradientLayer = new CAGradientLayer();
-            gradientLayer.Colors = new[] { startColor.CGColor, endColor.CGColor };
+            var gradientLayer = new CAGradientLayer
+            {
+                Colors = new[] { startColor.CGColor, endColor.CGColor }
+            };
             if (_isHorizontal)
             {
                 gradientLayer.StartPoint = new CGPoint(x: 0.0, y: 0.5);

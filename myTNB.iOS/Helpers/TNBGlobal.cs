@@ -44,8 +44,6 @@ namespace myTNB
         /// The measurement units
         /// </summary>
         public static string UNIT_CURRENCY = "RM";
-        public static string UNIT_ENERGY = "kWh";
-        public static string UNIT_EMISSION = "kg";
 
         public static string ACCOUNT_NAME_PATTERN = @"^.*$"; //@"^[A-Za-z0-9 ]*$";
         public static string AmountPattern = @"^[0-9.]*$";
@@ -54,6 +52,23 @@ namespace myTNB
         public static string NumbersOnlyPattern = @"^[0-9]*$";
         public static string ACCOUNT_NO_PATTERN = @"^[0-9]{12,14}$";
         public static string IC_NO_PATTERN = @"^[a-zA-Z0-9]+$";
+
+
+        public static string UNITENERGY
+        {
+            get
+            {
+                return "Global_UnitEnergy".Translate();
+            }
+        }
+
+        public static string UNITEMISSION
+        {
+            get
+            {
+                return "Global_UnitEmission".Translate();
+            }
+        }
 
         /// <summary>
         /// Gets the payment URL.

@@ -2,17 +2,16 @@
 using System.Diagnostics;
 using CoreGraphics;
 using Foundation;
-
 using UIKit;
 
 namespace myTNB.Dashboard.DashboardComponents
 {
     public class SystemDownComponent
     {
-        UIView _parentView;
+        readonly UIView _parentView;
         UIView _baseView;
         UITextView _txtView;
-        bool _isHeaderMode;
+        readonly bool _isHeaderMode;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="T:myTNB.Dashboard.DashboardComponents.SystemDownComponent"/> class.

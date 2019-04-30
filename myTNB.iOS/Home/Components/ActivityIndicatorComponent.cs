@@ -7,8 +7,8 @@ namespace myTNB.Home.Components
 {
     public class ActivityIndicatorComponent
     {
-        UIView View;
-        UIView _viewActivityIndicator;
+        private readonly UIView View;
+        private UIView _viewActivityIndicator;
 
         public ActivityIndicatorComponent(UIView view)
         {
@@ -18,10 +18,12 @@ namespace myTNB.Home.Components
 
         void CreateActivityIndicator()
         {
-            _viewActivityIndicator = new UIView(new CGRect(0, 0, View.Frame.Width, View.Frame.Height));
-            _viewActivityIndicator.BackgroundColor = UIColor.Black;
-            _viewActivityIndicator.Alpha = 0.75F;
-            _viewActivityIndicator.Hidden = true;
+            _viewActivityIndicator = new UIView(new CGRect(0, 0, View.Frame.Width, View.Frame.Height))
+            {
+                BackgroundColor = UIColor.Black,
+                Alpha = 0.75F,
+                Hidden = true
+            };
 
             nfloat centerX = _viewActivityIndicator.Frame.Width / 2;
             nfloat centerY = _viewActivityIndicator.Frame.Height / 2;
@@ -29,8 +31,8 @@ namespace myTNB.Home.Components
 #if true
             nfloat animationWidth = 48;
             LOTAnimationView animation = LOTAnimationView.AnimationNamed("TNB_Logo");
-            animation.Frame = new CGRect(centerX - animationWidth / 2, centerY - animationWidth / 2,
-                                         animationWidth, animationWidth);
+            animation.Frame = new CGRect(centerX - animationWidth / 2, centerY - animationWidth / 2
+                , animationWidth, animationWidth);
             animation.ContentMode = UIViewContentMode.ScaleAspectFit;
             animation.LoopAnimation = true;
             animation.Play();

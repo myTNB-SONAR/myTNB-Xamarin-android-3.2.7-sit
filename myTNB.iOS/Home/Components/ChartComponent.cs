@@ -50,8 +50,8 @@ namespace myTNB.Dashboard.DashboardComponents
         /// </summary>
         /// <param name="chartData">Chart data.</param>
         /// <param name="isNormalMeter">If set to <c>true</c> is normal meter.</param>
-        public void ConstructSegmentViews(List<SegmentDetailsModel> chartData, bool isNormalMeter = true, ChartModeEnum chartMode = ChartModeEnum.Cost,
-                                          bool isREAccount = false)
+        public void ConstructSegmentViews(List<SegmentDetailsModel> chartData, bool isNormalMeter = true
+            , ChartModeEnum chartMode = ChartModeEnum.Cost, bool isREAccount = false)
         {
             RemoveChartViewSubViews();
             double chartContainerWidth = (double)_viewChart.Frame.Width;
@@ -82,8 +82,8 @@ namespace myTNB.Dashboard.DashboardComponents
                 DrawLineChart(chartData, barBottomMargin, barHeight, barHeightByValues, chartContainerWidth);
             }
 
-            DrawBarChart(chartData, barTopMargin, barBottomMargin, barHeight, barHeightByValues, chartContainerWidth,
-                         chartContainerHeight, isNormalMeter, chartMode, isREAccount);
+            DrawBarChart(chartData, barTopMargin, barBottomMargin, barHeight, barHeightByValues, chartContainerWidth
+                , chartContainerHeight, isNormalMeter, chartMode, isREAccount);
         }
 
         /// <summary>
@@ -98,9 +98,11 @@ namespace myTNB.Dashboard.DashboardComponents
         /// <param name="chartContainerHeight">Chart container height.</param>
         /// <param name="isNormalMeter">If set to <c>true</c> is normal meter.</param>
         /// <param name="chartMode">Chart mode.</param>
-        private void DrawBarChart(List<SegmentDetailsModel> chartData, int barTopMargin, int barBottomMargin, double barHeight, double barHeightByValues,
-                                  double chartContainerWidth, double chartContainerHeight, bool isNormalMeter = true, ChartModeEnum chartMode = ChartModeEnum.Cost,
-                                  bool isREAccount = false)
+        private void DrawBarChart(List<SegmentDetailsModel> chartData, int barTopMargin
+            , int barBottomMargin, double barHeight, double barHeightByValues
+            , double chartContainerWidth, double chartContainerHeight
+            , bool isNormalMeter = true, ChartModeEnum chartMode = ChartModeEnum.Cost
+            , bool isREAccount = false)
         {
             double barMargin = 10;
             if (_parentView.Frame.Width == 320)
@@ -142,8 +144,10 @@ namespace myTNB.Dashboard.DashboardComponents
                     chartValueDbl = ChartHelper.UpdateValueForRE(chartValueDbl);
                 }
 
-                UIView viewSegment = new UIView(new CGRect(x * index, 0, x, chartContainerHeight));
-                viewSegment.Tag = 0;
+                UIView viewSegment = new UIView(new CGRect(x * index, 0, x, chartContainerHeight))
+                {
+                    Tag = 0
+                };
 
                 var lblText = FormatChartValue(chartValueDbl, chartMode);
                 var maxLines = 1;
@@ -160,32 +164,36 @@ namespace myTNB.Dashboard.DashboardComponents
 
                 var lblHeight = 14;
                 var lblY = (barHeight - barHeightByValues * Math.Abs(chartValueDbl) - lblOffset * maxLines);
-                UILabel lblCost = new UILabel(new CGRect(-15, lblY,
-                                                         viewSegment.Frame.Width + 30, lblHeight * maxLines));
-                lblCost.Font = MyTNBFont.MuseoSans10_500;
-                lblCost.TextColor = UIColor.White;
-                lblCost.TextAlignment = UITextAlignment.Center;
-                lblCost.LineBreakMode = UILineBreakMode.TailTruncation;
-                lblCost.Tag = 0;
-                lblCost.Hidden = true;
-                lblCost.Lines = maxLines;
-                lblCost.Text = lblText;
+                UILabel lblCost = new UILabel(new CGRect(-15, lblY
+                    , viewSegment.Frame.Width + 30, lblHeight * maxLines))
+                {
+                    Font = MyTNBFont.MuseoSans10_500,
+                    TextColor = UIColor.White,
+                    TextAlignment = UITextAlignment.Center,
+                    LineBreakMode = UILineBreakMode.TailTruncation,
+                    Tag = 0,
+                    Hidden = true,
+                    Lines = maxLines,
+                    Text = lblText
+                };
                 viewSegment.AddSubview(lblCost);
 
                 UIView viewBar = new UIView(new CGRect(barMargin, viewSegment.Frame.Height - barTopMargin
-                                                       , viewSegment.Frame.Width - (barMargin * 2), 0));
+                    , viewSegment.Frame.Width - (barMargin * 2), 0))
+                {
+                    BackgroundColor = UIColor.FromWhiteAlpha(1.0f, 0.2f),
+                    Tag = 1
+                };
                 viewBar.Layer.CornerRadius = 10.0f;
-                viewBar.BackgroundColor = UIColor.FromWhiteAlpha(1.0f, 0.2f);
-                viewBar.Tag = 1;
                 viewSegment.AddSubview(viewBar);
 
-                UILabel lblDate = new UILabel(new CGRect(0
-                                                         , lblDateY
-                                                         , viewSegment.Frame.Width
-                                                         , 14));
-                lblDate.Font = MyTNBFont.MuseoSans9_300;
-                lblDate.TextColor = UIColor.FromWhiteAlpha(1.0f, 0.2f);
-                lblDate.TextAlignment = UITextAlignment.Center;
+                UILabel lblDate = new UILabel(new CGRect(0, lblDateY
+                    , viewSegment.Frame.Width, 14))
+                {
+                    Font = MyTNBFont.MuseoSans9_300,
+                    TextColor = UIColor.FromWhiteAlpha(1.0f, 0.2f),
+                    TextAlignment = UITextAlignment.Center
+                };
 
                 string dateString = string.Empty;
                 if (DataManager.DataManager.SharedInstance.IsMontView)
@@ -235,14 +243,12 @@ namespace myTNB.Dashboard.DashboardComponents
 
                 viewSegment.AddGestureRecognizer(onSegmentTap);
                 _viewChart.AddSubview(viewSegment);
-
             }
 
-            UIView viewLine = new UIView(new CGRect(0
-                                                    , viewLineY
-                                                    , chartContainerWidth
-                                                    , 1));
-            viewLine.BackgroundColor = UIColor.FromWhiteAlpha(1.0f, 0.2f);
+            UIView viewLine = new UIView(new CGRect(0, viewLineY, chartContainerWidth, 1))
+            {
+                BackgroundColor = UIColor.FromWhiteAlpha(1.0f, 0.2f)
+            };
             _viewChart.AddSubview(viewLine);
         }
 
@@ -254,8 +260,8 @@ namespace myTNB.Dashboard.DashboardComponents
         /// <param name="barHeight">Bar height.</param>
         /// <param name="barHeightByValues">Bar height by values.</param>
         /// <param name="chartContainerWidth">Chart container width.</param>
-        private void DrawLineChart(List<SegmentDetailsModel> chartData, int barBottomMargin, double barHeight, double barHeightByValues,
-                                   double chartContainerWidth)
+        private void DrawLineChart(List<SegmentDetailsModel> chartData, int barBottomMargin
+            , double barHeight, double barHeightByValues, double chartContainerWidth)
         {
             var points = new List<CGPoint>();
             int x = (int)chartContainerWidth / chartData.Count;
@@ -290,11 +296,14 @@ namespace myTNB.Dashboard.DashboardComponents
                     return chartData.Max(x =>
                     {
                         if (!string.IsNullOrEmpty(x.CO2))
+                        {
                             return Math.Abs(TextHelper.ParseStringToDouble(x.CO2));
+                        }
                         else
+                        {
                             return 0;
+                        }
                     });
-
             }
         }
 
@@ -348,9 +357,9 @@ namespace myTNB.Dashboard.DashboardComponents
                     return string.Format("{0} {1}", TNBGlobal.UNIT_CURRENCY, str);
                 case ChartModeEnum.Usage:
                 case ChartModeEnum.REUsage:
-                    return string.Format("{0} {1}", str, TNBGlobal.UNIT_ENERGY);
+                    return string.Format("{0} {1}", str, TNBGlobal.UNITENERGY);
                 case ChartModeEnum.Emission:
-                    return string.Format("{0} {1}", str, TNBGlobal.UNIT_EMISSION);
+                    return string.Format("{0} {1}", str, TNBGlobal.UNITEMISSION);
             }
         }
 

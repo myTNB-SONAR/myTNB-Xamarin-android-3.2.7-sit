@@ -20,11 +20,13 @@ namespace myTNB.Dashboard.DashboardComponents
         {
             _viewUsageHistory = new UIView(new CGRect(0, 0, _parentView.Frame.Width, 18));
 
-            _lblDateRange = new UILabel(new CGRect(0, 0, _viewUsageHistory.Frame.Width, 18));
-            _lblDateRange.Font = MyTNBFont.MuseoSans14_500;
-            _lblDateRange.TextAlignment = UITextAlignment.Center;
-            _lblDateRange.TextColor = MyTNBColor.SunGlow;
-            _lblDateRange.Text = "-".ToUpper();
+            _lblDateRange = new UILabel(new CGRect(0, 0, _viewUsageHistory.Frame.Width, 18))
+            {
+                Font = MyTNBFont.MuseoSans14_500,
+                TextAlignment = UITextAlignment.Center,
+                TextColor = MyTNBColor.SunGlow,
+                Text = "-".ToUpper()
+            };
             _viewUsageHistory.AddSubview(_lblDateRange);
         }
 
@@ -81,17 +83,21 @@ namespace myTNB.Dashboard.DashboardComponents
             double width = 122; // selector width
             double xLocation = (_parentView.Frame.Width / 2) - (width / 2) - 22;
             _viewLeft = new UIView(new CGRect(xLocation, 0, 16, 16));
-            UIImageView imgViewLeft = new UIImageView(new CGRect(0, 0, 16, 16));
-            imgViewLeft.Image = UIImage.FromBundle("Arrow-Left");
-            imgViewLeft.Alpha = .60f;
+            UIImageView imgViewLeft = new UIImageView(new CGRect(0, 0, 16, 16))
+            {
+                Image = UIImage.FromBundle("Arrow-Left"),
+                Alpha = .60f
+            };
             _viewLeft.AddSubview(imgViewLeft);
             _viewUsageHistory.AddSubview(_viewLeft);
 
             var rightX = _viewUsageHistory.Frame.Width - _viewLeft.Frame.X - _viewLeft.Frame.Width;
             _viewRight = new UIView(new CGRect(rightX, 0, 16, 16));
-            UIImageView imgViewRight = new UIImageView(new CGRect(0, 0, 16, 16));
-            imgViewRight.Image = UIImage.FromBundle("Arrow-Right");
-            imgViewRight.Alpha = .60f;
+            UIImageView imgViewRight = new UIImageView(new CGRect(0, 0, 16, 16))
+            {
+                Image = UIImage.FromBundle("Arrow-Right"),
+                Alpha = .60f
+            };
             _viewRight.AddSubview(imgViewRight);
             _viewUsageHistory.AddSubview(_viewRight);
         }

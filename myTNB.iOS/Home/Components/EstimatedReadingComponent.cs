@@ -1,11 +1,10 @@
 ﻿using CoreGraphics;
-
 using UIKit;
 namespace myTNB.Dashboard.DashboardComponents
 {
     public class EstimatedReadingComponent
     {
-        UIView _parentView;
+        readonly UIView _parentView;
         UILabel _lblTitle;
         public EstimatedReadingComponent(UIView view)
         {
@@ -14,11 +13,13 @@ namespace myTNB.Dashboard.DashboardComponents
 
         internal void CreateComponent()
         {
-            _lblTitle = new UILabel(new CGRect(20, _parentView.Frame.Height - 74, _parentView.Frame.Width - 40, 14));
-            _lblTitle.Font = MyTNBFont.MuseoSans9;
-            _lblTitle.TextColor = UIColor.White;
-            _lblTitle.TextAlignment = UITextAlignment.Center;
-            _lblTitle.Text = "Component_EstimatedReading".Translate();
+            _lblTitle = new UILabel(new CGRect(20, _parentView.Frame.Height - 74, _parentView.Frame.Width - 40, 14))
+            {
+                Font = MyTNBFont.MuseoSans9,
+                TextColor = UIColor.White,
+                TextAlignment = UITextAlignment.Center,
+                Text = "Component_EstimatedReading".Translate()
+            };
         }
 
         public UILabel GetUI()

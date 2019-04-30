@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using Foundation;
-
 using myTNB.Model;
 using UIKit;
 
@@ -18,11 +17,8 @@ namespace myTNB.Home.Bill
         bool _isOwner;
 
         public BillTableViewDataSource(BillHistoryResponseModel billHistory
-                                       , PaymentHistoryResponseModel paymentHistory
-                                       , BillViewController billViewController
-                                       , bool hasNetworkConnection
-                                       , bool isREAccount
-                                       , bool isOwner)
+            , PaymentHistoryResponseModel paymentHistory, BillViewController billViewController
+            , bool hasNetworkConnection, bool isREAccount, bool isOwner)
         {
             if (billHistory != null && billHistory.d != null && billHistory.d.data != null)
             {
@@ -31,12 +27,13 @@ namespace myTNB.Home.Bill
                 {
                     _billHistory.d.data = billHistory.d.data.GetRange(0, 1);
                 }
-
             }
             else
             {
-                _billHistory.d = new BillHistoryModel();
-                _billHistory.d.data = new List<BillHistoryDataModel>();
+                _billHistory.d = new BillHistoryModel
+                {
+                    data = new List<BillHistoryDataModel>()
+                };
             }
 
             if (paymentHistory != null && paymentHistory.d != null && paymentHistory.d.data != null)
@@ -45,8 +42,10 @@ namespace myTNB.Home.Bill
             }
             else
             {
-                _paymentHistory.d = new PaymentHistoryModel();
-                _paymentHistory.d.data = new List<PaymentHistoryDataModel>();
+                _paymentHistory.d = new PaymentHistoryModel
+                {
+                    data = new List<PaymentHistoryDataModel>()
+                };
             }
             _billViewController = billViewController;
             _hasNetworkConnection = hasNetworkConnection;
@@ -122,7 +121,6 @@ namespace myTNB.Home.Bill
                         cell.lblDescription.Text = "Bill_NoBill".Translate();
                         return cell;
                     }
-
                 }
                 else
                 {
@@ -254,18 +252,16 @@ namespace myTNB.Home.Bill
                     cell.imgArrow.Hidden = paymentHistoryModel.NmPBranch != "myTNB Mobile App" ? true : false;
                     var strDate = paymentHistoryModel.DtEvent ?? string.Empty;
                     date = string.IsNullOrEmpty(strDate) || strDate.ToLower().Equals("n/a")
-                                                 ? "Common_NA".Translate()
-                                                 : DateHelper.GetFormattedDate(paymentHistoryModel.DtEvent, "dd MMM");
+                        ? "Common_NA".Translate() : DateHelper.GetFormattedDate(paymentHistoryModel.DtEvent, "dd MMM");
                     details = string.IsNullOrEmpty(paymentHistoryModel.NmPBranch) || string.IsNullOrWhiteSpace(paymentHistoryModel.NmPBranch)
-                                            ? string.Empty : string.Format("{0} {1}", "Bill_Via".Translate(), paymentHistoryModel.NmPBranch);
+                        ? string.Empty : string.Format("{0} {1}", "Bill_Via".Translate(), paymentHistoryModel.NmPBranch);
                 }
                 else
                 {
                     cell.imgArrow.Hidden = true;
                     var strDate = paymentHistoryModel.PaidDate ?? string.Empty;
                     date = string.IsNullOrEmpty(strDate) || strDate.ToLower().Equals("n/a")
-                                                 ? "Common_NA".Translate()
-                                                 : DateHelper.GetFormattedDate(paymentHistoryModel.PaidDate, "dd MMM");
+                        ? "Common_NA".Translate() : DateHelper.GetFormattedDate(paymentHistoryModel.PaidDate, "dd MMM");
                     details = "Bill_PaymentFrom".Translate();
                 }
 
