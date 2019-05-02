@@ -26,7 +26,7 @@ namespace myTNB
                 Image = UIImage.FromBundle("IC-RE-Leaf-Green")
             };
 
-            viewLine = GenericLine.GetLine(new CGRect(0, cellHeight - 1, cellWidth, 1);
+            viewLine = GenericLine.GetLine(new CGRect(0, cellHeight - 1, cellWidth, 1));
             viewLine.Hidden = false;
 
             AddSubviews(new UIView[] { lblAccountName, imgLeaf, viewLine });
