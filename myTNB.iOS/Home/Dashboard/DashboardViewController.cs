@@ -190,7 +190,7 @@ namespace myTNB.Dashboard
             var acct = DataManager.DataManager.SharedInstance.SelectedAccount;
             var due = DataManager.DataManager.SharedInstance.GetDue(acct.accNum);
 
-            if (due != null)
+            if (due != null && DataManager.DataManager.SharedInstance.AccountRecordsList?.d?.Count > 1)
             {
                 _amountDue = due.amountDue;
                 _dateDue = due.billDueDate;
