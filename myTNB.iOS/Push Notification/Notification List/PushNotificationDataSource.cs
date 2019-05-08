@@ -36,7 +36,7 @@ namespace myTNB.PushNotification
             {
                 cell = new NotificationViewCell("pushNotificationCell");
             }
-            cell.UpdateCell(_controller.isSelectionMode);
+            cell.UpdateCell(_controller._isSelectionMode);
             cell.ClearsContextBeforeDrawing = true;
             cell.imgIcon.Image = UIImage.FromBundle(GetIcon(notification.BCRMNotificationTypeId));
             cell.lblTitle.Text = notification.Title;
@@ -50,6 +50,7 @@ namespace myTNB.PushNotification
             cell.viewCheckBox.AddGestureRecognizer(new UITapGestureRecognizer(() =>
             {
                 notification.IsSelected = !notification.IsSelected;
+                _controller.UpdateTitleRightIconImage(notification);
                 cell.imgCheckbox.Image = UIImage.FromBundle(notification.IsSelected
                                                              ? "Payment-Checkbox-Active"
                                                              : "Payment-Checkbox-Inactive");
@@ -60,7 +61,20 @@ namespace myTNB.PushNotification
 
         public override void RowSelected(UITableView tableView, NSIndexPath indexPath)
         {
-            _controller.ExecuteGetNotificationDetailedInfoCall(_data[indexPath.Row]);
+            if (_controller._isSelectionMode)
+            {
+                UserNotificationDataModel notification = _data[indexPath.Row];
+                notification.IsSelected = !notification.IsSelected;
+                _controller.UpdateTitleRightIconImage(notification);
+                NSIndexPath[] rowsToReload = new NSIndexPath[] {
+                    indexPath
+                };
+                tableView.ReloadRows(rowsToReload, UITableViewRowAnimation.None);
+            }
+            else
+            {
+                _controller.ExecuteGetNotificationDetailedInfoCall(_data[indexPath.Row]);
+            }
         }
 
         internal string GetDate(string createdDate)

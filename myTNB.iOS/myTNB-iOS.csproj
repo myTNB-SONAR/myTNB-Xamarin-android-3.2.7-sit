@@ -858,6 +858,14 @@
     <ImageAsset Include="Assets.xcassets\LogOut.imageset\LogOut.png" />
     <ImageAsset Include="Assets.xcassets\LogOut.imageset\LogOut%402x.png" />
     <ImageAsset Include="Assets.xcassets\LogOut.imageset\LogOut%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Edit.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Notification-Check.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Notification-Check.imageset\Notification-Check.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Check.imageset\Notification-Check%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Check.imageset\Notification-Check%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Edit.imageset\Notification-Edit-1.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Edit.imageset\Notification-Edit%402x-1.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Edit.imageset\Notification-Edit%403x-1.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -1104,6 +1112,8 @@
     <Folder Include="Home\Feedback\Feedback Image\" />
     <Folder Include="Home\More\Language\" />
     <Folder Include="Helpers\Generic Line\" />
+    <Folder Include="Assets.xcassets\Notification-Edit.imageset\" />
+    <Folder Include="Assets.xcassets\Notification-Check.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />

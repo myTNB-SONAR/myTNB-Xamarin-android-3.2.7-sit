@@ -7,6 +7,7 @@ using myTNB.Dashboard.DashboardComponents;
 using myTNB.Model;
 using UIKit;
 using myTNB.SQLite.SQLiteDataManager;
+using System.Diagnostics;
 
 namespace myTNB.PushNotification
 {
@@ -20,9 +21,12 @@ namespace myTNB.PushNotification
         NotificationDetailedInfoResponseModel _detailedInfo = new NotificationDetailedInfoResponseModel();
         UserNotificationDataModel NotificationInfo = new UserNotificationDataModel();
         public DeleteNotificationResponseModel _deleteNotificationResponse = new DeleteNotificationResponseModel();
+        TitleBarComponent _titleBarComponent;
         List<UserNotificationDataModel> notifications;
-        public bool isSelectionMode = false;
-        bool isAllSelected = false;
+        List<UserNotificationDataModel> notificationsForDeletion;
+        public bool _isSelectionMode = false;
+        bool _isDeletionMode = false;
+        bool _isAllSelected = false;
 
         UIView _viewDelete;
         UIImageView _imgNoNotification;
@@ -136,34 +140,55 @@ namespace myTNB.PushNotification
             NavigationController.SetNavigationBarHidden(true, false);
             GradientViewComponent gradientViewComponent = new GradientViewComponent(View, true, 89, true);
             UIView headerView = gradientViewComponent.GetUI();
-            TitleBarComponent titleBarComponent = new TitleBarComponent(headerView);
+            _titleBarComponent = new TitleBarComponent(headerView);
 
-            UIView titleBarView = titleBarComponent.GetUI();
-            titleBarComponent.SetTitle("PushNotification_Title".Translate());
-            titleBarComponent.SetNotificationVisibility(false);
-            titleBarComponent.SetNotificationImage("Notification-Delete");
-            titleBarComponent.SetNotificationAction(new UITapGestureRecognizer(() =>
+            UIView titleBarView = _titleBarComponent.GetUI();
+            _titleBarComponent.SetTitle("PushNotification_Title".Translate());
+            _titleBarComponent.SetNotificationVisibility(false);
+            _titleBarComponent.SetNotificationImage("Notification-Edit");
+            _titleBarComponent.SetNotificationAction(new UITapGestureRecognizer(() =>
             {
-                if (!isSelectionMode)
+                if (_isDeletionMode)
                 {
-                    titleBarComponent.SetNotificationImage("Cancel-White");
-                    UpdateSelectAllFlags(false);
-                    viewHeader = null;
-                    CreateViewHeader();
-                    pushNotificationTableView.TableHeaderView = viewHeader;
+                    Debug.WriteLine("_isDeletionMode");
+                    var alert = UIAlertController.Create("PushNotification_DeleteTitle".Translate(), "Are you sure you want to delete the selected notification(s)?", UIAlertControllerStyle.Alert);
+                    alert.AddAction(UIAlertAction.Create("Yes", UIAlertActionStyle.Default, (obj) =>
+                    {
+                        if (notificationsForDeletion != null)
+                        {
+                            Debug.WriteLine("notificationsForDeletion count: " + notificationsForDeletion.Count);
+                            foreach (UserNotificationDataModel notif in notificationsForDeletion)
+                            {
+                                Debug.WriteLine("Delete: " + notif.Id);
+                            }
+                        }
+                    }));
+                    alert.AddAction(UIAlertAction.Create("Common_Cancel".Translate(), UIAlertActionStyle.Cancel, null));
+                    PresentViewController(alert, animated: true, completionHandler: null);
                 }
                 else
                 {
-                    titleBarComponent.SetNotificationImage("Notification-Delete");
-                    pushNotificationTableView.TableHeaderView = null;
-                    isAllSelected = false;
+                    if (!_isSelectionMode)
+                    {
+                        _titleBarComponent.SetNotificationImage("Notification-Check");
+                        UpdateSelectAllFlags(false);
+                        viewHeader = null;
+                        CreateViewHeader();
+                        pushNotificationTableView.TableHeaderView = viewHeader;
+                    }
+                    else
+                    {
+                        _titleBarComponent.SetNotificationImage("Notification-Edit");
+                        pushNotificationTableView.TableHeaderView = null;
+                        _isAllSelected = false;
+                    }
+                    _isSelectionMode = !_isSelectionMode;
+                    pushNotificationTableView.ReloadData();
                 }
-                isSelectionMode = !isSelectionMode;
-                pushNotificationTableView.ReloadData();
             }));
 
-            titleBarComponent.SetBackVisibility(false);
-            titleBarComponent.SetBackAction(new UITapGestureRecognizer(() =>
+            _titleBarComponent.SetBackVisibility(false);
+            _titleBarComponent.SetBackAction(new UITapGestureRecognizer(() =>
             {
                 DismissViewController(true, null);
             }));
@@ -366,11 +391,11 @@ namespace myTNB.PushNotification
 
             viewCheckBox.AddGestureRecognizer(new UITapGestureRecognizer(() =>
             {
-                isAllSelected = !isAllSelected;
-                imgCheckbox.Image = UIImage.FromBundle(isAllSelected
+                _isAllSelected = !_isAllSelected;
+                imgCheckbox.Image = UIImage.FromBundle(_isAllSelected
                                                         ? "Payment-Checkbox-Active"
                                                         : "Payment-Checkbox-Inactive");
-                UpdateSelectAllFlags(isAllSelected);
+                UpdateSelectAllFlags(_isAllSelected);
             }));
 
             UILabel lblTitle = new UILabel(new CGRect(45, 25, cellWidth - 96 - 60, 18))
@@ -400,11 +425,77 @@ namespace myTNB.PushNotification
         /// <param name="flag">If set to <c>true</c> flag.</param>
         internal void UpdateSelectAllFlags(bool flag)
         {
+            notificationsForDeletion = null;
+            if (flag)
+            {
+                notificationsForDeletion = new List<UserNotificationDataModel>();
+            }
+
             foreach (UserNotificationDataModel obj in notifications)
             {
                 obj.IsSelected = flag;
+                if (flag)
+                {
+                    notificationsForDeletion.Add(obj);
+                }
             }
+
             pushNotificationTableView.ReloadData();
+            UpdateTitleRightIconImage();
+        }
+
+        /// <summary>
+        /// Updates the title right icon image.
+        /// </summary>
+        public void UpdateTitleRightIconImage(UserNotificationDataModel notifModel = null)
+        {
+            _isDeletionMode = IsAtLeastOneIsSelected();
+            _titleBarComponent.SetNotificationImage(_isDeletionMode
+                                                        ? "Notification-Delete"
+                                                        : "Notification-Check");
+            UpdateNotificationForDeletionList(notifModel);
+        }
+
+        /// <summary>
+        /// Checks if at least one notification is selected for deletion
+        /// </summary>
+        /// <returns><c>true</c>, if at least one is selected was ised, <c>false</c> otherwise.</returns>
+        internal bool IsAtLeastOneIsSelected()
+        {
+            foreach (UserNotificationDataModel obj in notifications)
+            {
+                if (obj.IsSelected)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Updates the notification for deletion list.
+        /// </summary>
+        /// <param name="notifModel">Notif model.</param>
+        internal void UpdateNotificationForDeletionList(UserNotificationDataModel notifModel)
+        {
+            if (notifModel != null)
+            {
+                if (notifModel.IsSelected)
+                {
+                    if (notificationsForDeletion == null)
+                    {
+                        notificationsForDeletion = new List<UserNotificationDataModel>();
+                    }
+                    notificationsForDeletion.Add(notifModel);
+                }
+                else
+                {
+                    if (notificationsForDeletion != null)
+                    {
+                        notificationsForDeletion.Remove(notifModel);
+                    }
+                }
+            }
         }
     }
 }
