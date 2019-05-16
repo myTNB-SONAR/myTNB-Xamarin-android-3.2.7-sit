@@ -313,7 +313,12 @@ namespace myTNB_Android.Src.Notifications.Activity
 
         public void ShowNotificationFilterName(string filterName)
         {
-            txtNotificationName.Text = filterName;
+            if (!string.IsNullOrEmpty(filterName)) {
+                txtNotificationName.Text = filterName;    
+            } else {
+                txtNotificationName.Text = "";
+            }
+
         }
 
         public void ShowDetails(NotificationDetails.Models.NotificationDetails details, UserNotificationData notificationData, int position)

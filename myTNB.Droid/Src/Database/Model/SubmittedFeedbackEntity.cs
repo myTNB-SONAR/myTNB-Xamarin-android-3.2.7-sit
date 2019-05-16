@@ -35,70 +35,89 @@ namespace myTNB_Android.Src.Database.Model
 
         public static int CreateTable()
         {
-            var db = new SQLiteConnection(Constants.DB_PATH);
-            return db.CreateTable<SubmittedFeedbackEntity>();
+            //var db = new SQLiteConnection(Constants.DB_PATH);
+            var db = DBHelper.GetSQLiteConnection();
+            return (int)db.CreateTable<SubmittedFeedbackEntity>();
         }
 
 
 
         public static int InsertOrReplace(SubmittedFeedback submittedFeedback)
         {
-            var db = new SQLiteConnection(Constants.DB_PATH);
-            var newRecord = new SubmittedFeedbackEntity()
-            {
-                Id = submittedFeedback.FeedbackId,
-                DateCreated = submittedFeedback.DateCreated,
-                FeedbackMessage = submittedFeedback.FeedbackMessage,
-                FeedbackCategoryName = submittedFeedback.FeedbackCategoryName,
-                FeedbackCategoryId = submittedFeedback.FeedbackCategoryId
-            };
+            //using (var db = new SQLiteConnection(Constants.DB_PATH))
+            //{
+            var db = DBHelper.GetSQLiteConnection();
+                var newRecord = new SubmittedFeedbackEntity()
+                {
+                    Id = submittedFeedback.FeedbackId,
+                    DateCreated = submittedFeedback.DateCreated,
+                    FeedbackMessage = submittedFeedback.FeedbackMessage,
+                    FeedbackCategoryName = submittedFeedback.FeedbackCategoryName,
+                    FeedbackCategoryId = submittedFeedback.FeedbackCategoryId
+                };
 
-            int newRecordRow = db.InsertOrReplace(newRecord);
+                int newRecordRow = db.InsertOrReplace(newRecord);
 
-            return newRecordRow;
+                return newRecordRow;
+            //}
         }
 
         public static int InsertOrReplace(string Id, string DateCreated, string FeedbackMessage, string FeedbackCategoryName, string FeedbackCategoryId)
         {
-            var db = new SQLiteConnection(Constants.DB_PATH);
-            var newRecord = new SubmittedFeedbackEntity()
-            {
-                Id = Id,
-                DateCreated = DateCreated,
-                FeedbackMessage = FeedbackMessage,
-                FeedbackCategoryName = FeedbackCategoryName,
-                FeedbackCategoryId = FeedbackCategoryId
-            };
+            //using (var db = new SQLiteConnection(Constants.DB_PATH))
+            //{
+            var db = DBHelper.GetSQLiteConnection();
+                var newRecord = new SubmittedFeedbackEntity()
+                {
+                    Id = Id,
+                    DateCreated = DateCreated,
+                    FeedbackMessage = FeedbackMessage,
+                    FeedbackCategoryName = FeedbackCategoryName,
+                    FeedbackCategoryId = FeedbackCategoryId
+                };
 
-            int newRecordRow = db.InsertOrReplace(newRecord);
+                int newRecordRow = db.InsertOrReplace(newRecord);
 
-            return newRecordRow;
+                return newRecordRow;
+            //}
         }
 
         public static void Remove()
         {
-            var db = new SQLiteConnection(Constants.DB_PATH);
-            db.Execute("DELETE FROM SubmittedFeedbackEntity");
+            //using (var db = new SQLiteConnection(Constants.DB_PATH))
+            //{
+            var db = DBHelper.GetSQLiteConnection();
+                db.Execute("DELETE FROM SubmittedFeedbackEntity");
+            //}
         }
 
 
         public static bool HasRecords()
         {
-            var db = new SQLiteConnection(Constants.DB_PATH);
-            return db.Query<SubmittedFeedbackEntity>("SELECT * FROM SubmittedFeedbackEntity").Count > 0;
+            //using (var db = new SQLiteConnection(Constants.DB_PATH))
+            //{
+            var db = DBHelper.GetSQLiteConnection();
+                return db.Query<SubmittedFeedbackEntity>("SELECT * FROM SubmittedFeedbackEntity").Count > 0;
+            //}
         }
 
         public static int Count()
         {
-            var db = new SQLiteConnection(Constants.DB_PATH);
-            return db.Query<SubmittedFeedbackEntity>("SELECT * FROM SubmittedFeedbackEntity").Count();
+            //using (var db = new SQLiteConnection(Constants.DB_PATH))
+            //{
+            var db = DBHelper.GetSQLiteConnection();
+                return db.Query<SubmittedFeedbackEntity>("SELECT * FROM SubmittedFeedbackEntity").Count();
+            //}
         }
 
   
         public static List<SubmittedFeedbackEntity> GetActiveList()
         {
-            var db = new SQLiteConnection(Constants.DB_PATH);
-            return db.Query<SubmittedFeedbackEntity>("SELECT * FROM SubmittedFeedbackEntity").ToList();
+            //using (var db = new SQLiteConnection(Constants.DB_PATH))
+            //{
+            var db = DBHelper.GetSQLiteConnection();
+                return db.Query<SubmittedFeedbackEntity>("SELECT * FROM SubmittedFeedbackEntity").ToList();
+            //}
         }
     }
 }

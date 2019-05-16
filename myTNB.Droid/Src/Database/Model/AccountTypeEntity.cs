@@ -35,13 +35,16 @@ namespace myTNB_Android.Src.Database.Model
 
         public static int CreateTable(SQLiteConnection db)
         {
-            return db.CreateTable<AccountTypeEntity>();
+            return (int)db.CreateTable<AccountTypeEntity>();
         }
 
         public static int CreateTable()
         {
-            var db = new SQLiteConnection(Constants.DB_PATH);
-            return db.CreateTable<AccountTypeEntity>();
+            //using (var db = new SQLiteConnection(Constants.DB_PATH))
+            //{
+            var db = DBHelper.GetSQLiteConnection();
+            return (int)db.CreateTable<AccountTypeEntity>();
+            //}
         }
 
         public static void CreateTableAsync(SQLiteAsyncConnection db)
@@ -51,21 +54,23 @@ namespace myTNB_Android.Src.Database.Model
 
         public static int InsertOrReplace(string type , int accountType, string accountTypeName)
         {
-            var db = new SQLiteConnection(Constants.DB_PATH);
-            var newRecord = new AccountTypeEntity()
-            {
-                Type = type,
-                AccountType = accountType,
-                AccountTypeName = accountTypeName
-            };
-            int newRecordId = db.InsertOrReplace(newRecord);
-            if (newRecordId > 0)
-            {
-                return newRecord.AccountType ?? 0;
-            }
+            //using (var db = new SQLiteConnection(Constants.DB_PATH))
+            //{
+            var db = DBHelper.GetSQLiteConnection();
+                var newRecord = new AccountTypeEntity()
+                {
+                    Type = type,
+                    AccountType = accountType,
+                    AccountTypeName = accountTypeName
+                };
+                int newRecordId = db.InsertOrReplace(newRecord);
+                if (newRecordId > 0)
+                {
+                    return newRecord.AccountType ?? 0;
+                }
 
-            return 0;
-
+                return 0;
+            //}
             
         }
 

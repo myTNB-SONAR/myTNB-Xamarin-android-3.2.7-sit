@@ -49,7 +49,16 @@ namespace myTNB_Android.Src.FindUs.Activity
             base.OnCreate(savedInstanceState);
             try
             {
-                selectedLocationType = JsonConvert.DeserializeObject<LocationType>(Intent.Extras.GetString("selectedLocationType"));
+                Bundle extras = Intent.Extras;
+
+                if (extras != null)
+                {
+                    if (extras.ContainsKey("selectedLocationType")) {
+                    //selectedLocationType = JsonConvert.DeserializeObject<LocationType>(Intent.Extras.GetString("selectedLocationType"));
+                    selectedLocationType = DeSerialze<LocationType>(extras.GetString("selectedLocationType"));
+                    }
+                }
+
 
                 if (selectedLocationType != null)
                 {

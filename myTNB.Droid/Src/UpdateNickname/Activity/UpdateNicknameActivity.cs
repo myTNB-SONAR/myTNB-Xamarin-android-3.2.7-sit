@@ -55,10 +55,15 @@ namespace myTNB_Android.Src.UpdateNickname.Activity
             base.OnCreate(savedInstanceState);
 
             try {
-            if (Intent.Extras.ContainsKey(Constants.SELECTED_ACCOUNT))
+                Bundle extras = Intent.Extras;
+
+                if (extras !=  null) {
+                if (extras.ContainsKey(Constants.SELECTED_ACCOUNT))
             {
-                accountData = JsonConvert.DeserializeObject<AccountData>(Intent.Extras.GetString(Constants.SELECTED_ACCOUNT));
+                //accountData = JsonConvert.DeserializeObject<AccountData>(Intent.Extras.GetString(Constants.SELECTED_ACCOUNT));
+                        accountData = DeSerialze<AccountData>(extras.GetString(Constants.SELECTED_ACCOUNT));
             }
+                }
 
 
             progress = new MaterialDialog.Builder(this)

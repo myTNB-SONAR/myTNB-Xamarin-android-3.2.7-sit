@@ -6525,26 +6525,26 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f020054
 			public const int avd_hide_password = 2130837588;
 			
-			// aapt resource value: 0x7f0201ae
-			public const int avd_hide_password_1 = 2130837934;
-			
 			// aapt resource value: 0x7f0201af
-			public const int avd_hide_password_2 = 2130837935;
+			public const int avd_hide_password_1 = 2130837935;
 			
 			// aapt resource value: 0x7f0201b0
-			public const int avd_hide_password_3 = 2130837936;
+			public const int avd_hide_password_2 = 2130837936;
+			
+			// aapt resource value: 0x7f0201b1
+			public const int avd_hide_password_3 = 2130837937;
 			
 			// aapt resource value: 0x7f020055
 			public const int avd_show_password = 2130837589;
 			
-			// aapt resource value: 0x7f0201b1
-			public const int avd_show_password_1 = 2130837937;
-			
 			// aapt resource value: 0x7f0201b2
-			public const int avd_show_password_2 = 2130837938;
+			public const int avd_show_password_1 = 2130837938;
 			
 			// aapt resource value: 0x7f0201b3
-			public const int avd_show_password_3 = 2130837939;
+			public const int avd_show_password_2 = 2130837939;
+			
+			// aapt resource value: 0x7f0201b4
+			public const int avd_show_password_3 = 2130837940;
 			
 			// aapt resource value: 0x7f020056
 			public const int billing = 2130837590;
@@ -7255,328 +7255,331 @@ namespace myTNB_Android
 			public const int inactive_indicator = 2130837825;
 			
 			// aapt resource value: 0x7f020142
-			public const int learn_more_button_background = 2130837826;
+			public const int launch_screen = 2130837826;
 			
 			// aapt resource value: 0x7f020143
-			public const int light_button_background = 2130837827;
+			public const int learn_more_button_background = 2130837827;
 			
 			// aapt resource value: 0x7f020144
-			public const int light_green_outline_button_background = 2130837828;
+			public const int light_button_background = 2130837828;
 			
 			// aapt resource value: 0x7f020145
-			public const int LoadingViewAnim = 2130837829;
+			public const int light_green_outline_button_background = 2130837829;
 			
 			// aapt resource value: 0x7f020146
-			public const int Logo = 2130837830;
+			public const int LoadingViewAnim = 2130837830;
 			
 			// aapt resource value: 0x7f020147
-			public const int logo_white = 2130837831;
+			public const int Logo = 2130837831;
 			
 			// aapt resource value: 0x7f020148
-			public const int master = 2130837832;
+			public const int logo_white = 2130837832;
 			
 			// aapt resource value: 0x7f020149
-			public const int md_btn_selected = 2130837833;
+			public const int master = 2130837833;
 			
 			// aapt resource value: 0x7f02014a
-			public const int md_btn_selected_dark = 2130837834;
+			public const int md_btn_selected = 2130837834;
 			
 			// aapt resource value: 0x7f02014b
-			public const int md_btn_selector = 2130837835;
+			public const int md_btn_selected_dark = 2130837835;
 			
 			// aapt resource value: 0x7f02014c
-			public const int md_btn_selector_dark = 2130837836;
+			public const int md_btn_selector = 2130837836;
 			
 			// aapt resource value: 0x7f02014d
-			public const int md_btn_selector_ripple = 2130837837;
+			public const int md_btn_selector_dark = 2130837837;
 			
 			// aapt resource value: 0x7f02014e
-			public const int md_btn_selector_ripple_dark = 2130837838;
+			public const int md_btn_selector_ripple = 2130837838;
 			
 			// aapt resource value: 0x7f02014f
-			public const int md_btn_shape = 2130837839;
+			public const int md_btn_selector_ripple_dark = 2130837839;
 			
 			// aapt resource value: 0x7f020150
-			public const int md_item_selected = 2130837840;
+			public const int md_btn_shape = 2130837840;
 			
 			// aapt resource value: 0x7f020151
-			public const int md_item_selected_dark = 2130837841;
+			public const int md_item_selected = 2130837841;
 			
 			// aapt resource value: 0x7f020152
-			public const int md_nav_back = 2130837842;
+			public const int md_item_selected_dark = 2130837842;
 			
 			// aapt resource value: 0x7f020153
-			public const int md_selector = 2130837843;
+			public const int md_nav_back = 2130837843;
 			
 			// aapt resource value: 0x7f020154
-			public const int md_selector_dark = 2130837844;
+			public const int md_selector = 2130837844;
 			
 			// aapt resource value: 0x7f020155
-			public const int md_transparent = 2130837845;
+			public const int md_selector_dark = 2130837845;
 			
 			// aapt resource value: 0x7f020156
-			public const int messenger_bubble_large_blue = 2130837846;
+			public const int md_transparent = 2130837846;
 			
 			// aapt resource value: 0x7f020157
-			public const int messenger_bubble_large_white = 2130837847;
+			public const int messenger_bubble_large_blue = 2130837847;
 			
 			// aapt resource value: 0x7f020158
-			public const int messenger_bubble_small_blue = 2130837848;
+			public const int messenger_bubble_large_white = 2130837848;
 			
 			// aapt resource value: 0x7f020159
-			public const int messenger_bubble_small_white = 2130837849;
+			public const int messenger_bubble_small_blue = 2130837849;
 			
 			// aapt resource value: 0x7f02015a
-			public const int messenger_button_blue_bg_round = 2130837850;
+			public const int messenger_bubble_small_white = 2130837850;
 			
 			// aapt resource value: 0x7f02015b
-			public const int messenger_button_blue_bg_selector = 2130837851;
+			public const int messenger_button_blue_bg_round = 2130837851;
 			
 			// aapt resource value: 0x7f02015c
-			public const int messenger_button_send_round_shadow = 2130837852;
+			public const int messenger_button_blue_bg_selector = 2130837852;
 			
 			// aapt resource value: 0x7f02015d
-			public const int messenger_button_white_bg_round = 2130837853;
+			public const int messenger_button_send_round_shadow = 2130837853;
 			
 			// aapt resource value: 0x7f02015e
-			public const int messenger_button_white_bg_selector = 2130837854;
+			public const int messenger_button_white_bg_round = 2130837854;
 			
 			// aapt resource value: 0x7f02015f
-			public const int navigation_empty_icon = 2130837855;
+			public const int messenger_button_white_bg_selector = 2130837855;
 			
 			// aapt resource value: 0x7f020160
-			public const int notification_action_background = 2130837856;
+			public const int navigation_empty_icon = 2130837856;
 			
 			// aapt resource value: 0x7f020161
-			public const int notification_bg = 2130837857;
+			public const int notification_action_background = 2130837857;
 			
 			// aapt resource value: 0x7f020162
-			public const int notification_bg_low = 2130837858;
+			public const int notification_bg = 2130837858;
 			
 			// aapt resource value: 0x7f020163
-			public const int notification_bg_low_normal = 2130837859;
+			public const int notification_bg_low = 2130837859;
 			
 			// aapt resource value: 0x7f020164
-			public const int notification_bg_low_pressed = 2130837860;
+			public const int notification_bg_low_normal = 2130837860;
 			
 			// aapt resource value: 0x7f020165
-			public const int notification_bg_normal = 2130837861;
+			public const int notification_bg_low_pressed = 2130837861;
 			
 			// aapt resource value: 0x7f020166
-			public const int notification_bg_normal_pressed = 2130837862;
+			public const int notification_bg_normal = 2130837862;
 			
 			// aapt resource value: 0x7f020167
-			public const int notification_icon_background = 2130837863;
-			
-			// aapt resource value: 0x7f0201ac
-			public const int notification_template_icon_bg = 2130837932;
-			
-			// aapt resource value: 0x7f0201ad
-			public const int notification_template_icon_low_bg = 2130837933;
+			public const int notification_bg_normal_pressed = 2130837863;
 			
 			// aapt resource value: 0x7f020168
-			public const int notification_tile_bg = 2130837864;
+			public const int notification_icon_background = 2130837864;
+			
+			// aapt resource value: 0x7f0201ad
+			public const int notification_template_icon_bg = 2130837933;
+			
+			// aapt resource value: 0x7f0201ae
+			public const int notification_template_icon_low_bg = 2130837934;
 			
 			// aapt resource value: 0x7f020169
-			public const int notify_panel_notification_icon_bg = 2130837865;
+			public const int notification_tile_bg = 2130837865;
 			
 			// aapt resource value: 0x7f02016a
-			public const int payment = 2130837866;
+			public const int notify_panel_notification_icon_bg = 2130837866;
 			
 			// aapt resource value: 0x7f02016b
-			public const int placeholder_account_no = 2130837867;
+			public const int payment = 2130837867;
 			
 			// aapt resource value: 0x7f02016c
-			public const int placeholder_email = 2130837868;
+			public const int placeholder_account_no = 2130837868;
 			
 			// aapt resource value: 0x7f02016d
-			public const int placeholder_email_white = 2130837869;
+			public const int placeholder_email = 2130837869;
 			
 			// aapt resource value: 0x7f02016e
-			public const int placeholder_ic = 2130837870;
+			public const int placeholder_email_white = 2130837870;
 			
 			// aapt resource value: 0x7f02016f
-			public const int placeholder_label = 2130837871;
+			public const int placeholder_ic = 2130837871;
 			
 			// aapt resource value: 0x7f020170
-			public const int placeholder_mobile = 2130837872;
+			public const int placeholder_label = 2130837872;
 			
 			// aapt resource value: 0x7f020171
-			public const int placeholder_mobile_white = 2130837873;
+			public const int placeholder_mobile = 2130837873;
 			
 			// aapt resource value: 0x7f020172
-			public const int placeholder_name = 2130837874;
+			public const int placeholder_mobile_white = 2130837874;
 			
 			// aapt resource value: 0x7f020173
-			public const int placeholder_name_white = 2130837875;
+			public const int placeholder_name = 2130837875;
 			
 			// aapt resource value: 0x7f020174
-			public const int placeholder_password = 2130837876;
+			public const int placeholder_name_white = 2130837876;
 			
 			// aapt resource value: 0x7f020175
-			public const int placeholder_password_white = 2130837877;
+			public const int placeholder_password = 2130837877;
 			
 			// aapt resource value: 0x7f020176
-			public const int promotion = 2130837878;
+			public const int placeholder_password_white = 2130837878;
 			
 			// aapt resource value: 0x7f020177
-			public const int radio_button_off = 2130837879;
+			public const int promotion = 2130837879;
 			
 			// aapt resource value: 0x7f020178
-			public const int radio_button_on = 2130837880;
+			public const int radio_button_off = 2130837880;
 			
 			// aapt resource value: 0x7f020179
-			public const int radio_button_selector = 2130837881;
+			public const int radio_button_on = 2130837881;
 			
 			// aapt resource value: 0x7f02017a
-			public const int radio_button_text = 2130837882;
+			public const int radio_button_selector = 2130837882;
 			
 			// aapt resource value: 0x7f02017b
-			public const int radio_checked = 2130837883;
+			public const int radio_button_text = 2130837883;
 			
 			// aapt resource value: 0x7f02017c
-			public const int radio_unchecked = 2130837884;
+			public const int radio_checked = 2130837884;
 			
 			// aapt resource value: 0x7f02017d
-			public const int rating_selector = 2130837885;
+			public const int radio_unchecked = 2130837885;
 			
 			// aapt resource value: 0x7f02017e
-			public const int red_button_background = 2130837886;
+			public const int rating_selector = 2130837886;
 			
 			// aapt resource value: 0x7f02017f
-			public const int resend_active_background = 2130837887;
+			public const int red_button_background = 2130837887;
 			
 			// aapt resource value: 0x7f020180
-			public const int resend_inactive_progress = 2130837888;
+			public const int resend_active_background = 2130837888;
 			
 			// aapt resource value: 0x7f020181
-			public const int resend_inactive_with_border_progress = 2130837889;
+			public const int resend_inactive_progress = 2130837889;
 			
 			// aapt resource value: 0x7f020182
-			public const int ResetPasswordSuccessCheckDrawable = 2130837890;
+			public const int resend_inactive_with_border_progress = 2130837890;
 			
 			// aapt resource value: 0x7f020183
-			public const int ResetPasswordSuccessGreenCircle = 2130837891;
+			public const int ResetPasswordSuccessCheckDrawable = 2130837891;
 			
 			// aapt resource value: 0x7f020184
-			public const int ResetPasswordSuccessWhiteBackground = 2130837892;
+			public const int ResetPasswordSuccessGreenCircle = 2130837892;
 			
 			// aapt resource value: 0x7f020185
-			public const int rounded_cornor_dialog = 2130837893;
+			public const int ResetPasswordSuccessWhiteBackground = 2130837893;
 			
 			// aapt resource value: 0x7f020186
-			public const int scan = 2130837894;
+			public const int rounded_cornor_dialog = 2130837894;
 			
 			// aapt resource value: 0x7f020187
-			public const int selector_password_right_icon = 2130837895;
+			public const int scan = 2130837895;
 			
 			// aapt resource value: 0x7f020188
-			public const int selector_pressable = 2130837896;
+			public const int selector_password_right_icon = 2130837896;
 			
 			// aapt resource value: 0x7f020189
-			public const int shadow_effect = 2130837897;
+			public const int selector_pressable = 2130837897;
 			
 			// aapt resource value: 0x7f02018a
-			public const int silver_chalice_button_background = 2130837898;
+			public const int shadow_effect = 2130837898;
 			
 			// aapt resource value: 0x7f02018b
-			public const int silver_chalice_button_outline = 2130837899;
+			public const int silver_chalice_button_background = 2130837899;
 			
 			// aapt resource value: 0x7f02018c
-			public const int solid_border_background = 2130837900;
+			public const int silver_chalice_button_outline = 2130837900;
 			
 			// aapt resource value: 0x7f02018d
-			public const int splash = 2130837901;
+			public const int solid_border_background = 2130837901;
 			
 			// aapt resource value: 0x7f02018e
-			public const int Supply = 2130837902;
+			public const int splash = 2130837902;
 			
 			// aapt resource value: 0x7f02018f
-			public const int tagline = 2130837903;
+			public const int Supply = 2130837903;
 			
 			// aapt resource value: 0x7f020190
-			public const int tenaga_nasional = 2130837904;
+			public const int tagline = 2130837904;
 			
 			// aapt resource value: 0x7f020191
-			public const int tnb_loading_frame_01 = 2130837905;
+			public const int tenaga_nasional = 2130837905;
 			
 			// aapt resource value: 0x7f020192
-			public const int tnb_loading_frame_02 = 2130837906;
+			public const int tnb_loading_frame_01 = 2130837906;
 			
 			// aapt resource value: 0x7f020193
-			public const int tnb_loading_frame_03 = 2130837907;
+			public const int tnb_loading_frame_02 = 2130837907;
 			
 			// aapt resource value: 0x7f020194
-			public const int tnb_loading_frame_04 = 2130837908;
+			public const int tnb_loading_frame_03 = 2130837908;
 			
 			// aapt resource value: 0x7f020195
-			public const int tnb_loading_frame_05 = 2130837909;
+			public const int tnb_loading_frame_04 = 2130837909;
 			
 			// aapt resource value: 0x7f020196
-			public const int tnb_loading_frame_06 = 2130837910;
+			public const int tnb_loading_frame_05 = 2130837910;
 			
 			// aapt resource value: 0x7f020197
-			public const int tnb_loading_frame_07 = 2130837911;
+			public const int tnb_loading_frame_06 = 2130837911;
 			
 			// aapt resource value: 0x7f020198
-			public const int tnb_loading_frame_08 = 2130837912;
+			public const int tnb_loading_frame_07 = 2130837912;
 			
 			// aapt resource value: 0x7f020199
-			public const int tnb_loading_frame_09 = 2130837913;
+			public const int tnb_loading_frame_08 = 2130837913;
 			
 			// aapt resource value: 0x7f02019a
-			public const int tnb_loading_frame_10 = 2130837914;
+			public const int tnb_loading_frame_09 = 2130837914;
 			
 			// aapt resource value: 0x7f02019b
-			public const int tnb_loading_frame_11 = 2130837915;
+			public const int tnb_loading_frame_10 = 2130837915;
 			
 			// aapt resource value: 0x7f02019c
-			public const int tnb_loading_frame_12 = 2130837916;
+			public const int tnb_loading_frame_11 = 2130837916;
 			
 			// aapt resource value: 0x7f02019d
-			public const int tnb_loading_frame_13 = 2130837917;
+			public const int tnb_loading_frame_12 = 2130837917;
 			
 			// aapt resource value: 0x7f02019e
-			public const int tnb_loading_frame_14 = 2130837918;
+			public const int tnb_loading_frame_13 = 2130837918;
 			
 			// aapt resource value: 0x7f02019f
-			public const int tnb_loading_frame_15 = 2130837919;
+			public const int tnb_loading_frame_14 = 2130837919;
 			
 			// aapt resource value: 0x7f0201a0
-			public const int tnb_loading_frame_16 = 2130837920;
+			public const int tnb_loading_frame_15 = 2130837920;
 			
 			// aapt resource value: 0x7f0201a1
-			public const int tnb_receipt_logo_header = 2130837921;
+			public const int tnb_loading_frame_16 = 2130837921;
 			
 			// aapt resource value: 0x7f0201a2
-			public const int toggle_widget_background = 2130837922;
+			public const int tnb_receipt_logo_header = 2130837922;
 			
 			// aapt resource value: 0x7f0201a3
-			public const int toggle_widget_textcolor = 2130837923;
+			public const int toggle_widget_background = 2130837923;
 			
 			// aapt resource value: 0x7f0201a4
-			public const int tooltip_frame_dark = 2130837924;
+			public const int toggle_widget_textcolor = 2130837924;
 			
 			// aapt resource value: 0x7f0201a5
-			public const int tooltip_frame_light = 2130837925;
+			public const int tooltip_frame_dark = 2130837925;
 			
 			// aapt resource value: 0x7f0201a6
-			public const int visa = 2130837926;
+			public const int tooltip_frame_light = 2130837926;
 			
 			// aapt resource value: 0x7f0201a7
-			public const int white_background_rect = 2130837927;
+			public const int visa = 2130837927;
 			
 			// aapt resource value: 0x7f0201a8
-			public const int white_button_background = 2130837928;
+			public const int white_background_rect = 2130837928;
 			
 			// aapt resource value: 0x7f0201a9
-			public const int white_radius = 2130837929;
+			public const int white_button_background = 2130837929;
 			
 			// aapt resource value: 0x7f0201aa
-			public const int white_rounded_button_selector = 2130837930;
+			public const int white_radius = 2130837930;
 			
 			// aapt resource value: 0x7f0201ab
-			public const int white_selector_pressable = 2130837931;
+			public const int white_rounded_button_selector = 2130837931;
+			
+			// aapt resource value: 0x7f0201ac
+			public const int white_selector_pressable = 2130837932;
 			
 			static Drawable()
 			{
@@ -7603,8 +7606,8 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f0d0052
 			public const int META = 2131558482;
 			
-			// aapt resource value: 0x7f0d031e
-			public const int ReaccountList = 2131559198;
+			// aapt resource value: 0x7f0d0321
+			public const int ReaccountList = 2131559201;
 			
 			// aapt resource value: 0x7f0d0053
 			public const int SHIFT = 2131558483;
@@ -7612,38 +7615,38 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f0d0054
 			public const int SYM = 2131558484;
 			
-			// aapt resource value: 0x7f0d0334
-			public const int acc_amt_text = 2131559220;
+			// aapt resource value: 0x7f0d0337
+			public const int acc_amt_text = 2131559223;
+			
+			// aapt resource value: 0x7f0d0338
+			public const int acc_amt_value = 2131559224;
 			
 			// aapt resource value: 0x7f0d0335
-			public const int acc_amt_value = 2131559221;
+			public const int acc_name_text = 2131559221;
 			
-			// aapt resource value: 0x7f0d0332
-			public const int acc_name_text = 2131559218;
+			// aapt resource value: 0x7f0d0336
+			public const int acc_name_value = 2131559222;
 			
 			// aapt resource value: 0x7f0d0333
-			public const int acc_name_value = 2131559219;
+			public const int acc_number_text = 2131559219;
 			
-			// aapt resource value: 0x7f0d0330
-			public const int acc_number_text = 2131559216;
+			// aapt resource value: 0x7f0d0334
+			public const int acc_number_value = 2131559220;
 			
-			// aapt resource value: 0x7f0d0331
-			public const int acc_number_value = 2131559217;
-			
-			// aapt resource value: 0x7f0d01c0
-			public const int accountLayout = 2131558848;
-			
-			// aapt resource value: 0x7f0d030b
-			public const int accountNameTxt = 2131559179;
+			// aapt resource value: 0x7f0d01c3
+			public const int accountLayout = 2131558851;
 			
 			// aapt resource value: 0x7f0d030c
-			public const int accountNumber = 2131559180;
+			public const int accountNameTxt = 2131559180;
+			
+			// aapt resource value: 0x7f0d030d
+			public const int accountNumber = 2131559181;
+			
+			// aapt resource value: 0x7f0d02f7
+			public const int account_amount_edittext = 2131559159;
 			
 			// aapt resource value: 0x7f0d02f6
-			public const int account_amount_edittext = 2131559158;
-			
-			// aapt resource value: 0x7f0d02f5
-			public const int account_amount_layout = 2131559157;
+			public const int account_amount_layout = 2131559158;
 			
 			// aapt resource value: 0x7f0d00ab
 			public const int account_label_edittext = 2131558571;
@@ -7651,8 +7654,8 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f0d00aa
 			public const int account_label_layout = 2131558570;
 			
-			// aapt resource value: 0x7f0d033c
-			public const int account_layout = 2131559228;
+			// aapt resource value: 0x7f0d033f
+			public const int account_layout = 2131559231;
 			
 			// aapt resource value: 0x7f0d00b6
 			public const int account_list_recycler_view = 2131558582;
@@ -7663,8 +7666,8 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f0d00bd
 			public const int account_no_layout = 2131558589;
 			
-			// aapt resource value: 0x7f0d028f
-			public const int action0 = 2131559055;
+			// aapt resource value: 0x7f0d0290
+			public const int action0 = 2131559056;
 			
 			// aapt resource value: 0x7f0d009b
 			public const int action_bar = 2131558555;
@@ -7687,23 +7690,23 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f0d0079
 			public const int action_bar_title = 2131558521;
 			
-			// aapt resource value: 0x7f0d028c
-			public const int action_container = 2131559052;
+			// aapt resource value: 0x7f0d028d
+			public const int action_container = 2131559053;
 			
 			// aapt resource value: 0x7f0d009c
 			public const int action_context_bar = 2131558556;
 			
-			// aapt resource value: 0x7f0d035c
-			public const int action_delete_notification = 2131559260;
-			
-			// aapt resource value: 0x7f0d0293
-			public const int action_divider = 2131559059;
-			
 			// aapt resource value: 0x7f0d035f
-			public const int action_download = 2131559263;
+			public const int action_delete_notification = 2131559263;
 			
-			// aapt resource value: 0x7f0d028d
-			public const int action_image = 2131559053;
+			// aapt resource value: 0x7f0d0294
+			public const int action_divider = 2131559060;
+			
+			// aapt resource value: 0x7f0d0362
+			public const int action_download = 2131559266;
+			
+			// aapt resource value: 0x7f0d028e
+			public const int action_image = 2131559054;
 			
 			// aapt resource value: 0x7f0d0003
 			public const int action_menu_divider = 2131558403;
@@ -7720,26 +7723,26 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f0d007b
 			public const int action_mode_close_button = 2131558523;
 			
+			// aapt resource value: 0x7f0d0361
+			public const int action_next = 2131559265;
+			
 			// aapt resource value: 0x7f0d035e
-			public const int action_next = 2131559262;
+			public const int action_notification = 2131559262;
 			
-			// aapt resource value: 0x7f0d035b
-			public const int action_notification = 2131559259;
+			// aapt resource value: 0x7f0d0360
+			public const int action_share_promotion = 2131559264;
 			
-			// aapt resource value: 0x7f0d035d
-			public const int action_share_promotion = 2131559261;
+			// aapt resource value: 0x7f0d028f
+			public const int action_text = 2131559055;
 			
-			// aapt resource value: 0x7f0d028e
-			public const int action_text = 2131559054;
-			
-			// aapt resource value: 0x7f0d029c
-			public const int actions = 2131559068;
+			// aapt resource value: 0x7f0d029d
+			public const int actions = 2131559069;
 			
 			// aapt resource value: 0x7f0d007c
 			public const int activity_chooser_view_content = 2131558524;
 			
-			// aapt resource value: 0x7f0d030a
-			public const int adapterLayout = 2131559178;
+			// aapt resource value: 0x7f0d030b
+			public const int adapterLayout = 2131559179;
 			
 			// aapt resource value: 0x7f0d0020
 			public const int add = 2131558432;
@@ -7762,14 +7765,14 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f0d0055
 			public const int always = 2131558485;
 			
-			// aapt resource value: 0x7f0d030f
-			public const int amount = 2131559183;
+			// aapt resource value: 0x7f0d0310
+			public const int amount = 2131559184;
+			
+			// aapt resource value: 0x7f0d02fe
+			public const int amount_edittext = 2131559166;
 			
 			// aapt resource value: 0x7f0d02fd
-			public const int amount_edittext = 2131559165;
-			
-			// aapt resource value: 0x7f0d02fc
-			public const int amount_layout = 2131559164;
+			public const int amount_layout = 2131559165;
 			
 			// aapt resource value: 0x7f0d00af
 			public const int appBar = 2131558575;
@@ -7789,8 +7792,8 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f0d0135
 			public const int bar_chart = 2131558709;
 			
-			// aapt resource value: 0x7f0d02e4
-			public const int baseView = 2131559140;
+			// aapt resource value: 0x7f0d02e5
+			public const int baseView = 2131559141;
 			
 			// aapt resource value: 0x7f0d0072
 			public const int basic = 2131558514;
@@ -7798,11 +7801,11 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f0d004c
 			public const int beginning = 2131558476;
 			
-			// aapt resource value: 0x7f0d01cd
-			public const int billRelatedContraint = 2131558861;
+			// aapt resource value: 0x7f0d01d0
+			public const int billRelatedContraint = 2131558864;
 			
-			// aapt resource value: 0x7f0d01ce
-			public const int billRelatedIcon = 2131558862;
+			// aapt resource value: 0x7f0d01d1
+			public const int billRelatedIcon = 2131558865;
 			
 			// aapt resource value: 0x7f0d0075
 			public const int blocking = 2131558517;
@@ -7813,23 +7816,23 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f0d00c9
 			public const int bottomLayout = 2131558601;
 			
-			// aapt resource value: 0x7f0d015c
-			public const int bottomView = 2131558748;
+			// aapt resource value: 0x7f0d015f
+			public const int bottomView = 2131558751;
 			
 			// aapt resource value: 0x7f0d00e7
 			public const int bottom_line = 2131558631;
 			
-			// aapt resource value: 0x7f0d0162
-			public const int bottom_navigation = 2131558754;
+			// aapt resource value: 0x7f0d0165
+			public const int bottom_navigation = 2131558757;
 			
-			// aapt resource value: 0x7f0d015d
-			public const int bottom_sheet = 2131558749;
+			// aapt resource value: 0x7f0d0160
+			public const int bottom_sheet = 2131558752;
 			
 			// aapt resource value: 0x7f0d0035
 			public const int box_count = 2131558453;
 			
-			// aapt resource value: 0x7f0d01a1
-			public const int btnAdd = 2131558817;
+			// aapt resource value: 0x7f0d01a4
+			public const int btnAdd = 2131558820;
 			
 			// aapt resource value: 0x7f0d00c8
 			public const int btnAddAccount = 2131558600;
@@ -7837,14 +7840,14 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f0d00ba
 			public const int btnAddAnotherAccount = 2131558586;
 			
-			// aapt resource value: 0x7f0d0300
-			public const int btnAddCard = 2131559168;
+			// aapt resource value: 0x7f0d0301
+			public const int btnAddCard = 2131559169;
 			
-			// aapt resource value: 0x7f0d01bd
-			public const int btnBackToDashboard = 2131558845;
+			// aapt resource value: 0x7f0d01c0
+			public const int btnBackToDashboard = 2131558848;
 			
-			// aapt resource value: 0x7f0d01ee
-			public const int btnBackToFeedback = 2131558894;
+			// aapt resource value: 0x7f0d01f1
+			public const int btnBackToFeedback = 2131558897;
 			
 			// aapt resource value: 0x7f0d0242
 			public const int btnBackToHome = 2131558978;
@@ -7855,14 +7858,14 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f0d0119
 			public const int btnCard = 2131558681;
 			
-			// aapt resource value: 0x7f0d01a3
-			public const int btnClose = 2131558819;
+			// aapt resource value: 0x7f0d01a6
+			public const int btnClose = 2131558822;
 			
 			// aapt resource value: 0x7f0d00bb
 			public const int btnConfirm = 2131558587;
 			
-			// aapt resource value: 0x7f0d0209
-			public const int btnDashboard = 2131558921;
+			// aapt resource value: 0x7f0d020c
+			public const int btnDashboard = 2131558924;
 			
 			// aapt resource value: 0x7f0d0144
 			public const int btnDisabledPay = 2131558724;
@@ -7870,8 +7873,8 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f0d00f8
 			public const int btnExpand = 2131558648;
 			
-			// aapt resource value: 0x7f0d0302
-			public const int btnFPXPayment = 2131559170;
+			// aapt resource value: 0x7f0d0303
+			public const int btnFPXPayment = 2131559171;
 			
 			// aapt resource value: 0x7f0d012c
 			public const int btnGetAccess = 2131558700;
@@ -7888,8 +7891,8 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f0d0241
 			public const int btnLogin = 2131558977;
 			
-			// aapt resource value: 0x7f0d0271
-			public const int btnLogout = 2131559025;
+			// aapt resource value: 0x7f0d0272
+			public const int btnLogout = 2131559026;
 			
 			// aapt resource value: 0x7f0d00e5
 			public const int btnNext = 2131558629;
@@ -7897,8 +7900,8 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f0d00d0
 			public const int btnNonOwner = 2131558608;
 			
-			// aapt resource value: 0x7f0d0231
-			public const int btnOpenMap = 2131558961;
+			// aapt resource value: 0x7f0d0230
+			public const int btnOpenMap = 2131558960;
 			
 			// aapt resource value: 0x7f0d00cd
 			public const int btnOwner = 2131558605;
@@ -7906,38 +7909,38 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f0d0110
 			public const int btnPay = 2131558672;
 			
-			// aapt resource value: 0x7f0d02fa
-			public const int btnPayBills = 2131559162;
+			// aapt resource value: 0x7f0d02fb
+			public const int btnPayBills = 2131559163;
 			
 			// aapt resource value: 0x7f0d0114
 			public const int btnPayment = 2131558676;
 			
-			// aapt resource value: 0x7f0d02ce
-			public const int btnPromoClose = 2131559118;
+			// aapt resource value: 0x7f0d02cf
+			public const int btnPromoClose = 2131559119;
+			
+			// aapt resource value: 0x7f0d02d2
+			public const int btnPromoDetails = 2131559122;
 			
 			// aapt resource value: 0x7f0d02d1
-			public const int btnPromoDetails = 2131559121;
+			public const int btnPromoSkip = 2131559121;
 			
-			// aapt resource value: 0x7f0d02d0
-			public const int btnPromoSkip = 2131559120;
-			
-			// aapt resource value: 0x7f0d02c3
-			public const int btnRegister = 2131559107;
+			// aapt resource value: 0x7f0d02c4
+			public const int btnRegister = 2131559108;
 			
 			// aapt resource value: 0x7f0d0251
 			public const int btnRemoveAccount = 2131558993;
 			
-			// aapt resource value: 0x7f0d0201
-			public const int btnResend = 2131558913;
+			// aapt resource value: 0x7f0d0204
+			public const int btnResend = 2131558916;
 			
 			// aapt resource value: 0x7f0d0141
 			public const int btnRight = 2131558721;
 			
-			// aapt resource value: 0x7f0d0328
-			public const int btnSave = 2131559208;
+			// aapt resource value: 0x7f0d032b
+			public const int btnSave = 2131559211;
 			
-			// aapt resource value: 0x7f0d01c5
-			public const int btnSubmit = 2131558853;
+			// aapt resource value: 0x7f0d01c8
+			public const int btnSubmit = 2131558856;
 			
 			// aapt resource value: 0x7f0d013d
 			public const int btnTapRefresh = 2131558717;
@@ -7945,17 +7948,17 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f0d0243
 			public const int btnTest = 2131558979;
 			
-			// aapt resource value: 0x7f0d027c
-			public const int btnTextUpdateCards = 2131559036;
+			// aapt resource value: 0x7f0d027d
+			public const int btnTextUpdateCards = 2131559037;
 			
-			// aapt resource value: 0x7f0d0278
-			public const int btnTextUpdateMobileNo = 2131559032;
+			// aapt resource value: 0x7f0d0279
+			public const int btnTextUpdateMobileNo = 2131559033;
 			
 			// aapt resource value: 0x7f0d024d
 			public const int btnTextUpdateNickName = 2131558989;
 			
-			// aapt resource value: 0x7f0d0279
-			public const int btnTextUpdatePassword = 2131559033;
+			// aapt resource value: 0x7f0d027a
+			public const int btnTextUpdatePassword = 2131559034;
 			
 			// aapt resource value: 0x7f0d0133
 			public const int btnToggleDay = 2131558707;
@@ -7963,17 +7966,17 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f0d0134
 			public const int btnToggleMonth = 2131558708;
 			
-			// aapt resource value: 0x7f0d01be
-			public const int btnTryAgain = 2131558846;
+			// aapt resource value: 0x7f0d01c1
+			public const int btnTryAgain = 2131558849;
 			
 			// aapt resource value: 0x7f0d0130
 			public const int btnViewBill = 2131558704;
 			
-			// aapt resource value: 0x7f0d028b
-			public const int btnViewDetails = 2131559051;
+			// aapt resource value: 0x7f0d028c
+			public const int btnViewDetails = 2131559052;
 			
-			// aapt resource value: 0x7f0d02bb
-			public const int btnViewReceipt = 2131559099;
+			// aapt resource value: 0x7f0d02bc
+			public const int btnViewReceipt = 2131559100;
 			
 			// aapt resource value: 0x7f0d00c0
 			public const int btnWhereIsMyAccountNo = 2131558592;
@@ -7984,29 +7987,29 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f0d0082
 			public const int buttonPanel = 2131558530;
 			
-			// aapt resource value: 0x7f0d0218
-			public const int button_add_response = 2131558936;
+			// aapt resource value: 0x7f0d021b
+			public const int button_add_response = 2131558939;
 			
-			// aapt resource value: 0x7f0d0213
-			public const int button_attachment = 2131558931;
+			// aapt resource value: 0x7f0d0216
+			public const int button_attachment = 2131558934;
 			
-			// aapt resource value: 0x7f0d034c
-			public const int button_layout = 2131559244;
+			// aapt resource value: 0x7f0d034f
+			public const int button_layout = 2131559247;
 			
-			// aapt resource value: 0x7f0d021d
-			public const int button_login = 2131558941;
+			// aapt resource value: 0x7f0d0220
+			public const int button_login = 2131558944;
 			
-			// aapt resource value: 0x7f0d0219
-			public const int button_refresh = 2131558937;
+			// aapt resource value: 0x7f0d021c
+			public const int button_refresh = 2131558940;
 			
-			// aapt resource value: 0x7f0d0214
-			public const int button_send = 2131558932;
+			// aapt resource value: 0x7f0d0217
+			public const int button_send = 2131558935;
 			
-			// aapt resource value: 0x7f0d0221
-			public const int button_update = 2131558945;
+			// aapt resource value: 0x7f0d0224
+			public const int button_update = 2131558948;
 			
-			// aapt resource value: 0x7f0d0290
-			public const int cancel_action = 2131559056;
+			// aapt resource value: 0x7f0d0291
+			public const int cancel_action = 2131559057;
 			
 			// aapt resource value: 0x7f0d011f
 			public const int cancel_button = 2131558687;
@@ -8035,11 +8038,11 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f0d00e4
 			public const int chk_save_card = 2131558628;
 			
-			// aapt resource value: 0x7f0d0298
-			public const int chronometer = 2131559064;
+			// aapt resource value: 0x7f0d0299
+			public const int chronometer = 2131559065;
 			
-			// aapt resource value: 0x7f0d034e
-			public const int circles = 2131559246;
+			// aapt resource value: 0x7f0d0351
+			public const int circles = 2131559249;
 			
 			// aapt resource value: 0x7f0d001c
 			public const int circular = 2131558428;
@@ -8086,23 +8089,23 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f0d011c
 			public const int confirmation_code = 2131558684;
 			
-			// aapt resource value: 0x7f0d0165
-			public const int container = 2131558757;
+			// aapt resource value: 0x7f0d0168
+			public const int container = 2131558760;
 			
-			// aapt resource value: 0x7f0d0349
-			public const int content = 2131559241;
+			// aapt resource value: 0x7f0d034c
+			public const int content = 2131559244;
 			
-			// aapt resource value: 0x7f0d0353
-			public const int contentFrame = 2131559251;
+			// aapt resource value: 0x7f0d0356
+			public const int contentFrame = 2131559254;
 			
 			// aapt resource value: 0x7f0d0085
 			public const int contentPanel = 2131558533;
 			
-			// aapt resource value: 0x7f0d0161
-			public const int content_layout = 2131558753;
+			// aapt resource value: 0x7f0d0164
+			public const int content_layout = 2131558756;
 			
-			// aapt resource value: 0x7f0d0166
-			public const int coordinator = 2131558758;
+			// aapt resource value: 0x7f0d0169
+			public const int coordinator = 2131558761;
 			
 			// aapt resource value: 0x7f0d0244
 			public const int coordinatorLayout = 2131558980;
@@ -8143,8 +8146,8 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f0d013b
 			public const int dashboard_chartview_no_internet_title = 2131558715;
 			
-			// aapt resource value: 0x7f0d0337
-			public const int dear_customer = 2131559223;
+			// aapt resource value: 0x7f0d033a
+			public const int dear_customer = 2131559226;
 			
 			// aapt resource value: 0x7f0d0099
 			public const int decor_content_parent = 2131558553;
@@ -8155,20 +8158,20 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f0d00ae
 			public const int delete = 2131558574;
 			
-			// aapt resource value: 0x7f0d0168
-			public const int design_bottom_sheet = 2131558760;
+			// aapt resource value: 0x7f0d016b
+			public const int design_bottom_sheet = 2131558763;
+			
+			// aapt resource value: 0x7f0d0172
+			public const int design_menu_item_action_area = 2131558770;
+			
+			// aapt resource value: 0x7f0d0171
+			public const int design_menu_item_action_area_stub = 2131558769;
+			
+			// aapt resource value: 0x7f0d0170
+			public const int design_menu_item_text = 2131558768;
 			
 			// aapt resource value: 0x7f0d016f
-			public const int design_menu_item_action_area = 2131558767;
-			
-			// aapt resource value: 0x7f0d016e
-			public const int design_menu_item_action_area_stub = 2131558766;
-			
-			// aapt resource value: 0x7f0d016d
-			public const int design_menu_item_text = 2131558765;
-			
-			// aapt resource value: 0x7f0d016c
-			public const int design_navigation_view = 2131558764;
+			public const int design_navigation_view = 2131558767;
 			
 			// aapt resource value: 0x7f0d0044
 			public const int disableHome = 2131558468;
@@ -8179,8 +8182,8 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f0d010b
 			public const int divider = 2131558667;
 			
-			// aapt resource value: 0x7f0d034f
-			public const int done = 2131559247;
+			// aapt resource value: 0x7f0d0352
+			public const int done = 2131559250;
 			
 			// aapt resource value: 0x7f0d013f
 			public const int downtime_image = 2131558719;
@@ -8188,8 +8191,8 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f0d013e
 			public const int downtime_layout = 2131558718;
 			
-			// aapt resource value: 0x7f0d0310
-			public const int due_date = 2131559184;
+			// aapt resource value: 0x7f0d0311
+			public const int due_date = 2131559185;
 			
 			// aapt resource value: 0x7f0d001e
 			public const int dynamic = 2131558430;
@@ -8206,8 +8209,8 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f0d0157
 			public const int endDivider = 2131558743;
 			
-			// aapt resource value: 0x7f0d029e
-			public const int end_padder = 2131559070;
+			// aapt resource value: 0x7f0d029f
+			public const int end_padder = 2131559071;
 			
 			// aapt resource value: 0x7f0d005a
 			public const int enterAlways = 2131558490;
@@ -8215,8 +8218,8 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f0d005b
 			public const int enterAlwaysCollapsed = 2131558491;
 			
-			// aapt resource value: 0x7f0d0304
-			public const int enterCvvLayout = 2131559172;
+			// aapt resource value: 0x7f0d0305
+			public const int enterCvvLayout = 2131559173;
 			
 			// aapt resource value: 0x7f0d005c
 			public const int exitUntilCollapsed = 2131558492;
@@ -8227,29 +8230,29 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f0d0091
 			public const int expanded_menu = 2131558545;
 			
-			// aapt resource value: 0x7f0d0177
-			public const int faq_answer = 2131558775;
-			
-			// aapt resource value: 0x7f0d0175
-			public const int faq_img = 2131558773;
+			// aapt resource value: 0x7f0d017a
+			public const int faq_answer = 2131558778;
 			
 			// aapt resource value: 0x7f0d0178
-			public const int faq_list_recycler_view = 2131558776;
+			public const int faq_img = 2131558776;
 			
-			// aapt resource value: 0x7f0d0176
-			public const int faq_question = 2131558774;
+			// aapt resource value: 0x7f0d017b
+			public const int faq_list_recycler_view = 2131558779;
 			
-			// aapt resource value: 0x7f0d01d2
-			public const int faultyStreetLampsContraint = 2131558866;
+			// aapt resource value: 0x7f0d0179
+			public const int faq_question = 2131558777;
 			
-			// aapt resource value: 0x7f0d01d3
-			public const int faultyStreetLampsIcon = 2131558867;
+			// aapt resource value: 0x7f0d01d5
+			public const int faultyStreetLampsContraint = 2131558869;
+			
+			// aapt resource value: 0x7f0d01d6
+			public const int faultyStreetLampsIcon = 2131558870;
+			
+			// aapt resource value: 0x7f0d01cf
+			public const int feedbackMenuHeaderImage = 2131558863;
 			
 			// aapt resource value: 0x7f0d01cc
-			public const int feedbackMenuHeaderImage = 2131558860;
-			
-			// aapt resource value: 0x7f0d01c9
-			public const int feedbackTypeLayout = 2131558857;
+			public const int feedbackTypeLayout = 2131558860;
 			
 			// aapt resource value: 0x7f0d0067
 			public const int fill = 2131558503;
@@ -8269,41 +8272,41 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f0d00d9
 			public const int fragment_container = 2131558617;
 			
-			// aapt resource value: 0x7f0d02d2
-			public const int frameLayout = 2131559122;
+			// aapt resource value: 0x7f0d02d3
+			public const int frameLayout = 2131559123;
 			
-			// aapt resource value: 0x7f0d01f5
-			public const int frameLayout2 = 2131558901;
+			// aapt resource value: 0x7f0d01f8
+			public const int frameLayout2 = 2131558904;
 			
-			// aapt resource value: 0x7f0d0208
-			public const int get_access_success_icon = 2131558920;
+			// aapt resource value: 0x7f0d020b
+			public const int get_access_success_icon = 2131558923;
 			
 			// aapt resource value: 0x7f0d000a
 			public const int ghost_view = 2131558410;
 			
+			// aapt resource value: 0x7f0d0177
+			public const int give_us_a_review_landmine_button = 2131558775;
+			
 			// aapt resource value: 0x7f0d0174
-			public const int give_us_a_review_landmine_button = 2131558772;
+			public const int give_us_a_review_landmine_main_layout = 2131558772;
 			
-			// aapt resource value: 0x7f0d0171
-			public const int give_us_a_review_landmine_main_layout = 2131558769;
+			// aapt resource value: 0x7f0d0175
+			public const int give_us_a_review_landmine_text_1 = 2131558773;
 			
-			// aapt resource value: 0x7f0d0172
-			public const int give_us_a_review_landmine_text_1 = 2131558770;
+			// aapt resource value: 0x7f0d0176
+			public const int give_us_a_review_landmine_text_2 = 2131558774;
 			
-			// aapt resource value: 0x7f0d0173
-			public const int give_us_a_review_landmine_text_2 = 2131558771;
+			// aapt resource value: 0x7f0d031a
+			public const int greetingText = 2131559194;
 			
 			// aapt resource value: 0x7f0d0319
-			public const int greetingText = 2131559193;
+			public const int greeting_layout = 2131559193;
 			
-			// aapt resource value: 0x7f0d0318
-			public const int greeting_layout = 2131559192;
+			// aapt resource value: 0x7f0d0315
+			public const int headerText = 2131559189;
 			
-			// aapt resource value: 0x7f0d0314
-			public const int headerText = 2131559188;
-			
-			// aapt resource value: 0x7f0d0348
-			public const int heading = 2131559240;
+			// aapt resource value: 0x7f0d034b
+			public const int heading = 2131559243;
 			
 			// aapt resource value: 0x7f0d0005
 			public const int home = 2131558405;
@@ -8314,14 +8317,14 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f0d001d
 			public const int horizontal = 2131558429;
 			
-			// aapt resource value: 0x7f0d0316
-			public const int htab_appbar = 2131559190;
-			
 			// aapt resource value: 0x7f0d0317
-			public const int htab_collapse_toolbar = 2131559191;
+			public const int htab_appbar = 2131559191;
 			
-			// aapt resource value: 0x7f0d031b
-			public const int htab_header = 2131559195;
+			// aapt resource value: 0x7f0d0318
+			public const int htab_collapse_toolbar = 2131559192;
+			
+			// aapt resource value: 0x7f0d031c
+			public const int htab_header = 2131559196;
 			
 			// aapt resource value: 0x7f0d0026
 			public const int hybrid = 2131558438;
@@ -8329,8 +8332,8 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f0d0081
 			public const int icon = 2131558529;
 			
-			// aapt resource value: 0x7f0d029d
-			public const int icon_group = 2131559069;
+			// aapt resource value: 0x7f0d029e
+			public const int icon_group = 2131559070;
 			
 			// aapt resource value: 0x7f0d002c
 			public const int icon_only = 2131558444;
@@ -8341,20 +8344,20 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f0d007e
 			public const int image = 2131558526;
 			
-			// aapt resource value: 0x7f0d01e5
-			public const int imageActionIcon = 2131558885;
+			// aapt resource value: 0x7f0d01e8
+			public const int imageActionIcon = 2131558888;
 			
-			// aapt resource value: 0x7f0d02a0
-			public const int imageDetails = 2131559072;
+			// aapt resource value: 0x7f0d02a1
+			public const int imageDetails = 2131559073;
 			
-			// aapt resource value: 0x7f0d0272
-			public const int imageLeaf = 2131559026;
+			// aapt resource value: 0x7f0d0273
+			public const int imageLeaf = 2131559027;
 			
-			// aapt resource value: 0x7f0d022d
-			public const int imageProgressBar = 2131558957;
+			// aapt resource value: 0x7f0d022c
+			public const int imageProgressBar = 2131558956;
 			
-			// aapt resource value: 0x7f0d01a2
-			public const int imageView = 2131558818;
+			// aapt resource value: 0x7f0d01a5
+			public const int imageView = 2131558821;
 			
 			// aapt resource value: 0x7f0d0129
 			public const int imageView2 = 2131558697;
@@ -8362,8 +8365,8 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f0d00f2
 			public const int imageView3 = 2131558642;
 			
-			// aapt resource value: 0x7f0d02cd
-			public const int image_promotion = 2131559117;
+			// aapt resource value: 0x7f0d02ce
+			public const int image_promotion = 2131559118;
 			
 			// aapt resource value: 0x7f0d0246
 			public const int imgCardNumberDelete = 2131558982;
@@ -8371,59 +8374,53 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f0d014b
 			public const int imgCurrentCharges = 2131558731;
 			
-			// aapt resource value: 0x7f0d01b6
-			public const int imgFeedback = 2131558838;
+			// aapt resource value: 0x7f0d01b9
+			public const int imgFeedback = 2131558841;
 			
 			// aapt resource value: 0x7f0d00fa
 			public const int imgLeaf = 2131558650;
 			
-			// aapt resource value: 0x7f0d022b
-			public const int imgLoadingLogo = 2131558955;
+			// aapt resource value: 0x7f0d022a
+			public const int imgLoadingLogo = 2131558954;
 			
 			// aapt resource value: 0x7f0d0152
 			public const int imgProjectedCost = 2131558738;
 			
-			// aapt resource value: 0x7f0d02c8
-			public const int imgPromotion = 2131559112;
-			
-			// aapt resource value: 0x7f0d02bf
-			public const int img_call = 2131559103;
+			// aapt resource value: 0x7f0d02c9
+			public const int imgPromotion = 2131559113;
 			
 			// aapt resource value: 0x7f0d02c0
-			public const int img_display = 2131559104;
+			public const int img_call = 2131559104;
 			
-			// aapt resource value: 0x7f0d0227
-			public const int img_logo = 2131558951;
+			// aapt resource value: 0x7f0d02c1
+			public const int img_display = 2131559105;
 			
-			// aapt resource value: 0x7f0d0229
-			public const int img_tagline = 2131558953;
+			// aapt resource value: 0x7f0d0238
+			public const int img_logo = 2131558968;
 			
-			// aapt resource value: 0x7f0d0228
-			public const int img_tenaga_nasional = 2131558952;
+			// aapt resource value: 0x7f0d02cc
+			public const int indicator = 2131559116;
 			
-			// aapt resource value: 0x7f0d02cb
-			public const int indicator = 2131559115;
-			
-			// aapt resource value: 0x7f0d0299
-			public const int info = 2131559065;
+			// aapt resource value: 0x7f0d029a
+			public const int info = 2131559066;
 			
 			// aapt resource value: 0x7f0d0038
 			public const int inline = 2131558456;
 			
-			// aapt resource value: 0x7f0d020f
-			public const int input_email = 2131558927;
+			// aapt resource value: 0x7f0d0212
+			public const int input_email = 2131558930;
+			
+			// aapt resource value: 0x7f0d0214
+			public const int input_message = 2131558932;
 			
 			// aapt resource value: 0x7f0d0211
-			public const int input_message = 2131558929;
+			public const int input_name = 2131558929;
 			
-			// aapt resource value: 0x7f0d020e
-			public const int input_name = 2131558926;
+			// aapt resource value: 0x7f0d021f
+			public const int input_password = 2131558943;
 			
-			// aapt resource value: 0x7f0d021c
-			public const int input_password = 2131558940;
-			
-			// aapt resource value: 0x7f0d0210
-			public const int input_subject = 2131558928;
+			// aapt resource value: 0x7f0d0213
+			public const int input_subject = 2131558931;
 			
 			// aapt resource value: 0x7f0d0077
 			public const int italic = 2131558519;
@@ -8431,38 +8428,38 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f0d0000
 			public const int item_touch_helper_previous_elevation = 2131558400;
 			
+			// aapt resource value: 0x7f0d0226
+			public const int label_author = 2131558950;
+			
+			// aapt resource value: 0x7f0d0227
+			public const int label_date = 2131558951;
+			
+			// aapt resource value: 0x7f0d0219
+			public const int label_last_updated = 2131558937;
+			
+			// aapt resource value: 0x7f0d020e
+			public const int label_message = 2131558926;
+			
+			// aapt resource value: 0x7f0d0228
+			public const int label_text = 2131558952;
+			
+			// aapt resource value: 0x7f0d0222
+			public const int label_title = 2131558946;
+			
 			// aapt resource value: 0x7f0d0223
-			public const int label_author = 2131558947;
-			
-			// aapt resource value: 0x7f0d0224
-			public const int label_date = 2131558948;
-			
-			// aapt resource value: 0x7f0d0216
-			public const int label_last_updated = 2131558934;
-			
-			// aapt resource value: 0x7f0d020b
-			public const int label_message = 2131558923;
-			
-			// aapt resource value: 0x7f0d0225
-			public const int label_text = 2131558949;
-			
-			// aapt resource value: 0x7f0d021f
-			public const int label_title = 2131558943;
-			
-			// aapt resource value: 0x7f0d0220
-			public const int label_version = 2131558944;
+			public const int label_version = 2131558947;
 			
 			// aapt resource value: 0x7f0d00b4
 			public const int label_your_account = 2131558580;
 			
-			// aapt resource value: 0x7f0d0320
-			public const int laod_more_divider = 2131559200;
+			// aapt resource value: 0x7f0d0323
+			public const int laod_more_divider = 2131559203;
 			
 			// aapt resource value: 0x7f0d0040
 			public const int large = 2131558464;
 			
-			// aapt resource value: 0x7f0d0164
-			public const int largeLabel = 2131558756;
+			// aapt resource value: 0x7f0d0167
+			public const int largeLabel = 2131558759;
 			
 			// aapt resource value: 0x7f0d00b5
 			public const int layout1 = 2131558581;
@@ -8485,68 +8482,71 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f0d00b7
 			public const int layout_additional_accounts = 2131558583;
 			
-			// aapt resource value: 0x7f0d02cf
-			public const int layout_btn_holder = 2131559119;
+			// aapt resource value: 0x7f0d02d0
+			public const int layout_btn_holder = 2131559120;
 			
 			// aapt resource value: 0x7f0d0247
 			public const int layout_cards = 2131558983;
 			
-			// aapt resource value: 0x7f0d031d
-			public const int layout_content = 2131559197;
+			// aapt resource value: 0x7f0d031e
+			public const int layout_content = 2131559198;
 			
 			// aapt resource value: 0x7f0d0249
 			public const int layout_empty_cards = 2131558985;
 			
-			// aapt resource value: 0x7f0d01e8
-			public const int layout_empty_feedback = 2131558888;
+			// aapt resource value: 0x7f0d01eb
+			public const int layout_empty_feedback = 2131558891;
 			
-			// aapt resource value: 0x7f0d02cc
-			public const int layout_image_holder = 2131559116;
-			
-			// aapt resource value: 0x7f0d0235
-			public const int layout_opening_hours = 2131558965;
-			
-			// aapt resource value: 0x7f0d0233
-			public const int layout_phone = 2131558963;
-			
-			// aapt resource value: 0x7f0d0237
-			public const int layout_services = 2131558967;
-			
-			// aapt resource value: 0x7f0d0305
-			public const int lblBack = 2131559173;
-			
-			// aapt resource value: 0x7f0d0306
-			public const int lblCVVInfo = 2131559174;
-			
-			// aapt resource value: 0x7f0d02fe
-			public const int lblCreditDebitCard = 2131559166;
-			
-			// aapt resource value: 0x7f0d0301
-			public const int lblOtherPayment = 2131559169;
-			
-			// aapt resource value: 0x7f0d02b9
-			public const int lblTotalAmount = 2131559097;
-			
-			// aapt resource value: 0x7f0d02b3
-			public const int lblTrxDateTime = 2131559091;
-			
-			// aapt resource value: 0x7f0d02b5
-			public const int lblTrxID = 2131559093;
-			
-			// aapt resource value: 0x7f0d0329
-			public const int lblVerifyMobileNo = 2131559209;
-			
-			// aapt resource value: 0x7f0d022f
-			public const int lbl_address = 2131558959;
+			// aapt resource value: 0x7f0d02cd
+			public const int layout_image_holder = 2131559117;
 			
 			// aapt resource value: 0x7f0d0234
-			public const int lbl_opening_hours = 2131558964;
+			public const int layout_opening_hours = 2131558964;
 			
 			// aapt resource value: 0x7f0d0232
-			public const int lbl_phone = 2131558962;
+			public const int layout_phone = 2131558962;
+			
+			// aapt resource value: 0x7f0d031f
+			public const int layout_refresh = 2131559199;
 			
 			// aapt resource value: 0x7f0d0236
-			public const int lbl_services = 2131558966;
+			public const int layout_services = 2131558966;
+			
+			// aapt resource value: 0x7f0d0306
+			public const int lblBack = 2131559174;
+			
+			// aapt resource value: 0x7f0d0307
+			public const int lblCVVInfo = 2131559175;
+			
+			// aapt resource value: 0x7f0d02ff
+			public const int lblCreditDebitCard = 2131559167;
+			
+			// aapt resource value: 0x7f0d0302
+			public const int lblOtherPayment = 2131559170;
+			
+			// aapt resource value: 0x7f0d02ba
+			public const int lblTotalAmount = 2131559098;
+			
+			// aapt resource value: 0x7f0d02b4
+			public const int lblTrxDateTime = 2131559092;
+			
+			// aapt resource value: 0x7f0d02b6
+			public const int lblTrxID = 2131559094;
+			
+			// aapt resource value: 0x7f0d032c
+			public const int lblVerifyMobileNo = 2131559212;
+			
+			// aapt resource value: 0x7f0d022e
+			public const int lbl_address = 2131558958;
+			
+			// aapt resource value: 0x7f0d0233
+			public const int lbl_opening_hours = 2131558963;
+			
+			// aapt resource value: 0x7f0d0231
+			public const int lbl_phone = 2131558961;
+			
+			// aapt resource value: 0x7f0d0235
+			public const int lbl_services = 2131558965;
 			
 			// aapt resource value: 0x7f0d003b
 			public const int left = 2131558459;
@@ -8560,32 +8560,32 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f0d0018
 			public const int line3 = 2131558424;
 			
-			// aapt resource value: 0x7f0d01cb
-			public const int linearLayout1 = 2131558859;
+			// aapt resource value: 0x7f0d01ce
+			public const int linearLayout1 = 2131558862;
 			
 			// aapt resource value: 0x7f0d00da
 			public const int linearLayout2 = 2131558618;
 			
-			// aapt resource value: 0x7f0d02a8
-			public const int linearLayout3 = 2131559080;
+			// aapt resource value: 0x7f0d02a9
+			public const int linearLayout3 = 2131559081;
 			
-			// aapt resource value: 0x7f0d01bc
-			public const int linearLayout4 = 2131558844;
+			// aapt resource value: 0x7f0d01bf
+			public const int linearLayout4 = 2131558847;
 			
-			// aapt resource value: 0x7f0d02ff
-			public const int listAddedCards = 2131559167;
+			// aapt resource value: 0x7f0d0300
+			public const int listAddedCards = 2131559168;
 			
 			// aapt resource value: 0x7f0d0042
 			public const int listMode = 2131558466;
 			
-			// aapt resource value: 0x7f0d01e7
-			public const int listView = 2131558887;
+			// aapt resource value: 0x7f0d01ea
+			public const int listView = 2131558890;
 			
-			// aapt resource value: 0x7f0d0226
-			public const int list_attachments = 2131558950;
+			// aapt resource value: 0x7f0d0229
+			public const int list_attachments = 2131558953;
 			
-			// aapt resource value: 0x7f0d021a
-			public const int list_feedback_messages = 2131558938;
+			// aapt resource value: 0x7f0d021d
+			public const int list_feedback_messages = 2131558941;
 			
 			// aapt resource value: 0x7f0d0080
 			public const int list_item = 2131558528;
@@ -8593,32 +8593,32 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f0d00ef
 			public const int list_view = 2131558639;
 			
-			// aapt resource value: 0x7f0d0311
-			public const int loadMoreText = 2131559185;
+			// aapt resource value: 0x7f0d0312
+			public const int loadMoreText = 2131559186;
 			
 			// aapt resource value: 0x7f0d0128
 			public const int loading = 2131558696;
 			
-			// aapt resource value: 0x7f0d02c9
-			public const int mainContainer = 2131559113;
+			// aapt resource value: 0x7f0d02ca
+			public const int mainContainer = 2131559114;
 			
-			// aapt resource value: 0x7f0d02fb
-			public const int mainLayout = 2131559163;
+			// aapt resource value: 0x7f0d02fc
+			public const int mainLayout = 2131559164;
 			
-			// aapt resource value: 0x7f0d015f
-			public const int mainView = 2131558751;
+			// aapt resource value: 0x7f0d0162
+			public const int mainView = 2131558754;
 			
 			// aapt resource value: 0x7f0d00bc
 			public const int main_layout = 2131558588;
 			
-			// aapt resource value: 0x7f0d020a
-			public const int mapView = 2131558922;
+			// aapt resource value: 0x7f0d020d
+			public const int mapView = 2131558925;
 			
-			// aapt resource value: 0x7f0d01f2
-			public const int map_view = 2131558898;
+			// aapt resource value: 0x7f0d01f5
+			public const int map_view = 2131558901;
 			
-			// aapt resource value: 0x7f0d0355
-			public const int masked = 2131559253;
+			// aapt resource value: 0x7f0d0358
+			public const int masked = 2131559256;
 			
 			// aapt resource value: 0x7f0d025e
 			public const int md_buttonDefaultNegative = 2131559006;
@@ -8668,26 +8668,26 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f0d0261
 			public const int md_titleFrame = 2131559009;
 			
-			// aapt resource value: 0x7f0d0292
-			public const int media_actions = 2131559058;
-			
-			// aapt resource value: 0x7f0d0357
-			public const int menu_bill = 2131559255;
-			
-			// aapt resource value: 0x7f0d0356
-			public const int menu_dashboard = 2131559254;
-			
-			// aapt resource value: 0x7f0d0359
-			public const int menu_feedback = 2131559257;
+			// aapt resource value: 0x7f0d0293
+			public const int media_actions = 2131559059;
 			
 			// aapt resource value: 0x7f0d035a
-			public const int menu_more = 2131559258;
+			public const int menu_bill = 2131559258;
 			
-			// aapt resource value: 0x7f0d0358
-			public const int menu_promotion = 2131559256;
+			// aapt resource value: 0x7f0d0359
+			public const int menu_dashboard = 2131559257;
 			
-			// aapt resource value: 0x7f0d0325
-			public const int message = 2131559205;
+			// aapt resource value: 0x7f0d035c
+			public const int menu_feedback = 2131559260;
+			
+			// aapt resource value: 0x7f0d035d
+			public const int menu_more = 2131559261;
+			
+			// aapt resource value: 0x7f0d035b
+			public const int menu_promotion = 2131559259;
+			
+			// aapt resource value: 0x7f0d0328
+			public const int message = 2131559208;
 			
 			// aapt resource value: 0x7f0d0263
 			public const int messenger_send_button = 2131559011;
@@ -8701,8 +8701,8 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f0d0021
 			public const int multiply = 2131558433;
 			
-			// aapt resource value: 0x7f0d016b
-			public const int navigation_header_container = 2131558763;
+			// aapt resource value: 0x7f0d016e
+			public const int navigation_header_container = 2131558766;
 			
 			// aapt resource value: 0x7f0d0058
 			public const int never = 2131558488;
@@ -8710,8 +8710,8 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f0d003f
 			public const int never_display = 2131558463;
 			
-			// aapt resource value: 0x7f0d0350
-			public const int next = 2131559248;
+			// aapt resource value: 0x7f0d0353
+			public const int next = 2131559251;
 			
 			// aapt resource value: 0x7f0d00b2
 			public const int no_account_layout = 2131558578;
@@ -8722,17 +8722,17 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f0d013a
 			public const int no_internet_layout = 2131558714;
 			
+			// aapt resource value: 0x7f0d02e0
+			public const int no_promotion_img = 2131559136;
+			
+			// aapt resource value: 0x7f0d02e2
+			public const int no_promotion_info = 2131559138;
+			
 			// aapt resource value: 0x7f0d02df
-			public const int no_promotion_img = 2131559135;
+			public const int no_promotion_layout = 2131559135;
 			
 			// aapt resource value: 0x7f0d02e1
-			public const int no_promotion_info = 2131559137;
-			
-			// aapt resource value: 0x7f0d02de
-			public const int no_promotion_layout = 2131559134;
-			
-			// aapt resource value: 0x7f0d02e0
-			public const int no_promotion_title = 2131559136;
+			public const int no_promotion_title = 2131559137;
 			
 			// aapt resource value: 0x7f0d0147
 			public const int no_sm_data_layout = 2131558727;
@@ -8743,38 +8743,47 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f0d001f
 			public const int normal = 2131558431;
 			
-			// aapt resource value: 0x7f0d031f
-			public const int normalAccountList = 2131559199;
+			// aapt resource value: 0x7f0d0322
+			public const int normalAccountList = 2131559202;
 			
-			// aapt resource value: 0x7f0d0345
-			public const int note_text = 2131559237;
+			// aapt resource value: 0x7f0d015a
+			public const int noteDivider = 2131558746;
 			
-			// aapt resource value: 0x7f0d02a2
-			public const int notificationActionIcon = 2131559074;
+			// aapt resource value: 0x7f0d0159
+			public const int noteText = 2131558745;
 			
-			// aapt resource value: 0x7f0d029f
-			public const int notificationActionSwitch = 2131559071;
+			// aapt resource value: 0x7f0d0348
+			public const int note_text = 2131559240;
 			
-			// aapt resource value: 0x7f0d02aa
-			public const int notificationChannelRecyclerView = 2131559082;
-			
-			// aapt resource value: 0x7f0d02a4
-			public const int notificationIcon = 2131559076;
-			
-			// aapt resource value: 0x7f0d02a7
-			public const int notificationTypeRecyclerView = 2131559079;
-			
-			// aapt resource value: 0x7f0d029b
-			public const int notification_background = 2131559067;
+			// aapt resource value: 0x7f0d0158
+			public const int note_text_layout = 2131558744;
 			
 			// aapt resource value: 0x7f0d02a3
-			public const int notification_listview = 2131559075;
+			public const int notificationActionIcon = 2131559075;
+			
+			// aapt resource value: 0x7f0d02a0
+			public const int notificationActionSwitch = 2131559072;
+			
+			// aapt resource value: 0x7f0d02ab
+			public const int notificationChannelRecyclerView = 2131559083;
+			
+			// aapt resource value: 0x7f0d02a5
+			public const int notificationIcon = 2131559077;
+			
+			// aapt resource value: 0x7f0d02a8
+			public const int notificationTypeRecyclerView = 2131559080;
+			
+			// aapt resource value: 0x7f0d029c
+			public const int notification_background = 2131559068;
+			
+			// aapt resource value: 0x7f0d02a4
+			public const int notification_listview = 2131559076;
+			
+			// aapt resource value: 0x7f0d0296
+			public const int notification_main_column = 2131559062;
 			
 			// aapt resource value: 0x7f0d0295
-			public const int notification_main_column = 2131559061;
-			
-			// aapt resource value: 0x7f0d0294
-			public const int notification_main_column_container = 2131559060;
+			public const int notification_main_column_container = 2131559061;
 			
 			// aapt resource value: 0x7f0d0117
 			public const int onlyAccountOwnersLayout = 2131558679;
@@ -8782,17 +8791,17 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f0d0032
 			public const int open_graph = 2131558450;
 			
-			// aapt resource value: 0x7f0d01d7
-			public const int othersContraint = 2131558871;
+			// aapt resource value: 0x7f0d01da
+			public const int othersContraint = 2131558874;
 			
-			// aapt resource value: 0x7f0d01d8
-			public const int othersIcon = 2131558872;
+			// aapt resource value: 0x7f0d01db
+			public const int othersIcon = 2131558875;
 			
 			// aapt resource value: 0x7f0d0103
 			public const int outstandingChangeLayout = 2131558659;
 			
-			// aapt resource value: 0x7f0d0303
-			public const int overlay = 2131559171;
+			// aapt resource value: 0x7f0d0304
+			public const int overlay = 2131559172;
 			
 			// aapt resource value: 0x7f0d00c3
 			public const int owner_details_layout = 2131558595;
@@ -8827,20 +8836,20 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f0d000b
 			public const int parent_matrix = 2131558411;
 			
-			// aapt resource value: 0x7f0d032f
-			public const int pdfviewercontrol = 2131559215;
+			// aapt resource value: 0x7f0d0332
+			public const int pdf_viewer_control_view = 2131559218;
+			
+			// aapt resource value: 0x7f0d02bf
+			public const int phone_edittext = 2131559103;
 			
 			// aapt resource value: 0x7f0d02be
-			public const int phone_edittext = 2131559102;
-			
-			// aapt resource value: 0x7f0d02bd
-			public const int phone_label = 2131559101;
+			public const int phone_label = 2131559102;
 			
 			// aapt resource value: 0x7f0d0064
 			public const int pin = 2131558500;
 			
-			// aapt resource value: 0x7f0d0339
-			public const int pleased_text = 2131559225;
+			// aapt resource value: 0x7f0d033c
+			public const int pleased_text = 2131559228;
 			
 			// aapt resource value: 0x7f0d012d
 			public const int progressBar = 2131558701;
@@ -8854,107 +8863,107 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f0d0007
 			public const int progress_horizontal = 2131558407;
 			
-			// aapt resource value: 0x7f0d02ca
-			public const int promotionPager = 2131559114;
-			
-			// aapt resource value: 0x7f0d02d7
-			public const int promotion_campaign_period = 2131559127;
-			
-			// aapt resource value: 0x7f0d02d6
-			public const int promotion_campaign_period_label = 2131559126;
-			
-			// aapt resource value: 0x7f0d02dc
-			public const int promotion_date = 2131559132;
-			
-			// aapt resource value: 0x7f0d02d5
-			public const int promotion_description = 2131559125;
-			
-			// aapt resource value: 0x7f0d02d3
-			public const int promotion_img = 2131559123;
-			
-			// aapt resource value: 0x7f0d02dd
-			public const int promotion_img_read = 2131559133;
-			
-			// aapt resource value: 0x7f0d02db
-			public const int promotion_img_tag = 2131559131;
-			
-			// aapt resource value: 0x7f0d02e2
-			public const int promotion_list_recycler_view = 2131559138;
-			
-			// aapt resource value: 0x7f0d02da
-			public const int promotion_more_info = 2131559130;
-			
-			// aapt resource value: 0x7f0d02d9
-			public const int promotion_prizes = 2131559129;
+			// aapt resource value: 0x7f0d02cb
+			public const int promotionPager = 2131559115;
 			
 			// aapt resource value: 0x7f0d02d8
-			public const int promotion_prizes_label = 2131559128;
+			public const int promotion_campaign_period = 2131559128;
+			
+			// aapt resource value: 0x7f0d02d7
+			public const int promotion_campaign_period_label = 2131559127;
+			
+			// aapt resource value: 0x7f0d02dd
+			public const int promotion_date = 2131559133;
+			
+			// aapt resource value: 0x7f0d02d6
+			public const int promotion_description = 2131559126;
 			
 			// aapt resource value: 0x7f0d02d4
-			public const int promotion_title = 2131559124;
+			public const int promotion_img = 2131559124;
 			
-			// aapt resource value: 0x7f0d0309
-			public const int question_recycler_view = 2131559177;
+			// aapt resource value: 0x7f0d02de
+			public const int promotion_img_read = 2131559134;
+			
+			// aapt resource value: 0x7f0d02dc
+			public const int promotion_img_tag = 2131559132;
+			
+			// aapt resource value: 0x7f0d02e3
+			public const int promotion_list_recycler_view = 2131559139;
+			
+			// aapt resource value: 0x7f0d02db
+			public const int promotion_more_info = 2131559131;
+			
+			// aapt resource value: 0x7f0d02da
+			public const int promotion_prizes = 2131559130;
+			
+			// aapt resource value: 0x7f0d02d9
+			public const int promotion_prizes_label = 2131559129;
+			
+			// aapt resource value: 0x7f0d02d5
+			public const int promotion_title = 2131559125;
+			
+			// aapt resource value: 0x7f0d030a
+			public const int question_recycler_view = 2131559178;
 			
 			// aapt resource value: 0x7f0d0094
 			public const int radio = 2131558548;
 			
-			// aapt resource value: 0x7f0d02b0
-			public const int ratingBar = 2131559088;
+			// aapt resource value: 0x7f0d02b1
+			public const int ratingBar = 2131559089;
 			
-			// aapt resource value: 0x7f0d015b
-			public const int rbtnCO2 = 2131558747;
+			// aapt resource value: 0x7f0d015e
+			public const int rbtnCO2 = 2131558750;
 			
-			// aapt resource value: 0x7f0d0159
-			public const int rbtnRM = 2131558745;
+			// aapt resource value: 0x7f0d015c
+			public const int rbtnRM = 2131558748;
 			
-			// aapt resource value: 0x7f0d015a
-			public const int rbtnkWh = 2131558746;
+			// aapt resource value: 0x7f0d015d
+			public const int rbtnkWh = 2131558749;
 			
-			// aapt resource value: 0x7f0d0203
-			public const int re_send_btn = 2131558915;
+			// aapt resource value: 0x7f0d0206
+			public const int re_send_btn = 2131558918;
 			
-			// aapt resource value: 0x7f0d0336
-			public const int receipt_titile = 2131559222;
+			// aapt resource value: 0x7f0d0339
+			public const int receipt_titile = 2131559225;
 			
-			// aapt resource value: 0x7f0d01af
-			public const int recyclerView = 2131558831;
+			// aapt resource value: 0x7f0d01b2
+			public const int recyclerView = 2131558834;
 			
-			// aapt resource value: 0x7f0d02b7
-			public const int recyclerViewPaymentDetails = 2131559095;
+			// aapt resource value: 0x7f0d02b8
+			public const int recyclerViewPaymentDetails = 2131559096;
 			
-			// aapt resource value: 0x7f0d033a
-			public const int reference_number_text = 2131559226;
+			// aapt resource value: 0x7f0d033d
+			public const int reference_number_text = 2131559229;
 			
-			// aapt resource value: 0x7f0d033b
-			public const int reference_number_value = 2131559227;
+			// aapt resource value: 0x7f0d033e
+			public const int reference_number_value = 2131559230;
 			
-			// aapt resource value: 0x7f0d01b9
-			public const int reset_password_success_icon = 2131558841;
+			// aapt resource value: 0x7f0d01bc
+			public const int reset_password_success_icon = 2131558844;
 			
 			// aapt resource value: 0x7f0d003c
 			public const int right = 2131558460;
 			
-			// aapt resource value: 0x7f0d0313
-			public const int rightText = 2131559187;
+			// aapt resource value: 0x7f0d0314
+			public const int rightText = 2131559188;
 			
-			// aapt resource value: 0x7f0d029a
-			public const int right_icon = 2131559066;
-			
-			// aapt resource value: 0x7f0d030d
-			public const int right_layout = 2131559181;
-			
-			// aapt resource value: 0x7f0d0296
-			public const int right_side = 2131559062;
+			// aapt resource value: 0x7f0d029b
+			public const int right_icon = 2131559067;
 			
 			// aapt resource value: 0x7f0d030e
-			public const int rmText = 2131559182;
+			public const int right_layout = 2131559182;
+			
+			// aapt resource value: 0x7f0d0297
+			public const int right_side = 2131559063;
+			
+			// aapt resource value: 0x7f0d030f
+			public const int rmText = 2131559183;
 			
 			// aapt resource value: 0x7f0d00b1
 			public const int rootView = 2131558577;
 			
-			// aapt resource value: 0x7f0d01bf
-			public const int rootview = 2131558847;
+			// aapt resource value: 0x7f0d01c2
+			public const int rootview = 2131558850;
 			
 			// aapt resource value: 0x7f0d0028
 			public const int satellite = 2131558440;
@@ -8986,8 +8995,8 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f0d0087
 			public const int scrollView = 2131558535;
 			
-			// aapt resource value: 0x7f0d01ca
-			public const int scrollView1 = 2131558858;
+			// aapt resource value: 0x7f0d01cd
+			public const int scrollView1 = 2131558861;
 			
 			// aapt resource value: 0x7f0d0145
 			public const int scroll_view = 2131558725;
@@ -9010,14 +9019,14 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f0d00a1
 			public const int search_edit_frame = 2131558561;
 			
-			// aapt resource value: 0x7f0d01f0
-			public const int search_edittext = 2131558896;
+			// aapt resource value: 0x7f0d01f3
+			public const int search_edittext = 2131558899;
 			
 			// aapt resource value: 0x7f0d00a7
 			public const int search_go_btn = 2131558567;
 			
-			// aapt resource value: 0x7f0d01ef
-			public const int search_layout = 2131558895;
+			// aapt resource value: 0x7f0d01f2
+			public const int search_layout = 2131558898;
 			
 			// aapt resource value: 0x7f0d00a2
 			public const int search_mag_icon = 2131558562;
@@ -9034,8 +9043,8 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f0d0132
 			public const int segmented2 = 2131558706;
 			
-			// aapt resource value: 0x7f0d02f7
-			public const int select_account = 2131559159;
+			// aapt resource value: 0x7f0d02f8
+			public const int select_account = 2131559160;
 			
 			// aapt resource value: 0x7f0d00a9
 			public const int select_dialog_listview = 2131558569;
@@ -9043,11 +9052,11 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f0d00c2
 			public const int selector_account_type = 2131558594;
 			
-			// aapt resource value: 0x7f0d01f1
-			public const int selector_location_type = 2131558897;
+			// aapt resource value: 0x7f0d01f4
+			public const int selector_location_type = 2131558900;
 			
-			// aapt resource value: 0x7f0d015e
-			public const int shadow_layout = 2131558750;
+			// aapt resource value: 0x7f0d0161
+			public const int shadow_layout = 2131558753;
 			
 			// aapt resource value: 0x7f0d0093
 			public const int shortcut = 2131558547;
@@ -9061,38 +9070,38 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f0d0048
 			public const int showTitle = 2131558472;
 			
-			// aapt resource value: 0x7f0d034d
-			public const int skip = 2131559245;
+			// aapt resource value: 0x7f0d0350
+			public const int skip = 2131559248;
 			
 			// aapt resource value: 0x7f0d0148
 			public const int sm_chartview_no_data = 2131558728;
 			
-			// aapt resource value: 0x7f0d0158
-			public const int sm_graph_radio_group = 2131558744;
+			// aapt resource value: 0x7f0d015b
+			public const int sm_graph_radio_group = 2131558747;
 			
 			// aapt resource value: 0x7f0d0041
 			public const int small = 2131558465;
 			
-			// aapt resource value: 0x7f0d0163
-			public const int smallLabel = 2131558755;
+			// aapt resource value: 0x7f0d0166
+			public const int smallLabel = 2131558758;
 			
-			// aapt resource value: 0x7f0d016a
-			public const int snackbar_action = 2131558762;
+			// aapt resource value: 0x7f0d016d
+			public const int snackbar_action = 2131558765;
 			
-			// aapt resource value: 0x7f0d0169
-			public const int snackbar_text = 2131558761;
+			// aapt resource value: 0x7f0d016c
+			public const int snackbar_text = 2131558764;
 			
 			// aapt resource value: 0x7f0d005e
 			public const int snap = 2131558494;
 			
-			// aapt resource value: 0x7f0d01d1
-			public const int spaceBillRelated = 2131558865;
+			// aapt resource value: 0x7f0d01d4
+			public const int spaceBillRelated = 2131558868;
 			
-			// aapt resource value: 0x7f0d01d6
-			public const int spaceFaultyStreetLamps = 2131558870;
+			// aapt resource value: 0x7f0d01d9
+			public const int spaceFaultyStreetLamps = 2131558873;
 			
-			// aapt resource value: 0x7f0d01db
-			public const int spaceOthers = 2131558875;
+			// aapt resource value: 0x7f0d01de
+			public const int spaceOthers = 2131558878;
 			
 			// aapt resource value: 0x7f0d0083
 			public const int spacer = 2131558531;
@@ -9121,11 +9130,11 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f0d0062
 			public const int start = 2131558498;
 			
-			// aapt resource value: 0x7f0d01c8
-			public const int stateLayout = 2131558856;
+			// aapt resource value: 0x7f0d01cb
+			public const int stateLayout = 2131558859;
 			
-			// aapt resource value: 0x7f0d0291
-			public const int status_bar_latest_event_content = 2131559057;
+			// aapt resource value: 0x7f0d0292
+			public const int status_bar_latest_event_content = 2131559058;
 			
 			// aapt resource value: 0x7f0d0095
 			public const int submenuarrow = 2131558549;
@@ -9133,17 +9142,17 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f0d00a6
 			public const int submit_area = 2131558566;
 			
-			// aapt resource value: 0x7f0d01dc
-			public const int submittedFeedbackConstraint = 2131558876;
+			// aapt resource value: 0x7f0d01df
+			public const int submittedFeedbackConstraint = 2131558879;
 			
-			// aapt resource value: 0x7f0d01dd
-			public const int submittedFeedbackIcon = 2131558877;
+			// aapt resource value: 0x7f0d01e0
+			public const int submittedFeedbackIcon = 2131558880;
 			
-			// aapt resource value: 0x7f0d0312
-			public const int summaryFooter = 2131559186;
+			// aapt resource value: 0x7f0d0313
+			public const int summaryFooter = 2131559187;
 			
-			// aapt resource value: 0x7f0d0315
-			public const int summaryRootView = 2131559189;
+			// aapt resource value: 0x7f0d0316
+			public const int summaryRootView = 2131559190;
 			
 			// aapt resource value: 0x7f0d0112
 			public const int tabButtonLayout = 2131558674;
@@ -9160,11 +9169,11 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f0d001a
 			public const int text2 = 2131558426;
 			
-			// aapt resource value: 0x7f0d0352
-			public const int textDialogInfo = 2131559250;
+			// aapt resource value: 0x7f0d0355
+			public const int textDialogInfo = 2131559253;
 			
-			// aapt resource value: 0x7f0d0351
-			public const int textDialogTitle = 2131559249;
+			// aapt resource value: 0x7f0d0354
+			public const int textDialogTitle = 2131559252;
 			
 			// aapt resource value: 0x7f0d00e2
 			public const int textInputLayoutCardCVV = 2131558626;
@@ -9175,38 +9184,38 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f0d00dc
 			public const int textInputLayoutCardNo = 2131558620;
 			
+			// aapt resource value: 0x7f0d02eb
+			public const int textInputLayoutConfirmEmail = 2131559147;
+			
+			// aapt resource value: 0x7f0d02ee
+			public const int textInputLayoutConfirmPassword = 2131559150;
+			
 			// aapt resource value: 0x7f0d02ea
-			public const int textInputLayoutConfirmEmail = 2131559146;
-			
-			// aapt resource value: 0x7f0d02ed
-			public const int textInputLayoutConfirmPassword = 2131559149;
-			
-			// aapt resource value: 0x7f0d02e9
-			public const int textInputLayoutEmail = 2131559145;
-			
-			// aapt resource value: 0x7f0d0276
-			public const int textInputLayoutFullName = 2131559030;
-			
-			// aapt resource value: 0x7f0d02e5
-			public const int textInputLayoutICNo = 2131559141;
+			public const int textInputLayoutEmail = 2131559146;
 			
 			// aapt resource value: 0x7f0d0277
-			public const int textInputLayoutIcNo = 2131559031;
+			public const int textInputLayoutFullName = 2131559031;
 			
-			// aapt resource value: 0x7f0d02e7
-			public const int textInputLayoutMobileNo = 2131559143;
+			// aapt resource value: 0x7f0d02e6
+			public const int textInputLayoutICNo = 2131559142;
+			
+			// aapt resource value: 0x7f0d0278
+			public const int textInputLayoutIcNo = 2131559032;
+			
+			// aapt resource value: 0x7f0d02e8
+			public const int textInputLayoutMobileNo = 2131559144;
 			
 			// aapt resource value: 0x7f0d00de
 			public const int textInputLayoutNameOnCard = 2131558622;
 			
-			// aapt resource value: 0x7f0d02ec
-			public const int textInputLayoutPassword = 2131559148;
+			// aapt resource value: 0x7f0d02ed
+			public const int textInputLayoutPassword = 2131559149;
 			
-			// aapt resource value: 0x7f0d01f6
-			public const int textInputLayoutVerificationCode = 2131558902;
+			// aapt resource value: 0x7f0d01f9
+			public const int textInputLayoutVerificationCode = 2131558905;
 			
-			// aapt resource value: 0x7f0d022c
-			public const int textLoadingText = 2131558956;
+			// aapt resource value: 0x7f0d022b
+			public const int textLoadingText = 2131558955;
 			
 			// aapt resource value: 0x7f0d0089
 			public const int textSpacerNoButtons = 2131558537;
@@ -9220,8 +9229,8 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f0d00e6
 			public const int text_account_label = 2131558630;
 			
-			// aapt resource value: 0x7f0d02f4
-			public const int text_account_lable = 2131559156;
+			// aapt resource value: 0x7f0d02f5
+			public const int text_account_lable = 2131559157;
 			
 			// aapt resource value: 0x7f0d00ac
 			public const int text_account_number = 2131558572;
@@ -9229,32 +9238,32 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f0d00b8
 			public const int text_additional_accounts = 2131558584;
 			
-			// aapt resource value: 0x7f0d0230
-			public const int text_address = 2131558960;
+			// aapt resource value: 0x7f0d022f
+			public const int text_address = 2131558959;
 			
-			// aapt resource value: 0x7f0d0307
-			public const int text_bullet = 2131559175;
+			// aapt resource value: 0x7f0d0308
+			public const int text_bullet = 2131559176;
 			
-			// aapt resource value: 0x7f0d02ad
-			public const int text_description = 2131559085;
+			// aapt resource value: 0x7f0d02ae
+			public const int text_description = 2131559086;
 			
-			// aapt resource value: 0x7f0d021b
-			public const int text_headline = 2131558939;
+			// aapt resource value: 0x7f0d021e
+			public const int text_headline = 2131558942;
 			
-			// aapt resource value: 0x7f0d0170
-			public const int text_input_password_toggle = 2131558768;
+			// aapt resource value: 0x7f0d0173
+			public const int text_input_password_toggle = 2131558771;
 			
-			// aapt resource value: 0x7f0d02f9
-			public const int text_load_more = 2131559161;
+			// aapt resource value: 0x7f0d02fa
+			public const int text_load_more = 2131559162;
 			
 			// aapt resource value: 0x7f0d00b3
 			public const int text_no_of_account = 2131558579;
 			
-			// aapt resource value: 0x7f0d0308
-			public const int text_service = 2131559176;
+			// aapt resource value: 0x7f0d0309
+			public const int text_service = 2131559177;
 			
-			// aapt resource value: 0x7f0d022e
-			public const int text_title = 2131558958;
+			// aapt resource value: 0x7f0d022d
+			public const int text_title = 2131558957;
 			
 			// aapt resource value: 0x7f0d0014
 			public const int textinput_counter = 2131558420;
@@ -9262,11 +9271,11 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f0d0015
 			public const int textinput_error = 2131558421;
 			
-			// aapt resource value: 0x7f0d0338
-			public const int thanks_text = 2131559224;
+			// aapt resource value: 0x7f0d033b
+			public const int thanks_text = 2131559227;
 			
-			// aapt resource value: 0x7f0d0297
-			public const int time = 2131559063;
+			// aapt resource value: 0x7f0d0298
+			public const int time = 2131559064;
 			
 			// aapt resource value: 0x7f0d001b
 			public const int title = 2131558427;
@@ -9277,14 +9286,14 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f0d008e
 			public const int title_template = 2131558542;
 			
-			// aapt resource value: 0x7f0d0323
-			public const int tncWebView = 2131559203;
+			// aapt resource value: 0x7f0d0326
+			public const int tncWebView = 2131559206;
 			
 			// aapt resource value: 0x7f0d00b0
 			public const int toolbar = 2131558576;
 			
-			// aapt resource value: 0x7f0d0324
-			public const int toolbar_title = 2131559204;
+			// aapt resource value: 0x7f0d0327
+			public const int toolbar_title = 2131559207;
 			
 			// aapt resource value: 0x7f0d0039
 			public const int top = 2131558457;
@@ -9301,17 +9310,17 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f0d0107
 			public const int totalPayableLayout = 2131558663;
 			
-			// aapt resource value: 0x7f0d0343
-			public const int total_amt_text = 2131559235;
-			
-			// aapt resource value: 0x7f0d0344
-			public const int total_amt_value = 2131559236;
-			
-			// aapt resource value: 0x7f0d0167
-			public const int touch_outside = 2131558759;
+			// aapt resource value: 0x7f0d0346
+			public const int total_amt_text = 2131559238;
 			
 			// aapt resource value: 0x7f0d0347
-			public const int tour_image = 2131559239;
+			public const int total_amt_value = 2131559239;
+			
+			// aapt resource value: 0x7f0d016a
+			public const int touch_outside = 2131558762;
+			
+			// aapt resource value: 0x7f0d034a
+			public const int tour_image = 2131559242;
 			
 			// aapt resource value: 0x7f0d000f
 			public const int transition_current_scene = 2131558415;
@@ -9328,23 +9337,23 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f0d0013
 			public const int transition_transform = 2131558419;
 			
-			// aapt resource value: 0x7f0d033d
-			public const int txn_date_text = 2131559229;
-			
-			// aapt resource value: 0x7f0d033e
-			public const int txn_date_value = 2131559230;
-			
-			// aapt resource value: 0x7f0d033f
-			public const int txn_id_text = 2131559231;
-			
 			// aapt resource value: 0x7f0d0340
-			public const int txn_id_value = 2131559232;
+			public const int txn_date_text = 2131559232;
 			
 			// aapt resource value: 0x7f0d0341
-			public const int txn_method_text = 2131559233;
+			public const int txn_date_value = 2131559233;
 			
 			// aapt resource value: 0x7f0d0342
-			public const int txn_method_value = 2131559234;
+			public const int txn_id_text = 2131559234;
+			
+			// aapt resource value: 0x7f0d0343
+			public const int txn_id_value = 2131559235;
+			
+			// aapt resource value: 0x7f0d0344
+			public const int txn_method_text = 2131559236;
+			
+			// aapt resource value: 0x7f0d0345
+			public const int txn_method_value = 2131559237;
 			
 			// aapt resource value: 0x7f0d024c
 			public const int txtAccountAddress = 2131558988;
@@ -9352,17 +9361,17 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f0d023a
 			public const int txtAccountLogin = 2131558970;
 			
-			// aapt resource value: 0x7f0d0273
-			public const int txtAccountManage = 2131559027;
+			// aapt resource value: 0x7f0d0274
+			public const int txtAccountManage = 2131559028;
 			
 			// aapt resource value: 0x7f0d00fb
 			public const int txtAccountName = 2131558651;
 			
-			// aapt resource value: 0x7f0d0327
-			public const int txtAccountNickname = 2131559207;
+			// aapt resource value: 0x7f0d032a
+			public const int txtAccountNickname = 2131559210;
 			
-			// aapt resource value: 0x7f0d01ab
-			public const int txtAccountNo = 2131558827;
+			// aapt resource value: 0x7f0d01ae
+			public const int txtAccountNo = 2131558830;
 			
 			// aapt resource value: 0x7f0d00fc
 			public const int txtAccountNum = 2131558652;
@@ -9370,17 +9379,17 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f0d024b
 			public const int txtAccountNumber = 2131558987;
 			
-			// aapt resource value: 0x7f0d0283
-			public const int txtAccountNumberContent = 2131559043;
+			// aapt resource value: 0x7f0d0284
+			public const int txtAccountNumberContent = 2131559044;
 			
-			// aapt resource value: 0x7f0d0282
-			public const int txtAccountNumberTitle = 2131559042;
+			// aapt resource value: 0x7f0d0283
+			public const int txtAccountNumberTitle = 2131559043;
 			
 			// aapt resource value: 0x7f0d00c1
 			public const int txtAccountType = 2131558593;
 			
-			// aapt resource value: 0x7f0d0274
-			public const int txtAccountUsers = 2131559028;
+			// aapt resource value: 0x7f0d0275
+			public const int txtAccountUsers = 2131559029;
 			
 			// aapt resource value: 0x7f0d00fd
 			public const int txtAddress = 2131558653;
@@ -9403,8 +9412,8 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f0d0111
 			public const int txtBillPaymentHistoryTitle = 2131558673;
 			
-			// aapt resource value: 0x7f0d02c6
-			public const int txtCallUs = 2131559110;
+			// aapt resource value: 0x7f0d02c7
+			public const int txtCallUs = 2131559111;
 			
 			// aapt resource value: 0x7f0d00e3
 			public const int txtCardCVV = 2131558627;
@@ -9418,26 +9427,26 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f0d0245
 			public const int txtCardNumber = 2131558981;
 			
-			// aapt resource value: 0x7f0d027b
-			public const int txtCards = 2131559035;
+			// aapt resource value: 0x7f0d027c
+			public const int txtCards = 2131559036;
 			
 			// aapt resource value: 0x7f0d011a
 			public const int txtChartName = 2131558682;
 			
-			// aapt resource value: 0x7f0d02b2
-			public const int txtComments = 2131559090;
+			// aapt resource value: 0x7f0d02b3
+			public const int txtComments = 2131559091;
 			
-			// aapt resource value: 0x7f0d02eb
-			public const int txtConfirmEmail = 2131559147;
+			// aapt resource value: 0x7f0d02ec
+			public const int txtConfirmEmail = 2131559148;
 			
-			// aapt resource value: 0x7f0d02f3
-			public const int txtConfirmNewPassword = 2131559155;
+			// aapt resource value: 0x7f0d02f4
+			public const int txtConfirmNewPassword = 2131559156;
 			
-			// aapt resource value: 0x7f0d02ee
-			public const int txtConfirmPassword = 2131559150;
+			// aapt resource value: 0x7f0d02ef
+			public const int txtConfirmPassword = 2131559151;
 			
-			// aapt resource value: 0x7f0d01bb
-			public const int txtContentInfo = 2131558843;
+			// aapt resource value: 0x7f0d01be
+			public const int txtContentInfo = 2131558846;
 			
 			// aapt resource value: 0x7f0d010e
 			public const int txtCurrency = 2131558670;
@@ -9466,8 +9475,8 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f0d0150
 			public const int txtCurrentChargesUnit2 = 2131558736;
 			
-			// aapt resource value: 0x7f0d032b
-			public const int txtCurrentPassword = 2131559211;
+			// aapt resource value: 0x7f0d032e
+			public const int txtCurrentPassword = 2131559214;
 			
 			// aapt resource value: 0x7f0d014f
 			public const int txtCurretnChargesValue = 2131558735;
@@ -9475,206 +9484,206 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f0d00f4
 			public const int txtDate = 2131558644;
 			
-			// aapt resource value: 0x7f0d0202
-			public const int txtDidntReceive = 2131558914;
+			// aapt resource value: 0x7f0d0205
+			public const int txtDidntReceive = 2131558917;
 			
-			// aapt resource value: 0x7f0d031c
-			public const int txtDowntimeMessage = 2131559196;
+			// aapt resource value: 0x7f0d031d
+			public const int txtDowntimeMessage = 2131559197;
 			
 			// aapt resource value: 0x7f0d010f
 			public const int txtDueDate = 2131558671;
 			
-			// aapt resource value: 0x7f0d01e3
-			public const int txtEmail = 2131558883;
+			// aapt resource value: 0x7f0d01e6
+			public const int txtEmail = 2131558886;
 			
-			// aapt resource value: 0x7f0d01f4
-			public const int txtEmailLinkInfo = 2131558900;
+			// aapt resource value: 0x7f0d01f7
+			public const int txtEmailLinkInfo = 2131558903;
 			
 			// aapt resource value: 0x7f0d024a
 			public const int txtEmptyCard = 2131558986;
 			
-			// aapt resource value: 0x7f0d01e9
-			public const int txtEmptyFeedback = 2131558889;
+			// aapt resource value: 0x7f0d01ec
+			public const int txtEmptyFeedback = 2131558892;
 			
-			// aapt resource value: 0x7f0d01f3
-			public const int txtEnterEmailTitle = 2131558899;
+			// aapt resource value: 0x7f0d01f6
+			public const int txtEnterEmailTitle = 2131558902;
 			
-			// aapt resource value: 0x7f0d034b
-			public const int txtErrorMessage = 2131559243;
-			
-			// aapt resource value: 0x7f0d018c
-			public const int txtFaq10Content = 2131558796;
-			
-			// aapt resource value: 0x7f0d018b
-			public const int txtFaq10Title = 2131558795;
-			
-			// aapt resource value: 0x7f0d018e
-			public const int txtFaq11Content = 2131558798;
-			
-			// aapt resource value: 0x7f0d018d
-			public const int txtFaq11Title = 2131558797;
-			
-			// aapt resource value: 0x7f0d0190
-			public const int txtFaq12Content = 2131558800;
+			// aapt resource value: 0x7f0d034e
+			public const int txtErrorMessage = 2131559246;
 			
 			// aapt resource value: 0x7f0d018f
-			public const int txtFaq12Title = 2131558799;
+			public const int txtFaq10Content = 2131558799;
 			
-			// aapt resource value: 0x7f0d0192
-			public const int txtFaq13Content = 2131558802;
+			// aapt resource value: 0x7f0d018e
+			public const int txtFaq10Title = 2131558798;
 			
 			// aapt resource value: 0x7f0d0191
-			public const int txtFaq13Title = 2131558801;
+			public const int txtFaq11Content = 2131558801;
 			
-			// aapt resource value: 0x7f0d0194
-			public const int txtFaq14Content = 2131558804;
+			// aapt resource value: 0x7f0d0190
+			public const int txtFaq11Title = 2131558800;
 			
 			// aapt resource value: 0x7f0d0193
-			public const int txtFaq14Title = 2131558803;
+			public const int txtFaq12Content = 2131558803;
 			
-			// aapt resource value: 0x7f0d0196
-			public const int txtFaq15Content = 2131558806;
+			// aapt resource value: 0x7f0d0192
+			public const int txtFaq12Title = 2131558802;
 			
 			// aapt resource value: 0x7f0d0195
-			public const int txtFaq15Title = 2131558805;
+			public const int txtFaq13Content = 2131558805;
 			
-			// aapt resource value: 0x7f0d0198
-			public const int txtFaq16Content = 2131558808;
+			// aapt resource value: 0x7f0d0194
+			public const int txtFaq13Title = 2131558804;
 			
 			// aapt resource value: 0x7f0d0197
-			public const int txtFaq16Title = 2131558807;
+			public const int txtFaq14Content = 2131558807;
 			
-			// aapt resource value: 0x7f0d019a
-			public const int txtFaq17Content = 2131558810;
+			// aapt resource value: 0x7f0d0196
+			public const int txtFaq14Title = 2131558806;
 			
 			// aapt resource value: 0x7f0d0199
-			public const int txtFaq17Title = 2131558809;
+			public const int txtFaq15Content = 2131558809;
 			
-			// aapt resource value: 0x7f0d019c
-			public const int txtFaq18Content = 2131558812;
+			// aapt resource value: 0x7f0d0198
+			public const int txtFaq15Title = 2131558808;
 			
 			// aapt resource value: 0x7f0d019b
-			public const int txtFaq18Title = 2131558811;
+			public const int txtFaq16Content = 2131558811;
 			
-			// aapt resource value: 0x7f0d019e
-			public const int txtFaq19Content = 2131558814;
+			// aapt resource value: 0x7f0d019a
+			public const int txtFaq16Title = 2131558810;
 			
 			// aapt resource value: 0x7f0d019d
-			public const int txtFaq19Title = 2131558813;
+			public const int txtFaq17Content = 2131558813;
 			
-			// aapt resource value: 0x7f0d017a
-			public const int txtFaq1Content = 2131558778;
-			
-			// aapt resource value: 0x7f0d0179
-			public const int txtFaq1Title = 2131558777;
-			
-			// aapt resource value: 0x7f0d01a0
-			public const int txtFaq20Content = 2131558816;
+			// aapt resource value: 0x7f0d019c
+			public const int txtFaq17Title = 2131558812;
 			
 			// aapt resource value: 0x7f0d019f
-			public const int txtFaq20Title = 2131558815;
+			public const int txtFaq18Content = 2131558815;
 			
-			// aapt resource value: 0x7f0d017c
-			public const int txtFaq2Content = 2131558780;
+			// aapt resource value: 0x7f0d019e
+			public const int txtFaq18Title = 2131558814;
 			
-			// aapt resource value: 0x7f0d017b
-			public const int txtFaq2Title = 2131558779;
+			// aapt resource value: 0x7f0d01a1
+			public const int txtFaq19Content = 2131558817;
 			
-			// aapt resource value: 0x7f0d017e
-			public const int txtFaq3Content = 2131558782;
+			// aapt resource value: 0x7f0d01a0
+			public const int txtFaq19Title = 2131558816;
 			
 			// aapt resource value: 0x7f0d017d
-			public const int txtFaq3Title = 2131558781;
+			public const int txtFaq1Content = 2131558781;
 			
-			// aapt resource value: 0x7f0d0180
-			public const int txtFaq4Content = 2131558784;
+			// aapt resource value: 0x7f0d017c
+			public const int txtFaq1Title = 2131558780;
+			
+			// aapt resource value: 0x7f0d01a3
+			public const int txtFaq20Content = 2131558819;
+			
+			// aapt resource value: 0x7f0d01a2
+			public const int txtFaq20Title = 2131558818;
 			
 			// aapt resource value: 0x7f0d017f
-			public const int txtFaq4Title = 2131558783;
+			public const int txtFaq2Content = 2131558783;
 			
-			// aapt resource value: 0x7f0d0182
-			public const int txtFaq5Content = 2131558786;
+			// aapt resource value: 0x7f0d017e
+			public const int txtFaq2Title = 2131558782;
 			
 			// aapt resource value: 0x7f0d0181
-			public const int txtFaq5Title = 2131558785;
+			public const int txtFaq3Content = 2131558785;
 			
-			// aapt resource value: 0x7f0d0184
-			public const int txtFaq6Content = 2131558788;
+			// aapt resource value: 0x7f0d0180
+			public const int txtFaq3Title = 2131558784;
 			
 			// aapt resource value: 0x7f0d0183
-			public const int txtFaq6Title = 2131558787;
+			public const int txtFaq4Content = 2131558787;
 			
-			// aapt resource value: 0x7f0d0186
-			public const int txtFaq7Content = 2131558790;
+			// aapt resource value: 0x7f0d0182
+			public const int txtFaq4Title = 2131558786;
 			
 			// aapt resource value: 0x7f0d0185
-			public const int txtFaq7Title = 2131558789;
+			public const int txtFaq5Content = 2131558789;
 			
-			// aapt resource value: 0x7f0d0188
-			public const int txtFaq8Content = 2131558792;
+			// aapt resource value: 0x7f0d0184
+			public const int txtFaq5Title = 2131558788;
 			
 			// aapt resource value: 0x7f0d0187
-			public const int txtFaq8Title = 2131558791;
+			public const int txtFaq6Content = 2131558791;
 			
-			// aapt resource value: 0x7f0d018a
-			public const int txtFaq9Content = 2131558794;
+			// aapt resource value: 0x7f0d0186
+			public const int txtFaq6Title = 2131558790;
 			
 			// aapt resource value: 0x7f0d0189
-			public const int txtFaq9Title = 2131558793;
+			public const int txtFaq7Content = 2131558793;
 			
-			// aapt resource value: 0x7f0d01ad
-			public const int txtFeedback = 2131558829;
+			// aapt resource value: 0x7f0d0188
+			public const int txtFaq7Title = 2131558792;
 			
-			// aapt resource value: 0x7f0d01cf
-			public const int txtFeedbackBillingAndPayment = 2131558863;
+			// aapt resource value: 0x7f0d018b
+			public const int txtFaq8Content = 2131558795;
 			
-			// aapt resource value: 0x7f0d01d0
-			public const int txtFeedbackBillingAndPaymentContent = 2131558864;
+			// aapt resource value: 0x7f0d018a
+			public const int txtFaq8Title = 2131558794;
 			
-			// aapt resource value: 0x7f0d01c7
-			public const int txtFeedbackContent = 2131558855;
+			// aapt resource value: 0x7f0d018d
+			public const int txtFaq9Content = 2131558797;
 			
-			// aapt resource value: 0x7f0d01e6
-			public const int txtFeedbackDate = 2131558886;
+			// aapt resource value: 0x7f0d018c
+			public const int txtFaq9Title = 2131558796;
 			
-			// aapt resource value: 0x7f0d01a9
-			public const int txtFeedbackDateTime = 2131558825;
+			// aapt resource value: 0x7f0d01b0
+			public const int txtFeedback = 2131558832;
 			
-			// aapt resource value: 0x7f0d01d4
-			public const int txtFeedbackFaultyStreetLamps = 2131558868;
+			// aapt resource value: 0x7f0d01d2
+			public const int txtFeedbackBillingAndPayment = 2131558866;
 			
-			// aapt resource value: 0x7f0d01d5
-			public const int txtFeedbackFaultyStreetLampsContent = 2131558869;
+			// aapt resource value: 0x7f0d01d3
+			public const int txtFeedbackBillingAndPaymentContent = 2131558867;
 			
-			// aapt resource value: 0x7f0d01a5
-			public const int txtFeedbackId = 2131558821;
+			// aapt resource value: 0x7f0d01ca
+			public const int txtFeedbackContent = 2131558858;
 			
-			// aapt resource value: 0x7f0d01ed
-			public const int txtFeedbackIdContent = 2131558893;
+			// aapt resource value: 0x7f0d01e9
+			public const int txtFeedbackDate = 2131558889;
 			
-			// aapt resource value: 0x7f0d01eb
-			public const int txtFeedbackIdTitle = 2131558891;
+			// aapt resource value: 0x7f0d01ac
+			public const int txtFeedbackDateTime = 2131558828;
 			
-			// aapt resource value: 0x7f0d01d9
-			public const int txtFeedbackOthers = 2131558873;
+			// aapt resource value: 0x7f0d01d7
+			public const int txtFeedbackFaultyStreetLamps = 2131558871;
 			
-			// aapt resource value: 0x7f0d01da
-			public const int txtFeedbackOthersContent = 2131558874;
+			// aapt resource value: 0x7f0d01d8
+			public const int txtFeedbackFaultyStreetLampsContent = 2131558872;
 			
-			// aapt resource value: 0x7f0d02f8
-			public const int txtFeedbackState = 2131559160;
+			// aapt resource value: 0x7f0d01a8
+			public const int txtFeedbackId = 2131558824;
 			
-			// aapt resource value: 0x7f0d01a7
-			public const int txtFeedbackStatus = 2131558823;
+			// aapt resource value: 0x7f0d01f0
+			public const int txtFeedbackIdContent = 2131558896;
 			
-			// aapt resource value: 0x7f0d01c6
-			public const int txtFeedbackTitle = 2131558854;
+			// aapt resource value: 0x7f0d01ee
+			public const int txtFeedbackIdTitle = 2131558894;
 			
-			// aapt resource value: 0x7f0d01b8
-			public const int txtFeedbackType = 2131558840;
+			// aapt resource value: 0x7f0d01dc
+			public const int txtFeedbackOthers = 2131558876;
 			
-			// aapt resource value: 0x7f0d02c5
-			public const int txtFindUs = 2131559109;
+			// aapt resource value: 0x7f0d01dd
+			public const int txtFeedbackOthersContent = 2131558877;
+			
+			// aapt resource value: 0x7f0d02f9
+			public const int txtFeedbackState = 2131559161;
+			
+			// aapt resource value: 0x7f0d01aa
+			public const int txtFeedbackStatus = 2131558826;
+			
+			// aapt resource value: 0x7f0d01c9
+			public const int txtFeedbackTitle = 2131558857;
+			
+			// aapt resource value: 0x7f0d01bb
+			public const int txtFeedbackType = 2131558843;
+			
+			// aapt resource value: 0x7f0d02c6
+			public const int txtFindUs = 2131559110;
 			
 			// aapt resource value: 0x7f0d00ed
 			public const int txtFooter = 2131558637;
@@ -9688,116 +9697,116 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f0d023d
 			public const int txtForgotPassword = 2131558973;
 			
-			// aapt resource value: 0x7f0d01e1
-			public const int txtFullName = 2131558881;
+			// aapt resource value: 0x7f0d01e4
+			public const int txtFullName = 2131558884;
 			
-			// aapt resource value: 0x7f0d01f8
-			public const int txtGetACode = 2131558904;
+			// aapt resource value: 0x7f0d01fb
+			public const int txtGetACode = 2131558907;
 			
-			// aapt resource value: 0x7f0d02e6
-			public const int txtICNumber = 2131559142;
+			// aapt resource value: 0x7f0d02e7
+			public const int txtICNumber = 2131559143;
 			
-			// aapt resource value: 0x7f0d0205
-			public const int txtIcNo = 2131558917;
+			// aapt resource value: 0x7f0d0208
+			public const int txtIcNo = 2131558920;
 			
 			// aapt resource value: 0x7f0d00db
 			public const int txtInfoTitle = 2131558619;
 			
-			// aapt resource value: 0x7f0d0326
-			public const int txtInputLayoutAccountNickname = 2131559206;
+			// aapt resource value: 0x7f0d0329
+			public const int txtInputLayoutAccountNickname = 2131559209;
 			
-			// aapt resource value: 0x7f0d01aa
-			public const int txtInputLayoutAccountNo = 2131558826;
+			// aapt resource value: 0x7f0d01ad
+			public const int txtInputLayoutAccountNo = 2131558829;
 			
-			// aapt resource value: 0x7f0d027a
-			public const int txtInputLayoutCards = 2131559034;
+			// aapt resource value: 0x7f0d027b
+			public const int txtInputLayoutCards = 2131559035;
 			
-			// aapt resource value: 0x7f0d02b1
-			public const int txtInputLayoutComments = 2131559089;
+			// aapt resource value: 0x7f0d02b2
+			public const int txtInputLayoutComments = 2131559090;
 			
-			// aapt resource value: 0x7f0d02f2
-			public const int txtInputLayoutConfirmNewPassword = 2131559154;
+			// aapt resource value: 0x7f0d02f3
+			public const int txtInputLayoutConfirmNewPassword = 2131559155;
 			
-			// aapt resource value: 0x7f0d032c
-			public const int txtInputLayoutConfirmPassword = 2131559212;
+			// aapt resource value: 0x7f0d032f
+			public const int txtInputLayoutConfirmPassword = 2131559215;
 			
-			// aapt resource value: 0x7f0d032a
-			public const int txtInputLayoutCurrentPassword = 2131559210;
+			// aapt resource value: 0x7f0d032d
+			public const int txtInputLayoutCurrentPassword = 2131559213;
 			
-			// aapt resource value: 0x7f0d01a8
-			public const int txtInputLayoutDateTime = 2131558824;
+			// aapt resource value: 0x7f0d01ab
+			public const int txtInputLayoutDateTime = 2131558827;
 			
-			// aapt resource value: 0x7f0d01e2
-			public const int txtInputLayoutEmail = 2131558882;
+			// aapt resource value: 0x7f0d01e5
+			public const int txtInputLayoutEmail = 2131558885;
 			
-			// aapt resource value: 0x7f0d01ac
-			public const int txtInputLayoutFeedback = 2131558828;
+			// aapt resource value: 0x7f0d01af
+			public const int txtInputLayoutFeedback = 2131558831;
 			
-			// aapt resource value: 0x7f0d01a4
-			public const int txtInputLayoutFeedbackId = 2131558820;
+			// aapt resource value: 0x7f0d01a7
+			public const int txtInputLayoutFeedbackId = 2131558823;
 			
-			// aapt resource value: 0x7f0d01b7
-			public const int txtInputLayoutFeedbackType = 2131558839;
+			// aapt resource value: 0x7f0d01ba
+			public const int txtInputLayoutFeedbackType = 2131558842;
 			
-			// aapt resource value: 0x7f0d01e0
-			public const int txtInputLayoutFullName = 2131558880;
+			// aapt resource value: 0x7f0d01e3
+			public const int txtInputLayoutFullName = 2131558883;
 			
-			// aapt resource value: 0x7f0d0204
-			public const int txtInputLayoutICNo = 2131558916;
+			// aapt resource value: 0x7f0d0207
+			public const int txtInputLayoutICNo = 2131558919;
 			
-			// aapt resource value: 0x7f0d01b2
-			public const int txtInputLayoutLocation = 2131558834;
+			// aapt resource value: 0x7f0d01b5
+			public const int txtInputLayoutLocation = 2131558837;
 			
-			// aapt resource value: 0x7f0d0206
-			public const int txtInputLayoutMaidenName = 2131558918;
+			// aapt resource value: 0x7f0d0209
+			public const int txtInputLayoutMaidenName = 2131558921;
 			
-			// aapt resource value: 0x7f0d01c1
-			public const int txtInputLayoutMobileNo = 2131558849;
+			// aapt resource value: 0x7f0d01c4
+			public const int txtInputLayoutMobileNo = 2131558852;
 			
-			// aapt resource value: 0x7f0d02f0
-			public const int txtInputLayoutNewPassword = 2131559152;
+			// aapt resource value: 0x7f0d02f1
+			public const int txtInputLayoutNewPassword = 2131559153;
 			
 			// aapt resource value: 0x7f0d024e
 			public const int txtInputLayoutNickName = 2131558990;
 			
-			// aapt resource value: 0x7f0d01f9
-			public const int txtInputLayoutNumber_1 = 2131558905;
-			
 			// aapt resource value: 0x7f0d01fc
-			public const int txtInputLayoutNumber_2 = 2131558908;
+			public const int txtInputLayoutNumber_1 = 2131558908;
 			
-			// aapt resource value: 0x7f0d01fe
-			public const int txtInputLayoutNumber_3 = 2131558910;
+			// aapt resource value: 0x7f0d01ff
+			public const int txtInputLayoutNumber_2 = 2131558911;
 			
-			// aapt resource value: 0x7f0d0200
-			public const int txtInputLayoutNumber_4 = 2131558912;
+			// aapt resource value: 0x7f0d0201
+			public const int txtInputLayoutNumber_3 = 2131558913;
+			
+			// aapt resource value: 0x7f0d0203
+			public const int txtInputLayoutNumber_4 = 2131558915;
 			
 			// aapt resource value: 0x7f0d023b
 			public const int txtInputLayoutPassword = 2131558971;
 			
-			// aapt resource value: 0x7f0d01b4
-			public const int txtInputLayoutPoleNo = 2131558836;
-			
-			// aapt resource value: 0x7f0d01b0
-			public const int txtInputLayoutState = 2131558832;
-			
-			// aapt resource value: 0x7f0d01a6
-			public const int txtInputLayoutStatus = 2131558822;
-			
-			// aapt resource value: 0x7f0d02c4
-			public const int txtLikeToday = 2131559108;
+			// aapt resource value: 0x7f0d01b7
+			public const int txtInputLayoutPoleNo = 2131558839;
 			
 			// aapt resource value: 0x7f0d01b3
-			public const int txtLocation = 2131558835;
+			public const int txtInputLayoutState = 2131558835;
 			
-			// aapt resource value: 0x7f0d0238
-			public const int txtLocationType = 2131558968;
+			// aapt resource value: 0x7f0d01a9
+			public const int txtInputLayoutStatus = 2131558825;
 			
-			// aapt resource value: 0x7f0d0207
-			public const int txtMaidenName = 2131558919;
+			// aapt resource value: 0x7f0d02c5
+			public const int txtLikeToday = 2131559109;
 			
-			// aapt resource value: 0x7f0d02c2
-			public const int txtManageAccount = 2131559106;
+			// aapt resource value: 0x7f0d01b6
+			public const int txtLocation = 2131558838;
+			
+			// aapt resource value: 0x7f0d0237
+			public const int txtLocationType = 2131558967;
+			
+			// aapt resource value: 0x7f0d020a
+			public const int txtMaidenName = 2131558922;
+			
+			// aapt resource value: 0x7f0d02c3
+			public const int txtManageAccount = 2131559107;
 			
 			// aapt resource value: 0x7f0d0248
 			public const int txtManageCardsTitle = 2131558984;
@@ -9805,35 +9814,35 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f0d0252
 			public const int txtMarker = 2131558994;
 			
-			// aapt resource value: 0x7f0d01c3
-			public const int txtMaxCharacters = 2131558851;
+			// aapt resource value: 0x7f0d01c6
+			public const int txtMaxCharacters = 2131558854;
 			
-			// aapt resource value: 0x7f0d01c4
-			public const int txtMaxImageContent = 2131558852;
+			// aapt resource value: 0x7f0d01c7
+			public const int txtMaxImageContent = 2131558855;
 			
 			// aapt resource value: 0x7f0d00e8
 			public const int txtMessage = 2131558632;
 			
-			// aapt resource value: 0x7f0d01c2
-			public const int txtMobileNo = 2131558850;
+			// aapt resource value: 0x7f0d01c5
+			public const int txtMobileNo = 2131558853;
 			
-			// aapt resource value: 0x7f0d02e8
-			public const int txtMobileNumber = 2131559144;
+			// aapt resource value: 0x7f0d02e9
+			public const int txtMobileNumber = 2131559145;
+			
+			// aapt resource value: 0x7f0d0280
+			public const int txtMyAccountNoAccountContent = 2131559040;
 			
 			// aapt resource value: 0x7f0d027f
-			public const int txtMyAccountNoAccountContent = 2131559039;
+			public const int txtMyAccountNoAccountTitle = 2131559039;
 			
-			// aapt resource value: 0x7f0d027e
-			public const int txtMyAccountNoAccountTitle = 2131559038;
-			
-			// aapt resource value: 0x7f0d0275
-			public const int txtMyAccountTitle = 2131559029;
+			// aapt resource value: 0x7f0d0276
+			public const int txtMyAccountTitle = 2131559030;
 			
 			// aapt resource value: 0x7f0d00df
 			public const int txtNameOnCard = 2131558623;
 			
-			// aapt resource value: 0x7f0d02f1
-			public const int txtNewPassword = 2131559153;
+			// aapt resource value: 0x7f0d02f2
+			public const int txtNewPassword = 2131559154;
 			
 			// aapt resource value: 0x7f0d024f
 			public const int txtNickName = 2131558991;
@@ -9853,53 +9862,53 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f0d00d2
 			public const int txtNonOwnerConstrain = 2131558610;
 			
-			// aapt resource value: 0x7f0d02a9
-			public const int txtNotificationChannelTitle = 2131559081;
+			// aapt resource value: 0x7f0d02aa
+			public const int txtNotificationChannelTitle = 2131559082;
 			
-			// aapt resource value: 0x7f0d02a1
-			public const int txtNotificationContent = 2131559073;
-			
-			// aapt resource value: 0x7f0d02a5
-			public const int txtNotificationDate = 2131559077;
-			
-			// aapt resource value: 0x7f0d0287
-			public const int txtNotificationDetailsPaymentDueContent = 2131559047;
-			
-			// aapt resource value: 0x7f0d0286
-			public const int txtNotificationDetailsPaymentDueTitle = 2131559046;
-			
-			// aapt resource value: 0x7f0d0288
-			public const int txtNotificationDetailsSubContent1 = 2131559048;
-			
-			// aapt resource value: 0x7f0d0289
-			public const int txtNotificationDetailsSubContent2 = 2131559049;
-			
-			// aapt resource value: 0x7f0d028a
-			public const int txtNotificationDetailsSubContent3 = 2131559050;
-			
-			// aapt resource value: 0x7f0d0281
-			public const int txtNotificationSubTitle = 2131559041;
-			
-			// aapt resource value: 0x7f0d0280
-			public const int txtNotificationTitle = 2131559040;
+			// aapt resource value: 0x7f0d02a2
+			public const int txtNotificationContent = 2131559074;
 			
 			// aapt resource value: 0x7f0d02a6
-			public const int txtNotificationTypeTitle = 2131559078;
+			public const int txtNotificationDate = 2131559078;
 			
-			// aapt resource value: 0x7f0d02ac
-			public const int txtNotificationsContent = 2131559084;
+			// aapt resource value: 0x7f0d0288
+			public const int txtNotificationDetailsPaymentDueContent = 2131559048;
 			
-			// aapt resource value: 0x7f0d01fa
-			public const int txtNumber_1 = 2131558906;
+			// aapt resource value: 0x7f0d0287
+			public const int txtNotificationDetailsPaymentDueTitle = 2131559047;
 			
-			// aapt resource value: 0x7f0d01fb
-			public const int txtNumber_2 = 2131558907;
+			// aapt resource value: 0x7f0d0289
+			public const int txtNotificationDetailsSubContent1 = 2131559049;
+			
+			// aapt resource value: 0x7f0d028a
+			public const int txtNotificationDetailsSubContent2 = 2131559050;
+			
+			// aapt resource value: 0x7f0d028b
+			public const int txtNotificationDetailsSubContent3 = 2131559051;
+			
+			// aapt resource value: 0x7f0d0282
+			public const int txtNotificationSubTitle = 2131559042;
+			
+			// aapt resource value: 0x7f0d0281
+			public const int txtNotificationTitle = 2131559041;
+			
+			// aapt resource value: 0x7f0d02a7
+			public const int txtNotificationTypeTitle = 2131559079;
+			
+			// aapt resource value: 0x7f0d02ad
+			public const int txtNotificationsContent = 2131559085;
 			
 			// aapt resource value: 0x7f0d01fd
-			public const int txtNumber_3 = 2131558909;
+			public const int txtNumber_1 = 2131558909;
 			
-			// aapt resource value: 0x7f0d01ff
-			public const int txtNumber_4 = 2131558911;
+			// aapt resource value: 0x7f0d01fe
+			public const int txtNumber_2 = 2131558910;
+			
+			// aapt resource value: 0x7f0d0200
+			public const int txtNumber_3 = 2131558912;
+			
+			// aapt resource value: 0x7f0d0202
+			public const int txtNumber_4 = 2131558914;
 			
 			// aapt resource value: 0x7f0d0106
 			public const int txtOutstandingChargesContent = 2131558662;
@@ -9919,14 +9928,14 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f0d023c
 			public const int txtPassword = 2131558972;
 			
-			// aapt resource value: 0x7f0d02ae
-			public const int txtPayment = 2131559086;
-			
 			// aapt resource value: 0x7f0d02af
-			public const int txtPaymentFrom = 2131559087;
+			public const int txtPayment = 2131559087;
 			
-			// aapt resource value: 0x7f0d01b5
-			public const int txtPoleNo = 2131558837;
+			// aapt resource value: 0x7f0d02b0
+			public const int txtPaymentFrom = 2131559088;
+			
+			// aapt resource value: 0x7f0d01b8
+			public const int txtPoleNo = 2131558840;
 			
 			// aapt resource value: 0x7f0d0153
 			public const int txtProjectedCost = 2131558739;
@@ -9940,35 +9949,38 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f0d0156
 			public const int txtProjectedCostValue = 2131558742;
 			
-			// aapt resource value: 0x7f0d02c7
-			public const int txtPromotion = 2131559111;
+			// aapt resource value: 0x7f0d02c8
+			public const int txtPromotion = 2131559112;
 			
 			// aapt resource value: 0x7f0d00f7
 			public const int txtRange = 2131558647;
 			
+			// aapt resource value: 0x7f0d0320
+			public const int txtRefreshMessage = 2131559200;
+			
 			// aapt resource value: 0x7f0d0240
 			public const int txtRegisterAccount = 2131558976;
 			
-			// aapt resource value: 0x7f0d01ae
-			public const int txtRelatedScreenshotTitle = 2131558830;
-			
 			// aapt resource value: 0x7f0d01b1
-			public const int txtState = 2131558833;
+			public const int txtRelatedScreenshotTitle = 2131558833;
 			
-			// aapt resource value: 0x7f0d032d
-			public const int txtSubTitle = 2131559213;
+			// aapt resource value: 0x7f0d01b4
+			public const int txtState = 2131558836;
 			
-			// aapt resource value: 0x7f0d01de
-			public const int txtSubmittedFeedback = 2131558878;
+			// aapt resource value: 0x7f0d0330
+			public const int txtSubTitle = 2131559216;
 			
-			// aapt resource value: 0x7f0d01df
-			public const int txtSubmittedFeedbackContent = 2131558879;
+			// aapt resource value: 0x7f0d01e1
+			public const int txtSubmittedFeedback = 2131558881;
 			
-			// aapt resource value: 0x7f0d01e4
-			public const int txtSupplyAccountName = 2131558884;
+			// aapt resource value: 0x7f0d01e2
+			public const int txtSubmittedFeedbackContent = 2131558882;
 			
-			// aapt resource value: 0x7f0d02ef
-			public const int txtTermsConditions = 2131559151;
+			// aapt resource value: 0x7f0d01e7
+			public const int txtSupplyAccountName = 2131558887;
+			
+			// aapt resource value: 0x7f0d02f0
+			public const int txtTermsConditions = 2131559152;
 			
 			// aapt resource value: 0x7f0d00cc
 			public const int txtTitle = 2131558604;
@@ -9976,11 +9988,11 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f0d00cb
 			public const int txtTitleInfo = 2131558603;
 			
-			// aapt resource value: 0x7f0d027d
-			public const int txtTnBSupplyAccountTitle = 2131559037;
+			// aapt resource value: 0x7f0d027e
+			public const int txtTnBSupplyAccountTitle = 2131559038;
 			
-			// aapt resource value: 0x7f0d02ba
-			public const int txtTotalAmount = 2131559098;
+			// aapt resource value: 0x7f0d02bb
+			public const int txtTotalAmount = 2131559099;
 			
 			// aapt resource value: 0x7f0d010d
 			public const int txtTotalDueContent = 2131558669;
@@ -9988,11 +10000,11 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f0d010c
 			public const int txtTotalDueTitle = 2131558668;
 			
-			// aapt resource value: 0x7f0d0285
-			public const int txtTotalOutstandingAmtContent = 2131559045;
+			// aapt resource value: 0x7f0d0286
+			public const int txtTotalOutstandingAmtContent = 2131559046;
 			
-			// aapt resource value: 0x7f0d0284
-			public const int txtTotalOutstandingAmtTitle = 2131559044;
+			// aapt resource value: 0x7f0d0285
+			public const int txtTotalOutstandingAmtTitle = 2131559045;
 			
 			// aapt resource value: 0x7f0d012e
 			public const int txtTotalPayable = 2131558702;
@@ -10009,17 +10021,17 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f0d0108
 			public const int txtTotalPayableTitle = 2131558664;
 			
-			// aapt resource value: 0x7f0d01ec
-			public const int txtTransactionScheduleContent = 2131558892;
+			// aapt resource value: 0x7f0d01ef
+			public const int txtTransactionScheduleContent = 2131558895;
 			
-			// aapt resource value: 0x7f0d01ea
-			public const int txtTransactionScheduleTitle = 2131558890;
+			// aapt resource value: 0x7f0d01ed
+			public const int txtTransactionScheduleTitle = 2131558893;
 			
-			// aapt resource value: 0x7f0d02b4
-			public const int txtTrxDateTime = 2131559092;
+			// aapt resource value: 0x7f0d02b5
+			public const int txtTrxDateTime = 2131559093;
 			
-			// aapt resource value: 0x7f0d02b6
-			public const int txtTrxId = 2131559094;
+			// aapt resource value: 0x7f0d02b7
+			public const int txtTrxId = 2131559095;
 			
 			// aapt resource value: 0x7f0d00e9
 			public const int txtUpdate = 2131558633;
@@ -10030,14 +10042,14 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f0d00d8
 			public const int txtUsageHistory = 2131558616;
 			
-			// aapt resource value: 0x7f0d032e
-			public const int txtValue = 2131559214;
+			// aapt resource value: 0x7f0d0331
+			public const int txtValue = 2131559217;
 			
-			// aapt resource value: 0x7f0d01f7
-			public const int txtVerificationCode = 2131558903;
+			// aapt resource value: 0x7f0d01fa
+			public const int txtVerificationCode = 2131558906;
 			
-			// aapt resource value: 0x7f0d02c1
-			public const int txtWelcome = 2131559105;
+			// aapt resource value: 0x7f0d02c2
+			public const int txtWelcome = 2131559106;
 			
 			// aapt resource value: 0x7f0d0239
 			public const int txtWelcomeBack = 2131558969;
@@ -10045,11 +10057,11 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f0d00ce
 			public const int txtYes = 2131558606;
 			
-			// aapt resource value: 0x7f0d0160
-			public const int txt_account_name = 2131558752;
+			// aapt resource value: 0x7f0d0163
+			public const int txt_account_name = 2131558755;
 			
-			// aapt resource value: 0x7f0d022a
-			public const int txt_app_version = 2131558954;
+			// aapt resource value: 0x7f0d0271
+			public const int txt_app_version = 2131559025;
 			
 			// aapt resource value: 0x7f0d026d
 			public const int txt_more_fragment_help_support_TC = 2131559021;
@@ -10090,14 +10102,14 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f0d026e
 			public const int txt_more_fragment_share_title = 2131559022;
 			
-			// aapt resource value: 0x7f0d02ab
-			public const int txt_notification_name = 2131559083;
+			// aapt resource value: 0x7f0d02ac
+			public const int txt_notification_name = 2131559084;
 			
-			// aapt resource value: 0x7f0d0321
-			public const int txt_tnc_title = 2131559201;
+			// aapt resource value: 0x7f0d0324
+			public const int txt_tnc_title = 2131559204;
 			
-			// aapt resource value: 0x7f0d0322
-			public const int txt_tnc_version = 2131559202;
+			// aapt resource value: 0x7f0d0325
+			public const int txt_tnc_version = 2131559205;
 			
 			// aapt resource value: 0x7f0d004a
 			public const int uniform = 2131558474;
@@ -10114,47 +10126,47 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f0d0049
 			public const int useLogo = 2131558473;
 			
-			// aapt resource value: 0x7f0d031a
-			public const int userNameText = 2131559194;
+			// aapt resource value: 0x7f0d031b
+			public const int userNameText = 2131559195;
 			
 			// aapt resource value: 0x7f0d0078
 			public const int vertical = 2131558520;
 			
-			// aapt resource value: 0x7f0d01ba
-			public const int view2 = 2131558842;
+			// aapt resource value: 0x7f0d01bd
+			public const int view2 = 2131558845;
 			
 			// aapt resource value: 0x7f0d0250
 			public const int view3 = 2131558992;
 			
-			// aapt resource value: 0x7f0d02b8
-			public const int view4 = 2131559096;
+			// aapt resource value: 0x7f0d02b9
+			public const int view4 = 2131559097;
 			
-			// aapt resource value: 0x7f0d021e
-			public const int view_header = 2131558942;
+			// aapt resource value: 0x7f0d0221
+			public const int view_header = 2131558945;
 			
 			// aapt resource value: 0x7f0d0016
 			public const int view_offset_helper = 2131558422;
 			
-			// aapt resource value: 0x7f0d034a
-			public const int viewpager = 2131559242;
+			// aapt resource value: 0x7f0d034d
+			public const int viewpager = 2131559245;
 			
-			// aapt resource value: 0x7f0d0354
-			public const int visible = 2131559252;
+			// aapt resource value: 0x7f0d0357
+			public const int visible = 2131559255;
 			
-			// aapt resource value: 0x7f0d02e3
-			public const int webView = 2131559139;
+			// aapt resource value: 0x7f0d02e4
+			public const int webView = 2131559140;
 			
-			// aapt resource value: 0x7f0d0222
-			public const int web_update_details = 2131558946;
+			// aapt resource value: 0x7f0d0225
+			public const int web_update_details = 2131558949;
 			
-			// aapt resource value: 0x7f0d02bc
-			public const int web_view = 2131559100;
+			// aapt resource value: 0x7f0d02bd
+			public const int web_view = 2131559101;
 			
 			// aapt resource value: 0x7f0d0116
 			public const int weblinkLayout = 2131558678;
 			
-			// aapt resource value: 0x7f0d0346
-			public const int welcome_fragment = 2131559238;
+			// aapt resource value: 0x7f0d0349
+			public const int welcome_fragment = 2131559241;
 			
 			// aapt resource value: 0x7f0d002e
 			public const int wide = 2131558446;
@@ -10168,20 +10180,20 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f0d004b
 			public const int wrap_content = 2131558475;
 			
-			// aapt resource value: 0x7f0d0212
-			public const int wrapper_attachments = 2131558930;
-			
-			// aapt resource value: 0x7f0d020d
-			public const int wrapper_feedback = 2131558925;
-			
-			// aapt resource value: 0x7f0d020c
-			public const int wrapper_feedback_scroll = 2131558924;
-			
 			// aapt resource value: 0x7f0d0215
-			public const int wrapper_messages = 2131558933;
+			public const int wrapper_attachments = 2131558933;
 			
-			// aapt resource value: 0x7f0d0217
-			public const int wrapper_messages_buttons = 2131558935;
+			// aapt resource value: 0x7f0d0210
+			public const int wrapper_feedback = 2131558928;
+			
+			// aapt resource value: 0x7f0d020f
+			public const int wrapper_feedback_scroll = 2131558927;
+			
+			// aapt resource value: 0x7f0d0218
+			public const int wrapper_messages = 2131558936;
+			
+			// aapt resource value: 0x7f0d021a
+			public const int wrapper_messages_buttons = 2131558938;
 			
 			static Id()
 			{
@@ -13200,6 +13212,9 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f08016b
 			public const int non_owner_constrain = 2131231083;
 			
+			// aapt resource value: 0x7f08040c
+			public const int note_text_sm = 2131231756;
+			
 			// aapt resource value: 0x7f080247
 			public const int notification_activity_api_exception_btn_close = 2131231303;
 			
@@ -13935,6 +13950,9 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f08005d
 			public const int status_bar_notification_info_overflow = 2131230813;
 			
+			// aapt resource value: 0x7f08040d
+			public const int summary_dashboard_error_refresh = 2131231757;
+			
 			// aapt resource value: 0x7f080166
 			public const int suppy_account_question_one = 2131231078;
 			
@@ -13958,6 +13976,9 @@ namespace myTNB_Android
 			
 			// aapt resource value: 0x7f0803d7
 			public const int text_pay_bill = 2131231703;
+			
+			// aapt resource value: 0x7f08040e
+			public const int text_refresh = 2131231758;
 			
 			// aapt resource value: 0x7f0803e8
 			public const int text_rm = 2131231720;

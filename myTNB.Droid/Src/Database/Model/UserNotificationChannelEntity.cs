@@ -60,8 +60,11 @@ namespace myTNB_Android.Src.Database.Model
 
         public static int CreateTable()
         {
-            var db = new SQLiteConnection(Constants.DB_PATH);
-            return db.CreateTable<UserNotificationChannelEntity>();
+            //using (var db = new SQLiteConnection(Constants.DB_PATH))
+            //{
+            var db = DBHelper.GetSQLiteConnection();
+            return (int)db.CreateTable<UserNotificationChannelEntity>();
+            //}
         }
 
         public static void CreateTableAsync(SQLiteAsyncConnection db)
@@ -71,48 +74,63 @@ namespace myTNB_Android.Src.Database.Model
 
         public static int InsertOrReplace(UserNotificationChannel channel)
         {
-            var db = new SQLiteConnection(Constants.DB_PATH);
-            var newRecord = new UserNotificationChannelEntity()
-            {
-                Id = channel.Id,
-                Title = channel.Title,
-                Code = channel.Code,
-                PreferenceMode = channel.PreferenceMode,
-                Type = channel.Type,
-                CreatedDate = channel.CreatedDate,
-                MasterId = channel.MasterId,
-                IsOpted = channel.IsOpted,
-                ShowInFilterList = channel.ShowInFilterList,
-                ShowInPreference = channel.ShowInPreference
-            };
+            //using (var db = new SQLiteConnection(Constants.DB_PATH))
+            //{
+            var db = DBHelper.GetSQLiteConnection();
+                var newRecord = new UserNotificationChannelEntity()
+                {
+                    Id = channel.Id,
+                    Title = channel.Title,
+                    Code = channel.Code,
+                    PreferenceMode = channel.PreferenceMode,
+                    Type = channel.Type,
+                    CreatedDate = channel.CreatedDate,
+                    MasterId = channel.MasterId,
+                    IsOpted = channel.IsOpted,
+                    ShowInFilterList = channel.ShowInFilterList,
+                    ShowInPreference = channel.ShowInPreference
+                };
 
-            int rows = db.InsertOrReplace(newRecord);
- 
-            return rows;
+                int rows = db.InsertOrReplace(newRecord);
+
+                return rows;
+            //}
         }
 
         public static int RemoveActive()
         {
-            var db = new SQLiteConnection(Constants.DB_PATH);
-            return db.Execute("Delete from UserNotificationChannelEntity");
+            //using (var db = new SQLiteConnection(Constants.DB_PATH))
+            //{
+            var db = DBHelper.GetSQLiteConnection();
+                return db.Execute("Delete from UserNotificationChannelEntity");
+            //}
         }
 
         public static void UpdateIsOpted(string Code , bool isOpted)
         {
-            var db = new SQLiteConnection(Constants.DB_PATH);
-            db.Execute("Update UserNotificationChannelEntity set IsOpted = ? WHERE Code = ?", isOpted , Code);
+            //using (var db = new SQLiteConnection(Constants.DB_PATH))
+            //{
+            var db = DBHelper.GetSQLiteConnection();
+                db.Execute("Update UserNotificationChannelEntity set IsOpted = ? WHERE Code = ?", isOpted, Code);
+            //}
         }
 
         public static void UpdateIsOpted(string Id, string Code, bool isOpted)
         {
-            var db = new SQLiteConnection(Constants.DB_PATH);
-            db.Execute("Update UserNotificationChannelEntity set Id = ? , IsOpted = ? WHERE Code = ?",Id, isOpted, Code);
+            //using (var db = new SQLiteConnection(Constants.DB_PATH))
+            //{
+            var db = DBHelper.GetSQLiteConnection();
+                db.Execute("Update UserNotificationChannelEntity set Id = ? , IsOpted = ? WHERE Code = ?", Id, isOpted, Code);
+            //}
         }
 
         public static List<UserNotificationChannelEntity> ListAllActive()
         {
-            var db = new SQLiteConnection(Constants.DB_PATH);
-            return db.Query<UserNotificationChannelEntity>("select * from UserNotificationChannelEntity ").ToList<UserNotificationChannelEntity>();
+            //using (var db = new SQLiteConnection(Constants.DB_PATH))
+            //{
+            var db = DBHelper.GetSQLiteConnection();
+                return db.Query<UserNotificationChannelEntity>("select * from UserNotificationChannelEntity ").ToList<UserNotificationChannelEntity>();
+            //}
         }
 
     }

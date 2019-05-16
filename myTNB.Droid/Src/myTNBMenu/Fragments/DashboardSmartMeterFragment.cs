@@ -37,7 +37,6 @@ using myTNB_Android.Src.myTNBMenu.Activity;
 using myTNB_Android.Src.Database.Model;
 using Android.Support.V4.Content;
 using myTNB_Android.Src.Notifications.Activity;
-using myTNB_Android.Src.SmartMeterLearnMore.Activity;
 using myTNB_Android.Src.Utils;
 using Java.Util;
 using myTNB_Android.Src.myTNBMenu.Listener;
@@ -218,6 +217,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         [BindView(Resource.Id.endDivider)]
         View endDivider;
 
+        [BindView(Resource.Id.note_text_layout)]
+        LinearLayout noteTextLayout;
+
+        [BindView(Resource.Id.noteText)]
+        TextView noteTextView;
+
+        [BindView(Resource.Id.noteDivider)]
+        View noteDividerView;
 
         /// <summary>
         /// Flag to disable/enable CO2 view
@@ -335,6 +342,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 //}
             }
 
+                TextViewUtils.SetMuseoSans300Typeface(noteTextView);
             TextViewUtils.SetMuseoSans300Typeface(txtUsageHistory, txtAddress, txtTotalPayable, txtContentNoData, txtContentNoInternet, txtDueDate);
             TextViewUtils.SetMuseoSans300Typeface(btnToggleDay, btnToggleMonth);
             TextViewUtils.SetMuseoSans500Typeface(txtRange, txtTotalPayableTitle, txtTotalPayableCurrency, btnViewBill, btnPay, btnLearnMore, btnTapRefresh, txtTitleNoData, txtTitleNoInternet);
@@ -526,9 +534,13 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                             string faqid = textMessage.Substring(startIndex, lengthOfId);
                             if (!string.IsNullOrEmpty(faqid))
                             {
-                                Intent faqIntent = new Intent(this.Activity, typeof(FAQListActivity));
-                                faqIntent.PutExtra(Constants.FAQ_ID_PARAM, faqid);
-                                Activity.StartActivity(faqIntent);
+                                    Intent faqIntent = GetIntentObject(typeof(FAQListActivity));
+                                //Intent faqIntent = new Intent(this.Activity, typeof(FAQListActivity));
+                                if (faqIntent != null && IsAdded)
+                                {
+                                    faqIntent.PutExtra(Constants.FAQ_ID_PARAM, faqid);
+                                    Activity.StartActivity(faqIntent);
+                                }
                             }
                         }
                     }
@@ -556,6 +568,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             this.userActionsListener.OnArrowForwardClick();
         }
 
+        private void SetNoteVisiBility(bool isVisible) {
+            noteTextLayout.Visibility = isVisible ? ViewStates.Visible : ViewStates.Gone;
+            noteDividerView.Visibility = isVisible ? ViewStates.Visible : ViewStates.Gone;
+        }
 
         internal void SetUp()
         {
@@ -580,10 +596,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             {
                 txtAddress.Text = selectedAccount.AddStreet;
             }
-
+                //Since the month is coming as year and year is coming as month... we are checking like this...
+                SetNoteVisiBility(ChartType != ChartType.Month);
 
             if (ChartType == ChartType.Month)
             {
+                    
 
                 if (!hasNoInternet)
                 {
@@ -1320,19 +1338,27 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 selectedBill.NrBill = null;
             }
 
-            Intent viewBill = new Intent(this.Activity, typeof(ViewBillActivity));
-            viewBill.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccount));
-            viewBill.PutExtra(Constants.SELECTED_BILL, JsonConvert.SerializeObject(selectedBill));
-            StartActivity(viewBill);
+            Intent viewBill = GetIntentObject(typeof(ViewBillActivity));
+            //Intent viewBill = new Intent(this.Activity, typeof(ViewBillActivity));
+            if (viewBill != null && IsAdded)
+            {
+                viewBill.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccount));
+                viewBill.PutExtra(Constants.SELECTED_BILL, JsonConvert.SerializeObject(selectedBill));
+                StartActivity(viewBill);
+            }
         }
 
         public void ShowPayment()
         {
+            Intent payment_activity = GetIntentObject(typeof(SelectAccountsActivity));
             //Intent payment_activity = new Intent(this.Activity, typeof(MakePaymentActivity));
-            Intent payment_activity = new Intent(this.Activity, typeof(SelectAccountsActivity));
-            payment_activity.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccount));
-            //StartActivity(payment_activity);
-            StartActivityForResult(payment_activity, DashboardActivity.PAYMENT_RESULT_CODE);
+            //Intent payment_activity = new Intent(this.Activity, typeof(SelectAccountsActivity));
+            if (payment_activity != null && IsAdded)
+            {
+                payment_activity.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccount));
+                //StartActivity(payment_activity);
+                StartActivityForResult(payment_activity, DashboardActivity.PAYMENT_RESULT_CODE);
+            }
         }
 
         [OnClick(Resource.Id.btnToggleDay)]
@@ -1678,7 +1704,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
         public void ShowNotification()
         {
-            StartActivity(new Intent(this.Activity, typeof(NotificationActivity)));
+            Intent intent = GetIntentObject(typeof(NotificationActivity));
+            if (intent != null && IsAdded) {
+                StartActivity(intent);    
+            }
+
         }
 
         public void ShowAmountProgress()
@@ -1879,24 +1909,25 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
         public void ShowLearnMore(Weblink weblink)
         {
-            try {
-            if (weblink.OpenWith.Equals("APP"))
-            {
-                Intent smartMeterINtent = new Intent(this.Activity, typeof(SmartMeterLearnMoreActivity));
-                smartMeterINtent.PutExtra(Constants.SMART_METER_LINK, JsonConvert.SerializeObject(weblink));
-                StartActivity(smartMeterINtent);
-            }
-            else
-            {
-                var uri = Android.Net.Uri.Parse(weblink.Url);
-                var intent = new Intent(Intent.ActionView, uri);
-                StartActivity(intent);
-            }
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
+            //try {
+            //if (weblink.OpenWith.Equals("APP"))
+            //{
+            //        Intent smartMeterINtent = GetIntentObject(typeof(SmartMeterLearnMoreActivity));  
+            //    //Intent smartMeterINtent = new Intent(this.Activity, typeof(SmartMeterLearnMoreActivity));
+            //    smartMeterINtent.PutExtra(Constants.SMART_METER_LINK, JsonConvert.SerializeObject(weblink));
+            //    StartActivity(smartMeterINtent);
+            //}
+            //else
+            //{
+            //    var uri = Android.Net.Uri.Parse(weblink.Url);
+            //    var intent = new Intent(Intent.ActionView, uri);
+            //    StartActivity(intent);
+            //}
+            //}
+            //catch (Exception e)
+            //{
+            //    Utility.LoggingNonFatalError(e);
+            //}
         }
 
         void SMDashboardScrollViewListener.OnScrollChanged(SMDashboardScrollView v, int l, int t, int oldl, int oldt)
@@ -1954,6 +1985,54 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             {
                 scrollView.FullScroll(FocusSearchDirection.Up);
             }
+        }
+
+
+
+        DashboardActivity activity = null;
+        public override void OnAttach(Context context)
+        {
+            base.OnAttach(context);
+            try
+            {
+                //if (context is DashboardActivity)
+                //{
+
+                activity = context as DashboardActivity;
+                //activity = context as DashboardActivity;
+                //// SETS THE WINDOW BACKGROUND TO HORIZONTAL GRADIENT AS PER UI ALIGNMENT
+                //activity.Window.SetBackgroundDrawable(Activity.GetDrawable(Resource.Drawable.HorizontalGradientBackground));
+                //}
+            }
+            catch (Java.Lang.ClassCastException e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public override void OnAttach(Android.App.Activity activity)
+        {
+            base.OnAttach(activity);
+            try
+            {
+                //if (context is DashboardActivity)
+                //{
+
+                activity = activity as DashboardActivity;
+                //activity = context as DashboardActivity;
+                //// SETS THE WINDOW BACKGROUND TO HORIZONTAL GRADIENT AS PER UI ALIGNMENT
+                //activity.Window.SetBackgroundDrawable(Activity.GetDrawable(Resource.Drawable.HorizontalGradientBackground));
+                //}
+            }
+            catch (Java.Lang.ClassCastException e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        protected override Android.App.Activity GetActivityObject()
+        {
+            return activity;
         }
 
     }

@@ -43,9 +43,22 @@ namespace myTNB_Android.Src.NotificationDetails.Activity.Base
         {
             try {
             Bundle extras = Intent.Extras;
-            notificationDetails = JsonConvert.DeserializeObject<NotificationDetails.Models.NotificationDetails>(extras.GetString(Constants.SELECTED_NOTIFICATION_DETAIL_ITEM));
-            userNotificationData = JsonConvert.DeserializeObject<UserNotificationData>(extras.GetString(Constants.SELECTED_NOTIFICATION_LIST_ITEM));
-            position = extras.GetInt(Constants.SELECTED_NOTIFICATION_ITEM_POSITION);
+                if (extras != null) {
+                    //notificationDetails = JsonConvert.DeserializeObject<NotificationDetails.Models.NotificationDetails>(extras.GetString(Constants.SELECTED_NOTIFICATION_DETAIL_ITEM));
+                    //userNotificationData = JsonConvert.DeserializeObject<UserNotificationData>(extras.GetString(Constants.SELECTED_NOTIFICATION_LIST_ITEM));
+
+                    if (extras.ContainsKey(Constants.SELECTED_NOTIFICATION_DETAIL_ITEM)) {
+                        notificationDetails = DeSerialze<NotificationDetails.Models.NotificationDetails>(extras.GetString(Constants.SELECTED_NOTIFICATION_DETAIL_ITEM));
+                    }
+
+                    if (extras.ContainsKey(Constants.SELECTED_NOTIFICATION_LIST_ITEM))
+                    {
+                        userNotificationData = DeSerialze<UserNotificationData>(extras.GetString(Constants.SELECTED_NOTIFICATION_LIST_ITEM));
+                    }
+
+                    position = extras.GetInt(Constants.SELECTED_NOTIFICATION_ITEM_POSITION);        
+                }
+            
 
             base.OnCreate(savedInstanceState);
 

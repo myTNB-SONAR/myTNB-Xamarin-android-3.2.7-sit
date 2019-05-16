@@ -275,29 +275,36 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
         public override void OnBackPressed()
         {
+            try
+            {
+                //if (getFragmentManager().getBackStackEntryCount() > 0)
+                //    getFragmentManager().popBackStack();
+                //else
+                //super.onBackPressed();
+                List<CustomerBillingAccount> accountList = new List<CustomerBillingAccount>();
+                accountList = CustomerBillingAccount.List();
+                if (accountList?.Count > 1 &&
+                                currentFragment.GetType() == typeof(DashboardChartFragment) ||
+                                //currentFragment.GetType() == typeof(DashboardChartNoTNBAccount) || 
+                                currentFragment.GetType() == typeof(DashboardChartNonOwnerNoAccess) ||
+                                currentFragment.GetType() == typeof(DashboardSmartMeterFragment))
+                {
+                    EnableDropDown(false);
+                    HideAccountName();
+                    ShowBackButton(false);
+                    //ClearFragmentStack();
 
-            //if (getFragmentManager().getBackStackEntryCount() > 0)
-            //    getFragmentManager().popBackStack();
-            //else
-            //super.onBackPressed();
-            List<CustomerBillingAccount> accountList = CustomerBillingAccount.List();
-            if (accountList.Count > 1 &&
-                            currentFragment.GetType() == typeof(DashboardChartFragment) || 
-                            //currentFragment.GetType() == typeof(DashboardChartNoTNBAccount) || 
-                            currentFragment.GetType() == typeof(DashboardChartNonOwnerNoAccess) ||
-                            currentFragment.GetType() == typeof(DashboardSmartMeterFragment) ) {
-                EnableDropDown(false);
-                HideAccountName();
-                ShowBackButton(false);
-                //ClearFragmentStack();
+                    SetToolbarTitle(Resource.String.all_accounts);
+                    ShowSummaryDashBoard();
 
-                SetToolbarTitle(Resource.String.all_accounts);
-                ShowSummaryDashBoard();
-                
-            } else {
-                this.Finish();
+                }
+                else
+                {
+                    this.Finish();
+                }
+            } catch(Exception e) {
+                Utility.LoggingNonFatalError(e);
             }
-
         }
 
         private void BottomNavigationView_NavigationItemSelected(object sender, BottomNavigationView.NavigationItemSelectedEventArgs e)
@@ -1016,6 +1023,9 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             }
         }
 
-
+        public string GetDeviceId()
+        {
+            return this.DeviceId();
+        }
     }
 }

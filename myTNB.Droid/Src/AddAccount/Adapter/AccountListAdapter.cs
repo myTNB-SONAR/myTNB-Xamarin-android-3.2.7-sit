@@ -120,14 +120,14 @@ namespace myTNB_Android.Src.AddAccount
                         item.accountLabel = AccountLabel.Text.Trim();
                         if (!string.IsNullOrEmpty(item.accountLabel))
                         {
-                            if (!Utility.isAlphaNumeric(item.accountLabel))
-                            {
-                                textInputLayoutAccountLabel.Error = context.GetString(Resource.String.invalid_charac);
-                            }
-                            else
-                            {
+                            //if (!Utility.isAlphaNumeric(item.accountLabel))
+                            //{
+                            //    textInputLayoutAccountLabel.Error = context.GetString(Resource.String.invalid_charac);
+                            //}
+                            //else
+                            //{
                                 textInputLayoutAccountLabel.Error = "e.g. My House, Parent's House";
-                            }
+                            //}
                         }
                         else
                         {
@@ -142,10 +142,10 @@ namespace myTNB_Android.Src.AddAccount
                         item.accountLabel = AccountLabel.Text.Trim();
                         if (!string.IsNullOrEmpty(item.accountLabel))
                         {
-                            if (!Utility.isAlphaNumeric(item.accountLabel))
-                            {
-                                textInputLayoutAccountLabel.Error = context.GetString(Resource.String.invalid_charac);
-                            }
+                            //if (!Utility.isAlphaNumeric(item.accountLabel))
+                            //{
+                            //    textInputLayoutAccountLabel.Error = context.GetString(Resource.String.invalid_charac);
+                            //}
                         }
                     }
 
@@ -177,14 +177,14 @@ namespace myTNB_Android.Src.AddAccount
                     item.accountLabel = AccountLabel.Text.Trim();
                     if (!string.IsNullOrEmpty(item.accountLabel))
                     {
-                        if (!Utility.isAlphaNumeric(item.accountLabel))
-                        {
-                            textInputLayoutAccountLabel.Error = context.GetString(Resource.String.invalid_charac);
-                        }
-                        else
-                        {
+                        //if (!Utility.isAlphaNumeric(item.accountLabel))
+                        //{
+                        //    textInputLayoutAccountLabel.Error = context.GetString(Resource.String.invalid_charac);
+                        //}
+                        //else
+                        //{
                             textInputLayoutAccountLabel.Error = "e.g. My House, Parent's House";
-                        }
+                        //}
                     }
                     else
                     {

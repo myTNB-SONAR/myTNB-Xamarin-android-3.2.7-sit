@@ -35,8 +35,11 @@ namespace myTNB_Android.Src.myTNBMenu.Api
         Task<SMUsageHistoryResponse> DoSMQuery([Body] SMUsageHistoryRequest usageHistoryRequest, CancellationToken cancellationToken);
 
         [Headers("Content-Type:application/json; charset=utf-8")]
-        [Post("/v5/my_billingssp.asmx/GetSmartMeterAccountData_V2")]
+        [Post("/v5/my_billingssp.asmx/GetSmartMeterAccountData_V3")]
         Task<SMUsageHistoryResponse> DoSMQueryV2([Body] SMUsageHistoryRequest usageHistoryRequest, CancellationToken cancellationToken);
+        //[Post("/v5/my_billingssp.asmx/GetSmartMeterAccountData_V2")]
+        //[Post("/v5/my_billingssp.asmx/GetSmartMeterAccountData_V3")]
+
 
         [Headers("Content-Type:application/json; charset=utf-8")]
         [Post("/v5/my_billingssp.asmx/SmartMeterHourHistoryGraphStatus")]

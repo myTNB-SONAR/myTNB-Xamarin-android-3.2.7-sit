@@ -34,8 +34,9 @@ namespace myTNB_Android.Src.Database.Model
 
         public static int CreateTable()
         {
-            var db = new SQLiteConnection(Constants.DB_PATH);
-            return db.CreateTable<UserRegister>();
+            //var db = new SQLiteConnection(Constants.DB_PATH);
+            var db = DBHelper.GetSQLiteConnection();
+            return (int)db.CreateTable<UserRegister>();
         }
 
         /// <summary>
@@ -50,25 +51,31 @@ namespace myTNB_Android.Src.Database.Model
         /// <returns>Number of rows affected</returns>
         public static int InsertOrReplace(string icNo , string fullname , string email , string mobileNo , string verificationCode, string password)
         {
-            var db = new SQLiteConnection(Constants.DB_PATH);
-            var newRecord = new UserRegister()
-            {
-                ICNo = icNo,
-                FullName = fullname,
-                Email = email,
-                MobileNo = mobileNo,
-                VerificationCode = verificationCode,
-                Password = password,
-                Status = Constants.ACTIVE
-            };
-            return db.InsertOrReplace(newRecord);
+            //using (var db = new SQLiteConnection(Constants.DB_PATH))
+            //{
+            var db = DBHelper.GetSQLiteConnection();
+                var newRecord = new UserRegister()
+                {
+                    ICNo = icNo,
+                    FullName = fullname,
+                    Email = email,
+                    MobileNo = mobileNo,
+                    VerificationCode = verificationCode,
+                    Password = password,
+                    Status = Constants.ACTIVE
+                };
+                return db.InsertOrReplace(newRecord);
+            //}
 
         }
 
         public static IEnumerable<UserRegister> GetListOfActive()
         {
-            var db = new SQLiteConnection(Constants.DB_PATH);
-            return db.Query<UserRegister>("select * from UserRegister where status = ?", Constants.ACTIVE);
+            //using (var db = new SQLiteConnection(Constants.DB_PATH))
+            //{
+            var db = DBHelper.GetSQLiteConnection();
+                return db.Query<UserRegister>("select * from UserRegister where status = ?", Constants.ACTIVE);
+            //}
         }
 
         public static Boolean HasActive()
@@ -79,8 +86,11 @@ namespace myTNB_Android.Src.Database.Model
 
         public static int DeActivate()
         {
-            var db = new SQLiteConnection(Constants.DB_PATH);
-            return db.Execute("Update UserRegister set status = ? " , Constants.INACTIVE);
+            //using (var db = new SQLiteConnection(Constants.DB_PATH))
+            //{
+            var db = DBHelper.GetSQLiteConnection();
+                return db.Execute("Update UserRegister set status = ? ", Constants.INACTIVE);
+            //}
         }
 
         public static UserRegister GetActive()
@@ -91,8 +101,11 @@ namespace myTNB_Android.Src.Database.Model
 
         public static int RemoveActive()
         {
-            var db = new SQLiteConnection(Constants.DB_PATH);
-            return db.Execute("Delete from UserRegister where status = ? ", Constants.ACTIVE);
+            //using (var db = new SQLiteConnection(Constants.DB_PATH))
+            //{
+            var db = DBHelper.GetSQLiteConnection();
+                return db.Execute("Delete from UserRegister where status = ? ", Constants.ACTIVE);
+            //}
         }
     }
 }

@@ -39,33 +39,39 @@ namespace myTNB_Android.Src.Database.Model
 
         public static int CreateTable()
         {
-            var db = new SQLiteConnection(Constants.DB_PATH);
-            return db.CreateTable<DownTimeEntity>();
+            //using (var db = new SQLiteConnection(Constants.DB_PATH))
+            //{
+            var db = DBHelper.GetSQLiteConnection();
+            return (int)db.CreateTable<DownTimeEntity>();
+            //}
         }
 
         public static int InsertOrReplace(DownTime downTime)
         {
-            var db = new SQLiteConnection(Constants.DB_PATH);
-            var newRecord = new DownTimeEntity()
-            {
-                System = downTime.System,
-                IsDown = downTime.IsDown,
-                DowntimeMessage = downTime.DowntimeMessage,
-                DowntimeTextMessage = downTime.DowntimeTextMessage,
-                DowntimeStart = downTime.DowntimeStart,
-                DowntimeEnd = downTime.DowntimeEnd
-            };
-            return db.InsertOrReplace(newRecord);
-            
+            //using (var db = new SQLiteConnection(Constants.DB_PATH))
+            //{
+            var db = DBHelper.GetSQLiteConnection();
+                var newRecord = new DownTimeEntity()
+                {
+                    System = downTime.System,
+                    IsDown = downTime.IsDown,
+                    DowntimeMessage = downTime.DowntimeMessage,
+                    DowntimeTextMessage = downTime.DowntimeTextMessage,
+                    DowntimeStart = downTime.DowntimeStart,
+                    DowntimeEnd = downTime.DowntimeEnd
+                };
+                return db.InsertOrReplace(newRecord);
+            //}
 
         }
 
         public static IEnumerable<DownTimeEntity> Enumerate()
         {
-            using (var db = new SQLiteConnection(Constants.DB_PATH))
-            {
+            //using (var db = new SQLiteConnection(Constants.DB_PATH))
+            //{
+            var db = DBHelper.GetSQLiteConnection();
                 return db.Query<DownTimeEntity>("select * from DownTimeEntity");
-            }
+            //}
         }
 
         public static int Count()
@@ -75,17 +81,19 @@ namespace myTNB_Android.Src.Database.Model
 
         public static bool HasRecord(string code)
         {
-            using (var db = new SQLiteConnection(Constants.DB_PATH))
-            {
+            //using (var db = new SQLiteConnection(Constants.DB_PATH))
+            //{
+            var db = DBHelper.GetSQLiteConnection();
                 return db.Query<DownTimeEntity>("select * from DownTimeEntity WHERE System = ?", code).Count > 0;
-            }
+            //}
         }
 
         public static bool IsSystemDown(string systemCode)
         {
             bool isDOWN = false;
-            using (var db = new SQLiteConnection(Constants.DB_PATH))
-            {
+            //using (var db = new SQLiteConnection(Constants.DB_PATH))
+            //{
+            var db = DBHelper.GetSQLiteConnection();
                 List<DownTimeEntity> itemList = new List<DownTimeEntity>();
                 itemList = db.Query<DownTimeEntity>("select * from DownTimeEntity WHERE System = ?", systemCode);
                 if(itemList.Count > 0)
@@ -94,17 +102,24 @@ namespace myTNB_Android.Src.Database.Model
                     isDOWN = entity.IsDown;
                 }
                 return isDOWN;
-            }
+            //}
         }
 
         public static DownTimeEntity GetByCode(string code)
         {
             if (HasRecord(code))
             {
-                using (var db = new SQLiteConnection(Constants.DB_PATH))
-                {
-                    return db.Query<DownTimeEntity>("select * from DownTimeEntity WHERE System = ?", code)[0];
+                //using (var db = new SQLiteConnection(Constants.DB_PATH))
+                //{
+                var db = DBHelper.GetSQLiteConnection();
+                List<DownTimeEntity> list = new List<DownTimeEntity>();
+                list = db.Query<DownTimeEntity>("select * from DownTimeEntity WHERE System = ?", code);
+                if (list != null && list.Count() > 0) {
+                    return list[0];
+                } else {
+                    return null;
                 }
+                //}
             }
             else
             {
@@ -119,8 +134,11 @@ namespace myTNB_Android.Src.Database.Model
 
         public static void RemoveActive()
         {
-            var db = new SQLiteConnection(Constants.DB_PATH);
-            db.Execute("DELETE FROM DownTimeEntity");
+            //using (var db = new SQLiteConnection(Constants.DB_PATH))
+            //{
+            var db = DBHelper.GetSQLiteConnection();
+                db.Execute("DELETE FROM DownTimeEntity");
+            //}
         }
 
 

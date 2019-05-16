@@ -56,8 +56,16 @@ namespace myTNB_Android.Src.GetAccessSuccess.Activity
             TextViewUtils.SetMuseoSans500Typeface(txtTitleInfo , txtAccountName, btnDashboard);
             TextViewUtils.SetMuseoSans300Typeface(txtAccountName , txtAddress);
 
-            selectedAccount = JsonConvert.DeserializeObject<AccountData>(Intent.Extras.GetString(Constants.SELECTED_ACCOUNT));
+                Bundle extras = Intent.Extras;
 
+                if (extras != null)
+                {
+                    if (extras.ContainsKey(Constants.SELECTED_ACCOUNT))
+                    {
+                        //selectedAccount = JsonConvert.DeserializeObject<AccountData>(Intent.Extras.GetString(Constants.SELECTED_ACCOUNT));
+                        selectedAccount = DeSerialze<AccountData>(extras.GetString(Constants.SELECTED_ACCOUNT));
+                    }
+                }
             txtAccountName.Text = selectedAccount.AccountName;
             txtAccountNum.Text = selectedAccount.AccountNum;
             txtAddress.Text = selectedAccount.AddStreet;

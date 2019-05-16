@@ -305,87 +305,92 @@ namespace myTNB_Android.Src.AddAccount.Activity
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-
-            // Create your application here
-            mPresenter = new LinkAccountPresenter(this);
-
-            mGetAccountsProgressDialog = new AlertDialog.Builder(this)
-               .SetTitle("Loading..")
-               .SetMessage("Please wait while we are fetching account details")
-               .SetCancelable(false)
-               .Create();
-
-            if (Intent.HasExtra("fromDashboard"))
+            try
             {
-                fromDashboard = Intent.Extras.GetBoolean("fromDashboard", false);
-            }
+                // Create your application here
+                mPresenter = new LinkAccountPresenter(this);
 
-            TextViewUtils.SetMuseoSans500Typeface(textNoOfAcoount);
-            TextViewUtils.SetMuseoSans300Typeface(labelAccountLabel);
+                mGetAccountsProgressDialog = new AlertDialog.Builder(this)
+                   .SetTitle("Loading..")
+                   .SetMessage("Please wait while we are fetching account details")
+                   .SetCancelable(false)
+                   .Create();
 
-            adapter = new AccountListAdapter(this, accountList);
-            layoutManager = new LinearLayoutManager(this, LinearLayoutManager.Vertical, false);
-            accountListRecyclerView.SetLayoutManager(layoutManager);
-            accountListRecyclerView.SetAdapter(adapter);
-
-            additionalAdapter = new AdditionalAccountListAdapter(this, additionalAccountList);
-            layoutManager2 = new LinearLayoutManager(this, LinearLayoutManager.Vertical, false);
-            additionalAccountListRecyclerView.SetLayoutManager(layoutManager2);
-            additionalAccountListRecyclerView.SetAdapter(additionalAdapter);
-
-
-            //Get apiId and userId from the bundle
-            string email = UserEntity.GetActive().UserID;
-            string idNumber = UserEntity.GetActive().IdentificationNo; // Get IC number from registration;
-            string currentLinkedAccounts = "";
-            List<CustomerBillingAccount> savedAccounts = CustomerBillingAccount.List();
-            int numberOfAccounts = savedAccounts.Count();
-            for(int i=0; i < numberOfAccounts; i++)
-            {
-                currentLinkedAccounts += savedAccounts[i].AccNum;
-                if(i != numberOfAccounts-1)
+                if (Intent.HasExtra("fromDashboard"))
                 {
-                    currentLinkedAccounts += ",";
+                    fromDashboard = Intent.Extras.GetBoolean("fromDashboard", false);
                 }
 
-            }
-                //userActionsListener.GetAccounts(userID, apiID);
-            userActionsListener.GetAccountByIC(Constants.APP_CONFIG.API_KEY_ID, currentLinkedAccounts, email, idNumber);
+                TextViewUtils.SetMuseoSans500Typeface(textNoOfAcoount);
+                TextViewUtils.SetMuseoSans300Typeface(labelAccountLabel);
 
-            done = FindViewById<Button>(Resource.Id.btnAddAnotherAccount);
-            done.Click += delegate
-            {
-                ShowAddAnotherAccountScreen();
+                adapter = new AccountListAdapter(this, accountList);
+                layoutManager = new LinearLayoutManager(this, LinearLayoutManager.Vertical, false);
+                accountListRecyclerView.SetLayoutManager(layoutManager);
+                accountListRecyclerView.SetAdapter(adapter);
 
-            };
+                additionalAdapter = new AdditionalAccountListAdapter(this, additionalAccountList);
+                layoutManager2 = new LinearLayoutManager(this, LinearLayoutManager.Vertical, false);
+                additionalAccountListRecyclerView.SetLayoutManager(layoutManager2);
+                additionalAccountListRecyclerView.SetAdapter(additionalAdapter);
 
-            Button confirm = FindViewById<Button>(Resource.Id.btnConfirm);
-            confirm.Click += delegate
-            {
-                int totalAccountAdded = adapter.GetAccountList().Count() + additionalAdapter.GetAccountList().Count();
-                if (adapter.ItemCount == 0 && additionalAdapter.ItemCount == 0)
+
+                //Get apiId and userId from the bundle
+                string email = UserEntity.GetActive().UserID;
+                string idNumber = UserEntity.GetActive().IdentificationNo; // Get IC number from registration;
+                string currentLinkedAccounts = "";
+                List<CustomerBillingAccount> savedAccounts = new List<CustomerBillingAccount>();
+                savedAccounts = CustomerBillingAccount.List();
+                int numberOfAccounts = savedAccounts.Count();
+                for (int i = 0; i < numberOfAccounts; i++)
                 {
+                    currentLinkedAccounts += savedAccounts[i].AccNum;
+                    if (i != numberOfAccounts - 1)
+                    {
+                        currentLinkedAccounts += ",";
+                    }
+
+                }
+                //userActionsListener.GetAccounts(userID, apiID);
+                userActionsListener.GetAccountByIC(Constants.APP_CONFIG.API_KEY_ID, currentLinkedAccounts, email, idNumber);
+
+                done = FindViewById<Button>(Resource.Id.btnAddAnotherAccount);
+                done.Click += delegate
+                {
+                    ShowAddAnotherAccountScreen();
+
+                };
+
+                Button confirm = FindViewById<Button>(Resource.Id.btnConfirm);
+                confirm.Click += delegate
+                {
+                    int totalAccountAdded = adapter.GetAccountList().Count() + additionalAdapter.GetAccountList().Count();
+                    if (adapter.ItemCount == 0 && additionalAdapter.ItemCount == 0)
+                    {
                     //ShowNoAccountAddedError("No account added. Please click Add Another account button to add electricity account.");
                     this.userActionsListener.OnConfirm(accountList);
-                }
-                else if(totalAccountAdded > Constants.ADD_ACCOUNT_LIMIT)
-                {
-                    string errorLimit = GetString(Resource.String.add_account_link_account_limit_wildcard, Constants.ADD_ACCOUNT_LIMIT.ToString());
-                    ShowErrorMessage(errorLimit);
-                }
-                else
-                {
-                    CallAddMultileAccountsService();
-                }
+                    }
+                    else if (totalAccountAdded > Constants.ADD_ACCOUNT_LIMIT)
+                    {
+                        string errorLimit = GetString(Resource.String.add_account_link_account_limit_wildcard, Constants.ADD_ACCOUNT_LIMIT.ToString());
+                        ShowErrorMessage(errorLimit);
+                    }
+                    else
+                    {
+                        CallAddMultileAccountsService();
+                    }
 
 
                 // TODO : START ACTIVITY DASHBOARD
 
                 //this.userActionsListener.OnConfirm(accountList);
-                
+
             };
 
-            TextViewUtils.SetMuseoSans500Typeface(done, confirm);
+                TextViewUtils.SetMuseoSans500Typeface(done, confirm);
+            } catch(Exception e) {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         protected override void OnResume()
@@ -600,16 +605,16 @@ namespace myTNB_Android.Src.AddAccount.Activity
                         break;
                     }
 
-                    if (!Utility.isAlphaNumeric(item.accountLabel))
-                    {
-                        flag = false;
-                        AccountListViewHolder vh = (AccountListViewHolder)accountListRecyclerView.FindViewHolderForAdapterPosition(currentItemIndex);
-                        if (vh != null)
-                        {
-                            vh.textInputLayoutAccountLabel.Error = GetString(Resource.String.invalid_charac);
-                        }
-                        break;
-                    }
+                    //if (!Utility.isAlphaNumeric(item.accountLabel))
+                    //{
+                    //    flag = false;
+                    //    AccountListViewHolder vh = (AccountListViewHolder)accountListRecyclerView.FindViewHolderForAdapterPosition(currentItemIndex);
+                    //    if (vh != null)
+                    //    {
+                    //        vh.textInputLayoutAccountLabel.Error = GetString(Resource.String.invalid_charac);
+                    //    }
+                    //    break;
+                    //}
 
                     foreach (CustomerBillingAccount savedItem in accounts)
                     {
@@ -717,16 +722,16 @@ namespace myTNB_Android.Src.AddAccount.Activity
                             break;
                         }
 
-                        if (!Utility.isAlphaNumeric(item.accountLabel))
-                        {
-                            flag = false;
-                            AdditionalAccountViewHolder vh = (AdditionalAccountViewHolder)additionalAccountListRecyclerView.FindViewHolderForAdapterPosition(currentItemIndex);
-                            if (vh != null)
-                            {
-                                vh.textInputLayoutAccountLabel.Error = GetString(Resource.String.invalid_charac);
-                            }
-                            break;
-                        }
+                        //if (!Utility.isAlphaNumeric(item.accountLabel))
+                        //{
+                        //    flag = false;
+                        //    AdditionalAccountViewHolder vh = (AdditionalAccountViewHolder)additionalAccountListRecyclerView.FindViewHolderForAdapterPosition(currentItemIndex);
+                        //    if (vh != null)
+                        //    {
+                        //        vh.textInputLayoutAccountLabel.Error = GetString(Resource.String.invalid_charac);
+                        //    }
+                        //    break;
+                        //}
 
                         foreach (CustomerBillingAccount savedItem in accounts)
                         {

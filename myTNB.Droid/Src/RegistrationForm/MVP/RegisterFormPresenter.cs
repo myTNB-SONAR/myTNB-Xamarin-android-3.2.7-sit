@@ -352,14 +352,16 @@ namespace myTNB_Android.Src.RegistrationForm.MVP
             // SILENTLY DIE , SMS RECEIVE IS ONLY OPTIONAL
             if (requestCode == Constants.RUNTIME_PERMISSION_SMS_REQUEST_CODE)
             {
-                if (grantResults[0] == Permission.Denied)
+                if (Utility.IsPermissionHasCount(grantResults))
                 {
-                    //if (this.mView.ShouldShowSMSReceiveRationale())
-                    //{
-                    //    this.mView.ShowSMSPermissionRationale();
-                    //}
+                    if (grantResults[0] == Permission.Denied)
+                    {
+                        //if (this.mView.ShouldShowSMSReceiveRationale())
+                        //{
+                        //    this.mView.ShowSMSPermissionRationale();
+                        //}
+                    }
                 }
-
             }
         }
 

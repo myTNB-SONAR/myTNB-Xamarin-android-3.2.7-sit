@@ -21,18 +21,24 @@ namespace myTNB_Android.Src.Database.Model
     {
         public static void CreateTable()
         {
-            var db = new SQLiteConnection(Constants.DB_PATH);
-            List<SQLiteConnection.ColumnInfo> info = db.GetTableInfo("SummaryDashBoardDetailsEntity");
-            db.CreateTable<SummaryDashBoardAccountEntity>();
+            //using (var db = new SQLiteConnection(Constants.DB_PATH))
+            //{
+            var db = DBHelper.GetSQLiteConnection();
+                List<SQLiteConnection.ColumnInfo> info = db.GetTableInfo("SummaryDashBoardDetailsEntity");
+                db.CreateTable<SummaryDashBoardAccountEntity>();
+            //}
         }
 
         public static void InsertItem(SummaryDashBoardAccountEntity item)
         {
             try
             {
-                var db = new SQLiteConnection(Constants.DB_PATH);
-                int newRecord = db.InsertOrReplace(item);
-                Console.WriteLine("Insert Record: {0}", newRecord);
+                //using (var db = new SQLiteConnection(Constants.DB_PATH))
+                //{
+                var db = DBHelper.GetSQLiteConnection();
+                    int newRecord = db.InsertOrReplace(item);
+                    Console.WriteLine("Insert Record: {0}", newRecord);
+                //}
             }
             catch (Exception e)
             {
@@ -95,8 +101,11 @@ namespace myTNB_Android.Src.Database.Model
             List<SummaryDashBoardAccountEntity> itemList = new List<SummaryDashBoardAccountEntity>();
             try
             {
-                var db = new SQLiteConnection(Constants.DB_PATH);
-                itemList = db.Query<SummaryDashBoardAccountEntity>("select * from SummaryDashBoardDetailsEntity");
+                //using (var db = new SQLiteConnection(Constants.DB_PATH))
+                //{
+                var db = DBHelper.GetSQLiteConnection();
+                    itemList = db.Query<SummaryDashBoardAccountEntity>("select * from SummaryDashBoardDetailsEntity");
+                //}
             }
             catch (Exception e)
             {
@@ -111,12 +120,15 @@ namespace myTNB_Android.Src.Database.Model
             try
             {
                 List<SummaryDashBoardAccountEntity> itemList = new List<SummaryDashBoardAccountEntity>();
-                var db = new SQLiteConnection(Constants.DB_PATH);
-                itemList = db.Query<SummaryDashBoardAccountEntity>("select * from SummaryDashBoardDetailsEntity where AccountNo = ?", accNo);
-                if(itemList != null && itemList.Count > 0)
-                {
-                    entity = itemList[0];
-                }
+                //using (var db = new SQLiteConnection(Constants.DB_PATH))
+                //{
+                var db = DBHelper.GetSQLiteConnection();
+                    itemList = db.Query<SummaryDashBoardAccountEntity>("select * from SummaryDashBoardDetailsEntity where AccountNo = ?", accNo);
+                    if (itemList != null && itemList.Count > 0)
+                    {
+                        entity = itemList[0];
+                    }
+                //}
             }
             catch (Exception e)
             {
@@ -129,8 +141,11 @@ namespace myTNB_Android.Src.Database.Model
         {
             try
             {
-                var db = new SQLiteConnection(Constants.DB_PATH);
-                db.DeleteAll<SummaryDashBoardAccountEntity>();
+                //using (var db = new SQLiteConnection(Constants.DB_PATH))
+                //{
+                var db = DBHelper.GetSQLiteConnection();
+                    db.DeleteAll<SummaryDashBoardAccountEntity>();
+                //}
             }
             catch (Exception e)
             {
@@ -147,14 +162,20 @@ namespace myTNB_Android.Src.Database.Model
 
         public static void RemoveAll()
         {
-            var db = new SQLiteConnection(Constants.DB_PATH);
-            db.Execute("DELETE FROM SummaryDashBoardDetailsEntity");
+            //using (var db = new SQLiteConnection(Constants.DB_PATH))
+            //{
+            var db = DBHelper.GetSQLiteConnection();
+                db.Execute("DELETE FROM SummaryDashBoardDetailsEntity");
+            //}
         }
 
         public static void RemoveAccountData(string accNo)
         {
-            var db = new SQLiteConnection(Constants.DB_PATH);
-            db.Execute("DELETE FROM SummaryDashBoardDetailsEntity where AccountNo = ?", accNo);
+            //using (var db = new SQLiteConnection(Constants.DB_PATH))
+            //{
+            var db = DBHelper.GetSQLiteConnection();
+                db.Execute("DELETE FROM SummaryDashBoardDetailsEntity where AccountNo = ?", accNo);
+            //}
         }
 
 

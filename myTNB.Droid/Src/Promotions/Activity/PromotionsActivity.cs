@@ -24,6 +24,7 @@ using myTNB.SQLite.SQLiteDataManager;
 using Android.Util;
 using Square.Picasso;
 using System.Runtime;
+using System.IO;
 
 namespace myTNB_Android.Src.Promotions.Activity
 {
@@ -78,7 +79,17 @@ namespace myTNB_Android.Src.Promotions.Activity
             base.OnCreate(savedInstanceState);
             try {
             // Create your application here
-            model = JsonConvert.DeserializeObject<PromotionsModelV2>(Intent.Extras.GetString("Promotion"));
+                Bundle extras = Intent.Extras;
+
+                if (extras != null)
+                {
+                    if (extras.ContainsKey("Promotion"))
+                    {
+                        //model = JsonConvert.DeserializeObject<PromotionsModelV2>(Intent.Extras.GetString("Promotion"));
+                        model = DeSerialze<PromotionsModelV2>(extras.GetString("Promotion"));
+                    }
+                }
+            
             TextViewUtils.SetMuseoSans300Typeface(textPromotionTitle, textPromotionDes, textCampaign, textPrizes, textPromotionInfo);
             TextViewUtils.SetMuseoSans500Typeface(textPromotionTitle, textCampaignLabel, textPrizesLabel);
 

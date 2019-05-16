@@ -102,7 +102,16 @@ namespace myTNB_Android.Src.GetAccess.Activity
                 TextViewUtils.SetMuseoSans300Typeface(txtIcNo, txtMaidenName);
                 TextViewUtils.SetMuseoSans500Typeface(btnGetAccess);
 
-                selectedAccount = JsonConvert.DeserializeObject<AccountData>(Intent.Extras.GetString(Constants.SELECTED_ACCOUNT));
+                Bundle extras = Intent.Extras;
+
+                if (extras != null)
+                {
+                    if (extras.ContainsKey(Constants.SELECTED_ACCOUNT))
+                    {
+                        //selectedAccount = JsonConvert.DeserializeObject<AccountData>(Intent.Extras.GetString(Constants.SELECTED_ACCOUNT));
+                        selectedAccount = DeSerialze<AccountData>(extras.GetString(Constants.SELECTED_ACCOUNT));
+                    }
+                }
             } catch(Exception e) {
                 Utility.LoggingNonFatalError(e);
             }

@@ -51,8 +51,11 @@ namespace myTNB_Android.Src.Database.Model
 
         public static int CreateTable()
         {
-            var db = new SQLiteConnection(Constants.DB_PATH);
-            return db.CreateTable<UserEntity>();
+            //using (var db = new SQLiteConnection(Constants.DB_PATH))
+            //{
+            var db = DBHelper.GetSQLiteConnection();
+            return (int)db.CreateTable<UserEntity>();
+            //}
         }
 
         public static void CreateTableAsync(SQLiteAsyncConnection db)
@@ -62,41 +65,48 @@ namespace myTNB_Android.Src.Database.Model
 
         public static int InsertOrReplace(User user)
         {
-            var db = new SQLiteConnection(Constants.DB_PATH);
-            var newRecord = new UserEntity()
-            {
-                UserID = user.UserId,
-                DisplayName = user.DisplayName,
-                UserName = user.UserName,
-                Email = user.Email,
-                DateCreated = user.DateCreated ?? "",
-                LastLoginDate = user.LastLoginDate ?? "",
-                MobileNo = user.MobileNo,
-                IdentificationNo = user.IdentificationNo,
-                Status = Constants.ACTIVE
-            };
+            //using (var db = new SQLiteConnection(Constants.DB_PATH))
+            //{
+            var db = DBHelper.GetSQLiteConnection();
+                var newRecord = new UserEntity()
+                {
+                    UserID = user.UserId,
+                    DisplayName = user.DisplayName,
+                    UserName = user.UserName,
+                    Email = user.Email,
+                    DateCreated = user.DateCreated ?? "",
+                    LastLoginDate = user.LastLoginDate ?? "",
+                    MobileNo = user.MobileNo,
+                    IdentificationNo = user.IdentificationNo,
+                    Status = Constants.ACTIVE
+                };
 
-            int newRecordId = db.InsertOrReplace(newRecord);
-            if (newRecordId > 0)
-            {
-                return newRecord.Id ?? 0;
-            }
+                int newRecordId = db.InsertOrReplace(newRecord);
+                if (newRecordId > 0)
+                {
+                    return newRecord.Id ?? 0;
+                }
 
-            return 0;
+                return 0;
+            //}
         }
 
         public static int UpdatePhoneNumber(string newPhoneNumber)
         {
-            var db = new SQLiteConnection(Constants.DB_PATH);
-            return db.Execute("UPDATE UserEntity SET mobileNo = ?", newPhoneNumber);
+            //using (var db = new SQLiteConnection(Constants.DB_PATH))
+            //{
+            var db = DBHelper.GetSQLiteConnection();
+                return db.Execute("UPDATE UserEntity SET mobileNo = ?", newPhoneNumber);
+            //}
         }
 
         public static IEnumerable<UserEntity> ListAllActive()
         {
-            using (var db = new SQLiteConnection(Constants.DB_PATH))
-            {
+            //using (var db = new SQLiteConnection(Constants.DB_PATH))
+            //{
+            var db = DBHelper.GetSQLiteConnection();
                 return db.Query<UserEntity>("select * from UserEntity where status = ?", Constants.ACTIVE);
-            }
+            //}
         }
 
         public static UserEntity GetActive()
@@ -111,8 +121,9 @@ namespace myTNB_Android.Src.Database.Model
 
         public static Boolean IsCurrentlyActive()
         {
-            using (var db = new SQLiteConnection(Constants.DB_PATH))
-            {
+            //using (var db = new SQLiteConnection(Constants.DB_PATH))
+            //{
+            var db = DBHelper.GetSQLiteConnection();
                 List<UserEntity> userList = db.Query<UserEntity>("select * from UserEntity where status = ?", Constants.ACTIVE);
                 if (userList.Count > 0)
                 {
@@ -120,7 +131,7 @@ namespace myTNB_Android.Src.Database.Model
                 }
 
                 return false;
-            }
+            //}
                
 
         }
@@ -129,8 +140,11 @@ namespace myTNB_Android.Src.Database.Model
 
         public static int RemoveActive()
         {
-            var db = new SQLiteConnection(Constants.DB_PATH);
-            return db.Execute("Delete from UserEntity where status = ? ", Constants.ACTIVE);
+            //using (var db = new SQLiteConnection(Constants.DB_PATH))
+            //{
+            var db = DBHelper.GetSQLiteConnection();
+                return db.Execute("Delete from UserEntity where status = ? ", Constants.ACTIVE);
+            //}
         }
 
 

@@ -19,6 +19,8 @@ using myTNB_Android.Src.Notifications.Activity;
 using myTNB_Android.Src.myTNBMenu.MVP.Fragment;
 using Android.Support.Design.Widget;
 using Android.Support.V7.App;
+using myTNB_Android.Src.myTNBMenu.Activity;
+using Java.Lang;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments
 {
@@ -120,15 +122,23 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
         public void ShowAddAccount()
         {
-            Intent linkAccount = new Intent(this.Activity, typeof(LinkAccountActivity));
-            linkAccount.PutExtra("fromDashboard", true);
-            Activity.StartActivity(linkAccount);  
+            Intent linkAccount = GetIntentObject(typeof(LinkAccountActivity));
+            //Intent linkAccount = new Intent(this.Activity, typeof(LinkAccountActivity));
+            if (linkAccount != null && IsAdded)
+            {
+                linkAccount.PutExtra("fromDashboard", true);
+                Activity.StartActivity(linkAccount);
+            }
             //Activity.StartActivity(typeof(LinkAccountActivity));
         }
 
         public void ShowNotification()
         {
-            StartActivity(new Intent(this.Activity, typeof(NotificationActivity)));
+            Intent intent = GetIntentObject(typeof(NotificationActivity));
+            if (intent != null && IsAdded) {
+                StartActivity(intent);    
+            }
+
         }
 
         public bool HasInternet()
@@ -163,10 +173,56 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             );
             mNoInternetSnackbar.Show();
             }
-            catch (Exception e)
+            catch (System.Exception e)
             {
                 Utility.LoggingNonFatalError(e);
             }
+        }
+
+        DashboardActivity activity = null;
+        public override void OnAttach(Context context)
+        {
+            base.OnAttach(context);
+            try
+            {
+                //if (context is DashboardActivity)
+                //{
+
+                activity = context as DashboardActivity;
+                //activity = context as DashboardActivity;
+                //// SETS THE WINDOW BACKGROUND TO HORIZONTAL GRADIENT AS PER UI ALIGNMENT
+                //activity.Window.SetBackgroundDrawable(Activity.GetDrawable(Resource.Drawable.HorizontalGradientBackground));
+                //}
+            }
+            catch (ClassCastException e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public override void OnAttach(Android.App.Activity activity)
+        {
+            base.OnAttach(activity);
+            try
+            {
+                //if (context is DashboardActivity)
+                //{
+
+                activity = activity as DashboardActivity;
+                //activity = context as DashboardActivity;
+                //// SETS THE WINDOW BACKGROUND TO HORIZONTAL GRADIENT AS PER UI ALIGNMENT
+                //activity.Window.SetBackgroundDrawable(Activity.GetDrawable(Resource.Drawable.HorizontalGradientBackground));
+                //}
+            }
+            catch (ClassCastException e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        protected override Android.App.Activity GetActivityObject()
+        {
+            return activity;
         }
     }
 }

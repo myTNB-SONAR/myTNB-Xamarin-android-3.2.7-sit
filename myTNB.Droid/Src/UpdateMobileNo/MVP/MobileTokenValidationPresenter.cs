@@ -206,14 +206,16 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
             // SILENTLY DIE , SMS RECEIVE IS ONLY OPTIONAL
             if (requestCode == Constants.RUNTIME_PERMISSION_SMS_REQUEST_CODE)
             {
-                if (grantResults[0] == Permission.Denied)
-                {
-                    //if (this.mView.ShouldShowSMSReceiveRationale())
-                    //{
-                    //    this.mView.ShowSMSPermissionRationale();
-                    //}
-                }
-               
+                    if (Utility.IsPermissionHasCount(grantResults))
+                    {
+                        if (grantResults[0] == Permission.Denied)
+                        {
+                            //if (this.mView.ShouldShowSMSReceiveRationale())
+                            //{
+                            //    this.mView.ShowSMSPermissionRationale();
+                            //}
+                        }
+                    }  
             }
             }
             catch (Exception e)
@@ -311,18 +313,18 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
         public void Start()
         {
             try {
-            bool isGranted = this.mView.IsGrantedSMSReceivePermission();
-            if (!isGranted)
-            {
-                if (this.mView.ShouldShowSMSReceiveRationale())
-                {
-                    this.mView.ShowSMSPermissionRationale();
-                }
-                else
-                {
-                    this.mView.RequestSMSPermission();
-                }
-            }
+            //bool isGranted = this.mView.IsGrantedSMSReceivePermission();
+            //if (!isGranted)
+            //{
+            //    if (this.mView.ShouldShowSMSReceiveRationale())
+            //    {
+            //        this.mView.ShowSMSPermissionRationale();
+            //    }
+            //    else
+            //    {
+            //        this.mView.RequestSMSPermission();
+            //    }
+            //}
 
             this.mView.DisableResendButton();
             this.mView.StartProgress();

@@ -117,10 +117,25 @@ namespace myTNB_Android.Src.Login.Activity
             ISharedPreferences sharedPreferences = PreferenceManager.GetDefaultSharedPreferences(this);
             string savedEmail = UserSessions.GetUserEmail(sharedPreferences);
             txtEmail.Append(savedEmail);
+
+
+
+                if (Android.OS.Build.Manufacturer.ToLower() == "samsung") {
+                    txtEmail.LongClick += (object sender, View.LongClickEventArgs e) => onLongClick(sender, e);
+                    txtPassword.LongClick += (object sender, View.LongClickEventArgs e) => onLongClick(sender, e);
+                }
+
         } catch(Exception e) {
                 Utility.LoggingNonFatalError(e);
             }
         }
+
+        private bool onLongClick(object sender, View.LongClickEventArgs e)
+        {
+            // Code to execute on item click.
+            return true;
+        }
+
 
         private void TextChange(object sender, TextChangedEventArgs e)
         {
@@ -260,9 +275,9 @@ namespace myTNB_Android.Src.Login.Activity
         void OnLogin(object sender, EventArgs e)
         {
             try {
-            string email = txtEmail.Text.ToString().Trim();
-            string password = txtPassword.Text;
-            this.userActionsListener.LoginAsync(email , password , this.DeviceId(), chkRemeberMe.Checked);
+                string em_str = txtEmail.Text.ToString().Trim();
+                string pass_str = txtPassword.Text;
+            this.userActionsListener.LoginAsync(em_str , pass_str , this.DeviceId(), chkRemeberMe.Checked);
             }
             catch (Exception ex)
             {
@@ -366,13 +381,13 @@ namespace myTNB_Android.Src.Login.Activity
             return "";
         }
 
-        public void ShowResetPassword(string username , string enteredPassword)
+        public void ShowResetPassword(string u_name , string enteredPass)
         {
-            Intent ResetPasswordIntent = new Intent(this, typeof(ResetPasswordActivity));
-            ResetPasswordIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
-            ResetPasswordIntent.PutExtra(Constants.ENTERED_USERNAME , username);
-            ResetPasswordIntent.PutExtra(Constants.ENTERED_PASSWORD, enteredPassword);
-            StartActivity(ResetPasswordIntent);
+            Intent intent = new Intent(this, typeof(ResetPasswordActivity));
+            intent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
+            intent.PutExtra(Constants.ENTERED_USERNAME , u_name);
+            intent.PutExtra(Constants.ENTERED_PASSWORD, enteredPass);
+            StartActivity(intent);
         }
 
         public void ShowRegisterForm()
@@ -464,12 +479,12 @@ namespace myTNB_Android.Src.Login.Activity
 
         public void ShowUpdatePhoneNumber(UserAuthenticationRequest request, string phoneNumber)
         {
-            Intent updateMobileNo = new Intent(this, typeof(UpdateMobileActivity));
+            Intent intent = new Intent(this, typeof(UpdateMobileActivity));
             //updateMobileNo.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
-            updateMobileNo.PutExtra(Constants.FORCE_UPDATE_PHONE_NO, true);
-            updateMobileNo.PutExtra("LoginRequest", JsonConvert.SerializeObject(request));
-            updateMobileNo.PutExtra("PhoneNumber", phoneNumber);
-            StartActivity(updateMobileNo);
+            intent.PutExtra(Constants.FORCE_UPDATE_PHONE_NO, true);
+            intent.PutExtra("LoginRequest", JsonConvert.SerializeObject(request));
+            intent.PutExtra("PhoneNumber", phoneNumber);
+            StartActivity(intent);
         }
 
 

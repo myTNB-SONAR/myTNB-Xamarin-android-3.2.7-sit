@@ -39,11 +39,11 @@ using myTNB_Android.Src.Notifications.Activity;
 using Java.Util;
 using Refit;
 using myTNB_Android.Src.AppLaunch.Models;
-using myTNB_Android.Src.SmartMeterLearnMore.Activity;
 using myTNB_Android.Src.MultipleAccountPayment.Activity;
 using Android.Support.V7.App;
 using Android.Text;
 using myTNB_Android.Src.FAQ.Activity;
+using Java.Lang;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments
 {
@@ -225,140 +225,151 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         public override void OnViewCreated(View view, Bundle savedInstanceState)
         {
             base.OnViewCreated(view, savedInstanceState);
-            if (!hasNoInternet)
+            try
             {
-                txtTotalPayable.Text = decimalFormat.Format(selectedAccount.AmtCustBal);
-                //if(selectedAccount.AmtCustBal <= 0)
-                //{
-                //    btnPay.Enabled = false;
-                //    btnPay.Background = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.silver_chalice_button_background);
-                //}
-            }
-
-
-            TextViewUtils.SetMuseoSans300Typeface(txtUsageHistory , txtAddress , txtTotalPayable , txtContentNoData , txtContentNoInternet , txtDueDate);
-            TextViewUtils.SetMuseoSans300Typeface(btnToggleDay , btnToggleMonth );
-            TextViewUtils.SetMuseoSans500Typeface(txtRange , txtTotalPayableTitle , txtTotalPayableCurrency, btnViewBill, btnPay, btnLearnMore, btnTapRefresh, txtTitleNoData, txtTitleNoInternet);
-
-            this.userActionsListener.Start();
-
-            DownTimeEntity bcrmEntity = DownTimeEntity.GetByCode(Constants.BCRM_SYSTEM);
-            DownTimeEntity pgCCEntity = DownTimeEntity.GetByCode(Constants.PG_CC_SYSTEM);
-            DownTimeEntity pgFPXEntity = DownTimeEntity.GetByCode(Constants.PG_FPX_SYSTEM);
-
-            if (selectedAccount != null)
-            {
-
-                if (selectedAccount.AccountCategoryId.Equals("2"))
+                if (!hasNoInternet)
                 {
-                    btnPay.Visibility = ViewStates.Gone;
-                    btnViewBill.Text = GetString(Resource.String.dashboard_chart_view_payment_advice);
-                    txtUsageHistory.Visibility = ViewStates.Gone;
-                    txtTotalPayableTitle.Text = GetString(Resource.String.title_payment_advice_amount);
-                }
-                else
-                {
-                    btnPay.Visibility = ViewStates.Visible;
-                    btnViewBill.Text = GetString(Resource.String.dashboard_chartview_view_bill);
+                    txtTotalPayable.Text = decimalFormat.Format(selectedAccount.AmtCustBal);
+                    //if(selectedAccount.AmtCustBal <= 0)
+                    //{
+                    //    btnPay.Enabled = false;
+                    //    btnPay.Background = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.silver_chalice_button_background);
+                    //}
                 }
 
-               
-                if (bcrmEntity != null && bcrmEntity.IsDown)
+
+                TextViewUtils.SetMuseoSans300Typeface(txtUsageHistory, txtAddress, txtTotalPayable, txtContentNoData, txtContentNoInternet, txtDueDate);
+                TextViewUtils.SetMuseoSans300Typeface(btnToggleDay, btnToggleMonth);
+                TextViewUtils.SetMuseoSans500Typeface(txtRange, txtTotalPayableTitle, txtTotalPayableCurrency, btnViewBill, btnPay, btnLearnMore, btnTapRefresh, txtTitleNoData, txtTitleNoInternet);
+
+                this.userActionsListener?.Start();
+
+                DownTimeEntity bcrmEntity = DownTimeEntity.GetByCode(Constants.BCRM_SYSTEM);
+                DownTimeEntity pgCCEntity = DownTimeEntity.GetByCode(Constants.PG_CC_SYSTEM);
+                DownTimeEntity pgFPXEntity = DownTimeEntity.GetByCode(Constants.PG_FPX_SYSTEM);
+
+                if (selectedAccount != null)
                 {
-                    DisablePayButton();
-                    btnViewBill.Enabled = false;
-                    btnViewBill.Background = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.silver_chalice_button_outline);
-                    btnViewBill.SetTextColor(ContextCompat.GetColorStateList(this.Activity, Resource.Color.silverChalice));
-                    txtRange.Visibility = ViewStates.Gone;
-                    if (bcrmEntity.IsDown)
+
+                    if (selectedAccount.AccountCategoryId.Equals("2"))
                     {
-                        if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.N)
-                        {
-                            txtAddress.TextFormatted = Html.FromHtml(bcrmEntity.DowntimeMessage, FromHtmlOptions.ModeLegacy);
-                        }
-                        else
-                        {
-                            txtAddress.TextFormatted = Html.FromHtml(bcrmEntity.DowntimeMessage);
-                        }
-
-                        Snackbar downtimeSnackBar = Snackbar.Make(rootView,
-                            bcrmEntity.DowntimeTextMessage,
-                            Snackbar.LengthLong);
-                        View v = downtimeSnackBar.View;
-                        TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
-                        tv.SetMaxLines(5);
-                        downtimeSnackBar.Show();
+                        btnPay.Visibility = ViewStates.Gone;
+                        btnViewBill.Text = GetString(Resource.String.dashboard_chart_view_payment_advice);
+                        txtUsageHistory.Visibility = ViewStates.Gone;
+                        txtTotalPayableTitle.Text = GetString(Resource.String.title_payment_advice_amount);
                     }
-                }
-                else
-                {
-                    if (pgCCEntity.IsDown && pgFPXEntity.IsDown)
+                    else
+                    {
+                        btnPay.Visibility = ViewStates.Visible;
+                        btnViewBill.Text = GetString(Resource.String.dashboard_chartview_view_bill);
+                    }
+
+
+                    if (bcrmEntity != null && bcrmEntity.IsDown)
                     {
                         DisablePayButton();
-                        Snackbar downtimeSnackBar = Snackbar.Make(rootView,
+                        btnViewBill.Enabled = false;
+                        btnViewBill.Background = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.silver_chalice_button_outline);
+                        btnViewBill.SetTextColor(ContextCompat.GetColorStateList(this.Activity, Resource.Color.silverChalice));
+                        txtRange.Visibility = ViewStates.Gone;
+                        if (bcrmEntity.IsDown)
+                        {
+                            if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.N)
+                            {
+                                txtAddress.TextFormatted = Html.FromHtml(bcrmEntity.DowntimeMessage, FromHtmlOptions.ModeLegacy);
+                            }
+                            else
+                            {
+                                txtAddress.TextFormatted = Html.FromHtml(bcrmEntity.DowntimeMessage);
+                            }
+
+                            Snackbar downtimeSnackBar = Snackbar.Make(rootView,
                                 bcrmEntity.DowntimeTextMessage,
                                 Snackbar.LengthLong);
-                        View v = downtimeSnackBar.View;
-                        TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
-                        tv.SetMaxLines(5);
-                        if (!selectedAccount.AccountCategoryId.Equals("2"))
-                        {
+                            View v = downtimeSnackBar.View;
+                            TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+                            tv.SetMaxLines(5);
                             downtimeSnackBar.Show();
                         }
                     }
-
-                    this.userActionsListener.OnLoadAmount(selectedAccount.AccountNum);
-                }
-
-                txtAddress.Click += delegate {
-                    if (bcrmEntity.IsDown)
+                    else
                     {
-                        string textMessage = bcrmEntity.DowntimeMessage;
-                        if (textMessage != null && textMessage.Contains("http"))
+                        if (pgCCEntity.IsDown && pgFPXEntity.IsDown)
                         {
-                            //Launch webview
-                            int startIndex = textMessage.LastIndexOf("=") + 2;
-                            int lastIndex = textMessage.LastIndexOf("\"");
-                            int lengthOfId = (lastIndex - startIndex);
-                            if (lengthOfId < textMessage.Length)
+                            DisablePayButton();
+                            Snackbar downtimeSnackBar = Snackbar.Make(rootView,
+                                    bcrmEntity.DowntimeTextMessage,
+                                    Snackbar.LengthLong);
+                            View v = downtimeSnackBar.View;
+                            TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+                            tv.SetMaxLines(5);
+                            if (!selectedAccount.AccountCategoryId.Equals("2"))
                             {
-                                string url = textMessage.Substring(startIndex, lengthOfId);
-                                if (!string.IsNullOrEmpty(url))
-                                {
-                                    Intent intent = new Intent(Intent.ActionView);
-                                    intent.SetData(Android.Net.Uri.Parse(url));
-                                    StartActivity(intent);
-                                }
+                                downtimeSnackBar.Show();
                             }
                         }
-                        else if (textMessage != null && textMessage.Contains("faq"))
-                        {
-                            //Lauch FAQ
-                            int startIndex = textMessage.LastIndexOf("=") + 1;
-                            int lastIndex = textMessage.LastIndexOf("}");
-                            int lengthOfId = (lastIndex - startIndex) + 1;
-                            if (lengthOfId < textMessage.Length)
-                            {
-                                string faqid = textMessage.Substring(startIndex, lengthOfId);
-                                if (!string.IsNullOrEmpty(faqid))
-                                {
-                                    Intent faqIntent = new Intent(this.Activity, typeof(FAQListActivity));
-                                    faqIntent.PutExtra(Constants.FAQ_ID_PARAM, faqid);
-                                    Activity.StartActivity(faqIntent);
-                                }
-                            }
-                        }
+
+                        this.userActionsListener.OnLoadAmount(selectedAccount.AccountNum);
                     }
 
-                };
-            }
+                    txtAddress.Click += delegate
+                    {
+                        if (bcrmEntity.IsDown)
+                        {
+                            string textMessage = bcrmEntity.DowntimeMessage;
+                            if (textMessage != null && textMessage.Contains("http"))
+                            {
+                            //Launch webview
+                            int startIndex = textMessage.LastIndexOf("=") + 2;
+                                int lastIndex = textMessage.LastIndexOf("\"");
+                                int lengthOfId = (lastIndex - startIndex);
+                                if (lengthOfId < textMessage.Length)
+                                {
+                                    string url = textMessage.Substring(startIndex, lengthOfId);
+                                    if (!string.IsNullOrEmpty(url))
+                                    {
+                                        Intent intent = new Intent(Intent.ActionView);
+                                        intent.SetData(Android.Net.Uri.Parse(url));
+                                        StartActivity(intent);
+                                    }
+                                }
+                            }
+                            else if (textMessage != null && textMessage.Contains("faq"))
+                            {
+                            //Lauch FAQ
+                            int startIndex = textMessage.LastIndexOf("=") + 1;
+                                int lastIndex = textMessage.LastIndexOf("}");
+                                int lengthOfId = (lastIndex - startIndex) + 1;
+                                if (lengthOfId < textMessage.Length)
+                                {
+                                    string faqid = textMessage.Substring(startIndex, lengthOfId);
+                                    if (!string.IsNullOrEmpty(faqid))
+                                    {
+                                        Intent faqIntent = GetIntentObject(typeof(FAQListActivity));
+                                        //Intent faqIntent = new Intent(this.Activity, typeof(FAQListActivity));
+                                        if (faqIntent != null && IsAdded)
+                                        {
+                                            faqIntent.PutExtra(Constants.FAQ_ID_PARAM, faqid);
+                                            Activity.StartActivity(faqIntent);
+                                        }
+                                    }
+                                }
+                            }
+                        }
 
-            if (!string.IsNullOrEmpty(errorMSG))
+                    };
+                }
+
+                if (!string.IsNullOrEmpty(errorMSG))
+                {
+                    ShowUnableToFecthSmartMeterData(errorMSG);
+                }
+            }
+            catch (System.Exception e)
             {
-                ShowUnableToFecthSmartMeterData(errorMSG);
-            }
+                Utility.LoggingNonFatalError(e);
+          }
         }
-
         [OnClick(Resource.Id.btnLeft)]
         internal void OnLeft(object sender , EventArgs eventArgs)
         {
@@ -612,7 +623,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     val = float.PositiveInfinity;
                 }
 
-                yVals1.Add(new BarEntry(i, Math.Abs(val)));
+                yVals1.Add(new BarEntry(i, System.Math.Abs(val)));
             }
 
             BarDataSet set1;
@@ -676,7 +687,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     val = float.PositiveInfinity;
                 }
 
-                yVals1.Add(new BarEntry(i, Math.Abs(val)));
+                yVals1.Add(new BarEntry(i, System.Math.Abs(val)));
             }
 
             BarDataSet set1;
@@ -744,6 +755,49 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             mChart.Clear();
             SetUp();
         }
+        DashboardActivity activity = null;
+        public override void OnAttach(Context context)
+        {
+            base.OnAttach(context);
+            try
+            {
+                //if (context is DashboardActivity)
+                //{
+
+                activity = context as DashboardActivity;
+                //activity = context as DashboardActivity;
+                //// SETS THE WINDOW BACKGROUND TO HORIZONTAL GRADIENT AS PER UI ALIGNMENT
+                //activity.Window.SetBackgroundDrawable(Activity.GetDrawable(Resource.Drawable.HorizontalGradientBackground));
+                //}
+            }
+            catch (ClassCastException e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+
+        }
+
+
+        public override void OnAttach(Android.App.Activity activity)
+        {
+            base.OnAttach(activity);
+
+            try
+            {
+                //if (context is DashboardActivity)
+                //{
+
+                    this.activity = activity as DashboardActivity;
+                    //activity = context as DashboardActivity;
+                    //// SETS THE WINDOW BACKGROUND TO HORIZONTAL GRADIENT AS PER UI ALIGNMENT
+                    //activity.Window.SetBackgroundDrawable(Activity.GetDrawable(Resource.Drawable.HorizontalGradientBackground));
+                    //}
+                }
+                catch (ClassCastException e)
+                {
+                    Utility.LoggingNonFatalError(e);
+                }
+        }
 
         public void ShowViewBill(BillHistoryV5 selectedBill)
         {
@@ -761,19 +815,44 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 selectedBill.NrBill = null;
             }
 
-            Intent viewBill = new Intent(this.Activity , typeof(ViewBillActivity));
-            viewBill.PutExtra(Constants.SELECTED_ACCOUNT , JsonConvert.SerializeObject(selectedAccount));
-            viewBill.PutExtra(Constants.SELECTED_BILL, JsonConvert.SerializeObject(selectedBill));
-            StartActivity(viewBill);
+            //Intent viewBill = null;
+            //if (activity != null) {
+            //    viewBill = new Intent(activity, typeof(ViewBillActivity));    
+            //} else if (this.Activity != null) {
+            //    viewBill = new Intent(this.Activity, typeof(ViewBillActivity));
+            //}
+
+
+            Intent viewBill = GetIntentObject(typeof(ViewBillActivity));
+
+            if (viewBill != null && IsAdded) { 
+                viewBill.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccount));
+                viewBill.PutExtra(Constants.SELECTED_BILL, JsonConvert.SerializeObject(selectedBill));
+                StartActivity(viewBill);    
+            }
+
         }
 
         public void ShowPayment()
         {
-            //Intent payment_activity = new Intent(this.Activity, typeof(MakePaymentActivity));
-            Intent payment_activity = new Intent(this.Activity, typeof(SelectAccountsActivity));
-            payment_activity.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccount));
-            //StartActivity(payment_activity);
-            StartActivityForResult(payment_activity, DashboardActivity.PAYMENT_RESULT_CODE);
+            Intent payment_activity = GetIntentObject(typeof(SelectAccountsActivity));
+            //if (activity != null)
+            //{
+            //    payment_activity = new Intent(activity, typeof(SelectAccountsActivity));
+            //}
+            //else if (this.Activity != null)
+            //{
+            //    payment_activity = new Intent(this.Activity, typeof(SelectAccountsActivity));
+            //}
+
+            if (payment_activity != null && IsAdded)
+            {
+                //Intent payment_activity = new Intent(this.Activity, typeof(MakePaymentActivity));
+                //Intent payment_activity = new Intent(this.Activity, typeof(SelectAccountsActivity));
+                payment_activity.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccount));
+                //StartActivity(payment_activity);
+                StartActivityForResult(payment_activity, DashboardActivity.PAYMENT_RESULT_CODE);
+            }
         }
 
         [OnClick(Resource.Id.btnToggleDay)]
@@ -947,9 +1026,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             {
                 foreach (UsageHistoryData.ByDayData.DayData dayData in ByDay.Days)
                 {
-                    if (Math.Abs(dayData.Amount) > val)
+                        if (System.Math.Abs(dayData.Amount) > val)
                     {
-                        val = Math.Abs((float)dayData.Amount);
+                            val = System.Math.Abs((float)dayData.Amount);
                     }
                 }
             }
@@ -957,7 +1036,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 val = 1;
             }
             }
-            catch (Exception e)
+            catch (System.Exception e)
             {
                 Utility.LoggingNonFatalError(e);
             }
@@ -971,16 +1050,16 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
             foreach (UsageHistoryData.ByMonthData.MonthData MonthData in selectedHistoryData.ByMonth.Months)
             {
-                if (Math.Abs(MonthData.Amount) > val)
+                    if (System.Math.Abs(MonthData.Amount) > val)
                 {
-                    val = Math.Abs((float)MonthData.Amount);
+                        val = System.Math.Abs((float)MonthData.Amount);
                 }
             }
             if(val == 0){
                 val = 1;
             }
             }
-            catch (Exception e)
+            catch (System.Exception e)
             {
                 Utility.LoggingNonFatalError(e);
             }
@@ -1042,15 +1121,31 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             );
             mNoInternetSnackbar.Show();
             }
-            catch (Exception e)
+            catch (System.Exception e)
             {
                 Utility.LoggingNonFatalError(e);
             }
         }
 
+
+       
+
         public void ShowNotification()
         {
-            StartActivity(new Intent(this.Activity, typeof(NotificationActivity)));
+            Intent payment_activity = GetIntentObject(typeof(NotificationActivity));
+            //if (activity != null)
+            //{
+            //    payment_activity = new Intent(activity, typeof(NotificationActivity));
+            //}
+            //else if (this.Activity != null)
+            //{
+            //    payment_activity = new Intent(this.Activity, typeof(NotificationActivity));
+            //}
+
+            if (payment_activity != null && IsAdded)
+            {
+                StartActivity(payment_activity);
+            }
         }
 
         public void ShowAmountProgress()
@@ -1059,7 +1154,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             progressBar.Visibility = ViewStates.Visible;
             totalPayableLayout.Visibility = ViewStates.Gone;
 
-        } catch(Exception e) {
+            } catch(System.Exception e) {
                 Utility.LoggingNonFatalError(e);
             }
         }
@@ -1070,7 +1165,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             progressBar.Visibility = ViewStates.Gone;
             totalPayableLayout.Visibility = ViewStates.Visible;
             }
-            catch (Exception e)
+            catch (System.Exception e)
             {
                 Utility.LoggingNonFatalError(e);
             }
@@ -1105,7 +1200,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         }
                         else
                         {
-                            calAmt = Math.Abs(selectedAccount.AmtCustBal);
+                                calAmt = System.Math.Abs(selectedAccount.AmtCustBal);
                         }
                         txtTotalPayable.Text = decimalFormat.Format(calAmt);
 
@@ -1144,7 +1239,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             {
                 txtDueDate.Text = GetString(Resource.String.dashboard_chartview_due_date_not_available);
             }
-        } catch(Exception e) {
+            } catch(System.Exception e) {
                 Utility.LoggingNonFatalError(e);
             }
         }
@@ -1166,7 +1261,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             }
             );
             mCancelledExceptionSnackBar.Show();
-        } catch(Exception e) {
+            } catch(System.Exception e) {
                 Utility.LoggingNonFatalError(e);
             }
 
@@ -1192,14 +1287,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 );
                 mApiExcecptionSnackBar.Show();
             }
-            catch (Exception e)
+            catch (System.Exception e)
             {
                 Utility.LoggingNonFatalError(e);
             }
 
         }
         private Snackbar mUknownExceptionSnackBar;
-        public void ShowRetryOptionsUnknownException(Exception exception)
+        public void ShowRetryOptionsUnknownException(System.Exception exception)
         {
             try {
             if (mUknownExceptionSnackBar != null && mUknownExceptionSnackBar.IsShown)
@@ -1218,7 +1313,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             );
             mUknownExceptionSnackBar.Show();
             }
-            catch (Exception e)
+            catch (System.Exception e)
             {
                 Utility.LoggingNonFatalError(e);
             }
@@ -1241,7 +1336,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             );
             mSmartMeterError.Show();
             }
-            catch (Exception e)
+            catch (System.Exception e)
             {
                 Utility.LoggingNonFatalError(e);
             }
@@ -1262,24 +1357,31 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
         public void ShowLearnMore(Weblink weblink)
         {
-            try {
-            if (weblink.OpenWith.Equals("APP"))
-            {
-                Intent smartMeterINtent = new Intent(this.Activity , typeof(SmartMeterLearnMoreActivity));
-                smartMeterINtent.PutExtra(Constants.SMART_METER_LINK, JsonConvert.SerializeObject(weblink));
-                StartActivity(smartMeterINtent);
-            }
-            else
-            {
-                var uri = Android.Net.Uri.Parse(weblink.Url);
-                var intent = new Intent(Intent.ActionView, uri);
-                StartActivity(intent);
-            }
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
+            //try {
+            //if (weblink.OpenWith.Equals("APP"))
+            //{
+            //        Intent smartMeterINtent = GetIntentObject(typeof(SmartMeterLearnMoreActivity));
+            //    //Intent smartMeterINtent = new Intent(this.Activity , typeof(SmartMeterLearnMoreActivity));
+            //    smartMeterINtent.PutExtra(Constants.SMART_METER_LINK, JsonConvert.SerializeObject(weblink));
+            //    StartActivity(smartMeterINtent);
+            //}
+            //else
+            //{
+            //    var uri = Android.Net.Uri.Parse(weblink.Url);
+            //    var intent = new Intent(Intent.ActionView, uri);
+            //    StartActivity(intent);
+            //}
+            //}
+            //catch (System.Exception e)
+            //{
+            //    Utility.LoggingNonFatalError(e);
+            //}
         }
+
+        protected override Android.App.Activity GetActivityObject()
+        {
+            return activity;
+        }
+
     }
 }

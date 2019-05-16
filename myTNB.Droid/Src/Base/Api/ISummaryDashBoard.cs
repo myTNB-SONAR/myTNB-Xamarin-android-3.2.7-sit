@@ -11,6 +11,7 @@ namespace myTNB_Android.Src.SummaryDashBoard.API
 
         [Headers("Content-Type:application/json; charset=utf-8")]
         [Post("/v5/my_billingssp.asmx/GetLinkedAccountsSummaryInfo")]
+        //[Post("/v5/my_billingssp.asmx/GetLinkedAccountsSummaryInfoV2")]
         Task<SummaryDashBoardResponse> GetLinkedAccountsSummaryInfo([Body] SummaryDashBordRequest request, CancellationToken cancellationToken);
     }
 }

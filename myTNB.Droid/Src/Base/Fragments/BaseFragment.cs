@@ -29,10 +29,16 @@ namespace myTNB_Android.Src.Base.Fragments
 
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
-            // Use this to return your custom view for this Fragment
-            // return inflater.Inflate(Resource.Layout.YourFragment, container, false);
-            View inflateView = inflater.Inflate(ResourceId() , container , false);
-            Cheeseknife.Bind(this , inflateView);
+            View inflateView = null;
+            try
+            {
+                // Use this to return your custom view for this Fragment
+                // return inflater.Inflate(Resource.Layout.YourFragment, container, false);
+                inflateView = inflater.Inflate(ResourceId(), container, false);
+                Cheeseknife.Bind(this, inflateView);
+            } catch (Exception e) {
+                Utility.LoggingNonFatalError(e);
+            }
             return inflateView;
         }
 
@@ -133,63 +139,77 @@ namespace myTNB_Android.Src.Base.Fragments
 
             if (requestCode == Constants.RUNTIME_PERMISSION_CAMERA_REQUEST_CODE)
             {
-                if (grantResults[0] == Permission.Denied)
+                if (Utility.IsPermissionHasCount(grantResults))
                 {
+                    if (grantResults[0] == Permission.Denied)
+                    {
 
+                    }
                 }
             }
             else if (requestCode == Constants.RUNTIME_PERMISSION_PHONE_REQUEST_CODE)
             {
-                if (grantResults[0] == Permission.Denied)
+                if (Utility.IsPermissionHasCount(grantResults))
                 {
+                    if (grantResults[0] == Permission.Denied)
+                    {
 
+                    }
                 }
             }
             else if (requestCode == Constants.RUNTIME_PERMISSION_STORAGE_REQUEST_CODE)
             {
-                if (grantResults[0] == Permission.Denied)
+                if (Utility.IsPermissionHasCount(grantResults))
                 {
+                    if (grantResults[0] == Permission.Denied)
+                    {
 
+                    }
                 }
             }
             else if (requestCode == Constants.RUNTIME_PERMISSION_LOCATION_REQUEST_CODE)
             {
-                if (grantResults[0] == Permission.Denied)
+                if (Utility.IsPermissionHasCount(grantResults))
                 {
-                    if (!LocationPermissionRequired())
+                    if (grantResults[0] == Permission.Denied)
                     {
-                        if (ShouldShowRequestPermissionRationale(Manifest.Permission.AccessFineLocation) || ShouldShowRequestPermissionRationale(Manifest.Permission.AccessCoarseLocation))
+                        if (!LocationPermissionRequired())
                         {
-                            ShowRationale(LocationTitleRationale(),
-                                LocationContentRationale(),
-                                Constants.RUNTIME_PERMISSION_LOCATION_REQUEST_CODE,
-                                Resource.String.faulty_street_lamps_feedback_runtime_permission_dialog_btn_ok, delegate {
-                                    rationaleDialog.Dismiss();
-                                    if (requestCode == Constants.RUNTIME_PERMISSION_CAMERA_REQUEST_CODE)
+                            if (ShouldShowRequestPermissionRationale(Manifest.Permission.AccessFineLocation) || ShouldShowRequestPermissionRationale(Manifest.Permission.AccessCoarseLocation))
+                            {
+                                ShowRationale(LocationTitleRationale(),
+                                    LocationContentRationale(),
+                                    Constants.RUNTIME_PERMISSION_LOCATION_REQUEST_CODE,
+                                    Resource.String.faulty_street_lamps_feedback_runtime_permission_dialog_btn_ok, delegate
                                     {
-                                        RequestPermissions(new string[] { Manifest.Permission.Camera, Manifest.Permission.Flashlight }, Constants.RUNTIME_PERMISSION_CAMERA_REQUEST_CODE);
+                                        rationaleDialog.Dismiss();
+                                        if (requestCode == Constants.RUNTIME_PERMISSION_CAMERA_REQUEST_CODE)
+                                        {
+                                            RequestPermissions(new string[] { Manifest.Permission.Camera, Manifest.Permission.Flashlight }, Constants.RUNTIME_PERMISSION_CAMERA_REQUEST_CODE);
 
-                                    }
-                                    else if (requestCode == Constants.RUNTIME_PERMISSION_PHONE_REQUEST_CODE)
+                                        }
+                                        else if (requestCode == Constants.RUNTIME_PERMISSION_PHONE_REQUEST_CODE)
+                                        {
+                                            RequestPermissions(new string[] { Manifest.Permission.ReadPhoneState }, Constants.RUNTIME_PERMISSION_PHONE_REQUEST_CODE);
+
+                                        }
+                                        else if (requestCode == Constants.RUNTIME_PERMISSION_STORAGE_REQUEST_CODE)
+                                        {
+                                            RequestPermissions(new string[] { Manifest.Permission.WriteExternalStorage, Manifest.Permission.ReadExternalStorage }, Constants.RUNTIME_PERMISSION_STORAGE_REQUEST_CODE);
+
+                                        }
+                                        else if (requestCode == Constants.RUNTIME_PERMISSION_LOCATION_REQUEST_CODE)
+                                        {
+                                            RequestPermissions(new string[] { Manifest.Permission.AccessFineLocation, Manifest.Permission.AccessCoarseLocation }, Constants.RUNTIME_PERMISSION_STORAGE_REQUEST_CODE);
+
+                                        }
+                                    },
+                                    Resource.String.faulty_street_lamps_feedback_runtime_permission_dialog_btn_ok, delegate
                                     {
-                                        RequestPermissions(new string[] { Manifest.Permission.ReadPhoneState }, Constants.RUNTIME_PERMISSION_PHONE_REQUEST_CODE);
+                                        rationaleDialog.Dismiss();
+                                    });
 
-                                    }
-                                    else if (requestCode == Constants.RUNTIME_PERMISSION_STORAGE_REQUEST_CODE)
-                                    {
-                                        RequestPermissions(new string[] { Manifest.Permission.WriteExternalStorage, Manifest.Permission.ReadExternalStorage }, Constants.RUNTIME_PERMISSION_STORAGE_REQUEST_CODE);
-
-                                    }
-                                    else if (requestCode == Constants.RUNTIME_PERMISSION_LOCATION_REQUEST_CODE)
-                                    {
-                                        RequestPermissions(new string[] { Manifest.Permission.AccessFineLocation, Manifest.Permission.AccessCoarseLocation }, Constants.RUNTIME_PERMISSION_STORAGE_REQUEST_CODE);
-
-                                    }
-                                },
-                                Resource.String.faulty_street_lamps_feedback_runtime_permission_dialog_btn_ok, delegate {
-                                    rationaleDialog.Dismiss();
-                                });
-
+                            }
                         }
                     }
                 }
@@ -344,6 +364,26 @@ namespace myTNB_Android.Src.Base.Fragments
         public virtual void Ready()
         {
 
+        }
+
+
+        protected Intent GetIntentObject(Type type)
+        {
+            if (GetActivityObject() != null)
+            {
+                return new Intent(GetActivityObject(), type);
+            }
+            else if (this.Activity != null)
+            {
+                return new Intent(this.Activity, type);
+            }
+            return null;
+        }
+
+
+        protected virtual Android.App.Activity GetActivityObject()
+        {
+            return null;
         }
     }
 }

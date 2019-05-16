@@ -242,6 +242,9 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 
             void ShowBackButton(bool flag);
 
+
+            string GetDeviceId();
+
         }
 
         public interface IUserActionsListener : IBasePresenter
