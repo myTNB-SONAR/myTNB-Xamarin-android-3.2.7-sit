@@ -26,7 +26,7 @@ using Newtonsoft.Json;
 namespace myTNB_Android.Src.Base.Activity
 {
     /// <summary>
-    /// The class that abstracts the implementation of the resourceId and handling of permissions. 
+    /// The class that abstracts the implementation of the resourceId and handling of permissions.
     /// </summary>
     public abstract class BaseAppCompatActivity: AppCompatActivity
     {
@@ -41,97 +41,99 @@ namespace myTNB_Android.Src.Base.Activity
             base.OnCreate(savedInstanceState);
             SetContentView(ResourceId());
             Cheeseknife.Bind(this);
-
+            EvaluateRequestPermissions();
         }
 
         protected override void OnResume()
         {
             base.OnResume();
-# if DEBUG || DEVELOP
-            CrashManager.Register(this);
-#endif
-            if (CameraPermissionRequired())
-            {
-                if (ContextCompat.CheckSelfPermission(this, Manifest.Permission.Camera) != (int)Permission.Granted )
-                {
-                    if (ShouldShowRequestPermissionRationale(Manifest.Permission.Camera))
-                    {
-                        ShowRationale(Resource.String.runtime_permission_dialog_camera_title, Resource.String.runtime_permission_camera_rationale, Constants.RUNTIME_PERMISSION_CAMERA_REQUEST_CODE);
-                    }
-                    else
-                    {
-                        RequestPermissions(new string[] { Manifest.Permission.Camera, Manifest.Permission.Flashlight }, Constants.RUNTIME_PERMISSION_CAMERA_REQUEST_CODE);
-                    }
-                    return;
-                }
-            }
-
-            if (TelephonyPermissionRequired())
-            {
-                if (ContextCompat.CheckSelfPermission(this, Manifest.Permission.ReadPhoneState) != (int)Permission.Granted)
-                {
-                    if (ShouldShowRequestPermissionRationale(Manifest.Permission.ReadPhoneState))
-                    {
-                        ShowRationale(Resource.String.runtime_permission_dialog_phone_title, Resource.String.runtime_permission_phone_rationale, Constants.RUNTIME_PERMISSION_PHONE_REQUEST_CODE);
-
-                    }
-                    else
-                    {
-                        RequestPermissions(new string[] { Manifest.Permission.ReadPhoneState}, Constants.RUNTIME_PERMISSION_PHONE_REQUEST_CODE);
-
-                    }
-                    return;
-                }
-            }
-
-            if (StoragePermissionRequired())
-            {
-                if (ContextCompat.CheckSelfPermission(this, Manifest.Permission.WriteExternalStorage) != (int)Permission.Granted &&
-                    ContextCompat.CheckSelfPermission(this, Manifest.Permission.ReadExternalStorage) != (int)Permission.Granted)
-                {
-
-
-                    if (ShouldShowRequestPermissionRationale(Manifest.Permission.WriteExternalStorage) || ShouldShowRequestPermissionRationale(Manifest.Permission.ReadExternalStorage))
-                    {
-                        ShowRationale(Resource.String.runtime_permission_dialog_storage_title, Resource.String.runtime_permission_storage_rationale, Constants.RUNTIME_PERMISSION_STORAGE_REQUEST_CODE);
-                        
-                    }
-                    else
-                    {
-                        RequestPermissions(new string[] { Manifest.Permission.WriteExternalStorage , Manifest.Permission.ReadExternalStorage}, Constants.RUNTIME_PERMISSION_STORAGE_REQUEST_CODE);
-                    }
-                    return;
-                }
-                
-            }
-
-            if (LocationPermissionRequired())
-            {
-                if (ContextCompat.CheckSelfPermission(this, Manifest.Permission.AccessFineLocation) != (int)Permission.Granted && ContextCompat.CheckSelfPermission(this, Manifest.Permission.AccessCoarseLocation) != (int)Permission.Granted)
-                {
-
-
-                    if (ShouldShowRequestPermissionRationale(Manifest.Permission.AccessFineLocation) || ShouldShowRequestPermissionRationale(Manifest.Permission.AccessCoarseLocation))
-                    {
-                        ShowRationale(LocationTitleRationale(), LocationContentRationale(), Constants.RUNTIME_PERMISSION_LOCATION_REQUEST_CODE);
-
-                    }
-                    else
-                    {
-                        RequestPermissions(new string[] { Manifest.Permission.AccessFineLocation , Manifest.Permission.AccessCoarseLocation }, Constants.RUNTIME_PERMISSION_LOCATION_REQUEST_CODE);
-                    }
-                    return;
-                }
-            }
-
+            //ShowRequestPermissions();
             Ready();
- 
+        }
+
+        private void EvaluateRequestPermissions(){
+          # if DEBUG || DEVELOP
+                      CrashManager.Register(this);
+          #endif
+                      if (CameraPermissionRequired())
+                      {
+                          if (ContextCompat.CheckSelfPermission(this, Manifest.Permission.Camera) != (int)Permission.Granted )
+                          {
+                              if (ShouldShowRequestPermissionRationale(Manifest.Permission.Camera))
+                              {
+                                  ShowRationale(Resource.String.runtime_permission_dialog_camera_title, Resource.String.runtime_permission_camera_rationale, Constants.RUNTIME_PERMISSION_CAMERA_REQUEST_CODE);
+                              }
+                              else
+                              {
+                                  RequestPermissions(new string[] { Manifest.Permission.Camera, Manifest.Permission.Flashlight }, Constants.RUNTIME_PERMISSION_CAMERA_REQUEST_CODE);
+                              }
+                              return;
+                          }
+                      }
+
+                      if (TelephonyPermissionRequired())
+                      {
+                          if (ContextCompat.CheckSelfPermission(this, Manifest.Permission.ReadPhoneState) != (int)Permission.Granted)
+                          {
+                              if (ShouldShowRequestPermissionRationale(Manifest.Permission.ReadPhoneState))
+                              {
+                                  ShowRationale(Resource.String.runtime_permission_dialog_phone_title, Resource.String.runtime_permission_phone_rationale, Constants.RUNTIME_PERMISSION_PHONE_REQUEST_CODE);
+
+                              }
+                              else
+                              {
+                                  RequestPermissions(new string[] { Manifest.Permission.ReadPhoneState}, Constants.RUNTIME_PERMISSION_PHONE_REQUEST_CODE);
+
+                              }
+                              return;
+                          }
+                      }
+
+                      if (StoragePermissionRequired())
+                      {
+                          if (ContextCompat.CheckSelfPermission(this, Manifest.Permission.WriteExternalStorage) != (int)Permission.Granted &&
+                              ContextCompat.CheckSelfPermission(this, Manifest.Permission.ReadExternalStorage) != (int)Permission.Granted)
+                          {
+
+
+                              if (ShouldShowRequestPermissionRationale(Manifest.Permission.WriteExternalStorage) || ShouldShowRequestPermissionRationale(Manifest.Permission.ReadExternalStorage))
+                              {
+                                  ShowRationale(Resource.String.runtime_permission_dialog_storage_title, Resource.String.runtime_permission_storage_rationale, Constants.RUNTIME_PERMISSION_STORAGE_REQUEST_CODE);
+
+                              }
+                              else
+                              {
+                                  RequestPermissions(new string[] { Manifest.Permission.WriteExternalStorage , Manifest.Permission.ReadExternalStorage}, Constants.RUNTIME_PERMISSION_STORAGE_REQUEST_CODE);
+                              }
+                              return;
+                          }
+
+                      }
+
+                      if (LocationPermissionRequired())
+                      {
+                          if (ContextCompat.CheckSelfPermission(this, Manifest.Permission.AccessFineLocation) != (int)Permission.Granted && ContextCompat.CheckSelfPermission(this, Manifest.Permission.AccessCoarseLocation) != (int)Permission.Granted)
+                          {
+
+
+                              if (ShouldShowRequestPermissionRationale(Manifest.Permission.AccessFineLocation) || ShouldShowRequestPermissionRationale(Manifest.Permission.AccessCoarseLocation))
+                              {
+                                  ShowRationale(LocationTitleRationale(), LocationContentRationale(), Constants.RUNTIME_PERMISSION_LOCATION_REQUEST_CODE);
+
+                              }
+                              else
+                              {
+                                  RequestPermissions(new string[] { Manifest.Permission.AccessFineLocation , Manifest.Permission.AccessCoarseLocation }, Constants.RUNTIME_PERMISSION_LOCATION_REQUEST_CODE);
+                              }
+                              return;
+                          }
+                      }
         }
 
 
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Permission[] grantResults)
         {
-           
+
 
             if (requestCode == Constants.RUNTIME_PERMISSION_CAMERA_REQUEST_CODE)
             {
@@ -139,7 +141,7 @@ namespace myTNB_Android.Src.Base.Activity
                 {
                     if (grantResults[0] == Permission.Denied)
                     {
-
+                        
                     }
                 }
             }
@@ -257,7 +259,7 @@ namespace myTNB_Android.Src.Base.Activity
             Button positiveButton = rationaleDialog.GetButton((int)DialogButtonType.Positive);
             TextViewUtils.SetMuseoSans500Typeface(txtTitle , positiveButton);
             TextViewUtils.SetMuseoSans300Typeface(txtMessage);
-            
+
         }
 
         public void ShowRationale(int rationaleTitle, int rationaleContent, int requestCode , int positiveStringButton , EventHandler<DialogClickEventArgs> positiveButtonEvent , int negativeStringButton , EventHandler<DialogClickEventArgs> negativeButtonEvent)
