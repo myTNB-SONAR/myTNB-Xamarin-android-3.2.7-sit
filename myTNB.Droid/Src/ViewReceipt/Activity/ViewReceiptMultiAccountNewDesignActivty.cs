@@ -123,7 +123,7 @@ namespace myTNB_Android.Src.ViewReceipt.Activity
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-
+            baseView.Visibility = ViewStates.Gone;
             try {
             mPresenter = new ViewReceiptMultiAccountNewDesignPresenter(this);
             // Create your application here
@@ -512,6 +512,7 @@ namespace myTNB_Android.Src.ViewReceipt.Activity
 
         public void OnShowReceiptDetails(GetMultiReceiptByTransIdResponse response)
         {
+            baseView.Visibility = ViewStates.Visible;
             try {
             this.response = response;
             if (response != null) {
