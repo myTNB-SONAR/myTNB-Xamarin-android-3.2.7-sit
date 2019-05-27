@@ -1811,9 +1811,7 @@
     <BundleResource Include="Resources\TNB_Logo.json" />
     <BundleResource Include="Resources\Base.lproj\Localizable.strings" />
     <BundleResource Include="Resources\tnbReceiptLogoHeader.jpg" />
-    <BundleResource Include="Resources\ms.lproj\Localizable.strings" />
     <BundleResource Include="Resources\Base.lproj\InfoPlist.strings" />
-    <BundleResource Include="Resources\ms.lproj\InfoPlist.strings" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\myTNB.Mobile\myTNB.Mobile.csproj">

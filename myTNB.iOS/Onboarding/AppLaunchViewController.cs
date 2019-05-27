@@ -29,7 +29,7 @@ namespace myTNB
         public override void ViewDidLoad()
         {
             base.ViewDidLoad();
-            InitializeLanguage();
+            //InitializeLanguage();
             imgViewAppLaunch = new UIImageView(UIImage.FromBundle("App-Launch-Gradient"));
             var imgViewLogo = new UIImageView(UIImage.FromBundle("New-Launch-Logo"));
             //var imgViewLogoTitle = new UIImageView(UIImage.FromBundle("Logo-Title"));
