@@ -1,5 +1,5 @@
-"NSCameraUsageDescription"="EN - Enable myTNB to access your camera roll to upload photos and save ones you’ve taken with the app.";
-"NSPhotoLibraryUsageDescription"="EN - Enable myTNB to access your camera roll to upload photos and save ones you’ve taken with the app.";
-"NSLocationWhenInUseUsageDescription"="EN - Your current location may be used to find Kedai Tenaga nearby.";
-"NSLocationAlwaysUsageDescription"="EN - Your current location may be used to find Kedai Tenaga nearby.";
-"NSLocationUsageDescription"="EN - Your current location may be used to find Kedai Tenaga nearby.";
+"NSCameraUsageDescription"="Enable myTNB to access your camera roll to upload photos and save ones you’ve taken with the app.";
+"NSPhotoLibraryUsageDescription"="Enable myTNB to access your camera roll to upload photos and save ones you’ve taken with the app.";
+"NSLocationWhenInUseUsageDescription"="Your current location may be used to find Kedai Tenaga nearby.";
+"NSLocationAlwaysUsageDescription"="Your current location may be used to find Kedai Tenaga nearby.";
+"NSLocationUsageDescription"="Your current location may be used to find Kedai Tenaga nearby.";
