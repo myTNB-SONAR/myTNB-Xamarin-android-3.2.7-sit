@@ -956,6 +956,9 @@ namespace myTNB.Dashboard
             out smartMeterMetrics, out chartData, out dateRange, out isNormalMeter);
 #endif
 
+
+            DataManager.DataManager.SharedInstance.CurrentChartMode = DataManager.DataManager.SharedInstance.IsMontView
+                ? ChartModeEnum.Cost : ChartModeEnum.Usage;
             DisplayChart(chartData, dateRange, isNormalMeter, DataManager.DataManager.SharedInstance.IsMontView,
                          DataManager.DataManager.SharedInstance.CurrentChartMode, smartMeterMetrics, res);
         }
