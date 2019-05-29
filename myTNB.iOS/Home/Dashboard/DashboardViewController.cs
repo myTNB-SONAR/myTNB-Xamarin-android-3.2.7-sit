@@ -279,7 +279,7 @@ namespace myTNB.Dashboard
 
             _dashboardMainComponent._billAndPaymentView.Hidden = false;
             TNBGlobal.IsChartEmissionEnabled = false;
-            DataManager.DataManager.SharedInstance.CurrentChartMode = ChartModeEnum.Cost;
+            DataManager.DataManager.SharedInstance.CurrentChartMode = ChartModeEnum.Usage; //ChartModeEnum.Cost;
             var accNum = DataManager.DataManager.SharedInstance.SelectedAccount.accNum;
 
             if (isNormalMeter || isREAccount)
@@ -1149,7 +1149,7 @@ namespace myTNB.Dashboard
             }
             else
             {
-                yLoc = (float)_dashboardMainComponent._viewChartCompanion.Frame.GetMaxY() - 18f;// + 18f;
+                yLoc = (float)_dashboardMainComponent._viewChartCompanion.Frame.GetMaxY() - 40f;// + 18f;
             }
 
             _dashboardMainComponent._addressComponent.SetFrameByPrecedingView(yLoc);
