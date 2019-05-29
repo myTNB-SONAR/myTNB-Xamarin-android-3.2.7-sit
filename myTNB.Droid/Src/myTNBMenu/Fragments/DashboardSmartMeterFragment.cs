@@ -1187,8 +1187,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             try {
             if(ChartDataType == ChartDataType.RM)
             {
-                endDivider.Visibility = ViewStates.Visible;
-                layoutProjectedCost.Visibility = ViewStates.Visible;
+                endDivider.Visibility = ViewStates.Gone;
+                layoutProjectedCost.Visibility = ViewStates.Gone;
                 imgCurrentCharges.SetImageResource(Resource.Drawable.ic_rm);
                 imgProjectedCost.SetImageResource(Resource.Drawable.ic_projected_cost);
                 txtCurrentCharges.Text = (GetString(Resource.String.current_charges));

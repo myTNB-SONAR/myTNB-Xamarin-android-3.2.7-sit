@@ -205,6 +205,78 @@
                             android:paddingTop="@dimen/_5sdp"
                             android:scaleType="fitCenter" />
                     </LinearLayout>
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:minHeight="30dp"
+                        android:paddingTop="40dp"
+                        android:layout_marginRight="43dp"
+                        android:layout_marginLeft="43dp"
+                        android:visibility="visible">
+                        <RadioGroup
+                            android:id="@+id/sm_graph_radio_group"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
+                            android:orientation="horizontal">
+                            <RadioButton
+                                android:id="@+id/rbtnRM"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                style="@style/SMDashboardRadioButton"
+                                android:background="@drawable/radio_button_selector"
+                                android:button="@null"
+                                android:text="@string/text_rm"
+                                android:paddingTop="10dp"
+                                android:paddingBottom="10dp"
+                                android:paddingLeft="10dp"
+                                android:paddingRight="10dp"
+                                android:checked="true"
+                                android:textSize="14sp"
+                                android:layout_marginLeft="10dp"
+                                android:layout_marginRight="10dp"
+                                android:textColor="@drawable/radio_button_text"
+                                android:layout_weight="1"
+                                android:gravity="center" />
+                            <RadioButton
+                                android:id="@+id/rbtnkWh"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                style="@style/SMDashboardRadioButton"
+                                android:background="@drawable/radio_button_selector"
+                                android:button="@null"
+                                android:paddingTop="10dp"
+                                android:paddingBottom="10dp"
+                                android:paddingLeft="10dp"
+                                android:paddingRight="10dp"
+                                android:textSize="14sp"
+                                android:layout_marginLeft="10dp"
+                                android:layout_marginRight="10dp"
+                                android:textColor="@drawable/radio_button_text"
+                                android:text="@string/text_kwh"
+                                android:layout_weight="1"
+                                android:gravity="center" />
+                            <RadioButton
+                                android:id="@+id/rbtnCO2"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                style="@style/SMDashboardRadioButton"
+                                android:background="@drawable/radio_button_selector"
+                                android:button="@null"
+                                android:paddingTop="10dp"
+                                android:paddingBottom="10dp"
+                                android:paddingLeft="10dp"
+                                android:paddingRight="10dp"
+                                android:textSize="14sp"
+                                android:layout_marginLeft="10dp"
+                                android:layout_marginRight="10dp"
+                                android:textColor="@drawable/radio_button_text"
+                                android:text="@string/text_co2"
+                                android:layout_weight="1"
+                                android:gravity="center" />
+                        </RadioGroup>
+                    </RelativeLayout>
                     <LinearLayout
                         android:id="@+id/usageMetricsDetails"
                         android:layout_height="wrap_content"
@@ -412,78 +484,6 @@
                             android:alpha="0.3"
                             android:background="@color/barchartColorHighlighted" />
                     </LinearLayout>
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:minHeight="30dp"
-                        android:paddingTop="40dp"
-                        android:layout_marginRight="43dp"
-                        android:layout_marginLeft="43dp"
-                        android:visibility="visible">
-                        <RadioGroup
-                            android:id="@+id/sm_graph_radio_group"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_centerHorizontal="true"
-                            android:orientation="horizontal">
-                            <RadioButton
-                                android:id="@+id/rbtnRM"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                style="@style/SMDashboardRadioButton"
-                                android:background="@drawable/radio_button_selector"
-                                android:button="@null"
-                                android:text="@string/text_rm"
-                                android:paddingTop="10dp"
-                                android:paddingBottom="10dp"
-                                android:paddingLeft="10dp"
-                                android:paddingRight="10dp"
-                                android:checked="true"
-                                android:textSize="14sp"
-                                android:layout_marginLeft="10dp"
-                                android:layout_marginRight="10dp"
-                                android:textColor="@drawable/radio_button_text"
-                                android:layout_weight="1"
-                                android:gravity="center" />
-                            <RadioButton
-                                android:id="@+id/rbtnkWh"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                style="@style/SMDashboardRadioButton"
-                                android:background="@drawable/radio_button_selector"
-                                android:button="@null"
-                                android:paddingTop="10dp"
-                                android:paddingBottom="10dp"
-                                android:paddingLeft="10dp"
-                                android:paddingRight="10dp"
-                                android:textSize="14sp"
-                                android:layout_marginLeft="10dp"
-                                android:layout_marginRight="10dp"
-                                android:textColor="@drawable/radio_button_text"
-                                android:text="@string/text_kwh"
-                                android:layout_weight="1"
-                                android:gravity="center" />
-                            <RadioButton
-                                android:id="@+id/rbtnCO2"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                style="@style/SMDashboardRadioButton"
-                                android:background="@drawable/radio_button_selector"
-                                android:button="@null"
-                                android:paddingTop="10dp"
-                                android:paddingBottom="10dp"
-                                android:paddingLeft="10dp"
-                                android:paddingRight="10dp"
-                                android:textSize="14sp"
-                                android:layout_marginLeft="10dp"
-                                android:layout_marginRight="10dp"
-                                android:textColor="@drawable/radio_button_text"
-                                android:text="@string/text_co2"
-                                android:layout_weight="1"
-                                android:gravity="center" />
-                        </RadioGroup>
-                    </RelativeLayout>
                     <TextView
                         android:layout_height="wrap_content"
                         android:layout_width="wrap_content"
