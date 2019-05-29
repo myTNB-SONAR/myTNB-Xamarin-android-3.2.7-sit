@@ -73,12 +73,12 @@ namespace myTNB.Dashboard.DashboardComponents
             UITextAttributes attr = new UITextAttributes();
             attr.Font = myTNBFont.MuseoSans12();
             attr.TextColor = UIColor.White;
-            _chartModeView = new UIView(new CGRect(margin, _baseView.Frame.Height - 26, _baseView.Frame.Width, 26));
+            _chartModeView = new UIView(new CGRect(margin, 0, _baseView.Frame.Width, 26));
 
             _msgLabelView = new UIView(new CGRect(0, _baseView.Frame.Height - 112, _baseView.Frame.Width, 59));
             _messageLabel = new UILabel
             {
-                Frame = new CGRect(7, 13, _msgLabelView.Frame.Width - 14, 32),
+                Frame = new CGRect(7, 14, _msgLabelView.Frame.Width - 14, 32),
                 Font = myTNBFont.MuseoSans12_300(),
                 TextColor = UIColor.White,
                 Lines = 2,
@@ -155,7 +155,7 @@ namespace myTNB.Dashboard.DashboardComponents
             _baseView.AddSubview(_chartModeView);
 
             // metrics
-            _metricCmp1 = new InfoComponent(_baseView);
+            _metricCmp1 = new InfoComponent(_baseView, new CGRect(0, 34, _baseView.Frame.Width, 58));
             _metricCmp1.Icon.Image = UIImage.FromBundle("IC-Charges");
             _metricCmp1.TitleLabel.Text = TxtCurrentCharges;
             _metricCmp1.SubTitleLabel.Text = TxtAsOf;
@@ -183,14 +183,23 @@ namespace myTNB.Dashboard.DashboardComponents
             CGRect baseFrame = _baseView.Frame;
             CGRect chartFrame = _chartModeView.Frame;
             CGRect labelMsgFrame = _msgLabelView.Frame;
-            baseFrame.Height = flag ? 171 : 230;
+            switch (DataManager.DataManager.SharedInstance.CurrentChartMode)
+            {
+                default:
+                case ChartModeEnum.Cost:
+                case ChartModeEnum.Emission:
+                    baseFrame.Height = flag ? 112 : 171;
+                    labelMsgFrame = new CGRect(0, 86, _baseView.Frame.Width, 59);
+                    break;
+                case ChartModeEnum.Usage:
+                    baseFrame.Height = flag ? 171 : 230;
+                    labelMsgFrame = new CGRect(0, 144, _baseView.Frame.Width, 59);
+                    break;
+            }
+
             _baseView.Frame = baseFrame;
-            chartFrame = new CGRect(18, _baseView.Frame.Height - 26, _baseView.Frame.Width, 26);
-            labelMsgFrame = new CGRect(0, _baseView.Frame.Height - 112, _baseView.Frame.Width, 59);
-            _chartModeView.Frame = chartFrame;
             _msgLabelView.Frame = labelMsgFrame;
         }
-
 
         /// <summary>
         /// Gets the user interface.
@@ -302,16 +311,7 @@ namespace myTNB.Dashboard.DashboardComponents
                         {
                             _metricCmp1.ValueLabel.AttributedText = TextHelper.CreateValuePairString(currCharges, TNBGlobal.UNIT_CURRENCY + " ", true, myTNBFont.MuseoSans16_300(), UIColor.White, myTNBFont.MuseoSans12_300(), UIColor.White);
                         }
-                        _metricCmp2.Icon.Image = UIImage.FromBundle("IC-Cost");
-                        _metricCmp2.TitleLabel.Text = TxtProjectedCost;
-                        _metricCmp2.SubTitleLabel.Text = TxtForCurrentMonth;
-                        var prjctdCost = _usageMetrics?.StatsByCost?.ProjectedCost ?? "0";
-                        if (!string.IsNullOrEmpty(prjctdCost))
-                        {
-                            _metricCmp2.ValueLabel.AttributedText = TextHelper.CreateValuePairString(prjctdCost, TNBGlobal.UNIT_CURRENCY + " ", true, myTNBFont.MuseoSans16_300(), UIColor.White, myTNBFont.MuseoSans12_300(), UIColor.White);
-                        }
-                        _metricCmp2.ValuePairIcon.Image = null;
-                        _metricCmp2.SetHidden(false);
+                        _metricCmp2.SetHidden(true);
                     }
                     break;
                 case ChartModeEnum.Usage:
@@ -351,6 +351,8 @@ namespace myTNB.Dashboard.DashboardComponents
                     }
                     break;
             }
+
+            ShowMessage(DataManager.DataManager.SharedInstance.IsMontView);
 
 
         }
@@ -404,5 +406,4 @@ namespace myTNB.Dashboard.DashboardComponents
                 foregroundColor: textColor);
         }
     }
-
 }

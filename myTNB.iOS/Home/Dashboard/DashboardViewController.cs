@@ -1149,8 +1149,9 @@ namespace myTNB.Dashboard
             }
             else
             {
-                yLoc = (float)_dashboardMainComponent._viewChartCompanion.Frame.GetMaxY() + 18f;
+                yLoc = (float)_dashboardMainComponent._viewChartCompanion.Frame.GetMaxY() - 18f;// + 18f;
             }
+
             _dashboardMainComponent._addressComponent.SetFrameByPrecedingView(yLoc);
             _dashboardMainComponent._lblEstimatedReading.Hidden = (isMonthView) ? !IsEstimatedReading(chartData) : true;
             _dashboardMainComponent._usageHistoryComponent.SetDateRange(dateRange);
