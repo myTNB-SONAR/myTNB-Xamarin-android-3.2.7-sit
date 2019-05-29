@@ -5,7 +5,7 @@ namespace myTNB
     public static class TNBGlobal
     {
 #if DEBUG || MASTER
-        public static bool IsProduction = false;
+        public static bool IsProduction = true;//false;
         public static int PromoOverlayDisplayIntervalDays = 1;
 #else
         public static bool IsProduction = true;

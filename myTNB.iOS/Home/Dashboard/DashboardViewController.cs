@@ -480,6 +480,19 @@ namespace myTNB.Dashboard
                 {
                     selector.ValueChanged += (sender, e) =>
                     {
+                        if (_dashboardMainComponent._dashboardScrollView != null)
+                        {
+                            if (DataManager.DataManager.SharedInstance.IsMontView)
+                            {
+                                _dashboardMainComponent._dashboardScrollView.ScrollEnabled = true;
+                                _dashboardMainComponent._dashboardScrollView.Scrolled += OnScrollDashboard;
+                            }
+                            else
+                            {
+                                _dashboardMainComponent._dashboardScrollView.ScrollEnabled = false;
+                                _dashboardMainComponent._dashboardScrollView.Scrolled += (sndr, args) => { };
+                            }
+                        }
                         DataManager.DataManager.SharedInstance.IsMontView = selector.SelectedSegment != 0;
                         DataManager.DataManager.SharedInstance.CurrentChartIndex = 0;
                         _dashboardMainComponent._chartCompanionComponent.ShowMessage(DataManager.DataManager.SharedInstance.IsMontView);
@@ -737,7 +750,17 @@ namespace myTNB.Dashboard
 
             if (_dashboardMainComponent._dashboardScrollView != null)
             {
-                _dashboardMainComponent._dashboardScrollView.Scrolled += OnScrollDashboard;
+                if (DataManager.DataManager.SharedInstance.IsMontView)
+                {
+                    _dashboardMainComponent._dashboardScrollView.ScrollEnabled = false;
+                    _dashboardMainComponent._dashboardScrollView.Scrolled += (sndr, args) => { };
+                }
+                else
+                {
+                    _dashboardMainComponent._dashboardScrollView.ScrollEnabled = true;
+                    _dashboardMainComponent._dashboardScrollView.Scrolled += OnScrollDashboard;
+                }
+                //_dashboardMainComponent._dashboardScrollView.Scrolled += OnScrollDashboard;
                 //if (!DataManager.DataManager.SharedInstance.SelectedAccount.IsNormalMeter)
                 //{
                 //    _dashboardMainComponent._dashboardScrollView.Scrolled += OnScrollDashboard;
@@ -1125,7 +1148,7 @@ namespace myTNB.Dashboard
             }
             if (_dashboardMainComponent._dashboardScrollView != null)
             {
-                _dashboardMainComponent._dashboardScrollView.ScrollEnabled = !isNormalMeter;
+                //_dashboardMainComponent._dashboardScrollView.ScrollEnabled = !isNormalMeter;
                 //_dashboardMainComponent._dashboardScrollView.ScrollEnabled = !isNormalMeter; removed pull down to refresh
             }
             if (_dashboardMainComponent._chartCarousel != null)
