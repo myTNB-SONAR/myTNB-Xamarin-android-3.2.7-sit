@@ -75,7 +75,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         AccountData selectedAccount;
 
         ChartType ChartType = ChartType.Month;
-        ChartDataType ChartDataType = ChartDataType.RM;
+        ChartDataType ChartDataType = ChartDataType.kWh;
 
         bool hasNoInternet;
         static bool noSMDataFOund;
@@ -85,6 +85,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
         [BindView(Resource.Id.no_data_layout)]
         LinearLayout mNoDataLayout;
+
+        [BindView(Resource.Id.scroll_view_content)]
+        LinearLayout scrollViewContent;
 
         [BindView(Resource.Id.no_internet_layout)]
         LinearLayout mNoInternetLayout;
@@ -225,6 +228,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
         [BindView(Resource.Id.noteDivider)]
         View noteDividerView;
+
+
+        [BindView(Resource.Id.content_extension)]
+        LinearLayout contentExtension;
 
         /// <summary>
         /// Flag to disable/enable CO2 view
@@ -434,7 +441,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 mLayoutSegmentGroup.Visibility = ViewStates.Visible;
                 shadowLayout.Visibility = ViewStates.Visible;
                 txtRange.Visibility = ViewStates.Visible;
-                mUsageMetricsDetails.Visibility = ViewStates.Visible;
                 IsCO2Disabled = selectedHistoryData.IsCO2Disabled;
                 if (IsCO2Disabled)
                 {
@@ -569,8 +575,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         }
 
         private void SetNoteVisiBility(bool isVisible) {
-            noteTextLayout.Visibility = isVisible ? ViewStates.Visible : ViewStates.Gone;
-            noteDividerView.Visibility = isVisible ? ViewStates.Visible : ViewStates.Gone;
+            noteTextLayout.Visibility = ViewStates.Gone; //isVisible ? ViewStates.Visible : ViewStates.Gone;
+            noteDividerView.Visibility = ViewStates.Gone; //isVisible ? ViewStates.Visible : ViewStates.Gone;
         }
 
         internal void SetUp()
@@ -1285,10 +1291,20 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
         public void ShowByDay()
         {
+            if (!scrollView.CanScrollVertically(1) || !scrollView.CanScrollVertically(-1))
+            {
+                contentExtension.Visibility = ViewStates.Visible;
+                contentExtension.LayoutParameters.Height = bottomView.LayoutParameters.Height;
+            }
+            else
+            {
+                contentExtension.Visibility = ViewStates.Gone;
+            }
 
-
+            ChartDataType = ChartDataType.kWh;
             ChartType = ChartType.Day;
             mChart.Clear();
+            mUsageMetricsDetails.Visibility = ViewStates.Visible;
             SetUp();
         }
 
@@ -1302,7 +1318,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 mNoDataLayout.Visibility = ViewStates.Gone;
                 mSMNoDataLayout.Visibility = ViewStates.Gone;
                 mChart.Visibility = ViewStates.Visible;
-
+                mUsageMetricsDetails.Visibility = ViewStates.Gone;
+                ChartDataType = ChartDataType.RM;
                 mChart.Clear();
                 SetUp();
             } catch (Exception e)  {
@@ -1957,6 +1974,17 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 if (noSMDataFOund)
                 {
                     if(newState == BottomSheetBehavior.StateHidden)
+                    {
+                        bottomSheetBehavior.State = BottomSheetBehavior.StateExpanded;
+                    }
+                    if (newState == BottomSheetBehavior.StateDragging)
+                    {
+                        bottomSheetBehavior.State = BottomSheetBehavior.StateExpanded;
+                    }
+                }
+                else
+                {
+                    if (newState == BottomSheetBehavior.StateDragging)
                     {
                         bottomSheetBehavior.State = BottomSheetBehavior.StateExpanded;
                     }
