@@ -131,7 +131,7 @@ namespace myTNB.PushNotification
             }
         }
 
-        public override void CommitEditingStyle(UITableView tableView, UITableViewCellEditingStyle editingStyle, Foundation.NSIndexPath indexPath)
+        public override void CommitEditingStyle(UITableView tableView, UITableViewCellEditingStyle editingStyle, NSIndexPath indexPath)
         {
             switch (editingStyle)
             {
@@ -167,5 +167,67 @@ namespace myTNB.PushNotification
         {   // Optional - default text is 'Delete'
             return "Delete";
         }
+
+        void DeleteNotification(UITableView tableView, Foundation.NSIndexPath indexPath)
+        {
+           /* ActivityIndicator.Show();
+            _controller.DeleteUserNotification(_data[indexPath.Row]).ContinueWith(task =>
+            {
+                InvokeOnMainThread(() =>
+                {
+                    var deleteNotifResponse = _controller._deleteNotificationResponse;
+
+                    if (deleteNotifResponse != null && deleteNotifResponse?.d != null
+                                    && deleteNotifResponse?.d?.status?.ToLower() == "success"
+                                    && deleteNotifResponse?.d?.didSucceed == true)
+                    {
+                        _data.RemoveAt(indexPath.Row);
+                        tableView.DeleteRows(new NSIndexPath[] { indexPath }, UITableViewRowAnimation.Fade);
+                    }
+
+                    ActivityIndicator.Hide();
+                });
+            });*/
+        }
+
+        public override UISwipeActionsConfiguration GetLeadingSwipeActionsConfiguration(UITableView tableView, NSIndexPath indexPath)
+        {
+            UserNotificationDataModel notification = _data[indexPath.Row];
+            if (notification.IsRead.ToLower() != "false")
+            {
+                return null;
+            }
+#pragma warning disable XI0002 // Notifies you from using newer Apple APIs when targeting an older OS version
+            UIContextualAction contextualAction = UIContextualAction.FromContextualActionStyle(UIContextualActionStyle.Normal
+                , string.Empty
+                , (action, sourceView, completionHandler) =>
+                {
+
+                });
+            contextualAction.Image = UIImage.FromBundle("Notification-MarkAsRead");
+            contextualAction.BackgroundColor = UIColor.Blue;
+            UISwipeActionsConfiguration leadingSwipe = UISwipeActionsConfiguration.FromActions(new UIContextualAction[] { contextualAction });
+            leadingSwipe.PerformsFirstActionWithFullSwipe = false;
+            return leadingSwipe;
+#pragma warning restore XI0002 // Notifies you from using newer Apple APIs when targeting an older OS version
+        }
+
+        public override UISwipeActionsConfiguration GetTrailingSwipeActionsConfiguration(UITableView tableView, NSIndexPath indexPath)
+        {
+#pragma warning disable XI0002 // Notifies you from using newer Apple APIs when targeting an older OS version
+            UIContextualAction contextualAction = UIContextualAction.FromContextualActionStyle(UIContextualActionStyle.Normal
+                , string.Empty
+                , (action, sourceView, completionHandler) =>
+                {
+                    DeleteNotification(tableView, indexPath);
+                });
+            contextualAction.Image = UIImage.FromBundle("Notification-Delete");
+            contextualAction.BackgroundColor = UIColor.Red;
+            UISwipeActionsConfiguration trailingSwipe = UISwipeActionsConfiguration.FromActions(new UIContextualAction[] { contextualAction });
+            trailingSwipe.PerformsFirstActionWithFullSwipe = false;
+            return trailingSwipe;
+#pragma warning restore XI0002 // Notifies you from using newer Apple APIs when targeting an older OS version
+        }
+
     }
 }
