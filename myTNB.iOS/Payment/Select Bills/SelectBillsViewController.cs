@@ -46,7 +46,10 @@ namespace myTNB
             InitializedSubViews();
             AddBackButton();
             var appDelegate = UIApplication.SharedApplication.Delegate as AppDelegate;
-            appDelegate._selectBillsVC = this;
+            if (appDelegate != null)
+            {
+                appDelegate._selectBillsVC = this;
+            }
             NSNotificationCenter.DefaultCenter.AddObserver(UIKeyboard.DidShowNotification, (NSNotification obj) =>
             {
                 Console.WriteLine("Keyboard Show");
@@ -113,7 +116,7 @@ namespace myTNB
                 {
                     // update due values
                     int itemIndex = _accounts.FindIndex(x => x.accNum.Equals(accNum));
-                    if (itemIndex > -1)
+                    if (itemIndex > -1 && itemIndex < _accounts.Count)
                     {
                         _accounts[itemIndex].Amount = acct.amountDue;
                         _accounts[itemIndex].AmountDue = acct.amountDue;
@@ -124,8 +127,11 @@ namespace myTNB
 
                         if (displayIndex > -1)
                         {
-                            _accountsForDisplay[itemIndex].Amount = acct.amountDue;
-                            _accountsForDisplay[itemIndex].AmountDue = acct.amountDue;
+                            if (itemIndex > -1 && itemIndex < _accountsForDisplay.Count)
+                            {
+                                _accountsForDisplay[itemIndex].Amount = acct.amountDue;
+                                _accountsForDisplay[itemIndex].AmountDue = acct.amountDue;
+                            }
                         }
                         else
                         {
@@ -158,6 +164,7 @@ namespace myTNB
             lastStartIndex = 0;
             lastEndIndex = 0;
             loadMoreCount = 0;
+            DataManager.DataManager.SharedInstance.ClearPaidList();
         }
 
         void UpdateAccountListWithAmount()
@@ -354,8 +361,10 @@ namespace myTNB
                     if (item.IsAccountSelected)
                     {
                         _accountsForPayment.Add(item);
+                        DataManager.DataManager.SharedInstance.SetAccountNumberForPayment(item.accNum);
                     }
                 }
+
                 UIStoryboard storyBoard = UIStoryboard.FromName("Payment", null);
                 SelectPaymentMethodViewController viewController =
                     storyBoard.InstantiateViewController("SelectPaymentMethodViewController") as SelectPaymentMethodViewController;

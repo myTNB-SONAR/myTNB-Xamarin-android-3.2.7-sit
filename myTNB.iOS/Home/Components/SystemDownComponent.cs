@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using CoreGraphics;
 using Foundation;
 using UIKit;
@@ -57,87 +58,89 @@ namespace myTNB.Dashboard.DashboardComponents
             var bcrm = DataManager.DataManager.SharedInstance.SystemStatus?.Find(x => x.SystemType == Enums.SystemEnum.BCRM);
             var bcrmMsg = bcrm?.DowntimeMessage ?? "BRCM will be down for maintenance purpose";
 
+            NSMutableParagraphStyle msgParagraphStyle = new NSMutableParagraphStyle
+            {
+                Alignment = UITextAlignment.Center
+            };
+
+            UIStringAttributes msgAttributes = new UIStringAttributes
+            {
+                ForegroundColor = UIColor.White,
+                ParagraphStyle = msgParagraphStyle
+            };
+
+            UIStringAttributes linkAttributes = new UIStringAttributes
+            {
+                Font = myTNBFont.MuseoSans12_300(),
+                ForegroundColor = UIColor.White,
+                UnderlineStyle = NSUnderlineStyle.Single,
+                BackgroundColor = UIColor.Clear
+            };
+
+            _txtView = new UITextView(new CGRect(msgXLoc, imgGraphic.Frame.GetMaxY() + 31f, msgWidth, 90f))
+            {
+                BackgroundColor = UIColor.Clear,
+                Editable = false,
+                ScrollEnabled = false,
+                Selectable = false
+            };
+
+            NSError htmlError = null;
             try
             {
-                NSError htmlError = null;
                 NSAttributedString htmlBody = TextHelper.ConvertToHtmlWithFont(bcrmMsg, ref htmlError, myTNBFont.FONTNAME_300, 12f);
-                NSMutableAttributedString mutableDowntime = new NSMutableAttributedString(htmlBody);
-
-                NSMutableParagraphStyle msgParagraphStyle = new NSMutableParagraphStyle
-                {
-                    Alignment = UITextAlignment.Center
-                };
-
-                UIStringAttributes msgAttributes = new UIStringAttributes
-                {
-                    ForegroundColor = UIColor.White,
-                    ParagraphStyle = msgParagraphStyle
-                };
-
-                UIStringAttributes linkAttributes = new UIStringAttributes
-                {
-                    Font = myTNBFont.MuseoSans12_300(),
-                    ForegroundColor = UIColor.White,
-                    UnderlineStyle = NSUnderlineStyle.Single,
-                    BackgroundColor = UIColor.Clear
-                };
-
-                _txtView = new UITextView(new CGRect(msgXLoc, imgGraphic.Frame.GetMaxY() + 31f, msgWidth, 90f))
-                {
-                    BackgroundColor = UIColor.Clear,
-                    Editable = false,
-                    ScrollEnabled = false,
-                    Selectable = false
-                };
                 if (htmlBody != null)
                 {
+                    NSMutableAttributedString mutableDowntime = new NSMutableAttributedString(htmlBody);
                     if (mutableDowntime != null)
                     {
                         mutableDowntime.AddAttributes(msgAttributes, new NSRange(0, htmlBody.Length));
                         _txtView.AttributedText = mutableDowntime;
                     }
                 }
-                _txtView.WeakLinkTextAttributes = linkAttributes.Dictionary;
-                _txtView.UserInteractionEnabled = true;
-                _txtView.AddGestureRecognizer(
-                    new UITapGestureRecognizer(() =>
-                    {
-                        string str = bcrmMsg;
-                        if (!string.IsNullOrEmpty(str))
-                        {
-                            if (str.Contains("faqid"))
-                            {
-                                var startStr = str.Substring(str.IndexOf('{'));
-                                if (!string.IsNullOrEmpty(startStr))
-                                {
-                                    string faqId = startStr?.Split('"')[0];
-                                    if (!string.IsNullOrEmpty(faqId))
-                                    {
-                                        ViewHelper.GoToFAQScreenWithId(faqId);
-                                    }
-                                }
-                            }
-                            else if (str.Contains("http") || str.Contains("https"))
-                            {
-                                var startStr = str.Substring(str.IndexOf('"') + 1);
-                                if (!string.IsNullOrEmpty(startStr))
-                                {
-                                    string url = startStr?.Split('"')[0];
-                                    if (!string.IsNullOrEmpty(url))
-                                    {
-                                        ViewHelper.OpenBrowserWithUrl(url);
-                                    }
-                                }
-                            }
-                        }
-                    }));
-
-                _baseView.AddSubview(_txtView);
             }
             catch (Exception e)
             {
-                Console.WriteLine("Error: " + e.Message);
+                Debug.WriteLine("Error: " + e.Message);
             }
+
+            _txtView.WeakLinkTextAttributes = linkAttributes.Dictionary;
+            _txtView.UserInteractionEnabled = true;
+            _txtView.AddGestureRecognizer(
+                new UITapGestureRecognizer(() =>
+                {
+                    string str = bcrmMsg;
+                    if (!string.IsNullOrEmpty(str))
+                    {
+                        if (str.Contains("faqid"))
+                        {
+                            var startStr = str.Substring(str.IndexOf('{'));
+                            if (!string.IsNullOrEmpty(startStr))
+                            {
+                                string faqId = startStr?.Split('"')[0];
+                                if (!string.IsNullOrEmpty(faqId))
+                                {
+                                    ViewHelper.GoToFAQScreenWithId(faqId);
+                                }
+                            }
+                        }
+                        else if (str.Contains("http") || str.Contains("https"))
+                        {
+                            var startStr = str.Substring(str.IndexOf('"') + 1);
+                            if (!string.IsNullOrEmpty(startStr))
+                            {
+                                string url = startStr?.Split('"')[0];
+                                if (!string.IsNullOrEmpty(url))
+                                {
+                                    ViewHelper.OpenBrowserWithUrl(url);
+                                }
+                            }
+                        }
+                    }
+                }));
+
+            _baseView.AddSubview(_txtView);
+
 
             if (_isHeaderMode)
             {

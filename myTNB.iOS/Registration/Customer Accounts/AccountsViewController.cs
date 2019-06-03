@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Threading.Tasks;
@@ -85,6 +85,7 @@ namespace myTNB.Registration.CustomerAccounts
                 btnAddAccount.Hidden = true;
                 btnConfirm.Hidden = true;
                 accountRecordsTableView.Hidden = true;
+                lblSubDetails.Hidden = true;
                 NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
                 {
                     InvokeOnMainThread(() =>
@@ -197,17 +198,6 @@ namespace myTNB.Registration.CustomerAccounts
                                 if (isDashboardFlow)
                                 {
                                     ViewHelper.DismissControllersAndSelectTab(this, 0, true);
-
-                                    var baseRootVc = UIApplication.SharedApplication.KeyWindow?.RootViewController;
-                                    var newtopVc = AppDelegate.GetTopViewController(baseRootVc);
-                                    var newPresenting = newtopVc?.PresentingViewController;
-                                    if (!(newPresenting is HomeTabBarController))
-                                    {
-                                        Console.WriteLine("newPresenting = " + newPresenting.GetType().ToString());
-                                        //UIStoryboard storyBoard = UIStoryboard.FromName("Dashboard", null);
-                                        //UIViewController loginVC = storyBoard.InstantiateViewController("HomeTabBarController") as UIViewController;
-                                        //PresentViewController(loginVC, true, null);
-                                    }
                                 }
                                 else
                                 {
@@ -430,12 +420,15 @@ namespace myTNB.Registration.CustomerAccounts
 
                                     UIStoryboard storyBoard = UIStoryboard.FromName("Registration", null);
                                     AddAccountSuccessViewController addAccountSuccessVC = storyBoard.InstantiateViewController("AddAccountSuccessViewController") as AddAccountSuccessViewController;
-                                    addAccountSuccessVC.CreateNewlyAddedList();
-                                    AddRecords();
+                                    if (addAccountSuccessVC != null)
+                                    {
+                                        addAccountSuccessVC.CreateNewlyAddedList();
+                                        AddRecords();
 
-                                    addAccountSuccessVC.AccountsAddedCount = (int)count;
-                                    addAccountSuccessVC.IsDashboardFlow = isDashboardFlow;
-                                    PresentViewController(addAccountSuccessVC, true, null);
+                                        addAccountSuccessVC.AccountsAddedCount = (int)count;
+                                        addAccountSuccessVC.IsDashboardFlow = isDashboardFlow;
+                                        PresentViewController(addAccountSuccessVC, true, null);
+                                    }
                                     HideProgressView();
                                 }
                                 else
@@ -506,34 +499,36 @@ namespace myTNB.Registration.CustomerAccounts
 
                 List<CustomerAccountRecordModel> accountList = DataManager.DataManager.SharedInstance.AccountsToBeAddedList?.d;
 
-                List<object> billAccs = new List<object>();
-                foreach (var item in accountList)
+                if (accountList != null)
                 {
-                    billAccs.Add(new
+                    List<object> billAccs = new List<object>();
+                    foreach (var item in accountList)
                     {
-                        accNum = item.accNum != null ? item.accNum : "",
-                        accountTypeId = item.accountTypeId != null ? item.accountTypeId : "1",
-                        accountStAddress = item.accountStAddress != null ? item.accountStAddress : "",
-                        icNum = item.icNum != null ? item.icNum : "",
-                        isOwned = item.isOwned,
-                        accountNickName = item.accountNickName != null ? item.accountNickName : "",
-                        accountCategoryId = item.accountCategoryId != null ? item.accountCategoryId : ""
-                    });
+                        billAccs.Add(new
+                        {
+                            accNum = item.accNum ?? "",
+                            accountTypeId = item.accountTypeId ?? "1",
+                            accountStAddress = item.accountStAddress ?? "",
+                            icNum = item.icNum ?? "",
+                            item.isOwned,
+                            accountNickName = item.accountNickName ?? "",
+                            accountCategoryId = item.accountCategoryId ?? ""
+                        });
+                    }
+
+                    var user = DataManager.DataManager.SharedInstance.UserEntity?.Count > 0
+                                          ? DataManager.DataManager.SharedInstance.UserEntity[0]
+                                          : default(UserEntity);
+
+                    object requestParams = new
+                    {
+                        apiKeyID = TNBGlobal.API_KEY_ID,
+                        sspUserId = DataManager.DataManager.SharedInstance.User?.UserID,
+                        billAccounts = billAccs,
+                        user?.email
+                    };
+                    _addMultipleSupplyAccountsResponseModel = serviceManager.GetCustomerBillingAccountList("AddMultipleSupplyAccountsToUserReg", requestParams);
                 }
-
-                var user = DataManager.DataManager.SharedInstance.UserEntity?.Count > 0
-                                      ? DataManager.DataManager.SharedInstance.UserEntity[0]
-                                      : default(UserEntity);
-
-                object requestParams = new
-                {
-                    apiKeyID = TNBGlobal.API_KEY_ID,
-                    sspUserId = DataManager.DataManager.SharedInstance.User.UserID,
-                    billAccounts = billAccs,
-                    email = user?.email
-                };
-                _addMultipleSupplyAccountsResponseModel = serviceManager.GetCustomerBillingAccountList("AddMultipleSupplyAccountsToUserReg", requestParams);
-
             });
 
         }

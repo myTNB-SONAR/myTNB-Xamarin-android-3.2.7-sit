@@ -294,7 +294,7 @@ namespace myTNB.DataManager
             ServiceManager serviceManager = new ServiceManager();
 
             string userEmail = string.Empty;
-            if (DataManager.SharedInstance.UserEntity != null && DataManager.SharedInstance.UserEntity.Count > 0)
+            if (DataManager.SharedInstance.UserEntity != null && DataManager.SharedInstance.UserEntity?.Count > 0)
             {
                 userEmail = DataManager.SharedInstance.UserEntity[0].email;
             }
@@ -328,7 +328,7 @@ namespace myTNB.DataManager
 
             string userEmail = string.Empty;
             string sspId = string.Empty;
-            if (DataManager.SharedInstance.UserEntity != null && DataManager.SharedInstance.UserEntity.Count > 0)
+            if (DataManager.SharedInstance.UserEntity != null && DataManager.SharedInstance.UserEntity?.Count > 0)
             {
                 userEmail = DataManager.SharedInstance.UserEntity[0].email;
                 sspId = DataManager.SharedInstance.UserEntity[0].userID;

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using UIKit;
 using myTNB.Dashboard.DashboardComponents;
 using myTNB.Model;
@@ -13,7 +13,7 @@ namespace myTNB
 {
     public partial class ManageAccountsViewController : UIViewController
     {
-        public ManageAccountsViewController (IntPtr handle) : base (handle)
+        public ManageAccountsViewController(IntPtr handle) : base(handle)
         {
         }
 
@@ -35,7 +35,7 @@ namespace myTNB
         public override void ViewWillAppear(bool animated)
         {
             base.ViewWillAppear(animated);
-            if(DataManager.DataManager.SharedInstance.AccountRecordIndex > -1 
+            if (DataManager.DataManager.SharedInstance.AccountRecordIndex > -1
                && DataManager.DataManager.SharedInstance.AccountRecordsList != null
                && DataManager.DataManager.SharedInstance.AccountRecordsList.d != null
                && DataManager.DataManager.SharedInstance.AccountRecordIndex < DataManager.DataManager.SharedInstance.AccountRecordsList?.d?.Count)
@@ -63,20 +63,25 @@ namespace myTNB
             titleBarComponent.SetTitle("ManageAcctNavTitle".Translate());
             titleBarComponent.SetNotificationVisibility(true);
             titleBarComponent.SetBackVisibility(false);
-            titleBarComponent.SetBackAction(new UITapGestureRecognizer(() => {
+            titleBarComponent.SetBackAction(new UITapGestureRecognizer(() =>
+            {
                 DismissViewController(true, null);
             }));
             headerView.AddSubview(titleBarView);
             View.AddSubview(headerView);
         }
 
-        internal void UpdateNickName(){
+        internal void UpdateNickName()
+        {
             UIStoryboard storyBoard = UIStoryboard.FromName("UpdateNickname", null);
             UpdateNicknameViewController viewController =
                 storyBoard.InstantiateViewController("UpdateNicknameViewController") as UpdateNicknameViewController;
-            viewController.CustomerRecord = CustomerRecord;
-            var navController = new UINavigationController(viewController);
-            PresentViewController(navController, true, null);
+            if (viewController != null)
+            {
+                viewController.CustomerRecord = CustomerRecord;
+                var navController = new UINavigationController(viewController);
+                PresentViewController(navController, true, null);
+            }
         }
 
         internal void InitializeNotificationMessage()
@@ -107,9 +112,11 @@ namespace myTNB
         {
             _viewNotificationMsg.Hidden = false;
             _viewNotificationMsg.Alpha = 1.0f;
-            UIView.Animate(5, 1, UIViewAnimationOptions.CurveEaseOut, () => {
+            UIView.Animate(5, 1, UIViewAnimationOptions.CurveEaseOut, () =>
+            {
                 _viewNotificationMsg.Alpha = 0.0f;
-            }, () => {
+            }, () =>
+            {
                 _viewNotificationMsg.Hidden = true;
             });
         }
@@ -119,11 +126,13 @@ namespace myTNB
             string message = string.Format("ManageAcctRemoveMsg".Translate(), CustomerRecord.accDesc, CustomerRecord.accNum);
 
             var alert = UIAlertController.Create("ManageAcctRemoveTitle".Translate(), message, UIAlertControllerStyle.Alert);
-            alert.AddAction(UIAlertAction.Create("ManageAcctRemoveOk".Translate(), UIAlertActionStyle.Default, (obj) => {
+            alert.AddAction(UIAlertAction.Create("ManageAcctRemoveOk".Translate(), UIAlertActionStyle.Default, (obj) =>
+            {
                 ActivityIndicator.Show();
                 NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
                 {
-                    InvokeOnMainThread(() => {
+                    InvokeOnMainThread(() =>
+                    {
                         if (NetworkUtility.isReachable)
                         {
                             ExecuteRemoveTNBAccountForUserFavCall();
@@ -138,7 +147,8 @@ namespace myTNB
                     });
                 });
             }));
-            alert.AddAction(UIAlertAction.Create("Cancel", UIAlertActionStyle.Cancel, (obj) => {
+            alert.AddAction(UIAlertAction.Create("Cancel", UIAlertActionStyle.Cancel, (obj) =>
+            {
 
             }));
             PresentViewController(alert, animated: true, completionHandler: null);

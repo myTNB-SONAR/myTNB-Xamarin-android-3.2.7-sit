@@ -49,6 +49,7 @@ namespace myTNB
         UIView _viewCharges;
 
         UIImageView _imgLeaf;
+        UIRefreshControl refreshControl;
 
         BillingAccountDetailsResponseModel _billingAccountDetailsList = new BillingAccountDetailsResponseModel();
         PaymentHistoryResponseModel _paymentHistory = new PaymentHistoryResponseModel();
@@ -66,6 +67,7 @@ namespace myTNB
         bool isBcrmAvailable = true;
         bool isFromReceiptScreen = false;
         nfloat headerMarginY = 15.0f;
+        bool isRefreshing = false;
 
         public BillViewController(IntPtr handle) : base(handle)
         {
@@ -81,6 +83,7 @@ namespace myTNB
             }
             SetSubviews();
             NSNotificationCenter.DefaultCenter.AddObserver(UIApplication.WillEnterForegroundNotification, HandleAppWillEnterForeground);
+            refreshControl = new UIRefreshControl();
         }
 
         void HandleAppWillEnterForeground(NSNotification notification)
@@ -634,6 +637,8 @@ namespace myTNB
                                                                        , NetworkUtility.isReachable
                                                                        , isREAccount
                                                                        , isOwnedAccount);
+                    refreshControl.ValueChanged += PullDownTorefresh;
+                    //billTableView.AddSubview(refreshControl); removed pull down to refresh
                     billTableView.ReloadData();
                 });
             });
@@ -770,9 +775,24 @@ namespace myTNB
             _lblDueDateTitle.TextAlignment = UITextAlignment.Left;
             _currentBillDetailsView.AddSubview(_lblDueDateTitle);
 
-            _viewAmount = new UIView(new CGRect(View.Frame.Width - 120, _viewCharges.Frame.GetMaxY() + headerMarginY, 0, 24));             var lblCurrency = new UILabel(new CGRect(0, 6, 24, 18));             lblCurrency.Font = myTNBFont.MuseoSans14();             lblCurrency.TextColor = myTNBColor.TunaGrey();             lblCurrency.TextAlignment = UITextAlignment.Right;             lblCurrency.Text = CURRENCY;
-            _viewAmount.BackgroundColor = UIColor.Clear;             _viewAmount.AddSubview(lblCurrency);              _lblAmount = new UILabel(new CGRect(24, 0, 75, 24));             _lblAmount.Font = myTNBFont.MuseoSans24();             _lblAmount.TextColor = myTNBColor.TunaGrey();             _lblAmount.TextAlignment = UITextAlignment.Right;             //_lblAmount.Text = "0.00";
-            _lblAmount.BackgroundColor = UIColor.Clear;             _viewAmount.AddSubview(_lblAmount);              _currentBillDetailsView.AddSubview(_viewAmount);
+            _viewAmount = new UIView(new CGRect(View.Frame.Width - 120, _viewCharges.Frame.GetMaxY() + headerMarginY, 0, 24));
+            var lblCurrency = new UILabel(new CGRect(0, 6, 24, 18));
+            lblCurrency.Font = myTNBFont.MuseoSans14();
+            lblCurrency.TextColor = myTNBColor.TunaGrey();
+            lblCurrency.TextAlignment = UITextAlignment.Right;
+            lblCurrency.Text = CURRENCY;
+            _viewAmount.BackgroundColor = UIColor.Clear;
+            _viewAmount.AddSubview(lblCurrency);
+
+            _lblAmount = new UILabel(new CGRect(24, 0, 75, 24));
+            _lblAmount.Font = myTNBFont.MuseoSans24();
+            _lblAmount.TextColor = myTNBColor.TunaGrey();
+            _lblAmount.TextAlignment = UITextAlignment.Right;
+            //_lblAmount.Text = "0.00";
+            _lblAmount.BackgroundColor = UIColor.Clear;
+            _viewAmount.AddSubview(_lblAmount);
+
+            _currentBillDetailsView.AddSubview(_viewAmount);
 
             _btnPay = new UIButton(UIButtonType.Custom);
             _btnPay.Frame = new CGRect(18, 180, View.Frame.Width - 36, 48);
@@ -901,8 +921,18 @@ namespace myTNB
             btn.Layer.Mask = maskLayer;
         }
 
-        CGSize GetLabelSize(UILabel label, nfloat width, nfloat height)         {             return label.Text.StringSize(label.Font, new SizeF((float)width, (float)height));         }          void AdjustFrames()
-        {             CGSize newSize = GetLabelSize(_lblAmount, View.Frame.Width / 2, _lblAmount.Frame.Height);             double newWidth = Math.Ceiling(newSize.Width);             _lblAmount.Frame = new CGRect(24, 0, newWidth, _lblAmount.Frame.Height);             _viewAmount.Frame = new CGRect(View.Frame.Width - (newWidth + 24 + 17), _viewAmount.Frame.Y, newWidth + 24, 24);         }
+        CGSize GetLabelSize(UILabel label, nfloat width, nfloat height)
+        {
+            return label.Text.StringSize(label.Font, new SizeF((float)width, (float)height));
+        }
+
+        void AdjustFrames()
+        {
+            CGSize newSize = GetLabelSize(_lblAmount, View.Frame.Width / 2, _lblAmount.Frame.Height);
+            double newWidth = Math.Ceiling(newSize.Width);
+            _lblAmount.Frame = new CGRect(24, 0, newWidth, _lblAmount.Frame.Height);
+            _viewAmount.Frame = new CGRect(View.Frame.Width - (newWidth + 24 + 17), _viewAmount.Frame.Y, newWidth + 24, 24);
+        }
 
         void SetEvents()
         {
@@ -945,9 +975,12 @@ namespace myTNB
                             UIStoryboard storyBoard = UIStoryboard.FromName("Payment", null);
                             SelectBillsViewController selectBillsVC =
                                 storyBoard.InstantiateViewController("SelectBillsViewController") as SelectBillsViewController;
-                            selectBillsVC.SelectedAccountDueAmount = DataManager.DataManager.SharedInstance.BillingAccountDetails.amCustBal;
-                            var navController = new UINavigationController(selectBillsVC);
-                            PresentViewController(navController, true, null);
+                            if (selectBillsVC != null)
+                            {
+                                selectBillsVC.SelectedAccountDueAmount = DataManager.DataManager.SharedInstance.BillingAccountDetails.amCustBal;
+                                var navController = new UINavigationController(selectBillsVC);
+                                PresentViewController(navController, true, null);
+                            }
                         }
                         else
                         {
@@ -991,10 +1024,13 @@ namespace myTNB
                         UIStoryboard storyBoard = UIStoryboard.FromName("Receipt", null);
                         ReceiptViewController viewController =
                             storyBoard.InstantiateViewController("ReceiptViewController") as ReceiptViewController;
-                        viewController.MerchatTransactionID = merchantTransactionID;//"MYTN201801041414";//
-                        viewController.OnDone = OnDone;
-                        var navController = new UINavigationController(viewController);
-                        PresentViewController(navController, true, null);
+                        if (viewController != null)
+                        {
+                            viewController.MerchatTransactionID = merchantTransactionID;//"MYTN201801041414";//
+                            viewController.OnDone = OnDone;
+                            var navController = new UINavigationController(viewController);
+                            PresentViewController(navController, true, null);
+                        }
                     }
                     else
                     {
@@ -1143,6 +1179,82 @@ namespace myTNB
                 };
                 _billingAccountDetailsList = serviceManager.GetBillingAccountDetails("GetBillingAccountDetails", requestParameter);
             });
+        }
+
+        /// <summary>
+        /// Pulls down to refresh.
+        /// </summary>
+        /// <param name="sender">Sender.</param>
+        /// <param name="e">E.</param>
+        private async void PullDownTorefresh(object sender, EventArgs e)
+        {
+            if (!isRefreshing)
+            {
+                await RefreshScreen();
+            }
+        }
+
+        /// <summary>
+        /// Refreshes the screen.
+        /// </summary>
+        /// <returns>The screen.</returns>
+        private async Task RefreshScreen()
+        {
+            string _dateDue;
+            double _amountDue;
+            double _dueIncrementDays;
+            isRefreshing = true;
+            await GetBillingAccountDetails().ContinueWith(task =>
+            {
+                InvokeOnMainThread(() =>
+                {
+                    if (_billingAccountDetailsList != null && _billingAccountDetailsList?.d != null
+                        && _billingAccountDetailsList?.d?.data != null)
+                    {
+                        var billDetails = _billingAccountDetailsList.d.data;
+                        DataManager.DataManager.SharedInstance.BillingAccountDetails = billDetails;
+                        if (!isREAccount)
+                        {
+                            DataManager.DataManager.SharedInstance.SaveToBillingAccounts(billDetails, billDetails.accNum);
+                        }
+                    }
+                });
+            });
+            await GetAccountDueAmount().ContinueWith(dueTask =>
+            {
+                InvokeOnMainThread(() =>
+                {
+                    if (_dueAmount != null && _dueAmount?.d != null
+                        && _dueAmount?.d?.didSucceed == true)
+                    {
+                        _amountDue = _dueAmount.d.data.amountDue;
+                        _dateDue = _dueAmount.d.data.billDueDate;
+                        _dueIncrementDays = _dueAmount.d.data.IncrementREDueDateByDays;
+                        SetAmountInBillingDetails(_amountDue);
+                        SaveDueToCache(_dueAmount.d.data);
+                        SetBillAndPaymentDetails(_dateDue, _dueIncrementDays);
+                    }
+                });
+            });
+
+            var currentAmt = DataManager.DataManager.SharedInstance.BillingAccountDetails?.amCurrentChg ?? 0;
+            var outstandingAmt = DataManager.DataManager.SharedInstance.BillingAccountDetails?.amOutstandingChg ?? 0;
+            var payableAmt = DataManager.DataManager.SharedInstance.BillingAccountDetails?.amPayableChg ?? 0;
+            var balanceAmt = DataManager.DataManager.SharedInstance.BillingAccountDetails?.amCustBal ?? 0;
+
+            var current = !isREAccount ? currentAmt : ChartHelper.UpdateValueForRE(currentAmt);
+            var outstanding = !isREAccount ? outstandingAmt : ChartHelper.UpdateValueForRE(outstandingAmt);
+            var payable = !isREAccount ? payableAmt : ChartHelper.UpdateValueForRE(payableAmt);
+            var balance = !isREAccount ? balanceAmt : ChartHelper.UpdateValueForRE(balanceAmt);
+
+            _lblCurrentChargesValue.Text = CURRENCY + current.ToString("N2", CultureInfo.InvariantCulture);
+            _lblOutstandingChargesValue.Text = CURRENCY + outstanding.ToString("N2", CultureInfo.InvariantCulture);
+            _lblTotalPayableValue.Text = CURRENCY + payable.ToString("N2", CultureInfo.InvariantCulture);
+            _lblAmount.Text = balance.ToString("N2", CultureInfo.InvariantCulture);
+
+            AdjustFrames();
+            isRefreshing = false;
+            refreshControl.EndRefreshing();
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿using Foundation;
+using Foundation;
 using System;
 using UIKit;
 using myTNB.Dashboard.DashboardComponents;
@@ -49,18 +49,18 @@ namespace myTNB
             }
         }
 
-		public override void ViewWillAppear(bool animated)
-		{
-			base.ViewWillAppear(animated);
-			NavigationController.NavigationBar.Hidden = true;
+        public override void ViewWillAppear(bool animated)
+        {
+            base.ViewWillAppear(animated);
+            NavigationController.NavigationBar.Hidden = true;
 
             string mobileNo = DataManager.DataManager.SharedInstance.UserEntity?.Count > 0
                                          ? _textFieldHelper.TrimAllSpaces(DataManager.DataManager.SharedInstance.UserEntity[0]?.mobileNo)
                                          : string.Empty;
-			txtFieldMobileNo.Text = _textFieldHelper.FormatMobileNo(mobileNo);
-			SetVisibility();
-			SetSaveButtonEnable();
-		}
+            txtFieldMobileNo.Text = _textFieldHelper.FormatMobileNo(mobileNo);
+            SetVisibility();
+            SetSaveButtonEnable();
+        }
 
         internal void SetSubviews()
         {
@@ -175,7 +175,7 @@ namespace myTNB
                 {
                     if (textField.Text.Length == 0)
                     {
-						textField.Text += TNBGlobal.MobileNoPrefix;
+                        textField.Text += TNBGlobal.MobileNoPrefix;
                     }
                 }
                 lblHint.Hidden = lblError.Hidden ? textField.Text.Length == 0 : true;
@@ -214,9 +214,9 @@ namespace myTNB
                     bool isCharValid = _textFieldHelper.ValidateTextField(replacementString, TNBGlobal.MobileNoPattern);
                     if (!isCharValid)
                         return false;
-                   
+
                     if (range.Location >= TNBGlobal.MobileNoPrefix.Length)
-					{
+                    {
                         string content = _textFieldHelper.TrimAllSpaces(((UITextField)txtField).Text);
                         var count = content.Length + replacementString.Length - range.Length;
                         return count <= TNBGlobal.MobileNumberMaxCharCount;
@@ -232,22 +232,25 @@ namespace myTNB
             bool isValidMobileNo;
 
             var textStr = txtFieldMobileNo.Text?.Trim();
-            if (IsFromLogin) 
+            if (!string.IsNullOrEmpty(textStr))
             {
-                isValidMobileNo = _textFieldHelper.ValidateTextField(textStr.Replace("+", string.Empty), MOBILE_NO_PATTERN);
-            } else 
-            {
-                string mobileNo = DataManager.DataManager.SharedInstance.UserEntity?.Count > 0
-                                         ? _textFieldHelper.TrimAllSpaces(DataManager.DataManager.SharedInstance.UserEntity[0]?.mobileNo)
-                                         : string.Empty;
-                isValidMobileNo = _textFieldHelper.ValidateTextField(textStr.Replace("+", string.Empty), MOBILE_NO_PATTERN)
-                                                   && !mobileNo.Equals(_textFieldHelper.TrimAllSpaces(txtFieldMobileNo.Text));
+                if (IsFromLogin)
+                {
+                    isValidMobileNo = _textFieldHelper.ValidateTextField(textStr.Replace("+", string.Empty), MOBILE_NO_PATTERN);
+                }
+                else
+                {
+                    string mobileNo = DataManager.DataManager.SharedInstance.UserEntity?.Count > 0
+                                             ? _textFieldHelper.TrimAllSpaces(DataManager.DataManager.SharedInstance.UserEntity[0]?.mobileNo)
+                                             : string.Empty;
+                    isValidMobileNo = _textFieldHelper.ValidateTextField(textStr.Replace("+", string.Empty), MOBILE_NO_PATTERN)
+                                                       && !mobileNo.Equals(_textFieldHelper.TrimAllSpaces(txtFieldMobileNo.Text));
+                }
+                isValidMobileNo = isValidMobileNo && _textFieldHelper.ValidateMobileNumberLength(textStr);
+
+                btnSave.Enabled = isValidMobileNo;
+                btnSave.BackgroundColor = isValidMobileNo ? myTNBColor.FreshGreen() : myTNBColor.SilverChalice();
             }
-
-            isValidMobileNo = isValidMobileNo && _textFieldHelper.ValidateMobileNumberLength(textStr);
-
-            btnSave.Enabled = isValidMobileNo;
-            btnSave.BackgroundColor = isValidMobileNo ? myTNBColor.FreshGreen() : myTNBColor.SilverChalice();
         }
 
         internal void SetNavigationBar()

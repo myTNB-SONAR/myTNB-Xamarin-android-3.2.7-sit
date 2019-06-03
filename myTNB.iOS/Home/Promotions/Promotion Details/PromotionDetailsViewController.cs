@@ -7,6 +7,7 @@ using myTNB.SitecoreCMS.Model;
 using myTNB.Home.Components;
 using System.Collections.Generic;
 using myTNB.Extensions;
+using System.Diagnostics;
 
 namespace myTNB
 {
@@ -45,8 +46,8 @@ namespace myTNB
 
             UIBarButtonItem btnDownload = new UIBarButtonItem(UIImage.FromBundle("IC-Header-Share"), UIBarButtonItemStyle.Done, (sender, e) =>
             {
-                var message = NSObject.FromObject(Promotion.Title);
-                string url = Promotion.GeneralLinkUrl;
+                var message = NSObject.FromObject(Promotion?.Title);
+                string url = Promotion?.GeneralLinkUrl;
                 var item = NSObject.FromObject(url);
                 var activityItems = new NSObject[] { message, item };
                 UIActivity[] applicationActivities = null;
@@ -59,19 +60,21 @@ namespace myTNB
 
         void SetSubViews()
         {
-            UIScrollView scrollViewContent = new UIScrollView(new CGRect(0, 0, View.Frame.Width, View.Frame.Height - 64));
-            scrollViewContent.ShowsVerticalScrollIndicator = false;
+            UIScrollView scrollViewContent = new UIScrollView(new CGRect(0, 0, View.Frame.Width, View.Frame.Height - 64))
+            {
+                ShowsVerticalScrollIndicator = false
+            };
             UIView viewBanner = new UIView(new CGRect(0, 0, View.Frame.Width, View.Frame.Width / 1.777));
             UIImageView imgBanner = new UIImageView(new CGRect(0, 0, View.Frame.Width, View.Frame.Width / 1.777));
             viewBanner.AddSubview(imgBanner);
 
-            if (!string.IsNullOrWhiteSpace(Promotion.LandscapeImage))
+            if (!string.IsNullOrWhiteSpace(Promotion?.LandscapeImage))
             {
                 try
                 {
                     ActivityIndicatorComponent _activityIndicator = new ActivityIndicatorComponent(viewBanner);
                     _activityIndicator.Show();
-                    NSUrl url = new NSUrl(Promotion.LandscapeImage);
+                    NSUrl url = new NSUrl(Promotion?.LandscapeImage);
                     NSUrlSession session = NSUrlSession
                         .FromConfiguration(NSUrlSessionConfiguration.DefaultSessionConfiguration);
                     NSUrlSessionDataTask dataTask = session.CreateDataTask(url, (data, response, error) =>
@@ -93,13 +96,15 @@ namespace myTNB
                 }
             }
 
-            UILabel lblTitle = new UILabel(new CGRect(18, viewBanner.Frame.Height + 16, View.Frame.Width - 36, 18));
-            lblTitle.TextAlignment = UITextAlignment.Left;
-            lblTitle.TextColor = myTNBColor.PowerBlue();
-            lblTitle.Font = myTNBFont.MuseoSans16();
-            lblTitle.Lines = 0;
-            lblTitle.LineBreakMode = UILineBreakMode.WordWrap;
-            lblTitle.Text = Promotion.Title;
+            UILabel lblTitle = new UILabel(new CGRect(18, viewBanner.Frame.Height + 16, View.Frame.Width - 36, 18))
+            {
+                TextAlignment = UITextAlignment.Left,
+                TextColor = myTNBColor.PowerBlue(),
+                Font = myTNBFont.MuseoSans16(),
+                Lines = 0,
+                LineBreakMode = UILineBreakMode.WordWrap,
+                Text = Promotion?.Title
+            };
             CGSize newLblTitleSize = GetLabelSize(lblTitle, lblTitle.Frame.Width, 1000);
             lblTitle.Frame = new CGRect(lblTitle.Frame.X, lblTitle.Frame.Y, lblTitle.Frame.Width, newLblTitleSize.Height);
 
@@ -130,91 +135,115 @@ namespace myTNB
                 ForegroundColor = myTNBColor.TunaGrey()
             };
 
-            if (!string.IsNullOrWhiteSpace(Promotion.HeaderContent))
+            if (!string.IsNullOrWhiteSpace(Promotion?.HeaderContent))
             {
                 NSError htmlError = null;
-                NSAttributedString htmlBody = TextHelper.ConvertToHtmlWithFont(Promotion.HeaderContent, ref htmlError,
+                try
+                {
+                    NSAttributedString htmlBody = TextHelper.ConvertToHtmlWithFont(Promotion?.HeaderContent, ref htmlError,
                                                                                          myTNBFont.FONTNAME_300, 14f);
 
-                NSMutableAttributedString mutableHTML = new NSMutableAttributedString(htmlBody);
-                mutableHTML.AddAttributes(tunaGreyAttr
-                                                        , new NSRange(0, htmlBody.Length));
+                    NSMutableAttributedString mutableHTML = new NSMutableAttributedString(htmlBody);
+                    mutableHTML.AddAttributes(tunaGreyAttr, new NSRange(0, htmlBody.Length));
 
-                UITextView txtViewHeader = new UITextView();
-                txtViewHeader.Editable = false;
-                txtViewHeader.ScrollEnabled = false;
-                txtViewHeader.TextAlignment = UITextAlignment.Justified;
-                txtViewHeader.AttributedText = mutableHTML;
-                txtViewHeader.WeakLinkTextAttributes = linkAttributes.Dictionary;
+                    UITextView txtViewHeader = new UITextView
+                    {
+                        Editable = false,
+                        ScrollEnabled = false,
+                        TextAlignment = UITextAlignment.Justified,
+                        AttributedText = mutableHTML,
+                        WeakLinkTextAttributes = linkAttributes.Dictionary
+                    };
 
-
-                CGSize newSize = txtViewHeader.SizeThatFits(new CGSize(View.Frame.Width - 36, 1000f));
-                txtViewHeader.Frame = new CGRect(15
-                                                         , referenceFrame.GetMaxY() + 1
-                                                         , View.Frame.Width - 30
-                                                         , newSize.Height);
-                scrollViewContent.AddSubview(txtViewHeader);
-                referenceFrame = txtViewHeader.Frame;
+                    CGSize newSize = txtViewHeader.SizeThatFits(new CGSize(View.Frame.Width - 36, 1000f));
+                    txtViewHeader.Frame = new CGRect(15
+                                                             , referenceFrame.GetMaxY() + 1
+                                                             , View.Frame.Width - 30
+                                                             , newSize.Height);
+                    scrollViewContent.AddSubview(txtViewHeader);
+                    referenceFrame = txtViewHeader.Frame;
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine("Error: " + e.Message);
+                }
             }
 
-            if (!string.IsNullOrWhiteSpace(Promotion.BodyContent))
+            if (!string.IsNullOrWhiteSpace(Promotion?.BodyContent))
             {
                 NSError htmlBodyError = null;
-                NSAttributedString htmlBody = TextHelper.ConvertToHtmlWithFont(Promotion.BodyContent, ref htmlBodyError,
+                try
+                {
+                    NSAttributedString htmlBody = TextHelper.ConvertToHtmlWithFont(Promotion?.BodyContent, ref htmlBodyError,
                                                                                          myTNBFont.FONTNAME_300, 14f);
 
-                NSMutableAttributedString mutableHTMLBody = new NSMutableAttributedString(htmlBody);
-                mutableHTMLBody.AddAttributes(tunaGreyAttr
-                                                        , new NSRange(0, htmlBody.Length));
+                    NSMutableAttributedString mutableHTMLBody = new NSMutableAttributedString(htmlBody);
+                    mutableHTMLBody.AddAttributes(tunaGreyAttr, new NSRange(0, htmlBody.Length));
 
-                UITextView txtViewBody = new UITextView();
-                txtViewBody.Editable = false;
-                txtViewBody.ScrollEnabled = false;
-                txtViewBody.TextAlignment = UITextAlignment.Justified;
-                txtViewBody.AttributedText = mutableHTMLBody;
-                txtViewBody.WeakLinkTextAttributes = linkAttributes.Dictionary;
+                    UITextView txtViewBody = new UITextView
+                    {
+                        Editable = false,
+                        ScrollEnabled = false,
+                        TextAlignment = UITextAlignment.Justified,
+                        AttributedText = mutableHTMLBody,
+                        WeakLinkTextAttributes = linkAttributes.Dictionary
+                    };
 
 
-                CGSize campaignPeriodNewSize = txtViewBody.SizeThatFits(new CGSize(View.Frame.Width - 36, 1000f));
-                txtViewBody.Frame = new CGRect(15
-                                                         , referenceFrame.GetMaxY() + 1
-                                                         , View.Frame.Width - 30
-                                                         , campaignPeriodNewSize.Height);
-                scrollViewContent.AddSubview(txtViewBody);
-                referenceFrame = txtViewBody.Frame;
+                    CGSize campaignPeriodNewSize = txtViewBody.SizeThatFits(new CGSize(View.Frame.Width - 36, 1000f));
+                    txtViewBody.Frame = new CGRect(15
+                                                             , referenceFrame.GetMaxY() + 1
+                                                             , View.Frame.Width - 30
+                                                             , campaignPeriodNewSize.Height);
+                    scrollViewContent.AddSubview(txtViewBody);
+                    referenceFrame = txtViewBody.Frame;
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine("Error: " + e.Message);
+                }
             }
 
-            if (!string.IsNullOrWhiteSpace(Promotion.FooterContent))
+            if (!string.IsNullOrWhiteSpace(Promotion?.FooterContent))
             {
                 NSError htmlFooterError = null;
-                NSAttributedString htmlFooter = TextHelper.ConvertToHtmlWithFont(Promotion.FooterContent, ref htmlFooterError,
-                                                                                         myTNBFont.FONTNAME_300, 10f);
-                NSMutableAttributedString mutableHTMLFooter = new NSMutableAttributedString(htmlFooter);
-
-                UIStringAttributes footerLinkAttributes = new UIStringAttributes
+                try
                 {
-                    ForegroundColor = myTNBColor.PowerBlue(),
-                    Font = myTNBFont.MuseoSans10_300(),
-                    UnderlineStyle = NSUnderlineStyle.Single,
-                    UnderlineColor = myTNBColor.PowerBlue()
-                };
+                    NSAttributedString htmlFooter = TextHelper.ConvertToHtmlWithFont(Promotion?.FooterContent, ref htmlFooterError,
+                                                                                         myTNBFont.FONTNAME_300, 10f);
+                    NSMutableAttributedString mutableHTMLFooter = new NSMutableAttributedString(htmlFooter);
 
-                mutableHTMLFooter.AddAttributes(tunaGreyAttr, new NSRange(0, htmlFooter.Length));
+                    UIStringAttributes footerLinkAttributes = new UIStringAttributes
+                    {
+                        ForegroundColor = myTNBColor.PowerBlue(),
+                        Font = myTNBFont.MuseoSans10_300(),
+                        UnderlineStyle = NSUnderlineStyle.Single,
+                        UnderlineColor = myTNBColor.PowerBlue()
+                    };
 
-                UITextView txtViewFooter = new UITextView();
-                txtViewFooter.Editable = false;
-                txtViewFooter.ScrollEnabled = false;
-                txtViewFooter.TextAlignment = UITextAlignment.Justified;
-                txtViewFooter.AttributedText = mutableHTMLFooter;
-                txtViewFooter.WeakLinkTextAttributes = footerLinkAttributes.Dictionary;
+                    mutableHTMLFooter.AddAttributes(tunaGreyAttr, new NSRange(0, htmlFooter.Length));
 
-                CGSize footerNewSize = txtViewFooter.SizeThatFits(new CGSize(View.Frame.Width - 36, 1000f));
-                txtViewFooter.Frame = new CGRect(15
-                                                 , referenceFrame.GetMaxY() + 16
-                                                 , View.Frame.Width - 30
-                                                 , footerNewSize.Height);
-                scrollViewContent.AddSubviews(new UIView[] { txtViewFooter });
-                referenceFrame = txtViewFooter.Frame;
+                    UITextView txtViewFooter = new UITextView
+                    {
+                        Editable = false,
+                        ScrollEnabled = false,
+                        TextAlignment = UITextAlignment.Justified,
+                        AttributedText = mutableHTMLFooter,
+                        WeakLinkTextAttributes = footerLinkAttributes.Dictionary
+                    };
+
+                    CGSize footerNewSize = txtViewFooter.SizeThatFits(new CGSize(View.Frame.Width - 36, 1000f));
+                    txtViewFooter.Frame = new CGRect(15
+                                                     , referenceFrame.GetMaxY() + 16
+                                                     , View.Frame.Width - 30
+                                                     , footerNewSize.Height);
+                    scrollViewContent.AddSubviews(new UIView[] { txtViewFooter });
+                    referenceFrame = txtViewFooter.Frame;
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine("Error: " + e.Message);
+                }
             }
 
             scrollViewContent.ContentSize = new CGSize(View.Frame.Width, referenceFrame.Height + referenceFrame.Y + 30);

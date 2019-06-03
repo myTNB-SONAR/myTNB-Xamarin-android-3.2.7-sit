@@ -8,6 +8,7 @@ using myTNB.Dashboard.DashboardComponents;
 using myTNB.Home.Components;
 using CoreLocation;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace myTNB
 {
@@ -75,15 +76,15 @@ namespace myTNB
         void AddLocationImage()
         {
             string imgPath = string.Empty;
-            if (Annotation.is7E)
+            if ((bool)Annotation?.is7E)
             {
-                if (DataManager.DataManager.SharedInstance.LocationTypes != null)
+                if (DataManager.DataManager.SharedInstance.LocationTypes != null && DataManager.DataManager.SharedInstance.LocationTypes?.Count > 0)
                 {
                     int index = DataManager.DataManager.SharedInstance.LocationTypes.FindIndex(x => x.Title.Equals("7E"));
                     if (index > -1)
                     {
-                       if(!string.IsNullOrEmpty(DataManager.DataManager.SharedInstance.LocationTypes[index].ImagePath)
-                          && !string.IsNullOrWhiteSpace(DataManager.DataManager.SharedInstance.LocationTypes[index].ImagePath))
+                        if (!string.IsNullOrEmpty(DataManager.DataManager.SharedInstance.LocationTypes[index]?.ImagePath)
+                           && !string.IsNullOrWhiteSpace(DataManager.DataManager.SharedInstance.LocationTypes[index]?.ImagePath))
                         {
                             imgPath = DataManager.DataManager.SharedInstance.LocationTypes[index].ImagePath;
                         }
@@ -92,21 +93,21 @@ namespace myTNB
             }
             else
             {
-                if (Annotation.KTItem != null
-                   && !string.IsNullOrEmpty(Annotation.KTItem.ImagePath)
-                   && !string.IsNullOrWhiteSpace(Annotation.KTItem.ImagePath))
+                if (Annotation?.KTItem != null
+                   && !string.IsNullOrEmpty(Annotation?.KTItem.ImagePath)
+                   && !string.IsNullOrWhiteSpace(Annotation?.KTItem.ImagePath))
                 {
-                    imgPath = Annotation.KTItem.ImagePath;
+                    imgPath = Annotation?.KTItem.ImagePath;
                 }
                 else
                 {
-                    if (DataManager.DataManager.SharedInstance.LocationTypes != null)
+                    if (DataManager.DataManager.SharedInstance.LocationTypes != null && DataManager.DataManager.SharedInstance.LocationTypes?.Count > 0)
                     {
                         int index = DataManager.DataManager.SharedInstance.LocationTypes.FindIndex(x => x.Title.Equals("KT"));
                         if (index > -1)
                         {
-                            if (!string.IsNullOrEmpty(DataManager.DataManager.SharedInstance.LocationTypes[index].ImagePath)
-                            && !string.IsNullOrWhiteSpace(DataManager.DataManager.SharedInstance.LocationTypes[index].ImagePath))
+                            if (!string.IsNullOrEmpty(DataManager.DataManager.SharedInstance.LocationTypes[index]?.ImagePath)
+                            && !string.IsNullOrWhiteSpace(DataManager.DataManager.SharedInstance.LocationTypes[index]?.ImagePath))
                             {
                                 imgPath = DataManager.DataManager.SharedInstance.LocationTypes[index].ImagePath;
                             }
@@ -114,22 +115,33 @@ namespace myTNB
                     }
                 }
             }
-            NSUrl url = new NSUrl(imgPath);
-            NSUrlSession session = NSUrlSession
-                .FromConfiguration(NSUrlSessionConfiguration.DefaultSessionConfiguration);
-            NSUrlSessionDataTask dataTask = session.CreateDataTask(url, (data, response, error) =>
-            {
-                if (error == null && response != null && data != null)
-                {
-                    InvokeOnMainThread(() =>
-                    {
-                        _imgLocation.Image = UIImage.LoadFromData(data);
-                        _activityIndicator.Hide();
-                    });
 
+            try
+            {
+                if (!string.IsNullOrEmpty(imgPath))
+                {
+                    NSUrl url = new NSUrl(imgPath);
+                    NSUrlSession session = NSUrlSession
+                        .FromConfiguration(NSUrlSessionConfiguration.DefaultSessionConfiguration);
+                    NSUrlSessionDataTask dataTask = session.CreateDataTask(url, (data, response, error) =>
+                    {
+                        if (error == null && response != null && data != null)
+                        {
+                            InvokeOnMainThread(() =>
+                            {
+                                _imgLocation.Image = UIImage.LoadFromData(data);
+                                _activityIndicator.Hide();
+                            });
+
+                        }
+                    });
+                    dataTask.Resume();
                 }
-            });
-            dataTask.Resume();
+            }
+            catch (Exception err)
+            {
+                Debug.WriteLine("Error: " + err.Message);
+            }
         }
 
         void SetTableView()

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Foundation;
@@ -112,6 +112,7 @@ namespace myTNB.DataManager
 
         //Payment
         public bool IsPaymentDone = false;
+        private List<string> AccountNumbersForPaymentList;
 
         public static DataManager SharedInstance
         {
@@ -423,7 +424,10 @@ namespace myTNB.DataManager
                 if (entity != null)
                 {
                     model = JsonConvert.DeserializeObject<SmartChartDataModel>(entity.Data);
-                    lastUpdate = DateTime.Parse(entity.DateUpdated).ToLocalTime();
+                    if (!string.IsNullOrEmpty(entity.DateUpdated))
+                    {
+                        lastUpdate = DateTime.Parse(entity.DateUpdated, System.Globalization.CultureInfo.InvariantCulture).ToLocalTime();
+                    }
                     isRefreshNeeded = entity.IsRefreshNeeded;
                 }
             }
@@ -448,7 +452,10 @@ namespace myTNB.DataManager
                 if (entity != null)
                 {
                     model = JsonConvert.DeserializeObject<ChartDataModel>(entity.Data);
-                    lastUpdate = DateTime.Parse(entity.DateUpdated).ToLocalTime();
+                    if (!string.IsNullOrEmpty(entity.DateUpdated))
+                    {
+                        lastUpdate = DateTime.Parse(entity.DateUpdated, System.Globalization.CultureInfo.InvariantCulture).ToLocalTime();
+                    }
                     isRefreshNeeded = entity.IsRefreshNeeded;
                 }
             }
@@ -633,7 +640,10 @@ namespace myTNB.DataManager
                 if (entity != null)
                 {
                     model = JsonConvert.DeserializeObject<BillingAccountDetailsDataModel>(entity.Data);
-                    lastUpdate = DateTime.Parse(entity.DateUpdated).ToLocalTime();
+                    if (!string.IsNullOrEmpty(entity.DateUpdated))
+                    {
+                        lastUpdate = DateTime.Parse(entity.DateUpdated, System.Globalization.CultureInfo.InvariantCulture).ToLocalTime();
+                    }
                     isRefreshNeeded = entity.IsRefreshNeeded;
                 }
             }
@@ -737,7 +747,10 @@ namespace myTNB.DataManager
                 if (entity != null)
                 {
                     model = JsonConvert.DeserializeObject<BillHistoryModel>(entity.Data);
-                    lastUpdate = DateTime.Parse(entity.DateUpdated).ToLocalTime();
+                    if (!string.IsNullOrEmpty(entity.DateUpdated))
+                    {
+                        lastUpdate = DateTime.Parse(entity.DateUpdated, System.Globalization.CultureInfo.InvariantCulture).ToLocalTime();
+                    }
                     isRefreshNeeded = entity.IsRefreshNeeded;
                 }
             }
@@ -841,7 +854,10 @@ namespace myTNB.DataManager
                 if (entity != null)
                 {
                     model = JsonConvert.DeserializeObject<PaymentHistoryModel>(entity.Data);
-                    lastUpdate = DateTime.Parse(entity.DateUpdated).ToLocalTime();
+                    if (!string.IsNullOrEmpty(entity.DateUpdated))
+                    {
+                        lastUpdate = DateTime.Parse(entity.DateUpdated, System.Globalization.CultureInfo.InvariantCulture).ToLocalTime();
+                    }
                     isRefreshNeeded = entity.IsRefreshNeeded;
                 }
             }
@@ -891,6 +907,43 @@ namespace myTNB.DataManager
             if (!string.IsNullOrEmpty(key))
             {
                 PaymentHistoryEntity.DeleteItem(key);
+            }
+        }
+
+        /// <summary>
+        /// Sets the account number for payment.
+        /// </summary>
+        /// <param name="accountNumber">Account number.</param>
+        public void SetAccountNumberForPayment(string accountNumber)
+        {
+            if (AccountNumbersForPaymentList == null)
+            {
+                AccountNumbersForPaymentList = new List<string>();
+            }
+            AccountNumbersForPaymentList.Add(accountNumber);
+        }
+
+        /// <summary>
+        /// Ises the paid account number.
+        /// </summary>
+        /// <returns><c>true</c>, if paid account number was ised, <c>false</c> otherwise.</returns>
+        /// <param name="accountNumber">Account number.</param>
+        public bool IsPaidAccountNumber(string accountNumber) {
+            if (AccountNumbersForPaymentList == null)
+            {
+                return false;
+            }
+            return AccountNumbersForPaymentList.Contains(accountNumber);
+        }
+
+        /// <summary>
+        /// Clears the paid list.
+        /// </summary>
+        public void ClearPaidList()
+        {
+            if (AccountNumbersForPaymentList != null)
+            {
+                AccountNumbersForPaymentList.Clear();
             }
         }
 
