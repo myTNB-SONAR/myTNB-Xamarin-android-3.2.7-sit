@@ -20,9 +20,11 @@ namespace myTNB.PushNotification
             nfloat cellHeight = 66;
             Frame = new CGRect(0, 0, cellWidth, cellHeight);
 
-            viewCheckBox = new UIView(new CGRect(10, 20, 24, 24));
-            imgCheckbox = new UIImageView(new CGRect(0, 0, 24, 24));
-            imgCheckbox.Image = UIImage.FromBundle("Payment-Checkbox-Inactive");
+            viewCheckBox = new UIView(new CGRect(cellWidth - 40, 20, 24, 24));
+            imgCheckbox = new UIImageView(new CGRect(0, 0, 24, 24))
+            {
+                Image = UIImage.FromBundle("Payment-Checkbox-Inactive")
+            };
             viewCheckBox.AddSubview(imgCheckbox);
 
             imgIcon = new UIImageView(new CGRect(18, 17, 24, 24));
@@ -31,23 +33,31 @@ namespace myTNB.PushNotification
             lblTitle.TextColor = MyTNBColor.TunaGrey();
             lblTitle.Font = MyTNBFont.MuseoSans14;
 
-            lblDetails = new UILabel(new CGRect(48, 34, cellWidth - 96, 14));
-            lblDetails.TextColor = MyTNBColor.SilverChalice;
-            lblDetails.Font = MyTNBFont.MuseoSans9;
-            lblDetails.Lines = 1;
-            lblDetails.LineBreakMode = UILineBreakMode.TailTruncation;
+            lblDetails = new UILabel(new CGRect(48, 34, cellWidth - 96, 14))
+            {
+                TextColor = MyTNBColor.SilverChalice,
+                Font = MyTNBFont.MuseoSans9,
+                Lines = 1,
+                LineBreakMode = UILineBreakMode.TailTruncation
+            };
 
-            lblDate = new UILabel(new CGRect(cellWidth - 94, 17, 60, 14));
-            lblDate.TextColor = MyTNBColor.SilverChalice;
-            lblDate.Font = MyTNBFont.MuseoSans9;
-            lblDate.TextAlignment = UITextAlignment.Right;
+            lblDate = new UILabel(new CGRect(cellWidth - 94, 17, 60, 14))
+            {
+                TextColor = MyTNBColor.SilverChalice,
+                Font = MyTNBFont.MuseoSans9,
+                TextAlignment = UITextAlignment.Right
+            };
 
-            imgUnread = new UIImageView(new CGRect(cellWidth - 34, 16, 16, 16));
-            imgUnread.Image = UIImage.FromBundle("Notification-Unread");
-            imgUnread.Hidden = true;
+            imgUnread = new UIImageView(new CGRect(cellWidth - 34, 16, 16, 16))
+            {
+                Image = UIImage.FromBundle("Notification-Unread"),
+                Hidden = true
+            };
 
-            UIView viewLine = new UIView(new CGRect(0, cellHeight - 1, cellWidth, 1));
-            viewLine.BackgroundColor = MyTNBColor.PlatinumGrey;
+            UIView viewLine = new UIView(new CGRect(0, cellHeight - 1, cellWidth, 1))
+            {
+                BackgroundColor = MyTNBColor.PlatinumGrey
+            };
 
             AddSubviews(new UIView[] { viewCheckBox, imgIcon, lblTitle, lblDetails, lblDate, imgUnread, viewLine });
         }
@@ -64,22 +74,19 @@ namespace myTNB.PushNotification
 
         private void UpdateStyle(bool isSelectionMode)
         {
-            var xValueImg = isSelectionMode ? 41 : 18;
-            var xValueTitle = isSelectionMode ? 71 : 48;
+            nfloat cellWidth = UIApplication.SharedApplication.KeyWindow.Frame.Width;
+            nfloat xDate = isSelectionMode ? cellWidth - 134 : cellWidth - 94;
+            nfloat xRead = isSelectionMode ? cellWidth - 64 : cellWidth - 34;
 
             imgCheckbox.Hidden = !isSelectionMode;
 
-            CGRect imgframe = imgIcon.Frame;
-            imgframe.X = xValueImg;
-            imgIcon.Frame = imgframe;
+            CGRect dateFrame = lblDate.Frame;
+            dateFrame.X = xDate;
+            lblDate.Frame = dateFrame;
 
-            CGRect titleframe = lblTitle.Frame;
-            titleframe.X = xValueTitle;
-            lblTitle.Frame = titleframe;
-
-            CGRect descframe = lblDetails.Frame;
-            descframe.X = xValueTitle;
-            lblDetails.Frame = descframe;
+            CGRect readFrame = imgUnread.Frame;
+            readFrame.X = xRead;
+            imgUnread.Frame = readFrame;
         }
     }
 }

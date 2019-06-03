@@ -31,7 +31,7 @@ namespace myTNB.PushNotification
         UIView _viewDelete;
         UIImageView _imgNoNotification;
         UILabel _lblNoNotification;
-        UIView viewHeader;
+        UIView _viewHeader;
 
         public override void ViewDidLoad()
         {
@@ -172,9 +172,9 @@ namespace myTNB.PushNotification
                     {
                         _titleBarComponent.SetNotificationImage("Notification-Check");
                         UpdateSelectAllFlags(false);
-                        viewHeader = null;
+                        _viewHeader = null;
                         CreateViewHeader();
-                        pushNotificationTableView.TableHeaderView = viewHeader;
+                        pushNotificationTableView.TableHeaderView = _viewHeader;
                     }
                     else
                     {
@@ -410,13 +410,13 @@ namespace myTNB.PushNotification
                 BackgroundColor = MyTNBColor.PlatinumGrey
             };
 
-            viewHeader = new UIView
+            _viewHeader = new UIView
             {
                 ClipsToBounds = true,
                 Frame = new CGRect(0, 0, cellWidth, cellHeight),
                 BackgroundColor = UIColor.White
             };
-            viewHeader.AddSubviews(new UIView[] { viewCheckBox, lblTitle, viewLine });
+            _viewHeader.AddSubviews(new UIView[] { viewCheckBox, lblTitle, viewLine });
         }
 
         /// <summary>
