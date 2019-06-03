@@ -112,7 +112,7 @@
                     <com.github.mikephil.charting.charts.BarChart
                         android:id="@+id/bar_chart"
                         android:layout_width="match_parent"
-                        android:layout_height="175dp"
+                        android:layout_height="190dp"
                         android:layout_marginLeft="32dp"
                         android:layout_marginRight="32dp"
                         android:visibility="visible" />
@@ -494,7 +494,7 @@
                         android:layout_weight="0.6"
                         android:textSize="12sp"
                         android:textStyle="bold"
-                        android:padding="18dp"
+                        android:padding="28dp"
                         android:layout_gravity="center"
                         android:textColor="@color/white"
                         android:text="@string/dashboard_chartview_address_sample"
