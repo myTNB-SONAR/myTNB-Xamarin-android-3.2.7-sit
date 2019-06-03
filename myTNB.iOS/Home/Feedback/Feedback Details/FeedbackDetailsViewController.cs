@@ -132,10 +132,12 @@ namespace myTNB
             }
 
             UIImageView imgView = new UIImageView(new CGRect((viewContainer.Frame.Width / 2) - (imgWidth / 2)
-                                                             , ((viewContainer.Frame.Height - (DeviceHelper.IsIphoneXUpResolution() ? 44 : 24)) / 2) - (imgHeight / 2)
+                                                             , lblFileName.Frame.GetMaxY() + 10f
                                                              , imgWidth
-                                                             , imgHeight));
-            imgView.Image = image;
+                                                             , imgHeight))
+            {
+                Image = image
+            };
 
             viewContainer.AddSubviews(new UIView[] { lblFileName, viewClose, imgView });
 
