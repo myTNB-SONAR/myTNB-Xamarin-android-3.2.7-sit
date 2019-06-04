@@ -167,10 +167,10 @@ namespace myTNB.PushNotification
         {   // Optional - default text is 'Delete'
             return "Delete";
         }
-
+        
         void DeleteNotification(UITableView tableView, Foundation.NSIndexPath indexPath)
         {
-            /* ActivityIndicator.Show();
+            ActivityIndicator.Show();
              _controller.DeleteUserNotification(_data[indexPath.Row]).ContinueWith(task =>
              {
                  InvokeOnMainThread(() =>
@@ -184,10 +184,9 @@ namespace myTNB.PushNotification
                          _data.RemoveAt(indexPath.Row);
                          tableView.DeleteRows(new NSIndexPath[] { indexPath }, UITableViewRowAnimation.Fade);
                      }
-
                      ActivityIndicator.Hide();
                  });
-             });*/
+             });
         }
 
         public override UISwipeActionsConfiguration GetLeadingSwipeActionsConfiguration(UITableView tableView, NSIndexPath indexPath)
@@ -228,6 +227,5 @@ namespace myTNB.PushNotification
             return trailingSwipe;
 #pragma warning restore XI0002 // Notifies you from using newer Apple APIs when targeting an older OS version
         }
-
     }
 }

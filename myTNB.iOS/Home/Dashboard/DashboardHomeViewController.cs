@@ -353,7 +353,7 @@ namespace myTNB
             var posX = tableViewAccounts.Frame.Width / 2.0f - width / 2.0f;
             btnLoad = new UIButton(UIButtonType.Custom)
             {
-                Frame = new CGRect(posX, verticalMargin - 2, width, 20)
+                Frame = new CGRect(10, 3, tableViewAccounts.Frame.Width - 20, 60)
             };
             btnLoad.Layer.BorderColor = UIColor.Clear.CGColor;
             btnLoad.BackgroundColor = UIColor.Clear;
@@ -365,10 +365,9 @@ namespace myTNB
 
             UIView viewLine = new UIView
             {
-                Frame = new CGRect(0, btnLoad.Frame.GetMaxY() + verticalMargin - 2, tableViewAccounts.Frame.Width, 1),
+                Frame = new CGRect(0, btnLoad.Frame.GetMaxY() + 3, tableViewAccounts.Frame.Width, 1),
                 BackgroundColor = UIColor.FromWhiteAlpha(1, 0.2f)
             };
-
 
             _viewLoadMore = new UIView(new CGRect(0, 1, tableViewAccounts.Frame.Width, viewLine.Frame.GetMaxY()));// footerHeight));
             _viewLoadMore.AddSubview(btnLoad);
