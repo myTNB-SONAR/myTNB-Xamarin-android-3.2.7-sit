@@ -179,6 +179,7 @@
 "Feedback_PoleNumber"="Pole No.";
 "Feedback_GoToSettings"="Go to Settings";
 "Feedback_SelectAccountNumber"="Select Account No.";
+"Feedback_SelectAll"="Select All";
 "Feedback_SelectFeedbackType"="Select Feedback Type";
 "Feedback_SelectState"="Select State";
 "Feedback_State"="State";
@@ -190,6 +191,7 @@
 "Feedback_SuccessfulMessage"="Thank you for your feedback.";
 "Feedback_Title"="Feedback";
 "Feedback_Type"="Feedback Type";
+"Feedback_UnselectAll"="Unselect All";
 "Feedback_Unsuccessful"="Feedback Unsuccessful";
 "Feedback_UnsuccessfulMessage"="Your feedback didn't go through.";
 

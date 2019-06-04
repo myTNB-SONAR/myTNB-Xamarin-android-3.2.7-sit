@@ -32,6 +32,8 @@ namespace myTNB.PushNotification
         UIImageView _imgNoNotification;
         UILabel _lblNoNotification;
         UIView _viewHeader;
+        UIImageView imgCheckbox;
+        UILabel lblTitle;
 
         public override void ViewDidLoad()
         {
@@ -382,28 +384,25 @@ namespace myTNB.PushNotification
             nfloat cellWidth = UIApplication.SharedApplication.KeyWindow.Frame.Width;
             nfloat cellHeight = 66;
 
-            UIView viewCheckBox = new UIView(new CGRect(10, 22, 24, 24));
-            UIImageView imgCheckbox = new UIImageView(new CGRect(0, 0, 24, 24))
+            UIView viewCheckBox = new UIView(new CGRect(cellWidth - 40, 22, 24, 24));
+            imgCheckbox = new UIImageView(new CGRect(0, 0, 24, 24))
             {
                 Image = UIImage.FromBundle("Payment-Checkbox-Inactive")
             };
             viewCheckBox.AddSubview(imgCheckbox);
 
-            viewCheckBox.AddGestureRecognizer(new UITapGestureRecognizer(() =>
-            {
-                _isAllSelected = !_isAllSelected;
-                imgCheckbox.Image = UIImage.FromBundle(_isAllSelected
-                                                        ? "Payment-Checkbox-Active"
-                                                        : "Payment-Checkbox-Inactive");
-                UpdateSelectAllFlags(_isAllSelected);
-            }));
-
-            UILabel lblTitle = new UILabel(new CGRect(45, 25, cellWidth - 96 - 60, 18))
+            lblTitle = new UILabel(new CGRect(18, 25, cellWidth - 96 - 60, 18))
             {
                 TextColor = MyTNBColor.TunaGrey(),
                 Font = MyTNBFont.MuseoSans14,
-                Text = "Select All"
+                Text = "Feedback_SelectAll".Translate()
             };
+
+            viewCheckBox.AddGestureRecognizer(new UITapGestureRecognizer(() =>
+            {
+                OnCheckboxSelect();
+            }));
+
 
             UIView viewLine = new UIView(new CGRect(0, cellHeight - 1, cellWidth, 1))
             {
@@ -417,6 +416,24 @@ namespace myTNB.PushNotification
                 BackgroundColor = UIColor.White
             };
             _viewHeader.AddSubviews(new UIView[] { viewCheckBox, lblTitle, viewLine });
+        }
+
+        void OnCheckboxSelect(bool isCellSelected = false)
+        {
+            _isAllSelected = !_isAllSelected;
+            imgCheckbox.Image = UIImage.FromBundle(_isAllSelected
+                ? "Payment-Checkbox-Active" : "Payment-Checkbox-Inactive");
+            lblTitle.Text = _isAllSelected ? "Feedback_UnselectAll".Translate() : "Feedback_SelectAll".Translate();
+            if (!isCellSelected) {
+                UpdateSelectAllFlags(_isAllSelected);
+            }
+        }
+
+        internal void UpdateSectionHeaderWidget()
+        {
+            int selectedCount = notifications.FindAll(x => x.IsSelected == true).Count;
+            _isAllSelected = selectedCount != notifications.Count;
+            OnCheckboxSelect(true);
         }
 
         /// <summary>

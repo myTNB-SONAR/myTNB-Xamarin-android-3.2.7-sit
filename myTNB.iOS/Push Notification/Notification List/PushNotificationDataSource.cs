@@ -45,15 +45,15 @@ namespace myTNB.PushNotification
             cell.imgUnread.Hidden = notification.IsRead.ToLower() != "false";
             cell.SelectionStyle = UITableViewCellSelectionStyle.None;
             cell.imgCheckbox.Image = UIImage.FromBundle(notification.IsSelected
-                                                        ? "Payment-Checkbox-Active"
-                                                        : "Payment-Checkbox-Inactive");
+                ? "Payment-Checkbox-Active" : "Payment-Checkbox-Inactive");
             cell.viewCheckBox.AddGestureRecognizer(new UITapGestureRecognizer(() =>
             {
                 notification.IsSelected = !notification.IsSelected;
                 _controller.UpdateTitleRightIconImage(notification);
                 cell.imgCheckbox.Image = UIImage.FromBundle(notification.IsSelected
-                                                             ? "Payment-Checkbox-Active"
-                                                             : "Payment-Checkbox-Inactive");
+                    ? "Payment-Checkbox-Active" : "Payment-Checkbox-Inactive");
+
+                _controller.UpdateSectionHeaderWidget();
             }));
 
             return cell;
@@ -170,24 +170,24 @@ namespace myTNB.PushNotification
 
         void DeleteNotification(UITableView tableView, Foundation.NSIndexPath indexPath)
         {
-           /* ActivityIndicator.Show();
-            _controller.DeleteUserNotification(_data[indexPath.Row]).ContinueWith(task =>
-            {
-                InvokeOnMainThread(() =>
-                {
-                    var deleteNotifResponse = _controller._deleteNotificationResponse;
+            /* ActivityIndicator.Show();
+             _controller.DeleteUserNotification(_data[indexPath.Row]).ContinueWith(task =>
+             {
+                 InvokeOnMainThread(() =>
+                 {
+                     var deleteNotifResponse = _controller._deleteNotificationResponse;
 
-                    if (deleteNotifResponse != null && deleteNotifResponse?.d != null
-                                    && deleteNotifResponse?.d?.status?.ToLower() == "success"
-                                    && deleteNotifResponse?.d?.didSucceed == true)
-                    {
-                        _data.RemoveAt(indexPath.Row);
-                        tableView.DeleteRows(new NSIndexPath[] { indexPath }, UITableViewRowAnimation.Fade);
-                    }
+                     if (deleteNotifResponse != null && deleteNotifResponse?.d != null
+                                     && deleteNotifResponse?.d?.status?.ToLower() == "success"
+                                     && deleteNotifResponse?.d?.didSucceed == true)
+                     {
+                         _data.RemoveAt(indexPath.Row);
+                         tableView.DeleteRows(new NSIndexPath[] { indexPath }, UITableViewRowAnimation.Fade);
+                     }
 
-                    ActivityIndicator.Hide();
-                });
-            });*/
+                     ActivityIndicator.Hide();
+                 });
+             });*/
         }
 
         public override UISwipeActionsConfiguration GetLeadingSwipeActionsConfiguration(UITableView tableView, NSIndexPath indexPath)
@@ -202,12 +202,12 @@ namespace myTNB.PushNotification
                 , string.Empty
                 , (action, sourceView, completionHandler) =>
                 {
-
+                    //Todo: Call service
                 });
             contextualAction.Image = UIImage.FromBundle("Notification-MarkAsRead");
             contextualAction.BackgroundColor = UIColor.Blue;
             UISwipeActionsConfiguration leadingSwipe = UISwipeActionsConfiguration.FromActions(new UIContextualAction[] { contextualAction });
-            leadingSwipe.PerformsFirstActionWithFullSwipe = false;
+            leadingSwipe.PerformsFirstActionWithFullSwipe = true;
             return leadingSwipe;
 #pragma warning restore XI0002 // Notifies you from using newer Apple APIs when targeting an older OS version
         }
@@ -224,7 +224,7 @@ namespace myTNB.PushNotification
             contextualAction.Image = UIImage.FromBundle("Notification-Delete");
             contextualAction.BackgroundColor = UIColor.Red;
             UISwipeActionsConfiguration trailingSwipe = UISwipeActionsConfiguration.FromActions(new UIContextualAction[] { contextualAction });
-            trailingSwipe.PerformsFirstActionWithFullSwipe = false;
+            trailingSwipe.PerformsFirstActionWithFullSwipe = true;
             return trailingSwipe;
 #pragma warning restore XI0002 // Notifies you from using newer Apple APIs when targeting an older OS version
         }
