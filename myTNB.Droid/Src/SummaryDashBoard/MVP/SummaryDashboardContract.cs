@@ -43,6 +43,8 @@ namespace myTNB_Android.Src.SummaryDashBoard.MVP
             void ShowNoInternetSnackbar();
             void SetGreetingImageAndText(eGreeting greeting, string text);
 
+            void ShowRefreshSummaryDashboard(bool  flag);
+
         }
 
 
@@ -58,6 +60,10 @@ namespace myTNB_Android.Src.SummaryDashBoard.MVP
             void OnNotification();
 
             void EnableLoadMore();
+
+            void RefreshAccountSummary();
+
+            void LoadEmptySummaryDetails();
         }
 
 

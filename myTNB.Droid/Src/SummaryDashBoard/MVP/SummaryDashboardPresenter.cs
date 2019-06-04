@@ -24,7 +24,7 @@ namespace myTNB_Android.Src.SummaryDashBoard.MVP
         SummaryDashBordRequest summaryDashboardRequest = null;
         UserEntity userEntity = null;
 
-        List<CustomerBillingAccount> customerBillingAccounts = null;        
+        List<CustomerBillingAccount> customerBillingAccounts = null;
 
         int totalLoadMoreCount = 0;
         int curentLoadMoreCount = 0;
@@ -85,10 +85,13 @@ namespace myTNB_Android.Src.SummaryDashBoard.MVP
                         SummaryData(summaryDetailDBList);
                     }
                 }
-            } catch(Exception e) {
+            }
+            catch (Exception e)
+            {
                 Utility.LoggingNonFatalError(e);
             }
         }
+
 
 
 
@@ -199,8 +202,8 @@ namespace myTNB_Android.Src.SummaryDashBoard.MVP
                 ));
 #elif DEBUG
             var httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
+            httpClient.Timeout = TimeSpan.FromSeconds(10);
             var api = RestService.For<ISummaryDashBoard>(httpClient);
-
 #elif DEVELOP
             var api = RestService.For<ISummaryDashBoard>(Constants.SERVER_URL.END_POINT);
 
@@ -246,7 +249,9 @@ namespace myTNB_Android.Src.SummaryDashBoard.MVP
                             
                             SummaryData(summaryDetails);
                         }
+
                     }
+                    mView.ShowRefreshSummaryDashboard(false);
                 }
                 
                 //    if (accountSelected.isOwned)
@@ -302,6 +307,8 @@ namespace myTNB_Android.Src.SummaryDashBoard.MVP
                     this.mView.HideProgressDialog();
                 }
                 Utility.LoggingNonFatalError(e);
+                this.mView.ShowRefreshSummaryDashboard(true); //Show retry option for summary dashboard
+                LoadEmptySummaryDetails();
             }
             catch (ApiException apiException)
             {
@@ -314,6 +321,8 @@ namespace myTNB_Android.Src.SummaryDashBoard.MVP
                 }  
 
                 Utility.LoggingNonFatalError(apiException);
+                this.mView.ShowRefreshSummaryDashboard(true); //Show retry option for summary dashboard
+                LoadEmptySummaryDetails();
             }
             catch (Exception e)
             {
@@ -326,6 +335,8 @@ namespace myTNB_Android.Src.SummaryDashBoard.MVP
                     //this.mView.ShowOwnerDashboardNoInternetConnection(accountSelected.AccDesc);
                 }
                 Utility.LoggingNonFatalError(e);
+                this.mView.ShowRefreshSummaryDashboard(true); //Show retry option for summary dashboard
+                LoadEmptySummaryDetails();
             }
 
             //if (this.mView.IsActive())
@@ -488,7 +499,6 @@ namespace myTNB_Android.Src.SummaryDashBoard.MVP
             else
             {
                 this.mView.ShowNoInternetSnackbar();
-
             }
         }
 
@@ -557,6 +567,38 @@ namespace myTNB_Android.Src.SummaryDashBoard.MVP
 
         }
 
+        public void RefreshAccountSummary()
+        {
+            summaryDetailList.Clear();
+            SummaryDashBoardApiCall();
+        }
 
+        public void LoadEmptySummaryDetails()
+        {
+
+            if(summaryDashboardRequest == null){
+                FetchUserData();
+            }
+
+            if (summaryDashboardRequest != null && summaryDashboardRequest.AccNum.Count > 0)
+            {
+                List<SummaryDashBoardDetails> summaryDetails = new List<SummaryDashBoardDetails>();
+                for (int i = 0; i < summaryDashboardRequest.AccNum.Count; i++)
+                {
+                    CustomerBillingAccount cbAccount = CustomerBillingAccount.FindByAccNum(summaryDashboardRequest.AccNum[i]);
+                    SummaryDashBoardDetails smDetails = new SummaryDashBoardDetails();
+                    smDetails.AccName = cbAccount.AccDesc;
+                    smDetails.AccNumber = cbAccount.AccNum;
+                    smDetails.AccType = cbAccount.AccountCategoryId;
+                    smDetails.IsAccSelected = cbAccount.IsSelected;
+                    smDetails.AmountDue = "0.00";
+                    smDetails.BillDueDate = "--";
+                    summaryDetails.Add(smDetails);
+                }
+
+                SummaryData(summaryDetails);
+                mView.IsLoadMoreButtonVisible(false);
+            }
+        }
     }
 }

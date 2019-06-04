@@ -104,18 +104,22 @@ namespace myTNB_Android.Src.ViewBill.Activity
             }
             try
             {
-                if (selectedBill != null)
+                if (selectedBill != null && !string.IsNullOrEmpty(selectedBill.DtBill))
                 {
                     d = simpleDateParser.Parse(selectedBill.DtBill);
                 }
-                else
+                else 
                 {
-                    d = simpleDateParser.Parse(selectedAccount.DateBill);
-
+                    if (!string.IsNullOrEmpty(selectedAccount?.DateBill)) {
+                    d = simpleDateParser.Parse(selectedAccount?.DateBill);
+                    }
                 }
+
             }catch (Java.Text.ParseException e)
             {
-                
+                Utility.LoggingNonFatalError(e);
+            } catch(Exception e) {
+                Utility.LoggingNonFatalError(e);
             }
 
             if (d != null)
@@ -128,15 +132,30 @@ namespace myTNB_Android.Src.ViewBill.Activity
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
-            try {
-            selectedAccount = JsonConvert.DeserializeObject<AccountData>(Intent.Extras.GetString(Constants.SELECTED_ACCOUNT));
-            if (Intent.Extras.ContainsKey(Constants.SELECTED_BILL))
-            {
-                selectedBill = JsonConvert.DeserializeObject<BillHistoryV5>(Intent.Extras.GetString(Constants.SELECTED_BILL));
+
+
+            Bundle extras = Intent.Extras;
+
+            if (extras != null) {
+                if (extras.ContainsKey(Constants.SELECTED_ACCOUNT))
+                {
+                    //selectedAccount = JsonConvert.DeserializeObject<AccountData>(Intent.Extras.GetString(Constants.SELECTED_ACCOUNT));
+                    selectedAccount = DeSerialze<AccountData>(extras.GetString(Constants.SELECTED_ACCOUNT));
+                }            
+            
+                if (extras.ContainsKey(Constants.SELECTED_BILL))
+                {
+                    //selectedBill = JsonConvert.DeserializeObject<BillHistoryV5>(Intent.Extras.GetString(Constants.SELECTED_BILL));
+                    selectedBill = DeSerialze<BillHistoryV5>(extras.GetString(Constants.SELECTED_BILL));
+                }
+            
             }
 
-            base.OnCreate(savedInstanceState);
 
+
+
+            base.OnCreate(savedInstanceState);
+                try {
             //webView = FindViewById<WebView>(Resource.Id.webView);
             baseView = FindViewById<FrameLayout>(Resource.Id.rootView);
             mProgressBar = FindViewById<ProgressBar>(Resource.Id.progressBar);
@@ -146,7 +165,7 @@ namespace myTNB_Android.Src.ViewBill.Activity
             //webView.Settings.JavaScriptEnabled = (true);
             ////webView.SetWebChromeClient(new WebChromeClient());
             //webView.SetWebViewClient(new MyTNBWebViewClient(this, mProgressBar, downloadOption));
-            pdfViewer = FindViewById<SfPdfViewer>(Resource.Id.pdfviewercontrol);
+                pdfViewer = FindViewById<SfPdfViewer>(Resource.Id.pdf_viewer_control_view);
             //InputMethodManager inputMethodManager = (InputMethodManager)baseView.Context.GetSystemService(Context.InputMethodService);
             //inputMethodManager.HideSoftInputFromWindow(baseView.WindowToken, HideSoftInputFlags.None);
 
@@ -219,6 +238,7 @@ namespace myTNB_Android.Src.ViewBill.Activity
 
             public override bool ShouldOverrideUrlLoading(WebView view, string url)
             {
+                try {
                 if (ConnectionUtils.HasInternetConnection(mActivity))
                 {
                     view.LoadUrl(url);
@@ -227,11 +247,17 @@ namespace myTNB_Android.Src.ViewBill.Activity
                 {
                     ShowErrorMessageNoInternet(url);
                 }
+                }
+                catch (Exception e)
+                {
+                    Utility.LoggingNonFatalError(e);
+                }
                 return true;
             }
 
             public override void OnPageStarted(WebView view, string url, Android.Graphics.Bitmap favicon)
             {
+                try {
                 if (ConnectionUtils.HasInternetConnection(mActivity))
                 {
                     base.OnPageStarted(view, url, favicon);
@@ -245,14 +271,25 @@ namespace myTNB_Android.Src.ViewBill.Activity
                 {
                     ShowErrorMessageNoInternet(url);
                 }
+                }
+                catch (Exception e)
+                {
+                    Utility.LoggingNonFatalError(e);
+                }
             }
 
             public override void OnPageFinished(WebView view, string url)
             {
+                try {
                 progressBar.Visibility = ViewStates.Gone;
                 if (this.download != null)
                 {
                     this.download.SetVisible(true);
+                }
+                }
+                catch (Exception e)
+                {
+                    Utility.LoggingNonFatalError(e);
                 }
             }
         }
@@ -266,6 +303,7 @@ namespace myTNB_Android.Src.ViewBill.Activity
 
         public override bool OnOptionsItemSelected(IMenuItem item)
         {
+            try {
             switch (item.ItemId)
             {
                 case Resource.Id.action_download:
@@ -283,6 +321,11 @@ namespace myTNB_Android.Src.ViewBill.Activity
                         RequestPermissions(new string[] { Manifest.Permission.WriteExternalStorage }, Constants.RUNTIME_PERMISSION_STORAGE_REQUEST_CODE);
                     }
                     return true;
+            }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
             }
             return base.OnOptionsItemSelected(item);
         }
@@ -310,8 +353,13 @@ namespace myTNB_Android.Src.ViewBill.Activity
                 try
                 {
                     Java.IO.File file = new Java.IO.File(filePath);
-                    Stream PdfStream = File.Open(file.AbsolutePath, FileMode.Open);//Assets.Open(path);
-                    pdfViewer.LoadDocument(PdfStream);
+                        //Patch done by Jeeva on 26-12-2018.As per the App Code Scanning Report...
+                        using(Stream PdfStream = File.Open(file.AbsolutePath, FileMode.Open)) {
+                            pdfViewer.LoadDocument(PdfStream);
+                        }
+                    //Stream PdfStream = File.Open(file.AbsolutePath, FileMode.Open);//Assets.Open(path);
+                    //pdfViewer.LoadDocument(PdfStream);
+                        //Patch done by Jeeva on 26-12-2018.As per the App Code Scanning Report...
                 }catch(Exception e){
                     Log.Debug("ViewBillActivity", e.Message);
                 }
@@ -405,11 +453,12 @@ namespace myTNB_Android.Src.ViewBill.Activity
 
         public static void ShowErrorMessageNoInternet(string failingUrl)
         {
+            try {
             if (mErrorNoInternet != null && mErrorNoInternet.IsShown)
             {
                 mErrorNoInternet.Dismiss();
             }
-
+           
             mErrorNoInternet = Snackbar.Make(baseView, "Please check your internet connection.", Snackbar.LengthIndefinite)
             .SetAction("Try Again", delegate {
                 //webView.LoadUrl(failingUrl);
@@ -420,6 +469,11 @@ namespace myTNB_Android.Src.ViewBill.Activity
             tv.SetMaxLines(5);
 
             mErrorNoInternet.Show();
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         protected override void OnDestroy()
@@ -435,8 +489,11 @@ namespace myTNB_Android.Src.ViewBill.Activity
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Permission[] grantResults)
         {
             base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
+            try {
             if (requestCode == Constants.RUNTIME_PERMISSION_STORAGE_REQUEST_CODE)
             {
+                if (Utility.IsPermissionHasCount(grantResults))
+                {
                 if (grantResults[0] == Permission.Granted)
                 {
                     RunOnUiThread(() => {
@@ -444,13 +501,17 @@ namespace myTNB_Android.Src.ViewBill.Activity
                     });
 
                 }
+                }
+            }
+            } catch(Exception e) {
+                Utility.LoggingNonFatalError(e);
             }
         }
 
         public override void OnTrimMemory(TrimMemory level)
         {
             base.OnTrimMemory(level);
-
+            try {
             switch (level)
             {
                 case TrimMemory.RunningLow:
@@ -461,6 +522,11 @@ namespace myTNB_Android.Src.ViewBill.Activity
                     GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
                     GC.Collect();
                     break;
+            }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
             }
         }
     }

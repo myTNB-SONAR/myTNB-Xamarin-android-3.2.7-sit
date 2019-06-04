@@ -653,23 +653,26 @@ namespace myTNB_Android.Src.FindUs.Activity
             base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
             if(requestCode == Constants.RUNTIME_PERMISSION_LOCATION_REQUEST_CODE)
             {
-                if (grantResults[0] == Permission.Granted)
+                if (Utility.IsPermissionHasCount(grantResults))
                 {
-                    RunOnUiThread(() => {
-                        OnLoad();
-                    });
-                    
-                    if (_currentLocation != null)
+                    if (grantResults[0] == Permission.Granted)
                     {
-                        SetCurrentLoation(new LatLng(_currentLocation.Latitude, _currentLocation.Longitude));
-                        userActionsListener.GetLocations(Constants.APP_CONFIG.API_KEY_ID, GoogelApiKey, _currentLocation.Latitude.ToString(), _currentLocation.Longitude.ToString(), "ALL", mLocationDescription);
+                        RunOnUiThread(() =>
+                        {
+                            OnLoad();
+                        });
+
+                        if (_currentLocation != null)
+                        {
+                            SetCurrentLoation(new LatLng(_currentLocation.Latitude, _currentLocation.Longitude));
+                            userActionsListener.GetLocations(Constants.APP_CONFIG.API_KEY_ID, GoogelApiKey, _currentLocation.Latitude.ToString(), _currentLocation.Longitude.ToString(), "ALL", mLocationDescription);
+                        }
+                    }
+                    else
+                    {
+                        this.Finish();
                     }
                 }
-                else
-                {
-                    this.Finish();
-                }
-
             }
         }
 

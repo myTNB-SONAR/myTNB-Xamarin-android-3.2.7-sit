@@ -67,45 +67,52 @@ namespace myTNB_Android.Src.Utils.Custom.ProgressButton
         }
         public void Start(ResendButton button, Activity activity)
         {
-
-
-
-            counter = 0;
-            if (action != null)
+            try
             {
-                messageHandler.RemoveCallbacks(action);
-            }
-            action = () => UpdateProgress(button, 0);
-
-
-            activity.RunOnUiThread(() => {
+                counter = 0;
+                if (action != null)
+                {
+                    messageHandler.RemoveCallbacks(action);
+                }
                 action = () => UpdateProgress(button, 0);
-                messageHandler.PostDelayed(action, generateDelay());
-            });
+
+
+                activity.RunOnUiThread(() =>
+                {
+                    action = () => UpdateProgress(button, 0);
+                    messageHandler.PostDelayed(action, generateDelay());
+                });
+            }catch(Exception e){
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         void UpdateProgress(ResendButton button, float progress)
         {
 
-            
-            Progress += progressSlice;
-            button.SetProgress(Progress);
-            counter++;
-            if (counter < MaxCounter)
+            try
             {
-                action = () => UpdateProgress(button, Progress);
-                messageHandler.PostDelayed(action, generateDelay());
-                mListener.OnProgress(counter);
-            }
-            else
-            {
-                mListener.OnComplete();
-                if (action != null)
+                Progress += progressSlice;
+                button.SetProgress(Progress);
+                counter++;
+                if (counter < MaxCounter)
                 {
-                    messageHandler.RemoveCallbacks(action);
+                    action = () => UpdateProgress(button, Progress);
+                    messageHandler.PostDelayed(action, generateDelay());
+                    mListener.OnProgress(counter);
                 }
-                
+                else
+                {
+                    mListener.OnComplete();
+                    if (action != null)
+                    {
+                        messageHandler.RemoveCallbacks(action);
+                    }
 
+
+                }
+            }catch(Exception e){
+                Utility.LoggingNonFatalError(e);
             }
         }
 

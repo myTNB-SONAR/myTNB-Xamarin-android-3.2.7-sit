@@ -36,7 +36,15 @@ namespace myTNB_Android.Src.AddAccount.Fragment
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-            selectedAccountType = JsonConvert.DeserializeObject<AccountType>(Intent.Extras.GetString("selectedAccountType"));
+            Bundle extras = Intent.Extras;
+
+            if (extras != null)
+            {
+                if (extras.ContainsKey("selectedAccountType")) {
+                    //selectedAccountType = JsonConvert.DeserializeObject<AccountType>(extras.GetString("selectedAccountType"));
+                    selectedAccountType = DeSerialze<AccountType>(extras.GetString("selectedAccountType"));
+                }
+            }
 
             AccountType Residential = new AccountType();
             Residential.Id = "1";

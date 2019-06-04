@@ -6,6 +6,7 @@ using Android.Support.V4.App;
 using myTNB_Android.Src.Utils.Custom.Scanner;
 using Android.Util;
 using Android.Support.Design.Widget;
+using myTNB_Android.Src.Utils;
 
 namespace ZXing.Mobile
 {
@@ -58,6 +59,7 @@ namespace ZXing.Mobile
         public override void OnStart()
         {
             base.OnStart();
+            try {
             // won't be 0 if OnCreateView has been called before.
             if (frame.ChildCount == 0)
             {
@@ -70,10 +72,16 @@ namespace ZXing.Mobile
                 else if (CustomOverlayView != null)
                     frame.AddView (CustomOverlayView, layoutParams);
             }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public override void OnStop()
         {
+            try {
             if (scanner != null)
             {
                 scanner.StopScanning();
@@ -87,6 +95,11 @@ namespace ZXing.Mobile
                 frame.RemoveView(CustomOverlayView);
 
             base.OnStop();
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         private LinearLayout.LayoutParams getChildLayoutParams()
@@ -127,6 +140,7 @@ namespace ZXing.Mobile
 
         public void StartScanning (Action<Result> scanResultHandler, MobileBarcodeScanningOptions options = null)
         {            
+            try {
             ScanningOptions = options;
             scanCallback = scanResultHandler;
 
@@ -136,6 +150,11 @@ namespace ZXing.Mobile
             }
 
             scan ();
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         void scan ()
@@ -183,18 +202,30 @@ namespace ZXing.Mobile
         
         public void SetErrorMessage(string errorMessage)
         {
+            try {
             zxingOverlay.Error = true;
             zxingOverlay.BottomText = errorMessage;
             zxingOverlay.BottomTextColor = Android.Graphics.Color.ParseColor("#e44b21");
             zxingOverlay.Invalidate();
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public void SetSuccess()
         {
+            try {
             zxingOverlay.Error = false;
             zxingOverlay.BottomText = "Invalid barcode.";
             zxingOverlay.BottomTextColor = Android.Graphics.Color.ParseColor("#6dbe5b");
             zxingOverlay.Invalidate();
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 	}
 }

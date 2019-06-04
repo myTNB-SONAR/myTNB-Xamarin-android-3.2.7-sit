@@ -34,7 +34,6 @@
                     android:layout_height="wrap_content"
                     android:textSize="16sp"
                     android:drawableLeft="@drawable/placeholder_name"
-                    android:digits="@string/name_validation_digits"
                     android:id="@+id/account_label_edittext" />
             </android.support.design.widget.TextInputLayout>
             <TextView

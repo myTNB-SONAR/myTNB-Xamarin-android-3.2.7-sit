@@ -4,6 +4,7 @@ using myTNB.SitecoreCMS.Model;
 using System;
 using myTNB_Android.Src.Utils;
 using myTNB.SitecoreCM.Models;
+using myTNB_Android.Src.Database;
 
 namespace myTNB.SQLite.SQLiteDataManager
 {
@@ -11,7 +12,8 @@ namespace myTNB.SQLite.SQLiteDataManager
     {
         public void CreateTable()
         {
-            var db = new SQLiteConnection(Constants.DB_PATH);
+            //var db = new SQLiteConnection(Constants.DB_PATH);
+            var db = DBHelper.GetSQLiteConnection();
             List<SQLiteConnection.ColumnInfo> info = db.GetTableInfo("PromotionsEntity");
             db.CreateTable<PromotionsEntity>();
         }
@@ -20,7 +22,8 @@ namespace myTNB.SQLite.SQLiteDataManager
         {
             try
             {
-                var db = new SQLiteConnection(Constants.DB_PATH);
+                //var db = new SQLiteConnection(Constants.DB_PATH);
+                var db = DBHelper.GetSQLiteConnection();
                 int newRecord = db.InsertOrReplace(item);
                 Console.WriteLine("Insert Record: {0}", newRecord );
             }
@@ -59,7 +62,8 @@ namespace myTNB.SQLite.SQLiteDataManager
             List<PromotionsEntity> itemList = new List<PromotionsEntity>();
             try
             {
-                var db = new SQLiteConnection(Constants.DB_PATH);
+                //var db = new SQLiteConnection(Constants.DB_PATH);
+                var db = DBHelper.GetSQLiteConnection();
                 itemList = db.Query<PromotionsEntity>("select * from PromotionsEntity");
             }catch(Exception e){
                 Console.WriteLine("Error in Get All Items : {0}", e.Message);
@@ -70,7 +74,8 @@ namespace myTNB.SQLite.SQLiteDataManager
         public void DeleteTable(){
             try
             {
-                var db = new SQLiteConnection(Constants.DB_PATH);
+                //var db = new SQLiteConnection(Constants.DB_PATH);
+                var db = DBHelper.GetSQLiteConnection();
                 db.DeleteAll<PromotionsEntity>();
             }
             catch (Exception e)
@@ -83,7 +88,8 @@ namespace myTNB.SQLite.SQLiteDataManager
         {
             try
             {
-                var db = new SQLiteConnection(Constants.DB_PATH);
+                //var db = new SQLiteConnection(Constants.DB_PATH);
+                var db = DBHelper.GetSQLiteConnection();
                 var existingRecord = db.Query<PromotionsEntity>("SELECT * FROM PromotionsEntity WHERE ID = ? ", item.ID);
 
                 if (existingRecord != null && existingRecord.Count > 0)
@@ -105,7 +111,8 @@ namespace myTNB.SQLite.SQLiteDataManager
         {
             try
             {
-                var db = new SQLiteConnection(Constants.DB_PATH);
+                //var db = new SQLiteConnection(Constants.DB_PATH);
+                var db = DBHelper.GetSQLiteConnection();
                 var existingRecord = db.Query<PromotionsEntity>("SELECT * FROM PromotionsEntity WHERE Read = ? ", false);
 
                 if (existingRecord != null && existingRecord.Count > 0)

@@ -1,8 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+<!-- The launcher theme. It sets the main window background to the launch_screen drawable -->
+  <!--<style name="Theme.Launch" parent="@style/App.FullScreenTheme">
+        <item name="android:windowBackground">@drawable/launch_screen</item>
+    </style>-->
+    
+    <!-- Optional, on Android 5+ you can modify the colorPrimaryDark color to match the windowBackground color for further branding-->
+    <!-- <item name="colorPrimaryDark">@android:color/white</item> -->
+
+	
   <!-- See values-v21 for App.BaseTheme in Styles.xml this is for backward compatibility -->
   <style name="Theme.Launch" parent="@style/App.FullScreenTheme">
-    <item name="android:windowBackground">@drawable/GradientBackground</item>
+		<item name="android:windowBackground">@drawable/launch_screen</item>
+<!--    <item name="android:windowBackground">@drawable/GradientBackground</item>
     <item name="android:windowNoTitle">true</item>
 
     <item name="android:textColorPrimary">@color/tunaGrey</item>
@@ -21,6 +31,6 @@
     <item name="android:colorControlNormal">@color/silverChalice</item>
     <item name="android:colorControlHighlight">@color/tunaGrey</item>
     <item name="android:colorControlActivated">@color/tunaGrey</item>
-    <item name="android:textColorHint">@color/silverChalice</item>
+    <item name="android:textColorHint">@color/silverChalice</item>-->
   </style>
 </resources>

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using myTNB.SitecoreCMS.Model;
 using System;
 using myTNB_Android.Src.Utils;
+using myTNB_Android.Src.Database;
 
 namespace myTNB.SQLite.SQLiteDataManager
 {
@@ -10,18 +11,24 @@ namespace myTNB.SQLite.SQLiteDataManager
     {
         public void CreateTable()
         {
-            var db = new SQLiteConnection(Constants.DB_PATH);
-            List<SQLiteConnection.ColumnInfo> info = db.GetTableInfo("PreLoginPromoEntity");
-            db.CreateTable<PreLoginPromoEntity>();
+            //using (var db = new SQLiteConnection(Constants.DB_PATH))
+            //{
+            var db = DBHelper.GetSQLiteConnection();
+                List<SQLiteConnection.ColumnInfo> info = db.GetTableInfo("PreLoginPromoEntity");
+                db.CreateTable<PreLoginPromoEntity>();
+            //}
         }
 
         public void InsertItem(PreLoginPromoEntity item)
         {
             try
             {
-                var db = new SQLiteConnection(Constants.DB_PATH);
-                int newRecord = db.InsertOrReplace(item);
-                Console.WriteLine("Insert Record: {0}", newRecord );
+                //using (var db = new SQLiteConnection(Constants.DB_PATH))
+                //{
+                var db = DBHelper.GetSQLiteConnection();
+                    int newRecord = db.InsertOrReplace(item);
+                    Console.WriteLine("Insert Record: {0}", newRecord);
+                //}
             }
             catch (Exception e)
             {
@@ -49,8 +56,11 @@ namespace myTNB.SQLite.SQLiteDataManager
             List<PreLoginPromoEntity> itemList = new List<PreLoginPromoEntity>();
             try
             {
-                var db = new SQLiteConnection(Constants.DB_PATH);
-                itemList = db.Query<PreLoginPromoEntity>("select * from PreLoginPromoEntity");
+                //using (var db = new SQLiteConnection(Constants.DB_PATH))
+                //{
+                var db = DBHelper.GetSQLiteConnection();
+                    itemList = db.Query<PreLoginPromoEntity>("select * from PreLoginPromoEntity");
+                //}
             }catch(Exception e){
                 Console.WriteLine("Error in Get All Items : {0}", e.Message);
             }
@@ -60,8 +70,11 @@ namespace myTNB.SQLite.SQLiteDataManager
         public void DeleteTable(){
             try
             {
-                var db = new SQLiteConnection(Constants.DB_PATH);
-                db.DeleteAll<PreLoginPromoEntity>();
+                //using (var db = new SQLiteConnection(Constants.DB_PATH))
+                //{
+                var db = DBHelper.GetSQLiteConnection();
+                    db.DeleteAll<PreLoginPromoEntity>();
+                //}
             }
             catch (Exception e)
             {

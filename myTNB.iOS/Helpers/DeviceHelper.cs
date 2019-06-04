@@ -34,6 +34,7 @@ namespace myTNB
             }
             return size;
         }
+
         /// <summary>
         /// Checks if device is iPhone X and higher resolution
         /// </summary>

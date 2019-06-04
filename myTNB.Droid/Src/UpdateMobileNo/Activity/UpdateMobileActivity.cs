@@ -63,24 +63,25 @@ namespace myTNB_Android.Src.UpdateMobileNo.Activity
             base.OnCreate(savedInstanceState);
 
             try {
-            Intent intent = Intent;
+                Bundle intent = Intent.Extras;
             
             if (intent != null)
             {
-                if (intent.HasExtra(Constants.FORCE_UPDATE_PHONE_NO))
+                    if (intent.ContainsKey(Constants.FORCE_UPDATE_PHONE_NO))
                 {
-                    forceUpdatePhoneNo = intent.GetBooleanExtra(Constants.FORCE_UPDATE_PHONE_NO, false);
+                        forceUpdatePhoneNo = intent.GetBoolean(Constants.FORCE_UPDATE_PHONE_NO, false);
                     //SupportActionBar.SetDisplayHomeAsUpEnabled(false);
                 }
 
-                if (intent.HasExtra("LoginRequest"))
+                    if (intent.ContainsKey("LoginRequest"))
                 {
-                    loginRequest = JsonConvert.DeserializeObject<UserAuthenticationRequest>(Intent.GetStringExtra("LoginRequest"));
+                        //loginRequest = JsonConvert.DeserializeObject<UserAuthenticationRequest>(intent.GetString("LoginRequest"));
+                        loginRequest = DeSerialze<UserAuthenticationRequest>(intent.GetString("LoginRequest"));
                 }
 
-                if (intent.HasExtra(Constants.FROM_APP_LAUNCH))
+                    if (intent.ContainsKey(Constants.FROM_APP_LAUNCH))
                 {
-                    fromAppLaunch = intent.GetBooleanExtra(Constants.FROM_APP_LAUNCH, false);
+                        fromAppLaunch = intent.GetBoolean(Constants.FROM_APP_LAUNCH, false);
                 }
 
             }
@@ -128,7 +129,7 @@ namespace myTNB_Android.Src.UpdateMobileNo.Activity
                     MobileNo = "+60" + MobileNo;
                 }
                 txtMobileNo.Text = MobileNo;
-            }else if (intent.HasExtra("PhoneNumber"))
+                }else if (intent.ContainsKey("PhoneNumber"))
             {
                 string MobileNo = Intent.GetStringExtra("PhoneNumber");
                 if (!MobileNo.Contains("+60"))

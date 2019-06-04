@@ -22,7 +22,7 @@ using Android.Support.Design.Widget;
 using Newtonsoft.Json;
 using myTNB_Android.Src.RegistrationForm.Models;
 using Refit;
-using myTNB_Android.Src.RegisterValidation.Receivers;
+
 using Android.Text;
 using Android.Support.V4.Content;
 using Android;
@@ -83,7 +83,7 @@ namespace myTNB_Android.Src.RegisterValidation
         [BindView(Resource.Id.txtInputLayoutNumber_4)]
         TextInputLayout txtInputLayoutNumber_4;
 
-        PinDisplayerSMSReceiver pinDisplayerSMSReceiver;
+        //PinDisplayerSMSReceiver pinDisplayerSMSReceiver;
 
         MaterialDialog registrationDialog;
         private LoadingOverlay loadingOverlay;
@@ -99,9 +99,14 @@ namespace myTNB_Android.Src.RegisterValidation
                 .Cancelable(false)
                 .Build();
 
-            Bundle extras = Intent.Extras;
-
-            UserCredentialsEntity entity = JsonConvert.DeserializeObject<UserCredentialsEntity>(extras.GetString(Constants.USER_CREDENTIALS_ENTRY));
+                Bundle extras = Intent.Extras;
+                UserCredentialsEntity entity = new UserCredentialsEntity();
+                if (extras != null) {
+                    if (extras.ContainsKey(Constants.USER_CREDENTIALS_ENTRY)) {
+                        entity = JsonConvert.DeserializeObject<UserCredentialsEntity>(extras.GetString(Constants.USER_CREDENTIALS_ENTRY));            
+                    }
+                }
+            
 
             // Create your application here
             this.mPresenter = new RegistrationValidationPresenter(this , entity, PreferenceManager.GetDefaultSharedPreferences(this));
@@ -124,7 +129,7 @@ namespace myTNB_Android.Src.RegisterValidation
             txtNumber_3.TextChanged += TxtNumber_3_TextChanged;
             txtNumber_4.TextChanged += TxtNumber_4_TextChanged;
 
-            pinDisplayerSMSReceiver = new PinDisplayerSMSReceiver(txtNumber_1 , txtNumber_2 , txtNumber_3 , txtNumber_4);
+            //pinDisplayerSMSReceiver = new PinDisplayerSMSReceiver(txtNumber_1 , txtNumber_2 , txtNumber_3 , txtNumber_4);
 
             Snackbar mPinSentInfo = Snackbar.Make(rootView, 
                 GetString(Resource.String.registration_validation_snackbar_sms_sent_msg), 
@@ -239,16 +244,16 @@ namespace myTNB_Android.Src.RegisterValidation
 
         protected override void OnPause()
         {
-            try {
-            if (pinDisplayerSMSReceiver != null)
-            {
-                UnregisterReceiver(pinDisplayerSMSReceiver);
-            }
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
+            //try {
+            //if (pinDisplayerSMSReceiver != null)
+            //{
+            //    UnregisterReceiver(pinDisplayerSMSReceiver);
+            //}
+            //}
+            //catch (Exception e)
+            //{
+            //    Utility.LoggingNonFatalError(e);
+            //}
             base.OnPause();
         }
 
@@ -256,10 +261,10 @@ namespace myTNB_Android.Src.RegisterValidation
         {
             base.OnResume();
             try {
-            if (pinDisplayerSMSReceiver != null)
-            {
-                RegisterReceiver(pinDisplayerSMSReceiver , new IntentFilter("com.myTNB.smsReceiver"));
-            }
+            //if (pinDisplayerSMSReceiver != null)
+            //{
+            //    RegisterReceiver(pinDisplayerSMSReceiver , new IntentFilter("com.myTNB.smsReceiver"));
+            //}
             this.userActionsListener.Start();
             }
             catch (Exception e)

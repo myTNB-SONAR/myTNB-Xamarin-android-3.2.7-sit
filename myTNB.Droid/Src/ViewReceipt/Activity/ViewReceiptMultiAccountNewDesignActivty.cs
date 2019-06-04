@@ -578,13 +578,17 @@ namespace myTNB_Android.Src.ViewReceipt.Activity
             base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
             if (requestCode == Constants.RUNTIME_PERMISSION_STORAGE_REQUEST_CODE)
             {
-                if (grantResults[0] == Permission.Granted)
+                if (Utility.IsPermissionHasCount(grantResults))
                 {
-                    RunOnUiThread(() => {
-                        downloadClicked = true;
+                    if (grantResults[0] == Permission.Granted)
+                    {
+                        RunOnUiThread(() =>
+                        {
+                            downloadClicked = true;
                             createPDF(response);
-                    });
+                        });
 
+                    }
                 }
             }
         }

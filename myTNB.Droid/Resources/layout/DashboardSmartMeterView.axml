@@ -383,6 +383,34 @@
                             android:layout_marginRight="@dimen/_5sdp"
                             android:alpha="0.3"
                             android:background="@color/barchartColorHighlighted" />
+                        <LinearLayout
+                            android:id="@+id/note_text_layout"
+                            android:layout_height="wrap_content"
+                            android:layout_width="match_parent"
+                            android:weightSum="1"
+                            android:gravity="center"
+                            android:padding="18dp"
+                            android:paddingBottom="@dimen/_10sdp"
+                            android:paddingTop="@dimen/_10sdp"
+                            android:orientation="horizontal">
+                            <TextView
+                                android:id="@+id/noteText"
+                                android:layout_height="wrap_content"
+                                android:layout_width="match_parent"
+                                android:textColor="@color/white"
+                                android:text="@string/note_text_sm"
+                                android:textSize="12sp" />
+                        </LinearLayout>
+                        <View
+                            android:id="@+id/noteDivider"
+                            android:layout_height="1dp"
+                            android:layout_width="match_parent"
+                            android:layout_marginTop="@dimen/_2sdp"
+                            android:layout_marginBottom="@dimen/_2sdp"
+                            android:layout_marginLeft="@dimen/_5sdp"
+                            android:layout_marginRight="@dimen/_5sdp"
+                            android:alpha="0.3"
+                            android:background="@color/barchartColorHighlighted" />
                     </LinearLayout>
                     <RelativeLayout
                         android:layout_width="match_parent"

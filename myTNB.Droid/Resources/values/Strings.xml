@@ -1347,12 +1347,17 @@ Please try again later.]]>
 	<string name="name_error">Name should not contain special characters.</string> 
 
 	<!-- Crashlytics -->
-	<string name="com.crashlytics.android.build_id">v1.1.0</string>
+	<string name="com.crashlytics.android.build_id">v1.1.1.8</string>
 
 
 	<string name="invalid_charac">Invalid characters. Use letters or numbers only.</string>
 
 	<string name="name_validation_digits">abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789</string>
 	<string name="invalid_state">Invalid State</string>
+
+	<string name="note_text_sm">Note: Your usage above is before applicable taxes/additional charges.</string>
+    
+    <string name="summary_dashboard_error_refresh">We can’t get your account details at the moment. Please refresh this page.</string>
+    <string name="text_refresh">Refresh</string>
 
 </resources>

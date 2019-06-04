@@ -62,8 +62,13 @@ namespace myTNB_Android.Src.Database.Model
 
         public static int CreateTable()
         {
-            var db = new SQLiteConnection(Constants.DB_PATH);
-            return db.CreateTable<UserNotificationEntity>();
+            //using (var db = new SQLiteConnection(Constants.DB_PATH, SQLiteOpenFlags.ReadWrite | SQLiteOpenFlags.Create | SQLiteOpenFlags.FullMutex, true))
+            //using (var db = DBHelper.GetSQLiteConnection())
+            //{
+            var db = DBHelper.GetSQLiteConnection();
+            return (int)db.CreateTable<UserNotificationEntity>();
+
+            //}
         }
 
         public static void CreateTableAsync(SQLiteAsyncConnection db)
@@ -73,33 +78,38 @@ namespace myTNB_Android.Src.Database.Model
 
         public static int InsertOrReplace(UserNotification userNotification)
         {
-            var db = new SQLiteConnection(Constants.DB_PATH);
-            var newRecord = new UserNotificationEntity()
-            {
-                Id = userNotification.Id,
-                UId = userNotification.Id,
-                Email = userNotification.Email,
-                DeviceId = userNotification.DeviceId,
-                AccountNum = userNotification.AccountNum,
-                Title = userNotification.Title,
-                Message = userNotification.Message,
-                IsRead = userNotification.IsRead,
-                IsDeleted = userNotification.IsDeleted,
-                NotificationTypeId = userNotification.NotificationTypeId,
-                BCRMNotificationTypeId = userNotification.BCRMNotificationTypeId,
-                CreatedDate = userNotification.CreatedDate,
-                NotificationType = userNotification.NotificationType,
-                Target = userNotification.Target
-            };
-            int rows = db.InsertOrReplace(newRecord);
-            return rows;
-
+            //using (var db = new SQLiteConnection(Constants.DB_PATH, SQLiteOpenFlags.ReadWrite | SQLiteOpenFlags.Create | SQLiteOpenFlags.FullMutex, true))
+            //using (var db = DBHelper.GetSQLiteConnection())
+            //{
+            var db = DBHelper.GetSQLiteConnection();
+                var newRecord = new UserNotificationEntity()
+                {
+                    Id = userNotification.Id,
+                    UId = userNotification.Id,
+                    Email = userNotification.Email,
+                    DeviceId = userNotification.DeviceId,
+                    AccountNum = userNotification.AccountNum,
+                    Title = userNotification.Title,
+                    Message = userNotification.Message,
+                    IsRead = userNotification.IsRead,
+                    IsDeleted = userNotification.IsDeleted,
+                    NotificationTypeId = userNotification.NotificationTypeId,
+                    BCRMNotificationTypeId = userNotification.BCRMNotificationTypeId,
+                    CreatedDate = userNotification.CreatedDate,
+                    NotificationType = userNotification.NotificationType,
+                    Target = userNotification.Target
+                };
+                int rows = db.InsertOrReplace(newRecord);
+                //db.Close();
+                return rows;
+            //}
 
         }
 
         public static void InsertOrReplaceAsync(UserNotification userNotification)
         {
-            var db = new SQLiteAsyncConnection(Constants.DB_PATH);
+            //var db = new SQLiteAsyncConnection(Constants.DB_PATH, SQLiteOpenFlags.ReadWrite | SQLiteOpenFlags.Create | SQLiteOpenFlags.FullMutex, true);
+            var db = DBHelper.GetSQLiteConnection();
             var newRecord = new UserNotificationEntity()
             {
                 Id = userNotification.Id,
@@ -118,55 +128,112 @@ namespace myTNB_Android.Src.Database.Model
                 Target = userNotification.Target
             };
 
-            db.InsertOrReplaceAsync(newRecord);
+            //db.InsertOrReplaceAsync(newRecord);
+            db.InsertOrReplace(newRecord);
+
         }
 
         public static void UpdateIsRead(string notificationId, bool isRead)
         {
-            var db = new SQLiteConnection(Constants.DB_PATH);
-            db.Execute("UPDATE UserNotificationEntity set IsRead = ? WHERE Id = ?" , isRead , notificationId);
+            //using (var db = new SQLiteConnection(Constants.DB_PATH, SQLiteOpenFlags.ReadWrite | SQLiteOpenFlags.Create | SQLiteOpenFlags.FullMutex, true))
+            //using (var db = DBHelper.GetSQLiteConnection())
+            //{
+            var db = DBHelper.GetSQLiteConnection();
+                db.Execute("UPDATE UserNotificationEntity set IsRead = ? WHERE Id = ?", isRead, notificationId);
+                //db.Close();
+            //}
         }
 
         public static void UpdateIsDeleted(string notificationId , bool isDeleted)
         {
-            var db = new SQLiteConnection(Constants.DB_PATH);
-            db.Execute("UPDATE UserNotificationEntity set IsDeleted = ? WHERE Id = ?", isDeleted, notificationId);
+            //using (var db = new SQLiteConnection(Constants.DB_PATH, SQLiteOpenFlags.ReadWrite | SQLiteOpenFlags.Create | SQLiteOpenFlags.FullMutex, true))
+            //using (var db = DBHelper.GetSQLiteConnection())
+            //{
+            var db = DBHelper.GetSQLiteConnection();
+                db.Execute("UPDATE UserNotificationEntity set IsDeleted = ? WHERE Id = ?", isDeleted, notificationId);
+                //db.Close();
+            //}
         }
 
         public static UserNotificationEntity GetById(string Id)
         {
-            var db = new SQLiteConnection(Constants.DB_PATH);
-            return db.Query<UserNotificationEntity>("SELECT * FROM UserNotificationEntity WHERE Id = ?" , Id)[0];
+            //using (var db = new SQLiteConnection(Constants.DB_PATH, SQLiteOpenFlags.ReadWrite | SQLiteOpenFlags.Create | SQLiteOpenFlags.FullMutex, true))
+            //using (var db = DBHelper.GetSQLiteConnection())
+            //{
+            var db = DBHelper.GetSQLiteConnection();
+                UserNotificationEntity userNotificationEntity = new UserNotificationEntity();
+                userNotificationEntity = db.Query<UserNotificationEntity>("SELECT * FROM UserNotificationEntity WHERE Id = ?", Id)[0];
+                //db.Close();
+                return userNotificationEntity;
+                //return db.Query<UserNotificationEntity>("SELECT * FROM UserNotificationEntity WHERE Id = ?", Id)[0];
+            //}
         }
 
         public static List<UserNotificationEntity> ListAllActive()
         {
-            var db = new SQLiteConnection(Constants.DB_PATH);
-            return db.Query<UserNotificationEntity>("SELECT * FROM UserNotificationEntity WHERE IsDeleted = ?" , false).ToList<UserNotificationEntity>();
+            //using (var db = new SQLiteConnection(Constants.DB_PATH, SQLiteOpenFlags.ReadWrite | SQLiteOpenFlags.Create | SQLiteOpenFlags.FullMutex, true))
+            //using (var db = DBHelper.GetSQLiteConnection())
+            //{
+            var db = DBHelper.GetSQLiteConnection();
+                List<UserNotificationEntity> activeList = new List<UserNotificationEntity>();
+                activeList = db.Query<UserNotificationEntity>("SELECT * FROM UserNotificationEntity WHERE IsDeleted = ?", false).ToList<UserNotificationEntity>();
+                //db.Close();
+                return activeList;
+                //return db.Query<UserNotificationEntity>("SELECT * FROM UserNotificationEntity WHERE IsDeleted = ?", false).ToList<UserNotificationEntity>();
+            //}
         }
 
         public static List<UserNotificationEntity> ListFiltered(string notificationTypeId)
         {
-            var db = new SQLiteConnection(Constants.DB_PATH);
-            return db.Query<UserNotificationEntity>("SELECT * FROM UserNotificationEntity WHERE IsDeleted = ? AND NotificationTypeId = ?", false , notificationTypeId).ToList<UserNotificationEntity>();
+            //using (var db = new SQLiteConnection(Constants.DB_PATH, SQLiteOpenFlags.ReadWrite | SQLiteOpenFlags.Create | SQLiteOpenFlags.FullMutex, true))
+            //using (var db = DBHelper.GetSQLiteConnection())
+            //{
+            var db = DBHelper.GetSQLiteConnection();
+                List<UserNotificationEntity> filteredList = new List<UserNotificationEntity>();
+                filteredList = db.Query<UserNotificationEntity>("SELECT * FROM UserNotificationEntity WHERE IsDeleted = ? AND NotificationTypeId = ?", false, notificationTypeId).ToList<UserNotificationEntity>();
+                //db.Close();
+                return filteredList;
+                //return db.Query<UserNotificationEntity>("SELECT * FROM UserNotificationEntity WHERE IsDeleted = ? AND NotificationTypeId = ?", false, notificationTypeId).ToList<UserNotificationEntity>();
+            //}
         }
 
         public static int Count()
         {
-            var db = new SQLiteConnection(Constants.DB_PATH);
-            return db.Query<UserNotificationEntity>("SELECT * FROM UserNotificationEntity WHERE IsRead = ? AND IsDeleted = ?", false, false).Count;
+            //using (var db = new SQLiteConnection(Constants.DB_PATH, SQLiteOpenFlags.ReadWrite | SQLiteOpenFlags.Create | SQLiteOpenFlags.FullMutex, true))
+            //using (var db = DBHelper.GetSQLiteConnection())
+            //{
+            var db = DBHelper.GetSQLiteConnection();
+                int count = db.Query<UserNotificationEntity>("SELECT * FROM UserNotificationEntity WHERE IsRead = ? AND IsDeleted = ?", false, false).Count;
+                //db.Close();
+                return count;
+                //return db.Query<UserNotificationEntity>("SELECT * FROM UserNotificationEntity WHERE IsRead = ? AND IsDeleted = ?", false, false).Count;
+            //}
         }
 
         public static void RemoveAll()
         {
-            var db = new SQLiteConnection(Constants.DB_PATH);
-            db.Execute("DELETE FROM UserNotificationEntity");
+            //using (var db = new SQLiteConnection(Constants.DB_PATH, SQLiteOpenFlags.ReadWrite | SQLiteOpenFlags.Create | SQLiteOpenFlags.FullMutex, true))
+            //using (var db = DBHelper.GetSQLiteConnection())
+            //{
+            var db = DBHelper.GetSQLiteConnection();
+                db.Execute("DELETE FROM UserNotificationEntity");
+                //db.Close();
+            //}
         }
 
         public static bool HasNotifications()
         {
-            var db = new SQLiteConnection(Constants.DB_PATH);
-            return db.Query<UserNotificationEntity>("SELECT * FROM UserNotificationEntity WHERE IsRead = ? AND IsDeleted = ?" , false , false ).Count > 0;
+            //using (var db = new SQLiteConnection(Constants.DB_PATH))
+            //{
+            //int count = db.Query<UserNotificationEntity>("SELECT * FROM UserNotificationEntity WHERE IsRead = ? AND IsDeleted = ?", false, false).Count;
+            //db.Close();
+            //if (Count() > 0) {
+            //    return true;
+            //} else {
+            //    return false;
+            //}
+            //}
+            return (Count() > 0);
         }
 
     }

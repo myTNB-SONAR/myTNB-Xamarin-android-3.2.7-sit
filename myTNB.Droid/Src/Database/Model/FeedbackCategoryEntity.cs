@@ -28,45 +28,60 @@ namespace myTNB_Android.Src.Database.Model
 
         public static int CreateTable()
         {
-            var db = new SQLiteConnection(Constants.DB_PATH);
-            return db.CreateTable<FeedbackCategoryEntity>();
+            //using (var db = new SQLiteConnection(Constants.DB_PATH))
+            //{
+            var db = DBHelper.GetSQLiteConnection();
+            return (int)db.CreateTable<FeedbackCategoryEntity>();
+            //}
         }
 
         public static int InsertOrReplace(FeedbackCategory feedback)
         {
-            var db = new SQLiteConnection(Constants.DB_PATH);
-            var newRecord = new FeedbackCategoryEntity()
-            {
-                Id = feedback.FeedbackCategoryId,
-                Name = feedback.FeedbackCategoryName
-            };
+            //using (var db = new SQLiteConnection(Constants.DB_PATH))
+            //{
+            var db = DBHelper.GetSQLiteConnection();
+                var newRecord = new FeedbackCategoryEntity()
+                {
+                    Id = feedback.FeedbackCategoryId,
+                    Name = feedback.FeedbackCategoryName
+                };
 
 
-            int newRecordRow = db.InsertOrReplace(newRecord);
+                int newRecordRow = db.InsertOrReplace(newRecord);
 
-            return newRecordRow;
+                return newRecordRow;
+            //}
         }
 
 
 
         public static void RemoveActive()
         {
-            var db = new SQLiteConnection(Constants.DB_PATH);
-            db.Execute("DELETE FROM FeedbackCategoryEntity");
+            //using (var db = new SQLiteConnection(Constants.DB_PATH))
+            //{
+            var db = DBHelper.GetSQLiteConnection();
+                db.Execute("DELETE FROM FeedbackCategoryEntity");
+            //}
         }
 
 
         public static bool HasRecords()
         {
-            var db = new SQLiteConnection(Constants.DB_PATH);
-            return db.Query<FeedbackCategoryEntity>("SELECT * FROM FeedbackCategoryEntity").Count > 0;
+            //using (var db = new SQLiteConnection(Constants.DB_PATH))
+            //{
+            var db = DBHelper.GetSQLiteConnection();
+                return db.Query<FeedbackCategoryEntity>("SELECT * FROM FeedbackCategoryEntity").Count > 0;
+            //}
         }
 
 
         public static List<FeedbackCategoryEntity> GetActiveList()
         {
-            var db = new SQLiteConnection(Constants.DB_PATH);
-            return db.Query<FeedbackCategoryEntity>("SELECT * FROM FeedbackCategoryEntity").ToList();
+            //using (var db = new SQLiteConnection(Constants.DB_PATH))
+            //{
+            var db = DBHelper.GetSQLiteConnection();
+                return db.Query<FeedbackCategoryEntity>("SELECT * FROM FeedbackCategoryEntity").ToList();
+            //}
         }
     }
 }

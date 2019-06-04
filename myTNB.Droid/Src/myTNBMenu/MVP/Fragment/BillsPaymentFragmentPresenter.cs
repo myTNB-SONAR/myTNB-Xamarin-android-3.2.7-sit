@@ -19,11 +19,14 @@ using System.Threading;
 using Android.Util;
 using myTNB_Android.Src.Database.Model;
 using Newtonsoft.Json;
+using myTNB_Android.Src.AddAccount.Models;
 
 namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
 {
     public class BillsPaymentFragmentPresenter : BillsPaymentFragmentContract.IUserActionsListener
     {
+
+        internal readonly string TAG = typeof(BillsPaymentFragmentPresenter).Name;
         private BillsPaymentFragmentContract.IView mView;
         private AccountData selectedAccount;
         CancellationTokenSource cts;
@@ -403,6 +406,152 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
         }
 
 
+
+
+        private async void LoadBills(CustomerBillingAccount accountSelected)
+        {
+            cts = new CancellationTokenSource();
+            //this.mView.ShowProgressDialog();
+#if STUB
+            var api = Substitute.For<IUsageHistoryApi>();
+
+            var detailedAccountApi = Substitute.For<IDetailedCustomerAccount>();
+
+            api.DoQuery(new Requests.UsageHistoryRequest(Constants.APP_CONFIG.API_KEY_ID)
+            {
+                AccountNum = accountSelected.AccNum
+            }, cts.Token)
+            .ReturnsForAnyArgs(
+                Task.Run<UsageHistoryResponse>(
+                    () => JsonConvert.DeserializeObject<UsageHistoryResponse>(this.mView.GetUsageHistoryStub())
+                ));
+ 
+            detailedAccountApi.GetDetailedAccount(new AddAccount.Requests.AccountDetailsRequest()
+            {
+                apiKeyID = Constants.APP_CONFIG.API_KEY_ID,
+                CANum = accountSelected.AccNum
+            })
+            .ReturnsForAnyArgs(
+                Task.Run<AccountDetailsResponse>(
+                    () => JsonConvert.DeserializeObject<AccountDetailsResponse>(this.mView.GetAccountDetailsStub(accountSelected.AccNum))
+                ));
+
+
+            api.GetDetailedAccount(new AddAccount.Requests.AccountDetailsRequest()
+            {
+                apiKeyID = Constants.APP_CONFIG.API_KEY_ID,
+                CANum = accountSelected.AccNum
+            })
+            .ReturnsForAnyArgs(
+                Task.Run<AccountDetailsResponse>(
+                    () => JsonConvert.DeserializeObject<AccountDetailsResponse>(this.mView.GetAccountDetailsStub(accountSelected.AccNum))
+                ));
+#elif DEBUG
+            var httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
+            var api = RestService.For<IUsageHistoryApi>(httpClient);
+
+            var detailedAccountApi = RestService.For<IDetailedCustomerAccount>(httpClient);
+#elif DEVELOP
+            var detailedAccountApi = RestService.For<IDetailedCustomerAccount>(Constants.SERVER_URL.END_POINT);
+#else
+            var detailedAccountApi = RestService.For<IDetailedCustomerAccount>(Constants.SERVER_URL.END_POINT);
+#endif
+
+            try
+            {
+                AccountDetailsResponse customerBillingDetails = null;
+
+                AccountDataEntity accountEntity = AccountDataEntity.GetItemByAccountNo(accountSelected.AccNum);
+                if (accountEntity != null)
+                {
+                    customerBillingDetails = JsonConvert.DeserializeObject<AccountDetailsResponse>(accountEntity.JsonResponse);
+                }
+
+
+                if (customerBillingDetails == null)
+                {
+                    //if (mView.IsActive())
+                    //{
+                    //    this.mView.ShowProgressDialog();
+                    //}
+                    customerBillingDetails = await detailedAccountApi.GetDetailedAccount(new AddAccount.Requests.AccountDetailsRequest()
+
+                    {
+                        apiKeyID = Constants.APP_CONFIG.API_KEY_ID,
+                        CANum = accountSelected.AccNum
+                    }, cts.Token);
+                }
+
+
+                //if (this.mView.IsActive())
+                //{
+                //    this.mView.HideProgressDialog();
+                //}
+                if (!customerBillingDetails.Data.IsError)
+                {
+                    AccountData accountData = AccountData.Copy(customerBillingDetails.Data.AccountData, true);
+                    CustomerBillingAccount customerBillingAccount = CustomerBillingAccount.FindByAccNum(accountData.AccountNum);
+                    accountData.AccountNickName = accountSelected.AccDesc;
+                    accountData.AccountName = accountSelected.OwnerName;
+                    accountData.AddStreet = accountSelected.AccountStAddress;
+                    accountData.IsOwner = customerBillingAccount.isOwned;
+                    accountData.AccountCategoryId = customerBillingAccount.AccountCategoryId;
+
+                    //this.mView.ShowAccountName();
+                    //this.mView.EnableDropDown(true);
+                    //this.mView.SetToolbarTitle(Resource.String.bill_menu_activity_title);
+                    //currentBottomNavigationMenu = Resource.Id.menu_bill;
+                    //this.mView.ShowBillMenu(accountData);
+                    selectedAccount = accountData;
+                    this.mView.SetBillDetails(accountData);
+
+                }
+                else
+                {
+                    // TODO : SHOW ERROR WHEN NO BILLING IS RETURNED
+                }
+
+                //this.mView.SetAccountName(accountSelected.AccDesc);
+            }
+            catch (System.OperationCanceledException e)
+            {
+                Log.Debug(TAG, "Cancelled Exception");
+                // ADD OPERATION CANCELLED HERE
+                //if (this.mView.IsActive())
+                //{
+                //    this.mView.HideProgressDialog();
+                //}
+                Utility.LoggingNonFatalError(e);
+                //this.mView.ShowRetryOptionsCancelledException(e);
+            }
+            catch (ApiException apiException)
+            {
+                // ADD HTTP CONNECTION EXCEPTION HERE
+                //if (this.mView.IsActive())
+                //{
+                //    this.mView.HideProgressDialog();
+                //}
+                //this.mView.ShowRetryOptionsApiException(apiException);
+                Utility.LoggingNonFatalError(apiException);
+            }
+            catch (System.Exception e)
+            {
+                // ADD UNKNOWN EXCEPTION HERE
+                Log.Debug(TAG, "Stack " + e.StackTrace);
+                //if (this.mView.IsActive())
+                //{
+                //    this.mView.HideProgressDialog();
+                //}
+                //this.mView.ShowRetryOptionsUnknownException(e);
+
+                Utility.LoggingNonFatalError(e);
+            }
+
+
+
+        }
+
+
         private async void LoadingREPaymentHistory()
         {
 
@@ -495,6 +644,34 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
 
                 Utility.LoggingNonFatalError(e);
             }
+        }
+
+        void BillsPaymentFragmentContract.IUserActionsListener.LoadBills(CustomerBillingAccount accountSelected)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void RefreshData()
+        {
+            CustomerBillingAccount selected = new CustomerBillingAccount();
+            if (CustomerBillingAccount.HasSelected())
+            {
+                selected = CustomerBillingAccount.GetSelected();
+                //LoadBills(selected);
+                //this.mView.SetAccountName(selected.AccDesc);
+            }
+            else
+            {
+                List<CustomerBillingAccount> accountList = new List<CustomerBillingAccount>();
+                accountList = CustomerBillingAccount.List();
+                CustomerBillingAccount.SetSelected(accountList[0].AccNum);
+                selected = CustomerBillingAccount.GetSelected();
+                //LoadBills(selected);
+                //this.mView.SetAccountName(accountList[0].AccDesc);
+            }
+
+            LoadBills(selected);
+            //Start();
         }
     }
 }

@@ -54,8 +54,11 @@ namespace myTNB_Android.Src.Database.Model
 
         public static int CreateTable()
         {
-            var db = new SQLiteConnection(Constants.DB_PATH);
-            return db.CreateTable<NotificationChannelEntity>();
+            //using (var db = new SQLiteConnection(Constants.DB_PATH))
+            //{
+            var db = DBHelper.GetSQLiteConnection();
+            return (int)db.CreateTable<NotificationChannelEntity>();
+            //}
         }
 
         public static void CreateTableAsync(SQLiteAsyncConnection db)
@@ -65,27 +68,31 @@ namespace myTNB_Android.Src.Database.Model
 
         public static int InsertOrReplace(NotificationChannels channels)
         {
-            var db = new SQLiteConnection(Constants.DB_PATH);
-            var newRecord = new NotificationChannelEntity()
-            {
-                Id = channels.Id,
-                Title = channels.Title,
-                Code = channels.Code,
-                PreferenceMode = channels.PreferenceMode,
-                Type = channels.Type,
-                CreatedDate = channels.CreatedDate,
-                MasterId = channels.MasterId,
-                IsOpted = channels.IsOpted
-            };
+            //using (var db = new SQLiteConnection(Constants.DB_PATH))
+            //{
+            var db = DBHelper.GetSQLiteConnection();
+                var newRecord = new NotificationChannelEntity()
+                {
+                    Id = channels.Id,
+                    Title = channels.Title,
+                    Code = channels.Code,
+                    PreferenceMode = channels.PreferenceMode,
+                    Type = channels.Type,
+                    CreatedDate = channels.CreatedDate,
+                    MasterId = channels.MasterId,
+                    IsOpted = channels.IsOpted
+                };
 
-            int rows = db.InsertOrReplace(newRecord);
+                int rows = db.InsertOrReplace(newRecord);
 
-            return rows;
+                return rows;
+            //}
         }
 
         public static async void InsertOrReplaceAsync(NotificationChannels channels)
         {
-            var db = new SQLiteAsyncConnection(Constants.DB_PATH);
+            //var db = new SQLiteAsyncConnection(Constants.DB_PATH);
+            var db = DBHelper.GetSQLiteConnection();
             var newRecord = new NotificationChannelEntity()
             {
                 Id = channels.Id,
@@ -98,14 +105,18 @@ namespace myTNB_Android.Src.Database.Model
                 IsOpted = channels.IsOpted
             };
 
-            db.InsertOrReplaceAsync(newRecord);
+            //db.InsertOrReplaceAsync(newRecord);
+            db.InsertOrReplace(newRecord);
             
         }
 
         public static int RemoveActive()
         {
-            var db = new SQLiteConnection(Constants.DB_PATH);
-            return db.Execute("Delete from NotificationChannelEntity");
+            //using (var db = new SQLiteConnection(Constants.DB_PATH))
+            //{
+            var db = DBHelper.GetSQLiteConnection();
+                return db.Execute("Delete from NotificationChannelEntity");
+            //}
         }
     }
 }

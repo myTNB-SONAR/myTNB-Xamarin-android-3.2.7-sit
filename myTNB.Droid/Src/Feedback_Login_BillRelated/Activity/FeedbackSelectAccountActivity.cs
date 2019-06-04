@@ -48,7 +48,16 @@ namespace myTNB_Android.Src.Feedback_Login_BillRelated.Activity
         {
             base.OnCreate(savedInstanceState);
 
-            previouslySelected = JsonConvert.DeserializeObject<AccountData>(Intent.Extras.GetString(Constants.SELECTED_ACCOUNT));
+            Bundle extras = Intent.Extras;
+
+            if (extras != null)
+            {
+                if (extras.ContainsKey(Constants.SELECTED_ACCOUNT))
+                {
+                    //previouslySelected = JsonConvert.DeserializeObject<AccountData>(Intent.Extras.GetString(Constants.SELECTED_ACCOUNT));
+                    previouslySelected = DeSerialze<AccountData>(extras.GetString(Constants.SELECTED_ACCOUNT));
+                }
+            }
 
             feedbackSelectAdapter = new FeedbackSelectAccountAdapter(this);
             listView.Adapter = feedbackSelectAdapter;

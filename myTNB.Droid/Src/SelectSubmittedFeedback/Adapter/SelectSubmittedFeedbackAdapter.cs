@@ -113,7 +113,7 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.Adapter
             public SubmitFeedbackViewHolder(View itemView) : base(itemView)
             {
                 TextViewUtils.SetMuseoSans500Typeface(txtFeedbackTitle);
-                TextViewUtils.SetMuseoSans300Typeface(txtFeedbackTitle);
+                TextViewUtils.SetMuseoSans300Typeface(txtFeedbackContent, txtFeedbackDate);
             }
         }
     }

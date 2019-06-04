@@ -59,8 +59,11 @@ namespace myTNB_Android.Src.Database.Model
 
         public static int CreateTable()
         {
-            var db = new SQLiteConnection(Constants.DB_PATH);
-            return db.CreateTable<NotificationTypesEntity>();
+            //using (var db = new SQLiteConnection(Constants.DB_PATH))
+            //{
+            var db = DBHelper.GetSQLiteConnection();
+            return (int)db.CreateTable<NotificationTypesEntity>();
+            //}
         }
 
         public static void CreateTableAsync(SQLiteAsyncConnection db)
@@ -70,29 +73,33 @@ namespace myTNB_Android.Src.Database.Model
 
         public static int InsertOrReplace(NotificationTypes type)
         {
-            var db = new SQLiteConnection(Constants.DB_PATH);
-            var newRecord = new NotificationTypesEntity()
-            {
-                Id = type.Id,
-                Title = type.Title,
-                Code = type.Code,
-                PreferenceMode = type.PreferenceMode,
-                Type = type.Type,
-                CreatedDate = type.CreatedDate,
-                MasterId = type.MasterId,
-                IsOpted = type.IsOpted,
-                ShowInPreference = type.ShowInPreference,
-                ShowInFilterList = type.ShowInFilterList
-            };
+            //using (var db = new SQLiteConnection(Constants.DB_PATH))
+            //{
+            var db = DBHelper.GetSQLiteConnection();
+                var newRecord = new NotificationTypesEntity()
+                {
+                    Id = type.Id,
+                    Title = type.Title,
+                    Code = type.Code,
+                    PreferenceMode = type.PreferenceMode,
+                    Type = type.Type,
+                    CreatedDate = type.CreatedDate,
+                    MasterId = type.MasterId,
+                    IsOpted = type.IsOpted,
+                    ShowInPreference = type.ShowInPreference,
+                    ShowInFilterList = type.ShowInFilterList
+                };
 
-            int rows = db.InsertOrReplace(newRecord);
+                int rows = db.InsertOrReplace(newRecord);
 
-            return rows;
+                return rows;
+            //}
         }
 
         public static void InsertOrReplaceAsync(NotificationTypes type)
         {
-            var db = new SQLiteAsyncConnection(Constants.DB_PATH);
+            //var db = new SQLiteAsyncConnection(Constants.DB_PATH);
+            var db = DBHelper.GetSQLiteConnection();
             var newRecord = new NotificationTypesEntity()
             {
                 Id = type.Id,
@@ -107,27 +114,37 @@ namespace myTNB_Android.Src.Database.Model
                 ShowInFilterList = type.ShowInFilterList
             };
 
-            db.InsertOrReplaceAsync(newRecord);
+            //db.InsertOrReplaceAsync(newRecord);
+            db.InsertOrReplace(newRecord);
         }
 
         public static NotificationTypesEntity GetById(string Id)
         {
-            var db = new SQLiteConnection(Constants.DB_PATH);
-            return db.Query<NotificationTypesEntity>("SELECT * FROM NotificationTypesEntity WHERE Id = ?", Id).ToList()[0];
+            //using (var db = new SQLiteConnection(Constants.DB_PATH))
+            //{
+            var db = DBHelper.GetSQLiteConnection();
+                return db.Query<NotificationTypesEntity>("SELECT * FROM NotificationTypesEntity WHERE Id = ?", Id).ToList()[0];
+            //}
 
         }
 
         public static List<NotificationTypesEntity> List()
         {
-            var db = new SQLiteConnection(Constants.DB_PATH);
-            return db.Query<NotificationTypesEntity>("SELECT * FROM NotificationTypesEntity ").ToList();
+            //using (var db = new SQLiteConnection(Constants.DB_PATH))
+            //{
+            var db = DBHelper.GetSQLiteConnection();
+                return db.Query<NotificationTypesEntity>("SELECT * FROM NotificationTypesEntity ").ToList();
+            //}
 
         }
 
         public static int RemoveActive()
         {
-            var db = new SQLiteConnection(Constants.DB_PATH);
-            return db.Execute("Delete from NotificationTypesEntity");
+            //using (var db = new SQLiteConnection(Constants.DB_PATH))
+            //{
+            var db = DBHelper.GetSQLiteConnection();
+                return db.Execute("Delete from NotificationTypesEntity");
+            //}
         }
     }
 }

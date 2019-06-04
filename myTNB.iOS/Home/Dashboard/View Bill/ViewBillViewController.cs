@@ -149,8 +149,14 @@ namespace myTNB
 
         internal void GetFilePath()
         {
-            string pdfFileName = DataManager.DataManager.SharedInstance.SelectedAccount.accNum + _formattedDate + ".pdf";
-            string documentsPath = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
+            string billingNo = string.Empty;
+            string pdfFileName = string.Empty;
+            string documentsPath = string.Empty;
+            billingNo = selectedIndex > -1 && selectedIndex < _billHistory?.d?.data?.Count
+                    ? _billHistory?.d?.data[selectedIndex]?.BillingNo
+                    : _billHistory?.d?.data[0]?.BillingNo;
+            pdfFileName = DataManager.DataManager.SharedInstance.SelectedAccount.accNum + '_' + billingNo + _formattedDate + ".pdf";
+            documentsPath = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
             _pdfFilePath = Path.Combine(documentsPath, pdfFileName);
         }
 

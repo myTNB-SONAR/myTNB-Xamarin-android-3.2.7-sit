@@ -205,11 +205,11 @@ namespace myTNB_Android.Src.AddAccount.MVP
                 }
 
 
-                if (!Utility.isAlphaNumeric(accountLabel))
-                {
-                    mView.ShowEnterValidAccountName();
-                    return;
-                }
+                //if (!Utility.isAlphaNumeric(accountLabel))
+                //{
+                //    mView.ShowEnterValidAccountName();
+                //    return;
+                //}
 
 
 

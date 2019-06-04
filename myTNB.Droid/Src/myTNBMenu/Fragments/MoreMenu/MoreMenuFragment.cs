@@ -23,7 +23,6 @@ using Android.Support.Design.Widget;
 using AFollestad.MaterialDialogs;
 using myTNB_Android.Src.MyAccount.Activity;
 using myTNB_Android.Src.Database.Model;
-using myTNB_Android.Src.WebLink.Activity;
 using Newtonsoft.Json;
 using myTNB_Android.Src.FindUs.Activity;
 using Android.Content.PM;
@@ -420,9 +419,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.MoreMenu
         {
             if (entity.OpenWith.Equals("APP"))
             {
-                Intent weblink = new Intent(this.Activity , typeof(WeblinkActivity));
-                weblink.PutExtra(Constants.SELECTED_WEBLINK, JsonConvert.SerializeObject(entity));
-                StartActivity(weblink);
+                //Intent weblink = new Intent(this.Activity , typeof(WeblinkActivity));
+                //weblink.PutExtra(Constants.SELECTED_WEBLINK, JsonConvert.SerializeObject(entity));
+                //StartActivity(weblink);
             }
             else
             {
@@ -476,37 +475,37 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.MoreMenu
 
                     Application.Context.StartActivity(intent);
                 }
-                else
-                {
-                    if (entity.OpenWith.Equals("APP"))
-                    {
-                        Intent weblink = new Intent(this.Activity, typeof(WeblinkActivity));
-                        weblink.PutExtra(Constants.SELECTED_WEBLINK, JsonConvert.SerializeObject(entity));
-                        StartActivity(weblink);
-                    }
-                    else
-                    {
-                        var uri = Android.Net.Uri.Parse(entity.Url);
-                        var intent = new Intent(Intent.ActionView, uri);
-                        StartActivity(intent);
-                    }
-                }
+                //else
+                //{
+                //    if (entity.OpenWith.Equals("APP"))
+                //    {
+                //        Intent weblink = new Intent(this.Activity, typeof(WeblinkActivity));
+                //        weblink.PutExtra(Constants.SELECTED_WEBLINK, JsonConvert.SerializeObject(entity));
+                //        StartActivity(weblink);
+                //    }
+                //    else
+                //    {
+                //        var uri = Android.Net.Uri.Parse(entity.Url);
+                //        var intent = new Intent(Intent.ActionView, uri);
+                //        StartActivity(intent);
+                //    }
+                //}
             }
             catch (System.Exception e)
             {
                 Utility.LoggingNonFatalError(e);
-                if (entity.OpenWith.Equals("APP"))
-                {
-                    Intent weblink = new Intent(this.Activity, typeof(WeblinkActivity));
-                    weblink.PutExtra(Constants.SELECTED_WEBLINK, JsonConvert.SerializeObject(entity));
-                    StartActivity(weblink);
-                }
-                else
-                {
+                //if (entity.OpenWith.Equals("APP"))
+                //{
+                //    Intent weblink = new Intent(this.Activity, typeof(WeblinkActivity));
+                //    weblink.PutExtra(Constants.SELECTED_WEBLINK, JsonConvert.SerializeObject(entity));
+                //    StartActivity(weblink);
+                //}
+                //else
+                //{
                     var uri = Android.Net.Uri.Parse(entity.Url);
                     var intent = new Intent(Intent.ActionView, uri);
                     StartActivity(intent);
-                }
+                //}
             }
         }
     }

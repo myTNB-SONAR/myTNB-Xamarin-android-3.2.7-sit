@@ -139,7 +139,8 @@ namespace myTNB_Android.Src.Feedback_Login_BillRelated.MVP
 
             try
             {
-                UserEntity userEntity = UserEntity.GetActive();
+                UserEntity userEntity = new UserEntity();
+                userEntity= UserEntity.GetActive();
                 List<AttachedImageRequest> imageRequest = new List<AttachedImageRequest>();
                 int ctr = 1;
                 foreach (AttachedImage image in attachedImages)

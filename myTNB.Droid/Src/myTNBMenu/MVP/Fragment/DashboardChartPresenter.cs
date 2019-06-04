@@ -397,22 +397,27 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
 
         public void Start()
         {
-            // THIS SHOULD BE THE CHART DISPLAY ANIMATION
-            DownTimeEntity bcrmEntity = DownTimeEntity.GetByCode(Constants.BCRM_SYSTEM);
-            if (this.mView.HasNoInternet() || bcrmEntity.IsDown)
+            try
             {
-                this.mView.EnableLeftArrow(false);
-                this.mView.EnableRightArrow(false);
-                this.mView.ShowNoInternet();
+                // THIS SHOULD BE THE CHART DISPLAY ANIMATION
+                DownTimeEntity bcrmEntity = new DownTimeEntity();
+                bcrmEntity = DownTimeEntity.GetByCode(Constants.BCRM_SYSTEM);
+                if (this.mView.HasNoInternet() || bcrmEntity.IsDown)
+                {
+                    this.mView.EnableLeftArrow(false);
+                    this.mView.EnableRightArrow(false);
+                    this.mView.ShowNoInternet();
 
 
-            }
-            else
-            {
-               
-                OnByMonth();
+                }
+                else
+                {
 
-                
+                    OnByMonth();
+
+                }
+            } catch(Exception e) {
+                Utility.LoggingNonFatalError(e);
             }
         }
 
