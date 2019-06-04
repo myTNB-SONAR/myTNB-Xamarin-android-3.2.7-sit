@@ -93,41 +93,26 @@ namespace myTNB.PushNotification
 
         internal string GetIcon(string id)
         {
-            if (id == "01")
+            switch (id)
             {
-                return "Notification-New-Bill";
-            }
-            else if (id == "02")
-            {
-                return "Notification-Bill-Due";
-            }
-            else if (id == "03")
-            {
-                return "Notification-Dunning";
-            }
-            else if (id == "04")
-            {
-                return "Notification-Disconnection";
-            }
-            else if (id == "05")
-            {
-                return "Notification-Reconnection";
-            }
-            else if (id == "97")
-            {
-                return "Notification-Promotion";
-            }
-            else if (id == "98")
-            {
-                return "Notification-News";
-            }
-            else if (id == "99")
-            {
-                return "Notification-Maintenance";
-            }
-            else
-            {
-                return string.Empty;
+                case "01":
+                    return "Notification-New-Bill";
+                case "02":
+                    return "Notification-Bill-Due";
+                case "03":
+                    return "Notification-Dunning";
+                case "04":
+                    return "Notification-Disconnection";
+                case "05":
+                    return "Notification-Reconnection";
+                case "97":
+                    return "Notification-Promotion";
+                case "98":
+                    return "Notification-News";
+                case "99":
+                    return "Notification-Maintenance";
+                default:
+                    return string.Empty;
             }
         }
 
@@ -136,24 +121,7 @@ namespace myTNB.PushNotification
             switch (editingStyle)
             {
                 case UITableViewCellEditingStyle.Delete:
-                    ActivityIndicator.Show();
-                    _controller.DeleteUserNotification(_data[indexPath.Row]).ContinueWith(task =>
-                    {
-                        InvokeOnMainThread(() =>
-                        {
-                            var deleteNotifResponse = _controller._deleteNotificationResponse;
-
-                            if (deleteNotifResponse != null && deleteNotifResponse?.d != null
-                                            && deleteNotifResponse?.d?.status?.ToLower() == "success"
-                                            && deleteNotifResponse?.d?.didSucceed == true)
-                            {
-                                _data.RemoveAt(indexPath.Row);
-                                tableView.DeleteRows(new NSIndexPath[] { indexPath }, UITableViewRowAnimation.Fade);
-                            }
-
-                            ActivityIndicator.Hide();
-                        });
-                    });
+                    DeleteNotification(tableView, indexPath);
                     break;
                 case UITableViewCellEditingStyle.None:
                     break;
@@ -161,32 +129,48 @@ namespace myTNB.PushNotification
         }
         public override bool CanEditRow(UITableView tableView, NSIndexPath indexPath)
         {
-            return true; // return false if you wish to disable editing for a specific indexPath or for all rows
+            return true;
         }
         public override string TitleForDeleteConfirmation(UITableView tableView, NSIndexPath indexPath)
-        {   // Optional - default text is 'Delete'
-            return "Delete";
-        }
-        
-        void DeleteNotification(UITableView tableView, Foundation.NSIndexPath indexPath)
         {
-            ActivityIndicator.Show();
-             _controller.DeleteUserNotification(_data[indexPath.Row]).ContinueWith(task =>
-             {
-                 InvokeOnMainThread(() =>
-                 {
-                     var deleteNotifResponse = _controller._deleteNotificationResponse;
+            return "Common_Delete".Translate();
+        }
 
-                     if (deleteNotifResponse != null && deleteNotifResponse?.d != null
+        void DeleteNotification(UITableView tableView, NSIndexPath indexPath)
+        {
+            NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
+            {
+                InvokeOnMainThread(async () =>
+                {
+                    if (NetworkUtility.isReachable)
+                    {
+                        ActivityIndicator.Show();
+                        await _controller.DeleteUserNotification(_data[indexPath.Row]).ContinueWith(task =>
+                         {
+                             InvokeOnMainThread(() =>
+                             {
+                                 var deleteNotifResponse = _controller._deleteNotificationResponse;
+                                 if (deleteNotifResponse != null && deleteNotifResponse?.d != null
                                      && deleteNotifResponse?.d?.status?.ToLower() == "success"
                                      && deleteNotifResponse?.d?.didSucceed == true)
-                     {
-                         _data.RemoveAt(indexPath.Row);
-                         tableView.DeleteRows(new NSIndexPath[] { indexPath }, UITableViewRowAnimation.Fade);
-                     }
-                     ActivityIndicator.Hide();
-                 });
-             });
+                                 {
+                                     _data.RemoveAt(indexPath.Row);
+                                     tableView.DeleteRows(new NSIndexPath[] { indexPath }, UITableViewRowAnimation.Fade);
+                                 }
+                                 else
+                                 {
+                                     AlertHandler.DisplayServiceError(_controller, deleteNotifResponse?.d?.message);
+                                 }
+                                 ActivityIndicator.Hide();
+                             });
+                         });
+                    }
+                    else
+                    {
+                        AlertHandler.DisplayNoDataAlert(_controller);
+                    }
+                });
+            });
         }
 
         public override UISwipeActionsConfiguration GetLeadingSwipeActionsConfiguration(UITableView tableView, NSIndexPath indexPath)
