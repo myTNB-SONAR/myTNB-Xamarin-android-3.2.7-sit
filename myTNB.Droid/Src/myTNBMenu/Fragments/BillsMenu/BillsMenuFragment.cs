@@ -30,6 +30,7 @@ using myTNB_Android.Src.MultipleAccountPayment.Activity;
 using myTNB_Android.Src.Database.Model;
 using Java.Util;
 using Android.Support.Design.Widget;
+using Android.Support.V4.Widget;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.BillsMenu
 {
@@ -140,6 +141,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.BillsMenu
         [BindView(Resource.Id.divider)]
         View divider;
 
+        //[BindView(Resource.Id.swipeRefreshLayout)]
+        //SwipeRefreshLayout swipeRefreshLayout;
+
         bool noInternet = false;
 
         DecimalFormat decimalFormatter = new DecimalFormat("###,###,###,###,##0.00");
@@ -156,12 +160,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.BillsMenu
         }
 
 
-        internal static BillsMenuFragment NewInstance(AccountData selectedAccount , bool noInternet)
+        internal static BillsMenuFragment NewInstance(AccountData selectedAccount, bool noInternet)
         {
             BillsMenuFragment billsMenuFragment = new BillsMenuFragment();
             Bundle args = new Bundle();
             args.PutString(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccount));
-            args.PutBoolean(Constants.NO_INTERNET_CONNECTION , noInternet );
+            args.PutBoolean(Constants.NO_INTERNET_CONNECTION, noInternet);
             billsMenuFragment.Arguments = args;
             return billsMenuFragment;
         }
@@ -215,193 +219,68 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.BillsMenu
         {
             base.OnActivityCreated(savedInstanceState);
 
-            TextViewUtils.SetMuseoSans500Typeface(txtAccountName,
-              txtCurrentBill,
-              txtCurrentChargesTitle,
-              txtCurrentChargesContent,
-              txtOutstandingChargesTitle,
-              txtOutstandingChargesContent,
-              txtTotalPayableTitle,
-              txtDueDate,
-              txtCurrency,
-              btnPay,
-              txtBillPaymentHistoryTitle,
-              txtTotalDueContent,
-              txtTotalDueTitle);
-            TextViewUtils.SetMuseoSans300Typeface(txtAccountNum,
-                txtAddress,
-                txtTotalPayableContent,
-                txtFooter, txtFooter1 , txtFooter2,
-                txtCurrentChargesRM, txtOutstandingChargesRM, txtTotalPayableRM
-                );
 
-            txtAccountName.Text = selectedAccount.AccountName;
-            txtAccountNum.Text = selectedAccount.AccountNum;
-
-            ///<summary>
-            /// Revert non owner CR changes
-            ///</summary>
-            txtAddress.Text = selectedAccount.AddStreet;
-            //if (selectedAccount.IsOwner)
-            //{
-            //    txtAddress.Text = selectedAccount.AddStreet;
-            //    txtAddress.Visibility = ViewStates.Visible;
-            //}
-            //else
-            //{
-            //    txtAddress.Visibility = ViewStates.Gone;
-            //}
-            txtCurrentChargesContent.Text = decimalFormatter.Format(selectedAccount.AmtCurrentChg);
-            txtOutstandingChargesContent.Text = decimalFormatter.Format(selectedAccount.AmtOutstandingChg);
-            txtTotalPayableContent.Text = decimalFormatter.Format(selectedAccount.AmtPayableChg);
-
-            Date d = null;
             try
             {
-                if (!string.IsNullOrEmpty(selectedAccount.DatePaymentDue) && !selectedAccount.DatePaymentDue.Equals("N/A")) {
-                    d = dateParser.Parse(selectedAccount.DatePaymentDue);    
-                }
 
+                TextViewUtils.SetMuseoSans500Typeface(txtAccountName,
+                  txtCurrentBill,
+                  txtCurrentChargesTitle,
+                  txtCurrentChargesContent,
+                  txtOutstandingChargesTitle,
+                  txtOutstandingChargesContent,
+                  txtTotalPayableTitle,
+                  txtDueDate,
+                  txtCurrency,
+                  btnPay,
+                  txtBillPaymentHistoryTitle,
+                  txtTotalDueContent,
+                  txtTotalDueTitle);
+                TextViewUtils.SetMuseoSans300Typeface(txtAccountNum,
+                    txtAddress,
+                    txtTotalPayableContent,
+                    txtFooter, txtFooter1, txtFooter2,
+                    txtCurrentChargesRM, txtOutstandingChargesRM, txtTotalPayableRM
+                    );
+
+
+                SetBillDetails(selectedAccount);
+
+                //swipeRefreshLayout.Refresh += RefreshLayout_Refresh;
+
+                this.userActionsListener.Start();
             }
-            catch (ParseException e)
+            catch (System.Exception e)
             {
-
+                Utility.LoggingNonFatalError(e);
             }
-            if (selectedAccount.AccountCategoryId.Equals("2"))
-            {
-                double calAmt = selectedAccount.AmtCustBal * -1;
-                if (calAmt <= 0)
-                {
-                    calAmt = 0.00;
-                }
-                else
-                {
-                    calAmt = System.Math.Abs(selectedAccount.AmtCustBal);
-                }
-                txtTotalDueContent.Text = decimalFormatter.Format(calAmt);
-
-                if (d != null) {
-                    Calendar c = Calendar.Instance;
-                    c.Time = d;
-                    c.Add(CalendarField.Date, Constants.RE_ACCOUNT_DATE_INCREMENT_DAYS);
-                    Date newDate = c.Time;
-                    if (calAmt == 0.00)
-                    {
-                        txtDueDate.Text = "--";
-                    }
-                    else
-                    {
-                        txtDueDate.Text = GetString(Resource.String.dashboard_chartview_by_date_wildcard, dateFormatter.Format(newDate));
-                    }
-                } 
-
-            }
-            else
-            {
-                txtTotalDueContent.Text = decimalFormatter.Format(selectedAccount.AmtCustBal);
-                double calAmt = selectedAccount.AmtCustBal;
-                if (calAmt <= 0.00)
-                {
-                    txtDueDate.Text = "--";
-                }
-                else
-                {
-                    if (d != null)
-                        txtDueDate.Text = GetString(Resource.String.dashboard_chartview_due_date_wildcard, dateFormatter.Format(d));
-                }
-            }
-            //if (selectedAccount.AmtCustBal <= 0)
-            //{
-            //    btnPay.Enabled = false;
-            //    btnPay.Background = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.silver_chalice_button_background);
-            //}
-
-            if (!selectedAccount.IsOwner)
-            {
-                webLinkLayout.Visibility = ViewStates.Gone;
-                onlyAccountOwnersLayout.Visibility = ViewStates.Visible;
-            }
-            else
-            {
-                webLinkLayout.Visibility = ViewStates.Visible;
-                onlyAccountOwnersLayout.Visibility = ViewStates.Gone;
-            }
-
-            //if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.N)
-            //{
-            //    txtFooter.TextFormatted = Html.FromHtml(GetString(Resource.String.billing_list_fragment_footer_text), FromHtmlOptions.ModeLegacy);
-            //    txtFooter1.TextFormatted = Html.FromHtml(GetString(Resource.String.billing_list_fragment_footer_text1), FromHtmlOptions.ModeLegacy);
-
-            //}
-            //else
-            //{
-            //    txtFooter.TextFormatted = Html.FromHtml(GetString(Resource.String.billing_list_fragment_footer_text));
-            //    txtFooter1.TextFormatted = Html.FromHtml(GetString(Resource.String.billing_list_fragment_footer_text1));
-
-            //}
-            txtFooter.Visibility = ViewStates.Gone;
-            txtFooter1.Visibility = ViewStates.Gone;
-            txtFooter2.Visibility = ViewStates.Gone;
-
-            if (selectedAccount.AccountCategoryId.Equals("2"))
-            {
-                txtCurrentBill.Text = GetString(Resource.String.title_current_payment_advice);
-                txtTotalDueTitle.Text = GetString(Resource.String.title_payment_total_receivable);
-
-                currentChangeLayout.Visibility = ViewStates.Gone;
-                totalPayableLayout.Visibility = ViewStates.Gone;
-                outstandingChangeLayout.Visibility = ViewStates.Gone;
-                divider.Visibility = ViewStates.Gone;
-            }
-
-            DownTimeEntity bcrmEntity = DownTimeEntity.GetByCode(Constants.BCRM_SYSTEM);
-            DownTimeEntity pgCCEntity = DownTimeEntity.GetByCode(Constants.PG_CC_SYSTEM);
-            DownTimeEntity pgFPXEntity = DownTimeEntity.GetByCode(Constants.PG_FPX_SYSTEM);
-            if (bcrmEntity.IsDown || pgCCEntity.IsDown && pgFPXEntity.IsDown)
-            {
-                btnPay.Enabled = false;
-                btnPay.Background = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.silver_chalice_button_background);
-            }
-            else
-            {
-                btnPay.Enabled = true;
-                btnPay.Background = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.green_button_background);
-            }
-
-            if(pgCCEntity != null && pgFPXEntity != null)
-            {
-                if(pgCCEntity.IsDown && pgFPXEntity.IsDown)
-                {
-                    Snackbar downtimeSnackBar = Snackbar.Make(rootView,
-                            bcrmEntity.DowntimeTextMessage,
-                            Snackbar.LengthLong);
-                    View v = downtimeSnackBar.View;
-                    TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
-                    tv.SetMaxLines(4);
-                    if (!selectedAccount.AccountCategoryId.Equals("2"))
-                    {
-                        downtimeSnackBar.Show();
-                    }
-                }
-            }
-
-            this.userActionsListener.Start();
         }
 
+
+        //private void RefreshLayout_Refresh(object sender, EventArgs e)
+        //{
+        //    if (ConnectionUtils.HasInternetConnection(this.Activity))
+        //    {
+        //        swipeRefreshLayout.Refreshing = true;
+        //        this.userActionsListener.RefreshData();
+        //    }
+        //}
+
         [OnClick(Resource.Id.btnBills)]
-        void OnBills(object sender , EventArgs eventArgs)
+        void OnBills(object sender, EventArgs eventArgs)
         {
             this.userActionsListener.OnBillTab();
         }
 
         [OnClick(Resource.Id.btnPayment)]
-        void OnPayment(object sender , EventArgs eventArgs)
+        void OnPayment(object sender, EventArgs eventArgs)
         {
             this.userActionsListener.OnPaymentTab();
         }
 
         public void ShowBillsList(BillHistoryResponseV5 billsHistoryResponse)
         {
+
             ChildFragmentManager.BeginTransaction()
                 .Replace(Resource.Id.layoutReplacement, BillingListFragment.NewInstance(billsHistoryResponse, selectedAccount))
                 .CommitAllowingStateLoss();
@@ -529,6 +408,172 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.BillsMenu
             ChildFragmentManager.BeginTransaction()
                .Replace(Resource.Id.layoutReplacement, PaymentListFragment.NewInstance(paymentHistoryREResponse, selectedAccount))
                .CommitAllowingStateLoss();
+        }
+
+        public void SetBillDetails(AccountData selectedAccount)
+        {
+
+            //if (swipeRefreshLayout.Refreshing)
+            //{
+            //    swipeRefreshLayout.Refreshing = false;
+            //}
+            if (selectedAccount != null)
+            {
+                txtAccountName.Text = (!string.IsNullOrEmpty(selectedAccount?.AccountName)) ? selectedAccount?.AccountName : "";
+                txtAccountNum.Text = (!string.IsNullOrEmpty(selectedAccount?.AccountNum)) ? selectedAccount?.AccountNum : "";
+
+                ///<summary>
+                /// Revert non owner CR changes
+                ///</summary>
+                txtAddress.Text = selectedAccount?.AddStreet;
+                //if (selectedAccount.IsOwner)
+                //{
+                //    txtAddress.Text = selectedAccount.AddStreet;
+                //    txtAddress.Visibility = ViewStates.Visible;
+                //}
+                //else
+                //{
+                //    txtAddress.Visibility = ViewStates.Gone;
+                //}
+                txtCurrentChargesContent.Text = decimalFormatter.Format(selectedAccount?.AmtCurrentChg);
+                txtOutstandingChargesContent.Text = decimalFormatter.Format(selectedAccount?.AmtOutstandingChg);
+                txtTotalPayableContent.Text = decimalFormatter.Format(selectedAccount?.AmtPayableChg);
+
+                Date d = null;
+                try
+                {
+                    if (!string.IsNullOrEmpty(selectedAccount?.DatePaymentDue) && !selectedAccount.DatePaymentDue.Equals("N/A"))
+                    {
+                        d = dateParser.Parse(selectedAccount?.DatePaymentDue);
+                    }
+
+                }
+                catch (ParseException e)
+                {
+                    Utility.LoggingNonFatalError(e);
+                }
+                if (selectedAccount != null && selectedAccount.AccountCategoryId.Equals("2"))
+                {
+
+                    double calAmt = selectedAccount.AmtCustBal * -1;
+                    if (calAmt <= 0)
+                    {
+                        calAmt = 0.00;
+                    }
+                    else
+                    {
+                        calAmt = System.Math.Abs(selectedAccount.AmtCustBal);
+                    }
+                    txtTotalDueContent.Text = decimalFormatter.Format(calAmt);
+
+                    if (d != null)
+                    {
+                        Calendar c = Calendar.Instance;
+                        c.Time = d;
+                        c.Add(CalendarField.Date, Constants.RE_ACCOUNT_DATE_INCREMENT_DAYS);
+                        Date newDate = c.Time;
+                        if (calAmt == 0.00)
+                        {
+                            txtDueDate.Text = "--";
+                        }
+                        else
+                        {
+                            txtDueDate.Text = GetString(Resource.String.dashboard_chartview_by_date_wildcard, dateFormatter.Format(newDate));
+                        }
+
+                    }
+                }
+                else
+                {
+
+                    txtTotalDueContent.Text = decimalFormatter.Format(selectedAccount?.AmtCustBal);
+                    double calAmt = selectedAccount.AmtCustBal;
+                    if (calAmt <= 0.00)
+                    {
+                        txtDueDate.Text = "--";
+                    }
+                    else
+                    {
+                        if (d != null)
+                            txtDueDate.Text = GetString(Resource.String.dashboard_chartview_due_date_wildcard, dateFormatter.Format(d));
+                    }
+
+                }
+                //if (selectedAccount.AmtCustBal <= 0)
+                //{
+                //    btnPay.Enabled = false;
+                //    btnPay.Background = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.silver_chalice_button_background);
+                //}
+
+                if (!selectedAccount.IsOwner)
+                {
+                    webLinkLayout.Visibility = ViewStates.Gone;
+                    onlyAccountOwnersLayout.Visibility = ViewStates.Visible;
+                }
+                else
+                {
+                    webLinkLayout.Visibility = ViewStates.Visible;
+                    onlyAccountOwnersLayout.Visibility = ViewStates.Gone;
+                }
+
+                //if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.N)
+                //{
+                //    txtFooter.TextFormatted = Html.FromHtml(GetString(Resource.String.billing_list_fragment_footer_text), FromHtmlOptions.ModeLegacy);
+                //    txtFooter1.TextFormatted = Html.FromHtml(GetString(Resource.String.billing_list_fragment_footer_text1), FromHtmlOptions.ModeLegacy);
+
+                //}
+                //else
+                //{
+                //    txtFooter.TextFormatted = Html.FromHtml(GetString(Resource.String.billing_list_fragment_footer_text));
+                //    txtFooter1.TextFormatted = Html.FromHtml(GetString(Resource.String.billing_list_fragment_footer_text1));
+
+                //}
+                txtFooter.Visibility = ViewStates.Gone;
+                txtFooter1.Visibility = ViewStates.Gone;
+                txtFooter2.Visibility = ViewStates.Gone;
+
+                if (selectedAccount.AccountCategoryId.Equals("2"))
+                {
+                    txtCurrentBill.Text = GetString(Resource.String.title_current_payment_advice);
+                    txtTotalDueTitle.Text = GetString(Resource.String.title_payment_total_receivable);
+
+                    currentChangeLayout.Visibility = ViewStates.Gone;
+                    totalPayableLayout.Visibility = ViewStates.Gone;
+                    outstandingChangeLayout.Visibility = ViewStates.Gone;
+                    divider.Visibility = ViewStates.Gone;
+                }
+
+                DownTimeEntity bcrmEntity = DownTimeEntity.GetByCode(Constants.BCRM_SYSTEM);
+                DownTimeEntity pgCCEntity = DownTimeEntity.GetByCode(Constants.PG_CC_SYSTEM);
+                DownTimeEntity pgFPXEntity = DownTimeEntity.GetByCode(Constants.PG_FPX_SYSTEM);
+                if (bcrmEntity.IsDown || pgCCEntity.IsDown && pgFPXEntity.IsDown)
+                {
+                    btnPay.Enabled = false;
+                    btnPay.Background = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.silver_chalice_button_background);
+                }
+                else
+                {
+                    btnPay.Enabled = true;
+                    btnPay.Background = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.green_button_background);
+                }
+
+                if (pgCCEntity != null && pgFPXEntity != null)
+                {
+                    if (pgCCEntity.IsDown && pgFPXEntity.IsDown)
+                    {
+                        Snackbar downtimeSnackBar = Snackbar.Make(rootView,
+                                bcrmEntity.DowntimeTextMessage,
+                                Snackbar.LengthLong);
+                        View v = downtimeSnackBar.View;
+                        TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+                        tv.SetMaxLines(4);
+                        if (!selectedAccount.AccountCategoryId.Equals("2"))
+                        {
+                            downtimeSnackBar.Show();
+                        }
+                    }
+                }
+            }
         }
     }
 }

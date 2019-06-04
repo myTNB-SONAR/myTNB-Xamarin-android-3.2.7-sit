@@ -1046,6 +1046,10 @@
     <Compile Include="Src\WebLink\Activity\WeblinkActivity.cs" />
     <AndroidResource Include="Resources\drawable\resend_inactive_with_border_progress.xml" />
     <AndroidResource Include="Resources\xml\provider_paths.xml" />
+    <AndroidResource Include="Resources\drawable\launch_screen.xml" />
+    <Compile Include="Src\AppLaunch\Async\MasterApiDBOperation.cs" />
+    <Compile Include="Src\myTNBMenu\Async\SiteCorePromotioAPI.cs" />
+    <Compile Include="Src\myTNBMenu\Async\UserNotificationAPI.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

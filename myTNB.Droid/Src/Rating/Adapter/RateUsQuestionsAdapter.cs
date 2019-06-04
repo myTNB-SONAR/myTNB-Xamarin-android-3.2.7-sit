@@ -55,7 +55,7 @@ namespace myTNB_Android.Src.Rating.Adapter
                     vh.txtInputLayoutComments.Visibility = ViewStates.Gone;
                     vh.txtComments.Visibility = ViewStates.Gone;
 
-                    vh.ratingBar.Rating = SelectedRating;
+                    //vh.ratingBar.Rating = SelectedRating;
                     if(SelectedRating != 0 && SelectedRating < 6)
                     {
                         vh.txtContentInfo.Text = question.InputOptionValueList[SelectedRating-1].InputOptionValues;
@@ -66,7 +66,7 @@ namespace myTNB_Android.Src.Rating.Adapter
                         int Rating = ((int)e.Rating);
                         if (Rating == 0)
                         {
-                            question.IsQuestionAnswered = true;
+                                question.IsQuestionAnswered = false;
                             vh.txtContentInfo.Text = "";
                         }
                         else if (Rating == 1)

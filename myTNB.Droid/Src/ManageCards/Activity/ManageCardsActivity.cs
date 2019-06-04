@@ -72,10 +72,19 @@ namespace myTNB_Android.Src.ManageCards.Activity
             base.OnCreate(savedInstanceState);
             try
             {
-                string cardsListString = Intent.Extras.GetString(Constants.CREDIT_CARD_LIST);
-                cardsList = JsonConvert.DeserializeObject<List<CreditCardData>>(cardsListString);
+                Bundle extras = Intent.Extras;
 
-                Console.WriteLine("Card List " + cardsListString);
+                if (extras != null)
+                {
+                    if (extras.ContainsKey(Constants.CREDIT_CARD_LIST))
+                    {
+                        string cardsListString = extras.GetString(Constants.CREDIT_CARD_LIST);
+                        //cardsList = JsonConvert.DeserializeObject<List<CreditCardData>>(cardsListString);
+                        cardsList = DeSerialze<List<CreditCardData>>(cardsListString);
+                    }
+                }
+
+                //Console.WriteLine("Card List " + cardsListString);
 
                 progress = new MaterialDialog.Builder(this)
                     .Title(GetString(Resource.String.manage_cards_progress_title))

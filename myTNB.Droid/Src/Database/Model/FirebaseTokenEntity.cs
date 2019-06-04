@@ -26,8 +26,11 @@ namespace myTNB_Android.Src.Database.Model
 
         public static int CreateTable()
         {
-            var db = new SQLiteConnection(Constants.DB_PATH);
-            return db.CreateTable<FirebaseTokenEntity>();
+            //using (var db = new SQLiteConnection(Constants.DB_PATH))
+            //{
+            var db = DBHelper.GetSQLiteConnection();
+            return (int)db.CreateTable<FirebaseTokenEntity>();
+            //}
         }
 
         public static void CreateTableAsync(SQLiteAsyncConnection db)
@@ -37,40 +40,56 @@ namespace myTNB_Android.Src.Database.Model
 
         public static int InsertOrReplace(string token , bool isLatest)
         {
-            var db = new SQLiteConnection(Constants.DB_PATH);
-            var newRecord = new FirebaseTokenEntity()
-            {
-                FBToken = token,
-                IsLatest = isLatest
-            };
+            //using (var db = new SQLiteConnection(Constants.DB_PATH))
+            //{
+            var db = DBHelper.GetSQLiteConnection();
+                var newRecord = new FirebaseTokenEntity()
+                {
+                    FBToken = token,
+                    IsLatest = isLatest
+                };
 
-            int newRecordRow = db.InsertOrReplace(newRecord);
+                int newRecordRow = db.InsertOrReplace(newRecord);
 
-            return newRecordRow;
+                return newRecordRow;
+            //}
+
         }
 
         public static void RemoveLatest()
         {
-            var db = new SQLiteConnection(Constants.DB_PATH);
-            db.Execute("UPDATE FirebaseTokenEntity SET IsLatest = ? where IsLatest = ?", false, true);
+            //using (var db = new SQLiteConnection(Constants.DB_PATH))
+            //{
+            var db = DBHelper.GetSQLiteConnection();
+                db.Execute("UPDATE FirebaseTokenEntity SET IsLatest = ? where IsLatest = ?", false, true);
+            //}
         }
 
         public static void RemoveAll()
         {
-            var db = new SQLiteConnection(Constants.DB_PATH);
-            db.Execute("DELETE FROM FirebaseTokenEntity");
+            //using (var db = new SQLiteConnection(Constants.DB_PATH))
+            //{
+            var db = DBHelper.GetSQLiteConnection();
+                db.Execute("DELETE FROM FirebaseTokenEntity");
+            //}
         }
 
         public static bool HasLatest()
         {
-            var db = new SQLiteConnection(Constants.DB_PATH);
-            return db.Query<FirebaseTokenEntity>("SELECT * FROM FirebaseTokenEntity WHERE IsLatest = ?", true).Count > 0;
+            //using (var db = new SQLiteConnection(Constants.DB_PATH))
+            //{
+            var db = DBHelper.GetSQLiteConnection();
+                return db.Query<FirebaseTokenEntity>("SELECT * FROM FirebaseTokenEntity WHERE IsLatest = ?", true).Count > 0;
+            //}
         }
 
         public static FirebaseTokenEntity GetLatest()
         {
-            var db = new SQLiteConnection(Constants.DB_PATH);
-            return db.Query<FirebaseTokenEntity>("SELECT * FROM FirebaseTokenEntity WHERE IsLatest = ?" , true)[0];
+            //using (var db = new SQLiteConnection(Constants.DB_PATH))
+            //{
+            var db = DBHelper.GetSQLiteConnection();
+                return db.Query<FirebaseTokenEntity>("SELECT * FROM FirebaseTokenEntity WHERE IsLatest = ?", true)[0];
+            //}
         }
     }
 }

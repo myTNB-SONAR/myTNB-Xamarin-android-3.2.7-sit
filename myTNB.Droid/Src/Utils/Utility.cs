@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Text.RegularExpressions;
+using Android.Content.PM;
 
 namespace myTNB_Android.Src.Utils
 {
@@ -46,6 +47,11 @@ namespace myTNB_Android.Src.Utils
 
         public static void LoggingNonFatalError(Exception e) {
             Crashlytics.Crashlytics.LogException(new Java.Lang.Throwable(e.ToString()));
+        }
+
+
+        public static bool IsPermissionHasCount(Permission[] grantResults) {
+            return (grantResults != null && grantResults.Length > 0);
         }
     }
 }

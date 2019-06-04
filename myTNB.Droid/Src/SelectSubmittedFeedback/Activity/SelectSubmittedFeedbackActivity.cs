@@ -66,9 +66,9 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.Activity
                 .Progress(true , 0)
                 .Build();
 
-            adapter = new SelectSubmittedFeedbackAdapter(this, true);
-            listView.Adapter = adapter;
-            listView.EmptyView = layoutEmptyFeedback;
+            //adapter = new SelectSubmittedFeedbackAdapter(this, true);
+            //listView.Adapter = adapter;
+            //listView.EmptyView = layoutEmptyFeedback;
 
             TextViewUtils.SetMuseoSans300Typeface(txtEmptyFeedback);
 
@@ -120,7 +120,15 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.Activity
 
         public void ShowList(List<SubmittedFeedback> list)
         {
-            adapter.AddAll(list);
+            //adapter.AddAll(list);
+            if (list != null && list.Count > 0) {
+                adapter = new SelectSubmittedFeedbackAdapter(this, list, true);
+                listView.Adapter = adapter;
+            } else {
+                listView.EmptyView = layoutEmptyFeedback;
+            }
+            //listView.Adapter = adapter;
+            //listView.EmptyView = layoutEmptyFeedback;
         }
 
         public void ShowProgressDialog()
@@ -227,7 +235,9 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.Activity
 
         public void ClearList()
         {
-            adapter.Clear();
+            if (adapter != null) {
+                adapter.Clear();    
+            }
         }
 
         public void ShowFeedbackDetailsBillRelated(SubmittedFeedbackDetails submittedFeedback)

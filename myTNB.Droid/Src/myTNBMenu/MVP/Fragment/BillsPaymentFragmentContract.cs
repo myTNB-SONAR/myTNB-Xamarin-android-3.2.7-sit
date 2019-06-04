@@ -10,6 +10,7 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using myTNB_Android.Src.Base.MVP;
+using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.myTNBMenu.Models;
 
 namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
@@ -81,6 +82,9 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
             /// Shows the bill menu as normal account
             /// </summary>
             void ShowNormalAccount();
+
+
+            void SetBillDetails(AccountData selectedAccount);
         }
 
         public interface IUserActionsListener : IBasePresenter
@@ -109,6 +113,10 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
             /// Action on payment tab
             /// </summary>
             void OnPaymentTab();
+
+            void LoadBills(CustomerBillingAccount accountSelected);
+
+            void RefreshData();
         }
     }
 }

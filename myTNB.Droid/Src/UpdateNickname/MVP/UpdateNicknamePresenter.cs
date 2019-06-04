@@ -47,11 +47,11 @@ namespace myTNB_Android.Src.UpdateNickname.MVP
                 return;
             }
 
-            if (!Utility.isAlphaNumeric(newAccountNickName)) {
-                this.mView.DisableSaveButton();
-                this.mView.ShowEnterValidAccountName();
-                    return;
-            }
+            //if (!Utility.isAlphaNumeric(newAccountNickName)) {
+            //    this.mView.DisableSaveButton();
+            //    this.mView.ShowEnterValidAccountName();
+            //        return;
+            //}
 
             if (!TextUtils.IsEmpty(newAccountNickName))
             {
@@ -167,12 +167,12 @@ namespace myTNB_Android.Src.UpdateNickname.MVP
                 return;
             }
 
-            if (!Utility.isAlphaNumeric(newAccountNickname))
-            {
-                this.mView.ShowEnterValidAccountName();
-                this.mView.DisableSaveButton();
-                return;
-            }
+            //if (!Utility.isAlphaNumeric(newAccountNickname))
+            //{
+            //    this.mView.ShowEnterValidAccountName();
+            //    this.mView.DisableSaveButton();
+            //    return;
+            //}
 
             CustomerBillingAccount customerBillingAccount = CustomerBillingAccount.FindByAccNum(accountData.AccountNum);
             if (customerBillingAccount != null && customerBillingAccount.AccDesc.Equals(newAccountNickname))

@@ -205,24 +205,30 @@ namespace myTNB_Android.Src.MyAccount.Activity
         private Snackbar mCancelledExceptionSnackBar;
         public void ShowRetryOptionsCancelledException(System.OperationCanceledException operationCanceledException)
         {
-            if (mCancelledExceptionSnackBar != null && mCancelledExceptionSnackBar.IsShown)
+            try
             {
-                mCancelledExceptionSnackBar.Dismiss();
+                if (mCancelledExceptionSnackBar != null && mCancelledExceptionSnackBar.IsShown)
+                {
+                    mCancelledExceptionSnackBar.Dismiss();
+                }
+
+                mCancelledExceptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.my_account_cancelled_exception_error), Snackbar.LengthIndefinite)
+                .SetAction(GetString(Resource.String.my_account_cancelled_exception_btn_close), delegate
+                {
+
+                    mCancelledExceptionSnackBar.Dismiss();
+                }
+                );
+                mCancelledExceptionSnackBar.Show();
+            } catch(Exception e) {
+                Utility.LoggingNonFatalError(e);
             }
-
-            mCancelledExceptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.my_account_cancelled_exception_error), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.my_account_cancelled_exception_btn_close), delegate {
-
-                mCancelledExceptionSnackBar.Dismiss();
-            }
-            );
-            mCancelledExceptionSnackBar.Show();
-
         }
 
         private Snackbar mApiExcecptionSnackBar;
         public void ShowRetryOptionsApiException(ApiException apiException)
         {
+            try {
             if (mApiExcecptionSnackBar != null && mApiExcecptionSnackBar.IsShown)
             {
                 mApiExcecptionSnackBar.Dismiss();
@@ -235,11 +241,17 @@ namespace myTNB_Android.Src.MyAccount.Activity
             }
             );
             mApiExcecptionSnackBar.Show();
-
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
+
         private Snackbar mUknownExceptionSnackBar;
         public void ShowRetryOptionsUnknownException(Exception exception)
         {
+            try {
             if (mUknownExceptionSnackBar != null && mUknownExceptionSnackBar.IsShown)
             {
                 mUknownExceptionSnackBar.Dismiss();
@@ -253,7 +265,11 @@ namespace myTNB_Android.Src.MyAccount.Activity
             }
             );
             mUknownExceptionSnackBar.Show();
-
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         [OnClick(Resource.Id.btnTextUpdateMobileNo)]
@@ -289,48 +305,93 @@ namespace myTNB_Android.Src.MyAccount.Activity
         [OnClick(Resource.Id.btnLogout)]
         void OnClickLogout(object sender, EventArgs eventArgs)
         {
-            //this.userActionsListener.OnLogout(this.DeviceId());
-            logoutProgressDialog.Show();
+            try {
+                //this.userActionsListener.OnLogout(this.DeviceId());
+                if (IsActive())
+                {
+                    logoutProgressDialog.Show();
+                }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public void ShowUpdateMobileNo()
         {
+            try {
             Intent updateMobileNo = new Intent(this , typeof(UpdateMobileActivity));
             StartActivityForResult(updateMobileNo , Constants.UPDATE_MOBILE_NO_REQUEST);
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public void ShowUpdatePassword()
         {
+            try {
             Intent updateMobileNo = new Intent(this, typeof(UpdatePasswordActivity));
             StartActivityForResult(updateMobileNo, Constants.UPDATE_PASSWORD_REQUEST);
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public void ShowManageCards(List<CreditCardData> cardList)
         {
+            try {
             Intent manageCard = new Intent(this, typeof(ManageCardsActivity));
             manageCard.PutExtra(Constants.CREDIT_CARD_LIST ,  JsonConvert.SerializeObject(cardList) );
             StartActivityForResult(manageCard, Constants.MANAGE_CARDS_REQUEST);
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public void ShowManageSupplyAccount(AccountData accountData, int position)
         {
+            try {
             Intent manageAccount = new Intent(this , typeof(ManageSupplyAccountActivity));
             manageAccount.PutExtra(Constants.SELECTED_ACCOUNT , JsonConvert.SerializeObject(accountData));
             manageAccount.PutExtra(Constants.SELECTED_ACCOUNT_POSITION , position );
             StartActivityForResult(manageAccount , Constants.MANAGE_SUPPLY_ACCOUNT_REQUEST);
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public void ShowAddAccount()
         {
+            try {
             Intent updateMobileNo = new Intent(this, typeof(LinkAccountActivity));
             StartActivity(updateMobileNo);
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public void ShowLogout()
         {
+            try {
             ME.Leolin.Shortcutbadger.ShortcutBadger.RemoveCount(this.ApplicationContext);
             Intent logout = new Intent(this , typeof(LogoutEndActivity));
             StartActivity(logout);
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public void ShowProgressDialog()
@@ -341,13 +402,16 @@ namespace myTNB_Android.Src.MyAccount.Activity
             //}
             //accountRetrieverDialog.Show();
             try {
-            if (loadingOverlay != null && loadingOverlay.IsShowing)
-            {
-                loadingOverlay.Dismiss();
-            }
+                if (IsActive())
+                {
+                    if (loadingOverlay != null && loadingOverlay.IsShowing)
+                    {
+                        loadingOverlay.Dismiss();
+                    }
 
-            loadingOverlay = new LoadingOverlay(this, Resource.Style.LoadingOverlyDialogStyle);
-            loadingOverlay.Show();
+                    loadingOverlay = new LoadingOverlay(this, Resource.Style.LoadingOverlyDialogStyle);
+                    loadingOverlay.Show();
+                }
             }
             catch (Exception e)
             {
@@ -362,10 +426,13 @@ namespace myTNB_Android.Src.MyAccount.Activity
             //    accountRetrieverDialog.Dismiss();
             //}
             try {
-            if (loadingOverlay != null && loadingOverlay.IsShowing)
-            {
-                loadingOverlay.Dismiss();
-            }
+                if (IsActive())
+                {
+                    if (loadingOverlay != null && loadingOverlay.IsShowing)
+                    {
+                        loadingOverlay.Dismiss();
+                    }
+                }
             }
             catch (Exception e)
             {
@@ -399,8 +466,14 @@ namespace myTNB_Android.Src.MyAccount.Activity
 
         public void ShowEmptyAccount()
         {
+            try {
             listView.EmptyView = NoAccountLayout;
             btnAddAnotherAccount.Visibility = ViewStates.Gone;
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public void ShowUserData(UserEntity user , int numOfCards)
@@ -433,12 +506,19 @@ namespace myTNB_Android.Src.MyAccount.Activity
 
         protected override void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
         {
+            try {
             base.OnActivityResult(requestCode, resultCode, data);
             this.userActionsListener.OnActivityResult(requestCode , resultCode , data);
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public void ShowMobileUpdateSuccess(string newPhone)
         {
+            try {
             txtMobileNo.Text = newPhone;
             Snackbar updatePhoneSnackBar = Snackbar.Make(rootView, GetString(Resource.String.my_account_successful_update_mobile_no), Snackbar.LengthIndefinite)
                         .SetAction(GetString(Resource.String.my_account_successful_update_mobile_no_btn),
@@ -452,10 +532,16 @@ namespace myTNB_Android.Src.MyAccount.Activity
             TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
             tv.SetMaxLines(4);
             updatePhoneSnackBar.Show();
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public void ShowPasswordUpdateSuccess()
         {
+            try {
             Snackbar updatePassWordBar = Snackbar.Make(rootView, GetString(Resource.String.my_account_successful_update_password), Snackbar.LengthIndefinite)
                         .SetAction(GetString(Resource.String.my_account_successful_update_password_btn),
                          (view) =>
@@ -468,10 +554,16 @@ namespace myTNB_Android.Src.MyAccount.Activity
             TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
             tv.SetMaxLines(4);
             updatePassWordBar.Show();
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public void ShowRemovedCardSuccess(CreditCardData creditCard , int numOfCards)
         {
+            try {
             string lastDigits = creditCard.LastDigits.Substring(creditCard.LastDigits.Length - 4);
             txtCards.Text = string.Format("{0}", numOfCards);
             Snackbar.Make(rootView, GetString(Resource.String.manage_cards_card_remove_successfully_wildcard , lastDigits), Snackbar.LengthIndefinite)
@@ -482,6 +574,11 @@ namespace myTNB_Android.Src.MyAccount.Activity
                              // EMPTY WILL CLOSE SNACKBAR
                          }
                        ).Show();
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public void ShowGetCardsProgressDialog()
@@ -496,6 +593,7 @@ namespace myTNB_Android.Src.MyAccount.Activity
 
         public void ShowRemovedSupplyAccountSuccess(AccountData accountData, int position)
         {
+            try {
             adapter.Remove(position);
             Snackbar.Make(rootView, GetString(Resource.String.my_account_successful_remove_supply_account), Snackbar.LengthIndefinite)
                        .SetAction(GetString(Resource.String.my_account_successful_remove_supply_account_btn),
@@ -505,6 +603,11 @@ namespace myTNB_Android.Src.MyAccount.Activity
                             // EMPTY WILL CLOSE SNACKBAR
                         }
                        ).Show();
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public void ClearAccountsAdapter()
@@ -514,18 +617,31 @@ namespace myTNB_Android.Src.MyAccount.Activity
 
         public void EnableManageCards()
         {
+            try {
             btnTextUpdateCards.Enabled = true;
             btnTextUpdateCards.SetTextColor(Resources.GetColor(Resource.Color.powerBlue));
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public void DisableManageCards()
         {
+            try {
             btnTextUpdateCards.Enabled = false;
             btnTextUpdateCards.SetTextColor(Resources.GetColor(Resource.Color.silverChalice));
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public void ShowLogoutErrorMessage(string message)
         {
+            try {
             Snackbar.Make(rootView, message, Snackbar.LengthIndefinite)
                         .SetAction(GetString(Resource.String.logout_rate_btn_close),
                          (view) =>
@@ -534,6 +650,11 @@ namespace myTNB_Android.Src.MyAccount.Activity
                              // EMPTY WILL CLOSE SNACKBAR
                          }
                         ).Show();
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public void ShowLogoutProgressDialog()
@@ -543,13 +664,16 @@ namespace myTNB_Android.Src.MyAccount.Activity
             //    logoutProgressDialog.Show();
             //}
             try {
-            if (loadingOverlay != null && loadingOverlay.IsShowing)
-            {
-                loadingOverlay.Dismiss();
-            }
+                if (IsActive())
+                {
+                    if (loadingOverlay != null && loadingOverlay.IsShowing)
+                    {
+                        loadingOverlay.Dismiss();
+                    }
 
-            loadingOverlay = new LoadingOverlay(this, Resource.Style.LoadingOverlyDialogStyle);
-            loadingOverlay.Show();
+                    loadingOverlay = new LoadingOverlay(this, Resource.Style.LoadingOverlyDialogStyle);
+                    loadingOverlay.Show();
+                }
             }
             catch (Exception e)
             {
@@ -564,10 +688,13 @@ namespace myTNB_Android.Src.MyAccount.Activity
             //    logoutProgressDialog.Dismiss();
             //}
             try {
-            if (loadingOverlay != null && loadingOverlay.IsShowing)
-            {
-                loadingOverlay.Dismiss();
-            }
+                if (IsActive())
+                {
+                    if (loadingOverlay != null && loadingOverlay.IsShowing)
+                    {
+                        loadingOverlay.Dismiss();
+                    }
+                }
             }
             catch (Exception e)
             {
@@ -577,6 +704,7 @@ namespace myTNB_Android.Src.MyAccount.Activity
 
         public void ShowAccountRemovedSuccess()
         {
+            try {
             Snackbar updatePassWordBar =  Snackbar.Make(rootView, GetString(Resource.String.manage_supply_account_removed_success), Snackbar.LengthIndefinite)
                         .SetAction(GetString(Resource.String.my_account_successful_update_password_btn),
                          (view) =>
@@ -590,6 +718,11 @@ namespace myTNB_Android.Src.MyAccount.Activity
             TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
             tv.SetMaxLines(4);
             updatePassWordBar.Show();
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
     }
 }

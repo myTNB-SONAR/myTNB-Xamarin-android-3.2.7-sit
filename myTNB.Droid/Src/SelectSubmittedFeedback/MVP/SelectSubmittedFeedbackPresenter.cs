@@ -133,9 +133,9 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.MVP
 
             cts = new CancellationTokenSource();
 
-            if (mView.IsActive()) {
+            //if (mView.IsActive()) {
             this.mView.ShowProgressDialog();
-            }
+            //}
 #if DEBUG
             var httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
             var feedbackApi = RestService.For<IFeedbackApi>(httpClient);
@@ -158,10 +158,10 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.MVP
 
                     }, cts.Token);
 
-                    if (mView.IsActive())
-                    {
+                    //if (mView.IsActive())
+                    //{
                         this.mView.HideProgressDialog();
-                    }
+                    //}
 
                     if (!submittedFeedbackResponse.Data.IsError)
                     {
@@ -191,10 +191,10 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.MVP
 
                     }, cts.Token);
 
-                    if (mView.IsActive())
-                    {
+                    //if (mView.IsActive())
+                    //{
                         this.mView.HideProgressDialog();
-                    }
+                    //}
 
                     if (!submittedFeedbackResponse.Data.IsError)
                     {

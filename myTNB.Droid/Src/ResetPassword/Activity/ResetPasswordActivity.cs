@@ -366,9 +366,9 @@ namespace myTNB_Android.Src.ResetPassword.Activity
 
         public void ShowResetPasswordSuccess()
         {
-            Intent ResetPasswordSuccessIntent = new Intent(this, typeof(ResetPasswordSuccessActivity));
-            ResetPasswordSuccessIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
-            StartActivity(ResetPasswordSuccessIntent);
+            Intent intent = new Intent(this, typeof(ResetPasswordSuccessActivity));
+            intent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
+            StartActivity(intent);
 
         }
 

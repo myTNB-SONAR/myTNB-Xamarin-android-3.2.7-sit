@@ -22,7 +22,7 @@ using Android.Support.Design.Widget;
 using Newtonsoft.Json;
 using myTNB_Android.Src.RegistrationForm.Models;
 using Refit;
-using myTNB_Android.Src.RegisterValidation.Receivers;
+
 using Android.Text;
 using Android.Support.V4.Content;
 using Android;
@@ -87,7 +87,7 @@ namespace myTNB_Android.Src.UpdateMobileNo
         [BindView(Resource.Id.txtInputLayoutNumber_4)]
         TextInputLayout txtInputLayoutNumber_4;
 
-        PinDisplayerSMSReceiver pinDisplayerSMSReceiver;
+        //PinDisplayerSMSReceiver pinDisplayerSMSReceiver;
 
         MaterialDialog registrationDialog;
         private LoadingOverlay loadingOverlay;
@@ -113,10 +113,13 @@ namespace myTNB_Android.Src.UpdateMobileNo
 
             Bundle extras = Intent.Extras;
 
-            if (!extras.IsEmpty)
+                if (extras != null)
             {
-                newPhoneNo = extras.GetString(Constants.NEW_PHONE_NO);
-                loginRequest = JsonConvert.DeserializeObject<UserAuthenticationRequest>(extras.GetString("LoginRequest"));
+                    if (extras.ContainsKey("LoginRequest")) {
+                //loginRequest = JsonConvert.DeserializeObject<UserAuthenticationRequest>(extras.GetString("LoginRequest"));
+                        loginRequest = DeSerialze<UserAuthenticationRequest>(extras.GetString("LoginRequest"));
+                    }
+                    newPhoneNo = extras.GetString(Constants.NEW_PHONE_NO);
                 fromAppLaunch = extras.GetBoolean(Constants.FROM_APP_LAUNCH, false);
                 verifyPhone = extras.GetBoolean(Constants.FORCE_UPDATE_PHONE_NO, false);
             }
@@ -142,7 +145,7 @@ namespace myTNB_Android.Src.UpdateMobileNo
             txtNumber_3.TextChanged += TxtNumber_3_TextChanged;
             txtNumber_4.TextChanged += TxtNumber_4_TextChanged;
 
-            pinDisplayerSMSReceiver = new PinDisplayerSMSReceiver(txtNumber_1 , txtNumber_2 , txtNumber_3 , txtNumber_4);
+            //pinDisplayerSMSReceiver = new PinDisplayerSMSReceiver(txtNumber_1 , txtNumber_2 , txtNumber_3 , txtNumber_4);
 
             Snackbar mPinSentInfo = Snackbar.Make(rootView,
                 GetString(Resource.String.registration_validation_snackbar_sms_sent_msg),
@@ -251,27 +254,28 @@ namespace myTNB_Android.Src.UpdateMobileNo
 
         protected override void OnPause()
         {
-            try {
-            if (pinDisplayerSMSReceiver != null)
-            {
-                UnregisterReceiver(pinDisplayerSMSReceiver);
-            }
             base.OnPause();
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
+            //try {
+            //if (pinDisplayerSMSReceiver != null)
+            //{
+            //    UnregisterReceiver(pinDisplayerSMSReceiver);
+            //}
+            
+            //}
+            //catch (Exception e)
+            //{
+            //    Utility.LoggingNonFatalError(e);
+            //}
         }
 
         protected override void OnResume()
         {
             try {
             base.OnResume();
-            if (pinDisplayerSMSReceiver != null)
-            {
-                RegisterReceiver(pinDisplayerSMSReceiver , new IntentFilter("com.myTNB.smsReceiver"));
-            }
+            //if (pinDisplayerSMSReceiver != null)
+            //{
+            //    RegisterReceiver(pinDisplayerSMSReceiver , new IntentFilter("com.myTNB.smsReceiver"));
+            //}
             this.userActionsListener.Start();
             }
             catch (Exception e)

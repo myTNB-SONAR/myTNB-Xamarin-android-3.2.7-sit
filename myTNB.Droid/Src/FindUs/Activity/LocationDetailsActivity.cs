@@ -125,21 +125,26 @@ namespace myTNB_Android.Src.FindUs.Activity
             layoutOpeningHours.NestedScrollingEnabled = false;
             layoutServices.NestedScrollingEnabled = false;
 
-            string KT = Intent.Extras.GetString("KT");
-            string store = Intent.Extras.GetString("store");
-            string title = Intent.Extras.GetString("Title");
-            mImagePath = Intent.Extras.GetString("imagePath");
+                Bundle extras = Intent.Extras;
+
+                if (extras != null) {
+                    string KT = extras.GetString("KT");
+                    string store = extras.GetString("store");
+                    string title = extras.GetString("Title");
+                    mImagePath = extras.GetString("imagePath");
 
             if (!String.IsNullOrEmpty(KT))
             {
-                locationData = JsonConvert.DeserializeObject<LocationData>(KT);
+                //locationData = JsonConvert.DeserializeObject<LocationData>(KT);
+                    locationData = DeSerialze<LocationData>(KT);
                 RunOnUiThread(() => {
                     InitView(locationData);
                 });
             }
             if (!String.IsNullOrEmpty(store))
             {
-                googleApiResult = JsonConvert.DeserializeObject<GoogleApiResult>(store);
+                //googleApiResult = JsonConvert.DeserializeObject<GoogleApiResult>(store);
+                    googleApiResult = DeSerialze<GoogleApiResult>(store);
                 RunOnUiThread(() => {
                     InitView(googleApiResult);
                     });
@@ -149,6 +154,7 @@ namespace myTNB_Android.Src.FindUs.Activity
                 SetToolBarTitle(title);
             }
 
+                }
             TextViewUtils.SetMuseoSans500Typeface(txtTitle);
             TextViewUtils.SetMuseoSans300Typeface(txtAddress);
             TextViewUtils.SetMuseoSans300Typeface(lblAddress, lblPhone, lblOepningHours, lblServices);

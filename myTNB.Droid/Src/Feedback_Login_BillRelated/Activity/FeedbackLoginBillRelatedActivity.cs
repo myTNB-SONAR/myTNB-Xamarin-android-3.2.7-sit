@@ -111,6 +111,8 @@ namespace myTNB_Android.Src.Feedback_Login_BillRelated.Activity
                 .Build();
 
 
+                customerBillingAccount = new CustomerBillingAccount();
+
                 // Create your application here
                 TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutAccountNo, txtInputLayoutFeedback, txtInputLayoutMobileNo);
                 TextViewUtils.SetMuseoSans300Typeface(txtMaxImageContent, txtAccountNo, txtFeedback, txtRelatedScreenshotTitle, txtMaxCharacters, txtMobileNo);
@@ -588,24 +590,30 @@ namespace myTNB_Android.Src.Feedback_Login_BillRelated.Activity
         [OnClick(Resource.Id.btnSubmit)]
         void OnSubmit(object sender , EventArgs eventArgs)
         {
-            btnSubmit.Enabled = false;
-            Handler h = new Handler();
-            Action myAction = () =>
+            try
             {
-                btnSubmit.Enabled = true;
-            };
-            h.PostDelayed(myAction, 3000);
+                btnSubmit.Enabled = false;
+                Handler h = new Handler();
+                Action myAction = () =>
+                {
+                    btnSubmit.Enabled = true;
+                };
+                h.PostDelayed(myAction, 3000);
 
-            string feedback = txtFeedback.Text.Trim();
-            if (txtInputLayoutMobileNo.Visibility == ViewStates.Visible)
+                string feedback = txtFeedback.Text.Trim();
+                if (txtInputLayoutMobileNo.Visibility == ViewStates.Visible)
+                {
+                    string mobile_no = txtMobileNo.Text.Trim();
+                    this.userActionsListener.OnSubmit(this.DeviceId(), mobile_no, customerBillingAccount?.AccNum, feedback, adapter?.GetAllImages());
+                }
+                else
+                {
+                    this.userActionsListener.OnSubmit(this.DeviceId(), customerBillingAccount?.AccNum, feedback, adapter?.GetAllImages());
+                }
+            } catch(Exception e)
             {
-                string mobile_no = txtMobileNo.Text.Trim();
-                this.userActionsListener.OnSubmit(this.DeviceId(), mobile_no ,  customerBillingAccount.AccNum, feedback, adapter.GetAllImages());
-            }
-            else
-            {
-                this.userActionsListener.OnSubmit(this.DeviceId() , customerBillingAccount.AccNum , feedback , adapter.GetAllImages());
-            }
+                Utility.LoggingNonFatalError(e);        
+            }   
         }
 
 

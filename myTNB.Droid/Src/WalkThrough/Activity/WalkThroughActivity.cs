@@ -34,7 +34,7 @@ namespace myTNB_Android.Src.WalkThrough
               , Icon = "@drawable/ic_launcher"
        , LaunchMode = LaunchMode.SingleInstance
        , ScreenOrientation = ScreenOrientation.Portrait
-       , Theme = "@style/Theme.Launch")]
+              , Theme = "@style/Theme.Dashboard")]
     public class WalkThroughActivity : BaseAppCompatActivity , WalkThroughContract.IView , ViewPager.IOnPageChangeListener
     {
 

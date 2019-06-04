@@ -4,6 +4,7 @@ using Android.Runtime;
 using Android.Views;
 using Android.Graphics;
 using ZXing.Mobile.CameraAccess;
+using myTNB_Android.Src.Utils;
 
 namespace ZXing.Mobile
 {
@@ -24,36 +25,60 @@ namespace ZXing.Mobile
 
         private void Init()
         {
+            try {
             _cameraAnalyzer = new CameraAnalyzer(this, ScanningOptions);
             Holder.AddCallback(this);
             Holder.SetType(SurfaceType.PushBuffers);
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public async void SurfaceCreated(ISurfaceHolder holder)
         {
+            try {
             await ZXing.Net.Mobile.Android.PermissionsHandler.PermissionRequestTask;
 
             _cameraAnalyzer.SetupCamera();
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public async void SurfaceChanged(ISurfaceHolder holder, Format format, int wx, int hx)
         {
-            await ZXing.Net.Mobile.Android.PermissionsHandler.PermissionRequestTask;
+            try
+            {
+                await ZXing.Net.Mobile.Android.PermissionsHandler.PermissionRequestTask;
 
-            _cameraAnalyzer.RefreshCamera();
+                _cameraAnalyzer.RefreshCamera();
+            }catch(Exception e) {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public async void SurfaceDestroyed(ISurfaceHolder holder)
         {
+            try {
             await ZXing.Net.Mobile.Android.PermissionsHandler.PermissionRequestTask;
 
             _cameraAnalyzer.ShutdownCamera();
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public override bool OnTouchEvent(MotionEvent e)
         {
+            
             var r = base.OnTouchEvent(e);
-
+            try {
             switch (e.Action)
             {
                 case MotionEventActions.Down:
@@ -64,7 +89,11 @@ namespace ZXing.Mobile
                     this.AutoFocus((int)touchX, (int)touchY);
                     break;
             }
-
+            }
+            catch (Exception ex)
+            {
+                Utility.LoggingNonFatalError(ex);
+            }
             return r;
         }
 
@@ -80,6 +109,7 @@ namespace ZXing.Mobile
 
         public void StartScanning(Action<Result> scanResultCallback, MobileBarcodeScanningOptions options = null)
         {
+            try {
             ScanningOptions = options ?? MobileBarcodeScanningOptions.Default;
 
             _cameraAnalyzer.BarcodeFound += (sender, result) =>
@@ -87,6 +117,11 @@ namespace ZXing.Mobile
                 scanResultCallback?.Invoke(result);
             };
             _cameraAnalyzer.ResumeAnalysis();
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public void StopScanning()

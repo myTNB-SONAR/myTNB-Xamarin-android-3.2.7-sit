@@ -4,6 +4,7 @@ using myTNB.SitecoreCMS.Model;
 using System;
 using myTNB_Android.Src.Utils;
 using myTNB.SitecoreCM.Models;
+using myTNB_Android.Src.Database;
 
 namespace myTNB.SQLite.SQLiteDataManager
 {
@@ -11,18 +12,24 @@ namespace myTNB.SQLite.SQLiteDataManager
     {
         public void CreateTable()
         {
-            var db = new SQLiteConnection(Constants.DB_PATH);
-            List<SQLiteConnection.ColumnInfo> info = db.GetTableInfo("PromotionsParentEntityV2");
-            db.CreateTable<PromotionsParentEntityV2>();
+            //using (var db = new SQLiteConnection(Constants.DB_PATH))
+            //{
+            var db = DBHelper.GetSQLiteConnection();
+                List<SQLiteConnection.ColumnInfo> info = db.GetTableInfo("PromotionsParentEntityV2");
+                db.CreateTable<PromotionsParentEntityV2>();
+            //}
         }
 
         public void InsertItem(PromotionsParentEntityV2 item)
         {
             try
             {
-                var db = new SQLiteConnection(Constants.DB_PATH);
-                int newRecord = db.InsertOrReplace(item);
-                Console.WriteLine("Insert Record: {0}", newRecord );
+                //using (var db = new SQLiteConnection(Constants.DB_PATH))
+                //{
+                var db = DBHelper.GetSQLiteConnection();
+                    int newRecord = db.InsertOrReplace(item);
+                    Console.WriteLine("Insert Record: {0}", newRecord);
+                //}
             }
             catch (Exception e)
             {
@@ -48,8 +55,11 @@ namespace myTNB.SQLite.SQLiteDataManager
             List<PromotionsParentEntityV2> itemList = new List<PromotionsParentEntityV2>();
             try
             {
-                var db = new SQLiteConnection(Constants.DB_PATH);
-                itemList = db.Query<PromotionsParentEntityV2>("select * from PromotionsParentEntityV2");
+                //using (var db = new SQLiteConnection(Constants.DB_PATH))
+                //{
+                var db = DBHelper.GetSQLiteConnection();
+                    itemList = db.Query<PromotionsParentEntityV2>("select * from PromotionsParentEntityV2");
+                //}
             }catch(Exception e){
                 Console.WriteLine("Error in Get All Items : {0}", e.Message);
             }
@@ -59,8 +69,11 @@ namespace myTNB.SQLite.SQLiteDataManager
         public void DeleteTable(){
             try
             {
-                var db = new SQLiteConnection(Constants.DB_PATH);
-                db.DeleteAll<PromotionsParentEntityV2>();
+                //using (var db = new SQLiteConnection(Constants.DB_PATH))
+                //{
+                var db = DBHelper.GetSQLiteConnection();
+                    db.DeleteAll<PromotionsParentEntityV2>();
+                //}
             }
             catch (Exception e)
             {
@@ -72,9 +85,12 @@ namespace myTNB.SQLite.SQLiteDataManager
         {
             try
             {
-                var db = new SQLiteConnection(Constants.DB_PATH);
-                int newRecord = db.Update(item);
-                Console.WriteLine("Insert Record: {0}", newRecord);
+                //using (var db = new SQLiteConnection(Constants.DB_PATH))
+                //{
+                var db = DBHelper.GetSQLiteConnection();
+                    int newRecord = db.Update(item);
+                    Console.WriteLine("Insert Record: {0}", newRecord);
+                //}
             }
             catch (Exception e)
             {
@@ -84,8 +100,11 @@ namespace myTNB.SQLite.SQLiteDataManager
 
         public static void RemoveAll()
         {
-            var db = new SQLiteConnection(Constants.DB_PATH);
-            db.Execute("DELETE FROM PromotionsParentEntityV2");
+            //using (var db = new SQLiteConnection(Constants.DB_PATH))
+            //{
+            var db = DBHelper.GetSQLiteConnection();
+                db.Execute("DELETE FROM PromotionsParentEntityV2");
+            //}
         }
     }
 }

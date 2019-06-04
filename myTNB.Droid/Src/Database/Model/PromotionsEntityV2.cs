@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Threading;
 using Android.Graphics;
 using System.Net;
+using myTNB_Android.Src.Database;
 
 namespace myTNB.SQLite.SQLiteDataManager
 {
@@ -15,18 +16,24 @@ namespace myTNB.SQLite.SQLiteDataManager
     {
         public void CreateTable()
         {
-            var db = new SQLiteConnection(Constants.DB_PATH);
-            List<SQLiteConnection.ColumnInfo> info = db.GetTableInfo("PromotionsEntityV2");
-            db.CreateTable<PromotionsEntityV2>();
+            //using (var db = new SQLiteConnection(Constants.DB_PATH))
+            //{
+            var db = DBHelper.GetSQLiteConnection();
+                List<SQLiteConnection.ColumnInfo> info = db.GetTableInfo("PromotionsEntityV2");
+                db.CreateTable<PromotionsEntityV2>();
+            //}
         }
 
         public void InsertItem(PromotionsEntityV2 item)
         {
             try
             {
-                var db = new SQLiteConnection(Constants.DB_PATH);
-                int newRecord = db.InsertOrReplace(item);
-                Console.WriteLine("Insert Record: {0}", newRecord );
+                //using (var db = new SQLiteConnection(Constants.DB_PATH))
+                //{
+                var db = DBHelper.GetSQLiteConnection();
+                    int newRecord = db.InsertOrReplace(item);
+                    Console.WriteLine("Insert Record: {0}", newRecord);
+                //}
             }
             catch (Exception e)
             {
@@ -83,8 +90,11 @@ namespace myTNB.SQLite.SQLiteDataManager
             List<PromotionsEntityV2> itemList = new List<PromotionsEntityV2>();
             try
             {
-                var db = new SQLiteConnection(Constants.DB_PATH);
-                itemList = db.Query<PromotionsEntityV2>("select * from PromotionsEntityV2");
+                //using (var db = new SQLiteConnection(Constants.DB_PATH))
+                //{
+                var db = DBHelper.GetSQLiteConnection();
+                    itemList = db.Query<PromotionsEntityV2>("select * from PromotionsEntityV2");
+                //}
             }catch(Exception e){
                 Console.WriteLine("Error in Get All Items : {0}", e.Message);
             }
@@ -96,13 +106,16 @@ namespace myTNB.SQLite.SQLiteDataManager
             PromotionsEntityV2 entityV2 = new PromotionsEntityV2();
             try
             {
-                var db = new SQLiteConnection(Constants.DB_PATH);
-                List<PromotionsEntityV2> itemList = new List<PromotionsEntityV2>();
-                itemList = db.Query<PromotionsEntityV2>("SELECT * FROM PromotionsEntityV2 WHERE ID = ? ", id);
-                if(itemList.Count > 0)
-                {
-                    entityV2 = itemList[0];
-                }
+                //using (var db = new SQLiteConnection(Constants.DB_PATH))
+                //{
+                var db = DBHelper.GetSQLiteConnection();
+                    List<PromotionsEntityV2> itemList = new List<PromotionsEntityV2>();
+                    itemList = db.Query<PromotionsEntityV2>("SELECT * FROM PromotionsEntityV2 WHERE ID = ? ", id);
+                    if (itemList.Count > 0)
+                    {
+                        entityV2 = itemList[0];
+                    }
+                //}
             }
             catch (Exception e)
             {
@@ -114,8 +127,11 @@ namespace myTNB.SQLite.SQLiteDataManager
         public void DeleteTable(){
             try
             {
-                var db = new SQLiteConnection(Constants.DB_PATH);
-                db.DeleteAll<PromotionsEntityV2>();
+                //using (var db = new SQLiteConnection(Constants.DB_PATH))
+                //{
+                var db = DBHelper.GetSQLiteConnection();
+                    db.DeleteAll<PromotionsEntityV2>();
+                //}
             }
             catch (Exception e)
             {
@@ -127,17 +143,20 @@ namespace myTNB.SQLite.SQLiteDataManager
         {
             try
             {
-                var db = new SQLiteConnection(Constants.DB_PATH);
-                var existingRecord = db.Query<PromotionsEntityV2>("SELECT * FROM PromotionsEntityV2 WHERE ID = ? ", item.ID);
+                //using (var db = new SQLiteConnection(Constants.DB_PATH))
+                //{
+                var db = DBHelper.GetSQLiteConnection();
+                    var existingRecord = db.Query<PromotionsEntityV2>("SELECT * FROM PromotionsEntityV2 WHERE ID = ? ", item.ID);
 
-                if (existingRecord != null && existingRecord.Count > 0)
-                {
-                    var promotionRecord = existingRecord[0];
-                    promotionRecord.LandscapeImage = item.LandscapeImage;
-                    promotionRecord.Read = item.Read;
-                    db.Update(promotionRecord);
-                    Console.WriteLine("Update Record: {0}", promotionRecord);
-                }
+                    if (existingRecord != null && existingRecord.Count > 0)
+                    {
+                        var promotionRecord = existingRecord[0];
+                        promotionRecord.LandscapeImage = item.LandscapeImage;
+                        promotionRecord.Read = item.Read;
+                        db.Update(promotionRecord);
+                        Console.WriteLine("Update Record: {0}", promotionRecord);
+                    }
+                //}
             }
             catch (Exception e)
             {
@@ -149,17 +168,20 @@ namespace myTNB.SQLite.SQLiteDataManager
         {
             try
             {
-                var db = new SQLiteConnection(Constants.DB_PATH);
-                var existingRecord = db.Query<PromotionsEntityV2>("SELECT * FROM PromotionsEntityV2 WHERE ID = ? ", item.ID);
+                //using (var db = new SQLiteConnection(Constants.DB_PATH))
+                //{
+                var db = DBHelper.GetSQLiteConnection();
+                    var existingRecord = db.Query<PromotionsEntityV2>("SELECT * FROM PromotionsEntityV2 WHERE ID = ? ", item.ID);
 
-                if (existingRecord != null && existingRecord.Count > 0)
-                {
-                    DateTime dateTime = DateTime.Now;
-                    var promotionRecord = existingRecord[0];
-                    promotionRecord.PromoShownDate = GetFormattedStringDate(dateTime.ToString("yyyyMMdd"));
-                    db.Update(promotionRecord);
-                    Console.WriteLine("Update Record: {0}", promotionRecord);
-                }
+                    if (existingRecord != null && existingRecord.Count > 0)
+                    {
+                        DateTime dateTime = DateTime.Now;
+                        var promotionRecord = existingRecord[0];
+                        promotionRecord.PromoShownDate = GetFormattedStringDate(dateTime.ToString("yyyyMMdd"));
+                        db.Update(promotionRecord);
+                        Console.WriteLine("Update Record: {0}", promotionRecord);
+                    }
+                //}
             }
             catch (Exception e)
             {
@@ -171,25 +193,28 @@ namespace myTNB.SQLite.SQLiteDataManager
         {
             try
             {
-                var db = new SQLiteConnection(Constants.DB_PATH);
-                List<PromotionsEntityV2> itemList = new List<PromotionsEntityV2>();
-                try
-                {
-                    itemList = db.Query<PromotionsEntityV2>("select * from PromotionsEntityV2");
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine("Error in Get All Items : {0}", e.Message);
-                }
+                //using (var db = new SQLiteConnection(Constants.DB_PATH))
+                //{
+                var db = DBHelper.GetSQLiteConnection();
+                    List<PromotionsEntityV2> itemList = new List<PromotionsEntityV2>();
+                    try
+                    {
+                        itemList = db.Query<PromotionsEntityV2>("select * from PromotionsEntityV2");
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine("Error in Get All Items : {0}", e.Message);
+                    }
 
-                var dbUpdate = new SQLiteConnection(Constants.DB_PATH);
-                foreach (PromotionsModelV2 promotionRecord in itemList)
-                {
-                    DateTime dateTime = DateTime.Now;
-                    promotionRecord.PromoShownDate = GetFormattedStringDate(dateTime.ToString("yyyyMMdd"));
-                    dbUpdate.Update(promotionRecord);
-                    Console.WriteLine("Update All Record: {0}", promotionRecord);
-                }
+                    var dbUpdate = new SQLiteConnection(Constants.DB_PATH);
+                    foreach (PromotionsModelV2 promotionRecord in itemList)
+                    {
+                        DateTime dateTime = DateTime.Now;
+                        promotionRecord.PromoShownDate = GetFormattedStringDate(dateTime.ToString("yyyyMMdd"));
+                        dbUpdate.Update(promotionRecord);
+                        Console.WriteLine("Update All Record: {0}", promotionRecord);
+                    }
+                //}
             }
             catch (Exception e)
             {
@@ -201,13 +226,16 @@ namespace myTNB.SQLite.SQLiteDataManager
         {
             try
             {
-                var db = new SQLiteConnection(Constants.DB_PATH);
-                var existingRecord = db.Query<PromotionsEntityV2>("SELECT * FROM PromotionsEntityV2 WHERE Read = ? ", false);
+                //using (var db = new SQLiteConnection(Constants.DB_PATH))
+                //{
+                var db = DBHelper.GetSQLiteConnection();
+                    var existingRecord = db.Query<PromotionsEntityV2>("SELECT * FROM PromotionsEntityV2 WHERE Read = ? ", false);
 
-                if (existingRecord != null && existingRecord.Count > 0)
-                {
-                    return true;
-                }
+                    if (existingRecord != null && existingRecord.Count > 0)
+                    {
+                        return true;
+                    }
+                //}
             }
             catch (Exception e)
             {
@@ -223,13 +251,12 @@ namespace myTNB.SQLite.SQLiteDataManager
             List<PromotionsEntityV2> validItemList = new List<PromotionsEntityV2>();
             try
             {
-                var db = new SQLiteConnection(Constants.DB_PATH);
-                itemList = db.Query<PromotionsEntityV2>("select * from PromotionsEntityV2");
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("Error in Get All Items : {0}", e.Message);
-            }
+                //using (var db = new SQLiteConnection(Constants.DB_PATH))
+                //{
+                var db = DBHelper.GetSQLiteConnection();
+                    itemList = db.Query<PromotionsEntityV2>("select * from PromotionsEntityV2");
+                //}
+            
 
             foreach(PromotionsModelV2 item in itemList)
             {
@@ -289,13 +316,22 @@ namespace myTNB.SQLite.SQLiteDataManager
                     }
                 }
             }
+
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Error in Get All Items : {0}", e.Message);
+            }
             return validItemList;
         }
 
         public static void RemoveAll()
         {
-            var db = new SQLiteConnection(Constants.DB_PATH);
-            db.Execute("DELETE FROM PromotionsEntityV2");
+            //using (var db = new SQLiteConnection(Constants.DB_PATH))
+            //{
+            var db = DBHelper.GetSQLiteConnection();
+                db.Execute("DELETE FROM PromotionsEntityV2");
+            //}
         }
 
         public async Task<string> GetImageFilePathAsync(string title, string imageUrl)

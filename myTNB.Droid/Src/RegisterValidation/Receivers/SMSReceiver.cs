@@ -16,8 +16,8 @@ using myTNB_Android.Src.Utils;
 
 namespace myTNB_Android.Src.RegisterValidation.Receivers
 {
-    [BroadcastReceiver(Enabled = true, Label = "SMSReceiver")]
-    [IntentFilter(new[] { "android.provider.Telephony.SMS_RECEIVED" })]
+    //[BroadcastReceiver(Enabled = true, Label = "SMSReceiver")]
+    //[IntentFilter(new[] { "android.provider.Telephony.SMS_RECEIVED" })]
     public class SMSReceiver : BroadcastReceiver
     {
         private const string TAG = "SMSBroadcastReceiver";
@@ -26,15 +26,15 @@ namespace myTNB_Android.Src.RegisterValidation.Receivers
         private const string TNBTOKEN_SUBJECT_V2 = "Your myTNB OTP is:";
         public override void OnReceive(Context context, Intent intent)
         {
-            Log.Info(TAG, "Intent received: " + intent.Action);
+            Log.Info(TAG, "Intent received: " + intent?.Action);
 
-            if (intent.Action != IntentAction) return;
+            if (intent?.Action != IntentAction) return;
 
-            var bundle = intent.Extras;
+            var bundle = intent?.Extras;
 
             if (bundle == null) return;
 
-            var pdus = bundle.Get("pdus");
+            var pdus = bundle?.Get("pdus");
             var castedPdus = JNIEnv.GetArray<Java.Lang.Object>(pdus.Handle);
 
             var msgs = new SmsMessage[castedPdus.Length];
@@ -48,21 +48,25 @@ namespace myTNB_Android.Src.RegisterValidation.Receivers
 
                 msgs[i] = SmsMessage.CreateFromPdu(bytes);
 
-                sb.Append(string.Format("SMS From: {0}{1}Body: {2}{1}", msgs[i].OriginatingAddress,
+
+
+                if (msgs[i] != null && !string.IsNullOrEmpty(msgs[i].MessageBody)) {
+
+                    sb.Append(string.Format("SMS From: {0}{1}Body: {2}{1}", msgs[i].OriginatingAddress,
                                         System.Environment.NewLine, msgs[i].MessageBody));
 
-                
                 if (msgs[i].MessageBody.ToLower().Contains(TNBTOKEN_SUBJECT.ToLower()) || msgs[i].MessageBody.ToLower().Contains(TNBTOKEN_SUBJECT_V2.ToLower()))
                 {
                     string[] splitMessage = msgs[i].MessageBody.Split(':');
-                    if (splitMessage.Length > 1)
+                        if (splitMessage != null && splitMessage.Length > 1)
                     {
-                        Intent pinIntent = new Intent("com.myTNB.smsReceiver");
-                        pinIntent.PutExtra(Constants.RETRIEVE_PIN_FROM_SMS , splitMessage[1]);
-                        context.SendBroadcast(pinIntent);
+                            Intent pIntent = new Intent("com.myTNB.smsReceiver");
+                            pIntent.PutExtra(Constants.RETRIEVE_PIN_FROM_SMS , splitMessage[1]);
+                            context.SendBroadcast(pIntent);
                         break;
                     }
                    
+                }
                 }
 
                 //if (msgs[i].OriginatingAddress.Contains("6600"))

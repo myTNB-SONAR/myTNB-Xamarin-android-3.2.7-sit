@@ -19,18 +19,24 @@ namespace myTNB_Android.Src.Database.Model
     {
         public void CreateTable()
         {
-            var db = new SQLiteConnection(Constants.DB_PATH);
-            List<SQLiteConnection.ColumnInfo> info = db.GetTableInfo("FullRTEPagesEntity");
-            db.CreateTable<FullRTEPagesEntity>();
+            //using (var db = new SQLiteConnection(Constants.DB_PATH))
+            //{
+            var db = DBHelper.GetSQLiteConnection();
+                List<SQLiteConnection.ColumnInfo> info = db.GetTableInfo("FullRTEPagesEntity");
+                db.CreateTable<FullRTEPagesEntity>();
+            //}
         }
 
         public void InsertItem(FullRTEPagesEntity item)
         {
             try
             {
-                var db = new SQLiteConnection(Constants.DB_PATH);
-                int newRecord = db.InsertOrReplace(item);
-                Console.WriteLine("Insert Record: {0}", newRecord);
+                //using (var db = new SQLiteConnection(Constants.DB_PATH))
+                //{
+                var db = DBHelper.GetSQLiteConnection();
+                    int newRecord = db.InsertOrReplace(item);
+                    Console.WriteLine("Insert Record: {0}", newRecord);
+                //}
             }
             catch (Exception e)
             {
@@ -59,8 +65,11 @@ namespace myTNB_Android.Src.Database.Model
             List<FullRTEPagesEntity> itemList = new List<FullRTEPagesEntity>();
             try
             {
-                var db = new SQLiteConnection(Constants.DB_PATH);
-                itemList = db.Query<FullRTEPagesEntity>("select * from FullRTEPagesEntity");
+                //using (var db = new SQLiteConnection(Constants.DB_PATH))
+                //{
+                var db = DBHelper.GetSQLiteConnection();
+                    itemList = db.Query<FullRTEPagesEntity>("select * from FullRTEPagesEntity");
+                //}
             }
             catch (Exception e)
             {
@@ -73,8 +82,11 @@ namespace myTNB_Android.Src.Database.Model
         {
             try
             {
-                var db = new SQLiteConnection(Constants.DB_PATH);
-                db.DeleteAll<FullRTEPagesEntity>();
+                //using (var db = new SQLiteConnection(Constants.DB_PATH))
+                //{
+                var db = DBHelper.GetSQLiteConnection();
+                    db.DeleteAll<FullRTEPagesEntity>();
+                //}
             }
             catch (Exception e)
             {

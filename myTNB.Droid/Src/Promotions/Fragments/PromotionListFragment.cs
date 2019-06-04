@@ -216,7 +216,7 @@ namespace myTNB_Android.Src.Promotions.Fragments
             {
                 PromotionsParentEntityV2 wtManager = new PromotionsParentEntityV2();
                 List<PromotionsParentEntityV2> items = wtManager.GetAllItems();
-                if (items != null)
+                    if (items != null && items.Count() > 0)
                 {
                     PromotionsParentEntityV2 entity = items[0];
                     if (entity != null)

@@ -51,7 +51,16 @@ namespace myTNB_Android.Src.FeedbackFullScreenImage.Activity
         {
             try
             {
-                attachedImage = JsonConvert.DeserializeObject<AttachedImage>(Intent.Extras.GetString(Constants.SELECTED_FEEDBACK_DETAIL_IMAGE));
+                Bundle extras = Intent.Extras;
+
+                if (extras != null)
+                {
+                    if (extras.ContainsKey(Constants.SELECTED_FEEDBACK_DETAIL_IMAGE))
+                    {
+                        //attachedImage = JsonConvert.DeserializeObject<AttachedImage>(Intent.Extras.GetString(Constants.SELECTED_FEEDBACK_DETAIL_IMAGE));
+                        attachedImage = DeSerialze<AttachedImage>(extras.GetString(Constants.SELECTED_FEEDBACK_DETAIL_IMAGE));
+                    }
+                }
 
                 base.OnCreate(savedInstanceState);
                 imgFeedback.Visibility = ViewStates.Visible;

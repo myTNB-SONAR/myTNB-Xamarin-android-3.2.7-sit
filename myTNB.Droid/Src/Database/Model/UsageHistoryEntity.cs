@@ -19,18 +19,24 @@ namespace myTNB_Android.Src.Database.Model
     {
         public static void CreateTable()
         {
-            var db = new SQLiteConnection(Constants.DB_PATH);
-            List<SQLiteConnection.ColumnInfo> info = db.GetTableInfo("UsageHistoryEntity");
-            db.CreateTable<UsageHistoryEntity>();
+            //using (var db = new SQLiteConnection(Constants.DB_PATH))
+            //{
+            var db = DBHelper.GetSQLiteConnection();
+                List<SQLiteConnection.ColumnInfo> info = db.GetTableInfo("UsageHistoryEntity");
+                db.CreateTable<UsageHistoryEntity>();
+            //}
         }
 
         public static void InsertItem(UsageHistoryEntity item)
         {
             try
             {
-                var db = new SQLiteConnection(Constants.DB_PATH);
-                int newRecord = db.InsertOrReplace(item);
-                Console.WriteLine("Insert Record: {0}", newRecord);
+                //using (var db = new SQLiteConnection(Constants.DB_PATH))
+                //{
+                var db = DBHelper.GetSQLiteConnection();
+                    int newRecord = db.InsertOrReplace(item);
+                    Console.WriteLine("Insert Record: {0}", newRecord);
+                //}
             }
             catch (Exception e)
             {
@@ -93,8 +99,11 @@ namespace myTNB_Android.Src.Database.Model
             List<UsageHistoryEntity> itemList = new List<UsageHistoryEntity>();
             try
             {
-                var db = new SQLiteConnection(Constants.DB_PATH);
-                itemList = db.Query<UsageHistoryEntity>("select * from UsageHistoryEntity");
+                //using (var db = new SQLiteConnection(Constants.DB_PATH))
+                //{
+                var db = DBHelper.GetSQLiteConnection();
+                    itemList = db.Query<UsageHistoryEntity>("select * from UsageHistoryEntity");
+                //}
             }
             catch (Exception e)
             {
@@ -109,12 +118,15 @@ namespace myTNB_Android.Src.Database.Model
             try
             {
                 List<UsageHistoryEntity> itemList = new List<UsageHistoryEntity>();
-                var db = new SQLiteConnection(Constants.DB_PATH);
-                itemList = db.Query<UsageHistoryEntity>("select * from UsageHistoryEntity where AccountNo = ?", accNo);
-                if(itemList != null && itemList.Count > 0)
-                {
-                    entity = itemList[0];
-                }
+                //using (var db = new SQLiteConnection(Constants.DB_PATH))
+                //{
+                var db = DBHelper.GetSQLiteConnection();
+                    itemList = db.Query<UsageHistoryEntity>("select * from UsageHistoryEntity where AccountNo = ?", accNo);
+                    if (itemList != null && itemList.Count > 0)
+                    {
+                        entity = itemList[0];
+                    }
+                //}
             }
             catch (Exception e)
             {
@@ -127,8 +139,11 @@ namespace myTNB_Android.Src.Database.Model
         {
             try
             {
-                var db = new SQLiteConnection(Constants.DB_PATH);
-                db.DeleteAll<UsageHistoryEntity>();
+                //using (var db = new SQLiteConnection(Constants.DB_PATH))
+                //{
+                var db = DBHelper.GetSQLiteConnection();
+                    db.DeleteAll<UsageHistoryEntity>();
+                //}
             }
             catch (Exception e)
             {
@@ -145,14 +160,20 @@ namespace myTNB_Android.Src.Database.Model
 
         public static void RemoveAll()
         {
-            var db = new SQLiteConnection(Constants.DB_PATH);
-            db.Execute("DELETE FROM UsageHistoryEntity");
+            //using (var db = new SQLiteConnection(Constants.DB_PATH))
+            //{
+            var db = DBHelper.GetSQLiteConnection();
+                db.Execute("DELETE FROM UsageHistoryEntity");
+            //}
         }
 
         public static void RemoveAccountData(string accNo)
         {
-            var db = new SQLiteConnection(Constants.DB_PATH);
-            db.Execute("DELETE FROM UsageHistoryEntity where AccountNo = ?", accNo);
+            //using (var db = new SQLiteConnection(Constants.DB_PATH))
+            //{
+            var db = DBHelper.GetSQLiteConnection();
+                db.Execute("DELETE FROM UsageHistoryEntity where AccountNo = ?", accNo);
+            //}
         }
 
     }

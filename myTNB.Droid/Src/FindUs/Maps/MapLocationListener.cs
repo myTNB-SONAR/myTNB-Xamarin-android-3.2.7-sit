@@ -61,10 +61,10 @@ namespace myTNB_Android.Src.FindUs.Maps
             {
                 latI = location.Latitude;
                 lonI = location.Longitude;
-                String longitude = "Longitude: " + location.Longitude;
-                Log.Debug(TAG, longitude);
-                String latitude = "Latitude: " + location.Latitude;
-                Log.Debug(TAG, latitude);
+                //String longitude = "Longitude: " + location.Longitude;
+                //Log.Debug(TAG, longitude);
+                //String latitude = "Latitude: " + location.Latitude;
+                //Log.Debug(TAG, latitude);
             }
         }
 

@@ -77,22 +77,22 @@ namespace myTNB_Android.Src.Login.MVP
             }
         }
 
-        public async void LoginAsync(string username, string password , string deviceId, bool rememberMe)
+        public async void LoginAsync(string usrNme, string pwd , string deviceId, bool rememberMe)
         {
             cts = new CancellationTokenSource();
-            if (TextUtils.IsEmpty(username))
+            if (TextUtils.IsEmpty(usrNme))
             {
                 this.mView.ShowEmptyEmailError();
                 return;
             }
 
-            if (!Patterns.EmailAddress.Matcher(username).Matches())
+            if (!Patterns.EmailAddress.Matcher(usrNme).Matches())
             {
                 this.mView.ShowInvalidEmailError();
                 return;
             }
 
-            if (TextUtils.IsEmpty(password))
+            if (TextUtils.IsEmpty(pwd))
             {
                 this.mView.ShowEmptyPasswordError();
                 return;
@@ -166,8 +166,8 @@ namespace myTNB_Android.Src.Login.MVP
 
                 var userResponse = await api.DoLogin(new UserAuthenticationRequest(Constants.APP_CONFIG.API_KEY_ID)
                 {
-                    UserName = username,
-                    Password = password,
+                    UserName = usrNme,
+                    Password = pwd,
                     IpAddress = Constants.APP_CONFIG.API_KEY_ID,
                     ClientType = DeviceIdUtils.GetAppVersionName(),
                     ActiveUserName = Constants.APP_CONFIG.API_KEY_ID,
@@ -201,7 +201,7 @@ namespace myTNB_Android.Src.Login.MVP
 
                     if (rememberMe)
                     {
-                        UserSessions.SaveUserEmail(mSharedPref, username);
+                        UserSessions.SaveUserEmail(mSharedPref, usrNme);
                     }
                     else
                     {
@@ -216,15 +216,15 @@ namespace myTNB_Android.Src.Login.MVP
                         if (this.mView.IsActive())
                         {
                                 this.mView.HideProgressDialog();
-                            this.mView.ShowResetPassword(username , password);
+                            this.mView.ShowResetPassword(usrNme , pwd);
                         }
                     }
                     else if (!userResponse.Data.User.isPhoneVerified)
                     {
                         UserAuthenticationRequest loginRequest = new UserAuthenticationRequest(Constants.APP_CONFIG.API_KEY_ID)
                         {
-                            UserName = username,
-                            Password = password,
+                            UserName = usrNme,
+                            Password = pwd,
                             IpAddress = Constants.APP_CONFIG.API_KEY_ID,
                             ClientType = DeviceIdUtils.GetAppVersionName(),
                             ActiveUserName = userResponse.Data.User.UserId,

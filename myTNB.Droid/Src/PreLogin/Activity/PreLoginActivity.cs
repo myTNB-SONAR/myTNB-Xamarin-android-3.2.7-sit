@@ -214,9 +214,9 @@ namespace myTNB_Android.Src.PreLogin.Activity
                                     imgPromotion.SetImageBitmap(imageBitmap);
                                     imgPromotion.Click += delegate
                                     {
-                                        Intent webIntent = new Intent(this, typeof(PromotionWebActivity));
-                                        webIntent.PutExtra(Constants.PROMOTIONS_LINK, obj.GeneralLinkUrl);
-                                        StartActivity(webIntent);
+                                        //Intent webIntent = new Intent(this, typeof(PromotionWebActivity));
+                                        //webIntent.PutExtra(Constants.PROMOTIONS_LINK, obj.GeneralLinkUrl);
+                                        //StartActivity(webIntent);
                                     };
                                 }
                             }

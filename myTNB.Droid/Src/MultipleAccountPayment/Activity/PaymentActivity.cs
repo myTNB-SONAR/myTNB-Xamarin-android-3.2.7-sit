@@ -22,6 +22,7 @@ using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.SummaryDashBoard.Models;
 using myTNB_Android.Src.Base.Api;
 using System.Runtime;
+using System.IO;
 
 namespace myTNB_Android.Src.MultipleAccountPayment.Activity
 {
@@ -101,10 +102,26 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
             toolbar = FindViewById<Android.Support.V7.Widget.Toolbar>(Resource.Id.toolbar);
             frameContainer = FindViewById<FrameLayout>(Resource.Id.fragment_container);
             coordinatorLayout = FindViewById<Android.Support.Design.Widget.CoordinatorLayout>(Resource.Id.coordinatorLayout);
-            selectedAccount = JsonConvert.DeserializeObject<AccountData>(Intent.Extras.GetString(Constants.SELECTED_ACCOUNT));
-            accounts = JsonConvert.DeserializeObject<List<MPAccount>>(Intent.Extras.GetString("PAYMENT_ITEMS"));
-            total = Intent.Extras.GetString("TOTAL");
+                Bundle extras = Intent.Extras;
 
+                if (extras != null)
+                {
+                    if (extras.ContainsKey(Constants.SELECTED_ACCOUNT))
+                    {
+                        //selectedAccount = JsonConvert.DeserializeObject<AccountData>(extras.GetString(Constants.SELECTED_ACCOUNT));
+
+                        selectedAccount = DeSerialze<AccountData>(extras.GetString(Constants.SELECTED_ACCOUNT));
+                  
+                    }
+
+                    if (extras.ContainsKey("PAYMENT_ITEMS"))
+                    {
+                        //accounts = JsonConvert.DeserializeObject<List<MPAccount>>(extras.GetString("PAYMENT_ITEMS"));
+
+                        accounts = DeSerialze<List<MPAccount>>(extras.GetString("PAYMENT_ITEMS"));
+                    }
+                    total = Intent.Extras.GetString("TOTAL");
+                }
             OnLoadMainFragment();
             }
             catch (Exception e)
@@ -137,16 +154,19 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
 
         public void OnLoadMainFragment()
         {
-            Android.App.Fragment selectPaymentFragment = new MPSelectPaymentMethodFragment();
-            Bundle bundle = new Bundle();
-            bundle.PutString(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccount));
-            bundle.PutString("PAYMENT_ITEMS", JsonConvert.SerializeObject(accounts));
-            bundle.PutString("TOTAL", total);
-            selectPaymentFragment.Arguments = bundle;
-            var fragmentTransaction = FragmentManager.BeginTransaction();
-            fragmentTransaction.Add(Resource.Id.fragment_container, selectPaymentFragment);
-            fragmentTransaction.Commit();
-            currentFragment = selectPaymentFragment;
+            if (!IsFinishing && !IsDestroyed)
+            {
+                Android.App.Fragment selectPaymentFragment = new MPSelectPaymentMethodFragment();
+                Bundle bundle = new Bundle();
+                bundle.PutString(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccount));
+                bundle.PutString("PAYMENT_ITEMS", JsonConvert.SerializeObject(accounts));
+                bundle.PutString("TOTAL", total);
+                selectPaymentFragment.Arguments = bundle;
+                var fragmentTransaction = FragmentManager.BeginTransaction();
+                fragmentTransaction.Add(Resource.Id.fragment_container, selectPaymentFragment);
+                fragmentTransaction.Commit();
+                currentFragment = selectPaymentFragment;
+            }
         }
 
         internal void SetPaymentReceiptFlag(bool flag, SummaryDashBordRequest summaryDashBoardRequest)

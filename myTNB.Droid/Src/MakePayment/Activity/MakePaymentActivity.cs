@@ -58,8 +58,16 @@ namespace myTNB_Android.Src.MakePayment.Activity
 
             try
             {
-                selectedAccount = JsonConvert.DeserializeObject<AccountData>(Intent.Extras.GetString(Constants.SELECTED_ACCOUNT));
+                Bundle extras = Intent.Extras;
 
+                if (extras != null)
+                {
+                    if (extras.ContainsKey(Constants.SELECTED_ACCOUNT))
+                    {
+                        //selectedAccount = JsonConvert.DeserializeObject<AccountData>(Intent.Extras.GetString(Constants.SELECTED_ACCOUNT));
+                        selectedAccount = DeSerialze<AccountData>(extras.GetString(Constants.SELECTED_ACCOUNT));
+                    }
+                }
                 OnLoadMainFragment();
             } catch(Exception e) {
                 Utility.LoggingNonFatalError(e);

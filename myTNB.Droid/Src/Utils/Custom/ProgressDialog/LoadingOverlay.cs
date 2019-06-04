@@ -73,7 +73,7 @@ namespace myTNB_Android.Src.Utils.Custom.ProgressDialog
             try {
             if(animationDrawable != null){
                 imgLoadingImage.Background = null;
-                animationDrawable.Dispose();
+                //animationDrawable.Dispose();
             }
             } catch(Exception e) {
                 Utility.LoggingNonFatalError(e);

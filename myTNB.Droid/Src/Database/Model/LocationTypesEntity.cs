@@ -32,45 +32,54 @@ namespace myTNB_Android.Src.Database.Model
 
         public static int CreateTable()
         {
-            var db = new SQLiteConnection(Constants.DB_PATH);
-            return db.CreateTable<LocationTypesEntity>();
+            //using (var db = new SQLiteConnection(Constants.DB_PATH))
+            //{
+            var db = DBHelper.GetSQLiteConnection();
+                return (int)db.CreateTable<LocationTypesEntity>();
+            //}
         }
 
         public static int InsertOrReplace(LocationType loc)
         {
-            var db = new SQLiteConnection(Constants.DB_PATH);
-            var newRecord = new LocationTypesEntity()
-            {
-                Id = loc.Id,
-                Title = loc.Title,
-                Description = loc.Description,
-                ImagePath = loc.ImagePath
-            };
-            return db.InsertOrReplace(newRecord);
+            //using (var db = new SQLiteConnection(Constants.DB_PATH))
+            //{
+            var db = DBHelper.GetSQLiteConnection();
+                var newRecord = new LocationTypesEntity()
+                {
+                    Id = loc.Id,
+                    Title = loc.Title,
+                    Description = loc.Description,
+                    ImagePath = loc.ImagePath
+                };
+                return db.InsertOrReplace(newRecord);
+            //}
         }
 
         public static int InsertFristRecord()
         {
-            var db = new SQLiteConnection(Constants.DB_PATH);
-            db.DeleteAll<LocationTypesEntity>();
-            var newRecord = new LocationTypesEntity()
-            {
-                Id = "0",
-                Title = "All",
-                Description = "All",
-                ImagePath = Constants.SERVER_URL.END_POINT+"/public/images/pkp/default-kt.jpg"
-            };
-            return db.InsertOrReplace(newRecord);
-
+            //using (var db = new SQLiteConnection(Constants.DB_PATH))
+            //{
+            var db = DBHelper.GetSQLiteConnection();
+                db.DeleteAll<LocationTypesEntity>();
+                var newRecord = new LocationTypesEntity()
+                {
+                    Id = "0",
+                    Title = "All",
+                    Description = "All",
+                    ImagePath = Constants.SERVER_URL.END_POINT + "/public/images/pkp/default-kt.jpg"
+                };
+                return db.InsertOrReplace(newRecord);
+            //}
 
         }
 
         public static IEnumerable<LocationTypesEntity> Enumerate()
         {
-            using (var db = new SQLiteConnection(Constants.DB_PATH))
-            {
+            //using (var db = new SQLiteConnection(Constants.DB_PATH))
+            //{
+            var db = DBHelper.GetSQLiteConnection();
                 return db.Query<LocationTypesEntity>("select * from LocationTypesEntity");
-            }
+            //}
         }
 
         public static int Count()
@@ -80,20 +89,22 @@ namespace myTNB_Android.Src.Database.Model
 
         public static bool HasRecord()
         {
-            using (var db = new SQLiteConnection(Constants.DB_PATH))
-            {
+            //using (var db = new SQLiteConnection(Constants.DB_PATH))
+            //{
+            var db = DBHelper.GetSQLiteConnection();
                 return db.Query<LocationTypesEntity>("select * from LocationTypesEntity").Count > 0;
-            }
+            //}
         }
 
         public static LocationTypesEntity GetById(string Id)
         {
             if (HasRecord())
             {
-                using (var db = new SQLiteConnection(Constants.DB_PATH))
-                {
+                //using (var db = new SQLiteConnection(Constants.DB_PATH))
+                //{
+                var db = DBHelper.GetSQLiteConnection();
                     return db.Query<LocationTypesEntity>("select * from LocationTypesEntity WHERE ID = ?", Id)[0];
-                }
+                //}
             }
             else
             {
@@ -106,10 +117,11 @@ namespace myTNB_Android.Src.Database.Model
             List<LocationTypesEntity> entityTypes = new List<LocationTypesEntity>();
             if (HasRecord())
             {
-                using (var db = new SQLiteConnection(Constants.DB_PATH))
-                {
+                //using (var db = new SQLiteConnection(Constants.DB_PATH))
+                //{
+                var db = DBHelper.GetSQLiteConnection();
                     entityTypes.AddRange(db.Query<LocationTypesEntity>("select * from LocationTypesEntity"));
-                }
+                //}
             }
 
             List<myTNB_Android.Src.FindUs.Models.LocationType> types = new List<myTNB_Android.Src.FindUs.Models.LocationType>();

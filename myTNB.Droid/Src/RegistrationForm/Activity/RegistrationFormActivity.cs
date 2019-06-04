@@ -354,14 +354,14 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
         void OnRegister(object sender, EventArgs eventArgs)
         {
             try {
-            string fullname = txtFullName.Text.ToString().Trim();
+            string fName = txtFullName.Text.ToString().Trim();
             string ic_no = txtICNumber.Text.ToString().Trim();
             string mobile_no = txtMobileNumber.Text.ToString().Trim();
-            string email = txtEmail.Text.ToString().Trim();
+            string eml_str = txtEmail.Text.ToString().Trim();
             string confirm_email = txtConfirmEmail.Text.ToString().Trim();
             string password = txtPassword.Text;
             string confirm_password = txtConfirmPassword.Text;
-            this.userActionsListener.OnAcquireToken(fullname, ic_no, mobile_no, email, confirm_email, password, confirm_password);
+                this.userActionsListener.OnAcquireToken(fName, ic_no, mobile_no, eml_str, confirm_email, password, confirm_password);
             }
             catch (Exception e)
             {

@@ -40,7 +40,7 @@ namespace myTNB_Android.Src.Base.Activity
                 SupportActionBar.SetDisplayShowHomeEnabled(true);
                 if (ShowCustomToolbarTitle())
                 {
-                    TextView title = toolbar.FindViewById<TextView>(Resource.Id.toolbar_title);
+                    TextView title = toolbar?.FindViewById<TextView>(Resource.Id.toolbar_title);
                     TextViewUtils.SetMuseoSans500Typeface(title);
                     title.Text = ToolbarTitle();
                     SupportActionBar.SetDisplayShowTitleEnabled(false);
@@ -57,7 +57,7 @@ namespace myTNB_Android.Src.Base.Activity
                 if (ShowCustomToolbarTitle())
                 {
 
-                    TextView title = toolbar.FindViewById<TextView>(Resource.Id.toolbar_title);
+                    TextView title = toolbar?.FindViewById<TextView>(Resource.Id.toolbar_title);
                     TextViewUtils.SetMuseoSans500Typeface(title);
                     title.Text = ToolbarTitle();
                     SupportActionBar.SetDisplayShowTitleEnabled(false);
@@ -78,7 +78,7 @@ namespace myTNB_Android.Src.Base.Activity
         /// <returns></returns>
         public virtual string ToolbarTitle()
         {
-            return toolbar.Title;
+            return toolbar?.Title;
         }
 
         /// <summary>
@@ -103,11 +103,11 @@ namespace myTNB_Android.Src.Base.Activity
         public virtual void SetToolBarTitle(string title){
             if(toolbar != null)
             {
-                TextView txtTitle = toolbar.FindViewById<TextView>(Resource.Id.toolbar_title);
+                TextView txtTitle = toolbar?.FindViewById<TextView>(Resource.Id.toolbar_title);
                 txtTitle.Text = title;
             }else{
                 toolbar = FindViewById<Toolbar>(Resource.Id.toolbar);
-                TextView txtTitle = toolbar.FindViewById<TextView>(Resource.Id.toolbar_title);
+                TextView txtTitle = toolbar?.FindViewById<TextView>(Resource.Id.toolbar_title);
                 txtTitle.Text = title;
             }
         }

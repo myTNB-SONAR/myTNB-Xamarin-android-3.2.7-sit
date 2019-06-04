@@ -69,8 +69,20 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
 
             try
             {
-                accountData = JsonConvert.DeserializeObject<AccountData>(Intent.Extras.GetString(Constants.SELECTED_ACCOUNT));
-                position = Intent.Extras.GetInt(Constants.SELECTED_ACCOUNT_POSITION);
+
+                Bundle extras = Intent.Extras;
+
+                if (extras != null)
+                {
+                    if (extras.ContainsKey(Constants.SELECTED_ACCOUNT))
+                    {
+                        //accountData = JsonConvert.DeserializeObject<AccountData>(Intent.Extras.GetString(Constants.SELECTED_ACCOUNT));
+                        accountData = DeSerialze<AccountData>(extras.GetString(Constants.SELECTED_ACCOUNT));
+
+                    }
+                    position = extras.GetInt(Constants.SELECTED_ACCOUNT_POSITION);
+                }
+
 
                 progress = new MaterialDialog.Builder(this)
                     .Title(Resource.String.manage_supply_account_remove_progress_title)
