@@ -116,3 +116,5 @@
 "SmartMeterMessage" = "Note: Your usage above is before applicable taxes/additional charges.";
 "RefreshBtn" = "Refresh";
 "TimeOutMsg" = "We can't get your account details at the moment. Please refresh this page.";
+"Month" = "Month";
+"Day" = "Day";
