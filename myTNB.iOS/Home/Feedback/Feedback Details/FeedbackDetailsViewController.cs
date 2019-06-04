@@ -60,23 +60,29 @@ namespace myTNB
 
         internal void OnImageClick(UIImage image, string fileName)
         {
-            viewContainer = new UIView(UIScreen.MainScreen.Bounds);
-            viewContainer.BackgroundColor = UIColor.Black;
+            viewContainer = new UIView(UIScreen.MainScreen.Bounds)
+            {
+                BackgroundColor = UIColor.Black
+            };
 
-            UILabel lblFileName = new UILabel(new CGRect(0, DeviceHelper.IsIphoneXUpResolution() ? 44 : 0, viewContainer.Frame.Width, 24));
-            lblFileName.BackgroundColor = UIColor.Black;
-            lblFileName.Font = myTNBFont.MuseoSans16();
-            lblFileName.TextColor = UIColor.White;
-            lblFileName.TextAlignment = UITextAlignment.Center;
-            lblFileName.Text = fileName;
+            UILabel lblFileName = new UILabel(new CGRect(0, DeviceHelper.IsIphoneXUpResolution() ? 44 : 0, viewContainer.Frame.Width, 24))
+            {
+                BackgroundColor = UIColor.Black,
+                Font = myTNBFont.MuseoSans16(),
+                TextColor = UIColor.White,
+                TextAlignment = UITextAlignment.Center,
+                Text = fileName
+            };
 
             UIView viewClose = new UIView(new CGRect(viewContainer.Frame.Width - 70, DeviceHelper.IsIphoneXUpResolution() ? 44 : 0, 60, 24));
-            UILabel lblClose = new UILabel(new CGRect(0, 0, 60, 24));
-            lblClose.BackgroundColor = UIColor.Black;
-            lblClose.Font = myTNBFont.MuseoSans16();
-            lblClose.TextColor = UIColor.White;
-            lblClose.TextAlignment = UITextAlignment.Right;
-            lblClose.Text = "Close";
+            UILabel lblClose = new UILabel(new CGRect(0, 0, 60, 24))
+            {
+                BackgroundColor = UIColor.Black,
+                Font = myTNBFont.MuseoSans16(),
+                TextColor = UIColor.White,
+                TextAlignment = UITextAlignment.Right,
+                Text = "Close"
+            };
             viewClose.AddSubview(lblClose);
             viewClose.AddGestureRecognizer(new UITapGestureRecognizer(() =>
             {
@@ -87,64 +93,67 @@ namespace myTNB
 
             float imgWidth = 0;
             float imgHeight = 0;
-            if (image.Size.Width < image.Size.Height)
+            if (image != null)
             {
-                if (image.Size.Width < View.Frame.Width)
+                if (image.Size.Width < image.Size.Height)
                 {
-                    imgWidth = (float)image.Size.Width;
-                    if (image.Size.Height < View.Frame.Height - (DeviceHelper.IsIphoneXUpResolution() ? 44 : 24))
+                    if (image.Size.Width < View.Frame.Width)
                     {
+                        imgWidth = (float)image.Size.Width;
+                        if (image.Size.Height < View.Frame.Height - (DeviceHelper.IsIphoneXUpResolution() ? 44 : 24))
+                        {
+                            imgHeight = (float)image.Size.Height;
+                        }
+                        else
+                        {
+                            imgHeight = (float)View.Frame.Height - (DeviceHelper.IsIphoneXUpResolution() ? 44 : 24);
+                        }
+                    }
+                    else
+                    {
+                        imgWidth = (float)View.Frame.Width;
+                        float ratio = (float)(image.Size.Width / image.Size.Height);
+                        imgHeight = imgWidth / ratio;
+                        if (imgHeight > View.Frame.Height - (DeviceHelper.IsIphoneXUpResolution() ? 44 : 24))
+                        {
+                            imgHeight = (float)View.Frame.Height - (DeviceHelper.IsIphoneXUpResolution() ? 44 : 24);
+                        }
+                    }
+                }
+                else
+                {
+                    if (image.Size.Width < View.Frame.Width)
+                    {
+                        imgWidth = (float)image.Size.Width;
                         imgHeight = (float)image.Size.Height;
                     }
                     else
                     {
-                        imgHeight = (float)View.Frame.Height - (DeviceHelper.IsIphoneXUpResolution() ? 44 : 24);
+                        imgWidth = (float)View.Frame.Width;
+                        float ratio = (float)(image.Size.Width / image.Size.Height);
+                        imgHeight = imgWidth / ratio;
+                        if (imgHeight > View.Frame.Height - (DeviceHelper.IsIphoneXUpResolution() ? 44 : 24))
+                        {
+                            imgHeight = (float)View.Frame.Height - (DeviceHelper.IsIphoneXUpResolution() ? 44 : 24);
+                        }
                     }
                 }
-                else
+
+                UIImageView imgView = new UIImageView(new CGRect((viewContainer.Frame.Width / 2) - (imgWidth / 2)
+                                                                 , lblFileName.Frame.GetMaxY() + 10f
+                                                                 , imgWidth
+                                                                 , imgHeight))
                 {
-                    imgWidth = (float)View.Frame.Width;
-                    float ratio = (float)(image.Size.Width / image.Size.Height);
-                    imgHeight = imgWidth / ratio;
-                    if (imgHeight > View.Frame.Height - (DeviceHelper.IsIphoneXUpResolution() ? 44 : 24))
-                    {
-                        imgHeight = (float)View.Frame.Height - (DeviceHelper.IsIphoneXUpResolution() ? 44 : 24);
-                    }
-                }
+                    Image = image
+                };
+
+                viewContainer.AddSubviews(new UIView[] { lblFileName, viewClose, imgView });
+
+                UIWindow currentWindow = UIApplication.SharedApplication.KeyWindow;
+                currentWindow.AddSubview(viewContainer);
+                viewContainer.Hidden = false;
+                UIApplication.SharedApplication.StatusBarHidden = true;
             }
-            else
-            {
-                if (image.Size.Width < View.Frame.Width)
-                {
-                    imgWidth = (float)image.Size.Width;
-                    imgHeight = (float)image.Size.Height;
-                }
-                else
-                {
-                    imgWidth = (float)View.Frame.Width;
-                    float ratio = (float)(image.Size.Width / image.Size.Height);
-                    imgHeight = imgWidth / ratio;
-                    if (imgHeight > View.Frame.Height - (DeviceHelper.IsIphoneXUpResolution() ? 44 : 24))
-                    {
-                        imgHeight = (float)View.Frame.Height - (DeviceHelper.IsIphoneXUpResolution() ? 44 : 24);
-                    }
-                }
-            }
-
-            UIImageView imgView = new UIImageView(new CGRect((viewContainer.Frame.Width / 2) - (imgWidth / 2)
-                                                             , lblFileName.Frame.GetMaxY() + 10f
-                                                             , imgWidth
-                                                             , imgHeight))
-            {
-                Image = image
-            };
-
-            viewContainer.AddSubviews(new UIView[] { lblFileName, viewClose, imgView });
-
-            UIWindow currentWindow = UIApplication.SharedApplication.KeyWindow;
-            currentWindow.AddSubview(viewContainer);
-            viewContainer.Hidden = false;
-            UIApplication.SharedApplication.StatusBarHidden = true;
         }
     }
 }
