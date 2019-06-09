@@ -135,9 +135,11 @@ namespace myTNB_Android.Src.Notifications.Activity
 
                 notificationRecyclerAdapter = new NotificationRecyclerAdapter(this, true);
                 notificationRecyclerView.SetAdapter(notificationRecyclerAdapter);
-                NotificationSimpleCallback notificationSimpleCallback = new NotificationSimpleCallback(notificationRecyclerAdapter,0, ItemTouchHelper.Left);
+                //NotificationSimpleCallback notificationSimpleCallback = new NotificationSimpleCallback(notificationRecyclerAdapter,0, ItemTouchHelper.Left);
 
-                ItemTouchHelper itemTouchHelper = new ItemTouchHelper(notificationSimpleCallback);
+                NotificationSwipeDeleteCallback notificationSwipeDelete = new NotificationSwipeDeleteCallback();
+
+                ItemTouchHelper itemTouchHelper = new ItemTouchHelper(notificationSwipeDelete);
                 itemTouchHelper.AttachToRecyclerView(notificationRecyclerView);
 
                 int count = UserNotificationEntity.Count();
