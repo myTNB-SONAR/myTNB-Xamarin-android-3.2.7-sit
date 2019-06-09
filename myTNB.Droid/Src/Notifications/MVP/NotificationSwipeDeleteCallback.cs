@@ -5,6 +5,7 @@ using Android.Support.V7.Widget;
 using Android.Support.V7.Widget.Helper;
 using Android.Text;
 using Android.Views;
+using myTNB_Android.Src.Notifications.Adapter;
 
 namespace myTNB_Android.Src.Notifications.MVP
 {
@@ -20,6 +21,13 @@ namespace myTNB_Android.Src.Notifications.MVP
         private static ButtonState buttonShowedState = ButtonState.GONE;
         private static float buttonWidth = 300;
         private static RecyclerView.ViewHolder currentItemViewHolder = null;
+        private static RectF buttonInstance = null;
+        private static NotificationRecyclerAdapter adapter = null;
+
+        public NotificationSwipeDeleteCallback(NotificationRecyclerAdapter mAdapter)
+        {
+            adapter = mAdapter;
+        }
 
         public override int GetMovementFlags(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder)
         {
@@ -33,18 +41,21 @@ namespace myTNB_Android.Src.Notifications.MVP
 
         public override void OnSwiped(RecyclerView.ViewHolder viewHolder, int direction)
         {
-            //throw new NotImplementedException();
+            adapter.RemoveItem(viewHolder.AdapterPosition);
         }
 
-        //public override int ConvertToAbsoluteDirection(int flags, int layoutDirection)
-        //{
-        //    if (swipeBack)
-        //    {
-        //        swipeBack = buttonShowedState != ButtonState.GONE;
-        //        return 0;
-        //    }
-        //    return base.ConvertToAbsoluteDirection(flags, layoutDirection);
-        //}
+        public override int ConvertToAbsoluteDirection(int flags, int layoutDirection)
+        {
+            if (swipeBack)
+            {
+                swipeBack = buttonShowedState != ButtonState.GONE;
+                if (buttonShowedState == ButtonState.LEFT_VISIBLE)
+                {
+                    return 0;
+                }
+            }
+            return base.ConvertToAbsoluteDirection(flags, layoutDirection);
+        }
 
         private void drawText(String text, Canvas c, RectF button, Paint p)
         {
@@ -72,17 +83,44 @@ namespace myTNB_Android.Src.Notifications.MVP
             //c.DrawText("Delete", itemView.Right - (textPaint.TextSize * 4), itemView.Top + (itemView.Height / 2), textPaint);
 
             View itemView = viewHolder.ItemView;
+
+            ColorDrawable bg = new ColorDrawable();
             Paint p = new Paint();
+            RectF rightButton = null, leftButton = null;
+            if (dX < 0 || buttonShowedState == ButtonState.RIGHT_VISIBLE)
+            {
+                bg.Color = Color.Red;
+                bg.SetBounds(
+                        itemView.Right + (int)dX, itemView.Top, itemView.Right, itemView.Bottom);
+                bg.Draw(c);
 
-            RectF leftButton = new RectF(itemView.Left, itemView.Top, itemView.Left + (buttonWidth - 20), itemView.Bottom);
-            p.Color = Color.Blue;
-            c.DrawRoundRect(leftButton, 16, 16, p);
-            drawText("EDIT", c, leftButton, p);
+                rightButton = new RectF(itemView.Right - (buttonWidth - 20), itemView.Top, itemView.Right, itemView.Bottom);
+                p.Color = Color.Red;
+                c.DrawRoundRect(rightButton, 0, 0, p);
+                drawText("DELETE", c, rightButton, p);
+            }
+            else
+            {
+                bg.Color = Color.Blue;
+                bg.SetBounds(
+                        itemView.Left, itemView.Top, itemView.Left + (int)dX, itemView.Bottom);
+                bg.Draw(c);
 
-            RectF rightButton = new RectF(itemView.Right - (buttonWidth - 20), itemView.Top, itemView.Right, itemView.Bottom);
-            p.Color = Color.Red;
-            c.DrawRoundRect(rightButton, 16, 16, p);
-            drawText("DELETE", c, rightButton, p);
+                leftButton = new RectF(itemView.Left, itemView.Top, itemView.Left + (buttonWidth - 20), itemView.Bottom);
+                p.Color = Color.Blue;
+                c.DrawRoundRect(leftButton, 0, 0, p);
+                drawText("READ", c, leftButton, p);
+            }
+
+            buttonInstance = null;
+            if (buttonShowedState == ButtonState.LEFT_VISIBLE)
+            {
+                buttonInstance = leftButton;
+            }
+            else if (buttonShowedState == ButtonState.RIGHT_VISIBLE)
+            {
+                buttonInstance = rightButton;
+            }
 
             if (actionState == ItemTouchHelper.ActionStateSwipe)
             {
@@ -226,6 +264,17 @@ namespace myTNB_Android.Src.Notifications.MVP
                         recyclerView.GetChildAt(i).Clickable = true;
                     }
                     swipeBack = false;
+                    if (buttonInstance != null && buttonInstance.Contains(e.GetX(), e.GetY()))
+                    {
+                        if (buttonShowedState == ButtonState.LEFT_VISIBLE)
+                        {
+                            //adapter.RemoveItem(viewHolder.AdapterPosition);
+                        }
+                        else if (buttonShowedState == ButtonState.RIGHT_VISIBLE)
+                        {
+                            adapter.RemoveItem(viewHolder.AdapterPosition);
+                        }
+                    }
                     buttonShowedState = ButtonState.GONE;
                     currentItemViewHolder = null;
                 }

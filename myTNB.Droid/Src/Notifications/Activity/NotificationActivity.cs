@@ -137,7 +137,7 @@ namespace myTNB_Android.Src.Notifications.Activity
                 notificationRecyclerView.SetAdapter(notificationRecyclerAdapter);
                 //NotificationSimpleCallback notificationSimpleCallback = new NotificationSimpleCallback(notificationRecyclerAdapter,0, ItemTouchHelper.Left);
 
-                NotificationSwipeDeleteCallback notificationSwipeDelete = new NotificationSwipeDeleteCallback();
+                NotificationSwipeDeleteCallback notificationSwipeDelete = new NotificationSwipeDeleteCallback(notificationRecyclerAdapter);
 
                 ItemTouchHelper itemTouchHelper = new ItemTouchHelper(notificationSwipeDelete);
                 itemTouchHelper.AttachToRecyclerView(notificationRecyclerView);
