@@ -55,7 +55,6 @@ namespace myTNB.PushNotification
                     .DataManager.SharedInstance.CurrentSelectedNotificationTypeIndex].Id;
             }
 
-
             notifications = new List<UserNotificationDataModel>();
             if (DataManager.DataManager.SharedInstance.UserNotifications.Count > 0)
             {
@@ -72,36 +71,28 @@ namespace myTNB.PushNotification
                     .Where(x => x.IsDeleted.ToLower() == "false" && x.NotificationTypeId == filterID).OrderByDescending(o => DateTime.ParseExact(o.CreatedDate
                     , format, System.Globalization.CultureInfo.InvariantCulture)).ThenBy(t => t.Title).ToList();
                 }
-                if (_imgNoNotification != null && _lblNoNotification != null)
+
+                if (notifications != null && notifications.Count > 0)
                 {
-                    _imgNoNotification.Hidden = true;
-                    _lblNoNotification.Hidden = true;
+                    if (_imgNoNotification != null && _lblNoNotification != null)
+                    {
+                        _imgNoNotification.Hidden = true;
+                        _lblNoNotification.Hidden = true;
+                    }
+                    pushNotificationTableView.Hidden = false;
+                    pushNotificationTableView.ClearsContextBeforeDrawing = true;
+                    pushNotificationTableView.Source = new PushNotificationDataSource(this, notifications);
+                    pushNotificationTableView.ReloadData();
                 }
-                pushNotificationTableView.Hidden = false;
-                pushNotificationTableView.ClearsContextBeforeDrawing = true;
-                pushNotificationTableView.Source = new PushNotificationDataSource(this, notifications);
-                pushNotificationTableView.ReloadData();
+                else
+                {
+                    //Todo: Need to confirm design
+                    //DisplayNoNotification();
+                }
             }
             else
             {
-                if (_imgNoNotification == null || _lblNoNotification == null)
-                {
-                    _imgNoNotification = new UIImageView(new CGRect((View.Frame.Width / 2) - 75, 185, 150, 150))
-                    {
-                        Image = UIImage.FromBundle("Notification-Empty")
-                    };
-                    _lblNoNotification = new UILabel(new CGRect(44, 352, View.Frame.Width - 88, 16))
-                    {
-                        TextAlignment = UITextAlignment.Center,
-                        Text = "PushNotification_NoNotification".Translate(),
-                        Font = MyTNBFont.MuseoSans12,
-                        TextColor = MyTNBColor.SilverChalice
-                    };
-                    View.AddSubviews(new UIView[] { _imgNoNotification, _lblNoNotification });
-                }
-                pushNotificationTableView.Hidden = true;
-                _imgNoNotification.Hidden = false;
-                _lblNoNotification.Hidden = false;
+                DisplayNoNotification();
             }
             _titleBarComponent.SetNotificationVisibility(notifications == null || notifications.Count == 0);
         }
@@ -141,6 +132,28 @@ namespace myTNB.PushNotification
             {
                 UpdateNotificationDisplay();
             }
+        }
+
+        void DisplayNoNotification()
+        {
+            if (_imgNoNotification == null || _lblNoNotification == null)
+            {
+                _imgNoNotification = new UIImageView(new CGRect((View.Frame.Width / 2) - 75, 185, 150, 150))
+                {
+                    Image = UIImage.FromBundle("Notification-Empty")
+                };
+                _lblNoNotification = new UILabel(new CGRect(44, 352, View.Frame.Width - 88, 16))
+                {
+                    TextAlignment = UITextAlignment.Center,
+                    Text = "PushNotification_NoNotification".Translate(),
+                    Font = MyTNBFont.MuseoSans12,
+                    TextColor = MyTNBColor.SilverChalice
+                };
+                View.AddSubviews(new UIView[] { _imgNoNotification, _lblNoNotification });
+            }
+            pushNotificationTableView.Hidden = true;
+            _imgNoNotification.Hidden = false;
+            _lblNoNotification.Hidden = false;
         }
 
         internal void SetNavigationBar()
@@ -330,18 +343,22 @@ namespace myTNB.PushNotification
 
         internal void InitializeDeleteSuccessView()
         {
-            _viewDelete = new UIView(new CGRect(18, 32, View.Frame.Width - 36, 48));
-            _viewDelete.BackgroundColor = MyTNBColor.SunGlow;
+            _viewDelete = new UIView(new CGRect(18, 32, View.Frame.Width - 36, 48))
+            {
+                BackgroundColor = MyTNBColor.SunGlow
+            };
             _viewDelete.Layer.CornerRadius = 2.0f;
             _viewDelete.Hidden = true;
 
-            UILabel lblDeleteDetails = new UILabel(new CGRect(16, 16, _viewDelete.Frame.Width - 32, 16));
-            lblDeleteDetails.TextAlignment = UITextAlignment.Left;
-            lblDeleteDetails.Font = MyTNBFont.MuseoSans12;
-            lblDeleteDetails.TextColor = MyTNBColor.TunaGrey();
-            lblDeleteDetails.Text = "PushNotification_NotificationRemoved".Translate();
-            lblDeleteDetails.Lines = 0;
-            lblDeleteDetails.LineBreakMode = UILineBreakMode.WordWrap;
+            UILabel lblDeleteDetails = new UILabel(new CGRect(16, 16, _viewDelete.Frame.Width - 32, 16))
+            {
+                TextAlignment = UITextAlignment.Left,
+                Font = MyTNBFont.MuseoSans12,
+                TextColor = MyTNBColor.TunaGrey(),
+                Text = "PushNotification_NotificationRemoved".Translate(),
+                Lines = 0,
+                LineBreakMode = UILineBreakMode.WordWrap
+            };
 
             _viewDelete.AddSubview(lblDeleteDetails);
 
@@ -417,25 +434,7 @@ namespace myTNB.PushNotification
                                     && deleteNotifResponse?.d?.status?.ToLower() == "success"
                                     && deleteNotifResponse?.d?.didSucceed == true)
                                 {
-                                    if (isMultiple)
-                                    {
-                                        foreach (DeleteNotificationModel item in deleteNotificationList)
-                                        {
-                                            int index = notifications.FindIndex(x => x?.NotificationTypeId == item.NotificationType
-                                                && x.Id == item.NotificationId);
-                                            if (index > -1)
-                                            {
-                                                notifications.RemoveAt(index);
-                                            }
-                                        }
-                                    }
-                                    else
-                                    {
-                                        notifications.RemoveAt(indexPath.Row);
-
-                                    }
-                                    DataManager.DataManager.SharedInstance.UserNotifications = notifications;
-                                    deleteNotificationList.Clear();
+                                    UpdateNotifications(deleteNotificationList, isMultiple, indexPath);
                                     UpdateNotificationDisplay();
                                     pushNotificationTableView.ReloadData();
                                     UpdateTitleRightIconImage();
@@ -455,6 +454,48 @@ namespace myTNB.PushNotification
                     }
                 });
             });
+        }
+
+        void UpdateNotifications(List<DeleteNotificationModel> deleteNotificationList, bool isMultiple = false, NSIndexPath indexPath = null)
+        {
+            if (isMultiple)
+            {
+                if (deleteNotificationList.Count == DataManager.DataManager.SharedInstance.UserNotifications.Count)
+                {
+                    deleteNotificationList.Clear();
+                    notifications.Clear();
+                    DataManager.DataManager.SharedInstance.UserNotifications.Clear();
+                    return;
+                }
+                foreach (DeleteNotificationModel item in deleteNotificationList)
+                {
+                    int notificationIndex = notifications.FindIndex(x => x?.NotificationType == item.NotificationType
+                        && x.Id == item.NotificationId);
+                    if (notificationIndex > -1)
+                    {
+                        notifications.RemoveAt(notificationIndex);
+                    }
+
+                    int userNotificationIndex = DataManager.DataManager.SharedInstance.UserNotifications
+                        .FindIndex(x => x?.NotificationType == item.NotificationType && x.Id == item.NotificationId);
+                    if (userNotificationIndex > -1)
+                    {
+                        DataManager.DataManager.SharedInstance.UserNotifications.RemoveAt(userNotificationIndex);
+                    }
+                }
+                deleteNotificationList.Clear();
+            }
+            else
+            {
+                int userNotificationIndex = DataManager.DataManager.SharedInstance.UserNotifications
+                       .FindIndex(x => x?.NotificationType == notifications[indexPath.Row].NotificationType
+                       && x.Id == notifications[indexPath.Row].Id);
+                if (userNotificationIndex > -1)
+                {
+                    DataManager.DataManager.SharedInstance.UserNotifications.RemoveAt(userNotificationIndex);
+                }
+                notifications.RemoveAt(indexPath.Row);
+            }
         }
 
         Task DeleteUserNotification(List<DeleteNotificationModel> deleteNotificationList)
@@ -637,7 +678,7 @@ namespace myTNB.PushNotification
                     }
                     notificationsForDeletion.Add(new DeleteNotificationModel()
                     {
-                        NotificationType = notifModel?.NotificationTypeId,
+                        NotificationType = notifModel?.NotificationType,
                         NotificationId = notifModel?.Id
 
                     });
@@ -646,7 +687,7 @@ namespace myTNB.PushNotification
                 {
                     if (notificationsForDeletion != null)
                     {
-                        int index = notificationsForDeletion.FindIndex(x => x.NotificationType == notifModel?.NotificationTypeId
+                        int index = notificationsForDeletion.FindIndex(x => x.NotificationType == notifModel?.NotificationType
                             && x.NotificationId == notifModel.Id);
                         if (index > -1)
                         {

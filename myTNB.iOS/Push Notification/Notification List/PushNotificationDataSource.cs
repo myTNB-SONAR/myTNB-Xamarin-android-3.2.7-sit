@@ -141,7 +141,7 @@ namespace myTNB.PushNotification
             List<DeleteNotificationModel> deleteNotification = new List<DeleteNotificationModel>();
             deleteNotification.Add(new DeleteNotificationModel()
             {
-                NotificationType = _data[indexPath.Row]?.NotificationTypeId,
+                NotificationType = _data[indexPath.Row]?.NotificationType,
                 NotificationId = _data[indexPath.Row]?.Id
             });
             _controller.DeleteNotification(deleteNotification, false, indexPath);
