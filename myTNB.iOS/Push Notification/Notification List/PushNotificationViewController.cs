@@ -8,6 +8,7 @@ using myTNB.Model;
 using UIKit;
 using myTNB.SQLite.SQLiteDataManager;
 using System.Diagnostics;
+using Foundation;
 
 namespace myTNB.PushNotification
 {
@@ -23,9 +24,9 @@ namespace myTNB.PushNotification
         public DeleteNotificationResponseModel _deleteNotificationResponse = new DeleteNotificationResponseModel();
         TitleBarComponent _titleBarComponent;
         List<UserNotificationDataModel> notifications;
-        List<UserNotificationDataModel> notificationsForDeletion;
+        List<DeleteNotificationModel> notificationsForDeletion;
         public bool _isSelectionMode = false;
-        bool _isDeletionMode = false;
+        internal bool _isDeletionMode = false;
         bool _isAllSelected = false;
 
         UIView _viewDelete;
@@ -98,6 +99,10 @@ namespace myTNB.PushNotification
                 _imgNoNotification.Hidden = false;
                 _lblNoNotification.Hidden = false;
             }
+            if (notifications == null || notifications.Count == 0)
+            {
+                _titleBarComponent.SetNotificationVisibility(true);
+            }
         }
 
         public override void ViewWillAppear(bool animated)
@@ -153,26 +158,28 @@ namespace myTNB.PushNotification
                 if (_isDeletionMode)
                 {
                     Debug.WriteLine("_isDeletionMode");
-                    var alert = UIAlertController.Create("PushNotification_DeleteTitle".Translate(), "Are you sure you want to delete the selected notification(s)?", UIAlertControllerStyle.Alert);
-                    alert.AddAction(UIAlertAction.Create("Yes", UIAlertActionStyle.Default, (obj) =>
+                    var alert = UIAlertController.Create("PushNotification_DeleteTitleMultiple".Translate()
+                        , "PushNotification_DeleteMessageMultiple".Translate(), UIAlertControllerStyle.Alert);
+                    alert.AddAction(UIAlertAction.Create("Common_Yes".Translate(), UIAlertActionStyle.Default, (obj) =>
                     {
                         if (notificationsForDeletion != null)
                         {
                             Debug.WriteLine("notificationsForDeletion count: " + notificationsForDeletion.Count);
-                            foreach (UserNotificationDataModel notif in notificationsForDeletion)
+                            foreach (DeleteNotificationModel notif in notificationsForDeletion)
                             {
-                                Debug.WriteLine("Delete: " + notif.Id);
+                                Debug.WriteLine("Delete NotificationId: " + notif.NotificationId);
                             }
+                            DeleteNotification(notificationsForDeletion, true);
                         }
                     }));
-                    alert.AddAction(UIAlertAction.Create("Common_Cancel".Translate(), UIAlertActionStyle.Cancel, null));
+                    alert.AddAction(UIAlertAction.Create("Common_No".Translate(), UIAlertActionStyle.Cancel, null));
                     PresentViewController(alert, animated: true, completionHandler: null);
                 }
                 else
                 {
                     if (!_isSelectionMode)
                     {
-                        _titleBarComponent.SetNotificationImage("Notification-Check");
+                        _titleBarComponent.SetNotificationImage("IC-Header-Cancel");
                         UpdateSelectAllFlags(false);
                         _viewHeader = null;
                         CreateViewHeader();
@@ -355,7 +362,100 @@ namespace myTNB.PushNotification
             });
         }
 
-        internal Task DeleteUserNotification(UserNotificationDataModel dataModel)
+        internal void MarkNotificationAsRead(NSIndexPath indexPath)
+        {
+            NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
+            {
+                InvokeOnMainThread(async () =>
+                {
+                    if (NetworkUtility.isReachable)
+                    {
+                        ActivityIndicator.Show();
+                        await MarkUserNotification(notifications[indexPath.Row]).ContinueWith(task =>
+                        {
+                            InvokeOnMainThread(() =>
+                            {
+                                var markAsReadResponse = true;
+                                var deleteNotifResponse = _deleteNotificationResponse;
+                                if (markAsReadResponse)
+                                {
+                                    notifications[indexPath.Row].IsRead = "true";
+                                    pushNotificationTableView.ReloadData();
+                                }
+                                else
+                                {
+                                    AlertHandler.DisplayServiceError(this, deleteNotifResponse?.d?.message);
+                                }
+                                ActivityIndicator.Hide();
+                            });
+                        });
+                    }
+                    else
+                    {
+                        AlertHandler.DisplayNoDataAlert(this);
+                    }
+                });
+            });
+        }
+
+        internal void DeleteNotification(List<DeleteNotificationModel> deleteNotificationList, bool isMultiple = false, NSIndexPath indexPath = null)
+        {
+            NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
+            {
+                InvokeOnMainThread(async () =>
+                {
+                    if (NetworkUtility.isReachable)
+                    {
+                        ActivityIndicator.Show();
+                        await DeleteUserNotification(deleteNotificationList).ContinueWith(task =>
+                        {
+                            InvokeOnMainThread(() =>
+                            {
+                                var deleteNotifResponse = _deleteNotificationResponse;
+                                if (deleteNotifResponse != null && deleteNotifResponse?.d != null
+                                    && deleteNotifResponse?.d?.status?.ToLower() == "success"
+                                    && deleteNotifResponse?.d?.didSucceed == true)
+                                {
+                                    if (isMultiple)
+                                    {
+                                        foreach (DeleteNotificationModel item in deleteNotificationList)
+                                        {
+                                            int index = notifications.FindIndex(x => x?.NotificationTypeId == item.NotificationType
+                                                && x.Id == item.NotificationId);
+                                            if (index > -1)
+                                            {
+                                                notifications.RemoveAt(index);
+                                            }
+                                        }
+                                    }
+                                    else
+                                    {
+                                        notifications.RemoveAt(indexPath.Row);
+
+                                    }
+                                    DataManager.DataManager.SharedInstance.UserNotifications = notifications;
+                                    deleteNotificationList.Clear();
+                                    UpdateNotificationDisplay();
+                                    pushNotificationTableView.ReloadData();
+                                    NSNotificationCenter.DefaultCenter.PostNotificationName("NotificationDidChange", new NSObject());
+                                }
+                                else
+                                {
+                                    AlertHandler.DisplayServiceError(this, deleteNotifResponse?.d?.message);
+                                }
+                                ActivityIndicator.Hide();
+                            });
+                        });
+                    }
+                    else
+                    {
+                        AlertHandler.DisplayNoDataAlert(this);
+                    }
+                });
+            });
+        }
+
+        Task DeleteUserNotification(List<DeleteNotificationModel> deleteNotificationList)
         {
             var user = DataManager.DataManager.SharedInstance.UserEntity?.Count > 0
                                   ? DataManager.DataManager.SharedInstance.UserEntity[0]
@@ -366,8 +466,9 @@ namespace myTNB.PushNotification
                 object requestParameter = new
                 {
                     ApiKeyID = TNBGlobal.API_KEY_ID,
-                    NotificationType = dataModel?.BCRMNotificationType,
-                    NotificationId = dataModel?.Id,
+                    //NotificationType = dataModel?.BCRMNotificationType,
+                    //NotificationId = dataModel?.Id,
+                    UpdatedNotifications = deleteNotificationList,
                     Email = user?.email,
                     DeviceId = DataManager.DataManager.SharedInstance.UDID,
                     SSPUserId = user?.userID
@@ -376,10 +477,31 @@ namespace myTNB.PushNotification
             });
         }
 
+        Task MarkUserNotification(UserNotificationDataModel dataModel)
+        {
+            var user = DataManager.DataManager.SharedInstance.UserEntity?.Count > 0
+                ? DataManager.DataManager.SharedInstance.UserEntity[0]
+                : new UserEntity();
+            return Task.Factory.StartNew(() =>
+            {
+                ServiceManager serviceManager = new ServiceManager();
+                object requestParameter = new
+                {
+                    ApiKeyID = TNBGlobal.API_KEY_ID,
+                    //UpdatedNotifications
+                    NotificationType = dataModel?.BCRMNotificationType,
+                    NotificationId = dataModel?.Id,
+                    Email = user?.email,
+                    DeviceId = DataManager.DataManager.SharedInstance.UDID,
+                    SSPUserId = user?.userID
+                };
+            });
+        }
+
         /// <summary>
         /// Creates the view header.
         /// </summary>
-        internal void CreateViewHeader()
+        void CreateViewHeader()
         {
             nfloat cellWidth = UIApplication.SharedApplication.KeyWindow.Frame.Width;
             nfloat cellHeight = 66;
@@ -424,7 +546,8 @@ namespace myTNB.PushNotification
             imgCheckbox.Image = UIImage.FromBundle(_isAllSelected
                 ? "Payment-Checkbox-Active" : "Payment-Checkbox-Inactive");
             lblTitle.Text = _isAllSelected ? "Feedback_UnselectAll".Translate() : "Feedback_SelectAll".Translate();
-            if (!isCellSelected) {
+            if (!isCellSelected)
+            {
                 UpdateSelectAllFlags(_isAllSelected);
             }
         }
@@ -445,7 +568,7 @@ namespace myTNB.PushNotification
             notificationsForDeletion = null;
             if (flag)
             {
-                notificationsForDeletion = new List<UserNotificationDataModel>();
+                notificationsForDeletion = new List<DeleteNotificationModel>();
             }
 
             foreach (UserNotificationDataModel obj in notifications)
@@ -453,7 +576,11 @@ namespace myTNB.PushNotification
                 obj.IsSelected = flag;
                 if (flag)
                 {
-                    notificationsForDeletion.Add(obj);
+                    notificationsForDeletion.Add(new DeleteNotificationModel()
+                    {
+                        NotificationType = obj?.NotificationTypeId,
+                        NotificationId = obj.Id
+                    });
                 }
             }
 
@@ -468,8 +595,7 @@ namespace myTNB.PushNotification
         {
             _isDeletionMode = IsAtLeastOneIsSelected();
             _titleBarComponent.SetNotificationImage(_isDeletionMode
-                                                        ? "Notification-Delete"
-                                                        : "Notification-Check");
+                ? "Notification-Delete" : "IC-Header-Cancel");
             UpdateNotificationForDeletionList(notifModel);
         }
 
@@ -501,15 +627,25 @@ namespace myTNB.PushNotification
                 {
                     if (notificationsForDeletion == null)
                     {
-                        notificationsForDeletion = new List<UserNotificationDataModel>();
+                        notificationsForDeletion = new List<DeleteNotificationModel>();
                     }
-                    notificationsForDeletion.Add(notifModel);
+                    notificationsForDeletion.Add(new DeleteNotificationModel()
+                    {
+                        NotificationType = notifModel?.NotificationTypeId,
+                        NotificationId = notifModel?.Id
+
+                    });
                 }
                 else
                 {
                     if (notificationsForDeletion != null)
                     {
-                        notificationsForDeletion.Remove(notifModel);
+                        int index = notificationsForDeletion.FindIndex(x => x.NotificationType == notifModel?.NotificationTypeId
+                            && x.NotificationId == notifModel.Id);
+                        if (index > -1)
+                        {
+                            notificationsForDeletion.RemoveAt(index);
+                        }
                     }
                 }
             }

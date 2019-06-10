@@ -859,10 +859,6 @@
     <ImageAsset Include="Assets.xcassets\LogOut.imageset\LogOut%402x.png" />
     <ImageAsset Include="Assets.xcassets\LogOut.imageset\LogOut%403x.png" />
     <ImageAsset Include="Assets.xcassets\Notification-Edit.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Notification-Check.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Notification-Check.imageset\Notification-Check.png" />
-    <ImageAsset Include="Assets.xcassets\Notification-Check.imageset\Notification-Check%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Notification-Check.imageset\Notification-Check%403x.png" />
     <ImageAsset Include="Assets.xcassets\Notification-Edit.imageset\Notification-Edit-1.png" />
     <ImageAsset Include="Assets.xcassets\Notification-Edit.imageset\Notification-Edit%402x-1.png" />
     <ImageAsset Include="Assets.xcassets\Notification-Edit.imageset\Notification-Edit%403x-1.png" />
@@ -870,6 +866,10 @@
     <ImageAsset Include="Assets.xcassets\Notification-MarkAsRead.imageset\icHeaderMarkread.png" />
     <ImageAsset Include="Assets.xcassets\Notification-MarkAsRead.imageset\icHeaderMarkread%402x.png" />
     <ImageAsset Include="Assets.xcassets\Notification-MarkAsRead.imageset\icHeaderMarkread%403x.png" />
+    <ImageAsset Include="Assets.xcassets\IC-Header-Cancel.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\IC-Header-Cancel.imageset\icHeaderCancel.png" />
+    <ImageAsset Include="Assets.xcassets\IC-Header-Cancel.imageset\icHeaderCancel%402x.png" />
+    <ImageAsset Include="Assets.xcassets\IC-Header-Cancel.imageset\icHeaderCancel%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -1119,6 +1119,8 @@
     <Folder Include="Assets.xcassets\Notification-Edit.imageset\" />
     <Folder Include="Assets.xcassets\Notification-Check.imageset\" />
     <Folder Include="Assets.xcassets\Notification-MarkAsRead.imageset\" />
+    <Folder Include="Model\DeleteNotification\" />
+    <Folder Include="Assets.xcassets\IC-Header-Cancel.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -1802,6 +1804,7 @@
     <Compile Include="Helpers\Generic Tableview Selector\GenericSelectorViewController.designer.cs" />
     <Compile Include="Home\More\Language\LanguageSettings.cs" />
     <Compile Include="Helpers\Generic Line\GenericLine.cs" />
+    <Compile Include="Model\DeleteNotification\DeleteNotificationModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />

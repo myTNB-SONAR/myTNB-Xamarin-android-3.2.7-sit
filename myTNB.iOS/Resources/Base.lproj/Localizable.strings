@@ -403,6 +403,8 @@
 "PushNotification_AllNotifications"="All Notifications";
 "PushNotification_DeleteMessage"="Are you sure you want to delete this notification?";
 "PushNotification_DeleteTitle"="Delete Notification";
+"PushNotification_DeleteMessageMultiple"="Are you sure you want to delete all notifications?";
+"PushNotification_DeleteTitleMultiple"="Delete All Notifications";
 "PushNotification_NoNotification"="No notifications yet.";
 "PushNotification_NotificationRemoved"="Notification removed.";
 "PushNotification_SelectNotification"="Select Notification";

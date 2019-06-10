@@ -63,7 +63,8 @@ namespace myTNB
             isViewDidLoad = true;
             DataManager.DataManager.SharedInstance.SummaryNeedsRefresh = true;
             LoadContents();
-            NSNotificationCenter.DefaultCenter.AddObserver((Foundation.NSString)"LanguageDidChange", LanguageDidChange);
+            NSNotificationCenter.DefaultCenter.AddObserver((NSString)"LanguageDidChange", LanguageDidChange);
+            NSNotificationCenter.DefaultCenter.AddObserver((NSString)"NotificationDidChange", NotificationDidChange);
             NSNotificationCenter.DefaultCenter.AddObserver(UIApplication.WillEnterForegroundNotification, HandleAppWillEnterForeground);
             NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
             {
@@ -80,6 +81,13 @@ namespace myTNB
                     }
                 });
             });
+        }
+
+        public void NotificationDidChange(NSNotification notification)
+        {
+            Debug.WriteLine("DEBUG >>> SUMMARY DASHBOARD NotificationDidChange");
+            _titleBarComponent?.SetNotificationImage(PushNotificationHelper.GetNotificationImage());
+            PushNotificationHelper.UpdateApplicationBadge();
         }
 
         public void LanguageDidChange(NSNotification notification)
@@ -122,8 +130,7 @@ namespace myTNB
         /// </summary>
         private void UpdateNotificationIcon()
         {
-            _titleBarComponent?.SetNotificationImage(
-                    DataManager.DataManager.SharedInstance.HasNewNotification ? "Notification-New" : "Notification");
+            _titleBarComponent?.SetNotificationImage(PushNotificationHelper.GetNotificationImage());
         }
 
         private void Initialize()
