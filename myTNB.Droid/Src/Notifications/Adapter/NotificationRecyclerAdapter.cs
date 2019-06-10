@@ -142,6 +142,19 @@ namespace myTNB_Android.Src.Notifications.Adapter
                 viewHolder.txtNotificationTitle.Text = notificationData.Title;
 
                 viewHolder.txtNotificationContent.Text = notificationData.Message;
+
+                if (notificationData.ShowSelectButton)
+                {
+                    viewHolder.selectItemCheckbox.Visibility = ViewStates.Visible;
+                    viewHolder.txtNotificationContent.SetEms(18);
+                }
+                else
+                {
+                    viewHolder.selectItemCheckbox.Visibility = ViewStates.Gone;
+                    viewHolder.txtNotificationContent.SetEms(20);
+                }
+
+                viewHolder.selectItemCheckbox.Checked = notificationData.IsSelected;
             }
             catch (Exception e)
             {
@@ -159,6 +172,24 @@ namespace myTNB_Android.Src.Notifications.Adapter
             Remove(position);
         }
 
+        public void ShowSelectButtons(bool show)
+        {
+            foreach(UserNotificationData userNotificationData in this.itemList)
+            {
+                userNotificationData.ShowSelectButton = show;
+            }
+            NotifyDataSetChanged();
+        }
+
+        public void SelectAllNotifications(bool show)
+        {
+            foreach (UserNotificationData userNotificationData in this.itemList)
+            {
+                userNotificationData.IsSelected = show;
+            }
+            NotifyDataSetChanged();
+        }
+
         class NotificationRecyclerViewHolder : BaseRecyclerViewHolder
         {
             [BindView(Resource.Id.notificationIcon)]
@@ -173,6 +204,8 @@ namespace myTNB_Android.Src.Notifications.Adapter
             [BindView(Resource.Id.txtNotificationDate)]
             public TextView txtNotificationDate;
 
+            [BindView(Resource.Id.selectItemCheckBox)]
+            public CheckBox selectItemCheckbox;
 
             public NotificationRecyclerViewHolder(View itemView) : base(itemView)
             {

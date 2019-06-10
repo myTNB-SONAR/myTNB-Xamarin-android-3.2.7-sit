@@ -25,15 +25,23 @@ using myTNB_Android.Src.Utils.Custom.ProgressDialog;
 using System.Runtime;
 using Android.Support.V7.Widget;
 using Android.Support.V7.Widget.Helper;
+using static Android.Widget.CompoundButton;
 
 namespace myTNB_Android.Src.Notifications.Activity
 {
+
+    enum EditNotificationStates{
+        SHOW,
+        HIDE
+    }
+
+
     [Activity(Label = "@string/notification_activity_title"
               //, MainLauncher = true
               , Icon = "@drawable/ic_launcher"
       , ScreenOrientation = ScreenOrientation.Portrait
       , Theme = "@style/Theme.Notification")]
-    public class NotificationActivity : BaseToolbarAppCompatActivity, NotificationContract.IView
+    public class NotificationActivity : BaseToolbarAppCompatActivity, NotificationContract.IView, IOnCheckedChangeListener
     {
         [BindView(Resource.Id.rootView)]
         CoordinatorLayout rootView;
@@ -53,6 +61,12 @@ namespace myTNB_Android.Src.Notifications.Activity
         [BindView(Resource.Id.emptyLayout)]
         LinearLayout emptyLayout;
 
+        [BindView(Resource.Id.notificationSelectAll)]
+        LinearLayout notificationSelectAllContainer;
+
+        [BindView(Resource.Id.selectAllCheckBox)]
+        CheckBox selectAllCheckboxButton;
+
         //NotificationAdapter notificationAdapter;
         NotificationRecyclerAdapter notificationRecyclerAdapter;
 
@@ -61,6 +75,8 @@ namespace myTNB_Android.Src.Notifications.Activity
 
         MaterialDialog mProgressDialog, mQueryProgressDialog;
         private LoadingOverlay loadingOverlay;
+
+        private static EditNotificationStates editState = EditNotificationStates.HIDE;
 
         public bool IsActive()
         {
@@ -96,6 +112,35 @@ namespace myTNB_Android.Src.Notifications.Activity
         public void ShowNotificationsList(List<UserNotificationData> userNotificationList)
         {
             notificationRecyclerAdapter.AddAll(userNotificationList);
+        }
+
+        public override bool OnCreateOptionsMenu(IMenu menu)
+        {
+            MenuInflater.Inflate(Resource.Menu.DashboardToolbarMenu, menu);
+            menu.FindItem(Resource.Id.action_notification).SetIcon(GetDrawable(Resource.Drawable.ic_header_notification_unread));
+            return base.OnCreateOptionsMenu(menu);
+        }
+
+        public override bool OnOptionsItemSelected(IMenuItem item)
+        {
+            if (item.ItemId == Resource.Id.action_notification)
+            {
+                //this.userActionsListener.EditNotification();
+                if (editState == EditNotificationStates.HIDE)
+                {
+                    ShowSelectAllOption(ViewStates.Visible);
+                    notificationRecyclerAdapter.ShowSelectButtons(true);
+                    editState = EditNotificationStates.SHOW;
+                }
+                else
+                {
+                    ShowSelectAllOption(ViewStates.Gone);
+                    notificationRecyclerAdapter.ShowSelectButtons(false);
+                    editState = EditNotificationStates.HIDE;
+                }
+                return true;
+            }
+            return base.OnOptionsItemSelected(item);
         }
 
         protected override void OnCreate(Bundle savedInstanceState)
@@ -152,6 +197,8 @@ namespace myTNB_Android.Src.Notifications.Activity
                     ME.Leolin.Shortcutbadger.ShortcutBadger.ApplyCount(this.ApplicationContext, count);
                 }
 
+                ShowSelectAllOption(ViewStates.Gone);
+                selectAllCheckboxButton.SetOnCheckedChangeListener(this);
 
                 this.userActionsListener.Start();
 
@@ -447,6 +494,16 @@ namespace myTNB_Android.Src.Notifications.Activity
                     GC.Collect();
                     break;
             }
+        }
+
+        private void ShowSelectAllOption(ViewStates viewState)
+        {
+            notificationSelectAllContainer.Visibility = viewState;
+        }
+
+        public void OnCheckedChanged(CompoundButton buttonView, bool isChecked)
+        {
+            notificationRecyclerAdapter.SelectAllNotifications(isChecked);
         }
     }
 }

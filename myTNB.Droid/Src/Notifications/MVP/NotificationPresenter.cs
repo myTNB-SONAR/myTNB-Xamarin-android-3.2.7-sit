@@ -35,6 +35,11 @@ namespace myTNB_Android.Src.Notifications.MVP
             this.mView.SetPresenter(this);
         }
 
+        public void EditNotification()
+        {
+            throw new NotImplementedException();
+        }
+
         public void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
         {
             try {
