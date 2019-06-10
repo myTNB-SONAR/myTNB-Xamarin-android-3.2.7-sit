@@ -7,6 +7,7 @@ using System.Drawing;
 using System.Threading.Tasks;
 using myTNB.SQLite.SQLiteDataManager;
 using myTNB.SitecoreCMS.Model;
+using System.Collections.Generic;
 
 namespace myTNB
 {
@@ -451,13 +452,18 @@ namespace myTNB
                 object requestParameter = new
                 {
                     ApiKeyID = TNBGlobal.API_KEY_ID,
-                    NotificationType = NotificationInfo.NotificationType,
-                    NotificationId = id,
+                    UpdatedNotifications = new List<DeleteNotificationModel>(){
+                        new DeleteNotificationModel()
+                        {
+                            NotificationType = NotificationInfo.NotificationType,
+                            NotificationId = id
+                        }
+                    },
                     Email = user?.email,
                     DeviceId = DataManager.DataManager.SharedInstance.UDID,
                     SSPUserId = user?.userID
                 };
-                _deleteNotificationResponse = serviceManager.DeleteUserNotification("DeleteUserNotification_V2", requestParameter);
+                _deleteNotificationResponse = serviceManager.DeleteUserNotification("DeleteUserNotification_V3", requestParameter);
             });
         }
 

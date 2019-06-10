@@ -33,8 +33,8 @@ namespace myTNB.PushNotification
         UIImageView _imgNoNotification;
         UILabel _lblNoNotification;
         UIView _viewHeader;
-        UIImageView imgCheckbox;
-        UILabel lblTitle;
+        UIImageView _imgCheckbox;
+        UILabel _lblTitle;
 
         public override void ViewDidLoad()
         {
@@ -86,23 +86,24 @@ namespace myTNB.PushNotification
             {
                 if (_imgNoNotification == null || _lblNoNotification == null)
                 {
-                    _imgNoNotification = new UIImageView(new CGRect((View.Frame.Width / 2) - 75, 185, 150, 150));
-                    _imgNoNotification.Image = UIImage.FromBundle("Notification-Empty");
-                    _lblNoNotification = new UILabel(new CGRect(44, 352, View.Frame.Width - 88, 16));
-                    _lblNoNotification.TextAlignment = UITextAlignment.Center;
-                    _lblNoNotification.Text = "PushNotification_NoNotification".Translate();
-                    _lblNoNotification.Font = MyTNBFont.MuseoSans12;
-                    _lblNoNotification.TextColor = MyTNBColor.SilverChalice;
+                    _imgNoNotification = new UIImageView(new CGRect((View.Frame.Width / 2) - 75, 185, 150, 150))
+                    {
+                        Image = UIImage.FromBundle("Notification-Empty")
+                    };
+                    _lblNoNotification = new UILabel(new CGRect(44, 352, View.Frame.Width - 88, 16))
+                    {
+                        TextAlignment = UITextAlignment.Center,
+                        Text = "PushNotification_NoNotification".Translate(),
+                        Font = MyTNBFont.MuseoSans12,
+                        TextColor = MyTNBColor.SilverChalice
+                    };
                     View.AddSubviews(new UIView[] { _imgNoNotification, _lblNoNotification });
                 }
                 pushNotificationTableView.Hidden = true;
                 _imgNoNotification.Hidden = false;
                 _lblNoNotification.Hidden = false;
             }
-            if (notifications == null || notifications.Count == 0)
-            {
-                _titleBarComponent.SetNotificationVisibility(true);
-            }
+            _titleBarComponent.SetNotificationVisibility(notifications == null || notifications.Count == 0);
         }
 
         public override void ViewWillAppear(bool animated)
@@ -437,6 +438,7 @@ namespace myTNB.PushNotification
                                     deleteNotificationList.Clear();
                                     UpdateNotificationDisplay();
                                     pushNotificationTableView.ReloadData();
+                                    UpdateTitleRightIconImage();
                                     NSNotificationCenter.DefaultCenter.PostNotificationName("NotificationDidChange", new NSObject());
                                 }
                                 else
@@ -458,8 +460,7 @@ namespace myTNB.PushNotification
         Task DeleteUserNotification(List<DeleteNotificationModel> deleteNotificationList)
         {
             var user = DataManager.DataManager.SharedInstance.UserEntity?.Count > 0
-                                  ? DataManager.DataManager.SharedInstance.UserEntity[0]
-                                  : new UserEntity();
+                ? DataManager.DataManager.SharedInstance.UserEntity[0] : new UserEntity();
             return Task.Factory.StartNew(() =>
             {
                 ServiceManager serviceManager = new ServiceManager();
@@ -473,7 +474,7 @@ namespace myTNB.PushNotification
                     DeviceId = DataManager.DataManager.SharedInstance.UDID,
                     SSPUserId = user?.userID
                 };
-                _deleteNotificationResponse = serviceManager.DeleteUserNotification("DeleteUserNotification_V2", requestParameter);
+                _deleteNotificationResponse = serviceManager.DeleteUserNotification("DeleteUserNotification_V3", requestParameter);
             });
         }
 
@@ -507,13 +508,13 @@ namespace myTNB.PushNotification
             nfloat cellHeight = 66;
 
             UIView viewCheckBox = new UIView(new CGRect(cellWidth - 40, 22, 24, 24));
-            imgCheckbox = new UIImageView(new CGRect(0, 0, 24, 24))
+            _imgCheckbox = new UIImageView(new CGRect(0, 0, 24, 24))
             {
                 Image = UIImage.FromBundle("Payment-Checkbox-Inactive")
             };
-            viewCheckBox.AddSubview(imgCheckbox);
+            viewCheckBox.AddSubview(_imgCheckbox);
 
-            lblTitle = new UILabel(new CGRect(18, 25, cellWidth - 96 - 60, 18))
+            _lblTitle = new UILabel(new CGRect(18, 25, cellWidth - 96 - 60, 18))
             {
                 TextColor = MyTNBColor.TunaGrey(),
                 Font = MyTNBFont.MuseoSans14,
@@ -537,15 +538,20 @@ namespace myTNB.PushNotification
                 Frame = new CGRect(0, 0, cellWidth, cellHeight),
                 BackgroundColor = UIColor.White
             };
-            _viewHeader.AddSubviews(new UIView[] { viewCheckBox, lblTitle, viewLine });
+            _viewHeader.AddSubviews(new UIView[] { viewCheckBox, _lblTitle, viewLine });
         }
 
         void OnCheckboxSelect(bool isCellSelected = false)
         {
             _isAllSelected = !_isAllSelected;
-            imgCheckbox.Image = UIImage.FromBundle(_isAllSelected
-                ? "Payment-Checkbox-Active" : "Payment-Checkbox-Inactive");
-            lblTitle.Text = _isAllSelected ? "Feedback_UnselectAll".Translate() : "Feedback_SelectAll".Translate();
+            if (_imgCheckbox != null)
+            {
+                _imgCheckbox.Image = UIImage.FromBundle(_isAllSelected ? "Payment-Checkbox-Active" : "Payment-Checkbox-Inactive");
+            }
+            if (_lblTitle != null)
+            {
+                _lblTitle.Text = _isAllSelected ? "Feedback_UnselectAll".Translate() : "Feedback_SelectAll".Translate();
+            }
             if (!isCellSelected)
             {
                 UpdateSelectAllFlags(_isAllSelected);
