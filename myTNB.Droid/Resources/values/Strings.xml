@@ -674,6 +674,9 @@ You acknowledge that you have been provided with and have read and understood th
 
   <string name="notification_activity_query_progress_title">Retrieving Notifications</string>
   <string name="notification_activity_query_progress_content">Please wait...</string>
+    
+    
+   <string name="notification_select_title">Select</string>
   <!--End Of NOtification-->
   
   <!--Select NOtification-->
@@ -1347,7 +1350,7 @@ Please try again later.]]>
 	<string name="name_error">Name should not contain special characters.</string> 
 
 	<!-- Crashlytics -->
-	<string name="com.crashlytics.android.build_id">v1.1.1.8</string>
+	<string name="com.crashlytics.android.build_id">v1.1.7</string>
 
 
 	<string name="invalid_charac">Invalid characters. Use letters or numbers only.</string>

@@ -17,12 +17,15 @@ using myTNB_Android.Src.Utils;
 using Android.Support.V7.Widget;
 using Java.Text;
 using Java.Util;
+using myTNB_Android.Src.Notifications.MVP;
+using static Android.Widget.CompoundButton;
 
 namespace myTNB_Android.Src.Notifications.Adapter
 {
     public class NotificationRecyclerAdapter : BaseRecyclerAdapter<UserNotificationData>
     {
         Context notifyContext;
+        private NotificationContract.IView mNotificatonListener;
         public NotificationRecyclerAdapter(bool notify) : base(notify)
         {
         }
@@ -35,9 +38,15 @@ namespace myTNB_Android.Src.Notifications.Adapter
         {
         }
 
-        public NotificationRecyclerAdapter(Context context, bool notify) : base(notify)
+        //public NotificationRecyclerAdapter(Context context, bool notify) : base(notify)
+        //{
+        //    notifyContext = context;
+        //}
+
+        public NotificationRecyclerAdapter(Context context, NotificationContract.IView notificatonListener, bool notify) : base(notify)
         {
             notifyContext = context;
+            mNotificatonListener = notificatonListener;
         }
 
         public override void OnBindViewHolder(RecyclerView.ViewHolder holder, int position)
@@ -155,6 +164,7 @@ namespace myTNB_Android.Src.Notifications.Adapter
                 }
 
                 viewHolder.selectItemCheckbox.Checked = notificationData.IsSelected;
+                viewHolder.selectItemCheckbox.SetOnCheckedChangeListener(new NotificationItemSelectedListener(this,position, mNotificatonListener));
             }
             catch (Exception e)
             {
@@ -190,6 +200,32 @@ namespace myTNB_Android.Src.Notifications.Adapter
             NotifyDataSetChanged();
         }
 
+        public List<UserNotificationData> GetAllNotifications()
+        {
+            return this.itemList;
+        }
+
+        class NotificationItemSelectedListener : Java.Lang.Object, IOnCheckedChangeListener
+        {
+            int selectedPosition;
+            NotificationRecyclerAdapter notificationAdapter;
+            NotificationContract.IView notificatonListener;
+            public NotificationItemSelectedListener(NotificationRecyclerAdapter adapter, int position, NotificationContract.IView mNotificatonListener)
+            {
+                selectedPosition = position;
+                notificationAdapter = adapter;
+                notificatonListener = mNotificatonListener;
+            }
+
+            public void OnCheckedChanged(CompoundButton buttonView, bool isChecked)
+            {
+                UserNotificationData updatedItem = notificationAdapter.GetItemObject(selectedPosition);
+                updatedItem.IsSelected = isChecked;
+                notificatonListener.updateNotificationTitle();
+                //notificationAdapter.Update(selectedPosition,updatedItem);
+            }
+        }
+
         class NotificationRecyclerViewHolder : BaseRecyclerViewHolder
         {
             [BindView(Resource.Id.notificationIcon)]
@@ -211,7 +247,6 @@ namespace myTNB_Android.Src.Notifications.Adapter
             {
                 TextViewUtils.SetMuseoSans300Typeface(txtNotificationTitle);
                 TextViewUtils.SetMuseoSans300Typeface(txtNotificationContent, txtNotificationDate);
-
             }
         }
     }

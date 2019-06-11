@@ -12,6 +12,8 @@ using Android.Widget;
 using myTNB_Android.Src.Base.MVP;
 using myTNB_Android.Src.Notifications.Models;
 using Refit;
+using static Android.Widget.CompoundButton;
+
 namespace myTNB_Android.Src.Notifications.MVP
 {
     public class NotificationContract
@@ -115,6 +117,8 @@ namespace myTNB_Android.Src.Notifications.MVP
             /// </summary>
             /// <returns>unique id alphanumeric strings</returns>
             string GetDeviceId();
+
+            void updateNotificationTitle();
         }
 
         public interface IUserActionsListener : IBasePresenter

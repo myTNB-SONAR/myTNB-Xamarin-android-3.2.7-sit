@@ -1,6 +1,8 @@
 ﻿using System;
+using Android.Content;
 using Android.Graphics;
 using Android.Graphics.Drawables;
+using Android.Support.V4.Content;
 using Android.Support.V7.Widget;
 using Android.Support.V7.Widget.Helper;
 using Android.Text;
@@ -23,10 +25,27 @@ namespace myTNB_Android.Src.Notifications.MVP
         private static RecyclerView.ViewHolder currentItemViewHolder = null;
         private static RectF buttonInstance = null;
         private static NotificationRecyclerAdapter adapter = null;
+        private Drawable deleteIcon;
+        private Drawable markReadIcon;
+        private int intrinsicDeleteWidth;
+        private int intrinsicDeleteHeight;
+        private int intrinsicReadWidth;
+        private int intrinsicReadHeight;
+        private Context mContext;
 
-        public NotificationSwipeDeleteCallback(NotificationRecyclerAdapter mAdapter)
+        public NotificationSwipeDeleteCallback(Context context,NotificationRecyclerAdapter mAdapter)
         {
             adapter = mAdapter;
+            mContext = context;
+
+            deleteIcon = ContextCompat.GetDrawable(mContext,Resource.Drawable.ic_header_delete);
+            markReadIcon = ContextCompat.GetDrawable(mContext,Resource.Drawable.ic_header_mark_read);
+            intrinsicDeleteWidth = deleteIcon.IntrinsicWidth;
+            intrinsicDeleteHeight = deleteIcon.IntrinsicHeight;
+            intrinsicReadWidth = markReadIcon.IntrinsicWidth;
+            intrinsicReadHeight = markReadIcon.IntrinsicHeight;
+
+            buttonWidth = intrinsicDeleteWidth * 3;
         }
 
         public override int GetMovementFlags(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder)
@@ -57,32 +76,15 @@ namespace myTNB_Android.Src.Notifications.MVP
             return base.ConvertToAbsoluteDirection(flags, layoutDirection);
         }
 
-        private void drawText(String text, Canvas c, RectF button, Paint p)
+        private void DrawOptionIcon(int left, int top, int right, int bottom)
         {
-            float textSize = 60;
-            p.Color = Color.White;
-            p.AntiAlias = true;
-            p.TextSize = textSize;
 
-            float textWidth = p.MeasureText(text);
-            c.DrawText(text, button.CenterX() - (textWidth / 2), button.CenterY() + (textSize / 2), p);
         }
 
         public override void OnChildDraw(Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, bool isCurrentlyActive)
         {
-            //View itemView = viewHolder.ItemView;
-            //ColorDrawable bg = new ColorDrawable();
-            //bg.Color = Color.Red;
-            //bg.SetBounds(
-            //        itemView.Right, itemView.Top, itemView.Right, itemView.Bottom);
-            //bg.Draw(c);
-
-            //TextPaint textPaint = new TextPaint();
-            //textPaint.Color = Color.White;
-            //textPaint.TextSize = 25;
-            //c.DrawText("Delete", itemView.Right - (textPaint.TextSize * 4), itemView.Top + (itemView.Height / 2), textPaint);
-
             View itemView = viewHolder.ItemView;
+            int itemHeight = itemView.Height;
 
             ColorDrawable bg = new ColorDrawable();
             Paint p = new Paint();
@@ -97,7 +99,16 @@ namespace myTNB_Android.Src.Notifications.MVP
                 rightButton = new RectF(itemView.Right - (buttonWidth - 20), itemView.Top, itemView.Right, itemView.Bottom);
                 p.Color = Color.Red;
                 c.DrawRoundRect(rightButton, 0, 0, p);
-                drawText("DELETE", c, rightButton, p);
+
+                int deleteIconTop = itemView.Top + (itemHeight - intrinsicDeleteHeight) / 2;
+                int deleteIconMargin = (itemHeight - intrinsicDeleteHeight) / 2;
+                int deleteIconLeft = itemView.Right - deleteIconMargin - intrinsicDeleteWidth;
+                int deleteIconRight = itemView.Right - deleteIconMargin;
+                int deleteIconBottom = deleteIconTop + intrinsicDeleteHeight;
+
+                deleteIcon.SetBounds(deleteIconLeft, deleteIconTop, deleteIconRight, deleteIconBottom);
+                deleteIcon.Draw(c);
+
             }
             else
             {
@@ -109,7 +120,15 @@ namespace myTNB_Android.Src.Notifications.MVP
                 leftButton = new RectF(itemView.Left, itemView.Top, itemView.Left + (buttonWidth - 20), itemView.Bottom);
                 p.Color = Color.Blue;
                 c.DrawRoundRect(leftButton, 0, 0, p);
-                drawText("READ", c, leftButton, p);
+
+                int markReadIconTop = itemView.Top + (itemHeight - intrinsicReadHeight) / 2;
+                int markReadIconMargin = (itemHeight - intrinsicReadHeight) / 2;
+                int markReadIconLeft = itemView.Left + markReadIconMargin;
+                int markReadIconRight = itemView.Left + markReadIconMargin + intrinsicReadWidth;
+                int markReadIconBottom = markReadIconTop + intrinsicReadHeight;
+
+                markReadIcon.SetBounds(markReadIconLeft, markReadIconTop, markReadIconRight, markReadIconBottom);
+                markReadIcon.Draw(c);
             }
 
             buttonInstance = null;

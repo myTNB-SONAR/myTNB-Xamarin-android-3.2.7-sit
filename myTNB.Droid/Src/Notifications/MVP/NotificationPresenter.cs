@@ -22,6 +22,7 @@ using System.Threading;
 using Newtonsoft.Json;
 using myTNB_Android.Src.AppLaunch.Api;
 using myTNB_Android.Src.AppLaunch.Requests;
+using static Android.Widget.CompoundButton;
 
 namespace myTNB_Android.Src.Notifications.MVP
 {
@@ -267,39 +268,44 @@ namespace myTNB_Android.Src.Notifications.MVP
 
         void ShowFilteredList()
         {
-            try {
+            try
+            {
                 NotificationFilterEntity filter = new NotificationFilterEntity();
                 filter = NotificationFilterEntity.GetActive();
                 List<UserNotificationEntity> entities = new List<UserNotificationEntity>();
                 entities = UserNotificationEntity.ListAllActive();
 
-                if (filter != null) {
-                    if (!string.IsNullOrEmpty(filter.Id)) {
-            if (!filter.Id.Equals(Constants.ZERO_INDEX_FILTER))
-            {
-                entities = UserNotificationEntity.ListFiltered(filter.Id);
-            }
+                if (filter != null)
+                {
+                    if (!string.IsNullOrEmpty(filter.Id))
+                    {
+                        if (!filter.Id.Equals(Constants.ZERO_INDEX_FILTER))
+                        {
+                            entities = UserNotificationEntity.ListFiltered(filter.Id);
+                        }
                     }
-                    if (!string.IsNullOrEmpty(filter.Title)) {
-            this.mView.ShowNotificationFilterName(filter.Title);
+                    if (!string.IsNullOrEmpty(filter.Title))
+                    {
+                        this.mView.ShowNotificationFilterName(filter.Title);
                     }
                 }
 
-            List<UserNotificationData> listOfNotifications = new List<UserNotificationData>();
-                if (entities != null && entities.Count() > 0) {
-            foreach (UserNotificationEntity entity in entities)
-            {
-                if (!TextUtils.IsEmpty(entity.NotificationTypeId))
+                List<UserNotificationData> listOfNotifications = new List<UserNotificationData>();
+                if (entities != null && entities.Count() > 0)
                 {
+                    foreach (UserNotificationEntity entity in entities)
+                    {
+                        if (!TextUtils.IsEmpty(entity.NotificationTypeId))
+                        {
                             NotificationTypesEntity notificationTypesEntity = new NotificationTypesEntity();
                             notificationTypesEntity = NotificationTypesEntity.GetById(entity.NotificationTypeId);
-                    if (!TextUtils.IsEmpty(notificationTypesEntity.Code))
-                    {
-                        listOfNotifications.Add(UserNotificationData.Get(entity, notificationTypesEntity.Code));
-                    }
-                }
+                            if (!TextUtils.IsEmpty(notificationTypesEntity.Code))
+                            {
+                                listOfNotifications.Add(UserNotificationData.Get(entity, notificationTypesEntity.Code));
+                            }
+                        }
 
-            }
+                    }
                 }
 
             this.mView.ShowNotificationsList(listOfNotifications);

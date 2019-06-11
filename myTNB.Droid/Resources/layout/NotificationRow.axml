@@ -151,7 +151,7 @@
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
         android:layout_marginTop="21dp"
-        android:buttonTint="@color/material_grey_600"
+        android:button="@drawable/checkbox_selector"
         android:checked="false"
         android:text=" "
         app:layout_constraintStart_toEndOf="@+id/txtNotificationDate"
