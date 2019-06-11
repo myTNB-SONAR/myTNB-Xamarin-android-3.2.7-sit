@@ -463,6 +463,11 @@ namespace myTNB.PushNotification
             });
         }
 
+        void test()
+        {
+
+        }
+
         void UpdateNotifications(List<DeleteNotificationModel> deleteNotificationList, bool isMultiple = false, NSIndexPath indexPath = null)
         {
             if (isMultiple)
@@ -478,6 +483,7 @@ namespace myTNB.PushNotification
                 {
                     int notificationIndex = _notifications.FindIndex(x => x?.NotificationType == item.NotificationType
                         && x.Id == item.NotificationId);
+                    Debug.WriteLine("notificationIndex: " + notificationIndex);
                     if (notificationIndex > -1)
                     {
                         _notifications.RemoveAt(notificationIndex);
@@ -485,6 +491,7 @@ namespace myTNB.PushNotification
 
                     int userNotificationIndex = DataManager.DataManager.SharedInstance.UserNotifications
                         .FindIndex(x => x?.NotificationType == item.NotificationType && x.Id == item.NotificationId);
+                    Debug.WriteLine("userNotificationIndex: " + userNotificationIndex);
                     if (userNotificationIndex > -1)
                     {
                         DataManager.DataManager.SharedInstance.UserNotifications.RemoveAt(userNotificationIndex);
@@ -524,11 +531,6 @@ namespace myTNB.PushNotification
                 };
                 _deleteNotificationResponse = serviceManager.DeleteUserNotification("DeleteUserNotification_V3", requestParameter);
             });
-        }
-
-        List<DeleteNotificationModel> UpdateDeleteList()
-        {
-            return new List<DeleteNotificationModel>();
         }
 
         Task MarkUserNotification(UserNotificationDataModel dataModel)
@@ -639,7 +641,7 @@ namespace myTNB.PushNotification
                 {
                     _notificationsForDeletion.Add(new DeleteNotificationModel()
                     {
-                        NotificationType = obj?.NotificationTypeId,
+                        NotificationType = obj?.NotificationType,
                         NotificationId = obj.Id
                     });
                 }
