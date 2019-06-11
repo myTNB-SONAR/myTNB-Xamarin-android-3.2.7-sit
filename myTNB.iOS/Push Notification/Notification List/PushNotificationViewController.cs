@@ -20,6 +20,7 @@ namespace myTNB.PushNotification
         public DeleteNotificationResponseModel _deleteNotificationResponse = new DeleteNotificationResponseModel();
         public bool _isSelectionMode = false;
         internal bool _isDeletionMode = false;
+        bool _isAllSelected = false;
 
         AccountSelectionComponent _notificationSelectionComponent;
         NotificationDetailedInfoResponseModel _detailedInfo = new NotificationDetailedInfoResponseModel();
@@ -27,7 +28,6 @@ namespace myTNB.PushNotification
         TitleBarComponent _titleBarComponent;
         List<UserNotificationDataModel> _notifications;
         List<DeleteNotificationModel> _notificationsForDeletion;
-        bool _isAllSelected = false;
 
         UIView _viewDelete;
         UIImageView _imgNoNotification, _imgCheckbox;
@@ -44,12 +44,17 @@ namespace myTNB.PushNotification
         public void OnNotificationFilterDidChange(NSNotification notification)
         {
             Debug.WriteLine("DEBUG >>> PushNotificationViewController OnNotificationFilterDidChange");
+            OnReset();
+            SetNavigationBar();
+            pushNotificationTableView.TableHeaderView = null;
+        }
+
+        void OnReset()
+        {
             _isDeletionMode = false;
             _isSelectionMode = false;
             _isAllSelected = false;
             _notificationsForDeletion?.Clear();
-            SetNavigationBar();
-            pushNotificationTableView.TableHeaderView = null;
         }
 
         private void UpdateNotificationDisplay()
@@ -166,7 +171,7 @@ namespace myTNB.PushNotification
 
         internal void SetNavigationBar()
         {
-            NavigationController.SetNavigationBarHidden(true, false);
+            NavigationController?.SetNavigationBarHidden(true, false);
             GradientViewComponent gradientViewComponent = new GradientViewComponent(View, true, 89, true);
             UIView headerView = gradientViewComponent.GetUI();
             _titleBarComponent = new TitleBarComponent(headerView);
@@ -219,6 +224,7 @@ namespace myTNB.PushNotification
             _titleBarComponent.SetBackVisibility(false);
             _titleBarComponent.SetBackAction(new UITapGestureRecognizer(() =>
             {
+                OnReset();
                 DismissViewController(true, null);
             }));
             headerView.AddSubview(titleBarView);
