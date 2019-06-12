@@ -77,6 +77,7 @@ namespace myTNB_Android.Src.Notifications.Activity
         TextView selectAllNotificationLabel;
 
         private IMenu notificationMenu;
+        private MaterialDialog deleteDialog;
 
         //NotificationAdapter notificationAdapter;
         NotificationRecyclerAdapter notificationRecyclerAdapter;
@@ -92,6 +93,7 @@ namespace myTNB_Android.Src.Notifications.Activity
 
         private static EditNotificationStates editState = EditNotificationStates.HIDE;
         private static SelectNotificationStates selectNotificationState = SelectNotificationStates.UNSELECTED;
+        private bool isReadEnabled = false;
 
         public bool IsActive()
         {
@@ -133,7 +135,7 @@ namespace myTNB_Android.Src.Notifications.Activity
         {
             MenuInflater.Inflate(Resource.Menu.DashboardToolbarMenu, menu);
             notificationMenu = menu;
-            menu.FindItem(Resource.Id.action_notification).SetIcon(GetDrawable(Resource.Drawable.ic_action_edit));
+            menu.FindItem(Resource.Id.action_notification).SetIcon(GetDrawable(Resource.Drawable.ic_action_Select));
             return base.OnCreateOptionsMenu(menu);
         }
 
@@ -157,11 +159,12 @@ namespace myTNB_Android.Src.Notifications.Activity
                     if (selectNotificationState == SelectNotificationStates.SELECTED)
                     {
                         //Remove notifications here
+                        deleteDialog.Show();
                     }
                     else
                     {
                         //Cancel Delete
-                        notificationMenu.FindItem(Resource.Id.action_notification).SetIcon(Resource.Drawable.ic_action_edit);
+                        notificationMenu.FindItem(Resource.Id.action_notification).SetIcon(Resource.Drawable.ic_action_Select);
                         ShowSelectAllOption(ViewStates.Gone);
                         notificationRecyclerAdapter.ShowSelectButtons(false);
                         editState = EditNotificationStates.HIDE;
@@ -169,6 +172,14 @@ namespace myTNB_Android.Src.Notifications.Activity
                     }
                 }
                 return true;
+            }
+            else
+            {
+                if (isReadEnabled)
+                {
+                    ReadAllSelectedNotifications();
+                    return true;
+                }
             }
             return base.OnOptionsItemSelected(item);
         }
@@ -196,6 +207,16 @@ namespace myTNB_Android.Src.Notifications.Activity
             itemTouchHelper.AttachToRecyclerView(notificationRecyclerView);
         }
 
+        private void DeleteAllSelectedNotifications()
+        {
+
+        }
+
+        private void ReadAllSelectedNotifications()
+        {
+
+        }
+
         private void SetInitialNotificationState()
         {
             int count = UserNotificationEntity.Count();
@@ -209,6 +230,24 @@ namespace myTNB_Android.Src.Notifications.Activity
             }
 
             ShowSelectAllOption(ViewStates.Gone);
+            editState = EditNotificationStates.HIDE;
+            selectNotificationState = SelectNotificationStates.UNSELECTED;
+            isReadEnabled = false;
+
+            deleteDialog = new MaterialDialog.Builder(this)
+                    .Title("Delete All Notifications")
+                    .Content("Are you sure you want to delete all notifications?")
+                    .PositiveText("Yes")
+                    .PositiveColor(Resource.Color.blue)
+                    .NegativeText("No")
+                    .NegativeColor(Resource.Color.blue)
+                    .OnPositive((dialog, which) =>
+                    {
+                        DeleteAllSelectedNotifications();
+                        dialog.Dismiss();
+                    })
+                    .Cancelable(false)
+                    .Build();
         }
 
         protected override void OnCreate(Bundle savedInstanceState)
@@ -539,7 +578,6 @@ namespace myTNB_Android.Src.Notifications.Activity
         {
             notificationSelectAllContainer.Visibility = viewState;
         }
-        private static bool isSelectAllFromList = false;
         private static bool isSelectAllTap = false;
         public void OnCheckedChanged(CompoundButton buttonView, bool isChecked)
         {
@@ -568,17 +606,16 @@ namespace myTNB_Android.Src.Notifications.Activity
 
         private void ShowReadAndDeleteOption(bool show)
         {
+            isReadEnabled = show;
             if (show)
             {
                 notificationMenu.FindItem(Resource.Id.action_notification).SetIcon(Resource.Drawable.ic_header_delete);
-                SupportActionBar.SetIcon(Resource.Drawable.ic_header_mark_read);
-                SupportActionBar.SetDisplayHomeAsUpEnabled(false);
+                SupportActionBar.SetHomeAsUpIndicator(Resource.Drawable.ic_header_mark_read);
             }
             else
             {
                 notificationMenu.FindItem(Resource.Id.action_notification).SetIcon(Resource.Drawable.ic_header_cancel);
-                SupportActionBar.SetIcon(null);
-                SupportActionBar.SetDisplayHomeAsUpEnabled(true);
+                SupportActionBar.SetHomeAsUpIndicator(0);
             }
         }
 
