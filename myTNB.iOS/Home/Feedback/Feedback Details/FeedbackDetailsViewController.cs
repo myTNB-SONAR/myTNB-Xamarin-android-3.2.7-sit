@@ -94,63 +94,67 @@ namespace myTNB
 
             float imgWidth = 0;
             float imgHeight = 0;
-            if (image.Size.Width < image.Size.Height)
+            if (image != null)
             {
-                if (image.Size.Width < View.Frame.Width)
+                if (image.Size.Width < image.Size.Height)
                 {
-                    imgWidth = (float)image.Size.Width;
-                    if (image.Size.Height < View.Frame.Height - (DeviceHelper.IsIphoneXUpResolution() ? 44 : 24))
+                    if (image.Size.Width < View.Frame.Width)
                     {
+                        imgWidth = (float)image.Size.Width;
+                        if (image.Size.Height < View.Frame.Height - (DeviceHelper.IsIphoneXUpResolution() ? 44 : 24))
+                        {
+                            imgHeight = (float)image.Size.Height;
+                        }
+                        else
+                        {
+                            imgHeight = (float)View.Frame.Height - (DeviceHelper.IsIphoneXUpResolution() ? 44 : 24);
+                        }
+                    }
+                    else
+                    {
+                        imgWidth = (float)View.Frame.Width;
+                        float ratio = (float)(image.Size.Width / image.Size.Height);
+                        imgHeight = imgWidth / ratio;
+                        if (imgHeight > View.Frame.Height - (DeviceHelper.IsIphoneXUpResolution() ? 44 : 24))
+                        {
+                            imgHeight = (float)View.Frame.Height - (DeviceHelper.IsIphoneXUpResolution() ? 44 : 24);
+                        }
+                    }
+                }
+                else
+                {
+                    if (image.Size.Width < View.Frame.Width)
+                    {
+                        imgWidth = (float)image.Size.Width;
                         imgHeight = (float)image.Size.Height;
                     }
                     else
                     {
-                        imgHeight = (float)View.Frame.Height - (DeviceHelper.IsIphoneXUpResolution() ? 44 : 24);
+                        imgWidth = (float)View.Frame.Width;
+                        float ratio = (float)(image.Size.Width / image.Size.Height);
+                        imgHeight = imgWidth / ratio;
+                        if (imgHeight > View.Frame.Height - (DeviceHelper.IsIphoneXUpResolution() ? 44 : 24))
+                        {
+                            imgHeight = (float)View.Frame.Height - (DeviceHelper.IsIphoneXUpResolution() ? 44 : 24);
+                        }
                     }
                 }
-                else
+
+                UIImageView imgView = new UIImageView(new CGRect((viewContainer.Frame.Width / 2) - (imgWidth / 2)
+                                                                 , lblFileName.Frame.GetMaxY() + 10f
+                                                                 , imgWidth
+                                                                 , imgHeight))
                 {
-                    imgWidth = (float)View.Frame.Width;
-                    float ratio = (float)(image.Size.Width / image.Size.Height);
-                    imgHeight = imgWidth / ratio;
-                    if (imgHeight > View.Frame.Height - (DeviceHelper.IsIphoneXUpResolution() ? 44 : 24))
-                    {
-                        imgHeight = (float)View.Frame.Height - (DeviceHelper.IsIphoneXUpResolution() ? 44 : 24);
-                    }
-                }
+                    Image = image
+                };
+
+                viewContainer.AddSubviews(new UIView[] { lblFileName, viewClose, imgView });
+
+                UIWindow currentWindow = UIApplication.SharedApplication.KeyWindow;
+                currentWindow.AddSubview(viewContainer);
+                viewContainer.Hidden = false;
+                UIApplication.SharedApplication.StatusBarHidden = true;
             }
-            else
-            {
-                if (image.Size.Width < View.Frame.Width)
-                {
-                    imgWidth = (float)image.Size.Width;
-                    imgHeight = (float)image.Size.Height;
-                }
-                else
-                {
-                    imgWidth = (float)View.Frame.Width;
-                    float ratio = (float)(image.Size.Width / image.Size.Height);
-                    imgHeight = imgWidth / ratio;
-                    if (imgHeight > View.Frame.Height - (DeviceHelper.IsIphoneXUpResolution() ? 44 : 24))
-                    {
-                        imgHeight = (float)View.Frame.Height - (DeviceHelper.IsIphoneXUpResolution() ? 44 : 24);
-                    }
-                }
-            }
-
-            UIImageView imgView = new UIImageView(new CGRect((viewContainer.Frame.Width / 2) - (imgWidth / 2)
-                , ((viewContainer.Frame.Height - (DeviceHelper.IsIphoneXUpResolution() ? 44 : 24)) / 2) - (imgHeight / 2)
-                , imgWidth, imgHeight))
-            {
-                Image = image
-            };
-
-            viewContainer.AddSubviews(new UIView[] { lblFileName, viewClose, imgView });
-
-            UIWindow currentWindow = UIApplication.SharedApplication.KeyWindow;
-            currentWindow.AddSubview(viewContainer);
-            viewContainer.Hidden = false;
-            UIApplication.SharedApplication.StatusBarHidden = true;
         }
     }
 }

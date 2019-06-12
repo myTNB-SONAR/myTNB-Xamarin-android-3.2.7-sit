@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Drawing;
 using CoreGraphics;
 using Foundation;
 using myTNB.Model;
@@ -147,7 +148,7 @@ namespace myTNB.Home.Feedback.FeedbackDetails
                                     {
                                         cell.lblTitle.Text = "Feedback_Title".Translate().ToUpper();
                                         cell.lblValue.Text = _feedbackDetails.FeedbackMessage;
-                                        CGSize newSize = GetLabelSize(_feedbackDetails.FeedbackMessage);
+                                        CGSize newSize = GetTitleLabelSize(_feedbackDetails.FeedbackMessage);
                                         cell.lblValue.Frame = new CGRect(18, 30, tableView.Frame.Width - 36, newSize.Height);
                                         break;
                                     }
@@ -165,7 +166,7 @@ namespace myTNB.Home.Feedback.FeedbackDetails
                         {
                             cell.lblTitle.Text = "Feedback_Title".Translate().ToUpper();
                             cell.lblValue.Text = _feedbackDetails.FeedbackMessage;
-                            CGSize newSize = GetLabelSize(_feedbackDetails.FeedbackMessage);
+                            CGSize newSize = GetTitleLabelSize(_feedbackDetails.FeedbackMessage);
                             cell.lblValue.Frame = new CGRect(18, 30, tableView.Frame.Width - 36, newSize.Height);
                             break;
                         }
@@ -260,7 +261,7 @@ namespace myTNB.Home.Feedback.FeedbackDetails
                         }
                         else
                         {
-                            CGSize newSize = GetLabelSize(_feedbackDetails.FeedbackMessage);
+                            CGSize newSize = GetTitleLabelSize(_feedbackDetails.FeedbackMessage);
                             rowHeight = newSize.Height + 32f;
                         }
                         break;
@@ -272,7 +273,7 @@ namespace myTNB.Home.Feedback.FeedbackDetails
                     }
                 case 6:
                     {
-                        CGSize newSize = GetLabelSize(_feedbackDetails.FeedbackMessage);
+                        CGSize newSize = GetTitleLabelSize(_feedbackDetails.FeedbackMessage);
                         rowHeight = newSize.Height + 32f;
                         break;
                     }
@@ -291,20 +292,21 @@ namespace myTNB.Home.Feedback.FeedbackDetails
             return rowHeight;
         }
 
-        private CGSize GetLabelSize(string text)
+        /// <summary>
+        /// Gets the size of the title label.
+        /// </summary>
+        /// <returns>The title label size.</returns>
+        /// <param name="text">Text.</param>
+        private CGSize GetTitleLabelSize(string text)
         {
-#if true
-            var str = new NSString(text);
-            return str.GetSizeUsingAttributes(new UIStringAttributes { Font = MyTNBFont.MuseoSans14 });
-#else
-            UILabel label = new UILabel(new CGRect(18, 0, UIApplication.SharedApplication.KeyWindow.Frame.Width - 36, float.MaxValue));
-            label.Font = myTNBFont.MuseoSans14;
-            label.TextColor = myTNBColor.TunaGrey();
-            label.Lines = 0;
-            label.LineBreakMode = UILineBreakMode.WordWrap;
-            label.Text = text;
-            return label.Text.StringSize(label.Font, new SizeF((float)label.Frame.Width, float.MaxValue));
-#endif
+            UILabel label = new UILabel(new CGRect(18, 30, UIApplication.SharedApplication.KeyWindow.Frame.Width - 36, 1000))
+            {
+                Font = MyTNBFont.MuseoSans14,
+                Lines = 0,
+                LineBreakMode = UILineBreakMode.WordWrap,
+                Text = text
+            };
+            return label.Text.StringSize(label.Font, new SizeF((float)label.Frame.Width, 1000F));
         }
 
         internal string GetFormattedDate(string DateCreated)
