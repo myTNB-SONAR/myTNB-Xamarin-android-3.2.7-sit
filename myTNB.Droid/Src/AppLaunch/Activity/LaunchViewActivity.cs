@@ -34,6 +34,7 @@ using myTNB_Android.Src.LogoutEnd.Activity;
 using myTNB_Android.Src.Login.Activity;
 using myTNB_Android.Src.UpdateMobileNo.Activity;
 using System.Runtime;
+using myTNB_Android.Src.Maintenance.Activity;
 
 namespace myTNB_Android.Src.AppLaunch.Activity
 {
@@ -562,6 +563,22 @@ namespace myTNB_Android.Src.AppLaunch.Activity
             updateMobileNo.PutExtra(Constants.FROM_APP_LAUNCH, true);
             updateMobileNo.PutExtra("PhoneNumber", phoneNumber);
             StartActivity(updateMobileNo);
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void ShowMaintenance(MasterDataResponse masterDataResponse)
+        {
+            try
+            {
+                Intent maintenanceScreen = new Intent(this, typeof(MaintenanceActivity));
+                //updateMobileNo.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
+                maintenanceScreen.PutExtra(Constants.MAINTENANCE_TITLE, masterDataResponse.Data.MasterData.MaintainanceTitle);
+                maintenanceScreen.PutExtra(Constants.MAINTENANCE_MESSAGE, masterDataResponse.Data.MasterData.MaintainanceMessage);
+                StartActivity(maintenanceScreen);
             }
             catch (Exception e)
             {

@@ -233,7 +233,7 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                 //MasterDataResponse masterDataResponse = JsonConvert.DeserializeObject<MasterDataResponse>(response);
 
                 // TODO: ADD THIS TO REGISTER & LOGIN
-                if (!masterDataResponse.Data.IsError)
+                if (!masterDataResponse.Data.IsError && !masterDataResponse.Data.Status.Equals(Constants.MAINTENANCE_MODE))
                 {
                     new MasterApiDBOperation(masterDataResponse, mSharedPref).ExecuteOnExecutor(AsyncTask.ThreadPoolExecutor, "");
                     //Console.WriteLine("Excution time enters if");
@@ -425,53 +425,53 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                     //if (UserEntity.IsCurrentlyActive())
                     //{
 
-                        //try
-                        //{
-                        //    UserEntity entity = UserEntity.GetActive();
-                        //    bool phoneVerified = UserSessions.GetPhoneVerifiedFlag(mSharedPref);
-                        //    if (!phoneVerified)
-                        //    {
-                        //        //var phoneVerifyWatch = new System.Diagnostics.Stopwatch();
-                        //        //phoneVerifyWatch.Start();
-                        //        PhoneVerifyStatusResponse phoneVerifyResponse = await getPhoneVerifyApi.GetPhoneVerifyStatus(new GetPhoneVerifyStatusRequest()
-                        //        {
-                        //            ApiKeyId = Constants.APP_CONFIG.API_KEY_ID,
-                        //            Email = entity.Email,
-                        //            SSPUserID = entity.UserID,
-                        //            DeviceID = this.mView.GetDeviceId()
-                        //        }, cts.Token);
-                        //        //phoneVerifyWatch.Stop();
-                        //        //Console.WriteLine($"Execution Time for phone verification: {phoneVerifyWatch.ElapsedMilliseconds} ms");
+                    //try
+                    //{
+                    //    UserEntity entity = UserEntity.GetActive();
+                    //    bool phoneVerified = UserSessions.GetPhoneVerifiedFlag(mSharedPref);
+                    //    if (!phoneVerified)
+                    //    {
+                    //        //var phoneVerifyWatch = new System.Diagnostics.Stopwatch();
+                    //        //phoneVerifyWatch.Start();
+                    //        PhoneVerifyStatusResponse phoneVerifyResponse = await getPhoneVerifyApi.GetPhoneVerifyStatus(new GetPhoneVerifyStatusRequest()
+                    //        {
+                    //            ApiKeyId = Constants.APP_CONFIG.API_KEY_ID,
+                    //            Email = entity.Email,
+                    //            SSPUserID = entity.UserID,
+                    //            DeviceID = this.mView.GetDeviceId()
+                    //        }, cts.Token);
+                    //        //phoneVerifyWatch.Stop();
+                    //        //Console.WriteLine($"Execution Time for phone verification: {phoneVerifyWatch.ElapsedMilliseconds} ms");
 
-                        //        if (!phoneVerifyResponse.verificationData.IsError)
-                        //        {
-                        //            if (!phoneVerifyResponse.verificationData.Data.IsPhoneVerified)
-                        //            {
-                        //                this.mView.ShowUpdatePhoneNumber(phoneVerifyResponse.verificationData.Data.PhoneNumber);
-                        //                proceed = false;
-                        //            }
-                        //            else
-                        //            {
-                        //                proceed = true;
-                        //            }
-                        //        }
-                        //        else
-                        //        {
-                        //            proceed = true;
-                        //        }
+                    //        if (!phoneVerifyResponse.verificationData.IsError)
+                    //        {
+                    //            if (!phoneVerifyResponse.verificationData.Data.IsPhoneVerified)
+                    //            {
+                    //                this.mView.ShowUpdatePhoneNumber(phoneVerifyResponse.verificationData.Data.PhoneNumber);
+                    //                proceed = false;
+                    //            }
+                    //            else
+                    //            {
+                    //                proceed = true;
+                    //            }
+                    //        }
+                    //        else
+                    //        {
+                    //            proceed = true;
+                    //        }
 
 
-                        //    }
-                        //    else
-                        //    {
-                        //        proceed = true;
-                        //    }
-                        //}
-                        //catch (System.Exception e)
-                        //{
-                        //    Log.Debug("Package Manager", e.StackTrace);
-                        //    Utility.LoggingNonFatalError(e);
-                        //}
+                    //    }
+                    //    else
+                    //    {
+                    //        proceed = true;
+                    //    }
+                    //}
+                    //catch (System.Exception e)
+                    //{
+                    //    Log.Debug("Package Manager", e.StackTrace);
+                    //    Utility.LoggingNonFatalError(e);
+                    //}
                     //}
                     //else
                     //{
@@ -481,38 +481,38 @@ namespace myTNB_Android.Src.AppLaunch.MVP
 
                     //if (proceed)
                     //{
-                        bool appUpdateAvailable = false;
-                        if (masterDataResponse.Data.MasterData.AppVersionList != null && masterDataResponse.Data.MasterData.AppVersionList.Count > 0)
+                    bool appUpdateAvailable = false;
+                    if (masterDataResponse.Data.MasterData.AppVersionList != null && masterDataResponse.Data.MasterData.AppVersionList.Count > 0)
+                    {
+                        foreach (AppVersionList versionList in masterDataResponse.Data.MasterData.AppVersionList)
                         {
-                            foreach (AppVersionList versionList in masterDataResponse.Data.MasterData.AppVersionList)
+                            int serverVerison;
+                            if (versionList.Platform.Equals("1") || versionList.Platform.Equals("Android"))
                             {
-                                int serverVerison;
-                                if (versionList.Platform.Equals("1") || versionList.Platform.Equals("Android"))
+                                if (string.IsNullOrEmpty(versionList.Version))
                                 {
-                                    if (string.IsNullOrEmpty(versionList.Version))
+                                    appUpdateAvailable = false;
+                                }
+                                else if (int.TryParse(versionList.Version, out serverVerison))
+                                {
+                                    serverVerison = int.Parse(versionList.Version);
+                                    if (serverVerison > DeviceIdUtils.GetAppVersionCode())
                                     {
-                                        appUpdateAvailable = false;
-                                    }
-                                    else if (int.TryParse(versionList.Version, out serverVerison))
-                                    {
-                                        serverVerison = int.Parse(versionList.Version);
-                                        if (serverVerison > DeviceIdUtils.GetAppVersionCode())
-                                        {
-                                            appUpdateAvailable = true;
-                                        }
+                                        appUpdateAvailable = true;
                                     }
                                 }
                             }
+                        }
 
-                            if (appUpdateAvailable)
-                            {
-                                this.mView.ShowUpdateAvailable();
-                            }
-                            else
-                            {
+                        if (appUpdateAvailable)
+                        {
+                            this.mView.ShowUpdateAvailable();
+                        }
+                        else
+                        {
 
-                                if (UserEntity.IsCurrentlyActive())
-                                {
+                            if (UserEntity.IsCurrentlyActive())
+                            {
 
 
                                 try
@@ -677,32 +677,43 @@ namespace myTNB_Android.Src.AppLaunch.MVP
 
                                 }
 
-                                }
-                                else if (UserSessions.HasSkipped(mSharedPref))
+                            }
+                            else if (UserSessions.HasSkipped(mSharedPref))
+                            {
+                                if (!UserSessions.IsDeviceIdUpdated(mSharedPref) || !this.mView.GetDeviceId().Equals(UserSessions.GetDeviceId(mSharedPref)))
                                 {
-                                    if (!UserSessions.IsDeviceIdUpdated(mSharedPref) || !this.mView.GetDeviceId().Equals(UserSessions.GetDeviceId(mSharedPref)))
-                                    {
-                                        UserSessions.UpdateDeviceId(mSharedPref);
-                                        UserSessions.SaveDeviceId(mSharedPref, this.mView.GetDeviceId());
-                                    }
-                                    mView.ShowPreLogin();
+                                    UserSessions.UpdateDeviceId(mSharedPref);
+                                    UserSessions.SaveDeviceId(mSharedPref, this.mView.GetDeviceId());
                                 }
-                                else
+                                mView.ShowPreLogin();
+                            }
+                            else
+                            {
+                                if (!UserSessions.IsDeviceIdUpdated(mSharedPref) || !this.mView.GetDeviceId().Equals(UserSessions.GetDeviceId(mSharedPref)))
                                 {
-                                    if (!UserSessions.IsDeviceIdUpdated(mSharedPref) || !this.mView.GetDeviceId().Equals(UserSessions.GetDeviceId(mSharedPref)))
-                                    {
-                                        UserSessions.UpdateDeviceId(mSharedPref);
-                                        UserSessions.SaveDeviceId(mSharedPref, this.mView.GetDeviceId());
-                                    }
-                                    mView.ShowWalkThrough();
+                                    UserSessions.UpdateDeviceId(mSharedPref);
+                                    UserSessions.SaveDeviceId(mSharedPref, this.mView.GetDeviceId());
                                 }
+                                mView.ShowWalkThrough();
                             }
                         }
-                        else
-                        {
-                            this.mView.ShowRetryOptionApiException(null);
-                        }
+                    }
+                    else
+                    {
+                        this.mView.ShowRetryOptionApiException(null);
+                    }
                     //}
+                }
+                else if (masterDataResponse.Data.Status.Equals(Constants.MAINTENANCE_MODE))
+                {
+                    if (masterDataResponse.Data.MasterData.MaintainanceMessage != null && masterDataResponse.Data.MasterData.MaintainanceTitle != null)
+                    {
+                        this.mView.ShowMaintenance(masterDataResponse);
+                    }
+                    else
+                    {
+                        this.mView.ShowRetryOptionApiException(null);
+                    }
                 }
                 else
                 {
