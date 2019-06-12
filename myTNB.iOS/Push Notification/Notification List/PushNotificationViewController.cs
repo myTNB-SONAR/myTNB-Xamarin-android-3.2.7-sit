@@ -179,7 +179,7 @@ namespace myTNB.PushNotification
             UIView titleBarView = _titleBarComponent.GetUI();
             _titleBarComponent.SetTitle("PushNotification_Title".Translate());
             _titleBarComponent.SetNotificationVisibility(false);
-            _titleBarComponent.SetNotificationImage("Notification-Edit");
+            _titleBarComponent.SetNotificationImage("Notification-Select");
             _titleBarComponent.SetNotificationAction(new UITapGestureRecognizer(() =>
             {
                 if (_isDeletionMode)
@@ -206,7 +206,7 @@ namespace myTNB.PushNotification
                 {
                     if (_isSelectionMode)
                     {
-                        _titleBarComponent.SetNotificationImage("Notification-Edit");
+                        _titleBarComponent.SetNotificationImage("Notification-Select");
                         pushNotificationTableView.TableHeaderView = null;
                         _isAllSelected = false;
                     }
@@ -225,6 +225,7 @@ namespace myTNB.PushNotification
             _titleBarComponent.SetBackAction(new UITapGestureRecognizer(() =>
             {
                 OnReset();
+                DataManager.DataManager.SharedInstance.CurrentSelectedNotificationTypeIndex = 0;
                 DismissViewController(true, null);
             }));
             headerView.AddSubview(titleBarView);
@@ -663,7 +664,7 @@ namespace myTNB.PushNotification
         public void UpdateTitleRightIconImage(UserNotificationDataModel notifModel = null)
         {
             _isDeletionMode = IsAtLeastOneIsSelected();
-            string icon = "Notification-Edit";
+            string icon = "Notification-Select";
             if (_isSelectionMode)
             {
                 icon = _isDeletionMode ? "Notification-Delete" : "IC-Header-Cancel";

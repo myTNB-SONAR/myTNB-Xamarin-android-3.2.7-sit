@@ -858,7 +858,6 @@
     <ImageAsset Include="Assets.xcassets\LogOut.imageset\LogOut.png" />
     <ImageAsset Include="Assets.xcassets\LogOut.imageset\LogOut%402x.png" />
     <ImageAsset Include="Assets.xcassets\LogOut.imageset\LogOut%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Notification-Edit.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Notification-MarkAsRead.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Notification-MarkAsRead.imageset\icHeaderMarkread.png" />
     <ImageAsset Include="Assets.xcassets\Notification-MarkAsRead.imageset\icHeaderMarkread%402x.png" />
@@ -867,9 +866,10 @@
     <ImageAsset Include="Assets.xcassets\IC-Header-Cancel.imageset\icHeaderCancel.png" />
     <ImageAsset Include="Assets.xcassets\IC-Header-Cancel.imageset\icHeaderCancel%402x.png" />
     <ImageAsset Include="Assets.xcassets\IC-Header-Cancel.imageset\icHeaderCancel%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Notification-Edit.imageset\icActionEdit.png" />
-    <ImageAsset Include="Assets.xcassets\Notification-Edit.imageset\icActionEdit%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Notification-Edit.imageset\icActionEdit%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Select.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Notification-Select.imageset\icActionSelect.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Select.imageset\icActionSelect%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Select.imageset\icActionSelect%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -1116,11 +1116,11 @@
     <Folder Include="Home\Feedback\Feedback Image\" />
     <Folder Include="Home\More\Language\" />
     <Folder Include="Helpers\Generic Line\" />
-    <Folder Include="Assets.xcassets\Notification-Edit.imageset\" />
     <Folder Include="Assets.xcassets\Notification-Check.imageset\" />
     <Folder Include="Assets.xcassets\Notification-MarkAsRead.imageset\" />
     <Folder Include="Model\DeleteNotification\" />
     <Folder Include="Assets.xcassets\IC-Header-Cancel.imageset\" />
+    <Folder Include="Assets.xcassets\Notification-Select.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
