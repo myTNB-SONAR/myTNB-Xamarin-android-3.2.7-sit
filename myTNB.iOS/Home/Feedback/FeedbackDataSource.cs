@@ -37,5 +37,4 @@ using myTNB.Model.Feedback; using UIKit;  namespace myTNB.Home.Feedback 
                 _controller.PresentViewController(navController, true, null);
             }
         }
-         internal void ShowBRCMAlert()         {             var status = DataManager.DataManager.SharedInstance.SystemStatus?.Find(x => x.SystemType == SystemEnum.BCRM);             //Todo: Confirm alert will not show if msg is empty?
-            ToastHelper.DisplayAlertView(_controller, "Error_DefaultTitle".Translate(), status?.DowntimeTextMessage ?? "Error_DefaultMessage".Translate());         }     } }
+         internal void ShowBRCMAlert()         {             var status = DataManager.DataManager.SharedInstance.SystemStatus?.Find(x => x.SystemType == SystemEnum.BCRM);             AlertHandler.DisplayServiceError(_controller, status?.DowntimeTextMessage);         }     } }
