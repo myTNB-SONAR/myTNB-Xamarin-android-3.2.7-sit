@@ -854,6 +854,10 @@
     <ImageAsset Include="Assets.xcassets\New-Launch-Logo.imageset\New_Logo_SplashScreen%401x.png" />
     <ImageAsset Include="Assets.xcassets\New-Launch-Logo.imageset\New_Logo_SplashScreen%402x.png" />
     <ImageAsset Include="Assets.xcassets\New-Launch-Logo.imageset\New_Logo_SplashScreen%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Maintenance-Image.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Maintenance-Image.imageset\Maintenance-Image.png" />
+    <ImageAsset Include="Assets.xcassets\Maintenance-Image.imageset\Maintenance-Image%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Maintenance-Image.imageset\Maintenance-Image%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -1097,6 +1101,7 @@
     <Folder Include="Assets.xcassets\Logo-Combined.imageset\" />
     <Folder Include="Assets.xcassets\Payment-Checkbox-White-Inactive.imageset\" />
     <Folder Include="Assets.xcassets\New-Launch-Logo.imageset\" />
+    <Folder Include="Assets.xcassets\Maintenance-Image.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
