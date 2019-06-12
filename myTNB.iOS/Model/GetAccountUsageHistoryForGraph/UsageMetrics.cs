@@ -21,6 +21,5 @@ namespace myTNB.Model
             get;
             set;
         }
-
     }
 }

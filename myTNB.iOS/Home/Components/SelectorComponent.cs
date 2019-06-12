@@ -18,21 +18,20 @@ namespace myTNB.Dashboard.DashboardComponents
         {
             UITextAttributes attr = new UITextAttributes();
             attr.Font = myTNBFont.MuseoSans12();
-            attr.TextColor = myTNBColor.SelectionSemiTransparent();
+            attr.TextColor = UIColor.White;
             UITextAttributes attrSelected = new UITextAttributes();
             attrSelected.Font = myTNBFont.MuseoSans12();
-            attrSelected.TextColor = UIColor.White;
+            attrSelected.TextColor = myTNBColor.NeonBlue();
             double width = 122;
             double xLocation = (_parentView.Frame.Width / 2) - (width / 2);
             _selectorBar = new UISegmentedControl(new CGRect(xLocation, 0, width, 26));
             _selectorBar.InsertSegment("Day".Translate(), 0, false);
             _selectorBar.InsertSegment("Month".Translate(), 1, false);
-            _selectorBar.TintColor = myTNBColor.SelectionSemiTransparent();
+            _selectorBar.TintColor = UIColor.White;
             _selectorBar.SetTitleTextAttributes(attr, UIControlState.Normal);
             _selectorBar.SetTitleTextAttributes(attrSelected, UIControlState.Selected);
             _selectorBar.Layer.CornerRadius = 13.0f;
-            UIColor bColor = new UIColor(red: 1.0f, green: 1.0f, blue: 1.0f, alpha: 0.5f);
-            _selectorBar.Layer.BorderColor = bColor.CGColor;
+            _selectorBar.Layer.BorderColor = UIColor.White.CGColor;
             _selectorBar.Layer.BorderWidth = 1.0f;
             _selectorBar.Layer.MasksToBounds = true;
             _parentView.AddSubview(_selectorBar);

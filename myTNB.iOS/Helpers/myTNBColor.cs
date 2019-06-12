@@ -57,6 +57,11 @@ using UIKit;  namespace myTNB {
         /// <summary>         /// A color with RGBA of (0.97, 0.97, 0.97, 1).         /// </summary>         public static UIColor SectionGrey()         {             return new UIColor(red: 0.97f, green: 0.97f, blue: 0.97f, alpha: 1.0f);         }
         /// <summary>         /// A color with RGBA of (0.90, 0.90, 0.90, 1).         /// </summary>         public static UIColor SelectionGrey()         {             return new UIColor(red: 0.90f, green: 0.90f, blue: 0.90f, alpha: 1.0f);         }         /// <summary>         /// Selection semi transparent color.         /// </summary>         /// <returns>The semi transparent.</returns>         public static UIColor SelectionSemiTransparent()         {             return UIColor.FromRGBA(255, 255, 255, 60);         }
 
+        public static UIColor NeonBlue()
+        {
+            return new UIColor(red: 97f / 255.0f, green: 91f / 255.0f, blue: 228f / 255.0f, alpha: 1.0f);
+        }
+
         /// <summary>
         /// Gray for lines
         /// </summary>

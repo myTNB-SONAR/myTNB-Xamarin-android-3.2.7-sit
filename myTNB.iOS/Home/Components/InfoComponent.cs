@@ -5,14 +5,18 @@ namespace myTNB.Dashboard.DashboardComponents
 {
     public class InfoComponent
     {
-        UIView _parentView;
-        UIView _baseView;
         public UIImageView Icon;
         public UILabel TitleLabel;
         public UILabel SubTitleLabel;
         public UILabel ValueLabel;
         public UIImageView ValuePairIcon;
+        public UILabel InfoMsgLabel;
+        public UIView InfoMsgUIView;
+
+        UIView _parentView;
+        UIView _baseView;
         CGRect _baseFrame;
+        int topMargin = 12;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="T:myTNB.Dashboard.DashboardComponents.InfoComponent"/> class.
@@ -40,7 +44,7 @@ namespace myTNB.Dashboard.DashboardComponents
         /// </summary>
         private void Initialize()
         {
-            int topMargin = 12;
+
             double titleWidth = _parentView.Frame.Width * 0.60;
             double valueWidth = _parentView.Frame.Width * 0.30;
             Icon = new UIImageView(new CGRect(7, topMargin + 5, 24, 24));
@@ -51,7 +55,8 @@ namespace myTNB.Dashboard.DashboardComponents
                 TextColor = UIColor.White
             };
 
-            SubTitleLabel = new UILabel(new CGRect(Icon.Frame.X + Icon.Frame.Width + 10, TitleLabel.Frame.Y + TitleLabel.Frame.Height, titleWidth, 16))
+            SubTitleLabel = new UILabel(new CGRect(Icon.Frame.X + Icon.Frame.Width + 10
+                , TitleLabel.Frame.Y + TitleLabel.Frame.Height, titleWidth, 16))
             {
                 Font = myTNBFont.MuseoSans12_300(),
                 TextColor = new UIColor(red: 1.0f, green: 1.0f, blue: 1.0f, alpha: 0.7f)
@@ -61,9 +66,22 @@ namespace myTNB.Dashboard.DashboardComponents
             {
                 Font = myTNBFont.MuseoSans16_300(),
                 TextColor = UIColor.White,
+                TextAlignment = UITextAlignment.Right,
+            };
+
+            InfoMsgLabel = new UILabel(new CGRect(0, 0, valueWidth, 16))
+            {
+                Font = myTNBFont.MuseoSans12_300(),
+                TextColor = myTNBColor.SunGlow(),
                 TextAlignment = UITextAlignment.Right
             };
 
+            InfoMsgUIView = new UIView(new CGRect(_parentView.Frame.Width - valueWidth
+                , TitleLabel.Frame.Y + TitleLabel.Frame.Height, valueWidth, 16))
+            {
+                Hidden = true,
+            };
+            InfoMsgUIView.AddSubview(InfoMsgLabel);
             ValuePairIcon = new UIImageView(new CGRect(_parentView.Frame.Width - 51, topMargin + 9, 7, 13));
         }
 
@@ -79,6 +97,7 @@ namespace myTNB.Dashboard.DashboardComponents
             _baseView.AddSubview(TitleLabel);
             _baseView.AddSubview(SubTitleLabel);
             _baseView.AddSubview(ValueLabel);
+            _baseView.AddSubview(InfoMsgUIView);
             _baseView.AddSubview(ValuePairIcon);
 
             UIView viewLine = new UIView(new CGRect(0, _baseView.Frame.Height - 1,
@@ -108,5 +127,16 @@ namespace myTNB.Dashboard.DashboardComponents
             _baseView.Hidden = isHidden;
         }
 
+        public void ToggleInfoPopup(bool isDisplayed)
+        {
+            int valueLabelYLocation = topMargin + 6;
+            if (isDisplayed)
+            {
+                valueLabelYLocation = topMargin;
+            }
+            InfoMsgUIView.Hidden = !isDisplayed;
+            ValueLabel.Frame = new CGRect(ValueLabel.Frame.X, valueLabelYLocation
+                , ValueLabel.Frame.Width, ValueLabel.Frame.Height);
+        }
     }
 }
