@@ -233,7 +233,7 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                 //MasterDataResponse masterDataResponse = JsonConvert.DeserializeObject<MasterDataResponse>(response);
 
                 // TODO: ADD THIS TO REGISTER & LOGIN
-                if (!masterDataResponse.Data.IsError && !masterDataResponse.Data.Status.Equals(Constants.MAINTENANCE_MODE))
+                if (!masterDataResponse.Data.IsError && !masterDataResponse.Data.Status.ToUpper().Equals(Constants.MAINTENANCE_MODE))
                 {
                     new MasterApiDBOperation(masterDataResponse, mSharedPref).ExecuteOnExecutor(AsyncTask.ThreadPoolExecutor, "");
                     //Console.WriteLine("Excution time enters if");
@@ -704,7 +704,7 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                     }
                     //}
                 }
-                else if (masterDataResponse.Data.Status.Equals(Constants.MAINTENANCE_MODE))
+                else if (masterDataResponse.Data.Status.ToUpper().Equals(Constants.MAINTENANCE_MODE))
                 {
                     if (masterDataResponse.Data.MasterData.MaintainanceMessage != null && masterDataResponse.Data.MasterData.MaintainanceTitle != null)
                     {

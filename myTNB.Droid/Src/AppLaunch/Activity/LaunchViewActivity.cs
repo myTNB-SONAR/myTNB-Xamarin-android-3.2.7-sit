@@ -576,8 +576,8 @@ namespace myTNB_Android.Src.AppLaunch.Activity
             {
                 Intent maintenanceScreen = new Intent(this, typeof(MaintenanceActivity));
                 //updateMobileNo.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
-                maintenanceScreen.PutExtra(Constants.MAINTENANCE_TITLE, masterDataResponse.Data.MasterData.MaintainanceTitle);
-                maintenanceScreen.PutExtra(Constants.MAINTENANCE_MESSAGE, masterDataResponse.Data.MasterData.MaintainanceMessage);
+                maintenanceScreen.PutExtra(Constants.MAINTENANCE_TITLE_KEY, masterDataResponse.Data.MasterData.MaintainanceTitle);
+                maintenanceScreen.PutExtra(Constants.MAINTENANCE_MESSAGE_KEY, masterDataResponse.Data.MasterData.MaintainanceMessage);
                 StartActivity(maintenanceScreen);
             }
             catch (Exception e)

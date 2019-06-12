@@ -43,12 +43,12 @@ namespace myTNB_Android.Src.Maintenance.Activity
         {
             base.OnCreate(savedInstanceState);
 
-            if (Intent != null && Intent.Extras != null && Intent.Extras.ContainsKey(Constants.MAINTENANCE_TITLE) && Intent.Extras.ContainsKey(Constants.MAINTENANCE_MESSAGE))
+            if (Intent != null && Intent.Extras != null && Intent.Extras.ContainsKey(Constants.MAINTENANCE_TITLE_KEY) && Intent.Extras.ContainsKey(Constants.MAINTENANCE_MESSAGE_KEY))
             {
                 try
                 {
-                    string title = Intent.Extras.GetString(Constants.MAINTENANCE_TITLE);
-                    string message = Intent.Extras.GetString(Constants.MAINTENANCE_MESSAGE);
+                    string title = Intent.Extras.GetString(Constants.MAINTENANCE_TITLE_KEY);
+                    string message = Intent.Extras.GetString(Constants.MAINTENANCE_MESSAGE_KEY);
                     txtHeading.Text = title;
                     txtContent.Text = message;
 
