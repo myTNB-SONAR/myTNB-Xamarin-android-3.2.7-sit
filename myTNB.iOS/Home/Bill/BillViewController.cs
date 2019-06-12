@@ -88,9 +88,17 @@ namespace myTNB
 
         void HandleAppWillEnterForeground(NSNotification notification)
         {
-            Console.WriteLine("HandleAppWillEnterForeground");
-            DataManager.DataManager.SharedInstance.IsBillUpdateNeeded = true;
-            ViewWillAppear(true);
+            var baseRootVc = UIApplication.SharedApplication.KeyWindow?.RootViewController;
+            var topVc = AppDelegate.GetTopViewController(baseRootVc);
+
+            if (topVc != null)
+            {
+                if (topVc is BillViewController)
+                {
+                    DataManager.DataManager.SharedInstance.IsBillUpdateNeeded = true;
+                    ViewWillAppear(true);
+                }
+            }
         }
 
         public override void ViewWillAppear(bool animated)
