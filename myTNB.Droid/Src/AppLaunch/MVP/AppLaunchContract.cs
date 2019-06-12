@@ -143,6 +143,11 @@ namespace myTNB_Android.Src.AppLaunch.MVP
             /// Update phone number flow
             ///</summary>
             void ShowUpdatePhoneNumber(string phoneNumber);
+
+            ///<summary>
+            /// Show Maintenance Screen
+            ///</summary>
+            void ShowMaintenance(MasterDataResponse masterDataResponse);
         }
 
         public interface IUserActionsListener : IBasePresenter

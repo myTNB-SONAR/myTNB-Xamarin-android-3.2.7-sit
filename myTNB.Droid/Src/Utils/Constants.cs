@@ -204,6 +204,11 @@ namespace myTNB_Android.Src.Utils
         //Add account limit
         internal static readonly int ADD_ACCOUNT_LIMIT = 10;
 
+        //Maintenance
+        internal static readonly string MAINTENANCE_MODE = "Maintenance";
+        internal static readonly string MAINTENANCE_TITLE = "maintenanceTitle";
+        internal static readonly string MAINTENANCE_MESSAGE = "maintenanceMessage";
+
 
     }
 }

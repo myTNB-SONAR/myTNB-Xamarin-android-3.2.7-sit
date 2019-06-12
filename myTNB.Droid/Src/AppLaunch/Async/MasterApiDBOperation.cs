@@ -26,7 +26,7 @@ namespace myTNB_Android.Src.AppLaunch.Async
 
             Console.WriteLine("========= 0000 MasterApiDBOperation started");
             if (masterDataResponse != null && masterDataResponse.Data != null) {
-                if (!masterDataResponse.Data.IsError) {
+                if (!masterDataResponse.Data.IsError && !masterDataResponse.Data.Status.Equals(Constants.MAINTENANCE_MODE)) {
                     foreach (Weblink web in masterDataResponse.Data.MasterData.WebLinks)
                     {
                         int newRecord = WeblinkEntity.InsertOrReplace(web);
