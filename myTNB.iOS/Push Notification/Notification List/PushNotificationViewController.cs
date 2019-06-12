@@ -12,7 +12,7 @@ using Foundation;
 
 namespace myTNB.PushNotification
 {
-    public partial class PushNotificationViewController : UIViewController
+    public partial class PushNotificationViewController : CustomUIViewController//UIViewController
     {
         public PushNotificationViewController(IntPtr handle) : base(handle)
         {
@@ -115,11 +115,15 @@ namespace myTNB.PushNotification
             base.ViewWillAppear(animated);
             if (_viewDelete == null)
             {
-                InitializeDeleteSuccessView();
+                //InitializeDeleteSuccessView();
             }
             if (DataManager.DataManager.SharedInstance.IsNotificationDeleted)
             {
-                ShowDeleteNotification();
+                //ShowDeleteNotification();
+                DisplayToast("PushNotification_NoNotification".Translate(), new Action(() =>
+                {
+                    DataManager.DataManager.SharedInstance.IsNotificationDeleted = false;
+                }));
             }
             if (DataManager.DataManager.SharedInstance.NotificationNeedsUpdate)
             {

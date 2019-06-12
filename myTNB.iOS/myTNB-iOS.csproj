@@ -1805,6 +1805,7 @@
     <Compile Include="Home\More\Language\LanguageSettings.cs" />
     <Compile Include="Helpers\Generic Line\GenericLine.cs" />
     <Compile Include="Model\DeleteNotification\DeleteNotificationModel.cs" />
+    <Compile Include="Customs\CustomUIViewController.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />
