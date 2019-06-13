@@ -64,7 +64,7 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:text="@string/dashboard_chartview_month"
+                                android:text="@string/dashboard_chartview_day"
                                 android:textSize="12sp" />
                             <RadioButton
                                 android:id="@+id/btnToggleMonth"
@@ -73,7 +73,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:checked="true"
-                                android:text="@string/dashboard_chartview_year"
+                                android:text="@string/dashboard_chartview_month"
                                 android:textSize="12sp" />
                         </info.hoang8f.android.segmented.SegmentedGroup>
                     </RelativeLayout>
@@ -321,7 +321,7 @@
                             <LinearLayout
                                 android:layout_height="wrap_content"
                                 android:layout_width="0dp"
-                                android:layout_weight="0.5"
+                                android:layout_weight="0.7"
                                 android:layout_marginLeft="@dimen/_5sdp"
                                 android:orientation="vertical">
                                 <TextView
@@ -348,29 +348,55 @@
                             <LinearLayout
                                 android:layout_height="wrap_content"
                                 android:layout_width="0dp"
-                                android:layout_weight="0.4"
+                                android:layout_weight="0.2"
                                 android:gravity="right"
                                 android:orientation="horizontal">
-                                <TextView
+                                <LinearLayout
                                     android:layout_height="wrap_content"
-                                    android:layout_width="wrap_content"
-                                    android:textSize="14sp"
-                                    android:textStyle="normal"
-                                    android:textColor="@color/white"
-                                    android:text="RM"
-                                    android:layout_marginRight="@dimen/_2sdp"
-                                    android:id="@+id/txtProjectedCostUnit1"
-                                    android:gravity="right" />
-                                <TextView
-                                    android:layout_height="wrap_content"
-                                    android:layout_width="wrap_content"
-                                    android:textSize="20sp"
-                                    android:textStyle="normal"
-                                    android:textColor="@color/white"
-                                    android:text="00.00"
-                                    android:singleLine="true"
-                                    android:id="@+id/txtProjectedCostValue"
-                                    android:gravity="right" />
+                                    android:layout_width="match_parent"
+                                    android:orientation="vertical">
+                                    <LinearLayout
+                                        android:layout_height="wrap_content"
+                                        android:layout_width="wrap_content"
+                                        android:layout_weight="1"
+                                        android:layout_gravity="right"
+                                        android:orientation="horizontal">
+                                        <TextView
+                                            android:layout_height="wrap_content"
+                                            android:layout_width="wrap_content"
+                                            android:textSize="14sp"
+                                            android:textStyle="normal"
+                                            android:textColor="@color/white"
+                                            android:text="RM"
+                                            android:layout_marginRight="@dimen/_2sdp"
+                                            android:id="@+id/txtProjectedCostUnit1"/>
+                                        <TextView
+                                            android:layout_height="wrap_content"
+                                            android:layout_width="wrap_content"
+                                            android:textSize="20sp"
+                                            android:textStyle="normal"
+                                            android:textColor="@color/white"
+                                            android:text="00.00"
+                                            android:singleLine="true"
+                                            android:id="@+id/txtProjectedCostValue"/>
+                                    </LinearLayout>
+                                    <LinearLayout
+                                        android:layout_height="wrap_content"
+                                        android:layout_width="match_parent"
+                                        android:orientation="horizontal"
+                                        android:layout_gravity="right">
+                                        <TextView
+                                            android:layout_height="wrap_content"
+                                            android:layout_width="wrap_content"
+                                            android:textSize="10sp"
+                                            android:textStyle="normal"
+                                            android:textColor="@android:color/holo_orange_light"
+                                            android:singleLine="true"
+                                            android:text="What is this?"
+                                            android:id="@+id/txtWhatIsThis"
+                                            android:clickable="true"/>
+                                    </LinearLayout>
+                                </LinearLayout>
                             </LinearLayout>
                         </LinearLayout>
                         <View

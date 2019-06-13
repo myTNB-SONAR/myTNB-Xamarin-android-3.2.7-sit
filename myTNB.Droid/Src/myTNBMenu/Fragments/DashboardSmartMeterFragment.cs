@@ -46,10 +46,11 @@ using Android.Text;
 using System.Threading.Tasks;
 using Android.Support.V7.App;
 using myTNB_Android.Src.FAQ.Activity;
+using AFollestad.MaterialDialogs;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments
 {
-    public class DashboardSmartMeterFragment : BaseFragment, DashboardSmartMeterContract.IView, SMDashboardScrollViewListener
+    public class DashboardSmartMeterFragment : BaseFragment, DashboardSmartMeterContract.IView, SMDashboardScrollViewListener, View.IOnClickListener
     {
 
         [BindView(Resource.Id.progressBar)]
@@ -226,6 +227,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         [BindView(Resource.Id.noteDivider)]
         View noteDividerView;
 
+        [BindView(Resource.Id.txtWhatIsThis)]
+        TextView txtWhatIsThis;
+
+
         /// <summary>
         /// Flag to disable/enable CO2 view
         /// </summary>
@@ -342,7 +347,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 //}
             }
 
-                TextViewUtils.SetMuseoSans300Typeface(noteTextView);
+            TextViewUtils.SetMuseoSans300Typeface(noteTextView);
             TextViewUtils.SetMuseoSans300Typeface(txtUsageHistory, txtAddress, txtTotalPayable, txtContentNoData, txtContentNoInternet, txtDueDate);
             TextViewUtils.SetMuseoSans300Typeface(btnToggleDay, btnToggleMonth);
             TextViewUtils.SetMuseoSans500Typeface(txtRange, txtTotalPayableTitle, txtTotalPayableCurrency, btnViewBill, btnPay, btnLearnMore, btnTapRefresh, txtTitleNoData, txtTitleNoInternet);
@@ -361,7 +366,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             DownTimeEntity bcrmEntity = DownTimeEntity.GetByCode(Constants.BCRM_SYSTEM);
             DownTimeEntity pgCCEntity = DownTimeEntity.GetByCode(Constants.PG_CC_SYSTEM);
             DownTimeEntity pgFPXEntity = DownTimeEntity.GetByCode(Constants.PG_FPX_SYSTEM);
-
+            txtWhatIsThis.SetOnClickListener(this);
+            
             this.userActionsListener.Start();
             if (selectedAccount != null)
             {
@@ -456,11 +462,13 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     if (radioButtonRM.Checked)
                     {
                         ChartDataType = ChartDataType.RM;
+                        txtWhatIsThis.Visibility = ViewStates.Visible;
                         SetUp();
                     }
                     else if (radioButtonkWh.Checked)
                     {
                         ChartDataType = ChartDataType.kWh;
+                        txtWhatIsThis.Visibility = ViewStates.Gone;
                         SetUp();
                     }
                     else if (radioButtonCO2.Checked)
@@ -567,6 +575,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         {
             this.userActionsListener.OnArrowForwardClick();
         }
+
+        
 
         private void SetNoteVisiBility(bool isVisible) {
             noteTextLayout.Visibility = isVisible ? ViewStates.Visible : ViewStates.Gone;
@@ -1373,6 +1383,16 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             this.userActionsListener.OnByMonth();
         }
 
+        private void OnWhatIsThisTap()
+        {
+            new MaterialDialog.Builder(Activity)
+                    .Title(Activity.GetString(Resource.String.dashboard_smart_meter_what_is_this_title))
+                    .Content(Activity.GetString(Resource.String.dashboard_smart_meter_what_is_this_message))
+                    .PositiveText(Activity.GetString(Resource.String.dashboard_smart_meter_got_it))
+                    .PositiveColor(Resource.Color.blue)
+                    .Cancelable(true).Show();
+        }
+
         //[OnClick(Resource.Id.btnToggleHour)]
         //internal void OnToggleHour(object sender, EventArgs e)
         //{
@@ -2035,5 +2055,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             return activity;
         }
 
+        public void OnClick(View v)
+        {
+            OnWhatIsThisTap();
+        }
     }
 }

@@ -1289,13 +1289,13 @@ Please try again later.]]>
   
   <!-- Smart meter -->
   <string name="dashboard_chartview_year">Year</string>
-  <string name="current_charges">Current charges</string>
-  <string name="as_of">As of</string>
-  <string name="projected_cost">Projected cost</string>
-  <string name="for_current_month">For current month</string>
-  <string name="current_usage">Current usage</string>
-  <string name="vs_last_month">Vs. last month</string>
-  <string name="avg_elec_usage">Avg. electric usage</string>
+  <string name="current_charges">My current charges</string>
+  <string name="as_of">from</string>
+  <string name="projected_cost">My estimated charges</string>
+  <string name="for_current_month">for</string>
+  <string name="current_usage">My current usage</string>
+  <string name="vs_last_month">compared to</string>
+  <string name="avg_elec_usage">My average electric usage</string>
   <string name="current_emission">Current emission</string>
   <string name="text_rm">RM</string>
   <string name="text_kwh">Usage</string>
@@ -1305,6 +1305,10 @@ Please try again later.]]>
   <string name="dashboard_smart_meter_data_error">Unable to fetch smart meter data! Please try later</string>
   <string name="dashboard_smart_meter_no_data_error">Welcome to your Smart Meter Dashboard. You’ll see your usage here soon.</string>
   <string name="dashboard_smart_meter_available_soon">Available Soon</string>
+  <string name="dashboard_smart_meter_got_it">Got it!</string>
+  <string name="dashboard_smart_meter_what_is_this_title">What are estimated charges?</string>
+  <string name="dashboard_smart_meter_what_is_this_message">We estimate this amount by multiplying your average daily usage for your current bill period by the total number of days in the period. 
+    That is only an estimate, your final bill might differ.</string>
 
   <string name="loading_text">We’ll be there in a flash…</string>
   
