@@ -114,10 +114,8 @@ namespace myTNB.PushNotification
             base.ViewWillAppear(animated);
             if (DataManager.DataManager.SharedInstance.IsNotificationDeleted)
             {
-                DisplayToast("PushNotification_NotificationDeleted".Translate(), new Action(() =>
-                {
-                    DataManager.DataManager.SharedInstance.IsNotificationDeleted = false;
-                }));
+                DisplayToast("PushNotification_NotificationDeleted".Translate());
+                DataManager.DataManager.SharedInstance.IsNotificationDeleted = false;
             }
             if (DataManager.DataManager.SharedInstance.NotificationNeedsUpdate)
             {
@@ -176,6 +174,11 @@ namespace myTNB.PushNotification
 
             UIView titleBarView = _titleBarComponent.GetUI();
             _titleBarComponent.SetTitle("PushNotification_Title".Translate());
+            _titleBarComponent.SetPrimaryImage("Notification-MarkAsRead");
+            _titleBarComponent.SetPrimaryAction(new UITapGestureRecognizer((obj) =>
+            {
+
+            }));
             _titleBarComponent.SetNotificationVisibility(false);
             _titleBarComponent.SetNotificationImage("Notification-Select");
             _titleBarComponent.SetNotificationAction(new UITapGestureRecognizer(() =>
@@ -493,8 +496,6 @@ namespace myTNB.PushNotification
                 object requestParameter = new
                 {
                     ApiKeyID = TNBGlobal.API_KEY_ID,
-                    //NotificationType = dataModel?.BCRMNotificationType,
-                    //NotificationId = dataModel?.Id,
                     UpdatedNotifications = deleteNotificationList,
                     Email = user?.email,
                     DeviceId = DataManager.DataManager.SharedInstance.UDID,
@@ -632,6 +633,7 @@ namespace myTNB.PushNotification
             if (_isSelectionMode)
             {
                 icon = _isDeletionMode ? "Notification-Delete" : "IC-Header-Cancel";
+                _titleBarComponent.SetPrimaryVisibility(!_isDeletionMode);
             }
             _titleBarComponent.SetNotificationImage(icon);
             UpdateNotificationForDeletionList(notifModel);
