@@ -59,6 +59,9 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
         [BindView(Resource.Id.btnPay)]
         Button btnPay;
 
+        [BindView(Resource.Id.notificationButtonContainer)]
+        FrameLayout notificationButtonContainer;
+
         NotificationDetailPayableViewableContract.IUserActionsListener userActionsListener;
         NotificationDetailPayableViewablePresenter mPresenter;
 
@@ -142,7 +145,6 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
             }
         }
 
-
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -163,10 +165,8 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
             // Create your application here
 
             txtNotificationTitle.Text = notificationDetails.Title;
-            txtNotificationContent.Text = notificationDetails.Message;
-
-            mPresenter = new NotificationDetailPayableViewablePresenter(this);
-
+                txtNotificationContent.Text = notificationDetails.Message;
+                mPresenter = new NotificationDetailPayableViewablePresenter(this);
             int count = UserNotificationEntity.Count();
             if (count == 0)
             {
