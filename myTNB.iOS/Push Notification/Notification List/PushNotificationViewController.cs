@@ -27,7 +27,7 @@ namespace myTNB.PushNotification
         UserNotificationDataModel NotificationInfo = new UserNotificationDataModel();
         TitleBarComponent _titleBarComponent;
         List<UserNotificationDataModel> _notifications;
-        List<DeleteNotificationModel> _notificationsForDeletion;
+        List<UpdateNotificationModel> _notificationsForUpdate;
 
         UIImageView _imgNoNotification, _imgCheckbox;
         UILabel _lblNoNotification, _lblTitle;
@@ -53,7 +53,7 @@ namespace myTNB.PushNotification
             _isDeletionMode = false;
             _isSelectionMode = false;
             _isAllSelected = false;
-            _notificationsForDeletion?.Clear();
+            _notificationsForUpdate?.Clear();
         }
 
         private void UpdateNotificationDisplay()
@@ -190,14 +190,14 @@ namespace myTNB.PushNotification
                         , "PushNotification_DeleteMessageMultiple".Translate(), UIAlertControllerStyle.Alert);
                     alert.AddAction(UIAlertAction.Create("Common_Yes".Translate(), UIAlertActionStyle.Default, (obj) =>
                     {
-                        if (_notificationsForDeletion != null)
+                        if (_notificationsForUpdate != null)
                         {
-                            Debug.WriteLine("notificationsForDeletion count: " + _notificationsForDeletion.Count);
-                            foreach (DeleteNotificationModel notif in _notificationsForDeletion)
+                            Debug.WriteLine("notificationsForDeletion count: " + _notificationsForUpdate.Count);
+                            foreach (UpdateNotificationModel notif in _notificationsForUpdate)
                             {
                                 Debug.WriteLine("Delete NotificationId: " + notif.NotificationId);
                             }
-                            DeleteNotification(_notificationsForDeletion, true);
+                            DeleteNotification(_notificationsForUpdate, true);
                         }
                     }));
                     alert.AddAction(UIAlertAction.Create("Common_No".Translate(), UIAlertActionStyle.Cancel, null));
@@ -396,7 +396,7 @@ namespace myTNB.PushNotification
             });
         }
 
-        internal void DeleteNotification(List<DeleteNotificationModel> deleteNotificationList, bool isMultiple = false, NSIndexPath indexPath = null)
+        internal void DeleteNotification(List<UpdateNotificationModel> updateNotificationList, bool isMultiple = false, NSIndexPath indexPath = null)
         {
             NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
             {
@@ -405,7 +405,7 @@ namespace myTNB.PushNotification
                     if (NetworkUtility.isReachable)
                     {
                         ActivityIndicator.Show();
-                        await DeleteUserNotification(deleteNotificationList).ContinueWith(task =>
+                        await DeleteUserNotification(updateNotificationList).ContinueWith(task =>
                         {
                             InvokeOnMainThread(() =>
                             {
@@ -414,7 +414,7 @@ namespace myTNB.PushNotification
                                     && deleteNotifResponse?.d?.status?.ToLower() == "success"
                                     && deleteNotifResponse?.d?.didSucceed == true)
                                 {
-                                    UpdateNotifications(deleteNotificationList, isMultiple, indexPath);
+                                    UpdateNotifications(updateNotificationList, isMultiple, indexPath);
                                     UpdateNotificationDisplay();
                                     pushNotificationTableView.ReloadData();
                                     UpdateTitleRightIconImage();
@@ -442,18 +442,18 @@ namespace myTNB.PushNotification
 
         }
 
-        void UpdateNotifications(List<DeleteNotificationModel> deleteNotificationList, bool isMultiple = false, NSIndexPath indexPath = null)
+        void UpdateNotifications(List<UpdateNotificationModel> updateNotificationList, bool isMultiple = false, NSIndexPath indexPath = null)
         {
             if (isMultiple)
             {
-                if (deleteNotificationList.Count == DataManager.DataManager.SharedInstance.UserNotifications.Count)
+                if (updateNotificationList.Count == DataManager.DataManager.SharedInstance.UserNotifications.Count)
                 {
-                    deleteNotificationList.Clear();
+                    updateNotificationList.Clear();
                     _notifications.Clear();
                     DataManager.DataManager.SharedInstance.UserNotifications.Clear();
                     return;
                 }
-                foreach (DeleteNotificationModel item in deleteNotificationList)
+                foreach (UpdateNotificationModel item in updateNotificationList)
                 {
                     int notificationIndex = _notifications.FindIndex(x => x?.NotificationType == item.NotificationType
                         && x.Id == item.NotificationId);
@@ -471,7 +471,7 @@ namespace myTNB.PushNotification
                         DataManager.DataManager.SharedInstance.UserNotifications.RemoveAt(userNotificationIndex);
                     }
                 }
-                deleteNotificationList.Clear();
+                updateNotificationList.Clear();
             }
             else
             {
@@ -486,7 +486,7 @@ namespace myTNB.PushNotification
             }
         }
 
-        Task DeleteUserNotification(List<DeleteNotificationModel> deleteNotificationList)
+        Task DeleteUserNotification(List<UpdateNotificationModel> deleteNotificationList)
         {
             var user = DataManager.DataManager.SharedInstance.UserEntity?.Count > 0
                 ? DataManager.DataManager.SharedInstance.UserEntity[0] : new UserEntity();
@@ -600,10 +600,10 @@ namespace myTNB.PushNotification
         /// <param name="flag">If set to <c>true</c> flag.</param>
         internal void UpdateSelectAllFlags(bool flag)
         {
-            _notificationsForDeletion = null;
+            _notificationsForUpdate = null;
             if (flag)
             {
-                _notificationsForDeletion = new List<DeleteNotificationModel>();
+                _notificationsForUpdate = new List<UpdateNotificationModel>();
             }
 
             foreach (UserNotificationDataModel obj in _notifications)
@@ -611,7 +611,7 @@ namespace myTNB.PushNotification
                 obj.IsSelected = flag;
                 if (flag)
                 {
-                    _notificationsForDeletion.Add(new DeleteNotificationModel()
+                    _notificationsForUpdate.Add(new UpdateNotificationModel()
                     {
                         NotificationType = obj?.NotificationType,
                         NotificationId = obj.Id
@@ -665,11 +665,11 @@ namespace myTNB.PushNotification
             {
                 if (notifModel.IsSelected)
                 {
-                    if (_notificationsForDeletion == null)
+                    if (_notificationsForUpdate == null)
                     {
-                        _notificationsForDeletion = new List<DeleteNotificationModel>();
+                        _notificationsForUpdate = new List<UpdateNotificationModel>();
                     }
-                    _notificationsForDeletion.Add(new DeleteNotificationModel()
+                    _notificationsForUpdate.Add(new UpdateNotificationModel()
                     {
                         NotificationType = notifModel?.NotificationType,
                         NotificationId = notifModel?.Id
@@ -678,13 +678,13 @@ namespace myTNB.PushNotification
                 }
                 else
                 {
-                    if (_notificationsForDeletion != null)
+                    if (_notificationsForUpdate != null)
                     {
-                        int index = _notificationsForDeletion.FindIndex(x => x.NotificationType == notifModel?.NotificationType
+                        int index = _notificationsForUpdate.FindIndex(x => x.NotificationType == notifModel?.NotificationType
                             && x.NotificationId == notifModel.Id);
                         if (index > -1)
                         {
-                            _notificationsForDeletion.RemoveAt(index);
+                            _notificationsForUpdate.RemoveAt(index);
                         }
                     }
                 }

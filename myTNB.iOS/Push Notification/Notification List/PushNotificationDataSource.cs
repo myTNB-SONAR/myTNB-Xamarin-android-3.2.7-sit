@@ -138,13 +138,13 @@ namespace myTNB.PushNotification
 
         void DeleteNotification(NSIndexPath indexPath)
         {
-            List<DeleteNotificationModel> deleteNotification = new List<DeleteNotificationModel>();
-            deleteNotification.Add(new DeleteNotificationModel()
+            List<UpdateNotificationModel> updateNotificationList = new List<UpdateNotificationModel>();
+            updateNotificationList.Add(new UpdateNotificationModel()
             {
                 NotificationType = _data[indexPath.Row]?.NotificationType,
                 NotificationId = _data[indexPath.Row]?.Id
             });
-            _controller.DeleteNotification(deleteNotification, false, indexPath);
+            _controller.DeleteNotification(updateNotificationList, false, indexPath);
         }
 
         public override UISwipeActionsConfiguration GetLeadingSwipeActionsConfiguration(UITableView tableView, NSIndexPath indexPath)

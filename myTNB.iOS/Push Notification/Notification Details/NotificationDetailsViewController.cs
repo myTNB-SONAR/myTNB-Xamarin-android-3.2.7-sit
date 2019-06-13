@@ -455,8 +455,8 @@ namespace myTNB
                 object requestParameter = new
                 {
                     ApiKeyID = TNBGlobal.API_KEY_ID,
-                    UpdatedNotifications = new List<DeleteNotificationModel>(){
-                        new DeleteNotificationModel()
+                    UpdatedNotifications = new List<UpdateNotificationModel>(){
+                        new UpdateNotificationModel()
                         {
                             NotificationType = NotificationInfo.NotificationType,
                             NotificationId = id
