@@ -7,8 +7,8 @@ using myTNB.Dashboard.DashboardComponents;
 using myTNB.Model;
 using UIKit;
 using myTNB.SQLite.SQLiteDataManager;
-using System.Diagnostics;
 using Foundation;
+using System.Diagnostics;
 
 namespace myTNB.PushNotification
 {
@@ -291,7 +291,7 @@ namespace myTNB.PushNotification
                     {
                         GetNotificationDetailedInfo(dataModel).ContinueWith(task =>
                         {
-                            InvokeOnMainThread(async () =>
+                            InvokeOnMainThread(() =>
                             {
                                 if (_detailedInfo != null && _detailedInfo?.d != null
                                     && _detailedInfo?.d?.didSucceed == true
@@ -302,23 +302,23 @@ namespace myTNB.PushNotification
                                     UIStoryboard storyBoard = UIStoryboard.FromName("PushNotification", null);
                                     NotificationDetailsViewController viewController =
                                         storyBoard.InstantiateViewController("NotificationDetailsViewController") as NotificationDetailsViewController;
+                                    var index = DataManager.DataManager.SharedInstance.UserNotifications.FindIndex(x => x.Id == dataModel.Id);
                                     var notificationTitle = string.Empty;
-                                    var notifResult = DataManager.DataManager.SharedInstance.UserNotifications.Where(x => x.Id == dataModel.Id).ToList();
-                                    if (notifResult.Count > 0)
+                                    if (index > -1)
                                     {
-                                        notificationTitle = notifResult[0]?.Title;
+                                        DataManager.DataManager.SharedInstance.UserNotifications[index].IsRead = @"true";
+                                        notificationTitle = DataManager.DataManager.SharedInstance.UserNotifications[index]?.Title;
                                     }
                                     _detailedInfo.d.data.NotificationTitle = notificationTitle;
                                     viewController.NotificationInfo = _detailedInfo?.d?.data;
                                     NavigationController?.PushViewController(viewController, true);
+                                    UpdateNotificationDisplay();
                                 }
                                 else
                                 {
                                     AlertHandler.DisplayServiceError(this, _detailedInfo?.d?.message);
                                 }
                                 ActivityIndicator.Hide();
-                                await PushNotificationHelper.GetNotifications();
-                                UpdateNotificationDisplay();
                             });
                         });
                     }

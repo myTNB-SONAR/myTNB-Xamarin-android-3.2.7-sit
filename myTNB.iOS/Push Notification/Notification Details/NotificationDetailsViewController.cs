@@ -91,14 +91,17 @@ namespace myTNB
                     {
                         if (NetworkUtility.isReachable)
                         {
-                            Task[] taskList = new Task[] { DeleteUserNotification(NotificationInfo?.Id) };
-                            Task.WaitAll(taskList);
+                            await DeleteUserNotification(NotificationInfo?.Id);
                             if (_deleteNotificationResponse != null && _deleteNotificationResponse?.d != null
                                 && _deleteNotificationResponse?.d?.status?.ToLower() == "success"
                                 && _deleteNotificationResponse?.d?.didSucceed == true)
                             {
                                 DataManager.DataManager.SharedInstance.IsNotificationDeleted = true;
-                                await PushNotificationHelper.GetNotifications();
+                                var index = DataManager.DataManager.SharedInstance.UserNotifications.FindIndex(x => x.Id == NotificationInfo?.Id);
+                                if (index > -1)
+                                {
+                                    DataManager.DataManager.SharedInstance.UserNotifications.RemoveAt(index);
+                                }
                                 NavigationController?.PopViewController(true);
                             }
                             else
