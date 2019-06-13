@@ -1826,6 +1826,7 @@
       <DependentUpon>FeedbackDetailsViewCell.cs</DependentUpon>
     </Compile>
     <Compile Include="Enums\DashboardModeEnum.cs" />
+    <Compile Include="Customs\TextViewDelegate.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />

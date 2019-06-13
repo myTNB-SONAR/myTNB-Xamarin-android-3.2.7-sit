@@ -59,7 +59,8 @@ namespace myTNB.Dashboard
             _dashboardMainComponent = new DashboardMainComponent(View);
             _dashboardMainComponent.ToolTipGestureRecognizer = new UITapGestureRecognizer((obj) =>
             {
-                ToastHelper.DisplayAlertView(this, ToolTipTitle, ToolTipMessage, null, "Got it!");
+                string str = "<p><strong>What are estimated charges?</strong></p>\n<p><strong>&nbsp;</strong></p>\n<p>Estimated charges are calculated based</p>\n<p>on your average daily consumption for</p>\n<p>the past one (1) month.</p>\n<p>&nbsp;</p>\n<p>Note: Your actual bill may differ from</p>\n<p>the estimated charges. To find out</p>\n<p>more, please visit: <a href=\"B8EBBADE-0918-43B7-8093-BB2B19614033\">here</a></p>";
+                ToastHelper.DisplayAlertView(this, string.Empty, str, null, "Got it!", true);
             });
             //_dashboardMainComponent = new DashboardMainComponent(View)
             //{
@@ -1161,7 +1162,7 @@ namespace myTNB.Dashboard
             _dashboardMainComponent._addressComponent.SetFrameByPrecedingView(yLoc);
             _dashboardMainComponent._lblEstimatedReading.Hidden = (isMonthView) ? !IsEstimatedReading(chartData) : true;
             _dashboardMainComponent._usageHistoryComponent.SetDateRange(dateRange);
-            
+
         }
 
         /// <summary>

@@ -36,6 +36,7 @@ namespace myTNB.Dashboard.DashboardComponents
         private const string TxtForCurrentMonth = "for ";
         private const string TxtCurrentUsage = "My current usage";
         private const string TxtAverageUsage = "My average electric usage";
+        private const string TxtComparedFrom = "compared to previous bill period";
         private const string TxtVsLastMonth = "compoared to ";
         private const string TxtCurrentEmission = "Current emission";
         private const string TxtCurrency = "RM";
@@ -332,7 +333,7 @@ namespace myTNB.Dashboard.DashboardComponents
                         }
                         _metricCmp2.Icon.Image = UIImage.FromBundle("IC-Avg-Elec-Usage");
                         _metricCmp2.TitleLabel.Text = TxtAverageUsage;
-                        _metricCmp2.SubTitleLabel.Text = TxtVsLastMonth;
+                        _metricCmp2.SubTitleLabel.Text = TxtComparedFrom;
 
                         string value;
                         bool hasChange;

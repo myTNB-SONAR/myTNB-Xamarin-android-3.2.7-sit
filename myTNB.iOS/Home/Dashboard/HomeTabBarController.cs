@@ -35,7 +35,6 @@ namespace myTNB
                 UpdatePromotions();
                 DataManager.DataManager.SharedInstance.IsPromotionFirstLoad = true;
             }
-
         }
 
         public override void ViewWillAppear(bool animated)
