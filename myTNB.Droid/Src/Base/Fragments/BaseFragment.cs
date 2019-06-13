@@ -36,6 +36,7 @@ namespace myTNB_Android.Src.Base.Fragments
                 // return inflater.Inflate(Resource.Layout.YourFragment, container, false);
                 inflateView = inflater.Inflate(ResourceId(), container, false);
                 Cheeseknife.Bind(this, inflateView);
+                EvaluateRequestPermissions();
             } catch (Exception e) {
                 Utility.LoggingNonFatalError(e);
             }
@@ -48,12 +49,16 @@ namespace myTNB_Android.Src.Base.Fragments
         /// <returns></returns>
         public abstract int ResourceId();
 
-
-
         public override void OnResume()
         {
             base.OnResume();
+            Ready();
 
+        }
+
+
+        private void EvaluateRequestPermissions()
+        {
             if (CameraPermissionRequired())
             {
                 if (ContextCompat.CheckSelfPermission(this.Activity, Manifest.Permission.Camera) != (int)Permission.Granted)
@@ -127,11 +132,7 @@ namespace myTNB_Android.Src.Base.Fragments
                     return;
                 }
             }
-
-            Ready();
-
         }
-
 
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Permission[] grantResults)
         {
