@@ -181,8 +181,8 @@ namespace myTNB
                 if ((bool)response?.status.ToUpper().Equals("MAINTENANCE"))
                 {
                     float screenHeight = (float)UIApplication.SharedApplication.KeyWindow.Frame.Height;
-                    float imageWidth = DeviceHelper.GetScaledWidth(181f);
-                    float imageHeight = DeviceHelper.GetScaledHeight(107f);
+                    float imageWidth = DeviceHelper.GetScaledWidth(151f);
+                    float imageHeight = DeviceHelper.GetScaledHeight(136f);
                     float labelWidth = DeviceHelper.GetScaledWidth(236f);
 
                     GradientViewComponent gradientViewComponent = new GradientViewComponent(View, true, screenHeight, false);
@@ -190,7 +190,7 @@ namespace myTNB
 
                     UIImageView imageView = new UIImageView(UIImage.FromBundle("Maintenance-Image"))
                     {
-                        Frame = new CGRect(DeviceHelper.GetCenterXWithObjWidth(imageWidth), DeviceHelper.GetScaledHeightWithY(130f), imageWidth, imageHeight)
+                        Frame = new CGRect(DeviceHelper.GetCenterXWithObjWidth(imageWidth), DeviceHelper.GetScaledHeightWithY(140f), imageWidth, imageHeight)
                     };
 
                     UILabel lblTitle = new UILabel(new CGRect(DeviceHelper.GetCenterXWithObjWidth(labelWidth), imageView.Frame.GetMaxY() + 15f, labelWidth, 44f))
