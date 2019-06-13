@@ -406,7 +406,8 @@
 "PushNotification_DeleteMessageMultiple"="Are you sure you want to delete all notifications?";
 "PushNotification_DeleteTitleMultiple"="Delete All Notifications";
 "PushNotification_NoNotification"="No notifications yet.";
-"PushNotification_NotificationRemoved"="Notification removed.";
+"PushNotification_NotificationDeleted"="Notification deleted.";
+"PushNotification_NotificationsDeleted"="Notifications deleted.";
 "PushNotification_SelectNotification"="Select Notification";
 "PushNotification_Title"="Notifications";
 "PushNotification_ViewDetails"="View Details";

@@ -6,8 +6,8 @@ namespace myTNB
 {
     public class CustomUIViewController : UIViewController
     {
-        UIView _viewDelete;
-        UILabel lblDeleteDetails;
+        UIView _viewToast;
+        UILabel _lblToastDetails;
 
         public CustomUIViewController(IntPtr handle) : base(handle)
         {
@@ -28,19 +28,19 @@ namespace myTNB
             base.ViewDidAppear(animated);
         }
 
-        public void DisplayToast(string message, Action action)
+        public void DisplayToast(string message, Action action = null)
         {
-
-            if (_viewDelete == null)
+            if (_viewToast == null)
             {
-                _viewDelete = new UIView(new CGRect(18, 32, View.Frame.Width - 36, 48))
+                _viewToast = new UIView(new CGRect(18, 32, View.Frame.Width - 36, 48))
                 {
                     BackgroundColor = MyTNBColor.SunGlow
                 };
-                _viewDelete.Layer.CornerRadius = 2.0f;
-                _viewDelete.Hidden = true;
+                _viewToast.Layer.CornerRadius = 2.0f;
+                _viewToast.Hidden = true;
 
-                lblDeleteDetails = new UILabel(new CGRect(16, 16, _viewDelete.Frame.Width - 32, 16))
+                _lblToastDetails = new UILabel(new CGRect(16, 16, _viewToast.Frame.Width - 32
+                    , View.Frame.Height - ((_viewToast.Frame.X * 2) + 32)))
                 {
                     TextAlignment = UITextAlignment.Left,
                     Font = MyTNBFont.MuseoSans12,
@@ -48,22 +48,30 @@ namespace myTNB
                     Lines = 0,
                     LineBreakMode = UILineBreakMode.WordWrap
                 };
-                _viewDelete.AddSubview(lblDeleteDetails);
-                View.AddSubview(_viewDelete);
+
+                _viewToast.AddSubview(_lblToastDetails);
+                View.AddSubview(_viewToast);
             }
-            lblDeleteDetails.Text = message ?? string.Empty;
-            _viewDelete.Hidden = false;
-            _viewDelete.Alpha = 1.0f;
+            _lblToastDetails.Text = message ?? string.Empty;
+
+            CGSize size = LabelHelper.GetLabelSize(_lblToastDetails
+                , _lblToastDetails.Frame.Width, _lblToastDetails.Frame.Height);
+            _lblToastDetails.Frame = new CGRect(_lblToastDetails.Frame.X
+                , _lblToastDetails.Frame.Y, _lblToastDetails.Frame.Width, size.Height);
+            _viewToast.Frame = new CGRect(_viewToast.Frame.X
+                , _viewToast.Frame.Y, _viewToast.Frame.Width, size.Height + 32);
+
+            _viewToast.Hidden = false;
+            _viewToast.Alpha = 1.0f;
 #pragma warning disable XI0001 // Notifies you with advices on how to use Apple APIs
             UIView.Animate(5, 1, UIViewAnimationOptions.CurveEaseOut, () =>
-            {
-                _viewDelete.Alpha = 0.0f;
-            }, () =>
-            {
-                _viewDelete.Hidden = true;
-                action?.Invoke();
-
-            });
+             {
+                 _viewToast.Alpha = 0.0f;
+             }, () =>
+             {
+                 _viewToast.Hidden = true;
+                 action?.Invoke();
+             });
 #pragma warning restore XI0001 // Notifies you with advices on how to use Apple APIs
         }
     }

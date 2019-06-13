@@ -12,7 +12,7 @@ using Foundation;
 
 namespace myTNB.PushNotification
 {
-    public partial class PushNotificationViewController : CustomUIViewController//UIViewController
+    public partial class PushNotificationViewController : CustomUIViewController
     {
         public PushNotificationViewController(IntPtr handle) : base(handle)
         {
@@ -29,7 +29,6 @@ namespace myTNB.PushNotification
         List<UserNotificationDataModel> _notifications;
         List<DeleteNotificationModel> _notificationsForDeletion;
 
-        UIView _viewDelete;
         UIImageView _imgNoNotification, _imgCheckbox;
         UILabel _lblNoNotification, _lblTitle;
 
@@ -113,14 +112,9 @@ namespace myTNB.PushNotification
         public override void ViewWillAppear(bool animated)
         {
             base.ViewWillAppear(animated);
-            if (_viewDelete == null)
-            {
-                //InitializeDeleteSuccessView();
-            }
             if (DataManager.DataManager.SharedInstance.IsNotificationDeleted)
             {
-                //ShowDeleteNotification();
-                DisplayToast("PushNotification_NoNotification".Translate(), new Action(() =>
+                DisplayToast("PushNotification_NotificationDeleted".Translate(), new Action(() =>
                 {
                     DataManager.DataManager.SharedInstance.IsNotificationDeleted = false;
                 }));
@@ -301,8 +295,8 @@ namespace myTNB.PushNotification
                             {
                                 if (_detailedInfo != null && _detailedInfo?.d != null
                                     && _detailedInfo?.d?.didSucceed == true
-                                   && _detailedInfo?.d?.status.ToLower() == "success"
-                                   && _detailedInfo?.d?.data != null)
+                                    && _detailedInfo?.d?.status.ToLower() == "success"
+                                    && _detailedInfo?.d?.data != null)
                                 {
                                     DataManager.DataManager.SharedInstance.NotificationNeedsUpdate = false;
                                     UIStoryboard storyBoard = UIStoryboard.FromName("PushNotification", null);
@@ -317,6 +311,10 @@ namespace myTNB.PushNotification
                                     _detailedInfo.d.data.NotificationTitle = notificationTitle;
                                     viewController.NotificationInfo = _detailedInfo?.d?.data;
                                     NavigationController?.PushViewController(viewController, true);
+                                }
+                                else
+                                {
+                                    AlertHandler.DisplayServiceError(this, _detailedInfo?.d?.message);
                                 }
                                 ActivityIndicator.Hide();
                                 await PushNotificationHelper.GetNotifications();
@@ -356,45 +354,6 @@ namespace myTNB.PushNotification
                     SSPUserId = userId
                 };
                 _detailedInfo = serviceManager.GetNotificationDetailedInfo("GetNotificationDetailedInfo_V2", requestParameter);
-            });
-        }
-
-        internal void InitializeDeleteSuccessView()
-        {
-            _viewDelete = new UIView(new CGRect(18, 32, View.Frame.Width - 36, 48))
-            {
-                BackgroundColor = MyTNBColor.SunGlow
-            };
-            _viewDelete.Layer.CornerRadius = 2.0f;
-            _viewDelete.Hidden = true;
-
-            UILabel lblDeleteDetails = new UILabel(new CGRect(16, 16, _viewDelete.Frame.Width - 32, 16))
-            {
-                TextAlignment = UITextAlignment.Left,
-                Font = MyTNBFont.MuseoSans12,
-                TextColor = MyTNBColor.TunaGrey(),
-                Text = "PushNotification_NotificationRemoved".Translate(),
-                Lines = 0,
-                LineBreakMode = UILineBreakMode.WordWrap
-            };
-
-            _viewDelete.AddSubview(lblDeleteDetails);
-
-            UIWindow currentWindow = UIApplication.SharedApplication.KeyWindow;
-            currentWindow.AddSubview(_viewDelete);
-        }
-
-        internal void ShowDeleteNotification()
-        {
-            _viewDelete.Hidden = false;
-            _viewDelete.Alpha = 1.0f;
-            UIView.Animate(5, 1, UIViewAnimationOptions.CurveEaseOut, () =>
-            {
-                _viewDelete.Alpha = 0.0f;
-            }, () =>
-            {
-                _viewDelete.Hidden = true;
-                DataManager.DataManager.SharedInstance.IsNotificationDeleted = false;
             });
         }
 
@@ -457,10 +416,11 @@ namespace myTNB.PushNotification
                                     pushNotificationTableView.ReloadData();
                                     UpdateTitleRightIconImage();
                                     NSNotificationCenter.DefaultCenter.PostNotificationName("NotificationDidChange", new NSObject());
+                                    DisplayToast("PushNotification_NotificationsDeleted".Translate());
                                 }
                                 else
                                 {
-                                    AlertHandler.DisplayServiceError(this, deleteNotifResponse?.d?.message);
+                                    DisplayToast(deleteNotifResponse?.d?.message ?? "Error_DefaultMessage".Translate());
                                 }
                                 ActivityIndicator.Hide();
                             });
