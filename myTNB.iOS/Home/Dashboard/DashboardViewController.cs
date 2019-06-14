@@ -290,7 +290,6 @@ namespace myTNB.Dashboard
             TNBGlobal.IsChartEmissionEnabled = false;
             DataManager.DataManager.SharedInstance.CurrentChartMode = ChartModeEnum.Cost;
             var accNum = DataManager.DataManager.SharedInstance.SelectedAccount.accNum;
-            isNormalMeter = false;//stub
             if (isNormalMeter || isREAccount)
             {
                 ChartDataModel cachedData = GetCachedChartData(accNum);
