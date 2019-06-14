@@ -12,6 +12,11 @@ using myTNB.SQLite.SQLiteDataManager;
 using myTNB.SQLite;
 using myTNB.DataManager;
 using System.Collections.Generic;
+using System.Diagnostics;
+using myTNB.Extensions;
+using CoreGraphics;
+using myTNB.Dashboard.DashboardComponents;
+using System.Drawing;
 
 namespace myTNB
 {
@@ -76,6 +81,52 @@ namespace myTNB
             // clear cache data on App Launch
             BillingAccountEntity.DeleteTable();
             PaymentHistoryEntity.DeleteTable();
+
+            // clear cached data on Version Update
+            ClearCacheForVersionUpdate();
+        }
+
+        /// <summary>
+        /// Clears the cache for version update.
+        /// </summary>
+        internal void ClearCacheForVersionUpdate()
+        {
+            var sharedPreference = NSUserDefaults.StandardUserDefaults;
+            var appShortVersion = sharedPreference.StringForKey("appShortVersion");
+            var appBuildVersion = sharedPreference.StringForKey("appBuildVersion");
+            bool clearCache = false;
+
+            if (!string.IsNullOrEmpty(appShortVersion) && !string.IsNullOrEmpty(appBuildVersion))
+            {
+                if (appShortVersion == AppVersionHelper.GetAppShortVersion())
+                {
+                    if (appBuildVersion != AppVersionHelper.GetBuildVersion())
+                    {
+                        clearCache = true;
+                        sharedPreference.SetString(AppVersionHelper.GetAppShortVersion(), "appShortVersion");
+                        sharedPreference.SetString(AppVersionHelper.GetBuildVersion(), "appBuildVersion");
+                    }
+                }
+                else
+                {
+                    clearCache = true;
+                    sharedPreference.SetString(AppVersionHelper.GetAppShortVersion(), "appShortVersion");
+                    sharedPreference.SetString(AppVersionHelper.GetBuildVersion(), "appBuildVersion");
+                }
+            }
+            else
+            {
+                clearCache = true;
+                sharedPreference.SetString(AppVersionHelper.GetAppShortVersion(), "appShortVersion");
+                sharedPreference.SetString(AppVersionHelper.GetBuildVersion(), "appBuildVersion");
+            }
+
+            if (clearCache)
+            {
+                BillHistoryEntity.DeleteTable();
+                ChartEntity.DeleteTable();
+                DueEntity.DeleteTable();
+            }
         }
 
         public override void ViewDidLayoutSubviews()
@@ -108,70 +159,42 @@ namespace myTNB
                 {
                     if (NetworkUtility.isReachable)
                     {
-#if true
                         GetUserEntity();
                         await LoadMasterData();
-#else
-                        Task[] taskList = new Task[] {
-                            GetWebLinks()
-                            , GetLocationTypes()
-                            , GetStatesForFeedback()
-                            , GetFeedbackCategory()
-                            , GetOtherFeedbackType()
-                            , PushNotificationHelper.GetAppNotificationTypes()
-                        };
-                        Task.WaitAll(taskList);
-#endif
-                        if (!IsAppUpdateRequired())
-                        {
-                            ExecuteSiteCoreCall();
-                        }
-                        else
-                        {
-                            // show force update
-                            UIStoryboard storyBoard = UIStoryboard.FromName("Onboarding", null);
-                            var viewController =
-                                storyBoard.InstantiateViewController("AppUpdateViewController") as AppUpdateViewController;
-                            var navController = new UINavigationController(viewController);
-                            navController.ModalPresentationStyle = UIModalPresentationStyle.OverFullScreen;
-                            navController.SetNavigationBarHidden(true, false);
-                            PresentViewController(navController, false, null);
-                            UIApplication.SharedApplication.NetworkActivityIndicatorVisible = false;
-                        }
-
                     }
                     else
                     {
-                        Console.WriteLine("No Network");
-                        UIApplication.SharedApplication.NetworkActivityIndicatorVisible = false;
-                        UserAccountsEntity uaManager = new UserAccountsEntity();
-                        CustomerAccountRecordListModel accountRecords = uaManager.GetCustomerAccountRecordList();
-                        if (accountRecords != null && accountRecords?.d != null)
-                        {
-                            DataManager.DataManager.SharedInstance.AccountRecordsList = accountRecords;
-                            if (accountRecords.d.Count > 0)
-                            {
-                                DataManager.DataManager.SharedInstance.SelectedAccount = DataManager.DataManager.SharedInstance.AccountRecordsList.d[0];
-                            }
-                        }
-                        var sharedPreference = NSUserDefaults.StandardUserDefaults;
+                        //UIApplication.SharedApplication.NetworkActivityIndicatorVisible = false;
+                        //UserAccountsEntity uaManager = new UserAccountsEntity();
+                        //CustomerAccountRecordListModel accountRecords = uaManager.GetCustomerAccountRecordList();
+                        //if (accountRecords != null && accountRecords?.d != null)
+                        //{
+                        //    DataManager.DataManager.SharedInstance.AccountRecordsList = accountRecords;
+                        //    if (accountRecords.d.Count > 0)
+                        //    {
+                        //        DataManager.DataManager.SharedInstance.SelectedAccount = DataManager.DataManager.SharedInstance.AccountRecordsList.d[0];
+                        //    }
+                        //}
+                        //var sharedPreference = NSUserDefaults.StandardUserDefaults;
 
-                        var isLogin = sharedPreference.BoolForKey(TNBGlobal.PreferenceKeys.LoginState);
-                        var shouldUpdateDb = IsDbUpdateNeeded();
-                        if (isLogin && !shouldUpdateDb && DataManager.DataManager.SharedInstance.UserEntity != null && DataManager.DataManager.SharedInstance.UserEntity?.Count > 0)
-                        {
-                            DataManager.DataManager.SharedInstance.User.UserID = DataManager.DataManager.SharedInstance.UserEntity[0].userID;
-                            ShowDashboard();
-                        }
-                        else
-                        {
-                            if (shouldUpdateDb)
-                            {
-                                DataManager.DataManager.SharedInstance.ClearLoginState();
-                            }
-                            ShowPrelogin();
-                        }
-                        UIApplication.SharedApplication.NetworkActivityIndicatorVisible = false;
+                        //var isLogin = sharedPreference.BoolForKey(TNBGlobal.PreferenceKeys.LoginState);
+                        //var shouldUpdateDb = IsDbUpdateNeeded();
+                        //if (isLogin && !shouldUpdateDb && DataManager.DataManager.SharedInstance.UserEntity != null && DataManager.DataManager.SharedInstance.UserEntity?.Count > 0)
+                        //{
+                        //    DataManager.DataManager.SharedInstance.User.UserID = DataManager.DataManager.SharedInstance.UserEntity[0].userID;
+                        //    ShowDashboard();
+                        //}
+                        //else
+                        //{
+                        //    if (shouldUpdateDb)
+                        //    {
+                        //        DataManager.DataManager.SharedInstance.ClearLoginState();
+                        //    }
+                        //    ShowPrelogin();
+                        //}
+                        //UIApplication.SharedApplication.NetworkActivityIndicatorVisible = false;
+                        Debug.WriteLine("No Network");
+                        DisplayAlertView("ErrNoNetworkTitle".Translate(), "ErrNoNetworkMsg".Translate());
                     }
                 });
             });
@@ -199,52 +222,136 @@ namespace myTNB
         private async Task LoadMasterData()
         {
             var response = await ServiceCall.GetAppLaunchMasterData();
-            if (response.didSucceed)
+            if ((bool)response?.didSucceed)
             {
-                var data = response.data;
-
-                var iOSIndex = data?.AppVersions?.FindIndex(x => x.IsIos) ?? -1;
-                DataManager.DataManager.SharedInstance.LatestAppVersion = (iOSIndex > -1) ? data.AppVersions[iOSIndex].Version : string.Empty;
-
-                DataManager.DataManager.SharedInstance.SystemStatus = data?.SystemStatus ?? new List<DowntimeDataModel>();
-                DataManager.DataManager.SharedInstance.SetSystemsAvailability();
-
-                DataManager.DataManager.SharedInstance.WebLinks = data?.WebLinks ?? new List<WebLinksDataModel>();
-
-                DataManager.DataManager.SharedInstance.LocationTypes = data?.LocationTypes ?? new List<LocationTypeDataModel>();
-                if (data?.LocationTypes != null)
+                if ((bool)response?.status.ToUpper().Equals("MAINTENANCE"))
                 {
-                    LocationTypeDataModel allLocationModel = new LocationTypeDataModel();
-                    allLocationModel.Id = "all";
-                    allLocationModel.Title = "All";
-                    allLocationModel.Description = "All";
-                    if (DataManager.DataManager.SharedInstance.LocationTypes != null)
+                    float screenHeight = (float)UIApplication.SharedApplication.KeyWindow.Frame.Height;
+                    float imageWidth = DeviceHelper.GetScaledWidth(151f);
+                    float imageHeight = DeviceHelper.GetScaledHeight(136f);
+                    float labelWidth = DeviceHelper.GetScaledWidth(236f);
+
+                    GradientViewComponent gradientViewComponent = new GradientViewComponent(View, true, screenHeight, false);
+                    UIView parentView = gradientViewComponent.GetUI();
+
+                    UIImageView imageView = new UIImageView(UIImage.FromBundle("Maintenance-Image"))
                     {
-                        DataManager.DataManager.SharedInstance.LocationTypes.Insert(0, allLocationModel);
-                    }
+                        Frame = new CGRect(DeviceHelper.GetCenterXWithObjWidth(imageWidth), DeviceHelper.GetScaledHeightWithY(140f), imageWidth, imageHeight)
+                    };
+
+                    UILabel lblTitle = new UILabel(new CGRect(DeviceHelper.GetCenterXWithObjWidth(labelWidth), imageView.Frame.GetMaxY() + 15f, labelWidth, 44f))
+                    {
+                        Text = response?.data?.MaintenanceTitle ?? string.Empty,
+                        TextAlignment = UITextAlignment.Center,
+                        TextColor = myTNBColor.SunGlow(),
+                        Font = myTNBFont.MuseoSans24_500()
+                    };
+
+                    CGSize newSize = GetDescLabelSize(DeviceHelper.GetCenterXWithObjWidth(labelWidth), (float)lblTitle.Frame.GetMaxY(), labelWidth, response?.data?.MaintenanceMessage ?? string.Empty);
+
+                    UILabel lblDesc = new UILabel(new CGRect(DeviceHelper.GetCenterXWithObjWidth(labelWidth), lblTitle.Frame.GetMaxY(), labelWidth, newSize.Height))
+                    {
+                        Text = response?.data?.MaintenanceMessage ?? string.Empty,
+                        TextAlignment = UITextAlignment.Center,
+                        Lines = 0,
+                        TextColor = UIColor.White,
+                        Font = myTNBFont.MuseoSans16_300()
+                    };
+
+                    parentView.AddSubviews(new UIView[] { imageView, lblTitle, lblDesc });
+                    View.AddSubview(parentView);
                 }
-
-                DataManager.DataManager.SharedInstance.StatesForFeedBack = data?.States ?? new List<StatesForFeedbackDataModel>();
-
-                DataManager.DataManager.SharedInstance.FeedbackCategory = data?.FeedbackCategories ?? new List<FeedbackCategoryDataModel>();
-
-                DataManager.DataManager.SharedInstance.OtherFeedbackType = data?.FeedbackTypes ?? new List<OtherFeedbackTypeDataModel>();
-
-                var rawNotifGeneralTypes = data?.NotificationTypes ?? new List<NotificationPreferenceModel>();
-                DataManager.DataManager.SharedInstance.NotificationGeneralTypes = rawNotifGeneralTypes.FindAll(item => item?.ShowInFilterList?.ToLower() == "true") ?? new List<NotificationPreferenceModel>();
-
-                if (data?.NotificationTypes != null)
+                else
                 {
-                    NotificationPreferenceModel allNotificationItem = new NotificationPreferenceModel();
-                    allNotificationItem.Title = "All notifications";
-                    allNotificationItem.Id = "all";
-                    if (DataManager.DataManager.SharedInstance.NotificationGeneralTypes != null)
+                    var data = response?.data;
+
+                    var iOSIndex = data?.AppVersions?.FindIndex(x => x.IsIos) ?? -1;
+                    DataManager.DataManager.SharedInstance.LatestAppVersion = (iOSIndex > -1) ? data.AppVersions[iOSIndex].Version : string.Empty;
+
+                    DataManager.DataManager.SharedInstance.SystemStatus = data?.SystemStatus ?? new List<DowntimeDataModel>();
+                    DataManager.DataManager.SharedInstance.SetSystemsAvailability();
+
+                    DataManager.DataManager.SharedInstance.WebLinks = data?.WebLinks ?? new List<WebLinksDataModel>();
+
+                    DataManager.DataManager.SharedInstance.LocationTypes = data?.LocationTypes ?? new List<LocationTypeDataModel>();
+                    if (data?.LocationTypes != null)
                     {
-                        DataManager.DataManager.SharedInstance.NotificationGeneralTypes.Insert(0, allNotificationItem);
+                        LocationTypeDataModel allLocationModel = new LocationTypeDataModel();
+                        allLocationModel.Id = "all";
+                        allLocationModel.Title = "All";
+                        allLocationModel.Description = "All";
+                        if (DataManager.DataManager.SharedInstance.LocationTypes != null)
+                        {
+                            DataManager.DataManager.SharedInstance.LocationTypes.Insert(0, allLocationModel);
+                        }
+                    }
+
+                    DataManager.DataManager.SharedInstance.StatesForFeedBack = data?.States ?? new List<StatesForFeedbackDataModel>();
+
+                    DataManager.DataManager.SharedInstance.FeedbackCategory = data?.FeedbackCategories ?? new List<FeedbackCategoryDataModel>();
+
+                    DataManager.DataManager.SharedInstance.OtherFeedbackType = data?.FeedbackTypes ?? new List<OtherFeedbackTypeDataModel>();
+
+                    var rawNotifGeneralTypes = data?.NotificationTypes ?? new List<NotificationPreferenceModel>();
+                    DataManager.DataManager.SharedInstance.NotificationGeneralTypes = rawNotifGeneralTypes.FindAll(item => item?.ShowInFilterList?.ToLower() == "true") ?? new List<NotificationPreferenceModel>();
+
+                    if (data?.NotificationTypes != null)
+                    {
+                        NotificationPreferenceModel allNotificationItem = new NotificationPreferenceModel();
+                        allNotificationItem.Title = "All notifications";
+                        allNotificationItem.Id = "all";
+                        if (DataManager.DataManager.SharedInstance.NotificationGeneralTypes != null)
+                        {
+                            DataManager.DataManager.SharedInstance.NotificationGeneralTypes.Insert(0, allNotificationItem);
+                        }
+                    }
+
+                    if (!IsAppUpdateRequired())
+                    {
+                        ExecuteSiteCoreCall();
+                    }
+                    else
+                    {
+                        // show force update
+                        UIStoryboard storyBoard = UIStoryboard.FromName("Onboarding", null);
+                        var viewController =
+                            storyBoard.InstantiateViewController("AppUpdateViewController") as AppUpdateViewController;
+                        var navController = new UINavigationController(viewController);
+                        navController.ModalPresentationStyle = UIModalPresentationStyle.OverFullScreen;
+                        navController.SetNavigationBarHidden(true, false);
+                        PresentViewController(navController, false, null);
+                        UIApplication.SharedApplication.NetworkActivityIndicatorVisible = false;
                     }
                 }
             }
+            else
+            {
+                var msg = !string.IsNullOrWhiteSpace(response?.message) ? response?.message : "DefaultErrorMessage".Translate();
+                DisplayAlertView("ErrorTitle".Translate(), msg);
+            }
         }
+
+        /// <summary>
+        /// Gets the size of the description label.
+        /// </summary>
+        /// <returns>The description label size.</returns>
+        /// <param name="x">The x coordinate.</param>
+        /// <param name="y">The y coordinate.</param>
+        /// <param name="width">Width.</param>
+        /// <param name="text">Text.</param>
+        private CGSize GetDescLabelSize(float x, float y, float width, string text)
+        {
+            UILabel label = new UILabel(new CGRect(x, y, width, 1000))
+            {
+                TextAlignment = UITextAlignment.Center,
+                Lines = 0,
+                TextColor = UIColor.White,
+                Font = myTNBFont.MuseoSans16_300(),
+                Text = text
+            };
+            return label.Text.StringSize(label.Font, new SizeF((float)label.Frame.Width, 1000F));
+        }
+
 
         internal void GetUserEntity()
         {

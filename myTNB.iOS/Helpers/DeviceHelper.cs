@@ -49,7 +49,7 @@ namespace myTNB
             // xsmax    =   2688
             // x & xs   =   2436
             // xr       =   1792
-            return UIScreen.MainScreen.NativeBounds.Height >= 2436 
+            return UIScreen.MainScreen.NativeBounds.Height >= 2436
                 || UIScreen.MainScreen.NativeBounds.Height == 1792;
         }
         /// <summary>
@@ -155,6 +155,37 @@ namespace myTNB
             float adj = IsIphoneXUpResolution() ? 0.8f : 1;
             float screenHeight = (float)UIScreen.MainScreen.Bounds.Height;
             return height * (screenHeight / baseScreenHeight) * adj;
+        }
+        /// <summary>
+        /// Gets the scaled height using y-axis.
+        /// </summary>
+        /// <returns>The scaled height using y-axis.</returns>
+        /// <param name="y">The y coordinate.</param>
+        public static float GetScaledHeightWithY(float y)
+        {
+            float adj = IsIphoneXUpResolution() ? 1.3f : 1;
+            float screenHeight = (float)UIScreen.MainScreen.Bounds.Height;
+            return y * (screenHeight / baseScreenHeight) * adj;
+        }
+        /// <summary>
+        /// Gets the X value to center obj using obj width.
+        /// </summary>
+        /// <returns>The X value.</returns>
+        /// <param name="objWidth">Object width.</param>
+        public static float GetCenterXWithObjWidth(float objWidth)
+        {
+            float screenWidth = (float)UIScreen.MainScreen.Bounds.Width;
+            return screenWidth / 2 - (objWidth / 2);
+        }
+        /// <summary>
+        /// Gets the Y value to center obj using obj height.
+        /// </summary>
+        /// <returns>The Y value.</returns>
+        /// <param name="objHeight">Object height.</param>
+        public static float GetCenterYWithObjHeight(float objHeight)
+        {
+            float screenHeight = (float)UIScreen.MainScreen.Bounds.Height;
+            return screenHeight / 2 - (objHeight / 2);
         }
         /// <summary>
         /// Gets the OS Version.
