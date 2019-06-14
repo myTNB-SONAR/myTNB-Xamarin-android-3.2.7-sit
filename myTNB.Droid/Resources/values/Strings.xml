@@ -1294,7 +1294,7 @@ Please try again later.]]>
   <string name="projected_cost">My estimated charges</string>
   <string name="for_current_month">for</string>
   <string name="current_usage">My current usage</string>
-  <string name="vs_last_month">compared to</string>
+  <string name="vs_last_month">compared to previous bill period</string>
   <string name="avg_elec_usage">My average electric usage</string>
   <string name="current_emission">Current emission</string>
   <string name="text_rm">RM</string>

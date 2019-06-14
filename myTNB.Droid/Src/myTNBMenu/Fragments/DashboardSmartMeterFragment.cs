@@ -1191,7 +1191,17 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         }
         #endregion
 
-
+        private string GetChargeRangeDate(string preLabelString, string fromDateString, string toDateString)
+        {
+            if (fromDateString != null && toDateString != null)
+            {
+                SimpleDateFormat dateParser = new SimpleDateFormat("dd/MM/yyyy");
+                SimpleDateFormat dateFormatter = new SimpleDateFormat("dd MMM");
+                Date formattedDate = dateParser.Parse(fromDateString);
+                return preLabelString + " " + dateFormatter.Format(formattedDate) + " - " + toDateString;
+            }
+            return "--";
+        }
         public void SetupUsageMatricsData(SMUsageHistoryData.OtherUsageMetricsData usageMetricsData)
         {
             try {
@@ -1203,14 +1213,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 imgProjectedCost.SetImageResource(Resource.Drawable.ic_projected_cost);
                 txtCurrentCharges.Text = (GetString(Resource.String.current_charges));
                 txtProjectedCost.Text = GetString(Resource.String.projected_cost);
-                txtProjectedCostRange.Text = GetString(Resource.String.for_current_month);
                 if (usageMetricsData != null) {
                     txtCurretnChargesValue.Text = usageMetricsData.StatsByCost.CurrentCharges;
                     //float currChanrges = float.Parse(usageMetricsData.StatsByCost.CurrentCharges);
                     //txtCurretnChargesValue.Text = decimalFormat.Format(Math.Abs(currChanrges));
                     txtCurrentChargesUnit1.Visibility = ViewStates.Visible;
                     txtCurrentChargesUnit2.Visibility = ViewStates.Gone;
-                    txtCurrentChargesRange.Text = GetString(Resource.String.as_of) +" "+usageMetricsData.StatsByCost.AsOf;
+                    txtCurrentChargesRange.Text = GetChargeRangeDate(GetString(Resource.String.as_of),usageMetricsData.CurrentCycleStartDate, usageMetricsData.StatsByCost.AsOf);
+                    txtProjectedCostRange.Text = GetChargeRangeDate(GetString(Resource.String.for_current_month), usageMetricsData.CurrentCycleStartDate, usageMetricsData.StatsByCost.AsOf);
                     txtProjectedCostValue.Text = usageMetricsData.StatsByCost.ProjectedCost;
                     //float proCost = float.Parse(usageMetricsData.StatsByCost.ProjectedCost);
                     //txtProjectedCostValue.Text = decimalFormat.Format(Math.Abs(proCost));
@@ -1232,7 +1242,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     txtCurrentChargesUnit1.Visibility = ViewStates.Gone;
                     txtCurrentChargesUnit2.Visibility = ViewStates.Visible;
                     txtProjectedCostUnit1.Visibility = ViewStates.Gone;
-                    txtCurrentChargesRange.Text = GetString(Resource.String.as_of) + " " + usageMetricsData.StatsByUsage.AsOf;
+                    txtCurrentChargesRange.Text = GetChargeRangeDate(GetString(Resource.String.as_of),usageMetricsData.CurrentCycleStartDate, usageMetricsData.StatsByUsage.AsOf);
                     string htmlAvgUsageContent = usageMetricsData.StatsByUsage.UsageComparedToPrevious.Replace("-","").Replace("+","") + "%";
                     double avgUsageDouble = Double.Parse(String.IsNullOrEmpty(usageMetricsData.StatsByUsage.UsageComparedToPrevious) == true ? "0.00" : usageMetricsData.StatsByUsage.UsageComparedToPrevious);
                     if (avgUsageDouble != 0.00)
@@ -1385,12 +1395,51 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
         private void OnWhatIsThisTap()
         {
-            new MaterialDialog.Builder(Activity)
-                    .Title(Activity.GetString(Resource.String.dashboard_smart_meter_what_is_this_title))
-                    .Content(Activity.GetString(Resource.String.dashboard_smart_meter_what_is_this_message))
+            string textMessage = selectedHistoryData.ToolTips[0].Message;
+            MaterialDialog materialDialog = new MaterialDialog.Builder(Activity)
                     .PositiveText(Activity.GetString(Resource.String.dashboard_smart_meter_got_it))
                     .PositiveColor(Resource.Color.blue)
-                    .Cancelable(true).Show();
+                    .CustomView(Resource.Layout.WhatIsThisDialogView,false)
+                    .Cancelable(true)
+                    .Build();
+
+            View view = materialDialog.View;
+            TextView dialogDetailsText = view.FindViewById<TextView>(Resource.Id.textDialogDetails);
+
+            if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.N)
+            {
+                dialogDetailsText.TextFormatted = Html.FromHtml(textMessage, FromHtmlOptions.ModeLegacy);
+            }
+            else
+            {
+                dialogDetailsText.TextFormatted = Html.FromHtml(textMessage);
+            }
+
+            if (dialogDetailsText != null)
+            {
+                TextViewUtils.SetMuseoSans300Typeface(dialogDetailsText);
+            }
+            dialogDetailsText.Click += delegate
+            {
+                if (textMessage != null && textMessage.Contains("faq"))
+                {
+                    //Lauch FAQ
+                    int startIndex = textMessage.LastIndexOf("=") + 1;
+                    int lastIndex = textMessage.LastIndexOf("}");
+                    int lengthOfId = (lastIndex - startIndex) + 1;
+                    if (lengthOfId < textMessage.Length)
+                    {
+                        string faqid = textMessage.Substring(startIndex, lengthOfId);
+                        if (!string.IsNullOrEmpty(faqid))
+                        {
+                            Intent faqIntent = new Intent(this.Activity, typeof(FAQListActivity));
+                            faqIntent.PutExtra(Constants.FAQ_ID_PARAM, faqid);
+                            Activity.StartActivity(faqIntent);
+                        }
+                    }
+                }
+            };
+            materialDialog.Show();
         }
 
         //[OnClick(Resource.Id.btnToggleHour)]
