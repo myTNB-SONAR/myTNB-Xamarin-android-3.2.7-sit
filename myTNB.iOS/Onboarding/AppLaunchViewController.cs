@@ -13,7 +13,6 @@ using myTNB.SQLite;
 using myTNB.DataManager;
 using System.Collections.Generic;
 using System.Diagnostics;
-using myTNB.Extensions;
 using CoreGraphics;
 using myTNB.Dashboard.DashboardComponents;
 using System.Drawing;
@@ -136,8 +135,8 @@ namespace myTNB
 
         internal void SetupSuperViewBackground()
         {
-            var startColor = myTNBColor.GradientPurpleDarkElement();
-            var endColor = myTNBColor.GradientPurpleLightElement();
+            var startColor = MyTNBColor.GradientPurpleDarkElement;
+            var endColor = MyTNBColor.GradientPurpleLightElement;
 
             var gradientLayer = new CAGradientLayer();
             gradientLayer.Colors = new[] { startColor.CGColor, endColor.CGColor };
@@ -243,8 +242,8 @@ namespace myTNB
                     {
                         Text = response?.data?.MaintenanceTitle ?? string.Empty,
                         TextAlignment = UITextAlignment.Center,
-                        TextColor = myTNBColor.SunGlow(),
-                        Font = myTNBFont.MuseoSans24_500()
+                        TextColor = MyTNBColor.SunGlow,
+                        Font = MyTNBFont.MuseoSans24_500
                     };
 
                     CGSize newSize = GetDescLabelSize(DeviceHelper.GetCenterXWithObjWidth(labelWidth), (float)lblTitle.Frame.GetMaxY(), labelWidth, response?.data?.MaintenanceMessage ?? string.Empty);
@@ -255,7 +254,7 @@ namespace myTNB
                         TextAlignment = UITextAlignment.Center,
                         Lines = 0,
                         TextColor = UIColor.White,
-                        Font = myTNBFont.MuseoSans16_300()
+                        Font = MyTNBFont.MuseoSans16_300
                     };
 
                     parentView.AddSubviews(new UIView[] { imageView, lblTitle, lblDesc });
@@ -346,7 +345,7 @@ namespace myTNB
                 TextAlignment = UITextAlignment.Center,
                 Lines = 0,
                 TextColor = UIColor.White,
-                Font = myTNBFont.MuseoSans16_300(),
+                Font = MyTNBFont.MuseoSans16_300,
                 Text = text
             };
             return label.Text.StringSize(label.Font, new SizeF((float)label.Frame.Width, 1000F));
