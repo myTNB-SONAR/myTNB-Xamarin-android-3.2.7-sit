@@ -316,38 +316,8 @@ namespace myTNB.Dashboard
             }
             else
             {
-                var sharedPreference = NSUserDefaults.StandardUserDefaults;
-                var appShortVersion = sharedPreference.StringForKey("appShortVersion");
-                var appBuildVersion = sharedPreference.StringForKey("appBuildVersion");
-                bool updateCache = false;
-
-                if (!string.IsNullOrEmpty(appShortVersion) && !string.IsNullOrEmpty(appBuildVersion))
-                {
-                    if (appShortVersion == AppVersionHelper.GetAppShortVersion())
-                    {
-                        if (appBuildVersion != AppVersionHelper.GetBuildVersion())
-                        {
-                            updateCache = true;
-                            sharedPreference.SetString(AppVersionHelper.GetAppShortVersion(), "appShortVersion");
-                            sharedPreference.SetString(AppVersionHelper.GetBuildVersion(), "appBuildVersion");
-                        }
-                    }
-                    else
-                    {
-                        updateCache = true;
-                        sharedPreference.SetString(AppVersionHelper.GetAppShortVersion(), "appShortVersion");
-                        sharedPreference.SetString(AppVersionHelper.GetBuildVersion(), "appBuildVersion");
-                    }
-                }
-                else
-                {
-                    updateCache = true;
-                    sharedPreference.SetString(AppVersionHelper.GetAppShortVersion(), "appShortVersion");
-                    sharedPreference.SetString(AppVersionHelper.GetBuildVersion(), "appBuildVersion");
-                }
-
                 SmartChartDataModel cachedData = GetCachedSmartChartData(accNum);
-                if (cachedData != null && !updateCache)
+                if (cachedData != null)
                 {
                     isResultSuccess = true;
                     ChartHelper.RemoveExcessSmartMonthData(ref cachedData);

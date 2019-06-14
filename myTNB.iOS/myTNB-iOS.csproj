@@ -870,6 +870,10 @@
     <ImageAsset Include="Assets.xcassets\Notification-Select.imageset\icActionSelect.png" />
     <ImageAsset Include="Assets.xcassets\Notification-Select.imageset\icActionSelect%402x.png" />
     <ImageAsset Include="Assets.xcassets\Notification-Select.imageset\icActionSelect%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Maintenance-Image.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Maintenance-Image.imageset\Maintenance-Image-1.png" />
+    <ImageAsset Include="Assets.xcassets\Maintenance-Image.imageset\Maintenance-Image%402x-1.png" />
+    <ImageAsset Include="Assets.xcassets\Maintenance-Image.imageset\Maintenance-Image%403x-1.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -1121,6 +1125,7 @@
     <Folder Include="Model\UpdateNotification\" />
     <Folder Include="Assets.xcassets\IC-Header-Cancel.imageset\" />
     <Folder Include="Assets.xcassets\Notification-Select.imageset\" />
+    <Folder Include="Assets.xcassets\Maintenance-Image.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
