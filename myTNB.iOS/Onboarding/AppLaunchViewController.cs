@@ -81,6 +81,52 @@ namespace myTNB
             // clear cache data on App Launch
             BillingAccountEntity.DeleteTable();
             PaymentHistoryEntity.DeleteTable();
+
+            // clear cached data on Version Update
+            ClearCacheForVersionUpdate();
+        }
+
+        /// <summary>
+        /// Clears the cache for version update.
+        /// </summary>
+        internal void ClearCacheForVersionUpdate()
+        {
+            var sharedPreference = NSUserDefaults.StandardUserDefaults;
+            var appShortVersion = sharedPreference.StringForKey("appShortVersion");
+            var appBuildVersion = sharedPreference.StringForKey("appBuildVersion");
+            bool clearCache = false;
+
+            if (!string.IsNullOrEmpty(appShortVersion) && !string.IsNullOrEmpty(appBuildVersion))
+            {
+                if (appShortVersion == AppVersionHelper.GetAppShortVersion())
+                {
+                    if (appBuildVersion != AppVersionHelper.GetBuildVersion())
+                    {
+                        clearCache = true;
+                        sharedPreference.SetString(AppVersionHelper.GetAppShortVersion(), "appShortVersion");
+                        sharedPreference.SetString(AppVersionHelper.GetBuildVersion(), "appBuildVersion");
+                    }
+                }
+                else
+                {
+                    clearCache = true;
+                    sharedPreference.SetString(AppVersionHelper.GetAppShortVersion(), "appShortVersion");
+                    sharedPreference.SetString(AppVersionHelper.GetBuildVersion(), "appBuildVersion");
+                }
+            }
+            else
+            {
+                clearCache = true;
+                sharedPreference.SetString(AppVersionHelper.GetAppShortVersion(), "appShortVersion");
+                sharedPreference.SetString(AppVersionHelper.GetBuildVersion(), "appBuildVersion");
+            }
+
+            if (clearCache)
+            {
+                BillHistoryEntity.DeleteTable();
+                ChartEntity.DeleteTable();
+                DueEntity.DeleteTable();
+            }
         }
 
         public override void ViewDidLayoutSubviews()
