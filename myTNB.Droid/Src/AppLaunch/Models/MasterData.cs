@@ -52,5 +52,13 @@ namespace myTNB_Android.Src.AppLaunch.Models
         [JsonProperty(PropertyName = "NotificationTypeChannel")]
         [AliasAs("NotificationTypeChannel")]
         public List<NotificationChannels> NotificationTypeChannels { get; set; }
+
+        [JsonProperty(PropertyName = "MaintenanceTitle")]
+        [AliasAs("MaintenanceTitle")]
+        public string MaintainanceTitle { get; set; }
+
+        [JsonProperty(PropertyName = "MaintenanceMessage")]
+        [AliasAs("MaintenanceMessage")]
+        public string MaintainanceMessage { get; set; }
     }
 }

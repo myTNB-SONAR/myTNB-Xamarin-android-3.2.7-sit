@@ -866,6 +866,10 @@
     <ImageAsset Include="Assets.xcassets\Notification-Edit.imageset\Notification-Edit-1.png" />
     <ImageAsset Include="Assets.xcassets\Notification-Edit.imageset\Notification-Edit%402x-1.png" />
     <ImageAsset Include="Assets.xcassets\Notification-Edit.imageset\Notification-Edit%403x-1.png" />
+    <ImageAsset Include="Assets.xcassets\Maintenance-Image.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Maintenance-Image.imageset\Maintenance-Image-1.png" />
+    <ImageAsset Include="Assets.xcassets\Maintenance-Image.imageset\Maintenance-Image%402x-1.png" />
+    <ImageAsset Include="Assets.xcassets\Maintenance-Image.imageset\Maintenance-Image%403x-1.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -1114,6 +1118,7 @@
     <Folder Include="Helpers\Generic Line\" />
     <Folder Include="Assets.xcassets\Notification-Edit.imageset\" />
     <Folder Include="Assets.xcassets\Notification-Check.imageset\" />
+    <Folder Include="Assets.xcassets\Maintenance-Image.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />

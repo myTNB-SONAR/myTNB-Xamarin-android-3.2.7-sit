@@ -33,5 +33,10 @@ namespace myTNB.Model
         [JsonProperty("NotificationTypeChannel")]
         public List<NotificationPreferenceModel> NotificationChannels { set; get; }
 
+        [JsonProperty("MaintenanceTitle")]
+        public string MaintenanceTitle { set; get; }
+
+        [JsonProperty("MaintenanceMessage")]
+        public string MaintenanceMessage { set; get; }
     }
 }

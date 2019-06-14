@@ -38,32 +38,21 @@ namespace myTNB_Android.Src.ViewReceipt.MVP
 
         public async void GetReceiptDetailsAsync(string apiKeyId, string merchantTransId)
         {
-            if (mView.IsActive()) {
             this.mView.ShowGetReceiptDialog();
-            }
             var api = RestService.For<GetMultiReceiptByTransId>(Constants.SERVER_URL.END_POINT);
             try
             {
                 GetMultiReceiptByTransIdResponse result = await api.GetMultiReceiptByTransId(new GetReceiptRequest(apiKeyId, merchantTransId));
-                if (mView.IsActive())
-                {
-                    this.mView.HideGetReceiptDialog();
-                }
-                this.mView.OnShowReceiptDetails(result);
-
                 this.mView.HideGetReceiptDialog();
+                this.mView.OnShowReceiptDetails(result);
             }
             catch (Exception e)
             {
+                this.mView.HideGetReceiptDialog();
                 Log.Debug(TAG, e.StackTrace);
-                if (mView.IsActive())
-                {
-                    this.mView.HideGetReceiptDialog();
-                }
                 Utility.LoggingNonFatalError(e);
-                this.mView.ShowErrorMessage("We are facing some issue with server, Please try again latern");
+                this.mView.ShowErrorMessage("We are facing some issue with server, Please try again later.");
             }
-
         }
 
     }
