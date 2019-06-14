@@ -303,7 +303,7 @@ namespace myTNB.Dashboard.DashboardComponents
                     {
                         _metricCmp1.Icon.Image = UIImage.FromBundle("IC-Charges");
                         _metricCmp1.TitleLabel.Text = TxtCurrentCharges;
-                        _metricCmp1.SubTitleLabel.Text = TxtAsOf + _usageMetrics?.StatsByCost?.AsOf;
+                        _metricCmp1.SubTitleLabel.Text = GetDateRange(TxtAsOf, _usageMetrics?.FromCycleDate, _usageMetrics?.StatsByCost?.AsOf);
                         var currCharges = _usageMetrics?.StatsByCost?.CurrentCharges ?? "0";
                         if (!string.IsNullOrEmpty(currCharges))
                         {
@@ -311,7 +311,7 @@ namespace myTNB.Dashboard.DashboardComponents
                         }
                         _metricCmp2.Icon.Image = UIImage.FromBundle("IC-Cost");
                         _metricCmp2.TitleLabel.Text = TxtProjectedCost;
-                        _metricCmp2.SubTitleLabel.Text = TxtForCurrentMonth;
+                        _metricCmp2.SubTitleLabel.Text = GetDateRange(TxtForCurrentMonth, _usageMetrics?.FromCycleDate, _usageMetrics?.StatsByCost?.AsOf);
                         var prjctdCost = _usageMetrics?.StatsByCost?.ProjectedCost ?? "0";
                         if (!string.IsNullOrEmpty(prjctdCost))
                         {
@@ -325,7 +325,7 @@ namespace myTNB.Dashboard.DashboardComponents
                     {
                         _metricCmp1.Icon.Image = UIImage.FromBundle("IC-Energy-Usage");
                         _metricCmp1.TitleLabel.Text = TxtCurrentUsage;
-                        _metricCmp1.SubTitleLabel.Text = TxtAsOf + _usageMetrics?.StatsByUsage?.AsOf;
+                        _metricCmp1.SubTitleLabel.Text = GetDateRange(TxtAsOf, _usageMetrics?.FromCycleDate, _usageMetrics?.StatsByUsage?.AsOf);
                         var currUsageKWH = _usageMetrics?.StatsByUsage?.CurrentUsageKWH ?? "0";
                         if (!string.IsNullOrEmpty(currUsageKWH))
                         {
@@ -350,7 +350,7 @@ namespace myTNB.Dashboard.DashboardComponents
                     {
                         _metricCmp1.Icon.Image = UIImage.FromBundle("IC-CO2");
                         _metricCmp1.TitleLabel.Text = TxtCurrentEmission;
-                        _metricCmp1.SubTitleLabel.Text = TxtAsOf + _usageMetrics?.StatsByCo2?.First()?.AsOf;
+                        _metricCmp1.SubTitleLabel.Text = GetDateRange(TxtAsOf, _usageMetrics?.FromCycleDate, _usageMetrics?.StatsByCo2?.First()?.AsOf);
                         string value = _usageMetrics?.StatsByCo2?.Count > 0 ?
                                                      _usageMetrics?.StatsByCo2?.Sum(item => TextHelper.ParseStringToDouble(item.Quantity)).ToString() : "0";
                         _metricCmp1.ValueLabel.AttributedText = TextHelper.CreateValuePairString(value, " " + TNBGlobal.UNIT_EMISSION, false, myTNBFont.MuseoSans16_300(), UIColor.White, myTNBFont.MuseoSans12_300(), UIColor.White);
@@ -358,8 +358,16 @@ namespace myTNB.Dashboard.DashboardComponents
                     }
                     break;
             }
+        }
 
-
+        string GetDateRange(string preffix, string fromDate, string toDate)
+        {
+            if (string.IsNullOrEmpty(fromDate) || string.IsNullOrWhiteSpace(fromDate)
+                || string.IsNullOrEmpty(toDate) || string.IsNullOrWhiteSpace(toDate))
+            {
+                return "--";
+            }
+            return preffix + fromDate + " - " + toDate;
         }
 
         /// <summary>

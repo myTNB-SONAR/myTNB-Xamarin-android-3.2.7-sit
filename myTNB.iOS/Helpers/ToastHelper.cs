@@ -92,7 +92,7 @@ namespace myTNB
                 ForegroundColor = myTNBColor.PowerBlue(),
                 Font = myTNBFont.MuseoSans14_300(),
                 UnderlineStyle = NSUnderlineStyle.None,
-                //UnderlineColor = myTNBColor.PowerBlue()
+                UnderlineColor = UIColor.Clear
             };
             NSError htmlBodyError = null;
             NSAttributedString htmlBody = TextHelper.ConvertToHtmlWithFont(message
@@ -109,7 +109,7 @@ namespace myTNB
                 ScrollEnabled = false,
                 TextAlignment = UITextAlignment.Justified,
                 AttributedText = mutableHTMLBody,
-                WeakLinkTextAttributes = linkAttributes.Dictionary,
+                WeakLinkTextAttributes = linkAttributes.Dictionary
             };
 
             CGSize size = txtViewDetails.SizeThatFits(new CGSize(width - 32, maxDescriptionHeight));
@@ -157,8 +157,9 @@ namespace myTNB
             Action<NSUrl> action = new Action<NSUrl>((url) =>
             {
                 string scheme = url.Scheme + "://";
-                string urlWithoutScheme = url.AbsoluteString.Replace(scheme, string.Empty);
-                string key = urlWithoutScheme.Split("/")[1];
+                string urlWithoutScheme = url?.AbsoluteString?.Replace(scheme, string.Empty);
+                string key = !string.IsNullOrEmpty(urlWithoutScheme) && urlWithoutScheme.Contains("/") ? urlWithoutScheme?.Split("/")[1] : string.Empty;
+                key = key.Replace("%7B", "{").Replace("%7D", "}");
                 ViewHelper.GoToFAQScreenWithId(key);
                 viewParent.RemoveFromSuperview();
                 viewTabbar.RemoveFromSuperview();

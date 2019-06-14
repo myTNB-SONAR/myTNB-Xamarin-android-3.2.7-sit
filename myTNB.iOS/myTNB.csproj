@@ -1827,6 +1827,7 @@
     </Compile>
     <Compile Include="Enums\DashboardModeEnum.cs" />
     <Compile Include="Customs\TextViewDelegate.cs" />
+    <Compile Include="Model\GetAccountUsageHistoryForGraph\ToolTipsModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />

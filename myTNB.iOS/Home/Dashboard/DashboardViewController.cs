@@ -42,6 +42,8 @@ namespace myTNB.Dashboard
         const string ToolTipTitle = "What are estimated charges?";
         const string ToolTipMessage = "We esimate this amount by multiplying your average daily usage for your current bill period by the total number of days in the period. This is only an estimate, your final bill might differ.";
 
+        string toolTipMessage = string.Empty;
+
         //bool isRefreshing = false;
 
         public override void ViewDidLoad()
@@ -59,8 +61,7 @@ namespace myTNB.Dashboard
             _dashboardMainComponent = new DashboardMainComponent(View);
             _dashboardMainComponent.ToolTipGestureRecognizer = new UITapGestureRecognizer((obj) =>
             {
-                string str = "<p><strong>What are estimated charges?</strong></p>\n<p><strong>&nbsp;</strong></p>\n<p>Estimated charges are calculated based</p>\n<p>on your average daily consumption for</p>\n<p>the past one (1) month.</p>\n<p>&nbsp;</p>\n<p>Note: Your actual bill may differ from</p>\n<p>the estimated charges. To find out</p>\n<p>more, please visit: <a href=\"B8EBBADE-0918-43B7-8093-BB2B19614033\">here</a></p>";
-                ToastHelper.DisplayAlertView(this, string.Empty, str, null, "Got it!", true);
+                ToastHelper.DisplayAlertView(this, string.Empty, toolTipMessage, null, "Got it!", true);
             });
             //_dashboardMainComponent = new DashboardMainComponent(View)
             //{
@@ -289,7 +290,7 @@ namespace myTNB.Dashboard
             TNBGlobal.IsChartEmissionEnabled = false;
             DataManager.DataManager.SharedInstance.CurrentChartMode = ChartModeEnum.Cost;
             var accNum = DataManager.DataManager.SharedInstance.SelectedAccount.accNum;
-
+            isNormalMeter = false;//stub
             if (isNormalMeter || isREAccount)
             {
                 ChartDataModel cachedData = GetCachedChartData(accNum);
@@ -1125,6 +1126,8 @@ namespace myTNB.Dashboard
 
             if (!isNormalMeter)
             {
+                var toolTipData = (DataManager.DataManager.SharedInstance.CurrentChart as SmartChartDataModel).ToolTips?.Find(x => string.Compare(x.Type, "PROJECTEDCOST") > -1);
+                toolTipMessage = toolTipData?.Message;
                 _dashboardMainComponent._chartCompanionComponent.SetUsageMetric(smartMeterMetric);
                 _dashboardMainComponent._chartCompanionComponent.SetChartMode(DataManager.DataManager.SharedInstance.CurrentChartMode);
             }

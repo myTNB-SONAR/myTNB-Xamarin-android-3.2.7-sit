@@ -71,7 +71,7 @@ namespace myTNB.Dashboard.DashboardComponents
 
             InfoMsgLabel = new UILabel(new CGRect(0, 0, valueWidth, 16))
             {
-                Font = myTNBFont.MuseoSans12_300(),
+                Font = myTNBFont.MuseoSans12_500(),
                 TextColor = myTNBColor.SunGlow(),
                 TextAlignment = UITextAlignment.Right
             };
