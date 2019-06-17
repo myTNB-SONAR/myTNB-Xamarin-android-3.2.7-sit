@@ -1,4 +1,4 @@
-/* 
+﻿/* 
   Localizable.strings
   myTNB
 
@@ -325,6 +325,7 @@
 "Manage_VerifyMobileNumber"="For security purpose, please enter your mobile number to verify this device.";
 "Manage_MobileNumberNotVerifiedTitle" = "Verify Device";
 "Manage_MobileNumberVerifiedTitle" = "Update Mobile No.";
+"Manage_UpdateMobileNumberToast" = "Please take a moment to verify your device.";
 
 /*Manage Password*/
 "Manage_PasswordTitle"="Update Password";

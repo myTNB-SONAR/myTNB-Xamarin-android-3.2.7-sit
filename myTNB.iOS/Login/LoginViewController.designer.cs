@@ -32,27 +32,11 @@ namespace myTNB
 
         [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
-        UIKit.UILabel lblErrorMessage { get; set; }
-
-        [Outlet]
-        [GeneratedCode ("iOS Designer", "1.0")]
         UIKit.UILabel lblNoAccount { get; set; }
 
         [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
-        UIKit.UILabel lblNotifMessage { get; set; }
-
-        [Outlet]
-        [GeneratedCode ("iOS Designer", "1.0")]
         UIKit.UILabel lblWelcome { get; set; }
-
-        [Outlet]
-        [GeneratedCode ("iOS Designer", "1.0")]
-        UIKit.UIView viewErrorDialog { get; set; }
-
-        [Outlet]
-        [GeneratedCode ("iOS Designer", "1.0")]
-        UIKit.UIView viewNotifDialog { get; set; }
 
         void ReleaseDesignerOutlets ()
         {
@@ -76,34 +60,14 @@ namespace myTNB
                 lblAccountLogin = null;
             }
 
-            if (lblErrorMessage != null) {
-                lblErrorMessage.Dispose ();
-                lblErrorMessage = null;
-            }
-
             if (lblNoAccount != null) {
                 lblNoAccount.Dispose ();
                 lblNoAccount = null;
             }
 
-            if (lblNotifMessage != null) {
-                lblNotifMessage.Dispose ();
-                lblNotifMessage = null;
-            }
-
             if (lblWelcome != null) {
                 lblWelcome.Dispose ();
                 lblWelcome = null;
-            }
-
-            if (viewErrorDialog != null) {
-                viewErrorDialog.Dispose ();
-                viewErrorDialog = null;
-            }
-
-            if (viewNotifDialog != null) {
-                viewNotifDialog.Dispose ();
-                viewNotifDialog = null;
             }
         }
     }

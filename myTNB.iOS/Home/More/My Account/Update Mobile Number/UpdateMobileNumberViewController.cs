@@ -11,7 +11,7 @@ using myTNB.Registration;
 
 namespace myTNB
 {
-    public partial class UpdateMobileNumberViewController : UIViewController
+    public partial class UpdateMobileNumberViewController : CustomUIViewController
     {
         public UpdateMobileNumberViewController(IntPtr handle) : base(handle)
         {
@@ -30,7 +30,6 @@ namespace myTNB
 
         public bool WillHideBackButton = false;
         public bool IsFromLogin = false;
-        bool isAnimating = false;
         string _navTitle;
 
         public override void ViewDidLoad()
@@ -42,8 +41,7 @@ namespace myTNB
 
             if (IsFromLogin)
             {
-                View.BringSubviewToFront(toastView);
-                ToastHelper.ShowToast(toastView, ref isAnimating);
+                DisplayToast("Manage_UpdateMobileNumberToast".Translate());
             }
         }
 

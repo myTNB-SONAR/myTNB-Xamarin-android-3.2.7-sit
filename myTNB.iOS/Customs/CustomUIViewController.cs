@@ -9,6 +9,7 @@ namespace myTNB
     {
         UIView _viewToast, _viewToastOverlay;
         UILabel _lblToastDetails;
+        bool _isAnimating;
 
         public CustomUIViewController(IntPtr handle) : base(handle)
         {
@@ -75,17 +76,20 @@ namespace myTNB
 
             _viewToast.Hidden = false;
             _viewToastOverlay.Hidden = false;
+            if (!_isAnimating)
+            {
 #pragma warning disable XI0001 // Notifies you with advices on how to use Apple APIs
-            UIView.Animate(0.3, 0.3, UIViewAnimationOptions.CurveEaseOut, () =>
-             {
-                 _viewToast.Frame = new CGRect(_viewToast.Frame.X
-                , 32, _viewToast.Frame.Width, size.Height + 32);
-             }, () =>
-             {
-                 DismissToast(5.0F);
-             });
-
+                UIView.Animate(0.3, 0.3, UIViewAnimationOptions.CurveEaseOut, () =>
+                 {
+                     _isAnimating = true;
+                     _viewToast.Frame = new CGRect(_viewToast.Frame.X
+                    , 32, _viewToast.Frame.Width, size.Height + 32);
+                 }, () =>
+                 {
+                     DismissToast(2.0F);
+                 });
 #pragma warning restore XI0001 // Notifies you with advices on how to use Apple APIs
+            }
         }
 
         void AddSwipeGestureForToast()
@@ -117,6 +121,7 @@ namespace myTNB
                , 0, _viewToast.Frame.Width, 0);
             }, () =>
             {
+                _isAnimating = false;
                 _viewToast.Hidden = true;
                 _viewToastOverlay.Hidden = true;
                 _viewToast.Layer.RemoveAllAnimations();

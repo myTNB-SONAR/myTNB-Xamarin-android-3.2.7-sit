@@ -14,16 +14,8 @@ namespace myTNB
     [Register ("UpdateMobileNumberViewController")]
     partial class UpdateMobileNumberViewController
     {
-        [Outlet]
-        [GeneratedCode ("iOS Designer", "1.0")]
-        UIKit.UIView toastView { get; set; }
-
         void ReleaseDesignerOutlets ()
         {
-            if (toastView != null) {
-                toastView.Dispose ();
-                toastView = null;
-            }
         }
     }
 }
