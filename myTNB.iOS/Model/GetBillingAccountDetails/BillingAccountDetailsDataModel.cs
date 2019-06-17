@@ -28,5 +28,12 @@
         public double amCustBal { set; get; }
         public string isError { set; get; }
         public string message { set; get; }
+
+        public double InvoiceAmountPayable { set; get; }
+        public double OpenSecurityDeposit { set; get; }
+        public double OpenStampDuty { set; get; }
+        public double OpenProcessingFee { set; get; }
+        public double OpenMeterCost { set; get; }
+        public double OpenChargesTotal { set; get; }
     }
 }

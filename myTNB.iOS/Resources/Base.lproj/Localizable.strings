@@ -119,6 +119,7 @@
 "Component_ViewUsageHistory"="View usage history";
 "Component_VsLastMonth"="Vs. last month";
 "Component_WelcomeToSmartMeter"="Welcome to your Smart Meter Dashboard.";
+"Component_WhyThisAmount" = "Why this amount?";
 
 /*Dashboard*/
 "Dashboard_AllAccounts"="All Accounts";
