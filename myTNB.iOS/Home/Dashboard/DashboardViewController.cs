@@ -15,7 +15,7 @@ using UIKit;
 
 namespace myTNB.Dashboard
 {
-    public partial class DashboardViewController : UIViewController
+    public partial class DashboardViewController : CustomUIViewController
     {
         public DashboardViewController(IntPtr handle) : base(handle)
         {
@@ -801,7 +801,20 @@ namespace myTNB.Dashboard
                 {
                     _dashboardMainComponent._billAndPaymentComponent._activity.Hide();
                 }
+
+                //Stub
+                _dashboardMainComponent._billAndPaymentComponent.DisplayInfoToolTip(string.Empty, DisplayToolTip);
             }
+        }
+
+        void DisplayToolTip()
+        {
+            DisplayCustomAlert("What is included in my bill?"
+                , "It includes your current month's bill plus other mandatory payments. you may check out Bills tab for a detailed view."
+                , new Dictionary<string, Action>() {
+                    { "Common_Gotit".Translate(), null },
+                    {"Dashboard_BringMeThere".Translate(), null }
+                });
         }
 
         /// <summary>

@@ -16,7 +16,7 @@ using UIKit;  namespace myTNB {
         readonly static UIColor _selectionGrey = new UIColor(red: 0.90f, green: 0.90f, blue: 0.90f, alpha: 1.0f);
         readonly static UIColor _selectionSemiTransparent = UIColor.FromRGBA(255, 255, 255, 60);
         readonly static UIColor _linesGray = new UIColor(red: 0.85f, green: 0.85f, blue: 0.85f, alpha: 1.0f);
-
+        readonly static UIColor _payneGray = new UIColor(red: 0.28f, green: 0.28f, blue: 0.29f, alpha: 1.0f);
         /// <summary>         /// A color with RGBA of (0.47, 0.19, 0.83, 1).         /// </summary>         public static UIColor GradientPurpleDarkElement
         {
             get
@@ -119,6 +119,14 @@ using UIKit;  namespace myTNB {
             get
             {
                 return _linesGray;
+            }
+        }
+
+        public static UIColor PayneGray
+        {
+            get
+            {
+                return _payneGray;
             }
         }
         /// <summary>

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using CoreGraphics;
 using UIKit;
@@ -92,6 +93,20 @@ namespace myTNB
             }
         }
 
+        public void DisplayCustomAlert(string title, string message, Action handler = null, string actionTitle = null)
+        {
+            ToastHelper.DisplayCustomAlert(title, message, handler, actionTitle);
+        }
+
+        public void DisplayCustomAlert(string title, string message, Dictionary<string, Action> ctaButtons)
+        {
+            ToastHelper.DisplayCustomAlert(title, message, ctaButtons);
+        }
+
+
+
+        #region Private Methods
+
         void AddSwipeGestureForToast()
         {
             if (_viewToastOverlay != null)
@@ -128,5 +143,7 @@ namespace myTNB
             });
 #pragma warning restore XI0001 // Notifies you with advices on how to use Apple APIs
         }
+
+        #endregion
     }
 }

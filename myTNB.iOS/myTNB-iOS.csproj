@@ -1811,6 +1811,7 @@
     <Compile Include="Helpers\Generic Line\GenericLine.cs" />
     <Compile Include="Model\UpdateNotification\UpdateNotificationModel.cs" />
     <Compile Include="Customs\CustomUIViewController.cs" />
+    <Compile Include="Customs\TextViewDelegate.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />
