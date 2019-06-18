@@ -39,6 +39,10 @@
     <EmbedAssembliesIntoApk>False</EmbedAssembliesIntoApk>
     <AndroidCreatePackagePerAbi>true</AndroidCreatePackagePerAbi>
     <AndroidSupportedAbis />
+    <AotAssemblies>false</AotAssemblies>
+    <EnableLLVM>false</EnableLLVM>
+    <BundleAssemblies>false</BundleAssemblies>
+    <MandroidI18n />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugSymbols>True</DebugSymbols>
@@ -621,6 +625,8 @@
     <Compile Include="Src\LogoutRate\Request\LogoutRequest.cs" />
     <Compile Include="Src\LogoutRate\Request\LogoutRequestV2.cs" />
     <Compile Include="Src\Maintenance\Activity\MaintenanceActivity.cs" />
+    <Compile Include="Src\Maintenance\MVP\MaintenanceContract.cs" />
+    <Compile Include="Src\Maintenance\MVP\MaintenancePresenter.cs" />
     <Compile Include="Src\MakePayment\Api\GetRegisteredCardsApi.cs" />
     <Compile Include="Src\MakePayment\Api\SubmitPaymentApi.cs" />
     <Compile Include="Src\MakePayment\Models\CreditCard.cs" />
