@@ -76,6 +76,7 @@ namespace myTNB
                 , 32, _viewToast.Frame.Width, size.Height + 32);
 
             _viewToast.Hidden = false;
+            View.BringSubviewToFront(_viewToast);
             _viewToastOverlay.Hidden = false;
             if (!_isAnimating)
             {

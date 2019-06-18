@@ -110,7 +110,7 @@ namespace myTNB.Dashboard.DashboardComponents
         {
             _btnViewBill = new UIButton(UIButtonType.Custom)
             {
-                Frame = new CGRect(17, _lblDate.Frame.GetMaxY() + 12, (_viewPaymentContainer.Frame.Width / 2) - 19, 48)
+                Frame = new CGRect(17, _lblDate.Frame.GetMaxY() + 18, (_viewPaymentContainer.Frame.Width / 2) - 19, 48)
             };
             _btnViewBill.Layer.CornerRadius = 4;
             _btnViewBill.Layer.BorderColor = MyTNBColor.FreshGreen.CGColor;
@@ -122,7 +122,7 @@ namespace myTNB.Dashboard.DashboardComponents
 
             _btnPay = new UIButton(UIButtonType.Custom)
             {
-                Frame = new CGRect(_btnViewBill.Frame.Width + 21, _lblDate.Frame.GetMaxY() + 12, (_viewPaymentContainer.Frame.Width / 2) - 19, 48)
+                Frame = new CGRect(_btnViewBill.Frame.Width + 21, _lblDate.Frame.GetMaxY() + 18, (_viewPaymentContainer.Frame.Width / 2) - 19, 48)
             };
             _btnPay.Layer.CornerRadius = 4;
             _btnPay.Layer.BackgroundColor = MyTNBColor.FreshGreen.CGColor;

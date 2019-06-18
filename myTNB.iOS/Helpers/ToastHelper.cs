@@ -137,6 +137,7 @@ namespace myTNB
             {
                 Editable = false,
                 ScrollEnabled = true,
+                Selectable = false,
                 TextAlignment = UITextAlignment.Justified,
                 AttributedText = mutableHTMLBody,
                 WeakLinkTextAttributes = linkAttributes.Dictionary
@@ -144,9 +145,9 @@ namespace myTNB
             txtViewDetails.ScrollIndicatorInsets = UIEdgeInsets.Zero;
 
             //Resize
-            CGSize size = txtViewDetails.SizeThatFits(new CGSize(width - 32, maxDescriptionHeight));
+            CGSize size = txtViewDetails.SizeThatFits(new CGSize(width - 24, maxDescriptionHeight));
             nfloat txtViewHeight = size.Height > maxDescriptionHeight ? maxDescriptionHeight : size.Height;
-            txtViewDetails.Frame = new CGRect(16, txtViewY, width - 32, txtViewHeight);
+            txtViewDetails.Frame = new CGRect(12, txtViewY, width - 24, txtViewHeight);
 
             UIView viewline = new UIView(new CGRect(0, txtViewDetails.Frame.Height + 32, width, 1))
             {
