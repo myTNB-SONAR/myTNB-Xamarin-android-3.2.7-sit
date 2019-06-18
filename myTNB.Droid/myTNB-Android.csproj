@@ -1050,6 +1050,29 @@
     <Compile Include="Src\AppLaunch\Async\MasterApiDBOperation.cs" />
     <Compile Include="Src\myTNBMenu\Async\SiteCorePromotioAPI.cs" />
     <Compile Include="Src\myTNBMenu\Async\UserNotificationAPI.cs" />
+    <Compile Include="Src\Notifications\Adapter\NotificationRecyclerAdapter.cs" />
+    <Compile Include="Src\Notifications\MVP\NotificationSimpleCallback.cs" />
+    <Compile Include="Src\Notifications\MVP\NotificationSwipeDeleteCallback.cs" />
+    <AndroidResource Include="Resources\drawable-hdpi\ic_action_edit.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\ic_action_Select.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\ic_header_cancel.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\ic_header_mark_read.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\ic_action_edit.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\ic_action_Select.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\ic_header_cancel.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\ic_header_mark_read.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_action_edit.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_action_Select.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_header_cancel.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_header_mark_read.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_action_edit.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_action_Select.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_header_cancel.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_header_mark_read.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\ic_action_edit.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\ic_action_Select.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\ic_header_cancel.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\ic_header_mark_read.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
