@@ -43,14 +43,9 @@ namespace myTNB_Android.Src.Maintenance.MVP
             cts = new CancellationTokenSource();
             #if DEBUG
                 var httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
-                var feedbackApi = RestService.For<IFeedbackApi>(httpClient);
                 var masterDataApi = RestService.For<GetMasterDataApi>(httpClient);
-                var getPhoneVerifyApi = RestService.For<GetPhoneVerifyStatusApi>(httpClient);
             #else
-                var api = RestService.For<INotificationApi>(Constants.SERVER_URL.END_POINT);
-                var feedbackApi = RestService.For<IFeedbackApi>(Constants.SERVER_URL.END_POINT);
                 var masterDataApi = RestService.For<GetMasterDataApi>(Constants.SERVER_URL.END_POINT);
-                var getPhoneVerifyApi = RestService.For<GetPhoneVerifyStatusApi>(Constants.SERVER_URL.END_POINT);
             #endif
             try
             {
