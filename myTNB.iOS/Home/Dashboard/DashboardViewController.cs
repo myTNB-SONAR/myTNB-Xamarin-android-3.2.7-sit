@@ -60,24 +60,31 @@ namespace myTNB.Dashboard
             //{
             //    PullDownTorefresh = PullDownTorefresh
             //}; removed pull down to refresh
-            NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
+            if (!DataManager.DataManager.SharedInstance.IsLoadingFromDashboard)
             {
-                InvokeOnMainThread(async () =>
+                if (DataManager.DataManager.SharedInstance.UserNotifications?.Count == 0)
                 {
-                    if (NetworkUtility.isReachable)
+                    NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
                     {
-                        await PushNotificationHelper.GetNotifications();
-                        if (_dashboardMainComponent._titleBarComponent != null)
+                        InvokeOnMainThread(async () =>
                         {
-                            _dashboardMainComponent._titleBarComponent.SetNotificationImage(PushNotificationHelper.GetNotificationImage());
-                        }
-                    }
-                    else
-                    {
-                        AlertHandler.DisplayNoDataAlert(this);
-                    }
-                });
-            });
+                            if (NetworkUtility.isReachable)
+                            {
+                                DataManager.DataManager.SharedInstance.IsLoadingFromDashboard = true;
+                                await PushNotificationHelper.GetNotifications();
+                                if (_dashboardMainComponent._titleBarComponent != null)
+                                {
+                                    _dashboardMainComponent._titleBarComponent.SetNotificationImage(PushNotificationHelper.GetNotificationImage());
+                                }
+                            }
+                            else
+                            {
+                                AlertHandler.DisplayNoDataAlert(this);
+                            }
+                        });
+                    });
+                }
+            }
         }
 
         public void NotificationDidChange(NSNotification notification)
