@@ -13,10 +13,8 @@ using myTNB.SQLite;
 using myTNB.DataManager;
 using System.Collections.Generic;
 using System.Diagnostics;
-using myTNB.Extensions;
 using CoreGraphics;
 using myTNB.Dashboard.DashboardComponents;
-using System.Drawing;
 
 namespace myTNB
 {
@@ -172,8 +170,8 @@ namespace myTNB
 
         internal void SetupSuperViewBackground()
         {
-            var startColor = myTNBColor.GradientPurpleDarkElement();
-            var endColor = myTNBColor.GradientPurpleLightElement();
+            var startColor = MyTNBColor.GradientPurpleDarkElement;
+            var endColor = MyTNBColor.GradientPurpleLightElement;
 
             var gradientLayer = new CAGradientLayer();
             gradientLayer.Colors = new[] { startColor.CGColor, endColor.CGColor };
@@ -253,8 +251,8 @@ namespace myTNB
                     {
                         Text = titleMsg,
                         TextAlignment = UITextAlignment.Center,
-                        TextColor = myTNBColor.SunGlow(),
-                        Font = myTNBFont.MuseoSans24_500()
+                        TextColor = MyTNBColor.SunGlow,
+                        Font = MyTNBFont.MuseoSans24_500
                     };
 
                     NSMutableParagraphStyle msgParagraphStyle = new NSMutableParagraphStyle
@@ -266,7 +264,7 @@ namespace myTNB
 
                     UIStringAttributes msgAttributes = new UIStringAttributes
                     {
-                        Font = myTNBFont.MuseoSans16_300(),
+                        Font = MyTNBFont.MuseoSans16_300,
                         ForegroundColor = UIColor.White,
                         BackgroundColor = UIColor.Clear,
                         ParagraphStyle = msgParagraphStyle
