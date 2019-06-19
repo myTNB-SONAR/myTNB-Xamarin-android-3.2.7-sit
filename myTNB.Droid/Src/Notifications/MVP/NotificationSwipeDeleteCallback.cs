@@ -24,27 +24,29 @@ namespace myTNB_Android.Src.Notifications.MVP
         private static float buttonWidth = 300;
         private static RecyclerView.ViewHolder currentItemViewHolder = null;
         private static RectF buttonInstance = null;
-        private static NotificationRecyclerAdapter adapter = null;
-        private Drawable deleteIcon;
-        private Drawable markReadIcon;
+        private Drawable mDeleteIcon;
+        private Drawable mReadIcon;
         private int intrinsicDeleteWidth;
         private int intrinsicDeleteHeight;
         private int intrinsicReadWidth;
         private int intrinsicReadHeight;
         private Context mContext;
+        private static NotificationContract.IView notificationViewListener;
 
-        public NotificationSwipeDeleteCallback(Context context,NotificationRecyclerAdapter mAdapter)
+        public NotificationSwipeDeleteCallback(NotificationContract.IView listener, Drawable deleteIcon, Drawable readIcon)
         {
-            adapter = mAdapter;
-            mContext = context;
+            notificationViewListener = listener;
+            mDeleteIcon = deleteIcon;// ContextCompat.GetDrawable(mContext,Resource.Drawable.ic_header_delete);
+            mReadIcon = readIcon;// ContextCompat.GetDrawable(mContext,Resource.Drawable.ic_header_mark_read);
+            SetIconsLayout();
+        }
 
-            deleteIcon = ContextCompat.GetDrawable(mContext,Resource.Drawable.ic_header_delete);
-            markReadIcon = ContextCompat.GetDrawable(mContext,Resource.Drawable.ic_header_mark_read);
-            intrinsicDeleteWidth = deleteIcon.IntrinsicWidth;
-            intrinsicDeleteHeight = deleteIcon.IntrinsicHeight;
-            intrinsicReadWidth = markReadIcon.IntrinsicWidth;
-            intrinsicReadHeight = markReadIcon.IntrinsicHeight;
-
+        private void SetIconsLayout()
+        {
+            intrinsicDeleteWidth = mDeleteIcon.IntrinsicWidth;
+            intrinsicDeleteHeight = mDeleteIcon.IntrinsicHeight;
+            intrinsicReadWidth = mReadIcon.IntrinsicWidth;
+            intrinsicReadHeight = mReadIcon.IntrinsicHeight;
             buttonWidth = intrinsicDeleteWidth * 3;
         }
 
@@ -60,21 +62,29 @@ namespace myTNB_Android.Src.Notifications.MVP
 
         public override void OnSwiped(RecyclerView.ViewHolder viewHolder, int direction)
         {
-            adapter.RemoveItem(viewHolder.AdapterPosition);
+            int notificationPos = viewHolder.AdapterPosition;
+            if (direction == ItemTouchHelper.Left)
+            {
+                notificationViewListener.DeleteNotification(notificationPos);
+            }
+            else
+            {
+                notificationViewListener.ReadNotification(notificationPos);
+            }
         }
 
-        public override int ConvertToAbsoluteDirection(int flags, int layoutDirection)
-        {
-            if (swipeBack)
-            {
-                swipeBack = buttonShowedState != ButtonState.GONE;
-                if (buttonShowedState == ButtonState.LEFT_VISIBLE)
-                {
-                    return 0;
-                }
-            }
-            return base.ConvertToAbsoluteDirection(flags, layoutDirection);
-        }
+        //public override int ConvertToAbsoluteDirection(int flags, int layoutDirection)
+        //{
+        //    if (swipeBack)
+        //    {
+        //        swipeBack = buttonShowedState != ButtonState.GONE;
+        //        if (buttonShowedState == ButtonState.LEFT_VISIBLE)
+        //        {
+        //            return 0;
+        //        }
+        //    }
+        //    return base.ConvertToAbsoluteDirection(flags, layoutDirection);
+        //}
 
         private void DrawOptionIcon(int left, int top, int right, int bottom)
         {
@@ -106,8 +116,8 @@ namespace myTNB_Android.Src.Notifications.MVP
                 int deleteIconRight = itemView.Right - deleteIconMargin;
                 int deleteIconBottom = deleteIconTop + intrinsicDeleteHeight;
 
-                deleteIcon.SetBounds(deleteIconLeft, deleteIconTop, deleteIconRight, deleteIconBottom);
-                deleteIcon.Draw(c);
+                mDeleteIcon.SetBounds(deleteIconLeft, deleteIconTop, deleteIconRight, deleteIconBottom);
+                mDeleteIcon.Draw(c);
 
             }
             else
@@ -127,8 +137,8 @@ namespace myTNB_Android.Src.Notifications.MVP
                 int markReadIconRight = itemView.Left + markReadIconMargin + intrinsicReadWidth;
                 int markReadIconBottom = markReadIconTop + intrinsicReadHeight;
 
-                markReadIcon.SetBounds(markReadIconLeft, markReadIconTop, markReadIconRight, markReadIconBottom);
-                markReadIcon.Draw(c);
+                mReadIcon.SetBounds(markReadIconLeft, markReadIconTop, markReadIconRight, markReadIconBottom);
+                mReadIcon.Draw(c);
             }
 
             buttonInstance = null;
@@ -287,11 +297,12 @@ namespace myTNB_Android.Src.Notifications.MVP
                     {
                         if (buttonShowedState == ButtonState.LEFT_VISIBLE)
                         {
-                            //adapter.RemoveItem(viewHolder.AdapterPosition);
+                            notificationViewListener.ReadNotification(viewHolder.AdapterPosition);
                         }
                         else if (buttonShowedState == ButtonState.RIGHT_VISIBLE)
                         {
-                            adapter.RemoveItem(viewHolder.AdapterPosition);
+                            notificationViewListener.DeleteNotification(viewHolder.AdapterPosition);
+
                         }
                     }
                     buttonShowedState = ButtonState.GONE;

@@ -201,7 +201,7 @@ namespace myTNB_Android.Src.Notifications.Activity
             notificationRecyclerView.SetAdapter(notificationRecyclerAdapter);
             //NotificationSimpleCallback notificationSimpleCallback = new NotificationSimpleCallback(notificationRecyclerAdapter,0, ItemTouchHelper.Left);
 
-            notificationSwipeDelete = new NotificationSwipeDeleteCallback(this,notificationRecyclerAdapter);
+            notificationSwipeDelete = new NotificationSwipeDeleteCallback(this, GetDrawable(Resource.Drawable.ic_header_delete), GetDrawable(Resource.Drawable.ic_header_mark_read));
 
             itemTouchHelper = new ItemTouchHelper(notificationSwipeDelete);
             itemTouchHelper.AttachToRecyclerView(notificationRecyclerView);
@@ -679,6 +679,17 @@ namespace myTNB_Android.Src.Notifications.Activity
             }
 
             return selectedCount;
+        }
+
+        public void DeleteNotification(int notificationPos)
+        {
+            //notificationRecyclerAdapter.RemoveItem(notificationPos);
+
+        }
+
+        public void ReadNotification(int notificationPos)
+        {
+            //notificationRecyclerAdapter.ReadItem(notificationPos);
         }
     }
 }

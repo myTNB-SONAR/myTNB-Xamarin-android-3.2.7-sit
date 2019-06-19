@@ -119,6 +119,10 @@ namespace myTNB_Android.Src.Notifications.MVP
             string GetDeviceId();
 
             void updateNotificationTitle();
+
+            void DeleteNotification(int notificationPos);
+
+            void ReadNotification(int notificationPos);
         }
 
         public interface IUserActionsListener : IBasePresenter
