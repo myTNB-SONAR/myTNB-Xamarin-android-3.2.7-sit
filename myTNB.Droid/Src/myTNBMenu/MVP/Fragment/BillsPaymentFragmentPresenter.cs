@@ -414,39 +414,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
             cts = new CancellationTokenSource();
             //this.mView.ShowProgressDialog();
 #if STUB
-            var api = Substitute.For<IUsageHistoryApi>();
-
-            var detailedAccountApi = Substitute.For<IDetailedCustomerAccount>();
-
-            api.DoQuery(new Requests.UsageHistoryRequest(Constants.APP_CONFIG.API_KEY_ID)
-            {
-                AccountNum = accountSelected.AccNum
-            }, cts.Token)
-            .ReturnsForAnyArgs(
-                Task.Run<UsageHistoryResponse>(
-                    () => JsonConvert.DeserializeObject<UsageHistoryResponse>(this.mView.GetUsageHistoryStub())
-                ));
- 
-            detailedAccountApi.GetDetailedAccount(new AddAccount.Requests.AccountDetailsRequest()
-            {
-                apiKeyID = Constants.APP_CONFIG.API_KEY_ID,
-                CANum = accountSelected.AccNum
-            })
-            .ReturnsForAnyArgs(
-                Task.Run<AccountDetailsResponse>(
-                    () => JsonConvert.DeserializeObject<AccountDetailsResponse>(this.mView.GetAccountDetailsStub(accountSelected.AccNum))
-                ));
-
-
-            api.GetDetailedAccount(new AddAccount.Requests.AccountDetailsRequest()
-            {
-                apiKeyID = Constants.APP_CONFIG.API_KEY_ID,
-                CANum = accountSelected.AccNum
-            })
-            .ReturnsForAnyArgs(
-                Task.Run<AccountDetailsResponse>(
-                    () => JsonConvert.DeserializeObject<AccountDetailsResponse>(this.mView.GetAccountDetailsStub(accountSelected.AccNum))
-                ));
+            var detailedAccountApi = RestService.For<IDetailedCustomerAccount>(Constants.SERVER_URL.END_POINT);
 #elif DEBUG
             var httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
             var api = RestService.For<IUsageHistoryApi>(httpClient);

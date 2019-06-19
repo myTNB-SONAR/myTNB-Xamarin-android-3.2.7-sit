@@ -99,33 +99,15 @@ namespace myTNB_Android.Src.Login.MVP
 
             ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
 #if STUB
-            var httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
-            var api = Substitute.For<IAuthenticateUser>();
-            var notificationsApi = RestService.For<INotificationApi>(httpClient);
-            api.DoLogin(new UserAuthenticationRequest(Constants.APP_CONFIG.API_KEY_ID,
-               username,
-               password,
-               Constants.APP_CONFIG.API_KEY_ID,
-               Constants.APP_CONFIG.API_KEY_ID,
-               Constants.APP_CONFIG.API_KEY_ID,
-               Constants.APP_CONFIG.API_KEY_ID,
-               Constants.APP_CONFIG.API_KEY_ID,
-               Constants.APP_CONFIG.API_KEY_ID), cts.Token)
-               .ReturnsForAnyArgs(Task.Run<UserResponse>(
-                        () => JsonConvert.DeserializeObject<UserResponse>(this.mView.GetLoginResponseStubV4())
-                   ));
-
-
+            var api = RestService.For<IAuthenticateUser>(Constants.SERVER_URL.END_POINT);
+            var notificationsApi = RestService.For<INotificationApi>(Constants.SERVER_URL.END_POINT);
 #elif DEBUG
             var httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
             var api = RestService.For<IAuthenticateUser>(httpClient);
-
             var notificationsApi = RestService.For<INotificationApi>(httpClient);
-
 #else
             var api = RestService.For<IAuthenticateUser>(Constants.SERVER_URL.END_POINT);
-             var notificationsApi = RestService.For<INotificationApi>(Constants.SERVER_URL.END_POINT);
-            
+            var notificationsApi = RestService.For<INotificationApi>(Constants.SERVER_URL.END_POINT);
 #endif
             Log.Debug(TAG, "Awaiting...");
             try
@@ -252,11 +234,7 @@ namespace myTNB_Android.Src.Login.MVP
 
 
 #if STUB
-                        var customerAccountsApi = Substitute.For<GetCustomerAccounts>();
-                        customerAccountsApi.GetCustomerAccountV5(new AddAccount.Requests.GetCustomerAccountsRequest(Constants.APP_CONFIG.API_KEY_ID, userResponse.Data.User.UserId))
-                            .ReturnsForAnyArgs(Task.Run<AccountResponseV5>(
-                                    () => JsonConvert.DeserializeObject<AccountResponseV5>(this.mView.GetCustomerAccountsStubV5())
-                                ));
+                            var customerAccountsApi = RestService.For<GetCustomerAccounts>(Constants.SERVER_URL.END_POINT);
 
 #elif DEBUG
                             var newHttpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };

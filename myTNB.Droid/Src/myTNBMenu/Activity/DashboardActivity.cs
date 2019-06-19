@@ -36,6 +36,7 @@ using myTNB_Android.Src.ViewReceipt.Activity;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Runtime;
 
 namespace myTNB_Android.Src.myTNBMenu.Activity

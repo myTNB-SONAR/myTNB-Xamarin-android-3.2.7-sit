@@ -383,12 +383,7 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
 
 
 #if STUB
-                        var customerAccountsApi = Substitute.For<GetCustomerAccounts>();
-                        customerAccountsApi.GetCustomerAccountV5(new AddAccount.Requests.GetCustomerAccountsRequest(Constants.APP_CONFIG.API_KEY_ID, userResponse.Data.User.UserId))
-                            .ReturnsForAnyArgs(Task.Run<AccountResponseV5>(
-                                    () => JsonConvert.DeserializeObject<AccountResponseV5>(this.mView.GetCustomerAccountsStubV5())
-                                ));
-
+                        var customerAccountsApi = RestService.For<GetCustomerAccounts>(Constants.SERVER_URL.END_POINT);
 #elif DEBUG
                         var newHttpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
                         var customerAccountsApi = RestService.For<GetCustomerAccounts>(newHttpClient);

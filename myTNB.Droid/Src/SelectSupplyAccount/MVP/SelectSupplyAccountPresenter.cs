@@ -73,67 +73,8 @@ namespace myTNB_Android.Src.SelectSupplyAccount.MVP
                 this.mView.ShowProgressDialog();
             }
 #if STUB
-            var api = Substitute.For<IUsageHistoryApi>();
-            var detailedAccountApi = Substitute.For<IDetailedCustomerAccount>();
-
-            api.DoQuery(new myTNBMenu.Requests.UsageHistoryRequest(Constants.APP_CONFIG.API_KEY_ID) {
-                AccountNum = customerBillingAccount.AccNum
-            }, cts.Token)
-            .ReturnsForAnyArgs(
-                Task.Run<UsageHistoryResponse>(
-                    () => JsonConvert.DeserializeObject<UsageHistoryResponse>(this.mView.GetUsageHistoryStub())
-                ));
-
-            detailedAccountApi.GetDetailedAccount(new AddAccount.Requests.AccountDetailsRequest()
-            {
-                apiKeyID = Constants.APP_CONFIG.API_KEY_ID,
-                CANum = customerBillingAccount.AccNum
-            })
-            .ReturnsForAnyArgs(
-                Task.Run<AccountDetailsResponse>(
-                    () => JsonConvert.DeserializeObject<AccountDetailsResponse>(this.mView.GetAccountDetailsStub(customerBillingAccount.AccNum))
-                ));
-
-
-            api.GetDetailedAccount(new AddAccount.Requests.AccountDetailsRequest()
-            {
-                apiKeyID = Constants.APP_CONFIG.API_KEY_ID,
-                CANum = customerBillingAccount.AccNum
-            })
-            .ReturnsForAnyArgs(
-                Task.Run<AccountDetailsResponse>(
-                    () => JsonConvert.DeserializeObject<AccountDetailsResponse>(this.mView.GetAccountDetailsStub(customerBillingAccount.AccNum))
-                ));
-
-            //api.GetDetailedAccount(new AddAccount.Requests.AccountDetailsRequest()
-            //{
-            //    apiKeyID = Constants.APP_CONFIG.API_KEY_ID,
-            //    CANum = "220163099904"
-            //})
-            //    .ReturnsForAnyArgs(
-            //        Task.Run<AccountDetailsResponse>(
-            //            () => JsonConvert.DeserializeObject<AccountDetailsResponse>(this.mView.GetAccountDetailsStub("220163099904"))
-            //        ));
-
-            //api.GetDetailedAccount(new AddAccount.Requests.AccountDetailsRequest()
-            //{
-            //    apiKeyID = Constants.APP_CONFIG.API_KEY_ID,
-            //    CANum = "220223313703"
-            //})
-            //.ReturnsForAnyArgs(
-            //    Task.Run<AccountDetailsResponse>(
-            //        () => JsonConvert.DeserializeObject<AccountDetailsResponse>(this.mView.GetAccountDetailsStub("220223313703"))
-            //    ));
-
-            //api.GetDetailedAccount(new AddAccount.Requests.AccountDetailsRequest()
-            //{
-            //    apiKeyID = Constants.APP_CONFIG.API_KEY_ID,
-            //    CANum = "220595158104"
-            //})
-            //.ReturnsForAnyArgs(
-            //    Task.Run<AccountDetailsResponse>(
-            //        () => JsonConvert.DeserializeObject<AccountDetailsResponse>(this.mView.GetAccountDetailsStub("220595158104"))
-            //    ));
+            var api = RestService.For<IUsageHistoryApi>(Constants.SERVER_URL.END_POINT);
+            var detailedAccountApi = RestService.For<IDetailedCustomerAccount>(Constants.SERVER_URL.END_POINT);
 #elif DEBUG
             var httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
             var api = RestService.For<IUsageHistoryApi>(httpClient);
