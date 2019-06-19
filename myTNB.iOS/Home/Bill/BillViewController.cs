@@ -4,7 +4,6 @@ using myTNB.Dashboard.DashboardComponents;
 using System.Threading.Tasks;
 using myTNB.Model;
 using myTNB.Home.Bill;
-using CoreGraphics;
 using System.Globalization;
 using myTNB.DataManager;
 using Foundation;
@@ -87,18 +86,14 @@ namespace myTNB
 
         void InitializeValues()
         {
-            InitializedSubviews();
-            titleBarComponent.SetBackVisibility(!IsFromNavigation);
-            DataManager.DataManager.SharedInstance.selectedTag = 0;
-            if (_lblAmount != null)
-            {
-                _lblAmount.Text = TNBGlobal.DEFAULT_VALUE;
-                RefitAmountToWidget();
-            }
-
             isREAccount = DataManager.DataManager.SharedInstance.SelectedAccount.IsREAccount;
             isOwnedAccount = DataManager.DataManager.SharedInstance.SelectedAccount.IsOwnedAccount;
             isBcrmAvailable = DataManager.DataManager.SharedInstance.IsBcrmAvailable;
+
+            InitializedSubviews();
+            titleBarComponent.SetBackVisibility(!IsFromNavigation);
+            DataManager.DataManager.SharedInstance.selectedTag = 0;
+            SetChargesValue(null, null, TNBGlobal.DEFAULT_VALUE);
 
             SetDetailsView();
 
@@ -112,7 +107,6 @@ namespace myTNB
             {
                 _billingHistory = new BillHistoryResponseModel();
                 _paymentHistory = new PaymentHistoryResponseModel();
-                InitializeBillTableView();
                 SetupContent();
                 ToggleButtons();
             }
@@ -190,11 +184,12 @@ namespace myTNB
             }
             if (_lblTotalDueAmountTitle != null)
             {
-                _lblTotalDueAmountTitle.Text = isREAccount ? "Bill_PaymentAdviceAmount".Translate() : "Common_TotalAmountDue".Translate();
+                _lblTotalDueAmountTitle.Text = isREAccount ? "Bill_MyEarnings".Translate() : "Common_TotalAmountDue".Translate();
             }
-
-            _lblTotalDueAmountTitle.Text = isREAccount ? "Bill_MyEarnings".Translate() : "Common_TotalAmountDue".Translate();
-            _btnBills.SetTitle(isREAccount ? "Bill_PaymentAdviceInfo".Translate() : "Bill_Bills".Translate(), UIControlState.Normal);
+            if (_btnBills != null)
+            {
+                _btnBills.SetTitle(isREAccount ? "Bill_PaymentAdviceInfo".Translate() : "Bill_Bills".Translate(), UIControlState.Normal);
+            }
         }
 
         void SetButtonPayEnable()
@@ -343,7 +338,7 @@ namespace myTNB
             {
                 _lblAddress.Text = DataManager.DataManager.SharedInstance.SelectedAccount?.accountStAddress;
                 RefitAccountDetailsToWidget();
-                _headerView.Frame = new CGRect(0, 0, View.Frame.Width, GetHeaderViewHeight());
+                _headerView.Frame = GetHeaderFrame();
                 NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
                 {
                     InvokeOnMainThread(async () =>
@@ -359,23 +354,20 @@ namespace myTNB
                         var payable = !isREAccount ? payableAmt : ChartHelper.UpdateValueForRE(payableAmt);
                         var balance = !isREAccount ? balanceAmt : ChartHelper.UpdateValueForRE(balanceAmt);
 
-                        _lblCurrentChargesValue.Text = string.Format("{0} {1}", TNBGlobal.UNIT_CURRENCY, current.ToString("N2", CultureInfo.InvariantCulture));
-                        _lblOutstandingChargesValue.Text = string.Format("{0} {1}", TNBGlobal.UNIT_CURRENCY, outstanding.ToString("N2", CultureInfo.InvariantCulture));
-                        _lblAmount.Text = balance.ToString("N2", CultureInfo.InvariantCulture);
-                        RefitAmountToWidget();
+                        SetChargesValue(string.Format("{0} {1}", TNBGlobal.UNIT_CURRENCY, current.ToString("N2", CultureInfo.InvariantCulture))
+                            , string.Format("{0} {1}", TNBGlobal.UNIT_CURRENCY, outstanding.ToString("N2", CultureInfo.InvariantCulture))
+                            , balance.ToString("N2", CultureInfo.InvariantCulture));
                     });
                 });
             }
             else
             {
                 _lblAddress.Text = string.Empty;
-                _lblCurrentChargesValue.Text = string.Format("{0} {1}", TNBGlobal.UNIT_CURRENCY, TNBGlobal.DEFAULT_VALUE);
-                _lblOutstandingChargesValue.Text = string.Format("{0} {1}", TNBGlobal.UNIT_CURRENCY, TNBGlobal.DEFAULT_VALUE);
-                _lblAmount.Text = TNBGlobal.DEFAULT_VALUE;
-                RefitAmountToWidget();
+                SetChargesValue(string.Format("{0} {1}", TNBGlobal.UNIT_CURRENCY, TNBGlobal.DEFAULT_VALUE)
+                    , string.Format("{0} {1}", TNBGlobal.UNIT_CURRENCY, TNBGlobal.DEFAULT_VALUE)
+                    , TNBGlobal.DEFAULT_VALUE);
             }
 
-            _imgLeaf.Hidden = !isREAccount;
             _lblHistoryHeader.Text = isREAccount ? "Bill_REPaymentSectionHeader".Translate() : "Bill_PaymentSectionHeader".Translate();
         }
         /// <summary>
@@ -537,7 +529,6 @@ namespace myTNB
 
         void InitializedSubviews()
         {
-            //BillTableView Header
             _headerView = new UIView()
             {
                 BackgroundColor = UIColor.White
@@ -545,10 +536,17 @@ namespace myTNB
             billTableView.SeparatorStyle = UITableViewCellSeparatorStyle.None;
             billTableView.TableHeaderView = _headerView;
 
-            CreateNormalView();
+            if (isREAccount)
+            {
+                CreateREView();
+            }
+            else
+            {
+                CreateNormalView();
+            }
             _headerView.AddSubviews(new UIView[] { _viewAccountDetails, _viewCharges, _viewHistory });
             _lblHistoryHeader.Text = isREAccount ? "Bill_REPaymentSectionHeader".Translate() : "Bill_PaymentSectionHeader".Translate();
-            _headerView.Frame = new CGRect(0, 0, View.Frame.Width, GetHeaderViewHeight());
+            _headerView.Frame = GetHeaderFrame();
             _btnPay.Enabled = false;
             _btnPay.BackgroundColor = MyTNBColor.SilverChalice;
         }
