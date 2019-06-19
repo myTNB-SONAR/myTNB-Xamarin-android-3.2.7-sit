@@ -1,18 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
+﻿using Android.Content;
 using Android.OS;
-using Android.Runtime;
-using Android.Views;
 using Android.Widget;
 using CheeseBind;
-using Toolbar = Android.Support.V7.Widget.Toolbar;
 using myTNB_Android.Src.Utils;
+using System;
 using System.Runtime;
+using Toolbar = Android.Support.V7.Widget.Toolbar;
 
 namespace myTNB_Android.Src.Base.Activity
 {
@@ -34,7 +27,7 @@ namespace myTNB_Android.Src.Base.Activity
             // Add else to manually find the view of toolbar which is using Toolbar = Android.Support.V7.Widget.Toolbar;
             if (toolbar != null)
             {
-                
+
                 SetSupportActionBar(toolbar);
                 SupportActionBar.SetDisplayHomeAsUpEnabled(ShowBackArrowIndicator());
                 SupportActionBar.SetDisplayShowHomeEnabled(true);
@@ -45,7 +38,7 @@ namespace myTNB_Android.Src.Base.Activity
                     title.Text = ToolbarTitle();
                     SupportActionBar.SetDisplayShowTitleEnabled(false);
                 }
-                    
+
 
             }
             else
@@ -71,7 +64,7 @@ namespace myTNB_Android.Src.Base.Activity
         /// </summary>
         /// <returns>Boolean value</returns>
         public abstract Boolean ShowCustomToolbarTitle();
-        
+
         /// <summary>
         /// The activity title
         /// </summary>
@@ -100,12 +93,15 @@ namespace myTNB_Android.Src.Base.Activity
             return true;
         }
 
-        public virtual void SetToolBarTitle(string title){
-            if(toolbar != null)
+        public virtual void SetToolBarTitle(string title)
+        {
+            if (toolbar != null)
             {
                 TextView txtTitle = toolbar?.FindViewById<TextView>(Resource.Id.toolbar_title);
                 txtTitle.Text = title;
-            }else{
+            }
+            else
+            {
                 toolbar = FindViewById<Toolbar>(Resource.Id.toolbar);
                 TextView txtTitle = toolbar?.FindViewById<TextView>(Resource.Id.toolbar_title);
                 txtTitle.Text = title;

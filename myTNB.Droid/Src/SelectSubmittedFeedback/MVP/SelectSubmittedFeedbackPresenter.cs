@@ -1,23 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-using System.Threading;
-using System.Net.Http;
-using myTNB_Android.Src.Utils;
+﻿using Android.Content;
 using myTNB_Android.Src.Base.Api;
-using Refit;
-using myTNB_Android.Src.Database.Model;
-using System.Net;
 using myTNB_Android.Src.Base.Models;
+using myTNB_Android.Src.Database.Model;
+using myTNB_Android.Src.Utils;
 using Newtonsoft.Json;
+using Refit;
+using System;
+using System.Net;
+using System.Net.Http;
+using System.Threading;
 
 namespace myTNB_Android.Src.SelectSubmittedFeedback.MVP
 {
@@ -28,7 +19,7 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.MVP
         private ISharedPreferences mSharedPref;
         CancellationTokenSource cts;
 
-        public SelectSubmittedFeedbackPresenter(SelectSubmittedFeedbackContract.IView mView , ISharedPreferences mSharedPref)
+        public SelectSubmittedFeedbackPresenter(SelectSubmittedFeedbackContract.IView mView, ISharedPreferences mSharedPref)
         {
             this.mView = mView;
             this.mView.SetPresenter(this);
@@ -160,7 +151,7 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.MVP
 
                     //if (mView.IsActive())
                     //{
-                        this.mView.HideProgressDialog();
+                    this.mView.HideProgressDialog();
                     //}
 
                     if (!submittedFeedbackResponse.Data.IsError)
@@ -177,7 +168,7 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.MVP
                     }
                     else
                     {
-                       
+
                         this.mView.ShowRetryOptionsCancelledException(null);
                     }
                 }
@@ -193,7 +184,7 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.MVP
 
                     //if (mView.IsActive())
                     //{
-                        this.mView.HideProgressDialog();
+                    this.mView.HideProgressDialog();
                     //}
 
                     if (!submittedFeedbackResponse.Data.IsError)
@@ -213,8 +204,8 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.MVP
                         this.mView.ShowRetryOptionsCancelledException(null);
                     }
                 }
-               
-                
+
+
             }
             catch (System.OperationCanceledException e)
             {

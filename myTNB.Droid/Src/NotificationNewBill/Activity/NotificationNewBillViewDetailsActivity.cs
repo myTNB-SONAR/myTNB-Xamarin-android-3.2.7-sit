@@ -1,19 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
+﻿
 using Android.App;
 using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-using myTNB_Android.Src.Base.Activity;
 using Android.Content.PM;
-using myTNB_Android.Src.myTNBMenu.Models;
+using Android.OS;
+using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.myTNBMenu.Fragments.BillsMenu;
-using Newtonsoft.Json;
+using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.Utils;
 
 namespace myTNB_Android.Src.NotificationNewBill.Activity
@@ -39,9 +31,11 @@ namespace myTNB_Android.Src.NotificationNewBill.Activity
         {
             base.OnCreate(savedInstanceState);
             Bundle extras = Intent.Extras;
-            if (extras != null) {
+            if (extras != null)
+            {
                 //selectedAccount = JsonConvert.DeserializeObject<AccountData>(extras.GetString(Constants.SELECTED_ACCOUNT));
-                if (extras.ContainsKey(Constants.SELECTED_ACCOUNT)) {
+                if (extras.ContainsKey(Constants.SELECTED_ACCOUNT))
+                {
                     selectedAccount = DeSerialze<AccountData>(extras.GetString(Constants.SELECTED_ACCOUNT));
                 }
             }

@@ -1,16 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-using Newtonsoft.Json;
-using myTNB_Android.Src.Base.Request;
 
 namespace myTNB_Android.Src.Base.Request
 {
@@ -50,7 +39,7 @@ namespace myTNB_Android.Src.Base.Request
         public string Name { get; set; }
 
         [JsonProperty("phoneNum")]
-        public string PhoneNum { get; set;}
+        public string PhoneNum { get; set; }
 
         [JsonProperty("email")]
         public string Email { get; set; }

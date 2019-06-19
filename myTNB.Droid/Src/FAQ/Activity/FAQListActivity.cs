@@ -1,25 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
+﻿using Android.App;
 using Android.Content;
+using Android.Content.PM;
 using Android.OS;
-using Android.Runtime;
+using Android.Support.V7.Widget;
 using Android.Views;
 using Android.Widget;
-using myTNB_Android.Src.Base.Activity;
-using Android.Content.PM;
-using myTNB_Android.Src.FAQ.MVP;
-using System.Threading.Tasks;
-using myTNB.SitecoreCMS.Models;
-using myTNB_Android.Src.FAQ.Adapter;
-using Android.Support.V7.Widget;
 using CheeseBind;
+using myTNB.SitecoreCMS.Models;
 using myTNB.SQLite.SQLiteDataManager;
-using myTNB_Android.Src.Utils.Custom.ProgressDialog;
+using myTNB_Android.Src.Base.Activity;
+using myTNB_Android.Src.FAQ.Adapter;
+using myTNB_Android.Src.FAQ.MVP;
 using myTNB_Android.Src.Utils;
+using myTNB_Android.Src.Utils.Custom.ProgressDialog;
+using System;
+using System.Collections.Generic;
 using System.Runtime;
 
 namespace myTNB_Android.Src.FAQ.Activity
@@ -58,7 +53,9 @@ namespace myTNB_Android.Src.FAQ.Activity
                 {
                     loadingOverlay.Dismiss();
                 }
-            } catch(Exception e) {
+            }
+            catch (Exception e)
+            {
                 Utility.LoggingNonFatalError(e);
             }
         }
@@ -103,7 +100,7 @@ namespace myTNB_Android.Src.FAQ.Activity
                         if (!string.IsNullOrEmpty(FAQ_ID))
                         {
                             int index = 0;
-                            foreach(FAQsEntity entity in items)
+                            foreach (FAQsEntity entity in items)
                             {
                                 if (entity.ID.Equals(FAQ_ID))
                                 {
@@ -126,11 +123,12 @@ namespace myTNB_Android.Src.FAQ.Activity
         public void ShowProgressBar()
         {
             //mProgressBar.Visibility = ViewStates.Visible;
-            try {
-            if(loadingOverlay != null)
+            try
             {
-                loadingOverlay.Show();
-            }
+                if (loadingOverlay != null)
+                {
+                    loadingOverlay.Show();
+                }
             }
             catch (Exception e)
             {
@@ -159,7 +157,8 @@ namespace myTNB_Android.Src.FAQ.Activity
                 mProgressBar.Visibility = ViewStates.Gone;
                 ShowProgressBar();
                 this.userActionsListener.GetSavedFAQTimeStamp();
-            } catch (Exception e)
+            }
+            catch (Exception e)
             {
                 Utility.LoggingNonFatalError(e);
             }
@@ -177,32 +176,33 @@ namespace myTNB_Android.Src.FAQ.Activity
 
         public void ShowFAQTimestamp(bool success)
         {
-            try {
-            if (success)
+            try
             {
-                FAQsParentEntity wtManager = new FAQsParentEntity();
-                List<FAQsParentEntity> items = wtManager.GetAllItems();
-                if (items != null)
+                if (success)
                 {
-                    FAQsParentEntity entity = items[0];
-                    if (entity != null)
+                    FAQsParentEntity wtManager = new FAQsParentEntity();
+                    List<FAQsParentEntity> items = wtManager.GetAllItems();
+                    if (items != null)
                     {
-                        if (!entity.Timestamp.Equals(mSavedTimeStamp))
+                        FAQsParentEntity entity = items[0];
+                        if (entity != null)
                         {
-                            this.userActionsListener.OnGetFAQs();
-                        }
-                        else
-                        {
-                            ShowFAQ(true);
+                            if (!entity.Timestamp.Equals(mSavedTimeStamp))
+                            {
+                                this.userActionsListener.OnGetFAQs();
+                            }
+                            else
+                            {
+                                ShowFAQ(true);
+                            }
                         }
                     }
-                }
 
-            }
-            else
-            {
-                ShowFAQ(false);
-            }
+                }
+                else
+                {
+                    ShowFAQ(false);
+                }
             }
             catch (Exception e)
             {

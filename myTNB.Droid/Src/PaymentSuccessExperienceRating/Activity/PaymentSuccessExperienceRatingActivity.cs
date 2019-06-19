@@ -1,23 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
+﻿using AFollestad.MaterialDialogs;
 using Android.App;
 using Android.Content;
+using Android.Content.PM;
 using Android.OS;
-using Android.Runtime;
+using Android.Support.Design.Widget;
 using Android.Views;
 using Android.Widget;
-using Android.Content.PM;
-using myTNB_Android.Src.Base.Activity;
-using Android.Support.Design.Widget;
 using CheeseBind;
-using myTNB_Android.Src.Utils;
+using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.PaymentSuccessExperienceRating.MVP;
 using myTNB_Android.Src.PaymentSuccessExperienceRating.Response;
-using myTNB_Android.Src.Database.Model;
-using AFollestad.MaterialDialogs;
+using myTNB_Android.Src.Utils;
+using System;
 using System.Runtime;
 
 namespace myTNB_Android.Src.PaymentSuccessExperienceRating.Activity
@@ -73,38 +67,39 @@ namespace myTNB_Android.Src.PaymentSuccessExperienceRating.Activity
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-            try {
-            mPresenter = new PaymentSuccessExperienceRatingPresenter(this);
-
-            Bundle extras = Intent.Extras;
-            if (extras != null && extras.ContainsKey(Constants.SELECTED_RATING))
+            try
             {
-                ratingFromServer = extras.GetInt(Constants.SELECTED_RATING , 1);
-                ratingBar.Rating = (float)ratingFromServer;
-                CheckRatingText((int)ratingFromServer);
+                mPresenter = new PaymentSuccessExperienceRatingPresenter(this);
+
+                Bundle extras = Intent.Extras;
+                if (extras != null && extras.ContainsKey(Constants.SELECTED_RATING))
+                {
+                    ratingFromServer = extras.GetInt(Constants.SELECTED_RATING, 1);
+                    ratingBar.Rating = (float)ratingFromServer;
+                    CheckRatingText((int)ratingFromServer);
+                }
+
+                // Create your application here
+                TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutComments);
+                TextViewUtils.SetMuseoSans300Typeface(txtComments, txtContentInfo);
+                TextViewUtils.SetMuseoSans500Typeface(txtTitleInfo);
+                TextViewUtils.SetMuseoSans500Typeface(btnSubmit);
+
+
+                ratingBar.RatingBarChange += RatingBar_RatingBarChange;
+
+                btnSubmit.Click += delegate
+                {
+                    OnValidateSubmitRating();
+                };
+
+                progress = new MaterialDialog.Builder(this)
+                   .Title(GetString(Resource.String.payment_success_experience_rating_title))
+                   .Content(GetString(Resource.String.payment_success_experience_rating_message))
+                   .Progress(true, 0)
+                   .Cancelable(false)
+                   .Build();
             }
-
-            // Create your application here
-            TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutComments);
-            TextViewUtils.SetMuseoSans300Typeface(txtComments , txtContentInfo);
-            TextViewUtils.SetMuseoSans500Typeface(txtTitleInfo);
-            TextViewUtils.SetMuseoSans500Typeface(btnSubmit);
-                        
-
-            ratingBar.RatingBarChange += RatingBar_RatingBarChange;
-
-            btnSubmit.Click += delegate
-            {
-                OnValidateSubmitRating();
-            };
-
-            progress = new MaterialDialog.Builder(this)
-               .Title(GetString(Resource.String.payment_success_experience_rating_title))
-               .Content(GetString(Resource.String.payment_success_experience_rating_message))
-               .Progress(true, 0)
-               .Cancelable(false)
-               .Build();
-        }
             catch (Exception ex)
             {
                 Utility.LoggingNonFatalError(ex);
@@ -113,12 +108,13 @@ namespace myTNB_Android.Src.PaymentSuccessExperienceRating.Activity
 
         private void RatingBar_RatingBarChange(object sender, RatingBar.RatingBarChangeEventArgs e)
         {
-            try {
-            if (e.FromUser)
+            try
             {
-                ratingBar.Rating = e.Rating;
-                CheckRatingText((int)e.Rating);
-            }
+                if (e.FromUser)
+                {
+                    ratingBar.Rating = e.Rating;
+                    CheckRatingText((int)e.Rating);
+                }
             }
             catch (Exception ex)
             {
@@ -128,31 +124,32 @@ namespace myTNB_Android.Src.PaymentSuccessExperienceRating.Activity
 
         private void CheckRatingText(int Rating)
         {
-            try {
-            if (Rating == 0)
+            try
             {
-                txtContentInfo.Text = GetString(Resource.String.payment_success_experience_rating_txt_content_0);
-            }
-            else if (Rating == 1)
-            {
-                txtContentInfo.Text = GetString(Resource.String.payment_success_experience_rating_txt_content_1);
-            }
-            else if (Rating == 2)
-            {
-                txtContentInfo.Text = GetString(Resource.String.payment_success_experience_rating_txt_content_2);
-            }
-            else if (Rating == 3)
-            {
-                txtContentInfo.Text = GetString(Resource.String.payment_success_experience_rating_txt_content_3);
-            }
-            else if (Rating == 4)
-            {
-                txtContentInfo.Text = GetString(Resource.String.payment_success_experience_rating_txt_content_4);
-            }
-            else if (Rating == 5)
-            {
-                txtContentInfo.Text = GetString(Resource.String.payment_success_experience_rating_txt_content_5);
-            }
+                if (Rating == 0)
+                {
+                    txtContentInfo.Text = GetString(Resource.String.payment_success_experience_rating_txt_content_0);
+                }
+                else if (Rating == 1)
+                {
+                    txtContentInfo.Text = GetString(Resource.String.payment_success_experience_rating_txt_content_1);
+                }
+                else if (Rating == 2)
+                {
+                    txtContentInfo.Text = GetString(Resource.String.payment_success_experience_rating_txt_content_2);
+                }
+                else if (Rating == 3)
+                {
+                    txtContentInfo.Text = GetString(Resource.String.payment_success_experience_rating_txt_content_3);
+                }
+                else if (Rating == 4)
+                {
+                    txtContentInfo.Text = GetString(Resource.String.payment_success_experience_rating_txt_content_4);
+                }
+                else if (Rating == 5)
+                {
+                    txtContentInfo.Text = GetString(Resource.String.payment_success_experience_rating_txt_content_5);
+                }
             }
             catch (Exception ex)
             {
@@ -162,16 +159,17 @@ namespace myTNB_Android.Src.PaymentSuccessExperienceRating.Activity
 
         public void OnShowRating(int value)
         {
-            
+
         }
 
         public void ShowProgressDialog()
         {
-            try {
-            if (progress != null && !progress.IsShowing)
+            try
             {
-                progress.Show();
-            }
+                if (progress != null && !progress.IsShowing)
+                {
+                    progress.Show();
+                }
             }
             catch (Exception ex)
             {
@@ -181,11 +179,12 @@ namespace myTNB_Android.Src.PaymentSuccessExperienceRating.Activity
 
         public void HideProgressDialog()
         {
-            try {
-            if (progress != null && progress.IsShowing)
+            try
             {
-                progress.Dismiss();
-            }
+                if (progress != null && progress.IsShowing)
+                {
+                    progress.Dismiss();
+                }
             }
             catch (Exception ex)
             {
@@ -195,13 +194,14 @@ namespace myTNB_Android.Src.PaymentSuccessExperienceRating.Activity
 
         public void ShowSubmitRatingSuccess(SubmitExperienceRatingResponse response)
         {
-            try {
-            mSubmitRatingDialog = new MaterialDialog.Builder(this)
-                       .Title(GetString(Resource.String.payment_success_experience_rating_thank_you))
-                       .Content(GetString(Resource.String.payment_success_experience_rating_thank_you_message))
-                       .Cancelable(false)
-                       .PositiveText("Ok")
-                       .OnPositive((dialog, which) => this.Finish()).Show();
+            try
+            {
+                mSubmitRatingDialog = new MaterialDialog.Builder(this)
+                           .Title(GetString(Resource.String.payment_success_experience_rating_thank_you))
+                           .Content(GetString(Resource.String.payment_success_experience_rating_thank_you_message))
+                           .Cancelable(false)
+                           .PositiveText("Ok")
+                           .OnPositive((dialog, which) => this.Finish()).Show();
             }
             catch (Exception ex)
             {
@@ -211,14 +211,15 @@ namespace myTNB_Android.Src.PaymentSuccessExperienceRating.Activity
 
         public void ShowSubmitRatingError(string error)
         {
-            try {
-            mSubmitRatingDialog = new MaterialDialog.Builder(this)
-                      .Title(GetString(Resource.String.payment_success_experience_rating_sorry))
-                      .Content(GetString(Resource.String.payment_success_experience_rating_sorry_message))
-                      .Cancelable(false)
-                      .PositiveText("Ok")
-                      .OnPositive((dialog, which) => mSubmitRatingDialog.Dismiss()).Show();
-        }
+            try
+            {
+                mSubmitRatingDialog = new MaterialDialog.Builder(this)
+                          .Title(GetString(Resource.String.payment_success_experience_rating_sorry))
+                          .Content(GetString(Resource.String.payment_success_experience_rating_sorry_message))
+                          .Cancelable(false)
+                          .PositiveText("Ok")
+                          .OnPositive((dialog, which) => mSubmitRatingDialog.Dismiss()).Show();
+            }
             catch (Exception ex)
             {
                 Utility.LoggingNonFatalError(ex);
@@ -254,19 +255,20 @@ namespace myTNB_Android.Src.PaymentSuccessExperienceRating.Activity
 
         public void OnValidateSubmitRating()
         {
-            try {
-            string rating = ratingBar.Rating.ToString();
-            string ratingMsg = string.IsNullOrEmpty(txtComments.Text) ? "" : txtComments.Text;
-            string ratingFor = "PAY";
-
-            if(ratingBar.Rating == 0)
+            try
             {
-                ShowErrorMessage(GetString(Resource.String.error_empty_rating));
-                return;
-            }
+                string rating = ratingBar.Rating.ToString();
+                string ratingMsg = string.IsNullOrEmpty(txtComments.Text) ? "" : txtComments.Text;
+                string ratingFor = "PAY";
 
-            this.userActionsListener.SubmitRating(rating, ratingMsg, ratingFor);
-        }
+                if (ratingBar.Rating == 0)
+                {
+                    ShowErrorMessage(GetString(Resource.String.error_empty_rating));
+                    return;
+                }
+
+                this.userActionsListener.SubmitRating(rating, ratingMsg, ratingFor);
+            }
             catch (Exception ex)
             {
                 Utility.LoggingNonFatalError(ex);

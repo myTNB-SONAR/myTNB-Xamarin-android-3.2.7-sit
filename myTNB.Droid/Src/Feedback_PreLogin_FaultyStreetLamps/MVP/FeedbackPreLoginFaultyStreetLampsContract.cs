@@ -1,20 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
+﻿using Android.App;
 using Android.Content;
-using Android.OS;
+using Android.Locations;
 using Android.Runtime;
-using Android.Views;
-using Android.Widget;
+using myTNB_Android.Src.AppLaunch.Models;
+using myTNB_Android.Src.Base.Models;
 using myTNB_Android.Src.Base.MVP;
 using myTNB_Android.Src.Base.Request;
+using System.Collections.Generic;
 using System.Threading.Tasks;
-using myTNB_Android.Src.Base.Models;
-using myTNB_Android.Src.AppLaunch.Models;
-using Android.Locations;
 
 namespace myTNB_Android.Src.Feedback_PreLogin_FaultyStreetLamps.MVP
 {
@@ -207,7 +200,7 @@ namespace myTNB_Android.Src.Feedback_PreLogin_FaultyStreetLamps.MVP
             void ShowEmptyStateError();
 
         }
-        
+
         public interface IUserActionsListener : IBasePresenter
         {
             /// <summary>
@@ -257,7 +250,7 @@ namespace myTNB_Android.Src.Feedback_PreLogin_FaultyStreetLamps.MVP
             /// <param name="pole_no">string</param>
             /// <param name="feedback">string</param>
             /// <param name="attachedImages">List<paramref name="AttachedImage"/></param>
-            void OnSubmit(string deviceId, string fullname, string mobile_no, string email, FeedbackState feedbackState, string location , string pole_no, string feedback, List<AttachedImage> attachedImages);
+            void OnSubmit(string deviceId, string fullname, string mobile_no, string email, FeedbackState feedbackState, string location, string pole_no, string feedback, List<AttachedImage> attachedImages);
 
             /// <summary>
             /// Action to check empty fullname , mobile no , email ,location feedback
@@ -267,7 +260,7 @@ namespace myTNB_Android.Src.Feedback_PreLogin_FaultyStreetLamps.MVP
             /// <param name="email">string</param>
             /// <param name="location">string</param>
             /// <param name="feedback">string</param>
-            void CheckRequiredFields(string fullname, string mobile_no, string email, string location , string feedback, string state);
+            void CheckRequiredFields(string fullname, string mobile_no, string email, string location, string feedback, string state);
         }
     }
 }

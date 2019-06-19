@@ -1,17 +1,7 @@
-﻿using System;
+﻿using myTNB_Android.Src.myTNBMenu.Models;
+using SQLite;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-using SQLite;
-using myTNB_Android.Src.Utils;
-using myTNB_Android.Src.myTNBMenu.Models;
 
 namespace myTNB_Android.Src.Database.Model
 {
@@ -77,23 +67,23 @@ namespace myTNB_Android.Src.Database.Model
             //using (var db = new SQLiteConnection(Constants.DB_PATH))
             //{
             var db = DBHelper.GetSQLiteConnection();
-                var newRecord = new UserNotificationChannelEntity()
-                {
-                    Id = channel.Id,
-                    Title = channel.Title,
-                    Code = channel.Code,
-                    PreferenceMode = channel.PreferenceMode,
-                    Type = channel.Type,
-                    CreatedDate = channel.CreatedDate,
-                    MasterId = channel.MasterId,
-                    IsOpted = channel.IsOpted,
-                    ShowInFilterList = channel.ShowInFilterList,
-                    ShowInPreference = channel.ShowInPreference
-                };
+            var newRecord = new UserNotificationChannelEntity()
+            {
+                Id = channel.Id,
+                Title = channel.Title,
+                Code = channel.Code,
+                PreferenceMode = channel.PreferenceMode,
+                Type = channel.Type,
+                CreatedDate = channel.CreatedDate,
+                MasterId = channel.MasterId,
+                IsOpted = channel.IsOpted,
+                ShowInFilterList = channel.ShowInFilterList,
+                ShowInPreference = channel.ShowInPreference
+            };
 
-                int rows = db.InsertOrReplace(newRecord);
+            int rows = db.InsertOrReplace(newRecord);
 
-                return rows;
+            return rows;
             //}
         }
 
@@ -102,16 +92,16 @@ namespace myTNB_Android.Src.Database.Model
             //using (var db = new SQLiteConnection(Constants.DB_PATH))
             //{
             var db = DBHelper.GetSQLiteConnection();
-                return db.Execute("Delete from UserNotificationChannelEntity");
+            return db.Execute("Delete from UserNotificationChannelEntity");
             //}
         }
 
-        public static void UpdateIsOpted(string Code , bool isOpted)
+        public static void UpdateIsOpted(string Code, bool isOpted)
         {
             //using (var db = new SQLiteConnection(Constants.DB_PATH))
             //{
             var db = DBHelper.GetSQLiteConnection();
-                db.Execute("Update UserNotificationChannelEntity set IsOpted = ? WHERE Code = ?", isOpted, Code);
+            db.Execute("Update UserNotificationChannelEntity set IsOpted = ? WHERE Code = ?", isOpted, Code);
             //}
         }
 
@@ -120,7 +110,7 @@ namespace myTNB_Android.Src.Database.Model
             //using (var db = new SQLiteConnection(Constants.DB_PATH))
             //{
             var db = DBHelper.GetSQLiteConnection();
-                db.Execute("Update UserNotificationChannelEntity set Id = ? , IsOpted = ? WHERE Code = ?", Id, isOpted, Code);
+            db.Execute("Update UserNotificationChannelEntity set Id = ? , IsOpted = ? WHERE Code = ?", Id, isOpted, Code);
             //}
         }
 
@@ -129,7 +119,7 @@ namespace myTNB_Android.Src.Database.Model
             //using (var db = new SQLiteConnection(Constants.DB_PATH))
             //{
             var db = DBHelper.GetSQLiteConnection();
-                return db.Query<UserNotificationChannelEntity>("select * from UserNotificationChannelEntity ").ToList<UserNotificationChannelEntity>();
+            return db.Query<UserNotificationChannelEntity>("select * from UserNotificationChannelEntity ").ToList<UserNotificationChannelEntity>();
             //}
         }
 

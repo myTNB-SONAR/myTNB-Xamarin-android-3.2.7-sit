@@ -1,23 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-using myTNB_Android.Src.Database.Model;
-using System.Threading;
-using myTNB_Android.Src.Utils;
-using System.Net.Http;
-using myTNB_Android.Src.Base.Api;
-using Refit;
-using System.Net;
+﻿using myTNB_Android.Src.Base.Api;
 using myTNB_Android.Src.Base.Models;
-using Android.Text;
+using myTNB_Android.Src.Database.Model;
+using myTNB_Android.Src.Utils;
+using Refit;
+using System;
+using System.Collections.Generic;
+using System.Net;
+using System.Net.Http;
+using System.Threading;
 
 namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
 {
@@ -108,7 +98,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
             }
             catch (System.OperationCanceledException e)
             {
-                
+
                 if (mView.IsActive())
                 {
                     this.mView.HideProgressDialog();
@@ -215,7 +205,9 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                 //            }
 
                 //            this.mView.HideProgressDialog();
-            } catch(Exception e) {
+            }
+            catch (Exception e)
+            {
                 Utility.LoggingNonFatalError(e);
             }
 

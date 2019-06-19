@@ -1,15 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-using myTNB_Android.Src.Database.Model;
+﻿using myTNB_Android.Src.Database.Model;
 using Newtonsoft.Json;
 
 namespace myTNB_Android.Src.AppLaunch.Models
@@ -23,7 +12,7 @@ namespace myTNB_Android.Src.AppLaunch.Models
         public string FeedbackTypeName { get; set; }
 
         [JsonProperty("IsSelected")]
-        public bool IsSelected{ get; set; }
+        public bool IsSelected { get; set; }
 
         internal static FeedbackType Copy(FeedbackTypeEntity entity)
         {

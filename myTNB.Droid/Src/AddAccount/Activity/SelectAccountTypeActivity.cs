@@ -1,21 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
+﻿using Android.App;
 using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-using myTNB_Android.Src.Base.Activity;
 using Android.Content.PM;
-using CheeseBind;
-using myTNB_Android.Src.AddAccount.Models;
-using myTNB_Android.Src.AddAccount.Adapter;
-using Newtonsoft.Json;
+using Android.OS;
+using Android.Widget;
 using myTNB_Android.Src.AddAccount.Activity;
+using myTNB_Android.Src.AddAccount.Adapter;
+using myTNB_Android.Src.AddAccount.Models;
+using myTNB_Android.Src.Base.Activity;
+using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
 using System.Runtime;
 
 namespace myTNB_Android.Src.AddAccount.Fragment
@@ -40,7 +34,8 @@ namespace myTNB_Android.Src.AddAccount.Fragment
 
             if (extras != null)
             {
-                if (extras.ContainsKey("selectedAccountType")) {
+                if (extras.ContainsKey("selectedAccountType"))
+                {
                     //selectedAccountType = JsonConvert.DeserializeObject<AccountType>(extras.GetString("selectedAccountType"));
                     selectedAccountType = DeSerialze<AccountType>(extras.GetString("selectedAccountType"));
                 }

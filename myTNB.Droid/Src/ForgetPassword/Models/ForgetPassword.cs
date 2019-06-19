@@ -1,15 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Refit;
 
 namespace myTNB_Android.Src.ForgetPassword.Models
@@ -34,9 +23,9 @@ namespace myTNB_Android.Src.ForgetPassword.Models
 
         public ForgetPassword(string __type, string status, bool isError, string message)
         {
-            this.__type =__type ?? "";
+            this.__type = __type ?? "";
             Status = status ?? "";
-            IsError = isError ;
+            IsError = isError;
             Message = message ?? "";
         }
     }

@@ -1,18 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
+﻿using Android.Support.V7.Widget;
+using Android.Text;
 using Android.Views;
 using Android.Widget;
-using Android.Support.V7.Widget;
 using myTNB.SitecoreCMS.Models;
 using myTNB_Android.Src.Utils;
-using Android.Text;
+using System;
+using System.Collections.Generic;
 
 namespace myTNB_Android.Src.FAQ.Adapter
 {
@@ -54,7 +47,9 @@ namespace myTNB_Android.Src.FAQ.Adapter
 
                 TextViewUtils.SetMuseoSans500Typeface(vh.Question);
                 TextViewUtils.SetMuseoSans300Typeface(vh.Answer);
-            } catch(Exception e) {
+            }
+            catch (Exception e)
+            {
                 Utility.LoggingNonFatalError(e);
             }
         }

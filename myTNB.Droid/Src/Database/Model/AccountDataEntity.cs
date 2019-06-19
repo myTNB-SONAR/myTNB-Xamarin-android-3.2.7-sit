@@ -1,18 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-using SQLite;
-using myTNB_Android.Src.Utils;
-using myTNB_Android.Src.AddAccount.Models;
+﻿using myTNB_Android.Src.AddAccount.Models;
 using Newtonsoft.Json;
+using SQLite;
+using System;
+using System.Collections.Generic;
 
 namespace myTNB_Android.Src.Database.Model
 {
@@ -24,8 +14,8 @@ namespace myTNB_Android.Src.Database.Model
             //using (var db = new SQLiteConnection(Constants.DB_PATH))
             //{
             var db = DBHelper.GetSQLiteConnection();
-                List<SQLiteConnection.ColumnInfo> info = db.GetTableInfo("AccountDataEntity");
-                db.CreateTable<AccountDataEntity>();
+            List<SQLiteConnection.ColumnInfo> info = db.GetTableInfo("AccountDataEntity");
+            db.CreateTable<AccountDataEntity>();
             //}
         }
 
@@ -36,13 +26,13 @@ namespace myTNB_Android.Src.Database.Model
                 //using (var db = new SQLiteConnection(Constants.DB_PATH))
                 //{
                 var db = DBHelper.GetSQLiteConnection();
-                    int newRecord = db.InsertOrReplace(item);
-                    //Console.WriteLine("Insert Record: {0}", newRecord);
+                int newRecord = db.InsertOrReplace(item);
+                //Console.WriteLine("Insert Record: {0}", newRecord);
                 //}
             }
             catch (Exception e)
             {
-                
+
                 Console.WriteLine("Error in Insert Item in Table : {0}", e.Message);
             }
         }
@@ -66,7 +56,7 @@ namespace myTNB_Android.Src.Database.Model
         {
             bool flag = false;
             DateTime storedDateTime = GetSMUsgaeHistoryStoredDate(accNo);
-            if(storedDateTime.Date < DateTime.Now.Date)
+            if (storedDateTime.Date < DateTime.Now.Date)
                 flag = true;
             else
                 flag = false;
@@ -81,7 +71,7 @@ namespace myTNB_Android.Src.Database.Model
             if (item != null)
             {
                 storedDate = item.Timestamp;
-            }            
+            }
             return storedDate;
         }
 
@@ -105,7 +95,7 @@ namespace myTNB_Android.Src.Database.Model
                 //using (var db = new SQLiteConnection(Constants.DB_PATH))
                 //{
                 var db = DBHelper.GetSQLiteConnection();
-                    itemList = db.Query<AccountDataEntity>("select * from AccountDataEntity");
+                itemList = db.Query<AccountDataEntity>("select * from AccountDataEntity");
                 //}
             }
             catch (Exception e)
@@ -124,11 +114,11 @@ namespace myTNB_Android.Src.Database.Model
                 //using (var db = new SQLiteConnection(Constants.DB_PATH))
                 //{
                 var db = DBHelper.GetSQLiteConnection();
-                    itemList = db.Query<AccountDataEntity>("select * from AccountDataEntity where AccountNo = ?", accNo);
-                    if (itemList != null && itemList.Count > 0)
-                    {
-                        entity = itemList[0];
-                    }
+                itemList = db.Query<AccountDataEntity>("select * from AccountDataEntity where AccountNo = ?", accNo);
+                if (itemList != null && itemList.Count > 0)
+                {
+                    entity = itemList[0];
+                }
                 //}
             }
             catch (Exception e)
@@ -145,7 +135,7 @@ namespace myTNB_Android.Src.Database.Model
                 //using (var db = new SQLiteConnection(Constants.DB_PATH))
                 //{
                 var db = DBHelper.GetSQLiteConnection();
-                    db.DeleteAll<AccountDataEntity>();
+                db.DeleteAll<AccountDataEntity>();
                 //}
             }
             catch (Exception e)
@@ -166,7 +156,7 @@ namespace myTNB_Android.Src.Database.Model
             //using (var db = new SQLiteConnection(Constants.DB_PATH))
             //{
             var db = DBHelper.GetSQLiteConnection();
-                db.Execute("DELETE FROM AccountDataEntity");
+            db.Execute("DELETE FROM AccountDataEntity");
             //}
         }
 
@@ -175,16 +165,18 @@ namespace myTNB_Android.Src.Database.Model
             //using (var db = new SQLiteConnection(Constants.DB_PATH))
             //{
             var db = DBHelper.GetSQLiteConnection();
-                db.Execute("DELETE FROM AccountDataEntity where AccountNo = ?", accNo);
+            db.Execute("DELETE FROM AccountDataEntity where AccountNo = ?", accNo);
             //}
         }
 
 
-        public static bool UpdateNickName(string nickName, string accNo) {
+        public static bool UpdateNickName(string nickName, string accNo)
+        {
             AccountDataEntity accountDataEntity = GetItemByAccountNo(accNo);
 
-            if (accountDataEntity != null) {
-                AccountDetailsResponse customerBillingDetails =  JsonConvert.DeserializeObject<AccountDetailsResponse>(accountDataEntity.JsonResponse);
+            if (accountDataEntity != null)
+            {
+                AccountDetailsResponse customerBillingDetails = JsonConvert.DeserializeObject<AccountDetailsResponse>(accountDataEntity.JsonResponse);
                 customerBillingDetails.Data.AccountData.AccountName = nickName;
                 accountDataEntity.JsonResponse = JsonConvert.SerializeObject(customerBillingDetails);
                 InsertItem(accountDataEntity);

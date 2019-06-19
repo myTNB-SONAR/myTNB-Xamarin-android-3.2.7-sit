@@ -1,22 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
+﻿using Android;
 using Android.App;
 using Android.Content;
+using Android.Content.PM;
 using Android.OS;
 using Android.Runtime;
-using Android.Util;
+using Android.Support.V4.Content;
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
+using myTNB_Android.Src.Utils;
+using System;
 using AlertDialog = Android.App.AlertDialog;
 using Constants = myTNB_Android.Src.Utils.Constants;
-using Android.Support.V4.Content;
-using Android;
-using Android.Content.PM;
-using myTNB_Android.Src.Utils;
 
 namespace myTNB_Android.Src.Base.Fragments
 {
@@ -37,7 +32,9 @@ namespace myTNB_Android.Src.Base.Fragments
                 inflateView = inflater.Inflate(ResourceId(), container, false);
                 Cheeseknife.Bind(this, inflateView);
                 EvaluateRequestPermissions();
-            } catch (Exception e) {
+            }
+            catch (Exception e)
+            {
                 Utility.LoggingNonFatalError(e);
             }
             return inflateView;
@@ -352,12 +349,14 @@ namespace myTNB_Android.Src.Base.Fragments
             ShowRationale(LocationTitleRationale(),
                                 LocationContentRationale(),
                                 Constants.RUNTIME_PERMISSION_LOCATION_REQUEST_CODE,
-                                Resource.String.faulty_street_lamps_feedback_runtime_permission_dialog_btn_ok, delegate {
+                                Resource.String.faulty_street_lamps_feedback_runtime_permission_dialog_btn_ok, delegate
+                                {
                                     rationaleDialog.Dismiss();
                                     RequestPermissions(new string[] { Manifest.Permission.AccessFineLocation, Manifest.Permission.AccessCoarseLocation }, Constants.RUNTIME_PERMISSION_STORAGE_REQUEST_CODE);
 
                                 },
-                                Resource.String.faulty_street_lamps_feedback_runtime_permission_dialog_btn_cancel, delegate {
+                                Resource.String.faulty_street_lamps_feedback_runtime_permission_dialog_btn_cancel, delegate
+                                {
                                     rationaleDialog.Dismiss();
                                 });
         }

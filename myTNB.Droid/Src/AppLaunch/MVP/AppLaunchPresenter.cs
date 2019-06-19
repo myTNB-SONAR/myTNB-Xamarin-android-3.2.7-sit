@@ -1,45 +1,28 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
+﻿using Android.App;
 using Android.Content;
+using Android.Content.PM;
+using Android.Gms.Common;
 using Android.OS;
 using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-using System.Net;
-using myTNB_Android.Src.Utils;
-using Refit;
-using myTNB_Android.Src.Base.Api;
-using myTNB_Android.Src.AppLaunch.Requests;
 using Android.Util;
-using System.Net.Http;
-using myTNB_Android.Src.Database.Model;
-using SQLite;
-using System.Threading.Tasks;
-using myTNB_Android.Src.AppLaunch.Api;
-using System.Threading;
-using myTNB_Android.Src.AppLaunch.Models;
-using Android.Gms.Common;
-using myTNB_Android.Src.FindUs.Api;
-using myTNB_Android.Src.FindUs.Request;
-using static myTNB_Android.Src.FindUs.Response.GetLocationTypesResponse;
-using myTNB_Android.Src.Base.Models;
-using myTNB.SitecoreCMS.Services;
 using myTNB.SitecoreCMS.Model;
-using myTNB_Android.Src.SiteCore;
-using Newtonsoft.Json;
+using myTNB.SitecoreCMS.Services;
 using myTNB.SQLite.SQLiteDataManager;
-using Android.Content.PM;
-using myTNB_Android.Src.AddAccount.Api;
-using myTNB_Android.Src.AddAccount.Models;
-using myTNB_Android.Src.Login.Api;
-using System.Globalization;
 using myTNB_Android.Src.AppLaunch.Async;
-
-using myTNB_Android.Src.Base.Adapter;
+using myTNB_Android.Src.AppLaunch.Models;
+using myTNB_Android.Src.AppLaunch.Requests;
+using myTNB_Android.Src.Base.Api;
+using myTNB_Android.Src.Database.Model;
+using myTNB_Android.Src.SiteCore;
+using myTNB_Android.Src.Utils;
+using Newtonsoft.Json;
+using Refit;
+using System;
+using System.Collections.Generic;
+using System.Net;
+using System.Net.Http;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace myTNB_Android.Src.AppLaunch.MVP
 {

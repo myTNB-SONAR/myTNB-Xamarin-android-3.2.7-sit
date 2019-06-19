@@ -1,51 +1,41 @@
-﻿using System;
-using System.Collections.Generic;
-
+﻿using AFollestad.MaterialDialogs;
 using Android.App;
+using Android.Content;
+using Android.Content.PM;
+using Android.Graphics.Drawables;
 using Android.OS;
+using Android.Preferences;
+using Android.Runtime;
+using Android.Support.Design.Widget;
+using Android.Support.V4.Content;
+using Android.Util;
 using Android.Views;
 using Android.Widget;
-using Android.Support.Design.Widget;
-using myTNB_Android.Src.Base.Activity;
-using myTNB_Android.Src.Utils;
-using myTNB_Android.Src.myTNBMenu.MVP;
 using CheeseBind;
-using Android.Content.PM;
-using myTNB_Android.Src.myTNBMenu.Fragments;
-using myTNB_Android.Src.myTNBMenu.Models;
-using System.IO;
-using myTNB_Android.Src.PreLogin.Activity;
-using Android.Preferences;
-using Android.Content;
-using myTNB_Android.Src.SelectSupplyAccount.Activity;
-using Android.Runtime;
-using myTNB_Android.Src.myTNBMenu.Fragments.BillsMenu;
-using AFollestad.MaterialDialogs;
-using myTNB_Android.Src.myTNBMenu.Fragments.FeedbackMenu;
-using myTNB_Android.Src.myTNBMenu.Fragments.PromotionsMenu;
-using myTNB_Android.Src.myTNBMenu.Fragments.MoreMenu;
-using System.Linq;
-using Android.Util;
-using myTNB_Android.Src.ViewReceipt.Activity;
-using Android.Graphics.Drawables;
-using Android.Graphics;
-using Android.Support.V4.Content;
-using myTNB_Android.Src.PaymentSuccessExperienceRating.Activity;
-using myTNB_Android.Src.AppLaunch.Models;
-using myTNB_Android.Src.Promotions.Fragments;
-using myTNB_Android.Src.Promotions.Activity;
-using myTNB_Android.Src.Utils.Custom.ProgressDialog;
-using myTNB_Android.Src.Promotions.Adapter;
-using Android.Support.V4.View;
-using myTNB.SQLite.SQLiteDataManager;
 using myTNB.SitecoreCM.Models;
-using Newtonsoft.Json;
+using myTNB.SQLite.SQLiteDataManager;
+using myTNB_Android.Src.AppLaunch.Models;
+using myTNB_Android.Src.Base.Activity;
+using myTNB_Android.Src.Database.Model;
+using myTNB_Android.Src.myTNBMenu.Fragments;
+using myTNB_Android.Src.myTNBMenu.Fragments.BillsMenu;
+using myTNB_Android.Src.myTNBMenu.Fragments.FeedbackMenu;
+using myTNB_Android.Src.myTNBMenu.Fragments.MoreMenu;
+using myTNB_Android.Src.myTNBMenu.Models;
+using myTNB_Android.Src.myTNBMenu.MVP;
+using myTNB_Android.Src.PreLogin.Activity;
+using myTNB_Android.Src.Promotions.Fragments;
 using myTNB_Android.Src.Rating.Activity;
 using myTNB_Android.Src.Rating.Model;
+using myTNB_Android.Src.SelectSupplyAccount.Activity;
 using myTNB_Android.Src.SummaryDashBoard;
 using myTNB_Android.Src.SummaryDashBoard.SummaryListener;
-using myTNB_Android.Src.Database.Model;
-using Firebase;
+using myTNB_Android.Src.Utils;
+using myTNB_Android.Src.Utils.Custom.ProgressDialog;
+using myTNB_Android.Src.ViewReceipt.Activity;
+using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
 using System.Runtime;
 
 namespace myTNB_Android.Src.myTNBMenu.Activity
@@ -261,14 +251,16 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
         }
 
-        public void ClearFragmentStack() {
-            for(int i = 0; i < FragmentManager.BackStackEntryCount; i++)
+        public void ClearFragmentStack()
+        {
+            for (int i = 0; i < FragmentManager.BackStackEntryCount; i++)
             {
                 FragmentManager.PopBackStack();
             }
         }
 
-        public void ShowBackButton(bool flag) {
+        public void ShowBackButton(bool flag)
+        {
             this.SupportActionBar.SetDisplayHomeAsUpEnabled(flag);
             this.SupportActionBar.SetDisplayShowHomeEnabled(flag);
         }
@@ -302,7 +294,9 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 {
                     this.Finish();
                 }
-            } catch(Exception e) {
+            }
+            catch (Exception e)
+            {
                 Utility.LoggingNonFatalError(e);
             }
         }
@@ -354,7 +348,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             txtAccountName.Text = accountName;
             currentFragment = new DashboardChartFragment();
             FragmentManager.BeginTransaction()
-                           .Replace(Resource.Id.content_layout, DashboardChartFragment.NewInstance(true), 
+                           .Replace(Resource.Id.content_layout, DashboardChartFragment.NewInstance(true),
                                     typeof(DashboardChartFragment).Name)
                            //.AddToBackStack(null)
                            .CommitAllowingStateLoss();
@@ -493,7 +487,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             txtAccountName.Text = SelectedAccountData.AccountName;
             currentFragment = new DashboardChartFragment();
             FragmentManager.BeginTransaction()
-                           .Replace(Resource.Id.content_layout, DashboardChartFragment.NewInstance(data, SelectedAccountData), 
+                           .Replace(Resource.Id.content_layout, DashboardChartFragment.NewInstance(data, SelectedAccountData),
                                     typeof(DashboardChartFragment).Name)
                            //.AddToBackStack(null)
                            .CommitAllowingStateLoss();
@@ -514,7 +508,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             txtAccountName.Text = SelectedAccountData.AccountName;
             currentFragment = new DashboardChartFragment();
             FragmentManager.BeginTransaction()
-                           .Replace(Resource.Id.content_layout, DashboardChartFragment.NewInstance(data, SelectedAccountData, errorCode, errorMessage), 
+                           .Replace(Resource.Id.content_layout, DashboardChartFragment.NewInstance(data, SelectedAccountData, errorCode, errorMessage),
                          typeof(DashboardChartFragment).Name)
                            //.AddToBackStack(null)
                            .CommitAllowingStateLoss();
@@ -535,7 +529,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             txtAccountName.Text = SelectedAccountData.AccountName;
             currentFragment = new DashboardSmartMeterFragment();
             FragmentManager.BeginTransaction()
-                           .Replace(Resource.Id.content_layout, DashboardSmartMeterFragment.NewInstance(data, SelectedAccountData), 
+                           .Replace(Resource.Id.content_layout, DashboardSmartMeterFragment.NewInstance(data, SelectedAccountData),
                                     typeof(DashboardSmartMeterFragment).Name)
                            //.AddToBackStack(null)
                            .CommitAllowingStateLoss();
@@ -556,7 +550,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             txtAccountName.Text = SelectedAccountData.AccountName;
             currentFragment = new DashboardSmartMeterFragment();
             FragmentManager.BeginTransaction()
-                .Replace(Resource.Id.content_layout, DashboardSmartMeterFragment.NewInstance(data, SelectedAccountData, noSMData), 
+                .Replace(Resource.Id.content_layout, DashboardSmartMeterFragment.NewInstance(data, SelectedAccountData, noSMData),
                          typeof(DashboardSmartMeterFragment).Name)
                            //.AddToBackStack(null)
                            .CommitAllowingStateLoss();
@@ -667,15 +661,18 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             //    .Build();
 
             //materialDialog.Show();
-            try {
-            if (loadingOverlay != null && loadingOverlay.IsShowing)
+            try
             {
-                loadingOverlay.Dismiss();
-            }
+                if (loadingOverlay != null && loadingOverlay.IsShowing)
+                {
+                    loadingOverlay.Dismiss();
+                }
 
-            loadingOverlay = new LoadingOverlay(this, Resource.Style.LoadingOverlyDialogStyle);
-            loadingOverlay.Show();
-        } catch(Exception e) {
+                loadingOverlay = new LoadingOverlay(this, Resource.Style.LoadingOverlyDialogStyle);
+                loadingOverlay.Show();
+            }
+            catch (Exception e)
+            {
                 Utility.LoggingNonFatalError(e);
             }
         }
@@ -689,47 +686,49 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             //Handler h = new Handler();
             //Action myAction = () =>
             //{
-            try {
-            if (IsActive()) {
-            if (loadingOverlay != null && loadingOverlay.IsShowing)
+            try
             {
-                loadingOverlay.Dismiss();
-            }
-            }
-        
-            //};
-            //h.PostDelayed(myAction, 1000);
-
-            if (urlSchemaCalled)
-            {
-                if (urlSchemaData != null)
+                if (IsActive())
                 {
-                    if (urlSchemaData.Contains("receipt"))
+                    if (loadingOverlay != null && loadingOverlay.IsShowing)
                     {
+                        loadingOverlay.Dismiss();
+                    }
+                }
 
-                        string transID = urlSchemaData.Substring(urlSchemaData.LastIndexOf("=") + 1);
-                        if (!String.IsNullOrEmpty(transID))
+                //};
+                //h.PostDelayed(myAction, 1000);
+
+                if (urlSchemaCalled)
+                {
+                    if (urlSchemaData != null)
+                    {
+                        if (urlSchemaData.Contains("receipt"))
                         {
-                            Intent viewReceipt = new Intent(this, typeof(ViewReceiptMultiAccountNewDesignActivty));
-                            viewReceipt.PutExtra("merchantTransId", transID);
-                            StartActivity(viewReceipt);
+
+                            string transID = urlSchemaData.Substring(urlSchemaData.LastIndexOf("=") + 1);
+                            if (!String.IsNullOrEmpty(transID))
+                            {
+                                Intent viewReceipt = new Intent(this, typeof(ViewReceiptMultiAccountNewDesignActivty));
+                                viewReceipt.PutExtra("merchantTransId", transID);
+                                StartActivity(viewReceipt);
+                                urlSchemaCalled = false;
+                            }
+                        }
+                        else if (urlSchemaData.Contains("rating"))
+                        {
+                            int ratings = int.Parse(urlSchemaData.Substring(urlSchemaData.LastIndexOf("=") + 1));//GetQueryString(url, "transid");
+                            int lastIndexOfMerchantID = (urlSchemaData.IndexOf("&") - 1) - urlSchemaData.IndexOf("=");
+                            string merchantTransId = urlSchemaData.Substring(urlSchemaData.IndexOf("=") + 1, lastIndexOfMerchantID);
+                            Intent payment_activity = new Intent(this, typeof(RatingActivity));
+                            payment_activity.PutExtra(Constants.MERCHANT_TRANS_ID, merchantTransId);
+                            payment_activity.PutExtra(Constants.SELECTED_RATING, ratings);
+                            payment_activity.PutExtra(Constants.QUESTION_ID_CATEGORY, ((int)QuestionCategoryID.Payment));
+                            StartActivity(payment_activity);
                             urlSchemaCalled = false;
                         }
                     }
-                    else if (urlSchemaData.Contains("rating"))
-                    {
-                        int ratings = int.Parse(urlSchemaData.Substring(urlSchemaData.LastIndexOf("=") + 1));//GetQueryString(url, "transid");
-                        int lastIndexOfMerchantID = (urlSchemaData.IndexOf("&") - 1) - urlSchemaData.IndexOf("=");
-                        string merchantTransId = urlSchemaData.Substring(urlSchemaData.IndexOf("=") + 1, lastIndexOfMerchantID);
-                        Intent payment_activity = new Intent(this, typeof(RatingActivity));
-                        payment_activity.PutExtra(Constants.MERCHANT_TRANS_ID, merchantTransId);
-                        payment_activity.PutExtra(Constants.SELECTED_RATING, ratings);
-                        payment_activity.PutExtra(Constants.QUESTION_ID_CATEGORY, ((int)QuestionCategoryID.Payment));
-                        StartActivity(payment_activity);
-                        urlSchemaCalled = false;
-                    }
                 }
-            }
             }
             catch (Exception e)
             {
@@ -833,7 +832,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 this.userActionsListener.Start();
                 alreadyStarted = true;
                 //this.userActionsListener.GetSavedPromotionTimeStamp();
-                ShowPromotion(true);                
+                ShowPromotion(true);
             }
 
         }
@@ -1001,7 +1000,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
         public void NavigateToDashBoardFragment()
         {
-            
+
             mPresenter.OnAccountSelectDashBoard();
         }
 

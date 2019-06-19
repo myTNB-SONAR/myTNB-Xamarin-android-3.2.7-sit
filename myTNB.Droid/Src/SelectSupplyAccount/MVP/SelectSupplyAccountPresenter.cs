@@ -1,27 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
+﻿using Android.Util;
+using myTNB_Android.Src.AddAccount.Models;
 using myTNB_Android.Src.Database.Model;
-using System.Threading;
-using myTNB_Android.Src.Utils;
-using System.Net.Http;
-using Refit;
 using myTNB_Android.Src.myTNBMenu.Api;
 using myTNB_Android.Src.myTNBMenu.Models;
-using System.Net;
-using NSubstitute;
-using System.Threading.Tasks;
-using myTNB_Android.Src.AddAccount.Models;
+using myTNB_Android.Src.Utils;
 using Newtonsoft.Json;
-using Android.Util;
+using Refit;
+using System;
+using System.Collections.Generic;
+using System.Net;
+using System.Net.Http;
+using System.Threading;
 
 namespace myTNB_Android.Src.SelectSupplyAccount.MVP
 {
@@ -30,7 +19,7 @@ namespace myTNB_Android.Src.SelectSupplyAccount.MVP
         CancellationTokenSource cts;
         private SelectSupplyAccountContract.IView mView;
 
-        public SelectSupplyAccountPresenter(SelectSupplyAccountContract.IView mView )
+        public SelectSupplyAccountPresenter(SelectSupplyAccountContract.IView mView)
         {
             this.mView = mView;
             this.mView.SetPresenter(this);
@@ -38,35 +27,36 @@ namespace myTNB_Android.Src.SelectSupplyAccount.MVP
 
         public void OnSelectAccount(CustomerBillingAccount selectedCustomerBilling)
         {
-            try {
-            ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
-            if (!UsageHistoryEntity.IsSMDataUpdated(selectedCustomerBilling.AccNum))
+            try
             {
-                UsageHistoryEntity storedEntity = UsageHistoryEntity.GetItemByAccountNo(selectedCustomerBilling.AccNum);
-                AccountDataEntity accountEntity = AccountDataEntity.GetItemByAccountNo(selectedCustomerBilling.AccNum);
-                if (storedEntity != null && accountEntity != null)
+                ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
+                if (!UsageHistoryEntity.IsSMDataUpdated(selectedCustomerBilling.AccNum))
                 {
-                    CustomerBillingAccount.RemoveSelected();
-                    CustomerBillingAccount.Update(selectedCustomerBilling.AccNum, true);
-                    AccountDetailsResponse accountDetailsResponse = JsonConvert.DeserializeObject<AccountDetailsResponse>(accountEntity.JsonResponse);
-                    AccountData accountData = AccountData.Copy(accountDetailsResponse.Data.AccountData, true);
-                    accountData.AccountNum = accountData.AccountNum == null ? selectedCustomerBilling.AccNum : accountData.AccountNum;
-                    accountData.AccountNickName = selectedCustomerBilling.AccDesc;
-                    accountData.AccountName = selectedCustomerBilling.OwnerName;
-                    accountData.AddStreet = selectedCustomerBilling.AccountStAddress;
-                    accountData.AccountCategoryId = selectedCustomerBilling.AccountCategoryId;
-                    UsageHistoryResponse storedSMData = JsonConvert.DeserializeObject<UsageHistoryResponse>(storedEntity.JsonResponse);
-                    this.mView.ShowDashboardChart(storedSMData, accountData);
+                    UsageHistoryEntity storedEntity = UsageHistoryEntity.GetItemByAccountNo(selectedCustomerBilling.AccNum);
+                    AccountDataEntity accountEntity = AccountDataEntity.GetItemByAccountNo(selectedCustomerBilling.AccNum);
+                    if (storedEntity != null && accountEntity != null)
+                    {
+                        CustomerBillingAccount.RemoveSelected();
+                        CustomerBillingAccount.Update(selectedCustomerBilling.AccNum, true);
+                        AccountDetailsResponse accountDetailsResponse = JsonConvert.DeserializeObject<AccountDetailsResponse>(accountEntity.JsonResponse);
+                        AccountData accountData = AccountData.Copy(accountDetailsResponse.Data.AccountData, true);
+                        accountData.AccountNum = accountData.AccountNum == null ? selectedCustomerBilling.AccNum : accountData.AccountNum;
+                        accountData.AccountNickName = selectedCustomerBilling.AccDesc;
+                        accountData.AccountName = selectedCustomerBilling.OwnerName;
+                        accountData.AddStreet = selectedCustomerBilling.AccountStAddress;
+                        accountData.AccountCategoryId = selectedCustomerBilling.AccountCategoryId;
+                        UsageHistoryResponse storedSMData = JsonConvert.DeserializeObject<UsageHistoryResponse>(storedEntity.JsonResponse);
+                        this.mView.ShowDashboardChart(storedSMData, accountData);
+                    }
+                    else
+                    {
+                        LoadDataUsage(selectedCustomerBilling);
+                    }
                 }
                 else
                 {
                     LoadDataUsage(selectedCustomerBilling);
                 }
-            }
-            else
-            {
-                LoadDataUsage(selectedCustomerBilling);
-            }
             }
             catch (Exception e)
             {
@@ -78,8 +68,9 @@ namespace myTNB_Android.Src.SelectSupplyAccount.MVP
         private async void LoadDataUsage(CustomerBillingAccount customerBillingAccount)
         {
             cts = new CancellationTokenSource();
-            if (mView.IsActive()) {
-            this.mView.ShowProgressDialog();
+            if (mView.IsActive())
+            {
+                this.mView.ShowProgressDialog();
             }
 #if STUB
             var api = Substitute.For<IUsageHistoryApi>();
@@ -179,7 +170,7 @@ namespace myTNB_Android.Src.SelectSupplyAccount.MVP
                 smUsageModel.Timestamp = DateTime.Now.ToLocalTime();
                 smUsageModel.JsonResponse = JsonConvert.SerializeObject(response);
                 smUsageModel.AccountNo = customerBillingAccount.AccNum;
-                UsageHistoryEntity.InsertItem(smUsageModel);                
+                UsageHistoryEntity.InsertItem(smUsageModel);
                 /*****/
 
                 if (response != null && response.Data.Status.Equals("success") && !response.Data.IsError)
@@ -189,7 +180,7 @@ namespace myTNB_Android.Src.SelectSupplyAccount.MVP
                     {
                         apiKeyID = Constants.APP_CONFIG.API_KEY_ID,
                         CANum = customerBillingAccount.AccNum
-                    } , cts.Token);
+                    }, cts.Token);
 
                     if (mView.IsActive())
                     {
@@ -222,7 +213,9 @@ namespace myTNB_Android.Src.SelectSupplyAccount.MVP
                     }
 
 
-                } else {
+                }
+                else
+                {
                     if (mView.IsActive())
                     {
                         this.mView.HideShowProgressDialog();
@@ -233,8 +226,9 @@ namespace myTNB_Android.Src.SelectSupplyAccount.MVP
             }
             catch (System.OperationCanceledException e)
             {
-                if (mView.IsActive()) {
-                    this.mView.HideShowProgressDialog();    
+                if (mView.IsActive())
+                {
+                    this.mView.HideShowProgressDialog();
                 }
                 // ADD OPERATION CANCELLED HERE
                 Log.Debug("SelectSupplyAccountPresenter", e.Message + " " + e.StackTrace);
@@ -267,7 +261,7 @@ namespace myTNB_Android.Src.SelectSupplyAccount.MVP
                 }
                 else
                 {
-                    Log.Debug("SelectSupplyAccountPresenter" , e.Message + " " + e.StackTrace);
+                    Log.Debug("SelectSupplyAccountPresenter", e.Message + " " + e.StackTrace);
                     this.mView.ShowRetryOptionsUnknownException(e);
                 }
                 Utility.LoggingNonFatalError(e);

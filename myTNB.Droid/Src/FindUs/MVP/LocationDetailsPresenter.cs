@@ -1,22 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-using System.Net;
-using System.Threading;
-using myTNB_Android.Src.Utils;
-using System.Net.Http;
-using Refit;
+﻿using Android.Util;
 using myTNB_Android.Src.FindUs.Api;
 using myTNB_Android.Src.FindUs.Response;
-using Android.Util;
+using myTNB_Android.Src.Utils;
+using Refit;
+using System;
+using System.Net;
+using System.Net.Http;
+using System.Threading;
 
 namespace myTNB_Android.Src.FindUs.MVP
 {
@@ -41,7 +31,7 @@ namespace myTNB_Android.Src.FindUs.MVP
 
         public void Start()
         {
-            
+
         }
 
         private async void GetLocationDetailsFromGoogleAsync(string placeId, string googleApiKey, CancellationTokenSource cts)
@@ -63,12 +53,12 @@ namespace myTNB_Android.Src.FindUs.MVP
                 }
                 else
                 {
-                    
+
                 }
             }
             catch (System.OperationCanceledException cancelledException)
             {
-                
+
                 Log.Debug(TAG, cancelledException.StackTrace);
                 Utility.LoggingNonFatalError(cancelledException);
             }

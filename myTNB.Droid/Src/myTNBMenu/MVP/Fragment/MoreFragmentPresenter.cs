@@ -1,24 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-using myTNB_Android.Src.Utils;
-using System.Net;
-using Android.Util;
-using Refit;
-using System.Net.Http;
-using myTNB_Android.Src.myTNBMenu.Api;
-using System.Threading;
+﻿using Android.Util;
 using myTNB_Android.Src.Database.Model;
+using myTNB_Android.Src.myTNBMenu.Api;
 using myTNB_Android.Src.myTNBMenu.Models;
-using Android.Text;
+using myTNB_Android.Src.Utils;
+using Refit;
+using System;
+using System.Net;
+using System.Net.Http;
+using System.Threading;
 
 namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
 {
@@ -67,7 +56,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                     Email = userEntity.Email,
                     DeviceId = deviceId
 
-                } , cts.Token);
+                }, cts.Token);
 
                 if (!notificationTypesApi.Data.IsError)
                 {
@@ -75,8 +64,8 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                     {
                         ApiKeyID = Constants.APP_CONFIG.API_KEY_ID,
                         Email = userEntity.Email,
-                        
-                    } , cts.Token);
+
+                    }, cts.Token);
 
                     if (mView.IsActive())
                     {
@@ -97,7 +86,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                         foreach (UserNotificationChannel notificationChannel in notificationChannelApi.Data.Data)
                         {
                             int newRecord = UserNotificationChannelEntity.InsertOrReplace(notificationChannel);
-                            Console.WriteLine(string.Format("New Channel Created {0}" , newRecord));
+                            Console.WriteLine(string.Format("New Channel Created {0}", newRecord));
                         }
 
                         this.mView.ShowNotifications();
@@ -177,7 +166,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
             {
                 this.mView.ShowCallUs(WeblinkEntity.GetByCode("TNBCLO"));
             }
-            
+
         }
 
         public void OnCallUs1()

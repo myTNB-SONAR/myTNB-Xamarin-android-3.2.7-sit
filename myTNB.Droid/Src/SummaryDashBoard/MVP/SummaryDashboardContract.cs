@@ -1,7 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using myTNB_Android.Src.Base.MVP;
+﻿using myTNB_Android.Src.Base.MVP;
 using myTNB_Android.Src.SummaryDashBoard.Models;
+using System.Collections.Generic;
 
 namespace myTNB_Android.Src.SummaryDashBoard.MVP
 {
@@ -9,10 +8,11 @@ namespace myTNB_Android.Src.SummaryDashBoard.MVP
     {
         public SummaryDashboardContract()
         {
-            
+
         }
 
-        public enum eGreeting {
+        public enum eGreeting
+        {
             MORNING,
             AFTERNOON,
             EVENING
@@ -43,7 +43,7 @@ namespace myTNB_Android.Src.SummaryDashBoard.MVP
             void ShowNoInternetSnackbar();
             void SetGreetingImageAndText(eGreeting greeting, string text);
 
-            void ShowRefreshSummaryDashboard(bool  flag);
+            void ShowRefreshSummaryDashboard(bool flag);
 
         }
 

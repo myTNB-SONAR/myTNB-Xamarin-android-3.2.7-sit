@@ -1,10 +1,9 @@
-﻿using System;
-using Android.Content;
+﻿using Android.Content;
 using Android.OS;
-using Java.Lang;
 using myTNB_Android.Src.AppLaunch.Models;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.Utils;
+using System;
 using static myTNB_Android.Src.FindUs.Response.GetLocationTypesResponse;
 
 namespace myTNB_Android.Src.AppLaunch.Async
@@ -25,8 +24,10 @@ namespace myTNB_Android.Src.AppLaunch.Async
         {
 
             Console.WriteLine("========= 0000 MasterApiDBOperation started");
-            if (masterDataResponse != null && masterDataResponse.Data != null) {
-                if (!masterDataResponse.Data.IsError && !masterDataResponse.Data.Status.ToUpper().Equals(Constants.MAINTENANCE_MODE)) {
+            if (masterDataResponse != null && masterDataResponse.Data != null)
+            {
+                if (!masterDataResponse.Data.IsError && !masterDataResponse.Data.Status.ToUpper().Equals(Constants.MAINTENANCE_MODE))
+                {
                     foreach (Weblink web in masterDataResponse.Data.MasterData.WebLinks)
                     {
                         int newRecord = WeblinkEntity.InsertOrReplace(web);
@@ -91,13 +92,18 @@ namespace myTNB_Android.Src.AppLaunch.Async
                     }
 
                     int appCurrentVersion = DeviceIdUtils.GetAppVersionCode();
-                    if (UserEntity.IsCurrentlyActive()) {
+                    if (UserEntity.IsCurrentlyActive())
+                    {
                         int prevAppVersionCode = UserSessions.GetPrevAppVersionCode(preferences);
-                        if (prevAppVersionCode > 0) {
-                            if (prevAppVersionCode < appCurrentVersion) {
+                        if (prevAppVersionCode > 0)
+                        {
+                            if (prevAppVersionCode < appCurrentVersion)
+                            {
                                 SMUsageHistoryEntity.RemoveAll();
                             }
-                        }else{
+                        }
+                        else
+                        {
                             SMUsageHistoryEntity.RemoveAll();
                         }
                     }

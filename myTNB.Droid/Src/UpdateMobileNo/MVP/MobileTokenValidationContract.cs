@@ -1,18 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
+﻿using Android.Content.PM;
 using myTNB_Android.Src.Base.MVP;
-using Refit;
-using Android.Content.PM;
 using myTNB_Android.Src.Login.Requests;
+using Refit;
+using System;
 
 namespace myTNB_Android.Src.RegisterValidation.MVP
 {
@@ -119,7 +109,7 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
             /// </summary>
             /// <returns>bool</returns>
             bool IsGrantedSMSReceivePermission();
-            
+
             /// <summary>
             /// Returns if valid to show sms permission
             /// </summary>
@@ -195,7 +185,7 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
             /// <param name="num4">string</param>
             /// <param name="deviceId">string</param>
             /// <param name="fromAppLaunch">string</param>
-            void OnVerifyToken(string num1 , string num2 , string num3, string num4 , string deviceId, UserAuthenticationRequest request, bool fromAppLaunch, bool verifyPhone);
+            void OnVerifyToken(string num1, string num2, string num3, string num4, string deviceId, UserAuthenticationRequest request, bool fromAppLaunch, bool verifyPhone);
 
             /// <summary>
             /// Action to complete

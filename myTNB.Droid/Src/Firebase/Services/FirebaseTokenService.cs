@@ -1,16 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
+﻿
 using Android.App;
 using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-using Firebase.Iid;
 using Android.Util;
+using Firebase.Iid;
 using myTNB_Android.Src.Database.Model;
 
 namespace myTNB_Android.Src.Firebase.Services
@@ -28,7 +20,7 @@ namespace myTNB_Android.Src.Firebase.Services
             Log.Debug(TAG, "Refreshed token: " + refreshToken);
 
             FirebaseTokenEntity.RemoveLatest();
-            FirebaseTokenEntity.InsertOrReplace(refreshToken , true);
+            FirebaseTokenEntity.InsertOrReplace(refreshToken, true);
 
         }
     }

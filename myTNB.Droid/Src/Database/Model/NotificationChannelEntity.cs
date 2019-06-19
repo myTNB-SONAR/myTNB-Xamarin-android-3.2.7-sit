@@ -1,17 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
+﻿using myTNB_Android.Src.AppLaunch.Models;
 using SQLite;
-using myTNB_Android.Src.Utils;
-using myTNB_Android.Src.AppLaunch.Models;
 
 namespace myTNB_Android.Src.Database.Model
 {
@@ -71,21 +59,21 @@ namespace myTNB_Android.Src.Database.Model
             //using (var db = new SQLiteConnection(Constants.DB_PATH))
             //{
             var db = DBHelper.GetSQLiteConnection();
-                var newRecord = new NotificationChannelEntity()
-                {
-                    Id = channels.Id,
-                    Title = channels.Title,
-                    Code = channels.Code,
-                    PreferenceMode = channels.PreferenceMode,
-                    Type = channels.Type,
-                    CreatedDate = channels.CreatedDate,
-                    MasterId = channels.MasterId,
-                    IsOpted = channels.IsOpted
-                };
+            var newRecord = new NotificationChannelEntity()
+            {
+                Id = channels.Id,
+                Title = channels.Title,
+                Code = channels.Code,
+                PreferenceMode = channels.PreferenceMode,
+                Type = channels.Type,
+                CreatedDate = channels.CreatedDate,
+                MasterId = channels.MasterId,
+                IsOpted = channels.IsOpted
+            };
 
-                int rows = db.InsertOrReplace(newRecord);
+            int rows = db.InsertOrReplace(newRecord);
 
-                return rows;
+            return rows;
             //}
         }
 
@@ -107,7 +95,7 @@ namespace myTNB_Android.Src.Database.Model
 
             //db.InsertOrReplaceAsync(newRecord);
             db.InsertOrReplace(newRecord);
-            
+
         }
 
         public static int RemoveActive()
@@ -115,7 +103,7 @@ namespace myTNB_Android.Src.Database.Model
             //using (var db = new SQLiteConnection(Constants.DB_PATH))
             //{
             var db = DBHelper.GetSQLiteConnection();
-                return db.Execute("Delete from NotificationChannelEntity");
+            return db.Execute("Delete from NotificationChannelEntity");
             //}
         }
     }

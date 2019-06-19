@@ -1,21 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-using myTNB_Android.Src.NotificationDetails.Models;
-using Refit;
-using myTNB_Android.Src.myTNBMenu.Api;
-using myTNB_Android.Src.Utils;
-using System.Net.Http;
-using System.Net;
+﻿using myTNB_Android.Src.myTNBMenu.Api;
 using myTNB_Android.Src.myTNBMenu.Models;
+using myTNB_Android.Src.Utils;
+using Refit;
+using System;
+using System.Net;
+using System.Net.Http;
 using System.Threading;
 
 namespace myTNB_Android.Src.NotificationDetails.MVP
@@ -36,8 +25,9 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
         public async void OnPayment(Models.NotificationDetails notificationDetails)
         {
             cts = new CancellationTokenSource();
-            if (mView.IsActive()) {
-            this.mView.ShowRetrievalProgress();
+            if (mView.IsActive())
+            {
+                this.mView.ShowRetrievalProgress();
             }
             ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
 #if DEBUG
@@ -107,8 +97,9 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
         public async void OnViewDetails(Models.NotificationDetails notificationDetails)
         {
             cts = new CancellationTokenSource();
-            if (mView.IsActive()) {
-            this.mView.ShowRetrievalProgress();
+            if (mView.IsActive())
+            {
+                this.mView.ShowRetrievalProgress();
             }
             ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
 #if DEBUG
@@ -182,11 +173,12 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
             // TODO: 2. `Bill Dated` wildcard
             // TODO: 3. `Total Outstanding Amt` wildcard
             // TODO: 4. `Payment Due Wildcard`
-            try {
-            this.mView.ShowMonthWildCard();
-            this.mView.ShowBillDatedWildcard();
-            this.mView.ShowTotalOutstandingAmtWildcard();
-            this.mView.ShowPaymentDueWildcard();
+            try
+            {
+                this.mView.ShowMonthWildCard();
+                this.mView.ShowBillDatedWildcard();
+                this.mView.ShowTotalOutstandingAmtWildcard();
+                this.mView.ShowPaymentDueWildcard();
             }
             catch (Exception e)
             {

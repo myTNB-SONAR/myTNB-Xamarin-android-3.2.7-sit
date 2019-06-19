@@ -1,21 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
+﻿using Android.Content;
+using Android.Graphics.Drawables;
 using Android.OS;
-using Android.Runtime;
-using Android.Util;
+using Android.Support.V4.Content;
+using Android.Text;
 using Android.Views;
 using Android.Widget;
-using Android.Text;
 using myTNB_Android.Src.AddAccount.Activity;
 using myTNB_Android.Src.Utils;
-using Android.Graphics.Drawables;
-using Android.Support.V4.Content;
 using Org.Xml.Sax;
+using System;
+using System.Linq;
 
 namespace myTNB_Android.Src.AddAccount.Fragment
 {
@@ -33,7 +27,7 @@ namespace myTNB_Android.Src.AddAccount.Fragment
 
         LinearLayout layoutOtherInfo;
 
-        TextView txtTitleInfo , txtOutstandingPayment, txtCurrentBill , txtBillHistory, txtAllTransactionDetails, txtUsageHistory;
+        TextView txtTitleInfo, txtOutstandingPayment, txtCurrentBill, txtBillHistory, txtAllTransactionDetails, txtUsageHistory;
 
         public AddAccountByRightsFragment()
         {
@@ -75,7 +69,7 @@ namespace myTNB_Android.Src.AddAccount.Fragment
 
             txtTitle.Text = GetString(Resource.String.suppy_account_question_two);
             txtOwnerRights.Text = GetString(Resource.String.account_info_owner);
-            txtNonOwnerRights.TextFormatted = (GetHtmlText(GetString(Resource.String.account_info_non_owner ), new ImgSrcGetter(Activity)));
+            txtNonOwnerRights.TextFormatted = (GetHtmlText(GetString(Resource.String.account_info_non_owner), new ImgSrcGetter(Activity)));
 
             radio_non_owner.Click += delegate
             {
@@ -95,7 +89,7 @@ namespace myTNB_Android.Src.AddAccount.Fragment
 
 
             TextViewUtils.SetMuseoSans500Typeface(txtYes, txtNo, txtTitle);
-            TextViewUtils.SetMuseoSans300Typeface(txtOwnerRights, txtNonOwnerRights , txtTitleInfo, txtOutstandingPayment, txtCurrentBill, txtBillHistory, txtAllTransactionDetails, txtUsageHistory);
+            TextViewUtils.SetMuseoSans300Typeface(txtOwnerRights, txtNonOwnerRights, txtTitleInfo, txtOutstandingPayment, txtCurrentBill, txtBillHistory, txtAllTransactionDetails, txtUsageHistory);
 
             return rootView;
         }
@@ -106,7 +100,9 @@ namespace myTNB_Android.Src.AddAccount.Fragment
             if (((int)Build.VERSION.SdkInt) >= 24)
             {
                 return text; // Html.FromHtml(text, FromHtmlOptions.ModeLegacy).ToString();
-            } else {
+            }
+            else
+            {
                 return text; // Html.FromHtml(text).ToString();
             }
 
@@ -142,13 +138,13 @@ namespace myTNB_Android.Src.AddAccount.Fragment
                 {
                     id = Resource.Drawable.ic_check;
                 }
-                else 
+                else
                 {
                     id = Resource.Drawable.ic_wrong;
                 }
 
-                Drawable d = ContextCompat.GetDrawable(context , id );
-                d.SetBounds(0 , 0 , d.IntrinsicWidth , d.IntrinsicHeight);
+                Drawable d = ContextCompat.GetDrawable(context, id);
+                d.SetBounds(0, 0, d.IntrinsicWidth, d.IntrinsicHeight);
                 return d;
             }
         }

@@ -1,22 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
+﻿using Android.Bluetooth;
 using Android.Content;
 using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-using myTNB_Android.Src.Base.Activity;
-using Android.Telephony;
-using Java.Util;
-using myTNB_Android.Src.Base.Fragments;
 using Firebase.Messaging;
-using Android.Bluetooth;
-using Java.Security;
+using myTNB_Android.Src.Base.Activity;
+using myTNB_Android.Src.Base.Fragments;
+using System;
 using System.Security.Cryptography;
+using System.Text;
 
 namespace myTNB_Android.Src.Utils
 {
@@ -125,7 +115,7 @@ namespace myTNB_Android.Src.Utils
             try
             {
                 // creating a hex string
-                String identifier = "";               
+                String identifier = "";
 
                 byte[] ByteData = Encoding.ASCII.GetBytes(longId);
                 //MD5 creating MD5 object.
@@ -160,9 +150,10 @@ namespace myTNB_Android.Src.Utils
             try
             {
                 androidVersion = Build.VERSION.Release;
-            }catch(Exception e)
+            }
+            catch (Exception e)
             {
-                
+
             }
             return androidVersion;
         }
@@ -174,7 +165,8 @@ namespace myTNB_Android.Src.Utils
             {
                 Context context = MyTNBApplication.Context;
                 appVersion = context.PackageManager.GetPackageInfo(context.PackageName, 0).VersionName;
-            }catch(Exception e)
+            }
+            catch (Exception e)
             {
 
             }

@@ -1,22 +1,16 @@
-﻿using System;
+﻿using Android.App;
+using Android.Util;
+using myTNB.SitecoreCMS.Model;
+using myTNB.SitecoreCMS.Services;
+using myTNB.SQLite.SQLiteDataManager;
+using myTNB_Android.Src.SiteCore;
+using myTNB_Android.Src.Utils;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-using myTNB.SitecoreCMS.Services;
-using myTNB_Android.Src.SiteCore;
-using Newtonsoft.Json;
-using myTNB.SitecoreCMS.Model;
-using myTNB.SQLite.SQLiteDataManager;
-using Android.Util;
-using myTNB_Android.Src.Utils;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace myTNB_Android.Src.Promotions.MVP
 {
@@ -63,7 +57,8 @@ namespace myTNB_Android.Src.Promotions.MVP
                     mView.ShowPromotionTimestamp(false);
                     Utility.LoggingNonFatalError(e);
                 }
-            }).ContinueWith((Task previous) => {
+            }).ContinueWith((Task previous) =>
+            {
             }, cts.Token);
         }
 
@@ -98,13 +93,14 @@ namespace myTNB_Android.Src.Promotions.MVP
                     mView.ShowPromotion(true);
                     Utility.LoggingNonFatalError(e);
                 }
-            }).ContinueWith((Task previous) => {
+            }).ContinueWith((Task previous) =>
+            {
             }, cts.Token);
         }
 
         public void Start()
         {
-            
+
         }
 
         public void GetSavedPromotionTimeStamp()
@@ -126,7 +122,8 @@ namespace myTNB_Android.Src.Promotions.MVP
                 {
                     mView.OnSavedTimeStamp(null);
                 }
-            }catch(Exception e)
+            }
+            catch (Exception e)
             {
                 Log.Error("DB Exception", e.StackTrace);
                 mView.OnSavedTimeStamp(null);

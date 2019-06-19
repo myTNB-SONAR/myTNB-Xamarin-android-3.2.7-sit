@@ -1,28 +1,28 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Net.Http;
-using System.Threading;
-using System.Threading.Tasks;
-using Android.Util;
-using myTNB_Android.Src.Base.MVP;
+﻿using Android.Util;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.SummaryDashBoard.API;
 using myTNB_Android.Src.SummaryDashBoard.Models;
 using myTNB_Android.Src.Utils;
 using Newtonsoft.Json;
 using Refit;
+using System;
+using System.Collections.Generic;
+using System.Net.Http;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace myTNB_Android.Src.Base.Api
 {
     public class SummaryDashBoardApiCall
     {
-       
+
         public SummaryDashBoardApiCall()
         {
         }
 
 
-        public static async Task<List<SummaryDashBoardDetails>> GetSummaryDetails(SummaryDashBordRequest summaryDashboardRequest) {
+        public static async Task<List<SummaryDashBoardDetails>> GetSummaryDetails(SummaryDashBordRequest summaryDashboardRequest)
+        {
             List<SummaryDashBoardDetails> summaryDetails = new List<SummaryDashBoardDetails>();
             CancellationTokenSource cts = new CancellationTokenSource();
             //mView.ShowProgressDialog();

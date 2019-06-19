@@ -1,21 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-using System.Threading;
-using System.Net;
-using myTNB_Android.Src.Utils;
-using System.Net.Http;
-using Refit;
+﻿using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.PaymentSuccessExperienceRating.Api;
-using myTNB_Android.Src.Database.Model;
+using myTNB_Android.Src.Utils;
+using Refit;
+using System;
+using System.Net;
+using System.Net.Http;
+using System.Threading;
 
 namespace myTNB_Android.Src.PaymentSuccessExperienceRating.MVP
 {
@@ -51,8 +41,9 @@ namespace myTNB_Android.Src.PaymentSuccessExperienceRating.MVP
         public async void SubmitRatingAsync(string rating, string message, string ratingFor)
         {
             cts = new CancellationTokenSource();
-            if (mView.IsActive()) {
-            this.mView.ShowProgressDialog();
+            if (mView.IsActive())
+            {
+                this.mView.ShowProgressDialog();
             }
 
 #if DEBUG || STUB
@@ -102,7 +93,7 @@ namespace myTNB_Android.Src.PaymentSuccessExperienceRating.MVP
                 {
                     this.mView.HideProgressDialog();
                 }
-                this.mView.ShowErrorMessage("Please check your internet connection."); 
+                this.mView.ShowErrorMessage("Please check your internet connection.");
                 Utility.LoggingNonFatalError(apiException);
             }
             catch (Exception e)

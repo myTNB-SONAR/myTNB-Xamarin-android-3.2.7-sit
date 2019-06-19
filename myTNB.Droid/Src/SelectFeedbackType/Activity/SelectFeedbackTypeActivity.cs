@@ -1,24 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
+﻿using Android.App;
 using Android.Content;
+using Android.Content.PM;
 using Android.OS;
-using Android.Runtime;
 using Android.Views;
 using Android.Widget;
-using Android.Content.PM;
-using myTNB_Android.Src.Base.Activity;
-using myTNB_Android.Src.SelectFeedbackState.MVP;
-using myTNB_Android.Src.AppLaunch.Models;
-using myTNB_Android.Src.SelectFeedbackState.Adapter;
 using CheeseBind;
+using myTNB_Android.Src.AppLaunch.Models;
+using myTNB_Android.Src.Base.Activity;
+using myTNB_Android.Src.SelectFeedbackType.Adapter;
+using myTNB_Android.Src.SelectFeedbackType.MVP;
 using myTNB_Android.Src.Utils;
 using Newtonsoft.Json;
-using myTNB_Android.Src.SelectFeedbackType.MVP;
-using myTNB_Android.Src.SelectFeedbackType.Adapter;
+using System;
+using System.Collections.Generic;
 using System.Runtime;
 
 namespace myTNB_Android.Src.SelectFeedbackType.Activity
@@ -26,7 +20,7 @@ namespace myTNB_Android.Src.SelectFeedbackType.Activity
     [Activity(Label = "@string/select_feedback_type_activity_title"
     , ScreenOrientation = ScreenOrientation.Portrait
     , Theme = "@style/Theme.SelectFeedbackStateStyle")]
-    public class SelectFeedbackTypeActivity : BaseToolbarAppCompatActivity , SelectFeedbackTypeContract.IView
+    public class SelectFeedbackTypeActivity : BaseToolbarAppCompatActivity, SelectFeedbackTypeContract.IView
     {
 
         private SelectFeedbackTypeContract.IUserActionsListener userActionsListener;
@@ -43,15 +37,16 @@ namespace myTNB_Android.Src.SelectFeedbackType.Activity
             base.OnCreate(savedInstanceState);
 
             // Create your application here
-            try {
-            mPresenter = new SelectFeedbackTypePresenter(this);
+            try
+            {
+                mPresenter = new SelectFeedbackTypePresenter(this);
 
-            adapter = new SelectFeedbackTypeAdapter(this, true);
-            listView.Adapter = adapter;
+                adapter = new SelectFeedbackTypeAdapter(this, true);
+                listView.Adapter = adapter;
 
 
-            mPresenter = new SelectFeedbackTypePresenter(this);
-            this.userActionsListener.Start();
+                mPresenter = new SelectFeedbackTypePresenter(this);
+                this.userActionsListener.Start();
             }
             catch (Exception e)
             {
@@ -62,9 +57,10 @@ namespace myTNB_Android.Src.SelectFeedbackType.Activity
         [OnItemClick(Resource.Id.listView)]
         void OnItemClick(object sender, AdapterView.ItemClickEventArgs eventArgs)
         {
-            try {
-            FeedbackType newType = adapter.GetItemObject(eventArgs.Position);
-            this.userActionsListener.OnSelect(newType);
+            try
+            {
+                FeedbackType newType = adapter.GetItemObject(eventArgs.Position);
+                this.userActionsListener.OnSelect(newType);
             }
             catch (Exception e)
             {
@@ -101,7 +97,7 @@ namespace myTNB_Android.Src.SelectFeedbackType.Activity
         {
             Intent successIntent = new Intent();
             successIntent.PutExtra(Constants.SELECTED_FEEDBACK_TYPE, JsonConvert.SerializeObject(feedbackType));
-            SetResult(Result.Ok , successIntent);
+            SetResult(Result.Ok, successIntent);
             Finish();
         }
 

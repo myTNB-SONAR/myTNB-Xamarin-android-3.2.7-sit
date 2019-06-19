@@ -1,29 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
+﻿using Android.App;
 using Android.Content;
+using Android.Content.PM;
 using Android.OS;
-using Android.Runtime;
+using Android.Support.V7.Widget;
 using Android.Views;
 using Android.Widget;
-using myTNB_Android.Src.Base.Activity;
 using CheeseBind;
-using Android.Support.V7.Widget;
-using myTNB_Android.Src.AddAccount.Models;
-using myTNB_Android.Src.myTNBMenu.Activity;
-using Android.Content.PM;
-using Newtonsoft.Json;
 using myTNB_Android.Src.AddAccount.Adapter;
+using myTNB_Android.Src.AddAccount.Models;
+using myTNB_Android.Src.Base.Activity;
+using myTNB_Android.Src.myTNBMenu.Activity;
 using myTNB_Android.Src.Utils;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Runtime;
 
 namespace myTNB_Android.Src.AddAccount.Activity
 {
-    [Activity(Label = "Success",  
-        ScreenOrientation = ScreenOrientation.Portrait, 
+    [Activity(Label = "Success",
+        ScreenOrientation = ScreenOrientation.Portrait,
         Theme = "@style/Theme.LinkAccount")]
     public class AddAccountSuccessActivity : BaseToolbarAppCompatActivity
     {
@@ -62,18 +58,19 @@ namespace myTNB_Android.Src.AddAccount.Activity
 
             if (extras != null)
             {
-                if (extras.ContainsKey("Accounts")) {
+                if (extras.ContainsKey("Accounts"))
+                {
                     //accountList = JsonConvert.DeserializeObject<List<NewAccount>>(extras.GetString("Accounts"));
                     accountList = DeSerialze<List<NewAccount>>(extras.GetString("Accounts"));
                 }
             }
-                if (accountList != null && accountList.Count() > 0)
-                {
-                    adapter = new AddedAccountsAdapter(this, accountList);
-                    accountListRecyclerView.SetAdapter(adapter);
-                    adapter.NotifyDataSetChanged();
-                }
-            
+            if (accountList != null && accountList.Count() > 0)
+            {
+                adapter = new AddedAccountsAdapter(this, accountList);
+                accountListRecyclerView.SetAdapter(adapter);
+                adapter.NotifyDataSetChanged();
+            }
+
 
             Button done = FindViewById<Button>(Resource.Id.btnGetStarted);
             done.Click += delegate

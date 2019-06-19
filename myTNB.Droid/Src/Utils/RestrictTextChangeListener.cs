@@ -1,17 +1,14 @@
-﻿using System;
-using Android.Runtime;
+﻿using Android.Support.Design.Widget;
 using Android.Text;
-using Android.Views;
 using Android.Widget;
 using Java.Lang;
-using static Android.Views.View;
 using Java.Util.Regex;
-using Android.Support.Design.Widget;
+using static Android.Views.View;
 
 namespace myTNB_Android.Src.Utils
 {
 
-    
+
     public class RestrictTextChangeListener : Java.Lang.Object, ITextWatcher
     {
 
@@ -33,7 +30,7 @@ namespace myTNB_Android.Src.Utils
             _hint = _txtLayout.Hint;
             mEditText.FocusChange += EditTextOnFocusChanged;
         }
-        
+
 
         public void AfterTextChanged(IEditable s)
         {
@@ -128,5 +125,5 @@ namespace myTNB_Android.Src.Utils
             }
         }
     }
-    
+
 }

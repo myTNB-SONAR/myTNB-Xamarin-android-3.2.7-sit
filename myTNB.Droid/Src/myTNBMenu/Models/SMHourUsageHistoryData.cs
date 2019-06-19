@@ -1,17 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Refit;
-using Newtonsoft.Json.Linq;
+using System.Collections.Generic;
 
 namespace myTNB_Android.Src.myTNBMenu.Models
 {
@@ -20,11 +9,11 @@ namespace myTNB_Android.Src.myTNBMenu.Models
         [JsonProperty(PropertyName = "OtherUsageMetrics")]
         [AliasAs("OtherUsageMetrics")]
         public OtherUsageMetricsData OtherUsageMetrics { get; set; }
-        
+
         [JsonProperty(PropertyName = "ByHour")]
         [AliasAs("ByHour")]
         public List<ByHourData> ByHour { get; set; }
-       
+
         public class OtherUsageMetricsData
         {
             [JsonProperty(PropertyName = "ElectricUsage")]
@@ -62,5 +51,5 @@ namespace myTNB_Android.Src.myTNBMenu.Models
         }
     }
 
-    
+
 }

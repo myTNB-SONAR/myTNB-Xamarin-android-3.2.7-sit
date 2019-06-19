@@ -1,31 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
+﻿using AFollestad.MaterialDialogs;
 using Android.App;
 using Android.Content;
 using Android.OS;
 using Android.Runtime;
-using Android.Util;
+using Android.Support.Design.Widget;
+using Android.Support.V4.Content;
+using Android.Text;
 using Android.Views;
 using Android.Widget;
-using myTNB_Android.Src.AddAccount.MVP;
-using myTNB_Android.Src.Base.Models;
-using myTNB_Android.Src.AddAccount.Models;
 using CheeseBind;
-using Android.Support.Design.Widget;
-using Refit;
-using myTNB_Android.Src.Utils;
 using myTNB_Android.Src.AddAccount.Activity;
+using myTNB_Android.Src.AddAccount.Models;
+using myTNB_Android.Src.AddAccount.MVP;
 using myTNB_Android.Src.Barcode.Activity;
+using myTNB_Android.Src.Base.Models;
 using myTNB_Android.Src.Database.Model;
-using myTNB_Android.Src.AddAccount.Adapter;
-using Newtonsoft.Json;
-using AFollestad.MaterialDialogs;
-using Android.Text;
-using Android.Support.V4.Content;
+using myTNB_Android.Src.Utils;
 using myTNB_Android.Src.Utils.Custom.ProgressDialog;
+using Newtonsoft.Json;
+using Refit;
+using System;
 
 namespace myTNB_Android.Src.AddAccount.Fragment
 {
@@ -119,7 +113,7 @@ namespace myTNB_Android.Src.AddAccount.Fragment
             base.OnCreate(savedInstanceState);
             isOwner = Arguments.GetBoolean("isOwner");
             hasRights = Arguments.GetBoolean("hasRights");
-            
+
             // Create your fragment here
 
             mPresenter = new AddAccountPresenter(this);
@@ -134,7 +128,7 @@ namespace myTNB_Android.Src.AddAccount.Fragment
 
         }
 
-      
+
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
             // Use this to return your custom view for this Fragment
@@ -184,22 +178,22 @@ namespace myTNB_Android.Src.AddAccount.Fragment
                 TextViewUtils.SetMuseoSans500Typeface(addAccount);
                 addAccount.Click += delegate
                 {
-                //CallAddAccountService();
-                CallValidateAccountService();
+                    //CallAddAccountService();
+                    CallValidateAccountService();
                 };
 
                 scan = rootView.FindViewById<ImageButton>(Resource.Id.scan);
                 scan.Click += async delegate
                 {
-                //var scanner = new ZXing.Mobile.MobileBarcodeScanner();
-                //var result = await scanner.Scan();
+                    //var scanner = new ZXing.Mobile.MobileBarcodeScanner();
+                    //var result = await scanner.Scan();
 
-                //if (result != null)
-                //{
-                //    edtAccountNo.Text = result.Text;
-                //}
+                    //if (result != null)
+                    //{
+                    //    edtAccountNo.Text = result.Text;
+                    //}
 
-                Intent barcodeIntent = new Intent(Activity, typeof(BarcodeActivity));
+                    Intent barcodeIntent = new Intent(Activity, typeof(BarcodeActivity));
                     StartActivityForResult(barcodeIntent, Constants.BARCODE_REQUEST_CODE);
 
                 };
@@ -300,7 +294,9 @@ namespace myTNB_Android.Src.AddAccount.Fragment
                 }
 
                 this.userActionsListener.Start();
-            } catch(Exception e) {
+            }
+            catch (Exception e)
+            {
                 Utility.LoggingNonFatalError(e);
             }
             return rootView;
@@ -358,51 +354,57 @@ namespace myTNB_Android.Src.AddAccount.Fragment
                         }
                     }
                 }
-            } catch(Exception e) {
+            }
+            catch (Exception e)
+            {
                 Utility.LoggingNonFatalError(e);
             }
         }
 
         public void CallAddAccountService()
         {
-            try {
-            string apiKeyID = Constants.APP_CONFIG.API_KEY_ID;
-            string userID = UserEntity.GetActive().UserID;
-            string email = UserEntity.GetActive().Email;
-            string tnbBillAccountNum = edtAccountNo.Text; //"220089844906";
-            string tnbAccountHolderICNum = edtOwnersIC.Text;
-            string tnbAccountContractNum = edtOwnersIC.Text;
-            string type = "1";
-            string des = edtAccountLabel.Text; //This has to be changed after added in label
-            bool owner = isOwner;
-            string suppliedMotherName = edtOwnerMotherName.Text;
-            this.userActionsListener.AddAccount(apiKeyID, userID, email, tnbBillAccountNum, tnbAccountHolderICNum, tnbAccountContractNum, type, des, owner, suppliedMotherName);
-        } catch(Exception e) {
+            try
+            {
+                string apiKeyID = Constants.APP_CONFIG.API_KEY_ID;
+                string userID = UserEntity.GetActive().UserID;
+                string email = UserEntity.GetActive().Email;
+                string tnbBillAccountNum = edtAccountNo.Text; //"220089844906";
+                string tnbAccountHolderICNum = edtOwnersIC.Text;
+                string tnbAccountContractNum = edtOwnersIC.Text;
+                string type = "1";
+                string des = edtAccountLabel.Text; //This has to be changed after added in label
+                bool owner = isOwner;
+                string suppliedMotherName = edtOwnerMotherName.Text;
+                this.userActionsListener.AddAccount(apiKeyID, userID, email, tnbBillAccountNum, tnbAccountHolderICNum, tnbAccountContractNum, type, des, owner, suppliedMotherName);
+            }
+            catch (Exception e)
+            {
                 Utility.LoggingNonFatalError(e);
             }
         }
 
         public void CallValidateAccountService()
         {
-            try {
-            string apiKeyID = Constants.APP_CONFIG.API_KEY_ID;
-            //string userID = UserEntity.GetActive().UserID;
-            //string email = UserEntity.GetActive().Email;
-            string accountNum = edtAccountNo.Text; //"220089844906";
-            string icNumber = edtOwnersIC.Text;
-            string type = selectedAccountType.Id;
-            bool owner = isOwner;
-            string suppliedMotherName = edtOwnerMotherName.Text;
-            string accountLabel = edtAccountLabel.Text;
-            if (!IsAccountAlreadyRegistered(accountNum))
+            try
             {
-                this.userActionsListener.ValidateAccount(apiKeyID, accountNum, type, icNumber, suppliedMotherName, owner, accountLabel);
-            }
-            else
-            {
-                edtAccountNo.Error = "Account already added";
-                edtAccountNo.RequestFocus();
-            }
+                string apiKeyID = Constants.APP_CONFIG.API_KEY_ID;
+                //string userID = UserEntity.GetActive().UserID;
+                //string email = UserEntity.GetActive().Email;
+                string accountNum = edtAccountNo.Text; //"220089844906";
+                string icNumber = edtOwnersIC.Text;
+                string type = selectedAccountType.Id;
+                bool owner = isOwner;
+                string suppliedMotherName = edtOwnerMotherName.Text;
+                string accountLabel = edtAccountLabel.Text;
+                if (!IsAccountAlreadyRegistered(accountNum))
+                {
+                    this.userActionsListener.ValidateAccount(apiKeyID, accountNum, type, icNumber, suppliedMotherName, owner, accountLabel);
+                }
+                else
+                {
+                    edtAccountNo.Error = "Account already added";
+                    edtAccountNo.RequestFocus();
+                }
             }
             catch (Exception e)
             {
@@ -449,7 +451,7 @@ namespace myTNB_Android.Src.AddAccount.Fragment
             tv.SetMaxLines(5);
 
             mSnackBar.Show();
-            
+
         }
 
         public void ShowAddAccountSuccess(string message)
@@ -480,11 +482,12 @@ namespace myTNB_Android.Src.AddAccount.Fragment
             //{
             //    mAddAccountProgressDialog.Show();
             //}
-            if (IsActive()) {
-            if(loadingOverlay != null)
+            if (IsActive())
             {
-                loadingOverlay.Show();
-            }
+                if (loadingOverlay != null)
+                {
+                    loadingOverlay.Show();
+                }
             }
         }
 
@@ -492,7 +495,7 @@ namespace myTNB_Android.Src.AddAccount.Fragment
         {
             //edtAccountLabel.Error = "Empty Account Label";
             textInputLayoutAccountLabel.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
-            textInputLayoutAccountLabel.Error = "Invalid Account NickName"; 
+            textInputLayoutAccountLabel.Error = "Invalid Account NickName";
         }
 
         public void ShowEmptyAccountNumberError()
@@ -506,7 +509,7 @@ namespace myTNB_Android.Src.AddAccount.Fragment
         {
             //edtOwnerMotherName.Error = "Empty Mother's Maiden Name";
             textInputLayoutOwnerIC.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
-            textInputLayoutOwnerIC.Error = "Invalid Mother's Maiden Name"; 
+            textInputLayoutOwnerIC.Error = "Invalid Mother's Maiden Name";
         }
 
         public void ShowEmptyOwnerIcNumberError()
@@ -536,7 +539,8 @@ namespace myTNB_Android.Src.AddAccount.Fragment
             }
 
             mCancelledExceptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.add_account_link_cancelled_exception_error), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.add_account_link_cancelled_exception_btn_retry), delegate {
+            .SetAction(GetString(Resource.String.add_account_link_cancelled_exception_btn_retry), delegate
+            {
 
                 mCancelledExceptionSnackBar.Dismiss();
                 //CallAddAccountService();
@@ -555,7 +559,8 @@ namespace myTNB_Android.Src.AddAccount.Fragment
             }
 
             mApiExcecptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.add_account_link_api_exception_error), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.add_account_link_api_exception_btn_retry), delegate {
+            .SetAction(GetString(Resource.String.add_account_link_api_exception_btn_retry), delegate
+            {
 
                 mApiExcecptionSnackBar.Dismiss();
                 //CallAddAccountService();
@@ -574,12 +579,14 @@ namespace myTNB_Android.Src.AddAccount.Fragment
             }
 
             string msg = "Something went wrong, Please try again.";
-            if (IsAdded) {
+            if (IsAdded)
+            {
                 msg = GetString(Resource.String.add_account_link_unknown_exception_error);
             }
 
             mUknownExceptionSnackBar = Snackbar.Make(rootView, msg, Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.add_account_link_unknown_exception_btn_retry), delegate {
+            .SetAction(GetString(Resource.String.add_account_link_unknown_exception_btn_retry), delegate
+            {
 
                 mUknownExceptionSnackBar.Dismiss();
                 //CallAddAccountService();
@@ -636,19 +643,19 @@ namespace myTNB_Android.Src.AddAccount.Fragment
         public void ShowEnterValidAccountName()
         {
             textInputLayoutAccountLabel.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
-            textInputLayoutAccountLabel.Error = this.Activity.GetString(Resource.String.invalid_charac); 
+            textInputLayoutAccountLabel.Error = this.Activity.GetString(Resource.String.invalid_charac);
         }
 
         public void RemoveNameErrorMessage()
         {
             textInputLayoutAccountLabel.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
-            textInputLayoutAccountLabel.Error = ""; 
+            textInputLayoutAccountLabel.Error = "";
         }
 
         public void RemoveNumberErrorMessage()
         {
             textInputLayoutAccountNo.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
-            textInputLayoutAccountNo.Error = ""; 
+            textInputLayoutAccountNo.Error = "";
         }
 
         public void ShowSameAccountNameError()

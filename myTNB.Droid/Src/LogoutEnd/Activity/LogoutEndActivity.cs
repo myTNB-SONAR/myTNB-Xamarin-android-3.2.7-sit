@@ -1,20 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
+﻿using Android.App;
 using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
 using Android.Content.PM;
-using myTNB_Android.Src.Base.Activity;
-using CheeseBind;
-using myTNB_Android.Src.Utils;
-using myTNB_Android.Src.PreLogin.Activity;
+using Android.OS;
 using Android.Preferences;
+using Android.Widget;
+using CheeseBind;
+using myTNB_Android.Src.Base.Activity;
+using myTNB_Android.Src.PreLogin.Activity;
+using myTNB_Android.Src.Utils;
+using System;
 using System.Runtime;
 
 namespace myTNB_Android.Src.LogoutEnd.Activity
@@ -45,14 +39,14 @@ namespace myTNB_Android.Src.LogoutEnd.Activity
         {
             base.OnCreate(savedInstanceState);
             TextViewUtils.SetMuseoSans300Typeface(txtContentInfo);
-            TextViewUtils.SetMuseoSans500Typeface(btnBackToHome , txtTitleInfo);
+            TextViewUtils.SetMuseoSans500Typeface(btnBackToHome, txtTitleInfo);
             // Create your application here
             mSharedPref = PreferenceManager.GetDefaultSharedPreferences(this);
             UserSessions.SavePhoneVerified(mSharedPref, false);
         }
 
         [OnClick(Resource.Id.btnBackToHome)]
-        void OnBackToHome(object sender , EventArgs eventArgs)
+        void OnBackToHome(object sender, EventArgs eventArgs)
         {
             Intent PreLoginIntent = new Intent(this, typeof(PreLoginActivity));
             PreLoginIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);

@@ -1,19 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
+﻿using Android.Content;
+using Android.Support.Design.Widget;
+using Android.Support.V7.Widget;
 using Android.Views;
 using Android.Widget;
-using Android.Support.V7.Widget;
-using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.AddAccount.Models;
+using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Utils;
-using Android.Support.Design.Widget;
+using System;
+using System.Collections.Generic;
 
 namespace myTNB_Android.Src.AddAccount
 {
@@ -111,31 +105,13 @@ namespace myTNB_Android.Src.AddAccount
             //AccountLabel.Hint = hnt.ToUpper();
             AccountLabel.AddTextChangedListener(new InputFilterFormField(AccountLabel, textInputLayoutAccountLabel));
 
-            AccountLabel.FocusChange += (sender, e) => {
+            AccountLabel.FocusChange += (sender, e) =>
+            {
                 textInputLayoutAccountLabel.Error = null;
                 if (e.HasFocus)
                 {
                     if (item != null)
                     {
-                    item.accountLabel = AccountLabel.Text.Trim();
-                    if (!string.IsNullOrEmpty(item.accountLabel))
-                    {
-                        //if (!Utility.isAlphaNumeric(item.accountLabel))
-                        //{
-                        //    textInputLayoutAccountLabel.Error = context.GetString(Resource.String.invalid_charac);
-                        //}
-                        //else
-                        //{
-                            textInputLayoutAccountLabel.Error = "e.g. My House, Parent's House";
-                        //}
-                    }
-                    else
-                    {
-                        textInputLayoutAccountLabel.Error = "e.g. My House, Parent's House";
-                    }
-                }
-                } else {
-                    if (item != null) {
                         item.accountLabel = AccountLabel.Text.Trim();
                         if (!string.IsNullOrEmpty(item.accountLabel))
                         {
@@ -143,7 +119,29 @@ namespace myTNB_Android.Src.AddAccount
                             //{
                             //    textInputLayoutAccountLabel.Error = context.GetString(Resource.String.invalid_charac);
                             //}
-                        }    
+                            //else
+                            //{
+                            textInputLayoutAccountLabel.Error = "e.g. My House, Parent's House";
+                            //}
+                        }
+                        else
+                        {
+                            textInputLayoutAccountLabel.Error = "e.g. My House, Parent's House";
+                        }
+                    }
+                }
+                else
+                {
+                    if (item != null)
+                    {
+                        item.accountLabel = AccountLabel.Text.Trim();
+                        if (!string.IsNullOrEmpty(item.accountLabel))
+                        {
+                            //if (!Utility.isAlphaNumeric(item.accountLabel))
+                            //{
+                            //    textInputLayoutAccountLabel.Error = context.GetString(Resource.String.invalid_charac);
+                            //}
+                        }
                     }
 
                 }
@@ -152,7 +150,8 @@ namespace myTNB_Android.Src.AddAccount
 
 
 
-        public void PopulateData(NewAccount item) {
+        public void PopulateData(NewAccount item)
+        {
             this.item = item;
             try
             {
@@ -182,7 +181,7 @@ namespace myTNB_Android.Src.AddAccount
                         //}
                         //else
                         //{
-                            textInputLayoutAccountLabel.Error = "e.g. My House, Parent's House";
+                        textInputLayoutAccountLabel.Error = "e.g. My House, Parent's House";
                         //}
                     }
                     else
@@ -190,7 +189,9 @@ namespace myTNB_Android.Src.AddAccount
                         textInputLayoutAccountLabel.Error = "e.g. My House, Parent's House";
                     }
                 };
-            } catch(Exception e) {
+            }
+            catch (Exception e)
+            {
                 Utility.LoggingNonFatalError(e);
             }
         }

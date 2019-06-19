@@ -1,30 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
+﻿using AFollestad.MaterialDialogs;
 using Android.App;
 using Android.Content;
+using Android.Content.PM;
 using Android.OS;
-using Android.Runtime;
+using Android.Support.Constraints;
+using Android.Support.Design.Widget;
 using Android.Views;
 using Android.Widget;
-using myTNB_Android.Src.Base.Activity;
 using CheeseBind;
-using myTNB_Android.Src.Feedback_PreLogin_Menu.MVP;
-using myTNB_Android.Src.Utils;
-using myTNB_Android.Src.Feedback_Login_BillRelated.Activity;
-using myTNB_Android.Src.SelectSubmittedFeedback.Activity;
-using myTNB_Android.Src.Feedback_PreLogin_Others.Activity;
-using myTNB_Android.Src.Feedback_PreLogin_FaultyStreetLamps.Activity;
-using myTNB_Android.Src.Feedback_PreLogin_BillRelated.Activity;
-using Android.Content.PM;
-using Refit;
-using AFollestad.MaterialDialogs;
-using Android.Support.Design.Widget;
+using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Database.Model;
-using Android.Support.Constraints;
+using myTNB_Android.Src.Feedback_PreLogin_BillRelated.Activity;
+using myTNB_Android.Src.Feedback_PreLogin_FaultyStreetLamps.Activity;
+using myTNB_Android.Src.Feedback_PreLogin_Menu.MVP;
+using myTNB_Android.Src.Feedback_PreLogin_Others.Activity;
+using myTNB_Android.Src.SelectSubmittedFeedback.Activity;
+using myTNB_Android.Src.Utils;
 using myTNB_Android.Src.Utils.Custom.ProgressDialog;
+using Refit;
+using System;
+using System.Collections.Generic;
 using System.Runtime;
 
 namespace myTNB_Android.Src.Feedback_PreLogin_Menu.Activity
@@ -32,7 +27,7 @@ namespace myTNB_Android.Src.Feedback_PreLogin_Menu.Activity
     [Activity(Label = "@string/menu_feedback"
       , ScreenOrientation = ScreenOrientation.Portrait
       , Theme = "@style/Theme.Feedback")]
-    public class FeedbackPreLoginMenuActivity : BaseToolbarAppCompatActivity , FeedbackPreLoginMenuContract.IView
+    public class FeedbackPreLoginMenuActivity : BaseToolbarAppCompatActivity, FeedbackPreLoginMenuContract.IView
     {
         [BindView(Resource.Id.rootView)]
         LinearLayout rootView;
@@ -107,28 +102,31 @@ namespace myTNB_Android.Src.Feedback_PreLogin_Menu.Activity
 
             // Create your application here
 
-            try {
-            progressDialog = new MaterialDialog.Builder(this)
-                .Title(Resource.String.select_submitted_feedback_dialog_title)
-                .Content(Resource.String.select_submitted_feedback_dialog_content)
-                .Cancelable(false)
-                .Progress(true, 0)
-                .Build();
+            try
+            {
+                progressDialog = new MaterialDialog.Builder(this)
+                    .Title(Resource.String.select_submitted_feedback_dialog_title)
+                    .Content(Resource.String.select_submitted_feedback_dialog_content)
+                    .Cancelable(false)
+                    .Progress(true, 0)
+                    .Build();
 
-            TextViewUtils.SetMuseoSans300Typeface(txtFeedbackBillingAndPaymentContent,
-                        txtFeedbackFaultyStreetLampsContent,
-                        txtSubmittedFeedbackContent,
-                        txtFeedbackOthersContent);
+                TextViewUtils.SetMuseoSans300Typeface(txtFeedbackBillingAndPaymentContent,
+                            txtFeedbackFaultyStreetLampsContent,
+                            txtSubmittedFeedbackContent,
+                            txtFeedbackOthersContent);
 
-            TextViewUtils.SetMuseoSans500Typeface(txtFeedbackBillingAndPayment, 
-                        txtFeedbackFaultyStreetLamps, 
-                        txtSubmittedFeedback, 
-                        txtFeedbackOthers);
+                TextViewUtils.SetMuseoSans500Typeface(txtFeedbackBillingAndPayment,
+                            txtFeedbackFaultyStreetLamps,
+                            txtSubmittedFeedback,
+                            txtFeedbackOthers);
 
 
-            mPresenter = new FeedbackPreLoginMenuPresenter(this , this.DeviceId());
-            this.userActionsListener.Start();
-        } catch (Exception e) {
+                mPresenter = new FeedbackPreLoginMenuPresenter(this, this.DeviceId());
+                this.userActionsListener.Start();
+            }
+            catch (Exception e)
+            {
                 Utility.LoggingNonFatalError(e);
             }
         }
@@ -164,10 +162,13 @@ namespace myTNB_Android.Src.Feedback_PreLogin_Menu.Activity
         [OnClick(Resource.Id.billRelatedContraint)]
         void OnBillingAndPayment(object sender, EventArgs eventArgs)
         {
-            if (DownTimeEntity.IsBCRMDown()) {
+            if (DownTimeEntity.IsBCRMDown())
+            {
                 OnBCRMDownTimeErrorMessage();
-            } else {
-                this.userActionsListener.OnBillingPayment();    
+            }
+            else
+            {
+                this.userActionsListener.OnBillingPayment();
             }
 
         }
@@ -207,7 +208,7 @@ namespace myTNB_Android.Src.Feedback_PreLogin_Menu.Activity
             //}
             //else
             //{
-                this.userActionsListener.OnSubmittedFeedback();
+            this.userActionsListener.OnSubmittedFeedback();
             //}
         }
 
@@ -223,15 +224,18 @@ namespace myTNB_Android.Src.Feedback_PreLogin_Menu.Activity
             //{
             //    progressDialog.Show();
             //}
-            try {
-            if (loadingOverlay != null && loadingOverlay.IsShowing)
+            try
             {
-                loadingOverlay.Dismiss();
-            }
+                if (loadingOverlay != null && loadingOverlay.IsShowing)
+                {
+                    loadingOverlay.Dismiss();
+                }
 
-            loadingOverlay = new LoadingOverlay(this, Resource.Style.LoadingOverlyDialogStyle);
-            loadingOverlay.Show();
-        } catch (Exception e) {
+                loadingOverlay = new LoadingOverlay(this, Resource.Style.LoadingOverlyDialogStyle);
+                loadingOverlay.Show();
+            }
+            catch (Exception e)
+            {
                 Utility.LoggingNonFatalError(e);
             }
         }
@@ -242,12 +246,15 @@ namespace myTNB_Android.Src.Feedback_PreLogin_Menu.Activity
             //{
             //    progressDialog.Dismiss();
             //}
-            try {
-            if (loadingOverlay != null && loadingOverlay.IsShowing)
+            try
             {
-                loadingOverlay.Dismiss();
+                if (loadingOverlay != null && loadingOverlay.IsShowing)
+                {
+                    loadingOverlay.Dismiss();
+                }
             }
-        } catch (Exception e) {
+            catch (Exception e)
+            {
                 Utility.LoggingNonFatalError(e);
             }
         }
@@ -261,7 +268,8 @@ namespace myTNB_Android.Src.Feedback_PreLogin_Menu.Activity
             }
 
             mCancelledExceptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.login_cancelled_exception_error), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.login_cancelled_exception_btn_retry), delegate {
+            .SetAction(GetString(Resource.String.login_cancelled_exception_btn_retry), delegate
+            {
 
                 mCancelledExceptionSnackBar.Dismiss();
                 this.userActionsListener.OnRetry();
@@ -280,7 +288,8 @@ namespace myTNB_Android.Src.Feedback_PreLogin_Menu.Activity
             }
 
             mApiExcecptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.login_api_exception_error), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.login_api_exception_btn_retry), delegate {
+            .SetAction(GetString(Resource.String.login_api_exception_btn_retry), delegate
+            {
 
                 mApiExcecptionSnackBar.Dismiss();
                 this.userActionsListener.OnRetry();
@@ -299,7 +308,8 @@ namespace myTNB_Android.Src.Feedback_PreLogin_Menu.Activity
             }
 
             mUknownExceptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.login_unknown_exception_error), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.login_unknown_exception_btn_retry), delegate {
+            .SetAction(GetString(Resource.String.login_unknown_exception_btn_retry), delegate
+            {
 
                 mUknownExceptionSnackBar.Dismiss();
                 this.userActionsListener.OnRetry();
@@ -355,7 +365,9 @@ namespace myTNB_Android.Src.Feedback_PreLogin_Menu.Activity
                     }
 
                 }
-            } catch (Exception e) {
+            }
+            catch (Exception e)
+            {
                 Utility.LoggingNonFatalError(e);
             }
         }

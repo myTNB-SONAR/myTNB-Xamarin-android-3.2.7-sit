@@ -1,19 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
+﻿using Android.Content;
+using Android.Support.Design.Widget;
+using Android.Support.V7.Widget;
 using Android.Views;
 using Android.Widget;
-using Android.Support.V7.Widget;
-using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.AddAccount.Models;
+using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Utils;
-using Android.Support.Design.Widget;
+using System;
+using System.Collections.Generic;
 
 namespace myTNB_Android.Src.AddAccount
 {
@@ -111,7 +105,8 @@ namespace myTNB_Android.Src.AddAccount
             //string hnt = context.GetString(Resource.String.add_account_form_account_nickname);
             //AccountLabel.Hint = hnt.ToUpper();
             AccountLabel.AddTextChangedListener(new InputFilterFormField(AccountLabel, textInputLayoutAccountLabel));
-            AccountLabel.FocusChange += (sender, e) => {
+            AccountLabel.FocusChange += (sender, e) =>
+            {
                 textInputLayoutAccountLabel.Error = null;
                 if (e.HasFocus)
                 {
@@ -126,7 +121,7 @@ namespace myTNB_Android.Src.AddAccount
                             //}
                             //else
                             //{
-                                textInputLayoutAccountLabel.Error = "e.g. My House, Parent's House";
+                            textInputLayoutAccountLabel.Error = "e.g. My House, Parent's House";
                             //}
                         }
                         else
@@ -154,7 +149,8 @@ namespace myTNB_Android.Src.AddAccount
         }
 
 
-        public void populateData(NewAccount item) {
+        public void populateData(NewAccount item)
+        {
             this.item = item;
             try
             {
@@ -183,7 +179,7 @@ namespace myTNB_Android.Src.AddAccount
                         //}
                         //else
                         //{
-                            textInputLayoutAccountLabel.Error = "e.g. My House, Parent's House";
+                        textInputLayoutAccountLabel.Error = "e.g. My House, Parent's House";
                         //}
                     }
                     else
@@ -191,7 +187,9 @@ namespace myTNB_Android.Src.AddAccount
                         textInputLayoutAccountLabel.Error = "e.g. My House, Parent's House";
                     }
                 };
-            } catch(Exception e) {
+            }
+            catch (Exception e)
+            {
                 Utility.LoggingNonFatalError(e);
             }
         }

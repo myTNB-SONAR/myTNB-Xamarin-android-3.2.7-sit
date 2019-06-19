@@ -1,7 +1,6 @@
-﻿using System;
-using System.Threading.Tasks;
-using myTNB_Android.Src.MakePayment.Models;
+﻿using myTNB_Android.Src.MakePayment.Models;
 using Refit;
+using System.Threading.Tasks;
 
 namespace myTNB_Android.Src.MakePayment.Api
 {

@@ -1,25 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
+﻿using Android.Util;
+using myTNB_Android.Src.AddAccount.Models;
+using myTNB_Android.Src.Database.Model;
+using myTNB_Android.Src.myTNBMenu.Api;
 using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.Utils;
-using System.Net;
+using Newtonsoft.Json;
 using Refit;
-using myTNB_Android.Src.myTNBMenu.Api;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Threading;
-using Android.Util;
-using myTNB_Android.Src.Database.Model;
-using Newtonsoft.Json;
-using myTNB_Android.Src.AddAccount.Models;
 
 namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
 {
@@ -37,7 +29,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
         PaymentHistoryResponseV5 paymentHistoryResponseV5;
         PaymentHistoryREResponse paymentHistoryREResponse;
 
-        public BillsPaymentFragmentPresenter(BillsPaymentFragmentContract.IView mView , AccountData accountData)
+        public BillsPaymentFragmentPresenter(BillsPaymentFragmentContract.IView mView, AccountData accountData)
         {
             this.mView = mView;
             this.selectedAccount = accountData;
@@ -83,32 +75,42 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                         LoadingBillsHistory();
                     }
                 }
-            } catch(Exception e) {
+            }
+            catch (Exception e)
+            {
                 Utility.LoggingNonFatalError(e);
             }
         }
 
         public void OnPaymentTab()
         {
-            try {
-            if (selectedAccount.AccountCategoryId.Equals("2"))
+            try
             {
-                if (paymentHistoryREResponse != null && !paymentHistoryREResponse.Data.IsError && paymentHistoryREResponse.Data.Status.Equals("success"))
+                if (selectedAccount.AccountCategoryId.Equals("2"))
                 {
-                    this.mView.ShowREPaymentList(paymentHistoryREResponse);
-                }
-                else
-                {
-                    if (!PaymentHistoryEntity.IsSMDataUpdated(selectedAccount.AccountNum))
+                    if (paymentHistoryREResponse != null && !paymentHistoryREResponse.Data.IsError && paymentHistoryREResponse.Data.Status.Equals("success"))
                     {
-                        REPaymentHistoryEntity storedEntity = REPaymentHistoryEntity.GetItemByAccountNo(selectedAccount.AccountNum);
-                        if (storedEntity != null)
+                        this.mView.ShowREPaymentList(paymentHistoryREResponse);
+                    }
+                    else
+                    {
+                        if (!PaymentHistoryEntity.IsSMDataUpdated(selectedAccount.AccountNum))
                         {
-                            paymentHistoryREResponse = JsonConvert.DeserializeObject<PaymentHistoryREResponse>(storedEntity.JsonResponse);
-                            if (paymentHistoryREResponse.Data.PaymentHistoryRE != null && paymentHistoryREResponse.Data.PaymentHistoryRE.Count() > 0)
+                            REPaymentHistoryEntity storedEntity = REPaymentHistoryEntity.GetItemByAccountNo(selectedAccount.AccountNum);
+                            if (storedEntity != null)
                             {
-                                this.mView.ShowREPaymentList(paymentHistoryREResponse);
-                            }else{
+                                paymentHistoryREResponse = JsonConvert.DeserializeObject<PaymentHistoryREResponse>(storedEntity.JsonResponse);
+                                if (paymentHistoryREResponse.Data.PaymentHistoryRE != null && paymentHistoryREResponse.Data.PaymentHistoryRE.Count() > 0)
+                                {
+                                    this.mView.ShowREPaymentList(paymentHistoryREResponse);
+                                }
+                                else
+                                {
+                                    LoadingREPaymentHistory();
+                                }
+                            }
+                            else
+                            {
                                 LoadingREPaymentHistory();
                             }
                         }
@@ -116,32 +118,34 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                         {
                             LoadingREPaymentHistory();
                         }
+
                     }
-                    else
-                    {
-                        LoadingREPaymentHistory();
-                    }
-                    
-                }
-            }
-            else
-            {
-                if (paymentHistoryResponseV5 != null && !paymentHistoryResponseV5.Data.IsError && paymentHistoryResponseV5.Data.Status.Equals("success"))
-                {
-                    this.mView.ShowPaymentList(paymentHistoryResponseV5);
                 }
                 else
                 {
-                    if (!PaymentHistoryEntity.IsSMDataUpdated(selectedAccount.AccountNum))
+                    if (paymentHistoryResponseV5 != null && !paymentHistoryResponseV5.Data.IsError && paymentHistoryResponseV5.Data.Status.Equals("success"))
                     {
-                        PaymentHistoryEntity storedEntity = PaymentHistoryEntity.GetItemByAccountNo(selectedAccount.AccountNum);
-                        if (storedEntity != null)
+                        this.mView.ShowPaymentList(paymentHistoryResponseV5);
+                    }
+                    else
+                    {
+                        if (!PaymentHistoryEntity.IsSMDataUpdated(selectedAccount.AccountNum))
                         {
-                            paymentHistoryResponseV5 = JsonConvert.DeserializeObject<PaymentHistoryResponseV5>(storedEntity.JsonResponse);
-                            if (paymentHistoryResponseV5.Data.PaymentHistory != null && paymentHistoryResponseV5.Data.PaymentHistory.Count() > 0)
+                            PaymentHistoryEntity storedEntity = PaymentHistoryEntity.GetItemByAccountNo(selectedAccount.AccountNum);
+                            if (storedEntity != null)
                             {
-                                this.mView.ShowPaymentList(paymentHistoryResponseV5);
-                            }else{
+                                paymentHistoryResponseV5 = JsonConvert.DeserializeObject<PaymentHistoryResponseV5>(storedEntity.JsonResponse);
+                                if (paymentHistoryResponseV5.Data.PaymentHistory != null && paymentHistoryResponseV5.Data.PaymentHistory.Count() > 0)
+                                {
+                                    this.mView.ShowPaymentList(paymentHistoryResponseV5);
+                                }
+                                else
+                                {
+                                    LoadingPaymentHistory();
+                                }
+                            }
+                            else
+                            {
                                 LoadingPaymentHistory();
                             }
                         }
@@ -149,14 +153,9 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                         {
                             LoadingPaymentHistory();
                         }
+
                     }
-                    else
-                    {
-                        LoadingPaymentHistory();
-                    }
-                    
                 }
-            }
             }
             catch (Exception e)
             {
@@ -181,48 +180,49 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
 
         public void Start()
         {
-            try {
-            // NO IMPL
-            this.mView.DisableTabs();
-            ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
-
-            if (!BillHistoryEntity.IsSMDataUpdated(selectedAccount.AccountNum))
+            try
             {
-                BillHistoryEntity storedEntity = BillHistoryEntity.GetItemByAccountNo(selectedAccount.AccountNum);
-                if (storedEntity != null)
+                // NO IMPL
+                this.mView.DisableTabs();
+                ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
+
+                if (!BillHistoryEntity.IsSMDataUpdated(selectedAccount.AccountNum))
                 {
-                    billsHistoryResponseV5 = JsonConvert.DeserializeObject<BillHistoryResponseV5>(storedEntity.JsonResponse);
-                    this.mView.ShowBillsList(billsHistoryResponseV5);
-                    if (this.mView.IsActive())
+                    BillHistoryEntity storedEntity = BillHistoryEntity.GetItemByAccountNo(selectedAccount.AccountNum);
+                    if (storedEntity != null)
                     {
-                        this.mView.EnableTabs();
+                        billsHistoryResponseV5 = JsonConvert.DeserializeObject<BillHistoryResponseV5>(storedEntity.JsonResponse);
+                        this.mView.ShowBillsList(billsHistoryResponseV5);
+                        if (this.mView.IsActive())
+                        {
+                            this.mView.EnableTabs();
+                        }
+                    }
+                    else
+                    {
+                        LoadingBillsHistory();
                     }
                 }
                 else
                 {
                     LoadingBillsHistory();
                 }
-            }
-            else
-            {
-                LoadingBillsHistory();
-            }
-            
 
-            if (selectedAccount.AccountCategoryId.Equals("2"))
-            {
-                this.mView.ShowAccountRE();
-            }
-            else
-            {
-                this.mView.ShowNormalAccount();
-            }
+
+                if (selectedAccount.AccountCategoryId.Equals("2"))
+                {
+                    this.mView.ShowAccountRE();
+                }
+                else
+                {
+                    this.mView.ShowNormalAccount();
+                }
             }
             catch (Exception e)
             {
                 Utility.LoggingNonFatalError(e);
             }
-       }
+        }
 
         private async void LoadingBillsHistory()
         {
@@ -265,7 +265,8 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                     {
                         this.mView.ShowBillsList(billsHistoryResponseV5);
                     }
-                }else
+                }
+                else
                 {
                     if (this.mView.IsActive())
                     {
@@ -277,7 +278,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                 {
                     this.mView.EnableTabs();
                 }
-                
+
             }
             catch (System.OperationCanceledException e)
             {
@@ -356,7 +357,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                     {
                         this.mView.ShowPaymentList(paymentHistoryResponseV5);
                     }
-                    
+
                 }
                 else
                 {
@@ -364,9 +365,9 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                     {
                         this.mView.ShowEmptyPaymentList();
                     }
-                    
+
                 }
-             
+
 
             }
             catch (System.OperationCanceledException e)

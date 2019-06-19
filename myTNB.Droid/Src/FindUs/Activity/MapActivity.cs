@@ -1,46 +1,38 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
+﻿using Android.App;
 using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-using myTNB_Android.Src.Base.Activity;
 using Android.Content.PM;
 using Android.Gms.Maps;
-using myTNB_Android.Src.FindUs.Fragment;
-using Android.Util;
 using Android.Gms.Maps.Model;
+using Android.Locations;
+using Android.Net;
+using Android.OS;
+using Android.Runtime;
+using Android.Support.Design.Widget;
+using Android.Util;
+using Android.Views;
+using Android.Views.InputMethods;
+using Android.Widget;
+using CheeseBind;
+using myTNB_Android.Src.Base.Activity;
+using myTNB_Android.Src.Database.Model;
+using myTNB_Android.Src.FindUs.Models;
 using myTNB_Android.Src.FindUs.MVP;
 using myTNB_Android.Src.FindUs.Response;
-using Android.Support.Design.Widget;
-using myTNB_Android.Src.FindUs.Models;
-using Android.Locations;
-using System.Threading.Tasks;
-using Android.Support.V4.Content;
-using Android;
-using myTNB_Android.Src.FindUs.Maps;
-using Newtonsoft.Json;
-using myTNB_Android.Src.Database.Model;
-using CheeseBind;
 using myTNB_Android.Src.Utils;
-using static Android.Resource;
-using Android.Net;
-using Android.Views.InputMethods;
-using static Java.Util.ResourceBundle;
 using myTNB_Android.Src.Utils.Custom.ProgressDialog;
+using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Runtime;
+using System.Text;
 
 namespace myTNB_Android.Src.FindUs.Activity
 {
     [Activity(Label = "Find Us"
         , ScreenOrientation = ScreenOrientation.Portrait
         , Theme = "@style/Theme.FindUs")]
-    public class MapActivity : BaseToolbarAppCompatActivity, IOnMapReadyCallback, GoogleMap.IOnMyLocationButtonClickListener , ILocationListener, FindUsContract.IView
+    public class MapActivity : BaseToolbarAppCompatActivity, IOnMapReadyCallback, GoogleMap.IOnMyLocationButtonClickListener, ILocationListener, FindUsContract.IView
     {
         private readonly string TAG = "FindUSActivity";
         private readonly int SELECT_LOCATION_TYPE_CODE = 3410;
@@ -107,7 +99,7 @@ namespace myTNB_Android.Src.FindUs.Activity
         {
             mMap = googleMap;
 
-            if(_currentLocation != null)
+            if (_currentLocation != null)
             {
                 SetCurrentLoation(new LatLng(_currentLocation.Latitude, _currentLocation.Longitude));
                 userActionsListener.GetLocations(Constants.APP_CONFIG.API_KEY_ID, GoogelApiKey, _currentLocation.Latitude.ToString(), _currentLocation.Longitude.ToString(), "ALL", mLocationDescription);
@@ -142,14 +134,15 @@ namespace myTNB_Android.Src.FindUs.Activity
             //{
             //    this.mGetLocationsDialog.Show();
             //}
-            try {
-            if (loadingOverlay != null && loadingOverlay.IsShowing)
+            try
             {
-                loadingOverlay.Dismiss();
-            }
+                if (loadingOverlay != null && loadingOverlay.IsShowing)
+                {
+                    loadingOverlay.Dismiss();
+                }
 
-            loadingOverlay = new LoadingOverlay(this, Resource.Style.LoadingOverlyDialogStyle);
-            loadingOverlay.Show();
+                loadingOverlay = new LoadingOverlay(this, Resource.Style.LoadingOverlyDialogStyle);
+                loadingOverlay.Show();
             }
             catch (Exception e)
             {
@@ -178,7 +171,7 @@ namespace myTNB_Android.Src.FindUs.Activity
 
         public void ShowGetLocationsSuccess(GetLocationsResponse response, GetGoogleLocationsResponse results)
         {
-            if(mMap != null)
+            if (mMap != null)
             {
                 mMap.Clear();
                 mMarkers.Clear();
@@ -187,7 +180,7 @@ namespace myTNB_Android.Src.FindUs.Activity
             }
             locationsResponse.Clear();
             googleLocationsResponse.Clear();
-            if(response.D != null && response.D.LocationList != null)
+            if (response.D != null && response.D.LocationList != null)
             {
                 locationsResponse = response.D.LocationList;
                 if (response.D.LocationList.Count > 0)
@@ -262,13 +255,13 @@ namespace myTNB_Android.Src.FindUs.Activity
                 //    SetCurrentLoation(newLocation);
                 //}
             }
-            
+
         }
 
-      
+
         public void SetCurrentLoation(LatLng currentLocation)
         {
-            
+
             CameraPosition.Builder builder = CameraPosition.InvokeBuilder();
             builder.Target(currentLocation);
             builder.Zoom(16);
@@ -276,7 +269,7 @@ namespace myTNB_Android.Src.FindUs.Activity
             //builder.Tilt(65);
             CameraPosition cameraPosition = builder.Build();
             CameraUpdate cameraUpdate = CameraUpdateFactory.NewCameraPosition(cameraPosition);
-            
+
 
             mMap.UiSettings.ZoomControlsEnabled = false;
             mMap.UiSettings.CompassEnabled = true;
@@ -304,11 +297,12 @@ namespace myTNB_Android.Src.FindUs.Activity
             //{
             //    this.mGetLocationsDialog.Dismiss();
             //}
-            try {
-            if (loadingOverlay != null && loadingOverlay.IsShowing)
+            try
             {
-                loadingOverlay.Dismiss();
-            }
+                if (loadingOverlay != null && loadingOverlay.IsShowing)
+                {
+                    loadingOverlay.Dismiss();
+                }
             }
             catch (Exception e)
             {
@@ -332,7 +326,7 @@ namespace myTNB_Android.Src.FindUs.Activity
 
             rootView = (LinearLayout)FindViewById(Resource.Id.rootView);
             mapFragment = (MapFragment)FragmentManager.FindFragmentById(Resource.Id.map_view);
-            
+
             mapFragment.GetMapAsync(this);
 
             //mGetLocationsDialog = new AlertDialog.Builder(this)
@@ -345,7 +339,8 @@ namespace myTNB_Android.Src.FindUs.Activity
                .SetTitle("Locations")
                .SetMessage("No records found!")
                .SetCancelable(true)
-                .SetPositiveButton("Ok", (senderAlert, args) => {
+                .SetPositiveButton("Ok", (senderAlert, args) =>
+                {
                     if (loadingOverlay != null && loadingOverlay.IsShowing)
                     {
                         loadingOverlay.Dismiss();
@@ -455,15 +450,16 @@ namespace myTNB_Android.Src.FindUs.Activity
                         mLocationDialog = new AlertDialog.Builder(this)
                                 .SetTitle("Location!")
                                 .SetMessage("Location service disabled. Please enable location from phone settings.")
-                                .SetPositiveButton("Ok", (senderAlert, args) => {
+                                .SetPositiveButton("Ok", (senderAlert, args) =>
+                                {
                                     mLocationDialog.Dismiss();
                                 })
                                 .SetCancelable(false)
                                 .Create();
-                                if (!mLocationDialog.IsShowing)
-                                {
-                                    mLocationDialog.Show();
-                                }
+                        if (!mLocationDialog.IsShowing)
+                        {
+                            mLocationDialog.Show();
+                        }
                     }
                     else
                     {
@@ -522,9 +518,9 @@ namespace myTNB_Android.Src.FindUs.Activity
 
 
             }
-            Log.Debug(TAG, "Using " + _locationProvider + ".");   
+            Log.Debug(TAG, "Using " + _locationProvider + ".");
         }
-        
+
 
         protected override void OnResume()
         {
@@ -549,7 +545,7 @@ namespace myTNB_Android.Src.FindUs.Activity
 
         private void GMapInfoWindowClick(object sender, GoogleMap.InfoWindowClickEventArgs e)
         {
-            
+
         }
 
         /// <summary>
@@ -557,24 +553,25 @@ namespace myTNB_Android.Src.FindUs.Activity
         /// </summary>
         public void FindClickedItem(LatLng clickedItem)
         {
-            try {
-            LocationData locationData = null;
-            GoogleApiResult googleApiResult = null;
-
-            locationData = locationsResponse.Find(x => x.Latitude == clickedItem.Latitude);
-            googleApiResult = googleLocationsResponse.Find(y => y.geometry.location.lat == clickedItem.Latitude);
-            if (locationData != null)
+            try
             {
-                Intent detailsView = new Intent(this, typeof(LocationDetailsActivity));
-                detailsView.PutExtra("Title", KEDAI_TENAGA);
-                detailsView.PutExtra("KT", JsonConvert.SerializeObject(locationData));
-                detailsView.PutExtra("imagePath", selectedLocationType.ImagePath);
-                StartActivity(detailsView);
+                LocationData locationData = null;
+                GoogleApiResult googleApiResult = null;
+
+                locationData = locationsResponse.Find(x => x.Latitude == clickedItem.Latitude);
+                googleApiResult = googleLocationsResponse.Find(y => y.geometry.location.lat == clickedItem.Latitude);
+                if (locationData != null)
+                {
+                    Intent detailsView = new Intent(this, typeof(LocationDetailsActivity));
+                    detailsView.PutExtra("Title", KEDAI_TENAGA);
+                    detailsView.PutExtra("KT", JsonConvert.SerializeObject(locationData));
+                    detailsView.PutExtra("imagePath", selectedLocationType.ImagePath);
+                    StartActivity(detailsView);
+                }
             }
-        }
             catch (Exception e)
             {
-                Utility.LoggingNonFatalError(e);  
+                Utility.LoggingNonFatalError(e);
 
             }
             //else if (googleApiResult != null)
@@ -592,26 +589,27 @@ namespace myTNB_Android.Src.FindUs.Activity
         protected override void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
         {
             base.OnActivityResult(requestCode, resultCode, data);
-            try {
-            if(resultCode == Result.Ok)
+            try
             {
-                if(requestCode == SELECT_LOCATION_TYPE_CODE)
+                if (resultCode == Result.Ok)
                 {
-                    selectedLocationType = JsonConvert.DeserializeObject<LocationType>(data.GetStringExtra("selectedLocationType"));
-                    if(selectedLocationType != null)
+                    if (requestCode == SELECT_LOCATION_TYPE_CODE)
                     {
-                        if (_currentLocation != null)
+                        selectedLocationType = JsonConvert.DeserializeObject<LocationType>(data.GetStringExtra("selectedLocationType"));
+                        if (selectedLocationType != null)
                         {
-                            selectorLocationType.Text = selectedLocationType.Description;
-                            userActionsListener.GetLocations(Constants.APP_CONFIG.API_KEY_ID, GoogelApiKey, _currentLocation.Latitude.ToString(), _currentLocation.Longitude.ToString(), selectedLocationType.Title, selectedLocationType.Description);
+                            if (_currentLocation != null)
+                            {
+                                selectorLocationType.Text = selectedLocationType.Description;
+                                userActionsListener.GetLocations(Constants.APP_CONFIG.API_KEY_ID, GoogelApiKey, _currentLocation.Latitude.ToString(), _currentLocation.Longitude.ToString(), selectedLocationType.Title, selectedLocationType.Description);
+                            }
                         }
                     }
                 }
             }
-        }
             catch (Exception e)
             {
-                Utility.LoggingNonFatalError(e);  
+                Utility.LoggingNonFatalError(e);
 
             }
         }
@@ -651,7 +649,7 @@ namespace myTNB_Android.Src.FindUs.Activity
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Permission[] grantResults)
         {
             base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
-            if(requestCode == Constants.RUNTIME_PERMISSION_LOCATION_REQUEST_CODE)
+            if (requestCode == Constants.RUNTIME_PERMISSION_LOCATION_REQUEST_CODE)
             {
                 if (Utility.IsPermissionHasCount(grantResults))
                 {
@@ -703,7 +701,8 @@ namespace myTNB_Android.Src.FindUs.Activity
                 //{
                 //    _locationProvider = string.Empty;
                 //}
-                RunOnUiThread(() => {
+                RunOnUiThread(() =>
+                {
                     OnLoad();
                 });
                 alreadyAskedPermission = true;
