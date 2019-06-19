@@ -1126,6 +1126,7 @@
     <Folder Include="Assets.xcassets\IC-Header-Cancel.imageset\" />
     <Folder Include="Assets.xcassets\Notification-Select.imageset\" />
     <Folder Include="Assets.xcassets\Maintenance-Image.imageset\" />
+    <Folder Include="Customs\Bill\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -1812,6 +1813,9 @@
     <Compile Include="Model\UpdateNotification\UpdateNotificationModel.cs" />
     <Compile Include="Customs\CustomUIViewController.cs" />
     <Compile Include="Customs\TextViewDelegate.cs" />
+    <Compile Include="Customs\Bill\CustomBillUIViewController.cs" />
+    <Compile Include="Customs\CustomUILabel.cs" />
+    <Compile Include="Customs\CustomUIButton.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />

@@ -174,10 +174,7 @@ namespace myTNB
                     {
                         item.Value?.Invoke();
                     }
-                    else
-                    {
-                        viewParent.RemoveFromSuperview();
-                    }
+                    viewParent.RemoveFromSuperview();
                 }));
                 UILabel ctaLbl = new UILabel(new CGRect(0, 0, ctaBtn.Frame.Width, ctaBtn.Frame.Height))
                 {

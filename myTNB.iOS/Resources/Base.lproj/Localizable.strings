@@ -9,8 +9,8 @@
 /*Bill*/
 "Bill_Advice"="Advice";
 "Bill_Bills"="Bills";
+"Bill_BillDetails"="Bill Details";
 "Bill_By"="By";
-"Bill_CurrentBill"="Current Bill";
 "Bill_CurrentCharges"="Current Charges";
 "Bill_CurrentPaymentAdvice"="Current Payment Advice";
 "Bill_MyEarnings"="My Earnings";

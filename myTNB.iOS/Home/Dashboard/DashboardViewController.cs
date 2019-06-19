@@ -795,8 +795,7 @@ namespace myTNB.Dashboard
                 _dashboardMainComponent._billAndPaymentComponent.SetDateDue(dueDate);
                 //_dashboardMainComponent._billAndPaymentComponent.SetPayButtonEnable(_amountDue > 0);
                 _dashboardMainComponent._billAndPaymentComponent.SetPaymentTitle(isREAccount
-                                                                                 ? "Bill_MyEarnings".Translate()
-                                                                                 : "Common_AmountDue".Translate());
+                    ? "Bill_MyEarnings".Translate() : "Common_AmountDue".Translate());
                 if (_dashboardMainComponent._billAndPaymentComponent._activity != null)
                 {
                     _dashboardMainComponent._billAndPaymentComponent._activity.Hide();
@@ -813,7 +812,12 @@ namespace myTNB.Dashboard
                 , "It includes your current month's bill plus other mandatory payments. you may check out Bills tab for a detailed view."
                 , new Dictionary<string, Action>() {
                     { "Common_Gotit".Translate(), null },
-                    {"Dashboard_BringMeThere".Translate(), null }
+                    {"Dashboard_BringMeThere".Translate(), ()=>{
+                        if (TabBarController != null)
+                        {
+                            TabBarController.SelectedIndex = 1;
+                        }
+                    } }
                 });
         }
 

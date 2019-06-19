@@ -15,7 +15,7 @@ namespace myTNB
         public CustomUIViewController(IntPtr handle) : base(handle)
         {
         }
-
+        #region LifeCycle
         public override void ViewDidLoad()
         {
             base.ViewDidLoad();
@@ -30,7 +30,35 @@ namespace myTNB
         {
             base.ViewDidAppear(animated);
         }
+        #endregion
+        #region Utilities
+        public UILabel GetUILabelField(CGRect lblFrame, string key, UITextAlignment txtAlignment = UITextAlignment.Left)
+        {
+            return CustomUILabel.GetUILabelField(lblFrame, key, txtAlignment);
+        }
 
+        public UILabel GetUILabelField(CGRect lblFrame, string key, UIFont font
+            , UIColor textColor, UITextAlignment txtAlignment = UITextAlignment.Left)
+        {
+            return CustomUILabel.GetUILabelField(lblFrame, key, font, textColor, txtAlignment);
+        }
+
+        public CGSize GetLabelSize(UILabel label, nfloat width, nfloat height)
+        {
+            return CustomUILabel.GetLabelSize(label, width, height);
+        }
+
+        public UIButton GetUIButton(CGRect frame, string key)
+        {
+            return CustomUIButton.GetUIButton(frame, key);
+        }
+
+        public void MakeTopCornerRadius(UIButton button)
+        {
+            CustomUIButton.MakeTopCornerRadius(button);
+        }
+        #endregion
+        #region Toast
         public void DisplayToast(string message)
         {
             if (_viewToast == null)
@@ -93,7 +121,8 @@ namespace myTNB
 #pragma warning restore XI0001 // Notifies you with advices on how to use Apple APIs
             }
         }
-
+        #endregion
+        #region Alerts
         public void DisplayCustomAlert(string title, string message, Action handler = null, string actionTitle = null)
         {
             ToastHelper.DisplayCustomAlert(title, message, handler, actionTitle);
@@ -103,11 +132,8 @@ namespace myTNB
         {
             ToastHelper.DisplayCustomAlert(title, message, ctaButtons);
         }
-
-
-
+        #endregion
         #region Private Methods
-
         void AddSwipeGestureForToast()
         {
             if (_viewToastOverlay != null)
@@ -144,7 +170,6 @@ namespace myTNB
             });
 #pragma warning restore XI0001 // Notifies you with advices on how to use Apple APIs
         }
-
         #endregion
     }
 }
