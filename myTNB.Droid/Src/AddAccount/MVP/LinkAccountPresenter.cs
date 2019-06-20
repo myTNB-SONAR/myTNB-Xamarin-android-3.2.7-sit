@@ -48,9 +48,7 @@ namespace myTNB_Android.Src.AddAccount.MVP
             try
             {
                 UserEntity user = UserEntity.GetActive();
-                // TODO : UPDATE TO V5
                 var result = await api.GetCustomerAccountV5(new GetCustomerAccountsRequest(apiID, user.UserID));
-                //Log.Debug(TAG, " : "+result.response);
                 if (mView.IsActive())
                 {
                     this.mView.HideGetAccountsProgressDialog();
@@ -94,7 +92,6 @@ namespace myTNB_Android.Src.AddAccount.MVP
                 var api = RestService.For<GetCustomerAccountsForICNumApi>(Constants.SERVER_URL.END_POINT);
                 // TODO : UPDATE TO V5
                 var result = await api.GetCustomerAccountByIc(new GetBCRMAccountRequest(apiKeyID, currentAccountList, email, identificationNo));
-                //Log.Debug(TAG, " : "+result.response);
 
                 if (result.Data.IsError)
                 {

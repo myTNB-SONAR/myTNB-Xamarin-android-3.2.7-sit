@@ -17,7 +17,7 @@ namespace myTNB_Android.Src.AppLaunch.Api
         Task<NotificationTypesResponse> GetAppNotificationTypes([Body] NotificationRequest request, CancellationToken token);
 
         [Headers("Content-Type:application/json; charset=utf-8")]
-        [Post("/v5/my_billingssp.asmx//GetUserNotifications")]
+        [Post("/v5/my_billingssp.asmx/GetUserNotifications")]
         Task<UserNotificationResponse> GetUserNotifications([Body] UserNotificationRequest request, CancellationToken token);
     }
 }

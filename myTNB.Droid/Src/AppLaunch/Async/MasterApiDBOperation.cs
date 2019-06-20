@@ -31,10 +31,7 @@ namespace myTNB_Android.Src.AppLaunch.Async
                     foreach (Weblink web in masterDataResponse.Data.MasterData.WebLinks)
                     {
                         int newRecord = WeblinkEntity.InsertOrReplace(web);
-                        //Log.Debug(TAG, "New Weblink Record " + newRecord);
                     }
-
-                    //Log.Debug(TAG, "Weblink Records " + WeblinkEntity.Count());
 
                     FeedbackCategoryEntity.RemoveActive();
                     foreach (FeedbackCategory cat in masterDataResponse.Data.MasterData.FeedbackCategorys)
@@ -66,24 +63,18 @@ namespace myTNB_Android.Src.AppLaunch.Async
                     foreach (NotificationChannels notificationChannel in masterDataResponse.Data.MasterData.NotificationTypeChannels)
                     {
                         int newRecord = NotificationChannelEntity.InsertOrReplace(notificationChannel);
-                        //Log.Debug(TAG, "New Channel Record " + newRecord);
                     }
 
                     foreach (NotificationTypes notificationTypes in masterDataResponse.Data.MasterData.NotificationTypes)
                     {
                         int newRecord = NotificationTypesEntity.InsertOrReplace(notificationTypes);
-                        //Log.Debug(TAG, "New Type Record " + newRecord);
                     }
 
                     LocationTypesEntity.InsertFristRecord();
                     foreach (LocationType loc in masterDataResponse.Data.MasterData.LocationTypes)
                     {
                         int newRecord = LocationTypesEntity.InsertOrReplace(loc);
-                        //Log.Debug(TAG, "Location Types Record " + newRecord);
                     }
-
-
-                    //Log.Debug(TAG, "Location Records " + LocationTypesEntity.Count());
 
                     DownTimeEntity.RemoveActive();
                     foreach (DownTime cat in masterDataResponse.Data.MasterData.Downtimes)
@@ -108,10 +99,6 @@ namespace myTNB_Android.Src.AppLaunch.Async
                         }
                     }
                     UserSessions.SetAppVersionCode(preferences, appCurrentVersion);
-
-
-
-                    //Log.Debug(TAG, "DownTime Records " + DownTimeEntity.Count());
                 }
             }
 

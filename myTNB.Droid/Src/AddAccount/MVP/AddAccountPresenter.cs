@@ -29,8 +29,6 @@ namespace myTNB_Android.Src.AddAccount.MVP
 
         public void Start()
         {
-            //ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
-            //GetCustomerAccounts();
             mView.DisableAddAccountButton();
             Log.Debug(TAG, "Start Called");
         }
@@ -69,7 +67,6 @@ namespace myTNB_Android.Src.AddAccount.MVP
                 if (tnbBillAcctNo.Length != 12 && tnbBillAcctNo.Length != 14)
                 {
                     mView.ShowInvalidAccountNumberError();
-                    //mView.ShowEmptyAccountNumberError();
                     return;
                 }
 
@@ -103,17 +100,14 @@ namespace myTNB_Android.Src.AddAccount.MVP
 #if DEBUG
             var httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
             var api = RestService.For<AddAccountToCustomer>(httpClient);
-
 #else
-             var api = RestService.For<AddAccountToCustomer>(Constants.SERVER_URL.END_POINT);
+            var api = RestService.For<AddAccountToCustomer>(Constants.SERVER_URL.END_POINT);
             
 #endif
 
             try
             {
-
                 UserEntity user = UserEntity.GetActive();
-                //UserRegister userReg = UserRegister.GetActive();
                 var result = await api.AddAccountToCustomer(new AddAccountToCustomerRequest(apiKeyId, user.UserID, user.Email, tnbBillAcctNo, tnbAcctHolderIC, tnbAcctContractNo, type, des, isOwner, suppliedMotherName), addAccountCts.Token);
 
                 if (result.response[0].isError)
@@ -197,15 +191,6 @@ namespace myTNB_Android.Src.AddAccount.MVP
                     mView.ShowInvalidAccountNumberError();
                     return;
                 }
-
-
-                //if (!Utility.isAlphaNumeric(accountLabel))
-                //{
-                //    mView.ShowEnterValidAccountName();
-                //    return;
-                //}
-
-
 
                 ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
                 ValidateAccountAsync(apiKeyId, accountNum, accountType, userIdentificationNum, suppliedMotherName, isOwner, accountLabel);

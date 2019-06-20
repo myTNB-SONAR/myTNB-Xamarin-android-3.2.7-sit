@@ -5,17 +5,6 @@ namespace myTNB_Android.Src.AddAccount.Models
 
     public class Account
     {
-        // "__type": "Billing.BillingRegListSSP",
-        //"accNum": "220163099904",
-        //"userAccountID": null,
-        //"accDesc": "MANUFACTURE SDN. BHD. BEST FORM BRAKE",
-        //"icNum": null,
-        //"amCurrentChg": 4710.4,
-        //"isRegistered": "False",
-        //"isPaid": "False",
-        //"isError": "false",
-        //"message": null
-
         [JsonProperty(PropertyName = "__type")]
         public string Type { get; set; }
 

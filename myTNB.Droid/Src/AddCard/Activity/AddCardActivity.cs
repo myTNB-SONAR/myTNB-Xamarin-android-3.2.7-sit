@@ -80,7 +80,6 @@ namespace myTNB_Android.Src.AddCard.Activity
                 {
                     if (extras.ContainsKey("registeredCards"))
                     {
-                        //registerdCards = JsonConvert.DeserializeObject<List<myTNB_Android.Src.MakePayment.Models.CreditCard>>(Intent.Extras.GetString("registeredCards"));
                         registerdCards = DeSerialze<List<myTNB_Android.Src.MakePayment.Models.CreditCard>>(extras.GetString("registeredCards"));
                     }
                 }
@@ -111,7 +110,6 @@ namespace myTNB_Android.Src.AddCard.Activity
                 btnNext = FindViewById<Button>(Resource.Id.btnNext);
                 btnNext.Click += delegate
                 {
-                    //ValidateCardDetails();
                     DoSaveCard();
                 };
 
@@ -125,13 +123,6 @@ namespace myTNB_Android.Src.AddCard.Activity
 
                 TextViewUtils.SetMuseoSans300Typeface(saveCard);
                 TextViewUtils.SetMuseoSans500Typeface(btnNext);
-
-                /* string cardNo = txtCardNo.Text.Replace(" ", "");
-                string name = txtNameOfCard.Text;
-                string exp = txtCardExpDate.Text;
-                string cvv = txtCVV.Text;*/
-
-                //txtFeedback.TextChanged += TextChanged;
 
                 txtCardNo.TextChanged += CardTextChange;
 
@@ -164,13 +155,11 @@ namespace myTNB_Android.Src.AddCard.Activity
                     {
                         textInputLayoutCardNo.Error = "Invalid Card No.";
                     }
-                    //ShowErrorMessage("Invalid Card Number", "Please enter valid card number");
                 }
                 else if (!LuhnVerification(cardNo))
                 {
                     DisableSaveButton();
                     textInputLayoutCardNo.Error = "Invalid Card No.";
-                    //ShowErrorMessage("Invalid Card Number", "Please enter valid card number");
                 }
                 else
                 {
@@ -194,7 +183,6 @@ namespace myTNB_Android.Src.AddCard.Activity
                 if (String.IsNullOrEmpty(name))
                 {
                     DisableSaveButton();
-                    //ShowErrorMessage("Invalid Name", "Please enter name of card holder");
                 }
                 else
                 {
@@ -218,7 +206,6 @@ namespace myTNB_Android.Src.AddCard.Activity
                 if (String.IsNullOrEmpty(exp) || exp.Length != 5 || !exp.Contains("/"))
                 {
                     DisableSaveButton();
-                    //ShowErrorMessage("Invalid Exp Date", "Please enter expiry date of your card");
                     if (!String.IsNullOrEmpty(exp))
                     {
                         textInputLayoutCardExpDate.Error = "Invalid Card Expiration Date";
@@ -248,8 +235,7 @@ namespace myTNB_Android.Src.AddCard.Activity
 
                     if (!String.IsNullOrEmpty(cvv))
                     {
-                        textInputLayoutCVV.Error = "Invalid CVV.";
-                        //ShowErrorMessage("Invalid CVV Code", "Please enter CVV code from the back of your card");    
+                        textInputLayoutCVV.Error = "Invalid CVV."; 
                     }
 
                 }
@@ -290,27 +276,22 @@ namespace myTNB_Android.Src.AddCard.Activity
                 if (String.IsNullOrEmpty(cardNo) || cardNo.Length < 15)
                 {
                     DisableSaveButton();
-                    //ShowErrorMessage("Invalid Card Number", "Please enter valid card number");
                 }
                 else if (!LuhnVerification(cardNo))
                 {
                     DisableSaveButton();
-                    //ShowErrorMessage("Invalid Card Number", "Please enter valid card number");
                 }
                 else if (String.IsNullOrEmpty(name))
                 {
                     DisableSaveButton();
-                    //ShowErrorMessage("Invalid Name", "Please enter name of card holder");
                 }
                 else if (String.IsNullOrEmpty(exp) || exp.Length != 5 || !exp.Contains("/"))
                 {
                     DisableSaveButton();
-                    //ShowErrorMessage("Invalid Exp Date", "Please enter expiry date of your card");
                 }
                 else if (String.IsNullOrEmpty(cvv) || cvv.Length < 3)
                 {
                     DisableSaveButton();
-                    //ShowErrorMessage("Invalid CVV Code", "Please enter CVV code from the back of your card");
                 }
                 else if (IsAlreadyRegisteredCard(cardNo))
                 {

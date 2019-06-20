@@ -45,9 +45,6 @@ namespace myTNB_Android.Src.AppLaunch.Activity
         [BindView(Resource.Id.rootView)]
         RelativeLayout rootView;
 
-        //[BindView(Resource.Id.txt_app_version)]
-        //TextView txt_app_version;
-
         public static readonly string TAG = typeof(LaunchViewActivity).Name;
         private AppLaunchPresenter mPresenter;
         private AppLaunchContract.IUserActionsListener userActionsListener;
@@ -66,46 +63,12 @@ namespace myTNB_Android.Src.AppLaunch.Activity
 
             try
             {
-
-
                 if (Intent != null && Intent.Extras != null && Intent.Extras.ContainsKey("Email"))
                 {
                     string email = Intent.Extras.GetString("Email");
                     UserSessions.SetHasNotification(PreferenceManager.GetDefaultSharedPreferences(this));
                     UserSessions.SaveUserEmailNotification(PreferenceManager.GetDefaultSharedPreferences(this), email);
                 }
-
-
-                //mPresenter = new AppLaunchPresenter(this, PreferenceManager.GetDefaultSharedPreferences(this));
-                //Log.Debug(TAG, "InstanceID token: " + FirebaseInstanceId.Instance.Token);
-                //if (FirebaseTokenEntity.HasLatest())
-                //{
-                //    var tokenEntity = FirebaseTokenEntity.GetLatest();
-                //    if (tokenEntity != null)
-                //    {
-                //        Log.Debug(TAG, "Refresh token: " + tokenEntity.FBToken);
-                //    }
-                //}
-
-                ////TextViewUtils.SetMuseoSans300Typeface(txt_app_version);
-                //try
-                //{
-
-                //    PackageInfo info = this.PackageManager.GetPackageInfo("com.mytnb.mytnb", Android.Content.PM.PackageInfoFlags.Activities);
-                //    if (info != null)
-                //    {
-                //        txt_app_version.Text = GetString(Resource.String.text_app_version) +" "+ info.VersionName;
-                //    }
-                //}
-                //catch (System.Exception e)
-                //{
-                //    Log.Debug("Package Manager", e.StackTrace);
-                //    txt_app_version.Visibility = ViewStates.Gone;
-                //}
-                //Hide version number text from splash 
-                ////txt_app_version.Visibility = ViewStates.Gone;
-
-
             }
             catch (Exception e)
             {
@@ -148,7 +111,6 @@ namespace myTNB_Android.Src.AppLaunch.Activity
             try
             {
                 userActionsListener.GetSavedTimeStamp();
-                //RunOnUiThread(() => StartActivity(typeof(WalkThroughActivity)));
             }
             catch (Exception e)
             {
@@ -525,10 +487,6 @@ namespace myTNB_Android.Src.AppLaunch.Activity
         {
             try
             {
-                //if(appUpdateDialog != null)
-                //{
-
-
                 appUpdateDialog = new MaterialDialog.Builder(this)
                     .CustomView(Resource.Layout.AppUpdateDialog, false)
                     .Cancelable(false)
@@ -550,7 +508,6 @@ namespace myTNB_Android.Src.AppLaunch.Activity
 
                 if (IsActive())
                     appUpdateDialog.Show();
-                //}
             }
             catch (Exception e)
             {
@@ -581,7 +538,6 @@ namespace myTNB_Android.Src.AppLaunch.Activity
             try
             {
                 Intent updateMobileNo = new Intent(this, typeof(UpdateMobileActivity));
-                //updateMobileNo.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
                 updateMobileNo.PutExtra(Constants.FORCE_UPDATE_PHONE_NO, true);
                 updateMobileNo.PutExtra(Constants.FROM_APP_LAUNCH, true);
                 updateMobileNo.PutExtra("PhoneNumber", phoneNumber);
@@ -598,7 +554,6 @@ namespace myTNB_Android.Src.AppLaunch.Activity
             try
             {
                 Intent maintenanceScreen = new Intent(this, typeof(MaintenanceActivity));
-                //updateMobileNo.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
                 maintenanceScreen.PutExtra(Constants.MAINTENANCE_TITLE_KEY, masterDataResponse.Data.MasterData.MaintainanceTitle);
                 maintenanceScreen.PutExtra(Constants.MAINTENANCE_MESSAGE_KEY, masterDataResponse.Data.MasterData.MaintainanceMessage);
                 StartActivity(maintenanceScreen);
