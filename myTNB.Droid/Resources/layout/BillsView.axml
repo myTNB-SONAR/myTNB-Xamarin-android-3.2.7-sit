@@ -141,6 +141,157 @@
                     android:minHeight="25px"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:id="@+id/mandatoryPaymentsLayout"
+                    android:paddingLeft="30dp"
+                    android:paddingRight="30dp"
+                    android:paddingBottom="10dp">
+                    <TextView
+                        android:id="@+id/txtMandatoryPaymentsTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/tunaGrey"
+                        android:textSize="12sp"
+                        android:text="Mandatory Payments"
+                        android:layout_alignParentLeft="true" />
+                    <TextView
+                        android:id="@+id/txtMandatoryPaymentsRM"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBaseline="@+id/txtMandatoryPaymentsTitle"
+                        android:layout_toLeftOf="@+id/txtMandatoryPaymentsContent"
+                        android:text="RM "
+                        android:textSize="12sp"
+                        android:textColor="@color/tunaGrey" />
+                    <TextView
+                        android:id="@+id/txtMandatoryPaymentsContent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/tunaGrey"
+                        android:textSize="12sp"
+                        android:text="0.00"
+                        android:layout_alignParentRight="true" />
+                </RelativeLayout>
+                <RelativeLayout
+                    android:minWidth="25px"
+                    android:minHeight="25px"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/mandatoryPaymentsDetailLayout"
+                    android:paddingLeft="30dp"
+                    android:paddingRight="30dp"
+                    android:paddingBottom="10dp">
+                    <TextView
+                        android:id="@+id/txtSecurityDepositTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/silverChalice"
+                        android:textSize="12sp"
+                        android:text="Security Deposit"
+                        android:layout_alignParentLeft="true" />
+                    <TextView
+                        android:id="@+id/txtSecurityDepositRM"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBaseline="@+id/txtSecurityDepositTitle"
+                        android:layout_toLeftOf="@+id/txtSecurityDepositContent"
+                        android:text="RM "
+                        android:textSize="12sp"
+                        android:textColor="@color/silverChalice" />
+                    <TextView
+                        android:id="@+id/txtSecurityDepositContent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/silverChalice"
+                        android:textSize="12sp"
+                        android:text="0.00"
+                        android:layout_alignParentRight="true" />
+                    <TextView
+                        android:id="@+id/txtStampDutyTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/silverChalice"
+                        android:textSize="12sp"
+                        android:text="Stamp Duty"
+                        android:layout_alignParentLeft="true"
+                        android:layout_below="@+id/txtSecurityDepositTitle"/>
+                    <TextView
+                        android:id="@+id/txtStampDutyRM"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBaseline="@+id/txtStampDutyTitle"
+                        android:layout_toLeftOf="@+id/txtStampDutyContent"
+                        android:text="RM "
+                        android:textSize="12sp"
+                        android:textColor="@color/silverChalice" />
+                    <TextView
+                        android:id="@+id/txtStampDutyContent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/silverChalice"
+                        android:textSize="12sp"
+                        android:text="0.00"
+                        android:layout_alignBaseline="@+id/txtStampDutyTitle"
+                        android:layout_alignParentRight="true" />
+                    <TextView
+                        android:id="@+id/txtProcessingFeeTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/silverChalice"
+                        android:textSize="12sp"
+                        android:text="Processing Fee"
+                        android:layout_alignParentLeft="true"
+                        android:layout_below="@+id/txtStampDutyTitle"/>
+                    <TextView
+                        android:id="@+id/txtProcessingFeeRM"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBaseline="@+id/txtProcessingFeeTitle"
+                        android:layout_toLeftOf="@+id/txtProcessingFeeContent"
+                        android:text="RM "
+                        android:textSize="12sp"
+                        android:textColor="@color/silverChalice" />
+                    <TextView
+                        android:id="@+id/txtProcessingFeeContent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/silverChalice"
+                        android:textSize="12sp"
+                        android:text="0.00"
+                        android:layout_alignBaseline="@+id/txtProcessingFeeTitle"
+                        android:layout_alignParentRight="true" />
+                    <TextView
+                        android:id="@+id/txtMeterCostTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/silverChalice"
+                        android:textSize="12sp"
+                        android:text="Meter Cost"
+                        android:layout_alignParentLeft="true"
+                        android:layout_below="@+id/txtProcessingFeeTitle"/>
+                    <TextView
+                        android:id="@+id/txtMeterCostRM"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBaseline="@+id/txtMeterCostTitle"
+                        android:layout_toLeftOf="@+id/txtMeterCostContent"
+                        android:text="RM "
+                        android:textSize="12sp"
+                        android:textColor="@color/silverChalice" />
+                    <TextView
+                        android:id="@+id/txtMeterCostContent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/silverChalice"
+                        android:textSize="12sp"
+                        android:text="0.00"
+                        android:layout_alignBaseline="@+id/txtMeterCostTitle"
+                        android:layout_alignParentRight="true" />
+                </RelativeLayout>
+                <RelativeLayout
+                    android:minWidth="25px"
+                    android:minHeight="25px"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:id="@+id/outstandingChangeLayout"
                     android:paddingLeft="30dp"
                     android:paddingRight="30dp"

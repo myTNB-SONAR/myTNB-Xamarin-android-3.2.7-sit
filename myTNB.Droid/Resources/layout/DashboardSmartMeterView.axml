@@ -596,9 +596,22 @@
                     android:layout_alignParentStart="true"
                     android:layout_below="@+id/txtTotalPayableTitle"
                     android:textSize="11sp"
+                    android:layout_marginTop="10dp"
                     android:paddingTop="@dimen/_1sdp"
                     android:textColor="@color/silverChalice"
                     android:text="" />
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:textSize="10sp"
+                    android:textStyle="normal"
+                    android:layout_alignBaseline="@+id/txtDueDate"
+                    android:textColor="@android:color/holo_blue_light"
+                    android:singleLine="true"
+                    android:text="Why this amount?"
+                    android:id="@+id/txtWhyThisAmt"
+                    android:layout_alignParentRight="true" 
+                    android:clickable="true"/>
             </RelativeLayout>
             <LinearLayout
                 android:layout_width="match_parent"

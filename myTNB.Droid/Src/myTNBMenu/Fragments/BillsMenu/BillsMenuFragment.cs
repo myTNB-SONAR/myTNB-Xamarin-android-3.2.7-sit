@@ -50,6 +50,51 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.BillsMenu
         [BindView(Resource.Id.txtCurrentChargesRM)]
         TextView txtCurrentChargesRM;
 
+        [BindView(Resource.Id.txtMandatoryPaymentsTitle)]
+        TextView txtMandatoryPaymentsTitle;
+
+        [BindView(Resource.Id.txtMandatoryPaymentsContent)]
+        TextView txtMandatoryPaymentsContent;
+
+        [BindView(Resource.Id.txtMandatoryPaymentsRM)]
+        TextView txtMandatoryPaymentsRM;
+
+        [BindView(Resource.Id.txtSecurityDepositTitle)]
+        TextView txtSecurityDepositTitle;
+
+        [BindView(Resource.Id.txtSecurityDepositContent)]
+        TextView txtSecurityDepositContent;
+
+        [BindView(Resource.Id.txtSecurityDepositRM)]
+        TextView txtSecurityDepositRM;
+
+        [BindView(Resource.Id.txtProcessingFeeTitle)]
+        TextView txtProcessingFeeTitle;
+
+        [BindView(Resource.Id.txtProcessingFeeContent)]
+        TextView txtProcessingFeeContent;
+
+        [BindView(Resource.Id.txtProcessingFeeRM)]
+        TextView txtProcessingFeeRM;
+
+        [BindView(Resource.Id.txtMeterCostTitle)]
+        TextView txtMeterCostTitle;
+
+        [BindView(Resource.Id.txtMeterCostContent)]
+        TextView txtMeterCostContent;
+
+        [BindView(Resource.Id.txtMeterCostRM)]
+        TextView txtMeterCostRM;
+
+        [BindView(Resource.Id.txtStampDutyTitle)]
+        TextView txtStampDutyTitle;
+
+        [BindView(Resource.Id.txtStampDutyContent)]
+        TextView txtStampDutyContent;
+
+        [BindView(Resource.Id.txtStampDutyRM)]
+        TextView txtStampDutyRM;
+
         [BindView(Resource.Id.txtOutstandingChargesTitle)]
         TextView txtOutstandingChargesTitle;
 
@@ -118,6 +163,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.BillsMenu
 
         [BindView(Resource.Id.currentChangeLayout)]
         RelativeLayout currentChangeLayout;
+
+        [BindView(Resource.Id.mandatoryPaymentsLayout)]
+        RelativeLayout mandatoryPaymentsLayout;
+
+        [BindView(Resource.Id.mandatoryPaymentsDetailLayout)]
+        RelativeLayout mandatoryPaymentsDetailLayout;
 
         [BindView(Resource.Id.outstandingChangeLayout)]
         RelativeLayout outstandingChangeLayout;
@@ -214,6 +265,16 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.BillsMenu
                   txtCurrentBill,
                   txtCurrentChargesTitle,
                   txtCurrentChargesContent,
+                  txtMandatoryPaymentsTitle,
+                  txtMandatoryPaymentsContent,
+                  txtSecurityDepositTitle,
+                  txtSecurityDepositContent,
+                  txtProcessingFeeTitle,
+                  txtProcessingFeeContent,
+                  txtMeterCostTitle,
+                  txtMeterCostContent,
+                  txtStampDutyTitle,
+                  txtStampDutyContent,
                   txtOutstandingChargesTitle,
                   txtOutstandingChargesContent,
                   txtTotalPayableTitle,
@@ -227,7 +288,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.BillsMenu
                     txtAddress,
                     txtTotalPayableContent,
                     txtFooter, txtFooter1, txtFooter2,
-                    txtCurrentChargesRM, txtOutstandingChargesRM, txtTotalPayableRM
+                    txtCurrentChargesRM, txtOutstandingChargesRM, txtTotalPayableRM,
+                    txtMandatoryPaymentsRM, txtSecurityDepositRM, txtProcessingFeeRM, txtMeterCostRM, txtStampDutyRM
                     );
 
 
@@ -399,32 +461,43 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.BillsMenu
 
         public void SetBillDetails(AccountData selectedAccount)
         {
-
-            //if (swipeRefreshLayout.Refreshing)
-            //{
-            //    swipeRefreshLayout.Refreshing = false;
-            //}
             if (selectedAccount != null)
             {
                 txtAccountName.Text = (!string.IsNullOrEmpty(selectedAccount?.AccountName)) ? selectedAccount?.AccountName : "";
                 txtAccountNum.Text = (!string.IsNullOrEmpty(selectedAccount?.AccountNum)) ? selectedAccount?.AccountNum : "";
 
-                ///<summary>
-                /// Revert non owner CR changes
-                ///</summary>
                 txtAddress.Text = selectedAccount?.AddStreet;
-                //if (selectedAccount.IsOwner)
-                //{
-                //    txtAddress.Text = selectedAccount.AddStreet;
-                //    txtAddress.Visibility = ViewStates.Visible;
-                //}
-                //else
-                //{
-                //    txtAddress.Visibility = ViewStates.Gone;
-                //}
+
                 txtCurrentChargesContent.Text = decimalFormatter.Format(selectedAccount?.AmtCurrentChg);
                 txtOutstandingChargesContent.Text = decimalFormatter.Format(selectedAccount?.AmtOutstandingChg);
                 txtTotalPayableContent.Text = decimalFormatter.Format(selectedAccount?.AmtPayableChg);
+
+                totalPayableLayout.Visibility = ViewStates.Gone;
+
+#if DEBUG
+                if(selectedAccount.AccountNum == "220283416103")
+                {
+                    selectedAccount.OpenChargesTotal = 100.00;
+                    selectedAccount.OpenSecurityDeposit = 10.00;
+                    selectedAccount.OpenStampDuty = 20.00;
+                    selectedAccount.OpenProcessingFee = 30.00;
+                    selectedAccount.OpenMeterCost = 40.00;
+                }
+#endif
+
+                if (selectedAccount?.OpenChargesTotal == 0)
+                {
+                    mandatoryPaymentsLayout.Visibility = ViewStates.Gone;
+                    mandatoryPaymentsDetailLayout.Visibility = ViewStates.Gone;
+                }
+                else
+                {
+                    txtMandatoryPaymentsContent.Text = decimalFormatter.Format(selectedAccount?.OpenChargesTotal);
+                    txtSecurityDepositContent.Text = decimalFormatter.Format(selectedAccount?.OpenSecurityDeposit);
+                    txtStampDutyContent.Text = decimalFormatter.Format(selectedAccount?.OpenStampDuty);
+                    txtProcessingFeeContent.Text = decimalFormatter.Format(selectedAccount?.OpenProcessingFee);
+                    txtMeterCostContent.Text = decimalFormatter.Format(selectedAccount?.OpenMeterCost);
+                }
 
                 Date d = null;
                 try
@@ -527,6 +600,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.BillsMenu
                     currentChangeLayout.Visibility = ViewStates.Gone;
                     totalPayableLayout.Visibility = ViewStates.Gone;
                     outstandingChangeLayout.Visibility = ViewStates.Gone;
+                    mandatoryPaymentsLayout.Visibility = ViewStates.Gone;
+                    mandatoryPaymentsDetailLayout.Visibility = ViewStates.Gone;
                     divider.Visibility = ViewStates.Gone;
                 }
 
