@@ -48,7 +48,6 @@ namespace myTNB_Android.Src.AddAccount.Activity
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-            // Create your application here
 
             layoutManager = new LinearLayoutManager(this, LinearLayoutManager.Vertical, false);
             accountListRecyclerView.SetLayoutManager(layoutManager);
@@ -60,7 +59,6 @@ namespace myTNB_Android.Src.AddAccount.Activity
             {
                 if (extras.ContainsKey("Accounts"))
                 {
-                    //accountList = JsonConvert.DeserializeObject<List<NewAccount>>(extras.GetString("Accounts"));
                     accountList = DeSerialze<List<NewAccount>>(extras.GetString("Accounts"));
                 }
             }
@@ -87,7 +85,6 @@ namespace myTNB_Android.Src.AddAccount.Activity
 
         public override void OnBackPressed()
         {
-            //base.OnBackPressed();
             GetStarted();
         }
 

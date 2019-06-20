@@ -30,7 +30,6 @@ namespace myTNB_Android.Src.AddAccount.Activity
         {
             base.OnCreate(savedInstanceState);
 
-            // Create your application here
             Android.App.Fragment addAccountTypeFragment = new AddAccountTypeFragment();
             var fragmentTransaction = FragmentManager.BeginTransaction();
             fragmentTransaction.Add(Resource.Id.fragment_container, addAccountTypeFragment);

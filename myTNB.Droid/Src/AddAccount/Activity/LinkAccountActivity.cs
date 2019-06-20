@@ -101,10 +101,6 @@ namespace myTNB_Android.Src.AddAccount.Activity
 
         public void ShowGetAccountsProgressDialog()
         {
-            //if (this.mGetAccountsProgressDialog != null && !this.mGetAccountsProgressDialog.IsShowing)
-            //{
-            //    this.mGetAccountsProgressDialog.Show();
-            //}
             try
             {
                 if (IsActive())
@@ -126,10 +122,6 @@ namespace myTNB_Android.Src.AddAccount.Activity
 
         public void HideGetAccountsProgressDialog()
         {
-            //if (this.mGetAccountsProgressDialog != null && this.mGetAccountsProgressDialog.IsShowing)
-            //{
-            //    this.mGetAccountsProgressDialog.Dismiss();
-            //}
             try
             {
                 if (IsActive())
@@ -314,7 +306,6 @@ namespace myTNB_Android.Src.AddAccount.Activity
             base.OnCreate(savedInstanceState);
             try
             {
-                // Create your application here
                 mPresenter = new LinkAccountPresenter(this);
 
                 mGetAccountsProgressDialog = new AlertDialog.Builder(this)
@@ -358,7 +349,6 @@ namespace myTNB_Android.Src.AddAccount.Activity
                     }
 
                 }
-                //userActionsListener.GetAccounts(userID, apiID);
                 userActionsListener.GetAccountByIC(Constants.APP_CONFIG.API_KEY_ID, currentLinkedAccounts, email, idNumber);
 
                 done = FindViewById<Button>(Resource.Id.btnAddAnotherAccount);
@@ -374,7 +364,6 @@ namespace myTNB_Android.Src.AddAccount.Activity
                     int totalAccountAdded = adapter.GetAccountList().Count() + additionalAdapter.GetAccountList().Count();
                     if (adapter.ItemCount == 0 && additionalAdapter.ItemCount == 0)
                     {
-                        //ShowNoAccountAddedError("No account added. Please click Add Another account button to add electricity account.");
                         this.userActionsListener.OnConfirm(accountList);
                     }
                     else if (totalAccountAdded > Constants.ADD_ACCOUNT_LIMIT)
@@ -390,8 +379,6 @@ namespace myTNB_Android.Src.AddAccount.Activity
 
                     // TODO : START ACTIVITY DASHBOARD
 
-                    //this.userActionsListener.OnConfirm(accountList);
-
                 };
 
                 TextViewUtils.SetMuseoSans500Typeface(done, confirm);
@@ -406,8 +393,6 @@ namespace myTNB_Android.Src.AddAccount.Activity
         {
             base.OnResume();
             Log.Debug("Link Account", "OnResume");
-            //userActionsListener.Start();
-
         }
 
         public void ShowNoAccountAddedError(string message)
@@ -522,11 +507,10 @@ namespace myTNB_Android.Src.AddAccount.Activity
             {
                 List<NewAccount> newList = adapter.GetAccountList();
                 List<NewAccount> additionalList = additionalAdapter.GetAccountList();
-                //if (ValidateLinkAccountList(newList) && ValidateLinkAccountList(additionalList) && ValidateAccountNames(newList, additionalList) && ValidateAddtionalAccountNames(additionalList, newList))
                 if (ValidateAccountNames(newList, additionalList) && ValidateAddtionalAccountNames(additionalList, newList))
                 {
                     string apiKeyID = Constants.APP_CONFIG.API_KEY_ID;
-                    string userID = UserEntity.GetActive().UserID; //"20225235-290c-484a-a633-607cb51b15e6";
+                    string userID = UserEntity.GetActive().UserID;
                     string email = UserEntity.GetActive().Email;
                     List<Models.AddAccount> accounts = new List<Models.AddAccount>();
                     foreach (NewAccount item in newList)
@@ -617,17 +601,6 @@ namespace myTNB_Android.Src.AddAccount.Activity
                             }
                             break;
                         }
-
-                        //if (!Utility.isAlphaNumeric(item.accountLabel))
-                        //{
-                        //    flag = false;
-                        //    AccountListViewHolder vh = (AccountListViewHolder)accountListRecyclerView.FindViewHolderForAdapterPosition(currentItemIndex);
-                        //    if (vh != null)
-                        //    {
-                        //        vh.textInputLayoutAccountLabel.Error = GetString(Resource.String.invalid_charac);
-                        //    }
-                        //    break;
-                        //}
 
                         foreach (CustomerBillingAccount savedItem in accounts)
                         {
@@ -734,17 +707,6 @@ namespace myTNB_Android.Src.AddAccount.Activity
                             }
                             break;
                         }
-
-                        //if (!Utility.isAlphaNumeric(item.accountLabel))
-                        //{
-                        //    flag = false;
-                        //    AdditionalAccountViewHolder vh = (AdditionalAccountViewHolder)additionalAccountListRecyclerView.FindViewHolderForAdapterPosition(currentItemIndex);
-                        //    if (vh != null)
-                        //    {
-                        //        vh.textInputLayoutAccountLabel.Error = GetString(Resource.String.invalid_charac);
-                        //    }
-                        //    break;
-                        //}
 
                         foreach (CustomerBillingAccount savedItem in accounts)
                         {
@@ -863,7 +825,6 @@ namespace myTNB_Android.Src.AddAccount.Activity
         {
             try
             {
-                //base.OnActivityResult(requestCode, resultCode, data);
                 if (requestCode == ADD_ACCOUNT_REQUEST_CODE)
                 {
                     if (resultCode == Result.Ok)
@@ -956,85 +917,10 @@ namespace myTNB_Android.Src.AddAccount.Activity
                         }
                     }
                 }
-                //finalAccountList.AddRange(accountList);
-                //finalAccountList.AddRange(additionalAccountList);
-
-
-
-                /**Since Summary dashBoard logic is changed these codes where commented on 01-11-2018**/
-
-                //List<CustomerBillingAccount> customerBiilingAccounts = new List<CustomerBillingAccount>();
-                //CustomerBillingAccount.RemoveSelected();
-                //int i = 0;
-                //if (SummaryDashBoardAccountEntity.GetAllItems().Count() < Constants.SUMMARY_DASHBOARD_PAGE_COUNT)
-                //{
-                //    i = Constants.SUMMARY_DASHBOARD_PAGE_COUNT - SummaryDashBoardAccountEntity.GetAllItems().Count();
-                //}
-
-
-                //List<NewAccount> ReAccountList = (from item in finalAccountList where item.accountCategoryId == "2" select item).ToList();
-
-                //List<NewAccount> NormalAccountList = (from item in finalAccountList where item.accountCategoryId != "2" select item).ToList();
-                //bool isREAccountSelected = false;
-                //if (ReAccountList != null && ReAccountList.Count() > 0) {
-                //    foreach (NewAccount newAccount in ReAccountList)
-                //    {
-                //        bool isSelected = ctr == 0 ? true : false;
-                //        CustomerBillingAccount.InsertOrReplace(newAccount, isSelected);
-                //        isREAccountSelected = true;
-                //        if (ctr > 0) {
-                //            customerBiilingAccounts.Add(CustomerBillingAccount.FindByAccNum(newAccount.accountNumber));    
-                //        }
-                //        ctr++;
-                //    }
-                //    customerBiilingAccounts.Add(CustomerBillingAccount.GetSelected());
-                //}
-
-
-                //if (NormalAccountList != null && NormalAccountList.Count() > 0)
-                //{
-                //    if (!isREAccountSelected) {
-                //        i =  (customerBiilingAccounts.Count() > 0 && customerBiilingAccounts.Count() >= i) ? 0 : i;
-                //    }
-
-                //    foreach (NewAccount newAccount in NormalAccountList)
-                //    {
-
-                //            bool isSelected = (ctr == 0 && !isREAccountSelected) ? true : false;
-                //            CustomerBillingAccount.InsertOrReplace(newAccount, isSelected);    
-
-
-                //        if (ctr > 0 && i > 1 && ctr < i)
-                //        {
-                //            customerBiilingAccounts.Add(CustomerBillingAccount.FindByAccNum(newAccount.accountNumber));
-                //        }
-                //        ctr++;
-                //    }
-                //    if (!isREAccountSelected)
-                //    {
-                //        customerBiilingAccounts.Add(CustomerBillingAccount.GetSelected());
-                //    }
-                //}
-                //if (ConnectionUtils.HasInternetConnection(this))
-                //{
-                //    userActionsListener.InsertingInSummarydashBoard(customerBiilingAccounts);
-                //}
-
-                /**Since Summary dashBoard logic is changed these codes where commented on 01-11-2018**/
-
-
 
                 foreach (NewAccount newAccount in finalAccountList)
                 {
-                    //if (hasAlreadyExistingSelected)
-                    //{
-                    //    CustomerBillingAccount.InsertOrReplace(newAccount, false);
-                    //}
-                    //else
-                    //{
-                    //bool isSelected = ctr == 0 ? true : false;
                     CustomerBillingAccount.InsertOrReplace(newAccount, false);
-                    //}
 
                     ctr++;
                 }
@@ -1063,7 +949,6 @@ namespace myTNB_Android.Src.AddAccount.Activity
             .SetAction("Close", delegate
             {
                 mSnackBar.Dismiss();
-                //CallAddMultileAccountsService();
             });
             View v = mSnackBar.View;
             TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
@@ -1208,8 +1093,7 @@ namespace myTNB_Android.Src.AddAccount.Activity
         {
             //Get apiId and userId from the bundle
             string email = UserEntity.GetActive().UserID;
-            string idNumber = UserEntity.GetActive().IdentificationNo; //"919191919"; // Get IC number from registration;
-            //userActionsListener.GetAccounts(userID, apiID);
+            string idNumber = UserEntity.GetActive().IdentificationNo;  // Get IC number from registration;
             userActionsListener.GetAccountByIC(Constants.APP_CONFIG.API_KEY_ID, "", email, idNumber);
         }
 

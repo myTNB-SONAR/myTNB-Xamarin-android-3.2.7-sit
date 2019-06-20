@@ -46,12 +46,10 @@ namespace myTNB_Android.Src.AddAccount.Adapter
 
             if (item.IsSelected)
             {
-                //vh.txtSupplyAccountName.SetCompoundDrawablesWithIntrinsicBounds(0, 0, Resource.Drawable.ic_action_tick, 0);
                 vh.imageActionIcon.Visibility = ViewStates.Visible;
             }
             else
             {
-                //vh.txtSupplyAccountName.SetCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
                 vh.imageActionIcon.Visibility = ViewStates.Gone;
             }
 

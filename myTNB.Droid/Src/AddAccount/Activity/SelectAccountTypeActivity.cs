@@ -36,7 +36,6 @@ namespace myTNB_Android.Src.AddAccount.Fragment
             {
                 if (extras.ContainsKey("selectedAccountType"))
                 {
-                    //selectedAccountType = JsonConvert.DeserializeObject<AccountType>(extras.GetString("selectedAccountType"));
                     selectedAccountType = DeSerialze<AccountType>(extras.GetString("selectedAccountType"));
                 }
             }
