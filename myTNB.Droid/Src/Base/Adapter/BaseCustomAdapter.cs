@@ -99,8 +99,6 @@ namespace myTNB_Android.Src.Base.Adapter
             return position;
         }
 
-
-        //Fill in cound here, currently 0
         public override int Count
         {
             get
@@ -113,8 +111,6 @@ namespace myTNB_Android.Src.Base.Adapter
 
     public class BaseAdapterViewHolder : Java.Lang.Object
     {
-        //Your adapter views to re-use
-        //public TextView Title { get; set; }
         protected View itemView;
 
         public BaseAdapterViewHolder(View itemView)

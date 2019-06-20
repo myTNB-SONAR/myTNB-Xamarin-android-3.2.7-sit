@@ -25,7 +25,6 @@ namespace myTNB_Android.Src.Base.Api
         {
             List<SummaryDashBoardDetails> summaryDetails = new List<SummaryDashBoardDetails>();
             CancellationTokenSource cts = new CancellationTokenSource();
-            //mView.ShowProgressDialog();
 #if STUB
             var api = RestService.For<ISummaryDashBoard>(Constants.SERVER_URL.END_POINT);
 #elif DEBUG
@@ -34,14 +33,6 @@ namespace myTNB_Android.Src.Base.Api
 
 #elif DEVELOP
             var api = RestService.For<ISummaryDashBoard>(Constants.SERVER_URL.END_POINT);
-
-            //api.DoQuery(new Requests.UsageHistoryRequest(Constants.APP_CONFIG.API_KEY_ID) {
-            //    AccountNum = accountSelected.AccNum
-            //}, cts.Token)
-            //.ReturnsForAnyArgs(
-            //    Task.Run<UsageHistoryResponse>(
-            //        () => JsonConvert.DeserializeObject<UsageHistoryResponse>(this.mView.GetUsageHistoryStub())
-            //    ));
 #else
             var api = RestService.For<ISummaryDashBoard>(Constants.SERVER_URL.END_POINT);
 #endif
@@ -76,72 +67,21 @@ namespace myTNB_Android.Src.Base.Api
 
                                 summaryDetails.AddRange(summaryDetailsReponse);
                             }
-
-                            //SummaryData(summaryDetailsReponse);
                         }
                     }
                 }
-                //    if (accountSelected.isOwned)
-                //    {
-
-                //        if (currentBottomNavigationMenu == Resource.Id.menu_dashboard)
-                //        {
-                //            this.mView.ShowAccountName();
-                //            this.mView.SetToolbarTitle(Resource.String.dashboard_menu_activity_title);
-                //            if (smDataError)
-                //            {
-                //                smDataError = false;
-                //                if (smErrorCode.Equals("204"))
-                //                {
-                //                    this.mView.ShowChartWithError(response.Data.UsageHistoryData, AccountData.Copy(accountSelected, true), smErrorCode);
-                //                }
-                //            }
-                //            else
-                //            {
-                //                this.mView.ShowChart(response.Data.UsageHistoryData, AccountData.Copy(accountSelected, true));
-                //            }
-                //        }
-                //        else if (currentBottomNavigationMenu == Resource.Id.menu_bill)
-                //        {
-                //            this.mView.ShowAccountName();
-                //            this.mView.SetToolbarTitle(Resource.String.bill_menu_activity_title);
-                //            LoadBills(accountSelected);
-                //        }
-
-
-                //    }
-                //    else
-                //    {
-                //        this.mView.ShowNonOWner(AccountData.Copy(accountSelected, true));
-                //    }
-                //    this.mView.SetAccountName(accountSelected.AccDesc);
-
-                //}
-                //else
-                //{
-                //    this.mView.ShowOwnerDashboardNoInternetConnection(accountSelected.AccDesc);
-                //    this.mView.SetAccountName(accountSelected.AccDesc);
-                //}
             }
             catch (System.OperationCanceledException e)
             {
                 Log.Debug("SummaryDashboardApiCall", "Cancelled Exception");
-                // ADD OPERATION CANCELLED HERE
-                //this.mView.ShowRetryOptionsCancelledException(e);
-                //this.mView.ShowOwnerNoInternetConnection(accountSelected.AccDesc);
             }
             catch (ApiException apiException)
             {
-                // ADD HTTP CONNECTION EXCEPTION HERE
-                //this.mView.ShowRetryOptionsApiException(apiException);
 
             }
             catch (Exception e)
             {
-                // ADD UNKNOWN EXCEPTION HERE
                 Log.Debug("SummaryDashboardApiCall", "Stack " + e.StackTrace);
-                //this.mView.ShowRetryOptionsUnknownException(e);
-
             }
 
 

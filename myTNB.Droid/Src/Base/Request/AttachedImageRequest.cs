@@ -4,8 +4,6 @@ namespace myTNB_Android.Src.Base.Request
 {
     public class AttachedImageRequest
     {
-        //{"imageHex":"","fileSize": "12345","fileName": "Image 1"},
-
         [JsonProperty("imageHex")]
         public string ImageHex { get; set; }
 

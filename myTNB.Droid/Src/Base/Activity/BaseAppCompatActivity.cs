@@ -41,7 +41,6 @@ namespace myTNB_Android.Src.Base.Activity
         protected override void OnResume()
         {
             base.OnResume();
-            //ShowRequestPermissions();
             Ready();
         }
 

@@ -56,7 +56,6 @@ namespace myTNB_Android.Src.Barcode.Activity
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-            // Create your application here
             mPresenter = new BarcodePresenter(this);
             barCodeView.Click += delegate
             {
@@ -162,21 +161,17 @@ namespace myTNB_Android.Src.Barcode.Activity
             scanFragment.StartScanning(result =>
             {
                 Log.Debug(TAG, string.Format("Scanning result {0}", result));
-                // Null result means scanning was cancelled
                 if (result == null || string.IsNullOrEmpty(result.Text))
                 {
-                    //Toast.MakeText(this, "Scanning Cancelled", ToastLength.Long).Show();
                     return;
                 }
 
-                // Otherwise, proceed with result
                 string scannedText = result.Text;
                 if (!string.IsNullOrEmpty(scannedText) && scannedText.Length > 12)
                 {
                     scannedText = scannedText.Substring(0, 12);
                 }
                 this.userActionsListener.OnResult(scannedText);
-                //RunOnUiThread(() => Toast.MakeText(this, "Scanned: " + result.Text, ToastLength.Short).Show());
             }, opts);
             StartAutoFocus();
 

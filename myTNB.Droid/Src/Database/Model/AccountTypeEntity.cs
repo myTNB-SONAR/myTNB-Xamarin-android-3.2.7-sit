@@ -28,11 +28,8 @@ namespace myTNB_Android.Src.Database.Model
 
         public static int CreateTable()
         {
-            //using (var db = new SQLiteConnection(Constants.DB_PATH))
-            //{
             var db = DBHelper.GetSQLiteConnection();
             return (int)db.CreateTable<AccountTypeEntity>();
-            //}
         }
 
         public static void CreateTableAsync(SQLiteAsyncConnection db)
@@ -42,8 +39,6 @@ namespace myTNB_Android.Src.Database.Model
 
         public static int InsertOrReplace(string type, int accountType, string accountTypeName)
         {
-            //using (var db = new SQLiteConnection(Constants.DB_PATH))
-            //{
             var db = DBHelper.GetSQLiteConnection();
             var newRecord = new AccountTypeEntity()
             {
@@ -58,8 +53,6 @@ namespace myTNB_Android.Src.Database.Model
             }
 
             return 0;
-            //}
-
         }
 
         public static int InsertOrReplace(SQLiteConnection db, string type, int accountType, string accountTypeName)

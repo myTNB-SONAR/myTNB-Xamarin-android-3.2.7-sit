@@ -14,9 +14,6 @@ namespace myTNB_Android.Src.Base.Activity
     /// </summary>
     public abstract class BaseToolbarAppCompatActivity : BaseAppCompatActivity
     {
-        /// <summary>
-        /// Binds the Android.Support.V7.Widget.Toolbar
-        /// </summary>
         [BindView(Resource.Id.toolbar)]
         protected Toolbar toolbar;
 

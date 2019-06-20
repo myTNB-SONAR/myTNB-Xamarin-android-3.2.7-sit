@@ -27,8 +27,6 @@ namespace myTNB_Android.Src.Base.Fragments
             View inflateView = null;
             try
             {
-                // Use this to return your custom view for this Fragment
-                // return inflater.Inflate(Resource.Layout.YourFragment, container, false);
                 inflateView = inflater.Inflate(ResourceId(), container, false);
                 Cheeseknife.Bind(this, inflateView);
                 EvaluateRequestPermissions();

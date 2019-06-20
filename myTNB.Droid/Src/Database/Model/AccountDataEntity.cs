@@ -11,24 +11,17 @@ namespace myTNB_Android.Src.Database.Model
     {
         public static void CreateTable()
         {
-            //using (var db = new SQLiteConnection(Constants.DB_PATH))
-            //{
             var db = DBHelper.GetSQLiteConnection();
             List<SQLiteConnection.ColumnInfo> info = db.GetTableInfo("AccountDataEntity");
             db.CreateTable<AccountDataEntity>();
-            //}
         }
 
         public static void InsertItem(AccountDataEntity item)
         {
             try
             {
-                //using (var db = new SQLiteConnection(Constants.DB_PATH))
-                //{
                 var db = DBHelper.GetSQLiteConnection();
                 int newRecord = db.InsertOrReplace(item);
-                //Console.WriteLine("Insert Record: {0}", newRecord);
-                //}
             }
             catch (Exception e)
             {
@@ -92,11 +85,8 @@ namespace myTNB_Android.Src.Database.Model
             List<AccountDataEntity> itemList = new List<AccountDataEntity>();
             try
             {
-                //using (var db = new SQLiteConnection(Constants.DB_PATH))
-                //{
                 var db = DBHelper.GetSQLiteConnection();
                 itemList = db.Query<AccountDataEntity>("select * from AccountDataEntity");
-                //}
             }
             catch (Exception e)
             {
@@ -111,15 +101,12 @@ namespace myTNB_Android.Src.Database.Model
             try
             {
                 List<AccountDataEntity> itemList = new List<AccountDataEntity>();
-                //using (var db = new SQLiteConnection(Constants.DB_PATH))
-                //{
                 var db = DBHelper.GetSQLiteConnection();
                 itemList = db.Query<AccountDataEntity>("select * from AccountDataEntity where AccountNo = ?", accNo);
                 if (itemList != null && itemList.Count > 0)
                 {
                     entity = itemList[0];
                 }
-                //}
             }
             catch (Exception e)
             {
@@ -132,11 +119,8 @@ namespace myTNB_Android.Src.Database.Model
         {
             try
             {
-                //using (var db = new SQLiteConnection(Constants.DB_PATH))
-                //{
                 var db = DBHelper.GetSQLiteConnection();
                 db.DeleteAll<AccountDataEntity>();
-                //}
             }
             catch (Exception e)
             {
@@ -153,20 +137,14 @@ namespace myTNB_Android.Src.Database.Model
 
         public static void RemoveAll()
         {
-            //using (var db = new SQLiteConnection(Constants.DB_PATH))
-            //{
             var db = DBHelper.GetSQLiteConnection();
             db.Execute("DELETE FROM AccountDataEntity");
-            //}
         }
 
         public static void RemoveAccountData(string accNo)
         {
-            //using (var db = new SQLiteConnection(Constants.DB_PATH))
-            //{
             var db = DBHelper.GetSQLiteConnection();
             db.Execute("DELETE FROM AccountDataEntity where AccountNo = ?", accNo);
-            //}
         }
 
 
