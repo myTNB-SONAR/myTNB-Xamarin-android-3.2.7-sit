@@ -1,16 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-using myTNB_Android.Src.Base.MVP;
+﻿using myTNB_Android.Src.Base.MVP;
 using Refit;
+using System;
 
 namespace myTNB_Android.Src.UpdateNickname.MVP
 {
@@ -97,14 +87,14 @@ namespace myTNB_Android.Src.UpdateNickname.MVP
             /// <param name="accountNo">string</param>
             /// <param name="oldAccountNickName">string</param>
             /// <param name="newAccountNickName">string</param>
-            void OnUpdateNickName(string accountNo , string oldAccountNickName, string newAccountNickName);
+            void OnUpdateNickName(string accountNo, string oldAccountNickName, string newAccountNickName);
 
             /// <summary>
             /// Action to verify nickname
             /// </summary>
             /// <param name="accountNo">string</param>
             /// <param name="newAccountNickname">string</param>
-            void OnVerifyNickName(string accountNo , string newAccountNickname);
+            void OnVerifyNickName(string accountNo, string newAccountNickname);
         }
     }
 }

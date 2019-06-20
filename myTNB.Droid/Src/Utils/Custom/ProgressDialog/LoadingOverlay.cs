@@ -1,17 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
+﻿using Android.Content;
+using Android.Graphics.Drawables;
 using Android.Views;
 using Android.Widget;
-using myTNB_Android.Src.Base.Activity;
-using Android.Graphics;
-using Android.Graphics.Drawables;
+using System;
 
 namespace myTNB_Android.Src.Utils.Custom.ProgressDialog
 {
@@ -50,19 +41,22 @@ namespace myTNB_Android.Src.Utils.Custom.ProgressDialog
         public override void Show()
         {
             base.Show();
-            try {
-            if (imgLoadingImage != null)
+            try
             {
-                imgLoadingImage.Post(() =>
+                if (imgLoadingImage != null)
                 {
-                    animationDrawable = (AnimationDrawable)imgLoadingImage.Background;
-                    if (animationDrawable != null && !animationDrawable.IsRunning)
+                    imgLoadingImage.Post(() =>
                     {
-                        animationDrawable.Start();
-                    }
-                });
+                        animationDrawable = (AnimationDrawable)imgLoadingImage.Background;
+                        if (animationDrawable != null && !animationDrawable.IsRunning)
+                        {
+                            animationDrawable.Start();
+                        }
+                    });
+                }
             }
-        } catch(Exception e) {
+            catch (Exception e)
+            {
                 Utility.LoggingNonFatalError(e);
             }
         }
@@ -70,12 +64,16 @@ namespace myTNB_Android.Src.Utils.Custom.ProgressDialog
         public override void Dismiss()
         {
             base.Dismiss();
-            try {
-            if(animationDrawable != null){
-                imgLoadingImage.Background = null;
-                //animationDrawable.Dispose();
+            try
+            {
+                if (animationDrawable != null)
+                {
+                    imgLoadingImage.Background = null;
+                    //animationDrawable.Dispose();
+                }
             }
-            } catch(Exception e) {
+            catch (Exception e)
+            {
                 Utility.LoggingNonFatalError(e);
             }
         }

@@ -1,17 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-using myTNB_Android.Src.Base.MVP;
+﻿using myTNB_Android.Src.Base.MVP;
 using myTNB_Android.Src.SelectNotification.Models;
 using Refit;
+using System;
+using System.Collections.Generic;
 
 namespace myTNB_Android.Src.NotificationSettings.MVP
 {
@@ -36,7 +27,7 @@ namespace myTNB_Android.Src.NotificationSettings.MVP
             /// </summary>
             /// <param name="typePreference">NotificationTypeUserPreference</param>
             /// <param name="position">integer</param>
-            void ShowSuccessUpdatedNotificationType(NotificationTypeUserPreference typePreference , int position);
+            void ShowSuccessUpdatedNotificationType(NotificationTypeUserPreference typePreference, int position);
 
             /// <summary>
             /// Show udate success notification channel
@@ -52,7 +43,7 @@ namespace myTNB_Android.Src.NotificationSettings.MVP
             /// <param name="operationCanceledException">returned OperationCanceledException</param>
             /// <param name="typePreference">NotificationTypeUserPreference</param>
             /// <param name="position">integer</param>
-            void ShowRetryOptionsCancelledException(System.OperationCanceledException operationCanceledException , NotificationTypeUserPreference typePreference, int position);
+            void ShowRetryOptionsCancelledException(System.OperationCanceledException operationCanceledException, NotificationTypeUserPreference typePreference, int position);
 
             /// <summary>
             /// Shows a notification type api exception with an option to retry
@@ -60,7 +51,7 @@ namespace myTNB_Android.Src.NotificationSettings.MVP
             /// <param name="apiException">returned ApiException</param>
             /// <param name="typePreference">NotificationTypeUserPreference</param>
             /// <param name="position">integer</param>
-            void ShowRetryOptionsApiException(ApiException apiException , NotificationTypeUserPreference typePreference, int position);
+            void ShowRetryOptionsApiException(ApiException apiException, NotificationTypeUserPreference typePreference, int position);
 
             /// <summary>
             /// Shows a notification type unknown exception with an option to retry
@@ -105,14 +96,14 @@ namespace myTNB_Android.Src.NotificationSettings.MVP
             /// <param name="item">NotificationTypeUserPreference</param>
             /// <param name="position">integer</param>
             /// <param name="deviceId">string</param>
-            void OnTypeItemClick(NotificationTypeUserPreference item , int position , string deviceId);
+            void OnTypeItemClick(NotificationTypeUserPreference item, int position, string deviceId);
 
             /// <summary>
             /// Action to select to channel item
             /// </summary>
             /// <param name="item">NotificationChannelUserPreference</param>
             /// <param name="position">integer</param>
-            void OnChannelItemClick(NotificationChannelUserPreference item , int position );
+            void OnChannelItemClick(NotificationChannelUserPreference item, int position);
         }
     }
 }

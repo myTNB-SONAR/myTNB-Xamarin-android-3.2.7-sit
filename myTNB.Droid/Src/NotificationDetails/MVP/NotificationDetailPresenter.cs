@@ -1,21 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-using System.Net;
-using myTNB_Android.Src.Utils;
+﻿using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.NotificationDetails.Api;
+using myTNB_Android.Src.Utils;
 using Refit;
+using System;
+using System.Net;
 using System.Net.Http;
 using System.Threading;
-using myTNB_Android.Src.Database.Model;
 
 namespace myTNB_Android.Src.NotificationDetails.MVP
 {
@@ -25,7 +15,7 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
         private NotificationDetailContract.IView mView;
         CancellationTokenSource cts;
 
-        public NotificationDetailPresenter(NotificationDetailContract.IView mView )
+        public NotificationDetailPresenter(NotificationDetailContract.IView mView)
         {
             this.mView = mView;
             this.mView.SetPresenter(this);
@@ -38,8 +28,9 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
 
         public async void OnRemoveNotification(NotificationDetails.Models.NotificationDetails notificationDetails)
         {
-            if (mView.IsActive()) {
-            this.mView.ShowRemovingProgress();
+            if (mView.IsActive())
+            {
+                this.mView.ShowRemovingProgress();
             }
             cts = new CancellationTokenSource();
             ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
@@ -60,7 +51,7 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                     Email = UserEntity.GetActive().Email,
                     DeviceId = this.mView.GetDeviceId(),
                     SSPUserId = UserEntity.GetActive().UserID
-                } , cts.Token);
+                }, cts.Token);
 
                 if (mView.IsActive())
                 {
@@ -69,7 +60,7 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
 
                 if (!notificationDeleteResponse.Data.IsError)
                 {
-                    UserNotificationEntity.UpdateIsDeleted(notificationDetails.Id , true);
+                    UserNotificationEntity.UpdateIsDeleted(notificationDetails.Id, true);
                     this.mView.ShowNotificationListAsDeleted();
                 }
                 else
@@ -112,7 +103,7 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
 
         public void OnViewDetails()
         {
-            
+
         }
 
         public void Start()

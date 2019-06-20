@@ -1,5 +1,4 @@
-﻿using System;
-using Refit;
+﻿using Refit;
 using System.Collections.Generic;
 
 namespace myTNB_Android.Src.MultipleAccountPayment.Model

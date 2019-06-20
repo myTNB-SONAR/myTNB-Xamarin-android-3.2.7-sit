@@ -1,16 +1,7 @@
-﻿using System;
+﻿using myTNB_Android.Src.Utils;
+using SQLite;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-using SQLite;
-using myTNB_Android.Src.Utils;
 using static myTNB_Android.Src.FindUs.Response.GetLocationTypesResponse;
 
 namespace myTNB_Android.Src.Database.Model
@@ -35,7 +26,7 @@ namespace myTNB_Android.Src.Database.Model
             //using (var db = new SQLiteConnection(Constants.DB_PATH))
             //{
             var db = DBHelper.GetSQLiteConnection();
-                return (int)db.CreateTable<LocationTypesEntity>();
+            return (int)db.CreateTable<LocationTypesEntity>();
             //}
         }
 
@@ -44,14 +35,14 @@ namespace myTNB_Android.Src.Database.Model
             //using (var db = new SQLiteConnection(Constants.DB_PATH))
             //{
             var db = DBHelper.GetSQLiteConnection();
-                var newRecord = new LocationTypesEntity()
-                {
-                    Id = loc.Id,
-                    Title = loc.Title,
-                    Description = loc.Description,
-                    ImagePath = loc.ImagePath
-                };
-                return db.InsertOrReplace(newRecord);
+            var newRecord = new LocationTypesEntity()
+            {
+                Id = loc.Id,
+                Title = loc.Title,
+                Description = loc.Description,
+                ImagePath = loc.ImagePath
+            };
+            return db.InsertOrReplace(newRecord);
             //}
         }
 
@@ -60,15 +51,15 @@ namespace myTNB_Android.Src.Database.Model
             //using (var db = new SQLiteConnection(Constants.DB_PATH))
             //{
             var db = DBHelper.GetSQLiteConnection();
-                db.DeleteAll<LocationTypesEntity>();
-                var newRecord = new LocationTypesEntity()
-                {
-                    Id = "0",
-                    Title = "All",
-                    Description = "All",
-                    ImagePath = Constants.SERVER_URL.END_POINT + "/public/images/pkp/default-kt.jpg"
-                };
-                return db.InsertOrReplace(newRecord);
+            db.DeleteAll<LocationTypesEntity>();
+            var newRecord = new LocationTypesEntity()
+            {
+                Id = "0",
+                Title = "All",
+                Description = "All",
+                ImagePath = Constants.SERVER_URL.END_POINT + "/public/images/pkp/default-kt.jpg"
+            };
+            return db.InsertOrReplace(newRecord);
             //}
 
         }
@@ -78,7 +69,7 @@ namespace myTNB_Android.Src.Database.Model
             //using (var db = new SQLiteConnection(Constants.DB_PATH))
             //{
             var db = DBHelper.GetSQLiteConnection();
-                return db.Query<LocationTypesEntity>("select * from LocationTypesEntity");
+            return db.Query<LocationTypesEntity>("select * from LocationTypesEntity");
             //}
         }
 
@@ -92,7 +83,7 @@ namespace myTNB_Android.Src.Database.Model
             //using (var db = new SQLiteConnection(Constants.DB_PATH))
             //{
             var db = DBHelper.GetSQLiteConnection();
-                return db.Query<LocationTypesEntity>("select * from LocationTypesEntity").Count > 0;
+            return db.Query<LocationTypesEntity>("select * from LocationTypesEntity").Count > 0;
             //}
         }
 
@@ -103,7 +94,7 @@ namespace myTNB_Android.Src.Database.Model
                 //using (var db = new SQLiteConnection(Constants.DB_PATH))
                 //{
                 var db = DBHelper.GetSQLiteConnection();
-                    return db.Query<LocationTypesEntity>("select * from LocationTypesEntity WHERE ID = ?", Id)[0];
+                return db.Query<LocationTypesEntity>("select * from LocationTypesEntity WHERE ID = ?", Id)[0];
                 //}
             }
             else
@@ -120,24 +111,25 @@ namespace myTNB_Android.Src.Database.Model
                 //using (var db = new SQLiteConnection(Constants.DB_PATH))
                 //{
                 var db = DBHelper.GetSQLiteConnection();
-                    entityTypes.AddRange(db.Query<LocationTypesEntity>("select * from LocationTypesEntity"));
+                entityTypes.AddRange(db.Query<LocationTypesEntity>("select * from LocationTypesEntity"));
                 //}
             }
 
             List<myTNB_Android.Src.FindUs.Models.LocationType> types = new List<myTNB_Android.Src.FindUs.Models.LocationType>();
-            foreach(LocationTypesEntity item in entityTypes)
+            foreach (LocationTypesEntity item in entityTypes)
             {
-                types.Add(new myTNB_Android.Src.FindUs.Models.LocationType() {
+                types.Add(new myTNB_Android.Src.FindUs.Models.LocationType()
+                {
                     Id = item.Id,
                     Title = item.Title,
                     Description = item.Description,
                     ImagePath = item.ImagePath
-                    
+
                 });
             }
 
             return types;
         }
-    
+
     }
 }

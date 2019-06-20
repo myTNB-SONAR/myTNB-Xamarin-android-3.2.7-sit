@@ -1,18 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
+﻿using Android.Content;
+using Android.Support.Design.Widget;
+using Android.Support.V7.Widget;
 using Android.Views;
 using Android.Widget;
-using Android.Support.V7.Widget;
-using Android.Support.Design.Widget;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Utils;
+using System;
+using System.Collections.Generic;
 
 namespace myTNB_Android.Src.FindUs.Adapter
 {
@@ -32,47 +26,49 @@ namespace myTNB_Android.Src.FindUs.Adapter
 
         public override void OnBindViewHolder(RecyclerView.ViewHolder holder, int position)
         {
-            try {
-            PhoneListViewHolder h = holder as PhoneListViewHolder;
-            if (numbers.Count > 1)
+            try
             {
-                int count = position + 1;
-                h.PhoneLabel.Hint = "PHONE" + count;
-            }
-            else
-            {
-                h.PhoneLabel.Hint = "PHONE";
-            }
-            TextViewUtils.SetMuseoSans300Typeface(h.PhoneLabel);
-            h.PhoneNumber.Text = numbers[position];
-            TextViewUtils.SetMuseoSans300Typeface(h.PhoneNumber);
-            h.PhoneNumber.Enabled = false;
-            h.PhoneNumber.Background = null;
-            h.PhoneNumber.ClearFocus();
-            h.PhoneNumber.SetCursorVisible(false);
-            h.PhoneNumber.Focusable = false;
+                PhoneListViewHolder h = holder as PhoneListViewHolder;
+                if (numbers.Count > 1)
+                {
+                    int count = position + 1;
+                    h.PhoneLabel.Hint = "PHONE" + count;
+                }
+                else
+                {
+                    h.PhoneLabel.Hint = "PHONE";
+                }
+                TextViewUtils.SetMuseoSans300Typeface(h.PhoneLabel);
+                h.PhoneNumber.Text = numbers[position];
+                TextViewUtils.SetMuseoSans300Typeface(h.PhoneNumber);
+                h.PhoneNumber.Enabled = false;
+                h.PhoneNumber.Background = null;
+                h.PhoneNumber.ClearFocus();
+                h.PhoneNumber.SetCursorVisible(false);
+                h.PhoneNumber.Focusable = false;
 
-            if (numbers[position].Equals("Not Available"))
-            {
-                h.CallButton.Visibility = ViewStates.Gone;
-            }
-            else
-            {
-                h.CallButton.Visibility = ViewStates.Visible;
-                h.CallButton.Click += delegate {
-                    try
+                if (numbers[position].Equals("Not Available"))
+                {
+                    h.CallButton.Visibility = ViewStates.Gone;
+                }
+                else
+                {
+                    h.CallButton.Visibility = ViewStates.Visible;
+                    h.CallButton.Click += delegate
                     {
-                        string call = "tel:" + numbers[position];
-                        var geoUri = Android.Net.Uri.Parse(call);
-                        var mapIntent = new Intent(Intent.ActionView, geoUri);
-                        mActivity.StartActivity(mapIntent);
-                    }
-                    catch (Exception e)
-                    {
+                        try
+                        {
+                            string call = "tel:" + numbers[position];
+                            var geoUri = Android.Net.Uri.Parse(call);
+                            var mapIntent = new Intent(Intent.ActionView, geoUri);
+                            mActivity.StartActivity(mapIntent);
+                        }
+                        catch (Exception e)
+                        {
                             Utility.LoggingNonFatalError(e);
-                    }
-                };
-            }
+                        }
+                    };
+                }
             }
             catch (Exception e)
             {

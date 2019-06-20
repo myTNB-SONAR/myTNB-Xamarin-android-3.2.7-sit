@@ -1,23 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-using System.Threading;
-using System.Net;
-using myTNB_Android.Src.Utils;
-using System.Net.Http;
-using Refit;
-using myTNB_Android.Src.Rating.Api;
-using Android.Util;
-using myTNB_Android.Src.Rating.Request;
+﻿using Android.Util;
 using myTNB_Android.Src.Database.Model;
+using myTNB_Android.Src.Rating.Api;
+using myTNB_Android.Src.Rating.Request;
+using myTNB_Android.Src.Utils;
+using Refit;
+using System;
+using System.Collections.Generic;
+using System.Net;
+using System.Net.Http;
+using System.Threading;
 
 namespace myTNB_Android.Src.Rating.MVP
 {
@@ -45,8 +36,9 @@ namespace myTNB_Android.Src.Rating.MVP
         public async void GetRateUsQuestions(string questionCategoryID)
         {
             cts = new CancellationTokenSource();
-            if (mView.IsActive()) {
-            this.mView.ShowProgressDialog();
+            if (mView.IsActive())
+            {
+                this.mView.ShowProgressDialog();
             }
             ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
 
@@ -60,8 +52,8 @@ namespace myTNB_Android.Src.Rating.MVP
             {
                 var questionRespone = await api.GetQuestions(new Request.GetRateUsQuestionsRequest()
                 {
-                   ApiKeyID = Constants.APP_CONFIG.API_KEY_ID,
-                   QuestionCategoryId = questionCategoryID
+                    ApiKeyID = Constants.APP_CONFIG.API_KEY_ID,
+                    QuestionCategoryId = questionCategoryID
                 }, cts.Token);
 
                 if (mView.IsActive())
@@ -133,7 +125,8 @@ namespace myTNB_Android.Src.Rating.MVP
 
                     SubmitRateUs(submitRateUsRequest);
                 }
-            }catch(Exception e)
+            }
+            catch (Exception e)
             {
                 Log.Debug(TAG, e.StackTrace);
                 Utility.LoggingNonFatalError(e);
@@ -142,12 +135,12 @@ namespace myTNB_Android.Src.Rating.MVP
 
         public void Start()
         {
-            
+
         }
 
         public async void SubmitRateUs(SubmitRateUsRequest submitRateUsRequest)
         {
-             cts = new CancellationTokenSource();
+            cts = new CancellationTokenSource();
             if (mView.IsActive())
             {
                 this.mView.ShowProgressDialog();

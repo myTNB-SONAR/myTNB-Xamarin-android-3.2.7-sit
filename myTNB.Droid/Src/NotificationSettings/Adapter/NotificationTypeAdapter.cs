@@ -1,20 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
+﻿using Android.Support.V7.Widget;
 using Android.Views;
 using Android.Widget;
-using myTNB_Android.Src.SelectNotification.Models;
-using myTNB_Android.Src.Base.Adapter;
 using CheeseBind;
-using Android.Support.V4.Content;
+using myTNB_Android.Src.Base.Adapter;
+using myTNB_Android.Src.SelectNotification.Models;
 using myTNB_Android.Src.Utils;
-using Android.Support.V7.Widget;
+using System;
+using System.Collections.Generic;
 
 namespace myTNB_Android.Src.NotificationSettings.Adapter
 {
@@ -46,29 +38,30 @@ namespace myTNB_Android.Src.NotificationSettings.Adapter
 
         public override void OnBindViewHolder(RecyclerView.ViewHolder holder, int position)
         {
-            try {
-            var userPref = GetItemObject(position);
-            var viewHolder = holder as NotificationTypeViewHolder;
-            viewHolder.txtNotificationTitle.Text = userPref.Title;
+            try
+            {
+                var userPref = GetItemObject(position);
+                var viewHolder = holder as NotificationTypeViewHolder;
+                viewHolder.txtNotificationTitle.Text = userPref.Title;
 
-            if (userPref.IsOpted)
-            {
-                viewHolder.notificationActionSwitch.Checked = true;
-            }
-            else
-            {
-                viewHolder.notificationActionSwitch.Checked = false;
+                if (userPref.IsOpted)
+                {
+                    viewHolder.notificationActionSwitch.Checked = true;
+                }
+                else
+                {
+                    viewHolder.notificationActionSwitch.Checked = false;
 
-            }
+                }
 
-            if (userPref.PreferenceMode.Equals("M")) // MANDATORY
-            {
-                viewHolder.notificationActionSwitch.Enabled = false;
-            }
-            else
-            {
-                viewHolder.notificationActionSwitch.Enabled = true;
-            }
+                if (userPref.PreferenceMode.Equals("M")) // MANDATORY
+                {
+                    viewHolder.notificationActionSwitch.Enabled = false;
+                }
+                else
+                {
+                    viewHolder.notificationActionSwitch.Enabled = true;
+                }
             }
             catch (Exception ex)
             {
@@ -81,7 +74,7 @@ namespace myTNB_Android.Src.NotificationSettings.Adapter
             return new NotificationTypeViewHolder(LayoutInflater.From(parent.Context).Inflate(Resource.Layout.NotificationTypeUserPreferenceRow, parent, false), OnClickEvent);
         }
 
-    
+
 
         class NotificationTypeViewHolder : BaseRecyclerViewHolder
         {

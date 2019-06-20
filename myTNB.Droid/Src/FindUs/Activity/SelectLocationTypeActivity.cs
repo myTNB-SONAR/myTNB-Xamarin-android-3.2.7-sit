@@ -1,22 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
+﻿using Android.App;
 using Android.Content;
+using Android.Content.PM;
 using Android.OS;
-using Android.Runtime;
-using Android.Views;
 using Android.Widget;
 using myTNB_Android.Src.Base.Activity;
-using Android.Content.PM;
-using myTNB_Android.Src.FindUs.Models;
-using myTNB_Android.Src.FindUs.Adapter;
-using Newtonsoft.Json;
 using myTNB_Android.Src.Database.Model;
-using System.Runtime;
+using myTNB_Android.Src.FindUs.Adapter;
+using myTNB_Android.Src.FindUs.Models;
 using myTNB_Android.Src.Utils;
+using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.Runtime;
 
 namespace myTNB_Android.Src.FindUs.Activity
 {
@@ -53,9 +48,10 @@ namespace myTNB_Android.Src.FindUs.Activity
 
                 if (extras != null)
                 {
-                    if (extras.ContainsKey("selectedLocationType")) {
-                    //selectedLocationType = JsonConvert.DeserializeObject<LocationType>(Intent.Extras.GetString("selectedLocationType"));
-                    selectedLocationType = DeSerialze<LocationType>(extras.GetString("selectedLocationType"));
+                    if (extras.ContainsKey("selectedLocationType"))
+                    {
+                        //selectedLocationType = JsonConvert.DeserializeObject<LocationType>(Intent.Extras.GetString("selectedLocationType"));
+                        selectedLocationType = DeSerialze<LocationType>(extras.GetString("selectedLocationType"));
                     }
                 }
 
@@ -88,7 +84,7 @@ namespace myTNB_Android.Src.FindUs.Activity
             }
             catch (Exception e)
             {
-                Utility.LoggingNonFatalError(e);  
+                Utility.LoggingNonFatalError(e);
 
             }
         }

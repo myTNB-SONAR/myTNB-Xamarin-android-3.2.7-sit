@@ -1,17 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using Android.Icu.Text;
-using Android.Support.V7.Widget;
+﻿using Android.Support.V7.Widget;
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
 using Java.Text;
-
 using Java.Util;
 using myTNB_Android.Src.Base.Adapter;
 using myTNB_Android.Src.SummaryDashBoard.Models;
 using myTNB_Android.Src.SummaryDashBoard.SummaryListener;
 using myTNB_Android.Src.Utils;
+using System;
+using System.Collections.Generic;
 
 namespace myTNB_Android.Src.SummaryDashBoard
 {
@@ -63,8 +61,8 @@ namespace myTNB_Android.Src.SummaryDashBoard
             {
                 var viewHolder1 = holder as SummaryDashBoardHeaderViewHolder;
 
-                        viewHolder1.SetHeaderText("Accounts"); 
-                        viewHolder1.SetRightText("Due");
+                viewHolder1.SetHeaderText("Accounts");
+                viewHolder1.SetRightText("Due");
 
             }
             else
@@ -228,8 +226,8 @@ namespace myTNB_Android.Src.SummaryDashBoard
                         //}
                         //else
                         //{
-                            double amt = Convert.ToDouble(amount);
-                            amountText.Text = " " + decimalFormat.Format(amt);
+                        double amt = Convert.ToDouble(amount);
+                        amountText.Text = " " + decimalFormat.Format(amt);
                         //}
 
                     }
@@ -299,36 +297,38 @@ namespace myTNB_Android.Src.SummaryDashBoard
 
             public void SetHeaderText(String headertext)
             {
-                    try {
-                headerTextValue.Text = "";
-
-                if (!string.IsNullOrEmpty(headertext))
+                try
                 {
-                    headerTextValue.Text = headertext;
-                }
-                    }
-                    catch (Exception e)
+                    headerTextValue.Text = "";
+
+                    if (!string.IsNullOrEmpty(headertext))
                     {
-                        Utility.LoggingNonFatalError(e);
+                        headerTextValue.Text = headertext;
                     }
+                }
+                catch (Exception e)
+                {
+                    Utility.LoggingNonFatalError(e);
+                }
 
             }
 
 
             public void SetRightText(String righttext)
             {
-                    try {
-                rightTextValue.Text = "";
-
-                if (!string.IsNullOrEmpty(righttext))
+                try
                 {
-                    rightTextValue.Text = righttext;
-                }
-                    }
-                    catch (Exception e)
+                    rightTextValue.Text = "";
+
+                    if (!string.IsNullOrEmpty(righttext))
                     {
-                        Utility.LoggingNonFatalError(e);
+                        rightTextValue.Text = righttext;
                     }
+                }
+                catch (Exception e)
+                {
+                    Utility.LoggingNonFatalError(e);
+                }
 
             }
         }

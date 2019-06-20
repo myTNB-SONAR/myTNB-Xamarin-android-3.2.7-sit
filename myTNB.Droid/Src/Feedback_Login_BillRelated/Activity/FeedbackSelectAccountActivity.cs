@@ -1,22 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
+﻿using Android.App;
 using Android.Content;
+using Android.Content.PM;
 using Android.OS;
 using Android.Runtime;
-using Android.Views;
 using Android.Widget;
-using myTNB_Android.Src.Base.Activity;
 using CheeseBind;
-using Android.Content.PM;
+using myTNB_Android.Src.Base.Activity;
+using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.Feedback_Login_BillRelated.Adapter;
 using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.Utils;
 using Newtonsoft.Json;
-using myTNB_Android.Src.Database.Model;
+using System;
+using System.Collections.Generic;
 using System.Runtime;
 
 namespace myTNB_Android.Src.Feedback_Login_BillRelated.Activity
@@ -65,17 +61,17 @@ namespace myTNB_Android.Src.Feedback_Login_BillRelated.Activity
             if (CustomerBillingAccount.HasItems())
             {
                 List<CustomerBillingAccount> accountList = CustomerBillingAccount.List();
-                foreach(CustomerBillingAccount customer in accountList)
+                foreach (CustomerBillingAccount customer in accountList)
                 {
                     if (previouslySelected.AccountNum.Equals(customer.AccNum))
                     {
-                        feedbackSelectAdapter.Add(AccountData.Copy(customer , true));
+                        feedbackSelectAdapter.Add(AccountData.Copy(customer, true));
                     }
                     else
                     {
                         feedbackSelectAdapter.Add(AccountData.Copy(customer, false));
                     }
-                    
+
                 }
             }
             listView.ItemClick += OnItemClick;
@@ -87,7 +83,7 @@ namespace myTNB_Android.Src.Feedback_Login_BillRelated.Activity
         {
             AccountData accountData = feedbackSelectAdapter.GetItemObject(e.Position);
             Intent resultIntent = new Intent();
-            resultIntent.PutExtra(Constants.SELECTED_ACCOUNT , JsonConvert.SerializeObject(accountData));
+            resultIntent.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(accountData));
             SetResult(Result.Ok, resultIntent);
             Finish();
         }

@@ -1,29 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
+﻿using Android.App;
 using Android.Content;
+using Android.Content.PM;
 using Android.OS;
-using Android.Runtime;
+using Android.Preferences;
+using Android.Support.V4.View;
+using Android.Util;
 using Android.Views;
 using Android.Widget;
-using myTNB_Android.Src.Base.Activity;
-using Android.Content.PM;
-using Android.Support.V4.View;
-using myTNB.Droid.Models;
-using myTNB_Android.Src.WalkThrough.Adapter;
 using CheeseBind;
-using myTNB_Android.Src.WalkThrough.MVP;
-using Android.Util;
+using myTNB.Droid.Models;
+using myTNB.SitecoreCMS.Model;
+using myTNB.SQLite.SQLiteDataManager;
+using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.PreLogin.Activity;
 using myTNB_Android.Src.Utils;
-using Android.Preferences;
-using Android.Support.V4.Content.Res;
-using Android.Graphics;
-using myTNB.SQLite.SQLiteDataManager;
-using myTNB.SitecoreCMS.Model;
+using myTNB_Android.Src.WalkThrough.Adapter;
+using myTNB_Android.Src.WalkThrough.MVP;
+using System;
+using System.Collections.Generic;
 using System.Runtime;
 
 namespace myTNB_Android.Src.WalkThrough
@@ -35,7 +29,7 @@ namespace myTNB_Android.Src.WalkThrough
        , LaunchMode = LaunchMode.SingleInstance
        , ScreenOrientation = ScreenOrientation.Portrait
               , Theme = "@style/Theme.Dashboard")]
-    public class WalkThroughActivity : BaseAppCompatActivity , WalkThroughContract.IView , ViewPager.IOnPageChangeListener
+    public class WalkThroughActivity : BaseAppCompatActivity, WalkThroughContract.IView, ViewPager.IOnPageChangeListener
     {
 
         System.Timers.Timer t;
@@ -67,7 +61,7 @@ namespace myTNB_Android.Src.WalkThrough
         private WalkThroughContract.IUserActionsListener userActionsListener;
         public static readonly string TAG = "WalkThroughActivity";
 
-        private string savedTimeStamp = "0000000"; 
+        private string savedTimeStamp = "0000000";
 
         public int GetCurrentItem()
         {
@@ -91,19 +85,22 @@ namespace myTNB_Android.Src.WalkThrough
 
         public void ShowNext(int index)
         {
-            try {
-            if (index == viewPager.ChildCount)
+            try
             {
-                userActionsListener.NavigatePrelogin();
+                if (index == viewPager.ChildCount)
+                {
+                    userActionsListener.NavigatePrelogin();
+                }
+                else
+                {
+                    viewPager.SetCurrentItem(index % viewPager.ChildCount, true);
+                }
             }
-            else
+            catch (Exception e)
             {
-                viewPager.SetCurrentItem(index % viewPager.ChildCount, true);
-            }
-        } catch(Exception e) {
                 Utility.LoggingNonFatalError(e);
             }
-            
+
         }
 
         public int GetTotalItems()
@@ -120,51 +117,52 @@ namespace myTNB_Android.Src.WalkThrough
         {
             base.OnCreate(savedInstanceState);
 
-            try {
-            mPresenter = new WalkThroughPresenter(this , PreferenceManager.GetDefaultSharedPreferences(this));
-
-            //Deck deckOne = new Deck();
-            //deckOne.imageId = Resource.Drawable.dashboard;
-            //deckOne.heading = Resources.GetString(Resource.String.walkthrough_1_heading);
-            //deckOne.content = Resources.GetString(Resource.String.walkthrough_1_content);
-
-            //Deck deckTwo = new Deck();
-            //deckTwo.imageId = Resource.Drawable.billing;
-            //deckTwo.heading = Resources.GetString(Resource.String.walkthrough_2_heading);
-            //deckTwo.content = Resources.GetString(Resource.String.walkthrough_2_content);
-
-            //Deck deckThree = new Deck();
-            //deckThree.imageId = Resource.Drawable.payment;
-            //deckThree.heading = Resources.GetString(Resource.String.walkthrough_3_heading);
-            //deckThree.content = Resources.GetString(Resource.String.walkthrough_3_content);
-
-            //Deck[] deckParam = new Deck[3];
-            //deckParam[0] = deckOne;
-            //deckParam[1] = deckTwo;
-            //deckParam[2] = deckThree;
-            //walkThroughDeck = new WalkThroughDeck(deckParam);
-            //viewPager.OffscreenPageLimit = walkThroughDeck.NumCards;
-            //pagerAdapter = new WalkThroughAdapter(SupportFragmentManager, walkThroughDeck);
-            viewPager.Adapter = pagerAdapter;
-            //[Preserve]
-            //viewPager.AddOnPageChangeListener(this);
-            //buildCircles();
-
-            TextViewUtils.SetMuseoSans300Typeface( btnDone , btnSkip);
-            TextViewUtils.SetMuseoSans500Typeface(txtErrorMessage);
-
-            //this.userActionsListener.Start();
-          
-            if (MyTNBApplication.siteCoreUpdated)
+            try
             {
-                mProgressBar.Visibility = ViewStates.Visible;
-                btnNext.Visibility = ViewStates.Gone;
-                this.userActionsListener.OnGetWalkThroughData();
-            }
-            else
-            {
-                ShowWalkThroughData(true);
-            }
+                mPresenter = new WalkThroughPresenter(this, PreferenceManager.GetDefaultSharedPreferences(this));
+
+                //Deck deckOne = new Deck();
+                //deckOne.imageId = Resource.Drawable.dashboard;
+                //deckOne.heading = Resources.GetString(Resource.String.walkthrough_1_heading);
+                //deckOne.content = Resources.GetString(Resource.String.walkthrough_1_content);
+
+                //Deck deckTwo = new Deck();
+                //deckTwo.imageId = Resource.Drawable.billing;
+                //deckTwo.heading = Resources.GetString(Resource.String.walkthrough_2_heading);
+                //deckTwo.content = Resources.GetString(Resource.String.walkthrough_2_content);
+
+                //Deck deckThree = new Deck();
+                //deckThree.imageId = Resource.Drawable.payment;
+                //deckThree.heading = Resources.GetString(Resource.String.walkthrough_3_heading);
+                //deckThree.content = Resources.GetString(Resource.String.walkthrough_3_content);
+
+                //Deck[] deckParam = new Deck[3];
+                //deckParam[0] = deckOne;
+                //deckParam[1] = deckTwo;
+                //deckParam[2] = deckThree;
+                //walkThroughDeck = new WalkThroughDeck(deckParam);
+                //viewPager.OffscreenPageLimit = walkThroughDeck.NumCards;
+                //pagerAdapter = new WalkThroughAdapter(SupportFragmentManager, walkThroughDeck);
+                viewPager.Adapter = pagerAdapter;
+                //[Preserve]
+                //viewPager.AddOnPageChangeListener(this);
+                //buildCircles();
+
+                TextViewUtils.SetMuseoSans300Typeface(btnDone, btnSkip);
+                TextViewUtils.SetMuseoSans500Typeface(txtErrorMessage);
+
+                //this.userActionsListener.Start();
+
+                if (MyTNBApplication.siteCoreUpdated)
+                {
+                    mProgressBar.Visibility = ViewStates.Visible;
+                    btnNext.Visibility = ViewStates.Gone;
+                    this.userActionsListener.OnGetWalkThroughData();
+                }
+                else
+                {
+                    ShowWalkThroughData(true);
+                }
             }
             catch (Exception e)
             {
@@ -174,19 +172,21 @@ namespace myTNB_Android.Src.WalkThrough
 
         private void buildCircles()
         {
-            try {
-            float scale = this.Resources.DisplayMetrics.Density;
-            int padding = (int)(3 * scale + 0.5f);
-            for (int i = 0; i < pagerAdapter.Count; i++) {
-                ImageView circle = new ImageView(this);
-                circle.SetImageResource(Resource.Drawable.inactive_indicator);
-                circle.LayoutParameters = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WrapContent, ViewGroup.LayoutParams.WrapContent);
-                circle.SetAdjustViewBounds(true);
-                circle.SetPadding(padding, 0, padding, 0);
-                circles.AddView(circle);
-            }
+            try
+            {
+                float scale = this.Resources.DisplayMetrics.Density;
+                int padding = (int)(3 * scale + 0.5f);
+                for (int i = 0; i < pagerAdapter.Count; i++)
+                {
+                    ImageView circle = new ImageView(this);
+                    circle.SetImageResource(Resource.Drawable.inactive_indicator);
+                    circle.LayoutParameters = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WrapContent, ViewGroup.LayoutParams.WrapContent);
+                    circle.SetAdjustViewBounds(true);
+                    circle.SetPadding(padding, 0, padding, 0);
+                    circles.AddView(circle);
+                }
 
-            setIndicator(0);
+                setIndicator(0);
             }
             catch (Exception e)
             {
@@ -196,24 +196,25 @@ namespace myTNB_Android.Src.WalkThrough
 
         private void setIndicator(int index)
         {
-            try {
-            if (index < pagerAdapter.Count)
+            try
             {
-                for (int i = 0; i < pagerAdapter.Count; i++)
+                if (index < pagerAdapter.Count)
                 {
-                    ImageView circle = (ImageView)circles.GetChildAt(i);
-                    if (i == index)
+                    for (int i = 0; i < pagerAdapter.Count; i++)
                     {
-                        //TODO: R.color.text_selected
-                        circle.SetImageResource(Resource.Drawable.active_indicator);
-                    }   
-                    else
-                    {
-                        circle.SetImageResource(Resource.Drawable.inactive_indicator);
-                        //circle.setColorFilter(ResourcesCompat.getCoFFlor(getResources(), android.R.color.transparent, null));
+                        ImageView circle = (ImageView)circles.GetChildAt(i);
+                        if (i == index)
+                        {
+                            //TODO: R.color.text_selected
+                            circle.SetImageResource(Resource.Drawable.active_indicator);
+                        }
+                        else
+                        {
+                            circle.SetImageResource(Resource.Drawable.inactive_indicator);
+                            //circle.setColorFilter(ResourcesCompat.getCoFFlor(getResources(), android.R.color.transparent, null));
+                        }
                     }
                 }
-            }
             }
             catch (Exception e)
             {
@@ -243,7 +244,7 @@ namespace myTNB_Android.Src.WalkThrough
         public void ShowDone()
         {
             // TODO : IMPLEMENT SHOW 'DONE' TEXT REPLACING ARROW
-            Log.Debug(TAG , "Show Done is Called");
+            Log.Debug(TAG, "Show Done is Called");
             btnDone.Visibility = ViewStates.Visible;
             btnNext.Visibility = ViewStates.Gone;
             btnSkip.Visibility = ViewStates.Gone;
@@ -263,30 +264,31 @@ namespace myTNB_Android.Src.WalkThrough
         {
             this.userActionsListener.OnPageSelected(position);
             setIndicator(position);
-            Log.Debug(TAG , "Position " + position);
+            Log.Debug(TAG, "Position " + position);
         }
 
         public void OnTimeStampRecieved(string timestamp)
         {
-            try {
-            if(timestamp != null)
+            try
             {
-                if (timestamp.Equals(savedTimeStamp))
+                if (timestamp != null)
                 {
-                    MyTNBApplication.siteCoreUpdated = false;
-                    ShowWalkThroughData(true);
+                    if (timestamp.Equals(savedTimeStamp))
+                    {
+                        MyTNBApplication.siteCoreUpdated = false;
+                        ShowWalkThroughData(true);
+                    }
+                    else
+                    {
+                        MyTNBApplication.siteCoreUpdated = true;
+                        this.userActionsListener.OnGetWalkThroughData();
+                    }
                 }
                 else
                 {
                     MyTNBApplication.siteCoreUpdated = true;
                     this.userActionsListener.OnGetWalkThroughData();
                 }
-            }
-            else
-            {
-                MyTNBApplication.siteCoreUpdated = true;
-                this.userActionsListener.OnGetWalkThroughData();
-            }
             }
             catch (Exception e)
             {
@@ -296,52 +298,59 @@ namespace myTNB_Android.Src.WalkThrough
 
         public void ShowWalkThroughData(bool success)
         {
-            try {
-            if (success)
+            try
             {
-                WalkthroughScreensEntity wtManager = new WalkthroughScreensEntity();
-                List<WalkthroughScreensEntity> items = wtManager.GetAllItems();
-                if (items != null)
+                if (success)
                 {
-                    Deck[] deckParam = new Deck[items.Count];
-                    int i = 0;
-                    if (items.Count != 0)
+                    WalkthroughScreensEntity wtManager = new WalkthroughScreensEntity();
+                    List<WalkthroughScreensEntity> items = wtManager.GetAllItems();
+                    if (items != null)
                     {
-                        foreach (WalkthroughScreensModel obj in items)
+                        Deck[] deckParam = new Deck[items.Count];
+                        int i = 0;
+                        if (items.Count != 0)
                         {
-                            Deck deck = new Deck();
-                            deck.imageId = Resource.Drawable.payment;
-                            deck.imageUrl = obj.Image;
-                            deck.heading = obj.Text;
-                            deck.content = obj.SubText;
+                            foreach (WalkthroughScreensModel obj in items)
+                            {
+                                Deck deck = new Deck();
+                                deck.imageId = Resource.Drawable.payment;
+                                deck.imageUrl = obj.Image;
+                                deck.heading = obj.Text;
+                                deck.content = obj.SubText;
 
-                            deckParam[i] = deck;
-                            i++;
+                                deckParam[i] = deck;
+                                i++;
+                            }
+                        }
+                        else
+                        {
+                            deckParam = GetDefaultData();
+                        }
+                        try
+                        {
+                            RunOnUiThread(() =>
+                            {
+                                walkThroughDeck = new WalkThroughDeck(deckParam);
+                                viewPager.OffscreenPageLimit = walkThroughDeck.NumCards;
+                                pagerAdapter = new WalkThroughAdapter(SupportFragmentManager, walkThroughDeck);
+                                viewPager.Adapter = pagerAdapter;
+                                pagerAdapter.NotifyDataSetChanged();
+                                viewPager.AddOnPageChangeListener(this);
+                                mProgressBar.Visibility = ViewStates.Gone;
+                                btnNext.Visibility = ViewStates.Visible;
+                                txtErrorMessage.Visibility = ViewStates.Gone;
+                                buildCircles();
+                            });
+                        }
+                        catch (Exception e)
+                        {
+                            Log.Error(TAG, e.Message);
+                            txtErrorMessage.Visibility = ViewStates.Visible;
                         }
                     }
                     else
                     {
-                        deckParam = GetDefaultData();
-                    }
-                    try
-                    {
-                        RunOnUiThread(() =>
-                        {
-                            walkThroughDeck = new WalkThroughDeck(deckParam);
-                            viewPager.OffscreenPageLimit = walkThroughDeck.NumCards;
-                            pagerAdapter = new WalkThroughAdapter(SupportFragmentManager, walkThroughDeck);
-                            viewPager.Adapter = pagerAdapter;
-                            pagerAdapter.NotifyDataSetChanged();
-                            viewPager.AddOnPageChangeListener(this);
-                            mProgressBar.Visibility = ViewStates.Gone;
-                            btnNext.Visibility = ViewStates.Visible;
-                            txtErrorMessage.Visibility = ViewStates.Gone;
-                            buildCircles();
-                        });
-                    }
-                    catch(Exception e)
-                    {
-                        Log.Error(TAG, e.Message);
+                        mProgressBar.Visibility = ViewStates.Gone;
                         txtErrorMessage.Visibility = ViewStates.Visible;
                     }
                 }
@@ -351,12 +360,6 @@ namespace myTNB_Android.Src.WalkThrough
                     txtErrorMessage.Visibility = ViewStates.Visible;
                 }
             }
-            else
-            {
-                mProgressBar.Visibility = ViewStates.Gone;
-                txtErrorMessage.Visibility = ViewStates.Visible;
-            }
-            }
             catch (Exception e)
             {
                 Utility.LoggingNonFatalError(e);
@@ -365,12 +368,13 @@ namespace myTNB_Android.Src.WalkThrough
 
         public void OnSavedTimeStampRecievd(string timestamp)
         {
-            try {
-            if(timestamp != null)
+            try
             {
-                savedTimeStamp = timestamp;
-            }
-            this.userActionsListener.OnGetTimeStamp();
+                if (timestamp != null)
+                {
+                    savedTimeStamp = timestamp;
+                }
+                this.userActionsListener.OnGetTimeStamp();
             }
             catch (Exception e)
             {
@@ -386,27 +390,28 @@ namespace myTNB_Android.Src.WalkThrough
         public Deck[] GetDefaultData()
         {
             Deck[] deckParam = new Deck[3];
-            try {
-            Deck deckOne = new Deck();
-            deckOne.imageId = Resource.Drawable.dashboard;
-            deckOne.heading = Resources.GetString(Resource.String.walkthrough_1_heading);
-            deckOne.content = Resources.GetString(Resource.String.walkthrough_1_content);
+            try
+            {
+                Deck deckOne = new Deck();
+                deckOne.imageId = Resource.Drawable.dashboard;
+                deckOne.heading = Resources.GetString(Resource.String.walkthrough_1_heading);
+                deckOne.content = Resources.GetString(Resource.String.walkthrough_1_content);
 
-            Deck deckTwo = new Deck();
-            deckTwo.imageId = Resource.Drawable.billing;
-            deckTwo.heading = Resources.GetString(Resource.String.walkthrough_2_heading);
-            deckTwo.content = Resources.GetString(Resource.String.walkthrough_2_content);
+                Deck deckTwo = new Deck();
+                deckTwo.imageId = Resource.Drawable.billing;
+                deckTwo.heading = Resources.GetString(Resource.String.walkthrough_2_heading);
+                deckTwo.content = Resources.GetString(Resource.String.walkthrough_2_content);
 
-            Deck deckThree = new Deck();
-            deckThree.imageId = Resource.Drawable.payment;
-            deckThree.heading = Resources.GetString(Resource.String.walkthrough_3_heading);
-            deckThree.content = Resources.GetString(Resource.String.walkthrough_3_content);
+                Deck deckThree = new Deck();
+                deckThree.imageId = Resource.Drawable.payment;
+                deckThree.heading = Resources.GetString(Resource.String.walkthrough_3_heading);
+                deckThree.content = Resources.GetString(Resource.String.walkthrough_3_content);
 
-            
-            deckParam[0] = deckOne;
-            deckParam[1] = deckTwo;
-            deckParam[2] = deckThree;
-            walkThroughDeck = new WalkThroughDeck(deckParam);
+
+                deckParam[0] = deckOne;
+                deckParam[1] = deckTwo;
+                deckParam[2] = deckThree;
+                walkThroughDeck = new WalkThroughDeck(deckParam);
             }
             catch (Exception e)
             {

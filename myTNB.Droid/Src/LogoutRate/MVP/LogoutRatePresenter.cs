@@ -1,22 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-using myTNB_Android.Src.Database.Model;
+﻿using myTNB_Android.Src.Database.Model;
+using myTNB_Android.Src.LogoutRate.Api;
 using myTNB_Android.Src.Utils;
-using System.Threading;
 using Refit;
+using System;
 using System.Net;
 using System.Net.Http;
-using myTNB_Android.Src.LogoutRate.Api;
-using Firebase.Iid;
+using System.Threading;
 
 namespace myTNB_Android.Src.LogoutRate.MVP
 {
@@ -38,10 +27,11 @@ namespace myTNB_Android.Src.LogoutRate.MVP
             ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
             cts = new CancellationTokenSource();
 
-            if (mView.IsActive()) {
-            this.mView.ShowProgressDialog();
+            if (mView.IsActive())
+            {
+                this.mView.ShowProgressDialog();
             }
- 
+
 
 
 #if DEBUG || STUB
@@ -59,7 +49,7 @@ namespace myTNB_Android.Src.LogoutRate.MVP
                     ApiKeyId = Constants.APP_CONFIG.API_KEY_ID,
                     Email = userEntity.Email,
                     DeviceId = deviceId
-                } , cts.Token);
+                }, cts.Token);
 
                 if (mView.IsActive())
                 {

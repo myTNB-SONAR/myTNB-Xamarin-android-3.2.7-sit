@@ -1,24 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-using System.Threading;
-using System.Net;
-using myTNB_Android.Src.Utils;
-using System.Net.Http;
-using Refit;
-using myTNB_Android.Src.UpdateMobileNo.Api;
-using myTNB_Android.Src.Database.Model;
+﻿using Android.Telephony;
 using Android.Text;
-using Android.Telephony;
+using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.Login.Requests;
+using myTNB_Android.Src.UpdateMobileNo.Api;
+using myTNB_Android.Src.Utils;
+using Refit;
+using System;
+using System.Net;
+using System.Net.Http;
+using System.Threading;
 
 namespace myTNB_Android.Src.UpdateMobileNo.MVP
 {
@@ -59,13 +49,14 @@ namespace myTNB_Android.Src.UpdateMobileNo.MVP
                 return;
             }
 
-            if (mView.IsActive()) {
-            this.mView.ShowProgress();
+            if (mView.IsActive())
+            {
+                this.mView.ShowProgress();
             }
 
             ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
             cts = new CancellationTokenSource();
-            
+
 #if DEBUG || STUB
             var httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
             var updateMobileApi = RestService.For<IUpdateMobileNoApi>(httpClient);
@@ -82,7 +73,7 @@ namespace myTNB_Android.Src.UpdateMobileNo.MVP
                     Email = request.UserName,
                     OldPhoneNumber = "",
                     NewPhoneNumber = newPhoneNumber
-                } , cts.Token);
+                }, cts.Token);
 
                 if (mView.IsActive())
                 {
@@ -160,12 +151,13 @@ namespace myTNB_Android.Src.UpdateMobileNo.MVP
             string user_name = "";
             string user_email = "";
 
-            if(request != null)
+            if (request != null)
             {
                 sspUser_ID = request.ActiveUserName;
                 user_name = request.UserName;
                 user_email = request.UserName;
-            }else if (UserEntity.IsCurrentlyActive())
+            }
+            else if (UserEntity.IsCurrentlyActive())
             {
                 UserEntity entity = UserEntity.GetActive();
                 sspUser_ID = entity.UserID;
@@ -173,13 +165,14 @@ namespace myTNB_Android.Src.UpdateMobileNo.MVP
                 user_email = entity.Email;
             }
 
-            if (mView.IsActive()) {
-            this.mView.ShowProgress();
+            if (mView.IsActive())
+            {
+                this.mView.ShowProgress();
             }
 
             ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
             cts = new CancellationTokenSource();
-            
+
 #if DEBUG || STUB
             var httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
             var updateMobileApi = RestService.For<ISendUpdatePhoneTokenSMSApi>(httpClient);
@@ -254,24 +247,25 @@ namespace myTNB_Android.Src.UpdateMobileNo.MVP
 
         public void OnVerifyMobile(string mobileNo, bool isForceUpdate)
         {
-            try {
-            if (TextUtils.IsEmpty(mobileNo))
+            try
             {
-                return;
-            }
-
-
-            if (UserEntity.IsCurrentlyActive() && !isForceUpdate)
-            {
-                UserEntity entity = UserEntity.GetActive();
-                if (entity.MobileNo.Equals(mobileNo))
+                if (TextUtils.IsEmpty(mobileNo))
                 {
-                    this.mView.DisableSaveButton();
                     return;
                 }
-            }
 
-            this.mView.EnableSaveButton();
+
+                if (UserEntity.IsCurrentlyActive() && !isForceUpdate)
+                {
+                    UserEntity entity = UserEntity.GetActive();
+                    if (entity.MobileNo.Equals(mobileNo))
+                    {
+                        this.mView.DisableSaveButton();
+                        return;
+                    }
+                }
+
+                this.mView.EnableSaveButton();
             }
             catch (Exception e)
             {

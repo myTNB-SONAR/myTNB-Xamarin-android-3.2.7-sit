@@ -1,24 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
+﻿using AFollestad.MaterialDialogs;
 using Android.App;
 using Android.Content;
+using Android.Content.PM;
 using Android.OS;
-using Android.Runtime;
-using Android.Views;
+using Android.Util;
 using Android.Widget;
 using myTNB_Android.Src.Base.Activity;
-using Android.Content.PM;
 using myTNB_Android.Src.MakePayment.Fragment;
-using Android.Util;
-using myTNB_Android.Src.MakePayment.MVP;
-using myTNB_Android.Src.MakePayment.Model;
-using myTNB_Android.Src.Utils;
 using myTNB_Android.Src.myTNBMenu.Models;
+using myTNB_Android.Src.Utils;
 using Newtonsoft.Json;
-using AFollestad.MaterialDialogs;
+using System;
 using System.Runtime;
 
 namespace myTNB_Android.Src.MakePayment.Activity
@@ -36,7 +28,7 @@ namespace myTNB_Android.Src.MakePayment.Activity
         private Toolbar toolbar;
 
         public static bool paymentReceiptGenerated = false;
-        
+
         public override int ResourceId()
         {
             return Resource.Layout.MakePaymentView;
@@ -47,12 +39,13 @@ namespace myTNB_Android.Src.MakePayment.Activity
             return true;
         }
 
-        public override void SetToolBarTitle(string title){
+        public override void SetToolBarTitle(string title)
+        {
             base.SetToolBarTitle(title);
         }
 
         protected override void OnCreate(Bundle savedInstanceState)
-        { 
+        {
             base.OnCreate(savedInstanceState);
             // Create your application here
 
@@ -69,7 +62,9 @@ namespace myTNB_Android.Src.MakePayment.Activity
                     }
                 }
                 OnLoadMainFragment();
-            } catch(Exception e) {
+            }
+            catch (Exception e)
+            {
                 Utility.LoggingNonFatalError(e);
             }
             //Android.App.Fragment selectPaymentFragment = new SelectPaymentMethodFragment();
@@ -84,7 +79,8 @@ namespace myTNB_Android.Src.MakePayment.Activity
 
         public void nextFragment(Android.App.Fragment fragment, Bundle bundle)
         {
-            if (fragment is SelectPaymentMethodFragment){
+            if (fragment is SelectPaymentMethodFragment)
+            {
                 var paymentWebViewFragment = new PaymentWebViewFragment();
                 paymentWebViewFragment.Arguments = bundle;
                 var fragmentTransaction = FragmentManager.BeginTransaction();
@@ -96,7 +92,7 @@ namespace myTNB_Android.Src.MakePayment.Activity
         }
 
         public void OnLoadMainFragment()
-        {            
+        {
             Android.App.Fragment selectPaymentFragment = new SelectPaymentMethodFragment();
             Bundle bundle = new Bundle();
             bundle.PutString(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccount));
@@ -123,39 +119,42 @@ namespace myTNB_Android.Src.MakePayment.Activity
 
         public override void OnBackPressed()
         {
-            try {
-            int count = this.FragmentManager.BackStackEntryCount;
-            Log.Debug("OnBackPressed", "fragment stack count :" + count);
-            if (count == 0 || paymentReceiptGenerated)
+            try
             {
-                if (paymentReceiptGenerated)
+                int count = this.FragmentManager.BackStackEntryCount;
+                Log.Debug("OnBackPressed", "fragment stack count :" + count);
+                if (count == 0 || paymentReceiptGenerated)
                 {
-                    SetResult(Result.Ok);
-                }
-                Finish();
-            }
-            else
-            {
-                Log.Debug("MakePaymentActivity", "Current Fragment :" + currentFragment.Class);
-                if (currentFragment is PaymentWebViewFragment)
-                {
-                    mCancelPaymentDialog = new MaterialDialog.Builder(this)
-                        .Title("Abort Payment!")
-                        .Content(GetString(Resource.String.error_abort_payment))
-                        .Cancelable(false)
-                        .PositiveText("Abort")
-                        .PositiveColor(Resource.Color.black)
-                        .OnPositive((dialog, which) => this.FragmentManager.PopBackStack())
-                        .NeutralText("Cancel")
-                        .NeutralColor(Resource.Color.black)
-                        .OnNeutral((dialog, which) => mCancelPaymentDialog.Dismiss()).Show();
+                    if (paymentReceiptGenerated)
+                    {
+                        SetResult(Result.Ok);
+                    }
+                    Finish();
                 }
                 else
                 {
-                    this.FragmentManager.PopBackStack();
+                    Log.Debug("MakePaymentActivity", "Current Fragment :" + currentFragment.Class);
+                    if (currentFragment is PaymentWebViewFragment)
+                    {
+                        mCancelPaymentDialog = new MaterialDialog.Builder(this)
+                            .Title("Abort Payment!")
+                            .Content(GetString(Resource.String.error_abort_payment))
+                            .Cancelable(false)
+                            .PositiveText("Abort")
+                            .PositiveColor(Resource.Color.black)
+                            .OnPositive((dialog, which) => this.FragmentManager.PopBackStack())
+                            .NeutralText("Cancel")
+                            .NeutralColor(Resource.Color.black)
+                            .OnNeutral((dialog, which) => mCancelPaymentDialog.Dismiss()).Show();
+                    }
+                    else
+                    {
+                        this.FragmentManager.PopBackStack();
+                    }
                 }
             }
-        } catch(Exception e) {
+            catch (Exception e)
+            {
                 Utility.LoggingNonFatalError(e);
             }
 

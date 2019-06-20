@@ -1,5 +1,4 @@
-﻿using System;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 
 namespace myTNB_Android.Src.SummaryDashBoard.Models
 {
@@ -7,7 +6,7 @@ namespace myTNB_Android.Src.SummaryDashBoard.Models
     {
         public SummaryDashBoardDetails()
         {
-           
+
 
 
         }

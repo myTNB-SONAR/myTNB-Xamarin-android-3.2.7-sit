@@ -1,15 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-using myTNB_Android.Src.Base.Models;
+﻿using myTNB_Android.Src.Base.Models;
 using Refit;
 
 namespace myTNB_Android.Src.ResetPassword.Request
@@ -50,7 +39,7 @@ namespace myTNB_Android.Src.ResetPassword.Request
         [AliasAs("deviceCordova")]
         public string deviceCordova { get; set; }
 
-        public ResetPasswordRequest(string apiKeyId , string username, string currentPassword, string newPassword, string confirmNewPassword, string ipAddress, string clientType, string activeUserName, string devicePlatform, string deviceVersion, string deviceCordova) : base(apiKeyId)
+        public ResetPasswordRequest(string apiKeyId, string username, string currentPassword, string newPassword, string confirmNewPassword, string ipAddress, string clientType, string activeUserName, string devicePlatform, string deviceVersion, string deviceCordova) : base(apiKeyId)
         {
             this.username = username;
             //this.email = email;

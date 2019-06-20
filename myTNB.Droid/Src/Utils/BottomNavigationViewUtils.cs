@@ -1,18 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-using Android.Support.Design.Widget;
+﻿using Android.App;
 using Android.Support.Design.Internal;
+using Android.Support.Design.Widget;
 using Android.Util;
-using Android.Content.Res;
+using Android.Views;
+using System;
 
 namespace myTNB_Android.Src.Utils
 {
@@ -69,7 +60,7 @@ namespace myTNB_Android.Src.Utils
         /// <param name="bottomNavigationView"></param>
         /// <param name="sizeInDp"></param>
         /// <param name="topPadding"></param>
-        public static void SetImageSize(this BottomNavigationView bottomNavigationView , int sizeInDp , int topPadding)
+        public static void SetImageSize(this BottomNavigationView bottomNavigationView, int sizeInDp, int topPadding)
         {
             DisplayMetrics displayMetrics = Application.Context.Resources.DisplayMetrics;
             var bottomNavigationMenuView = bottomNavigationView.GetChildAt(0) as BottomNavigationMenuView;
@@ -79,8 +70,8 @@ namespace myTNB_Android.Src.Utils
                 View iconView = bottomNavigationMenuView.GetChildAt(i).FindViewById(Resource.Id.icon);
                 ViewGroup.LayoutParams layoutParams = iconView.LayoutParameters;
                 var paddingTop = (int)TypedValue.ApplyDimension(ComplexUnitType.Dip, topPadding, displayMetrics);
-                iconView.SetPadding( 0 , paddingTop , 0 , 0);
-                layoutParams.Height = (int)TypedValue.ApplyDimension(ComplexUnitType.Dip , sizeInDp , displayMetrics);
+                iconView.SetPadding(0, paddingTop, 0, 0);
+                layoutParams.Height = (int)TypedValue.ApplyDimension(ComplexUnitType.Dip, sizeInDp, displayMetrics);
                 layoutParams.Width = (int)TypedValue.ApplyDimension(ComplexUnitType.Dip, sizeInDp, displayMetrics);
             }
         }

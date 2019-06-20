@@ -1,26 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-using System.Net;
+﻿using Android.Text;
+using Android.Util;
+using myTNB_Android.Src.AddAccount.Api;
+using myTNB_Android.Src.AddAccount.Models;
+using myTNB_Android.Src.AddAccount.Requests;
+using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.Utils;
 using Refit;
-using myTNB_Android.Src.AddAccount.Api;
-using myTNB_Android.Src.AddAccount.Requests;
-using Android.Util;
-using myTNB_Android.Src.AddAccount.Models;
-using Android.Text;
-using myTNB_Android.Src.Database.Model;
+using System;
+using System.Collections.Generic;
+using System.Net;
 using System.Net.Http;
 using System.Threading;
-using System.Text.RegularExpressions;
 
 namespace myTNB_Android.Src.AddAccount.MVP
 {
@@ -39,8 +29,6 @@ namespace myTNB_Android.Src.AddAccount.MVP
 
         public void Start()
         {
-            //ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
-            //GetCustomerAccounts();
             mView.DisableAddAccountButton();
             Log.Debug(TAG, "Start Called");
         }
@@ -79,7 +67,6 @@ namespace myTNB_Android.Src.AddAccount.MVP
                 if (tnbBillAcctNo.Length != 12 && tnbBillAcctNo.Length != 14)
                 {
                     mView.ShowInvalidAccountNumberError();
-                    //mView.ShowEmptyAccountNumberError();
                     return;
                 }
 
@@ -98,7 +85,9 @@ namespace myTNB_Android.Src.AddAccount.MVP
 
                 ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
                 AddAccountAsync(apiKeyId, userID, email, tnbBillAcctNo, tnbAcctHolderIC, tnbAcctContractNo, type, des, isOwner, suppliedMotherName);
-            } catch(Exception e) {
+            }
+            catch (Exception e)
+            {
                 Utility.LoggingNonFatalError(e);
             }
         }
@@ -111,24 +100,22 @@ namespace myTNB_Android.Src.AddAccount.MVP
 #if DEBUG
             var httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
             var api = RestService.For<AddAccountToCustomer>(httpClient);
-
 #else
-             var api = RestService.For<AddAccountToCustomer>(Constants.SERVER_URL.END_POINT);
+            var api = RestService.For<AddAccountToCustomer>(Constants.SERVER_URL.END_POINT);
             
 #endif
 
             try
             {
-
                 UserEntity user = UserEntity.GetActive();
-                //UserRegister userReg = UserRegister.GetActive();
                 var result = await api.AddAccountToCustomer(new AddAccountToCustomerRequest(apiKeyId, user.UserID, user.Email, tnbBillAcctNo, tnbAcctHolderIC, tnbAcctContractNo, type, des, isOwner, suppliedMotherName), addAccountCts.Token);
 
                 if (result.response[0].isError)
                 {
                     mView.ShowAddAccountFail(result.response[0].message);
-                    if (mView.IsActive()) {
-                    mView.HideAddingAccountProgressDialog();
+                    if (mView.IsActive())
+                    {
+                        mView.HideAddingAccountProgressDialog();
                     }
                 }
                 else
@@ -141,7 +128,8 @@ namespace myTNB_Android.Src.AddAccount.MVP
                     mView.ShowAddAccountSuccess(result.response[0].message);
                 }
 
-            }catch (System.OperationCanceledException cancelledException)
+            }
+            catch (System.OperationCanceledException cancelledException)
             {
                 if (mView.IsActive())
                 {
@@ -168,8 +156,8 @@ namespace myTNB_Android.Src.AddAccount.MVP
                 this.mView.ShowRetryOptionsUnknownException(unknownException);
                 Utility.LoggingNonFatalError(unknownException);
             }
-            
-            
+
+
         }
 
         public void ValidateAccount(string apiKeyId, string accountNum, string accountType, string userIdentificationNum, string suppliedMotherName, bool isOwner, string accountLabel)
@@ -204,18 +192,11 @@ namespace myTNB_Android.Src.AddAccount.MVP
                     return;
                 }
 
-
-                //if (!Utility.isAlphaNumeric(accountLabel))
-                //{
-                //    mView.ShowEnterValidAccountName();
-                //    return;
-                //}
-
-
-
                 ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
                 ValidateAccountAsync(apiKeyId, accountNum, accountType, userIdentificationNum, suppliedMotherName, isOwner, accountLabel);
-            } catch(Exception e ){
+            }
+            catch (Exception e)
+            {
                 Utility.LoggingNonFatalError(e);
             }
         }
@@ -239,7 +220,7 @@ namespace myTNB_Android.Src.AddAccount.MVP
 
             try
             {
-                
+
                 var result = await api.ValidateManualAccount(new ValidateManualAccountRequest(apiKeyId, accountNum, accountType, userIdentificationNum, suppliedMotherName, isOwner));
                 if (mView.IsActive())
                 {
@@ -350,7 +331,9 @@ namespace myTNB_Android.Src.AddAccount.MVP
                 {
                     mView.DisableAddAccountButton();
                 }
-            } catch(Exception e) {
+            }
+            catch (Exception e)
+            {
                 Utility.LoggingNonFatalError(e);
             }
         }

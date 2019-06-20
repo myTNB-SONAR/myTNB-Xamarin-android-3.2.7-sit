@@ -1,17 +1,7 @@
-﻿using System;
+﻿using myTNB_Android.Src.Base.Models;
+using SQLite;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-using SQLite;
-using myTNB_Android.Src.Utils;
-using myTNB_Android.Src.Base.Models;
 
 namespace myTNB_Android.Src.Database.Model
 {
@@ -47,18 +37,18 @@ namespace myTNB_Android.Src.Database.Model
             //using (var db = new SQLiteConnection(Constants.DB_PATH))
             //{
             var db = DBHelper.GetSQLiteConnection();
-                var newRecord = new SubmittedFeedbackEntity()
-                {
-                    Id = submittedFeedback.FeedbackId,
-                    DateCreated = submittedFeedback.DateCreated,
-                    FeedbackMessage = submittedFeedback.FeedbackMessage,
-                    FeedbackCategoryName = submittedFeedback.FeedbackCategoryName,
-                    FeedbackCategoryId = submittedFeedback.FeedbackCategoryId
-                };
+            var newRecord = new SubmittedFeedbackEntity()
+            {
+                Id = submittedFeedback.FeedbackId,
+                DateCreated = submittedFeedback.DateCreated,
+                FeedbackMessage = submittedFeedback.FeedbackMessage,
+                FeedbackCategoryName = submittedFeedback.FeedbackCategoryName,
+                FeedbackCategoryId = submittedFeedback.FeedbackCategoryId
+            };
 
-                int newRecordRow = db.InsertOrReplace(newRecord);
+            int newRecordRow = db.InsertOrReplace(newRecord);
 
-                return newRecordRow;
+            return newRecordRow;
             //}
         }
 
@@ -67,18 +57,18 @@ namespace myTNB_Android.Src.Database.Model
             //using (var db = new SQLiteConnection(Constants.DB_PATH))
             //{
             var db = DBHelper.GetSQLiteConnection();
-                var newRecord = new SubmittedFeedbackEntity()
-                {
-                    Id = Id,
-                    DateCreated = DateCreated,
-                    FeedbackMessage = FeedbackMessage,
-                    FeedbackCategoryName = FeedbackCategoryName,
-                    FeedbackCategoryId = FeedbackCategoryId
-                };
+            var newRecord = new SubmittedFeedbackEntity()
+            {
+                Id = Id,
+                DateCreated = DateCreated,
+                FeedbackMessage = FeedbackMessage,
+                FeedbackCategoryName = FeedbackCategoryName,
+                FeedbackCategoryId = FeedbackCategoryId
+            };
 
-                int newRecordRow = db.InsertOrReplace(newRecord);
+            int newRecordRow = db.InsertOrReplace(newRecord);
 
-                return newRecordRow;
+            return newRecordRow;
             //}
         }
 
@@ -87,7 +77,7 @@ namespace myTNB_Android.Src.Database.Model
             //using (var db = new SQLiteConnection(Constants.DB_PATH))
             //{
             var db = DBHelper.GetSQLiteConnection();
-                db.Execute("DELETE FROM SubmittedFeedbackEntity");
+            db.Execute("DELETE FROM SubmittedFeedbackEntity");
             //}
         }
 
@@ -97,7 +87,7 @@ namespace myTNB_Android.Src.Database.Model
             //using (var db = new SQLiteConnection(Constants.DB_PATH))
             //{
             var db = DBHelper.GetSQLiteConnection();
-                return db.Query<SubmittedFeedbackEntity>("SELECT * FROM SubmittedFeedbackEntity").Count > 0;
+            return db.Query<SubmittedFeedbackEntity>("SELECT * FROM SubmittedFeedbackEntity").Count > 0;
             //}
         }
 
@@ -106,17 +96,17 @@ namespace myTNB_Android.Src.Database.Model
             //using (var db = new SQLiteConnection(Constants.DB_PATH))
             //{
             var db = DBHelper.GetSQLiteConnection();
-                return db.Query<SubmittedFeedbackEntity>("SELECT * FROM SubmittedFeedbackEntity").Count();
+            return db.Query<SubmittedFeedbackEntity>("SELECT * FROM SubmittedFeedbackEntity").Count();
             //}
         }
 
-  
+
         public static List<SubmittedFeedbackEntity> GetActiveList()
         {
             //using (var db = new SQLiteConnection(Constants.DB_PATH))
             //{
             var db = DBHelper.GetSQLiteConnection();
-                return db.Query<SubmittedFeedbackEntity>("SELECT * FROM SubmittedFeedbackEntity").ToList();
+            return db.Query<SubmittedFeedbackEntity>("SELECT * FROM SubmittedFeedbackEntity").ToList();
             //}
         }
     }

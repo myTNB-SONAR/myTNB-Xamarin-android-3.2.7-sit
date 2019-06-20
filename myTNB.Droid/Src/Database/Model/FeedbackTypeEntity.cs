@@ -1,17 +1,7 @@
-﻿using System;
+﻿using myTNB_Android.Src.AppLaunch.Models;
+using SQLite;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-using SQLite;
-using myTNB_Android.Src.AppLaunch.Models;
-using myTNB_Android.Src.Utils;
 namespace myTNB_Android.Src.Database.Model
 {
     public class FeedbackTypeEntity
@@ -39,33 +29,33 @@ namespace myTNB_Android.Src.Database.Model
             //using (var db = new SQLiteConnection(Constants.DB_PATH))
             //{
             var db = DBHelper.GetSQLiteConnection();
-                var newRecord = new FeedbackTypeEntity()
-                {
-                    Id = type.FeedbackTypeId,
-                    Name = type.FeedbackTypeName
-                };
+            var newRecord = new FeedbackTypeEntity()
+            {
+                Id = type.FeedbackTypeId,
+                Name = type.FeedbackTypeName
+            };
 
-                int newRecordRow = db.InsertOrReplace(newRecord);
+            int newRecordRow = db.InsertOrReplace(newRecord);
 
-                return newRecordRow;
+            return newRecordRow;
             //}
         }
 
-        public static int InsertOrReplace(FeedbackType type , bool isSelected)
+        public static int InsertOrReplace(FeedbackType type, bool isSelected)
         {
             //using (var db = new SQLiteConnection(Constants.DB_PATH))
             //{
             var db = DBHelper.GetSQLiteConnection();
-                var newRecord = new FeedbackTypeEntity()
-                {
-                    Id = type.FeedbackTypeId,
-                    Name = type.FeedbackTypeName,
-                    IsSelected = isSelected
-                };
+            var newRecord = new FeedbackTypeEntity()
+            {
+                Id = type.FeedbackTypeId,
+                Name = type.FeedbackTypeName,
+                IsSelected = isSelected
+            };
 
-                int newRecordRow = db.InsertOrReplace(newRecord);
+            int newRecordRow = db.InsertOrReplace(newRecord);
 
-                return newRecordRow;
+            return newRecordRow;
             //}
         }
 
@@ -75,7 +65,7 @@ namespace myTNB_Android.Src.Database.Model
             //using (var db = new SQLiteConnection(Constants.DB_PATH))
             //{
             var db = DBHelper.GetSQLiteConnection();
-                db.Execute("UPDATE FeedbackTypeEntity SET IsSelected = ? WHERE FeedbackTypeId = ?", true, Id);
+            db.Execute("UPDATE FeedbackTypeEntity SET IsSelected = ? WHERE FeedbackTypeId = ?", true, Id);
             //}
         }
 
@@ -91,7 +81,7 @@ namespace myTNB_Android.Src.Database.Model
                     //using (var db = new SQLiteConnection(Constants.DB_PATH))
                     //{
                     var db = DBHelper.GetSQLiteConnection();
-                        int newRecordRow = db.InsertOrReplace(state);
+                    int newRecordRow = db.InsertOrReplace(state);
                     //}
 
                 }
@@ -103,7 +93,7 @@ namespace myTNB_Android.Src.Database.Model
             //using (var db = new SQLiteConnection(Constants.DB_PATH))
             //{
             var db = DBHelper.GetSQLiteConnection();
-                db.Execute("DELETE FROM FeedbackTypeEntity");
+            db.Execute("DELETE FROM FeedbackTypeEntity");
             //}
         }
 
@@ -112,7 +102,7 @@ namespace myTNB_Android.Src.Database.Model
             //using (var db = new SQLiteConnection(Constants.DB_PATH))
             //{
             var db = DBHelper.GetSQLiteConnection();
-                db.Execute("UPDATE FeedbackTypeEntity SET IsSelected = ?", false);
+            db.Execute("UPDATE FeedbackTypeEntity SET IsSelected = ?", false);
             //}
         }
 
@@ -122,7 +112,7 @@ namespace myTNB_Android.Src.Database.Model
             //using (var db = new SQLiteConnection(Constants.DB_PATH))
             //{
             var db = DBHelper.GetSQLiteConnection();
-                return db.Query<FeedbackTypeEntity>("SELECT * FROM FeedbackTypeEntity").Count > 0;
+            return db.Query<FeedbackTypeEntity>("SELECT * FROM FeedbackTypeEntity").Count > 0;
             //}
         }
 
@@ -143,7 +133,7 @@ namespace myTNB_Android.Src.Database.Model
             //using (var db = new SQLiteConnection(Constants.DB_PATH))
             //{
             var db = DBHelper.GetSQLiteConnection();
-                return db.Query<FeedbackTypeEntity>("SELECT * FROM FeedbackTypeEntity WHERE IsSelected = ?", true).Count > 0;
+            return db.Query<FeedbackTypeEntity>("SELECT * FROM FeedbackTypeEntity WHERE IsSelected = ?", true).Count > 0;
             //}
         }
 
@@ -152,7 +142,7 @@ namespace myTNB_Android.Src.Database.Model
             //using (var db = new SQLiteConnection(Constants.DB_PATH))
             //{
             var db = DBHelper.GetSQLiteConnection();
-                return db.Query<FeedbackTypeEntity>("SELECT * FROM FeedbackTypeEntity WHERE IsSelected = ?", true)[0];
+            return db.Query<FeedbackTypeEntity>("SELECT * FROM FeedbackTypeEntity WHERE IsSelected = ?", true)[0];
             //}
         }
 
@@ -161,7 +151,7 @@ namespace myTNB_Android.Src.Database.Model
             //using (var db = new SQLiteConnection(Constants.DB_PATH))
             //{
             var db = DBHelper.GetSQLiteConnection();
-                return db.Query<FeedbackTypeEntity>("SELECT * FROM FeedbackTypeEntity").ToList();
+            return db.Query<FeedbackTypeEntity>("SELECT * FROM FeedbackTypeEntity").ToList();
             //}
         }
     }

@@ -1,23 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-using myTNB_Android.Src.Base.Models;
-using System.Threading;
-using static myTNB_Android.Src.Base.Models.SubmittedFeedbackDetails;
-using myTNB_Android.Src.Utils;
-using Android.Graphics;
+﻿using Android.Graphics;
 using Android.Text;
 using Java.Text;
 using Java.Util;
+using myTNB_Android.Src.Base.Models;
 using myTNB_Android.Src.Database.Model;
+using myTNB_Android.Src.Utils;
+using System;
+using System.Collections.Generic;
+using System.Threading;
+using static myTNB_Android.Src.Base.Models.SubmittedFeedbackDetails;
 
 namespace myTNB_Android.Src.FeedbackDetails.MVP
 {

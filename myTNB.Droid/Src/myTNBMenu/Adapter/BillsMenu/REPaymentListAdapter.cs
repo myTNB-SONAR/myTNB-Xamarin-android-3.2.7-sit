@@ -1,22 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
+﻿using Android.Content;
 using Android.Views;
 using Android.Widget;
-using myTNB_Android.Src.myTNBMenu.Models;
-using myTNB_Android.Src.Base.Adapter;
 using CheeseBind;
-using Java.Util;
-using Android.Net;
-using myTNB_Android.Src.Utils;
 using Java.Text;
-using Android.Text;
+using Java.Util;
+using myTNB_Android.Src.Base.Adapter;
+using myTNB_Android.Src.myTNBMenu.Models;
+using myTNB_Android.Src.Utils;
+using System;
+using System.Collections.Generic;
 
 namespace myTNB_Android.Src.myTNBMenu.Adapter.BillsMenu
 {
@@ -81,7 +73,9 @@ namespace myTNB_Android.Src.myTNBMenu.Adapter.BillsMenu
 
                 TextViewUtils.SetMuseoSans500Typeface(vh.txtPayment, vh.txtDate, vh.txtAmtPayable);
                 TextViewUtils.SetMuseoSans300Typeface(vh.txtPaymentFrom);
-            } catch(Exception e) {
+            }
+            catch (Exception e)
+            {
                 Utility.LoggingNonFatalError(e);
             }
             return convertView;

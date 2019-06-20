@@ -1,19 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
+﻿using Android.Content;
+using Android.Support.V4.Content;
 using Android.Views;
 using Android.Widget;
-using myTNB_Android.Src.NotificationFilter.Models;
-using myTNB_Android.Src.Base.Adapter;
 using CheeseBind;
-using Android.Support.V4.Content;
+using myTNB_Android.Src.Base.Adapter;
+using myTNB_Android.Src.NotificationFilter.Models;
 using myTNB_Android.Src.Utils;
+using System;
+using System.Collections.Generic;
 
 namespace myTNB_Android.Src.NotificationFilter.Adapter
 {
@@ -36,7 +30,7 @@ namespace myTNB_Android.Src.NotificationFilter.Adapter
         }
 
         public void DisableAll()
-        { 
+        {
             foreach (NotificationFilterData data in itemList)
             {
                 data.IsSelected = false;
@@ -50,7 +44,7 @@ namespace myTNB_Android.Src.NotificationFilter.Adapter
             NotificationFilterViewHolder viewHolder = null;
             if (convertView == null)
             {
-                convertView = LayoutInflater.From(context).Inflate(Resource.Layout.NotificationFilterRow , parent , false);
+                convertView = LayoutInflater.From(context).Inflate(Resource.Layout.NotificationFilterRow, parent, false);
                 viewHolder = new NotificationFilterViewHolder(convertView);
                 convertView.Tag = viewHolder;
             }
@@ -58,17 +52,18 @@ namespace myTNB_Android.Src.NotificationFilter.Adapter
             {
                 viewHolder = convertView.Tag as NotificationFilterViewHolder;
             }
-            try {
-            viewHolder.txtNotificationTitle.Text = data.Title;
-            if (data.IsSelected)
+            try
             {
-                viewHolder.notificationActionIcon.SetImageDrawable(ContextCompat.GetDrawable(context, Resource.Drawable.ic_action_tick));
-            }
-            else
-            {
-                viewHolder.notificationActionIcon.SetImageDrawable(null);
+                viewHolder.txtNotificationTitle.Text = data.Title;
+                if (data.IsSelected)
+                {
+                    viewHolder.notificationActionIcon.SetImageDrawable(ContextCompat.GetDrawable(context, Resource.Drawable.ic_action_tick));
+                }
+                else
+                {
+                    viewHolder.notificationActionIcon.SetImageDrawable(null);
 
-            }
+                }
             }
             catch (Exception e)
             {

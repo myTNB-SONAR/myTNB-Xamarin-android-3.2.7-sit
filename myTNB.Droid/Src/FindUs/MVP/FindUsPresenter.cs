@@ -1,23 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-using myTNB_Android.Src.Utils;
-using System.Net;
-using Refit;
+﻿using Android.Util;
 using myTNB_Android.Src.FindUs.Api;
-using myTNB_Android.Src.FindUs.Response;
-using System.Net.Http;
 using myTNB_Android.Src.FindUs.Request;
+using myTNB_Android.Src.FindUs.Response;
+using myTNB_Android.Src.Utils;
+using Refit;
+using System;
+using System.Net;
+using System.Net.Http;
 using System.Threading;
-using Android.Util;
 
 namespace myTNB_Android.Src.FindUs.MVP
 {
@@ -48,9 +38,10 @@ namespace myTNB_Android.Src.FindUs.MVP
         {
             cts = new CancellationTokenSource();
 
-            if (mView.IsActive()) {
-            this.mView.ShowGetLocationsDialog();
-                }
+            if (mView.IsActive())
+            {
+                this.mView.ShowGetLocationsDialog();
+            }
 
             // TODO : UPDATE Replace string with Constants.SERVER_URL
 
@@ -70,7 +61,7 @@ namespace myTNB_Android.Src.FindUs.MVP
             {
                 GetLocationsResponse result = new GetLocationsResponse();
                 GetGoogleLocationsResponse results = null;// new GetGoogleLocationsResponse();
-                if (locationType.ToLower().Equals("kt") || locationType.ToLower().Equals("all") )
+                if (locationType.ToLower().Equals("kt") || locationType.ToLower().Equals("all"))
                 {
                     result = await api.GetLocationsV5(new GetLocationsRequest(apiKeyId, latitude, longitude, "KT"), cts.Token);
                 }
@@ -82,7 +73,7 @@ namespace myTNB_Android.Src.FindUs.MVP
                 //    results = await googelApi.GetLocationsFromGoogle(googleApiKey, latitude + "," + longitude, "5000", locationDes, locationDes, cts.Token);
                 //}
 
-                
+
 
                 if (result.D != null && result.D.IsError)
                 {

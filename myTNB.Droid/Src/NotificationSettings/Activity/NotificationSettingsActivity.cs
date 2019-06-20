@@ -1,25 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
+﻿using AFollestad.MaterialDialogs;
 using Android.App;
 using Android.Content;
+using Android.Content.PM;
 using Android.OS;
-using Android.Runtime;
+using Android.Support.Design.Widget;
+using Android.Support.V7.Widget;
 using Android.Views;
 using Android.Widget;
-using myTNB_Android.Src.Base.Activity;
-using Android.Content.PM;
 using CheeseBind;
+using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.NotificationSettings.Adapter;
-using myTNB_Android.Src.SelectNotification.Models;
 using myTNB_Android.Src.NotificationSettings.MVP;
+using myTNB_Android.Src.SelectNotification.Models;
 using myTNB_Android.Src.Utils;
-using Android.Support.Design.Widget;
 using Refit;
-using AFollestad.MaterialDialogs;
-using Android.Support.V7.Widget;
+using System;
+using System.Collections.Generic;
 using System.Runtime;
 
 namespace myTNB_Android.Src.NotificationSettings.Activity
@@ -28,7 +24,7 @@ namespace myTNB_Android.Src.NotificationSettings.Activity
       //, MainLauncher = true
       , ScreenOrientation = ScreenOrientation.Portrait
       , Theme = "@style/Theme.Notification")]
-    public class NotificationSettingsActivity : BaseToolbarAppCompatActivity , NotificationSettingsContract.IView
+    public class NotificationSettingsActivity : BaseToolbarAppCompatActivity, NotificationSettingsContract.IView
     {
 
         [BindView(Resource.Id.rootView)]
@@ -53,10 +49,10 @@ namespace myTNB_Android.Src.NotificationSettings.Activity
         NotificationSettingsContract.IUserActionsListener userActionsListener;
         NotificationSettingsPresenter mPresenter;
 
-        LinearLayoutManager notificationChannelLayoutManager , notificationTypeLayoutManager;
+        LinearLayoutManager notificationChannelLayoutManager, notificationTypeLayoutManager;
 
 
-        MaterialDialog progressUpdateType , progressUpdateChannel;
+        MaterialDialog progressUpdateType, progressUpdateChannel;
 
         public bool IsActive()
         {
@@ -93,32 +89,33 @@ namespace myTNB_Android.Src.NotificationSettings.Activity
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-            try {
-            // Create your application here
-            Console.WriteLine("NotificationSettingsActivity OnCreate");
+            try
+            {
+                // Create your application here
+                Console.WriteLine("NotificationSettingsActivity OnCreate");
 
-            TextViewUtils.SetMuseoSans500Typeface(txtNotificationTypeTitle , txtNotificationChannelTitle);
+                TextViewUtils.SetMuseoSans500Typeface(txtNotificationTypeTitle, txtNotificationChannelTitle);
 
-            notificationChannelLayoutManager = new LinearLayoutManager(this);
-            notificationTypeLayoutManager = new LinearLayoutManager(this);
-            notificationTypeRecyclerView.SetLayoutManager(notificationTypeLayoutManager);
-            notificationChannelRecyclerView.SetLayoutManager(notificationChannelLayoutManager);
+                notificationChannelLayoutManager = new LinearLayoutManager(this);
+                notificationTypeLayoutManager = new LinearLayoutManager(this);
+                notificationTypeRecyclerView.SetLayoutManager(notificationTypeLayoutManager);
+                notificationChannelRecyclerView.SetLayoutManager(notificationChannelLayoutManager);
 
-            typeAdapter = new NotificationTypeAdapter(true);
-            typeAdapter.ClickEvent += TypeAdapter_ClickEvent;
-            notificationTypeRecyclerView.SetAdapter(typeAdapter);
-            notificationTypeRecyclerView.NestedScrollingEnabled = (false);
-            
-            //notificationTypeListView.SetNoScroll();
+                typeAdapter = new NotificationTypeAdapter(true);
+                typeAdapter.ClickEvent += TypeAdapter_ClickEvent;
+                notificationTypeRecyclerView.SetAdapter(typeAdapter);
+                notificationTypeRecyclerView.NestedScrollingEnabled = (false);
 
-            channelAdapter = new NotificationChannelAdapter( true);
-            channelAdapter.ClickEvent += ChannelAdapter_ClickEvent;
-            notificationChannelRecyclerView.SetAdapter(channelAdapter);
-            notificationTypeRecyclerView.NestedScrollingEnabled = (false);
-            //notificationChannelListView.SetNoScroll();
+                //notificationTypeListView.SetNoScroll();
 
-            mPresenter = new NotificationSettingsPresenter(this);
-            this.userActionsListener.Start();
+                channelAdapter = new NotificationChannelAdapter(true);
+                channelAdapter.ClickEvent += ChannelAdapter_ClickEvent;
+                notificationChannelRecyclerView.SetAdapter(channelAdapter);
+                notificationTypeRecyclerView.NestedScrollingEnabled = (false);
+                //notificationChannelListView.SetNoScroll();
+
+                mPresenter = new NotificationSettingsPresenter(this);
+                this.userActionsListener.Start();
             }
             catch (Exception ex)
             {
@@ -129,9 +126,10 @@ namespace myTNB_Android.Src.NotificationSettings.Activity
 
         private void ChannelAdapter_ClickEvent(object sender, int e)
         {
-            try {
-            NotificationChannelUserPreference userPreference = channelAdapter.GetItemObject(e);
-            this.userActionsListener.OnChannelItemClick(userPreference, e);
+            try
+            {
+                NotificationChannelUserPreference userPreference = channelAdapter.GetItemObject(e);
+                this.userActionsListener.OnChannelItemClick(userPreference, e);
             }
             catch (Exception ex)
             {
@@ -141,9 +139,10 @@ namespace myTNB_Android.Src.NotificationSettings.Activity
 
         private void TypeAdapter_ClickEvent(object sender, int e)
         {
-            try {
-            NotificationTypeUserPreference userPreference = typeAdapter.GetItemObject(e);
-            this.userActionsListener.OnTypeItemClick(userPreference, e, this.DeviceId());
+            try
+            {
+                NotificationTypeUserPreference userPreference = typeAdapter.GetItemObject(e);
+                this.userActionsListener.OnTypeItemClick(userPreference, e, this.DeviceId());
             }
             catch (Exception ex)
             {
@@ -168,7 +167,7 @@ namespace myTNB_Android.Src.NotificationSettings.Activity
         protected override void OnResume()
         {
             base.OnResume();
-         
+
         }
 
 
@@ -230,7 +229,7 @@ namespace myTNB_Android.Src.NotificationSettings.Activity
 
         public void ShowSuccessUpdatedNotificationType(NotificationTypeUserPreference typePreference, int position)
         {
-            this.typeAdapter.Update(position , typePreference);
+            this.typeAdapter.Update(position, typePreference);
         }
 
         public void ShowSuccessUpdatedNotificationChannel(NotificationChannelUserPreference channelPreference, int position)
@@ -247,7 +246,8 @@ namespace myTNB_Android.Src.NotificationSettings.Activity
             }
 
             mCancelledExceptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.notification_settings_cancelled_exception_error), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.notification_settings_cancelled_exception_btn_close), delegate {
+            .SetAction(GetString(Resource.String.notification_settings_cancelled_exception_btn_close), delegate
+            {
 
                 mCancelledExceptionSnackBar.Dismiss();
             }
@@ -264,7 +264,8 @@ namespace myTNB_Android.Src.NotificationSettings.Activity
             }
 
             mApiExcecptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.notification_settings_api_exception_error), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.notification_settings_api_exception_btn_close), delegate {
+            .SetAction(GetString(Resource.String.notification_settings_api_exception_btn_close), delegate
+            {
 
                 mApiExcecptionSnackBar.Dismiss();
 
@@ -283,7 +284,8 @@ namespace myTNB_Android.Src.NotificationSettings.Activity
             }
 
             mUknownExceptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.notification_settings_unknown_exception_error), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.notification_settings_unknown_exception_btn_close), delegate {
+            .SetAction(GetString(Resource.String.notification_settings_unknown_exception_btn_close), delegate
+            {
 
                 mUknownExceptionSnackBar.Dismiss();
 
@@ -301,7 +303,8 @@ namespace myTNB_Android.Src.NotificationSettings.Activity
             }
 
             mCancelledExceptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.notification_settings_cancelled_exception_error), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.notification_settings_cancelled_exception_btn_close), delegate {
+            .SetAction(GetString(Resource.String.notification_settings_cancelled_exception_btn_close), delegate
+            {
 
                 mCancelledExceptionSnackBar.Dismiss();
             }
@@ -318,7 +321,8 @@ namespace myTNB_Android.Src.NotificationSettings.Activity
             }
 
             mApiExcecptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.notification_settings_api_exception_error), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.notification_settings_api_exception_btn_close), delegate {
+            .SetAction(GetString(Resource.String.notification_settings_api_exception_btn_close), delegate
+            {
 
                 mApiExcecptionSnackBar.Dismiss();
 
@@ -337,7 +341,8 @@ namespace myTNB_Android.Src.NotificationSettings.Activity
             }
 
             mUknownExceptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.notification_settings_unknown_exception_error), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.notification_settings_unknown_exception_btn_close), delegate {
+            .SetAction(GetString(Resource.String.notification_settings_unknown_exception_btn_close), delegate
+            {
 
                 mUknownExceptionSnackBar.Dismiss();
 

@@ -1,41 +1,31 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
+﻿using Android.App;
 using Android.Content;
 using Android.OS;
 using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-using System.Threading;
-using System.Net;
-using myTNB_Android.Src.Utils;
-using NSubstitute;
+using Android.Util;
+using myTNB.SitecoreCMS.Model;
+using myTNB.SitecoreCMS.Services;
+using myTNB.SQLite.SQLiteDataManager;
+using myTNB_Android.Src.AddAccount.Models;
+using myTNB_Android.Src.AppLaunch.Activity;
+using myTNB_Android.Src.AppLaunch.Models;
+using myTNB_Android.Src.Database.Model;
+using myTNB_Android.Src.myTNBMenu.Activity;
 using myTNB_Android.Src.myTNBMenu.Api;
-using System.Threading.Tasks;
+using myTNB_Android.Src.myTNBMenu.Async;
+using myTNB_Android.Src.myTNBMenu.Fragments;
 using myTNB_Android.Src.myTNBMenu.Models;
+using myTNB_Android.Src.SiteCore;
+using myTNB_Android.Src.SummaryDashBoard;
+using myTNB_Android.Src.Utils;
 using Newtonsoft.Json;
 using Refit;
-using Android.Util;
+using System;
+using System.Collections.Generic;
+using System.Net;
 using System.Net.Http;
-using myTNB_Android.Src.Database.Model;
-using myTNB_Android.Src.Utils;
-using myTNB_Android.Src.AddAccount.Models;
-using myTNB_Android.Src.AppLaunch.Models;
-using myTNB.SQLite.SQLiteDataManager;
-using myTNB.SitecoreCMS.Services;
-using myTNB.SitecoreCMS.Model;
-using myTNB_Android.Src.SiteCore;
-using myTNB_Android.Src.myTNBMenu.Activity;
-using myTNB_Android.Src.SummaryDashBoard;
-using myTNB_Android.Src.myTNBMenu.Fragments;
-using Java.Lang;
-using myTNB_Android.Src.AppLaunch.Api;
-using myTNB_Android.Src.AppLaunch.Requests;
-using myTNB_Android.Src.AppLaunch.Activity;
-using myTNB_Android.Src.myTNBMenu.Async;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace myTNB_Android.Src.myTNBMenu.MVP
 {
@@ -510,9 +500,9 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                 OnMenuSelect(Resource.Id.menu_bill);
             }
 
-           
 
-                                                
+
+
         }
 
 
@@ -522,38 +512,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
             cts = new CancellationTokenSource();
             //this.mView.ShowProgressDialog();
 #if STUB
-            var api = Substitute.For<IUsageHistoryApi>();
-
-            var detailedAccountApi = Substitute.For<IDetailedCustomerAccount>();
-
-            api.DoQuery(new Requests.UsageHistoryRequest(Constants.APP_CONFIG.API_KEY_ID) {
-                AccountNum = accountSelected.AccNum
-            }, cts.Token)
-            .ReturnsForAnyArgs(
-                Task.Run<UsageHistoryResponse>(
-                    () => JsonConvert.DeserializeObject<UsageHistoryResponse>(this.mView.GetUsageHistoryStub())
-                ));
-
-            detailedAccountApi.GetDetailedAccount(new AddAccount.Requests.AccountDetailsRequest()
-            {
-                apiKeyID = Constants.APP_CONFIG.API_KEY_ID,
-                CANum = accountSelected.AccNum
-            })
-            .ReturnsForAnyArgs(
-                Task.Run<AccountDetailsResponse>(
-                    () => JsonConvert.DeserializeObject<AccountDetailsResponse>(this.mView.GetAccountDetailsStub(accountSelected.AccNum))
-                ));
-
-
-            api.GetDetailedAccount(new AddAccount.Requests.AccountDetailsRequest()
-            {
-                apiKeyID = Constants.APP_CONFIG.API_KEY_ID,
-                CANum = accountSelected.AccNum
-            })
-            .ReturnsForAnyArgs(
-                Task.Run<AccountDetailsResponse>(
-                    () => JsonConvert.DeserializeObject<AccountDetailsResponse>(this.mView.GetAccountDetailsStub(accountSelected.AccNum))
-                ));
+            var api = RestService.For<IUsageHistoryApi>(Constants.SERVER_URL.END_POINT);
 #elif DEBUG
             var httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
             var api = RestService.For<IUsageHistoryApi>(httpClient);
@@ -714,38 +673,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
             }
 
 #if STUB
-            var api = Substitute.For<IUsageHistoryApi>();
-
-            var detailedAccountApi = Substitute.For<IDetailedCustomerAccount>();
-
-            api.DoQuery(new Requests.UsageHistoryRequest(Constants.APP_CONFIG.API_KEY_ID) {
-                AccountNum = accountSelected.AccNum
-            }, cts.Token)
-            .ReturnsForAnyArgs(
-                Task.Run<UsageHistoryResponse>(
-                    () => JsonConvert.DeserializeObject<UsageHistoryResponse>(this.mView.GetUsageHistoryStub())
-                ));
-
-            detailedAccountApi.GetDetailedAccount(new AddAccount.Requests.AccountDetailsRequest()
-            {
-                apiKeyID = Constants.APP_CONFIG.API_KEY_ID,
-                CANum = accountSelected.AccNum
-            })
-            .ReturnsForAnyArgs(
-                Task.Run<AccountDetailsResponse>(
-                    () => JsonConvert.DeserializeObject<AccountDetailsResponse>(this.mView.GetAccountDetailsStub(accountSelected.AccNum))
-                ));
-
-
-            api.GetDetailedAccount(new AddAccount.Requests.AccountDetailsRequest()
-            {
-                apiKeyID = Constants.APP_CONFIG.API_KEY_ID,
-                CANum = accountSelected.AccNum
-            })
-            .ReturnsForAnyArgs(
-                Task.Run<AccountDetailsResponse>(
-                    () => JsonConvert.DeserializeObject<AccountDetailsResponse>(this.mView.GetAccountDetailsStub(accountSelected.AccNum))
-                ));
+            var api = RestService.For<IUsageHistoryApi>(Constants.SERVER_URL.END_POINT);
 #elif DEBUG
             var httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
             var api = RestService.For<IUsageHistoryApi>(httpClient);
@@ -891,43 +819,10 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
             cts = new CancellationTokenSource();
             //this.mView.ShowProgressDialog();
 #if STUB
-            var api = Substitute.For<IUsageHistoryApi>();
-
-            var detailedAccountApi = Substitute.For<IDetailedCustomerAccount>();
-
-            api.DoQuery(new Requests.UsageHistoryRequest(Constants.APP_CONFIG.API_KEY_ID)
-            {
-                AccountNum = accountSelected.AccNum
-            }, cts.Token)
-            .ReturnsForAnyArgs(
-                Task.Run<UsageHistoryResponse>(
-                    () => JsonConvert.DeserializeObject<UsageHistoryResponse>(this.mView.GetUsageHistoryStub())
-                ));
- 
-            detailedAccountApi.GetDetailedAccount(new AddAccount.Requests.AccountDetailsRequest()
-            {
-                apiKeyID = Constants.APP_CONFIG.API_KEY_ID,
-                CANum = accountSelected.AccNum
-            })
-            .ReturnsForAnyArgs(
-                Task.Run<AccountDetailsResponse>(
-                    () => JsonConvert.DeserializeObject<AccountDetailsResponse>(this.mView.GetAccountDetailsStub(accountSelected.AccNum))
-                ));
-
-
-            api.GetDetailedAccount(new AddAccount.Requests.AccountDetailsRequest()
-            {
-                apiKeyID = Constants.APP_CONFIG.API_KEY_ID,
-                CANum = accountSelected.AccNum
-            })
-            .ReturnsForAnyArgs(
-                Task.Run<AccountDetailsResponse>(
-                    () => JsonConvert.DeserializeObject<AccountDetailsResponse>(this.mView.GetAccountDetailsStub(accountSelected.AccNum))
-                ));
+            var detailedAccountApi = RestService.For<IDetailedCustomerAccount>(Constants.SERVER_URL.END_POINT);
 #elif DEBUG
             var httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
             var api = RestService.For<IUsageHistoryApi>(httpClient);
-
             var detailedAccountApi = RestService.For<IDetailedCustomerAccount>(httpClient);
 #elif DEVELOP
             var detailedAccountApi = RestService.For<IDetailedCustomerAccount>(Constants.SERVER_URL.END_POINT);

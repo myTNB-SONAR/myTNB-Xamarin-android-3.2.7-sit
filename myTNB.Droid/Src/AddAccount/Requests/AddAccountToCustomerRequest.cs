@@ -1,21 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-using myTNB_Android.Src.AddAccount.Models;
+﻿using myTNB_Android.Src.AddAccount.Models;
 
 namespace myTNB_Android.Src.AddAccount.Requests
 {
     public class AddAccountToCustomerRequest : AddAccountResquest
     {
-        public AddAccountToCustomerRequest(string apiKeyID, string userID, string email, string tnbBillAccountNum, string tnbAcctHolderIC, string tnbAcctContractNo, string type, string des, bool isOwner, string suppliedMotherName) : base(apiKeyID,  userID, email, tnbBillAccountNum, tnbAcctHolderIC, tnbAcctContractNo, type, des, isOwner, suppliedMotherName)
+        public AddAccountToCustomerRequest(string apiKeyID, string userID, string email, string tnbBillAccountNum, string tnbAcctHolderIC, string tnbAcctContractNo, string type, string des, bool isOwner, string suppliedMotherName) : base(apiKeyID, userID, email, tnbBillAccountNum, tnbAcctHolderIC, tnbAcctContractNo, type, des, isOwner, suppliedMotherName)
         {
             base.apiKeyID = apiKeyID;
             base.userID = userID;

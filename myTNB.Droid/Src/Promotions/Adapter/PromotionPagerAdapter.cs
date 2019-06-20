@@ -1,27 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
+﻿using Android.Content;
+using Android.Graphics;
+using Android.Support.V4.View;
+using Android.Util;
 using Android.Views;
 using Android.Widget;
-using Android.Support.V4.View;
-using Java.Lang;
 using myTNB.SitecoreCM.Models;
-using myTNB_Android.Src.Utils;
-using System.Threading.Tasks;
-using System.Threading;
-using Android.Graphics;
 using myTNB.SQLite.SQLiteDataManager;
-using System.Net;
-using Android.Util;
+using myTNB_Android.Src.Utils;
 using Square.Picasso;
-using myTNB_Android.Src.Promotions.Activity;
-using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.Net;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace myTNB_Android.Src.Promotions.Adapter
 {
@@ -46,7 +37,7 @@ namespace myTNB_Android.Src.Promotions.Adapter
 
         public override Java.Lang.Object InstantiateItem(ViewGroup container, int position)
         {
-            ViewGroup rootView =(ViewGroup) LayoutInflater.From(mContext).Inflate(Resource.Layout.promotion_pager_item, container, false);
+            ViewGroup rootView = (ViewGroup)LayoutInflater.From(mContext).Inflate(Resource.Layout.promotion_pager_item, container, false);
             Button btnSkip = (Button)rootView.FindViewById(Resource.Id.btnPromoSkip);
             Button btnDetails = (Button)rootView.FindViewById(Resource.Id.btnPromoDetails);
             ImageButton btnClose = (ImageButton)rootView.FindViewById(Resource.Id.btnPromoClose);
@@ -104,7 +95,7 @@ namespace myTNB_Android.Src.Promotions.Adapter
             this.promotions.RemoveAt(pos);
             this.NotifyDataSetChanged();
             OnRefreshIndicator(pos);
-            if(this.promotions.Count == 0)
+            if (this.promotions.Count == 0)
             {
                 OnCloseClick(pos);
             }
@@ -124,7 +115,7 @@ namespace myTNB_Android.Src.Promotions.Adapter
 
         void OnRefreshIndicator(int position)
         {
-            if(RefreshIndicator != null)
+            if (RefreshIndicator != null)
             {
                 RefreshIndicator(this, position);
             }
@@ -225,7 +216,7 @@ namespace myTNB_Android.Src.Promotions.Adapter
         {
             bool flag = false;
 
-            foreach(PromotionsModelV2 item in promotions)
+            foreach (PromotionsModelV2 item in promotions)
             {
                 if (item.PromoShown)
                 {

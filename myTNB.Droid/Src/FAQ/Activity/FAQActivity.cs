@@ -1,19 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
+﻿using Android.App;
 using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-using myTNB_Android.Src.Base.Activity;
-using CheeseBind;
-using myTNB_Android.Src.Utils;
 using Android.Content.PM;
+using Android.OS;
 using Android.Text;
+using Android.Widget;
+using CheeseBind;
+using myTNB_Android.Src.Base.Activity;
+using myTNB_Android.Src.Utils;
+using System;
 using System.Runtime;
 
 namespace myTNB_Android.Src.FAQ.Activity
@@ -172,46 +166,46 @@ namespace myTNB_Android.Src.FAQ.Activity
 
             // Create your application here
 
-            TextViewUtils.SetMuseoSans300Typeface(txtFaq1Content, 
-                txtFaq2Content  , 
-                txtFaq3Content  , 
-                txtFaq4Content  , 
-                txtFaq5Content  , 
-                txtFaq6Content  , 
-                txtFaq7Content  ,
-                txtFaq8Content  ,
-                txtFaq9Content  ,
-                txtFaq10Content ,
-                txtFaq11Content ,
-                txtFaq12Content ,
-                txtFaq13Content ,
-                txtFaq14Content ,
-                txtFaq15Content ,
-                txtFaq16Content ,
-                txtFaq17Content ,
-                txtFaq18Content ,
-                txtFaq19Content ,
+            TextViewUtils.SetMuseoSans300Typeface(txtFaq1Content,
+                txtFaq2Content,
+                txtFaq3Content,
+                txtFaq4Content,
+                txtFaq5Content,
+                txtFaq6Content,
+                txtFaq7Content,
+                txtFaq8Content,
+                txtFaq9Content,
+                txtFaq10Content,
+                txtFaq11Content,
+                txtFaq12Content,
+                txtFaq13Content,
+                txtFaq14Content,
+                txtFaq15Content,
+                txtFaq16Content,
+                txtFaq17Content,
+                txtFaq18Content,
+                txtFaq19Content,
                 txtFaq20Content);
 
             TextViewUtils.SetMuseoSans500Typeface(txtFaq1Title,
-                txtFaq2Title    ,
-                txtFaq3Title    ,
-                txtFaq4Title    ,
-                txtFaq5Title    ,
-                txtFaq6Title    ,
-                txtFaq7Title    ,
-                txtFaq8Title    ,
-                txtFaq9Title    ,
-                txtFaq10Title   ,
-                txtFaq11Title   ,
-                txtFaq12Title   ,
-                txtFaq13Title   ,
-                txtFaq14Title   ,
-                txtFaq15Title   ,
-                txtFaq16Title   ,
-                txtFaq17Title   ,
-                txtFaq18Title   ,
-                txtFaq19Title   ,
+                txtFaq2Title,
+                txtFaq3Title,
+                txtFaq4Title,
+                txtFaq5Title,
+                txtFaq6Title,
+                txtFaq7Title,
+                txtFaq8Title,
+                txtFaq9Title,
+                txtFaq10Title,
+                txtFaq11Title,
+                txtFaq12Title,
+                txtFaq13Title,
+                txtFaq14Title,
+                txtFaq15Title,
+                txtFaq16Title,
+                txtFaq17Title,
+                txtFaq18Title,
+                txtFaq19Title,
                 txtFaq20Title);
             // 15 , 18
 

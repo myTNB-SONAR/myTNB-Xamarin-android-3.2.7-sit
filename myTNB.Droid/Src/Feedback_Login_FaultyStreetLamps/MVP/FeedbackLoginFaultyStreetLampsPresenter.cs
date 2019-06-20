@@ -1,34 +1,28 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
+﻿using Android.App;
 using Android.Content;
 using Android.Locations;
-using Android.OS;
 using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-using myTNB_Android.Src.AppLaunch.Models;
-using myTNB_Android.Src.Base.Models;
-using System.Threading;
-using myTNB_Android.Src.Base.Api;
-using Android.Text;
-using myTNB_Android.Src.Utils;
-using System.Net.Http;
-using System.Net;
-using Refit;
-using myTNB_Android.Src.Base.Request;
-using Newtonsoft.Json;
-using myTNB_Android.Src.Database.Model;
-using Plugin.Geolocator.Abstractions;
-using System.Threading.Tasks;
-using Plugin.Geolocator;
-using Java.Text;
-using myTNB_Android.Src.Feedback_Login_FaultyStreetLamps.Api;
 using Android.Telephony;
-using Android.Support.Design.Widget;
+using Android.Text;
+using Java.Text;
+using myTNB_Android.Src.AppLaunch.Models;
+using myTNB_Android.Src.Base.Api;
+using myTNB_Android.Src.Base.Models;
+using myTNB_Android.Src.Base.Request;
+using myTNB_Android.Src.Database.Model;
+using myTNB_Android.Src.Feedback_Login_FaultyStreetLamps.Api;
+using myTNB_Android.Src.Utils;
+using Newtonsoft.Json;
+using Plugin.Geolocator;
+using Plugin.Geolocator.Abstractions;
+using Refit;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace myTNB_Android.Src.Feedback_Login_FaultyStreetLamps.MVP
 {
@@ -86,20 +80,23 @@ namespace myTNB_Android.Src.Feedback_Login_FaultyStreetLamps.MVP
                         this.mView.ShowState(null);
                     }
                 }
-            } catch(Exception e) {
+            }
+            catch (Exception e)
+            {
                 Utility.LoggingNonFatalError(e);
             }
         }
 
         private async void OnSaveCameraImage(string tempImagePath, string fileName)
         {
-            try {
-            this.mView.DisableSubmitButton();
-            this.mView.ShowLoadingImage();
-            string resultFilePath = await this.mView.SaveCameraImage(tempImagePath, fileName);
-            this.mView.UpdateAdapter(resultFilePath, fileName);
-            this.mView.HideLoadingImage();
-            this.mView.EnableSubmitButton();
+            try
+            {
+                this.mView.DisableSubmitButton();
+                this.mView.ShowLoadingImage();
+                string resultFilePath = await this.mView.SaveCameraImage(tempImagePath, fileName);
+                this.mView.UpdateAdapter(resultFilePath, fileName);
+                this.mView.HideLoadingImage();
+                this.mView.EnableSubmitButton();
             }
             catch (Exception e)
             {
@@ -110,15 +107,16 @@ namespace myTNB_Android.Src.Feedback_Login_FaultyStreetLamps.MVP
 
         private async void OnSaveGalleryImage(Android.Net.Uri selectedImage, string fileName)
         {
-            try {
-            this.mView.DisableSubmitButton();
-            this.mView.ShowLoadingImage();
-            string resultFilePath = await this.mView.SaveGalleryImage(selectedImage, FileUtils.TEMP_IMAGE_FOLDER, fileName);
+            try
+            {
+                this.mView.DisableSubmitButton();
+                this.mView.ShowLoadingImage();
+                string resultFilePath = await this.mView.SaveGalleryImage(selectedImage, FileUtils.TEMP_IMAGE_FOLDER, fileName);
 
 
-            this.mView.UpdateAdapter(resultFilePath, fileName);
-            this.mView.HideLoadingImage();
-            this.mView.EnableSubmitButton();
+                this.mView.UpdateAdapter(resultFilePath, fileName);
+                this.mView.HideLoadingImage();
+                this.mView.EnableSubmitButton();
             }
             catch (Exception e)
             {
@@ -136,11 +134,11 @@ namespace myTNB_Android.Src.Feedback_Login_FaultyStreetLamps.MVP
             this.mView.ShowGallery();
         }
 
-        public async void OnSubmit(string deviceId,  FeedbackState feedbackState, string location, string pole_no, string feedback, List<AttachedImage> attachedImages)
+        public async void OnSubmit(string deviceId, FeedbackState feedbackState, string location, string pole_no, string feedback, List<AttachedImage> attachedImages)
         {
             cts = new CancellationTokenSource();
             this.mView.ClearErrors();
-         
+
 
             if (TextUtils.IsEmpty(location))
             {
@@ -166,13 +164,15 @@ namespace myTNB_Android.Src.Feedback_Login_FaultyStreetLamps.MVP
             }
 
 
-            if (feedbackState == null) {
+            if (feedbackState == null)
+            {
                 this.mView.ShowEmptyStateError();
                 return;
             }
 
-            if (mView.IsActive()) {
-            this.mView.ShowProgressDialog();
+            if (mView.IsActive())
+            {
+                this.mView.ShowProgressDialog();
             }
 
             ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
@@ -237,7 +237,7 @@ namespace myTNB_Android.Src.Feedback_Login_FaultyStreetLamps.MVP
                     this.mView.ClearInputFields();
                     FeedbackStateEntity entity = FeedbackStateEntity.GetFirstOrSelected();
                     this.mView.ShowState(FeedbackState.Copy(entity));
-                    this.mView.ShowSuccess(preLoginFeedbackResponse.Data.Data.DateCreated, preLoginFeedbackResponse.Data.Data.FeedbackId , attachedImages.Count);
+                    this.mView.ShowSuccess(preLoginFeedbackResponse.Data.Data.DateCreated, preLoginFeedbackResponse.Data.Data.FeedbackId, attachedImages.Count);
                 }
                 else
                 {
@@ -301,7 +301,9 @@ namespace myTNB_Android.Src.Feedback_Login_FaultyStreetLamps.MVP
                 {
                     this.mView.HideMobileNo();
                 }
-            } catch (Exception e) {
+            }
+            catch (Exception e)
+            {
                 Utility.LoggingNonFatalError(e);
             }
         }
@@ -313,7 +315,7 @@ namespace myTNB_Android.Src.Feedback_Login_FaultyStreetLamps.MVP
 
         public async void OnLocationRequest(Geocoder geoCoder)
         {
-           
+
             //TODO IMPLEMENT ASYNC GETTING COORDINATES AND CONVERT TO REVERSE GEOCODE
             string geocodedString = string.Empty;
             var currentPosition = await GetCurrentLocation();
@@ -418,7 +420,7 @@ namespace myTNB_Android.Src.Feedback_Login_FaultyStreetLamps.MVP
             //    return;
             //}
 
-                this.mView.EnableSubmitButton();
+            this.mView.EnableSubmitButton();
             //}
             //else
             //{
@@ -489,7 +491,8 @@ namespace myTNB_Android.Src.Feedback_Login_FaultyStreetLamps.MVP
             }
 
 
-            if (!Utility.IsValidMobileNumber(mobile_no)) {
+            if (!Utility.IsValidMobileNumber(mobile_no))
+            {
                 this.mView.ShowInvalidMobileNoError();
                 return;
             }
@@ -506,8 +509,9 @@ namespace myTNB_Android.Src.Feedback_Login_FaultyStreetLamps.MVP
                 return;
             }
 
-            if (mView.IsActive()) {
-            this.mView.ShowProgressDialog();
+            if (mView.IsActive())
+            {
+                this.mView.ShowProgressDialog();
             }
 
             ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
@@ -623,49 +627,49 @@ namespace myTNB_Android.Src.Feedback_Login_FaultyStreetLamps.MVP
             //if (!TextUtils.IsEmpty(mobile_no) && !TextUtils.IsEmpty(location) && !TextUtils.IsEmpty(feedback))
             //{
             this.mView.ClearErrors();
-                if (TextUtils.IsEmpty(mobile_no))
-                {
-                    this.mView.DisableSubmitButton();
-                    this.mView.ShowEmptyMobileNoError();
-                    return;
-                }
+            if (TextUtils.IsEmpty(mobile_no))
+            {
+                this.mView.DisableSubmitButton();
+                this.mView.ShowEmptyMobileNoError();
+                return;
+            }
 
-                if (TextUtils.IsEmpty(location))
-                {
-                    this.mView.DisableSubmitButton();
-                    this.mView.ShowEmptyLocationError();
-                    return;
-                }
+            if (TextUtils.IsEmpty(location))
+            {
+                this.mView.DisableSubmitButton();
+                this.mView.ShowEmptyLocationError();
+                return;
+            }
 
-                if (!PhoneNumberUtils.IsGlobalPhoneNumber(mobile_no))
-                {
-                    this.mView.DisableSubmitButton();
-                    this.mView.ShowInvalidMobileNoError();
-                    return;
-                }
-                else
-                {
-                    this.mView.ClearMobileNoError();
-                }
+            if (!PhoneNumberUtils.IsGlobalPhoneNumber(mobile_no))
+            {
+                this.mView.DisableSubmitButton();
+                this.mView.ShowInvalidMobileNoError();
+                return;
+            }
+            else
+            {
+                this.mView.ClearMobileNoError();
+            }
 
-                if (!Utility.IsValidMobileNumber(mobile_no))
-                {
-                    this.mView.DisableSubmitButton();
-                    this.mView.ShowInvalidMobileNoError();
-                    return;
-                }
-                else
-                {
-                    this.mView.ClearMobileNoError();
-                }
+            if (!Utility.IsValidMobileNumber(mobile_no))
+            {
+                this.mView.DisableSubmitButton();
+                this.mView.ShowInvalidMobileNoError();
+                return;
+            }
+            else
+            {
+                this.mView.ClearMobileNoError();
+            }
 
 
-                if (TextUtils.IsEmpty(feedback) && feedback.Equals(" "))
-                {
-                    this.mView.DisableSubmitButton();
-                    //this.mView.ShowEmptyFeedbackError();
-                    return;
-                }
+            if (TextUtils.IsEmpty(feedback) && feedback.Equals(" "))
+            {
+                this.mView.DisableSubmitButton();
+                //this.mView.ShowEmptyFeedbackError();
+                return;
+            }
 
 
             //if (string.IsNullOrEmpty(state)) {
@@ -674,7 +678,7 @@ namespace myTNB_Android.Src.Feedback_Login_FaultyStreetLamps.MVP
             //    return;
             //}
 
-                this.mView.EnableSubmitButton();
+            this.mView.EnableSubmitButton();
             //}
             //else
             //{

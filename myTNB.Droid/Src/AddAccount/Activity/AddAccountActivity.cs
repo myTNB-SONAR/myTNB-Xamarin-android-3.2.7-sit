@@ -1,20 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
+﻿using Android.App;
 using Android.Content;
+using Android.Content.PM;
 using Android.OS;
 using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-using myTNB_Android.Src.Base.Activity;
-using Android.Content.PM;
-using myTNB_Android.Src.AddAccount.Fragment;
 using Android.Util;
-using ZXing.Mobile;
+using Android.Views;
+using myTNB_Android.Src.AddAccount.Fragment;
+using myTNB_Android.Src.Base.Activity;
+using System;
 using System.Runtime;
+using ZXing.Mobile;
 
 namespace myTNB_Android.Src.AddAccount.Activity
 {
@@ -35,7 +30,6 @@ namespace myTNB_Android.Src.AddAccount.Activity
         {
             base.OnCreate(savedInstanceState);
 
-            // Create your application here
             Android.App.Fragment addAccountTypeFragment = new AddAccountTypeFragment();
             var fragmentTransaction = FragmentManager.BeginTransaction();
             fragmentTransaction.Add(Resource.Id.fragment_container, addAccountTypeFragment);
@@ -69,7 +63,7 @@ namespace myTNB_Android.Src.AddAccount.Activity
                     fragmentTransaction.Commit();
                 }
             }
-            else if(fragment is AddAccountByRightsFragment)
+            else if (fragment is AddAccountByRightsFragment)
             {
                 var addAccountForm = new AddAccountFormFragment();
                 addAccountForm.Arguments = bundle;
@@ -88,7 +82,7 @@ namespace myTNB_Android.Src.AddAccount.Activity
         public override void OnBackPressed()
         {
             int count = this.FragmentManager.BackStackEntryCount;
-            Log.Debug("OnBackPressed", "fragment stack count :"+count);
+            Log.Debug("OnBackPressed", "fragment stack count :" + count);
             if (count == 0)
             {
                 Finish();
