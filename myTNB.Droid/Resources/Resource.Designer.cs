@@ -7792,8 +7792,8 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f0d00eb
 			public const int barCodeView = 2131558635;
 			
-			// aapt resource value: 0x7f0d0146
-			public const int bar_chart = 2131558726;
+			// aapt resource value: 0x7f0d0147
+			public const int bar_chart = 2131558727;
 			
 			// aapt resource value: 0x7f0d02fc
 			public const int baseView = 2131559164;
@@ -7885,11 +7885,11 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f0d00ca
 			public const int btnGetStarted = 2131558602;
 			
-			// aapt resource value: 0x7f0d014a
-			public const int btnLearnMore = 2131558730;
+			// aapt resource value: 0x7f0d014b
+			public const int btnLearnMore = 2131558731;
 			
-			// aapt resource value: 0x7f0d0151
-			public const int btnLeft = 2131558737;
+			// aapt resource value: 0x7f0d0152
+			public const int btnLeft = 2131558738;
 			
 			// aapt resource value: 0x7f0d0255
 			public const int btnLogin = 2131558997;
@@ -7936,8 +7936,8 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f0d0218
 			public const int btnResend = 2131558936;
 			
-			// aapt resource value: 0x7f0d0152
-			public const int btnRight = 2131558738;
+			// aapt resource value: 0x7f0d0153
+			public const int btnRight = 2131558739;
 			
 			// aapt resource value: 0x7f0d0342
 			public const int btnSave = 2131559234;
@@ -7945,8 +7945,8 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f0d01dc
 			public const int btnSubmit = 2131558876;
 			
-			// aapt resource value: 0x7f0d014e
-			public const int btnTapRefresh = 2131558734;
+			// aapt resource value: 0x7f0d014f
+			public const int btnTapRefresh = 2131558735;
 			
 			// aapt resource value: 0x7f0d0257
 			public const int btnTest = 2131558999;
@@ -7963,17 +7963,17 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f0d0291
 			public const int btnTextUpdatePassword = 2131559057;
 			
-			// aapt resource value: 0x7f0d0144
-			public const int btnToggleDay = 2131558724;
-			
 			// aapt resource value: 0x7f0d0145
-			public const int btnToggleMonth = 2131558725;
+			public const int btnToggleDay = 2131558725;
+			
+			// aapt resource value: 0x7f0d0146
+			public const int btnToggleMonth = 2131558726;
 			
 			// aapt resource value: 0x7f0d01d5
 			public const int btnTryAgain = 2131558869;
 			
-			// aapt resource value: 0x7f0d0141
-			public const int btnViewBill = 2131558721;
+			// aapt resource value: 0x7f0d0142
+			public const int btnViewBill = 2131558722;
 			
 			// aapt resource value: 0x7f0d02a3
 			public const int btnViewDetails = 2131559075;
@@ -8140,17 +8140,17 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f0d0154
 			public const int dashboard_chartview_no_account_title = 2131558740;
 			
-			// aapt resource value: 0x7f0d0149
-			public const int dashboard_chartview_no_data_content = 2131558729;
+			// aapt resource value: 0x7f0d014a
+			public const int dashboard_chartview_no_data_content = 2131558730;
 			
-			// aapt resource value: 0x7f0d0148
-			public const int dashboard_chartview_no_data_title = 2131558728;
+			// aapt resource value: 0x7f0d0149
+			public const int dashboard_chartview_no_data_title = 2131558729;
+			
+			// aapt resource value: 0x7f0d014e
+			public const int dashboard_chartview_no_internet_content = 2131558734;
 			
 			// aapt resource value: 0x7f0d014d
-			public const int dashboard_chartview_no_internet_content = 2131558733;
-			
-			// aapt resource value: 0x7f0d014c
-			public const int dashboard_chartview_no_internet_title = 2131558732;
+			public const int dashboard_chartview_no_internet_title = 2131558733;
 			
 			// aapt resource value: 0x7f0d0351
 			public const int dear_customer = 2131559249;
@@ -8191,11 +8191,11 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f0d0369
 			public const int done = 2131559273;
 			
-			// aapt resource value: 0x7f0d0150
-			public const int downtime_image = 2131558736;
+			// aapt resource value: 0x7f0d0151
+			public const int downtime_image = 2131558737;
 			
-			// aapt resource value: 0x7f0d014f
-			public const int downtime_layout = 2131558735;
+			// aapt resource value: 0x7f0d0150
+			public const int downtime_layout = 2131558736;
 			
 			// aapt resource value: 0x7f0d0328
 			public const int due_date = 2131559208;
@@ -8737,11 +8737,11 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f0d00b2
 			public const int no_account_layout = 2131558578;
 			
-			// aapt resource value: 0x7f0d0147
-			public const int no_data_layout = 2131558727;
+			// aapt resource value: 0x7f0d0148
+			public const int no_data_layout = 2131558728;
 			
-			// aapt resource value: 0x7f0d014b
-			public const int no_internet_layout = 2131558731;
+			// aapt resource value: 0x7f0d014c
+			public const int no_internet_layout = 2131558732;
 			
 			// aapt resource value: 0x7f0d02f7
 			public const int no_promotion_img = 2131559159;
@@ -9064,8 +9064,8 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f0d00a8
 			public const int search_voice_btn = 2131558568;
 			
-			// aapt resource value: 0x7f0d0143
-			public const int segmented2 = 2131558723;
+			// aapt resource value: 0x7f0d0144
+			public const int segmented2 = 2131558724;
 			
 			// aapt resource value: 0x7f0d030f
 			public const int select_account = 2131559183;
@@ -10105,8 +10105,8 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f0d00e9
 			public const int txtUpdate = 2131558633;
 			
-			// aapt resource value: 0x7f0d0142
-			public const int txtUsageHIstory = 2131558722;
+			// aapt resource value: 0x7f0d0143
+			public const int txtUsageHIstory = 2131558723;
 			
 			// aapt resource value: 0x7f0d00d8
 			public const int txtUsageHistory = 2131558616;
@@ -10123,8 +10123,8 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f0d024d
 			public const int txtWelcomeBack = 2131558989;
 			
-			// aapt resource value: 0x7f0d0153
-			public const int txtWhyThisAmt = 2131558739;
+			// aapt resource value: 0x7f0d0141
+			public const int txtWhyThisAmt = 2131558721;
 			
 			// aapt resource value: 0x7f0d00ce
 			public const int txtYes = 2131558606;
@@ -11256,8 +11256,8 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f0801b3
 			public const int account_nickname_info = 2131231155;
 			
-			// aapt resource value: 0x7f080405
-			public const int account_number_validation_error = 2131231749;
+			// aapt resource value: 0x7f080406
+			public const int account_number_validation_error = 2131231750;
 			
 			// aapt resource value: 0x7f080163
 			public const int add_account_all_transaction_details = 2131231075;
@@ -11325,8 +11325,8 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f0801a7
 			public const int add_account_link_unknown_exception_error = 2131231143;
 			
-			// aapt resource value: 0x7f080406
-			public const int add_account_number_validation_error = 2131231750;
+			// aapt resource value: 0x7f080407
+			public const int add_account_number_validation_error = 2131231751;
 			
 			// aapt resource value: 0x7f080160
 			public const int add_account_outstanding_payment = 2131231072;
@@ -11340,8 +11340,8 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f08016c
 			public const int add_account_where_is_my_account = 2131231084;
 			
-			// aapt resource value: 0x7f0803ff
-			public const int add_another_account = 2131231743;
+			// aapt resource value: 0x7f080400
+			public const int add_another_account = 2131231744;
 			
 			// aapt resource value: 0x7f080215
 			public const int add_card = 2131231253;
@@ -11352,8 +11352,8 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f0801b1
 			public const int add_electricity_account_title = 2131231153;
 			
-			// aapt resource value: 0x7f080400
-			public const int all_accounts = 2131231744;
+			// aapt resource value: 0x7f080401
+			public const int all_accounts = 2131231745;
 			
 			// aapt resource value: 0x7f0800d9
 			public const int app_developer = 2131230937;
@@ -11388,17 +11388,17 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f08006a
 			public const int appbar_scrolling_view_behavior = 2131230826;
 			
-			// aapt resource value: 0x7f0803e1
-			public const int as_of = 2131231713;
+			// aapt resource value: 0x7f0803e2
+			public const int as_of = 2131231714;
 			
-			// aapt resource value: 0x7f0803e6
-			public const int avg_elec_usage = 2131231718;
+			// aapt resource value: 0x7f0803e7
+			public const int avg_elec_usage = 2131231719;
+			
+			// aapt resource value: 0x7f0803ed
+			public const int avg_electric_usage_down = 2131231725;
 			
 			// aapt resource value: 0x7f0803ec
-			public const int avg_electric_usage_down = 2131231724;
-			
-			// aapt resource value: 0x7f0803eb
-			public const int avg_electric_usage_up = 2131231723;
+			public const int avg_electric_usage_up = 2131231724;
 			
 			// aapt resource value: 0x7f0801b4
 			public const int barcode_activity_title = 2131231156;
@@ -11541,11 +11541,11 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f08006b
 			public const int bottom_sheet_behavior = 2131230827;
 			
-			// aapt resource value: 0x7f0803f2
-			public const int btn_details = 2131231730;
+			// aapt resource value: 0x7f0803f3
+			public const int btn_details = 2131231731;
 			
-			// aapt resource value: 0x7f0803f1
-			public const int btn_skip = 2131231729;
+			// aapt resource value: 0x7f0803f2
+			public const int btn_skip = 2131231730;
 			
 			// aapt resource value: 0x7f080223
 			public const int card_exp_date = 2131231267;
@@ -11559,8 +11559,8 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f08006c
 			public const int character_counter_pattern = 2131230828;
 			
-			// aapt resource value: 0x7f080408
-			public const int com_crashlytics_android_build_id = 2131231752;
+			// aapt resource value: 0x7f080409
+			public const int com_crashlytics_android_build_id = 2131231753;
 			
 			// aapt resource value: 0x7f08001b
 			public const int com_facebook_device_auth_instructions = 2131230747;
@@ -11754,14 +11754,14 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f080214
 			public const int credit_debit_card = 2131231252;
 			
-			// aapt resource value: 0x7f0803e0
-			public const int current_charges = 2131231712;
+			// aapt resource value: 0x7f0803e1
+			public const int current_charges = 2131231713;
 			
-			// aapt resource value: 0x7f0803e7
-			public const int current_emission = 2131231719;
+			// aapt resource value: 0x7f0803e8
+			public const int current_emission = 2131231720;
 			
-			// aapt resource value: 0x7f0803e4
-			public const int current_usage = 2131231716;
+			// aapt resource value: 0x7f0803e5
+			public const int current_usage = 2131231717;
 			
 			// aapt resource value: 0x7f080224
 			public const int cvv = 2131231268;
@@ -11907,8 +11907,8 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f0801c8
 			public const int dashboard_chartview_view_bill = 2131231176;
 			
-			// aapt resource value: 0x7f0803df
-			public const int dashboard_chartview_year = 2131231711;
+			// aapt resource value: 0x7f0803e0
+			public const int dashboard_chartview_year = 2131231712;
 			
 			// aapt resource value: 0x7f0801fc
 			public const int dashboard_menu_activity_title = 2131231228;
@@ -11925,14 +11925,14 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f0801ed
 			public const int dashboard_select_supply_account_dummy_row_string = 2131231213;
 			
-			// aapt resource value: 0x7f0803ef
-			public const int dashboard_smart_meter_available_soon = 2131231727;
-			
-			// aapt resource value: 0x7f0803ed
-			public const int dashboard_smart_meter_data_error = 2131231725;
+			// aapt resource value: 0x7f0803f0
+			public const int dashboard_smart_meter_available_soon = 2131231728;
 			
 			// aapt resource value: 0x7f0803ee
-			public const int dashboard_smart_meter_no_data_error = 2131231726;
+			public const int dashboard_smart_meter_data_error = 2131231726;
+			
+			// aapt resource value: 0x7f0803ef
+			public const int dashboard_smart_meter_no_data_error = 2131231727;
 			
 			// aapt resource value: 0x7f080002
 			public const int default_web_client_id = 2131230722;
@@ -11964,8 +11964,8 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f080227
 			public const int error_service_down = 2131231271;
 			
-			// aapt resource value: 0x7f0803f6
-			public const int facebook_app_id = 2131231734;
+			// aapt resource value: 0x7f0803f7
+			public const int facebook_app_id = 2131231735;
 			
 			// aapt resource value: 0x7f0803b9
 			public const int faq_10_content = 2131231673;
@@ -12354,8 +12354,8 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f080003
 			public const int firebase_database_url = 2131230723;
 			
-			// aapt resource value: 0x7f0803e3
-			public const int for_current_month = 2131231715;
+			// aapt resource value: 0x7f0803e4
+			public const int for_current_month = 2131231716;
 			
 			// aapt resource value: 0x7f080141
 			public const int forget_password_activity_title = 2131231041;
@@ -12537,14 +12537,14 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f080006
 			public const int google_storage_bucket = 2131230726;
 			
-			// aapt resource value: 0x7f0803fb
-			public const int greeting_text_afternoon = 2131231739;
-			
 			// aapt resource value: 0x7f0803fc
-			public const int greeting_text_evening = 2131231740;
+			public const int greeting_text_afternoon = 2131231740;
 			
-			// aapt resource value: 0x7f0803fa
-			public const int greeting_text_morning = 2131231738;
+			// aapt resource value: 0x7f0803fd
+			public const int greeting_text_evening = 2131231741;
+			
+			// aapt resource value: 0x7f0803fb
+			public const int greeting_text_morning = 2131231739;
 			
 			// aapt resource value: 0x7f08007a
 			public const int hockeyapp_crash_dialog_app_name_fallback = 2131230842;
@@ -12825,11 +12825,11 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f08021e
 			public const int initiate_payment_progress_title = 2131231262;
 			
-			// aapt resource value: 0x7f080409
-			public const int invalid_charac = 2131231753;
+			// aapt resource value: 0x7f08040a
+			public const int invalid_charac = 2131231754;
 			
-			// aapt resource value: 0x7f08040b
-			public const int invalid_state = 2131231755;
+			// aapt resource value: 0x7f08040c
+			public const int invalid_state = 2131231756;
 			
 			// aapt resource value: 0x7f0800d3
 			public const int launch = 2131230931;
@@ -12840,11 +12840,11 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f0803cf
 			public const int load_more = 2131231695;
 			
-			// aapt resource value: 0x7f0803fd
-			public const int load_more_accounts = 2131231741;
+			// aapt resource value: 0x7f0803fe
+			public const int load_more_accounts = 2131231742;
 			
-			// aapt resource value: 0x7f0803f0
-			public const int loading_text = 2131231728;
+			// aapt resource value: 0x7f0803f1
+			public const int loading_text = 2131231729;
 			
 			// aapt resource value: 0x7f0800f7
 			public const int login = 2131230967;
@@ -12954,8 +12954,8 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f08030d
 			public const int logout_rate_unknown_exception_error = 2131231501;
 			
-			// aapt resource value: 0x7f0803fe
-			public const int malaysia_currency = 2131231742;
+			// aapt resource value: 0x7f0803ff
+			public const int malaysia_currency = 2131231743;
 			
 			// aapt resource value: 0x7f0802ba
 			public const int manage_cards_activity_title = 2131231418;
@@ -13263,14 +13263,14 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f080299
 			public const int my_account_unknown_exception_error = 2131231385;
 			
-			// aapt resource value: 0x7f080407
-			public const int name_error = 2131231751;
+			// aapt resource value: 0x7f080408
+			public const int name_error = 2131231752;
 			
 			// aapt resource value: 0x7f080222
 			public const int name_on_card = 2131231266;
 			
-			// aapt resource value: 0x7f08040a
-			public const int name_validation_digits = 2131231754;
+			// aapt resource value: 0x7f08040b
+			public const int name_validation_digits = 2131231755;
 			
 			// aapt resource value: 0x7f080225
 			public const int next = 2131231269;
@@ -13281,14 +13281,14 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f0801b2
 			public const int no_account_found = 2131231154;
 			
-			// aapt resource value: 0x7f080404
-			public const int no_internet_connection = 2131231748;
+			// aapt resource value: 0x7f080405
+			public const int no_internet_connection = 2131231749;
 			
 			// aapt resource value: 0x7f08016b
 			public const int non_owner_constrain = 2131231083;
 			
-			// aapt resource value: 0x7f08040c
-			public const int note_text_sm = 2131231756;
+			// aapt resource value: 0x7f08040d
+			public const int note_text_sm = 2131231757;
 			
 			// aapt resource value: 0x7f080247
 			public const int notification_activity_api_exception_btn_close = 2131231303;
@@ -13569,8 +13569,8 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f0800ee
 			public const int prelogin_what_would_you_like_today = 2131230958;
 			
-			// aapt resource value: 0x7f0803e2
-			public const int projected_cost = 2131231714;
+			// aapt resource value: 0x7f0803e3
+			public const int projected_cost = 2131231715;
 			
 			// aapt resource value: 0x7f0801f9
 			public const int promotion_menu_activity_title = 2131231225;
@@ -13584,14 +13584,14 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f0800f3
 			public const int quick_access = 2131230963;
 			
+			// aapt resource value: 0x7f0803f6
+			public const int rating_thank_you = 2131231734;
+			
 			// aapt resource value: 0x7f0803f5
-			public const int rating_thank_you = 2131231733;
+			public const int rating_thank_you_message = 2131231733;
 			
 			// aapt resource value: 0x7f0803f4
-			public const int rating_thank_you_message = 2131231732;
-			
-			// aapt resource value: 0x7f0803f3
-			public const int rating_txt_comments_hint = 2131231731;
+			public const int rating_txt_comments_hint = 2131231732;
 			
 			// aapt resource value: 0x7f080232
 			public const int receipt_account_amount = 2131231282;
@@ -13614,8 +13614,8 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f08022f
 			public const int receipt_from_account = 2131231279;
 			
-			// aapt resource value: 0x7f080403
-			public const int receipt_note_text = 2131231747;
+			// aapt resource value: 0x7f080404
+			public const int receipt_note_text = 2131231748;
 			
 			// aapt resource value: 0x7f08022a
 			public const int receipt_payment_succesful = 2131231274;
@@ -13632,11 +13632,11 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f080235
 			public const int receipt_thank_you = 2131231285;
 			
-			// aapt resource value: 0x7f080401
-			public const int receipt_title = 2131231745;
-			
 			// aapt resource value: 0x7f080402
-			public const int receipt_total_amount = 2131231746;
+			public const int receipt_title = 2131231746;
+			
+			// aapt resource value: 0x7f080403
+			public const int receipt_total_amount = 2131231747;
 			
 			// aapt resource value: 0x7f080233
 			public const int receipt_transaction_method = 2131231283;
@@ -14025,8 +14025,8 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f08005d
 			public const int status_bar_notification_info_overflow = 2131230813;
 			
-			// aapt resource value: 0x7f08040d
-			public const int summary_dashboard_error_refresh = 2131231757;
+			// aapt resource value: 0x7f08040e
+			public const int summary_dashboard_error_refresh = 2131231758;
 			
 			// aapt resource value: 0x7f080166
 			public const int suppy_account_question_one = 2131231078;
@@ -14043,32 +14043,32 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f0800d4
 			public const int text_app_version = 2131230932;
 			
-			// aapt resource value: 0x7f0803ea
-			public const int text_co2 = 2131231722;
+			// aapt resource value: 0x7f0803eb
+			public const int text_co2 = 2131231723;
 			
-			// aapt resource value: 0x7f0803e9
-			public const int text_kwh = 2131231721;
+			// aapt resource value: 0x7f0803ea
+			public const int text_kwh = 2131231722;
 			
 			// aapt resource value: 0x7f0803d7
 			public const int text_pay_bill = 2131231703;
 			
-			// aapt resource value: 0x7f08040e
-			public const int text_refresh = 2131231758;
+			// aapt resource value: 0x7f08040f
+			public const int text_refresh = 2131231759;
 			
-			// aapt resource value: 0x7f0803e8
-			public const int text_rm = 2131231720;
+			// aapt resource value: 0x7f0803e9
+			public const int text_rm = 2131231721;
 			
 			// aapt resource value: 0x7f0803da
 			public const int text_total_amount = 2131231706;
 			
-			// aapt resource value: 0x7f0803dc
-			public const int title_current_payment_advice = 2131231708;
-			
 			// aapt resource value: 0x7f0803dd
-			public const int title_payment_advice_amount = 2131231709;
+			public const int title_current_payment_advice = 2131231709;
 			
 			// aapt resource value: 0x7f0803de
-			public const int title_payment_total_receivable = 2131231710;
+			public const int title_payment_advice_amount = 2131231710;
+			
+			// aapt resource value: 0x7f0803df
+			public const int title_payment_total_receivable = 2131231711;
 			
 			// aapt resource value: 0x7f08019b
 			public const int tnc_html = 2131231131;
@@ -14106,11 +14106,11 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f080302
 			public const int update_account_progress_title = 2131231490;
 			
-			// aapt resource value: 0x7f0803f8
-			public const int update_dialog_message = 2131231736;
+			// aapt resource value: 0x7f0803f9
+			public const int update_dialog_message = 2131231737;
 			
-			// aapt resource value: 0x7f0803f7
-			public const int update_dialog_title = 2131231735;
+			// aapt resource value: 0x7f0803f8
+			public const int update_dialog_title = 2131231736;
 			
 			// aapt resource value: 0x7f0802c6
 			public const int update_mobile_activity_title = 2131231430;
@@ -14151,8 +14151,8 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f0802cd
 			public const int update_mobile_unknown_exception_error = 2131231437;
 			
-			// aapt resource value: 0x7f0803f9
-			public const int update_now = 2131231737;
+			// aapt resource value: 0x7f0803fa
+			public const int update_now = 2131231738;
 			
 			// aapt resource value: 0x7f0802d6
 			public const int update_password_activity_title = 2131231446;
@@ -14226,8 +14226,8 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f0801f6
 			public const int viewbill_activity_title = 2131231222;
 			
-			// aapt resource value: 0x7f0803e5
-			public const int vs_last_month = 2131231717;
+			// aapt resource value: 0x7f0803e6
+			public const int vs_last_month = 2131231718;
 			
 			// aapt resource value: 0x7f0800e4
 			public const int walkthrough_1_content = 2131230948;
@@ -14264,6 +14264,9 @@ namespace myTNB_Android
 			
 			// aapt resource value: 0x7f0801b0
 			public const int where_is_my_account_no_text = 2131231152;
+			
+			// aapt resource value: 0x7f0803dc
+			public const int why_this_amount = 2131231708;
 			
 			// aapt resource value: 0x7f080168
 			public const int yes = 2131231080;

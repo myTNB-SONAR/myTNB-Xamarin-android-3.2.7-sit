@@ -1281,6 +1281,7 @@ Please try again later.]]>
 	<string name="total_amount_due_bill">Total Amount Due</string>
   <string name="text_total_amount">Total Amount</string>
   <string name="error_abort_payment">Are you sure you want to abort payment?</string>
+  <string name="why_this_amount">Why this amount?</string>
   <!--- End of Multiple accounts payment-->
 
   <string name="title_current_payment_advice">Current Payment Advice</string>

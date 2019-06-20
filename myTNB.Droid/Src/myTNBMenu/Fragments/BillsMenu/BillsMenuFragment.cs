@@ -473,18 +473,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.BillsMenu
                 txtTotalPayableContent.Text = decimalFormatter.Format(selectedAccount?.AmtPayableChg);
 
                 totalPayableLayout.Visibility = ViewStates.Gone;
-
-#if DEBUG
-                if(selectedAccount.AccountNum == "220283416103")
-                {
-                    selectedAccount.OpenChargesTotal = 100.00;
-                    selectedAccount.OpenSecurityDeposit = 10.00;
-                    selectedAccount.OpenStampDuty = 20.00;
-                    selectedAccount.OpenProcessingFee = 30.00;
-                    selectedAccount.OpenMeterCost = 40.00;
-                }
-#endif
-
+                
                 if (selectedAccount?.OpenChargesTotal == 0)
                 {
                     mandatoryPaymentsLayout.Visibility = ViewStates.Gone;

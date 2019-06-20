@@ -108,6 +108,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         [BindView(Resource.Id.txtTotalPayableTitle)]
         TextView txtTotalPayableTitle;
 
+        [BindView(Resource.Id.txtWhyThisAmt)]
+        TextView txtWhyThisAmt;
+
         [BindView(Resource.Id.txtTotalPayableCurrency)]
         TextView txtTotalPayableCurrency;
 
@@ -378,11 +381,17 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         btnViewBill.Text = GetString(Resource.String.dashboard_chart_view_payment_advice);
                         txtUsageHistory.Visibility = ViewStates.Gone;
                         txtTotalPayableTitle.Text = GetString(Resource.String.title_payment_advice_amount);
+                        txtWhyThisAmt.Visibility = ViewStates.Gone;
                     }
                     else
                     {
                         btnPay.Visibility = ViewStates.Visible;
                         btnViewBill.Text = GetString(Resource.String.dashboard_chartview_view_bill);
+
+                        if (selectedAccount.OpenChargesTotal == 0.00)
+                        {
+                            txtWhyThisAmt.Visibility = ViewStates.Gone;
+                        }
                     }
 
                     if (bcrmEntity.IsDown)
