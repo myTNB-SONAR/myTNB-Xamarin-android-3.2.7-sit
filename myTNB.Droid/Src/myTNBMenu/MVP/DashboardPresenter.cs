@@ -937,30 +937,15 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 
             try
             {
-                AccountDetailsResponse customerBillingDetails = null;
-
-                AccountDataEntity accountEntity = AccountDataEntity.GetItemByAccountNo(accountSelected.AccNum);
-                if (accountEntity != null)
+                if (this.mView.IsActive())
                 {
-                    customerBillingDetails = JsonConvert.DeserializeObject<AccountDetailsResponse>(accountEntity.JsonResponse);
+                    this.mView.ShowProgressDialog();
                 }
-
-
-                if (customerBillingDetails == null)
-                {
-                    if (mView.IsActive())
-                    {
-                        this.mView.ShowProgressDialog();
-                    }
-                    customerBillingDetails = await detailedAccountApi.GetDetailedAccount(new AddAccount.Requests.AccountDetailsRequest()
-
+                AccountDetailsResponse customerBillingDetails = await detailedAccountApi.GetDetailedAccount(new AddAccount.Requests.AccountDetailsRequest()
                     {
                         apiKeyID = Constants.APP_CONFIG.API_KEY_ID,
                         CANum = accountSelected.AccNum
                     }, cts.Token);
-                }
-
-
                 if (this.mView.IsActive())
                 {
                     this.mView.HideProgressDialog();
@@ -985,7 +970,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                 {
                     // TODO : SHOW ERROR WHEN NO BILLING IS RETURNED
                 }
-
                 this.mView.SetAccountName(accountSelected.AccDesc);
             }
             catch (System.OperationCanceledException e)

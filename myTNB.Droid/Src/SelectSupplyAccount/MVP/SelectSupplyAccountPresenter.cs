@@ -40,33 +40,7 @@ namespace myTNB_Android.Src.SelectSupplyAccount.MVP
         {
             try {
             ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
-            if (!UsageHistoryEntity.IsSMDataUpdated(selectedCustomerBilling.AccNum))
-            {
-                UsageHistoryEntity storedEntity = UsageHistoryEntity.GetItemByAccountNo(selectedCustomerBilling.AccNum);
-                AccountDataEntity accountEntity = AccountDataEntity.GetItemByAccountNo(selectedCustomerBilling.AccNum);
-                if (storedEntity != null && accountEntity != null)
-                {
-                    CustomerBillingAccount.RemoveSelected();
-                    CustomerBillingAccount.Update(selectedCustomerBilling.AccNum, true);
-                    AccountDetailsResponse accountDetailsResponse = JsonConvert.DeserializeObject<AccountDetailsResponse>(accountEntity.JsonResponse);
-                    AccountData accountData = AccountData.Copy(accountDetailsResponse.Data.AccountData, true);
-                    accountData.AccountNum = accountData.AccountNum == null ? selectedCustomerBilling.AccNum : accountData.AccountNum;
-                    accountData.AccountNickName = selectedCustomerBilling.AccDesc;
-                    accountData.AccountName = selectedCustomerBilling.OwnerName;
-                    accountData.AddStreet = selectedCustomerBilling.AccountStAddress;
-                    accountData.AccountCategoryId = selectedCustomerBilling.AccountCategoryId;
-                    UsageHistoryResponse storedSMData = JsonConvert.DeserializeObject<UsageHistoryResponse>(storedEntity.JsonResponse);
-                    this.mView.ShowDashboardChart(storedSMData, accountData);
-                }
-                else
-                {
-                    LoadDataUsage(selectedCustomerBilling);
-                }
-            }
-            else
-            {
-                LoadDataUsage(selectedCustomerBilling);
-            }
+            LoadDataUsage(selectedCustomerBilling);
             }
             catch (Exception e)
             {
