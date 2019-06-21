@@ -41,10 +41,11 @@ using static MikePhil.Charting.Components.XAxis;
 using static MikePhil.Charting.Components.YAxis;
 using static myTNB_Android.Src.myTNBMenu.Listener.SMDashboardScrollView;
 using static myTNB_Android.Src.myTNBMenu.Models.SMUsageHistoryData;
+using AFollestad.MaterialDialogs;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments
 {
-    public class DashboardSmartMeterFragment : BaseFragment, DashboardSmartMeterContract.IView, SMDashboardScrollViewListener
+    public class DashboardSmartMeterFragment : BaseFragment, DashboardSmartMeterContract.IView, SMDashboardScrollViewListener, View.IOnClickListener
     {
 
         [BindView(Resource.Id.progressBar)]
@@ -354,7 +355,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 TextViewUtils.SetMuseoSans300Typeface(noteTextView);
                 TextViewUtils.SetMuseoSans300Typeface(txtUsageHistory, txtAddress, txtTotalPayable, txtContentNoData, txtContentNoInternet, txtDueDate);
                 TextViewUtils.SetMuseoSans300Typeface(btnToggleDay, btnToggleMonth);
-                TextViewUtils.SetMuseoSans500Typeface(txtRange, txtTotalPayableTitle, txtTotalPayableCurrency, btnViewBill, btnPay, btnLearnMore, btnTapRefresh, txtTitleNoData, txtTitleNoInternet);
+                TextViewUtils.SetMuseoSans500Typeface(txtRange, txtTotalPayableTitle, txtTotalPayableCurrency, btnViewBill, btnPay, btnLearnMore, btnTapRefresh, txtTitleNoData, txtTitleNoInternet, txtWhyThisAmt);
 
                 //smart meter
                 TextViewUtils.SetMuseoSans500Typeface(txtCurrentCharges, txtCurretnChargesValue, txtProjectedCost, txtProjectedCostValue);
@@ -370,6 +371,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 DownTimeEntity bcrmEntity = DownTimeEntity.GetByCode(Constants.BCRM_SYSTEM);
                 DownTimeEntity pgCCEntity = DownTimeEntity.GetByCode(Constants.PG_CC_SYSTEM);
                 DownTimeEntity pgFPXEntity = DownTimeEntity.GetByCode(Constants.PG_FPX_SYSTEM);
+
+                txtWhyThisAmt.SetOnClickListener(this);
 
                 this.userActionsListener.Start();
                 if (selectedAccount != null)
@@ -388,7 +391,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         btnPay.Visibility = ViewStates.Visible;
                         btnViewBill.Text = GetString(Resource.String.dashboard_chartview_view_bill);
 
-                        if (selectedAccount.OpenChargesTotal == 0.00)
+                        if (selectedAccount.OpenChargesTotal == 0.00  && selectedAccount.AccountNum != "210124772804")
                         {
                             txtWhyThisAmt.Visibility = ViewStates.Gone;
                         }
@@ -2110,6 +2113,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         protected override Android.App.Activity GetActivityObject()
         {
             return activity;
+        }
+
+        public void OnClick(View v)
+        {
+            
         }
 
     }

@@ -115,7 +115,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             try
             {
                 TextViewUtils.SetMuseoSans300Typeface(txtContent, txtTotalPayable, txtDueDate);
-                TextViewUtils.SetMuseoSans500Typeface(txtTitle, btnGetAccess, btnPay, txtTotalPayableTitle, txtTotalPayableCurrency);
+                TextViewUtils.SetMuseoSans500Typeface(txtTitle, btnGetAccess, btnPay, txtTotalPayableTitle, txtTotalPayableCurrency, txtWhyThisAmt);
 
                 txtTotalPayable.Text = decimalFormat.Format(selectedAccount.AmtCustBal);
                 //if (selectedAccount.AmtCustBal <= 0)
@@ -138,7 +138,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         btnPay.Visibility = ViewStates.Visible;
                         btnViewBill.Text = GetString(Resource.String.dashboard_chartview_view_bill);
 
-                        if (selectedAccount.OpenChargesTotal == 0.00)
+                        if (selectedAccount.OpenChargesTotal == 0.00 && selectedAccount.AccountNum != "210124772804")
                         {
                             txtWhyThisAmt.Visibility = ViewStates.Gone;
                         }
