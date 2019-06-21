@@ -36,6 +36,16 @@ namespace myTNB_Android.Src.Notifications.MVP
             this.mView.SetPresenter(this);
         }
 
+        public void DeleteNotificationByPosition(int position)
+        {
+            //TODO
+        }
+
+        public void DeleteAllSelectedNotifications()
+        {
+            //TODO
+        }
+
         public void EditNotification()
         {
             throw new NotImplementedException();
@@ -257,6 +267,16 @@ namespace myTNB_Android.Src.Notifications.MVP
                 Utility.LoggingNonFatalError(e);
             }
 
+        }
+
+        public void ReadNotificationByPosition(int position)
+        {
+            //TODO
+        }
+
+        public void ReadAllSelectedNotifications()
+        {
+            //TODO
         }
 
         public void Start()

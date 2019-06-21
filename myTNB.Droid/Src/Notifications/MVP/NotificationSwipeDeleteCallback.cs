@@ -65,11 +65,11 @@ namespace myTNB_Android.Src.Notifications.MVP
             int notificationPos = viewHolder.AdapterPosition;
             if (direction == ItemTouchHelper.Left)
             {
-                notificationViewListener.DeleteNotification(notificationPos);
+                notificationViewListener.DeleteNotificationByPosition(notificationPos);
             }
             else
             {
-                notificationViewListener.ReadNotification(notificationPos);
+                notificationViewListener.ReadNotificationByPosition(notificationPos);
             }
         }
 
@@ -297,11 +297,11 @@ namespace myTNB_Android.Src.Notifications.MVP
                     {
                         if (buttonShowedState == ButtonState.LEFT_VISIBLE)
                         {
-                            notificationViewListener.ReadNotification(viewHolder.AdapterPosition);
+                            notificationViewListener.ReadNotificationByPosition(viewHolder.AdapterPosition);
                         }
                         else if (buttonShowedState == ButtonState.RIGHT_VISIBLE)
                         {
-                            notificationViewListener.DeleteNotification(viewHolder.AdapterPosition);
+                            notificationViewListener.DeleteNotificationByPosition(viewHolder.AdapterPosition);
 
                         }
                     }

@@ -221,7 +221,7 @@ namespace myTNB_Android.Src.Notifications.Adapter
             {
                 UserNotificationData updatedItem = notificationAdapter.GetItemObject(selectedPosition);
                 updatedItem.IsSelected = isChecked;
-                notificatonListener.updateNotificationTitle();
+                notificatonListener.UpdatedSelectedNotifications();
                 //notificationAdapter.Update(selectedPosition,updatedItem);
             }
         }

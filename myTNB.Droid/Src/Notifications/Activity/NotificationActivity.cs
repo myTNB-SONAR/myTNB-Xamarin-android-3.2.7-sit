@@ -156,10 +156,24 @@ namespace myTNB_Android.Src.Notifications.Activity
                 else
                 {
                     itemTouchHelper.AttachToRecyclerView(notificationRecyclerView);
-                    if (selectNotificationState == SelectNotificationStates.SELECTED)
+                    if (GetSelectedNotificationCount() > 0)
                     {
-                        //Remove notifications here
-                        deleteDialog.Show();
+						//Remove notifications here
+						new MaterialDialog.Builder(this)
+					        .Title("Delete All Notifications")
+					        .Content("Are you sure you want to delete all notifications?")
+					        .PositiveText("Yes")
+					        .PositiveColor(Resource.Color.blue)
+					        .NegativeText("No")
+					        .NegativeColor(Resource.Color.blue)
+					        .OnPositive((dialog, which) =>
+					        {
+						        //DeleteAllSelectedNotifications();
+						        dialog.Dismiss();
+						        this.mPresenter.DeleteAllSelectedNotifications();
+					        })
+					        .Cancelable(false)
+					        .Show();
                     }
                     else
                     {
@@ -233,21 +247,6 @@ namespace myTNB_Android.Src.Notifications.Activity
             editState = EditNotificationStates.HIDE;
             selectNotificationState = SelectNotificationStates.UNSELECTED;
             isReadEnabled = false;
-
-            deleteDialog = new MaterialDialog.Builder(this)
-                    .Title("Delete All Notifications")
-                    .Content("Are you sure you want to delete all notifications?")
-                    .PositiveText("Yes")
-                    .PositiveColor(Resource.Color.blue)
-                    .NegativeText("No")
-                    .NegativeColor(Resource.Color.blue)
-                    .OnPositive((dialog, which) =>
-                    {
-                        DeleteAllSelectedNotifications();
-                        dialog.Dismiss();
-                    })
-                    .Cancelable(false)
-                    .Build();
         }
 
         protected override void OnCreate(Bundle savedInstanceState)
@@ -600,7 +599,7 @@ namespace myTNB_Android.Src.Notifications.Activity
             }
             else
             {
-                updateNotificationTitle();
+				UpdatedSelectedNotifications();
             }
         }
 
@@ -681,15 +680,61 @@ namespace myTNB_Android.Src.Notifications.Activity
             return selectedCount;
         }
 
-        public void DeleteNotification(int notificationPos)
+        public void DeleteNotificationByPosition(int notificationPos)
         {
-            //notificationRecyclerAdapter.RemoveItem(notificationPos);
+			//notificationRecyclerAdapter.RemoveItem(notificationPos);
+			this.mPresenter.DeleteNotificationByPosition(notificationPos);
+		}
 
-        }
-
-        public void ReadNotification(int notificationPos)
+        public void ReadNotificationByPosition(int notificationPos)
         {
-            //notificationRecyclerAdapter.ReadItem(notificationPos);
-        }
-    }
+			this.mPresenter.ReadNotificationByPosition(notificationPos);
+		}
+
+        public void DeleteSelectedNotifications()
+		{
+
+		}
+
+        public void ReadSelectedNotifications()
+		{
+
+		}
+
+        public void UpdatedSelectedNotifications()
+		{
+			if (!isSelectAllTap)
+			{
+				int selectedCount = GetSelectedNotificationCount();
+				SetToolBarTitle(GetSelectedNotificationTitle());
+				if (selectedCount != notificationRecyclerAdapter.ItemCount)
+				{
+					if (selectedCount == 0)
+					{
+						ShowReadAndDeleteOption(false);
+					}
+					else
+					{
+						ShowReadAndDeleteOption(true);
+					}
+					selectAllNotificationLabel.Text = "Select All";
+					selectAllCheckboxButton.SetOnCheckedChangeListener(null);
+					selectAllCheckboxButton.Checked = false;
+					selectAllCheckboxButton.SetOnCheckedChangeListener(this);
+				}
+				else
+				{
+					ShowReadAndDeleteOption(true);
+					selectAllNotificationLabel.Text = "Unselect All";
+					selectAllCheckboxButton.SetOnCheckedChangeListener(null);
+					selectAllCheckboxButton.Checked = true;
+					selectAllCheckboxButton.SetOnCheckedChangeListener(this);
+				}
+			}
+			else
+			{
+				isSelectAllTap = false;
+			}
+		}
+	}
 }

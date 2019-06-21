@@ -120,9 +120,11 @@ namespace myTNB_Android.Src.Notifications.MVP
 
             void updateNotificationTitle();
 
-            void DeleteNotification(int notificationPos);
+            void DeleteNotificationByPosition(int notificationPos);
 
-            void ReadNotification(int notificationPos);
+            void ReadNotificationByPosition(int notificationPos);
+
+            void UpdatedSelectedNotifications();
         }
 
         public interface IUserActionsListener : IBasePresenter
@@ -157,6 +159,28 @@ namespace myTNB_Android.Src.Notifications.MVP
             /// Action to edit notification list
             /// </summary>
             void EditNotification();
+
+            /// <summary>
+            /// Delete notification by position.
+            /// <param name="position">integer</param>
+            /// </summary>
+            void DeleteNotificationByPosition(int position);
+
+            /// <summary>
+            /// Read notification by position.
+            /// <param name="position">integer</param>
+            /// </summary>
+            void ReadNotificationByPosition(int position);
+
+            /// <summary>
+            /// Delete all selected notifications.
+            /// </summary>
+            void DeleteAllSelectedNotifications();
+
+            /// <summary>
+            /// Read all selected notifications.
+            /// </summary>
+            void ReadAllSelectedNotifications();
         }
     }
 }
