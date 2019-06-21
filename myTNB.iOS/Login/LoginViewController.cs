@@ -375,7 +375,7 @@ namespace myTNB
                     }
                     else
                     {
-                        AlertHandler.DisplayNoDataAlert(this);
+                        DisplayNoDataAlert();
                     }
                 });
             });
@@ -523,7 +523,7 @@ namespace myTNB
                     else
                     {
                         DataManager.DataManager.SharedInstance.BillingAccountDetails = new BillingAccountDetailsDataModel();
-                        AlertHandler.DisplayServiceError(this, _billingAccountDetailsList?.d?.message);
+                        DisplayServiceError(_billingAccountDetailsList?.d?.message);
                     }
                     ActivityIndicator.Hide();
                 });

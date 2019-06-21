@@ -11,7 +11,7 @@ using System.Collections.Generic;
 
 namespace myTNB
 {
-    public partial class NotificationDetailsViewController : UIViewController
+    public partial class NotificationDetailsViewController : CustomUIViewController
     {
         public NotificationDetailsViewController(IntPtr handle) : base(handle)
         {
@@ -106,12 +106,12 @@ namespace myTNB
                             }
                             else
                             {
-                                AlertHandler.DisplayServiceError(this, _deleteNotificationResponse?.d?.message);
+                                DisplayServiceError(_deleteNotificationResponse?.d?.message);
                             }
                         }
                         else
                         {
-                            AlertHandler.DisplayNoDataAlert(this);
+                            DisplayNoDataAlert();
                         }
                         ActivityIndicator.Hide();
                     });
@@ -172,12 +172,12 @@ namespace myTNB
                             {
                                 DataManager.DataManager.SharedInstance.IsSameAccount = true;
                                 DataManager.DataManager.SharedInstance.BillingAccountDetails = new BillingAccountDetailsDataModel();
-                                AlertHandler.DisplayServiceError(this, _billingAccountDetailsList?.d?.message);
+                                DisplayServiceError(_billingAccountDetailsList?.d?.message);
                             }
                         }
                         else
                         {
-                            AlertHandler.DisplayNoDataAlert(this);
+                            DisplayNoDataAlert();
                         }
                         ActivityIndicator.Hide();
                     });

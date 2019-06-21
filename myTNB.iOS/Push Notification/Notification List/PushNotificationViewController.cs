@@ -132,7 +132,7 @@ namespace myTNB.PushNotification
                         }
                         else
                         {
-                            AlertHandler.DisplayNoDataAlert(this);
+                            DisplayNoDataAlert();
                         }
                     });
                 });
@@ -319,7 +319,7 @@ namespace myTNB.PushNotification
                                 }
                                 else
                                 {
-                                    AlertHandler.DisplayServiceError(this, _detailedInfo?.d?.message);
+                                    DisplayServiceError(_detailedInfo?.d?.message);
                                 }
                                 ActivityIndicator.Hide();
                             });
@@ -327,7 +327,7 @@ namespace myTNB.PushNotification
                     }
                     else
                     {
-                        AlertHandler.DisplayNoDataAlert(this);
+                        DisplayNoDataAlert();
                         ActivityIndicator.Hide();
                     }
                 });
@@ -382,7 +382,7 @@ namespace myTNB.PushNotification
                                 }
                                 else
                                 {
-                                    AlertHandler.DisplayServiceError(this, deleteNotifResponse?.d?.message);
+                                    DisplayServiceError(deleteNotifResponse?.d?.message);
                                 }
                                 ActivityIndicator.Hide();
                             });
@@ -390,7 +390,7 @@ namespace myTNB.PushNotification
                     }
                     else
                     {
-                        AlertHandler.DisplayNoDataAlert(this);
+                        DisplayNoDataAlert();
                     }
                 });
             });
@@ -431,7 +431,7 @@ namespace myTNB.PushNotification
                     }
                     else
                     {
-                        AlertHandler.DisplayNoDataAlert(this);
+                        DisplayNoDataAlert();
                     }
                 });
             });

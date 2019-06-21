@@ -20,7 +20,7 @@ namespace myTNB
             , _viewBreakdownTitle, _viewCurrentCharges, _viewOutstandingCharges                     //Field Container
             , _viewItemizedBilling, _viewTotalAmountDue, _viewHistoryHeader;
 
-        public UILabel _lblAccountName, _lblAccountNumber, _lblAddress                              // Value Account Details
+        public UILabel _lblAccountName, _lblAccountNumber, _lblAddress                              //Value Account Details
             , _lblBreakdownHeader, _lblCurrentChargesTitle, _lblOutstandingChargesTitle             //Title Charges
             , _lblTotalDueAmountTitle, _lblHistoryHeader
             , _lblMandatoryPayments, _lblSecurityDeposit                                            //Title Itemized Billing

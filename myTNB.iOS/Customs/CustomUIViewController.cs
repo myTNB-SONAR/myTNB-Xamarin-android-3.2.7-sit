@@ -31,7 +31,7 @@ namespace myTNB
             base.ViewDidAppear(animated);
         }
         #endregion
-        #region Utilities
+        #region Widget Utilities
         public UILabel GetUILabelField(CGRect lblFrame, string key, UITextAlignment txtAlignment = UITextAlignment.Left)
         {
             return CustomUILabel.GetUILabelField(lblFrame, key, txtAlignment);
@@ -56,6 +56,22 @@ namespace myTNB
         public void MakeTopCornerRadius(UIButton button)
         {
             CustomUIButton.MakeTopCornerRadius(button);
+        }
+        #endregion
+        #region Alerts
+        public void DisplayNoDataAlert()
+        {
+            AlertHandler.DisplayNoDataAlert(this);
+        }
+
+        public void DisplayServiceError(string message, Action<UIAlertAction> handler = null)
+        {
+            AlertHandler.DisplayServiceError(this, message, handler);
+        }
+
+        public void DisplayGenericAlert(string title, string message, Action<UIAlertAction> handler = null)
+        {
+            AlertHandler.DisplayGenericAlert(this, title, message, handler);
         }
         #endregion
         #region Toast
