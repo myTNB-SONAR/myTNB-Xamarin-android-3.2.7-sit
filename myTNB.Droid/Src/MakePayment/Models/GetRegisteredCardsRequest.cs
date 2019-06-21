@@ -1,5 +1,4 @@
-﻿using System;
-using Refit;
+﻿using Refit;
 
 namespace myTNB_Android.Src.MakePayment.Models
 {

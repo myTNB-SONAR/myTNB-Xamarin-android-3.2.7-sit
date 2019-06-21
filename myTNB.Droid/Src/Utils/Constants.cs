@@ -1,17 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-
-using SQLite;
-using System.IO;
+﻿using System.IO;
 
 namespace myTNB_Android.Src.Utils
 {
@@ -19,7 +6,7 @@ namespace myTNB_Android.Src.Utils
     {
         internal static string LIBRARY_PATH => System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal);
         internal static readonly string DB_NAME = "myTNB.db3";
-        internal static string DB_PATH => Path.Combine(LIBRARY_PATH , DB_NAME);
+        internal static string DB_PATH => Path.Combine(LIBRARY_PATH, DB_NAME);
 
         internal static readonly string DEVICE_PLATFORM = "1"; // 1 for Android (for iOS its 2)
 
@@ -105,7 +92,7 @@ namespace myTNB_Android.Src.Utils
         internal static readonly int REQUEST_FEEDBACK_SUCCESS_VIEW = 0x00;
         internal static readonly int REQUEST_FEEDBACK_FAIL_VIEW = 0x01;
 
-        
+
 
         internal static readonly int UPDATE_NICKNAME_REQUEST = 0x09;
         internal static readonly int RUNTIME_PERMISSION_SMS_REQUEST_CODE = 0x03;
@@ -115,7 +102,7 @@ namespace myTNB_Android.Src.Utils
         internal static readonly int RUNTIME_PERMISSION_GALLERY_REQUEST_CODE = 0x07;
         internal static readonly int RUNTIME_PERMISSION_LOCATION_REQUEST_CODE = 0x08;
 
-        
+
 
         //internal static readonly string API_KEY_ID = "9515F2FA-C267-42C9-8087-FABA77CB84DF";
 
@@ -142,7 +129,7 @@ namespace myTNB_Android.Src.Utils
             internal static readonly string API_KEY_ID = "9515F2FA-C267-42C9-8087-FABA77CB84DF";
             //internal static readonly string API_KEY_ID = "E6148656-205B-494C-BC95-CC241423E72F";
             internal static readonly int MAX_IMAGE_QUALITY_IN_PERCENT = 100;
-                internal static readonly int IN_SAMPLE_SIZE = 4;
+            internal static readonly int IN_SAMPLE_SIZE = 4;
 #else //create new flavour called PROD, SIT, UAT
                 internal static readonly string API_KEY_ID = "E6148656-205B-494C-BC95-CC241423E72F";
                 internal static readonly int MAX_IMAGE_QUALITY_IN_PERCENT = 100;
@@ -151,11 +138,11 @@ namespace myTNB_Android.Src.Utils
         }
 
         //Notification Codes
-        internal static string NOTIFICATION_CODE_BP     = "BP";
-        internal static string NOTIFICATION_CODE_ACC    = "ACC";
-        internal static string NOTIFICATION_CODE_PO     = "PO";
-        internal static string NOTIFICATION_CODE_PRO    = "PRO";
-        internal static string NOTIFICATION_CODE_REW    = "REW";
+        internal static string NOTIFICATION_CODE_BP = "BP";
+        internal static string NOTIFICATION_CODE_ACC = "ACC";
+        internal static string NOTIFICATION_CODE_PO = "PO";
+        internal static string NOTIFICATION_CODE_PRO = "PRO";
+        internal static string NOTIFICATION_CODE_REW = "REW";
 
         //Feedback
         internal static readonly int FEEDBACK_CHAR_LIMIT = 250;
@@ -198,7 +185,7 @@ namespace myTNB_Android.Src.Utils
         //FAQ ID
         internal static readonly string FAQ_ID_PARAM = ".faqID";
 
-		//Summary dashboard
+        //Summary dashboard
         internal static readonly int SUMMARY_DASHBOARD_PAGE_COUNT = 5;
 
         //Add account limit

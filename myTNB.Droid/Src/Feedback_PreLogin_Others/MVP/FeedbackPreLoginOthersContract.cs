@@ -1,19 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
+﻿using Android.App;
 using Android.Content;
-using Android.OS;
 using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-using myTNB_Android.Src.Base.MVP;
-using myTNB_Android.Src.Base.Models;
-using myTNB_Android.Src.Base.Request;
-using System.Threading.Tasks;
 using myTNB_Android.Src.AppLaunch.Models;
+using myTNB_Android.Src.Base.Models;
+using myTNB_Android.Src.Base.MVP;
+using myTNB_Android.Src.Base.Request;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace myTNB_Android.Src.Feedback_PreLogin_Others.MVP
 {
@@ -143,7 +136,7 @@ namespace myTNB_Android.Src.Feedback_PreLogin_Others.MVP
             /// <param name="date">string</param>
             /// <param name="feedbackId">string</param>
             /// <param name="imageCount">integer</param>
-            void ShowSuccess(string date, string feedbackId , int imageCount);
+            void ShowSuccess(string date, string feedbackId, int imageCount);
 
             /// <summary>
             /// Shows the unsuccessful screen of saving feedback
@@ -228,7 +221,7 @@ namespace myTNB_Android.Src.Feedback_PreLogin_Others.MVP
             /// <param name="mobile_no">string</param>
             /// <param name="email">string</param>
             /// <param name="feedback">string</param>
-            void CheckRequiredFields(string fullname , string mobile_no, string email , string feedback);
+            void CheckRequiredFields(string fullname, string mobile_no, string email, string feedback);
         }
     }
 }

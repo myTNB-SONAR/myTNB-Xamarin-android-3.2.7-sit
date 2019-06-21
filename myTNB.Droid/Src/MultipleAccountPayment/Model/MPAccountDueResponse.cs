@@ -1,18 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-using Newtonsoft.Json;
-using myTNB_Android.Src.Base.Models;
-using myTNB_Android.Src.MakePayment.Models;
+﻿using Newtonsoft.Json;
 using Refit;
+using System.Collections.Generic;
 
 namespace myTNB_Android.Src.MultipleAccountPayment.Model
 {
@@ -46,7 +34,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Model
         }
 
         public class Account
-        {           
+        {
             [JsonProperty(PropertyName = "amountDue")]
             [AliasAs("amountDue")]
             public double amountDue { get; set; }

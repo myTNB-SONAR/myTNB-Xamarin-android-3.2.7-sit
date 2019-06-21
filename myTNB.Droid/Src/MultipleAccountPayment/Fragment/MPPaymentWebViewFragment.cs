@@ -1,32 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
+﻿using Android.App;
 using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Util;
-using Android.Views;
-using Android.Widget;
-using Android.Webkit;
-using Org.Apache.Http.Util;
-using Java.Net;
-using Android.Net.Wifi;
-using myTNB_Android.Src.ViewReceipt.Activity;
-using System.Web;
-using Newtonsoft.Json;
-using myTNB_Android.Src.PaymentSuccessExperienceRating.Activity;
-using myTNB_Android.Src.Utils;
-using Android.Support.Design.Widget;
-using myTNB_Android.Src.MultipleAccountPayment.Activity;
 using Android.Net.Http;
+using Android.Net.Wifi;
+using Android.OS;
+using Android.Support.Design.Widget;
+using Android.Views;
+using Android.Webkit;
+using Android.Widget;
+using Java.Net;
+using myTNB_Android.Src.MultipleAccountPayment.Activity;
+using myTNB_Android.Src.myTNBMenu.Activity;
 using myTNB_Android.Src.Rating.Activity;
 using myTNB_Android.Src.Rating.Model;
-using myTNB_Android.Src.myTNBMenu.Activity;
 using myTNB_Android.Src.SummaryDashBoard.Models;
-using myTNB_Android.Src.Base.Api;
+using myTNB_Android.Src.Utils;
+using myTNB_Android.Src.ViewReceipt.Activity;
+using Newtonsoft.Json;
+using Org.Apache.Http.Util;
+using System;
+using System.Web;
 
 namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
 {
@@ -65,7 +57,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
         private bool saveCard;
         private bool isRegisteredCard;
 
-        
+
         string tokenizedHashCodeCC;
 
         private static WebView mWebView;
@@ -91,119 +83,97 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
         {
             // Use this to return your custom view for this Fragment
             View rootView = inflater.Inflate(Resource.Layout.PaymentWebView, container, false);
-            try {
-            mainView = rootView.FindViewById<FrameLayout>(Resource.Id.rootView);
-            var metrics = Resources.DisplayMetrics;
-            var widthInDp = ConvertPixelsToDp(metrics.WidthPixels);
-            int heightInDp = metrics.HeightPixels;
-            summaryDashBoardRequest = JsonConvert.DeserializeObject<SummaryDashBordRequest>(Arguments.GetString("SummaryDashBoardRequest"));
-            paymentActivity = ((PaymentActivity)Activity);
-            if (Arguments.ContainsKey("html_fpx"))
+            try
             {
-                paymentActivity.SetToolBarTitle(TOOL_BAR_TITLE_FPX);
-            }
-            else
-            {
-                paymentActivity.SetToolBarTitle(TOOL_BAR_TITLE);
-            }
-            
-            mWebView = rootView.FindViewById<WebView>(Resource.Id.web_view);
-            mProgressBar = rootView.FindViewById<ProgressBar>(Resource.Id.progressBar);
-            mProgressBar.Visibility = ViewStates.Gone;
-
-            
-            //mWebView.LayoutParameters.Height = heightInDp + 200;
-            mWebView.SetWebChromeClient(new WebChromeClient());           
-            mWebView.Settings.SetPluginState(WebSettings.PluginState.On);
-            mWebView.SetWebViewClient(new MyTNBWebViewClient(paymentActivity, mProgressBar, summaryDashBoardRequest));
-            mWebView.VerticalScrollBarEnabled = true;
-
-            WebSettings settings = mWebView.Settings;
-            settings.JavaScriptEnabled = true;
-            settings.DomStorageEnabled = true;         
-            settings.LoadWithOverviewMode = true;
-            settings.BuiltInZoomControls = false;
-
-            if (Arguments.ContainsKey("html_fpx"))
-            {
-                mWebView.LoadUrl(Arguments.GetString("html_fpx"));
-            }
-            else
-            {
-
-                action = Arguments.GetString("action");
-                merchantId = Arguments.GetString("merchantId");//"MYTNB_V2_UAT";
-                merchantTransId = Arguments.GetString("merchantTransId");
-                currencyCode = Arguments.GetString("currencyCode");
-                payAm = Arguments.GetString("payAm");
-
-                custEmail = Arguments.GetString("custEmail");
-                custName = Arguments.GetString("custName");
-                des = Arguments.GetString("des");
-                returnURL = Arguments.GetString("returnURL");
-                signature = Arguments.GetString("signature");
-
-                mparam1 = Arguments.GetString("mparam1");
-                transType = Arguments.GetString("transType");
-                payMethod = Arguments.GetString("payMethod");
-                accNum = Arguments.GetString("accNum");
-                custPhone = Arguments.GetString("custPhone");
-
-                transType = Arguments.GetString("transType");
-                tokenizedHashCodeCC = Arguments.GetString("tokenizedHashCodeCC");
-
-
-
-                isRegisteredCard = Arguments.GetBoolean("registeredCard", false);
-                cardCvv = Arguments.GetString("cardCvv"); // -- CVV Enabled --
-                if (!isRegisteredCard)
+                mainView = rootView.FindViewById<FrameLayout>(Resource.Id.rootView);
+                var metrics = Resources.DisplayMetrics;
+                var widthInDp = ConvertPixelsToDp(metrics.WidthPixels);
+                int heightInDp = metrics.HeightPixels;
+                summaryDashBoardRequest = JsonConvert.DeserializeObject<SummaryDashBordRequest>(Arguments.GetString("SummaryDashBoardRequest"));
+                paymentActivity = ((PaymentActivity)Activity);
+                if (Arguments.ContainsKey("html_fpx"))
                 {
-                    cardNo = Arguments.GetString("cardNo");
-                    cardExpM = Arguments.GetString("cardExpM");
-                    cardExpY = "20" + Arguments.GetString("cardExpY");
-                    cardCvv = Arguments.GetString("cardCvv");
-                    cardType = Arguments.GetString("cardType");
-                    saveCard = Arguments.GetBoolean("saveCard", false);
-                }
-
-
-                //string url = "https://pguat.tnb.com.my/payment/PaymentInterface.jsp";
-
-                //String url = "https://pguat.tnb.com.my/payment/PaymentWindowResponsive.jsp";
-
-                string data = "";
-
-                if (isRegisteredCard)
-                {
-                    data = "PAYMENT_METHOD=" + URLEncoder.Encode(payMethod)
-                                + "&TRANSACTIONTYPE=" + URLEncoder.Encode(transType)
-                                + "&MERCHANTID=" + URLEncoder.Encode(merchantId)
-                                + "&MERCHANT_TRANID=" + URLEncoder.Encode(merchantTransId)
-                                + "&PYMT_IND=" + URLEncoder.Encode(PYMT_IND)
-                                + "&PYMT_CRITERIA=" + URLEncoder.Encode(PYMT_CRITERIA_PAYMENT)
-                                + "&CURRENCYCODE=" + URLEncoder.Encode(currencyCode)
-                                + "&AMOUNT=" + URLEncoder.Encode(payAm)
-                                + "&MPARAM1=" + URLEncoder.Encode(mparam1)
-                                + "&SIGNATURE=" + URLEncoder.Encode(signature)
-                                + "&CUSTNAME=" + URLEncoder.Encode(custName)
-                                + "&CUSTEMAIL=" + URLEncoder.Encode(custEmail)
-                                + "&CUSTPHONE=" + URLEncoder.Encode(custPhone)
-                                + "&PYMT_TOKEN=" + URLEncoder.Encode(tokenizedHashCodeCC)
-                                //+ "&SHOPPER_IP=" + URLEncoder.Encode(GetDeviceIPAddress())
-                                + "&DESCRIPTION=" + URLEncoder.Encode(des)
-                                //+ "&RESPONSE_TYPE=" + URLEncoder.Encode("1") // 1 – Return response via browser redirection, using HTTP GET method
-                                + "&CARDCVC=" + URLEncoder.Encode(cardCvv) // -- CVV Enabled --
-                                + "&RETURN_URL=" + URLEncoder.Encode(returnURL);
+                    paymentActivity.SetToolBarTitle(TOOL_BAR_TITLE_FPX);
                 }
                 else
                 {
-                    string paymentCriteria = saveCard ? PYMT_CRITERIA_REGISTRATION : PYMT_CRITERIA_PAYMENT;
-                    if (saveCard)
+                    paymentActivity.SetToolBarTitle(TOOL_BAR_TITLE);
+                }
+
+                mWebView = rootView.FindViewById<WebView>(Resource.Id.web_view);
+                mProgressBar = rootView.FindViewById<ProgressBar>(Resource.Id.progressBar);
+                mProgressBar.Visibility = ViewStates.Gone;
+
+
+                //mWebView.LayoutParameters.Height = heightInDp + 200;
+                mWebView.SetWebChromeClient(new WebChromeClient());
+                mWebView.Settings.SetPluginState(WebSettings.PluginState.On);
+                mWebView.SetWebViewClient(new MyTNBWebViewClient(paymentActivity, mProgressBar, summaryDashBoardRequest));
+                mWebView.VerticalScrollBarEnabled = true;
+
+                WebSettings settings = mWebView.Settings;
+                settings.JavaScriptEnabled = true;
+                settings.DomStorageEnabled = true;
+                settings.LoadWithOverviewMode = true;
+                settings.BuiltInZoomControls = false;
+
+                if (Arguments.ContainsKey("html_fpx"))
+                {
+                    mWebView.LoadUrl(Arguments.GetString("html_fpx"));
+                }
+                else
+                {
+
+                    action = Arguments.GetString("action");
+                    merchantId = Arguments.GetString("merchantId");//"MYTNB_V2_UAT";
+                    merchantTransId = Arguments.GetString("merchantTransId");
+                    currencyCode = Arguments.GetString("currencyCode");
+                    payAm = Arguments.GetString("payAm");
+
+                    custEmail = Arguments.GetString("custEmail");
+                    custName = Arguments.GetString("custName");
+                    des = Arguments.GetString("des");
+                    returnURL = Arguments.GetString("returnURL");
+                    signature = Arguments.GetString("signature");
+
+                    mparam1 = Arguments.GetString("mparam1");
+                    transType = Arguments.GetString("transType");
+                    payMethod = Arguments.GetString("payMethod");
+                    accNum = Arguments.GetString("accNum");
+                    custPhone = Arguments.GetString("custPhone");
+
+                    transType = Arguments.GetString("transType");
+                    tokenizedHashCodeCC = Arguments.GetString("tokenizedHashCodeCC");
+
+
+
+                    isRegisteredCard = Arguments.GetBoolean("registeredCard", false);
+                    cardCvv = Arguments.GetString("cardCvv"); // -- CVV Enabled --
+                    if (!isRegisteredCard)
+                    {
+                        cardNo = Arguments.GetString("cardNo");
+                        cardExpM = Arguments.GetString("cardExpM");
+                        cardExpY = "20" + Arguments.GetString("cardExpY");
+                        cardCvv = Arguments.GetString("cardCvv");
+                        cardType = Arguments.GetString("cardType");
+                        saveCard = Arguments.GetBoolean("saveCard", false);
+                    }
+
+
+                    //string url = "https://pguat.tnb.com.my/payment/PaymentInterface.jsp";
+
+                    //String url = "https://pguat.tnb.com.my/payment/PaymentWindowResponsive.jsp";
+
+                    string data = "";
+
+                    if (isRegisteredCard)
                     {
                         data = "PAYMENT_METHOD=" + URLEncoder.Encode(payMethod)
                                     + "&TRANSACTIONTYPE=" + URLEncoder.Encode(transType)
                                     + "&MERCHANTID=" + URLEncoder.Encode(merchantId)
                                     + "&MERCHANT_TRANID=" + URLEncoder.Encode(merchantTransId)
+                                    + "&PYMT_IND=" + URLEncoder.Encode(PYMT_IND)
+                                    + "&PYMT_CRITERIA=" + URLEncoder.Encode(PYMT_CRITERIA_PAYMENT)
                                     + "&CURRENCYCODE=" + URLEncoder.Encode(currencyCode)
                                     + "&AMOUNT=" + URLEncoder.Encode(payAm)
                                     + "&MPARAM1=" + URLEncoder.Encode(mparam1)
@@ -211,53 +181,76 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                                     + "&CUSTNAME=" + URLEncoder.Encode(custName)
                                     + "&CUSTEMAIL=" + URLEncoder.Encode(custEmail)
                                     + "&CUSTPHONE=" + URLEncoder.Encode(custPhone)
-                                    + "&PYMT_IND=" + URLEncoder.Encode(PYMT_IND)
-                                    + "&PYMT_CRITERIA=" + URLEncoder.Encode(paymentCriteria)
+                                    + "&PYMT_TOKEN=" + URLEncoder.Encode(tokenizedHashCodeCC)
                                     //+ "&SHOPPER_IP=" + URLEncoder.Encode(GetDeviceIPAddress())
                                     + "&DESCRIPTION=" + URLEncoder.Encode(des)
-                                    // + "&RESPONSE_TYPE=" + URLEncoder.Encode("1") // 1 – Return response via browser redirection, using HTTP GET method
-                                    + "&RETURN_URL=" + URLEncoder.Encode(returnURL)
-                                    + "&CARDNO=" + URLEncoder.Encode(cardNo)
-                                    + "&CARDNAME=" + URLEncoder.Encode(custName)
-                                    + "&CARDTYPE=" + URLEncoder.Encode(cardType)
-                                    + "&EXPIRYMONTH=" + URLEncoder.Encode(cardExpM)
-                                    + "&EXPIRYYEAR=" + URLEncoder.Encode(cardExpY)
-                                    + "&CARDCVC=" + URLEncoder.Encode(cardCvv);
+                                    //+ "&RESPONSE_TYPE=" + URLEncoder.Encode("1") // 1 – Return response via browser redirection, using HTTP GET method
+                                    + "&CARDCVC=" + URLEncoder.Encode(cardCvv) // -- CVV Enabled --
+                                    + "&RETURN_URL=" + URLEncoder.Encode(returnURL);
                     }
                     else
                     {
-                        data = "PAYMENT_METHOD=" + URLEncoder.Encode(payMethod)
-                                   + "&TRANSACTIONTYPE=" + URLEncoder.Encode(transType)
-                                   + "&MERCHANTID=" + URLEncoder.Encode(merchantId)
-                                   + "&MERCHANT_TRANID=" + URLEncoder.Encode(merchantTransId)
-                                   + "&CURRENCYCODE=" + URLEncoder.Encode(currencyCode)
-                                   + "&AMOUNT=" + URLEncoder.Encode(payAm)
-                                   + "&MPARAM1=" + URLEncoder.Encode(mparam1)
-                                   + "&SIGNATURE=" + URLEncoder.Encode(signature)
-                                   + "&CUSTNAME=" + URLEncoder.Encode(custName)
-                                   + "&CUSTEMAIL=" + URLEncoder.Encode(custEmail)
-                                   + "&CUSTPHONE=" + URLEncoder.Encode(custPhone)
-                                   //+ "&SHOPPER_IP=" + URLEncoder.Encode(GetDeviceIPAddress())
-                                   + "&DESCRIPTION=" + URLEncoder.Encode(des)
-                                   // + "&RESPONSE_TYPE=" + URLEncoder.Encode("1") // 1 – Return response via browser redirection, using HTTP GET method
-                                   + "&RETURN_URL=" + URLEncoder.Encode(returnURL)
-                                   + "&CARDNO=" + URLEncoder.Encode(cardNo)
-                                   + "&CARDNAME=" + URLEncoder.Encode(custName)
-                                   + "&CARDTYPE=" + URLEncoder.Encode(cardType)
-                                   + "&EXPIRYMONTH=" + URLEncoder.Encode(cardExpM)
-                                   + "&EXPIRYYEAR=" + URLEncoder.Encode(cardExpY)
-                                   + "&CARDCVC=" + URLEncoder.Encode(cardCvv);
+                        string paymentCriteria = saveCard ? PYMT_CRITERIA_REGISTRATION : PYMT_CRITERIA_PAYMENT;
+                        if (saveCard)
+                        {
+                            data = "PAYMENT_METHOD=" + URLEncoder.Encode(payMethod)
+                                        + "&TRANSACTIONTYPE=" + URLEncoder.Encode(transType)
+                                        + "&MERCHANTID=" + URLEncoder.Encode(merchantId)
+                                        + "&MERCHANT_TRANID=" + URLEncoder.Encode(merchantTransId)
+                                        + "&CURRENCYCODE=" + URLEncoder.Encode(currencyCode)
+                                        + "&AMOUNT=" + URLEncoder.Encode(payAm)
+                                        + "&MPARAM1=" + URLEncoder.Encode(mparam1)
+                                        + "&SIGNATURE=" + URLEncoder.Encode(signature)
+                                        + "&CUSTNAME=" + URLEncoder.Encode(custName)
+                                        + "&CUSTEMAIL=" + URLEncoder.Encode(custEmail)
+                                        + "&CUSTPHONE=" + URLEncoder.Encode(custPhone)
+                                        + "&PYMT_IND=" + URLEncoder.Encode(PYMT_IND)
+                                        + "&PYMT_CRITERIA=" + URLEncoder.Encode(paymentCriteria)
+                                        //+ "&SHOPPER_IP=" + URLEncoder.Encode(GetDeviceIPAddress())
+                                        + "&DESCRIPTION=" + URLEncoder.Encode(des)
+                                        // + "&RESPONSE_TYPE=" + URLEncoder.Encode("1") // 1 – Return response via browser redirection, using HTTP GET method
+                                        + "&RETURN_URL=" + URLEncoder.Encode(returnURL)
+                                        + "&CARDNO=" + URLEncoder.Encode(cardNo)
+                                        + "&CARDNAME=" + URLEncoder.Encode(custName)
+                                        + "&CARDTYPE=" + URLEncoder.Encode(cardType)
+                                        + "&EXPIRYMONTH=" + URLEncoder.Encode(cardExpM)
+                                        + "&EXPIRYYEAR=" + URLEncoder.Encode(cardExpY)
+                                        + "&CARDCVC=" + URLEncoder.Encode(cardCvv);
+                        }
+                        else
+                        {
+                            data = "PAYMENT_METHOD=" + URLEncoder.Encode(payMethod)
+                                       + "&TRANSACTIONTYPE=" + URLEncoder.Encode(transType)
+                                       + "&MERCHANTID=" + URLEncoder.Encode(merchantId)
+                                       + "&MERCHANT_TRANID=" + URLEncoder.Encode(merchantTransId)
+                                       + "&CURRENCYCODE=" + URLEncoder.Encode(currencyCode)
+                                       + "&AMOUNT=" + URLEncoder.Encode(payAm)
+                                       + "&MPARAM1=" + URLEncoder.Encode(mparam1)
+                                       + "&SIGNATURE=" + URLEncoder.Encode(signature)
+                                       + "&CUSTNAME=" + URLEncoder.Encode(custName)
+                                       + "&CUSTEMAIL=" + URLEncoder.Encode(custEmail)
+                                       + "&CUSTPHONE=" + URLEncoder.Encode(custPhone)
+                                       //+ "&SHOPPER_IP=" + URLEncoder.Encode(GetDeviceIPAddress())
+                                       + "&DESCRIPTION=" + URLEncoder.Encode(des)
+                                       // + "&RESPONSE_TYPE=" + URLEncoder.Encode("1") // 1 – Return response via browser redirection, using HTTP GET method
+                                       + "&RETURN_URL=" + URLEncoder.Encode(returnURL)
+                                       + "&CARDNO=" + URLEncoder.Encode(cardNo)
+                                       + "&CARDNAME=" + URLEncoder.Encode(custName)
+                                       + "&CARDTYPE=" + URLEncoder.Encode(cardType)
+                                       + "&EXPIRYMONTH=" + URLEncoder.Encode(cardExpM)
+                                       + "&EXPIRYYEAR=" + URLEncoder.Encode(cardExpY)
+                                       + "&CARDCVC=" + URLEncoder.Encode(cardCvv);
+                        }
                     }
+                    mWebView.PostUrl(action, EncodingUtils.GetBytes(data, "base64"));
                 }
-                mWebView.PostUrl(action, EncodingUtils.GetBytes(data, "base64"));
-            }
             }
             catch (Exception e)
             {
                 Utility.LoggingNonFatalError(e);
             }
             return rootView;
-            
+
         }
 
         public override void OnResume()
@@ -273,7 +266,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
             base.OnResume();
         }
 
-       
+
 
 
         public class MyTNBWebViewClient : WebViewClient
@@ -353,7 +346,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                     }
                     return true;
                 }
-                
+
             }
 
             public override void OnPageStarted(WebView view, string url, Android.Graphics.Bitmap favicon)
@@ -371,10 +364,10 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
 
             public override void OnPageFinished(WebView view, string url)
             {
-                
+
                 if (url.ToLower().Contains("statusreceipt.aspx") && url.ToLower().Contains("approved") || url.ToLower().Contains("paystatusreceipt"))
                 {
-                     
+
                     ((PaymentActivity)mActivity).SetPaymentReceiptFlag(true, summaryDashBoardRequest);
                     //((PaymentActivity)mActivity).SetToolBarTitle("Success");
                     ((PaymentActivity)mActivity).HideToolBar();
@@ -387,13 +380,16 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                     //((PaymentActivity)mActivity).SetToolBarTitle("Unsuccessful");
                     ((PaymentActivity)mActivity).HideToolBar();
 
-                }else if (url.ToLower().Contains("mytnbapp://payment/"))
+                }
+                else if (url.ToLower().Contains("mytnbapp://payment/"))
                 {
                     progressBar.Visibility = ViewStates.Gone;
                     Intent DashboardIntent = new Intent(mActivity, typeof(DashboardActivity));
                     DashboardIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
                     mActivity.StartActivity(DashboardIntent);
-                } else {
+                }
+                else
+                {
                     progressBar.Visibility = ViewStates.Gone;
                 }
 
@@ -451,7 +447,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
 
         public string GetDeviceIPAddress()
         {
-            WifiManager manager = (WifiManager) Activity.GetSystemService(Service.WifiService);
+            WifiManager manager = (WifiManager)Activity.GetSystemService(Service.WifiService);
             int ip = manager.ConnectionInfo.IpAddress;
 
             string ipaddress = Android.Text.Format.Formatter.FormatIpAddress(ip);
@@ -462,7 +458,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
         {
             string query_string = string.Empty;
 
-            var uri = new Uri(url.Replace("&","?"));
+            var uri = new Uri(url.Replace("&", "?"));
             var newQueryString = HttpUtility.ParseQueryString(uri.Query);
             query_string = newQueryString[key].ToString();
 
@@ -483,7 +479,8 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
             }
 
             mErrorMessageSnackBar = Snackbar.Make(mainView, "Please check your internet connection.", Snackbar.LengthIndefinite)
-            .SetAction("Try Again", delegate {
+            .SetAction("Try Again", delegate
+            {
                 if (!failingUrl.ToLower().Contains("statusreceipt.aspx") || !failingUrl.ToLower().Contains("paystatusreceipt"))
                 {
                     mWebView.LoadUrl(failingUrl);

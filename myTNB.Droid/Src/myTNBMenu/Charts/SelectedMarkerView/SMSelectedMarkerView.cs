@@ -1,21 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.OS;
+﻿using Android.Content;
 using Android.Runtime;
-using Android.Views;
 using Android.Widget;
+using Java.Text;
 using MikePhil.Charting.Components;
-using myTNB_Android.Src.myTNBMenu.Models;
 using MikePhil.Charting.Data;
 using MikePhil.Charting.Highlight;
 using MikePhil.Charting.Util;
-using Java.Text;
+using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.Utils;
+using System;
 
 namespace myTNB_Android.Src.myTNBMenu.Charts.SelectedMarkerView
 {
@@ -55,11 +48,13 @@ namespace myTNB_Android.Src.myTNBMenu.Charts.SelectedMarkerView
                     {
                         float val = float.Parse(UsageHistoryData.ByMonth[CurrentParentIndex].Months[index].Amount == null ? "0.00" : UsageHistoryData.ByMonth[CurrentParentIndex].Months[index].Amount);
                         titleMarker.Text = "RM " + decimalFormat.Format(val);
-                    }else if (ChartDataType == ChartDataType.kWh)
+                    }
+                    else if (ChartDataType == ChartDataType.kWh)
                     {
                         float val = float.Parse(UsageHistoryData.ByMonth[CurrentParentIndex].Months[index].Consumption == null ? "0.00" : UsageHistoryData.ByMonth[CurrentParentIndex].Months[index].Consumption);
                         titleMarker.Text = decimalFormat.Format(val) + " kWh";
-                    }else if (ChartDataType == ChartDataType.CO2)
+                    }
+                    else if (ChartDataType == ChartDataType.CO2)
                     {
                         float val = float.Parse(UsageHistoryData.ByMonth[CurrentParentIndex].Months[index].CO2 == null ? "0.00" : UsageHistoryData.ByMonth[CurrentParentIndex].Months[index].CO2);
                         titleMarker.Text = decimalFormat.Format(val) + " kg";
@@ -73,11 +68,13 @@ namespace myTNB_Android.Src.myTNBMenu.Charts.SelectedMarkerView
                     {
                         float val = float.Parse(UsageHistoryData.ByDay[CurrentParentIndex].Days[index].Amount == null ? "0.00" : UsageHistoryData.ByDay[CurrentParentIndex].Days[index].Amount);
                         titleMarker.Text = "RM " + decimalFormat.Format(val);
-                    }else if (ChartDataType == ChartDataType.kWh)
+                    }
+                    else if (ChartDataType == ChartDataType.kWh)
                     {
                         float val = float.Parse(UsageHistoryData.ByDay[CurrentParentIndex].Days[index].Consumption == null ? "0.00" : UsageHistoryData.ByDay[CurrentParentIndex].Days[index].Consumption);
                         titleMarker.Text = decimalFormat.Format(val) + " kWh";
-                    }else if (ChartDataType == ChartDataType.CO2)
+                    }
+                    else if (ChartDataType == ChartDataType.CO2)
                     {
                         float val = float.Parse(UsageHistoryData.ByDay[CurrentParentIndex].Days[index].CO2 == null ? "0.00" : UsageHistoryData.ByDay[CurrentParentIndex].Days[index].CO2);
                         titleMarker.Text = decimalFormat.Format(val) + " kg";
@@ -89,8 +86,8 @@ namespace myTNB_Android.Src.myTNBMenu.Charts.SelectedMarkerView
                 titleMarker.Text = "RM " + decimalFormat.Format(e.GetY());
             }
 
-            
-            base.RefreshContent(e , highlight);
+
+            base.RefreshContent(e, highlight);
         }
 
         public override MPPointF GetOffsetForDrawingAtPoint(float posX, float posY)

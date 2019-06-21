@@ -1,17 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-using Newtonsoft.Json;
-using Refit;
+﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Refit;
+using System;
+using System.Collections.Generic;
 
 namespace myTNB_Android.Src.myTNBMenu.Models
 {
@@ -64,7 +55,7 @@ namespace myTNB_Android.Src.myTNBMenu.Models
                 public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
                 {
                     double parseAmount = 0.00;
-                    JToken jtoken = JToken.Load(reader); 
+                    JToken jtoken = JToken.Load(reader);
                     if (jtoken.Type == JTokenType.String)
                     {
                         string val = jtoken.ToObject<String>();
@@ -78,7 +69,7 @@ namespace myTNB_Android.Src.myTNBMenu.Models
                             return parseAmount;
                         }
                     }
-                    
+
                     return parseAmount;
                 }
 
@@ -118,5 +109,5 @@ namespace myTNB_Android.Src.myTNBMenu.Models
         }
     }
 
-    
+
 }

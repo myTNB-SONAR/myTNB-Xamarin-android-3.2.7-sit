@@ -1,19 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.OS;
+﻿using Android.App;
 using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-using myTNB_Android.Src.Database.Model;
 using Firebase;
-using myTNB.SQLite.SQLiteDataManager;
 using Firebase.Analytics;
-
+using myTNB_Android.Src.Database.Model;
+using System;
 using Xamarin.Facebook;
 
 namespace myTNB_Android.Src
@@ -22,7 +12,7 @@ namespace myTNB_Android.Src
     //It is considered a good practice to set the android:debuggable attribute to false. 
     //The simplest way to do this is by adding a conditional compile statement in AssemblyInfo.cs:
 #if DEBUG
-    [Application(Debuggable = true , LargeHeap = true)]
+    [Application(Debuggable = true, LargeHeap = true)]
 #else
     [Application(Debuggable=false , LargeHeap = true)]
 #endif

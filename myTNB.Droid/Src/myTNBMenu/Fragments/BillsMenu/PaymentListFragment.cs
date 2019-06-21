@@ -1,22 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
+﻿using Android.Content;
 using Android.OS;
 using Android.Runtime;
-using Android.Views;
 using Android.Widget;
-using myTNB_Android.Src.Base.Fragments;
 using CheeseBind;
-using myTNB_Android.Src.Utils;
-using Newtonsoft.Json;
-using myTNB_Android.Src.myTNBMenu.Models;
+using myTNB_Android.Src.Base.Fragments;
 using myTNB_Android.Src.myTNBMenu.Adapter.BillsMenu;
-using myTNB_Android.Src.ViewBill.Activity;
+using myTNB_Android.Src.myTNBMenu.Models;
+using myTNB_Android.Src.Utils;
 using myTNB_Android.Src.ViewReceipt.Activity;
+using Newtonsoft.Json;
+using System;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.BillsMenu
 {
@@ -108,7 +101,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.BillsMenu
 
             listView.ItemClick += ListView_ItemClick;
 
-            
+
 
             //View footerView = LayoutInflater.From(Activity).Inflate(Resource.Layout.PaymentListFragmentFooterView, null, false);
             //listView.AddFooterView(footerView);

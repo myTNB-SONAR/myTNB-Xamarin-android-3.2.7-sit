@@ -1,31 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
+﻿using Android.Content;
 using Android.Text;
-using System.Net;
-using myTNB_Android.Src.Utils;
-using System.Net.Http;
-using Refit;
-using myTNB_Android.Src.ResetPassword.Api;
-using System.Threading;
-using myTNB_Android.Src.ResetPassword.Request;
+using myTNB_Android.Src.AddAccount.Api;
+using myTNB_Android.Src.AddAccount.Models;
+using myTNB_Android.Src.AppLaunch.Api;
+using myTNB_Android.Src.AppLaunch.Models;
+using myTNB_Android.Src.AppLaunch.Requests;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.Login.Api;
 using myTNB_Android.Src.Login.Requests;
-using myTNB_Android.Src.AddAccount.Api;
-using myTNB_Android.Src.AddAccount.Models;
-using myTNB_Android.Src.AppLaunch.Requests;
-using myTNB_Android.Src.AppLaunch.Api;
-using myTNB_Android.Src.AppLaunch.Models;
+using myTNB_Android.Src.ResetPassword.Api;
+using myTNB_Android.Src.ResetPassword.Request;
+using myTNB_Android.Src.Utils;
+using Refit;
+using System;
+using System.Collections.Generic;
+using System.Net;
+using System.Net.Http;
 using System.Text.RegularExpressions;
+using System.Threading;
 
 namespace myTNB_Android.Src.ResetPassword.MVP
 {
@@ -41,7 +33,7 @@ namespace myTNB_Android.Src.ResetPassword.MVP
 
         CancellationTokenSource cts;
 
-        public ResetPasswordPresenter(ResetPasswordContract.IView mView , ISharedPreferences mSharedPref)
+        public ResetPasswordPresenter(ResetPasswordContract.IView mView, ISharedPreferences mSharedPref)
         {
             this.mView = mView;
             this.mSharedPref = mSharedPref;
@@ -53,7 +45,7 @@ namespace myTNB_Android.Src.ResetPassword.MVP
             // NO IMPL
         }
 
-        public async void Submit(string apiKeyId, string newPassword, string confirmNewPassword , string oldPassword , string username , string deviceId)
+        public async void Submit(string apiKeyId, string newPassword, string confirmNewPassword, string oldPassword, string username, string deviceId)
         {
             cts = new CancellationTokenSource();
 
@@ -84,8 +76,9 @@ namespace myTNB_Android.Src.ResetPassword.MVP
 
             this.mView.DisableSubmitButton();
 
-            if (mView.IsActive()) {
-            this.mView.ShowProgressDialog();
+            if (mView.IsActive())
+            {
+                this.mView.ShowProgressDialog();
             }
 
             ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
@@ -112,7 +105,7 @@ namespace myTNB_Android.Src.ResetPassword.MVP
                                                                            apiKeyId,
                                                                            apiKeyId,
                                                                            apiKeyId,
-                                                                           apiKeyId) , cts.Token);
+                                                                           apiKeyId), cts.Token);
 
                 if (changePasswordResponse.Data.IsError)
                 {
@@ -159,12 +152,12 @@ namespace myTNB_Android.Src.ResetPassword.MVP
                         {
 
 
-//#if STUB
-//                        var customerAccountsApi = Substitute.For<GetCustomerAccounts>();
-//                        customerAccountsApi.GetCustomerAccountV5(new AddAccount.Requests.GetCustomerAccountsRequest(Constants.APP_CONFIG.API_KEY_ID, userResponse.Data.User.UserId))
-//                            .ReturnsForAnyArgs(Task.Run<AccountResponseV5>(
-//                                    () => JsonConvert.DeserializeObject<AccountResponseV5>(this.mView.GetCustomerAccountsStubV5())
-//                                ));
+                            //#if STUB
+                            //                        var customerAccountsApi = Substitute.For<GetCustomerAccounts>();
+                            //                        customerAccountsApi.GetCustomerAccountV5(new AddAccount.Requests.GetCustomerAccountsRequest(Constants.APP_CONFIG.API_KEY_ID, userResponse.Data.User.UserId))
+                            //                            .ReturnsForAnyArgs(Task.Run<AccountResponseV5>(
+                            //                                    () => JsonConvert.DeserializeObject<AccountResponseV5>(this.mView.GetCustomerAccountsStubV5())
+                            //                                ));
 
 #if DEBUG || STUB
                             var newHttpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
@@ -222,7 +215,9 @@ namespace myTNB_Android.Src.ResetPassword.MVP
                             this.mView.ShowNotificationCount(UserNotificationEntity.Count());
                             this.mView.ShowResetPasswordSuccess();
 
-                        } else {
+                        }
+                        else
+                        {
                             if (mView.IsActive())
                             {
                                 this.mView.HideProgressDialog();
@@ -277,12 +272,14 @@ namespace myTNB_Android.Src.ResetPassword.MVP
 
         public bool CheckPasswordIsValid(string password)
         {
-            
-                bool isValid = false;
+
+            bool isValid = false;
             try
             {
                 isValid = hasNumber.IsMatch(password) && hasUpperChar.IsMatch(password) && hasMinimum8Chars.IsMatch(password);
-            } catch(Exception e) {
+            }
+            catch (Exception e)
+            {
                 Utility.LoggingNonFatalError(e);
             }
             return isValid;

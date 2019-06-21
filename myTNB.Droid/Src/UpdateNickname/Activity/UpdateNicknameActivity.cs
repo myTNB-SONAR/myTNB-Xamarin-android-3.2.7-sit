@@ -1,26 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
+﻿using AFollestad.MaterialDialogs;
 using Android.App;
 using Android.Content;
+using Android.Content.PM;
 using Android.OS;
 using Android.Runtime;
+using Android.Support.Design.Widget;
+using Android.Support.V4.Content;
 using Android.Views;
 using Android.Widget;
-using Android.Content.PM;
-using myTNB_Android.Src.Base.Activity;
 using CheeseBind;
-using Android.Support.Design.Widget;
-using myTNB_Android.Src.Utils;
+using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.myTNBMenu.Models;
-using Newtonsoft.Json;
 using myTNB_Android.Src.UpdateNickname.MVP;
-using Refit;
-using AFollestad.MaterialDialogs;
-using Android.Support.V4.Content;
+using myTNB_Android.Src.Utils;
 using myTNB_Android.Src.Utils.Custom.ProgressDialog;
+using Newtonsoft.Json;
+using Refit;
+using System;
 using System.Runtime;
 
 namespace myTNB_Android.Src.UpdateNickname.Activity
@@ -28,7 +24,7 @@ namespace myTNB_Android.Src.UpdateNickname.Activity
     [Activity(Label = "@string/update_account_activity_title"
     , ScreenOrientation = ScreenOrientation.Portrait
     , Theme = "@style/Theme.UpdateMobile")]
-    public class UpdateNicknameActivity : BaseToolbarAppCompatActivity , UpdateNicknameContract.IView
+    public class UpdateNicknameActivity : BaseToolbarAppCompatActivity, UpdateNicknameContract.IView
     {
         [BindView(Resource.Id.rootView)]
         LinearLayout rootView;
@@ -54,44 +50,46 @@ namespace myTNB_Android.Src.UpdateNickname.Activity
         {
             base.OnCreate(savedInstanceState);
 
-            try {
+            try
+            {
                 Bundle extras = Intent.Extras;
 
-                if (extras !=  null) {
-                if (extras.ContainsKey(Constants.SELECTED_ACCOUNT))
-            {
-                //accountData = JsonConvert.DeserializeObject<AccountData>(Intent.Extras.GetString(Constants.SELECTED_ACCOUNT));
+                if (extras != null)
+                {
+                    if (extras.ContainsKey(Constants.SELECTED_ACCOUNT))
+                    {
+                        //accountData = JsonConvert.DeserializeObject<AccountData>(Intent.Extras.GetString(Constants.SELECTED_ACCOUNT));
                         accountData = DeSerialze<AccountData>(extras.GetString(Constants.SELECTED_ACCOUNT));
-            }
+                    }
                 }
 
 
-            progress = new MaterialDialog.Builder(this)
-                .Title(GetString(Resource.String.update_account_progress_title))
-                .Content(GetString(Resource.String.update_account_progress_content))
-                .Progress(true, 0)
-                .Cancelable(false)
-                .Build();
+                progress = new MaterialDialog.Builder(this)
+                    .Title(GetString(Resource.String.update_account_progress_title))
+                    .Content(GetString(Resource.String.update_account_progress_content))
+                    .Progress(true, 0)
+                    .Cancelable(false)
+                    .Build();
 
-            // Create your application here
-            TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutAccountNickname);
-            TextViewUtils.SetMuseoSans300Typeface(txtAccountNickname);
-            TextViewUtils.SetMuseoSans500Typeface(btnSave);
+                // Create your application here
+                TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutAccountNickname);
+                TextViewUtils.SetMuseoSans300Typeface(txtAccountNickname);
+                TextViewUtils.SetMuseoSans500Typeface(btnSave);
 
-            txtAccountNickname.AddTextChangedListener(new InputFilterFormField(txtAccountNickname, txtInputLayoutAccountNickname));
+                txtAccountNickname.AddTextChangedListener(new InputFilterFormField(txtAccountNickname, txtInputLayoutAccountNickname));
 
-            if (accountData != null && !string.IsNullOrEmpty(accountData.AccountNickName))
-            {
-                txtAccountNickname.Text = accountData.AccountName;
-            }
-
-
-            mPresenter = new UpdateNicknamePresenter(this , accountData);
-            this.userActionsListener.Start();
+                if (accountData != null && !string.IsNullOrEmpty(accountData.AccountNickName))
+                {
+                    txtAccountNickname.Text = accountData.AccountName;
+                }
 
 
+                mPresenter = new UpdateNicknamePresenter(this, accountData);
+                this.userActionsListener.Start();
 
-            txtAccountNickname.TextChanged += TxtAccountNickname_TextChanged;
+
+
+                txtAccountNickname.TextChanged += TxtAccountNickname_TextChanged;
 
             }
             catch (Exception e)
@@ -105,9 +103,10 @@ namespace myTNB_Android.Src.UpdateNickname.Activity
         [Preserve]
         private void TxtAccountNickname_TextChanged(object sender, Android.Text.TextChangedEventArgs e)
         {
-            try {
-            string newAccountNickName = txtAccountNickname.Text;
-            this.userActionsListener.OnVerifyNickName(accountData.AccountNum , newAccountNickName);
+            try
+            {
+                string newAccountNickName = txtAccountNickname.Text;
+                this.userActionsListener.OnVerifyNickName(accountData.AccountNum, newAccountNickName);
             }
             catch (Exception ex)
             {
@@ -116,14 +115,15 @@ namespace myTNB_Android.Src.UpdateNickname.Activity
         }
 
         [OnClick(Resource.Id.btnSave)]
-        void OnClickSave(object sender , EventArgs eventArgs)
+        void OnClickSave(object sender, EventArgs eventArgs)
         {
-            try {
-            string newNickName = txtAccountNickname.Text;
-            string oldNickname = accountData.AccountNickName;
-            string accountNo = accountData.AccountNum;
+            try
+            {
+                string newNickName = txtAccountNickname.Text;
+                string oldNickname = accountData.AccountNickName;
+                string accountNo = accountData.AccountNum;
 
-            this.userActionsListener.OnUpdateNickName(accountNo , oldNickname , newNickName);
+                this.userActionsListener.OnUpdateNickName(accountNo, oldNickname, newNickName);
             }
             catch (Exception e)
             {
@@ -138,11 +138,12 @@ namespace myTNB_Android.Src.UpdateNickname.Activity
             //    progress.Dismiss();
             //}
 
-            try {
-            if (loadingOverlay != null && loadingOverlay.IsShowing)
+            try
             {
-                loadingOverlay.Dismiss();
-            }
+                if (loadingOverlay != null && loadingOverlay.IsShowing)
+                {
+                    loadingOverlay.Dismiss();
+                }
             }
             catch (Exception e)
             {
@@ -186,14 +187,15 @@ namespace myTNB_Android.Src.UpdateNickname.Activity
             //{
             //    progress.Show();
             //}
-            try {
-            if (loadingOverlay != null && loadingOverlay.IsShowing)
+            try
             {
-                loadingOverlay.Dismiss();
-            }
+                if (loadingOverlay != null && loadingOverlay.IsShowing)
+                {
+                    loadingOverlay.Dismiss();
+                }
 
-            loadingOverlay = new LoadingOverlay(this, Resource.Style.LoadingOverlyDialogStyle);
-            loadingOverlay.Show();
+                loadingOverlay = new LoadingOverlay(this, Resource.Style.LoadingOverlyDialogStyle);
+                loadingOverlay.Show();
             }
             catch (Exception e)
             {
@@ -215,10 +217,11 @@ namespace myTNB_Android.Src.UpdateNickname.Activity
             }
 
             mCancelledExceptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.login_cancelled_exception_error), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.login_cancelled_exception_btn_retry), delegate {
+            .SetAction(GetString(Resource.String.login_cancelled_exception_btn_retry), delegate
+            {
 
                 mCancelledExceptionSnackBar.Dismiss();
-   
+
             }
             );
             mCancelledExceptionSnackBar.Show();
@@ -234,7 +237,8 @@ namespace myTNB_Android.Src.UpdateNickname.Activity
             }
 
             mApiExcecptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.login_api_exception_error), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.login_api_exception_btn_retry), delegate {
+            .SetAction(GetString(Resource.String.login_api_exception_btn_retry), delegate
+            {
 
                 mApiExcecptionSnackBar.Dismiss();
 
@@ -253,7 +257,8 @@ namespace myTNB_Android.Src.UpdateNickname.Activity
             }
 
             mUknownExceptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.login_unknown_exception_error), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.login_unknown_exception_btn_retry), delegate {
+            .SetAction(GetString(Resource.String.login_unknown_exception_btn_retry), delegate
+            {
 
                 mUknownExceptionSnackBar.Dismiss();
 
@@ -269,7 +274,7 @@ namespace myTNB_Android.Src.UpdateNickname.Activity
             Intent intent = new Intent();
             accountData.AccountNickName = newNickName;
             intent.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(accountData));
-            SetResult(Result.Ok , intent);
+            SetResult(Result.Ok, intent);
             Finish();
         }
 
@@ -300,7 +305,8 @@ namespace myTNB_Android.Src.UpdateNickname.Activity
         }
 
 
-        public void ClearError(){
+        public void ClearError()
+        {
             txtInputLayoutAccountNickname.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
             txtInputLayoutAccountNickname.Error = "";
         }

@@ -1,17 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
+﻿using Android.Graphics;
 using Android.OS;
-using Android.Runtime;
-using Android.Util;
 using Android.Views;
 using Android.Widget;
 using myTNB_Android.Src.Utils;
-using Android.Graphics;
+using System;
 
 namespace myTNB_Android.Src.WalkThrough.Fragment
 {
@@ -59,24 +51,25 @@ namespace myTNB_Android.Src.WalkThrough.Fragment
 
             // Use this to return your custom view for this Fragment
             View rootView = inflater.Inflate(Resource.Layout.WalkThroughContentView, container, false);
-            try {
-            TextView txtHeading = (TextView)rootView.FindViewById(Resource.Id.heading);
-            txtHeading.Text = heading;
-            TextView txtContent = (TextView)rootView.FindViewById(Resource.Id.content);
-            txtContent.Text = content;
-            ImageView imgView = (ImageView)rootView.FindViewById(Resource.Id.tour_image);
-            if (imageUrl != null && !imageUrl.Equals(""))
+            try
             {
-                Bitmap bitmap = ImageUtils.GetImageBitmapFromUrl(imageUrl);
-                imgView.SetImageBitmap(bitmap);
-            }
-            else
-            {
-                imgView.SetImageResource(imgId);
-            }
+                TextView txtHeading = (TextView)rootView.FindViewById(Resource.Id.heading);
+                txtHeading.Text = heading;
+                TextView txtContent = (TextView)rootView.FindViewById(Resource.Id.content);
+                txtContent.Text = content;
+                ImageView imgView = (ImageView)rootView.FindViewById(Resource.Id.tour_image);
+                if (imageUrl != null && !imageUrl.Equals(""))
+                {
+                    Bitmap bitmap = ImageUtils.GetImageBitmapFromUrl(imageUrl);
+                    imgView.SetImageBitmap(bitmap);
+                }
+                else
+                {
+                    imgView.SetImageResource(imgId);
+                }
 
-            TextViewUtils.SetMuseoSans300Typeface( txtContent);
-            TextViewUtils.SetMuseoSans500Typeface( txtHeading);
+                TextViewUtils.SetMuseoSans300Typeface(txtContent);
+                TextViewUtils.SetMuseoSans500Typeface(txtHeading);
             }
             catch (Exception e)
             {

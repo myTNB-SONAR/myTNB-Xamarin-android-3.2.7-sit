@@ -1,28 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
+﻿using Android;
 using Android.App;
 using Android.Content;
+using Android.Content.PM;
 using Android.OS;
 using Android.Runtime;
+using Android.Support.Design.Widget;
+using Android.Support.V4.Content;
+using Android.Text;
 using Android.Views;
 using Android.Widget;
-using myTNB_Android.Src.Base.Activity;
-using Android.Content.PM;
-using myTNB_Android.Src.RegistrationForm.MVP;
 using CheeseBind;
-using Android.Text;
-using Android.Support.Design.Widget;
-using Refit;
-using myTNB_Android.Src.Utils;
+using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.RegisterValidation;
-using myTNB_Android.Src.TermsAndConditions.Activity;
-using Newtonsoft.Json;
 using myTNB_Android.Src.RegistrationForm.Models;
-using Android.Support.V4.Content;
-using Android;
+using myTNB_Android.Src.RegistrationForm.MVP;
+using myTNB_Android.Src.TermsAndConditions.Activity;
+using myTNB_Android.Src.Utils;
+using Newtonsoft.Json;
+using Refit;
+using System;
 using System.Runtime;
 
 namespace myTNB_Android.Src.RegistrationForm.Activity
@@ -101,77 +97,78 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
             base.OnCreate(savedInstanceState);
 
 
-            try {
-            this.mPresenter = new RegisterFormPresenter(this);
+            try
+            {
+                this.mPresenter = new RegisterFormPresenter(this);
 
 
-            mVerificationProgressDialog = new AlertDialog.Builder(this)
-                .SetTitle(GetString(Resource.String.verification_alert_dialog_title))
-                .SetMessage(GetString(Resource.String.verification_alert_dialog_message))
-                .SetCancelable(false)
-                .Create();
+                mVerificationProgressDialog = new AlertDialog.Builder(this)
+                    .SetTitle(GetString(Resource.String.verification_alert_dialog_title))
+                    .SetMessage(GetString(Resource.String.verification_alert_dialog_message))
+                    .SetCancelable(false)
+                    .Create();
 
-            mRegistrationProgressDialog = new AlertDialog.Builder(this)
-                 .SetTitle(GetString(Resource.String.registration_alert_dialog_title))
-                 .SetMessage(GetString(Resource.String.registration_alert_dialog_message))
-                 .SetCancelable(false)
-                 .Create();
+                mRegistrationProgressDialog = new AlertDialog.Builder(this)
+                     .SetTitle(GetString(Resource.String.registration_alert_dialog_title))
+                     .SetMessage(GetString(Resource.String.registration_alert_dialog_message))
+                     .SetCancelable(false)
+                     .Create();
 
-            TextViewUtils.SetMuseoSans300Typeface(txtConfirmEmail,
-                txtConfirmPassword,
-                txtEmail,
-                txtMobileNumber,
-                txtFullName,
-                txtICNumber,
-                txtPassword,
-                txtTermsConditions);
+                TextViewUtils.SetMuseoSans300Typeface(txtConfirmEmail,
+                    txtConfirmPassword,
+                    txtEmail,
+                    txtMobileNumber,
+                    txtFullName,
+                    txtICNumber,
+                    txtPassword,
+                    txtTermsConditions);
 
-            TextViewUtils.SetMuseoSans300Typeface(textInputLayoutConfirmEmail,
-                textInputLayoutConfirmPassword,
-                textInputLayoutEmail,
-                textInputLayoutFullName,
-                textInputLayoutMobileNo,
-                textInputLayoutICNo,
-                textInputLayoutPassword);
+                TextViewUtils.SetMuseoSans300Typeface(textInputLayoutConfirmEmail,
+                    textInputLayoutConfirmPassword,
+                    textInputLayoutEmail,
+                    textInputLayoutFullName,
+                    textInputLayoutMobileNo,
+                    textInputLayoutICNo,
+                    textInputLayoutPassword);
 
-            TextViewUtils.SetMuseoSans500Typeface(btnRegister);
+                TextViewUtils.SetMuseoSans500Typeface(btnRegister);
 
-            //var inputFilter = new InputFilterPhoneNumber();
-            //txtMobileNumber.AddTextChangedListener(inputFilter);
-            //txtMobileNumber.FocusChange += (object sender, View.FocusChangeEventArgs e) =>
-            //{
-            //    if (e.HasFocus)
-            //    {
-            //        if (string.IsNullOrEmpty(txtMobileNumber.Text))
-            //        {
-            //            txtMobileNumber.Append("+60");
-            //        }
+                //var inputFilter = new InputFilterPhoneNumber();
+                //txtMobileNumber.AddTextChangedListener(inputFilter);
+                //txtMobileNumber.FocusChange += (object sender, View.FocusChangeEventArgs e) =>
+                //{
+                //    if (e.HasFocus)
+                //    {
+                //        if (string.IsNullOrEmpty(txtMobileNumber.Text))
+                //        {
+                //            txtMobileNumber.Append("+60");
+                //        }
 
-            //    }
+                //    }
 
-            //};
-           
-            txtFullName.TextChanged += TextChange;
-            txtICNumber.TextChanged += TextChange;
-            txtMobileNumber.TextChanged += TextChange;
-            txtEmail.TextChanged += TextChange;
-            txtConfirmEmail.TextChanged += TextChange;
-            txtPassword.TextChanged += TextChange;
-            txtConfirmPassword.TextChanged += TextChange;
+                //};
 
-            txtFullName.AddTextChangedListener(new InputFilterFormField(txtFullName, textInputLayoutFullName));
-            txtICNumber.AddTextChangedListener(new InputFilterFormField(txtICNumber, textInputLayoutICNo));
-            txtMobileNumber.AddTextChangedListener(new InputFilterFormField(txtMobileNumber, textInputLayoutMobileNo));
-            txtEmail.AddTextChangedListener(new InputFilterFormField(txtEmail, textInputLayoutEmail));
-            txtConfirmEmail.AddTextChangedListener(new InputFilterFormField(txtConfirmEmail, textInputLayoutConfirmEmail));
-            txtPassword.AddTextChangedListener(new InputFilterFormField(txtPassword, textInputLayoutPassword));
-            txtConfirmPassword.AddTextChangedListener(new InputFilterFormField(txtConfirmPassword, textInputLayoutConfirmPassword));
+                txtFullName.TextChanged += TextChange;
+                txtICNumber.TextChanged += TextChange;
+                txtMobileNumber.TextChanged += TextChange;
+                txtEmail.TextChanged += TextChange;
+                txtConfirmEmail.TextChanged += TextChange;
+                txtPassword.TextChanged += TextChange;
+                txtConfirmPassword.TextChanged += TextChange;
 
-           
-            this.userActionsListener.Start();
+                txtFullName.AddTextChangedListener(new InputFilterFormField(txtFullName, textInputLayoutFullName));
+                txtICNumber.AddTextChangedListener(new InputFilterFormField(txtICNumber, textInputLayoutICNo));
+                txtMobileNumber.AddTextChangedListener(new InputFilterFormField(txtMobileNumber, textInputLayoutMobileNo));
+                txtEmail.AddTextChangedListener(new InputFilterFormField(txtEmail, textInputLayoutEmail));
+                txtConfirmEmail.AddTextChangedListener(new InputFilterFormField(txtConfirmEmail, textInputLayoutConfirmEmail));
+                txtPassword.AddTextChangedListener(new InputFilterFormField(txtPassword, textInputLayoutPassword));
+                txtConfirmPassword.AddTextChangedListener(new InputFilterFormField(txtConfirmPassword, textInputLayoutConfirmPassword));
 
-            txtMobileNumber.Append("+60");
-            txtMobileNumber.SetFilters(new Android.Text.IInputFilter[] { new InputFilterPhoneNumber() });
+
+                this.userActionsListener.Start();
+
+                txtMobileNumber.Append("+60");
+                txtMobileNumber.SetFilters(new Android.Text.IInputFilter[] { new InputFilterPhoneNumber() });
             }
             catch (Exception e)
             {
@@ -192,39 +189,40 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
 
         private void TextChange(object sender, TextChangedEventArgs e)
         {
-            try {
-            string fullname = txtFullName.Text.ToString().Trim();
-            string ic_no = txtICNumber.Text.ToString().Trim();
-            string mobile_no = txtMobileNumber.Text.ToString().Trim();
-            string email = txtEmail.Text.ToString().Trim();
-            string confirm_email = txtConfirmEmail.Text.ToString().Trim();
-            string password = txtPassword.Text;
-            string confirm_password = txtConfirmPassword.Text;
-            this.userActionsListener.CheckRequiredFields(fullname, ic_no, mobile_no, email, confirm_email, password, confirm_password);
+            try
+            {
+                string fullname = txtFullName.Text.ToString().Trim();
+                string ic_no = txtICNumber.Text.ToString().Trim();
+                string mobile_no = txtMobileNumber.Text.ToString().Trim();
+                string email = txtEmail.Text.ToString().Trim();
+                string confirm_email = txtConfirmEmail.Text.ToString().Trim();
+                string password = txtPassword.Text;
+                string confirm_password = txtConfirmPassword.Text;
+                this.userActionsListener.CheckRequiredFields(fullname, ic_no, mobile_no, email, confirm_email, password, confirm_password);
 
-            if (!string.IsNullOrEmpty(password))
-            {
-                textInputLayoutPassword.Error = GetString(Resource.String.registration_form_password_format_hint);
-                textInputLayoutPassword.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomHint);
-                TextViewUtils.SetMuseoSans300Typeface(textInputLayoutPassword);
-                textInputLayoutPassword.PasswordVisibilityToggleEnabled = true;
-            }
-            else
-            {
-                textInputLayoutPassword.Error = "";
-                textInputLayoutPassword.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
-                TextViewUtils.SetMuseoSans300Typeface(textInputLayoutPassword);
-                textInputLayoutPassword.PasswordVisibilityToggleEnabled = false;
-            }
+                if (!string.IsNullOrEmpty(password))
+                {
+                    textInputLayoutPassword.Error = GetString(Resource.String.registration_form_password_format_hint);
+                    textInputLayoutPassword.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomHint);
+                    TextViewUtils.SetMuseoSans300Typeface(textInputLayoutPassword);
+                    textInputLayoutPassword.PasswordVisibilityToggleEnabled = true;
+                }
+                else
+                {
+                    textInputLayoutPassword.Error = "";
+                    textInputLayoutPassword.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
+                    TextViewUtils.SetMuseoSans300Typeface(textInputLayoutPassword);
+                    textInputLayoutPassword.PasswordVisibilityToggleEnabled = false;
+                }
 
-            if (!string.IsNullOrEmpty(confirm_password))
-            {
-                textInputLayoutConfirmPassword.PasswordVisibilityToggleEnabled = true;
-            }
-            else
-            {
-                textInputLayoutConfirmPassword.PasswordVisibilityToggleEnabled = false;
-            }
+                if (!string.IsNullOrEmpty(confirm_password))
+                {
+                    textInputLayoutConfirmPassword.PasswordVisibilityToggleEnabled = true;
+                }
+                else
+                {
+                    textInputLayoutConfirmPassword.PasswordVisibilityToggleEnabled = false;
+                }
             }
             catch (Exception ex)
             {
@@ -353,14 +351,15 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
         [OnClick(Resource.Id.btnRegister)]
         void OnRegister(object sender, EventArgs eventArgs)
         {
-            try {
-            string fName = txtFullName.Text.ToString().Trim();
-            string ic_no = txtICNumber.Text.ToString().Trim();
-            string mobile_no = txtMobileNumber.Text.ToString().Trim();
-            string eml_str = txtEmail.Text.ToString().Trim();
-            string confirm_email = txtConfirmEmail.Text.ToString().Trim();
-            string password = txtPassword.Text;
-            string confirm_password = txtConfirmPassword.Text;
+            try
+            {
+                string fName = txtFullName.Text.ToString().Trim();
+                string ic_no = txtICNumber.Text.ToString().Trim();
+                string mobile_no = txtMobileNumber.Text.ToString().Trim();
+                string eml_str = txtEmail.Text.ToString().Trim();
+                string confirm_email = txtConfirmEmail.Text.ToString().Trim();
+                string password = txtPassword.Text;
+                string confirm_password = txtConfirmPassword.Text;
                 this.userActionsListener.OnAcquireToken(fName, ic_no, mobile_no, eml_str, confirm_email, password, confirm_password);
             }
             catch (Exception e)
@@ -382,11 +381,12 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
 
         public void ShowVerificationCodeProgressDialog()
         {
-            try {
-            if (this.mVerificationProgressDialog != null && !this.mVerificationProgressDialog.IsShowing)
+            try
             {
-                this.mVerificationProgressDialog.Show();
-            }
+                if (this.mVerificationProgressDialog != null && !this.mVerificationProgressDialog.IsShowing)
+                {
+                    this.mVerificationProgressDialog.Show();
+                }
             }
             catch (Exception e)
             {
@@ -396,11 +396,12 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
 
         public void HideVerificationCodeProgressDialog()
         {
-            try {
-            if (this.mVerificationProgressDialog != null && this.mVerificationProgressDialog.IsShowing)
+            try
             {
-                this.mVerificationProgressDialog.Dismiss();
-            }
+                if (this.mVerificationProgressDialog != null && this.mVerificationProgressDialog.IsShowing)
+                {
+                    this.mVerificationProgressDialog.Dismiss();
+                }
             }
             catch (Exception e)
             {
@@ -410,11 +411,12 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
 
         public void ShowRegistrationProgressDialog()
         {
-            try {
-            if (this.mRegistrationProgressDialog != null && !this.mRegistrationProgressDialog.IsShowing)
+            try
             {
-                this.mRegistrationProgressDialog.Show();
-            }
+                if (this.mRegistrationProgressDialog != null && !this.mRegistrationProgressDialog.IsShowing)
+                {
+                    this.mRegistrationProgressDialog.Show();
+                }
             }
             catch (Exception e)
             {
@@ -424,11 +426,12 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
 
         public void HideRegistrationProgressDialog()
         {
-            try {
-            if (this.mRegistrationProgressDialog != null && this.mRegistrationProgressDialog.IsShowing)
+            try
             {
-                this.mRegistrationProgressDialog.Dismiss();
-            }
+                if (this.mRegistrationProgressDialog != null && this.mRegistrationProgressDialog.IsShowing)
+                {
+                    this.mRegistrationProgressDialog.Dismiss();
+                }
             }
             catch (Exception e)
             {
@@ -472,7 +475,8 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
             }
 
             mCancelledExceptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.registration_cancelled_exception_error), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.registration_cancelled_exception_btn_retry), delegate {
+            .SetAction(GetString(Resource.String.registration_cancelled_exception_btn_retry), delegate
+            {
 
                 mCancelledExceptionSnackBar.Dismiss();
                 string fullname = txtFullName.Text;
@@ -499,7 +503,8 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
             }
 
             mApiExcecptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.registration_api_exception_error), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.registration_api_exception_btn_retry), delegate {
+            .SetAction(GetString(Resource.String.registration_api_exception_btn_retry), delegate
+            {
 
                 mApiExcecptionSnackBar.Dismiss();
                 string fullname = txtFullName.Text;
@@ -526,7 +531,8 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
             }
 
             mUknownExceptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.registration_unknown_exception_error), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.registration_unknown_exception_btn_retry), delegate {
+            .SetAction(GetString(Resource.String.registration_unknown_exception_btn_retry), delegate
+            {
 
                 mUknownExceptionSnackBar.Dismiss();
                 string fullname = txtFullName.Text;
@@ -598,9 +604,10 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
 
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Permission[] grantResults)
         {
-            try {
-            base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
-            this.userActionsListener.OnRequestPermissionsResult(requestCode, permissions, grantResults);
+            try
+            {
+                base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
+                this.userActionsListener.OnRequestPermissionsResult(requestCode, permissions, grantResults);
             }
             catch (Exception e)
             {
@@ -624,7 +631,8 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
             else
             {
                 mSnackBar = Snackbar.Make(rootView, GetString(Resource.String.runtime_permission_sms_received_rationale), Snackbar.LengthIndefinite)
-                .SetAction(GetString(Resource.String.runtime_permission_dialog_btn_show), delegate {
+                .SetAction(GetString(Resource.String.runtime_permission_dialog_btn_show), delegate
+                {
                     mSnackBar.Dismiss();
                     this.userActionsListener.OnRequestSMSPermission();
                 }
@@ -651,7 +659,8 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
         }
 
 
-        public void ShowFullNameError() {
+        public void ShowFullNameError()
+        {
             textInputLayoutFullName.Error = GetString(Resource.String.name_error);
         }
 
@@ -677,6 +686,6 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
                     break;
             }
         }
-        
+
     }
 }

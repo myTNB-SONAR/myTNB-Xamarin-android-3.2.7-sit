@@ -1,37 +1,30 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
+﻿using AFollestad.MaterialDialogs;
 using Android.App;
 using Android.Content;
 using Android.OS;
-using Android.Runtime;
+using Android.Support.Design.Widget;
 using Android.Util;
 using Android.Views;
 using Android.Widget;
-using myTNB_Android.Src.Base.Fragments;
 using CheeseBind;
-using myTNB_Android.Src.myTNBMenu.Activity;
 using Java.Lang;
-using myTNB_Android.Src.Utils;
+using myTNB_Android.Src.Base.Fragments;
+using myTNB_Android.Src.Database.Model;
+using myTNB_Android.Src.FAQ.Activity;
+using myTNB_Android.Src.FindUs.Activity;
+using myTNB_Android.Src.MyAccount.Activity;
+using myTNB_Android.Src.myTNBMenu.Activity;
 using myTNB_Android.Src.myTNBMenu.MVP.Fragment;
 using myTNB_Android.Src.NotificationSettings.Activity;
-using Refit;
 using myTNB_Android.Src.TermsAndConditions.Activity;
-using Android.Support.Design.Widget;
-using AFollestad.MaterialDialogs;
-using myTNB_Android.Src.MyAccount.Activity;
-using myTNB_Android.Src.Database.Model;
-using Newtonsoft.Json;
-using myTNB_Android.Src.FindUs.Activity;
-using Android.Content.PM;
-using myTNB_Android.Src.FAQ.Activity;
+using myTNB_Android.Src.Utils;
 using myTNB_Android.Src.Utils.Custom.ProgressDialog;
+using Refit;
+using System;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.MoreMenu
 {
-    public class MoreMenuFragment : BaseFragment , MoreFragmentContract.IView
+    public class MoreMenuFragment : BaseFragment, MoreFragmentContract.IView
     {
 
         [BindView(Resource.Id.rootView)]
@@ -139,10 +132,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.MoreMenu
                 var code = context.PackageManager.GetPackageInfo(context.PackageName, 0).VersionCode;
                 if (name != null)
                 {
-                    txt_app_version.Text = GetString(Resource.String.text_app_version) +" "+ name;
+                    txt_app_version.Text = GetString(Resource.String.text_app_version) + " " + name;
                 }
             }
-            catch(System.Exception e)
+            catch (System.Exception e)
             {
                 Log.Debug("Package Manager", e.StackTrace);
                 txt_app_version.Visibility = ViewStates.Gone;
@@ -180,7 +173,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.MoreMenu
         }
 
         [OnClick(Resource.Id.btnLogout)]
-        void OnLogout(object sender , EventArgs eventArgs)
+        void OnLogout(object sender, EventArgs eventArgs)
         {
             if (Activity is DashboardActivity)
             {
@@ -190,19 +183,19 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.MoreMenu
         }
 
         [OnClick(Resource.Id.txt_more_fragment_settings_notifications)]
-        void OnNotificationClick(object sender , EventArgs e)
+        void OnNotificationClick(object sender, EventArgs e)
         {
             Log.Debug(Tag, "On Click " + this.userActionsListener);
             this.userActionsListener.OnNotification(this.DeviceId());
         }
         [OnClick(Resource.Id.txt_more_fragment_settings_my_account)]
-        void OnMyAccountClick(object sender , EventArgs e)
+        void OnMyAccountClick(object sender, EventArgs e)
         {
-            this.userActionsListener.OnMyAccount();   
+            this.userActionsListener.OnMyAccount();
         }
 
         [OnClick(Resource.Id.txt_more_fragment_help_support_call_us)]
-        void OnCallUs(object sender ,EventArgs e)
+        void OnCallUs(object sender, EventArgs e)
         {
             this.userActionsListener.OnCallUs();
         }
@@ -227,7 +220,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.MoreMenu
         }
 
         [OnClick(Resource.Id.txt_more_fragment_help_support_TC)]
-        void OnTC(object sender , EventArgs e)
+        void OnTC(object sender, EventArgs e)
         {
             this.userActionsListener.OnTermsAndConditions();
         }
@@ -243,7 +236,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.MoreMenu
         {
             this.userActionsListener.OnFindUs();
         }
-        
+
         [OnClick(Resource.Id.txt_more_fragment_share_rate_this_app)]
         void OnRateApp(object sender, EventArgs e)
         {
@@ -252,7 +245,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.MoreMenu
 
         public void ShowNotifications()
         {
-            StartActivity(new Intent(this.Activity , typeof(NotificationSettingsActivity)));
+            StartActivity(new Intent(this.Activity, typeof(NotificationSettingsActivity)));
         }
 
         public void ShowTermsAndConditions()
@@ -274,19 +267,21 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.MoreMenu
         private Snackbar mCancelledExceptionSnackBar;
         public void ShowRetryOptionsCancelledException(System.OperationCanceledException operationCanceledException)
         {
-            try {
-            if (mCancelledExceptionSnackBar != null && mCancelledExceptionSnackBar.IsShown)
+            try
             {
-                mCancelledExceptionSnackBar.Dismiss();
-            }
+                if (mCancelledExceptionSnackBar != null && mCancelledExceptionSnackBar.IsShown)
+                {
+                    mCancelledExceptionSnackBar.Dismiss();
+                }
 
-            mCancelledExceptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.more_cancelled_exception_error), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.more_menu_cancelled_exception_btn_close), delegate {
+                mCancelledExceptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.more_cancelled_exception_error), Snackbar.LengthIndefinite)
+                .SetAction(GetString(Resource.String.more_menu_cancelled_exception_btn_close), delegate
+                {
 
-                mCancelledExceptionSnackBar.Dismiss();
-            }
-            );
-            mCancelledExceptionSnackBar.Show();
+                    mCancelledExceptionSnackBar.Dismiss();
+                }
+                );
+                mCancelledExceptionSnackBar.Show();
             }
             catch (System.Exception e)
             {
@@ -297,20 +292,22 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.MoreMenu
         private Snackbar mApiExcecptionSnackBar;
         public void ShowRetryOptionsApiException(ApiException apiException)
         {
-            try {
-            if (mApiExcecptionSnackBar != null && mApiExcecptionSnackBar.IsShown)
+            try
             {
-                mApiExcecptionSnackBar.Dismiss();
-            }
+                if (mApiExcecptionSnackBar != null && mApiExcecptionSnackBar.IsShown)
+                {
+                    mApiExcecptionSnackBar.Dismiss();
+                }
 
-            mApiExcecptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.more_api_exception_error), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.more_menu_api_exception_btn_close), delegate {
+                mApiExcecptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.more_api_exception_error), Snackbar.LengthIndefinite)
+                .SetAction(GetString(Resource.String.more_menu_api_exception_btn_close), delegate
+                {
 
-                mApiExcecptionSnackBar.Dismiss();
-     
-            }
-            );
-            mApiExcecptionSnackBar.Show();
+                    mApiExcecptionSnackBar.Dismiss();
+
+                }
+                );
+                mApiExcecptionSnackBar.Show();
             }
             catch (System.Exception e)
             {
@@ -321,21 +318,23 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.MoreMenu
         private Snackbar mUknownExceptionSnackBar;
         public void ShowRetryOptionsUnknownException(System.Exception exception)
         {
-            try {
-            if (mUknownExceptionSnackBar != null && mUknownExceptionSnackBar.IsShown)
+            try
             {
-                mUknownExceptionSnackBar.Dismiss();
+                if (mUknownExceptionSnackBar != null && mUknownExceptionSnackBar.IsShown)
+                {
+                    mUknownExceptionSnackBar.Dismiss();
 
-            }
+                }
 
-            mUknownExceptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.more_unknown_exception_error), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.more_menu_unknown_exception_btn_close), delegate {
+                mUknownExceptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.more_unknown_exception_error), Snackbar.LengthIndefinite)
+                .SetAction(GetString(Resource.String.more_menu_unknown_exception_btn_close), delegate
+                {
 
-                mUknownExceptionSnackBar.Dismiss();
-  
-            }
-            );
-            mUknownExceptionSnackBar.Show();
+                    mUknownExceptionSnackBar.Dismiss();
+
+                }
+                );
+                mUknownExceptionSnackBar.Show();
             }
             catch (System.Exception e)
             {
@@ -358,14 +357,15 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.MoreMenu
             //    .Build();
 
             //notificationsProgressDialog.Show();'
-            try {
-            if (loadingOverlay != null && loadingOverlay.IsShowing)
+            try
             {
-                loadingOverlay.Dismiss();
-            }
+                if (loadingOverlay != null && loadingOverlay.IsShowing)
+                {
+                    loadingOverlay.Dismiss();
+                }
 
-            loadingOverlay = new LoadingOverlay(Activity, Resource.Style.LoadingOverlyDialogStyle);
-            loadingOverlay.Show();
+                loadingOverlay = new LoadingOverlay(Activity, Resource.Style.LoadingOverlyDialogStyle);
+                loadingOverlay.Show();
             }
             catch (System.Exception e)
             {
@@ -379,11 +379,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.MoreMenu
             //{
             //    notificationsProgressDialog.Dismiss();
             //}
-            try {
-            if (loadingOverlay != null && loadingOverlay.IsShowing)
+            try
             {
-                loadingOverlay.Dismiss();
-            }
+                if (loadingOverlay != null && loadingOverlay.IsShowing)
+                {
+                    loadingOverlay.Dismiss();
+                }
             }
             catch (System.Exception e)
             {
@@ -426,7 +427,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.MoreMenu
             else
             {
                 var uri = Android.Net.Uri.Parse(entity.Url);
-                var intent = new Intent(Intent.ActionView , uri);
+                var intent = new Intent(Intent.ActionView, uri);
                 StartActivity(intent);
             }
         }
@@ -445,16 +446,16 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.MoreMenu
             //    var intent = new Intent(Intent.ActionView, uri);
             //    StartActivity(intent);
             //}
-            StartActivity(new Intent(this.Activity , typeof(FAQListActivity)));
+            StartActivity(new Intent(this.Activity, typeof(FAQListActivity)));
         }
 
         public void ShowShareApp(WeblinkEntity entity)
         {
             Intent shareIntent = new Intent(Intent.ActionSend);
             shareIntent.SetType("text/plain");
-            shareIntent.PutExtra(Intent.ExtraSubject , entity.Title);
-            shareIntent.PutExtra(Intent.ExtraText , entity.Url);
-            StartActivity(Intent.CreateChooser(shareIntent , GetString(Resource.String.more_fragment_share_via)));
+            shareIntent.PutExtra(Intent.ExtraSubject, entity.Title);
+            shareIntent.PutExtra(Intent.ExtraText, entity.Url);
+            StartActivity(Intent.CreateChooser(shareIntent, GetString(Resource.String.more_fragment_share_via)));
         }
 
         public void ShowRateUs(WeblinkEntity entity)
@@ -464,7 +465,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.MoreMenu
             try
             {
                 string[] array = entity.Url.Split(new[] { "?id=" }, StringSplitOptions.None);
-                
+
                 if (array.Length > 1)
                 {
                     string id = array[1];
@@ -502,9 +503,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.MoreMenu
                 //}
                 //else
                 //{
-                    var uri = Android.Net.Uri.Parse(entity.Url);
-                    var intent = new Intent(Intent.ActionView, uri);
-                    StartActivity(intent);
+                var uri = Android.Net.Uri.Parse(entity.Url);
+                var intent = new Intent(Intent.ActionView, uri);
+                StartActivity(intent);
                 //}
             }
         }

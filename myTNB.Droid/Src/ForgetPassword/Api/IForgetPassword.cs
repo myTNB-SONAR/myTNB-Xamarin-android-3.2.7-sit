@@ -1,19 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-using Refit;
-using myTNB_Android.Src.ForgetPassword.Models;
+﻿using myTNB_Android.Src.ForgetPassword.Models;
 using myTNB_Android.Src.ForgetPassword.Requests;
-using System.Threading.Tasks;
+using Refit;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace myTNB_Android.Src.ForgetPassword.Api
 {

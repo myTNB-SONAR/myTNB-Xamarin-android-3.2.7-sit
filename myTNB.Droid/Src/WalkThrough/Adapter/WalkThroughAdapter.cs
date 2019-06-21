@@ -1,16 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-
-using Android.Support.V4.View;
+﻿using Android.Content;
 using Android.Support.V4.App;
 using myTNB.Droid.Models;
 using myTNB_Android.Src.WalkThrough.Fragment;
@@ -30,7 +18,7 @@ namespace myTNB_Android.Src.WalkThrough.Adapter
 
         public override int Count
         {
-            get {  return this.walkThroughDeck.NumCards; }
+            get { return this.walkThroughDeck.NumCards; }
         }
 
         public override Android.Support.V4.App.Fragment GetItem(int position)

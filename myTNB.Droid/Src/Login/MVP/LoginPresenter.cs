@@ -1,38 +1,29 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
+﻿using Android.App;
 using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
 using Android.Text;
 using Android.Util;
-using myTNB_Android.Src.Login.Models;
-using Refit;
+using Firebase.Iid;
+using myTNB.SitecoreCMS.Model;
+using myTNB.SitecoreCMS.Services;
+using myTNB.SQLite.SQLiteDataManager;
+using myTNB_Android.Src.AddAccount.Api;
+using myTNB_Android.Src.AddAccount.Models;
+using myTNB_Android.Src.AppLaunch.Api;
+using myTNB_Android.Src.AppLaunch.Models;
+using myTNB_Android.Src.AppLaunch.Requests;
+using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.Login.Api;
 using myTNB_Android.Src.Login.Requests;
-using System.Threading.Tasks;
+using myTNB_Android.Src.SiteCore;
 using myTNB_Android.Src.Utils;
+using Newtonsoft.Json;
+using Refit;
+using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Threading;
-using myTNB_Android.Src.Database.Model;
-using NSubstitute;
-using myTNB_Android.Src.AddAccount.Api;
-using myTNB_Android.Src.AddAccount.Models;
-using Newtonsoft.Json;
-using myTNB_Android.Src.AppLaunch.Api;
-using myTNB_Android.Src.AppLaunch.Requests;
-using myTNB_Android.Src.AppLaunch.Models;
-using Firebase.Iid;
-using myTNB.SQLite.SQLiteDataManager;
-using myTNB.SitecoreCMS.Services;
-using myTNB.SitecoreCMS.Model;
-using myTNB_Android.Src.SiteCore;
+using System.Threading.Tasks;
 
 namespace myTNB_Android.Src.Login.MVP
 {
@@ -46,7 +37,7 @@ namespace myTNB_Android.Src.Login.MVP
 
         private string savedPromoTimeStamp = "0000000";
 
-        public LoginPresenter(LoginContract.IView mView , ISharedPreferences mSharedPref)
+        public LoginPresenter(LoginContract.IView mView, ISharedPreferences mSharedPref)
         {
             this.mView = mView;
             this.mSharedPref = mSharedPref;
@@ -55,21 +46,22 @@ namespace myTNB_Android.Src.Login.MVP
 
         public void CancelLogin()
         {
-            try {
-            if (cts != null && cts.Token.CanBeCanceled)
+            try
             {
-                cts.Cancel();
-                if (mView.IsActive())
+                if (cts != null && cts.Token.CanBeCanceled)
                 {
-                    this.mView.HideProgressDialog();
+                    cts.Cancel();
+                    if (mView.IsActive())
+                    {
+                        this.mView.HideProgressDialog();
+                    }
                 }
-            }
-            else
-            {
-                // TODO : COULD NOT BE CANCELLED SHOW TO USERS
-            }
+                else
+                {
+                    // TODO : COULD NOT BE CANCELLED SHOW TO USERS
+                }
 
-            this.mView.EnableLoginButton();
+                this.mView.EnableLoginButton();
             }
             catch (Exception e)
             {
@@ -77,7 +69,7 @@ namespace myTNB_Android.Src.Login.MVP
             }
         }
 
-        public async void LoginAsync(string usrNme, string pwd , string deviceId, bool rememberMe)
+        public async void LoginAsync(string usrNme, string pwd, string deviceId, bool rememberMe)
         {
             cts = new CancellationTokenSource();
             if (TextUtils.IsEmpty(usrNme))
@@ -107,33 +99,15 @@ namespace myTNB_Android.Src.Login.MVP
 
             ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
 #if STUB
-            var httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
-            var api = Substitute.For<IAuthenticateUser>();
-            var notificationsApi = RestService.For<INotificationApi>(httpClient);
-            api.DoLogin(new UserAuthenticationRequest(Constants.APP_CONFIG.API_KEY_ID,
-               username,
-               password,
-               Constants.APP_CONFIG.API_KEY_ID,
-               Constants.APP_CONFIG.API_KEY_ID,
-               Constants.APP_CONFIG.API_KEY_ID,
-               Constants.APP_CONFIG.API_KEY_ID,
-               Constants.APP_CONFIG.API_KEY_ID,
-               Constants.APP_CONFIG.API_KEY_ID), cts.Token)
-               .ReturnsForAnyArgs(Task.Run<UserResponse>(
-                        () => JsonConvert.DeserializeObject<UserResponse>(this.mView.GetLoginResponseStubV4())
-                   ));
-
-
+            var api = RestService.For<IAuthenticateUser>(Constants.SERVER_URL.END_POINT);
+            var notificationsApi = RestService.For<INotificationApi>(Constants.SERVER_URL.END_POINT);
 #elif DEBUG
             var httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
             var api = RestService.For<IAuthenticateUser>(httpClient);
-
             var notificationsApi = RestService.For<INotificationApi>(httpClient);
-
 #else
             var api = RestService.For<IAuthenticateUser>(Constants.SERVER_URL.END_POINT);
-             var notificationsApi = RestService.For<INotificationApi>(Constants.SERVER_URL.END_POINT);
-            
+            var notificationsApi = RestService.For<INotificationApi>(Constants.SERVER_URL.END_POINT);
 #endif
             Log.Debug(TAG, "Awaiting...");
             try
@@ -161,7 +135,7 @@ namespace myTNB_Android.Src.Login.MVP
                 else
                 {
                     fcmToken = FirebaseInstanceId.Instance.Token;
-                    FirebaseTokenEntity.InsertOrReplace(fcmToken , true);
+                    FirebaseTokenEntity.InsertOrReplace(fcmToken, true);
                 }
 
                 var userResponse = await api.DoLogin(new UserAuthenticationRequest(Constants.APP_CONFIG.API_KEY_ID)
@@ -215,8 +189,8 @@ namespace myTNB_Android.Src.Login.MVP
                     {
                         if (this.mView.IsActive())
                         {
-                                this.mView.HideProgressDialog();
-                            this.mView.ShowResetPassword(usrNme , pwd);
+                            this.mView.HideProgressDialog();
+                            this.mView.ShowResetPassword(usrNme, pwd);
                         }
                     }
                     else if (!userResponse.Data.User.isPhoneVerified)
@@ -235,8 +209,9 @@ namespace myTNB_Android.Src.Login.MVP
                             FcmToken = fcmToken
                         };
 
-                        if (mView.IsActive()) {
-                        this.mView.HideProgressDialog();
+                        if (mView.IsActive())
+                        {
+                            this.mView.HideProgressDialog();
                         }
                         this.mView.ShowUpdatePhoneNumber(loginRequest, userResponse.Data.User.MobileNo);
                     }
@@ -259,11 +234,7 @@ namespace myTNB_Android.Src.Login.MVP
 
 
 #if STUB
-                        var customerAccountsApi = Substitute.For<GetCustomerAccounts>();
-                        customerAccountsApi.GetCustomerAccountV5(new AddAccount.Requests.GetCustomerAccountsRequest(Constants.APP_CONFIG.API_KEY_ID, userResponse.Data.User.UserId))
-                            .ReturnsForAnyArgs(Task.Run<AccountResponseV5>(
-                                    () => JsonConvert.DeserializeObject<AccountResponseV5>(this.mView.GetCustomerAccountsStubV5())
-                                ));
+                            var customerAccountsApi = RestService.For<GetCustomerAccounts>(Constants.SERVER_URL.END_POINT);
 
 #elif DEBUG
                             var newHttpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
@@ -370,7 +341,8 @@ namespace myTNB_Android.Src.Login.MVP
                                     }
                                     catch (Exception e)
                                     {
-                                        if (mView.IsActive()) {
+                                        if (mView.IsActive())
+                                        {
                                             this.mView.HideProgressDialog();
                                         }
                                         Log.Error("API Exception", e.StackTrace);
@@ -408,7 +380,8 @@ namespace myTNB_Android.Src.Login.MVP
                                             Log.Error("API Exception", e.StackTrace);
                                             Utility.LoggingNonFatalError(e);
                                         }
-                                    }).ContinueWith((Task previous) => {
+                                    }).ContinueWith((Task previous) =>
+                                    {
                                     }, cts.Token);
                                 }
                             }
@@ -438,14 +411,14 @@ namespace myTNB_Android.Src.Login.MVP
                         }
                     }
 
-                    
+
 
                 }
 
             }
-            catch (System.OperationCanceledException e )
+            catch (System.OperationCanceledException e)
             {
-                Log.Debug(TAG , "Cancelled Exception");
+                Log.Debug(TAG, "Cancelled Exception");
                 // ADD OPERATION CANCELLED HERE
                 if (this.mView.IsActive())
                 {
@@ -453,7 +426,7 @@ namespace myTNB_Android.Src.Login.MVP
                     this.mView.ShowRetryOptionsCancelledException(e);
                 }
                 Utility.LoggingNonFatalError(e);
-            } 
+            }
             catch (ApiException apiException)
             {
                 // ADD HTTP CONNECTION EXCEPTION HERE
@@ -467,7 +440,7 @@ namespace myTNB_Android.Src.Login.MVP
             catch (Exception e)
             {
                 // ADD UNKNOWN EXCEPTION HERE
-                Log.Debug(TAG , "Stack " +  e.StackTrace);
+                Log.Debug(TAG, "Stack " + e.StackTrace);
                 if (this.mView.IsActive())
                 {
                     this.mView.HideProgressDialog();
@@ -486,7 +459,7 @@ namespace myTNB_Android.Src.Login.MVP
 
         }
 
-        
+
 
         public void NavigateToDashboard()
         {

@@ -1,27 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
+﻿using AFollestad.MaterialDialogs;
 using Android.App;
 using Android.Content;
+using Android.Content.PM;
 using Android.OS;
 using Android.Runtime;
+using Android.Support.Design.Widget;
+using Android.Support.V4.Content;
 using Android.Views;
 using Android.Widget;
-using myTNB_Android.Src.Base.Activity;
-using Android.Content.PM;
-using myTNB_Android.Src.UpdateMobileNo.MVP;
-using Refit;
-using Android.Support.Design.Widget;
 using CheeseBind;
-using AFollestad.MaterialDialogs;
-using myTNB_Android.Src.Utils;
-using Android.Support.V4.Content;
-using myTNB_Android.Src.Utils.Custom.ProgressDialog;
-using Newtonsoft.Json;
+using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.Login.Requests;
+using myTNB_Android.Src.UpdateMobileNo.MVP;
+using myTNB_Android.Src.Utils;
+using myTNB_Android.Src.Utils.Custom.ProgressDialog;
+using Newtonsoft.Json;
+using Refit;
+using System;
 using System.Runtime;
 
 namespace myTNB_Android.Src.UpdateMobileNo.Activity
@@ -29,7 +25,7 @@ namespace myTNB_Android.Src.UpdateMobileNo.Activity
     [Activity(Label = "@string/update_mobile_activity_title"
         , ScreenOrientation = ScreenOrientation.Portrait
         , Theme = "@style/Theme.UpdateMobile")]
-    public class UpdateMobileActivity : BaseToolbarAppCompatActivity , UpdateMobileContract.IView
+    public class UpdateMobileActivity : BaseToolbarAppCompatActivity, UpdateMobileContract.IView
     {
         [BindView(Resource.Id.rootView)]
         LinearLayout rootView;
@@ -62,99 +58,101 @@ namespace myTNB_Android.Src.UpdateMobileNo.Activity
         {
             base.OnCreate(savedInstanceState);
 
-            try {
-                Bundle intent = Intent.Extras;
-            
-            if (intent != null)
+            try
             {
-                    if (intent.ContainsKey(Constants.FORCE_UPDATE_PHONE_NO))
+                Bundle intent = Intent.Extras;
+
+                if (intent != null)
                 {
+                    if (intent.ContainsKey(Constants.FORCE_UPDATE_PHONE_NO))
+                    {
                         forceUpdatePhoneNo = intent.GetBoolean(Constants.FORCE_UPDATE_PHONE_NO, false);
-                    //SupportActionBar.SetDisplayHomeAsUpEnabled(false);
-                }
+                        //SupportActionBar.SetDisplayHomeAsUpEnabled(false);
+                    }
 
                     if (intent.ContainsKey("LoginRequest"))
-                {
+                    {
                         //loginRequest = JsonConvert.DeserializeObject<UserAuthenticationRequest>(intent.GetString("LoginRequest"));
                         loginRequest = DeSerialze<UserAuthenticationRequest>(intent.GetString("LoginRequest"));
-                }
+                    }
 
                     if (intent.ContainsKey(Constants.FROM_APP_LAUNCH))
-                {
+                    {
                         fromAppLaunch = intent.GetBoolean(Constants.FROM_APP_LAUNCH, false);
+                    }
+
                 }
 
-            }
+
+                // Create your application here
+
+                TextViewUtils.SetMuseoSans300Typeface(txtMobileNo);
+                TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutMobileNo);
+                TextViewUtils.SetMuseoSans500Typeface(btnSave);
+                TextViewUtils.SetMuseoSans300Typeface(lblVerifyMobileNo);
+
+                progress = new MaterialDialog.Builder(this)
+                    .Title(GetString(Resource.String.update_mobile_progress_title))
+                    .Content(GetString(Resource.String.update_mobile_progress_content))
+                    .Progress(true, 0)
+                    .Cancelable(false)
+                    .Build();
 
 
-            // Create your application here
+                mPresenter = new UpdateMobilePresenter(this);
+                userActionsListener.Start();
 
-            TextViewUtils.SetMuseoSans300Typeface(txtMobileNo);
-            TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutMobileNo);
-            TextViewUtils.SetMuseoSans500Typeface(btnSave);
-            TextViewUtils.SetMuseoSans300Typeface(lblVerifyMobileNo);
+                //txtMobileNo.FocusChange += (object sender, View.FocusChangeEventArgs e) =>
+                //{
+                //    if (e.HasFocus)
+                //    {
+                //        if (string.IsNullOrEmpty(txtMobileNo.Text))
+                //        {
+                //            txtMobileNo.Append("+60");
+                //        }
+                //    }
+                //};
 
-            progress = new MaterialDialog.Builder(this)
-                .Title(GetString(Resource.String.update_mobile_progress_title))
-                .Content(GetString(Resource.String.update_mobile_progress_content))
-                .Progress(true, 0)
-                .Cancelable(false)
-                .Build();
+                txtMobileNo.TextChanged += TxtMobileNo_TextChanged;
+                txtMobileNo.AddTextChangedListener(new InputFilterFormField(txtMobileNo, txtInputLayoutMobileNo));
 
 
-            mPresenter = new UpdateMobilePresenter(this);
-            userActionsListener.Start();
-
-            //txtMobileNo.FocusChange += (object sender, View.FocusChangeEventArgs e) =>
-            //{
-            //    if (e.HasFocus)
-            //    {
-            //        if (string.IsNullOrEmpty(txtMobileNo.Text))
-            //        {
-            //            txtMobileNo.Append("+60");
-            //        }
-            //    }
-            //};
-
-            txtMobileNo.TextChanged += TxtMobileNo_TextChanged;
-            txtMobileNo.AddTextChangedListener(new InputFilterFormField(txtMobileNo, txtInputLayoutMobileNo));
-            
-
-            if (UserEntity.IsCurrentlyActive())
-            {
-                UserEntity entity = UserEntity.GetActive();
-                string MobileNo = entity.MobileNo;
-                if (!MobileNo.Contains("+60"))
+                if (UserEntity.IsCurrentlyActive())
                 {
-                    MobileNo = "+60" + MobileNo;
+                    UserEntity entity = UserEntity.GetActive();
+                    string MobileNo = entity.MobileNo;
+                    if (!MobileNo.Contains("+60"))
+                    {
+                        MobileNo = "+60" + MobileNo;
+                    }
+                    txtMobileNo.Text = MobileNo;
                 }
-                txtMobileNo.Text = MobileNo;
-                }else if (intent.ContainsKey("PhoneNumber"))
-            {
-                string MobileNo = Intent.GetStringExtra("PhoneNumber");
-                if (!MobileNo.Contains("+60"))
+                else if (intent.ContainsKey("PhoneNumber"))
                 {
-                    MobileNo = "+60" + MobileNo;
+                    string MobileNo = Intent.GetStringExtra("PhoneNumber");
+                    if (!MobileNo.Contains("+60"))
+                    {
+                        MobileNo = "+60" + MobileNo;
+                    }
+                    txtMobileNo.Text = string.IsNullOrEmpty(MobileNo) ? "" : MobileNo;
                 }
-                txtMobileNo.Text = string.IsNullOrEmpty(MobileNo) ? "" : MobileNo;
-            }
 
-            if (string.IsNullOrEmpty(txtMobileNo.Text))
-            {
-                txtMobileNo.Append("+60");
-            }
-            txtMobileNo.SetFilters(new Android.Text.IInputFilter[] { new InputFilterPhoneNumber() });
+                if (string.IsNullOrEmpty(txtMobileNo.Text))
+                {
+                    txtMobileNo.Append("+60");
+                }
+                txtMobileNo.SetFilters(new Android.Text.IInputFilter[] { new InputFilterPhoneNumber() });
 
-            if (forceUpdatePhoneNo)
-            {
-                lblVerifyMobileNo.Visibility = ViewStates.Visible;
-                SetToolBarTitle(GetString(Resource.String.verify_mobile_no));
-            }
-            else
-            {
-                lblVerifyMobileNo.Visibility = ViewStates.Gone;
-                SetToolBarTitle(GetString(Resource.String.update_mobile_activity_title));
-            }
+                if (forceUpdatePhoneNo)
+                {
+                    lblVerifyMobileNo.Visibility = ViewStates.Visible;
+                    SetToolBarTitle(GetString(Resource.String.verify_mobile_no));
+                }
+                else
+                {
+                    lblVerifyMobileNo.Visibility = ViewStates.Gone;
+                    SetToolBarTitle(GetString(Resource.String.update_mobile_activity_title));
+                }
 
             }
             catch (Exception e)
@@ -182,11 +180,12 @@ namespace myTNB_Android.Src.UpdateMobileNo.Activity
             //{
             //    progress.Dismiss();
             //}
-            try {
-            if (loadingOverlay != null && loadingOverlay.IsShowing)
+            try
             {
-                loadingOverlay.Dismiss();
-            }
+                if (loadingOverlay != null && loadingOverlay.IsShowing)
+                {
+                    loadingOverlay.Dismiss();
+                }
             }
             catch (Exception e)
             {
@@ -228,7 +227,8 @@ namespace myTNB_Android.Src.UpdateMobileNo.Activity
             }
 
             mErrorSnackbar = Snackbar.Make(rootView, message, Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.update_mobile_cancelled_exception_btn_close), delegate {
+            .SetAction(GetString(Resource.String.update_mobile_cancelled_exception_btn_close), delegate
+            {
 
                 mErrorSnackbar.Dismiss();
             }
@@ -247,14 +247,15 @@ namespace myTNB_Android.Src.UpdateMobileNo.Activity
             //{
             //    progress.Show();
             //}
-            try {
-            if (loadingOverlay != null && loadingOverlay.IsShowing)
+            try
             {
-                loadingOverlay.Dismiss();
-            }
+                if (loadingOverlay != null && loadingOverlay.IsShowing)
+                {
+                    loadingOverlay.Dismiss();
+                }
 
-            loadingOverlay = new LoadingOverlay(this, Resource.Style.LoadingOverlyDialogStyle);
-            loadingOverlay.Show();
+                loadingOverlay = new LoadingOverlay(this, Resource.Style.LoadingOverlyDialogStyle);
+                loadingOverlay.Show();
             }
             catch (Exception e)
             {
@@ -271,7 +272,8 @@ namespace myTNB_Android.Src.UpdateMobileNo.Activity
             }
 
             mCancelledExceptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.update_mobile_cancelled_exception_error), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.update_mobile_cancelled_exception_btn_close), delegate {
+            .SetAction(GetString(Resource.String.update_mobile_cancelled_exception_btn_close), delegate
+            {
 
                 mCancelledExceptionSnackBar.Dismiss();
             }
@@ -289,7 +291,8 @@ namespace myTNB_Android.Src.UpdateMobileNo.Activity
             }
 
             mApiExcecptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.update_mobile_api_exception_error), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.update_mobile_api_exception_btn_close), delegate {
+            .SetAction(GetString(Resource.String.update_mobile_api_exception_btn_close), delegate
+            {
 
                 mApiExcecptionSnackBar.Dismiss();
             }
@@ -307,7 +310,8 @@ namespace myTNB_Android.Src.UpdateMobileNo.Activity
             }
 
             mUknownExceptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.update_mobile_unknown_exception_error), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.update_mobile_unknown_exception_btn_close), delegate {
+            .SetAction(GetString(Resource.String.update_mobile_unknown_exception_btn_close), delegate
+            {
 
                 mUknownExceptionSnackBar.Dismiss();
 
@@ -335,7 +339,7 @@ namespace myTNB_Android.Src.UpdateMobileNo.Activity
         public void EnableSaveButton()
         {
             btnSave.Enabled = true;
-            btnSave.Background = ContextCompat.GetDrawable(this , Resource.Drawable.green_button_background);
+            btnSave.Background = ContextCompat.GetDrawable(this, Resource.Drawable.green_button_background);
 
         }
 
@@ -355,19 +359,20 @@ namespace myTNB_Android.Src.UpdateMobileNo.Activity
         {
             //if (!forceUpdatePhoneNo)
             //{
-                base.OnBackPressed();
+            base.OnBackPressed();
             //}
         }
 
         protected override void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
         {
-            try {
-            base.OnActivityResult(requestCode, resultCode, data);
-            if(requestCode == Constants.REQUEST_VERIFICATION_SMS_TOEKN_CODE && resultCode == Result.Ok)
+            try
             {
-                SetResult(Result.Ok);
-                Finish();
-            }
+                base.OnActivityResult(requestCode, resultCode, data);
+                if (requestCode == Constants.REQUEST_VERIFICATION_SMS_TOEKN_CODE && resultCode == Result.Ok)
+                {
+                    SetResult(Result.Ok);
+                    Finish();
+                }
             }
             catch (Exception e)
             {

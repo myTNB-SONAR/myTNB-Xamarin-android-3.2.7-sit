@@ -1,22 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
+﻿using Android.App;
 using Android.Content;
+using Android.Content.PM;
 using Android.OS;
-using Android.Runtime;
 using Android.Views;
 using Android.Widget;
-using Android.Content.PM;
-using myTNB_Android.Src.Base.Activity;
-using myTNB_Android.Src.SelectFeedbackState.MVP;
-using myTNB_Android.Src.AppLaunch.Models;
-using myTNB_Android.Src.SelectFeedbackState.Adapter;
 using CheeseBind;
+using myTNB_Android.Src.AppLaunch.Models;
+using myTNB_Android.Src.Base.Activity;
+using myTNB_Android.Src.SelectFeedbackState.Adapter;
+using myTNB_Android.Src.SelectFeedbackState.MVP;
 using myTNB_Android.Src.Utils;
 using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
 using System.Runtime;
 
 namespace myTNB_Android.Src.SelectFeedbackState.Activity
@@ -24,7 +20,7 @@ namespace myTNB_Android.Src.SelectFeedbackState.Activity
     [Activity(Label = "@string/select_feedback_state_activity_title"
     , ScreenOrientation = ScreenOrientation.Portrait
     , Theme = "@style/Theme.SelectFeedbackStateStyle")]
-    public class SelectFeedbackStateActivity : BaseToolbarAppCompatActivity , SelectFeedbackStateContract.IView
+    public class SelectFeedbackStateActivity : BaseToolbarAppCompatActivity, SelectFeedbackStateContract.IView
     {
 
         private SelectFeedbackStateContract.IUserActionsListener userActionsListener;
@@ -41,15 +37,16 @@ namespace myTNB_Android.Src.SelectFeedbackState.Activity
             base.OnCreate(savedInstanceState);
 
             // Create your application here
-            try {
-            mPresenter = new SelectFeedbackStatePresenter(this);
+            try
+            {
+                mPresenter = new SelectFeedbackStatePresenter(this);
 
-            adapter = new SelectFeedbackStateAdapter(this, true);
-            listView.Adapter = adapter;
+                adapter = new SelectFeedbackStateAdapter(this, true);
+                listView.Adapter = adapter;
 
 
-            mPresenter = new SelectFeedbackStatePresenter(this);
-            this.userActionsListener.Start();
+                mPresenter = new SelectFeedbackStatePresenter(this);
+                this.userActionsListener.Start();
             }
             catch (Exception e)
             {
@@ -60,9 +57,10 @@ namespace myTNB_Android.Src.SelectFeedbackState.Activity
         [OnItemClick(Resource.Id.listView)]
         void OnItemClick(object sender, AdapterView.ItemClickEventArgs eventArgs)
         {
-            try {
-            FeedbackState newState = adapter.GetItemObject(eventArgs.Position);
-            this.userActionsListener.OnSelect(newState);
+            try
+            {
+                FeedbackState newState = adapter.GetItemObject(eventArgs.Position);
+                this.userActionsListener.OnSelect(newState);
             }
             catch (Exception e)
             {
@@ -99,7 +97,7 @@ namespace myTNB_Android.Src.SelectFeedbackState.Activity
         {
             Intent successIntent = new Intent();
             successIntent.PutExtra(Constants.SELECTED_FEEDBACK_STATE, JsonConvert.SerializeObject(feedbackState));
-            SetResult(Result.Ok , successIntent);
+            SetResult(Result.Ok, successIntent);
             Finish();
         }
 

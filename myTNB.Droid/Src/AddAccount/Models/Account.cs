@@ -1,33 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-using Newtonsoft.Json;
-using Refit;
+﻿using Newtonsoft.Json;
 
 namespace myTNB_Android.Src.AddAccount.Models
 {
-   
+
     public class Account
     {
-            // "__type": "Billing.BillingRegListSSP",
-            //"accNum": "220163099904",
-            //"userAccountID": null,
-            //"accDesc": "MANUFACTURE SDN. BHD. BEST FORM BRAKE",
-            //"icNum": null,
-            //"amCurrentChg": 4710.4,
-            //"isRegistered": "False",
-            //"isPaid": "False",
-            //"isError": "false",
-            //"message": null
-
         [JsonProperty(PropertyName = "__type")]
         public string Type { get; set; }
 

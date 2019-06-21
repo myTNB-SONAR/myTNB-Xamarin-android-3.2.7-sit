@@ -1,15 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Util;
+﻿using Android.OS;
 using Android.Views;
-using Android.Widget;
 using myTNB_Android.Src.Base.Fragments;
 
 namespace myTNB_Android.Src.Promotions.Fragments
@@ -36,14 +26,14 @@ namespace myTNB_Android.Src.Promotions.Fragments
         {
             return Resource.Layout.PromotionDetailsView;
         }
-        
+
 
         private IMenu menu;
         public override void OnCreateOptionsMenu(IMenu menu, MenuInflater inflater)
         {
             inflater.Inflate(Resource.Menu.PromotionDetailMenu, menu);
             this.menu = menu;
-            
+
             base.OnCreateOptionsMenu(menu, inflater);
         }
 
@@ -55,7 +45,7 @@ namespace myTNB_Android.Src.Promotions.Fragments
 
                     return true;
             }
-                    return base.OnOptionsItemSelected(item);
+            return base.OnOptionsItemSelected(item);
         }
     }
 }

@@ -1,5 +1,4 @@
-﻿using Android.Graphics;
-using SQLite;
+﻿using SQLite;
 
 namespace myTNB.SitecoreCM.Models
 {
@@ -13,7 +12,7 @@ namespace myTNB.SitecoreCM.Models
         public string SubText { set; get; }
         public string CampaignPeriod { set; get; }
         public string Prizes { set; get; }
-        public string HowToWin{ set; get; }
+        public string HowToWin { set; get; }
         public string FooterNote { set; get; }
         public string PublishedDate { set; get; }
         public string GeneralLinkUrl { set; get; }

@@ -1,20 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
+﻿using Android.App;
 using Android.Content;
+using Android.Content.PM;
 using Android.OS;
-using Android.Runtime;
+using Android.Util;
 using Android.Views;
 using Android.Widget;
 using myTNB_Android.Src.Base.Activity;
-using Android.Content.PM;
 using myTNB_Android.Src.Rating.Fargment;
-using Android.Util;
-using myTNB_Android.Src.Rating.Model;
 using myTNB_Android.Src.Utils;
+using System;
 using System.Runtime;
 
 namespace myTNB_Android.Src.Rating.Activity
@@ -49,22 +43,23 @@ namespace myTNB_Android.Src.Rating.Activity
 
         public void ShowToolBar()
         {
-            try {
-            if (appBarLayout != null)
+            try
             {
-                TypedValue tv = new TypedValue();
-                int actionBarHeight = 0;
-                if (Theme.ResolveAttribute(Android.Resource.Attribute.ActionBarSize, tv, true))
+                if (appBarLayout != null)
                 {
-                    actionBarHeight = TypedValue.ComplexToDimensionPixelSize(tv.Data, Resources.DisplayMetrics);
+                    TypedValue tv = new TypedValue();
+                    int actionBarHeight = 0;
+                    if (Theme.ResolveAttribute(Android.Resource.Attribute.ActionBarSize, tv, true))
+                    {
+                        actionBarHeight = TypedValue.ComplexToDimensionPixelSize(tv.Data, Resources.DisplayMetrics);
+                    }
+
+                    appBarLayout.Visibility = ViewStates.Visible;
+                    Android.Support.Design.Widget.CoordinatorLayout.LayoutParams lp = new Android.Support.Design.Widget.CoordinatorLayout.LayoutParams(Android.Support.Design.Widget.CoordinatorLayout.LayoutParams.MatchParent, Android.Support.Design.Widget.CoordinatorLayout.LayoutParams.MatchParent);
+                    lp.SetMargins(0, actionBarHeight, 0, 0);
+
+                    frameContainer.LayoutParameters = lp;
                 }
-
-                appBarLayout.Visibility = ViewStates.Visible;
-                Android.Support.Design.Widget.CoordinatorLayout.LayoutParams lp = new Android.Support.Design.Widget.CoordinatorLayout.LayoutParams(Android.Support.Design.Widget.CoordinatorLayout.LayoutParams.MatchParent, Android.Support.Design.Widget.CoordinatorLayout.LayoutParams.MatchParent);
-                lp.SetMargins(0, actionBarHeight, 0, 0);
-
-                frameContainer.LayoutParameters = lp;
-            }
             }
             catch (Exception e)
             {
@@ -74,15 +69,16 @@ namespace myTNB_Android.Src.Rating.Activity
 
         public void HideToolBar()
         {
-            try {
-            if (appBarLayout != null)
+            try
             {
-                appBarLayout.Visibility = ViewStates.Gone;
-                Android.Support.Design.Widget.CoordinatorLayout.LayoutParams lp = new Android.Support.Design.Widget.CoordinatorLayout.LayoutParams(Android.Support.Design.Widget.CoordinatorLayout.LayoutParams.MatchParent, Android.Support.Design.Widget.CoordinatorLayout.LayoutParams.MatchParent);
-                lp.SetMargins(0, 0, 0, 0);
+                if (appBarLayout != null)
+                {
+                    appBarLayout.Visibility = ViewStates.Gone;
+                    Android.Support.Design.Widget.CoordinatorLayout.LayoutParams lp = new Android.Support.Design.Widget.CoordinatorLayout.LayoutParams(Android.Support.Design.Widget.CoordinatorLayout.LayoutParams.MatchParent, Android.Support.Design.Widget.CoordinatorLayout.LayoutParams.MatchParent);
+                    lp.SetMargins(0, 0, 0, 0);
 
-                frameContainer.LayoutParameters = lp;
-            }
+                    frameContainer.LayoutParameters = lp;
+                }
             }
             catch (Exception e)
             {
@@ -93,32 +89,33 @@ namespace myTNB_Android.Src.Rating.Activity
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-            try {
-            appBarLayout = FindViewById<Android.Support.Design.Widget.AppBarLayout>(Resource.Id.appBar);
-            toolbar = FindViewById<Android.Support.V7.Widget.Toolbar>(Resource.Id.toolbar);
-            frameContainer = FindViewById<FrameLayout>(Resource.Id.fragment_container);
-            coordinatorLayout = FindViewById<Android.Support.Design.Widget.CoordinatorLayout>(Resource.Id.coordinatorLayout);
-
-            deviceID = DeviceIdUtils.DeviceId(this);
-            Bundle extras = Intent.Extras;
-            if (extras != null)
+            try
             {
-                if (extras.ContainsKey(Constants.QUESTION_ID_CATEGORY))
-                {
-                    quesIdCategory = extras.GetInt(Constants.QUESTION_ID_CATEGORY).ToString();
-                }
-                if (extras.ContainsKey(Constants.MERCHANT_TRANS_ID))
-                {
-                    merchantTransID = extras.GetString(Constants.MERCHANT_TRANS_ID);
-                }
-                if (extras.ContainsKey(Constants.SELECTED_RATING))
-                {
-                    selectedRating = extras.GetInt(Constants.SELECTED_RATING, 1);
-                }
-                
-            }
+                appBarLayout = FindViewById<Android.Support.Design.Widget.AppBarLayout>(Resource.Id.appBar);
+                toolbar = FindViewById<Android.Support.V7.Widget.Toolbar>(Resource.Id.toolbar);
+                frameContainer = FindViewById<FrameLayout>(Resource.Id.fragment_container);
+                coordinatorLayout = FindViewById<Android.Support.Design.Widget.CoordinatorLayout>(Resource.Id.coordinatorLayout);
 
-            OnLoadMainFragment();
+                deviceID = DeviceIdUtils.DeviceId(this);
+                Bundle extras = Intent.Extras;
+                if (extras != null)
+                {
+                    if (extras.ContainsKey(Constants.QUESTION_ID_CATEGORY))
+                    {
+                        quesIdCategory = extras.GetInt(Constants.QUESTION_ID_CATEGORY).ToString();
+                    }
+                    if (extras.ContainsKey(Constants.MERCHANT_TRANS_ID))
+                    {
+                        merchantTransID = extras.GetString(Constants.MERCHANT_TRANS_ID);
+                    }
+                    if (extras.ContainsKey(Constants.SELECTED_RATING))
+                    {
+                        selectedRating = extras.GetInt(Constants.SELECTED_RATING, 1);
+                    }
+
+                }
+
+                OnLoadMainFragment();
             }
             catch (Exception e)
             {
@@ -157,19 +154,20 @@ namespace myTNB_Android.Src.Rating.Activity
 
         public override void OnBackPressed()
         {
-            try {
-            int count = this.FragmentManager.BackStackEntryCount;
-            Log.Debug("OnBackPressed", "fragment stack count :" + count);
-            if (currentFragment is ThankYouFragment || currentFragment is SubmitRatingFragment)
+            try
             {
-                Finish();
-            }
-            else
-            {
-                this.FragmentManager.PopBackStack();
-            }
+                int count = this.FragmentManager.BackStackEntryCount;
+                Log.Debug("OnBackPressed", "fragment stack count :" + count);
+                if (currentFragment is ThankYouFragment || currentFragment is SubmitRatingFragment)
+                {
+                    Finish();
+                }
+                else
+                {
+                    this.FragmentManager.PopBackStack();
+                }
 
-        }
+            }
             catch (Exception e)
             {
                 Utility.LoggingNonFatalError(e);

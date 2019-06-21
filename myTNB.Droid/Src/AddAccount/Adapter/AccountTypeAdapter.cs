@@ -1,17 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-
-using Android.Views;
+﻿using Android.Views;
 using Android.Widget;
+using CheeseBind;
 using myTNB_Android.Src.AddAccount.Models;
 using myTNB_Android.Src.Base.Adapter;
-using CheeseBind;
-using System.Runtime.Remoting.Contexts;
-using Android.Content;
 using myTNB_Android.Src.Utils;
+using System.Collections.Generic;
 
 namespace myTNB_Android.Src.AddAccount.Adapter
 {
@@ -53,12 +46,10 @@ namespace myTNB_Android.Src.AddAccount.Adapter
 
             if (item.IsSelected)
             {
-                //vh.txtSupplyAccountName.SetCompoundDrawablesWithIntrinsicBounds(0, 0, Resource.Drawable.ic_action_tick, 0);
                 vh.imageActionIcon.Visibility = ViewStates.Visible;
             }
             else
             {
-                //vh.txtSupplyAccountName.SetCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
                 vh.imageActionIcon.Visibility = ViewStates.Gone;
             }
 

@@ -1,36 +1,29 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
+﻿using AFollestad.MaterialDialogs;
 using Android.Content;
 using Android.OS;
-using Android.Runtime;
-using Android.Util;
+using Android.Support.Constraints;
+using Android.Support.Design.Widget;
 using Android.Views;
 using Android.Widget;
-using myTNB_Android.Src.Base.Fragments;
-using myTNB_Android.Src.myTNBMenu.Activity;
-using Java.Lang;
 using CheeseBind;
-using myTNB_Android.Src.Utils;
-using myTNB_Android.Src.myTNBMenu.MVP.Fragment;
+using Java.Lang;
+using myTNB_Android.Src.Base.Fragments;
+using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.Feedback_Login_BillRelated.Activity;
 using myTNB_Android.Src.Feedback_Login_FaultyStreetLamps.Activity;
 using myTNB_Android.Src.Feedback_Login_Others.Activity;
+using myTNB_Android.Src.myTNBMenu.Activity;
+using myTNB_Android.Src.myTNBMenu.MVP.Fragment;
 using myTNB_Android.Src.SelectSubmittedFeedback.Activity;
-using Refit;
-using AFollestad.MaterialDialogs;
-using Android.Support.Design.Widget;
-using myTNB_Android.Src.AppLaunch.Models;
-using Android.Support.Constraints;
-using myTNB_Android.Src.Database.Model;
+using myTNB_Android.Src.Utils;
 using myTNB_Android.Src.Utils.Custom.ProgressDialog;
+using Refit;
+using System;
+using System.Collections.Generic;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.FeedbackMenu
 {
-    public class FeedbackMenuFragment : BaseFragment , FeedbackMenuContract.IView
+    public class FeedbackMenuFragment : BaseFragment, FeedbackMenuContract.IView
     {
         [BindView(Resource.Id.rootView)]
         LinearLayout rootView;
@@ -193,12 +186,15 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.FeedbackMenu
 
 
         [OnClick(Resource.Id.billRelatedContraint)]
-        void OnBillingAndPayment(object sender , EventArgs eventArgs)
+        void OnBillingAndPayment(object sender, EventArgs eventArgs)
         {
-            
-            if (DownTimeEntity.IsBCRMDown()) {
+
+            if (DownTimeEntity.IsBCRMDown())
+            {
                 OnBCRMDownTimeErrorMessage();
-            } else {
+            }
+            else
+            {
                 this.userActionsListener.OnBillingPayment();
             }
 
@@ -239,7 +235,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.FeedbackMenu
             //}
             //else
             //{
-                this.userActionsListener.OnSubmittedFeedback();
+            this.userActionsListener.OnSubmittedFeedback();
             //}
         }
 
@@ -262,14 +258,15 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.FeedbackMenu
             //    progressDialog.Show();
             //}
 
-            try {
-            if (loadingOverlay != null && loadingOverlay.IsShowing)
+            try
             {
-                loadingOverlay.Dismiss();
-            }
+                if (loadingOverlay != null && loadingOverlay.IsShowing)
+                {
+                    loadingOverlay.Dismiss();
+                }
 
-            loadingOverlay = new LoadingOverlay(Activity.ApplicationContext, Resource.Style.LoadingOverlyDialogStyle);
-            loadingOverlay.Show();
+                loadingOverlay = new LoadingOverlay(Activity.ApplicationContext, Resource.Style.LoadingOverlyDialogStyle);
+                loadingOverlay.Show();
             }
             catch (System.Exception e)
             {
@@ -305,7 +302,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.FeedbackMenu
             }
 
             mCancelledExceptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.login_cancelled_exception_error), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.login_cancelled_exception_btn_retry), delegate {
+            .SetAction(GetString(Resource.String.login_cancelled_exception_btn_retry), delegate
+            {
 
                 mCancelledExceptionSnackBar.Dismiss();
                 this.userActionsListener.OnRetry();
@@ -324,7 +322,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.FeedbackMenu
             }
 
             mApiExcecptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.login_api_exception_error), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.login_api_exception_btn_retry), delegate {
+            .SetAction(GetString(Resource.String.login_api_exception_btn_retry), delegate
+            {
 
                 mApiExcecptionSnackBar.Dismiss();
                 this.userActionsListener.OnRetry();
@@ -343,7 +342,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.FeedbackMenu
             }
 
             mUknownExceptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.login_unknown_exception_error), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.login_unknown_exception_btn_retry), delegate {
+            .SetAction(GetString(Resource.String.login_unknown_exception_btn_retry), delegate
+            {
 
                 mUknownExceptionSnackBar.Dismiss();
                 this.userActionsListener.OnRetry();
@@ -355,32 +355,33 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.FeedbackMenu
 
         public void ShowFeedbackMenu(List<FeedbackCategoryEntity> feedbackCategory)
         {
-                try {
-            billRelatedConstraint.Visibility = ViewStates.Gone;
-            faultyStreetLampsContraint.Visibility = ViewStates.Gone;
-            othersContraint.Visibility = ViewStates.Gone;
-            spaceBillRelated.Visibility = ViewStates.Gone;
-            spaceFaultyStreetLamps.Visibility = ViewStates.Gone;
-            spaceOthers.Visibility = ViewStates.Gone;
-            foreach (FeedbackCategoryEntity fc in feedbackCategory)
+            try
             {
-                if (fc.Id.Equals("1"))
+                billRelatedConstraint.Visibility = ViewStates.Gone;
+                faultyStreetLampsContraint.Visibility = ViewStates.Gone;
+                othersContraint.Visibility = ViewStates.Gone;
+                spaceBillRelated.Visibility = ViewStates.Gone;
+                spaceFaultyStreetLamps.Visibility = ViewStates.Gone;
+                spaceOthers.Visibility = ViewStates.Gone;
+                foreach (FeedbackCategoryEntity fc in feedbackCategory)
                 {
-                    billRelatedConstraint.Visibility = ViewStates.Visible;
-                    spaceBillRelated.Visibility = ViewStates.Visible;
+                    if (fc.Id.Equals("1"))
+                    {
+                        billRelatedConstraint.Visibility = ViewStates.Visible;
+                        spaceBillRelated.Visibility = ViewStates.Visible;
+                    }
+                    else if (fc.Id.Equals("2"))
+                    {
+                        faultyStreetLampsContraint.Visibility = ViewStates.Visible;
+                        spaceFaultyStreetLamps.Visibility = ViewStates.Visible;
+                    }
+                    else if (fc.Id.Equals("3"))
+                    {
+                        othersContraint.Visibility = ViewStates.Visible;
+                        spaceOthers.Visibility = ViewStates.Visible;
+                    }
+
                 }
-                else if (fc.Id.Equals("2"))
-                {
-                    faultyStreetLampsContraint.Visibility = ViewStates.Visible;
-                    spaceFaultyStreetLamps.Visibility = ViewStates.Visible;
-                }
-                else if (fc.Id.Equals("3"))
-                {
-                    othersContraint.Visibility = ViewStates.Visible;
-                    spaceOthers.Visibility = ViewStates.Visible;
-                }
-                
-            }
             }
             catch (System.Exception e)
             {
@@ -409,32 +410,36 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.FeedbackMenu
         public void OnBCRMDownTimeErrorMessage(string message = null)
         {
 
-            try {
-            if (mErrorMessageSnackBar != null && mErrorMessageSnackBar.IsShown)
+            try
             {
-                mErrorMessageSnackBar.Dismiss();
-            }
-
-
-            if (string.IsNullOrEmpty(message))
-            {
-                DownTimeEntity BCRMDownTime = DownTimeEntity.GetByCode(Constants.BCRM_SYSTEM);
-                if (BCRMDownTime != null && !string.IsNullOrEmpty(BCRMDownTime.DowntimeTextMessage)) {
-                    message = BCRMDownTime.DowntimeTextMessage;
-                } else {
-                    message = GetString(Resource.String.app_launch_http_exception_error);    
+                if (mErrorMessageSnackBar != null && mErrorMessageSnackBar.IsShown)
+                {
+                    mErrorMessageSnackBar.Dismiss();
                 }
 
-            }
 
-            mErrorMessageSnackBar = Snackbar.Make(rootView, message, Snackbar.LengthIndefinite)
-            .SetAction("Close", delegate { mErrorMessageSnackBar.Dismiss(); }
-            );
-            View v = mErrorMessageSnackBar.View;
-            TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
-            tv.SetMaxLines(5);
-            v.SetPadding(0, 0, 0, 50);
-            mErrorMessageSnackBar.Show();
+                if (string.IsNullOrEmpty(message))
+                {
+                    DownTimeEntity BCRMDownTime = DownTimeEntity.GetByCode(Constants.BCRM_SYSTEM);
+                    if (BCRMDownTime != null && !string.IsNullOrEmpty(BCRMDownTime.DowntimeTextMessage))
+                    {
+                        message = BCRMDownTime.DowntimeTextMessage;
+                    }
+                    else
+                    {
+                        message = GetString(Resource.String.app_launch_http_exception_error);
+                    }
+
+                }
+
+                mErrorMessageSnackBar = Snackbar.Make(rootView, message, Snackbar.LengthIndefinite)
+                .SetAction("Close", delegate { mErrorMessageSnackBar.Dismiss(); }
+                );
+                View v = mErrorMessageSnackBar.View;
+                TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+                tv.SetMaxLines(5);
+                v.SetPadding(0, 0, 0, 50);
+                mErrorMessageSnackBar.Show();
             }
             catch (System.Exception e)
             {

@@ -1,25 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
+﻿using Android.Graphics;
+using Android.Graphics.Drawables;
+using Android.Support.V4.Graphics.Drawable;
 using Android.Support.V7.Widget;
 using Android.Views;
 using Android.Widget;
-using myTNB_Android.Src.Base.Adapter;
 using CheeseBind;
-using myTNB_Android.Src.Utils;
-
-using Square.Picasso;
-using Java.IO;
+using myTNB_Android.Src.Base.Adapter;
 using myTNB_Android.Src.Base.Models;
-using Android.Graphics;
-using Android.Graphics.Drawables;
-using Android.Support.V4.Graphics.Drawable;
+using myTNB_Android.Src.Utils;
+using Square.Picasso;
+using System;
+using System.Collections.Generic;
 
 namespace myTNB_Android.Src.Feedback_Login_Others.Adapter
 {
@@ -103,7 +94,9 @@ namespace myTNB_Android.Src.Feedback_Login_Others.Adapter
                         viewHolder.progressBar.Visibility = ViewStates.Gone;
                     }
                 }
-            } catch (Exception e) {
+            }
+            catch (Exception e)
+            {
                 Utility.LoggingNonFatalError(e);
             }
         }
@@ -112,7 +105,7 @@ namespace myTNB_Android.Src.Feedback_Login_Others.Adapter
         {
             if (RemoveClickEvent != null)
             {
-                RemoveClickEvent(this , position);
+                RemoveClickEvent(this, position);
             }
         }
 
@@ -128,13 +121,13 @@ namespace myTNB_Android.Src.Feedback_Login_Others.Adapter
         {
             if (viewType == Constants.VIEW_TYPE_REAL_RECORD)
             {
-                return new FeedbackPreLoginImageViewHolder(LayoutInflater.From(parent.Context).Inflate(Resource.Layout.FeedbackBillRelatedImageRow, parent, false) , RemoveClick);
+                return new FeedbackPreLoginImageViewHolder(LayoutInflater.From(parent.Context).Inflate(Resource.Layout.FeedbackBillRelatedImageRow, parent, false), RemoveClick);
             }
             else
             {
-                return new FeedbackPreLoginDummyViewHolder(LayoutInflater.From(parent.Context).Inflate(Resource.Layout.FeedbackBillRelatedImageEmptyRow, parent, false) , AddClick);
+                return new FeedbackPreLoginDummyViewHolder(LayoutInflater.From(parent.Context).Inflate(Resource.Layout.FeedbackBillRelatedImageEmptyRow, parent, false), AddClick);
             }
-            
+
         }
 
         class FeedbackPreLoginImageViewHolder : BaseRecyclerViewHolder

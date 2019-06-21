@@ -1,18 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
+﻿using Android.App;
 using Android.Content;
 using Android.Content.PM;
-using Android.Graphics;
 using Android.OS;
 using Android.Preferences;
-using Android.Runtime;
 using Android.Support.Design.Widget;
-using Android.Util;
-using Android.Views;
 using Android.Widget;
 using CheeseBind;
 using myTNB_Android.Src.AppLaunch.Activity;
@@ -20,6 +11,7 @@ using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Maintenance.MVP;
 using myTNB_Android.Src.Utils;
 using Refit;
+using System;
 
 namespace myTNB_Android.Src.Maintenance.Activity
 {
@@ -150,7 +142,8 @@ namespace myTNB_Android.Src.Maintenance.Activity
                 else
                 {
                     mApiExcecptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.app_launch_http_exception_error), Snackbar.LengthIndefinite)
-                    .SetAction(GetString(Resource.String.app_launch_http_exception_btn_retry), delegate {
+                    .SetAction(GetString(Resource.String.app_launch_http_exception_btn_retry), delegate
+                    {
 
                         mApiExcecptionSnackBar.Dismiss();
                         hasBeenCalled = false;
@@ -181,7 +174,8 @@ namespace myTNB_Android.Src.Maintenance.Activity
                 else
                 {
                     mUnknownExceptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.app_launch_unknown_exception_error), Snackbar.LengthIndefinite)
-                    .SetAction(GetString(Resource.String.app_launch_unknown_exception_btn_retry), delegate {
+                    .SetAction(GetString(Resource.String.app_launch_unknown_exception_btn_retry), delegate
+                    {
 
                         mUnknownExceptionSnackBar.Dismiss();
                         hasBeenCalled = false;
@@ -206,7 +200,8 @@ namespace myTNB_Android.Src.Maintenance.Activity
             }
 
             mNoInternetSnackbar = Snackbar.Make(rootView, GetString(Resource.String.no_internet_connection), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.dashboard_chartview_data_not_available_no_internet_btn_close), delegate {
+            .SetAction(GetString(Resource.String.dashboard_chartview_data_not_available_no_internet_btn_close), delegate
+            {
 
                 mNoInternetSnackbar.Dismiss();
             }
