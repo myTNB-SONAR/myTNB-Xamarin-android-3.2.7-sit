@@ -1,34 +1,29 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
+﻿using AFollestad.MaterialDialogs;
 using Android.App;
 using Android.Content;
 using Android.OS;
-using Android.Runtime;
+using Android.Support.Design.Widget;
+using Android.Text;
 using Android.Util;
 using Android.Views;
+using Android.Views.InputMethods;
 using Android.Widget;
-using myTNB_Android.Src.Utils;
+using Java.Text;
+using myTNB_Android.Src.AddCard.Activity;
+using myTNB_Android.Src.Database.Model;
+using myTNB_Android.Src.MakePayment.Activity;
 using myTNB_Android.Src.MakePayment.Adapter;
 using myTNB_Android.Src.MakePayment.Model;
-using myTNB_Android.Src.MakePayment.MVP;
-using Android.Views.InputMethods;
-using static Android.Widget.TextView;
-using Android.Support.Design.Widget;
-using myTNB_Android.Src.AddCard.Activity;
-using Newtonsoft.Json;
 using myTNB_Android.Src.MakePayment.Models;
-using System.Net;
-using myTNB_Android.Src.MakePayment.Activity;
-using myTNB_Android.Src.myTNBMenu.Models;
-using Java.Text;
-using myTNB_Android.Src.Database.Model;
-using AFollestad.MaterialDialogs;
+using myTNB_Android.Src.MakePayment.MVP;
 using myTNB_Android.Src.myTNBMenu.Activity;
-using Android.Text;
+using myTNB_Android.Src.myTNBMenu.Models;
+using myTNB_Android.Src.Utils;
 using myTNB_Android.Src.Utils.Custom.ProgressDialog;
+using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace myTNB_Android.Src.MakePayment.Fragment
 {

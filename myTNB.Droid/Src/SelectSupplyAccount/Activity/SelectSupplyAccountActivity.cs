@@ -1,29 +1,26 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
+﻿using AFollestad.MaterialDialogs;
 using Android.App;
 using Android.Content;
+using Android.Content.PM;
 using Android.OS;
 using Android.Runtime;
+using Android.Support.Design.Widget;
 using Android.Views;
 using Android.Widget;
-using myTNB_Android.Src.Base.Activity;
-using Android.Content.PM;
 using CheeseBind;
-using myTNB_Android.Src.Dashboard.Adapter;
-using myTNB_Android.Src.SelectSupplyAccount.MVP;
-using myTNB_Android.Src.Database.Model;
-using Refit;
-using Android.Support.Design.Widget;
-using myTNB_Android.Src.myTNBMenu.Models;
-using myTNB_Android.Src.Utils;
-using Newtonsoft.Json;
-using System.IO;
-using AFollestad.MaterialDialogs;
 using myTNB_Android.Src.AddAccount.Activity;
+using myTNB_Android.Src.Base.Activity;
+using myTNB_Android.Src.Dashboard.Adapter;
+using myTNB_Android.Src.Database.Model;
+using myTNB_Android.Src.myTNBMenu.Models;
+using myTNB_Android.Src.SelectSupplyAccount.MVP;
+using myTNB_Android.Src.Utils;
 using myTNB_Android.Src.Utils.Custom.ProgressDialog;
+using Newtonsoft.Json;
+using Refit;
+using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Runtime;
 
 namespace myTNB_Android.Src.SelectSupplyAccount.Activity
@@ -32,7 +29,7 @@ namespace myTNB_Android.Src.SelectSupplyAccount.Activity
               , Icon = "@drawable/ic_launcher"
     , ScreenOrientation = ScreenOrientation.Portrait
     , Theme = "@style/Theme.Dashboard")]
-    public class SelectSupplyAccountActivity : BaseToolbarAppCompatActivity , SelectSupplyAccountContract.IView
+    public class SelectSupplyAccountActivity : BaseToolbarAppCompatActivity, SelectSupplyAccountContract.IView
     {
 
         private SelectSupplyAccountContract.IUserActionsListener userActionsListener;
@@ -70,7 +67,7 @@ namespace myTNB_Android.Src.SelectSupplyAccount.Activity
 
         public void ShowList(List<CustomerBillingAccount> customerBillingAccountList)
         {
-            Console.WriteLine(string.Format("Size {0}" , customerBillingAccountList.Count));
+            Console.WriteLine(string.Format("Size {0}", customerBillingAccountList.Count));
             accountListAdapter.AddAll(customerBillingAccountList);
         }
 
@@ -83,7 +80,8 @@ namespace myTNB_Android.Src.SelectSupplyAccount.Activity
             }
 
             mCancelledExceptionSnackBar = Snackbar.Make(listView, GetString(Resource.String.select_supply_activity_cancelled_exception_error), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.select_supply_activity_cancelled_exception_btn_close), delegate {
+            .SetAction(GetString(Resource.String.select_supply_activity_cancelled_exception_btn_close), delegate
+            {
 
                 mCancelledExceptionSnackBar.Dismiss();
             }
@@ -101,7 +99,8 @@ namespace myTNB_Android.Src.SelectSupplyAccount.Activity
             }
 
             mApiExcecptionSnackBar = Snackbar.Make(listView, GetString(Resource.String.select_supply_activity_api_exception_error), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.select_supply_activity_api_exception_btn_close), delegate {
+            .SetAction(GetString(Resource.String.select_supply_activity_api_exception_btn_close), delegate
+            {
 
                 mApiExcecptionSnackBar.Dismiss();
             }
@@ -119,7 +118,8 @@ namespace myTNB_Android.Src.SelectSupplyAccount.Activity
             }
 
             mUknownExceptionSnackBar = Snackbar.Make(listView, GetString(Resource.String.select_supply_activity_unknown_exception_error), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.select_supply_activity_unknown_exception_btn_close), delegate {
+            .SetAction(GetString(Resource.String.select_supply_activity_unknown_exception_btn_close), delegate
+            {
 
                 mUknownExceptionSnackBar.Dismiss();
             }
@@ -131,21 +131,22 @@ namespace myTNB_Android.Src.SelectSupplyAccount.Activity
         {
             base.OnCreate(savedInstanceState);
 
-            try {
-            mPresenter = new SelectSupplyAccountPresenter(this);
-
-            accountListAdapter = new SelectSupplyAccountAdapter(this , true);
-            listView.Adapter = accountListAdapter;
-
-            listView.ItemClick += OnItemClick;
-
-            Button done = FindViewById<Button>(Resource.Id.btnAddAnotherAccount);
-            done.Click += delegate
+            try
             {
-                StartActivity(typeof(LinkAccountActivity));
-            };
-            TextViewUtils.SetMuseoSans500Typeface(done);
-            this.userActionsListener.Start();
+                mPresenter = new SelectSupplyAccountPresenter(this);
+
+                accountListAdapter = new SelectSupplyAccountAdapter(this, true);
+                listView.Adapter = accountListAdapter;
+
+                listView.ItemClick += OnItemClick;
+
+                Button done = FindViewById<Button>(Resource.Id.btnAddAnotherAccount);
+                done.Click += delegate
+                {
+                    StartActivity(typeof(LinkAccountActivity));
+                };
+                TextViewUtils.SetMuseoSans500Typeface(done);
+                this.userActionsListener.Start();
             }
             catch (Exception e)
             {
@@ -154,11 +155,12 @@ namespace myTNB_Android.Src.SelectSupplyAccount.Activity
         }
 
         [Preserve]
-        internal void OnItemClick(object sender , AdapterView.ItemClickEventArgs e)
+        internal void OnItemClick(object sender, AdapterView.ItemClickEventArgs e)
         {
-            try {
-            CustomerBillingAccount customerAccount = accountListAdapter.GetItemObject(e.Position);
-            this.userActionsListener.OnSelectAccount(customerAccount);
+            try
+            {
+                CustomerBillingAccount customerAccount = accountListAdapter.GetItemObject(e.Position);
+                this.userActionsListener.OnSelectAccount(customerAccount);
             }
             catch (Exception ex)
             {
@@ -175,8 +177,9 @@ namespace myTNB_Android.Src.SelectSupplyAccount.Activity
 
             }
 
-            mSnackBarError = Snackbar.Make(listView, errorMessage , Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.select_supply_activity_unknown_exception_btn_close), delegate {
+            mSnackBarError = Snackbar.Make(listView, errorMessage, Snackbar.LengthIndefinite)
+            .SetAction(GetString(Resource.String.select_supply_activity_unknown_exception_btn_close), delegate
+            {
 
                 mSnackBarError.Dismiss();
             }
@@ -188,7 +191,7 @@ namespace myTNB_Android.Src.SelectSupplyAccount.Activity
         {
             Intent result = new Intent();
             result.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(accountData));
-            result.PutExtra(Constants.SELECTED_ACCOUNT_USAGE , JsonConvert.SerializeObject(response.Data.UsageHistoryData));
+            result.PutExtra(Constants.SELECTED_ACCOUNT_USAGE, JsonConvert.SerializeObject(response.Data.UsageHistoryData));
             SetResult(Result.Ok, result);
             Finish();
         }
@@ -208,14 +211,15 @@ namespace myTNB_Android.Src.SelectSupplyAccount.Activity
             //    .Build();
 
             //materialDialog.Show();
-            try {
-            if (loadingOverlay != null && loadingOverlay.IsShowing)
+            try
             {
-                loadingOverlay.Dismiss();
-            }
+                if (loadingOverlay != null && loadingOverlay.IsShowing)
+                {
+                    loadingOverlay.Dismiss();
+                }
 
-            loadingOverlay = new LoadingOverlay(this, Resource.Style.LoadingOverlyDialogStyle);
-            loadingOverlay.Show();
+                loadingOverlay = new LoadingOverlay(this, Resource.Style.LoadingOverlyDialogStyle);
+                loadingOverlay.Show();
             }
             catch (Exception e)
             {
@@ -229,11 +233,12 @@ namespace myTNB_Android.Src.SelectSupplyAccount.Activity
             //{
             //    materialDialog.Dismiss();
             //}
-            try {
-            if (loadingOverlay != null && loadingOverlay.IsShowing)
+            try
             {
-                loadingOverlay.Dismiss();
-            }
+                if (loadingOverlay != null && loadingOverlay.IsShowing)
+                {
+                    loadingOverlay.Dismiss();
+                }
             }
             catch (Exception e)
             {
@@ -331,7 +336,7 @@ namespace myTNB_Android.Src.SelectSupplyAccount.Activity
         }
 
 
-            public override void OnTrimMemory(TrimMemory level)
+        public override void OnTrimMemory(TrimMemory level)
         {
             base.OnTrimMemory(level);
 

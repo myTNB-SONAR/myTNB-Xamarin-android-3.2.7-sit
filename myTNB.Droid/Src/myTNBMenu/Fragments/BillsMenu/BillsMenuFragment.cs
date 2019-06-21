@@ -1,36 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
+﻿using Android.App;
 using Android.Content;
 using Android.OS;
-using Android.Runtime;
-using Android.Util;
+using Android.Support.Design.Widget;
+using Android.Support.V4.Content;
 using Android.Views;
 using Android.Widget;
+using CheeseBind;
+using Java.Lang;
+using Java.Text;
+using Java.Util;
 using myTNB_Android.Src.Base.Fragments;
+using myTNB_Android.Src.Database.Model;
+using myTNB_Android.Src.MultipleAccountPayment.Activity;
+using myTNB_Android.Src.myTNBMenu.Activity;
 using myTNB_Android.Src.myTNBMenu.Models;
+using myTNB_Android.Src.myTNBMenu.MVP.Fragment;
 using myTNB_Android.Src.Utils;
 using Newtonsoft.Json;
-using CheeseBind;
-using myTNB_Android.Src.myTNBMenu.MVP.Fragment;
-using Info.Hoang8f.Android.Segmented;
-using Java.Text;
-using Android.Text;
-using Java.Lang;
-using myTNB_Android.Src.myTNBMenu.Activity;
-using myTNB_Android.Src.MakePayment.Activity;
-using Android.Graphics;
-using static Android.Resource;
-using Android.Support.V4.Content;
-using myTNB_Android.Src.AddAccount.Fragment;
-using myTNB_Android.Src.MultipleAccountPayment.Activity;
-using myTNB_Android.Src.Database.Model;
-using Java.Util;
-using Android.Support.Design.Widget;
-using Android.Support.V4.Widget;
+using System;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.BillsMenu
 {

@@ -1,17 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-using myTNB_Android.Src.Base.MVP;
-using myTNB_Android.Src.Rating.Response;
+﻿using myTNB_Android.Src.Base.MVP;
 using myTNB_Android.Src.Rating.Request;
+using myTNB_Android.Src.Rating.Response;
+using System;
+using System.Collections.Generic;
 using static myTNB_Android.Src.Rating.Request.SubmitRateUsRequest;
 
 namespace myTNB_Android.Src.Rating.MVP
@@ -66,7 +57,7 @@ namespace myTNB_Android.Src.Rating.MVP
 
         public interface IUserActionsListener : IBasePresenter
         {
-            
+
             /// <summary>
             /// User actions to go back to previous screen
             /// </summary>

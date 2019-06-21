@@ -1,22 +1,16 @@
-﻿using System;
+﻿using Android.App;
+using Android.Util;
+using myTNB.SitecoreCMS.Model;
+using myTNB.SitecoreCMS.Services;
+using myTNB.SQLite.SQLiteDataManager;
+using myTNB_Android.Src.SiteCore;
+using myTNB_Android.Src.Utils;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-using myTNB_Android.Src.Utils;
-using myTNB.SitecoreCMS.Services;
-using myTNB_Android.Src.SiteCore;
-using myTNB.SitecoreCMS.Model;
-using Newtonsoft.Json;
-using myTNB.SQLite.SQLiteDataManager;
-using Android.Util;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace myTNB_Android.Src.FAQ.MVP
 {
@@ -90,7 +84,8 @@ namespace myTNB_Android.Src.FAQ.MVP
                     mView.ShowFAQ(false);
                     Utility.LoggingNonFatalError(e);
                 }
-            }).ContinueWith((Task previous) => {
+            }).ContinueWith((Task previous) =>
+            {
             }, cts.Token);
         }
 
@@ -125,13 +120,14 @@ namespace myTNB_Android.Src.FAQ.MVP
                     mView.ShowFAQTimestamp(false);
                     Utility.LoggingNonFatalError(e);
                 }
-            }).ContinueWith((Task previous) => {
+            }).ContinueWith((Task previous) =>
+            {
             }, cts.Token);
         }
 
         public void Start()
         {
-            
+
         }
     }
 }

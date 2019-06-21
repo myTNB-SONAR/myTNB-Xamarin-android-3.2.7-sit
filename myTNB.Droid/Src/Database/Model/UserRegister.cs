@@ -1,23 +1,15 @@
-﻿using System;
+﻿using myTNB_Android.Src.Utils;
+using SQLite;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-using SQLite;
-using myTNB_Android.Src.Utils;
 
 namespace myTNB_Android.Src.Database.Model
 {
     [Table("UserRegister")]
     public class UserRegister
     {
-        [PrimaryKey , Column("icNo")]
+        [PrimaryKey, Column("icNo")]
         public string ICNo { get; set; }
         [Column("fullName")]
         public string FullName { get; set; }
@@ -49,22 +41,22 @@ namespace myTNB_Android.Src.Database.Model
         /// <param name="verificationCode"></param>
         /// <param name="password"></param>
         /// <returns>Number of rows affected</returns>
-        public static int InsertOrReplace(string icNo , string fullname , string email , string mobileNo , string verificationCode, string password)
+        public static int InsertOrReplace(string icNo, string fullname, string email, string mobileNo, string verificationCode, string password)
         {
             //using (var db = new SQLiteConnection(Constants.DB_PATH))
             //{
             var db = DBHelper.GetSQLiteConnection();
-                var newRecord = new UserRegister()
-                {
-                    ICNo = icNo,
-                    FullName = fullname,
-                    Email = email,
-                    MobileNo = mobileNo,
-                    VerificationCode = verificationCode,
-                    Password = password,
-                    Status = Constants.ACTIVE
-                };
-                return db.InsertOrReplace(newRecord);
+            var newRecord = new UserRegister()
+            {
+                ICNo = icNo,
+                FullName = fullname,
+                Email = email,
+                MobileNo = mobileNo,
+                VerificationCode = verificationCode,
+                Password = password,
+                Status = Constants.ACTIVE
+            };
+            return db.InsertOrReplace(newRecord);
             //}
 
         }
@@ -74,7 +66,7 @@ namespace myTNB_Android.Src.Database.Model
             //using (var db = new SQLiteConnection(Constants.DB_PATH))
             //{
             var db = DBHelper.GetSQLiteConnection();
-                return db.Query<UserRegister>("select * from UserRegister where status = ?", Constants.ACTIVE);
+            return db.Query<UserRegister>("select * from UserRegister where status = ?", Constants.ACTIVE);
             //}
         }
 
@@ -89,7 +81,7 @@ namespace myTNB_Android.Src.Database.Model
             //using (var db = new SQLiteConnection(Constants.DB_PATH))
             //{
             var db = DBHelper.GetSQLiteConnection();
-                return db.Execute("Update UserRegister set status = ? ", Constants.INACTIVE);
+            return db.Execute("Update UserRegister set status = ? ", Constants.INACTIVE);
             //}
         }
 
@@ -104,7 +96,7 @@ namespace myTNB_Android.Src.Database.Model
             //using (var db = new SQLiteConnection(Constants.DB_PATH))
             //{
             var db = DBHelper.GetSQLiteConnection();
-                return db.Execute("Delete from UserRegister where status = ? ", Constants.ACTIVE);
+            return db.Execute("Delete from UserRegister where status = ? ", Constants.ACTIVE);
             //}
         }
     }

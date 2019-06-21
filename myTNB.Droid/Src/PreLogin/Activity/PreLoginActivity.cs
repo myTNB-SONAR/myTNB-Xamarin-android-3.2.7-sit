@@ -1,30 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
+﻿using Android.App;
 using Android.Content;
+using Android.Content.PM;
 using Android.OS;
-using Android.Runtime;
+using Android.Util;
 using Android.Views;
 using Android.Widget;
-using myTNB_Android.Src.Base.Activity;
-using Android.Content.PM;
-using myTNB_Android.Src.PreLogin.MVP;
-using myTNB_Android.Src.Login.Activity;
 using CheeseBind;
-using myTNB_Android.Src.RegistrationForm.Activity;
-using myTNB_Android.Src.Utils;
-using myTNB_Android.Src.Feedback_PreLogin_BillRelated.Activity;
+using myTNB.SitecoreCMS.Model;
+using myTNB.SQLite.SQLiteDataManager;
+using myTNB_Android.Src.Base.Activity;
+using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.Feedback_PreLogin_Menu.Activity;
 using myTNB_Android.Src.FindUs.Activity;
-using myTNB_Android.Src.Database.Model;
-using myTNB.SQLite.SQLiteDataManager;
-using myTNB.SitecoreCMS.Model;
-using Android.Graphics;
-using Android.Util;
-using System.Net;
+using myTNB_Android.Src.Login.Activity;
+using myTNB_Android.Src.PreLogin.MVP;
+using myTNB_Android.Src.RegistrationForm.Activity;
+using myTNB_Android.Src.Utils;
+using System;
+using System.Collections.Generic;
 using System.Runtime;
 
 namespace myTNB_Android.Src.PreLogin.Activity
@@ -33,7 +26,7 @@ namespace myTNB_Android.Src.PreLogin.Activity
               , Icon = "@drawable/ic_launcher"
       , ScreenOrientation = ScreenOrientation.Portrait
       , Theme = "@style/Theme.PreLogin")]
-    public class PreLoginActivity : BaseAppCompatActivity , PreLoginContract.IView
+    public class PreLoginActivity : BaseAppCompatActivity, PreLoginContract.IView
     {
 
         private PreLoginPresenter mPresenter;
@@ -76,13 +69,14 @@ namespace myTNB_Android.Src.PreLogin.Activity
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-            try {
-            mPresenter = new PreLoginPresenter(this);
-            TextViewUtils.SetMuseoSans500Typeface(txtWelcome);
+            try
+            {
+                mPresenter = new PreLoginPresenter(this);
+                TextViewUtils.SetMuseoSans500Typeface(txtWelcome);
 
-            TextViewUtils.SetMuseoSans300Typeface(txtManageAccount , txtLikeToday , txtLocation , txtFeedback , txtCallUs, txtPromotion);
+                TextViewUtils.SetMuseoSans300Typeface(txtManageAccount, txtLikeToday, txtLocation, txtFeedback, txtCallUs, txtPromotion);
 
-            TextViewUtils.SetMuseoSans500Typeface(btnLogin , btnRegister);
+                TextViewUtils.SetMuseoSans500Typeface(btnLogin, btnRegister);
             }
             catch (Exception ex)
             {
@@ -130,8 +124,9 @@ namespace myTNB_Android.Src.PreLogin.Activity
         [OnClick(Resource.Id.btnLogin)]
         void OnLogin(object sender, EventArgs eventArgs)
         {
-            try {
-            this.userActionsListener.NavigateToLogin();
+            try
+            {
+                this.userActionsListener.NavigateToLogin();
             }
             catch (Exception ex)
             {
@@ -142,8 +137,9 @@ namespace myTNB_Android.Src.PreLogin.Activity
         [OnClick(Resource.Id.btnRegister)]
         void OnRegister(object sender, EventArgs eventArgs)
         {
-            try {
-            this.userActionsListener.NavigateToRegister();
+            try
+            {
+                this.userActionsListener.NavigateToRegister();
             }
             catch (Exception ex)
             {
@@ -154,8 +150,9 @@ namespace myTNB_Android.Src.PreLogin.Activity
         [OnClick(Resource.Id.txtFindUs)]
         void OnFindUs(object sender, EventArgs eventArgs)
         {
-            try {
-            this.userActionsListener.NavigateToFindUs();
+            try
+            {
+                this.userActionsListener.NavigateToFindUs();
             }
             catch (Exception ex)
             {
@@ -166,8 +163,9 @@ namespace myTNB_Android.Src.PreLogin.Activity
         [OnClick(Resource.Id.txtCallUs)]
         void OnCallUs(object sender, EventArgs eventArgs)
         {
-            try {
-            this.userActionsListener.NavigateToCallUs();
+            try
+            {
+                this.userActionsListener.NavigateToCallUs();
             }
             catch (Exception ex)
             {
@@ -178,10 +176,11 @@ namespace myTNB_Android.Src.PreLogin.Activity
 
 
         [OnClick(Resource.Id.txtFeedback)]
-        void OnFeedback(object sender , EventArgs eventArgs)
+        void OnFeedback(object sender, EventArgs eventArgs)
         {
-            try {
-            this.userActionsListener.NavigateToFeedback();
+            try
+            {
+                this.userActionsListener.NavigateToFeedback();
             }
             catch (Exception ex)
             {
@@ -240,7 +239,7 @@ namespace myTNB_Android.Src.PreLogin.Activity
         {
             StartActivity(new Intent(this, typeof(MapActivity)));
         }
-        
+
         public void ShowCallUs(WeblinkEntity entity)
         {
             if (entity.OpenWith.Equals("PHONE"))
@@ -253,15 +252,16 @@ namespace myTNB_Android.Src.PreLogin.Activity
 
         public void ShowFeedback()
         {
-            var feedbackIntent = new Intent(this , typeof(FeedbackPreLoginMenuActivity));
+            var feedbackIntent = new Intent(this, typeof(FeedbackPreLoginMenuActivity));
             StartActivity(feedbackIntent);
         }
 
         public void GetDataFromSiteCore()
         {
-            try {
-            progressBar.Visibility = ViewStates.Visible;
-            this.userActionsListener.OnGetPreLoginPromo();
+            try
+            {
+                progressBar.Visibility = ViewStates.Visible;
+                this.userActionsListener.OnGetPreLoginPromo();
             }
             catch (Exception ex)
             {

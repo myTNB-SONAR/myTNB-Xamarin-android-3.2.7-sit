@@ -1,30 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
+﻿using Android.App;
 using Android.Content;
+using Android.Content.PM;
 using Android.OS;
-using Android.Runtime;
+using Android.Preferences;
+using Android.Support.Design.Widget;
+using Android.Support.V4.Content;
+using Android.Support.V7.Widget;
 using Android.Views;
 using Android.Widget;
-using Android.Content.PM;
-using myTNB_Android.Src.Base.Activity;
 using CheeseBind;
-using Android.Support.Design.Widget;
-using Android.Support.V7.Widget;
-using myTNB_Android.Src.FeedbackDetails.Adapter;
+using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Base.Models;
-using Newtonsoft.Json;
-using myTNB_Android.Src.Utils;
+using myTNB_Android.Src.FeedbackDetails.Adapter;
 using myTNB_Android.Src.FeedbackDetails.MVP;
-using Java.Text;
-using Java.Util;
-using myTNB_Android.Src.Database.Model;
-using Android.Preferences;
 using myTNB_Android.Src.FeedbackFullScreenImage.Activity;
-using Android.Support.V4.Content;
+using myTNB_Android.Src.Utils;
+using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
 using System.Runtime;
 
 namespace myTNB_Android.Src.FeedbackDetails.Activity
@@ -32,7 +25,7 @@ namespace myTNB_Android.Src.FeedbackDetails.Activity
     [Activity(Label = "@string/faulty_street_lamps_activity_title"
       , ScreenOrientation = ScreenOrientation.Portrait
       , Theme = "@style/Theme.FaultyStreetLamps")]
-    public class FeedbackDetailsFaultyLampsActivity : BaseToolbarAppCompatActivity , FeedbackDetailsContract.FaultyLamps.IView
+    public class FeedbackDetailsFaultyLampsActivity : BaseToolbarAppCompatActivity, FeedbackDetailsContract.FaultyLamps.IView
     {
 
         [BindView(Resource.Id.rootView)]
@@ -120,16 +113,17 @@ namespace myTNB_Android.Src.FeedbackDetails.Activity
 
         public void ShowImages(List<AttachedImage> list)
         {
-            try {
-            adapter.AddAll(list);
-            if (list.Count <= 0)
+            try
             {
-                txtRelatedScreenshotTitle.Visibility = ViewStates.Gone;
-            }
-            else
-            {
-                txtRelatedScreenshotTitle.Visibility = ViewStates.Visible;
-            }
+                adapter.AddAll(list);
+                if (list.Count <= 0)
+                {
+                    txtRelatedScreenshotTitle.Visibility = ViewStates.Gone;
+                }
+                else
+                {
+                    txtRelatedScreenshotTitle.Visibility = ViewStates.Visible;
+                }
             }
             catch (Exception e)
             {
@@ -144,36 +138,37 @@ namespace myTNB_Android.Src.FeedbackDetails.Activity
 
         public void ShowInputData(string feedbackId, string feedbackStatus, string feedbackCode, string dateTime, string state, string location, string pole_no, string feedback)
         {
-            try {
-            txtFeedbackId.Text = feedbackId;
-           
-            txtFeedbackStatus.Text = feedbackStatus;
+            try
+            {
+                txtFeedbackId.Text = feedbackId;
 
-            if (feedbackCode.Equals("CL01"))
-            {
-                txtFeedbackStatus.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.createdColor)));
-            }
-            else if (feedbackCode.Equals("CL02"))
-            {
-                txtFeedbackStatus.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.inProgressColor)));
-            }
-            else if (feedbackCode.Equals("CL03"))
-            {
-                txtFeedbackStatus.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.completedColor)));
-            }
-            else if (feedbackCode.Equals("CL04"))
-            {
-                txtFeedbackStatus.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.completedColor)));
-            }
-            else if (feedbackCode.Equals("CL06"))
-            {
-                txtFeedbackStatus.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.cancelledColor)));
-            }
-            txtFeedbackDateTime.Text = dateTime;
-            txtState.Text = state;
-            txtLocation.Text = location;
-            txtPoleNo.Text = pole_no;
-            txtFeedback.Text = feedback;
+                txtFeedbackStatus.Text = feedbackStatus;
+
+                if (feedbackCode.Equals("CL01"))
+                {
+                    txtFeedbackStatus.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.createdColor)));
+                }
+                else if (feedbackCode.Equals("CL02"))
+                {
+                    txtFeedbackStatus.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.inProgressColor)));
+                }
+                else if (feedbackCode.Equals("CL03"))
+                {
+                    txtFeedbackStatus.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.completedColor)));
+                }
+                else if (feedbackCode.Equals("CL04"))
+                {
+                    txtFeedbackStatus.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.completedColor)));
+                }
+                else if (feedbackCode.Equals("CL06"))
+                {
+                    txtFeedbackStatus.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.cancelledColor)));
+                }
+                txtFeedbackDateTime.Text = dateTime;
+                txtState.Text = state;
+                txtLocation.Text = location;
+                txtPoleNo.Text = pole_no;
+                txtFeedback.Text = feedback;
             }
             catch (Exception e)
             {
@@ -185,22 +180,23 @@ namespace myTNB_Android.Src.FeedbackDetails.Activity
         {
             base.OnCreate(savedInstanceState);
 
-            try {
-            string selectedFeedback = UserSessions.GetSelectedFeedback(PreferenceManager.GetDefaultSharedPreferences(this));
-            submittedFeedback = JsonConvert.DeserializeObject<SubmittedFeedbackDetails>(selectedFeedback);
+            try
+            {
+                string selectedFeedback = UserSessions.GetSelectedFeedback(PreferenceManager.GetDefaultSharedPreferences(this));
+                submittedFeedback = JsonConvert.DeserializeObject<SubmittedFeedbackDetails>(selectedFeedback);
 
-            TextViewUtils.SetMuseoSans300Typeface(txtRelatedScreenshotTitle ,txtFeedbackId, txtFeedbackDateTime, txtState, txtLocation, txtPoleNo, txtFeedback , txtFeedbackStatus);
-            TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutFeedbackId,  txtInputLayoutFeedback, txtInputLayoutLocation, txtInputLayoutDateTime, txtInputLayoutPoleNo, txtInputLayoutState , txtInputLayoutStatus);
+                TextViewUtils.SetMuseoSans300Typeface(txtRelatedScreenshotTitle, txtFeedbackId, txtFeedbackDateTime, txtState, txtLocation, txtPoleNo, txtFeedback, txtFeedbackStatus);
+                TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutFeedbackId, txtInputLayoutFeedback, txtInputLayoutLocation, txtInputLayoutDateTime, txtInputLayoutPoleNo, txtInputLayoutState, txtInputLayoutStatus);
 
-            adapter = new FeedbackImageRecyclerAdapter(true);
-            layoutManager = new GridLayoutManager(this, Constants.GRID_IMAGE_COUNT);
-            recyclerView.SetLayoutManager(layoutManager);
-            recyclerView.SetAdapter(adapter);
+                adapter = new FeedbackImageRecyclerAdapter(true);
+                layoutManager = new GridLayoutManager(this, Constants.GRID_IMAGE_COUNT);
+                recyclerView.SetLayoutManager(layoutManager);
+                recyclerView.SetAdapter(adapter);
 
-            adapter.SelectClickEvent += Adapter_SelectClickEvent;
+                adapter.SelectClickEvent += Adapter_SelectClickEvent;
 
-            mPresenter = new FeedbackDetailsFaultyLampsPresenter(this , submittedFeedback);
-            this.userActionsListener.Start();
+                mPresenter = new FeedbackDetailsFaultyLampsPresenter(this, submittedFeedback);
+                this.userActionsListener.Start();
             }
             catch (Exception e)
             {

@@ -1,23 +1,14 @@
-﻿using System;
+﻿using myTNB_Android.Src.Utils;
+using SQLite;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-using SQLite;
-using myTNB_Android.Src.Utils;
 
 namespace myTNB_Android.Src.Database.Model
 {
     [Table("NotificationFilterEntity")]
     public class NotificationFilterEntity
     {
-        [Unique , Column("Id")]
+        [Unique, Column("Id")]
         public string Id { get; set; }
 
         [Column("Title")]
@@ -39,7 +30,7 @@ namespace myTNB_Android.Src.Database.Model
             db.CreateTableAsync<NotificationFilterEntity>();
         }
 
-        public static int InsertOrReplace(string Id , string Title , bool isSelected)
+        public static int InsertOrReplace(string Id, string Title, bool isSelected)
         {
             using (var db = new SQLiteConnection(Constants.DB_PATH))
             {

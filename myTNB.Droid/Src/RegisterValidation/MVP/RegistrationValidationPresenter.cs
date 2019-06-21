@@ -1,30 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
+﻿using Android.Content;
+using Android.Content.PM;
 using Android.Text;
-using myTNB_Android.Src.RegistrationForm.Models;
 using Android.Util;
-using Refit;
-using System.Net.Http;
-using myTNB_Android.Src.RegistrationForm.Api;
-using myTNB_Android.Src.Utils;
-using System.Threading;
+using myTNB_Android.Src.AppLaunch.Api;
+using myTNB_Android.Src.AppLaunch.Models;
+using myTNB_Android.Src.AppLaunch.Requests;
+using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.Login.Api;
 using myTNB_Android.Src.Login.Requests;
-using myTNB_Android.Src.Database.Model;
+using myTNB_Android.Src.RegistrationForm.Api;
+using myTNB_Android.Src.RegistrationForm.Models;
 using myTNB_Android.Src.RegistrationForm.Requests;
-using myTNB_Android.Src.AppLaunch.Api;
-using myTNB_Android.Src.AppLaunch.Requests;
-using myTNB_Android.Src.AppLaunch.Models;
-using Android.Content.PM;
+using myTNB_Android.Src.Utils;
+using Refit;
+using System;
+using System.Collections.Generic;
+using System.Net.Http;
+using System.Threading;
 
 namespace myTNB_Android.Src.RegisterValidation.MVP
 {
@@ -36,7 +28,7 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
         private CancellationTokenSource cts;
         private ISharedPreferences mSharedPref;
 
-        public RegistrationValidationPresenter(RegistrationValidationContract.IView mView , UserCredentialsEntity userCredentialsEntity, ISharedPreferences sharedPreferences)
+        public RegistrationValidationPresenter(RegistrationValidationContract.IView mView, UserCredentialsEntity userCredentialsEntity, ISharedPreferences sharedPreferences)
         {
             this.mView = mView;
             this.userCredentialsEntity = userCredentialsEntity;
@@ -54,9 +46,9 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
             this.mView.ShowAccountListActivity();
         }
 
-        public async void OnRegister(string num1, string num2, string num3, string num4 , string deviceId)
+        public async void OnRegister(string num1, string num2, string num3, string num4, string deviceId)
         {
-            
+
             cts = new CancellationTokenSource();
             if (TextUtils.IsEmpty(num1))
             {
@@ -106,18 +98,18 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
                     displayName = userCredentialsEntity.Fullname,
                     username = userCredentialsEntity.Email,
                     email = userCredentialsEntity.Email,
-                    token = string.Format("{0}{1}{2}{3}" , num1 , num2, num3 , num4),
+                    token = string.Format("{0}{1}{2}{3}", num1, num2, num3, num4),
                     password = userCredentialsEntity.Password,
                     confirmPassword = userCredentialsEntity.ConfirmEmail,
                     icNo = userCredentialsEntity.ICNo,
                     mobileNo = userCredentialsEntity.MobileNo,
                     ipAddress = Constants.APP_CONFIG.API_KEY_ID,
-                    clientType = DeviceIdUtils.GetAppVersionName(), 
+                    clientType = DeviceIdUtils.GetAppVersionName(),
                     activeUserName = Constants.APP_CONFIG.API_KEY_ID,
                     devicePlatform = Constants.DEVICE_PLATFORM,
                     deviceVersion = DeviceIdUtils.GetAndroidVersion(),
                     deviceCordova = Constants.APP_CONFIG.API_KEY_ID
-                } ,cts.Token );
+                }, cts.Token);
 
                 if (!userRegistrationResponse.userRegistration.IsError)
                 {
@@ -155,7 +147,7 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
                     }
                     else
                     {
-                       
+
                         List<NotificationTypesEntity> notificationTypes = NotificationTypesEntity.List();
                         NotificationFilterEntity.InsertOrReplace(Constants.ZERO_INDEX_FILTER, Constants.ZERO_INDEX_TITLE, true);
                         foreach (NotificationTypesEntity notificationType in notificationTypes)
@@ -194,7 +186,9 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
                             this.mView.ShowNotificationCount(UserNotificationEntity.Count());
                             this.mView.ShowAccountListActivity();
                             UserSessions.SavePhoneVerified(mSharedPref, true);
-                        } else {
+                        }
+                        else
+                        {
                             if (mView.IsActive())
                             {
                                 this.mView.HideRegistrationProgress();

@@ -1,26 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-using Android.Text;
+﻿using Android.Util;
+using myTNB_Android.Src.AppLaunch.Models;
 using myTNB_Android.Src.Database.Model;
+using myTNB_Android.Src.myTNBMenu.Api;
+using myTNB_Android.Src.myTNBMenu.Models;
+using myTNB_Android.Src.myTNBMenu.Requests;
 using myTNB_Android.Src.Utils;
+using Refit;
+using System;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
-using Refit;
-using myTNB_Android.Src.myTNBMenu.Api;
 using System.Threading;
-using myTNB_Android.Src.AppLaunch.Models;
-using myTNB_Android.Src.myTNBMenu.Requests;
-using Android.Util;
-using myTNB_Android.Src.myTNBMenu.Models;
 
 namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
 {
@@ -37,53 +27,26 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
 
         public void OnArrowBackClick()
         {
-            try {
-            if (this.mView.GetCurrentParentIndex() == (this.mView.GetMaxParentIndex() - 1))
+            try
             {
-                this.mView.EnableLeftArrow(false);
-            }
-            else
-            {
-                
-                int newIndex = (this.mView.GetCurrentParentIndex() + 1) % this.mView.GetMaxParentIndex();
-                this.mView.SetCurrentParentIndex(newIndex);
-                if (this.mView.GetCurrentParentIndex() == (this.mView.GetMaxParentIndex() -1))
+                if (this.mView.GetCurrentParentIndex() == (this.mView.GetMaxParentIndex() - 1))
                 {
                     this.mView.EnableLeftArrow(false);
                 }
                 else
                 {
-                    this.mView.EnableLeftArrow(true);
+
+                    int newIndex = (this.mView.GetCurrentParentIndex() + 1) % this.mView.GetMaxParentIndex();
+                    this.mView.SetCurrentParentIndex(newIndex);
+                    if (this.mView.GetCurrentParentIndex() == (this.mView.GetMaxParentIndex() - 1))
+                    {
+                        this.mView.EnableLeftArrow(false);
+                    }
+                    else
+                    {
+                        this.mView.EnableLeftArrow(true);
+                    }
                 }
-            }
-
-            if (this.mView.GetCurrentParentIndex() == 0)
-            {
-                this.mView.EnableRightArrow(false);
-            }
-            else
-            {
-                this.mView.EnableRightArrow(true);
-            }
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
-        }
-
-        public void OnArrowForwardClick()
-        {
-            try {
-            if (this.mView.GetCurrentParentIndex() == 0)
-            {
-                this.mView.EnableRightArrow(false);
-            }
-            else
-            {
-                
-                int newIndex = this.mView.GetCurrentParentIndex() - 1;
-                this.mView.SetCurrentParentIndex(newIndex);
 
                 if (this.mView.GetCurrentParentIndex() == 0)
                 {
@@ -94,15 +57,44 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                     this.mView.EnableRightArrow(true);
                 }
             }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
 
-            if (this.mView.GetCurrentParentIndex() == (this.mView.GetMaxParentIndex() - 1))
+        public void OnArrowForwardClick()
+        {
+            try
             {
-                this.mView.EnableLeftArrow(false);
-            }
-            else
-            {
-                this.mView.EnableLeftArrow(true);
-            }
+                if (this.mView.GetCurrentParentIndex() == 0)
+                {
+                    this.mView.EnableRightArrow(false);
+                }
+                else
+                {
+
+                    int newIndex = this.mView.GetCurrentParentIndex() - 1;
+                    this.mView.SetCurrentParentIndex(newIndex);
+
+                    if (this.mView.GetCurrentParentIndex() == 0)
+                    {
+                        this.mView.EnableRightArrow(false);
+                    }
+                    else
+                    {
+                        this.mView.EnableRightArrow(true);
+                    }
+                }
+
+                if (this.mView.GetCurrentParentIndex() == (this.mView.GetMaxParentIndex() - 1))
+                {
+                    this.mView.EnableLeftArrow(false);
+                }
+                else
+                {
+                    this.mView.EnableLeftArrow(true);
+                }
             }
             catch (Exception e)
             {
@@ -112,39 +104,41 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
 
         public void OnByDay()
         {
-            try {
-            if (!this.mView.HasNoInternet())
+            try
             {
-                this.mView.SetCurrentParentIndex(0);
-                if (!this.mView.IsByDayEmpty())
+                if (!this.mView.HasNoInternet())
                 {
-                    this.mView.EnableLeftArrow(true);
-                    this.mView.EnableRightArrow(false);
-                    this.mView.ShowByDay();
+                    this.mView.SetCurrentParentIndex(0);
+                    if (!this.mView.IsByDayEmpty())
+                    {
+                        this.mView.EnableLeftArrow(true);
+                        this.mView.EnableRightArrow(false);
+                        this.mView.ShowByDay();
+                    }
+                    else
+                    {
+                        this.mView.EnableLeftArrow(false);
+                        this.mView.ShowNotAvailableDayData();
+                    }
                 }
-                else
-                {
-                    this.mView.EnableLeftArrow(false);
-                    this.mView.ShowNotAvailableDayData();
-                }
-            }
             }
             catch (Exception e)
             {
                 Utility.LoggingNonFatalError(e);
             }
-         
+
         }
 
         public void OnByMonth()
         {
-            try {
-            if (!this.mView.HasNoInternet())
+            try
             {
-                this.mView.EnableLeftArrow(false);
-                this.mView.EnableRightArrow(false);
-                this.mView.ShowByMonth();
-            }
+                if (!this.mView.HasNoInternet())
+                {
+                    this.mView.EnableLeftArrow(false);
+                    this.mView.EnableRightArrow(false);
+                    this.mView.ShowByMonth();
+                }
             }
             catch (Exception e)
             {
@@ -190,13 +184,13 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
 
 
                 if (this.mView.IsActive())
-                { 
+                {
                     this.mView.HideAmountProgress();
                     if (!amountDueResponse.Data.IsError)
                     {
                         //if (amountDueResponse.Data.Data.AmountDue > 0.00)
                         //{
-                            //this.mView.EnablePayButton();
+                        //this.mView.EnablePayButton();
                         //}
                         this.mView.ShowAmountDue(amountDueResponse.Data.Data);
                     }
@@ -205,7 +199,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                         this.mView.ShowRetryOptionsApiException(null);
                     }
 
-                        
+
 
                 }
             }
@@ -254,7 +248,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
             else
             {
                 this.mView.ShowNoInternetSnackbar();
-                
+
             }
         }
 
@@ -268,7 +262,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
             {
                 this.mView.ShowNoInternetSnackbar();
             }
-            
+
         }
 
         public void OnTapRefresh()
@@ -318,37 +312,38 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
 
                 var billsHistoryResponseV5 = billsHistoryResponseApi;
 
-                if (billsHistoryResponseV5 != null && billsHistoryResponseV5.Data != null) {
-                    if (!billsHistoryResponseV5.Data.IsError && !string.IsNullOrEmpty(billsHistoryResponseV5.Data.Status) 
+                if (billsHistoryResponseV5 != null && billsHistoryResponseV5.Data != null)
+                {
+                    if (!billsHistoryResponseV5.Data.IsError && !string.IsNullOrEmpty(billsHistoryResponseV5.Data.Status)
                         && billsHistoryResponseV5.Data.Status.Equals("success"))
-                {
-                    if (billsHistoryResponseV5.Data.BillHistory != null && billsHistoryResponseV5.Data.BillHistory.Count() > 0)
                     {
-                        this.mView.ShowViewBill(billsHistoryResponseV5.Data.BillHistory[0]);
-                        return;
+                        if (billsHistoryResponseV5.Data.BillHistory != null && billsHistoryResponseV5.Data.BillHistory.Count() > 0)
+                        {
+                            this.mView.ShowViewBill(billsHistoryResponseV5.Data.BillHistory[0]);
+                            return;
+                        }
+
+
+                        /*** Save Bill History For the Day ***/
+                        //BillHistoryEntity smUsageModel = new BillHistoryEntity();
+                        //smUsageModel.Timestamp = DateTime.Now.ToLocalTime();
+                        //smUsageModel.JsonResponse = JsonConvert.SerializeObject(billsHistoryResponseV5);
+                        //smUsageModel.AccountNo = selectedAccount.AccountNum;
+                        //BillHistoryEntity.InsertItem(smUsageModel);
+                        /*****/
+
+                        //if (IsActive())
+                        //{
+                        //    this.mView.ShowBillsList(billsHistoryResponseV5);
+                        //}
                     }
-
-
-                    /*** Save Bill History For the Day ***/
-                    //BillHistoryEntity smUsageModel = new BillHistoryEntity();
-                    //smUsageModel.Timestamp = DateTime.Now.ToLocalTime();
-                    //smUsageModel.JsonResponse = JsonConvert.SerializeObject(billsHistoryResponseV5);
-                    //smUsageModel.AccountNo = selectedAccount.AccountNum;
-                    //BillHistoryEntity.InsertItem(smUsageModel);
-                    /*****/
-
-                    //if (IsActive())
-                    //{
-                    //    this.mView.ShowBillsList(billsHistoryResponseV5);
-                    //}
-                }
-                else
-                {
-                    //if (this.mView.IsActive())
-                    //{
-                    //    this.mView.ShowEmptyBillList();
-                    //}
-                }
+                    else
+                    {
+                        //if (this.mView.IsActive())
+                        //{
+                        //    this.mView.ShowEmptyBillList();
+                        //}
+                    }
                 }
 
                 //if (this.mView.IsActive())
@@ -416,7 +411,9 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                     OnByMonth();
 
                 }
-            } catch(Exception e) {
+            }
+            catch (Exception e)
+            {
                 Utility.LoggingNonFatalError(e);
             }
         }

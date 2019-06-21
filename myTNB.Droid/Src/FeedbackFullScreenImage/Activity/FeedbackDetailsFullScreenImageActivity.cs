@@ -1,21 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
+﻿using Android.App;
 using Android.Content;
+using Android.Content.PM;
 using Android.OS;
-using Android.Runtime;
 using Android.Views;
 using Android.Widget;
-using Android.Content.PM;
+using CheeseBind;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Base.Models;
-using Newtonsoft.Json;
 using myTNB_Android.Src.Utils;
-using CheeseBind;
 using Square.Picasso;
+using System;
 using System.Runtime;
 
 namespace myTNB_Android.Src.FeedbackFullScreenImage.Activity
@@ -85,7 +79,9 @@ namespace myTNB_Android.Src.FeedbackFullScreenImage.Activity
                     .Load(new Java.IO.File(attachedImage.Path))
                     .Fit()
                     .Into(imgFeedback);
-            } catch(Exception e) {
+            }
+            catch (Exception e)
+            {
                 Utility.LoggingNonFatalError(e);
             }
         }

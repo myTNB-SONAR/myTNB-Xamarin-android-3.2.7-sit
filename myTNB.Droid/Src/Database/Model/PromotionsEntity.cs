@@ -1,10 +1,8 @@
-﻿using SQLite;
-using System.Collections.Generic;
-using myTNB.SitecoreCMS.Model;
-using System;
-using myTNB_Android.Src.Utils;
-using myTNB.SitecoreCM.Models;
+﻿using myTNB.SitecoreCM.Models;
 using myTNB_Android.Src.Database;
+using SQLite;
+using System;
+using System.Collections.Generic;
 
 namespace myTNB.SQLite.SQLiteDataManager
 {
@@ -25,7 +23,7 @@ namespace myTNB.SQLite.SQLiteDataManager
                 //var db = new SQLiteConnection(Constants.DB_PATH);
                 var db = DBHelper.GetSQLiteConnection();
                 int newRecord = db.InsertOrReplace(item);
-                Console.WriteLine("Insert Record: {0}", newRecord );
+                Console.WriteLine("Insert Record: {0}", newRecord);
             }
             catch (Exception e)
             {
@@ -35,7 +33,8 @@ namespace myTNB.SQLite.SQLiteDataManager
 
         public void InsertListOfItems(List<PromotionsModel> itemList)
         {
-            if(itemList != null){
+            if (itemList != null)
+            {
                 foreach (PromotionsModel obj in itemList)
                 {
                     PromotionsEntity item = new PromotionsEntity();
@@ -65,13 +64,16 @@ namespace myTNB.SQLite.SQLiteDataManager
                 //var db = new SQLiteConnection(Constants.DB_PATH);
                 var db = DBHelper.GetSQLiteConnection();
                 itemList = db.Query<PromotionsEntity>("select * from PromotionsEntity");
-            }catch(Exception e){
+            }
+            catch (Exception e)
+            {
                 Console.WriteLine("Error in Get All Items : {0}", e.Message);
             }
             return itemList;
         }
 
-        public void DeleteTable(){
+        public void DeleteTable()
+        {
             try
             {
                 //var db = new SQLiteConnection(Constants.DB_PATH);
@@ -80,7 +82,7 @@ namespace myTNB.SQLite.SQLiteDataManager
             }
             catch (Exception e)
             {
-                Console.WriteLine("Error in Delete Table : {0}",e.Message);
+                Console.WriteLine("Error in Delete Table : {0}", e.Message);
             }
         }
 

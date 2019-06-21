@@ -1,30 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
+﻿using AFollestad.MaterialDialogs;
 using Android.App;
 using Android.Content;
+using Android.Content.PM;
 using Android.OS;
-using Android.Runtime;
+using Android.Preferences;
+using Android.Support.Design.Widget;
+using Android.Text;
 using Android.Views;
 using Android.Widget;
-using Android.Content.PM;
-using myTNB_Android.Src.Base.Activity;
-using myTNB_Android.Src.RegisterValidation.MVP;
-using Refit;
 using CheeseBind;
-using myTNB_Android.Src.Utils.Custom.ProgressButton;
-using Android.Support.Design.Widget;
-using AFollestad.MaterialDialogs;
-using myTNB_Android.Src.RegistrationForm.Models;
-using Newtonsoft.Json;
-using myTNB_Android.Src.Utils;
-using Android.Text;
-using myTNB_Android.Src.AddAccount.Activity;
+using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.ForgetPassword.MVP;
-using Android.Preferences;
+using myTNB_Android.Src.Utils;
+using myTNB_Android.Src.Utils.Custom.ProgressButton;
 using myTNB_Android.Src.Utils.Custom.ProgressDialog;
+using Refit;
+using System;
+using System.Linq;
 using System.Runtime;
 
 namespace myTNB_Android.Src.ForgetPassword.Activity
@@ -90,56 +82,58 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-            try {
-            mPresenter = new ForgetPasswordPresenter(this, PreferenceManager.GetDefaultSharedPreferences(this));
-
-            mVerificationProgressDialog = new MaterialDialog.Builder(this)
-                .Title(Resource.String.forget_password_validation_progress_title)
-                .Content(Resource.String.forget_password_validation_progress_message)
-                .Progress(true, 0)
-                .Cancelable(false)
-                .Build();
-
-            Bundle extras = Intent.Extras;
-            email = extras.GetString("email");
-
-            txtInfoTitle.Text = GetString(Resource.String.forget_password_verification_code_text, email);
-            TextViewUtils.SetMuseoSans300Typeface(txtInfoTitle, txtDidntReceive);
-            TextViewUtils.SetMuseoSans300Typeface(txtNumber_1, txtNumber_2, txtNumber_3, txtNumber_4);
-            TextViewUtils.SetMuseoSans500Typeface(btnResend, OnCompleteResend);
-            
-
-            txtNumber_1.TextChanged += TxtNumber_1_TextChanged;
-            txtNumber_2.TextChanged += TxtNumber_2_TextChanged;
-            txtNumber_3.TextChanged += TxtNumber_3_TextChanged;
-            txtNumber_4.TextChanged += TxtNumber_4_TextChanged;
-
-            progressGenerator = new ProgressGenerator(this)
+            try
             {
-                ProgressSlice = 100f / 30f,
-                MaxCounter = 30
+                mPresenter = new ForgetPasswordPresenter(this, PreferenceManager.GetDefaultSharedPreferences(this));
 
-            };
+                mVerificationProgressDialog = new MaterialDialog.Builder(this)
+                    .Title(Resource.String.forget_password_validation_progress_title)
+                    .Content(Resource.String.forget_password_validation_progress_message)
+                    .Progress(true, 0)
+                    .Cancelable(false)
+                    .Build();
 
-            this.userActionsListener.Start();
-        }
+                Bundle extras = Intent.Extras;
+                email = extras.GetString("email");
+
+                txtInfoTitle.Text = GetString(Resource.String.forget_password_verification_code_text, email);
+                TextViewUtils.SetMuseoSans300Typeface(txtInfoTitle, txtDidntReceive);
+                TextViewUtils.SetMuseoSans300Typeface(txtNumber_1, txtNumber_2, txtNumber_3, txtNumber_4);
+                TextViewUtils.SetMuseoSans500Typeface(btnResend, OnCompleteResend);
+
+
+                txtNumber_1.TextChanged += TxtNumber_1_TextChanged;
+                txtNumber_2.TextChanged += TxtNumber_2_TextChanged;
+                txtNumber_3.TextChanged += TxtNumber_3_TextChanged;
+                txtNumber_4.TextChanged += TxtNumber_4_TextChanged;
+
+                progressGenerator = new ProgressGenerator(this)
+                {
+                    ProgressSlice = 100f / 30f,
+                    MaxCounter = 30
+
+                };
+
+                this.userActionsListener.Start();
+            }
             catch (Exception e)
             {
                 Utility.LoggingNonFatalError(e);
             }
             //ShowSuccess("An SMS containing activation pin has been send to your number.");
         }
-        
+
 
         private void TxtNumber_1_TextChanged(object sender, Android.Text.TextChangedEventArgs e)
         {
-            try {
-            if (e.Text.Count() == 1)
+            try
             {
-                txtNumber_1.ClearFocus();
-                txtNumber_2.RequestFocus();
-            }
-            CheckValidPin();
+                if (e.Text.Count() == 1)
+                {
+                    txtNumber_1.ClearFocus();
+                    txtNumber_2.RequestFocus();
+                }
+                CheckValidPin();
             }
             catch (Exception ex)
             {
@@ -150,13 +144,14 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
 
         private void TxtNumber_2_TextChanged(object sender, Android.Text.TextChangedEventArgs e)
         {
-            try {
-            if (e.Text.Count() == 1)
+            try
             {
-                txtNumber_2.ClearFocus();
-                txtNumber_3.RequestFocus();
-            }
-            CheckValidPin();
+                if (e.Text.Count() == 1)
+                {
+                    txtNumber_2.ClearFocus();
+                    txtNumber_3.RequestFocus();
+                }
+                CheckValidPin();
             }
             catch (Exception ex)
             {
@@ -166,13 +161,14 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
 
         private void TxtNumber_3_TextChanged(object sender, Android.Text.TextChangedEventArgs e)
         {
-            try {
-            if (e.Text.Count() == 1)
+            try
             {
-                txtNumber_3.ClearFocus();
-                txtNumber_4.RequestFocus();
-            }
-            CheckValidPin();
+                if (e.Text.Count() == 1)
+                {
+                    txtNumber_3.ClearFocus();
+                    txtNumber_4.RequestFocus();
+                }
+                CheckValidPin();
             }
             catch (Exception ex)
             {
@@ -182,8 +178,9 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
 
         private void TxtNumber_4_TextChanged(object sender, Android.Text.TextChangedEventArgs e)
         {
-            try {
-            CheckValidPin();
+            try
+            {
+                CheckValidPin();
             }
             catch (Exception ex)
             {
@@ -197,34 +194,35 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
             string txt_2 = txtNumber_2.Text;
             string txt_3 = txtNumber_3.Text;
             string txt_4 = txtNumber_4.Text;
-            try {
-            if (TextUtils.IsEmpty(txt_1) || !TextUtils.IsDigitsOnly(txt_1))
+            try
             {
-                return;
-            }
+                if (TextUtils.IsEmpty(txt_1) || !TextUtils.IsDigitsOnly(txt_1))
+                {
+                    return;
+                }
 
-            if (TextUtils.IsEmpty(txt_2) || !TextUtils.IsDigitsOnly(txt_2))
-            {
-                return;
-            }
+                if (TextUtils.IsEmpty(txt_2) || !TextUtils.IsDigitsOnly(txt_2))
+                {
+                    return;
+                }
 
-            if (TextUtils.IsEmpty(txt_3) || !TextUtils.IsDigitsOnly(txt_3))
-            {
-                return;
-            }
+                if (TextUtils.IsEmpty(txt_3) || !TextUtils.IsDigitsOnly(txt_3))
+                {
+                    return;
+                }
 
-            if (TextUtils.IsEmpty(txt_3) || !TextUtils.IsDigitsOnly(txt_3))
-            {
-                return;
-            }
+                if (TextUtils.IsEmpty(txt_3) || !TextUtils.IsDigitsOnly(txt_3))
+                {
+                    return;
+                }
 
-            if (TextUtils.IsEmpty(txt_4) || !TextUtils.IsDigitsOnly(txt_4))
-            {
-                return;
-            }
+                if (TextUtils.IsEmpty(txt_4) || !TextUtils.IsDigitsOnly(txt_4))
+                {
+                    return;
+                }
 
-            string code = txt_1 + "" + txt_2 + "" + txt_3 + "" + txt_4;
-            this.userActionsListener.Submit(Constants.APP_CONFIG.API_KEY_ID, email, email, code);
+                string code = txt_1 + "" + txt_2 + "" + txt_3 + "" + txt_4;
+                this.userActionsListener.Submit(Constants.APP_CONFIG.API_KEY_ID, email, email, code);
             }
             catch (Exception e)
             {
@@ -264,17 +262,17 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
 
         public void ShowEmptyEmailError()
         {
-            
+
         }
 
         public void ShowEmptyCodeError()
         {
-            
+
         }
 
         public void ShowInvalidEmailError()
         {
-            
+
         }
 
         public void ShowError(string errorMessage)
@@ -283,13 +281,13 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
             {
                 mSnackBar.Dismiss();
             }
-            
-            
+
+
             mSnackBar = Snackbar.Make(rootView, errorMessage, Snackbar.LengthIndefinite)
                 .SetAction(GetString(Resource.String.forget_password_btn_close), delegate { mSnackBar.Dismiss(); }
             );
             mSnackBar.Show();
-            
+
         }
 
         public void ShowSuccess(string message)
@@ -298,23 +296,24 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
             {
                 mSnackBar.Dismiss();
             }
-                mSnackBar = Snackbar.Make(rootView, message, Snackbar.LengthIndefinite)
-                .SetAction(GetString(Resource.String.forget_password_btn_close), delegate {
-                    mSnackBar.Dismiss();
-                    if (!resendCalled)
-                    {
-                        this.Finish();
-                    }
-                    else
-                    {
-                        resendCalled = false;
-                    }
+            mSnackBar = Snackbar.Make(rootView, message, Snackbar.LengthIndefinite)
+            .SetAction(GetString(Resource.String.forget_password_btn_close), delegate
+            {
+                mSnackBar.Dismiss();
+                if (!resendCalled)
+                {
+                    this.Finish();
                 }
-                );
-                View v = mSnackBar.View;
-                TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
-                tv.SetMaxLines(5);
-                mSnackBar.Show();
+                else
+                {
+                    resendCalled = false;
+                }
+            }
+            );
+            View v = mSnackBar.View;
+            TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+            tv.SetMaxLines(5);
+            mSnackBar.Show();
         }
 
         public void ShowProgressDialog()
@@ -323,14 +322,15 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
             //{
             //    mVerificationProgressDialog.Show();
             //}
-            try {
-            if (loadingOverlay != null && loadingOverlay.IsShowing)
+            try
             {
-                loadingOverlay.Dismiss();
-            }
+                if (loadingOverlay != null && loadingOverlay.IsShowing)
+                {
+                    loadingOverlay.Dismiss();
+                }
 
-            loadingOverlay = new LoadingOverlay(this, Resource.Style.LoadingOverlyDialogStyle);
-            loadingOverlay.Show();
+                loadingOverlay = new LoadingOverlay(this, Resource.Style.LoadingOverlyDialogStyle);
+                loadingOverlay.Show();
             }
             catch (Exception e)
             {
@@ -344,11 +344,12 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
             //{
             //    mVerificationProgressDialog.Dismiss();
             //}
-            try {
-            if (loadingOverlay != null && loadingOverlay.IsShowing)
+            try
             {
-                loadingOverlay.Dismiss();
-            }
+                if (loadingOverlay != null && loadingOverlay.IsShowing)
+                {
+                    loadingOverlay.Dismiss();
+                }
             }
             catch (Exception e)
             {
@@ -358,32 +359,32 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
 
         public void ShowGetCodeProgressDialog()
         {
-            
+
         }
 
         public void HideGetCodeProgressDialog()
         {
-            
+
         }
 
         public void ClearErrorMessages()
         {
-            
+
         }
 
         public void ClearTextFields()
         {
-            
+
         }
 
         public void EnableSubmitButton()
         {
-            
+
         }
 
         public void DisableSubmitButton()
         {
-            
+
         }
 
         private Snackbar mCancelledExceptionSnackBar;
@@ -395,7 +396,8 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
             }
 
             mCancelledExceptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.forget_password_cancelled_exception_error), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.forget_password_cancelled_exception_btn_retry), delegate {
+            .SetAction(GetString(Resource.String.forget_password_cancelled_exception_btn_retry), delegate
+            {
 
                 mCancelledExceptionSnackBar.Dismiss();
                 string txt_1 = txtNumber_1.Text;
@@ -420,7 +422,8 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
             }
 
             mApiExcecptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.forget_password_api_exception_error), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.forget_password_api_exception_btn_retry), delegate {
+            .SetAction(GetString(Resource.String.forget_password_api_exception_btn_retry), delegate
+            {
 
                 mApiExcecptionSnackBar.Dismiss();
                 string txt_1 = txtNumber_1.Text;
@@ -444,7 +447,8 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
             }
 
             mUknownExceptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.forget_password_unknown_exception_error), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.forget_password_unknown_exception_btn_retry), delegate {
+            .SetAction(GetString(Resource.String.forget_password_unknown_exception_btn_retry), delegate
+            {
 
                 mUknownExceptionSnackBar.Dismiss();
                 string txt_1 = txtNumber_1.Text;
@@ -460,17 +464,17 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
 
         public void ShowRetryOptionsCodeCancelledException(System.OperationCanceledException operationCanceledException)
         {
-            
+
         }
 
         public void ShowRetryOptionsCodeApiException(ApiException apiException)
         {
-            
+
         }
 
         public void ShowRetryOptionsCodeUnknownException(Exception exception)
         {
-            
+
         }
 
         public void SetPresenter(ForgetPasswordContract.IUserActionsListener userActionListener)
@@ -483,16 +487,17 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
 
         void ProgressGenerator.OnProgressListener.OnComplete()
         {
-            try {
-            btnResend.Text = GetString(Resource.String.registration_validation_btn_resend) + "(30)";
-            //btnResend.SetCompoundDrawablesWithIntrinsicBounds(GetDrawable(Resource.Drawable.ic_button_resend_loaded), null, null, null);
-            btnResend.Visibility = ViewStates.Gone;
-            OnCompleteResend.Visibility = ViewStates.Visible;
-            btnResend.Text = GetString(Resource.String.registration_validation_btn_resend);
-            btnResend.SetCompoundDrawablesWithIntrinsicBounds(GetDrawable(Resource.Drawable.ic_button_resend_loading), null, null, null);
-            btnResend.SetTextColor(Resources.GetColor(Resource.Color.freshGreen));
-            progressGenerator.Progress = 0;
-            this.userActionsListener.OnComplete();
+            try
+            {
+                btnResend.Text = GetString(Resource.String.registration_validation_btn_resend) + "(30)";
+                //btnResend.SetCompoundDrawablesWithIntrinsicBounds(GetDrawable(Resource.Drawable.ic_button_resend_loaded), null, null, null);
+                btnResend.Visibility = ViewStates.Gone;
+                OnCompleteResend.Visibility = ViewStates.Visible;
+                btnResend.Text = GetString(Resource.String.registration_validation_btn_resend);
+                btnResend.SetCompoundDrawablesWithIntrinsicBounds(GetDrawable(Resource.Drawable.ic_button_resend_loading), null, null, null);
+                btnResend.SetTextColor(Resources.GetColor(Resource.Color.freshGreen));
+                progressGenerator.Progress = 0;
+                this.userActionsListener.OnComplete();
             }
             catch (Exception e)
             {
@@ -508,7 +513,7 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
 
         public void OnComplete()
         {
-            
+
         }
 
         public void OnProgress(int count)
@@ -524,13 +529,14 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
 
         public void StartProgress()
         {
-            try {
-            OnCompleteResend.Visibility = ViewStates.Gone;
-            btnResend.Visibility = ViewStates.Visible;
-            btnResend.SetCompoundDrawablesWithIntrinsicBounds(GetDrawable(Resource.Drawable.ic_button_resend_loading), null, null, null);
-            btnResend.SetTextColor(Resources.GetColor(Resource.Color.freshGreen));
-            progressGenerator.Progress = 0;
-            progressGenerator.Start(btnResend, this);
+            try
+            {
+                OnCompleteResend.Visibility = ViewStates.Gone;
+                btnResend.Visibility = ViewStates.Visible;
+                btnResend.SetCompoundDrawablesWithIntrinsicBounds(GetDrawable(Resource.Drawable.ic_button_resend_loading), null, null, null);
+                btnResend.SetTextColor(Resources.GetColor(Resource.Color.freshGreen));
+                progressGenerator.Progress = 0;
+                progressGenerator.Start(btnResend, this);
             }
             catch (Exception e)
             {

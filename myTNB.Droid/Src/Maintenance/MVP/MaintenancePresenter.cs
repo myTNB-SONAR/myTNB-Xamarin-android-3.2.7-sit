@@ -1,21 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Text;
-using System.Threading;
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-using myTNB_Android.Src.AppLaunch.Async;
+﻿using Android.Content;
 using myTNB_Android.Src.AppLaunch.Models;
 using myTNB_Android.Src.Base.Api;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.Utils;
 using Refit;
+using System;
+using System.Net.Http;
+using System.Threading;
 
 namespace myTNB_Android.Src.Maintenance.MVP
 {
@@ -41,12 +32,12 @@ namespace myTNB_Android.Src.Maintenance.MVP
         private async void LoadAccounts()
         {
             cts = new CancellationTokenSource();
-            #if DEBUG
-                var httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
-                var masterDataApi = RestService.For<GetMasterDataApi>(httpClient);
-            #else
+#if DEBUG
+            var httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
+            var masterDataApi = RestService.For<GetMasterDataApi>(httpClient);
+#else
                 var masterDataApi = RestService.For<GetMasterDataApi>(Constants.SERVER_URL.END_POINT);
-            #endif
+#endif
             try
             {
                 Context mContext = MyTNBApplication.Context;
@@ -111,4 +102,4 @@ namespace myTNB_Android.Src.Maintenance.MVP
             //
         }
     }
-   }
+}

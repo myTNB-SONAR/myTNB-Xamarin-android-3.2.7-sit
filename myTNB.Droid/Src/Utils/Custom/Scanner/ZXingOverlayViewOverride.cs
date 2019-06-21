@@ -1,18 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Util;
-using Android.Views;
-using Android.Widget;
+﻿using Android.Content;
 using Android.Graphics;
 using Android.Text;
-using Android.Support.V4.Content;
+using Android.Util;
+using Android.Views;
+using System;
+using System.Collections.Generic;
 
 namespace myTNB_Android.Src.Utils.Custom.Scanner
 {
@@ -39,26 +31,27 @@ namespace myTNB_Android.Src.Utils.Custom.Scanner
 
         public ZxingOverlayViewOverride(Context context) : base(context)
         {
-            try {
-            this.SetWillNotDraw(false);
-            // Initialize these once for performance rather than calling them every time in onDraw().
-            paint = new Paint(PaintFlags.AntiAlias);
-            roundRectPaint = new Paint(PaintFlags.AntiAlias);
-            roundRectPaint.SetStyle(Paint.Style.Stroke);
-            roundRectPaint.StrokeWidth = 2;
-            //Resources resources = getResources();
-            maskColor = Color.Gray; // resources.getColor(R.color.viewfinder_mask);
-            resultColor = Color.Red; // resources.getColor(R.color.result_view);
-            frameColor = Color.Black; // resources.getColor(R.color.viewfinder_frame);
-            laserColor = Color.Red; //  resources.getColor(R.color.viewfinder_laser);
-                                    //resultPointColor = Color.LightCoral; // resources.getColor(R.color.possible_result_points);
-            scannerAlpha = 0;
-            possibleResultPoints = new List<ZXing.ResultPoint>(5);
-            //lastPossibleResultPoints = null;
-            this.SetBackgroundColor(Color.Transparent);
+            try
+            {
+                this.SetWillNotDraw(false);
+                // Initialize these once for performance rather than calling them every time in onDraw().
+                paint = new Paint(PaintFlags.AntiAlias);
+                roundRectPaint = new Paint(PaintFlags.AntiAlias);
+                roundRectPaint.SetStyle(Paint.Style.Stroke);
+                roundRectPaint.StrokeWidth = 2;
+                //Resources resources = getResources();
+                maskColor = Color.Gray; // resources.getColor(R.color.viewfinder_mask);
+                resultColor = Color.Red; // resources.getColor(R.color.result_view);
+                frameColor = Color.Black; // resources.getColor(R.color.viewfinder_frame);
+                laserColor = Color.Red; //  resources.getColor(R.color.viewfinder_laser);
+                                        //resultPointColor = Color.LightCoral; // resources.getColor(R.color.possible_result_points);
+                scannerAlpha = 0;
+                possibleResultPoints = new List<ZXing.ResultPoint>(5);
+                //lastPossibleResultPoints = null;
+                this.SetBackgroundColor(Color.Transparent);
 
-            //scanner = scannerInstance;
-            BottomTextColor = Android.Graphics.Color.ParseColor("#e44b21");
+                //scanner = scannerInstance;
+                BottomTextColor = Android.Graphics.Color.ParseColor("#e44b21");
             }
             catch (Exception e)
             {
@@ -68,7 +61,7 @@ namespace myTNB_Android.Src.Utils.Custom.Scanner
 
         Rect GetFramingRect(Canvas canvas)
         {
-            
+
             int width = canvas.Width * 15 / 16;
 
             int height = canvas.Height * 4 / 10;
@@ -87,15 +80,16 @@ namespace myTNB_Android.Src.Utils.Custom.Scanner
 
         protected override void OnMeasure(int widthMeasureSpec, int heightMeasureSpec)
         {
-            try {
-            // Try for a width based on our minimum
-            int minw = PaddingLeft + PaddingRight + SuggestedMinimumWidth;
-            int w = ResolveSizeAndState(minw, widthMeasureSpec, 1);
+            try
+            {
+                // Try for a width based on our minimum
+                int minw = PaddingLeft + PaddingRight + SuggestedMinimumWidth;
+                int w = ResolveSizeAndState(minw, widthMeasureSpec, 1);
 
-            int minh = MeasureSpec.GetSize(w)  + PaddingBottom + PaddingTop;
-            int h = ResolveSizeAndState(MeasureSpec.GetSize(w), heightMeasureSpec, 0);
+                int minh = MeasureSpec.GetSize(w) + PaddingBottom + PaddingTop;
+                int h = ResolveSizeAndState(MeasureSpec.GetSize(w), heightMeasureSpec, 0);
 
-            base.OnMeasure(widthMeasureSpec, heightMeasureSpec);
+                base.OnMeasure(widthMeasureSpec, heightMeasureSpec);
             }
             catch (Exception e)
             {
@@ -105,176 +99,177 @@ namespace myTNB_Android.Src.Utils.Custom.Scanner
 
         protected override void OnDraw(Canvas canvas)
         {
-            try {
-            var scale = this.Context.Resources.DisplayMetrics.Density;
-
-            var frame = GetFramingRect(canvas);
-    
-
-            var width = canvas.Width;
-            var height = canvas.Height;
-
-            paint.Color = resultBitmap != null ? resultColor : maskColor; 
-            paint.Alpha = 100;
-
-            roundRectPaint.Color = BottomTextColor;
-            roundRectPaint.Alpha = 100;
-
-            //canvas.DrawRect(0, 0, width, frame.Top, paint);
-            //canvas.DrawRect(0, frame.Top, frame.Left, frame.Bottom + 1, paint);
-            //canvas.DrawRect(frame.Right + 1, frame.Top, width, frame.Bottom + 1, paint);
-            //canvas.DrawRect(0, frame.Bottom + 1, width, height, paint);
-            //Log.Debug("Overlay" , string.Format("left {0} , top {1} , right {2} , bottom {3}" , ));
-
-            canvas.DrawRoundRect(new RectF(frame.Left + CANVAS_SQUARE_SIZE,
-                                      frame.Top + CANVAS_SQUARE_SIZE,
-                                      frame.Right - CANVAS_SQUARE_SIZE,
-                                      frame.Bottom - POINT_SIZE), 10, 10, roundRectPaint);
-
-
-            var textPaint = new TextPaint();
-            
-            textPaint.Color = BottomTextColor;
-            textPaint.TextSize = 12 * scale;
-            textPaint.SetTypeface(Typeface.CreateFromAsset(this.Context.Assets, "fonts/" + TextViewUtils.MuseoSans300));
-
-            if (!Error)
+            try
             {
-                textPaint.Color = Color.Argb( 0 , 0 , 0 ,0);
-            }
+                var scale = this.Context.Resources.DisplayMetrics.Density;
 
-            var topTextLayout = new StaticLayout(this.TopText, textPaint, canvas.Width, Android.Text.Layout.Alignment.AlignCenter, 1.0f, 0.0f, false);
-            canvas.Save();
-            Rect topBounds = new Rect();
-
-            textPaint.GetTextBounds(this.TopText, 0, this.TopText.Length, topBounds);
-            canvas.Translate(0, frame.Top / 2 - (topTextLayout.Height / 2));
-
-            //canvas.Translate(topBounds.Left, topBounds.Bottom);
-            topTextLayout.Draw(canvas);
-
-            canvas.Restore();
+                var frame = GetFramingRect(canvas);
 
 
-            var botTextLayout = new StaticLayout(this.BottomText, textPaint, canvas.Width, Android.Text.Layout.Alignment.AlignCenter, 1.0f, 0.0f, false);
-            canvas.Save();
-            Rect botBounds = new Rect();
-            
-            textPaint.GetTextBounds(this.BottomText, 0, this.BottomText.Length, botBounds);
-            canvas.Translate(0, (frame.Bottom + (canvas.Height - frame.Bottom) / 2) - ((botTextLayout.Height / 2) * 2));
+                var width = canvas.Width;
+                var height = canvas.Height;
 
-            //canvas.Translate(topBounds.Left, topBounds.Bottom);
-            botTextLayout.Draw(canvas);
+                paint.Color = resultBitmap != null ? resultColor : maskColor;
+                paint.Alpha = 100;
 
-            canvas.Restore();
+                roundRectPaint.Color = BottomTextColor;
+                roundRectPaint.Alpha = 100;
 
+                //canvas.DrawRect(0, 0, width, frame.Top, paint);
+                //canvas.DrawRect(0, frame.Top, frame.Left, frame.Bottom + 1, paint);
+                //canvas.DrawRect(frame.Right + 1, frame.Top, width, frame.Bottom + 1, paint);
+                //canvas.DrawRect(0, frame.Bottom + 1, width, height, paint);
+                //Log.Debug("Overlay" , string.Format("left {0} , top {1} , right {2} , bottom {3}" , ));
 
-
-
-
-            if (resultBitmap != null)
-            {
-                paint.Alpha = CURRENT_POINT_OPACITY;
-                canvas.DrawBitmap(resultBitmap, null, new RectF(frame.Left, frame.Top, frame.Right, frame.Bottom), paint);
-
-            }
-            else
-            {
-                // Draw a two pixel solid black border inside the framing rect
-                paint.Color = frameColor;
-                //canvas.DrawRect(frame.Left, frame.Top, frame.Right + 1, frame.Top + 2, paint);
-                //canvas.DrawRect(frame.Left, frame.Top + 2, frame.Left + 2, frame.Bottom - 1, paint);
-                //canvas.DrawRect(frame.Right - 1, frame.Top, frame.Right + 1, frame.Bottom - 1, paint);
-                //canvas.DrawRect(frame.Left, frame.Bottom - 1, frame.Right + 1, frame.Bottom + 1, paint);
-
-                // Draw a red "laser scanner" line through the middle to show decoding is active
-
-                //Removed Thin Red Line
-                //paint.Color = laserColor;
-                //paint.Alpha = SCANNER_ALPHA[scannerAlpha];
-                //scannerAlpha = (scannerAlpha + 1) % SCANNER_ALPHA.Length;
-                //int middle = frame.Height() / 2 + frame.Top;
+                canvas.DrawRoundRect(new RectF(frame.Left + CANVAS_SQUARE_SIZE,
+                                          frame.Top + CANVAS_SQUARE_SIZE,
+                                          frame.Right - CANVAS_SQUARE_SIZE,
+                                          frame.Bottom - POINT_SIZE), 10, 10, roundRectPaint);
 
 
-                //int middle = frame.Width() / 2 + frame.Left;
+                var textPaint = new TextPaint();
 
-                //canvas.DrawRect(frame.Left + 2, middle - 1, frame.Right - 1, middle + 2, paint);
+                textPaint.Color = BottomTextColor;
+                textPaint.TextSize = 12 * scale;
+                textPaint.SetTypeface(Typeface.CreateFromAsset(this.Context.Assets, "fonts/" + TextViewUtils.MuseoSans300));
 
+                if (!Error)
+                {
+                    textPaint.Color = Color.Argb(0, 0, 0, 0);
+                }
 
-                //canvas.DrawRect(0, middle - 1, width, middle + 2, paint);
+                var topTextLayout = new StaticLayout(this.TopText, textPaint, canvas.Width, Android.Text.Layout.Alignment.AlignCenter, 1.0f, 0.0f, false);
+                canvas.Save();
+                Rect topBounds = new Rect();
 
-                //End of Removed Thin Red Line
+                textPaint.GetTextBounds(this.TopText, 0, this.TopText.Length, topBounds);
+                canvas.Translate(0, frame.Top / 2 - (topTextLayout.Height / 2));
 
-                //canvas.DrawRect(middle - 1, frame.Top + 2, middle + 2, frame.Bottom - 1, paint); //frame.Top + 2, middle - 1, frame.Bottom - 1, middle + 2, paint);
+                //canvas.Translate(topBounds.Left, topBounds.Bottom);
+                topTextLayout.Draw(canvas);
 
-                //var previewFrame = scanner.GetFramingRectInPreview();
-                //float scaleX = frame.Width() / (float) previewFrame.Width();
-                //float scaleY = frame.Height() / (float) previewFrame.Height();
-
-                /*var currentPossible = possibleResultPoints;
-				var currentLast = lastPossibleResultPoints;
-				int frameLeft = frame.Left;
-				int frameTop = frame.Top;
-				if (currentPossible == null || currentPossible.Count <= 0) 
-				{
-        			lastPossibleResultPoints = null;
-				} 
-				else 
-				{
-					possibleResultPoints = new List<com.google.zxing.ResultPoint>(5);
-					lastPossibleResultPoints = currentPossible;
-					paint.Alpha = CURRENT_POINT_OPACITY;
-					paint.Color = resultPointColor;
-					lock (currentPossible) 
-					{
-						foreach (var point in currentPossible) 
-						{
-							canvas.DrawCircle(frameLeft + (int) (point.X * scaleX),
-                              frameTop + (int) (point.Y * scaleY), POINT_SIZE, paint);
-						}
-					}
-				}
-				if (currentLast != null) 
-				{
-					paint.Alpha = CURRENT_POINT_OPACITY / 2;
-					paint.Color = resultPointColor;
-					lock (currentLast) 
-					{
-						float radius = POINT_SIZE / 2.0f;
-						foreach (var point in currentLast) 
-						{
-							canvas.DrawCircle(frameLeft + (int) (point.X * scaleX),
-                              frameTop + (int) (point.Y * scaleY), radius, paint);
-						}
-					}
-				}
-				*/
-
-                // Request another update at the animation interval, but only repaint the laser line,
-                // not the entire viewfinder mask.
-                //PostInvalidateDelayed(ANIMATION_DELAY,
-                //                      frame.Left - POINT_SIZE,
-                //                      frame.Top - POINT_SIZE,
-                //                      frame.Right + POINT_SIZE,
-                //                      frame.Bottom + POINT_SIZE);
-
-            }
+                canvas.Restore();
 
 
-            // Repaints the text using the bot text bounds
-            PostInvalidateDelayed(0,
-                    botBounds.Left,
-                    botBounds.Top,
-                    botBounds.Right,
-                    botBounds.Bottom);
+                var botTextLayout = new StaticLayout(this.BottomText, textPaint, canvas.Width, Android.Text.Layout.Alignment.AlignCenter, 1.0f, 0.0f, false);
+                canvas.Save();
+                Rect botBounds = new Rect();
 
-            // Repaints the square
-            PostInvalidateDelayed(0,
-                    frame.Left + CANVAS_SQUARE_SIZE,
-                                      frame.Top + CANVAS_SQUARE_SIZE,
-                                      frame.Right - CANVAS_SQUARE_SIZE,
-                                      frame.Bottom - POINT_SIZE);
-            base.OnDraw(canvas);
+                textPaint.GetTextBounds(this.BottomText, 0, this.BottomText.Length, botBounds);
+                canvas.Translate(0, (frame.Bottom + (canvas.Height - frame.Bottom) / 2) - ((botTextLayout.Height / 2) * 2));
+
+                //canvas.Translate(topBounds.Left, topBounds.Bottom);
+                botTextLayout.Draw(canvas);
+
+                canvas.Restore();
+
+
+
+
+
+                if (resultBitmap != null)
+                {
+                    paint.Alpha = CURRENT_POINT_OPACITY;
+                    canvas.DrawBitmap(resultBitmap, null, new RectF(frame.Left, frame.Top, frame.Right, frame.Bottom), paint);
+
+                }
+                else
+                {
+                    // Draw a two pixel solid black border inside the framing rect
+                    paint.Color = frameColor;
+                    //canvas.DrawRect(frame.Left, frame.Top, frame.Right + 1, frame.Top + 2, paint);
+                    //canvas.DrawRect(frame.Left, frame.Top + 2, frame.Left + 2, frame.Bottom - 1, paint);
+                    //canvas.DrawRect(frame.Right - 1, frame.Top, frame.Right + 1, frame.Bottom - 1, paint);
+                    //canvas.DrawRect(frame.Left, frame.Bottom - 1, frame.Right + 1, frame.Bottom + 1, paint);
+
+                    // Draw a red "laser scanner" line through the middle to show decoding is active
+
+                    //Removed Thin Red Line
+                    //paint.Color = laserColor;
+                    //paint.Alpha = SCANNER_ALPHA[scannerAlpha];
+                    //scannerAlpha = (scannerAlpha + 1) % SCANNER_ALPHA.Length;
+                    //int middle = frame.Height() / 2 + frame.Top;
+
+
+                    //int middle = frame.Width() / 2 + frame.Left;
+
+                    //canvas.DrawRect(frame.Left + 2, middle - 1, frame.Right - 1, middle + 2, paint);
+
+
+                    //canvas.DrawRect(0, middle - 1, width, middle + 2, paint);
+
+                    //End of Removed Thin Red Line
+
+                    //canvas.DrawRect(middle - 1, frame.Top + 2, middle + 2, frame.Bottom - 1, paint); //frame.Top + 2, middle - 1, frame.Bottom - 1, middle + 2, paint);
+
+                    //var previewFrame = scanner.GetFramingRectInPreview();
+                    //float scaleX = frame.Width() / (float) previewFrame.Width();
+                    //float scaleY = frame.Height() / (float) previewFrame.Height();
+
+                    /*var currentPossible = possibleResultPoints;
+                    var currentLast = lastPossibleResultPoints;
+                    int frameLeft = frame.Left;
+                    int frameTop = frame.Top;
+                    if (currentPossible == null || currentPossible.Count <= 0) 
+                    {
+                        lastPossibleResultPoints = null;
+                    } 
+                    else 
+                    {
+                        possibleResultPoints = new List<com.google.zxing.ResultPoint>(5);
+                        lastPossibleResultPoints = currentPossible;
+                        paint.Alpha = CURRENT_POINT_OPACITY;
+                        paint.Color = resultPointColor;
+                        lock (currentPossible) 
+                        {
+                            foreach (var point in currentPossible) 
+                            {
+                                canvas.DrawCircle(frameLeft + (int) (point.X * scaleX),
+                                  frameTop + (int) (point.Y * scaleY), POINT_SIZE, paint);
+                            }
+                        }
+                    }
+                    if (currentLast != null) 
+                    {
+                        paint.Alpha = CURRENT_POINT_OPACITY / 2;
+                        paint.Color = resultPointColor;
+                        lock (currentLast) 
+                        {
+                            float radius = POINT_SIZE / 2.0f;
+                            foreach (var point in currentLast) 
+                            {
+                                canvas.DrawCircle(frameLeft + (int) (point.X * scaleX),
+                                  frameTop + (int) (point.Y * scaleY), radius, paint);
+                            }
+                        }
+                    }
+                    */
+
+                    // Request another update at the animation interval, but only repaint the laser line,
+                    // not the entire viewfinder mask.
+                    //PostInvalidateDelayed(ANIMATION_DELAY,
+                    //                      frame.Left - POINT_SIZE,
+                    //                      frame.Top - POINT_SIZE,
+                    //                      frame.Right + POINT_SIZE,
+                    //                      frame.Bottom + POINT_SIZE);
+
+                }
+
+
+                // Repaints the text using the bot text bounds
+                PostInvalidateDelayed(0,
+                        botBounds.Left,
+                        botBounds.Top,
+                        botBounds.Right,
+                        botBounds.Bottom);
+
+                // Repaints the square
+                PostInvalidateDelayed(0,
+                        frame.Left + CANVAS_SQUARE_SIZE,
+                                          frame.Top + CANVAS_SQUARE_SIZE,
+                                          frame.Right - CANVAS_SQUARE_SIZE,
+                                          frame.Bottom - POINT_SIZE);
+                base.OnDraw(canvas);
             }
             catch (Exception e)
             {
@@ -284,9 +279,10 @@ namespace myTNB_Android.Src.Utils.Custom.Scanner
 
         public override void Invalidate()
         {
-            try {
-            Log.Debug("Invalidate" , "Invalidated!");
-            base.Invalidate();
+            try
+            {
+                Log.Debug("Invalidate", "Invalidated!");
+                base.Invalidate();
             }
             catch (Exception e)
             {
@@ -296,9 +292,10 @@ namespace myTNB_Android.Src.Utils.Custom.Scanner
 
         public void DrawResultBitmap(Android.Graphics.Bitmap barcode)
         {
-            try {
-            resultBitmap = barcode;
-            Invalidate();
+            try
+            {
+                resultBitmap = barcode;
+                Invalidate();
             }
             catch (Exception e)
             {
@@ -308,18 +305,19 @@ namespace myTNB_Android.Src.Utils.Custom.Scanner
 
         public void AddPossibleResultPoint(ZXing.ResultPoint point)
         {
-            try {
-            var points = possibleResultPoints;
-
-            lock (points)
+            try
             {
-                points.Add(point);
-                var size = points.Count;
-                if (size > MAX_RESULT_POINTS)
+                var points = possibleResultPoints;
+
+                lock (points)
                 {
-                    points.RemoveRange(0, size - MAX_RESULT_POINTS / 2);
+                    points.Add(point);
+                    var size = points.Count;
+                    if (size > MAX_RESULT_POINTS)
+                    {
+                        points.RemoveRange(0, size - MAX_RESULT_POINTS / 2);
+                    }
                 }
-            }
             }
             catch (Exception e)
             {

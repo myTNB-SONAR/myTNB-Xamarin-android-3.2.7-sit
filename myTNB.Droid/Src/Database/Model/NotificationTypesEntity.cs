@@ -1,17 +1,7 @@
-﻿using System;
+﻿using myTNB_Android.Src.AppLaunch.Models;
+using SQLite;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-using SQLite;
-using myTNB_Android.Src.Utils;
-using myTNB_Android.Src.AppLaunch.Models;
 
 namespace myTNB_Android.Src.Database.Model
 {
@@ -76,23 +66,23 @@ namespace myTNB_Android.Src.Database.Model
             //using (var db = new SQLiteConnection(Constants.DB_PATH))
             //{
             var db = DBHelper.GetSQLiteConnection();
-                var newRecord = new NotificationTypesEntity()
-                {
-                    Id = type.Id,
-                    Title = type.Title,
-                    Code = type.Code,
-                    PreferenceMode = type.PreferenceMode,
-                    Type = type.Type,
-                    CreatedDate = type.CreatedDate,
-                    MasterId = type.MasterId,
-                    IsOpted = type.IsOpted,
-                    ShowInPreference = type.ShowInPreference,
-                    ShowInFilterList = type.ShowInFilterList
-                };
+            var newRecord = new NotificationTypesEntity()
+            {
+                Id = type.Id,
+                Title = type.Title,
+                Code = type.Code,
+                PreferenceMode = type.PreferenceMode,
+                Type = type.Type,
+                CreatedDate = type.CreatedDate,
+                MasterId = type.MasterId,
+                IsOpted = type.IsOpted,
+                ShowInPreference = type.ShowInPreference,
+                ShowInFilterList = type.ShowInFilterList
+            };
 
-                int rows = db.InsertOrReplace(newRecord);
+            int rows = db.InsertOrReplace(newRecord);
 
-                return rows;
+            return rows;
             //}
         }
 
@@ -123,7 +113,7 @@ namespace myTNB_Android.Src.Database.Model
             //using (var db = new SQLiteConnection(Constants.DB_PATH))
             //{
             var db = DBHelper.GetSQLiteConnection();
-                return db.Query<NotificationTypesEntity>("SELECT * FROM NotificationTypesEntity WHERE Id = ?", Id).ToList()[0];
+            return db.Query<NotificationTypesEntity>("SELECT * FROM NotificationTypesEntity WHERE Id = ?", Id).ToList()[0];
             //}
 
         }
@@ -133,7 +123,7 @@ namespace myTNB_Android.Src.Database.Model
             //using (var db = new SQLiteConnection(Constants.DB_PATH))
             //{
             var db = DBHelper.GetSQLiteConnection();
-                return db.Query<NotificationTypesEntity>("SELECT * FROM NotificationTypesEntity ").ToList();
+            return db.Query<NotificationTypesEntity>("SELECT * FROM NotificationTypesEntity ").ToList();
             //}
 
         }
@@ -143,7 +133,7 @@ namespace myTNB_Android.Src.Database.Model
             //using (var db = new SQLiteConnection(Constants.DB_PATH))
             //{
             var db = DBHelper.GetSQLiteConnection();
-                return db.Execute("Delete from NotificationTypesEntity");
+            return db.Execute("Delete from NotificationTypesEntity");
             //}
         }
     }

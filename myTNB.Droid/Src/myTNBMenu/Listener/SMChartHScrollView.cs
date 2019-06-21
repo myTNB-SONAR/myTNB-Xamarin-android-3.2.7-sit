@@ -1,14 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
+﻿using Android.Content;
 using Android.Util;
-using Android.Views;
 using Android.Widget;
 
 namespace myTNB_Android.Src.myTNBMenu.Listener
@@ -33,7 +24,7 @@ namespace myTNB_Android.Src.myTNBMenu.Listener
 
         }
 
-       
+
         public interface SMChartHScrollViewListener
         {
             void OnHScrollChanged(SMChartHScrollView v, int l, int t, int oldl, int oldt);

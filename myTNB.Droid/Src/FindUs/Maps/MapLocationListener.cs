@@ -1,16 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
+﻿using Android.App;
 using Android.Content;
+using Android.Locations;
 using Android.OS;
 using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-using Android.Locations;
-using Android.Util;
+using System;
 
 namespace myTNB_Android.Src.FindUs.Maps
 {
@@ -42,7 +35,7 @@ namespace myTNB_Android.Src.FindUs.Maps
             locationCriteria.PowerRequirement = Power.Medium;
 
             var locationProvider = locationManager.GetBestProvider(locationCriteria, true);
-            
+
             if (locationProvider != null && locationManager.IsProviderEnabled(locationProvider))
             {
                 locationManager.RequestLocationUpdates(provider, MIN_TIME_FOR_UPDATE, MIN_DISTANCE_FOR_UPDATE, this);
@@ -70,17 +63,17 @@ namespace myTNB_Android.Src.FindUs.Maps
 
         public void OnProviderDisabled(string provider)
         {
-            
+
         }
 
         public void OnProviderEnabled(string provider)
         {
-            
+
         }
 
         public void OnStatusChanged(string provider, [GeneratedEnum] Availability status, Bundle extras)
         {
-            
+
         }
     }
 }

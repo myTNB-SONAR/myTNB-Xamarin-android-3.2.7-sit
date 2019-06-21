@@ -1,27 +1,21 @@
-﻿using System;
+﻿using Android.App;
+using Android.Content;
+using Android.Runtime;
+using Android.Text;
+using myTNB_Android.Src.AppLaunch.Api;
+using myTNB_Android.Src.AppLaunch.Models;
+using myTNB_Android.Src.AppLaunch.Requests;
+using myTNB_Android.Src.Database.Model;
+using myTNB_Android.Src.NotificationDetails.Api;
+using myTNB_Android.Src.Notifications.Models;
+using myTNB_Android.Src.Utils;
+using Refit;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-using myTNB_Android.Src.AppLaunch.Models;
-using myTNB_Android.Src.Database.Model;
-using myTNB_Android.Src.Notifications.Models;
-using Android.Text;
 using System.Net;
-using myTNB_Android.Src.Utils;
 using System.Net.Http;
-using Refit;
-using myTNB_Android.Src.NotificationDetails.Api;
 using System.Threading;
-using Newtonsoft.Json;
-using myTNB_Android.Src.AppLaunch.Api;
-using myTNB_Android.Src.AppLaunch.Requests;
 
 namespace myTNB_Android.Src.Notifications.MVP
 {
@@ -37,31 +31,32 @@ namespace myTNB_Android.Src.Notifications.MVP
 
         public void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
         {
-            try {
-            if (requestCode == Constants.NOTIFICATION_DETAILS_REQUEST_CODE)
+            try
             {
-                if (resultCode == Result.Ok)
+                if (requestCode == Constants.NOTIFICATION_DETAILS_REQUEST_CODE)
                 {
-                    int position = data.Extras.GetInt(Constants.SELECTED_NOTIFICATION_ITEM_POSITION , -1);
-                   
-                    this.mView.UpdateIsReadNotificationItem(position , true);
-
-                    bool isDeleted = data.Extras.GetBoolean(Constants.ACTION_IS_DELETE , false);
-                    if (isDeleted)
+                    if (resultCode == Result.Ok)
                     {
-                        this.mView.UpdateIsDeleteNotificationItem(position , true);
-                        this.mView.ShowNotificationRemoved();
+                        int position = data.Extras.GetInt(Constants.SELECTED_NOTIFICATION_ITEM_POSITION, -1);
+
+                        this.mView.UpdateIsReadNotificationItem(position, true);
+
+                        bool isDeleted = data.Extras.GetBoolean(Constants.ACTION_IS_DELETE, false);
+                        if (isDeleted)
+                        {
+                            this.mView.UpdateIsDeleteNotificationItem(position, true);
+                            this.mView.ShowNotificationRemoved();
+                        }
                     }
                 }
-            }
-            else if (requestCode == Constants.NOTIFICATION_FILTER_REQUEST_CODE)
-            {
-                if (resultCode == Result.Ok)
+                else if (requestCode == Constants.NOTIFICATION_FILTER_REQUEST_CODE)
                 {
-                    this.mView.ClearAdapter();
-                    this.ShowFilteredList();
+                    if (resultCode == Result.Ok)
+                    {
+                        this.mView.ClearAdapter();
+                        this.ShowFilteredList();
+                    }
                 }
-            }
             }
             catch (Exception e)
             {
@@ -72,8 +67,9 @@ namespace myTNB_Android.Src.Notifications.MVP
         public async void OnSelectedNotificationItem(UserNotificationData userNotification, int position)
         {
             cts = new CancellationTokenSource();
-            if (mView.IsActive()) {
-            this.mView.ShowProgress();
+            if (mView.IsActive())
+            {
+                this.mView.ShowProgress();
             }
             ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
 #if DEBUG
@@ -101,14 +97,14 @@ namespace myTNB_Android.Src.Notifications.MVP
 
                 if (!detailNotificationResponse.Data.IsError)
                 {
-                    UserNotificationEntity.UpdateIsRead(detailNotificationResponse.Data.Data.Id , true);
+                    UserNotificationEntity.UpdateIsRead(detailNotificationResponse.Data.Data.Id, true);
                     NotificationTypesEntity entity = NotificationTypesEntity.GetById(userNotification.NotificationTypeId);
 
                     if (entity != null)
                     {
                         this.mView.ShowDetails(detailNotificationResponse.Data.Data, userNotification, position);
                     }
-                   
+
                 }
 
             }
@@ -177,7 +173,7 @@ namespace myTNB_Android.Src.Notifications.MVP
                 }, cts.Token);
 
 
-            if (mView.IsActive())
+                if (mView.IsActive())
                 {
                     this.mView.HideQueryProgress();
                 }
@@ -235,7 +231,7 @@ namespace myTNB_Android.Src.Notifications.MVP
             catch (ApiException apiException)
             {
 
-            if (mView.IsActive())
+                if (mView.IsActive())
                 {
                     this.mView.HideQueryProgress();
                 }
@@ -244,7 +240,7 @@ namespace myTNB_Android.Src.Notifications.MVP
             catch (Exception e)
             {
 
-            if (mView.IsActive())
+                if (mView.IsActive())
                 {
                     this.mView.HideQueryProgress();
                 }
@@ -255,49 +251,54 @@ namespace myTNB_Android.Src.Notifications.MVP
 
         public void Start()
         {
-            
+
             ShowFilteredList();
-           
+
         }
 
         void ShowFilteredList()
         {
-            try {
+            try
+            {
                 NotificationFilterEntity filter = new NotificationFilterEntity();
                 filter = NotificationFilterEntity.GetActive();
                 List<UserNotificationEntity> entities = new List<UserNotificationEntity>();
                 entities = UserNotificationEntity.ListAllActive();
 
-                if (filter != null) {
-                    if (!string.IsNullOrEmpty(filter.Id)) {
-            if (!filter.Id.Equals(Constants.ZERO_INDEX_FILTER))
-            {
-                entities = UserNotificationEntity.ListFiltered(filter.Id);
-            }
+                if (filter != null)
+                {
+                    if (!string.IsNullOrEmpty(filter.Id))
+                    {
+                        if (!filter.Id.Equals(Constants.ZERO_INDEX_FILTER))
+                        {
+                            entities = UserNotificationEntity.ListFiltered(filter.Id);
+                        }
                     }
-                    if (!string.IsNullOrEmpty(filter.Title)) {
-            this.mView.ShowNotificationFilterName(filter.Title);
+                    if (!string.IsNullOrEmpty(filter.Title))
+                    {
+                        this.mView.ShowNotificationFilterName(filter.Title);
                     }
                 }
 
-            List<UserNotificationData> listOfNotifications = new List<UserNotificationData>();
-                if (entities != null && entities.Count() > 0) {
-            foreach (UserNotificationEntity entity in entities)
-            {
-                if (!TextUtils.IsEmpty(entity.NotificationTypeId))
+                List<UserNotificationData> listOfNotifications = new List<UserNotificationData>();
+                if (entities != null && entities.Count() > 0)
                 {
+                    foreach (UserNotificationEntity entity in entities)
+                    {
+                        if (!TextUtils.IsEmpty(entity.NotificationTypeId))
+                        {
                             NotificationTypesEntity notificationTypesEntity = new NotificationTypesEntity();
                             notificationTypesEntity = NotificationTypesEntity.GetById(entity.NotificationTypeId);
-                    if (!TextUtils.IsEmpty(notificationTypesEntity.Code))
-                    {
-                        listOfNotifications.Add(UserNotificationData.Get(entity, notificationTypesEntity.Code));
+                            if (!TextUtils.IsEmpty(notificationTypesEntity.Code))
+                            {
+                                listOfNotifications.Add(UserNotificationData.Get(entity, notificationTypesEntity.Code));
+                            }
+                        }
+
                     }
                 }
 
-            }
-                }
-
-            this.mView.ShowNotificationsList(listOfNotifications);
+                this.mView.ShowNotificationsList(listOfNotifications);
             }
             catch (Exception e)
             {

@@ -1,21 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
+﻿using Android.App;
 using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-using myTNB_Android.Src.Utils;
-using myTNB.SitecoreCMS.Services;
-using myTNB.SitecoreCMS.Model;
-using myTNB_Android.Src.SiteCore;
-using Newtonsoft.Json;
 using Android.Util;
+using myTNB.SitecoreCMS.Model;
+using myTNB.SitecoreCMS.Services;
 using myTNB.SQLite.SQLiteDataManager;
+using myTNB_Android.Src.SiteCore;
+using myTNB_Android.Src.Utils;
+using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace myTNB_Android.Src.WalkThrough.MVP
@@ -25,7 +18,7 @@ namespace myTNB_Android.Src.WalkThrough.MVP
         private WalkThroughContract.IView mView;
         private ISharedPreferences mPrefs;
 
-        public WalkThroughPresenter(WalkThroughContract.IView mView , ISharedPreferences sharedPreferences)
+        public WalkThroughPresenter(WalkThroughContract.IView mView, ISharedPreferences sharedPreferences)
         {
             this.mView = mView;
             this.mPrefs = sharedPreferences;
@@ -47,9 +40,10 @@ namespace myTNB_Android.Src.WalkThrough.MVP
 
         public void NavigateNextScreen()
         {
-            try {
-            int index = this.mView.GetCurrentItem() + 1;
-            this.mView.ShowNext(index);
+            try
+            {
+                int index = this.mView.GetCurrentItem() + 1;
+                this.mView.ShowNext(index);
             }
             catch (Exception e)
             {
@@ -59,12 +53,13 @@ namespace myTNB_Android.Src.WalkThrough.MVP
 
         public void OnPageSelected(int position)
         {
-            try {
-            int index = position + 1;
-            if (index == this.mView.GetTotalItems() )
+            try
             {
-                this.mView.ShowDone();
-            }
+                int index = position + 1;
+                if (index == this.mView.GetTotalItems())
+                {
+                    this.mView.ShowDone();
+                }
             }
             catch (Exception e)
             {
@@ -83,9 +78,9 @@ namespace myTNB_Android.Src.WalkThrough.MVP
             {
                 TimeStampEntity wtManager = new TimeStampEntity();
                 List<TimeStampEntity> items = wtManager.GetAllItems();
-                if(items != null && items.Count != 0)
+                if (items != null && items.Count != 0)
                 {
-                    foreach(TimeStampEntity obj in items)
+                    foreach (TimeStampEntity obj in items)
                     {
                         this.mView.OnSavedTimeStampRecievd(obj.Timestamp);
                     }
@@ -95,7 +90,8 @@ namespace myTNB_Android.Src.WalkThrough.MVP
                     this.mView.OnSavedTimeStampRecievd(null);
                 }
 
-            }catch(Exception e)
+            }
+            catch (Exception e)
             {
                 Log.Error("API Exception", e.StackTrace);
                 Utility.LoggingNonFatalError(e);
@@ -112,7 +108,7 @@ namespace myTNB_Android.Src.WalkThrough.MVP
                     GetItemsService getItemsService = new GetItemsService(SiteCoreConfig.OS, density, SiteCoreConfig.SITECORE_URL, SiteCoreConfig.DEFAULT_LANGUAGE);
                     string json = getItemsService.GetTimestampItem();
                     TimestampResponseModel responseModel = JsonConvert.DeserializeObject<TimestampResponseModel>(json);
-                    if(responseModel.Status.Equals("Success"))
+                    if (responseModel.Status.Equals("Success"))
                     {
                         TimeStampEntity wtManager = new TimeStampEntity();
                         wtManager.DeleteTable();

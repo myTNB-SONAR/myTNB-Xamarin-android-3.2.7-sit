@@ -1,16 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-using SQLite;
-using myTNB_Android.Src.Utils;
+﻿using SQLite;
 
 namespace myTNB_Android.Src.Database.Model
 {
@@ -18,7 +6,7 @@ namespace myTNB_Android.Src.Database.Model
     internal class FirebaseTokenEntity
     {
 
-        [Unique , Column("FBToken")]
+        [Unique, Column("FBToken")]
         public string FBToken { get; set; }
 
         [Column("IsLatest")]
@@ -38,20 +26,20 @@ namespace myTNB_Android.Src.Database.Model
             db.CreateTableAsync<FirebaseTokenEntity>();
         }
 
-        public static int InsertOrReplace(string token , bool isLatest)
+        public static int InsertOrReplace(string token, bool isLatest)
         {
             //using (var db = new SQLiteConnection(Constants.DB_PATH))
             //{
             var db = DBHelper.GetSQLiteConnection();
-                var newRecord = new FirebaseTokenEntity()
-                {
-                    FBToken = token,
-                    IsLatest = isLatest
-                };
+            var newRecord = new FirebaseTokenEntity()
+            {
+                FBToken = token,
+                IsLatest = isLatest
+            };
 
-                int newRecordRow = db.InsertOrReplace(newRecord);
+            int newRecordRow = db.InsertOrReplace(newRecord);
 
-                return newRecordRow;
+            return newRecordRow;
             //}
 
         }
@@ -61,7 +49,7 @@ namespace myTNB_Android.Src.Database.Model
             //using (var db = new SQLiteConnection(Constants.DB_PATH))
             //{
             var db = DBHelper.GetSQLiteConnection();
-                db.Execute("UPDATE FirebaseTokenEntity SET IsLatest = ? where IsLatest = ?", false, true);
+            db.Execute("UPDATE FirebaseTokenEntity SET IsLatest = ? where IsLatest = ?", false, true);
             //}
         }
 
@@ -70,7 +58,7 @@ namespace myTNB_Android.Src.Database.Model
             //using (var db = new SQLiteConnection(Constants.DB_PATH))
             //{
             var db = DBHelper.GetSQLiteConnection();
-                db.Execute("DELETE FROM FirebaseTokenEntity");
+            db.Execute("DELETE FROM FirebaseTokenEntity");
             //}
         }
 
@@ -79,7 +67,7 @@ namespace myTNB_Android.Src.Database.Model
             //using (var db = new SQLiteConnection(Constants.DB_PATH))
             //{
             var db = DBHelper.GetSQLiteConnection();
-                return db.Query<FirebaseTokenEntity>("SELECT * FROM FirebaseTokenEntity WHERE IsLatest = ?", true).Count > 0;
+            return db.Query<FirebaseTokenEntity>("SELECT * FROM FirebaseTokenEntity WHERE IsLatest = ?", true).Count > 0;
             //}
         }
 
@@ -88,7 +76,7 @@ namespace myTNB_Android.Src.Database.Model
             //using (var db = new SQLiteConnection(Constants.DB_PATH))
             //{
             var db = DBHelper.GetSQLiteConnection();
-                return db.Query<FirebaseTokenEntity>("SELECT * FROM FirebaseTokenEntity WHERE IsLatest = ?", true)[0];
+            return db.Query<FirebaseTokenEntity>("SELECT * FROM FirebaseTokenEntity WHERE IsLatest = ?", true)[0];
             //}
         }
     }

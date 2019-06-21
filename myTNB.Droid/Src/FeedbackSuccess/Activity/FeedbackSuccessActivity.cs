@@ -1,20 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
+﻿using Android.App;
 using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-using myTNB_Android.Src.Base.Activity;
 using Android.Content.PM;
+using Android.OS;
+using Android.Widget;
 using CheeseBind;
-using myTNB_Android.Src.Utils;
 using Java.Text;
 using Java.Util;
+using myTNB_Android.Src.Base.Activity;
+using myTNB_Android.Src.Utils;
+using System;
 using System.Runtime;
 
 namespace myTNB_Android.Src.FeedbackSuccess.Activity
@@ -93,14 +87,16 @@ namespace myTNB_Android.Src.FeedbackSuccess.Activity
                 {
                     txtTransactionScheduleContent.Text = simpleDateTimeFormat.Format(d);
                 }
-            } catch(Exception e) {
+            }
+            catch (Exception e)
+            {
                 Utility.LoggingNonFatalError(e);
             }
 
         }
 
         [OnClick(Resource.Id.btnBackToFeedback)]
-        void OnBack(object sender , EventArgs eventArgs)
+        void OnBack(object sender, EventArgs eventArgs)
         {
             Finish();
         }

@@ -1,18 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-using SQLite;
-using myTNB_Android.Src.Utils;
+﻿using myTNB_Android.Src.SummaryDashBoard.Models;
 using Newtonsoft.Json;
-using myTNB_Android.Src.SummaryDashBoard.Models;
+using SQLite;
+using System;
+using System.Collections.Generic;
 
 namespace myTNB_Android.Src.Database.Model
 {
@@ -24,8 +14,8 @@ namespace myTNB_Android.Src.Database.Model
             //using (var db = new SQLiteConnection(Constants.DB_PATH))
             //{
             var db = DBHelper.GetSQLiteConnection();
-                List<SQLiteConnection.ColumnInfo> info = db.GetTableInfo("SummaryDashBoardDetailsEntity");
-                db.CreateTable<SummaryDashBoardAccountEntity>();
+            List<SQLiteConnection.ColumnInfo> info = db.GetTableInfo("SummaryDashBoardDetailsEntity");
+            db.CreateTable<SummaryDashBoardAccountEntity>();
             //}
         }
 
@@ -36,8 +26,8 @@ namespace myTNB_Android.Src.Database.Model
                 //using (var db = new SQLiteConnection(Constants.DB_PATH))
                 //{
                 var db = DBHelper.GetSQLiteConnection();
-                    int newRecord = db.InsertOrReplace(item);
-                    Console.WriteLine("Insert Record: {0}", newRecord);
+                int newRecord = db.InsertOrReplace(item);
+                Console.WriteLine("Insert Record: {0}", newRecord);
                 //}
             }
             catch (Exception e)
@@ -65,7 +55,7 @@ namespace myTNB_Android.Src.Database.Model
         {
             bool flag = false;
             DateTime storedDateTime = GetSMUsgaeHistoryStoredDate(accNo);
-            if(storedDateTime.Date < DateTime.Now.Date)
+            if (storedDateTime.Date < DateTime.Now.Date)
                 flag = true;
             else
                 flag = false;
@@ -80,7 +70,7 @@ namespace myTNB_Android.Src.Database.Model
             if (item != null)
             {
                 storedDate = item.Timestamp;
-            }            
+            }
             return storedDate;
         }
 
@@ -104,7 +94,7 @@ namespace myTNB_Android.Src.Database.Model
                 //using (var db = new SQLiteConnection(Constants.DB_PATH))
                 //{
                 var db = DBHelper.GetSQLiteConnection();
-                    itemList = db.Query<SummaryDashBoardAccountEntity>("select * from SummaryDashBoardDetailsEntity");
+                itemList = db.Query<SummaryDashBoardAccountEntity>("select * from SummaryDashBoardDetailsEntity");
                 //}
             }
             catch (Exception e)
@@ -123,11 +113,11 @@ namespace myTNB_Android.Src.Database.Model
                 //using (var db = new SQLiteConnection(Constants.DB_PATH))
                 //{
                 var db = DBHelper.GetSQLiteConnection();
-                    itemList = db.Query<SummaryDashBoardAccountEntity>("select * from SummaryDashBoardDetailsEntity where AccountNo = ?", accNo);
-                    if (itemList != null && itemList.Count > 0)
-                    {
-                        entity = itemList[0];
-                    }
+                itemList = db.Query<SummaryDashBoardAccountEntity>("select * from SummaryDashBoardDetailsEntity where AccountNo = ?", accNo);
+                if (itemList != null && itemList.Count > 0)
+                {
+                    entity = itemList[0];
+                }
                 //}
             }
             catch (Exception e)
@@ -144,7 +134,7 @@ namespace myTNB_Android.Src.Database.Model
                 //using (var db = new SQLiteConnection(Constants.DB_PATH))
                 //{
                 var db = DBHelper.GetSQLiteConnection();
-                    db.DeleteAll<SummaryDashBoardAccountEntity>();
+                db.DeleteAll<SummaryDashBoardAccountEntity>();
                 //}
             }
             catch (Exception e)
@@ -165,7 +155,7 @@ namespace myTNB_Android.Src.Database.Model
             //using (var db = new SQLiteConnection(Constants.DB_PATH))
             //{
             var db = DBHelper.GetSQLiteConnection();
-                db.Execute("DELETE FROM SummaryDashBoardDetailsEntity");
+            db.Execute("DELETE FROM SummaryDashBoardDetailsEntity");
             //}
         }
 
@@ -174,7 +164,7 @@ namespace myTNB_Android.Src.Database.Model
             //using (var db = new SQLiteConnection(Constants.DB_PATH))
             //{
             var db = DBHelper.GetSQLiteConnection();
-                db.Execute("DELETE FROM SummaryDashBoardDetailsEntity where AccountNo = ?", accNo);
+            db.Execute("DELETE FROM SummaryDashBoardDetailsEntity where AccountNo = ?", accNo);
             //}
         }
 

@@ -1,28 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
+﻿using AFollestad.MaterialDialogs;
 using Android.App;
 using Android.Content;
+using Android.Content.PM;
 using Android.OS;
-using Android.Runtime;
+using Android.Util;
 using Android.Views;
 using Android.Widget;
-using Android.Content.PM;
 using myTNB_Android.Src.Base.Activity;
-using AFollestad.MaterialDialogs;
-using myTNB_Android.Src.myTNBMenu.Models;
-using Newtonsoft.Json;
-using myTNB_Android.Src.MultipleAccountPayment.Fragment;
-using myTNB_Android.Src.Utils;
-using Android.Util;
-using myTNB_Android.Src.MultipleAccountPayment.Model;
-using myTNB_Android.Src.Database.Model;
-using myTNB_Android.Src.SummaryDashBoard.Models;
 using myTNB_Android.Src.Base.Api;
+using myTNB_Android.Src.MultipleAccountPayment.Fragment;
+using myTNB_Android.Src.MultipleAccountPayment.Model;
+using myTNB_Android.Src.myTNBMenu.Models;
+using myTNB_Android.Src.SummaryDashBoard.Models;
+using myTNB_Android.Src.Utils;
+using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Runtime;
-using System.IO;
 
 namespace myTNB_Android.Src.MultipleAccountPayment.Activity
 {
@@ -97,11 +92,12 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
             base.OnCreate(savedInstanceState);
             // Create your application here
 
-            try {
-            appBarLayout = FindViewById<Android.Support.Design.Widget.AppBarLayout>(Resource.Id.appBar);
-            toolbar = FindViewById<Android.Support.V7.Widget.Toolbar>(Resource.Id.toolbar);
-            frameContainer = FindViewById<FrameLayout>(Resource.Id.fragment_container);
-            coordinatorLayout = FindViewById<Android.Support.Design.Widget.CoordinatorLayout>(Resource.Id.coordinatorLayout);
+            try
+            {
+                appBarLayout = FindViewById<Android.Support.Design.Widget.AppBarLayout>(Resource.Id.appBar);
+                toolbar = FindViewById<Android.Support.V7.Widget.Toolbar>(Resource.Id.toolbar);
+                frameContainer = FindViewById<FrameLayout>(Resource.Id.fragment_container);
+                coordinatorLayout = FindViewById<Android.Support.Design.Widget.CoordinatorLayout>(Resource.Id.coordinatorLayout);
                 Bundle extras = Intent.Extras;
 
                 if (extras != null)
@@ -111,7 +107,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
                         //selectedAccount = JsonConvert.DeserializeObject<AccountData>(extras.GetString(Constants.SELECTED_ACCOUNT));
 
                         selectedAccount = DeSerialze<AccountData>(extras.GetString(Constants.SELECTED_ACCOUNT));
-                  
+
                     }
 
                     if (extras.ContainsKey("PAYMENT_ITEMS"))
@@ -122,7 +118,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
                     }
                     total = Intent.Extras.GetString("TOTAL");
                 }
-            OnLoadMainFragment();
+                OnLoadMainFragment();
             }
             catch (Exception e)
             {
@@ -171,14 +167,17 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
 
         internal void SetPaymentReceiptFlag(bool flag, SummaryDashBordRequest summaryDashBoardRequest)
         {
-            try {
-            paymentReceiptGenerated = flag;
-            if (paymentReceiptGenerated) {
-                if (ConnectionUtils.HasInternetConnection(this)) {
-                    SummaryDashBaordUpdate(summaryDashBoardRequest);    
+            try
+            {
+                paymentReceiptGenerated = flag;
+                if (paymentReceiptGenerated)
+                {
+                    if (ConnectionUtils.HasInternetConnection(this))
+                    {
+                        SummaryDashBaordUpdate(summaryDashBoardRequest);
+                    }
                 }
-                }
-        }
+            }
             catch (Exception e)
             {
                 Utility.LoggingNonFatalError(e);
@@ -187,13 +186,14 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
 
         public void ClearBackStack()
         {
-            try {
-            FragmentManager manager = this.FragmentManager;
-            if (manager.BackStackEntryCount > 0)
+            try
             {
-                manager.PopBackStack(FragmentManager.GetBackStackEntryAt(0).Id, FragmentManager.PopBackStackInclusive);
+                FragmentManager manager = this.FragmentManager;
+                if (manager.BackStackEntryCount > 0)
+                {
+                    manager.PopBackStack(FragmentManager.GetBackStackEntryAt(0).Id, FragmentManager.PopBackStackInclusive);
+                }
             }
-        }
             catch (Exception e)
             {
                 Utility.LoggingNonFatalError(e);
@@ -203,42 +203,44 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
 
         public override void OnBackPressed()
         {
-            try {
-            int count = this.FragmentManager.BackStackEntryCount;
-            Log.Debug("OnBackPressed", "fragment stack count :" + count);
-            if (count == 0 || paymentReceiptGenerated)
+            try
             {
-                if (paymentReceiptGenerated)
+                int count = this.FragmentManager.BackStackEntryCount;
+                Log.Debug("OnBackPressed", "fragment stack count :" + count);
+                if (count == 0 || paymentReceiptGenerated)
                 {
-                    SetResult(Result.Ok);
-                }
-                Finish();
-            }
-            else
-            {
-                Log.Debug("MakePaymentActivity", "Current Fragment :" + currentFragment.Class);
-                if (currentFragment is MPPaymentWebViewFragment)
-                {
-                    mCancelPaymentDialog = new MaterialDialog.Builder(this)
-                        .Title("Abort Payment!")
-                        .Content(GetString(Resource.String.error_abort_payment))
-                        .Cancelable(false)
-                        .PositiveText("Abort")
-                        .PositiveColor(Resource.Color.black)
-                        .OnPositive((dialog, which) => {
-                            this.FragmentManager.PopBackStack();
-                            this.SetToolBarTitle("Select Payment Method");
-                            })
-                        .NeutralText("Cancel")
-                        .NeutralColor(Resource.Color.black)
-                        .OnNeutral((dialog, which) => mCancelPaymentDialog.Dismiss()).Show();
+                    if (paymentReceiptGenerated)
+                    {
+                        SetResult(Result.Ok);
+                    }
+                    Finish();
                 }
                 else
                 {
-                    this.FragmentManager.PopBackStack();
+                    Log.Debug("MakePaymentActivity", "Current Fragment :" + currentFragment.Class);
+                    if (currentFragment is MPPaymentWebViewFragment)
+                    {
+                        mCancelPaymentDialog = new MaterialDialog.Builder(this)
+                            .Title("Abort Payment!")
+                            .Content(GetString(Resource.String.error_abort_payment))
+                            .Cancelable(false)
+                            .PositiveText("Abort")
+                            .PositiveColor(Resource.Color.black)
+                            .OnPositive((dialog, which) =>
+                            {
+                                this.FragmentManager.PopBackStack();
+                                this.SetToolBarTitle("Select Payment Method");
+                            })
+                            .NeutralText("Cancel")
+                            .NeutralColor(Resource.Color.black)
+                            .OnNeutral((dialog, which) => mCancelPaymentDialog.Dismiss()).Show();
+                    }
+                    else
+                    {
+                        this.FragmentManager.PopBackStack();
+                    }
                 }
             }
-        }
             catch (Exception e)
             {
                 Utility.LoggingNonFatalError(e);
@@ -248,12 +250,13 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
 
         public void SummaryDashBaordUpdate(SummaryDashBordRequest summaryDashBoardRequest)
         {
-            try {
-            if (summaryDashBoardRequest != null)
+            try
             {
-                if (summaryDashBoardRequest.AccNum != null && summaryDashBoardRequest.AccNum.Count() > 0)
-                     SummaryDashBoardApiCall.GetSummaryDetails(summaryDashBoardRequest);
-            }
+                if (summaryDashBoardRequest != null)
+                {
+                    if (summaryDashBoardRequest.AccNum != null && summaryDashBoardRequest.AccNum.Count() > 0)
+                        SummaryDashBoardApiCall.GetSummaryDetails(summaryDashBoardRequest);
+                }
             }
             catch (Exception e)
             {
@@ -263,7 +266,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
 
         public override void Finish()
         {
-            
+
             if (paymentReceiptGenerated)
             {
                 SelectAccountsActivity.selectAccountsActivity?.SetResult(Result.Ok);

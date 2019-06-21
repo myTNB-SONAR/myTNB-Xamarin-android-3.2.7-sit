@@ -1,24 +1,16 @@
-﻿using System;
+﻿using myTNB_Android.Src.Login.Models;
+using myTNB_Android.Src.Utils;
+using SQLite;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-using SQLite;
-using myTNB_Android.Src.Utils;
-using myTNB_Android.Src.Login.Models;
 
 namespace myTNB_Android.Src.Database.Model
 {
     [Table("UserEntity")]
     public class UserEntity
     {
-        [PrimaryKey , AutoIncrement]
+        [PrimaryKey, AutoIncrement]
         public int? Id { get; set; }
 
         [Unique, Column("userID")]
@@ -68,26 +60,26 @@ namespace myTNB_Android.Src.Database.Model
             //using (var db = new SQLiteConnection(Constants.DB_PATH))
             //{
             var db = DBHelper.GetSQLiteConnection();
-                var newRecord = new UserEntity()
-                {
-                    UserID = user.UserId,
-                    DisplayName = user.DisplayName,
-                    UserName = user.UserName,
-                    Email = user.Email,
-                    DateCreated = user.DateCreated ?? "",
-                    LastLoginDate = user.LastLoginDate ?? "",
-                    MobileNo = user.MobileNo,
-                    IdentificationNo = user.IdentificationNo,
-                    Status = Constants.ACTIVE
-                };
+            var newRecord = new UserEntity()
+            {
+                UserID = user.UserId,
+                DisplayName = user.DisplayName,
+                UserName = user.UserName,
+                Email = user.Email,
+                DateCreated = user.DateCreated ?? "",
+                LastLoginDate = user.LastLoginDate ?? "",
+                MobileNo = user.MobileNo,
+                IdentificationNo = user.IdentificationNo,
+                Status = Constants.ACTIVE
+            };
 
-                int newRecordId = db.InsertOrReplace(newRecord);
-                if (newRecordId > 0)
-                {
-                    return newRecord.Id ?? 0;
-                }
+            int newRecordId = db.InsertOrReplace(newRecord);
+            if (newRecordId > 0)
+            {
+                return newRecord.Id ?? 0;
+            }
 
-                return 0;
+            return 0;
             //}
         }
 
@@ -96,7 +88,7 @@ namespace myTNB_Android.Src.Database.Model
             //using (var db = new SQLiteConnection(Constants.DB_PATH))
             //{
             var db = DBHelper.GetSQLiteConnection();
-                return db.Execute("UPDATE UserEntity SET mobileNo = ?", newPhoneNumber);
+            return db.Execute("UPDATE UserEntity SET mobileNo = ?", newPhoneNumber);
             //}
         }
 
@@ -105,15 +97,16 @@ namespace myTNB_Android.Src.Database.Model
             //using (var db = new SQLiteConnection(Constants.DB_PATH))
             //{
             var db = DBHelper.GetSQLiteConnection();
-                return db.Query<UserEntity>("select * from UserEntity where status = ?", Constants.ACTIVE);
+            return db.Query<UserEntity>("select * from UserEntity where status = ?", Constants.ACTIVE);
             //}
         }
 
         public static UserEntity GetActive()
         {
             List<UserEntity> activeList = ListAllActive().ToList<UserEntity>();
-            if (activeList != null && activeList.Count() > 0) {
-                return activeList[0];    
+            if (activeList != null && activeList.Count() > 0)
+            {
+                return activeList[0];
             }
             return null;
         }
@@ -124,15 +117,15 @@ namespace myTNB_Android.Src.Database.Model
             //using (var db = new SQLiteConnection(Constants.DB_PATH))
             //{
             var db = DBHelper.GetSQLiteConnection();
-                List<UserEntity> userList = db.Query<UserEntity>("select * from UserEntity where status = ?", Constants.ACTIVE);
-                if (userList.Count > 0)
-                {
-                    return true;
-                }
+            List<UserEntity> userList = db.Query<UserEntity>("select * from UserEntity where status = ?", Constants.ACTIVE);
+            if (userList.Count > 0)
+            {
+                return true;
+            }
 
-                return false;
+            return false;
             //}
-               
+
 
         }
 
@@ -143,7 +136,7 @@ namespace myTNB_Android.Src.Database.Model
             //using (var db = new SQLiteConnection(Constants.DB_PATH))
             //{
             var db = DBHelper.GetSQLiteConnection();
-                return db.Execute("Delete from UserEntity where status = ? ", Constants.ACTIVE);
+            return db.Execute("Delete from UserEntity where status = ? ", Constants.ACTIVE);
             //}
         }
 

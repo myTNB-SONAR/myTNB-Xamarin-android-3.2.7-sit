@@ -1,18 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.OS;
+﻿using Android.Content;
 using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-using Android.Util;
 using Android.Telephony;
-using Android.Support.V4.Content;
+using Android.Util;
 using myTNB_Android.Src.Utils;
+using System.Text;
 
 namespace myTNB_Android.Src.RegisterValidation.Receivers
 {
@@ -50,23 +41,24 @@ namespace myTNB_Android.Src.RegisterValidation.Receivers
 
 
 
-                if (msgs[i] != null && !string.IsNullOrEmpty(msgs[i].MessageBody)) {
+                if (msgs[i] != null && !string.IsNullOrEmpty(msgs[i].MessageBody))
+                {
 
                     sb.Append(string.Format("SMS From: {0}{1}Body: {2}{1}", msgs[i].OriginatingAddress,
                                         System.Environment.NewLine, msgs[i].MessageBody));
 
-                if (msgs[i].MessageBody.ToLower().Contains(TNBTOKEN_SUBJECT.ToLower()) || msgs[i].MessageBody.ToLower().Contains(TNBTOKEN_SUBJECT_V2.ToLower()))
-                {
-                    string[] splitMessage = msgs[i].MessageBody.Split(':');
-                        if (splitMessage != null && splitMessage.Length > 1)
+                    if (msgs[i].MessageBody.ToLower().Contains(TNBTOKEN_SUBJECT.ToLower()) || msgs[i].MessageBody.ToLower().Contains(TNBTOKEN_SUBJECT_V2.ToLower()))
                     {
+                        string[] splitMessage = msgs[i].MessageBody.Split(':');
+                        if (splitMessage != null && splitMessage.Length > 1)
+                        {
                             Intent pIntent = new Intent("com.myTNB.smsReceiver");
-                            pIntent.PutExtra(Constants.RETRIEVE_PIN_FROM_SMS , splitMessage[1]);
+                            pIntent.PutExtra(Constants.RETRIEVE_PIN_FROM_SMS, splitMessage[1]);
                             context.SendBroadcast(pIntent);
-                        break;
+                            break;
+                        }
+
                     }
-                   
-                }
                 }
 
                 //if (msgs[i].OriginatingAddress.Contains("6600"))
@@ -83,9 +75,9 @@ namespace myTNB_Android.Src.RegisterValidation.Receivers
                 //        context.SendBroadcast(pinIntent);
                 //        break;
                 //    }
-                   
+
                 //}
-                   
+
 
             }
 

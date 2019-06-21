@@ -1,7 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Refit;
+using System.Collections.Generic;
 
 namespace myTNB_Android.Src.Base.Models
 {

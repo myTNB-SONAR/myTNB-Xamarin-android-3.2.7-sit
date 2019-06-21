@@ -1,28 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
+﻿using AFollestad.MaterialDialogs;
 using Android.App;
 using Android.Content;
+using Android.Content.PM;
 using Android.OS;
 using Android.Runtime;
+using Android.Support.Design.Widget;
+using Android.Support.V7.Widget;
 using Android.Views;
 using Android.Widget;
-using myTNB_Android.Src.Base.Activity;
-using Android.Content.PM;
-using myTNB_Android.Src.ManageCards.Adapter;
-using Android.Support.V7.Widget;
 using CheeseBind;
-using myTNB_Android.Src.ManageCards.MVP;
+using myTNB_Android.Src.Base.Activity;
+using myTNB_Android.Src.ManageCards.Adapter;
 using myTNB_Android.Src.ManageCards.Models;
-using Refit;
-using Android.Support.Design.Widget;
-using AFollestad.MaterialDialogs;
+using myTNB_Android.Src.ManageCards.MVP;
 using myTNB_Android.Src.Utils;
-using Newtonsoft.Json;
-using static AFollestad.MaterialDialogs.MaterialDialog;
 using myTNB_Android.Src.Utils.Custom.ProgressDialog;
+using Newtonsoft.Json;
+using Refit;
+using System;
+using System.Collections.Generic;
 using System.Runtime;
 
 namespace myTNB_Android.Src.ManageCards.Activity
@@ -30,7 +26,7 @@ namespace myTNB_Android.Src.ManageCards.Activity
     [Activity(Label = "@string/manage_cards_activity_title"
     , ScreenOrientation = ScreenOrientation.Portrait
     , Theme = "@style/Theme.ManageCards")]
-    public class ManageCardsActivity : BaseToolbarAppCompatActivity , ManageCardsContract.IView
+    public class ManageCardsActivity : BaseToolbarAppCompatActivity, ManageCardsContract.IView
     {
 
         [BindView(Resource.Id.layout_cards)]
@@ -103,40 +99,46 @@ namespace myTNB_Android.Src.ManageCards.Activity
 
                 mPresenter = new ManageCardsPresenter(this);
                 this.userActionsListener.Start();
-            } catch(Exception e) {
+            }
+            catch (Exception e)
+            {
                 Utility.LoggingNonFatalError(e);
             }
         }
         [Preserve]
         private void MAdapter_RemoveClick(object sender, int e)
         {
-            try {
-            if (removeDialog != null && removeDialog.IsShowing)
+            try
             {
-                removeDialog.Dismiss();
-            }
-            CreditCardData creditCardData = mAdapter.GetItemObject(e);
-            string lastDigit = creditCardData.LastDigits.Substring(creditCardData.LastDigits.Length - 4);
-            removeDialog = new AlertDialog.Builder(this)
-
-                .SetTitle(Resource.String.manage_cards_remove_dialog_title)
-                .SetMessage(GetString(Resource.String.manage_cards_remove_content_wildcard , lastDigit))
-                .SetNegativeButton(Resource.String.manage_cards_btn_cancel , 
-                delegate {
-                    removeDialog.Dismiss();
-                })
-                .SetPositiveButton(Resource.String.manage_cards_btn_ok , 
-                delegate 
+                if (removeDialog != null && removeDialog.IsShowing)
                 {
-                    this.userActionsListener.OnRemove(creditCardData, e);
-                })
-                .Show()
-                ;
-        } catch(Exception ex) {
+                    removeDialog.Dismiss();
+                }
+                CreditCardData creditCardData = mAdapter.GetItemObject(e);
+                string lastDigit = creditCardData.LastDigits.Substring(creditCardData.LastDigits.Length - 4);
+                removeDialog = new AlertDialog.Builder(this)
+
+                    .SetTitle(Resource.String.manage_cards_remove_dialog_title)
+                    .SetMessage(GetString(Resource.String.manage_cards_remove_content_wildcard, lastDigit))
+                    .SetNegativeButton(Resource.String.manage_cards_btn_cancel,
+                    delegate
+                    {
+                        removeDialog.Dismiss();
+                    })
+                    .SetPositiveButton(Resource.String.manage_cards_btn_ok,
+                    delegate
+                    {
+                        this.userActionsListener.OnRemove(creditCardData, e);
+                    })
+                    .Show()
+                    ;
+            }
+            catch (Exception ex)
+            {
                 Utility.LoggingNonFatalError(ex);
             }
-            
-            
+
+
         }
 
         public bool IsActive()
@@ -156,18 +158,19 @@ namespace myTNB_Android.Src.ManageCards.Activity
 
         public void ShowCards()
         {
-            try {
-            if (cardsList.Count == 0)
+            try
             {
-                layoutEmptyCards.Visibility = ViewStates.Visible;
-                layoutCards.Visibility = ViewStates.Gone;
-            }
-            else
-            {
-                layoutCards.Visibility = ViewStates.Visible;
-                layoutEmptyCards.Visibility = ViewStates.Gone;
-                mAdapter.AddAll(cardsList);
-            }
+                if (cardsList.Count == 0)
+                {
+                    layoutEmptyCards.Visibility = ViewStates.Visible;
+                    layoutCards.Visibility = ViewStates.Gone;
+                }
+                else
+                {
+                    layoutCards.Visibility = ViewStates.Visible;
+                    layoutEmptyCards.Visibility = ViewStates.Gone;
+                    mAdapter.AddAll(cardsList);
+                }
             }
             catch (Exception e)
             {
@@ -186,14 +189,15 @@ namespace myTNB_Android.Src.ManageCards.Activity
             //{
             //    progress.Show();
             //}
-            try {
-            if (loadingOverlay != null && loadingOverlay.IsShowing)
+            try
             {
-                loadingOverlay.Dismiss();
-            }
+                if (loadingOverlay != null && loadingOverlay.IsShowing)
+                {
+                    loadingOverlay.Dismiss();
+                }
 
-            loadingOverlay = new LoadingOverlay(this, Resource.Style.LoadingOverlyDialogStyle);
-            loadingOverlay.Show();
+                loadingOverlay = new LoadingOverlay(this, Resource.Style.LoadingOverlyDialogStyle);
+                loadingOverlay.Show();
             }
             catch (Exception e)
             {
@@ -207,11 +211,12 @@ namespace myTNB_Android.Src.ManageCards.Activity
             //{
             //    progress.Dismiss();
             //}
-            try {
-            if (loadingOverlay != null && loadingOverlay.IsShowing)
+            try
             {
-                loadingOverlay.Dismiss();
-            }
+                if (loadingOverlay != null && loadingOverlay.IsShowing)
+                {
+                    loadingOverlay.Dismiss();
+                }
             }
             catch (Exception e)
             {
@@ -219,24 +224,25 @@ namespace myTNB_Android.Src.ManageCards.Activity
             }
         }
 
-        public void ShowRemoveSuccess(CreditCardData RemovedCard , int position)
+        public void ShowRemoveSuccess(CreditCardData RemovedCard, int position)
         {
-            try {
-            cardsList.RemoveAt(position);
-            if (cardsList.Count == 0)
+            try
             {
-                layoutEmptyCards.Visibility = ViewStates.Visible;
-                layoutCards.Visibility = ViewStates.Gone;
-                this.userActionsListener.OnRemoveStay(RemovedCard , position);
+                cardsList.RemoveAt(position);
+                if (cardsList.Count == 0)
+                {
+                    layoutEmptyCards.Visibility = ViewStates.Visible;
+                    layoutCards.Visibility = ViewStates.Gone;
+                    this.userActionsListener.OnRemoveStay(RemovedCard, position);
 
-            }
-            else
-            {
-                Intent creditCard = new Intent();
-                creditCard.PutExtra(Constants.REMOVED_CREDIT_CARD, JsonConvert.SerializeObject(RemovedCard));
-                SetResult(Result.Ok, creditCard);
-                Finish();
-            }
+                }
+                else
+                {
+                    Intent creditCard = new Intent();
+                    creditCard.PutExtra(Constants.REMOVED_CREDIT_CARD, JsonConvert.SerializeObject(RemovedCard));
+                    SetResult(Result.Ok, creditCard);
+                    Finish();
+                }
             }
             catch (Exception e)
             {
@@ -253,7 +259,8 @@ namespace myTNB_Android.Src.ManageCards.Activity
             }
 
             mCancelledExceptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.login_cancelled_exception_error), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.login_cancelled_exception_btn_retry), delegate {
+            .SetAction(GetString(Resource.String.login_cancelled_exception_btn_retry), delegate
+            {
 
                 mCancelledExceptionSnackBar.Dismiss();
 
@@ -272,7 +279,8 @@ namespace myTNB_Android.Src.ManageCards.Activity
             }
 
             mApiExcecptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.login_api_exception_error), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.login_api_exception_btn_retry), delegate {
+            .SetAction(GetString(Resource.String.login_api_exception_btn_retry), delegate
+            {
 
                 mApiExcecptionSnackBar.Dismiss();
 
@@ -291,7 +299,8 @@ namespace myTNB_Android.Src.ManageCards.Activity
             }
 
             mUknownExceptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.login_unknown_exception_error), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.login_unknown_exception_btn_retry), delegate {
+            .SetAction(GetString(Resource.String.login_unknown_exception_btn_retry), delegate
+            {
 
                 mUknownExceptionSnackBar.Dismiss();
 
@@ -313,7 +322,7 @@ namespace myTNB_Android.Src.ManageCards.Activity
                         ).Show();
         }
 
-        public void ShowSnackbarRemovedSuccess(CreditCardData RemovedCard , int position)
+        public void ShowSnackbarRemovedSuccess(CreditCardData RemovedCard, int position)
         {
             var creditCard = new Intent();
             creditCard.PutExtra(Constants.REMOVED_CREDIT_CARD, JsonConvert.SerializeObject(RemovedCard));

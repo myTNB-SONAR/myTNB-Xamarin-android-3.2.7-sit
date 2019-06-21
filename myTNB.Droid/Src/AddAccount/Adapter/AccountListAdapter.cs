@@ -1,19 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
+﻿using Android.Content;
+using Android.Support.Design.Widget;
+using Android.Support.V7.Widget;
 using Android.Views;
 using Android.Widget;
-using Android.Support.V7.Widget;
-using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.AddAccount.Models;
+using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Utils;
-using Android.Support.Design.Widget;
+using System;
+using System.Collections.Generic;
 
 namespace myTNB_Android.Src.AddAccount
 {
@@ -89,7 +83,6 @@ namespace myTNB_Android.Src.AddAccount
         public TextView AccountNumber { get; private set; }
         public TextView AccountAddress { get; private set; }
         public ImageView DeleteView { get; private set; }
-        //[BindView(Resource.Id.account_label_layout)]
         public TextInputLayout textInputLayoutAccountLabel { get; private set; }
         private Context context;
 
@@ -108,10 +101,9 @@ namespace myTNB_Android.Src.AddAccount
             TextViewUtils.SetMuseoSans300Typeface(AccountNumber, AccountAddress, AccountLabel);
             TextViewUtils.SetMuseoSans300Typeface(textInputLayoutAccountLabel);
             context = itemView.Context;
-            //string hnt = context.GetString(Resource.String.add_account_form_account_nickname);
-            //AccountLabel.Hint = hnt.ToUpper();
             AccountLabel.AddTextChangedListener(new InputFilterFormField(AccountLabel, textInputLayoutAccountLabel));
-            AccountLabel.FocusChange += (sender, e) => {
+            AccountLabel.FocusChange += (sender, e) =>
+            {
                 textInputLayoutAccountLabel.Error = null;
                 if (e.HasFocus)
                 {
@@ -120,14 +112,7 @@ namespace myTNB_Android.Src.AddAccount
                         item.accountLabel = AccountLabel.Text.Trim();
                         if (!string.IsNullOrEmpty(item.accountLabel))
                         {
-                            //if (!Utility.isAlphaNumeric(item.accountLabel))
-                            //{
-                            //    textInputLayoutAccountLabel.Error = context.GetString(Resource.String.invalid_charac);
-                            //}
-                            //else
-                            //{
-                                textInputLayoutAccountLabel.Error = "e.g. My House, Parent's House";
-                            //}
+                            textInputLayoutAccountLabel.Error = "e.g. My House, Parent's House";
                         }
                         else
                         {
@@ -140,13 +125,6 @@ namespace myTNB_Android.Src.AddAccount
                     if (item != null)
                     {
                         item.accountLabel = AccountLabel.Text.Trim();
-                        if (!string.IsNullOrEmpty(item.accountLabel))
-                        {
-                            //if (!Utility.isAlphaNumeric(item.accountLabel))
-                            //{
-                            //    textInputLayoutAccountLabel.Error = context.GetString(Resource.String.invalid_charac);
-                            //}
-                        }
                     }
 
                 }
@@ -154,14 +132,13 @@ namespace myTNB_Android.Src.AddAccount
         }
 
 
-        public void populateData(NewAccount item) {
+        public void populateData(NewAccount item)
+        {
             this.item = item;
             try
             {
                 AccountNumber.Text = this.item.accountNumber;
-                //TextViewUtils.SetMuseoSans300Typeface(vh.AccountNumber);
                 AccountAddress.Text = this.item.accountAddress;
-                //TextViewUtils.SetMuseoSans300Typeface(vh.AccountAddress);
                 if (this.item.accountLabel.Equals(EG_ACCOUNT_LABEL))
                 {
                     AccountLabel.Hint = this.item.accountLabel;
@@ -177,21 +154,16 @@ namespace myTNB_Android.Src.AddAccount
                     item.accountLabel = AccountLabel.Text.Trim();
                     if (!string.IsNullOrEmpty(item.accountLabel))
                     {
-                        //if (!Utility.isAlphaNumeric(item.accountLabel))
-                        //{
-                        //    textInputLayoutAccountLabel.Error = context.GetString(Resource.String.invalid_charac);
-                        //}
-                        //else
-                        //{
-                            textInputLayoutAccountLabel.Error = "e.g. My House, Parent's House";
-                        //}
+                        textInputLayoutAccountLabel.Error = "e.g. My House, Parent's House";
                     }
                     else
                     {
                         textInputLayoutAccountLabel.Error = "e.g. My House, Parent's House";
                     }
                 };
-            } catch(Exception e) {
+            }
+            catch (Exception e)
+            {
                 Utility.LoggingNonFatalError(e);
             }
         }
