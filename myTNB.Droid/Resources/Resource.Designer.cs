@@ -12831,6 +12831,18 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f08040c
 			public const int invalid_state = 2131231756;
 			
+			// aapt resource value: 0x7f080411
+			public const int itemized_bill_bring_me_there = 2131231761;
+			
+			// aapt resource value: 0x7f080410
+			public const int itemized_bill_got_it = 2131231760;
+			
+			// aapt resource value: 0x7f080413
+			public const int itemized_bill_message = 2131231763;
+			
+			// aapt resource value: 0x7f080412
+			public const int itemized_bill_title = 2131231762;
+			
 			// aapt resource value: 0x7f0800d3
 			public const int launch = 2131230931;
 			

@@ -1,4 +1,5 @@
-﻿using Android.App;
+﻿using AFollestad.MaterialDialogs;
+using Android.App;
 using Android.Content;
 using Android.Graphics;
 using Android.OS;
@@ -147,6 +148,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         private int currentParentIndex = 0;
         private string errorMSG = null;
 
+        private MaterialDialog mWhyThisAmtCardDialog;
+
         public override int ResourceId()
         {
             return Resource.Layout.DashboardChartView;
@@ -261,11 +264,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     {
                         btnPay.Visibility = ViewStates.Visible;
                         btnViewBill.Text = GetString(Resource.String.dashboard_chartview_view_bill);
-                    }
 
-                    if (selectedAccount.OpenChargesTotal == 0.00)
-                    {
-                        txtWhyThisAmt.Visibility = ViewStates.Gone;
+                        if (selectedAccount.OpenChargesTotal == 0.00)
+                        {
+                            txtWhyThisAmt.Visibility = ViewStates.Gone;
+                        }
                     }
 
 
@@ -386,6 +389,42 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             this.userActionsListener.OnArrowForwardClick();
         }
 
+        [OnClick(Resource.Id.txtWhyThisAmt)]
+        void OnWhyThisAMtClick(object sender, EventArgs eventArgs)
+        {
+            try
+            {
+                txtWhyThisAmt.Enabled = false;
+                Handler h = new Handler();
+                Action myAction = () =>
+                {
+                    txtWhyThisAmt.Enabled = true;
+                };
+                h.PostDelayed(myAction, 3000);
+
+                mWhyThisAmtCardDialog = new MaterialDialog.Builder(Activity)
+                    .Title(Activity.GetString(Resource.String.itemized_bill_title))
+                    .Content(Activity.GetString(Resource.String.itemized_bill_message))
+                    .Cancelable(false)
+                    .PositiveText(Activity.GetString(Resource.String.itemized_bill_bring_me_there))
+                     .PositiveColor(Resource.Color.powerBlue)
+                    .OnPositive((dialog, which) =>
+                    {
+                        ((DashboardActivity)Activity).BillsMenuAccess();
+                        mWhyThisAmtCardDialog.Dismiss();
+                    })
+                    .NeutralText(Activity.GetString(Resource.String.itemized_bill_got_it))
+                    .NeutralColor(Resource.Color.powerBlue)
+                    .OnNeutral((dialog, which) =>
+                    {
+                        mWhyThisAmtCardDialog.Dismiss();
+                    }).Show();
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
 
         internal void SetUp()
         {

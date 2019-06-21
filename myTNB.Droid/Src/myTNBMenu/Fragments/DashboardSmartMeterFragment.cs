@@ -1,4 +1,5 @@
-﻿using Android.App;
+﻿using AFollestad.MaterialDialogs;
+using Android.App;
 using Android.Content;
 using Android.Graphics;
 using Android.OS;
@@ -41,11 +42,10 @@ using static MikePhil.Charting.Components.XAxis;
 using static MikePhil.Charting.Components.YAxis;
 using static myTNB_Android.Src.myTNBMenu.Listener.SMDashboardScrollView;
 using static myTNB_Android.Src.myTNBMenu.Models.SMUsageHistoryData;
-using AFollestad.MaterialDialogs;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments
 {
-    public class DashboardSmartMeterFragment : BaseFragment, DashboardSmartMeterContract.IView, SMDashboardScrollViewListener, View.IOnClickListener
+    public class DashboardSmartMeterFragment : BaseFragment, DashboardSmartMeterContract.IView, SMDashboardScrollViewListener
     {
 
         [BindView(Resource.Id.progressBar)]
@@ -247,6 +247,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         IAxisValueFormatter XLabelsFormatter;
         private int currentParentIndex = 0;
 
+        private MaterialDialog mWhyThisAmtCardDialog;
+
         public override int ResourceId()
         {
             return Resource.Layout.DashboardSmartMeterView;
@@ -372,8 +374,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 DownTimeEntity pgCCEntity = DownTimeEntity.GetByCode(Constants.PG_CC_SYSTEM);
                 DownTimeEntity pgFPXEntity = DownTimeEntity.GetByCode(Constants.PG_FPX_SYSTEM);
 
-                txtWhyThisAmt.SetOnClickListener(this);
-
                 this.userActionsListener.Start();
                 if (selectedAccount != null)
                 {
@@ -391,7 +391,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         btnPay.Visibility = ViewStates.Visible;
                         btnViewBill.Text = GetString(Resource.String.dashboard_chartview_view_bill);
 
-                        if (selectedAccount.OpenChargesTotal == 0.00  && selectedAccount.AccountNum != "210124772804")
+                        if (selectedAccount.OpenChargesTotal == 0.00)
                         {
                             txtWhyThisAmt.Visibility = ViewStates.Gone;
                         }
@@ -1452,6 +1452,43 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             this.userActionsListener.OnLearnMore();
         }
 
+        [OnClick(Resource.Id.txtWhyThisAmt)]
+        void OnWhyThisAMtClick(object sender, EventArgs eventArgs)
+        {
+            try
+            {
+                txtWhyThisAmt.Enabled = false;
+                Handler h = new Handler();
+                Action myAction = () =>
+                {
+                    txtWhyThisAmt.Enabled = true;
+                };
+                h.PostDelayed(myAction, 3000);
+
+                mWhyThisAmtCardDialog = new MaterialDialog.Builder(Activity)
+                    .Title(Activity.GetString(Resource.String.itemized_bill_title))
+                    .Content(Activity.GetString(Resource.String.itemized_bill_message))
+                    .Cancelable(false)
+                    .PositiveText(Activity.GetString(Resource.String.itemized_bill_bring_me_there))
+                     .PositiveColor(Resource.Color.powerBlue)
+                    .OnPositive((dialog, which) =>
+                    {
+                        ((DashboardActivity)Activity).BillsMenuAccess();
+                        mWhyThisAmtCardDialog.Dismiss();
+                    })
+                    .NeutralText(Activity.GetString(Resource.String.itemized_bill_got_it))
+                    .NeutralColor(Resource.Color.powerBlue)
+                    .OnNeutral((dialog, which) =>
+                    {
+                        mWhyThisAmtCardDialog.Dismiss();
+                    }).Show();
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
         public void SetPresenter(DashboardSmartMeterContract.IUserActionsListener userActionListener)
         {
             this.userActionsListener = userActionListener;
@@ -2113,11 +2150,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         protected override Android.App.Activity GetActivityObject()
         {
             return activity;
-        }
-
-        public void OnClick(View v)
-        {
-            
         }
 
     }

@@ -878,6 +878,12 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             }
         }
 
+        public void BillsMenuAccess()
+        {
+            bottomNavigationView.Menu.FindItem(Resource.Id.menu_bill).SetChecked(true);
+            this.userActionsListener?.OnMenuSelect(Resource.Id.menu_bill);
+        }
+
         public void ShowUnreadPromotions()
         {
             if (bottomNavigationView != null && bottomNavigationView.Menu != null)
