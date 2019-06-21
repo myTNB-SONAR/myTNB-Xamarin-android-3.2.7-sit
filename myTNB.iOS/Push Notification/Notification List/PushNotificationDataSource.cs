@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using CoreGraphics;
 using Foundation;
 using myTNB.Model;
 using UIKit;
@@ -116,24 +117,34 @@ namespace myTNB.PushNotification
             }
         }
 
-        public override void CommitEditingStyle(UITableView tableView, UITableViewCellEditingStyle editingStyle, NSIndexPath indexPath)
+        public override UITableViewRowAction[] EditActionsForRow(UITableView tableView, NSIndexPath indexPath)
         {
-            switch (editingStyle)
+            UITableViewRowAction deleteAction = new UITableViewRowAction()
             {
-                case UITableViewCellEditingStyle.Delete:
-                    DeleteNotification(indexPath);
-                    break;
-                case UITableViewCellEditingStyle.None:
-                    break;
-            }
+                BackgroundColor = UIColor.FromPatternImage(RowActionImage(UIColor.Red.CGColor, "Notification-Delete")),
+                Title = "        ",
+
+            };
+            UITableViewRowAction readAction = new UITableViewRowAction()
+            {
+                BackgroundColor = UIColor.FromPatternImage(RowActionImage(UIColor.Blue.CGColor, "Notification-MarkAsRead")),
+                Title = "        "
+            };
+            return new UITableViewRowAction[] { deleteAction, readAction };
         }
-        public override bool CanEditRow(UITableView tableView, NSIndexPath indexPath)
+
+        UIImage RowActionImage(CGColor bgColor, string imgKey)
         {
-            return true && !_controller._isSelectionMode;
-        }
-        public override string TitleForDeleteConfirmation(UITableView tableView, NSIndexPath indexPath)
-        {
-            return "Common_Delete".Translate();
+            CGRect frame = new CGRect(0, 0, 64, 64);
+            UIGraphics.BeginImageContextWithOptions(new CGSize(64, 64), false, UIScreen.MainScreen.Scale);
+            CGContext context = UIGraphics.GetCurrentContext();
+            context.SetFillColor(bgColor);
+            context.FillRect(frame);
+            UIImage img = UIImage.FromBundle(imgKey);
+            img.Draw(new CGRect((frame.Size.Width - 20) / 2, (frame.Size.Height - 20) / 2, 20, 20));
+            UIImage newImg = UIGraphics.GetImageFromCurrentImageContext();
+            UIGraphics.EndImageContext();
+            return newImg;
         }
 
         void DeleteNotification(NSIndexPath indexPath)
