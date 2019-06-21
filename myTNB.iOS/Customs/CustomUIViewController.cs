@@ -73,6 +73,15 @@ namespace myTNB
         {
             AlertHandler.DisplayGenericAlert(this, title, message, handler);
         }
+        public void DisplayCustomAlert(string title, string message, Action handler = null, string actionTitle = null)
+        {
+            AlertHandler.DisplayCustomAlert(title, message, handler, actionTitle);
+        }
+
+        public void DisplayCustomAlert(string title, string message, Dictionary<string, Action> ctaButtons)
+        {
+            AlertHandler.DisplayCustomAlert(title, message, ctaButtons);
+        }
         #endregion
         #region Toast
         public void DisplayToast(string message)
@@ -136,17 +145,6 @@ namespace myTNB
                  });
 #pragma warning restore XI0001 // Notifies you with advices on how to use Apple APIs
             }
-        }
-        #endregion
-        #region Alerts
-        public void DisplayCustomAlert(string title, string message, Action handler = null, string actionTitle = null)
-        {
-            ToastHelper.DisplayCustomAlert(title, message, handler, actionTitle);
-        }
-
-        public void DisplayCustomAlert(string title, string message, Dictionary<string, Action> ctaButtons)
-        {
-            ToastHelper.DisplayCustomAlert(title, message, ctaButtons);
         }
         #endregion
         #region Private Methods
