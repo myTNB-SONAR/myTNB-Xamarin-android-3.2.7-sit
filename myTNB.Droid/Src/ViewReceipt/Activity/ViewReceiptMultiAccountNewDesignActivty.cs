@@ -1,10 +1,4 @@
 ﻿
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime;
-using System.Text;
 using Android;
 using Android.App;
 using Android.Content;
@@ -28,6 +22,11 @@ using myTNB_Android.Src.Utils;
 using myTNB_Android.Src.Utils.Custom.ProgressDialog;
 using myTNB_Android.Src.ViewReceipt.Model;
 using myTNB_Android.Src.ViewReceipt.MVP;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Runtime;
 
 namespace myTNB_Android.Src.ViewReceipt.Activity
 {
@@ -124,32 +123,36 @@ namespace myTNB_Android.Src.ViewReceipt.Activity
         {
             base.OnCreate(savedInstanceState);
             baseView.Visibility = ViewStates.Gone;
-            try {
-            mPresenter = new ViewReceiptMultiAccountNewDesignPresenter(this);
-            // Create your application here
+            try
+            {
+                mPresenter = new ViewReceiptMultiAccountNewDesignPresenter(this);
+                // Create your application here
 
 
-            mProgressBar.Visibility = ViewStates.Gone;
-        
+                mProgressBar.Visibility = ViewStates.Gone;
 
-        TextViewUtils.SetMuseoSans500Typeface(noteText, totalAmtValue, totalAmtText, txnMethodValue, txnMethodText,
-                                                  txnIdValue, txnIdText, txnDateValue, txnDSateText, referenceNumberValue,
-                                                  referenceNumberText, pleasedText, thanksText, dearCustomer, receiptTitile);
 
-            mGetReceiptDialog = new AlertDialog.Builder(this)
-              .SetTitle("Get Receipt")
-              .SetMessage("Please wait while we are getting receipt details...")
-              .SetCancelable(false)
-              .Create();
+                TextViewUtils.SetMuseoSans500Typeface(noteText, totalAmtValue, totalAmtText, txnMethodValue, txnMethodText,
+                                                          txnIdValue, txnIdText, txnDateValue, txnDSateText, referenceNumberValue,
+                                                          referenceNumberText, pleasedText, thanksText, dearCustomer, receiptTitile);
 
-           
-            string apiKeyID = Constants.APP_CONFIG.API_KEY_ID;
-            string merchantTransId = Intent.Extras.GetString("merchantTransId");
-            if (ConnectionUtils.HasInternetConnection(this)) {
-            this.iPresenter.GetReceiptDetails(apiKeyID, merchantTransId);
-            } else {
-                ShowErrorMessage(GetString(Resource.String.no_internet_connection));
-            }
+                mGetReceiptDialog = new AlertDialog.Builder(this)
+                  .SetTitle("Get Receipt")
+                  .SetMessage("Please wait while we are getting receipt details...")
+                  .SetCancelable(false)
+                  .Create();
+
+
+                string apiKeyID = Constants.APP_CONFIG.API_KEY_ID;
+                string merchantTransId = Intent.Extras.GetString("merchantTransId");
+                if (ConnectionUtils.HasInternetConnection(this))
+                {
+                    this.iPresenter.GetReceiptDetails(apiKeyID, merchantTransId);
+                }
+                else
+                {
+                    ShowErrorMessage(GetString(Resource.String.no_internet_connection));
+                }
             }
             catch (Exception e)
             {
@@ -178,7 +181,7 @@ namespace myTNB_Android.Src.ViewReceipt.Activity
                     else
                     {
                         RequestPermissions(new string[] { Manifest.Permission.WriteExternalStorage }, Constants.RUNTIME_PERMISSION_STORAGE_REQUEST_CODE);
-                    }                    
+                    }
                     return true;
             }
             return base.OnOptionsItemSelected(item);
@@ -187,20 +190,21 @@ namespace myTNB_Android.Src.ViewReceipt.Activity
 
         private void WriteGrayContent(PdfPTable tableLayout)
         {
-            try {
-            tableLayout.WidthPercentage = 100;
-
-            PdfPCell cell = new PdfPCell(new Phrase(null, null))
+            try
             {
-                PaddingLeft = 0,
-                PaddingTop = 0,
-                PaddingRight = 0,
-                PaddingBottom = 0,
-                BackgroundColor = new iTextSharp.text.Color(228.0f / 255.0f, 228.0f / 255.0f, 228.0f / 255.0f, 1.0f),
-                Border = 0,
-                FixedHeight = 2,
-            };
-            tableLayout.AddCell(cell);
+                tableLayout.WidthPercentage = 100;
+
+                PdfPCell cell = new PdfPCell(new Phrase(null, null))
+                {
+                    PaddingLeft = 0,
+                    PaddingTop = 0,
+                    PaddingRight = 0,
+                    PaddingBottom = 0,
+                    BackgroundColor = new iTextSharp.text.Color(228.0f / 255.0f, 228.0f / 255.0f, 228.0f / 255.0f, 1.0f),
+                    Border = 0,
+                    FixedHeight = 2,
+                };
+                tableLayout.AddCell(cell);
             }
             catch (Exception e)
             {
@@ -306,7 +310,8 @@ namespace myTNB_Android.Src.ViewReceipt.Activity
 
                                 float y = document.PageSize.Height - document.TopMargin - headerImage.Height;
 
-                                if (y < 700) {
+                                if (y < 700)
+                                {
                                     float diff = 700 - y;
                                     y = y + diff;
                                 }
@@ -397,7 +402,7 @@ namespace myTNB_Android.Src.ViewReceipt.Activity
                                 .SetAction("Open", delegate
                                 {
                                     Java.IO.File file = new Java.IO.File(path);
-                                    Android.Net.Uri fileUri = FileProvider.GetUriForFile(this, 
+                                    Android.Net.Uri fileUri = FileProvider.GetUriForFile(this,
                                             ApplicationContext.PackageName + ".provider", file);
 
                                     Intent intent = new Intent(Intent.ActionView);
@@ -430,9 +435,12 @@ namespace myTNB_Android.Src.ViewReceipt.Activity
                         });
                     }
 
-                } else {
-                    if (!ConnectionUtils.HasInternetConnection(this)) {
-                            ShowErrorMessage(GetString(Resource.String.no_internet_connection));
+                }
+                else
+                {
+                    if (!ConnectionUtils.HasInternetConnection(this))
+                    {
+                        ShowErrorMessage(GetString(Resource.String.no_internet_connection));
                     }
                 }
             }
@@ -445,14 +453,15 @@ namespace myTNB_Android.Src.ViewReceipt.Activity
             //{
             //    this.mGetReceiptDialog.Show();
             //}
-            try {
-            if (loadingOverlay != null && loadingOverlay.IsShowing)
+            try
             {
-                loadingOverlay.Dismiss();
-            }
+                if (loadingOverlay != null && loadingOverlay.IsShowing)
+                {
+                    loadingOverlay.Dismiss();
+                }
 
-            loadingOverlay = new LoadingOverlay(this, Resource.Style.LoadingOverlyDialogStyle);
-            loadingOverlay.Show();
+                loadingOverlay = new LoadingOverlay(this, Resource.Style.LoadingOverlyDialogStyle);
+                loadingOverlay.Show();
             }
             catch (Exception e)
             {
@@ -466,11 +475,12 @@ namespace myTNB_Android.Src.ViewReceipt.Activity
             //{
             //    this.mGetReceiptDialog.Dismiss();
             //}
-            try {
-            if (loadingOverlay != null && loadingOverlay.IsShowing)
+            try
             {
-                loadingOverlay.Dismiss();
-            }
+                if (loadingOverlay != null && loadingOverlay.IsShowing)
+                {
+                    loadingOverlay.Dismiss();
+                }
             }
             catch (Exception e)
             {
@@ -513,60 +523,64 @@ namespace myTNB_Android.Src.ViewReceipt.Activity
         public void OnShowReceiptDetails(GetMultiReceiptByTransIdResponse response)
         {
             baseView.Visibility = ViewStates.Visible;
-            try {
-            this.response = response;
-            if (response != null) {
-                if (response.receipt.Status.Equals("success"))
+            try
+            {
+                this.response = response;
+                if (response != null)
                 {
-                    Log.Debug(TAG, "Receipt :" + response.receipt.receiptDetails);
-                    MultiReceiptDetails receiiptDetails = response.receipt.receiptDetails;
-                    RECEPT_NO = receiiptDetails.referenceNum;
-
-                    List<AccMultiPay> accounts = receiiptDetails.accMultiPay;
-
-                    pleasedText.Text = string.Format(pleaseTextStr, receiiptDetails.payMethod);
-
-                    referenceNumberValue.Text = receiiptDetails.referenceNum;
-
-                    txnDateValue.Text = receiiptDetails.payTransDate;
-
-                    txnIdValue.Text = receiiptDetails.payTransID;
-
-                    txnMethodValue.Text = receiiptDetails.payMethod;
-
-                    totalAmtValue.Text = receiiptDetails.payAmt;
-
-                    if (accountLayout.ChildCount > 0) {
-                        accountLayout.RemoveAllViews();
-                    }
-
-                    if (accounts != null && accounts.Count() > 0) {
-                    foreach (AccMultiPay acct in accounts)
+                    if (response.receipt.Status.Equals("success"))
                     {
-                            View view = LayoutInflater.From(this).Inflate(Resource.Layout.ViewBillReceiptAccountDetails, baseView, false);
-                            TextView accNumberText = view.FindViewById<TextView>(Resource.Id.acc_number_text);
-                            TextView accNumberValue = view.FindViewById<TextView>(Resource.Id.acc_number_value);
-                            TextView accNameText = view.FindViewById<TextView>(Resource.Id.acc_name_text);
-                            TextView accNameValue = view.FindViewById<TextView>(Resource.Id.acc_name_value);
-                            TextView accAmtText = view.FindViewById<TextView>(Resource.Id.acc_amt_text);
-                            TextView accAmtValue = view.FindViewById<TextView>(Resource.Id.acc_amt_value);
+                        Log.Debug(TAG, "Receipt :" + response.receipt.receiptDetails);
+                        MultiReceiptDetails receiiptDetails = response.receipt.receiptDetails;
+                        RECEPT_NO = receiiptDetails.referenceNum;
+
+                        List<AccMultiPay> accounts = receiiptDetails.accMultiPay;
+
+                        pleasedText.Text = string.Format(pleaseTextStr, receiiptDetails.payMethod);
+
+                        referenceNumberValue.Text = receiiptDetails.referenceNum;
+
+                        txnDateValue.Text = receiiptDetails.payTransDate;
+
+                        txnIdValue.Text = receiiptDetails.payTransID;
+
+                        txnMethodValue.Text = receiiptDetails.payMethod;
+
+                        totalAmtValue.Text = receiiptDetails.payAmt;
+
+                        if (accountLayout.ChildCount > 0)
+                        {
+                            accountLayout.RemoveAllViews();
+                        }
+
+                        if (accounts != null && accounts.Count() > 0)
+                        {
+                            foreach (AccMultiPay acct in accounts)
+                            {
+                                View view = LayoutInflater.From(this).Inflate(Resource.Layout.ViewBillReceiptAccountDetails, baseView, false);
+                                TextView accNumberText = view.FindViewById<TextView>(Resource.Id.acc_number_text);
+                                TextView accNumberValue = view.FindViewById<TextView>(Resource.Id.acc_number_value);
+                                TextView accNameText = view.FindViewById<TextView>(Resource.Id.acc_name_text);
+                                TextView accNameValue = view.FindViewById<TextView>(Resource.Id.acc_name_value);
+                                TextView accAmtText = view.FindViewById<TextView>(Resource.Id.acc_amt_text);
+                                TextView accAmtValue = view.FindViewById<TextView>(Resource.Id.acc_amt_value);
 
 
-                            TextViewUtils.SetMuseoSans500Typeface(accNumberText, accNumberValue, accNameText, 
-                                                                  accNameValue, accAmtText, accAmtValue);
+                                TextViewUtils.SetMuseoSans500Typeface(accNumberText, accNumberValue, accNameText,
+                                                                      accNameValue, accAmtText, accAmtValue);
 
-                            accNumberValue.Text = acct.accountNum;
-                            accNameValue.Text = acct.accountOwnerName;
-                            accAmtValue.Text = acct.itmAmt;
+                                accNumberValue.Text = acct.accountNum;
+                                accNameValue.Text = acct.accountOwnerName;
+                                accAmtValue.Text = acct.itmAmt;
 
 
-                            accountLayout.AddView(view);
+                                accountLayout.AddView(view);
+
+                            }
+                        }
 
                     }
-                    }
-
-                }          
-            }
+                }
             }
             catch (Exception e)
             {
@@ -574,7 +588,7 @@ namespace myTNB_Android.Src.ViewReceipt.Activity
             }
         }
 
-            public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Permission[] grantResults)
+        public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Permission[] grantResults)
         {
             base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
             if (requestCode == Constants.RUNTIME_PERMISSION_STORAGE_REQUEST_CODE)
@@ -611,6 +625,6 @@ namespace myTNB_Android.Src.ViewReceipt.Activity
                     break;
             }
         }
-        
+
     }
 }

@@ -1,19 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-using Refit;
-using myTNB_Android.Src.RegistrationForm.Models;
+﻿using myTNB_Android.Src.RegistrationForm.Models;
 using myTNB_Android.Src.RegistrationForm.Requests;
-using System.Threading.Tasks;
+using Refit;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace myTNB_Android.Src.RegistrationForm.Api
 {
@@ -21,6 +10,6 @@ namespace myTNB_Android.Src.RegistrationForm.Api
     {
         [Headers("Content-Type:application/json; charset=utf-8")]
         [Post("/v5/my_billingssp.asmx/CreateNewUserWithToken")]
-        Task<UserRegistrationResponse> RegisterUser([Body] UserRegistrationRequest request , CancellationToken token);
+        Task<UserRegistrationResponse> RegisterUser([Body] UserRegistrationRequest request, CancellationToken token);
     }
 }

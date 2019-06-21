@@ -1,17 +1,7 @@
-﻿using System;
+﻿using myTNB_Android.Src.AddAccount.Models;
+using SQLite;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-using SQLite;
-using myTNB_Android.Src.Utils;
-using myTNB_Android.Src.AddAccount.Models;
 
 namespace myTNB_Android.Src.Database.Model
 {
@@ -29,7 +19,7 @@ namespace myTNB_Android.Src.Database.Model
         [Column("__type")]
         public string Type { get; set; }
 
-        [PrimaryKey , Column("accNum")]
+        [PrimaryKey, Column("accNum")]
         public string AccNum { get; set; }
 
         [Column("accDesc")]
@@ -100,11 +90,11 @@ namespace myTNB_Android.Src.Database.Model
         /// <param name="isSelected"></param>
         /// <param name="smartMeterCode"></param>
         /// <returns>Rows changed</returns>
-        public static int InsertOrReplace(string type 
+        public static int InsertOrReplace(string type
             , string accNum
             , string accDesc
             , string userAccountID
-            , string icNum 
+            , string icNum
             , string amtCurrentChg
             , bool isRegistered
             , bool isPaid
@@ -119,27 +109,27 @@ namespace myTNB_Android.Src.Database.Model
             //using (var db = DBHelper.GetSQLiteConnection())
             //{
             var db = DBHelper.GetSQLiteConnection();
-                var newRecord = new CustomerBillingAccount()
-                {
-                    Type = type,
-                    AccNum = accNum,
-                    AccDesc = accDesc,
-                    UserAccountId = userAccountID,
-                    ICNum = icNum,
-                    AmtCurrentChg = amtCurrentChg,
-                    IsRegistered = isRegistered,
-                    IsPaid = isPaid,
-                    AccountTypeId = accountTypeId,
-                    AccountStAddress = accountStAddress,
-                    OwnerName = ownerName,
-                    AccountCategoryId = accountCategoryId,
-                    SmartMeterCode = smartMeterCode == null ? "0" : smartMeterCode,
-                    IsSelected = isSelected
-                };
+            var newRecord = new CustomerBillingAccount()
+            {
+                Type = type,
+                AccNum = accNum,
+                AccDesc = accDesc,
+                UserAccountId = userAccountID,
+                ICNum = icNum,
+                AmtCurrentChg = amtCurrentChg,
+                IsRegistered = isRegistered,
+                IsPaid = isPaid,
+                AccountTypeId = accountTypeId,
+                AccountStAddress = accountStAddress,
+                OwnerName = ownerName,
+                AccountCategoryId = accountCategoryId,
+                SmartMeterCode = smartMeterCode == null ? "0" : smartMeterCode,
+                IsSelected = isSelected
+            };
 
-                int newRecordRow = db.InsertOrReplace(newRecord);
+            int newRecordRow = db.InsertOrReplace(newRecord);
 
-                return newRecordRow;
+            return newRecordRow;
             //}
         }
 
@@ -150,92 +140,92 @@ namespace myTNB_Android.Src.Database.Model
             //using (var db = DBHelper.GetSQLiteConnection())
             //{
             var db = DBHelper.GetSQLiteConnection();
-                var newRecord = new CustomerBillingAccount()
-                {
-                    Type = accountResponse.Type,
-                    AccNum = accountResponse.AccountNumber,
-                    AccDesc = string.IsNullOrEmpty(accountResponse.AccDesc) == true ? "--" : accountResponse.AccDesc,
-                    UserAccountId = accountResponse.UserAccountID,
-                    ICNum = accountResponse.IcNum,
-                    AmtCurrentChg = accountResponse.AmCurrentChg,
-                    IsRegistered = accountResponse.IsRegistered,
-                    IsPaid = accountResponse.IsPaid,
-                    isOwned = accountResponse.IsOwned,
-                    AccountTypeId = accountResponse.AccountTypeId,
-                    AccountStAddress = accountResponse.AccountStAddress,
-                    OwnerName = accountResponse.OwnerName,
-                    AccountCategoryId = accountResponse.AccountCategoryId,
-                    SmartMeterCode = accountResponse.SmartMeterCode == null ? "0" : accountResponse.SmartMeterCode,
-                    IsSelected = false
-                };
+            var newRecord = new CustomerBillingAccount()
+            {
+                Type = accountResponse.Type,
+                AccNum = accountResponse.AccountNumber,
+                AccDesc = string.IsNullOrEmpty(accountResponse.AccDesc) == true ? "--" : accountResponse.AccDesc,
+                UserAccountId = accountResponse.UserAccountID,
+                ICNum = accountResponse.IcNum,
+                AmtCurrentChg = accountResponse.AmCurrentChg,
+                IsRegistered = accountResponse.IsRegistered,
+                IsPaid = accountResponse.IsPaid,
+                isOwned = accountResponse.IsOwned,
+                AccountTypeId = accountResponse.AccountTypeId,
+                AccountStAddress = accountResponse.AccountStAddress,
+                OwnerName = accountResponse.OwnerName,
+                AccountCategoryId = accountResponse.AccountCategoryId,
+                SmartMeterCode = accountResponse.SmartMeterCode == null ? "0" : accountResponse.SmartMeterCode,
+                IsSelected = false
+            };
 
-                int newRecordRow = db.InsertOrReplace(newRecord);
+            int newRecordRow = db.InsertOrReplace(newRecord);
 
-                return newRecordRow;
+            return newRecordRow;
             //}
         }
 
-        public static int InsertOrReplace(NewAccount accountResponse , bool isSelected)
+        public static int InsertOrReplace(NewAccount accountResponse, bool isSelected)
         {
             //using (var db = new SQLiteConnection(Constants.DB_PATH, SQLiteOpenFlags.ReadWrite | SQLiteOpenFlags.Create | SQLiteOpenFlags.FullMutex, true))
             //using (var db = DBHelper.GetSQLiteConnection())
             //{
             var db = DBHelper.GetSQLiteConnection();
-                var newRecord = new CustomerBillingAccount()
-                {
-                    Type = accountResponse.type,
-                    AccNum = accountResponse.accountNumber,
-                    AccDesc = string.IsNullOrEmpty(accountResponse.accountLabel) == true ? "--" : accountResponse.accountLabel,
-                    UserAccountId = accountResponse.userAccountId,
-                    ICNum = accountResponse.icNum,
-                    AmtCurrentChg = accountResponse.amCurrentChg,
-                    IsRegistered = accountResponse.isRegistered,
-                    IsPaid = accountResponse.isPaid,
-                    isOwned = accountResponse.isOwner,
-                    AccountTypeId = accountResponse.accountTypeId,
-                    AccountStAddress = accountResponse.accountAddress,
-                    OwnerName = accountResponse.ownerName,
-                    AccountCategoryId = accountResponse.accountCategoryId,
-                    SmartMeterCode = accountResponse.smartMeterCode == null ? "0" : accountResponse.smartMeterCode,
-                    IsSelected = isSelected
-                };
+            var newRecord = new CustomerBillingAccount()
+            {
+                Type = accountResponse.type,
+                AccNum = accountResponse.accountNumber,
+                AccDesc = string.IsNullOrEmpty(accountResponse.accountLabel) == true ? "--" : accountResponse.accountLabel,
+                UserAccountId = accountResponse.userAccountId,
+                ICNum = accountResponse.icNum,
+                AmtCurrentChg = accountResponse.amCurrentChg,
+                IsRegistered = accountResponse.isRegistered,
+                IsPaid = accountResponse.isPaid,
+                isOwned = accountResponse.isOwner,
+                AccountTypeId = accountResponse.accountTypeId,
+                AccountStAddress = accountResponse.accountAddress,
+                OwnerName = accountResponse.ownerName,
+                AccountCategoryId = accountResponse.accountCategoryId,
+                SmartMeterCode = accountResponse.smartMeterCode == null ? "0" : accountResponse.smartMeterCode,
+                IsSelected = isSelected
+            };
 
-                int newRecordRow = db.InsertOrReplace(newRecord);
+            int newRecordRow = db.InsertOrReplace(newRecord);
 
-                return newRecordRow;
+            return newRecordRow;
             //}
         }
 
 
-        public static int InsertOrReplace(Account accountResponse , bool isSelected)
+        public static int InsertOrReplace(Account accountResponse, bool isSelected)
         {
             //using (var db = new SQLiteConnection(Constants.DB_PATH, SQLiteOpenFlags.ReadWrite | SQLiteOpenFlags.Create | SQLiteOpenFlags.FullMutex, true))
             //using (var db = DBHelper.GetSQLiteConnection())
             //{
             var db = DBHelper.GetSQLiteConnection();
 
-                var newRecord = new CustomerBillingAccount()
-                {
-                    Type = accountResponse.Type,
-                    AccNum = accountResponse.AccountNumber,
-                    AccDesc = string.IsNullOrEmpty(accountResponse.AccDesc) == true ? "--" : accountResponse.AccDesc,
-                    UserAccountId = accountResponse.UserAccountID,
-                    ICNum = accountResponse.IcNum,
-                    AmtCurrentChg = accountResponse.AmCurrentChg,
-                    IsRegistered = accountResponse.IsRegistered,
-                    IsPaid = accountResponse.IsPaid,
-                    IsSelected = isSelected,
-                    AccountTypeId = accountResponse.AccountTypeId,
-                    AccountStAddress = accountResponse.AccountStAddress,
-                    OwnerName = accountResponse.OwnerName,
-                    AccountCategoryId = accountResponse.AccountCategoryId,
-                    SmartMeterCode = accountResponse.SmartMeterCode == null ? "0" : accountResponse.SmartMeterCode,
-                    isOwned = accountResponse.IsOwned
-                };
+            var newRecord = new CustomerBillingAccount()
+            {
+                Type = accountResponse.Type,
+                AccNum = accountResponse.AccountNumber,
+                AccDesc = string.IsNullOrEmpty(accountResponse.AccDesc) == true ? "--" : accountResponse.AccDesc,
+                UserAccountId = accountResponse.UserAccountID,
+                ICNum = accountResponse.IcNum,
+                AmtCurrentChg = accountResponse.AmCurrentChg,
+                IsRegistered = accountResponse.IsRegistered,
+                IsPaid = accountResponse.IsPaid,
+                IsSelected = isSelected,
+                AccountTypeId = accountResponse.AccountTypeId,
+                AccountStAddress = accountResponse.AccountStAddress,
+                OwnerName = accountResponse.OwnerName,
+                AccountCategoryId = accountResponse.AccountCategoryId,
+                SmartMeterCode = accountResponse.SmartMeterCode == null ? "0" : accountResponse.SmartMeterCode,
+                isOwned = accountResponse.IsOwned
+            };
 
-                int newRecordRow = db.InsertOrReplace(newRecord);
+            int newRecordRow = db.InsertOrReplace(newRecord);
 
-                return newRecordRow;
+            return newRecordRow;
             //}
         }
 
@@ -245,7 +235,7 @@ namespace myTNB_Android.Src.Database.Model
             //using (var db = DBHelper.GetSQLiteConnection())
             //{
             var db = DBHelper.GetSQLiteConnection();
-                return db.Query<CustomerBillingAccount>("SELECT * FROM CustomerBillingAccountEntity");
+            return db.Query<CustomerBillingAccount>("SELECT * FROM CustomerBillingAccountEntity");
             //}
         }
 
@@ -260,7 +250,8 @@ namespace myTNB_Android.Src.Database.Model
             List<CustomerBillingAccount> NonReAccount = NonREAccountList();
 
             List<CustomerBillingAccount> customerAccounts = new List<CustomerBillingAccount>();
-            if (ReAccount != null && ReAccount.Count() > 0) {
+            if (ReAccount != null && ReAccount.Count() > 0)
+            {
                 customerAccounts.AddRange(ReAccount.OrderBy(x => x.AccDesc).ToList());
             }
 
@@ -278,7 +269,7 @@ namespace myTNB_Android.Src.Database.Model
             //using (var db = DBHelper.GetSQLiteConnection())
             //{
             var db = DBHelper.GetSQLiteConnection();
-                return db.Query<CustomerBillingAccount>("SELECT * FROM CustomerBillingAccountEntity WHERE isSelected = ?", true).Count > 0;
+            return db.Query<CustomerBillingAccount>("SELECT * FROM CustomerBillingAccountEntity WHERE isSelected = ?", true).Count > 0;
             //}
         }
 
@@ -288,7 +279,7 @@ namespace myTNB_Android.Src.Database.Model
             //using (var db = DBHelper.GetSQLiteConnection())
             //{
             var db = DBHelper.GetSQLiteConnection();
-                return db.Query<CustomerBillingAccount>("SELECT * FROM CustomerBillingAccountEntity ").Count > 0;
+            return db.Query<CustomerBillingAccount>("SELECT * FROM CustomerBillingAccountEntity ").Count > 0;
             //}
         }
 
@@ -298,7 +289,7 @@ namespace myTNB_Android.Src.Database.Model
             //using (var db = DBHelper.GetSQLiteConnection())
             //{
             var db = DBHelper.GetSQLiteConnection();
-                return db.Query<CustomerBillingAccount>("SELECT * FROM CustomerBillingAccountEntity WHERE isSelected = ?", true).ToList()[0];
+            return db.Query<CustomerBillingAccount>("SELECT * FROM CustomerBillingAccountEntity WHERE isSelected = ?", true).ToList()[0];
             //}
         }
 
@@ -308,7 +299,7 @@ namespace myTNB_Android.Src.Database.Model
             //using (var db = DBHelper.GetSQLiteConnection())
             //{
             var db = DBHelper.GetSQLiteConnection();
-                return db.Query<CustomerBillingAccount>("SELECT * FROM CustomerBillingAccountEntity", true).ToList()[0];
+            return db.Query<CustomerBillingAccount>("SELECT * FROM CustomerBillingAccountEntity", true).ToList()[0];
             //}
         }
 
@@ -331,26 +322,26 @@ namespace myTNB_Android.Src.Database.Model
             //using (var db = DBHelper.GetSQLiteConnection())
             //{
             var db = DBHelper.GetSQLiteConnection();
-                return db.Execute("UPDATE CustomerBillingAccountEntity SET isSelected = ? WHERE isSelected = ?", false, true);
+            return db.Execute("UPDATE CustomerBillingAccountEntity SET isSelected = ? WHERE isSelected = ?", false, true);
             //}
         }
 
-        public static int Update(string accNum , bool isSelected)
+        public static int Update(string accNum, bool isSelected)
         {
             //using (var db = new SQLiteConnection(Constants.DB_PATH, SQLiteOpenFlags.ReadWrite | SQLiteOpenFlags.Create | SQLiteOpenFlags.FullMutex, true))
             //using (var db = DBHelper.GetSQLiteConnection())
             //{
             var db = DBHelper.GetSQLiteConnection();
-                var existingRecord = db.Query<CustomerBillingAccount>("SELECT * FROM CustomerBillingAccountEntity WHERE accNum = ? ", accNum);
+            var existingRecord = db.Query<CustomerBillingAccount>("SELECT * FROM CustomerBillingAccountEntity WHERE accNum = ? ", accNum);
 
-                if (existingRecord != null && existingRecord.Count > 0)
-                {
-                    var customerBARecord = existingRecord[0];
-                    customerBARecord.IsSelected = isSelected;
-                    return db.Update(customerBARecord);
-                }
+            if (existingRecord != null && existingRecord.Count > 0)
+            {
+                var customerBARecord = existingRecord[0];
+                customerBARecord.IsSelected = isSelected;
+                return db.Update(customerBARecord);
+            }
 
-                return 0;
+            return 0;
             //}
         }
         public static int RemoveActive()
@@ -359,7 +350,7 @@ namespace myTNB_Android.Src.Database.Model
             //using (var db = DBHelper.GetSQLiteConnection())
             //{
             var db = DBHelper.GetSQLiteConnection();
-                return db.Execute("Delete from CustomerBillingAccountEntity ");
+            return db.Execute("Delete from CustomerBillingAccountEntity ");
             //}
         }
 
@@ -369,17 +360,17 @@ namespace myTNB_Android.Src.Database.Model
             //using (var db = DBHelper.GetSQLiteConnection())
             //{
             var db = DBHelper.GetSQLiteConnection();
-                return db.Execute("Delete from CustomerBillingAccountEntity WHERE accNum = ?", AccountNum);
+            return db.Execute("Delete from CustomerBillingAccountEntity WHERE accNum = ?", AccountNum);
             //}
         }
 
-        public static int UpdateAccountName(string newAccountName , string accNum)
+        public static int UpdateAccountName(string newAccountName, string accNum)
         {
             //using (var db = new SQLiteConnection(Constants.DB_PATH, SQLiteOpenFlags.ReadWrite | SQLiteOpenFlags.Create | SQLiteOpenFlags.FullMutex, true))
             //using (var db = DBHelper.GetSQLiteConnection())
             //{
             var db = DBHelper.GetSQLiteConnection();
-                return db.Execute("Update CustomerBillingAccountEntity SET accDesc = ? WHERE accNum = ?", newAccountName, accNum);
+            return db.Execute("Update CustomerBillingAccountEntity SET accDesc = ? WHERE accNum = ?", newAccountName, accNum);
             //}
         }
 
@@ -393,8 +384,8 @@ namespace myTNB_Android.Src.Database.Model
             //using (var db = DBHelper.GetSQLiteConnection())
             //{
             var db = DBHelper.GetSQLiteConnection();
-                db.Execute("Update CustomerBillingAccountEntity SET IsSelected = ? WHERE accNum = ?", true, accNum);
-                //db.Close();
+            db.Execute("Update CustomerBillingAccountEntity SET IsSelected = ? WHERE accNum = ?", true, accNum);
+            //db.Close();
             //}
         }
 
@@ -405,13 +396,13 @@ namespace myTNB_Android.Src.Database.Model
             //using (var db = DBHelper.GetSQLiteConnection())
             //{
             var db = DBHelper.GetSQLiteConnection();
-                var record = db.Query<CustomerBillingAccount>("SELECT * FROM CustomerBillingAccountEntity WHERE accNum =?", accNum);
+            var record = db.Query<CustomerBillingAccount>("SELECT * FROM CustomerBillingAccountEntity WHERE accNum =?", accNum);
 
-                if (record != null && record.Count > 0)
-                {
-                    return record[0];
-                }
-                return null;
+            if (record != null && record.Count > 0)
+            {
+                return record[0];
+            }
+            return null;
             //}
         }
 
@@ -423,11 +414,11 @@ namespace myTNB_Android.Src.Database.Model
             //using (var db = DBHelper.GetSQLiteConnection())
             //{
             var db = DBHelper.GetSQLiteConnection();
-                List<CustomerBillingAccount> reAccountList = new List<CustomerBillingAccount>();
-                reAccountList = db.Query<CustomerBillingAccount>("SELECT * FROM CustomerBillingAccountEntity WHERE accountCategoryId = 2 ORDER BY accDesc ASC").ToList().OrderBy(x => x.AccDesc).ToList();
-                //db.Close();
-                return reAccountList;
-                //return db.Query<CustomerBillingAccount>("SELECT * FROM CustomerBillingAccountEntity WHERE accountCategoryId = 2 ORDER BY accDesc ASC").ToList().OrderBy(x => x.AccDesc).ToList();
+            List<CustomerBillingAccount> reAccountList = new List<CustomerBillingAccount>();
+            reAccountList = db.Query<CustomerBillingAccount>("SELECT * FROM CustomerBillingAccountEntity WHERE accountCategoryId = 2 ORDER BY accDesc ASC").ToList().OrderBy(x => x.AccDesc).ToList();
+            //db.Close();
+            return reAccountList;
+            //return db.Query<CustomerBillingAccount>("SELECT * FROM CustomerBillingAccountEntity WHERE accountCategoryId = 2 ORDER BY accDesc ASC").ToList().OrderBy(x => x.AccDesc).ToList();
             //}
         }
 
@@ -439,19 +430,23 @@ namespace myTNB_Android.Src.Database.Model
             //using (var db = DBHelper.GetSQLiteConnection())
             //{
             var db = DBHelper.GetSQLiteConnection();
-                //return db.Query<CustomerBillingAccount>("SELECT * FROM CustomerBillingAccountEntity WHERE accountCategoryId != 2 ORDER BY accDesc ASC").ToList().OrderBy(x => x.AccDesc).ToList();
-                List<CustomerBillingAccount> nonREAccountList = new List<CustomerBillingAccount>();
-                nonREAccountList = db.Query<CustomerBillingAccount>("SELECT * FROM CustomerBillingAccountEntity WHERE accountCategoryId != 2 ORDER BY accDesc ASC").ToList().OrderBy(x => x.AccDesc).ToList();
-                //db.Close();
-                return nonREAccountList;
+            //return db.Query<CustomerBillingAccount>("SELECT * FROM CustomerBillingAccountEntity WHERE accountCategoryId != 2 ORDER BY accDesc ASC").ToList().OrderBy(x => x.AccDesc).ToList();
+            List<CustomerBillingAccount> nonREAccountList = new List<CustomerBillingAccount>();
+            nonREAccountList = db.Query<CustomerBillingAccount>("SELECT * FROM CustomerBillingAccountEntity WHERE accountCategoryId != 2 ORDER BY accDesc ASC").ToList().OrderBy(x => x.AccDesc).ToList();
+            //db.Close();
+            return nonREAccountList;
             //}
         }
 
-        public static void MakeFirstAsSelected() {
+        public static void MakeFirstAsSelected()
+        {
             List<CustomerBillingAccount> ReAccount = REAccountList();
-            if (ReAccount != null && ReAccount.Count() > 0) {
+            if (ReAccount != null && ReAccount.Count() > 0)
+            {
                 SetSelected(ReAccount[0].AccNum);
-            } else {
+            }
+            else
+            {
                 List<CustomerBillingAccount> NonReAccount = NonREAccountList();
                 if (NonReAccount != null && NonReAccount.Count() > 0)
                 {

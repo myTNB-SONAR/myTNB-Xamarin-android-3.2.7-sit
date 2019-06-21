@@ -1,24 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-using myTNB_Android.Src.myTNBMenu.Models;
-using System.Threading;
-using System.Net;
-using myTNB_Android.Src.Utils;
-using System.Net.Http;
-using Refit;
-using myTNB_Android.Src.myTNBMenu.Api;
-using myTNB_Android.Src.myTNBMenu.Requests;
+﻿using Android.Util;
 using myTNB_Android.Src.Database.Model;
-using Android.Util;
+using myTNB_Android.Src.myTNBMenu.Api;
+using myTNB_Android.Src.myTNBMenu.Models;
+using myTNB_Android.Src.myTNBMenu.Requests;
+using myTNB_Android.Src.Utils;
+using Refit;
+using System;
+using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Threading;
 
 namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
 {
@@ -43,8 +34,9 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
         {
             cts = new CancellationTokenSource();
 
-            if (mView.IsActive()) {
-            this.mView.ShowAmountProgress();
+            if (mView.IsActive())
+            {
+                this.mView.ShowAmountProgress();
             }
 
             this.mView.DisablePayButton();
@@ -75,7 +67,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                     {
                         //if (amountDueResponse.Data.Data.AmountDue > 0.00)
                         //{
-                            this.mView.EnablePayButton();
+                        this.mView.EnablePayButton();
                         //}
                         this.mView.ShowAmountDue(amountDueResponse.Data.Data);
                     }

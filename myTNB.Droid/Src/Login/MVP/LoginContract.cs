@@ -1,17 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-using myTNB_Android.Src.Base.MVP;
-using Refit;
+﻿using myTNB_Android.Src.Base.MVP;
 using myTNB_Android.Src.Login.Requests;
+using Refit;
+using System;
 
 namespace myTNB_Android.Src.Login.MVP
 {
@@ -70,7 +60,7 @@ namespace myTNB_Android.Src.Login.MVP
             /// <summary>
             /// Shows Reset Password ACtivity provided there is a reset flag
             /// </summary>
-            void ShowResetPassword(string email , string enteredPassword);
+            void ShowResetPassword(string email, string enteredPassword);
 
             /// <summary>
             /// Shows ForgetPassword Activity
@@ -149,7 +139,7 @@ namespace myTNB_Android.Src.Login.MVP
             /// </summary>
             /// <param name="username"></param>
             /// <param name="password"></param>
-            void LoginAsync(string username , string password , string deviceId, bool rememberMe);
+            void LoginAsync(string username, string password, string deviceId, bool rememberMe);
 
             /// <summary>
             /// Navigates to dashboard once login credentials has been saved successfully.

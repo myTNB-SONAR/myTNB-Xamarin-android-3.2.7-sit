@@ -1,15 +1,8 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
 using Android.Content;
-using Android.OS;
-using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
+using System.Collections.Generic;
 
 namespace myTNB_Android.Src.Base.Adapter
 {
@@ -78,7 +71,7 @@ namespace myTNB_Android.Src.Base.Adapter
             }
         }
 
-        public void Update(int index , T item)
+        public void Update(int index, T item)
         {
             itemList[index] = item;
             if (notify)
@@ -106,8 +99,6 @@ namespace myTNB_Android.Src.Base.Adapter
             return position;
         }
 
-
-        //Fill in cound here, currently 0
         public override int Count
         {
             get
@@ -120,8 +111,6 @@ namespace myTNB_Android.Src.Base.Adapter
 
     public class BaseAdapterViewHolder : Java.Lang.Object
     {
-        //Your adapter views to re-use
-        //public TextView Title { get; set; }
         protected View itemView;
 
         public BaseAdapterViewHolder(View itemView)

@@ -1,28 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
+﻿using Android.App;
 using Android.Content;
 using Android.OS;
 using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-using myTNB_Android.Src.Base.Models;
-using System.Threading;
-using myTNB_Android.Src.Utils;
-using myTNB_Android.Src.Database.Model;
+using Android.Telephony;
 using Android.Text;
+using Java.Text;
+using myTNB_Android.Src.Base.Api;
+using myTNB_Android.Src.Base.Models;
+using myTNB_Android.Src.Base.Request;
+using myTNB_Android.Src.Database.Model;
+using myTNB_Android.Src.myTNBMenu.Models;
+using myTNB_Android.Src.Utils;
+using Newtonsoft.Json;
+using Refit;
+using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
-using Refit;
-using myTNB_Android.Src.Base.Api;
-using myTNB_Android.Src.Base.Request;
-using myTNB_Android.Src.myTNBMenu.Models;
-using Newtonsoft.Json;
-using Java.Text;
-using Android.Telephony;
+using System.Threading;
 
 namespace myTNB_Android.Src.Feedback_Login_BillRelated.MVP
 {
@@ -124,8 +119,9 @@ namespace myTNB_Android.Src.Feedback_Login_BillRelated.MVP
 
             cts = new CancellationTokenSource();
 
-            if (mView.IsActive()) {
-            this.mView.ShowProgressDialog();
+            if (mView.IsActive())
+            {
+                this.mView.ShowProgressDialog();
             }
 
             ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
@@ -140,7 +136,7 @@ namespace myTNB_Android.Src.Feedback_Login_BillRelated.MVP
             try
             {
                 UserEntity userEntity = new UserEntity();
-                userEntity= UserEntity.GetActive();
+                userEntity = UserEntity.GetActive();
                 List<AttachedImageRequest> imageRequest = new List<AttachedImageRequest>();
                 int ctr = 1;
                 foreach (AttachedImage image in attachedImages)
@@ -196,7 +192,7 @@ namespace myTNB_Android.Src.Feedback_Login_BillRelated.MVP
                     this.mView.ClearInputFields();
                     CustomerBillingAccount customerBillingAccount = CustomerBillingAccount.GetSelectedOrFirst();
                     this.mView.ShowSelectedAccount(customerBillingAccount);
-                    this.mView.ShowSuccess(preLoginFeedbackResponse.Data.Data.DateCreated, preLoginFeedbackResponse.Data.Data.FeedbackId , attachedImages.Count);
+                    this.mView.ShowSuccess(preLoginFeedbackResponse.Data.Data.DateCreated, preLoginFeedbackResponse.Data.Data.FeedbackId, attachedImages.Count);
                 }
                 else
                 {
@@ -270,10 +266,12 @@ namespace myTNB_Android.Src.Feedback_Login_BillRelated.MVP
                 {
                     this.mView.HideMobileNo();
                 }
-            } catch(Exception e) {
+            }
+            catch (Exception e)
+            {
                 Utility.LoggingNonFatalError(e);
             }
-            
+
         }
 
         public void OnSelectAccount()
@@ -293,10 +291,12 @@ namespace myTNB_Android.Src.Feedback_Login_BillRelated.MVP
                     }
 
                 }
-            } catch(Exception e) {
+            }
+            catch (Exception e)
+            {
                 Utility.LoggingNonFatalError(e);
             }
-           
+
         }
 
         public void CheckRequiredFields(string feedback)
@@ -313,7 +313,9 @@ namespace myTNB_Android.Src.Feedback_Login_BillRelated.MVP
                     //this.mView.ShowEmptyFeedbackError();
                     this.mView.DisableSubmitButton();
                 }
-            } catch(Exception e) {
+            }
+            catch (Exception e)
+            {
                 Utility.LoggingNonFatalError(e);
             }
         }
@@ -356,8 +358,9 @@ namespace myTNB_Android.Src.Feedback_Login_BillRelated.MVP
 
             cts = new CancellationTokenSource();
 
-            if (mView.IsActive()) {
-            this.mView.ShowProgressDialog();
+            if (mView.IsActive())
+            {
+                this.mView.ShowProgressDialog();
             }
 
             ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
@@ -517,7 +520,9 @@ namespace myTNB_Android.Src.Feedback_Login_BillRelated.MVP
 
 
                 this.mView.EnableSubmitButton();
-            } catch(Exception e) {
+            }
+            catch (Exception e)
+            {
                 Utility.LoggingNonFatalError(e);
             }
             //}

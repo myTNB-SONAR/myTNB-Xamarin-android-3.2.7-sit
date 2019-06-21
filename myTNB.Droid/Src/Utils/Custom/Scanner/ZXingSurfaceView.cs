@@ -1,10 +1,10 @@
-﻿using System;
-using Android.Content;
+﻿using Android.Content;
+using Android.Graphics;
 using Android.Runtime;
 using Android.Views;
-using Android.Graphics;
-using ZXing.Mobile.CameraAccess;
 using myTNB_Android.Src.Utils;
+using System;
+using ZXing.Mobile.CameraAccess;
 
 namespace ZXing.Mobile
 {
@@ -25,10 +25,11 @@ namespace ZXing.Mobile
 
         private void Init()
         {
-            try {
-            _cameraAnalyzer = new CameraAnalyzer(this, ScanningOptions);
-            Holder.AddCallback(this);
-            Holder.SetType(SurfaceType.PushBuffers);
+            try
+            {
+                _cameraAnalyzer = new CameraAnalyzer(this, ScanningOptions);
+                Holder.AddCallback(this);
+                Holder.SetType(SurfaceType.PushBuffers);
             }
             catch (Exception e)
             {
@@ -38,10 +39,11 @@ namespace ZXing.Mobile
 
         public async void SurfaceCreated(ISurfaceHolder holder)
         {
-            try {
-            await ZXing.Net.Mobile.Android.PermissionsHandler.PermissionRequestTask;
+            try
+            {
+                await ZXing.Net.Mobile.Android.PermissionsHandler.PermissionRequestTask;
 
-            _cameraAnalyzer.SetupCamera();
+                _cameraAnalyzer.SetupCamera();
             }
             catch (Exception e)
             {
@@ -56,17 +58,20 @@ namespace ZXing.Mobile
                 await ZXing.Net.Mobile.Android.PermissionsHandler.PermissionRequestTask;
 
                 _cameraAnalyzer.RefreshCamera();
-            }catch(Exception e) {
+            }
+            catch (Exception e)
+            {
                 Utility.LoggingNonFatalError(e);
             }
         }
 
         public async void SurfaceDestroyed(ISurfaceHolder holder)
         {
-            try {
-            await ZXing.Net.Mobile.Android.PermissionsHandler.PermissionRequestTask;
+            try
+            {
+                await ZXing.Net.Mobile.Android.PermissionsHandler.PermissionRequestTask;
 
-            _cameraAnalyzer.ShutdownCamera();
+                _cameraAnalyzer.ShutdownCamera();
             }
             catch (Exception e)
             {
@@ -76,19 +81,20 @@ namespace ZXing.Mobile
 
         public override bool OnTouchEvent(MotionEvent e)
         {
-            
+
             var r = base.OnTouchEvent(e);
-            try {
-            switch (e.Action)
+            try
             {
-                case MotionEventActions.Down:
-                    return true;
-                case MotionEventActions.Up:
-                    var touchX = e.GetX();
-                    var touchY = e.GetY();
-                    this.AutoFocus((int)touchX, (int)touchY);
-                    break;
-            }
+                switch (e.Action)
+                {
+                    case MotionEventActions.Down:
+                        return true;
+                    case MotionEventActions.Up:
+                        var touchX = e.GetX();
+                        var touchY = e.GetY();
+                        this.AutoFocus((int)touchX, (int)touchY);
+                        break;
+                }
             }
             catch (Exception ex)
             {
@@ -109,14 +115,15 @@ namespace ZXing.Mobile
 
         public void StartScanning(Action<Result> scanResultCallback, MobileBarcodeScanningOptions options = null)
         {
-            try {
-            ScanningOptions = options ?? MobileBarcodeScanningOptions.Default;
-
-            _cameraAnalyzer.BarcodeFound += (sender, result) =>
+            try
             {
-                scanResultCallback?.Invoke(result);
-            };
-            _cameraAnalyzer.ResumeAnalysis();
+                ScanningOptions = options ?? MobileBarcodeScanningOptions.Default;
+
+                _cameraAnalyzer.BarcodeFound += (sender, result) =>
+                {
+                    scanResultCallback?.Invoke(result);
+                };
+                _cameraAnalyzer.ResumeAnalysis();
             }
             catch (Exception e)
             {

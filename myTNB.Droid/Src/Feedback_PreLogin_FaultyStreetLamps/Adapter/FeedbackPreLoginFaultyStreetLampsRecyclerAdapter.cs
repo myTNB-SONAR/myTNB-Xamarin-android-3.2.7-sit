@@ -1,23 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-using myTNB_Android.Src.Base.Models;
-using myTNB_Android.Src.Base.Adapter;
-using myTNB_Android.Src.Utils;
-using Android.Support.V7.Widget;
-using Square.Picasso;
-using CheeseBind;
-using Android.Graphics;
+﻿using Android.Graphics;
 using Android.Graphics.Drawables;
 using Android.Support.V4.Graphics.Drawable;
+using Android.Support.V7.Widget;
+using Android.Views;
+using Android.Widget;
+using CheeseBind;
+using myTNB_Android.Src.Base.Adapter;
+using myTNB_Android.Src.Base.Models;
+using myTNB_Android.Src.Utils;
+using Square.Picasso;
+using System;
+using System.Collections.Generic;
 
 namespace myTNB_Android.Src.Feedback_PreLogin_FaultyStreetLamps.Adapter
 {
@@ -41,14 +34,15 @@ namespace myTNB_Android.Src.Feedback_PreLogin_FaultyStreetLamps.Adapter
         public List<AttachedImage> GetAllImages()
         {
             List<AttachedImage> attachList = new List<AttachedImage>();
-            try {
-            foreach (AttachedImage image in itemList)
+            try
             {
-                if (image.ViewType == Constants.VIEW_TYPE_REAL_RECORD)
+                foreach (AttachedImage image in itemList)
                 {
-                    attachList.Add(image);
+                    if (image.ViewType == Constants.VIEW_TYPE_REAL_RECORD)
+                    {
+                        attachList.Add(image);
+                    }
                 }
-            }
             }
             catch (Exception e)
             {
@@ -64,47 +58,48 @@ namespace myTNB_Android.Src.Feedback_PreLogin_FaultyStreetLamps.Adapter
 
         public override void OnBindViewHolder(RecyclerView.ViewHolder holder, int position)
         {
-            try {
-            AttachedImage image = GetItemObject(position);
-            if (holder is FeedbackPreLoginImageViewHolder)
+            try
             {
-                // the actual image
-                var viewHolder = holder as FeedbackPreLoginImageViewHolder;
-                Picasso.With(viewHolder.ItemView.Context)
-                    .Load(new Java.IO.File(image.Path))
-                    .Fit()
-                    .Into(viewHolder.imageView
-                            , delegate
-                            {
-                                Bitmap imageBitmap = ((BitmapDrawable)viewHolder.imageView.Drawable).Bitmap;
-                                if (imageBitmap != null && !imageBitmap.IsRecycled)
-                                {
-                                    RoundedBitmapDrawable imageDrawable = RoundedBitmapDrawableFactory.Create(viewHolder.ItemView.Context.Resources, imageBitmap);
-                                    imageDrawable.CornerRadius = 5f;
-                                    viewHolder.imageView.SetImageDrawable(imageDrawable);
-
-                                }
-                            }
-                            , delegate
-                            {
-
-                            });
-            }
-            else
-            {
-                // the dummy view
-                var viewHolder = holder as FeedbackPreLoginDummyViewHolder;
-                if (image.IsLoading)
+                AttachedImage image = GetItemObject(position);
+                if (holder is FeedbackPreLoginImageViewHolder)
                 {
-                    viewHolder.btnAdd.Visibility = ViewStates.Gone;
-                    viewHolder.progressBar.Visibility = ViewStates.Visible;
+                    // the actual image
+                    var viewHolder = holder as FeedbackPreLoginImageViewHolder;
+                    Picasso.With(viewHolder.ItemView.Context)
+                        .Load(new Java.IO.File(image.Path))
+                        .Fit()
+                        .Into(viewHolder.imageView
+                                , delegate
+                                {
+                                    Bitmap imageBitmap = ((BitmapDrawable)viewHolder.imageView.Drawable).Bitmap;
+                                    if (imageBitmap != null && !imageBitmap.IsRecycled)
+                                    {
+                                        RoundedBitmapDrawable imageDrawable = RoundedBitmapDrawableFactory.Create(viewHolder.ItemView.Context.Resources, imageBitmap);
+                                        imageDrawable.CornerRadius = 5f;
+                                        viewHolder.imageView.SetImageDrawable(imageDrawable);
+
+                                    }
+                                }
+                                , delegate
+                                {
+
+                                });
                 }
                 else
                 {
-                    viewHolder.btnAdd.Visibility = ViewStates.Visible;
-                    viewHolder.progressBar.Visibility = ViewStates.Gone;
+                    // the dummy view
+                    var viewHolder = holder as FeedbackPreLoginDummyViewHolder;
+                    if (image.IsLoading)
+                    {
+                        viewHolder.btnAdd.Visibility = ViewStates.Gone;
+                        viewHolder.progressBar.Visibility = ViewStates.Visible;
+                    }
+                    else
+                    {
+                        viewHolder.btnAdd.Visibility = ViewStates.Visible;
+                        viewHolder.progressBar.Visibility = ViewStates.Gone;
+                    }
                 }
-            }
             }
             catch (Exception e)
             {

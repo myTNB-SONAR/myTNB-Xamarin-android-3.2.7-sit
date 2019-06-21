@@ -1,28 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
+﻿using Android.App;
 using Android.Content;
+using Android.Content.PM;
 using Android.OS;
-using Android.Runtime;
+using Android.Preferences;
+using Android.Support.Design.Widget;
+using Android.Text;
 using Android.Views;
 using Android.Widget;
-using myTNB_Android.Src.Base.Activity;
-using Android.Content.PM;
 using CheeseBind;
-using Android.Support.Design.Widget;
-using myTNB_Android.Src.Utils;
-using myTNB_Android.Src.ResetPassword.MVP;
-using Refit;
-using Android.Preferences;
 using myTNB_Android.Src.AppLaunch.Activity;
+using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Login.Activity;
 using myTNB_Android.Src.myTNBMenu.Activity;
-using Android.Util;
+using myTNB_Android.Src.ResetPassword.MVP;
 using myTNB_Android.Src.ResetPasswordSuccess.Activity;
-using Android.Text;
+using myTNB_Android.Src.Utils;
+using Refit;
+using System;
 using System.Runtime;
 
 namespace myTNB_Android.Src.ResetPassword.Activity
@@ -31,7 +25,7 @@ namespace myTNB_Android.Src.ResetPassword.Activity
               , Icon = "@drawable/ic_launcher"
        , ScreenOrientation = ScreenOrientation.Portrait
        , Theme = "@style/Theme.ResetPassword")]
-    public class ResetPasswordActivity : BaseToolbarAppCompatActivity , ResetPasswordContract.IView
+    public class ResetPasswordActivity : BaseToolbarAppCompatActivity, ResetPasswordContract.IView
     {
 
         [BindView(Resource.Id.txtNewPassword)]
@@ -62,42 +56,43 @@ namespace myTNB_Android.Src.ResetPassword.Activity
         private ResetPasswordPresenter mPresenter;
         private ResetPasswordContract.IUserActionsListener userActionsListener;
 
-        string enteredPassword , enteredUserName;
+        string enteredPassword, enteredUserName;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
 
             // Create your application here
-            try {
-            mPresenter = new ResetPasswordPresenter(this , PreferenceManager.GetDefaultSharedPreferences(this));
-
-            TextViewUtils.SetMuseoSans500Typeface(btnSubmit);
-
-            TextViewUtils.SetMuseoSans300Typeface(txtTitleInfo, txtNewPassword , txtConfirmNewPassword);
-
-            TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutNewPassword , txtInputLayoutConfirmNewPassword);
-
-            mProgressDialog = new AlertDialog.Builder(this)
-                .SetTitle(GetString(Resource.String.reset_password_alert_dialog_title))
-                .SetMessage(GetString(Resource.String.reset_password_alert_dialog_message))
-                .SetCancelable(false)
-                .Create();
-
-            if (savedInstanceState != null)
+            try
             {
-                enteredPassword = savedInstanceState.GetString(Constants.ENTERED_PASSWORD , enteredPassword);
-                enteredUserName = savedInstanceState.GetString(Constants.ENTERED_USERNAME, enteredUserName);
-            }
-            else
-            {
-                enteredPassword = Intent.Extras.GetString(Constants.ENTERED_PASSWORD , null);
-                enteredUserName = Intent.Extras.GetString(Constants.ENTERED_USERNAME , null);
-            }
+                mPresenter = new ResetPasswordPresenter(this, PreferenceManager.GetDefaultSharedPreferences(this));
 
-            txtNewPassword.TextChanged += TextChange;
-            txtConfirmNewPassword.TextChanged += TextChange;
-        }
+                TextViewUtils.SetMuseoSans500Typeface(btnSubmit);
+
+                TextViewUtils.SetMuseoSans300Typeface(txtTitleInfo, txtNewPassword, txtConfirmNewPassword);
+
+                TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutNewPassword, txtInputLayoutConfirmNewPassword);
+
+                mProgressDialog = new AlertDialog.Builder(this)
+                    .SetTitle(GetString(Resource.String.reset_password_alert_dialog_title))
+                    .SetMessage(GetString(Resource.String.reset_password_alert_dialog_message))
+                    .SetCancelable(false)
+                    .Create();
+
+                if (savedInstanceState != null)
+                {
+                    enteredPassword = savedInstanceState.GetString(Constants.ENTERED_PASSWORD, enteredPassword);
+                    enteredUserName = savedInstanceState.GetString(Constants.ENTERED_USERNAME, enteredUserName);
+                }
+                else
+                {
+                    enteredPassword = Intent.Extras.GetString(Constants.ENTERED_PASSWORD, null);
+                    enteredUserName = Intent.Extras.GetString(Constants.ENTERED_USERNAME, null);
+                }
+
+                txtNewPassword.TextChanged += TextChange;
+                txtConfirmNewPassword.TextChanged += TextChange;
+            }
             catch (Exception e)
             {
                 Utility.LoggingNonFatalError(e);
@@ -106,34 +101,35 @@ namespace myTNB_Android.Src.ResetPassword.Activity
 
         private void TextChange(object sender, TextChangedEventArgs e)
         {
-            try {
-            string newPassword = txtNewPassword.Text;
-            string confirmPassword = txtConfirmNewPassword.Text;
+            try
+            {
+                string newPassword = txtNewPassword.Text;
+                string confirmPassword = txtConfirmNewPassword.Text;
 
-            if (!string.IsNullOrEmpty(newPassword))
-            {
-                txtInputLayoutNewPassword.Error = GetString(Resource.String.registration_form_password_format_hint);
-                txtInputLayoutNewPassword.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomHint);
-                TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutNewPassword);
-                txtInputLayoutNewPassword.PasswordVisibilityToggleEnabled = true;
-            }
-            else
-            {
-                txtInputLayoutNewPassword.Error = "";
-                txtInputLayoutNewPassword.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
-                TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutNewPassword);
-                txtInputLayoutNewPassword.PasswordVisibilityToggleEnabled = false;
-            }
+                if (!string.IsNullOrEmpty(newPassword))
+                {
+                    txtInputLayoutNewPassword.Error = GetString(Resource.String.registration_form_password_format_hint);
+                    txtInputLayoutNewPassword.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomHint);
+                    TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutNewPassword);
+                    txtInputLayoutNewPassword.PasswordVisibilityToggleEnabled = true;
+                }
+                else
+                {
+                    txtInputLayoutNewPassword.Error = "";
+                    txtInputLayoutNewPassword.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
+                    TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutNewPassword);
+                    txtInputLayoutNewPassword.PasswordVisibilityToggleEnabled = false;
+                }
 
-            if (!string.IsNullOrEmpty(confirmPassword))
-            {
-                txtInputLayoutConfirmNewPassword.PasswordVisibilityToggleEnabled = true;
+                if (!string.IsNullOrEmpty(confirmPassword))
+                {
+                    txtInputLayoutConfirmNewPassword.PasswordVisibilityToggleEnabled = true;
+                }
+                else
+                {
+                    txtInputLayoutConfirmNewPassword.PasswordVisibilityToggleEnabled = false;
+                }
             }
-            else
-            {
-                txtInputLayoutConfirmNewPassword.PasswordVisibilityToggleEnabled = false;
-            }
-        }
             catch (Exception ex)
             {
                 Utility.LoggingNonFatalError(ex);
@@ -174,11 +170,12 @@ namespace myTNB_Android.Src.ResetPassword.Activity
 
         public void ShowProgressDialog()
         {
-            try {
-            if (mProgressDialog != null && !mProgressDialog.IsShowing)
+            try
             {
-                mProgressDialog.Show();
-            }
+                if (mProgressDialog != null && !mProgressDialog.IsShowing)
+                {
+                    mProgressDialog.Show();
+                }
             }
             catch (Exception e)
             {
@@ -188,11 +185,12 @@ namespace myTNB_Android.Src.ResetPassword.Activity
 
         public void HideProgressDialog()
         {
-            try {
-            if (mProgressDialog != null && mProgressDialog.IsShowing)
+            try
             {
-                mProgressDialog.Dismiss();
-            }
+                if (mProgressDialog != null && mProgressDialog.IsShowing)
+                {
+                    mProgressDialog.Dismiss();
+                }
             }
             catch (Exception e)
             {
@@ -245,7 +243,8 @@ namespace myTNB_Android.Src.ResetPassword.Activity
             }
 
             mCancelledExceptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.reset_password_cancelled_exception_error), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.reset_password_cancelled_exception_btn_retry), delegate {
+            .SetAction(GetString(Resource.String.reset_password_cancelled_exception_btn_retry), delegate
+            {
 
                 mCancelledExceptionSnackBar.Dismiss();
 
@@ -264,12 +263,13 @@ namespace myTNB_Android.Src.ResetPassword.Activity
             }
 
             mApiExcecptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.reset_password_api_exception_error), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.reset_password_api_exception_btn_retry), delegate {
+            .SetAction(GetString(Resource.String.reset_password_api_exception_btn_retry), delegate
+            {
 
                 mApiExcecptionSnackBar.Dismiss();
                 string newPassword = txtNewPassword.Text;
                 string confirmPassword = txtConfirmNewPassword.Text;
-                this.userActionsListener.Submit(Constants.APP_CONFIG.API_KEY_ID, newPassword, confirmPassword, enteredPassword , enteredUserName, this.DeviceId());
+                this.userActionsListener.Submit(Constants.APP_CONFIG.API_KEY_ID, newPassword, confirmPassword, enteredPassword, enteredUserName, this.DeviceId());
             }
             );
             mApiExcecptionSnackBar.Show();
@@ -288,12 +288,13 @@ namespace myTNB_Android.Src.ResetPassword.Activity
             }
 
             mUknownExceptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.reset_password_unknown_exception_error), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.reset_password_unknown_exception_btn_retry), delegate {
+            .SetAction(GetString(Resource.String.reset_password_unknown_exception_btn_retry), delegate
+            {
 
                 mUknownExceptionSnackBar.Dismiss();
                 string newPassword = txtNewPassword.Text;
                 string confirmPassword = txtConfirmNewPassword.Text;
-                this.userActionsListener.Submit(Constants.APP_CONFIG.API_KEY_ID, newPassword, confirmPassword , enteredPassword, enteredUserName , this.DeviceId());
+                this.userActionsListener.Submit(Constants.APP_CONFIG.API_KEY_ID, newPassword, confirmPassword, enteredPassword, enteredUserName, this.DeviceId());
             }
             );
             mUknownExceptionSnackBar.Show();
@@ -317,12 +318,13 @@ namespace myTNB_Android.Src.ResetPassword.Activity
         }
 
         [OnClick(Resource.Id.btnSubmit)]
-        void OnSubmit(object sender , EventArgs eventArgs)
+        void OnSubmit(object sender, EventArgs eventArgs)
         {
-            try {
-            string newPassword = txtNewPassword.Text;
-            string confirmPassword = txtConfirmNewPassword.Text;
-            this.userActionsListener.Submit(Constants.APP_CONFIG.API_KEY_ID, newPassword , confirmPassword , enteredPassword, enteredUserName, this.DeviceId());
+            try
+            {
+                string newPassword = txtNewPassword.Text;
+                string confirmPassword = txtConfirmNewPassword.Text;
+                this.userActionsListener.Submit(Constants.APP_CONFIG.API_KEY_ID, newPassword, confirmPassword, enteredPassword, enteredUserName, this.DeviceId());
             }
             catch (Exception e)
             {
@@ -338,25 +340,27 @@ namespace myTNB_Android.Src.ResetPassword.Activity
 
         public override void OnBackPressed()
         {
-            try {
-            if (fromActivity != null && (fromActivity.Equals(LaunchViewActivity.TAG) || fromActivity.Equals(LoginActivity.TAG)))
+            try
             {
-                // TODO : START ACTIVITY DASHBOARD
-                if (UserSessions.HasResetFlag(PreferenceManager.GetDefaultSharedPreferences(this)))
+                if (fromActivity != null && (fromActivity.Equals(LaunchViewActivity.TAG) || fromActivity.Equals(LoginActivity.TAG)))
                 {
-                    Intent DashboardIntent = new Intent(this, typeof(DashboardActivity));
-                    DashboardIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
-                    StartActivity(DashboardIntent);
+                    // TODO : START ACTIVITY DASHBOARD
+                    if (UserSessions.HasResetFlag(PreferenceManager.GetDefaultSharedPreferences(this)))
+                    {
+                        Intent DashboardIntent = new Intent(this, typeof(DashboardActivity));
+                        DashboardIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
+                        StartActivity(DashboardIntent);
+                    }
+                    else
+                    {
+                        ShowResetPasswordSuccess();
+                    }
+
                 }
                 else
                 {
-                    ShowResetPasswordSuccess();
+                    base.OnBackPressed();
                 }
-               
-            }else
-            {
-                base.OnBackPressed();
-            }
             }
             catch (Exception e)
             {
@@ -379,15 +383,16 @@ namespace myTNB_Android.Src.ResetPassword.Activity
 
         public void ShowNotificationCount(int count)
         {
-            try {
-            if (count <= 0)
+            try
             {
-                ME.Leolin.Shortcutbadger.ShortcutBadger.RemoveCount(this.ApplicationContext);
-            }
-            else
-            {
-                ME.Leolin.Shortcutbadger.ShortcutBadger.ApplyCount(this.ApplicationContext, count);
-            }
+                if (count <= 0)
+                {
+                    ME.Leolin.Shortcutbadger.ShortcutBadger.RemoveCount(this.ApplicationContext);
+                }
+                else
+                {
+                    ME.Leolin.Shortcutbadger.ShortcutBadger.ApplyCount(this.ApplicationContext, count);
+                }
             }
             catch (Exception e)
             {

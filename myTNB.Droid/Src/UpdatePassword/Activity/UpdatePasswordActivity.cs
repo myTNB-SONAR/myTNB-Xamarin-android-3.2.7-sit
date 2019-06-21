@@ -1,24 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
+﻿using AFollestad.MaterialDialogs;
 using Android.App;
 using Android.Content;
+using Android.Content.PM;
 using Android.OS;
-using Android.Runtime;
+using Android.Support.Design.Widget;
+using Android.Text;
 using Android.Views;
 using Android.Widget;
-using myTNB_Android.Src.Base.Activity;
-using Android.Content.PM;
-using myTNB_Android.Src.UpdatePassword.MVP;
-using Refit;
-using Android.Support.Design.Widget;
 using CheeseBind;
+using myTNB_Android.Src.Base.Activity;
+using myTNB_Android.Src.UpdatePassword.MVP;
 using myTNB_Android.Src.Utils;
-using AFollestad.MaterialDialogs;
-using Android.Text;
 using myTNB_Android.Src.Utils.Custom.ProgressDialog;
+using Refit;
+using System;
 using System.Runtime;
 
 namespace myTNB_Android.Src.UpdatePassword.Activity
@@ -26,7 +21,7 @@ namespace myTNB_Android.Src.UpdatePassword.Activity
     [Activity(Label = "@string/update_password_activity_title"
         , ScreenOrientation = ScreenOrientation.Portrait
         , Theme = "@style/Theme.UpdatePassword")]
-    public class UpdatePasswordActivity : BaseToolbarAppCompatActivity , UpdatePasswordContract.IView
+    public class UpdatePasswordActivity : BaseToolbarAppCompatActivity, UpdatePasswordContract.IView
     {
 
         [BindView(Resource.Id.rootView)]
@@ -66,35 +61,36 @@ namespace myTNB_Android.Src.UpdatePassword.Activity
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-            try {
-            TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutConfirmPassword,
-                txtInputLayoutCurrentPassword,
-                txtInputLayoutNewPassword);
+            try
+            {
+                TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutConfirmPassword,
+                    txtInputLayoutCurrentPassword,
+                    txtInputLayoutNewPassword);
 
-            TextViewUtils.SetMuseoSans300Typeface(txtCurrentPassword,
-                txtNewPassword,
-                txtConfirmPassword);
+                TextViewUtils.SetMuseoSans300Typeface(txtCurrentPassword,
+                    txtNewPassword,
+                    txtConfirmPassword);
 
-            TextViewUtils.SetMuseoSans500Typeface(btnSave);
+                TextViewUtils.SetMuseoSans500Typeface(btnSave);
 
-            txtCurrentPassword.TextChanged += TextChange;
-            txtNewPassword.TextChanged += TextChange;
-            txtConfirmPassword.TextChanged += TextChange;
+                txtCurrentPassword.TextChanged += TextChange;
+                txtNewPassword.TextChanged += TextChange;
+                txtConfirmPassword.TextChanged += TextChange;
 
-            txtCurrentPassword.AddTextChangedListener(new InputFilterFormField(txtCurrentPassword, txtInputLayoutCurrentPassword));
-            txtNewPassword.AddTextChangedListener(new InputFilterFormField(txtNewPassword, txtInputLayoutNewPassword));
-            txtConfirmPassword.AddTextChangedListener(new InputFilterFormField(txtConfirmPassword, txtInputLayoutConfirmPassword));
+                txtCurrentPassword.AddTextChangedListener(new InputFilterFormField(txtCurrentPassword, txtInputLayoutCurrentPassword));
+                txtNewPassword.AddTextChangedListener(new InputFilterFormField(txtNewPassword, txtInputLayoutNewPassword));
+                txtConfirmPassword.AddTextChangedListener(new InputFilterFormField(txtConfirmPassword, txtInputLayoutConfirmPassword));
 
-            progress = new MaterialDialog.Builder(this)
-            .Title(GetString(Resource.String.update_password_progress_title))
-            .Content(GetString(Resource.String.update_password_progress_content))
-            .Progress(true, 0)
-            .Cancelable(false)
-            .Build();
+                progress = new MaterialDialog.Builder(this)
+                .Title(GetString(Resource.String.update_password_progress_title))
+                .Content(GetString(Resource.String.update_password_progress_content))
+                .Progress(true, 0)
+                .Cancelable(false)
+                .Build();
 
 
-            this.mPresenter = new UpdatePasswordPresenter(this);
-            this.userActionsListener.Start();
+                this.mPresenter = new UpdatePasswordPresenter(this);
+                this.userActionsListener.Start();
             }
             catch (Exception e)
             {
@@ -104,43 +100,44 @@ namespace myTNB_Android.Src.UpdatePassword.Activity
 
         private void TextChange(object sender, TextChangedEventArgs e)
         {
-            try {
-            string currentPassword = txtCurrentPassword.Text;
-            string newPassword = txtNewPassword.Text;
-            string confirmPassword = txtConfirmPassword.Text;
+            try
+            {
+                string currentPassword = txtCurrentPassword.Text;
+                string newPassword = txtNewPassword.Text;
+                string confirmPassword = txtConfirmPassword.Text;
 
-            if (!string.IsNullOrEmpty(currentPassword))
-            {
-                txtInputLayoutCurrentPassword.PasswordVisibilityToggleEnabled = true;
-            }
-            else
-            {
-                txtInputLayoutCurrentPassword.PasswordVisibilityToggleEnabled = false;
-            }
+                if (!string.IsNullOrEmpty(currentPassword))
+                {
+                    txtInputLayoutCurrentPassword.PasswordVisibilityToggleEnabled = true;
+                }
+                else
+                {
+                    txtInputLayoutCurrentPassword.PasswordVisibilityToggleEnabled = false;
+                }
 
-            if (!string.IsNullOrEmpty(newPassword))
-            {
-                txtInputLayoutNewPassword.Error = GetString(Resource.String.registration_form_password_format_hint);
-                txtInputLayoutNewPassword.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomHint);
-                TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutNewPassword);
-                txtInputLayoutNewPassword.PasswordVisibilityToggleEnabled = true;
-            }
-            else
-            {
-                txtInputLayoutNewPassword.Error = "";
-                txtInputLayoutNewPassword.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
-                TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutNewPassword);
-                txtInputLayoutNewPassword.PasswordVisibilityToggleEnabled = false;
-            }
+                if (!string.IsNullOrEmpty(newPassword))
+                {
+                    txtInputLayoutNewPassword.Error = GetString(Resource.String.registration_form_password_format_hint);
+                    txtInputLayoutNewPassword.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomHint);
+                    TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutNewPassword);
+                    txtInputLayoutNewPassword.PasswordVisibilityToggleEnabled = true;
+                }
+                else
+                {
+                    txtInputLayoutNewPassword.Error = "";
+                    txtInputLayoutNewPassword.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
+                    TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutNewPassword);
+                    txtInputLayoutNewPassword.PasswordVisibilityToggleEnabled = false;
+                }
 
-            if (!string.IsNullOrEmpty(confirmPassword))
-            {
-                txtInputLayoutConfirmPassword.PasswordVisibilityToggleEnabled = true;
-            }
-            else
-            {
-                txtInputLayoutConfirmPassword.PasswordVisibilityToggleEnabled = false;
-            }
+                if (!string.IsNullOrEmpty(confirmPassword))
+                {
+                    txtInputLayoutConfirmPassword.PasswordVisibilityToggleEnabled = true;
+                }
+                else
+                {
+                    txtInputLayoutConfirmPassword.PasswordVisibilityToggleEnabled = false;
+                }
             }
             catch (Exception ex)
             {
@@ -151,11 +148,12 @@ namespace myTNB_Android.Src.UpdatePassword.Activity
         [OnClick(Resource.Id.btnSave)]
         void OnSave(object sender, EventArgs eventArgs)
         {
-            try {
-            string currentPassword = txtCurrentPassword.Text;
-            string newPassword = txtNewPassword.Text;
-            string confirmPassword = txtConfirmPassword.Text;
-            this.userActionsListener.OnSave(currentPassword , newPassword , confirmPassword);
+            try
+            {
+                string currentPassword = txtCurrentPassword.Text;
+                string newPassword = txtNewPassword.Text;
+                string confirmPassword = txtConfirmPassword.Text;
+                this.userActionsListener.OnSave(currentPassword, newPassword, confirmPassword);
             }
             catch (Exception e)
             {
@@ -226,7 +224,8 @@ namespace myTNB_Android.Src.UpdatePassword.Activity
             }
 
             mCancelledExceptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.update_password_cancelled_exception_error), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.update_password_cancelled_exception_btn_close), delegate {
+            .SetAction(GetString(Resource.String.update_password_cancelled_exception_btn_close), delegate
+            {
 
                 mCancelledExceptionSnackBar.Dismiss();
             }
@@ -244,7 +243,8 @@ namespace myTNB_Android.Src.UpdatePassword.Activity
             }
 
             mApiExcecptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.update_password_api_exception_error), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.update_password_api_exception_btn_close), delegate {
+            .SetAction(GetString(Resource.String.update_password_api_exception_btn_close), delegate
+            {
 
                 mApiExcecptionSnackBar.Dismiss();
             }
@@ -262,7 +262,8 @@ namespace myTNB_Android.Src.UpdatePassword.Activity
             }
 
             mUknownExceptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.update_password_unknown_exception_error), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.update_password_unknown_exception_btn_close), delegate {
+            .SetAction(GetString(Resource.String.update_password_unknown_exception_btn_close), delegate
+            {
 
                 mUknownExceptionSnackBar.Dismiss();
 
@@ -285,14 +286,15 @@ namespace myTNB_Android.Src.UpdatePassword.Activity
             //{
             //    progress.Show();
             //}
-            try {
-            if (loadingOverlay != null && loadingOverlay.IsShowing)
+            try
             {
-                loadingOverlay.Dismiss();
-            }
+                if (loadingOverlay != null && loadingOverlay.IsShowing)
+                {
+                    loadingOverlay.Dismiss();
+                }
 
-            loadingOverlay = new LoadingOverlay(this, Resource.Style.LoadingOverlyDialogStyle);
-            loadingOverlay.Show();
+                loadingOverlay = new LoadingOverlay(this, Resource.Style.LoadingOverlyDialogStyle);
+                loadingOverlay.Show();
             }
             catch (Exception e)
             {
@@ -307,11 +309,12 @@ namespace myTNB_Android.Src.UpdatePassword.Activity
             //{
             //    progress.Dismiss();
             //}
-            try {
-            if (loadingOverlay != null && loadingOverlay.IsShowing)
+            try
             {
-                loadingOverlay.Dismiss();
-            }
+                if (loadingOverlay != null && loadingOverlay.IsShowing)
+                {
+                    loadingOverlay.Dismiss();
+                }
             }
             catch (Exception e)
             {
@@ -328,7 +331,8 @@ namespace myTNB_Android.Src.UpdatePassword.Activity
             }
 
             mErrorSnackbar = Snackbar.Make(rootView, message, Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.update_password_cancelled_exception_btn_close), delegate {
+            .SetAction(GetString(Resource.String.update_password_cancelled_exception_btn_close), delegate
+            {
 
                 mErrorSnackbar.Dismiss();
             }

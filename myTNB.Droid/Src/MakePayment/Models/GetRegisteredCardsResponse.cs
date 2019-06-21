@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using myTNB_Android.Src.Base.Models;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Refit;
+using System.Collections.Generic;
 
 namespace myTNB_Android.Src.MakePayment.Models
 {
@@ -34,6 +32,6 @@ namespace myTNB_Android.Src.MakePayment.Models
             [AliasAs("data")]
             public List<CreditCard> creditCard { get; set; }
         }
-        
+
     }
 }

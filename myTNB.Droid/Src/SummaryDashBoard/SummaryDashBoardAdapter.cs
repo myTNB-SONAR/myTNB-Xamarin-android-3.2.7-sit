@@ -1,13 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.Graphics.Drawables;
-using Android.OS;
-using Android.Runtime;
+﻿using Android.Graphics.Drawables;
 using Android.Support.V4.Content;
 using Android.Support.V7.Widget;
 using Android.Views;
@@ -19,6 +10,9 @@ using myTNB_Android.Src.Base.Adapter;
 using myTNB_Android.Src.SummaryDashBoard.Models;
 using myTNB_Android.Src.SummaryDashBoard.SummaryListener;
 using myTNB_Android.Src.Utils;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace myTNB_Android.Src.SummaryDashBoard
 {
@@ -110,19 +104,21 @@ namespace myTNB_Android.Src.SummaryDashBoard
             if (position == 0)
             {
                 var viewHolder1 = holder as SummaryDashBoardHeaderViewHolder;
-                   
-                        viewHolder1.SetHeaderText("Renewable Energy");
-                        viewHolder1.SetRightText("My Earnings");
-            
-            } else {
+
+                viewHolder1.SetHeaderText("Renewable Energy");
+                viewHolder1.SetRightText("My Earnings");
+
+            }
+            else
+            {
                 var viewHolder3 = holder as SummaryDashBoardViewHolder;
                 viewHolder3.PopulateData(reAccount[position - 1]);
                 //        viewHolder3.SetAcountName(reAccount[position - 1].AccName);
                 //        viewHolder3.SetAcountNumber(reAccount[position - 1].AccNumber);
                 //viewHolder3.SetDueDate(reAccount[position - 1].BillDueDate, reAccount[position - 1].AmountDue);
-                        //viewHolder3.SetAmountText(reAccount[position - 1].AmountDue);
+                //viewHolder3.SetAmountText(reAccount[position - 1].AmountDue);
             }
-           
+
             //if (position == 0 || (position) == (reAccountCount != 0 ? (reAccountCount + 1) : reAccountCount )) {
             //    var viewHolder1 = holder as SummaryDashBoardHeaderViewHolder;
             //    if (HAS_RE_HEADER && position == 0) {
@@ -169,12 +165,13 @@ namespace myTNB_Android.Src.SummaryDashBoard
         public override RecyclerView.ViewHolder OnCreateViewHolder(ViewGroup parent, int viewType)
         {
 
-            switch (viewType) {
+            switch (viewType)
+            {
                 case HEADER:
                     return new SummaryDashBoardHeaderViewHolder(LayoutInflater.From(parent.Context).Inflate(Resource.Layout.SummaryDashBoardHeader, parent, false));
 
                 //case FOOTER:
-                    //return new SummaryDashBoardFooterViewHolder(LayoutInflater.From(parent.Context).Inflate(Resource.Layout.SummaryDashBoardFooter, parent, false));
+                //return new SummaryDashBoardFooterViewHolder(LayoutInflater.From(parent.Context).Inflate(Resource.Layout.SummaryDashBoardFooter, parent, false));
 
                 default:
                     return new SummaryDashBoardViewHolder(LayoutInflater.From(parent.Context).Inflate(Resource.Layout.SummaryDashboardAdapter, parent, false), iSummaryListener);
@@ -440,35 +437,39 @@ namespace myTNB_Android.Src.SummaryDashBoard
             }
 
 
-            public void SetHeaderText(String headertext) {
-                    try {
-                headerTextValue.Text = "";
+            public void SetHeaderText(String headertext)
+            {
+                try
+                {
+                    headerTextValue.Text = "";
 
-                if (!string.IsNullOrEmpty(headertext)) {
-                    headerTextValue.Text = headertext;    
-                }
-                    }
-                    catch (Exception e)
+                    if (!string.IsNullOrEmpty(headertext))
                     {
-                        Utility.LoggingNonFatalError(e);
+                        headerTextValue.Text = headertext;
                     }
+                }
+                catch (Exception e)
+                {
+                    Utility.LoggingNonFatalError(e);
+                }
             }
 
 
             public void SetRightText(String righttext)
             {
-                    try {
-                rightTextValue.Text = "";
-
-                if (!string.IsNullOrEmpty(righttext))
+                try
                 {
-                    rightTextValue.Text = righttext;
-                }
-                    }
-                    catch (Exception e)
+                    rightTextValue.Text = "";
+
+                    if (!string.IsNullOrEmpty(righttext))
                     {
-                        Utility.LoggingNonFatalError(e);
+                        rightTextValue.Text = righttext;
                     }
+                }
+                catch (Exception e)
+                {
+                    Utility.LoggingNonFatalError(e);
+                }
             }
         }
 

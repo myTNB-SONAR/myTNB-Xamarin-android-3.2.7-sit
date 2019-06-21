@@ -1,23 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-using myTNB_Android.Src.NotificationDetails.Models;
-using System.Threading;
-using System.Net;
-using myTNB_Android.Src.Utils;
-using System.Net.Http;
-using Refit;
+﻿using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.myTNBMenu.Api;
 using myTNB_Android.Src.myTNBMenu.Models;
-using myTNB_Android.Src.Database.Model;
+using myTNB_Android.Src.Utils;
+using Refit;
+using System;
+using System.Net;
+using System.Net.Http;
+using System.Threading;
 
 namespace myTNB_Android.Src.NotificationDetails.MVP
 {
@@ -144,7 +133,7 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                     {
                         this.mView.ShowDetails(AccountData.Copy(customerBillingDetails.Data.AccountData, true));
                     }
-                    
+
                 }
                 else
                 {

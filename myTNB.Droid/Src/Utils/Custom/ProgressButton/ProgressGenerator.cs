@@ -1,14 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
+﻿using Android.App;
 using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
+using System;
 
 
 namespace myTNB_Android.Src.Utils.Custom.ProgressButton
@@ -44,10 +36,10 @@ namespace myTNB_Android.Src.Utils.Custom.ProgressButton
         }
 
         private int counter = 0;
-      
+
         public int MaxCounter
         {
-            set;get;
+            set; get;
         }
 
         public interface OnProgressListener
@@ -82,7 +74,9 @@ namespace myTNB_Android.Src.Utils.Custom.ProgressButton
                     action = () => UpdateProgress(button, 0);
                     messageHandler.PostDelayed(action, generateDelay());
                 });
-            }catch(Exception e){
+            }
+            catch (Exception e)
+            {
                 Utility.LoggingNonFatalError(e);
             }
         }
@@ -111,7 +105,9 @@ namespace myTNB_Android.Src.Utils.Custom.ProgressButton
 
 
                 }
-            }catch(Exception e){
+            }
+            catch (Exception e)
+            {
                 Utility.LoggingNonFatalError(e);
             }
         }

@@ -1,27 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
+﻿using Android.App;
 using Android.Content;
+using Android.Content.PM;
 using Android.OS;
-using Android.Runtime;
+using Android.Preferences;
+using Android.Support.Design.Widget;
+using Android.Support.V4.Content;
+using Android.Support.V7.Widget;
 using Android.Views;
 using Android.Widget;
-using myTNB_Android.Src.Base.Activity;
-using Android.Content.PM;
-using Android.Support.Design.Widget;
 using CheeseBind;
-using Android.Support.V7.Widget;
-using myTNB_Android.Src.Utils;
+using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Base.Models;
-using Newtonsoft.Json;
 using myTNB_Android.Src.FeedbackDetails.Adapter;
 using myTNB_Android.Src.FeedbackDetails.MVP;
-using Android.Preferences;
 using myTNB_Android.Src.FeedbackFullScreenImage.Activity;
-using Android.Support.V4.Content;
+using myTNB_Android.Src.Utils;
+using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
 using System.Runtime;
 
 namespace myTNB_Android.Src.FeedbackDetails.Activity
@@ -29,7 +25,7 @@ namespace myTNB_Android.Src.FeedbackDetails.Activity
     [Activity(Label = "@string/bill_related_activity_title"
       , ScreenOrientation = ScreenOrientation.Portrait
       , Theme = "@style/Theme.BillRelated")]
-    public class FeedbackDetailsBillRelatedActivity : BaseToolbarAppCompatActivity , FeedbackDetailsContract.BillRelated.IView
+    public class FeedbackDetailsBillRelatedActivity : BaseToolbarAppCompatActivity, FeedbackDetailsContract.BillRelated.IView
     {
 
         [BindView(Resource.Id.txtInputLayoutFeedbackId)]
@@ -75,7 +71,7 @@ namespace myTNB_Android.Src.FeedbackDetails.Activity
 
         SubmittedFeedbackDetails submittedFeedback;
 
-        
+
         FeedbackDetailsBillRelatedPresenter mPresenter;
         FeedbackDetailsContract.BillRelated.IUserActionsListener userActionsListener;
 
@@ -144,7 +140,9 @@ namespace myTNB_Android.Src.FeedbackDetails.Activity
                 txtFeedbackDateTime.Text = dateTime;
                 txtAccountNo.Text = accountNoName;
                 txtFeedback.Text = feedback;
-            } catch(Exception e) {
+            }
+            catch (Exception e)
+            {
                 Utility.LoggingNonFatalError(e);
             }
         }
@@ -153,22 +151,23 @@ namespace myTNB_Android.Src.FeedbackDetails.Activity
         {
             base.OnCreate(savedInstanceState);
 
-            try {
-            // Create your application here
-            string selectedFeedback = UserSessions.GetSelectedFeedback(PreferenceManager.GetDefaultSharedPreferences(this));
-            submittedFeedback = JsonConvert.DeserializeObject<SubmittedFeedbackDetails>(selectedFeedback);
+            try
+            {
+                // Create your application here
+                string selectedFeedback = UserSessions.GetSelectedFeedback(PreferenceManager.GetDefaultSharedPreferences(this));
+                submittedFeedback = JsonConvert.DeserializeObject<SubmittedFeedbackDetails>(selectedFeedback);
 
-            TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutAccountNo, txtInputLayoutFeedback , txtInputLayoutFeedbackId , txtInputLayoutDateTime , txtInputLayoutStatus);
-            TextViewUtils.SetMuseoSans300Typeface(txtFeedbackId, txtFeedbackDateTime,  txtAccountNo, txtFeedback, txtRelatedScreenshotTitle , txtFeedbackStatus);
+                TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutAccountNo, txtInputLayoutFeedback, txtInputLayoutFeedbackId, txtInputLayoutDateTime, txtInputLayoutStatus);
+                TextViewUtils.SetMuseoSans300Typeface(txtFeedbackId, txtFeedbackDateTime, txtAccountNo, txtFeedback, txtRelatedScreenshotTitle, txtFeedbackStatus);
 
-            adapter = new FeedbackImageRecyclerAdapter(true);
-            layoutManager = new GridLayoutManager(this, Constants.GRID_IMAGE_COUNT);
-            recyclerView.SetLayoutManager(layoutManager);
-            recyclerView.SetAdapter(adapter);
-            adapter.SelectClickEvent += Adapter_SelectClickEvent;
+                adapter = new FeedbackImageRecyclerAdapter(true);
+                layoutManager = new GridLayoutManager(this, Constants.GRID_IMAGE_COUNT);
+                recyclerView.SetLayoutManager(layoutManager);
+                recyclerView.SetAdapter(adapter);
+                adapter.SelectClickEvent += Adapter_SelectClickEvent;
 
-            mPresenter = new FeedbackDetailsBillRelatedPresenter(this , submittedFeedback);
-            this.userActionsListener.Start();
+                mPresenter = new FeedbackDetailsBillRelatedPresenter(this, submittedFeedback);
+                this.userActionsListener.Start();
             }
             catch (Exception e)
             {
@@ -180,8 +179,8 @@ namespace myTNB_Android.Src.FeedbackDetails.Activity
         private void Adapter_SelectClickEvent(object sender, int e)
         {
             AttachedImage selectedImage = adapter.GetItemObject(e);
-            var fullImageIntent = new Intent(this , typeof(FeedbackDetailsFullScreenImageActivity));
-            fullImageIntent.PutExtra(Constants.SELECTED_FEEDBACK_DETAIL_IMAGE , JsonConvert.SerializeObject(selectedImage));
+            var fullImageIntent = new Intent(this, typeof(FeedbackDetailsFullScreenImageActivity));
+            fullImageIntent.PutExtra(Constants.SELECTED_FEEDBACK_DETAIL_IMAGE, JsonConvert.SerializeObject(selectedImage));
             StartActivity(fullImageIntent);
         }
 

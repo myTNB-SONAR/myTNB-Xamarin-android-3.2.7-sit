@@ -1,21 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
+﻿using Android.Content;
 using Android.Views;
 using Android.Widget;
-using myTNB_Android.Src.myTNBMenu.Models;
-using myTNB_Android.Src.Base.Adapter;
 using CheeseBind;
+using myTNB_Android.Src.Base.Adapter;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.Utils;
-using Android.Graphics.Drawables;
-using Android.Support.V4.Content;
+using System;
+using System.Collections.Generic;
 
 namespace myTNB_Android.Src.Dashboard.Adapter
 {
@@ -25,7 +16,7 @@ namespace myTNB_Android.Src.Dashboard.Adapter
         {
         }
 
-        public SelectSupplyAccountAdapter(Context context , bool notify) : base(context , notify)
+        public SelectSupplyAccountAdapter(Context context, bool notify) : base(context, notify)
         {
 
         }
@@ -43,7 +34,7 @@ namespace myTNB_Android.Src.Dashboard.Adapter
             AccountListViewHolder vh = null;
             if (convertView == null)
             {
-                convertView = LayoutInflater.From(context).Inflate(Resource.Layout.SelectSupplyAccountRow , parent , false) ;
+                convertView = LayoutInflater.From(context).Inflate(Resource.Layout.SelectSupplyAccountRow, parent, false);
                 vh = new AccountListViewHolder(convertView);
                 convertView.Tag = vh;
             }
@@ -52,28 +43,29 @@ namespace myTNB_Android.Src.Dashboard.Adapter
                 vh = convertView.Tag as AccountListViewHolder;
 
             }
-            try {
-            CustomerBillingAccount item = GetItemObject(position);
-            vh.txtSupplyAccountName.Text = item.AccDesc;
+            try
+            {
+                CustomerBillingAccount item = GetItemObject(position);
+                vh.txtSupplyAccountName.Text = item.AccDesc;
 
-            if (item.AccountCategoryId.Equals("2"))
-            {
-                vh.imageLeaf.Visibility = ViewStates.Visible;
-            }
-            else
-            {
-                vh.imageLeaf.Visibility = ViewStates.Invisible;
-            }
+                if (item.AccountCategoryId.Equals("2"))
+                {
+                    vh.imageLeaf.Visibility = ViewStates.Visible;
+                }
+                else
+                {
+                    vh.imageLeaf.Visibility = ViewStates.Invisible;
+                }
 
-            if (item.IsSelected)
-            {
-                vh.imageActionIcon.Visibility = ViewStates.Visible;
-            }
-            else
-            {
-                vh.imageActionIcon.Visibility = ViewStates.Invisible;
+                if (item.IsSelected)
+                {
+                    vh.imageActionIcon.Visibility = ViewStates.Visible;
+                }
+                else
+                {
+                    vh.imageActionIcon.Visibility = ViewStates.Invisible;
 
-            }
+                }
             }
             catch (Exception e)
             {

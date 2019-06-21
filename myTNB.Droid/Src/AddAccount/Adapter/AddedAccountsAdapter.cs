@@ -1,18 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
+﻿using Android.Support.V7.Widget;
 using Android.Views;
 using Android.Widget;
-using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.AddAccount.Models;
-using Android.Support.V7.Widget;
+using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Utils;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace myTNB_Android.Src.AddAccount.Adapter
 {
@@ -57,7 +51,8 @@ namespace myTNB_Android.Src.AddAccount.Adapter
         {
             AccountListViewHolder vh = holder as AccountListViewHolder;
             vh.bottomLine.Visibility = ViewStates.Visible;
-            if (accountList != null && accountList.Count() > 0 && accountList.Count() == 1) {
+            if (accountList != null && accountList.Count() > 0 && accountList.Count() == 1)
+            {
                 vh.bottomLine.Visibility = ViewStates.Gone;
             }
 

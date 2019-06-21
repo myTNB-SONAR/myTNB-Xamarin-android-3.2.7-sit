@@ -1,37 +1,27 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-using Android.Graphics;
+﻿using Android.Graphics;
 using Android.Support.Design.Widget;
+using Android.Widget;
 
 namespace myTNB_Android.Src.Utils
 {
     public sealed class TextViewUtils
     {
-   
+
         public static string MuseoSans300 = "MuseoSans_300.otf";
         public static string MuseoSans500 = "MuseoSans_500.otf";
-        
 
-        public static void SetTypeface(string family ,params EditText[] editTexts )
+
+        public static void SetTypeface(string family, params EditText[] editTexts)
         {
             foreach (var editText in editTexts)
             {
-                editText.Typeface = Typeface.CreateFromAsset(editText.Context.Assets , "fonts/" + family);
+                editText.Typeface = Typeface.CreateFromAsset(editText.Context.Assets, "fonts/" + family);
             }
         }
 
         public static void SetMuseoSans300Typeface(params EditText[] editTexts)
         {
-            SetTypeface(MuseoSans300 , editTexts);
+            SetTypeface(MuseoSans300, editTexts);
         }
 
         public static void SetMuseoSans500Typeface(params EditText[] editTexts)

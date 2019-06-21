@@ -1,43 +1,38 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
+﻿using AFollestad.MaterialDialogs;
 using Android.App;
 using Android.Content;
+using Android.Content.PM;
+using Android.Graphics;
 using Android.OS;
+using Android.Preferences;
+using Android.Provider;
 using Android.Runtime;
+using Android.Support.Design.Widget;
+using Android.Support.V4.Content;
+using Android.Support.V7.Widget;
+using Android.Text;
 using Android.Views;
 using Android.Widget;
-using Android.Content.PM;
-using myTNB_Android.Src.Base.Activity;
 using CheeseBind;
-using Android.Support.Design.Widget;
-using Android.Support.V7.Widget;
-using myTNB_Android.Src.Utils;
-using myTNB_Android.Src.Feedback_Login_BillRelated.Adapter;
-using myTNB_Android.Src.Feedback_Login_BillRelated.MVP;
-using Android.Net;
-using myTNB_Android.Src.Base.Models;
-using myTNB_Android.Src.Base.Request;
-using System.Threading.Tasks;
-using AFollestad.MaterialDialogs;
-using Android.Support.V4.Content;
-using myTNB_Android.Src.FeedbackSuccess.Activity;
-using myTNB_Android.Src.FeedbackFail.Activity;
-using Android.Provider;
-using Android.Graphics;
-using System.Web;
-using myTNB_Android.Src.Database.Model;
-using myTNB_Android.Src.SelectSupplyAccount.Activity;
 using Java.Text;
 using Java.Util;
-using Android.Preferences;
-using Android.Text;
+using myTNB_Android.Src.Base.Activity;
+using myTNB_Android.Src.Base.Models;
+using myTNB_Android.Src.Base.Request;
+using myTNB_Android.Src.Database.Model;
+using myTNB_Android.Src.Feedback_Login_BillRelated.Adapter;
+using myTNB_Android.Src.Feedback_Login_BillRelated.MVP;
+using myTNB_Android.Src.FeedbackFail.Activity;
+using myTNB_Android.Src.FeedbackSuccess.Activity;
 using myTNB_Android.Src.myTNBMenu.Models;
-using Newtonsoft.Json;
+using myTNB_Android.Src.Utils;
 using myTNB_Android.Src.Utils.Custom.ProgressDialog;
+using Newtonsoft.Json;
+using System;
 using System.Runtime;
+using System.Text;
+using System.Threading.Tasks;
+using System.Web;
 
 namespace myTNB_Android.Src.Feedback_Login_BillRelated.Activity
 {
@@ -45,7 +40,7 @@ namespace myTNB_Android.Src.Feedback_Login_BillRelated.Activity
       , ScreenOrientation = ScreenOrientation.Portrait
               , WindowSoftInputMode = SoftInput.AdjustPan
       , Theme = "@style/Theme.FaultyStreetLamps")]
-    public class FeedbackLoginBillRelatedActivity : BaseToolbarAppCompatActivity , FeedbackLoginBillRelatedContract.IView, View.IOnTouchListener
+    public class FeedbackLoginBillRelatedActivity : BaseToolbarAppCompatActivity, FeedbackLoginBillRelatedContract.IView, View.IOnTouchListener
     {
 
         [BindView(Resource.Id.txtInputLayoutAccountNo)]
@@ -162,7 +157,9 @@ namespace myTNB_Android.Src.Feedback_Login_BillRelated.Activity
                 txtMobileNo.TextChanged += TextChanged;
                 txtFeedback.SetOnTouchListener(this);
                 txtInputLayoutFeedback.Error = GetString(Resource.String.feedback_total_character_left);
-            } catch(Exception e) {
+            }
+            catch (Exception e)
+            {
                 Utility.LoggingNonFatalError(e);
             }
         }
@@ -171,49 +168,51 @@ namespace myTNB_Android.Src.Feedback_Login_BillRelated.Activity
         [Preserve]
         private void TextChanged(object sender, Android.Text.TextChangedEventArgs e)
         {
-            try {
-            FeedBackCharacCount();
+            try
+            {
+                FeedBackCharacCount();
 
-            string feedback = txtFeedback.Text;
-            if (txtInputLayoutMobileNo.Visibility == ViewStates.Visible)
-            {
-                string mobile_no = txtMobileNo.Text.Trim();
-                this.userActionsListener.CheckRequiredFields(mobile_no, feedback);
-            }
-            else
-            {
-                this.userActionsListener.CheckRequiredFields(feedback);
-            }
+                string feedback = txtFeedback.Text;
+                if (txtInputLayoutMobileNo.Visibility == ViewStates.Visible)
+                {
+                    string mobile_no = txtMobileNo.Text.Trim();
+                    this.userActionsListener.CheckRequiredFields(mobile_no, feedback);
+                }
+                else
+                {
+                    this.userActionsListener.CheckRequiredFields(feedback);
+                }
 
             }
             catch (Exception ex)
             {
                 Utility.LoggingNonFatalError(ex);
             }
-            
+
         }
 
 
         private void FeedBackCharacCount()
         {
-            try {
-            string feedback = txtFeedback.Text;
-            int char_count = 0;
+            try
+            {
+                string feedback = txtFeedback.Text;
+                int char_count = 0;
 
-            if (!string.IsNullOrEmpty(feedback))
-            {
-                char_count = feedback.Length;
-            }
+                if (!string.IsNullOrEmpty(feedback))
+                {
+                    char_count = feedback.Length;
+                }
 
-            if (char_count > 0)
-            {
-                int char_left = Constants.FEEDBACK_CHAR_LIMIT - char_count;
-                txtInputLayoutFeedback.Error = char_left + " " + GetString(Resource.String.feedback_character_left);
-            }
-            else
-            {
-                txtInputLayoutFeedback.Error = GetString(Resource.String.feedback_total_character_left);
-            }
+                if (char_count > 0)
+                {
+                    int char_left = Constants.FEEDBACK_CHAR_LIMIT - char_count;
+                    txtInputLayoutFeedback.Error = char_left + " " + GetString(Resource.String.feedback_character_left);
+                }
+                else
+                {
+                    txtInputLayoutFeedback.Error = GetString(Resource.String.feedback_total_character_left);
+                }
             }
             catch (Exception e)
             {
@@ -261,27 +260,30 @@ namespace myTNB_Android.Src.Feedback_Login_BillRelated.Activity
         [Preserve]
         private void Adapter_RemoveClickEvent(object sender, int e)
         {
-            try {
-            adapter.Remove(e);
-            if (adapter.GetAllImages().Count == 1 && adapter.ItemCount == 1)
+            try
             {
-                adapter.Add(new AttachedImage()
-                {
-                    ViewType = Constants.VIEW_TYPE_DUMMY_RECORD
-                });
-            }
-            else
-            {
-
-                if (adapter.ItemCount == 0)
+                adapter.Remove(e);
+                if (adapter.GetAllImages().Count == 1 && adapter.ItemCount == 1)
                 {
                     adapter.Add(new AttachedImage()
                     {
                         ViewType = Constants.VIEW_TYPE_DUMMY_RECORD
                     });
                 }
+                else
+                {
+
+                    if (adapter.ItemCount == 0)
+                    {
+                        adapter.Add(new AttachedImage()
+                        {
+                            ViewType = Constants.VIEW_TYPE_DUMMY_RECORD
+                        });
+                    }
+                }
             }
-        } catch(Exception ex) {
+            catch (Exception ex)
+            {
                 Utility.LoggingNonFatalError(ex);
             }
         }
@@ -289,33 +291,34 @@ namespace myTNB_Android.Src.Feedback_Login_BillRelated.Activity
         [Preserve]
         private void Adapter_AddClickEvent(object sender, int e)
         {
-            try {
-            string[] items = { GetString(Resource.String.bill_related_feedback_selection_take_photo) ,
+            try
+            {
+                string[] items = { GetString(Resource.String.bill_related_feedback_selection_take_photo) ,
                                GetString(Resource.String.bill_related_feedback_selection_choose_from_library) ,
                                GetString(Resource.String.bill_related_feedback_selection_cancel)};
 
-            AlertDialog.Builder builder = new AlertDialog.Builder(this)
-                .SetTitle(GetString(Resource.String.bill_related_feedback_selection_option_title));
-            builder.SetItems(items, (lsender, args) =>
-            {
+                AlertDialog.Builder builder = new AlertDialog.Builder(this)
+                    .SetTitle(GetString(Resource.String.bill_related_feedback_selection_option_title));
+                builder.SetItems(items, (lsender, args) =>
+                {
 
 
 
-                if (items[args.Which].Equals(GetString(Resource.String.bill_related_feedback_selection_take_photo)))
-                {
-                    this.userActionsListener.OnAttachPhotoCamera();
+                    if (items[args.Which].Equals(GetString(Resource.String.bill_related_feedback_selection_take_photo)))
+                    {
+                        this.userActionsListener.OnAttachPhotoCamera();
+                    }
+                    else if (items[args.Which].Equals(GetString(Resource.String.bill_related_feedback_selection_choose_from_library)))
+                    {
+                        this.userActionsListener.OnAttachPhotoGallery();
+                    }
+                    else if (items[args.Which].Equals(GetString(Resource.String.bill_related_feedback_selection_cancel)))
+                    {
+                        _ChooseDialog.Dismiss();
+                    }
                 }
-                else if (items[args.Which].Equals(GetString(Resource.String.bill_related_feedback_selection_choose_from_library)))
-                {
-                    this.userActionsListener.OnAttachPhotoGallery();
-                }
-                else if (items[args.Which].Equals(GetString(Resource.String.bill_related_feedback_selection_cancel)))
-                {
-                    _ChooseDialog.Dismiss();
-                }
-            }
-            );
-            _ChooseDialog = builder.Show();
+                );
+                _ChooseDialog = builder.Show();
             }
             catch (Exception ex)
             {
@@ -335,15 +338,16 @@ namespace myTNB_Android.Src.Feedback_Login_BillRelated.Activity
 
         public void ClearErrors()
         {
-            try {
-            txtInputLayoutFeedback.SetErrorTextAppearance(Resource.Style.TextInputLayoutFeedbackCount);
-            txtInputLayoutAccountNo.Error = null;
-            txtInputLayoutFeedback.Error = null;
-            txtInputLayoutMobileNo.Error = null;
+            try
+            {
+                txtInputLayoutFeedback.SetErrorTextAppearance(Resource.Style.TextInputLayoutFeedbackCount);
+                txtInputLayoutAccountNo.Error = null;
+                txtInputLayoutFeedback.Error = null;
+                txtInputLayoutMobileNo.Error = null;
 
-            TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutFeedback.FindViewById<TextView>(Resource.Id.textinput_error));
-            TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutFeedback);
-            FeedBackCharacCount();
+                TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutFeedback.FindViewById<TextView>(Resource.Id.textinput_error));
+                TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutFeedback);
+                FeedBackCharacCount();
             }
             catch (Exception e)
             {
@@ -353,18 +357,21 @@ namespace myTNB_Android.Src.Feedback_Login_BillRelated.Activity
 
         public void EnableSubmitButton()
         {
-            try {
-            string feedback = txtFeedback.Text.Trim();
-            if (TextUtils.IsEmpty(feedback))
+            try
             {
-                ShowEmptyFeedbackError();
-                DisableSubmitButton();
-                return;
-            } else {
-                ClearErrors();
-            }           
-            btnSubmit.Enabled = true;
-            btnSubmit.Background = ContextCompat.GetDrawable(this, Resource.Drawable.green_button_background);
+                string feedback = txtFeedback.Text.Trim();
+                if (TextUtils.IsEmpty(feedback))
+                {
+                    ShowEmptyFeedbackError();
+                    DisableSubmitButton();
+                    return;
+                }
+                else
+                {
+                    ClearErrors();
+                }
+                btnSubmit.Enabled = true;
+                btnSubmit.Background = ContextCompat.GetDrawable(this, Resource.Drawable.green_button_background);
             }
             catch (Exception e)
             {
@@ -383,14 +390,15 @@ namespace myTNB_Android.Src.Feedback_Login_BillRelated.Activity
 
         public void ShowLoadingImage()
         {
-            try {
-            int position = adapter.ItemCount - 1;
-            AttachedImage attachImage = adapter.GetItemObject(position);
-            if (attachImage != null && attachImage.ViewType == Constants.VIEW_TYPE_DUMMY_RECORD)
+            try
             {
-                attachImage.IsLoading = true;
-                adapter.Update(position, attachImage);
-            }
+                int position = adapter.ItemCount - 1;
+                AttachedImage attachImage = adapter.GetItemObject(position);
+                if (attachImage != null && attachImage.ViewType == Constants.VIEW_TYPE_DUMMY_RECORD)
+                {
+                    attachImage.IsLoading = true;
+                    adapter.Update(position, attachImage);
+                }
             }
             catch (Exception e)
             {
@@ -400,14 +408,15 @@ namespace myTNB_Android.Src.Feedback_Login_BillRelated.Activity
 
         public void HideLoadingImage()
         {
-            try {
-            int position = adapter.ItemCount - 1;
-            AttachedImage attachImage = adapter.GetItemObject(position);
-            if (attachImage != null && attachImage.ViewType == Constants.VIEW_TYPE_DUMMY_RECORD)
+            try
             {
-                attachImage.IsLoading = false;
-                adapter.Update(position, attachImage);
-            }
+                int position = adapter.ItemCount - 1;
+                AttachedImage attachImage = adapter.GetItemObject(position);
+                if (attachImage != null && attachImage.ViewType == Constants.VIEW_TYPE_DUMMY_RECORD)
+                {
+                    attachImage.IsLoading = false;
+                    adapter.Update(position, attachImage);
+                }
             }
             catch (Exception e)
             {
@@ -443,8 +452,9 @@ namespace myTNB_Android.Src.Feedback_Login_BillRelated.Activity
 
         public Task<string> SaveGalleryImage(Android.Net.Uri selectedImage, string pTempImagePath, string pFileName)
         {
-            return Task.Run<string>(() => {
-                return FileUtils.ProcessGalleryImage(this , selectedImage , pTempImagePath , pFileName);
+            return Task.Run<string>(() =>
+            {
+                return FileUtils.ProcessGalleryImage(this, selectedImage, pTempImagePath, pFileName);
             });
 
         }
@@ -474,7 +484,7 @@ namespace myTNB_Android.Src.Feedback_Login_BillRelated.Activity
             });
         }
 
-            public void SetPresenter(FeedbackLoginBillRelatedContract.IUserActionsListener userActionListener)
+        public void SetPresenter(FeedbackLoginBillRelatedContract.IUserActionsListener userActionListener)
         {
             this.userActionsListener = userActionListener;
         }
@@ -504,7 +514,7 @@ namespace myTNB_Android.Src.Feedback_Login_BillRelated.Activity
 
         public void ShowEmptyFeedbackError()
         {
-              txtInputLayoutFeedback.SetErrorTextAppearance(Resource.Style.TextErrorAppearance);
+            txtInputLayoutFeedback.SetErrorTextAppearance(Resource.Style.TextErrorAppearance);
             TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutFeedback.FindViewById<TextView>(Resource.Id.textinput_error));
             TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutFeedback);
             txtInputLayoutFeedback.Error = GetString(Resource.String.bill_related_feedback_empty_feedback_error);
@@ -519,14 +529,15 @@ namespace myTNB_Android.Src.Feedback_Login_BillRelated.Activity
             //    submitDialog.Show();
             //}
 
-            try {
-            if (loadingOverlay != null && loadingOverlay.IsShowing)
+            try
             {
-                loadingOverlay.Dismiss();
-            }
+                if (loadingOverlay != null && loadingOverlay.IsShowing)
+                {
+                    loadingOverlay.Dismiss();
+                }
 
-            loadingOverlay = new LoadingOverlay(this, Resource.Style.LoadingOverlyDialogStyle);
-            loadingOverlay.Show();
+                loadingOverlay = new LoadingOverlay(this, Resource.Style.LoadingOverlyDialogStyle);
+                loadingOverlay.Show();
             }
             catch (Exception e)
             {
@@ -540,11 +551,12 @@ namespace myTNB_Android.Src.Feedback_Login_BillRelated.Activity
             //{
             //    submitDialog.Dismiss();
             //}
-            try {
-            if (loadingOverlay != null && loadingOverlay.IsShowing)
+            try
             {
-                loadingOverlay.Dismiss();
-            }
+                if (loadingOverlay != null && loadingOverlay.IsShowing)
+                {
+                    loadingOverlay.Dismiss();
+                }
             }
             catch (Exception e)
             {
@@ -588,7 +600,7 @@ namespace myTNB_Android.Src.Feedback_Login_BillRelated.Activity
         }
 
         [OnClick(Resource.Id.btnSubmit)]
-        void OnSubmit(object sender , EventArgs eventArgs)
+        void OnSubmit(object sender, EventArgs eventArgs)
         {
             try
             {
@@ -610,10 +622,11 @@ namespace myTNB_Android.Src.Feedback_Login_BillRelated.Activity
                 {
                     this.userActionsListener.OnSubmit(this.DeviceId(), customerBillingAccount?.AccNum, feedback, adapter?.GetAllImages());
                 }
-            } catch(Exception e)
+            }
+            catch (Exception e)
             {
-                Utility.LoggingNonFatalError(e);        
-            }   
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
 
@@ -644,7 +657,7 @@ namespace myTNB_Android.Src.Feedback_Login_BillRelated.Activity
             if (txtInputLayoutMobileNo.Visibility == ViewStates.Visible)
             {
                 string mobile_no = txtMobileNo.Text.Trim();
-                this.userActionsListener.CheckRequiredFields(mobile_no , feedback);
+                this.userActionsListener.CheckRequiredFields(mobile_no, feedback);
             }
             else
             {
@@ -681,7 +694,7 @@ namespace myTNB_Android.Src.Feedback_Login_BillRelated.Activity
         public void ShowSelectAccount(AccountData accountData)
         {
             Intent supplyAccount = new Intent(this, typeof(FeedbackSelectAccountActivity));
-            supplyAccount.PutExtra(Constants.SELECTED_ACCOUNT , JsonConvert.SerializeObject(accountData));
+            supplyAccount.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(accountData));
             StartActivityForResult(supplyAccount, Constants.SELECT_ACCOUNT_REQUEST_CODE);
         }
 
@@ -724,7 +737,8 @@ namespace myTNB_Android.Src.Feedback_Login_BillRelated.Activity
         }
 
         Snackbar mErrorMessageSnackBar;
-        public void OnSubmitError(string message = null) {
+        public void OnSubmitError(string message = null)
+        {
             if (mErrorMessageSnackBar != null && mErrorMessageSnackBar.IsShown)
             {
                 mErrorMessageSnackBar.Dismiss();

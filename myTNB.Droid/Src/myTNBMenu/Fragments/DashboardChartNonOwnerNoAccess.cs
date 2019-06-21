@@ -1,41 +1,34 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
+﻿using Android.App;
 using Android.Content;
 using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-using myTNB_Android.Src.Base.Fragments;
-using CheeseBind;
-using myTNB_Android.Src.Utils;
-using myTNB_Android.Src.myTNBMenu.Models;
-using Newtonsoft.Json;
-using myTNB_Android.Src.myTNBMenu.MVP.Fragment;
-using myTNB_Android.Src.GetAccess.Activity;
-using Java.Text;
-using myTNB_Android.Src.MakePayment.Activity;
-using myTNB_Android.Src.Database.Model;
-using Android.Support.V4.Content;
-using myTNB_Android.Src.Notifications.Activity;
-using myTNB_Android.Src.myTNBMenu.Activity;
 using Android.Support.Design.Widget;
-using Refit;
-using Java.Util;
-using myTNB_Android.Src.ViewBill.Activity;
-using myTNB_Android.Src.AddAccount.Fragment;
-using myTNB_Android.Src.MultipleAccountPayment.Activity;
+using Android.Support.V4.Content;
 using Android.Support.V7.App;
 using Android.Text;
-using myTNB_Android.Src.FAQ.Activity;
+using Android.Views;
+using Android.Widget;
+using CheeseBind;
 using Java.Lang;
+using Java.Text;
+using Java.Util;
+using myTNB_Android.Src.Base.Fragments;
+using myTNB_Android.Src.Database.Model;
+using myTNB_Android.Src.FAQ.Activity;
+using myTNB_Android.Src.GetAccess.Activity;
+using myTNB_Android.Src.MultipleAccountPayment.Activity;
+using myTNB_Android.Src.myTNBMenu.Activity;
+using myTNB_Android.Src.myTNBMenu.Models;
+using myTNB_Android.Src.myTNBMenu.MVP.Fragment;
+using myTNB_Android.Src.Notifications.Activity;
+using myTNB_Android.Src.Utils;
+using myTNB_Android.Src.ViewBill.Activity;
+using Newtonsoft.Json;
+using Refit;
+using System;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments
 {
-    public class DashboardChartNonOwnerNoAccess : BaseFragment , DashboardNonOwnerContract.IView
+    public class DashboardChartNonOwnerNoAccess : BaseFragment, DashboardNonOwnerContract.IView
     {
 
         [BindView(Resource.Id.progressBar)]
@@ -116,142 +109,144 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         {
             base.OnViewCreated(view, savedInstanceState);
 
-            try {
-            TextViewUtils.SetMuseoSans300Typeface(txtContent, txtTotalPayable , txtDueDate);
-            TextViewUtils.SetMuseoSans500Typeface(txtTitle , btnGetAccess , btnPay , txtTotalPayableTitle , txtTotalPayableCurrency);
-
-            txtTotalPayable.Text = decimalFormat.Format(selectedAccount.AmtCustBal);
-            //if (selectedAccount.AmtCustBal <= 0)
-            //{
-            //    btnPay.Enabled = false;
-            //    btnPay.Background = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.silver_chalice_button_background);
-            //}
-
-            if (selectedAccount != null)
+            try
             {
-                if (selectedAccount.AccountCategoryId.Equals("2"))
-                {
-                    btnPay.Visibility = ViewStates.Gone;
-                    btnViewBill.Text = GetString(Resource.String.dashboard_chart_view_payment_advice);
-                    txtTotalPayableTitle.Text = GetString(Resource.String.title_payment_advice_amount);
-                }
-                else
-                {
-                    btnPay.Visibility = ViewStates.Visible;
-                    btnViewBill.Text = GetString(Resource.String.dashboard_chartview_view_bill);
-                    ///<summary>
-                    /// Revert non owner CR changes
-                    ///</summary>
-                    //if (!selectedAccount.IsOwner)
-                    //{
-                    //    btnViewBill.Visibility = ViewStates.Gone;
-                    //}
-                    //else
-                    //{
-                    //    btnViewBill.Visibility = ViewStates.Visible;
-                    //}
+                TextViewUtils.SetMuseoSans300Typeface(txtContent, txtTotalPayable, txtDueDate);
+                TextViewUtils.SetMuseoSans500Typeface(txtTitle, btnGetAccess, btnPay, txtTotalPayableTitle, txtTotalPayableCurrency);
 
-                }
+                txtTotalPayable.Text = decimalFormat.Format(selectedAccount.AmtCustBal);
+                //if (selectedAccount.AmtCustBal <= 0)
+                //{
+                //    btnPay.Enabled = false;
+                //    btnPay.Background = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.silver_chalice_button_background);
+                //}
 
-                DownTimeEntity bcrmEntity = DownTimeEntity.GetByCode(Constants.BCRM_SYSTEM);
-                DownTimeEntity pgCCEntity = DownTimeEntity.GetByCode(Constants.PG_CC_SYSTEM);
-                DownTimeEntity pgFPXEntity = DownTimeEntity.GetByCode(Constants.PG_FPX_SYSTEM);
-                if (bcrmEntity != null && bcrmEntity.IsDown)
+                if (selectedAccount != null)
                 {
-                    DisablePayButton();
-                    btnViewBill.Enabled = false;
-                    btnViewBill.Background = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.silver_chalice_button_outline);
-                    btnViewBill.SetTextColor(ContextCompat.GetColorStateList(this.Activity, Resource.Color.silverChalice));
-                    if (bcrmEntity.IsDown)
+                    if (selectedAccount.AccountCategoryId.Equals("2"))
                     {
-                        if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.N)
-                        {
-                            txtContent.TextFormatted = Html.FromHtml(bcrmEntity.DowntimeMessage, FromHtmlOptions.ModeLegacy);
-                        }
-                        else
-                        {
-                            txtContent.TextFormatted = Html.FromHtml(bcrmEntity.DowntimeMessage);
-                        }
-
-                        Snackbar downtimeSnackBar = Snackbar.Make(rootView,
-                            bcrmEntity.DowntimeTextMessage,
-                            Snackbar.LengthLong);
-                        View v = downtimeSnackBar.View;
-                        TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
-                        tv.SetMaxLines(5);
-                        downtimeSnackBar.Show();
+                        btnPay.Visibility = ViewStates.Gone;
+                        btnViewBill.Text = GetString(Resource.String.dashboard_chart_view_payment_advice);
+                        txtTotalPayableTitle.Text = GetString(Resource.String.title_payment_advice_amount);
                     }
-                }
-                else
-                {
+                    else
+                    {
+                        btnPay.Visibility = ViewStates.Visible;
+                        btnViewBill.Text = GetString(Resource.String.dashboard_chartview_view_bill);
+                        ///<summary>
+                        /// Revert non owner CR changes
+                        ///</summary>
+                        //if (!selectedAccount.IsOwner)
+                        //{
+                        //    btnViewBill.Visibility = ViewStates.Gone;
+                        //}
+                        //else
+                        //{
+                        //    btnViewBill.Visibility = ViewStates.Visible;
+                        //}
 
-                    if (pgCCEntity.IsDown && pgFPXEntity.IsDown)
+                    }
+
+                    DownTimeEntity bcrmEntity = DownTimeEntity.GetByCode(Constants.BCRM_SYSTEM);
+                    DownTimeEntity pgCCEntity = DownTimeEntity.GetByCode(Constants.PG_CC_SYSTEM);
+                    DownTimeEntity pgFPXEntity = DownTimeEntity.GetByCode(Constants.PG_FPX_SYSTEM);
+                    if (bcrmEntity != null && bcrmEntity.IsDown)
                     {
                         DisablePayButton();
-                        Snackbar downtimeSnackBar = Snackbar.Make(rootView,
+                        btnViewBill.Enabled = false;
+                        btnViewBill.Background = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.silver_chalice_button_outline);
+                        btnViewBill.SetTextColor(ContextCompat.GetColorStateList(this.Activity, Resource.Color.silverChalice));
+                        if (bcrmEntity.IsDown)
+                        {
+                            if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.N)
+                            {
+                                txtContent.TextFormatted = Html.FromHtml(bcrmEntity.DowntimeMessage, FromHtmlOptions.ModeLegacy);
+                            }
+                            else
+                            {
+                                txtContent.TextFormatted = Html.FromHtml(bcrmEntity.DowntimeMessage);
+                            }
+
+                            Snackbar downtimeSnackBar = Snackbar.Make(rootView,
                                 bcrmEntity.DowntimeTextMessage,
                                 Snackbar.LengthLong);
-                        View v = downtimeSnackBar.View;
-                        TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
-                        tv.SetMaxLines(5);
-                        if (!selectedAccount.AccountCategoryId.Equals("2"))
-                        {
+                            View v = downtimeSnackBar.View;
+                            TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+                            tv.SetMaxLines(5);
                             downtimeSnackBar.Show();
                         }
                     }
-
-                    this.userActionsListener.OnLoadAmount(selectedAccount.AccountNum);
-                }                
-
-                txtContent.Click += delegate {
-                    if (bcrmEntity != null && bcrmEntity.IsDown)
+                    else
                     {
-                        string textMessage = bcrmEntity.DowntimeMessage;
-                        if (textMessage != null && textMessage.Contains("http"))
+
+                        if (pgCCEntity.IsDown && pgFPXEntity.IsDown)
                         {
-                            //Launch webview
-                            int startIndex = textMessage.LastIndexOf("=") + 2;
-                            int lastIndex = textMessage.LastIndexOf("\"");
-                            int lengthOfId = (lastIndex - startIndex);
-                            if (lengthOfId < textMessage.Length)
+                            DisablePayButton();
+                            Snackbar downtimeSnackBar = Snackbar.Make(rootView,
+                                    bcrmEntity.DowntimeTextMessage,
+                                    Snackbar.LengthLong);
+                            View v = downtimeSnackBar.View;
+                            TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+                            tv.SetMaxLines(5);
+                            if (!selectedAccount.AccountCategoryId.Equals("2"))
                             {
-                                string url = textMessage.Substring(startIndex, lengthOfId);
-                                if (!string.IsNullOrEmpty(url))
-                                {
-                                    Intent intent = new Intent(Intent.ActionView);
-                                    intent.SetData(Android.Net.Uri.Parse(url));
-                                    StartActivity(intent);
-                                }
+                                downtimeSnackBar.Show();
                             }
                         }
-                        else if (textMessage != null && textMessage.Contains("faq"))
+
+                        this.userActionsListener.OnLoadAmount(selectedAccount.AccountNum);
+                    }
+
+                    txtContent.Click += delegate
+                    {
+                        if (bcrmEntity != null && bcrmEntity.IsDown)
                         {
-                            //Lauch FAQ
-                            int startIndex = textMessage.LastIndexOf("=") + 1;
-                            int lastIndex = textMessage.LastIndexOf("}");
-                            int lengthOfId = (lastIndex - startIndex) + 1;
-                            if (lengthOfId < textMessage.Length)
+                            string textMessage = bcrmEntity.DowntimeMessage;
+                            if (textMessage != null && textMessage.Contains("http"))
                             {
-                                string faqid = textMessage.Substring(startIndex, lengthOfId);
-                                if (!string.IsNullOrEmpty(faqid))
+                                //Launch webview
+                                int startIndex = textMessage.LastIndexOf("=") + 2;
+                                int lastIndex = textMessage.LastIndexOf("\"");
+                                int lengthOfId = (lastIndex - startIndex);
+                                if (lengthOfId < textMessage.Length)
                                 {
-                                        Intent faqIntent = GetIntentObject(typeof(FAQListActivity));
-                                    //Intent faqIntent = new Intent(this.Activity, typeof(FAQListActivity));
-                                    if (faqIntent != null && IsAdded)
+                                    string url = textMessage.Substring(startIndex, lengthOfId);
+                                    if (!string.IsNullOrEmpty(url))
                                     {
-                                        faqIntent.PutExtra(Constants.FAQ_ID_PARAM, faqid);
-                                        Activity.StartActivity(faqIntent);
+                                        Intent intent = new Intent(Intent.ActionView);
+                                        intent.SetData(Android.Net.Uri.Parse(url));
+                                        StartActivity(intent);
+                                    }
+                                }
+                            }
+                            else if (textMessage != null && textMessage.Contains("faq"))
+                            {
+                                //Lauch FAQ
+                                int startIndex = textMessage.LastIndexOf("=") + 1;
+                                int lastIndex = textMessage.LastIndexOf("}");
+                                int lengthOfId = (lastIndex - startIndex) + 1;
+                                if (lengthOfId < textMessage.Length)
+                                {
+                                    string faqid = textMessage.Substring(startIndex, lengthOfId);
+                                    if (!string.IsNullOrEmpty(faqid))
+                                    {
+                                        Intent faqIntent = GetIntentObject(typeof(FAQListActivity));
+                                        //Intent faqIntent = new Intent(this.Activity, typeof(FAQListActivity));
+                                        if (faqIntent != null && IsAdded)
+                                        {
+                                            faqIntent.PutExtra(Constants.FAQ_ID_PARAM, faqid);
+                                            Activity.StartActivity(faqIntent);
+                                        }
                                     }
                                 }
                             }
                         }
-                    }
 
-                };
+                    };
+
+                }
 
             }
-
-        }
             catch (System.Exception e)
             {
                 Utility.LoggingNonFatalError(e);
@@ -364,8 +359,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         public void ShowNotification()
         {
             Intent intent = GetIntentObject(typeof(NotificationActivity));
-            if (intent != null && IsAdded) {
-                StartActivity(intent);     
+            if (intent != null && IsAdded)
+            {
+                StartActivity(intent);
             }
 
         }
@@ -378,19 +374,21 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         private Snackbar mNoInternetSnackbar;
         public void ShowNoInternetSnackbar()
         {
-            try {
-            if (mNoInternetSnackbar != null && mNoInternetSnackbar.IsShown)
+            try
             {
-                mNoInternetSnackbar.Dismiss();
-            }
+                if (mNoInternetSnackbar != null && mNoInternetSnackbar.IsShown)
+                {
+                    mNoInternetSnackbar.Dismiss();
+                }
 
-            mNoInternetSnackbar = Snackbar.Make(rootView, GetString(Resource.String.dashboard_chartview_data_not_available_no_internet), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.dashboard_chartview_data_not_available_no_internet_btn_close), delegate {
+                mNoInternetSnackbar = Snackbar.Make(rootView, GetString(Resource.String.dashboard_chartview_data_not_available_no_internet), Snackbar.LengthIndefinite)
+                .SetAction(GetString(Resource.String.dashboard_chartview_data_not_available_no_internet_btn_close), delegate
+                {
 
-                mNoInternetSnackbar.Dismiss();
-            }
-            );
-            mNoInternetSnackbar.Show();
+                    mNoInternetSnackbar.Dismiss();
+                }
+                );
+                mNoInternetSnackbar.Show();
             }
             catch (System.Exception e)
             {
@@ -400,11 +398,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
         public void ShowAmountProgress()
         {
-            try {
-            progressBar.Visibility = ViewStates.Visible;
-            totalPayableLayout.Visibility = ViewStates.Gone;
+            try
+            {
+                progressBar.Visibility = ViewStates.Visible;
+                totalPayableLayout.Visibility = ViewStates.Gone;
 
-        }
+            }
             catch (System.Exception e)
             {
                 Utility.LoggingNonFatalError(e);
@@ -413,11 +412,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
         public void HideAmountProgress()
         {
-            try {
-            progressBar.Visibility = ViewStates.Gone;
-            totalPayableLayout.Visibility = ViewStates.Visible;
+            try
+            {
+                progressBar.Visibility = ViewStates.Gone;
+                totalPayableLayout.Visibility = ViewStates.Visible;
 
-        }
+            }
             catch (System.Exception e)
             {
                 Utility.LoggingNonFatalError(e);
@@ -502,20 +502,22 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         private Snackbar mCancelledExceptionSnackBar;
         public void ShowRetryOptionsCancelledException(System.OperationCanceledException operationCanceledException)
         {
-            try {
-            if (mCancelledExceptionSnackBar != null && mCancelledExceptionSnackBar.IsShown)
+            try
             {
-                mCancelledExceptionSnackBar.Dismiss();
-            }
+                if (mCancelledExceptionSnackBar != null && mCancelledExceptionSnackBar.IsShown)
+                {
+                    mCancelledExceptionSnackBar.Dismiss();
+                }
 
-            mCancelledExceptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.dashboard_chart_cancelled_exception_error), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.dashboard_chart_cancelled_exception_btn_retry), delegate {
+                mCancelledExceptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.dashboard_chart_cancelled_exception_error), Snackbar.LengthIndefinite)
+                .SetAction(GetString(Resource.String.dashboard_chart_cancelled_exception_btn_retry), delegate
+                {
 
-                mCancelledExceptionSnackBar.Dismiss();
-                this.userActionsListener.OnLoadAmount(selectedAccount.AccountNum);
-            }
-            );
-            mCancelledExceptionSnackBar.Show();
+                    mCancelledExceptionSnackBar.Dismiss();
+                    this.userActionsListener.OnLoadAmount(selectedAccount.AccountNum);
+                }
+                );
+                mCancelledExceptionSnackBar.Show();
             }
             catch (System.Exception e)
             {
@@ -526,20 +528,22 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         private Snackbar mApiExcecptionSnackBar;
         public void ShowRetryOptionsApiException(ApiException apiException)
         {
-            try {
-            if (mApiExcecptionSnackBar != null && mApiExcecptionSnackBar.IsShown)
+            try
             {
-                mApiExcecptionSnackBar.Dismiss();
-            }
+                if (mApiExcecptionSnackBar != null && mApiExcecptionSnackBar.IsShown)
+                {
+                    mApiExcecptionSnackBar.Dismiss();
+                }
 
-            mApiExcecptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.dashboard_chart_api_exception_error), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.dashboard_chart_api_exception_btn_retry), delegate {
+                mApiExcecptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.dashboard_chart_api_exception_error), Snackbar.LengthIndefinite)
+                .SetAction(GetString(Resource.String.dashboard_chart_api_exception_btn_retry), delegate
+                {
 
-                mApiExcecptionSnackBar.Dismiss();
-                this.userActionsListener.OnLoadAmount(selectedAccount.AccountNum);
-            }
-            );
-            mApiExcecptionSnackBar.Show();
+                    mApiExcecptionSnackBar.Dismiss();
+                    this.userActionsListener.OnLoadAmount(selectedAccount.AccountNum);
+                }
+                );
+                mApiExcecptionSnackBar.Show();
             }
             catch (System.Exception e)
             {
@@ -549,22 +553,24 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         private Snackbar mUknownExceptionSnackBar;
         public void ShowRetryOptionsUnknownException(System.Exception exception)
         {
-            try {
-            if (mUknownExceptionSnackBar != null && mUknownExceptionSnackBar.IsShown)
+            try
             {
-                mUknownExceptionSnackBar.Dismiss();
+                if (mUknownExceptionSnackBar != null && mUknownExceptionSnackBar.IsShown)
+                {
+                    mUknownExceptionSnackBar.Dismiss();
 
-            }
+                }
 
-            mUknownExceptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.dashboard_chart_unknown_exception_error), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.dashboard_chart_unknown_exception_btn_retry), delegate {
+                mUknownExceptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.dashboard_chart_unknown_exception_error), Snackbar.LengthIndefinite)
+                .SetAction(GetString(Resource.String.dashboard_chart_unknown_exception_btn_retry), delegate
+                {
 
-                mUknownExceptionSnackBar.Dismiss();
-                this.userActionsListener.OnLoadAmount(selectedAccount.AccountNum);
+                    mUknownExceptionSnackBar.Dismiss();
+                    this.userActionsListener.OnLoadAmount(selectedAccount.AccountNum);
 
-            }
-            );
-            mUknownExceptionSnackBar.Show();
+                }
+                );
+                mUknownExceptionSnackBar.Show();
             }
             catch (System.Exception e)
             {
@@ -634,19 +640,20 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
         public void ShowViewBill(BillHistoryV5 selectedBill)
         {
-            try {
-            btnViewBill.Enabled = false;
-            Handler h = new Handler();
-            Action myAction = () =>
+            try
             {
-                btnViewBill.Enabled = true;
-            };
-            h.PostDelayed(myAction, 3000);
+                btnViewBill.Enabled = false;
+                Handler h = new Handler();
+                Action myAction = () =>
+                {
+                    btnViewBill.Enabled = true;
+                };
+                h.PostDelayed(myAction, 3000);
 
-            if (selectedBill != null && selectedBill.NrBill != null)
-            {
-                selectedBill.NrBill = null;
-            }
+                if (selectedBill != null && selectedBill.NrBill != null)
+                {
+                    selectedBill.NrBill = null;
+                }
 
                 Intent viewBill = GetIntentObject(typeof(ViewBillActivity));
                 //Intent viewBill = new Intent(this.Activity, typeof(ViewBillActivity));

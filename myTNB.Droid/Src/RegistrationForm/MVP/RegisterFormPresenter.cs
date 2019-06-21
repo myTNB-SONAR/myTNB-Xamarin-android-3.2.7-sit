@@ -1,31 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
+﻿using Android.Content.PM;
+using Android.Telephony;
 using Android.Text;
 using Android.Util;
-using System.Net.Http;
+using myTNB_Android.Src.RegistrationForm.Api;
+using myTNB_Android.Src.RegistrationForm.Models;
+using myTNB_Android.Src.RegistrationForm.Requests;
 using myTNB_Android.Src.Utils;
 using Refit;
-using myTNB_Android.Src.RegistrationForm.Api;
+using System;
 using System.Net;
-using myTNB_Android.Src.RegistrationForm.Requests;
-using System.Threading;
-using myTNB_Android.Src.Login.Api;
-using myTNB_Android.Src.Login.Requests;
-using myTNB_Android.Src.Database.Model;
-using Java.Lang;
-using myTNB_Android.Src.RegistrationForm.Models;
+using System.Net.Http;
 using System.Text.RegularExpressions;
-using Android.Telephony;
-using Android.Content.PM;
+using System.Threading;
 
 namespace myTNB_Android.Src.RegistrationForm.MVP
 {
@@ -49,80 +35,85 @@ namespace myTNB_Android.Src.RegistrationForm.MVP
         public void CheckRequiredFields(string fullname, string icno, string mobile_no, string email, string confirm_email, string password, string confirm_password)
         {
 
-            try {
-            if (!TextUtils.IsEmpty(fullname) && !TextUtils.IsEmpty(icno) && !TextUtils.IsEmpty(mobile_no) && !TextUtils.IsEmpty(email) && !TextUtils.IsEmpty(confirm_email) && !TextUtils.IsEmpty(password) && !TextUtils.IsEmpty(confirm_password) )
+            try
             {
-
-                if (!Utility.isAlphaNumeric(fullname))
+                if (!TextUtils.IsEmpty(fullname) && !TextUtils.IsEmpty(icno) && !TextUtils.IsEmpty(mobile_no) && !TextUtils.IsEmpty(email) && !TextUtils.IsEmpty(confirm_email) && !TextUtils.IsEmpty(password) && !TextUtils.IsEmpty(confirm_password))
                 {
-                    this.mView.ShowFullNameError();
-                    this.mView.DisableRegisterButton();
-                } else {
-                    this.mView.ClearFullNameError();
-                }
+
+                    if (!Utility.isAlphaNumeric(fullname))
+                    {
+                        this.mView.ShowFullNameError();
+                        this.mView.DisableRegisterButton();
+                    }
+                    else
+                    {
+                        this.mView.ClearFullNameError();
+                    }
 
 
-                if (!Patterns.EmailAddress.Matcher(email).Matches())
-                {
-                    this.mView.ShowInvalidEmailError();
-                    this.mView.DisableRegisterButton();
-                    return;
+                    if (!Patterns.EmailAddress.Matcher(email).Matches())
+                    {
+                        this.mView.ShowInvalidEmailError();
+                        this.mView.DisableRegisterButton();
+                        return;
+                    }
+                    else
+                    {
+                        this.mView.ClearInvalidEmailError();
+                    }
+
+                    if (!email.Equals(confirm_email))
+                    {
+                        this.mView.ShowNotEqualConfirmEmailError();
+                        this.mView.DisableRegisterButton();
+                        return;
+                    }
+                    else
+                    {
+                        this.mView.ClearNotEqualConfirmEmailError();
+                    }
+
+                    if (!CheckPasswordIsValid(password))
+                    {
+                        this.mView.ShowPasswordMinimumOf6CharactersError();
+                        this.mView.DisableRegisterButton();
+                        return;
+                    }
+                    else
+                    {
+                        this.mView.ClearPasswordMinimumOf6CharactersError();
+                    }
+
+                    if (!password.Equals(confirm_password))
+                    {
+                        this.mView.ShowNotEqualConfirmPasswordError();
+                        this.mView.DisableRegisterButton();
+                        return;
+                    }
+                    else
+                    {
+                        this.mView.ClearNotEqualConfirmPasswordError();
+                    }
+
+
+                    if (!Utility.IsValidMobileNumber(mobile_no))
+                    {
+                        this.mView.ShowInvalidMobileNoError();
+                        this.mView.DisableRegisterButton();
+                        return;
+                    }
+                    else
+                    {
+                        this.mView.ClearInvalidMobileError();
+
+                    }
+
+                    this.mView.EnableRegisterButton();
                 }
                 else
                 {
-                    this.mView.ClearInvalidEmailError();
-                }
-
-                if (!email.Equals(confirm_email))
-                {
-                    this.mView.ShowNotEqualConfirmEmailError();
                     this.mView.DisableRegisterButton();
-                    return;
                 }
-                else
-                {
-                    this.mView.ClearNotEqualConfirmEmailError();
-                }
-
-                if (!CheckPasswordIsValid(password))
-                {
-                    this.mView.ShowPasswordMinimumOf6CharactersError();
-                    this.mView.DisableRegisterButton();
-                    return;
-                }
-                else
-                {
-                    this.mView.ClearPasswordMinimumOf6CharactersError();
-                }
-
-                if (!password.Equals(confirm_password))
-                {
-                    this.mView.ShowNotEqualConfirmPasswordError();
-                    this.mView.DisableRegisterButton();
-                    return;
-                }
-                else
-                {
-                    this.mView.ClearNotEqualConfirmPasswordError();
-                }
-
-
-                if (!Utility.IsValidMobileNumber(mobile_no))
-                {
-                    this.mView.ShowInvalidMobileNoError();
-                    this.mView.DisableRegisterButton();
-                    return;
-                }  else {
-                    this.mView.ClearInvalidMobileError();
-                        
-                }
-
-                this.mView.EnableRegisterButton();
-            }
-            else
-            {
-                this.mView.DisableRegisterButton();
-            }
             }
             catch (System.Exception e)
             {
@@ -150,7 +141,8 @@ namespace myTNB_Android.Src.RegistrationForm.MVP
                 return;
             }
 
-            if (!Utility.isAlphaNumeric(fullname)) {
+            if (!Utility.isAlphaNumeric(fullname))
+            {
                 this.mView.ShowFullNameError();
                 return;
             }
@@ -229,7 +221,7 @@ namespace myTNB_Android.Src.RegistrationForm.MVP
             this.mView.ShowRegistrationProgressDialog();
             this.mView.ClearAllErrorFields();
 
-             ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
+            ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
 
 #if DEBUG
             var httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
@@ -248,10 +240,10 @@ namespace myTNB_Android.Src.RegistrationForm.MVP
                     username = email,
                     mobileNo = mobile_no,
                     ipAddress = Constants.APP_CONFIG.API_KEY_ID,
-                    clientType = Constants.APP_CONFIG.API_KEY_ID , 
+                    clientType = Constants.APP_CONFIG.API_KEY_ID,
                     activeUserName = Constants.APP_CONFIG.API_KEY_ID,
                     devicePlatform = Constants.APP_CONFIG.API_KEY_ID,
-                    deviceVersion = Constants.APP_CONFIG.API_KEY_ID , 
+                    deviceVersion = Constants.APP_CONFIG.API_KEY_ID,
                     deviceCordova = Constants.APP_CONFIG.API_KEY_ID
 
                 });
@@ -301,31 +293,32 @@ namespace myTNB_Android.Src.RegistrationForm.MVP
             }
 
 
-       
+
 
             this.mView.HideRegistrationProgressDialog();
         }
 
         public void Start()
         {
-            try {
-            this.mView.DisableRegisterButton();
-            this.mView.ClearFields();
-
-            bool isGranted = this.mView.IsGrantedSMSReceivePermission();
-            if (!isGranted)
+            try
             {
-                if (this.mView.ShouldShowSMSReceiveRationale())
+                this.mView.DisableRegisterButton();
+                this.mView.ClearFields();
+
+                bool isGranted = this.mView.IsGrantedSMSReceivePermission();
+                if (!isGranted)
                 {
-                    //this.mView.ShowSMSPermissionRationale();
-                }
-                else
-                {
-                    this.mView.RequestSMSPermission();
-                }
+                    if (this.mView.ShouldShowSMSReceiveRationale())
+                    {
+                        //this.mView.ShowSMSPermissionRationale();
+                    }
+                    else
+                    {
+                        this.mView.RequestSMSPermission();
+                    }
 
 
-            }
+                }
 
             }
             catch (System.Exception e)
@@ -337,8 +330,9 @@ namespace myTNB_Android.Src.RegistrationForm.MVP
         public bool CheckPasswordIsValid(string password)
         {
             bool isValid = false;
-            try {
-            isValid = hasNumber.IsMatch(password) && hasUpperChar.IsMatch(password) && hasMinimum8Chars.IsMatch(password);
+            try
+            {
+                isValid = hasNumber.IsMatch(password) && hasUpperChar.IsMatch(password) && hasMinimum8Chars.IsMatch(password);
             }
             catch (System.Exception e)
             {

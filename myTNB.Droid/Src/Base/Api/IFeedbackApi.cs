@@ -1,21 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-using Refit;
-using System.Threading.Tasks;
-using System.Threading;
-using myTNB_Android.Src.Base.Request;
-using myTNB_Android.Src.Base.Models;
-using myTNB_Android.Src.AppLaunch.Models;
+﻿using myTNB_Android.Src.AppLaunch.Models;
 using myTNB_Android.Src.AppLaunch.Requests;
+using myTNB_Android.Src.Base.Models;
+using myTNB_Android.Src.Base.Request;
+using Refit;
+using System.Threading;
+using System.Threading.Tasks;
 
 
 namespace myTNB_Android.Src.Base.Api

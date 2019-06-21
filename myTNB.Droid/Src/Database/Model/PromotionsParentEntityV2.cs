@@ -1,10 +1,8 @@
-﻿using SQLite;
-using System.Collections.Generic;
-using myTNB.SitecoreCMS.Model;
-using System;
-using myTNB_Android.Src.Utils;
-using myTNB.SitecoreCM.Models;
+﻿using myTNB.SitecoreCM.Models;
 using myTNB_Android.Src.Database;
+using SQLite;
+using System;
+using System.Collections.Generic;
 
 namespace myTNB.SQLite.SQLiteDataManager
 {
@@ -15,8 +13,8 @@ namespace myTNB.SQLite.SQLiteDataManager
             //using (var db = new SQLiteConnection(Constants.DB_PATH))
             //{
             var db = DBHelper.GetSQLiteConnection();
-                List<SQLiteConnection.ColumnInfo> info = db.GetTableInfo("PromotionsParentEntityV2");
-                db.CreateTable<PromotionsParentEntityV2>();
+            List<SQLiteConnection.ColumnInfo> info = db.GetTableInfo("PromotionsParentEntityV2");
+            db.CreateTable<PromotionsParentEntityV2>();
             //}
         }
 
@@ -27,8 +25,8 @@ namespace myTNB.SQLite.SQLiteDataManager
                 //using (var db = new SQLiteConnection(Constants.DB_PATH))
                 //{
                 var db = DBHelper.GetSQLiteConnection();
-                    int newRecord = db.InsertOrReplace(item);
-                    Console.WriteLine("Insert Record: {0}", newRecord);
+                int newRecord = db.InsertOrReplace(item);
+                Console.WriteLine("Insert Record: {0}", newRecord);
                 //}
             }
             catch (Exception e)
@@ -39,7 +37,8 @@ namespace myTNB.SQLite.SQLiteDataManager
 
         public void InsertListOfItems(List<PromotionParentModelV2> itemList)
         {
-            if(itemList != null){
+            if (itemList != null)
+            {
                 foreach (PromotionParentModelV2 obj in itemList)
                 {
                     PromotionsParentEntityV2 item = new PromotionsParentEntityV2();
@@ -58,26 +57,29 @@ namespace myTNB.SQLite.SQLiteDataManager
                 //using (var db = new SQLiteConnection(Constants.DB_PATH))
                 //{
                 var db = DBHelper.GetSQLiteConnection();
-                    itemList = db.Query<PromotionsParentEntityV2>("select * from PromotionsParentEntityV2");
+                itemList = db.Query<PromotionsParentEntityV2>("select * from PromotionsParentEntityV2");
                 //}
-            }catch(Exception e){
+            }
+            catch (Exception e)
+            {
                 Console.WriteLine("Error in Get All Items : {0}", e.Message);
             }
             return itemList;
         }
 
-        public void DeleteTable(){
+        public void DeleteTable()
+        {
             try
             {
                 //using (var db = new SQLiteConnection(Constants.DB_PATH))
                 //{
                 var db = DBHelper.GetSQLiteConnection();
-                    db.DeleteAll<PromotionsParentEntityV2>();
+                db.DeleteAll<PromotionsParentEntityV2>();
                 //}
             }
             catch (Exception e)
             {
-                Console.WriteLine("Error in Delete Table : {0}",e.Message);
+                Console.WriteLine("Error in Delete Table : {0}", e.Message);
             }
         }
 
@@ -88,8 +90,8 @@ namespace myTNB.SQLite.SQLiteDataManager
                 //using (var db = new SQLiteConnection(Constants.DB_PATH))
                 //{
                 var db = DBHelper.GetSQLiteConnection();
-                    int newRecord = db.Update(item);
-                    Console.WriteLine("Insert Record: {0}", newRecord);
+                int newRecord = db.Update(item);
+                Console.WriteLine("Insert Record: {0}", newRecord);
                 //}
             }
             catch (Exception e)
@@ -103,7 +105,7 @@ namespace myTNB.SQLite.SQLiteDataManager
             //using (var db = new SQLiteConnection(Constants.DB_PATH))
             //{
             var db = DBHelper.GetSQLiteConnection();
-                db.Execute("DELETE FROM PromotionsParentEntityV2");
+            db.Execute("DELETE FROM PromotionsParentEntityV2");
             //}
         }
     }

@@ -1,10 +1,9 @@
-﻿using System;
-using Android.Content;
-using myTNB_Android.Src.ViewReceipt.Api;
-using Refit;
-using myTNB_Android.Src.ViewReceipt.Model;
-using Android.Util;
+﻿using Android.Util;
 using myTNB_Android.Src.Utils;
+using myTNB_Android.Src.ViewReceipt.Api;
+using myTNB_Android.Src.ViewReceipt.Model;
+using Refit;
+using System;
 using System.Net;
 
 namespace myTNB_Android.Src.ViewReceipt.MVP
@@ -13,7 +12,7 @@ namespace myTNB_Android.Src.ViewReceipt.MVP
     {
         private string TAG = "View Receipt Presenter";
         private ViewReceiptMultiAccountContract.IView mView;
-        
+
         public ViewReceiptMultiAccountPresenter(ViewReceiptMultiAccountContract.IView view)
         {
             this.mView = view;
@@ -22,12 +21,12 @@ namespace myTNB_Android.Src.ViewReceipt.MVP
 
         public void NevigateToNextScreen()
         {
-            
+
         }
 
         public void Start()
         {
-            
+
         }
 
         public void GetReceiptDetails(string apiKeyID, string merchantTransId)

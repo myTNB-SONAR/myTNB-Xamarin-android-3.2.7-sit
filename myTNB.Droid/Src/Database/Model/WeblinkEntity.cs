@@ -1,17 +1,7 @@
-﻿using System;
+﻿using myTNB_Android.Src.AppLaunch.Models;
+using SQLite;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-using SQLite;
-using myTNB_Android.Src.Utils;
-using myTNB_Android.Src.AppLaunch.Models;
 
 namespace myTNB_Android.Src.Database.Model
 {
@@ -44,7 +34,7 @@ namespace myTNB_Android.Src.Database.Model
             //using (var db = new SQLiteConnection(Constants.DB_PATH))
             //{
             var db = DBHelper.GetSQLiteConnection();
-                return (int)db.CreateTable<WeblinkEntity>();
+            return (int)db.CreateTable<WeblinkEntity>();
             //}
         }
 
@@ -53,16 +43,16 @@ namespace myTNB_Android.Src.Database.Model
             //using (var db = new SQLiteConnection(Constants.DB_PATH))
             //{
             var db = DBHelper.GetSQLiteConnection();
-                var newRecord = new WeblinkEntity()
-                {
-                    Id = web.Id,
-                    Code = web.Code,
-                    Title = web.Title,
-                    Url = web.Url,
-                    IsActive = web.IsActive,
-                    DateCreated = web.DateCreated,
-                    OpenWith = web.OpenWith
-                };
+            var newRecord = new WeblinkEntity()
+            {
+                Id = web.Id,
+                Code = web.Code,
+                Title = web.Title,
+                Url = web.Url,
+                IsActive = web.IsActive,
+                DateCreated = web.DateCreated,
+                OpenWith = web.OpenWith
+            };
             return (int)db.InsertOrReplace(newRecord);
             //}
 
@@ -73,7 +63,7 @@ namespace myTNB_Android.Src.Database.Model
             //using (var db = new SQLiteConnection(Constants.DB_PATH))
             //{
             var db = DBHelper.GetSQLiteConnection();
-                return db.Query<WeblinkEntity>("select * from WeblinkEntity");
+            return db.Query<WeblinkEntity>("select * from WeblinkEntity");
             //}
         }
 
@@ -87,7 +77,7 @@ namespace myTNB_Android.Src.Database.Model
             //using (var db = new SQLiteConnection(Constants.DB_PATH))
             //{
             var db = DBHelper.GetSQLiteConnection();
-                return db.Query<WeblinkEntity>("select * from WeblinkEntity WHERE CODE = ?" , code).Count > 0;
+            return db.Query<WeblinkEntity>("select * from WeblinkEntity WHERE CODE = ?", code).Count > 0;
             //}
         }
 
@@ -98,7 +88,7 @@ namespace myTNB_Android.Src.Database.Model
                 //using (var db = new SQLiteConnection(Constants.DB_PATH))
                 //{
                 var db = DBHelper.GetSQLiteConnection();
-                    return db.Query<WeblinkEntity>("select * from WeblinkEntity WHERE CODE = ?", code)[0];
+                return db.Query<WeblinkEntity>("select * from WeblinkEntity WHERE CODE = ?", code)[0];
                 //}
             }
             else
@@ -107,6 +97,6 @@ namespace myTNB_Android.Src.Database.Model
             }
         }
 
-        
+
     }
 }

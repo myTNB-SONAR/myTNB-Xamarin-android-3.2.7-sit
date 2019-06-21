@@ -1,22 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
+﻿using Android.App;
 using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
 using Android.Content.PM;
+using Android.OS;
+using Android.Support.Design.Widget;
+using Android.Views;
+using Android.Webkit;
+using Android.Widget;
+using CheeseBind;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Utils;
-using Weblink = myTNB_Android.Src.AppLaunch.Models.Weblink;
 using Newtonsoft.Json;
-using CheeseBind;
-using Android.Webkit;
-using Android.Support.Design.Widget;
+using System;
+using Weblink = myTNB_Android.Src.AppLaunch.Models.Weblink;
 
 namespace myTNB_Android.Src.WebLink.Activity
 {
@@ -75,7 +70,7 @@ namespace myTNB_Android.Src.WebLink.Activity
         {
 
             public Android.App.Activity mActivity;
-            public ProgressBar progressBar;       
+            public ProgressBar progressBar;
 
             public WeblinkClient(Android.App.Activity mActivity, ProgressBar progress)
             {
@@ -146,7 +141,8 @@ namespace myTNB_Android.Src.WebLink.Activity
             }
 
             mErrorNoInternet = Snackbar.Make(baseView, "Please check your internet connection.", Snackbar.LengthIndefinite)
-            .SetAction("Try Again", delegate {
+            .SetAction("Try Again", delegate
+            {
                 webView.LoadUrl(failingUrl);
                 mErrorNoInternet.Dismiss();
             });

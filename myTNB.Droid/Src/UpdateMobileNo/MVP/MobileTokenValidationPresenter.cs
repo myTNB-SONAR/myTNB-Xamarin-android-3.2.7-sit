@@ -1,37 +1,26 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-using Android.Text;
-using myTNB_Android.Src.RegistrationForm.Models;
-using Android.Util;
-using Refit;
-using System.Net.Http;
-using myTNB_Android.Src.RegistrationForm.Api;
-using myTNB_Android.Src.Utils;
-using System.Threading;
-using myTNB_Android.Src.Login.Api;
-using myTNB_Android.Src.Login.Requests;
-using myTNB_Android.Src.Database.Model;
-using myTNB_Android.Src.RegistrationForm.Requests;
-using myTNB_Android.Src.AppLaunch.Api;
-using myTNB_Android.Src.AppLaunch.Requests;
-using myTNB_Android.Src.AppLaunch.Models;
+﻿using Android.Content;
 using Android.Content.PM;
-using myTNB_Android.Src.UpdateMobileNo.Api;
-using myTNB_Android.Src.UpdateMobileNo.Request;
-using System.Net;
+using Android.Text;
+using Android.Util;
 using myTNB_Android.Src.AddAccount.Api;
 using myTNB_Android.Src.AddAccount.Models;
+using myTNB_Android.Src.AppLaunch.Api;
+using myTNB_Android.Src.AppLaunch.Models;
+using myTNB_Android.Src.AppLaunch.Requests;
 using myTNB_Android.Src.Base.Api;
 using myTNB_Android.Src.Base.Models;
+using myTNB_Android.Src.Database.Model;
+using myTNB_Android.Src.Login.Api;
+using myTNB_Android.Src.Login.Requests;
+using myTNB_Android.Src.UpdateMobileNo.Api;
+using myTNB_Android.Src.UpdateMobileNo.Request;
+using myTNB_Android.Src.Utils;
+using Refit;
+using System;
+using System.Collections.Generic;
+using System.Net;
+using System.Net.Http;
+using System.Threading;
 
 namespace myTNB_Android.Src.RegisterValidation.MVP
 {
@@ -61,9 +50,9 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
             this.mView.ShowAccountListActivity();
         }
 
-        public async void OnVerifyToken(string num1, string num2, string num3, string num4 , string newPhone, UserAuthenticationRequest request, bool fromAppLaunch, bool verfiyPhone)
+        public async void OnVerifyToken(string num1, string num2, string num3, string num4, string newPhone, UserAuthenticationRequest request, bool fromAppLaunch, bool verfiyPhone)
         {
-            
+
             cts = new CancellationTokenSource();
             if (TextUtils.IsEmpty(num1))
             {
@@ -110,7 +99,8 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
                 this.authenticationRequest = request;
                 user_id = request.ActiveUserName;
                 user_email = request.UserName;
-            }else if (UserEntity.IsCurrentlyActive())
+            }
+            else if (UserEntity.IsCurrentlyActive())
             {
                 UserEntity entity = UserEntity.GetActive();
                 user_id = entity.UserID;
@@ -125,21 +115,23 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
 
             try
             {
-                var verifyTokenResponse = await verifyTokenApi.UpdatePhoneNumberV2(new UpdateMobileNo.Request.UpdateMobileV2Request() {
+                var verifyTokenResponse = await verifyTokenApi.UpdatePhoneNumberV2(new UpdateMobileNo.Request.UpdateMobileV2Request()
+                {
                     ApiKeyId = Constants.APP_CONFIG.API_KEY_ID,
                     UserId = user_id,
                     Email = user_email,
                     OldPhoneNumber = oldPhoneNo,
                     NewPhoneNumber = newPhone,
                     token = string.Format("{0}{1}{2}{3}", num1, num2, num3, num4)
-                },cts.Token );
+                }, cts.Token);
 
                 if (mView.IsActive())
                 {
                     this.mView.HideRegistrationProgress();
                 }
 
-                if (!verifyTokenResponse.Data.IsError){
+                if (!verifyTokenResponse.Data.IsError)
+                {
                     //this.mView.ShowDashboardMyAccount();
                     /// call login service 
                     if (UserEntity.IsCurrentlyActive())
@@ -202,10 +194,11 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
 
         public void OnRequestPermissionsResult(int requestCode, string[] permissions, Permission[] grantResults)
         {
-            try {
-            // SILENTLY DIE , SMS RECEIVE IS ONLY OPTIONAL
-            if (requestCode == Constants.RUNTIME_PERMISSION_SMS_REQUEST_CODE)
+            try
             {
+                // SILENTLY DIE , SMS RECEIVE IS ONLY OPTIONAL
+                if (requestCode == Constants.RUNTIME_PERMISSION_SMS_REQUEST_CODE)
+                {
                     if (Utility.IsPermissionHasCount(grantResults))
                     {
                         if (grantResults[0] == Permission.Denied)
@@ -215,8 +208,8 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
                             //    this.mView.ShowSMSPermissionRationale();
                             //}
                         }
-                    }  
-            }
+                    }
+                }
             }
             catch (Exception e)
             {
@@ -240,12 +233,13 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
             string user_name = "";
             string user_email = "";
 
-            if(this.authenticationRequest != null)
+            if (this.authenticationRequest != null)
             {
                 ssp_userid = authenticationRequest.ActiveUserName;
                 user_name = authenticationRequest.UserName;
                 user_email = authenticationRequest.UserName;
-            }else if (UserEntity.IsCurrentlyActive())
+            }
+            else if (UserEntity.IsCurrentlyActive())
             {
                 UserEntity entity = UserEntity.GetActive();
                 ssp_userid = entity.UserID;
@@ -283,7 +277,7 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
                 {
                     this.mView.ShowError(verificationResponse.Data.Message);
                 }
-                
+
 
             }
             catch (System.OperationCanceledException e)
@@ -312,22 +306,23 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
 
         public void Start()
         {
-            try {
-            //bool isGranted = this.mView.IsGrantedSMSReceivePermission();
-            //if (!isGranted)
-            //{
-            //    if (this.mView.ShouldShowSMSReceiveRationale())
-            //    {
-            //        this.mView.ShowSMSPermissionRationale();
-            //    }
-            //    else
-            //    {
-            //        this.mView.RequestSMSPermission();
-            //    }
-            //}
+            try
+            {
+                //bool isGranted = this.mView.IsGrantedSMSReceivePermission();
+                //if (!isGranted)
+                //{
+                //    if (this.mView.ShouldShowSMSReceiveRationale())
+                //    {
+                //        this.mView.ShowSMSPermissionRationale();
+                //    }
+                //    else
+                //    {
+                //        this.mView.RequestSMSPermission();
+                //    }
+                //}
 
-            this.mView.DisableResendButton();
-            this.mView.StartProgress();
+                this.mView.DisableResendButton();
+                this.mView.StartProgress();
             }
             catch (Exception e)
             {
@@ -340,8 +335,9 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
             cts = new CancellationTokenSource();
             ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
 
-            if (mView.IsActive()) {
-            this.mView.ShowRegistrationProgress();
+            if (mView.IsActive())
+            {
+                this.mView.ShowRegistrationProgress();
             }
 #if DEBUG
             var httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
@@ -387,12 +383,7 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
 
 
 #if STUB
-                        var customerAccountsApi = Substitute.For<GetCustomerAccounts>();
-                        customerAccountsApi.GetCustomerAccountV5(new AddAccount.Requests.GetCustomerAccountsRequest(Constants.APP_CONFIG.API_KEY_ID, userResponse.Data.User.UserId))
-                            .ReturnsForAnyArgs(Task.Run<AccountResponseV5>(
-                                    () => JsonConvert.DeserializeObject<AccountResponseV5>(this.mView.GetCustomerAccountsStubV5())
-                                ));
-
+                        var customerAccountsApi = RestService.For<GetCustomerAccounts>(Constants.SERVER_URL.END_POINT);
 #elif DEBUG
                         var newHttpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
                         var customerAccountsApi = RestService.For<GetCustomerAccounts>(newHttpClient);
@@ -444,12 +435,15 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
                                 int newRecord = UserNotificationEntity.InsertOrReplace(userNotification);
                             }
                         }
-                        if(UserEntity.IsCurrentlyActive()){
+                        if (UserEntity.IsCurrentlyActive())
+                        {
                             UserEntity.UpdatePhoneNumber(newPhone);
                         }
                         UserSessions.SavePhoneVerified(mSharedPref, true);
                         this.mView.ShowDashboardMyAccount();
-                    } else {
+                    }
+                    else
+                    {
                         if (mView.IsActive())
                         {
                             this.mView.HideRegistrationProgress();
@@ -496,9 +490,10 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
             cts = new CancellationTokenSource();
             ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
 
-            if (mView.IsActive()) {
-            this.mView.ShowRegistrationProgress();
-                }
+            if (mView.IsActive())
+            {
+                this.mView.ShowRegistrationProgress();
+            }
 #if DEBUG
             var httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
             var api = RestService.For<INotificationApi>(httpClient);
@@ -570,7 +565,9 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
                     }
                     this.mView.ShowDashboard();
 
-                } else {
+                }
+                else
+                {
                     if (mView.IsActive())
                     {
                         this.mView.HideRegistrationProgress();
@@ -611,5 +608,5 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
                 Utility.LoggingNonFatalError(e);
             }
         }
-        }
+    }
 }

@@ -1,23 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
+﻿using Android.Content;
 using Android.OS;
 using Android.Runtime;
-using Android.Util;
-using Android.Views;
 using Android.Widget;
-using myTNB_Android.Src.Base.Fragments;
 using CheeseBind;
+using myTNB_Android.Src.Base.Fragments;
 using myTNB_Android.Src.myTNBMenu.Adapter.BillsMenu;
 using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.Utils;
-using Newtonsoft.Json;
 using myTNB_Android.Src.ViewBill.Activity;
-using Android.Text;
+using Newtonsoft.Json;
+using System;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.BillsMenu
 {
@@ -33,12 +25,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.BillsMenu
         LinearLayout emptyLayout;
 
         private BillHistoryResponseV5 responseData;
-        
-        internal static BillingListFragment NewInstance(BillHistoryResponseV5 response , AccountData selectedAccount)
+
+        internal static BillingListFragment NewInstance(BillHistoryResponseV5 response, AccountData selectedAccount)
         {
             BillingListFragment fragment = new BillingListFragment();
             Bundle args = new Bundle();
-            args.PutString(Constants.BILL_RESPONSE , JsonConvert.SerializeObject(response));
+            args.PutString(Constants.BILL_RESPONSE, JsonConvert.SerializeObject(response));
             args.PutString(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccount));
             fragment.Arguments = args;
             return fragment;
@@ -53,7 +45,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.BillsMenu
                 responseData = JsonConvert.DeserializeObject<BillHistoryResponseV5>(extras.GetString(Constants.BILL_RESPONSE));
                 selectedAccount = JsonConvert.DeserializeObject<AccountData>(extras.GetString(Constants.SELECTED_ACCOUNT));
             }
-          
+
         }
 
 
@@ -68,7 +60,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.BillsMenu
             {
                 billsListAdapter = new BillsListAdapter(Activity, true);
             }
-           
+
             listView.EmptyView = emptyLayout;
             listView.Adapter = billsListAdapter;
 
@@ -83,7 +75,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.BillsMenu
 
             listView.ItemClick += ListView_ItemClick;
 
-            
+
         }
         [Preserve]
         private void ListView_ItemClick(object sender, AdapterView.ItemClickEventArgs e)
@@ -104,10 +96,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.BillsMenu
                 //if (selectedAccount.IsOwner)
                 //{
                 BillHistoryV5 selectedBill = billsListAdapter.GetItemObject(e.Position);
-                    Intent viewBill = new Intent(this.Activity, typeof(ViewBillActivity));
-                    viewBill.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccount));
-                    viewBill.PutExtra(Constants.SELECTED_BILL, JsonConvert.SerializeObject(selectedBill));
-                    StartActivity(viewBill);
+                Intent viewBill = new Intent(this.Activity, typeof(ViewBillActivity));
+                viewBill.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccount));
+                viewBill.PutExtra(Constants.SELECTED_BILL, JsonConvert.SerializeObject(selectedBill));
+                StartActivity(viewBill);
                 //}
             }
 

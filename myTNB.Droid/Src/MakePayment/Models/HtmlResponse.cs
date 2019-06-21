@@ -1,5 +1,4 @@
-﻿using System;
-using System.Net;
+﻿using System.Net;
 
 namespace myTNB_Android.Src.MakePayment.Models
 {
@@ -12,7 +11,8 @@ namespace myTNB_Android.Src.MakePayment.Models
             response = res;
         }
 
-        public static WebResponse GetWebResponse(){
+        public static WebResponse GetWebResponse()
+        {
             return response;
         }
     }

@@ -1,30 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
+﻿using Android.App;
 using Android.Content;
+using Android.Content.PM;
+using Android.Graphics;
 using Android.OS;
-using Android.Runtime;
+using Android.Text;
 using Android.Views;
 using Android.Widget;
-using myTNB_Android.Src.Base.Activity;
-using Android.Content.PM;
-using Newtonsoft.Json;
-using myTNB.SitecoreCM.Models;
 using CheeseBind;
+using myTNB.SitecoreCM.Models;
+using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Utils;
-using Android.Text;
-using System.Threading.Tasks;
-using System.Threading;
-using System.Net;
-using Android.Graphics;
-using myTNB.SQLite.SQLiteDataManager;
-using Android.Util;
 using Square.Picasso;
+using System;
+using System.Net;
 using System.Runtime;
-using System.IO;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace myTNB_Android.Src.Promotions.Activity
 {
@@ -77,8 +68,9 @@ namespace myTNB_Android.Src.Promotions.Activity
         {
 
             base.OnCreate(savedInstanceState);
-            try {
-            // Create your application here
+            try
+            {
+                // Create your application here
                 Bundle extras = Intent.Extras;
 
                 if (extras != null)
@@ -89,48 +81,48 @@ namespace myTNB_Android.Src.Promotions.Activity
                         model = DeSerialze<PromotionsModelV2>(extras.GetString("Promotion"));
                     }
                 }
-            
-            TextViewUtils.SetMuseoSans300Typeface(textPromotionTitle, textPromotionDes, textCampaign, textPrizes, textPromotionInfo);
-            TextViewUtils.SetMuseoSans500Typeface(textPromotionTitle, textCampaignLabel, textPrizesLabel);
 
-            if(model != null)
-            {
-                textPromotionTitle.Text = model.Title;
-                textPromotionDes.Text = model.SubText;
-                if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.N)
-                {
-                    textCampaign.TextFormatted = Html.FromHtml(model.HeaderContent, FromHtmlOptions.ModeLegacy);
-                    textPrizes.TextFormatted = Html.FromHtml(model.BodyContent, FromHtmlOptions.ModeLegacy);
-                    textPromotionInfo.TextFormatted = Html.FromHtml(model.FooterContent, FromHtmlOptions.ModeLegacy);
-                }
-                else
-                {
-                    textCampaign.TextFormatted = Html.FromHtml(model.HeaderContent);
-                    textPrizes.TextFormatted = Html.FromHtml(model.BodyContent);
-                    textPromotionInfo.TextFormatted = Html.FromHtml(model.FooterContent);
-                }
-                
-                textCampaign.MovementMethod = Android.Text.Method.LinkMovementMethod.Instance;
-                textPrizes.MovementMethod = Android.Text.Method.LinkMovementMethod.Instance;
-                textPromotionInfo.MovementMethod = Android.Text.Method.LinkMovementMethod.Instance;
-                //if(model.Image != null)
-                //{
-                //    GetImageAsync(imgPromotion, mProgressBar, model);
-                //}
+                TextViewUtils.SetMuseoSans300Typeface(textPromotionTitle, textPromotionDes, textCampaign, textPrizes, textPromotionInfo);
+                TextViewUtils.SetMuseoSans500Typeface(textPromotionTitle, textCampaignLabel, textPrizesLabel);
 
-                if (model.LandscapeImage.Contains("jpeg"))
+                if (model != null)
                 {
-                    Picasso.With(imgPromotion.Context)
-                   .Load(new Java.IO.File(model.LandscapeImage))
-                   .Fit()
-                   .Into(imgPromotion);
-                    mProgressBar.Visibility = ViewStates.Gone;
+                    textPromotionTitle.Text = model.Title;
+                    textPromotionDes.Text = model.SubText;
+                    if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.N)
+                    {
+                        textCampaign.TextFormatted = Html.FromHtml(model.HeaderContent, FromHtmlOptions.ModeLegacy);
+                        textPrizes.TextFormatted = Html.FromHtml(model.BodyContent, FromHtmlOptions.ModeLegacy);
+                        textPromotionInfo.TextFormatted = Html.FromHtml(model.FooterContent, FromHtmlOptions.ModeLegacy);
+                    }
+                    else
+                    {
+                        textCampaign.TextFormatted = Html.FromHtml(model.HeaderContent);
+                        textPrizes.TextFormatted = Html.FromHtml(model.BodyContent);
+                        textPromotionInfo.TextFormatted = Html.FromHtml(model.FooterContent);
+                    }
+
+                    textCampaign.MovementMethod = Android.Text.Method.LinkMovementMethod.Instance;
+                    textPrizes.MovementMethod = Android.Text.Method.LinkMovementMethod.Instance;
+                    textPromotionInfo.MovementMethod = Android.Text.Method.LinkMovementMethod.Instance;
+                    //if(model.Image != null)
+                    //{
+                    //    GetImageAsync(imgPromotion, mProgressBar, model);
+                    //}
+
+                    if (model.LandscapeImage.Contains("jpeg"))
+                    {
+                        Picasso.With(imgPromotion.Context)
+                       .Load(new Java.IO.File(model.LandscapeImage))
+                       .Fit()
+                       .Into(imgPromotion);
+                        mProgressBar.Visibility = ViewStates.Gone;
+                    }
+                    else
+                    {
+                        GetImageAsync(imgPromotion, mProgressBar, model);
+                    }
                 }
-                else
-                {
-                    GetImageAsync(imgPromotion, mProgressBar, model);
-                }
-            }
             }
             catch (Exception e)
             {
@@ -149,7 +141,7 @@ namespace myTNB_Android.Src.Promotions.Activity
             switch (item.ItemId)
             {
                 case Resource.Id.action_share_promotion:
-                    if(model != null)
+                    if (model != null)
                     {
                         Intent shareIntent = new Intent(Intent.ActionSend);
                         shareIntent.SetType("text/plain");
@@ -157,28 +149,29 @@ namespace myTNB_Android.Src.Promotions.Activity
                         shareIntent.PutExtra(Intent.ExtraText, model.GeneralLinkUrl);
                         StartActivity(Intent.CreateChooser(shareIntent, GetString(Resource.String.more_fragment_share_via)));
                     }
-                return true;
+                    return true;
             }
             return base.OnOptionsItemSelected(item);
         }
 
         public async Task GetImageAsync(ImageView icon, ProgressBar progressBar, PromotionsModelV2 item)
         {
-            try {
-            progressBar.Visibility = ViewStates.Visible;
-            CancellationTokenSource cts = new CancellationTokenSource();
-            Bitmap imageBitmap = null;
-            await Task.Run(() =>
+            try
             {
-                imageBitmap = GetImageBitmapFromUrl(icon, item.LandscapeImage);
-            }, cts.Token);
+                progressBar.Visibility = ViewStates.Visible;
+                CancellationTokenSource cts = new CancellationTokenSource();
+                Bitmap imageBitmap = null;
+                await Task.Run(() =>
+                {
+                    imageBitmap = GetImageBitmapFromUrl(icon, item.LandscapeImage);
+                }, cts.Token);
 
-            if (imageBitmap != null)
-            {
-                icon.SetImageBitmap(imageBitmap);
-            }
+                if (imageBitmap != null)
+                {
+                    icon.SetImageBitmap(imageBitmap);
+                }
 
-            progressBar.Visibility = ViewStates.Gone;
+                progressBar.Visibility = ViewStates.Gone;
             }
             catch (Exception e)
             {
@@ -189,15 +182,16 @@ namespace myTNB_Android.Src.Promotions.Activity
         private Android.Graphics.Bitmap GetImageBitmapFromUrl(ImageView icon, string url)
         {
             Android.Graphics.Bitmap image = null;
-            try {
-            using (WebClient webClient = new WebClient())
+            try
             {
-                var imageBytes = webClient.DownloadData(url);
-                if (imageBytes != null && imageBytes.Length > 0)
+                using (WebClient webClient = new WebClient())
                 {
-                    image = BitmapFactory.DecodeByteArray(imageBytes, 0, imageBytes.Length);
+                    var imageBytes = webClient.DownloadData(url);
+                    if (imageBytes != null && imageBytes.Length > 0)
+                    {
+                        image = BitmapFactory.DecodeByteArray(imageBytes, 0, imageBytes.Length);
+                    }
                 }
-            }
             }
             catch (Exception e)
             {

@@ -3,35 +3,34 @@ using Android.App;
 using Android.Content;
 using Android.Content.PM;
 using Android.OS;
+using Android.Runtime;
 using Android.Support.Design.Widget;
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
 using myTNB_Android.Src.Base.Activity;
+using myTNB_Android.Src.Database.Model;
+using myTNB_Android.Src.NotificationDetails.Activity;
 using myTNB_Android.Src.NotificationFilter.Activity;
 using myTNB_Android.Src.Notifications.Adapter;
 using myTNB_Android.Src.Notifications.Models;
 using myTNB_Android.Src.Notifications.MVP;
+using myTNB_Android.Src.Utils;
+using myTNB_Android.Src.Utils.Custom.ProgressDialog;
+using Newtonsoft.Json;
 using Refit;
 using System;
 using System.Collections.Generic;
-using myTNB_Android.Src.NotificationDetails.Models;
-using myTNB_Android.Src.NotificationDetails.Activity;
-using myTNB_Android.Src.Utils;
-using Newtonsoft.Json;
-using Android.Runtime;
-using myTNB_Android.Src.Database.Model;
-using myTNB_Android.Src.Utils.Custom.ProgressDialog;
 using System.Runtime;
 
 namespace myTNB_Android.Src.Notifications.Activity
 {
     [Activity(Label = "@string/notification_activity_title"
-      //, MainLauncher = true
+              //, MainLauncher = true
               , Icon = "@drawable/ic_launcher"
       , ScreenOrientation = ScreenOrientation.Portrait
       , Theme = "@style/Theme.Notification")]
-    public class NotificationActivity : BaseToolbarAppCompatActivity  , NotificationContract.IView
+    public class NotificationActivity : BaseToolbarAppCompatActivity, NotificationContract.IView
     {
         [BindView(Resource.Id.rootView)]
         CoordinatorLayout rootView;
@@ -53,7 +52,7 @@ namespace myTNB_Android.Src.Notifications.Activity
         NotificationContract.IUserActionsListener userActionsListener;
         NotificationPresenter mPresenter;
 
-        MaterialDialog mProgressDialog , mQueryProgressDialog;
+        MaterialDialog mProgressDialog, mQueryProgressDialog;
         private LoadingOverlay loadingOverlay;
 
         public bool IsActive()
@@ -76,7 +75,7 @@ namespace myTNB_Android.Src.Notifications.Activity
             return true;
         }
         [OnClick(Resource.Id.txt_notification_name)]
-        void OnNotificationFilter(object sender , EventArgs eventArgs)
+        void OnNotificationFilter(object sender, EventArgs eventArgs)
         {
             this.userActionsListener.OnShowNotificationFilter();
         }
@@ -84,7 +83,7 @@ namespace myTNB_Android.Src.Notifications.Activity
         public void ShowNotificationFilter()
         {
             Intent notificationFilter = new Intent(this, typeof(NotificationFilterActivity));
-            StartActivityForResult(notificationFilter , Constants.NOTIFICATION_FILTER_REQUEST_CODE);
+            StartActivityForResult(notificationFilter, Constants.NOTIFICATION_FILTER_REQUEST_CODE);
         }
 
         public void ShowNotificationsList(List<UserNotificationData> userNotificationList)
@@ -96,59 +95,63 @@ namespace myTNB_Android.Src.Notifications.Activity
         {
             base.OnCreate(savedInstanceState);
 
-            try {
-
-            mProgressDialog = new MaterialDialog.Builder(this)
-                .Title(GetString(Resource.String.notification_activity_progress_title))
-                .Content(GetString(Resource.String.notification_activity_progress_content))
-                .Cancelable(false)
-                .Progress(true, 0)
-                .Build();
-
-            mQueryProgressDialog = new MaterialDialog.Builder(this)
-                .Title(GetString(Resource.String.notification_activity_query_progress_title))
-                .Content(GetString(Resource.String.notification_activity_query_progress_content))
-                .Cancelable(false)
-                .Progress(true, 0)
-                .Build();
-
-            TextViewUtils.SetMuseoSans500Typeface(txtNotificationName);
-            TextViewUtils.SetMuseoSans300Typeface(txtNotificationsContent);
-
-            this.mPresenter = new NotificationPresenter(this);
-            notificationAdapter = new NotificationAdapter(this, true);
-            notificationListView.Adapter = notificationAdapter;
-            notificationListView.EmptyView = emptyLayout;
-
-            int count = UserNotificationEntity.Count();
-            if (count == 0)
+            try
             {
-                ME.Leolin.Shortcutbadger.ShortcutBadger.RemoveCount(this.ApplicationContext);
+
+                mProgressDialog = new MaterialDialog.Builder(this)
+                    .Title(GetString(Resource.String.notification_activity_progress_title))
+                    .Content(GetString(Resource.String.notification_activity_progress_content))
+                    .Cancelable(false)
+                    .Progress(true, 0)
+                    .Build();
+
+                mQueryProgressDialog = new MaterialDialog.Builder(this)
+                    .Title(GetString(Resource.String.notification_activity_query_progress_title))
+                    .Content(GetString(Resource.String.notification_activity_query_progress_content))
+                    .Cancelable(false)
+                    .Progress(true, 0)
+                    .Build();
+
+                TextViewUtils.SetMuseoSans500Typeface(txtNotificationName);
+                TextViewUtils.SetMuseoSans300Typeface(txtNotificationsContent);
+
+                this.mPresenter = new NotificationPresenter(this);
+                notificationAdapter = new NotificationAdapter(this, true);
+                notificationListView.Adapter = notificationAdapter;
+                notificationListView.EmptyView = emptyLayout;
+
+                int count = UserNotificationEntity.Count();
+                if (count == 0)
+                {
+                    ME.Leolin.Shortcutbadger.ShortcutBadger.RemoveCount(this.ApplicationContext);
+                }
+                else
+                {
+                    ME.Leolin.Shortcutbadger.ShortcutBadger.ApplyCount(this.ApplicationContext, count);
+                }
+
+
+                this.userActionsListener.Start();
+
+                Bundle extras = Intent.Extras;
+                if (extras != null && extras.ContainsKey(Constants.HAS_NOTIFICATION) && extras.GetBoolean(Constants.HAS_NOTIFICATION))
+                {
+                    this.userActionsListener.QueryOnLoad(this.DeviceId());
+                }
             }
-            else
+            catch (Exception e)
             {
-                ME.Leolin.Shortcutbadger.ShortcutBadger.ApplyCount(this.ApplicationContext, count);
-            }
-
-
-            this.userActionsListener.Start();
-
-            Bundle extras = Intent.Extras;
-            if (extras != null && extras.ContainsKey(Constants.HAS_NOTIFICATION) && extras.GetBoolean(Constants.HAS_NOTIFICATION))
-            {
-                this.userActionsListener.QueryOnLoad(this.DeviceId());
-            }
-        } catch(Exception e) {
                 Utility.LoggingNonFatalError(e);
             }
 
         }
         [OnItemClick(Resource.Id.notification_listview)]
-        void OnItemClick(object sender , AbsListView.ItemClickEventArgs args)
+        void OnItemClick(object sender, AbsListView.ItemClickEventArgs args)
         {
-            try {
-            UserNotificationData data = notificationAdapter.GetItemObject(args.Position);
-            this.userActionsListener.OnSelectedNotificationItem(data , args.Position);
+            try
+            {
+                UserNotificationData data = notificationAdapter.GetItemObject(args.Position);
+                this.userActionsListener.OnSelectedNotificationItem(data, args.Position);
             }
             catch (Exception e)
             {
@@ -162,15 +165,18 @@ namespace myTNB_Android.Src.Notifications.Activity
             //{
             //    mProgressDialog.Show();
             //}
-            try {
-            if (loadingOverlay != null && loadingOverlay.IsShowing)
+            try
             {
-                loadingOverlay.Dismiss();
-            }
+                if (loadingOverlay != null && loadingOverlay.IsShowing)
+                {
+                    loadingOverlay.Dismiss();
+                }
 
-            loadingOverlay = new LoadingOverlay(this, Resource.Style.LoadingOverlyDialogStyle);
-            loadingOverlay.Show();
-        } catch(Exception e) {
+                loadingOverlay = new LoadingOverlay(this, Resource.Style.LoadingOverlyDialogStyle);
+                loadingOverlay.Show();
+            }
+            catch (Exception e)
+            {
                 Utility.LoggingNonFatalError(e);
             }
         }
@@ -181,12 +187,15 @@ namespace myTNB_Android.Src.Notifications.Activity
             //{
             //    mProgressDialog.Dismiss();
             //}
-            try {
-            if (loadingOverlay != null && loadingOverlay.IsShowing)
+            try
             {
-                loadingOverlay.Dismiss();
+                if (loadingOverlay != null && loadingOverlay.IsShowing)
+                {
+                    loadingOverlay.Dismiss();
+                }
             }
-        } catch(Exception e) {
+            catch (Exception e)
+            {
                 Utility.LoggingNonFatalError(e);
             }
         }
@@ -201,7 +210,8 @@ namespace myTNB_Android.Src.Notifications.Activity
             }
 
             mCancelledExceptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.notification_activity_cancelled_exception_error), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.notification_activity_cancelled_exception_btn_close), delegate {
+            .SetAction(GetString(Resource.String.notification_activity_cancelled_exception_btn_close), delegate
+            {
 
                 mCancelledExceptionSnackBar.Dismiss();
 
@@ -220,7 +230,8 @@ namespace myTNB_Android.Src.Notifications.Activity
             }
 
             mApiExcecptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.notification_activity_api_exception_error), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.notification_activity_api_exception_btn_close), delegate {
+            .SetAction(GetString(Resource.String.notification_activity_api_exception_btn_close), delegate
+            {
 
                 mApiExcecptionSnackBar.Dismiss();
 
@@ -239,7 +250,8 @@ namespace myTNB_Android.Src.Notifications.Activity
             }
 
             mUknownExceptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.notification_activity_unknown_exception_error), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.notification_activity_unknown_exception_btn_close), delegate {
+            .SetAction(GetString(Resource.String.notification_activity_unknown_exception_btn_close), delegate
+            {
 
                 mUknownExceptionSnackBar.Dismiss();
 
@@ -253,9 +265,10 @@ namespace myTNB_Android.Src.Notifications.Activity
 
         protected override void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
         {
-            try {
-            base.OnActivityResult(requestCode, resultCode, data);
-            this.userActionsListener.OnActivityResult(requestCode , resultCode , data);
+            try
+            {
+                base.OnActivityResult(requestCode, resultCode, data);
+                this.userActionsListener.OnActivityResult(requestCode, resultCode, data);
             }
             catch (Exception e)
             {
@@ -263,12 +276,13 @@ namespace myTNB_Android.Src.Notifications.Activity
             }
         }
 
-        public void UpdateIsReadNotificationItem(int position , bool isRead )
+        public void UpdateIsReadNotificationItem(int position, bool isRead)
         {
-            try {
-            UserNotificationData userNotificationData = notificationAdapter.GetItemObject(position);
-            userNotificationData.IsRead = isRead;
-            notificationAdapter.Update(position, userNotificationData);
+            try
+            {
+                UserNotificationData userNotificationData = notificationAdapter.GetItemObject(position);
+                userNotificationData.IsRead = isRead;
+                notificationAdapter.Update(position, userNotificationData);
             }
             catch (Exception e)
             {
@@ -278,10 +292,13 @@ namespace myTNB_Android.Src.Notifications.Activity
 
         public void UpdateIsDeleteNotificationItem(int position, bool isDelete)
         {
-            try {
-            UserNotificationData userNotificationData = notificationAdapter.GetItemObject(position);
-            notificationAdapter.Remove(position);
-        } catch(Exception e) {
+            try
+            {
+                UserNotificationData userNotificationData = notificationAdapter.GetItemObject(position);
+                notificationAdapter.Remove(position);
+            }
+            catch (Exception e)
+            {
                 Utility.LoggingNonFatalError(e);
             }
 
@@ -297,7 +314,8 @@ namespace myTNB_Android.Src.Notifications.Activity
             }
 
             mNotificationRemoved = Snackbar.Make(rootView, GetString(Resource.String.notification_activity_notification_removed), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.notification_activity_notification_removed_btn_close), delegate {
+            .SetAction(GetString(Resource.String.notification_activity_notification_removed_btn_close), delegate
+            {
 
                 mNotificationRemoved.Dismiss();
 
@@ -313,9 +331,12 @@ namespace myTNB_Android.Src.Notifications.Activity
 
         public void ShowNotificationFilterName(string filterName)
         {
-            if (!string.IsNullOrEmpty(filterName)) {
-                txtNotificationName.Text = filterName;    
-            } else {
+            if (!string.IsNullOrEmpty(filterName))
+            {
+                txtNotificationName.Text = filterName;
+            }
+            else
+            {
                 txtNotificationName.Text = "";
             }
 
@@ -352,15 +373,18 @@ namespace myTNB_Android.Src.Notifications.Activity
             //{
             //    mQueryProgressDialog.Show();
             //}
-            try {
-            if (loadingOverlay != null && loadingOverlay.IsShowing)
+            try
             {
-                loadingOverlay.Dismiss();
-            }
+                if (loadingOverlay != null && loadingOverlay.IsShowing)
+                {
+                    loadingOverlay.Dismiss();
+                }
 
-            loadingOverlay = new LoadingOverlay(this, Resource.Style.LoadingOverlyDialogStyle);
-            loadingOverlay.Show();
-        } catch(Exception e) {
+                loadingOverlay = new LoadingOverlay(this, Resource.Style.LoadingOverlyDialogStyle);
+                loadingOverlay.Show();
+            }
+            catch (Exception e)
+            {
                 Utility.LoggingNonFatalError(e);
             }
         }
@@ -377,7 +401,9 @@ namespace myTNB_Android.Src.Notifications.Activity
                 {
                     loadingOverlay.Dismiss();
                 }
-            } catch(Exception e) {
+            }
+            catch (Exception e)
+            {
                 Utility.LoggingNonFatalError(e);
             }
         }

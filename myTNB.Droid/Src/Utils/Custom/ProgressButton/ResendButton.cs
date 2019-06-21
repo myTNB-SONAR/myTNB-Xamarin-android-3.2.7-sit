@@ -1,23 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Util;
-using Android.Views;
-using Android.Widget;
-using Android.Graphics.Drawables;
+﻿using Android.Content;
 using Android.Graphics;
+using Android.Graphics.Drawables;
+using Android.OS;
+using Android.Util;
 
 namespace myTNB_Android.Src.Utils.Custom.ProgressButton
 {
     public class ResendButton : Android.Widget.Button
     {
-        
+
         private float CornerRadius = 10f;
         private GradientDrawable ProgressDrawable;
         private GradientDrawable NormalDrawable;
@@ -61,7 +52,7 @@ namespace myTNB_Android.Src.Utils.Custom.ProgressButton
             {
                 this._CurrentProgress = value;
             }
-        } 
+        }
 
         public int Counter
         {
@@ -82,12 +73,12 @@ namespace myTNB_Android.Src.Utils.Custom.ProgressButton
 
         public ResendButton(Context context, IAttributeSet attrs) : base(context, attrs)
         {
-            Init(context , attrs);
+            Init(context, attrs);
         }
 
         public ResendButton(Context context, IAttributeSet attrs, int defStyleAttr) : base(context, attrs, defStyleAttr)
         {
-            Init(context , attrs);
+            Init(context, attrs);
         }
 
         public ResendButton(Context context, IAttributeSet attrs, int defStyleAttr, int defStyleRes) : base(context, attrs, defStyleAttr, defStyleRes)
@@ -95,7 +86,7 @@ namespace myTNB_Android.Src.Utils.Custom.ProgressButton
             Init(context, attrs);
         }
 
-    
+
 
         private void Init(Context context, IAttributeSet attrs)
         {
@@ -113,7 +104,7 @@ namespace myTNB_Android.Src.Utils.Custom.ProgressButton
 
         protected override void OnDraw(Android.Graphics.Canvas canvas)
         {
-           
+
             DrawProgress(canvas);
             setBackgroundCompat(ProgressDrawable);
             setBackgroundCompat(NormalDrawable);
@@ -125,7 +116,7 @@ namespace myTNB_Android.Src.Utils.Custom.ProgressButton
         {
             float scale = (float)CurrentProgress / (float)MaxProgress;
             float indicatorWidth = (float)MeasuredWidth * scale;
-            ProgressDrawable.SetBounds(2, 2, (int)indicatorWidth-2, MeasuredHeight-2);
+            ProgressDrawable.SetBounds(2, 2, (int)indicatorWidth - 2, MeasuredHeight - 2);
             ProgressDrawable.Draw(canvas);
         }
 

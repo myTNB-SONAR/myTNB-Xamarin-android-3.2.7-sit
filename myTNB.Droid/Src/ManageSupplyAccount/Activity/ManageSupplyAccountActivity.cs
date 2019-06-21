@@ -1,27 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
+﻿using AFollestad.MaterialDialogs;
 using Android.App;
 using Android.Content;
+using Android.Content.PM;
 using Android.OS;
 using Android.Runtime;
+using Android.Support.Design.Widget;
 using Android.Views;
 using Android.Widget;
-using myTNB_Android.Src.Base.Activity;
 using CheeseBind;
-using myTNB_Android.Src.myTNBMenu.Models;
-using Newtonsoft.Json;
-using myTNB_Android.Src.Utils;
+using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.ManageSupplyAccount.MVP;
-using Android.Support.Design.Widget;
-using Android.Content.PM;
+using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.UpdateNickname.Activity;
-using AFollestad.MaterialDialogs;
-using Refit;
-using Android.Util;
+using myTNB_Android.Src.Utils;
 using myTNB_Android.Src.Utils.Custom.ProgressDialog;
+using Newtonsoft.Json;
+using Refit;
+using System;
 using System.Runtime;
 
 namespace myTNB_Android.Src.ManageSupplyAccount.Activity
@@ -29,7 +24,7 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
     [Activity(Label = "@string/manage_supply_account_activity_title"
     , ScreenOrientation = ScreenOrientation.Portrait
     , Theme = "@style/Theme.ManageSupplyAccount")]
-    public class ManageSupplyAccountActivity : BaseToolbarAppCompatActivity , ManageSupplyAccountContract.IView
+    public class ManageSupplyAccountActivity : BaseToolbarAppCompatActivity, ManageSupplyAccountContract.IView
     {
         [BindView(Resource.Id.rootView)]
         LinearLayout rootView;
@@ -104,13 +99,15 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
 
                 mPresenter = new ManageSupplyAccountPresenter(this, accountData);
                 this.userActionsListener.Start();
-            } catch(Exception e) {
+            }
+            catch (Exception e)
+            {
                 Utility.LoggingNonFatalError(e);
             }
         }
 
         [OnClick(Resource.Id.btnTextUpdateNickName)]
-        void OnClickUpdateNickname(object sender , EventArgs eventArgs)
+        void OnClickUpdateNickname(object sender, EventArgs eventArgs)
         {
             this.userActionsListener.OnUpdateNickname();
         }
@@ -118,34 +115,38 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
         [OnClick(Resource.Id.btnRemoveAccount)]
         void OnClickRemoveAccount(object sender, EventArgs eventArgs)
         {
-            try {
-            if (removeDialog != null && removeDialog.IsShowing)
+            try
             {
-                removeDialog.Dismiss();
-            }
-
-            removeDialog = new AlertDialog.Builder(this)
-                
-                .SetTitle(Resource.String.manage_supply_account_remove_dialog_title)
-                .SetMessage(GetString(Resource.String.manage_supply_account_remove_dialog_content_wildcard , accountData.AccountNickName , accountData.AccountNum))
-                .SetNegativeButton(Resource.String.manage_cards_btn_cancel,
-                delegate {
-                    removeDialog.Dismiss();
-                })
-                .SetPositiveButton(Resource.String.manage_cards_btn_ok,
-                delegate
+                if (removeDialog != null && removeDialog.IsShowing)
                 {
-                    this.userActionsListener.OnRemoveAccount(accountData);
-                })
-                .Show()
-                ;
-        } catch(Exception e) {
+                    removeDialog.Dismiss();
+                }
+
+                removeDialog = new AlertDialog.Builder(this)
+
+                    .SetTitle(Resource.String.manage_supply_account_remove_dialog_title)
+                    .SetMessage(GetString(Resource.String.manage_supply_account_remove_dialog_content_wildcard, accountData.AccountNickName, accountData.AccountNum))
+                    .SetNegativeButton(Resource.String.manage_cards_btn_cancel,
+                    delegate
+                    {
+                        removeDialog.Dismiss();
+                    })
+                    .SetPositiveButton(Resource.String.manage_cards_btn_ok,
+                    delegate
+                    {
+                        this.userActionsListener.OnRemoveAccount(accountData);
+                    })
+                    .Show()
+                    ;
+            }
+            catch (Exception e)
+            {
                 Utility.LoggingNonFatalError(e);
             }
             //int titleId = Resources.GetIdentifier("alertTitle", "id", "android");
             //TextView txtTitle = removeDialog.FindViewById<TextView>(titleId);
             //txtTitle.SetTextSize(ComplexUnitType.Sp ,17);
-            
+
         }
 
         public bool IsActive()
@@ -170,42 +171,43 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
 
         public void ShowUpdateNickname()
         {
-            Intent updateNickName = new Intent(this , typeof(UpdateNicknameActivity));
-            updateNickName.PutExtra(Constants.SELECTED_ACCOUNT , JsonConvert.SerializeObject(accountData));
-            StartActivityForResult(updateNickName , Constants.UPDATE_NICKNAME_REQUEST); 
+            Intent updateNickName = new Intent(this, typeof(UpdateNicknameActivity));
+            updateNickName.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(accountData));
+            StartActivityForResult(updateNickName, Constants.UPDATE_NICKNAME_REQUEST);
         }
 
         public void ShowSuccessRemovedAccount()
         {
             Intent result = new Intent();
-            result.PutExtra(Constants.SELECTED_ACCOUNT , JsonConvert.SerializeObject(accountData));
+            result.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(accountData));
             result.PutExtra(Constants.SELECTED_ACCOUNT_POSITION, position);
             result.PutExtra(Constants.ACCOUNT_REMOVED_FLAG, true);
-            SetResult(Result.Ok , result);
+            SetResult(Result.Ok, result);
             Finish();
         }
 
         protected override void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
         {
             base.OnActivityResult(requestCode, resultCode, data);
-            this.userActionsListener.OnActivityResult(requestCode , resultCode , data);
+            this.userActionsListener.OnActivityResult(requestCode, resultCode, data);
         }
 
         public void ShowUpdateSuccessNickname(AccountData accountData)
         {
-            try {
-            this.accountData = accountData;
-            txtNickName.Text = accountData.AccountNickName;
+            try
+            {
+                this.accountData = accountData;
+                txtNickName.Text = accountData.AccountNickName;
 
-            Snackbar.Make(rootView, GetString(Resource.String.manage_supply_account_update_nickname_success), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.manage_supply_account_btn_close),
-             (view) =>
-             {
+                Snackbar.Make(rootView, GetString(Resource.String.manage_supply_account_update_nickname_success), Snackbar.LengthIndefinite)
+                .SetAction(GetString(Resource.String.manage_supply_account_btn_close),
+                 (view) =>
+                 {
 
-                             // EMPTY WILL CLOSE SNACKBAR
-                         }
-            ).Show();
-            SetResult(Result.Ok);
+                 // EMPTY WILL CLOSE SNACKBAR
+             }
+                ).Show();
+                SetResult(Result.Ok);
             }
             catch (Exception e)
             {
@@ -219,14 +221,15 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
             //{
             //    progress.Show();
             //}
-            try {
-            if (loadingOverlay != null && loadingOverlay.IsShowing)
+            try
             {
-                loadingOverlay.Dismiss();
-            }
+                if (loadingOverlay != null && loadingOverlay.IsShowing)
+                {
+                    loadingOverlay.Dismiss();
+                }
 
-            loadingOverlay = new LoadingOverlay(this, Resource.Style.LoadingOverlyDialogStyle);
-            loadingOverlay.Show();
+                loadingOverlay = new LoadingOverlay(this, Resource.Style.LoadingOverlyDialogStyle);
+                loadingOverlay.Show();
             }
             catch (Exception e)
             {
@@ -240,11 +243,12 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
             //{
             //    progress.Dismiss();
             //}
-            try {
-            if (loadingOverlay != null && loadingOverlay.IsShowing)
+            try
             {
-                loadingOverlay.Dismiss();
-            }
+                if (loadingOverlay != null && loadingOverlay.IsShowing)
+                {
+                    loadingOverlay.Dismiss();
+                }
             }
             catch (Exception e)
             {
@@ -261,7 +265,8 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
             }
 
             mCancelledExceptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.manage_supply_account_cancelled_exception_error), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.manage_supply_account_cancelled_exception_btn_close), delegate {
+            .SetAction(GetString(Resource.String.manage_supply_account_cancelled_exception_btn_close), delegate
+            {
 
                 mCancelledExceptionSnackBar.Dismiss();
             }
@@ -279,7 +284,8 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
             }
 
             mApiExcecptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.manage_supply_account_api_exception_error), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.manage_supply_account_api_exception_btn_close), delegate {
+            .SetAction(GetString(Resource.String.manage_supply_account_api_exception_btn_close), delegate
+            {
 
                 mApiExcecptionSnackBar.Dismiss();
             }
@@ -297,7 +303,8 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
             }
 
             mUknownExceptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.manage_supply_account_unknown_exception_error), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.manage_supply_account_unknown_exception_btn_close), delegate {
+            .SetAction(GetString(Resource.String.manage_supply_account_unknown_exception_btn_close), delegate
+            {
 
                 mUknownExceptionSnackBar.Dismiss();
 

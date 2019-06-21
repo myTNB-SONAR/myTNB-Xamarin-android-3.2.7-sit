@@ -1,22 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
+﻿using Android.App;
 using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-using myTNB_Android.Src.Base.Activity;
 using Android.Content.PM;
-using CheeseBind;
-using Android.Webkit;
-using myTNB_Android.Src.AppLaunch.Models;
+using Android.OS;
 using Android.Support.Design.Widget;
+using Android.Views;
+using Android.Webkit;
+using Android.Widget;
+using CheeseBind;
+using myTNB_Android.Src.AppLaunch.Models;
+using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Utils;
 using Newtonsoft.Json;
+using System;
 using System.Runtime;
 
 namespace myTNB_Android.Src.SmartMeterLearnMore.Activity
@@ -54,11 +49,12 @@ namespace myTNB_Android.Src.SmartMeterLearnMore.Activity
             base.OnCreate(savedInstanceState);
 
             // Create your application here
-            try {
-            webLink = JsonConvert.DeserializeObject<Weblink>(Intent.Extras.GetString(Constants.SMART_METER_LINK));
-            webView.Settings.JavaScriptEnabled = true;
-            webView.SetWebViewClient(new SmartMeterLearnMoreWebClient(this, mProgressBar, webLink, webView));
-            webView.LoadUrl(webLink.Url);
+            try
+            {
+                webLink = JsonConvert.DeserializeObject<Weblink>(Intent.Extras.GetString(Constants.SMART_METER_LINK));
+                webView.Settings.JavaScriptEnabled = true;
+                webView.SetWebViewClient(new SmartMeterLearnMoreWebClient(this, mProgressBar, webLink, webView));
+                webView.LoadUrl(webLink.Url);
             }
             catch (Exception e)
             {
@@ -75,7 +71,8 @@ namespace myTNB_Android.Src.SmartMeterLearnMore.Activity
             }
 
             mErrorNoInternet = Snackbar.Make(rootView, GetString(Resource.String.smart_meter_learn_more_snackbar_error_no_internet), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.smart_meter_learn_more_snackbar_error_btn), delegate {
+            .SetAction(GetString(Resource.String.smart_meter_learn_more_snackbar_error_btn), delegate
+            {
                 webView.LoadUrl(failingUrl);
                 mErrorNoInternet.Dismiss();
             });
@@ -93,7 +90,7 @@ namespace myTNB_Android.Src.SmartMeterLearnMore.Activity
             private SmartMeterLearnMoreActivity activity;
             private WebView webView;
 
-            public SmartMeterLearnMoreWebClient(SmartMeterLearnMoreActivity activity, ProgressBar progressBar, Weblink webLink,  WebView webView)
+            public SmartMeterLearnMoreWebClient(SmartMeterLearnMoreActivity activity, ProgressBar progressBar, Weblink webLink, WebView webView)
             {
                 this.progressBar = progressBar;
                 this.webLink = webLink;
@@ -135,7 +132,7 @@ namespace myTNB_Android.Src.SmartMeterLearnMore.Activity
             }
 
 
-              
+
         }
 
 

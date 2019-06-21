@@ -1,19 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
+﻿using Android.App;
 using Android.Content;
-using Android.OS;
 using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-using myTNB_Android.Src.Base.MVP;
-using System.Threading.Tasks;
 using myTNB_Android.Src.Base.Models;
-using Refit;
+using myTNB_Android.Src.Base.MVP;
 using myTNB_Android.Src.Base.Request;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 
 
@@ -81,7 +73,7 @@ namespace myTNB_Android.Src.Feedback_PreLogIn_BillRelated.MVP
             /// <param name="tempImagePath">string</param>
             /// <param name="fileName">string</param>
             /// <returns>Task</returns>
-            Task<string> SaveGalleryImage(Android.Net.Uri selectedImage , string tempImagePath, string fileName);
+            Task<string> SaveGalleryImage(Android.Net.Uri selectedImage, string tempImagePath, string fileName);
 
             /// <summary>
             /// Shows image loader
@@ -220,7 +212,7 @@ namespace myTNB_Android.Src.Feedback_PreLogIn_BillRelated.MVP
             /// <param name="account_no">string</param>
             /// <param name="feedback">string</param>
             /// <param name="attachedImages">List<paramref name="AttachedImage"/></param>
-            void OnSubmit(string deviceId, string fullname , string mobile_no , string email , string account_no , string feedback , List<AttachedImage> attachedImages );
+            void OnSubmit(string deviceId, string fullname, string mobile_no, string email, string account_no, string feedback, List<AttachedImage> attachedImages);
 
             /// <summary>
             /// Action to check empty fullname, mobile_no , email , account no, feedback
@@ -230,7 +222,7 @@ namespace myTNB_Android.Src.Feedback_PreLogIn_BillRelated.MVP
             /// <param name="email">string</param>
             /// <param name="account_no">string</param>
             /// <param name="feedback">string</param>
-            void CheckRequiredFields(string fullname , string mobile_no , string email , string account_no , string feedback);
+            void CheckRequiredFields(string fullname, string mobile_no, string email, string account_no, string feedback);
         }
     }
 }

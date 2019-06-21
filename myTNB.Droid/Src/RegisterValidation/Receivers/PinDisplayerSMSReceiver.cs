@@ -1,13 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
+﻿
 using Android.App;
 using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
 using Android.Widget;
 using myTNB_Android.Src.Utils;
 
@@ -36,7 +29,7 @@ namespace myTNB_Android.Src.RegisterValidation.Receivers
                 return;
             }
             string StringPin = intent.Extras.GetString(Constants.RETRIEVE_PIN_FROM_SMS).Trim();
-            for(int i = 0; i < pin.Length; i++)
+            for (int i = 0; i < pin.Length; i++)
             {
                 this.pin[i].Text = StringPin[i].ToString();
             }
