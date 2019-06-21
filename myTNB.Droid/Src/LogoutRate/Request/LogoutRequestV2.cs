@@ -1,15 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 
 namespace myTNB_Android.Src.LogoutRate.Request
 {
@@ -31,6 +20,6 @@ namespace myTNB_Android.Src.LogoutRate.Request
         public string OsType { get; set; }
 
         [JsonProperty("OsVersion")]
-        public string OsVersion { get; set; }   
+        public string OsVersion { get; set; }
     }
 }

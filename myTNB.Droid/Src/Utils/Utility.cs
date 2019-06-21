@@ -1,6 +1,6 @@
-﻿using System;
+﻿using Android.Content.PM;
+using System;
 using System.Text.RegularExpressions;
-using Android.Content.PM;
 
 namespace myTNB_Android.Src.Utils
 {
@@ -11,8 +11,9 @@ namespace myTNB_Android.Src.Utils
         }
 
 
-        public static bool AccountNumberValidation(int length) {           
-                return (length == 12 || length == 14);
+        public static bool AccountNumberValidation(int length)
+        {
+            return (length == 12 || length == 14);
         }
 
         public static bool AddAccountNumberValidation(int length)
@@ -33,10 +34,14 @@ namespace myTNB_Android.Src.Utils
         }
 
 
-        public static bool IsValidMobileNumber(string mobileNumber) {
-            if (!string.IsNullOrEmpty(mobileNumber)) {
-                if (mobileNumber.StartsWith("+60")) {
-                    if (mobileNumber.Substring(3).Length == 9 || mobileNumber.Substring(3).Length == 10) {
+        public static bool IsValidMobileNumber(string mobileNumber)
+        {
+            if (!string.IsNullOrEmpty(mobileNumber))
+            {
+                if (mobileNumber.StartsWith("+60"))
+                {
+                    if (mobileNumber.Substring(3).Length == 9 || mobileNumber.Substring(3).Length == 10)
+                    {
                         return true;
                     }
                 }
@@ -45,12 +50,14 @@ namespace myTNB_Android.Src.Utils
         }
 
 
-        public static void LoggingNonFatalError(Exception e) {
+        public static void LoggingNonFatalError(Exception e)
+        {
             Crashlytics.Crashlytics.LogException(new Java.Lang.Throwable(e.ToString()));
         }
 
 
-        public static bool IsPermissionHasCount(Permission[] grantResults) {
+        public static bool IsPermissionHasCount(Permission[] grantResults)
+        {
             return (grantResults != null && grantResults.Length > 0);
         }
     }

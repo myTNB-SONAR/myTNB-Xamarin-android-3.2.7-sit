@@ -1,24 +1,14 @@
-﻿using System;
+﻿using myTNB_Android.Src.AppLaunch.Models;
+using SQLite;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-using SQLite;
-using myTNB_Android.Src.Utils;
-using myTNB_Android.Src.AppLaunch.Models;
 
 namespace myTNB_Android.Src.Database.Model
 {
     [Table("UserNotificationEntity")]
     public class UserNotificationEntity
     {
-        [PrimaryKey , Column("Id")]
+        [PrimaryKey, Column("Id")]
         public string Id { get; set; }
 
         [Unique, Column("UId")]
@@ -82,26 +72,26 @@ namespace myTNB_Android.Src.Database.Model
             //using (var db = DBHelper.GetSQLiteConnection())
             //{
             var db = DBHelper.GetSQLiteConnection();
-                var newRecord = new UserNotificationEntity()
-                {
-                    Id = userNotification.Id,
-                    UId = userNotification.Id,
-                    Email = userNotification.Email,
-                    DeviceId = userNotification.DeviceId,
-                    AccountNum = userNotification.AccountNum,
-                    Title = userNotification.Title,
-                    Message = userNotification.Message,
-                    IsRead = userNotification.IsRead,
-                    IsDeleted = userNotification.IsDeleted,
-                    NotificationTypeId = userNotification.NotificationTypeId,
-                    BCRMNotificationTypeId = userNotification.BCRMNotificationTypeId,
-                    CreatedDate = userNotification.CreatedDate,
-                    NotificationType = userNotification.NotificationType,
-                    Target = userNotification.Target
-                };
-                int rows = db.InsertOrReplace(newRecord);
-                //db.Close();
-                return rows;
+            var newRecord = new UserNotificationEntity()
+            {
+                Id = userNotification.Id,
+                UId = userNotification.Id,
+                Email = userNotification.Email,
+                DeviceId = userNotification.DeviceId,
+                AccountNum = userNotification.AccountNum,
+                Title = userNotification.Title,
+                Message = userNotification.Message,
+                IsRead = userNotification.IsRead,
+                IsDeleted = userNotification.IsDeleted,
+                NotificationTypeId = userNotification.NotificationTypeId,
+                BCRMNotificationTypeId = userNotification.BCRMNotificationTypeId,
+                CreatedDate = userNotification.CreatedDate,
+                NotificationType = userNotification.NotificationType,
+                Target = userNotification.Target
+            };
+            int rows = db.InsertOrReplace(newRecord);
+            //db.Close();
+            return rows;
             //}
 
         }
@@ -139,19 +129,19 @@ namespace myTNB_Android.Src.Database.Model
             //using (var db = DBHelper.GetSQLiteConnection())
             //{
             var db = DBHelper.GetSQLiteConnection();
-                db.Execute("UPDATE UserNotificationEntity set IsRead = ? WHERE Id = ?", isRead, notificationId);
-                //db.Close();
+            db.Execute("UPDATE UserNotificationEntity set IsRead = ? WHERE Id = ?", isRead, notificationId);
+            //db.Close();
             //}
         }
 
-        public static void UpdateIsDeleted(string notificationId , bool isDeleted)
+        public static void UpdateIsDeleted(string notificationId, bool isDeleted)
         {
             //using (var db = new SQLiteConnection(Constants.DB_PATH, SQLiteOpenFlags.ReadWrite | SQLiteOpenFlags.Create | SQLiteOpenFlags.FullMutex, true))
             //using (var db = DBHelper.GetSQLiteConnection())
             //{
             var db = DBHelper.GetSQLiteConnection();
-                db.Execute("UPDATE UserNotificationEntity set IsDeleted = ? WHERE Id = ?", isDeleted, notificationId);
-                //db.Close();
+            db.Execute("UPDATE UserNotificationEntity set IsDeleted = ? WHERE Id = ?", isDeleted, notificationId);
+            //db.Close();
             //}
         }
 
@@ -161,11 +151,11 @@ namespace myTNB_Android.Src.Database.Model
             //using (var db = DBHelper.GetSQLiteConnection())
             //{
             var db = DBHelper.GetSQLiteConnection();
-                UserNotificationEntity userNotificationEntity = new UserNotificationEntity();
-                userNotificationEntity = db.Query<UserNotificationEntity>("SELECT * FROM UserNotificationEntity WHERE Id = ?", Id)[0];
-                //db.Close();
-                return userNotificationEntity;
-                //return db.Query<UserNotificationEntity>("SELECT * FROM UserNotificationEntity WHERE Id = ?", Id)[0];
+            UserNotificationEntity userNotificationEntity = new UserNotificationEntity();
+            userNotificationEntity = db.Query<UserNotificationEntity>("SELECT * FROM UserNotificationEntity WHERE Id = ?", Id)[0];
+            //db.Close();
+            return userNotificationEntity;
+            //return db.Query<UserNotificationEntity>("SELECT * FROM UserNotificationEntity WHERE Id = ?", Id)[0];
             //}
         }
 
@@ -175,11 +165,11 @@ namespace myTNB_Android.Src.Database.Model
             //using (var db = DBHelper.GetSQLiteConnection())
             //{
             var db = DBHelper.GetSQLiteConnection();
-                List<UserNotificationEntity> activeList = new List<UserNotificationEntity>();
-                activeList = db.Query<UserNotificationEntity>("SELECT * FROM UserNotificationEntity WHERE IsDeleted = ?", false).ToList<UserNotificationEntity>();
-                //db.Close();
-                return activeList;
-                //return db.Query<UserNotificationEntity>("SELECT * FROM UserNotificationEntity WHERE IsDeleted = ?", false).ToList<UserNotificationEntity>();
+            List<UserNotificationEntity> activeList = new List<UserNotificationEntity>();
+            activeList = db.Query<UserNotificationEntity>("SELECT * FROM UserNotificationEntity WHERE IsDeleted = ?", false).ToList<UserNotificationEntity>();
+            //db.Close();
+            return activeList;
+            //return db.Query<UserNotificationEntity>("SELECT * FROM UserNotificationEntity WHERE IsDeleted = ?", false).ToList<UserNotificationEntity>();
             //}
         }
 
@@ -189,11 +179,11 @@ namespace myTNB_Android.Src.Database.Model
             //using (var db = DBHelper.GetSQLiteConnection())
             //{
             var db = DBHelper.GetSQLiteConnection();
-                List<UserNotificationEntity> filteredList = new List<UserNotificationEntity>();
-                filteredList = db.Query<UserNotificationEntity>("SELECT * FROM UserNotificationEntity WHERE IsDeleted = ? AND NotificationTypeId = ?", false, notificationTypeId).ToList<UserNotificationEntity>();
-                //db.Close();
-                return filteredList;
-                //return db.Query<UserNotificationEntity>("SELECT * FROM UserNotificationEntity WHERE IsDeleted = ? AND NotificationTypeId = ?", false, notificationTypeId).ToList<UserNotificationEntity>();
+            List<UserNotificationEntity> filteredList = new List<UserNotificationEntity>();
+            filteredList = db.Query<UserNotificationEntity>("SELECT * FROM UserNotificationEntity WHERE IsDeleted = ? AND NotificationTypeId = ?", false, notificationTypeId).ToList<UserNotificationEntity>();
+            //db.Close();
+            return filteredList;
+            //return db.Query<UserNotificationEntity>("SELECT * FROM UserNotificationEntity WHERE IsDeleted = ? AND NotificationTypeId = ?", false, notificationTypeId).ToList<UserNotificationEntity>();
             //}
         }
 
@@ -203,10 +193,10 @@ namespace myTNB_Android.Src.Database.Model
             //using (var db = DBHelper.GetSQLiteConnection())
             //{
             var db = DBHelper.GetSQLiteConnection();
-                int count = db.Query<UserNotificationEntity>("SELECT * FROM UserNotificationEntity WHERE IsRead = ? AND IsDeleted = ?", false, false).Count;
-                //db.Close();
-                return count;
-                //return db.Query<UserNotificationEntity>("SELECT * FROM UserNotificationEntity WHERE IsRead = ? AND IsDeleted = ?", false, false).Count;
+            int count = db.Query<UserNotificationEntity>("SELECT * FROM UserNotificationEntity WHERE IsRead = ? AND IsDeleted = ?", false, false).Count;
+            //db.Close();
+            return count;
+            //return db.Query<UserNotificationEntity>("SELECT * FROM UserNotificationEntity WHERE IsRead = ? AND IsDeleted = ?", false, false).Count;
             //}
         }
 
@@ -216,8 +206,8 @@ namespace myTNB_Android.Src.Database.Model
             //using (var db = DBHelper.GetSQLiteConnection())
             //{
             var db = DBHelper.GetSQLiteConnection();
-                db.Execute("DELETE FROM UserNotificationEntity");
-                //db.Close();
+            db.Execute("DELETE FROM UserNotificationEntity");
+            //db.Close();
             //}
         }
 

@@ -1,17 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Refit;
-using System.Text.RegularExpressions;
+using System;
+using System.Linq;
 
 namespace myTNB_Android.Src.MultipleAccountPayment.Model
 {
@@ -117,7 +107,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Model
                 string[] subStrings = Enumerable.Range(0, 4).Select(n => cardNo.Substring(n * 4, 4)).ToArray();
                 cardNoPrintable = String.Format("XXXX XXXX XXXX {0}", subStrings[3]);
             }
-            else if(cardNo.Length == 15)
+            else if (cardNo.Length == 15)
             {
                 string subStrings = cardNo.Substring(12);
                 cardNoPrintable = String.Format("XXXX XXXX XXXX {0}", subStrings);

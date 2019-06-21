@@ -1,24 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-using System.Threading;
-using myTNB_Android.Src.Utils;
-using System.Net.Http;
-using Refit;
-using myTNB_Android.Src.UpdateNickname.Api;
-using Android.Text;
+﻿using Android.Text;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.myTNBMenu.Models;
-using myTNB_Android.Src.SummaryDashBoard.Models;
-using Newtonsoft.Json;
+using myTNB_Android.Src.UpdateNickname.Api;
+using myTNB_Android.Src.Utils;
+using Refit;
+using System;
+using System.Collections.Generic;
+using System.Net.Http;
+using System.Threading;
 
 namespace myTNB_Android.Src.UpdateNickname.MVP
 {
@@ -29,7 +18,7 @@ namespace myTNB_Android.Src.UpdateNickname.MVP
 
         AccountData accountData;
 
-        public UpdateNicknamePresenter(UpdateNicknameContract.IView mView , AccountData accountData)
+        public UpdateNicknamePresenter(UpdateNicknameContract.IView mView, AccountData accountData)
         {
             this.mView = mView;
             this.accountData = accountData;
@@ -77,8 +66,9 @@ namespace myTNB_Android.Src.UpdateNickname.MVP
             }
 
             cts = new CancellationTokenSource();
-            if (mView.IsActive()) {
-            this.mView.ShowProgressDialog();
+            if (mView.IsActive())
+            {
+                this.mView.ShowProgressDialog();
             }
 
 #if DEBUG || STUB
@@ -98,7 +88,7 @@ namespace myTNB_Android.Src.UpdateNickname.MVP
                     AccountNo = accountNo,
                     OldAccountNickName = oldAccountNickName,
                     NewAccountNickName = newAccountNickName
-                } , cts.Token);
+                }, cts.Token);
 
                 if (mView.IsActive())
                 {
@@ -107,7 +97,7 @@ namespace myTNB_Android.Src.UpdateNickname.MVP
 
                 if (!updateNickNameResponse.Data.IsError)
                 {
-                    CustomerBillingAccount.UpdateAccountName(newAccountNickName , accountNo);
+                    CustomerBillingAccount.UpdateAccountName(newAccountNickName, accountNo);
                     AccountDataEntity.UpdateNickName(newAccountNickName, accountNo);
 
                     /**Since Summary dashBoard logic is changed these codes where commented on 01-11-2018**/
@@ -157,32 +147,33 @@ namespace myTNB_Android.Src.UpdateNickname.MVP
 
         public void OnVerifyNickName(string accountNo, string newAccountNickname)
         {
-            try {
-            this.mView.ClearError();
-
-            if (TextUtils.IsEmpty(newAccountNickname))
+            try
             {
-                this.mView.DisableSaveButton();
-                this.mView.ShowEmptyNickNameError();
-                return;
-            }
+                this.mView.ClearError();
 
-            //if (!Utility.isAlphaNumeric(newAccountNickname))
-            //{
-            //    this.mView.ShowEnterValidAccountName();
-            //    this.mView.DisableSaveButton();
-            //    return;
-            //}
+                if (TextUtils.IsEmpty(newAccountNickname))
+                {
+                    this.mView.DisableSaveButton();
+                    this.mView.ShowEmptyNickNameError();
+                    return;
+                }
 
-            CustomerBillingAccount customerBillingAccount = CustomerBillingAccount.FindByAccNum(accountData.AccountNum);
-            if (customerBillingAccount != null && customerBillingAccount.AccDesc.Equals(newAccountNickname))
-            {
-                this.mView.DisableSaveButton();
-            }
-            else
-            {
-                this.mView.EnableSaveButton();
-            }
+                //if (!Utility.isAlphaNumeric(newAccountNickname))
+                //{
+                //    this.mView.ShowEnterValidAccountName();
+                //    this.mView.DisableSaveButton();
+                //    return;
+                //}
+
+                CustomerBillingAccount customerBillingAccount = CustomerBillingAccount.FindByAccNum(accountData.AccountNum);
+                if (customerBillingAccount != null && customerBillingAccount.AccDesc.Equals(newAccountNickname))
+                {
+                    this.mView.DisableSaveButton();
+                }
+                else
+                {
+                    this.mView.EnableSaveButton();
+                }
             }
             catch (Exception e)
             {
@@ -192,13 +183,14 @@ namespace myTNB_Android.Src.UpdateNickname.MVP
 
         public void Start()
         {
-            try {
-            this.mView.DisableSaveButton();
-            CustomerBillingAccount customerBillingAccount = CustomerBillingAccount.FindByAccNum(accountData.AccountNum);
-            if (customerBillingAccount != null && !TextUtils.IsEmpty(customerBillingAccount.AccDesc))
+            try
             {
-                this.mView.ShowNickname(customerBillingAccount.AccDesc);
-            }
+                this.mView.DisableSaveButton();
+                CustomerBillingAccount customerBillingAccount = CustomerBillingAccount.FindByAccNum(accountData.AccountNum);
+                if (customerBillingAccount != null && !TextUtils.IsEmpty(customerBillingAccount.AccDesc))
+                {
+                    this.mView.ShowNickname(customerBillingAccount.AccDesc);
+                }
             }
             catch (Exception e)
             {

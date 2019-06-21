@@ -1,15 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-using Android.Preferences;
+﻿using Android.Content;
 using Java.Lang;
 using Java.Text;
 using Java.Util;
@@ -34,7 +23,7 @@ namespace myTNB_Android.Src.Utils
 
 
 
-        public static void SetCurrentImageCount(ISharedPreferences prefs ,  int count)
+        public static void SetCurrentImageCount(ISharedPreferences prefs, int count)
         {
 
             SimpleDateFormat simpleDateFormatter = new SimpleDateFormat("dd-MM-yyyy");
@@ -43,8 +32,8 @@ namespace myTNB_Android.Src.Utils
             calendarYesterday.Add(CalendarField.Date, -1);
 
             ISharedPreferencesEditor editor = prefs.Edit();
-            editor.Remove(string.Format("{0}{1}", "currentImageCount" , simpleDateFormatter.Format(calendarYesterday.TimeInMillis)));
-            editor.PutInt(string.Format("{0}{1}", "currentImageCount", simpleDateFormatter.Format(calendarNow.TimeInMillis)) , count);
+            editor.Remove(string.Format("{0}{1}", "currentImageCount", simpleDateFormatter.Format(calendarYesterday.TimeInMillis)));
+            editor.PutInt(string.Format("{0}{1}", "currentImageCount", simpleDateFormatter.Format(calendarNow.TimeInMillis)), count);
             editor.Apply();
         }
 
@@ -53,7 +42,7 @@ namespace myTNB_Android.Src.Utils
 
             SimpleDateFormat simpleDateFormatter = new SimpleDateFormat("dd-MM-yyyy");
             Calendar calendarNow = Calendar.GetInstance(Locale.Default);
-            return prefs.GetInt(string.Format("{0}{1}", "currentImageCount", simpleDateFormatter.Format(calendarNow.TimeInMillis)) , 0);
+            return prefs.GetInt(string.Format("{0}{1}", "currentImageCount", simpleDateFormatter.Format(calendarNow.TimeInMillis)), 0);
         }
 
         public static void SetHasNotification(ISharedPreferences prefs)
@@ -77,7 +66,7 @@ namespace myTNB_Android.Src.Utils
 
         public static string GetUserEmailNotification(ISharedPreferences prefs)
         {
-            return prefs.GetString("notificationEmail" , null);
+            return prefs.GetString("notificationEmail", null);
         }
 
         public static void RemoveNotificationSession(ISharedPreferences prefs)
@@ -114,10 +103,10 @@ namespace myTNB_Android.Src.Utils
 
         internal static System.Boolean HasResetFlag(ISharedPreferences mSharedPref)
         {
-            return mSharedPref.GetBoolean("resetPasswordEnabled" , false);
+            return mSharedPref.GetBoolean("resetPasswordEnabled", false);
         }
         [Deprecated]
-        internal static void PersistPassword(ISharedPreferences mSharedPref , string password)
+        internal static void PersistPassword(ISharedPreferences mSharedPref, string password)
         {
             ISharedPreferencesEditor editor = mSharedPref.Edit();
             editor.PutString("currentPassword", password);
@@ -126,7 +115,7 @@ namespace myTNB_Android.Src.Utils
         [Deprecated]
         internal static string GetPersistPassword(ISharedPreferences mSharedPref)
         {
-            return mSharedPref.GetString("currentPassword" , null);
+            return mSharedPref.GetString("currentPassword", null);
         }
 
         internal static void RemovePersistPassword(ISharedPreferences mSharedPref)
@@ -136,7 +125,7 @@ namespace myTNB_Android.Src.Utils
             editor.Apply();
         }
 
-        internal static void SaveSelectedFeedback(ISharedPreferences mSharedPref , string largeJsonString)
+        internal static void SaveSelectedFeedback(ISharedPreferences mSharedPref, string largeJsonString)
         {
             ISharedPreferencesEditor editor = mSharedPref.Edit();
             editor.PutString(Constants.SELECTED_FEEDBACK, largeJsonString);
@@ -145,7 +134,7 @@ namespace myTNB_Android.Src.Utils
 
         internal static string GetSelectedFeedback(ISharedPreferences mSharePref)
         {
-            return mSharePref.GetString(Constants.SELECTED_FEEDBACK , null);
+            return mSharePref.GetString(Constants.SELECTED_FEEDBACK, null);
         }
 
         internal static void UpdateDeviceId(ISharedPreferences mSharedPref)
@@ -203,11 +192,13 @@ namespace myTNB_Android.Src.Utils
             editor.Apply();
         }
 
-        public static int GetPrevAppVersionCode(ISharedPreferences preferences) {
+        public static int GetPrevAppVersionCode(ISharedPreferences preferences)
+        {
             return preferences.GetInt("PREV_APP_VERSION_CODE", 0);
         }
 
-        public static void SetAppVersionCode(ISharedPreferences preferences, int appVersionCode) {
+        public static void SetAppVersionCode(ISharedPreferences preferences, int appVersionCode)
+        {
             ISharedPreferencesEditor editor = preferences.Edit();
             editor.PutInt("PREV_APP_VERSION_CODE", appVersionCode);
             editor.Apply();

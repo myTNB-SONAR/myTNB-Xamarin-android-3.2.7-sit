@@ -1,18 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
+﻿using Android.Content;
 using Android.Views;
 using Android.Widget;
+using CheeseBind;
 using myTNB_Android.Src.AppLaunch.Models;
 using myTNB_Android.Src.Base.Adapter;
-using CheeseBind;
 using myTNB_Android.Src.Utils;
+using System;
+using System.Collections.Generic;
 
 namespace myTNB_Android.Src.SelectFeedbackState.Adapter
 {
@@ -48,19 +42,20 @@ namespace myTNB_Android.Src.SelectFeedbackState.Adapter
                 vh = convertView.Tag as FeedbackStateViewHolder;
 
             }
-            try {
-            FeedbackState item = GetItemObject(position);
-            vh.txtFeedbackState.Text = item.StateName;
-
-            if (item.IsSelected)
+            try
             {
-                vh.imageActionIcon.Visibility = ViewStates.Visible;
-            }
-            else
-            {
-                vh.imageActionIcon.Visibility = ViewStates.Gone;
+                FeedbackState item = GetItemObject(position);
+                vh.txtFeedbackState.Text = item.StateName;
 
-            }
+                if (item.IsSelected)
+                {
+                    vh.imageActionIcon.Visibility = ViewStates.Visible;
+                }
+                else
+                {
+                    vh.imageActionIcon.Visibility = ViewStates.Gone;
+
+                }
             }
             catch (Exception e)
             {

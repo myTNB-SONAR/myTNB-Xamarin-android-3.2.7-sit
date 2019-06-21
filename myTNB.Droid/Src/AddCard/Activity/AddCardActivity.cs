@@ -1,26 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
+﻿using AFollestad.MaterialDialogs;
 using Android.App;
 using Android.Content;
+using Android.Content.PM;
 using Android.OS;
 using Android.Runtime;
+using Android.Support.Design.Widget;
+using Android.Support.V4.Content;
+using Android.Text;
 using Android.Views;
 using Android.Widget;
-using myTNB_Android.Src.Base.Activity;
-using Android.Util;
-using Android.Content.PM;
-using Android.Support.Design.Widget;
-using myTNB_Android.Src.Utils;
-using Android.Text;
-using myTNB_Android.Src.AddCard.MVP;
-using myTNB_Android.Src.MakePayment.Model;
-using Newtonsoft.Json;
 using Card.IO;
-using AFollestad.MaterialDialogs;
-using Android.Support.V4.Content;
+using myTNB_Android.Src.AddCard.MVP;
+using myTNB_Android.Src.Base.Activity;
+using myTNB_Android.Src.MakePayment.Model;
+using myTNB_Android.Src.Utils;
+using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Runtime;
 
 namespace myTNB_Android.Src.AddCard.Activity
@@ -83,7 +80,6 @@ namespace myTNB_Android.Src.AddCard.Activity
                 {
                     if (extras.ContainsKey("registeredCards"))
                     {
-                        //registerdCards = JsonConvert.DeserializeObject<List<myTNB_Android.Src.MakePayment.Models.CreditCard>>(Intent.Extras.GetString("registeredCards"));
                         registerdCards = DeSerialze<List<myTNB_Android.Src.MakePayment.Models.CreditCard>>(extras.GetString("registeredCards"));
                     }
                 }
@@ -114,7 +110,6 @@ namespace myTNB_Android.Src.AddCard.Activity
                 btnNext = FindViewById<Button>(Resource.Id.btnNext);
                 btnNext.Click += delegate
                 {
-                    //ValidateCardDetails();
                     DoSaveCard();
                 };
 
@@ -129,13 +124,6 @@ namespace myTNB_Android.Src.AddCard.Activity
                 TextViewUtils.SetMuseoSans300Typeface(saveCard);
                 TextViewUtils.SetMuseoSans500Typeface(btnNext);
 
-                /* string cardNo = txtCardNo.Text.Replace(" ", "");
-                string name = txtNameOfCard.Text;
-                string exp = txtCardExpDate.Text;
-                string cvv = txtCVV.Text;*/
-
-                //txtFeedback.TextChanged += TextChanged;
-
                 txtCardNo.TextChanged += CardTextChange;
 
                 txtNameOfCard.TextChanged += NameTextChange;
@@ -143,7 +131,9 @@ namespace myTNB_Android.Src.AddCard.Activity
                 txtCardExpDate.TextChanged += ExpTextChange;
 
                 txtCVV.TextChanged += CvvTextChange;
-            } catch(Exception e) {
+            }
+            catch (Exception e)
+            {
                 Utility.LoggingNonFatalError(e);
             }
 
@@ -165,19 +155,19 @@ namespace myTNB_Android.Src.AddCard.Activity
                     {
                         textInputLayoutCardNo.Error = "Invalid Card No.";
                     }
-                    //ShowErrorMessage("Invalid Card Number", "Please enter valid card number");
                 }
                 else if (!LuhnVerification(cardNo))
                 {
                     DisableSaveButton();
                     textInputLayoutCardNo.Error = "Invalid Card No.";
-                    //ShowErrorMessage("Invalid Card Number", "Please enter valid card number");
                 }
                 else
                 {
                     EnableSaveButton();
                 }
-            } catch(Exception ex) {
+            }
+            catch (Exception ex)
+            {
                 Utility.LoggingNonFatalError(ex);
             }
         }
@@ -185,19 +175,19 @@ namespace myTNB_Android.Src.AddCard.Activity
         [Preserve]
         private void NameTextChange(object sender, Android.Text.TextChangedEventArgs e)
         {
-            
-            try {
-            string name = txtNameOfCard.Text.Trim();
 
-            if (String.IsNullOrEmpty(name))
+            try
             {
-                DisableSaveButton();
-                //ShowErrorMessage("Invalid Name", "Please enter name of card holder");
-            }
-            else
-            {
-                EnableSaveButton();
-            }
+                string name = txtNameOfCard.Text.Trim();
+
+                if (String.IsNullOrEmpty(name))
+                {
+                    DisableSaveButton();
+                }
+                else
+                {
+                    EnableSaveButton();
+                }
             }
             catch (Exception ex)
             {
@@ -208,22 +198,23 @@ namespace myTNB_Android.Src.AddCard.Activity
         [Preserve]
         private void ExpTextChange(object sender, Android.Text.TextChangedEventArgs e)
         {
-            try {
-            string exp = txtCardExpDate.Text.Trim();
+            try
+            {
+                string exp = txtCardExpDate.Text.Trim();
 
-            textInputLayoutCardExpDate.Error = null;
-            if (String.IsNullOrEmpty(exp) || exp.Length != 5 || !exp.Contains("/"))
-            {
-                DisableSaveButton();
-                //ShowErrorMessage("Invalid Exp Date", "Please enter expiry date of your card");
-                if (!String.IsNullOrEmpty(exp)) {
-                    textInputLayoutCardExpDate.Error = "Invalid Card Expiration Date";
+                textInputLayoutCardExpDate.Error = null;
+                if (String.IsNullOrEmpty(exp) || exp.Length != 5 || !exp.Contains("/"))
+                {
+                    DisableSaveButton();
+                    if (!String.IsNullOrEmpty(exp))
+                    {
+                        textInputLayoutCardExpDate.Error = "Invalid Card Expiration Date";
+                    }
                 }
-            }
-            else
-            {
-                EnableSaveButton();
-            }
+                else
+                {
+                    EnableSaveButton();
+                }
             }
             catch (Exception ex)
             {
@@ -234,30 +225,31 @@ namespace myTNB_Android.Src.AddCard.Activity
         [Preserve]
         private void CvvTextChange(object sender, Android.Text.TextChangedEventArgs e)
         {
-            try {
-            string cvv = txtCVV.Text.Trim();
-            textInputLayoutCVV.Error = null;
-            if (String.IsNullOrEmpty(cvv) || cvv.Length < 3)
+            try
             {
-                DisableSaveButton();
+                string cvv = txtCVV.Text.Trim();
+                textInputLayoutCVV.Error = null;
+                if (String.IsNullOrEmpty(cvv) || cvv.Length < 3)
+                {
+                    DisableSaveButton();
 
-                if (!String.IsNullOrEmpty(cvv)) {
-                    textInputLayoutCVV.Error = "Invalid CVV.";
-                //ShowErrorMessage("Invalid CVV Code", "Please enter CVV code from the back of your card");    
+                    if (!String.IsNullOrEmpty(cvv))
+                    {
+                        textInputLayoutCVV.Error = "Invalid CVV."; 
+                    }
+
                 }
-
-            }
-            else
-            {
-                EnableSaveButton();
-            }
+                else
+                {
+                    EnableSaveButton();
+                }
             }
             catch (Exception ex)
             {
                 Utility.LoggingNonFatalError(ex);
             }
         }
-        
+
 
         public override void OnBackPressed()
         {
@@ -269,7 +261,7 @@ namespace myTNB_Android.Src.AddCard.Activity
 
         public void Start()
         {
-            
+
         }
 
         public void ValidateCardDetails()
@@ -279,54 +271,52 @@ namespace myTNB_Android.Src.AddCard.Activity
             string exp = txtCardExpDate.Text;
             string cvv = txtCVV.Text;
 
-            try {
-            if (String.IsNullOrEmpty(cardNo) || cardNo.Length < 15)
+            try
             {
-                DisableSaveButton();
-                //ShowErrorMessage("Invalid Card Number", "Please enter valid card number");
-            }
-            else if(!LuhnVerification(cardNo))
-            {
-                DisableSaveButton();
-                //ShowErrorMessage("Invalid Card Number", "Please enter valid card number");
-            }
-            else if (String.IsNullOrEmpty(name))
-            {
-                DisableSaveButton();
-                //ShowErrorMessage("Invalid Name", "Please enter name of card holder");
-            }
-            else if (String.IsNullOrEmpty(exp) || exp.Length != 5 || !exp.Contains("/"))
-            {
-                DisableSaveButton();
-                //ShowErrorMessage("Invalid Exp Date", "Please enter expiry date of your card");
-            }
-            else if (String.IsNullOrEmpty(cvv) || cvv.Length < 3)
-            {
-                DisableSaveButton();
-                //ShowErrorMessage("Invalid CVV Code", "Please enter CVV code from the back of your card");
-            }
-            else if (IsAlreadyRegisteredCard(cardNo))
-            {
-                DisableSaveButton();
-                mDuplicateCardDialog = new MaterialDialog.Builder(this)
-                        .Title("Info")
-                        .Content("Seems like you are paying with an already saved Credit / Debit Card. Do you want to continue?")
-                        .Cancelable(false)
-                        .PositiveText("Continue")
-                        .OnPositive((dialog, which) => {
-                            CardDetails card = new CardDetails(cardNo, name, exp, cvv, saveCard.Checked);
-                            Intent finishIntent = new Intent();
-                            finishIntent.PutExtra("extra", JsonConvert.SerializeObject(card));
-                            SetResult(Result.Ok, finishIntent);
-                            Finish();
-                        })
-                        .NeutralText("Cancel")
-                        .OnNeutral((dialog, which) => mDuplicateCardDialog.Dismiss()).Show();
-            }
-            else{
-                btnNext.Enabled = true;
-                btnNext.Background = ContextCompat.GetDrawable(this, Resource.Drawable.green_button_background);
-            }
+                if (String.IsNullOrEmpty(cardNo) || cardNo.Length < 15)
+                {
+                    DisableSaveButton();
+                }
+                else if (!LuhnVerification(cardNo))
+                {
+                    DisableSaveButton();
+                }
+                else if (String.IsNullOrEmpty(name))
+                {
+                    DisableSaveButton();
+                }
+                else if (String.IsNullOrEmpty(exp) || exp.Length != 5 || !exp.Contains("/"))
+                {
+                    DisableSaveButton();
+                }
+                else if (String.IsNullOrEmpty(cvv) || cvv.Length < 3)
+                {
+                    DisableSaveButton();
+                }
+                else if (IsAlreadyRegisteredCard(cardNo))
+                {
+                    DisableSaveButton();
+                    mDuplicateCardDialog = new MaterialDialog.Builder(this)
+                            .Title("Info")
+                            .Content("Seems like you are paying with an already saved Credit / Debit Card. Do you want to continue?")
+                            .Cancelable(false)
+                            .PositiveText("Continue")
+                            .OnPositive((dialog, which) =>
+                            {
+                                CardDetails card = new CardDetails(cardNo, name, exp, cvv, saveCard.Checked);
+                                Intent finishIntent = new Intent();
+                                finishIntent.PutExtra("extra", JsonConvert.SerializeObject(card));
+                                SetResult(Result.Ok, finishIntent);
+                                Finish();
+                            })
+                            .NeutralText("Cancel")
+                            .OnNeutral((dialog, which) => mDuplicateCardDialog.Dismiss()).Show();
+                }
+                else
+                {
+                    btnNext.Enabled = true;
+                    btnNext.Background = ContextCompat.GetDrawable(this, Resource.Drawable.green_button_background);
+                }
             }
             catch (Exception ex)
             {
@@ -335,17 +325,20 @@ namespace myTNB_Android.Src.AddCard.Activity
         }
 
 
-        private void EnableSaveButton() {
+        private void EnableSaveButton()
+        {
             ValidateCardDetails();
         }
 
 
-        private void DisableSaveButton() {
+        private void DisableSaveButton()
+        {
             btnNext.Enabled = false;
             btnNext.Background = ContextCompat.GetDrawable(this, Resource.Drawable.silver_chalice_button_background);
         }
 
-        private void DoSaveCard() {
+        private void DoSaveCard()
+        {
             try
             {
                 string cardNo = txtCardNo.Text.Replace(" ", "");
@@ -358,7 +351,9 @@ namespace myTNB_Android.Src.AddCard.Activity
                 finishIntent.PutExtra("extra", JsonConvert.SerializeObject(card));
                 SetResult(Result.Ok, finishIntent);
                 Finish();
-            } catch (Exception e) {
+            }
+            catch (Exception e)
+            {
                 Utility.LoggingNonFatalError(e);
             }
         }
@@ -414,27 +409,28 @@ namespace myTNB_Android.Src.AddCard.Activity
 
         protected override void OnActivityResult(int requestCode, Result result, Intent data)
         {
-            try {
-            if (requestCode == REQUEST_SCAN && data != null
-                && data.HasExtra(CardIOActivity.ExtraScanResult))
+            try
             {
-                var card = data.GetParcelableExtra(CardIOActivity.ExtraScanResult)
-                     .JavaCast<CreditCard>();
-                if (card != null)
+                if (requestCode == REQUEST_SCAN && data != null
+                    && data.HasExtra(CardIOActivity.ExtraScanResult))
                 {
-                    txtCardNo.Text = card.CardNumber;
-                    if (card.ExpiryMonth != 0 && card.ExpiryYear != 0)
+                    var card = data.GetParcelableExtra(CardIOActivity.ExtraScanResult)
+                         .JavaCast<CreditCard>();
+                    if (card != null)
                     {
-                        string cardExpDate = card.ExpiryMonth + "" + card.ExpiryYear;
-                        txtCardExpDate.Text = cardExpDate;
+                        txtCardNo.Text = card.CardNumber;
+                        if (card.ExpiryMonth != 0 && card.ExpiryYear != 0)
+                        {
+                            string cardExpDate = card.ExpiryMonth + "" + card.ExpiryYear;
+                            txtCardExpDate.Text = cardExpDate;
+                        }
                     }
-                }
 
-            }
-            else
-            {
-                Toast.MakeText(this, "Unable to scan card! Please try again...", ToastLength.Long).Show();
-            }
+                }
+                else
+                {
+                    Toast.MakeText(this, "Unable to scan card! Please try again...", ToastLength.Long).Show();
+                }
             }
             catch (Exception ex)
             {
@@ -451,12 +447,12 @@ namespace myTNB_Android.Src.AddCard.Activity
             {
                 string first = card.LastDigits.Substring(0, 6);
                 string last = card.LastDigits.Substring(card.LastDigits.Length - 4);
-                if(first.Equals(first6Digits) && last.Equals(last4Digits))
+                if (first.Equals(first6Digits) && last.Equals(last4Digits))
                 {
                     flag = true;
                     break;
                 }
-                
+
             }
 
             return flag;

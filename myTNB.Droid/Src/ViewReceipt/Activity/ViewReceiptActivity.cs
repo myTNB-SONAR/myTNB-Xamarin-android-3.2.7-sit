@@ -1,27 +1,23 @@
-﻿using System;
-
-using Android.App;
-using Android.OS;
-using myTNB_Android.Src.Base.Activity;
-using myTNB_Android.Src.myTNBMenu.Models;
-using CheeseBind;
-using Android.Webkit;
-using myTNB_Android.Src.ViewReceipt.MVP;
-using myTNB_Android.Src.ViewReceipt.Model;
-using Android.Support.Design.Widget;
-using myTNB_Android.Src.Utils;
-using Android.Widget;
-using Android.Views;
-using Android.Util;
+﻿using Android.App;
+using Android.Content;
 using Android.Content.PM;
-using Android.Print;
-using System.IO;
-using static Android.Provider.DocumentsContract;
+using Android.OS;
+using Android.Support.Design.Widget;
+using Android.Support.V4.Content;
+using Android.Util;
+using Android.Views;
+using Android.Webkit;
+using Android.Widget;
+using CheeseBind;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
-using Android.Content;
-using AFollestad.MaterialDialogs;
-using Android.Support.V4.Content;
+using myTNB_Android.Src.Base.Activity;
+using myTNB_Android.Src.myTNBMenu.Models;
+using myTNB_Android.Src.Utils;
+using myTNB_Android.Src.ViewReceipt.Model;
+using myTNB_Android.Src.ViewReceipt.MVP;
+using System;
+using System.IO;
 
 namespace myTNB_Android.Src.ViewReceipt.Activity
 {
@@ -76,41 +72,42 @@ namespace myTNB_Android.Src.ViewReceipt.Activity
 
         public void OnShowReceiptDetails(GetReceiptResponse response)
         {
-            try {
-            if(response != null)
+            try
             {
-                if (response.receipt.Status.Equals("success"))
+                if (response != null)
                 {
-                    Log.Debug(TAG, "Receipt :" + response.receipt.receiptDetails);
-                    RECEPT_NO = response.receipt.receiptDetails.referenceNum;
-                    receipt_html = HTML_START + "<p><font color='grey'>" + this.GetString(Resource.String.receipt_dear_customer)+ "</font></p></b><br/>"
-                        + "<p><font color='grey'>" + this.GetString(Resource.String.receipt_payment_succesful)  +  "</font></p></b><br/>"
-                        + "<p><font color='grey'>" + this.GetString(Resource.String.receipt_reference_number) + response.receipt.receiptDetails.referenceNum + "<br></br>"
-                        + this.GetString(Resource.String.receipt_date) + response.receipt.receiptDetails.payTransDate + "<br></br>"
-                        + this.GetString(Resource.String.receipt_amount) + response.receipt.receiptDetails.payAmt + "<br></br>"
-                        + this.GetString(Resource.String.receipt_from_account) + response.receipt.receiptDetails.customerName + "<br></br>"
-                        + this.GetString(Resource.String.receipt_account_number) + response.receipt.receiptDetails.accountNum + "<br></br>"
-                        + this.GetString(Resource.String.receipt_transaction_method) + response.receipt.receiptDetails.payMethod + "<br></br>"
-                        + this.GetString(Resource.String.receipt_transcation_id) + response.receipt.receiptDetails.payTransID + "<br></br>"
-                        + "</font></p>"
-                        + HTML_END;
+                    if (response.receipt.Status.Equals("success"))
+                    {
+                        Log.Debug(TAG, "Receipt :" + response.receipt.receiptDetails);
+                        RECEPT_NO = response.receipt.receiptDetails.referenceNum;
+                        receipt_html = HTML_START + "<p><font color='grey'>" + this.GetString(Resource.String.receipt_dear_customer) + "</font></p></b><br/>"
+                            + "<p><font color='grey'>" + this.GetString(Resource.String.receipt_payment_succesful) + "</font></p></b><br/>"
+                            + "<p><font color='grey'>" + this.GetString(Resource.String.receipt_reference_number) + response.receipt.receiptDetails.referenceNum + "<br></br>"
+                            + this.GetString(Resource.String.receipt_date) + response.receipt.receiptDetails.payTransDate + "<br></br>"
+                            + this.GetString(Resource.String.receipt_amount) + response.receipt.receiptDetails.payAmt + "<br></br>"
+                            + this.GetString(Resource.String.receipt_from_account) + response.receipt.receiptDetails.customerName + "<br></br>"
+                            + this.GetString(Resource.String.receipt_account_number) + response.receipt.receiptDetails.accountNum + "<br></br>"
+                            + this.GetString(Resource.String.receipt_transaction_method) + response.receipt.receiptDetails.payMethod + "<br></br>"
+                            + this.GetString(Resource.String.receipt_transcation_id) + response.receipt.receiptDetails.payTransID + "<br></br>"
+                            + "</font></p>"
+                            + HTML_END;
 
-                    receipt_pdf = this.GetString(Resource.String.receipt_dear_customer) + "\n\n"
-                        + this.GetString(Resource.String.receipt_payment_succesful) + "\n\n"
-                        + this.GetString(Resource.String.receipt_reference_number) + response.receipt.receiptDetails.referenceNum + "\n"
-                        + this.GetString(Resource.String.receipt_date) + response.receipt.receiptDetails.payTransDate + "\n"
-                        + this.GetString(Resource.String.receipt_amount) + response.receipt.receiptDetails.payAmt + "\n"
-                        + this.GetString(Resource.String.receipt_from_account) + response.receipt.receiptDetails.customerName + "\n"
-                        + this.GetString(Resource.String.receipt_account_number) + response.receipt.receiptDetails.accountNum + "\n"
-                        + this.GetString(Resource.String.receipt_transaction_method) + response.receipt.receiptDetails.payMethod + "\n"
-                        + this.GetString(Resource.String.receipt_transcation_id) + response.receipt.receiptDetails.payTransID + "\n";
-                    webView.LoadData(receipt_html, "text/html", "UTF-8");
+                        receipt_pdf = this.GetString(Resource.String.receipt_dear_customer) + "\n\n"
+                            + this.GetString(Resource.String.receipt_payment_succesful) + "\n\n"
+                            + this.GetString(Resource.String.receipt_reference_number) + response.receipt.receiptDetails.referenceNum + "\n"
+                            + this.GetString(Resource.String.receipt_date) + response.receipt.receiptDetails.payTransDate + "\n"
+                            + this.GetString(Resource.String.receipt_amount) + response.receipt.receiptDetails.payAmt + "\n"
+                            + this.GetString(Resource.String.receipt_from_account) + response.receipt.receiptDetails.customerName + "\n"
+                            + this.GetString(Resource.String.receipt_account_number) + response.receipt.receiptDetails.accountNum + "\n"
+                            + this.GetString(Resource.String.receipt_transaction_method) + response.receipt.receiptDetails.payMethod + "\n"
+                            + this.GetString(Resource.String.receipt_transcation_id) + response.receipt.receiptDetails.payTransID + "\n";
+                        webView.LoadData(receipt_html, "text/html", "UTF-8");
+                    }
+                    else
+                    {
+                        ShowErrorMessage(response.receipt.Message);
+                    }
                 }
-                else
-                {
-                    ShowErrorMessage(response.receipt.Message);
-                }
-            }
             }
             catch (Exception e)
             {
@@ -161,26 +158,27 @@ namespace myTNB_Android.Src.ViewReceipt.Activity
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-            try {
-            mPresenter = new ViewReceiptPresenter(this);
-            webView = FindViewById<WebView>(Resource.Id.webView);
-            baseView = FindViewById<FrameLayout>(Resource.Id.rootView);
-            mProgressBar = FindViewById<ProgressBar>(Resource.Id.progressBar);
+            try
+            {
+                mPresenter = new ViewReceiptPresenter(this);
+                webView = FindViewById<WebView>(Resource.Id.webView);
+                baseView = FindViewById<FrameLayout>(Resource.Id.rootView);
+                mProgressBar = FindViewById<ProgressBar>(Resource.Id.progressBar);
 
-            mGetReceiptDialog = new AlertDialog.Builder(this)
-              .SetTitle("Get Receipt")
-              .SetMessage("Please wait while we are getting receipt details...")
-              .SetCancelable(false)
-              .Create();
+                mGetReceiptDialog = new AlertDialog.Builder(this)
+                  .SetTitle("Get Receipt")
+                  .SetMessage("Please wait while we are getting receipt details...")
+                  .SetCancelable(false)
+                  .Create();
 
-            // Create your application here
-            webView.Settings.JavaScriptEnabled = (true);
-            webView.SetWebChromeClient(new WebChromeClient());
-            webView.SetWebViewClient(new MyTNBWebViewClient(this, mProgressBar));
+                // Create your application here
+                webView.Settings.JavaScriptEnabled = (true);
+                webView.SetWebChromeClient(new WebChromeClient());
+                webView.SetWebViewClient(new MyTNBWebViewClient(this, mProgressBar));
 
-            string apiKeyID = Constants.APP_CONFIG.API_KEY_ID;
-            string merchantTransId = Intent.Extras.GetString("merchantTransId");
-            this.userActionsListener.GetReceiptDetails(apiKeyID, merchantTransId);
+                string apiKeyID = Constants.APP_CONFIG.API_KEY_ID;
+                string merchantTransId = Intent.Extras.GetString("merchantTransId");
+                this.userActionsListener.GetReceiptDetails(apiKeyID, merchantTransId);
             }
             catch (Exception e)
             {
@@ -208,7 +206,7 @@ namespace myTNB_Android.Src.ViewReceipt.Activity
 
         public void OnDownloadPDF()
         {
-            
+
             if (downloadClicked)
             {
                 mProgressBar.Visibility = ViewStates.Visible;
@@ -277,11 +275,11 @@ namespace myTNB_Android.Src.ViewReceipt.Activity
                         Log.Debug("ViewReceiptActivity", e.StackTrace);
                         downloadClicked = false;
                         mProgressBar.Visibility = ViewStates.Gone;
-                            Utility.LoggingNonFatalError(e);
+                        Utility.LoggingNonFatalError(e);
                     }
                 });
             }
-            
+
         }
 
         public class MyTNBWebViewClient : WebViewClient
@@ -365,7 +363,8 @@ namespace myTNB_Android.Src.ViewReceipt.Activity
             }
 
             mErrorNoInternet = Snackbar.Make(mainView, "Please check your internet connection.", Snackbar.LengthIndefinite)
-            .SetAction("Try Again", delegate {
+            .SetAction("Try Again", delegate
+            {
                 webView.LoadUrl(failingUrl);
                 mErrorNoInternet.Dismiss();
             });

@@ -1,23 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-using Android.Text;
-using Java.Lang;
-using Android.Graphics.Drawables;
+﻿using Android.Graphics.Drawables;
 using Android.Support.Design.Widget;
+using Android.Text;
+using Android.Widget;
+using Java.Lang;
+using System;
 using static Android.Views.View;
 
 namespace myTNB_Android.Src.Utils
 {
-    
+
     public class InputFilterFormField : Java.Lang.Object, ITextWatcher
     {
         private readonly TextInputLayout _txtLayout;
@@ -57,7 +48,7 @@ namespace myTNB_Android.Src.Utils
 
         public void AfterTextChanged(IEditable s)
         {
-            if(_editText == null)
+            if (_editText == null)
             {
                 return;
             }

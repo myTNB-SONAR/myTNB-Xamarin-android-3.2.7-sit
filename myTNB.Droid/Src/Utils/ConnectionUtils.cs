@@ -1,15 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
+﻿using Android.Content;
 using Android.Net;
+using Android.OS;
 
 namespace myTNB_Android.Src.Utils
 {
@@ -43,7 +34,7 @@ namespace myTNB_Android.Src.Utils
                         {
                             if (anInfo.GetState() == NetworkInfo.State.Connected)
                             {
-                            
+
                                 return true;
                             }
                         }

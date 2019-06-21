@@ -20,7 +20,7 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
         CancellationTokenSource cts;
         private ISharedPreferences mSharedPref;
 
-        public ForgetPasswordPresenter(ForgetPasswordContract.IView mView , ISharedPreferences sharedPref)
+        public ForgetPasswordPresenter(ForgetPasswordContract.IView mView, ISharedPreferences sharedPref)
         {
             this.mView = mView;
             this.mSharedPref = sharedPref;
@@ -160,8 +160,9 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
 
             this.mView.DisableSubmitButton();
 
-            if (mView.IsActive()) {
-            this.mView.ShowProgressDialog();
+            if (mView.IsActive())
+            {
+                this.mView.ShowProgressDialog();
             }
             ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
 

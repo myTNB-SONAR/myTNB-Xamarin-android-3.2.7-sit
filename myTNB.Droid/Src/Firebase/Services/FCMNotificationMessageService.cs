@@ -1,28 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
+﻿using Android.App;
 using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-using Firebase.Messaging;
-using Android.Util;
-using myTNB_Android.Src.Database.Model;
-using myTNB_Android.Src.Notifications.Activity;
+using Android.Graphics;
 using Android.Media;
 using Android.Support.V4.App;
-using Android.Graphics;
-using myTNB_Android.Src.Utils;
-using System.Threading;
-using System.Net.Http;
-using Refit;
+using Firebase.Messaging;
 using myTNB_Android.Src.AppLaunch.Api;
-using myTNB_Android.Src.AppLaunch.Requests;
 using myTNB_Android.Src.AppLaunch.Models;
+using myTNB_Android.Src.AppLaunch.Requests;
+using myTNB_Android.Src.Database.Model;
+using myTNB_Android.Src.Notifications.Activity;
+using myTNB_Android.Src.Utils;
+using Refit;
+using System;
+using System.Collections.Generic;
+using System.Net.Http;
+using System.Threading;
 
 namespace myTNB_Android.Src.Firebase.Services
 {
@@ -52,7 +44,7 @@ namespace myTNB_Android.Src.Firebase.Services
             }
             UserEntity userEntity = UserEntity.GetActive();
 
-            IDictionary<string,string> remoteData = remoteMessage.Data;
+            IDictionary<string, string> remoteData = remoteMessage.Data;
             if (remoteData.ContainsKey("Email") && remoteData["Email"].Equals(userEntity.Email))
             {
 
@@ -118,14 +110,14 @@ namespace myTNB_Android.Src.Firebase.Services
 
                         foreach (NotificationChannels notificationChannel in appNotificationChannelsResponse.Data.Data)
                         {
-                             NotificationChannelEntity.InsertOrReplaceAsync(notificationChannel);
+                            NotificationChannelEntity.InsertOrReplaceAsync(notificationChannel);
 
                         }
 
                         foreach (NotificationTypes notificationTypes in appNotificationTypesResponse.Data.Data)
                         {
                             NotificationTypesEntity.InsertOrReplaceAsync(notificationTypes);
-                   
+
                         }
 
                         if (UserEntity.IsCurrentlyActive())
@@ -150,7 +142,7 @@ namespace myTNB_Android.Src.Firebase.Services
                                 SendNotification(title, message);
                             }
                         }
-                        
+
                     }
 
                 }
@@ -174,8 +166,8 @@ namespace myTNB_Android.Src.Firebase.Services
         {
 
             Intent intent = new Intent(this, typeof(NotificationActivity));
-            intent.PutExtra(Constants.HAS_NOTIFICATION , true);
-            
+            intent.PutExtra(Constants.HAS_NOTIFICATION, true);
+
             intent.AddFlags(ActivityFlags.ClearTop);
             PendingIntent pendingIntent = PendingIntent.GetActivity(this, 0 /* Request code */, intent,
                     PendingIntentFlags.OneShot);
@@ -195,7 +187,7 @@ namespace myTNB_Android.Src.Firebase.Services
                     (NotificationManager)GetSystemService(Context.NotificationService);
 
             notificationManager.Notify(0, notificationBuilder.Build());
-    }
+        }
 
-}
+    }
 }

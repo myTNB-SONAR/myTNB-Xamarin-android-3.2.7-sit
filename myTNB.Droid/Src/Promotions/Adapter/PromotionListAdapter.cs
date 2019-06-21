@@ -1,34 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
+﻿using Android.Graphics;
+using Android.Support.V7.Widget;
+using Android.Util;
 using Android.Views;
 using Android.Widget;
-using Android.Support.V7.Widget;
-using myTNB_Android.Src.Base.Activity;
 using myTNB.SitecoreCM.Models;
-using myTNB_Android.Src.Utils;
-using System.Threading.Tasks;
-using System.Net;
-using Android.Graphics;
-using System.Threading;
-using Java.Text;
-using Java.Util;
 using myTNB.SQLite.SQLiteDataManager;
-using Android.Util;
+using myTNB_Android.Src.Utils;
 using Square.Picasso;
+using System;
+using System.Collections.Generic;
+using System.Net;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace myTNB_Android.Src.Promotions.Adapter
 {
     public class PromotionListAdapter : RecyclerView.Adapter
     {
 
-        private Android.App.Activity  mActicity;
+        private Android.App.Activity mActicity;
         private List<PromotionsModelV2> promotionList = new List<PromotionsModelV2>();
         private List<PromotionsModelV2> orgPromotionList = new List<PromotionsModelV2>();
         public event EventHandler<int> ItemClick;
@@ -160,7 +150,7 @@ namespace myTNB_Android.Src.Promotions.Adapter
                 };
                 wtManager.UpdateItem(wtManager);
             }
-            
+
             progressBar.Visibility = ViewStates.Gone;
         }
 

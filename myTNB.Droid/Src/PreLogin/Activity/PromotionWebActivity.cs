@@ -1,21 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
+﻿using Android.App;
 using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-using myTNB_Android.Src.Base.Activity;
 using Android.Content.PM;
-using myTNB_Android.Src.myTNBMenu.Fragments.PromotionsMenu;
-using CheeseBind;
-using Android.Webkit;
+using Android.OS;
 using Android.Support.Design.Widget;
+using Android.Views;
+using Android.Webkit;
+using Android.Widget;
+using CheeseBind;
+using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Utils;
+using System;
 
 namespace myTNB_Android.Src.PreLogin.Activity
 {
@@ -43,18 +37,19 @@ namespace myTNB_Android.Src.PreLogin.Activity
         {
             base.OnCreate(savedInstanceState);
 
-            try {
-            string webLink = Intent.Extras.GetString(Constants.PROMOTIONS_LINK);
+            try
+            {
+                string webLink = Intent.Extras.GetString(Constants.PROMOTIONS_LINK);
 
-            webView = FindViewById<WebView>(Resource.Id.webView);
-            baseView = FindViewById<FrameLayout>(Resource.Id.rootView);
-            mProgressBar = FindViewById<ProgressBar>(Resource.Id.progressBar);
+                webView = FindViewById<WebView>(Resource.Id.webView);
+                baseView = FindViewById<FrameLayout>(Resource.Id.rootView);
+                mProgressBar = FindViewById<ProgressBar>(Resource.Id.progressBar);
 
-            webView.Settings.JavaScriptEnabled = (true);
-            //webView.SetWebChromeClient(new WebChromeClient());
-            webView.SetWebViewClient(new MyTNBWebViewClient(this, mProgressBar));
+                webView.Settings.JavaScriptEnabled = (true);
+                //webView.SetWebChromeClient(new WebChromeClient());
+                webView.SetWebViewClient(new MyTNBWebViewClient(this, mProgressBar));
 
-            webView.LoadUrl(webLink);
+                webView.LoadUrl(webLink);
             }
             catch (Exception ex)
             {
@@ -115,7 +110,8 @@ namespace myTNB_Android.Src.PreLogin.Activity
             }
 
             mErrorNoInternet = Snackbar.Make(baseView, "Please check your internet connection.", Snackbar.LengthIndefinite)
-            .SetAction("Try Again", delegate {
+            .SetAction("Try Again", delegate
+            {
                 webView.LoadUrl(failingUrl);
                 mErrorNoInternet.Dismiss();
             });

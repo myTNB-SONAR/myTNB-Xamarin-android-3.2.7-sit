@@ -1,6 +1,4 @@
-﻿using System;
-using System.Threading;
-using Android.OS;
+﻿using Android.OS;
 using myTNB_Android.Src.AppLaunch.Api;
 using myTNB_Android.Src.AppLaunch.Models;
 using myTNB_Android.Src.AppLaunch.Requests;
@@ -8,6 +6,8 @@ using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.myTNBMenu.MVP;
 using myTNB_Android.Src.Utils;
 using Refit;
+using System;
+using System.Threading;
 
 namespace myTNB_Android.Src.myTNBMenu.Async
 {

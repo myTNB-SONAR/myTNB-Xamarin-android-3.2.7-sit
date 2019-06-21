@@ -1,10 +1,10 @@
-﻿using System;
-using System.Net;
-using Android.Util;
+﻿using Android.Util;
 using myTNB_Android.Src.Utils;
 using myTNB_Android.Src.ViewReceipt.Api;
 using myTNB_Android.Src.ViewReceipt.Model;
 using Refit;
+using System;
+using System.Net;
 
 namespace myTNB_Android.Src.ViewReceipt.MVP
 {

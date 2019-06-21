@@ -1,16 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-using SQLite;
-using myTNB_Android.Src.Utils;
+﻿using SQLite;
 
 namespace myTNB_Android.Src.Database.Model
 {
@@ -25,7 +13,7 @@ namespace myTNB_Android.Src.Database.Model
         [MaxLength(50), Column("type")]
         public string Type { get; set; }
 
-        
+
         [Column("accountTypeName")]
         public string AccountTypeName { get; set; }
 
@@ -40,11 +28,8 @@ namespace myTNB_Android.Src.Database.Model
 
         public static int CreateTable()
         {
-            //using (var db = new SQLiteConnection(Constants.DB_PATH))
-            //{
             var db = DBHelper.GetSQLiteConnection();
             return (int)db.CreateTable<AccountTypeEntity>();
-            //}
         }
 
         public static void CreateTableAsync(SQLiteAsyncConnection db)
@@ -52,26 +37,22 @@ namespace myTNB_Android.Src.Database.Model
             db.CreateTableAsync<AccountTypeEntity>();
         }
 
-        public static int InsertOrReplace(string type , int accountType, string accountTypeName)
+        public static int InsertOrReplace(string type, int accountType, string accountTypeName)
         {
-            //using (var db = new SQLiteConnection(Constants.DB_PATH))
-            //{
             var db = DBHelper.GetSQLiteConnection();
-                var newRecord = new AccountTypeEntity()
-                {
-                    Type = type,
-                    AccountType = accountType,
-                    AccountTypeName = accountTypeName
-                };
-                int newRecordId = db.InsertOrReplace(newRecord);
-                if (newRecordId > 0)
-                {
-                    return newRecord.AccountType ?? 0;
-                }
+            var newRecord = new AccountTypeEntity()
+            {
+                Type = type,
+                AccountType = accountType,
+                AccountTypeName = accountTypeName
+            };
+            int newRecordId = db.InsertOrReplace(newRecord);
+            if (newRecordId > 0)
+            {
+                return newRecord.AccountType ?? 0;
+            }
 
-                return 0;
-            //}
-            
+            return 0;
         }
 
         public static int InsertOrReplace(SQLiteConnection db, string type, int accountType, string accountTypeName)
@@ -82,7 +63,7 @@ namespace myTNB_Android.Src.Database.Model
                 AccountType = accountType,
                 AccountTypeName = accountTypeName
             };
-            int newRecordId =  db.InsertOrReplace(newRecord);
+            int newRecordId = db.InsertOrReplace(newRecord);
             if (newRecordId > 0)
             {
                 return newRecord.AccountType ?? 0;

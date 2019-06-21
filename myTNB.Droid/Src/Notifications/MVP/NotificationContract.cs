@@ -1,17 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
+﻿using Android.App;
 using Android.Content;
-using Android.OS;
 using Android.Runtime;
-using Android.Views;
-using Android.Widget;
 using myTNB_Android.Src.Base.MVP;
 using myTNB_Android.Src.Notifications.Models;
 using Refit;
+using System;
+using System.Collections.Generic;
 namespace myTNB_Android.Src.Notifications.MVP
 {
     public class NotificationContract
@@ -41,7 +35,7 @@ namespace myTNB_Android.Src.Notifications.MVP
             /// <param name="details">NotificationDetails.Models.NotificationDetails</param>
             /// <param name="notificationData">UserNotificationData</param>
             /// <param name="position">integer</param>
-            void ShowDetails(NotificationDetails.Models.NotificationDetails details , UserNotificationData notificationData , int position);
+            void ShowDetails(NotificationDetails.Models.NotificationDetails details, UserNotificationData notificationData, int position);
 
             //void ShowSelectedNotificationNewBillItem(NotificationDetails.Models.NotificationDetails details , UserNotificationData notificationData , int position);
 
@@ -52,14 +46,14 @@ namespace myTNB_Android.Src.Notifications.MVP
             /// </summary>
             /// <param name="position">int</param>
             /// <param name="isRead">bool</param>
-            void UpdateIsReadNotificationItem(int position , bool isRead);
+            void UpdateIsReadNotificationItem(int position, bool isRead);
 
             /// <summary>
             /// Show and delete notification
             /// </summary>
             /// <param name="position">int</param>
             /// <param name="isDelete">bool</param>
-            void UpdateIsDeleteNotificationItem(int position , bool isDelete);
+            void UpdateIsDeleteNotificationItem(int position, bool isDelete);
 
             /// <summary>
             /// Show notification removed
@@ -124,7 +118,7 @@ namespace myTNB_Android.Src.Notifications.MVP
             /// </summary>
             /// <param name="userNotification">UserNotificationData</param>
             /// <param name="position">integer</param>
-            void OnSelectedNotificationItem(UserNotificationData userNotification , int position);
+            void OnSelectedNotificationItem(UserNotificationData userNotification, int position);
 
             /// <summary>
             /// The returned result from another activity

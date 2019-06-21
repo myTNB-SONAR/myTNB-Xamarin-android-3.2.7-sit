@@ -1,24 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
+﻿using AFollestad.MaterialDialogs;
 using Android.App;
 using Android.Content;
+using Android.Content.PM;
 using Android.OS;
-using Android.Runtime;
+using Android.Support.Design.Widget;
 using Android.Views;
 using Android.Widget;
-using myTNB_Android.Src.Base.Activity;
-using Android.Content.PM;
 using CheeseBind;
-using myTNB_Android.Src.Utils;
-using myTNB_Android.Src.LogoutRate.MVP;
+using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.LogoutEnd.Activity;
-using Android.Support.Design.Widget;
-using Refit;
-using AFollestad.MaterialDialogs;
+using myTNB_Android.Src.LogoutRate.MVP;
+using myTNB_Android.Src.Utils;
 using myTNB_Android.Src.Utils.Custom.ProgressDialog;
+using Refit;
+using System;
 using System.Runtime;
 
 namespace myTNB_Android.Src.LogoutRate.Activity
@@ -26,11 +21,11 @@ namespace myTNB_Android.Src.LogoutRate.Activity
     [Activity(Label = "@string/logout_activity_title"
         , ScreenOrientation = ScreenOrientation.Portrait
         , Theme = "@style/Theme.Logout")]
-    public class LogoutRateActivity : BaseAppCompatActivity , LogoutRateContract.IView
+    public class LogoutRateActivity : BaseAppCompatActivity, LogoutRateContract.IView
     {
         [BindView(Resource.Id.rootView)]
         CoordinatorLayout rootView;
-        
+
 
         [BindView(Resource.Id.txtTitleInfo)]
         TextView txtTitleInfo;
@@ -73,27 +68,30 @@ namespace myTNB_Android.Src.LogoutRate.Activity
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-            try {
-            progress = new MaterialDialog.Builder(this)
-            .Title(GetString(Resource.String.logout_rate_progress_title))
-            .Content(GetString(Resource.String.logout_rate_progress_content))
-            .Progress(true, 0)
-            .Cancelable(false)
-            .Build();
+            try
+            {
+                progress = new MaterialDialog.Builder(this)
+                .Title(GetString(Resource.String.logout_rate_progress_title))
+                .Content(GetString(Resource.String.logout_rate_progress_content))
+                .Progress(true, 0)
+                .Cancelable(false)
+                .Build();
 
 
-            //TextViewUtils.SetMuseoSans300Typeface(txtContentInfo);
-            TextViewUtils.SetMuseoSans500Typeface(txtTitleInfo , btnSubmit);
-            // Create your application here
+                //TextViewUtils.SetMuseoSans300Typeface(txtContentInfo);
+                TextViewUtils.SetMuseoSans500Typeface(txtTitleInfo, btnSubmit);
+                // Create your application here
 
-            mPresenter = new LogoutRatePresenter(this);
-        } catch(Exception e) {
+                mPresenter = new LogoutRatePresenter(this);
+            }
+            catch (Exception e)
+            {
                 Utility.LoggingNonFatalError(e);
             }
         }
 
         [OnClick(Resource.Id.btnSubmit)]
-        void OnSubmit(object sender , EventArgs eventArgs)
+        void OnSubmit(object sender, EventArgs eventArgs)
         {
             // TODO : ADD START ACTIVITY FOR LOGOUT END
             this.userActionsListener.OnLogout(this.DeviceId());
@@ -115,7 +113,8 @@ namespace myTNB_Android.Src.LogoutRate.Activity
             }
 
             mCancelledExceptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.logout_rate_cancelled_exception_error), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.logout_rate_cancelled_exception_btn_close), delegate {
+            .SetAction(GetString(Resource.String.logout_rate_cancelled_exception_btn_close), delegate
+            {
 
                 mCancelledExceptionSnackBar.Dismiss();
             }
@@ -133,7 +132,8 @@ namespace myTNB_Android.Src.LogoutRate.Activity
             }
 
             mApiExcecptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.logout_rate_api_exception_error), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.logout_rate_api_exception_btn_close), delegate {
+            .SetAction(GetString(Resource.String.logout_rate_api_exception_btn_close), delegate
+            {
 
                 mApiExcecptionSnackBar.Dismiss();
             }
@@ -151,7 +151,8 @@ namespace myTNB_Android.Src.LogoutRate.Activity
             }
 
             mUknownExceptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.logout_rate_unknown_exception_error), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.logout_rate_unknown_exception_btn_close), delegate {
+            .SetAction(GetString(Resource.String.logout_rate_unknown_exception_btn_close), delegate
+            {
 
                 mUknownExceptionSnackBar.Dismiss();
 
@@ -167,14 +168,15 @@ namespace myTNB_Android.Src.LogoutRate.Activity
             //{
             //    progress.Show();
             //}
-            try {
-            if (loadingOverlay != null && loadingOverlay.IsShowing)
+            try
             {
-                loadingOverlay.Dismiss();
-            }
+                if (loadingOverlay != null && loadingOverlay.IsShowing)
+                {
+                    loadingOverlay.Dismiss();
+                }
 
-            loadingOverlay = new LoadingOverlay(this, Resource.Style.LoadingOverlyDialogStyle);
-            loadingOverlay.Show();
+                loadingOverlay = new LoadingOverlay(this, Resource.Style.LoadingOverlyDialogStyle);
+                loadingOverlay.Show();
             }
             catch (Exception e)
             {
@@ -188,12 +190,15 @@ namespace myTNB_Android.Src.LogoutRate.Activity
             //{
             //    progress.Dismiss();
             //}
-            try {
-            if (loadingOverlay != null && loadingOverlay.IsShowing)
+            try
             {
-                loadingOverlay.Dismiss();
+                if (loadingOverlay != null && loadingOverlay.IsShowing)
+                {
+                    loadingOverlay.Dismiss();
+                }
             }
-        } catch(Exception e) {
+            catch (Exception e)
+            {
                 Utility.LoggingNonFatalError(e);
             }
         }

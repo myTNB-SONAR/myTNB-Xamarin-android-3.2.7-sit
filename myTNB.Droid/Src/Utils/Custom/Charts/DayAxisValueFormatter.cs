@@ -1,18 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
+﻿using Android.Util;
+using MikePhil.Charting.Charts;
 using MikePhil.Charting.Components;
 using MikePhil.Charting.Formatter;
-using MikePhil.Charting.Charts;
-using Android.Util;
+using System;
 
 namespace myTNB_Android.Src.Utils.Custom.Charts
 {
@@ -34,7 +24,7 @@ namespace myTNB_Android.Src.Utils.Custom.Charts
         public string GetFormattedValue(float value, AxisBase axis)
         {
 
-            Log.Debug("DayAxisValueFormatter" , string.Format("Value is {0}" , value));
+            Log.Debug("DayAxisValueFormatter", string.Format("Value is {0}", value));
 
 
             int monthIndex = Math.Abs((int)value);

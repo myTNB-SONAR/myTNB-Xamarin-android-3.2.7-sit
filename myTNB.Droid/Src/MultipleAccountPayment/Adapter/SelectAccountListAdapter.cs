@@ -1,26 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
+﻿using Android.Support.Design.Widget;
+using Android.Support.V7.Widget;
+using Android.Util;
 using Android.Views;
 using Android.Widget;
-using Android.Support.V7.Widget;
-using Android.Support.Design.Widget;
-using myTNB_Android.Src.Base.Activity;
-using myTNB_Android.Src.Utils;
-using myTNB_Android.Src.MultipleAccountPayment.Model;
-using Android.Util;
-using Android.Views.InputMethods;
-using Java.Lang;
-using static myTNB_Android.Src.MultipleAccountPayment.Adapter.SelectAccountListAdapter;
 using Java.Text;
-using Android.Text;
-using Android.Text.Method;
+using myTNB_Android.Src.Base.Activity;
+using myTNB_Android.Src.MultipleAccountPayment.Model;
+using myTNB_Android.Src.Utils;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace myTNB_Android.Src.MultipleAccountPayment.Adapter
 {
@@ -50,10 +39,11 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Adapter
 
         public void AddAccounts(List<MPAccount> _accountList)
         {
-            try {
-            accountList = accountList.Concat(_accountList).ToList();
-            //this.NotifyDataSetChanged();
-            this.NotifyItemRangeInserted(accountList.Count, _accountList.Count);
+            try
+            {
+                accountList = accountList.Concat(_accountList).ToList();
+                //this.NotifyDataSetChanged();
+                this.NotifyItemRangeInserted(accountList.Count, _accountList.Count);
             }
             catch (System.Exception e)
             {
@@ -66,39 +56,40 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Adapter
         public override void OnBindViewHolder(RecyclerView.ViewHolder holder, int position)
         {
             SelectAccountListViewHolder vh = holder as SelectAccountListViewHolder;
-            try {
-            TextViewUtils.SetMuseoSans300Typeface(vh.AccountLabel, vh.AccountNumber, vh.AccountAddress);
-            TextViewUtils.SetMuseoSans300Typeface(vh.AmountLabel);
-            TextViewUtils.SetMuseoSans300Typeface(vh.Amount);
-            MPAccount item = accountList[position];
-            vh.AccountNumber.Text = item.accountNumber;
-            vh.AccountAddress.Text = item.accountAddress;
-            vh.AccountLabel.Text = item.accountLabel;
-            vh.Amount.Text = payableFormatter.Format(item.amount);
-            if(item.amount < 1)
+            try
             {
-                item.isValidAmount = false;
-            }
-            else
-            {
-                item.isValidAmount = true;
-            }
-            vh.AmountLabel.Error = "";
-            vh.AmountLabel.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomHint);
-            vh.Amount.AfterTextChanged += (sender, args) =>
-            {
-                if (vh.Amount.HasFocus)
+                TextViewUtils.SetMuseoSans300Typeface(vh.AccountLabel, vh.AccountNumber, vh.AccountAddress);
+                TextViewUtils.SetMuseoSans300Typeface(vh.AmountLabel);
+                TextViewUtils.SetMuseoSans300Typeface(vh.Amount);
+                MPAccount item = accountList[position];
+                vh.AccountNumber.Text = item.accountNumber;
+                vh.AccountAddress.Text = item.accountAddress;
+                vh.AccountLabel.Text = item.accountLabel;
+                vh.Amount.Text = payableFormatter.Format(item.amount);
+                if (item.amount < 1)
                 {
-                    if (vh.SelectAccountView.Checked)
+                    item.isValidAmount = false;
+                }
+                else
+                {
+                    item.isValidAmount = true;
+                }
+                vh.AmountLabel.Error = "";
+                vh.AmountLabel.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomHint);
+                vh.Amount.AfterTextChanged += (sender, args) =>
+                {
+                    if (vh.Amount.HasFocus)
                     {
+                        if (vh.SelectAccountView.Checked)
+                        {
                         //if (!string.IsNullOrEmpty(vh.Amount.Text))
                         //{
                             ValidateHolder(item, position, vh);
                         //}
                     }
-                }
-            };
-            vh.SelectAccountView.Checked = item.isSelected;
+                    }
+                };
+                vh.SelectAccountView.Checked = item.isSelected;
             }
             catch (System.Exception e)
             {
@@ -106,13 +97,47 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Adapter
             }
         }
 
-        public void ValidateHolder(MPAccount item,int position, SelectAccountListViewHolder vh)
+        public void ValidateHolder(MPAccount item, int position, SelectAccountListViewHolder vh)
         {
-            try {
-            if (!string.IsNullOrEmpty(vh.Amount.Text))
+            try
             {
-                double newAmount = double.Parse(vh.Amount.Text);
-                if (newAmount < 1)
+                if (!string.IsNullOrEmpty(vh.Amount.Text))
+                {
+                    double newAmount = double.Parse(vh.Amount.Text);
+                    if (newAmount < 1)
+                    {
+                        vh.AmountLabel.Error = mActicity.GetString(Resource.String.error_invalid_amount);
+                        vh.AmountLabel.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
+                        vh.Amount.RequestFocus();
+                        item.isValidAmount = false;
+                        item.isSelected = false;
+                        vh.SelectAccountView.Checked = false;
+                        CheckChanged(this, position);
+                    }
+                    ///<summary>
+                    /// Uncomment this block of code to enable check for amount should be greater that Due Amount 
+                    /// </summary>
+                    /// 
+                    //else if (newAmount < item.orgAmount)
+                    //{
+                    //    vh.Amount.Text = item.orgAmount.ToString();
+                    //    vh.AmountLabel.Error = string.Format(mActicity.GetString(Resource.String.error_less_than_original_amount), item.amount.ToString());
+                    //    vh.AmountLabel.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
+                    //    vh.Amount.RequestFocus();
+                    //    item.isValidAmount = false;
+                    //    item.isSelected = false;
+                    //    vh.SelectAccountView.Checked = false;
+                    //}
+                    else
+                    {
+                        vh.AmountLabel.Error = "";
+                        vh.AmountLabel.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomHint);
+                        item.isValidAmount = true;
+                        item.amount = newAmount;
+                        CheckChanged(this, position);
+                    }
+                }
+                else
                 {
                     vh.AmountLabel.Error = mActicity.GetString(Resource.String.error_invalid_amount);
                     vh.AmountLabel.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
@@ -122,39 +147,6 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Adapter
                     vh.SelectAccountView.Checked = false;
                     CheckChanged(this, position);
                 }
-                ///<summary>
-                /// Uncomment this block of code to enable check for amount should be greater that Due Amount 
-                /// </summary>
-                /// 
-                //else if (newAmount < item.orgAmount)
-                //{
-                //    vh.Amount.Text = item.orgAmount.ToString();
-                //    vh.AmountLabel.Error = string.Format(mActicity.GetString(Resource.String.error_less_than_original_amount), item.amount.ToString());
-                //    vh.AmountLabel.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
-                //    vh.Amount.RequestFocus();
-                //    item.isValidAmount = false;
-                //    item.isSelected = false;
-                //    vh.SelectAccountView.Checked = false;
-                //}
-                else
-                {
-                    vh.AmountLabel.Error = "";
-                    vh.AmountLabel.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomHint);
-                    item.isValidAmount = true;
-                    item.amount = newAmount;
-                    CheckChanged(this, position);
-                }
-            }
-            else
-            {
-                vh.AmountLabel.Error = mActicity.GetString(Resource.String.error_invalid_amount);
-                vh.AmountLabel.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
-                vh.Amount.RequestFocus();
-                item.isValidAmount = false;
-                item.isSelected = false;
-                vh.SelectAccountView.Checked = false;
-                CheckChanged(this, position);
-            }
             }
             catch (System.Exception e)
             {
@@ -172,23 +164,24 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Adapter
 
         void OnClick(SelectAccountListViewHolder sender, int position)
         {
-            try {
-            MPAccount item = accountList[position];
-            if (GetSelectedAccounts().Count == 5 && sender.SelectAccountView.Checked)
+            try
             {
-                bool isChecked = false;
-                item.isSelected = isChecked;
-                sender.SelectAccountView.Checked = isChecked;
-                CheckChanged(this, -1);
-            }
-            else
-            {
-                bool isChecked = sender.SelectAccountView.Checked;
-                item.isSelected = isChecked;
-                sender.SelectAccountView.Checked = isChecked;
-                //CheckChanged(this, position);
-                ValidateHolder(item, position, sender);
-            }
+                MPAccount item = accountList[position];
+                if (GetSelectedAccounts().Count == 5 && sender.SelectAccountView.Checked)
+                {
+                    bool isChecked = false;
+                    item.isSelected = isChecked;
+                    sender.SelectAccountView.Checked = isChecked;
+                    CheckChanged(this, -1);
+                }
+                else
+                {
+                    bool isChecked = sender.SelectAccountView.Checked;
+                    item.isSelected = isChecked;
+                    sender.SelectAccountView.Checked = isChecked;
+                    //CheckChanged(this, position);
+                    ValidateHolder(item, position, sender);
+                }
             }
             catch (System.Exception e)
             {
@@ -246,18 +239,19 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Adapter
         public List<MPAccount> GetSelectedAccounts()
         {
             List<MPAccount> selectedStores = new List<MPAccount>();
-            try {
-            if (accountList != null)
+            try
             {
-                for (int i = 0; i < accountList.Count; i++)
+                if (accountList != null)
                 {
-                    if (accountList[i].isSelected)
+                    for (int i = 0; i < accountList.Count; i++)
                     {
-                        MPAccount item = accountList[i];
-                        selectedStores.Add(item);
+                        if (accountList[i].isSelected)
+                        {
+                            MPAccount item = accountList[i];
+                            selectedStores.Add(item);
+                        }
                     }
                 }
-            }
             }
             catch (System.Exception e)
             {
@@ -269,14 +263,15 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Adapter
         public bool IsAllAmountValid()
         {
             bool flag = true;
-            try {
-            foreach(MPAccount item in GetSelectedAccounts())
+            try
             {
-                if (!item.isValidAmount)
+                foreach (MPAccount item in GetSelectedAccounts())
                 {
-                    flag = false;
+                    if (!item.isValidAmount)
+                    {
+                        flag = false;
+                    }
                 }
-            }
             }
             catch (System.Exception e)
             {

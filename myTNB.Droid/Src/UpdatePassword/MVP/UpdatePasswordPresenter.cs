@@ -1,23 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-using Android.Text;
-using Refit;
-using System.Net.Http;
-using myTNB_Android.Src.Utils;
-using myTNB_Android.Src.UpdatePassword.Api;
-using System.Net;
+﻿using Android.Text;
 using myTNB_Android.Src.Database.Model;
-using System.Threading;
+using myTNB_Android.Src.UpdatePassword.Api;
+using myTNB_Android.Src.Utils;
+using Refit;
+using System;
+using System.Net;
+using System.Net.Http;
 using System.Text.RegularExpressions;
+using System.Threading;
 
 namespace myTNB_Android.Src.UpdatePassword.MVP
 {
@@ -72,8 +62,9 @@ namespace myTNB_Android.Src.UpdatePassword.MVP
             }
             ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
             UserEntity userEntity = UserEntity.GetActive();
-            if (mView.IsActive()) {
-            this.mView.ShowProgress();
+            if (mView.IsActive())
+            {
+                this.mView.ShowProgress();
             }
 #if DEBUG || STUB
             var httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
@@ -97,7 +88,7 @@ namespace myTNB_Android.Src.UpdatePassword.MVP
                     DevicePlatform = Constants.APP_CONFIG.API_KEY_ID,
                     DeviceVersion = Constants.APP_CONFIG.API_KEY_ID,
                     DeviceCordova = Constants.APP_CONFIG.API_KEY_ID
-                } , cts.Token);
+                }, cts.Token);
 
                 if (mView.IsActive())
                 {

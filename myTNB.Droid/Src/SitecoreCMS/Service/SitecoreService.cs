@@ -1,16 +1,15 @@
-﻿using System;
+﻿using Sitecore.MobileSDK.API;
+using Sitecore.MobileSDK.API.Exceptions;
 using Sitecore.MobileSDK.API.Items;
-using Sitecore.MobileSDK.API;
-using Sitecore.MobileSDK.API.Session;
-using System.Threading.Tasks;
 using Sitecore.MobileSDK.API.Request;
 using Sitecore.MobileSDK.API.Request.Parameters;
-using System.Collections.Generic;
-using Sitecore.MobileSDK.API.Exceptions;
-using System.Linq;
-using System.IO;
+using Sitecore.MobileSDK.API.Session;
 using Sitecore.MobileSDK.PasswordProvider;
-using myTNB_Android.Src.SiteCore;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace myTNB.SitecoreCMS.Services
 {

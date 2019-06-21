@@ -1,20 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
+﻿using Android.App;
 using Android.Content;
+using Android.Content.PM;
 using Android.OS;
-using Android.Runtime;
 using Android.Views;
 using Android.Widget;
-using Android.Content.PM;
-using myTNB_Android.Src.Base.Activity;
-using myTNB_Android.Src.ResetPasswordSuccess.MVP;
 using CheeseBind;
-using myTNB_Android.Src.Utils;
+using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Login.Activity;
+using myTNB_Android.Src.ResetPasswordSuccess.MVP;
+using myTNB_Android.Src.Utils;
+using System;
 using System.Runtime;
 
 namespace myTNB_Android.Src.ResetPasswordSuccess.Activity
@@ -23,7 +18,7 @@ namespace myTNB_Android.Src.ResetPasswordSuccess.Activity
               , Icon = "@drawable/ic_launcher"
           , ScreenOrientation = ScreenOrientation.Portrait
           , Theme = "@style/Theme.ResetPasswordSuccess")]
-    public class ResetPasswordSuccessActivity : BaseAppCompatActivity , ResetPasswordSuccessContract.IView
+    public class ResetPasswordSuccessActivity : BaseAppCompatActivity, ResetPasswordSuccessContract.IView
     {
 
         private ResetPasswordSuccessContract.IUserActionsListener userActionsListener;
@@ -44,13 +39,14 @@ namespace myTNB_Android.Src.ResetPasswordSuccess.Activity
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-            try {
-            // Create your application here
-            mPresenter = new ResetPasswordSuccessPresenter(this);
+            try
+            {
+                // Create your application here
+                mPresenter = new ResetPasswordSuccessPresenter(this);
 
-            TextViewUtils.SetMuseoSans500Typeface(txtTitleInfo);
-            TextViewUtils.SetMuseoSans300Typeface(txtContentInfo);
-            TextViewUtils.SetMuseoSans500Typeface(btnLogin);
+                TextViewUtils.SetMuseoSans500Typeface(txtTitleInfo);
+                TextViewUtils.SetMuseoSans300Typeface(txtContentInfo);
+                TextViewUtils.SetMuseoSans500Typeface(btnLogin);
             }
             catch (Exception e)
             {
@@ -89,7 +85,7 @@ namespace myTNB_Android.Src.ResetPasswordSuccess.Activity
         }
 
         [OnClick(Resource.Id.btnLogin)]
-        void OnLogin(object sender ,EventArgs eventArgs)
+        void OnLogin(object sender, EventArgs eventArgs)
         {
             this.userActionsListener.OnLogin();
         }

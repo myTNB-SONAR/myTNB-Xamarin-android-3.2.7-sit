@@ -1,21 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-using myTNB.SitecoreCMS.Services;
-using myTNB_Android.Src.SiteCore;
-using Newtonsoft.Json;
-using myTNB_Android.Src.SitecoreCMS.Model;
-using myTNB_Android.Src.Database.Model;
+﻿using Android.App;
 using Android.Util;
+using myTNB.SitecoreCMS.Services;
+using myTNB_Android.Src.Database.Model;
+using myTNB_Android.Src.SiteCore;
+using myTNB_Android.Src.SitecoreCMS.Model;
 using myTNB_Android.Src.Utils;
+using Newtonsoft.Json;
+using System;
+using System.Threading.Tasks;
 
 namespace myTNB_Android.Src.TermsAndConditions.MVP
 {

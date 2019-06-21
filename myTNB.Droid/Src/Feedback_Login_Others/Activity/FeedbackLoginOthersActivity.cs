@@ -1,43 +1,38 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
+﻿using AFollestad.MaterialDialogs;
 using Android.App;
 using Android.Content;
+using Android.Content.PM;
+using Android.Graphics;
 using Android.OS;
+using Android.Preferences;
+using Android.Provider;
 using Android.Runtime;
+using Android.Support.Design.Widget;
+using Android.Support.V4.Content;
+using Android.Support.V7.Widget;
+using Android.Text;
 using Android.Views;
 using Android.Widget;
-using Android.Content.PM;
-using myTNB_Android.Src.Base.Activity;
-using myTNB_Android.Src.Feedback_PreLogin_Others.MVP;
-using Android.Net;
-using myTNB_Android.Src.Base.Models;
-using myTNB_Android.Src.Base.Request;
-using System.Threading.Tasks;
 using CheeseBind;
-using Android.Support.Design.Widget;
-using Android.Support.V7.Widget;
-using myTNB_Android.Src.Feedback_PreLogIn_Others.Adapter;
-using AFollestad.MaterialDialogs;
-using myTNB_Android.Src.Utils;
-using myTNB_Android.Src.AppLaunch.Models;
-using Android.Provider;
-using Android.Graphics;
-using myTNB_Android.Src.FeedbackSuccess.Activity;
-using myTNB_Android.Src.FeedbackFail.Activity;
-using System.Web;
-using Android.Support.V4.Content;
-using myTNB_Android.Src.SelectFeedbackType.Activity;
-using myTNB_Android.Src.Feedback_Login_Others.MVP;
-using myTNB_Android.Src.Feedback_Login_Others.Adapter;
 using Java.Text;
 using Java.Util;
-using Android.Preferences;
-using Android.Text;
+using myTNB_Android.Src.AppLaunch.Models;
+using myTNB_Android.Src.Base.Activity;
+using myTNB_Android.Src.Base.Models;
+using myTNB_Android.Src.Base.Request;
+using myTNB_Android.Src.Feedback_Login_Others.Adapter;
+using myTNB_Android.Src.Feedback_Login_Others.MVP;
+using myTNB_Android.Src.FeedbackFail.Activity;
+using myTNB_Android.Src.FeedbackSuccess.Activity;
+using myTNB_Android.Src.SelectFeedbackType.Activity;
+using myTNB_Android.Src.Utils;
 using myTNB_Android.Src.Utils.Custom.ProgressDialog;
+using System;
+using System.Collections.Generic;
 using System.Runtime;
+using System.Text;
+using System.Threading.Tasks;
+using System.Web;
 
 namespace myTNB_Android.Src.Feedback_Login_Others.Activity
 {
@@ -45,7 +40,7 @@ namespace myTNB_Android.Src.Feedback_Login_Others.Activity
       , ScreenOrientation = ScreenOrientation.Portrait
               , WindowSoftInputMode = SoftInput.AdjustPan
       , Theme = "@style/Theme.Others")]
-    public class FeedbackLoginOthersActivity : BaseToolbarAppCompatActivity , FeedbackLoginOthersContract.IView, View.IOnTouchListener
+    public class FeedbackLoginOthersActivity : BaseToolbarAppCompatActivity, FeedbackLoginOthersContract.IView, View.IOnTouchListener
     {
 
 
@@ -109,8 +104,8 @@ namespace myTNB_Android.Src.Feedback_Login_Others.Activity
                 .Cancelable(false)
                 .Build();
 
-            TextViewUtils.SetMuseoSans300Typeface( txtInputLayoutFeedbackType, txtInputLayoutFeedback , txtInputLayoutMobileNo);
-            TextViewUtils.SetMuseoSans300Typeface(txtMaxImageContent, txtFeedbackType, txtFeedback, txtRelatedScreenshotTitle , txtMaxCharacters, txtMobileNo);
+            TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutFeedbackType, txtInputLayoutFeedback, txtInputLayoutMobileNo);
+            TextViewUtils.SetMuseoSans300Typeface(txtMaxImageContent, txtFeedbackType, txtFeedback, txtRelatedScreenshotTitle, txtMaxCharacters, txtMobileNo);
             TextViewUtils.SetMuseoSans500Typeface(btnSubmit);
 
             adapter = new FeedbackLoginOthersImageRecyclerAdapter(true);
@@ -168,7 +163,7 @@ namespace myTNB_Android.Src.Feedback_Login_Others.Activity
             if (txtInputLayoutMobileNo.Visibility == ViewStates.Visible)
             {
                 string mobile_no = txtMobileNo.Text.Trim();
-                this.userActionsListener.CheckRequiredFields(mobile_no , feedback);
+                this.userActionsListener.CheckRequiredFields(mobile_no, feedback);
             }
             else
             {
@@ -227,26 +222,27 @@ namespace myTNB_Android.Src.Feedback_Login_Others.Activity
         [OnClick(Resource.Id.btnSubmit)]
         void OnSubmit(object sender, EventArgs e)
         {
-            try {
-            btnSubmit.Enabled = false;
-            Handler h = new Handler();
-            Action myAction = () =>
+            try
             {
-                btnSubmit.Enabled = true;
-            };
-            h.PostDelayed(myAction, 3000);
+                btnSubmit.Enabled = false;
+                Handler h = new Handler();
+                Action myAction = () =>
+                {
+                    btnSubmit.Enabled = true;
+                };
+                h.PostDelayed(myAction, 3000);
 
-            string feedback = txtFeedback.Text.Trim();
-            List<AttachedImage> attachedImages = adapter.GetAllImages();
-            if (txtInputLayoutMobileNo.Visibility == ViewStates.Visible)
-            {
-                string mobile_no = txtMobileNo.Text.Trim();
-                this.userActionsListener.OnSubmit(this.DeviceId(), mobile_no, currentFeedbackType, feedback, attachedImages);
-            }
-            else
-            {
-                this.userActionsListener.OnSubmit(this.DeviceId(), currentFeedbackType, feedback, attachedImages);
-            }
+                string feedback = txtFeedback.Text.Trim();
+                List<AttachedImage> attachedImages = adapter.GetAllImages();
+                if (txtInputLayoutMobileNo.Visibility == ViewStates.Visible)
+                {
+                    string mobile_no = txtMobileNo.Text.Trim();
+                    this.userActionsListener.OnSubmit(this.DeviceId(), mobile_no, currentFeedbackType, feedback, attachedImages);
+                }
+                else
+                {
+                    this.userActionsListener.OnSubmit(this.DeviceId(), currentFeedbackType, feedback, attachedImages);
+                }
             }
             catch (Exception ex)
             {
@@ -285,7 +281,7 @@ namespace myTNB_Android.Src.Feedback_Login_Others.Activity
             }
             else
             {
- 
+
                 if (adapter.ItemCount == 0)
                 {
                     adapter.Add(new AttachedImage()
@@ -391,17 +387,18 @@ namespace myTNB_Android.Src.Feedback_Login_Others.Activity
 
         public Task<string> SaveCameraImage(string tempImagePath, string fileName)
         {
-            
+
             return Task.Run<string>(() =>
             {
                 return FileUtils.ProcessCameraImage(this, tempImagePath, fileName);
             });
-           
+
         }
 
         public Task<string> SaveGalleryImage(Android.Net.Uri selectedImage, string pTempImagePath, string pFileName)
         {
-            return Task.Run<string>(() => {
+            return Task.Run<string>(() =>
+            {
                 return FileUtils.ProcessGalleryImage(this, selectedImage, pTempImagePath, pFileName);
             });
 
@@ -409,14 +406,15 @@ namespace myTNB_Android.Src.Feedback_Login_Others.Activity
 
         public void ShowLoadingImage()
         {
-            try {
-            int position = adapter.ItemCount - 1;
-            AttachedImage attachImage = adapter.GetItemObject(position);
-            if (attachImage != null && attachImage.ViewType == Constants.VIEW_TYPE_DUMMY_RECORD)
+            try
             {
-                attachImage.IsLoading = true;
-                adapter.Update(position, attachImage);
-            }
+                int position = adapter.ItemCount - 1;
+                AttachedImage attachImage = adapter.GetItemObject(position);
+                if (attachImage != null && attachImage.ViewType == Constants.VIEW_TYPE_DUMMY_RECORD)
+                {
+                    attachImage.IsLoading = true;
+                    adapter.Update(position, attachImage);
+                }
             }
             catch (Exception e)
             {
@@ -426,14 +424,15 @@ namespace myTNB_Android.Src.Feedback_Login_Others.Activity
 
         public void HideLoadingImage()
         {
-            try {
-            int position = adapter.ItemCount - 1;
-            AttachedImage attachImage = adapter.GetItemObject(position);
-            if (attachImage != null && attachImage.ViewType == Constants.VIEW_TYPE_DUMMY_RECORD)
+            try
             {
-                attachImage.IsLoading = false;
-                adapter.Update(position, attachImage);
-            }
+                int position = adapter.ItemCount - 1;
+                AttachedImage attachImage = adapter.GetItemObject(position);
+                if (attachImage != null && attachImage.ViewType == Constants.VIEW_TYPE_DUMMY_RECORD)
+                {
+                    attachImage.IsLoading = false;
+                    adapter.Update(position, attachImage);
+                }
             }
             catch (Exception e)
             {
@@ -469,24 +468,25 @@ namespace myTNB_Android.Src.Feedback_Login_Others.Activity
 
         private void FeedBackCharacCount()
         {
-            try {
-            string feedback = txtFeedback.Text;
-            int char_count = 0;
+            try
+            {
+                string feedback = txtFeedback.Text;
+                int char_count = 0;
 
-            if (!string.IsNullOrEmpty(feedback))
-            {
-                char_count = feedback.Length;
-            }
+                if (!string.IsNullOrEmpty(feedback))
+                {
+                    char_count = feedback.Length;
+                }
 
-            if (char_count > 0)
-            {
-                int char_left = Constants.FEEDBACK_CHAR_LIMIT - char_count;
-                txtInputLayoutFeedback.Error = char_left + " " + GetString(Resource.String.feedback_character_left);
-            }
-            else
-            {
-                txtInputLayoutFeedback.Error = GetString(Resource.String.feedback_total_character_left);
-            }
+                if (char_count > 0)
+                {
+                    int char_left = Constants.FEEDBACK_CHAR_LIMIT - char_count;
+                    txtInputLayoutFeedback.Error = char_left + " " + GetString(Resource.String.feedback_character_left);
+                }
+                else
+                {
+                    txtInputLayoutFeedback.Error = GetString(Resource.String.feedback_total_character_left);
+                }
             }
             catch (Exception e)
             {
@@ -517,15 +517,18 @@ namespace myTNB_Android.Src.Feedback_Login_Others.Activity
             //{
             //    submitDialog.Show();
             //}
-            try {
-            if (loadingOverlay != null && loadingOverlay.IsShowing)
+            try
             {
-                loadingOverlay.Dismiss();
-            }
+                if (loadingOverlay != null && loadingOverlay.IsShowing)
+                {
+                    loadingOverlay.Dismiss();
+                }
 
-            loadingOverlay = new LoadingOverlay(this, Resource.Style.LoadingOverlyDialogStyle);
-            loadingOverlay.Show();
-        } catch(Exception e) {
+                loadingOverlay = new LoadingOverlay(this, Resource.Style.LoadingOverlyDialogStyle);
+                loadingOverlay.Show();
+            }
+            catch (Exception e)
+            {
                 Utility.LoggingNonFatalError(e);
             }
         }
@@ -542,12 +545,14 @@ namespace myTNB_Android.Src.Feedback_Login_Others.Activity
                 {
                     loadingOverlay.Dismiss();
                 }
-            } catch(Exception e) {
+            }
+            catch (Exception e)
+            {
                 Utility.LoggingNonFatalError(e);
             }
         }
 
-        public void ShowSuccess(string date, string feedbackId , int imageCount)
+        public void ShowSuccess(string date, string feedbackId, int imageCount)
         {
             ISharedPreferences sharedPref = PreferenceManager.GetDefaultSharedPreferences(this);
             int currentCount = UserSessions.GetCurrentImageCount(sharedPref);
@@ -568,30 +573,30 @@ namespace myTNB_Android.Src.Feedback_Login_Others.Activity
 
         public Task<AttachedImageRequest> SaveImage(AttachedImage attachedImage)
         {
-            
-                return Task.Run<AttachedImageRequest>(() =>
+
+            return Task.Run<AttachedImageRequest>(() =>
+            {
+                BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+
+                Bitmap bitmap = BitmapFactory.DecodeFile(attachedImage.Path, bmOptions);
+
+                byte[] imageBytes = FileUtils.Get(this, bitmap);
+                int size = imageBytes.Length;
+                string hexString = HttpUtility.UrlEncode(FileUtils.ByteArrayToString(imageBytes), Encoding.UTF8);
+                if (bitmap != null && !bitmap.IsRecycled)
                 {
-                    BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+                    bitmap.Recycle();
+                }
+                Console.WriteLine(string.Format("Hex string {0}", hexString));
+                return new AttachedImageRequest()
+                {
+                    ImageHex = hexString,
+                    FileSize = size,
+                    FileName = attachedImage.Name
+                };
 
-                    Bitmap bitmap = BitmapFactory.DecodeFile(attachedImage.Path, bmOptions);
+            });
 
-                    byte[] imageBytes = FileUtils.Get(this, bitmap);
-                    int size = imageBytes.Length;
-                    string hexString = HttpUtility.UrlEncode(FileUtils.ByteArrayToString(imageBytes), Encoding.UTF8);
-                    if (bitmap != null && !bitmap.IsRecycled)
-                    {
-                        bitmap.Recycle();
-                    }
-                    Console.WriteLine(string.Format("Hex string {0}", hexString));
-                    return new AttachedImageRequest()
-                    {
-                        ImageHex = hexString,
-                        FileSize = size,
-                        FileName = attachedImage.Name
-                    };
-
-                });
-            
         }
 
         public void EnableSubmitButton()
@@ -603,7 +608,9 @@ namespace myTNB_Android.Src.Feedback_Login_Others.Activity
                 DisableSubmitButton();
                 ShowEmptyFeedbackError();
                 return;
-            } else {
+            }
+            else
+            {
                 ClearErrors();
             }
 
@@ -650,7 +657,7 @@ namespace myTNB_Android.Src.Feedback_Login_Others.Activity
         {
             SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyyMMdd");
             Calendar calendar = Calendar.GetInstance(Locale.Default);
-            return GetString(Resource.String.feedback_image_name_convention, dateFormatter.Format(calendar.TimeInMillis), UserSessions.GetCurrentImageCount(PreferenceManager.GetDefaultSharedPreferences(this)) + itemCount );
+            return GetString(Resource.String.feedback_image_name_convention, dateFormatter.Format(calendar.TimeInMillis), UserSessions.GetCurrentImageCount(PreferenceManager.GetDefaultSharedPreferences(this)) + itemCount);
         }
 
         public void ShowMobileNo()

@@ -1,23 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
+﻿using Android.App;
 using Android.Content;
+using Android.Content.PM;
 using Android.OS;
-using Android.Runtime;
+using Android.Support.Design.Widget;
 using Android.Views;
 using Android.Widget;
-using myTNB_Android.Src.Base.Activity;
-using Android.Content.PM;
 using CheeseBind;
-using myTNB_Android.Src.Utils;
-using Android.Support.Design.Widget;
+using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.GetAccess.MVP;
 using myTNB_Android.Src.GetAccessSuccess.Activity;
-using Newtonsoft.Json;
 using myTNB_Android.Src.myTNBMenu.Models;
+using myTNB_Android.Src.Utils;
+using Newtonsoft.Json;
+using System;
 using System.Runtime;
 
 namespace myTNB_Android.Src.GetAccess.Activity
@@ -25,7 +20,7 @@ namespace myTNB_Android.Src.GetAccess.Activity
     [Activity(Label = "@string/get_access_activity_title"
      , ScreenOrientation = ScreenOrientation.Portrait
      , Theme = "@style/Theme.GetAccess")]
-    public class GetAccessFormActivity : BaseToolbarAppCompatActivity , GetAccessFormContract.IView
+    public class GetAccessFormActivity : BaseToolbarAppCompatActivity, GetAccessFormContract.IView
     {
         [BindView(Resource.Id.txtInputLayoutICNo)]
         TextInputLayout txtInputLayoutICNo;
@@ -86,8 +81,8 @@ namespace myTNB_Android.Src.GetAccess.Activity
         public void ShowSuccess()
         {
             // SHOW SUCCESS VIEW
-            Intent access_form_success = new Intent(this , typeof(GetAccessSuccessActivity));
-            access_form_success.PutExtra(Constants.SELECTED_ACCOUNT , JsonConvert.SerializeObject(selectedAccount));
+            Intent access_form_success = new Intent(this, typeof(GetAccessSuccessActivity));
+            access_form_success.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccount));
             StartActivity(access_form_success);
         }
 
@@ -112,7 +107,9 @@ namespace myTNB_Android.Src.GetAccess.Activity
                         selectedAccount = DeSerialze<AccountData>(extras.GetString(Constants.SELECTED_ACCOUNT));
                     }
                 }
-            } catch(Exception e) {
+            }
+            catch (Exception e)
+            {
                 Utility.LoggingNonFatalError(e);
             }
         }
@@ -121,11 +118,14 @@ namespace myTNB_Android.Src.GetAccess.Activity
         [OnClick(Resource.Id.btnGetAccess)]
         void OnBtnGetAccess(object sender, EventArgs eventArgs)
         {
-            try {
-            string icno = txtIcNo.Text;
-            string maiden_name = txtMaidenName.Text;
-            this.userActionsListener.OnGetAccess(icno , maiden_name);
-        } catch(Exception e) {
+            try
+            {
+                string icno = txtIcNo.Text;
+                string maiden_name = txtMaidenName.Text;
+                this.userActionsListener.OnGetAccess(icno, maiden_name);
+            }
+            catch (Exception e)
+            {
                 Utility.LoggingNonFatalError(e);
             }
         }
