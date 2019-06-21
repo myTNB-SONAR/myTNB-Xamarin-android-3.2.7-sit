@@ -13,6 +13,8 @@
 "Bill_By"="By";
 "Bill_CurrentCharges"="Current Charges";
 "Bill_CurrentPaymentAdvice"="Current Payment Advice";
+"Bill_DisconnectionCharges"="Disconnection Charges";
+"Bill_MandatoryPayments"="Mandatory Payments";
 "Bill_MyEarnings"="My Earnings";
 "Bill_NoBill"="Yay! No bills! You will be notified\nwhen your bill is ready.";
 "Bill_NoDataConnection"="Unable to load. Check your\ninternet connection or try again later.";
@@ -23,9 +25,12 @@
 "Bill_PaymentAdviceInfo"="Payment Advice"; 
 "Bill_PaymentFrom"="From TNB";
 "Bill_PaymentSectionHeader"="Bill / Payment History";
+"Bill_ReconnectionCharges"="Reconnection Charges";
 "Bill_RECurrentAmount"="Current Amount";
 "Bill_REOutstandingAmount"="Outstanding Amount";
 "Bill_REPaymentSectionHeader"="Payment Advice / Payment History";
+"Bill_SecurityDeposit"="Security Deposit";
+"Bill_StampDuty"="Stamp Duty";
 "Bill_TotalPayable"="Total Payable";
 "Bill_Via"="via";
 

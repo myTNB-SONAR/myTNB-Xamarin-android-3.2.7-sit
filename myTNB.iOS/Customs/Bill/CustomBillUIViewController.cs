@@ -6,24 +6,29 @@ namespace myTNB
 {
     public class CustomBillUIViewController : CustomUIViewController
     {
-        nfloat _frameWidth, _contentWidth;
+        nfloat _frameWidth, _contentWidth, childWidth, childWidthTitle, childWidthValue;
         public CustomBillUIViewController(IntPtr handle) : base(handle)
         {
             _frameWidth = UIScreen.MainScreen.Bounds.Width;
             _contentWidth = _frameWidth - 36.0F;
+            childWidth = _frameWidth - 36.0F;
+            childWidthTitle = childWidth * 0.60F;
+            childWidthValue = childWidth * 0.40F;
         }
         //Parent Container
-        public UIView _viewAccountDetails, _viewCharges, _viewHistory;
-        //Fields Charges
-        public UIView _viewBreakdownTitle, _viewCurrentCharges, _viewOutstandingCharges
-            , _viewTotalAmountDue, _viewHistoryHeader;
-        //Value AccountDetails
-        public UILabel _lblAccountName, _lblAccountNumber, _lblAddress;
-        //Title Charges
-        public UILabel _lblBreakdownHeader, _lblCurrentChargesTitle, _lblOutstandingChargesTitle
-            , _lblTotalDueAmountTitle, _lblHistoryHeader;
-        //Value Charges
-        public UILabel _lblCurrentChargesValue, _lblOutstandingChargesValue, _lblDueDateTitle, _lblAmount;
+        public UIView _viewAccountDetails, _viewCharges, _viewHistory                               //Parent Container
+            , _viewBreakdownTitle, _viewCurrentCharges, _viewOutstandingCharges                     //Field Container
+            , _viewItemizedBilling, _viewTotalAmountDue, _viewHistoryHeader;
+
+        public UILabel _lblAccountName, _lblAccountNumber, _lblAddress                              // Value Account Details
+            , _lblBreakdownHeader, _lblCurrentChargesTitle, _lblOutstandingChargesTitle             //Title Charges
+            , _lblTotalDueAmountTitle, _lblHistoryHeader
+            , _lblMandatoryPayments, _lblSecurityDeposit                                            //Title Itemized Billing
+            , _lblDisconnection, _lblReconnection, _lblStampDuty
+            , _lblCurrentChargesValue, _lblOutstandingChargesValue                                  //Value Charges
+            , _lblDueDateTitle, _lblAmount
+            , _lblMandatoryPaymentsValue, _lblSecurityDepositValue                                  //Value Itemized Billing
+            , _lblDisconnectionValue, _lblReconnectionValue, _lblStampDutyValue;
         //Button
         public UIButton _btnPay, _btnBills, _btnPayments;
         //Child Container
@@ -32,10 +37,10 @@ namespace myTNB
         public UIImageView _imgLeaf;
 
         //For Normal and Smart Metre
-        public void CreateNormalView()
+        public void CreateNormalView(bool isItemizedBilling = false)
         {
             CreateAccountDetailsSection();
-            CreateChargesSection();
+            CreateChargesSection(false, isItemizedBilling);
             CreateHistorySection();
         }
 
@@ -46,12 +51,7 @@ namespace myTNB
             CreateHistorySection();
         }
 
-        public void CreateNonConsumptionView()
-        {
-
-        }
-
-        public void SetChargesValue(string currentCharge, string outstandingCharge, string amount)
+        public void SetChargesValues(string currentCharge, string outstandingCharge, string amount)
         {
             if (_lblCurrentChargesValue != null)
             {
@@ -66,6 +66,16 @@ namespace myTNB
                 _lblAmount.Text = amount;
             }
             RefitAmountToWidget();
+        }
+
+        public void SetItemizedBillingValues(string mandatoryPayments, string securityDeposit
+            , string disconnectionCharges, string reconnectionCharges, string stampDuty)
+        {
+            _lblMandatoryPaymentsValue.Text = mandatoryPayments ?? string.Format("{0} {1}", TNBGlobal.UNIT_CURRENCY, TNBGlobal.DEFAULT_VALUE);
+            _lblSecurityDepositValue.Text = securityDeposit ?? string.Format("{0} {1}", TNBGlobal.UNIT_CURRENCY, TNBGlobal.DEFAULT_VALUE);
+            _lblDisconnectionValue.Text = disconnectionCharges ?? string.Format("{0} {1}", TNBGlobal.UNIT_CURRENCY, TNBGlobal.DEFAULT_VALUE);
+            _lblReconnectionValue.Text = reconnectionCharges ?? string.Format("{0} {1}", TNBGlobal.UNIT_CURRENCY, TNBGlobal.DEFAULT_VALUE);
+            _lblStampDutyValue.Text = stampDuty ?? string.Format("{0} {1}", TNBGlobal.UNIT_CURRENCY, TNBGlobal.DEFAULT_VALUE);
         }
 
         public CGRect GetHeaderFrame()
@@ -125,7 +135,7 @@ namespace myTNB
             }
         }
 
-        private void CreateChargesSection(bool isREAccount = false)
+        private void CreateChargesSection(bool isREAccount = false, bool isItemizedBilling = false)
         {
             nfloat widgetY = 0.0F;
             _viewCharges = new UIView()
@@ -148,6 +158,16 @@ namespace myTNB
                 widgetY += 64;
                 _viewCurrentCharges = new UIView(new CGRect(18, widgetY, _contentWidth, 16));
                 widgetY += 32;
+                _viewItemizedBilling = new UIView()
+                {
+                    // BackgroundColor = UIColor.Cyan
+                };
+                if (isItemizedBilling)
+                {
+                    _viewItemizedBilling.Frame = new CGRect(18, widgetY, _contentWidth, 88);
+                    AddItemizedBilling();
+                    widgetY += 104;
+                }
                 _viewOutstandingCharges = new UIView(new CGRect(18, widgetY, _contentWidth, 16));
                 widgetY += 32;
                 UIView viewLine = GenericLine.GetLine(new CGRect(18, widgetY, _contentWidth, 1));
@@ -159,18 +179,14 @@ namespace myTNB
 
                 nfloat containerViewHeight = widgetY + _btnPay.Frame.Height + 24;
                 _viewCharges.Frame = new CGRect(0, _viewAccountDetails.Frame.GetMaxY(), _frameWidth, containerViewHeight);
-                _viewCharges.AddSubviews(new UIView[] { _viewBreakdownTitle, _viewCurrentCharges
+                _viewCharges.AddSubviews(new UIView[] { _viewBreakdownTitle, _viewCurrentCharges, _viewItemizedBilling
                 , _viewOutstandingCharges, viewLine, _viewTotalAmountDue, _btnPay });
             }
-            AddChildrenViews(isREAccount);
+            AddChildrenViews(isREAccount, isItemizedBilling);
         }
 
-        private void AddChildrenViews(bool isREAccount)
+        private void AddChildrenViews(bool isREAccount, bool isItemizedBilling)
         {
-            nfloat childWidth = _frameWidth - 36.0F;
-            nfloat childWidthTitle = childWidth * 0.60F;
-            nfloat childWidthValue = childWidth * 0.40F;
-
             _lblBreakdownHeader = GetUILabelField(new CGRect(18, 24, _frameWidth - 36, 18), "Bill_BillDetails"
                 , MyTNBFont.MuseoSans16, MyTNBColor.PowerBlue);
 
@@ -183,7 +199,11 @@ namespace myTNB
                 _lblOutstandingChargesTitle = GetUILabelField(new CGRect(0, 0, childWidthTitle, 16), "Bill_OutstandingCharges");
                 _lblOutstandingChargesValue = GetUILabelField(new CGRect(_lblCurrentChargesTitle.Frame.Width, 0
                     , childWidthValue, 16), string.Empty, UITextAlignment.Right);
+
+                _viewCurrentCharges.AddSubviews(new UIView[] { _lblCurrentChargesTitle, _lblCurrentChargesValue });
+                _viewOutstandingCharges.AddSubviews(new UIView[] { _lblOutstandingChargesTitle, _lblOutstandingChargesValue });
             }
+
             _lblTotalDueAmountTitle = GetUILabelField(new CGRect(0, 16, childWidthTitle, 18), "Common_TotalAmountDue"
                 , MyTNBFont.MuseoSans14_500, MyTNBColor.TunaGrey());
             _lblDueDateTitle = GetUILabelField(new CGRect(0, 34, childWidthTitle, 14), TNBGlobal.EMPTY_DATE
@@ -198,14 +218,38 @@ namespace myTNB
             _viewAmount.AddSubviews(new UIView[] { lblCurrency, _lblAmount });
 
             _viewBreakdownTitle.AddSubview(_lblBreakdownHeader);
-            if (!isREAccount)
-            {
-                _viewCurrentCharges.AddSubviews(new UIView[] { _lblCurrentChargesTitle, _lblCurrentChargesValue });
-                _viewOutstandingCharges.AddSubviews(new UIView[] { _lblOutstandingChargesTitle, _lblOutstandingChargesValue });
-            }
+
             _viewTotalAmountDue.AddSubviews(new UIView[] { _lblTotalDueAmountTitle, _lblDueDateTitle, _viewAmount });
 
             RefitAmountToWidget();
+        }
+
+        private void AddItemizedBilling()
+        {
+            nfloat widgetY = 0;
+            _lblMandatoryPayments = GetUILabelField(new CGRect(0, widgetY, childWidthTitle, 16), "Bill_MandatoryPayments");
+            _lblMandatoryPaymentsValue = GetUILabelField(new CGRect(_lblMandatoryPayments.Frame.Width, widgetY
+                , childWidthValue, 16), string.Empty, UITextAlignment.Right);
+            widgetY += 32;
+            _lblSecurityDeposit = GetSubKeyValueLabel(new CGRect(0, widgetY, childWidthTitle, 14), "Bill_SecurityDeposit");
+            _lblSecurityDepositValue = GetSubKeyValueLabel(new CGRect(_lblSecurityDeposit.Frame.Width, widgetY
+                , childWidthValue, 14), string.Empty, UITextAlignment.Right);
+            widgetY += 14;
+            _lblDisconnection = GetSubKeyValueLabel(new CGRect(0, widgetY, childWidthTitle, 14), "Bill_DisconnectionCharges");
+            _lblDisconnectionValue = GetSubKeyValueLabel(new CGRect(_lblDisconnection.Frame.Width, widgetY
+                , childWidthValue, 14), string.Empty, UITextAlignment.Right);
+            widgetY += 14;
+            _lblReconnection = GetSubKeyValueLabel(new CGRect(0, widgetY, childWidthTitle, 14), "Bill_ReconnectionCharges");
+            _lblReconnectionValue = GetSubKeyValueLabel(new CGRect(_lblReconnection.Frame.Width, widgetY
+                , childWidthValue, 14), string.Empty, UITextAlignment.Right);
+            widgetY += 14;
+            _lblStampDuty = GetSubKeyValueLabel(new CGRect(0, widgetY, childWidthTitle, 14), "Bill_StampDuty");
+            _lblStampDutyValue = GetSubKeyValueLabel(new CGRect(_lblStampDuty.Frame.Width, widgetY
+                , childWidthValue, 14), string.Empty, UITextAlignment.Right);
+
+            _viewItemizedBilling.AddSubviews(new UIView[] { _lblMandatoryPayments, _lblSecurityDeposit
+                , _lblDisconnection, _lblReconnection, _lblStampDuty,_lblMandatoryPaymentsValue
+                , _lblSecurityDepositValue, _lblDisconnectionValue, _lblReconnectionValue, _lblStampDutyValue  });
         }
 
         private void CreateHistorySection()
@@ -239,6 +283,11 @@ namespace myTNB
             _viewHistoryHeader.AddSubview(_lblHistoryHeader);
             viewToggle.AddSubviews(new UIView[] { _btnBills, _btnPayments });
             _viewHistory.AddSubviews(new UIView[] { _viewHistoryHeader, viewToggle });
+        }
+
+        private UILabel GetSubKeyValueLabel(CGRect cgRect, string key, UITextAlignment textAlignment = UITextAlignment.Left)
+        {
+            return GetUILabelField(cgRect, key, MyTNBFont.MuseoSans11_300, MyTNBColor.SilverChalice, textAlignment);
         }
     }
 }

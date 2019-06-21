@@ -112,7 +112,7 @@ namespace myTNB
                             else
                             {
                                 Debug.WriteLine("No Network");
-                                DisplayAlertView("ErrNoNetworkTitle".Translate(), "ErrNoNetworkMsg".Translate());
+                                AlertHandler.DisplayNoDataAlert(this);
                             }
                         });
                     }
@@ -199,7 +199,7 @@ namespace myTNB
                     else
                     {
                         Debug.WriteLine("No Network");
-                        DisplayAlertView("ErrNoNetworkTitle".Translate(), "ErrNoNetworkMsg".Translate());
+                        AlertHandler.DisplayNoDataAlert(this);
                     }
                 });
             });
@@ -354,8 +354,7 @@ namespace myTNB
             }
             else
             {
-                var msg = !string.IsNullOrWhiteSpace(response?.message) ? response?.message : "DefaultErrorMessage".Translate();
-                DisplayAlertView("ErrorTitle".Translate(), msg);
+                AlertHandler.DisplayServiceError(this, response?.message);
             }
         }
 
@@ -508,13 +507,6 @@ namespace myTNB
                     }
                 }
             });
-        }
-
-        internal void DisplayAlertView(string title, string message)
-        {
-            var alert = UIAlertController.Create(title, message, UIAlertControllerStyle.Alert);
-            alert.AddAction(UIAlertAction.Create("Ok", UIAlertActionStyle.Cancel, null));
-            PresentViewController(alert, animated: true, completionHandler: null);
         }
 
         internal void ExecuteGetCutomerRecordsCall()

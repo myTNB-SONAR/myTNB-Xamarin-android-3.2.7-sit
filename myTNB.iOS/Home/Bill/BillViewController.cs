@@ -24,14 +24,10 @@ namespace myTNB
         DueAmountResponseModel _dueAmount = new DueAmountResponseModel();
 
         public UserNotificationDataModel NotificationInfo = new UserNotificationDataModel();
-        public bool IsFromNavigation = false;
-        bool _paymentNeedsUpdate = false;
-        bool isAnimating = false;
-        bool isREAccount = false;
-        bool isOwnedAccount = false;
+        public bool IsFromNavigation;
+        bool _paymentNeedsUpdate, isAnimating, isREAccount, isOwnedAccount, isFromReceiptScreen;
         bool isBcrmAvailable = true;
-        bool isFromReceiptScreen = false;
-        bool isRefreshing = false;
+        readonly bool isItemizedBilling; //Stub
 
         public BillViewController(IntPtr handle) : base(handle)
         {
@@ -41,7 +37,7 @@ namespace myTNB
         public override void ViewDidLoad()
         {
             base.ViewDidLoad();
-            NSNotificationCenter.DefaultCenter.AddObserver((Foundation.NSString)"LanguageDidChange", LanguageDidChange);
+            NSNotificationCenter.DefaultCenter.AddObserver((NSString)"LanguageDidChange", LanguageDidChange);
             NSNotificationCenter.DefaultCenter.AddObserver(UIApplication.WillEnterForegroundNotification, HandleAppWillEnterForeground);
             if (NavigationController != null && NavigationController.NavigationBar != null)
             {
@@ -93,7 +89,11 @@ namespace myTNB
             InitializedSubviews();
             titleBarComponent.SetBackVisibility(!IsFromNavigation);
             DataManager.DataManager.SharedInstance.selectedTag = 0;
-            SetChargesValue(null, null, TNBGlobal.DEFAULT_VALUE);
+            SetChargesValues(null, null, TNBGlobal.DEFAULT_VALUE);
+            if (isItemizedBilling)
+            {
+                SetItemizedBillingValues(null, null, null, null, null);
+            }
 
             SetDetailsView();
 
@@ -349,23 +349,42 @@ namespace myTNB
                         var payableAmt = DataManager.DataManager.SharedInstance.BillingAccountDetails?.amPayableChg ?? 0;
                         var balanceAmt = DataManager.DataManager.SharedInstance.BillingAccountDetails?.amCustBal ?? 0;
 
-                        var current = !isREAccount ? currentAmt : ChartHelper.UpdateValueForRE(currentAmt);
-                        var outstanding = !isREAccount ? outstandingAmt : ChartHelper.UpdateValueForRE(outstandingAmt);
-                        var payable = !isREAccount ? payableAmt : ChartHelper.UpdateValueForRE(payableAmt);
-                        var balance = !isREAccount ? balanceAmt : ChartHelper.UpdateValueForRE(balanceAmt);
+                        var current = isREAccount ? ChartHelper.UpdateValueForRE(currentAmt) : currentAmt;
+                        var outstanding = isREAccount ? ChartHelper.UpdateValueForRE(outstandingAmt) : outstandingAmt;
+                        var payable = isREAccount ? ChartHelper.UpdateValueForRE(payableAmt) : payableAmt;
+                        var balance = isREAccount ? ChartHelper.UpdateValueForRE(balanceAmt) : balanceAmt;
 
-                        SetChargesValue(string.Format("{0} {1}", TNBGlobal.UNIT_CURRENCY, current.ToString("N2", CultureInfo.InvariantCulture))
+                        SetChargesValues(string.Format("{0} {1}", TNBGlobal.UNIT_CURRENCY, current.ToString("N2", CultureInfo.InvariantCulture))
                             , string.Format("{0} {1}", TNBGlobal.UNIT_CURRENCY, outstanding.ToString("N2", CultureInfo.InvariantCulture))
                             , balance.ToString("N2", CultureInfo.InvariantCulture));
+
+                        if (isItemizedBilling)
+                        {
+                            var mandatoryPayments = DataManager.DataManager.SharedInstance.BillingAccountDetails?.OpenChargesTotal ?? 0;
+                            var securityDeposit = DataManager.DataManager.SharedInstance.BillingAccountDetails?.OpenSecurityDeposit ?? 0;
+                            var disconnectionCharges = DataManager.DataManager.SharedInstance.BillingAccountDetails?.OpenProcessingFee ?? 0;
+                            var reconnectionCharges = DataManager.DataManager.SharedInstance.BillingAccountDetails?.OpenMeterCost ?? 0;
+                            var stampDuty = DataManager.DataManager.SharedInstance.BillingAccountDetails?.OpenStampDuty ?? 0;
+
+                            SetItemizedBillingValues(string.Format("{0} {1}", TNBGlobal.UNIT_CURRENCY, mandatoryPayments.ToString("N2", CultureInfo.InvariantCulture))
+                                , string.Format("{0} {1}", TNBGlobal.UNIT_CURRENCY, securityDeposit.ToString("N2", CultureInfo.InvariantCulture))
+                                , string.Format("{0} {1}", TNBGlobal.UNIT_CURRENCY, disconnectionCharges.ToString("N2", CultureInfo.InvariantCulture))
+                                , string.Format("{0} {1}", TNBGlobal.UNIT_CURRENCY, reconnectionCharges.ToString("N2", CultureInfo.InvariantCulture))
+                                , string.Format("{0} {1}", TNBGlobal.UNIT_CURRENCY, stampDuty.ToString("N2", CultureInfo.InvariantCulture)));
+                        }
                     });
                 });
             }
             else
             {
                 _lblAddress.Text = string.Empty;
-                SetChargesValue(string.Format("{0} {1}", TNBGlobal.UNIT_CURRENCY, TNBGlobal.DEFAULT_VALUE)
+                SetChargesValues(string.Format("{0} {1}", TNBGlobal.UNIT_CURRENCY, TNBGlobal.DEFAULT_VALUE)
                     , string.Format("{0} {1}", TNBGlobal.UNIT_CURRENCY, TNBGlobal.DEFAULT_VALUE)
                     , TNBGlobal.DEFAULT_VALUE);
+                if (isItemizedBilling)
+                {
+                    SetItemizedBillingValues(null, null, null, null, null);
+                }
             }
 
             _lblHistoryHeader.Text = isREAccount ? "Bill_REPaymentSectionHeader".Translate() : "Bill_PaymentSectionHeader".Translate();
@@ -542,7 +561,7 @@ namespace myTNB
             }
             else
             {
-                CreateNormalView();
+                CreateNormalView(isItemizedBilling);
             }
             _headerView.AddSubviews(new UIView[] { _viewAccountDetails, _viewCharges, _viewHistory });
             _lblHistoryHeader.Text = isREAccount ? "Bill_REPaymentSectionHeader".Translate() : "Bill_PaymentSectionHeader".Translate();
