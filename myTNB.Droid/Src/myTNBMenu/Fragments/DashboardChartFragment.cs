@@ -390,35 +390,47 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         }
 
         [OnClick(Resource.Id.txtWhyThisAmt)]
-        void OnWhyThisAMtClick(object sender, EventArgs eventArgs)
+        void OnWhyThisAmtClick(object sender, EventArgs eventArgs)
         {
             try
             {
-                txtWhyThisAmt.Enabled = false;
-                Handler h = new Handler();
-                Action myAction = () =>
-                {
-                    txtWhyThisAmt.Enabled = true;
-                };
-                h.PostDelayed(myAction, 3000);
-
                 mWhyThisAmtCardDialog = new MaterialDialog.Builder(Activity)
-                    .Title(Activity.GetString(Resource.String.itemized_bill_title))
-                    .Content(Activity.GetString(Resource.String.itemized_bill_message))
+                    .CustomView(Resource.Layout.WhyThisAmtView, false)
                     .Cancelable(false)
-                    .PositiveText(Activity.GetString(Resource.String.itemized_bill_bring_me_there))
-                     .PositiveColor(Resource.Color.powerBlue)
-                    .OnPositive((dialog, which) =>
-                    {
-                        ((DashboardActivity)Activity).BillsMenuAccess();
-                        mWhyThisAmtCardDialog.Dismiss();
-                    })
-                    .NeutralText(Activity.GetString(Resource.String.itemized_bill_got_it))
-                    .NeutralColor(Resource.Color.powerBlue)
-                    .OnNeutral((dialog, which) =>
-                    {
-                        mWhyThisAmtCardDialog.Dismiss();
-                    }).Show();
+                    .CanceledOnTouchOutside(false)
+                    .Build();
+
+                View dialogView = mWhyThisAmtCardDialog.Window.DecorView;
+                dialogView.SetBackgroundResource(Android.Resource.Color.Transparent);
+
+                TextView txtItemizedTitle = mWhyThisAmtCardDialog.FindViewById<TextView>(Resource.Id.txtItemizedTitle);
+                TextView txtItemizedMessage = mWhyThisAmtCardDialog.FindViewById<TextView>(Resource.Id.txtItemizedMessage);
+                TextView btnGotIt = mWhyThisAmtCardDialog.FindViewById<TextView>(Resource.Id.txtBtnGotIt);
+                TextView btnBringMeThere = mWhyThisAmtCardDialog.FindViewById<TextView>(Resource.Id.txtBtnBringMeThere);
+                if (Build.VERSION.SdkInt >= BuildVersionCodes.N)
+                {
+                    txtItemizedMessage.TextFormatted = Html.FromHtml(Activity.GetString(Resource.String.itemized_bill_message), FromHtmlOptions.ModeLegacy);
+                }
+                else
+                {
+                    txtItemizedMessage.TextFormatted = Html.FromHtml(Activity.GetString(Resource.String.itemized_bill_message));
+                }
+                TextViewUtils.SetMuseoSans500Typeface(txtItemizedTitle, btnGotIt, btnBringMeThere);
+                TextViewUtils.SetMuseoSans300Typeface(txtItemizedMessage);
+                btnGotIt.Click += delegate
+                {
+                    mWhyThisAmtCardDialog.Dismiss();
+                };
+                btnBringMeThere.Click += delegate
+                {
+                    ((DashboardActivity)Activity).BillsMenuAccess();
+                    mWhyThisAmtCardDialog.Dismiss();
+                };
+
+                if(IsActive())
+                {
+                    mWhyThisAmtCardDialog.Show();
+                }
             }
             catch (System.Exception e)
             {
