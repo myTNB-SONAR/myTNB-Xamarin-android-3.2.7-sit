@@ -117,20 +117,36 @@ namespace myTNB.PushNotification
             }
         }
 
+        public override bool CanEditRow(UITableView tableView, NSIndexPath indexPath)
+        {
+            return !_controller._isSelectionMode;
+        }
+
         public override UITableViewRowAction[] EditActionsForRow(UITableView tableView, NSIndexPath indexPath)
         {
-            UITableViewRowAction deleteAction = new UITableViewRowAction()
+            UserNotificationDataModel notification = _data[indexPath.Row];
+            if (!_controller._isSelectionMode)
             {
-                BackgroundColor = UIColor.FromPatternImage(RowActionImage(UIColor.Red.CGColor, "Notification-Delete")),
-                Title = "        ",
-
-            };
-            UITableViewRowAction readAction = new UITableViewRowAction()
-            {
-                BackgroundColor = UIColor.FromPatternImage(RowActionImage(UIColor.Blue.CGColor, "Notification-MarkAsRead")),
-                Title = "        "
-            };
-            return new UITableViewRowAction[] { deleteAction, readAction };
+                UITableViewRowAction deleteAction = UITableViewRowAction.Create(UITableViewRowActionStyle.Default, "        ", delegate
+                {
+                    DeleteNotification(indexPath);
+                });
+                deleteAction.BackgroundColor = UIColor.FromPatternImage(RowActionImage(UIColor.Red.CGColor, "Notification-Delete"));
+                if (notification.IsRead.ToLower() == "false")
+                {
+                    UITableViewRowAction readAction = UITableViewRowAction.Create(UITableViewRowActionStyle.Default, "        ", delegate
+                    {
+                        //Todo: Read Notification
+                    });
+                    readAction.BackgroundColor = UIColor.FromPatternImage(RowActionImage(UIColor.Blue.CGColor, "Notification-MarkAsRead"));
+                    return new UITableViewRowAction[] { deleteAction, readAction };
+                }
+                else
+                {
+                    return new UITableViewRowAction[] { deleteAction };
+                }
+            }
+            return null;
         }
 
         UIImage RowActionImage(CGColor bgColor, string imgKey)
