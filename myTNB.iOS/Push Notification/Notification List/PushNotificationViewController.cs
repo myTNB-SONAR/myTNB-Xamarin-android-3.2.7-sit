@@ -18,13 +18,12 @@ namespace myTNB.PushNotification
         {
         }
         public DeleteNotificationResponseModel _deleteNotificationResponse = new DeleteNotificationResponseModel();
-        public bool _isSelectionMode = false;
-        internal bool _isDeletionMode = false;
-        bool _isAllSelected = false;
+        public bool _isSelectionMode;
+        internal bool _isDeletionMode;
+        bool _isAllSelected;
 
         AccountSelectionComponent _notificationSelectionComponent;
         NotificationDetailedInfoResponseModel _detailedInfo = new NotificationDetailedInfoResponseModel();
-        UserNotificationDataModel NotificationInfo = new UserNotificationDataModel();
         TitleBarComponent _titleBarComponent;
         List<UserNotificationDataModel> _notifications;
         List<UpdateNotificationModel> _notificationsForUpdate;
@@ -174,10 +173,41 @@ namespace myTNB.PushNotification
 
             UIView titleBarView = _titleBarComponent.GetUI();
             _titleBarComponent.SetTitle("PushNotification_Title".Translate());
-            _titleBarComponent.SetPrimaryImage("Notification-MarkAsRead");
-            _titleBarComponent.SetPrimaryAction(new UITapGestureRecognizer((obj) =>
+            _titleBarComponent.SetSecondaryImage("Notification-MarkAsRead");
+            _titleBarComponent.SetSecondaryAction(new UITapGestureRecognizer((obj) =>
             {
-
+                int count = _notificationsForUpdate != null ? _notificationsForUpdate.Count : 0;
+                if (count > 1)
+                {
+                    var readAlert = UIAlertController.Create("PushNotification_ReadNotificationsTitle".Translate()
+                        , "PushNotification_ReadNotificationsMessage".Translate(), UIAlertControllerStyle.Alert);
+                    readAlert.AddAction(UIAlertAction.Create("Common_Yes".Translate(), UIAlertActionStyle.Default, (args) =>
+                    {
+                        if (_notificationsForUpdate != null)
+                        {
+                            Debug.WriteLine("notificationsForDeletion count: " + _notificationsForUpdate.Count);
+                            foreach (UpdateNotificationModel notif in _notificationsForUpdate)
+                            {
+                                Debug.WriteLine("Delete NotificationId: " + notif.NotificationId);
+                            }
+                            //Todo: Read Notification
+                        }
+                    }));
+                    readAlert.AddAction(UIAlertAction.Create("Common_No".Translate(), UIAlertActionStyle.Cancel, null));
+                    PresentViewController(readAlert, animated: true, completionHandler: null);
+                }
+                else
+                {
+                    if (_notificationsForUpdate != null)
+                    {
+                        Debug.WriteLine("notificationsForDeletion count: " + _notificationsForUpdate.Count);
+                        foreach (UpdateNotificationModel notif in _notificationsForUpdate)
+                        {
+                            Debug.WriteLine("Delete NotificationId: " + notif.NotificationId);
+                        }
+                        //Todo: Read Notification
+                    }
+                }
             }));
             _titleBarComponent.SetNotificationVisibility(false);
             _titleBarComponent.SetNotificationImage("Notification-Select");
@@ -186,9 +216,11 @@ namespace myTNB.PushNotification
                 if (_isDeletionMode)
                 {
                     Debug.WriteLine("_isDeletionMode");
-                    var alert = UIAlertController.Create("PushNotification_DeleteTitleMultiple".Translate()
-                        , "PushNotification_DeleteMessageMultiple".Translate(), UIAlertControllerStyle.Alert);
-                    alert.AddAction(UIAlertAction.Create("Common_Yes".Translate(), UIAlertActionStyle.Default, (obj) =>
+                    int count = _notificationsForUpdate != null ? _notificationsForUpdate.Count : 0;
+                    string alertTitle = count > 1 ? "PushNotification_DeleteTitleMultiple" : "PushNotification_DeleteMessage";
+                    string alertMsg = count > 1 ? "PushNotification_DeleteMessageMultiple" : "PushNotification_DeleteMessage";
+                    var deleteAlert = UIAlertController.Create(alertTitle.Translate(), alertMsg.Translate(), UIAlertControllerStyle.Alert);
+                    deleteAlert.AddAction(UIAlertAction.Create("Common_Yes".Translate(), UIAlertActionStyle.Default, (args) =>
                     {
                         if (_notificationsForUpdate != null)
                         {
@@ -200,8 +232,8 @@ namespace myTNB.PushNotification
                             DeleteNotification(_notificationsForUpdate, true);
                         }
                     }));
-                    alert.AddAction(UIAlertAction.Create("Common_No".Translate(), UIAlertActionStyle.Cancel, null));
-                    PresentViewController(alert, animated: true, completionHandler: null);
+                    deleteAlert.AddAction(UIAlertAction.Create("Common_No".Translate(), UIAlertActionStyle.Cancel, null));
+                    PresentViewController(deleteAlert, animated: true, completionHandler: null);
                 }
                 else
                 {
@@ -218,6 +250,7 @@ namespace myTNB.PushNotification
                         pushNotificationTableView.TableHeaderView = GetTableViewHeader();
                     }
                     _isSelectionMode = !_isSelectionMode;
+                    UpdateTitleRightIconImage();
                     pushNotificationTableView.ReloadData();
                 }
             }));
@@ -633,7 +666,7 @@ namespace myTNB.PushNotification
             if (_isSelectionMode)
             {
                 icon = _isDeletionMode ? "Notification-Delete" : "IC-Header-Cancel";
-                _titleBarComponent.SetPrimaryVisibility(!_isDeletionMode);
+                _titleBarComponent.SetSecondaryVisibility(!_isDeletionMode);
             }
             _titleBarComponent.SetNotificationImage(icon);
             UpdateNotificationForDeletionList(notifModel);

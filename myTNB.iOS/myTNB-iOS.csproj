@@ -867,13 +867,13 @@
     <ImageAsset Include="Assets.xcassets\IC-Header-Cancel.imageset\icHeaderCancel%402x.png" />
     <ImageAsset Include="Assets.xcassets\IC-Header-Cancel.imageset\icHeaderCancel%403x.png" />
     <ImageAsset Include="Assets.xcassets\Notification-Select.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Notification-Select.imageset\icActionSelect.png" />
-    <ImageAsset Include="Assets.xcassets\Notification-Select.imageset\icActionSelect%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Notification-Select.imageset\icActionSelect%403x.png" />
     <ImageAsset Include="Assets.xcassets\Maintenance-Image.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Maintenance-Image.imageset\Maintenance-Image-1.png" />
     <ImageAsset Include="Assets.xcassets\Maintenance-Image.imageset\Maintenance-Image%402x-1.png" />
     <ImageAsset Include="Assets.xcassets\Maintenance-Image.imageset\Maintenance-Image%403x-1.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Select.imageset\icActionSelectAll.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Select.imageset\icActionSelectAll%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Select.imageset\icActionSelectAll%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />

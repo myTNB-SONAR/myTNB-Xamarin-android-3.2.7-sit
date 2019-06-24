@@ -409,6 +409,8 @@
 "PushNotification_NoNotification"="No notifications yet.";
 "PushNotification_NotificationDeleted"="Notification deleted.";
 "PushNotification_NotificationsDeleted"="Notifications deleted.";
+"PushNotification_ReadNotificationsMessage"="Are you sure you want to mark all notifications as read?";
+"PushNotification_ReadNotificationsTitle"="Mark All As Read";
 "PushNotification_SelectNotification"="Select Notification";
 "PushNotification_Title"="Notifications";
 "PushNotification_ViewDetails"="View Details";
