@@ -9,6 +9,7 @@ using UIKit;
 using myTNB.SQLite.SQLiteDataManager;
 using Foundation;
 using System.Diagnostics;
+using myTNB.Home.Components;
 
 namespace myTNB.PushNotification
 {
@@ -19,9 +20,9 @@ namespace myTNB.PushNotification
         }
         public DeleteNotificationResponseModel _deleteNotificationResponse = new DeleteNotificationResponseModel();
         UserNotificationResponseModel userNotificationResponse = new UserNotificationResponseModel();
-        public bool _isSelectionMode = false;
-        internal bool _isDeletionMode = false;
-        bool _isAllSelected = false;
+        public bool _isSelectionMode;
+        internal bool _isDeletionMode;
+        bool _isAllSelected;
 
         AccountSelectionComponent _notificationSelectionComponent;
         NotificationDetailedInfoResponseModel _detailedInfo = new NotificationDetailedInfoResponseModel();
@@ -30,9 +31,11 @@ namespace myTNB.PushNotification
         List<UserNotificationDataModel> _notifications;
         List<UpdateNotificationModel> _notificationsForUpdate;
 
-        UIImageView _imgNoNotification, _imgCheckbox;
-        UILabel _lblNoNotification, _lblTitle;
-        UIButton _btnRefresh;
+        UIImageView _imgCheckbox;
+        UILabel _lblTitle;
+
+        RefreshViewComponent _refreshViewComponent;
+        UIView headerView;
 
         public override void ViewDidLoad()
         {
@@ -89,57 +92,24 @@ namespace myTNB.PushNotification
         private void ValidateResponse()
         {
             userNotificationResponse = DataManager.DataManager.SharedInstance.UserNotificationResponse;
-            if (userNotificationResponse == null || userNotificationResponse?.d == null || userNotificationResponse?.d?.didSucceed == false || userNotificationResponse?.d?.status?.ToLower() == "failed")
+            if (userNotificationResponse == null
+                || userNotificationResponse?.d == null
+                || userNotificationResponse?.d?.didSucceed == false
+                || userNotificationResponse?.d?.status?.ToLower() == "failed")
             {
-                nfloat horizontalMargin = 18.0f;
-                nfloat verticalMargin = 10.0f;
-                nfloat btnHeight = 44.0f;
-
-                Debug.WriteLine("error!");
-                Debug.WriteLine("userNotificationResponse: " + userNotificationResponse);
-
-                var errMsg = userNotificationResponse?.d?.message ?? @"Something went wrong. Please try again.";
-                if (_imgNoNotification == null || _lblNoNotification == null || _btnRefresh == null)
-                {
-                    _imgNoNotification = new UIImageView(new CGRect((View.Frame.Width / 2) - 75, 185, 150, 150))
-                    {
-                        Image = UIImage.FromBundle("Notification-Empty")
-                    };
-                    _lblNoNotification = new UILabel(new CGRect(44, _imgNoNotification.Frame.GetMaxY() + verticalMargin, View.Frame.Width - 88, 16))
-                    {
-                        TextAlignment = UITextAlignment.Center,
-                        Text = errMsg,
-                        Font = MyTNBFont.MuseoSans12,
-                        TextColor = MyTNBColor.SilverChalice
-                    };
-                    _btnRefresh = new UIButton(UIButtonType.Custom)
-                    {
-                        Frame = new CGRect(horizontalMargin, _lblNoNotification.Frame.GetMaxY() + verticalMargin, View.Frame.Width - horizontalMargin * 2, btnHeight)
-                    };
-                    _btnRefresh.Layer.CornerRadius = 4;
-                    _btnRefresh.Layer.BorderColor = MyTNBColor.SilverChalice.CGColor;
-                    _btnRefresh.BackgroundColor = UIColor.Clear;
-                    _btnRefresh.Layer.BorderWidth = 1;
-                    _btnRefresh.SetTitle("Refresh", UIControlState.Normal);
-                    _btnRefresh.Font = MyTNBFont.MuseoSans16_300;
-                    _btnRefresh.SetTitleColor(MyTNBColor.SilverChalice, UIControlState.Normal);
-                    _btnRefresh.TouchUpInside += (sender, e) =>
-                    {
-                        Debug.WriteLine("Refresh button tapped");
-                        GetUserNotif();
-                    };
-                    View.AddSubviews(new UIView[] { _imgNoNotification, _lblNoNotification, _btnRefresh });
-                }
+                DisplayRefreshScreen();
                 _titleBarComponent.SetNotificationVisibility(true);
                 pushNotificationTableView.Hidden = true;
-                _imgNoNotification.Hidden = false;
-                _lblNoNotification.Hidden = false;
-                _btnRefresh.Hidden = false;
             }
             else
             {
                 UpdateNotificationDisplay();
             }
+        }
+
+        void OnRefreshTap()
+        {
+            GetUserNotif();
         }
 
         private void UpdateNotificationDisplay()
@@ -173,10 +143,12 @@ namespace myTNB.PushNotification
 
                 if (_notifications != null && _notifications.Count > 0)
                 {
-                    if (_imgNoNotification != null && _lblNoNotification != null)
+                    if (_refreshViewComponent != null)
                     {
-                        _imgNoNotification.Hidden = true;
-                        _lblNoNotification.Hidden = true;
+                        if (_refreshViewComponent.GetView().IsDescendantOfView(View))
+                        {
+                            _refreshViewComponent.GetView().RemoveFromSuperview();
+                        }
                     }
                     pushNotificationTableView.Hidden = false;
                     pushNotificationTableView.ClearsContextBeforeDrawing = true;
@@ -222,31 +194,48 @@ namespace myTNB.PushNotification
 
         void DisplayNoNotification()
         {
-            if (_imgNoNotification == null || _lblNoNotification == null)
-            {
-                _imgNoNotification = new UIImageView(new CGRect((View.Frame.Width / 2) - 75, 185, 150, 150))
-                {
-                    Image = UIImage.FromBundle("Notification-Empty")
-                };
-                _lblNoNotification = new UILabel(new CGRect(44, 352, View.Frame.Width - 88, 16))
-                {
-                    TextAlignment = UITextAlignment.Center,
-                    Text = "PushNotification_NoNotification".Translate(),
-                    Font = MyTNBFont.MuseoSans12,
-                    TextColor = MyTNBColor.SilverChalice
-                };
-                View.AddSubviews(new UIView[] { _imgNoNotification, _lblNoNotification });
-            }
             pushNotificationTableView.Hidden = true;
-            _imgNoNotification.Hidden = false;
-            _lblNoNotification.Hidden = false;
+
+            if (_refreshViewComponent != null)
+            {
+                if (_refreshViewComponent.GetView().IsDescendantOfView(View))
+                {
+                    _refreshViewComponent.GetView().RemoveFromSuperview();
+                }
+            }
+
+            _refreshViewComponent = new RefreshViewComponent(View, headerView);
+            _refreshViewComponent.SetIconImage("Notification-Error");
+            _refreshViewComponent.SetDescription("PushNotification_NoNotification".Translate());
+            _refreshViewComponent.SetRefreshButtonHidden(true);
+
+            View.AddSubview(_refreshViewComponent.GetUI());
+        }
+
+        internal void DisplayRefreshScreen()
+        {
+            if (_refreshViewComponent != null)
+            {
+                if (_refreshViewComponent.GetView().IsDescendantOfView(View))
+                {
+                    _refreshViewComponent.GetView().RemoveFromSuperview();
+                }
+            }
+
+            _refreshViewComponent = new RefreshViewComponent(View, headerView);
+            _refreshViewComponent.SetIconImage("Notification-Error");
+            _refreshViewComponent.SetDescription("We can’t seem to find the right information! This page must be tired. Help it out. Tap the button below.");
+            _refreshViewComponent.SetButtonText("Refresh Now");
+            _refreshViewComponent.OnButtonTap = OnRefreshTap;
+
+            View.AddSubview(_refreshViewComponent.GetUI());
         }
 
         internal void SetNavigationBar()
         {
             NavigationController?.SetNavigationBarHidden(true, false);
             GradientViewComponent gradientViewComponent = new GradientViewComponent(View, true, 89, true);
-            UIView headerView = gradientViewComponent.GetUI();
+            headerView = gradientViewComponent.GetUI();
             _titleBarComponent = new TitleBarComponent(headerView);
 
             UIView titleBarView = _titleBarComponent.GetUI();

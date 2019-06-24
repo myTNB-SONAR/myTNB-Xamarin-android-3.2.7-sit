@@ -874,6 +874,10 @@
     <ImageAsset Include="Assets.xcassets\Maintenance-Image.imageset\Maintenance-Image-1.png" />
     <ImageAsset Include="Assets.xcassets\Maintenance-Image.imageset\Maintenance-Image%402x-1.png" />
     <ImageAsset Include="Assets.xcassets\Maintenance-Image.imageset\Maintenance-Image%403x-1.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Error.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Notification-Error.imageset\Notification-Error.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Error.imageset\Notification-Error%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Error.imageset\Notification-Error%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -1126,6 +1130,7 @@
     <Folder Include="Assets.xcassets\IC-Header-Cancel.imageset\" />
     <Folder Include="Assets.xcassets\Notification-Select.imageset\" />
     <Folder Include="Assets.xcassets\Maintenance-Image.imageset\" />
+    <Folder Include="Assets.xcassets\Notification-Error.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -1811,6 +1816,7 @@
     <Compile Include="Helpers\Generic Line\GenericLine.cs" />
     <Compile Include="Model\UpdateNotification\UpdateNotificationModel.cs" />
     <Compile Include="Customs\CustomUIViewController.cs" />
+    <Compile Include="Home\Components\RefreshViewComponent.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />
