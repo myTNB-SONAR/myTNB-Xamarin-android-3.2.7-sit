@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using CoreGraphics;
 using Foundation;
 using myTNB.Model;
 using UIKit;
@@ -116,24 +117,50 @@ namespace myTNB.PushNotification
             }
         }
 
-        public override void CommitEditingStyle(UITableView tableView, UITableViewCellEditingStyle editingStyle, NSIndexPath indexPath)
-        {
-            switch (editingStyle)
-            {
-                case UITableViewCellEditingStyle.Delete:
-                    DeleteNotification(indexPath);
-                    break;
-                case UITableViewCellEditingStyle.None:
-                    break;
-            }
-        }
         public override bool CanEditRow(UITableView tableView, NSIndexPath indexPath)
         {
-            return true && !_controller._isSelectionMode;
+            return !_controller._isSelectionMode;
         }
-        public override string TitleForDeleteConfirmation(UITableView tableView, NSIndexPath indexPath)
+
+        public override UITableViewRowAction[] EditActionsForRow(UITableView tableView, NSIndexPath indexPath)
         {
-            return "Common_Delete".Translate();
+            UserNotificationDataModel notification = _data[indexPath.Row];
+            if (!_controller._isSelectionMode)
+            {
+                UITableViewRowAction deleteAction = UITableViewRowAction.Create(UITableViewRowActionStyle.Default, "        ", delegate
+                {
+                    DeleteNotification(indexPath);
+                });
+                deleteAction.BackgroundColor = UIColor.FromPatternImage(RowActionImage(UIColor.Red.CGColor, "Notification-Delete"));
+                if (notification.IsRead.ToLower() == "false")
+                {
+                    UITableViewRowAction readAction = UITableViewRowAction.Create(UITableViewRowActionStyle.Default, "        ", delegate
+                    {
+                        //Todo: Read Notification
+                    });
+                    readAction.BackgroundColor = UIColor.FromPatternImage(RowActionImage(UIColor.Blue.CGColor, "Notification-MarkAsRead"));
+                    return new UITableViewRowAction[] { deleteAction, readAction };
+                }
+                else
+                {
+                    return new UITableViewRowAction[] { deleteAction };
+                }
+            }
+            return null;
+        }
+
+        UIImage RowActionImage(CGColor bgColor, string imgKey)
+        {
+            CGRect frame = new CGRect(0, 0, 64, 64);
+            UIGraphics.BeginImageContextWithOptions(new CGSize(64, 64), false, UIScreen.MainScreen.Scale);
+            CGContext context = UIGraphics.GetCurrentContext();
+            context.SetFillColor(bgColor);
+            context.FillRect(frame);
+            UIImage img = UIImage.FromBundle(imgKey);
+            img.Draw(new CGRect((frame.Size.Width - 20) / 2, (frame.Size.Height - 20) / 2, 20, 20));
+            UIImage newImg = UIGraphics.GetImageFromCurrentImageContext();
+            UIGraphics.EndImageContext();
+            return newImg;
         }
 
         void DeleteNotification(NSIndexPath indexPath)
