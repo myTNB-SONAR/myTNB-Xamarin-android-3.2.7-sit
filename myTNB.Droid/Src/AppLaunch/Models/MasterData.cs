@@ -60,5 +60,87 @@ namespace myTNB_Android.Src.AppLaunch.Models
         [JsonProperty(PropertyName = "MaintenanceMessage")]
         [AliasAs("MaintenanceMessage")]
         public string MaintainanceMessage { get; set; }
+
+        [JsonProperty(PropertyName = "ForceUpdateInfo")]
+        [AliasAs("ForceUpdateInfo")]
+        public ForceUpdateInfoData ForceUpdateInfo { get; set; }
+        //public ForceUpdateInfoData ForceUpdateInfo
+        //{
+        //    get{
+        //        return new ForceUpdateInfoData();
+        //    }
+        //}
+
+
+        public class ForceUpdateInfoData
+        {
+            //private bool _isAndroidForceUpdateOn;
+            //private string _AndroidLatestVersion, _ModalTitle, _ModalBody, _ModalBtnText;
+
+            [JsonProperty(PropertyName = "isAndroidForceUpdateOn")]
+            [AliasAs("isAndroidForceUpdateOn")]
+            public bool isAndroidForceUpdateOn { get; set; }
+
+            [JsonProperty(PropertyName = "AndroidLatestVersion")]
+            [AliasAs("AndroidLatestVersion")]
+            public string AndroidLatestVersion { get; set; }
+
+            [JsonProperty(PropertyName = "ModalTitle")]
+            [AliasAs("ModalTitle")]
+            public string ModalTitle { get; set; }
+
+            [JsonProperty(PropertyName = "ModalBody")]
+            [AliasAs("ModalBody")]
+            public string ModalBody { get; set; }
+
+            [JsonProperty(PropertyName = "ModalBtnText")]
+            [AliasAs("ModalBtnText")]
+            public string ModalBtnText { get; set; }
+
+            //public ForceUpdateInfoData()
+            //{
+            //    _isAndroidForceUpdateOn = true;
+            //    _AndroidLatestVersion = "58";
+            //    _ModalTitle = "New Version Available (v1.1.8)";
+            //    _ModalBody = "<p>Get the newest version of myTNB to enjoy a better experience</p>";
+            //    _ModalBtnText = "Update Now";
+            //}
+
+            //public bool isAndroidForceUpdateOn
+            //{
+            //    get
+            //    {
+            //        return _isAndroidForceUpdateOn;
+            //    }
+            //}
+            //public string AndroidLatestVersion
+            //{
+            //    get
+            //    {
+            //        return _AndroidLatestVersion;
+            //    }
+            //}
+            //public string ModalTitle
+            //{
+            //    get
+            //    {
+            //        return _ModalTitle;
+            //    }
+            //}
+            //public string ModalBody
+            //{
+            //    get
+            //    {
+            //        return _ModalBody;
+            //    }
+            //}
+            //public string ModalBtnText
+            //{
+            //    get
+            //    {
+            //        return _ModalBtnText;
+            //    }
+            //}
+        }
     }
 }

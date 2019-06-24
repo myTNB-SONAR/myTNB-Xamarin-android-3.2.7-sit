@@ -132,7 +132,7 @@ namespace myTNB_Android.Src.AppLaunch.MVP
             ///<summary>
             /// Lgout function created to update device id after removing persmissin
             ///</summary>
-            void ShowUpdateAvailable();
+            void ShowUpdateAvailable(string title, string message, string btnLabel);
 
             ///<summary>
             /// Lgout function created to update device id after removing persmissin

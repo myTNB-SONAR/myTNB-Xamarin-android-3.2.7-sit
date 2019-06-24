@@ -35,6 +35,7 @@ using myTNB_Android.Src.Login.Activity;
 using myTNB_Android.Src.UpdateMobileNo.Activity;
 using System.Runtime;
 using myTNB_Android.Src.Maintenance.Activity;
+using Android.Text;
 
 namespace myTNB_Android.Src.AppLaunch.Activity
 {
@@ -501,7 +502,7 @@ namespace myTNB_Android.Src.AppLaunch.Activity
             }
         }
 
-        public void ShowUpdateAvailable()
+        public void ShowUpdateAvailable(string title, string message, string btnLabel)
         {
             try {
             //if(appUpdateDialog != null)
@@ -520,6 +521,17 @@ namespace myTNB_Android.Src.AppLaunch.Activity
                 TextView txtDialogTitle = appUpdateDialog.FindViewById<TextView>(Resource.Id.txtTitle);
                 TextView txtDialogMessage = appUpdateDialog.FindViewById<TextView>(Resource.Id.txtMessage);
                 TextView btnUpdateNow = appUpdateDialog.FindViewById<TextView>(Resource.Id.txtUpdate);
+                txtDialogTitle.Text = title;
+                txtDialogMessage.Text = message;
+                btnUpdateNow.Text = btnLabel;
+                if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
+                {
+                    txtDialogMessage.TextFormatted = Html.FromHtml(message, FromHtmlOptions.ModeLegacy);
+                }
+                else
+                {
+                    txtDialogMessage.TextFormatted = Html.FromHtml(message);
+                }
                 TextViewUtils.SetMuseoSans300Typeface(txtDialogMessage);
                 TextViewUtils.SetMuseoSans500Typeface(txtDialogTitle, btnUpdateNow);
                 btnUpdateNow.Click += delegate
