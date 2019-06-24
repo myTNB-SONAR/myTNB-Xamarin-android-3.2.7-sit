@@ -131,14 +131,14 @@ namespace myTNB.PushNotification
                 {
                     DeleteNotification(indexPath);
                 });
-                deleteAction.BackgroundColor = UIColor.FromPatternImage(RowActionImage(UIColor.Red.CGColor, "Notification-Delete"));
+                deleteAction.BackgroundColor = UIColor.FromPatternImage(RowActionImage(MyTNBColor.HarleyDavidsonOrange.CGColor, "Notification-Delete"));
                 if (notification.IsRead.ToLower() == "false")
                 {
                     UITableViewRowAction readAction = UITableViewRowAction.Create(UITableViewRowActionStyle.Default, "        ", delegate
                     {
                         //Todo: Read Notification
                     });
-                    readAction.BackgroundColor = UIColor.FromPatternImage(RowActionImage(UIColor.Blue.CGColor, "Notification-MarkAsRead"));
+                    readAction.BackgroundColor = UIColor.FromPatternImage(RowActionImage(MyTNBColor.Denim.CGColor, "Notification-MarkAsRead"));
                     return new UITableViewRowAction[] { deleteAction, readAction };
                 }
                 else
@@ -151,8 +151,8 @@ namespace myTNB.PushNotification
 
         UIImage RowActionImage(CGColor bgColor, string imgKey)
         {
-            CGRect frame = new CGRect(0, 0, 64, 64);
-            UIGraphics.BeginImageContextWithOptions(new CGSize(64, 64), false, UIScreen.MainScreen.Scale);
+            CGRect frame = new CGRect(0, 0, 66, 66);
+            UIGraphics.BeginImageContextWithOptions(new CGSize(66, 66), false, UIScreen.MainScreen.Scale);
             CGContext context = UIGraphics.GetCurrentContext();
             context.SetFillColor(bgColor);
             context.FillRect(frame);
@@ -190,7 +190,7 @@ namespace myTNB.PushNotification
                     _controller.MarkNotificationAsRead(indexPath);
                 });
             contextualAction.Image = UIImage.FromBundle("Notification-MarkAsRead");
-            contextualAction.BackgroundColor = UIColor.Blue;
+            contextualAction.BackgroundColor = MyTNBColor.Denim;
             UISwipeActionsConfiguration leadingSwipe = UISwipeActionsConfiguration.FromActions(new UIContextualAction[] { contextualAction });
             leadingSwipe.PerformsFirstActionWithFullSwipe = true;
             return leadingSwipe;
@@ -211,7 +211,7 @@ namespace myTNB.PushNotification
                     DeleteNotification(indexPath);
                 });
             contextualAction.Image = UIImage.FromBundle("Notification-Delete");
-            contextualAction.BackgroundColor = UIColor.Red;
+            contextualAction.BackgroundColor = MyTNBColor.HarleyDavidsonOrange;
             UISwipeActionsConfiguration trailingSwipe = UISwipeActionsConfiguration.FromActions(new UIContextualAction[] { contextualAction });
             trailingSwipe.PerformsFirstActionWithFullSwipe = true;
             return trailingSwipe;
