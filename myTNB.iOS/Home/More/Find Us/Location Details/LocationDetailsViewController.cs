@@ -51,7 +51,7 @@ namespace myTNB
             TitleBarComponent titleBarComponent = new TitleBarComponent(headerView);
             UIView titleBarView = titleBarComponent.GetUI();
             titleBarComponent.SetTitle(NavigationTitle);
-            titleBarComponent.SetNotificationVisibility(true);
+            titleBarComponent.SetPrimaryVisibility(true);
             titleBarComponent.SetBackVisibility(false);
             titleBarComponent.SetBackAction(new UITapGestureRecognizer(() =>
             {

@@ -86,7 +86,7 @@ namespace myTNB
         public void NotificationDidChange(NSNotification notification)
         {
             Debug.WriteLine("DEBUG >>> SUMMARY DASHBOARD NotificationDidChange");
-            _titleBarComponent?.SetNotificationImage(PushNotificationHelper.GetNotificationImage());
+            _titleBarComponent?.SetPrimaryImage(PushNotificationHelper.GetNotificationImage());
             PushNotificationHelper.UpdateApplicationBadge();
         }
 
@@ -130,7 +130,7 @@ namespace myTNB
         /// </summary>
         private void UpdateNotificationIcon()
         {
-            _titleBarComponent?.SetNotificationImage(PushNotificationHelper.GetNotificationImage());
+            _titleBarComponent?.SetPrimaryImage(PushNotificationHelper.GetNotificationImage());
         }
 
         private void Initialize()
@@ -144,7 +144,7 @@ namespace myTNB
             _titleBarComponent = new TitleBarComponent(_gradientView);
             UIView titleBarView = _titleBarComponent.GetUI();
             _titleBarComponent.SetTitle("Dashboard_AllAccounts".Translate());
-            _titleBarComponent.SetNotificationVisibility(false);
+            _titleBarComponent.SetPrimaryVisibility(false);
             _titleBarComponent.SetBackVisibility(false);
             _titleBarComponent.SetBackImage("LogOut");
             _titleBarComponent.SetBackAction(new UITapGestureRecognizer(() =>
@@ -211,7 +211,7 @@ namespace myTNB
                         });
                     });
                 });
-                _titleBarComponent.SetNotificationAction(notificationTap);
+                _titleBarComponent.SetPrimaryAction(notificationTap);
             }
         }
 

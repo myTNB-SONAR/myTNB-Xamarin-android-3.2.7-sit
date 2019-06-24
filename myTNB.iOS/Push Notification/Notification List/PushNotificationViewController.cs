@@ -105,7 +105,7 @@ namespace myTNB.PushNotification
             {
                 DisplayNoNotification();
             }
-            _titleBarComponent.SetNotificationVisibility(_notifications == null || _notifications.Count == 0);
+            _titleBarComponent.SetPrimaryVisibility(_notifications == null || _notifications.Count == 0);
         }
 
         public override void ViewWillAppear(bool animated)
@@ -209,9 +209,9 @@ namespace myTNB.PushNotification
                     }
                 }
             }));
-            _titleBarComponent.SetNotificationVisibility(false);
-            _titleBarComponent.SetNotificationImage("Notification-Select");
-            _titleBarComponent.SetNotificationAction(new UITapGestureRecognizer(() =>
+            _titleBarComponent.SetPrimaryVisibility(false);
+            _titleBarComponent.SetPrimaryImage("Notification-Select");
+            _titleBarComponent.SetPrimaryAction(new UITapGestureRecognizer(() =>
             {
                 if (_isDeletionMode)
                 {
@@ -239,13 +239,13 @@ namespace myTNB.PushNotification
                 {
                     if (_isSelectionMode)
                     {
-                        _titleBarComponent.SetNotificationImage("Notification-Select");
+                        _titleBarComponent.SetPrimaryImage("Notification-Select");
                         pushNotificationTableView.TableHeaderView = null;
                         _isAllSelected = false;
                     }
                     else
                     {
-                        _titleBarComponent.SetNotificationImage("IC-Header-Cancel");
+                        _titleBarComponent.SetPrimaryImage("IC-Header-Cancel");
                         UpdateSelectAllFlags(false);
                         pushNotificationTableView.TableHeaderView = GetTableViewHeader();
                     }
@@ -668,7 +668,7 @@ namespace myTNB.PushNotification
                 icon = _isDeletionMode ? "Notification-Delete" : "IC-Header-Cancel";
                 _titleBarComponent.SetSecondaryVisibility(!_isDeletionMode);
             }
-            _titleBarComponent.SetNotificationImage(icon);
+            _titleBarComponent.SetPrimaryImage(icon);
             UpdateNotificationForDeletionList(notifModel);
         }
 

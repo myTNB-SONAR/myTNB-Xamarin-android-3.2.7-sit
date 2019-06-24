@@ -94,17 +94,17 @@ namespace myTNB.Dashboard.DashboardComponents
             _imgViewSecondaryAction.Image = UIImage.FromBundle(img);
         }
 
-        public void SetNotificationAction(UITapGestureRecognizer tapGesture)
+        public void SetPrimaryAction(UITapGestureRecognizer tapGesture)
         {
             _viewPrimaryAction.AddGestureRecognizer(tapGesture);
         }
 
-        public void SetNotificationVisibility(bool isHidden)
+        public void SetPrimaryVisibility(bool isHidden)
         {
             _viewPrimaryAction.Hidden = isHidden;
         }
 
-        public void SetNotificationImage(string img)
+        public void SetPrimaryImage(string img)
         {
             _imgViewPrimaryAction.Image = UIImage.FromBundle(img);
         }
