@@ -1,18 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
+﻿using Android.Content.PM;
 using myTNB_Android.Src.Base.MVP;
-using Refit;
 using myTNB_Android.Src.RegistrationForm.Models;
-using Android.Content.PM;
+using Refit;
+using System;
 
 namespace myTNB_Android.Src.RegistrationForm.MVP
 {
@@ -37,7 +27,7 @@ namespace myTNB_Android.Src.RegistrationForm.MVP
             /// Post Validation
             /// </summary>
             void ShowInvalidICNoError();
- 
+
             /// <summary>
             /// Show empty mobile no error
             /// Pre Validation
@@ -63,7 +53,7 @@ namespace myTNB_Android.Src.RegistrationForm.MVP
             void ShowInvalidEmailError();
 
             void ClearInvalidEmailError();
-            
+
             /// <summary>
             /// Show empty confirm email error
             /// Pre Validation
@@ -71,7 +61,7 @@ namespace myTNB_Android.Src.RegistrationForm.MVP
             void ShowEmptyConfirmEmailError();
 
 
-           
+
             /// <summary>
             /// Show not equal to email confirm email error 
             /// Pre Validation
@@ -232,7 +222,7 @@ namespace myTNB_Android.Src.RegistrationForm.MVP
             /// <param name="confirm_email">string confirm email</param>
             /// <param name="password">string password</param>
             /// <param name="confirm_password">string confirm password</param>
-            void OnAcquireToken(string fullname , string icno , string mobile_no , string email , string confirm_email , string password , string confirm_password );
+            void OnAcquireToken(string fullname, string icno, string mobile_no, string email, string confirm_email, string password, string confirm_password);
 
             void CheckRequiredFields(string fullname, string icno, string mobile_no, string email, string confirm_email, string password, string confirm_password);
 

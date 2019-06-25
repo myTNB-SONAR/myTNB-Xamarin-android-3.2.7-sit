@@ -1,5 +1,4 @@
-﻿using System;
-using myTNB_Android.Src.Base.MVP;
+﻿using myTNB_Android.Src.Base.MVP;
 using myTNB_Android.Src.ViewReceipt.Model;
 
 namespace myTNB_Android.Src.ViewReceipt.MVP

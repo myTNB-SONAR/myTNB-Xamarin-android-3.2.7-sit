@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Drawing;
 using CoreGraphics;
 using Foundation;
@@ -60,13 +61,13 @@ namespace myTNB.Home.Feedback.FeedbackDetails
                 {
                     case 0:
                         {
-                            cell.lblTitle.Text = "FEEDBACK ID";
+                            cell.lblTitle.Text = "Feedback_ID".Translate().ToUpper();
                             cell.lblValue.Text = _feedbackDetails.ServiceReqNo;
                             break;
                         }
                     case 1:
                         {
-                            cell.lblTitle.Text = "FEEDBACK STATUS";
+                            cell.lblTitle.Text = "Feedback_Status".Translate().ToUpper();
                             cell.lblValue.Text = _feedbackDetails.StatusDesc;
 
                             string statusCode = _feedbackDetails.StatusCode;
@@ -75,26 +76,26 @@ namespace myTNB.Home.Feedback.FeedbackDetails
                                 case "CL01":
                                     {
                                         //Created
-                                        cell.lblValue.TextColor = myTNBColor.PowerBlue();
+                                        cell.lblValue.TextColor = MyTNBColor.PowerBlue;
                                         break;
                                     }
                                 case "CL02":
                                     {
                                         //In Progress
-                                        cell.lblValue.TextColor = myTNBColor.SunGlow();
+                                        cell.lblValue.TextColor = MyTNBColor.SunGlow;
                                         break;
                                     }
                                 case "CL03":
                                 case "CL04":
                                     {
                                         //Completed
-                                        cell.lblValue.TextColor = myTNBColor.FreshGreen();
+                                        cell.lblValue.TextColor = MyTNBColor.FreshGreen;
                                         break;
                                     }
                                 case "CL06":
                                     {
                                         //Cancelled
-                                        cell.lblValue.TextColor = myTNBColor.Tomato();
+                                        cell.lblValue.TextColor = MyTNBColor.Tomato;
                                         break;
                                     }
                             }
@@ -103,13 +104,13 @@ namespace myTNB.Home.Feedback.FeedbackDetails
                         }
                     case 2:
                         {
-                            cell.lblTitle.Text = "FEEDBACK DATE & TIME";
+                            cell.lblTitle.Text = "Feedback_DateTimeTitle".Translate().ToUpper();
                             cell.lblValue.Text = GetFormattedDate(_feedbackDetails.DateCreated);
                             break;
                         }
                     case 3:
                         {
-                            cell.lblTitle.Text = "FEEDBACK DATE & TIME";
+                            cell.lblTitle.Text = "Feedback_DateTimeTitle".Translate().ToUpper();
                             cell.lblValue.Text = GetFormattedDate(_feedbackDetails.DateCreated);
 
                             string feedbackCatId = _feedbackDetails.FeedbackCategoryId;
@@ -117,19 +118,19 @@ namespace myTNB.Home.Feedback.FeedbackDetails
                             {
                                 case "1":
                                     {
-                                        cell.lblTitle.Text = "ACCOUNT NO.";
+                                        cell.lblTitle.Text = "Common_AccountNo".Translate().ToUpper();
                                         cell.lblValue.Text = _feedbackDetails.AccountNum;
                                         break;
                                     }
                                 case "2":
                                     {
-                                        cell.lblTitle.Text = "STATE";
+                                        cell.lblTitle.Text = "Feedback_State".Translate().ToUpper();
                                         cell.lblValue.Text = _feedbackDetails.StateName;
                                         break;
                                     }
                                 case "3":
                                     {
-                                        cell.lblTitle.Text = "FEEDBACK TYPE";
+                                        cell.lblTitle.Text = "Feedback_Type".Translate().ToUpper();
                                         cell.lblValue.Text = _feedbackDetails.FeedbackTypeName;
                                         break;
                                     }
@@ -145,7 +146,7 @@ namespace myTNB.Home.Feedback.FeedbackDetails
                                 case "1":
                                 case "3":
                                     {
-                                        cell.lblTitle.Text = "FEEDBACK";
+                                        cell.lblTitle.Text = "Feedback_Title".Translate().ToUpper();
                                         cell.lblValue.Text = _feedbackDetails.FeedbackMessage;
                                         CGSize newSize = GetTitleLabelSize(_feedbackDetails.FeedbackMessage);
                                         cell.lblValue.Frame = new CGRect(18, 30, tableView.Frame.Width - 36, newSize.Height);
@@ -153,7 +154,7 @@ namespace myTNB.Home.Feedback.FeedbackDetails
                                     }
                                 default:
                                     {
-                                        cell.lblTitle.Text = "LOCATION / STREET NAME";
+                                        cell.lblTitle.Text = "Feedback_Location".Translate().ToUpper();
                                         cell.lblValue.Text = _feedbackDetails.Location;
                                         break;
                                     }
@@ -163,7 +164,7 @@ namespace myTNB.Home.Feedback.FeedbackDetails
                         }
                     case 6:
                         {
-                            cell.lblTitle.Text = "FEEDBACK";
+                            cell.lblTitle.Text = "Feedback_Title".Translate().ToUpper();
                             cell.lblValue.Text = _feedbackDetails.FeedbackMessage;
                             CGSize newSize = GetTitleLabelSize(_feedbackDetails.FeedbackMessage);
                             cell.lblValue.Frame = new CGRect(18, 30, tableView.Frame.Width - 36, newSize.Height);
@@ -181,14 +182,16 @@ namespace myTNB.Home.Feedback.FeedbackDetails
                     if (_feedbackDetails.FeedbackImage != null && _feedbackDetails.FeedbackImage.Count > 0)
                     {
                         var cell = tableView.DequeueReusableCell("feedbackDetailsImageCell", indexPath) as FeedbackDetailsViewImageCell;
-                        cell.lblTitle.Text = "PHOTO / SCREENSHOT";
+                        cell.lblTitle.Text = "Feedback_Photo".Translate().ToUpper();
                         int x = 0;
                         UIImageHelper imgHelper = new UIImageHelper();
                         foreach (var item in _feedbackDetails.FeedbackImage)
                         {
                             UIView viewContainer = new UIView(new CGRect(x, 0, 94, 94));
-                            UIImageView imgView = new UIImageView(new CGRect(0, 0, 94, 94));
-                            imgView.Image = imgHelper.ConvertHexToUIImage(item.imageHex);
+                            UIImageView imgView = new UIImageView(new CGRect(0, 0, 94, 94))
+                            {
+                                Image = imgHelper.ConvertHexToUIImage(item.imageHex)
+                            };
                             viewContainer.AddGestureRecognizer(new UITapGestureRecognizer(() =>
                             {
                                 _controller.OnImageClick(imgView.Image, item.fileName);
@@ -205,7 +208,7 @@ namespace myTNB.Home.Feedback.FeedbackDetails
                 else
                 {
                     var cell = tableView.DequeueReusableCell("feedbackDetailsCell", indexPath) as FeedbackDetailsViewCell;
-                    cell.lblTitle.Text = "POLE NO.";
+                    cell.lblTitle.Text = "Feedback_PoleNumber".Translate().ToUpper();
                     cell.lblValue.Text = _feedbackDetails.PoleNum;
                     cell.SelectionStyle = UITableViewCellSelectionStyle.None;
                     return cell;
@@ -216,14 +219,16 @@ namespace myTNB.Home.Feedback.FeedbackDetails
                 if (_feedbackDetails.FeedbackImage != null && _feedbackDetails.FeedbackImage.Count > 0)
                 {
                     var cell = tableView.DequeueReusableCell("feedbackDetailsImageCell", indexPath) as FeedbackDetailsViewImageCell;
-                    cell.lblTitle.Text = "PHOTO / SCREENSHOT";
+                    cell.lblTitle.Text = "Feedback_Photo".Translate().ToUpper();
                     int x = 0;
                     UIImageHelper imgHelper = new UIImageHelper();
                     foreach (var item in _feedbackDetails.FeedbackImage)
                     {
                         UIView viewContainer = new UIView(new CGRect(x, 0, 94, 94));
-                        UIImageView imgView = new UIImageView(new CGRect(0, 0, 94, 94));
-                        imgView.Image = imgHelper.ConvertHexToUIImage(item.imageHex);
+                        UIImageView imgView = new UIImageView(new CGRect(0, 0, 94, 94))
+                        {
+                            Image = imgHelper.ConvertHexToUIImage(item.imageHex)
+                        };
                         viewContainer.AddGestureRecognizer(new UITapGestureRecognizer(() =>
                         {
                             _controller.OnImageClick(imgView.Image, item.fileName);
@@ -263,14 +268,7 @@ namespace myTNB.Home.Feedback.FeedbackDetails
                     }
                 case 5:
                     {
-                        if (_feedbackDetails.FeedbackCategoryId == "2")
-                        {
-                            rowHeight = 50f;
-                        }
-                        else
-                        {
-                            rowHeight = 130f;
-                        }
+                        rowHeight = _feedbackDetails.FeedbackCategoryId == "2" ? 50f : 130f;
                         break;
                     }
                 case 6:
@@ -303,7 +301,7 @@ namespace myTNB.Home.Feedback.FeedbackDetails
         {
             UILabel label = new UILabel(new CGRect(18, 30, UIApplication.SharedApplication.KeyWindow.Frame.Width - 36, 1000))
             {
-                Font = myTNBFont.MuseoSans14(),
+                Font = MyTNBFont.MuseoSans14,
                 Lines = 0,
                 LineBreakMode = UILineBreakMode.WordWrap,
                 Text = text
@@ -313,6 +311,10 @@ namespace myTNB.Home.Feedback.FeedbackDetails
 
         internal string GetFormattedDate(string DateCreated)
         {
+            if (string.IsNullOrEmpty(DateCreated) || string.IsNullOrWhiteSpace(DateCreated))
+            {
+                return TNBGlobal.EMPTY_DATE;
+            }
             try
             {
                 string date = DateHelper.GetFormattedDate(DateCreated.Split(' ')[0], "dd MMM yyyy");
@@ -329,7 +331,7 @@ namespace myTNB.Home.Feedback.FeedbackDetails
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
+                Debug.WriteLine(e.Message);
                 return string.Empty;
             }
         }

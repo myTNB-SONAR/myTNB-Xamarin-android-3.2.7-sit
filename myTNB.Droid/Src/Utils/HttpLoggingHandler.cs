@@ -1,19 +1,11 @@
-﻿using System;
+﻿using Android.Util;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
 using System.Net.Http;
-using System.Threading.Tasks;
-using System.Threading;
-using Android.Util;
 using System.Net.Http.Headers;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace myTNB_Android.Src.Utils
 {
@@ -33,7 +25,7 @@ namespace myTNB_Android.Src.Utils
             var req = request;
             var msg = $"[{req.RequestUri.PathAndQuery} -  Request]";
 
-            Log.Debug(TAG , $"{msg}========Request Start==========");
+            Log.Debug(TAG, $"{msg}========Request Start==========");
             Log.Debug(TAG, $"{msg} {req.Method} {req.RequestUri.PathAndQuery} {req.RequestUri.Scheme}/{req.Version}");
             Log.Debug(TAG, $"{msg} Host: {req.RequestUri.Scheme}://{req.RequestUri.Host}");
 

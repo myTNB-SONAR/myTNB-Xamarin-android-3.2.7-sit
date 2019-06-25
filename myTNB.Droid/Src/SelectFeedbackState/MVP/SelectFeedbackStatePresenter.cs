@@ -1,17 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-using myTNB_Android.Src.AppLaunch.Models;
+﻿using myTNB_Android.Src.AppLaunch.Models;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.Utils;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace myTNB_Android.Src.SelectFeedbackState.MVP
 {
@@ -27,11 +19,12 @@ namespace myTNB_Android.Src.SelectFeedbackState.MVP
 
         public void OnSelect(FeedbackState feedbackState)
         {
-            try {
-            FeedbackStateEntity.RemoveActive();
-            FeedbackStateEntity.SetSelected(feedbackState.StateId);
+            try
+            {
+                FeedbackStateEntity.RemoveActive();
+                FeedbackStateEntity.SetSelected(feedbackState.StateId);
 
-            this.mView.ShowSelectedSuccess(feedbackState);
+                this.mView.ShowSelectedSuccess(feedbackState);
             }
             catch (Exception e)
             {
@@ -41,20 +34,21 @@ namespace myTNB_Android.Src.SelectFeedbackState.MVP
 
         public void Start()
         {
-            try {
-            var list = new List<FeedbackState>();
-            var entityList = FeedbackStateEntity.GetActiveList();
-            foreach (FeedbackStateEntity entity in entityList)
+            try
             {
-                list.Add(new FeedbackState()
+                var list = new List<FeedbackState>();
+                var entityList = FeedbackStateEntity.GetActiveList();
+                foreach (FeedbackStateEntity entity in entityList)
                 {
-                    StateId = entity.Id,
-                    StateName = entity.Name,
-                    IsSelected = entity.IsSelected
-                });
-            }
-            List<FeedbackState> SortedList = list.OrderBy(o => o.StateName).ToList();
-            this.mView.ShowList(SortedList);
+                    list.Add(new FeedbackState()
+                    {
+                        StateId = entity.Id,
+                        StateName = entity.Name,
+                        IsSelected = entity.IsSelected
+                    });
+                }
+                List<FeedbackState> SortedList = list.OrderBy(o => o.StateName).ToList();
+                this.mView.ShowList(SortedList);
             }
             catch (Exception e)
             {

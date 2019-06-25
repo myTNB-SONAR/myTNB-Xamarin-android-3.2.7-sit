@@ -1,21 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
+﻿using Android.Content;
+using Android.Support.V4.Content;
 using Android.Views;
 using Android.Widget;
-using myTNB_Android.Src.Base.Models;
-using myTNB_Android.Src.Base.Adapter;
 using CheeseBind;
-using myTNB_Android.Src.Utils;
 using Java.Text;
 using Java.Util;
-using Android.Support.V4.Content;
+using myTNB_Android.Src.Base.Adapter;
+using myTNB_Android.Src.Base.Models;
+using myTNB_Android.Src.Utils;
+using System;
+using System.Collections.Generic;
 
 namespace myTNB_Android.Src.SelectSubmittedFeedback.Adapter
 {
@@ -48,7 +42,7 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.Adapter
 
             if (convertView == null)
             {
-                convertView = LayoutInflater.From(context).Inflate(Resource.Layout.FeedbackSubmittedRow , parent , false);
+                convertView = LayoutInflater.From(context).Inflate(Resource.Layout.FeedbackSubmittedRow, parent, false);
                 vh = new SubmitFeedbackViewHolder(convertView);
                 convertView.Tag = vh;
             }
@@ -57,37 +51,38 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.Adapter
                 vh = convertView.Tag as SubmitFeedbackViewHolder;
             }
 
-            try {
-            SubmittedFeedback item = GetItemObject(position);
-
-            Date d = null;
-            string title = "Bill";
             try
             {
-                d = simpleDateParser.Parse(item.DateCreated);
-                vh.txtFeedbackDate.Text = simpleDateFormat.Format(d);
-            }
-            catch (Java.Text.ParseException e)
-            {
-                vh.txtFeedbackDate.Text = "NA";
+                SubmittedFeedback item = GetItemObject(position);
+
+                Date d = null;
+                string title = "Bill";
+                try
+                {
+                    d = simpleDateParser.Parse(item.DateCreated);
+                    vh.txtFeedbackDate.Text = simpleDateFormat.Format(d);
+                }
+                catch (Java.Text.ParseException e)
+                {
+                    vh.txtFeedbackDate.Text = "NA";
                     Utility.LoggingNonFatalError(e);
-            }
+                }
 
-            vh.txtFeedbackTitle.Text = item.FeedbackCategoryName;
-            vh.txtFeedbackContent.Text = item.FeedbackMessage;
+                vh.txtFeedbackTitle.Text = item.FeedbackCategoryName;
+                vh.txtFeedbackContent.Text = item.FeedbackMessage;
 
-            if (item.FeedbackCategoryId.Equals("1") )
-            {
-                vh.imgFeedback.SetImageDrawable(ContextCompat.GetDrawable(context, Resource.Drawable.ic_feedback_submitted_billing));
-            }
-            else if (item.FeedbackCategoryId.Equals("2"))
-            {
-                vh.imgFeedback.SetImageDrawable(ContextCompat.GetDrawable(context, Resource.Drawable.ic_feedback_submitted_streetlamp));
-            }
-            else if (item.FeedbackCategoryId.Equals("3"))
-            {
-                vh.imgFeedback.SetImageDrawable(ContextCompat.GetDrawable(context, Resource.Drawable.ic_feedback_submitted_others));
-            }
+                if (item.FeedbackCategoryId.Equals("1"))
+                {
+                    vh.imgFeedback.SetImageDrawable(ContextCompat.GetDrawable(context, Resource.Drawable.ic_feedback_submitted_billing));
+                }
+                else if (item.FeedbackCategoryId.Equals("2"))
+                {
+                    vh.imgFeedback.SetImageDrawable(ContextCompat.GetDrawable(context, Resource.Drawable.ic_feedback_submitted_streetlamp));
+                }
+                else if (item.FeedbackCategoryId.Equals("3"))
+                {
+                    vh.imgFeedback.SetImageDrawable(ContextCompat.GetDrawable(context, Resource.Drawable.ic_feedback_submitted_others));
+                }
             }
             catch (Exception e)
             {

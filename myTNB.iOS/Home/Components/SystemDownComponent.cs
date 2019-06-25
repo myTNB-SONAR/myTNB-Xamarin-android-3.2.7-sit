@@ -8,10 +8,10 @@ namespace myTNB.Dashboard.DashboardComponents
 {
     public class SystemDownComponent
     {
-        UIView _parentView;
+        readonly UIView _parentView;
         UIView _baseView;
         UITextView _txtView;
-        bool _isHeaderMode;
+        readonly bool _isHeaderMode;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="T:myTNB.Dashboard.DashboardComponents.SystemDownComponent"/> class.
@@ -56,7 +56,7 @@ namespace myTNB.Dashboard.DashboardComponents
             var msgXLoc = baseWidth / 2.0f - msgWidth / 2.0f;
 
             var bcrm = DataManager.DataManager.SharedInstance.SystemStatus?.Find(x => x.SystemType == Enums.SystemEnum.BCRM);
-            var bcrmMsg = bcrm?.DowntimeMessage ?? "BRCM will be down for maintenance purpose";
+            var bcrmMsg = bcrm?.DowntimeMessage ?? "Error_BCRMMessage".Translate();
 
             NSMutableParagraphStyle msgParagraphStyle = new NSMutableParagraphStyle
             {
@@ -71,7 +71,7 @@ namespace myTNB.Dashboard.DashboardComponents
 
             UIStringAttributes linkAttributes = new UIStringAttributes
             {
-                Font = myTNBFont.MuseoSans12_300(),
+                Font = MyTNBFont.MuseoSans12_300,
                 ForegroundColor = UIColor.White,
                 UnderlineStyle = NSUnderlineStyle.Single,
                 BackgroundColor = UIColor.Clear
@@ -88,7 +88,7 @@ namespace myTNB.Dashboard.DashboardComponents
             NSError htmlError = null;
             try
             {
-                NSAttributedString htmlBody = TextHelper.ConvertToHtmlWithFont(bcrmMsg, ref htmlError, myTNBFont.FONTNAME_300, 12f);
+                NSAttributedString htmlBody = TextHelper.ConvertToHtmlWithFont(bcrmMsg, ref htmlError, MyTNBFont.FONTNAME_300, 12f);
                 if (htmlBody != null)
                 {
                     NSMutableAttributedString mutableDowntime = new NSMutableAttributedString(htmlBody);
@@ -157,6 +157,5 @@ namespace myTNB.Dashboard.DashboardComponents
             CreateComponent();
             return _baseView;
         }
-
     }
 }

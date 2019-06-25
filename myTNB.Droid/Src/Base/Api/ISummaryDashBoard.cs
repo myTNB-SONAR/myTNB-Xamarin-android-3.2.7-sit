@@ -1,8 +1,7 @@
-﻿using System;
+﻿using myTNB_Android.Src.SummaryDashBoard.Models;
+using Refit;
 using System.Threading;
 using System.Threading.Tasks;
-using myTNB_Android.Src.SummaryDashBoard.Models;
-using Refit;
 
 namespace myTNB_Android.Src.SummaryDashBoard.API
 {

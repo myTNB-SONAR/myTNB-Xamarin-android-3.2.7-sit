@@ -30,9 +30,9 @@ namespace myTNB.Model
 
                 if (!string.IsNullOrEmpty(BCRMNotificationTypeId))
                 {
-                    switch(BCRMNotificationTypeId)
+                    switch (BCRMNotificationTypeId)
                     {
-                        case "01" :
+                        case "01":
                             notificationType = BCRMNotificationEnum.NewBill;
                             break;
                         case "02":
@@ -63,5 +63,7 @@ namespace myTNB.Model
             }
         }
 
+        [JsonIgnore]
+        public bool IsSelected { set; get; }
     }
 }

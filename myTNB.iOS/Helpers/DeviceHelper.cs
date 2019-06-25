@@ -35,11 +35,6 @@ namespace myTNB
             return size;
         }
 
-        public static bool IsIphoneXr()
-        {
-            return false; //UIScreen.MainScreen.NativeBounds.Height == 1792;
-        }
-
         /// <summary>
         /// Checks if device is iPhone X and higher resolution
         /// </summary>

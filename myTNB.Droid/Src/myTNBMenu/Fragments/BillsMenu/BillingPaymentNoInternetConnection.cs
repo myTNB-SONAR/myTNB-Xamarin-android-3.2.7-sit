@@ -1,16 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
+﻿using Android.OS;
 using Android.Widget;
-using myTNB_Android.Src.Base.Fragments;
 using CheeseBind;
+using myTNB_Android.Src.Base.Fragments;
 using myTNB_Android.Src.Utils;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.BillsMenu

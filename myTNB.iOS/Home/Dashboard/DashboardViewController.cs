@@ -8,7 +8,6 @@ using Foundation;
 using myTNB.Dashboard.DashboardComponents;
 using myTNB.DataManager;
 using myTNB.Enums;
-using myTNB.Extensions;
 using myTNB.Model;
 using myTNB.PushNotification;
 using myTNB.Registration.CustomerAccounts;
@@ -55,6 +54,8 @@ namespace myTNB.Dashboard
             {
                 appDelegate._dashboardVC = this;
             }
+            NSNotificationCenter.DefaultCenter.AddObserver((Foundation.NSString)"LanguageDidChange", LanguageDidChange);
+            NSNotificationCenter.DefaultCenter.AddObserver(UIApplication.WillEnterForegroundNotification, HandleAppWillEnterForeground);
             DataManager.DataManager.SharedInstance.IsPreloginFeedback = false;
             NavigationController?.SetNavigationBarHidden(true, false);
             NavigationItem?.SetHidesBackButton(true, false);
@@ -67,7 +68,6 @@ namespace myTNB.Dashboard
             //{
             //    PullDownTorefresh = PullDownTorefresh
             //}; removed pull down to refresh
-            NSNotificationCenter.DefaultCenter.AddObserver(UIApplication.WillEnterForegroundNotification, HandleAppWillEnterForeground);
             NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
             {
                 InvokeOnMainThread(async () =>
@@ -83,17 +83,20 @@ namespace myTNB.Dashboard
                     }
                     else
                     {
-                        var alert = UIAlertController.Create("ErrNoNetworkTitle".Translate(), "ErrNoNetworkMsg".Translate(), UIAlertControllerStyle.Alert);
-                        alert.AddAction(UIAlertAction.Create("Ok", UIAlertActionStyle.Cancel, null));
-                        PresentViewController(alert, animated: true, completionHandler: null);
+                        AlertHandler.DisplayNoDataAlert(this);
                     }
                 });
             });
         }
 
+        public void LanguageDidChange(NSNotification notification)
+        {
+            Debug.WriteLine("DEBUG >>> INNER DASHBOARD LanguageDidChange");
+        }
+
         internal void HandleAppWillEnterForeground(NSNotification notification)
         {
-            Console.WriteLine("HandleAppWillEnterForeground");
+            Debug.WriteLine("HandleAppWillEnterForeground");
             isFromForeground = true;
 
             if (!DataManager.DataManager.SharedInstance.IsLoggedIn())
@@ -152,10 +155,8 @@ namespace myTNB.Dashboard
                     }
                     else
                     {
-                        Console.WriteLine("No Network");
-                        var alert = UIAlertController.Create("ErrNoNetworkTitle".Translate(), "ErrNoNetworkMsg".Translate(), UIAlertControllerStyle.Alert);
-                        alert.AddAction(UIAlertAction.Create("Ok", UIAlertActionStyle.Cancel, null));
-                        PresentViewController(alert, animated: true, completionHandler: null);
+                        Debug.WriteLine("No Network");
+                        AlertHandler.DisplayNoDataAlert(this);
                         _dashboardMainComponent.ConstructNoDataConnectionDashboard();
                         SetEventsAndText();
                     }
@@ -181,7 +182,6 @@ namespace myTNB.Dashboard
                             if (!DataManager.DataManager.SharedInstance.IsSameAccount)
                             {
                                 await LoadDashboard();
-
                                 await LoadAmountDue();
                             }
                         }
@@ -311,7 +311,7 @@ namespace myTNB.Dashboard
                     }
                     else
                     {
-                        errorMessage = !string.IsNullOrWhiteSpace(chartResponse.message) ? chartResponse.message : "DefaultErrorMessage".Translate();
+                        errorMessage = !string.IsNullOrWhiteSpace(chartResponse.message) ? chartResponse.message : "Error_DefaultMessage".Translate();
                     }
                 }
             }
@@ -348,7 +348,7 @@ namespace myTNB.Dashboard
                     {
                         var message = !string.IsNullOrWhiteSpace(chartResponse.message)
                                              ? chartResponse.message
-                                             : "GetSmartMeterDataError".Translate();
+                                             : "Error_GetSmartMeterDataMessage".Translate();
                         ShowToast(message);
                         ChartModel normalChartResponse = await GetAccountUsageHistoryForGraph();
                         isResultSuccess = normalChartResponse.didSucceed;
@@ -356,15 +356,16 @@ namespace myTNB.Dashboard
 
                         if (!isResultSuccess)
                         {
-                            errorMessage = !string.IsNullOrWhiteSpace(normalChartResponse.message) ? normalChartResponse.message : "DefaultErrorMessage".Translate();
+                            errorMessage = !string.IsNullOrWhiteSpace(normalChartResponse.message)
+                                ? normalChartResponse.message : "Error_DefaultMessage".Translate();
                         }
                     }
                     else
                     {
                         DataManager.DataManager.SharedInstance.CurrentChart = chartResponse.data;
-                        errorMessage = !string.IsNullOrWhiteSpace(chartResponse.message) ? chartResponse.message : "DefaultErrorMessage".Translate();
+                        errorMessage = !string.IsNullOrWhiteSpace(chartResponse.message)
+                            ? chartResponse.message : "Error_DefaultMessage".Translate();
                     }
-
                 }
             }
 
@@ -400,7 +401,6 @@ namespace myTNB.Dashboard
                                .Add(DataManager.DataManager.SharedInstance.SelectedAccount.accNum
                                     , DataManager.DataManager.SharedInstance.CurrentChart);
                 }
-
             }
         }
 
@@ -447,7 +447,6 @@ namespace myTNB.Dashboard
                     _dashboardMainComponent._accountSelectionComponent.SetSelectAccountEvent(accountSelectionGesture);
                 }
                 _dashboardMainComponent._accountSelectionComponent.SetDropdownVisibility(false);//DataManager.DataManager.SharedInstance.AccountRecordsList.d.Count == 1);
-
                 _dashboardMainComponent._accountSelectionComponent.SetLeafVisibility(!isREAccount);
             }
             if (_dashboardMainComponent._selectorComponent != null)
@@ -581,10 +580,8 @@ namespace myTNB.Dashboard
                             }
                             else
                             {
-                                Console.WriteLine("No Network");
-                                var alert = UIAlertController.Create("ErrNoNetworkTitle".Translate(), "ErrNoNetworkMsg".Translate(), UIAlertControllerStyle.Alert);
-                                alert.AddAction(UIAlertAction.Create("Ok", UIAlertActionStyle.Cancel, null));
-                                PresentViewController(alert, animated: true, completionHandler: null);
+                                Debug.WriteLine("No Network");
+                                AlertHandler.DisplayNoDataAlert(this);
                             }
                         });
                     });
@@ -609,9 +606,7 @@ namespace myTNB.Dashboard
                             }
                             else
                             {
-                                var alert = UIAlertController.Create("ErrNoNetworkTitle".Translate(), "ErrNoNetworkMsg".Translate(), UIAlertControllerStyle.Alert);
-                                alert.AddAction(UIAlertAction.Create("Ok", UIAlertActionStyle.Cancel, null));
-                                PresentViewController(alert, animated: true, completionHandler: null);
+                                AlertHandler.DisplayNoDataAlert(this);
                             }
                         });
                     });
@@ -623,7 +618,7 @@ namespace myTNB.Dashboard
                 _dashboardMainComponent._noAccountComponent._btnAddAccount.TouchUpInside += (sender, e) =>
                 {
                     //Todo: Handle Add Account
-                    Console.WriteLine("Add account button tapped");
+                    Debug.WriteLine("Add account button tapped");
                     UIStoryboard storyBoard = UIStoryboard.FromName("AccountRecords", null);
                     AccountsViewController viewController =
                         storyBoard.InstantiateViewController("AccountsViewController") as AccountsViewController;
@@ -660,15 +655,12 @@ namespace myTNB.Dashboard
                             if (NetworkUtility.isReachable)
                             {
                                 await LoadDashboard();
-
                                 await LoadAmountDue();
                             }
                             else
                             {
-                                Console.WriteLine("No Network");
-                                var alert = UIAlertController.Create("ErrNoNetworkTitle".Translate(), "ErrNoNetworkMsg".Translate(), UIAlertControllerStyle.Alert);
-                                alert.AddAction(UIAlertAction.Create("Ok", UIAlertActionStyle.Cancel, null));
-                                PresentViewController(alert, animated: true, completionHandler: null);
+                                Debug.WriteLine("No Network");
+                                AlertHandler.DisplayNoDataAlert(this);
                             }
                         });
                     });
@@ -702,10 +694,8 @@ namespace myTNB.Dashboard
                             }
                             else
                             {
-                                Console.WriteLine("No Network");
-                                var alert = UIAlertController.Create("ErrNoNetworkTitle".Translate(), "ErrNoNetworkMsg".Translate(), UIAlertControllerStyle.Alert);
-                                alert.AddAction(UIAlertAction.Create("Ok", UIAlertActionStyle.Cancel, null));
-                                PresentViewController(alert, animated: true, completionHandler: null);
+                                Debug.WriteLine("No Network");
+                                AlertHandler.DisplayNoDataAlert(this);
                             }
                         });
                     });
@@ -721,7 +711,6 @@ namespace myTNB.Dashboard
                 //    _dashboardMainComponent._dashboardScrollView.Scrolled += OnScrollDashboard;
                 //} removed pull down to refresh
             }
-
         }
 
         internal void SetAccountDetails()
@@ -747,7 +736,7 @@ namespace myTNB.Dashboard
         {
             if (_dashboardMainComponent._billAndPaymentComponent != null)
             {
-                string amount = NetworkUtility.isReachable ? _amountDue.ToString() : "0";
+                string amount = NetworkUtility.isReachable ? _amountDue.ToString() : TNBGlobal.ZERO;
 
                 _dashboardMainComponent._billAndPaymentComponent.SetAmount(amount, isREAccount);
 
@@ -759,7 +748,7 @@ namespace myTNB.Dashboard
                 string prefix = string.Empty;
                 if (string.IsNullOrEmpty(dateString) || dateString.ToUpper().Equals("N/A"))
                 {
-                    formattedDate = "--";
+                    formattedDate = TNBGlobal.EMPTY_DATE;
                 }
                 else
                 {
@@ -774,19 +763,19 @@ namespace myTNB.Dashboard
                         }
                         catch (FormatException)
                         {
-                            Console.WriteLine("Unable to parse '{0}'", dateString);
+                            Debug.WriteLine("Unable to parse '{0}'", dateString);
                         }
                     }
                     formattedDate = DateHelper.GetFormattedDate(dateString, "dd MMM yyyy");
-                    prefix = isREAccount ? "By " : string.Empty;
+                    prefix = isREAccount ? string.Format("{0} ", "Bill_By".Translate()) : string.Empty;
                 }
 
                 string dueDate = prefix + formattedDate;
                 _dashboardMainComponent._billAndPaymentComponent.SetDateDue(dueDate);
                 //_dashboardMainComponent._billAndPaymentComponent.SetPayButtonEnable(_amountDue > 0);
                 _dashboardMainComponent._billAndPaymentComponent.SetPaymentTitle(isREAccount
-                                                                                 ? "AmountRE".Translate()
-                                                                                 : "AmountNormalAccount".Translate());
+                                                                                 ? "Bill_MyEarnings".Translate()
+                                                                                 : "Common_AmountDue".Translate());
                 if (_dashboardMainComponent._billAndPaymentComponent._activity != null)
                 {
                     _dashboardMainComponent._billAndPaymentComponent._activity.Hide();
@@ -852,7 +841,6 @@ namespace myTNB.Dashboard
                     {
                         ShowToast(errorMessage);
                     }
-
                     DisplayCurrentChart();
                 }
                 else
@@ -1309,7 +1297,7 @@ namespace myTNB.Dashboard
             UIScrollView scrollView = sender as UIScrollView;
             if (scrollView != null)
             {
-                //Console.WriteLine("RRA: scroll: _lastContentOffset:{0}, currentOffset:{1}", _lastContentOffset, scrollView.ContentOffset.Y);
+                //Debug.WriteLine("RRA: scroll: _lastContentOffset:{0}, currentOffset:{1}", _lastContentOffset, scrollView.ContentOffset.Y);
                 if (_lastContentOffset < 0 || _lastContentOffset < scrollView.ContentOffset.Y)
                 {
                     //Pulling down

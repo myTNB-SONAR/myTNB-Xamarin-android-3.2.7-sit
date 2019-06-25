@@ -54,7 +54,7 @@ namespace myTNB
             loadingLabel.BackgroundColor = UIColor.Clear;
             loadingLabel.TextColor = UIColor.White;
             loadingLabel.Text = Texts.InfoLoading;
-            loadingLabel.Font = myTNBFont.MuseoSans14_300();
+            loadingLabel.Font = myTNBFont.MuseoSans14_300;
             loadingLabel.TextAlignment = UITextAlignment.Center;
             loadingLabel.AutoresizingMask = UIViewAutoresizing.All;
             AddSubview(loadingLabel);

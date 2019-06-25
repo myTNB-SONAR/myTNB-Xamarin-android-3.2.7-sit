@@ -1,9 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-using CoreGraphics;
 using Foundation;
-using myTNB.Extensions;
 using myTNB.Model;
 using UIKit;
 
@@ -19,11 +17,8 @@ namespace myTNB.Home.Bill
         bool _isOwner;
 
         public BillTableViewDataSource(BillHistoryResponseModel billHistory
-                                       , PaymentHistoryResponseModel paymentHistory
-                                       , BillViewController billViewController
-                                       , bool hasNetworkConnection
-                                       , bool isREAccount
-                                       , bool isOwner)
+            , PaymentHistoryResponseModel paymentHistory, BillViewController billViewController
+            , bool hasNetworkConnection, bool isREAccount, bool isOwner)
         {
             if (billHistory != null && billHistory.d != null && billHistory.d.data != null)
             {
@@ -32,12 +27,13 @@ namespace myTNB.Home.Bill
                 {
                     _billHistory.d.data = billHistory.d.data.GetRange(0, 1);
                 }
-
             }
             else
             {
-                _billHistory.d = new BillHistoryModel();
-                _billHistory.d.data = new List<BillHistoryDataModel>();
+                _billHistory.d = new BillHistoryModel
+                {
+                    data = new List<BillHistoryDataModel>()
+                };
             }
 
             if (paymentHistory != null && paymentHistory.d != null && paymentHistory.d.data != null)
@@ -46,8 +42,10 @@ namespace myTNB.Home.Bill
             }
             else
             {
-                _paymentHistory.d = new PaymentHistoryModel();
-                _paymentHistory.d.data = new List<PaymentHistoryDataModel>();
+                _paymentHistory.d = new PaymentHistoryModel
+                {
+                    data = new List<PaymentHistoryDataModel>()
+                };
             }
             _billViewController = billViewController;
             _hasNetworkConnection = hasNetworkConnection;
@@ -86,12 +84,10 @@ namespace myTNB.Home.Bill
         {
             if (_hasNetworkConnection)
             {
-                const string CURRENCY = "RM ";
                 const string CELLIDENTIFIER = "billCell";
 
                 if (DataManager.DataManager.SharedInstance.selectedTag == 0)
                 {
-                    //tableView.TableFooterView.Hidden = !HasBill();
                     if (HasBill())
                     {
                         var cell = tableView.DequeueReusableCell(CELLIDENTIFIER, indexPath) as BillTableViewCell;
@@ -106,7 +102,7 @@ namespace myTNB.Home.Bill
 
                         if (_isREAccount)
                         {
-                            title += " Advice";
+                            title += string.Format(" {0}", "Bill_Advice".Translate());
                             amountDbl = ChartHelper.UpdateValueForRE(amountDbl);
                         }
                         cell.AdjustYlocation(true);
@@ -114,7 +110,7 @@ namespace myTNB.Home.Bill
                         cell.lblDate.Text = date;
                         cell.lblTitle.Text = title;
                         cell.lblDetails.Hidden = true;
-                        cell.lblAmount.Text = CURRENCY + amountDbl.ToString("N2", CultureInfo.InvariantCulture);
+                        cell.lblAmount.Text = string.Format("{0} {1}", TNBGlobal.UNIT_CURRENCY, amountDbl.ToString("N2", CultureInfo.InvariantCulture));
                         cell.viewLine.Hidden = !(indexPath.Row < _billHistory?.d?.data?.Count - 1);
                         return cell;
                     }
@@ -122,14 +118,12 @@ namespace myTNB.Home.Bill
                     {
                         var cell = tableView.DequeueReusableCell("NoDataViewCell", indexPath) as NoDataViewCell;
                         cell.imgViewState.Image = UIImage.FromBundle("Empty-Current-Bill");
-                        cell.lblDescription.Text = "Yay! No bills! You will be notified\r\nwhen your bill is ready.  ";
+                        cell.lblDescription.Text = "Bill_NoBill".Translate();
                         return cell;
                     }
-
                 }
                 else
                 {
-                    //tableView.TableFooterView.Hidden = !HasPayment();
                     if (HasPayment())
                     {
                         var cell = tableView.DequeueReusableCell(CELLIDENTIFIER, indexPath) as BillTableViewCell;
@@ -140,7 +134,7 @@ namespace myTNB.Home.Bill
                     {
                         var cell = tableView.DequeueReusableCell("NoDataViewCell", indexPath) as NoDataViewCell;
                         cell.imgViewState.Image = UIImage.FromBundle("Empty-Bill-Payment");
-                        cell.lblDescription.Text = "No payments yet! Payments\r\nmade will be shown here.";
+                        cell.lblDescription.Text = "Bill_NoPayment".Translate();
                         return cell;
                     }
                 }
@@ -150,7 +144,7 @@ namespace myTNB.Home.Bill
                 //tableView.TableFooterView.Hidden = true;
                 var cell = tableView.DequeueReusableCell("NoDataViewCell", indexPath) as NoDataViewCell;
                 cell.imgViewState.Image = UIImage.FromBundle("No-Internet-Connection");
-                cell.lblDescription.Text = "Unable to load. Check your\r\ninternet connection or try again later.";
+                cell.lblDescription.Text = "Bill_NoDataConnection".Translate();
                 return cell;
             }
         }
@@ -162,25 +156,11 @@ namespace myTNB.Home.Bill
             {
                 if (DataManager.DataManager.SharedInstance.selectedTag == 0)
                 {
-                    if (HasBill())
-                    {
-                        return 62F;
-                    }
-                    else
-                    {
-                        return 238F;
-                    }
+                    return HasBill() ? 62F : 238F;
                 }
                 else
                 {
-                    if (HasPayment())
-                    {
-                        return 62F;
-                    }
-                    else
-                    {
-                        return 238F;
-                    }
+                    return HasPayment() ? 62F : 238F;
                 }
             }
             else
@@ -235,9 +215,7 @@ namespace myTNB.Home.Bill
             }
             else
             {
-                var alert = UIAlertController.Create("ErrNoNetworkTitle".Translate(), "ErrNoNetworkMsg".Translate(), UIAlertControllerStyle.Alert);
-                alert.AddAction(UIAlertAction.Create("Ok", UIAlertActionStyle.Cancel, null));
-                _billViewController.PresentViewController(alert, animated: true, completionHandler: null);
+                AlertHandler.DisplayNoDataAlert(_billViewController);
             }
         }
 
@@ -264,45 +242,33 @@ namespace myTNB.Home.Bill
             {
                 PaymentHistoryDataModel paymentHistoryModel = _paymentHistory?.d?.data[row];
                 cell.AdjustYlocation(false);
-                cell.lblTitle.Text = "Payment";
+                cell.lblTitle.Text = "Common_Payment".Translate();
                 cell.viewLine.Hidden = !(row < _paymentHistory?.d?.data?.Count - 1);
-
+                cell.lblDetails.Hidden = false;
+                string date = string.Empty;
+                string details = string.Empty;
                 if (!_isREAccount)
                 {
                     cell.imgArrow.Hidden = paymentHistoryModel.NmPBranch != "myTNB Mobile App" ? true : false;
-
                     var strDate = paymentHistoryModel.DtEvent ?? string.Empty;
-                    var date = string.IsNullOrEmpty(strDate) || strDate.ToLower().Equals("n/a")
-                                                  ? "N/A"
-                                                  : DateHelper.GetFormattedDate(paymentHistoryModel.DtEvent, "dd MMM");
-                    string details = string.IsNullOrEmpty(paymentHistoryModel.NmPBranch) || string.IsNullOrWhiteSpace(paymentHistoryModel.NmPBranch)
-                                             ? string.Empty : "via " + paymentHistoryModel.NmPBranch;
-
-                    cell.lblDate.Text = date;
-
-                    cell.lblDetails.Text = details;
-                    cell.lblDetails.Hidden = false;
-
-                    double amountDbl = TextHelper.ParseStringToDouble(paymentHistoryModel.AmPaid);
-                    cell.lblAmount.Text = TNBGlobal.UNIT_CURRENCY + " " + amountDbl.ToString("N2", CultureInfo.InvariantCulture);
+                    date = string.IsNullOrEmpty(strDate) || strDate.ToLower().Equals("n/a")
+                        ? "Common_NA".Translate() : DateHelper.GetFormattedDate(paymentHistoryModel.DtEvent, "dd MMM");
+                    details = string.IsNullOrEmpty(paymentHistoryModel.NmPBranch) || string.IsNullOrWhiteSpace(paymentHistoryModel.NmPBranch)
+                        ? string.Empty : string.Format("{0} {1}", "Bill_Via".Translate(), paymentHistoryModel.NmPBranch);
                 }
                 else
                 {
                     cell.imgArrow.Hidden = true;
-
                     var strDate = paymentHistoryModel.PaidDate ?? string.Empty;
-                    var date = string.IsNullOrEmpty(strDate) || strDate.ToLower().Equals("n/a")
-                                                  ? "N/A"
-                                                  : DateHelper.GetFormattedDate(paymentHistoryModel.PaidDate, "dd MMM");
-                    string details = "Payment From".Translate();
-
-                    cell.lblDate.Text = date;
-                    cell.lblDetails.Text = details;
-                    cell.lblDetails.Hidden = false;
-
-                    double amountDbl = TextHelper.ParseStringToDouble(paymentHistoryModel.Amount);
-                    cell.lblAmount.Text = TNBGlobal.UNIT_CURRENCY + " " + amountDbl.ToString("N2", CultureInfo.InvariantCulture);
+                    date = string.IsNullOrEmpty(strDate) || strDate.ToLower().Equals("n/a")
+                        ? "Common_NA".Translate() : DateHelper.GetFormattedDate(paymentHistoryModel.PaidDate, "dd MMM");
+                    details = "Bill_PaymentFrom".Translate();
                 }
+
+                cell.lblDate.Text = date;
+                cell.lblDetails.Text = details;
+                double amountDbl = TextHelper.ParseStringToDouble(_isREAccount ? paymentHistoryModel.Amount : paymentHistoryModel.AmPaid);
+                cell.lblAmount.Text = string.Format("{0} {1}", TNBGlobal.UNIT_CURRENCY, amountDbl.ToString("N2", CultureInfo.InvariantCulture));
             }
         }
     }

@@ -15,7 +15,8 @@ namespace myTNB.Home.More.MyAccount.ManageAccounts
         public ManageAccountsDataSource(ManageAccountsViewController controller, CustomerAccountRecordModel accountRecord)
         {
             _controller = controller;
-            if (accountRecord != null){
+            if (accountRecord != null)
+            {
                 _accountRecord = accountRecord;
             }
         }
@@ -32,28 +33,35 @@ namespace myTNB.Home.More.MyAccount.ManageAccounts
 
         public override UITableViewCell GetCell(UITableView tableView, NSIndexPath indexPath)
         {
-            if(indexPath.Row == 0){
+            if (indexPath.Row == 0)
+            {
                 var cell = tableView.DequeueReusableCell("DetailsViewCell", indexPath) as DetailsViewCell;
                 cell.Frame = new CGRect(cell.Frame.X, cell.Frame.Y, tableView.Frame.Width, 82);
                 cell.lblAccountNumber.Text = ServiceCall.ValidateResponseItem(_accountRecord.accNum);
                 cell.lblAddress.Text = ServiceCall.ValidateResponseItem(_accountRecord.accountStAddress);
                 cell.SelectionStyle = UITableViewCellSelectionStyle.None;
                 return cell;
-            }else if(indexPath.Row == 1){
+            }
+            else if (indexPath.Row == 1)
+            {
                 var cell = tableView.DequeueReusableCell("UpdateViewCell", indexPath) as UpdateViewCell;
                 cell.Frame = new CGRect(cell.Frame.X, cell.Frame.Y, tableView.Frame.Width, 62);
-                cell.lblTitle.Text = "ACCOUNT NICKNAME";
+                cell.lblTitle.Text = "Common_AccountNickname".Translate().ToUpper();
                 cell.lblDetail.Text = ServiceCall.ValidateResponseItem(_accountRecord.accDesc);
-                cell.lblCTA.Text = "Update";
-                cell.viewCTA.AddGestureRecognizer(new UITapGestureRecognizer(()=>{
+                cell.lblCTA.Text = "Common_Update".Translate();
+                cell.viewCTA.AddGestureRecognizer(new UITapGestureRecognizer(() =>
+                {
                     _controller.UpdateNickName();
                 }));
                 cell.SelectionStyle = UITableViewCellSelectionStyle.None;
                 return cell;
-            }else if(indexPath.Row == 2){
+            }
+            else if (indexPath.Row == 2)
+            {
                 var cell = tableView.DequeueReusableCell("RemoveViewCell", indexPath) as RemoveViewCell;
                 cell.Frame = new CGRect(cell.Frame.X, cell.Frame.Y, tableView.Frame.Width, DeviceHelper.GetScaledHeight(88));
-                cell.btnRemove.TouchUpInside += (sender, e) => {
+                cell.btnRemove.TouchUpInside += (sender, e) =>
+                {
                     _controller.OnRemoveAccount();
                 };
                 cell.SelectionStyle = UITableViewCellSelectionStyle.None;

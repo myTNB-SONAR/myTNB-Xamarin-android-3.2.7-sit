@@ -1,5 +1,4 @@
-﻿using System;
-using Refit;
+﻿using Refit;
 
 namespace myTNB_Android.Src.MakePayment.Models
 {
@@ -56,7 +55,7 @@ namespace myTNB_Android.Src.MakePayment.Models
             this.MERCHANT_TRANID = merchantId;
             this.accNum = accNum;
             this.payAmount = payAm;
-            this.custName = 
+            this.custName =
             this.custEmail = custEmail;
             this.custPhone = custPhone;
             this.MPARAM1 = mParam1;

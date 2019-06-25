@@ -5,7 +5,8 @@ using myTNB.Model;
 using System.Threading.Tasks;
 using CoreGraphics;
 using myTNB.Registration.CustomerAccounts;
-using myTNB.Extensions;
+
+using System.Diagnostics;
 
 namespace myTNB
 {
@@ -19,13 +20,8 @@ namespace myTNB
         {
             base.ViewDidLoad();
             AddBackButton();
-            accountRecordsTableView.Frame = new CGRect(0
-                                                       , 0
-                                                       , View.Frame.Width
-                                                       , View.Frame.Height
-                                                            - (DeviceHelper.IsIphoneXUpResolution()
-                                                               ? 64 + 72 + 24
-                                                               : 64 + 72));
+            accountRecordsTableView.Frame = new CGRect(0, 0, View.Frame.Width
+                , View.Frame.Height - (DeviceHelper.IsIphoneXUpResolution() ? 64 + 72 + 24 : 64 + 72));
             accountRecordsTableView.Source = new SelectAccountsDataSource(this);
             accountRecordsTableView.ReloadData();
             accountRecordsTableView.SeparatorStyle = UITableViewCellSeparatorStyle.None;
@@ -34,7 +30,7 @@ namespace myTNB
 
         internal void AddBackButton()
         {
-            Title = "Select Electricity Account";
+            Title = "SelectAccount_Title".Translate();
             NavigationItem.HidesBackButton = true;
             UIImage backImg = UIImage.FromBundle("Back-White");
             UIBarButtonItem btnBack = new UIBarButtonItem(backImg, UIBarButtonItemStyle.Done, (sender, e) =>
@@ -47,12 +43,14 @@ namespace myTNB
 
         void AddCTAButton()
         {
-            UIButton btnAddAccount = new UIButton(UIButtonType.Custom);
-            btnAddAccount.Frame = new CGRect(18, View.Frame.Height - (DeviceHelper.IsIphoneXUpResolution() ? 152 : 128), View.Frame.Width - 36, 48);
-            btnAddAccount.SetTitle("AddAnotherAccount".Translate(), UIControlState.Normal);
-            btnAddAccount.Font = myTNBFont.MuseoSans16();
+            UIButton btnAddAccount = new UIButton(UIButtonType.Custom)
+            {
+                Frame = new CGRect(18, View.Frame.Height - (DeviceHelper.IsIphoneXUpResolution() ? 152 : 128), View.Frame.Width - 36, 48)
+            };
+            btnAddAccount.SetTitle("Common_AddAnotherAccount".Translate(), UIControlState.Normal);
+            btnAddAccount.Font = MyTNBFont.MuseoSans16;
             btnAddAccount.Layer.CornerRadius = 5.0f;
-            btnAddAccount.BackgroundColor = myTNBColor.FreshGreen();
+            btnAddAccount.BackgroundColor = MyTNBColor.FreshGreen;
             View.AddSubview(btnAddAccount);
             btnAddAccount.TouchUpInside += (sender, e) =>
             {
@@ -63,7 +61,7 @@ namespace myTNB
                     {
                         if (NetworkUtility.isReachable)
                         {
-                            Console.WriteLine("Add account button tapped");
+                            Debug.WriteLine("Add account button tapped");
                             UIStoryboard storyBoard = UIStoryboard.FromName("AccountRecords", null);
                             AccountsViewController viewController = storyBoard.InstantiateViewController("AccountsViewController") as AccountsViewController;
                             viewController.isDashboardFlow = true;
@@ -73,10 +71,8 @@ namespace myTNB
                         }
                         else
                         {
-                            Console.WriteLine("No Network");
-                            var alert = UIAlertController.Create("ErrNoNetworkTitle".Translate(), "ErrNoNetworkMsg".Translate(), UIAlertControllerStyle.Alert);
-                            alert.AddAction(UIAlertAction.Create("Ok", UIAlertActionStyle.Cancel, null));
-                            PresentViewController(alert, animated: true, completionHandler: null);
+                            Debug.WriteLine("No Network");
+                            AlertHandler.DisplayNoDataAlert(this);
                         }
                         ActivityIndicator.Hide();
                     });
@@ -130,8 +126,8 @@ namespace myTNB
                                     DataManager.DataManager.SharedInstance.IsBillUpdateNeeded = false;
                                     if (!DataManager.DataManager.SharedInstance.SelectedAccount.IsREAccount)
                                     {
-                                        DataManager.DataManager.SharedInstance.SaveToBillingAccounts(DataManager.DataManager.SharedInstance.BillingAccountDetails,
-                                                                                                     DataManager.DataManager.SharedInstance.SelectedAccount.accNum);
+                                        DataManager.DataManager.SharedInstance.SaveToBillingAccounts(DataManager.DataManager.SharedInstance.BillingAccountDetails
+                                            , DataManager.DataManager.SharedInstance.SelectedAccount.accNum);
                                     }
                                     this.DismissViewController(true, null);
                                 }
@@ -139,9 +135,7 @@ namespace myTNB
                                 {
                                     DataManager.DataManager.SharedInstance.IsSameAccount = true;
                                     DataManager.DataManager.SharedInstance.BillingAccountDetails = new BillingAccountDetailsDataModel();
-                                    var alert = UIAlertController.Create("Error in Response", "There is an error in the server, please try again.", UIAlertControllerStyle.Alert);
-                                    alert.AddAction(UIAlertAction.Create("Ok", UIAlertActionStyle.Cancel, null));
-                                    PresentViewController(alert, animated: true, completionHandler: null);
+                                    AlertHandler.DisplayServiceError(this, _billingAccountDetailsList?.d?.message);
                                 }
                                 ActivityIndicator.Hide();
                             });
@@ -149,10 +143,8 @@ namespace myTNB
                     }
                     else
                     {
-                        Console.WriteLine("No Network");
-                        var alert = UIAlertController.Create("ErrNoNetworkTitle".Translate(), "ErrNoNetworkMsg".Translate(), UIAlertControllerStyle.Alert);
-                        alert.AddAction(UIAlertAction.Create("Ok", UIAlertActionStyle.Cancel, null));
-                        PresentViewController(alert, animated: true, completionHandler: null);
+                        Debug.WriteLine("No Network");
+                        AlertHandler.DisplayNoDataAlert(this);
                     }
                 });
             });

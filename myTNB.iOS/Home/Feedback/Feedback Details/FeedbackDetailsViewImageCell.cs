@@ -10,20 +10,20 @@ namespace myTNB
         public UILabel lblValue;
         public UIScrollView imgScrollView;
 
-        public FeedbackDetailsViewImageCell (IntPtr handle) : base (handle)
+        public FeedbackDetailsViewImageCell(IntPtr handle) : base(handle)
         {
             nfloat cellWidth = UIApplication.SharedApplication.KeyWindow.Frame.Width;
 
             lblTitle = new UILabel(new CGRect(18, 16, cellWidth - 36, 14))
             {
-                Font = myTNBFont.MuseoSans9(),
-                TextColor = myTNBColor.SilverChalice()
+                Font = MyTNBFont.MuseoSans9,
+                TextColor = MyTNBColor.SilverChalice
             };
 
             lblValue = new UILabel(new CGRect(18, 30, cellWidth - 36, 18))
             {
-                Font = myTNBFont.MuseoSans14(),
-                TextColor = myTNBColor.TunaGrey(),
+                Font = MyTNBFont.MuseoSans14,
+                TextColor = MyTNBColor.TunaGrey(),
                 Lines = 0,
                 LineBreakMode = UILineBreakMode.WordWrap
             };

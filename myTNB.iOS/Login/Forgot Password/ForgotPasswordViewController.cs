@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Foundation;
 using CoreGraphics;
 using myTNB.DataManager;
-using myTNB.Extensions;
 
 namespace myTNB
 {
@@ -31,7 +30,7 @@ namespace myTNB
         public override void ViewDidLoad()
         {
             base.ViewDidLoad();
-            this.Title = "Reset Password";
+            this.Title = "Login_ResetPasswordTitle".Translate();
             this.NavigationItem.HidesBackButton = true;
 
             InitializedSubViews();
@@ -43,17 +42,17 @@ namespace myTNB
         internal void InitializedSubViews()
         {
             lblTitle.Frame = new CGRect(18, 19, View.Frame.Width - 36, 18);
-            lblTitle.TextColor = myTNBColor.PowerBlue();
-            lblTitle.Font = myTNBFont.MuseoSans16_500();
-            lblTitle.Text = "Please enter your email.";
+            lblTitle.TextColor = MyTNBColor.PowerBlue;
+            lblTitle.Font = MyTNBFont.MuseoSans16_500;
+            lblTitle.Text = "Login_EnterEmail".Translate();
 
             lblDescription.Frame = new CGRect(18, 40, View.Frame.Width - 36, 36);
-            lblDescription.TextColor = myTNBColor.TunaGrey();
-            lblDescription.Font = myTNBFont.MuseoSans14_300();
+            lblDescription.TextColor = MyTNBColor.TunaGrey();
+            lblDescription.Font = MyTNBFont.MuseoSans14_300;
             lblDescription.TextAlignment = UITextAlignment.Left;
             lblDescription.Lines = 0;
             lblDescription.LineBreakMode = UILineBreakMode.WordWrap;
-            lblDescription.Text = "A 4-digit verification code will be sent to this email address.";
+            lblDescription.Text = "Login_CodeSentToEmailMessage".Translate();
 
             btnSubmit.Layer.CornerRadius = 5f;
 
@@ -62,30 +61,30 @@ namespace myTNB
             viewEmail.BackgroundColor = UIColor.Clear;
 
             lblEmailTitle = new UILabel(new CGRect(0, 0, viewEmail.Frame.Width, 12));
-            lblEmailTitle.Font = myTNBFont.MuseoSans9_300();
-            lblEmailTitle.TextColor = myTNBColor.SilverChalice();
-            lblEmailTitle.Text = "EMAIL";
+            lblEmailTitle.Font = MyTNBFont.MuseoSans9_300;
+            lblEmailTitle.TextColor = MyTNBColor.SilverChalice;
+            lblEmailTitle.Text = "Common_Email".Translate().ToUpper();
             lblEmailTitle.TextAlignment = UITextAlignment.Left;
 
             lblEmailError = new UILabel(new CGRect(0, 37, viewEmail.Frame.Width, 14));
-            lblEmailError.Font = myTNBFont.MuseoSans9_300();
-            lblEmailError.TextColor = myTNBColor.Tomato();
-            lblEmailError.Text = "Invalid email address";
+            lblEmailError.Font = MyTNBFont.MuseoSans9_300;
+            lblEmailError.TextColor = MyTNBColor.Tomato;
+            lblEmailError.Text = "Invalid_Email".Translate();
             lblEmailError.TextAlignment = UITextAlignment.Left;
 
             txtFieldEmail = new UITextField(new CGRect(0, 12, viewEmail.Frame.Width, 24));
             txtFieldEmail.AttributedPlaceholder = new NSAttributedString(
-                "Email"
-                , font: myTNBFont.MuseoSans16_300()
-                , foregroundColor: myTNBColor.SilverChalice()
+                "Common_Email".Translate().ToUpper()
+                , font: MyTNBFont.MuseoSans16_300
+                , foregroundColor: MyTNBColor.SilverChalice
                 , strokeWidth: 0
             );
-            txtFieldEmail.TextColor = myTNBColor.TunaGrey();
+            txtFieldEmail.TextColor = MyTNBColor.TunaGrey();
             txtFieldEmail.KeyboardType = UIKeyboardType.EmailAddress;
             txtFieldEmail.ReturnKeyType = UIReturnKeyType.Done;
 
             viewLineEmail = new UIView((new CGRect(0, 36, viewEmail.Frame.Width, 1)));
-            viewLineEmail.BackgroundColor = myTNBColor.PlatinumGrey();
+            viewLineEmail.BackgroundColor = MyTNBColor.PlatinumGrey;
 
             viewEmail.AddSubviews(new UIView[] { lblEmailTitle, lblEmailError, txtFieldEmail, viewLineEmail });
 
@@ -99,8 +98,10 @@ namespace myTNB
             lblEmailTitle.Hidden = true;
             lblEmailError.Hidden = true;
             btnSubmit.Enabled = false;
-            btnSubmit.BackgroundColor = myTNBColor.PlatinumGrey();
-            btnSubmit.Frame = new CGRect(18, View.Frame.Height - (DeviceHelper.IsIphoneXUpResolution() ? 184 : DeviceHelper.GetScaledHeight(136)), View.Frame.Width - 36, DeviceHelper.GetScaledHeight(48));
+            btnSubmit.SetTitle("Common_Submit".Translate(), UIControlState.Normal);
+            btnSubmit.BackgroundColor = MyTNBColor.PlatinumGrey;
+            btnSubmit.Frame = new CGRect(18, View.Frame.Height - (DeviceHelper.IsIphoneXUpResolution()
+                ? 184 : DeviceHelper.GetScaledHeight(136)), View.Frame.Width - 36, DeviceHelper.GetScaledHeight(48));
         }
 
         internal void SetEvents()
@@ -119,8 +120,7 @@ namespace myTNB
                         }
                         else
                         {
-                            Console.WriteLine("No Network");
-                            DisplayAlertMessage("ErrNoNetworkTitle".Translate(), "ErrNoNetworkMsg".Translate());
+                            AlertHandler.DisplayNoDataAlert(this);
                             ActivityIndicator.Hide();
                         }
                     });
@@ -148,7 +148,7 @@ namespace myTNB
             textField.EditingDidBegin += (sender, e) =>
             {
                 textFieldTitle.Hidden = textField.Text.Length == 0;
-                viewLine.BackgroundColor = myTNBColor.PowerBlue();
+                viewLine.BackgroundColor = MyTNBColor.PowerBlue;
                 textField.LeftViewMode = UITextFieldViewMode.Never;
             };
             textField.ShouldEndEditing = (sender) =>
@@ -156,8 +156,8 @@ namespace myTNB
                 textFieldTitle.Hidden = textField.Text.Length == 0;
                 bool isValid = _textFieldHelper.ValidateTextField(textField.Text, pattern);
                 textFieldError.Hidden = isValid || textField.Text.Length == 0;
-                viewLine.BackgroundColor = isValid || textField.Text.Length == 0 ? myTNBColor.PlatinumGrey() : myTNBColor.Tomato();
-                textField.TextColor = isValid || textField.Text.Length == 0 ? myTNBColor.TunaGrey() : myTNBColor.Tomato();
+                viewLine.BackgroundColor = isValid || textField.Text.Length == 0 ? MyTNBColor.PlatinumGrey : MyTNBColor.Tomato;
+                textField.TextColor = isValid || textField.Text.Length == 0 ? MyTNBColor.TunaGrey() : MyTNBColor.Tomato;
                 SetSubmitButtonEnable();
                 return true;
             };
@@ -181,7 +181,7 @@ namespace myTNB
         {
             bool isValid = _textFieldHelper.ValidateTextField(txtFieldEmail.Text, EMAIL_PATTERN);
             btnSubmit.Enabled = isValid;
-            btnSubmit.BackgroundColor = isValid ? myTNBColor.FreshGreen() : myTNBColor.SilverChalice();
+            btnSubmit.BackgroundColor = isValid ? MyTNBColor.FreshGreen : MyTNBColor.SilverChalice;
         }
 
         internal void AddBackButton()
@@ -218,14 +218,7 @@ namespace myTNB
                     }
                     else
                     {
-                        string errorMsg = "Error in sending reset code.";
-                        if (_resetCodeList != null && _resetCodeList.d != null
-                           && !string.IsNullOrEmpty(_resetCodeList.d.message)
-                           && !string.IsNullOrWhiteSpace(_resetCodeList.d.message))
-                        {
-                            errorMsg = _resetCodeList.d.message;
-                        }
-                        DisplayAlertMessage("Error", errorMsg);
+                        AlertHandler.DisplayServiceError(this, _resetCodeList?.d?.message);
                     }
                     ActivityIndicator.Hide();
                 });
@@ -251,13 +244,6 @@ namespace myTNB
                 };
                 _resetCodeList = serviceManager.BaseServiceCall("SendResetPasswordCode", requestParameter);
             });
-        }
-
-        internal void DisplayAlertMessage(string title, string message)
-        {
-            var alert = UIAlertController.Create(title, message, UIAlertControllerStyle.Alert);
-            alert.AddAction(UIAlertAction.Create("Ok", UIAlertActionStyle.Cancel, null));
-            PresentViewController(alert, animated: true, completionHandler: null);
         }
     }
 }

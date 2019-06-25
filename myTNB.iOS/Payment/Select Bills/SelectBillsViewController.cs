@@ -9,7 +9,6 @@ using System.Collections.Generic;
 using myTNB.Model;
 using System.Globalization;
 using System.Drawing;
-using myTNB.Extensions;
 
 namespace myTNB
 {
@@ -52,18 +51,14 @@ namespace myTNB
             }
             NSNotificationCenter.DefaultCenter.AddObserver(UIKeyboard.DidShowNotification, (NSNotification obj) =>
             {
-                Console.WriteLine("Keyboard Show");
                 var userInfo = obj.UserInfo;
                 NSValue keyboardFrame = userInfo.ValueForKey(UIKeyboard.FrameEndUserInfoKey) as NSValue;
                 CGRect keyboardRectangle = keyboardFrame.CGRectValue;
-                SelectBillsTableView.Frame = new CGRect(0
-                                                        , 0
-                                                        , View.Frame.Width
-                                                        , View.Frame.Height - (keyboardRectangle.Height));
+                SelectBillsTableView.Frame = new CGRect(0, 0, View.Frame.Width
+                    , View.Frame.Height - (keyboardRectangle.Height));
             });
             NSNotificationCenter.DefaultCenter.AddObserver(UIKeyboard.DidHideNotification, (NSNotification obj) =>
             {
-                Console.WriteLine("Keyboard Hide");
                 SetDefaultTableFrame();
             });
 
@@ -120,11 +115,8 @@ namespace myTNB
                     {
                         _accounts[itemIndex].Amount = acct.amountDue;
                         _accounts[itemIndex].AmountDue = acct.amountDue;
-
                         acctsToRemove.Add(accNum);
-
                         int displayIndex = _accountsForDisplay.FindIndex(x => x.accNum.Equals(accNum));
-
                         if (displayIndex > -1)
                         {
                             if (itemIndex > -1 && itemIndex < _accountsForDisplay.Count)
@@ -267,14 +259,15 @@ namespace myTNB
             }
             _lblTotalAmountValue.Text = totalAmount.ToString("N2", CultureInfo.InvariantCulture);
             AdjustAmountFrame();
-            var title = (selectedAccountCount > 0) ? string.Format("PayBillBtnMltple".Translate(), selectedAccountCount.ToString()) : "PayBillBtnSngle".Translate();
+            var title = (selectedAccountCount > 0) ? string.Format("Payment_Multiple".Translate()
+                , selectedAccountCount.ToString()) : "Payment_Single".Translate();
             BtnPayBill.SetTitle(title, UIControlState.Normal);
 
             bool isValid = (selectedAccountCount > 0 && totalAmount > 0) && !hasInvalidSelection;
 
             BtnPayBill.BackgroundColor = isValid
-                ? myTNBColor.FreshGreen()
-                : myTNBColor.SilverChalice();
+                ? MyTNBColor.FreshGreen
+                : MyTNBColor.SilverChalice;
             BtnPayBill.Enabled = isValid;
         }
 
@@ -300,10 +293,7 @@ namespace myTNB
                                 else
                                 {
                                     UpDateTotalAmount();
-                                    string msg = _multiAccountDueAmount?.d?.message;
-                                    var alert = UIAlertController.Create(string.Empty, !string.IsNullOrEmpty(msg) ? msg : "DefaultServerErrorMessage".Translate(), UIAlertControllerStyle.Alert);
-                                    alert.AddAction(UIAlertAction.Create("Ok", UIAlertActionStyle.Cancel, null));
-                                    PresentViewController(alert, animated: true, completionHandler: null);
+                                    AlertHandler.DisplayServiceError(this, _multiAccountDueAmount?.d?.message);
                                     ActivityIndicator.Hide();
                                 }
                             });
@@ -311,10 +301,7 @@ namespace myTNB
                     }
                     else
                     {
-                        Console.WriteLine("No Network");
-                        var alert = UIAlertController.Create("ErrNoNetworkTitle".Translate(), "ErrNoNetworkMsg".Translate(), UIAlertControllerStyle.Alert);
-                        alert.AddAction(UIAlertAction.Create("Ok", UIAlertActionStyle.Cancel, null));
-                        PresentViewController(alert, animated: true, completionHandler: null);
+                        AlertHandler.DisplayNoDataAlert(this);
                         ActivityIndicator.Hide();
                     }
                 });
@@ -349,10 +336,10 @@ namespace myTNB
 
         internal void InitializedSubViews()
         {
-            BtnPayBill.BackgroundColor = myTNBColor.SilverChalice();
+            BtnPayBill.BackgroundColor = MyTNBColor.SilverChalice;
             BtnPayBill.Layer.CornerRadius = 4.0f;
             BtnPayBill.SetTitleColor(UIColor.White, UIControlState.Normal);
-            BtnPayBill.TitleLabel.Font = myTNBFont.MuseoSans16_500();
+            BtnPayBill.TitleLabel.Font = MyTNBFont.MuseoSans16_500;
             BtnPayBill.TouchUpInside += (sender, e) =>
             {
                 _accountsForPayment = new List<CustomerAccountRecordModel>();
@@ -374,25 +361,25 @@ namespace myTNB
                 PresentViewController(navController, true, null);
             };
 
-            BottomContainerView.BackgroundColor = myTNBColor.LightGrayBG();
+            BottomContainerView.BackgroundColor = MyTNBColor.LightGrayBG;
 
             _viewAmount = new UIView(new CGRect(18, 20, View.Frame.Width - 36, 24));
 
             UILabel lblTotalAmountTitle = new UILabel(new CGRect(0, 6, 120, 18));
-            lblTotalAmountTitle.TextColor = myTNBColor.TunaGrey();
-            lblTotalAmountTitle.Font = myTNBFont.MuseoSans14_500();
-            lblTotalAmountTitle.Text = "Total Amount";
+            lblTotalAmountTitle.TextColor = MyTNBColor.TunaGrey();
+            lblTotalAmountTitle.Font = MyTNBFont.MuseoSans14_500;
+            lblTotalAmountTitle.Text = "Common_TotalAmount".Translate();
 
             _lblCurrency = new UILabel(new CGRect(0, 6, 24, 18));
-            _lblCurrency.TextColor = myTNBColor.TunaGrey();
-            _lblCurrency.Font = myTNBFont.MuseoSans14_500();
-            _lblCurrency.Text = "RM";
+            _lblCurrency.TextColor = MyTNBColor.TunaGrey();
+            _lblCurrency.Font = MyTNBFont.MuseoSans14_500;
+            _lblCurrency.Text = TNBGlobal.UNIT_CURRENCY;
             _lblCurrency.TextAlignment = UITextAlignment.Right;
 
             _lblTotalAmountValue = new UILabel(new CGRect(0, 0, (View.Frame.Width - 36) / 2, 24));
-            _lblTotalAmountValue.TextColor = myTNBColor.TunaGrey();
-            _lblTotalAmountValue.Font = myTNBFont.MuseoSans24_500();
-            _lblTotalAmountValue.Text = "0.00";
+            _lblTotalAmountValue.TextColor = MyTNBColor.TunaGrey();
+            _lblTotalAmountValue.Font = MyTNBFont.MuseoSans24_500;
+            _lblTotalAmountValue.Text = TNBGlobal.DEFAULT_VALUE;
             _lblTotalAmountValue.TextAlignment = UITextAlignment.Right;
 
             _viewAmount.AddSubviews(lblTotalAmountTitle, _lblCurrency, _lblTotalAmountValue);
@@ -400,16 +387,16 @@ namespace myTNB
             BottomContainerView.AddSubview(_viewAmount);
 
             _viewFooter = new UIView(new CGRect(0, 0, View.Frame.Width, 40));
-            _viewFooter.BackgroundColor = myTNBColor.LightGrayBG();
+            _viewFooter.BackgroundColor = MyTNBColor.LightGrayBG;
             _viewFooter.AddGestureRecognizer(new UITapGestureRecognizer(() =>
             {
                 OnLoadMore();
             }));
             UILabel lblLoadMore = new UILabel(new CGRect(0, 0, _viewFooter.Frame.Width, 16));
             lblLoadMore.TextAlignment = UITextAlignment.Center;
-            lblLoadMore.AttributedText = new NSAttributedString("Load More"
-                , font: myTNBFont.MuseoSans12_300()
-                , foregroundColor: myTNBColor.SilverChalice()
+            lblLoadMore.AttributedText = new NSAttributedString("Payment_LoadMore".Translate()
+                , font: MyTNBFont.MuseoSans12_300
+                , foregroundColor: MyTNBColor.SilverChalice
                 , strokeWidth: 0
                 , underlineStyle: NSUnderlineStyle.Single
             );
@@ -421,17 +408,11 @@ namespace myTNB
 
         void AdjustAmountFrame()
         {
-            CGSize newSize = GetLabelSize(_lblTotalAmountValue
-                                          , _viewAmount.Frame.Width / 2
-                                          , 24);
+            CGSize newSize = GetLabelSize(_lblTotalAmountValue, _viewAmount.Frame.Width / 2, 24);
             _lblTotalAmountValue.Frame = new CGRect(_viewAmount.Frame.Width - newSize.Width - 9
-                                                    , 0
-                                                    , newSize.Width
-                                                    , 24);
+                , 0, newSize.Width, 24);
             _lblCurrency.Frame = new CGRect(_lblTotalAmountValue.Frame.X - 27
-                                            , _lblCurrency.Frame.Y
-                                            , _lblCurrency.Frame.Width
-                                            , _lblCurrency.Frame.Height);
+                , _lblCurrency.Frame.Y, _lblCurrency.Frame.Width, _lblCurrency.Frame.Height);
         }
 
         CGSize GetLabelSize(UILabel label, nfloat width, nfloat height)

@@ -1,28 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
+﻿using Android.App;
 using Android.Content;
-using Android.OS;
 using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-using myTNB_Android.Src.AppLaunch.Models;
-using myTNB_Android.Src.Base.Models;
-using myTNB_Android.Src.Utils;
-using System.Threading;
+using Android.Telephony;
 using Android.Text;
+using Java.Text;
+using myTNB_Android.Src.AppLaunch.Models;
+using myTNB_Android.Src.Base.Api;
+using myTNB_Android.Src.Base.Models;
+using myTNB_Android.Src.Base.Request;
+using myTNB_Android.Src.Database.Model;
+using myTNB_Android.Src.Utils;
+using Newtonsoft.Json;
+using Refit;
+using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
-using Refit;
-using myTNB_Android.Src.Base.Api;
-using myTNB_Android.Src.Base.Request;
-using Newtonsoft.Json;
-using myTNB_Android.Src.Database.Model;
-using Java.Text;
-using Android.Telephony;
+using System.Threading;
 
 namespace myTNB_Android.Src.Feedback_Login_Others.MVP
 {
@@ -82,13 +76,14 @@ namespace myTNB_Android.Src.Feedback_Login_Others.MVP
 
         private async void OnSaveCameraImage(string tempImagePath, string fileName)
         {
-            try {
-            this.mView.DisableSubmitButton();
-            this.mView.ShowLoadingImage();
-            string resultFilePath = await this.mView.SaveCameraImage(tempImagePath, fileName);
-            this.mView.UpdateAdapter(resultFilePath, fileName);
-            this.mView.HideLoadingImage();
-            this.mView.EnableSubmitButton();
+            try
+            {
+                this.mView.DisableSubmitButton();
+                this.mView.ShowLoadingImage();
+                string resultFilePath = await this.mView.SaveCameraImage(tempImagePath, fileName);
+                this.mView.UpdateAdapter(resultFilePath, fileName);
+                this.mView.HideLoadingImage();
+                this.mView.EnableSubmitButton();
             }
             catch (Exception e)
             {
@@ -99,13 +94,14 @@ namespace myTNB_Android.Src.Feedback_Login_Others.MVP
 
         private async void OnSaveGalleryImage(Android.Net.Uri selectedImage, string fileName)
         {
-            try {
-            this.mView.DisableSubmitButton();
-            this.mView.ShowLoadingImage();
-            string resultFilePath = await this.mView.SaveGalleryImage(selectedImage, FileUtils.TEMP_IMAGE_FOLDER, fileName);
-            this.mView.UpdateAdapter(resultFilePath, fileName);
-            this.mView.HideLoadingImage();
-            this.mView.EnableSubmitButton();
+            try
+            {
+                this.mView.DisableSubmitButton();
+                this.mView.ShowLoadingImage();
+                string resultFilePath = await this.mView.SaveGalleryImage(selectedImage, FileUtils.TEMP_IMAGE_FOLDER, fileName);
+                this.mView.UpdateAdapter(resultFilePath, fileName);
+                this.mView.HideLoadingImage();
+                this.mView.EnableSubmitButton();
             }
             catch (Exception e)
             {
@@ -138,8 +134,9 @@ namespace myTNB_Android.Src.Feedback_Login_Others.MVP
                 return;
             }
 
-            if (mView.IsActive()) {
-            this.mView.ShowProgressDialog();
+            if (mView.IsActive())
+            {
+                this.mView.ShowProgressDialog();
             }
 
             ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
@@ -205,7 +202,7 @@ namespace myTNB_Android.Src.Feedback_Login_Others.MVP
 
                     SubmittedFeedbackEntity.InsertOrReplace(newSubmittedFeedback);
                     this.mView.ClearInputFields();
-                    this.mView.ShowSuccess(preLoginFeedbackResponse.Data.Data.DateCreated, preLoginFeedbackResponse.Data.Data.FeedbackId , attachedImages.Count);
+                    this.mView.ShowSuccess(preLoginFeedbackResponse.Data.Data.DateCreated, preLoginFeedbackResponse.Data.Data.FeedbackId, attachedImages.Count);
                 }
                 else
                 {
@@ -268,7 +265,9 @@ namespace myTNB_Android.Src.Feedback_Login_Others.MVP
                 {
                     this.mView.HideMobileNo();
                 }
-            } catch(Exception e) {
+            }
+            catch (Exception e)
+            {
                 Utility.LoggingNonFatalError(e);
             }
         }
@@ -311,8 +310,9 @@ namespace myTNB_Android.Src.Feedback_Login_Others.MVP
                 return;
             }
 
-            if (mView.IsActive()) {
-            this.mView.ShowProgressDialog();
+            if (mView.IsActive())
+            {
+                this.mView.ShowProgressDialog();
             }
 
             ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
@@ -428,44 +428,45 @@ namespace myTNB_Android.Src.Feedback_Login_Others.MVP
 
             this.mView.ClearErrors();
 
-                if (TextUtils.IsEmpty(mobile_no)) {
-                    this.mView.DisableSubmitButton();
-                    this.mView.ShowEmptyMobileNoError();
+            if (TextUtils.IsEmpty(mobile_no))
+            {
+                this.mView.DisableSubmitButton();
+                this.mView.ShowEmptyMobileNoError();
                 return;
-                }
+            }
 
-                if (!PhoneNumberUtils.IsGlobalPhoneNumber(mobile_no))
-                {
-                    this.mView.DisableSubmitButton();
-                    this.mView.ShowInvalidMobileNoError();
-                    return;
-                }
-                else
-                {
-                    this.mView.ClearMobileNoError();
-                }
-
-
-                if (!Utility.IsValidMobileNumber(mobile_no))
-                {
-                    this.mView.DisableSubmitButton();
-                    this.mView.ShowInvalidMobileNoError();
-                    return;
-                }
-                else
-                {
-                    this.mView.ClearMobileNoError();
-                }
+            if (!PhoneNumberUtils.IsGlobalPhoneNumber(mobile_no))
+            {
+                this.mView.DisableSubmitButton();
+                this.mView.ShowInvalidMobileNoError();
+                return;
+            }
+            else
+            {
+                this.mView.ClearMobileNoError();
+            }
 
 
-                if (TextUtils.IsEmpty(feedback) && feedback.Equals(" "))
-                {
-                    this.mView.DisableSubmitButton();
-                    this.mView.ShowEmptyFeedbackError();
-                    return;
-                }
+            if (!Utility.IsValidMobileNumber(mobile_no))
+            {
+                this.mView.DisableSubmitButton();
+                this.mView.ShowInvalidMobileNoError();
+                return;
+            }
+            else
+            {
+                this.mView.ClearMobileNoError();
+            }
 
-                this.mView.EnableSubmitButton();
+
+            if (TextUtils.IsEmpty(feedback) && feedback.Equals(" "))
+            {
+                this.mView.DisableSubmitButton();
+                this.mView.ShowEmptyFeedbackError();
+                return;
+            }
+
+            this.mView.EnableSubmitButton();
             //}
             //else
             //{

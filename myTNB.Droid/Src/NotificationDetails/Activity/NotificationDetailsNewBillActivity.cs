@@ -1,30 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
+﻿using AFollestad.MaterialDialogs;
 using Android.App;
 using Android.Content;
+using Android.Content.PM;
 using Android.OS;
-using Android.Runtime;
 using Android.Views;
 using Android.Widget;
-using Android.Content.PM;
-using myTNB_Android.Src.NotificationDetails.Activity.Base;
 using CheeseBind;
-using myTNB_Android.Src.Utils;
-using myTNB_Android.Src.NotificationDetails.MVP;
-using myTNB_Android.Src.MakePayment.Activity;
-using Newtonsoft.Json;
-using myTNB_Android.Src.myTNBMenu.Models;
-using AFollestad.MaterialDialogs;
-using myTNB_Android.Src.NotificationNewBill.Activity;
-using myTNB_Android.Src.NotificationDetails.Models;
 using Java.Text;
 using Java.Util;
-using myTNB_Android.Src.AddAccount.Fragment;
 using myTNB_Android.Src.MultipleAccountPayment.Activity;
+using myTNB_Android.Src.myTNBMenu.Models;
+using myTNB_Android.Src.NotificationDetails.Activity.Base;
+using myTNB_Android.Src.NotificationDetails.MVP;
+using myTNB_Android.Src.NotificationNewBill.Activity;
+using myTNB_Android.Src.Utils;
 using myTNB_Android.Src.Utils.Custom.ProgressDialog;
+using Newtonsoft.Json;
+using System;
 using System.Runtime;
 
 namespace myTNB_Android.Src.NotificationDetails.Activity
@@ -33,7 +25,7 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
               , Icon = "@drawable/ic_launcher"
       , ScreenOrientation = ScreenOrientation.Portrait
       , Theme = "@style/Theme.Notification")]
-    public class NotificationDetailsNewBillActivity : BaseNotificationDetailActivity , NotificationDetailNewBillContract.IView
+    public class NotificationDetailsNewBillActivity : BaseNotificationDetailActivity, NotificationDetailNewBillContract.IView
     {
 
         [BindView(Resource.Id.rootView)]
@@ -130,15 +122,18 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
             //{
             //    retrievalDialog.Show();
             //}
-            try {
-            if (loadingOverlay != null && loadingOverlay.IsShowing)
+            try
             {
-                loadingOverlay.Dismiss();
-            }
+                if (loadingOverlay != null && loadingOverlay.IsShowing)
+                {
+                    loadingOverlay.Dismiss();
+                }
 
-            loadingOverlay = new LoadingOverlay(this, Resource.Style.LoadingOverlyDialogStyle);
-            loadingOverlay.Show();
-        } catch(Exception e) {
+                loadingOverlay = new LoadingOverlay(this, Resource.Style.LoadingOverlyDialogStyle);
+                loadingOverlay.Show();
+            }
+            catch (Exception e)
+            {
                 Utility.LoggingNonFatalError(e);
             }
         }
@@ -149,11 +144,12 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
             //{
             //    retrievalDialog.Dismiss();
             //}
-            try {
-            if (loadingOverlay != null && loadingOverlay.IsShowing)
+            try
             {
-                loadingOverlay.Dismiss();
-            }
+                if (loadingOverlay != null && loadingOverlay.IsShowing)
+                {
+                    loadingOverlay.Dismiss();
+                }
             }
             catch (Exception e)
             {
@@ -166,35 +162,38 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
         {
             base.OnCreate(savedInstanceState);
 
-            try {
-            retrievalDialog = new MaterialDialog.Builder(this)
-            .Title(GetString(Resource.String.notification_detail_retrieval_progress_title))
-            .Content(GetString(Resource.String.notification_detail_retrieval_progress_content))
-            .Cancelable(false)
-            .Progress(true, 0)
-            .Build();
-            // Create your application here
+            try
+            {
+                retrievalDialog = new MaterialDialog.Builder(this)
+                .Title(GetString(Resource.String.notification_detail_retrieval_progress_title))
+                .Content(GetString(Resource.String.notification_detail_retrieval_progress_content))
+                .Cancelable(false)
+                .Progress(true, 0)
+                .Build();
+                // Create your application here
 
-            TextViewUtils.SetMuseoSans500Typeface(btnViewDetails , 
-                btnPay,
-                txtAccountNumberTitle , 
-                txtNotificationDetailsPaymentDueTitle, 
-                txtNotificationSubTitle,
-                txtNotificationTitle,
-                txtTotalOutstandingAmtTitle);
+                TextViewUtils.SetMuseoSans500Typeface(btnViewDetails,
+                    btnPay,
+                    txtAccountNumberTitle,
+                    txtNotificationDetailsPaymentDueTitle,
+                    txtNotificationSubTitle,
+                    txtNotificationTitle,
+                    txtTotalOutstandingAmtTitle);
 
-            TextViewUtils.SetMuseoSans300Typeface(
-                txtAccountNumberContent,
-                txtNotificationDetailsPaymentDueContent,
-                txtNotificationDetailsSubContent1,
-                txtNotificationDetailsSubContent2,
-                txtNotificationDetailsSubContent3,
-                txtTotalOutstandingAmtContent);
+                TextViewUtils.SetMuseoSans300Typeface(
+                    txtAccountNumberContent,
+                    txtNotificationDetailsPaymentDueContent,
+                    txtNotificationDetailsSubContent1,
+                    txtNotificationDetailsSubContent2,
+                    txtNotificationDetailsSubContent3,
+                    txtTotalOutstandingAmtContent);
 
 
-            this.newBillPresenter = new NotificationDetailNewBillPresenter(this);
-            this.newBillUserActionsListener.Start();
-        } catch(Exception e) {
+                this.newBillPresenter = new NotificationDetailNewBillPresenter(this);
+                this.newBillUserActionsListener.Start();
+            }
+            catch (Exception e)
+            {
                 Utility.LoggingNonFatalError(e);
             }
 
@@ -204,8 +203,9 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
         [OnClick(Resource.Id.btnPay)]
         void OnPay(object sender, EventArgs eventArgs)
         {
-            try {
-            this.newBillUserActionsListener.OnPayment(notificationDetails);
+            try
+            {
+                this.newBillUserActionsListener.OnPayment(notificationDetails);
             }
             catch (Exception e)
             {
@@ -216,8 +216,9 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
         [OnClick(Resource.Id.btnViewDetails)]
         void OnViewDetails(object sender, EventArgs eventArgs)
         {
-            try {
-            this.newBillUserActionsListener.OnViewDetails(notificationDetails);
+            try
+            {
+                this.newBillUserActionsListener.OnViewDetails(notificationDetails);
             }
             catch (Exception e)
             {
@@ -232,51 +233,61 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
 
         public void ShowMonthWildCard()
         {
-            try {
-            // TODO : ADD Month Name to notification_detail_new_bill_title_wildcard 
-            if (notificationDetails.AccountDetails != null)
+            try
             {
-                Date d = null;
-                try
+                // TODO : ADD Month Name to notification_detail_new_bill_title_wildcard 
+                if (notificationDetails.AccountDetails != null)
                 {
-                    d = dateParser.Parse(notificationDetails.AccountDetails.BillDate);
-                }catch (ParseException pe)
-                {
+                    Date d = null;
+                    try
+                    {
+                        d = dateParser.Parse(notificationDetails.AccountDetails.BillDate);
+                    }
+                    catch (ParseException pe)
+                    {
                         Utility.LoggingNonFatalError(pe);
+                    }
+                    if (d != null)
+                    {
+                        txtNotificationTitle.Text = GetString(Resource.String.notification_detail_new_bill_title_wildcard, monthFormatter.Format(d));
+                    }
+
                 }
-                if (d != null)
-                {
-                    txtNotificationTitle.Text = GetString(Resource.String.notification_detail_new_bill_title_wildcard , monthFormatter.Format(d));
-                }
-                
             }
-        } catch(Exception e) {
+            catch (Exception e)
+            {
                 Utility.LoggingNonFatalError(e);
             }
         }
 
         public void ShowBillDatedWildcard()
         {
-            try {
-            // TODO : ADD Bill date to notification_detail_new_bill_sub_title_wildcard
-            if (notificationDetails.AccountDetails != null)
+            try
             {
-                txtNotificationSubTitle.Text = GetString(Resource.String.notification_detail_new_bill_sub_title_wildcard, notificationDetails.AccountDetails.BillDate);
+                // TODO : ADD Bill date to notification_detail_new_bill_sub_title_wildcard
+                if (notificationDetails.AccountDetails != null)
+                {
+                    txtNotificationSubTitle.Text = GetString(Resource.String.notification_detail_new_bill_sub_title_wildcard, notificationDetails.AccountDetails.BillDate);
+                }
             }
-        } catch(Exception e) {
+            catch (Exception e)
+            {
                 Utility.LoggingNonFatalError(e);
             }
         }
 
         public void ShowTotalOutstandingAmtWildcard()
         {
-            try {
-            // TODO : ADD Outstanding Amt 
-            if (notificationDetails.AccountDetails != null)
+            try
             {
-                txtTotalOutstandingAmtContent.Text = "RM" + numberFormatter.Format(notificationDetails.AccountDetails.AmountPayable);
+                // TODO : ADD Outstanding Amt 
+                if (notificationDetails.AccountDetails != null)
+                {
+                    txtTotalOutstandingAmtContent.Text = "RM" + numberFormatter.Format(notificationDetails.AccountDetails.AmountPayable);
+                }
             }
-        } catch(Exception e) {
+            catch (Exception e)
+            {
                 Utility.LoggingNonFatalError(e);
             }
         }
@@ -290,7 +301,9 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
                 {
                     txtNotificationDetailsPaymentDueContent.Text = notificationDetails.AccountDetails.PaymentDueDate;
                 }
-            } catch(Exception e) {
+            }
+            catch (Exception e)
+            {
                 Utility.LoggingNonFatalError(e);
             }
         }

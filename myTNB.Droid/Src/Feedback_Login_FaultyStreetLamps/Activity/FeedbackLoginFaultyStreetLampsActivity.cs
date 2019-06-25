@@ -1,42 +1,37 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
+﻿using AFollestad.MaterialDialogs;
 using Android.App;
 using Android.Content;
+using Android.Content.PM;
+using Android.Graphics;
 using Android.OS;
+using Android.Preferences;
+using Android.Provider;
 using Android.Runtime;
+using Android.Support.Design.Widget;
+using Android.Support.V4.Content;
+using Android.Support.V7.Widget;
+using Android.Text;
 using Android.Views;
 using Android.Widget;
-using myTNB_Android.Src.Base.Activity;
-using Android.Content.PM;
 using CheeseBind;
-using Android.Support.Design.Widget;
-using Android.Support.V7.Widget;
-using myTNB_Android.Src.Utils;
-using myTNB_Android.Src.Feedback_Login_FaultyStreetLamps.MVP;
-using Android.Net;
-using myTNB_Android.Src.AppLaunch.Models;
-using myTNB_Android.Src.Base.Models;
-using myTNB_Android.Src.Base.Request;
-using System.Threading.Tasks;
-using myTNB_Android.Src.Feedback_PreLogin_FaultyStreetLamps.Adapter;
-using myTNB_Android.Src.Feedback_Login_FaultyStreetLamps.Adapter;
-using AFollestad.MaterialDialogs;
-using Android.Text;
-using Android.Support.V4.Content;
-using Android.Graphics;
-using System.Web;
-using Android.Provider;
-using myTNB_Android.Src.FeedbackSuccess.Activity;
-using myTNB_Android.Src.FeedbackFail.Activity;
-using myTNB_Android.Src.SelectFeedbackState.Activity;
 using Java.Text;
 using Java.Util;
-using Android.Preferences;
+using myTNB_Android.Src.AppLaunch.Models;
+using myTNB_Android.Src.Base.Activity;
+using myTNB_Android.Src.Base.Models;
+using myTNB_Android.Src.Base.Request;
+using myTNB_Android.Src.Feedback_Login_FaultyStreetLamps.Adapter;
+using myTNB_Android.Src.Feedback_Login_FaultyStreetLamps.MVP;
+using myTNB_Android.Src.FeedbackFail.Activity;
+using myTNB_Android.Src.FeedbackSuccess.Activity;
+using myTNB_Android.Src.SelectFeedbackState.Activity;
+using myTNB_Android.Src.Utils;
 using myTNB_Android.Src.Utils.Custom.ProgressDialog;
+using System;
 using System.Runtime;
+using System.Text;
+using System.Threading.Tasks;
+using System.Web;
 
 namespace myTNB_Android.Src.Feedback_Login_FaultyStreetLamps.Activity
 {
@@ -44,7 +39,7 @@ namespace myTNB_Android.Src.Feedback_Login_FaultyStreetLamps.Activity
       , ScreenOrientation = ScreenOrientation.Portrait
               , WindowSoftInputMode = SoftInput.AdjustPan
       , Theme = "@style/Theme.FaultyStreetLamps")]
-    public class FeedbackLoginFaultyStreetLampsActivity : BaseToolbarAppCompatActivity , FeedbackLoginFaultyStreetLampsContract.IView, View.IOnTouchListener
+    public class FeedbackLoginFaultyStreetLampsActivity : BaseToolbarAppCompatActivity, FeedbackLoginFaultyStreetLampsContract.IView, View.IOnTouchListener
     {
 
         [BindView(Resource.Id.rootView)]
@@ -125,7 +120,7 @@ namespace myTNB_Android.Src.Feedback_Login_FaultyStreetLamps.Activity
                 .Cancelable(false)
                 .Build();
             // Create your application here
-            TextViewUtils.SetMuseoSans300Typeface(txtMobileNo, txtMaxImageContent, txtRelatedScreenshotTitle, txtFeedbackContent, txtState, txtLocation, txtPoleNo, txtFeedback , txtMaxCharacters);
+            TextViewUtils.SetMuseoSans300Typeface(txtMobileNo, txtMaxImageContent, txtRelatedScreenshotTitle, txtFeedbackContent, txtState, txtLocation, txtPoleNo, txtFeedback, txtMaxCharacters);
             TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutMobileNo, txtInputLayoutFeedback, txtInputLayoutLocation, txtInputLayoutPoleNo, txtInputLayoutState);
             TextViewUtils.SetMuseoSans500Typeface(txtFeedbackTitle, btnSubmit);
 
@@ -221,32 +216,36 @@ namespace myTNB_Android.Src.Feedback_Login_FaultyStreetLamps.Activity
                 {
                     this.userActionsListener.CheckRequiredFields(location, feedback, state);
                 }
-            } catch(Exception ex) {
+            }
+            catch (Exception ex)
+            {
                 Utility.LoggingNonFatalError(ex);
             }
 
         }
 
 
-        private void FeedBackCharacCount() {
-            try {
-            string feedback = txtFeedback.Text;
-            int char_count = 0;
+        private void FeedBackCharacCount()
+        {
+            try
+            {
+                string feedback = txtFeedback.Text;
+                int char_count = 0;
 
-            if (!string.IsNullOrEmpty(feedback))
-            {
-                char_count = feedback.Length;
-            }
+                if (!string.IsNullOrEmpty(feedback))
+                {
+                    char_count = feedback.Length;
+                }
 
-            if (char_count > 0)
-            {
-                int char_left = Constants.FEEDBACK_CHAR_LIMIT - char_count;
-                txtInputLayoutFeedback.Error = char_left + " " + GetString(Resource.String.feedback_character_left);
-            }
-            else
-            {
-                txtInputLayoutFeedback.Error = GetString(Resource.String.feedback_total_character_left);
-            }
+                if (char_count > 0)
+                {
+                    int char_left = Constants.FEEDBACK_CHAR_LIMIT - char_count;
+                    txtInputLayoutFeedback.Error = char_left + " " + GetString(Resource.String.feedback_character_left);
+                }
+                else
+                {
+                    txtInputLayoutFeedback.Error = GetString(Resource.String.feedback_total_character_left);
+                }
             }
             catch (Exception e)
             {
@@ -388,34 +387,35 @@ namespace myTNB_Android.Src.Feedback_Login_FaultyStreetLamps.Activity
         void OnSubmit(object sender, EventArgs eventArgs)
         {
 
-            try {
-            btnSubmit.Enabled = false;
-            Handler h = new Handler();
-            Action myAction = () =>
+            try
             {
-                btnSubmit.Enabled = true;
-            };
-            h.PostDelayed(myAction, 3000);
+                btnSubmit.Enabled = false;
+                Handler h = new Handler();
+                Action myAction = () =>
+                {
+                    btnSubmit.Enabled = true;
+                };
+                h.PostDelayed(myAction, 3000);
 
-            string state = txtState.Text.Trim();
-            string locationName = txtLocation.Text.Trim();
-            string poleNo = txtPoleNo.Text.Trim();
-            string feedback = txtFeedback.Text.Trim();
-            if (txtInputLayoutMobileNo.Visibility == ViewStates.Visible)
-            {
-                string mobile_no = txtMobileNo.Text.Trim();
-                this.userActionsListener.OnSubmit(this.DeviceId(), mobile_no, currentFeedbackState, locationName, poleNo, feedback, adapter.GetAllImages());
-            }
-            else
-            {
-                this.userActionsListener.OnSubmit(this.DeviceId(), currentFeedbackState, locationName, poleNo, feedback, adapter.GetAllImages());
-            }
+                string state = txtState.Text.Trim();
+                string locationName = txtLocation.Text.Trim();
+                string poleNo = txtPoleNo.Text.Trim();
+                string feedback = txtFeedback.Text.Trim();
+                if (txtInputLayoutMobileNo.Visibility == ViewStates.Visible)
+                {
+                    string mobile_no = txtMobileNo.Text.Trim();
+                    this.userActionsListener.OnSubmit(this.DeviceId(), mobile_no, currentFeedbackState, locationName, poleNo, feedback, adapter.GetAllImages());
+                }
+                else
+                {
+                    this.userActionsListener.OnSubmit(this.DeviceId(), currentFeedbackState, locationName, poleNo, feedback, adapter.GetAllImages());
+                }
             }
             catch (Exception e)
             {
                 Utility.LoggingNonFatalError(e);
             }
-            
+
         }
 
         [OnClick(Resource.Id.stateLayout)]
@@ -471,27 +471,28 @@ namespace myTNB_Android.Src.Feedback_Login_FaultyStreetLamps.Activity
 
         public void ClearErrors()
         {
-            try {
-            //txtInputLayoutFeedback.SetErrorTextAppearance(Resource.Style.TextErrorAppearance);
-            txtInputLayoutFeedback.SetErrorTextAppearance(Resource.Style.TextInputLayoutFeedbackCount);
+            try
+            {
+                //txtInputLayoutFeedback.SetErrorTextAppearance(Resource.Style.TextErrorAppearance);
+                txtInputLayoutFeedback.SetErrorTextAppearance(Resource.Style.TextInputLayoutFeedbackCount);
 
-            txtInputLayoutLocation.SetErrorTextAppearance(Resource.Style.TextErrorAppearance);
-            txtInputLayoutPoleNo.SetErrorTextAppearance(Resource.Style.TextErrorAppearance);
+                txtInputLayoutLocation.SetErrorTextAppearance(Resource.Style.TextErrorAppearance);
+                txtInputLayoutPoleNo.SetErrorTextAppearance(Resource.Style.TextErrorAppearance);
 
-            TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutLocation.FindViewById<TextView>(Resource.Id.textinput_error) ,
-                txtInputLayoutFeedback.FindViewById<TextView>(Resource.Id.textinput_error) ,
-                txtInputLayoutPoleNo.FindViewById<TextView>(Resource.Id.textinput_error));
+                TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutLocation.FindViewById<TextView>(Resource.Id.textinput_error),
+                    txtInputLayoutFeedback.FindViewById<TextView>(Resource.Id.textinput_error),
+                    txtInputLayoutPoleNo.FindViewById<TextView>(Resource.Id.textinput_error));
 
 
-            txtInputLayoutFeedback.Error = null;
-            txtInputLayoutLocation.Error = null;
-            txtInputLayoutPoleNo.Error = null;
-            txtInputLayoutState.Error = null;
-            txtInputLayoutMobileNo.Error = null;
+                txtInputLayoutFeedback.Error = null;
+                txtInputLayoutLocation.Error = null;
+                txtInputLayoutPoleNo.Error = null;
+                txtInputLayoutState.Error = null;
+                txtInputLayoutMobileNo.Error = null;
 
-            TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutFeedback, txtInputLayoutLocation, txtInputLayoutPoleNo, txtInputLayoutState);
+                TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutFeedback, txtInputLayoutLocation, txtInputLayoutPoleNo, txtInputLayoutState);
 
-            FeedBackCharacCount();
+                FeedBackCharacCount();
             }
             catch (Exception e)
             {
@@ -509,24 +510,29 @@ namespace myTNB_Android.Src.Feedback_Login_FaultyStreetLamps.Activity
 
         public void EnableSubmitButton()
         {
-            try {
-            string location = txtLocation.Text.Trim();
-            string feedback = txtFeedback.Text.Trim();
-
-            if (TextUtils.IsEmpty(location))
+            try
             {
-                DisableSubmitButton();
-                return;
-            } else if (TextUtils.IsEmpty(feedback)) {
-                DisableSubmitButton();
-                ShowEmptyFeedbackError();
-                return;
-            } else {
-                ClearErrors();
-            }
+                string location = txtLocation.Text.Trim();
+                string feedback = txtFeedback.Text.Trim();
 
-            btnSubmit.Enabled = true;
-            btnSubmit.Background = ContextCompat.GetDrawable(this, Resource.Drawable.green_button_background);
+                if (TextUtils.IsEmpty(location))
+                {
+                    DisableSubmitButton();
+                    return;
+                }
+                else if (TextUtils.IsEmpty(feedback))
+                {
+                    DisableSubmitButton();
+                    ShowEmptyFeedbackError();
+                    return;
+                }
+                else
+                {
+                    ClearErrors();
+                }
+
+                btnSubmit.Enabled = true;
+                btnSubmit.Background = ContextCompat.GetDrawable(this, Resource.Drawable.green_button_background);
             }
             catch (Exception e)
             {
@@ -548,14 +554,15 @@ namespace myTNB_Android.Src.Feedback_Login_FaultyStreetLamps.Activity
 
         public void ShowLoadingImage()
         {
-            try {
-            int position = adapter.ItemCount - 1;
-            AttachedImage attachImage = adapter.GetItemObject(position);
-            if (attachImage != null && attachImage.ViewType == Constants.VIEW_TYPE_DUMMY_RECORD)
+            try
             {
-                attachImage.IsLoading = true;
-                adapter.Update(position, attachImage);
-            }
+                int position = adapter.ItemCount - 1;
+                AttachedImage attachImage = adapter.GetItemObject(position);
+                if (attachImage != null && attachImage.ViewType == Constants.VIEW_TYPE_DUMMY_RECORD)
+                {
+                    attachImage.IsLoading = true;
+                    adapter.Update(position, attachImage);
+                }
             }
             catch (Exception e)
             {
@@ -565,14 +572,15 @@ namespace myTNB_Android.Src.Feedback_Login_FaultyStreetLamps.Activity
 
         public void HideLoadingImage()
         {
-            try {
-            int position = adapter.ItemCount - 1;
-            AttachedImage attachImage = adapter.GetItemObject(position);
-            if (attachImage != null && attachImage.ViewType == Constants.VIEW_TYPE_DUMMY_RECORD)
+            try
             {
-                attachImage.IsLoading = false;
-                adapter.Update(position, attachImage);
-            }
+                int position = adapter.ItemCount - 1;
+                AttachedImage attachImage = adapter.GetItemObject(position);
+                if (attachImage != null && attachImage.ViewType == Constants.VIEW_TYPE_DUMMY_RECORD)
+                {
+                    attachImage.IsLoading = false;
+                    adapter.Update(position, attachImage);
+                }
             }
             catch (Exception e)
             {
@@ -591,7 +599,8 @@ namespace myTNB_Android.Src.Feedback_Login_FaultyStreetLamps.Activity
 
         public Task<string> SaveGalleryImage(Android.Net.Uri selectedImage, string pTempImagePath, string pFileName)
         {
-            return Task.Run<string>(() => {
+            return Task.Run<string>(() =>
+            {
                 return FileUtils.ProcessGalleryImage(this, selectedImage, pTempImagePath, pFileName);
             });
 
@@ -599,7 +608,7 @@ namespace myTNB_Android.Src.Feedback_Login_FaultyStreetLamps.Activity
 
         public Task<AttachedImageRequest> SaveImage(AttachedImage attachedImage)
         {
-            
+
             return Task.Run<AttachedImageRequest>(() =>
             {
                 BitmapFactory.Options bmOptions = new BitmapFactory.Options();
@@ -622,7 +631,7 @@ namespace myTNB_Android.Src.Feedback_Login_FaultyStreetLamps.Activity
                 };
 
             });
-            
+
         }
 
         public void SetPresenter(FeedbackLoginFaultyStreetLampsContract.IUserActionsListener userActionListener)
@@ -651,7 +660,7 @@ namespace myTNB_Android.Src.Feedback_Login_FaultyStreetLamps.Activity
 
 
 
-        public void ShowSuccess(string date, string feedbackId , int imageCount)
+        public void ShowSuccess(string date, string feedbackId, int imageCount)
         {
             ISharedPreferences sharedPref = PreferenceManager.GetDefaultSharedPreferences(this);
             int currentCount = UserSessions.GetCurrentImageCount(sharedPref);
@@ -681,7 +690,7 @@ namespace myTNB_Android.Src.Feedback_Login_FaultyStreetLamps.Activity
 
 
             txtInputLayoutFeedback.Error = null;
-           
+
 
             TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutFeedback, txtInputLayoutLocation, txtInputLayoutPoleNo, txtInputLayoutState);
             txtInputLayoutFeedback.Error = GetString(Resource.String.faulty_street_lamps_feedback_empty_feedback_error);
@@ -738,11 +747,12 @@ namespace myTNB_Android.Src.Feedback_Login_FaultyStreetLamps.Activity
             //{
             //    submitDialog.Dismiss();
             //}
-            try {
-            if (loadingOverlay != null && loadingOverlay.IsShowing)
+            try
             {
-                loadingOverlay.Dismiss();
-            }
+                if (loadingOverlay != null && loadingOverlay.IsShowing)
+                {
+                    loadingOverlay.Dismiss();
+                }
             }
             catch (Exception e)
             {
@@ -752,17 +762,22 @@ namespace myTNB_Android.Src.Feedback_Login_FaultyStreetLamps.Activity
 
         public void ShowState(FeedbackState feedbackState)
         {
-            try {
-            ClearErrors();
-            if (feedbackState != null) {
-                this.currentFeedbackState = feedbackState;
-                txtState.Text = feedbackState.StateName;    
-            } else {
-                if (string.IsNullOrEmpty(txtState.Text.Trim())) {
-                    currentFeedbackState = null;
-                    ShowEmptyStateError();
+            try
+            {
+                ClearErrors();
+                if (feedbackState != null)
+                {
+                    this.currentFeedbackState = feedbackState;
+                    txtState.Text = feedbackState.StateName;
                 }
-            }
+                else
+                {
+                    if (string.IsNullOrEmpty(txtState.Text.Trim()))
+                    {
+                        currentFeedbackState = null;
+                        ShowEmptyStateError();
+                    }
+                }
             }
             catch (Exception e)
             {
@@ -774,21 +789,22 @@ namespace myTNB_Android.Src.Feedback_Login_FaultyStreetLamps.Activity
 
         public void UpdateAdapter(string pFilePath, string pFileName)
         {
-            try {
-            adapter.Update(adapter.ItemCount - 1, new AttachedImage()
+            try
             {
-                ViewType = Constants.VIEW_TYPE_REAL_RECORD,
-                Name = pFileName,
-                Path = pFilePath
-
-            });
-            if (adapter.ItemCount < 2)
-            {
-                adapter.Add(new AttachedImage()
+                adapter.Update(adapter.ItemCount - 1, new AttachedImage()
                 {
-                    ViewType = Constants.VIEW_TYPE_DUMMY_RECORD
+                    ViewType = Constants.VIEW_TYPE_REAL_RECORD,
+                    Name = pFileName,
+                    Path = pFilePath
+
                 });
-            }
+                if (adapter.ItemCount < 2)
+                {
+                    adapter.Add(new AttachedImage()
+                    {
+                        ViewType = Constants.VIEW_TYPE_DUMMY_RECORD
+                    });
+                }
             }
             catch (Exception e)
             {
@@ -882,7 +898,8 @@ namespace myTNB_Android.Src.Feedback_Login_FaultyStreetLamps.Activity
                 mErrorMessageSnackBar.Dismiss();
             }
 
-            if(string.IsNullOrEmpty(message)) {
+            if (string.IsNullOrEmpty(message))
+            {
                 message = GetString(Resource.String.app_launch_http_exception_error);
             }
 

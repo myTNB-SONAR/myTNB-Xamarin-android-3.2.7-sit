@@ -1,5 +1,4 @@
 ﻿using CoreGraphics;
-using myTNB.Extensions;
 using UIKit;
 
 namespace myTNB.Dashboard.DashboardComponents
@@ -17,16 +16,16 @@ namespace myTNB.Dashboard.DashboardComponents
         internal void CreateComponent()
         {
             UITextAttributes attr = new UITextAttributes();
-            attr.Font = myTNBFont.MuseoSans12();
+            attr.Font = MyTNBFont.MuseoSans12;
             attr.TextColor = UIColor.White;
             UITextAttributes attrSelected = new UITextAttributes();
-            attrSelected.Font = myTNBFont.MuseoSans12();
-            attrSelected.TextColor = myTNBColor.NeonBlue();
+            attrSelected.Font = MyTNBFont.MuseoSans12;
+            attrSelected.TextColor = MyTNBColor.NeonBlue;
             double width = 122;
             double xLocation = (_parentView.Frame.Width / 2) - (width / 2);
             _selectorBar = new UISegmentedControl(new CGRect(xLocation, 0, width, 26));
-            _selectorBar.InsertSegment("Day".Translate(), 0, false);
-            _selectorBar.InsertSegment("Month".Translate(), 1, false);
+            _selectorBar.InsertSegment("Common_Day".Translate(), 0, false);
+            _selectorBar.InsertSegment("Common_Month".Translate(), 1, false);
             _selectorBar.TintColor = UIColor.White;
             _selectorBar.SetTitleTextAttributes(attr, UIControlState.Normal);
             _selectorBar.SetTitleTextAttributes(attrSelected, UIControlState.Selected);

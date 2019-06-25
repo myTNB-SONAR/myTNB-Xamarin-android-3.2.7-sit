@@ -50,8 +50,8 @@ namespace myTNB
                 if (lblMessage != null)
                 {
                     lblMessage.Text = message;
-                    lblMessage.Font = myTNBFont.MuseoSans12_300();
-                    lblMessage.TextColor = myTNBColor.TunaGrey();
+                    lblMessage.Font = MyTNBFont.MuseoSans12_300;
+                    lblMessage.TextColor = MyTNBColor.TunaGrey();
                 }
 
             }
@@ -89,18 +89,18 @@ namespace myTNB
 
             UIStringAttributes linkAttributes = new UIStringAttributes
             {
-                ForegroundColor = myTNBColor.PowerBlue(),
-                Font = myTNBFont.MuseoSans14_300(),
+                ForegroundColor = MyTNBColor.PowerBlue,
+                Font = MyTNBFont.MuseoSans14_300,
                 UnderlineStyle = NSUnderlineStyle.None,
                 UnderlineColor = UIColor.Clear
             };
             NSError htmlBodyError = null;
-            NSAttributedString htmlBody = TextHelper.ConvertToHtmlWithFont(message, ref htmlBodyError, myTNBFont.FONTNAME_300, 14f);
+            NSAttributedString htmlBody = TextHelper.ConvertToHtmlWithFont(message, ref htmlBodyError, MyTNBFont.FONTNAME_300, 14f);
 
             NSMutableAttributedString mutableHTMLBody = new NSMutableAttributedString(htmlBody);
             mutableHTMLBody.AddAttributes(new UIStringAttributes
             {
-                ForegroundColor = myTNBColor.TunaGrey()
+                ForegroundColor = MyTNBColor.TunaGrey()
             }, new NSRange(0, htmlBody.Length));
             UITextView txtViewDetails = new UITextView
             {
@@ -117,16 +117,16 @@ namespace myTNB
 
             UIView viewline = new UIView(new CGRect(0, txtViewDetails.Frame.Height + 32, width, 1))
             {
-                BackgroundColor = myTNBColor.LightGrayBG()
+                BackgroundColor = MyTNBColor.LightGrayBG
             };
             UIView viewBtn = new UIView(new CGRect(0, viewline.Frame.Y + 1, width, 50));
 
             UILabel lblAction = new UILabel(new CGRect(0, 0, viewBtn.Frame.Width, viewBtn.Frame.Height))
             {
                 Text = actionTitle,
-                Font = myTNBFont.MuseoSans16_500(),
+                Font = MyTNBFont.MuseoSans16_500,
                 TextAlignment = UITextAlignment.Center,
-                TextColor = myTNBColor.PowerBlue()
+                TextColor = MyTNBColor.PowerBlue
             };
             viewBtn.AddSubview(lblAction);
             nfloat viewHeight = viewBtn.Frame.Y + viewBtn.Frame.Height;

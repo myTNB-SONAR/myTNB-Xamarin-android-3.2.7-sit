@@ -6,7 +6,6 @@ using CoreGraphics;
 using myTNB.Home.More.FindUs.LocationDetails;
 using myTNB.Dashboard.DashboardComponents;
 using myTNB.Home.Components;
-using CoreLocation;
 using System.Collections.Generic;
 using System.Diagnostics;
 
@@ -165,7 +164,7 @@ namespace myTNB
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
+                Debug.WriteLine(e.Message);
             }
         }
 
@@ -195,24 +194,24 @@ namespace myTNB
             }
             if (schemaDictionary.Count > 0)
             {
-                var mapAlert = UIAlertController.Create("Map Selection", "Select navigation application.", UIAlertControllerStyle.ActionSheet);
+                var mapAlert = UIAlertController.Create("FindUs_MapSelection".Translate()
+                    , "FindUs_SelectApplication".Translate(), UIAlertControllerStyle.ActionSheet);
                 foreach (var schema in schemaDictionary)
                 {
-                    var action = UIAlertAction.Create("Open in " + schema.Key, UIAlertActionStyle.Default, (obj) =>
+                    var action = UIAlertAction.Create(string.Format("{0} {1}", "FindUs_OpenIn".Translate(), schema.Key)
+                        , UIAlertActionStyle.Default, (obj) =>
                     {
                         UIApplication.SharedApplication.OpenUrl(new NSUrl(schema.Value));
                     });
                     mapAlert.AddAction(action);
                 }
-                var cancelAction = UIAlertAction.Create("Cancel", UIAlertActionStyle.Cancel, null);
+                var cancelAction = UIAlertAction.Create("Common_Cancel".Translate(), UIAlertActionStyle.Cancel, null);
                 mapAlert.AddAction(cancelAction);
                 PresentViewController(mapAlert, animated: true, completionHandler: null);
             }
             else
             {
-                var alert = UIAlertController.Create("Warning", "No supported map application is installed.", UIAlertControllerStyle.Alert);
-                alert.AddAction(UIAlertAction.Create("Ok", UIAlertActionStyle.Cancel, null));
-                PresentViewController(alert, animated: true, completionHandler: null);
+                AlertHandler.DisplayGenericAlert(this, "Common_Warning".Translate(), "FindUs_NoSupportedApplication".Translate());
             }
         }
     }

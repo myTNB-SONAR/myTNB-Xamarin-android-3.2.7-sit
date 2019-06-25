@@ -3,7 +3,6 @@ using CoreGraphics;
 using Foundation;
 using System;
 using UIKit;
-using myTNB.Extensions;
 
 namespace myTNB
 {
@@ -22,13 +21,12 @@ namespace myTNB
             InitiliazeViews();
             SetEvents();
             this.NavigationController.NavigationBarHidden = true;
-
         }
 
         internal void SetupSuperViewBackground()
         {
-            var startColor = myTNBColor.GradientPurpleDarkElement();
-            var endColor = myTNBColor.GradientPurpleLightElement();
+            var startColor = MyTNBColor.GradientPurpleDarkElement;
+            var endColor = MyTNBColor.GradientPurpleLightElement;
             var gradientLayer = new CAGradientLayer();
             gradientLayer.Colors = new[] { startColor.CGColor, endColor.CGColor };
             gradientLayer.Locations = new NSNumber[] { 0, 1 };
@@ -49,21 +47,21 @@ namespace myTNB
             viewContainer.AddSubview(imgViewCheck);
 
             var lblFeedback = new UILabel(new CGRect(0, imgViewCheck.Frame.GetMaxY() + 5, viewContainer.Frame.Width, 18));
-            lblFeedback.Font = myTNBFont.MuseoSans16();
-            lblFeedback.TextColor = myTNBColor.PowerBlue();
-            lblFeedback.Text = "Thank you.";
+            lblFeedback.Font = MyTNBFont.MuseoSans16;
+            lblFeedback.TextColor = MyTNBColor.PowerBlue;
+            lblFeedback.Text = "Rating_ThankYou".Translate();
             lblFeedback.TextAlignment = UITextAlignment.Center;
             viewContainer.AddSubview(lblFeedback);
 
             var lblDetail = new UILabel(new CGRect(0, lblFeedback.Frame.GetMaxY() + 1, viewContainer.Frame.Width, 16));
-            lblDetail.Font = myTNBFont.MuseoSans12();
-            lblDetail.TextColor = myTNBColor.TunaGrey();
-            lblDetail.Text = "Your rating will help us serve you better.";
+            lblDetail.Font = MyTNBFont.MuseoSans12;
+            lblDetail.TextColor = MyTNBColor.TunaGrey();
+            lblDetail.Text = "Rating_Description".Translate();
             lblDetail.TextAlignment = UITextAlignment.Center;
             viewContainer.AddSubview(lblDetail);
 
             //var lblSubDetail = new UILabel(new CGRect(0, 150, viewContainer.Frame.Width, 16));
-            //lblSubDetail.Font = myTNBFont.MuseoSans12();
+            //lblSubDetail.Font = myTNBFont.MuseoSans12;
             //lblSubDetail.TextColor = myTNBColor.TunaGrey();
             //lblSubDetail.Text = "Please try again later.";
             //lblSubDetail.TextAlignment = UITextAlignment.Center;
@@ -72,12 +70,11 @@ namespace myTNB
             //Back to Dashboard Button
             _btnDashBoard = new UIButton(UIButtonType.Custom);
             _btnDashBoard.Frame = new CGRect(18, View.Frame.Height - 64, View.Frame.Width - 36, 48);
-            _btnDashBoard.SetTitle("BackToDshbrd".Translate(), UIControlState.Normal);
-            _btnDashBoard.Font = myTNBFont.MuseoSans16();
+            _btnDashBoard.SetTitle("Common_BackToDashboard".Translate(), UIControlState.Normal);
+            _btnDashBoard.Font = MyTNBFont.MuseoSans16;
             _btnDashBoard.Layer.CornerRadius = 5.0f;
-            _btnDashBoard.BackgroundColor = myTNBColor.FreshGreen();
+            _btnDashBoard.BackgroundColor = MyTNBColor.FreshGreen;
             View.AddSubview(_btnDashBoard);
-
         }
 
         internal void SetEvents()
@@ -94,7 +91,7 @@ namespace myTNB
                 var newPresenting = newtopVc?.PresentingViewController;
                 if (!(newPresenting is HomeTabBarController))
                 {
-                    Console.WriteLine("newPresenting = " + newPresenting.GetType().ToString());
+                    Debug.WriteLine("newPresenting = " + newPresenting.GetType().ToString());
                     //UIStoryboard storyBoard = UIStoryboard.FromName("Dashboard", null);
                     //var vc = storyBoard.InstantiateViewController("HomeTabBarController") as UIViewController;
                     //ShowViewController(vc, this);
@@ -105,7 +102,6 @@ namespace myTNB
                 ShowViewController(vc, this);
 #endif
             };
-
         }
     }
 }

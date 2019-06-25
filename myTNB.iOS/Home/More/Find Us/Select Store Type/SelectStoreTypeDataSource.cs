@@ -34,8 +34,8 @@ namespace myTNB.Home.More.FindUs.SelectStoreType
         {
             var cell = tableView.DequeueReusableCell("selectStoreTypeViewCell", indexPath);
             cell.TextLabel.Text = _storeTypeList[indexPath.Row].Description;
-            cell.TextLabel.TextColor = myTNBColor.TunaGrey();
-            cell.TextLabel.Font = myTNBFont.MuseoSans16();
+            cell.TextLabel.TextColor = MyTNBColor.TunaGrey();
+            cell.TextLabel.Font = MyTNBFont.MuseoSans16;
             if (indexPath.Row == DataManager.DataManager.SharedInstance.CurrentStoreTypeIndex)
             {
                 cell.Accessory = UITableViewCellAccessory.None;
@@ -55,7 +55,7 @@ namespace myTNB.Home.More.FindUs.SelectStoreType
                 }
             }
             UIView viewLine = new UIView(new CGRect(0, cell.Frame.Height - 1, tableView.Frame.Width, 1));
-            viewLine.BackgroundColor = myTNBColor.PlatinumGrey();
+            viewLine.BackgroundColor = MyTNBColor.PlatinumGrey;
             cell.AddSubview(viewLine);
 
             return cell;

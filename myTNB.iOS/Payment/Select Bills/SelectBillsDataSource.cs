@@ -4,7 +4,6 @@ using System.Globalization;
 using Foundation;
 using myTNB.Model;
 using UIKit;
-using myTNB.Extensions;
 
 namespace myTNB.Payment.SelectBills
 {
@@ -38,8 +37,7 @@ namespace myTNB.Payment.SelectBills
             cell._lblAccountNo.Text = acctNumber;
             cell._txtViewAddress.Text = _accounts[indexPath.Row].accountStAddress;
             cell._imgViewCheckBox.Image = UIImage.FromBundle(_accounts[indexPath.Row].IsAccountSelected
-                                                             ? "Payment-Checkbox-Active"
-                                                             : "Payment-Checkbox-Inactive");
+                ? "Payment-Checkbox-Active" : "Payment-Checkbox-Inactive");
             cell._txtFieldAmount.Text = _accounts[indexPath.Row].Amount.ToString("N2", CultureInfo.InvariantCulture);
 
             cell._viewCheckBox.AddGestureRecognizer(new UITapGestureRecognizer(() =>
@@ -51,20 +49,17 @@ namespace myTNB.Payment.SelectBills
                 }
                 else
                 {
-                    cell._lblAmountError.Text = "SelectBillInvalidAmount".Translate();
+                    cell._lblAmountError.Text = "Invalid_PayAmount".Translate();
                     cell._lblAmountError.Hidden = false;
                     UpdateUIForInputError(true, cell);
                 }
             }));
 
             var isValidAmount = amountStatus.ContainsKey(acctNumber) ? amountStatus[acctNumber] : true;
-
-            cell._txtFieldAmount.TextColor = isValidAmount ? myTNBColor.TunaGrey() : myTNBColor.Tomato();
+            cell._txtFieldAmount.TextColor = isValidAmount ? MyTNBColor.TunaGrey() : MyTNBColor.Tomato;
             cell._lblAmountError.Hidden = isValidAmount;
-            cell._viewLineAmount.BackgroundColor = isValidAmount ? myTNBColor.PlatinumGrey() : myTNBColor.Tomato();
-
+            cell._viewLineAmount.BackgroundColor = isValidAmount ? MyTNBColor.PlatinumGrey : MyTNBColor.Tomato;
             SetTextField(cell._txtFieldAmount, cell._lblAmountError, cell);
-
             return cell;
         }
 
@@ -94,8 +89,7 @@ namespace myTNB.Payment.SelectBills
                 }
                 _accounts[index].IsAccountSelected = !isAccountSelected;
                 cell._imgViewCheckBox.Image = UIImage.FromBundle(_accounts[index].IsAccountSelected
-                                                             ? "Payment-Checkbox-Active"
-                                                             : "Payment-Checkbox-Inactive");
+                    ? "Payment-Checkbox-Active" : "Payment-Checkbox-Inactive");
                 _controller.UpDateTotalAmount();
             }
         }
@@ -116,13 +110,12 @@ namespace myTNB.Payment.SelectBills
                 {
                     double parsedAmount = TextHelper.ParseStringToDouble(cell._txtFieldAmount.Text);
                     _accounts[index].Amount = parsedAmount;
-
                     _controller.UpDateTotalAmount();
                 }
             };
             textField.EditingDidBegin += (sender, e) =>
             {
-                cell._viewLineAmount.BackgroundColor = myTNBColor.PowerBlue();
+                cell._viewLineAmount.BackgroundColor = MyTNBColor.PowerBlue;
                 int index = _accounts.FindIndex(x => x.accNum.Equals(cell._lblAccountNo.Text));
                 ShowErrorMessage(error, index, cell);
             };
@@ -143,7 +136,9 @@ namespace myTNB.Payment.SelectBills
                 bool isCharValid = _textFieldHelper.ValidateTextField(replacement, TNBGlobal.AmountPattern);
 
                 if (!isCharValid)
+                {
                     return false;
+                }
 
                 if (txtField.Text.Contains("."))
                 {
@@ -151,7 +146,9 @@ namespace myTNB.Payment.SelectBills
                     if (range.Location > indx)
                     {
                         if (replacement == ".")
+                        {
                             return false;
+                        }
                         else
                         {
                             if (!string.IsNullOrEmpty(replacement))
@@ -160,7 +157,9 @@ namespace myTNB.Payment.SelectBills
                                 if (str[1] != null)
                                 {
                                     if (str[1].Length == 2)
+                                    {
                                         return false;
+                                    }
                                 }
                             }
                         }
@@ -168,7 +167,9 @@ namespace myTNB.Payment.SelectBills
                     else
                     {
                         if (replacement == ".")
+                        {
                             return false;
+                        }
                     }
                 }
 
@@ -200,7 +201,7 @@ namespace myTNB.Payment.SelectBills
             else
             {
                 lblError.Hidden = false;
-                lblError.Text = "SelectBillInvalidAmount".Translate();
+                lblError.Text = "Invalid_PayAmount".Translate();
                 UpdateUIForInputError(true, cell, endEditing);
             }
             return isValid;
@@ -224,13 +225,13 @@ namespace myTNB.Payment.SelectBills
             UIView viewLine = cell.ViewWithTag(0).ViewWithTag(1) as UIView;
             if (isError)
             {
-                cell._txtFieldAmount.TextColor = myTNBColor.Tomato();
-                viewLine.BackgroundColor = myTNBColor.Tomato();
+                cell._txtFieldAmount.TextColor = MyTNBColor.Tomato;
+                viewLine.BackgroundColor = MyTNBColor.Tomato;
             }
             else
             {
-                cell._txtFieldAmount.TextColor = myTNBColor.TunaGrey();
-                viewLine.BackgroundColor = (endEditing) ? myTNBColor.PlatinumGrey() : myTNBColor.PowerBlue();
+                cell._txtFieldAmount.TextColor = MyTNBColor.TunaGrey();
+                viewLine.BackgroundColor = (endEditing) ? MyTNBColor.PlatinumGrey : MyTNBColor.PowerBlue;
             }
         }
     }

@@ -1,0 +1,1839 @@
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\Xamarin.Build.Download.0.4.11\build\Xamarin.Build.Download.props" Condition="Exists('..\packages\Xamarin.Build.Download.0.4.11\build\Xamarin.Build.Download.props')" />
+  <Import Project="..\packages\Xamarin.Build.Download.0.4.6\build\Xamarin.Build.Download.props" Condition="Exists('..\packages\Xamarin.Build.Download.0.4.6\build\Xamarin.Build.Download.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">iPhoneSimulator</Platform>
+    <ProjectGuid>{54B23CE8-FC60-45C7-BBDC-4A52EA3AF336}</ProjectGuid>
+    <ProjectTypeGuids>{FEACFBD2-3405-455C-9665-78FE426C6842};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>myTNB</RootNamespace>
+    <AssemblyName>myTNB</AssemblyName>
+    <IPhoneResourcePrefix>Resources</IPhoneResourcePrefix>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhoneSimulator' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\iPhoneSimulator\Debug</OutputPath>
+    <DefineConstants>DEBUG;ENABLE_TEST_CLOUD;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodesignKey>iPhone Developer</CodesignKey>
+    <MtouchDebug>true</MtouchDebug>
+    <MtouchNoSymbolStrip>true</MtouchNoSymbolStrip>
+    <MtouchFastDev>true</MtouchFastDev>
+    <IOSDebuggerPort>58646</IOSDebuggerPort>
+    <MtouchLink>SdkOnly</MtouchLink>
+    <MtouchArch>i386, x86_64</MtouchArch>
+    <MtouchHttpClientHandler>NSUrlSessionHandler</MtouchHttpClientHandler>
+    <PlatformTarget>x86</PlatformTarget>
+    <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhone' ">
+    <Optimize>true</Optimize>
+    <OutputPath>bin\iPhone\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodesignKey>iPhone Distribution: Tenaga Nasional Berhad (7M28WAFSL6)</CodesignKey>
+    <MtouchFloat32>true</MtouchFloat32>
+    <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
+    <MtouchLink>SdkOnly</MtouchLink>
+    <MtouchArch>ARMv7, ARM64</MtouchArch>
+    <MtouchHttpClientHandler>NSUrlSessionHandler</MtouchHttpClientHandler>
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhoneSimulator' ">
+    <Optimize>true</Optimize>
+    <OutputPath>bin\iPhoneSimulator\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodesignKey>iPhone Distribution: Tenaga Nasional Berhad (7M28WAFSL6)</CodesignKey>
+    <MtouchNoSymbolStrip>true</MtouchNoSymbolStrip>
+    <MtouchLink>None</MtouchLink>
+    <MtouchArch>x86_64</MtouchArch>
+    <MtouchHttpClientHandler>NSUrlSessionHandler</MtouchHttpClientHandler>
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhone' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\iPhone\Debug</OutputPath>
+    <DefineConstants>DEBUG;ENABLE_TEST_CLOUD;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodesignKey>iPhone Developer</CodesignKey>
+    <DeviceSpecificBuild>true</DeviceSpecificBuild>
+    <MtouchDebug>true</MtouchDebug>
+    <MtouchNoSymbolStrip>true</MtouchNoSymbolStrip>
+    <MtouchFastDev>true</MtouchFastDev>
+    <MtouchFloat32>true</MtouchFloat32>
+    <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
+    <IOSDebuggerPort>41117</IOSDebuggerPort>
+    <MtouchLink>SdkOnly</MtouchLink>
+    <MtouchArch>ARMv7s, ARM64</MtouchArch>
+    <MtouchHttpClientHandler>NSUrlSessionHandler</MtouchHttpClientHandler>
+    <PlatformTarget>x86</PlatformTarget>
+    <BuildIpa>false</BuildIpa>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Master|iPhone' ">
+    <Optimize>true</Optimize>
+    <OutputPath>bin\iPhone\Master</OutputPath>
+    <DefineConstants>__IOS__;__MOBILE__;__UNIFIED__;MASTER;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodesignKey>iPhone Distribution: Tenaga Nasional Berhad (7M28WAFSL6)</CodesignKey>
+    <MtouchFloat32>true</MtouchFloat32>
+    <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
+    <MtouchLink>SdkOnly</MtouchLink>
+    <MtouchArch>ARMv7, ARM64</MtouchArch>
+    <MtouchHttpClientHandler>NSUrlSessionHandler</MtouchHttpClientHandler>
+    <PlatformTarget>x86</PlatformTarget>
+    <MtouchVerbosity>2</MtouchVerbosity>
+    <OnDemandResourcesInitialInstallTags></OnDemandResourcesInitialInstallTags>
+    <OnDemandResourcesPrefetchOrder></OnDemandResourcesPrefetchOrder>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Master|iPhoneSimulator' ">
+    <Optimize>true</Optimize>
+    <OutputPath>bin\iPhoneSimulator\Master</OutputPath>
+    <DefineConstants>__IOS__;__MOBILE__;__UNIFIED__;MASTER;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodesignKey>iPhone Distribution: Tenaga Nasional Berhad (7M28WAFSL6)</CodesignKey>
+    <MtouchNoSymbolStrip>true</MtouchNoSymbolStrip>
+    <MtouchLink>None</MtouchLink>
+    <MtouchArch>x86_64</MtouchArch>
+    <MtouchHttpClientHandler>NSUrlSessionHandler</MtouchHttpClientHandler>
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Core" />
+    <Reference Include="Xamarin.iOS" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="Cirrious.FluentLayouts.Touch">
+      <HintPath>..\packages\Cirrious.FluentLayout.2.6.0\lib\Xamarin.iOS10\Cirrious.FluentLayouts.Touch.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Threading.Tasks">
+      <HintPath>..\packages\Microsoft.Bcl.Async.1.0.168\lib\portable-net45+win8+wpa81\Microsoft.Threading.Tasks.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Threading.Tasks.Extensions">
+      <HintPath>..\packages\Microsoft.Bcl.Async.1.0.168\lib\portable-net45+win8+wpa81\Microsoft.Threading.Tasks.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.Extensions">
+      <HintPath>..\packages\Microsoft.Net.Http.2.2.29\lib\Xamarin.iOS10\System.Net.Http.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.Primitives">
+      <HintPath>..\packages\Microsoft.Net.Http.2.2.29\lib\Xamarin.iOS10\System.Net.Http.Primitives.dll</HintPath>
+    </Reference>
+    <Reference Include="crypto">
+      <HintPath>..\packages\Portable.BouncyCastle.1.8.1.1\lib\netstandard1.3\crypto.dll</HintPath>
+    </Reference>
+    <Reference Include="Sitecore.MobileSDK">
+      <HintPath>..\packages\Sitecore.MobileSDK.Xamarin.1.3.0\lib\portable-net45+win8+wpa81\Sitecore.MobileSDK.dll</HintPath>
+    </Reference>
+    <Reference Include="Sitecore.MobileSDK.PasswordProvider.Interface">
+      <HintPath>..\packages\Sitecore.MobileSDK.Xamarin.1.3.0\lib\portable-net45+win8+wpa81\Sitecore.MobileSDK.PasswordProvider.Interface.dll</HintPath>
+    </Reference>
+    <Reference Include="Sitecore.MobileSDK.PasswordProvider.iOS.UnifiedAPI">
+      <HintPath>..\packages\Sitecore.MobileSDK.PasswordProvider.1.3.0\lib\Xamarin.iOS10\Sitecore.MobileSDK.PasswordProvider.iOS.UnifiedAPI.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="ZXing.Net.Mobile.Core">
+      <HintPath>..\packages\ZXing.Net.Mobile.2.1.47\lib\Xamarin.iOS10\ZXing.Net.Mobile.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="zxing.portable">
+      <HintPath>..\packages\ZXing.Net.Mobile.2.1.47\lib\Xamarin.iOS10\zxing.portable.dll</HintPath>
+    </Reference>
+    <Reference Include="ZXingNetMobile">
+      <HintPath>..\packages\ZXing.Net.Mobile.2.1.47\lib\Xamarin.iOS10\ZXingNetMobile.dll</HintPath>
+    </Reference>
+    <Reference Include="Firebase.Core">
+      <HintPath>..\packages\Xamarin.Firebase.iOS.Core.4.0.8\lib\Xamarin.iOS10\Firebase.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Firebase.InstanceID">
+      <HintPath>..\packages\Xamarin.Firebase.iOS.InstanceID.2.0.4\lib\Xamarin.iOS10\Firebase.InstanceID.dll</HintPath>
+    </Reference>
+    <Reference Include="Firebase.Analytics">
+      <HintPath>..\packages\Xamarin.Firebase.iOS.Analytics.4.0.4\lib\Xamarin.iOS10\Firebase.Analytics.dll</HintPath>
+    </Reference>
+    <Reference Include="Firebase.CloudMessaging">
+      <HintPath>..\packages\Xamarin.Firebase.iOS.CloudMessaging.2.0.4\lib\Xamarin.iOS10\Firebase.CloudMessaging.dll</HintPath>
+    </Reference>
+    <Reference Include="Card.IO">
+      <HintPath>..\packages\Xamarin.CardIO.iOS.5.4.1\lib\Xamarin.iOS10\Card.IO.dll</HintPath>
+    </Reference>
+    <Reference Include="MonoTouch.Dialog-1" />
+    <Reference Include="itextsharpios">
+      <HintPath>..\packages\Xam.iTextSharpLGPL.0.1.0\lib\Xamarin.iOS10\itextsharpios.dll</HintPath>
+    </Reference>
+    <Reference Include="XamiTextSharpLGPL.iOS">
+      <HintPath>..\packages\Xam.iTextSharpLGPL.0.1.0\lib\Xamarin.iOS10\XamiTextSharpLGPL.iOS.dll</HintPath>
+    </Reference>
+    <Reference Include="iCarousel.iOS">
+      <HintPath>..\packages\Xamarin.iCarousel.1.8.3\lib\Xamarin.iOS\iCarousel.iOS.dll</HintPath>
+    </Reference>
+    <Reference Include="Lottie.iOS">
+      <HintPath>..\packages\Com.Airbnb.iOS.Lottie.2.5.4\lib\xamarinios10\Lottie.iOS.dll</HintPath>
+    </Reference>
+    <Reference Include="Facebook.CoreKit">
+      <HintPath>..\packages\Xamarin.Facebook.CoreKit.iOS.4.35.0\lib\Xamarin.iOS10\Facebook.CoreKit.dll</HintPath>
+    </Reference>
+    <Reference Include="Facebook.LoginKit">
+      <HintPath>..\packages\Xamarin.Facebook.LoginKit.iOS.4.35.0\lib\Xamarin.iOS10\Facebook.LoginKit.dll</HintPath>
+    </Reference>
+    <Reference Include="Facebook.MarketingKit">
+      <HintPath>..\packages\Xamarin.Facebook.MarketingKit.iOS.4.35.0\lib\Xamarin.iOS10\Facebook.MarketingKit.dll</HintPath>
+    </Reference>
+    <Reference Include="Facebook.MessengerShareKit">
+      <HintPath>..\packages\Xamarin.Facebook.MessengerShareKit.iOS.1.3.2\lib\Xamarin.iOS10\Facebook.MessengerShareKit.dll</HintPath>
+    </Reference>
+    <Reference Include="Facebook.PlacesKit">
+      <HintPath>..\packages\Xamarin.Facebook.PlacesKit.iOS.4.35.0\lib\Xamarin.iOS10\Facebook.PlacesKit.dll</HintPath>
+    </Reference>
+    <Reference Include="Facebook.ShareKit">
+      <HintPath>..\packages\Xamarin.Facebook.ShareKit.iOS.4.35.0\lib\Xamarin.iOS10\Facebook.ShareKit.dll</HintPath>
+    </Reference>
+    <Reference Include="Firebase.Crashlytics">
+      <HintPath>..\packages\Xamarin.Firebase.iOS.Crashlytics.3.10.9\lib\Xamarin.iOS10\Firebase.Crashlytics.dll</HintPath>
+    </Reference>
+    <Reference Include="RestSharp">
+      <HintPath>..\packages\RestSharp.106.5.4\lib\netstandard2.0\RestSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="SQLitePCLRaw.core">
+      <HintPath>..\packages\SQLitePCLRaw.core.1.1.13\lib\Xamarin.iOS10\SQLitePCLRaw.core.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="SQLitePCLRaw.provider.sqlite3">
+      <HintPath>..\packages\SQLitePCLRaw.provider.sqlite3.ios_unified.1.1.13\lib\Xamarin.iOS10\SQLitePCLRaw.provider.sqlite3.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="SQLitePCLRaw.batteries_green">
+      <HintPath>..\packages\SQLitePCLRaw.bundle_green.1.1.13\lib\Xamarin.iOS10\SQLitePCLRaw.batteries_green.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="SQLitePCLRaw.batteries_v2">
+      <HintPath>..\packages\SQLitePCLRaw.bundle_green.1.1.13\lib\Xamarin.iOS10\SQLitePCLRaw.batteries_v2.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="SQLite-net">
+      <HintPath>..\packages\sqlite-net-pcl.1.5.231\lib\netstandard1.1\SQLite-net.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Plugin.Connectivity.Abstractions">
+      <HintPath>..\packages\Xam.Plugin.Connectivity.3.2.0\lib\Xamarin.iOS10\Plugin.Connectivity.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Plugin.Connectivity">
+      <HintPath>..\packages\Xam.Plugin.Connectivity.3.2.0\lib\Xamarin.iOS10\Plugin.Connectivity.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\netstandard2.0\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Refit">
+      <HintPath>..\packages\Refit.4.6.58\lib\netstandard2.0\Refit.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\app_logo.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\email_white.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\email_white.imageset\Email-white.png" />
+    <ImageAsset Include="Assets.xcassets\email_white.imageset\Email-white%402x.png" />
+    <ImageAsset Include="Assets.xcassets\email_white.imageset\Email-white%403x.png" />
+    <ImageAsset Include="Assets.xcassets\password_white.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Back-White.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Back-White.imageset\Back-White.png" />
+    <ImageAsset Include="Assets.xcassets\Back-White.imageset\Back-White%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Back-White.imageset\Back-White%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Cancel-White.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Cancel-White.imageset\Cancel-White.png" />
+    <ImageAsset Include="Assets.xcassets\Cancel-White.imageset\Cancel-White%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Cancel-White.imageset\Cancel-White%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Next-White.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Next-White.imageset\Next-White.png" />
+    <ImageAsset Include="Assets.xcassets\Next-White.imageset\Next-White%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Next-White.imageset\Next-White%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Calculator.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Calculator.imageset\Calculator.png" />
+    <ImageAsset Include="Assets.xcassets\Calculator.imageset\Calculator%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Calculator.imageset\Calculator%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Supply.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Supply.imageset\Supply.png" />
+    <ImageAsset Include="Assets.xcassets\Supply.imageset\Supply%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Supply.imageset\Supply%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Feedback.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Feedback.imageset\Feedback.png" />
+    <ImageAsset Include="Assets.xcassets\Feedback.imageset\Feedback%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Feedback.imageset\Feedback%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Loaded.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Loaded.imageset\Loaded.png" />
+    <ImageAsset Include="Assets.xcassets\Loaded.imageset\Loaded%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Loaded.imageset\Loaded%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Loading.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Loading.imageset\Loading.png" />
+    <ImageAsset Include="Assets.xcassets\Loading.imageset\Loading%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Loading.imageset\Loading%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Email.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Email.imageset\Email.png" />
+    <ImageAsset Include="Assets.xcassets\Email.imageset\Email%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Email.imageset\Email%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Account-Number.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Account-Number.imageset\Account no. Copy.png" />
+    <ImageAsset Include="Assets.xcassets\Account-Number.imageset\Account no. Copy%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Account-Number.imageset\Account no. Copy%403x.png" />
+    <ImageAsset Include="Assets.xcassets\IC.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\IC.imageset\IC.png" />
+    <ImageAsset Include="Assets.xcassets\IC.imageset\IC%402x.png" />
+    <ImageAsset Include="Assets.xcassets\IC.imageset\IC%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Label.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Label.imageset\Label.png" />
+    <ImageAsset Include="Assets.xcassets\Label.imageset\Label%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Label.imageset\Label%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Mobile-White.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Mobile-White.imageset\Mobile-white.png" />
+    <ImageAsset Include="Assets.xcassets\Mobile-White.imageset\Mobile-white%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Mobile-White.imageset\Mobile-white%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Mobile.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Mobile.imageset\Mobile.png" />
+    <ImageAsset Include="Assets.xcassets\Mobile.imageset\Mobile%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Mobile.imageset\Mobile%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Name-White.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Name-White.imageset\Name-white.png" />
+    <ImageAsset Include="Assets.xcassets\Name-White.imageset\Name-white%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Name-White.imageset\Name-white%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Name.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Name.imageset\Name.png" />
+    <ImageAsset Include="Assets.xcassets\Name.imageset\Name%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Name.imageset\Name%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Billing.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Dashboard.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Payment.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Billing.imageset\Billing.png" />
+    <ImageAsset Include="Assets.xcassets\Billing.imageset\Billing%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Billing.imageset\Billing%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Dashboard.imageset\Dashboard.png" />
+    <ImageAsset Include="Assets.xcassets\Dashboard.imageset\Dashboard%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Payment.imageset\Payment.png" />
+    <ImageAsset Include="Assets.xcassets\Payment.imageset\Payment%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Payment.imageset\Payment%403x.png" />
+    <ImageAsset Include="Assets.xcassets\App-Launch-Gradient.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Logo.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Logo.imageset\Logo%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Delete.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Delete.imageset\delete.png" />
+    <ImageAsset Include="Assets.xcassets\Delete.imageset\delete%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Delete.imageset\delete%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Check-Green.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Check-Green.imageset\Check-Green.png" />
+    <ImageAsset Include="Assets.xcassets\X-Red.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\X-Red.imageset\X-Red.png" />
+    <ImageAsset Include="Assets.xcassets\Scan.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Scan.imageset\scan.png" />
+    <ImageAsset Include="Assets.xcassets\Scan.imageset\scan%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Scan.imageset\scan%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Circle-With-Check-Green.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Circle-With-Check-Green.imageset\Circle-With-Check-Green.png" />
+    <ImageAsset Include="Assets.xcassets\Arrow-Left.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Arrow-Right.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Logo-Title.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Tagline.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Logo-Title.imageset\ Logo-Title.png" />
+    <ImageAsset Include="Assets.xcassets\Tagline.imageset\ Tagline%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Notification.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Notification.imageset\notifications.png" />
+    <ImageAsset Include="Assets.xcassets\Notification.imageset\notifications%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Notification.imageset\notifications%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Dropdown.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Tab-Dashboard.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Tab-Bill.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Tab-Promotions.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Tab-Feedback.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Tab-More.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Download.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Download.imageset\save.png" />
+    <ImageAsset Include="Assets.xcassets\Download.imageset\save%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Download.imageset\save%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Table-Tick.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Table-Tick.imageset\tick.png" />
+    <ImageAsset Include="Assets.xcassets\Table-Tick.imageset\tick%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Table-Tick.imageset\tick%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Arrow-Left.imageset\ic_slider_left.png" />
+    <ImageAsset Include="Assets.xcassets\Arrow-Left.imageset\ic_slider_left%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Arrow-Left.imageset\ic_slider_left%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Arrow-Right.imageset\ic_slider_right.png" />
+    <ImageAsset Include="Assets.xcassets\Arrow-Right.imageset\ic_slider_right%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Arrow-Right.imageset\ic_slider_right%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Empty-Dashboard.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Arrow-Right-Black.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Arrow-Right-Black.imageset\Arrow-Right-Black.pdf" />
+    <ImageAsset Include="Assets.xcassets\Arrow-Right-Black.imageset\Arrow-Right-Black.png" />
+    <ImageAsset Include="Assets.xcassets\Arrow-Right-Black.imageset\Arrow-Right-Black%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Arrow-Right-Black.imageset\Arrow-Right-Black%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Camera.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Camera.imageset\camera.png" />
+    <ImageAsset Include="Assets.xcassets\Camera.imageset\camera%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Camera.imageset\camera%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Card-Expiry.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Card-Number.imageset\cardNo.png" />
+    <ImageAsset Include="Assets.xcassets\Card-Number.imageset\cardNo%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Card-Number.imageset\cardNo%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Card-Number.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Card-CVV.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Card-Expiry.imageset\cardExpiry.png" />
+    <ImageAsset Include="Assets.xcassets\Card-Expiry.imageset\cardExpiry%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Card-Expiry.imageset\cardExpiry%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Card-CVV.imageset\cardCvv.png" />
+    <ImageAsset Include="Assets.xcassets\Card-CVV.imageset\cardCvv%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Card-CVV.imageset\cardCvv%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Dropdown.imageset\ic_header_dropdown.png" />
+    <ImageAsset Include="Assets.xcassets\Dropdown.imageset\ic_header_dropdown%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Dropdown.imageset\ic_header_dropdown%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Get-Access.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Get-Access.imageset\ic_empty_dashboard.png" />
+    <ImageAsset Include="Assets.xcassets\Get-Access.imageset\ic_empty_dashboard%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Get-Access.imageset\ic_empty_dashboard%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Empty-Dashboard.imageset\icEmptyAccountDashboard.png" />
+    <ImageAsset Include="Assets.xcassets\Empty-Dashboard.imageset\icEmptyAccountDashboard%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Empty-Dashboard.imageset\icEmptyAccountDashboard%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Unread.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Notification-Unread.imageset\icon_notification_unread.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Unread.imageset\icon_notification_unread%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Unread.imageset\icon_notification_unread%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Delete.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Notification-Delete.imageset\ic_header_delete.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Delete.imageset\ic_header_delete%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Delete.imageset\ic_header_delete%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Checkbox-Active.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Checkbox-Active.imageset\ic_action_checkbox_active.png" />
+    <ImageAsset Include="Assets.xcassets\Checkbox-Active.imageset\ic_action_checkbox_active%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Checkbox-Active.imageset\ic_action_checkbox_active%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Checkbox-Inactive.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Checkbox-Inactive.imageset\ic_action_checkbox_inactive.png" />
+    <ImageAsset Include="Assets.xcassets\Checkbox-Inactive.imageset\ic_action_checkbox_inactive%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Checkbox-Inactive.imageset\ic_action_checkbox_inactive%403x.png" />
+    <ImageAsset Include="Assets.xcassets\IC-Action-Add-Card.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\IC-Action-Add-Card.imageset\ic_action_add_card.png" />
+    <ImageAsset Include="Assets.xcassets\IC-Action-Add-Card.imageset\ic_action_add_card%402x.png" />
+    <ImageAsset Include="Assets.xcassets\IC-Action-Add-Card.imageset\ic_action_add_card%403x.png" />
+    <ImageAsset Include="Assets.xcassets\IC-Action-Checkbox-Active.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\IC-Action-Checkbox-Active.imageset\ic_action_checkbox_active.png" />
+    <ImageAsset Include="Assets.xcassets\IC-Action-Checkbox-Active.imageset\ic_action_checkbox_active%402x.png" />
+    <ImageAsset Include="Assets.xcassets\IC-Action-Checkbox-Active.imageset\ic_action_checkbox_active%403x.png" />
+    <ImageAsset Include="Assets.xcassets\IC-Action-Checkbox-InActive.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\IC-Action-Checkbox-InActive.imageset\ic_action_checkbox_inactive.png" />
+    <ImageAsset Include="Assets.xcassets\IC-Action-Checkbox-InActive.imageset\ic_action_checkbox_inactive%402x.png" />
+    <ImageAsset Include="Assets.xcassets\IC-Action-Checkbox-InActive.imageset\ic_action_checkbox_inactive%403x.png" />
+    <ImageAsset Include="Assets.xcassets\IC-Action-Expand.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\IC-Action-Expand.imageset\ic_action_expand.png" />
+    <ImageAsset Include="Assets.xcassets\IC-Action-Expand.imageset\ic_action_expand%402x.png" />
+    <ImageAsset Include="Assets.xcassets\IC-Action-Expand.imageset\ic_action_expand%403x.png" />
+    <ImageAsset Include="Assets.xcassets\IC-Action-Tick.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\IC-Action-Tick.imageset\ic_action_tick.png" />
+    <ImageAsset Include="Assets.xcassets\IC-Action-Tick.imageset\ic_action_tick%402x.png" />
+    <ImageAsset Include="Assets.xcassets\IC-Action-Tick.imageset\ic_action_tick%403x.png" />
+    <ImageAsset Include="Assets.xcassets\IC-Action-Edit.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\IC-Action-Edit.imageset\ic_action_edit.png" />
+    <ImageAsset Include="Assets.xcassets\IC-Action-Edit.imageset\ic_action_edit%402x.png" />
+    <ImageAsset Include="Assets.xcassets\IC-Action-Edit.imageset\ic_action_edit%403x.png" />
+    <ImageAsset Include="Assets.xcassets\IC-Action-Delete.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\IC-Action-Delete.imageset\ic_action_delete.png" />
+    <ImageAsset Include="Assets.xcassets\IC-Action-Delete.imageset\ic_action_delete%402x.png" />
+    <ImageAsset Include="Assets.xcassets\IC-Action-Delete.imageset\ic_action_delete%403x.png" />
+    <ImageAsset Include="Assets.xcassets\IC-Payment-Card-Mastercard.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\IC-Payment-Card-Mastercard.imageset\ic_payment_card_master.png" />
+    <ImageAsset Include="Assets.xcassets\IC-Payment-Card-Mastercard.imageset\ic_payment_card_master%402x.png" />
+    <ImageAsset Include="Assets.xcassets\IC-Payment-Card-Mastercard.imageset\ic_payment_card_master%403x.png" />
+    <ImageAsset Include="Assets.xcassets\IC-Payment-Card-Visa.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\IC-Payment-Card-Visa.imageset\ic_payment_card_visa.png" />
+    <ImageAsset Include="Assets.xcassets\IC-Payment-Card-Visa.imageset\ic_payment_card_visa%402x.png" />
+    <ImageAsset Include="Assets.xcassets\IC-Payment-Card-Visa.imageset\ic_payment_card_visa%403x.png" />
+    <ImageAsset Include="Assets.xcassets\IC-Payment-FPX.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\IC-Payment-FPX.imageset\ic_payment_fpx.png" />
+    <ImageAsset Include="Assets.xcassets\IC-Payment-FPX.imageset\ic_payment_fpx%402x.png" />
+    <ImageAsset Include="Assets.xcassets\IC-Payment-FPX.imageset\ic_payment_fpx%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-New.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Notification-New.imageset\ic_header_notification_unread.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-New.imageset\ic_header_notification_unread%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-New.imageset\ic_header_notification_unread%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Call.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Call.imageset\ic_display_call.png" />
+    <ImageAsset Include="Assets.xcassets\Call.imageset\ic_display_call%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Call.imageset\ic_display_call%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Logout-Logo.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\IC-Action-Rating-Active.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\IC-Action-Rating-Inactive.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\IC-Action-Rating-Active.imageset\icActionRatingsActive.png" />
+    <ImageAsset Include="Assets.xcassets\IC-Action-Rating-Active.imageset\icActionRatingsActive%402x.png" />
+    <ImageAsset Include="Assets.xcassets\IC-Action-Rating-Active.imageset\icActionRatingsActive%403x.png" />
+    <ImageAsset Include="Assets.xcassets\IC-Action-Rating-Inactive.imageset\icActionRatingsInactive.png" />
+    <ImageAsset Include="Assets.xcassets\IC-Action-Rating-Inactive.imageset\icActionRatingsInactive%402x.png" />
+    <ImageAsset Include="Assets.xcassets\IC-Action-Rating-Inactive.imageset\icActionRatingsInactive%403x.png" />
+    <ImageAsset Include="Assets.xcassets\IC-Field-Search.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\IC-Field-Search.imageset\icFieldSearch.png" />
+    <ImageAsset Include="Assets.xcassets\IC-Field-Search.imageset\icFieldSearch%402x.png" />
+    <ImageAsset Include="Assets.xcassets\IC-Field-Search.imageset\icFieldSearch%403x.png" />
+    <ImageAsset Include="Assets.xcassets\IC-Button-Map-Center.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\IC-Button-Map-Center.imageset\icButtonMapCenter.png" />
+    <ImageAsset Include="Assets.xcassets\IC-Button-Map-Center.imageset\icButtonMapCenter%402x.png" />
+    <ImageAsset Include="Assets.xcassets\IC-Button-Map-Center.imageset\icButtonMapCenter%403x.png" />
+    <ImageAsset Include="Assets.xcassets\IC-Header-Share.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\IC-Header-Share.imageset\ic_header_share.png" />
+    <ImageAsset Include="Assets.xcassets\IC-Header-Share.imageset\ic_header_share%402x.png" />
+    <ImageAsset Include="Assets.xcassets\IC-Header-Share.imageset\ic_header_share%403x.png" />
+    <ImageAsset Include="Assets.xcassets\IC-Action-Dropdown.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\IC-Action-Dropdown.imageset\ic_action_dropdown.png" />
+    <ImageAsset Include="Assets.xcassets\IC-Action-Dropdown.imageset\ic_action_dropdown%402x.png" />
+    <ImageAsset Include="Assets.xcassets\IC-Action-Dropdown.imageset\ic_action_dropdown%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Map-Kedai-Tenaga.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Map-Convenient-Store.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Map-Kedai-Tenaga.imageset\ic_button_map_pin_kedai_tenaga.png" />
+    <ImageAsset Include="Assets.xcassets\Map-Kedai-Tenaga.imageset\ic_button_map_pin_kedai_tenaga%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Map-Kedai-Tenaga.imageset\ic_button_map_pin_kedai_tenaga%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Map-Convenient-Store.imageset\ic_button_map_pin_convenient_store.png" />
+    <ImageAsset Include="Assets.xcassets\Map-Convenient-Store.imageset\ic_button_map_pin_convenient_store%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Map-Convenient-Store.imageset\ic_button_map_pin_convenient_store%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Find_Account_Number.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-76.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-76%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Direction.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Direction.imageset\ic_button_direction.png" />
+    <ImageAsset Include="Assets.xcassets\Direction.imageset\ic_button_direction%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Direction.imageset\ic_button_direction%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Empty.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Notification-Empty.imageset\icEmptyNotification.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Empty.imageset\icEmptyNotification%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Empty.imageset\icEmptyNotification%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Card-Empty.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Card-Empty.imageset\icEmptyCreditcards.png" />
+    <ImageAsset Include="Assets.xcassets\Card-Empty.imageset\icEmptyCreditcards%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Card-Empty.imageset\icEmptyCreditcards%403x.png" />
+    <ImageAsset Include="Assets.xcassets\IC-Feedback.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\IC-Feedback.imageset\icFieldText.png" />
+    <ImageAsset Include="Assets.xcassets\IC-Feedback.imageset\icFieldText%402x.png" />
+    <ImageAsset Include="Assets.xcassets\IC-Feedback.imageset\icFieldText%403x.png" />
+    <ImageAsset Include="Assets.xcassets\IC-FieldCoordinates.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\IC-FieldCoordinates.imageset\icFieldCoordinates.png" />
+    <ImageAsset Include="Assets.xcassets\IC-FieldCoordinates.imageset\icFieldCoordinates%402x.png" />
+    <ImageAsset Include="Assets.xcassets\IC-FieldCoordinates.imageset\icFieldCoordinates%403x.png" />
+    <ImageAsset Include="Assets.xcassets\IC-Action-Location.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\IC-Action-Location.imageset\icActionLocation.png" />
+    <ImageAsset Include="Assets.xcassets\IC-Action-Location.imageset\icActionLocation%402x.png" />
+    <ImageAsset Include="Assets.xcassets\IC-Action-Location.imageset\icActionLocation%403x.png" />
+    <ImageAsset Include="Assets.xcassets\IC-FieldFeedback.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\IC-FieldFeedback.imageset\icFieldFeedback.png" />
+    <ImageAsset Include="Assets.xcassets\IC-FieldFeedback.imageset\icFieldFeedback%402x.png" />
+    <ImageAsset Include="Assets.xcassets\IC-FieldFeedback.imageset\icFieldFeedback%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Faulty-TNB-Lamp.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Faulty-TNB-Lamp.imageset\img_feedback_streetlamp.png" />
+    <ImageAsset Include="Assets.xcassets\Faulty-TNB-Lamp.imageset\img_feedback_streetlamp%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Faulty-TNB-Lamp.imageset\img_feedback_streetlamp%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Locate-Blue.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Locate-Blue.imageset\Locate.png" />
+    <ImageAsset Include="Assets.xcassets\Locate-Blue.imageset\Locate%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Locate-Blue.imageset\Locate%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Locate-Blue.imageset\icButtonLocate.png" />
+    <ImageAsset Include="Assets.xcassets\Locate-Blue.imageset\icButtonLocate%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Locate-Blue.imageset\icButtonLocate%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Feedback-Blue.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Feedback-Blue.imageset\icButtonFeedback.png" />
+    <ImageAsset Include="Assets.xcassets\Feedback-Blue.imageset\icButtonFeedback%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Feedback-Blue.imageset\icButtonFeedback%403x.png" />
+    <ImageAsset Include="Assets.xcassets\IC-Field-Text.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\IC-Field-Text.imageset\icFieldText.png" />
+    <ImageAsset Include="Assets.xcassets\IC-Field-Text.imageset\icFieldText%402x.png" />
+    <ImageAsset Include="Assets.xcassets\IC-Field-Text.imageset\icFieldText%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Red-Cross.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Red-Cross.imageset\Red-Cross.png" />
+    <ImageAsset Include="Assets.xcassets\Loading-Circle.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Loading-Circle.imageset\loadingCircle.png" />
+    <ImageAsset Include="Assets.xcassets\Loading-Circle.imageset\loadingCircle%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Loading-Circle.imageset\loadingCircle%403x.png" />
+    <ImageAsset Include="Assets.xcassets\No-Internet-Connection.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\No-Internet-Connection.imageset\icEmptyError.pdf" />
+    <ImageAsset Include="Assets.xcassets\No-Internet-Connection.imageset\icEmptyError.png" />
+    <ImageAsset Include="Assets.xcassets\No-Internet-Connection.imageset\icEmptyError%402x.png" />
+    <ImageAsset Include="Assets.xcassets\No-Internet-Connection.imageset\icEmptyError%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Empty-Current-Bill.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Empty-Current-Bill.imageset\icEmptyCurrentBill.pdf" />
+    <ImageAsset Include="Assets.xcassets\Empty-Current-Bill.imageset\icEmptyCurrentBill.png" />
+    <ImageAsset Include="Assets.xcassets\Empty-Current-Bill.imageset\icEmptyCurrentBill%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Empty-Current-Bill.imageset\icEmptyCurrentBill%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Empty-Bill-Payment.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Empty-Bill-Payment.imageset\icEmptyBillPayment.pdf" />
+    <ImageAsset Include="Assets.xcassets\Empty-Bill-Payment.imageset\icEmptyBillPayment.png" />
+    <ImageAsset Include="Assets.xcassets\Empty-Bill-Payment.imageset\icEmptyBillPayment%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Empty-Bill-Payment.imageset\icEmptyBillPayment%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-New-Bill.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Notification-Bill-Due.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Notification-Reconnection.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Notification-Disconnection.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Notification-Dunning.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Notification-New-Bill.imageset\ic_notification_billing.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-New-Bill.imageset\ic_notification_billing%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-New-Bill.imageset\ic_notification_billing%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Bill-Due.imageset\ic_notification_billing due.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Bill-Due.imageset\ic_notification_billing due%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Bill-Due.imageset\ic_notification_billing due%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Reconnection.imageset\ic_notification_connection.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Reconnection.imageset\ic_notification_connection%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Reconnection.imageset\ic_notification_connection%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Disconnection.imageset\ic_notification_connection.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Disconnection.imageset\ic_notification_connection%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Disconnection.imageset\ic_notification_connection%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Dunning.imageset\ic_notification_power.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Dunning.imageset\ic_notification_power%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Dunning.imageset\ic_notification_power%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Password-Old.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Password-Old.imageset\Password.png" />
+    <ImageAsset Include="Assets.xcassets\Password-Old.imageset\Password%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Password-Old.imageset\Password%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Password.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Password.imageset\icFieldPassword.png" />
+    <ImageAsset Include="Assets.xcassets\Password.imageset\icFieldPassword%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Password.imageset\icFieldPassword%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Password.imageset\icFieldPassword.pdf" />
+    <ImageAsset Include="Assets.xcassets\password_white.imageset\icFieldPasswordWhite.png" />
+    <ImageAsset Include="Assets.xcassets\password_white.imageset\icFieldPasswordWhite%402x.png" />
+    <ImageAsset Include="Assets.xcassets\password_white.imageset\icFieldPasswordWhite%403x.png" />
+    <ImageAsset Include="Assets.xcassets\IC-Action-Show-Password.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\IC-Display-Prelogin.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\IC-Display-Prelogin.imageset\icDisplayPrelogin.png" />
+    <ImageAsset Include="Assets.xcassets\IC-Display-Prelogin.imageset\icDisplayPrelogin%402x.png" />
+    <ImageAsset Include="Assets.xcassets\IC-Display-Prelogin.imageset\icDisplayPrelogin%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Feedback-Bill.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Feedback-Bill.imageset\icTileFeedbackBill.png" />
+    <ImageAsset Include="Assets.xcassets\Feedback-Bill.imageset\icTileFeedbackBill%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Feedback-Bill.imageset\icTileFeedbackBill%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Feedback-Bill.imageset\icTileFeedbackBill.pdf" />
+    <ImageAsset Include="Assets.xcassets\Feedback-Streetlamp.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Feedback-Others.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Feedback-Header.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Feedback-Header.imageset\img_feedback.png" />
+    <ImageAsset Include="Assets.xcassets\Feedback-Header.imageset\img_feedback%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Feedback-Header.imageset\img_feedback%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Feedback-Others.imageset\icTileFeedbackOthers.png" />
+    <ImageAsset Include="Assets.xcassets\Feedback-Others.imageset\icTileFeedbackOthers%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Feedback-Others.imageset\icTileFeedbackOthers%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Feedback-Others.imageset\icTileFeedbackOthers.pdf" />
+    <ImageAsset Include="Assets.xcassets\Feedback-Streetlamp.imageset\icTileFeedbackStreetlamp.png" />
+    <ImageAsset Include="Assets.xcassets\Feedback-Streetlamp.imageset\icTileFeedbackStreetlamp%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Feedback-Streetlamp.imageset\icTileFeedbackStreetlamp%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Feedback-Streetlamp.imageset\icTileFeedbackStreetlamp.pdf" />
+    <ImageAsset Include="Assets.xcassets\Feedback-Submitted.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Feedback-Submitted.imageset\ic_feedback_submitted.png" />
+    <ImageAsset Include="Assets.xcassets\Feedback-Submitted.imageset\ic_feedback_submitted%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Feedback-Submitted.imageset\ic_feedback_submitted%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Feedback-Submitted.imageset\icTileFeedbackSubmitted.pdf" />
+    <ImageAsset Include="Assets.xcassets\Feedback-Submitted-Bill.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Feedback-Submitted-Bill.imageset\ic_feedback_submitted_billing.png" />
+    <ImageAsset Include="Assets.xcassets\Feedback-Submitted-Bill.imageset\ic_feedback_submitted_billing%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Feedback-Submitted-Bill.imageset\ic_feedback_submitted_billing%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Feedback-Submitted-Streetlamp.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Feedback-Submitted-Others.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Feedback-Submitted-Others.imageset\ic_feedback_submitted_others.png" />
+    <ImageAsset Include="Assets.xcassets\Feedback-Submitted-Others.imageset\ic_feedback_submitted_others%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Feedback-Submitted-Others.imageset\ic_feedback_submitted_others%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Feedback-Submitted-Streetlamp.imageset\ic_feedback_submitted_streetlamp.png" />
+    <ImageAsset Include="Assets.xcassets\Feedback-Submitted-Streetlamp.imageset\ic_feedback_submitted_streetlamp%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Feedback-Submitted-Streetlamp.imageset\ic_feedback_submitted_streetlamp%403x.png" />
+    <ImageAsset Include="Assets.xcassets\App-Launch-Gradient.imageset\img_splash.png" />
+    <ImageAsset Include="Assets.xcassets\App-Launch-Gradient.imageset\img_splash%402x.png" />
+    <ImageAsset Include="Assets.xcassets\App-Launch-Gradient.imageset\img_splash%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Tab-Feedback.imageset\ic_menu_feedback.png" />
+    <ImageAsset Include="Assets.xcassets\Tab-Feedback.imageset\ic_menu_feedback%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Tab-Feedback.imageset\ic_menu_feedback%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Tab-Promotions.imageset\ic_menu_promo.png" />
+    <ImageAsset Include="Assets.xcassets\Tab-Promotions.imageset\ic_menu_promo%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Tab-Promotions.imageset\ic_menu_promo%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Tab-Dashboard.imageset\ic_menu_dashboard.png" />
+    <ImageAsset Include="Assets.xcassets\Tab-Dashboard.imageset\ic_menu_dashboard%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Tab-Dashboard.imageset\ic_menu_dashboard%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Tab-More.imageset\ic_menu_more.png" />
+    <ImageAsset Include="Assets.xcassets\Tab-More.imageset\ic_menu_more%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Tab-More.imageset\ic_menu_more%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Payment-Checkbox-Active.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Payment-Checkbox-Inactive.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Payment-Checkbox-Active.imageset\ic_action_checkbox_active.png" />
+    <ImageAsset Include="Assets.xcassets\Payment-Checkbox-Active.imageset\ic_action_checkbox_active%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Payment-Checkbox-Active.imageset\ic_action_checkbox_active%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Tab-Bill.imageset\ic_menu_bill.png" />
+    <ImageAsset Include="Assets.xcassets\Tab-Bill.imageset\ic_menu_bill%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Tab-Bill.imageset\ic_menu_bill%403x.png" />
+    <ImageAsset Include="Assets.xcassets\IC-Action-Show-Password.imageset\icActionShowPassword.png" />
+    <ImageAsset Include="Assets.xcassets\IC-Action-Show-Password.imageset\icActionShowPassword%402x.png" />
+    <ImageAsset Include="Assets.xcassets\IC-Action-Show-Password.imageset\icActionShowPassword%403x.png" />
+    <ImageAsset Include="Assets.xcassets\IC-Empty-Promotion.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\IC-Empty-Promotion.imageset\icEmptyPromotions.png" />
+    <ImageAsset Include="Assets.xcassets\IC-Empty-Promotion.imageset\icEmptyPromotions%402x.png" />
+    <ImageAsset Include="Assets.xcassets\IC-Empty-Promotion.imageset\icEmptyPromotions%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Promo.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Notification-Promo.imageset\ic_notification_promo.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Promo.imageset\ic_notification_promo%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Promo.imageset\ic_notification_promo%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Banner-Bill-Due.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Notification-Banner-Bill-Due.imageset\img_notifications_bill due.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Banner-Bill-Due.imageset\img_notifications_bill due%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Banner-Bill-Due.imageset\img_notifications_bill due%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Banner-New-Bill.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Notification-Banner-New-Bill.imageset\img_notifications_new bill.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Banner-New-Bill.imageset\img_notifications_new bill%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Banner-New-Bill.imageset\img_notifications_new bill%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Banner-Disconnection.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Notification-Banner-Disconnection.imageset\img_notifications_disconnection.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Banner-Disconnection.imageset\img_notifications_disconnection%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Banner-Disconnection.imageset\img_notifications_disconnection%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Banner-Dunning.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Notification-Banner-Dunning.imageset\img_notifications_dunning.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Banner-Dunning.imageset\img_notifications_dunning%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Banner-Dunning.imageset\img_notifications_dunning%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Banner-Reconnection.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Notification-Banner-Reconnection.imageset\img_notifications_reconnection.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Banner-Reconnection.imageset\img_notifications_reconnection%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Banner-Reconnection.imageset\img_notifications_reconnection%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Tab-Promotions-Unread-Active.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Tab-Promotions-Unread-Inactive.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Tab-Promotions-Unread-Inactive.imageset\ic_menu_promo_unread.png" />
+    <ImageAsset Include="Assets.xcassets\Tab-Promotions-Unread-Inactive.imageset\ic_menu_promo_unread%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Tab-Promotions-Unread-Inactive.imageset\ic_menu_promo_unread%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Tab-Promotions-Unread-Active.imageset\ic_menu_promo_toggled_unread.png" />
+    <ImageAsset Include="Assets.xcassets\Tab-Promotions-Unread-Active.imageset\ic_menu_promo_toggled_unread%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Tab-Promotions-Unread-Active.imageset\ic_menu_promo_toggled_unread%403x.png" />
+    <ImageAsset Include="Assets.xcassets\IC-RE-Leaf-Green.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\IC-RE-Leaf-White.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\IC-RE-Leaf-White.imageset\icDisplayReDashboard.png" />
+    <ImageAsset Include="Assets.xcassets\IC-RE-Leaf-White.imageset\icDisplayReDashboard%402x.png" />
+    <ImageAsset Include="Assets.xcassets\IC-RE-Leaf-White.imageset\icDisplayReDashboard%403x.png" />
+    <ImageAsset Include="Assets.xcassets\IC-RE-Leaf-Green.imageset\icDisplayREleaf.png" />
+    <ImageAsset Include="Assets.xcassets\IC-RE-Leaf-Green.imageset\icDisplayREleaf%402x.png" />
+    <ImageAsset Include="Assets.xcassets\IC-RE-Leaf-Green.imageset\icDisplayREleaf%403x.png" />
+    <ImageAsset Include="Assets.xcassets\IC-Payment-Card-Amex.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\IC-Payment-Card-Amex.imageset\ic_payment_card_amex.png" />
+    <ImageAsset Include="Assets.xcassets\IC-Payment-Card-Amex.imageset\ic_payment_card_amex%402x.png" />
+    <ImageAsset Include="Assets.xcassets\IC-Payment-Card-Amex.imageset\ic_payment_card_amex%403x.png" />
+    <ImageAsset Include="Assets.xcassets\IC-Action-Show-PasswordWhite.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\IC-Action-Show-PasswordWhite.imageset\ic_action_show password_white.png" />
+    <ImageAsset Include="Assets.xcassets\IC-Action-Show-PasswordWhite.imageset\ic_action_show password_white%402x.png" />
+    <ImageAsset Include="Assets.xcassets\IC-Action-Show-PasswordWhite.imageset\ic_action_show password_white%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Feedback-Empty.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Feedback-Empty.imageset\ic_empty_archived_message.png" />
+    <ImageAsset Include="Assets.xcassets\Feedback-Empty.imageset\ic_empty_archived_message%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Feedback-Empty.imageset\ic_empty_archived_message%403x.png" />
+    <ImageAsset Include="Assets.xcassets\IC-Charges.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\IC-Charges.imageset\rm.png" />
+    <ImageAsset Include="Assets.xcassets\IC-Charges.imageset\rm%402x.png" />
+    <ImageAsset Include="Assets.xcassets\IC-Charges.imageset\rm%403x.png" />
+    <ImageAsset Include="Assets.xcassets\IC-Cost.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\IC-Cost.imageset\estimatedCost.png" />
+    <ImageAsset Include="Assets.xcassets\IC-Cost.imageset\estimatedCost%402x.png" />
+    <ImageAsset Include="Assets.xcassets\IC-Cost.imageset\estimatedCost%403x.png" />
+    <ImageAsset Include="Assets.xcassets\IC-Energy-Usage.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\IC-Energy-Usage.imageset\energyUsage.png" />
+    <ImageAsset Include="Assets.xcassets\IC-Energy-Usage.imageset\energyUsage%402x.png" />
+    <ImageAsset Include="Assets.xcassets\IC-Energy-Usage.imageset\energyUsage%403x.png" />
+    <ImageAsset Include="Assets.xcassets\IC-Avg-Elec-Usage.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\IC-Avg-Elec-Usage.imageset\avgelectricusage.png" />
+    <ImageAsset Include="Assets.xcassets\IC-Avg-Elec-Usage.imageset\avgelectricusage%402x.png" />
+    <ImageAsset Include="Assets.xcassets\IC-Avg-Elec-Usage.imageset\avgelectricusage%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Arrow-Up.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Arrow-Up.imageset\up.png" />
+    <ImageAsset Include="Assets.xcassets\Arrow-Up.imageset\up%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Arrow-Up.imageset\up%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Arrow-Down.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Arrow-Down.imageset\down.png" />
+    <ImageAsset Include="Assets.xcassets\Arrow-Down.imageset\down%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Arrow-Down.imageset\down%403x.png" />
+    <ImageAsset Include="Assets.xcassets\IC-Emission.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\IC-Emission.imageset\co2.png" />
+    <ImageAsset Include="Assets.xcassets\IC-Emission.imageset\co2%402x.png" />
+    <ImageAsset Include="Assets.xcassets\IC-Emission.imageset\co2%403x.png" />
+    <ImageAsset Include="Assets.xcassets\IC-CO2.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\IC-CO2.imageset\co2.png" />
+    <ImageAsset Include="Assets.xcassets\IC-CO2.imageset\co2%402x.png" />
+    <ImageAsset Include="Assets.xcassets\IC-CO2.imageset\co2%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Mask-View.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Mask-View.imageset\Mask.png" />
+    <ImageAsset Include="Assets.xcassets\Mask-View.imageset\Mask%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Mask-View.imageset\Mask%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Empty-Chart-Data.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Empty-Chart-Data.imageset\bcrm-down.png" />
+    <ImageAsset Include="Assets.xcassets\Empty-Chart-Data.imageset\bcrm-down%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Empty-Chart-Data.imageset\bcrm-down%403x.png" />
+    <ImageAsset Include="Assets.xcassets\IC-X-Gray.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\IC-X-Gray.imageset\Promotions-Cancel.png" />
+    <ImageAsset Include="Assets.xcassets\IC-X-Gray.imageset\Promotions-Cancel%402x.png" />
+    <ImageAsset Include="Assets.xcassets\IC-X-Gray.imageset\Promotions-Cancel%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Greeting-Morning.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Greeting-Morning.imageset\illustrationMorning.png" />
+    <ImageAsset Include="Assets.xcassets\Greeting-Morning.imageset\illustrationMorning%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Greeting-Morning.imageset\illustrationMorning%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Greeting-Afternoon.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Greeting-Afternoon.imageset\illustrationAfternoon.png" />
+    <ImageAsset Include="Assets.xcassets\Greeting-Afternoon.imageset\illustrationAfternoon%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Greeting-Afternoon.imageset\illustrationAfternoon%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Greeting-Evening.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Greeting-Evening.imageset\illustrationEvening.png" />
+    <ImageAsset Include="Assets.xcassets\Greeting-Evening.imageset\illustrationEvening%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Greeting-Evening.imageset\illustrationEvening%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Down-BCRM.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Down-BCRM.imageset\icSummarydashboardBcrmDown.png" />
+    <ImageAsset Include="Assets.xcassets\Down-BCRM.imageset\icSummarydashboardBcrmDown%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Down-BCRM.imageset\icSummarydashboardBcrmDown%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Maintenance.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Notification-Promotion.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Notification-Maintenance.imageset\icNotificationMaintenance.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Maintenance.imageset\icNotificationMaintenance%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Maintenance.imageset\icNotificationMaintenance%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Promotion.imageset\icMenuPromoToggled.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Promotion.imageset\icMenuPromoToggled%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Promotion.imageset\icMenuPromoToggled%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-News.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Notification-News.imageset\icNotificationNews2.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-News.imageset\icNotificationNews2%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-News.imageset\icNotificationNews2%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Banner-Maintenance.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Notification-Banner-Promotion.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Notification-Banner-News.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Notification-Banner-Maintenance.imageset\illustrationMaintenance.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Banner-Maintenance.imageset\illustrationMaintenance%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Banner-Maintenance.imageset\illustrationMaintenance%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Banner-Promotion.imageset\illustrationPromotions.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Banner-Promotion.imageset\illustrationPromotions%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Banner-Promotion.imageset\illustrationPromotions%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Banner-News.imageset\illustrationNews.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Banner-News.imageset\illustrationNews%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Banner-News.imageset\illustrationNews%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Receipt-Header.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Receipt-Header.imageset\TNB_Receipt_Logo-Header.png" />
+    <ImageAsset Include="Assets.xcassets\Receipt-Header.imageset\TNB_Receipt_Logo-Header%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Receipt-Header.imageset\TNB_Receipt_Logo-Header%403x.png" />
+    <ImageAsset Include="Assets.xcassets\IC-Action-Hide-PasswordWhite.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\IC-Action-Hide-PasswordWhite.imageset\ic_action_hide password_white.png" />
+    <ImageAsset Include="Assets.xcassets\IC-Action-Hide-PasswordWhite.imageset\ic_action_hide password_white%402x.png" />
+    <ImageAsset Include="Assets.xcassets\IC-Action-Hide-PasswordWhite.imageset\ic_action_hide password_white%403x.png" />
+    <ImageAsset Include="Assets.xcassets\app_logo.imageset\Logo.png" />
+    <ImageAsset Include="Assets.xcassets\app_logo.imageset\Logo%402x.png" />
+    <ImageAsset Include="Assets.xcassets\app_logo.imageset\Logo%403x.png" />
+    <ImageAsset Include="Assets.xcassets\IC-Action-Hide-Password.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\IC-Action-Hide-Password.imageset\ic_action_hide password_dark.png" />
+    <ImageAsset Include="Assets.xcassets\IC-Action-Hide-Password.imageset\ic_action_hide password_dark%402x.png" />
+    <ImageAsset Include="Assets.xcassets\IC-Action-Hide-Password.imageset\ic_action_hide password_dark%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Logout-Logo.imageset\ic_logout_logo.png" />
+    <ImageAsset Include="Assets.xcassets\Logout-Logo.imageset\ic_logout_logo%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Logout-Logo.imageset\ic_logout_logo%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Logo-Combined.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Logo-Combined.imageset\TNB Logo_White.png" />
+    <ImageAsset Include="Assets.xcassets\Logo-Combined.imageset\TNB Logo_White%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Logo-Combined.imageset\TNB Logo_White%403x.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-20%402x.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-60.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-29%402x.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-29%403x.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-80.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-120.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-180.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-20.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-29.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-167.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-1024.png" />
+    <ImageAsset Include="Assets.xcassets\Payment-Checkbox-Inactive.imageset\icActionCheckboxInactive.png" />
+    <ImageAsset Include="Assets.xcassets\Payment-Checkbox-Inactive.imageset\icActionCheckboxInactive%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Payment-Checkbox-Inactive.imageset\icActionCheckboxInactive%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Payment-Checkbox-White-Inactive.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Payment-Checkbox-White-Inactive.imageset\icActionCheckboxInactiveWhite.png" />
+    <ImageAsset Include="Assets.xcassets\Payment-Checkbox-White-Inactive.imageset\icActionCheckboxInactiveWhite%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Payment-Checkbox-White-Inactive.imageset\icActionCheckboxInactiveWhite%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Find_Account_Number.imageset\new-bill copy.png" />
+    <ImageAsset Include="Assets.xcassets\Find_Account_Number.imageset\new-bill copy%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Find_Account_Number.imageset\new-bill copy%403x.png" />
+    <ImageAsset Include="Assets.xcassets\New-Launch-Logo.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\New-Launch-Logo.imageset\New_Logo_SplashScreen%401x.png" />
+    <ImageAsset Include="Assets.xcassets\New-Launch-Logo.imageset\New_Logo_SplashScreen%402x.png" />
+    <ImageAsset Include="Assets.xcassets\New-Launch-Logo.imageset\New_Logo_SplashScreen%403x.png" />
+    <ImageAsset Include="Assets.xcassets\LogOut.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\LogOut.imageset\LogOut.png" />
+    <ImageAsset Include="Assets.xcassets\LogOut.imageset\LogOut%402x.png" />
+    <ImageAsset Include="Assets.xcassets\LogOut.imageset\LogOut%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Edit.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Notification-Check.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Notification-Check.imageset\Notification-Check.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Check.imageset\Notification-Check%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Check.imageset\Notification-Check%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Edit.imageset\Notification-Edit-1.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Edit.imageset\Notification-Edit%402x-1.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Edit.imageset\Notification-Edit%403x-1.png" />
+    <ImageAsset Include="Assets.xcassets\Maintenance-Image.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Maintenance-Image.imageset\Maintenance-Image-1.png" />
+    <ImageAsset Include="Assets.xcassets\Maintenance-Image.imageset\Maintenance-Image%402x-1.png" />
+    <ImageAsset Include="Assets.xcassets\Maintenance-Image.imageset\Maintenance-Image%403x-1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Resources\" />
+    <Folder Include="Helpers\" />
+    <Folder Include="Onboarding\" />
+    <Folder Include="Login\" />
+    <Folder Include="Model\" />
+    <Folder Include="Registration\" />
+    <Folder Include="Registration\Customer Accounts\" />
+    <Folder Include="Assets.xcassets\app_logo.imageset\" />
+    <Folder Include="Resources\Fonts\" />
+    <Folder Include="Assets.xcassets\email_white.imageset\" />
+    <Folder Include="Assets.xcassets\password_white.imageset\" />
+    <Folder Include="Data Manager\" />
+    <Folder Include="Assets.xcassets\Back-White.imageset\" />
+    <Folder Include="Assets.xcassets\Cancel-White.imageset\" />
+    <Folder Include="Assets.xcassets\Next-White.imageset\" />
+    <Folder Include="Assets.xcassets\Calculator.imageset\" />
+    <Folder Include="Assets.xcassets\Supply.imageset\" />
+    <Folder Include="Assets.xcassets\Feedback.imageset\" />
+    <Folder Include="Assets.xcassets\Loaded.imageset\" />
+    <Folder Include="Assets.xcassets\Loading.imageset\" />
+    <Folder Include="Assets.xcassets\Email.imageset\" />
+    <Folder Include="Assets.xcassets\Account-Number.imageset\" />
+    <Folder Include="Assets.xcassets\IC.imageset\" />
+    <Folder Include="Assets.xcassets\Label.imageset\" />
+    <Folder Include="Assets.xcassets\Mobile-White.imageset\" />
+    <Folder Include="Assets.xcassets\Mobile.imageset\" />
+    <Folder Include="Assets.xcassets\Name-White.imageset\" />
+    <Folder Include="Assets.xcassets\Name.imageset\" />
+    <Folder Include="Assets.xcassets\Promo-Ads.imageset\" />
+    <Folder Include="Assets.xcassets\Billing.imageset\" />
+    <Folder Include="Assets.xcassets\Dashboard.imageset\" />
+    <Folder Include="Assets.xcassets\Payment.imageset\" />
+    <Folder Include="Assets.xcassets\App-Launch.imageset\" />
+    <Folder Include="Assets.xcassets\App-Launch-Gradient.imageset\" />
+    <Folder Include="Assets.xcassets\Logo.imageset\" />
+    <Folder Include="Login\Forgot Password\" />
+    <Folder Include="Sitecore CMS\" />
+    <Folder Include="Sitecore CMS\Service\" />
+    <Folder Include="Sitecore CMS\Model\" />
+    <Folder Include="Sitecore CMS\Extensions\" />
+    <Folder Include="SQLite\" />
+    <Folder Include="SQLite\SQLite Data Manager\" />
+    <Folder Include="Assets.xcassets\Delete.imageset\" />
+    <Folder Include="Assets.xcassets\Check-Green.imageset\" />
+    <Folder Include="Assets.xcassets\X-Red.imageset\" />
+    <Folder Include="Assets.xcassets\Scan.imageset\" />
+    <Folder Include="Assets.xcassets\Circle-With-Check-Green.imageset\" />
+    <Folder Include="Assets.xcassets\Arrow-Left.imageset\" />
+    <Folder Include="Assets.xcassets\Arrow-Right.imageset\" />
+    <Folder Include="Assets.xcassets\Logo-Title.imageset\" />
+    <Folder Include="Assets.xcassets\Tagline.imageset\" />
+    <Folder Include="Assets.xcassets\Notification.imageset\" />
+    <Folder Include="Assets.xcassets\Dropdown.imageset\" />
+    <Folder Include="Payment\" />
+    <Folder Include="Assets.xcassets\Tab-Dashboard.imageset\" />
+    <Folder Include="Assets.xcassets\Tab-Bill.imageset\" />
+    <Folder Include="Assets.xcassets\Tab-Promotions.imageset\" />
+    <Folder Include="Assets.xcassets\Tab-Feedback.imageset\" />
+    <Folder Include="Assets.xcassets\Tab-More.imageset\" />
+    <Folder Include="Home\" />
+    <Folder Include="Home\Dashboard\" />
+    <Folder Include="Home\Bill\" />
+    <Folder Include="Home\Promotions\" />
+    <Folder Include="Home\Feedback\" />
+    <Folder Include="Home\More\" />
+    <Folder Include="Home\Components\" />
+    <Folder Include="Assets.xcassets\Download.imageset\" />
+    <Folder Include="Assets.xcassets\Table-Tick.imageset\" />
+    <Folder Include="Assets.xcassets\Empty-Dashboard.imageset\" />
+    <Folder Include="Home\Dashboard\Get Access\" />
+    <Folder Include="Assets.xcassets\Arrow-Right-Black.imageset\" />
+    <Folder Include="Payment\Add Card\" />
+    <Folder Include="Assets.xcassets\Camera.imageset\" />
+    <Folder Include="Assets.xcassets\Card-Expiry.imageset\" />
+    <Folder Include="Assets.xcassets\Card-Number.imageset\" />
+    <Folder Include="Assets.xcassets\Card-CVV.imageset\" />
+    <Folder Include="Assets.xcassets\Get-Access.imageset\" />
+    <Folder Include="Push Notification\" />
+    <Folder Include="Assets.xcassets\Notification-Bill.imageset\" />
+    <Folder Include="Assets.xcassets\Notification-High-Usage.imageset\" />
+    <Folder Include="Assets.xcassets\Notification-Power.imageset\" />
+    <Folder Include="Assets.xcassets\Notification-Promo.imageset\" />
+    <Folder Include="Assets.xcassets\Notification-Unread.imageset\" />
+    <Folder Include="Assets.xcassets\Notification-Weather.imageset\" />
+    <Folder Include="Assets.xcassets\Notification-Delete.imageset\" />
+    <Folder Include="Home\More\Push Notification Settings\" />
+    <Folder Include="Assets.xcassets\Checkbox-Active.imageset\" />
+    <Folder Include="Assets.xcassets\Checkbox-Inactive.imageset\" />
+    <Folder Include="Assets.xcassets\IC-Action-Add-Card.imageset\" />
+    <Folder Include="Assets.xcassets\IC-Action-Checkbox-Active.imageset\" />
+    <Folder Include="Assets.xcassets\IC-Action-Checkbox-InActive.imageset\" />
+    <Folder Include="Assets.xcassets\IC-Action-Expand.imageset\" />
+    <Folder Include="Assets.xcassets\IC-Action-Tick.imageset\" />
+    <Folder Include="Assets.xcassets\IC-Action-Edit.imageset\" />
+    <Folder Include="Assets.xcassets\IC-Action-Delete.imageset\" />
+    <Folder Include="Assets.xcassets\IC-Payment-Card-Mastercard.imageset\" />
+    <Folder Include="Assets.xcassets\IC-Payment-Card-Visa.imageset\" />
+    <Folder Include="Assets.xcassets\IC-Payment-FPX.imageset\" />
+    <Folder Include="Payment\Make Payment\" />
+    <Folder Include="Assets.xcassets\Notification-New.imageset\" />
+    <Folder Include="Push Notification\Notification Details\" />
+    <Folder Include="Push Notification\Notification List\" />
+    <Folder Include="Model\GetBillingAccountDetails\" />
+    <Folder Include="Model\Notification\" />
+    <Folder Include="Model\GetAccountUsageHistoryForGraph\" />
+    <Folder Include="Model\IsUserAuthenticate\" />
+    <Folder Include="Model\GetCustomerBillingAccountList\" />
+    <Folder Include="Enums\" />
+    <Folder Include="Home\More\My Account\" />
+    <Folder Include="Assets.xcassets\Call.imageset\" />
+    <Folder Include="Home\More\My Account\Update Mobile Number\" />
+    <Folder Include="Home\More\My Account\Update Password\" />
+    <Folder Include="Home\More\My Account\Manage Cards\" />
+    <Folder Include="Home\More\My Account\Manage Accounts\" />
+    <Folder Include="Home\More\My Account\Manage Accounts\Update Nickname\" />
+    <Folder Include="Home\More\My Account\Logout\" />
+    <Folder Include="Assets.xcassets\Logout-Logo.imageset\" />
+    <Folder Include="Assets.xcassets\IC-Action-Rating-Active.imageset\" />
+    <Folder Include="Assets.xcassets\IC-Action-Rating-Inactive.imageset\" />
+    <Folder Include="Home\More\Find Us\" />
+    <Folder Include="Assets.xcassets\IC-Field-Search.imageset\" />
+    <Folder Include="Assets.xcassets\IC-Button-Map-Center.imageset\" />
+    <Folder Include="Home\Bill\Receipt\" />
+    <Folder Include="Model\GetReceipt\" />
+    <Folder Include="Assets.xcassets\IC-Header-Share.imageset\" />
+    <Folder Include="Assets.xcassets\IC-Action-Dropdown.imageset\" />
+    <Folder Include="Model\GetAccountDueAmount\" />
+    <Folder Include="Model\Base Model\" />
+    <Folder Include="Home\More\Find Us\Select Store Type\" />
+    <Folder Include="Assets.xcassets\Map-Kedai-Tenaga.imageset\" />
+    <Folder Include="Assets.xcassets\Map-E-Pay.imageset\" />
+    <Folder Include="Assets.xcassets\Map-Convenient-Store.imageset\" />
+    <Folder Include="Assets.xcassets\Find_Account_Number.imageset\" />
+    <Folder Include="Model\GetWebLinks\" />
+    <Folder Include="Browser\" />
+    <Folder Include="Model\GetLocationTypes\" />
+    <Folder Include="Model\GetLocations\" />
+    <Folder Include="Home\More\Find Us\Location Details\" />
+    <Folder Include="Assets.xcassets\Direction.imageset\" />
+    <Folder Include="Model\Feedback\" />
+    <Folder Include="Assets.xcassets\Notification-Empty.imageset\" />
+    <Folder Include="Assets.xcassets\Card-Empty.imageset\" />
+    <Folder Include="Assets.xcassets\IC-Feedback.imageset\" />
+    <Folder Include="Assets.xcassets\IC-FieldCoordinates.imageset\" />
+    <Folder Include="Assets.xcassets\IC-Action-Location.imageset\" />
+    <Folder Include="Assets.xcassets\IC-FieldFeedback.imageset\" />
+    <Folder Include="Assets.xcassets\Faulty-TNB-Lamp.imageset\" />
+    <Folder Include="Assets.xcassets\Locate-Blue.imageset\" />
+    <Folder Include="Assets.xcassets\Feedback-Blue.imageset\" />
+    <Folder Include="Rating\" />
+    <Folder Include="Assets.xcassets\IC-Field-Text.imageset\" />
+    <Folder Include="Assets.xcassets\Red-Cross.imageset\" />
+    <Folder Include="Model\GetFeedbackCategory\" />
+    <Folder Include="Model\SubmitFeedback\" />
+    <Folder Include="Model\GetStatesForFeedback\" />
+    <Folder Include="Model\GetOtherFeedbackType\" />
+    <Folder Include="Model\GetBillHistory\" />
+    <Folder Include="Model\GetPaymentHistory\" />
+    <Folder Include="Model\GetSubmittedFeedbackList\" />
+    <Folder Include="Model\GetSubmittedFeedbackDetails\" />
+    <Folder Include="Home\Feedback\Feedback Details\" />
+    <Folder Include="Assets.xcassets\Loading-Circle.imageset\" />
+    <Folder Include="Assets.xcassets\No-Internet-Connection.imageset\" />
+    <Folder Include="Assets.xcassets\Empty-Current-Bill.imageset\" />
+    <Folder Include="Assets.xcassets\Empty-Bill-Payment.imageset\" />
+    <Folder Include="Assets.xcassets\Notification-New-Bill.imageset\" />
+    <Folder Include="Assets.xcassets\Notification-Bill-Due.imageset\" />
+    <Folder Include="Assets.xcassets\Notification-Reconnection.imageset\" />
+    <Folder Include="Assets.xcassets\Notification-Disconnection.imageset\" />
+    <Folder Include="Assets.xcassets\Notification-Dunning.imageset\" />
+    <Folder Include="Assets.xcassets\Password-Old.imageset\" />
+    <Folder Include="Assets.xcassets\Password.imageset\" />
+    <Folder Include="Assets.xcassets\IC-Action-Show-Password.imageset\" />
+    <Folder Include="Assets.xcassets\IC-Display-Prelogin.imageset\" />
+    <Folder Include="Home\More\FAQ\" />
+    <Folder Include="Model\FAQ\" />
+    <Folder Include="Assets.xcassets\Feedback-Bill2.imageset\" />
+    <Folder Include="Assets.xcassets\Feedbacks.imageset\" />
+    <Folder Include="Assets.xcassets\Feedback-Bill.imageset\" />
+    <Folder Include="Assets.xcassets\Feedback-Streetlamp.imageset\" />
+    <Folder Include="Assets.xcassets\Feedback-Others.imageset\" />
+    <Folder Include="Assets.xcassets\Feedback-Header.imageset\" />
+    <Folder Include="Assets.xcassets\Feedback-Submitted.imageset\" />
+    <Folder Include="Assets.xcassets\Feedback-Submitted-Bill.imageset\" />
+    <Folder Include="Assets.xcassets\Feedback-Submitted-Streetlamp.imageset\" />
+    <Folder Include="Assets.xcassets\Feedback-Submitted-Others.imageset\" />
+    <Folder Include="Assets.xcassets\Payment-Checkbox-Active.imageset\" />
+    <Folder Include="Assets.xcassets\Payment-Checkbox-Inactive.imageset\" />
+    <Folder Include="Assets.xcassets\IC-Empty-Promotion.imageset\" />
+    <Folder Include="Home\Promotions\Promotion Details\" />
+    <Folder Include="Assets.xcassets\Notification-Promo.imageset\" />
+    <Folder Include="Assets.xcassets\Notification-Banner-Bill-Due.imageset\" />
+    <Folder Include="Assets.xcassets\Notification-Banner-New-Bill.imageset\" />
+    <Folder Include="Assets.xcassets\Notification-Banner-Disconnection.imageset\" />
+    <Folder Include="Assets.xcassets\Notification-Banner-Dunning.imageset\" />
+    <Folder Include="Assets.xcassets\Notification-Banner-Reconnection.imageset\" />
+    <Folder Include="Assets.xcassets\Tab-Promotions-Unread-Active.imageset\" />
+    <Folder Include="Assets.xcassets\Tab-Promotions-Unread-Inactive.imageset\" />
+    <Folder Include="Assets.xcassets\IC-RE-Leaf-Green.imageset\" />
+    <Folder Include="Assets.xcassets\IC-RE-Leaf-White.imageset\" />
+    <Folder Include="Assets.xcassets\IC-Payment-Card-Amex.imageset\" />
+    <Folder Include="Payment\Select Bills\" />
+    <Folder Include="Model\GetMultiReceiptByTransId\" />
+    <Folder Include="Model\GetMultiAccountDueAmount\" />
+    <Folder Include="Model\RequestPayBill\" />
+    <Folder Include="Assets.xcassets\IC-Action-Show-PasswordWhite.imageset\" />
+    <Folder Include="Home\Feedback\Submitted Feedback\" />
+    <Folder Include="Assets.xcassets\Feedback-Empty.imageset\" />
+    <Folder Include="Assets.xcassets\IC-Charges.imageset\" />
+    <Folder Include="Assets.xcassets\IC-Cost.imageset\" />
+    <Folder Include="Assets.xcassets\IC-Energy-Usage.imageset\" />
+    <Folder Include="Assets.xcassets\IC-Avg-Elec-Usage.imageset\" />
+    <Folder Include="Assets.xcassets\Arrow-Up.imageset\" />
+    <Folder Include="Assets.xcassets\Arrow-Down.imageset\" />
+    <Folder Include="Assets.xcassets\IC-Emission.imageset\" />
+    <Folder Include="Assets.xcassets\IC-CO2.imageset\" />
+    <Folder Include="Assets.xcassets\Mask-View.imageset\" />
+    <Folder Include="Assets.xcassets\Empty-Chart-Data.imageset\" />
+    <Folder Include="Resources\Base.lproj\" />
+    <Folder Include="Extensions\" />
+    <Folder Include="Assets.xcassets\IC-X-Gray.imageset\" />
+    <Folder Include="Customs\" />
+    <Folder Include="Assets.xcassets\Greeting-Morning.imageset\" />
+    <Folder Include="Assets.xcassets\Greeting-Afternoon.imageset\" />
+    <Folder Include="Assets.xcassets\Greeting-Evening.imageset\" />
+    <Folder Include="Assets.xcassets\Down-BCRM.imageset\" />
+    <Folder Include="Assets.xcassets\Notification-Maintenance.imageset\" />
+    <Folder Include="Assets.xcassets\Notification-Promotion.imageset\" />
+    <Folder Include="Assets.xcassets\Notification-News.imageset\" />
+    <Folder Include="Assets.xcassets\Notification-Banner-Maintenance.imageset\" />
+    <Folder Include="Assets.xcassets\Notification-Banner-Promotion.imageset\" />
+    <Folder Include="Assets.xcassets\Notification-Banner-News.imageset\" />
+    <Folder Include="Assets.xcassets\Receipt-Header.imageset\" />
+    <Folder Include="Assets.xcassets\IC-Action-Hide-PasswordWhite.imageset\" />
+    <Folder Include="Assets.xcassets\IC-Action-Hide-Password.imageset\" />
+    <Folder Include="Assets.xcassets\Logo-Combined.imageset\" />
+    <Folder Include="Assets.xcassets\Payment-Checkbox-White-Inactive.imageset\" />
+    <Folder Include="Assets.xcassets\New-Launch-Logo.imageset\" />
+    <Folder Include="Assets.xcassets\LogOut.imageset\" />
+    <Folder Include="Home\Feedback\Feedback Entry\" />
+    <Folder Include="Home\Feedback\Feedback Location and State\" />
+    <Folder Include="Home\Feedback\Feedback Image\" />
+    <Folder Include="Home\More\Language\" />
+    <Folder Include="Helpers\Generic Line\" />
+    <Folder Include="Assets.xcassets\Notification-Edit.imageset\" />
+    <Folder Include="Assets.xcassets\Notification-Check.imageset\" />
+    <Folder Include="Assets.xcassets\Maintenance-Image.imageset\" />
+  </ItemGroup>
+  <ItemGroup>
+    <InterfaceDefinition Include="LaunchScreen.storyboard" />
+    <InterfaceDefinition Include="Onboarding\Onboarding.storyboard" />
+    <InterfaceDefinition Include="Login\Login.storyboard" />
+    <InterfaceDefinition Include="Registration\Registration.storyboard" />
+    <InterfaceDefinition Include="Registration\Customer Accounts\AccountRecords.storyboard" />
+    <InterfaceDefinition Include="Login\Forgot Password\ForgotPassword.storyboard" />
+    <InterfaceDefinition Include="Payment\Payment.storyboard" />
+    <InterfaceDefinition Include="Home\Dashboard\Dashboard.storyboard" />
+    <InterfaceDefinition Include="Home\Dashboard\View Bill\ViewBill.storyboard" />
+    <InterfaceDefinition Include="Home\Dashboard\Get Access\GetAccess.storyboard" />
+    <InterfaceDefinition Include="Payment\Add Card\AddCard.storyboard" />
+    <InterfaceDefinition Include="Push Notification\PushNotification.storyboard" />
+    <InterfaceDefinition Include="Home\More\Push Notification Settings\NotificationSettings.storyboard" />
+    <InterfaceDefinition Include="Payment\Make Payment\MakePayment.storyboard" />
+    <InterfaceDefinition Include="Home\More\My Account\MyAccount.storyboard" />
+    <InterfaceDefinition Include="Home\More\My Account\Update Mobile Number\UpdateMobileNumber.storyboard" />
+    <InterfaceDefinition Include="Home\More\My Account\Update Password\UpdatePassword.storyboard" />
+    <InterfaceDefinition Include="Home\More\My Account\Manage Cards\ManageCards.storyboard" />
+    <InterfaceDefinition Include="Home\More\My Account\Manage Accounts\ManageAccounts.storyboard" />
+    <InterfaceDefinition Include="Home\More\My Account\Manage Accounts\Update Nickname\UpdateNickname.storyboard" />
+    <InterfaceDefinition Include="Home\More\My Account\Logout\Logout.storyboard" />
+    <InterfaceDefinition Include="Home\More\Find Us\FindUs.storyboard" />
+    <InterfaceDefinition Include="Home\Bill\Receipt\Receipt.storyboard" />
+    <InterfaceDefinition Include="Home\More\Find Us\Select Store Type\SelectStoreType.storyboard" />
+    <InterfaceDefinition Include="Browser\Browser.storyboard" />
+    <InterfaceDefinition Include="Home\More\Find Us\Location Details\LocationDetails.storyboard" />
+    <InterfaceDefinition Include="Home\Feedback\Feedback.storyboard" />
+    <InterfaceDefinition Include="Rating\Rating.storyboard" />
+    <InterfaceDefinition Include="Home\Feedback\Feedback Details\FeedbackDetails.storyboard" />
+    <InterfaceDefinition Include="Home\More\FAQ\FAQ.storyboard" />
+    <InterfaceDefinition Include="Home\Promotions\Promotion Details\PromotionDetails.storyboard" />
+    <InterfaceDefinition Include="Helpers\Generic Tableview Selector\GenericSelector.storyboard" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Info.plist" />
+    <None Include="Entitlements.plist" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Main.cs" />
+    <Compile Include="AppDelegate.cs" />
+    <Compile Include="Helpers\MyTNBColor.cs" />
+    <Compile Include="Onboarding\AppLaunchViewController.cs" />
+    <Compile Include="Onboarding\AppLaunchViewController.designer.cs">
+      <DependentUpon>AppLaunchViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Login\LoginViewController.cs" />
+    <Compile Include="Login\LoginViewController.designer.cs">
+      <DependentUpon>LoginViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Login\PreloginViewController.cs" />
+    <Compile Include="Login\PreloginViewController.designer.cs">
+      <DependentUpon>PreloginViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Registration\Customer Accounts\AccountsViewController.cs" />
+    <Compile Include="Registration\Customer Accounts\AccountsViewController.designer.cs">
+      <DependentUpon>AccountsViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Registration\VerifyPinViewController.cs" />
+    <Compile Include="Registration\VerifyPinViewController.designer.cs">
+      <DependentUpon>VerifyPinViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Registration\RegistrationViewController.cs" />
+    <Compile Include="Registration\RegistrationViewController.designer.cs">
+      <DependentUpon>RegistrationViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Registration\Customer Accounts\AccountRecordsTableViewCell.cs" />
+    <Compile Include="Registration\Customer Accounts\AccountRecordsTableViewCell.designer.cs">
+      <DependentUpon>AccountRecordsTableViewCell.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Registration\Customer Accounts\AccountRecordDataSource.cs" />
+    <Compile Include="Helpers\LoadingOverlay.cs" />
+    <Compile Include="Registration\AddAccountViewController.cs" />
+    <Compile Include="Registration\AddAccountViewController.designer.cs">
+      <DependentUpon>AddAccountViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Model\AddAccountModel.cs" />
+    <Compile Include="Model\AddAccountListModel.cs" />
+    <Compile Include="Helpers\TextFieldHelper.cs" />
+    <Compile Include="Helpers\TNBGlobal.cs" />
+    <Compile Include="Data Manager\DataManager.cs" />
+    <Compile Include="Model\UserModel.cs" />
+    <Compile Include="Onboarding\OnboardingModelController.cs" />
+    <Compile Include="Onboarding\OnboardingDataViewController.cs" />
+    <Compile Include="Onboarding\OnboardingDataViewController.designer.cs">
+      <DependentUpon>OnboardingDataViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Onboarding\OnboardingRootViewController.cs" />
+    <Compile Include="Onboarding\OnboardingRootViewController.designer.cs">
+      <DependentUpon>OnboardingRootViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Model\OnboardingModel.cs" />
+    <Compile Include="Helpers\NetworkUtility.cs" />
+    <Compile Include="Login\Forgot Password\ForgotPasswordViewController.cs" />
+    <Compile Include="Login\Forgot Password\ForgotPasswordViewController.designer.cs">
+      <DependentUpon>ForgotPasswordViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Login\Forgot Password\ResetPasswordViewController.cs" />
+    <Compile Include="Login\Forgot Password\ResetPasswordViewController.designer.cs">
+      <DependentUpon>ResetPasswordViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Model\NewUserModel.cs" />
+    <Compile Include="Model\NewUserResponseModel.cs" />
+    <Compile Include="Sitecore CMS\Model\EnergyTipsModel.cs" />
+    <Compile Include="Sitecore CMS\Model\FullRTEPagesModel.cs" />
+    <Compile Include="Sitecore CMS\Model\LocationsModel.cs" />
+    <Compile Include="Sitecore CMS\Model\PreLoginPromoModel.cs" />
+    <Compile Include="Sitecore CMS\Model\WalkthroughScreensModel.cs" />
+    <Compile Include="Sitecore CMS\Extensions\SitecoreItemExtensions.cs" />
+    <Compile Include="Sitecore CMS\Service\EnergyTipsService.cs" />
+    <Compile Include="Sitecore CMS\Service\FullRTEPagesService.cs" />
+    <Compile Include="Sitecore CMS\Service\GetItemsService.cs" />
+    <Compile Include="Sitecore CMS\Service\LocationsService.cs" />
+    <Compile Include="Sitecore CMS\Service\PreLoginPromoService.cs" />
+    <Compile Include="Sitecore CMS\Service\SitecoreService.cs" />
+    <Compile Include="Sitecore CMS\Service\WalkthroughScreenService.cs" />
+    <Compile Include="Sitecore CMS\Constants.cs" />
+    <Compile Include="SQLite\SQLiteHelper.cs" />
+    <Compile Include="Registration\Customer Accounts\SelectAccountByICNumberViewController.cs" />
+    <Compile Include="Registration\Customer Accounts\SelectAccountByICNumberViewController.designer.cs">
+      <DependentUpon>SelectAccountByICNumberViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Registration\Customer Accounts\SelectAccountByRightsViewController.cs" />
+    <Compile Include="Registration\Customer Accounts\SelectAccountByRightsViewController.designer.cs">
+      <DependentUpon>SelectAccountByRightsViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Sitecore CMS\Model\BaseModel.cs" />
+    <Compile Include="Sitecore CMS\Model\TimestampModel.cs" />
+    <Compile Include="Sitecore CMS\Service\TimestampService.cs" />
+    <Compile Include="Sitecore CMS\Model\WalkthroughScreensResponseModel.cs" />
+    <Compile Include="SQLite\SQLite Data Manager\WalkthroughScreensEntity.cs" />
+    <Compile Include="Helpers\DeviceHelper.cs" />
+    <Compile Include="Registration\BarcodeScannerViewController.cs" />
+    <Compile Include="Registration\BarcodeScannerViewController.designer.cs">
+      <DependentUpon>BarcodeScannerViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Registration\TermsAndConditionViewController.cs" />
+    <Compile Include="Registration\TermsAndConditionViewController.designer.cs">
+      <DependentUpon>TermsAndConditionViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Login\Forgot Password\PasswordResetSuccessViewController.cs" />
+    <Compile Include="Login\Forgot Password\PasswordResetSuccessViewController.designer.cs">
+      <DependentUpon>PasswordResetSuccessViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Helpers\MyTNBFont.cs" />
+    <Compile Include="Payment\SelectPaymentMethodViewController.cs" />
+    <Compile Include="Payment\SelectPaymentMethodViewController.designer.cs">
+      <DependentUpon>SelectPaymentMethodViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Home\Dashboard\DashboardViewController.cs" />
+    <Compile Include="Home\Dashboard\DashboardViewController.designer.cs">
+      <DependentUpon>..\..\Dashboard\DashboardViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Home\Dashboard\Select Accounts\SelectAccountsDataSource.cs" />
+    <Compile Include="Home\Dashboard\Select Accounts\SelectAccountTableViewController.cs" />
+    <Compile Include="Home\Dashboard\Select Accounts\SelectAccountTableViewController.designer.cs">
+      <DependentUpon>..\..\..\Dashboard\Select Accounts\SelectAccountTableViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Home\Bill\BillViewController.cs" />
+    <Compile Include="Home\Bill\BillViewController.designer.cs">
+      <DependentUpon>BillViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Home\Promotions\PromotionsViewController.cs" />
+    <Compile Include="Home\Promotions\PromotionsViewController.designer.cs">
+      <DependentUpon>PromotionsViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Home\Feedback\FeedbackViewController.cs" />
+    <Compile Include="Home\Feedback\FeedbackViewController.designer.cs">
+      <DependentUpon>FeedbackViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Home\More\MoreViewController.cs" />
+    <Compile Include="Home\More\MoreViewController.designer.cs">
+      <DependentUpon>MoreViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Home\Components\AccountSelectionComponent.cs" />
+    <Compile Include="Home\Components\AddressComponent.cs" />
+    <Compile Include="Home\Components\BillAndPaymentComponent.cs" />
+    <Compile Include="Home\Components\ChartComponent.cs" />
+    <Compile Include="Home\Components\EstimatedReadingComponent.cs" />
+    <Compile Include="Home\Components\GetAccessComponent.cs" />
+    <Compile Include="Home\Components\GradientViewComponent.cs" />
+    <Compile Include="Home\Components\NoAccountComponent.cs" />
+    <Compile Include="Home\Components\NoDataConnectionComponent.cs" />
+    <Compile Include="Home\Components\SelectorComponent.cs" />
+    <Compile Include="Home\Components\SmartMeterComponent.cs" />
+    <Compile Include="Home\Components\TitleBarComponent.cs" />
+    <Compile Include="Home\Components\UsageHistoryComponent.cs" />
+    <Compile Include="Home\Dashboard\DashboardMainComponent.cs" />
+    <Compile Include="SQLite\SQLite Data Manager\UserAccountsEntity.cs" />
+    <Compile Include="Data Manager\ServiceManager.cs" />
+    <Compile Include="Data Manager\BaseService.cs" />
+    <Compile Include="SQLite\SQLite Data Manager\UserEntity.cs" />
+    <Compile Include="Home\Dashboard\View Bill\ViewBillViewController.cs" />
+    <Compile Include="Home\Dashboard\View Bill\ViewBillViewController.designer.cs">
+      <DependentUpon>ViewBillViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Helpers\WebViewDelegate.cs" />
+    <Compile Include="Home\Dashboard\Get Access\GetAccessSuccessViewController.cs" />
+    <Compile Include="Home\Dashboard\Get Access\GetAccessSuccessViewController.designer.cs">
+      <DependentUpon>GetAccessSuccessViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Home\Dashboard\Get Access\GetAccessViewController.cs" />
+    <Compile Include="Home\Dashboard\Get Access\GetAccessViewController.designer.cs">
+      <DependentUpon>GetAccessViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Home\Bill\BillTableViewDataSource.cs" />
+    <Compile Include="Home\Bill\BillTableViewCell.cs" />
+    <Compile Include="Home\Bill\BillTableViewCell.designer.cs">
+      <DependentUpon>BillTableViewCell.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Payment\Add Card\AddCardViewController.cs" />
+    <Compile Include="Payment\Add Card\AddCardViewController.designer.cs">
+      <DependentUpon>AddCardViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CreditCardInfoModel.cs" />
+    <Compile Include="Payment\Add Card\CreditCardScannerViewController.cs" />
+    <Compile Include="Payment\Add Card\CreditCardScannerViewController.designer.cs">
+      <DependentUpon>CreditCardScannerViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Model\RegistrationTokenSMSModel.cs" />
+    <Compile Include="Model\RegistrationTokenSMSResponseModel.cs" />
+    <Compile Include="Helpers\DateHelper.cs" />
+    <Compile Include="UserInfoViewController.cs" />
+    <Compile Include="Model\RegisteredCardsDataModel.cs" />
+    <Compile Include="Model\RegisteredCardsModel.cs" />
+    <Compile Include="Model\RegisteredCardsResponseModel.cs" />
+    <Compile Include="Home\More\MoreDataSource.cs" />
+    <Compile Include="Home\More\Push Notification Settings\NotificationSettingsViewController.cs" />
+    <Compile Include="Home\More\Push Notification Settings\NotificationSettingsViewController.designer.cs">
+      <DependentUpon>NotificationSettingsViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Home\More\Push Notification Settings\NotificationSettingsDataSource.cs" />
+    <Compile Include="Payment\SelectPaymentTableViewSource.cs" />
+    <Compile Include="Payment\AddCardCell.cs" />
+    <Compile Include="Payment\AddCardCell.designer.cs">
+      <DependentUpon>AddCardCell.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Helpers\UIViewWithDashedLinerBorder.cs" />
+    <Compile Include="Payment\SelectPaymentCell.cs" />
+    <Compile Include="Payment\SelectPaymentCell.designer.cs">
+      <DependentUpon>SelectPaymentCell.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Payment\Make Payment\MakePaymentViewController.cs" />
+    <Compile Include="Payment\Make Payment\MakePaymentViewController.designer.cs">
+      <DependentUpon>MakePaymentViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CardModel.cs" />
+    <Compile Include="Payment\fpxCell.cs" />
+    <Compile Include="Payment\fpxCell.designer.cs">
+      <DependentUpon>fpxCell.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Push Notification\PushNotificationHelper.cs" />
+    <Compile Include="Home\More\Push Notification Settings\NotificationSettingsViewCell.cs" />
+    <Compile Include="Home\More\Push Notification Settings\NotificationSettingsViewCell.designer.cs">
+      <DependentUpon>NotificationSettingsViewCell.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Model\DeleteNotificationResponseModel.cs" />
+    <Compile Include="Push Notification\Notification Details\NotificationDetailsViewController.cs" />
+    <Compile Include="Push Notification\Notification Details\NotificationDetailsViewController.designer.cs">
+      <DependentUpon>NotificationDetailsViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Push Notification\Notification List\PushNotificationDataSource.cs" />
+    <Compile Include="Push Notification\Notification List\PushNotificationViewController.cs" />
+    <Compile Include="Push Notification\Notification List\PushNotificationViewController.designer.cs">
+      <DependentUpon>PushNotificationViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Push Notification\Notification List\NotificationViewCell.cs" />
+    <Compile Include="Push Notification\Notification List\NotificationViewCell.designer.cs">
+      <DependentUpon>NotificationViewCell.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Model\AccountDetailsModel.cs" />
+    <Compile Include="Model\GetBillingAccountDetails\BillingAccountDetailsModel.cs" />
+    <Compile Include="Model\GetBillingAccountDetails\BillingAccountDetailsDataModel.cs" />
+    <Compile Include="Model\GetBillingAccountDetails\BillingAccountDetailsResponseModel.cs" />
+    <Compile Include="Model\Notification\NotificationChannelResponseModel.cs" />
+    <Compile Include="Model\Notification\NotificationDetailedInfoModel.cs" />
+    <Compile Include="Model\Notification\NotificationDetailedInfoResponseModel.cs" />
+    <Compile Include="Model\Notification\NotificationPreferenceModel.cs" />
+    <Compile Include="Model\Notification\NotificationPreferenceUpdateResponseModel.cs" />
+    <Compile Include="Model\Notification\NotificationTypeModel.cs" />
+    <Compile Include="Model\Notification\NotificationTypeResponseModel.cs" />
+    <Compile Include="Model\Notification\UserNotificationDataModel.cs" />
+    <Compile Include="Model\Notification\UserNotificationModel.cs" />
+    <Compile Include="Model\Notification\UserNotificationResponseModel.cs" />
+    <Compile Include="Model\GetAccountUsageHistoryForGraph\ByDayModel.cs" />
+    <Compile Include="Model\GetAccountUsageHistoryForGraph\ByMonthModel.cs" />
+    <Compile Include="Model\GetAccountUsageHistoryForGraph\ChartDataModel.cs" />
+    <Compile Include="Model\GetAccountUsageHistoryForGraph\ChartModel.cs" />
+    <Compile Include="Model\GetAccountUsageHistoryForGraph\ChartResponseData.cs" />
+    <Compile Include="Model\GetCustomerBillingAccountList\CustomerAccountDataModel.cs" />
+    <Compile Include="Model\GetCustomerBillingAccountList\CustomerAccountRecordListModel.cs" />
+    <Compile Include="Model\GetCustomerBillingAccountList\CustomerAccountRecordModel.cs" />
+    <Compile Include="Model\GetCustomerBillingAccountList\CustomerAccountResponseModel.cs" />
+    <Compile Include="Model\GetAccountUsageHistoryForGraph\SegmentDetailsModel.cs" />
+    <Compile Include="Enums\APIVersionEnum.cs" />
+    <Compile Include="Home\More\My Account\MyAccountViewController.cs" />
+    <Compile Include="Home\More\My Account\MyAccountViewController.designer.cs">
+      <DependentUpon>MyAccountViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Home\More\My Account\AccountDetailsViewCell.cs" />
+    <Compile Include="Home\More\My Account\AccountDetailsViewCell.designer.cs">
+      <DependentUpon>AccountDetailsViewCell.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Home\More\My Account\SupplyAccountViewCell.cs" />
+    <Compile Include="Home\More\My Account\SupplyAccountViewCell.designer.cs">
+      <DependentUpon>SupplyAccountViewCell.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Home\Feedback\FeedbackDataSource.cs" />
+    <Compile Include="Home\Feedback\FeedbackViewCell.cs" />
+    <Compile Include="Home\Feedback\FeedbackViewCell.designer.cs">
+      <DependentUpon>FeedbackViewCell.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Home\More\My Account\MyAccountDataSource.cs" />
+    <Compile Include="Home\More\My Account\Update Mobile Number\UpdateMobileNumberViewController.cs" />
+    <Compile Include="Home\More\My Account\Update Mobile Number\UpdateMobileNumberViewController.designer.cs">
+      <DependentUpon>UpdateMobileNumberViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Home\More\My Account\Manage Accounts\ManageAccountsViewController.cs" />
+    <Compile Include="Home\More\My Account\Manage Accounts\ManageAccountsViewController.designer.cs">
+      <DependentUpon>ManageAccountsViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Home\More\My Account\Manage Accounts\DetailsViewCell.cs" />
+    <Compile Include="Home\More\My Account\Manage Accounts\DetailsViewCell.designer.cs">
+      <DependentUpon>DetailsViewCell.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Home\More\My Account\Manage Accounts\UpdateViewCell.cs" />
+    <Compile Include="Home\More\My Account\Manage Accounts\UpdateViewCell.designer.cs">
+      <DependentUpon>UpdateViewCell.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Home\More\My Account\Manage Accounts\RemoveViewCell.cs" />
+    <Compile Include="Home\More\My Account\Manage Accounts\RemoveViewCell.designer.cs">
+      <DependentUpon>RemoveViewCell.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Home\More\My Account\Manage Accounts\ManageAccountsDataSource.cs" />
+    <Compile Include="Home\More\My Account\Manage Accounts\Update Nickname\UpdateNicknameViewController.cs" />
+    <Compile Include="Home\More\My Account\Manage Accounts\Update Nickname\UpdateNicknameViewController.designer.cs">
+      <DependentUpon>UpdateNicknameViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Home\More\My Account\Manage Cards\ManageCardViewController.cs" />
+    <Compile Include="Home\More\My Account\Manage Cards\ManageCardViewController.designer.cs">
+      <DependentUpon>ManageCardViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Home\More\My Account\Manage Cards\ManageCardViewCell.cs" />
+    <Compile Include="Home\More\My Account\Manage Cards\ManageCardViewCell.designer.cs">
+      <DependentUpon>ManageCardViewCell.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Home\More\My Account\Manage Cards\ManageCardsDataSource.cs" />
+    <Compile Include="Data Manager\ServiceCall.cs" />
+    <Compile Include="Home\More\My Account\Update Password\UpdatePasswordViewController.cs" />
+    <Compile Include="Home\More\My Account\Update Password\UpdatePasswordViewController.designer.cs">
+      <DependentUpon>UpdatePasswordViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Home\More\My Account\Logout\LogoutViewController.cs" />
+    <Compile Include="Home\More\My Account\Logout\LogoutViewController.designer.cs">
+      <DependentUpon>LogoutViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Home\More\Find Us\FindUsViewController.cs" />
+    <Compile Include="Home\More\Find Us\FindUsViewController.designer.cs">
+      <DependentUpon>FindUsViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Home\Bill\Receipt\ReceiptViewController.cs" />
+    <Compile Include="Home\Bill\Receipt\ReceiptViewController.designer.cs">
+      <DependentUpon>ReceiptViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Model\GetReceipt\ReceiptDataModel.cs" />
+    <Compile Include="Model\GetReceipt\ReceiptModel.cs" />
+    <Compile Include="Model\GetReceipt\ReceiptResponseModel.cs" />
+    <Compile Include="Model\AddMultipleSupplyAccountsToUserReg\AddMultipleSupplyAccountsDataModel.cs" />
+    <Compile Include="Model\AddMultipleSupplyAccountsToUserReg\AddMultipleSupplyAccountsModel.cs" />
+    <Compile Include="Model\AddMultipleSupplyAccountsToUserReg\AddMultipleSupplyAccountsResponseModel.cs" />
+    <Compile Include="Model\ValidateManualAccountLinking\ValidateManualAccountLinkingModel.cs" />
+    <Compile Include="Model\ValidateManualAccountLinking\ValidateManualAccountLinkingResponseModel.cs" />
+    <Compile Include="Registration\AddAccountSuccessDataSource.cs" />
+    <Compile Include="Registration\AddAccountSuccessViewController.cs" />
+    <Compile Include="Registration\AddAccountSuccessViewController.designer.cs">
+      <DependentUpon>AddAccountSuccessViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Registration\SuccessfullyAddedAccountCell.cs" />
+    <Compile Include="Registration\SuccessfullyAddedAccountCell.designer.cs">
+      <DependentUpon>SuccessfullyAddedAccountCell.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Model\ValidateManualAccountLinking\ValidateManualAccountLinkingDataModel.cs" />
+    <Compile Include="Model\GetAccountDueAmount\DueAmountDataModel.cs" />
+    <Compile Include="Model\GetAccountDueAmount\DueAmountModel.cs" />
+    <Compile Include="Model\GetAccountDueAmount\DueAmountResponseModel.cs" />
+    <Compile Include="Home\Components\ActivityIndicatorComponent.cs" />
+    <Compile Include="Model\Base Model\BaseModel.cs" />
+    <Compile Include="Model\Base Model\BaseResponseModel.cs" />
+    <Compile Include="Home\More\Find Us\Select Store Type\SelectStoreTypeViewController.cs" />
+    <Compile Include="Home\More\Find Us\Select Store Type\SelectStoreTypeViewController.designer.cs">
+      <DependentUpon>SelectStoreTypeViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Home\More\Find Us\Select Store Type\SelectStoreTypeDataSource.cs" />
+    <Compile Include="Home\More\Find Us\AnnotationModel.cs" />
+    <Compile Include="Model\GetWebLinks\WebLinksDataModel.cs" />
+    <Compile Include="Model\GetWebLinks\WebLinksModel.cs" />
+    <Compile Include="Model\GetWebLinks\WebLinksResponseModel.cs" />
+    <Compile Include="Browser\BrowserViewController.cs" />
+    <Compile Include="Browser\BrowserViewController.designer.cs">
+      <DependentUpon>BrowserViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Model\IsUserAuthenticate\UserAuthenticationDataModel.cs" />
+    <Compile Include="Model\IsUserAuthenticate\UserAuthenticationModel.cs" />
+    <Compile Include="Model\IsUserAuthenticate\UserAuthenticationResponseModel.cs" />
+    <Compile Include="Model\GetLocationTypes\LocationTypeDataModel.cs" />
+    <Compile Include="Model\GetLocationTypes\LocationTypesModel.cs" />
+    <Compile Include="Model\GetLocationTypes\LocationTypesResponseModel.cs" />
+    <Compile Include="Home\More\Find Us\Location Details\LocationDetailsViewController.cs" />
+    <Compile Include="Home\More\Find Us\Location Details\LocationDetailsViewController.designer.cs">
+      <DependentUpon>LocationDetailsViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Model\GetLocations\GetLocationsDataModel.cs" />
+    <Compile Include="Model\GetLocations\GetLocationsModel.cs" />
+    <Compile Include="Model\GetLocations\GetLocationsResponseModel.cs" />
+    <Compile Include="Model\GetLocations\OpeningHoursModel.cs" />
+    <Compile Include="Model\GetLocations\ServicesModel.cs" />
+    <Compile Include="Home\More\Find Us\Location Details\LocationDetailsDataSource.cs" />
+    <Compile Include="Home\More\Find Us\Location Details\AddressViewCell.cs" />
+    <Compile Include="Home\More\Find Us\Location Details\AddressViewCell.designer.cs">
+      <DependentUpon>AddressViewCell.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Home\More\Find Us\Location Details\ContactUsViewCell.cs" />
+    <Compile Include="Home\More\Find Us\Location Details\ContactUsViewCell.designer.cs">
+      <DependentUpon>ContactUsViewCell.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Home\More\Find Us\Location Details\LocationNameViewCell.cs" />
+    <Compile Include="Home\More\Find Us\Location Details\LocationNameViewCell.designer.cs">
+      <DependentUpon>LocationNameViewCell.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Home\More\Find Us\Location Details\OpeningHoursViewCell.cs" />
+    <Compile Include="Home\More\Find Us\Location Details\OpeningHoursViewCell.designer.cs">
+      <DependentUpon>OpeningHoursViewCell.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Home\More\Find Us\Location Details\ServicesViewCell.cs" />
+    <Compile Include="Home\More\Find Us\Location Details\ServicesViewCell.designer.cs">
+      <DependentUpon>ServicesViewCell.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Model\Feedback\FeedbackSection.cs" />
+    <Compile Include="Login\Forgot Password\EnterCodeViewController.cs" />
+    <Compile Include="Login\Forgot Password\EnterCodeViewController.designer.cs">
+      <DependentUpon>EnterCodeViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Model\GetLocations\PhoneModel.cs" />
+    <Compile Include="Rating\RatingViewController.cs" />
+    <Compile Include="Rating\RatingViewController.designer.cs">
+      <DependentUpon>RatingViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Model\Feedback\SubmitFeedbackResponseModel.cs" />
+    <Compile Include="Model\GetFeedbackCategory\FeedbackCategoryDataModel.cs" />
+    <Compile Include="Model\GetFeedbackCategory\FeedbackCategoryModel.cs" />
+    <Compile Include="Model\GetFeedbackCategory\FeedbackCategoryResponseModel.cs" />
+    <Compile Include="Model\SubmitFeedback\SubmitFeedbackDataModel.cs" />
+    <Compile Include="Model\SubmitFeedback\SubmitFeedbackModel.cs" />
+    <Compile Include="Model\SubmitFeedback\SubmitFeedbackResponseModel.cs" />
+    <Compile Include="Model\GetStatesForFeedback\StatesForFeedbackDataModel.cs" />
+    <Compile Include="Model\GetStatesForFeedback\StatesForFeedbackModel.cs" />
+    <Compile Include="Model\GetStatesForFeedback\StatesForFeedbackResponseModel.cs" />
+    <Compile Include="Model\GetBillHistory\BillHistoryDataModel.cs" />
+    <Compile Include="Model\GetBillHistory\BillHistoryModel.cs" />
+    <Compile Include="Model\GetBillHistory\BillHistoryResponseModel.cs" />
+    <Compile Include="Model\GetPaymentHistory\PaymentHistoryDataModel.cs" />
+    <Compile Include="Model\GetPaymentHistory\PaymentHistoryModel.cs" />
+    <Compile Include="Model\GetPaymentHistory\PaymentHistoryResponseModel.cs" />
+    <Compile Include="Model\GetOtherFeedbackType\OtherFeedbackTypeDataModel.cs" />
+    <Compile Include="Model\GetOtherFeedbackType\OtherFeedbackTypeModel.cs" />
+    <Compile Include="Model\GetOtherFeedbackType\OtherFeedbackTypeResponseModel.cs" />
+    <Compile Include="Model\GetSubmittedFeedbackList\SubmittedFeedbackDataModel.cs" />
+    <Compile Include="Model\GetSubmittedFeedbackList\SubmittedFeedbackModel.cs" />
+    <Compile Include="Model\GetSubmittedFeedbackList\SubmittedFeedbackResponseModel.cs" />
+    <Compile Include="Model\GetSubmittedFeedbackDetails\SubmittedFeedbackDetailsDataModel.cs" />
+    <Compile Include="Model\GetSubmittedFeedbackDetails\SubmittedFeedbackDetailsModel.cs" />
+    <Compile Include="Model\GetSubmittedFeedbackDetails\SubmittedFeedbackDetailsResponseModel.cs" />
+    <Compile Include="Model\GetSubmittedFeedbackDetails\FeedbackImageModel.cs" />
+    <Compile Include="Enums\FeedBackEnum.cs" />
+    <Compile Include="Home\Feedback\Feedback Details\FeedbackDetailsViewController.cs" />
+    <Compile Include="Home\Feedback\Feedback Details\FeedbackDetailsViewController.designer.cs">
+      <DependentUpon>FeedbackDetailsViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Home\Feedback\Feedback Details\FeedbackDetailsDataSource.cs" />
+    <Compile Include="Helpers\ScrollViewDelegate.cs" />
+    <Compile Include="Home\Bill\NoDataViewCell.cs" />
+    <Compile Include="Home\Bill\NoDataViewCell.designer.cs">
+      <DependentUpon>NoDataViewCell.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Home\Dashboard\HomeTabBarController.cs" />
+    <Compile Include="Home\Dashboard\HomeTabBarController.designer.cs">
+      <DependentUpon>HomeTabBarController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Helpers\LabelHelper.cs" />
+    <Compile Include="Home\Feedback\FeedbackFileNameHelper.cs" />
+    <Compile Include="Sitecore CMS\Model\TimestampResponseModel.cs" />
+    <Compile Include="Sitecore CMS\Model\TermsAndConditionResponseModel.cs" />
+    <Compile Include="SQLite\SQLite Data Manager\TermsAndConditionEntity.cs" />
+    <Compile Include="Home\More\FAQ\FAQViewController.cs" />
+    <Compile Include="Home\More\FAQ\FAQViewController.designer.cs">
+      <DependentUpon>FAQViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Model\FAQ\FAQModel.cs" />
+    <Compile Include="Model\FAQ\FAQDataModel.cs" />
+    <Compile Include="Home\More\FAQ\FAQDataSource.cs" />
+    <Compile Include="Home\Promotions\PromotionsViewCell.cs" />
+    <Compile Include="Home\Promotions\PromotionsViewCell.designer.cs">
+      <DependentUpon>PromotionsViewCell.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Home\Promotions\Promotion Details\PromotionDetailsViewController.cs" />
+    <Compile Include="Home\Promotions\Promotion Details\PromotionDetailsViewController.designer.cs">
+      <DependentUpon>PromotionDetailsViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Home\Promotions\PromotionsDataSource.cs" />
+    <Compile Include="Sitecore CMS\Model\FAQsModel.cs" />
+    <Compile Include="Sitecore CMS\Model\FAQsResponseModel.cs" />
+    <Compile Include="Sitecore CMS\Model\FAQTimestampResponseModel.cs" />
+    <Compile Include="Sitecore CMS\Model\PromotionsModel.cs" />
+    <Compile Include="Sitecore CMS\Model\PromotionsResponseModel.cs" />
+    <Compile Include="Sitecore CMS\Model\PromotionsTimestampResponseModel.cs" />
+    <Compile Include="Sitecore CMS\Service\FAQsService.cs" />
+    <Compile Include="Sitecore CMS\Service\PromotionsService.cs" />
+    <Compile Include="SQLite\SQLite Data Manager\FAQEntity.cs" />
+    <Compile Include="SQLite\SQLite Data Manager\PromotionsEntity.cs" />
+    <Compile Include="Home\More\FAQ\FAQViewCell.cs" />
+    <Compile Include="Home\More\FAQ\FAQViewCell.designer.cs">
+      <DependentUpon>FAQViewCell.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Home\Dashboard\Select Accounts\AccountsViewCell.cs" />
+    <Compile Include="Home\Dashboard\Select Accounts\AccountsViewCell.designer.cs">
+      <DependentUpon>AccountsViewCell.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Model\Feedback\FeedbackRowModel.cs" />
+    <Compile Include="Payment\Select Bills\SelectBillsViewController.cs" />
+    <Compile Include="Payment\Select Bills\SelectBillsViewController.designer.cs">
+      <DependentUpon>SelectBillsViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Payment\Select Bills\SelectBillsDataSource.cs" />
+    <Compile Include="Payment\Select Bills\SelectBillsTableViewCell.cs" />
+    <Compile Include="Payment\Select Bills\SelectBillsTableViewCell.designer.cs">
+      <DependentUpon>SelectBillsTableViewCell.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Model\GetMultiReceiptByTransId\MultiReceiptResponseModel.cs" />
+    <Compile Include="Model\GetReceipt\MultiPayDataModel.cs" />
+    <Compile Include="Model\GetMultiAccountDueAmount\MultiAccountDueAmountResponseModel.cs" />
+    <Compile Include="Model\GetMultiAccountDueAmount\MultiAccountDueAmountModel.cs" />
+    <Compile Include="Model\GetMultiAccountDueAmount\MultiAccountDueAmountDataModel.cs" />
+    <Compile Include="Model\RequestPayBill\RequestPayBillDataModel.cs" />
+    <Compile Include="Model\RequestPayBill\RequestPayBillModel.cs" />
+    <Compile Include="Model\RequestPayBill\RequestPayBillResponseModel.cs" />
+    <Compile Include="Model\RequestPayBill\PayAccountDataModel.cs" />
+    <Compile Include="Model\RequestPayBill\PaymentItemsModel.cs" />
+    <Compile Include="Home\Feedback\Submitted Feedback\SubmitFeedbackFailedViewController.cs" />
+    <Compile Include="Home\Feedback\Submitted Feedback\SubmitFeedbackFailedViewController.designer.cs">
+      <DependentUpon>SubmitFeedbackFailedViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Home\Feedback\Submitted Feedback\SubmitFeedbackSuccessViewController.cs" />
+    <Compile Include="Home\Feedback\Submitted Feedback\SubmitFeedbackSuccessViewController.designer.cs">
+      <DependentUpon>SubmitFeedbackSuccessViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Home\Feedback\Submitted Feedback\SubmittedFeedbackCell.cs" />
+    <Compile Include="Home\Feedback\Submitted Feedback\SubmittedFeedbackCell.designer.cs">
+      <DependentUpon>SubmittedFeedbackCell.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Home\Feedback\Submitted Feedback\SubmittedFeedbackDataSource.cs" />
+    <Compile Include="Home\Feedback\Submitted Feedback\SubmittedFeedbackViewController.cs" />
+    <Compile Include="Home\Feedback\Submitted Feedback\SubmittedFeedbackViewController.designer.cs">
+      <DependentUpon>SubmittedFeedbackViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Home\Components\LineChartComponent.cs" />
+    <Compile Include="Model\GetAccountUsageHistoryForGraph\ChartDataModelBase.cs" />
+    <Compile Include="Model\GetAccountUsageHistoryForGraph\SmartChartDataModel.cs" />
+    <Compile Include="Model\GetAccountUsageHistoryForGraph\SmartChartModel.cs" />
+    <Compile Include="Model\GetAccountUsageHistoryForGraph\ChartModelBase.cs" />
+    <Compile Include="Model\GetAccountUsageHistoryForGraph\UsageMetrics.cs" />
+    <Compile Include="Model\GetAccountUsageHistoryForGraph\RealTimeMetrics.cs" />
+    <Compile Include="SQLite\SQLite Data Manager\ChartEntity.cs" />
+    <Compile Include="Home\Components\ChartCompanionComponent.cs" />
+    <Compile Include="Home\Components\InfoComponent.cs" />
+    <Compile Include="Model\GetAccountUsageHistoryForGraph\EmissionMetric.cs" />
+    <Compile Include="Enums\ChartModeEnum.cs" />
+    <Compile Include="Model\GetAccountUsageHistoryForGraph\ByRangeModelBase.cs" />
+    <Compile Include="Home\Dashboard\ChartDataSource.cs" />
+    <Compile Include="Helpers\ChartHelper.cs" />
+    <Compile Include="Helpers\AppVersionHelper.cs" />
+    <Compile Include="Helpers\ToastHelper.cs" />
+    <Compile Include="Extensions\StringExtensions.cs" />
+    <Compile Include="Home\Promotions\PromotionsModalViewController.cs" />
+    <Compile Include="Home\Promotions\PromotionsModalViewController.designer.cs">
+      <DependentUpon>PromotionsModalViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Sitecore CMS\Model\PromotionsModelV2.cs" />
+    <Compile Include="Sitecore CMS\Service\PromotionsV2Service.cs" />
+    <Compile Include="Sitecore CMS\Model\PromotionsV2ResponseModel.cs" />
+    <Compile Include="Sitecore CMS\Model\PromotionsParentV2ResponseModel.cs" />
+    <Compile Include="Home\Promotions\PromotionsModalDataSource.cs" />
+    <Compile Include="Model\Feedback\FeedbackQuestionRequestModel.cs" />
+    <Compile Include="Model\Feedback\FeedbackQuestionModel.cs" />
+    <Compile Include="Model\Feedback\QuestionInputOption.cs" />
+    <Compile Include="Enums\QuestionTypeEnum.cs" />
+    <Compile Include="Enums\QuestionCategoryEnum.cs" />
+    <Compile Include="Rating\FeedbackInputCell.cs" />
+    <Compile Include="Rating\FeedbackInputCell.designer.cs">
+      <DependentUpon>FeedbackInputCell.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Rating\RatingDataSource.cs" />
+    <Compile Include="Helpers\ViewHelper.cs" />
+    <Compile Include="Model\SubmitFeedback\InputAnswerDetailsModel.cs" />
+    <Compile Include="Model\SubmitFeedback\InputAnswerModel.cs" />
+    <Compile Include="Customs\FeedbackTextView.cs" />
+    <Compile Include="Rating\RatingResultsViewController.cs" />
+    <Compile Include="Rating\RatingResultsViewController.designer.cs">
+      <DependentUpon>RatingResultsViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Helpers\TextHelper.cs" />
+    <Compile Include="Home\Dashboard\DashboardHomeViewController.cs" />
+    <Compile Include="Home\Dashboard\DashboardHomeViewController.designer.cs">
+      <DependentUpon>DashboardHomeViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Home\Dashboard\DashboardNavigationController.cs" />
+    <Compile Include="Home\Dashboard\DashboardNavigationController.designer.cs">
+      <DependentUpon>DashboardNavigationController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Model\GetAccountDueAmount\AmountDueStatusResponseModel.cs" />
+    <Compile Include="Home\Dashboard\DashboardAccountsDataSource.cs" />
+    <Compile Include="Home\Dashboard\DashboardAccountCell.cs" />
+    <Compile Include="Home\Dashboard\DashboardAccountCell.designer.cs">
+      <DependentUpon>DashboardAccountCell.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Home\Components\GreetingComponent.cs" />
+    <Compile Include="Enums\GreetingModeEnum.cs" />
+    <Compile Include="Enums\NotificationEnum.cs" />
+    <Compile Include="SQLite\SQLite Data Manager\DueEntity.cs" />
+    <Compile Include="SQLite\SQLite Data Manager\BillingAccountEntity.cs" />
+    <Compile Include="SQLite\SQLite Data Manager\BillHistoryEntity.cs" />
+    <Compile Include="SQLite\SQLite Data Manager\PaymentHistoryEntity.cs" />
+    <Compile Include="Model\MasterDataResponseModel.cs" />
+    <Compile Include="Model\MasterDataModel.cs" />
+    <Compile Include="Model\AppVersionModel.cs" />
+    <Compile Include="Onboarding\AppUpdateViewController.cs" />
+    <Compile Include="Onboarding\AppUpdateViewController.designer.cs">
+      <DependentUpon>AppUpdateViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Model\DowntimeDataModel.cs" />
+    <Compile Include="Enums\SystemEnum.cs" />
+    <Compile Include="Home\Components\SystemDownComponent.cs" />
+    <Compile Include="Home\Bill\Receipt\ReceiptTableViewDataSource.cs" />
+    <Compile Include="Home\Bill\Receipt\ReceiptTableViewCell.cs" />
+    <Compile Include="Home\Bill\Receipt\ReceiptTableViewCell.designer.cs">
+      <DependentUpon>ReceiptTableViewCell.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Model\PhoneVerificationStatusResponseModel.cs" />
+    <Compile Include="Model\PhoneVerificationStatusDataModel.cs" />
+    <Compile Include="Home\Feedback\Feedback Details\FeedbackDetailsViewImageCell.cs" />
+    <Compile Include="Home\Feedback\Feedback Details\FeedbackDetailsViewImageCell.designer.cs">
+      <DependentUpon>FeedbackDetailsViewImageCell.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Home\Feedback\Feedback Details\FeedbackDetailsViewCell.cs" />
+    <Compile Include="Home\Feedback\Feedback Details\FeedbackDetailsViewCell.designer.cs">
+      <DependentUpon>FeedbackDetailsViewCell.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Enums\DashboardModeEnum.cs" />
+    <Compile Include="Helpers\AlertHandler.cs" />
+    <Compile Include="Home\Feedback\Feedback Entry\FeedbackEntryViewController.cs" />
+    <Compile Include="Home\Feedback\Feedback Entry\FeedbackEntryViewController.designer.cs">
+      <DependentUpon>FeedbackEntryViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Home\Feedback\Feedback Entry\OtherFeedbackComponent.cs" />
+    <Compile Include="Home\Feedback\Feedback Entry\FeedbackCommonWidgets.cs" />
+    <Compile Include="Home\Feedback\Feedback Entry\BillRelatedFeedbackComponent.cs" />
+    <Compile Include="Home\Feedback\Feedback Entry\StreetLampFeedbackComponent.cs" />
+    <Compile Include="Helpers\AttributedStringUtility.cs" />
+    <Compile Include="Home\Feedback\Feedback Entry\FeedbackEntryStatus.cs" />
+    <Compile Include="Home\Feedback\Feedback Entry\FeedbackEntryStatus.designer.cs">
+      <DependentUpon>FeedbackEntryStatus.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Home\Feedback\Feedback Location and State\LocationManager.cs" />
+    <Compile Include="Home\Feedback\Feedback Location and State\LocationUpdateEventArgs.cs" />
+    <Compile Include="Home\Feedback\Feedback Image\ImageDataModel.cs" />
+    <Compile Include="Home\Feedback\Feedback Image\ImagePickerDelegate.cs" />
+    <Compile Include="Home\Feedback\Feedback Image\UIImageHelper.cs" />
+    <Compile Include="Helpers\Generic Tableview Selector\GenericSelectorDataSource.cs" />
+    <Compile Include="Helpers\Generic Tableview Selector\GenericSelectorViewController.cs" />
+    <Compile Include="Helpers\Generic Tableview Selector\GenericSelectorViewController.designer.cs" />
+    <Compile Include="Home\More\Language\LanguageSettings.cs" />
+    <Compile Include="Helpers\Generic Line\GenericLine.cs" />
+    <Compile Include="Customs\TextViewDelegate.cs" />
+    <Compile Include="Model\GetAccountUsageHistoryForGraph\ToolTipsModel.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\TermsAndCondition.txt" />
+    <BundleResource Include="GoogleService-Info.plist" />
+    <BundleResource Include="Resources\FAQ.json" />
+    <BundleResource Include="Resources\Fonts\MuseoSans_500.otf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </BundleResource>
+    <BundleResource Include="Resources\Fonts\MuseoSans-300.otf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </BundleResource>
+    <BundleResource Include="Resources\TNB_Logo.json" />
+    <BundleResource Include="Resources\Base.lproj\Localizable.strings" />
+    <BundleResource Include="Resources\tnbReceiptLogoHeader.jpg" />
+    <BundleResource Include="Resources\Base.lproj\InfoPlist.strings" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\myTNB.Mobile\myTNB.Mobile.csproj">
+      <Project>{A27A3842-1A8F-47F0-B333-94875BC922ED}</Project>
+      <Name>myTNB.Mobile</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
+  <Import Project="..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" />
+  <Import Project="..\packages\Xamarin.Build.Download.0.4.6\build\Xamarin.Build.Download.targets" Condition="Exists('..\packages\Xamarin.Build.Download.0.4.6\build\Xamarin.Build.Download.targets')" />
+  <Import Project="..\packages\Xamarin.Firebase.iOS.Core.4.0.8\build\Xamarin.Firebase.iOS.Core.targets" Condition="Exists('..\packages\Xamarin.Firebase.iOS.Core.4.0.8\build\Xamarin.Firebase.iOS.Core.targets')" />
+  <Import Project="..\packages\Xamarin.Firebase.iOS.InstanceID.2.0.4\build\Xamarin.Firebase.iOS.InstanceID.targets" Condition="Exists('..\packages\Xamarin.Firebase.iOS.InstanceID.2.0.4\build\Xamarin.Firebase.iOS.InstanceID.targets')" />
+  <Import Project="..\packages\Xamarin.Firebase.iOS.Analytics.4.0.4\build\Xamarin.Firebase.iOS.Analytics.targets" Condition="Exists('..\packages\Xamarin.Firebase.iOS.Analytics.4.0.4\build\Xamarin.Firebase.iOS.Analytics.targets')" />
+  <Import Project="..\packages\Xamarin.Firebase.iOS.CloudMessaging.2.0.4\build\Xamarin.Firebase.iOS.CloudMessaging.targets" Condition="Exists('..\packages\Xamarin.Firebase.iOS.CloudMessaging.2.0.4\build\Xamarin.Firebase.iOS.CloudMessaging.targets')" />
+  <Import Project="..\packages\Xamarin.Build.Download.0.4.11\build\Xamarin.Build.Download.targets" Condition="Exists('..\packages\Xamarin.Build.Download.0.4.11\build\Xamarin.Build.Download.targets')" />
+  <Import Project="..\packages\Xamarin.Firebase.iOS.Crashlytics.3.10.9\build\Xamarin.Firebase.iOS.Crashlytics.targets" Condition="Exists('..\packages\Xamarin.Firebase.iOS.Crashlytics.3.10.9\build\Xamarin.Firebase.iOS.Crashlytics.targets')" />
+  <Import Project="..\packages\Refit.4.6.58\build\netstandard1.4\refit.targets" Condition="Exists('..\packages\Refit.4.6.58\build\netstandard1.4\refit.targets')" />
+</Project>

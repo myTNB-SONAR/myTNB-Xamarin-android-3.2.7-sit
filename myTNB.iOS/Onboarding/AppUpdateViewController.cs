@@ -1,5 +1,4 @@
 using Foundation;
-using myTNB.Extensions;
 using System;
 using UIKit;
 
@@ -7,7 +6,7 @@ namespace myTNB
 {
     public partial class AppUpdateViewController : UIViewController
     {
-        public AppUpdateViewController (IntPtr handle) : base (handle)
+        public AppUpdateViewController(IntPtr handle) : base(handle)
         {
         }
 
@@ -15,20 +14,20 @@ namespace myTNB
         {
             base.ViewDidLoad();
 
-            var titleStr = @"<p style=""text-align:center;""><strong>" + "NewUpdateTitle".Translate() + "</strong></p>";
+            var titleStr = @"<p style=""text-align:center;""><strong>" + "Onboarding_NewUpdateTitle".Translate() + "</strong></p>";
             NSError htmlError = null;
-            NSAttributedString attrString = TextHelper.ConvertToHtmlWithFont(titleStr, ref htmlError,
-                                                                                         myTNBFont.FONTNAME_300, 14f);
+            NSAttributedString attrString = TextHelper.ConvertToHtmlWithFont(titleStr
+                , ref htmlError, MyTNBFont.FONTNAME_300, 14f);
             lblTitle.AttributedText = attrString;
-            lblTitle.TextColor = myTNBColor.TunaGrey();
+            lblTitle.TextColor = MyTNBColor.TunaGrey();
 
-            lblMessage.Font = myTNBFont.MuseoSans14_300();
-            lblMessage.TextColor = myTNBColor.TunaGrey();
+            lblMessage.Font = MyTNBFont.MuseoSans14_300;
+            lblMessage.TextColor = MyTNBColor.TunaGrey();
             lblMessage.Lines = 0;
 
-            btnUpdate.SetTitle("NewUpdateAction".Translate(), UIControlState.Normal);
-            btnUpdate.SetTitleColor(myTNBColor.PowerBlue(), UIControlState.Normal);
-            btnUpdate.Font = myTNBFont.MuseoSans16_300();
+            btnUpdate.SetTitle("Onboarding_UpdateNow".Translate(), UIControlState.Normal);
+            btnUpdate.SetTitleColor(MyTNBColor.PowerBlue, UIControlState.Normal);
+            btnUpdate.Font = MyTNBFont.MuseoSans16_300;
             btnUpdate.BackgroundColor = UIColor.Clear;
             btnUpdate.TouchUpInside += OpenUpdateLink;
         }
@@ -57,7 +56,6 @@ namespace myTNB
 
                 }
             }
-
         }
     }
 }

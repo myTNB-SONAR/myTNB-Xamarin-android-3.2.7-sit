@@ -1,33 +1,26 @@
-﻿using System;
-
+﻿using Android;
 using Android.App;
-using Android.OS;
-using myTNB_Android.Src.Base.Activity;
-using myTNB_Android.Src.myTNBMenu.Models;
-using CheeseBind;
-using Android.Webkit;
-using myTNB_Android.Src.ViewReceipt.MVP;
-using myTNB_Android.Src.ViewReceipt.Model;
-using Android.Support.Design.Widget;
-using myTNB_Android.Src.Utils;
-using Android.Widget;
-using Android.Views;
-using Android.Util;
+using Android.Content;
 using Android.Content.PM;
-using Android.Print;
-using System.IO;
-using static Android.Provider.DocumentsContract;
+using Android.OS;
+using Android.Runtime;
+using Android.Support.Design.Widget;
+using Android.Support.V4.Content;
+using Android.Util;
+using Android.Views;
+using Android.Webkit;
+using Android.Widget;
+using CheeseBind;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
-using Android.Content;
-using AFollestad.MaterialDialogs;
+using myTNB_Android.Src.Base.Activity;
+using myTNB_Android.Src.myTNBMenu.Models;
+using myTNB_Android.Src.Utils;
+using myTNB_Android.Src.ViewReceipt.Model;
+using myTNB_Android.Src.ViewReceipt.MVP;
+using System;
 using System.Collections.Generic;
-using Android.Runtime;
-using Android.Support.V4.Content;
-using Android;
-using Android.Graphics.Drawables;
-using Android.Graphics;
-using Android.Content.Res;
+using System.IO;
 
 namespace myTNB_Android.Src.ViewReceipt.Activity
 {
@@ -65,9 +58,9 @@ namespace myTNB_Android.Src.ViewReceipt.Activity
         private FrameLayout baseView;
 
         [BindView(Resource.Id.progressBar)]
-         ProgressBar mProgressBar;
+        ProgressBar mProgressBar;
 
-       
+
         public void HideGetReceiptDialog()
         {
             if (this.mGetReceiptDialog != null && this.mGetReceiptDialog.IsShowing)
@@ -82,7 +75,7 @@ namespace myTNB_Android.Src.ViewReceipt.Activity
         }
 
 
-       
+
         public void OnShowReceiptDetails(GetMultiReceiptByTransIdResponse response)
         {
             if (response != null)
@@ -98,22 +91,22 @@ namespace myTNB_Android.Src.ViewReceipt.Activity
                     foreach (AccMultiPay acct in accounts)
                     {
                         string accountInfoTable = "<tr><table>";
-                        
-                        accountInfoTable += "<tr style='font-family:times new roman;'>"+ "<td style='color: black'>" + this.GetString(Resource.String.receipt_account_number)+ "</td><td>:</td><td>" + acct.accountNum + "</td><tr>"
-                                            + "<tr style='font-family:times new roman;'><td style='color: black'>"+ this.GetString(Resource.String.receipt_account_holder_name)+ "</td><td>:</td><td>" + acct.accountOwnerName + "</td><tr>"
-                                            + "<tr style='font-family:times new roman;'><td style='color: black'>"+ this.GetString(Resource.String.receipt_account_amount)+ "</td><td>:</td><td>" + acct.itmAmt + "</td><tr>";
+
+                        accountInfoTable += "<tr style='font-family:times new roman;'>" + "<td style='color: black'>" + this.GetString(Resource.String.receipt_account_number) + "</td><td>:</td><td>" + acct.accountNum + "</td><tr>"
+                                            + "<tr style='font-family:times new roman;'><td style='color: black'>" + this.GetString(Resource.String.receipt_account_holder_name) + "</td><td>:</td><td>" + acct.accountOwnerName + "</td><tr>"
+                                            + "<tr style='font-family:times new roman;'><td style='color: black'>" + this.GetString(Resource.String.receipt_account_amount) + "</td><td>:</td><td>" + acct.itmAmt + "</td><tr>";
                         accountInfoTable += "</table></br></tr>";
                         accountList += accountInfoTable;
                     }
 
                     string succesful_message = response.receipt.receiptDetails.payMethod.Equals("FPX") ? this.GetString(Resource.String.receipt_payment_succesful_fpx) : this.GetString(Resource.String.receipt_payment_succesful);
 
-                    receipt_html = HTML_START + "<p style='font-family:times new roman;'><font color='black'>" 
+                    receipt_html = HTML_START + "<p style='font-family:times new roman;'><font color='black'>"
                         + this.GetString(Resource.String.receipt_dear_customer) + "</br></br>"
                         + this.GetString(Resource.String.receipt_payment_thank_you) + "</br>"
                         + succesful_message + "</p>"
-                        + "<p style='font-family:times new roman;'><font color='black'>" 
-                        + "<table width='100 %'><tr><td>" + this.GetString(Resource.String.receipt_reference_number)+"</td><td>:</td>" + "<td>"+response.receipt.receiptDetails.referenceNum + "</td></tr>"
+                        + "<p style='font-family:times new roman;'><font color='black'>"
+                        + "<table width='100 %'><tr><td>" + this.GetString(Resource.String.receipt_reference_number) + "</td><td>:</td>" + "<td>" + response.receipt.receiptDetails.referenceNum + "</td></tr>"
                         + "<tr><td>" + this.GetString(Resource.String.receipt_date) + "</td><td>:</td><td>" + response.receipt.receiptDetails.payTransDate + "</td></tr>"
                         + "<tr><td>" + this.GetString(Resource.String.receipt_amount) + "</td><td>:</td><td>" + response.receipt.receiptDetails.payAmt + "</td></tr></table><br></br>"
                         + "<table width='100%'>" + accountList + "</table></p><br></br>"
@@ -124,11 +117,11 @@ namespace myTNB_Android.Src.ViewReceipt.Activity
                         + HTML_END;
 
                     string pdfAccountList = "";
-                    
+
                     foreach (AccMultiPay acct in accounts)
                     {
                         string pdfAccountInfo = this.GetString(Resource.String.receipt_account_number) + " : " + acct.accountNum + "\n"
-                                            + this.GetString(Resource.String.receipt_account_holder_name) + " : "+ acct.accountOwnerName + "\n"
+                                            + this.GetString(Resource.String.receipt_account_holder_name) + " : " + acct.accountOwnerName + "\n"
                                             + this.GetString(Resource.String.receipt_account_amount) + " : " + acct.itmAmt + "\n\n";
 
                         pdfAccountList += pdfAccountInfo;
@@ -239,7 +232,7 @@ namespace myTNB_Android.Src.ViewReceipt.Activity
                     else
                     {
                         RequestPermissions(new string[] { Manifest.Permission.WriteExternalStorage }, Constants.RUNTIME_PERMISSION_STORAGE_REQUEST_CODE);
-                    }                    
+                    }
                     return true;
             }
             return base.OnOptionsItemSelected(item);

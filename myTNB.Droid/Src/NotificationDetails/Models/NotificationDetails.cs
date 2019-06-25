@@ -1,15 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 
 namespace myTNB_Android.Src.NotificationDetails.Models
 {
@@ -56,7 +45,7 @@ namespace myTNB_Android.Src.NotificationDetails.Models
 
         [JsonProperty("AccountDetails", Required = Newtonsoft.Json.Required.AllowNull)]
         public AccountDetailsData AccountDetails;
-        
+
 
         public class AccountDetailsData
         {

@@ -1,25 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
+﻿using Android.Content;
 using Android.OS;
-using Android.Runtime;
-using Android.Util;
+using Android.Support.Design.Widget;
 using Android.Views;
+using Android.Webkit;
 using Android.Widget;
+using CheeseBind;
+using Java.Lang;
+using myTNB_Android.Src.AppLaunch.Models;
 using myTNB_Android.Src.Base.Fragments;
 using myTNB_Android.Src.myTNBMenu.Activity;
-using Java.Lang;
-using CheeseBind;
-using Android.Webkit;
-using myTNB_Android.Src.AppLaunch.Models;
-using Newtonsoft.Json;
-
 using myTNB_Android.Src.Utils;
-using Android.Support.Design.Widget;
+using Newtonsoft.Json;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.PromotionsMenu
 {
@@ -41,7 +32,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.PromotionsMenu
         {
             PromotionsMenuFragment fragment = new PromotionsMenuFragment();
             Bundle arguments = new Bundle();
-            arguments.PutString(Constants.PROMOTIONS_LINK , JsonConvert.SerializeObject(weblink));
+            arguments.PutString(Constants.PROMOTIONS_LINK, JsonConvert.SerializeObject(weblink));
             fragment.Arguments = arguments;
             return fragment;
         }
@@ -89,23 +80,25 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.PromotionsMenu
         private Snackbar mErrorNoInternet;
         public void ShowErrorMessageNoInternet(string failingUrl)
         {
-            try {
-            if (mErrorNoInternet != null && mErrorNoInternet.IsShown)
+            try
             {
-                mErrorNoInternet.Dismiss();
+                if (mErrorNoInternet != null && mErrorNoInternet.IsShown)
+                {
+                    mErrorNoInternet.Dismiss();
+                }
+
+                mErrorNoInternet = Snackbar.Make(rootView, GetString(Resource.String.promotions_menu_snackbar_error_no_internet), Snackbar.LengthIndefinite)
+                .SetAction(GetString(Resource.String.promotions_menu_snackbar_error_btn), delegate
+                {
+                    webView.LoadUrl(failingUrl);
+                    mErrorNoInternet.Dismiss();
+                });
+                View v = mErrorNoInternet.View;
+                TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+                tv.SetMaxLines(5);
+
+                mErrorNoInternet.Show();
             }
-
-            mErrorNoInternet = Snackbar.Make(rootView, GetString(Resource.String.promotions_menu_snackbar_error_no_internet), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.promotions_menu_snackbar_error_btn), delegate {
-                webView.LoadUrl(failingUrl);
-                mErrorNoInternet.Dismiss();
-            });
-            View v = mErrorNoInternet.View;
-            TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
-            tv.SetMaxLines(5);
-
-            mErrorNoInternet.Show();
-        }
             catch (System.Exception e)
             {
                 Utility.LoggingNonFatalError(e);
@@ -120,7 +113,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.PromotionsMenu
             private PromotionsMenuFragment fragment;
             private WebView webView;
 
-            public PromotionsWebViewClient(PromotionsMenuFragment fragment, ProgressBar progressBar , Weblink webLink , WebView webView)
+            public PromotionsWebViewClient(PromotionsMenuFragment fragment, ProgressBar progressBar, Weblink webLink, WebView webView)
             {
                 this.fragment = fragment;
                 this.progressBar = progressBar;
@@ -143,7 +136,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.PromotionsMenu
                     return true;
                 }
                 return false;
-  
+
             }
 
             public override void OnPageStarted(WebView view, string url, Android.Graphics.Bitmap favicon)

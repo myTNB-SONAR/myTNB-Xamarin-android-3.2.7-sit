@@ -5,7 +5,7 @@ using CoreGraphics;
 using Foundation;
 using myTNB.Model;
 using UIKit;
-using myTNB.Extensions;
+
 
 namespace myTNB.Home.More.MyAccount
 {
@@ -31,18 +31,18 @@ namespace myTNB.Home.More.MyAccount
 
         List<string> SectionTitle = new List<string>
         {
-            "myTNB Account",
-            "TNB Electricity Supply Account"
+            "MyAccount_MyTNBAccount".Translate(),
+            "MyAccount_TNBSupplyAccount".Translate()
         };
 
         List<string> DetailContent = new List<string>
         {
-            "NAME",
-            "IC / ROC / PASSPORT NO.",
-            "EMAIL",
-            "MOBILE NO.",
-            "PASSWORD",
-            "Credit / Debit Cards"
+            "Common_Name".Translate().ToUpper(),
+            "Common_ICROCPassportNumber".Translate().ToUpper(),
+            "Common_Email".Translate().ToUpper(),
+            "Common_MobileNumber".Translate().ToUpper(),
+            "Common_Password".Translate().ToUpper(),
+            "Common_Cards".Translate().ToUpper()
         };
 
         public override nint NumberOfSections(UITableView tableView)
@@ -71,12 +71,12 @@ namespace myTNB.Home.More.MyAccount
         public override UIView GetViewForHeader(UITableView tableView, nint section)
         {
             UIView view = new UIView(new CGRect(0, 0, tableView.Frame.Width, 48));
-            view.BackgroundColor = myTNBColor.SectionGrey();
+            view.BackgroundColor = MyTNBColor.SectionGrey;
 
             var lblSectionTitle = new UILabel(new CGRect(18, 16, tableView.Frame.Width, 18));
             lblSectionTitle.Text = SectionTitle[(int)section];
-            lblSectionTitle.Font = myTNBFont.MuseoSans16();
-            lblSectionTitle.TextColor = myTNBColor.PowerBlue();
+            lblSectionTitle.Font = MyTNBFont.MuseoSans16;
+            lblSectionTitle.TextColor = MyTNBColor.PowerBlue;
             view.Add(lblSectionTitle);
 
             return view;
@@ -92,9 +92,9 @@ namespace myTNB.Home.More.MyAccount
                 var detailCount = DetailContent?.Count ?? 0;
                 cell.lblTitle.Text = indexPath.Row < detailCount ? DetailContent[indexPath.Row] : string.Empty;
                 cell.viewCTA.Hidden = true;
-                cell.lblDetail.TextColor = myTNBColor.SilverChalice();
+                cell.lblDetail.TextColor = MyTNBColor.SilverChalice;
 
-                var userInfo = DataManager.DataManager.SharedInstance.UserEntity?.Count > 0 
+                var userInfo = DataManager.DataManager.SharedInstance.UserEntity?.Count > 0
                                           ? DataManager.DataManager.SharedInstance.UserEntity[0]
                                           : new SQLite.SQLiteDataManager.UserEntity();
                 if (indexPath.Row == 0)
@@ -107,7 +107,7 @@ namespace myTNB.Home.More.MyAccount
                     if (!string.IsNullOrEmpty(icNo) && icNo.Length > 4)
                     {
                         string lastDigit = icNo.Substring(icNo.Length - 4);
-                        icNo = "ICNoMask".Translate() + lastDigit;
+                        icNo = "MyAccount_ICNumberMask".Translate() + lastDigit;
                     }
                     string maskedICNo = icNo;
                     cell.lblDetail.Text = maskedICNo;
@@ -119,16 +119,16 @@ namespace myTNB.Home.More.MyAccount
                 else if (indexPath.Row == 3)
                 {
                     cell.lblDetail.Text = userInfo?.mobileNo;
-                    cell.lblDetail.TextColor = myTNBColor.TunaGrey();
-                    cell.lblCTA.Text = "Update";
+                    cell.lblDetail.TextColor = MyTNBColor.TunaGrey();
+                    cell.lblCTA.Text = "Common_Update".Translate();
                     cell.viewCTA.Hidden = false;
                     cell.viewCTA.AddGestureRecognizer(new UITapGestureRecognizer(_controller.UpdateMobileNumber));
                 }
                 else if (indexPath.Row == 4)
                 {
                     cell.lblDetail.Text = "••••••••••••••";
-                    cell.lblDetail.TextColor = myTNBColor.TunaGrey();
-                    cell.lblCTA.Text = "Update";
+                    cell.lblDetail.TextColor = MyTNBColor.TunaGrey();
+                    cell.lblCTA.Text = "Common_Update".Translate();
                     cell.viewCTA.Hidden = false;
                     cell.viewCTA.AddGestureRecognizer(new UITapGestureRecognizer(() =>
                     {
@@ -139,8 +139,8 @@ namespace myTNB.Home.More.MyAccount
                 {
                     var cardCount = _registeredCards?.d?.data?.Count ?? 0;
                     cell.lblDetail.Text = cardCount.ToString();
-                    cell.lblDetail.TextColor = myTNBColor.TunaGrey();
-                    cell.lblCTA.Text = "Manage";
+                    cell.lblDetail.TextColor = MyTNBColor.TunaGrey();
+                    cell.lblCTA.Text = "Common_Manage".Translate();
                     UITapGestureRecognizer manageCards = new UITapGestureRecognizer(() =>
                     {
                         _controller.ManageRegisteredCards();
@@ -154,7 +154,7 @@ namespace myTNB.Home.More.MyAccount
                         cell.viewCTA.AddGestureRecognizer(new UITapGestureRecognizer(() => { }));
                     }
                     cell.lblCTA.TextColor = cardCount > 0
-                        ? myTNBColor.PowerBlue() : myTNBColor.SilverChalice();
+                        ? MyTNBColor.PowerBlue : MyTNBColor.SilverChalice;
                     cell.viewCTA.Hidden = false;
                 }
                 cell.viewLine.Hidden = !(indexPath.Row < detailCount - 1);
@@ -168,7 +168,7 @@ namespace myTNB.Home.More.MyAccount
                 cell.lblName.Text = GetAccountModel(indexPath.Row).accDesc;
                 cell.lblAccountNumber.Text = GetAccountModel(indexPath.Row).accNum;
                 //cell.lblUsers.Text = "2 Users";
-                cell.lblCTA.Text = "Manage";
+                cell.lblCTA.Text = "Common_Manage".Translate();
                 cell.SelectionStyle = UITableViewCellSelectionStyle.None;
 
                 nfloat cellWidth = UIApplication.SharedApplication.KeyWindow.Frame.Width;
@@ -213,7 +213,7 @@ namespace myTNB.Home.More.MyAccount
         {
             if (DataManager.DataManager.SharedInstance.AccountRecordsList != null
                && DataManager.DataManager.SharedInstance.AccountRecordsList.d != null
-               && index < DataManager.DataManager.SharedInstance.AccountRecordsList?.d?.Count )
+               && index < DataManager.DataManager.SharedInstance.AccountRecordsList?.d?.Count)
             {
                 return DataManager.DataManager.SharedInstance.AccountRecordsList.d[index];
             }

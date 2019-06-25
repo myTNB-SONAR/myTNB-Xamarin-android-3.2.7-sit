@@ -1,28 +1,22 @@
-﻿using System;
+﻿using Android.App;
+using Android.Content;
+using Android.Runtime;
+using myTNB.SQLite.SQLiteDataManager;
+using myTNB_Android.Src.Database.Model;
+using myTNB_Android.Src.LogoutRate.Api;
+using myTNB_Android.Src.MakePayment.Api;
+using myTNB_Android.Src.MakePayment.Models;
+using myTNB_Android.Src.ManageCards.Models;
+using myTNB_Android.Src.myTNBMenu.Models;
+using myTNB_Android.Src.Utils;
+using Newtonsoft.Json;
+using Refit;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-using myTNB_Android.Src.Database.Model;
-using myTNB_Android.Src.myTNBMenu.Models;
-using System.Threading;
-using System.Net.Http;
-using myTNB_Android.Src.Utils;
-using Refit;
-using myTNB_Android.Src.myTNBMenu.Api;
-using myTNB_Android.Src.MakePayment.Api;
 using System.Net;
-using myTNB_Android.Src.ManageCards.Models;
-using Newtonsoft.Json;
-using myTNB_Android.Src.MakePayment.Models;
-using myTNB_Android.Src.LogoutRate.Api;
-using myTNB.SQLite.SQLiteDataManager;
+using System.Net.Http;
+using System.Threading;
 
 namespace myTNB_Android.Src.MyAccount.MVP
 {
@@ -42,68 +36,69 @@ namespace myTNB_Android.Src.MyAccount.MVP
 
         public void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
         {
-            try {
-            if (requestCode == Constants.UPDATE_MOBILE_NO_REQUEST)
+            try
             {
-                if (resultCode == Result.Ok)
+                if (requestCode == Constants.UPDATE_MOBILE_NO_REQUEST)
                 {
-                    UserEntity userEntity = UserEntity.GetActive();
-                    this.mView.ShowMobileUpdateSuccess(userEntity.MobileNo);
-                }
-            }
-            else if (requestCode == Constants.UPDATE_PASSWORD_REQUEST)
-            {
-                if (resultCode == Result.Ok)
-                {
-                    this.mView.ShowPasswordUpdateSuccess();
-                }
-            }
-            else if (requestCode == Constants.MANAGE_CARDS_REQUEST)
-            {
-                if (resultCode == Result.Ok)
-                {
-                    CreditCardData creditCard = JsonConvert.DeserializeObject<CreditCardData>(data.Extras.GetString(Constants.REMOVED_CREDIT_CARD));
-                    cardList.Remove(cardList.Single(item => item.Id.Equals(creditCard.Id)));
-                    this.mView.ShowRemovedCardSuccess(creditCard , cardList.Count);
-                    if (cardList.Count > 0)
+                    if (resultCode == Result.Ok)
                     {
-                        this.mView.EnableManageCards();
-                    }
-                    else
-                    {
-                        this.mView.DisableManageCards();
+                        UserEntity userEntity = UserEntity.GetActive();
+                        this.mView.ShowMobileUpdateSuccess(userEntity.MobileNo);
                     }
                 }
-            }
-            else if (requestCode == Constants.MANAGE_SUPPLY_ACCOUNT_REQUEST)
-            {
-                if (resultCode == Result.Ok)
+                else if (requestCode == Constants.UPDATE_PASSWORD_REQUEST)
                 {
+                    if (resultCode == Result.Ok)
+                    {
+                        this.mView.ShowPasswordUpdateSuccess();
+                    }
+                }
+                else if (requestCode == Constants.MANAGE_CARDS_REQUEST)
+                {
+                    if (resultCode == Result.Ok)
+                    {
+                        CreditCardData creditCard = JsonConvert.DeserializeObject<CreditCardData>(data.Extras.GetString(Constants.REMOVED_CREDIT_CARD));
+                        cardList.Remove(cardList.Single(item => item.Id.Equals(creditCard.Id)));
+                        this.mView.ShowRemovedCardSuccess(creditCard, cardList.Count);
+                        if (cardList.Count > 0)
+                        {
+                            this.mView.EnableManageCards();
+                        }
+                        else
+                        {
+                            this.mView.DisableManageCards();
+                        }
+                    }
+                }
+                else if (requestCode == Constants.MANAGE_SUPPLY_ACCOUNT_REQUEST)
+                {
+                    if (resultCode == Result.Ok)
+                    {
 
-                    this.mView.ClearAccountsAdapter();
-                    List<CustomerBillingAccount> customerAccountList = CustomerBillingAccount.List();
-                    if (customerAccountList != null && customerAccountList.Count > 0)
-                    {
-                        this.mView.ShowAccountList(customerAccountList);
-                    }
-                    else
-                    {
-                        this.mView.ShowEmptyAccount();
-                    }
-                    if (data != null && data.HasExtra(Constants.ACCOUNT_REMOVED_FLAG) && data.GetBooleanExtra(Constants.ACCOUNT_REMOVED_FLAG, false))
-                    {
-                        this.mView.ShowAccountRemovedSuccess();
-                    }
+                        this.mView.ClearAccountsAdapter();
+                        List<CustomerBillingAccount> customerAccountList = CustomerBillingAccount.List();
+                        if (customerAccountList != null && customerAccountList.Count > 0)
+                        {
+                            this.mView.ShowAccountList(customerAccountList);
+                        }
+                        else
+                        {
+                            this.mView.ShowEmptyAccount();
+                        }
+                        if (data != null && data.HasExtra(Constants.ACCOUNT_REMOVED_FLAG) && data.GetBooleanExtra(Constants.ACCOUNT_REMOVED_FLAG, false))
+                        {
+                            this.mView.ShowAccountRemovedSuccess();
+                        }
 
+                    }
                 }
-            }
             }
             catch (Exception e)
             {
                 Utility.LoggingNonFatalError(e);
             }
 
-        
+
         }
 
         public void OnAddAccount()
@@ -117,8 +112,9 @@ namespace myTNB_Android.Src.MyAccount.MVP
             cts = new CancellationTokenSource();
 
 
-            if (mView.IsActive()) {
-            this.mView.ShowLogoutProgressDialog();
+            if (mView.IsActive())
+            {
+                this.mView.ShowLogoutProgressDialog();
             }
 
 
@@ -215,7 +211,7 @@ namespace myTNB_Android.Src.MyAccount.MVP
             this.mView.ShowManageCards(cardList);
         }
 
-        public async void OnManageSupplyAccount(CustomerBillingAccount customerBillingAccount , int position)
+        public async void OnManageSupplyAccount(CustomerBillingAccount customerBillingAccount, int position)
         {
             //ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
             //cts = new CancellationTokenSource();
@@ -264,7 +260,7 @@ namespace myTNB_Android.Src.MyAccount.MVP
             //                this.mView.ShowRetryOptionsUnknownException(e);
             //            }
 
-            this.mView.ShowManageSupplyAccount(AccountData.Copy(customerBillingAccount , false), position);
+            this.mView.ShowManageSupplyAccount(AccountData.Copy(customerBillingAccount, false), position);
             //this.mView.HideShowProgressDialog();
         }
 
@@ -282,28 +278,29 @@ namespace myTNB_Android.Src.MyAccount.MVP
         public void Start()
         {
             //
-            try {
-            ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
-            if (CustomerBillingAccount.Enumerate().Count() > 0)
+            try
             {
-                List<CustomerBillingAccount> customerAccountList = CustomerBillingAccount.List();
-                if (customerAccountList != null && customerAccountList.Count > 0)
+                ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
+                if (CustomerBillingAccount.Enumerate().Count() > 0)
                 {
-                    this.mView.ShowAccountList(customerAccountList);
+                    List<CustomerBillingAccount> customerAccountList = CustomerBillingAccount.List();
+                    if (customerAccountList != null && customerAccountList.Count > 0)
+                    {
+                        this.mView.ShowAccountList(customerAccountList);
+                    }
+                    else
+                    {
+                        this.mView.ShowEmptyAccount();
+                    }
                 }
                 else
                 {
                     this.mView.ShowEmptyAccount();
                 }
-            }
-            else
-            {
-                this.mView.ShowEmptyAccount();
-            }
 
 
 
-            LoadCards();
+                LoadCards();
 
             }
             catch (Exception e)
@@ -317,8 +314,9 @@ namespace myTNB_Android.Src.MyAccount.MVP
         {
             cts = new CancellationTokenSource();
 
-            if (mView.IsActive()) {
-            this.mView.ShowProgressDialog();
+            if (mView.IsActive())
+            {
+                this.mView.ShowProgressDialog();
             }
 
             UserEntity userEntity = UserEntity.GetActive();
@@ -347,7 +345,7 @@ namespace myTNB_Android.Src.MyAccount.MVP
                         cardList.Add(CreditCardData.Copy(card));
                     }
 
-                    this.mView.ShowUserData(userEntity , cardsApiResponse.Data.creditCard.Count);
+                    this.mView.ShowUserData(userEntity, cardsApiResponse.Data.creditCard.Count);
 
                     if (cardList.Count > 0)
                     {
@@ -360,7 +358,7 @@ namespace myTNB_Android.Src.MyAccount.MVP
                 }
                 else
                 {
-                    this.mView.ShowUserData(userEntity , 0);
+                    this.mView.ShowUserData(userEntity, 0);
                 }
 
             }

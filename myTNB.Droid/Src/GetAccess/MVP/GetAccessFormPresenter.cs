@@ -1,16 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-using Android.Text;
+﻿using Android.Text;
 using myTNB_Android.Src.Utils;
+using System;
 
 namespace myTNB_Android.Src.GetAccess.MVP
 {
@@ -40,7 +30,9 @@ namespace myTNB_Android.Src.GetAccess.MVP
                     return;
                 }
                 this.mView.ShowSuccess();
-            } catch(Exception e) {
+            }
+            catch (Exception e)
+            {
                 Utility.LoggingNonFatalError(e);
             }
         }

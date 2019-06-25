@@ -1,7 +1,6 @@
 using System;
 using UIKit;
 using CoreGraphics;
-using myTNB.Extensions;
 
 namespace myTNB
 {
@@ -17,12 +16,12 @@ namespace myTNB
             btnRemove = new UIButton(UIButtonType.Custom);
             btnRemove.Frame = new CGRect(18, 0, cellWidth - 36, DeviceHelper.GetScaledHeight(48));
             btnRemove.Layer.CornerRadius = 4;
-            btnRemove.Layer.BorderColor = myTNBColor.FreshGreen().CGColor;
+            btnRemove.Layer.BorderColor = MyTNBColor.FreshGreen.CGColor;
             btnRemove.BackgroundColor = UIColor.White;
             btnRemove.Layer.BorderWidth = 1;
-            btnRemove.SetTitle("ManageAcctRemoveBtn".Translate(), UIControlState.Normal);
-            btnRemove.Font = myTNBFont.MuseoSans16_500();
-            btnRemove.SetTitleColor(myTNBColor.FreshGreen(), UIControlState.Normal);
+            btnRemove.SetTitle("Manage_RemoveAccount".Translate(), UIControlState.Normal);
+            btnRemove.Font = MyTNBFont.MuseoSans16_500;
+            btnRemove.SetTitleColor(MyTNBColor.FreshGreen, UIControlState.Normal);
             AddSubview(btnRemove);
         }
     }

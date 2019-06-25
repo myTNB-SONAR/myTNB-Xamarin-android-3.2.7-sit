@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using myTNB.Model;
 using System.Drawing;
-using myTNB.Extensions;
+using System.Diagnostics;
 
 namespace myTNB
 {
@@ -21,7 +21,7 @@ namespace myTNB
         BillHistoryResponseModel _billHistory = new BillHistoryResponseModel();
         string _url = string.Empty;
         string _pdfFilePath = string.Empty;
-        string _titleSuffix = "Bill";
+        string _titleSuffix = string.Empty;
         string _formattedDate = string.Empty;
 
         public int selectedIndex = -1;
@@ -33,7 +33,7 @@ namespace myTNB
             NavigationItem.HidesBackButton = true;
 
             _titleSuffix = DataManager.DataManager.SharedInstance.SelectedAccount.accountCategoryId.Equals("2")
-                                      ? "Advice" : "Bill";
+                ? "ViewBill_Advice".Translate() : "ViewBill_Title".Translate();
             SetNavigationItems();
             NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
             {
@@ -45,9 +45,7 @@ namespace myTNB
                     }
                     else
                     {
-                        var alert = UIAlertController.Create("ErrNoNetworkTitle".Translate(), "ErrNoNetworkMsg".Translate(), UIAlertControllerStyle.Alert);
-                        alert.AddAction(UIAlertAction.Create("Ok", UIAlertActionStyle.Cancel, null));
-                        PresentViewController(alert, animated: true, completionHandler: null);
+                        AlertHandler.DisplayNoDataAlert(this);
                     }
                 });
             });
@@ -107,7 +105,7 @@ namespace myTNB
                         }
                         catch (Exception err)
                         {
-                            Console.WriteLine("Error: " + err.Message);
+                            Debug.WriteLine("Error: " + err.Message);
                         }
                     }
                 }

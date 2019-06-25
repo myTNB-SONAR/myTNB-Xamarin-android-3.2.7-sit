@@ -4,6 +4,7 @@ using UIKit;
 using CoreGraphics;
 using CoreAnimation;
 using Cirrious.FluentLayouts.Touch;
+using System.Diagnostics;
 
 namespace myTNB
 {
@@ -65,9 +66,9 @@ namespace myTNB
                             {
                                 Frame = new CGRect(0f, 0f, 0f, 0f)
                             };
-                            btnSkip.SetTitle("Skip", UIControlState.Normal);
+                            btnSkip.SetTitle("Onboarding_Skip".Translate(), UIControlState.Normal);
                             btnSkip.BackgroundColor = UIColor.Clear;
-                            btnSkip.TitleLabel.Font = myTNBFont.MuseoSans14();
+                            btnSkip.TitleLabel.Font = MyTNBFont.MuseoSans14;
                             btnSkip.TitleLabel.TextAlignment = UITextAlignment.Left;
                             View.AddSubview(btnSkip);
                             btnSkip.TouchUpInside += (sender, e) =>
@@ -79,9 +80,9 @@ namespace myTNB
                             {
                                 Frame = new CGRect(0f, 0f, 0f, 0f)
                             };
-                            btnDone.SetTitle("Done", UIControlState.Normal);
+                            btnDone.SetTitle("Common_Done".Translate(), UIControlState.Normal);
                             btnDone.BackgroundColor = UIColor.Clear;
-                            btnDone.TitleLabel.Font = myTNBFont.MuseoSans14();
+                            btnDone.TitleLabel.Font = MyTNBFont.MuseoSans14;
                             btnDone.TitleLabel.TextAlignment = UITextAlignment.Right;
                             View.AddSubview(btnDone);
                             btnDone.TouchUpInside += (sender, e) =>
@@ -144,7 +145,7 @@ namespace myTNB
                     }
                     catch (Exception e)
                     {
-                        Console.WriteLine("Error: " + e.Message);
+                        Debug.WriteLine("Error: " + e.Message);
                     }
                 });
             });
@@ -198,8 +199,8 @@ namespace myTNB
 
         internal void SetupSuperViewBackground()
         {
-            var startColor = myTNBColor.GradientPurpleDarkElement();
-            var endColor = myTNBColor.GradientPurpleLightElement();
+            var startColor = MyTNBColor.GradientPurpleDarkElement;
+            var endColor = MyTNBColor.GradientPurpleLightElement;
 
             var gradientLayer = new CAGradientLayer();
             gradientLayer.Colors = new[] { startColor.CGColor, endColor.CGColor };

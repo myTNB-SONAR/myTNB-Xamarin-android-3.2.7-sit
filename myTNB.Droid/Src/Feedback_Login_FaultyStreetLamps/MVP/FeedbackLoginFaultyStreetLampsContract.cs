@@ -1,20 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
+﻿using Android.App;
 using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-using myTNB_Android.Src.Base.Request;
-using myTNB_Android.Src.Base.Models;
-using System.Threading.Tasks;
-using myTNB_Android.Src.Base.MVP;
-using myTNB_Android.Src.AppLaunch.Models;
 using Android.Locations;
+using Android.Runtime;
+using myTNB_Android.Src.AppLaunch.Models;
+using myTNB_Android.Src.Base.Models;
+using myTNB_Android.Src.Base.MVP;
+using myTNB_Android.Src.Base.Request;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace myTNB_Android.Src.Feedback_Login_FaultyStreetLamps.MVP
 {
@@ -253,7 +246,7 @@ namespace myTNB_Android.Src.Feedback_Login_FaultyStreetLamps.MVP
             /// <param name="pole_no">string</param>
             /// <param name="feedback">string</param>
             /// <param name="attachedImages">List<paramref name="AttachedImage"/></param>
-            void OnSubmit(string deviceId,  FeedbackState feedbackState, string location, string pole_no, string feedback, List<AttachedImage> attachedImages);
+            void OnSubmit(string deviceId, FeedbackState feedbackState, string location, string pole_no, string feedback, List<AttachedImage> attachedImages);
 
             /// <summary>
             /// Action to submit feedback with mobile no
@@ -265,7 +258,7 @@ namespace myTNB_Android.Src.Feedback_Login_FaultyStreetLamps.MVP
             /// <param name="pole_no">string</param>
             /// <param name="feedback">string</param>
             /// <param name="attachedImages">List<paramref name="AttachedImage"/></param>
-            void OnSubmit(string deviceId, string mobile_no , FeedbackState feedbackState, string location, string pole_no, string feedback, List<AttachedImage> attachedImages);
+            void OnSubmit(string deviceId, string mobile_no, FeedbackState feedbackState, string location, string pole_no, string feedback, List<AttachedImage> attachedImages);
 
             /// <summary>
             /// Action to check empty location & feedback
@@ -280,7 +273,7 @@ namespace myTNB_Android.Src.Feedback_Login_FaultyStreetLamps.MVP
             /// <param name="mobile_no">string</param>
             /// <param name="location">string</param>
             /// <param name="feedback">string</param>
-            void CheckRequiredFields(string mobile_no , string location , string feedback, string state);
+            void CheckRequiredFields(string mobile_no, string location, string feedback, string state);
         }
     }
 }

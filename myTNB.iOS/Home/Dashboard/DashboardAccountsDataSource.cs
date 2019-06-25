@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using CoreGraphics;
 using Foundation;
-using myTNB.Extensions;
 using myTNB.Model;
 using UIKit;
 
@@ -45,8 +44,8 @@ namespace myTNB
         /// <param name="accountsForDisplay">Accounts for display.</param>
         /// <param name="onSelectRow">On select row.</param>
         /// <param name="onScroll">On scroll.</param>
-        public DashboardAccountsDataSource(Dictionary<string, List<DueAmountDataModel>> accountsForDisplay,
-                                           Action<DueAmountDataModel> onSelectRow, EventHandler onScroll)
+        public DashboardAccountsDataSource(Dictionary<string, List<DueAmountDataModel>> accountsForDisplay
+            , Action<DueAmountDataModel> onSelectRow, EventHandler onScroll)
         {
             DisplayedAccounts = accountsForDisplay;
             OnRowSelected = onSelectRow;
@@ -67,7 +66,7 @@ namespace myTNB
             {
                 cell = new DashboardAccountCell(CellIdentifier);
             }
-                
+
             if (IsIndexPathValid(indexPath))
             {
                 var accts = DisplayedAccounts[keys[indexPath.Section]];
@@ -93,7 +92,6 @@ namespace myTNB
                 {
                     OnRowSelected(acct);
                 }
-
             }
         }
 
@@ -107,7 +105,7 @@ namespace myTNB
         {
             int sectionCount = keys?.Count ?? 0;
             int rowCount = 0;
-            if(section < sectionCount)
+            if (section < sectionCount)
             {
                 var key = keys[(int)section];
                 if (DisplayedAccounts.ContainsKey(key))
@@ -160,9 +158,8 @@ namespace myTNB
         public override UIView GetViewForHeader(UITableView tableView, nint section)
         {
             var title = keys[(int)section];
-            var amountTitle = string.Compare(title, "REAccountsSectionHeader".Translate()) == 0
-                                    ? "REAccountsSectionSubHeader".Translate()
-                                    : "NormalAccountsSectionSubHeader".Translate();
+            var amountTitle = string.Compare(title, "Dashboard_RESectionHeader".Translate()) == 0
+                ? "Dashboard_RESectionSubHeader".Translate() : "Dashboard_SectionHeader".Translate();
             float sectionHeight = 36.0f;
 
             UIView sectionView = new UIView(new CGRect(0, 0, tableView.Bounds.Width, sectionHeight));
@@ -172,7 +169,7 @@ namespace myTNB
             {
                 Frame = new CGRect(horizontalMargin, 0, titleWidth, sectionView.Frame.Height),
                 Text = title,
-                Font = myTNBFont.MuseoSans14_500(),
+                Font = MyTNBFont.MuseoSans14_500,
                 TextColor = UIColor.White,
             };
 
@@ -180,13 +177,11 @@ namespace myTNB
             {
                 Frame = new CGRect(lblTitle.Frame.GetMaxX() + 1, 0, sectionView.Frame.Width - titleWidth - horizontalMargin * 2, sectionView.Frame.Height),
                 Text = amountTitle,
-                Font = myTNBFont.MuseoSans14_500(),
+                Font = MyTNBFont.MuseoSans14_500,
                 TextColor = UIColor.White,
                 TextAlignment = UITextAlignment.Right
             };
-
             sectionView.AddSubviews(new UIView[] { lblTitle, lblAmountTitle });
-
             return sectionView;
         }
 
@@ -217,7 +212,6 @@ namespace myTNB
                     }
                 }
             }
-
             return res;
         }
 
@@ -229,6 +223,5 @@ namespace myTNB
         {
             OnTableViewScroll?.Invoke(scrollView, null);
         }
-
     }
 }

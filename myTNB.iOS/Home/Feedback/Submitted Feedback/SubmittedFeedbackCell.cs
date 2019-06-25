@@ -1,4 +1,3 @@
-using Foundation;
 using System;
 using UIKit;
 using CoreGraphics;
@@ -9,23 +8,21 @@ namespace myTNB
     {
         public UIImageView imgViewIcon;
 
-        public SubmittedFeedbackCell (IntPtr handle) : base (handle)
+        public SubmittedFeedbackCell(IntPtr handle) : base(handle)
         {
             imgViewIcon = new UIImageView(new CGRect(16, 18, 24, 24));
 
             AddSubview(imgViewIcon);
         }
-        /// <summary>
-        /// Updates the style.
-        /// </summary>
+
         public void UpdateStyle()
         {
-            lblFeedbackType.Font = myTNBFont.MuseoSans14_300();
-            lblFeedbackType.TextColor = myTNBColor.TunaGrey();
-            lblDetails.Font = myTNBFont.MuseoSans9_300();
-            lblDetails.TextColor = myTNBColor.SilverChalice();
-            lblDate.Font = myTNBFont.MuseoSans9_300();
-            lblDate.TextColor = myTNBColor.SilverChalice();
+            lblFeedbackType.Font = MyTNBFont.MuseoSans14_300;
+            lblFeedbackType.TextColor = MyTNBColor.TunaGrey();
+            lblDetails.Font = MyTNBFont.MuseoSans9_300;
+            lblDetails.TextColor = MyTNBColor.SilverChalice;
+            lblDate.Font = MyTNBFont.MuseoSans9_300;
+            lblDate.TextColor = MyTNBColor.SilverChalice;
         }
 
         public UILabel FeedbackTypeLabel

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using Firebase.CloudMessaging;
 using Firebase.Core;
@@ -24,7 +25,7 @@ namespace myTNB
             InstanceId.Notifications.ObserveTokenRefresh((sender, e) =>
             {
                 var token = InstanceId.SharedInstance.Token;
-                Console.WriteLine("FCM Token: " + token);
+                Debug.WriteLine("FCM Token: " + token);
                 DataManager.DataManager.SharedInstance.FCMToken = token;
                 var sharedPreference = NSUserDefaults.StandardUserDefaults;
                 sharedPreference.SetString(token, "FCMToken");
@@ -92,7 +93,7 @@ namespace myTNB
             }
             catch (Exception e)
             {
-                Console.WriteLine("Error: " + e.Message);
+                Debug.WriteLine("Error: " + e.Message);
             }
         }
         /// <summary>
@@ -141,15 +142,11 @@ namespace myTNB
                 try
                 {
                     int count = DataManager.DataManager.SharedInstance.UserNotifications.FindAll(x => x.IsRead.ToLower().Equals("false")).Count;
-                    if (count < 0)
-                    {
-                        count = 0;
-                    }
-                    return count;
+                    return count < 0 ? 0 : count;
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine(e.Message);
+                    Debug.WriteLine(e.Message);
                     return 0;
                 }
             }
@@ -186,7 +183,7 @@ namespace myTNB
                 var response = serviceManager.GetNotificationTypes("GetAppNotificationTypes", requestParameter);
                 DataManager.DataManager.SharedInstance.NotificationGeneralTypes = response?.d?.data;
                 NotificationPreferenceModel allNotificationItem = new NotificationPreferenceModel();
-                allNotificationItem.Title = "All notifications";
+                allNotificationItem.Title = "PushNotification_AllNotifications".Translate();
                 allNotificationItem.Id = "all";
                 if (DataManager.DataManager.SharedInstance.NotificationGeneralTypes != null)
                 {
@@ -217,7 +214,8 @@ namespace myTNB
                     email = DataManager.DataManager.SharedInstance.UserEntity[0].email,
                     deviceId = DataManager.DataManager.SharedInstance.UDID
                 };
-                DataManager.DataManager.SharedInstance.NotificationTypeResponse = serviceManager.GetNotificationTypes("GetUserNotificationTypePreferences", requestParameter);
+                DataManager.DataManager.SharedInstance.NotificationTypeResponse = 
+                serviceManager.GetNotificationTypes("GetUserNotificationTypePreferences", requestParameter);
             });
         }
 
@@ -231,7 +229,8 @@ namespace myTNB
                     apiKeyID = TNBGlobal.API_KEY_ID,
                     email = DataManager.DataManager.SharedInstance.UserEntity[0].email
                 };
-                DataManager.DataManager.SharedInstance.NotificationChannelResponse = serviceManager.GetNotificationChannels("GetUserNotificationChannelPreferences", requestParameter);
+                DataManager.DataManager.SharedInstance.NotificationChannelResponse = 
+                serviceManager.GetNotificationChannels("GetUserNotificationChannelPreferences", requestParameter);
             });
         }
     }

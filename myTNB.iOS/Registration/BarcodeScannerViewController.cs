@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using CoreGraphics;
@@ -14,7 +15,6 @@ namespace myTNB.Registration
         {
         }
         UIStatusBarStyle originalStatusBarStyle = UIStatusBarStyle.Default;
-        const string ACCOUNT_NO_PATTERN = @"^[0-9]{12,14}$";
         ZXingScannerView scannerView;
         UIView scanLayerView;
         UILabel lblScanStatus;
@@ -36,7 +36,7 @@ namespace myTNB.Registration
 
         public override void ViewDidLoad()
         {
-            NavigationItem.Title = "Add Electricity Account";
+            NavigationItem.Title = "Common_AddElectricityAccount".Translate();
             ActivityIndicator.Show();
             UIApplication.SharedApplication.StatusBarOrientation = UIInterfaceOrientation.Portrait;
             this.NavigationItem.HidesBackButton = true;
@@ -60,9 +60,9 @@ namespace myTNB.Registration
             {
                 Frame = new CGRect(16, 16, View.Frame.Width - 32, 60),
                 AttributedText = new NSAttributedString(
-                    "Scan the barcode on your bill to retrieve account details.",
-                    font: myTNBFont.MuseoSans16_300(),
-                    foregroundColor: myTNBColor.TunaGrey(),
+                    "Registration_ScanMessage".Translate(),
+                    font: MyTNBFont.MuseoSans16_300,
+                    foregroundColor: MyTNBColor.TunaGrey(),
                     strokeWidth: 0
                 ),
                 TextAlignment = UITextAlignment.Left
@@ -78,30 +78,38 @@ namespace myTNB.Registration
             nfloat overlayHeight = scanOverlayView.Frame.Height;
             UIColor scanBGColor = new UIColor(red: 0.73f, green: 0.73f, blue: 0.74f, alpha: 0.3f);
 
-            UIView topLayer = new UIView(new CGRect(0, 0, overlayWidth, (overlayHeight / 2) - 120));
-            topLayer.BackgroundColor = scanBGColor;
+            UIView topLayer = new UIView(new CGRect(0, 0, overlayWidth, (overlayHeight / 2) - 120))
+            {
+                BackgroundColor = scanBGColor
+            };
 
-            UIView leftLayer = new UIView(new CGRect(0, (overlayHeight / 2) - 120, 18, 120));
-            leftLayer.BackgroundColor = scanBGColor;
+            UIView leftLayer = new UIView(new CGRect(0, (overlayHeight / 2) - 120, 18, 120))
+            {
+                BackgroundColor = scanBGColor
+            };
 
             scanLayerView = new UIView(new CGRect(18, (overlayHeight / 2) - 120, overlayWidth - 36, 120));
             scanLayerView.Layer.BorderWidth = 2.0f;
-            scanLayerView.Layer.BorderColor = myTNBColor.SilverChalice().CGColor;
+            scanLayerView.Layer.BorderColor = MyTNBColor.SilverChalice.CGColor;
             //scanLayerView.Layer.CornerRadius = 10.0f;
 
-            UIView rightLayer = new UIView(new CGRect(scanOverlayView.Frame.Width - 18, (overlayHeight / 2) - 120, 18, 120));
-            rightLayer.BackgroundColor = scanBGColor;
+            UIView rightLayer = new UIView(new CGRect(scanOverlayView.Frame.Width - 18, (overlayHeight / 2) - 120, 18, 120))
+            {
+                BackgroundColor = scanBGColor
+            };
 
-            UIView bottomLayer = new UIView(new CGRect(0, (overlayHeight / 2), overlayWidth, (overlayHeight / 2)));
-            bottomLayer.BackgroundColor = scanBGColor;
+            UIView bottomLayer = new UIView(new CGRect(0, (overlayHeight / 2), overlayWidth, (overlayHeight / 2)))
+            {
+                BackgroundColor = scanBGColor
+            };
 
             lblScanStatus = new UILabel
             {
                 Frame = new CGRect(0, (overlayHeight / 2) + 20, overlayWidth, 16),
                 AttributedText = new NSAttributedString(
-                    "Invalid barcode.",
-                    font: myTNBFont.MuseoSans12(),
-                    foregroundColor: myTNBColor.Tomato(),
+                    "Invalid_Barcode".Translate(),
+                    font: MyTNBFont.MuseoSans12,
+                    foregroundColor: MyTNBColor.Tomato,
                     strokeWidth: 0
                 ),
                 TextAlignment = UITextAlignment.Center
@@ -115,10 +123,12 @@ namespace myTNB.Registration
             scanOverlayView.AddSubview(rightLayer);
             scanOverlayView.AddSubview(bottomLayer);
 
-            scannerView = new ZXingScannerView(new CGRect(0, lblDescription.Frame.GetMaxY() + 10, View.Frame.Width, View.Frame.Height - 70));
-            scannerView.AutoresizingMask = UIViewAutoresizing.FlexibleWidth | UIViewAutoresizing.FlexibleHeight;
-            scannerView.UseCustomOverlayView = true;
-            scannerView.CustomOverlayView = scanOverlayView;
+            scannerView = new ZXingScannerView(new CGRect(0, lblDescription.Frame.GetMaxY() + 10, View.Frame.Width, View.Frame.Height - 70))
+            {
+                AutoresizingMask = UIViewAutoresizing.FlexibleWidth | UIViewAutoresizing.FlexibleHeight,
+                UseCustomOverlayView = true,
+                CustomOverlayView = scanOverlayView
+            };
 
             scannerView.OnCancelButtonPressed += delegate
             {
@@ -187,13 +197,13 @@ namespace myTNB.Registration
                                 {
                                     accountNumber = accountNumber.Substring(0, 12);
                                 }
-                                Regex regex = new Regex(ACCOUNT_NO_PATTERN);
+                                Regex regex = new Regex(TNBGlobal.ACCOUNT_NO_PATTERN);
                                 Match match = regex.Match(accountNumber);
                                 if (match.Success)
                                 {
                                     InvokeOnMainThread(() =>
                                     {
-                                        scanLayerView.Layer.BorderColor = myTNBColor.FreshGreen().CGColor;
+                                        scanLayerView.Layer.BorderColor = MyTNBColor.FreshGreen.CGColor;
                                         lblScanStatus.Hidden = true;
 
                                         DataManager.DataManager.SharedInstance.AccountNumber = accountNumber;
@@ -204,7 +214,7 @@ namespace myTNB.Registration
                                 {
                                     InvokeOnMainThread(() =>
                                     {
-                                        scanLayerView.Layer.BorderColor = myTNBColor.Tomato().CGColor;
+                                        scanLayerView.Layer.BorderColor = MyTNBColor.Tomato.CGColor;
                                         lblScanStatus.Hidden = false;
                                     });
                                 }
@@ -215,7 +225,7 @@ namespace myTNB.Registration
             }
             catch (Exception e)
             {
-                Console.WriteLine("Error: " + e.Message);
+                Debug.WriteLine("Error: " + e.Message);
             }
         }
 

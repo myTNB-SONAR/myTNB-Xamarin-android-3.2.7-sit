@@ -1,16 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-using myTNB_Android.Src.Base.MVP;
+﻿using myTNB_Android.Src.Base.MVP;
 using Refit;
+using System;
 
 namespace myTNB_Android.Src.ForgetPassword.MVP
 {
@@ -152,7 +142,7 @@ namespace myTNB_Android.Src.ForgetPassword.MVP
             /// <param name="email">string value</param>
             /// <param name="username">string value</param>
             /// <param name="code">string value</param>
-            void Submit(string apiKeyId, string email , string username , string code);
+            void Submit(string apiKeyId, string email, string username, string code);
 
             /// <summary>
             /// 

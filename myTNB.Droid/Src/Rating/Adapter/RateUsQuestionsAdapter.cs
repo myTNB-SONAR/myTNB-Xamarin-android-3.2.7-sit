@@ -1,20 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
+﻿using Android.Content;
+using Android.Support.Design.Widget;
+using Android.Support.V7.Widget;
+using Android.Text.Method;
 using Android.Views;
 using Android.Widget;
-using Android.Support.V7.Widget;
 using myTNB_Android.Src.Rating.Model;
-using Android.Support.Design.Widget;
 using myTNB_Android.Src.Utils;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using static myTNB_Android.Src.Rating.Request.SubmitRateUsRequest;
-using Android.Text.Method;
 
 namespace myTNB_Android.Src.Rating.Adapter
 {
@@ -40,98 +35,100 @@ namespace myTNB_Android.Src.Rating.Adapter
 
         public override void OnBindViewHolder(RecyclerView.ViewHolder holder, int position)
         {
-            try {
-            RateUsQuestionViewHolder vh = holder as RateUsQuestionViewHolder;
-            RateUsQuestion question = questions[position];
-            if(question != null)
+            try
             {
-
-                vh.txtTitleInfo.Text = QuestionCount +". " + question.Question;
-                QuestionCount += 1;
-                if (question.QuestionType.Equals(Constants.QUESTION_TYPE_RATING))
+                RateUsQuestionViewHolder vh = holder as RateUsQuestionViewHolder;
+                RateUsQuestion question = questions[position];
+                if (question != null)
                 {
-                    vh.ratingBar.Visibility = ViewStates.Visible;
-                    vh.txtContentInfo.Visibility = ViewStates.Visible;
-                    vh.txtInputLayoutComments.Visibility = ViewStates.Gone;
-                    vh.txtComments.Visibility = ViewStates.Gone;
 
-                    //vh.ratingBar.Rating = SelectedRating;
-                    if(SelectedRating != 0 && SelectedRating < 6)
+                    vh.txtTitleInfo.Text = QuestionCount + ". " + question.Question;
+                    QuestionCount += 1;
+                    if (question.QuestionType.Equals(Constants.QUESTION_TYPE_RATING))
                     {
-                        vh.txtContentInfo.Text = question.InputOptionValueList[SelectedRating-1].InputOptionValues;
-                        question.InputRating = "" + SelectedRating;
-                    }
-                    vh.ratingBar.RatingBarChange += (o, e) => {
-                        vh.ratingBar.Rating = e.Rating;
-                        int Rating = ((int)e.Rating);
-                        if (Rating == 0)
+                        vh.ratingBar.Visibility = ViewStates.Visible;
+                        vh.txtContentInfo.Visibility = ViewStates.Visible;
+                        vh.txtInputLayoutComments.Visibility = ViewStates.Gone;
+                        vh.txtComments.Visibility = ViewStates.Gone;
+
+                        //vh.ratingBar.Rating = SelectedRating;
+                        if (SelectedRating != 0 && SelectedRating < 6)
                         {
+                            vh.txtContentInfo.Text = question.InputOptionValueList[SelectedRating - 1].InputOptionValues;
+                            question.InputRating = "" + SelectedRating;
+                        }
+                        vh.ratingBar.RatingBarChange += (o, e) =>
+                        {
+                            vh.ratingBar.Rating = e.Rating;
+                            int Rating = ((int)e.Rating);
+                            if (Rating == 0)
+                            {
                                 question.IsQuestionAnswered = false;
-                            vh.txtContentInfo.Text = "";
-                        }
-                        else if (Rating == 1)
-                        {
-                            question.IsQuestionAnswered = true;
-                            vh.txtContentInfo.Text = question.InputOptionValueList[0].InputOptionValues;
-                        }
-                        else if (Rating == 2)
-                        {
-                            question.IsQuestionAnswered = true;
-                            vh.txtContentInfo.Text = question.InputOptionValueList[1].InputOptionValues;
-                        }
-                        else if (Rating == 3)
-                        {
-                            question.IsQuestionAnswered = true;
-                            vh.txtContentInfo.Text = question.InputOptionValueList[2].InputOptionValues;
-                        }
-                        else if (Rating == 4)
-                        {
-                            question.IsQuestionAnswered = true;
-                            vh.txtContentInfo.Text = question.InputOptionValueList[3].InputOptionValues;
-                        }
-                        else if (Rating == 5)
-                        {
-                            question.IsQuestionAnswered = true;
-                            vh.txtContentInfo.Text = question.InputOptionValueList[4].InputOptionValues;
-                        }
-                        question.InputRating = Rating.ToString();
-                        OnRatingUpdate(vh, position);
-                    };
-                }
-                else if (question.QuestionType.Equals(Constants.QUESTION_TYPE_COMMENTS))
-                {
-                    vh.ratingBar.Visibility = ViewStates.Gone;
-                    vh.txtContentInfo.Visibility = ViewStates.Gone;
-                    vh.txtInputLayoutComments.Visibility = ViewStates.Visible;
-                    vh.txtComments.Visibility = ViewStates.Visible;
-
-                    vh.txtComments.TextChanged += delegate
+                                vh.txtContentInfo.Text = "";
+                            }
+                            else if (Rating == 1)
+                            {
+                                question.IsQuestionAnswered = true;
+                                vh.txtContentInfo.Text = question.InputOptionValueList[0].InputOptionValues;
+                            }
+                            else if (Rating == 2)
+                            {
+                                question.IsQuestionAnswered = true;
+                                vh.txtContentInfo.Text = question.InputOptionValueList[1].InputOptionValues;
+                            }
+                            else if (Rating == 3)
+                            {
+                                question.IsQuestionAnswered = true;
+                                vh.txtContentInfo.Text = question.InputOptionValueList[2].InputOptionValues;
+                            }
+                            else if (Rating == 4)
+                            {
+                                question.IsQuestionAnswered = true;
+                                vh.txtContentInfo.Text = question.InputOptionValueList[3].InputOptionValues;
+                            }
+                            else if (Rating == 5)
+                            {
+                                question.IsQuestionAnswered = true;
+                                vh.txtContentInfo.Text = question.InputOptionValueList[4].InputOptionValues;
+                            }
+                            question.InputRating = Rating.ToString();
+                            OnRatingUpdate(vh, position);
+                        };
+                    }
+                    else if (question.QuestionType.Equals(Constants.QUESTION_TYPE_COMMENTS))
                     {
-                        string feedback = vh.txtComments.Text;
+                        vh.ratingBar.Visibility = ViewStates.Gone;
+                        vh.txtContentInfo.Visibility = ViewStates.Gone;
+                        vh.txtInputLayoutComments.Visibility = ViewStates.Visible;
+                        vh.txtComments.Visibility = ViewStates.Visible;
 
-                        int char_count = feedback.Length;
-                        if (char_count > 0)
+                        vh.txtComments.TextChanged += delegate
                         {
-                            int char_left = Constants.FEEDBACK_CHAR_LIMIT - char_count;
-                            vh.txtInputLayoutComments.Error = char_left + " " + mContext.GetString(Resource.String.feedback_character_left);
-                            questions[position].IsQuestionAnswered = true;
-                            question.InputAnswer = feedback;
-                        }
-                        else
-                        {
-                            vh.txtInputLayoutComments.Error = mContext.GetString(Resource.String.feedback_total_character_left);
-                            questions[position].IsQuestionAnswered = false;
-                        }
-                        OnRatingUpdate(vh, position);
-                    };
+                            string feedback = vh.txtComments.Text;
+
+                            int char_count = feedback.Length;
+                            if (char_count > 0)
+                            {
+                                int char_left = Constants.FEEDBACK_CHAR_LIMIT - char_count;
+                                vh.txtInputLayoutComments.Error = char_left + " " + mContext.GetString(Resource.String.feedback_character_left);
+                                questions[position].IsQuestionAnswered = true;
+                                question.InputAnswer = feedback;
+                            }
+                            else
+                            {
+                                vh.txtInputLayoutComments.Error = mContext.GetString(Resource.String.feedback_total_character_left);
+                                questions[position].IsQuestionAnswered = false;
+                            }
+                            OnRatingUpdate(vh, position);
+                        };
+                    }
                 }
-            }
             }
             catch (Exception e)
             {
                 Utility.LoggingNonFatalError(e);
             }
-            
+
         }
 
         void OnRatingUpdate(RateUsQuestionViewHolder sender, int position)
@@ -142,15 +139,16 @@ namespace myTNB_Android.Src.Rating.Adapter
         public bool IsAllQuestionAnswered()
         {
             bool flag = true;
-            try {
-            foreach(RateUsQuestion item in questions)
+            try
             {
-                if (!item.IsQuestionAnswered && item.IsMandatory)
+                foreach (RateUsQuestion item in questions)
                 {
-                    flag = false;
-                    break;
+                    if (!item.IsQuestionAnswered && item.IsMandatory)
+                    {
+                        flag = false;
+                        break;
+                    }
                 }
-            }
             }
             catch (Exception e)
             {
@@ -162,18 +160,19 @@ namespace myTNB_Android.Src.Rating.Adapter
         public List<InputAnswerDetails> GetInputAnswers()
         {
             List<InputAnswerDetails> inputAnswers = new List<InputAnswerDetails>();
-            try {
-            if (IsAllQuestionAnswered())
+            try
             {
-                foreach(RateUsQuestion ques in questions)
+                if (IsAllQuestionAnswered())
                 {
-                    InputAnswerDetails item = new InputAnswerDetails();
-                    item.WLTYQuestionId = ques.WLTYQuestionId;
-                    item.RatingInput = string.IsNullOrEmpty(ques.InputRating) == true ? "" : ques.InputRating;
-                    item.MultilineInput = string.IsNullOrEmpty(ques.InputAnswer) == true ? "" : ques.InputAnswer;
-                    inputAnswers.Add(item);
+                    foreach (RateUsQuestion ques in questions)
+                    {
+                        InputAnswerDetails item = new InputAnswerDetails();
+                        item.WLTYQuestionId = ques.WLTYQuestionId;
+                        item.RatingInput = string.IsNullOrEmpty(ques.InputRating) == true ? "" : ques.InputRating;
+                        item.MultilineInput = string.IsNullOrEmpty(ques.InputAnswer) == true ? "" : ques.InputAnswer;
+                        inputAnswers.Add(item);
+                    }
                 }
-            }
             }
             catch (Exception e)
             {
@@ -192,7 +191,7 @@ namespace myTNB_Android.Src.Rating.Adapter
 
         public class RateUsQuestionViewHolder : RecyclerView.ViewHolder, EditText.IOnTouchListener
         {
-            
+
             public TextView txtTitleInfo;
             public TextView txtContentInfo;
             public TextInputLayout txtInputLayoutComments;
@@ -221,10 +220,10 @@ namespace myTNB_Android.Src.Rating.Adapter
 
             public bool OnTouch(View v, MotionEvent e)
             {
-                if(v.Id == Resource.Id.txtComments)
+                if (v.Id == Resource.Id.txtComments)
                 {
                     v.Parent.RequestDisallowInterceptTouchEvent(true);
-                    switch(e.Action & MotionEventActions.Mask)
+                    switch (e.Action & MotionEventActions.Mask)
                     {
                         case MotionEventActions.Up:
                             v.Parent.RequestDisallowInterceptTouchEvent(false);

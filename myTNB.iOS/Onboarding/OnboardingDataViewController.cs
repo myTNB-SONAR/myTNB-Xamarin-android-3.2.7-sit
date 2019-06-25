@@ -3,6 +3,7 @@ using System;
 using UIKit;
 using myTNB.Model;
 using CoreGraphics;
+using System.Diagnostics;
 
 namespace myTNB
 {
@@ -47,8 +48,8 @@ namespace myTNB
 
         internal void SetupSuperViewBackground()
         {
-            //var startColor = myTNBColor.GradientPurpleDarkElement();
-            //var endColor = myTNBColor.GradientPurpleLightElement();
+            //var startColor = myTNBColor.GradientPurpleDarkElement;
+            //var endColor = myTNBColor.GradientPurpleLightElement;
 
             //var gradientLayer = new CAGradientLayer();
             //gradientLayer.Colors = new[] { startColor.CGColor, endColor.CGColor };
@@ -67,7 +68,7 @@ namespace myTNB
                     }
                     catch (Exception e)
                     {
-                        Console.WriteLine("Image load Error: " + e.Message);
+                        Debug.WriteLine("Image load Error: " + e.Message);
                         imgLogo = UIImage.FromBundle(string.Empty);
                     }                 }             }             else             {
                 if (string.IsNullOrEmpty(DataObject.ImageName) || string.IsNullOrWhiteSpace(DataObject.ImageName))
@@ -80,7 +81,7 @@ namespace myTNB
                 }             } 
             viewContainer = new UIView(new CGRect(0, (View.Frame.Height - 310) / 2, View.Frame.Width, 280));
             viewContainer.BackgroundColor = UIColor.Clear;
-             imgViewLogo = new UIImageView(new CGRect((viewContainer.Frame.Width - imgSize) / 2, padding, imgSize, imgSize));             imgViewLogo.Image = imgLogo;              if (!imgViewLogo.IsDescendantOfView(viewContainer))             {                 viewContainer.AddSubview(imgViewLogo);             }             else             {                 imgViewLogo.RemoveFromSuperview();             }              lblTitle = new UILabel(new CGRect(padding, imgViewLogo.Frame.GetMaxY() + inlineMargin, viewContainer.Frame.Width - (padding * 2), 30));             lblTitle.Font = myTNBFont.MuseoSans24_500();             lblTitle.Text = DataObject.Title;             lblTitle.TextColor = myTNBColor.SunGlow();             lblTitle.TextAlignment = UITextAlignment.Center;             viewContainer.AddSubview(lblTitle);              lblMessage = new UILabel(new CGRect(padding, lblTitle.Frame.GetMaxY(), viewContainer.Frame.Width - (padding * 2), 50));             lblMessage.Font = myTNBFont.MuseoSans16_300();             lblMessage.Text = DataObject.Message;             lblMessage.Lines = 0;             lblMessage.TextColor = UIColor.White;             lblMessage.TextAlignment = UITextAlignment.Center;             viewContainer.AddSubview(lblMessage);
+             imgViewLogo = new UIImageView(new CGRect((viewContainer.Frame.Width - imgSize) / 2, padding, imgSize, imgSize));             imgViewLogo.Image = imgLogo;              if (!imgViewLogo.IsDescendantOfView(viewContainer))             {                 viewContainer.AddSubview(imgViewLogo);             }             else             {                 imgViewLogo.RemoveFromSuperview();             }              lblTitle = new UILabel(new CGRect(padding, imgViewLogo.Frame.GetMaxY() + inlineMargin, viewContainer.Frame.Width - (padding * 2), 30));             lblTitle.Font = MyTNBFont.MuseoSans24_500;             lblTitle.Text = DataObject.Title;             lblTitle.TextColor = MyTNBColor.SunGlow;             lblTitle.TextAlignment = UITextAlignment.Center;             viewContainer.AddSubview(lblTitle);              lblMessage = new UILabel(new CGRect(padding, lblTitle.Frame.GetMaxY(), viewContainer.Frame.Width - (padding * 2), 50));             lblMessage.Font = MyTNBFont.MuseoSans16_300;             lblMessage.Text = DataObject.Message;             lblMessage.Lines = 0;             lblMessage.TextColor = UIColor.White;             lblMessage.TextAlignment = UITextAlignment.Center;             viewContainer.AddSubview(lblMessage);
 
             View.AddSubview(viewContainer);
         }

@@ -1,22 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-using myTNB_Android.Src.Database.Model;
-using System.Threading;
-using Refit;
-using System.Net.Http;
-using myTNB_Android.Src.Utils;
-using myTNB_Android.Src.Base.Api;
-using System.Net;
+﻿using myTNB_Android.Src.Base.Api;
 using myTNB_Android.Src.Base.Models;
+using myTNB_Android.Src.Database.Model;
+using myTNB_Android.Src.Utils;
+using Refit;
+using System;
+using System.Collections.Generic;
+using System.Net;
+using System.Net.Http;
+using System.Threading;
 
 namespace myTNB_Android.Src.Feedback_PreLogin_Menu.MVP
 {
@@ -27,7 +18,7 @@ namespace myTNB_Android.Src.Feedback_PreLogin_Menu.MVP
         CancellationTokenSource cts;
         string deviceId;
 
-        public FeedbackPreLoginMenuPresenter(FeedbackPreLoginMenuContract.IView mView , string deviceId)
+        public FeedbackPreLoginMenuPresenter(FeedbackPreLoginMenuContract.IView mView, string deviceId)
         {
             this.mView = mView;
             this.mView.SetPresenter(this);
@@ -60,8 +51,9 @@ namespace myTNB_Android.Src.Feedback_PreLogin_Menu.MVP
 
             cts = new CancellationTokenSource();
 
-            if (mView.IsActive()) {
-            this.mView.ShowProgressDialog();
+            if (mView.IsActive())
+            {
+                this.mView.ShowProgressDialog();
             }
 #if DEBUG
             var httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
@@ -145,13 +137,16 @@ namespace myTNB_Android.Src.Feedback_PreLogin_Menu.MVP
 
         public void Start()
         {
-            try {
-            if (FeedbackCategoryEntity.HasRecords())
+            try
             {
-                List<FeedbackCategoryEntity> feedbackCategoryList = FeedbackCategoryEntity.GetActiveList();
-                this.mView.ShowFeedbackMenu(feedbackCategoryList);
+                if (FeedbackCategoryEntity.HasRecords())
+                {
+                    List<FeedbackCategoryEntity> feedbackCategoryList = FeedbackCategoryEntity.GetActiveList();
+                    this.mView.ShowFeedbackMenu(feedbackCategoryList);
+                }
             }
-        } catch (Exception e) {
+            catch (Exception e)
+            {
                 Utility.LoggingNonFatalError(e);
             }
 

@@ -1,19 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
+﻿using Android.App;
 using Android.Content;
-using Android.OS;
 using Android.Runtime;
-using Android.Views;
-using Android.Widget;
 using myTNB_Android.Src.Base.MVP;
-using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.Database.Model;
-using Refit;
 using myTNB_Android.Src.ManageCards.Models;
+using myTNB_Android.Src.myTNBMenu.Models;
+using Refit;
+using System;
+using System.Collections.Generic;
 
 namespace myTNB_Android.Src.MyAccount.MVP
 {
@@ -52,13 +46,13 @@ namespace myTNB_Android.Src.MyAccount.MVP
             /// </summary>
             /// <param name="creditCard">CreditCardData</param>
             /// <param name="numOfCards">integer</param>
-            void ShowRemovedCardSuccess(CreditCardData creditCard , int numOfCards);
+            void ShowRemovedCardSuccess(CreditCardData creditCard, int numOfCards);
 
             /// <summary>
             /// Show Account Data per list item row click 
             /// </summary>
             /// <param name="accountData"></param>
-            void ShowManageSupplyAccount(AccountData accountData , int position);
+            void ShowManageSupplyAccount(AccountData accountData, int position);
 
             /// <summary>
             /// Shows removed account success
@@ -136,7 +130,7 @@ namespace myTNB_Android.Src.MyAccount.MVP
             /// </summary>
             /// <param name="user">UserEntity</param>
             /// <param name="numOfCards">integer</param>
-            void ShowUserData(UserEntity user , int numOfCards);
+            void ShowUserData(UserEntity user, int numOfCards);
 
             /// <summary>
             /// Enable manage cards button
@@ -192,7 +186,7 @@ namespace myTNB_Android.Src.MyAccount.MVP
             /// </summary>
             /// <param name="customerBillingAccount">CustomerBillingAccount</param>
             /// <param name="position">integer</param>
-            void OnManageSupplyAccount(CustomerBillingAccount customerBillingAccount , int position);
+            void OnManageSupplyAccount(CustomerBillingAccount customerBillingAccount, int position);
 
             /// <summary>
             /// Action to add accounts

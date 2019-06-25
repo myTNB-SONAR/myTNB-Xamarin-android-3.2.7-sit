@@ -5,7 +5,7 @@ namespace myTNB.Dashboard.DashboardComponents
 {
     public class GetAccessComponent
     {
-        UIView _parentView;
+        readonly UIView _parentView;
         UIView _viewGetAccess;
         UILabel _lblTitle;
         UILabel _lblSubtitle;
@@ -36,35 +36,43 @@ namespace myTNB.Dashboard.DashboardComponents
 
             var imgWidth = _viewGetAccess.Frame.Width * .51;
             var xLocation = _viewGetAccess.Frame.Width / 2 - DeviceHelper.GetScaledWidth((float)imgWidth) / 2;
-            UIImageView imgViewEmpty = new UIImageView(new CGRect(xLocation, yLocation, DeviceHelper.GetScaledWidth((float)imgWidth), DeviceHelper.GetScaledHeight((float)imgWidth)));
-            imgViewEmpty.Image = UIImage.FromBundle("Get-Access");
-            imgViewEmpty.ContentMode = UIViewContentMode.ScaleAspectFit;
+            UIImageView imgViewEmpty = new UIImageView(new CGRect(xLocation, yLocation, DeviceHelper.GetScaledWidth((float)imgWidth)
+                , DeviceHelper.GetScaledHeight((float)imgWidth)))
+            {
+                Image = UIImage.FromBundle("Get-Access"),
+                ContentMode = UIViewContentMode.ScaleAspectFit
+            };
             _viewGetAccess.AddSubview(imgViewEmpty);
 
-            _lblTitle = new UILabel(new CGRect(10, imgViewEmpty.Frame.GetMaxY() + 1, _viewGetAccess.Frame.Width - 20, 16));
-            _lblTitle.TextAlignment = UITextAlignment.Center;
-            _lblTitle.Font = myTNBFont.MuseoSans14_500();
-            _lblTitle.Text = "View usage history";
-            _lblTitle.TextColor = UIColor.White;
+            _lblTitle = new UILabel(new CGRect(10, imgViewEmpty.Frame.GetMaxY() + 1, _viewGetAccess.Frame.Width - 20, 16))
+            {
+                TextAlignment = UITextAlignment.Center,
+                Font = MyTNBFont.MuseoSans14_500,
+                Text = "Component_ViewUsageHistory".Translate(),
+                TextColor = UIColor.White
+            };
             _viewGetAccess.AddSubview(_lblTitle);
 
-            _lblSubtitle = new UILabel(new CGRect(0, _lblTitle.Frame.GetMaxY(), _viewGetAccess.Frame.Width, 28));
-            _lblSubtitle.TextAlignment = UITextAlignment.Center;
-            //_lblSubtitle.Text = "You will require permission from the owner to view usage and transaction details.";
-            _lblSubtitle.Text = "Only electricity account owners\r\nmay view usage and transaction details.";
-            _lblSubtitle.Font = myTNBFont.MuseoSans11_300();
-            _lblSubtitle.Lines = 2;
-            _lblSubtitle.TextColor = UIColor.White;
-            _lblSubtitle.LineBreakMode = UILineBreakMode.WordWrap;
+            _lblSubtitle = new UILabel(new CGRect(0, _lblTitle.Frame.GetMaxY(), _viewGetAccess.Frame.Width, 28))
+            {
+                TextAlignment = UITextAlignment.Center,
+                Text = "Component_GetAccessMessage".Translate(),
+                Font = MyTNBFont.MuseoSans11_300,
+                Lines = 2,
+                TextColor = UIColor.White,
+                LineBreakMode = UILineBreakMode.WordWrap
+            };
             _viewGetAccess.AddSubview(_lblSubtitle);
 
-            _btnGetAccess = new UIButton(UIButtonType.Custom);
-            _btnGetAccess.Frame = new CGRect(90, _viewGetAccess.Frame.Height - 71, _viewGetAccess.Frame.Width - 180, 48);
+            _btnGetAccess = new UIButton(UIButtonType.Custom)
+            {
+                Frame = new CGRect(90, _viewGetAccess.Frame.Height - 71, _viewGetAccess.Frame.Width - 180, 48)
+            };
             _btnGetAccess.Layer.CornerRadius = 4;
             _btnGetAccess.Layer.BorderColor = UIColor.White.CGColor;
             _btnGetAccess.Layer.BorderWidth = 1;
-            _btnGetAccess.SetTitle("Get access", UIControlState.Normal);
-            _btnGetAccess.Font = myTNBFont.MuseoSans16();
+            _btnGetAccess.SetTitle("Common_GetAccess".Translate(), UIControlState.Normal);
+            _btnGetAccess.Font = MyTNBFont.MuseoSans16;
             _btnGetAccess.SetTitleColor(UIColor.White, UIControlState.Normal);
             //_viewGetAccess.AddSubview(_btnGetAccess);
         }

@@ -4,7 +4,6 @@ using myTNB.Home.Feedback;
 using System.Threading.Tasks;
 using myTNB.Model;
 using CoreGraphics;
-using myTNB.Extensions;
 
 namespace myTNB
 {
@@ -26,8 +25,7 @@ namespace myTNB
             base.ViewDidLoad();
             AddBackButton();
             _email = DataManager.DataManager.SharedInstance.IsPreloginFeedback
-                                ? string.Empty
-                                : DataManager.DataManager.SharedInstance.UserEntity[0].email;
+                ? string.Empty : DataManager.DataManager.SharedInstance.UserEntity[0].email;
         }
 
         public override void ViewWillAppear(bool animated)
@@ -48,14 +46,18 @@ namespace myTNB
             {
                 if (_imgNoFeedback == null || _lblNoFeedback == null)
                 {
-                    _imgNoFeedback = new UIImageView(new CGRect((View.Frame.Width / 2) - 75, 185, 150, 150));
-                    _imgNoFeedback.Image = UIImage.FromBundle("Feedback-Empty");
-                    _lblNoFeedback = new UILabel(new CGRect(44, 352, View.Frame.Width - 88, 32));
-                    _lblNoFeedback.TextAlignment = UITextAlignment.Center;
-                    _lblNoFeedback.Lines = 2;
-                    _lblNoFeedback.Text = "You have not submittted\r\nany feedback.";
-                    _lblNoFeedback.Font = myTNBFont.MuseoSans12_300();
-                    _lblNoFeedback.TextColor = myTNBColor.SilverChalice();
+                    _imgNoFeedback = new UIImageView(new CGRect((View.Frame.Width / 2) - 75, 185, 150, 150))
+                    {
+                        Image = UIImage.FromBundle("Feedback-Empty")
+                    };
+                    _lblNoFeedback = new UILabel(new CGRect(44, 352, View.Frame.Width - 88, 32))
+                    {
+                        TextAlignment = UITextAlignment.Center,
+                        Lines = 2,
+                        Text = "Feedback_NoFeedbackSubmittedMessage".Translate(),
+                        Font = MyTNBFont.MuseoSans12_300,
+                        TextColor = MyTNBColor.SilverChalice
+                    };
                     View.AddSubviews(new UIView[] { _imgNoFeedback, _lblNoFeedback });
                 }
                 SubmittedFeedbackTableView.Hidden = true;
@@ -111,7 +113,7 @@ namespace myTNB
                                 }
                                 else
                                 {
-                                    ToastHelper.DisplayAlertView(this, "ErrorTitle".Translate(), _feedbackDetails?.d?.message);
+                                    AlertHandler.DisplayServiceError(this, _feedbackDetails?.d?.message);
                                 }
                                 ActivityIndicator.Hide();
                             });
@@ -119,10 +121,7 @@ namespace myTNB
                     }
                     else
                     {
-                        Console.WriteLine("No Network");
-                        var alert = UIAlertController.Create("ErrNoNetworkTitle".Translate(), "ErrNoNetworkMsg".Translate(), UIAlertControllerStyle.Alert);
-                        alert.AddAction(UIAlertAction.Create("Ok", UIAlertActionStyle.Cancel, null));
-                        PresentViewController(alert, animated: true, completionHandler: null);
+                        AlertHandler.DisplayNoDataAlert(this);
                     }
                 });
             });

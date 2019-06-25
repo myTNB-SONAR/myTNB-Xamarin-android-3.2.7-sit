@@ -1,5 +1,4 @@
-﻿using System;
-namespace myTNB_Android.Src.SummaryDashBoard.SummaryListener
+﻿namespace myTNB_Android.Src.SummaryDashBoard.SummaryListener
 {
     public interface ISummaryFragmentToDashBoardActivtyListener
     {

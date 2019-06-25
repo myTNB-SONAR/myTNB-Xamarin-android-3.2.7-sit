@@ -7,11 +7,10 @@ namespace myTNB
 {
     public partial class GetAccessViewController : UIViewController
     {
-        public GetAccessViewController (IntPtr handle) : base (handle)
+        public GetAccessViewController(IntPtr handle) : base(handle)
         {
         }
         const string NAME_PATTERN = @"^[A-Za-z0-9 _]*[A-Za-z0-9][A-Za-z0-9 \-\\_ _]*$";
-        const string IC_NO_PATTERN = @"^[0-9]+$";
 
         TextFieldHelper _textFieldHelper = new TextFieldHelper();
         UIButton _btnGetAccess;
@@ -37,8 +36,10 @@ namespace myTNB
             SetEvents();
         }
 
-        internal void SetEvents(){
-            _btnGetAccess.TouchUpInside += (sender, e) => {
+        internal void SetEvents()
+        {
+            _btnGetAccess.TouchUpInside += (sender, e) =>
+            {
                 UIStoryboard storyBoard = UIStoryboard.FromName("GetAccess", null);
                 GetAccessSuccessViewController loginVC = storyBoard.InstantiateViewController("GetAccessSuccessViewController") as GetAccessSuccessViewController;
                 this.ShowViewController(loginVC, this);
@@ -47,24 +48,28 @@ namespace myTNB
 
         internal void SetNavigationItems()
         {
-            UIBarButtonItem btnBack = new UIBarButtonItem(UIImage.FromBundle("Back-White"), UIBarButtonItemStyle.Done, (sender, e) => {
+            UIBarButtonItem btnBack = new UIBarButtonItem(UIImage.FromBundle("Back-White"), UIBarButtonItemStyle.Done, (sender, e) =>
+            {
                 DismissViewController(true, null);
             });
             NavigationItem.LeftBarButtonItem = btnBack;
         }
 
-        internal void SetSubViews(){
+        internal void SetSubViews()
+        {
             //IC Number
-            UIView viewICNumber = new UIView((new CGRect(18, 16, View.Frame.Width - 36, 51)));
-            viewICNumber.BackgroundColor = UIColor.Clear;
+            UIView viewICNumber = new UIView((new CGRect(18, 16, View.Frame.Width - 36, 51)))
+            {
+                BackgroundColor = UIColor.Clear
+            };
 
             lblICNoTitle = new UILabel
             {
                 Frame = new CGRect(0, 0, viewICNumber.Frame.Width, 12),
                 AttributedText = new NSAttributedString(
-                    "Owner's IC No.",
-                    font: myTNBFont.MuseoSans9(),
-                    foregroundColor: myTNBColor.SilverChalice(),
+                    "Common_ICNumber".Translate(),
+                    font: MyTNBFont.MuseoSans9,
+                    foregroundColor: MyTNBColor.SilverChalice,
                     strokeWidth: 0
                 ),
                 TextAlignment = UITextAlignment.Left
@@ -76,9 +81,9 @@ namespace myTNB
             {
                 Frame = new CGRect(0, 37, viewICNumber.Frame.Width, 14),
                 AttributedText = new NSAttributedString(
-                    "Invalid IC no.",
-                    font: myTNBFont.MuseoSans9(),
-                    foregroundColor: myTNBColor.Tomato(),
+                    "Invalid_ICNo".Translate(),
+                    font: MyTNBFont.MuseoSans9,
+                    foregroundColor: MyTNBColor.Tomato,
                     strokeWidth: 0
                 ),
                 TextAlignment = UITextAlignment.Left
@@ -90,18 +95,17 @@ namespace myTNB
             {
                 Frame = new CGRect(0, 12, viewICNumber.Frame.Width, 24),
                 AttributedPlaceholder = new NSAttributedString(
-                    "Owner's IC No.",
-                    font: myTNBFont.MuseoSans16(),
-                    foregroundColor: myTNBColor.SilverChalice(),
+                    "Common_ICNumber".Translate(),
+                    font: MyTNBFont.MuseoSans16,
+                    foregroundColor: MyTNBColor.SilverChalice,
                     strokeWidth: 0
                 ),
-                TextColor = myTNBColor.TunaGrey()
+                TextColor = MyTNBColor.TunaGrey()
             };
             txtFieldICNo.KeyboardType = UIKeyboardType.NumberPad;
             viewICNumber.AddSubview(txtFieldICNo);
 
-            viewLineICNo = new UIView((new CGRect(0, 36, viewICNumber.Frame.Width, 1)));
-            viewLineICNo.BackgroundColor = myTNBColor.PlatinumGrey();
+            viewLineICNo = GenericLine.GetLine(new CGRect(0, 36, viewICNumber.Frame.Width, 1));
             viewICNumber.AddSubview(viewLineICNo);
 
             //FullName 
@@ -112,9 +116,9 @@ namespace myTNB
             {
                 Frame = new CGRect(0, 0, viewName.Frame.Width, 12),
                 AttributedText = new NSAttributedString(
-                    "Owner’s mother's maiden name",
-                    font: myTNBFont.MuseoSans9(),
-                    foregroundColor: myTNBColor.SilverChalice(),
+                    "Common_MaidenName".Translate(),
+                    font: MyTNBFont.MuseoSans9,
+                    foregroundColor: MyTNBColor.SilverChalice,
                     strokeWidth: 0
                 ),
                 TextAlignment = UITextAlignment.Left
@@ -126,9 +130,9 @@ namespace myTNB
             {
                 Frame = new CGRect(0, 37, viewName.Frame.Width, 14),
                 AttributedText = new NSAttributedString(
-                    "Invalid maiden name",
-                    font: myTNBFont.MuseoSans9(),
-                    foregroundColor: myTNBColor.Tomato(),
+                    "Invalid_MaidenName".Translate(),
+                    font: MyTNBFont.MuseoSans9,
+                    foregroundColor: MyTNBColor.Tomato,
                     strokeWidth: 0
                 ),
                 TextAlignment = UITextAlignment.Left
@@ -140,25 +144,26 @@ namespace myTNB
             {
                 Frame = new CGRect(0, 12, viewName.Frame.Width, 24),
                 AttributedPlaceholder = new NSAttributedString(
-                    "Owner’s mother's maiden name",
-                    font: myTNBFont.MuseoSans16(),
-                    foregroundColor: myTNBColor.SilverChalice(),
+                    "Common_MaidenName".Translate(),
+                    font: MyTNBFont.MuseoSans16,
+                    foregroundColor: MyTNBColor.SilverChalice,
                     strokeWidth: 0
                 ),
-                TextColor = myTNBColor.TunaGrey()
+                TextColor = MyTNBColor.TunaGrey()
             };
             viewName.AddSubview(txtFieldName);
 
-            viewLineName = new UIView((new CGRect(0, 36, viewName.Frame.Width, 1)));
-            viewLineName.BackgroundColor = myTNBColor.PlatinumGrey();
+            viewLineName = GenericLine.GetLine(new CGRect(0, 36, viewName.Frame.Width, 1));
             viewName.AddSubview(viewLineName);
 
-            _btnGetAccess = new UIButton(UIButtonType.Custom);
-            _btnGetAccess.Frame = new CGRect(18, View.Frame.Height - 132, View.Frame.Width - 36, 48);
-            _btnGetAccess.SetTitle("Get Access", UIControlState.Normal);
-            _btnGetAccess.Font = myTNBFont.MuseoSans16();
+            _btnGetAccess = new UIButton(UIButtonType.Custom)
+            {
+                Frame = new CGRect(18, View.Frame.Height - 132, View.Frame.Width - 36, 48)
+            };
+            _btnGetAccess.SetTitle("Common_GetAccess".Translate(), UIControlState.Normal);
+            _btnGetAccess.Font = MyTNBFont.MuseoSans16;
             _btnGetAccess.Layer.CornerRadius = 5.0f;
-            _btnGetAccess.BackgroundColor = myTNBColor.SilverChalice();
+            _btnGetAccess.BackgroundColor = MyTNBColor.SilverChalice;
             _btnGetAccess.Enabled = false;
 
             View.AddSubview(viewName);
@@ -170,7 +175,7 @@ namespace myTNB
             _textFieldHelper.CreateDoneButton(txtFieldICNo);
 
             SetTextFieldEvents(txtFieldName, lblNameTitle, lblNameError, viewLineName, TNBGlobal.CustomerNamePattern);
-            SetTextFieldEvents(txtFieldICNo, lblICNoTitle, lblICNoError, viewLineICNo, IC_NO_PATTERN);
+            SetTextFieldEvents(txtFieldICNo, lblICNoTitle, lblICNoError, viewLineICNo, TNBGlobal.IC_NO_PATTERN);
         }
 
         internal void SetKeyboard(UITextField textField)
@@ -184,20 +189,23 @@ namespace myTNB
         internal void SetTextFieldEvents(UITextField textField, UILabel lblTitle, UILabel lblError, UIView viewLine, string pattern)
         {
             SetKeyboard(textField);
-            textField.EditingChanged += (sender, e) => {
+            textField.EditingChanged += (sender, e) =>
+            {
                 lblTitle.Hidden = textField.Text.Length == 0;
             };
-            textField.EditingDidBegin += (sender, e) => {
+            textField.EditingDidBegin += (sender, e) =>
+            {
                 lblTitle.Hidden = textField.Text.Length == 0;
                 textField.LeftViewMode = UITextFieldViewMode.Never;
-                viewLine.BackgroundColor = myTNBColor.PowerBlue();
+                viewLine.BackgroundColor = MyTNBColor.PowerBlue;
             };
-            textField.ShouldEndEditing = (sender) => {
+            textField.ShouldEndEditing = (sender) =>
+            {
                 lblTitle.Hidden = textField.Text.Length == 0;
                 bool isValid = _textFieldHelper.ValidateTextField(textField.Text, pattern);
                 lblError.Hidden = isValid || textField.Text.Length == 0;
-                viewLine.BackgroundColor = isValid || textField.Text.Length == 0 ? myTNBColor.PlatinumGrey() : myTNBColor.Tomato();
-                textField.TextColor = isValid || textField.Text.Length == 0 ? myTNBColor.TunaGrey() : myTNBColor.Tomato();
+                viewLine.BackgroundColor = isValid || textField.Text.Length == 0 ? MyTNBColor.PlatinumGrey : MyTNBColor.Tomato;
+                textField.TextColor = isValid || textField.Text.Length == 0 ? MyTNBColor.TunaGrey() : MyTNBColor.Tomato;
 
                 SetGetAccessButtonEnable();
                 return true;
@@ -207,7 +215,8 @@ namespace myTNB
                 sender.ResignFirstResponder();
                 return false;
             };
-            textField.EditingDidBegin += (sender, e) => {
+            textField.EditingDidBegin += (sender, e) =>
+            {
                 lblTitle.Hidden = false;
             };
             textField.EditingDidEnd += (sender, e) =>
@@ -219,11 +228,11 @@ namespace myTNB
 
         internal void SetGetAccessButtonEnable()
         {
-            bool isValidICNo = _textFieldHelper.ValidateTextField(txtFieldICNo.Text, IC_NO_PATTERN);
+            bool isValidICNo = _textFieldHelper.ValidateTextField(txtFieldICNo.Text, TNBGlobal.IC_NO_PATTERN);
             bool isValidName = _textFieldHelper.ValidateTextField(txtFieldName.Text, TNBGlobal.CustomerNamePattern);
             bool isValid = isValidICNo && isValidName;
             _btnGetAccess.Enabled = isValid;
-            _btnGetAccess.BackgroundColor = isValid ? myTNBColor.FreshGreen() : myTNBColor.SilverChalice();
+            _btnGetAccess.BackgroundColor = isValid ? MyTNBColor.FreshGreen : MyTNBColor.SilverChalice;
         }
     }
 }

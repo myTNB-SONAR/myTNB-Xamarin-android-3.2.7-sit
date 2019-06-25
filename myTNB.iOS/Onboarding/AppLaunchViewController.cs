@@ -1,4 +1,4 @@
-using Foundation;
+﻿using Foundation;
 using System;
 using UIKit;
 using CoreAnimation;
@@ -13,10 +13,8 @@ using myTNB.SQLite;
 using myTNB.DataManager;
 using System.Collections.Generic;
 using System.Diagnostics;
-using myTNB.Extensions;
 using CoreGraphics;
 using myTNB.Dashboard.DashboardComponents;
-using System.Drawing;
 
 namespace myTNB
 {
@@ -27,6 +25,8 @@ namespace myTNB
         UIImageView imgViewAppLaunch;
         BillingAccountDetailsResponseModel _billingAccountDetailsList = new BillingAccountDetailsResponseModel();
         string _imageSize = string.Empty;
+        bool isMaintenance = false;
+        UIView maintenanceView;
         public AppLaunchViewController(IntPtr handle) : base(handle)
         {
         }
@@ -84,6 +84,40 @@ namespace myTNB
 
             // clear cached data on Version Update
             ClearCacheForVersionUpdate();
+
+            NSNotificationCenter.DefaultCenter.AddObserver(UIApplication.WillEnterForegroundNotification, HandleAppWillEnterForeground);
+
+            GradientViewComponent gradientViewComponent = new GradientViewComponent(View, true, (float)UIScreen.MainScreen.Bounds.Height, false);
+            maintenanceView = gradientViewComponent.GetUI();
+        }
+
+        void HandleAppWillEnterForeground(NSNotification notification)
+        {
+            var baseRootVc = UIApplication.SharedApplication.KeyWindow?.RootViewController;
+            var topVc = AppDelegate.GetTopViewController(baseRootVc);
+
+            if (topVc != null)
+            {
+                if (topVc is AppLaunchViewController)
+                {
+                    if (isMaintenance)
+                    {
+                        InvokeOnMainThread(async () =>
+                        {
+                            if (NetworkUtility.isReachable)
+                            {
+                                GetUserEntity();
+                                await LoadMasterData();
+                            }
+                            else
+                            {
+                                Debug.WriteLine("No Network");
+                                AlertHandler.DisplayNoDataAlert(this);
+                            }
+                        });
+                    }
+                }
+            }
         }
 
         /// <summary>
@@ -136,8 +170,8 @@ namespace myTNB
 
         internal void SetupSuperViewBackground()
         {
-            var startColor = myTNBColor.GradientPurpleDarkElement();
-            var endColor = myTNBColor.GradientPurpleLightElement();
+            var startColor = MyTNBColor.GradientPurpleDarkElement;
+            var endColor = MyTNBColor.GradientPurpleLightElement;
 
             var gradientLayer = new CAGradientLayer();
             gradientLayer.Colors = new[] { startColor.CGColor, endColor.CGColor };
@@ -164,37 +198,8 @@ namespace myTNB
                     }
                     else
                     {
-                        //UIApplication.SharedApplication.NetworkActivityIndicatorVisible = false;
-                        //UserAccountsEntity uaManager = new UserAccountsEntity();
-                        //CustomerAccountRecordListModel accountRecords = uaManager.GetCustomerAccountRecordList();
-                        //if (accountRecords != null && accountRecords?.d != null)
-                        //{
-                        //    DataManager.DataManager.SharedInstance.AccountRecordsList = accountRecords;
-                        //    if (accountRecords.d.Count > 0)
-                        //    {
-                        //        DataManager.DataManager.SharedInstance.SelectedAccount = DataManager.DataManager.SharedInstance.AccountRecordsList.d[0];
-                        //    }
-                        //}
-                        //var sharedPreference = NSUserDefaults.StandardUserDefaults;
-
-                        //var isLogin = sharedPreference.BoolForKey(TNBGlobal.PreferenceKeys.LoginState);
-                        //var shouldUpdateDb = IsDbUpdateNeeded();
-                        //if (isLogin && !shouldUpdateDb && DataManager.DataManager.SharedInstance.UserEntity != null && DataManager.DataManager.SharedInstance.UserEntity?.Count > 0)
-                        //{
-                        //    DataManager.DataManager.SharedInstance.User.UserID = DataManager.DataManager.SharedInstance.UserEntity[0].userID;
-                        //    ShowDashboard();
-                        //}
-                        //else
-                        //{
-                        //    if (shouldUpdateDb)
-                        //    {
-                        //        DataManager.DataManager.SharedInstance.ClearLoginState();
-                        //    }
-                        //    ShowPrelogin();
-                        //}
-                        //UIApplication.SharedApplication.NetworkActivityIndicatorVisible = false;
                         Debug.WriteLine("No Network");
-                        DisplayAlertView("ErrNoNetworkTitle".Translate(), "ErrNoNetworkMsg".Translate());
+                        AlertHandler.DisplayNoDataAlert(this);
                     }
                 });
             });
@@ -226,43 +231,66 @@ namespace myTNB
             {
                 if ((bool)response?.status.ToUpper().Equals("MAINTENANCE"))
                 {
+                    isMaintenance = true;
                     float screenHeight = (float)UIApplication.SharedApplication.KeyWindow.Frame.Height;
+                    float screenWidth = (float)UIApplication.SharedApplication.KeyWindow.Frame.Width;
                     float imageWidth = DeviceHelper.GetScaledWidth(151f);
                     float imageHeight = DeviceHelper.GetScaledHeight(136f);
-                    float labelWidth = DeviceHelper.GetScaledWidth(236f);
-
-                    GradientViewComponent gradientViewComponent = new GradientViewComponent(View, true, screenHeight, false);
-                    UIView parentView = gradientViewComponent.GetUI();
+                    float labelWidth = screenWidth - 40f;
+                    float lineTextHeight = 24f;
 
                     UIImageView imageView = new UIImageView(UIImage.FromBundle("Maintenance-Image"))
                     {
-                        Frame = new CGRect(DeviceHelper.GetCenterXWithObjWidth(imageWidth), DeviceHelper.GetScaledHeightWithY(140f), imageWidth, imageHeight)
+                        Frame = new CGRect(DeviceHelper.GetCenterXWithObjWidth(imageWidth), DeviceHelper.GetScaledHeightWithY(90f), imageWidth, imageHeight)
                     };
 
-                    UILabel lblTitle = new UILabel(new CGRect(DeviceHelper.GetCenterXWithObjWidth(labelWidth), imageView.Frame.GetMaxY() + 15f, labelWidth, 44f))
+                    var titleMsg = response?.data?.MaintenanceTitle ?? string.Empty;
+                    var descMsg = response?.data?.MaintenanceMessage ?? string.Empty;
+
+                    UILabel lblTitle = new UILabel(new CGRect(DeviceHelper.GetCenterXWithObjWidth(labelWidth), imageView.Frame.GetMaxY() + 24f, labelWidth, 44f))
                     {
-                        Text = response?.data?.MaintenanceTitle ?? string.Empty,
+                        Text = titleMsg,
                         TextAlignment = UITextAlignment.Center,
-                        TextColor = myTNBColor.SunGlow(),
-                        Font = myTNBFont.MuseoSans24_500()
+                        TextColor = MyTNBColor.SunGlow,
+                        Font = MyTNBFont.MuseoSans24_500
                     };
 
-                    CGSize newSize = GetDescLabelSize(DeviceHelper.GetCenterXWithObjWidth(labelWidth), (float)lblTitle.Frame.GetMaxY(), labelWidth, response?.data?.MaintenanceMessage ?? string.Empty);
-
-                    UILabel lblDesc = new UILabel(new CGRect(DeviceHelper.GetCenterXWithObjWidth(labelWidth), lblTitle.Frame.GetMaxY(), labelWidth, newSize.Height))
+                    NSMutableParagraphStyle msgParagraphStyle = new NSMutableParagraphStyle
                     {
-                        Text = response?.data?.MaintenanceMessage ?? string.Empty,
-                        TextAlignment = UITextAlignment.Center,
-                        Lines = 0,
-                        TextColor = UIColor.White,
-                        Font = myTNBFont.MuseoSans16_300()
+                        Alignment = UITextAlignment.Center,
+                        MinimumLineHeight = lineTextHeight,
+                        MaximumLineHeight = lineTextHeight
                     };
 
-                    parentView.AddSubviews(new UIView[] { imageView, lblTitle, lblDesc });
-                    View.AddSubview(parentView);
+                    UIStringAttributes msgAttributes = new UIStringAttributes
+                    {
+                        Font = MyTNBFont.MuseoSans16_300,
+                        ForegroundColor = UIColor.White,
+                        BackgroundColor = UIColor.Clear,
+                        ParagraphStyle = msgParagraphStyle
+                    };
+
+                    var attributedText = new NSMutableAttributedString(descMsg);
+                    attributedText.AddAttributes(msgAttributes, new NSRange(0, descMsg.Length));
+
+                    UILabel lblDesc = new UILabel()
+                    {
+                        AttributedText = attributedText,
+                        Lines = 0
+                    };
+
+                    CGSize cGSize = lblDesc.SizeThatFits(new CGSize(labelWidth, 1000f));
+                    lblDesc.Frame = new CGRect(DeviceHelper.GetCenterXWithObjWidth(labelWidth), lblTitle.Frame.GetMaxY() + 8f, labelWidth, cGSize.Height);
+
+                    maintenanceView.AddSubviews(new UIView[] { imageView, lblTitle, lblDesc });
+                    if (!maintenanceView.IsDescendantOfView(View))
+                    {
+                        View.AddSubview(maintenanceView);
+                    }
                 }
                 else
                 {
+                    isMaintenance = false;
                     var data = response?.data;
 
                     var iOSIndex = data?.AppVersions?.FindIndex(x => x.IsIos) ?? -1;
@@ -326,32 +354,9 @@ namespace myTNB
             }
             else
             {
-                var msg = !string.IsNullOrWhiteSpace(response?.message) ? response?.message : "DefaultErrorMessage".Translate();
-                DisplayAlertView("ErrorTitle".Translate(), msg);
+                AlertHandler.DisplayServiceError(this, response?.message);
             }
         }
-
-        /// <summary>
-        /// Gets the size of the description label.
-        /// </summary>
-        /// <returns>The description label size.</returns>
-        /// <param name="x">The x coordinate.</param>
-        /// <param name="y">The y coordinate.</param>
-        /// <param name="width">Width.</param>
-        /// <param name="text">Text.</param>
-        private CGSize GetDescLabelSize(float x, float y, float width, string text)
-        {
-            UILabel label = new UILabel(new CGRect(x, y, width, 1000))
-            {
-                TextAlignment = UITextAlignment.Center,
-                Lines = 0,
-                TextColor = UIColor.White,
-                Font = myTNBFont.MuseoSans16_300(),
-                Text = text
-            };
-            return label.Text.StringSize(label.Font, new SizeF((float)label.Frame.Width, 1000F));
-        }
-
 
         internal void GetUserEntity()
         {

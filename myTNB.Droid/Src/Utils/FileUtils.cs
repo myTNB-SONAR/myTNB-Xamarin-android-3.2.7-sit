@@ -1,22 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
+﻿using Android.Content;
 using Android.Graphics;
-using System.IO;
-using System.Threading.Tasks;
-using Java.Nio;
-using myTNB_Android.Src.Feedback_PreLogin_BillRelated.Activity;
-using System.Globalization;
 using Android.Util;
 using myTNB_Android.Src.Base.Activity;
+using System;
+using System.IO;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace myTNB_Android.Src.Utils
 {
@@ -26,7 +15,7 @@ namespace myTNB_Android.Src.Utils
         internal const string IMAGE_FOLDER = "Images";
 
         internal const string PROMO_IMAGE_FOLDER = "PromoImages";
-        public static string GetImagesPath(Context context , string pFolder)
+        public static string GetImagesPath(Context context, string pFolder)
         {
             string path = System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal);
             string filePath = System.IO.Path.Combine(path, pFolder);
@@ -40,20 +29,20 @@ namespace myTNB_Android.Src.Utils
             return filePath;
         }
 
-        public static string GetTemporaryImageFilePath(Context context, string pFolder , string tmpName)
+        public static string GetTemporaryImageFilePath(Context context, string pFolder, string tmpName)
         {
             string path = System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal);
-            string filePath = System.IO.Path.Combine(path, pFolder , tmpName);
+            string filePath = System.IO.Path.Combine(path, pFolder, tmpName);
             if (IsExternalStorageReadable() && IsExternalStorageWritable())
             {
                 string externalPath = context.GetExternalFilesDir(null).AbsolutePath;
-                filePath = System.IO.Path.Combine(externalPath, pFolder , tmpName);
+                filePath = System.IO.Path.Combine(externalPath, pFolder, tmpName);
                 Console.WriteLine(string.Format("Folder External {0} File Path {1}", path, filePath));
             }
             return filePath;
         }
 
-        public static void Remove(Context context , string pFolder , string pFileName)
+        public static void Remove(Context context, string pFolder, string pFileName)
         {
             string path = System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal);
 
@@ -73,17 +62,17 @@ namespace myTNB_Android.Src.Utils
 
         }
 
-        public static string Save(Context context , Bitmap bitmap  , string pFolder , string pFileName)
+        public static string Save(Context context, Bitmap bitmap, string pFolder, string pFileName)
         {
-            
-            string path = System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal );
-            
+
+            string path = System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal);
+
             string filePath = System.IO.Path.Combine(path, pFolder, pFileName);
-            Console.WriteLine(string.Format("Folder Personal {0} File Path {1}", path , filePath));
+            Console.WriteLine(string.Format("Folder Personal {0} File Path {1}", path, filePath));
             if (IsExternalStorageReadable() && IsExternalStorageWritable())
             {
                 string externalPath = context.GetExternalFilesDir(null).AbsolutePath;
-                filePath  = System.IO.Path.Combine(externalPath, pFolder, pFileName);
+                filePath = System.IO.Path.Combine(externalPath, pFolder, pFileName);
                 Console.WriteLine(string.Format("Folder External {0} File Path {1}", path, filePath));
             }
 
@@ -91,10 +80,10 @@ namespace myTNB_Android.Src.Utils
             {
                 Directory.CreateDirectory(System.IO.Path.Combine(path, pFolder));
             }
-           
-            var stream = new FileStream(filePath ,FileMode.Create );
-           
-            bitmap.Compress(Bitmap.CompressFormat.Jpeg , 100 , stream);
+
+            var stream = new FileStream(filePath, FileMode.Create);
+
+            bitmap.Compress(Bitmap.CompressFormat.Jpeg, 100, stream);
             stream.Close();
 
 
@@ -121,7 +110,7 @@ namespace myTNB_Android.Src.Utils
 
         public static Task<string> SaveAsync(Bitmap bitmap, string pFolder, string pFileName)
         {
-            return Task.Run<string>(()=> 
+            return Task.Run<string>(() =>
             {
                 string path = System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal);
 
@@ -141,7 +130,7 @@ namespace myTNB_Android.Src.Utils
         }
 
 
-        public static byte[] Get(Context context , Bitmap bitmap )
+        public static byte[] Get(Context context, Bitmap bitmap)
         {
 
             byte[] bitmapData;
@@ -161,20 +150,20 @@ namespace myTNB_Android.Src.Utils
             return hex.ToString();
         }
 
-        public static Bitmap GetImageFromHex(string hex , int fileSize)
+        public static Bitmap GetImageFromHex(string hex, int fileSize)
         {
             byte[] imageBytes = StringToByteArray(hex);
-            return BitmapFactory.DecodeByteArray(imageBytes , 0 , Math.Min(imageBytes.Length, fileSize));
+            return BitmapFactory.DecodeByteArray(imageBytes, 0, Math.Min(imageBytes.Length, fileSize));
         }
 
         public static Task<Bitmap> GetImageFromHexAsync(string hex, int fileSize)
         {
-            return Task.Run<Bitmap>(() => 
+            return Task.Run<Bitmap>(() =>
             {
                 byte[] imageBytes = StringToByteArray(hex);
-                return BitmapFactory.DecodeByteArray(imageBytes, 0, Math.Min(imageBytes.Length , fileSize));
+                return BitmapFactory.DecodeByteArray(imageBytes, 0, Math.Min(imageBytes.Length, fileSize));
             });
-            
+
         }
 
         public static byte[] StringToByteArray(string hex)
@@ -220,7 +209,7 @@ namespace myTNB_Android.Src.Utils
         {
             string path = System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal);
 
-     
+
             if (IsExternalStorageReadable() && IsExternalStorageWritable())
             {
                 path = context.GetExternalFilesDir(null).AbsolutePath;
@@ -228,9 +217,9 @@ namespace myTNB_Android.Src.Utils
             return Directory.Exists(System.IO.Path.Combine(path, pTempFolder));
         }
 
-        internal static void CreateDirectory(Context context , string pTempFolder)
+        internal static void CreateDirectory(Context context, string pTempFolder)
         {
-            if (!DirectoryExists(context , pTempFolder))
+            if (!DirectoryExists(context, pTempFolder))
             {
                 string path = System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal);
 
@@ -244,7 +233,7 @@ namespace myTNB_Android.Src.Utils
             }
         }
 
-        internal static string ProcessGalleryImage(Context context , Android.Net.Uri selectedImage, string pTempImagePath, string pFileName)
+        internal static string ProcessGalleryImage(Context context, Android.Net.Uri selectedImage, string pTempImagePath, string pFileName)
         {
             DisplayMetrics metrics = new DisplayMetrics();
             int srcWidth = 200;

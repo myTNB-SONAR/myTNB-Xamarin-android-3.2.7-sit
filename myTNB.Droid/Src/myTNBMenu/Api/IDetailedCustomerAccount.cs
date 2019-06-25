@@ -1,19 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-using Refit;
-using myTNB_Android.Src.AddAccount.Models;
-using System.Threading.Tasks;
+﻿using myTNB_Android.Src.AddAccount.Models;
 using myTNB_Android.Src.AddAccount.Requests;
+using Refit;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace myTNB_Android.Src.myTNBMenu.Api
 {
@@ -21,6 +10,6 @@ namespace myTNB_Android.Src.myTNBMenu.Api
     {
         [Headers("Content-Type:application/json; charset=utf-8")]
         [Post("/v5/my_billingssp.asmx/GetBillingAccountDetails")]
-        Task<AccountDetailsResponse> GetDetailedAccount([Body] AccountDetailsRequest accountDetailResponse , CancellationToken token);
+        Task<AccountDetailsResponse> GetDetailedAccount([Body] AccountDetailsRequest accountDetailResponse, CancellationToken token);
     }
 }

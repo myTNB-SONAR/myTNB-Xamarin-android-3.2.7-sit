@@ -5,7 +5,7 @@ namespace myTNB
     public static class TNBGlobal
     {
 #if DEBUG || MASTER
-        public static bool IsProduction = false;
+        public static bool IsProduction = true;
         public static int PromoOverlayDisplayIntervalDays = 1;
 #else
         public static bool IsProduction = true;
@@ -16,7 +16,7 @@ namespace myTNB
         public static string DEFAULT_LANGUAGE = "en";
         public static string DB_NAME = "myTNB.db";
 
-        public static string API_KEY_ID = GetAPIKeyID();
+        public static string API_KEY_ID = GetAPIKeyID;
         public static string DEVICE_PLATFORM_IOS = "2";
         public static string SITECORE_URL = "https://sitecore.tnb.com.my/";
         public static string SITECORE_USERNAME = "api_user";
@@ -44,33 +44,56 @@ namespace myTNB
         /// The measurement units
         /// </summary>
         public static string UNIT_CURRENCY = "RM";
-        public static string UNIT_ENERGY = "kWh";
-        public static string UNIT_EMISSION = "kg";
 
         public static string ACCOUNT_NAME_PATTERN = @"^.*$"; //@"^[A-Za-z0-9 ]*$";
         public static string AmountPattern = @"^[0-9.]*$";
         public static string CustomerNamePattern = @"^[A-Za-z0-9 ]*$"; //@"(?i)^[a-z0-9]+(?:[ ]?[a-z0-9]+)*$"; 
         public static string MobileNoPattern = @"^[0-9]*$";
         public static string NumbersOnlyPattern = @"^[0-9]*$";
+        public static string ACCOUNT_NO_PATTERN = @"^[0-9]{12,14}$";
+        public static string IC_NO_PATTERN = @"^[a-zA-Z0-9]+$";
+
+
+        public static string UNITENERGY
+        {
+            get
+            {
+                return "Global_UnitEnergy".Translate();
+            }
+        }
+
+        public static string UNITEMISSION
+        {
+            get
+            {
+                return "Global_UnitEmission".Translate();
+            }
+        }
 
         /// <summary>
         /// Gets the payment URL.
         /// </summary>
         /// <returns>The payment URL.</returns>
-        public static string GetPaymentURL()
+        public static string GetPaymentURL
         {
-            return IsProduction ? "https://mytnbapp.tnb.com.my/v5/PayRedirect.aspx"
+            get
+            {
+                return IsProduction ? "https://mytnbapp.tnb.com.my/v5/PayRedirect.aspx"
                     : "https://mobiletestingws.tnb.com.my/v5/PayRedirect.aspx";
+            }
         }
 
         /// <summary>
         /// Gets the API Key identifier.
         /// </summary>
         /// <returns>The APIK ey identifier.</returns>
-        static string GetAPIKeyID()
+        static string GetAPIKeyID
         {
-            return IsProduction ? "E6148656-205B-494C-BC95-CC241423E72F"
+            get
+            {
+                return IsProduction ? "E6148656-205B-494C-BC95-CC241423E72F"
                     : "9515F2FA-C267-42C9-8087-FABA77CB84DF";
+            }
         }
 
         #region Character Limits
@@ -138,5 +161,10 @@ namespace myTNB
             public static string LoginState = "isLogin";
         }
 
+        public static string DEFAULT_VALUE = "0.00";
+        public static string ZERO = "0";
+        public static string EMPTY_DATE = "--";
+        public static string EMPTY_ADDRESS = "- - -";
+        public static string PERCENTAGE = "%";
     }
 }

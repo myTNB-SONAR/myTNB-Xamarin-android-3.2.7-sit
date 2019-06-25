@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using Carousels;
 using myTNB.Model;
 using UIKit;
@@ -9,16 +8,14 @@ namespace myTNB.Dashboard.DashboardComponents
 {
     public class ChartDataSource : iCarouselDataSource
     {
-        UIView _parentView;
+        readonly UIView _parentView;
         ChartDataModelBase chartBaseData;
         bool isRenewableAcct = false;
-
 
         public ChartDataSource(UIView view, ChartDataModelBase chart, bool isREAcct)
         {
             _parentView = view;
             isRenewableAcct = isREAcct;
-
             ChartHelper.SortChartDataDescending(chart, out chartBaseData);
         }
 
@@ -30,17 +27,14 @@ namespace myTNB.Dashboard.DashboardComponents
         public override nint GetNumberOfItems(iCarousel carousel)
         {
             // return the number of items in the data
-
             if (chartBaseData != null)
             {
                 bool isNormalMeter = (chartBaseData is ChartDataModel) ? true : false;
-
                 if (isNormalMeter)
                 {
                     if (DataManager.DataManager.SharedInstance.IsMontView)
                     {
                         var model = chartBaseData as ChartDataModel;
-
                         if (model.ByMonth != null)
                         {
                             return 1;
@@ -75,8 +69,8 @@ namespace myTNB.Dashboard.DashboardComponents
             UsageMetrics smartMeterMetrics = null;
             int chartIndex = (int)index;
 
-            ChartHelper.GetSelectedChartInfo(chartBaseData, DataManager.DataManager.SharedInstance.IsMontView,
-                                 chartIndex, out smartMeterMetrics, out chartData, out dateRange, out isNormalMeter);
+            ChartHelper.GetSelectedChartInfo(chartBaseData, DataManager.DataManager.SharedInstance.IsMontView
+                , chartIndex, out smartMeterMetrics, out chartData, out dateRange, out isNormalMeter);
 
             var chartComponent = new ChartComponent(_parentView);
             var viewChart = chartComponent.GetUI(isNormalMeter);
@@ -84,7 +78,8 @@ namespace myTNB.Dashboard.DashboardComponents
             //if (chartData?.Count > 0)
             {
                 chartComponent?.SetFrameByMeterType(isNormalMeter);
-                chartComponent.ConstructSegmentViews(chartData, isNormalMeter, DataManager.DataManager.SharedInstance.CurrentChartMode, isRenewableAcct);
+                chartComponent.ConstructSegmentViews(chartData, isNormalMeter
+                    , DataManager.DataManager.SharedInstance.CurrentChartMode, isRenewableAcct);
 
                 var rangeLabel = new UILabel()
                 {
@@ -94,12 +89,7 @@ namespace myTNB.Dashboard.DashboardComponents
                 };
                 viewChart.AddSubview(rangeLabel);
             }
-
-
             return viewChart;
         }
-
-
-
     }
 }

@@ -1,17 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-using myTNB_Android.Src.Base.MVP;
-using Refit;
+﻿using myTNB_Android.Src.Base.MVP;
 using myTNB_Android.Src.ManageCards.Models;
+using Refit;
+using System;
 
 namespace myTNB_Android.Src.ManageCards.MVP
 {
@@ -46,14 +36,14 @@ namespace myTNB_Android.Src.ManageCards.MVP
             /// </summary>
             /// <param name="RemovedCard">CreditCardData</param>
             /// <param name="position">integer</param>
-            void ShowRemoveSuccess(CreditCardData RemovedCard , int position);
+            void ShowRemoveSuccess(CreditCardData RemovedCard, int position);
 
             /// <summary>
             /// Shows a removed card snackbar success and stays in the screen
             /// </summary>
             /// <param name="RemovedCard">CreditCardData</param>
             /// <param name="position">integer</param>
-            void ShowSnackbarRemovedSuccess(CreditCardData RemovedCard , int position);
+            void ShowSnackbarRemovedSuccess(CreditCardData RemovedCard, int position);
 
             /// <summary>
             /// Shows a cancelled exception with an option to retry
@@ -88,7 +78,7 @@ namespace myTNB_Android.Src.ManageCards.MVP
             /// </summary>
             /// <param name="RemovedCard"></param>
             /// <param name="position"></param>
-            void OnRemoveStay(CreditCardData RemovedCard , int position);
+            void OnRemoveStay(CreditCardData RemovedCard, int position);
         }
     }
 }

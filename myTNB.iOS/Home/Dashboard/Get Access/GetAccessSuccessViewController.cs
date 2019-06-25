@@ -3,13 +3,12 @@ using System;
 using UIKit;
 using CoreAnimation;
 using CoreGraphics;
-using myTNB.Extensions;
 
 namespace myTNB
 {
     public partial class GetAccessSuccessViewController : UIViewController
     {
-        public GetAccessSuccessViewController (IntPtr handle) : base (handle)
+        public GetAccessSuccessViewController(IntPtr handle) : base(handle)
         {
         }
 
@@ -32,8 +31,8 @@ namespace myTNB
 
         internal void SetupSuperViewBackground()
         {
-            var startColor = myTNBColor.GradientPurpleDarkElement();
-            var endColor = myTNBColor.GradientPurpleLightElement();
+            var startColor = MyTNBColor.GradientPurpleDarkElement;
+            var endColor = MyTNBColor.GradientPurpleLightElement;
 
             var gradientLayer = new CAGradientLayer();
             gradientLayer.Colors = new[] { startColor.CGColor, endColor.CGColor };
@@ -65,24 +64,26 @@ namespace myTNB
             {
                 Frame = new CGRect(18, 143, View.Frame.Width - 36, 18),
                 AttributedText = new NSAttributedString(
-                             "Access Requested to the Owner",
-                    font: myTNBFont.MuseoSans16(),
-                             foregroundColor: myTNBColor.PowerBlue(),
+                             "GetAccess_RequestedToOwnerMessage".Translate(),
+                    font: MyTNBFont.MuseoSans16,
+                             foregroundColor: MyTNBColor.PowerBlue,
                              strokeWidth: 0
                             ),
                 TextAlignment = UITextAlignment.Center,
             };
 
-            UIView viewLine = new UIView((new CGRect(32, 176, View.Frame.Width - 64, 1)));
-            viewLine.BackgroundColor = myTNBColor.PlatinumGrey();
+            UIView viewLine = new UIView((new CGRect(32, 176, View.Frame.Width - 64, 1)))
+            {
+                BackgroundColor = MyTNBColor.PlatinumGrey
+            };
 
             UILabel lblDescription = new UILabel
             {
                 Frame = new CGRect(42, 193, View.Frame.Width - 84, 18),
                 AttributedText = new NSAttributedString(
                     DataManager.DataManager.SharedInstance.SelectedAccount.accDesc,
-                    font: myTNBFont.MuseoSans14(),
-                 foregroundColor: myTNBColor.TunaGrey(),
+                    font: MyTNBFont.MuseoSans14,
+                 foregroundColor: MyTNBColor.TunaGrey(),
                  strokeWidth: 0
                 ),
                 Lines = 0,
@@ -95,8 +96,8 @@ namespace myTNB
                 Frame = new CGRect(42, 212, View.Frame.Width - 84, 16),
                 AttributedText = new NSAttributedString(
                     DataManager.DataManager.SharedInstance.SelectedAccount.accNum,
-                    font: myTNBFont.MuseoSans12(),
-                 foregroundColor: myTNBColor.TunaGrey(),
+                    font: MyTNBFont.MuseoSans12,
+                 foregroundColor: MyTNBColor.TunaGrey(),
                  strokeWidth: 0
                 ),
                 Lines = 0,
@@ -109,8 +110,8 @@ namespace myTNB
                 Frame = new CGRect(42, 244, View.Frame.Width - 84, 48),
                 AttributedText = new NSAttributedString(
                     DataManager.DataManager.SharedInstance.BillingAccountDetails.addStreet,
-                    font: myTNBFont.MuseoSans12(),
-                 foregroundColor: myTNBColor.TunaGrey(),
+                    font: MyTNBFont.MuseoSans12,
+                 foregroundColor: MyTNBColor.TunaGrey(),
                  strokeWidth: 0
                 ),
                 Lines = 0,
@@ -118,12 +119,14 @@ namespace myTNB
                 TextAlignment = UITextAlignment.Left,
             };
 
-            btnBackToDashboard = new UIButton(UIButtonType.Custom);
-            btnBackToDashboard.Frame = new CGRect(18, View.Frame.Height - 72, View.Frame.Width - 36, 48);
-            btnBackToDashboard.SetTitle("BackToDshbrd".Translate(), UIControlState.Normal);
-            btnBackToDashboard.Font = myTNBFont.MuseoSans16();
+            btnBackToDashboard = new UIButton(UIButtonType.Custom)
+            {
+                Frame = new CGRect(18, View.Frame.Height - 72, View.Frame.Width - 36, 48)
+            };
+            btnBackToDashboard.SetTitle("Common_BackToDashboard".Translate(), UIControlState.Normal);
+            btnBackToDashboard.Font = MyTNBFont.MuseoSans16;
             btnBackToDashboard.Layer.CornerRadius = 4.0f;
-            btnBackToDashboard.BackgroundColor = myTNBColor.FreshGreen();
+            btnBackToDashboard.BackgroundColor = MyTNBColor.FreshGreen;
 
             View.AddSubview(viewContainer);
             View.AddSubview(imgViewClose);
@@ -146,7 +149,8 @@ namespace myTNB
 
         internal void SetEvents()
         {
-            btnBackToDashboard.TouchUpInside += (sender, e) => {
+            btnBackToDashboard.TouchUpInside += (sender, e) =>
+            {
                 this.DismissViewController(false, null);
             };
         }
