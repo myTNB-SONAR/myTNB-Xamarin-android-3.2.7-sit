@@ -250,6 +250,7 @@ namespace myTNB.PushNotification
                         UpdateSelectAllFlags(false);
                         pushNotificationTableView.TableHeaderView = GetTableViewHeader();
                     }
+                    _titleBarComponent.SetTitle(_isSelectionMode ? "PushNotification_Title".Translate() : "PushNotification_Select".Translate());
                     _isSelectionMode = !_isSelectionMode;
                     UpdateTitleRightIconImage();
                     pushNotificationTableView.ReloadData();
@@ -695,6 +696,9 @@ namespace myTNB.PushNotification
             }
             _titleBarComponent.SetPrimaryImage(icon);
             UpdateNotificationForDeletionList(notifModel);
+            int count = _notificationsForUpdate != null ? _notificationsForUpdate.Count : 0;
+            _titleBarComponent.SetTitle(count > 0 ? string.Format("PushNotification_Selected".Translate(), count)
+                : "PushNotification_Select".Translate());
         }
 
         /// <summary>
