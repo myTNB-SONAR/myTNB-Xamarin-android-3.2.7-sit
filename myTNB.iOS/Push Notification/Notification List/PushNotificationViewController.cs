@@ -97,7 +97,9 @@ namespace myTNB.PushNotification
                 || userNotificationResponse?.d?.didSucceed == false
                 || userNotificationResponse?.d?.status?.ToLower() == "failed")
             {
-                DisplayRefreshScreen();
+                var msg = "This page must be tired. Tap the button below to help it out.";
+                var btnText = "Refresh Now";
+                DisplayRefreshScreen(msg, btnText);
                 _titleBarComponent.SetNotificationVisibility(true);
                 pushNotificationTableView.Hidden = true;
             }
@@ -212,7 +214,7 @@ namespace myTNB.PushNotification
             View.AddSubview(_refreshViewComponent.GetUI());
         }
 
-        internal void DisplayRefreshScreen()
+        internal void DisplayRefreshScreen(string msg, string btnText)
         {
             if (_refreshViewComponent != null)
             {
@@ -224,8 +226,8 @@ namespace myTNB.PushNotification
 
             _refreshViewComponent = new RefreshViewComponent(View, headerView);
             _refreshViewComponent.SetIconImage("Notification-Error");
-            _refreshViewComponent.SetDescription("We can’t seem to find the right information! This page must be tired. Help it out. Tap the button below.");
-            _refreshViewComponent.SetButtonText("Refresh Now");
+            _refreshViewComponent.SetDescription(msg);
+            _refreshViewComponent.SetButtonText(btnText);
             _refreshViewComponent.OnButtonTap = OnRefreshTap;
 
             View.AddSubview(_refreshViewComponent.GetUI());
