@@ -125,8 +125,7 @@ namespace myTNB
             {
                 DataManager.DataManager.SharedInstance.HasNewNotification = false;
             }
-            int unreadCount = GetNotificationCount();
-            UIApplication.SharedApplication.ApplicationIconBadgeNumber = unreadCount;
+            UpdateApplicationBadge();
 
             return res;
         }
@@ -137,7 +136,7 @@ namespace myTNB
         public static int GetNotificationCount()
         {
             if (DataManager.DataManager.SharedInstance.UserNotifications != null
-               && DataManager.DataManager.SharedInstance.UserNotifications.Count > 0)
+                && DataManager.DataManager.SharedInstance.UserNotifications?.Count > 0)
             {
                 try
                 {
@@ -182,9 +181,11 @@ namespace myTNB
                 };
                 var response = serviceManager.GetNotificationTypes("GetAppNotificationTypes", requestParameter);
                 DataManager.DataManager.SharedInstance.NotificationGeneralTypes = response?.d?.data;
-                NotificationPreferenceModel allNotificationItem = new NotificationPreferenceModel();
-                allNotificationItem.Title = "PushNotification_AllNotifications".Translate();
-                allNotificationItem.Id = "all";
+                NotificationPreferenceModel allNotificationItem = new NotificationPreferenceModel
+                {
+                    Title = "PushNotification_AllNotifications".Translate(),
+                    Id = "all"
+                };
                 if (DataManager.DataManager.SharedInstance.NotificationGeneralTypes != null)
                 {
                     DataManager.DataManager.SharedInstance.NotificationGeneralTypes.Insert(0, allNotificationItem);
@@ -214,7 +215,7 @@ namespace myTNB
                     email = DataManager.DataManager.SharedInstance.UserEntity[0].email,
                     deviceId = DataManager.DataManager.SharedInstance.UDID
                 };
-                DataManager.DataManager.SharedInstance.NotificationTypeResponse = 
+                DataManager.DataManager.SharedInstance.NotificationTypeResponse =
                 serviceManager.GetNotificationTypes("GetUserNotificationTypePreferences", requestParameter);
             });
         }
@@ -229,9 +230,29 @@ namespace myTNB
                     apiKeyID = TNBGlobal.API_KEY_ID,
                     email = DataManager.DataManager.SharedInstance.UserEntity[0].email
                 };
-                DataManager.DataManager.SharedInstance.NotificationChannelResponse = 
+                DataManager.DataManager.SharedInstance.NotificationChannelResponse =
                 serviceManager.GetNotificationChannels("GetUserNotificationChannelPreferences", requestParameter);
             });
+        }
+
+        public static string GetNotificationImage()
+        {
+            if (DataManager.DataManager.SharedInstance.UserNotifications.Count > 0)
+            {
+                int index = DataManager.DataManager.SharedInstance.UserNotifications.FindIndex(x => x.IsRead.ToLower() == "false");
+                DataManager.DataManager.SharedInstance.HasNewNotification = index > -1;
+            }
+            else
+            {
+                DataManager.DataManager.SharedInstance.HasNewNotification = false;
+            }
+            return DataManager.DataManager.SharedInstance.HasNewNotification ? "Notification-New" : "Notification";
+        }
+
+        public static void UpdateApplicationBadge()
+        {
+            int unreadCount = GetNotificationCount();
+            UIApplication.SharedApplication.ApplicationIconBadgeNumber = unreadCount;
         }
     }
 }

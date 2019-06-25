@@ -16,7 +16,7 @@ using UIKit;
 
 namespace myTNB
 {
-    public partial class DashboardHomeViewController : UIViewController
+    public partial class DashboardHomeViewController : CustomUIViewController
     {
         GradientViewComponent _gradientViewComponent;
         GreetingComponent _greetingComponent;
@@ -76,7 +76,7 @@ namespace myTNB
                     }
                     else
                     {
-                        AlertHandler.DisplayNoDataAlert(this);
+                        DisplayNoDataAlert();
                     }
                 });
             });
@@ -122,7 +122,7 @@ namespace myTNB
         /// </summary>
         private void UpdateNotificationIcon()
         {
-            _titleBarComponent?.SetNotificationImage(
+            _titleBarComponent?.SetPrimaryImage(
                     DataManager.DataManager.SharedInstance.HasNewNotification ? "Notification-New" : "Notification");
         }
 
@@ -137,13 +137,13 @@ namespace myTNB
             _titleBarComponent = new TitleBarComponent(_gradientView);
             UIView titleBarView = _titleBarComponent.GetUI();
             _titleBarComponent.SetTitle("Dashboard_AllAccounts".Translate());
-            _titleBarComponent.SetNotificationVisibility(false);
+            _titleBarComponent.SetPrimaryVisibility(false);
             _titleBarComponent.SetBackVisibility(false);
             _titleBarComponent.SetBackImage("LogOut");
             _titleBarComponent.SetBackAction(new UITapGestureRecognizer(() =>
             {
                 var alert = UIAlertController.Create("MyAccount_Logout".Translate(), "MyAccount_LogoutConfirmation".Translate(), UIAlertControllerStyle.Alert);
-                alert.AddAction(UIAlertAction.Create("Ok", UIAlertActionStyle.Default, (obj) =>
+                alert.AddAction(UIAlertAction.Create("Common_Ok".Translate(), UIAlertActionStyle.Default, (obj) =>
                 {
                     UIStoryboard storyBoard = UIStoryboard.FromName("Logout", null);
                     LogoutViewController viewController =
@@ -151,7 +151,7 @@ namespace myTNB
                     var navController = new UINavigationController(viewController);
                     PresentViewController(navController, true, null);
                 }));
-                alert.AddAction(UIAlertAction.Create("Cancel", UIAlertActionStyle.Cancel, null));
+                alert.AddAction(UIAlertAction.Create("Common_Cancel".Translate(), UIAlertActionStyle.Cancel, null));
                 PresentViewController(alert, animated: true, completionHandler: null);
             }));
 
@@ -204,7 +204,7 @@ namespace myTNB
                         });
                     });
                 });
-                _titleBarComponent.SetNotificationAction(notificationTap);
+                _titleBarComponent.SetPrimaryAction(notificationTap);
             }
         }
 
@@ -894,7 +894,6 @@ namespace myTNB
                         accts[i] = acct;
                         shouldReload = true;
                     }
-
                 }
 
             } // key

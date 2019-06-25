@@ -70,7 +70,7 @@ namespace myTNB
             TitleBarComponent titleBarComponent = new TitleBarComponent(_headerView);
             UIView titleBarView = titleBarComponent.GetUI();
             titleBarComponent.SetTitle("Rating_Title".Translate());
-            titleBarComponent.SetNotificationVisibility(true);
+            titleBarComponent.SetPrimaryVisibility(true);
             titleBarComponent.SetBackVisibility(false);
             titleBarComponent.SetBackAction(new UITapGestureRecognizer(() =>
             {

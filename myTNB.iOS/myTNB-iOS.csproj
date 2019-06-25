@@ -858,18 +858,22 @@
     <ImageAsset Include="Assets.xcassets\LogOut.imageset\LogOut.png" />
     <ImageAsset Include="Assets.xcassets\LogOut.imageset\LogOut%402x.png" />
     <ImageAsset Include="Assets.xcassets\LogOut.imageset\LogOut%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Notification-Edit.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Notification-Check.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Notification-Check.imageset\Notification-Check.png" />
-    <ImageAsset Include="Assets.xcassets\Notification-Check.imageset\Notification-Check%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Notification-Check.imageset\Notification-Check%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Notification-Edit.imageset\Notification-Edit-1.png" />
-    <ImageAsset Include="Assets.xcassets\Notification-Edit.imageset\Notification-Edit%402x-1.png" />
-    <ImageAsset Include="Assets.xcassets\Notification-Edit.imageset\Notification-Edit%403x-1.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-MarkAsRead.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Notification-MarkAsRead.imageset\icHeaderMarkread.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-MarkAsRead.imageset\icHeaderMarkread%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-MarkAsRead.imageset\icHeaderMarkread%403x.png" />
+    <ImageAsset Include="Assets.xcassets\IC-Header-Cancel.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\IC-Header-Cancel.imageset\icHeaderCancel.png" />
+    <ImageAsset Include="Assets.xcassets\IC-Header-Cancel.imageset\icHeaderCancel%402x.png" />
+    <ImageAsset Include="Assets.xcassets\IC-Header-Cancel.imageset\icHeaderCancel%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Select.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Maintenance-Image.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Maintenance-Image.imageset\Maintenance-Image-1.png" />
     <ImageAsset Include="Assets.xcassets\Maintenance-Image.imageset\Maintenance-Image%402x-1.png" />
     <ImageAsset Include="Assets.xcassets\Maintenance-Image.imageset\Maintenance-Image%403x-1.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Select.imageset\icActionSelectAll.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Select.imageset\icActionSelectAll%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Select.imageset\icActionSelectAll%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -1116,9 +1120,13 @@
     <Folder Include="Home\Feedback\Feedback Image\" />
     <Folder Include="Home\More\Language\" />
     <Folder Include="Helpers\Generic Line\" />
-    <Folder Include="Assets.xcassets\Notification-Edit.imageset\" />
     <Folder Include="Assets.xcassets\Notification-Check.imageset\" />
+    <Folder Include="Assets.xcassets\Notification-MarkAsRead.imageset\" />
+    <Folder Include="Model\UpdateNotification\" />
+    <Folder Include="Assets.xcassets\IC-Header-Cancel.imageset\" />
+    <Folder Include="Assets.xcassets\Notification-Select.imageset\" />
     <Folder Include="Assets.xcassets\Maintenance-Image.imageset\" />
+    <Folder Include="Model\Modify Notification\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -1377,7 +1385,6 @@
     <Compile Include="Home\More\Push Notification Settings\NotificationSettingsViewCell.designer.cs">
       <DependentUpon>NotificationSettingsViewCell.cs</DependentUpon>
     </Compile>
-    <Compile Include="Model\DeleteNotificationResponseModel.cs" />
     <Compile Include="Push Notification\Notification Details\NotificationDetailsViewController.cs" />
     <Compile Include="Push Notification\Notification Details\NotificationDetailsViewController.designer.cs">
       <DependentUpon>NotificationDetailsViewController.cs</DependentUpon>
@@ -1802,8 +1809,12 @@
     <Compile Include="Helpers\Generic Tableview Selector\GenericSelectorViewController.designer.cs" />
     <Compile Include="Home\More\Language\LanguageSettings.cs" />
     <Compile Include="Helpers\Generic Line\GenericLine.cs" />
-    <Compile Include="Customs\TextViewDelegate.cs" />
+    <Compile Include="Model\UpdateNotification\UpdateNotificationModel.cs" />
+    <Compile Include="Customs\CustomUIViewController.cs" />
+    <Compile Include="Model\Modify Notification\DeleteNotificationResponseModel.cs" />
+    <Compile Include="Model\Modify Notification\ReadNotificationResponseModel.cs" />
     <Compile Include="Model\GetAccountUsageHistoryForGraph\ToolTipsModel.cs" />
+    <Compile Include="Customs\TextViewDelegate.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />

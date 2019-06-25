@@ -29,6 +29,5 @@ namespace myTNB.Model
         }
 
         public List<ToolTipsModel> ToolTips { set; get; }
-
     }
 }

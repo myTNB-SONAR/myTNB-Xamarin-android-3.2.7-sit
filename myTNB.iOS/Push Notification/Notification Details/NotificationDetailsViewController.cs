@@ -7,6 +7,7 @@ using System.Drawing;
 using System.Threading.Tasks;
 using myTNB.SQLite.SQLiteDataManager;
 using myTNB.SitecoreCMS.Model;
+using System.Collections.Generic;
 
 namespace myTNB
 {
@@ -77,9 +78,9 @@ namespace myTNB
             _titleBarComponent = new TitleBarComponent(headerView);
             UIView titleBarView = _titleBarComponent.GetUI();
             _titleBarComponent.SetTitle(NotificationInfo.Title);
-            _titleBarComponent.SetNotificationVisibility(false);
-            _titleBarComponent.SetNotificationImage("Notification-Delete");
-            _titleBarComponent.SetNotificationAction(new UITapGestureRecognizer(() =>
+            _titleBarComponent.SetPrimaryVisibility(false);
+            _titleBarComponent.SetPrimaryImage("Notification-Delete");
+            _titleBarComponent.SetPrimaryAction(new UITapGestureRecognizer(() =>
             {
                 var alert = UIAlertController.Create("PushNotification_DeleteTitle".Translate()
                     , "PushNotification_DeleteMessage".Translate(), UIAlertControllerStyle.Alert);
@@ -90,14 +91,17 @@ namespace myTNB
                     {
                         if (NetworkUtility.isReachable)
                         {
-                            Task[] taskList = new Task[] { DeleteUserNotification(NotificationInfo?.Id) };
-                            Task.WaitAll(taskList);
+                            await DeleteUserNotification(NotificationInfo?.Id);
                             if (_deleteNotificationResponse != null && _deleteNotificationResponse?.d != null
                                 && _deleteNotificationResponse?.d?.status?.ToLower() == "success"
                                 && _deleteNotificationResponse?.d?.didSucceed == true)
                             {
                                 DataManager.DataManager.SharedInstance.IsNotificationDeleted = true;
-                                await PushNotificationHelper.GetNotifications();
+                                var index = DataManager.DataManager.SharedInstance.UserNotifications.FindIndex(x => x.Id == NotificationInfo?.Id);
+                                if (index > -1)
+                                {
+                                    DataManager.DataManager.SharedInstance.UserNotifications.RemoveAt(index);
+                                }
                                 NavigationController?.PopViewController(true);
                             }
                             else
@@ -451,13 +455,18 @@ namespace myTNB
                 object requestParameter = new
                 {
                     ApiKeyID = TNBGlobal.API_KEY_ID,
-                    NotificationType = NotificationInfo.NotificationType,
-                    NotificationId = id,
+                    UpdatedNotifications = new List<UpdateNotificationModel>(){
+                        new UpdateNotificationModel()
+                        {
+                            NotificationType = NotificationInfo.NotificationType,
+                            NotificationId = id
+                        }
+                    },
                     Email = user?.email,
                     DeviceId = DataManager.DataManager.SharedInstance.UDID,
                     SSPUserId = user?.userID
                 };
-                _deleteNotificationResponse = serviceManager.DeleteUserNotification("DeleteUserNotification_V2", requestParameter);
+                _deleteNotificationResponse = serviceManager.DeleteUserNotification("DeleteUserNotification_V3", requestParameter);
             });
         }
 

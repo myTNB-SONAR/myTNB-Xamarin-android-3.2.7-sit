@@ -133,7 +133,7 @@ namespace myTNB
             titleBarComponent = new TitleBarComponent(headerView);
             UIView titleBarView = titleBarComponent.GetUI();
             titleBarComponent.SetTitle("Payment_SelectMethodTitle".Translate());
-            titleBarComponent.SetNotificationVisibility(true);
+            titleBarComponent.SetPrimaryVisibility(true);
             titleBarComponent.SetBackVisibility(false);
             titleBarComponent.SetBackAction(new UITapGestureRecognizer(() =>
             {

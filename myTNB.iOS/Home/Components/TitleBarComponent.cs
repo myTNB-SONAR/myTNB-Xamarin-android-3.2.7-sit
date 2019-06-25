@@ -5,13 +5,9 @@ namespace myTNB.Dashboard.DashboardComponents
 {
     public class TitleBarComponent
     {
-        UIView _parentView;
-        UIView _viewTitleBar;
+        UIView _parentView, _viewTitleBar, _viewSecondaryAction, _viewPrimaryAction, _viewBack;
         UILabel _lblTitle;
-        UIView _viewNotification;
-        UIImageView _imgViewNotification;
-        UIView _viewBack;
-        UIImageView _imgViewBack;
+        UIImageView _imgViewSecondaryAction, _imgViewPrimaryAction, _imgViewBack;
 
         const int HEIGHT = 24;
 
@@ -45,18 +41,29 @@ namespace myTNB.Dashboard.DashboardComponents
             {
                 Font = MyTNBFont.MuseoSans16_500
             };
-            ;
+            
             _lblTitle.TextAlignment = UITextAlignment.Center;
             _lblTitle.TextColor = UIColor.White;
             _viewTitleBar.AddSubview(_lblTitle);
 
-            _viewNotification = new UIView(new CGRect(_parentView.Frame.Width - 48, 0, 24, HEIGHT));
-            _imgViewNotification = new UIImageView(new CGRect(0, 0, 24, HEIGHT))
+            _viewPrimaryAction = new UIView(new CGRect(_parentView.Frame.Width - 48, 0, 24, HEIGHT));
+            _imgViewPrimaryAction = new UIImageView(new CGRect(0, 0, 24, HEIGHT))
             {
                 Image = UIImage.FromBundle("Notification")
             };
-            _viewNotification.AddSubview(_imgViewNotification);
-            _viewTitleBar.AddSubview(_viewNotification);
+            _viewPrimaryAction.AddSubview(_imgViewPrimaryAction);
+            _viewTitleBar.AddSubview(_viewPrimaryAction);
+
+            _viewSecondaryAction = new UIView(new CGRect(_parentView.Frame.Width - 80, 0, 24, HEIGHT))
+            {
+                Hidden = true
+            };
+            _imgViewSecondaryAction = new UIImageView(new CGRect(0, 0, 24, HEIGHT))
+            {
+                Image = UIImage.FromBundle("Notification")
+            };
+            _viewSecondaryAction.AddSubview(_imgViewSecondaryAction);
+            _viewTitleBar.AddSubview(_viewSecondaryAction);
 
             _parentView.AddSubview(_viewTitleBar);
         }
@@ -72,19 +79,34 @@ namespace myTNB.Dashboard.DashboardComponents
             _lblTitle.Text = title;
         }
 
-        public void SetNotificationImage(string img)
+        public void SetSecondaryAction(UITapGestureRecognizer tapGesture)
         {
-            _imgViewNotification.Image = UIImage.FromBundle(img);
+            _viewSecondaryAction.AddGestureRecognizer(tapGesture);
         }
 
-        public void SetNotificationAction(UITapGestureRecognizer tapGesture)
+        public void SetSecondaryVisibility(bool isHidden)
         {
-            _viewNotification.AddGestureRecognizer(tapGesture);
+            _viewSecondaryAction.Hidden = isHidden;
         }
 
-        public void SetNotificationVisibility(bool isHidden)
+        public void SetSecondaryImage(string img)
         {
-            _viewNotification.Hidden = isHidden;
+            _imgViewSecondaryAction.Image = UIImage.FromBundle(img);
+        }
+
+        public void SetPrimaryAction(UITapGestureRecognizer tapGesture)
+        {
+            _viewPrimaryAction.AddGestureRecognizer(tapGesture);
+        }
+
+        public void SetPrimaryVisibility(bool isHidden)
+        {
+            _viewPrimaryAction.Hidden = isHidden;
+        }
+
+        public void SetPrimaryImage(string img)
+        {
+            _imgViewPrimaryAction.Image = UIImage.FromBundle(img);
         }
 
         public void SetBackImage(string img)
