@@ -176,7 +176,7 @@ namespace myTNB
             _titleBarComponent = new TitleBarComponent(headerView);
             UIView titleBarView = _titleBarComponent.GetUI();
             _titleBarComponent.SetTitle("Promotion_Title".Translate());
-            _titleBarComponent.SetNotificationVisibility(true);
+            _titleBarComponent.SetPrimaryVisibility(true);
             headerView.AddSubview(titleBarView);
             View.AddSubview(headerView);
         }

@@ -160,11 +160,11 @@ namespace myTNB
                     }
                 }
             }
-            catch(JsonSerializationException ex)
+            catch (JsonSerializationException ex)
             {
                 Debug.WriteLine(ex);
             }
-            catch(JsonReaderException ex)
+            catch (JsonReaderException ex)
             {
                 Debug.WriteLine(ex);
             }
@@ -554,6 +554,20 @@ namespace myTNB
             return (string.IsNullOrEmpty(rawResponse.Content)
                     || string.IsNullOrWhiteSpace(rawResponse.Content)) ? new DeleteNotificationResponseModel()
                     : JsonConvert.DeserializeObject<DeleteNotificationResponseModel>(rawResponse.Content);
+        }
+        /// <summary>
+        /// Reads the user notification.
+        /// </summary>
+        /// <returns>The user notification.</returns>
+        /// <param name="suffix">Suffix.</param>
+        /// <param name="requestParams">Request parameters.</param>
+        public ReadNotificationResponseModel ReadUserNotification(string suffix, object requestParams)
+        {
+            BaseService baseService = new BaseService();
+            RestResponse rawResponse = baseService.ExecuteWebservice(suffix, requestParams, APIVersion.V5);
+            return (string.IsNullOrEmpty(rawResponse.Content)
+                    || string.IsNullOrWhiteSpace(rawResponse.Content)) ? new ReadNotificationResponseModel()
+                    : JsonConvert.DeserializeObject<ReadNotificationResponseModel>(rawResponse.Content);
         }
         /// <summary>
         /// Gets the receipt.

@@ -311,24 +311,22 @@ namespace myTNB.Registration.CustomerAccounts
                     {
                         if (!isDashboardFlow)
                         {
-                            ToastHelper.DisplayAlertView(this, "Error_DefaultTitle".Translate(), _customerAccountResponseModel?.d?.message, (obj) =>
-                            {
-                                if (DataManager.DataManager.SharedInstance.AccountRecordsList == null
-                                   || DataManager.DataManager.SharedInstance.AccountRecordsList?.d == null)
-                                {
-                                    DataManager.DataManager.SharedInstance.AccountRecordsList = new CustomerAccountRecordListModel();
-                                    DataManager.DataManager.SharedInstance.AccountRecordsList.d = new List<CustomerAccountRecordModel>();
-                                }
-                                UIStoryboard storyBoard = UIStoryboard.FromName("Dashboard", null);
-                                UIViewController homeTabBarVC = storyBoard.InstantiateViewController("HomeTabBarController") as UIViewController;
-                                PresentViewController(homeTabBarVC, true, null);
-                            });
+                            AlertHandler.DisplayServiceError(this, _customerAccountResponseModel?.d?.message, (obj) =>
+                             {
+                                 if (DataManager.DataManager.SharedInstance.AccountRecordsList == null
+                                    || DataManager.DataManager.SharedInstance.AccountRecordsList?.d == null)
+                                 {
+                                     DataManager.DataManager.SharedInstance.AccountRecordsList = new CustomerAccountRecordListModel();
+                                     DataManager.DataManager.SharedInstance.AccountRecordsList.d = new List<CustomerAccountRecordModel>();
+                                 }
+                                 UIStoryboard storyBoard = UIStoryboard.FromName("Dashboard", null);
+                                 UIViewController homeTabBarVC = storyBoard.InstantiateViewController("HomeTabBarController") as UIViewController;
+                                 PresentViewController(homeTabBarVC, true, null);
+                             });
                         }
                         else
                         {
-                            var message = !string.IsNullOrWhiteSpace(_customerAccountResponseModel?.d?.message)
-                                ? _customerAccountResponseModel?.d?.message : "Error_DefaultMessage".Translate();
-                            ToastHelper.DisplayAlertView(this, "Error_DefaultTitle".Translate(), message, (obj) =>
+                            AlertHandler.DisplayServiceError(this, _customerAccountResponseModel?.d?.message, (obj) =>
                             {
                                 DismissViewController(true, null);
                             });

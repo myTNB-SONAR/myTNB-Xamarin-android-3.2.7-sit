@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using CoreGraphics;
 using Foundation;
 using myTNB.Model;
 using UIKit;
@@ -45,15 +46,14 @@ namespace myTNB.PushNotification
             cell.imgUnread.Hidden = notification.IsRead.ToLower() != "false";
             cell.SelectionStyle = UITableViewCellSelectionStyle.None;
             cell.imgCheckbox.Image = UIImage.FromBundle(notification.IsSelected
-                                                        ? "Payment-Checkbox-Active"
-                                                        : "Payment-Checkbox-Inactive");
+                ? "Payment-Checkbox-Active" : "Payment-Checkbox-Inactive");
             cell.viewCheckBox.AddGestureRecognizer(new UITapGestureRecognizer(() =>
             {
                 notification.IsSelected = !notification.IsSelected;
                 _controller.UpdateTitleRightIconImage(notification);
                 cell.imgCheckbox.Image = UIImage.FromBundle(notification.IsSelected
-                                                             ? "Payment-Checkbox-Active"
-                                                             : "Payment-Checkbox-Inactive");
+                    ? "Payment-Checkbox-Active" : "Payment-Checkbox-Inactive");
+                _controller.UpdateSectionHeaderWidget();
             }));
 
             return cell;
@@ -93,79 +93,138 @@ namespace myTNB.PushNotification
 
         internal string GetIcon(string id)
         {
-            if (id == "01")
+            switch (id)
             {
-                return "Notification-New-Bill";
-            }
-            else if (id == "02")
-            {
-                return "Notification-Bill-Due";
-            }
-            else if (id == "03")
-            {
-                return "Notification-Dunning";
-            }
-            else if (id == "04")
-            {
-                return "Notification-Disconnection";
-            }
-            else if (id == "05")
-            {
-                return "Notification-Reconnection";
-            }
-            else if (id == "97")
-            {
-                return "Notification-Promotion";
-            }
-            else if (id == "98")
-            {
-                return "Notification-News";
-            }
-            else if (id == "99")
-            {
-                return "Notification-Maintenance";
-            }
-            else
-            {
-                return string.Empty;
+                case "01":
+                    return "Notification-New-Bill";
+                case "02":
+                    return "Notification-Bill-Due";
+                case "03":
+                    return "Notification-Dunning";
+                case "04":
+                    return "Notification-Disconnection";
+                case "05":
+                    return "Notification-Reconnection";
+                case "97":
+                    return "Notification-Promotion";
+                case "98":
+                    return "Notification-News";
+                case "99":
+                    return "Notification-Maintenance";
+                default:
+                    return string.Empty;
             }
         }
 
-        public override void CommitEditingStyle(UITableView tableView, UITableViewCellEditingStyle editingStyle, Foundation.NSIndexPath indexPath)
-        {
-            switch (editingStyle)
-            {
-                case UITableViewCellEditingStyle.Delete:
-                    ActivityIndicator.Show();
-                    _controller.DeleteUserNotification(_data[indexPath.Row]).ContinueWith(task =>
-                    {
-                        InvokeOnMainThread(() =>
-                        {
-                            var deleteNotifResponse = _controller._deleteNotificationResponse;
-
-                            if (deleteNotifResponse != null && deleteNotifResponse?.d != null
-                                            && deleteNotifResponse?.d?.status?.ToLower() == "success"
-                                            && deleteNotifResponse?.d?.didSucceed == true)
-                            {
-                                _data.RemoveAt(indexPath.Row);
-                                tableView.DeleteRows(new NSIndexPath[] { indexPath }, UITableViewRowAnimation.Fade);
-                            }
-
-                            ActivityIndicator.Hide();
-                        });
-                    });
-                    break;
-                case UITableViewCellEditingStyle.None:
-                    break;
-            }
-        }
         public override bool CanEditRow(UITableView tableView, NSIndexPath indexPath)
         {
-            return true; // return false if you wish to disable editing for a specific indexPath or for all rows
+            return !_controller._isSelectionMode;
         }
-        public override string TitleForDeleteConfirmation(UITableView tableView, NSIndexPath indexPath)
-        {   // Optional - default text is 'Delete'
-            return "Delete";
+
+        public override UITableViewRowAction[] EditActionsForRow(UITableView tableView, NSIndexPath indexPath)
+        {
+            UserNotificationDataModel notification = _data[indexPath.Row];
+            if (!_controller._isSelectionMode)
+            {
+                UITableViewRowAction deleteAction = UITableViewRowAction.Create(UITableViewRowActionStyle.Default, "        ", delegate
+                {
+                    DeleteNotification(indexPath);
+                });
+                deleteAction.BackgroundColor = UIColor.FromPatternImage(RowActionImage(MyTNBColor.HarleyDavidsonOrange.CGColor, "Notification-Delete"));
+                if (notification.IsRead.ToLower() == "false")
+                {
+                    UITableViewRowAction readAction = UITableViewRowAction.Create(UITableViewRowActionStyle.Default, "        ", delegate
+                    {
+                        //Todo: Read Notification
+                    });
+                    readAction.BackgroundColor = UIColor.FromPatternImage(RowActionImage(MyTNBColor.Denim.CGColor, "Notification-MarkAsRead"));
+                    return new UITableViewRowAction[] { deleteAction, readAction };
+                }
+                else
+                {
+                    return new UITableViewRowAction[] { deleteAction };
+                }
+            }
+            return null;
+        }
+
+        UIImage RowActionImage(CGColor bgColor, string imgKey)
+        {
+            CGRect frame = new CGRect(0, 0, 66, 66);
+            UIGraphics.BeginImageContextWithOptions(new CGSize(66, 66), false, UIScreen.MainScreen.Scale);
+            CGContext context = UIGraphics.GetCurrentContext();
+            context.SetFillColor(bgColor);
+            context.FillRect(frame);
+            UIImage img = UIImage.FromBundle(imgKey);
+            img.Draw(new CGRect((frame.Size.Width - 20) / 2, (frame.Size.Height - 20) / 2, 20, 20));
+            UIImage newImg = UIGraphics.GetImageFromCurrentImageContext();
+            UIGraphics.EndImageContext();
+            return newImg;
+        }
+
+        private void DeleteNotification(NSIndexPath indexPath)
+        {
+            List<UpdateNotificationModel> updateNotificationList = new List<UpdateNotificationModel>();
+            updateNotificationList.Add(new UpdateNotificationModel()
+            {
+                NotificationType = _data[indexPath.Row]?.NotificationType,
+                NotificationId = _data[indexPath.Row]?.Id
+            });
+            _controller.DeleteNotification(updateNotificationList, false, indexPath);
+        }
+
+        private void ReadNotification(NSIndexPath indexPath)
+        {
+            List<UpdateNotificationModel> updateNotificationList = new List<UpdateNotificationModel>();
+            updateNotificationList.Add(new UpdateNotificationModel()
+            {
+                NotificationType = _data[indexPath.Row]?.NotificationType,
+                NotificationId = _data[indexPath.Row]?.Id
+            });
+            _controller.ReadNotification(updateNotificationList, false, indexPath);
+        }
+
+        public override UISwipeActionsConfiguration GetLeadingSwipeActionsConfiguration(UITableView tableView, NSIndexPath indexPath)
+        {
+            UserNotificationDataModel notification = _data[indexPath.Row];
+            if (notification.IsRead.ToLower() != "false" || _controller._isSelectionMode)
+            {
+                return null;
+            }
+#pragma warning disable XI0002 // Notifies you from using newer Apple APIs when targeting an older OS version
+            UIContextualAction contextualAction = UIContextualAction.FromContextualActionStyle(UIContextualActionStyle.Normal
+                , string.Empty
+                , (action, sourceView, completionHandler) =>
+                {
+                    ReadNotification(indexPath);
+                });
+            contextualAction.Image = UIImage.FromBundle("Notification-MarkAsRead");
+            contextualAction.BackgroundColor = MyTNBColor.Denim;
+            UISwipeActionsConfiguration leadingSwipe = UISwipeActionsConfiguration.FromActions(new UIContextualAction[] { contextualAction });
+            leadingSwipe.PerformsFirstActionWithFullSwipe = true;
+            return leadingSwipe;
+#pragma warning restore XI0002 // Notifies you from using newer Apple APIs when targeting an older OS version
+        }
+
+        public override UISwipeActionsConfiguration GetTrailingSwipeActionsConfiguration(UITableView tableView, NSIndexPath indexPath)
+        {
+            if (_controller._isSelectionMode)
+            {
+                return null;
+            }
+#pragma warning disable XI0002 // Notifies you from using newer Apple APIs when targeting an older OS version
+            UIContextualAction contextualAction = UIContextualAction.FromContextualActionStyle(UIContextualActionStyle.Normal
+                , string.Empty
+                , (action, sourceView, completionHandler) =>
+                {
+                    DeleteNotification(indexPath);
+                });
+            contextualAction.Image = UIImage.FromBundle("Notification-Delete");
+            contextualAction.BackgroundColor = MyTNBColor.HarleyDavidsonOrange;
+            UISwipeActionsConfiguration trailingSwipe = UISwipeActionsConfiguration.FromActions(new UIContextualAction[] { contextualAction });
+            trailingSwipe.PerformsFirstActionWithFullSwipe = true;
+            return trailingSwipe;
+#pragma warning restore XI0002 // Notifies you from using newer Apple APIs when targeting an older OS version
         }
     }
 }

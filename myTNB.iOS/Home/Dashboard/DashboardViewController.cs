@@ -49,7 +49,8 @@ namespace myTNB.Dashboard
             {
                 appDelegate._dashboardVC = this;
             }
-            NSNotificationCenter.DefaultCenter.AddObserver((Foundation.NSString)"LanguageDidChange", LanguageDidChange);
+            NSNotificationCenter.DefaultCenter.AddObserver((NSString)"LanguageDidChange", LanguageDidChange);
+            NSNotificationCenter.DefaultCenter.AddObserver((NSString)"NotificationDidChange", NotificationDidChange);
             NSNotificationCenter.DefaultCenter.AddObserver(UIApplication.WillEnterForegroundNotification, HandleAppWillEnterForeground);
             DataManager.DataManager.SharedInstance.IsPreloginFeedback = false;
             NavigationController?.SetNavigationBarHidden(true, false);
@@ -68,8 +69,7 @@ namespace myTNB.Dashboard
                         await PushNotificationHelper.GetNotifications();
                         if (_dashboardMainComponent._titleBarComponent != null)
                         {
-                            _dashboardMainComponent._titleBarComponent.SetNotificationImage(
-                                DataManager.DataManager.SharedInstance.HasNewNotification ? "Notification-New" : "Notification");
+                            _dashboardMainComponent._titleBarComponent.SetPrimaryImage(PushNotificationHelper.GetNotificationImage());
                         }
                     }
                     else
@@ -78,6 +78,13 @@ namespace myTNB.Dashboard
                     }
                 });
             });
+        }
+
+        public void NotificationDidChange(NSNotification notification)
+        {
+            Debug.WriteLine("DEBUG >>> Inner DASHBOARD NotificationDidChange");
+            _dashboardMainComponent?._titleBarComponent?.SetPrimaryImage(PushNotificationHelper.GetNotificationImage());
+            PushNotificationHelper.UpdateApplicationBadge();
         }
 
         public void LanguageDidChange(NSNotification notification)
@@ -705,7 +712,7 @@ namespace myTNB.Dashboard
                         });
                     });
                 });
-                _dashboardMainComponent._titleBarComponent.SetNotificationAction(notificationTap);
+                _dashboardMainComponent._titleBarComponent.SetPrimaryAction(notificationTap);
             }
 
             if (_dashboardMainComponent._dashboardScrollView != null)
@@ -741,8 +748,7 @@ namespace myTNB.Dashboard
             }
             if (_dashboardMainComponent._titleBarComponent != null)
             {
-                _dashboardMainComponent._titleBarComponent.SetNotificationImage(
-                    DataManager.DataManager.SharedInstance.HasNewNotification ? "Notification-New" : "Notification");
+                _dashboardMainComponent._titleBarComponent.SetPrimaryImage(PushNotificationHelper.GetNotificationImage());
             }
             SetBillAndPaymentDetails();
         }

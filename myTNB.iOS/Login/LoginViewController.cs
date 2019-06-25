@@ -14,7 +14,7 @@ using System.Collections.Generic;
 
 namespace myTNB
 {
-    public partial class LoginViewController : UIViewController
+    public partial class LoginViewController : CustomUIViewController
     {
         readonly Regex EmailRegex = new Regex(@"[a-zA-Z0-9\\+\\.\\_\\%\\-\\+]{1,256}" + "\\@"
                                                       + "[a-zA-Z0-9][a-zA-Z0-9\\-]{0,64}"
@@ -24,7 +24,6 @@ namespace myTNB
                                                       + ")+");
         string _eMail = string.Empty;
         string _password = string.Empty;
-        bool isAnimating = false;
         bool IsRememberMe = true;
 
         UserAuthenticationResponseModel _authenticationList = new UserAuthenticationResponseModel();
@@ -57,27 +56,17 @@ namespace myTNB
         public override void TouchesBegan(NSSet touches, UIEvent evt)
         {
             base.TouchesBegan(touches, evt);
-            HideDialog();
             dismissKeyBoard();
         }
 
         public override void ViewWillAppear(bool animated)
         {
             base.ViewWillAppear(animated);
-            viewNotifDialog.Hidden = true;
         }
 
         public override void ViewWillDisappear(bool animated)
         {
             base.ViewWillDisappear(animated);
-            if (viewNotifDialog.Hidden == false)
-            {
-                viewNotifDialog.Hidden = true;
-            }
-            if (viewErrorDialog.Hidden == false)
-            {
-                viewErrorDialog.Hidden = true;
-            }
             txtFieldEmail.Text = string.Empty;
             txtFieldPassword.Text = string.Empty;
         }
@@ -289,7 +278,6 @@ namespace myTNB
 
             txtFieldEmail.ShouldBeginEditing = (sender) =>
             {
-                HideDialog();
                 return true;
             };
 
@@ -329,57 +317,28 @@ namespace myTNB
 
             txtFieldPassword.ShouldBeginEditing = (sender) =>
             {
-                HideDialog();
                 return true;
             };
         }
 
         void ShowEmptyEmailError()
         {
-            lblErrorMessage.Text = "Error_EmailRequired".Translate();
-            ShowViewPinSent(viewErrorDialog);
+            DisplayToast("Error_EmailRequired".Translate());
         }
 
         void ShowInvalidEmailError()
         {
-            lblErrorMessage.Text = "Invalid_Email".Translate();
-            ShowViewPinSent(viewErrorDialog);
+            DisplayToast("Invalid_Email".Translate());
         }
 
         void ShowEmptyPasswordError()
         {
-            lblErrorMessage.Text = "Error_PasswordRequired".Translate();
-            ShowViewPinSent(viewErrorDialog);
+            DisplayToast("Error_PasswordRequired".Translate());
         }
 
         void ShowServerError(string errorMessage)
         {
-
-            lblNotifMessage.Text = errorMessage ?? "Error_DefaultMessage".Translate();
-            ShowViewPinSent(viewNotifDialog);
-        }
-
-        void ShowViewPinSent(UIView viewDialog)
-        {
-            if (!isAnimating)
-            {
-                isAnimating = true;
-            }
-            else
-            {
-                isAnimating = false;
-                viewDialog.Hidden = true;
-            }
-            viewDialog.Hidden = false;
-            viewDialog.Alpha = 1.0f;
-            UIView.Animate(5, 1, UIViewAnimationOptions.CurveEaseOut, () =>
-            {
-                viewDialog.Alpha = 0.0f;
-            }, () =>
-            {
-                viewDialog.Hidden = true;
-                viewDialog.Hidden = false;
-            });
+            DisplayToast(errorMessage ?? "Error_DefaultMessage".Translate());
         }
 
         void OnLogin()
@@ -589,9 +548,6 @@ namespace myTNB
         {
             //Setup Corner Radius
             btnLogin.Layer.CornerRadius = 5;
-            viewErrorDialog.Layer.CornerRadius = 5;
-            viewNotifDialog.Layer.CornerRadius = 5;
-
             lblEmailTitle.Hidden = txtFieldEmail.Text.Length == 0;
             lblPasswordTitle.Hidden = txtFieldPassword.Text.Length == 0;
         }
@@ -611,18 +567,6 @@ namespace myTNB
             btnRegister.SetTitle("Login_RegisterForAccount".Translate(), UIControlState.Normal);
             btnLogin.TitleLabel.Font = MyTNBFont.MuseoSans16_500;
             btnLogin.SetTitle("Login_Login".Translate(), UIControlState.Normal);
-        }
-
-        void HideDialog()
-        {
-            if (viewErrorDialog.Hidden == false)
-            {
-                viewErrorDialog.Hidden = true;
-            }
-            else if (viewNotifDialog.Hidden == false)
-            {
-                viewNotifDialog.Hidden = true;
-            }
         }
 
         void dismissKeyBoard()
