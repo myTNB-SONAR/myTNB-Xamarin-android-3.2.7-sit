@@ -1815,6 +1815,7 @@
     <Compile Include="Model\Modify Notification\ReadNotificationResponseModel.cs" />
     <Compile Include="Model\GetAccountUsageHistoryForGraph\ToolTipsModel.cs" />
     <Compile Include="Customs\TextViewDelegate.cs" />
+    <Compile Include="Home\Components\ToolTipComponent.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />
