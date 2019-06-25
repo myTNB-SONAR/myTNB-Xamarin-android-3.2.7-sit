@@ -1126,6 +1126,7 @@
     <Folder Include="Assets.xcassets\IC-Header-Cancel.imageset\" />
     <Folder Include="Assets.xcassets\Notification-Select.imageset\" />
     <Folder Include="Assets.xcassets\Maintenance-Image.imageset\" />
+    <Folder Include="Model\Modify Notification\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -1384,7 +1385,6 @@
     <Compile Include="Home\More\Push Notification Settings\NotificationSettingsViewCell.designer.cs">
       <DependentUpon>NotificationSettingsViewCell.cs</DependentUpon>
     </Compile>
-    <Compile Include="Model\DeleteNotificationResponseModel.cs" />
     <Compile Include="Push Notification\Notification Details\NotificationDetailsViewController.cs" />
     <Compile Include="Push Notification\Notification Details\NotificationDetailsViewController.designer.cs">
       <DependentUpon>NotificationDetailsViewController.cs</DependentUpon>
@@ -1811,6 +1811,8 @@
     <Compile Include="Helpers\Generic Line\GenericLine.cs" />
     <Compile Include="Model\UpdateNotification\UpdateNotificationModel.cs" />
     <Compile Include="Customs\CustomUIViewController.cs" />
+    <Compile Include="Model\Modify Notification\DeleteNotificationResponseModel.cs" />
+    <Compile Include="Model\Modify Notification\ReadNotificationResponseModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />

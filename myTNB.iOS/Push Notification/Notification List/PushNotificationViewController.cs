@@ -17,7 +17,8 @@ namespace myTNB.PushNotification
         public PushNotificationViewController(IntPtr handle) : base(handle)
         {
         }
-        public DeleteNotificationResponseModel _deleteNotificationResponse = new DeleteNotificationResponseModel();
+        private DeleteNotificationResponseModel _deleteNotificationResponse = new DeleteNotificationResponseModel();
+        private ReadNotificationResponseModel _readNotificationResponse = new ReadNotificationResponseModel();
         public bool _isSelectionMode;
         internal bool _isDeletionMode;
         bool _isAllSelected;
@@ -131,7 +132,7 @@ namespace myTNB.PushNotification
                         }
                         else
                         {
-                            AlertHandler.DisplayNoDataAlert(this);
+                            DisplayNoDataAlert();
                         }
                     });
                 });
@@ -190,7 +191,7 @@ namespace myTNB.PushNotification
                             {
                                 Debug.WriteLine("Delete NotificationId: " + notif.NotificationId);
                             }
-                            //Todo: Read Notification
+                            ReadNotification(_notificationsForUpdate, true);
                         }
                     }));
                     readAlert.AddAction(UIAlertAction.Create("Common_No".Translate(), UIAlertActionStyle.Cancel, null));
@@ -205,7 +206,7 @@ namespace myTNB.PushNotification
                         {
                             Debug.WriteLine("Delete NotificationId: " + notif.NotificationId);
                         }
-                        //Todo: Read Notification
+                        ReadNotification(_notificationsForUpdate, true);
                     }
                 }
             }));
@@ -352,7 +353,7 @@ namespace myTNB.PushNotification
                                 }
                                 else
                                 {
-                                    AlertHandler.DisplayServiceError(this, _detailedInfo?.d?.message);
+                                    DisplayServiceError(_detailedInfo?.d?.message);
                                 }
                                 ActivityIndicator.Hide();
                             });
@@ -360,7 +361,7 @@ namespace myTNB.PushNotification
                     }
                     else
                     {
-                        AlertHandler.DisplayNoDataAlert(this);
+                        DisplayNoDataAlert();
                         ActivityIndicator.Hide();
                     }
                 });
@@ -393,7 +394,7 @@ namespace myTNB.PushNotification
             });
         }
 
-        internal void MarkNotificationAsRead(NSIndexPath indexPath)
+        internal void ReadNotification(List<UpdateNotificationModel> updateNotificationList, bool isMultiple = false, NSIndexPath indexPath = null)
         {
             NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
             {
@@ -402,20 +403,25 @@ namespace myTNB.PushNotification
                     if (NetworkUtility.isReachable)
                     {
                         ActivityIndicator.Show();
-                        await MarkUserNotification(_notifications[indexPath.Row]).ContinueWith(task =>
+                        await ReadUserNotification(updateNotificationList).ContinueWith(task =>
                         {
                             InvokeOnMainThread(() =>
                             {
-                                var markAsReadResponse = true;
-                                var deleteNotifResponse = _deleteNotificationResponse;
-                                if (markAsReadResponse)
+                                var readNotificationResponse = _readNotificationResponse;
+                                if (readNotificationResponse != null && readNotificationResponse?.d != null
+                                    && readNotificationResponse?.d?.status?.ToLower() == "success"
+                                    && readNotificationResponse?.d?.didSucceed == true)
                                 {
-                                    _notifications[indexPath.Row].IsRead = "true";
+                                    UpdateNotifications(updateNotificationList, isMultiple, indexPath, true);
+                                    UpdateNotificationDisplay();
+                                    pushNotificationTableView.ReloadData();
+                                    UpdateTitleRightIconImage();
+                                    NSNotificationCenter.DefaultCenter.PostNotificationName("NotificationDidChange", new NSObject());
                                     pushNotificationTableView.ReloadData();
                                 }
                                 else
                                 {
-                                    AlertHandler.DisplayServiceError(this, deleteNotifResponse?.d?.message);
+                                    DisplayToast(readNotificationResponse?.d?.message ?? "Error_DefaultMessage".Translate());
                                 }
                                 ActivityIndicator.Hide();
                             });
@@ -423,7 +429,7 @@ namespace myTNB.PushNotification
                     }
                     else
                     {
-                        AlertHandler.DisplayNoDataAlert(this);
+                        DisplayNoDataAlert();
                     }
                 });
             });
@@ -464,22 +470,18 @@ namespace myTNB.PushNotification
                     }
                     else
                     {
-                        AlertHandler.DisplayNoDataAlert(this);
+                        DisplayNoDataAlert();
                     }
                 });
             });
         }
 
-        void test()
-        {
-
-        }
-
-        void UpdateNotifications(List<UpdateNotificationModel> updateNotificationList, bool isMultiple = false, NSIndexPath indexPath = null)
+        void UpdateNotifications(List<UpdateNotificationModel> updateNotificationList, bool isMultiple = false
+            , NSIndexPath indexPath = null, bool isRead = false)
         {
             if (isMultiple)
             {
-                if (updateNotificationList.Count == DataManager.DataManager.SharedInstance.UserNotifications.Count)
+                if (updateNotificationList.Count == DataManager.DataManager.SharedInstance.UserNotifications.Count && !isRead)
                 {
                     updateNotificationList.Clear();
                     _notifications.Clear();
@@ -493,7 +495,7 @@ namespace myTNB.PushNotification
                     Debug.WriteLine("notificationIndex: " + notificationIndex);
                     if (notificationIndex > -1)
                     {
-                        _notifications.RemoveAt(notificationIndex);
+                        ModifyNotification(notificationIndex, isRead);
                     }
 
                     int userNotificationIndex = DataManager.DataManager.SharedInstance.UserNotifications
@@ -501,7 +503,7 @@ namespace myTNB.PushNotification
                     Debug.WriteLine("userNotificationIndex: " + userNotificationIndex);
                     if (userNotificationIndex > -1)
                     {
-                        DataManager.DataManager.SharedInstance.UserNotifications.RemoveAt(userNotificationIndex);
+                        ModifyNotification(userNotificationIndex, isRead, true);
                     }
                 }
                 updateNotificationList.Clear();
@@ -513,9 +515,33 @@ namespace myTNB.PushNotification
                        && x.Id == _notifications[indexPath.Row].Id);
                 if (userNotificationIndex > -1)
                 {
-                    DataManager.DataManager.SharedInstance.UserNotifications.RemoveAt(userNotificationIndex);
+                    ModifyNotification(userNotificationIndex, isRead, true);
                 }
-                _notifications.RemoveAt(indexPath.Row);
+                ModifyNotification(indexPath.Row, isRead);
+            }
+        }
+
+        private void ModifyNotification(int index, bool isRead = false, bool isGlobalList = false)
+        {
+            if (isRead)
+            {
+                if (isGlobalList)
+                {
+                    DataManager.DataManager.SharedInstance.UserNotifications[index].IsRead = "true";
+                    DataManager.DataManager.SharedInstance.UserNotifications[index].IsSelected = false;
+                    return;
+                }
+                _notifications[index].IsRead = "true";
+                _notifications[index].IsSelected = false;
+            }
+            else
+            {
+                if (isGlobalList)
+                {
+                    DataManager.DataManager.SharedInstance.UserNotifications.RemoveAt(index);
+                    return;
+                }
+                _notifications.RemoveAt(index);
             }
         }
 
@@ -538,7 +564,7 @@ namespace myTNB.PushNotification
             });
         }
 
-        Task MarkUserNotification(UserNotificationDataModel dataModel)
+        Task ReadUserNotification(List<UpdateNotificationModel> readNotificationList)
         {
             var user = DataManager.DataManager.SharedInstance.UserEntity?.Count > 0
                 ? DataManager.DataManager.SharedInstance.UserEntity[0]
@@ -549,13 +575,12 @@ namespace myTNB.PushNotification
                 object requestParameter = new
                 {
                     ApiKeyID = TNBGlobal.API_KEY_ID,
-                    //UpdatedNotifications
-                    NotificationType = dataModel?.BCRMNotificationType,
-                    NotificationId = dataModel?.Id,
+                    UpdatedNotifications = readNotificationList,
                     Email = user?.email,
                     DeviceId = DataManager.DataManager.SharedInstance.UDID,
                     SSPUserId = user?.userID
                 };
+                _readNotificationResponse = serviceManager.ReadUserNotification("ReadUserNotification", requestParameter);
             });
         }
 

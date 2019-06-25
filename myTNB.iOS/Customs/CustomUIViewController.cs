@@ -14,7 +14,7 @@ namespace myTNB
         public CustomUIViewController(IntPtr handle) : base(handle)
         {
         }
-
+        #region LifeCycle
         public override void ViewDidLoad()
         {
             base.ViewDidLoad();
@@ -29,7 +29,24 @@ namespace myTNB
         {
             base.ViewDidAppear(animated);
         }
+        #endregion
+        #region Alerts
+        public void DisplayNoDataAlert()
+        {
+            AlertHandler.DisplayNoDataAlert(this);
+        }
 
+        public void DisplayServiceError(string message, Action<UIAlertAction> handler = null)
+        {
+            AlertHandler.DisplayServiceError(this, message, handler);
+        }
+
+        public void DisplayGenericAlert(string title, string message, Action<UIAlertAction> handler = null)
+        {
+            AlertHandler.DisplayGenericAlert(this, title, message, handler);
+        }
+        #endregion
+        #region Toast
         public void DisplayToast(string message)
         {
             if (_viewToast == null)
@@ -75,23 +92,25 @@ namespace myTNB
                 , 32, _viewToast.Frame.Width, size.Height + 32);
 
             _viewToast.Hidden = false;
+            View.BringSubviewToFront(_viewToast);
             _viewToastOverlay.Hidden = false;
             if (!_isAnimating)
             {
 #pragma warning disable XI0001 // Notifies you with advices on how to use Apple APIs
                 UIView.Animate(0.3, 0.3, UIViewAnimationOptions.CurveEaseOut, () =>
-                 {
-                     _isAnimating = true;
-                     _viewToast.Frame = new CGRect(_viewToast.Frame.X
-                    , 32, _viewToast.Frame.Width, size.Height + 32);
-                 }, () =>
-                 {
-                     DismissToast(2.0F);
-                 });
+                {
+                    _isAnimating = true;
+                    _viewToast.Frame = new CGRect(_viewToast.Frame.X
+                   , 32, _viewToast.Frame.Width, size.Height + 32);
+                }, () =>
+                {
+                    DismissToast(2.0F);
+                });
 #pragma warning restore XI0001 // Notifies you with advices on how to use Apple APIs
             }
         }
-
+        #endregion
+        #region Private Methods
         void AddSwipeGestureForToast()
         {
             if (_viewToastOverlay != null)
@@ -128,5 +147,6 @@ namespace myTNB
             });
 #pragma warning restore XI0001 // Notifies you with advices on how to use Apple APIs
         }
+        #endregion
     }
 }

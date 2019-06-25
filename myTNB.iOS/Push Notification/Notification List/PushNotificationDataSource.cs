@@ -163,7 +163,7 @@ namespace myTNB.PushNotification
             return newImg;
         }
 
-        void DeleteNotification(NSIndexPath indexPath)
+        private void DeleteNotification(NSIndexPath indexPath)
         {
             List<UpdateNotificationModel> updateNotificationList = new List<UpdateNotificationModel>();
             updateNotificationList.Add(new UpdateNotificationModel()
@@ -172,6 +172,17 @@ namespace myTNB.PushNotification
                 NotificationId = _data[indexPath.Row]?.Id
             });
             _controller.DeleteNotification(updateNotificationList, false, indexPath);
+        }
+
+        private void ReadNotification(NSIndexPath indexPath)
+        {
+            List<UpdateNotificationModel> updateNotificationList = new List<UpdateNotificationModel>();
+            updateNotificationList.Add(new UpdateNotificationModel()
+            {
+                NotificationType = _data[indexPath.Row]?.NotificationType,
+                NotificationId = _data[indexPath.Row]?.Id
+            });
+            _controller.ReadNotification(updateNotificationList, false, indexPath);
         }
 
         public override UISwipeActionsConfiguration GetLeadingSwipeActionsConfiguration(UITableView tableView, NSIndexPath indexPath)
@@ -186,8 +197,7 @@ namespace myTNB.PushNotification
                 , string.Empty
                 , (action, sourceView, completionHandler) =>
                 {
-                    //Todo: Call service
-                    _controller.MarkNotificationAsRead(indexPath);
+                    ReadNotification(indexPath);
                 });
             contextualAction.Image = UIImage.FromBundle("Notification-MarkAsRead");
             contextualAction.BackgroundColor = MyTNBColor.Denim;
