@@ -12,6 +12,7 @@ using myTNB.DataManager;
 using Foundation;
 using myTNB.Enums;
 using System.Diagnostics;
+using myTNB.Home.Components;
 
 namespace myTNB
 {
@@ -26,6 +27,7 @@ namespace myTNB
             , _lblHistoryHeader, _lblCurrentBillHeader, _lblTotalDueAmountTitle, _lblDueDateTitle;
         UIImageView _imgLeaf;
         UIRefreshControl refreshControl;
+        UIView _headerTitleView;
 
         BillingAccountDetailsResponseModel _billingAccountDetailsList = new BillingAccountDetailsResponseModel();
         PaymentHistoryResponseModel _paymentHistory = new PaymentHistoryResponseModel();
@@ -33,6 +35,7 @@ namespace myTNB
         AccountSelectionComponent _accountSelectionComponent;
         TitleBarComponent titleBarComponent;
         DueAmountResponseModel _dueAmount = new DueAmountResponseModel();
+        RefreshViewComponent _refreshViewComponent;
 
         public UserNotificationDataModel NotificationInfo = new UserNotificationDataModel();
         public bool IsFromNavigation = false;
@@ -87,6 +90,7 @@ namespace myTNB
         public override void ViewWillAppear(bool animated)
         {
             base.ViewWillAppear(animated);
+            ResetUI();
             if (!isFromReceiptScreen)
             {
                 InitializeValues();
@@ -95,6 +99,18 @@ namespace myTNB
             {
                 isFromReceiptScreen = false;
             }
+        }
+
+        void ResetUI()
+        {
+            if (_refreshViewComponent != null)
+            {
+                if (_refreshViewComponent.GetView().IsDescendantOfView(View))
+                {
+                    _refreshViewComponent.GetView().RemoveFromSuperview();
+                }
+            }
+            billTableView.Hidden = false;
         }
 
         void InitializeValues()
@@ -303,8 +319,8 @@ namespace myTNB
         void SetSubviews()
         {
             GradientViewComponent gradientViewComponent = new GradientViewComponent(View, true, 89, true);
-            UIView headerView = gradientViewComponent.GetUI();
-            titleBarComponent = new TitleBarComponent(headerView);
+            _headerTitleView = gradientViewComponent.GetUI();
+            titleBarComponent = new TitleBarComponent(_headerTitleView);
             UIView titleBarView = titleBarComponent.GetUI();
             titleBarComponent.SetTitle("Bill_Bills".Translate());
             titleBarComponent.SetNotificationVisibility(true);
@@ -314,13 +330,13 @@ namespace myTNB
                 NavigationController?.PopViewController(true);
             }));
 
-            headerView.AddSubview(titleBarView);
+            _headerTitleView.AddSubview(titleBarView);
 
-            _accountSelectionComponent = new AccountSelectionComponent(headerView);
+            _accountSelectionComponent = new AccountSelectionComponent(_headerTitleView);
             UIView accountSelectionView = _accountSelectionComponent.GetUI();
-            headerView.AddSubview(accountSelectionView);
+            _headerTitleView.AddSubview(accountSelectionView);
 
-            View.AddSubview(headerView);
+            View.AddSubview(_headerTitleView);
         }
 
         void ExecuteGetBillHistoryCall()
@@ -495,7 +511,7 @@ namespace myTNB
                  {
                      InvokeOnMainThread(() =>
                      {
-                         if (_billingAccountDetailsList != null && _billingAccountDetailsList?.d != null
+                         if (_billingAccountDetailsList?.d?.didSucceed == true && _billingAccountDetailsList != null && _billingAccountDetailsList?.d != null
                              && _billingAccountDetailsList?.d?.data != null)
                          {
                              var billDetails = _billingAccountDetailsList.d.data;
@@ -504,6 +520,13 @@ namespace myTNB
                              {
                                  DataManager.DataManager.SharedInstance.SaveToBillingAccounts(billDetails, billDetails.accNum);
                              }
+                             ResetUI();
+                         }
+                         else
+                         {
+                             var msg = "This page must be tired. Tap the button below to help it out.";
+                             var btnText = "Refresh Now";
+                             ShowRefreshScreen(msg, btnText);
                          }
                      });
                  });
@@ -623,7 +646,7 @@ namespace myTNB
                 {
                     billTableView.Source = new BillTableViewDataSource(_billingHistory
                         , _paymentHistory, this, NetworkUtility.isReachable, isREAccount, isOwnedAccount);
-                    refreshControl.ValueChanged += PullDownTorefresh;
+                    //refreshControl.ValueChanged += PullDownTorefresh; removed pull down to refresh
                     //billTableView.AddSubview(refreshControl); removed pull down to refresh
                     billTableView.ReloadData();
                 });
@@ -1172,7 +1195,7 @@ namespace myTNB
             {
                 InvokeOnMainThread(() =>
                 {
-                    if (_billingAccountDetailsList != null && _billingAccountDetailsList?.d != null
+                    if (_billingAccountDetailsList?.d?.didSucceed == true && _billingAccountDetailsList != null && _billingAccountDetailsList?.d != null
                         && _billingAccountDetailsList?.d?.data != null)
                     {
                         var billDetails = _billingAccountDetailsList.d.data;
@@ -1182,13 +1205,17 @@ namespace myTNB
                             DataManager.DataManager.SharedInstance.SaveToBillingAccounts(billDetails, billDetails.accNum);
                         }
                         LoadBillHistory();
+                        ResetUI();
                     }
                     else
                     {
                         DataManager.DataManager.SharedInstance.IsSameAccount = true;
                         DataManager.DataManager.SharedInstance.BillingAccountDetails = new BillingAccountDetailsDataModel();
-                        AlertHandler.DisplayServiceError(this, _billingAccountDetailsList?.d?.message);
+                        //AlertHandler.DisplayServiceError(this, _billingAccountDetailsList?.d?.message);
                         ActivityIndicator.Hide();
+                        var msg = "This page must be tired. Tap the button below to help it out.";
+                        var btnText = "Refresh Now";
+                        ShowRefreshScreen(msg, btnText);
                     }
                 });
             });
@@ -1227,6 +1254,7 @@ namespace myTNB
         /// <returns>The screen.</returns>
         private async Task RefreshScreen()
         {
+            ActivityIndicator.Show();
             string _dateDue;
             double _amountDue;
             double _dueIncrementDays;
@@ -1235,7 +1263,7 @@ namespace myTNB
             {
                 InvokeOnMainThread(() =>
                 {
-                    if (_billingAccountDetailsList != null && _billingAccountDetailsList?.d != null
+                    if (_billingAccountDetailsList?.d?.didSucceed == true && _billingAccountDetailsList != null && _billingAccountDetailsList?.d != null
                         && _billingAccountDetailsList?.d?.data != null)
                     {
                         var billDetails = _billingAccountDetailsList.d.data;
@@ -1244,6 +1272,13 @@ namespace myTNB
                         {
                             DataManager.DataManager.SharedInstance.SaveToBillingAccounts(billDetails, billDetails.accNum);
                         }
+                        ResetUI();
+                    }
+                    else
+                    {
+                        var msg = "This page must be tired. Tap the button below to help it out.";
+                        var btnText = "Refresh Now";
+                        ShowRefreshScreen(msg, btnText);
                     }
                 });
             });
@@ -1282,6 +1317,32 @@ namespace myTNB
             AdjustFrames();
             isRefreshing = false;
             refreshControl.EndRefreshing();
+            ActivityIndicator.Hide();
+        }
+
+        internal void ShowRefreshScreen(string msg, string btnText)
+        {
+            if (_refreshViewComponent != null)
+            {
+                if (_refreshViewComponent.GetView().IsDescendantOfView(View))
+                {
+                    _refreshViewComponent.GetView().RemoveFromSuperview();
+                }
+            }
+
+            _refreshViewComponent = new RefreshViewComponent(View, _headerTitleView);
+            _refreshViewComponent.SetIconImage("Notification-Error");
+            _refreshViewComponent.SetDescription(msg);
+            _refreshViewComponent.SetButtonText(btnText);
+            _refreshViewComponent.OnButtonTap = OnRefreshTap;
+            billTableView.Hidden = true;
+            View.AddSubview(_refreshViewComponent.GetUI());
+        }
+
+        async void OnRefreshTap()
+        {
+            Debug.WriteLine("OnRefreshTap");
+            await RefreshScreen();
         }
     }
 }

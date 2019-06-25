@@ -74,6 +74,11 @@ namespace myTNB.Dashboard.DashboardComponents
             return _viewTitleBar;
         }
 
+        public UIView GetView()
+        {
+            return _viewTitleBar;
+        }
+
         public void SetTitle(string title)
         {
             _lblTitle.Text = title;

@@ -32,7 +32,7 @@ namespace myTNB.Home.Components
         {
             float viewMargin = 10f;
             float imageTopMargin = 70f;
-            float imageWidth = DeviceHelper.GetScaledWidth(96f);
+            float imageWidth = DeviceHelper.GetScaledWidth(104f);
             float imageHeight = DeviceHelper.GetScaledHeight(96f);
             float lineTextHeight = 24f;
 
@@ -68,7 +68,7 @@ namespace myTNB.Home.Components
             UIStringAttributes msgAttributes = new UIStringAttributes
             {
                 Font = MyTNBFont.MuseoSans16_300,
-                ForegroundColor = forGradientBG ? UIColor.White : MyTNBColor.SilverChalice,
+                ForegroundColor = forGradientBG ? UIColor.White : MyTNBColor.Grey,
                 BackgroundColor = UIColor.Clear,
                 ParagraphStyle = msgParagraphStyle
             };

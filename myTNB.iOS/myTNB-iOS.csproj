@@ -875,9 +875,9 @@
     <ImageAsset Include="Assets.xcassets\Maintenance-Image.imageset\Maintenance-Image%402x-1.png" />
     <ImageAsset Include="Assets.xcassets\Maintenance-Image.imageset\Maintenance-Image%403x-1.png" />
     <ImageAsset Include="Assets.xcassets\Notification-Error.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Notification-Error.imageset\Notification-Error.png" />
-    <ImageAsset Include="Assets.xcassets\Notification-Error.imageset\Notification-Error%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Notification-Error.imageset\Notification-Error%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Error.imageset\Notification_Error.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Error.imageset\Notification_Error%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Error.imageset\Notification_Error%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
