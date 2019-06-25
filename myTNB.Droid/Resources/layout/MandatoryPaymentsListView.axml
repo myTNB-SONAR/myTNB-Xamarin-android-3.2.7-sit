@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingLeft="30dp"
+    android:paddingRight="30dp"
+    android:paddingBottom="10dp"
+    android:id="@+id/rootView"
+    android:background="@color/greyBackground">
+    <TextView
+        android:id="@+id/txtMandatoryPaymentTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/silverChalice"
+        android:textSize="12sp"
+        android:text="Mandatory Payments"
+        android:layout_alignParentLeft="true" />
+    <TextView
+        android:id="@+id/txtMandatoryPaymentRM"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/txtMandatoryPaymentTitle"
+        android:layout_toLeftOf="@+id/txtMandatoryPaymentContent"
+        android:text="RM "
+        android:textSize="12sp"
+        android:textColor="@color/silverChalice" />
+    <TextView
+        android:id="@+id/txtMandatoryPaymentContent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/silverChalice"
+        android:textSize="12sp"
+        android:text="0.00"
+        android:layout_alignBaseline="@+id/txtMandatoryPaymentTitle"
+        android:layout_alignParentRight="true" />
+</RelativeLayout>
