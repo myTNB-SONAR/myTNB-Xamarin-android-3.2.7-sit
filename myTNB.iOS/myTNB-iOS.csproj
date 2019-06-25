@@ -874,6 +874,10 @@
     <ImageAsset Include="Assets.xcassets\Notification-Select.imageset\icActionSelectAll.png" />
     <ImageAsset Include="Assets.xcassets\Notification-Select.imageset\icActionSelectAll%402x.png" />
     <ImageAsset Include="Assets.xcassets\Notification-Select.imageset\icActionSelectAll%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Error.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Notification-Error.imageset\Notification_Error.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Error.imageset\Notification_Error%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Error.imageset\Notification_Error%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -1127,6 +1131,7 @@
     <Folder Include="Assets.xcassets\Notification-Select.imageset\" />
     <Folder Include="Assets.xcassets\Maintenance-Image.imageset\" />
     <Folder Include="Model\Modify Notification\" />
+    <Folder Include="Assets.xcassets\Notification-Error.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -1813,6 +1818,7 @@
     <Compile Include="Customs\CustomUIViewController.cs" />
     <Compile Include="Model\Modify Notification\DeleteNotificationResponseModel.cs" />
     <Compile Include="Model\Modify Notification\ReadNotificationResponseModel.cs" />
+    <Compile Include="Home\Components\RefreshViewComponent.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />

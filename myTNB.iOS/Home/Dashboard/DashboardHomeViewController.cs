@@ -72,8 +72,10 @@ namespace myTNB
                 {
                     if (NetworkUtility.isReachable)
                     {
+                        DataManager.DataManager.SharedInstance.IsLoadingFromDashboard = true;
                         await PushNotificationHelper.GetNotifications();
                         UpdateNotificationIcon();
+                        NSNotificationCenter.DefaultCenter.PostNotificationName("OnReceiveNotificationFromDashboard", new NSObject());
                     }
                     else
                     {

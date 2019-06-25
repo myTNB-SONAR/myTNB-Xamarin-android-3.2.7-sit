@@ -9,6 +9,7 @@ using UIKit;
 using myTNB.SQLite.SQLiteDataManager;
 using Foundation;
 using System.Diagnostics;
+using myTNB.Home.Components;
 
 namespace myTNB.PushNotification
 {
@@ -19,6 +20,7 @@ namespace myTNB.PushNotification
         }
         private DeleteNotificationResponseModel _deleteNotificationResponse = new DeleteNotificationResponseModel();
         private ReadNotificationResponseModel _readNotificationResponse = new ReadNotificationResponseModel();
+        UserNotificationResponseModel userNotificationResponse = new UserNotificationResponseModel();
         public bool _isSelectionMode;
         internal bool _isDeletionMode;
         bool _isAllSelected;
@@ -29,15 +31,25 @@ namespace myTNB.PushNotification
         List<UserNotificationDataModel> _notifications;
         List<UpdateNotificationModel> _notificationsForUpdate;
 
-        UIImageView _imgNoNotification, _imgCheckbox;
-        UILabel _lblNoNotification, _lblTitle;
+        UIImageView _imgCheckbox;
+        UILabel _lblTitle;
+
+        RefreshViewComponent _refreshViewComponent;
+        UIView headerView;
 
         public override void ViewDidLoad()
         {
             base.ViewDidLoad();
             NSNotificationCenter.DefaultCenter.AddObserver((NSString)"OnNotificationFilterDidChange", OnNotificationFilterDidChange);
+            NSNotificationCenter.DefaultCenter.AddObserver((NSString)"OnReceiveNotificationFromDashboard", OnReceiveNotificationFromDashboard);
             SetNavigationBar();
             SetSubViews();
+        }
+
+        internal void OnReceiveNotificationFromDashboard(NSNotification notification)
+        {
+            Debug.WriteLine("OnReceiveNotificationFromDashboard");
+            ValidateResponse();
         }
 
         public void OnNotificationFilterDidChange(NSNotification notification)
@@ -54,6 +66,52 @@ namespace myTNB.PushNotification
             _isSelectionMode = false;
             _isAllSelected = false;
             _notificationsForUpdate?.Clear();
+        }
+
+        private void GetUserNotif()
+        {
+            NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
+            {
+                InvokeOnMainThread(async () =>
+                {
+                    if (NetworkUtility.isReachable)
+                    {
+                        ActivityIndicator.Show();
+                        await PushNotificationHelper.GetNotifications();
+                        ValidateResponse();
+                        ActivityIndicator.Hide();
+                    }
+                    else
+                    {
+                        AlertHandler.DisplayNoDataAlert(this);
+                    }
+                });
+            });
+        }
+
+        private void ValidateResponse()
+        {
+            userNotificationResponse = DataManager.DataManager.SharedInstance.UserNotificationResponse;
+            if (userNotificationResponse == null
+                || userNotificationResponse?.d == null
+                || userNotificationResponse?.d?.didSucceed == false
+                || userNotificationResponse?.d?.status?.ToLower() == "failed")
+            {
+                var msg = "This page must be tired. Tap the button below to help it out.";
+                var btnText = "Refresh Now";
+                DisplayRefreshScreen(msg, btnText);
+                _titleBarComponent.SetPrimaryVisibility(true);
+                pushNotificationTableView.Hidden = true;
+            }
+            else
+            {
+                UpdateNotificationDisplay();
+            }
+        }
+
+        void OnRefreshTap()
+        {
+            GetUserNotif();
         }
 
         private void UpdateNotificationDisplay()
@@ -87,10 +145,12 @@ namespace myTNB.PushNotification
 
                 if (_notifications != null && _notifications.Count > 0)
                 {
-                    if (_imgNoNotification != null && _lblNoNotification != null)
+                    if (_refreshViewComponent != null)
                     {
-                        _imgNoNotification.Hidden = true;
-                        _lblNoNotification.Hidden = true;
+                        if (_refreshViewComponent.GetView().IsDescendantOfView(View))
+                        {
+                            _refreshViewComponent.GetView().RemoveFromSuperview();
+                        }
                     }
                     pushNotificationTableView.Hidden = false;
                     pushNotificationTableView.ClearsContextBeforeDrawing = true;
@@ -112,64 +172,72 @@ namespace myTNB.PushNotification
         public override void ViewWillAppear(bool animated)
         {
             base.ViewWillAppear(animated);
-            if (DataManager.DataManager.SharedInstance.IsNotificationDeleted)
+            if (DataManager.DataManager.SharedInstance.IsLoadingFromDashboard)
             {
-                DisplayToast("PushNotification_NotificationDeleted".Translate());
-                DataManager.DataManager.SharedInstance.IsNotificationDeleted = false;
-            }
-            if (DataManager.DataManager.SharedInstance.NotificationNeedsUpdate)
-            {
-                NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
-                {
-                    InvokeOnMainThread(async () =>
-                    {
-                        if (NetworkUtility.isReachable)
-                        {
-                            ActivityIndicator.Show();
-                            await PushNotificationHelper.GetNotifications();
-                            UpdateNotificationDisplay();
-                            ActivityIndicator.Hide();
-                        }
-                        else
-                        {
-                            DisplayNoDataAlert();
-                        }
-                    });
-                });
+                ActivityIndicator.Show();
             }
             else
             {
-                UpdateNotificationDisplay();
+                if (DataManager.DataManager.SharedInstance.IsNotificationDeleted)
+                {
+                    DisplayToast("PushNotification_NotificationDeleted".Translate());
+                    DataManager.DataManager.SharedInstance.IsNotificationDeleted = false;
+                }
+                if (DataManager.DataManager.SharedInstance.NotificationNeedsUpdate)
+                {
+                    GetUserNotif();
+                }
+                else
+                {
+                    ValidateResponse();
+                }
             }
         }
 
         void DisplayNoNotification()
         {
-            if (_imgNoNotification == null || _lblNoNotification == null)
-            {
-                _imgNoNotification = new UIImageView(new CGRect((View.Frame.Width / 2) - 75, 185, 150, 150))
-                {
-                    Image = UIImage.FromBundle("Notification-Empty")
-                };
-                _lblNoNotification = new UILabel(new CGRect(44, 352, View.Frame.Width - 88, 16))
-                {
-                    TextAlignment = UITextAlignment.Center,
-                    Text = "PushNotification_NoNotification".Translate(),
-                    Font = MyTNBFont.MuseoSans12,
-                    TextColor = MyTNBColor.SilverChalice
-                };
-                View.AddSubviews(new UIView[] { _imgNoNotification, _lblNoNotification });
-            }
             pushNotificationTableView.Hidden = true;
-            _imgNoNotification.Hidden = false;
-            _lblNoNotification.Hidden = false;
+
+            if (_refreshViewComponent != null)
+            {
+                if (_refreshViewComponent.GetView().IsDescendantOfView(View))
+                {
+                    _refreshViewComponent.GetView().RemoveFromSuperview();
+                }
+            }
+
+            _refreshViewComponent = new RefreshViewComponent(View, headerView);
+            _refreshViewComponent.SetIconImage("Notification-Error");
+            _refreshViewComponent.SetDescription("PushNotification_NoNotification".Translate());
+            _refreshViewComponent.SetRefreshButtonHidden(true);
+
+            View.AddSubview(_refreshViewComponent.GetUI());
+        }
+
+        internal void DisplayRefreshScreen(string msg, string btnText)
+        {
+            if (_refreshViewComponent != null)
+            {
+                if (_refreshViewComponent.GetView().IsDescendantOfView(View))
+                {
+                    _refreshViewComponent.GetView().RemoveFromSuperview();
+                }
+            }
+
+            _refreshViewComponent = new RefreshViewComponent(View, headerView);
+            _refreshViewComponent.SetIconImage("Notification-Error");
+            _refreshViewComponent.SetDescription(msg);
+            _refreshViewComponent.SetButtonText(btnText);
+            _refreshViewComponent.OnButtonTap = OnRefreshTap;
+
+            View.AddSubview(_refreshViewComponent.GetUI());
         }
 
         internal void SetNavigationBar()
         {
             NavigationController?.SetNavigationBarHidden(true, false);
             GradientViewComponent gradientViewComponent = new GradientViewComponent(View, true, 89, true);
-            UIView headerView = gradientViewComponent.GetUI();
+            headerView = gradientViewComponent.GetUI();
             _titleBarComponent = new TitleBarComponent(headerView);
 
             UIView titleBarView = _titleBarComponent.GetUI();
@@ -670,22 +738,25 @@ namespace myTNB.PushNotification
                 _notificationsForUpdate = new List<UpdateNotificationModel>();
             }
 
-            foreach (UserNotificationDataModel obj in _notifications)
+            if (_notifications != null && _notifications?.Count > 0)
             {
-                obj.IsSelected = flag;
-                if (flag)
+                foreach (UserNotificationDataModel obj in _notifications)
                 {
-                    _notificationsForUpdate.Add(new UpdateNotificationModel()
+                    obj.IsSelected = flag;
+                    if (flag)
                     {
-                        NotificationType = obj?.NotificationType,
-                        NotificationId = obj.Id,
-                        IsRead = obj.IsRead.ToUpper() == "TRUE"
-                    });
+                        _notificationsForUpdate.Add(new UpdateNotificationModel()
+                        {
+                            NotificationType = obj?.NotificationType,
+                            NotificationId = obj.Id,
+                            IsRead = obj.IsRead.ToUpper() == "TRUE"
+                        });
+                    }
                 }
-            }
 
-            pushNotificationTableView.ReloadData();
-            UpdateTitleRightIconImage();
+                pushNotificationTableView.ReloadData();
+                UpdateTitleRightIconImage();
+            }
         }
 
         /// <summary>

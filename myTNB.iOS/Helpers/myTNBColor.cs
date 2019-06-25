@@ -18,6 +18,7 @@ using UIKit;  namespace myTNB {
         readonly static UIColor _linesGray = new UIColor(red: 0.85f, green: 0.85f, blue: 0.85f, alpha: 1.0f);
         readonly static UIColor _harleyDavidsonOrange = new UIColor(red: 0.89F, green: 0.20F, blue: 0.10F, alpha: 1.0f);
         readonly static UIColor _denim = new UIColor(red: 0.11F, green: 0.47F, blue: 0.79F, alpha: 1.0f);
+        readonly static UIColor _grey = new UIColor(red: 0.55f, green: 0.55f, blue: 0.55f, alpha: 1.0f);
 
         /// <summary>         /// A color with RGBA of (0.47, 0.19, 0.83, 1).         /// </summary>         public static UIColor GradientPurpleDarkElement
         {
@@ -151,5 +152,15 @@ using UIKit;  namespace myTNB {
         public static UIColor TunaGrey(float customAlpha = 1.0f)
         {
             return new UIColor(red: 73.0f / 255.0f, green: 73.0f / 255.0f, blue: 74.0f / 255.0f, alpha: customAlpha);
+        }
+        /// <summary>
+        /// A color with RGBA of (0.55, 0.55, 0.55, 1).
+        /// </summary>
+        public static UIColor Grey
+        {
+            get
+            {
+                return _grey;
+            }
         }
     } }
