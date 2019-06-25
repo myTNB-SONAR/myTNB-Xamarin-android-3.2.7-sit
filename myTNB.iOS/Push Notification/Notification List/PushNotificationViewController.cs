@@ -177,6 +177,11 @@ namespace myTNB.PushNotification
             _titleBarComponent.SetSecondaryImage("Notification-MarkAsRead");
             _titleBarComponent.SetSecondaryAction(new UITapGestureRecognizer((obj) =>
             {
+                bool isNotRead = _notificationsForUpdate.FindIndex(x => !x.IsRead) > -1;
+                if (!isNotRead)
+                {
+                    return;
+                }
                 int count = _notificationsForUpdate != null ? _notificationsForUpdate.Count : 0;
                 if (count > 1)
                 {
@@ -673,7 +678,8 @@ namespace myTNB.PushNotification
                     _notificationsForUpdate.Add(new UpdateNotificationModel()
                     {
                         NotificationType = obj?.NotificationType,
-                        NotificationId = obj.Id
+                        NotificationId = obj.Id,
+                        IsRead = obj.IsRead.ToUpper() == "TRUE"
                     });
                 }
             }
@@ -685,7 +691,7 @@ namespace myTNB.PushNotification
         /// <summary>
         /// Updates the title right icon image.
         /// </summary>
-        public void UpdateTitleRightIconImage(UserNotificationDataModel notifModel = null)
+        internal void UpdateTitleRightIconImage(UserNotificationDataModel notifModel = null)
         {
             _isDeletionMode = IsAtLeastOneIsSelected();
             string icon = "Notification-Select";
@@ -721,7 +727,7 @@ namespace myTNB.PushNotification
         /// Updates the notification for deletion list.
         /// </summary>
         /// <param name="notifModel">Notif model.</param>
-        internal void UpdateNotificationForDeletionList(UserNotificationDataModel notifModel)
+        private void UpdateNotificationForDeletionList(UserNotificationDataModel notifModel)
         {
             if (notifModel != null)
             {
@@ -734,8 +740,8 @@ namespace myTNB.PushNotification
                     _notificationsForUpdate.Add(new UpdateNotificationModel()
                     {
                         NotificationType = notifModel?.NotificationType,
-                        NotificationId = notifModel?.Id
-
+                        NotificationId = notifModel?.Id,
+                        IsRead = notifModel.IsRead.ToUpper() == "TRUE"
                     });
                 }
                 else
