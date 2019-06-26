@@ -1761,10 +1761,6 @@
     <Compile Include="SQLite\SQLite Data Manager\BillHistoryEntity.cs" />
     <Compile Include="SQLite\SQLite Data Manager\PaymentHistoryEntity.cs" />
     <Compile Include="Model\AppVersionModel.cs" />
-    <Compile Include="Onboarding\AppUpdateViewController.cs" />
-    <Compile Include="Onboarding\AppUpdateViewController.designer.cs">
-      <DependentUpon>AppUpdateViewController.cs</DependentUpon>
-    </Compile>
     <Compile Include="Model\DowntimeDataModel.cs" />
     <Compile Include="Enums\SystemEnum.cs" />
     <Compile Include="Home\Components\SystemDownComponent.cs" />
