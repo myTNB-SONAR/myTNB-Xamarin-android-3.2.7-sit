@@ -26,6 +26,7 @@ namespace myTNB_Android.Src.Notifications.Adapter
     {
         Context notifyContext;
         private static NotificationContract.IView mNotificatonListener;
+        private static bool isClickable = true;
         public NotificationRecyclerAdapter(bool notify) : base(notify)
         {
         }
@@ -243,17 +244,33 @@ namespace myTNB_Android.Src.Notifications.Adapter
             {
                 TextViewUtils.SetMuseoSans300Typeface(txtNotificationTitle);
                 TextViewUtils.SetMuseoSans300Typeface(txtNotificationContent, txtNotificationDate);
-                itemView.SetOnClickListener(new MyItemClickListener());
+                itemView.SetOnClickListener(new NotificationItemClickListener(this, adapter));
                 selectItemCheckbox.SetOnCheckedChangeListener(new NotificationItemSelectedListener(this, adapter));
             }
         }
 
-        class MyItemClickListener : Java.Lang.Object, View.IOnClickListener
+        class NotificationItemClickListener : Java.Lang.Object, View.IOnClickListener
         {
+            NotificationRecyclerViewHolder mViewHolder;
+            NotificationRecyclerAdapter mAdapter;
+            public NotificationItemClickListener(NotificationRecyclerViewHolder viewHolder, NotificationRecyclerAdapter adapter)
+            {
+                mViewHolder = viewHolder;
+                mAdapter = adapter;
+            }
             public void OnClick(View v)
             {
-                //throw new NotImplementedException();
+                if (isClickable)
+                {
+                    int position = mViewHolder.AdapterPosition;
+                    mNotificatonListener.ShowNotificationDetails(position);
+                }
             }
+        }
+
+        public void SetClickable(bool isClick)
+        {
+            isClickable = isClick;
         }
     }
 }

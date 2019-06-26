@@ -155,7 +155,6 @@
         android:button="@drawable/checkbox_selector"
         android:checked="false"
         android:text=" "
-        app:layout_constraintStart_toEndOf="@+id/txtNotificationDate"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 </android.support.constraint.ConstraintLayout>

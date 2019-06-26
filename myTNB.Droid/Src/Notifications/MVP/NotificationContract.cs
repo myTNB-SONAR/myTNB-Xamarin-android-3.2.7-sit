@@ -132,7 +132,9 @@ namespace myTNB_Android.Src.Notifications.MVP
             void UpdateSelectedNotification();
 
             void OnFailedNotificationAction();
-        }
+
+			void ShowNotificationDetails(int notificationItemPosition);
+		}
 
         public interface IUserActionsListener : IBasePresenter
         {

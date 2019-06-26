@@ -154,6 +154,7 @@ namespace myTNB_Android.Src.Notifications.Activity
                         notificationRecyclerAdapter.ShowSelectButtons(true);
                         editState = EditNotificationStates.SHOW;
                         itemTouchHelper.AttachToRecyclerView(null);
+                        notificationRecyclerAdapter.SetClickable(false);
                         SetToolBarTitle(GetString(Resource.String.Notification_Select));
                     }
                     else
@@ -170,6 +171,7 @@ namespace myTNB_Android.Src.Notifications.Activity
                             notificationRecyclerAdapter.ShowSelectButtons(false);
                             editState = EditNotificationStates.HIDE;
                             SetToolBarTitle(GetString(Resource.String.notification_activity_title));
+                            notificationRecyclerAdapter.SetClickable(true);
                         }
                     }
                     break;
@@ -219,12 +221,12 @@ namespace myTNB_Android.Src.Notifications.Activity
         {
             foreach (UserNotificationData notification in notificationRecyclerAdapter.GetAllNotifications())
             {
-                if (notification.IsSelected && notification.IsRead)
+                if (notification.IsSelected && !notification.IsRead)
                 {
                     return true;
                 }
             }
-            return true; //dummy
+            return false;
         }
 
         public bool IsActive()
@@ -327,15 +329,6 @@ namespace myTNB_Android.Src.Notifications.Activity
             }
         }
 
-        class MyItemDecoration : RecyclerView.ItemDecoration
-        {
-            public void onDraw(Canvas c, RecyclerView parent, RecyclerView.State state)
-            {
-                //notificationSwipeDelete.on OnDraw(c);
-            }
-
-        }
-
         private void SetNotificationRecyclerView()
         {
             //notificationAdapter = new NotificationAdapter(this, true);
@@ -379,6 +372,7 @@ namespace myTNB_Android.Src.Notifications.Activity
             selectAllCheckboxButton.Checked = false;
             selectAllCheckboxButton.SetOnCheckedChangeListener(this);
             ShowEditMode(false);
+            notificationRecyclerAdapter.SetClickable(true);
         }
 
         
@@ -775,5 +769,12 @@ namespace myTNB_Android.Src.Notifications.Activity
         {
             notificationRecyclerAdapter.NotifyDataSetChanged();
         }
-    }
+
+        public void ShowNotificationDetails(int itemPosition)
+		{
+			UserNotificationData userNotificationData = notificationRecyclerAdapter.GetAllNotifications()[itemPosition];
+			mPresenter.OnSelectedNotificationItem(userNotificationData, itemPosition);
+		}
+
+	}
 }
