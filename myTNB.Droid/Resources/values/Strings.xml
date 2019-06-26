@@ -1365,5 +1365,9 @@ Please try again later.]]>
   <string name="itemized_bill_got_it">Got it!</string>
   <string name="itemized_bill_bring_me_there">Bring me there.</string>
   <string name="itemized_bill_title">What is included in my bill?</string>
-  <string name="itemized_bill_message"><![CDATA[It includes your <b>current month’s bill</b> plus other <b>mandatory payments</b>.<br/>You may check out Bills tab for a detailed view.]]></string>
+  <string name="itemized_bill_message"><![CDATA[It includes your current month’s bill, outstanding charges plus other mandatory payments. You may check out Bills tab for a detailed view.]]></string>
+  <string name="itemized_bill_second_title">This account has mandatory charges </string>
+  <string name="itemized_bill_second_message"><![CDATA[Mandatory charges are charges that need to be cleared. It will be included in your total amount payable.]]></string>
+  <string name="itemized_bill_third_title">This account has mandatory charges </string>
+  <string name="itemized_bill_third_message"><![CDATA[Mandatory charges are charges that need to be cleared. It will be included in your total amount payable.<br/><br/>You may check out the Bills tab for a detailed view.]]></string>
 </resources>

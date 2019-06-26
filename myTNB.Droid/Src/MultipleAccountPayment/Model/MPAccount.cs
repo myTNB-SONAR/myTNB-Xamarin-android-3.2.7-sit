@@ -32,6 +32,10 @@
 
         public double orgAmount { get; set; }
 
+        public double OpenChargeTotal { get; set; }
+
+        public bool isTooltipShow { get; set; }
+
         public bool isSelected { get; set; }
 
         public bool isValidAmount { get; set; }

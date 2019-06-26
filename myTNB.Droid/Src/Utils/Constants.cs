@@ -196,6 +196,9 @@ namespace myTNB_Android.Src.Utils
         internal static readonly string MAINTENANCE_TITLE_KEY = "maintenanceTitle";
         internal static readonly string MAINTENANCE_MESSAGE_KEY = "maintenanceMessage";
 
+        //Itemized Billing
+        internal static readonly string ITEMZIED_BILLING_VIEW_KEY = "itemizedBilling";
+
 
     }
 }

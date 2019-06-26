@@ -128,7 +128,7 @@
                     android:layout_below="@+id/txtTotalPayableTitle"
                     android:text="Due 6 Sep 2017"
                     android:textSize="11sp"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="9dp"
                     android:textColor="@color/silverChalice" />
                 <TextView
                     android:layout_height="wrap_content"

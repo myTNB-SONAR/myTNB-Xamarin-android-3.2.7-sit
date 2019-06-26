@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System.Collections.Generic;
 
 namespace myTNB_Android.Src.AddAccount.Models
 {
@@ -77,23 +78,11 @@ namespace myTNB_Android.Src.AddAccount.Models
         [JsonProperty("amCustBal")]
         public double AmtCustBal { get; set; }
 
-        [JsonProperty("InvoiceAmountPayable")]
-        public double InvoiceAmountPayable { get; set; }
-
-        [JsonProperty("OpenSecurityDeposit")]
-        public double OpenSecurityDeposit { get; set; }
-
-        [JsonProperty("OpenStampDuty")]
-        public double OpenStampDuty { get; set; }
-
-        [JsonProperty("OpenProcessingFee")]
-        public double OpenProcessingFee { get; set; }
-
-        [JsonProperty("OpenMeterCost")]
-        public double OpenMeterCost { get; set; }
+        [JsonProperty("ItemizedBillings")]
+        public List<ItemizedBillingDetails> ItemizedBilling { get; set; }   
 
         [JsonProperty("OpenChargesTotal")]
-        public double OpenChargesTotal { get; set; }
+        public double OpenChargesTotal { get; set; }     
 
         [JsonProperty("isError")]
         public bool isError { get; set; }

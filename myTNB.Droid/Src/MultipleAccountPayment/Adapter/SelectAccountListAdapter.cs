@@ -1,11 +1,17 @@
-﻿using Android.Support.Design.Widget;
+﻿using AFollestad.MaterialDialogs;
+using Android.Content;
+using Android.OS;
+using Android.Support.Design.Widget;
 using Android.Support.V7.Widget;
+using Android.Text;
+using Android.Text.Method;
 using Android.Util;
 using Android.Views;
 using Android.Widget;
 using Java.Text;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.MultipleAccountPayment.Model;
+using myTNB_Android.Src.myTNBMenu.Activity;
 using myTNB_Android.Src.Utils;
 using System;
 using System.Collections.Generic;
@@ -21,6 +27,8 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Adapter
         private List<MPAccount> orgAccountList = new List<MPAccount>();
         public event EventHandler<int> CheckChanged;
         private SparseBooleanArray selectedItems;
+
+        private MaterialDialog mWhyThisAmtCardDialog;
 
         private DecimalFormat payableFormatter = new DecimalFormat("###############0.00");
 
@@ -60,12 +68,23 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Adapter
             {
                 TextViewUtils.SetMuseoSans300Typeface(vh.AccountLabel, vh.AccountNumber, vh.AccountAddress);
                 TextViewUtils.SetMuseoSans300Typeface(vh.AmountLabel);
-                TextViewUtils.SetMuseoSans300Typeface(vh.Amount);
+                TextViewUtils.SetMuseoSans300Typeface(vh.Amount, vh.MandatoryPaymentContent);
+                TextViewUtils.SetMuseoSans500Typeface(vh.MandatoryPaymentTite);
                 MPAccount item = accountList[position];
                 vh.AccountNumber.Text = item.accountNumber;
                 vh.AccountAddress.Text = item.accountAddress;
                 vh.AccountLabel.Text = item.accountLabel;
                 vh.Amount.Text = payableFormatter.Format(item.amount);
+
+                if(item.OpenChargeTotal != 0)
+                {
+                    vh.MandatoryPaymentContent.Text = payableFormatter.Format(item.OpenChargeTotal);
+                }
+                else
+                {
+                    vh.MandatoryPaymentDetailView.Visibility = ViewStates.Gone;
+                }
+
                 if (item.amount < 1)
                 {
                     item.isValidAmount = false;
@@ -197,6 +216,9 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Adapter
             public TextInputLayout AmountLabel { get; private set; }
             public EditText Amount { get; private set; }
             public CheckBox SelectAccountView { get; private set; }
+            public LinearLayout MandatoryPaymentDetailView { get; private set; }
+            public TextView MandatoryPaymentTite { get; private set; }
+            public TextView MandatoryPaymentContent { get; private set; }
 
             public SelectAccountListViewHolder(View itemView, Action<SelectAccountListViewHolder, int> listener) : base(itemView)
             {
@@ -205,13 +227,18 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Adapter
                 AccountAddress = itemView.FindViewById<TextView>(Resource.Id.text_account_address);
                 AmountLabel = itemView.FindViewById<TextInputLayout>(Resource.Id.account_amount_layout);
                 Amount = itemView.FindViewById<EditText>(Resource.Id.account_amount_edittext);
+                MandatoryPaymentDetailView = itemView.FindViewById<LinearLayout>(Resource.Id.mandatory_payment_detail);
+                MandatoryPaymentTite = itemView.FindViewById<TextView>(Resource.Id.mandatory_payment_title);
+                MandatoryPaymentContent = itemView.FindViewById<TextView>(Resource.Id.mandatory_payment_content);
+
 
                 SelectAccountView = itemView.FindViewById<CheckBox>(Resource.Id.select_account);
                 SelectAccountView.Click += (s, e) => listener((this), base.LayoutPosition);
 
                 TextViewUtils.SetMuseoSans300Typeface(AccountLabel, AccountNumber, AccountAddress);
                 TextViewUtils.SetMuseoSans300Typeface(AmountLabel);
-                TextViewUtils.SetMuseoSans300Typeface(Amount);
+                TextViewUtils.SetMuseoSans300Typeface(Amount, MandatoryPaymentContent);
+                TextViewUtils.SetMuseoSans500Typeface(MandatoryPaymentTite);
 
                 Amount.AddTextChangedListener(new RestrictTextChangeListener(Amount, AmountLabel, 2));
 
@@ -248,6 +275,11 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Adapter
                         if (accountList[i].isSelected)
                         {
                             MPAccount item = accountList[i];
+                            if(item.isSelected && !item.isTooltipShow && item.OpenChargeTotal != 0)
+                            {
+                                ShowTooltip();
+                                item.isTooltipShow = true;
+                            }
                             selectedStores.Add(item);
                         }
                     }
@@ -258,6 +290,59 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Adapter
                 Utility.LoggingNonFatalError(e);
             }
             return selectedStores;
+        }
+
+        public void ShowTooltip()
+        {
+            try
+            {
+                // TODO Itemized: customized message
+                mWhyThisAmtCardDialog = new MaterialDialog.Builder(mActicity)
+                    .CustomView(Resource.Layout.CustomDialogDoubleButtonLayout, false)
+                    .Cancelable(false)
+                    .CanceledOnTouchOutside(false)
+                    .Build();
+
+                View dialogView = mWhyThisAmtCardDialog.Window.DecorView;
+                dialogView.SetBackgroundResource(Android.Resource.Color.Transparent);
+
+                TextView txtItemizedTitle = mWhyThisAmtCardDialog.FindViewById<TextView>(Resource.Id.txtTitle);
+                TextView txtItemizedMessage = mWhyThisAmtCardDialog.FindViewById<TextView>(Resource.Id.txtMessage);
+                TextView btnGotIt = mWhyThisAmtCardDialog.FindViewById<TextView>(Resource.Id.txtBtnSecond);
+                TextView btnBringMeThere = mWhyThisAmtCardDialog.FindViewById<TextView>(Resource.Id.txtBtnFirst);
+                txtItemizedMessage.MovementMethod = new ScrollingMovementMethod();
+                if (Build.VERSION.SdkInt >= BuildVersionCodes.N)
+                {
+                    txtItemizedMessage.TextFormatted = Html.FromHtml(mActicity.GetString(Resource.String.itemized_bill_third_message), FromHtmlOptions.ModeLegacy);
+                }
+                else
+                {
+                    txtItemizedMessage.TextFormatted = Html.FromHtml(mActicity.GetString(Resource.String.itemized_bill_third_message));
+                }
+                txtItemizedTitle.Text = mActicity.GetString(Resource.String.itemized_bill_third_title);
+                btnGotIt.Text = mActicity.GetString(Resource.String.itemized_bill_got_it);
+                btnBringMeThere.Text = mActicity.GetString(Resource.String.itemized_bill_bring_me_there);
+                TextViewUtils.SetMuseoSans500Typeface(txtItemizedTitle, btnGotIt, btnBringMeThere);
+                TextViewUtils.SetMuseoSans300Typeface(txtItemizedMessage);
+                btnGotIt.Click += delegate
+                {
+                    mWhyThisAmtCardDialog.Dismiss();
+                };
+                btnBringMeThere.Click += delegate
+                {
+                    Intent dashbaord_activity = new Intent(mActicity, typeof(DashboardActivity));
+                    dashbaord_activity.PutExtra(Constants.ITEMZIED_BILLING_VIEW_KEY, true);
+                    dashbaord_activity.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
+                    mActicity.StartActivity(dashbaord_activity);
+                    mWhyThisAmtCardDialog.Dismiss();
+                };
+
+                mWhyThisAmtCardDialog.Show();
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public bool IsAllAmountValid()

@@ -8,6 +8,7 @@ using Android.Support.Design.Widget;
 using Android.Support.V4.Content;
 using Android.Support.V7.App;
 using Android.Text;
+using Android.Text.Method;
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
@@ -394,8 +395,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         {
             try
             {
+                // TODO Itemized: customized message
                 mWhyThisAmtCardDialog = new MaterialDialog.Builder(Activity)
-                    .CustomView(Resource.Layout.WhyThisAmtView, false)
+                    .CustomView(Resource.Layout.CustomDialogDoubleButtonLayout, false)
                     .Cancelable(false)
                     .CanceledOnTouchOutside(false)
                     .Build();
@@ -403,10 +405,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 View dialogView = mWhyThisAmtCardDialog.Window.DecorView;
                 dialogView.SetBackgroundResource(Android.Resource.Color.Transparent);
 
-                TextView txtItemizedTitle = mWhyThisAmtCardDialog.FindViewById<TextView>(Resource.Id.txtItemizedTitle);
-                TextView txtItemizedMessage = mWhyThisAmtCardDialog.FindViewById<TextView>(Resource.Id.txtItemizedMessage);
-                TextView btnGotIt = mWhyThisAmtCardDialog.FindViewById<TextView>(Resource.Id.txtBtnGotIt);
-                TextView btnBringMeThere = mWhyThisAmtCardDialog.FindViewById<TextView>(Resource.Id.txtBtnBringMeThere);
+                TextView txtItemizedTitle = mWhyThisAmtCardDialog.FindViewById<TextView>(Resource.Id.txtTitle);
+                TextView txtItemizedMessage = mWhyThisAmtCardDialog.FindViewById<TextView>(Resource.Id.txtMessage);
+                TextView btnGotIt = mWhyThisAmtCardDialog.FindViewById<TextView>(Resource.Id.txtBtnSecond);
+                TextView btnBringMeThere = mWhyThisAmtCardDialog.FindViewById<TextView>(Resource.Id.txtBtnFirst);
+                txtItemizedMessage.MovementMethod = new ScrollingMovementMethod();
                 if (Build.VERSION.SdkInt >= BuildVersionCodes.N)
                 {
                     txtItemizedMessage.TextFormatted = Html.FromHtml(Activity.GetString(Resource.String.itemized_bill_message), FromHtmlOptions.ModeLegacy);
@@ -415,6 +418,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 {
                     txtItemizedMessage.TextFormatted = Html.FromHtml(Activity.GetString(Resource.String.itemized_bill_message));
                 }
+                txtItemizedTitle.Text = Activity.GetString(Resource.String.itemized_bill_title);
+                btnGotIt.Text = Activity.GetString(Resource.String.itemized_bill_got_it);
+                btnBringMeThere.Text = Activity.GetString(Resource.String.itemized_bill_bring_me_there);
                 TextViewUtils.SetMuseoSans500Typeface(txtItemizedTitle, btnGotIt, btnBringMeThere);
                 TextViewUtils.SetMuseoSans300Typeface(txtItemizedMessage);
                 btnGotIt.Click += delegate
@@ -1262,6 +1268,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
                         if (selectedAccount.AccountCategoryId.Equals("2"))
                         {
+                            txtWhyThisAmt.Visibility = ViewStates.Gone;
                             selectedAccount.AmtCustBal = accountDueAmount.AmountDue;
                             double calAmt = selectedAccount.AmtCustBal * -1;
                             if (calAmt <= 0)
@@ -1291,6 +1298,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         }
                         else
                         {
+                            if(accountDueAmount.OpenChargesTotal == 0)
+                            {
+                                txtWhyThisAmt.Visibility = ViewStates.Gone;
+                            }
+                            else
+                            {
+                                txtWhyThisAmt.Visibility = ViewStates.Visible;
+                            }
                             txtTotalPayable.Text = decimalFormat.Format(accountDueAmount.AmountDue);
                             selectedAccount.AmtCustBal = accountDueAmount.AmountDue;
                             double calAmt = selectedAccount.AmtCustBal;
@@ -1304,10 +1319,15 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                             }
                         }
                     }
+                    else
+                    {
+                        txtWhyThisAmt.Visibility = ViewStates.Gone;
+                    }
                 }
                 else
                 {
                     txtDueDate.Text = GetString(Resource.String.dashboard_chartview_due_date_not_available);
+                    txtWhyThisAmt.Visibility = ViewStates.Gone;
                 }
             }
             catch (System.Exception e)

@@ -46,6 +46,10 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Model
             [JsonProperty(PropertyName = "accNum")]
             [AliasAs("accNum")]
             public string accNum { get; set; }
+
+            [JsonProperty(PropertyName = "OpenChargesTotal")]
+            [AliasAs("OpenChargesTotal")]
+            public double OpenChargesTotal { get; set; } 
         }
     }
 }

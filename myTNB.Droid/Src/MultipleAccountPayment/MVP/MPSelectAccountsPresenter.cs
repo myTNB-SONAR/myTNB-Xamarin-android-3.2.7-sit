@@ -29,13 +29,13 @@ namespace myTNB_Android.Src.MultipleAccountPayment.MVP
 
         }
 
-        public void GetMultiAccountDueAmount(string apiKeyID, List<string> accounts)
+        public void GetMultiAccountDueAmount(string apiKeyID, List<string> accounts, string preSelectedAccount)
         {
             ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
-            GetMultiAccountDueAmountAsync(apiKeyID, accounts);
+            GetMultiAccountDueAmountAsync(apiKeyID, accounts, preSelectedAccount);
         }
 
-        public async void GetMultiAccountDueAmountAsync(string apiKeyId, List<string> accounts)
+        public async void GetMultiAccountDueAmountAsync(string apiKeyId, List<string> accounts, string preSelectedAccount)
         {
             try
             {
@@ -55,12 +55,26 @@ namespace myTNB_Android.Src.MultipleAccountPayment.MVP
                 bool getDetailsFromApi = false;
                 foreach (string account in accounts)
                 {
+                    // TODO Itemized: remove cache or not
+                    getDetailsFromApi = true;
+                    break;
                     if (!SelectBillsEntity.IsSMDataUpdated(account))
                     {
                         SelectBillsEntity storedEntity = SelectBillsEntity.GetItemByAccountNo(account);
                         if (storedEntity != null)
                         {
                             MPAccount storedSMData = JsonConvert.DeserializeObject<MPAccount>(storedEntity.JsonResponse);
+                            if(!string.IsNullOrEmpty(preSelectedAccount))
+                            {
+                                if(account == preSelectedAccount)
+                                {
+                                    storedSMData.isSelected = true;
+                                }
+                                else
+                                {
+                                    storedSMData.isSelected = false;
+                                }
+                            }
                             storeAccounts.Add(storedSMData);
                         }
                         else

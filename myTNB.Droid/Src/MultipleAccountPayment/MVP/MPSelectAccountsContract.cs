@@ -70,7 +70,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.MVP
             /// <summary>
             /// Get due amount for all accounts
             /// </summary>
-            void GetMultiAccountDueAmount(string apiKeyID, List<string> accounts);
+            void GetMultiAccountDueAmount(string apiKeyID, List<string> accounts, string preSelectedAccount);
         }
     }
 }

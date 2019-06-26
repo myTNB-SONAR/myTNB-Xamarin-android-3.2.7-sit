@@ -1,6 +1,7 @@
 ﻿using myTNB_Android.Src.AddAccount.Models;
 using myTNB_Android.Src.Database.Model;
 using Newtonsoft.Json;
+using System.Collections.Generic;
 
 namespace myTNB_Android.Src.myTNBMenu.Models
 {
@@ -105,23 +106,11 @@ namespace myTNB_Android.Src.myTNBMenu.Models
         [JsonProperty("AmtCustBal")]
         public double AmtCustBal { get; set; }
 
-        [JsonProperty("InvoiceAmountPayable")]
-        public double InvoiceAmountPayable { get; set; }
-
-        [JsonProperty("OpenSecurityDeposit")]
-        public double OpenSecurityDeposit { get; set; }
-
-        [JsonProperty("OpenStampDuty")]
-        public double OpenStampDuty { get; set; }
-
-        [JsonProperty("OpenProcessingFee")]
-        public double OpenProcessingFee { get; set; }
-
-        [JsonProperty("OpenMeterCost")]
-        public double OpenMeterCost { get; set; }
+        [JsonProperty("ItemizedBillings")]
+        public List<ItemizedBillingDetails> ItemizedBilling { get; set; }   
 
         [JsonProperty("OpenChargesTotal")]
-        public double OpenChargesTotal { get; set; }
+        public double OpenChargesTotal { get; set; }    
 
         [JsonProperty("IsSelected")]
         public bool IsSelected { get; set; }
@@ -163,11 +152,7 @@ namespace myTNB_Android.Src.myTNBMenu.Models
                 StnAddTown = accountDetails.StnAddTown,
                 StnAddState = accountDetails.StnAddState,
                 AmtCustBal = accountDetails.AmtCustBal,
-                InvoiceAmountPayable = accountDetails.InvoiceAmountPayable,
-                OpenSecurityDeposit = accountDetails.OpenSecurityDeposit,
-                OpenStampDuty = accountDetails.OpenStampDuty,
-                OpenProcessingFee = accountDetails.OpenProcessingFee,
-                OpenMeterCost = accountDetails.OpenMeterCost,
+                ItemizedBilling = accountDetails.ItemizedBilling,
                 OpenChargesTotal = accountDetails.OpenChargesTotal,
                 AccountCategoryId = "",
                 SmartMeterCode = accountDetails.SmartMeterCode,
@@ -205,11 +190,7 @@ namespace myTNB_Android.Src.myTNBMenu.Models
                 StnAddTown = accountDetails.StnAddTown,
                 StnAddState = accountDetails.StnAddState,
                 AmtCustBal = accountDetails.AmtCustBal,
-                InvoiceAmountPayable = accountDetails.InvoiceAmountPayable,
-                OpenSecurityDeposit = accountDetails.OpenSecurityDeposit,
-                OpenStampDuty = accountDetails.OpenStampDuty,
-                OpenProcessingFee = accountDetails.OpenProcessingFee,
-                OpenMeterCost = accountDetails.OpenMeterCost,
+                ItemizedBilling = accountDetails.ItemizedBilling,
                 OpenChargesTotal = accountDetails.OpenChargesTotal,
                 AccountCategoryId = customerBilling.AccountCategoryId,
                 IsOwner = customerBilling.isOwned,
@@ -248,11 +229,7 @@ namespace myTNB_Android.Src.myTNBMenu.Models
                 StnAddTown = "",
                 StnAddState = "",
                 AmtCustBal = 0,
-                InvoiceAmountPayable = 0,
-                OpenSecurityDeposit = 0,
-                OpenStampDuty = 0,
-                OpenProcessingFee = 0,
-                OpenMeterCost = 0,
+                ItemizedBilling = null,
                 OpenChargesTotal = 0,
                 IsOwner = accountDetails.isOwned,
                 AccountCategoryId = accountDetails.AccountCategoryId,

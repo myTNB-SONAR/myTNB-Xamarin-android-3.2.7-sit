@@ -56,6 +56,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
         private int INDEX_COUNTER = 0;
         private int NO_OF_ITARATION = 0;
         private bool firstTime = false;
+        private string preSelectedAccount = null;
         List<CustomerBillingAccount> registerdAccounts;
         AccountData selectedAccount;
 
@@ -120,6 +121,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
                     {
                         //selectedAccount = JsonConvert.DeserializeObject<AccountData>(Intent.Extras.GetString(Constants.SELECTED_ACCOUNT));
                         selectedAccount = DeSerialze<AccountData>(extras.GetString(Constants.SELECTED_ACCOUNT));
+                        preSelectedAccount = selectedAccount.AccountNum;
                     }
                 }
 
@@ -166,7 +168,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
                         custAccounts.Add(item.AccNum);
                     }
                     firstTime = true;
-                    this.userActionsListener.GetMultiAccountDueAmount(Constants.APP_CONFIG.API_KEY_ID, custAccounts);
+                    this.userActionsListener.GetMultiAccountDueAmount(Constants.APP_CONFIG.API_KEY_ID, custAccounts, preSelectedAccount);
                 }
 
                 accountListRecyclerView.SetLayoutManager(layoutManager);
@@ -200,7 +202,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
                         {
                             custAccounts.Add(item.AccNum);
                         }
-                        this.userActionsListener.GetMultiAccountDueAmount(Constants.APP_CONFIG.API_KEY_ID, custAccounts);
+                        this.userActionsListener.GetMultiAccountDueAmount(Constants.APP_CONFIG.API_KEY_ID, custAccounts, null);
                     }
                     else
                     {
@@ -266,6 +268,10 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
                 foreach (MPAccount account in selectedAccounts)
                 {
                     total += account.amount;
+                    if(account.OpenChargeTotal != 0) 
+                    {
+                        total += account.OpenChargeTotal;
+                    }
                 }
                 textTotalPayable.Text = payableFormatter.Format(total);
                 if (selectedAccounts.Count > 0)
@@ -435,14 +441,20 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
                             {
                                 CustomerBillingAccount customerBillingAccount = CustomerBillingAccount.FindByAccNum(account.accNum);
                                 double dueAmount = account.amountDue;
-                                //if (dueAmount > 1)
+                                // TODO Itemized: to deduct with Itemized Bill or not
+                                //if(account.OpenChargesTotal != 0)
                                 //{
+                                //    dueAmount = dueAmount - account.OpenChargesTotal;
+                                //}
+
                                 MPAccount mpAccount = new MPAccount()
                                 {
                                     accountLabel = customerBillingAccount.AccDesc,
                                     accountNumber = customerBillingAccount.AccNum,
                                     accountAddress = customerBillingAccount.AccountStAddress,
                                     isSelected = selectedAccount.AccountNum.Equals(customerBillingAccount.AccNum) ? true && dueAmount > 0 : false,
+                                    isTooltipShow = false,
+                                    OpenChargeTotal = account.OpenChargesTotal == 0.00 ? 0.00 : account.OpenChargesTotal,
                                     amount = dueAmount,
                                     orgAmount = dueAmount
                                 };
