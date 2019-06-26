@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Newtonsoft.Json;
 
 namespace myTNB.Model
@@ -38,5 +37,8 @@ namespace myTNB.Model
 
         [JsonProperty("MaintenanceMessage")]
         public string MaintenanceMessage { set; get; }
+
+        [JsonProperty("ForceUpdateInfo")]
+        public ForceUpdateInfoModel ForceUpdateInfo { set; get; }
     }
 }

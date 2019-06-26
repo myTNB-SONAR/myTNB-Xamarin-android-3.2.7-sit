@@ -174,7 +174,7 @@ namespace myTNB
             {
                 InvokeOnMainThread(() =>
                 {
-                    _resendLabel.Text = string.Format("ResendBtnTimerTxt".Translate(), timerCtr);
+                    _resendLabel.Text = string.Format("Registration_ResendTimer".Translate(), timerCtr);
                 });
                 timerCtr = timerCtr - 1;
             }
