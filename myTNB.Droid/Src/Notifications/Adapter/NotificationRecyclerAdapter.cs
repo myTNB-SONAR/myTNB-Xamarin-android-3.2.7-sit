@@ -25,7 +25,7 @@ namespace myTNB_Android.Src.Notifications.Adapter
     public class NotificationRecyclerAdapter : BaseRecyclerAdapter<UserNotificationData>
     {
         Context notifyContext;
-        private NotificationContract.IView mNotificatonListener;
+        private static NotificationContract.IView mNotificatonListener;
         public NotificationRecyclerAdapter(bool notify) : base(notify)
         {
         }
@@ -164,7 +164,6 @@ namespace myTNB_Android.Src.Notifications.Adapter
                 }
 
                 viewHolder.selectItemCheckbox.Checked = notificationData.IsSelected;
-                viewHolder.selectItemCheckbox.SetOnCheckedChangeListener(new NotificationItemSelectedListener(this,position, mNotificatonListener));
             }
             catch (Exception e)
             {
@@ -174,7 +173,7 @@ namespace myTNB_Android.Src.Notifications.Adapter
 
         public override RecyclerView.ViewHolder OnCreateViewHolder(ViewGroup parent, int viewType)
         {
-            return new NotificationRecyclerViewHolder(LayoutInflater.From(parent.Context).Inflate(Resource.Layout.NotificationRow, parent, false));
+            return new NotificationRecyclerViewHolder(this, LayoutInflater.From(parent.Context).Inflate(Resource.Layout.NotificationRow, parent, false));
         }
 
         public void RemoveItem(int position)
@@ -193,9 +192,9 @@ namespace myTNB_Android.Src.Notifications.Adapter
 
         public void SelectAllNotifications(bool show)
         {
-            foreach (UserNotificationData userNotificationData in this.itemList)
+            for (int i=0; i < this.itemList.Count; i++)
             {
-                userNotificationData.IsSelected = show;
+                this.itemList[i].IsSelected = show;
             }
             NotifyDataSetChanged();
         }
@@ -207,22 +206,19 @@ namespace myTNB_Android.Src.Notifications.Adapter
 
         class NotificationItemSelectedListener : Java.Lang.Object, IOnCheckedChangeListener
         {
-            int selectedPosition;
-            NotificationRecyclerAdapter notificationAdapter;
-            NotificationContract.IView notificatonListener;
-            public NotificationItemSelectedListener(NotificationRecyclerAdapter adapter, int position, NotificationContract.IView mNotificatonListener)
+            NotificationRecyclerViewHolder mViewHolder;
+            NotificationRecyclerAdapter mAdapter;
+
+            public NotificationItemSelectedListener(NotificationRecyclerViewHolder viewHolder, NotificationRecyclerAdapter adapter)
             {
-                selectedPosition = position;
-                notificationAdapter = adapter;
-                notificatonListener = mNotificatonListener;
+                mViewHolder = viewHolder;
+                mAdapter = adapter;
             }
 
             public void OnCheckedChanged(CompoundButton buttonView, bool isChecked)
             {
-                UserNotificationData updatedItem = notificationAdapter.GetItemObject(selectedPosition);
-                updatedItem.IsSelected = isChecked;
-                notificatonListener.UpdatedSelectedNotifications();
-                //notificationAdapter.Update(selectedPosition,updatedItem);
+                mAdapter.itemList[mViewHolder.AdapterPosition].IsSelected = isChecked;
+                mNotificatonListener.UpdatedSelectedNotifications();
             }
         }
 
@@ -243,10 +239,20 @@ namespace myTNB_Android.Src.Notifications.Adapter
             [BindView(Resource.Id.selectItemCheckBox)]
             public CheckBox selectItemCheckbox;
 
-            public NotificationRecyclerViewHolder(View itemView) : base(itemView)
+            public NotificationRecyclerViewHolder(NotificationRecyclerAdapter adapter, View itemView) : base(itemView)
             {
                 TextViewUtils.SetMuseoSans300Typeface(txtNotificationTitle);
                 TextViewUtils.SetMuseoSans300Typeface(txtNotificationContent, txtNotificationDate);
+                itemView.SetOnClickListener(new MyItemClickListener());
+                selectItemCheckbox.SetOnCheckedChangeListener(new NotificationItemSelectedListener(this, adapter));
+            }
+        }
+
+        class MyItemClickListener : Java.Lang.Object, View.IOnClickListener
+        {
+            public void OnClick(View v)
+            {
+                //throw new NotImplementedException();
             }
         }
     }

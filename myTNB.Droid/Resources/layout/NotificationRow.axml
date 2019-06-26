@@ -132,7 +132,7 @@
             android:ellipsize="end"
             android:textColor="@color/silverChalice"/>
     </LinearLayout>
-    
+
     <TextView
         android:id="@+id/txtNotificationDate"
         android:layout_width="wrap_content"
@@ -140,10 +140,11 @@
         android:text="10 Jul 2017"
         android:textSize="9sp"
         android:textColor="@color/silverChalice"
-        android:layout_marginTop="25dp"
         android:layout_marginLeft="5dp"
+				android:gravity="center"
         app:layout_constraintStart_toEndOf="@+id/notificationItemDetails"
-        app:layout_constraintTop_toTopOf="parent"/>
+				app:layout_constraintTop_toTopOf="@+id/notificationItemDetails"
+				app:layout_constraintBottom_toBottomOf="@+id/notificationItemDetails"/>
     <CheckBox
         android:id="@+id/selectItemCheckBox"
         android:layout_width="wrap_content"

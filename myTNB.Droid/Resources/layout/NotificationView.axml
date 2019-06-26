@@ -43,9 +43,9 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:paddingLeft="20dp"
-            android:paddingTop="20dp"
+            android:paddingTop="24dp"
             android:paddingRight="10dp"
-            android:paddingBottom="10dp"
+            android:paddingBottom="24dp"
             android:visibility="visible">
 
             <TextView
@@ -54,7 +54,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Select All" />
-                
+
             <CheckBox
                 android:id="@+id/selectAllCheckBox"
                 android:layout_width="wrap_content"
@@ -62,13 +62,12 @@
                 android:checked="false"
                 android:text=""
                 android:button="@drawable/checkbox_selector"/>
-                <!--android:buttonTint="@color/freshGreen"/>-->
 
         </LinearLayout>
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/material_grey_600"/>
+            android:background="@color/platinumGrey"/>
     </LinearLayout>
 
         <FrameLayout

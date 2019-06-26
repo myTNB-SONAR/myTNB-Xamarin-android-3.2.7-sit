@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
+using System.Threading;
+using System.Threading.Tasks;
 using Android.App;
 using Android.Content;
 using Android.OS;
@@ -10,6 +11,8 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using myTNB_Android.Src.Base.MVP;
+using myTNB_Android.Src.NotificationDetails.Requests;
+using myTNB_Android.Src.Notifications.Api;
 using myTNB_Android.Src.Notifications.Models;
 using Refit;
 using static Android.Widget.CompoundButton;
@@ -118,13 +121,17 @@ namespace myTNB_Android.Src.Notifications.MVP
             /// <returns>unique id alphanumeric strings</returns>
             string GetDeviceId();
 
-            void updateNotificationTitle();
-
             void DeleteNotificationByPosition(int notificationPos);
 
             void ReadNotificationByPosition(int notificationPos);
 
             void UpdatedSelectedNotifications();
+
+            List<UserNotificationData> GetNotificationList();
+
+            void UpdateSelectedNotification();
+
+            void OnFailedNotificationAction();
         }
 
         public interface IUserActionsListener : IBasePresenter
@@ -161,18 +168,6 @@ namespace myTNB_Android.Src.Notifications.MVP
             void EditNotification();
 
             /// <summary>
-            /// Delete notification by position.
-            /// <param name="position">integer</param>
-            /// </summary>
-            void DeleteNotificationByPosition(int position);
-
-            /// <summary>
-            /// Read notification by position.
-            /// <param name="position">integer</param>
-            /// </summary>
-            void ReadNotificationByPosition(int position);
-
-            /// <summary>
             /// Delete all selected notifications.
             /// </summary>
             void DeleteAllSelectedNotifications();
@@ -181,6 +176,12 @@ namespace myTNB_Android.Src.Notifications.MVP
             /// Read all selected notifications.
             /// </summary>
             void ReadAllSelectedNotifications();
+        }
+
+        public interface IApiNotification
+        {
+            Task<NotificationApiResponse> DeleteUserNotification(string deviceId, List<UserNotificationData> userNotificationList);
+            Task<NotificationApiResponse> ReadUserNotification(string deviceId, List<UserNotificationData> userNotificationList);
         }
     }
 }

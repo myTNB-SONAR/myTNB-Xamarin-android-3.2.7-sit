@@ -23,27 +23,100 @@ using Newtonsoft.Json;
 using myTNB_Android.Src.AppLaunch.Api;
 using myTNB_Android.Src.AppLaunch.Requests;
 using static Android.Widget.CompoundButton;
+using myTNB_Android.Src.NotificationDetails.Requests;
+using System.Threading.Tasks;
+using myTNB_Android.Src.Notifications.Api;
 
 namespace myTNB_Android.Src.Notifications.MVP
 {
+    enum API_ACTION
+    {
+        DELETE,
+        READ
+    }
     public class NotificationPresenter : NotificationContract.IUserActionsListener
     {
         private NotificationContract.IView mView;
+        NotificationContract.IApiNotification notificationApi;
         CancellationTokenSource cts;
+        List<UserNotificationData> selectedNotificationList;
         public NotificationPresenter(NotificationContract.IView mView)
         {
             this.mView = mView;
             this.mView.SetPresenter(this);
         }
 
-        public void DeleteNotificationByPosition(int position)
+        private async Task InvokeNotificationApi(API_ACTION apiAction)
         {
-            //TODO
+            NotificationApiResponse notificationApiResponse = null;
+            selectedNotificationList = new List<UserNotificationData>();
+            foreach (UserNotificationData notification in this.mView.GetNotificationList())
+            {
+                if (notification.IsSelected)
+                {
+                    selectedNotificationList.Add(notification);
+                }
+            }
+            try
+            {
+                this.mView.ShowProgress();
+                switch (apiAction)
+                {
+                    case API_ACTION.DELETE:
+                        notificationApiResponse = await notificationApi.DeleteUserNotification(this.mView.GetDeviceId(), selectedNotificationList);
+                        break;
+                    case API_ACTION.READ:
+                        notificationApiResponse = await notificationApi.ReadUserNotification(this.mView.GetDeviceId(), selectedNotificationList);
+                        break;
+                }
+            }
+            catch (System.OperationCanceledException e)
+            {
+                if (mView.IsActive())
+                {
+                    this.mView.HideProgress();
+                }
+                // ADD OPERATION CANCELLED HERE
+                this.mView.ShowRetryOptionsCancelledException(e);
+                this.mView.OnFailedNotificationAction();
+                //Utility.LoggingNonFatalError(e);
+            }
+            catch (ApiException apiException)
+            {
+                if (mView.IsActive())
+                {
+                    this.mView.HideProgress();
+                }
+                // ADD HTTP CONNECTION EXCEPTION HERE
+                this.mView.ShowRetryOptionsApiException(apiException);
+                this.mView.OnFailedNotificationAction();
+                //Utility.LoggingNonFatalError(apiException);
+            }
+            catch (Exception e)
+            {
+                if (mView.IsActive())
+                {
+                    this.mView.HideProgress();
+                }
+                // ADD UNKNOWN EXCEPTION HERE
+                this.mView.ShowRetryOptionsUnknownException(e);
+                this.mView.OnFailedNotificationAction();
+                //Utility.LoggingNonFatalError(e);
+            }
+            finally
+            {
+                this.mView.HideProgress();
+            }
         }
 
         public void DeleteAllSelectedNotifications()
         {
-            //TODO
+            _ = InvokeNotificationApi(API_ACTION.DELETE);
+        }
+
+        public void ReadAllSelectedNotifications()
+        {
+            _ = InvokeNotificationApi(API_ACTION.READ);
         }
 
         public void EditNotification()
@@ -175,7 +248,7 @@ namespace myTNB_Android.Src.Notifications.MVP
             }
 #if DEBUG
             var httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
-            var api = RestService.For<INotificationApi>(httpClient);
+            var api = RestService.For<AppLaunch.Api.INotificationApi>(httpClient);
 #else
             var api = RestService.For<INotificationApi>(Constants.SERVER_URL.END_POINT);
 #endif
@@ -269,19 +342,9 @@ namespace myTNB_Android.Src.Notifications.MVP
 
         }
 
-        public void ReadNotificationByPosition(int position)
-        {
-            //TODO
-        }
-
-        public void ReadAllSelectedNotifications()
-        {
-            //TODO
-        }
-
         public void Start()
         {
-            
+            notificationApi = new NotificationApiCall();
             ShowFilteredList();
            
         }
