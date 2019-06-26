@@ -53,13 +53,6 @@ namespace myTNB
             controller.PresentViewController(alert, animated: true, completionHandler: null);
         }
 
-        public static void DisplayCustomAlert(string title, string message
-            , Action handler = null, string actionTitle = null)
-        {
-            DisplayCustomAlert(title, message, new Dictionary<string, Action>() {
-                { string.IsNullOrEmpty(actionTitle) ? "Common_Ok".Translate() : actionTitle, handler }
-            });
-        }
         public static void DisplayForceUpdate(string title, string message
           , string actionTitle = null, Action handler = null)
         {

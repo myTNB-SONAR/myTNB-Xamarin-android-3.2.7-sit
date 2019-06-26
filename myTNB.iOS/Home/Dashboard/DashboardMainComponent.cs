@@ -47,6 +47,8 @@ namespace myTNB.Dashboard.DashboardComponents
 
         public EventHandler PullDownTorefresh;
 
+        public UITapGestureRecognizer ToolTipGestureRecognizer;
+
         internal void RemoveAllSubviews()
         {
             foreach (UIView item in _parentView)
@@ -203,6 +205,7 @@ namespace myTNB.Dashboard.DashboardComponents
 
             // Section below chart
             _chartCompanionComponent = new ChartCompanionComponent(_dashboardScrollView, frameY);
+            _chartCompanionComponent.ToolTipGestureRecognizer = ToolTipGestureRecognizer;
             _viewChartCompanion = _chartCompanionComponent.GetUI();
             _dashboardScrollView.AddSubview(_viewChartCompanion);
 
@@ -216,6 +219,10 @@ namespace myTNB.Dashboard.DashboardComponents
             //_viewSmartMeter.Hidden = true;
             //_dashboardScrollView.AddSubview(_viewSmartMeter);
 
+
+            CGSize contentSize = _dashboardScrollView.ContentSize;
+            contentSize.Height = contentSize.Height + 20;
+            _dashboardScrollView.ContentSize = contentSize;
             _gradientView.AddSubview(_dashboardScrollView);
 
             _parentView.AddSubview(_gradientView);

@@ -16,7 +16,7 @@ using UIKit;
 
 namespace myTNB
 {
-    public partial class DashboardHomeViewController : UIViewController
+    public partial class DashboardHomeViewController : CustomUIViewController
     {
         GradientViewComponent _gradientViewComponent;
         GreetingComponent _greetingComponent;
@@ -24,9 +24,8 @@ namespace myTNB
         SystemDownComponent _sysDownComponent;
         UIView _gradientView, _greetingView, _sysDownView, _viewHeader
             , _viewFooter, _viewLoadMore;
-        UIButton btnAdd, btnLoad;
-        UIRefreshControl refreshControl;
-
+        UIButton btnAdd;
+        UILabel _lblLoadMore;
         Dictionary<string, List<DueAmountDataModel>> displayedAccounts = new Dictionary<string, List<DueAmountDataModel>>();
         int loadedAccountsCount;
 
@@ -53,18 +52,12 @@ namespace myTNB
         public override void ViewDidLoad()
         {
             base.ViewDidLoad();
-            refreshControl = new UIRefreshControl
-            {
-                TintColor = UIColor.White
-            };
-            refreshControl.ValueChanged += PullDownTorefresh;
             Initialize();
             SetEvents();
             isViewDidLoad = true;
             DataManager.DataManager.SharedInstance.SummaryNeedsRefresh = true;
             LoadContents();
-            NSNotificationCenter.DefaultCenter.AddObserver((NSString)"LanguageDidChange", LanguageDidChange);
-            NSNotificationCenter.DefaultCenter.AddObserver((NSString)"NotificationDidChange", NotificationDidChange);
+            NSNotificationCenter.DefaultCenter.AddObserver((Foundation.NSString)"LanguageDidChange", LanguageDidChange);
             NSNotificationCenter.DefaultCenter.AddObserver(UIApplication.WillEnterForegroundNotification, HandleAppWillEnterForeground);
             NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
             {
@@ -77,24 +70,17 @@ namespace myTNB
                     }
                     else
                     {
-                        AlertHandler.DisplayNoDataAlert(this);
+                        DisplayNoDataAlert();
                     }
                 });
             });
-        }
-
-        public void NotificationDidChange(NSNotification notification)
-        {
-            Debug.WriteLine("DEBUG >>> SUMMARY DASHBOARD NotificationDidChange");
-            _titleBarComponent?.SetPrimaryImage(PushNotificationHelper.GetNotificationImage());
-            PushNotificationHelper.UpdateApplicationBadge();
         }
 
         public void LanguageDidChange(NSNotification notification)
         {
             Debug.WriteLine("DEBUG >>> SUMMARY DASHBOARD LanguageDidChange");
             _titleBarComponent.SetTitle("Dashboard_AllAccounts".Translate());
-            btnLoad.SetTitle("Dashboard_LoadMoreAccounts".Translate(), UIControlState.Normal);
+            _lblLoadMore.Text = "Dashboard_LoadMoreAccounts".Translate();
             btnAdd.SetTitle("Common_AddAnotherAccount".Translate(), UIControlState.Normal);
             DataManager.DataManager.SharedInstance.SummaryNeedsRefresh = true;
         }
@@ -130,7 +116,8 @@ namespace myTNB
         /// </summary>
         private void UpdateNotificationIcon()
         {
-            _titleBarComponent?.SetPrimaryImage(PushNotificationHelper.GetNotificationImage());
+            _titleBarComponent?.SetPrimaryImage(
+                    DataManager.DataManager.SharedInstance.HasNewNotification ? "Notification-New" : "Notification");
         }
 
         private void Initialize()
@@ -149,8 +136,8 @@ namespace myTNB
             _titleBarComponent.SetBackImage("LogOut");
             _titleBarComponent.SetBackAction(new UITapGestureRecognizer(() =>
             {
-                var alert = UIAlertController.Create("Logout".Translate(), "LogoutConfirmation".Translate(), UIAlertControllerStyle.Alert);
-                alert.AddAction(UIAlertAction.Create("Ok", UIAlertActionStyle.Default, (obj) =>
+                var alert = UIAlertController.Create("MyAccount_Logout".Translate(), "MyAccount_LogoutConfirmation".Translate(), UIAlertControllerStyle.Alert);
+                alert.AddAction(UIAlertAction.Create("Common_Ok".Translate(), UIAlertActionStyle.Default, (obj) =>
                 {
                     UIStoryboard storyBoard = UIStoryboard.FromName("Logout", null);
                     LogoutViewController viewController =
@@ -158,7 +145,7 @@ namespace myTNB
                     var navController = new UINavigationController(viewController);
                     PresentViewController(navController, true, null);
                 }));
-                alert.AddAction(UIAlertAction.Create("Cancel", UIAlertActionStyle.Cancel, null));
+                alert.AddAction(UIAlertAction.Create("Common_Cancel".Translate(), UIAlertActionStyle.Cancel, null));
                 PresentViewController(alert, animated: true, completionHandler: null);
             }));
 
@@ -345,41 +332,35 @@ namespace myTNB
         {
             int horizontalMargin = 18;
             nfloat footerHeight = 0f;
-            _viewFooter = new UIView(); //new UIView(new CGRect(0, 0, tableViewAccounts.Frame.Width, 44 + verticalMargin * 2));
+            _viewFooter = new UIView();
 
             UIView viewFooterLine = new UIView
             {
                 Frame = new CGRect(0, 0, tableViewAccounts.Frame.Width, 1),
                 BackgroundColor = UIColor.FromWhiteAlpha(1, 0.2f)
             };
-            //_viewFooter.AddSubview(viewFooterLine);
 
             // load more
-
-            var width = 140.0f;
-            var posX = tableViewAccounts.Frame.Width / 2.0f - width / 2.0f;
-            btnLoad = new UIButton(UIButtonType.Custom)
+            _lblLoadMore = new UILabel(new CGRect(0, 0, tableViewAccounts.Frame.Width, 64))
             {
-                Frame = new CGRect(10, 3, tableViewAccounts.Frame.Width - 20, 60)
+                Text = "Dashboard_LoadMoreAccounts".Translate(),
+                TextColor = UIColor.White,
+                Font = MyTNBFont.MuseoSans14_300,
+                TextAlignment = UITextAlignment.Center
             };
-            btnLoad.Layer.BorderColor = UIColor.Clear.CGColor;
-            btnLoad.BackgroundColor = UIColor.Clear;
-            btnLoad.Layer.BorderWidth = 1;
-            btnLoad.SetTitle("Dashboard_LoadMoreAccounts".Translate(), UIControlState.Normal);
-            btnLoad.Font = MyTNBFont.MuseoSans14_300;
-            btnLoad.SetTitleColor(UIColor.White, UIControlState.Normal);
-            btnLoad.TouchUpInside += OnLoadMore;
 
             UIView viewLine = new UIView
             {
-                Frame = new CGRect(0, btnLoad.Frame.GetMaxY() + 3, tableViewAccounts.Frame.Width, 1),
+                Frame = new CGRect(0, 64, tableViewAccounts.Frame.Width, 1),
                 BackgroundColor = UIColor.FromWhiteAlpha(1, 0.2f)
             };
 
-            _viewLoadMore = new UIView(new CGRect(0, 1, tableViewAccounts.Frame.Width, viewLine.Frame.GetMaxY()));// footerHeight));
-            _viewLoadMore.AddSubview(btnLoad);
-            _viewLoadMore.AddSubview(viewLine);
-
+            _viewLoadMore = new UIView(new CGRect(0, 1, tableViewAccounts.Frame.Width, 65));
+            _viewLoadMore.AddGestureRecognizer(new UITapGestureRecognizer(() =>
+            {
+                OnLoadMore();
+            }));
+            _viewLoadMore.AddSubviews(new UIView[] { _lblLoadMore, viewLine });
             _viewLoadMore.Hidden = true;
             _viewFooter.AddSubview(_viewLoadMore);
 
@@ -423,50 +404,6 @@ namespace myTNB
         /// </summary>
         /// <param name="sender">Sender.</param>
         /// <param name="e">Event args.</param>
-        //public void OnTableViewAccountsScrolled(object sender, EventArgs e) removed as part of removal of pull down to refresh
-        //{
-        //    var tableHeight = tableViewAccounts.Frame.Size.Height;
-        //    var contentYoffset = tableViewAccounts.ContentOffset.Y;
-        //    var distanceFromBottom = tableViewAccounts.ContentSize.Height - contentYoffset;
-
-        //    if (distanceFromBottom >= tableHeight && (tableViewAccounts.ContentOffset.Y >= 0 || (int)Math.Ceiling(tableViewAccounts.TableHeaderView.Frame.Height) != (int)Math.Ceiling(maxHeaderHeight)))
-        //    {
-        //        if (!isRefreshing)
-        //        {
-        //            var scrollDiff = tableViewAccounts.ContentOffset.Y - previousScrollOffset;
-        //            var isScrollingDown = scrollDiff > 0;
-        //            var isScrollingUp = scrollDiff < 0;
-
-        //            var newHeight = headerHeight;
-        //            if (tableViewAccounts.ContentOffset.Y <= 0 && (int)Math.Ceiling(tableViewAccounts.TableHeaderView.Frame.Height) == (int)Math.Ceiling(maxHeaderHeight))
-        //            {
-        //                newHeight = maxHeaderHeight;
-        //            }
-        //            else if (isScrollingDown)
-        //            {
-        //                newHeight = (float)Math.Max(minHeaderHeight, headerHeight - Math.Abs(scrollDiff));
-        //            }
-        //            else if (isScrollingUp)
-        //            {
-        //                newHeight = (float)Math.Min(maxHeaderHeight, headerHeight + Math.Abs(scrollDiff));
-        //            }
-
-        //            if (newHeight != headerHeight)
-        //            {
-        //                headerHeight = newHeight;
-        //                ViewHelper.AdjustFrameSetHeight(_viewHeader, headerHeight);
-        //                tableViewAccounts.TableHeaderView = _viewHeader;
-        //            }
-        //            previousScrollOffset = tableViewAccounts.ContentOffset.Y;
-        //        }
-        //    }
-        //}
-
-        /// <summary>
-        /// Handles the table view accounts scrolled event.
-        /// </summary>
-        /// <param name="sender">Sender.</param>
-        /// <param name="e">Event args.</param>
         public void OnTableViewAccountsScrolled(object sender, EventArgs e)
         {
             var scrollDiff = tableViewAccounts.ContentOffset.Y - previousScrollOffset;
@@ -501,9 +438,7 @@ namespace myTNB
         /// <summary>
         /// Handles the load more.
         /// </summary>
-        /// <param name="sender">Sender.</param>
-        /// <param name="e">E.</param>
-        private void OnLoadMore(object sender, EventArgs e)
+        private void OnLoadMore()
         {
             NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
             {
@@ -595,7 +530,6 @@ namespace myTNB
 
                 if (response.didSucceed && response.AccountDues?.Count > 0)
                 {
-                    //Debug.WriteLine("GetLinkedAccountsSummaryInfo SUCCESS!");
                     UpdateDisplayedAccounts(response.AccountDues);
                     isTimeOut = false;
                     if (accountsToRefresh != null)
@@ -610,7 +544,6 @@ namespace myTNB
                 }
                 else
                 {
-                    //Debug.WriteLine("GetLinkedAccountsSummaryInfo FAILED!");
                     if (accountsToRefresh != null)
                     {
                         List<string> combinedList = accountsToRefresh.Union(accounts).ToList();
@@ -633,7 +566,6 @@ namespace myTNB
                 InitializeAccountsTable();
                 ActivityIndicator.Hide();
                 isRefreshing = false;
-                refreshControl.EndRefreshing();
             }
             return res;
         }
@@ -644,7 +576,6 @@ namespace myTNB
         private void InitializeAccountsTable()
         {
             tableViewAccounts.Source = new DashboardAccountsDataSource(displayedAccounts, OnAccountRowSelected, OnTableViewAccountsScrolled);
-            //tableViewAccounts.AddSubview(refreshControl); removed pull down to refresh
             tableViewAccounts.ReloadData();
         }
 
@@ -658,14 +589,8 @@ namespace myTNB
 
             if (index >= 0)
             {
-#if true
                 var selected = DataManager.DataManager.SharedInstance.AccountRecordsList.d[index];
                 DataManager.DataManager.SharedInstance.SelectAccount(selected.accNum);
-#else
-                DataManager.DataManager.SharedInstance.PreviousSelectedAccountIndex = DataManager.DataManager.SharedInstance.CurrentSelectedAccountIndex;
-                DataManager.DataManager.SharedInstance.CurrentSelectedAccountIndex = index;
-                DataManager.DataManager.SharedInstance.SelectedAccount = DataManager.DataManager.SharedInstance.AccountRecordsList.d[index];
-#endif
                 DataManager.DataManager.SharedInstance.IsSameAccount = false;
                 UIStoryboard storyBoard = UIStoryboard.FromName("Dashboard", null);
                 var vc = storyBoard.InstantiateViewController("DashboardViewController") as DashboardViewController;
@@ -705,7 +630,6 @@ namespace myTNB
                 var accountsToAdd = new List<DueAmountDataModel>();
                 var accountsToAddRe = new List<DueAmountDataModel>();
                 int added = 0;
-
 
                 // check if new RE accounts added since last load
                 var reKey = "Dashboard_RESectionHeader".Translate();
@@ -792,7 +716,6 @@ namespace myTNB
                 if (displayedAccounts.ContainsKey(key))
                 {
                     var section = displayedAccounts[key];
-                    //section.InsertRange(0, accountsToAdd);
                     section.AddRange(accountsToAdd);
                     displayedAccounts[key] = section.OrderBy(x => x.accNickName).ToList();
                 }
@@ -900,7 +823,6 @@ namespace myTNB
                         accts[i] = acct;
                         shouldReload = true;
                     }
-
                 }
 
             } // key

@@ -11,6 +11,7 @@ using myTNB.Enums;
 using myTNB.Model;
 using myTNB.PushNotification;
 using myTNB.Registration.CustomerAccounts;
+using myTNB.SQLite.SQLiteDataManager;
 using UIKit;
 
 namespace myTNB.Dashboard
@@ -37,8 +38,8 @@ namespace myTNB.Dashboard
         bool isFromViewBillAdvice = false;
 
         public bool ShouldShowBackButton = false;
-
-        //bool isRefreshing = false;
+        string _toolTipMessage = string.Empty;
+        string _toolTipBtnTitle = string.Empty;
 
         public override void ViewDidLoad()
         {
@@ -56,10 +57,10 @@ namespace myTNB.Dashboard
             NavigationController?.SetNavigationBarHidden(true, false);
             NavigationItem?.SetHidesBackButton(true, false);
             _dashboardMainComponent = new DashboardMainComponent(View);
-            //_dashboardMainComponent = new DashboardMainComponent(View)
-            //{
-            //    PullDownTorefresh = PullDownTorefresh
-            //}; removed pull down to refresh
+            _dashboardMainComponent.ToolTipGestureRecognizer = new UITapGestureRecognizer((obj) =>
+            {
+                DisplayCustomAlert(string.Empty, _toolTipMessage, _toolTipBtnTitle, null);
+            });
             NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
             {
                 InvokeOnMainThread(async () =>
@@ -74,7 +75,7 @@ namespace myTNB.Dashboard
                     }
                     else
                     {
-                        AlertHandler.DisplayNoDataAlert(this);
+                        DisplayNoDataAlert();
                     }
                 });
             });
@@ -96,12 +97,10 @@ namespace myTNB.Dashboard
         {
             Debug.WriteLine("HandleAppWillEnterForeground");
             isFromForeground = true;
-
             if (!DataManager.DataManager.SharedInstance.IsLoggedIn())
             {
                 return;
             }
-
             ViewWillAppear(true);
             ViewDidAppear(true);
         }
@@ -154,7 +153,7 @@ namespace myTNB.Dashboard
                     else
                     {
                         Debug.WriteLine("No Network");
-                        AlertHandler.DisplayNoDataAlert(this);
+                        DisplayNoDataAlert();
                         _dashboardMainComponent.ConstructNoDataConnectionDashboard();
                         SetEventsAndText();
                     }
@@ -263,17 +262,6 @@ namespace myTNB.Dashboard
             DataManager.DataManager.SharedInstance.SaveDue(item);
         }
 
-
-
-        /// <summary>
-        /// Checks if display normal dashboard.
-        /// </summary>
-        /// <returns><c>true</c>, if normal dashboard display, <c>false</c> otherwise.</returns>
-        private bool IsNormalDashboardDisplay()
-        {
-            return DataManager.DataManager.SharedInstance.SelectedAccount.IsNormalMeter || isREAccount;
-        }
-
         /// <summary>
         /// Gets the usage history.
         /// </summary>
@@ -286,9 +274,8 @@ namespace myTNB.Dashboard
 
             _dashboardMainComponent._billAndPaymentView.Hidden = false;
             TNBGlobal.IsChartEmissionEnabled = false;
-            DataManager.DataManager.SharedInstance.CurrentChartMode = ChartModeEnum.Usage; //ChartModeEnum.Cost;
+            DataManager.DataManager.SharedInstance.CurrentChartMode = ChartModeEnum.Cost;
             var accNum = DataManager.DataManager.SharedInstance.SelectedAccount.accNum;
-
             if (isNormalMeter || isREAccount)
             {
                 ChartDataModel cachedData = GetCachedChartData(accNum);
@@ -426,8 +413,22 @@ namespace myTNB.Dashboard
             });
             return index != -1;
         }
+        #region Events
+        private void SetEvents()
+        {
+            SetAccountSelectionEvent();
+            SetSelectorComponent();
+            SetChartComponentEvent();
+            SetCarouselEvent();
+            SetBillAndPaymentEvent();
+            SetNoAccountEvent();
+            SetAccessEvent();
+            SetNoDataConnectionEvent();
+            SetTitleBarEvent();
+            SetScrollEvent();
+        }
 
-        internal void SetEvents()
+        private void SetAccountSelectionEvent()
         {
             if (_dashboardMainComponent._accountSelectionComponent != null)
             {
@@ -448,6 +449,10 @@ namespace myTNB.Dashboard
                 _dashboardMainComponent._accountSelectionComponent.SetDropdownVisibility(false);//DataManager.DataManager.SharedInstance.AccountRecordsList.d.Count == 1);
                 _dashboardMainComponent._accountSelectionComponent.SetLeafVisibility(!isREAccount);
             }
+        }
+
+        private void SetSelectorComponent()
+        {
             if (_dashboardMainComponent._selectorComponent != null)
             {
                 UISegmentedControl selector = _dashboardMainComponent._selectorComponent._selectorBar;
@@ -456,28 +461,17 @@ namespace myTNB.Dashboard
                 {
                     selector.ValueChanged += (sender, e) =>
                     {
-                        if (_dashboardMainComponent._dashboardScrollView != null)
-                        {
-                            if (DataManager.DataManager.SharedInstance.IsMontView)
-                            {
-                                _dashboardMainComponent._dashboardScrollView.ScrollEnabled = true;
-                                _dashboardMainComponent._dashboardScrollView.Scrolled += OnScrollDashboard;
-                            }
-                            else
-                            {
-                                _dashboardMainComponent._dashboardScrollView.ScrollEnabled = false;
-                                _dashboardMainComponent._dashboardScrollView.Scrolled += (sndr, args) => { };
-                            }
-                        }
                         DataManager.DataManager.SharedInstance.IsMontView = selector.SelectedSegment != 0;
                         DataManager.DataManager.SharedInstance.CurrentChartIndex = 0;
-                        _dashboardMainComponent._chartCompanionComponent.ShowMessage(DataManager.DataManager.SharedInstance.IsMontView);
                         DisplayCurrentChart();
                         OnUpdateSmartChartIndex(false, false);
                     };
                 }
             }
+        }
 
+        private void SetChartComponentEvent()
+        {
             if (_dashboardMainComponent._chartComponent != null)
             {
                 // CHART_CAROUSEL interchange left and right gestures if have carousel
@@ -537,7 +531,10 @@ namespace myTNB.Dashboard
                 _dashboardMainComponent._chartCompanionComponent?.AddChartModeHandler(ChartModeEnum.Usage, consumptionHandler);
                 _dashboardMainComponent._chartCompanionComponent?.AddChartModeHandler(ChartModeEnum.Emission, emissionHandler);
             }
+        }
 
+        private void SetCarouselEvent()
+        {
             if (_dashboardMainComponent._chartCarousel != null)
             {
                 // handle item selections
@@ -548,7 +545,10 @@ namespace myTNB.Dashboard
                     OnUpdateSmartChartIndex(false, false);
                 };
             }
+        }
 
+        private void SetBillAndPaymentEvent()
+        {
             if (_dashboardMainComponent._billAndPaymentComponent != null)
             {
                 if (isREAccount)
@@ -593,7 +593,7 @@ namespace myTNB.Dashboard
                             else
                             {
                                 Debug.WriteLine("No Network");
-                                AlertHandler.DisplayNoDataAlert(this);
+                                DisplayNoDataAlert();
                             }
                         });
                     });
@@ -618,13 +618,16 @@ namespace myTNB.Dashboard
                             }
                             else
                             {
-                                AlertHandler.DisplayNoDataAlert(this);
+                                DisplayNoDataAlert();
                             }
                         });
                     });
                 };
             }
+        }
 
+        private void SetNoAccountEvent()
+        {
             if (_dashboardMainComponent._noAccountComponent != null)
             {
                 _dashboardMainComponent._noAccountComponent._btnAddAccount.TouchUpInside += (sender, e) =>
@@ -643,42 +646,10 @@ namespace myTNB.Dashboard
                     }
                 };
             }
+        }
 
-            if (_dashboardMainComponent._getAccessComponent != null)
-            {
-                _dashboardMainComponent._getAccessComponent._btnGetAccess.TouchUpInside += (sender, e) =>
-                {
-                    UIStoryboard storyBoard = UIStoryboard.FromName("GetAccess", null);
-                    GetAccessViewController viewController =
-                        storyBoard.InstantiateViewController("GetAccessViewController") as GetAccessViewController;
-                    var navController = new UINavigationController(viewController);
-                    PresentViewController(navController, true, null);
-                };
-            }
-
-            if (_dashboardMainComponent._noDataConnectionComponent != null)
-            {
-                _dashboardMainComponent._noDataConnectionComponent._btnRefresh.TouchUpInside += (sender, e) =>
-                {
-                    NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
-                    {
-                        InvokeOnMainThread(async () =>
-                        {
-                            if (NetworkUtility.isReachable)
-                            {
-                                await LoadDashboard();
-                                await LoadAmountDue();
-                            }
-                            else
-                            {
-                                Debug.WriteLine("No Network");
-                                AlertHandler.DisplayNoDataAlert(this);
-                            }
-                        });
-                    });
-                };
-            }
-
+        private void SetTitleBarEvent()
+        {
             if (_dashboardMainComponent._titleBarComponent != null)
             {
                 _dashboardMainComponent._titleBarComponent.SetBackVisibility(!ShouldShowBackButton);
@@ -690,7 +661,6 @@ namespace myTNB.Dashboard
                         NavigationController.PopViewController(true);
                     }));
                 }
-
                 UITapGestureRecognizer notificationTap = new UITapGestureRecognizer(() =>
                 {
                     NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
@@ -707,34 +677,64 @@ namespace myTNB.Dashboard
                             else
                             {
                                 Debug.WriteLine("No Network");
-                                AlertHandler.DisplayNoDataAlert(this);
+                                DisplayNoDataAlert();
                             }
                         });
                     });
                 });
                 _dashboardMainComponent._titleBarComponent.SetPrimaryAction(notificationTap);
             }
+        }
 
+        private void SetScrollEvent()
+        {
             if (_dashboardMainComponent._dashboardScrollView != null)
             {
-                if (DataManager.DataManager.SharedInstance.IsMontView)
-                {
-                    _dashboardMainComponent._dashboardScrollView.ScrollEnabled = false;
-                    _dashboardMainComponent._dashboardScrollView.Scrolled += (sndr, args) => { };
-                }
-                else
-                {
-                    _dashboardMainComponent._dashboardScrollView.ScrollEnabled = true;
-                    _dashboardMainComponent._dashboardScrollView.Scrolled += OnScrollDashboard;
-                }
-                //_dashboardMainComponent._dashboardScrollView.Scrolled += OnScrollDashboard;
-                //if (!DataManager.DataManager.SharedInstance.SelectedAccount.IsNormalMeter)
-                //{
-                //    _dashboardMainComponent._dashboardScrollView.Scrolled += OnScrollDashboard;
-                //} removed pull down to refresh
+                _dashboardMainComponent._dashboardScrollView.Scrolled += OnScrollDashboard;
             }
         }
 
+        private void SetNoDataConnectionEvent()
+        {
+            if (_dashboardMainComponent._noDataConnectionComponent != null)
+            {
+                _dashboardMainComponent._noDataConnectionComponent._btnRefresh.TouchUpInside += (sender, e) =>
+                {
+                    NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
+                    {
+                        InvokeOnMainThread(async () =>
+                        {
+                            if (NetworkUtility.isReachable)
+                            {
+                                await LoadDashboard();
+                                await LoadAmountDue();
+                            }
+                            else
+                            {
+                                Debug.WriteLine("No Network");
+                                DisplayNoDataAlert();
+                            }
+                        });
+                    });
+                };
+            }
+        }
+
+        private void SetAccessEvent()
+        {
+            if (_dashboardMainComponent._getAccessComponent != null)
+            {
+                _dashboardMainComponent._getAccessComponent._btnGetAccess.TouchUpInside += (sender, e) =>
+                {
+                    UIStoryboard storyBoard = UIStoryboard.FromName("GetAccess", null);
+                    GetAccessViewController viewController =
+                        storyBoard.InstantiateViewController("GetAccessViewController") as GetAccessViewController;
+                    var navController = new UINavigationController(viewController);
+                    PresentViewController(navController, true, null);
+                };
+            }
+        }
+        #endregion
         internal void SetAccountDetails()
         {
             if (_dashboardMainComponent._accountSelectionComponent != null)
@@ -793,7 +793,6 @@ namespace myTNB.Dashboard
 
                 string dueDate = prefix + formattedDate;
                 _dashboardMainComponent._billAndPaymentComponent.SetDateDue(dueDate);
-                //_dashboardMainComponent._billAndPaymentComponent.SetPayButtonEnable(_amountDue > 0);
                 _dashboardMainComponent._billAndPaymentComponent.SetPaymentTitle(isREAccount
                     ? "Bill_MyEarnings".Translate() : "Common_AmountDue".Translate());
                 if (_dashboardMainComponent._billAndPaymentComponent._activity != null)
@@ -811,7 +810,7 @@ namespace myTNB.Dashboard
             DisplayCustomAlert("What is included in my bill?"
                 , "It includes your current month's bill plus other mandatory payments. you may check out Bills tab for a detailed view."
                 , new Dictionary<string, Action>() {
-                    { "Common_Gotit".Translate(), null },
+                    { "Common_GotIt".Translate(), null },
                     {"Dashboard_BringMeThere".Translate(), ()=>{
                         if (TabBarController != null)
                         {
@@ -827,19 +826,7 @@ namespace myTNB.Dashboard
         /// <returns>The dashboard.</returns>
         private async Task LoadDashboard()
         {
-#if true
             await GetUsageHistory();
-#else
-            if (DataManager.DataManager.SharedInstance.SelectedAccount.IsOwnedAccount)
-            {
-                await GetUsageHistory();
-            }
-            else
-            {
-                _dashboardMainComponent.ConstructGetAccessDashboard(IsNormalDashboardDisplay());
-                SetEventsAndText();
-            }
-#endif
         }
 
         /// <summary>
@@ -859,29 +846,14 @@ namespace myTNB.Dashboard
             else if (isNormalChart && !isBcrmAvailable)
             {
                 _dashboardMainComponent.ConstructBCRMDownDashboard();
-
                 ShowBcrmToast();
             }
             else if (DataManager.DataManager.SharedInstance.CurrentChart != null)
             {
                 bool willShowDowntimeToast = (!isREAccount && !DataManager.DataManager.SharedInstance.IsPaymentCreditCardAvailable
-                                      && !DataManager.DataManager.SharedInstance.IsPaymentFPXAvailable) || !isBcrmAvailable;
+                    && !DataManager.DataManager.SharedInstance.IsPaymentFPXAvailable) || !isBcrmAvailable;
 
-                if (!WillDisplayNoData())
-                {
-                    _dashboardMainComponent.ConstructChartDashboard(isNormalChart);
-
-                    if (willShowDowntimeToast)
-                    {
-                        ShowBcrmToast();
-                    }
-                    else if (!string.IsNullOrWhiteSpace(errorMessage))
-                    {
-                        ShowToast(errorMessage);
-                    }
-                    DisplayCurrentChart();
-                }
-                else
+                if (WillDisplayNoData())
                 {
                     _dashboardMainComponent.ConstructSmartMeterDashboard();
                     if (willShowDowntimeToast)
@@ -892,6 +864,19 @@ namespace myTNB.Dashboard
                     {
                         ShowToast(errorMessage);
                     }
+                }
+                else
+                {
+                    _dashboardMainComponent.ConstructChartDashboard(isNormalChart);
+                    if (willShowDowntimeToast)
+                    {
+                        ShowBcrmToast();
+                    }
+                    else if (!string.IsNullOrWhiteSpace(errorMessage))
+                    {
+                        ShowToast(errorMessage);
+                    }
+                    DisplayCurrentChart();
                 }
             }
             else
@@ -932,9 +917,7 @@ namespace myTNB.Dashboard
         private bool WillDisplayNoData()
         {
             bool res = false;
-
             var msg = DataManager.DataManager.SharedInstance.CurrentChart?.CustomMessage;
-
             if (!string.IsNullOrEmpty(msg))
             {
                 res = msg == TNBGlobal.Errors.NoSmartData;
@@ -951,84 +934,10 @@ namespace myTNB.Dashboard
             string dateRange = string.Empty;
             bool isNormalMeter = true;
             UsageMetrics smartMeterMetrics = null;
-
-#if true
-            bool res = ChartHelper.GetSelectedChartInfo(DataManager.DataManager.SharedInstance.CurrentChart, DataManager.DataManager.SharedInstance.IsMontView,
-                                 DataManager.DataManager.SharedInstance.CurrentChartIndex, out smartMeterMetrics, out chartData, out dateRange, out isNormalMeter);
-#else
-            GetSelectedChartInfo(DataManager.DataManager.SharedInstance.CurrentChart, DataManager.DataManager.SharedInstance.IsMontView,
-            out smartMeterMetrics, out chartData, out dateRange, out isNormalMeter);
-#endif
-
-
-            DataManager.DataManager.SharedInstance.CurrentChartMode = DataManager.DataManager.SharedInstance.IsMontView
-                ? ChartModeEnum.Cost : ChartModeEnum.Usage;
-            DisplayChart(chartData, dateRange, isNormalMeter, DataManager.DataManager.SharedInstance.IsMontView,
-                         DataManager.DataManager.SharedInstance.CurrentChartMode, smartMeterMetrics, res);
-        }
-
-        /// <summary>
-        /// Gets the selected chart info.
-        /// </summary>
-        /// <param name="chartModelBase">Chart model base.</param>
-        /// <param name="isMonthView">If set to <c>true</c> is month view.</param>
-        /// <param name="smartMeterMetric">Smart chart index.</param>
-        /// <param name="chartData">Chart data.</param>
-        /// <param name="dateRange">Date range.</param>
-        /// <param name="isNormalMeter">If set to <c>true</c> is normal meter.</param>
-        private void GetSelectedChartInfo(ChartDataModelBase chartModelBase, bool isMonthView, out UsageMetrics smartMeterMetric,
-                                          out List<SegmentDetailsModel> chartData, out string dateRange, out bool isNormalMeter)
-        {
-            isNormalMeter = (chartModelBase is ChartDataModel) ? true : false;
-            chartData = null;
-            dateRange = string.Empty;
-            smartMeterMetric = null;
-
-            if (isNormalMeter)
-            {
-                ChartDataModel model = chartModelBase as ChartDataModel;
-                if (model != null)
-                {
-                    if (isMonthView)
-                    {
-                        chartData = model.ByMonth.Months;
-                        dateRange = model.ByMonth.Range;
-                    }
-                    else if (model.ByDay?.Count > 0 && DataManager.DataManager.SharedInstance.CurrentChartIndex < model.ByDay?.Count)
-                    {
-                        chartData = model.ByDay[DataManager.DataManager.SharedInstance.CurrentChartIndex].Days;
-                        dateRange = model.ByDay[DataManager.DataManager.SharedInstance.CurrentChartIndex].Range;
-                    }
-                }
-            }
-            else
-            {
-                SmartChartDataModel model = chartModelBase as SmartChartDataModel;
-                if (model != null)
-                {
-                    if (isMonthView)
-                    {
-                        if (model.ByMonth?.Count > 0 && DataManager.DataManager.SharedInstance.CurrentChartIndex < model.ByMonth?.Count)
-                        {
-                            chartData = model.ByMonth[DataManager.DataManager.SharedInstance.CurrentChartIndex].Months;
-                            dateRange = model.ByMonth[DataManager.DataManager.SharedInstance.CurrentChartIndex].Range;
-                        }
-
-                    }
-                    else if (model.ByDay?.Count > 0 && DataManager.DataManager.SharedInstance.CurrentChartIndex < model.ByDay?.Count)
-                    {
-                        chartData = model.ByDay[DataManager.DataManager.SharedInstance.CurrentChartIndex].Days;
-                        dateRange = model.ByDay[DataManager.DataManager.SharedInstance.CurrentChartIndex].Range;
-                    }
-
-                    smartMeterMetric = model.OtherUsageMetrics;
-                }
-            }
-
-            if (chartData == null)
-            {
-                chartData = new List<SegmentDetailsModel>();
-            }
+            bool res = ChartHelper.GetSelectedChartInfo(DataManager.DataManager.SharedInstance.CurrentChart, DataManager.DataManager.SharedInstance.IsMontView
+                , DataManager.DataManager.SharedInstance.CurrentChartIndex, out smartMeterMetrics, out chartData, out dateRange, out isNormalMeter);
+            DisplayChart(chartData, dateRange, isNormalMeter, DataManager.DataManager.SharedInstance.IsMontView
+                , DataManager.DataManager.SharedInstance.CurrentChartMode, smartMeterMetrics, res);
         }
 
         /// <summary>
@@ -1047,12 +956,10 @@ namespace myTNB.Dashboard
             if (isGetChartSuccess)
             {
 #if CHART_CAROUSEL
-                _dashboardMainComponent._chartCarousel.DataSource = new ChartDataSource(_dashboardMainComponent._dashboardScrollView,
-                                                                                    DataManager.DataManager.SharedInstance.CurrentChart,
-                                                                                    isREAccount);
+                _dashboardMainComponent._chartCarousel.DataSource = new ChartDataSource(_dashboardMainComponent._dashboardScrollView
+                    , DataManager.DataManager.SharedInstance.CurrentChart, isREAccount);
 #else
                 _dashboardMainComponent._chartComponent.ConstructSegmentViews(chartData, isNormalMeter, chartMode, isREAccount);
-
 #endif
                 _dashboardMainComponent._usageHistoryComponent.ToggleNavigationVisibility(isNormalMeter);
             }
@@ -1069,8 +976,7 @@ namespace myTNB.Dashboard
                     month.Months = new List<SegmentDetailsModel>(chartData);
                     model.ByMonth = month;
 #if CHART_CAROUSEL
-                    _dashboardMainComponent._chartCarousel.DataSource = new ChartDataSource(_dashboardMainComponent._dashboardScrollView,
-                                                                                    model);
+                    _dashboardMainComponent._chartCarousel.DataSource = new ChartDataSource(_dashboardMainComponent._dashboardScrollView, model);
 #endif
                 }
                 else
@@ -1095,8 +1001,7 @@ namespace myTNB.Dashboard
                         model.ByDay.Add(dayModel);
                     }
 #if CHART_CAROUSEL
-                    _dashboardMainComponent._chartCarousel.DataSource = new ChartDataSource(_dashboardMainComponent._dashboardScrollView,
-                                                                                    model);
+                    _dashboardMainComponent._chartCarousel.DataSource = new ChartDataSource(_dashboardMainComponent._dashboardScrollView, model);
 #endif
                 }
 
@@ -1117,20 +1022,21 @@ namespace myTNB.Dashboard
 #endif
                 OnUpdateSmartChartIndex(false);
             }
-
-
             _dashboardMainComponent._selectorComponent.SetHidden(isNormalMeter);
             _dashboardMainComponent._chartCompanionComponent.SetHidden(isNormalMeter);
 
             if (!isNormalMeter)
             {
+                ToolTipsModel toolTipData = (DataManager.DataManager.SharedInstance.CurrentChart
+                    as SmartChartDataModel).ToolTips?.Find(x => string.Compare(x.Type.ToUpper(), "PROJECTEDCOST") > -1);
+                _toolTipMessage = toolTipData?.Message;
+                _toolTipBtnTitle = toolTipData?.ButtonTitle ?? "Common_GotIt".Translate();
                 _dashboardMainComponent._chartCompanionComponent.SetUsageMetric(smartMeterMetric);
                 _dashboardMainComponent._chartCompanionComponent.SetChartMode(DataManager.DataManager.SharedInstance.CurrentChartMode);
             }
             if (_dashboardMainComponent._dashboardScrollView != null)
             {
-                //_dashboardMainComponent._dashboardScrollView.ScrollEnabled = !isNormalMeter;
-                //_dashboardMainComponent._dashboardScrollView.ScrollEnabled = !isNormalMeter; removed pull down to refresh
+                _dashboardMainComponent._dashboardScrollView.ScrollEnabled = !isNormalMeter;
             }
             if (_dashboardMainComponent._chartCarousel != null)
             {
@@ -1139,9 +1045,7 @@ namespace myTNB.Dashboard
             _dashboardMainComponent._usageHistoryComponent.SetFrameByMeterType(isNormalMeter);
             _dashboardMainComponent._billAndPaymentComponent?.SetMaskHidden(isNormalMeter);
 
-
             float yLoc;
-
             if (isNormalMeter)
             {
                 yLoc = (float)_dashboardMainComponent._viewChart.Frame.GetMaxY() + 28f;
@@ -1156,13 +1060,11 @@ namespace myTNB.Dashboard
             }
             else
             {
-                yLoc = (float)_dashboardMainComponent._viewChartCompanion.Frame.GetMaxY() - 40f;// + 18f;
+                yLoc = (float)_dashboardMainComponent._viewChartCompanion.Frame.GetMaxY() + 18f;
             }
-
             _dashboardMainComponent._addressComponent.SetFrameByPrecedingView(yLoc);
             _dashboardMainComponent._lblEstimatedReading.Hidden = (isMonthView) ? !IsEstimatedReading(chartData) : true;
             _dashboardMainComponent._usageHistoryComponent.SetDateRange(dateRange);
-
         }
 
         /// <summary>
@@ -1243,7 +1145,6 @@ namespace myTNB.Dashboard
             _dashboardMainComponent?._componentActivity?.Hide();
 
             return chartResponse;
-
         }
 
         /// <summary>
@@ -1255,8 +1156,7 @@ namespace myTNB.Dashboard
             SmartChartModel chartResponse = null;
             ServiceManager serviceManager = new ServiceManager();
 
-#if true
-            var user = (DataManager.DataManager.SharedInstance.UserEntity?.Count > 0)
+            UserEntity user = (DataManager.DataManager.SharedInstance.UserEntity?.Count > 0)
                 ? DataManager.DataManager.SharedInstance.UserEntity[0]
                 : new SQLite.SQLiteDataManager.UserEntity();
 
@@ -1269,17 +1169,6 @@ namespace myTNB.Dashboard
                 metercode = DataManager.DataManager.SharedInstance.SelectedAccount.smartMeterCode,
                 isOwner = DataManager.DataManager.SharedInstance.SelectedAccount.isOwned
             };
-#else // test
-            object requestParameter = new
-            {
-                apiKeyID = TNBGlobal.API_KEY_ID,
-                accNum = "220383318601", //DataManager.DataManager.SharedInstance.SelectedAccount.accNum
-                userEmail = "test7@gmail.com",
-                sspUserId = "3326BECA-2E8A-41A7-8143-A02D109F0070",
-                metercode = "",
-                isOwner = "true"
-            };
-#endif
             _dashboardMainComponent?._componentActivity?.Show();
             chartResponse = await Task.Run(() =>
             {
@@ -1301,7 +1190,6 @@ namespace myTNB.Dashboard
             DateTime lastUpdate = default(DateTime);
             bool isRefreshNeeded = default(bool);
             var model = DataManager.DataManager.SharedInstance.GetSmartAccountUsageHistory(accountNum, ref lastUpdate, ref isRefreshNeeded);
-
             if (model != null && lastUpdate.Date == DateTime.Today && !isRefreshNeeded)
             {
                 return model;
@@ -1319,7 +1207,6 @@ namespace myTNB.Dashboard
             DateTime lastUpdate = default(DateTime);
             bool isRefreshNeeded = default(bool);
             var model = DataManager.DataManager.SharedInstance.GetAccountUsageHistory(accountNum, ref lastUpdate, ref isRefreshNeeded);
-
             if (model != null && lastUpdate.Date == DateTime.Today && !isRefreshNeeded)
             {
                 return model;
@@ -1337,7 +1224,6 @@ namespace myTNB.Dashboard
             UIScrollView scrollView = sender as UIScrollView;
             if (scrollView != null)
             {
-                //Debug.WriteLine("RRA: scroll: _lastContentOffset:{0}, currentOffset:{1}", _lastContentOffset, scrollView.ContentOffset.Y);
                 if (_lastContentOffset < 0 || _lastContentOffset < scrollView.ContentOffset.Y)
                 {
                     //Pulling down
@@ -1385,63 +1271,5 @@ namespace myTNB.Dashboard
                 _billingAccountDetailsList = serviceManager.GetBillingAccountDetails("GetBillingAccountDetails", requestParameter);
             });
         }
-
-        /// <summary>
-        /// Pulls down to refresh.
-        /// </summary>
-        /// <param name="sender">Sender.</param>
-        /// <param name="e">E.</param>
-        //private void PullDownTorefresh(object sender, EventArgs e)
-        //{
-        //    if (!isRefreshing)
-        //    {
-        //        Debug.WriteLine("PullDownTorefresh");
-        //        RefreshScreen();
-        //    }
-        //}
-
-        /// <summary>
-        /// Refreshes the screen.
-        /// </summary>
-        /// <returns>The screen.</returns>
-        //private void RefreshScreen()
-        //{
-        //    isRefreshing = true;
-        //    NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
-        //    {
-        //        InvokeOnMainThread(async () =>
-        //        {
-        //            if (NetworkUtility.isReachable)
-        //            {
-        //                await GetAccountDueAmount().ContinueWith(dueTask =>
-        //                {
-        //                    InvokeOnMainThread(() =>
-        //                    {
-        //                        if (_dueAmount != null && _dueAmount?.d != null
-        //                            && _dueAmount?.d?.didSucceed == true
-        //                            && _dueAmount?.d?.data != null)
-        //                        {
-        //                            _amountDue = _dueAmount.d.data.amountDue;
-        //                            _dateDue = _dueAmount.d.data.billDueDate;
-        //                            _dueIncrementDays = _dueAmount.d.data.IncrementREDueDateByDays;
-        //                            SetAmountInBillingDetails(_amountDue);
-        //                            SaveDueToCache(_dueAmount.d.data);
-        //                        }
-        //                        SetBillAndPaymentDetails();
-        //                    });
-        //                });
-        //            }
-        //            else
-        //            {
-        //                var alert = UIAlertController.Create("ErrNoNetworkTitle".Translate(), "ErrNoNetworkMsg".Translate(), UIAlertControllerStyle.Alert);
-        //                alert.AddAction(UIAlertAction.Create("Ok", UIAlertActionStyle.Cancel, null));
-        //                PresentViewController(alert, animated: true, completionHandler: null);
-        //            }
-        //            isRefreshing = false;
-        //            _dashboardMainComponent._refreshControl.EndRefreshing();
-        //        });
-        //    });
-        //}
-
     }
 }

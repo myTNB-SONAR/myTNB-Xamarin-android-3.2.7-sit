@@ -16,6 +16,7 @@ using UIKit;  namespace myTNB {
         readonly static UIColor _selectionGrey = new UIColor(red: 0.90f, green: 0.90f, blue: 0.90f, alpha: 1.0f);
         readonly static UIColor _selectionSemiTransparent = UIColor.FromRGBA(255, 255, 255, 60);
         readonly static UIColor _linesGray = new UIColor(red: 0.85f, green: 0.85f, blue: 0.85f, alpha: 1.0f);
+        readonly static UIColor _neonBlue = new UIColor(red: 97f / 255.0f, green: 91f / 255.0f, blue: 228f / 255.0f, alpha: 1.0f);
         readonly static UIColor _harleyDavidsonOrange = new UIColor(red: 0.89F, green: 0.20F, blue: 0.10F, alpha: 1.0f);
         readonly static UIColor _denim = new UIColor(red: 0.11F, green: 0.47F, blue: 0.79F, alpha: 1.0f);
 
@@ -151,5 +152,13 @@ using UIKit;  namespace myTNB {
         public static UIColor TunaGrey(float customAlpha = 1.0f)
         {
             return new UIColor(red: 73.0f / 255.0f, green: 73.0f / 255.0f, blue: 74.0f / 255.0f, alpha: customAlpha);
+        }
+
+        public static UIColor NeonBlue
+        {
+            get
+            {
+                return _neonBlue;
+            }
         }
     } }
