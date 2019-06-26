@@ -57,7 +57,7 @@ namespace myTNB.Dashboard.DashboardComponents
             {
                 _yLocation += 12; // 24 margin
             }
-            _baseView = new UIView(new CGRect(margin, _yLocation, _parentView.Frame.Width - (margin * 2), 171));
+            _baseView = new UIView(new CGRect(margin, _yLocation + 12, _parentView.Frame.Width - (margin * 2), 171));
             center = _baseView.Frame.Width / 2;
             // chart mode
             UITextAttributes attr = new UITextAttributes();
@@ -135,7 +135,7 @@ namespace myTNB.Dashboard.DashboardComponents
 
         private void CreateMetricComponent()
         {
-            _metricCmp1 = new InfoComponent(_baseView, new CGRect(0, _chartModeView.Frame.GetMaxY() + 12, _baseView.Frame.Width, 58));
+            _metricCmp1 = new InfoComponent(_baseView, new CGRect(0, _chartModeView.Frame.GetMaxY() + 24, _baseView.Frame.Width, 58));
             _metricCmp1.Icon.Image = UIImage.FromBundle("IC-Charges");
             _metricCmp1.TitleLabel.Text = MyCostSoFar;
             _metricCmp1.SubTitleLabel.Text = For;
