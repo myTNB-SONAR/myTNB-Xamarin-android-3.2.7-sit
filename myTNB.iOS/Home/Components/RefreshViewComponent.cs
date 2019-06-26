@@ -31,8 +31,8 @@ namespace myTNB.Home.Components
         internal void CreateComponent(bool forGradientBG = false)
         {
             float viewMargin = 10f;
-            float imageTopMargin = 70f;
-            float imageWidth = DeviceHelper.GetScaledWidth(104f);
+            float imageTopMargin = forGradientBG ? 14f : 70f;
+            float imageWidth = DeviceHelper.GetScaledWidth(96f);
             float imageHeight = DeviceHelper.GetScaledHeight(96f);
             float lineTextHeight = 24f;
 

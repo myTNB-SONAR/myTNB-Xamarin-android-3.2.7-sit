@@ -5,6 +5,7 @@ using UIKit;
 using CoreGraphics;
 using myTNB.Enums;
 using System;
+using myTNB.Model;
 
 namespace myTNB.Dashboard.DashboardComponents
 {
@@ -33,6 +34,7 @@ namespace myTNB.Dashboard.DashboardComponents
         public SmartMeterComponent _smartMeterComponent;
         public ChartCompanionComponent _chartCompanionComponent;
         public ActivityIndicatorComponent _componentActivity;
+        public RefreshViewComponent _refreshViewComponent;
         public UIView _viewChartCompanion;
         public UIView _viewSmartMeter;
         public UIView _viewChart;
@@ -489,6 +491,49 @@ namespace myTNB.Dashboard.DashboardComponents
             //_addressComponent = new AddressComponent(_gradientView);
             //_gradientView.AddSubview(_addressComponent.GetUI());
 
+            _parentView.AddSubview(_gradientView);
+
+            _billAndPaymentComponent = new BillAndPaymentComponent(_parentView);
+            _parentView.AddSubview(_billAndPaymentComponent.GetUI());
+        }
+
+        /// <summary>
+        /// Constructs the refresh screen when API call is failed.
+        /// </summary>
+        /// <param name="buttonAction"></param>
+        /// <param name="chartModel"></param>
+        public void ConstructRefreshScreen(Action buttonAction, ChartModel chartModel)
+        {
+            RemoveAllSubviews();
+
+            bool isFullScreen = true;// !DeviceHelper.IsIphoneXUpResolution();
+            float percentage = isFullScreen ? 1.0f : 0.68f;
+
+            _gradientViewComponent = new GradientViewComponent(_parentView, percentage);
+            _gradientView = _gradientViewComponent.GetUI();
+            _billAndPaymentComponent = new BillAndPaymentComponent(_parentView);
+            _billAndPaymentView = !isFullScreen ? _billAndPaymentComponent.GetUI(_gradientView.Frame.Height)
+                                                : _billAndPaymentComponent.GetUI();
+
+            //Add Title Bar
+            _titleBarComponent = new TitleBarComponent(_gradientView);
+            _gradientView.AddSubview(_titleBarComponent.GetUI());
+
+            //Add account selection
+            _accountSelectionComponent = new AccountSelectionComponent(_gradientView);
+            UIView accountSelectionView = _accountSelectionComponent.GetUI();
+            _gradientView.AddSubview(accountSelectionView);
+
+            var msg = !string.IsNullOrWhiteSpace(chartModel?.RefreshMessage) ? chartModel?.RefreshMessage : "Error_RefreshMessage".Translate();
+            var btnText = !string.IsNullOrWhiteSpace(chartModel?.RefreshBtnText) ? chartModel?.RefreshBtnText : "Error_RefreshBtnTitle".Translate();
+
+            //Add Refresh screen view
+            _refreshViewComponent = new RefreshViewComponent(_parentView, _accountSelectionComponent.GetView());
+            _refreshViewComponent.SetIconImage("Refresh-Error-White");
+            _refreshViewComponent.SetDescription(msg);
+            _refreshViewComponent.SetButtonText(btnText);
+            _refreshViewComponent.OnButtonTap = buttonAction;
+            _gradientView.AddSubview(_refreshViewComponent.GetUIForGradientBG());
             _parentView.AddSubview(_gradientView);
 
             _billAndPaymentComponent = new BillAndPaymentComponent(_parentView);

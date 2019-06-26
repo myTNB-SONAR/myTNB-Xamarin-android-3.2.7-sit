@@ -1331,7 +1331,7 @@ namespace myTNB
             }
 
             _refreshViewComponent = new RefreshViewComponent(View, _headerTitleView);
-            _refreshViewComponent.SetIconImage("Notification-Error");
+            _refreshViewComponent.SetIconImage("Refresh-Error-Normal");
             _refreshViewComponent.SetDescription(msg);
             _refreshViewComponent.SetButtonText(btnText);
             _refreshViewComponent.OnButtonTap = OnRefreshTap;

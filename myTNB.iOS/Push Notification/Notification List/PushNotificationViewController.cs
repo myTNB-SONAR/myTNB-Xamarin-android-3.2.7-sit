@@ -207,7 +207,7 @@ namespace myTNB.PushNotification
             }
 
             _refreshViewComponent = new RefreshViewComponent(View, headerView);
-            _refreshViewComponent.SetIconImage("Notification-Error");
+            _refreshViewComponent.SetIconImage("Notification-Empty");
             _refreshViewComponent.SetDescription("PushNotification_NoNotification".Translate());
             _refreshViewComponent.SetRefreshButtonHidden(true);
 
@@ -225,7 +225,7 @@ namespace myTNB.PushNotification
             }
 
             _refreshViewComponent = new RefreshViewComponent(View, headerView);
-            _refreshViewComponent.SetIconImage("Notification-Error");
+            _refreshViewComponent.SetIconImage("Refresh-Error-Normal");
             _refreshViewComponent.SetDescription(msg);
             _refreshViewComponent.SetButtonText(btnText);
             _refreshViewComponent.OnButtonTap = OnRefreshTap;

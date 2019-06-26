@@ -56,6 +56,11 @@ namespace myTNB.Dashboard.DashboardComponents
             return _viewAccountSelection;
         }
 
+        public UIView GetView()
+        {
+            return _viewAccountSelection;
+        }
+
         public void SetAccountName(string accountName)
         {
             _lblAccountName.Text = accountName;
