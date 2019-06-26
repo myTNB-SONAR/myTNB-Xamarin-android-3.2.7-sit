@@ -6525,26 +6525,26 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f020054
 			public const int avd_hide_password = 2130837588;
 			
-			// aapt resource value: 0x7f0201b0
-			public const int avd_hide_password_1 = 2130837936;
-			
-			// aapt resource value: 0x7f0201b1
-			public const int avd_hide_password_2 = 2130837937;
-			
 			// aapt resource value: 0x7f0201b2
-			public const int avd_hide_password_3 = 2130837938;
+			public const int avd_hide_password_1 = 2130837938;
+			
+			// aapt resource value: 0x7f0201b3
+			public const int avd_hide_password_2 = 2130837939;
+			
+			// aapt resource value: 0x7f0201b4
+			public const int avd_hide_password_3 = 2130837940;
 			
 			// aapt resource value: 0x7f020055
 			public const int avd_show_password = 2130837589;
 			
-			// aapt resource value: 0x7f0201b3
-			public const int avd_show_password_1 = 2130837939;
-			
-			// aapt resource value: 0x7f0201b4
-			public const int avd_show_password_2 = 2130837940;
-			
 			// aapt resource value: 0x7f0201b5
-			public const int avd_show_password_3 = 2130837941;
+			public const int avd_show_password_1 = 2130837941;
+			
+			// aapt resource value: 0x7f0201b6
+			public const int avd_show_password_2 = 2130837942;
+			
+			// aapt resource value: 0x7f0201b7
+			public const int avd_show_password_3 = 2130837943;
 			
 			// aapt resource value: 0x7f020056
 			public const int billing = 2130837590;
@@ -7374,11 +7374,11 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f020169
 			public const int notification_icon_background = 2130837865;
 			
-			// aapt resource value: 0x7f0201ae
-			public const int notification_template_icon_bg = 2130837934;
+			// aapt resource value: 0x7f0201b0
+			public const int notification_template_icon_bg = 2130837936;
 			
-			// aapt resource value: 0x7f0201af
-			public const int notification_template_icon_low_bg = 2130837935;
+			// aapt resource value: 0x7f0201b1
+			public const int notification_template_icon_low_bg = 2130837937;
 			
 			// aapt resource value: 0x7f02016a
 			public const int notification_tile_bg = 2130837866;
@@ -7450,139 +7450,145 @@ namespace myTNB_Android
 			public const int red_button_background = 2130837888;
 			
 			// aapt resource value: 0x7f020181
-			public const int resend_active_background = 2130837889;
+			public const int refresh = 2130837889;
 			
 			// aapt resource value: 0x7f020182
-			public const int resend_inactive_progress = 2130837890;
+			public const int refresh_on_bg = 2130837890;
 			
 			// aapt resource value: 0x7f020183
-			public const int resend_inactive_with_border_progress = 2130837891;
+			public const int resend_active_background = 2130837891;
 			
 			// aapt resource value: 0x7f020184
-			public const int ResetPasswordSuccessCheckDrawable = 2130837892;
+			public const int resend_inactive_progress = 2130837892;
 			
 			// aapt resource value: 0x7f020185
-			public const int ResetPasswordSuccessGreenCircle = 2130837893;
+			public const int resend_inactive_with_border_progress = 2130837893;
 			
 			// aapt resource value: 0x7f020186
-			public const int ResetPasswordSuccessWhiteBackground = 2130837894;
+			public const int ResetPasswordSuccessCheckDrawable = 2130837894;
 			
 			// aapt resource value: 0x7f020187
-			public const int rounded_cornor_dialog = 2130837895;
+			public const int ResetPasswordSuccessGreenCircle = 2130837895;
 			
 			// aapt resource value: 0x7f020188
-			public const int scan = 2130837896;
+			public const int ResetPasswordSuccessWhiteBackground = 2130837896;
 			
 			// aapt resource value: 0x7f020189
-			public const int selector_password_right_icon = 2130837897;
+			public const int rounded_cornor_dialog = 2130837897;
 			
 			// aapt resource value: 0x7f02018a
-			public const int selector_pressable = 2130837898;
+			public const int scan = 2130837898;
 			
 			// aapt resource value: 0x7f02018b
-			public const int shadow_effect = 2130837899;
+			public const int selector_password_right_icon = 2130837899;
 			
 			// aapt resource value: 0x7f02018c
-			public const int silver_chalice_button_background = 2130837900;
+			public const int selector_pressable = 2130837900;
 			
 			// aapt resource value: 0x7f02018d
-			public const int silver_chalice_button_outline = 2130837901;
+			public const int shadow_effect = 2130837901;
 			
 			// aapt resource value: 0x7f02018e
-			public const int solid_border_background = 2130837902;
+			public const int silver_chalice_button_background = 2130837902;
 			
 			// aapt resource value: 0x7f02018f
-			public const int splash = 2130837903;
+			public const int silver_chalice_button_outline = 2130837903;
 			
 			// aapt resource value: 0x7f020190
-			public const int Supply = 2130837904;
+			public const int solid_border_background = 2130837904;
 			
 			// aapt resource value: 0x7f020191
-			public const int tagline = 2130837905;
+			public const int splash = 2130837905;
 			
 			// aapt resource value: 0x7f020192
-			public const int tenaga_nasional = 2130837906;
+			public const int Supply = 2130837906;
 			
 			// aapt resource value: 0x7f020193
-			public const int tnb_loading_frame_01 = 2130837907;
+			public const int tagline = 2130837907;
 			
 			// aapt resource value: 0x7f020194
-			public const int tnb_loading_frame_02 = 2130837908;
+			public const int tenaga_nasional = 2130837908;
 			
 			// aapt resource value: 0x7f020195
-			public const int tnb_loading_frame_03 = 2130837909;
+			public const int tnb_loading_frame_01 = 2130837909;
 			
 			// aapt resource value: 0x7f020196
-			public const int tnb_loading_frame_04 = 2130837910;
+			public const int tnb_loading_frame_02 = 2130837910;
 			
 			// aapt resource value: 0x7f020197
-			public const int tnb_loading_frame_05 = 2130837911;
+			public const int tnb_loading_frame_03 = 2130837911;
 			
 			// aapt resource value: 0x7f020198
-			public const int tnb_loading_frame_06 = 2130837912;
+			public const int tnb_loading_frame_04 = 2130837912;
 			
 			// aapt resource value: 0x7f020199
-			public const int tnb_loading_frame_07 = 2130837913;
+			public const int tnb_loading_frame_05 = 2130837913;
 			
 			// aapt resource value: 0x7f02019a
-			public const int tnb_loading_frame_08 = 2130837914;
+			public const int tnb_loading_frame_06 = 2130837914;
 			
 			// aapt resource value: 0x7f02019b
-			public const int tnb_loading_frame_09 = 2130837915;
+			public const int tnb_loading_frame_07 = 2130837915;
 			
 			// aapt resource value: 0x7f02019c
-			public const int tnb_loading_frame_10 = 2130837916;
+			public const int tnb_loading_frame_08 = 2130837916;
 			
 			// aapt resource value: 0x7f02019d
-			public const int tnb_loading_frame_11 = 2130837917;
+			public const int tnb_loading_frame_09 = 2130837917;
 			
 			// aapt resource value: 0x7f02019e
-			public const int tnb_loading_frame_12 = 2130837918;
+			public const int tnb_loading_frame_10 = 2130837918;
 			
 			// aapt resource value: 0x7f02019f
-			public const int tnb_loading_frame_13 = 2130837919;
+			public const int tnb_loading_frame_11 = 2130837919;
 			
 			// aapt resource value: 0x7f0201a0
-			public const int tnb_loading_frame_14 = 2130837920;
+			public const int tnb_loading_frame_12 = 2130837920;
 			
 			// aapt resource value: 0x7f0201a1
-			public const int tnb_loading_frame_15 = 2130837921;
+			public const int tnb_loading_frame_13 = 2130837921;
 			
 			// aapt resource value: 0x7f0201a2
-			public const int tnb_loading_frame_16 = 2130837922;
+			public const int tnb_loading_frame_14 = 2130837922;
 			
 			// aapt resource value: 0x7f0201a3
-			public const int tnb_receipt_logo_header = 2130837923;
+			public const int tnb_loading_frame_15 = 2130837923;
 			
 			// aapt resource value: 0x7f0201a4
-			public const int toggle_widget_background = 2130837924;
+			public const int tnb_loading_frame_16 = 2130837924;
 			
 			// aapt resource value: 0x7f0201a5
-			public const int toggle_widget_textcolor = 2130837925;
+			public const int tnb_receipt_logo_header = 2130837925;
 			
 			// aapt resource value: 0x7f0201a6
-			public const int tooltip_frame_dark = 2130837926;
+			public const int toggle_widget_background = 2130837926;
 			
 			// aapt resource value: 0x7f0201a7
-			public const int tooltip_frame_light = 2130837927;
+			public const int toggle_widget_textcolor = 2130837927;
 			
 			// aapt resource value: 0x7f0201a8
-			public const int visa = 2130837928;
+			public const int tooltip_frame_dark = 2130837928;
 			
 			// aapt resource value: 0x7f0201a9
-			public const int white_background_rect = 2130837929;
+			public const int tooltip_frame_light = 2130837929;
 			
 			// aapt resource value: 0x7f0201aa
-			public const int white_button_background = 2130837930;
+			public const int visa = 2130837930;
 			
 			// aapt resource value: 0x7f0201ab
-			public const int white_radius = 2130837931;
+			public const int white_background_rect = 2130837931;
 			
 			// aapt resource value: 0x7f0201ac
-			public const int white_rounded_button_selector = 2130837932;
+			public const int white_button_background = 2130837932;
 			
 			// aapt resource value: 0x7f0201ad
-			public const int white_selector_pressable = 2130837933;
+			public const int white_radius = 2130837933;
+			
+			// aapt resource value: 0x7f0201ae
+			public const int white_rounded_button_selector = 2130837934;
+			
+			// aapt resource value: 0x7f0201af
+			public const int white_selector_pressable = 2130837935;
 			
 			static Drawable()
 			{
