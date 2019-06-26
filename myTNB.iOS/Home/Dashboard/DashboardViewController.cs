@@ -25,19 +25,14 @@ namespace myTNB.Dashboard
         DashboardMainComponent _dashboardMainComponent;
         DueAmountResponseModel _dueAmount = new DueAmountResponseModel();
         BillingAccountDetailsResponseModel _billingAccountDetailsList = new BillingAccountDetailsResponseModel();
-        bool isAnimating = false;
 
-        double _amountDue = 0;
-        double _dueIncrementDays = 0;
+        double _amountDue, _dueIncrementDays, _lastContentOffset;
         string _dateDue = string.Empty;
-        bool isREAccount = false;
+        bool isAnimating, isREAccount, isFromForeground, isFromViewBillAdvice;
         bool isBcrmAvailable = true;
-        double _lastContentOffset;
-        bool isFromForeground = false;
         bool isNormalChart = true;
-        bool isFromViewBillAdvice = false;
 
-        public bool ShouldShowBackButton = false;
+        public bool ShouldShowBackButton;
         string _toolTipMessage = string.Empty;
         string _toolTipBtnTitle = string.Empty;
 
@@ -45,7 +40,7 @@ namespace myTNB.Dashboard
         {
             base.ViewDidLoad();
             // Perform any additional setup after loading the view, typically from a nib.
-            var appDelegate = UIApplication.SharedApplication.Delegate as AppDelegate;
+            AppDelegate appDelegate = UIApplication.SharedApplication.Delegate as AppDelegate;
             if (appDelegate != null)
             {
                 appDelegate._dashboardVC = this;
@@ -146,11 +141,7 @@ namespace myTNB.Dashboard
             {
                 InvokeOnMainThread(() =>
                 {
-                    if (NetworkUtility.isReachable)
-                    {
-                        //PushNotificationHelper.HandlePushNotification();
-                    }
-                    else
+                    if (!NetworkUtility.isReachable)
                     {
                         Debug.WriteLine("No Network");
                         DisplayNoDataAlert();
@@ -182,6 +173,10 @@ namespace myTNB.Dashboard
                                 await LoadAmountDue();
                             }
                         }
+                        else
+                        {
+                            DisplayNoDataAlert();
+                        }
                     });
                 });
             }
@@ -196,7 +191,7 @@ namespace myTNB.Dashboard
             var acct = DataManager.DataManager.SharedInstance.SelectedAccount;
             var due = DataManager.DataManager.SharedInstance.GetDue(acct.accNum);
 
-            if (due != null && DataManager.DataManager.SharedInstance.AccountRecordsList?.d?.Count > 1)
+            /*if (due != null && DataManager.DataManager.SharedInstance.AccountRecordsList?.d?.Count > 1)
             {
                 _amountDue = due.amountDue;
                 _dateDue = due.billDueDate;
@@ -205,42 +200,42 @@ namespace myTNB.Dashboard
                 SetBillAndPaymentDetails();
             }
             else
+            {*/
+            await GetBillingAccountDetails().ContinueWith(task =>
             {
-                await GetBillingAccountDetails().ContinueWith(task =>
+                InvokeOnMainThread(() =>
                 {
-                    InvokeOnMainThread(() =>
+                    if (_billingAccountDetailsList != null && _billingAccountDetailsList?.d != null
+                        && _billingAccountDetailsList?.d?.data != null)
                     {
-                        if (_billingAccountDetailsList != null && _billingAccountDetailsList?.d != null
-                            && _billingAccountDetailsList?.d?.data != null)
+                        var billDetails = _billingAccountDetailsList.d.data;
+                        DataManager.DataManager.SharedInstance.BillingAccountDetails = billDetails;
+                        if (!isREAccount)
                         {
-                            var billDetails = _billingAccountDetailsList.d.data;
-                            DataManager.DataManager.SharedInstance.BillingAccountDetails = billDetails;
-                            if (!isREAccount)
-                            {
-                                DataManager.DataManager.SharedInstance.SaveToBillingAccounts(billDetails, billDetails.accNum);
-                            }
+                            DataManager.DataManager.SharedInstance.SaveToBillingAccounts(billDetails, billDetails.accNum);
                         }
-                    });
+                    }
                 });
+            });
 
-                await GetAccountDueAmount().ContinueWith(dueTask =>
+            await GetAccountDueAmount().ContinueWith(dueTask =>
+            {
+                InvokeOnMainThread(() =>
                 {
-                    InvokeOnMainThread(() =>
+                    if (_dueAmount != null && _dueAmount?.d != null
+                        && _dueAmount?.d?.didSucceed == true
+                        && _dueAmount?.d?.data != null)
                     {
-                        if (_dueAmount != null && _dueAmount?.d != null
-                            && _dueAmount?.d?.didSucceed == true
-                            && _dueAmount?.d?.data != null)
-                        {
-                            _amountDue = _dueAmount.d.data.amountDue;
-                            _dateDue = _dueAmount.d.data.billDueDate;
-                            _dueIncrementDays = _dueAmount.d.data.IncrementREDueDateByDays;
-                            SetAmountInBillingDetails(_amountDue);
-                            SaveDueToCache(_dueAmount.d.data);
-                        }
-                        SetBillAndPaymentDetails();
-                    });
+                        _amountDue = _dueAmount.d.data.amountDue;
+                        _dateDue = _dueAmount.d.data.billDueDate;
+                        _dueIncrementDays = _dueAmount.d.data.IncrementREDueDateByDays;
+                        SetAmountInBillingDetails(_amountDue);
+                        SaveDueToCache(_dueAmount.d.data);
+                    }
+                    SetBillAndPaymentDetails();
                 });
-            }
+            });
+            //}
         }
 
         /// <summary>
@@ -793,15 +788,17 @@ namespace myTNB.Dashboard
 
                 string dueDate = prefix + formattedDate;
                 _dashboardMainComponent._billAndPaymentComponent.SetDateDue(dueDate);
-                _dashboardMainComponent._billAndPaymentComponent.SetPaymentTitle(isREAccount
-                    ? "Bill_MyEarnings".Translate() : "Common_AmountDue".Translate());
+                _dashboardMainComponent._billAndPaymentComponent.SetPaymentTitle(isREAccount ? "Bill_MyEarnings".Translate() : "Common_AmountDue".Translate());
                 if (_dashboardMainComponent._billAndPaymentComponent._activity != null)
                 {
                     _dashboardMainComponent._billAndPaymentComponent._activity.Hide();
                 }
 
-                //Stub
-                _dashboardMainComponent._billAndPaymentComponent.DisplayInfoToolTip(string.Empty, DisplayToolTip);
+                if (_dueAmount != null && _dueAmount?.d != null && _dueAmount?.d?.didSucceed == true
+                        && _dueAmount?.d?.data != null && _dueAmount.d.data.IsItemisedBilling)
+                {
+                    _dashboardMainComponent._billAndPaymentComponent.DisplayInfoToolTip(string.Empty, DisplayToolTip);
+                }
             }
         }
 

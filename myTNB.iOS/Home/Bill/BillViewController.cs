@@ -27,7 +27,7 @@ namespace myTNB
         public bool IsFromNavigation;
         bool _paymentNeedsUpdate, isAnimating, isREAccount, isOwnedAccount, isFromReceiptScreen;
         bool isBcrmAvailable = true;
-        readonly bool isItemizedBilling; //Stub
+        //readonly bool isItemizedBilling; //Stub
 
         public BillViewController(IntPtr handle) : base(handle)
         {
@@ -90,10 +90,10 @@ namespace myTNB
             titleBarComponent.SetBackVisibility(!IsFromNavigation);
             DataManager.DataManager.SharedInstance.selectedTag = 0;
             SetChargesValues(null, null, TNBGlobal.DEFAULT_VALUE);
-            if (isItemizedBilling)
-            {
-                SetItemizedBillingValues(null, null, null, null, null);
-            }
+            /* if (isItemizedBilling)
+             {
+                 SetItemizedBillingValues(null, null, null, null, null);
+             }*/
 
             SetDetailsView();
 
@@ -361,7 +361,8 @@ namespace myTNB
                             , string.Format("{0} {1}", TNBGlobal.UNIT_CURRENCY, outstanding.ToString("N2", CultureInfo.InvariantCulture))
                             , balance.ToString("N2", CultureInfo.InvariantCulture));
 
-                        if (isItemizedBilling)
+                        if (_dueAmount != null && _dueAmount?.d != null && _dueAmount?.d?.didSucceed == true
+                            && _dueAmount?.d?.data != null && _dueAmount.d.data.IsItemisedBilling)
                         {
                             var mandatoryPayments = DataManager.DataManager.SharedInstance.BillingAccountDetails?.OpenChargesTotal ?? 0;
                             var securityDeposit = DataManager.DataManager.SharedInstance.BillingAccountDetails?.OpenSecurityDeposit ?? 0;
@@ -382,10 +383,10 @@ namespace myTNB
                         SetChargesValues(string.Format("{0} {1}", TNBGlobal.UNIT_CURRENCY, TNBGlobal.DEFAULT_VALUE)
                             , string.Format("{0} {1}", TNBGlobal.UNIT_CURRENCY, TNBGlobal.DEFAULT_VALUE)
                             , TNBGlobal.DEFAULT_VALUE);
-                        if (isItemizedBilling)
+                        /*if (isItemizedBilling)
                         {
                             SetItemizedBillingValues(null, null, null, null, null);
-                        }
+                        }*/
                         DisplayNoDataAlert();
                     }
                 });
@@ -404,7 +405,7 @@ namespace myTNB
             double _amountDue;
             double _dueIncrementDays;
 
-            if (due != null && DataManager.DataManager.SharedInstance.AccountRecordsList?.d?.Count > 1)
+            /*if (due != null && DataManager.DataManager.SharedInstance.AccountRecordsList?.d?.Count > 1)
             {
                 _amountDue = due.amountDue;
                 _dateDue = due.billDueDate;
@@ -413,40 +414,40 @@ namespace myTNB
                 SetBillAndPaymentDetails(_dateDue, _dueIncrementDays);
             }
             else
-            {
-                await GetBillingAccountDetails().ContinueWith(task =>
+            {*/
+            await GetBillingAccountDetails().ContinueWith(task =>
+             {
+                 InvokeOnMainThread(() =>
                  {
-                     InvokeOnMainThread(() =>
+                     if (_billingAccountDetailsList != null && _billingAccountDetailsList?.d != null
+                         && _billingAccountDetailsList?.d?.data != null)
                      {
-                         if (_billingAccountDetailsList != null && _billingAccountDetailsList?.d != null
-                             && _billingAccountDetailsList?.d?.data != null)
+                         var billDetails = _billingAccountDetailsList.d.data;
+                         DataManager.DataManager.SharedInstance.BillingAccountDetails = billDetails;
+                         if (!isREAccount)
                          {
-                             var billDetails = _billingAccountDetailsList.d.data;
-                             DataManager.DataManager.SharedInstance.BillingAccountDetails = billDetails;
-                             if (!isREAccount)
-                             {
-                                 DataManager.DataManager.SharedInstance.SaveToBillingAccounts(billDetails, billDetails.accNum);
-                             }
+                             DataManager.DataManager.SharedInstance.SaveToBillingAccounts(billDetails, billDetails.accNum);
                          }
-                     });
+                     }
                  });
-                await GetAccountDueAmount().ContinueWith(dueTask =>
+             });
+            await GetAccountDueAmount().ContinueWith(dueTask =>
+            {
+                InvokeOnMainThread(() =>
                 {
-                    InvokeOnMainThread(() =>
+                    if (_dueAmount != null && _dueAmount?.d != null
+                        && _dueAmount?.d?.didSucceed == true)
                     {
-                        if (_dueAmount != null && _dueAmount?.d != null
-                            && _dueAmount?.d?.didSucceed == true)
-                        {
-                            _amountDue = _dueAmount.d.data.amountDue;
-                            _dateDue = _dueAmount.d.data.billDueDate;
-                            _dueIncrementDays = _dueAmount.d.data.IncrementREDueDateByDays;
-                            SetAmountInBillingDetails(_amountDue);
-                            SaveDueToCache(_dueAmount.d.data);
-                            SetBillAndPaymentDetails(_dateDue, _dueIncrementDays);
-                        }
-                    });
+                        _amountDue = _dueAmount.d.data.amountDue;
+                        _dateDue = _dueAmount.d.data.billDueDate;
+                        _dueIncrementDays = _dueAmount.d.data.IncrementREDueDateByDays;
+                        SetAmountInBillingDetails(_amountDue);
+                        SaveDueToCache(_dueAmount.d.data);
+                        SetBillAndPaymentDetails(_dateDue, _dueIncrementDays);
+                    }
                 });
-            }
+            });
+            //}
         }
         /// <summary>
         /// Gets the account due amount if no cached data
@@ -560,7 +561,8 @@ namespace myTNB
             }
             else
             {
-                CreateNormalView(isItemizedBilling);
+                //CreateNormalView(isItemizedBilling);
+                CreateNormalView();
             }
             _headerView.AddSubviews(new UIView[] { _viewAccountDetails, _viewCharges, _viewHistory });
             _lblHistoryHeader.Text = isREAccount ? "Bill_REPaymentSectionHeader".Translate() : "Bill_PaymentSectionHeader".Translate();
