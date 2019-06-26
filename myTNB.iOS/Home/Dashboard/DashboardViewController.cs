@@ -462,7 +462,6 @@ namespace myTNB.Dashboard
                     {
                         DataManager.DataManager.SharedInstance.IsMontView = selector.SelectedSegment != 0;
                         DataManager.DataManager.SharedInstance.CurrentChartIndex = 0;
-                        _dashboardMainComponent._chartCompanionComponent.ShowMessage(DataManager.DataManager.SharedInstance.IsMontView);
                         DisplayCurrentChart();
                         OnUpdateSmartChartIndex(false, false);
                     };

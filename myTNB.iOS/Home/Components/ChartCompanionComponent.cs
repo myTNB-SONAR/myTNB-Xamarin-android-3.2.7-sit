@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using CoreGraphics;
@@ -14,12 +13,10 @@ namespace myTNB.Dashboard.DashboardComponents
     {
         public UITapGestureRecognizer ToolTipGestureRecognizer;
 
-        UIView _parentView, _baseView, _chartModeView, _metricView1
-            , _metricView2, _msgLabelView, _msgViewLine, _viewTooltip;
+        UIView _parentView, _baseView, _chartModeView, _metricView1, _metricView2, _viewTooltip;
         InfoComponent _metricCmp1, _metricCmp2;
         UIButton _amountBtn, _consumptionBtn, _emissionBtn;
         UsageMetrics _usageMetrics;
-        UILabel _messageLabel;
         double _yLocation;
 
         private string For = "Component_For".Translate();
@@ -66,7 +63,6 @@ namespace myTNB.Dashboard.DashboardComponents
 
             CreateChartViewButtons();
             CreateMetricComponent();
-            CreateInfoMessage();
             CreateTooltip();
             _baseView.Frame = new CGRect(_baseView.Frame.X, _baseView.Frame.Y, _baseView.Frame.Width, _viewTooltip.Frame.GetMaxY());
         }
@@ -152,31 +148,6 @@ namespace myTNB.Dashboard.DashboardComponents
             _baseView.AddSubviews(new UIView[] { _metricView1, _metricView2 });
         }
 
-        private void CreateInfoMessage()
-        {
-            _msgLabelView = new UIView(new CGRect(0, _metricView2.Frame.GetMaxY(), _baseView.Frame.Width, 59));
-            _messageLabel = new UILabel
-            {
-                Frame = new CGRect(7, 13, _msgLabelView.Frame.Width - 14, 32),
-                Font = MyTNBFont.MuseoSans12_300,
-                TextColor = UIColor.White,
-                Lines = 2,
-                LineBreakMode = UILineBreakMode.TailTruncation,
-                TextAlignment = UITextAlignment.Left,
-                Text = "Component_SmartMeterMessage".Translate()
-            };
-            _msgLabelView.AddSubview(_messageLabel);
-            _msgViewLine = new UIView(new CGRect(0, _msgLabelView.Frame.Height - 1
-                , _msgLabelView.Frame.Width, 1))
-            {
-                BackgroundColor = MyTNBColor.SelectionSemiTransparent
-            };
-            _msgLabelView.AddSubview(_msgViewLine);
-            _msgLabelView.Hidden = true;
-
-            _baseView.AddSubview(_msgLabelView);
-        }
-
         private void CreateTooltip()
         {
             ToolTipComponent toolTipComponent = new ToolTipComponent(_baseView);
@@ -185,21 +156,6 @@ namespace myTNB.Dashboard.DashboardComponents
             toolTipComponent.SetEvent(ToolTipGestureRecognizer);
             toolTipComponent.SetTopMargin(_metricView2.Frame.GetMaxY() + 8F);
             _baseView.AddSubview(_viewTooltip);
-        }
-
-        /// <summary>
-        /// Shows the message label for the Smart Meter graph in Monthly view.
-        /// </summary>
-        /// <param name="isMonthView">If set to <c>true</c> flag.</param>
-        public void ShowMessage(bool isMonthView)
-        {
-            _msgLabelView.Hidden = isMonthView;
-            CGRect labelMsgFrame = new CGRect(0, _metricView2.Frame.GetMaxY(), _baseView.Frame.Width, 59);
-            _msgLabelView.Frame = labelMsgFrame;
-            nfloat toolTipY = (isMonthView ? _metricView2.Frame.GetMaxY() : _msgLabelView.Frame.GetMaxY()) + 8.0F;
-            Debug.WriteLine("toolTipY: " + toolTipY);
-            _viewTooltip.Frame = new CGRect(_viewTooltip.Frame.X, toolTipY, _viewTooltip.Frame.Width, _viewTooltip.Frame.Height);
-            _baseView.Frame = new CGRect(_baseView.Frame.X, _baseView.Frame.Y, _baseView.Frame.Width, _viewTooltip.Frame.GetMaxY());
         }
 
         /// <summary>
