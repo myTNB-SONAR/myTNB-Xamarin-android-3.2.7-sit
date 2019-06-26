@@ -228,6 +228,21 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         [BindView(Resource.Id.content_extension)]
         LinearLayout contentExtension;
 
+        [BindView(Resource.Id.layout_graph_total)]
+        LinearLayout allGraphLayout;
+
+        [BindView(Resource.Id.layout_api_refresh)]
+        LinearLayout refreshLayout;
+
+        [BindView(Resource.Id.btnRefresh)]
+        Button btnNewRefresh;
+
+        [BindView(Resource.Id.refresh_content)]
+        TextView txtNewRefreshMessage;
+
+        private string txtRefreshMsg = "";
+        private string txtBtnRefreshTitle = "";
+
         /// <summary>
         /// Flag to disable/enable CO2 view
         /// </summary>
@@ -271,6 +286,23 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             else
             {
                 noSMDataFOund = false;
+            }
+
+            if(extras.ContainsKey("RefreshMsg") && !string.IsNullOrEmpty(extras.GetString("RefreshMsg")))
+            {
+                txtRefreshMsg = extras.GetString("RefreshMsg");
+            }
+            else
+            {
+                txtRefreshMsg = Activity.GetString(Resource.String.text_new_refresh_content);
+            }
+            if(extras.ContainsKey("RefreshMsgBtn") && !string.IsNullOrEmpty(extras.GetString("RefreshMsgBtn")))
+            {
+                txtBtnRefreshTitle = extras.GetString("RefreshMsgBtn");
+            }
+            else
+            {
+                txtBtnRefreshTitle = Activity.GetString(Resource.String.text_new_refresh);
             }
 
             if (!hasNoInternet)
@@ -350,8 +382,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
                 TextViewUtils.SetMuseoSans300Typeface(noteTextView);
                 TextViewUtils.SetMuseoSans300Typeface(txtUsageHistory, txtAddress, txtTotalPayable, txtContentNoData, txtContentNoInternet, txtDueDate);
-                TextViewUtils.SetMuseoSans300Typeface(btnToggleDay, btnToggleMonth);
-                TextViewUtils.SetMuseoSans500Typeface(txtRange, txtTotalPayableTitle, txtTotalPayableCurrency, btnViewBill, btnPay, btnLearnMore, btnTapRefresh, txtTitleNoData, txtTitleNoInternet);
+                TextViewUtils.SetMuseoSans300Typeface(btnToggleDay, btnToggleMonth, txtNewRefreshMessage);
+                TextViewUtils.SetMuseoSans500Typeface(txtRange, txtTotalPayableTitle, txtTotalPayableCurrency, btnViewBill, btnPay, btnLearnMore, btnTapRefresh, txtTitleNoData, txtTitleNoInternet, btnNewRefresh);
 
                 //smart meter
                 TextViewUtils.SetMuseoSans500Typeface(txtCurrentCharges, txtCurretnChargesValue, txtProjectedCost, txtProjectedCostValue);
@@ -367,6 +399,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 DownTimeEntity bcrmEntity = DownTimeEntity.GetByCode(Constants.BCRM_SYSTEM);
                 DownTimeEntity pgCCEntity = DownTimeEntity.GetByCode(Constants.PG_CC_SYSTEM);
                 DownTimeEntity pgFPXEntity = DownTimeEntity.GetByCode(Constants.PG_FPX_SYSTEM);
+
+                btnNewRefresh.Text = txtBtnRefreshTitle;
+                txtNewRefreshMessage.Text = txtRefreshMsg;
 
                 this.userActionsListener.Start();
                 if (selectedAccount != null)
@@ -436,6 +471,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     mSMNoDataLayout.Visibility = ViewStates.Gone;
                     mChart.Visibility = ViewStates.Visible;
                     mNoInternetLayout.Visibility = ViewStates.Gone;
+                    refreshLayout.Visibility = ViewStates.Gone;
+                    allGraphLayout.Visibility = ViewStates.Visible;
 
                     mLayoutSegmentGroup.Visibility = ViewStates.Visible;
                     shadowLayout.Visibility = ViewStates.Visible;
@@ -506,6 +543,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     mSMNoDataLayout.Visibility = ViewStates.Visible;
                     mChart.Visibility = ViewStates.Gone;
                     mNoInternetLayout.Visibility = ViewStates.Gone;
+                    refreshLayout.Visibility = ViewStates.Gone;
+                    allGraphLayout.Visibility = ViewStates.Visible;
                 }
 
                 txtAddress.Click += delegate
@@ -1428,6 +1467,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             this.userActionsListener.OnTapRefresh();
         }
 
+        [OnClick(Resource.Id.btnRefresh)]
+        internal void OnRefresh(object sender, EventArgs e)
+        {
+            this.userActionsListener.OnTapRefresh();
+        }
+
         [OnClick(Resource.Id.btnPay)]
         internal void OnUserPay(object sender, EventArgs e)
         {
@@ -1521,6 +1566,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             mSMNoDataLayout.Visibility = ViewStates.Gone;
             mChart.Visibility = ViewStates.Gone;
             mNoInternetLayout.Visibility = ViewStates.Gone;
+            refreshLayout.Visibility = ViewStates.Gone;
+            allGraphLayout.Visibility = ViewStates.Visible;
         }
 
         public bool IsByDayEmpty()
@@ -1534,7 +1581,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             mNoDataLayout.Visibility = ViewStates.Gone;
             mSMNoDataLayout.Visibility = ViewStates.Gone;
             mChart.Visibility = ViewStates.Gone;
-            mNoInternetLayout.Visibility = ViewStates.Visible;
+            mNoInternetLayout.Visibility = ViewStates.Gone;
+            refreshLayout.Visibility = ViewStates.Visible;
+            allGraphLayout.Visibility = ViewStates.Gone;
             txtDueDate.Text = GetString(Resource.String.dashboard_chartview_due_date_not_available);
 
         }

@@ -132,10 +132,23 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         [BindView(Resource.Id.downtime_layout)]
         LinearLayout mDownTimeLayout;
 
+        [BindView(Resource.Id.layout_graph_total)]
+        LinearLayout allGraphLayout;
 
+        [BindView(Resource.Id.layout_api_refresh)]
+        LinearLayout refreshLayout;
+
+        [BindView(Resource.Id.btnRefresh)]
+        Button btnNewRefresh;
+
+        [BindView(Resource.Id.refresh_content)]
+        TextView txtNewRefreshMessage;
 
         private DashboardChartContract.IUserActionsListener userActionsListener;
         private DashboardChartPresenter mPresenter;
+
+        private string txtRefreshMsg = "";
+        private string txtBtnRefreshTitle = "";
 
         DecimalFormat decimalFormat = new DecimalFormat("#,###,###,###,##0.00");
         SimpleDateFormat dateParser = new SimpleDateFormat("dd/MM/yyyy");
@@ -159,6 +172,24 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             {
                 hasNoInternet = extras.GetBoolean(Constants.NO_INTERNET_CONNECTION);
             }
+
+            if(extras.ContainsKey("RefreshMsg") && !string.IsNullOrEmpty(extras.GetString("RefreshMsg")))
+            {
+                txtRefreshMsg = extras.GetString("RefreshMsg");
+            }
+            else
+            {
+                txtRefreshMsg = Activity.GetString(Resource.String.text_new_refresh_content);
+            }
+            if(extras.ContainsKey("RefreshMsgBtn") && !string.IsNullOrEmpty(extras.GetString("RefreshMsgBtn")))
+            {
+                txtBtnRefreshTitle = extras.GetString("RefreshMsgBtn");
+            }
+            else
+            {
+                txtBtnRefreshTitle = Activity.GetString(Resource.String.text_new_refresh);
+            }
+
             if (!hasNoInternet)
             {
                 if (extras.ContainsKey(Constants.SELECTED_ACCOUNT))
@@ -207,12 +238,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             return chartFragment;
         }
 
-        internal static DashboardChartFragment NewInstance(bool hasNoInternet)
+        internal static DashboardChartFragment NewInstance(bool hasNoInternet, UsageHistoryResponse response)
         {
             DashboardChartFragment chartFragment = new DashboardChartFragment();
             Bundle bundle = new Bundle();
 
             bundle.PutBoolean(Constants.NO_INTERNET_CONNECTION, hasNoInternet);
+            bundle.PutString("RefreshMsg", response.Data.RefreshMessage);
+            bundle.PutString("RefreshMsgBtn", response.Data.RefreshBtnText);
             chartFragment.Arguments = bundle;
             return chartFragment;
         }
@@ -234,14 +267,17 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
 
                 TextViewUtils.SetMuseoSans300Typeface(txtUsageHistory, txtAddress, txtTotalPayable, txtContentNoData, txtContentNoInternet, txtDueDate);
-                TextViewUtils.SetMuseoSans300Typeface(btnToggleDay, btnToggleMonth);
-                TextViewUtils.SetMuseoSans500Typeface(txtRange, txtTotalPayableTitle, txtTotalPayableCurrency, btnViewBill, btnPay, btnLearnMore, btnTapRefresh, txtTitleNoData, txtTitleNoInternet);
+                TextViewUtils.SetMuseoSans300Typeface(btnToggleDay, btnToggleMonth, txtNewRefreshMessage);
+                TextViewUtils.SetMuseoSans500Typeface(txtRange, txtTotalPayableTitle, txtTotalPayableCurrency, btnViewBill, btnPay, btnLearnMore, btnTapRefresh, txtTitleNoData, txtTitleNoInternet, btnNewRefresh);
 
                 this.userActionsListener?.Start();
 
                 DownTimeEntity bcrmEntity = DownTimeEntity.GetByCode(Constants.BCRM_SYSTEM);
                 DownTimeEntity pgCCEntity = DownTimeEntity.GetByCode(Constants.PG_CC_SYSTEM);
                 DownTimeEntity pgFPXEntity = DownTimeEntity.GetByCode(Constants.PG_FPX_SYSTEM);
+
+                btnNewRefresh.Text = txtBtnRefreshTitle;
+                txtNewRefreshMessage.Text = txtRefreshMsg;
 
                 if (selectedAccount != null)
                 {
@@ -876,6 +912,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             this.userActionsListener.OnTapRefresh();
         }
 
+        [OnClick(Resource.Id.btnRefresh)]
+        internal void OnRefresh(object sender, EventArgs e)
+        {
+            this.userActionsListener.OnTapRefresh();
+        }
+
         [OnClick(Resource.Id.btnPay)]
         internal void OnUserPay(object sender, EventArgs e)
         {
@@ -969,6 +1011,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             mNoDataLayout.Visibility = ViewStates.Visible;
             mChart.Visibility = ViewStates.Gone;
             mNoInternetLayout.Visibility = ViewStates.Gone;
+            refreshLayout.Visibility = ViewStates.Gone;
+            allGraphLayout.Visibility = ViewStates.Visible;
         }
 
         public bool IsByDayEmpty()
@@ -983,21 +1027,24 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             txtDueDate.Text = GetString(Resource.String.dashboard_chartview_due_date_not_available);
             if (bcrmEnrity != null && bcrmEnrity.IsDown)
             {
+                allGraphLayout.Visibility = ViewStates.Visible;
                 mNoDataLayout.Visibility = ViewStates.Gone;
                 mChart.Visibility = ViewStates.Gone;
                 mNoInternetLayout.Visibility = ViewStates.Gone;
                 mDownTimeLayout.Visibility = ViewStates.Visible;
                 txtAddress.Text = bcrmEnrity.DowntimeMessage;
                 txtAddress.Visibility = ViewStates.Visible;
+                refreshLayout.Visibility = ViewStates.Gone;
             }
             else
             {
                 mNoDataLayout.Visibility = ViewStates.Gone;
                 mChart.Visibility = ViewStates.Gone;
-                mNoInternetLayout.Visibility = ViewStates.Visible;
+                mNoInternetLayout.Visibility = ViewStates.Gone;
                 mDownTimeLayout.Visibility = ViewStates.Gone;
+                refreshLayout.Visibility = ViewStates.Visible;
+                allGraphLayout.Visibility = ViewStates.Gone;
             }
-
         }
 
         public bool HasNoInternet()

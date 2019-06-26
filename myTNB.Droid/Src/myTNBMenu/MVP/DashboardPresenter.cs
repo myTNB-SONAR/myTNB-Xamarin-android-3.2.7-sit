@@ -237,7 +237,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                                 {
                                     CustomerBillingAccount selected = CustomerBillingAccount.GetSelected();
                                     this.mView.ShowAccountName();
-                                    this.mView.ShowOwnerDashboardNoInternetConnection(selected.AccDesc);
+                                    this.mView.ShowOwnerDashboardNoInternetConnection(selected.AccDesc, null);
                                 }
                             }
                             else if (currentBottomNavigationMenu == Resource.Id.menu_bill)
@@ -278,7 +278,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                         {
                             CustomerBillingAccount selected = CustomerBillingAccount.GetSelected();
                             this.mView.ShowAccountName();
-                            this.mView.ShowOwnerDashboardNoInternetConnection(selected.AccDesc);
+                            this.mView.ShowOwnerDashboardNoInternetConnection(selected.AccDesc, null);
 
                             List<CustomerBillingAccount> accountList = CustomerBillingAccount.List();
                             bool enableDropDown = accountList.Count > 0 ? true : false;
@@ -556,7 +556,11 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                     /*****/
                 }
 
-                if (usageHistoryResponse != null && usageHistoryResponse.Data.Status.Equals("success") && !usageHistoryResponse.Data.IsError)
+                if(usageHistoryResponse != null && usageHistoryResponse.Data != null && usageHistoryResponse.Data.Status.ToUpper() == Constants.REFRESH_MODE)
+                {
+                    this.mView.ShowOwnerDashboardNoInternetConnection(accountSelected.AccDesc, usageHistoryResponse);
+                }
+                else if (usageHistoryResponse != null && usageHistoryResponse.Data.Status.Equals("success") && !usageHistoryResponse.Data.IsError)
                 {
 
                     //if (accountSelected.isOwned)
@@ -609,7 +613,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                     {
                         this.mView.HideProgressDialog();
                     }
-                    this.mView.ShowOwnerDashboardNoInternetConnection(accountSelected.AccDesc);
+                    this.mView.ShowOwnerDashboardNoInternetConnection(accountSelected.AccDesc, null);
                     this.mView.SetAccountName(accountSelected.AccDesc);
                 }
             }
@@ -623,6 +627,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                 // ADD OPERATION CANCELLED HERE
                 //this.mView.ShowRetryOptionsCancelledException(e);
                 //this.mView.ShowOwnerNoInternetConnection(accountSelected.AccDesc);
+                this.mView.ShowOwnerDashboardNoInternetConnection(accountSelected.AccDesc, null);
                 Utility.LoggingNonFatalError(e);
             }
             catch (ApiException apiException)
@@ -633,7 +638,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                 if (this.mView.IsActive())
                 {
                     this.mView.HideProgressDialog();
-                    this.mView.ShowOwnerDashboardNoInternetConnection(accountSelected.AccDesc);
+                    this.mView.ShowOwnerDashboardNoInternetConnection(accountSelected.AccDesc, null);
                 }
 
                 Utility.LoggingNonFatalError(apiException);
@@ -647,7 +652,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                 if (this.mView.IsActive())
                 {
                     this.mView.HideProgressDialog();
-                    this.mView.ShowOwnerDashboardNoInternetConnection(accountSelected.AccDesc);
+                    this.mView.ShowOwnerDashboardNoInternetConnection(accountSelected.AccDesc, null);
                 }
                 Utility.LoggingNonFatalError(e);
             }

@@ -92,7 +92,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
             /// Show no internet connection in dashboard
             /// </summary>
             /// <param name="accountName">string</param>
-            void ShowOwnerDashboardNoInternetConnection(string accountName);
+            void ShowOwnerDashboardNoInternetConnection(string accountName, UsageHistoryResponse response);
 
             /// <summary>
             /// Show no internet connection in bill menu

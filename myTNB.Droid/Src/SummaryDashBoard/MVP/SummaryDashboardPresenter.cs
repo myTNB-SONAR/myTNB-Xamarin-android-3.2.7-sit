@@ -207,7 +207,7 @@ namespace myTNB_Android.Src.SummaryDashBoard.MVP
                     this.mView.HideProgressDialog();
                 }
 
-                if(response != null && response.Data != null && response.Data.Status.ToLower() == "failed")
+                if(response != null && response.Data != null && response.Data.Status.ToUpper() == Constants.REFRESH_MODE)
                 {
                     mView.ShowRefreshSummaryDashboard(true, response);
                 }

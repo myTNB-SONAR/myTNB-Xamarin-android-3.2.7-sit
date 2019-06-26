@@ -196,6 +196,7 @@ namespace myTNB_Android.Src.Utils
         internal static readonly string MAINTENANCE_TITLE_KEY = "maintenanceTitle";
         internal static readonly string MAINTENANCE_MESSAGE_KEY = "maintenanceMessage";
 
-
+        //Refresh View
+        internal static readonly string REFRESH_MODE = "FAILED";
     }
 }

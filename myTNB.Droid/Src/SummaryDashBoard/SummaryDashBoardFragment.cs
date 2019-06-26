@@ -209,8 +209,8 @@ namespace myTNB_Android.Src.SummaryDashBoard
                 activity = ((DashboardActivity)Activity);
 
                 TextViewUtils.SetMuseoSans500Typeface(greetingTxt, loadMore, userNameTxt);
-                TextViewUtils.SetMuseoSans500Typeface(addAcount, btnRefresh);
-                TextViewUtils.SetMuseoSans300Typeface(txtDowntimeMessage, txtRefreshMessage);
+                TextViewUtils.SetMuseoSans500Typeface(addAcount, btnRefresh, btnNewRefresh);
+                TextViewUtils.SetMuseoSans300Typeface(txtDowntimeMessage, txtRefreshMessage, txtNewRefreshMessage);
 
                 reAccRecyclerView.SetLayoutManager(new LinearLayoutManager(this.Activity));
                 normalRecyclerView.SetLayoutManager(new LinearLayoutManager(this.Activity));
