@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using CoreGraphics;
 using UIKit;
@@ -44,6 +45,13 @@ namespace myTNB
         public void DisplayGenericAlert(string title, string message, Action<UIAlertAction> handler = null)
         {
             AlertHandler.DisplayGenericAlert(this, title, message, handler);
+        }
+
+        public void DisplayCustomAlert(string title, string message, string btnTitle, Action btnAction = null)
+        {
+            AlertHandler.DisplayCustomAlert(title, message, new Dictionary<string, Action>() {
+                { string.IsNullOrEmpty(btnTitle) ? "Common_Ok".Translate() : btnTitle, btnAction } }
+            , UITextAlignment.Left, UITextAlignment.Left, true, 0.056F, false);
         }
         #endregion
         #region Toast

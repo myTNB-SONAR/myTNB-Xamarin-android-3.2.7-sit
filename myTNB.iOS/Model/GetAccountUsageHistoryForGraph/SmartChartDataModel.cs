@@ -17,7 +17,7 @@ namespace myTNB.Model
         {
             get
             {
-                if(!string.IsNullOrEmpty(IsCO2Disabled))
+                if (!string.IsNullOrEmpty(IsCO2Disabled))
                 {
                     if (bool.TryParse(IsCO2Disabled, out bool res))
                     {
@@ -28,5 +28,6 @@ namespace myTNB.Model
             }
         }
 
+        public List<ToolTipsModel> ToolTips { set; get; }
     }
 }

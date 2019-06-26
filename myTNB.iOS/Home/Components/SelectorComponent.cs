@@ -15,29 +15,22 @@ namespace myTNB.Dashboard.DashboardComponents
 
         internal void CreateComponent()
         {
-            UITextAttributes attr = new UITextAttributes
-            {
-                Font = MyTNBFont.MuseoSans12,
-                TextColor = MyTNBColor.SelectionSemiTransparent
-            };
-            UITextAttributes attrSelected = new UITextAttributes
-            {
-                Font = MyTNBFont.MuseoSans12,
-                TextColor = UIColor.White
-            };
+            UITextAttributes attr = new UITextAttributes();
+            attr.Font = MyTNBFont.MuseoSans12;
+            attr.TextColor = UIColor.White;
+            UITextAttributes attrSelected = new UITextAttributes();
+            attrSelected.Font = MyTNBFont.MuseoSans12;
+            attrSelected.TextColor = MyTNBColor.NeonBlue;
             double width = 122;
             double xLocation = (_parentView.Frame.Width / 2) - (width / 2);
-            _selectorBar = new UISegmentedControl(new CGRect(xLocation, 0, width, 26))
-            {
-                TintColor = MyTNBColor.SelectionSemiTransparent
-            };
+            _selectorBar = new UISegmentedControl(new CGRect(xLocation, 0, width, 26));
             _selectorBar.InsertSegment("Common_Day".Translate(), 0, false);
             _selectorBar.InsertSegment("Common_Month".Translate(), 1, false);
+            _selectorBar.TintColor = UIColor.White;
             _selectorBar.SetTitleTextAttributes(attr, UIControlState.Normal);
             _selectorBar.SetTitleTextAttributes(attrSelected, UIControlState.Selected);
             _selectorBar.Layer.CornerRadius = 13.0f;
-            UIColor bColor = new UIColor(red: 1.0f, green: 1.0f, blue: 1.0f, alpha: 0.5f);
-            _selectorBar.Layer.BorderColor = bColor.CGColor;
+            _selectorBar.Layer.BorderColor = UIColor.White.CGColor;
             _selectorBar.Layer.BorderWidth = 1.0f;
             _selectorBar.Layer.MasksToBounds = true;
             _parentView.AddSubview(_selectorBar);

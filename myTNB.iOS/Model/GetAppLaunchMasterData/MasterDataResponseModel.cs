@@ -1,5 +1,4 @@
-﻿using System;
-namespace myTNB.Model
+﻿namespace myTNB.Model
 {
     public class MasterDataResponseModel : BaseModel
     {

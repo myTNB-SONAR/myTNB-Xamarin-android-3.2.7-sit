@@ -1138,6 +1138,7 @@
     <Folder Include="Assets.xcassets\Notification-Error.imageset\" />
     <Folder Include="Assets.xcassets\Refresh-Error-Normal.imageset\" />
     <Folder Include="Assets.xcassets\Refresh-Error-White.imageset\" />
+    <Folder Include="Model\GetAppLaunchMasterData\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -1770,13 +1771,7 @@
     <Compile Include="SQLite\SQLite Data Manager\BillingAccountEntity.cs" />
     <Compile Include="SQLite\SQLite Data Manager\BillHistoryEntity.cs" />
     <Compile Include="SQLite\SQLite Data Manager\PaymentHistoryEntity.cs" />
-    <Compile Include="Model\MasterDataResponseModel.cs" />
-    <Compile Include="Model\MasterDataModel.cs" />
     <Compile Include="Model\AppVersionModel.cs" />
-    <Compile Include="Onboarding\AppUpdateViewController.cs" />
-    <Compile Include="Onboarding\AppUpdateViewController.designer.cs">
-      <DependentUpon>AppUpdateViewController.cs</DependentUpon>
-    </Compile>
     <Compile Include="Model\DowntimeDataModel.cs" />
     <Compile Include="Enums\SystemEnum.cs" />
     <Compile Include="Home\Components\SystemDownComponent.cs" />
@@ -1825,6 +1820,12 @@
     <Compile Include="Model\Modify Notification\DeleteNotificationResponseModel.cs" />
     <Compile Include="Model\Modify Notification\ReadNotificationResponseModel.cs" />
     <Compile Include="Home\Components\RefreshViewComponent.cs" />
+    <Compile Include="Model\GetAccountUsageHistoryForGraph\ToolTipsModel.cs" />
+    <Compile Include="Customs\TextViewDelegate.cs" />
+    <Compile Include="Home\Components\ToolTipComponent.cs" />
+    <Compile Include="Model\GetAppLaunchMasterData\MasterDataModel.cs" />
+    <Compile Include="Model\GetAppLaunchMasterData\MasterDataResponseModel.cs" />
+    <Compile Include="Model\GetAppLaunchMasterData\ForceUpdateInfoModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />

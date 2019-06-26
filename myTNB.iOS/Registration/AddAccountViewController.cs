@@ -540,7 +540,7 @@ namespace myTNB.Registration
                     {
                         Frame = new CGRect(0, viewInfo.Frame.Height - 30, viewInfo.Frame.Width, 20)
                     };
-                    btnDismiss.SetTitle("Registration_GotIt".Translate(), UIControlState.Normal);
+                    btnDismiss.SetTitle("Common_GotIt".Translate(), UIControlState.Normal);
                     btnDismiss.SetTitleColor(MyTNBColor.PowerBlue, UIControlState.Normal);
                     btnDismiss.Font = MyTNBFont.MuseoSans16_500;
                     btnDismiss.TouchUpInside += (sender, e) =>
