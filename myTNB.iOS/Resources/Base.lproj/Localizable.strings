@@ -61,6 +61,7 @@
 "Common_Email"="Email";
 "Common_Fullname"="Fullname";
 "Common_GetAccess"="Get Access";
+"Common_GotIt"="Got it!";
 "Common_ICNumber"="Owner's IC No.";
 "Common_ICROCPassportNumber"="IC / ROC / Passport No.";
 "Common_MaidenName"="Owner’s mother's maiden name";
@@ -461,7 +462,6 @@
 "Registration_AnswerForOwner" = "I'm the owner of this electricity supply account.";
 "Registration_Commercial"="Commercial";
 "Registration_CurrentBill" = "Current bill";
-"Registration_GotIt"="Got It!";
 "Registration_NickNameEmptyMessage"="Account nickname cannot be empty. Please enter valid nickname and try adding your account again.";
 "Registration_NoAccountsFoundMessage"="Please tap on the button below to add your TNB electricity account.";
 "Registration_NoAccountsTitle" = "No accounts found!";

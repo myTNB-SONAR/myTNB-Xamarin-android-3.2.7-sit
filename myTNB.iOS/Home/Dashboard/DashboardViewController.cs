@@ -38,7 +38,8 @@ namespace myTNB.Dashboard
         bool isFromViewBillAdvice = false;
 
         public bool ShouldShowBackButton = false;
-        string toolTipMessage = string.Empty;
+        string _toolTipMessage = string.Empty;
+        string _toolTipBtnTitle = string.Empty;
 
         public override void ViewDidLoad()
         {
@@ -58,7 +59,7 @@ namespace myTNB.Dashboard
             _dashboardMainComponent = new DashboardMainComponent(View);
             _dashboardMainComponent.ToolTipGestureRecognizer = new UITapGestureRecognizer((obj) =>
             {
-                ToastHelper.DisplayAlertView(this, string.Empty, toolTipMessage, null, "Got it!", true);
+                DisplayCustomAlert(string.Empty, _toolTipMessage, _toolTipBtnTitle, null);
             });
             NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
             {
@@ -1010,7 +1011,8 @@ namespace myTNB.Dashboard
             {
                 ToolTipsModel toolTipData = (DataManager.DataManager.SharedInstance.CurrentChart
                     as SmartChartDataModel).ToolTips?.Find(x => string.Compare(x.Type.ToUpper(), "PROJECTEDCOST") > -1);
-                toolTipMessage = toolTipData?.Message;
+                _toolTipMessage = toolTipData?.Message;
+                _toolTipBtnTitle = toolTipData?.ButtonTitle ?? "Common_GotIt".Translate();
                 _dashboardMainComponent._chartCompanionComponent.SetUsageMetric(smartMeterMetric);
                 _dashboardMainComponent._chartCompanionComponent.SetChartMode(DataManager.DataManager.SharedInstance.CurrentChartMode);
             }

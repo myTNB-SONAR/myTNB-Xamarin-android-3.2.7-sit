@@ -1127,6 +1127,7 @@
     <Folder Include="Assets.xcassets\Notification-Select.imageset\" />
     <Folder Include="Assets.xcassets\Maintenance-Image.imageset\" />
     <Folder Include="Model\Modify Notification\" />
+    <Folder Include="Model\GetAppLaunchMasterData\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -1759,8 +1760,6 @@
     <Compile Include="SQLite\SQLite Data Manager\BillingAccountEntity.cs" />
     <Compile Include="SQLite\SQLite Data Manager\BillHistoryEntity.cs" />
     <Compile Include="SQLite\SQLite Data Manager\PaymentHistoryEntity.cs" />
-    <Compile Include="Model\MasterDataResponseModel.cs" />
-    <Compile Include="Model\MasterDataModel.cs" />
     <Compile Include="Model\AppVersionModel.cs" />
     <Compile Include="Onboarding\AppUpdateViewController.cs" />
     <Compile Include="Onboarding\AppUpdateViewController.designer.cs">
@@ -1816,6 +1815,9 @@
     <Compile Include="Model\GetAccountUsageHistoryForGraph\ToolTipsModel.cs" />
     <Compile Include="Customs\TextViewDelegate.cs" />
     <Compile Include="Home\Components\ToolTipComponent.cs" />
+    <Compile Include="Model\GetAppLaunchMasterData\MasterDataModel.cs" />
+    <Compile Include="Model\GetAppLaunchMasterData\MasterDataResponseModel.cs" />
+    <Compile Include="Model\GetAppLaunchMasterData\ForceUpdateInfoModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />
