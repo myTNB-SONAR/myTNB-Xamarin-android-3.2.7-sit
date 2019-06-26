@@ -27,6 +27,18 @@ namespace myTNB_Android.Src.SummaryDashBoard.Models
 
             [JsonProperty("data")]
             public List<SummaryDashBoardDetails> data { get; set; }
+
+            [JsonProperty("RefreshTitle")]
+            public string RefreshTitle { get; set; }
+
+            [JsonProperty("RefreshMessage")]
+            public string RefreshMessage { get; set; }
+
+            [JsonProperty("RefreshBtnText")]
+            public string RefreshBtnText { get; set; }
+
+            [JsonProperty("status")]
+            public string Status { get; set; }
         }
     }
 }

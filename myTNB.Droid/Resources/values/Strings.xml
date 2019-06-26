@@ -1360,4 +1360,7 @@ Please try again later.]]>
     <string name="summary_dashboard_error_refresh">We can’t get your account details at the moment. Please refresh this page.</string>
     <string name="text_refresh">Refresh</string>
 
+  <!-- Refresh -->
+  <string name="text_new_refresh">Refresh Now</string>
+  <string name="text_new_refresh_content">This page must be tired. Tap the button below to help it out.</string>
 </resources>

@@ -206,7 +206,12 @@ namespace myTNB_Android.Src.SummaryDashBoard.MVP
                 {
                     this.mView.HideProgressDialog();
                 }
-                if (response != null)
+
+                if(response != null && response.Data != null && response.Data.Status.ToLower() == "failed")
+                {
+                    mView.ShowRefreshSummaryDashboard(true, response);
+                }
+                else if (response != null)
                 {
                     if (response.Data != null)
                     {
@@ -233,7 +238,7 @@ namespace myTNB_Android.Src.SummaryDashBoard.MVP
                         }
 
                     }
-                    mView.ShowRefreshSummaryDashboard(false);
+                    mView.ShowRefreshSummaryDashboard(false, null);
                 }
 
                 //    if (accountSelected.isOwned)
@@ -289,7 +294,7 @@ namespace myTNB_Android.Src.SummaryDashBoard.MVP
                     this.mView.HideProgressDialog();
                 }
                 Utility.LoggingNonFatalError(e);
-                this.mView.ShowRefreshSummaryDashboard(true); //Show retry option for summary dashboard
+                this.mView.ShowRefreshSummaryDashboard(true, null); //Show retry option for summary dashboard
                 LoadEmptySummaryDetails();
             }
             catch (ApiException apiException)
@@ -303,7 +308,7 @@ namespace myTNB_Android.Src.SummaryDashBoard.MVP
                 }
 
                 Utility.LoggingNonFatalError(apiException);
-                this.mView.ShowRefreshSummaryDashboard(true); //Show retry option for summary dashboard
+                this.mView.ShowRefreshSummaryDashboard(true, null); //Show retry option for summary dashboard
                 LoadEmptySummaryDetails();
             }
             catch (Exception e)
@@ -317,7 +322,7 @@ namespace myTNB_Android.Src.SummaryDashBoard.MVP
                     //this.mView.ShowOwnerDashboardNoInternetConnection(accountSelected.AccDesc);
                 }
                 Utility.LoggingNonFatalError(e);
-                this.mView.ShowRefreshSummaryDashboard(true); //Show retry option for summary dashboard
+                this.mView.ShowRefreshSummaryDashboard(true, null); //Show retry option for summary dashboard
                 LoadEmptySummaryDetails();
             }
 

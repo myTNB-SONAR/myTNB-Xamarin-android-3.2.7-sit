@@ -70,11 +70,20 @@ namespace myTNB_Android.Src.SummaryDashBoard
         [BindView(Resource.Id.summaryFooter)]
         TextView addAcount;
 
+        [BindView(Resource.Id.layout_api_refresh)]
+        LinearLayout layoutNewRefresh;
+
         [BindView(Resource.Id.layout_refresh)]
         LinearLayout layoutRefresh;
 
         [BindView(Resource.Id.btnTapRefresh)]
         Button btnRefresh;
+
+        [BindView(Resource.Id.btnRefresh)]
+        Button btnNewRefresh;
+
+        [BindView(Resource.Id.refresh_content)]
+        TextView txtNewRefreshMessage;
 
         [BindView(Resource.Id.txtRefreshMessage)]
         TextView txtRefreshMessage;
@@ -249,6 +258,29 @@ namespace myTNB_Android.Src.SummaryDashBoard
                     }
                 };
 
+                btnNewRefresh.Click += delegate
+                {
+                    btnRefresh.Enabled = false;
+                    btnRefresh.Clickable = false;
+                    Handler h = new Handler();
+                    Action myAction = () =>
+                    {
+                        btnRefresh.Enabled = true;
+                        btnRefresh.Clickable = true;
+                    };
+                    h.PostDelayed(myAction, 2000);
+
+                    if (HasNetworkConnection())
+                    {
+                        ShowProgressDialog();
+                        this.listener.RefreshAccountSummary();
+                    }
+                    else
+                    {
+                        ShowNoInternetSnackbar();
+                    }
+                };
+
 
                 addAcount.Click += delegate
                 {
@@ -322,6 +354,7 @@ namespace myTNB_Android.Src.SummaryDashBoard
                     if (bcrmDownTime != null && bcrmDownTime.IsDown)
                     {
                         downtimeLayout.Visibility = ViewStates.Visible;
+                        layoutNewRefresh.Visibility = ViewStates.Gone;
                         greetingLayout.Visibility = ViewStates.Gone;
                         if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.N)
                         {
@@ -337,6 +370,7 @@ namespace myTNB_Android.Src.SummaryDashBoard
                         downtimeLayout.Visibility = ViewStates.Gone;
                         greetingLayout.Visibility = ViewStates.Visible;
                         layoutRefresh.Visibility = ViewStates.Gone;
+                        layoutNewRefresh.Visibility = ViewStates.Gone;
                     }
                     listener.FetchAccountSummary();
 
@@ -483,16 +517,43 @@ namespace myTNB_Android.Src.SummaryDashBoard
             }
             );
             mNoInternetSnackbar.Show();
-            ShowRefreshSummaryDashboard(true);
+            ShowRefreshSummaryDashboard(true, null);
             layoutContent.Visibility = ViewStates.Visible;
             listener.LoadEmptySummaryDetails();
         }
 
 
-        public void ShowRefreshSummaryDashboard(bool yesno)
+        public void ShowRefreshSummaryDashboard(bool yesno, SummaryDashBoardResponse response)
         {
-
-            layoutRefresh.Visibility = yesno ? ViewStates.Visible : ViewStates.Gone;
+            downtimeLayout.Visibility = ViewStates.Gone;
+            greetingLayout.Visibility = yesno ? ViewStates.Gone : ViewStates.Visible;
+            layoutRefresh.Visibility = ViewStates.Gone;
+            layoutNewRefresh.Visibility = yesno ? ViewStates.Visible : ViewStates.Gone;
+            layoutRefresh.Visibility = ViewStates.Gone;
+            if(response != null)
+            {
+                if(!string.IsNullOrEmpty(response.Data.RefreshMessage))
+                {
+                    txtNewRefreshMessage.Text = response.Data.RefreshMessage;
+                }
+                else
+                {
+                    txtNewRefreshMessage.Text = Activity.GetString(Resource.String.text_new_refresh_content);
+                }
+                if(!string.IsNullOrEmpty(response.Data.RefreshBtnText))
+                {
+                    btnNewRefresh.Text = response.Data.RefreshBtnText;
+                }
+                else
+                {
+                    btnNewRefresh.Text = Activity.GetString(Resource.String.text_new_refresh);
+                }
+            }
+            else
+            {
+                txtNewRefreshMessage.Text = Activity.GetString(Resource.String.text_new_refresh_content);
+                btnNewRefresh.Text = Activity.GetString(Resource.String.text_new_refresh);
+            }
         }
 
         public void SetGreetingImageAndText(eGreeting greeting, string text)
