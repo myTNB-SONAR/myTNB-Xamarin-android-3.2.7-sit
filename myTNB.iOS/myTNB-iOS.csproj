@@ -867,13 +867,13 @@
     <ImageAsset Include="Assets.xcassets\IC-Header-Cancel.imageset\icHeaderCancel%402x.png" />
     <ImageAsset Include="Assets.xcassets\IC-Header-Cancel.imageset\icHeaderCancel%403x.png" />
     <ImageAsset Include="Assets.xcassets\Notification-Select.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Notification-Select.imageset\icActionSelect.png" />
-    <ImageAsset Include="Assets.xcassets\Notification-Select.imageset\icActionSelect%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Notification-Select.imageset\icActionSelect%403x.png" />
     <ImageAsset Include="Assets.xcassets\Maintenance-Image.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Maintenance-Image.imageset\Maintenance-Image-1.png" />
     <ImageAsset Include="Assets.xcassets\Maintenance-Image.imageset\Maintenance-Image%402x-1.png" />
     <ImageAsset Include="Assets.xcassets\Maintenance-Image.imageset\Maintenance-Image%403x-1.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Select.imageset\icActionSelectAll.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Select.imageset\icActionSelectAll%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Select.imageset\icActionSelectAll%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -1126,7 +1126,7 @@
     <Folder Include="Assets.xcassets\IC-Header-Cancel.imageset\" />
     <Folder Include="Assets.xcassets\Notification-Select.imageset\" />
     <Folder Include="Assets.xcassets\Maintenance-Image.imageset\" />
-    <Folder Include="Customs\Bill\" />
+    <Folder Include="Model\Modify Notification\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -1385,7 +1385,6 @@
     <Compile Include="Home\More\Push Notification Settings\NotificationSettingsViewCell.designer.cs">
       <DependentUpon>NotificationSettingsViewCell.cs</DependentUpon>
     </Compile>
-    <Compile Include="Model\DeleteNotificationResponseModel.cs" />
     <Compile Include="Push Notification\Notification Details\NotificationDetailsViewController.cs" />
     <Compile Include="Push Notification\Notification Details\NotificationDetailsViewController.designer.cs">
       <DependentUpon>NotificationDetailsViewController.cs</DependentUpon>
@@ -1812,10 +1811,12 @@
     <Compile Include="Helpers\Generic Line\GenericLine.cs" />
     <Compile Include="Model\UpdateNotification\UpdateNotificationModel.cs" />
     <Compile Include="Customs\CustomUIViewController.cs" />
-    <Compile Include="Customs\TextViewDelegate.cs" />
+    <Compile Include="Model\Modify Notification\DeleteNotificationResponseModel.cs" />
+    <Compile Include="Model\Modify Notification\ReadNotificationResponseModel.cs" />
     <Compile Include="Customs\Bill\CustomBillUIViewController.cs" />
-    <Compile Include="Customs\CustomUILabel.cs" />
     <Compile Include="Customs\CustomUIButton.cs" />
+    <Compile Include="Customs\CustomUILabel.cs" />
+    <Compile Include="Customs\TextViewDelegate.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />

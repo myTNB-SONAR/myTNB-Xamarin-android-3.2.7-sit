@@ -73,6 +73,7 @@ namespace myTNB
         {
             AlertHandler.DisplayGenericAlert(this, title, message, handler);
         }
+
         public void DisplayCustomAlert(string title, string message, Action handler = null, string actionTitle = null)
         {
             AlertHandler.DisplayCustomAlert(title, message, handler, actionTitle);

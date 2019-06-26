@@ -60,10 +60,19 @@ namespace myTNB
                 { string.IsNullOrEmpty(actionTitle) ? "Common_Ok".Translate() : actionTitle, handler }
             });
         }
-
-        public static void DisplayCustomAlert(string title, string message, Dictionary<string, Action> ctaButtons)
+        public static void DisplayForceUpdate(string title, string message
+          , string actionTitle = null, Action handler = null)
         {
-            nfloat margin = UIScreen.MainScreen.Bounds.Width * 0.056F;
+            DisplayCustomAlert(title, message, new Dictionary<string, Action>() {
+                { string.IsNullOrEmpty(actionTitle) ? "Common_Ok".Translate() : actionTitle, handler } }
+                , UITextAlignment.Center, UITextAlignment.Center, false, 0.105F);
+        }
+
+        public static void DisplayCustomAlert(string title, string message, Dictionary<string, Action> ctaButtons
+            , UITextAlignment titleAlignment = UITextAlignment.Left, UITextAlignment descriptionAlignment = UITextAlignment.Left
+            , bool shouldDismissAlert = true, float marginPercentage = 0.056F, bool isDefaultURLAction = true)
+        {
+            nfloat margin = UIScreen.MainScreen.Bounds.Width * marginPercentage;
             nfloat width = UIScreen.MainScreen.Bounds.Width - (margin * 2);
             nfloat height = UIScreen.MainScreen.Bounds.Height - (18 + (UIScreen.MainScreen.Bounds.Height * 0.202F));
             nfloat maxDescriptionHeight = height - 51 - 10;
@@ -97,17 +106,19 @@ namespace myTNB
             UILabel lblTitle = new UILabel(new CGRect(16, 0, width - 32, 0))
             {
                 Font = MyTNBFont.MuseoSans14_500,
-                TextColor = MyTNBColor.PayneGray,
-                TextAlignment = UITextAlignment.Left,
-                Text = title
+                TextColor = MyTNBColor.TunaGrey(),
+                TextAlignment = titleAlignment,
+                Text = title,
+                Lines = 0
             };
 
             nfloat txtViewY = 10;
             if (!string.IsNullOrEmpty(title) && !string.IsNullOrWhiteSpace(title))
             {
-                lblTitle.Frame = new CGRect(16, 16, width - 32, 20);
-                txtViewY = 46;
-                maxDescriptionHeight -= 36;
+                CGSize titleSize = LabelHelper.GetLabelSize(lblTitle, width - 32, 60);
+                lblTitle.Frame = new CGRect(16, 16, width - 32, titleSize.Height);
+                txtViewY = 26 + titleSize.Height;
+                maxDescriptionHeight -= (16 + titleSize.Height);
             }
 
             // Body
@@ -115,8 +126,6 @@ namespace myTNB
             {
                 Editable = false,
                 ScrollEnabled = true,
-                Selectable = false,
-                TextAlignment = UITextAlignment.Justified,
                 AttributedText = mutableHTMLBody,
                 WeakLinkTextAttributes = linkAttributes.Dictionary
             };
@@ -126,8 +135,8 @@ namespace myTNB
             CGSize size = txtViewDetails.SizeThatFits(new CGSize(width - 24, maxDescriptionHeight));
             nfloat txtViewHeight = size.Height > maxDescriptionHeight ? maxDescriptionHeight : size.Height;
             txtViewDetails.Frame = new CGRect(12, txtViewY, width - 24, txtViewHeight);
-
-            UIView viewline = new UIView(new CGRect(0, txtViewDetails.Frame.Height + 32, width, 1))
+            txtViewDetails.TextAlignment = descriptionAlignment;
+            UIView viewline = new UIView(new CGRect(0, txtViewDetails.Frame.GetMaxY(), width, 1))
             {
                 BackgroundColor = MyTNBColor.LightGrayBG
             };
@@ -152,7 +161,10 @@ namespace myTNB
                     {
                         item.Value?.Invoke();
                     }
-                    viewParent.RemoveFromSuperview();
+                    if (shouldDismissAlert)
+                    {
+                        viewParent.RemoveFromSuperview();
+                    }
                 }));
                 UILabel ctaLbl = new UILabel(new CGRect(0, 0, ctaBtn.Frame.Width, ctaBtn.Frame.Height))
                 {
@@ -178,15 +190,18 @@ namespace myTNB
             alertView.AddSubviews(new UIView[] { lblTitle, txtViewDetails, ctaContainer });
 
             viewParent.AddSubview(alertView);
-            Action<NSUrl> action = new Action<NSUrl>((url) =>
+            if (!isDefaultURLAction)
             {
-                string absURL = url?.AbsoluteString;
-                string key = !string.IsNullOrEmpty(absURL) && absURL.Contains("faqid=") ? absURL?.Split("faqid=")[1] : string.Empty;
-                key = key.Replace("%7B", "{").Replace("%7D", "}");
-                ViewHelper.GoToFAQScreenWithId(key);
-                viewParent.RemoveFromSuperview();
-            });
-            txtViewDetails.Delegate = new TextViewDelegate(action);
+                Action<NSUrl> action = new Action<NSUrl>((url) =>
+                {
+                    string absURL = url?.AbsoluteString;
+                    string key = !string.IsNullOrEmpty(absURL) && absURL.Contains("faqid=") ? absURL?.Split("faqid=")[1] : string.Empty;
+                    key = key.Replace("%7B", "{").Replace("%7D", "}");
+                    ViewHelper.GoToFAQScreenWithId(key);
+                    viewParent.RemoveFromSuperview();
+                });
+                txtViewDetails.Delegate = new TextViewDelegate(action);
+            }
             UIWindow currentWindow = UIApplication.SharedApplication.KeyWindow;
             currentWindow.AddSubview(viewParent);
         }

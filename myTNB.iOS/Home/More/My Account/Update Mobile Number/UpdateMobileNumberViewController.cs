@@ -257,7 +257,7 @@ namespace myTNB
             UIView titleBarView = titleBarComponent.GetUI();
             _navTitle = IsFromLogin ? "Manage_MobileNumberNotVerifiedTitle".Translate() : "Manage_MobileNumberVerifiedTitle".Translate();
             titleBarComponent.SetTitle(_navTitle);
-            titleBarComponent.SetNotificationVisibility(true);
+            titleBarComponent.SetPrimaryVisibility(true);
             titleBarComponent.SetBackVisibility(WillHideBackButton);
             titleBarComponent.SetBackAction(new UITapGestureRecognizer(() =>
             {

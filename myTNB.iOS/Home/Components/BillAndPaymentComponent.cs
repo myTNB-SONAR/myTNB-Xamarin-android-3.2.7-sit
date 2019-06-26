@@ -87,13 +87,13 @@ namespace myTNB.Dashboard.DashboardComponents
             };
 
             _infoView = new UIView(new CGRect(_viewPaymentContainer.Frame.Width - (_viewPaymentContainer.Frame.Width * .30) - 18
-                , _lblPaymentTitle.Frame.GetMaxY() + 4, _viewPaymentContainer.Frame.Width * .30, 14))
+                , _lblPaymentTitle.Frame.GetMaxY() + 4, _viewPaymentContainer.Frame.Width * .30, 16))
             {
                 Hidden = true
             };
-            _lblInfo = new UILabel(new CGRect(0, 0, _infoView.Frame.Width, 14))
+            _lblInfo = new UILabel(new CGRect(0, 0, _infoView.Frame.Width, 16))
             {
-                Font = MyTNBFont.MuseoSans12_300,
+                Font = MyTNBFont.MuseoSans12_500,
                 TextColor = MyTNBColor.PowerBlue,
                 TextAlignment = UITextAlignment.Right,
                 Text = "Component_WhyThisAmount".Translate()
@@ -297,11 +297,9 @@ namespace myTNB.Dashboard.DashboardComponents
                         _viewPaymentContainer.Frame = origViewFrame;
                         SetMaskHidden(false);
                     }
-
                 }
                 , () => { }
             );
-
         }
 
         internal void AdjustFrames()

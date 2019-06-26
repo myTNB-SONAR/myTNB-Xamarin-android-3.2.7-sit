@@ -78,9 +78,9 @@ namespace myTNB
             _titleBarComponent = new TitleBarComponent(headerView);
             UIView titleBarView = _titleBarComponent.GetUI();
             _titleBarComponent.SetTitle(NotificationInfo.Title);
-            _titleBarComponent.SetNotificationVisibility(false);
-            _titleBarComponent.SetNotificationImage("Notification-Delete");
-            _titleBarComponent.SetNotificationAction(new UITapGestureRecognizer(() =>
+            _titleBarComponent.SetPrimaryVisibility(false);
+            _titleBarComponent.SetPrimaryImage("Notification-Delete");
+            _titleBarComponent.SetPrimaryAction(new UITapGestureRecognizer(() =>
             {
                 var alert = UIAlertController.Create("PushNotification_DeleteTitle".Translate()
                     , "PushNotification_DeleteMessage".Translate(), UIAlertControllerStyle.Alert);
