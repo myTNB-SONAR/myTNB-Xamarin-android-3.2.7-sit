@@ -96,7 +96,8 @@
                         android:textColorLink="@color/white"
                         android:gravity="center" />
                 </LinearLayout>
-                <LinearLayout android:id="@+id/layout_api_refresh"
+                <LinearLayout 
+                    android:id="@+id/layout_api_refresh"
                     android:orientation="vertical"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
