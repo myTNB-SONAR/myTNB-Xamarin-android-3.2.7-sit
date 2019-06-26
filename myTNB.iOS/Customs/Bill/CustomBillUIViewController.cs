@@ -158,10 +158,7 @@ namespace myTNB
                 widgetY += 64;
                 _viewCurrentCharges = new UIView(new CGRect(18, widgetY, _contentWidth, 16));
                 widgetY += 32;
-                _viewItemizedBilling = new UIView()
-                {
-                    // BackgroundColor = UIColor.Cyan
-                };
+                _viewItemizedBilling = new UIView();
                 if (isItemizedBilling)
                 {
                     _viewItemizedBilling.Frame = new CGRect(18, widgetY, _contentWidth, 88);

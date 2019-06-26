@@ -1128,6 +1128,7 @@
     <Folder Include="Assets.xcassets\Maintenance-Image.imageset\" />
     <Folder Include="Model\Modify Notification\" />
     <Folder Include="Model\GetAppLaunchMasterData\" />
+    <Folder Include="Model\ItemisedBilling\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -1817,6 +1818,7 @@
     <Compile Include="Model\GetAppLaunchMasterData\MasterDataModel.cs" />
     <Compile Include="Model\GetAppLaunchMasterData\MasterDataResponseModel.cs" />
     <Compile Include="Model\GetAppLaunchMasterData\ForceUpdateInfoModel.cs" />
+    <Compile Include="Model\ItemisedBilling\ItemisedBilling.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />
