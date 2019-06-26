@@ -147,7 +147,7 @@ namespace myTNB
                             InitializeBillTableView();
                             SetupContent();
                             ToggleButtons();
-                            AlertHandler.DisplayNoDataAlert(this);
+                            DisplayNoDataAlert();
                         }
                     });
                 });
@@ -334,15 +334,15 @@ namespace myTNB
                 : string.Empty;
             _lblAccountNumber.Text = DataManager.DataManager.SharedInstance.SelectedAccount?.accNum;
 
-            if (NetworkUtility.isReachable)
+            NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
             {
-                _lblAddress.Text = DataManager.DataManager.SharedInstance.SelectedAccount?.accountStAddress;
-                RefitAccountDetailsToWidget();
-                _headerView.Frame = GetHeaderFrame();
-                NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
+                InvokeOnMainThread(async () =>
                 {
-                    InvokeOnMainThread(async () =>
+                    if (NetworkUtility.isReachable)
                     {
+                        _lblAddress.Text = DataManager.DataManager.SharedInstance.SelectedAccount?.accountStAddress;
+                        RefitAccountDetailsToWidget();
+                        _headerView.Frame = GetHeaderFrame();
                         await LoadAmountDue();
                         var currentAmt = DataManager.DataManager.SharedInstance.BillingAccountDetails?.amCurrentChg ?? 0;
                         var outstandingAmt = DataManager.DataManager.SharedInstance.BillingAccountDetails?.amOutstandingChg ?? 0;
@@ -372,20 +372,22 @@ namespace myTNB
                                 , string.Format("{0} {1}", TNBGlobal.UNIT_CURRENCY, reconnectionCharges.ToString("N2", CultureInfo.InvariantCulture))
                                 , string.Format("{0} {1}", TNBGlobal.UNIT_CURRENCY, stampDuty.ToString("N2", CultureInfo.InvariantCulture)));
                         }
-                    });
+                    }
+                    else
+                    {
+                        _lblAddress.Text = string.Empty;
+                        SetChargesValues(string.Format("{0} {1}", TNBGlobal.UNIT_CURRENCY, TNBGlobal.DEFAULT_VALUE)
+                            , string.Format("{0} {1}", TNBGlobal.UNIT_CURRENCY, TNBGlobal.DEFAULT_VALUE)
+                            , TNBGlobal.DEFAULT_VALUE);
+                        if (isItemizedBilling)
+                        {
+                            SetItemizedBillingValues(null, null, null, null, null);
+                        }
+                        DisplayNoDataAlert();
+                    }
                 });
-            }
-            else
-            {
-                _lblAddress.Text = string.Empty;
-                SetChargesValues(string.Format("{0} {1}", TNBGlobal.UNIT_CURRENCY, TNBGlobal.DEFAULT_VALUE)
-                    , string.Format("{0} {1}", TNBGlobal.UNIT_CURRENCY, TNBGlobal.DEFAULT_VALUE)
-                    , TNBGlobal.DEFAULT_VALUE);
-                if (isItemizedBilling)
-                {
-                    SetItemizedBillingValues(null, null, null, null, null);
-                }
-            }
+            });
+
 
             _lblHistoryHeader.Text = isREAccount ? "Bill_REPaymentSectionHeader".Translate() : "Bill_PaymentSectionHeader".Translate();
         }
@@ -535,15 +537,9 @@ namespace myTNB
 
         void InitializeBillTableView()
         {
-            NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
-            {
-                InvokeOnMainThread(() =>
-                {
-                    billTableView.Source = new BillTableViewDataSource(_billingHistory
-                        , _paymentHistory, this, NetworkUtility.isReachable, isREAccount, isOwnedAccount);
-                    billTableView.ReloadData();
-                });
-            });
+            billTableView.Source = new BillTableViewDataSource(_billingHistory
+                , _paymentHistory, this, NetworkUtility.isReachable, isREAccount, isOwnedAccount);
+            billTableView.ReloadData();
         }
 
         void InitializedSubviews()
@@ -621,7 +617,7 @@ namespace myTNB
                         else
                         {
                             Debug.WriteLine("No Network");
-                            AlertHandler.DisplayNoDataAlert(this);
+                            DisplayNoDataAlert();
                         }
                     });
                 });
@@ -646,7 +642,6 @@ namespace myTNB
             }
         }
 
-
         internal void ViewReceipt(string merchantTransactionID)
         {
             NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
@@ -669,7 +664,7 @@ namespace myTNB
                     else
                     {
                         Debug.WriteLine("No Network");
-                        AlertHandler.DisplayNoDataAlert(this);
+                        DisplayNoDataAlert();
                     }
                 });
             });
@@ -705,6 +700,10 @@ namespace myTNB
                                 }
                                 InvokeOnMainThread(DisplayPaymentHistory);
                             });
+                        }
+                        else
+                        {
+                            DisplayNoDataAlert();
                         }
                     });
                 });
@@ -788,7 +787,7 @@ namespace myTNB
                     {
                         DataManager.DataManager.SharedInstance.IsSameAccount = true;
                         DataManager.DataManager.SharedInstance.BillingAccountDetails = new BillingAccountDetailsDataModel();
-                        AlertHandler.DisplayServiceError(this, _billingAccountDetailsList?.d?.message);
+                        DisplayServiceError(_billingAccountDetailsList?.d?.message);
                         ActivityIndicator.Hide();
                     }
                 });
