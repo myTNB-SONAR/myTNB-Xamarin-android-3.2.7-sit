@@ -1,4 +1,6 @@
-﻿namespace myTNB.Model
+﻿using System.Collections.Generic;
+
+namespace myTNB.Model
 {
     public class BillingAccountDetailsDataModel
     {
@@ -30,10 +32,18 @@
         public string message { set; get; }
 
         public double InvoiceAmountPayable { set; get; }
-        public double OpenSecurityDeposit { set; get; }
-        public double OpenStampDuty { set; get; }
-        public double OpenProcessingFee { set; get; }
-        public double OpenMeterCost { set; get; }
+        public List<ItemisedBilling> ItemizedBillings { set; get; }
         public double OpenChargesTotal { set; get; }
+        public bool IsItemisedBilling
+        {
+            get
+            {
+                return OpenChargesTotal > 0;
+            }
+        }
+        public string WhatIsThisLink { set; get; }
+        public string WhatIsThisTitle { set; get; }
+        public string WhatIsThisMessage { set; get; }
+        public string WhatIsThisButtonText { set; get; }
     }
 }

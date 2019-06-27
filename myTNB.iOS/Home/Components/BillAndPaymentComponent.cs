@@ -95,8 +95,7 @@ namespace myTNB.Dashboard.DashboardComponents
             {
                 Font = MyTNBFont.MuseoSans12_500,
                 TextColor = MyTNBColor.PowerBlue,
-                TextAlignment = UITextAlignment.Right,
-                Text = "Component_WhyThisAmount".Translate()
+                TextAlignment = UITextAlignment.Right
             };
             _infoView.AddSubview(_lblInfo);
 
@@ -333,18 +332,21 @@ namespace myTNB.Dashboard.DashboardComponents
             origViewFrame = newFrame;
         }
 
-        public void DisplayInfoToolTip(string message, Action action = null)
+        public void DisplayInfoToolTip(string title, Action action = null)
         {
-            if (!string.IsNullOrEmpty(message) && !string.IsNullOrWhiteSpace(message))
-            {
-                _lblInfo.Text = message;
-            }
+            _lblInfo.Text = title ?? "Component_WhyThisAmount".Translate();
+
             if (action != null)
             {
                 _infoView.AddGestureRecognizer(new UITapGestureRecognizer(action));
             }
             _infoView.Hidden = false;
             _viewAmount.Frame = new CGRect(_viewAmount.Frame.X, 10 + adjustment, _viewAmount.Frame.Width, _viewAmount.Frame.Height);
+        }
+
+        public void HideInfo()
+        {
+            _infoView.Hidden = true;
         }
     }
 }

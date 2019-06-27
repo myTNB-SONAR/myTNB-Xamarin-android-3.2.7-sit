@@ -33,6 +33,10 @@
 "Bill_StampDuty"="Stamp Duty";
 "Bill_TotalPayable"="Total Payable";
 "Bill_Via"="via";
+"Bill_WhatIsThis"="What is this?";
+"Bill_WhatIsThisButtonText"="Got It!";
+"Bill_WhatIsThisMessage"="Mandatory charges are charges that need to be cleared. It will be included in your total amount payable.";
+"Bill_WhatIsThisTitle"="This account has mandatory charges";
 
 /*Common*/
 "Common_Abort"="Abort";
@@ -143,6 +147,8 @@
 "Dashboard_RESectionHeader"="Renewable Energy";
 "Dashboard_RESectionSubHeader"="My Earnings";
 "Dashboard_SectionHeader"="Accounts";
+"Dashboard_TooltipMessage"="It includes your current month’s bill, outstanding charges plus other mandatory charges. You may check out the Bills tab for a detailed view.";
+"Dashboard_TooltipTitle"="What is included in my bill?";
 
 /*Error*/
 "Error_BCRMMessage"="BRCM will be down for maintenance purpose";

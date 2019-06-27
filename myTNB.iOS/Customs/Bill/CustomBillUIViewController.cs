@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Globalization;
 using CoreGraphics;
+using myTNB.Model;
 using UIKit;
 
 namespace myTNB
@@ -32,15 +35,15 @@ namespace myTNB
         //Button
         public UIButton _btnPay, _btnBills, _btnPayments;
         //Child Container
-        UIView _viewAmount;
+        UIView _viewAmount, _viewLine;
         //UIImage
         public UIImageView _imgLeaf;
 
         //For Normal and Smart Metre
-        public void CreateNormalView(bool isItemizedBilling = false)
+        public void CreateNormalView()
         {
             CreateAccountDetailsSection();
-            CreateChargesSection(false, isItemizedBilling);
+            CreateChargesSection(false);
             CreateHistorySection();
         }
 
@@ -106,6 +109,59 @@ namespace myTNB
                 , _viewCharges.Frame.Width, _viewCharges.Frame.Height);
         }
 
+        public void AddItemisedBillingDetails(BillingAccountDetailsDataModel billingAccount, Action tooltipAction)
+        {
+            nfloat widgetY = 0;
+            _lblMandatoryPayments = GetKeyValueLabel(new CGRect(0, widgetY, childWidthTitle, 16), "Bill_MandatoryPayments");
+            _lblMandatoryPaymentsValue = GetKeyValueLabel(new CGRect(_lblMandatoryPayments.Frame.Width, widgetY, childWidthValue, 16)
+                , string.Format("{0} {1}", TNBGlobal.UNIT_CURRENCY, billingAccount.OpenChargesTotal.ToString("N2", CultureInfo.InvariantCulture))
+                , UITextAlignment.Right);
+            widgetY += 20;
+            _viewItemizedBilling.AddSubviews(new UIView[] { _lblMandatoryPayments, _lblMandatoryPaymentsValue });
+            foreach (var item in billingAccount.ItemizedBillings)
+            {
+                UILabel iTitle = GetSubKeyValueLabel(new CGRect(0, widgetY, childWidthTitle, 16), item.NonConsumpChargeName);
+                UILabel iValue = GetSubKeyValueLabel(new CGRect(childWidthTitle, widgetY, childWidthValue, 16)
+                    , string.Format("{0} {1}", TNBGlobal.UNIT_CURRENCY, item.NonConsumpChargeValue.ToString("N2", CultureInfo.InvariantCulture))
+                    , UITextAlignment.Right);
+                _viewItemizedBilling.AddSubviews(new UIView[] { iTitle, iValue });
+                widgetY += 16;
+            }
+
+            widgetY += 4;
+            UIView viewTooltip = new UIView(new CGRect(0, widgetY, childWidth, 16));
+            viewTooltip.AddGestureRecognizer(new UITapGestureRecognizer(() =>
+            {
+                tooltipAction?.Invoke();
+            }));
+            UILabel lblTooltip = new UILabel(new CGRect(0, 0, childWidth, 16))
+            {
+                TextColor = MyTNBColor.PowerBlue,
+                Font = MyTNBFont.MuseoSans12_500,
+                TextAlignment = UITextAlignment.Left,
+                Text = billingAccount.WhatIsThisLink ?? "Bill_WhatIsThis".Translate()
+            };
+            viewTooltip.AddSubview(lblTooltip);
+            _viewItemizedBilling.AddSubview(viewTooltip);
+            widgetY += 16;
+
+            _viewItemizedBilling.Frame = new CGRect(18, _viewBreakdownTitle.Frame.GetMaxY() + 16, _contentWidth, widgetY);
+            _viewOutstandingCharges.Frame = new CGRect(_viewOutstandingCharges.Frame.X, _viewItemizedBilling.Frame.GetMaxY() + 12
+                , _viewOutstandingCharges.Frame.Width, _viewOutstandingCharges.Frame.Height);
+            _viewCurrentCharges.Frame = new CGRect(_viewCurrentCharges.Frame.X, _viewOutstandingCharges.Frame.GetMaxY() + 12
+                , _viewCurrentCharges.Frame.Width, _viewCurrentCharges.Frame.Height);
+            _viewLine.Frame = new CGRect(_viewLine.Frame.X, _viewCurrentCharges.Frame.GetMaxY() + 16
+                , _viewLine.Frame.Width, _viewLine.Frame.Height);
+            _viewTotalAmountDue.Frame = new CGRect(_viewTotalAmountDue.Frame.X, _viewLine.Frame.GetMaxY()
+                , _viewTotalAmountDue.Frame.Width, _viewTotalAmountDue.Frame.Height);
+            _btnPay.Frame = new CGRect(_btnPay.Frame.X, _viewTotalAmountDue.Frame.GetMaxY()
+                , _btnPay.Frame.Width, _btnPay.Frame.Height);
+            _viewCharges.Frame = new CGRect(_viewCharges.Frame.X, _viewCharges.Frame.Y
+                , _viewCharges.Frame.Width, _btnPay.Frame.GetMaxY() + 16);
+            _viewHistory.Frame = new CGRect(_viewHistory.Frame.X, _viewCharges.Frame.GetMaxY()
+                , _viewHistory.Frame.Width, _viewHistory.Frame.Height);
+        }
+
         private void CreateAccountDetailsSection(bool isReAccount = false)
         {
             nfloat widgetY = 16.0F;
@@ -135,7 +191,7 @@ namespace myTNB
             }
         }
 
-        private void CreateChargesSection(bool isREAccount = false, bool isItemizedBilling = false)
+        private void CreateChargesSection(bool isREAccount = false)
         {
             nfloat widgetY = 0.0F;
             _viewCharges = new UIView()
@@ -159,15 +215,9 @@ namespace myTNB
                 _viewCurrentCharges = new UIView(new CGRect(18, widgetY, _contentWidth, 16));
                 widgetY += 32;
                 _viewItemizedBilling = new UIView();
-                if (isItemizedBilling)
-                {
-                    _viewItemizedBilling.Frame = new CGRect(18, widgetY, _contentWidth, 88);
-                    AddItemizedBilling();
-                    widgetY += 104;
-                }
                 _viewOutstandingCharges = new UIView(new CGRect(18, widgetY, _contentWidth, 16));
                 widgetY += 32;
-                UIView viewLine = GenericLine.GetLine(new CGRect(18, widgetY, _contentWidth, 1));
+                _viewLine = GenericLine.GetLine(new CGRect(18, widgetY, _contentWidth, 1));
                 widgetY += 1;
                 _viewTotalAmountDue = new UIView(new CGRect(18, widgetY, _contentWidth, 64));
                 widgetY += 64;
@@ -176,25 +226,25 @@ namespace myTNB
 
                 nfloat containerViewHeight = widgetY + _btnPay.Frame.Height + 24;
                 _viewCharges.Frame = new CGRect(0, _viewAccountDetails.Frame.GetMaxY(), _frameWidth, containerViewHeight);
-                _viewCharges.AddSubviews(new UIView[] { _viewBreakdownTitle, _viewCurrentCharges, _viewItemizedBilling
-                , _viewOutstandingCharges, viewLine, _viewTotalAmountDue, _btnPay });
+                _viewCharges.AddSubviews(new UIView[] { _viewBreakdownTitle, _viewItemizedBilling, _viewOutstandingCharges
+                    , _viewCurrentCharges, _viewLine, _viewTotalAmountDue, _btnPay });
             }
-            AddChildrenViews(isREAccount, isItemizedBilling);
+            AddChildrenViews(isREAccount);
         }
 
-        private void AddChildrenViews(bool isREAccount, bool isItemizedBilling)
+        private void AddChildrenViews(bool isREAccount)
         {
             _lblBreakdownHeader = GetUILabelField(new CGRect(18, 24, _frameWidth - 36, 18), "Bill_BillDetails"
                 , MyTNBFont.MuseoSans16, MyTNBColor.PowerBlue);
 
             if (!isREAccount)
             {
-                _lblCurrentChargesTitle = GetUILabelField(new CGRect(0, 0, childWidthTitle, 16), "Bill_CurrentCharges");
-                _lblCurrentChargesValue = GetUILabelField(new CGRect(_lblCurrentChargesTitle.Frame.Width, 0
+                _lblCurrentChargesTitle = GetKeyValueLabel(new CGRect(0, 0, childWidthTitle, 16), "Bill_CurrentCharges");
+                _lblCurrentChargesValue = GetKeyValueLabel(new CGRect(_lblCurrentChargesTitle.Frame.Width, 0
                     , childWidthValue, 16), string.Empty, UITextAlignment.Right);
 
-                _lblOutstandingChargesTitle = GetUILabelField(new CGRect(0, 0, childWidthTitle, 16), "Bill_OutstandingCharges");
-                _lblOutstandingChargesValue = GetUILabelField(new CGRect(_lblCurrentChargesTitle.Frame.Width, 0
+                _lblOutstandingChargesTitle = GetKeyValueLabel(new CGRect(0, 0, childWidthTitle, 16), "Bill_OutstandingCharges");
+                _lblOutstandingChargesValue = GetKeyValueLabel(new CGRect(_lblCurrentChargesTitle.Frame.Width, 0
                     , childWidthValue, 16), string.Empty, UITextAlignment.Right);
 
                 _viewCurrentCharges.AddSubviews(new UIView[] { _lblCurrentChargesTitle, _lblCurrentChargesValue });
@@ -202,9 +252,9 @@ namespace myTNB
             }
 
             _lblTotalDueAmountTitle = GetUILabelField(new CGRect(0, 16, childWidthTitle, 18), "Common_TotalAmountDue"
-                , MyTNBFont.MuseoSans14_500, MyTNBColor.TunaGrey());
+                , MyTNBFont.MuseoSans16_500, MyTNBColor.TunaGrey());
             _lblDueDateTitle = GetUILabelField(new CGRect(0, 34, childWidthTitle, 14), TNBGlobal.EMPTY_DATE
-                , MyTNBFont.MuseoSans11_300, MyTNBColor.SilverChalice);
+                , MyTNBFont.MuseoSans12_300, MyTNBColor.SilverChalice);
             _viewAmount = new UIView(new CGRect(childWidthTitle, 0, childWidthValue, 48));
             UILabel lblCurrency = GetUILabelField(new CGRect(0, 30, 24, 18), string.Format("{0} "
                 , TNBGlobal.UNIT_CURRENCY), MyTNBFont.MuseoSans14, MyTNBColor.TunaGrey(), UITextAlignment.Right);
@@ -219,34 +269,6 @@ namespace myTNB
             _viewTotalAmountDue.AddSubviews(new UIView[] { _lblTotalDueAmountTitle, _lblDueDateTitle, _viewAmount });
 
             RefitAmountToWidget();
-        }
-
-        private void AddItemizedBilling()
-        {
-            nfloat widgetY = 0;
-            _lblMandatoryPayments = GetUILabelField(new CGRect(0, widgetY, childWidthTitle, 16), "Bill_MandatoryPayments");
-            _lblMandatoryPaymentsValue = GetUILabelField(new CGRect(_lblMandatoryPayments.Frame.Width, widgetY
-                , childWidthValue, 16), string.Empty, UITextAlignment.Right);
-            widgetY += 32;
-            _lblSecurityDeposit = GetSubKeyValueLabel(new CGRect(0, widgetY, childWidthTitle, 14), "Bill_SecurityDeposit");
-            _lblSecurityDepositValue = GetSubKeyValueLabel(new CGRect(_lblSecurityDeposit.Frame.Width, widgetY
-                , childWidthValue, 14), string.Empty, UITextAlignment.Right);
-            widgetY += 14;
-            _lblDisconnection = GetSubKeyValueLabel(new CGRect(0, widgetY, childWidthTitle, 14), "Bill_DisconnectionCharges");
-            _lblDisconnectionValue = GetSubKeyValueLabel(new CGRect(_lblDisconnection.Frame.Width, widgetY
-                , childWidthValue, 14), string.Empty, UITextAlignment.Right);
-            widgetY += 14;
-            _lblReconnection = GetSubKeyValueLabel(new CGRect(0, widgetY, childWidthTitle, 14), "Bill_ReconnectionCharges");
-            _lblReconnectionValue = GetSubKeyValueLabel(new CGRect(_lblReconnection.Frame.Width, widgetY
-                , childWidthValue, 14), string.Empty, UITextAlignment.Right);
-            widgetY += 14;
-            _lblStampDuty = GetSubKeyValueLabel(new CGRect(0, widgetY, childWidthTitle, 14), "Bill_StampDuty");
-            _lblStampDutyValue = GetSubKeyValueLabel(new CGRect(_lblStampDuty.Frame.Width, widgetY
-                , childWidthValue, 14), string.Empty, UITextAlignment.Right);
-
-            _viewItemizedBilling.AddSubviews(new UIView[] { _lblMandatoryPayments, _lblSecurityDeposit
-                , _lblDisconnection, _lblReconnection, _lblStampDuty,_lblMandatoryPaymentsValue
-                , _lblSecurityDepositValue, _lblDisconnectionValue, _lblReconnectionValue, _lblStampDutyValue  });
         }
 
         private void CreateHistorySection()
@@ -284,7 +306,12 @@ namespace myTNB
 
         private UILabel GetSubKeyValueLabel(CGRect cgRect, string key, UITextAlignment textAlignment = UITextAlignment.Left)
         {
-            return GetUILabelField(cgRect, key, MyTNBFont.MuseoSans11_300, MyTNBColor.SilverChalice, textAlignment);
+            return GetUILabelField(cgRect, key, MyTNBFont.MuseoSans12_300, MyTNBColor.SilverChalice, textAlignment);
+        }
+
+        private UILabel GetKeyValueLabel(CGRect cgRect, string key, UITextAlignment textAlignment = UITextAlignment.Left)
+        {
+            return GetUILabelField(cgRect, key, MyTNBFont.MuseoSans14_500, MyTNBColor.TunaGrey(), textAlignment);
         }
     }
 }

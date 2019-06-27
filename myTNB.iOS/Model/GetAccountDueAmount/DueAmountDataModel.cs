@@ -73,6 +73,12 @@ namespace myTNB.Model
             }
         }
 
+        public string WhyThisAmountLink { set; get; }
+        public string WhyThisAmountTitle { set; get; }
+        public string WhyThisAmountMessage { set; get; }
+        public string WhyThisAmountPrimaryButtonText { set; get; }
+        public string WhyThisAmountSecondaryButtonText { set; get; }
+
         #endregion
 
         /// <summary>

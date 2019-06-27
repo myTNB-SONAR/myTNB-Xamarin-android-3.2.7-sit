@@ -191,16 +191,6 @@ namespace myTNB.Dashboard
             var acct = DataManager.DataManager.SharedInstance.SelectedAccount;
             var due = DataManager.DataManager.SharedInstance.GetDue(acct.accNum);
 
-            /*if (due != null && DataManager.DataManager.SharedInstance.AccountRecordsList?.d?.Count > 1)
-            {
-                _amountDue = due.amountDue;
-                _dateDue = due.billDueDate;
-                _dueIncrementDays = due.IncrementREDueDateByDays;
-                SetAmountInBillingDetails(_amountDue);
-                SetBillAndPaymentDetails();
-            }
-            else
-            {*/
             await GetBillingAccountDetails().ContinueWith(task =>
             {
                 InvokeOnMainThread(() =>
@@ -795,25 +785,36 @@ namespace myTNB.Dashboard
                 }
 
                 if (_dueAmount != null && _dueAmount?.d != null && _dueAmount?.d?.didSucceed == true
-                        && _dueAmount?.d?.data != null && _dueAmount.d.data.IsItemisedBilling)
+                        && _dueAmount?.d?.data != null)
                 {
-                    _dashboardMainComponent._billAndPaymentComponent.DisplayInfoToolTip(string.Empty, DisplayToolTip);
+                    if (_dueAmount.d.data.IsItemisedBilling)
+                    {
+                        _dashboardMainComponent._billAndPaymentComponent.DisplayInfoToolTip(_dueAmount.d.data.WhyThisAmountLink, DisplayToolTip);
+                    }
+                    else
+                    {
+                        _dashboardMainComponent._billAndPaymentComponent.HideInfo();
+                    }
                 }
             }
         }
 
         void DisplayToolTip()
         {
-            DisplayCustomAlert("What is included in my bill?"
-                , "It includes your current month's bill plus other mandatory payments. you may check out Bills tab for a detailed view."
+            string title = _dueAmount.d.data.WhyThisAmountTitle ?? "Dashboard_TooltipTitle".Translate();
+            string msg = _dueAmount.d.data.WhyThisAmountMessage ?? "Dashboard_TooltipMessage".Translate();
+            string primaryButton = _dueAmount.d.data.WhyThisAmountPrimaryButtonText ?? "Common_GotIt".Translate();
+            string secondaryButton = _dueAmount.d.data.WhyThisAmountSecondaryButtonText ?? "Dashboard_BringMeThere".Translate();
+
+            DisplayCustomAlert(title, msg
                 , new Dictionary<string, Action>() {
-                    { "Common_GotIt".Translate(), null },
-                    {"Dashboard_BringMeThere".Translate(), ()=>{
+                    { primaryButton, null }
+                    , {secondaryButton, ()=>{
                         if (TabBarController != null)
                         {
                             TabBarController.SelectedIndex = 1;
                         }
-                    } }
+                    }}
                 });
         }
 

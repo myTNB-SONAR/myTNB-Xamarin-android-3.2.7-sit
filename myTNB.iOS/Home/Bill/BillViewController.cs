@@ -27,7 +27,6 @@ namespace myTNB
         public bool IsFromNavigation;
         bool _paymentNeedsUpdate, isAnimating, isREAccount, isOwnedAccount, isFromReceiptScreen;
         bool isBcrmAvailable = true;
-        //readonly bool isItemizedBilling; //Stub
 
         public BillViewController(IntPtr handle) : base(handle)
         {
@@ -90,10 +89,6 @@ namespace myTNB
             titleBarComponent.SetBackVisibility(!IsFromNavigation);
             DataManager.DataManager.SharedInstance.selectedTag = 0;
             SetChargesValues(null, null, TNBGlobal.DEFAULT_VALUE);
-            /* if (isItemizedBilling)
-             {
-                 SetItemizedBillingValues(null, null, null, null, null);
-             }*/
 
             SetDetailsView();
 
@@ -180,15 +175,15 @@ namespace myTNB
         {
             if (_lblBreakdownHeader != null)
             {
-                _lblBreakdownHeader.Text = isREAccount ? "Bill_CurrentPaymentAdvice".Translate() : "Bill_BillDetails".Translate();
+                _lblBreakdownHeader.Text = (isREAccount ? "Bill_CurrentPaymentAdvice" : "Bill_BillDetails").Translate();
             }
             if (_lblTotalDueAmountTitle != null)
             {
-                _lblTotalDueAmountTitle.Text = isREAccount ? "Bill_MyEarnings".Translate() : "Common_TotalAmountDue".Translate();
+                _lblTotalDueAmountTitle.Text = (isREAccount ? "Bill_MyEarnings" : "Common_TotalAmountDue").Translate();
             }
             if (_btnBills != null)
             {
-                _btnBills.SetTitle(isREAccount ? "Bill_PaymentAdviceInfo".Translate() : "Bill_Bills".Translate(), UIControlState.Normal);
+                _btnBills.SetTitle((isREAccount ? "Bill_PaymentAdviceInfo" : "Bill_Bills").Translate(), UIControlState.Normal);
             }
         }
 
@@ -361,20 +356,12 @@ namespace myTNB
                             , string.Format("{0} {1}", TNBGlobal.UNIT_CURRENCY, outstanding.ToString("N2", CultureInfo.InvariantCulture))
                             , balance.ToString("N2", CultureInfo.InvariantCulture));
 
-                        if (_dueAmount != null && _dueAmount?.d != null && _dueAmount?.d?.didSucceed == true
-                            && _dueAmount?.d?.data != null && _dueAmount.d.data.IsItemisedBilling)
+                        if (_billingAccountDetailsList != null && _billingAccountDetailsList?.d != null && _billingAccountDetailsList?.d?.didSucceed == true
+                            && _billingAccountDetailsList?.d?.data != null && _billingAccountDetailsList.d.data.IsItemisedBilling)
                         {
-                            var mandatoryPayments = DataManager.DataManager.SharedInstance.BillingAccountDetails?.OpenChargesTotal ?? 0;
-                            var securityDeposit = DataManager.DataManager.SharedInstance.BillingAccountDetails?.OpenSecurityDeposit ?? 0;
-                            var disconnectionCharges = DataManager.DataManager.SharedInstance.BillingAccountDetails?.OpenProcessingFee ?? 0;
-                            var reconnectionCharges = DataManager.DataManager.SharedInstance.BillingAccountDetails?.OpenMeterCost ?? 0;
-                            var stampDuty = DataManager.DataManager.SharedInstance.BillingAccountDetails?.OpenStampDuty ?? 0;
-
-                            SetItemizedBillingValues(string.Format("{0} {1}", TNBGlobal.UNIT_CURRENCY, mandatoryPayments.ToString("N2", CultureInfo.InvariantCulture))
-                                , string.Format("{0} {1}", TNBGlobal.UNIT_CURRENCY, securityDeposit.ToString("N2", CultureInfo.InvariantCulture))
-                                , string.Format("{0} {1}", TNBGlobal.UNIT_CURRENCY, disconnectionCharges.ToString("N2", CultureInfo.InvariantCulture))
-                                , string.Format("{0} {1}", TNBGlobal.UNIT_CURRENCY, reconnectionCharges.ToString("N2", CultureInfo.InvariantCulture))
-                                , string.Format("{0} {1}", TNBGlobal.UNIT_CURRENCY, stampDuty.ToString("N2", CultureInfo.InvariantCulture)));
+                            AddItemisedBillingDetails(_billingAccountDetailsList.d.data, ItemisedBillingTooltipAction);
+                            _headerView.Frame = GetHeaderFrame();
+                            billTableView.ReloadData();
                         }
                     }
                     else
@@ -383,10 +370,6 @@ namespace myTNB
                         SetChargesValues(string.Format("{0} {1}", TNBGlobal.UNIT_CURRENCY, TNBGlobal.DEFAULT_VALUE)
                             , string.Format("{0} {1}", TNBGlobal.UNIT_CURRENCY, TNBGlobal.DEFAULT_VALUE)
                             , TNBGlobal.DEFAULT_VALUE);
-                        /*if (isItemizedBilling)
-                        {
-                            SetItemizedBillingValues(null, null, null, null, null);
-                        }*/
                         DisplayNoDataAlert();
                     }
                 });
@@ -405,16 +388,6 @@ namespace myTNB
             double _amountDue;
             double _dueIncrementDays;
 
-            /*if (due != null && DataManager.DataManager.SharedInstance.AccountRecordsList?.d?.Count > 1)
-            {
-                _amountDue = due.amountDue;
-                _dateDue = due.billDueDate;
-                _dueIncrementDays = due.IncrementREDueDateByDays;
-                SetAmountInBillingDetails(_amountDue);
-                SetBillAndPaymentDetails(_dateDue, _dueIncrementDays);
-            }
-            else
-            {*/
             await GetBillingAccountDetails().ContinueWith(task =>
              {
                  InvokeOnMainThread(() =>
@@ -550,7 +523,7 @@ namespace myTNB
         {
             _headerView = new UIView()
             {
-                BackgroundColor = UIColor.White
+                BackgroundColor = UIColor.White,
             };
             billTableView.SeparatorStyle = UITableViewCellSeparatorStyle.None;
             billTableView.TableHeaderView = _headerView;
@@ -561,7 +534,6 @@ namespace myTNB
             }
             else
             {
-                //CreateNormalView(isItemizedBilling);
                 CreateNormalView();
             }
             _headerView.AddSubviews(new UIView[] { _viewAccountDetails, _viewCharges, _viewHistory });
@@ -816,6 +788,15 @@ namespace myTNB
                 };
                 _billingAccountDetailsList = serviceManager.GetBillingAccountDetails("GetBillingAccountDetails", requestParameter);
             });
+        }
+
+        private void ItemisedBillingTooltipAction()
+        {
+            string title = _billingAccountDetailsList.d.data.WhatIsThisTitle ?? "Bill_WhatIsThisTitle".Translate();
+            string msg = _billingAccountDetailsList.d.data.WhatIsThisMessage ?? "Bill_WhatIsThisMessage".Translate();
+            string btnText = _billingAccountDetailsList.d.data.WhatIsThisButtonText ?? "Bill_WhatIsThisButtonText".Translate();
+
+            DisplayCustomAlert(title, msg, btnText);
         }
     }
 }
