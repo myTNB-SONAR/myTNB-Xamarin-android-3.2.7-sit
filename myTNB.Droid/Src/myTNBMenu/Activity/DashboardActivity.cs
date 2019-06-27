@@ -57,7 +57,6 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
         private DashboardContract.IUserActionsListener userActionsListener;
         private DashboardPresenter mPresenter;
         private bool urlSchemaCalled = false;
-        private bool navigateBilling = false;
         private string urlSchemaData = "";
 
         [BindView(Resource.Id.rootView)]
@@ -250,13 +249,6 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
             // TODO : ADD DRAWABLE RIGHT IF ACCOUNTS IN DATABASE IS GREATER THAN 1
             this.userActionsListener?.OnNotificationCount();
-
-            navigateBilling = false;
-
-            if (extras != null && extras.ContainsKey(Constants.ITEMZIED_BILLING_VIEW_KEY))
-            {
-                navigateBilling = true;
-            }
         }
 
         public void ClearFragmentStack()
@@ -326,10 +318,6 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             if (this.mPresenter != null)
             {
                 this.mPresenter.OnValidateData();
-            }
-            if(navigateBilling)
-            {
-                BillsMenuAccess();
             }
         }
 
@@ -894,6 +882,14 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             ShowProgressDialog();
             bottomNavigationView.Menu.FindItem(Resource.Id.menu_bill).SetChecked(true);
             this.userActionsListener?.OnMenuSelect(Resource.Id.menu_bill);
+        }
+
+        public void BillMenuAccessOther(AccountData selectedAccount)
+        {
+            bottomNavigationView.Menu.FindItem(Resource.Id.menu_bill).SetChecked(true);
+            ShowAccountName();
+            SetToolbarTitle(Resource.String.bill_menu_activity_title);
+            ShowBillMenu(selectedAccount);
         }
 
         public void ShowUnreadPromotions()

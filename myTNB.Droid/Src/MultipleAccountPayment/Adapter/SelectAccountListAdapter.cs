@@ -10,6 +10,7 @@ using Android.Views;
 using Android.Widget;
 using Java.Text;
 using myTNB_Android.Src.Base.Activity;
+using myTNB_Android.Src.MultipleAccountPayment.Activity;
 using myTNB_Android.Src.MultipleAccountPayment.Model;
 using myTNB_Android.Src.myTNBMenu.Activity;
 using myTNB_Android.Src.Utils;
@@ -329,11 +330,13 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Adapter
                 };
                 btnBringMeThere.Click += delegate
                 {
-                    Intent dashbaord_activity = new Intent(mActicity, typeof(DashboardActivity));
-                    dashbaord_activity.PutExtra(Constants.ITEMZIED_BILLING_VIEW_KEY, true);
-                    dashbaord_activity.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
-                    mActicity.StartActivity(dashbaord_activity);
+                    ((SelectAccountsActivity)mActicity).NavigateBillScreen(item);
                     mWhyThisAmtCardDialog.Dismiss();
+                    //Intent dashbaord_activity = new Intent(mActicity, typeof(DashboardActivity));
+                    //dashbaord_activity.PutExtra(Constants.ITEMZIED_BILLING_VIEW_KEY, true);
+                    //dashbaord_activity.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
+                    //mActicity.StartActivity(dashbaord_activity);
+                    //mWhyThisAmtCardDialog.Dismiss();
                 };
 
                 mWhyThisAmtCardDialog.Show();

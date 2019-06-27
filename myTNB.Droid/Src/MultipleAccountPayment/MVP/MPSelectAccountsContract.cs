@@ -1,5 +1,7 @@
 ﻿using myTNB_Android.Src.Base.MVP;
+using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.MultipleAccountPayment.Model;
+using myTNB_Android.Src.myTNBMenu.Models;
 using System.Collections.Generic;
 
 namespace myTNB_Android.Src.MultipleAccountPayment.MVP
@@ -63,6 +65,8 @@ namespace myTNB_Android.Src.MultipleAccountPayment.MVP
             /// Show due amount for all accounts from stored accounts
             /// </summary>
             void GetAccountDueAmountResult(List<MPAccount> accounts);
+
+            void ShowDashboardChart(UsageHistoryResponse response, AccountData accountData);
         }
 
         public interface IUserActionsListener : IBasePresenter
@@ -71,6 +75,8 @@ namespace myTNB_Android.Src.MultipleAccountPayment.MVP
             /// Get due amount for all accounts
             /// </summary>
             void GetMultiAccountDueAmount(string apiKeyID, List<string> accounts, string preSelectedAccount);
+
+            void OnSelectAccount(CustomerBillingAccount selectedCustomerBilling);
         }
     }
 }

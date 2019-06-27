@@ -260,6 +260,30 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
             }
         }
 
+        public void NavigateBillScreen(MPAccount item)
+        {
+            try
+            {
+                CustomerBillingAccount customerAccount = CustomerBillingAccount.FindByAccNum(item.accountNumber);
+                this.userActionsListener.OnSelectAccount(customerAccount);
+            }
+            catch (Exception ex)
+            {
+                Utility.LoggingNonFatalError(ex);
+            }
+        }
+
+        public void ShowDashboardChart(UsageHistoryResponse response, AccountData accountData)
+        {
+            Intent result = new Intent();
+            result.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(accountData));
+            result.PutExtra(Constants.SELECTED_ACCOUNT_USAGE, JsonConvert.SerializeObject(response.Data.UsageHistoryData));
+            result.PutExtra(Constants.ITEMZIED_BILLING_VIEW_KEY, true);
+            SetResult(Result.FirstUser, result);
+            Finish();
+        }
+
+
         public void UpdateTotal(List<MPAccount> selectedAccounts)
         {
             try
