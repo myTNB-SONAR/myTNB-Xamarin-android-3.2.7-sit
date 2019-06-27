@@ -106,6 +106,12 @@ namespace myTNB_Android.Src.Notifications.MVP
             void ShowRetryOptionsUnknownException(Exception exception);
 
             /// <summary>
+            /// Shows a failed error call with an option to cancel
+            /// </summary>
+            /// <param name="message">the returned exception</param>
+            void ShowFailedErrorMessage(string errorMessage);
+
+            /// <summary>
             /// Show query progress dialog
             /// </summary>
             void ShowQueryProgress();
@@ -134,7 +140,11 @@ namespace myTNB_Android.Src.Notifications.MVP
             void OnFailedNotificationAction();
 
 			void ShowNotificationDetails(int notificationItemPosition);
-		}
+
+            void UpdateDeleteNotifications();
+
+            void UpdateReadNotifications();
+        }
 
         public interface IUserActionsListener : IBasePresenter
         {

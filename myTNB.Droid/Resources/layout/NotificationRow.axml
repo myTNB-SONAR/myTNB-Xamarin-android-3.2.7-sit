@@ -141,8 +141,10 @@
         android:textSize="9sp"
         android:textColor="@color/silverChalice"
         android:layout_marginLeft="5dp"
+				android:layout_marginRight="5dp"
+				app:layout_goneMarginRight="16dp"
 				android:gravity="center"
-        app:layout_constraintStart_toEndOf="@+id/notificationItemDetails"
+        app:layout_constraintEnd_toStartOf="@+id/selectItemCheckBox"
 				app:layout_constraintTop_toTopOf="@+id/notificationItemDetails"
 				app:layout_constraintBottom_toBottomOf="@+id/notificationItemDetails"/>
     <CheckBox

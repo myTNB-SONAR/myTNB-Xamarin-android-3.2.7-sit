@@ -67,7 +67,7 @@ namespace myTNB_Android.Src.Notifications.Api
                     NotificationType = userNotificationData.NotificationType
                 });
             }
-            return await notificationApi.DeleteUserNotification(new NotificationDeleteRequest
+            return await notificationApi.ReadUserNotification(new NotificationReadRequest
             {
                 ApiKeyID = Constants.APP_CONFIG.API_KEY_ID,
                 Email = UserEntity.GetActive().Email,

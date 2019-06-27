@@ -64,10 +64,31 @@ namespace myTNB_Android.Src.Notifications.MVP
                 {
                     case API_ACTION.DELETE:
                         notificationApiResponse = await notificationApi.DeleteUserNotification(this.mView.GetDeviceId(), selectedNotificationList);
+                        if (!notificationApiResponse.Data.IsError)
+                        {
+                            foreach (UserNotificationData userNotificationData in selectedNotificationList)
+                            {
+                                UserNotificationEntity.RemoveById(userNotificationData.Id);
+                            }
+                            this.mView.UpdateDeleteNotifications();
+                        }
                         break;
                     case API_ACTION.READ:
                         notificationApiResponse = await notificationApi.ReadUserNotification(this.mView.GetDeviceId(), selectedNotificationList);
+                        if (!notificationApiResponse.Data.IsError)
+                        {
+                            foreach(UserNotificationData userNotificationData in selectedNotificationList)
+                            {
+                                UserNotificationEntity.UpdateIsRead(userNotificationData.Id, true);
+                            }
+                            this.mView.UpdateReadNotifications();
+                        }
                         break;
+                }
+                if (notificationApiResponse.Data.IsError)
+                {
+                    this.mView.ShowFailedErrorMessage(notificationApiResponse.Data.Message);
+                    this.mView.OnFailedNotificationAction();
                 }
             }
             catch (System.OperationCanceledException e)
@@ -102,10 +123,6 @@ namespace myTNB_Android.Src.Notifications.MVP
                 this.mView.ShowRetryOptionsUnknownException(e);
                 this.mView.OnFailedNotificationAction();
                 //Utility.LoggingNonFatalError(e);
-            }
-            finally
-            {
-                this.mView.HideProgress();
             }
         }
 
@@ -384,7 +401,11 @@ namespace myTNB_Android.Src.Notifications.MVP
                             notificationTypesEntity = NotificationTypesEntity.GetById(entity.NotificationTypeId);
                             if (!TextUtils.IsEmpty(notificationTypesEntity.Code))
                             {
-                                listOfNotifications.Add(UserNotificationData.Get(entity, notificationTypesEntity.Code));
+                                UserNotificationData userNotificationData = UserNotificationData.Get(entity, notificationTypesEntity.Code);
+                                if (!userNotificationData.IsDeleted)
+                                {
+                                    listOfNotifications.Add(UserNotificationData.Get(entity, notificationTypesEntity.Code));
+                                }
                             }
                         }
 

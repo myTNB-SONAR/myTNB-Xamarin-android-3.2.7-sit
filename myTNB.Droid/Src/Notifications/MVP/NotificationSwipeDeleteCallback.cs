@@ -8,6 +8,7 @@ using Android.Support.V7.Widget.Helper;
 using Android.Text;
 using Android.Views;
 using myTNB_Android.Src.Notifications.Adapter;
+using static myTNB_Android.Src.AppLaunch.Models.UserNotificationResponse;
 
 namespace myTNB_Android.Src.Notifications.MVP
 {
@@ -52,6 +53,12 @@ namespace myTNB_Android.Src.Notifications.MVP
 
         public override int GetMovementFlags(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder)
         {
+            //UserNotificationData userNotificationData = recyclerView.GetAdapter();
+            NotificationRecyclerAdapter notificationAdapter = (NotificationRecyclerAdapter)recyclerView.GetAdapter();
+            if (notificationAdapter.GetItemObject(viewHolder.AdapterPosition).IsRead)
+            {
+                return MakeMovementFlags(0, ItemTouchHelper.Left);
+            }
             return MakeMovementFlags(0,ItemTouchHelper.Left | ItemTouchHelper.Right);
         }
 
@@ -63,6 +70,7 @@ namespace myTNB_Android.Src.Notifications.MVP
         public override void OnSwiped(RecyclerView.ViewHolder viewHolder, int direction)
         {
             int notificationPos = viewHolder.AdapterPosition;
+
             if (direction == ItemTouchHelper.Left)
             {
                 notificationViewListener.DeleteNotificationByPosition(notificationPos);

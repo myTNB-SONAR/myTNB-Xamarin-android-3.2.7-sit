@@ -155,6 +155,17 @@ namespace myTNB_Android.Src.Database.Model
             //}
         }
 
+        public static void RemoveById(string notificationId)
+        {
+            //using (var db = new SQLiteConnection(Constants.DB_PATH, SQLiteOpenFlags.ReadWrite | SQLiteOpenFlags.Create | SQLiteOpenFlags.FullMutex, true))
+            //using (var db = DBHelper.GetSQLiteConnection())
+            //{
+            var db = DBHelper.GetSQLiteConnection();
+            db.Execute("DELETE FROM UserNotificationEntity WHERE Id = ?", notificationId);
+            //db.Close();
+            //}
+        }
+
         public static UserNotificationEntity GetById(string Id)
         {
             //using (var db = new SQLiteConnection(Constants.DB_PATH, SQLiteOpenFlags.ReadWrite | SQLiteOpenFlags.Create | SQLiteOpenFlags.FullMutex, true))

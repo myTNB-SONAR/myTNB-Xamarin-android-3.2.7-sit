@@ -262,7 +262,17 @@ namespace myTNB_Android.Src.Notifications.Activity
 
         public void ShowNotificationsList(List<UserNotificationData> userNotificationList)
         {
-            notificationRecyclerAdapter.AddAll(userNotificationList);
+            if (userNotificationList.Count == 0)
+            {
+                FindViewById(Resource.Id.emptyLayout).Visibility = ViewStates.Visible;
+                notificationRecyclerView.Visibility = ViewStates.Gone;
+            }
+            else
+            {
+                notificationRecyclerView.Visibility = ViewStates.Visible;
+                FindViewById(Resource.Id.emptyLayout).Visibility = ViewStates.Gone;
+                notificationRecyclerAdapter.AddAll(userNotificationList);
+            }
         }
 
         private void ShowDeleteAllNotificationDialog()
@@ -344,7 +354,9 @@ namespace myTNB_Android.Src.Notifications.Activity
             //notificationRecyclerView.AddItemDecoration(new MyItemDecoration());
 
             notificationRecyclerAdapter = new NotificationRecyclerAdapter(this, this, true);
+            //notificationRecyclerView.SetEmptyView(FindViewById(Resource.Id.emptyLayout));
             //notificationRecyclerAdapter.SetNotificationSelectListener(this.mPresenter);
+
             notificationRecyclerView.SetAdapter(notificationRecyclerAdapter);
             //NotificationSimpleCallback notificationSimpleCallback = new NotificationSimpleCallback(notificationRecyclerAdapter,0, ItemTouchHelper.Left);
 
@@ -429,6 +441,54 @@ namespace myTNB_Android.Src.Notifications.Activity
             {
                 Utility.LoggingNonFatalError(e);
             }
+        }
+
+        public void UpdateReadNotifications()
+        {
+            foreach(UserNotificationData notificationData in notificationRecyclerAdapter.GetAllNotifications())
+            {
+                if (notificationData.IsSelected)
+                {
+                    notificationData.IsRead = true;
+                }
+            }
+            if (IsActive())
+            {
+                HideProgress();
+            }
+            notificationRecyclerAdapter.NotifyDataSetChanged();
+        }
+
+        public void UpdateDeleteNotifications()
+        {
+            notificationRecyclerAdapter.GetAllNotifications().RemoveAll(notification => notification.IsSelected == true);
+            if (IsActive())
+            {
+                HideProgress();
+            }
+            notificationRecyclerAdapter.NotifyDataSetChanged();
+            if (notificationRecyclerAdapter.GetAllNotifications().Count == 0)
+            {
+                ClearAdapter();
+                FindViewById(Resource.Id.emptyLayout).Visibility = ViewStates.Visible;
+                notificationRecyclerView.Visibility = ViewStates.Gone;
+            }
+        }
+
+        private Snackbar mCancelledErrorSnackBar;
+        public void ShowFailedErrorMessage(string errorMessage)
+        {
+            if (mCancelledErrorSnackBar != null && mCancelledErrorSnackBar.IsShown)
+            {
+                mCancelledErrorSnackBar.Dismiss();
+            }
+
+            mCancelledErrorSnackBar = Snackbar.Make(rootView, errorMessage, Snackbar.LengthIndefinite)
+            .SetAction(GetString(Resource.String.notification_activity_cancelled_exception_btn_close), delegate {
+                mCancelledErrorSnackBar.Dismiss();
+            }
+            );
+            mCancelledErrorSnackBar.Show();
         }
 
 
@@ -714,12 +774,14 @@ namespace myTNB_Android.Src.Notifications.Activity
         public void DeleteNotificationByPosition(int notificationPos)
         {
             selectedNotification = notificationPos;
+            notificationRecyclerAdapter.GetItemObject(selectedNotification).IsSelected = true;
             this.mPresenter.DeleteAllSelectedNotifications();
 		}
 
         public void ReadNotificationByPosition(int notificationPos)
         {
             selectedNotification = notificationPos;
+            notificationRecyclerAdapter.GetItemObject(selectedNotification).IsSelected = true;
             this.mPresenter.ReadAllSelectedNotifications();
         }
 
@@ -775,6 +837,5 @@ namespace myTNB_Android.Src.Notifications.Activity
 			UserNotificationData userNotificationData = notificationRecyclerAdapter.GetAllNotifications()[itemPosition];
 			mPresenter.OnSelectedNotificationItem(userNotificationData, itemPosition);
 		}
-
 	}
 }

@@ -52,7 +52,7 @@
     <AndroidUseSharedRuntime>False</AndroidUseSharedRuntime>
     <AndroidLinkMode>SdkOnly</AndroidLinkMode>
     <EmbedAssembliesIntoApk>True</EmbedAssembliesIntoApk>
-    <AndroidSupportedAbis>armeabi;armeabi-v7a;x86;x86_64;arm64-v8a</AndroidSupportedAbis>
+    <AndroidSupportedAbis>armeabi-v7a;x86;x86_64;arm64-v8a</AndroidSupportedAbis>
     <MandroidI18n>West</MandroidI18n>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Develop|AnyCPU'">
@@ -1073,6 +1073,14 @@
     <AndroidResource Include="Resources\drawable-xxxhdpi\ic_action_Select.png" />
     <AndroidResource Include="Resources\drawable-xxxhdpi\ic_header_cancel.png" />
     <AndroidResource Include="Resources\drawable-xxxhdpi\ic_header_mark_read.png" />
+    <Compile Include="Src\Notifications\Api\INotificationApi.cs" />
+    <Compile Include="Src\Notifications\Api\NotificationApiImpl.cs" />
+    <Compile Include="Src\Notifications\Api\NotificationApiResponse.cs" />
+    <Compile Include="Src\Notifications\Api\NotificationDeleteRequest.cs" />
+    <Compile Include="Src\Notifications\Api\NotificationReadRequest.cs" />
+    <Compile Include="Src\Notifications\Models\NotificationData.cs" />
+    <AndroidResource Include="Resources\menu\NotificationToolbarMenu.xml" />
+    <AndroidResource Include="Resources\layout\NotificationEmptyView.axml" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
