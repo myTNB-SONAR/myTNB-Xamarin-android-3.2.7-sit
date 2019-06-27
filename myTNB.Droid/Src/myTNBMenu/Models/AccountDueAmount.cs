@@ -20,5 +20,20 @@ namespace myTNB_Android.Src.myTNBMenu.Models
 
         [JsonProperty("OpenChargesTotal")]
         public double OpenChargesTotal { get; set; }
+
+        [JsonProperty("WhyThisAmountLink")]
+        public string WhyThisAmountLink { get; set; }
+
+        [JsonProperty("WhyThisAmountTitle")]
+        public string WhyThisAmountTitle { get; set; }
+
+        [JsonProperty("WhyThisAmountMessage")]
+        public string WhyThisAmountMessage { get; set; }
+
+        [JsonProperty("WhyThisAmountPriButtonText")]
+        public string WhyThisAmountPriButtonText { get; set; }
+
+        [JsonProperty("WhyThisAmountSecButtonText")]
+        public string WhyThisAmountSecButtonText { get; set; }
     }
 }

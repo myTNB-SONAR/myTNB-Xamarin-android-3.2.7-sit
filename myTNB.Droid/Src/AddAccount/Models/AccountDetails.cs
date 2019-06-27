@@ -84,11 +84,23 @@ namespace myTNB_Android.Src.AddAccount.Models
         [JsonProperty("OpenChargesTotal")]
         public double OpenChargesTotal { get; set; }     
 
+        [JsonProperty("message")]
+        public string message { get; set; }
+
         [JsonProperty("isError")]
         public bool isError { get; set; }
 
-        [JsonProperty("message")]
-        public string message { get; set; }
+        [JsonProperty("WhatIsThisLink")]
+        public string WhatIsThisLink { get; set; }
+
+        [JsonProperty("WhatIsThisTitle")]
+        public string WhatIsThisTitle { get; set; }
+
+        [JsonProperty("WhatIsThisMessage")]
+        public string WhatIsThisMessage { get; set; }
+
+        [JsonProperty("WhatIsThisButtonText")]
+        public string WhatIsThisButtonText { get; set; }
 
         [JsonProperty("smartMeterCode")]
         public string SmartMeterCode { get; set; }

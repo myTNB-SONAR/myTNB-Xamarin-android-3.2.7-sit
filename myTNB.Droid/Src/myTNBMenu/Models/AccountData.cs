@@ -110,7 +110,19 @@ namespace myTNB_Android.Src.myTNBMenu.Models
         public List<ItemizedBillingDetails> ItemizedBilling { get; set; }   
 
         [JsonProperty("OpenChargesTotal")]
-        public double OpenChargesTotal { get; set; }    
+        public double OpenChargesTotal { get; set; }   
+
+        [JsonProperty("WhatIsThisLink")]
+        public string WhatIsThisLink { get; set; }
+
+        [JsonProperty("WhatIsThisTitle")]
+        public string WhatIsThisTitle { get; set; }
+
+        [JsonProperty("WhatIsThisMessage")]
+        public string WhatIsThisMessage { get; set; }
+
+        [JsonProperty("WhatIsThisButtonText")]
+        public string WhatIsThisButtonText { get; set; } 
 
         [JsonProperty("IsSelected")]
         public bool IsSelected { get; set; }
@@ -154,6 +166,10 @@ namespace myTNB_Android.Src.myTNBMenu.Models
                 AmtCustBal = accountDetails.AmtCustBal,
                 ItemizedBilling = accountDetails.ItemizedBilling,
                 OpenChargesTotal = accountDetails.OpenChargesTotal,
+                WhatIsThisLink = accountDetails.WhatIsThisLink,
+                WhatIsThisTitle = accountDetails.WhatIsThisTitle,
+                WhatIsThisMessage = accountDetails.WhatIsThisMessage,
+                WhatIsThisButtonText = accountDetails.WhatIsThisButtonText,
                 AccountCategoryId = "",
                 SmartMeterCode = accountDetails.SmartMeterCode,
                 IsSelected = isSelected
@@ -192,6 +208,10 @@ namespace myTNB_Android.Src.myTNBMenu.Models
                 AmtCustBal = accountDetails.AmtCustBal,
                 ItemizedBilling = accountDetails.ItemizedBilling,
                 OpenChargesTotal = accountDetails.OpenChargesTotal,
+                WhatIsThisLink = accountDetails.WhatIsThisLink,
+                WhatIsThisTitle = accountDetails.WhatIsThisTitle,
+                WhatIsThisMessage = accountDetails.WhatIsThisMessage,
+                WhatIsThisButtonText = accountDetails.WhatIsThisButtonText,
                 AccountCategoryId = customerBilling.AccountCategoryId,
                 IsOwner = customerBilling.isOwned,
                 SmartMeterCode = customerBilling.SmartMeterCode,
@@ -231,6 +251,10 @@ namespace myTNB_Android.Src.myTNBMenu.Models
                 AmtCustBal = 0,
                 ItemizedBilling = null,
                 OpenChargesTotal = 0,
+                WhatIsThisLink = "",
+                WhatIsThisTitle = "",
+                WhatIsThisMessage = "",
+                WhatIsThisButtonText = "",
                 IsOwner = accountDetails.isOwned,
                 AccountCategoryId = accountDetails.AccountCategoryId,
                 SmartMeterCode = accountDetails.SmartMeterCode,

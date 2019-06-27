@@ -74,6 +74,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
         AccountData selectedAccount;
 
+        AccountDueAmount accountDueAmountData;
+
         DecimalFormat decimalFormat = new DecimalFormat("#,###,###,###,##0.00");
         SimpleDateFormat dateParser = new SimpleDateFormat("dd/MM/yyyy");
         SimpleDateFormat dateFormatter = new SimpleDateFormat("dd MMM yyyy");
@@ -350,7 +352,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         {
             try
             {
-                // TODO Itemized: customized message
                 mWhyThisAmtCardDialog = new MaterialDialog.Builder(Activity)
                     .CustomView(Resource.Layout.CustomDialogDoubleButtonLayout, false)
                     .Cancelable(false)
@@ -367,15 +368,15 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 txtItemizedMessage.MovementMethod = new ScrollingMovementMethod();
                 if (Build.VERSION.SdkInt >= BuildVersionCodes.N)
                 {
-                    txtItemizedMessage.TextFormatted = Html.FromHtml(Activity.GetString(Resource.String.itemized_bill_message), FromHtmlOptions.ModeLegacy);
+                    txtItemizedMessage.TextFormatted = string.IsNullOrEmpty(accountDueAmountData.WhyThisAmountMessage) ? Html.FromHtml(Activity.GetString(Resource.String.itemized_bill_message), FromHtmlOptions.ModeLegacy) : Html.FromHtml(accountDueAmountData.WhyThisAmountMessage, FromHtmlOptions.ModeLegacy);
                 }
                 else
                 {
-                    txtItemizedMessage.TextFormatted = Html.FromHtml(Activity.GetString(Resource.String.itemized_bill_message));
+                    txtItemizedMessage.TextFormatted = string.IsNullOrEmpty(accountDueAmountData.WhyThisAmountMessage) ? Html.FromHtml(Activity.GetString(Resource.String.itemized_bill_message)) : Html.FromHtml(accountDueAmountData.WhyThisAmountMessage);
                 }
-                txtItemizedTitle.Text = Activity.GetString(Resource.String.itemized_bill_title);
-                btnGotIt.Text = Activity.GetString(Resource.String.itemized_bill_got_it);
-                btnBringMeThere.Text = Activity.GetString(Resource.String.itemized_bill_bring_me_there);
+                txtItemizedTitle.Text = string.IsNullOrEmpty(accountDueAmountData.WhyThisAmountTitle) ? Activity.GetString(Resource.String.itemized_bill_title) : accountDueAmountData.WhyThisAmountTitle;
+                btnGotIt.Text = string.IsNullOrEmpty(accountDueAmountData.WhyThisAmountSecButtonText) ? Activity.GetString(Resource.String.itemized_bill_got_it) : accountDueAmountData.WhyThisAmountSecButtonText;
+                btnBringMeThere.Text = string.IsNullOrEmpty(accountDueAmountData.WhyThisAmountPriButtonText) ? Activity.GetString(Resource.String.itemized_bill_bring_me_there) : accountDueAmountData.WhyThisAmountPriButtonText;
                 TextViewUtils.SetMuseoSans500Typeface(txtItemizedTitle, btnGotIt, btnBringMeThere);
                 TextViewUtils.SetMuseoSans300Typeface(txtItemizedMessage);
                 btnGotIt.Click += delegate
@@ -483,6 +484,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         {
             try
             {
+                accountDueAmountData = accountDueAmount;
                 Date d = null;
                 try
                 {

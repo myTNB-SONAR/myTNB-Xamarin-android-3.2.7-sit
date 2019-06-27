@@ -451,6 +451,10 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
                                     isTooltipShow = false,
                                     OpenChargeTotal = account.OpenChargesTotal == 0.00 ? 0.00 : account.OpenChargesTotal,
                                     amount = dueAmount,
+                                    MandatoryChargesTitle = response.accountDueAmountResponse.MandatoryChargesTitle,
+                                    MandatoryChargesMessage = response.accountDueAmountResponse.MandatoryChargesMessage,
+                                    MandatoryChargesPriButtonText = response.accountDueAmountResponse.MandatoryChargesPriButtonText,
+                                    MandatoryChargesSecButtonText = response.accountDueAmountResponse.MandatoryChargesSecButtonText,
                                     orgAmount = dueAmount
                                 };
                                 accountList.Add(mpAccount);

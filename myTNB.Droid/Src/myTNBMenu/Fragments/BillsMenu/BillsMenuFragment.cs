@@ -300,7 +300,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.BillsMenu
         {
             try
             {
-                // TODO Itemized: customized message
                 mMandatoryPaymentCardDialog = new MaterialDialog.Builder(Activity)
                     .CustomView(Resource.Layout.CustomDialogOneButtonLayout, false)
                     .Cancelable(false)
@@ -316,14 +315,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.BillsMenu
                 txtItemizedMessage.MovementMethod = new ScrollingMovementMethod();
                 if (Build.VERSION.SdkInt >= BuildVersionCodes.N)
                 {
-                    txtItemizedMessage.TextFormatted = Html.FromHtml(Activity.GetString(Resource.String.itemized_bill_second_message), FromHtmlOptions.ModeLegacy);
+                    txtItemizedMessage.TextFormatted = string.IsNullOrEmpty(selectedAccount.WhatIsThisMessage) ? Html.FromHtml(Activity.GetString(Resource.String.itemized_bill_second_message), FromHtmlOptions.ModeLegacy) : Html.FromHtml(selectedAccount.WhatIsThisMessage, FromHtmlOptions.ModeLegacy);
                 }
                 else
                 {
-                    txtItemizedMessage.TextFormatted = Html.FromHtml(Activity.GetString(Resource.String.itemized_bill_second_message));
+                    txtItemizedMessage.TextFormatted = string.IsNullOrEmpty(selectedAccount.WhatIsThisMessage) ? Html.FromHtml(Activity.GetString(Resource.String.itemized_bill_second_message)) : Html.FromHtml(selectedAccount.WhatIsThisMessage);
                 }
-                txtItemizedTitle.Text = Activity.GetString(Resource.String.itemized_bill_second_title);
-                btnGotIt.Text = Activity.GetString(Resource.String.itemized_bill_got_it);
+                txtItemizedTitle.Text = string.IsNullOrEmpty(selectedAccount.WhatIsThisTitle) ? Activity.GetString(Resource.String.itemized_bill_second_title) : selectedAccount.WhatIsThisTitle;
+                btnGotIt.Text = string.IsNullOrEmpty(selectedAccount.WhatIsThisButtonText) ? Activity.GetString(Resource.String.itemized_bill_got_it)  : selectedAccount.WhatIsThisButtonText;
                 TextViewUtils.SetMuseoSans500Typeface(txtItemizedTitle, btnGotIt);
                 TextViewUtils.SetMuseoSans300Typeface(txtItemizedMessage);
                 btnGotIt.Click += delegate

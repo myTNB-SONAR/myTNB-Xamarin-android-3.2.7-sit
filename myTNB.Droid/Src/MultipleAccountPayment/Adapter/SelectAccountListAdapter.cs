@@ -155,7 +155,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Adapter
                         item.amount = newAmount;
                         if(item.isSelected && !item.isTooltipShow && item.OpenChargeTotal != 0)
                         {
-                            ShowTooltip();
+                            ShowTooltip(item);
                             item.isTooltipShow = true;
                         }
                         CheckChanged(this, position);
@@ -292,11 +292,10 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Adapter
             return selectedStores;
         }
 
-        public void ShowTooltip()
+        public void ShowTooltip(MPAccount item)
         {
             try
             {
-                // TODO Itemized: customized message
                 mWhyThisAmtCardDialog = new MaterialDialog.Builder(mActicity)
                     .CustomView(Resource.Layout.CustomDialogDoubleButtonLayout, false)
                     .Cancelable(false)
@@ -313,15 +312,15 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Adapter
                 txtItemizedMessage.MovementMethod = new ScrollingMovementMethod();
                 if (Build.VERSION.SdkInt >= BuildVersionCodes.N)
                 {
-                    txtItemizedMessage.TextFormatted = Html.FromHtml(mActicity.GetString(Resource.String.itemized_bill_third_message), FromHtmlOptions.ModeLegacy);
+                    txtItemizedMessage.TextFormatted = string.IsNullOrEmpty(item.MandatoryChargesMessage) ? Html.FromHtml(mActicity.GetString(Resource.String.itemized_bill_third_message), FromHtmlOptions.ModeLegacy) : Html.FromHtml(item.MandatoryChargesMessage, FromHtmlOptions.ModeLegacy);
                 }
                 else
                 {
-                    txtItemizedMessage.TextFormatted = Html.FromHtml(mActicity.GetString(Resource.String.itemized_bill_third_message));
+                    txtItemizedMessage.TextFormatted = string.IsNullOrEmpty(item.MandatoryChargesMessage) ? Html.FromHtml(mActicity.GetString(Resource.String.itemized_bill_third_message)) : Html.FromHtml(item.MandatoryChargesMessage);
                 }
-                txtItemizedTitle.Text = mActicity.GetString(Resource.String.itemized_bill_third_title);
-                btnGotIt.Text = mActicity.GetString(Resource.String.itemized_bill_got_it);
-                btnBringMeThere.Text = mActicity.GetString(Resource.String.itemized_bill_bring_me_there);
+                txtItemizedTitle.Text = string.IsNullOrEmpty(item.MandatoryChargesTitle) ? mActicity.GetString(Resource.String.itemized_bill_third_title) : item.MandatoryChargesTitle;
+                btnGotIt.Text = string.IsNullOrEmpty(item.MandatoryChargesSecButtonText) ? mActicity.GetString(Resource.String.itemized_bill_got_it) : item.MandatoryChargesSecButtonText;
+                btnBringMeThere.Text = string.IsNullOrEmpty(item.MandatoryChargesPriButtonText) ? mActicity.GetString(Resource.String.itemized_bill_bring_me_there) : item.MandatoryChargesPriButtonText;
                 TextViewUtils.SetMuseoSans500Typeface(txtItemizedTitle, btnGotIt, btnBringMeThere);
                 TextViewUtils.SetMuseoSans300Typeface(txtItemizedMessage);
                 btnGotIt.Click += delegate
