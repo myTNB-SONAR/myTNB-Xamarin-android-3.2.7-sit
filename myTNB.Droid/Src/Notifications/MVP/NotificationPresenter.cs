@@ -200,6 +200,10 @@ namespace myTNB_Android.Src.Notifications.MVP
                         {
                             try
                             {
+                                if (mView.IsActive())
+                                {
+                                    this.mView.ShowQueryProgress();
+                                }
                                 UserEntity loggedUser = UserEntity.GetActive();
                                 var userNotificationResponse = await api.GetUserNotifications(new UserNotificationRequest()
                                 {
@@ -208,6 +212,11 @@ namespace myTNB_Android.Src.Notifications.MVP
                                     DeviceId = deviceId
 
                                 }, cts.Token);
+
+                                if (mView.IsActive())
+                                {
+                                    this.mView.HideQueryProgress();
+                                }
 
                                 if (userNotificationResponse != null && userNotificationResponse.Data != null && userNotificationResponse.Data.Status.ToUpper() == Constants.REFRESH_MODE)
                                 {
@@ -236,15 +245,16 @@ namespace myTNB_Android.Src.Notifications.MVP
 
                                 if (mView.IsActive())
                                 {
+                                    this.mView.HideQueryProgress();
                                     this.mView.ShowRefreshView(null, null);
                                 }
                                 Utility.LoggingNonFatalError(apiException);
                             }
                             catch (Exception e)
                             {
-
                                 if (mView.IsActive())
                                 {
+                                    this.mView.HideQueryProgress();
                                     this.mView.ShowRefreshView(null, null);
                                 }
                                 Utility.LoggingNonFatalError(e);
