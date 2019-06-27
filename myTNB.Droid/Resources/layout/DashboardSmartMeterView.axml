@@ -499,11 +499,12 @@
                                 android:orientation="horizontal"
                                 android:paddingLeft="@dimen/_10sdp"
                                 android:paddingRight="@dimen/_10sdp"
+                                android:layout_marginTop="12dp"
                                 android:layout_gravity="right">
                                 <TextView
                                     android:layout_height="wrap_content"
                                     android:layout_width="match_parent"
-                                    android:textSize="10sp"
+                                    android:textSize="12sp"
                                     android:textStyle="normal"
                                     android:textColor="@color/sunGlow"
                                     android:singleLine="true"
@@ -526,7 +527,7 @@
                                 android:id="@+id/txtAddress"
                                 android:layout_marginTop="@dimen/_5sdp"
                                 android:gravity="center" />
-                                <View
+                                <!-- <View
                                     android:id="@+id/addressDivider"
                                     android:layout_height="1dp"
                                     android:layout_width="match_parent"
@@ -557,7 +558,7 @@
                                         android:gravity="center"
                                         android:text="Account Status: "
                                         android:textSize="12sp" />
-                                </LinearLayout>
+                                </LinearLayout> -->
                     </LinearLayout>
                     <View
                         android:id="@+id/bottomView"

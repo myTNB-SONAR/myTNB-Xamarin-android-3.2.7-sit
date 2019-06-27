@@ -1050,6 +1050,7 @@
     <Compile Include="Src\AppLaunch\Async\MasterApiDBOperation.cs" />
     <Compile Include="Src\myTNBMenu\Async\SiteCorePromotioAPI.cs" />
     <Compile Include="Src\myTNBMenu\Async\UserNotificationAPI.cs" />
+    <AndroidResource Include="Resources\layout\WhatIsThisDialogView.axml" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
