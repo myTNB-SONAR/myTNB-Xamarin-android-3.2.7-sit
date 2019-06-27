@@ -52,7 +52,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.MVP
                 //var api = RestService.For<GetRegisteredCardsApi>(Constants.SERVER_URL.END_POINT);
 
                 List<MPAccount> storeAccounts = new List<MPAccount>();
-                bool getDetailsFromApi = false;
+                bool getDetailsFromApi = true;
                 foreach (string account in accounts)
                 {
                     // TODO Itemized: remove cache or not
