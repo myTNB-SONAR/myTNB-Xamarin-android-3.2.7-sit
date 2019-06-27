@@ -37,6 +37,6 @@
             android:layout_marginRight="16dp"
             android:text="Login"
             android:id="@+id/btnRefresh"
-            style="@style/Theme.RefreshWhiteButton" />
+            style="@style/Theme.RefreshButton" />
     </LinearLayout>
 </LinearLayout>
