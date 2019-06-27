@@ -1404,14 +1404,17 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         {
             string textMessage = selectedHistoryData.ToolTips[0].Message;
             MaterialDialog materialDialog = new MaterialDialog.Builder(Activity)
-                    .PositiveText(Activity.GetString(Resource.String.dashboard_smart_meter_got_it))
-                    .PositiveColor(Resource.Color.blue)
                     .CustomView(Resource.Layout.WhatIsThisDialogView,false)
                     .Cancelable(true)
                     .Build();
 
             View view = materialDialog.View;
-            TextView dialogDetailsText = view.FindViewById<TextView>(Resource.Id.textDialogDetails);
+            TextView dialogDetailsText = view.FindViewById<TextView>(Resource.Id.txtDialogMessage);
+            TextView dialogBtnLabel = view.FindViewById<TextView>(Resource.Id.txtBtnLabel);
+            dialogBtnLabel.Click += delegate
+            {
+                materialDialog.Dismiss();
+            };
 
             if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.N)
             {
