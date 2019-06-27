@@ -17,11 +17,5 @@ namespace myTNB.Model.GetMultiAccountDueAmount
                 return OpenChargesTotal > 0;
             }
         }
-
-        public string MandatoryChargesLinK { set; get; }
-        public string MandatoryChargesTitle { set; get; }
-        public string MandatoryChargesMessage { set; get; }
-        public string MandatoryChargesPrimaryButtonText { set; get; }
-        public string MandatoryChargesSecondaryButtonText { set; get; }
     }
 }

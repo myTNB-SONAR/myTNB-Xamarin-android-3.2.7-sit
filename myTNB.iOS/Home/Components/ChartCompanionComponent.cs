@@ -34,6 +34,8 @@ namespace myTNB.Dashboard.DashboardComponents
         private double center, btnWidth = 64, btnOffset = 12;
         private int margin = 18;
 
+        private ToolTipComponent _toolTipComponent;
+
         public ChartCompanionComponent(UIView view)
         {
             _parentView = view;
@@ -150,12 +152,17 @@ namespace myTNB.Dashboard.DashboardComponents
 
         private void CreateTooltip()
         {
-            ToolTipComponent toolTipComponent = new ToolTipComponent(_baseView);
-            _viewTooltip = toolTipComponent.GetUI();
-            toolTipComponent.SetContent("What are these costs?");
-            toolTipComponent.SetEvent(ToolTipGestureRecognizer);
-            toolTipComponent.SetTopMargin(_metricView2.Frame.GetMaxY() + 8F);
+            _toolTipComponent = new ToolTipComponent(_baseView);
+            _viewTooltip = _toolTipComponent.GetUI();
+            _toolTipComponent.SetContent("What are these costs?");
+            _toolTipComponent.SetEvent(ToolTipGestureRecognizer);
+            _toolTipComponent.SetTopMargin(_metricView2.Frame.GetMaxY() + 8F);
             _baseView.AddSubview(_viewTooltip);
+        }
+
+        public void SetTooltipLink(string title)
+        {
+            _toolTipComponent.SetContent(title ?? "Dashboard_WhatAreTheseCost");
         }
 
         /// <summary>

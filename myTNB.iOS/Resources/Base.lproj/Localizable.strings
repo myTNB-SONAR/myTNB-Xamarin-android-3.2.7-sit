@@ -149,6 +149,7 @@
 "Dashboard_SectionHeader"="Accounts";
 "Dashboard_TooltipMessage"="It includes your current month’s bill, outstanding charges plus other mandatory charges. You may check out the Bills tab for a detailed view.";
 "Dashboard_TooltipTitle"="What is included in my bill?";
+"Dashboard_WhatAreTheseCost"="What are these costs?";
 
 /*Error*/
 "Error_BCRMMessage"="BRCM will be down for maintenance purpose";

@@ -743,11 +743,8 @@ namespace myTNB.Dashboard
             if (_dashboardMainComponent._billAndPaymentComponent != null)
             {
                 string amount = NetworkUtility.isReachable ? _amountDue.ToString() : TNBGlobal.ZERO;
-
                 _dashboardMainComponent._billAndPaymentComponent.SetAmount(amount, isREAccount);
-
                 var adjAmount = !isREAccount ? _amountDue : ChartHelper.UpdateValueForRE(_amountDue);
-
                 string dateString = !string.IsNullOrEmpty(_dateDue) && adjAmount > 0 ? _dateDue : string.Empty;
 
                 string formattedDate = string.Empty;
@@ -778,7 +775,8 @@ namespace myTNB.Dashboard
 
                 string dueDate = prefix + formattedDate;
                 _dashboardMainComponent._billAndPaymentComponent.SetDateDue(dueDate);
-                _dashboardMainComponent._billAndPaymentComponent.SetPaymentTitle(isREAccount ? "Bill_MyEarnings".Translate() : "Common_AmountDue".Translate());
+                _dashboardMainComponent._billAndPaymentComponent.SetPaymentTitle(isREAccount
+                    ? "Bill_MyEarnings".Translate() : "Common_AmountDue".Translate());
                 if (_dashboardMainComponent._billAndPaymentComponent._activity != null)
                 {
                     _dashboardMainComponent._billAndPaymentComponent._activity.Hide();
@@ -1031,6 +1029,7 @@ namespace myTNB.Dashboard
                 _toolTipBtnTitle = toolTipData?.ButtonTitle ?? "Common_GotIt".Translate();
                 _dashboardMainComponent._chartCompanionComponent.SetUsageMetric(smartMeterMetric);
                 _dashboardMainComponent._chartCompanionComponent.SetChartMode(DataManager.DataManager.SharedInstance.CurrentChartMode);
+                _dashboardMainComponent._chartCompanionComponent.SetTooltipLink(toolTipData?.LinkTitle);
             }
             if (_dashboardMainComponent._dashboardScrollView != null)
             {

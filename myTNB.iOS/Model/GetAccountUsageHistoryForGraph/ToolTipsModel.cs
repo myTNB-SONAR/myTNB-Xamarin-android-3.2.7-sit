@@ -1,5 +1,4 @@
-﻿using System;
-namespace myTNB
+﻿namespace myTNB
 {
     public class ToolTipsModel
     {
@@ -7,5 +6,6 @@ namespace myTNB
         public string Title { set; get; }
         public string Message { set; get; }
         public string ButtonTitle { set; get; }
+        public string LinkTitle { set; get; }
     }
 }
