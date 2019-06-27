@@ -137,6 +137,7 @@
 "Dashboard_RESectionHeader"="Renewable Energy";
 "Dashboard_RESectionSubHeader"="My Earnings";
 "Dashboard_SectionHeader"="Accounts";
+"Dashboard_WhatAreTheseCost"="What are these costs?";
 
 /*Error*/
 "Error_BCRMMessage"="BRCM will be down for maintenance purpose";
