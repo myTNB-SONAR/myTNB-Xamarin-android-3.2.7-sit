@@ -85,6 +85,8 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
         bool mobileNoUpdated = false;
 
+        private bool refreshBilling = false;
+
         private bool isBackButtonVisible = false;
 
         private LoadingOverlay loadingOverlay;
@@ -250,6 +252,12 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             // TODO : ADD DRAWABLE RIGHT IF ACCOUNTS IN DATABASE IS GREATER THAN 1
             this.userActionsListener?.OnNotificationCount();
 
+            refreshBilling = false;
+
+            if (extras != null && extras.ContainsKey(Constants.REFRESH_MODE))
+            {
+                refreshBilling = true;
+            }
         }
 
         public void ClearFragmentStack()
@@ -319,6 +327,10 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             if (this.mPresenter != null)
             {
                 this.mPresenter.OnValidateData();
+            }
+            if (refreshBilling)
+            {
+                BillsMenuRefresh();
             }
         }
 
@@ -609,6 +621,15 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 .CommitAllowingStateLoss();
         }
 
+        public void ShowBillMenuWithError(string contextTxt, string btnTxt, AccountData selectedAccount)
+        {
+            ShowBackButton(false);
+            currentFragment = new BillsMenuFragment();
+            FragmentManager.BeginTransaction()
+                .Replace(Resource.Id.content_layout, BillsMenuFragment.NewInstance(contextTxt, btnTxt, selectedAccount))
+                .CommitAllowingStateLoss();
+        }
+
         public void SetToolbarTitle(int stringResourceId)
         {
             this.toolbar.FindViewById<TextView>(Resource.Id.toolbar_title).Text = GetString(stringResourceId);
@@ -618,6 +639,13 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
         {
             //bottomNavigationView.getMenu().getItem(0).setChecked(false);
             this.bottomNavigationView.Menu.FindItem(resourceId).SetChecked(true);
+        }
+
+        public void BillsMenuRefresh()
+        {
+            ShowProgressDialog();
+            bottomNavigationView.Menu.FindItem(Resource.Id.menu_bill).SetChecked(true);
+            this.userActionsListener?.OnMenuSelect(Resource.Id.menu_bill);
         }
 
         public void EnableDropDown(bool enable)

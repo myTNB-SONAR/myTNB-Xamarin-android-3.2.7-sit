@@ -288,17 +288,17 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 noSMDataFOund = false;
             }
 
-            if(extras.ContainsKey("RefreshMsg") && !string.IsNullOrEmpty(extras.GetString("RefreshMsg")))
+            if(extras.ContainsKey(Constants.REFRESH_MSG) && !string.IsNullOrEmpty(extras.GetString(Constants.REFRESH_MSG)))
             {
-                txtRefreshMsg = extras.GetString("RefreshMsg");
+                txtRefreshMsg = extras.GetString(Constants.REFRESH_MSG);
             }
             else
             {
                 txtRefreshMsg = Activity.GetString(Resource.String.text_new_refresh_content);
             }
-            if(extras.ContainsKey("RefreshMsgBtn") && !string.IsNullOrEmpty(extras.GetString("RefreshMsgBtn")))
+            if(extras.ContainsKey(Constants.REFRESH_BTN_MSG) && !string.IsNullOrEmpty(extras.GetString(Constants.REFRESH_BTN_MSG)))
             {
-                txtBtnRefreshTitle = extras.GetString("RefreshMsgBtn");
+                txtBtnRefreshTitle = extras.GetString(Constants.REFRESH_BTN_MSG);
             }
             else
             {
@@ -1616,6 +1616,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 txtNewRefreshMessage.TextFormatted = string.IsNullOrEmpty(contentTxt)? Html.FromHtml(txtRefreshMsg) : Html.FromHtml(contentTxt);
             }
             txtDueDate.Text = GetString(Resource.String.dashboard_chartview_due_date_not_available);
+            txtTotalPayable.Text = GetString(Resource.String.dashboard_chartview_due_date_not_available);
             DisablePayButton();
             btnViewBill.Enabled = false;
             btnViewBill.Background = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.silver_chalice_button_outline);

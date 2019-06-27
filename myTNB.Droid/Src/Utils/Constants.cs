@@ -198,5 +198,7 @@ namespace myTNB_Android.Src.Utils
 
         //Refresh View
         internal static readonly string REFRESH_MODE = "FAILED";
+        internal static readonly string REFRESH_MSG = "refreshMsg";
+        internal static readonly string REFRESH_BTN_MSG = "refreshBtnTxt";
     }
 }

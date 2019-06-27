@@ -850,7 +850,12 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                 {
                     this.mView.HideProgressDialog();
                 }
-                if (!customerBillingDetails.Data.IsError)
+                if (customerBillingDetails != null && customerBillingDetails.Data != null && customerBillingDetails.Data.Status.ToUpper() == Constants.REFRESH_MODE)
+                {
+                    AccountData accountData = AccountData.Copy(accountSelected, true);
+                    this.mView.ShowBillMenuWithError(customerBillingDetails.Data.RefreshMessage, customerBillingDetails.Data.RefreshBtnText, accountData);
+                }
+                else if (!customerBillingDetails.Data.IsError)
                 {
                     AccountData accountData = AccountData.Copy(customerBillingDetails.Data.AccountData, true);
                     CustomerBillingAccount customerBillingAccount = CustomerBillingAccount.FindByAccNum(accountData.AccountNum);
@@ -869,6 +874,8 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                 else
                 {
                     // TODO : SHOW ERROR WHEN NO BILLING IS RETURNED
+                    AccountData accountData = AccountData.Copy(accountSelected, true);
+                    this.mView.ShowBillMenuWithError(null, null, accountData);
                 }
                 this.mView.SetAccountName(accountSelected.AccDesc);
             }
@@ -880,6 +887,8 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                 {
                     this.mView.HideProgressDialog();
                 }
+                AccountData accountData = AccountData.Copy(accountSelected, true);
+                this.mView.ShowBillMenuWithError(null, null, accountData);
                 Utility.LoggingNonFatalError(e);
                 //this.mView.ShowRetryOptionsCancelledException(e);
             }
@@ -890,6 +899,8 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                 {
                     this.mView.HideProgressDialog();
                 }
+                AccountData accountData = AccountData.Copy(accountSelected, true);
+                this.mView.ShowBillMenuWithError(null, null, accountData);
                 //this.mView.ShowRetryOptionsApiException(apiException);
                 Utility.LoggingNonFatalError(apiException);
             }
@@ -901,6 +912,8 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                 {
                     this.mView.HideProgressDialog();
                 }
+                AccountData accountData = AccountData.Copy(accountSelected, true);
+                this.mView.ShowBillMenuWithError(null, null, accountData);
                 //this.mView.ShowRetryOptionsUnknownException(e);
 
                 Utility.LoggingNonFatalError(e);

@@ -173,17 +173,17 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 hasNoInternet = extras.GetBoolean(Constants.NO_INTERNET_CONNECTION);
             }
 
-            if(extras.ContainsKey("RefreshMsg") && !string.IsNullOrEmpty(extras.GetString("RefreshMsg")))
+            if(extras.ContainsKey(Constants.REFRESH_MSG) && !string.IsNullOrEmpty(extras.GetString(Constants.REFRESH_MSG)))
             {
-                txtRefreshMsg = extras.GetString("RefreshMsg");
+                txtRefreshMsg = extras.GetString(Constants.REFRESH_MSG);
             }
             else
             {
                 txtRefreshMsg = Activity.GetString(Resource.String.text_new_refresh_content);
             }
-            if(extras.ContainsKey("RefreshMsgBtn") && !string.IsNullOrEmpty(extras.GetString("RefreshMsgBtn")))
+            if(extras.ContainsKey(Constants.REFRESH_BTN_MSG) && !string.IsNullOrEmpty(extras.GetString(Constants.REFRESH_BTN_MSG)))
             {
-                txtBtnRefreshTitle = extras.GetString("RefreshMsgBtn");
+                txtBtnRefreshTitle = extras.GetString(Constants.REFRESH_BTN_MSG);
             }
             else
             {
@@ -244,8 +244,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             Bundle bundle = new Bundle();
 
             bundle.PutBoolean(Constants.NO_INTERNET_CONNECTION, hasNoInternet);
-            bundle.PutString("RefreshMsg", response.Data.RefreshMessage);
-            bundle.PutString("RefreshMsgBtn", response.Data.RefreshBtnText);
+            bundle.PutString(Constants.REFRESH_MSG, response.Data.RefreshMessage);
+            bundle.PutString(Constants.REFRESH_BTN_MSG, response.Data.RefreshBtnText);
             chartFragment.Arguments = bundle;
             return chartFragment;
         }
@@ -1052,6 +1052,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 refreshLayout.Visibility = ViewStates.Visible;
                 allGraphLayout.Visibility = ViewStates.Gone;
                 txtDueDate.Text = GetString(Resource.String.dashboard_chartview_due_date_not_available);
+                txtTotalPayable.Text = GetString(Resource.String.dashboard_chartview_due_date_not_available);
                 DisablePayButton();
                 btnViewBill.Enabled = false;
                 btnViewBill.Background = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.silver_chalice_button_outline);
@@ -1078,6 +1079,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             refreshLayout.Visibility = ViewStates.Visible;
             allGraphLayout.Visibility = ViewStates.Gone;
             txtDueDate.Text = GetString(Resource.String.dashboard_chartview_due_date_not_available);
+            txtTotalPayable.Text = GetString(Resource.String.dashboard_chartview_due_date_not_available);
             DisablePayButton();
             btnViewBill.Enabled = false;
             btnViewBill.Background = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.silver_chalice_button_outline);

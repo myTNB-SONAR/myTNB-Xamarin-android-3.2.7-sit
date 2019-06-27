@@ -56,6 +56,12 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
             /// </summary>
             void ShowPayment();
 
+            void ShowView();
+
+            void ShowRefreshView(string contentTxt, string btnTxt);
+
+            void ToggleFetch(bool yesno);
+
             /// <summary>
             /// Returns connectivity
             /// </summary>

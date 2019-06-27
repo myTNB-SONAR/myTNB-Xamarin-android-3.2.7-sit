@@ -3,6 +3,7 @@ using Android.Content;
 using Android.Runtime;
 using myTNB_Android.Src.AppLaunch.Models;
 using myTNB_Android.Src.Base.MVP;
+using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.myTNBMenu.Models;
 using System;
 using System.Threading.Tasks;
@@ -46,6 +47,8 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
             /// </summary>
             /// <param name="selectedAccount">AccountData</param>
             void ShowBillMenu(AccountData selectedAccount);
+
+            void ShowBillMenuWithError(string contextTxt, string btnTxt, AccountData selectedAccount);
 
             /// <summary>
             /// Enable bill menu

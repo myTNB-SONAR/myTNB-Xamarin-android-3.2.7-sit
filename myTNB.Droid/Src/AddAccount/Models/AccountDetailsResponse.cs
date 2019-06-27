@@ -21,6 +21,15 @@ namespace myTNB_Android.Src.AddAccount.Models
             [JsonProperty(PropertyName = "isError")]
             public bool IsError { get; set; }
 
+            [JsonProperty(PropertyName = "RefreshTitle")]
+            public string RefreshTitle { get; set; }
+
+            [JsonProperty(PropertyName = "RefreshMessage")]
+            public string RefreshMessage { get; set; }
+
+            [JsonProperty(PropertyName = "RefreshBtnText")]
+            public string RefreshBtnText { get; set; }
+
             [JsonProperty(PropertyName = "message")]
             public string Message { get; set; }
         }
