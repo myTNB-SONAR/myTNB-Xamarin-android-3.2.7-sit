@@ -1042,7 +1042,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                             selectedAccount.AccountCategoryId = customerBillingAccount.AccountCategoryId;
 
                         }
-                        ((DashboardActivity)Activity).BillMenuAccessOther(selectedAccount);
+                        try
+                        {
+                            ((DashboardActivity)Activity).BillMenuAccessOther(selectedAccount);
+                        }
+                        catch (System.Exception e)
+                        {
+                            Utility.LoggingNonFatalError(e);
+                        }
                     }
                 }
             }

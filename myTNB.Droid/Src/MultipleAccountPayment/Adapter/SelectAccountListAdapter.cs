@@ -330,7 +330,14 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Adapter
                 };
                 btnBringMeThere.Click += delegate
                 {
-                    ((SelectAccountsActivity)mActicity).NavigateBillScreen(item);
+                    try
+                    {
+                        ((SelectAccountsActivity)mActicity).NavigateBillScreen(item);
+                    }
+                    catch (System.Exception e)
+                    {
+                        Utility.LoggingNonFatalError(e);
+                    }
                     mWhyThisAmtCardDialog.Dismiss();
                     //Intent dashbaord_activity = new Intent(mActicity, typeof(DashboardActivity));
                     //dashbaord_activity.PutExtra(Constants.ITEMZIED_BILLING_VIEW_KEY, true);
