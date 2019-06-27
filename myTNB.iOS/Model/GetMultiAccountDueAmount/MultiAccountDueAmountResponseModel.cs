@@ -1,4 +1,4 @@
-﻿namespace myTNB.Model.GetMultiAccountDueAmount
+﻿namespace myTNB.Model
 {
     public class MultiAccountDueAmountResponseModel
     {

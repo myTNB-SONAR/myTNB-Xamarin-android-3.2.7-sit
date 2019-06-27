@@ -506,6 +506,9 @@
 /*Select Account*/
 "SelectAccount_Title"="Select Electricity Account";
 
+/*Select Bill*/
+"SelectBill_OtherCharges"="OTHER CHARGES (RM)";
+
 /*Tabbar*/
 "Tabbar_Bills"="Bills";
 "Tabbar_Dashboard"="Dashboard";

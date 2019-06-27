@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
+using CoreGraphics;
 using Foundation;
 using myTNB.Model;
 using UIKit;
@@ -11,10 +13,12 @@ namespace myTNB.Payment.SelectBills
     {
         SelectBillsViewController _controller;
         List<CustomerAccountRecordModel> _accounts = new List<CustomerAccountRecordModel>();
+        MultiAccountDueAmountResponseModel _multiAccountDueAmount = new MultiAccountDueAmountResponseModel();
         TextFieldHelper _textFieldHelper = new TextFieldHelper();
         Dictionary<string, bool> amountStatus = new Dictionary<string, bool>();
 
-        public SelectBillsDataSource(SelectBillsViewController controller, List<CustomerAccountRecordModel> accounts)
+        public SelectBillsDataSource(SelectBillsViewController controller, List<CustomerAccountRecordModel> accounts
+            , MultiAccountDueAmountResponseModel multiAccountDueAmount)
         {
             _controller = controller;
             _accounts = accounts;
@@ -25,6 +29,7 @@ namespace myTNB.Payment.SelectBills
                     amountStatus.Add(obj.accNum, true);
                 }
             }
+            _multiAccountDueAmount = multiAccountDueAmount;
         }
 
         public override UITableViewCell GetCell(UITableView tableView, NSIndexPath indexPath)
@@ -39,7 +44,6 @@ namespace myTNB.Payment.SelectBills
             cell._imgViewCheckBox.Image = UIImage.FromBundle(_accounts[indexPath.Row].IsAccountSelected
                 ? "Payment-Checkbox-Active" : "Payment-Checkbox-Inactive");
             cell._txtFieldAmount.Text = _accounts[indexPath.Row].Amount.ToString("N2", CultureInfo.InvariantCulture);
-
             cell._viewCheckBox.AddGestureRecognizer(new UITapGestureRecognizer(() =>
             {
                 if (_accounts[indexPath.Row].Amount >= TNBGlobal.PaymentMinAmnt)
@@ -60,6 +64,12 @@ namespace myTNB.Payment.SelectBills
             cell._lblAmountError.Hidden = isValidAmount;
             cell._viewLineAmount.BackgroundColor = isValidAmount ? MyTNBColor.PlatinumGrey : MyTNBColor.Tomato;
             SetTextField(cell._txtFieldAmount, cell._lblAmountError, cell);
+
+            int acctIndex = _multiAccountDueAmount.d.data.FindIndex(x => x.accNum == acctNumber);
+            if (acctIndex > -1 && _multiAccountDueAmount.d.data[acctIndex].IsItemisedBilling)
+            {
+                cell.AddMandatoryPayment(_multiAccountDueAmount.d.data[acctIndex].OpenChargesTotal);
+            }
             return cell;
         }
 
@@ -70,7 +80,10 @@ namespace myTNB.Payment.SelectBills
 
         public override nfloat GetHeightForRow(UITableView tableView, NSIndexPath indexPath)
         {
-            return 205;
+            string acctNumber = _accounts[indexPath.Row].accNum;
+            int acctIndex = _multiAccountDueAmount.d.data.FindIndex(x => x.accNum == acctNumber);
+            nfloat val = acctIndex > -1 && _multiAccountDueAmount.d.data[acctIndex].IsItemisedBilling ? 257 : 205;
+            return val;
         }
 
         void UpdateCheckBox(SelectBillsTableViewCell cell)

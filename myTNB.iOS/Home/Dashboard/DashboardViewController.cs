@@ -225,7 +225,6 @@ namespace myTNB.Dashboard
                     SetBillAndPaymentDetails();
                 });
             });
-            //}
         }
 
         /// <summary>
@@ -318,8 +317,7 @@ namespace myTNB.Dashboard
                     else if (chartResponse.StatusCode == TNBGlobal.Errors.FetchingSmartData)
                     {
                         var message = !string.IsNullOrWhiteSpace(chartResponse.message)
-                                             ? chartResponse.message
-                                             : "Error_GetSmartMeterDataMessage".Translate();
+                            ? chartResponse.message : "Error_GetSmartMeterDataMessage".Translate();
                         ShowToast(message);
                         ChartModel normalChartResponse = await GetAccountUsageHistoryForGraph();
                         isResultSuccess = normalChartResponse.didSucceed;
@@ -361,16 +359,13 @@ namespace myTNB.Dashboard
                 if (DataManager.DataManager.SharedInstance.AccountChartDictionary
                    .ContainsKey(DataManager.DataManager.SharedInstance.SelectedAccount.accNum))
                 {
-                    DataManager.DataManager.SharedInstance
-                               .AccountChartDictionary[DataManager.DataManager
-                                                       .SharedInstance.SelectedAccount.accNum]
-                               = DataManager.DataManager.SharedInstance.CurrentChart;
+                    DataManager.DataManager.SharedInstance.AccountChartDictionary[DataManager.DataManager.SharedInstance.SelectedAccount.accNum]
+                        = DataManager.DataManager.SharedInstance.CurrentChart;
                 }
                 else
                 {
-                    DataManager.DataManager.SharedInstance.AccountChartDictionary
-                               .Add(DataManager.DataManager.SharedInstance.SelectedAccount.accNum
-                                    , DataManager.DataManager.SharedInstance.CurrentChart);
+                    DataManager.DataManager.SharedInstance.AccountChartDictionary.Add(DataManager.DataManager.SharedInstance.SelectedAccount.accNum
+                        , DataManager.DataManager.SharedInstance.CurrentChart);
                 }
             }
         }
@@ -379,8 +374,7 @@ namespace myTNB.Dashboard
         {
             if (DataManager.DataManager.SharedInstance.BillingAccountDetails != null)
             {
-                DataManager.DataManager.SharedInstance
-                           .BillingAccountDetails.amCustBal = amount;
+                DataManager.DataManager.SharedInstance.BillingAccountDetails.amCustBal = amount;
             }
         }
 
@@ -801,18 +795,18 @@ namespace myTNB.Dashboard
         {
             string title = _dueAmount.d.data.WhyThisAmountTitle ?? "Dashboard_TooltipTitle".Translate();
             string msg = _dueAmount.d.data.WhyThisAmountMessage ?? "Dashboard_TooltipMessage".Translate();
-            string primaryButton = _dueAmount.d.data.WhyThisAmountPrimaryButtonText ?? "Common_GotIt".Translate();
-            string secondaryButton = _dueAmount.d.data.WhyThisAmountSecondaryButtonText ?? "Dashboard_BringMeThere".Translate();
+            string primaryButton = _dueAmount.d.data.WhyThisAmountPriButtonText ?? "Common_GotIt".Translate();
+            string secondaryButton = _dueAmount.d.data.WhyThisAmountSecButtonText ?? "Dashboard_BringMeThere".Translate();
 
             DisplayCustomAlert(title, msg
                 , new Dictionary<string, Action>() {
-                    { primaryButton, null }
-                    , {secondaryButton, ()=>{
+                    { primaryButton, ()=>{
                         if (TabBarController != null)
                         {
                             TabBarController.SelectedIndex = 1;
                         }
                     }}
+                    , { secondaryButton, null }
                 });
         }
 
@@ -1026,10 +1020,10 @@ namespace myTNB.Dashboard
                 ToolTipsModel toolTipData = (DataManager.DataManager.SharedInstance.CurrentChart
                     as SmartChartDataModel).ToolTips?.Find(x => string.Compare(x.Type.ToUpper(), "PROJECTEDCOST") > -1);
                 _toolTipMessage = toolTipData?.Message;
-                _toolTipBtnTitle = toolTipData?.ButtonTitle ?? "Common_GotIt".Translate();
+                _toolTipBtnTitle = toolTipData?.SMBtnText ?? "Common_GotIt".Translate();
                 _dashboardMainComponent._chartCompanionComponent.SetUsageMetric(smartMeterMetric);
                 _dashboardMainComponent._chartCompanionComponent.SetChartMode(DataManager.DataManager.SharedInstance.CurrentChartMode);
-                _dashboardMainComponent._chartCompanionComponent.SetTooltipLink(toolTipData?.LinkTitle);
+                _dashboardMainComponent._chartCompanionComponent.SetTooltipLink(toolTipData?.SMLink);
             }
             if (_dashboardMainComponent._dashboardScrollView != null)
             {

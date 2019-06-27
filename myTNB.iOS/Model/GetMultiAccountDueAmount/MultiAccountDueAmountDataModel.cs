@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace myTNB.Model.GetMultiAccountDueAmount
+namespace myTNB.Model
 {
     public class MultiAccountDueAmountDataModel
     {

@@ -420,7 +420,6 @@ namespace myTNB
                     }
                 });
             });
-            //}
         }
         /// <summary>
         /// Gets the account due amount if no cached data
