@@ -151,6 +151,78 @@
                             android:enabled="false"
                             android:paddingBottom="12dp" />
                     </LinearLayout>
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:minHeight="30dp"
+                        android:paddingTop="40dp"
+                        android:layout_marginRight="43dp"
+                        android:layout_marginLeft="43dp"
+                        android:visibility="visible">
+                        <RadioGroup
+                            android:id="@+id/sm_graph_radio_group"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
+                            android:orientation="horizontal">
+                            <RadioButton
+                                android:id="@+id/rbtnRM"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                style="@style/SMDashboardRadioButton"
+                                android:background="@drawable/radio_button_selector"
+                                android:button="@null"
+                                android:text="@string/text_rm"
+                                android:paddingTop="10dp"
+                                android:paddingBottom="10dp"
+                                android:paddingLeft="10dp"
+                                android:paddingRight="10dp"
+                                android:checked="true"
+                                android:textSize="14sp"
+                                android:layout_marginLeft="10dp"
+                                android:layout_marginRight="10dp"
+                                android:textColor="@color/barchartColorHighlighted"
+                                android:layout_weight="1"
+                                android:gravity="center" />
+                            <RadioButton
+                                android:id="@+id/rbtnkWh"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                style="@style/SMDashboardRadioButton"
+                                android:background="@drawable/radio_button_selector"
+                                android:button="@null"
+                                android:paddingTop="10dp"
+                                android:paddingBottom="10dp"
+                                android:paddingLeft="10dp"
+                                android:paddingRight="10dp"
+                                android:textSize="14sp"
+                                android:layout_marginLeft="10dp"
+                                android:layout_marginRight="10dp"
+                                android:textColor="@color/barchartColorHighlighted"
+                                android:text="@string/text_kwh"
+                                android:layout_weight="1"
+                                android:gravity="center" />
+                            <RadioButton
+                                android:id="@+id/rbtnCO2"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                style="@style/SMDashboardRadioButton"
+                                android:background="@drawable/radio_button_selector"
+                                android:button="@null"
+                                android:paddingTop="10dp"
+                                android:paddingBottom="10dp"
+                                android:paddingLeft="10dp"
+                                android:paddingRight="10dp"
+                                android:textSize="14sp"
+                                android:layout_marginLeft="10dp"
+                                android:layout_marginRight="10dp"
+                                android:textColor="@drawable/radio_button_text"
+                                android:text="@string/text_co2"
+                                android:layout_weight="1"
+                                android:gravity="center" />
+                        </RadioGroup>
+                    </RelativeLayout>
                     <LinearLayout
                         android:id="@+id/no_internet_layout"
                         android:layout_width="match_parent"
@@ -238,7 +310,7 @@
                                 <TextView
                                     android:layout_height="wrap_content"
                                     android:layout_width="match_parent"
-                                    android:textSize="16sp"
+                                    android:textSize="14sp"
                                     android:textStyle="bold"
                                     android:textColor="@color/white"
                                     android:text="@string/current_charges"
@@ -248,7 +320,7 @@
                                 <TextView
                                     android:layout_height="wrap_content"
                                     android:layout_width="match_parent"
-                                    android:textSize="14sp"
+                                    android:textSize="12sp"
                                     android:textStyle="bold"
                                     android:textColor="@color/barchartColorHighlighted"
                                     android:text="@string/as_of"
@@ -265,7 +337,7 @@
                                 <TextView
                                     android:layout_height="wrap_content"
                                     android:layout_width="wrap_content"
-                                    android:textSize="14sp"
+                                    android:textSize="12sp"
                                     android:textStyle="normal"
                                     android:textColor="@color/white"
                                     android:text="RM"
@@ -274,7 +346,7 @@
                                 <TextView
                                     android:layout_height="wrap_content"
                                     android:layout_width="wrap_content"
-                                    android:textSize="20sp"
+                                    android:textSize="16sp"
                                     android:textStyle="normal"
                                     android:textColor="@color/white"
                                     android:text="00.00"
@@ -327,7 +399,7 @@
                                 <TextView
                                     android:layout_height="wrap_content"
                                     android:layout_width="match_parent"
-                                    android:textSize="16sp"
+                                    android:textSize="14sp"
                                     android:textStyle="bold"
                                     android:textColor="@color/white"
                                     android:text="@string/projected_cost"
@@ -337,7 +409,7 @@
                                 <TextView
                                     android:layout_height="wrap_content"
                                     android:layout_width="match_parent"
-                                    android:textSize="14sp"
+                                    android:textSize="12sp"
                                     android:textStyle="bold"
                                     android:textColor="@color/barchartColorHighlighted"
                                     android:singleLine="true"
@@ -364,7 +436,7 @@
                                         <TextView
                                             android:layout_height="wrap_content"
                                             android:layout_width="wrap_content"
-                                            android:textSize="14sp"
+                                            android:textSize="12sp"
                                             android:textStyle="normal"
                                             android:textColor="@color/white"
                                             android:text="RM"
@@ -373,28 +445,12 @@
                                         <TextView
                                             android:layout_height="wrap_content"
                                             android:layout_width="wrap_content"
-                                            android:textSize="20sp"
+                                            android:textSize="16sp"
                                             android:textStyle="normal"
                                             android:textColor="@color/white"
                                             android:text="00.00"
                                             android:singleLine="true"
                                             android:id="@+id/txtProjectedCostValue"/>
-                                    </LinearLayout>
-                                    <LinearLayout
-                                        android:layout_height="wrap_content"
-                                        android:layout_width="match_parent"
-                                        android:orientation="horizontal"
-                                        android:layout_gravity="right">
-                                        <TextView
-                                            android:layout_height="wrap_content"
-                                            android:layout_width="wrap_content"
-                                            android:textSize="10sp"
-                                            android:textStyle="normal"
-                                            android:textColor="@color/sunGlow"
-                                            android:singleLine="true"
-                                            android:text="What is this?"
-                                            android:id="@+id/txtWhatIsThis"
-                                            android:clickable="true"/>
                                     </LinearLayout>
                                 </LinearLayout>
                             </LinearLayout>
@@ -437,92 +493,72 @@
                             android:layout_marginRight="@dimen/_5sdp"
                             android:alpha="0.3"
                             android:background="@color/barchartColorHighlighted" />
+                            <LinearLayout
+                                android:layout_height="wrap_content"
+                                android:layout_width="match_parent"
+                                android:orientation="horizontal"
+                                android:paddingLeft="@dimen/_10sdp"
+                                android:paddingRight="@dimen/_10sdp"
+                                android:layout_gravity="right">
+                                <TextView
+                                    android:layout_height="wrap_content"
+                                    android:layout_width="match_parent"
+                                    android:textSize="10sp"
+                                    android:textStyle="normal"
+                                    android:textColor="@color/sunGlow"
+                                    android:singleLine="true"
+                                    android:layout_gravity="right"
+                                    android:gravity="right"
+                                    android:text="What are these costs?"
+                                    android:id="@+id/txtWhatIsThis"
+                                    android:clickable="true"/>
+                            </LinearLayout>
+                            <TextView
+                                android:layout_height="wrap_content"
+                                android:layout_width="wrap_content"
+                                android:layout_weight="0.6"
+                                android:textSize="12sp"
+                                android:textStyle="bold"
+                                android:padding="28dp"
+                                android:layout_gravity="center"
+                                android:textColor="@color/white"
+                                android:text="@string/dashboard_chartview_address_sample"
+                                android:id="@+id/txtAddress"
+                                android:layout_marginTop="@dimen/_5sdp"
+                                android:gravity="center" />
+                                <View
+                                    android:id="@+id/addressDivider"
+                                    android:layout_height="1dp"
+                                    android:layout_width="match_parent"
+                                    android:layout_marginTop="@dimen/_2sdp"
+                                    android:layout_marginBottom="@dimen/_2sdp"
+                                    android:layout_marginLeft="@dimen/_5sdp"
+                                    android:layout_marginRight="@dimen/_5sdp"
+                                    android:alpha="0.3"
+                                    android:background="@color/barchartColorHighlighted" />
+                                <LinearLayout
+                                    android:id="@+id/accountStatusContainer"
+                                    android:layout_height="wrap_content"
+                                    android:layout_width="match_parent"
+                                    android:weightSum="1"
+                                    android:gravity="center"
+                                    android:padding="18dp"
+                                    android:paddingBottom="@dimen/_10sdp"
+                                    android:paddingTop="@dimen/_10sdp"
+                                    android:paddingLeft="@dimen/_10sdp"
+                                    android:paddingRight="@dimen/_10sdp"
+                                    android:orientation="horizontal">
+                                    <TextView
+                                        android:id="@+id/accountStatus"
+                                        android:layout_height="wrap_content"
+                                        android:layout_width="match_parent"
+                                        android:textColor="@color/white"
+                                        android:layout_gravity="center"
+                                        android:gravity="center"
+                                        android:text="Account Status: "
+                                        android:textSize="12sp" />
+                                </LinearLayout>
                     </LinearLayout>
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:minHeight="30dp"
-                        android:paddingTop="40dp"
-                        android:layout_marginRight="43dp"
-                        android:layout_marginLeft="43dp"
-                        android:visibility="visible">
-                        <RadioGroup
-                            android:id="@+id/sm_graph_radio_group"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_centerHorizontal="true"
-                            android:orientation="horizontal">
-                            <RadioButton
-                                android:id="@+id/rbtnRM"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                style="@style/SMDashboardRadioButton"
-                                android:background="@drawable/radio_button_selector"
-                                android:button="@null"
-                                android:text="@string/text_rm"
-                                android:paddingTop="10dp"
-                                android:paddingBottom="10dp"
-                                android:paddingLeft="10dp"
-                                android:paddingRight="10dp"
-                                android:checked="true"
-                                android:textSize="14sp"
-                                android:layout_marginLeft="10dp"
-                                android:layout_marginRight="10dp"
-                                android:textColor="@color/barchartColorHighlighted"
-                                android:layout_weight="1"
-                                android:gravity="center" />
-                            <RadioButton
-                                android:id="@+id/rbtnkWh"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                style="@style/SMDashboardRadioButton"
-                                android:background="@drawable/radio_button_selector"
-                                android:button="@null"
-                                android:paddingTop="10dp"
-                                android:paddingBottom="10dp"
-                                android:paddingLeft="10dp"
-                                android:paddingRight="10dp"
-                                android:textSize="14sp"
-                                android:layout_marginLeft="10dp"
-                                android:layout_marginRight="10dp"
-                                android:textColor="@color/barchartColorHighlighted"
-                                android:text="@string/text_kwh"
-                                android:layout_weight="1"
-                                android:gravity="center" />
-                            <RadioButton
-                                android:id="@+id/rbtnCO2"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                style="@style/SMDashboardRadioButton"
-                                android:background="@drawable/radio_button_selector"
-                                android:button="@null"
-                                android:paddingTop="10dp"
-                                android:paddingBottom="10dp"
-                                android:paddingLeft="10dp"
-                                android:paddingRight="10dp"
-                                android:textSize="14sp"
-                                android:layout_marginLeft="10dp"
-                                android:layout_marginRight="10dp"
-                                android:textColor="@drawable/radio_button_text"
-                                android:text="@string/text_co2"
-                                android:layout_weight="1"
-                                android:gravity="center" />
-                        </RadioGroup>
-                    </RelativeLayout>
-                    <TextView
-                        android:layout_height="wrap_content"
-                        android:layout_width="wrap_content"
-                        android:layout_weight="0.6"
-                        android:textSize="12sp"
-                        android:textStyle="bold"
-                        android:padding="28dp"
-                        android:layout_gravity="center"
-                        android:textColor="@color/white"
-                        android:text="@string/dashboard_chartview_address_sample"
-                        android:id="@+id/txtAddress"
-                        android:layout_marginTop="@dimen/_5sdp"
-                        android:gravity="center" />
                     <View
                         android:id="@+id/bottomView"
                         android:layout_height="wrap_content"

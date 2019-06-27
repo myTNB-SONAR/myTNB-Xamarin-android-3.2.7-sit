@@ -98,7 +98,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
         [BindView(Resource.Id.layoutSegmentGroup)]
         RelativeLayout mLayoutSegmentGroup;
-        
+
         [BindView(Resource.Id.txtUsageHistory)]
         TextView txtUsageHistory;
 
@@ -175,7 +175,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
         [BindView(Resource.Id.txtCurrentChargesRange)]
         TextView txtCurrentChargesRange;
-        
+
         [BindView(Resource.Id.txtCurrentChargesUnit1)]
         TextView txtCurrentChargesUnit1;
 
@@ -296,8 +296,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
 
 
-        
-        
+
+
 
         internal static DashboardSmartMeterFragment NewInstance(SMUsageHistoryData usageHistoryData, AccountData accountData)
         {
@@ -367,7 +367,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             DownTimeEntity pgCCEntity = DownTimeEntity.GetByCode(Constants.PG_CC_SYSTEM);
             DownTimeEntity pgFPXEntity = DownTimeEntity.GetByCode(Constants.PG_FPX_SYSTEM);
             txtWhatIsThis.SetOnClickListener(this);
-            
+
             this.userActionsListener.Start();
             if (selectedAccount != null)
             {
@@ -419,7 +419,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
                     this.userActionsListener.OnLoadAmount(selectedAccount.AccountNum);
                 }
-                
+
             }
 
             if (!noSMDataFOund)
@@ -493,7 +493,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     {
                         txtAddress.TextFormatted = Html.FromHtml(bcrmEntity.DowntimeMessage);
                     }
-                    
+
                 }
                 else
                 {
@@ -504,7 +504,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 shadowLayout.Visibility = ViewStates.Gone;
                 bottomSheetBehavior.State = BottomSheetBehavior.StateExpanded;
                 bottomSheet.SetOnClickListener(null);
-                
+
                 mNoDataLayout.Visibility = ViewStates.Gone;
                 mSMNoDataLayout.Visibility = ViewStates.Visible;
                 mChart.Visibility = ViewStates.Gone;
@@ -576,7 +576,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             this.userActionsListener.OnArrowForwardClick();
         }
 
-        
+
 
         private void SetNoteVisiBility(bool isVisible) {
             noteTextLayout.Visibility = isVisible ? ViewStates.Visible : ViewStates.Gone;
@@ -607,11 +607,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 txtAddress.Text = selectedAccount.AddStreet;
             }
                 //Since the month is coming as year and year is coming as month... we are checking like this...
-                SetNoteVisiBility(ChartType != ChartType.Month);
+                //SprintX - 1 change: Remove Note section
+                SetNoteVisiBility(false);//ChartType != ChartType.Month);
 
             if (ChartType == ChartType.Month)
             {
-                    
+
 
                 if (!hasNoInternet)
                 {
@@ -723,14 +724,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             }
 
         }
-        #endregion 
+        #endregion
 
         #region SETUP AXIS DAY
         internal void SetUpXAxisDay()
         {
 
             try {
-            XLabelsFormatter = new SMChartsDayFormatter(selectedHistoryData.ByDay, mChart, currentParentIndex, 0);            
+            XLabelsFormatter = new SMChartsDayFormatter(selectedHistoryData.ByDay, mChart, currentParentIndex, 0);
 
             XAxis xAxis = mChart.XAxis;
             xAxis.Position = XAxisPosition.Bottom;
@@ -770,7 +771,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             xAxis.Position = XAxisPosition.Bottom;
             xAxis.TextColor = Color.ParseColor("#ffffff");
             xAxis.AxisLineWidth = 2f;
-            xAxis.AxisLineColor = Color.ParseColor("#77a3ea");            
+            xAxis.AxisLineColor = Color.ParseColor("#77a3ea");
 
             //xAxis.Typeface = (mTfLight);
             xAxis.SetDrawGridLines(false);
@@ -778,7 +779,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             xAxis.Granularity = 1f; // only intervals of 1 day
             xAxis.LabelCount = 7;
             xAxis.ValueFormatter = XLabelsFormatter;
-            
+
             }
             catch (Exception e)
             {
@@ -787,7 +788,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         }
         #endregion
 
-        #region SETUP Y AXIS BOTH MONTH 
+        #region SETUP Y AXIS BOTH MONTH
         internal void SetUpYAxis()
         {
             try {
@@ -862,7 +863,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 Utility.LoggingNonFatalError(e);
             }
         }
-        #endregion  
+        #endregion
 
         #region SETUP Y AXIS BOTH Hour
         internal void SetUpYAxisHour()
@@ -905,7 +906,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 Utility.LoggingNonFatalError(e);
             }
         }
-        #endregion  
+        #endregion
 
         #region SETUP MARKERVIEW MONTH / HIGHLIGHT TEXT
         internal void SetUpMarkerMonthView()
@@ -1039,7 +1040,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             {
                 Utility.LoggingNonFatalError(e);
             }
-            
+
         }
         #endregion
 
@@ -1219,7 +1220,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     //txtCurretnChargesValue.Text = decimalFormat.Format(Math.Abs(currChanrges));
                     txtCurrentChargesUnit1.Visibility = ViewStates.Visible;
                     txtCurrentChargesUnit2.Visibility = ViewStates.Gone;
-                    txtCurrentChargesRange.Text = GetChargeRangeDate(GetString(Resource.String.as_of),usageMetricsData.CurrentCycleStartDate, usageMetricsData.StatsByCost.AsOf);
+                    txtCurrentChargesRange.Text = GetChargeRangeDate(GetString(Resource.String.for_current_month),usageMetricsData.CurrentCycleStartDate, usageMetricsData.StatsByCost.AsOf);
                     txtProjectedCostRange.Text = GetChargeRangeDate(GetString(Resource.String.for_current_month), usageMetricsData.CurrentCycleStartDate, usageMetricsData.StatsByCost.AsOf);
                     txtProjectedCostValue.Text = usageMetricsData.StatsByCost.ProjectedCost;
                     //float proCost = float.Parse(usageMetricsData.StatsByCost.ProjectedCost);
@@ -1235,14 +1236,13 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 imgProjectedCost.SetImageResource(Resource.Drawable.ic_avgelectric_usage);
                 txtCurrentCharges.Text = GetString(Resource.String.current_usage);
                 txtProjectedCost.Text = GetString(Resource.String.avg_elec_usage);
-                txtProjectedCostRange.Text = GetString(Resource.String.vs_last_month);
                 if (usageMetricsData != null)
                 {
                     txtCurretnChargesValue.Text = usageMetricsData.StatsByUsage.CurrentUsageKWH;
                     txtCurrentChargesUnit1.Visibility = ViewStates.Gone;
                     txtCurrentChargesUnit2.Visibility = ViewStates.Visible;
                     txtProjectedCostUnit1.Visibility = ViewStates.Gone;
-                    txtCurrentChargesRange.Text = GetChargeRangeDate(GetString(Resource.String.as_of),usageMetricsData.CurrentCycleStartDate, usageMetricsData.StatsByUsage.AsOf);
+                    txtCurrentChargesRange.Text = GetChargeRangeDate(GetString(Resource.String.for_current_month),usageMetricsData.CurrentCycleStartDate, usageMetricsData.StatsByUsage.AsOf);
                     string htmlAvgUsageContent = usageMetricsData.StatsByUsage.UsageComparedToPrevious.Replace("-","").Replace("+","") + "%";
                     double avgUsageDouble = Double.Parse(String.IsNullOrEmpty(usageMetricsData.StatsByUsage.UsageComparedToPrevious) == true ? "0.00" : usageMetricsData.StatsByUsage.UsageComparedToPrevious);
                     if (avgUsageDouble != 0.00)
@@ -1250,17 +1250,24 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         if (usageMetricsData.StatsByUsage.UsageComparedToPrevious.Contains("-"))
                         {
                             htmlAvgUsageContent = GetString(Resource.String.avg_electric_usage_down) + htmlAvgUsageContent;
+                            txtProjectedCostRange.Text = GetString(Resource.String.less_last_bill_period);
                         }
                         else
                         {
+                          if(int.Parse(usageMetricsData.StatsByUsage.UsageComparedToPrevious) == 0){
+                            htmlAvgUsageContent = htmlAvgUsageContent;
+                            txtProjectedCostRange.Text = GetString(Resource.String.same_last_bill_period);
+                          }else{
                             htmlAvgUsageContent = GetString(Resource.String.avg_electric_usage_up) + htmlAvgUsageContent;
+                            txtProjectedCostRange.Text = GetString(Resource.String.more_last_bill_period);
+                          }
                         }
                     }
 
-                    
+
                     if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
                     {
-                        
+
                         txtProjectedCostValue.TextFormatted = Html.FromHtml(htmlAvgUsageContent, Html.FromHtmlModeLegacy);
                     }
                     else
@@ -1300,7 +1307,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             catch (Exception e)
             {
                 Utility.LoggingNonFatalError(e);
-            }    
+            }
         }
 
         public void ShowByDay()
@@ -1569,7 +1576,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             mChart.Visibility = ViewStates.Gone;
             mNoInternetLayout.Visibility = ViewStates.Visible;
             txtDueDate.Text = GetString(Resource.String.dashboard_chartview_due_date_not_available);
-            
+
         }
         public bool HasNoInternet()
         {
@@ -1775,7 +1782,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         {
             Intent intent = GetIntentObject(typeof(NotificationActivity));
             if (intent != null && IsAdded) {
-                StartActivity(intent);    
+                StartActivity(intent);
             }
 
         }
@@ -1796,9 +1803,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             bottomSheetBehavior.State = BottomSheetBehavior.StateExpanded;
 
             ///<summary>
-            /// Scroll animation 
+            /// Scroll animation
             ///</summary>
-            
+
             //ScrollUpDownScrollView(0);
             //System.Timers.Timer waitTimer = new System.Timers.Timer(800);
             //waitTimer.Elapsed += delegate {
@@ -1847,7 +1854,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                             calAmt = Math.Abs(selectedAccount.AmtCustBal);
                         }
                         txtTotalPayable.Text = decimalFormat.Format(calAmt);
-                        
+
 
                         int incrementDays = int.Parse(accountDueAmount.IncrementREDueDateByDays == null ? "0" : accountDueAmount.IncrementREDueDateByDays);
                         Constants.RE_ACCOUNT_DATE_INCREMENT_DAYS = incrementDays;
@@ -1981,7 +1988,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             //try {
             //if (weblink.OpenWith.Equals("APP"))
             //{
-            //        Intent smartMeterINtent = GetIntentObject(typeof(SmartMeterLearnMoreActivity));  
+            //        Intent smartMeterINtent = GetIntentObject(typeof(SmartMeterLearnMoreActivity));
             //    //Intent smartMeterINtent = new Intent(this.Activity, typeof(SmartMeterLearnMoreActivity));
             //    smartMeterINtent.PutExtra(Constants.SMART_METER_LINK, JsonConvert.SerializeObject(weblink));
             //    StartActivity(smartMeterINtent);
