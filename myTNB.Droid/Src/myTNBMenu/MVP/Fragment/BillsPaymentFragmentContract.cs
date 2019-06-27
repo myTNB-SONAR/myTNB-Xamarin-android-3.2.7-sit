@@ -40,7 +40,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
             /// Shows no internet connection
             /// </summary>
             void ShowNoInternet();
-
+            
             /// <summary>
             /// Enable bill and payment tab
             /// </summary>

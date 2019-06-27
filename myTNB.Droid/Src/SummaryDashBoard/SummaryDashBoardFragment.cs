@@ -5,6 +5,7 @@ using Android.Support.Design.Widget;
 using Android.Support.V4.Content;
 using Android.Support.V7.Widget;
 using Android.Text;
+using Android.Text.Method;
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
@@ -220,7 +221,7 @@ namespace myTNB_Android.Src.SummaryDashBoard
 
                 presenter = new SummaryDashboardPresenter(this);
 
-
+                txtNewRefreshMessage.MovementMethod = new ScrollingMovementMethod();
 
                 loadMore.Click += delegate
                 {
@@ -534,7 +535,14 @@ namespace myTNB_Android.Src.SummaryDashBoard
             {
                 if(!string.IsNullOrEmpty(response.Data.RefreshMessage))
                 {
-                    txtNewRefreshMessage.Text = response.Data.RefreshMessage;
+                    if (Build.VERSION.SdkInt >= BuildVersionCodes.N)
+                    {
+                        txtNewRefreshMessage.TextFormatted = Html.FromHtml(response.Data.RefreshMessage, FromHtmlOptions.ModeLegacy);
+                    }
+                    else
+                    {
+                        txtNewRefreshMessage.TextFormatted = Html.FromHtml(response.Data.RefreshMessage);
+                    }
                 }
                 else
                 {

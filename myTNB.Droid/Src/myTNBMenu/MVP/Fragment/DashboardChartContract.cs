@@ -40,6 +40,8 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
             /// </summary>
             void ShowNoInternet();
 
+            void ShowNoInternetWithWord(string contentTxt, string buttonTxt);
+
             /// <summary>
             ///  Show no internet snackbar
             /// </summary>

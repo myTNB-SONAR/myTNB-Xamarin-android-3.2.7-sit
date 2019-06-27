@@ -209,8 +209,11 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                 if (this.mView.IsActive())
                 {
                     this.mView.HideAmountProgress();
-
-                    if (!amountDueResponse.Data.IsError)
+                    if (amountDueResponse != null && amountDueResponse.Data != null && amountDueResponse.Data.Status.ToUpper() == Constants.REFRESH_MODE)
+                    {
+                        this.mView.ShowNoInternetWithWord(amountDueResponse.Data.RefreshMessage, amountDueResponse.Data.RefreshBtnText);
+                    }
+                    else if (!amountDueResponse.Data.IsError)
                     {
                         //if (amountDueResponse.Data.Data.AmountDue > 0.00)
                         //{
@@ -220,7 +223,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                     }
                     else
                     {
-                        this.mView.ShowRetryOptionsApiException(null);
+                        this.mView.ShowNoInternetWithWord(null, null);
                     }
 
 
@@ -231,8 +234,8 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                 if (this.mView.IsActive())
                 {
                     this.mView.HideAmountProgress();
-                    this.mView.ShowRetryOptionsCancelledException(e);
-
+                    // this.mView.ShowRetryOptionsCancelledException(e);
+                    this.mView.ShowNoInternetWithWord(null, null);
                 }
                 Utility.LoggingNonFatalError(e);
             }
@@ -242,7 +245,8 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                 if (this.mView.IsActive())
                 {
                     this.mView.HideAmountProgress();
-                    this.mView.ShowRetryOptionsApiException(apiException);
+                    // this.mView.ShowRetryOptionsApiException(apiException);
+                    this.mView.ShowNoInternetWithWord(null, null);
                 }
                 Utility.LoggingNonFatalError(apiException);
             }
@@ -252,7 +256,8 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                 if (this.mView.IsActive())
                 {
                     this.mView.HideAmountProgress();
-                    this.mView.ShowRetryOptionsUnknownException(e);
+                    // this.mView.ShowRetryOptionsUnknownException(e);
+                    this.mView.ShowNoInternetWithWord(null, null);
                 }
                 Utility.LoggingNonFatalError(e);
             }
