@@ -441,11 +441,6 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
                             {
                                 CustomerBillingAccount customerBillingAccount = CustomerBillingAccount.FindByAccNum(account.accNum);
                                 double dueAmount = account.amountDue;
-                                // TODO Itemized: to deduct with Itemized Bill or not
-                                if(account.OpenChargesTotal != 0)
-                                {
-                                    dueAmount = dueAmount - account.OpenChargesTotal;
-                                }
 
                                 MPAccount mpAccount = new MPAccount()
                                 {

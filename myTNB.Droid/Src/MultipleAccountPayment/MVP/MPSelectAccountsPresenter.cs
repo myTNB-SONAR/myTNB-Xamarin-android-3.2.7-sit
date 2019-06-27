@@ -55,7 +55,6 @@ namespace myTNB_Android.Src.MultipleAccountPayment.MVP
                 bool getDetailsFromApi = true;
                 foreach (string account in accounts)
                 {
-                    // TODO Itemized: remove cache or not
                     getDetailsFromApi = true;
                     break;
                     if (!SelectBillsEntity.IsSMDataUpdated(account))

@@ -153,6 +153,11 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Adapter
                         vh.AmountLabel.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomHint);
                         item.isValidAmount = true;
                         item.amount = newAmount;
+                        if(item.isSelected && !item.isTooltipShow && item.OpenChargeTotal != 0)
+                        {
+                            ShowTooltip();
+                            item.isTooltipShow = true;
+                        }
                         CheckChanged(this, position);
                     }
                 }
@@ -275,11 +280,6 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Adapter
                         if (accountList[i].isSelected)
                         {
                             MPAccount item = accountList[i];
-                            if(item.isSelected && !item.isTooltipShow && item.OpenChargeTotal != 0)
-                            {
-                                ShowTooltip();
-                                item.isTooltipShow = true;
-                            }
                             selectedStores.Add(item);
                         }
                     }

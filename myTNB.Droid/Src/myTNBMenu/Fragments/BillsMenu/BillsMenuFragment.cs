@@ -485,7 +485,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.BillsMenu
 
                 txtCurrentChargesContent.Text = decimalFormatter.Format(selectedAccount?.AmtCurrentChg);
                 txtOutstandingChargesContent.Text = decimalFormatter.Format(selectedAccount?.AmtOutstandingChg);
-                // TODO Itemized: check calculation
+
                 if (selectedAccount?.OpenChargesTotal == 0)
                 {
                     mandatoryPaymentsLayout.Visibility = ViewStates.Gone;
