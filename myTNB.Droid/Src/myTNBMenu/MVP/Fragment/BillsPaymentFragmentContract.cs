@@ -80,6 +80,18 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
 
 
             void SetBillDetails(AccountData selectedAccount);
+
+            /// <summary>
+            /// Show progress dialog
+            /// </summary>
+            void ShowProgressDialog();
+
+            /// <summary>
+            /// Hide progress dialog
+            /// </summary>
+            void HideProgressDialog();
+
+            void ShowDashboardChart(UsageHistoryResponse response, AccountData accountData);
         }
 
         public interface IUserActionsListener : IBasePresenter
@@ -112,6 +124,8 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
             void LoadBills(CustomerBillingAccount accountSelected);
 
             void RefreshData();
+
+            void OnSelectAccount(CustomerBillingAccount selectedCustomerBilling);
         }
     }
 }

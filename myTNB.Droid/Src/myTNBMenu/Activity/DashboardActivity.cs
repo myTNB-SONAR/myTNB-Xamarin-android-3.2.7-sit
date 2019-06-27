@@ -85,8 +85,6 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
         bool mobileNoUpdated = false;
 
-        private bool refreshBilling = false;
-
         private bool isBackButtonVisible = false;
 
         private LoadingOverlay loadingOverlay;
@@ -251,13 +249,6 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
             // TODO : ADD DRAWABLE RIGHT IF ACCOUNTS IN DATABASE IS GREATER THAN 1
             this.userActionsListener?.OnNotificationCount();
-
-            refreshBilling = false;
-
-            if (extras != null && extras.ContainsKey(Constants.REFRESH_MODE))
-            {
-                refreshBilling = true;
-            }
         }
 
         public void ClearFragmentStack()
@@ -327,10 +318,6 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             if (this.mPresenter != null)
             {
                 this.mPresenter.OnValidateData();
-            }
-            if (refreshBilling)
-            {
-                BillsMenuRefresh();
             }
         }
 
@@ -641,13 +628,13 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             this.bottomNavigationView.Menu.FindItem(resourceId).SetChecked(true);
         }
 
-        public void BillsMenuRefresh()
+        public void BillsMenuRefresh(AccountData accountData)
         {
-            ShowProgressDialog();
             bottomNavigationView.Menu.FindItem(Resource.Id.menu_bill).SetChecked(true);
-            this.userActionsListener?.OnMenuSelect(Resource.Id.menu_bill);
+            ShowAccountName();
+            SetToolbarTitle(Resource.String.bill_menu_activity_title);
+            ShowBillMenu(accountData);
         }
-
         public void EnableDropDown(bool enable)
         {
             if (enable)

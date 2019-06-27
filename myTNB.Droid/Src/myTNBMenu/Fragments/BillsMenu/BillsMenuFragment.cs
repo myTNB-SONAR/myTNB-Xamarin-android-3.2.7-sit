@@ -254,10 +254,20 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.BillsMenu
         [OnClick(Resource.Id.btnRefresh)]
         internal void OnRefresh(object sender, EventArgs e)
         {
-            Intent dashbaord_activity = new Intent(Activity, typeof(DashboardActivity));
-            dashbaord_activity.PutExtra(Constants.REFRESH_MODE, true);
-            dashbaord_activity.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
-            Activity.StartActivity(dashbaord_activity);
+            CustomerBillingAccount customerAccount = CustomerBillingAccount.FindByAccNum(selectedAccount.AccountNum);
+            this.userActionsListener.OnSelectAccount(customerAccount);
+        }
+
+        public void ShowDashboardChart(UsageHistoryResponse response, AccountData accountData)
+        {
+            try
+            {
+                ((DashboardActivity)Activity).BillsMenuRefresh(accountData);
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public void ShowView()
@@ -506,6 +516,48 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.BillsMenu
             ChildFragmentManager.BeginTransaction()
                .Replace(Resource.Id.layoutReplacement, PaymentListFragment.NewInstance(paymentHistoryREResponse, selectedAccount))
                .CommitAllowingStateLoss();
+        }
+
+        public void ShowProgressDialog()
+        {
+            //if (progressDialog != null && !progressDialog.IsShowing)
+            //{
+            //    progressDialog.Show();
+            //}
+
+            try
+            {
+                if (loadingOverlay != null && loadingOverlay.IsShowing)
+                {
+                    loadingOverlay.Dismiss();
+                }
+
+                loadingOverlay = new LoadingOverlay(Activity.ApplicationContext, Resource.Style.LoadingOverlyDialogStyle);
+                loadingOverlay.Show();
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void HideProgressDialog()
+        {
+            //if (progressDialog != null && progressDialog.IsShowing)
+            //{
+            //    progressDialog.Dismiss();
+            //}
+            try
+            {
+                if (loadingOverlay != null && loadingOverlay.IsShowing)
+                {
+                    loadingOverlay.Dismiss();
+                }
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public void SetBillDetails(AccountData selectedAccount)
