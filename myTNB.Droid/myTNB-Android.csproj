@@ -1081,6 +1081,21 @@
     <Compile Include="Src\Notifications\Models\NotificationData.cs" />
     <AndroidResource Include="Resources\menu\NotificationToolbarMenu.xml" />
     <AndroidResource Include="Resources\layout\NotificationEmptyView.axml" />
+    <AndroidResource Include="Resources\drawable-hdpi\empty_state_notification.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\ic_action_select_all.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\ic_header_markread.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\empty_state_notification.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\ic_action_select_all.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\ic_header_markread.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\empty_state_notification.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_action_select_all.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_header_markread.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\empty_state_notification.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_action_select_all.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_header_markread.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\empty_state_notification.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\ic_action_select_all.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\ic_header_markread.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
