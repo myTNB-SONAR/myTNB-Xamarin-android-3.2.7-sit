@@ -47,8 +47,11 @@ namespace myTNB_Android.Src.myTNBMenu.Async
 
                 //userNotiWatch.Stop();
                 //Console.WriteLine($"Execution Time for user notification: {userNotiWatch.ElapsedMilliseconds} ms");
-
-                if (userNotificationResponse.Result != null && userNotificationResponse.Result.Data != null)
+                if (userNotificationResponse != null && userNotificationResponse.Result != null && userNotificationResponse.Result.Data.Status.ToUpper() == Constants.REFRESH_MODE)
+                {
+                    UserNotificationEntity.RemoveAll();
+                }
+                else if (userNotificationResponse.Result != null && userNotificationResponse.Result.Data != null)
                 {
                     if (!userNotificationResponse.Result.Data.IsError)
                     {
@@ -59,19 +62,30 @@ namespace myTNB_Android.Src.myTNBMenu.Async
                         }
 
                     }
+                    else
+                    {
+                        UserNotificationEntity.RemoveAll();
+                    }
+                }
+                else
+                {
+                    UserNotificationEntity.RemoveAll();
                 }
                 Console.WriteLine("000 UserNotificationAPI ended");
             }
             catch (ApiException apiException)
             {
+                UserNotificationEntity.RemoveAll();
                 Utility.LoggingNonFatalError(apiException);
             }
             catch (Newtonsoft.Json.JsonReaderException e)
             {
+                UserNotificationEntity.RemoveAll();
                 Utility.LoggingNonFatalError(e);
             }
             catch (System.Exception e)
             {
+                UserNotificationEntity.RemoveAll();
                 Utility.LoggingNonFatalError(e);
             }
             return null;
