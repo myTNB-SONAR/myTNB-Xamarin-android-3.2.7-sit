@@ -112,7 +112,7 @@ namespace myTNB
         public void AddItemisedBillingDetails(BillingAccountDetailsDataModel billingAccount, Action tooltipAction)
         {
             nfloat widgetY = 0;
-            _lblMandatoryPayments = GetKeyValueLabel(new CGRect(0, widgetY, childWidthTitle, 16), "Bill_MandatoryPayments");
+            _lblMandatoryPayments = GetKeyValueLabel(new CGRect(0, widgetY, childWidthTitle, 16), "Bill_OtherCharges");
             _lblMandatoryPaymentsValue = GetKeyValueLabel(new CGRect(_lblMandatoryPayments.Frame.Width, widgetY, childWidthValue, 16)
                 , string.Format("{0} {1}", TNBGlobal.UNIT_CURRENCY, billingAccount.OpenChargesTotal.ToString("N2", CultureInfo.InvariantCulture))
                 , UITextAlignment.Right);

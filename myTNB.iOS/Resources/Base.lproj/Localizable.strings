@@ -14,11 +14,11 @@
 "Bill_CurrentCharges"="Current Charges";
 "Bill_CurrentPaymentAdvice"="Current Payment Advice";
 "Bill_DisconnectionCharges"="Disconnection Charges";
-"Bill_MandatoryPayments"="Mandatory Payments";
 "Bill_MyEarnings"="My Earnings";
 "Bill_NoBill"="Yay! No bills! You will be notified\nwhen your bill is ready.";
 "Bill_NoDataConnection"="Unable to load. Check your\ninternet connection or try again later.";
 "Bill_NoPayment"="No payments yet! Payments\nmade will be shown here.";
+"Bill_OtherCharges"="Other Charges";
 "Bill_OutstandingCharges"="Outstanding Charges";
 "Bill_Pay"="Pay";
 "Bill_PaymentAdviceAmount"="Payment Advice Amount";
