@@ -101,9 +101,13 @@ namespace myTNB.Payment.SelectBills
                     }
                 }
                 _accounts[index].IsAccountSelected = !isAccountSelected;
-                cell._imgViewCheckBox.Image = UIImage.FromBundle(_accounts[index].IsAccountSelected
+                cell._imgViewCheckBox.Image = UIImage.FromBundle(!isAccountSelected
                     ? "Payment-Checkbox-Active" : "Payment-Checkbox-Inactive");
                 _controller.UpDateTotalAmount();
+                if (!isAccountSelected)
+                {
+                    _controller.OnShowItemisedTooltip(_accounts[index].accNum);
+                }
             }
         }
 

@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using myTNB.Model;
 using System.Globalization;
-using System.Drawing;
 
 namespace myTNB
 {
@@ -18,27 +17,19 @@ namespace myTNB
         }
 
         public double SelectedAccountDueAmount;
+        public List<CustomerAccountRecordModel> _accountsForPayment = new List<CustomerAccountRecordModel>();
+        public double totalAmount = 0.00;
 
-        string selectedAccountNumber = DataManager.DataManager.SharedInstance.SelectedAccount.accNum;
         MultiAccountDueAmountResponseModel _multiAccountDueAmount = new MultiAccountDueAmountResponseModel();
         List<CustomerAccountRecordModel> _accounts = new List<CustomerAccountRecordModel>();
         List<CustomerAccountRecordModel> _accountsForDisplay = new List<CustomerAccountRecordModel>();
         CustomerAccountRecordModel _selectedAccount = new CustomerAccountRecordModel();
-        public List<CustomerAccountRecordModel> _accountsForPayment = new List<CustomerAccountRecordModel>();
 
-        UIView _viewAmount;
-        UILabel _lblCurrency;
-        public UILabel _lblTotalAmountValue;
-        UIView _viewFooter;
+        private UIView _viewAmount, _viewFooter;
+        private UILabel _lblTotalAmountValue, _lblCurrency;
 
-        int loadMoreCount = 0;
-        int lastStartIndex = 0;
-        int lastEndIndex = 0;
-        bool isViewDidLoad = false;
-        public double totalAmount = 0.00;
-
-        private bool isItemisedTooltipDisplayed;
-        private bool isItemisedDidLoad = true;
+        int loadMoreCount, lastStartIndex, lastEndIndex;
+        bool isViewDidLoad, isItemisedTooltipDisplayed;
 
         public override void ViewDidLoad()
         {
@@ -96,12 +87,6 @@ namespace myTNB
                     isViewDidLoad = false;
                 }
             }
-        }
-
-        public override void ViewDidAppear(bool animated)
-        {
-            base.ViewDidAppear(animated);
-            isItemisedDidLoad = false;
         }
 
         /// <summary>
@@ -195,7 +180,7 @@ namespace myTNB
                     _accounts.Add(item);
                 }
             }
-            int selectedAccountIndex = _accounts.FindIndex(x => x.accNum.Equals(selectedAccountNumber));
+            int selectedAccountIndex = _accounts.FindIndex(x => x.accNum.Equals(DataManager.DataManager.SharedInstance.SelectedAccount.accNum));
             if (selectedAccountIndex > -1)
             {
                 _selectedAccount = _accounts[selectedAccountIndex];
@@ -255,7 +240,6 @@ namespace myTNB
                     if (accIndex > -1 && _multiAccountDueAmount.d.data[accIndex].IsItemisedBilling)
                     {
                         otherCharges = _multiAccountDueAmount.d.data[accIndex].OpenChargesTotal;
-                        OnShowItemisedTooltip(item.accNum);
                     }
                     if (item.Amount < TNBGlobal.PaymentMinAmnt)
                     {
@@ -279,20 +263,15 @@ namespace myTNB
             BtnPayBill.Enabled = isValid;
         }
 
-        private void OnShowItemisedTooltip(string accNum)
+        internal void OnShowItemisedTooltip(string accNum)
         {
-            if (isItemisedDidLoad)
-            {
-                isItemisedDidLoad = false;
-                return;
-            }
             if (!isItemisedTooltipDisplayed)
             {
                 var data = _multiAccountDueAmount.d;
                 DisplayCustomAlert(data.MandatoryChargesTitle, data.MandatoryChargesMessage, new Dictionary<string, Action>() {
                     {
                         data.MandatoryChargesPriButtonText, ()=>{
-                            OnBack();
+                            EvaluatePageSource(accNum);
                         }
                     }
                     ,{
@@ -301,6 +280,13 @@ namespace myTNB
                 });
                 isItemisedTooltipDisplayed = true;
             }
+        }
+
+        private void EvaluatePageSource(string accNumber)
+        {
+            DataManager.DataManager.SharedInstance.SelectedAccount
+                = DataManager.DataManager.SharedInstance.AccountRecordsList.d.Find(x => x.accNum == accNumber);
+            ViewHelper.DismissControllersAndSelectTab(this, 1, true);
         }
 
         void OnGetMultiAccountDueAmountServiceCall(List<string> accountsForQuery)
