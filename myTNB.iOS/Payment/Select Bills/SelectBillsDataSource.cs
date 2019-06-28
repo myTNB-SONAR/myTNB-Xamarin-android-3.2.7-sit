@@ -104,7 +104,8 @@ namespace myTNB.Payment.SelectBills
                 cell._imgViewCheckBox.Image = UIImage.FromBundle(!isAccountSelected
                     ? "Payment-Checkbox-Active" : "Payment-Checkbox-Inactive");
                 _controller.UpDateTotalAmount();
-                if (!isAccountSelected)
+                int accIndex = _multiAccountDueAmount.d.data.FindIndex(x => x.accNum == _accounts[index].accNum);
+                if (!isAccountSelected && accIndex > -1 && _multiAccountDueAmount.d.data[accIndex].IsItemisedBilling)
                 {
                     _controller.OnShowItemisedTooltip(_accounts[index].accNum);
                 }
