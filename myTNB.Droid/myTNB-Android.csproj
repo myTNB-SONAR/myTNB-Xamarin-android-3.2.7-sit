@@ -4373,11 +4373,6 @@
     <AndroidResource Include="Resources\drawable-xxxhdpi\refresh.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\layout\RefreshView.axml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
-  </ItemGroup>
-  <ItemGroup>
     <AndroidResource Include="Resources\drawable\white_filled_button_background.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />

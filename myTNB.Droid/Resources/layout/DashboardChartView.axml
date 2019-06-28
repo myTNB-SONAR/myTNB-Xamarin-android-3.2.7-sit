@@ -25,34 +25,36 @@
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:visibility="gone">
-                <ImageView
-                    android:id="@+id/refresh_image"
-                    android:layout_height="96dp"
-                    android:layout_width="96dp"
-                    android:layout_gravity="center_horizontal"
-                    android:src="@drawable/refresh_on_bg"/>
-                <TextView
-                    android:id="@+id/refresh_content"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="24dp"
-                    android:gravity="center"
-                    android:lineSpacingExtra="4sp"
-                    android:paddingLeft="16dp"
-                    android:paddingRight="16dp"
-                    android:textSize="16sp"
-                    android:text="@string/text_new_refresh_content"
-                    android:textColor="@color/white"/>
-                <Button
+                <LinearLayout 
+                    android:orientation="vertical"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp"
-                    android:text="@string/text_new_refresh"
-                    android:id="@+id/btnRefresh"
-                    style="@style/Theme.RefreshWhiteButton" />
+                    android:layout_height="match_parent"
+                    android:paddingTop="6dp">
+                    <ImageView
+                        android:id="@+id/refresh_image"
+                        android:layout_height="96dp"
+                        android:layout_width="96dp"
+                        android:layout_gravity="center_horizontal"
+                        android:src="@drawable/refresh_on_bg"/>
+                    <TextView
+                        android:id="@+id/refresh_content"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="24dp"
+                        android:gravity="center"
+                        android:lineSpacingExtra="4sp"
+                        android:textSize="16sp"
+                        android:text="@string/text_new_refresh_content"
+                        android:textColor="@color/white"/>
+                    <Button
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:text="@string/text_new_refresh"
+                        android:id="@+id/btnRefresh"
+                        style="@style/Theme.RefreshWhiteButton" />
+                </LinearLayout>
             </LinearLayout>
             <LinearLayout
                 android:id="@+id/layout_graph_total"

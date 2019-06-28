@@ -244,9 +244,7 @@ namespace myTNB_Android.Src.Notifications.MVP
                                 }
                                 else
                                 {
-                                    this.mView.ShowView();
-                                    this.mView.ClearAdapter();
-                                    this.ShowFilteredList();
+                                    this.mView.ShowRefreshView(null, null);
                                 }
                             }
                             catch (ApiException apiException)

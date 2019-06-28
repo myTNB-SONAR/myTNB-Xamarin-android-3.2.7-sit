@@ -240,6 +240,10 @@ namespace myTNB_Android.Src.SummaryDashBoard.MVP
                     }
                     mView.ShowRefreshSummaryDashboard(false, null);
                 }
+                else
+                {
+                    this.mView.ShowRefreshSummaryDashboard(true, null); 
+                }
 
                 //    if (accountSelected.isOwned)
                 //    {
