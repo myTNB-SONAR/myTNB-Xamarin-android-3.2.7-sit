@@ -35,6 +35,7 @@ namespace myTNB.Dashboard.DashboardComponents
         public ChartCompanionComponent _chartCompanionComponent;
         public ActivityIndicatorComponent _componentActivity;
         public RefreshViewComponent _refreshViewComponent;
+        public AccountStatusComponent _accountStatusComponent;
         public UIView _viewChartCompanion;
         public UIView _viewSmartMeter;
         public UIView _viewChart;
@@ -50,6 +51,7 @@ namespace myTNB.Dashboard.DashboardComponents
         public EventHandler PullDownTorefresh;
 
         public UITapGestureRecognizer ToolTipGestureRecognizer;
+        public UITapGestureRecognizer ToolTipGestureRecognizerForAcctStatus;
 
         internal void RemoveAllSubviews()
         {
@@ -215,6 +217,14 @@ namespace myTNB.Dashboard.DashboardComponents
             _addressComponent = new AddressComponent(_dashboardScrollView);
             _dashboardScrollView.AddSubview(_addressComponent.GetUI());
 
+            if (!DataManager.DataManager.SharedInstance.AccountIsActive)
+            {
+                //Add Account Status
+                _accountStatusComponent = new AccountStatusComponent(_dashboardScrollView, _addressComponent.GetView());
+                _dashboardScrollView.AddSubview(_accountStatusComponent.GetUI());
+                AddAccountStatusComponent();
+            }
+
             //Add smart meter
             //_smartMeterComponent = new SmartMeterComponent(_gradientView);
             //_viewSmartMeter = _smartMeterComponent.GetUI();
@@ -225,6 +235,7 @@ namespace myTNB.Dashboard.DashboardComponents
             CGSize contentSize = _dashboardScrollView.ContentSize;
             contentSize.Height = contentSize.Height + 20;
             _dashboardScrollView.ContentSize = contentSize;
+
             _gradientView.AddSubview(_dashboardScrollView);
 
             _parentView.AddSubview(_gradientView);
@@ -314,6 +325,14 @@ namespace myTNB.Dashboard.DashboardComponents
             //Add Address
             _addressComponent = new AddressComponent(_gradientView);
             _gradientView.AddSubview(_addressComponent.GetUI());
+
+            if (!DataManager.DataManager.SharedInstance.AccountIsActive)
+            {
+                //Add Account Status
+                _accountStatusComponent = new AccountStatusComponent(_gradientView, _addressComponent.GetView());
+                _gradientView.AddSubview(_accountStatusComponent.GetUI());
+                AddAccountStatusComponent();
+            }
 
             _parentView.AddSubview(_gradientView);
 
@@ -451,6 +470,14 @@ namespace myTNB.Dashboard.DashboardComponents
             _addressComponent = new AddressComponent(_gradientView);
             _gradientView.AddSubview(_addressComponent.GetUI());
 
+            if (!DataManager.DataManager.SharedInstance.AccountIsActive)
+            {
+                //Add Account Status
+                _accountStatusComponent = new AccountStatusComponent(_gradientView, _addressComponent.GetView());
+                _gradientView.AddSubview(_accountStatusComponent.GetUI());
+                AddAccountStatusComponent();
+            }
+
             _parentView.AddSubview(_gradientView);
 
             _billAndPaymentComponent = new BillAndPaymentComponent(_parentView);
@@ -545,6 +572,28 @@ namespace myTNB.Dashboard.DashboardComponents
 
             _billAndPaymentComponent = new BillAndPaymentComponent(_parentView);
             _parentView.AddSubview(_billAndPaymentComponent.GetUI());
+        }
+
+        /// <summary>
+        /// Add Account Status Component properties
+        /// </summary>
+        private void AddAccountStatusComponent()
+        {
+            var installationDetails = DataManager.DataManager.SharedInstance.InstallationDetails;
+            var isAccountActive = DataManager.DataManager.SharedInstance.AccountIsActive;
+
+            if (!isAccountActive)
+            {
+                if (installationDetails != null)
+                {
+                    var acctStatusText = !string.IsNullOrWhiteSpace(installationDetails.AccountStatusMessage) ? installationDetails.AccountStatusMessage : "Dashboard_AccountStatus".Translate();
+                    var acctStatusTooltipTitle = !string.IsNullOrWhiteSpace(installationDetails.AccountStatusModalTitle) ? installationDetails.AccountStatusModalTitle : "Dashboard_AccountStatusToolTip".Translate();
+
+                    _accountStatusComponent.SetEvent(ToolTipGestureRecognizerForAcctStatus);
+                    _accountStatusComponent.SetStatusLabel(acctStatusText);
+                    _accountStatusComponent.SetToolTipLabel(acctStatusTooltipTitle);
+                }
+            }
         }
     }
 }

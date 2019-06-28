@@ -115,6 +115,10 @@ namespace myTNB.DataManager
         public bool IsPaymentDone = false;
         private List<string> AccountNumbersForPaymentList;
 
+        //Account Related
+        public InstallationDetailDataModel InstallationDetails = new InstallationDetailDataModel();
+        public bool AccountIsActive = false;
+
         public static DataManager SharedInstance
         {
             get
@@ -202,6 +206,10 @@ namespace myTNB.DataManager
             isLocationSearch = false;
 
             IsPromotionFirstLoad = false;
+
+            //Account Related
+            InstallationDetails = new InstallationDetailDataModel();
+            AccountIsActive = false;
         }
 
         /// <summary>

@@ -137,6 +137,9 @@
 "Dashboard_RESectionHeader"="Renewable Energy";
 "Dashboard_RESectionSubHeader"="My Earnings";
 "Dashboard_SectionHeader"="Accounts";
+"Dashboard_AccountStatus"="Electricity Connection: Unavailable!";
+"Dashboard_AccountStatusToolTip"="What does this mean?";
+"Dashboard_AccountStatusMessage"="Your electricity has been disconnected and is unavailable. This was not caused by a power outage. If you’ve made a payment, please give us some time for this to be reflected.";
 "Dashboard_WhatAreTheseCost"="What are these costs?";
 
 /*Error*/

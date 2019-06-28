@@ -1139,6 +1139,7 @@
     <Folder Include="Assets.xcassets\Refresh-Error-Normal.imageset\" />
     <Folder Include="Assets.xcassets\Refresh-Error-White.imageset\" />
     <Folder Include="Model\GetAppLaunchMasterData\" />
+    <Folder Include="Model\GetInstallationDetails\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -1826,6 +1827,10 @@
     <Compile Include="Model\GetAppLaunchMasterData\MasterDataModel.cs" />
     <Compile Include="Model\GetAppLaunchMasterData\MasterDataResponseModel.cs" />
     <Compile Include="Model\GetAppLaunchMasterData\ForceUpdateInfoModel.cs" />
+    <Compile Include="Home\Components\AccountStatusComponent.cs" />
+    <Compile Include="Model\GetInstallationDetails\InstallationDetailDataModel.cs" />
+    <Compile Include="Model\GetInstallationDetails\InstallationDetailModel.cs" />
+    <Compile Include="Model\GetInstallationDetails\InstallationDetailResponseModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />
