@@ -158,6 +158,12 @@ namespace myTNB.Dashboard
                     {
                         await LoadInstallationDetails();
                     }
+                    else
+                    {
+                        DisplayNoDataAlert();
+                        _dashboardMainComponent.ConstructNoDataConnectionDashboard();
+                        SetEventsAndText();
+                    }
                 });
             });
         }
