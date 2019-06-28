@@ -1128,6 +1128,7 @@
     <Folder Include="Assets.xcassets\Maintenance-Image.imageset\" />
     <Folder Include="Model\Modify Notification\" />
     <Folder Include="Model\GetAppLaunchMasterData\" />
+    <Folder Include="Model\GetInstallationDetails\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -1814,6 +1815,10 @@
     <Compile Include="Model\GetAppLaunchMasterData\MasterDataModel.cs" />
     <Compile Include="Model\GetAppLaunchMasterData\MasterDataResponseModel.cs" />
     <Compile Include="Model\GetAppLaunchMasterData\ForceUpdateInfoModel.cs" />
+    <Compile Include="Home\Components\AccountStatusComponent.cs" />
+    <Compile Include="Model\GetInstallationDetails\InstallationDetailDataModel.cs" />
+    <Compile Include="Model\GetInstallationDetails\InstallationDetailModel.cs" />
+    <Compile Include="Model\GetInstallationDetails\InstallationDetailResponseModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />
