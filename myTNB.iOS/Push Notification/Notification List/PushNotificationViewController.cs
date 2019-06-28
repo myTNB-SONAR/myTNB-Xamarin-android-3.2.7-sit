@@ -396,7 +396,7 @@ namespace myTNB.PushNotification
                     DeviceId = DataManager.DataManager.SharedInstance.UDID,
                     SSPUserId = userId
                 };
-                _detailedInfo = serviceManager.GetNotificationDetailedInfo("GetNotificationDetailedInfo_V2", requestParameter);
+                _detailedInfo = serviceManager.GetNotificationDetailedInfo("GetNotificationDetailedInfo_V3", requestParameter);
             });
         }
 
