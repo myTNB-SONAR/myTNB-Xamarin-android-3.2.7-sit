@@ -63,20 +63,18 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                 if (this.mView.IsActive())
                 {
                     this.mView.HideAmountProgress();
-                    if (!amountDueResponse.Data.IsError)
-                    {
-                        //if (amountDueResponse.Data.Data.AmountDue > 0.00)
-                        //{
-                        this.mView.EnablePayButton();
-                        //}
-                        this.mView.ShowAmountDue(amountDueResponse.Data.Data);
-                    }
-                    else
-                    {
-                        this.mView.ShowRetryOptionsApiException(null);
-
-                    }
-
+                }
+                if (!amountDueResponse.Data.IsError)
+                {
+                    //if (amountDueResponse.Data.Data.AmountDue > 0.00)
+                    //{
+                    this.mView.EnablePayButton();
+                    //}
+                    this.mView.ShowAmountDue(amountDueResponse.Data.Data);
+                }
+                else
+                {
+                    this.mView.ShowRetryOptionsApiException(null);
 
                 }
             }

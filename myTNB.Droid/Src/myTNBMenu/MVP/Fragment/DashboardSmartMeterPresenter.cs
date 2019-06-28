@@ -209,24 +209,22 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                 if (this.mView.IsActive())
                 {
                     this.mView.HideAmountProgress();
-                    if (amountDueResponse != null && amountDueResponse.Data != null && amountDueResponse.Data.Status.ToUpper() == Constants.REFRESH_MODE)
-                    {
-                        this.mView.ShowNoInternetWithWord(amountDueResponse.Data.RefreshMessage, amountDueResponse.Data.RefreshBtnText);
-                    }
-                    else if (!amountDueResponse.Data.IsError)
-                    {
-                        //if (amountDueResponse.Data.Data.AmountDue > 0.00)
-                        //{
-                        // this.mView.EnablePayButton();
-                        //}
-                        this.mView.ShowAmountDue(amountDueResponse.Data.Data);
-                    }
-                    else
-                    {
-                        this.mView.ShowNoInternetWithWord(null, null);
-                    }
-
-
+                }
+                if (amountDueResponse != null && amountDueResponse.Data != null && amountDueResponse.Data.Status.ToUpper() == Constants.REFRESH_MODE)
+                {
+                    this.mView.ShowNoInternetWithWord(amountDueResponse.Data.RefreshMessage, amountDueResponse.Data.RefreshBtnText);
+                }
+                else if (!amountDueResponse.Data.IsError)
+                {
+                    //if (amountDueResponse.Data.Data.AmountDue > 0.00)
+                    //{
+                    // this.mView.EnablePayButton();
+                    //}
+                    this.mView.ShowAmountDue(amountDueResponse.Data.Data);
+                }
+                else
+                {
+                    this.mView.ShowNoInternetWithWord(null, null);
                 }
             }
             catch (System.OperationCanceledException e)
@@ -235,8 +233,8 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                 {
                     this.mView.HideAmountProgress();
                     // this.mView.ShowRetryOptionsCancelledException(e);
-                    this.mView.ShowNoInternetWithWord(null, null);
                 }
+                this.mView.ShowNoInternetWithWord(null, null);
                 Utility.LoggingNonFatalError(e);
             }
             catch (ApiException apiException)
@@ -246,8 +244,8 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                 {
                     this.mView.HideAmountProgress();
                     // this.mView.ShowRetryOptionsApiException(apiException);
-                    this.mView.ShowNoInternetWithWord(null, null);
                 }
+                this.mView.ShowNoInternetWithWord(null, null);
                 Utility.LoggingNonFatalError(apiException);
             }
             catch (Exception e)
@@ -257,8 +255,8 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                 {
                     this.mView.HideAmountProgress();
                     // this.mView.ShowRetryOptionsUnknownException(e);
-                    this.mView.ShowNoInternetWithWord(null, null);
                 }
+                this.mView.ShowNoInternetWithWord(null, null);
                 Utility.LoggingNonFatalError(e);
             }
 
