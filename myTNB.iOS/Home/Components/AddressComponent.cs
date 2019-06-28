@@ -35,6 +35,11 @@ namespace myTNB.Dashboard.DashboardComponents
             return _lblAddress;
         }
 
+        public UILabel GetView()
+        {
+            return _lblAddress;
+        }
+
         public void SetAddress(string address)
         {
             if (!string.IsNullOrEmpty(address))

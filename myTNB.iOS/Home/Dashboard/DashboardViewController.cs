@@ -25,6 +25,7 @@ namespace myTNB.Dashboard
         DashboardMainComponent _dashboardMainComponent;
         DueAmountResponseModel _dueAmount = new DueAmountResponseModel();
         BillingAccountDetailsResponseModel _billingAccountDetailsList = new BillingAccountDetailsResponseModel();
+        InstallationDetailResponseModel _installationDetails = new InstallationDetailResponseModel();
         bool isAnimating = false;
 
         double _amountDue = 0;
@@ -60,6 +61,13 @@ namespace myTNB.Dashboard
             _dashboardMainComponent.ToolTipGestureRecognizer = new UITapGestureRecognizer((obj) =>
             {
                 DisplayCustomAlert(string.Empty, _toolTipMessage, _toolTipBtnTitle, null);
+            });
+            _dashboardMainComponent.ToolTipGestureRecognizerForAcctStatus = new UITapGestureRecognizer((obj) =>
+            {
+                var installationDetails = DataManager.DataManager.SharedInstance.InstallationDetails;
+                var acctStatusTooltipBtnTitle = !string.IsNullOrWhiteSpace(installationDetails.AccountStatusModalBtnText) ? installationDetails.AccountStatusModalBtnText : "Common_GotIt".Translate();
+                var acctStatusTooltipMsg = !string.IsNullOrWhiteSpace(installationDetails.AccountStatusModalMessage) ? installationDetails.AccountStatusModalMessage : "Dashboard_AccountStatusMessage".Translate();
+                DisplayCustomAlert(string.Empty, acctStatusTooltipMsg, acctStatusTooltipBtnTitle, null);
             });
             NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
             {
@@ -144,18 +152,11 @@ namespace myTNB.Dashboard
 
             NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
             {
-                InvokeOnMainThread(() =>
+                InvokeOnMainThread(async () =>
                 {
                     if (NetworkUtility.isReachable)
                     {
-                        //PushNotificationHelper.HandlePushNotification();
-                    }
-                    else
-                    {
-                        Debug.WriteLine("No Network");
-                        DisplayNoDataAlert();
-                        _dashboardMainComponent.ConstructNoDataConnectionDashboard();
-                        SetEventsAndText();
+                        await LoadInstallationDetails();
                     }
                 });
             });
@@ -185,6 +186,30 @@ namespace myTNB.Dashboard
                     });
                 });
             }
+        }
+
+        /// <summary>
+        /// Loads the Account's Installation Details
+        /// </summary>
+        /// <returns></returns>
+        private async Task LoadInstallationDetails()
+        {
+            await GetInstallationDetails().ContinueWith(task =>
+            {
+                InvokeOnMainThread(() =>
+                {
+                    if (_installationDetails != null && _installationDetails?.d != null
+                        && _installationDetails?.d?.data != null && _installationDetails?.d?.didSucceed == true)
+                    {
+                        var installationDetails = _installationDetails.d.data;
+                        DataManager.DataManager.SharedInstance.InstallationDetails = installationDetails;
+                        if (!string.IsNullOrWhiteSpace(installationDetails.DisconnectionStatus))
+                        {
+                            DataManager.DataManager.SharedInstance.AccountIsActive = installationDetails.DisconnectionStatus.ToLower() == "available";
+                        }
+                    }
+                });
+            });
         }
 
         /// <summary>
@@ -1030,21 +1055,28 @@ namespace myTNB.Dashboard
             float yLoc;
             if (isNormalMeter)
             {
-                yLoc = (float)_dashboardMainComponent._viewChart.Frame.GetMaxY() + 28f;
+                yLoc = (float)_dashboardMainComponent._viewChart.Frame.GetMaxY();
                 if (DeviceHelper.IsIphoneXUpResolution())
                 {
                     yLoc = (float)_dashboardMainComponent._viewChart.Frame.GetMaxY() + 5f;
                 }
-                else if (DeviceHelper.IsIphone6UpResolution())
-                {
-                    yLoc = (float)_dashboardMainComponent._viewChart.Frame.GetMaxY() + 40;
-                }
             }
             else
             {
-                yLoc = (float)_dashboardMainComponent._viewChartCompanion.Frame.GetMaxY() + 18f;
+                if (DeviceHelper.IsIphone6UpResolution() || DeviceHelper.IsIphone5())
+                {
+                    yLoc = (float)_dashboardMainComponent._viewChartCompanion.Frame.GetMaxY();
+                }
+                else
+                {
+                    yLoc = (float)_dashboardMainComponent._viewChartCompanion.Frame.GetMaxY() + 18f;
+                }
             }
             _dashboardMainComponent._addressComponent.SetFrameByPrecedingView(yLoc);
+            if (_dashboardMainComponent._accountStatusComponent != null)
+            {
+                _dashboardMainComponent._accountStatusComponent.SetFrameByPrecedingView((float)_dashboardMainComponent._addressComponent.GetView().Frame.GetMaxY());
+            }
             _dashboardMainComponent._lblEstimatedReading.Hidden = (isMonthView) ? !IsEstimatedReading(chartData) : true;
             _dashboardMainComponent._usageHistoryComponent.SetDateRange(dateRange);
         }
@@ -1251,6 +1283,23 @@ namespace myTNB.Dashboard
                     CANum = DataManager.DataManager.SharedInstance.SelectedAccount.accNum
                 };
                 _billingAccountDetailsList = serviceManager.GetBillingAccountDetails("GetBillingAccountDetails", requestParameter);
+            });
+        }
+        /// <summary>
+        /// Gets the installation details of electricity account
+        /// </summary>
+        /// <returns></returns>
+        Task GetInstallationDetails()
+        {
+            return Task.Factory.StartNew(() =>
+            {
+                ServiceManager serviceManager = new ServiceManager();
+                object requestParameter = new
+                {
+                    apiKeyID = TNBGlobal.API_KEY_ID,
+                    accNum = DataManager.DataManager.SharedInstance.SelectedAccount.accNum
+                };
+                _installationDetails = serviceManager.GetInstallationDetail("GetInstallationDetails", requestParameter);
             });
         }
     }
