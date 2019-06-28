@@ -1294,8 +1294,8 @@ Please try again later.]]>
   <string name="projected_cost">My bill may reach</string>
   <string name="for_current_month">for</string>
   <string name="current_usage">My current usage</string>
-  <string name="more_last_bill_period">more compared to last bill period</string>
-  <string name="less_last_bill_period">less compared to last bill period</string>
+  <string name="more_last_bill_period">more compared to the last bill period</string>
+  <string name="less_last_bill_period">less compared to the last bill period</string>
   <string name="same_last_bill_period">the same as the last bill period</string>
   <string name="avg_elec_usage">My current usage trend is</string>
   <string name="current_emission">Current emission</string>
