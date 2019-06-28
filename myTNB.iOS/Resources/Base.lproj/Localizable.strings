@@ -100,8 +100,8 @@
 "Component_AverageElectricUsage"="Avg. electric usage";
 "Component_CannotLoadChart"="Sorry, we could not load your usage chart";
 "Component_CO2"="CO²";
-"Component_CompareLess"="less compared to last bill period";
-"Component_CompareMore"="more compared to last bill period";
+"Component_CompareLess"="less compared to the last bill period";
+"Component_CompareMore"="more compared to the last bill period";
 "Component_CompareSame"="the same as the last bill period";
 "Component_CurrentBill"="Current Bill";
 "Component_CurrentCharges"="Current charges";
