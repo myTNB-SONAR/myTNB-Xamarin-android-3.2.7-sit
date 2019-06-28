@@ -102,18 +102,17 @@ namespace myTNB_Android.Src.Notifications.MVP
 
                     if (entity != null)
                     {
-                        this.mView.ShowView();
                         this.mView.ShowDetails(detailNotificationResponse.Data.Data, userNotification, position);
                     }
                     else
                     {
-                        this.mView.ShowRefreshView(null, null);
+                        this.mView.ShowRetryOptionsUnknownException(null);
                     }
 
                 }
                 else
                 {
-                    this.mView.ShowRefreshView(null, null);
+                    this.mView.ShowRetryOptionsUnknownException(null);
                 }
 
             }
@@ -123,8 +122,8 @@ namespace myTNB_Android.Src.Notifications.MVP
                 {
                     this.mView.HideProgress();
                 }
-                this.mView.ShowRefreshView(null, null);
                 // ADD OPERATION CANCELLED HERE
+                this.mView.ShowRetryOptionsCancelledException(e);
                 Utility.LoggingNonFatalError(e);
             }
             catch (ApiException apiException)
@@ -133,8 +132,8 @@ namespace myTNB_Android.Src.Notifications.MVP
                 {
                     this.mView.HideProgress();
                 }
-                this.mView.ShowRefreshView(null, null);
                 // ADD HTTP CONNECTION EXCEPTION HERE
+                this.mView.ShowRetryOptionsApiException(apiException);
                 Utility.LoggingNonFatalError(apiException);
             }
             catch (Exception e)
@@ -143,8 +142,8 @@ namespace myTNB_Android.Src.Notifications.MVP
                 {
                     this.mView.HideProgress();
                 }
-                this.mView.ShowRefreshView(null, null);
                 // ADD UNKNOWN EXCEPTION HERE
+                this.mView.ShowRetryOptionsUnknownException(e);
                 Utility.LoggingNonFatalError(e);
             }
 
