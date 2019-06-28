@@ -14283,6 +14283,9 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f0800f9
 			public const int welcome_back = 2131230969;
 			
+			// aapt resource value: 0x7f080418
+			public const int what_is_this = 2131231768;
+			
 			// aapt resource value: 0x7f0801af
 			public const int where_is_my_account_no = 2131231151;
 			

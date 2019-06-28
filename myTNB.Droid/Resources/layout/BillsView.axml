@@ -126,7 +126,7 @@
                         android:layout_height="wrap_content"
                         android:textColor="@color/tunaGrey"
                         android:textSize="14sp"
-                        android:text="Mandatory Charges"
+                        android:text="Other Charges"
                         android:layout_alignParentLeft="true" />
                     <TextView
                         android:id="@+id/txtMandatoryPaymentsRM"
@@ -170,7 +170,7 @@
                         android:layout_height="wrap_content"
                         android:textColor="@color/powerBlue"
                         android:textSize="12sp"
-                        android:text="What is this?"
+                        android:text="@string/what_is_this"
                         android:layout_alignParentLeft="true"
                         android:textStyle="normal"
                         android:clickable="true"

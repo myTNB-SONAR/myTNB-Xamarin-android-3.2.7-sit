@@ -1277,10 +1277,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         {
             try
             {
-                accountDueAmountData = accountDueAmount;
                 Date d = null;
                 try
                 {
+                    accountDueAmountData = accountDueAmount;
+                    txtWhyThisAmt.Text = string.IsNullOrEmpty(accountDueAmount.WhyThisAmountLink) ? Activity.GetString(Resource.String.why_this_amount) : accountDueAmount.WhyThisAmountLink;
                     d = dateParser.Parse(accountDueAmount.BillDueDate);
                 }
                 catch (ParseException e)

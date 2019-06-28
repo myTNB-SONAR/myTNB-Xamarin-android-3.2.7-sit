@@ -520,7 +520,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.BillsMenu
                 }
                 else
                 {
-                    // Option 2
                     if (selectedAccount?.ItemizedBilling != null && selectedAccount?.ItemizedBilling.Count() > 0)
                     {
                         mandatoryPaymentsLayout.Visibility = ViewStates.Visible;
@@ -528,6 +527,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.BillsMenu
                         mandatoryPaymentsToolTipsLayout.Visibility = ViewStates.Visible;
                         txtMandatoryPaymentsContent.Text = decimalFormatter.Format(selectedAccount?.OpenChargesTotal);
                         adapter = new ItemizedBillingDetailsAdapter(Activity, selectedAccount?.ItemizedBilling);
+                        txtBtnMandatoryPaymentsToolTips.Text = string.IsNullOrEmpty(selectedAccount.WhatIsThisLink) ? Activity.GetString(Resource.String.what_is_this) : selectedAccount.WhatIsThisLink;
                         mMandatoryPaymentDetailRecyclerView.SetAdapter(adapter);
                         adapter.NotifyDataSetChanged();
                     }
