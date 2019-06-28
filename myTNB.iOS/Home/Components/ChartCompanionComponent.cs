@@ -33,7 +33,6 @@ namespace myTNB.Dashboard.DashboardComponents
         private string TxtEmission = "Component_CO2".Translate();
         private double center, btnWidth = 64, btnOffset = 12;
         private int margin = 18;
-
         private ToolTipComponent _toolTipComponent;
 
         public ChartCompanionComponent(UIView view)
@@ -154,7 +153,7 @@ namespace myTNB.Dashboard.DashboardComponents
         {
             _toolTipComponent = new ToolTipComponent(_baseView);
             _viewTooltip = _toolTipComponent.GetUI();
-            _toolTipComponent.SetContent("What are these costs?");
+            _toolTipComponent.SetContent("Dashboard_WhatAreTheseCost");
             _toolTipComponent.SetEvent(ToolTipGestureRecognizer);
             _toolTipComponent.SetTopMargin(_metricView2.Frame.GetMaxY() + 8F);
             _baseView.AddSubview(_viewTooltip);

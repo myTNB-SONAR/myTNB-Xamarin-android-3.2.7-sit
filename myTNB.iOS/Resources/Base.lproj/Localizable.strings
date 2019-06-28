@@ -109,8 +109,8 @@
 "Component_AverageElectricUsage"="Avg. electric usage";
 "Component_CannotLoadChart"="Sorry, we could not load your usage chart";
 "Component_CO2"="CO²";
-"Component_CompareLess"="less compared to last bill period";
-"Component_CompareMore"="more compared to last bill period";
+"Component_CompareLess"="less compared to the last bill period";
+"Component_CompareMore"="more compared to the last bill period";
 "Component_CompareSame"="the same as the last bill period";
 "Component_CurrentBill"="Current Bill";
 "Component_CurrentCharges"="Current charges";
@@ -149,6 +149,9 @@
 "Dashboard_SectionHeader"="Accounts";
 "Dashboard_TooltipMessage"="It includes your current month’s bill, outstanding charges plus other mandatory charges. You may check out the Bills tab for a detailed view.";
 "Dashboard_TooltipTitle"="What is included in my bill?";
+"Dashboard_AccountStatus"="Electricity Connection: Unavailable!";
+"Dashboard_AccountStatusToolTip"="What does this mean?";
+"Dashboard_AccountStatusMessage"="Your electricity has been disconnected and is unavailable. This was not caused by a power outage. If you’ve made a payment, please give us some time for this to be reflected.";
 "Dashboard_WhatAreTheseCost"="What are these costs?";
 
 /*Error*/

@@ -782,5 +782,19 @@ namespace myTNB
                     || string.IsNullOrWhiteSpace(rawResponse.Content)) ? new RequestPayBillResponseModel()
                     : JsonConvert.DeserializeObject<RequestPayBillResponseModel>(rawResponse.Content);
         }
+        /// <summary>
+        /// Gets the Installation Details of an electricity account
+        /// </summary>
+        /// <param name="suffix"></param>
+        /// <param name="requestParams"></param>
+        /// <returns></returns>
+        public InstallationDetailResponseModel GetInstallationDetail(string suffix, object requestParams)
+        {
+            BaseService baseService = new BaseService();
+            RestResponse rawResponse = baseService.ExecuteWebservice(suffix, requestParams, APIVersion.V5);
+            return (string.IsNullOrEmpty(rawResponse.Content)
+                    || string.IsNullOrWhiteSpace(rawResponse.Content)) ? new InstallationDetailResponseModel()
+                    : JsonConvert.DeserializeObject<InstallationDetailResponseModel>(rawResponse.Content);
+        }
     }
 }

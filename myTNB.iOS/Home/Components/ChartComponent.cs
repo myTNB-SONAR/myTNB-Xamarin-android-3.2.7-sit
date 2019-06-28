@@ -21,20 +21,22 @@ namespace myTNB.Dashboard.DashboardComponents
         }
         internal void CreateComponent(bool isNormalMeter)
         {
+            var isAccountActive = DataManager.DataManager.SharedInstance.AccountIsActive;
             int yLocation = GetChartYLocation(isNormalMeter);
-            //float viewPercentage = !DeviceHelper.IsIphoneXUpResolution() ? 0.33f : 0.45f;
-            float viewPercentage = 0.33f;
+
+            float viewPercentage = isAccountActive ? 0.33f : 0.30f;
+
             if (DeviceHelper.IsIphoneXUpResolution())
             {
                 viewPercentage = 0.45f;
             }
             else if (DeviceHelper.IsIphone6UpResolution())
             {
-                viewPercentage = 0.40f;
+                viewPercentage = isAccountActive ? 0.40f : 0.35f;
             }
-            float viewHeight = (float)_parentView.Frame.Height * viewPercentage;// 160f;//(float)_parentView.Frame.Height - (217f);
-            _viewChart = new UIView(new CGRect(42, yLocation, _parentView.Frame.Width - 84, viewHeight));
 
+            float viewHeight = (float)_parentView.Frame.Height * viewPercentage;
+            _viewChart = new UIView(new CGRect(42, yLocation, _parentView.Frame.Width - 84, viewHeight));
         }
 
         internal void RemoveChartViewSubViews()
@@ -383,12 +385,21 @@ namespace myTNB.Dashboard.DashboardComponents
         /// <param name="isNormalMeter">If set to <c>true</c> is normal meter.</param>
         private int GetChartYLocation(bool isNormalMeter = true)
         {
-            int yLocation = 51;// 101 - 50;
+            var isAccountActive = DataManager.DataManager.SharedInstance.AccountIsActive;
+            var yValue = isAccountActive ? 51f : 30f;
+            int yLocation = (int)DeviceHelper.GetScaledHeight(yValue);
             if (!isNormalMeter)
             {
                 if (!DeviceHelper.IsIphoneXUpResolution())
                 {
-                    yLocation += 5;
+                    if (DeviceHelper.IsIphone5())
+                    {
+                        yLocation += 25;
+                    }
+                    else
+                    {
+                        yLocation += 20;
+                    }
                 }
                 else
                 {

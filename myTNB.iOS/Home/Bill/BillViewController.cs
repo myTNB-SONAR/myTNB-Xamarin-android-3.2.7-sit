@@ -375,7 +375,6 @@ namespace myTNB
                 });
             });
 
-
             _lblHistoryHeader.Text = isREAccount ? "Bill_REPaymentSectionHeader".Translate() : "Bill_PaymentSectionHeader".Translate();
         }
         /// <summary>
@@ -387,7 +386,6 @@ namespace myTNB
             string _dateDue;
             double _amountDue;
             double _dueIncrementDays;
-
             await GetBillingAccountDetails().ContinueWith(task =>
              {
                  InvokeOnMainThread(() =>
