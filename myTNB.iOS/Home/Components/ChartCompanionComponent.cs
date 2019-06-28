@@ -17,6 +17,7 @@ namespace myTNB.Dashboard.DashboardComponents
         InfoComponent _metricCmp1, _metricCmp2;
         UIButton _amountBtn, _consumptionBtn, _emissionBtn;
         UsageMetrics _usageMetrics;
+        ToolTipComponent _toolTipComponent;
         double _yLocation;
 
         private string For = "Component_For".Translate();
@@ -150,12 +151,17 @@ namespace myTNB.Dashboard.DashboardComponents
 
         private void CreateTooltip()
         {
-            ToolTipComponent toolTipComponent = new ToolTipComponent(_baseView);
-            _viewTooltip = toolTipComponent.GetUI();
-            toolTipComponent.SetContent("What are these costs?");
-            toolTipComponent.SetEvent(ToolTipGestureRecognizer);
-            toolTipComponent.SetTopMargin(_metricView2.Frame.GetMaxY() + 8F);
+            _toolTipComponent = new ToolTipComponent(_baseView);
+            _viewTooltip = _toolTipComponent.GetUI();
+            _toolTipComponent.SetContent("Dashboard_WhatAreTheseCost");
+            _toolTipComponent.SetEvent(ToolTipGestureRecognizer);
+            _toolTipComponent.SetTopMargin(_metricView2.Frame.GetMaxY() + 8F);
             _baseView.AddSubview(_viewTooltip);
+        }
+
+        public void SetTooltipLink(string title)
+        {
+            _toolTipComponent.SetContent(title ?? "Dashboard_WhatAreTheseCost");
         }
 
         /// <summary>
