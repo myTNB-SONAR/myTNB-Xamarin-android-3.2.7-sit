@@ -884,7 +884,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             this.userActionsListener?.OnMenuSelect(Resource.Id.menu_bill);
         }
 
-        public void BillMenuAccessOther(AccountData selectedAccount)
+        public void BillsMenuAccess(AccountData selectedAccount)
         {
             bottomNavigationView.Menu.FindItem(Resource.Id.menu_bill).SetChecked(true);
             ShowAccountName();

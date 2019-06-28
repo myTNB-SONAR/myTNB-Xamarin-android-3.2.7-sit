@@ -1596,7 +1596,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         }
                         try
                         {
-                            ((DashboardActivity)Activity).BillMenuAccessOther(selectedAccount);
+                            ((DashboardActivity)Activity).BillsMenuAccess(selectedAccount);
                         }
                         catch (System.Exception e)
                         {
