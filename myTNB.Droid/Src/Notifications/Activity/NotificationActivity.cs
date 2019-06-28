@@ -141,6 +141,8 @@ namespace myTNB_Android.Src.Notifications.Activity
                 int count = UserNotificationEntity.Count();
                 if (count == 0)
                 {
+                    ShowQueryProgress();
+                    this.userActionsListener.QueryOnLoad(this.DeviceId());
                     ME.Leolin.Shortcutbadger.ShortcutBadger.RemoveCount(this.ApplicationContext);
                 }
                 else
@@ -153,11 +155,6 @@ namespace myTNB_Android.Src.Notifications.Activity
 
                 Bundle extras = Intent.Extras;
                 if (extras != null && extras.ContainsKey(Constants.HAS_NOTIFICATION) && extras.GetBoolean(Constants.HAS_NOTIFICATION))
-                {
-                    this.userActionsListener.QueryOnLoad(this.DeviceId());
-                }
-
-                if (count == 0)
                 {
                     this.userActionsListener.QueryOnLoad(this.DeviceId());
                 }

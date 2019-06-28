@@ -180,12 +180,6 @@ namespace myTNB_Android.Src.Notifications.MVP
                     ApiKeyId = Constants.APP_CONFIG.API_KEY_ID
                 }, cts.Token);
 
-
-                if (mView.IsActive())
-                {
-                    this.mView.HideQueryProgress();
-                }
-
                 if (!appNotificationChannelsResponse.Data.IsError)
                 {
                     if (!appNotificationTypesResponse.Data.IsError)
@@ -208,10 +202,6 @@ namespace myTNB_Android.Src.Notifications.MVP
                         {
                             try
                             {
-                                if (mView.IsActive())
-                                {
-                                    this.mView.ShowQueryProgress();
-                                }
                                 UserEntity loggedUser = UserEntity.GetActive();
                                 var userNotificationResponse = await api.GetUserNotifications(new UserNotificationRequest()
                                 {
@@ -266,16 +256,31 @@ namespace myTNB_Android.Src.Notifications.MVP
                                 Utility.LoggingNonFatalError(e);
                             }
                         }
+                        else
+                        {
+                            if (mView.IsActive())
+                            {
+                                this.mView.HideQueryProgress();
+                            }
+                        }
 
                     }
                     else
                     {
+                        if (mView.IsActive())
+                        {
+                            this.mView.HideQueryProgress();
+                        }
                         this.mView.ShowRefreshView(null, null);
                     }
 
                 }
                 else
                 {
+                    if (mView.IsActive())
+                    {
+                        this.mView.HideQueryProgress();
+                    }
                     this.mView.ShowRefreshView(null, null);
                 }
             }
