@@ -47,6 +47,7 @@ using System.Threading.Tasks;
 using Android.Support.V7.App;
 using myTNB_Android.Src.FAQ.Activity;
 using AFollestad.MaterialDialogs;
+using Android.Text.Style;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments
 {
@@ -366,6 +367,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             DownTimeEntity bcrmEntity = DownTimeEntity.GetByCode(Constants.BCRM_SYSTEM);
             DownTimeEntity pgCCEntity = DownTimeEntity.GetByCode(Constants.PG_CC_SYSTEM);
             DownTimeEntity pgFPXEntity = DownTimeEntity.GetByCode(Constants.PG_FPX_SYSTEM);
+            txtWhatIsThis.Text = selectedHistoryData.ToolTips[0].SMLink;
             txtWhatIsThis.SetOnClickListener(this);
 
             this.userActionsListener.Start();
@@ -1403,14 +1405,16 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         private void OnWhatIsThisTap()
         {
             string textMessage = selectedHistoryData.ToolTips[0].Message;
+            string btnLabel = selectedHistoryData.ToolTips[0].SMBtnText;
             MaterialDialog materialDialog = new MaterialDialog.Builder(Activity)
                     .CustomView(Resource.Layout.WhatIsThisDialogView,false)
-                    .Cancelable(true)
+                    .Cancelable(false)
                     .Build();
 
             View view = materialDialog.View;
             TextView dialogDetailsText = view.FindViewById<TextView>(Resource.Id.txtDialogMessage);
             TextView dialogBtnLabel = view.FindViewById<TextView>(Resource.Id.txtBtnLabel);
+            dialogBtnLabel.Text = btnLabel;
             dialogBtnLabel.Click += delegate
             {
                 materialDialog.Dismiss();
@@ -1429,6 +1433,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             {
                 TextViewUtils.SetMuseoSans300Typeface(dialogDetailsText);
             }
+
+            SpannableString s = new SpannableString(dialogDetailsText.Text);
+            string st = s.ToString();
+            int i = st.IndexOf("FAQ");
+            s.SetSpan(new URLSpanNoUnderline(dialogDetailsText.Text),i,i+8,SpanTypes.ExclusiveExclusive);
+            dialogDetailsText.SetText(s,TextView.BufferType.Spannable);
             dialogDetailsText.Click += delegate
             {
                 if (textMessage != null && textMessage.Contains("faq"))
@@ -2117,6 +2127,19 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         public void OnClick(View v)
         {
             OnWhatIsThisTap();
+        }
+
+        class URLSpanNoUnderline : URLSpan
+        {
+            public URLSpanNoUnderline(string url) : base(url)
+            {
+            }
+
+            public override void UpdateDrawState(TextPaint ds)
+            {
+                base.UpdateDrawState(ds);
+                ds.UnderlineText = false;
+            }
         }
     }
 }

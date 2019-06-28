@@ -510,7 +510,6 @@
                                     android:singleLine="true"
                                     android:layout_gravity="right"
                                     android:gravity="right"
-                                    android:text="What are these costs?"
                                     android:id="@+id/txtWhatIsThis"
                                     android:clickable="true"/>
                             </LinearLayout>

@@ -209,6 +209,14 @@ namespace myTNB_Android.Src.myTNBMenu.Models
             [JsonProperty(PropertyName = "Message")]
             [AliasAs("Message")]
             public string Message { get; set; }
+
+            [JsonProperty(PropertyName = "SMLink")]
+            [AliasAs("SMLink")]
+            public string SMLink { get; set; }
+
+            [JsonProperty(PropertyName = "SMBtnText")]
+            [AliasAs("SMBtnText")]
+            public string SMBtnText { get; set; }
         }
     }
 
