@@ -142,22 +142,6 @@ namespace myTNB
             UIView titleBarView = _titleBarComponent.GetUI();
             _titleBarComponent.SetTitle("Dashboard_AllAccounts".Translate());
             _titleBarComponent.SetPrimaryVisibility(false);
-            _titleBarComponent.SetBackVisibility(false);
-            _titleBarComponent.SetBackImage("LogOut");
-            _titleBarComponent.SetBackAction(new UITapGestureRecognizer(() =>
-            {
-                var alert = UIAlertController.Create("MyAccount_Logout".Translate(), "MyAccount_LogoutConfirmation".Translate(), UIAlertControllerStyle.Alert);
-                alert.AddAction(UIAlertAction.Create("Common_Ok".Translate(), UIAlertActionStyle.Default, (obj) =>
-                {
-                    UIStoryboard storyBoard = UIStoryboard.FromName("Logout", null);
-                    LogoutViewController viewController =
-                        storyBoard.InstantiateViewController("LogoutViewController") as LogoutViewController;
-                    var navController = new UINavigationController(viewController);
-                    PresentViewController(navController, true, null);
-                }));
-                alert.AddAction(UIAlertAction.Create("Common_Cancel".Translate(), UIAlertActionStyle.Cancel, null));
-                PresentViewController(alert, animated: true, completionHandler: null);
-            }));
 
             _gradientView.AddSubview(titleBarView);
 

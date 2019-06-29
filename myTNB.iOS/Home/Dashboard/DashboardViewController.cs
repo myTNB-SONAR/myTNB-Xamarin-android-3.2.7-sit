@@ -26,6 +26,7 @@ namespace myTNB.Dashboard
         DueAmountResponseModel _dueAmount = new DueAmountResponseModel();
         BillingAccountDetailsResponseModel _billingAccountDetailsList = new BillingAccountDetailsResponseModel();
         InstallationDetailResponseModel _installationDetails = new InstallationDetailResponseModel();
+
         bool isAnimating = false;
 
         double _amountDue = 0;
@@ -165,27 +166,6 @@ namespace myTNB.Dashboard
                 isFromViewBillAdvice = false;
             }
 
-            NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
-            {
-                InvokeOnMainThread(async () =>
-                {
-                    if (NetworkUtility.isReachable)
-                    {
-                        await LoadInstallationDetails();
-                    }
-                    else
-                    {
-                        DisplayNoDataAlert();
-                        _dashboardMainComponent.ConstructNoDataConnectionDashboard();
-                        SetEventsAndText();
-                    }
-                });
-            });
-        }
-
-        public override void ViewDidAppear(bool animated)
-        {
-            base.ViewDidAppear(animated);
             if (!ServiceCall.HasAccountList())
             {
                 RenderDisplay();
@@ -200,13 +180,26 @@ namespace myTNB.Dashboard
                         {
                             if (!DataManager.DataManager.SharedInstance.IsSameAccount)
                             {
-                                await LoadDashboard();
+                                await LoadInstallationDetails();
                                 await LoadAmountDue();
+                                await LoadDashboard();
+                                SetEventsAndText();
                             }
+                        }
+                        else
+                        {
+                            DisplayNoDataAlert();
+                            _dashboardMainComponent.ConstructNoDataConnectionDashboard();
+                            SetEventsAndText();
                         }
                     });
                 });
             }
+        }
+
+        public override void ViewDidAppear(bool animated)
+        {
+            base.ViewDidAppear(animated);
         }
 
         /// <summary>
@@ -254,6 +247,7 @@ namespace myTNB.Dashboard
             }
             else
             {
+                ActivityIndicator.Show();
                 await GetAccountDueAmount().ContinueWith(dueTask =>
                 {
                     InvokeOnMainThread(() =>
@@ -273,26 +267,10 @@ namespace myTNB.Dashboard
                         else
                         {
                             amountDueIsAvailable = false;
+                            _dashboardMainComponent.ConstructRefreshScreen(RefreshScreen, _dueAmount.d);
+                            ActivityIndicator.Hide();
                         }
                         SetBillAndPaymentDetails();
-                    });
-                });
-
-                await GetBillingAccountDetails().ContinueWith(task =>
-                {
-                    InvokeOnMainThread(() =>
-                    {
-                        if (_billingAccountDetailsList != null && _billingAccountDetailsList?.d != null
-                            && _billingAccountDetailsList?.d?.data != null && _billingAccountDetailsList?.d?.didSucceed != false
-                            && _billingAccountDetailsList?.d?.status.ToLower() != "failed")
-                        {
-                            var billDetails = _billingAccountDetailsList.d.data;
-                            DataManager.DataManager.SharedInstance.BillingAccountDetails = billDetails;
-                            if (!isREAccount)
-                            {
-                                DataManager.DataManager.SharedInstance.SaveToBillingAccounts(billDetails, billDetails.accNum);
-                            }
-                        }
                     });
                 });
             }
@@ -344,6 +322,7 @@ namespace myTNB.Dashboard
                 }
                 else
                 {
+                    ActivityIndicator.Show();
                     ChartModel chartResponse = await GetAccountUsageHistoryForGraph();
                     chartModelResponse = chartResponse;
                     isFromCache = false;
@@ -369,6 +348,7 @@ namespace myTNB.Dashboard
                 }
                 else
                 {
+                    ActivityIndicator.Show();
                     SmartChartModel chartResponse = await GetSmartMeterAccountData();
                     isResultSuccess = chartResponse.didSucceed;
                     isSMCallSuccess = isResultSuccess;
@@ -405,6 +385,8 @@ namespace myTNB.Dashboard
                     }
                 }
             }
+
+            ActivityIndicator.Hide();
 
             if (isResultSuccess)
             {
@@ -492,6 +474,7 @@ namespace myTNB.Dashboard
                         UIStoryboard storyBoard = UIStoryboard.FromName("Dashboard", null);
                         SelectAccountTableViewController viewController =
                             storyBoard.InstantiateViewController("SelectAccountTableViewController") as SelectAccountTableViewController;
+                        viewController.selectionIsFromDashboard = true;
                         var navController = new UINavigationController(viewController);
                         PresentViewController(navController, true, null);
                     });
@@ -757,12 +740,12 @@ namespace myTNB.Dashboard
                         {
                             if (NetworkUtility.isReachable)
                             {
-                                await LoadDashboard();
+                                await LoadInstallationDetails();
                                 await LoadAmountDue();
+                                await LoadDashboard();
                             }
                             else
                             {
-                                Debug.WriteLine("No Network");
                                 DisplayNoDataAlert();
                             }
                         });
@@ -873,7 +856,10 @@ namespace myTNB.Dashboard
         /// <returns>The dashboard.</returns>
         private async Task LoadDashboard()
         {
-            await GetUsageHistory();
+            if (amountDueIsAvailable)
+            {
+                await GetUsageHistory();
+            }
         }
 
         /// <summary>
@@ -945,6 +931,7 @@ namespace myTNB.Dashboard
                 _dashboardMainComponent.ConstructNoDataConnectionDashboard();
             }
             SetEventsAndText();
+            SetBillAndPaymentDetails();
         }
 
         /// <summary>
@@ -1206,12 +1193,12 @@ namespace myTNB.Dashboard
                 accNum = DataManager.DataManager.SharedInstance.SelectedAccount.accNum
             };
 
-            _dashboardMainComponent?._componentActivity?.Show();
+            //_dashboardMainComponent?._componentActivity?.Show();
             chartResponse = await Task.Run(() =>
             {
                 return serviceManager.GetAccountUsageHistoryForGraph("GetAccountUsageHistoryForGraph", requestParameter);
             });
-            _dashboardMainComponent?._componentActivity?.Hide();
+            //_dashboardMainComponent?._componentActivity?.Hide();
 
             return chartResponse;
         }
@@ -1238,13 +1225,13 @@ namespace myTNB.Dashboard
                 metercode = DataManager.DataManager.SharedInstance.SelectedAccount.smartMeterCode,
                 isOwner = DataManager.DataManager.SharedInstance.SelectedAccount.isOwned
             };
-            _dashboardMainComponent?._componentActivity?.Show();
+            //_dashboardMainComponent?._componentActivity?.Show();
             chartResponse = await Task.Run(() =>
             {
                 return serviceManager.GetSmartMeterAccountData("GetSmartMeterAccountData_V3", requestParameter);
             });
 
-            _dashboardMainComponent?._componentActivity?.Hide();
+            //_dashboardMainComponent?._componentActivity?.Hide();
 
             return chartResponse;
         }
@@ -1343,16 +1330,15 @@ namespace myTNB.Dashboard
 
         private void RefreshScreen()
         {
-            Debug.WriteLine("RefreshScreen() Tap");
             NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
             {
                 InvokeOnMainThread(async () =>
                 {
                     if (NetworkUtility.isReachable)
                     {
-                        ActivityIndicator.Show();
-                        await LoadDashboard();
                         await LoadAmountDue();
+                        await LoadDashboard();
+                        SetEventsAndText();
                         ActivityIndicator.Hide();
                     }
                 });

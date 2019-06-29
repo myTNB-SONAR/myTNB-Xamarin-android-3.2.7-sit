@@ -535,8 +535,8 @@ namespace myTNB.Dashboard.DashboardComponents
         /// Constructs the refresh screen when API call is failed.
         /// </summary>
         /// <param name="buttonAction"></param>
-        /// <param name="chartModel"></param>
-        public void ConstructRefreshScreen(Action buttonAction, ChartModel chartModel)
+        /// <param name="baseModel"></param>
+        public void ConstructRefreshScreen(Action buttonAction, BaseModel baseModel)
         {
             RemoveAllSubviews();
 
@@ -558,8 +558,8 @@ namespace myTNB.Dashboard.DashboardComponents
             UIView accountSelectionView = _accountSelectionComponent.GetUI();
             _gradientView.AddSubview(accountSelectionView);
 
-            var msg = !string.IsNullOrWhiteSpace(chartModel?.RefreshMessage) ? chartModel?.RefreshMessage : "Error_RefreshMessage".Translate();
-            var btnText = !string.IsNullOrWhiteSpace(chartModel?.RefreshBtnText) ? chartModel?.RefreshBtnText : "Error_RefreshBtnTitle".Translate();
+            var msg = !string.IsNullOrWhiteSpace(baseModel?.RefreshMessage) ? baseModel?.RefreshMessage : "Error_RefreshMessage".Translate();
+            var btnText = !string.IsNullOrWhiteSpace(baseModel?.RefreshBtnText) ? baseModel?.RefreshBtnText : "Error_RefreshBtnTitle".Translate();
 
             //Add Refresh screen view
             _refreshViewComponent = new RefreshViewComponent(_parentView, _accountSelectionComponent.GetView());

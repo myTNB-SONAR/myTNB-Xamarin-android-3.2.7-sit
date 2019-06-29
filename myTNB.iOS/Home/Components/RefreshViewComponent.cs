@@ -36,8 +36,17 @@ namespace myTNB.Home.Components
             float imageHeight = DeviceHelper.GetScaledHeight(96f);
             float lineTextHeight = 24f;
 
-            var yPos = (_headerView != null) ? _headerView.Frame.GetMaxY() + viewMargin : viewMargin;
-            float viewHeight = (float)(_parentView.Frame.Height - yPos) - viewMargin;
+            nfloat yPos = (_headerView != null) ? _headerView.Frame.GetMaxY() + viewMargin : viewMargin;
+            nfloat viewHeight = _parentView.Frame.Height - yPos - viewMargin;
+
+            if (DeviceHelper.IsIphoneXUpResolution())
+            {
+                yPos += 70f;
+            }
+            else if (DeviceHelper.IsIphone6UpResolution())
+            {
+                yPos += 20f;
+            }
 
             _viewRefreshScreen = new UIView(new CGRect(viewMargin, yPos, _parentView.Frame.Width - (viewMargin * 2), viewHeight))
             {
@@ -56,7 +65,7 @@ namespace myTNB.Home.Components
             };
 
             var descMsg = _descriptionMessage ?? string.Empty;
-            var btnText = _buttonText ?? "Refresh";
+            var btnText = _buttonText ?? "Error_RefreshBtnTitle".Translate();
 
             NSMutableParagraphStyle msgParagraphStyle = new NSMutableParagraphStyle
             {

@@ -511,8 +511,10 @@ namespace myTNB
                  {
                      InvokeOnMainThread(() =>
                      {
-                         if (_billingAccountDetailsList?.d?.didSucceed == true && _billingAccountDetailsList != null && _billingAccountDetailsList?.d != null
-                             && _billingAccountDetailsList?.d?.data != null)
+                         if (_billingAccountDetailsList?.d?.didSucceed == true
+                            && _billingAccountDetailsList != null
+                            && _billingAccountDetailsList?.d != null
+                            && _billingAccountDetailsList?.d?.data != null)
                          {
                              var billDetails = _billingAccountDetailsList.d.data;
                              DataManager.DataManager.SharedInstance.BillingAccountDetails = billDetails;
@@ -524,8 +526,8 @@ namespace myTNB
                          }
                          else
                          {
-                             var msg = "This page must be tired. Tap the button below to help it out.";
-                             var btnText = "Refresh Now";
+                             var msg = !string.IsNullOrWhiteSpace(_billingAccountDetailsList?.d?.RefreshMessage) ? _billingAccountDetailsList?.d?.RefreshMessage : "Error_RefreshMessage".Translate();
+                             var btnText = !string.IsNullOrWhiteSpace(_billingAccountDetailsList?.d?.RefreshBtnText) ? _billingAccountDetailsList?.d?.RefreshBtnText : "Error_RefreshBtnTitle".Translate();
                              ShowRefreshScreen(msg, btnText);
                          }
                      });
@@ -1195,7 +1197,9 @@ namespace myTNB
             {
                 InvokeOnMainThread(() =>
                 {
-                    if (_billingAccountDetailsList?.d?.didSucceed == true && _billingAccountDetailsList != null && _billingAccountDetailsList?.d != null
+                    if (_billingAccountDetailsList?.d?.didSucceed == true
+                        && _billingAccountDetailsList != null
+                        && _billingAccountDetailsList?.d != null
                         && _billingAccountDetailsList?.d?.data != null)
                     {
                         var billDetails = _billingAccountDetailsList.d.data;
@@ -1211,10 +1215,9 @@ namespace myTNB
                     {
                         DataManager.DataManager.SharedInstance.IsSameAccount = true;
                         DataManager.DataManager.SharedInstance.BillingAccountDetails = new BillingAccountDetailsDataModel();
-                        //AlertHandler.DisplayServiceError(this, _billingAccountDetailsList?.d?.message);
                         ActivityIndicator.Hide();
-                        var msg = "This page must be tired. Tap the button below to help it out.";
-                        var btnText = "Refresh Now";
+                        var msg = !string.IsNullOrWhiteSpace(_billingAccountDetailsList?.d?.RefreshMessage) ? _billingAccountDetailsList?.d?.RefreshMessage : "Error_RefreshMessage".Translate();
+                        var btnText = !string.IsNullOrWhiteSpace(_billingAccountDetailsList?.d?.RefreshBtnText) ? _billingAccountDetailsList?.d?.RefreshBtnText : "Error_RefreshBtnTitle".Translate();
                         ShowRefreshScreen(msg, btnText);
                     }
                 });
@@ -1263,7 +1266,9 @@ namespace myTNB
             {
                 InvokeOnMainThread(() =>
                 {
-                    if (_billingAccountDetailsList?.d?.didSucceed == true && _billingAccountDetailsList != null && _billingAccountDetailsList?.d != null
+                    if (_billingAccountDetailsList?.d?.didSucceed == true
+                        && _billingAccountDetailsList != null
+                        && _billingAccountDetailsList?.d != null
                         && _billingAccountDetailsList?.d?.data != null)
                     {
                         var billDetails = _billingAccountDetailsList.d.data;
@@ -1276,8 +1281,8 @@ namespace myTNB
                     }
                     else
                     {
-                        var msg = "This page must be tired. Tap the button below to help it out.";
-                        var btnText = "Refresh Now";
+                        var msg = !string.IsNullOrWhiteSpace(_billingAccountDetailsList?.d?.RefreshMessage) ? _billingAccountDetailsList?.d?.RefreshMessage : "Error_RefreshMessage".Translate();
+                        var btnText = !string.IsNullOrWhiteSpace(_billingAccountDetailsList?.d?.RefreshBtnText) ? _billingAccountDetailsList?.d?.RefreshBtnText : "Error_RefreshBtnTitle".Translate();
                         ShowRefreshScreen(msg, btnText);
                     }
                 });
