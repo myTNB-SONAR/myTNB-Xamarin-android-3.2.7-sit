@@ -167,34 +167,8 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                             this.mView.ShowViewBill(billsHistoryResponseV5.Data.BillHistory[0]);
                             return;
                         }
-
-
-                        /*** Save Bill History For the Day ***/
-                        //BillHistoryEntity smUsageModel = new BillHistoryEntity();
-                        //smUsageModel.Timestamp = DateTime.Now.ToLocalTime();
-                        //smUsageModel.JsonResponse = JsonConvert.SerializeObject(billsHistoryResponseV5);
-                        //smUsageModel.AccountNo = selectedAccount.AccountNum;
-                        //BillHistoryEntity.InsertItem(smUsageModel);
-                        /*****/
-
-                        //if (IsActive())
-                        //{
-                        //    this.mView.ShowBillsList(billsHistoryResponseV5);
-                        //}
-                    }
-                    else
-                    {
-                        //if (this.mView.IsActive())
-                        //{
-                        //    this.mView.ShowEmptyBillList();
-                        //}
                     }
                 }
-                //if (this.mView.IsActive())
-                //{
-                //    this.mView.EnableTabs();
-                //}
-
             }
             catch (System.OperationCanceledException e)
             {

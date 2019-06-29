@@ -176,7 +176,14 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                                 {
                                     CustomerBillingAccount selected = CustomerBillingAccount.GetSelected();
                                     this.mView.ShowAccountName();
-                                    this.mView.ShowOwnerDashboardNoInternetConnection(selected.AccDesc, null, AccountData.Copy(selected, true));
+                                    if(selected != null && !string.IsNullOrEmpty(selected.AccNum))
+                                    {
+                                        this.mView.ShowOwnerDashboardNoInternetConnection(selected.AccDesc, null,  AccountData.Copy(selected, true));
+                                    }
+                                    else
+                                    {
+                                        this.mView.ShowOwnerDashboardNoInternetConnection(selected.AccDesc, null, null);
+                                    }
                                 }
                             }
                             else if (currentBottomNavigationMenu == Resource.Id.menu_bill)
@@ -217,7 +224,14 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                         {
                             CustomerBillingAccount selected = CustomerBillingAccount.GetSelected();
                             this.mView.ShowAccountName();
-                            this.mView.ShowOwnerDashboardNoInternetConnection(selected.AccDesc, null, AccountData.Copy(selected, true));
+                            if(selected != null && !string.IsNullOrEmpty(selected.AccNum))
+                            {
+                                this.mView.ShowOwnerDashboardNoInternetConnection(selected.AccDesc, null,  AccountData.Copy(selected, true));
+                            }
+                            else
+                            {
+                                this.mView.ShowOwnerDashboardNoInternetConnection(selected.AccDesc, null, null);
+                            }
 
                             List<CustomerBillingAccount> accountList = CustomerBillingAccount.List();
                             bool enableDropDown = accountList.Count > 0 ? true : false;
@@ -486,7 +500,14 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                     {
                         this.mView.HideProgressDialog();
                     }
-                    this.mView.ShowOwnerDashboardNoInternetConnection(accountSelected.AccDesc, usageHistoryResponse, AccountData.Copy(accountSelected, true));
+                    if(accountSelected != null && !string.IsNullOrEmpty(accountSelected.AccNum))
+                    {
+                        this.mView.ShowOwnerDashboardNoInternetConnection(accountSelected.AccDesc, null,  AccountData.Copy(accountSelected, true));
+                    }
+                    else
+                    {
+                        this.mView.ShowOwnerDashboardNoInternetConnection(accountSelected.AccDesc, null, null);
+                    }
                 }
                 else if (usageHistoryResponse != null && usageHistoryResponse.Data.Status.Equals("success") && !usageHistoryResponse.Data.IsError)
                 {
@@ -523,7 +544,14 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                     {
                         this.mView.HideProgressDialog();
                     }
-                    this.mView.ShowOwnerDashboardNoInternetConnection(accountSelected.AccDesc, null, AccountData.Copy(accountSelected, true));
+                    if(accountSelected != null && !string.IsNullOrEmpty(accountSelected.AccNum))
+                    {
+                        this.mView.ShowOwnerDashboardNoInternetConnection(accountSelected.AccDesc, null,  AccountData.Copy(accountSelected, true));
+                    }
+                    else
+                    {
+                        this.mView.ShowOwnerDashboardNoInternetConnection(accountSelected.AccDesc, null, null);
+                    }
                     this.mView.SetAccountName(accountSelected.AccDesc);
                 }
             }
@@ -534,7 +562,14 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                     this.mView.HideProgressDialog();
                 }
                 Log.Debug(TAG, "Cancelled Exception");
-                this.mView.ShowOwnerDashboardNoInternetConnection(accountSelected.AccDesc, null, AccountData.Copy(accountSelected, true));
+                if(accountSelected != null && !string.IsNullOrEmpty(accountSelected.AccNum))
+                {
+                    this.mView.ShowOwnerDashboardNoInternetConnection(accountSelected.AccDesc, null,  AccountData.Copy(accountSelected, true));
+                }
+                else
+                {
+                    this.mView.ShowOwnerDashboardNoInternetConnection(accountSelected.AccDesc, null, null);
+                }
                 Utility.LoggingNonFatalError(e);
             }
             catch (ApiException apiException)
@@ -543,7 +578,14 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                 {
                     this.mView.HideProgressDialog();
                 }
-                this.mView.ShowOwnerDashboardNoInternetConnection(accountSelected.AccDesc, null, AccountData.Copy(accountSelected, true));
+                if(accountSelected != null && !string.IsNullOrEmpty(accountSelected.AccNum))
+                {
+                    this.mView.ShowOwnerDashboardNoInternetConnection(accountSelected.AccDesc, null,  AccountData.Copy(accountSelected, true));
+                }
+                else
+                {
+                    this.mView.ShowOwnerDashboardNoInternetConnection(accountSelected.AccDesc, null, null);
+                }
                 Utility.LoggingNonFatalError(apiException);
             }
             catch (System.Exception e)
@@ -553,7 +595,14 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                 {
                     this.mView.HideProgressDialog();
                 }
-                this.mView.ShowOwnerDashboardNoInternetConnection(accountSelected.AccDesc, null, AccountData.Copy(accountSelected, true));
+                if(accountSelected != null && !string.IsNullOrEmpty(accountSelected.AccNum))
+                {
+                    this.mView.ShowOwnerDashboardNoInternetConnection(accountSelected.AccDesc, null,  AccountData.Copy(accountSelected, true));
+                }
+                else
+                {
+                    this.mView.ShowOwnerDashboardNoInternetConnection(accountSelected.AccDesc, null, null);
+                }
                 Utility.LoggingNonFatalError(e);
             }
         }

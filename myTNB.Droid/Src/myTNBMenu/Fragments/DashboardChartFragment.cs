@@ -77,9 +77,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         [BindView(Resource.Id.no_data_layout)]
         LinearLayout mNoDataLayout;
 
-        [BindView(Resource.Id.no_internet_layout)]
-        LinearLayout mNoInternetLayout;
-
         [BindView(Resource.Id.txtUsageHIstory)]
         TextView txtUsageHistory;
 
@@ -113,15 +110,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
         [BindView(Resource.Id.btnLearnMore)]
         Button btnLearnMore;
-
-        [BindView(Resource.Id.dashboard_chartview_no_internet_title)]
-        TextView txtTitleNoInternet;
-
-        [BindView(Resource.Id.dashboard_chartview_no_internet_content)]
-        TextView txtContentNoInternet;
-
-        [BindView(Resource.Id.btnTapRefresh)]
-        Button btnTapRefresh;
 
         [BindView(Resource.Id.btnLeft)]
         ImageButton btnLeft;
@@ -202,7 +190,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 if (extras.ContainsKey(Constants.SELECTED_ACCOUNT_USAGE))
                 {
                     selectedHistoryData = JsonConvert.DeserializeObject<UsageHistoryData>(extras.GetString(Constants.SELECTED_ACCOUNT_USAGE));
-
                 }
 
                 if (extras.ContainsKey(Constants.SELECTED_ERROR_MSG))
@@ -270,9 +257,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 }
 
 
-                TextViewUtils.SetMuseoSans300Typeface(txtUsageHistory, txtAddress, txtTotalPayable, txtContentNoData, txtContentNoInternet, txtDueDate);
+                TextViewUtils.SetMuseoSans300Typeface(txtUsageHistory, txtAddress, txtTotalPayable, txtContentNoData, txtDueDate);
                 TextViewUtils.SetMuseoSans300Typeface(btnToggleDay, btnToggleMonth, txtNewRefreshMessage);
-                TextViewUtils.SetMuseoSans500Typeface(txtRange, txtTotalPayableTitle, txtTotalPayableCurrency, btnViewBill, btnPay, btnLearnMore, btnTapRefresh, txtTitleNoData, txtTitleNoInternet, btnNewRefresh);
+                TextViewUtils.SetMuseoSans500Typeface(txtRange, txtTotalPayableTitle, txtTotalPayableCurrency, btnViewBill, btnPay, btnLearnMore, txtTitleNoData, btnNewRefresh);
 
                 this.userActionsListener?.Start();
 
@@ -793,14 +780,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             base.OnAttach(context);
             try
             {
-                //if (context is DashboardActivity)
-                //{
-
                 activity = context as DashboardActivity;
-                //activity = context as DashboardActivity;
-                //// SETS THE WINDOW BACKGROUND TO HORIZONTAL GRADIENT AS PER UI ALIGNMENT
-                //activity.Window.SetBackgroundDrawable(Activity.GetDrawable(Resource.Drawable.HorizontalGradientBackground));
-                //}
             }
             catch (ClassCastException e)
             {
@@ -816,14 +796,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
             try
             {
-                //if (context is DashboardActivity)
-                //{
-
                 this.activity = activity as DashboardActivity;
-                //activity = context as DashboardActivity;
-                //// SETS THE WINDOW BACKGROUND TO HORIZONTAL GRADIENT AS PER UI ALIGNMENT
-                //activity.Window.SetBackgroundDrawable(Activity.GetDrawable(Resource.Drawable.HorizontalGradientBackground));
-                //}
             }
             catch (ClassCastException e)
             {
@@ -847,14 +820,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             {
                 selectedBill.NrBill = null;
             }
-
-            //Intent viewBill = null;
-            //if (activity != null) {
-            //    viewBill = new Intent(activity, typeof(ViewBillActivity));    
-            //} else if (this.Activity != null) {
-            //    viewBill = new Intent(this.Activity, typeof(ViewBillActivity));
-            //}
-
 
             Intent viewBill = GetIntentObject(typeof(ViewBillActivity));
 
@@ -894,12 +859,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         internal void OnViewBill(object sender, EventArgs e)
         {
             this.userActionsListener.OnViewBill(selectedAccount);
-        }
-
-        [OnClick(Resource.Id.btnTapRefresh)]
-        internal void OnTapRefresh(object sender, EventArgs e)
-        {
-            this.userActionsListener.OnTapRefresh();
         }
 
         [OnClick(Resource.Id.btnRefresh)]
@@ -1000,7 +959,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             //txtRange.Text = GetString(Resource.String.dashboard_chartview_no_day_data_available);
             mNoDataLayout.Visibility = ViewStates.Visible;
             mChart.Visibility = ViewStates.Gone;
-            mNoInternetLayout.Visibility = ViewStates.Gone;
             refreshLayout.Visibility = ViewStates.Gone;
             allGraphLayout.Visibility = ViewStates.Visible;
         }
@@ -1019,7 +977,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 allGraphLayout.Visibility = ViewStates.Visible;
                 mNoDataLayout.Visibility = ViewStates.Gone;
                 mChart.Visibility = ViewStates.Gone;
-                mNoInternetLayout.Visibility = ViewStates.Gone;
                 mDownTimeLayout.Visibility = ViewStates.Visible;
                 txtAddress.Text = bcrmEnrity.DowntimeMessage;
                 txtAddress.Visibility = ViewStates.Visible;
@@ -1029,7 +986,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             {
                 mNoDataLayout.Visibility = ViewStates.Gone;
                 mChart.Visibility = ViewStates.Gone;
-                mNoInternetLayout.Visibility = ViewStates.Gone;
                 mDownTimeLayout.Visibility = ViewStates.Gone;
                 refreshLayout.Visibility = ViewStates.Visible;
                 allGraphLayout.Visibility = ViewStates.Gone;
@@ -1060,7 +1016,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             }
             mNoDataLayout.Visibility = ViewStates.Gone;
             mChart.Visibility = ViewStates.Gone;
-            mNoInternetLayout.Visibility = ViewStates.Gone;
             mDownTimeLayout.Visibility = ViewStates.Gone;
             refreshLayout.Visibility = ViewStates.Visible;
             allGraphLayout.Visibility = ViewStates.Gone;

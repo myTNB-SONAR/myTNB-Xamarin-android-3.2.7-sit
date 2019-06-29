@@ -332,7 +332,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                 Log.Debug("BillPayment Presenter", "Cancelled Exception");
                 if (this.mView.IsActive())
                 {
-                    this.mView.ShowNoInternetSnackbar();
+                    this.mView.ShowRetryOptionsApiException(null);
                 }
                 Utility.LoggingNonFatalError(e);
             }
@@ -342,7 +342,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                 Log.Debug("BillPayment Presenter", "Stack " + apiException.StackTrace);
                 if (this.mView.IsActive())
                 {
-                    this.mView.ShowNoInternetSnackbar();
+                    this.mView.ShowRetryOptionsApiException(apiException);
                 }
                 Utility.LoggingNonFatalError(apiException);
             }
@@ -352,7 +352,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                 Log.Debug("BillPayment Presenter", "Stack " + e.StackTrace);
                 if (this.mView.IsActive())
                 {
-                    this.mView.ShowNoInternetSnackbar();
+                    this.mView.ShowRetryOptionsApiException(null);
                 }
                 Utility.LoggingNonFatalError(e);
             }
