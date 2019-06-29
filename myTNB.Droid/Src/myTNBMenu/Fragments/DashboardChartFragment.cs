@@ -375,7 +375,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                     if (!string.IsNullOrEmpty(faqid))
                                     {
                                         Intent faqIntent = GetIntentObject(typeof(FAQListActivity));
-                                        //Intent faqIntent = new Intent(this.Activity, typeof(FAQListActivity));
                                         if (faqIntent != null && IsAdded)
                                         {
                                             faqIntent.PutExtra(Constants.FAQ_ID_PARAM, faqid);
@@ -503,7 +502,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             xAxis.AxisLineWidth = 2f;
             xAxis.AxisLineColor = Color.ParseColor("#77a3ea");
 
-            //xAxis.Typeface = (mTfLight);
             xAxis.SetDrawGridLines(false);
 
             xAxis.Granularity = 1f; // only intervals of 1 day
@@ -530,7 +528,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             xAxis.AxisLineWidth = 2f;
             xAxis.AxisLineColor = Color.ParseColor("#77a3ea");
 
-            //xAxis.Typeface = (mTfLight);
             xAxis.SetDrawGridLines(false);
 
             xAxis.Granularity = 1f; // only intervals of 1 day
@@ -667,7 +664,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
                 set1.HighLightColor = Color.Argb(255, 255, 255, 255);
 
-                //set1.SetColor(Resource.Color.sunGlow , 255);
                 int[] color = { Color.Argb(50, 255, 255, 255) };
                 set1.SetColors(color);
                 List<IBarDataSet> dataSets = new List<IBarDataSet>();
@@ -681,7 +677,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 data.HighlightEnabled = true;
                 data.SetValueTextSize(10f);
                 data.SetDrawValues(false);
-                //data.setValueTypeface(mTfLight);
 
                 mChart.Data = data;
             }
@@ -731,7 +726,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
                 set1.HighLightColor = Color.Argb(255, 255, 255, 255);
 
-                //set1.SetColor(Resource.Color.sunGlow , 255);
                 int[] color = { Color.Argb(50, 255, 255, 255) };
                 set1.SetColors(color);
                 List<IBarDataSet> dataSets = new List<IBarDataSet>();
@@ -745,7 +739,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 data.HighlightEnabled = true;
                 data.SetValueTextSize(10f);
                 data.SetDrawValues(false);
-                //data.setValueTypeface(mTfLight);
 
                 mChart.Data = data;
             }
@@ -767,7 +760,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         {
             ChartType = ChartType.Month;
 
-            // TODO : TO FIX STATEFUL CHANGES DURING MONTH/DAY OPTION
             mNoDataLayout.Visibility = ViewStates.Gone;
             mChart.Visibility = ViewStates.Visible;
 
@@ -944,7 +936,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
         public override void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
         {
-            //base.OnActivityResult(requestCode, resultCode, data);
             if (requestCode == DashboardActivity.PAYMENT_RESULT_CODE)
             {
                 if (resultCode == Result.Ok)
@@ -956,7 +947,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
         public void ShowNotAvailableDayData()
         {
-            //txtRange.Text = GetString(Resource.String.dashboard_chartview_no_day_data_available);
             mNoDataLayout.Visibility = ViewStates.Visible;
             mChart.Visibility = ViewStates.Gone;
             refreshLayout.Visibility = ViewStates.Gone;
@@ -1118,8 +1108,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             var act = this.Activity as AppCompatActivity;
 
             var actionBar = act.SupportActionBar;
-            //actionBar.SetDisplayHomeAsUpEnabled(true);
-            //actionBar.SetDisplayShowHomeEnabled(true);
         }
 
         public override bool OnOptionsItemSelected(IMenuItem item)

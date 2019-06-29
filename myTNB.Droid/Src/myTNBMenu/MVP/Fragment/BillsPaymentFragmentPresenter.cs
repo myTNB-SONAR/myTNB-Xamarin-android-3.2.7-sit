@@ -293,7 +293,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
             catch (ApiException apiException)
             {
                 // ADD HTTP CONNECTION EXCEPTION HERE
-                //this.mView.ShowRetryOptionsApiException(apiException);
                 Log.Debug("BillPayment Presenter", "Stack " + apiException.StackTrace);
                 if (this.mView.IsActive())
                 {
@@ -306,7 +305,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
             {
                 // ADD UNKNOWN EXCEPTION HERE
                 Log.Debug("BillPayment Presenter", "Stack " + e.StackTrace);
-                //this.mView.ShowRetryOptionsUnknownException(e);
                 if (this.mView.IsActive())
                 {
                     this.mView.ShowNoInternet();
@@ -374,7 +372,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
             {
                 Log.Debug("BillPayment Presenter", "Cancelled Exception");
                 // ADD OPERATION CANCELLED HERE
-                //this.mView.ShowRetryOptionsCancelledException(e);
                 if (this.mView.IsActive())
                 {
                     this.mView.ShowNoInternet();
@@ -384,7 +381,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
             catch (ApiException apiException)
             {
                 // ADD HTTP CONNECTION EXCEPTION HERE
-                //this.mView.ShowRetryOptionsApiException(apiException);
                 Log.Debug("BillPayment Presenter", "Stack " + apiException.StackTrace);
                 if (this.mView.IsActive())
                 {
@@ -396,7 +392,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
             {
                 // ADD UNKNOWN EXCEPTION HERE
                 Log.Debug("BillPayment Presenter", "Stack " + e.StackTrace);
-                //this.mView.ShowRetryOptionsUnknownException(e);
                 if (this.mView.IsActive())
                 {
                     this.mView.ShowNoInternet();
@@ -412,7 +407,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
         private async void LoadBills(CustomerBillingAccount accountSelected)
         {
             cts = new CancellationTokenSource();
-            //this.mView.ShowProgressDialog();
 #if STUB
             var detailedAccountApi = RestService.For<IDetailedCustomerAccount>(Constants.SERVER_URL.END_POINT);
 #elif DEBUG
@@ -439,10 +433,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
 
                 if (customerBillingDetails == null)
                 {
-                    //if (mView.IsActive())
-                    //{
-                    //    this.mView.ShowProgressDialog();
-                    //}
                     customerBillingDetails = await detailedAccountApi.GetDetailedAccount(new AddAccount.Requests.AccountDetailsRequest()
 
                     {
@@ -451,11 +441,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                     }, cts.Token);
                 }
 
-
-                //if (this.mView.IsActive())
-                //{
-                //    this.mView.HideProgressDialog();
-                //}
                 if (!customerBillingDetails.Data.IsError)
                 {
                     AccountData accountData = AccountData.Copy(customerBillingDetails.Data.AccountData, true);
@@ -466,53 +451,26 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                     accountData.IsOwner = customerBillingAccount.isOwned;
                     accountData.AccountCategoryId = customerBillingAccount.AccountCategoryId;
 
-                    //this.mView.ShowAccountName();
-                    //this.mView.EnableDropDown(true);
-                    //this.mView.SetToolbarTitle(Resource.String.bill_menu_activity_title);
-                    //currentBottomNavigationMenu = Resource.Id.menu_bill;
-                    //this.mView.ShowBillMenu(accountData);
                     selectedAccount = accountData;
                     this.mView.SetBillDetails(accountData);
 
                 }
-                else
-                {
-                    // TODO : SHOW ERROR WHEN NO BILLING IS RETURNED
-                }
-
-                //this.mView.SetAccountName(accountSelected.AccDesc);
             }
             catch (System.OperationCanceledException e)
             {
                 Log.Debug(TAG, "Cancelled Exception");
                 // ADD OPERATION CANCELLED HERE
-                //if (this.mView.IsActive())
-                //{
-                //    this.mView.HideProgressDialog();
-                //}
                 Utility.LoggingNonFatalError(e);
-                //this.mView.ShowRetryOptionsCancelledException(e);
             }
             catch (ApiException apiException)
             {
                 // ADD HTTP CONNECTION EXCEPTION HERE
-                //if (this.mView.IsActive())
-                //{
-                //    this.mView.HideProgressDialog();
-                //}
-                //this.mView.ShowRetryOptionsApiException(apiException);
                 Utility.LoggingNonFatalError(apiException);
             }
             catch (System.Exception e)
             {
                 // ADD UNKNOWN EXCEPTION HERE
                 Log.Debug(TAG, "Stack " + e.StackTrace);
-                //if (this.mView.IsActive())
-                //{
-                //    this.mView.HideProgressDialog();
-                //}
-                //this.mView.ShowRetryOptionsUnknownException(e);
-
                 Utility.LoggingNonFatalError(e);
             }
 
@@ -581,7 +539,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
             {
                 Log.Debug("BillPayment Presenter", "Cancelled Exception");
                 // ADD OPERATION CANCELLED HERE
-                //this.mView.ShowRetryOptionsCancelledException(e);
                 if (this.mView.IsActive())
                 {
                     this.mView.ShowNoInternet();
@@ -592,7 +549,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
             catch (ApiException apiException)
             {
                 // ADD HTTP CONNECTION EXCEPTION HERE
-                //this.mView.ShowRetryOptionsApiException(apiException);
                 Log.Debug("BillPayment Presenter", "Stack " + apiException.StackTrace);
                 if (this.mView.IsActive())
                 {
@@ -605,7 +561,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
             {
                 // ADD UNKNOWN EXCEPTION HERE
                 Log.Debug("BillPayment Presenter", "Stack " + e.StackTrace);
-                //this.mView.ShowRetryOptionsUnknownException(e);
                 if (this.mView.IsActive())
                 {
                     this.mView.ShowNoInternet();
@@ -626,8 +581,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
             if (CustomerBillingAccount.HasSelected())
             {
                 selected = CustomerBillingAccount.GetSelected();
-                //LoadBills(selected);
-                //this.mView.SetAccountName(selected.AccDesc);
             }
             else
             {
@@ -635,12 +588,9 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                 accountList = CustomerBillingAccount.List();
                 CustomerBillingAccount.SetSelected(accountList[0].AccNum);
                 selected = CustomerBillingAccount.GetSelected();
-                //LoadBills(selected);
-                //this.mView.SetAccountName(accountList[0].AccDesc);
             }
 
             LoadBills(selected);
-            //Start();
         }
 
         public void OnSelectAccount(CustomerBillingAccount selectedCustomerBilling)

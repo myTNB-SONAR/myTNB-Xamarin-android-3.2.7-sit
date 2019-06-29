@@ -15,7 +15,6 @@ namespace myTNB_Android.Src.myTNBMenu.Async
     {
         CancellationTokenSource cts = new CancellationTokenSource();
 #if DEBUG
-        //var httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
         INotificationApi api = RestService.For<INotificationApi>(Constants.SERVER_URL.END_POINT);
 #else
         INotificationApi api = RestService.For<INotificationApi>(Constants.SERVER_URL.END_POINT);
@@ -45,11 +44,16 @@ namespace myTNB_Android.Src.myTNBMenu.Async
 
                 }, cts.Token);
 
-                //userNotiWatch.Stop();
-                //Console.WriteLine($"Execution Time for user notification: {userNotiWatch.ElapsedMilliseconds} ms");
                 if (userNotificationResponse != null && userNotificationResponse.Result != null && userNotificationResponse.Result.Data.Status.ToUpper() == Constants.REFRESH_MODE)
                 {
-                    UserNotificationEntity.RemoveAll();
+                    try
+                    {
+                        UserNotificationEntity.RemoveAll();
+                    }
+                    catch (System.Exception ne)
+                    {
+                        Utility.LoggingNonFatalError(ne);
+                    }
                 }
                 else if (userNotificationResponse.Result != null && userNotificationResponse.Result.Data != null)
                 {
@@ -57,35 +61,69 @@ namespace myTNB_Android.Src.myTNBMenu.Async
                     {
                         foreach (UserNotification userNotification in userNotificationResponse.Result.Data.Data)
                         {
-                            // tODO : SAVE ALL NOTIFICATIONs
                             int newRecord = UserNotificationEntity.InsertOrReplace(userNotification);
                         }
 
                     }
                     else
                     {
-                        UserNotificationEntity.RemoveAll();
+                        try
+                        {
+                            UserNotificationEntity.RemoveAll();
+                        }
+                        catch (System.Exception ne)
+                        {
+                            Utility.LoggingNonFatalError(ne);
+                        }
                     }
                 }
                 else
                 {
-                    UserNotificationEntity.RemoveAll();
+                    try
+                    {
+                        UserNotificationEntity.RemoveAll();
+                    }
+                    catch (System.Exception ne)
+                    {
+                        Utility.LoggingNonFatalError(ne);
+                    }
                 }
                 Console.WriteLine("000 UserNotificationAPI ended");
             }
             catch (ApiException apiException)
             {
-                UserNotificationEntity.RemoveAll();
+                try
+                {
+                    UserNotificationEntity.RemoveAll();
+                }
+                catch (System.Exception ne)
+                {
+                    Utility.LoggingNonFatalError(ne);
+                }
                 Utility.LoggingNonFatalError(apiException);
             }
             catch (Newtonsoft.Json.JsonReaderException e)
             {
-                UserNotificationEntity.RemoveAll();
+                try
+                {
+                    UserNotificationEntity.RemoveAll();
+                }
+                catch (System.Exception ne)
+                {
+                    Utility.LoggingNonFatalError(ne);
+                }
                 Utility.LoggingNonFatalError(e);
             }
             catch (System.Exception e)
             {
-                UserNotificationEntity.RemoveAll();
+                try
+                {
+                    UserNotificationEntity.RemoveAll();
+                }
+                catch (System.Exception ne)
+                {
+                    Utility.LoggingNonFatalError(ne);
+                }
                 Utility.LoggingNonFatalError(e);
             }
             return null;
