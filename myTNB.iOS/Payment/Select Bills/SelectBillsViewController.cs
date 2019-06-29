@@ -74,7 +74,6 @@ namespace myTNB
                     ResetValues();
                     GetAccountsForDisplay();
                     List<string> accountsForQuery = GetAccountsForQuery(0, 5);
-                    //UpdateFromCachedDues(accountsForQuery);
                     if (accountsForQuery?.Count > 0)
                     {
                         ActivityIndicator.Show();
@@ -87,50 +86,6 @@ namespace myTNB
                     isViewDidLoad = false;
                 }
             }
-        }
-
-        /// <summary>
-        /// Updates from cached dues.
-        /// </summary>
-        /// <param name="accountsForQuery">Accounts for query.</param>
-        private void UpdateFromCachedDues(List<string> accountsForQuery)
-        {
-            var acctsToRemove = new List<string>();
-
-            foreach (var accNum in accountsForQuery)
-            {
-                var acct = DataManager.DataManager.SharedInstance.GetDue(accNum);
-                if (acct != null)
-                {
-                    // update due values
-                    int itemIndex = _accounts.FindIndex(x => x.accNum.Equals(accNum));
-                    if (itemIndex > -1 && itemIndex < _accounts.Count)
-                    {
-                        _accounts[itemIndex].Amount = acct.amountDue;
-                        _accounts[itemIndex].AmountDue = acct.amountDue;
-                        acctsToRemove.Add(accNum);
-                        int displayIndex = _accountsForDisplay.FindIndex(x => x.accNum.Equals(accNum));
-                        if (displayIndex > -1)
-                        {
-                            if (itemIndex > -1 && itemIndex < _accountsForDisplay.Count)
-                            {
-                                _accountsForDisplay[itemIndex].Amount = acct.amountDue;
-                                _accountsForDisplay[itemIndex].AmountDue = acct.amountDue;
-                            }
-                        }
-                        else
-                        {
-                            _accountsForDisplay.Add(_accounts[itemIndex]);
-                        }
-                    }
-                }
-            }
-
-            if (acctsToRemove?.Count > 0)
-            {
-                accountsForQuery.RemoveAll(x => acctsToRemove.FindIndex(removeItem => removeItem == x) > -1);
-            }
-
         }
 
         void SetDefaultTableFrame()
@@ -211,7 +166,6 @@ namespace myTNB
             lastStartIndex += (loadMoreCount > 0 ? 4 : 5);
             lastEndIndex = lastStartIndex + 4;
             List<string> accountsForQuery = GetAccountsForQuery(lastStartIndex, lastEndIndex);
-            //UpdateFromCachedDues(accountsForQuery);
             if (accountsForQuery?.Count > 0)
             {
                 ActivityIndicator.Show();
@@ -256,9 +210,7 @@ namespace myTNB
 
             bool isValid = (selectedAccountCount > 0 && totalAmount > 0) && !hasInvalidSelection;
 
-            BtnPayBill.BackgroundColor = isValid
-                ? MyTNBColor.FreshGreen
-                : MyTNBColor.SilverChalice;
+            BtnPayBill.BackgroundColor = isValid ? MyTNBColor.FreshGreen : MyTNBColor.SilverChalice;
             BtnPayBill.Enabled = isValid;
         }
 
@@ -438,7 +390,7 @@ namespace myTNB
             {
                 OnBack();
             });
-            this.NavigationItem.LeftBarButtonItem = btnBack;
+            NavigationItem.LeftBarButtonItem = btnBack;
         }
 
         private void OnBack()
