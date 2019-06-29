@@ -184,12 +184,15 @@ namespace myTNB
         /// <returns><c>true</c>, if app update required was ised, <c>false</c> otherwise.</returns>
         private bool IsAppUpdateRequired(ForceUpdateInfoModel forceUpdateData)
         {
-            if ((bool)forceUpdateData?.isIOSForceUpdateOn)
+            if (forceUpdateData != null)
             {
-                if (!string.IsNullOrWhiteSpace(DataManager.DataManager.SharedInstance.LatestAppVersion))
+                if ((bool)forceUpdateData?.isIOSForceUpdateOn)
                 {
-                    // if latest app version is higher
-                    return string.CompareOrdinal(DataManager.DataManager.SharedInstance.LatestAppVersion, AppVersionHelper.GetAppShortVersion()) > 0;
+                    if (!string.IsNullOrWhiteSpace(DataManager.DataManager.SharedInstance.LatestAppVersion))
+                    {
+                        // if latest app version is higher
+                        return string.CompareOrdinal(DataManager.DataManager.SharedInstance.LatestAppVersion, AppVersionHelper.GetAppShortVersion()) > 0;
+                    }
                 }
             }
             return false;

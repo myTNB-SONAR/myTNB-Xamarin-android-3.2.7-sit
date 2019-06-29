@@ -163,6 +163,7 @@ namespace myTNB
 
         public static string DEFAULT_VALUE = "0.00";
         public static string ZERO = "0";
+        public static string EMPTY_AMOUNT = "--";
         public static string EMPTY_DATE = "--";
         public static string EMPTY_ADDRESS = "- - -";
         public static string PERCENTAGE = "%";

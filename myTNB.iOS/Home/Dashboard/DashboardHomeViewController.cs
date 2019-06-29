@@ -57,7 +57,8 @@ namespace myTNB
             isViewDidLoad = true;
             DataManager.DataManager.SharedInstance.SummaryNeedsRefresh = true;
             LoadContents();
-            NSNotificationCenter.DefaultCenter.AddObserver((Foundation.NSString)"LanguageDidChange", LanguageDidChange);
+            NSNotificationCenter.DefaultCenter.AddObserver((NSString)"LanguageDidChange", LanguageDidChange);
+            NSNotificationCenter.DefaultCenter.AddObserver((NSString)"NotificationDidChange", NotificationDidChange);
             NSNotificationCenter.DefaultCenter.AddObserver(UIApplication.WillEnterForegroundNotification, HandleAppWillEnterForeground);
             NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
             {
@@ -65,8 +66,10 @@ namespace myTNB
                 {
                     if (NetworkUtility.isReachable)
                     {
+                        DataManager.DataManager.SharedInstance.IsLoadingFromDashboard = true;
                         await PushNotificationHelper.GetNotifications();
                         UpdateNotificationIcon();
+                        NSNotificationCenter.DefaultCenter.PostNotificationName("OnReceiveNotificationFromDashboard", new NSObject());
                     }
                     else
                     {
@@ -74,6 +77,13 @@ namespace myTNB
                     }
                 });
             });
+        }
+
+        public void NotificationDidChange(NSNotification notification)
+        {
+            Debug.WriteLine("DEBUG >>> SUMMARY DASHBOARD NotificationDidChange");
+            _titleBarComponent?.SetPrimaryImage(PushNotificationHelper.GetNotificationImage());
+            PushNotificationHelper.UpdateApplicationBadge();
         }
 
         public void LanguageDidChange(NSNotification notification)
@@ -132,22 +142,6 @@ namespace myTNB
             UIView titleBarView = _titleBarComponent.GetUI();
             _titleBarComponent.SetTitle("Dashboard_AllAccounts".Translate());
             _titleBarComponent.SetPrimaryVisibility(false);
-            _titleBarComponent.SetBackVisibility(false);
-            _titleBarComponent.SetBackImage("LogOut");
-            _titleBarComponent.SetBackAction(new UITapGestureRecognizer(() =>
-            {
-                var alert = UIAlertController.Create("MyAccount_Logout".Translate(), "MyAccount_LogoutConfirmation".Translate(), UIAlertControllerStyle.Alert);
-                alert.AddAction(UIAlertAction.Create("Common_Ok".Translate(), UIAlertActionStyle.Default, (obj) =>
-                {
-                    UIStoryboard storyBoard = UIStoryboard.FromName("Logout", null);
-                    LogoutViewController viewController =
-                        storyBoard.InstantiateViewController("LogoutViewController") as LogoutViewController;
-                    var navController = new UINavigationController(viewController);
-                    PresentViewController(navController, true, null);
-                }));
-                alert.AddAction(UIAlertAction.Create("Common_Cancel".Translate(), UIAlertActionStyle.Cancel, null));
-                PresentViewController(alert, animated: true, completionHandler: null);
-            }));
 
             _gradientView.AddSubview(titleBarView);
 

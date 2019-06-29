@@ -874,6 +874,14 @@
     <ImageAsset Include="Assets.xcassets\Notification-Select.imageset\icActionSelectAll.png" />
     <ImageAsset Include="Assets.xcassets\Notification-Select.imageset\icActionSelectAll%402x.png" />
     <ImageAsset Include="Assets.xcassets\Notification-Select.imageset\icActionSelectAll%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Refresh-Error-Normal.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Refresh-Error-White.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Refresh-Error-Normal.imageset\Refresh-Error-Normal.png" />
+    <ImageAsset Include="Assets.xcassets\Refresh-Error-Normal.imageset\Refresh-Error-Normal%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Refresh-Error-Normal.imageset\Refresh-Error-Normal%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Refresh-Error-White.imageset\Refresh-Error-White.png" />
+    <ImageAsset Include="Assets.xcassets\Refresh-Error-White.imageset\Refresh-Error-White%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Refresh-Error-White.imageset\Refresh-Error-White%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -1127,6 +1135,9 @@
     <Folder Include="Assets.xcassets\Notification-Select.imageset\" />
     <Folder Include="Assets.xcassets\Maintenance-Image.imageset\" />
     <Folder Include="Model\Modify Notification\" />
+    <Folder Include="Assets.xcassets\Notification-Error.imageset\" />
+    <Folder Include="Assets.xcassets\Refresh-Error-Normal.imageset\" />
+    <Folder Include="Assets.xcassets\Refresh-Error-White.imageset\" />
     <Folder Include="Model\GetAppLaunchMasterData\" />
     <Folder Include="Model\GetInstallationDetails\" />
   </ItemGroup>
@@ -1809,6 +1820,7 @@
     <Compile Include="Customs\CustomUIViewController.cs" />
     <Compile Include="Model\Modify Notification\DeleteNotificationResponseModel.cs" />
     <Compile Include="Model\Modify Notification\ReadNotificationResponseModel.cs" />
+    <Compile Include="Home\Components\RefreshViewComponent.cs" />
     <Compile Include="Model\GetAccountUsageHistoryForGraph\ToolTipsModel.cs" />
     <Compile Include="Customs\TextViewDelegate.cs" />
     <Compile Include="Home\Components\ToolTipComponent.cs" />
