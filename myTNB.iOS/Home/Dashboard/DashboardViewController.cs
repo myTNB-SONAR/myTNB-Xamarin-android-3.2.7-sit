@@ -472,6 +472,7 @@ namespace myTNB.Dashboard
                 {
                     UITapGestureRecognizer accountSelectionGesture = new UITapGestureRecognizer(() =>
                     {
+                        DataManager.DataManager.SharedInstance.IsSameAccount = true;
                         UIStoryboard storyBoard = UIStoryboard.FromName("Dashboard", null);
                         SelectAccountTableViewController viewController =
                             storyBoard.InstantiateViewController("SelectAccountTableViewController") as SelectAccountTableViewController;
