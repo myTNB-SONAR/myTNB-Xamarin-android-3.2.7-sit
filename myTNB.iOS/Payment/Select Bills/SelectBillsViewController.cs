@@ -140,7 +140,7 @@ namespace myTNB
 
         void ResetValues()
         {
-            SelectBillsTableView.Source = new SelectBillsDataSource(this, new List<CustomerAccountRecordModel>(), new MultiAccountDueAmountResponseModel());
+            SelectBillsTableView.Source = new SelectBillsDataSource(this, new List<CustomerAccountRecordModel>());
             SelectBillsTableView.ReloadData();
             _multiAccountDueAmount = new MultiAccountDueAmountResponseModel();
             _accounts = new List<CustomerAccountRecordModel>();
@@ -161,10 +161,9 @@ namespace myTNB
                 {
                     _accounts[itemIndex].Amount = item.amountDue;
                     _accounts[itemIndex].AmountDue = item.amountDue;
-                    //if (item.amountDue > 0)
-                    //{
+                    _accounts[itemIndex].OpenChargesTotal = item.OpenChargesTotal;
+                    _accounts[itemIndex].ItemizedBillings = item.ItemizedBillings;
                     _accountsForDisplay.Add(_accounts[itemIndex]);
-                    //}
                 }
             }
         }
@@ -212,7 +211,7 @@ namespace myTNB
             lastStartIndex += (loadMoreCount > 0 ? 4 : 5);
             lastEndIndex = lastStartIndex + 4;
             List<string> accountsForQuery = GetAccountsForQuery(lastStartIndex, lastEndIndex);
-            UpdateFromCachedDues(accountsForQuery);
+            //UpdateFromCachedDues(accountsForQuery);
             if (accountsForQuery?.Count > 0)
             {
                 ActivityIndicator.Show();
@@ -346,7 +345,7 @@ namespace myTNB
 
         internal void InitializedTableView()
         {
-            SelectBillsTableView.Source = new SelectBillsDataSource(this, _accountsForDisplay, _multiAccountDueAmount);
+            SelectBillsTableView.Source = new SelectBillsDataSource(this, _accountsForDisplay);
             SelectBillsTableView.SeparatorStyle = UITableViewCellSeparatorStyle.None;
             SelectBillsTableView.ReloadData();
         }
