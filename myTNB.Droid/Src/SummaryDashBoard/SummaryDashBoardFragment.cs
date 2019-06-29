@@ -5,7 +5,6 @@ using Android.Support.Design.Widget;
 using Android.Support.V4.Content;
 using Android.Support.V7.Widget;
 using Android.Text;
-using Android.Text.Method;
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
@@ -71,20 +70,11 @@ namespace myTNB_Android.Src.SummaryDashBoard
         [BindView(Resource.Id.summaryFooter)]
         TextView addAcount;
 
-        [BindView(Resource.Id.layout_api_refresh)]
-        LinearLayout layoutNewRefresh;
-
         [BindView(Resource.Id.layout_refresh)]
         LinearLayout layoutRefresh;
 
         [BindView(Resource.Id.btnTapRefresh)]
         Button btnRefresh;
-
-        [BindView(Resource.Id.btnRefresh)]
-        Button btnNewRefresh;
-
-        [BindView(Resource.Id.refresh_content)]
-        TextView txtNewRefreshMessage;
 
         [BindView(Resource.Id.txtRefreshMessage)]
         TextView txtRefreshMessage;
@@ -117,14 +107,7 @@ namespace myTNB_Android.Src.SummaryDashBoard
             base.OnAttach(context);
             try
             {
-                //if (context is DashboardActivity)
-                //{
-
                 mCallBack = context as ISummaryFragmentToDashBoardActivtyListener;
-                //activity = context as DashboardActivity;
-                //// SETS THE WINDOW BACKGROUND TO HORIZONTAL GRADIENT AS PER UI ALIGNMENT
-                //activity.Window.SetBackgroundDrawable(Activity.GetDrawable(Resource.Drawable.HorizontalGradientBackground));
-                //}
             }
             catch (ClassCastException e)
             {
@@ -139,14 +122,7 @@ namespace myTNB_Android.Src.SummaryDashBoard
 
             try
             {
-                //if (context is DashboardActivity)
-                //{
-
                 mCallBack = activity as ISummaryFragmentToDashBoardActivtyListener;
-                //activity = context as DashboardActivity;
-                //// SETS THE WINDOW BACKGROUND TO HORIZONTAL GRADIENT AS PER UI ALIGNMENT
-                //activity.Window.SetBackgroundDrawable(Activity.GetDrawable(Resource.Drawable.HorizontalGradientBackground));
-                //}
             }
             catch (ClassCastException e)
             {
@@ -210,8 +186,8 @@ namespace myTNB_Android.Src.SummaryDashBoard
                 activity = ((DashboardActivity)Activity);
 
                 TextViewUtils.SetMuseoSans500Typeface(greetingTxt, loadMore, userNameTxt);
-                TextViewUtils.SetMuseoSans500Typeface(addAcount, btnRefresh, btnNewRefresh);
-                TextViewUtils.SetMuseoSans300Typeface(txtDowntimeMessage, txtRefreshMessage, txtNewRefreshMessage);
+                TextViewUtils.SetMuseoSans500Typeface(addAcount, btnRefresh);
+                TextViewUtils.SetMuseoSans300Typeface(txtDowntimeMessage, txtRefreshMessage);
 
                 reAccRecyclerView.SetLayoutManager(new LinearLayoutManager(this.Activity));
                 normalRecyclerView.SetLayoutManager(new LinearLayoutManager(this.Activity));
@@ -220,8 +196,6 @@ namespace myTNB_Android.Src.SummaryDashBoard
                 IsLoadMoreButtonVisible(false);
 
                 presenter = new SummaryDashboardPresenter(this);
-
-                txtNewRefreshMessage.MovementMethod = new ScrollingMovementMethod();
 
                 loadMore.Click += delegate
                 {
@@ -258,30 +232,6 @@ namespace myTNB_Android.Src.SummaryDashBoard
                         ShowNoInternetSnackbar();
                     }
                 };
-
-                btnNewRefresh.Click += delegate
-                {
-                    btnRefresh.Enabled = false;
-                    btnRefresh.Clickable = false;
-                    Handler h = new Handler();
-                    Action myAction = () =>
-                    {
-                        btnRefresh.Enabled = true;
-                        btnRefresh.Clickable = true;
-                    };
-                    h.PostDelayed(myAction, 2000);
-
-                    if (HasNetworkConnection())
-                    {
-                        ShowProgressDialog();
-                        this.listener.RefreshAccountSummary();
-                    }
-                    else
-                    {
-                        ShowNoInternetSnackbar();
-                    }
-                };
-
 
                 addAcount.Click += delegate
                 {
@@ -348,14 +298,12 @@ namespace myTNB_Android.Src.SummaryDashBoard
         {
             try
             {
-                //listener.FetchUserData();
                 if (HasNetworkConnection())
                 {
                     DownTimeEntity bcrmDownTime = DownTimeEntity.GetByCode(Constants.BCRM_SYSTEM);
                     if (bcrmDownTime != null && bcrmDownTime.IsDown)
                     {
                         downtimeLayout.Visibility = ViewStates.Visible;
-                        layoutNewRefresh.Visibility = ViewStates.Gone;
                         greetingLayout.Visibility = ViewStates.Gone;
                         if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.N)
                         {
@@ -371,7 +319,6 @@ namespace myTNB_Android.Src.SummaryDashBoard
                         downtimeLayout.Visibility = ViewStates.Gone;
                         greetingLayout.Visibility = ViewStates.Visible;
                         layoutRefresh.Visibility = ViewStates.Gone;
-                        layoutNewRefresh.Visibility = ViewStates.Gone;
                     }
                     listener.FetchAccountSummary();
 
