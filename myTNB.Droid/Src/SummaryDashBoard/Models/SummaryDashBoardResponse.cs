@@ -37,6 +37,9 @@ namespace myTNB_Android.Src.SummaryDashBoard.Models
             [JsonProperty("RefreshBtnText")]
             public string RefreshBtnText { get; set; }
 
+            [JsonProperty("isError")]
+            public bool isError { get; set; }
+
             [JsonProperty("status")]
             public string Status { get; set; }
         }

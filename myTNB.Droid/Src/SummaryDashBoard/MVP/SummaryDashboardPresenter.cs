@@ -180,7 +180,7 @@ namespace myTNB_Android.Src.SummaryDashBoard.MVP
 
                 if (response != null)
                 {
-                    if (response.Data != null)
+                    if (response.Data != null && !response.Data.isError)
                     {
                         var summaryDetails = response.Data.data;
                         if (summaryDetails != null && summaryDetails.Count > 0)
@@ -203,7 +203,27 @@ namespace myTNB_Android.Src.SummaryDashBoard.MVP
 
                             SummaryData(summaryDetails);
                         }
-
+                    }
+                    else
+                    {
+                        if (summaryDetailList != null && summaryDetailList.Count > 0)
+                        {
+                            SummaryData();
+                        }
+                        else if(SummaryDashBoardAccountEntity.GetAllItems().Count() != 0)
+                        {
+                            List<SummaryDashBoardAccountEntity> list = SummaryDashBoardAccountEntity.GetAllItems();
+                            List<SummaryDashBoardDetails> summaryDetailDBList = new List<SummaryDashBoardDetails>();
+                            foreach (SummaryDashBoardAccountEntity details in list)
+                            {
+                                SummaryDashBoardDetails accountDetails = JsonConvert.DeserializeObject<SummaryDashBoardDetails>(details.JsonResponse);
+                                if (!summaryDetailDBList.Any(p => p.AccNumber.Equals(accountDetails.AccNumber)))
+                                {
+                                    summaryDetailDBList.Add(accountDetails);
+                                }
+                            }
+                            SummaryData(summaryDetailDBList);
+                        }
                     }
                     mView.ShowRefreshSummaryDashboard(false);
                 }
