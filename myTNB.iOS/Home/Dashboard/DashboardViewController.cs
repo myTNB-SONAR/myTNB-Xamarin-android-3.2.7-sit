@@ -180,6 +180,7 @@ namespace myTNB.Dashboard
                         {
                             if (!DataManager.DataManager.SharedInstance.IsSameAccount)
                             {
+                                ActivityIndicator.Show();
                                 await LoadInstallationDetails();
                                 await LoadAmountDue();
                                 await LoadDashboard();
@@ -608,6 +609,7 @@ namespace myTNB.Dashboard
 
                 _dashboardMainComponent._billAndPaymentComponent._btnPay.TouchUpInside += (sender, e) =>
                 {
+                    DataManager.DataManager.SharedInstance.IsSameAccount = true;
                     NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
                     {
                         InvokeOnMainThread(() =>
@@ -634,6 +636,7 @@ namespace myTNB.Dashboard
                 };
                 _dashboardMainComponent._billAndPaymentComponent._btnViewBill.TouchUpInside += (sender, e) =>
                 {
+                    DataManager.DataManager.SharedInstance.IsSameAccount = true;
                     NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
                     {
                         InvokeOnMainThread(() =>
@@ -697,6 +700,7 @@ namespace myTNB.Dashboard
                 }
                 UITapGestureRecognizer notificationTap = new UITapGestureRecognizer(() =>
                 {
+                    DataManager.DataManager.SharedInstance.IsSameAccount = true;
                     NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
                     {
                         InvokeOnMainThread(() =>
@@ -740,6 +744,7 @@ namespace myTNB.Dashboard
                         {
                             if (NetworkUtility.isReachable)
                             {
+                                ActivityIndicator.Show();
                                 await LoadInstallationDetails();
                                 await LoadAmountDue();
                                 await LoadDashboard();

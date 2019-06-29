@@ -1277,6 +1277,7 @@ namespace myTNB
                         {
                             DataManager.DataManager.SharedInstance.SaveToBillingAccounts(billDetails, billDetails.accNum);
                         }
+                        LoadBillHistory();
                         ResetUI();
                     }
                     else
