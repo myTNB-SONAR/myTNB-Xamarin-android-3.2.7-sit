@@ -1239,7 +1239,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         btnViewBill.Enabled = true;
                         btnViewBill.SetTextColor(ContextCompat.GetColorStateList(this.Activity, Resource.Color.freshGreen));
                         btnViewBill.Background = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.light_green_outline_button_background);
-
+                        if(!hasNoInternet)
+                        {
+                            allGraphLayout.Visibility = ViewStates.Visible;
+                            refreshLayout.Visibility = ViewStates.Gone;
+                            mNoDataLayout.Visibility = ViewStates.Gone;
+                            mChart.Visibility = ViewStates.Visible;
+                            mDownTimeLayout.Visibility = ViewStates.Gone;
+                        }
                         if (selectedAccount.AccountCategoryId.Equals("2"))
                         {
                             selectedAccount.AmtCustBal = accountDueAmount.AmountDue;
