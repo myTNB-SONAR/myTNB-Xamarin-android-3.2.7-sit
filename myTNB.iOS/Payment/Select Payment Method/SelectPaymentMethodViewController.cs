@@ -6,11 +6,11 @@ using myTNB.Dashboard.DashboardComponents;
 using myTNB.Enums;
 using myTNB.Model;
 using myTNB.Model.RequestPayBill;
-using myTNB.Payment.AddCard;
 using UIKit;
 using Foundation;
 using System.Globalization;
 using System.Security;
+using myTNB.Payment;
 
 namespace myTNB
 {

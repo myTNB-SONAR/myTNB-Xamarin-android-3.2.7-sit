@@ -355,7 +355,7 @@ namespace myTNB
                         SetChargesValues(string.Format("{0} {1}", TNBGlobal.UNIT_CURRENCY, current.ToString("N2", CultureInfo.InvariantCulture))
                             , string.Format("{0} {1}", TNBGlobal.UNIT_CURRENCY, outstanding.ToString("N2", CultureInfo.InvariantCulture))
                             , balance.ToString("N2", CultureInfo.InvariantCulture));
-
+#if true
                         if (_billingAccountDetailsList != null && _billingAccountDetailsList?.d != null && _billingAccountDetailsList?.d?.didSucceed == true
                             && _billingAccountDetailsList?.d?.data != null && _billingAccountDetailsList.d.data.IsItemisedBilling)
                         {
@@ -363,6 +363,7 @@ namespace myTNB
                             _headerView.Frame = GetHeaderFrame();
                             billTableView.ReloadData();
                         }
+#endif
                     }
                     else
                     {

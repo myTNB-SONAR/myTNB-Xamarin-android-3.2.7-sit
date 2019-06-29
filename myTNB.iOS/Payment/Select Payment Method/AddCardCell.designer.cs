@@ -5,23 +5,22 @@
 // Manual changes to this file will not be maintained.
 //
 using Foundation;
-using System;
 using System.CodeDom.Compiler;
-using UIKit;
 
 namespace myTNB
 {
-    [Register ("AddCardCell")]
+    [Register("AddCardCell")]
     partial class AddCardCell
     {
         [Outlet]
-        [GeneratedCode ("iOS Designer", "1.0")]
+        [GeneratedCode("iOS Designer", "1.0")]
         UIKit.UILabel lblAddCard { get; set; }
 
-        void ReleaseDesignerOutlets ()
+        void ReleaseDesignerOutlets()
         {
-            if (lblAddCard != null) {
-                lblAddCard.Dispose ();
+            if (lblAddCard != null)
+            {
+                lblAddCard.Dispose();
                 lblAddCard = null;
             }
         }

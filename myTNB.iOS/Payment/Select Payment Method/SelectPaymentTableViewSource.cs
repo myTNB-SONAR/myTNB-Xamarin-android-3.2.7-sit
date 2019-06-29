@@ -6,7 +6,7 @@ using myTNB.Model;
 using myTNB.Enums;
 using System.Diagnostics;
 
-namespace myTNB.Payment.AddCard
+namespace myTNB.Payment
 {
     public class SelectPaymentTableViewSource : UITableViewSource
     {

@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Globalization;
-using CoreGraphics;
 using Foundation;
 using myTNB.Model;
 using UIKit;
@@ -64,12 +62,13 @@ namespace myTNB.Payment.SelectBills
             cell._lblAmountError.Hidden = isValidAmount;
             cell._viewLineAmount.BackgroundColor = isValidAmount ? MyTNBColor.PlatinumGrey : MyTNBColor.Tomato;
             SetTextField(cell._txtFieldAmount, cell._lblAmountError, cell);
-
+#if true
             int acctIndex = _multiAccountDueAmount.d.data.FindIndex(x => x.accNum == acctNumber);
             if (acctIndex > -1 && _multiAccountDueAmount.d.data[acctIndex].IsItemisedBilling)
             {
                 cell.AddMandatoryPayment(_multiAccountDueAmount.d.data[acctIndex].OpenChargesTotal);
             }
+#endif
             return cell;
         }
 
@@ -104,11 +103,13 @@ namespace myTNB.Payment.SelectBills
                 cell._imgViewCheckBox.Image = UIImage.FromBundle(!isAccountSelected
                     ? "Payment-Checkbox-Active" : "Payment-Checkbox-Inactive");
                 _controller.UpDateTotalAmount();
+#if true
                 int accIndex = _multiAccountDueAmount.d.data.FindIndex(x => x.accNum == _accounts[index].accNum);
                 if (!isAccountSelected && accIndex > -1 && _multiAccountDueAmount.d.data[accIndex].IsItemisedBilling)
                 {
                     _controller.OnShowItemisedTooltip(_accounts[index].accNum);
                 }
+#endif
             }
         }
 

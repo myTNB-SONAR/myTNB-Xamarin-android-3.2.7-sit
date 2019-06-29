@@ -33,7 +33,7 @@ namespace myTNB.Dashboard
         double _dueIncrementDays = 0;
         double _lastContentOffset;
 
-        public bool ShouldShowBackButton = false;
+        public bool ShouldShowBackButton;
 
         string _dateDue = string.Empty;
         string _toolTipMessage = string.Empty;
@@ -811,23 +811,25 @@ namespace myTNB.Dashboard
                 {
                     _dashboardMainComponent._billAndPaymentComponent._activity.Hide();
                 }
-
+#if true
                 if (_dueAmount != null && _dueAmount?.d != null && _dueAmount?.d?.didSucceed == true
                         && _dueAmount?.d?.data != null)
                 {
                     if (_dueAmount.d.data.IsItemisedBilling)
                     {
-                        _dashboardMainComponent._billAndPaymentComponent.DisplayInfoToolTip(_dueAmount.d.data.WhyThisAmountLink, DisplayToolTip);
+                        _dashboardMainComponent._billAndPaymentComponent.DisplayInfoToolTip(_dueAmount.d.data.WhyThisAmountLink
+                            , DisplayItemisedBillingToolTip);
                     }
                     else
                     {
                         _dashboardMainComponent._billAndPaymentComponent.HideInfo();
                     }
                 }
+#endif
             }
         }
 
-        void DisplayToolTip()
+        void DisplayItemisedBillingToolTip()
         {
             string title = _dueAmount.d.data.WhyThisAmountTitle ?? "Dashboard_TooltipTitle".Translate();
             string msg = _dueAmount.d.data.WhyThisAmountMessage ?? "Dashboard_TooltipMessage".Translate();

@@ -183,7 +183,7 @@ namespace myTNB
         /// <returns><c>true</c>, if app update required was ised, <c>false</c> otherwise.</returns>
         private bool IsAppUpdateRequired(ForceUpdateInfoModel forceUpdateData)
         {
-            if ((bool)forceUpdateData?.isIOSForceUpdateOn)
+            if (forceUpdateData != null && (bool)forceUpdateData?.isIOSForceUpdateOn)
             {
                 if (!string.IsNullOrWhiteSpace(DataManager.DataManager.SharedInstance.LatestAppVersion))
                 {
