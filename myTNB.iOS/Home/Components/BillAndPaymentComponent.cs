@@ -65,7 +65,8 @@ namespace myTNB.Dashboard.DashboardComponents
             {
                 Font = MyTNBFont.MuseoSans12_300,
                 TextColor = MyTNBColor.SilverChalice,
-                TextAlignment = UITextAlignment.Left
+                TextAlignment = UITextAlignment.Left,
+                Text = TNBGlobal.EMPTY_DATE
             };
 
             //_viewAmount = new UIView(new CGRect(0, 23 + adjustment, 0, 24));
@@ -74,8 +75,7 @@ namespace myTNB.Dashboard.DashboardComponents
             {
                 Font = MyTNBFont.MuseoSans14_500,
                 TextColor = MyTNBColor.TunaGrey(),
-                TextAlignment = UITextAlignment.Right,
-                Text = TNBGlobal.UNIT_CURRENCY
+                TextAlignment = UITextAlignment.Right
             };
 
             _lblAmount = new UILabel(new CGRect(24, 0, 75, 24))
@@ -83,7 +83,7 @@ namespace myTNB.Dashboard.DashboardComponents
                 Font = MyTNBFont.MuseoSans24_300,
                 TextColor = MyTNBColor.TunaGrey(),
                 TextAlignment = UITextAlignment.Right,
-                Text = TNBGlobal.DEFAULT_VALUE
+                Text = TNBGlobal.EMPTY_AMOUNT
             };
 
             _infoView = new UIView(new CGRect(_viewPaymentContainer.Frame.Width - (_viewPaymentContainer.Frame.Width * .30) - 18
@@ -195,8 +195,8 @@ namespace myTNB.Dashboard.DashboardComponents
         public UIView GetUI(double yLocation)
         {
             CreateComponent(yLocation);
-            _activity = new ActivityIndicatorComponent(_viewPaymentContainer);
-            _activity.Show();
+            //_activity = new ActivityIndicatorComponent(_viewPaymentContainer);
+            //_activity.Show();
             return _viewPaymentContainer;
         }
 

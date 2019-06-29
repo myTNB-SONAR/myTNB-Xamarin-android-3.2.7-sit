@@ -33,17 +33,13 @@ namespace myTNB
 
         int verticalMargin = 24;
         nfloat addHeight = 44.0f;
-        nfloat addAccountHeight;
-        nfloat headerHeight;
+        nfloat addAccountHeight, headerHeight;
         nfloat maxHeaderHeight = 128f;
         nfloat minHeaderHeight = 0.1f;
         nfloat previousScrollOffset;
-        bool isViewDidLoad = false;
-        bool isAnimating = false;
+        bool isViewDidLoad, isAnimating, isTimeOut, isRefreshing;
         bool isBcrmAvailable = true;
-        bool isTimeOut = false;
         List<string> accountsToRefresh;
-        bool isRefreshing = false;
 
         public DashboardHomeViewController(IntPtr handle) : base(handle)
         {
@@ -57,7 +53,8 @@ namespace myTNB
             isViewDidLoad = true;
             DataManager.DataManager.SharedInstance.SummaryNeedsRefresh = true;
             LoadContents();
-            NSNotificationCenter.DefaultCenter.AddObserver((Foundation.NSString)"LanguageDidChange", LanguageDidChange);
+            NSNotificationCenter.DefaultCenter.AddObserver((NSString)"LanguageDidChange", LanguageDidChange);
+            NSNotificationCenter.DefaultCenter.AddObserver((NSString)"NotificationDidChange", NotificationDidChange);
             NSNotificationCenter.DefaultCenter.AddObserver(UIApplication.WillEnterForegroundNotification, HandleAppWillEnterForeground);
             NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
             {
@@ -65,8 +62,10 @@ namespace myTNB
                 {
                     if (NetworkUtility.isReachable)
                     {
+                        DataManager.DataManager.SharedInstance.IsLoadingFromDashboard = true;
                         await PushNotificationHelper.GetNotifications();
                         UpdateNotificationIcon();
+                        NSNotificationCenter.DefaultCenter.PostNotificationName("OnReceiveNotificationFromDashboard", new NSObject());
                     }
                     else
                     {
@@ -74,6 +73,13 @@ namespace myTNB
                     }
                 });
             });
+        }
+
+        public void NotificationDidChange(NSNotification notification)
+        {
+            Debug.WriteLine("DEBUG >>> SUMMARY DASHBOARD NotificationDidChange");
+            _titleBarComponent?.SetPrimaryImage(PushNotificationHelper.GetNotificationImage());
+            PushNotificationHelper.UpdateApplicationBadge();
         }
 
         public void LanguageDidChange(NSNotification notification)
@@ -87,10 +93,7 @@ namespace myTNB
 
         private void HandleAppWillEnterForeground(NSNotification notification)
         {
-            if (DataManager.DataManager.SharedInstance.IsLoggedIn())
-            {
-                //RefreshScreen();
-            }
+            
         }
 
         public override void ViewWillAppear(bool animated)
@@ -132,22 +135,6 @@ namespace myTNB
             UIView titleBarView = _titleBarComponent.GetUI();
             _titleBarComponent.SetTitle("Dashboard_AllAccounts".Translate());
             _titleBarComponent.SetPrimaryVisibility(false);
-            _titleBarComponent.SetBackVisibility(false);
-            _titleBarComponent.SetBackImage("LogOut");
-            _titleBarComponent.SetBackAction(new UITapGestureRecognizer(() =>
-            {
-                var alert = UIAlertController.Create("MyAccount_Logout".Translate(), "MyAccount_LogoutConfirmation".Translate(), UIAlertControllerStyle.Alert);
-                alert.AddAction(UIAlertAction.Create("Common_Ok".Translate(), UIAlertActionStyle.Default, (obj) =>
-                {
-                    UIStoryboard storyBoard = UIStoryboard.FromName("Logout", null);
-                    LogoutViewController viewController =
-                        storyBoard.InstantiateViewController("LogoutViewController") as LogoutViewController;
-                    var navController = new UINavigationController(viewController);
-                    PresentViewController(navController, true, null);
-                }));
-                alert.AddAction(UIAlertAction.Create("Common_Cancel".Translate(), UIAlertActionStyle.Cancel, null));
-                PresentViewController(alert, animated: true, completionHandler: null);
-            }));
 
             _gradientView.AddSubview(titleBarView);
 
@@ -727,7 +714,6 @@ namespace myTNB
                         var firstKey = displayedAccounts.Keys.ElementAt(0);
                         var section = displayedAccounts[firstKey];
                         displayedAccounts.Remove(firstKey);
-
                         displayedAccounts = new Dictionary<string, List<DueAmountDataModel>>
                         {
                             { key.Translate(), accountsToAdd },
@@ -824,7 +810,6 @@ namespace myTNB
                         shouldReload = true;
                     }
                 }
-
             } // key
             DataManager.DataManager.SharedInstance.ClearPaidList();
             return acctsToGetLatestDues;
@@ -914,38 +899,6 @@ namespace myTNB
                     ToastHelper.ShowToast(toastView, ref isAnimating, status?.DowntimeTextMessage);
                 }
             }
-        }
-
-        /// <summary>
-        /// Pulls down to refresh.
-        /// </summary>
-        /// <param name="sender">Sender.</param>
-        /// <param name="e">E.</param>
-        private void PullDownTorefresh(object sender, EventArgs e)
-        {
-            if (!isRefreshing)
-            {
-                RefreshScreen();
-            }
-        }
-
-        /// <summary>
-        /// Refreshes the screen.
-        /// </summary>
-        /// <returns>The screen.</returns>
-        private void RefreshScreen()
-        {
-            isRefreshing = true;
-            DataManager.DataManager.SharedInstance.SummaryNeedsRefresh = true;
-
-            var baseVc = UIApplication.SharedApplication.KeyWindow?.RootViewController;
-            var topVc = AppDelegate.GetTopViewController(baseVc);
-            bool hideLoadingIndicator = false;
-            if (!(topVc is DashboardHomeViewController))
-            {
-                hideLoadingIndicator = true;
-            }
-            LoadContents(false, hideLoadingIndicator);
         }
     }
 }

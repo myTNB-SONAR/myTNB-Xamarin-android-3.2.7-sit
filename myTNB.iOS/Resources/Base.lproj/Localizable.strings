@@ -183,6 +183,8 @@
 "Error_TimeOut"="We can't get your account details at the moment. Please refresh this page.";
 "Error_UpdateNickname"="Cannot update nickname. Please try again.";
 "Error_VerifyDevice"="Cannot verify device. Please try again.";
+"Error_RefreshMessage"="This page must be tired. Tap the button below to help it out.";
+"Error_RefreshBtnTitle"="Refresh Now";
 
 /*Feedback*/
 "Feedback_AccessMessage"="Turn On Location Services to allow \"myTNB\" to determine your location";

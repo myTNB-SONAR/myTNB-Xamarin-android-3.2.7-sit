@@ -92,13 +92,20 @@ namespace myTNB.Dashboard.SelectAccounts
                 DataManager.DataManager.SharedInstance.IsSameAccount = false;
             }
 #endif
-            if (DataManager.DataManager.SharedInstance.IsSameAccount)
+            if (!_controller.selectionIsFromDashboard)
             {
-                _controller.DismissViewController(true, null);
+                if (DataManager.DataManager.SharedInstance.IsSameAccount)
+                {
+                    _controller.DismissViewController(true, null);
+                }
+                else
+                {
+                    _controller.LoadBillingAccountDetails();
+                }
             }
             else
             {
-                _controller.LoadBillingAccountDetails();
+                _controller.DismissViewController(true, null);
             }
         }
 

@@ -104,6 +104,12 @@ namespace myTNB
         {
             bool res = false;
             await GetUserNotifications();
+            if (DataManager.DataManager.SharedInstance.IsLoadingFromDashboard)
+            {
+                DataManager.DataManager.SharedInstance.IsLoadingFromDashboard = false;
+                NSNotificationCenter.DefaultCenter.PostNotificationName("OnReceiveNotificationFromDashboard", new NSObject());
+            }
+            DataManager.DataManager.SharedInstance.UserNotificationResponse = _userNotifications;
             res = _userNotifications?.d?.didSucceed == true;
 
             if (_userNotifications != null && _userNotifications?.d != null

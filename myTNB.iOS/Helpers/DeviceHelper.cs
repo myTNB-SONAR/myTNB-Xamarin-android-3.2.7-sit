@@ -167,9 +167,9 @@ namespace myTNB
         /// </summary>
         /// <returns>The X value.</returns>
         /// <param name="objWidth">Object width.</param>
-        public static float GetCenterXWithObjWidth(float objWidth)
+        public static float GetCenterXWithObjWidth(float objWidth, UIView parentView = null)
         {
-            float screenWidth = (float)UIScreen.MainScreen.Bounds.Width;
+            float screenWidth = (float)((parentView != null) ? parentView.Frame.Width : (float)UIScreen.MainScreen.Bounds.Width);
             return screenWidth / 2 - (objWidth / 2);
         }
         /// <summary>
@@ -177,9 +177,9 @@ namespace myTNB
         /// </summary>
         /// <returns>The Y value.</returns>
         /// <param name="objHeight">Object height.</param>
-        public static float GetCenterYWithObjHeight(float objHeight)
+        public static float GetCenterYWithObjHeight(float objHeight, UIView parentView = null)
         {
-            float screenHeight = (float)UIScreen.MainScreen.Bounds.Height;
+            float screenHeight = (float)((parentView != null) ? parentView.Frame.Height : (float)UIScreen.MainScreen.Bounds.Height);
             return screenHeight / 2 - (objHeight / 2);
         }
         /// <summary>

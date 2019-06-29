@@ -21,19 +21,15 @@ namespace myTNB.Dashboard
         public DashboardViewController(IntPtr handle) : base(handle)
         {
         }
+        public bool ShouldShowBackButton;
 
         DashboardMainComponent _dashboardMainComponent;
         DueAmountResponseModel _dueAmount = new DueAmountResponseModel();
         BillingAccountDetailsResponseModel _billingAccountDetailsList = new BillingAccountDetailsResponseModel();
         InstallationDetailResponseModel _installationDetails = new InstallationDetailResponseModel();
-        bool isAnimating, isFromViewBillAdvice, isFromForeground, isREAccount;
+        bool isAnimating, isFromViewBillAdvice, isFromForeground, isREAccount, amountDueIsAvailable;
         bool isBcrmAvailable = true, isNormalChart = true;
-
-        double _amountDue = 0;
-        double _dueIncrementDays = 0;
-        double _lastContentOffset;
-
-        public bool ShouldShowBackButton;
+        double _amountDue, _dueIncrementDays, _lastContentOffset;
 
         string _dateDue = string.Empty;
         string _toolTipMessage = string.Empty;
@@ -43,7 +39,7 @@ namespace myTNB.Dashboard
         {
             base.ViewDidLoad();
             // Perform any additional setup after loading the view, typically from a nib.
-            var appDelegate = UIApplication.SharedApplication.Delegate as AppDelegate;
+            AppDelegate appDelegate = UIApplication.SharedApplication.Delegate as AppDelegate;
             if (appDelegate != null)
             {
                 appDelegate._dashboardVC = this;
@@ -66,24 +62,32 @@ namespace myTNB.Dashboard
                 var acctStatusTooltipMsg = !string.IsNullOrWhiteSpace(installationDetails.AccountStatusModalMessage) ? installationDetails.AccountStatusModalMessage : "Dashboard_AccountStatusMessage".Translate();
                 DisplayCustomAlert(string.Empty, acctStatusTooltipMsg, acctStatusTooltipBtnTitle, null);
             });
-            NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
+
+            if (!DataManager.DataManager.SharedInstance.IsLoadingFromDashboard)
             {
-                InvokeOnMainThread(async () =>
+                if (DataManager.DataManager.SharedInstance.UserNotifications?.Count == 0)
                 {
-                    if (NetworkUtility.isReachable)
+                    NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
                     {
-                        await PushNotificationHelper.GetNotifications();
-                        if (_dashboardMainComponent._titleBarComponent != null)
+                        InvokeOnMainThread(async () =>
                         {
-                            _dashboardMainComponent._titleBarComponent.SetPrimaryImage(PushNotificationHelper.GetNotificationImage());
-                        }
-                    }
-                    else
-                    {
-                        DisplayNoDataAlert();
-                    }
-                });
-            });
+                            if (NetworkUtility.isReachable)
+                            {
+                                DataManager.DataManager.SharedInstance.IsLoadingFromDashboard = true;
+                                await PushNotificationHelper.GetNotifications();
+                                if (_dashboardMainComponent._titleBarComponent != null)
+                                {
+                                    _dashboardMainComponent._titleBarComponent.SetPrimaryImage(PushNotificationHelper.GetNotificationImage());
+                                }
+                            }
+                            else
+                            {
+                                DisplayNoDataAlert();
+                            }
+                        });
+                    });
+                }
+            }
         }
 
         public void NotificationDidChange(NSNotification notification)
@@ -147,27 +151,6 @@ namespace myTNB.Dashboard
                 isFromViewBillAdvice = false;
             }
 
-            NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
-            {
-                InvokeOnMainThread(async () =>
-                {
-                    if (NetworkUtility.isReachable)
-                    {
-                        await LoadInstallationDetails();
-                    }
-                    else
-                    {
-                        DisplayNoDataAlert();
-                        _dashboardMainComponent.ConstructNoDataConnectionDashboard();
-                        SetEventsAndText();
-                    }
-                });
-            });
-        }
-
-        public override void ViewDidAppear(bool animated)
-        {
-            base.ViewDidAppear(animated);
             if (!ServiceCall.HasAccountList())
             {
                 RenderDisplay();
@@ -182,13 +165,26 @@ namespace myTNB.Dashboard
                         {
                             if (!DataManager.DataManager.SharedInstance.IsSameAccount)
                             {
-                                await LoadDashboard();
+                                await LoadInstallationDetails();
                                 await LoadAmountDue();
+                                await LoadDashboard();
+                                SetEventsAndText();
                             }
+                        }
+                        else
+                        {
+                            DisplayNoDataAlert();
+                            _dashboardMainComponent.ConstructNoDataConnectionDashboard();
+                            SetEventsAndText();
                         }
                     });
                 });
             }
+        }
+
+        public override void ViewDidAppear(bool animated)
+        {
+            base.ViewDidAppear(animated);
         }
 
         /// <summary>
@@ -221,40 +217,34 @@ namespace myTNB.Dashboard
         /// <returns>The amount due.</returns>
         private async Task LoadAmountDue()
         {
+            amountDueIsAvailable = false;
             var acct = DataManager.DataManager.SharedInstance.SelectedAccount;
             var due = DataManager.DataManager.SharedInstance.GetDue(acct.accNum);
-            await GetBillingAccountDetails().ContinueWith(task =>
-            {
-                InvokeOnMainThread(() =>
-                {
-                    if (_billingAccountDetailsList != null && _billingAccountDetailsList?.d != null
-                        && _billingAccountDetailsList?.d?.data != null)
-                    {
-                        var billDetails = _billingAccountDetailsList.d.data;
-                        DataManager.DataManager.SharedInstance.BillingAccountDetails = billDetails;
-                        if (!isREAccount)
-                        {
-                            DataManager.DataManager.SharedInstance.SaveToBillingAccounts(billDetails, billDetails.accNum);
-                        }
-                    }
-                });
-            });
-
+            ActivityIndicator.Show();
             await GetAccountDueAmount().ContinueWith(dueTask =>
             {
                 InvokeOnMainThread(() =>
                 {
                     if (_dueAmount != null && _dueAmount?.d != null
                         && _dueAmount?.d?.didSucceed == true
-                        && _dueAmount?.d?.data != null)
+                        && _dueAmount?.d?.data != null
+                        && _dueAmount?.d?.status.ToLower() != "failed")
                     {
+                        amountDueIsAvailable = true;
                         _amountDue = _dueAmount.d.data.amountDue;
                         _dateDue = _dueAmount.d.data.billDueDate;
                         _dueIncrementDays = _dueAmount.d.data.IncrementREDueDateByDays;
                         SetAmountInBillingDetails(_amountDue);
                         SaveDueToCache(_dueAmount.d.data);
                     }
+                    else
+                    {
+                        amountDueIsAvailable = false;
+                        _dashboardMainComponent.ConstructRefreshScreen(RefreshScreen, _dueAmount.d);
+
+                    }
                     SetBillAndPaymentDetails();
+                    ActivityIndicator.Hide();
                 });
             });
         }
@@ -286,7 +276,9 @@ namespace myTNB.Dashboard
         {
             bool isNormalMeter = DataManager.DataManager.SharedInstance.SelectedAccount.IsNormalMeter;
             bool isResultSuccess = false;
-            string errorMessage = string.Empty;
+            bool isFromCache = false;
+            bool isSMCallSuccess = false;
+            ChartModel chartModelResponse = null;
 
             _dashboardMainComponent._billAndPaymentView.Hidden = false;
             TNBGlobal.IsChartEmissionEnabled = false;
@@ -297,12 +289,16 @@ namespace myTNB.Dashboard
                 ChartDataModel cachedData = GetCachedChartData(accNum);
                 if (cachedData != null)
                 {
+                    isFromCache = true;
                     isResultSuccess = true;
                     DataManager.DataManager.SharedInstance.CurrentChart = cachedData;
                 }
                 else
                 {
+                    ActivityIndicator.Show();
                     ChartModel chartResponse = await GetAccountUsageHistoryForGraph();
+                    chartModelResponse = chartResponse;
+                    isFromCache = false;
                     isResultSuccess = chartResponse.didSucceed;
                     ChartDataModel dataModel = chartResponse.data;
                     DataManager.DataManager.SharedInstance.CurrentChart = dataModel;
@@ -311,10 +307,6 @@ namespace myTNB.Dashboard
                     {
                         DataManager.DataManager.SharedInstance.SaveChartToUsageHistory(dataModel, accNum);
                     }
-                    else
-                    {
-                        errorMessage = !string.IsNullOrWhiteSpace(chartResponse.message) ? chartResponse.message : "Error_DefaultMessage".Translate();
-                    }
                 }
             }
             else
@@ -322,15 +314,18 @@ namespace myTNB.Dashboard
                 SmartChartDataModel cachedData = GetCachedSmartChartData(accNum);
                 if (cachedData != null)
                 {
+                    isFromCache = true;
                     isResultSuccess = true;
                     ChartHelper.RemoveExcessSmartMonthData(ref cachedData);
                     DataManager.DataManager.SharedInstance.CurrentChart = cachedData;
                 }
                 else
                 {
+                    ActivityIndicator.Show();
                     SmartChartModel chartResponse = await GetSmartMeterAccountData();
                     isResultSuccess = chartResponse.didSucceed;
-
+                    isSMCallSuccess = isResultSuccess;
+                    isFromCache = false;
                     if (isResultSuccess)
                     {
                         if (chartResponse.StatusCode != TNBGlobal.Errors.NoSmartData)
@@ -353,23 +348,18 @@ namespace myTNB.Dashboard
                                              : "Error_GetSmartMeterDataMessage".Translate();
                         ShowToast(message);
                         ChartModel normalChartResponse = await GetAccountUsageHistoryForGraph();
+                        chartModelResponse = normalChartResponse;
                         isResultSuccess = normalChartResponse.didSucceed;
                         DataManager.DataManager.SharedInstance.CurrentChart = normalChartResponse.data;
-
-                        if (!isResultSuccess)
-                        {
-                            errorMessage = !string.IsNullOrWhiteSpace(normalChartResponse.message)
-                                ? normalChartResponse.message : "Error_DefaultMessage".Translate();
-                        }
                     }
                     else
                     {
                         DataManager.DataManager.SharedInstance.CurrentChart = chartResponse.data;
-                        errorMessage = !string.IsNullOrWhiteSpace(chartResponse.message)
-                            ? chartResponse.message : "Error_DefaultMessage".Translate();
                     }
                 }
             }
+
+            ActivityIndicator.Hide();
 
             if (isResultSuccess)
             {
@@ -378,7 +368,7 @@ namespace myTNB.Dashboard
 
             InvokeOnMainThread(() =>
             {
-                RenderDisplay(errorMessage);
+                RenderDisplay(isFromCache, isSMCallSuccess, chartModelResponse);
             });
         }
 
@@ -453,6 +443,7 @@ namespace myTNB.Dashboard
                         UIStoryboard storyBoard = UIStoryboard.FromName("Dashboard", null);
                         SelectAccountTableViewController viewController =
                             storyBoard.InstantiateViewController("SelectAccountTableViewController") as SelectAccountTableViewController;
+                        viewController.selectionIsFromDashboard = true;
                         var navController = new UINavigationController(viewController);
                         PresentViewController(navController, true, null);
                     });
@@ -718,12 +709,12 @@ namespace myTNB.Dashboard
                         {
                             if (NetworkUtility.isReachable)
                             {
-                                await LoadDashboard();
+                                await LoadInstallationDetails();
                                 await LoadAmountDue();
+                                await LoadDashboard();
                             }
                             else
                             {
-                                Debug.WriteLine("No Network");
                                 DisplayNoDataAlert();
                             }
                         });
@@ -762,49 +753,59 @@ namespace myTNB.Dashboard
             {
                 _dashboardMainComponent._titleBarComponent.SetPrimaryImage(PushNotificationHelper.GetNotificationImage());
             }
-            SetBillAndPaymentDetails();
         }
 
         internal void SetBillAndPaymentDetails()
         {
             if (_dashboardMainComponent._billAndPaymentComponent != null)
             {
-                string amount = NetworkUtility.isReachable ? _amountDue.ToString() : TNBGlobal.ZERO;
-
-                _dashboardMainComponent._billAndPaymentComponent.SetAmount(amount, isREAccount);
-
-                var adjAmount = !isREAccount ? _amountDue : ChartHelper.UpdateValueForRE(_amountDue);
-
-                string dateString = !string.IsNullOrEmpty(_dateDue) && adjAmount > 0 ? _dateDue : string.Empty;
-
-                string formattedDate = string.Empty;
-                string prefix = string.Empty;
-                if (string.IsNullOrEmpty(dateString) || dateString.ToUpper().Equals("N/A"))
+                if (amountDueIsAvailable)
                 {
-                    formattedDate = TNBGlobal.EMPTY_DATE;
+                    string amount = NetworkUtility.isReachable ? _amountDue.ToString() : TNBGlobal.ZERO;
+
+                    _dashboardMainComponent._billAndPaymentComponent.SetAmount(amount, isREAccount);
+
+                    var adjAmount = !isREAccount ? _amountDue : ChartHelper.UpdateValueForRE(_amountDue);
+
+                    string dateString = !string.IsNullOrEmpty(_dateDue) && adjAmount > 0 ? _dateDue : string.Empty;
+
+                    string formattedDate = string.Empty;
+                    string prefix = string.Empty;
+                    if (string.IsNullOrEmpty(dateString) || dateString.ToUpper().Equals("N/A"))
+                    {
+                        formattedDate = TNBGlobal.EMPTY_DATE;
+                    }
+                    else
+                    {
+                        if (isREAccount && _dueIncrementDays > 0)
+                        {
+                            try
+                            {
+                                var format = @"dd/MM/yyyy";
+                                DateTime due = DateTime.ParseExact(dateString, format, System.Globalization.CultureInfo.InvariantCulture);
+                                due = due.AddDays(_dueIncrementDays);
+                                dateString = due.ToString(format);
+                            }
+                            catch (FormatException)
+                            {
+                                Debug.WriteLine("Unable to parse '{0}'", dateString);
+                            }
+                        }
+                        formattedDate = DateHelper.GetFormattedDate(dateString, "dd MMM yyyy");
+                        prefix = isREAccount ? string.Format("{0} ", "Bill_By".Translate()) : string.Empty;
+                    }
+
+                    string dueDate = prefix + formattedDate;
+                    _dashboardMainComponent._billAndPaymentComponent.SetDateDue(dueDate);
+                    _dashboardMainComponent._billAndPaymentComponent.SetCurrency(TNBGlobal.UNIT_CURRENCY);
                 }
                 else
                 {
-                    if (isREAccount && _dueIncrementDays > 0)
-                    {
-                        try
-                        {
-                            var format = @"dd/MM/yyyy";
-                            DateTime due = DateTime.ParseExact(dateString, format, System.Globalization.CultureInfo.InvariantCulture);
-                            due = due.AddDays(_dueIncrementDays);
-                            dateString = due.ToString(format);
-                        }
-                        catch (FormatException)
-                        {
-                            Debug.WriteLine("Unable to parse '{0}'", dateString);
-                        }
-                    }
-                    formattedDate = DateHelper.GetFormattedDate(dateString, "dd MMM yyyy");
-                    prefix = isREAccount ? string.Format("{0} ", "Bill_By".Translate()) : string.Empty;
+                    _dashboardMainComponent._billAndPaymentComponent.SetAmount(TNBGlobal.EMPTY_AMOUNT, isREAccount);
+                    _dashboardMainComponent._billAndPaymentComponent.SetDateDue(TNBGlobal.EMPTY_DATE);
+                    _dashboardMainComponent._billAndPaymentComponent.SetCurrency(string.Empty);
                 }
 
-                string dueDate = prefix + formattedDate;
-                _dashboardMainComponent._billAndPaymentComponent.SetDateDue(dueDate);
                 _dashboardMainComponent._billAndPaymentComponent.SetPaymentTitle(isREAccount
                     ? "Bill_MyEarnings".Translate() : "Common_AmountDue".Translate());
                 if (_dashboardMainComponent._billAndPaymentComponent._activity != null)
@@ -826,6 +827,8 @@ namespace myTNB.Dashboard
                     }
                 }
 #endif
+                _dashboardMainComponent._billAndPaymentComponent.SetPayButtonEnable(amountDueIsAvailable);
+                _dashboardMainComponent._billAndPaymentComponent.SetBillButtonEnable(amountDueIsAvailable);
             }
         }
 
@@ -854,15 +857,28 @@ namespace myTNB.Dashboard
         /// <returns>The dashboard.</returns>
         private async Task LoadDashboard()
         {
-            await GetUsageHistory();
+            if (amountDueIsAvailable)
+            {
+                await GetUsageHistory();
+            }
         }
 
         /// <summary>
         /// Renders the display.
         /// </summary>
-        /// <param name="errorMessage">Error message.</param>
-        internal void RenderDisplay(string errorMessage = "")
+        /// <param name="isFromCache"></param>
+        /// <param name="isSMCallSuccess"></param>
+        /// <param name="chartModel"></param>
+        internal void RenderDisplay(bool isFromCache = false, bool isSMCallSuccess = false, ChartModel chartModel = null)
         {
+            string errorMessage = string.Empty;
+
+            if (chartModel != null && chartModel?.didSucceed == false)
+            {
+                errorMessage = !string.IsNullOrWhiteSpace(chartModel?.message)
+                    ? chartModel.message : "Error_DefaultMessage".Translate();
+            }
+
             DataManager.DataManager.SharedInstance.IsMontView = true;
             DataManager.DataManager.SharedInstance.CurrentChartIndex = 0;
             isNormalChart = DataManager.DataManager.SharedInstance.SelectedAccount.IsNormalMeter || isREAccount;
@@ -875,6 +891,10 @@ namespace myTNB.Dashboard
             {
                 _dashboardMainComponent.ConstructBCRMDownDashboard();
                 ShowBcrmToast();
+            }
+            else if (!isFromCache && !isSMCallSuccess && (chartModel == null || chartModel?.didSucceed == false || chartModel?.status?.ToLower() == "failed"))
+            {
+                _dashboardMainComponent.ConstructRefreshScreen(RefreshScreen, chartModel);
             }
             else if (DataManager.DataManager.SharedInstance.CurrentChart != null)
             {
@@ -912,6 +932,7 @@ namespace myTNB.Dashboard
                 _dashboardMainComponent.ConstructNoDataConnectionDashboard();
             }
             SetEventsAndText();
+            SetBillAndPaymentDetails();
         }
 
         /// <summary>
@@ -1173,12 +1194,12 @@ namespace myTNB.Dashboard
                 accNum = DataManager.DataManager.SharedInstance.SelectedAccount.accNum
             };
 
-            _dashboardMainComponent?._componentActivity?.Show();
+            //_dashboardMainComponent?._componentActivity?.Show();
             chartResponse = await Task.Run(() =>
             {
                 return serviceManager.GetAccountUsageHistoryForGraph("GetAccountUsageHistoryForGraph", requestParameter);
             });
-            _dashboardMainComponent?._componentActivity?.Hide();
+            //_dashboardMainComponent?._componentActivity?.Hide();
 
             return chartResponse;
         }
@@ -1205,13 +1226,13 @@ namespace myTNB.Dashboard
                 metercode = DataManager.DataManager.SharedInstance.SelectedAccount.smartMeterCode,
                 isOwner = DataManager.DataManager.SharedInstance.SelectedAccount.isOwned
             };
-            _dashboardMainComponent?._componentActivity?.Show();
+            //_dashboardMainComponent?._componentActivity?.Show();
             chartResponse = await Task.Run(() =>
             {
                 return serviceManager.GetSmartMeterAccountData("GetSmartMeterAccountData_V3", requestParameter);
             });
 
-            _dashboardMainComponent?._componentActivity?.Hide();
+            //_dashboardMainComponent?._componentActivity?.Hide();
 
             return chartResponse;
         }
@@ -1305,6 +1326,23 @@ namespace myTNB.Dashboard
                     CANum = DataManager.DataManager.SharedInstance.SelectedAccount.accNum
                 };
                 _billingAccountDetailsList = serviceManager.GetBillingAccountDetails("GetBillingAccountDetails", requestParameter);
+            });
+        }
+
+        private void RefreshScreen()
+        {
+            NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
+            {
+                InvokeOnMainThread(async () =>
+                {
+                    if (NetworkUtility.isReachable)
+                    {
+                        await LoadAmountDue();
+                        await LoadDashboard();
+                        SetEventsAndText();
+                        ActivityIndicator.Hide();
+                    }
+                });
             });
         }
         /// <summary>
