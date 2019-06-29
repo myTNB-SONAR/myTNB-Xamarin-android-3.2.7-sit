@@ -24,7 +24,7 @@ namespace myTNB
         SystemDownComponent _sysDownComponent;
         UIView _gradientView, _greetingView, _sysDownView, _viewHeader
             , _viewFooter, _viewLoadMore;
-        UIButton btnAdd, btnLoad;
+        UIButton btnAdd;
         UILabel _lblLoadMore;
         Dictionary<string, List<DueAmountDataModel>> displayedAccounts = new Dictionary<string, List<DueAmountDataModel>>();
         int loadedAccountsCount;
@@ -90,7 +90,7 @@ namespace myTNB
         {
             Debug.WriteLine("DEBUG >>> SUMMARY DASHBOARD LanguageDidChange");
             _titleBarComponent.SetTitle("Dashboard_AllAccounts".Translate());
-            btnLoad.SetTitle("Dashboard_LoadMoreAccounts".Translate(), UIControlState.Normal);
+            _lblLoadMore.Text = "Dashboard_LoadMoreAccounts".Translate();
             btnAdd.SetTitle("Common_AddAnotherAccount".Translate(), UIControlState.Normal);
             DataManager.DataManager.SharedInstance.SummaryNeedsRefresh = true;
         }
