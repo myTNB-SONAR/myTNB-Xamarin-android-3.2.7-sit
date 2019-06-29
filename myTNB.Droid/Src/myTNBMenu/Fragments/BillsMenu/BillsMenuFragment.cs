@@ -339,14 +339,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.BillsMenu
                     txtNewRefreshMessage.TextFormatted = string.IsNullOrEmpty(txtRefreshContent) ? Html.FromHtml(GetString(Resource.String.text_new_refresh_content)) : Html.FromHtml(txtRefreshContent);
                 }
 
+                SetBillDetails(selectedAccount);
+
+                this.userActionsListener.Start();
+
                 if(failedFetch)
                 {
                     ShowRefreshView(null, null);
                 }
-
-                SetBillDetails(selectedAccount);
-
-                this.userActionsListener.Start();
             }
             catch (System.Exception e)
             {

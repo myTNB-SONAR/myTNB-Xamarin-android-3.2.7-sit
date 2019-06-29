@@ -178,11 +178,7 @@ namespace myTNB_Android.Src.SummaryDashBoard.MVP
                     this.mView.HideProgressDialog();
                 }
 
-                if(response != null && response.Data != null && response.Data.Status.ToUpper() == Constants.REFRESH_MODE)
-                {
-                    mView.ShowRefreshSummaryDashboard(true, response);
-                }
-                else if (response != null)
+                if (response != null)
                 {
                     if (response.Data != null)
                     {
@@ -209,11 +205,7 @@ namespace myTNB_Android.Src.SummaryDashBoard.MVP
                         }
 
                     }
-                    mView.ShowRefreshSummaryDashboard(false, null);
-                }
-                else
-                {
-                    this.mView.ShowRefreshSummaryDashboard(true, null); 
+                    mView.ShowRefreshSummaryDashboard(false);
                 }
             }
             catch (System.OperationCanceledException e)
@@ -225,7 +217,7 @@ namespace myTNB_Android.Src.SummaryDashBoard.MVP
                     this.mView.HideProgressDialog();
                 }
                 Utility.LoggingNonFatalError(e);
-                this.mView.ShowRefreshSummaryDashboard(true, null); //Show retry option for summary dashboard
+                this.mView.ShowRefreshSummaryDashboard(true); //Show retry option for summary dashboard
                 LoadEmptySummaryDetails();
             }
             catch (ApiException apiException)
@@ -237,7 +229,7 @@ namespace myTNB_Android.Src.SummaryDashBoard.MVP
                 }
 
                 Utility.LoggingNonFatalError(apiException);
-                this.mView.ShowRefreshSummaryDashboard(true, null); //Show retry option for summary dashboard
+                this.mView.ShowRefreshSummaryDashboard(true); //Show retry option for summary dashboard
                 LoadEmptySummaryDetails();
             }
             catch (Exception e)
@@ -249,7 +241,7 @@ namespace myTNB_Android.Src.SummaryDashBoard.MVP
                     this.mView.HideProgressDialog();
                 }
                 Utility.LoggingNonFatalError(e);
-                this.mView.ShowRefreshSummaryDashboard(true, null); //Show retry option for summary dashboard
+                this.mView.ShowRefreshSummaryDashboard(true); //Show retry option for summary dashboard
                 LoadEmptySummaryDetails();
             }
         }

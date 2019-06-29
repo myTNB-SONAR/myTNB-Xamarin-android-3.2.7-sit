@@ -856,7 +856,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         [OnClick(Resource.Id.btnRefresh)]
         internal void OnRefresh(object sender, EventArgs e)
         {
-            this.userActionsListener.OnTapRefresh();
+            if (hasNoInternet)
+            {
+                this.userActionsListener.OnTapRefresh();
+            }
+            else
+            {
+                this.userActionsListener.OnLoadAmount(selectedAccount.AccountNum);
+            }
         }
 
         [OnClick(Resource.Id.btnPay)]
