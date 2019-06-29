@@ -138,6 +138,11 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
         private async void LoadingBillsHistory(AccountData selectedAccount)
         {
 
+            if (this.mView.IsActive())
+            {
+                this.mView.ShowAmountProgress();
+            }
+
             cts = new CancellationTokenSource();
 #if DEBUG || STUB
             var httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new System.Uri(Constants.SERVER_URL.END_POINT) };
@@ -157,6 +162,11 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
 
                 var billsHistoryResponseV5 = billsHistoryResponseApi;
 
+                if (this.mView.IsActive())
+                {
+                    this.mView.HideAmountProgress();
+                }
+
                 if (billsHistoryResponseV5 != null && billsHistoryResponseV5.Data != null)
                 {
                     if (!billsHistoryResponseV5.Data.IsError && !string.IsNullOrEmpty(billsHistoryResponseV5.Data.Status)
@@ -167,7 +177,19 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                             this.mView.ShowViewBill(billsHistoryResponseV5.Data.BillHistory[0]);
                             return;
                         }
+                        else
+                        {
+                            this.mView.ShowViewBill();
+                        }
+                    }                    
+                    else
+                    {
+                        this.mView.ShowViewBill();
                     }
+                }
+                else
+                {
+                    this.mView.ShowViewBill();
                 }
             }
             catch (System.OperationCanceledException e)
@@ -175,6 +197,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                 Log.Debug("BillPayment Presenter", "Cancelled Exception");
                 if (this.mView.IsActive())
                 {
+                    this.mView.HideAmountProgress();
                     this.mView.ShowNoInternetSnackbar();
                 }
                 Utility.LoggingNonFatalError(e);
@@ -182,10 +205,10 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
             catch (ApiException apiException)
             {
                 // ADD HTTP CONNECTION EXCEPTION HERE
-                //this.mView.ShowRetryOptionsApiException(apiException);
                 Log.Debug("BillPayment Presenter", "Stack " + apiException.StackTrace);
                 if (this.mView.IsActive())
                 {
+                    this.mView.HideAmountProgress();
                     this.mView.ShowNoInternetSnackbar();
                 }
                 Utility.LoggingNonFatalError(apiException);
@@ -194,9 +217,9 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
             {
                 // ADD UNKNOWN EXCEPTION HERE
                 Log.Debug("BillPayment Presenter", "Stack " + e.StackTrace);
-                //this.mView.ShowRetryOptionsUnknownException(e);
                 if (this.mView.IsActive())
                 {
+                    this.mView.HideAmountProgress();
                     this.mView.ShowNoInternetSnackbar();
                 }
                 Utility.LoggingNonFatalError(e);

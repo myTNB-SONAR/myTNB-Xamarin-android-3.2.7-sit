@@ -974,10 +974,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
             Console.WriteLine("000 OnAccountSelectDashBoard started");
             try
             {
-                if (this.mView.IsActive())
-                {
-                    this.mView.ShowProgressDialog();
-                }
                 DashboardActivity.GO_TO_INNER_DASHBOARD = true;
                 List<CustomerBillingAccount> accountList = new List<CustomerBillingAccount>();
                 accountList = CustomerBillingAccount.List();
@@ -1051,11 +1047,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                                     LoadUsageHistory(selected);
                                 }
                             }
-
-                            if (this.mView.IsActive())
-                            {
-                                this.mView.HideProgressDialog();
-                            }
                             
                             if (selected.AccountCategoryId.Equals("2"))
                             {
@@ -1070,13 +1061,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                                 this.mView.SetAccountName(selected.AccDesc);
                             }
                         }
-                        else
-                        {
-                            if (this.mView.IsActive())
-                            {
-                                this.mView.HideProgressDialog();
-                            }
-                        }
                     }
                     else
                     {
@@ -1087,10 +1071,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                             selected = CustomerBillingAccount.GetSelected();
                             if (selected != null && !string.IsNullOrEmpty(selected.AccNum))
                             {
-                                if (this.mView.IsActive())
-                                {
-                                    this.mView.HideProgressDialog();
-                                }
                                 if (!selected.SmartMeterCode.Equals("0"))
                                 {
                                     LoadSMUsageHistory(selected);
@@ -1114,30 +1094,12 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                                 }
 
                             }
-                            else
-                            {
-                                if (this.mView.IsActive())
-                                {
-                                    this.mView.HideProgressDialog();
-                                }
-                            }
-                        }
-                        else
-                        {
-                            if (this.mView.IsActive())
-                            {
-                                this.mView.HideProgressDialog();
-                            }
                         }
                     }
 
                 }
                 else
                 {
-                    if (this.mView.IsActive())
-                    {
-                        this.mView.HideProgressDialog();
-                    }
                     this.mView.HideAccountName();
                     this.mView.ShowNoAccountDashboardChartMenu();
                     this.mView.DisableBillMenu();
@@ -1145,10 +1107,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
             }
             catch (System.Exception e)
             {
-                if (this.mView.IsActive())
-                {
-                    this.mView.HideProgressDialog();
-                }
                 Utility.LoggingNonFatalError(e);
             }
             Console.WriteLine("000 OnAccountSelectDashBoard ended");

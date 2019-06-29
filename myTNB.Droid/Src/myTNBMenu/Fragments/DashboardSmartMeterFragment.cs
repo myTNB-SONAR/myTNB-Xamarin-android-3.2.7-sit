@@ -1889,6 +1889,30 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             }
         }
 
+        private Snackbar mLoadBillSnackBar;
+        public void ShowLoadBillRetryOptions()
+        {
+            try
+            {
+                if (mLoadBillSnackBar != null && mLoadBillSnackBar.IsShown)
+                {
+                    mLoadBillSnackBar.Dismiss();
+                }
+
+                mLoadBillSnackBar = Snackbar.Make(rootView, GetString(Resource.String.dashboard_chart_cancelled_exception_error), Snackbar.LengthIndefinite)
+                .SetAction(GetString(Resource.String.dashboard_chartview_data_not_available_no_internet_btn_close), delegate
+                {
+                    mLoadBillSnackBar.Dismiss();
+                }
+                );
+                mLoadBillSnackBar.Show();
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
         private Snackbar mApiExcecptionSnackBar;
         public void ShowRetryOptionsApiException(ApiException apiException)
         {

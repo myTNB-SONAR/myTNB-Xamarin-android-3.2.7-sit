@@ -140,6 +140,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
             /// </summary>
             void DisablePayButton();
 
+            void ShowLoadBillRetryOptions();
 
             /// <summary>
             /// Shows a cancelled exception with an option to retry
