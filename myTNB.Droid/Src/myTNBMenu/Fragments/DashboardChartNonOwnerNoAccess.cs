@@ -442,6 +442,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 {
                     if (selectedAccount != null)
                     {
+                        EnablePayButton();
+                        btnViewBill.Enabled = true;
+                        btnViewBill.SetTextColor(ContextCompat.GetColorStateList(this.Activity, Resource.Color.freshGreen));
+                        btnViewBill.Background = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.light_green_outline_button_background);
                         if (selectedAccount.AccountCategoryId.Equals("2"))
                         {
                             selectedAccount.AmtCustBal = accountDueAmount.AmountDue;
@@ -490,6 +494,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 }
                 else
                 {
+                    txtTotalPayable.Text = GetString(Resource.String.dashboard_chartview_due_date_not_available);
                     txtDueDate.Text = GetString(Resource.String.dashboard_chartview_due_date_not_available);
                 }
             }

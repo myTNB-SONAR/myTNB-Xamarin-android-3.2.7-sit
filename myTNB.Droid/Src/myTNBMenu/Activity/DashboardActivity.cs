@@ -342,13 +342,13 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                    .CommitAllowingStateLoss();
         }
 
-        public void ShowOwnerDashboardNoInternetConnection(string accountName, UsageHistoryResponse response)
+        public void ShowOwnerDashboardNoInternetConnection(string accountName, UsageHistoryResponse response, AccountData selectedAccount)
         {
             //contentLayout.RemoveAllViews();
             txtAccountName.Text = accountName;
             currentFragment = new DashboardChartFragment();
             FragmentManager.BeginTransaction()
-                           .Replace(Resource.Id.content_layout, DashboardChartFragment.NewInstance(true, response),
+                           .Replace(Resource.Id.content_layout, DashboardChartFragment.NewInstance(true, response, selectedAccount),
                                     typeof(DashboardChartFragment).Name)
                            //.AddToBackStack(null)
                            .CommitAllowingStateLoss();
@@ -997,7 +997,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             //contentLayout.RemoveAllViews();
             txtAccountName.Text = accountName;
             FragmentManager.BeginTransaction()
-                           .Replace(Resource.Id.content_layout, DashboardChartFragment.NewInstance(true, null),
+                           .Replace(Resource.Id.content_layout, DashboardChartFragment.NewInstance(true, null, null),
                                     typeof(DashboardChartFragment).Name)
                            //.AddToBackStack(null)
                            .CommitAllowingStateLoss();

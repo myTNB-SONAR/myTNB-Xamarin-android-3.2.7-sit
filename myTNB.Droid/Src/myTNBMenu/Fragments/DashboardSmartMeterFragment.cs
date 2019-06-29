@@ -248,6 +248,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         /// </summary>
         private bool IsCO2Disabled = true;
 
+        private bool hasAmtDue = false;
+
 
         private DashboardSmartMeterContract.IUserActionsListener userActionsListener;
         private DashboardSmartMeterPresenter mPresenter;
@@ -1584,22 +1586,25 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
         public void ShowNoInternet()
         {
-            //txtRange.Text = GetString(Resource.String.dashboard_chartview_no_day_data_available);
+            
             mNoDataLayout.Visibility = ViewStates.Gone;
             mSMNoDataLayout.Visibility = ViewStates.Gone;
             mChart.Visibility = ViewStates.Gone;
             mNoInternetLayout.Visibility = ViewStates.Gone;
             refreshLayout.Visibility = ViewStates.Visible;
             allGraphLayout.Visibility = ViewStates.Gone;
-            txtDueDate.Text = GetString(Resource.String.dashboard_chartview_due_date_not_available);
-            btnViewBill.Enabled = false;
-            btnViewBill.Background = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.silver_chalice_button_outline);
-            btnViewBill.SetTextColor(ContextCompat.GetColorStateList(this.Activity, Resource.Color.silverChalice));
+            if(!hasAmtDue)
+            {
+                txtDueDate.Text = GetString(Resource.String.dashboard_chartview_due_date_not_available);
+                btnViewBill.Enabled = false;
+                btnViewBill.Background = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.silver_chalice_button_outline);
+                btnViewBill.SetTextColor(ContextCompat.GetColorStateList(this.Activity, Resource.Color.silverChalice));
+            }
         }
 
         public void ShowNoInternetWithWord(string contentTxt, string buttonTxt)
         {
-            //txtRange.Text = GetString(Resource.String.dashboard_chartview_no_day_data_available);
+            hasAmtDue = false;
             mNoDataLayout.Visibility = ViewStates.Gone;
             mSMNoDataLayout.Visibility = ViewStates.Gone;
             mChart.Visibility = ViewStates.Gone;
@@ -1898,6 +1903,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 {
                     if (selectedAccount != null)
                     {
+                        hasAmtDue = true;
+                        EnablePayButton();
+                        btnViewBill.Enabled = true;
+                        btnViewBill.SetTextColor(ContextCompat.GetColorStateList(this.Activity, Resource.Color.freshGreen));
+                        btnViewBill.Background = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.light_green_outline_button_background);
                         if (selectedAccount.AccountCategoryId.Equals("2"))
                         {
                             selectedAccount.AmtCustBal = accountDueAmount.AmountDue;
@@ -1946,6 +1956,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 }
                 else
                 {
+                    txtTotalPayable.Text = GetString(Resource.String.dashboard_chartview_due_date_not_available);
                     txtDueDate.Text = GetString(Resource.String.dashboard_chartview_due_date_not_available);
                 }
             }
@@ -2050,25 +2061,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
         public void ShowLearnMore(Weblink weblink)
         {
-            //try {
-            //if (weblink.OpenWith.Equals("APP"))
-            //{
-            //        Intent smartMeterINtent = GetIntentObject(typeof(SmartMeterLearnMoreActivity));  
-            //    //Intent smartMeterINtent = new Intent(this.Activity, typeof(SmartMeterLearnMoreActivity));
-            //    smartMeterINtent.PutExtra(Constants.SMART_METER_LINK, JsonConvert.SerializeObject(weblink));
-            //    StartActivity(smartMeterINtent);
-            //}
-            //else
-            //{
-            //    var uri = Android.Net.Uri.Parse(weblink.Url);
-            //    var intent = new Intent(Intent.ActionView, uri);
-            //    StartActivity(intent);
-            //}
-            //}
-            //catch (Exception e)
-            //{
-            //    Utility.LoggingNonFatalError(e);
-            //}
+
         }
 
         void SMDashboardScrollViewListener.OnScrollChanged(SMDashboardScrollView v, int l, int t, int oldl, int oldt)

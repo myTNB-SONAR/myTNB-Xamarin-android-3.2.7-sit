@@ -131,14 +131,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
 
         public void OnViewBill(AccountData selectedAccount)
         {
-            if (this.mView.HasInternet())
-            {
-                LoadingBillsHistory(selectedAccount);
-            }
-            else
-            {
-                this.mView.ShowNoInternetSnackbar();
-            }
+            LoadingBillsHistory(selectedAccount);
         }
 
 
@@ -234,10 +227,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                 }
                 Utility.LoggingNonFatalError(e);
             }
-
-            this.mView.ShowViewBill();
-
-
         }
 
 
