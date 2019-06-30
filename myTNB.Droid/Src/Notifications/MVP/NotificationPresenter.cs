@@ -104,15 +104,7 @@ namespace myTNB_Android.Src.Notifications.MVP
                     {
                         this.mView.ShowDetails(detailNotificationResponse.Data.Data, userNotification, position);
                     }
-                    else
-                    {
-                        this.mView.ShowRetryOptionsUnknownException(null);
-                    }
 
-                }
-                else
-                {
-                    this.mView.ShowRetryOptionsUnknownException(null);
                 }
 
             }
