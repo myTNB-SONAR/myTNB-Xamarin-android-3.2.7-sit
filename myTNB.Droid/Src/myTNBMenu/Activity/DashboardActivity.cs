@@ -249,7 +249,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
             // TODO : ADD DRAWABLE RIGHT IF ACCOUNTS IN DATABASE IS GREATER THAN 1
             this.userActionsListener?.OnNotificationCount();
-
+            
         }
 
         public void ClearFragmentStack()
@@ -876,6 +876,21 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 txtAccountName.SetCompoundDrawablesWithIntrinsicBounds(leafIcon, null, null, null);
                 txtAccountName.CompoundDrawablePadding = 10;
             }
+        }
+
+        public void BillsMenuAccess()
+        {
+            ShowProgressDialog();
+            bottomNavigationView.Menu.FindItem(Resource.Id.menu_bill).SetChecked(true);
+            this.userActionsListener?.OnMenuSelect(Resource.Id.menu_bill);
+        }
+
+        public void BillsMenuAccess(AccountData selectedAccount)
+        {
+            bottomNavigationView.Menu.FindItem(Resource.Id.menu_bill).SetChecked(true);
+            ShowAccountName();
+            SetToolbarTitle(Resource.String.bill_menu_activity_title);
+            ShowBillMenu(selectedAccount);
         }
 
         public void ShowUnreadPromotions()

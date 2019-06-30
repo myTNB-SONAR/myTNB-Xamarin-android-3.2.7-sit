@@ -158,19 +158,6 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
 
             txtNotificationTitle.Text = notificationDetails.Title;
                 txtNotificationContent.Text = notificationDetails.Message;
-                mPresenter = new NotificationDetailPayableViewablePresenter(this);
-            int count = UserNotificationEntity.Count();
-            if (count == 0)
-            {
-                ME.Leolin.Shortcutbadger.ShortcutBadger.RemoveCount(this.ApplicationContext);
-            }
-            else
-            {
-                ME.Leolin.Shortcutbadger.ShortcutBadger.ApplyCount(this.ApplicationContext, count);
-            }
-
-                txtNotificationTitle.Text = notificationDetails.Title;
-                txtNotificationContent.Text = notificationDetails.Message;
 
                 mPresenter = new NotificationDetailPayableViewablePresenter(this);
 

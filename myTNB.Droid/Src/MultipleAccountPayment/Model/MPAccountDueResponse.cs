@@ -20,6 +20,22 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Model
             [AliasAs("status")]
             public string Status { get; set; }
 
+            [JsonProperty(PropertyName = "MandatoryChargesTitle")]
+            [AliasAs("MandatoryChargesTitle")]
+            public string MandatoryChargesTitle { get; set; }
+
+            [JsonProperty(PropertyName = "MandatoryChargesMessage")]
+            [AliasAs("MandatoryChargesMessage")]
+            public string MandatoryChargesMessage { get; set; }
+
+            [JsonProperty(PropertyName = "MandatoryChargesPriButtonText")]
+            [AliasAs("MandatoryChargesPriButtonText")]
+            public string MandatoryChargesPriButtonText { get; set; }
+
+            [JsonProperty(PropertyName = "MandatoryChargesSecButtonText")]
+            [AliasAs("MandatoryChargesSecButtonText")]
+            public string MandatoryChargesSecButtonText { get; set; }
+
             [JsonProperty(PropertyName = "isError")]
             [AliasAs("isError")]
             public bool IsError { get; set; }
@@ -46,6 +62,10 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Model
             [JsonProperty(PropertyName = "accNum")]
             [AliasAs("accNum")]
             public string accNum { get; set; }
+
+            [JsonProperty(PropertyName = "OpenChargesTotal")]
+            [AliasAs("OpenChargesTotal")]
+            public double OpenChargesTotal { get; set; } 
         }
     }
 }

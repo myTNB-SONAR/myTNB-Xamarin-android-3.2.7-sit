@@ -104,16 +104,12 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
                 {
                     if (extras.ContainsKey(Constants.SELECTED_ACCOUNT))
                     {
-                        //selectedAccount = JsonConvert.DeserializeObject<AccountData>(extras.GetString(Constants.SELECTED_ACCOUNT));
-
                         selectedAccount = DeSerialze<AccountData>(extras.GetString(Constants.SELECTED_ACCOUNT));
 
                     }
 
                     if (extras.ContainsKey("PAYMENT_ITEMS"))
                     {
-                        //accounts = JsonConvert.DeserializeObject<List<MPAccount>>(extras.GetString("PAYMENT_ITEMS"));
-
                         accounts = DeSerialze<List<MPAccount>>(extras.GetString("PAYMENT_ITEMS"));
                     }
                     total = Intent.Extras.GetString("TOTAL");
@@ -124,14 +120,6 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
             {
                 Utility.LoggingNonFatalError(e);
             }
-            //Android.App.Fragment selectPaymentFragment = new SelectPaymentMethodFragment();
-            //Bundle bundle = new Bundle();
-            //bundle.PutString(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccount));
-            //selectPaymentFragment.Arguments = bundle;
-            //var fragmentTransaction = FragmentManager.BeginTransaction();
-            //fragmentTransaction.Add(Resource.Id.fragment_container, selectPaymentFragment);
-            //fragmentTransaction.Commit();
-            //currentFragment = selectPaymentFragment;
         }
 
         public void nextFragment(Android.App.Fragment fragment, Bundle bundle)
@@ -275,7 +263,6 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
             {
                 SelectAccountsActivity.selectAccountsActivity?.SetResult(Result.Canceled);
             }
-            //SelectAccountsActivity.selectAccountsActivity.Finish();
             base.Finish();
         }
 

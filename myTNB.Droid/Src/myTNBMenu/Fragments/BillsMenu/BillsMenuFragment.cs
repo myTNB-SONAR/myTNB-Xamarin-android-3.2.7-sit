@@ -1,8 +1,12 @@
-﻿using Android.App;
+﻿using AFollestad.MaterialDialogs;
+using Android.App;
 using Android.Content;
 using Android.OS;
 using Android.Support.Design.Widget;
 using Android.Support.V4.Content;
+using Android.Support.V7.Widget;
+using Android.Text;
+using Android.Text.Method;
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
@@ -13,11 +17,14 @@ using myTNB_Android.Src.Base.Fragments;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.MultipleAccountPayment.Activity;
 using myTNB_Android.Src.myTNBMenu.Activity;
+using myTNB_Android.Src.myTNBMenu.Adapter.BillsMenu;
 using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.myTNBMenu.MVP.Fragment;
 using myTNB_Android.Src.Utils;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.BillsMenu
 {
@@ -50,6 +57,15 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.BillsMenu
         [BindView(Resource.Id.txtCurrentChargesRM)]
         TextView txtCurrentChargesRM;
 
+        [BindView(Resource.Id.txtMandatoryPaymentsTitle)]
+        TextView txtMandatoryPaymentsTitle;
+
+        [BindView(Resource.Id.txtMandatoryPaymentsContent)]
+        TextView txtMandatoryPaymentsContent;
+
+        [BindView(Resource.Id.txtMandatoryPaymentsRM)]
+        TextView txtMandatoryPaymentsRM;
+
         [BindView(Resource.Id.txtOutstandingChargesTitle)]
         TextView txtOutstandingChargesTitle;
 
@@ -58,15 +74,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.BillsMenu
 
         [BindView(Resource.Id.txtOutstandingChargesRM)]
         TextView txtOutstandingChargesRM;
-
-        [BindView(Resource.Id.txtTotalPayableTitle)]
-        TextView txtTotalPayableTitle;
-
-        [BindView(Resource.Id.txtTotalPayableContent)]
-        TextView txtTotalPayableContent;
-
-        [BindView(Resource.Id.txtTotalPayableRM)]
-        TextView txtTotalPayableRM;
 
         [BindView(Resource.Id.txtTotalDueTitle)]
         TextView txtTotalDueTitle;
@@ -119,11 +126,27 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.BillsMenu
         [BindView(Resource.Id.currentChangeLayout)]
         RelativeLayout currentChangeLayout;
 
+        [BindView(Resource.Id.mandatoryPaymentsLayout)]
+        RelativeLayout mandatoryPaymentsLayout;
+
+        [BindView(Resource.Id.mandatoryPaymentsToolTipsLayout)]
+        RelativeLayout mandatoryPaymentsToolTipsLayout;
+
+        [BindView(Resource.Id.txtMandatoryPaymentsToolTips)]
+        TextView txtBtnMandatoryPaymentsToolTips;
+
         [BindView(Resource.Id.outstandingChangeLayout)]
         RelativeLayout outstandingChangeLayout;
 
         [BindView(Resource.Id.totalPayableLayout)]
         RelativeLayout totalPayableLayout;
+
+        [BindView(Resource.Id.mandatory_list_recycler_view)]
+        public RecyclerView mMandatoryPaymentDetailRecyclerView;
+
+        RecyclerView.LayoutManager layoutManager;
+
+        ItemizedBillingDetailsAdapter adapter;
 
         [BindView(Resource.Id.divider)]
         View divider;
@@ -132,6 +155,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.BillsMenu
         //SwipeRefreshLayout swipeRefreshLayout;
 
         bool noInternet = false;
+
+        private MaterialDialog mMandatoryPaymentCardDialog;
 
         DecimalFormat decimalFormatter = new DecimalFormat("###,###,###,###,##0.00");
         SimpleDateFormat dateParser = new SimpleDateFormat("dd/MM/yyyy");
@@ -214,9 +239,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.BillsMenu
                   txtCurrentBill,
                   txtCurrentChargesTitle,
                   txtCurrentChargesContent,
+                  txtMandatoryPaymentsTitle,
+                  txtMandatoryPaymentsContent,
                   txtOutstandingChargesTitle,
                   txtOutstandingChargesContent,
-                  txtTotalPayableTitle,
+                  txtBtnMandatoryPaymentsToolTips,
                   txtDueDate,
                   txtCurrency,
                   btnPay,
@@ -225,11 +252,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.BillsMenu
                   txtTotalDueTitle);
                 TextViewUtils.SetMuseoSans300Typeface(txtAccountNum,
                     txtAddress,
-                    txtTotalPayableContent,
                     txtFooter, txtFooter1, txtFooter2,
-                    txtCurrentChargesRM, txtOutstandingChargesRM, txtTotalPayableRM
+                    txtCurrentChargesRM, txtOutstandingChargesRM, 
+                    txtMandatoryPaymentsRM
                     );
 
+                layoutManager = new LinearLayoutManager(Activity, LinearLayoutManager.Vertical, false);
+                mMandatoryPaymentDetailRecyclerView.SetLayoutManager(layoutManager);
+                mMandatoryPaymentDetailRecyclerView.SetAdapter(adapter);
 
                 SetBillDetails(selectedAccount);
 
@@ -263,6 +293,52 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.BillsMenu
         void OnPayment(object sender, EventArgs eventArgs)
         {
             this.userActionsListener.OnPaymentTab();
+        }
+
+        [OnClick(Resource.Id.txtMandatoryPaymentsToolTips)]
+        void OnMandatoryPaymentClick(object sender, EventArgs eventArgs)
+        {
+            try
+            {
+                mMandatoryPaymentCardDialog = new MaterialDialog.Builder(Activity)
+                    .CustomView(Resource.Layout.CustomDialogOneButtonLayout, false)
+                    .Cancelable(false)
+                    .CanceledOnTouchOutside(false)
+                    .Build();
+
+                View dialogView = mMandatoryPaymentCardDialog.Window.DecorView;
+                dialogView.SetBackgroundResource(Android.Resource.Color.Transparent);
+
+                TextView txtItemizedTitle = mMandatoryPaymentCardDialog.FindViewById<TextView>(Resource.Id.txtTitle);
+                TextView txtItemizedMessage = mMandatoryPaymentCardDialog.FindViewById<TextView>(Resource.Id.txtMessage);
+                TextView btnGotIt = mMandatoryPaymentCardDialog.FindViewById<TextView>(Resource.Id.txtBtnFirst);
+                txtItemizedMessage.MovementMethod = new ScrollingMovementMethod();
+                if (Build.VERSION.SdkInt >= BuildVersionCodes.N)
+                {
+                    txtItemizedMessage.TextFormatted = string.IsNullOrEmpty(selectedAccount.WhatIsThisMessage) ? Html.FromHtml(Activity.GetString(Resource.String.itemized_bill_second_message), FromHtmlOptions.ModeLegacy) : Html.FromHtml(selectedAccount.WhatIsThisMessage, FromHtmlOptions.ModeLegacy);
+                }
+                else
+                {
+                    txtItemizedMessage.TextFormatted = string.IsNullOrEmpty(selectedAccount.WhatIsThisMessage) ? Html.FromHtml(Activity.GetString(Resource.String.itemized_bill_second_message)) : Html.FromHtml(selectedAccount.WhatIsThisMessage);
+                }
+                txtItemizedTitle.Text = string.IsNullOrEmpty(selectedAccount.WhatIsThisTitle) ? Activity.GetString(Resource.String.itemized_bill_second_title) : selectedAccount.WhatIsThisTitle;
+                btnGotIt.Text = string.IsNullOrEmpty(selectedAccount.WhatIsThisButtonText) ? Activity.GetString(Resource.String.itemized_bill_got_it)  : selectedAccount.WhatIsThisButtonText;
+                TextViewUtils.SetMuseoSans500Typeface(txtItemizedTitle, btnGotIt);
+                TextViewUtils.SetMuseoSans300Typeface(txtItemizedMessage);
+                btnGotIt.Click += delegate
+                {
+                    mMandatoryPaymentCardDialog.Dismiss();
+                };
+
+                if (IsActive())
+                {
+                    mMandatoryPaymentCardDialog.Show();
+                }
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public void ShowBillsList(BillHistoryResponseV5 billsHistoryResponse)
@@ -343,6 +419,33 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.BillsMenu
                         ((DashboardActivity)Activity).OnTapRefresh();
                     }
                 }
+                else if (resultCode == Result.FirstUser)
+                {
+                    Bundle extras = data.Extras;
+                    if (extras.ContainsKey(Constants.ITEMZIED_BILLING_VIEW_KEY))
+                    {
+                        AccountData selectedAccount = JsonConvert.DeserializeObject<AccountData>(extras.GetString(Constants.SELECTED_ACCOUNT));
+                        UsageHistoryData selectedHistoryData = JsonConvert.DeserializeObject<UsageHistoryData>(extras.GetString(Constants.SELECTED_ACCOUNT_USAGE));
+
+                        bool isOwned = true;
+                        CustomerBillingAccount customerBillingAccount = CustomerBillingAccount.FindByAccNum(selectedAccount.AccountNum);
+                        if (customerBillingAccount != null)
+                        {
+                            isOwned = customerBillingAccount.isOwned;
+                            selectedAccount.IsOwner = isOwned;
+                            selectedAccount.AccountCategoryId = customerBillingAccount.AccountCategoryId;
+
+                        }
+                        try
+                        {
+                            ((DashboardActivity)Activity).BillsMenuAccess(selectedAccount);
+                        }
+                        catch (System.Exception e)
+                        {
+                            Utility.LoggingNonFatalError(e);
+                        }
+                    }
+                }
             }
         }
 
@@ -399,32 +502,42 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.BillsMenu
 
         public void SetBillDetails(AccountData selectedAccount)
         {
-
-            //if (swipeRefreshLayout.Refreshing)
-            //{
-            //    swipeRefreshLayout.Refreshing = false;
-            //}
             if (selectedAccount != null)
             {
                 txtAccountName.Text = (!string.IsNullOrEmpty(selectedAccount?.AccountName)) ? selectedAccount?.AccountName : "";
                 txtAccountNum.Text = (!string.IsNullOrEmpty(selectedAccount?.AccountNum)) ? selectedAccount?.AccountNum : "";
 
-                ///<summary>
-                /// Revert non owner CR changes
-                ///</summary>
                 txtAddress.Text = selectedAccount?.AddStreet;
-                //if (selectedAccount.IsOwner)
-                //{
-                //    txtAddress.Text = selectedAccount.AddStreet;
-                //    txtAddress.Visibility = ViewStates.Visible;
-                //}
-                //else
-                //{
-                //    txtAddress.Visibility = ViewStates.Gone;
-                //}
+
                 txtCurrentChargesContent.Text = decimalFormatter.Format(selectedAccount?.AmtCurrentChg);
                 txtOutstandingChargesContent.Text = decimalFormatter.Format(selectedAccount?.AmtOutstandingChg);
-                txtTotalPayableContent.Text = decimalFormatter.Format(selectedAccount?.AmtPayableChg);
+
+                if (selectedAccount?.OpenChargesTotal == 0)
+                {
+                    mandatoryPaymentsLayout.Visibility = ViewStates.Gone;
+                    mMandatoryPaymentDetailRecyclerView.Visibility = ViewStates.Gone;
+                    mandatoryPaymentsToolTipsLayout.Visibility = ViewStates.Gone;
+                }
+                else
+                {
+                    if (selectedAccount?.ItemizedBilling != null && selectedAccount?.ItemizedBilling.Count() > 0)
+                    {
+                        mandatoryPaymentsLayout.Visibility = ViewStates.Visible;
+                        mMandatoryPaymentDetailRecyclerView.Visibility = ViewStates.Visible;
+                        mandatoryPaymentsToolTipsLayout.Visibility = ViewStates.Visible;
+                        txtMandatoryPaymentsContent.Text = decimalFormatter.Format(selectedAccount?.OpenChargesTotal);
+                        adapter = new ItemizedBillingDetailsAdapter(Activity, selectedAccount?.ItemizedBilling);
+                        txtBtnMandatoryPaymentsToolTips.Text = string.IsNullOrEmpty(selectedAccount.WhatIsThisLink) ? Activity.GetString(Resource.String.what_is_this) : selectedAccount.WhatIsThisLink;
+                        mMandatoryPaymentDetailRecyclerView.SetAdapter(adapter);
+                        adapter.NotifyDataSetChanged();
+                    }
+                    else
+                    {
+                        mandatoryPaymentsLayout.Visibility = ViewStates.Gone;
+                        mMandatoryPaymentDetailRecyclerView.Visibility = ViewStates.Gone;
+                        mandatoryPaymentsToolTipsLayout.Visibility = ViewStates.Gone;
+                    }
+                }
 
                 Date d = null;
                 try
@@ -527,6 +640,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.BillsMenu
                     currentChangeLayout.Visibility = ViewStates.Gone;
                     totalPayableLayout.Visibility = ViewStates.Gone;
                     outstandingChangeLayout.Visibility = ViewStates.Gone;
+                    mandatoryPaymentsLayout.Visibility = ViewStates.Gone;
+                    mMandatoryPaymentDetailRecyclerView.Visibility = ViewStates.Gone;
+                    mandatoryPaymentsToolTipsLayout.Visibility = ViewStates.Gone;
                     divider.Visibility = ViewStates.Gone;
                 }
 
@@ -560,6 +676,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.BillsMenu
                         }
                     }
                 }
+            }
+            else
+            {
+                mandatoryPaymentsLayout.Visibility = ViewStates.Gone;
+                mMandatoryPaymentDetailRecyclerView.Visibility = ViewStates.Gone;
+                mandatoryPaymentsToolTipsLayout.Visibility = ViewStates.Gone;
             }
         }
     }
