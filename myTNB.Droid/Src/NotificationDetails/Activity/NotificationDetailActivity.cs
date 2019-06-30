@@ -49,6 +49,9 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
         [BindView(Resource.Id.btnPay)]
         Button btnPay;
 
+        [BindView(Resource.Id.notificationButtonContainer)]
+        FrameLayout notificationButtonContainer;
+
         NotificationDetailPayableViewableContract.IUserActionsListener userActionsListener;
         NotificationDetailPayableViewablePresenter mPresenter;
 
@@ -134,26 +137,37 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
             }
         }
 
-
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
 
-            try
+            try {
+            retrievalDialog = new MaterialDialog.Builder(this)
+            .Title(GetString(Resource.String.notification_detail_retrieval_progress_title))
+            .Content(GetString(Resource.String.notification_detail_retrieval_progress_content))
+            .Cancelable(false)
+            .Progress(true, 0)
+            .Build();
+
+            TextViewUtils.SetMuseoSans500Typeface(txtNotificationTitle,
+                btnViewDetails,
+                btnPay);
+
+            TextViewUtils.SetMuseoSans300Typeface(txtNotificationContent);
+            // Create your application here
+
+            txtNotificationTitle.Text = notificationDetails.Title;
+                txtNotificationContent.Text = notificationDetails.Message;
+                mPresenter = new NotificationDetailPayableViewablePresenter(this);
+            int count = UserNotificationEntity.Count();
+            if (count == 0)
             {
-                retrievalDialog = new MaterialDialog.Builder(this)
-                .Title(GetString(Resource.String.notification_detail_retrieval_progress_title))
-                .Content(GetString(Resource.String.notification_detail_retrieval_progress_content))
-                .Cancelable(false)
-                .Progress(true, 0)
-                .Build();
-
-                TextViewUtils.SetMuseoSans500Typeface(txtNotificationTitle,
-                    btnViewDetails,
-                    btnPay);
-
-                TextViewUtils.SetMuseoSans300Typeface(txtNotificationContent);
-                // Create your application here
+                ME.Leolin.Shortcutbadger.ShortcutBadger.RemoveCount(this.ApplicationContext);
+            }
+            else
+            {
+                ME.Leolin.Shortcutbadger.ShortcutBadger.ApplyCount(this.ApplicationContext, count);
+            }
 
                 txtNotificationTitle.Text = notificationDetails.Title;
                 txtNotificationContent.Text = notificationDetails.Message;
