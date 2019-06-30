@@ -165,7 +165,7 @@ namespace myTNB_Android.Src.Notifications.Activity
                         }
                         else
                         {
-                            notificationMenu.FindItem(Resource.Id.action_notification_edit_delete).SetIcon(Resource.Drawable.ic_action_Select);
+                            notificationMenu.FindItem(Resource.Id.action_notification_edit_delete).SetIcon(Resource.Drawable.ic_action_select_all);
                             ShowSelectAllOption(ViewStates.Gone);
                             notificationRecyclerAdapter.ShowSelectButtons(false);
                             editState = EditNotificationStates.HIDE;
