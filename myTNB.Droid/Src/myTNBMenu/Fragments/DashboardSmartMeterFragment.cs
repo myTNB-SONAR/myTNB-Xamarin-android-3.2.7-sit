@@ -1,50 +1,58 @@
-﻿using Android.App;
-using Android.Content;
-using Android.Graphics;
-using Android.OS;
-using Android.Runtime;
-using Android.Support.Design.Widget;
-using Android.Support.V4.Content;
-using Android.Support.V7.App;
-using Android.Text;
-using Android.Views;
-using Android.Widget;
-using CheeseBind;
-using Java.Text;
-using Java.Util;
-using MikePhil.Charting.Charts;
-using MikePhil.Charting.Components;
-using MikePhil.Charting.Data;
-using MikePhil.Charting.Formatter;
-using MikePhil.Charting.Highlight;
-using MikePhil.Charting.Interfaces.Datasets;
-using myTNB_Android.Src.AppLaunch.Models;
-using myTNB_Android.Src.Base.Fragments;
-using myTNB_Android.Src.Database.Model;
-using myTNB_Android.Src.FAQ.Activity;
-using myTNB_Android.Src.MultipleAccountPayment.Activity;
-using myTNB_Android.Src.myTNBMenu.Activity;
-using myTNB_Android.Src.myTNBMenu.Charts.Formatter;
-using myTNB_Android.Src.myTNBMenu.Charts.SelectedMarkerView;
-using myTNB_Android.Src.myTNBMenu.Listener;
-using myTNB_Android.Src.myTNBMenu.Models;
-using myTNB_Android.Src.myTNBMenu.MVP.Fragment;
-using myTNB_Android.Src.Notifications.Activity;
-using myTNB_Android.Src.Utils;
-using myTNB_Android.Src.Utils.Custom.Charts;
-using myTNB_Android.Src.ViewBill.Activity;
-using Newtonsoft.Json;
-using Refit;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+using Android.App;
+using Android.Content;
+using Android.OS;
+using Android.Runtime;
+using Android.Util;
+using Android.Views;
+using Android.Widget;
+using myTNB_Android.Src.AppLaunch.Models;
+using myTNB_Android.Src.myTNBMenu.Models;
+using myTNB_Android.Src.myTNBMenu.MVP.Fragment;
+using Refit;
+using myTNB_Android.Src.Base.Fragments;
+using CheeseBind;
+using Android.Support.Design.Widget;
+using MikePhil.Charting.Charts;
+using Java.Text;
+using MikePhil.Charting.Formatter;
+using Newtonsoft.Json;
+using myTNB_Android.Src.myTNBMenu.Charts.Formatter;
+using MikePhil.Charting.Components;
 using static MikePhil.Charting.Components.XAxis;
+using Android.Graphics;
+using myTNB_Android.Src.Utils.Custom.Charts;
 using static MikePhil.Charting.Components.YAxis;
+using myTNB_Android.Src.myTNBMenu.Charts.SelectedMarkerView;
+using MikePhil.Charting.Data;
+using MikePhil.Charting.Interfaces.Datasets;
+using MikePhil.Charting.Highlight;
+using myTNB_Android.Src.ViewBill.Activity;
+using myTNB_Android.Src.MultipleAccountPayment.Activity;
+using myTNB_Android.Src.myTNBMenu.Activity;
+using myTNB_Android.Src.Database.Model;
+using Android.Support.V4.Content;
+using myTNB_Android.Src.Notifications.Activity;
+using myTNB_Android.Src.Utils;
+using Java.Util;
+using myTNB_Android.Src.myTNBMenu.Listener;
 using static myTNB_Android.Src.myTNBMenu.Listener.SMDashboardScrollView;
 using static myTNB_Android.Src.myTNBMenu.Models.SMUsageHistoryData;
+using Android.Text;
+using System.Threading.Tasks;
+using Android.Support.V7.App;
+using myTNB_Android.Src.FAQ.Activity;
+using AFollestad.MaterialDialogs;
+using Android.Text.Style;
+using static myTNB_Android.Src.myTNBMenu.Models.GetInstallationDetailsResponse;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments
 {
-    public class DashboardSmartMeterFragment : BaseFragment, DashboardSmartMeterContract.IView, SMDashboardScrollViewListener
+    public class DashboardSmartMeterFragment : BaseFragment, DashboardSmartMeterContract.IView, SMDashboardScrollViewListener, View.IOnClickListener
     {
 
         [BindView(Resource.Id.progressBar)]
@@ -70,7 +78,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         AccountData selectedAccount;
 
         ChartType ChartType = ChartType.Month;
-        ChartDataType ChartDataType = ChartDataType.kWh;
+        ChartDataType ChartDataType = ChartDataType.RM;
 
         bool hasNoInternet;
         static bool noSMDataFOund;
@@ -80,9 +88,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
         [BindView(Resource.Id.no_data_layout)]
         LinearLayout mNoDataLayout;
-
-        [BindView(Resource.Id.scroll_view_content)]
-        LinearLayout scrollViewContent;
 
         [BindView(Resource.Id.no_internet_layout)]
         LinearLayout mNoInternetLayout;
@@ -101,6 +106,15 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
         [BindView(Resource.Id.txtAddress)]
         TextView txtAddress;
+
+        [BindView(Resource.Id.addressDivider)]
+        View addressDivider;
+
+        [BindView(Resource.Id.txtAccountStatus)]
+        TextView txtAccountStatus;
+
+        [BindView(Resource.Id.txtWhatAccountStatus)]
+        TextView txtWhatAccountStatus;
 
         [BindView(Resource.Id.txtRange)]
         TextView txtRange;
@@ -224,9 +238,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         [BindView(Resource.Id.noteDivider)]
         View noteDividerView;
 
+        [BindView(Resource.Id.txtWhatIsThis)]
+        TextView txtWhatIsThis;
 
-        [BindView(Resource.Id.content_extension)]
-        LinearLayout contentExtension;
 
         /// <summary>
         /// Flag to disable/enable CO2 view
@@ -253,23 +267,20 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             base.OnCreate(savedInstanceState);
             Bundle extras = Arguments;
 
-            if (extras != null && extras.Size() > 0)
+            if (extras != null && extras.Size() > 0) {
+            if (extras.ContainsKey(Constants.NO_INTERNET_CONNECTION))
             {
-                if (extras.ContainsKey(Constants.NO_INTERNET_CONNECTION))
-                {
-                    hasNoInternet = extras.GetBoolean(Constants.NO_INTERNET_CONNECTION);
-                }
-                if (extras.ContainsKey(Constants.NO_SM_DATA_FOUND))
-                {
-                    noSMDataFOund = extras.GetBoolean(Constants.NO_SM_DATA_FOUND);
-                }
-                else
-                {
-                    noSMDataFOund = false;
-                }
+                hasNoInternet = extras.GetBoolean(Constants.NO_INTERNET_CONNECTION);
+            }
+            if (extras.ContainsKey(Constants.NO_SM_DATA_FOUND))
+            {
+                noSMDataFOund = extras.GetBoolean(Constants.NO_SM_DATA_FOUND);
             }
             else
             {
+                noSMDataFOund = false;
+            }
+            } else {
                 noSMDataFOund = false;
             }
 
@@ -336,227 +347,229 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         public override void OnViewCreated(View view, Bundle savedInstanceState)
         {
             base.OnViewCreated(view, savedInstanceState);
-            try
+            try {
+            if (!hasNoInternet)
             {
-                if (!hasNoInternet)
+                txtTotalPayable.Text = decimalFormat.Format(selectedAccount.AmtCustBal);
+                //if(selectedAccount.AmtCustBal <= 0)
+                //{
+                //    btnPay.Enabled = false;
+                //    btnPay.Background = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.silver_chalice_button_background);
+                //}
+            }
+
+            TextViewUtils.SetMuseoSans300Typeface(noteTextView);
+            TextViewUtils.SetMuseoSans300Typeface(txtUsageHistory, txtAddress, txtTotalPayable, txtContentNoData, txtContentNoInternet, txtDueDate);
+            TextViewUtils.SetMuseoSans300Typeface(btnToggleDay, btnToggleMonth);
+            TextViewUtils.SetMuseoSans500Typeface(txtRange, txtTotalPayableTitle, txtTotalPayableCurrency, btnViewBill, btnPay, btnLearnMore, btnTapRefresh, txtTitleNoData, txtTitleNoInternet);
+
+            //smart meter
+            TextViewUtils.SetMuseoSans500Typeface(txtCurrentCharges, txtCurretnChargesValue, txtProjectedCost, txtProjectedCostValue);
+            TextViewUtils.SetMuseoSans300Typeface(txtCurrentChargesRange, txtProjectedCostRange, txtCurrentChargesUnit1, txtCurrentChargesUnit2, txtProjectedCostUnit1);
+            TextViewUtils.SetMuseoSans300Typeface(radioButtonRM, radioButtonkWh, radioButtonCO2);
+
+            //bottom sheet
+            bottomSheetBehavior = BottomSheetBehavior.From(bottomSheet);
+            bottomSheetBehavior.State = BottomSheetBehavior.StateHidden;
+            bottomSheetBehavior.SetBottomSheetCallback(new DashboardBottomSheetCallBack());
+
+
+            DownTimeEntity bcrmEntity = DownTimeEntity.GetByCode(Constants.BCRM_SYSTEM);
+            DownTimeEntity pgCCEntity = DownTimeEntity.GetByCode(Constants.PG_CC_SYSTEM);
+            DownTimeEntity pgFPXEntity = DownTimeEntity.GetByCode(Constants.PG_FPX_SYSTEM);
+            txtWhatIsThis.Text = selectedHistoryData.ToolTips[0].SMLink;
+            txtWhatIsThis.SetOnClickListener(this);
+
+            this.userActionsListener.Start();
+            if (selectedAccount != null)
+            {
+
+                if (selectedAccount.AccountCategoryId.Equals("2"))
                 {
-                    txtTotalPayable.Text = decimalFormat.Format(selectedAccount.AmtCustBal);
-                    //if(selectedAccount.AmtCustBal <= 0)
-                    //{
-                    //    btnPay.Enabled = false;
-                    //    btnPay.Background = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.silver_chalice_button_background);
-                    //}
+                    btnPay.Visibility = ViewStates.Gone;
+                    btnViewBill.Text = GetString(Resource.String.dashboard_chart_view_payment_advice);
+                    txtUsageHistory.Visibility = ViewStates.Gone;
+                    txtTotalPayableTitle.Text = GetString(Resource.String.title_payment_advice_amount);
+                }
+                else
+                {
+                    btnPay.Visibility = ViewStates.Visible;
+                    btnViewBill.Text = GetString(Resource.String.dashboard_chartview_view_bill);
                 }
 
-                TextViewUtils.SetMuseoSans300Typeface(noteTextView);
-                TextViewUtils.SetMuseoSans300Typeface(txtUsageHistory, txtAddress, txtTotalPayable, txtContentNoData, txtContentNoInternet, txtDueDate);
-                TextViewUtils.SetMuseoSans300Typeface(btnToggleDay, btnToggleMonth);
-                TextViewUtils.SetMuseoSans500Typeface(txtRange, txtTotalPayableTitle, txtTotalPayableCurrency, btnViewBill, btnPay, btnLearnMore, btnTapRefresh, txtTitleNoData, txtTitleNoInternet);
-
-                //smart meter
-                TextViewUtils.SetMuseoSans500Typeface(txtCurrentCharges, txtCurretnChargesValue, txtProjectedCost, txtProjectedCostValue);
-                TextViewUtils.SetMuseoSans300Typeface(txtCurrentChargesRange, txtProjectedCostRange, txtCurrentChargesUnit1, txtCurrentChargesUnit2, txtProjectedCostUnit1);
-                TextViewUtils.SetMuseoSans300Typeface(radioButtonRM, radioButtonkWh, radioButtonCO2);
-
-                //bottom sheet
-                bottomSheetBehavior = BottomSheetBehavior.From(bottomSheet);
-                bottomSheetBehavior.State = BottomSheetBehavior.StateHidden;
-                bottomSheetBehavior.SetBottomSheetCallback(new DashboardBottomSheetCallBack());
-
-
-                DownTimeEntity bcrmEntity = DownTimeEntity.GetByCode(Constants.BCRM_SYSTEM);
-                DownTimeEntity pgCCEntity = DownTimeEntity.GetByCode(Constants.PG_CC_SYSTEM);
-                DownTimeEntity pgFPXEntity = DownTimeEntity.GetByCode(Constants.PG_FPX_SYSTEM);
-
-                this.userActionsListener.Start();
-                if (selectedAccount != null)
+                if (bcrmEntity.IsDown)
                 {
-
-                    if (selectedAccount.AccountCategoryId.Equals("2"))
-                    {
-                        btnPay.Visibility = ViewStates.Gone;
-                        btnViewBill.Text = GetString(Resource.String.dashboard_chart_view_payment_advice);
-                        txtUsageHistory.Visibility = ViewStates.Gone;
-                        txtTotalPayableTitle.Text = GetString(Resource.String.title_payment_advice_amount);
-                    }
-                    else
-                    {
-                        btnPay.Visibility = ViewStates.Visible;
-                        btnViewBill.Text = GetString(Resource.String.dashboard_chartview_view_bill);
-                    }
-
-                    if (bcrmEntity.IsDown)
+                    DisablePayButton();
+                    btnViewBill.Enabled = false;
+                    btnViewBill.Background = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.silver_chalice_button_outline);
+                    btnViewBill.SetTextColor(ContextCompat.GetColorStateList(this.Activity, Resource.Color.silverChalice));
+                    txtRange.Visibility = ViewStates.Gone;
+                    Snackbar downtimeSnackBar = Snackbar.Make(rootView,
+                            bcrmEntity.DowntimeTextMessage,
+                            Snackbar.LengthLong);
+                    View v = downtimeSnackBar.View;
+                    TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+                    tv.SetMaxLines(5);
+                    downtimeSnackBar.Show();
+                }
+                else
+                {
+                    if (pgCCEntity.IsDown && pgFPXEntity.IsDown)
                     {
                         DisablePayButton();
-                        btnViewBill.Enabled = false;
-                        btnViewBill.Background = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.silver_chalice_button_outline);
-                        btnViewBill.SetTextColor(ContextCompat.GetColorStateList(this.Activity, Resource.Color.silverChalice));
-                        txtRange.Visibility = ViewStates.Gone;
                         Snackbar downtimeSnackBar = Snackbar.Make(rootView,
                                 bcrmEntity.DowntimeTextMessage,
                                 Snackbar.LengthLong);
                         View v = downtimeSnackBar.View;
                         TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
                         tv.SetMaxLines(5);
-                        downtimeSnackBar.Show();
-                    }
-                    else
-                    {
-                        if (pgCCEntity.IsDown && pgFPXEntity.IsDown)
+                        if (!selectedAccount.AccountCategoryId.Equals("2"))
                         {
-                            DisablePayButton();
-                            Snackbar downtimeSnackBar = Snackbar.Make(rootView,
-                                    bcrmEntity.DowntimeTextMessage,
-                                    Snackbar.LengthLong);
-                            View v = downtimeSnackBar.View;
-                            TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
-                            tv.SetMaxLines(5);
-                            if (!selectedAccount.AccountCategoryId.Equals("2"))
-                            {
-                                downtimeSnackBar.Show();
-                            }
+                            downtimeSnackBar.Show();
                         }
-
-                        this.userActionsListener.OnLoadAmount(selectedAccount.AccountNum);
                     }
-
+                    this.userActionsListener.GetAccountStatus(selectedAccount.AccountNum);
+                    this.userActionsListener.OnLoadAmount(selectedAccount.AccountNum);
                 }
 
-                if (!noSMDataFOund)
+            }
+
+            if (!noSMDataFOund)
+            {
+                var metrics = Resources.DisplayMetrics;
+                int heightInDp = metrics.HeightPixels;
+                if (heightInDp > 1776)
                 {
-                    var metrics = Resources.DisplayMetrics;
-                    int heightInDp = metrics.HeightPixels;
-                    if (heightInDp > 1776)
-                    {
-                        bottomView.LayoutParameters.Height = 120;
-                        bottomView.RequestLayout();
-                    }
+                    bottomView.LayoutParameters.Height = 120;
+                    bottomView.RequestLayout();
+                }
 
-                    mNoDataLayout.Visibility = ViewStates.Gone;
-                    mSMNoDataLayout.Visibility = ViewStates.Gone;
-                    mChart.Visibility = ViewStates.Visible;
-                    mNoInternetLayout.Visibility = ViewStates.Gone;
+                mNoDataLayout.Visibility = ViewStates.Gone;
+                mSMNoDataLayout.Visibility = ViewStates.Gone;
+                mChart.Visibility = ViewStates.Visible;
+                mNoInternetLayout.Visibility = ViewStates.Gone;
 
-                    mLayoutSegmentGroup.Visibility = ViewStates.Visible;
-                    shadowLayout.Visibility = ViewStates.Visible;
-                    txtRange.Visibility = ViewStates.Visible;
-                    IsCO2Disabled = selectedHistoryData.IsCO2Disabled;
-                    if (IsCO2Disabled)
-                    {
-                        radioButtonCO2.Visibility = ViewStates.Gone;
-                    }
-                    else
-                    {
-                        radioButtonCO2.Visibility = ViewStates.Visible;
-                    }
-
-
-                    scrollView = view.FindViewById<SMDashboardScrollView>(Resource.Id.scroll_view);
-                    scrollView.SmoothScrollingEnabled = true;
-                    scrollView.setOnScrollViewListener(this);
-
-
-                    radioGroupSMGraph.CheckedChange += (s, e) =>
-                    {
-                        if (radioButtonRM.Checked)
-                        {
-                            ChartDataType = ChartDataType.RM;
-                            SetUp();
-                        }
-                        else if (radioButtonkWh.Checked)
-                        {
-                            ChartDataType = ChartDataType.kWh;
-                            SetUp();
-                        }
-                        else if (radioButtonCO2.Checked)
-                        {
-                            ChartDataType = ChartDataType.CO2;
-                            SetUp();
-                        }
-                    };
+                mLayoutSegmentGroup.Visibility = ViewStates.Visible;
+                shadowLayout.Visibility = ViewStates.Visible;
+                txtRange.Visibility = ViewStates.Visible;
+                mUsageMetricsDetails.Visibility = ViewStates.Visible;
+                IsCO2Disabled = selectedHistoryData.IsCO2Disabled;
+                if (IsCO2Disabled)
+                {
+                    radioButtonCO2.Visibility = ViewStates.Gone;
                 }
                 else
                 {
+                    radioButtonCO2.Visibility = ViewStates.Visible;
+                }
 
-                    mLayoutSegmentGroup.Visibility = ViewStates.Gone;
-                    txtRange.Text = GetString(Resource.String.dashboard_smart_meter_available_soon);
-                    if (bcrmEntity.IsDown)
+
+                scrollView = view.FindViewById<SMDashboardScrollView>(Resource.Id.scroll_view);
+                scrollView.SmoothScrollingEnabled = true;
+                scrollView.setOnScrollViewListener(this);
+
+
+                radioGroupSMGraph.CheckedChange += (s, e) =>
+                {
+                    if (radioButtonRM.Checked)
                     {
-                        if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.N)
-                        {
-                            txtAddress.TextFormatted = Html.FromHtml(bcrmEntity.DowntimeMessage, FromHtmlOptions.ModeLegacy);
-                        }
-                        else
-                        {
-                            txtAddress.TextFormatted = Html.FromHtml(bcrmEntity.DowntimeMessage);
-                        }
+                        ChartDataType = ChartDataType.RM;
+                        txtWhatIsThis.Visibility = ViewStates.Visible;
+                        SetUp();
+                    }
+                    else if (radioButtonkWh.Checked)
+                    {
+                        ChartDataType = ChartDataType.kWh;
+                        txtWhatIsThis.Visibility = ViewStates.Gone;
+                        SetUp();
+                    }
+                    else if (radioButtonCO2.Checked)
+                    {
+                        ChartDataType = ChartDataType.CO2;
+                        SetUp();
+                    }
+                };
+            }
+            else
+            {
 
+                mLayoutSegmentGroup.Visibility = ViewStates.Gone;
+                txtRange.Text = GetString(Resource.String.dashboard_smart_meter_available_soon);
+                if (bcrmEntity.IsDown)
+                {
+                    if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.N)
+                    {
+                        txtAddress.TextFormatted = Html.FromHtml(bcrmEntity.DowntimeMessage, FromHtmlOptions.ModeLegacy);
                     }
                     else
                     {
-                        txtAddress.Text = GetString(Resource.String.dashboard_smart_meter_no_data_error);
+                        txtAddress.TextFormatted = Html.FromHtml(bcrmEntity.DowntimeMessage);
                     }
-                    mUsageMetricsDetails.Visibility = ViewStates.Gone;
-                    radioGroupSMGraph.Visibility = ViewStates.Gone;
-                    shadowLayout.Visibility = ViewStates.Gone;
-                    bottomSheetBehavior.State = BottomSheetBehavior.StateExpanded;
-                    bottomSheet.SetOnClickListener(null);
 
-                    mNoDataLayout.Visibility = ViewStates.Gone;
-                    mSMNoDataLayout.Visibility = ViewStates.Visible;
-                    mChart.Visibility = ViewStates.Gone;
-                    mNoInternetLayout.Visibility = ViewStates.Gone;
+                }
+                else
+                {
+                    txtAddress.Text = GetString(Resource.String.dashboard_smart_meter_no_data_error);
+                }
+                mUsageMetricsDetails.Visibility = ViewStates.Gone;
+                radioGroupSMGraph.Visibility = ViewStates.Gone;
+                shadowLayout.Visibility = ViewStates.Gone;
+                bottomSheetBehavior.State = BottomSheetBehavior.StateExpanded;
+                bottomSheet.SetOnClickListener(null);
+
+                mNoDataLayout.Visibility = ViewStates.Gone;
+                mSMNoDataLayout.Visibility = ViewStates.Visible;
+                mChart.Visibility = ViewStates.Gone;
+                mNoInternetLayout.Visibility = ViewStates.Gone;
+            }
+
+            txtAddress.Click += delegate {
+                if (bcrmEntity.IsDown)
+                {
+                    string textMessage = bcrmEntity.DowntimeMessage;
+                    if (textMessage != null && textMessage.Contains("http"))
+                    {
+                        //Launch webview
+                        int startIndex = textMessage.LastIndexOf("=") + 2;
+                        int lastIndex = textMessage.LastIndexOf("\"");
+                        int lengthOfId = (lastIndex - startIndex);
+                        if (lengthOfId < textMessage.Length)
+                        {
+                            string url = textMessage.Substring(startIndex, lengthOfId);
+                            if (!string.IsNullOrEmpty(url))
+                            {
+                                Intent intent = new Intent(Intent.ActionView);
+                                intent.SetData(Android.Net.Uri.Parse(url));
+                                StartActivity(intent);
+                            }
+                        }
+                    }
+                    else if (textMessage != null && textMessage.Contains("faq"))
+                    {
+                        //Lauch FAQ
+                        int startIndex = textMessage.LastIndexOf("=") + 1;
+                        int lastIndex = textMessage.LastIndexOf("}");
+                        int lengthOfId = (lastIndex - startIndex) + 1;
+                        if (lengthOfId < textMessage.Length) {
+                            string faqid = textMessage.Substring(startIndex, lengthOfId);
+                            if (!string.IsNullOrEmpty(faqid))
+                            {
+                                    Intent faqIntent = GetIntentObject(typeof(FAQListActivity));
+                                //Intent faqIntent = new Intent(this.Activity, typeof(FAQListActivity));
+                                if (faqIntent != null && IsAdded)
+                                {
+                                    faqIntent.PutExtra(Constants.FAQ_ID_PARAM, faqid);
+                                    Activity.StartActivity(faqIntent);
+                                }
+                            }
+                        }
+                    }
                 }
 
-                txtAddress.Click += delegate
-                {
-                    if (bcrmEntity.IsDown)
-                    {
-                        string textMessage = bcrmEntity.DowntimeMessage;
-                        if (textMessage != null && textMessage.Contains("http"))
-                        {
-                            //Launch webview
-                            int startIndex = textMessage.LastIndexOf("=") + 2;
-                            int lastIndex = textMessage.LastIndexOf("\"");
-                            int lengthOfId = (lastIndex - startIndex);
-                            if (lengthOfId < textMessage.Length)
-                            {
-                                string url = textMessage.Substring(startIndex, lengthOfId);
-                                if (!string.IsNullOrEmpty(url))
-                                {
-                                    Intent intent = new Intent(Intent.ActionView);
-                                    intent.SetData(Android.Net.Uri.Parse(url));
-                                    StartActivity(intent);
-                                }
-                            }
-                        }
-                        else if (textMessage != null && textMessage.Contains("faq"))
-                        {
-                            //Lauch FAQ
-                            int startIndex = textMessage.LastIndexOf("=") + 1;
-                            int lastIndex = textMessage.LastIndexOf("}");
-                            int lengthOfId = (lastIndex - startIndex) + 1;
-                            if (lengthOfId < textMessage.Length)
-                            {
-                                string faqid = textMessage.Substring(startIndex, lengthOfId);
-                                if (!string.IsNullOrEmpty(faqid))
-                                {
-                                    Intent faqIntent = GetIntentObject(typeof(FAQListActivity));
-                                    //Intent faqIntent = new Intent(this.Activity, typeof(FAQListActivity));
-                                    if (faqIntent != null && IsAdded)
-                                    {
-                                        faqIntent.PutExtra(Constants.FAQ_ID_PARAM, faqid);
-                                        Activity.StartActivity(faqIntent);
-                                    }
-                                }
-                            }
-                        }
-                    }
-
-                };
+            };
 
 
-            }
+        }
             catch (Exception e)
             {
                 Utility.LoggingNonFatalError(e);
@@ -575,121 +588,122 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             this.userActionsListener.OnArrowForwardClick();
         }
 
-        private void SetNoteVisiBility(bool isVisible)
-        {
-            noteTextLayout.Visibility = ViewStates.Gone; //isVisible ? ViewStates.Visible : ViewStates.Gone;
-            noteDividerView.Visibility = ViewStates.Gone; //isVisible ? ViewStates.Visible : ViewStates.Gone;
+
+
+        private void SetNoteVisiBility(bool isVisible) {
+            noteTextLayout.Visibility = isVisible ? ViewStates.Visible : ViewStates.Gone;
+            noteDividerView.Visibility = isVisible ? ViewStates.Visible : ViewStates.Gone;
         }
 
         internal void SetUp()
         {
-            try
+            try {
+            if (hasNoInternet || noSMDataFOund)
             {
-                if (hasNoInternet || noSMDataFOund)
-                {
-                    return;
-                }
+                return;
+            }
 
-                mChart.SetRoundedBarRadius(100f);
-                mChart.SetDrawBarShadow(false);
-                mChart.SetDrawValueAboveBar(true);
-                mChart.Description.Enabled = false;
-                mChart.SetMaxVisibleValueCount(7);
-                mChart.SetPinchZoom(false);
-                mChart.SetDrawGridBackground(false);
-                mChart.SetScaleEnabled(false);
-                mChart.Legend.Enabled = false;
-                mChart.AnimateY(1000);
+            mChart.SetRoundedBarRadius(100f);
+            mChart.SetDrawBarShadow(false);
+            mChart.SetDrawValueAboveBar(true);
+            mChart.Description.Enabled = false;
+            mChart.SetMaxVisibleValueCount(7);
+            mChart.SetPinchZoom(false);
+            mChart.SetDrawGridBackground(false);
+            mChart.SetScaleEnabled(false);
+            mChart.Legend.Enabled = false;
+            mChart.AnimateY(1000);
+
+            if (!hasNoInternet)
+            {
+                txtAddress.Text = selectedAccount.AddStreet;
+            }
+                //Since the month is coming as year and year is coming as month... we are checking like this...
+                //SprintX - 1 change: Remove Note section
+                SetNoteVisiBility(false);//ChartType != ChartType.Month);
+
+            if (ChartType == ChartType.Month)
+            {
+
 
                 if (!hasNoInternet)
                 {
-                    txtAddress.Text = selectedAccount.AddStreet;
+                    txtRange.Text = selectedHistoryData.ByMonth[0].Range;
                 }
-                //Since the month is coming as year and year is coming as month... we are checking like this...
-                SetNoteVisiBility(ChartType != ChartType.Month);
+                // SETUP XAXIS
 
-                if (ChartType == ChartType.Month)
+                SetUpXAxis();
+
+                // SETUP YAXIS
+
+                SetUpYAxis();
+
+                // SETUP MARKER VIEW
+
+                SetUpMarkerMonthView();
+
+                // ADD DATA
+
+                SetData(selectedHistoryData.ByMonth[0].Months.Count);
+
+
+            }
+            else if(ChartType == ChartType.Day)
+            {
+
+                if (!hasNoInternet)
                 {
-
-
-                    if (!hasNoInternet)
-                    {
-                        txtRange.Text = selectedHistoryData.ByMonth[0].Range;
-                    }
-                    // SETUP XAXIS
-
-                    SetUpXAxis();
-
-                    // SETUP YAXIS
-
-                    SetUpYAxis();
-
-                    // SETUP MARKER VIEW
-
-                    SetUpMarkerMonthView();
-
-                    // ADD DATA
-
-                    SetData(selectedHistoryData.ByMonth[0].Months.Count);
-
-
+                    txtRange.Text = selectedHistoryData.ByDay[currentParentIndex].Range;
                 }
-                else if (ChartType == ChartType.Day)
+                // SETUP XAXIS
+
+                SetUpXAxisDay();
+
+                // SETUP YAXIS
+
+                SetUpYAxisDay();
+
+                // SETUP MARKER VIEW
+
+                SetUpMarkerDayView();
+
+                // ADD DATA
+                //SetDayData(currentParentIndex, 7);
+                SetDayData(currentParentIndex, selectedHistoryData.ByDay[currentParentIndex].Days.Count);
+            }
+            else
+            {
+
+                if (!hasNoInternet)
                 {
-
-                    if (!hasNoInternet)
-                    {
-                        txtRange.Text = selectedHistoryData.ByDay[currentParentIndex].Range;
-                    }
-                    // SETUP XAXIS
-
-                    SetUpXAxisDay();
-
-                    // SETUP YAXIS
-
-                    SetUpYAxisDay();
-
-                    // SETUP MARKER VIEW
-
-                    SetUpMarkerDayView();
-
-                    // ADD DATA
-                    //SetDayData(currentParentIndex, 7);
-                    SetDayData(currentParentIndex, selectedHistoryData.ByDay[currentParentIndex].Days.Count);
+                    txtRange.Text = selectedHistoryData.ByDay[currentParentIndex].Range;
                 }
-                else
-                {
+                // SETUP XAXIS
 
-                    if (!hasNoInternet)
-                    {
-                        txtRange.Text = selectedHistoryData.ByDay[currentParentIndex].Range;
-                    }
-                    // SETUP XAXIS
+                SetUpXAxisHour();
 
-                    SetUpXAxisHour();
+                // SETUP YAXIS
 
-                    // SETUP YAXIS
+                SetUpYAxisHour();
 
-                    SetUpYAxisHour();
+                // SETUP MARKER VIEW
 
-                    // SETUP MARKER VIEW
+                SetUpMarkerHourView();
 
-                    SetUpMarkerHourView();
+                // ADD DATA
+                //SetHourData(currentParentIndex, 7);
+                SetDayData(currentParentIndex, selectedHistoryData.ByDay[currentParentIndex].Days.Count);
+            }
 
-                    // ADD DATA
-                    //SetHourData(currentParentIndex, 7);
-                    SetDayData(currentParentIndex, selectedHistoryData.ByDay[currentParentIndex].Days.Count);
-                }
-
-                int graphTopPadding = 20;
-                if (selectedAccount.AccountCategoryId.Equals("2"))
-                {
-                    graphTopPadding = 30;
-                }
-                mChart.SetExtraOffsets(0, graphTopPadding, 0, 0);
+            int graphTopPadding = 20;
+            if (selectedAccount.AccountCategoryId.Equals("2"))
+            {
+                graphTopPadding = 30;
+            }
+            mChart.SetExtraOffsets(0, graphTopPadding, 0, 0);
 
 
-                SetupUsageMatricsData(selectedHistoryData.OtherUsageMetrics);
+            SetupUsageMatricsData(selectedHistoryData.OtherUsageMetrics);
             }
             catch (Exception e)
             {
@@ -700,22 +714,21 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         #region SETUP AXIS MONTH
         internal void SetUpXAxis()
         {
-            try
-            {
-                XLabelsFormatter = new SMChartsMonthFormatter(selectedHistoryData.ByMonth, mChart, 0);
+            try {
+            XLabelsFormatter = new SMChartsMonthFormatter(selectedHistoryData.ByMonth, mChart, 0);
 
-                XAxis xAxis = mChart.XAxis;
-                xAxis.Position = XAxisPosition.Bottom;
-                xAxis.TextColor = Color.ParseColor("#ffffff");
-                xAxis.AxisLineWidth = 2f;
-                xAxis.AxisLineColor = Color.ParseColor("#77a3ea");
+            XAxis xAxis = mChart.XAxis;
+            xAxis.Position = XAxisPosition.Bottom;
+            xAxis.TextColor = Color.ParseColor("#ffffff");
+            xAxis.AxisLineWidth = 2f;
+            xAxis.AxisLineColor = Color.ParseColor("#77a3ea");
 
-                //xAxis.Typeface = (mTfLight);
-                xAxis.SetDrawGridLines(false);
+            //xAxis.Typeface = (mTfLight);
+            xAxis.SetDrawGridLines(false);
 
-                xAxis.Granularity = 1f; // only intervals of 1 day
-                xAxis.LabelCount = selectedHistoryData.ByMonth[0].Months.Count;
-                xAxis.ValueFormatter = XLabelsFormatter;
+            xAxis.Granularity = 1f; // only intervals of 1 day
+            xAxis.LabelCount = selectedHistoryData.ByMonth[0].Months.Count;
+            xAxis.ValueFormatter = XLabelsFormatter;
             }
             catch (Exception e)
             {
@@ -723,28 +736,27 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             }
 
         }
-        #endregion 
+        #endregion
 
         #region SETUP AXIS DAY
         internal void SetUpXAxisDay()
         {
 
-            try
-            {
-                XLabelsFormatter = new SMChartsDayFormatter(selectedHistoryData.ByDay, mChart, currentParentIndex, 0);
+            try {
+            XLabelsFormatter = new SMChartsDayFormatter(selectedHistoryData.ByDay, mChart, currentParentIndex, 0);
 
-                XAxis xAxis = mChart.XAxis;
-                xAxis.Position = XAxisPosition.Bottom;
-                xAxis.TextColor = Color.ParseColor("#ffffff");
-                xAxis.AxisLineWidth = 2f;
-                xAxis.AxisLineColor = Color.ParseColor("#77a3ea");
+            XAxis xAxis = mChart.XAxis;
+            xAxis.Position = XAxisPosition.Bottom;
+            xAxis.TextColor = Color.ParseColor("#ffffff");
+            xAxis.AxisLineWidth = 2f;
+            xAxis.AxisLineColor = Color.ParseColor("#77a3ea");
 
-                //xAxis.Typeface = (mTfLight);
-                xAxis.SetDrawGridLines(false);
+            //xAxis.Typeface = (mTfLight);
+            xAxis.SetDrawGridLines(false);
 
-                xAxis.Granularity = 1f; // only intervals of 1 day
-                xAxis.LabelCount = selectedHistoryData.ByDay[currentParentIndex].Days.Count;
-                xAxis.ValueFormatter = XLabelsFormatter;
+            xAxis.Granularity = 1f; // only intervals of 1 day
+            xAxis.LabelCount = selectedHistoryData.ByDay[currentParentIndex].Days.Count;
+            xAxis.ValueFormatter = XLabelsFormatter;
 
             }
             catch (Exception e)
@@ -759,27 +771,26 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         #region SETUP AXIS Hour
         internal void SetUpXAxisHour()
         {
-            try
+            try {
+            XLabelsFormatter = new SMChartsHourFormatter()
             {
-                XLabelsFormatter = new SMChartsHourFormatter()
-                {
-                    DayData = selectedHistoryData.ByDay,
-                    Chart = mChart,
-                    ParentIndex = currentParentIndex
-                };
+                DayData = selectedHistoryData.ByDay,
+                Chart = mChart,
+                ParentIndex = currentParentIndex
+            };
 
-                XAxis xAxis = mChart.XAxis;
-                xAxis.Position = XAxisPosition.Bottom;
-                xAxis.TextColor = Color.ParseColor("#ffffff");
-                xAxis.AxisLineWidth = 2f;
-                xAxis.AxisLineColor = Color.ParseColor("#77a3ea");
+            XAxis xAxis = mChart.XAxis;
+            xAxis.Position = XAxisPosition.Bottom;
+            xAxis.TextColor = Color.ParseColor("#ffffff");
+            xAxis.AxisLineWidth = 2f;
+            xAxis.AxisLineColor = Color.ParseColor("#77a3ea");
 
-                //xAxis.Typeface = (mTfLight);
-                xAxis.SetDrawGridLines(false);
+            //xAxis.Typeface = (mTfLight);
+            xAxis.SetDrawGridLines(false);
 
-                xAxis.Granularity = 1f; // only intervals of 1 day
-                xAxis.LabelCount = 7;
-                xAxis.ValueFormatter = XLabelsFormatter;
+            xAxis.Granularity = 1f; // only intervals of 1 day
+            xAxis.LabelCount = 7;
+            xAxis.ValueFormatter = XLabelsFormatter;
 
             }
             catch (Exception e)
@@ -789,33 +800,32 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         }
         #endregion
 
-        #region SETUP Y AXIS BOTH MONTH 
+        #region SETUP Y AXIS BOTH MONTH
         internal void SetUpYAxis()
         {
-            try
-            {
-                IAxisValueFormatter custom = new MyAxisValueFormatter();
+            try {
+            IAxisValueFormatter custom = new MyAxisValueFormatter();
 
-                float maxVal = GetMaxMonthValues();
-                float lowestPossibleSpace = (5f / 100f) * -maxVal;
-                Console.WriteLine("Space {0}", lowestPossibleSpace);
+            float maxVal = GetMaxMonthValues();
+            float lowestPossibleSpace = (5f / 100f) * -maxVal;
+            Console.WriteLine("Space {0}", lowestPossibleSpace);
 
-                YAxis leftAxis = mChart.AxisLeft; ;
-                leftAxis.Enabled = false;
-                leftAxis.SetPosition(YAxisLabelPosition.OutsideChart);
-                leftAxis.SetDrawGridLines(false);
-                leftAxis.SpaceTop = 10f;
-                leftAxis.SpaceBottom = 10f;
-                leftAxis.AxisMinimum = lowestPossibleSpace;
-                leftAxis.AxisMaximum = maxVal;
+            YAxis leftAxis = mChart.AxisLeft; ;
+            leftAxis.Enabled = false;
+            leftAxis.SetPosition(YAxisLabelPosition.OutsideChart);
+            leftAxis.SetDrawGridLines(false);
+            leftAxis.SpaceTop = 10f;
+            leftAxis.SpaceBottom = 10f;
+            leftAxis.AxisMinimum = lowestPossibleSpace;
+            leftAxis.AxisMaximum = maxVal;
 
-                YAxis rightAxis = mChart.AxisRight;
-                rightAxis.Enabled = false;
-                rightAxis.SetDrawGridLines(false);
-                rightAxis.SpaceTop = 10f;
-                rightAxis.SpaceBottom = 10f;
-                rightAxis.AxisMinimum = lowestPossibleSpace;
-                rightAxis.AxisMaximum = maxVal;
+            YAxis rightAxis = mChart.AxisRight;
+            rightAxis.Enabled = false;
+            rightAxis.SetDrawGridLines(false);
+            rightAxis.SpaceTop = 10f;
+            rightAxis.SpaceBottom = 10f;
+            rightAxis.AxisMinimum = lowestPossibleSpace;
+            rightAxis.AxisMaximum = maxVal;
             }
             catch (Exception e)
             {
@@ -827,105 +837,102 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         #region SETUP Y AXIS BOTH DAY
         internal void SetUpYAxisDay()
         {
-            try
-            {
-                IAxisValueFormatter custom = new MyAxisValueFormatter();
-                float maxVal = GetMaxDaysValues();
-                float lowestPossibleSpace = (5f / 100f) * -maxVal;
-                Console.WriteLine("Space {0}", lowestPossibleSpace);
+            try {
+            IAxisValueFormatter custom = new MyAxisValueFormatter();
+            float maxVal = GetMaxDaysValues();
+            float lowestPossibleSpace = (5f / 100f) * -maxVal;
+            Console.WriteLine("Space {0}", lowestPossibleSpace);
 
-                YAxis leftAxis = mChart.AxisLeft; ;
-                leftAxis.Enabled = false;
-                leftAxis.SetPosition(YAxisLabelPosition.OutsideChart);
-                leftAxis.SetDrawGridLines(false);
-                leftAxis.SpaceTop = 10f;
-                leftAxis.SpaceBottom = 10f;
-                leftAxis.AxisMinimum = lowestPossibleSpace;
-                leftAxis.AxisMaximum = maxVal;
-                //leftAxis.AxisMinimum = 0f;
-                //leftAxis.AxisMaximum = 100f;
-                //leftAxis.SetLabelCount(5 , true);
-                //leftAxis.SetStartAtZero(true);
+            YAxis leftAxis = mChart.AxisLeft; ;
+            leftAxis.Enabled = false;
+            leftAxis.SetPosition(YAxisLabelPosition.OutsideChart);
+            leftAxis.SetDrawGridLines(false);
+            leftAxis.SpaceTop = 10f;
+            leftAxis.SpaceBottom = 10f;
+            leftAxis.AxisMinimum = lowestPossibleSpace;
+            leftAxis.AxisMaximum = maxVal;
+            //leftAxis.AxisMinimum = 0f;
+            //leftAxis.AxisMaximum = 100f;
+            //leftAxis.SetLabelCount(5 , true);
+            //leftAxis.SetStartAtZero(true);
 
 
-                YAxis rightAxis = mChart.AxisRight;
-                rightAxis.Enabled = false;
-                rightAxis.SetDrawGridLines(false);
-                rightAxis.SpaceTop = 10f;
-                rightAxis.SpaceBottom = 10f;
-                rightAxis.AxisMinimum = lowestPossibleSpace;
-                rightAxis.AxisMaximum = maxVal;
-                //rightAxis.AxisMinimum = 0f;
-                //rightAxis.AxisMaximum = 100f;
-                //rightAxis.SetLabelCount(5, true);
-                //rightAxis.ValueFormatter = custom;
-                //rightAxis.SetStartAtZero(true);
+            YAxis rightAxis = mChart.AxisRight;
+            rightAxis.Enabled = false;
+            rightAxis.SetDrawGridLines(false);
+            rightAxis.SpaceTop = 10f;
+            rightAxis.SpaceBottom = 10f;
+            rightAxis.AxisMinimum = lowestPossibleSpace;
+            rightAxis.AxisMaximum = maxVal;
+            //rightAxis.AxisMinimum = 0f;
+            //rightAxis.AxisMaximum = 100f;
+            //rightAxis.SetLabelCount(5, true);
+            //rightAxis.ValueFormatter = custom;
+            //rightAxis.SetStartAtZero(true);
             }
             catch (Exception e)
             {
                 Utility.LoggingNonFatalError(e);
             }
         }
-        #endregion  
+        #endregion
 
         #region SETUP Y AXIS BOTH Hour
         internal void SetUpYAxisHour()
         {
-            try
-            {
-                IAxisValueFormatter custom = new MyAxisValueFormatter();
-                float maxVal = GetMaxHoursValues();
-                float lowestPossibleSpace = (5f / 100f) * -maxVal;
-                Console.WriteLine("Space {0}", lowestPossibleSpace);
+            try {
+            IAxisValueFormatter custom = new MyAxisValueFormatter();
+            float maxVal = GetMaxHoursValues();
+            float lowestPossibleSpace = (5f / 100f) * -maxVal;
+            Console.WriteLine("Space {0}", lowestPossibleSpace);
 
-                YAxis leftAxis = mChart.AxisLeft; ;
-                leftAxis.Enabled = false;
-                leftAxis.SetPosition(YAxisLabelPosition.OutsideChart);
-                leftAxis.SetDrawGridLines(false);
-                leftAxis.SpaceTop = 10f;
-                leftAxis.SpaceBottom = 10f;
-                leftAxis.AxisMinimum = lowestPossibleSpace;
-                leftAxis.AxisMaximum = maxVal;
-                //leftAxis.AxisMinimum = 0f;
-                //leftAxis.AxisMaximum = 100f;
-                //leftAxis.SetLabelCount(5 , true);
-                //leftAxis.SetStartAtZero(true);
+            YAxis leftAxis = mChart.AxisLeft; ;
+            leftAxis.Enabled = false;
+            leftAxis.SetPosition(YAxisLabelPosition.OutsideChart);
+            leftAxis.SetDrawGridLines(false);
+            leftAxis.SpaceTop = 10f;
+            leftAxis.SpaceBottom = 10f;
+            leftAxis.AxisMinimum = lowestPossibleSpace;
+            leftAxis.AxisMaximum = maxVal;
+            //leftAxis.AxisMinimum = 0f;
+            //leftAxis.AxisMaximum = 100f;
+            //leftAxis.SetLabelCount(5 , true);
+            //leftAxis.SetStartAtZero(true);
 
 
-                YAxis rightAxis = mChart.AxisRight;
-                rightAxis.Enabled = false;
-                rightAxis.SetDrawGridLines(false);
-                rightAxis.SpaceTop = 10f;
-                rightAxis.SpaceBottom = 10f;
-                rightAxis.AxisMinimum = lowestPossibleSpace;
-                rightAxis.AxisMaximum = maxVal;
-                //rightAxis.AxisMinimum = 0f;
-                //rightAxis.AxisMaximum = 100f;
-                //rightAxis.SetLabelCount(5, true);
-                //rightAxis.ValueFormatter = custom;
-                //rightAxis.SetStartAtZero(true);
+            YAxis rightAxis = mChart.AxisRight;
+            rightAxis.Enabled = false;
+            rightAxis.SetDrawGridLines(false);
+            rightAxis.SpaceTop = 10f;
+            rightAxis.SpaceBottom = 10f;
+            rightAxis.AxisMinimum = lowestPossibleSpace;
+            rightAxis.AxisMaximum = maxVal;
+            //rightAxis.AxisMinimum = 0f;
+            //rightAxis.AxisMaximum = 100f;
+            //rightAxis.SetLabelCount(5, true);
+            //rightAxis.ValueFormatter = custom;
+            //rightAxis.SetStartAtZero(true);
             }
             catch (Exception e)
             {
                 Utility.LoggingNonFatalError(e);
             }
         }
-        #endregion  
+        #endregion
 
         #region SETUP MARKERVIEW MONTH / HIGHLIGHT TEXT
         internal void SetUpMarkerMonthView()
         {
-            try
+            try {
+            SMSelectedMarkerView markerView = new SMSelectedMarkerView(Activity)
             {
-                SMSelectedMarkerView markerView = new SMSelectedMarkerView(Activity)
-                {
-                    UsageHistoryData = selectedHistoryData,
-                    ChartType = ChartType.Month,
-                    ChartDataType = ChartDataType,
-                    AccountType = selectedAccount.AccountCategoryId
-                };
-                markerView.ChartView = mChart;
-                mChart.Marker = markerView;
+                UsageHistoryData = selectedHistoryData,
+                ChartType = ChartType.Month,
+                ChartDataType = ChartDataType,
+                AccountType = selectedAccount.AccountCategoryId
+            };
+            markerView.ChartView = mChart;
+            mChart.Marker = markerView;
             }
             catch (Exception e)
             {
@@ -972,77 +979,75 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         internal void SetData(int barLength)
         {
 
-            try
+            try {
+            List<BarEntry> yVals1 = new List<BarEntry>();
+            for (int i = 0; i < barLength; i++)
             {
-                List<BarEntry> yVals1 = new List<BarEntry>();
-                for (int i = 0; i < barLength; i++)
+                float val = 0;
+                if (ChartDataType == ChartDataType.RM)
                 {
-                    float val = 0;
-                    if (ChartDataType == ChartDataType.RM)
-                    {
-                        val = float.Parse(selectedHistoryData.ByMonth[0].Months[i].Amount == null ? "0.00" : selectedHistoryData.ByMonth[0].Months[i].Amount);
-                    }
-                    else if (ChartDataType == ChartDataType.kWh)
-                    {
-                        val = float.Parse(selectedHistoryData.ByMonth[0].Months[i].Consumption == null ? "0.00" : selectedHistoryData.ByMonth[0].Months[i].Consumption);
-                    }
-                    else
-                    {
-                        val = float.Parse(selectedHistoryData.ByMonth[0].Months[i].CO2 == null ? "0.00" : selectedHistoryData.ByMonth[0].Months[i].CO2);
-                    }
-                    if (float.IsPositiveInfinity(val))
-                    {
-                        val = float.PositiveInfinity;
-                    }
-
-                    yVals1.Add(new BarEntry(i, Math.Abs(val)));
-                }
-
-                BarDataSet set1;
-
-                if (mChart.Data != null && mChart.Data is BarData)
+                    val = float.Parse(selectedHistoryData.ByMonth[0].Months[i].Amount == null ? "0.00" : selectedHistoryData.ByMonth[0].Months[i].Amount);
+                }else if(ChartDataType == ChartDataType.kWh)
                 {
-                    var barData = mChart.Data as BarData;
-
-                    if (barData.DataSetCount > 0)
-                    {
-                        set1 = barData.GetDataSetByIndex(0) as BarDataSet;
-                        set1.Values = yVals1;
-                        barData.NotifyDataChanged();
-                        mChart.NotifyDataSetChanged();
-                    }
+                    val = float.Parse(selectedHistoryData.ByMonth[0].Months[i].Consumption == null ? "0.00" : selectedHistoryData.ByMonth[0].Months[i].Consumption);
                 }
                 else
                 {
-                    set1 = new BarDataSet(yVals1, "");
-                    set1.SetDrawIcons(false);
-
-
-                    set1.HighLightColor = Color.Argb(255, 255, 255, 255);
-
-                    //set1.SetColor(Resource.Color.sunGlow , 255);
-                    int[] color = { Color.Argb(50, 255, 255, 255) };
-                    set1.SetColors(color);
-                    List<IBarDataSet> dataSets = new List<IBarDataSet>();
-                    dataSets.Add(set1);
-
-
-                    BarData data = new BarData(dataSets);
-
-                    data.BarWidth = 0.45f;
-
-                    data.HighlightEnabled = true;
-                    data.SetValueTextSize(10f);
-                    data.SetDrawValues(false);
-                    //data.setValueTypeface(mTfLight);
-
-                    mChart.Data = data;
+                    val = float.Parse(selectedHistoryData.ByMonth[0].Months[i].CO2 == null ? "0.00" : selectedHistoryData.ByMonth[0].Months[i].CO2);
+                }
+                if (float.IsPositiveInfinity(val))
+                {
+                    val = float.PositiveInfinity;
                 }
 
-                // HIGHLIGHT RIGHT MOST ITEM
-                Highlight rightMostBar = new Highlight(barLength - 1, 0, 0);
-                mChart.HighlightValues(new Highlight[] { rightMostBar });
+                yVals1.Add(new BarEntry(i, Math.Abs(val)));
             }
+
+            BarDataSet set1;
+
+            if (mChart.Data != null && mChart.Data is BarData)
+            {
+                var barData = mChart.Data as BarData;
+
+                if (barData.DataSetCount > 0)
+                {
+                    set1 = barData.GetDataSetByIndex(0) as BarDataSet;
+                    set1.Values = yVals1;
+                    barData.NotifyDataChanged();
+                    mChart.NotifyDataSetChanged();
+                }
+            }
+            else
+            {
+                set1 = new BarDataSet(yVals1, "");
+                set1.SetDrawIcons(false);
+
+
+                set1.HighLightColor = Color.Argb(255, 255, 255, 255);
+
+                //set1.SetColor(Resource.Color.sunGlow , 255);
+                int[] color = { Color.Argb(50, 255, 255, 255) };
+                set1.SetColors(color);
+                List<IBarDataSet> dataSets = new List<IBarDataSet>();
+                dataSets.Add(set1);
+
+
+                BarData data = new BarData(dataSets);
+
+                data.BarWidth = 0.45f;
+
+                data.HighlightEnabled = true;
+                data.SetValueTextSize(10f);
+                data.SetDrawValues(false);
+                //data.setValueTypeface(mTfLight);
+
+                mChart.Data = data;
+            }
+
+            // HIGHLIGHT RIGHT MOST ITEM
+            Highlight rightMostBar = new Highlight(barLength - 1, 0, 0);
+            mChart.HighlightValues(new Highlight[] { rightMostBar });
+                }
             catch (Exception e)
             {
                 Utility.LoggingNonFatalError(e);
@@ -1054,77 +1059,75 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         #region SETUP DAY DATA
         internal void SetDayData(int parentIndex, int barLength)
         {
-            try
+            try {
+            List<BarEntry> yVals1 = new List<BarEntry>();
+            int barIndex = 0;
+            for (int i = 0; i < barLength; i++)
             {
-                List<BarEntry> yVals1 = new List<BarEntry>();
-                int barIndex = 0;
-                for (int i = 0; i < barLength; i++)
+                float val = 0;
+                if (ChartDataType == ChartDataType.RM)
                 {
-                    float val = 0;
-                    if (ChartDataType == ChartDataType.RM)
-                    {
-                        val = float.Parse(selectedHistoryData.ByDay[parentIndex].Days[i].Amount == null ? "0.00" : selectedHistoryData.ByDay[parentIndex].Days[i].Amount);
-                    }
-                    else if (ChartDataType == ChartDataType.kWh)
-                    {
-                        val = float.Parse(selectedHistoryData.ByDay[parentIndex].Days[i].Consumption == null ? "0.00" : selectedHistoryData.ByDay[parentIndex].Days[i].Consumption);
-                    }
-                    else
-                    {
-                        val = float.Parse(selectedHistoryData.ByDay[parentIndex].Days[i].CO2 == null ? "0.00" : selectedHistoryData.ByDay[parentIndex].Days[i].CO2);
-                    }
-                    if (float.IsPositiveInfinity(val))
-                    {
-                        val = float.PositiveInfinity;
-                    }
-
-                    yVals1.Add(new BarEntry(i, Math.Abs(val)));
-
-                }
-
-                BarDataSet set1;
-
-                if (mChart.Data != null && mChart.Data is BarData)
+                    val = float.Parse(selectedHistoryData.ByDay[parentIndex].Days[i].Amount == null ? "0.00" : selectedHistoryData.ByDay[parentIndex].Days[i].Amount);
+                }else if(ChartDataType == ChartDataType.kWh)
                 {
-                    var barData = mChart.Data as BarData;
-
-                    if (barData.DataSetCount > 0)
-                    {
-                        set1 = barData.GetDataSetByIndex(0) as BarDataSet;
-                        set1.Values = yVals1;
-                        barData.NotifyDataChanged();
-                        mChart.NotifyDataSetChanged();
-                    }
+                    val = float.Parse(selectedHistoryData.ByDay[parentIndex].Days[i].Consumption == null ? "0.00" : selectedHistoryData.ByDay[parentIndex].Days[i].Consumption);
                 }
                 else
                 {
-                    set1 = new BarDataSet(yVals1, "");
-                    set1.SetDrawIcons(false);
-
-
-                    set1.HighLightColor = Color.Argb(255, 255, 255, 255);
-
-                    //set1.SetColor(Resource.Color.sunGlow , 255);
-                    int[] color = { Color.Argb(50, 255, 255, 255) };
-                    set1.SetColors(color);
-                    List<IBarDataSet> dataSets = new List<IBarDataSet>();
-                    dataSets.Add(set1);
-
-
-                    BarData data = new BarData(dataSets);
-
-                    data.BarWidth = 0.4f;
-
-                    data.HighlightEnabled = true;
-                    data.SetValueTextSize(10f);
-                    data.SetDrawValues(false);
-                    //data.setValueTypeface(mTfLight);
-
-                    mChart.Data = data;
+                    val = float.Parse(selectedHistoryData.ByDay[parentIndex].Days[i].CO2 == null ? "0.00" : selectedHistoryData.ByDay[parentIndex].Days[i].CO2);
                 }
-                // HIGHLIGHT RIGHT MOST ITEM
-                Highlight rightMostBar = new Highlight(barLength - 1, 0, 0);
-                mChart.HighlightValues(new Highlight[] { rightMostBar });
+                if (float.IsPositiveInfinity(val))
+                {
+                    val = float.PositiveInfinity;
+                }
+
+                yVals1.Add(new BarEntry(i, Math.Abs(val)));
+
+            }
+
+            BarDataSet set1;
+
+            if (mChart.Data != null && mChart.Data is BarData)
+            {
+                var barData = mChart.Data as BarData;
+
+                if (barData.DataSetCount > 0)
+                {
+                    set1 = barData.GetDataSetByIndex(0) as BarDataSet;
+                    set1.Values = yVals1;
+                    barData.NotifyDataChanged();
+                    mChart.NotifyDataSetChanged();
+                }
+            }
+            else
+            {
+                set1 = new BarDataSet(yVals1, "");
+                set1.SetDrawIcons(false);
+
+
+                set1.HighLightColor = Color.Argb(255, 255, 255, 255);
+
+                //set1.SetColor(Resource.Color.sunGlow , 255);
+                int[] color = { Color.Argb(50, 255, 255, 255) };
+                set1.SetColors(color);
+                List<IBarDataSet> dataSets = new List<IBarDataSet>();
+                dataSets.Add(set1);
+
+
+                BarData data = new BarData(dataSets);
+
+                data.BarWidth = 0.4f;
+
+                data.HighlightEnabled = true;
+                data.SetValueTextSize(10f);
+                data.SetDrawValues(false);
+                //data.setValueTypeface(mTfLight);
+
+                mChart.Data = data;
+            }
+            // HIGHLIGHT RIGHT MOST ITEM
+            Highlight rightMostBar = new Highlight(barLength - 1, 0, 0);
+            mChart.HighlightValues(new Highlight[] { rightMostBar });
             }
             catch (Exception e)
             {
@@ -1136,64 +1139,63 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         #region SETUP Hour DATA
         internal void SetHourData(int parentIndex, int barLength)
         {
-            try
+            try {
+            List<BarEntry> yVals1 = new List<BarEntry>();
+            for (int i = 0; i < barLength; i++)
             {
-                List<BarEntry> yVals1 = new List<BarEntry>();
-                for (int i = 0; i < barLength; i++)
+                float val = float.Parse(selectedHistoryData.ByMonth[parentIndex].Months[i].Amount == null ? "0.00" : selectedHistoryData.ByMonth[parentIndex].Months[i].Amount);
+                if (float.IsPositiveInfinity(val))
                 {
-                    float val = float.Parse(selectedHistoryData.ByMonth[parentIndex].Months[i].Amount == null ? "0.00" : selectedHistoryData.ByMonth[parentIndex].Months[i].Amount);
-                    if (float.IsPositiveInfinity(val))
-                    {
-                        val = float.PositiveInfinity;
-                    }
-
-                    yVals1.Add(new BarEntry(i, Math.Abs(val)));
+                    val = float.PositiveInfinity;
                 }
 
-                BarDataSet set1;
+                yVals1.Add(new BarEntry(i, Math.Abs(val)));
+            }
 
-                if (mChart.Data != null && mChart.Data is BarData)
+            BarDataSet set1;
+
+            if (mChart.Data != null && mChart.Data is BarData)
+            {
+                var barData = mChart.Data as BarData;
+
+                if (barData.DataSetCount > 0)
                 {
-                    var barData = mChart.Data as BarData;
-
-                    if (barData.DataSetCount > 0)
-                    {
-                        set1 = barData.GetDataSetByIndex(0) as BarDataSet;
-                        set1.Values = yVals1;
-                        barData.NotifyDataChanged();
-                        mChart.NotifyDataSetChanged();
-                    }
+                    set1 = barData.GetDataSetByIndex(0) as BarDataSet;
+                    set1.Values = yVals1;
+                    barData.NotifyDataChanged();
+                    mChart.NotifyDataSetChanged();
                 }
-                else
-                {
-                    set1 = new BarDataSet(yVals1, "");
-                    set1.SetDrawIcons(false);
+            }
+            else
+            {
+                set1 = new BarDataSet(yVals1, "");
+                set1.SetDrawIcons(false);
 
 
-                    set1.HighLightColor = Color.Argb(255, 255, 255, 255);
+                set1.HighLightColor = Color.Argb(255, 255, 255, 255);
 
-                    //set1.SetColor(Resource.Color.sunGlow , 255);
-                    int[] color = { Color.Argb(50, 255, 255, 255) };
-                    set1.SetColors(color);
-                    List<IBarDataSet> dataSets = new List<IBarDataSet>();
-                    dataSets.Add(set1);
+                //set1.SetColor(Resource.Color.sunGlow , 255);
+                int[] color = { Color.Argb(50, 255, 255, 255) };
+                set1.SetColors(color);
+                List<IBarDataSet> dataSets = new List<IBarDataSet>();
+                dataSets.Add(set1);
 
 
-                    BarData data = new BarData(dataSets);
+                BarData data = new BarData(dataSets);
 
-                    data.BarWidth = 0.45f;
+                data.BarWidth = 0.45f;
 
-                    data.HighlightEnabled = true;
-                    data.SetValueTextSize(10f);
-                    data.SetDrawValues(false);
-                    //data.setValueTypeface(mTfLight);
+                data.HighlightEnabled = true;
+                data.SetValueTextSize(10f);
+                data.SetDrawValues(false);
+                //data.setValueTypeface(mTfLight);
 
-                    mChart.Data = data;
-                }
+                mChart.Data = data;
+            }
 
-                // HIGHLIGHT RIGHT MOST ITEM
-                Highlight rightMostBar = new Highlight(barLength - 1, 0, 0);
-                mChart.HighlightValues(new Highlight[] { rightMostBar });
+            // HIGHLIGHT RIGHT MOST ITEM
+            Highlight rightMostBar = new Highlight(barLength - 1, 0, 0);
+            mChart.HighlightValues(new Highlight[] { rightMostBar });
             }
             catch (Exception e)
             {
@@ -1202,103 +1204,117 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         }
         #endregion
 
-
+        private string GetChargeRangeDate(string preLabelString, string fromDateString, string toDateString)
+        {
+            if (fromDateString != null && toDateString != null)
+            {
+                SimpleDateFormat dateParser = new SimpleDateFormat("dd/MM/yyyy");
+                SimpleDateFormat dateFormatter = new SimpleDateFormat("dd MMM");
+                Date formattedDate = dateParser.Parse(fromDateString);
+                return preLabelString + " " + dateFormatter.Format(formattedDate) + " - " + toDateString;
+            }
+            return "--";
+        }
         public void SetupUsageMatricsData(SMUsageHistoryData.OtherUsageMetricsData usageMetricsData)
         {
-            try
+            try {
+            if(ChartDataType == ChartDataType.RM)
             {
-                if (ChartDataType == ChartDataType.RM)
-                {
-                    endDivider.Visibility = ViewStates.Gone;
-                    layoutProjectedCost.Visibility = ViewStates.Gone;
-                    imgCurrentCharges.SetImageResource(Resource.Drawable.ic_rm);
-                    imgProjectedCost.SetImageResource(Resource.Drawable.ic_projected_cost);
-                    txtCurrentCharges.Text = (GetString(Resource.String.current_charges));
-                    txtProjectedCost.Text = GetString(Resource.String.projected_cost);
-                    txtProjectedCostRange.Text = GetString(Resource.String.for_current_month);
-                    if (usageMetricsData != null)
-                    {
-                        txtCurretnChargesValue.Text = usageMetricsData.StatsByCost.CurrentCharges;
-                        //float currChanrges = float.Parse(usageMetricsData.StatsByCost.CurrentCharges);
-                        //txtCurretnChargesValue.Text = decimalFormat.Format(Math.Abs(currChanrges));
-                        txtCurrentChargesUnit1.Visibility = ViewStates.Visible;
-                        txtCurrentChargesUnit2.Visibility = ViewStates.Gone;
-                        txtCurrentChargesRange.Text = GetString(Resource.String.as_of) + " " + usageMetricsData.StatsByCost.AsOf;
-                        txtProjectedCostValue.Text = usageMetricsData.StatsByCost.ProjectedCost;
-                        //float proCost = float.Parse(usageMetricsData.StatsByCost.ProjectedCost);
-                        //txtProjectedCostValue.Text = decimalFormat.Format(Math.Abs(proCost));
-                        txtProjectedCostUnit1.Visibility = ViewStates.Visible;
-                    }
+                endDivider.Visibility = ViewStates.Visible;
+                layoutProjectedCost.Visibility = ViewStates.Visible;
+                imgCurrentCharges.SetImageResource(Resource.Drawable.ic_rm);
+                imgProjectedCost.SetImageResource(Resource.Drawable.ic_projected_cost);
+                txtCurrentCharges.Text = (GetString(Resource.String.current_charges));
+                txtProjectedCost.Text = GetString(Resource.String.projected_cost);
+                if (usageMetricsData != null) {
+                    txtCurretnChargesValue.Text = usageMetricsData.StatsByCost.CurrentCharges;
+                    //float currChanrges = float.Parse(usageMetricsData.StatsByCost.CurrentCharges);
+                    //txtCurretnChargesValue.Text = decimalFormat.Format(Math.Abs(currChanrges));
+                    txtCurrentChargesUnit1.Visibility = ViewStates.Visible;
+                    txtCurrentChargesUnit2.Visibility = ViewStates.Gone;
+                    txtCurrentChargesRange.Text = GetChargeRangeDate(GetString(Resource.String.for_current_month),usageMetricsData.CurrentCycleStartDate, usageMetricsData.StatsByCost.AsOf);
+                    txtProjectedCostRange.Text = GetChargeRangeDate(GetString(Resource.String.for_current_month), usageMetricsData.CurrentCycleStartDate, usageMetricsData.StatsByCost.AsOf);
+                    txtProjectedCostValue.Text = usageMetricsData.StatsByCost.ProjectedCost;
+                    //float proCost = float.Parse(usageMetricsData.StatsByCost.ProjectedCost);
+                    //txtProjectedCostValue.Text = decimalFormat.Format(Math.Abs(proCost));
+                    txtProjectedCostUnit1.Visibility = ViewStates.Visible;
                 }
-                else if (ChartDataType == ChartDataType.kWh)
+            }
+            else if(ChartDataType == ChartDataType.kWh)
+            {
+                endDivider.Visibility = ViewStates.Visible;
+                layoutProjectedCost.Visibility = ViewStates.Visible;
+                imgCurrentCharges.SetImageResource(Resource.Drawable.ic_energy_usage);
+                imgProjectedCost.SetImageResource(Resource.Drawable.ic_avgelectric_usage);
+                txtCurrentCharges.Text = GetString(Resource.String.current_usage);
+                txtProjectedCost.Text = GetString(Resource.String.avg_elec_usage);
+                if (usageMetricsData != null)
                 {
-                    endDivider.Visibility = ViewStates.Visible;
-                    layoutProjectedCost.Visibility = ViewStates.Visible;
-                    imgCurrentCharges.SetImageResource(Resource.Drawable.ic_energy_usage);
-                    imgProjectedCost.SetImageResource(Resource.Drawable.ic_avgelectric_usage);
-                    txtCurrentCharges.Text = GetString(Resource.String.current_usage);
-                    txtProjectedCost.Text = GetString(Resource.String.avg_elec_usage);
-                    txtProjectedCostRange.Text = GetString(Resource.String.vs_last_month);
-                    if (usageMetricsData != null)
+                    txtCurretnChargesValue.Text = usageMetricsData.StatsByUsage.CurrentUsageKWH;
+                    txtCurrentChargesUnit1.Visibility = ViewStates.Gone;
+                    txtCurrentChargesUnit2.Visibility = ViewStates.Visible;
+                    txtProjectedCostUnit1.Visibility = ViewStates.Gone;
+                    txtCurrentChargesRange.Text = GetChargeRangeDate(GetString(Resource.String.for_current_month),usageMetricsData.CurrentCycleStartDate, usageMetricsData.StatsByUsage.AsOf);
+                    string htmlAvgUsageContent = usageMetricsData.StatsByUsage.UsageComparedToPrevious.Replace("-","").Replace("+","") + "%";
+                    double avgUsageDouble = Double.Parse(String.IsNullOrEmpty(usageMetricsData.StatsByUsage.UsageComparedToPrevious) == true ? "0.00" : usageMetricsData.StatsByUsage.UsageComparedToPrevious);
+                    if (avgUsageDouble != 0.00)
                     {
-                        txtCurretnChargesValue.Text = usageMetricsData.StatsByUsage.CurrentUsageKWH;
-                        txtCurrentChargesUnit1.Visibility = ViewStates.Gone;
-                        txtCurrentChargesUnit2.Visibility = ViewStates.Visible;
-                        txtProjectedCostUnit1.Visibility = ViewStates.Gone;
-                        txtCurrentChargesRange.Text = GetString(Resource.String.as_of) + " " + usageMetricsData.StatsByUsage.AsOf;
-                        string htmlAvgUsageContent = usageMetricsData.StatsByUsage.UsageComparedToPrevious.Replace("-", "").Replace("+", "") + "%";
-                        double avgUsageDouble = Double.Parse(String.IsNullOrEmpty(usageMetricsData.StatsByUsage.UsageComparedToPrevious) == true ? "0.00" : usageMetricsData.StatsByUsage.UsageComparedToPrevious);
-                        if (avgUsageDouble != 0.00)
+                        if (usageMetricsData.StatsByUsage.UsageComparedToPrevious.Contains("-"))
                         {
-                            if (usageMetricsData.StatsByUsage.UsageComparedToPrevious.Contains("-"))
-                            {
-                                htmlAvgUsageContent = GetString(Resource.String.avg_electric_usage_down) + htmlAvgUsageContent;
-                            }
-                            else
-                            {
-                                htmlAvgUsageContent = GetString(Resource.String.avg_electric_usage_up) + htmlAvgUsageContent;
-                            }
-                        }
-
-
-                        if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
-                        {
-
-                            txtProjectedCostValue.TextFormatted = Html.FromHtml(htmlAvgUsageContent, Html.FromHtmlModeLegacy);
+                            htmlAvgUsageContent = GetString(Resource.String.avg_electric_usage_down) + htmlAvgUsageContent;
+                            txtProjectedCostRange.Text = GetString(Resource.String.less_last_bill_period);
                         }
                         else
                         {
-                            txtProjectedCostValue.TextFormatted = Html.FromHtml(htmlAvgUsageContent);
+                          if(int.Parse(usageMetricsData.StatsByUsage.UsageComparedToPrevious) == 0){
+                            htmlAvgUsageContent = htmlAvgUsageContent;
+                            txtProjectedCostRange.Text = GetString(Resource.String.same_last_bill_period);
+                          }else{
+                            htmlAvgUsageContent = GetString(Resource.String.avg_electric_usage_up) + htmlAvgUsageContent;
+                            txtProjectedCostRange.Text = GetString(Resource.String.more_last_bill_period);
+                          }
                         }
-
                     }
-                }
-                else if (ChartDataType == ChartDataType.CO2)
-                {
-                    endDivider.Visibility = ViewStates.Invisible;
-                    layoutProjectedCost.Visibility = ViewStates.Invisible;
-                    imgCurrentCharges.SetImageResource(Resource.Drawable.ic_energy_usage_co2);
-                    txtCurrentCharges.Text = GetString(Resource.String.current_emission);
-                    if (usageMetricsData != null)
+
+
+                    if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
                     {
-                        if (usageMetricsData.StatsByCo2 != null && usageMetricsData.StatsByCo2.Count > 0)
+
+                        txtProjectedCostValue.TextFormatted = Html.FromHtml(htmlAvgUsageContent, Html.FromHtmlModeLegacy);
+                    }
+                    else
+                    {
+                        txtProjectedCostValue.TextFormatted = Html.FromHtml(htmlAvgUsageContent);
+                    }
+
+                }
+            }
+            else if (ChartDataType == ChartDataType.CO2)
+            {
+                endDivider.Visibility = ViewStates.Invisible;
+                layoutProjectedCost.Visibility = ViewStates.Invisible;
+                imgCurrentCharges.SetImageResource(Resource.Drawable.ic_energy_usage_co2);
+                txtCurrentCharges.Text = GetString(Resource.String.current_emission);
+                if (usageMetricsData != null)
+                {
+                    if (usageMetricsData.StatsByCo2 != null && usageMetricsData.StatsByCo2.Count > 0)
+                    {
+                        foreach (StatsByCo2 item in usageMetricsData.StatsByCo2)
                         {
-                            foreach (StatsByCo2 item in usageMetricsData.StatsByCo2)
+                            if (item.ItemName.Equals("Emision"))
                             {
-                                if (item.ItemName.Equals("Emision"))
-                                {
-                                    txtCurretnChargesValue.Text = item.Quantity;
-                                    txtCurrentChargesUnit1.Visibility = ViewStates.Gone;
-                                    txtCurrentChargesUnit2.Text = "kg";
-                                    txtCurrentChargesUnit2.Visibility = ViewStates.Visible;
-                                    txtProjectedCostUnit1.Visibility = ViewStates.Gone;
-                                    txtCurrentChargesRange.Text = GetString(Resource.String.as_of) + " " + item.AsOf;
-                                }
+                                txtCurretnChargesValue.Text = item.Quantity;
+                                txtCurrentChargesUnit1.Visibility = ViewStates.Gone;
+                                txtCurrentChargesUnit2.Text = "kg";
+                                txtCurrentChargesUnit2.Visibility = ViewStates.Visible;
+                                txtProjectedCostUnit1.Visibility = ViewStates.Gone;
+                                txtCurrentChargesRange.Text = GetString(Resource.String.as_of) + " " + item.AsOf;
                             }
                         }
-
                     }
+
                 }
+            }
             }
             catch (Exception e)
             {
@@ -1308,20 +1324,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
         public void ShowByDay()
         {
-            if (!scrollView.CanScrollVertically(1) || !scrollView.CanScrollVertically(-1))
-            {
-                contentExtension.Visibility = ViewStates.Visible;
-                contentExtension.LayoutParameters.Height = bottomView.LayoutParameters.Height;
-            }
-            else
-            {
-                contentExtension.Visibility = ViewStates.Gone;
-            }
 
-            ChartDataType = ChartDataType.kWh;
+
             ChartType = ChartType.Day;
             mChart.Clear();
-            mUsageMetricsDetails.Visibility = ViewStates.Visible;
             SetUp();
         }
 
@@ -1335,13 +1341,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 mNoDataLayout.Visibility = ViewStates.Gone;
                 mSMNoDataLayout.Visibility = ViewStates.Gone;
                 mChart.Visibility = ViewStates.Visible;
-                mUsageMetricsDetails.Visibility = ViewStates.Gone;
-                ChartDataType = ChartDataType.RM;
+
                 mChart.Clear();
                 SetUp();
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e)  {
                 Utility.LoggingNonFatalError(e);
             }
         }
@@ -1407,6 +1410,66 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         internal void OnToggleMonth(object sender, EventArgs e)
         {
             this.userActionsListener.OnByMonth();
+        }
+
+        private void OnWhatIsThisTap()
+        {
+            string textMessage = selectedHistoryData.ToolTips[0].Message;
+            string btnLabel = selectedHistoryData.ToolTips[0].SMBtnText;
+            MaterialDialog materialDialog = new MaterialDialog.Builder(Activity)
+                    .CustomView(Resource.Layout.WhatIsThisDialogView,false)
+                    .Cancelable(false)
+                    .Build();
+
+            View view = materialDialog.View;
+            TextView dialogDetailsText = view.FindViewById<TextView>(Resource.Id.txtDialogMessage);
+            TextView dialogBtnLabel = view.FindViewById<TextView>(Resource.Id.txtBtnLabel);
+            dialogBtnLabel.Text = btnLabel;
+            dialogBtnLabel.Click += delegate
+            {
+                materialDialog.Dismiss();
+            };
+
+            if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.N)
+            {
+                dialogDetailsText.TextFormatted = Html.FromHtml(textMessage, FromHtmlOptions.ModeLegacy);
+            }
+            else
+            {
+                dialogDetailsText.TextFormatted = Html.FromHtml(textMessage);
+            }
+
+            if (dialogDetailsText != null)
+            {
+                TextViewUtils.SetMuseoSans300Typeface(dialogDetailsText);
+            }
+
+            SpannableString s = new SpannableString(dialogDetailsText.Text);
+            string st = s.ToString();
+            int i = st.IndexOf("FAQ");
+            s.SetSpan(new URLSpanNoUnderline(dialogDetailsText.Text),i,i+8,SpanTypes.ExclusiveExclusive);
+            dialogDetailsText.SetText(s,TextView.BufferType.Spannable);
+            dialogDetailsText.Click += delegate
+            {
+                if (textMessage != null && textMessage.Contains("faq"))
+                {
+                    //Lauch FAQ
+                    int startIndex = textMessage.LastIndexOf("=") + 1;
+                    int lastIndex = textMessage.LastIndexOf("}");
+                    int lengthOfId = (lastIndex - startIndex) + 1;
+                    if (lengthOfId < textMessage.Length)
+                    {
+                        string faqid = textMessage.Substring(startIndex, lengthOfId);
+                        if (!string.IsNullOrEmpty(faqid))
+                        {
+                            Intent faqIntent = new Intent(this.Activity, typeof(FAQListActivity));
+                            faqIntent.PutExtra(Constants.FAQ_ID_PARAM, faqid);
+                            Activity.StartActivity(faqIntent);
+                        }
+                    }
+                }
+            };
+            materialDialog.Show();
         }
 
         //[OnClick(Resource.Id.btnToggleHour)]
@@ -1556,51 +1619,49 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         internal float GetMaxDaysValues()
         {
             float val = 0;
-            try
+            try {
+            if (ChartDataType == ChartDataType.RM)
             {
-                if (ChartDataType == ChartDataType.RM)
+                foreach (SMUsageHistoryData.ByDayData ByDay in selectedHistoryData.ByDay)
                 {
-                    foreach (SMUsageHistoryData.ByDayData ByDay in selectedHistoryData.ByDay)
+                    foreach (SMUsageHistoryData.ByDayData.DayData dayData in ByDay.Days)
                     {
-                        foreach (SMUsageHistoryData.ByDayData.DayData dayData in ByDay.Days)
+                        if (Math.Abs(float.Parse(dayData.Amount == null ? "0.00" : dayData.Amount)) > val)
                         {
-                            if (Math.Abs(float.Parse(dayData.Amount == null ? "0.00" : dayData.Amount)) > val)
-                            {
-                                val = Math.Abs(float.Parse(dayData.Amount == null ? "0.00" : dayData.Amount));
-                            }
+                            val = Math.Abs(float.Parse(dayData.Amount == null ? "0.00" : dayData.Amount));
                         }
                     }
                 }
-                else if (ChartDataType == ChartDataType.kWh)
+            }
+            else if (ChartDataType == ChartDataType.kWh)
+            {
+                foreach (SMUsageHistoryData.ByDayData ByDay in selectedHistoryData.ByDay)
                 {
-                    foreach (SMUsageHistoryData.ByDayData ByDay in selectedHistoryData.ByDay)
+                    foreach (SMUsageHistoryData.ByDayData.DayData dayData in ByDay.Days)
                     {
-                        foreach (SMUsageHistoryData.ByDayData.DayData dayData in ByDay.Days)
+                        if (Math.Abs(float.Parse(dayData.Consumption == null ? "0.00" : dayData.Consumption)) > val)
                         {
-                            if (Math.Abs(float.Parse(dayData.Consumption == null ? "0.00" : dayData.Consumption)) > val)
-                            {
-                                val = Math.Abs(float.Parse(dayData.Consumption == null ? "0.00" : dayData.Consumption));
-                            }
+                            val = Math.Abs(float.Parse(dayData.Consumption == null ? "0.00" : dayData.Consumption));
                         }
                     }
                 }
-                else
+            }
+            else
+            {
+                foreach (SMUsageHistoryData.ByDayData ByDay in selectedHistoryData.ByDay)
                 {
-                    foreach (SMUsageHistoryData.ByDayData ByDay in selectedHistoryData.ByDay)
+                    foreach (SMUsageHistoryData.ByDayData.DayData dayData in ByDay.Days)
                     {
-                        foreach (SMUsageHistoryData.ByDayData.DayData dayData in ByDay.Days)
+                        if (Math.Abs(float.Parse(dayData.CO2 == null ? "0.00" : dayData.CO2)) > val)
                         {
-                            if (Math.Abs(float.Parse(dayData.CO2 == null ? "0.00" : dayData.CO2)) > val)
-                            {
-                                val = Math.Abs(float.Parse(dayData.CO2 == null ? "0.00" : dayData.CO2));
-                            }
+                            val = Math.Abs(float.Parse(dayData.CO2 == null ? "0.00" : dayData.CO2));
                         }
                     }
                 }
-                if (val == 0)
-                {
-                    val = 1;
-                }
+            }
+            if(val == 0){
+                val = 1;
+            }
 
             }
             catch (Exception e)
@@ -1614,42 +1675,40 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         internal float GetMaxMonthValues()
         {
             float val = 0;
-            try
+            try {
+            if (ChartDataType == ChartDataType.RM)
             {
-                if (ChartDataType == ChartDataType.RM)
+                foreach (SMUsageHistoryData.ByMonthData.MonthData MonthData in selectedHistoryData.ByMonth[0].Months)
                 {
-                    foreach (SMUsageHistoryData.ByMonthData.MonthData MonthData in selectedHistoryData.ByMonth[0].Months)
+                    if (Math.Abs(float.Parse(MonthData.Amount == null ? "0.00" : MonthData.Amount)) > val)
                     {
-                        if (Math.Abs(float.Parse(MonthData.Amount == null ? "0.00" : MonthData.Amount)) > val)
-                        {
-                            val = Math.Abs(float.Parse(MonthData.Amount == null ? "0.00" : MonthData.Amount));
-                        }
+                        val = Math.Abs(float.Parse(MonthData.Amount == null ? "0.00" : MonthData.Amount));
                     }
                 }
-                else if (ChartDataType == ChartDataType.kWh)
+            }
+            else if(ChartDataType == ChartDataType.kWh)
+            {
+                foreach (SMUsageHistoryData.ByMonthData.MonthData MonthData in selectedHistoryData.ByMonth[0].Months)
                 {
-                    foreach (SMUsageHistoryData.ByMonthData.MonthData MonthData in selectedHistoryData.ByMonth[0].Months)
+                    if (Math.Abs(float.Parse(MonthData.Consumption == null ? "0.00" : MonthData.Consumption)) > val)
                     {
-                        if (Math.Abs(float.Parse(MonthData.Consumption == null ? "0.00" : MonthData.Consumption)) > val)
-                        {
-                            val = Math.Abs(float.Parse(MonthData.Consumption == null ? "0.00" : MonthData.Consumption));
-                        }
+                        val = Math.Abs(float.Parse(MonthData.Consumption == null ? "0.00" : MonthData.Consumption));
                     }
                 }
-                else if (ChartDataType == ChartDataType.CO2)
+            }
+            else if (ChartDataType == ChartDataType.CO2)
+            {
+                foreach (SMUsageHistoryData.ByMonthData.MonthData MonthData in selectedHistoryData.ByMonth[0].Months)
                 {
-                    foreach (SMUsageHistoryData.ByMonthData.MonthData MonthData in selectedHistoryData.ByMonth[0].Months)
+                    if (Math.Abs(float.Parse(MonthData.CO2 == null ? "0.00" : MonthData.CO2)) > val)
                     {
-                        if (Math.Abs(float.Parse(MonthData.CO2 == null ? "0.00" : MonthData.CO2)) > val)
-                        {
-                            val = Math.Abs(float.Parse(MonthData.CO2 == null ? "0.00" : MonthData.CO2));
-                        }
+                        val = Math.Abs(float.Parse(MonthData.CO2 == null ? "0.00" : MonthData.CO2));
                     }
                 }
-                if (val == 0)
-                {
-                    val = 1;
-                }
+            }
+            if(val == 0){
+                val = 1;
+            }
             }
             catch (Exception e)
             {
@@ -1661,22 +1720,19 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         internal float GetMaxHoursValues()
         {
             float val = 0;
-            try
+            try {
+            foreach (SMUsageHistoryData.ByDayData ByDay in selectedHistoryData.ByDay)
             {
-                foreach (SMUsageHistoryData.ByDayData ByDay in selectedHistoryData.ByDay)
+                foreach (SMUsageHistoryData.ByDayData.DayData dayData in ByDay.Days)
                 {
-                    foreach (SMUsageHistoryData.ByDayData.DayData dayData in ByDay.Days)
+                    if (Math.Abs(float.Parse(dayData.Amount == null ? "0.00" : dayData.Amount)) > val)
                     {
-                        if (Math.Abs(float.Parse(dayData.Amount == null ? "0.00" : dayData.Amount)) > val)
-                        {
-                            val = Math.Abs(float.Parse(dayData.Amount == null ? "0.00" : dayData.Amount));
-                        }
+                        val = Math.Abs(float.Parse(dayData.Amount == null ? "0.00" : dayData.Amount));
                     }
                 }
-
             }
-            catch (Exception e)
-            {
+
+        } catch (Exception e)  {
                 Utility.LoggingNonFatalError(e);
             }
             return val;
@@ -1725,21 +1781,19 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         private Snackbar mNoInternetSnackbar;
         public void ShowNoInternetSnackbar()
         {
-            try
+            try {
+            if (mNoInternetSnackbar != null && mNoInternetSnackbar.IsShown)
             {
-                if (mNoInternetSnackbar != null && mNoInternetSnackbar.IsShown)
-                {
-                    mNoInternetSnackbar.Dismiss();
-                }
+                mNoInternetSnackbar.Dismiss();
+            }
 
-                mNoInternetSnackbar = Snackbar.Make(rootView, GetString(Resource.String.dashboard_chartview_data_not_available_no_internet), Snackbar.LengthIndefinite)
-                .SetAction(GetString(Resource.String.dashboard_chartview_data_not_available_no_internet_btn_close), delegate
-                {
+            mNoInternetSnackbar = Snackbar.Make(rootView, GetString(Resource.String.dashboard_chartview_data_not_available_no_internet), Snackbar.LengthIndefinite)
+            .SetAction(GetString(Resource.String.dashboard_chartview_data_not_available_no_internet_btn_close), delegate {
 
-                    mNoInternetSnackbar.Dismiss();
-                }
-                );
-                mNoInternetSnackbar.Show();
+                mNoInternetSnackbar.Dismiss();
+            }
+            );
+            mNoInternetSnackbar.Show();
             }
             catch (Exception e)
             {
@@ -1750,8 +1804,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         public void ShowNotification()
         {
             Intent intent = GetIntentObject(typeof(NotificationActivity));
-            if (intent != null && IsAdded)
-            {
+            if (intent != null && IsAdded) {
                 StartActivity(intent);
             }
 
@@ -1767,26 +1820,25 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
         public void HideAmountProgress()
         {
-            try
-            {
-                progressBar.Visibility = ViewStates.Gone;
-                totalPayableLayout.Visibility = ViewStates.Visible;
-                bottomSheetBehavior.State = BottomSheetBehavior.StateExpanded;
+            try {
+            progressBar.Visibility = ViewStates.Gone;
+            totalPayableLayout.Visibility = ViewStates.Visible;
+            bottomSheetBehavior.State = BottomSheetBehavior.StateExpanded;
 
-                ///<summary>
-                /// Scroll animation 
-                ///</summary>
+            ///<summary>
+            /// Scroll animation
+            ///</summary>
 
-                //ScrollUpDownScrollView(0);
-                //System.Timers.Timer waitTimer = new System.Timers.Timer(800);
-                //waitTimer.Elapsed += delegate {
-                //    ScrollUpDownScrollView(1);
-                //    if(waitTimer != null)
-                //    {
-                //        waitTimer.Stop();
-                //    }
-                //};
-                //waitTimer.Start();
+            //ScrollUpDownScrollView(0);
+            //System.Timers.Timer waitTimer = new System.Timers.Timer(800);
+            //waitTimer.Elapsed += delegate {
+            //    ScrollUpDownScrollView(1);
+            //    if(waitTimer != null)
+            //    {
+            //        waitTimer.Stop();
+            //    }
+            //};
+            //waitTimer.Start();
 
             }
             catch (Exception e)
@@ -1797,72 +1849,71 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
         public void ShowAmountDue(AccountDueAmount accountDueAmount)
         {
+            try {
+            Date d = null;
             try
             {
-                Date d = null;
-                try
-                {
-                    d = dateParser.Parse(accountDueAmount.BillDueDate);
-                }
-                catch (ParseException e)
-                {
+                d = dateParser.Parse(accountDueAmount.BillDueDate);
+            }
+            catch (ParseException e)
+            {
                     Utility.LoggingNonFatalError(e);
-                }
+            }
 
-                if (d != null)
+            if (d != null)
+            {
+                if (selectedAccount != null)
                 {
-                    if (selectedAccount != null)
+                    if (selectedAccount.AccountCategoryId.Equals("2"))
                     {
-                        if (selectedAccount.AccountCategoryId.Equals("2"))
+                        selectedAccount.AmtCustBal = accountDueAmount.AmountDue;
+                        double calAmt = selectedAccount.AmtCustBal * -1;
+                        if (calAmt <= 0)
                         {
-                            selectedAccount.AmtCustBal = accountDueAmount.AmountDue;
-                            double calAmt = selectedAccount.AmtCustBal * -1;
-                            if (calAmt <= 0)
-                            {
-                                calAmt = 0.00;
-                            }
-                            else
-                            {
-                                calAmt = Math.Abs(selectedAccount.AmtCustBal);
-                            }
-                            txtTotalPayable.Text = decimalFormat.Format(calAmt);
-
-
-                            int incrementDays = int.Parse(accountDueAmount.IncrementREDueDateByDays == null ? "0" : accountDueAmount.IncrementREDueDateByDays);
-                            Constants.RE_ACCOUNT_DATE_INCREMENT_DAYS = incrementDays;
-                            Calendar c = Calendar.Instance;
-                            c.Time = d;
-                            c.Add(CalendarField.Date, incrementDays);
-                            Date newDate = c.Time;
-                            if (calAmt == 0.00)
-                            {
-                                txtDueDate.Text = "--";
-                            }
-                            else
-                            {
-                                txtDueDate.Text = GetString(Resource.String.dashboard_chartview_by_date_wildcard, dateFormatter.Format(newDate));
-                            }
+                            calAmt = 0.00;
                         }
                         else
                         {
-                            txtTotalPayable.Text = decimalFormat.Format(accountDueAmount.AmountDue);
-                            selectedAccount.AmtCustBal = accountDueAmount.AmountDue;
-                            double calAmt = selectedAccount.AmtCustBal;
-                            if (calAmt <= 0.00)
-                            {
-                                txtDueDate.Text = "--";
-                            }
-                            else
-                            {
-                                txtDueDate.Text = GetString(Resource.String.dashboard_chartview_due_date_wildcard, dateFormatter.Format(d));
-                            }
+                            calAmt = Math.Abs(selectedAccount.AmtCustBal);
+                        }
+                        txtTotalPayable.Text = decimalFormat.Format(calAmt);
+
+
+                        int incrementDays = int.Parse(accountDueAmount.IncrementREDueDateByDays == null ? "0" : accountDueAmount.IncrementREDueDateByDays);
+                        Constants.RE_ACCOUNT_DATE_INCREMENT_DAYS = incrementDays;
+                        Calendar c = Calendar.Instance;
+                        c.Time = d;
+                        c.Add(CalendarField.Date, incrementDays);
+                        Date newDate = c.Time;
+                        if (calAmt == 0.00)
+                        {
+                            txtDueDate.Text = "--";
+                        }
+                        else
+                        {
+                            txtDueDate.Text = GetString(Resource.String.dashboard_chartview_by_date_wildcard, dateFormatter.Format(newDate));
+                        }
+                    }
+                    else
+                    {
+                        txtTotalPayable.Text = decimalFormat.Format(accountDueAmount.AmountDue);
+                        selectedAccount.AmtCustBal = accountDueAmount.AmountDue;
+                        double calAmt = selectedAccount.AmtCustBal;
+                        if (calAmt <= 0.00)
+                        {
+                            txtDueDate.Text = "--";
+                        }
+                        else
+                        {
+                            txtDueDate.Text = GetString(Resource.String.dashboard_chartview_due_date_wildcard, dateFormatter.Format(d));
                         }
                     }
                 }
-                else
-                {
-                    txtDueDate.Text = GetString(Resource.String.dashboard_chartview_due_date_not_available);
-                }
+            }
+            else
+            {
+                txtDueDate.Text = GetString(Resource.String.dashboard_chartview_due_date_not_available);
+            }
             }
             catch (Exception e)
             {
@@ -1873,25 +1924,21 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         private Snackbar mCancelledExceptionSnackBar;
         public void ShowRetryOptionsCancelledException(System.OperationCanceledException operationCanceledException)
         {
-            try
+            try {
+            if (mCancelledExceptionSnackBar != null && mCancelledExceptionSnackBar.IsShown)
             {
-                if (mCancelledExceptionSnackBar != null && mCancelledExceptionSnackBar.IsShown)
-                {
-                    mCancelledExceptionSnackBar.Dismiss();
-                }
-
-                mCancelledExceptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.dashboard_chart_cancelled_exception_error), Snackbar.LengthIndefinite)
-                .SetAction(GetString(Resource.String.dashboard_chart_cancelled_exception_btn_retry), delegate
-                {
-
-                    mCancelledExceptionSnackBar.Dismiss();
-                    this.userActionsListener.OnLoadAmount(selectedAccount.AccountNum);
-                }
-                );
-                mCancelledExceptionSnackBar.Show();
+                mCancelledExceptionSnackBar.Dismiss();
             }
-            catch (Exception e)
-            {
+
+            mCancelledExceptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.dashboard_chart_cancelled_exception_error), Snackbar.LengthIndefinite)
+            .SetAction(GetString(Resource.String.dashboard_chart_cancelled_exception_btn_retry), delegate {
+
+                mCancelledExceptionSnackBar.Dismiss();
+                this.userActionsListener.OnLoadAmount(selectedAccount.AccountNum);
+            }
+            );
+            mCancelledExceptionSnackBar.Show();
+        } catch (Exception e)  {
                 Utility.LoggingNonFatalError(e);
             }
         }
@@ -1899,22 +1946,20 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         private Snackbar mApiExcecptionSnackBar;
         public void ShowRetryOptionsApiException(ApiException apiException)
         {
-            try
+            try {
+            if (mApiExcecptionSnackBar != null && mApiExcecptionSnackBar.IsShown)
             {
-                if (mApiExcecptionSnackBar != null && mApiExcecptionSnackBar.IsShown)
-                {
-                    mApiExcecptionSnackBar.Dismiss();
-                }
+                mApiExcecptionSnackBar.Dismiss();
+            }
 
-                mApiExcecptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.dashboard_chart_api_exception_error), Snackbar.LengthIndefinite)
-                .SetAction(GetString(Resource.String.dashboard_chart_api_exception_btn_retry), delegate
-                {
+            mApiExcecptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.dashboard_chart_api_exception_error), Snackbar.LengthIndefinite)
+            .SetAction(GetString(Resource.String.dashboard_chart_api_exception_btn_retry), delegate {
 
-                    mApiExcecptionSnackBar.Dismiss();
-                    this.userActionsListener.OnLoadAmount(selectedAccount.AccountNum);
-                }
-                );
-                mApiExcecptionSnackBar.Show();
+                mApiExcecptionSnackBar.Dismiss();
+                this.userActionsListener.OnLoadAmount(selectedAccount.AccountNum);
+            }
+            );
+            mApiExcecptionSnackBar.Show();
             }
             catch (Exception e)
             {
@@ -1925,24 +1970,22 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         private Snackbar mUknownExceptionSnackBar;
         public void ShowRetryOptionsUnknownException(Exception exception)
         {
-            try
+            try {
+            if (mUknownExceptionSnackBar != null && mUknownExceptionSnackBar.IsShown)
             {
-                if (mUknownExceptionSnackBar != null && mUknownExceptionSnackBar.IsShown)
-                {
-                    mUknownExceptionSnackBar.Dismiss();
+                mUknownExceptionSnackBar.Dismiss();
 
-                }
+            }
 
-                mUknownExceptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.dashboard_chart_unknown_exception_error), Snackbar.LengthIndefinite)
-                .SetAction(GetString(Resource.String.dashboard_chart_unknown_exception_btn_retry), delegate
-                {
+            mUknownExceptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.dashboard_chart_unknown_exception_error), Snackbar.LengthIndefinite)
+            .SetAction(GetString(Resource.String.dashboard_chart_unknown_exception_btn_retry), delegate {
 
-                    mUknownExceptionSnackBar.Dismiss();
-                    this.userActionsListener.OnLoadAmount(selectedAccount.AccountNum);
+                mUknownExceptionSnackBar.Dismiss();
+                this.userActionsListener.OnLoadAmount(selectedAccount.AccountNum);
 
-                }
-                );
-                mUknownExceptionSnackBar.Show();
+            }
+            );
+            mUknownExceptionSnackBar.Show();
             }
             catch (Exception e)
             {
@@ -1968,7 +2011,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             //try {
             //if (weblink.OpenWith.Equals("APP"))
             //{
-            //        Intent smartMeterINtent = GetIntentObject(typeof(SmartMeterLearnMoreActivity));  
+            //        Intent smartMeterINtent = GetIntentObject(typeof(SmartMeterLearnMoreActivity));
             //    //Intent smartMeterINtent = new Intent(this.Activity, typeof(SmartMeterLearnMoreActivity));
             //    smartMeterINtent.PutExtra(Constants.SMART_METER_LINK, JsonConvert.SerializeObject(weblink));
             //    StartActivity(smartMeterINtent);
@@ -1991,11 +2034,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             View view = (View)scrollView.GetChildAt(scrollView.ChildCount - 1);
             int scrollPosition = t - oldt;
             // if diff is zero, then the bottom has been reached
-            if (scrollPosition > 0)
+            if (scrollPosition > 0 )
             {
                 bottomSheetBehavior.State = BottomSheetBehavior.StateHidden;
             }
-            else if (scrollPosition < 0)
+            else if(scrollPosition < 0)
             {
                 bottomSheetBehavior.State = BottomSheetBehavior.StateExpanded;
             }
@@ -2012,18 +2055,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             {
                 if (noSMDataFOund)
                 {
-                    if (newState == BottomSheetBehavior.StateHidden)
-                    {
-                        bottomSheetBehavior.State = BottomSheetBehavior.StateExpanded;
-                    }
-                    if (newState == BottomSheetBehavior.StateDragging)
-                    {
-                        bottomSheetBehavior.State = BottomSheetBehavior.StateExpanded;
-                    }
-                }
-                else
-                {
-                    if (newState == BottomSheetBehavior.StateDragging)
+                    if(newState == BottomSheetBehavior.StateHidden)
                     {
                         bottomSheetBehavior.State = BottomSheetBehavior.StateExpanded;
                     }
@@ -2034,10 +2066,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
         private void ScrollUpDownScrollView(int UpDown)
         {
-            if (Activity != null)
+            if(Activity != null)
             {
-                Activity.RunOnUiThread(() =>
-                {
+                Activity.RunOnUiThread(() => {
                     ScrollViewTowards(UpDown);
                 });
             }
@@ -2049,7 +2080,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             {
                 scrollView.FullScroll(FocusSearchDirection.Down);
             }
-            else if (UpDown == 1)
+            else if(UpDown == 1)
             {
                 scrollView.FullScroll(FocusSearchDirection.Up);
             }
@@ -2103,5 +2134,62 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             return activity;
         }
 
+        public void OnClick(View v)
+        {
+            OnWhatIsThisTap();
+        }
+
+        class URLSpanNoUnderline : URLSpan
+        {
+            public URLSpanNoUnderline(string url) : base(url)
+            {
+            }
+
+            public override void UpdateDrawState(TextPaint ds)
+            {
+                base.UpdateDrawState(ds);
+                ds.UnderlineText = false;
+            }
+        }
+
+        private void OnWhatIsThisAccountStatusTap(string dialogMessage, string btnLabelText)
+        {
+            TooltipGenerator tooltipGenerator = new TooltipGenerator(Activity);
+            tooltipGenerator.Create(dialogMessage);
+            tooltipGenerator.AddAction(btnLabelText);
+            tooltipGenerator.Show();
+        }
+
+        private void SetAccountStatusVisibility(ViewStates viewStates)
+        {
+            addressDivider.Visibility = viewStates;
+            txtAccountStatus.Visibility = viewStates;
+            txtWhatAccountStatus.Visibility = viewStates;
+        }
+
+        public void ShowAccountStatus(AccountStatusData accountStatusData)
+        {
+            if (accountStatusData.DisconnectionStatus != "Available")
+            {
+                SetAccountStatusVisibility(ViewStates.Visible);
+                if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.N)
+                {
+                    txtAccountStatus.TextFormatted = Html.FromHtml(accountStatusData.AccountStatusMessage, FromHtmlOptions.ModeLegacy);
+                }
+                else
+                {
+                    txtAccountStatus.TextFormatted = Html.FromHtml(accountStatusData.AccountStatusMessage);
+                }
+                txtWhatAccountStatus.Text = accountStatusData.AccountStatusModalTitle;
+                txtWhatAccountStatus.Click += delegate
+                {
+                    OnWhatIsThisAccountStatusTap(accountStatusData.AccountStatusModalMessage,accountStatusData.AccountStatusModalBtnText);
+                };
+            }
+            else
+            {
+                SetAccountStatusVisibility(ViewStates.Gone);
+            }
+        }
     }
 }

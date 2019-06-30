@@ -1069,6 +1069,14 @@
     <Compile Include="Src\AppLaunch\Async\MasterApiDBOperation.cs" />
     <Compile Include="Src\myTNBMenu\Async\SiteCorePromotioAPI.cs" />
     <Compile Include="Src\myTNBMenu\Async\UserNotificationAPI.cs" />
+    <AndroidResource Include="Resources\layout\WhatIsThisDialogView.axml" />
+    <AndroidResource Include="Resources\drawable\rounded_corner_dialog.xml" />
+    <Compile Include="Src\myTNBMenu\Api\IGetInstallationDetailsApi.cs" />
+    <Compile Include="Src\myTNBMenu\Models\GetInstallationDetailsResponse.cs" />
+    <Compile Include="Src\myTNBMenu\Requests\GetInstallationDetailsRequest.cs" />
+    <Compile Include="Src\myTNBMenu\Models\GetInstallationDetailResponse.cs" />
+    <Compile Include="Src\Utils\TooltipGenerator.cs" />
+    <AndroidResource Include="Resources\layout\ToolTipSingleButtonView.axml" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

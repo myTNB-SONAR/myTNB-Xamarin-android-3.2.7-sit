@@ -39,6 +39,13 @@ using System;
 using System.Collections.Generic;
 using static MikePhil.Charting.Components.XAxis;
 using static MikePhil.Charting.Components.YAxis;
+using myTNB_Android.Src.AppLaunch.Models;
+using myTNB_Android.Src.MultipleAccountPayment.Activity;
+using Android.Support.V7.App;
+using Android.Text;
+using myTNB_Android.Src.FAQ.Activity;
+using Java.Lang;
+using static myTNB_Android.Src.myTNBMenu.Models.GetInstallationDetailsResponse;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments
 {
@@ -85,6 +92,15 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
         [BindView(Resource.Id.txtAddress)]
         TextView txtAddress;
+
+        [BindView(Resource.Id.addressDivider)]
+        View addressDivider;
+
+        [BindView(Resource.Id.txtAccountStatus)]
+        TextView txtAccountStatus;
+
+        [BindView(Resource.Id.txtWhatAccountStatus)]
+        TextView txtWhatAccountStatus;
 
         [BindView(Resource.Id.txtRange)]
         TextView txtRange;
@@ -303,7 +319,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                 downtimeSnackBar.Show();
                             }
                         }
-
+                        this.userActionsListener.GetAccountStatus(selectedAccount.AccountNum);
                         this.userActionsListener.OnLoadAmount(selectedAccount.AccountNum);
                     }
 
@@ -478,7 +494,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
 
         }
-        #endregion 
+        #endregion
 
         #region SETUP AXIS DAY
         internal void SetUpXAxisDay()
@@ -507,7 +523,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         }
         #endregion
 
-        #region SETUP Y AXIS BOTH MONTH 
+        #region SETUP Y AXIS BOTH MONTH
         internal void SetUpYAxis()
         {
             IAxisValueFormatter custom = new MyAxisValueFormatter();
@@ -572,7 +588,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             //rightAxis.SetStartAtZero(true);
 
         }
-        #endregion  
+        #endregion
 
         #region SETUP MARKERVIEW MONTH / HIGHLIGHT TEXT
         internal void SetUpMarkerMonthView()
@@ -813,7 +829,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
             //Intent viewBill = null;
             //if (activity != null) {
-            //    viewBill = new Intent(activity, typeof(ViewBillActivity));    
+            //    viewBill = new Intent(activity, typeof(ViewBillActivity));
             //} else if (this.Activity != null) {
             //    viewBill = new Intent(this.Activity, typeof(ViewBillActivity));
             //}
@@ -1401,6 +1417,46 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         protected override Android.App.Activity GetActivityObject()
         {
             return activity;
+        }
+
+        private void OnWhatIsThisAccountStatusTap(string dialogMessage, string btnLabelText)
+        {
+            TooltipGenerator tooltipGenerator = new TooltipGenerator(Activity);
+            tooltipGenerator.Create(dialogMessage);
+            tooltipGenerator.AddAction(btnLabelText);
+            tooltipGenerator.Show();
+        }
+
+        private void SetAccountStatusVisibility(ViewStates viewStates)
+        {
+            addressDivider.Visibility = viewStates;
+            txtAccountStatus.Visibility = viewStates;
+            txtWhatAccountStatus.Visibility = viewStates;
+        }
+
+        public void ShowAccountStatus(AccountStatusData accountStatusData)
+        {
+            if (accountStatusData.DisconnectionStatus != "Available")
+            {
+                SetAccountStatusVisibility(ViewStates.Visible);
+                if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.N)
+                {
+                    txtAccountStatus.TextFormatted = Html.FromHtml(accountStatusData.AccountStatusMessage, FromHtmlOptions.ModeLegacy);
+                }
+                else
+                {
+                    txtAccountStatus.TextFormatted = Html.FromHtml(accountStatusData.AccountStatusMessage);
+                }
+                txtWhatAccountStatus.Text = accountStatusData.AccountStatusModalTitle;
+                txtWhatAccountStatus.Click += delegate
+                {
+                    OnWhatIsThisAccountStatusTap(accountStatusData.AccountStatusModalMessage, accountStatusData.AccountStatusModalBtnText);
+                };
+            }
+            else
+            {
+                SetAccountStatusVisibility(ViewStates.Gone);
+            }
         }
 
     }

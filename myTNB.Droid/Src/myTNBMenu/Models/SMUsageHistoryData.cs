@@ -24,6 +24,9 @@ namespace myTNB_Android.Src.myTNBMenu.Models
         [AliasAs("ByDay")]
         public List<ByDayData> ByDay { get; set; }
 
+        [JsonProperty(PropertyName = "ToolTips")]
+        [AliasAs("ToolTips")]
+        public List<SmartMeterToolTips> ToolTips { get; set; }
 
         public class OtherUsageMetricsData
         {
@@ -38,6 +41,10 @@ namespace myTNB_Android.Src.myTNBMenu.Models
             [JsonProperty(PropertyName = "StatsByCo2")]
             [AliasAs("StatsByCo2")]
             public List<StatsByCo2> StatsByCo2 { get; set; }
+
+            [JsonProperty(PropertyName = "CurrentCycleStartDate")]
+            [AliasAs("CurrentCycleStartDate")]
+            public string CurrentCycleStartDate { get; set; }
         }
 
         public class StatsByCost
@@ -177,6 +184,29 @@ namespace myTNB_Android.Src.myTNBMenu.Models
                 [AliasAs("CO2")]
                 public string CO2 { get; set; }
             }
+        }
+
+        public class SmartMeterToolTips
+        {
+            [JsonProperty(PropertyName = "Type")]
+            [AliasAs("Type")]
+            public string Type { get; set; }
+
+            [JsonProperty(PropertyName = "Title")]
+            [AliasAs("Title")]
+            public string Title { get; set; }
+
+            [JsonProperty(PropertyName = "Message")]
+            [AliasAs("Message")]
+            public string Message { get; set; }
+
+            [JsonProperty(PropertyName = "SMLink")]
+            [AliasAs("SMLink")]
+            public string SMLink { get; set; }
+
+            [JsonProperty(PropertyName = "SMBtnText")]
+            [AliasAs("SMBtnText")]
+            public string SMBtnText { get; set; }
         }
     }
 
