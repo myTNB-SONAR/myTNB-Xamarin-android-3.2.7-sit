@@ -421,6 +421,89 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
             }
         }
 
+        public async void GetAccountStatus(string accountNum)
+        {
+            cts = new CancellationTokenSource();
+            if (mView.IsActive())
+            {
+                this.mView.ShowAmountProgress();
+            }
+            //this.mView.DisablePayButton();
+            ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
+#if DEBUG
+            var httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
+            var installDetailsApi = RestService.For<IGetInstallationDetailsApi>(httpClient);
+
+#else
+            var installDetailsApi = RestService.For<GetInstallationDetails>(Constants.SERVER_URL.END_POINT);
+
+#endif 
+
+            try
+            {
+                var installDetailsResponse = await installDetailsApi.GetInstallationDetails(new Requests.GetInstallationDetailsRequest()
+                {
+                    ApiKeyId = Constants.APP_CONFIG.API_KEY_ID,
+                    AccNum = accountNum
+                }, cts.Token);
+
+
+                if (this.mView.IsActive())
+                {
+                    this.mView.HideAmountProgress();
+
+                    if (!installDetailsResponse.Data.IsError)
+                    {
+                        this.mView.ShowAccountStatus(installDetailsResponse.Data.Data);
+                    }
+                    else
+                    {
+                        this.mView.ShowRetryOptionsApiException(null);
+                    }
+
+
+                }
+            }
+            catch (System.OperationCanceledException e)
+            {
+                if (this.mView.IsActive())
+                {
+                    this.mView.HideAmountProgress();
+                    this.mView.ShowRetryOptionsCancelledException(e);
+
+                }
+                Utility.LoggingNonFatalError(e);
+            }
+            catch (ApiException apiException)
+            {
+                // ADD HTTP CONNECTION EXCEPTION HERE
+                if (this.mView.IsActive())
+                {
+                    this.mView.HideAmountProgress();
+                    this.mView.ShowRetryOptionsApiException(apiException);
+                }
+                Utility.LoggingNonFatalError(apiException);
+            }
+            catch (Exception e)
+            {
+                // ADD UNKNOWN EXCEPTION HERE
+                if (this.mView.IsActive())
+                {
+                    this.mView.HideAmountProgress();
+                    this.mView.ShowRetryOptionsUnknownException(e);
+                }
+                Utility.LoggingNonFatalError(e);
+            }
+
+            //if (this.mView.IsActive())
+            //{
+            //    this.mView.HideAmountProgress();
+
+            //}
+
+
+        }
+
 
     }
 }

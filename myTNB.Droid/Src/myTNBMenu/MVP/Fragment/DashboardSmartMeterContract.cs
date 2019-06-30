@@ -13,6 +13,7 @@ using myTNB_Android.Src.Base.MVP;
 using myTNB_Android.Src.myTNBMenu.Models;
 using Refit;
 using myTNB_Android.Src.AppLaunch.Models;
+using static myTNB_Android.Src.myTNBMenu.Models.GetInstallationDetailsResponse;
 
 namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
 {
@@ -153,6 +154,12 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
             /// </summary>
             void DisablePayButton();
 
+            /// <summary>
+            /// Show Account Status
+            /// </summary>
+            /// <param name="accountStatus">AccountStatusData</param>
+            void ShowAccountStatus(AccountStatusData accountStatus);
+
 
             /// <summary>
             /// Shows a cancelled exception with an option to retry
@@ -231,6 +238,12 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
             /// Action to navigate to learn more
             /// </summary>
             void OnLearnMore();
+
+            /// <summary>
+            /// Action to get Account Status
+            /// </summary>
+            /// <param name="accountNum">string</param>
+            void GetAccountStatus(string accountNum);
         }
     }
 }

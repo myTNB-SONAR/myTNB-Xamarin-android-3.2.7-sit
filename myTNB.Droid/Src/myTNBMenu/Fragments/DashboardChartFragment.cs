@@ -44,6 +44,7 @@ using Android.Support.V7.App;
 using Android.Text;
 using myTNB_Android.Src.FAQ.Activity;
 using Java.Lang;
+using static myTNB_Android.Src.myTNBMenu.Models.GetInstallationDetailsResponse;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments
 {
@@ -90,6 +91,15 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
         [BindView(Resource.Id.txtAddress)]
         TextView txtAddress;
+
+        [BindView(Resource.Id.addressDivider)]
+        View addressDivider;
+
+        [BindView(Resource.Id.txtAccountStatus)]
+        TextView txtAccountStatus;
+
+        [BindView(Resource.Id.txtWhatAccountStatus)]
+        TextView txtWhatAccountStatus;
 
         [BindView(Resource.Id.txtRange)]
         TextView txtRange;
@@ -308,7 +318,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                 downtimeSnackBar.Show();
                             }
                         }
-
+                        this.userActionsListener.GetAccountStatus(selectedAccount.AccountNum);
                         this.userActionsListener.OnLoadAmount(selectedAccount.AccountNum);
                     }
 
@@ -1381,6 +1391,46 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         protected override Android.App.Activity GetActivityObject()
         {
             return activity;
+        }
+
+        private void OnWhatIsThisAccountStatusTap(string dialogMessage, string btnLabelText)
+        {
+            TooltipGenerator tooltipGenerator = new TooltipGenerator(Activity);
+            tooltipGenerator.Create(dialogMessage);
+            tooltipGenerator.AddAction(btnLabelText);
+            tooltipGenerator.Show();
+        }
+
+        private void SetAccountStatusVisibility(ViewStates viewStates)
+        {
+            addressDivider.Visibility = viewStates;
+            txtAccountStatus.Visibility = viewStates;
+            txtWhatAccountStatus.Visibility = viewStates;
+        }
+
+        public void ShowAccountStatus(AccountStatusData accountStatusData)
+        {
+            if (accountStatusData.DisconnectionStatus != "Available")
+            {
+                SetAccountStatusVisibility(ViewStates.Visible);
+                if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.N)
+                {
+                    txtAccountStatus.TextFormatted = Html.FromHtml(accountStatusData.AccountStatusMessage, FromHtmlOptions.ModeLegacy);
+                }
+                else
+                {
+                    txtAccountStatus.TextFormatted = Html.FromHtml(accountStatusData.AccountStatusMessage);
+                }
+                txtWhatAccountStatus.Text = accountStatusData.AccountStatusModalTitle;
+                txtWhatAccountStatus.Click += delegate
+                {
+                    OnWhatIsThisAccountStatusTap(accountStatusData.AccountStatusModalMessage, accountStatusData.AccountStatusModalBtnText);
+                };
+            }
+            else
+            {
+                SetAccountStatusVisibility(ViewStates.Gone);
+            }
         }
 
     }
