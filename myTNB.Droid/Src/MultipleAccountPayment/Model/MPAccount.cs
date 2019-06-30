@@ -44,6 +44,8 @@
 
         public bool isTooltipShow { get; set; }
 
+        public bool tooltipPopUp { get; set; }
+
         public bool isSelected { get; set; }
 
         public bool isValidAmount { get; set; }

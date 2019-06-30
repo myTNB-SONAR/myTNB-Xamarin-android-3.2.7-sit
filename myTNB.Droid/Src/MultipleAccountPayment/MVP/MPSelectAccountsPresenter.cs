@@ -170,9 +170,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.MVP
         {
             try
             {
-                //if (mView.IsActive()) {
                 this.mView.ShowProgressDialog();
-                //}
 
 #if DEBUG || STUB
                 var httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
@@ -180,7 +178,6 @@ namespace myTNB_Android.Src.MultipleAccountPayment.MVP
 #else
             var api = RestService.For<MPGetAccountsDueAmountApi>(Constants.SERVER_URL.END_POINT);
 #endif
-                //var api = RestService.For<GetRegisteredCardsApi>(Constants.SERVER_URL.END_POINT);
 
                 List<MPAccount> storeAccounts = new List<MPAccount>();
                 bool getDetailsFromApi = true;
@@ -223,10 +220,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.MVP
                 if (getDetailsFromApi)
                 {
                     MPAccountDueResponse result = await api.GetMultiAccountDueAmount(new MPGetAccountDueAmountRequest(apiKeyId, accounts));
-                    //if (mView.IsActive())
-                    //{
                     this.mView.HideProgressDialog();
-                    //}
                     if (result.accountDueAmountResponse != null && !result.accountDueAmountResponse.IsError)
                     {
                         this.mView.GetAccountDueAmountResult(result);
@@ -239,10 +233,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.MVP
                 }
                 else
                 {
-                    //if (mView.IsActive())
-                    //{
                     this.mView.HideProgressDialog();
-                    //}
                     this.mView.GetAccountDueAmountResult(storeAccounts);
                 }
             }

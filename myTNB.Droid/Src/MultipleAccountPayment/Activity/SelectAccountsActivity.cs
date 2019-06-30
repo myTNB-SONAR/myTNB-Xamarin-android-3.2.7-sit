@@ -9,6 +9,7 @@ using Android.Support.Design.Widget;
 using Android.Support.V4.Content;
 using Android.Support.V7.Widget;
 using Android.Text;
+using Android.Text.Method;
 using Android.Util;
 using Android.Views;
 using Android.Views.InputMethods;
@@ -49,6 +50,8 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
         RecyclerView.LayoutManager layoutManager;
         SelectAccountListAdapter adapter;
         List<MPAccount> accountList = new List<MPAccount>();
+
+        private MaterialDialog mWhyThisAmtCardDialog;
 
         private int TOTAL_ACCOUNTS = 0;
         private int TOTAL_NUMBER_OF_ITEMS_TO_GET = 4;
@@ -119,7 +122,6 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
                 {
                     if (extras.ContainsKey(Constants.SELECTED_ACCOUNT))
                     {
-                        //selectedAccount = JsonConvert.DeserializeObject<AccountData>(Intent.Extras.GetString(Constants.SELECTED_ACCOUNT));
                         selectedAccount = DeSerialze<AccountData>(extras.GetString(Constants.SELECTED_ACCOUNT));
                         preSelectedAccount = selectedAccount.AccountNum;
                     }
@@ -224,13 +226,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
         {
             try
             {
-                //adapter = new SelectAccountListAdapter(this, accountList);
-                //layoutManager = new LinearLayoutManager(this, LinearLayoutManager.Vertical, false);
-                //accountListRecyclerView.SetLayoutManager(layoutManager);
-                //accountListRecyclerView.SetAdapter(adapter);
-                //adapter.NotifyDataSetChanged();
                 adapter.AddAccounts(accountList);
-                //adapter.CheckChanged += OnCheckChanged;
                 UpdateTotal(adapter.GetSelectedAccounts());
             }
             catch (Exception e)
@@ -251,10 +247,75 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
                 {
                     List<MPAccount> list = adapter.GetSelectedAccounts();
                     Log.Debug("Selected Accounts", " List " + list);
+                    MPAccount selectedAccount = list[position];
+                    if(selectedAccount.tooltipPopUp)
+                    {
+                        if(selectedAccount.isSelected && !selectedAccount.isTooltipShow && selectedAccount.OpenChargeTotal != 0)
+                        {
+                            ShowTooltip(selectedAccount);
+                            list[position].isTooltipShow = true;
+                        }
+                    }
                     UpdateTotal(list);
                 }
             }
             catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void ShowTooltip(MPAccount item)
+        {
+            try
+            {
+                mWhyThisAmtCardDialog = new MaterialDialog.Builder(this)
+                    .CustomView(Resource.Layout.CustomDialogDoubleButtonLayout, false)
+                    .Cancelable(false)
+                    .CanceledOnTouchOutside(false)
+                    .Build();
+
+                View dialogView = mWhyThisAmtCardDialog.Window.DecorView;
+                dialogView.SetBackgroundResource(Android.Resource.Color.Transparent);
+
+                TextView txtItemizedTitle = mWhyThisAmtCardDialog.FindViewById<TextView>(Resource.Id.txtTitle);
+                TextView txtItemizedMessage = mWhyThisAmtCardDialog.FindViewById<TextView>(Resource.Id.txtMessage);
+                TextView btnGotIt = mWhyThisAmtCardDialog.FindViewById<TextView>(Resource.Id.txtBtnSecond);
+                TextView btnBringMeThere = mWhyThisAmtCardDialog.FindViewById<TextView>(Resource.Id.txtBtnFirst);
+                txtItemizedMessage.MovementMethod = new ScrollingMovementMethod();
+                if (Build.VERSION.SdkInt >= BuildVersionCodes.N)
+                {
+                    txtItemizedMessage.TextFormatted = string.IsNullOrEmpty(item.MandatoryChargesMessage) ? Html.FromHtml(this.GetString(Resource.String.itemized_bill_third_message), FromHtmlOptions.ModeLegacy) : Html.FromHtml(item.MandatoryChargesMessage, FromHtmlOptions.ModeLegacy);
+                }
+                else
+                {
+                    txtItemizedMessage.TextFormatted = string.IsNullOrEmpty(item.MandatoryChargesMessage) ? Html.FromHtml(this.GetString(Resource.String.itemized_bill_third_message)) : Html.FromHtml(item.MandatoryChargesMessage);
+                }
+                txtItemizedTitle.Text = string.IsNullOrEmpty(item.MandatoryChargesTitle) ? this.GetString(Resource.String.itemized_bill_third_title) : item.MandatoryChargesTitle;
+                btnGotIt.Text = string.IsNullOrEmpty(item.MandatoryChargesSecButtonText) ? this.GetString(Resource.String.itemized_bill_got_it) : item.MandatoryChargesSecButtonText;
+                btnBringMeThere.Text = string.IsNullOrEmpty(item.MandatoryChargesPriButtonText) ? this.GetString(Resource.String.itemized_bill_bring_me_there) : item.MandatoryChargesPriButtonText;
+                TextViewUtils.SetMuseoSans500Typeface(txtItemizedTitle, btnGotIt, btnBringMeThere);
+                TextViewUtils.SetMuseoSans300Typeface(txtItemizedMessage);
+                btnGotIt.Click += delegate
+                {
+                    mWhyThisAmtCardDialog.Dismiss();
+                };
+                btnBringMeThere.Click += delegate
+                {
+                    try
+                    {
+                        NavigateBillScreen(item);
+                    }
+                    catch (System.Exception e)
+                    {
+                        Utility.LoggingNonFatalError(e);
+                    }
+                    mWhyThisAmtCardDialog.Dismiss();
+                };
+
+                mWhyThisAmtCardDialog.Show();
+            }
+            catch (System.Exception e)
             {
                 Utility.LoggingNonFatalError(e);
             }
@@ -292,10 +353,6 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
                 foreach (MPAccount account in selectedAccounts)
                 {
                     total += account.amount;
-                    if(account.OpenChargeTotal != 0) 
-                    {
-                        total += account.OpenChargeTotal;
-                    }
                 }
                 textTotalPayable.Text = payableFormatter.Format(total);
                 if (selectedAccounts.Count > 0)
@@ -313,7 +370,6 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
             {
                 Utility.LoggingNonFatalError(e);
             }
-            //IsValidAmount(total);
         }
 
         public void ShowError(string messge)
@@ -346,14 +402,10 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
             {
                 if (adapter.IsAllAmountValid())
                 {
-                    ///<remarks>
-                    /// Proceed to next screen 
-                    ///</remarks>
                     Intent payment_activity = new Intent(this, typeof(PaymentActivity));
                     payment_activity.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccount));
                     payment_activity.PutExtra("PAYMENT_ITEMS", JsonConvert.SerializeObject(adapter.GetSelectedAccounts()));
                     payment_activity.PutExtra("TOTAL", textTotalPayable.Text);
-                    //StartActivity(payment_activity);
                     StartActivityForResult(payment_activity, PaymentActivity.SELECT_PAYMENT_ACTIVITY_CODE);
                 }
                 else
@@ -410,10 +462,6 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
 
         public void ShowProgressDialog()
         {
-            //if (this.mGetDueAmountDialog != null && !this.mGetDueAmountDialog.IsShowing)
-            //{
-            //    this.mGetDueAmountDialog.Show();
-            //}
             try
             {
                 if (loadingOverlay != null && loadingOverlay.IsShowing)
@@ -432,10 +480,6 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
 
         public void HideProgressDialog()
         {
-            //if (this.mGetDueAmountDialog != null && this.mGetDueAmountDialog.IsShowing)
-            //{
-            //    this.mGetDueAmountDialog.Dismiss();
-            //}
             try
             {
                 if (loadingOverlay != null && loadingOverlay.IsShowing)
@@ -451,7 +495,6 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
 
         public void GetAccountDueAmountResult(MPAccountDueResponse response)
         {
-            //            List<CustomerBillingAccount> registerdAccounts = CustomerBillingAccount.List();
             try
             {
                 if (response != null)
@@ -482,7 +525,6 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
                                     orgAmount = dueAmount
                                 };
                                 accountList.Add(mpAccount);
-                                //}
 
                                 /*** Save SM Usage History For the Day***/
                                 SelectBillsEntity smUsageModel = new SelectBillsEntity();
@@ -520,7 +562,6 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
         {
             try
             {
-                //            List<CustomerBillingAccount> registerdAccounts = CustomerBillingAccount.List();
                 if (accounts != null)
                 {
                     if (accounts.Count > 0)
@@ -564,8 +605,6 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
                 }
                 else
                 {
-
-                    //INDEX_COUNTER = index * TOTAL_NUMBER_OF_ITEMS_TO_GET;
                     if (INDEX_COUNTER < TOTAL_ACCOUNTS)
                     {
                         if (NO_OF_ITARATION == 0)
@@ -618,7 +657,6 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
         {
             try
             {
-                //base.OnActivityResult(requestCode, resultCode, data);
                 if (requestCode == PaymentActivity.SELECT_PAYMENT_ACTIVITY_CODE)
                 {
                     if (resultCode == Result.Ok)

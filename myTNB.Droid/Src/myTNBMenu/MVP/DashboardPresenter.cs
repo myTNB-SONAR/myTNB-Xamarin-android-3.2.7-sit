@@ -219,7 +219,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                         }
 
                     }
-                    
                     // NO INTERNET RESPONSE
                     else if (resultCode == Result.FirstUser)
                     {
