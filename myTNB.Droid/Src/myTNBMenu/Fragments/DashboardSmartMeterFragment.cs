@@ -407,6 +407,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     if (bcrmEntity.IsDown)
                     {
                         DisablePayButton();
+                        txtDueDate.Text = GetString(Resource.String.dashboard_chartview_due_date_not_available);
+                        txtTotalPayable.Text = GetString(Resource.String.dashboard_chartview_due_date_not_available);
                         btnViewBill.Enabled = false;
                         btnViewBill.Background = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.silver_chalice_button_outline);
                         btnViewBill.SetTextColor(ContextCompat.GetColorStateList(this.Activity, Resource.Color.silverChalice));
@@ -1808,7 +1810,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     if (selectedAccount != null)
                     {
                         hasAmtDue = true;
-                        EnablePayButton();
+                        DownTimeEntity pgCCEntity = DownTimeEntity.GetByCode(Constants.PG_CC_SYSTEM);
+                        DownTimeEntity pgFPXEntity = DownTimeEntity.GetByCode(Constants.PG_FPX_SYSTEM);
+                        if(!pgCCEntity.IsDown || !pgFPXEntity.IsDown)
+                        {
+                            EnablePayButton();
+                        }
                         btnViewBill.Enabled = true;
                         btnViewBill.SetTextColor(ContextCompat.GetColorStateList(this.Activity, Resource.Color.freshGreen));
                         btnViewBill.Background = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.light_green_outline_button_background);
