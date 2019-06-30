@@ -353,6 +353,12 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
                 foreach (MPAccount account in selectedAccounts)
                 {
                     total += account.amount;
+#if true
+                    if (account.OpenChargeTotal != 0)
+                    {
+                        total += account.OpenChargeTotal;
+                    }
+#endif
                 }
                 textTotalPayable.Text = payableFormatter.Format(total);
                 if (selectedAccounts.Count > 0)

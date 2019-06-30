@@ -181,41 +181,6 @@ namespace myTNB_Android.Src.MultipleAccountPayment.MVP
 
                 List<MPAccount> storeAccounts = new List<MPAccount>();
                 bool getDetailsFromApi = true;
-                foreach (string account in accounts)
-                {
-                    getDetailsFromApi = true;
-                    break;
-                    if (!SelectBillsEntity.IsSMDataUpdated(account))
-                    {
-                        SelectBillsEntity storedEntity = SelectBillsEntity.GetItemByAccountNo(account);
-                        if (storedEntity != null)
-                        {
-                            MPAccount storedSMData = JsonConvert.DeserializeObject<MPAccount>(storedEntity.JsonResponse);
-                            if(!string.IsNullOrEmpty(preSelectedAccount))
-                            {
-                                if(account == preSelectedAccount)
-                                {
-                                    storedSMData.isSelected = true;
-                                }
-                                else
-                                {
-                                    storedSMData.isSelected = false;
-                                }
-                            }
-                            storeAccounts.Add(storedSMData);
-                        }
-                        else
-                        {
-                            getDetailsFromApi = true;
-                            break;
-                        }
-                    }
-                    else
-                    {
-                        getDetailsFromApi = true;
-                        break;
-                    }
-                }
 
                 if (getDetailsFromApi)
                 {
