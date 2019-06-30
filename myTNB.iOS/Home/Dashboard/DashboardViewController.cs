@@ -242,10 +242,9 @@ namespace myTNB.Dashboard
                     {
                         amountDueIsAvailable = false;
                         _dashboardMainComponent.ConstructRefreshScreen(RefreshScreen, _dueAmount.d);
-
+                        ActivityIndicator.Hide();
                     }
                     SetBillAndPaymentDetails();
-                    ActivityIndicator.Hide();
                 });
             });
         }
@@ -840,10 +839,10 @@ namespace myTNB.Dashboard
 
         void DisplayItemisedBillingToolTip()
         {
-            string title = _dueAmount.d.data.WhyThisAmountTitle ?? "Dashboard_TooltipTitle".Translate();
-            string msg = _dueAmount.d.data.WhyThisAmountMessage ?? "Dashboard_TooltipMessage".Translate();
-            string primaryButton = _dueAmount.d.data.WhyThisAmountPriButtonText ?? "Common_GotIt".Translate();
-            string secondaryButton = _dueAmount.d.data.WhyThisAmountSecButtonText ?? "Dashboard_BringMeThere".Translate();
+            string title = _dueAmount?.d?.data?.WhyThisAmountTitle ?? "Dashboard_TooltipTitle".Translate();
+            string msg = _dueAmount?.d?.data?.WhyThisAmountMessage ?? "Dashboard_TooltipMessage".Translate();
+            string primaryButton = _dueAmount?.d?.data?.WhyThisAmountPriButtonText ?? "Common_GotIt".Translate();
+            string secondaryButton = _dueAmount?.d?.data?.WhyThisAmountSecButtonText ?? "Dashboard_BringMeThere".Translate();
 
             DisplayCustomAlert(title, msg
                 , new Dictionary<string, Action>() {

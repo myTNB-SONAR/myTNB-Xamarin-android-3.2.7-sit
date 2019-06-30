@@ -4,9 +4,6 @@ using myTNB.Dashboard.DashboardComponents;
 using System.Threading.Tasks;
 using myTNB.Model;
 using myTNB.Home.Bill;
-using System.Drawing;
-using CoreGraphics;
-using CoreAnimation;
 using System.Globalization;
 using myTNB.DataManager;
 using Foundation;
@@ -33,7 +30,6 @@ namespace myTNB
         bool _paymentNeedsUpdate, isAnimating, isREAccount, isOwnedAccount
             , isFromReceiptScreen, isRefreshing;
         bool isBcrmAvailable = true;
-        nfloat headerMarginY = 15.0f;
 
         public BillViewController(IntPtr handle) : base(handle)
         {

@@ -185,15 +185,18 @@ namespace myTNB
             bool hasInvalidSelection = false;
             foreach (var item in _accountsForDisplay)
             {
-                if (item.IsAccountSelected)
+                if (_multiAccountDueAmount != null && _multiAccountDueAmount.d != null
+                    && _multiAccountDueAmount.d.data != null && item.IsAccountSelected)
                 {
-                    selectedAccountCount++;
-                    int accIndex = _multiAccountDueAmount.d.data.FindIndex(x => x.accNum == item.accNum);
                     double otherCharges = 0;
+                    selectedAccountCount++;
+#if true
+                    int accIndex = _multiAccountDueAmount.d.data.FindIndex(x => x.accNum == item.accNum);
                     if (accIndex > -1 && _multiAccountDueAmount.d.data[accIndex].IsItemisedBilling)
                     {
                         otherCharges = _multiAccountDueAmount.d.data[accIndex].OpenChargesTotal;
                     }
+#endif
                     if (item.Amount < TNBGlobal.PaymentMinAmnt)
                     {
                         hasInvalidSelection = true;
@@ -222,7 +225,13 @@ namespace myTNB
                 DisplayCustomAlert(data.MandatoryChargesTitle, data.MandatoryChargesMessage, new Dictionary<string, Action>() {
                     {
                         data.MandatoryChargesPriButtonText, ()=>{
-                            EvaluatePageSource(accNum);
+                            if (DataManager.DataManager.SharedInstance.AccountRecordsList!=null
+                                && DataManager.DataManager.SharedInstance.AccountRecordsList.d != null)
+                            {
+                                DataManager.DataManager.SharedInstance.SelectedAccount
+                                    = DataManager.DataManager.SharedInstance.AccountRecordsList.d.Find(x => x.accNum == accNum);
+                                ViewHelper.DismissControllersAndSelectTab(this, 1, true);
+                            }
                         }
                     }
                     ,{
@@ -231,13 +240,6 @@ namespace myTNB
                 });
                 isItemisedTooltipDisplayed = true;
             }
-        }
-
-        private void EvaluatePageSource(string accNumber)
-        {
-            DataManager.DataManager.SharedInstance.SelectedAccount
-                = DataManager.DataManager.SharedInstance.AccountRecordsList.d.Find(x => x.accNum == accNumber);
-            ViewHelper.DismissControllersAndSelectTab(this, 1, true);
         }
 
         void OnGetMultiAccountDueAmountServiceCall(List<string> accountsForQuery)
