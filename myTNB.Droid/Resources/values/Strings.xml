@@ -1347,7 +1347,7 @@ Please try again later.]]>
 	<string name="name_error">Name should not contain special characters.</string> 
 
 	<!-- Crashlytics -->
-	<string name="com.crashlytics.android.build_id">v1.1.8</string>
+	<string name="com.crashlytics.android.build_id">v1.1.9</string>
 
 
 	<string name="invalid_charac">Invalid characters. Use letters or numbers only.</string>

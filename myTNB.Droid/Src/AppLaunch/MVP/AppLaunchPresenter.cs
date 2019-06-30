@@ -86,6 +86,20 @@ namespace myTNB_Android.Src.AppLaunch.MVP
             }
         }
 
+        private bool IsAppNeedsUpdate(MasterData masterData)
+        {
+            MasterData.ForceUpdateInfoData forceUpdatedData = (MasterData.ForceUpdateInfoData)masterData.ForceUpdateInfo;
+            if (forceUpdatedData != null && forceUpdatedData.isAndroidForceUpdateOn)
+            {
+                Log.Debug("TEST", "= " + DeviceIdUtils.GetAppVersionCode());
+                if (int.Parse(forceUpdatedData.AndroidLatestVersion) > DeviceIdUtils.GetAppVersionCode())
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
         private async void LoadAccounts()
         {
             cts = new CancellationTokenSource();
@@ -136,29 +150,32 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                     bool appUpdateAvailable = false;
                     if (masterDataResponse.Data.MasterData.AppVersionList != null && masterDataResponse.Data.MasterData.AppVersionList.Count > 0)
                     {
-                        foreach (AppVersionList versionList in masterDataResponse.Data.MasterData.AppVersionList)
-                        {
-                            int serverVerison;
-                            if (versionList.Platform.Equals("1") || versionList.Platform.Equals("Android"))
-                            {
-                                if (string.IsNullOrEmpty(versionList.Version))
-                                {
-                                    appUpdateAvailable = false;
-                                }
-                                else if (int.TryParse(versionList.Version, out serverVerison))
-                                {
-                                    serverVerison = int.Parse(versionList.Version);
-                                    if (serverVerison > DeviceIdUtils.GetAppVersionCode())
-                                    {
-                                        appUpdateAvailable = true;
-                                    }
-                                }
-                            }
-                        }
-
+                        //foreach (AppVersionList versionList in masterDataResponse.Data.MasterData.AppVersionList)
+                        //{
+                        //    int serverVerison;
+                        //    if (versionList.Platform.Equals("1") || versionList.Platform.Equals("Android"))
+                        //    {
+                        //        if (string.IsNullOrEmpty(versionList.Version))
+                        //        {
+                        //            appUpdateAvailable = false;
+                        //        }
+                        //        else if (int.TryParse(versionList.Version, out serverVerison))
+                        //        {
+                        //            serverVerison = int.Parse(versionList.Version);
+                        //            if (serverVerison > DeviceIdUtils.GetAppVersionCode())
+                        //            {
+                        //                appUpdateAvailable = true;
+                        //            }
+                        //        }
+                        //    }
+                        //}
+                        appUpdateAvailable = IsAppNeedsUpdate(masterDataResponse.Data.MasterData);
                         if (appUpdateAvailable)
                         {
-                            this.mView.ShowUpdateAvailable();
+                            string modalTitle = masterDataResponse.Data.MasterData.ForceUpdateInfo.ModalTitle;
+                            string modalMessage = masterDataResponse.Data.MasterData.ForceUpdateInfo.ModalBody;
+                            string modalBtnLabel = masterDataResponse.Data.MasterData.ForceUpdateInfo.ModalBtnText;
+                            this.mView.ShowUpdateAvailable(modalTitle, modalMessage, modalBtnLabel);
                         }
                         else
                         {
