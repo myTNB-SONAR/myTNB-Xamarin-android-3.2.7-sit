@@ -39,9 +39,7 @@
     <EmbedAssembliesIntoApk>False</EmbedAssembliesIntoApk>
     <AndroidCreatePackagePerAbi>true</AndroidCreatePackagePerAbi>
     <AndroidSupportedAbis />
-    <AotAssemblies>false</AotAssemblies>
     <EnableLLVM>false</EnableLLVM>
-    <BundleAssemblies>false</BundleAssemblies>
     <MandroidI18n />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -58,9 +56,7 @@
     <EmbedAssembliesIntoApk>True</EmbedAssembliesIntoApk>
     <AndroidSupportedAbis>armeabi-v7a;x86;x86_64;arm64-v8a</AndroidSupportedAbis>
     <MandroidI18n>West</MandroidI18n>
-    <AotAssemblies>false</AotAssemblies>
     <EnableLLVM>true</EnableLLVM>
-    <BundleAssemblies>false</BundleAssemblies>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Develop|AnyCPU'">
     <DebugSymbols>true</DebugSymbols>
@@ -76,9 +72,7 @@
     <AndroidSupportedAbis>armeabi-v7a;x86;x86_64;arm64-v8a</AndroidSupportedAbis>
     <AndroidLinkMode>SdkOnly</AndroidLinkMode>
     <MandroidI18n>West</MandroidI18n>
-    <AotAssemblies>false</AotAssemblies>
     <EnableLLVM>false</EnableLLVM>
-    <BundleAssemblies>false</BundleAssemblies>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Stub|AnyCPU'">
     <OutputPath>bin\Stub\</OutputPath>
@@ -86,9 +80,7 @@
     <DebugType>full</DebugType>
     <DebugSymbols>true</DebugSymbols>
     <ErrorReport>prompt</ErrorReport>
-    <AotAssemblies>false</AotAssemblies>
     <EnableLLVM>false</EnableLLVM>
-    <BundleAssemblies>false</BundleAssemblies>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Master|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -103,9 +95,7 @@
     <AndroidSupportedAbis>armeabi-v7a;x86;x86_64;arm64-v8a</AndroidSupportedAbis>
     <AndroidLinkMode>SdkOnly</AndroidLinkMode>
     <MandroidI18n>West</MandroidI18n>
-    <AotAssemblies>false</AotAssemblies>
     <EnableLLVM>false</EnableLLVM>
-    <BundleAssemblies>false</BundleAssemblies>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="AFollestad.MaterialDialogs.Core, Version=0.9.4.4, Culture=neutral, processorArchitecture=MSIL">
@@ -1077,6 +1067,52 @@
     <Compile Include="Src\myTNBMenu\Models\GetInstallationDetailResponse.cs" />
     <Compile Include="Src\Utils\TooltipGenerator.cs" />
     <AndroidResource Include="Resources\layout\ToolTipSingleButtonView.axml" />
+    <Compile Include="Src\Notifications\Adapter\NotificationRecyclerAdapter.cs" />
+    <Compile Include="Src\Notifications\MVP\NotificationSimpleCallback.cs" />
+    <Compile Include="Src\Notifications\MVP\NotificationSwipeDeleteCallback.cs" />
+    <AndroidResource Include="Resources\drawable-hdpi\ic_action_edit.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\ic_action_Select.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\ic_header_cancel.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\ic_header_mark_read.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\ic_action_edit.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\ic_action_Select.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\ic_header_cancel.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\ic_header_mark_read.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_action_edit.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_action_Select.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_header_cancel.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_header_mark_read.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_action_edit.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_action_Select.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_header_cancel.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_header_mark_read.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\ic_action_edit.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\ic_action_Select.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\ic_header_cancel.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\ic_header_mark_read.png" />
+    <Compile Include="Src\Notifications\Api\INotificationApi.cs" />
+    <Compile Include="Src\Notifications\Api\NotificationApiImpl.cs" />
+    <Compile Include="Src\Notifications\Api\NotificationApiResponse.cs" />
+    <Compile Include="Src\Notifications\Api\NotificationDeleteRequest.cs" />
+    <Compile Include="Src\Notifications\Api\NotificationReadRequest.cs" />
+    <Compile Include="Src\Notifications\Models\NotificationData.cs" />
+    <AndroidResource Include="Resources\menu\NotificationToolbarMenu.xml" />
+    <AndroidResource Include="Resources\layout\NotificationEmptyView.axml" />
+    <AndroidResource Include="Resources\drawable-hdpi\empty_state_notification.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\ic_action_select_all.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\ic_header_markread.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\empty_state_notification.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\ic_action_select_all.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\ic_header_markread.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\empty_state_notification.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_action_select_all.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_header_markread.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\empty_state_notification.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_action_select_all.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_header_markread.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\empty_state_notification.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\ic_action_select_all.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\ic_header_markread.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -4432,7 +4468,7 @@
   <Import Project="..\packages\Xamarin.Firebase.Common.42.1021.1\build\MonoAndroid70\Xamarin.Firebase.Common.targets" Condition="Exists('..\packages\Xamarin.Firebase.Common.42.1021.1\build\MonoAndroid70\Xamarin.Firebase.Common.targets')" />
   <Import Project="..\packages\Xamarin.Firebase.Iid.42.1021.1\build\MonoAndroid70\Xamarin.Firebase.Iid.targets" Condition="Exists('..\packages\Xamarin.Firebase.Iid.42.1021.1\build\MonoAndroid70\Xamarin.Firebase.Iid.targets')" />
   <Import Project="..\packages\Xamarin.Firebase.Messaging.42.1021.1\build\MonoAndroid70\Xamarin.Firebase.Messaging.targets" Condition="Exists('..\packages\Xamarin.Firebase.Messaging.42.1021.1\build\MonoAndroid70\Xamarin.Firebase.Messaging.targets')" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
 		Other similar extension points exist, see Microsoft.Common.targets.
 		<Target Name="BeforeBuild">
 		</Target>

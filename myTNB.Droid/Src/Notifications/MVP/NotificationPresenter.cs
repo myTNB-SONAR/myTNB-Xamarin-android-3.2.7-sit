@@ -16,17 +16,126 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading;
+using Newtonsoft.Json;
+using myTNB_Android.Src.AppLaunch.Api;
+using myTNB_Android.Src.AppLaunch.Requests;
+using static Android.Widget.CompoundButton;
+using myTNB_Android.Src.NotificationDetails.Requests;
+using System.Threading.Tasks;
+using myTNB_Android.Src.Notifications.Api;
 
 namespace myTNB_Android.Src.Notifications.MVP
 {
+    enum API_ACTION
+    {
+        DELETE,
+        READ
+    }
     public class NotificationPresenter : NotificationContract.IUserActionsListener
     {
         private NotificationContract.IView mView;
+        NotificationContract.IApiNotification notificationApi;
         CancellationTokenSource cts;
+        List<UserNotificationData> selectedNotificationList;
         public NotificationPresenter(NotificationContract.IView mView)
         {
             this.mView = mView;
             this.mView.SetPresenter(this);
+        }
+
+        private async Task InvokeNotificationApi(API_ACTION apiAction)
+        {
+            NotificationApiResponse notificationApiResponse = null;
+            selectedNotificationList = new List<UserNotificationData>();
+            foreach (UserNotificationData notification in this.mView.GetNotificationList())
+            {
+                if (notification.IsSelected)
+                {
+                    selectedNotificationList.Add(notification);
+                }
+            }
+            try
+            {
+                this.mView.ShowProgress();
+                switch (apiAction)
+                {
+                    case API_ACTION.DELETE:
+                        notificationApiResponse = await notificationApi.DeleteUserNotification(this.mView.GetDeviceId(), selectedNotificationList);
+                        if (!notificationApiResponse.Data.IsError)
+                        {
+                            foreach (UserNotificationData userNotificationData in selectedNotificationList)
+                            {
+                                UserNotificationEntity.RemoveById(userNotificationData.Id);
+                            }
+                            this.mView.UpdateDeleteNotifications();
+                        }
+                        break;
+                    case API_ACTION.READ:
+                        notificationApiResponse = await notificationApi.ReadUserNotification(this.mView.GetDeviceId(), selectedNotificationList);
+                        if (!notificationApiResponse.Data.IsError)
+                        {
+                            foreach(UserNotificationData userNotificationData in selectedNotificationList)
+                            {
+                                UserNotificationEntity.UpdateIsRead(userNotificationData.Id, true);
+                            }
+                            this.mView.UpdateReadNotifications();
+                        }
+                        break;
+                }
+                if (notificationApiResponse.Data.IsError)
+                {
+                    this.mView.ShowFailedErrorMessage(notificationApiResponse.Data.Message);
+                    this.mView.OnFailedNotificationAction();
+                }
+            }
+            catch (System.OperationCanceledException e)
+            {
+                if (mView.IsActive())
+                {
+                    this.mView.HideProgress();
+                }
+                // ADD OPERATION CANCELLED HERE
+                this.mView.ShowRetryOptionsCancelledException(e);
+                this.mView.OnFailedNotificationAction();
+                //Utility.LoggingNonFatalError(e);
+            }
+            catch (ApiException apiException)
+            {
+                if (mView.IsActive())
+                {
+                    this.mView.HideProgress();
+                }
+                // ADD HTTP CONNECTION EXCEPTION HERE
+                this.mView.ShowRetryOptionsApiException(apiException);
+                this.mView.OnFailedNotificationAction();
+                //Utility.LoggingNonFatalError(apiException);
+            }
+            catch (Exception e)
+            {
+                if (mView.IsActive())
+                {
+                    this.mView.HideProgress();
+                }
+                // ADD UNKNOWN EXCEPTION HERE
+                this.mView.ShowRetryOptionsUnknownException(e);
+                this.mView.OnFailedNotificationAction();
+                //Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void DeleteAllSelectedNotifications()
+        {
+            _ = InvokeNotificationApi(API_ACTION.DELETE);
+        }
+
+        public void ReadAllSelectedNotifications()
+        {
+            _ = InvokeNotificationApi(API_ACTION.READ);
+        }
+
+        public void EditNotification()
+        {
+            throw new NotImplementedException();
         }
 
         public void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
@@ -155,7 +264,7 @@ namespace myTNB_Android.Src.Notifications.MVP
             }
 #if DEBUG
             var httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
-            var api = RestService.For<INotificationApi>(httpClient);
+            var api = RestService.For<AppLaunch.Api.INotificationApi>(httpClient);
 #else
             var api = RestService.For<INotificationApi>(Constants.SERVER_URL.END_POINT);
 #endif
@@ -251,7 +360,7 @@ namespace myTNB_Android.Src.Notifications.MVP
 
         public void Start()
         {
-
+            notificationApi = new NotificationApiCall();
             ShowFilteredList();
 
         }
@@ -291,7 +400,11 @@ namespace myTNB_Android.Src.Notifications.MVP
                             notificationTypesEntity = NotificationTypesEntity.GetById(entity.NotificationTypeId);
                             if (!TextUtils.IsEmpty(notificationTypesEntity.Code))
                             {
-                                listOfNotifications.Add(UserNotificationData.Get(entity, notificationTypesEntity.Code));
+                                UserNotificationData userNotificationData = UserNotificationData.Get(entity, notificationTypesEntity.Code);
+                                if (!userNotificationData.IsDeleted)
+                                {
+                                    listOfNotifications.Add(UserNotificationData.Get(entity, notificationTypesEntity.Code));
+                                }
                             }
                         }
 

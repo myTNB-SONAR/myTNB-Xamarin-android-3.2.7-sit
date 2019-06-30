@@ -657,7 +657,7 @@ You acknowledge that you have been provided with and have read and understood th
   <!--Notification-->
   <string name="notification_activity_title">Notifications</string>
   <string name="notification_selection_title">All notifications</string>
-  <string name="notification_activity_empty_txt_content">No notifications yet.</string>
+  <string name="notification_activity_empty_txt_content">Looks like you have no new notifications today.</string>
 
   <string name="notification_activity_cancelled_exception_error">Something went wrong, Please try again.</string>
   <string name="notification_activity_api_exception_error">Something went wrong, Please try again.</string>
@@ -674,6 +674,19 @@ You acknowledge that you have been provided with and have read and understood th
 
   <string name="notification_activity_query_progress_title">Retrieving Notifications</string>
   <string name="notification_activity_query_progress_content">Please wait...</string>
+  <string name="notification_select_title">Select</string>
+  <string name="Notification_Delete_All_Dialog_Title">Delete All Notifications</string>
+  <string name="Notification_Delete_All_Dialog_Content">Are you sure you want to delete all notifications?</string>
+  <string name="Notification_Delete_Dialog_Title">Delete Notification</string>
+  <string name="Notification_Delete_Dialog_Content">Are you sure you want to delete this notification?</string>
+  <string name="Notification_Read_All_Dialog_Title">Mark All As Read</string>
+  <string name="Notification_Read_All_Dialog_Content">Are you sure you want to all notifications as read?</string>
+  <string name="Common_Dialog_Yes">Yes</string>
+  <string name="Common_Dialog_No">No</string>
+  <string name="Notification_Select">Select</string>
+  <string name="Notification_Selected">Selected</string>
+  <string name="Notification_Select_All">Select All</string>
+  <string name="Notification_Unselect_All">Unselect All</string>
   <!--End Of NOtification-->
 
   <!--Select NOtification-->

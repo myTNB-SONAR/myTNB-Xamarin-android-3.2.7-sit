@@ -30,44 +30,88 @@
             android:textColor="@color/white"
             android:textSize="12sp" />
 
+            <LinearLayout
+        android:id="@+id/notificationSelectAllHeader"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+            android:background="@color/white">
+
+        <LinearLayout
+            android:id="@+id/notificationSelectAll"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingLeft="20dp"
+            android:paddingTop="24dp"
+            android:paddingRight="10dp"
+            android:paddingBottom="24dp"
+            android:visibility="visible">
+
+            <TextView
+                android:id="@+id/selectAllNotificationLabel"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Select All" />
+
+            <CheckBox
+                android:id="@+id/selectAllCheckBox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="false"
+                android:text=""
+                android:button="@drawable/checkbox_selector"/>
+
+        </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/platinumGrey"/>
+    </LinearLayout>
+
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <ListView
+            <!-- <ListView
                 android:id="@+id/notification_listview"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@color/white"
-                android:visibility="visible" />
+                android:visibility="visible" /> -->
 
-
+            <android.support.v7.widget.RecyclerView
+              android:id="@+id/notification_recyclerView"
+              android:scrollbars="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/white"/>
             <LinearLayout
                 android:id="@+id/emptyLayout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_gravity="center"
                 android:background="@color/white"
-                android:gravity="center"
                 android:orientation="vertical"
                 android:visibility="gone">
-
-
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_empty_notification"
+                    android:layout_marginTop="80dp"
+                    android:gravity="center"
+                    android:src="@drawable/empty_state_notification"
                     app:srcCompat="@drawable/ic_empty_notification" />
 
                 <TextView
                     android:id="@+id/txtNotificationsContent"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
                     android:layout_marginLeft="41dp"
                     android:layout_marginRight="41dp"
                     android:gravity="center"
                     android:text="@string/notification_activity_empty_txt_content"
-                    android:textSize="12sp" />
+                    android:textSize="16sp" />
             </LinearLayout>
         </FrameLayout>
 

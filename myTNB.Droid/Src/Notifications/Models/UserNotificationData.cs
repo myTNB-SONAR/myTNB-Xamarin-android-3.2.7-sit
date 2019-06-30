@@ -13,6 +13,8 @@ namespace myTNB_Android.Src.Notifications.Models
         //"CreatedDate": "11/7/2017 4:37:57 PM",
         //"MasterId": null,
         //"IsOpted": null
+        private bool IsSelectOptionShown = false;
+        private bool IsNotificationSelected = false;
 
         [JsonProperty("Id")]
         public string Id { get; set; }
@@ -56,7 +58,30 @@ namespace myTNB_Android.Src.Notifications.Models
         [JsonProperty("Code")]
         public string Code { get; set; }
 
-        public static UserNotificationData Get(UserNotificationEntity userNotification, string Code)
+        public bool ShowSelectButton
+        {
+            get{
+                return IsSelectOptionShown;
+            }
+            set
+            {
+                IsSelectOptionShown = value;
+            }
+        }
+
+        public bool IsSelected
+        {
+            get
+            {
+                return IsNotificationSelected;
+            }
+            set
+            {
+                IsNotificationSelected = value;
+            }
+        }
+
+        public static UserNotificationData Get(UserNotificationEntity userNotification , string Code)
         {
             return new UserNotificationData()
             {
