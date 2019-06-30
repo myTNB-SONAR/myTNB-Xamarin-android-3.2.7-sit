@@ -21,28 +21,17 @@ namespace myTNB.Dashboard
         public DashboardViewController(IntPtr handle) : base(handle)
         {
         }
+        public bool ShouldShowBackButton;
 
         DashboardMainComponent _dashboardMainComponent;
         DueAmountResponseModel _dueAmount = new DueAmountResponseModel();
         BillingAccountDetailsResponseModel _billingAccountDetailsList = new BillingAccountDetailsResponseModel();
         InstallationDetailResponseModel _installationDetails = new InstallationDetailResponseModel();
+        bool isAnimating, isFromViewBillAdvice, isFromForeground, isREAccount, amountDueIsAvailable;
+        bool isBcrmAvailable = true, isNormalChart = true;
+        double _amountDue, _dueIncrementDays, _lastContentOffset;
 
-        bool isAnimating = false;
-
-        double _amountDue = 0;
-        double _dueIncrementDays = 0;
         string _dateDue = string.Empty;
-        bool isREAccount = false;
-        bool isBcrmAvailable = true;
-        double _lastContentOffset;
-        bool isFromForeground = false;
-        bool isNormalChart = true;
-        bool isFromViewBillAdvice = false;
-
-        public bool ShouldShowBackButton = false;
-        bool amountDueIsAvailable = false;
-
-        //bool isRefreshing = false;
         string _toolTipMessage = string.Empty;
         string _toolTipBtnTitle = string.Empty;
 
@@ -50,7 +39,7 @@ namespace myTNB.Dashboard
         {
             base.ViewDidLoad();
             // Perform any additional setup after loading the view, typically from a nib.
-            var appDelegate = UIApplication.SharedApplication.Delegate as AppDelegate;
+            AppDelegate appDelegate = UIApplication.SharedApplication.Delegate as AppDelegate;
             if (appDelegate != null)
             {
                 appDelegate._dashboardVC = this;
@@ -62,10 +51,6 @@ namespace myTNB.Dashboard
             NavigationController?.SetNavigationBarHidden(true, false);
             NavigationItem?.SetHidesBackButton(true, false);
             _dashboardMainComponent = new DashboardMainComponent(View);
-            //_dashboardMainComponent = new DashboardMainComponent(View)
-            //{
-            //    PullDownTorefresh = PullDownTorefresh
-            //}; removed pull down to refresh
             _dashboardMainComponent.ToolTipGestureRecognizer = new UITapGestureRecognizer((obj) =>
             {
                 DisplayCustomAlert(string.Empty, _toolTipMessage, _toolTipBtnTitle, null);
@@ -236,45 +221,32 @@ namespace myTNB.Dashboard
             amountDueIsAvailable = false;
             var acct = DataManager.DataManager.SharedInstance.SelectedAccount;
             var due = DataManager.DataManager.SharedInstance.GetDue(acct.accNum);
-
-            if (due != null && DataManager.DataManager.SharedInstance.AccountRecordsList?.d?.Count > 1)
+            ActivityIndicator.Show();
+            await GetAccountDueAmount().ContinueWith(dueTask =>
             {
-                amountDueIsAvailable = true;
-                _amountDue = due.amountDue;
-                _dateDue = due.billDueDate;
-                _dueIncrementDays = due.IncrementREDueDateByDays;
-                SetAmountInBillingDetails(_amountDue);
-                SetBillAndPaymentDetails();
-            }
-            else
-            {
-                ActivityIndicator.Show();
-                await GetAccountDueAmount().ContinueWith(dueTask =>
+                InvokeOnMainThread(() =>
                 {
-                    InvokeOnMainThread(() =>
+                    if (_dueAmount != null && _dueAmount?.d != null
+                        && _dueAmount?.d?.didSucceed == true
+                        && _dueAmount?.d?.data != null
+                        && _dueAmount?.d?.status.ToLower() != "failed")
                     {
-                        if (_dueAmount != null && _dueAmount?.d != null
-                            && _dueAmount?.d?.didSucceed == true
-                            && _dueAmount?.d?.data != null
-                            && _dueAmount?.d?.status.ToLower() != "failed")
-                        {
-                            amountDueIsAvailable = true;
-                            _amountDue = _dueAmount.d.data.amountDue;
-                            _dateDue = _dueAmount.d.data.billDueDate;
-                            _dueIncrementDays = _dueAmount.d.data.IncrementREDueDateByDays;
-                            SetAmountInBillingDetails(_amountDue);
-                            SaveDueToCache(_dueAmount.d.data);
-                        }
-                        else
-                        {
-                            amountDueIsAvailable = false;
-                            _dashboardMainComponent.ConstructRefreshScreen(RefreshScreen, _dueAmount.d);
-                            ActivityIndicator.Hide();
-                        }
-                        SetBillAndPaymentDetails();
-                    });
+                        amountDueIsAvailable = true;
+                        _amountDue = _dueAmount.d.data.amountDue;
+                        _dateDue = _dueAmount.d.data.billDueDate;
+                        _dueIncrementDays = _dueAmount.d.data.IncrementREDueDateByDays;
+                        SetAmountInBillingDetails(_amountDue);
+                        SaveDueToCache(_dueAmount.d.data);
+                    }
+                    else
+                    {
+                        amountDueIsAvailable = false;
+                        _dashboardMainComponent.ConstructRefreshScreen(RefreshScreen, _dueAmount.d);
+                        ActivityIndicator.Hide();
+                    }
+                    SetBillAndPaymentDetails();
                 });
-            }
+            });
         }
 
         /// <summary>
@@ -410,16 +382,13 @@ namespace myTNB.Dashboard
                 if (DataManager.DataManager.SharedInstance.AccountChartDictionary
                    .ContainsKey(DataManager.DataManager.SharedInstance.SelectedAccount.accNum))
                 {
-                    DataManager.DataManager.SharedInstance
-                               .AccountChartDictionary[DataManager.DataManager
-                                                       .SharedInstance.SelectedAccount.accNum]
-                               = DataManager.DataManager.SharedInstance.CurrentChart;
+                    DataManager.DataManager.SharedInstance.AccountChartDictionary[DataManager.DataManager
+                        .SharedInstance.SelectedAccount.accNum] = DataManager.DataManager.SharedInstance.CurrentChart;
                 }
                 else
                 {
-                    DataManager.DataManager.SharedInstance.AccountChartDictionary
-                               .Add(DataManager.DataManager.SharedInstance.SelectedAccount.accNum
-                                    , DataManager.DataManager.SharedInstance.CurrentChart);
+                    DataManager.DataManager.SharedInstance.AccountChartDictionary.Add(DataManager.DataManager
+                        .SharedInstance.SelectedAccount.accNum, DataManager.DataManager.SharedInstance.CurrentChart);
                 }
             }
         }
@@ -428,8 +397,7 @@ namespace myTNB.Dashboard
         {
             if (DataManager.DataManager.SharedInstance.BillingAccountDetails != null)
             {
-                DataManager.DataManager.SharedInstance
-                           .BillingAccountDetails.amCustBal = amount;
+                DataManager.DataManager.SharedInstance.BillingAccountDetails.amCustBal = amount;
             }
         }
 
@@ -790,7 +758,6 @@ namespace myTNB.Dashboard
             {
                 _dashboardMainComponent._titleBarComponent.SetPrimaryImage(PushNotificationHelper.GetNotificationImage());
             }
-            //SetBillAndPaymentDetails();
         }
 
         internal void SetBillAndPaymentDetails()
@@ -850,10 +817,43 @@ namespace myTNB.Dashboard
                 {
                     _dashboardMainComponent._billAndPaymentComponent._activity.Hide();
                 }
-
+#if true
+                if (_dueAmount != null && _dueAmount?.d != null && _dueAmount?.d?.didSucceed == true
+                        && _dueAmount?.d?.data != null)
+                {
+                    if (_dueAmount.d.data.IsItemisedBilling)
+                    {
+                        _dashboardMainComponent._billAndPaymentComponent.DisplayInfoToolTip(_dueAmount.d.data.WhyThisAmountLink
+                            , DisplayItemisedBillingToolTip);
+                    }
+                    else
+                    {
+                        _dashboardMainComponent._billAndPaymentComponent.HideInfo();
+                    }
+                }
+#endif
                 _dashboardMainComponent._billAndPaymentComponent.SetPayButtonEnable(amountDueIsAvailable);
                 _dashboardMainComponent._billAndPaymentComponent.SetBillButtonEnable(amountDueIsAvailable);
             }
+        }
+
+        void DisplayItemisedBillingToolTip()
+        {
+            string title = _dueAmount?.d?.data?.WhyThisAmountTitle ?? "Dashboard_TooltipTitle".Translate();
+            string msg = _dueAmount?.d?.data?.WhyThisAmountMessage ?? "Dashboard_TooltipMessage".Translate();
+            string primaryButton = _dueAmount?.d?.data?.WhyThisAmountPriButtonText ?? "Common_GotIt".Translate();
+            string secondaryButton = _dueAmount?.d?.data?.WhyThisAmountSecButtonText ?? "Dashboard_BringMeThere".Translate();
+
+            DisplayCustomAlert(title, msg
+                , new Dictionary<string, Action>() {
+                    { primaryButton, ()=>{
+                        if (TabBarController != null)
+                        {
+                            TabBarController.SelectedIndex = 1;
+                        }
+                    }}
+                    , { secondaryButton, null }
+                });
         }
 
         /// <summary>
@@ -881,7 +881,7 @@ namespace myTNB.Dashboard
             if (chartModel != null && chartModel?.didSucceed == false)
             {
                 errorMessage = !string.IsNullOrWhiteSpace(chartModel?.message)
-                                ? chartModel.message : "Error_DefaultMessage".Translate();
+                    ? chartModel.message : "Error_DefaultMessage".Translate();
             }
 
             DataManager.DataManager.SharedInstance.IsMontView = true;

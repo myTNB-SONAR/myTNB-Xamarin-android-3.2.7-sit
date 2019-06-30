@@ -1,4 +1,5 @@
-﻿using myTNB.DataManager;
+﻿using System.Collections.Generic;
+using myTNB.DataManager;
 using Newtonsoft.Json;
 
 namespace myTNB.Model
@@ -176,5 +177,14 @@ namespace myTNB.Model
         public double Amount { set; get; }
         public double AmountDue { set; get; }
         public bool IsAccountSelected { set; get; }
+        public List<ItemisedBilling> ItemizedBillings { set; get; }
+        public double OpenChargesTotal { set; get; }
+        public bool IsItemisedBilling
+        {
+            get
+            {
+                return OpenChargesTotal > 0;
+            }
+        }
     }
 }

@@ -57,5 +57,21 @@ namespace myTNB
             }
             ShowToast(viewDialog, ref isAnimating);
         }
+
+        /// <summary>
+        /// Displays the alert view.
+        /// </summary>
+        /// <param name="view">View.</param>
+        /// <param name="title">Title.</param>
+        /// <param name="message">Message.</param>
+        /// <param name="handler">Handler.</param>
+        public static void DisplayAlertView(UIViewController view, string title, string message
+            , Action<UIAlertAction> handler = null, string actionTitle = null)
+        {
+            var alert = UIAlertController.Create(title, message, UIAlertControllerStyle.Alert);
+            alert.AddAction(UIAlertAction.Create(string.IsNullOrEmpty(actionTitle) ? "Common_Ok".Translate() : actionTitle
+                , UIAlertActionStyle.Cancel, handler));
+            view.PresentViewController(alert, animated: true, completionHandler: null);
+        }
     }
 }

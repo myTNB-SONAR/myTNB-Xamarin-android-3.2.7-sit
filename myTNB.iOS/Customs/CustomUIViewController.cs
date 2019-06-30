@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using CoreGraphics;
@@ -31,6 +31,33 @@ namespace myTNB
             base.ViewDidAppear(animated);
         }
         #endregion
+        #region Widget Utilities
+        public UILabel GetUILabelField(CGRect lblFrame, string key, UITextAlignment txtAlignment = UITextAlignment.Left)
+        {
+            return CustomUILabel.GetUILabelField(lblFrame, key, txtAlignment);
+        }
+
+        public UILabel GetUILabelField(CGRect lblFrame, string key, UIFont font
+            , UIColor textColor, UITextAlignment txtAlignment = UITextAlignment.Left)
+        {
+            return CustomUILabel.GetUILabelField(lblFrame, key, font, textColor, txtAlignment);
+        }
+
+        public CGSize GetLabelSize(UILabel label, nfloat width, nfloat height)
+        {
+            return CustomUILabel.GetLabelSize(label, width, height);
+        }
+
+        public UIButton GetUIButton(CGRect frame, string key)
+        {
+            return CustomUIButton.GetUIButton(frame, key);
+        }
+
+        public void MakeTopCornerRadius(UIButton button)
+        {
+            CustomUIButton.MakeTopCornerRadius(button);
+        }
+        #endregion
         #region Alerts
         public void DisplayNoDataAlert()
         {
@@ -45,6 +72,11 @@ namespace myTNB
         public void DisplayGenericAlert(string title, string message, Action<UIAlertAction> handler = null)
         {
             AlertHandler.DisplayGenericAlert(this, title, message, handler);
+        }
+
+        public void DisplayCustomAlert(string title, string message, Dictionary<string, Action> ctaButtons)
+        {
+            AlertHandler.DisplayCustomAlert(title, message, ctaButtons);
         }
 
         public void DisplayCustomAlert(string title, string message, string btnTitle, Action btnAction = null)
@@ -106,14 +138,14 @@ namespace myTNB
             {
 #pragma warning disable XI0001 // Notifies you with advices on how to use Apple APIs
                 UIView.Animate(0.3, 0.3, UIViewAnimationOptions.CurveEaseOut, () =>
-                {
-                    _isAnimating = true;
-                    _viewToast.Frame = new CGRect(_viewToast.Frame.X
-                   , 32, _viewToast.Frame.Width, size.Height + 32);
-                }, () =>
-                {
-                    DismissToast(2.0F);
-                });
+                 {
+                     _isAnimating = true;
+                     _viewToast.Frame = new CGRect(_viewToast.Frame.X
+                    , 32, _viewToast.Frame.Width, size.Height + 32);
+                 }, () =>
+                 {
+                     DismissToast(2.0F);
+                 });
 #pragma warning restore XI0001 // Notifies you with advices on how to use Apple APIs
             }
         }

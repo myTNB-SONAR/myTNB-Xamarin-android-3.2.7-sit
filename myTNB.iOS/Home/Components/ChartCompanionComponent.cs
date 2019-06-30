@@ -17,7 +17,6 @@ namespace myTNB.Dashboard.DashboardComponents
         InfoComponent _metricCmp1, _metricCmp2;
         UIButton _amountBtn, _consumptionBtn, _emissionBtn;
         UsageMetrics _usageMetrics;
-        ToolTipComponent _toolTipComponent;
         double _yLocation;
 
         private string For = "Component_For".Translate();
@@ -34,6 +33,7 @@ namespace myTNB.Dashboard.DashboardComponents
         private string TxtEmission = "Component_CO2".Translate();
         private double center, btnWidth = 64, btnOffset = 12;
         private int margin = 18;
+        private ToolTipComponent _toolTipComponent;
 
         public ChartCompanionComponent(UIView view)
         {

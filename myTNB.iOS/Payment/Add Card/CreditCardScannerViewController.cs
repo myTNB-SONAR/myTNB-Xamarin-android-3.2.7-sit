@@ -3,9 +3,9 @@ using Card.IO;
 using CoreGraphics;
 using UIKit;
 
-namespace myTNB.Payment.AddCard
+namespace myTNB.Payment
 {
-    public partial class CreditCardScannerViewController : UIViewController
+    public class CreditCardScannerViewController : UIViewController
     {
         public CreditCardScannerViewController(IntPtr handle) : base(handle)
         {
@@ -51,7 +51,6 @@ namespace myTNB.Payment.AddCard
             cardIOView.HideCardIOLogo = true;
             cardIOView.Delegate = new CardIODelegate(this);
             View.AddSubview(cardIOView);
-
         }
 
         class CardIODelegate : CardIOViewDelegate

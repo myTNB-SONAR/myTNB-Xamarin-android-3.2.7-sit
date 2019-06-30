@@ -2,12 +2,8 @@
 
 namespace myTNB.Model
 {
-    public class MultiAccountDueAmountDataModel
+    public class PaymentRecordModel : CustomerAccountRecordModel
     {
-        public double amountDue { set; get; }
-        public string billDueDate { set; get; }
-        public string accNum { set; get; }
-        public string IncrementREDueDateByDays { set; get; }
         public List<ItemisedBilling> ItemizedBillings { set; get; }
         public double OpenChargesTotal { set; get; }
         public bool IsItemisedBilling

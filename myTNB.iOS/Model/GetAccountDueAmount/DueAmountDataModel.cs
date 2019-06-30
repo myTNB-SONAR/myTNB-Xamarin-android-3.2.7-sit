@@ -1,4 +1,5 @@
-﻿using myTNB.DataManager;
+﻿using System.Collections.Generic;
+using myTNB.DataManager;
 using myTNB.SQLite.SQLiteDataManager;
 using SQLite;
 
@@ -37,7 +38,7 @@ namespace myTNB.Model
             }
         }
 
-#region Account fields
+        #region Account fields
         public double IncrementREDueDateByDays
         {
             get;
@@ -61,7 +62,24 @@ namespace myTNB.Model
             get;
             set;
         }
-#endregion
+
+        public List<ItemisedBilling> ItemizedBillings { set; get; }
+        public double OpenChargesTotal { set; get; }
+        public bool IsItemisedBilling
+        {
+            get
+            {
+                return OpenChargesTotal > 0;
+            }
+        }
+
+        public string WhyThisAmountLink { set; get; }
+        public string WhyThisAmountTitle { set; get; }
+        public string WhyThisAmountMessage { set; get; }
+        public string WhyThisAmountPriButtonText { set; get; }
+        public string WhyThisAmountSecButtonText { set; get; }
+
+        #endregion
 
         /// <summary>
         /// Updates the values.

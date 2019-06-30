@@ -4,10 +4,9 @@ using myTNB.Model;
 using System.Collections.Generic;
 using myTNB.Enum;
 using myTNB.Model.AddMultipleSupplyAccountsToUserReg;
-using myTNB.Model.GetMultiAccountDueAmount;
 using Newtonsoft.Json.Linq;
-using System;
 using System.Diagnostics;
+using System;
 
 namespace myTNB
 {
@@ -320,6 +319,10 @@ namespace myTNB
             catch (JsonSerializationException ex)
             {
                 Debug.WriteLine(ex);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("APP LAUNCH MASTER DATE EXCEPTION");
             }
             return new MasterDataResponseModel();
         }

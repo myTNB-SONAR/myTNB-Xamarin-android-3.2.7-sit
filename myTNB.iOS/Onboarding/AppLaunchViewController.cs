@@ -20,7 +20,6 @@ namespace myTNB
 {
     public partial class AppLaunchViewController : UIViewController
     {
-        //For future reference, don't delete
         UIImageView imgViewAppLaunch;
         string _imageSize = string.Empty;
         bool isMaintenance;
@@ -184,15 +183,12 @@ namespace myTNB
         /// <returns><c>true</c>, if app update required was ised, <c>false</c> otherwise.</returns>
         private bool IsAppUpdateRequired(ForceUpdateInfoModel forceUpdateData)
         {
-            if (forceUpdateData != null)
+            if (forceUpdateData != null && (bool)forceUpdateData?.isIOSForceUpdateOn)
             {
-                if ((bool)forceUpdateData?.isIOSForceUpdateOn)
+                if (!string.IsNullOrWhiteSpace(DataManager.DataManager.SharedInstance.LatestAppVersion))
                 {
-                    if (!string.IsNullOrWhiteSpace(DataManager.DataManager.SharedInstance.LatestAppVersion))
-                    {
-                        // if latest app version is higher
-                        return string.CompareOrdinal(DataManager.DataManager.SharedInstance.LatestAppVersion, AppVersionHelper.GetAppShortVersion()) > 0;
-                    }
+                    // if latest app version is higher
+                    return string.CompareOrdinal(DataManager.DataManager.SharedInstance.LatestAppVersion, AppVersionHelper.GetAppShortVersion()) > 0;
                 }
             }
             return false;
@@ -407,13 +403,13 @@ namespace myTNB
             {
                 _imageSize = DeviceHelper.GetImageSize((int)View.Frame.Width);
                 await GetWalkthroughScreens().ContinueWith(task =>
-                   {
-                       InvokeOnMainThread(() =>
-                       {
-                           ShowOnboarding();
-                           UIApplication.SharedApplication.NetworkActivityIndicatorVisible = false;
-                       });
-                   });
+                {
+                    InvokeOnMainThread(() =>
+                    {
+                        ShowOnboarding();
+                        UIApplication.SharedApplication.NetworkActivityIndicatorVisible = false;
+                    });
+                });
             }
         }
 

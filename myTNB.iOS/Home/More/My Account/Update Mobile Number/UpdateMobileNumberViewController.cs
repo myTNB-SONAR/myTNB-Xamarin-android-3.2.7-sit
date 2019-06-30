@@ -295,8 +295,7 @@ namespace myTNB
                 }
                 else
                 {
-                    AlertHandler.DisplayServiceError(this, IsFromLogin
-                        ? "Error_VerifyDevice".Translate() : "Error_MobileNumberUpdate".Translate());
+                    DisplayServiceError(IsFromLogin ? "Error_VerifyDevice".Translate() : "Error_MobileNumberUpdate".Translate());
                     ActivityIndicator.Hide();
                 }
             };
@@ -330,12 +329,12 @@ namespace myTNB
                         }
                         else
                         {
-                            AlertHandler.DisplayServiceError(this, string.Empty);
+                            DisplayServiceError(string.Empty);
                         }
                     }
                     else
                     {
-                        AlertHandler.DisplayNoDataAlert(this);
+                        DisplayNoDataAlert();
                     }
                     ActivityIndicator.Hide();
                 });

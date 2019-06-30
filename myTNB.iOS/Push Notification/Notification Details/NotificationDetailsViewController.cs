@@ -3,7 +3,6 @@ using UIKit;
 using myTNB.Dashboard.DashboardComponents;
 using myTNB.Model;
 using CoreGraphics;
-using System.Drawing;
 using System.Threading.Tasks;
 using myTNB.SQLite.SQLiteDataManager;
 using myTNB.SitecoreCMS.Model;
@@ -11,7 +10,7 @@ using System.Collections.Generic;
 
 namespace myTNB
 {
-    public partial class NotificationDetailsViewController : UIViewController
+    public partial class NotificationDetailsViewController : CustomUIViewController
     {
         public NotificationDetailsViewController(IntPtr handle) : base(handle)
         {
@@ -106,12 +105,12 @@ namespace myTNB
                             }
                             else
                             {
-                                AlertHandler.DisplayServiceError(this, _deleteNotificationResponse?.d?.message);
+                                DisplayServiceError(_deleteNotificationResponse?.d?.message);
                             }
                         }
                         else
                         {
-                            AlertHandler.DisplayNoDataAlert(this);
+                            DisplayNoDataAlert();
                         }
                         ActivityIndicator.Hide();
                     });
@@ -135,18 +134,8 @@ namespace myTNB
             if (index > -1)
             {
                 ActivityIndicator.Show();
-
-#if true
                 var selected = DataManager.DataManager.SharedInstance.AccountRecordsList.d[(int)index];
                 DataManager.DataManager.SharedInstance.SelectAccount(selected.accNum);
-#else
-
-                DataManager.DataManager.SharedInstance.SelectedAccount =
-                    DataManager.DataManager.SharedInstance.AccountRecordsList.d[index];
-                DataManager.DataManager.SharedInstance.IsSameAccount = false;
-                DataManager.DataManager.SharedInstance.CurrentSelectedAccountIndex = index;
-                DataManager.DataManager.SharedInstance.PreviousSelectedAccountIndex = index;
-#endif
 
                 NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
                 {
@@ -172,12 +161,12 @@ namespace myTNB
                             {
                                 DataManager.DataManager.SharedInstance.IsSameAccount = true;
                                 DataManager.DataManager.SharedInstance.BillingAccountDetails = new BillingAccountDetailsDataModel();
-                                AlertHandler.DisplayServiceError(this, _billingAccountDetailsList?.d?.message);
+                                DisplayServiceError(_billingAccountDetailsList?.d?.message);
                             }
                         }
                         else
                         {
-                            AlertHandler.DisplayNoDataAlert(this);
+                            DisplayNoDataAlert();
                         }
                         ActivityIndicator.Hide();
                     });
@@ -221,7 +210,6 @@ namespace myTNB
                 , View.Frame.Width, DeviceHelper.GetScaledSizeByHeight(25.5f)));
 
             imgViewHeader.Image = UIImage.FromBundle(GetBannerImage());
-            //UILabel lblTitle = new UILabel(new CGRect(18, DeviceHelper.IsIphoneXUpResolution() ? 104 : 80, View.Frame.Width - 36, 36));
             UILabel lblTitle = new UILabel(new CGRect(18, DeviceHelper.GetScaledSizeByHeight(40.5f)
                 , View.Frame.Width - 36, 36));
 
@@ -438,11 +426,6 @@ namespace myTNB
                     }
                 }
             }
-        }
-
-        CGSize GetLabelSize(UILabel label, nfloat width, nfloat height)
-        {
-            return label.Text.StringSize(label.Font, new SizeF((float)width, (float)height));
         }
 
         internal Task DeleteUserNotification(string id)

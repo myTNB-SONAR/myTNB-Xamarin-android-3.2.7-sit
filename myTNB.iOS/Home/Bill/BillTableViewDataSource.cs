@@ -92,8 +92,7 @@ namespace myTNB.Home.Bill
                     {
                         var cell = tableView.DequeueReusableCell(CELLIDENTIFIER, indexPath) as BillTableViewCell;
                         BillHistoryDataModel billHistoryModel = indexPath.Row < _billHistory?.d?.data?.Count
-                                                                         ? _billHistory.d.data[indexPath.Row]
-                                                                         : new BillHistoryDataModel();
+                            ? _billHistory.d.data[indexPath.Row] : new BillHistoryDataModel();
 
                         var date = DateHelper.GetFormattedDate(billHistoryModel.DtBill, "dd MMM");
                         var title = DateHelper.GetFormattedDate(billHistoryModel.DtBill, "MMM yyyy");

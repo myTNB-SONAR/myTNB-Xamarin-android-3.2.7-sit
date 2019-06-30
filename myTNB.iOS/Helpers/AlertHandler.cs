@@ -54,7 +54,7 @@ namespace myTNB
         }
 
         public static void DisplayForceUpdate(string title, string message
-            , string actionTitle = null, Action handler = null)
+          , string actionTitle = null, Action handler = null)
         {
             DisplayCustomAlert(title, message, new Dictionary<string, Action>() {
                 { string.IsNullOrEmpty(actionTitle) ? "Common_Ok".Translate() : actionTitle, handler } }

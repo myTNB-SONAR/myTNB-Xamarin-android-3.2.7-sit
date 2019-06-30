@@ -9,9 +9,9 @@ namespace myTNB.Dashboard.DashboardComponents
     public class BillAndPaymentComponent
     {
         readonly UIView _parentView;
-        UIView _viewPaymentContainer, _viewAmount;
+        UIView _viewPaymentContainer, _viewAmount, _infoView;
         public UIButton _btnViewBill, _btnPay;
-        UILabel _lblPaymentTitle, _lblCurrency, _lblAmount, _lblDate;
+        UILabel _lblPaymentTitle, _lblCurrency, _lblAmount, _lblDate, _lblInfo;
         UIImageView _mask;
         CGRect origViewFrame;
         int paymentViewHiddenState = -1;
@@ -60,7 +60,6 @@ namespace myTNB.Dashboard.DashboardComponents
                 TextAlignment = UITextAlignment.Left,
                 Text = "Common_AmountDue".Translate()
             };
-            _viewPaymentContainer.AddSubview(_lblPaymentTitle);
 
             _lblDate = new UILabel(new CGRect(17, _lblPaymentTitle.Frame.GetMaxY() + 4, _viewPaymentContainer.Frame.Width - 20, 14))
             {
@@ -69,16 +68,15 @@ namespace myTNB.Dashboard.DashboardComponents
                 TextAlignment = UITextAlignment.Left,
                 Text = TNBGlobal.EMPTY_DATE
             };
-            _viewPaymentContainer.AddSubview(_lblDate);
 
-            _viewAmount = new UIView(new CGRect(0, 23 + adjustment, 0, 24));
+            //_viewAmount = new UIView(new CGRect(0, 23 + adjustment, 0, 24));
+            _viewAmount = new UIView(new CGRect(0, 10 + adjustment, 0, 24));
             _lblCurrency = new UILabel(new CGRect(0, 6, 24, 18))
             {
                 Font = MyTNBFont.MuseoSans14_500,
                 TextColor = MyTNBColor.TunaGrey(),
                 TextAlignment = UITextAlignment.Right
             };
-            _viewAmount.AddSubview(_lblCurrency);
 
             _lblAmount = new UILabel(new CGRect(24, 0, 75, 24))
             {
@@ -87,9 +85,22 @@ namespace myTNB.Dashboard.DashboardComponents
                 TextAlignment = UITextAlignment.Right,
                 Text = TNBGlobal.EMPTY_AMOUNT
             };
-            _viewAmount.AddSubview(_lblAmount);
 
-            _viewPaymentContainer.AddSubview(_viewAmount);
+            _infoView = new UIView(new CGRect(_viewPaymentContainer.Frame.Width - (_viewPaymentContainer.Frame.Width * .30) - 18
+                , _lblPaymentTitle.Frame.GetMaxY() + 4, _viewPaymentContainer.Frame.Width * .30, 16))
+            {
+                Hidden = true
+            };
+            _lblInfo = new UILabel(new CGRect(0, 0, _infoView.Frame.Width, 16))
+            {
+                Font = MyTNBFont.MuseoSans12_500,
+                TextColor = MyTNBColor.PowerBlue,
+                TextAlignment = UITextAlignment.Right
+            };
+            _infoView.AddSubview(_lblInfo);
+
+            _viewAmount.AddSubviews(new UIView[] { _lblCurrency, _lblAmount });
+            _viewPaymentContainer.AddSubviews(new UIView[] { _lblPaymentTitle, _lblDate, _viewAmount, _infoView });
 
             AdjustFrames();
         }
@@ -98,7 +109,7 @@ namespace myTNB.Dashboard.DashboardComponents
         {
             _btnViewBill = new UIButton(UIButtonType.Custom)
             {
-                Frame = new CGRect(17, _lblDate.Frame.GetMaxY() + 12, (_viewPaymentContainer.Frame.Width / 2) - 19, 48)
+                Frame = new CGRect(17, _lblDate.Frame.GetMaxY() + 18, (_viewPaymentContainer.Frame.Width / 2) - 19, 48)
             };
             _btnViewBill.Layer.CornerRadius = 4;
             _btnViewBill.Layer.BorderColor = MyTNBColor.FreshGreen.CGColor;
@@ -110,7 +121,7 @@ namespace myTNB.Dashboard.DashboardComponents
 
             _btnPay = new UIButton(UIButtonType.Custom)
             {
-                Frame = new CGRect(_btnViewBill.Frame.Width + 21, _lblDate.Frame.GetMaxY() + 12, (_viewPaymentContainer.Frame.Width / 2) - 19, 48)
+                Frame = new CGRect(_btnViewBill.Frame.Width + 21, _lblDate.Frame.GetMaxY() + 18, (_viewPaymentContainer.Frame.Width / 2) - 19, 48)
             };
             _btnPay.Layer.CornerRadius = 4;
             _btnPay.Layer.BackgroundColor = MyTNBColor.FreshGreen.CGColor;
@@ -285,11 +296,9 @@ namespace myTNB.Dashboard.DashboardComponents
                         _viewPaymentContainer.Frame = origViewFrame;
                         SetMaskHidden(false);
                     }
-
                 }
                 , () => { }
             );
-
         }
 
         internal void AdjustFrames()
@@ -321,6 +330,23 @@ namespace myTNB.Dashboard.DashboardComponents
             newFrame.Y = yLocation;
             _viewPaymentContainer.Frame = newFrame;
             origViewFrame = newFrame;
+        }
+
+        public void DisplayInfoToolTip(string title, Action action = null)
+        {
+            _lblInfo.Text = title ?? "Component_WhyThisAmount".Translate();
+
+            if (action != null)
+            {
+                _infoView.AddGestureRecognizer(new UITapGestureRecognizer(action));
+            }
+            _infoView.Hidden = false;
+            _viewAmount.Frame = new CGRect(_viewAmount.Frame.X, 10 + adjustment, _viewAmount.Frame.Width, _viewAmount.Frame.Height);
+        }
+
+        public void HideInfo()
+        {
+            _infoView.Hidden = true;
         }
     }
 }

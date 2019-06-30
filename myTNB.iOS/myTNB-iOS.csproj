@@ -1140,6 +1140,7 @@
     <Folder Include="Assets.xcassets\Refresh-Error-White.imageset\" />
     <Folder Include="Model\GetAppLaunchMasterData\" />
     <Folder Include="Model\GetInstallationDetails\" />
+    <Folder Include="Payment\Select Payment Method\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -1287,10 +1288,6 @@
       <DependentUpon>PasswordResetSuccessViewController.cs</DependentUpon>
     </Compile>
     <Compile Include="Helpers\MyTNBFont.cs" />
-    <Compile Include="Payment\SelectPaymentMethodViewController.cs" />
-    <Compile Include="Payment\SelectPaymentMethodViewController.designer.cs">
-      <DependentUpon>SelectPaymentMethodViewController.cs</DependentUpon>
-    </Compile>
     <Compile Include="Home\Dashboard\DashboardViewController.cs" />
     <Compile Include="Home\Dashboard\DashboardViewController.designer.cs">
       <DependentUpon>..\..\Dashboard\DashboardViewController.cs</DependentUpon>
@@ -1374,16 +1371,7 @@
       <DependentUpon>NotificationSettingsViewController.cs</DependentUpon>
     </Compile>
     <Compile Include="Home\More\Push Notification Settings\NotificationSettingsDataSource.cs" />
-    <Compile Include="Payment\SelectPaymentTableViewSource.cs" />
-    <Compile Include="Payment\AddCardCell.cs" />
-    <Compile Include="Payment\AddCardCell.designer.cs">
-      <DependentUpon>AddCardCell.cs</DependentUpon>
-    </Compile>
     <Compile Include="Helpers\UIViewWithDashedLinerBorder.cs" />
-    <Compile Include="Payment\SelectPaymentCell.cs" />
-    <Compile Include="Payment\SelectPaymentCell.designer.cs">
-      <DependentUpon>SelectPaymentCell.cs</DependentUpon>
-    </Compile>
     <Compile Include="Payment\Make Payment\MakePaymentViewController.cs" />
     <Compile Include="Payment\Make Payment\MakePaymentViewController.designer.cs">
       <DependentUpon>MakePaymentViewController.cs</DependentUpon>
@@ -1820,6 +1808,9 @@
     <Compile Include="Customs\CustomUIViewController.cs" />
     <Compile Include="Model\Modify Notification\DeleteNotificationResponseModel.cs" />
     <Compile Include="Model\Modify Notification\ReadNotificationResponseModel.cs" />
+    <Compile Include="Customs\Bill\CustomBillUIViewController.cs" />
+    <Compile Include="Customs\CustomUIButton.cs" />
+    <Compile Include="Customs\CustomUILabel.cs" />
     <Compile Include="Home\Components\RefreshViewComponent.cs" />
     <Compile Include="Model\GetAccountUsageHistoryForGraph\ToolTipsModel.cs" />
     <Compile Include="Customs\TextViewDelegate.cs" />
@@ -1827,10 +1818,29 @@
     <Compile Include="Model\GetAppLaunchMasterData\MasterDataModel.cs" />
     <Compile Include="Model\GetAppLaunchMasterData\MasterDataResponseModel.cs" />
     <Compile Include="Model\GetAppLaunchMasterData\ForceUpdateInfoModel.cs" />
+    <Compile Include="Model\GetBillingAccountDetails\ItemisedBilling.cs" />
     <Compile Include="Home\Components\AccountStatusComponent.cs" />
     <Compile Include="Model\GetInstallationDetails\InstallationDetailDataModel.cs" />
     <Compile Include="Model\GetInstallationDetails\InstallationDetailModel.cs" />
     <Compile Include="Model\GetInstallationDetails\InstallationDetailResponseModel.cs" />
+    <Compile Include="Payment\Select Payment Method\SelectPaymentCell.cs" />
+    <Compile Include="Payment\Select Payment Method\SelectPaymentCell.designer.cs">
+      <DependentUpon>SelectPaymentCell.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Payment\Select Payment Method\SelectPaymentMethodViewController.cs" />
+    <Compile Include="Payment\Select Payment Method\SelectPaymentMethodViewController.designer.cs">
+      <DependentUpon>SelectPaymentMethodViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Payment\Select Payment Method\SelectPaymentTableViewSource.cs" />
+    <Compile Include="Payment\Select Payment Method\AddCardCell.cs" />
+    <Compile Include="Payment\Select Payment Method\AddCardCell.designer.cs">
+      <DependentUpon>AddCardCell.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Model\GetCustomerBillingAccountList\PaymentRecordModel.cs" />
+    <Compile Include="Payment\Select Bills\NonConsumptionTableViewCell.cs" />
+    <Compile Include="Payment\Select Bills\NonConsumptionTableViewCell.designer.cs">
+      <DependentUpon>NonConsumptionTableViewCell.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />

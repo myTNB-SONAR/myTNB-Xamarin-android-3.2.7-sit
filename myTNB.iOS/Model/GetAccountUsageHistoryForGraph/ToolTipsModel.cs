@@ -1,5 +1,4 @@
-﻿using System;
-namespace myTNB
+﻿namespace myTNB
 {
     public class ToolTipsModel
     {

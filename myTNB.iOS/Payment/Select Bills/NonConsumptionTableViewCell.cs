@@ -5,8 +5,9 @@ using CoreGraphics;
 
 namespace myTNB
 {
-    public partial class SelectBillsTableViewCell : UITableViewCell
+    public partial class NonConsumptionTableViewCell : UITableViewCell
     {
+        public UILabel _lblMandatoryAmount;
         public UILabel _lblName;
         public UILabel _lblAccountNo;
         public UITextView _txtViewAddress;
@@ -15,9 +16,8 @@ namespace myTNB
         public UIView _viewLineAmount;
         public UIView _viewCheckBox;
         public UIImageView _imgViewCheckBox;
-        private UIView _viewAmount, _viewSeparator;
-
-        public SelectBillsTableViewCell(IntPtr handle) : base(handle)
+        private UIView _viewAmount, _viewSeparator, _viewMandatoryCharges;
+        public NonConsumptionTableViewCell(IntPtr handle) : base(handle)
         {
             SeparatorInset = new UIEdgeInsets(0, 0, 0, 0);
             LayoutMargins = new UIEdgeInsets(0, 0, 0, 0);
@@ -111,6 +111,37 @@ namespace myTNB
             };
 
             AddSubviews(_lblName, _lblAccountNo, _txtViewAddress, _viewCheckBox, _viewAmount, _viewSeparator);
+            AddMandatoryPayment();
+        }
+
+        public void AddMandatoryPayment()
+        {
+            _viewMandatoryCharges = new UIView(new CGRect(18, _txtViewAddress.Frame.GetMaxY() + 16, Frame.Width - 72, 36));
+            UILabel lblMandatoryTitle = new UILabel(new CGRect(0, 0, _viewMandatoryCharges.Frame.Width, 12))
+            {
+                Text = "SelectBill_OtherCharges".Translate(),
+                Font = MyTNBFont.MuseoSans9_300,
+                TextColor = MyTNBColor.SilverChalice
+            };
+            _lblMandatoryAmount = new UILabel(new CGRect(0, 12, _viewMandatoryCharges.Frame.Width, 24))
+            {
+                Font = MyTNBFont.MuseoSans16_300,
+                TextColor = MyTNBColor.TunaGrey()
+            };
+            _viewMandatoryCharges.AddSubviews(new UIView[] { lblMandatoryTitle, _lblMandatoryAmount });
+            AddSubviews(_viewMandatoryCharges);
+            RefitViews();
+        }
+
+        private void RefitViews()
+        {
+            _viewAmount.Frame = new CGRect(_viewAmount.Frame.X, _viewMandatoryCharges.Frame.GetMaxY() + 16
+                , _viewAmount.Frame.Width, _viewAmount.Frame.Height);
+            _viewSeparator.Frame = new CGRect(_viewSeparator.Frame.X, _viewAmount.Frame.GetMaxY() + 16
+                , _viewSeparator.Frame.Width, _viewSeparator.Frame.Height);
+            Frame = new CGRect(Frame.X, Frame.Y, Frame.Width, _viewSeparator.Frame.GetMaxY());
+            _viewCheckBox.Frame = new CGRect(_viewCheckBox.Frame.X, (Frame.Height - _viewCheckBox.Frame.Height) / 2
+                , _viewCheckBox.Frame.Width, _viewCheckBox.Frame.Height);
         }
     }
 }
