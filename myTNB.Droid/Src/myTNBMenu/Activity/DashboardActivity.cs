@@ -249,6 +249,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
             // TODO : ADD DRAWABLE RIGHT IF ACCOUNTS IN DATABASE IS GREATER THAN 1
             this.userActionsListener?.OnNotificationCount();
+            
         }
 
         public void ClearFragmentStack()
