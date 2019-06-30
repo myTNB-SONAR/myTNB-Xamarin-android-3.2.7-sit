@@ -33,13 +33,17 @@ namespace myTNB
 
         int verticalMargin = 24;
         nfloat addHeight = 44.0f;
-        nfloat addAccountHeight, headerHeight;
+        nfloat addAccountHeight;
+        nfloat headerHeight;
         nfloat maxHeaderHeight = 128f;
         nfloat minHeaderHeight = 0.1f;
         nfloat previousScrollOffset;
-        bool isViewDidLoad, isAnimating, isTimeOut, isRefreshing;
+        bool isViewDidLoad = false;
+        bool isAnimating = false;
         bool isBcrmAvailable = true;
+        bool isTimeOut = false;
         List<string> accountsToRefresh;
+        bool isRefreshing = false;
 
         public DashboardHomeViewController(IntPtr handle) : base(handle)
         {
@@ -93,7 +97,10 @@ namespace myTNB
 
         private void HandleAppWillEnterForeground(NSNotification notification)
         {
-            
+            if (DataManager.DataManager.SharedInstance.IsLoggedIn())
+            {
+                //RefreshScreen();
+            }
         }
 
         public override void ViewWillAppear(bool animated)
@@ -714,6 +721,7 @@ namespace myTNB
                         var firstKey = displayedAccounts.Keys.ElementAt(0);
                         var section = displayedAccounts[firstKey];
                         displayedAccounts.Remove(firstKey);
+
                         displayedAccounts = new Dictionary<string, List<DueAmountDataModel>>
                         {
                             { key.Translate(), accountsToAdd },
@@ -810,6 +818,7 @@ namespace myTNB
                         shouldReload = true;
                     }
                 }
+
             } // key
             DataManager.DataManager.SharedInstance.ClearPaidList();
             return acctsToGetLatestDues;
@@ -899,6 +908,38 @@ namespace myTNB
                     ToastHelper.ShowToast(toastView, ref isAnimating, status?.DowntimeTextMessage);
                 }
             }
+        }
+
+        /// <summary>
+        /// Pulls down to refresh.
+        /// </summary>
+        /// <param name="sender">Sender.</param>
+        /// <param name="e">E.</param>
+        private void PullDownTorefresh(object sender, EventArgs e)
+        {
+            if (!isRefreshing)
+            {
+                RefreshScreen();
+            }
+        }
+
+        /// <summary>
+        /// Refreshes the screen.
+        /// </summary>
+        /// <returns>The screen.</returns>
+        private void RefreshScreen()
+        {
+            isRefreshing = true;
+            DataManager.DataManager.SharedInstance.SummaryNeedsRefresh = true;
+
+            var baseVc = UIApplication.SharedApplication.KeyWindow?.RootViewController;
+            var topVc = AppDelegate.GetTopViewController(baseVc);
+            bool hideLoadingIndicator = false;
+            if (!(topVc is DashboardHomeViewController))
+            {
+                hideLoadingIndicator = true;
+            }
+            LoadContents(false, hideLoadingIndicator);
         }
     }
 }

@@ -22,7 +22,7 @@ namespace myTNB
 
         MultiAccountDueAmountResponseModel _multiAccountDueAmount = new MultiAccountDueAmountResponseModel();
         List<CustomerAccountRecordModel> _accounts = new List<CustomerAccountRecordModel>();
-        List<CustomerAccountRecordModel> _accountsForDisplay = new List<CustomerAccountRecordModel>();
+        List<PaymentRecordModel> _accountsForDisplay = new List<PaymentRecordModel>();
         CustomerAccountRecordModel _selectedAccount = new CustomerAccountRecordModel();
 
         private UIView _viewAmount, _viewFooter;
@@ -95,11 +95,11 @@ namespace myTNB
 
         void ResetValues()
         {
-            SelectBillsTableView.Source = new SelectBillsDataSource(this, new List<CustomerAccountRecordModel>());
+            SelectBillsTableView.Source = new SelectBillsDataSource(this, new List<PaymentRecordModel>());
             SelectBillsTableView.ReloadData();
             _multiAccountDueAmount = new MultiAccountDueAmountResponseModel();
             _accounts = new List<CustomerAccountRecordModel>();
-            _accountsForDisplay = new List<CustomerAccountRecordModel>();
+            _accountsForDisplay = new List<PaymentRecordModel>();
             _selectedAccount = new CustomerAccountRecordModel();
             lastStartIndex = 0;
             lastEndIndex = 0;
@@ -116,11 +116,40 @@ namespace myTNB
                 {
                     _accounts[itemIndex].Amount = item.amountDue;
                     _accounts[itemIndex].AmountDue = item.amountDue;
-                    _accounts[itemIndex].OpenChargesTotal = item.OpenChargesTotal;
-                    _accounts[itemIndex].ItemizedBillings = item.ItemizedBillings;
-                    _accountsForDisplay.Add(_accounts[itemIndex]);
+                    UpdateAccountsForDisplay(_accounts[itemIndex], item);
                 }
             }
+        }
+
+        private void UpdateAccountsForDisplay(CustomerAccountRecordModel customerAccount
+            , MultiAccountDueAmountDataModel dueAmtData)
+        {
+            _accountsForDisplay.Add(new PaymentRecordModel
+            {
+                ItemizedBillings = dueAmtData.ItemizedBillings,
+                OpenChargesTotal = dueAmtData.OpenChargesTotal,
+                Amount = dueAmtData.amountDue,
+                AmountDue = dueAmtData.amountDue,
+                accNum = customerAccount.accNum,
+                userAccountID = customerAccount.userAccountID,
+                accDesc = customerAccount.accDesc,
+                icNum = customerAccount.icNum,
+                amCurrentChg = customerAccount.amCurrentChg,
+                isRegistered = customerAccount.isRegistered,
+                isPaid = customerAccount.isPaid,
+                isError = customerAccount.isError,
+                message = customerAccount.message,
+                isOwned = customerAccount.isOwned,
+                isLocal = customerAccount.isLocal,
+                accountTypeId = customerAccount.accountTypeId,
+                accountStAddress = customerAccount.accountStAddress,
+                accountNickName = customerAccount.accountNickName,
+                ownerName = customerAccount.ownerName,
+                accountCategoryId = customerAccount.accountCategoryId,
+                accountOwnerName = customerAccount.accountOwnerName,
+                smartMeterCode = customerAccount.smartMeterCode,
+                IsAccountSelected = customerAccount.IsAccountSelected
+            });
         }
 
         void GetAccountsForDisplay()

@@ -54,7 +54,7 @@ namespace myTNB.Dashboard.DashboardComponents
             _lblSubtitle = new UILabel(new CGRect(xLocation, _lblTitle.Frame.GetMaxY() + 2, subWidth, 28))
             {
                 TextAlignment = UITextAlignment.Center,
-                Text = string.Format("Component_NoAccountMessage".Translate(), Environment.NewLine),
+                Text = string.Format("Common_NoAccount".Translate(), Environment.NewLine),
                 Font = MyTNBFont.MuseoSans11_300,
                 Lines = 2,
                 TextColor = UIColor.White,
