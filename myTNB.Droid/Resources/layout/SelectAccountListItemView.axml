@@ -56,13 +56,40 @@
                 android:lines="3"
                 android:textColor="@color/tunaGrey"
                 android:text="Account Address" />
+               <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginRight="32dp"
+                    android:id="@+id/mandatory_payment_detail">
+               <TextView
+                    android:layout_width="match_parent"
+                    android:singleLine="true"
+                    android:layout_height="match_parent"
+                    android:id="@+id/mandatory_payment_title"
+                    android:textSize="10sp"
+                    android:textColor="@color/silverChalice"
+                    android:text="Other Charges (RM)" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:singleLine="true"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="1dp"
+                    android:id="@+id/mandatory_payment_content"
+                    android:textSize="16sp"
+                    android:textColor="@color/tunaGrey"
+                    android:text="0.00" />
+            </LinearLayout>
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/account_amount_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:hintTextAppearance="@style/TextInputLayout.TextAppearance.LightBackground"
-                android:layout_marginTop="8dp"
-                android:layout_marginStart="8dp"
+                android:layout_marginTop="14dp"
+                android:layout_marginStart="4dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginRight="32dp">
                 <android.support.design.widget.TextInputEditText

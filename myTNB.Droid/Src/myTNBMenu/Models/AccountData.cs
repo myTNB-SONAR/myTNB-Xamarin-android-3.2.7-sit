@@ -1,35 +1,12 @@
 ﻿using myTNB_Android.Src.AddAccount.Models;
 using myTNB_Android.Src.Database.Model;
 using Newtonsoft.Json;
+using System.Collections.Generic;
 
 namespace myTNB_Android.Src.myTNBMenu.Models
 {
     public class AccountData
     {
-        //"accNum": "240000876706",
-        // "accName": "CHONG MING LUEN",
-        // "accICNo": null,
-        // "accICNoNew": "830311045007",
-        // "accComNo": null,
-        // "amDeposit": 0,
-        // "amCurrentChg": -746.12,
-        // "amOutstandingChg": 0,
-        // "amPayableChg": -746.12,
-        // "amLastPay": 0,
-        // "dateBill": "04/08/2017",
-        // "datePymtDue": "03/09/2017",
-        // "dateLastPay": "N/A",
-        // "sttSupply": "Active",
-        // "addStreet": "JLN MACAP UMBOO, KG BARU MACAP, 76100, MACHAP",
-        // "addArea": null,
-        // "addTown": null,
-        // "addState": null,
-        // "stnName": "PC Jasin",
-        // "stnAddStreet": null,
-        // "stnAddArea": null,
-        // "stnAddTown": null,
-        // "stnAddState": null,
-        // "amCustBal": -746.12,
         [JsonProperty("AccountNum")]
         public string AccountNum { get; set; }
 
@@ -105,6 +82,24 @@ namespace myTNB_Android.Src.myTNBMenu.Models
         [JsonProperty("AmtCustBal")]
         public double AmtCustBal { get; set; }
 
+        [JsonProperty("ItemizedBillings")]
+        public List<ItemizedBillingDetails> ItemizedBilling { get; set; }   
+
+        [JsonProperty("OpenChargesTotal")]
+        public double OpenChargesTotal { get; set; }   
+
+        [JsonProperty("WhatIsThisLink")]
+        public string WhatIsThisLink { get; set; }
+
+        [JsonProperty("WhatIsThisTitle")]
+        public string WhatIsThisTitle { get; set; }
+
+        [JsonProperty("WhatIsThisMessage")]
+        public string WhatIsThisMessage { get; set; }
+
+        [JsonProperty("WhatIsThisButtonText")]
+        public string WhatIsThisButtonText { get; set; } 
+
         [JsonProperty("IsSelected")]
         public bool IsSelected { get; set; }
 
@@ -145,6 +140,12 @@ namespace myTNB_Android.Src.myTNBMenu.Models
                 StnAddTown = accountDetails.StnAddTown,
                 StnAddState = accountDetails.StnAddState,
                 AmtCustBal = accountDetails.AmtCustBal,
+                ItemizedBilling = accountDetails.ItemizedBilling,
+                OpenChargesTotal = accountDetails.OpenChargesTotal,
+                WhatIsThisLink = accountDetails.WhatIsThisLink,
+                WhatIsThisTitle = accountDetails.WhatIsThisTitle,
+                WhatIsThisMessage = accountDetails.WhatIsThisMessage,
+                WhatIsThisButtonText = accountDetails.WhatIsThisButtonText,
                 AccountCategoryId = "",
                 SmartMeterCode = accountDetails.SmartMeterCode,
                 IsSelected = isSelected
@@ -181,6 +182,12 @@ namespace myTNB_Android.Src.myTNBMenu.Models
                 StnAddTown = accountDetails.StnAddTown,
                 StnAddState = accountDetails.StnAddState,
                 AmtCustBal = accountDetails.AmtCustBal,
+                ItemizedBilling = accountDetails.ItemizedBilling,
+                OpenChargesTotal = accountDetails.OpenChargesTotal,
+                WhatIsThisLink = accountDetails.WhatIsThisLink,
+                WhatIsThisTitle = accountDetails.WhatIsThisTitle,
+                WhatIsThisMessage = accountDetails.WhatIsThisMessage,
+                WhatIsThisButtonText = accountDetails.WhatIsThisButtonText,
                 AccountCategoryId = customerBilling.AccountCategoryId,
                 IsOwner = customerBilling.isOwned,
                 SmartMeterCode = customerBilling.SmartMeterCode,
@@ -218,6 +225,12 @@ namespace myTNB_Android.Src.myTNBMenu.Models
                 StnAddTown = "",
                 StnAddState = "",
                 AmtCustBal = 0,
+                ItemizedBilling = null,
+                OpenChargesTotal = 0,
+                WhatIsThisLink = "",
+                WhatIsThisTitle = "",
+                WhatIsThisMessage = "",
+                WhatIsThisButtonText = "",
                 IsOwner = accountDetails.isOwned,
                 AccountCategoryId = accountDetails.AccountCategoryId,
                 SmartMeterCode = accountDetails.SmartMeterCode,

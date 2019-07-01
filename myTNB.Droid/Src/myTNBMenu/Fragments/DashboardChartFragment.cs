@@ -1,4 +1,5 @@
-﻿using Android.App;
+﻿using AFollestad.MaterialDialogs;
+using Android.App;
 using Android.Content;
 using Android.Graphics;
 using Android.OS;
@@ -7,6 +8,7 @@ using Android.Support.Design.Widget;
 using Android.Support.V4.Content;
 using Android.Support.V7.App;
 using Android.Text;
+using Android.Text.Method;
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
@@ -92,6 +94,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         [BindView(Resource.Id.txtTotalPayableTitle)]
         TextView txtTotalPayableTitle;
 
+        [BindView(Resource.Id.txtWhyThisAmt)]
+        TextView txtWhyThisAmt;
+
         [BindView(Resource.Id.txtTotalPayableCurrency)]
         TextView txtTotalPayableCurrency;
 
@@ -132,7 +137,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         [BindView(Resource.Id.downtime_layout)]
         LinearLayout mDownTimeLayout;
 
-
+        AccountDueAmount accountDueAmountData;
 
         private DashboardChartContract.IUserActionsListener userActionsListener;
         private DashboardChartPresenter mPresenter;
@@ -143,6 +148,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         IAxisValueFormatter XLabelsFormatter;
         private int currentParentIndex = 0;
         private string errorMSG = null;
+
+        private MaterialDialog mWhyThisAmtCardDialog;
 
         public override int ResourceId()
         {
@@ -235,7 +242,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
                 TextViewUtils.SetMuseoSans300Typeface(txtUsageHistory, txtAddress, txtTotalPayable, txtContentNoData, txtContentNoInternet, txtDueDate);
                 TextViewUtils.SetMuseoSans300Typeface(btnToggleDay, btnToggleMonth);
-                TextViewUtils.SetMuseoSans500Typeface(txtRange, txtTotalPayableTitle, txtTotalPayableCurrency, btnViewBill, btnPay, btnLearnMore, btnTapRefresh, txtTitleNoData, txtTitleNoInternet);
+                TextViewUtils.SetMuseoSans500Typeface(txtRange, txtTotalPayableTitle, txtTotalPayableCurrency, btnViewBill, btnPay, btnLearnMore, btnTapRefresh, txtTitleNoData, txtTitleNoInternet, txtWhyThisAmt);
 
                 this.userActionsListener?.Start();
 
@@ -252,11 +259,17 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         btnViewBill.Text = GetString(Resource.String.dashboard_chart_view_payment_advice);
                         txtUsageHistory.Visibility = ViewStates.Gone;
                         txtTotalPayableTitle.Text = GetString(Resource.String.title_payment_advice_amount);
+                        txtWhyThisAmt.Visibility = ViewStates.Gone;
                     }
                     else
                     {
                         btnPay.Visibility = ViewStates.Visible;
                         btnViewBill.Text = GetString(Resource.String.dashboard_chartview_view_bill);
+
+                        if (selectedAccount.OpenChargesTotal == 0.00)
+                        {
+                            txtWhyThisAmt.Visibility = ViewStates.Gone;
+                        }
                     }
 
 
@@ -377,6 +390,58 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             this.userActionsListener.OnArrowForwardClick();
         }
 
+        [OnClick(Resource.Id.txtWhyThisAmt)]
+        void OnWhyThisAmtClick(object sender, EventArgs eventArgs)
+        {
+            try
+            {
+                mWhyThisAmtCardDialog = new MaterialDialog.Builder(Activity)
+                    .CustomView(Resource.Layout.CustomDialogDoubleButtonLayout, false)
+                    .Cancelable(false)
+                    .CanceledOnTouchOutside(false)
+                    .Build();
+
+                View dialogView = mWhyThisAmtCardDialog.Window.DecorView;
+                dialogView.SetBackgroundResource(Android.Resource.Color.Transparent);
+
+                TextView txtItemizedTitle = mWhyThisAmtCardDialog.FindViewById<TextView>(Resource.Id.txtTitle);
+                TextView txtItemizedMessage = mWhyThisAmtCardDialog.FindViewById<TextView>(Resource.Id.txtMessage);
+                TextView btnGotIt = mWhyThisAmtCardDialog.FindViewById<TextView>(Resource.Id.txtBtnSecond);
+                TextView btnBringMeThere = mWhyThisAmtCardDialog.FindViewById<TextView>(Resource.Id.txtBtnFirst);
+                txtItemizedMessage.MovementMethod = new ScrollingMovementMethod();
+                if (Build.VERSION.SdkInt >= BuildVersionCodes.N)
+                {
+                    txtItemizedMessage.TextFormatted = string.IsNullOrEmpty(accountDueAmountData.WhyThisAmountMessage) ? Html.FromHtml(Activity.GetString(Resource.String.itemized_bill_message), FromHtmlOptions.ModeLegacy) : Html.FromHtml(accountDueAmountData.WhyThisAmountMessage, FromHtmlOptions.ModeLegacy);
+                }
+                else
+                {
+                    txtItemizedMessage.TextFormatted = string.IsNullOrEmpty(accountDueAmountData.WhyThisAmountMessage) ? Html.FromHtml(Activity.GetString(Resource.String.itemized_bill_message)) : Html.FromHtml(accountDueAmountData.WhyThisAmountMessage);
+                }
+                txtItemizedTitle.Text = string.IsNullOrEmpty(accountDueAmountData.WhyThisAmountTitle) ? Activity.GetString(Resource.String.itemized_bill_title) : accountDueAmountData.WhyThisAmountTitle;
+                btnGotIt.Text = string.IsNullOrEmpty(accountDueAmountData.WhyThisAmountSecButtonText) ? Activity.GetString(Resource.String.itemized_bill_got_it) : accountDueAmountData.WhyThisAmountSecButtonText;
+                btnBringMeThere.Text = string.IsNullOrEmpty(accountDueAmountData.WhyThisAmountPriButtonText) ? Activity.GetString(Resource.String.itemized_bill_bring_me_there) : accountDueAmountData.WhyThisAmountPriButtonText;
+                TextViewUtils.SetMuseoSans500Typeface(txtItemizedTitle, btnGotIt, btnBringMeThere);
+                TextViewUtils.SetMuseoSans300Typeface(txtItemizedMessage);
+                btnGotIt.Click += delegate
+                {
+                    mWhyThisAmtCardDialog.Dismiss();
+                };
+                btnBringMeThere.Click += delegate
+                {
+                    ((DashboardActivity)Activity).BillsMenuAccess();
+                    mWhyThisAmtCardDialog.Dismiss();
+                };
+
+                if(IsActive())
+                {
+                    mWhyThisAmtCardDialog.Show();
+                }
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
 
         internal void SetUp()
         {
@@ -960,6 +1025,33 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 {
                     ((DashboardActivity)Activity).OnTapRefresh();
                 }
+                else if (resultCode == Result.FirstUser)
+                {
+                    Bundle extras = data.Extras;
+                    if(extras.ContainsKey(Constants.ITEMZIED_BILLING_VIEW_KEY))
+                    {
+                        AccountData selectedAccount = JsonConvert.DeserializeObject<AccountData>(extras.GetString(Constants.SELECTED_ACCOUNT));
+                        UsageHistoryData selectedHistoryData = JsonConvert.DeserializeObject<UsageHistoryData>(extras.GetString(Constants.SELECTED_ACCOUNT_USAGE));
+
+                        bool isOwned = true;
+                        CustomerBillingAccount customerBillingAccount = CustomerBillingAccount.FindByAccNum(selectedAccount.AccountNum);
+                        if (customerBillingAccount != null)
+                        {
+                            isOwned = customerBillingAccount.isOwned;
+                            selectedAccount.IsOwner = isOwned;
+                            selectedAccount.AccountCategoryId = customerBillingAccount.AccountCategoryId;
+
+                        }
+                        try
+                        {
+                            ((DashboardActivity)Activity).BillsMenuAccess(selectedAccount);
+                        }
+                        catch (System.Exception e)
+                        {
+                            Utility.LoggingNonFatalError(e);
+                        }
+                    }
+                }
             }
         }
 
@@ -1188,6 +1280,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 Date d = null;
                 try
                 {
+                    accountDueAmountData = accountDueAmount;
+                    txtWhyThisAmt.Text = string.IsNullOrEmpty(accountDueAmount.WhyThisAmountLink) ? Activity.GetString(Resource.String.why_this_amount) : accountDueAmount.WhyThisAmountLink;
                     d = dateParser.Parse(accountDueAmount.BillDueDate);
                 }
                 catch (ParseException e)
@@ -1202,6 +1296,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
                         if (selectedAccount.AccountCategoryId.Equals("2"))
                         {
+                            txtWhyThisAmt.Visibility = ViewStates.Gone;
                             selectedAccount.AmtCustBal = accountDueAmount.AmountDue;
                             double calAmt = selectedAccount.AmtCustBal * -1;
                             if (calAmt <= 0)
@@ -1231,6 +1326,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         }
                         else
                         {
+                            if(accountDueAmount.OpenChargesTotal == 0)
+                            {
+                                txtWhyThisAmt.Visibility = ViewStates.Gone;
+                            }
+                            else
+                            {
+                                txtWhyThisAmt.Visibility = ViewStates.Visible;
+                            }
                             txtTotalPayable.Text = decimalFormat.Format(accountDueAmount.AmountDue);
                             selectedAccount.AmtCustBal = accountDueAmount.AmountDue;
                             double calAmt = selectedAccount.AmtCustBal;
@@ -1244,10 +1347,15 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                             }
                         }
                     }
+                    else
+                    {
+                        txtWhyThisAmt.Visibility = ViewStates.Gone;
+                    }
                 }
                 else
                 {
                     txtDueDate.Text = GetString(Resource.String.dashboard_chartview_due_date_not_available);
+                    txtWhyThisAmt.Visibility = ViewStates.Gone;
                 }
             }
             catch (System.Exception e)

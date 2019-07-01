@@ -87,7 +87,7 @@
                 android:layout_height="wrap_content"
                 android:textColor="@color/powerBlue"
                 android:textSize="16sp"
-                android:text="Current Bill"
+                android:text="Bill Details"
                 android:paddingLeft="30dp"
                 android:paddingRight="30dp"
                 android:paddingBottom="10dp"
@@ -100,41 +100,81 @@
                 android:background="@color/white"
                 android:minWidth="25px"
                 android:minHeight="25px">
+                <LinearLayout
+                    android:minWidth="25px"
+                    android:minHeight="25px"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingLeft="30dp"
+                    android:paddingRight="30dp"
+                    android:paddingBottom="10dp"
+                    android:paddingTop="20dp">
+                </LinearLayout>
                 <RelativeLayout
                     android:minWidth="25px"
                     android:minHeight="25px"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/currentChangeLayout"
+                    android:id="@+id/mandatoryPaymentsLayout"
                     android:paddingLeft="30dp"
                     android:paddingRight="30dp"
-                    android:paddingBottom="10dp"
-                    android:paddingTop="20dp">
+                    android:paddingBottom="10dp">
                     <TextView
-                        android:id="@+id/txtCurrentChargesTitle"
+                        android:id="@+id/txtMandatoryPaymentsTitle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="@color/tunaGrey"
-                        android:textSize="12sp"
-                        android:text="Current Charges"
+                        android:textSize="14sp"
+                        android:text="Other Charges"
                         android:layout_alignParentLeft="true" />
                     <TextView
-                        android:id="@+id/txtCurrentChargesRM"
+                        android:id="@+id/txtMandatoryPaymentsRM"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignBaseline="@+id/txtCurrentChargesTitle"
-                        android:layout_toLeftOf="@+id/txtCurrentChargesContent"
+                        android:layout_alignBaseline="@+id/txtMandatoryPaymentsTitle"
+                        android:layout_toLeftOf="@+id/txtMandatoryPaymentsContent"
                         android:text="RM "
-                        android:textSize="12sp"
+                        android:textSize="14sp"
                         android:textColor="@color/tunaGrey" />
                     <TextView
-                        android:id="@+id/txtCurrentChargesContent"
+                        android:id="@+id/txtMandatoryPaymentsContent"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="@color/tunaGrey"
-                        android:textSize="12sp"
-                        android:text="00.00"
+                        android:textSize="14sp"
+                        android:text="0.00"
                         android:layout_alignParentRight="true" />
+                </RelativeLayout>
+                <android.support.v7.widget.RecyclerView
+                    android:minWidth="25px"
+                    android:minHeight="25px"
+                    android:id="@+id/mandatory_list_recycler_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingLeft="30dp"
+                    android:paddingRight="30dp"
+                    android:paddingBottom="10dp" />
+                <RelativeLayout
+                    android:minWidth="25px"
+                    android:minHeight="25px"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/mandatoryPaymentsToolTipsLayout"
+                    android:paddingLeft="30dp"
+                    android:paddingRight="30dp"
+                    android:paddingBottom="10dp">
+                    <TextView
+                        android:id="@+id/txtMandatoryPaymentsToolTips"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/powerBlue"
+                        android:textSize="12sp"
+                        android:text="@string/what_is_this"
+                        android:layout_alignParentLeft="true"
+                        android:textStyle="normal"
+                        android:clickable="true"
+                        android:singleLine="true" />
                 </RelativeLayout>
                 <RelativeLayout
                     android:minWidth="25px"
@@ -150,7 +190,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="@color/tunaGrey"
-                        android:textSize="12sp"
+                        android:textSize="14sp"
                         android:text="Outstanding Charges"
                         android:layout_alignParentLeft="true" />
                     <TextView
@@ -160,14 +200,14 @@
                         android:layout_alignBaseline="@+id/txtOutstandingChargesTitle"
                         android:layout_toLeftOf="@+id/txtOutstandingChargesContent"
                         android:text="RM "
-                        android:textSize="12sp"
+                        android:textSize="14sp"
                         android:textColor="@color/tunaGrey" />
                     <TextView
                         android:id="@+id/txtOutstandingChargesContent"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="@color/tunaGrey"
-                        android:textSize="12sp"
+                        android:textSize="14sp"
                         android:text="0.00"
                         android:layout_alignParentRight="true" />
                 </RelativeLayout>
@@ -176,33 +216,33 @@
                     android:minHeight="25px"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/totalPayableLayout"
+                    android:id="@+id/currentChangeLayout"
                     android:paddingLeft="30dp"
                     android:paddingRight="30dp"
                     android:paddingBottom="10dp">
                     <TextView
-                        android:id="@+id/txtTotalPayableTitle"
+                        android:id="@+id/txtCurrentChargesTitle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="@color/tunaGrey"
-                        android:textSize="12sp"
-                        android:text="Total Payable"
+                        android:textSize="14sp"
+                        android:text="Current Charges"
                         android:layout_alignParentLeft="true" />
                     <TextView
-                        android:id="@+id/txtTotalPayableRM"
+                        android:id="@+id/txtCurrentChargesRM"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignBaseline="@+id/txtTotalPayableTitle"
-                        android:layout_toLeftOf="@+id/txtTotalPayableContent"
+                        android:layout_alignBaseline="@+id/txtCurrentChargesTitle"
+                        android:layout_toLeftOf="@+id/txtCurrentChargesContent"
                         android:text="RM "
-                        android:textSize="12sp"
+                        android:textSize="14sp"
                         android:textColor="@color/tunaGrey" />
                     <TextView
-                        android:id="@+id/txtTotalPayableContent"
+                        android:id="@+id/txtCurrentChargesContent"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="@color/tunaGrey"
-                        android:textSize="12sp"
+                        android:textSize="14sp"
                         android:text="0.00"
                         android:layout_alignParentRight="true" />
                 </RelativeLayout>
@@ -259,7 +299,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentStart="true"
                         android:layout_below="@+id/txtTotalDueTitle"
-                        android:textSize="11sp"
+                        android:textSize="12sp"
                         android:paddingTop="@dimen/_1sdp"
                         android:textColor="@color/silverChalice"
                         android:text="@string/dashboard_chartview_due_date_not_available" />

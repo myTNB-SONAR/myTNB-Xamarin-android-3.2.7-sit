@@ -245,7 +245,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentStart="true"
                     android:layout_alignParentTop="true"
-                    android:text="@string/total_amount_due"
+                    android:text="@string/total_amount_due_bill"
                     android:textColor="@color/tunaGrey"
                     android:textSize="16sp" />
                 <TextView
@@ -276,9 +276,22 @@
                     android:layout_alignParentStart="true"
                     android:layout_below="@+id/txtTotalPayableTitle"
                     android:textSize="11sp"
+                    android:layout_marginTop="9dp"
                     android:paddingTop="@dimen/_1sdp"
                     android:textColor="@color/silverChalice"
                     android:text="" />
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:textSize="12sp"
+                    android:textStyle="normal"
+                    android:layout_alignBaseline="@+id/txtDueDate"
+                    android:textColor="@color/powerBlue"
+                    android:singleLine="true"
+                    android:text="@string/why_this_amount"
+                    android:id="@+id/txtWhyThisAmt"
+                    android:layout_alignParentRight="true" 
+                    android:clickable="true"/>
             </RelativeLayout>
             <LinearLayout
                 android:layout_width="match_parent"
