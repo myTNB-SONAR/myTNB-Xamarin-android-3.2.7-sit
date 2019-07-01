@@ -52,6 +52,17 @@ namespace myTNB_Android.Src.myTNBMenu.Async
                 {
                     if (!userNotificationResponse.Result.Data.IsError)
                     {
+                        if (userNotificationResponse.Result.Data.Data.Count > 0)
+                        {
+                            try
+                            {
+                                UserNotificationEntity.RemoveAll();
+                            }
+                            catch (System.Exception ne)
+                            {
+                                Utility.LoggingNonFatalError(ne);
+                            }
+                        }
                         foreach (UserNotification userNotification in userNotificationResponse.Result.Data.Data)
                         {
                             // tODO : SAVE ALL NOTIFICATIONs
