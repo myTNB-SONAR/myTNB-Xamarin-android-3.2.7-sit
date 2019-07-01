@@ -5,6 +5,7 @@ using Android.Content.PM;
 using Android.OS;
 using Android.Runtime;
 using Android.Support.Design.Widget;
+using Android.Text;
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
@@ -52,6 +53,9 @@ namespace myTNB_Android.Src.Notifications.Activity
         [BindView(Resource.Id.rootView)]
         CoordinatorLayout rootView;
 
+        [BindView(Resource.Id.layout_api_refresh)]
+        LinearLayout refreshLayout;
+
         [BindView(Resource.Id.notification_recyclerView)]
         RecyclerView notificationRecyclerView;
 
@@ -69,6 +73,12 @@ namespace myTNB_Android.Src.Notifications.Activity
 
         [BindView(Resource.Id.selectAllCheckBox)]
         CheckBox selectAllCheckboxButton;
+
+        [BindView(Resource.Id.btnRefresh)]
+        Button btnNewRefresh;
+
+        [BindView(Resource.Id.refresh_content)]
+        TextView txtNewRefreshMessage;
 
         [BindView(Resource.Id.selectAllNotificationLabel)]
         TextView selectAllNotificationLabel;
@@ -341,17 +351,31 @@ namespace myTNB_Android.Src.Notifications.Activity
 
         private void SetNotificationRecyclerView()
         {
-            //notificationAdapter = new NotificationAdapter(this, true);
-            //notificationListView.Adapter = notificationAdapter;
-            //notificationListView.EmptyView = emptyLayout;
             LinearLayoutManager layoutManager = new LinearLayoutManager(this);
             notificationRecyclerView.SetLayoutManager(layoutManager);
+            TextViewUtils.SetMuseoSans500Typeface(txtNotificationName);
+            TextViewUtils.SetMuseoSans300Typeface(txtNotificationsContent);
+            TextViewUtils.SetMuseoSans300Typeface(txtNewRefreshMessage);
+            TextViewUtils.SetMuseoSans500Typeface(btnNewRefresh);
 
             DividerItemDecoration mDividerItemDecoration = new DividerItemDecoration(notificationRecyclerView.Context,
             DividerItemDecoration.Vertical);
             notificationRecyclerView.AddItemDecoration(mDividerItemDecoration);
 
-            //notificationRecyclerView.AddItemDecoration(new MyItemDecoration());
+            notificationRecyclerView.Visibility = ViewStates.Visible;
+            refreshLayout.Visibility = ViewStates.Gone;
+
+            int count = UserNotificationEntity.Count();
+            if (count == 0)
+            {
+                ShowQueryProgress();
+                this.userActionsListener.QueryOnLoad(this.DeviceId());
+                ME.Leolin.Shortcutbadger.ShortcutBadger.RemoveCount(this.ApplicationContext);
+            }
+            else
+            {
+                ME.Leolin.Shortcutbadger.ShortcutBadger.ApplyCount(this.ApplicationContext, count);
+            }
 
             notificationRecyclerAdapter = new NotificationRecyclerAdapter(this, this, true);
             //notificationRecyclerView.SetEmptyView(FindViewById(Resource.Id.emptyLayout));
@@ -423,6 +447,42 @@ namespace myTNB_Android.Src.Notifications.Activity
                 Utility.LoggingNonFatalError(e);
             }
         }
+
+        public void ShowView()
+        {
+            this.userActionsListener.ShowFilteredList();
+            refreshLayout.Visibility = ViewStates.Gone;
+        }
+
+        public void ShowRefreshView(string contentTxt, string btnTxt)
+        {
+            try
+            {
+                FindViewById(Resource.Id.emptyLayout).Visibility = ViewStates.Gone;
+                notificationRecyclerView.Visibility = ViewStates.Gone;
+                refreshLayout.Visibility = ViewStates.Visible;
+                btnNewRefresh.Text = string.IsNullOrEmpty(btnTxt) ? GetString(Resource.String.text_new_refresh) : btnTxt;
+                if (Build.VERSION.SdkInt >= BuildVersionCodes.N)
+                {
+                    txtNewRefreshMessage.TextFormatted = string.IsNullOrEmpty(contentTxt) ? Html.FromHtml(GetString(Resource.String.text_new_refresh_content), FromHtmlOptions.ModeLegacy) : Html.FromHtml(contentTxt, FromHtmlOptions.ModeLegacy);
+                }
+                else
+                {
+                    txtNewRefreshMessage.TextFormatted = string.IsNullOrEmpty(contentTxt) ? Html.FromHtml(GetString(Resource.String.text_new_refresh_content)) : Html.FromHtml(contentTxt);
+                }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        [OnClick(Resource.Id.btnRefresh)]
+        internal void OnRefresh(object sender, EventArgs e)
+        {
+            this.userActionsListener.QueryOnLoad(this.DeviceId());
+        }
+
 
         public void HideProgress()
         {

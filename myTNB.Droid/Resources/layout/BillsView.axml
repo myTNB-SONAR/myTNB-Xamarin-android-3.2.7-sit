@@ -6,10 +6,6 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="false"
     android:id="@+id/rootView">
-<!--<android.support.v4.widget.SwipeRefreshLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/swipeRefreshLayout">-->
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -20,406 +16,455 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
-        <!-- Top Layout -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+            <LinearLayout 
+			    android:id="@+id/layout_api_refresh"
                 android:orientation="vertical"
-                android:id="@+id/topLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
                 android:background="@color/white"
-                android:padding="@dimen/_2sdp">
+                android:visibility="gone">
+                <LinearLayout 
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:background="@color/white"
+                    android:layout_marginBottom="80dp">
+                    <ImageView
+                        android:id="@+id/refresh_image"
+                        android:layout_height="96dp"
+                        android:layout_width="96dp"
+                        android:layout_gravity="center_horizontal"
+                        android:src="@drawable/refresh"/>
+                    <TextView
+                        android:id="@+id/refresh_content"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="24dp"
+                        android:gravity="center"
+                        android:lineSpacingExtra="4sp"
+                        android:paddingLeft="16dp"
+                        android:paddingRight="16dp"
+                        android:textSize="16sp"
+                        android:text="@string/text_new_refresh_content"
+                        android:textColor="@color/silverChalice"/>
+                    <Button
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="16dp"
+                        android:text="@string/text_new_refresh"
+                        android:id="@+id/btnRefresh"
+                        style="@style/Theme.RefreshButton" />
+                </LinearLayout>
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/layout_bill_total"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:visibility="visible">
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
+                    android:id="@+id/topLayout"
+                    android:background="@color/white"
+                    android:padding="@dimen/_2sdp">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:paddingLeft="30dp"
+                        android:paddingRight="30dp"
+                        android:paddingBottom="10dp"
+                        android:paddingTop="20dp">
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+                            <ImageView
+                                android:id="@+id/imgLeaf"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentEnd="true"
+                                android:layout_centerVertical="true"
+                                android:src="@drawable/ic_display_REleaf"
+                                android:visibility="gone" />
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
+                                <TextView
+                                    android:id="@+id/txtAccountName"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="Rental house"
+                                    android:textColor="@color/tunaGrey"
+                                    android:textSize="14sp"
+                                    android:ellipsize="end"
+                                    android:maxEms="20"
+                                    android:maxLines="1" />
+                                <TextView
+                                    android:id="@+id/txtAccountNum"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="220229082203"
+                                    android:textColor="@color/tunaGrey"
+                                    android:textSize="12sp" />
+                            </LinearLayout>
+                        </RelativeLayout>
+                        <TextView
+                            android:id="@+id/txtAddress"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/tunaGrey"
+                            android:textSize="12sp"
+                            android:layout_marginTop="10dp"
+                            android:text="No. 3 Jalan Melur, 12 Taman Melur, 68000 Ampang, Selangor" />
+                    </LinearLayout>
+                </LinearLayout>
+                <TextView
+                    android:id="@+id/txtCurrentBill"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/powerBlue"
+                    android:textSize="16sp"
+                    android:text="Bill Details"
                     android:paddingLeft="30dp"
                     android:paddingRight="30dp"
                     android:paddingBottom="10dp"
-                    android:paddingTop="20dp">
+                    android:paddingTop="20dp" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:id="@+id/chargeLayout"
+                    android:background="@color/white"
+                    android:minWidth="25px"
+                    android:minHeight="25px">
+					<LinearLayout
+						android:minWidth="25px"
+						android:minHeight="25px"
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:orientation="vertical"
+						android:paddingLeft="30dp"
+						android:paddingRight="30dp"
+						android:paddingBottom="10dp"
+						android:paddingTop="20dp">
+					</LinearLayout>
+					<RelativeLayout
+						android:minWidth="25px"
+						android:minHeight="25px"
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:id="@+id/mandatoryPaymentsLayout"
+						android:paddingLeft="30dp"
+						android:paddingRight="30dp"
+						android:paddingBottom="10dp">
+						<TextView
+							android:id="@+id/txtMandatoryPaymentsTitle"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:textColor="@color/tunaGrey"
+							android:textSize="14sp"
+							android:text="Other Charges"
+							android:layout_alignParentLeft="true" />
+						<TextView
+							android:id="@+id/txtMandatoryPaymentsRM"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:layout_alignBaseline="@+id/txtMandatoryPaymentsTitle"
+							android:layout_toLeftOf="@+id/txtMandatoryPaymentsContent"
+							android:text="RM "
+							android:textSize="14sp"
+							android:textColor="@color/tunaGrey" />
+						<TextView
+							android:id="@+id/txtMandatoryPaymentsContent"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:textColor="@color/tunaGrey"
+							android:textSize="14sp"
+							android:text="0.00"
+							android:layout_alignParentRight="true" />
+					</RelativeLayout>
+					<android.support.v7.widget.RecyclerView
+						android:minWidth="25px"
+						android:minHeight="25px"
+						android:id="@+id/mandatory_list_recycler_view"
+						android:layout_width="match_parent"
+						android:layout_height="match_parent"
+						android:paddingLeft="30dp"
+						android:paddingRight="30dp"
+						android:paddingBottom="10dp" />
+					<RelativeLayout
+						android:minWidth="25px"
+						android:minHeight="25px"
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:id="@+id/mandatoryPaymentsToolTipsLayout"
+						android:paddingLeft="30dp"
+						android:paddingRight="30dp"
+						android:paddingBottom="10dp">
+						<TextView
+							android:id="@+id/txtMandatoryPaymentsToolTips"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:textColor="@color/powerBlue"
+							android:textSize="12sp"
+							android:text="@string/what_is_this"
+							android:layout_alignParentLeft="true"
+							android:textStyle="normal"
+							android:clickable="true"
+							android:singleLine="true" />
+					</RelativeLayout>
                     <RelativeLayout
+                        android:minWidth="25px"
+                        android:minHeight="25px"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent">
-                        <ImageView
-                            android:id="@+id/imgLeaf"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/outstandingChangeLayout"
+                        android:paddingLeft="30dp"
+                        android:paddingRight="30dp"
+                        android:paddingBottom="10dp">
+                        <TextView
+                            android:id="@+id/txtOutstandingChargesTitle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/tunaGrey"
+                            android:textSize="14sp"
+                            android:text="Outstanding Charges"
+                            android:layout_alignParentLeft="true" />
+                        <TextView
+                            android:id="@+id/txtOutstandingChargesRM"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignBaseline="@+id/txtOutstandingChargesTitle"
+                            android:layout_toLeftOf="@+id/txtOutstandingChargesContent"
+                            android:text="RM "
+                            android:textSize="14sp"
+                            android:textColor="@color/tunaGrey" />
+                        <TextView
+                            android:id="@+id/txtOutstandingChargesContent"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/tunaGrey"
+                            android:textSize="14sp"
+                            android:text="0.00"
+                            android:layout_alignParentRight="true" />
+                    </RelativeLayout>
+					<RelativeLayout
+						android:minWidth="25px"
+						android:minHeight="25px"
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:id="@+id/currentChangeLayout"
+						android:paddingLeft="30dp"
+						android:paddingRight="30dp"
+						android:paddingBottom="10dp">
+						<TextView
+							android:id="@+id/txtCurrentChargesTitle"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:textColor="@color/tunaGrey"
+							android:textSize="14sp"
+							android:text="Current Charges"
+							android:layout_alignParentLeft="true" />
+						<TextView
+							android:id="@+id/txtCurrentChargesRM"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:layout_alignBaseline="@+id/txtCurrentChargesTitle"
+							android:layout_toLeftOf="@+id/txtCurrentChargesContent"
+							android:text="RM "
+							android:textSize="14sp"
+							android:textColor="@color/tunaGrey" />
+						<TextView
+							android:id="@+id/txtCurrentChargesContent"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:textColor="@color/tunaGrey"
+							android:textSize="14sp"
+							android:text="0.00"
+							android:layout_alignParentRight="true" />
+					</RelativeLayout>
+                    <View
+                        android:layout_height="1dp"
+                        android:layout_width="match_parent"
+                        android:layout_marginLeft="30dp"
+                        android:layout_marginRight="30dp"
+                        android:id="@+id/divider"
+                        android:background="@color/tunaGrey" />
+                    <RelativeLayout
+                        android:minWidth="25px"
+                        android:minHeight="25px"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/totalPayableLayout"
+                        android:paddingLeft="30dp"
+                        android:paddingRight="30dp"
+                        android:paddingBottom="10dp"
+                        android:paddingTop="10dp">
+                        <TextView
+                            android:id="@+id/txtTotalDueTitle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentStart="true"
+                            android:layout_alignParentTop="true"
+                            android:text="@string/total_amount_due_bill"
+                            android:textColor="@color/tunaGrey"
+                            android:textSize="16sp" />
+                        <TextView
+                            android:id="@+id/txtTotalDueContent"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentEnd="true"
-                            android:layout_centerVertical="true"
-                            android:src="@drawable/ic_display_REleaf"
-                            android:visibility="gone" />
-                        <LinearLayout
+                            android:layout_alignParentRight="true"
+                            android:layout_alignParentTop="true"
+                            android:text="0.00"
+                            android:textColor="@color/tunaGrey"
+                            android:textSize="24sp" />
+                        <TextView
+                            android:id="@+id/txtCurrency"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:orientation="vertical">
-                            <TextView
-                                android:id="@+id/txtAccountName"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:text="Rental house"
-                                android:textColor="@color/tunaGrey"
-                                android:textSize="14sp"
-                                android:ellipsize="end"
-                                android:maxEms="20"
-                                android:maxLines="1" />
-                            <TextView
-                                android:id="@+id/txtAccountNum"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:text="220229082203"
-                                android:textColor="@color/tunaGrey"
-                                android:textSize="12sp" />
-                        </LinearLayout>
+                            android:layout_alignBaseline="@+id/txtTotalDueContent"
+                            android:layout_alignBottom="@+id/txtTotalDueContent"
+                            android:layout_toLeftOf="@+id/txtTotalDueContent"
+                            android:layout_toStartOf="@+id/txtTotalDueContent"
+                            android:text="RM"
+                            android:textColor="@color/tunaGrey"
+                            android:textSize="14sp" />
+                        <TextView
+                            android:id="@+id/txtDueDate"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentStart="true"
+                            android:layout_below="@+id/txtTotalDueTitle"
+                            android:textSize="12sp"
+                            android:paddingTop="@dimen/_1sdp"
+                            android:textColor="@color/silverChalice"
+                            android:text="@string/dashboard_chartview_due_date_not_available" />
                     </RelativeLayout>
-                    <TextView
-                        android:id="@+id/txtAddress"
+                    <Button
+                        android:id="@+id/btnPay"
+                        android:text="@string/dashboard_chartview_pay"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/tunaGrey"
-                        android:textSize="12sp"
-                        android:layout_marginTop="10dp"
-                        android:text="No. 3 Jalan Melur, 12 Taman Melur, 68000 Ampang, Selangor" />
-                </LinearLayout>
-            </LinearLayout>
-        <!-- End Top Layout-->
-            <TextView
-                android:id="@+id/txtCurrentBill"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="@color/powerBlue"
-                android:textSize="16sp"
-                android:text="Bill Details"
-                android:paddingLeft="30dp"
-                android:paddingRight="30dp"
-                android:paddingBottom="10dp"
-                android:paddingTop="20dp" />
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:id="@+id/chargeLayout"
-                android:background="@color/white"
-                android:minWidth="25px"
-                android:minHeight="25px">
-                <LinearLayout
-                    android:minWidth="25px"
-                    android:minHeight="25px"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:paddingLeft="30dp"
-                    android:paddingRight="30dp"
-                    android:paddingBottom="10dp"
-                    android:paddingTop="20dp">
-                </LinearLayout>
-                <RelativeLayout
-                    android:minWidth="25px"
-                    android:minHeight="25px"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/mandatoryPaymentsLayout"
-                    android:paddingLeft="30dp"
-                    android:paddingRight="30dp"
-                    android:paddingBottom="10dp">
+                        android:textAllCaps="false"
+                        style="@style/Theme.PayButton"
+                        android:layout_marginLeft="30dp"
+                        android:layout_marginRight="30dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="40dp" />
                     <TextView
-                        android:id="@+id/txtMandatoryPaymentsTitle"
-                        android:layout_width="wrap_content"
+                        android:id="@+id/txtBillPaymentHistoryTitle"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/tunaGrey"
-                        android:textSize="14sp"
-                        android:text="Other Charges"
-                        android:layout_alignParentLeft="true" />
-                    <TextView
-                        android:id="@+id/txtMandatoryPaymentsRM"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignBaseline="@+id/txtMandatoryPaymentsTitle"
-                        android:layout_toLeftOf="@+id/txtMandatoryPaymentsContent"
-                        android:text="RM "
-                        android:textSize="14sp"
-                        android:textColor="@color/tunaGrey" />
-                    <TextView
-                        android:id="@+id/txtMandatoryPaymentsContent"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/tunaGrey"
-                        android:textSize="14sp"
-                        android:text="0.00"
-                        android:layout_alignParentRight="true" />
-                </RelativeLayout>
-                <android.support.v7.widget.RecyclerView
-                    android:minWidth="25px"
-                    android:minHeight="25px"
-                    android:id="@+id/mandatory_list_recycler_view"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:paddingLeft="30dp"
-                    android:paddingRight="30dp"
-                    android:paddingBottom="10dp" />
-                <RelativeLayout
-                    android:minWidth="25px"
-                    android:minHeight="25px"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/mandatoryPaymentsToolTipsLayout"
-                    android:paddingLeft="30dp"
-                    android:paddingRight="30dp"
-                    android:paddingBottom="10dp">
-                    <TextView
-                        android:id="@+id/txtMandatoryPaymentsToolTips"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:background="@color/lightGrey"
+                        android:paddingBottom="10dp"
+                        android:paddingLeft="30dp"
+                        android:paddingRight="30dp"
+                        android:paddingTop="20dp"
+                        android:text="@string/bill_menu_payment_history"
                         android:textColor="@color/powerBlue"
-                        android:textSize="12sp"
-                        android:text="@string/what_is_this"
-                        android:layout_alignParentLeft="true"
-                        android:textStyle="normal"
-                        android:clickable="true"
-                        android:singleLine="true" />
-                </RelativeLayout>
-                <RelativeLayout
-                    android:minWidth="25px"
-                    android:minHeight="25px"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/outstandingChangeLayout"
-                    android:paddingLeft="30dp"
-                    android:paddingRight="30dp"
-                    android:paddingBottom="10dp">
-                    <TextView
-                        android:id="@+id/txtOutstandingChargesTitle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/tunaGrey"
-                        android:textSize="14sp"
-                        android:text="Outstanding Charges"
-                        android:layout_alignParentLeft="true" />
-                    <TextView
-                        android:id="@+id/txtOutstandingChargesRM"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignBaseline="@+id/txtOutstandingChargesTitle"
-                        android:layout_toLeftOf="@+id/txtOutstandingChargesContent"
-                        android:text="RM "
-                        android:textSize="14sp"
-                        android:textColor="@color/tunaGrey" />
-                    <TextView
-                        android:id="@+id/txtOutstandingChargesContent"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/tunaGrey"
-                        android:textSize="14sp"
-                        android:text="0.00"
-                        android:layout_alignParentRight="true" />
-                </RelativeLayout>
-                <RelativeLayout
-                    android:minWidth="25px"
-                    android:minHeight="25px"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/currentChangeLayout"
-                    android:paddingLeft="30dp"
-                    android:paddingRight="30dp"
-                    android:paddingBottom="10dp">
-                    <TextView
-                        android:id="@+id/txtCurrentChargesTitle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/tunaGrey"
-                        android:textSize="14sp"
-                        android:text="Current Charges"
-                        android:layout_alignParentLeft="true" />
-                    <TextView
-                        android:id="@+id/txtCurrentChargesRM"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignBaseline="@+id/txtCurrentChargesTitle"
-                        android:layout_toLeftOf="@+id/txtCurrentChargesContent"
-                        android:text="RM "
-                        android:textSize="14sp"
-                        android:textColor="@color/tunaGrey" />
-                    <TextView
-                        android:id="@+id/txtCurrentChargesContent"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/tunaGrey"
-                        android:textSize="14sp"
-                        android:text="0.00"
-                        android:layout_alignParentRight="true" />
-                </RelativeLayout>
-                <View
-                    android:layout_height="1dp"
-                    android:layout_width="match_parent"
-                    android:layout_marginLeft="30dp"
-                    android:layout_marginRight="30dp"
-                    android:id="@+id/divider"
-                    android:background="@color/tunaGrey" />
-                <RelativeLayout
-                    android:minWidth="25px"
-                    android:minHeight="25px"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/totalPayableLayout"
-                    android:paddingLeft="30dp"
-                    android:paddingRight="30dp"
-                    android:paddingBottom="10dp"
-                    android:paddingTop="10dp">
-                    <TextView
-                        android:id="@+id/txtTotalDueTitle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentStart="true"
-                        android:layout_alignParentTop="true"
-                        android:text="@string/total_amount_due_bill"
-                        android:textColor="@color/tunaGrey"
                         android:textSize="16sp" />
-                    <TextView
-                        android:id="@+id/txtTotalDueContent"
-                        android:layout_width="wrap_content"
+                    <RadioGroup
+                        android:id="@+id/tabButtonLayout"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
-                        android:layout_alignParentRight="true"
-                        android:layout_alignParentTop="true"
-                        android:text="0.00"
-                        android:textColor="@color/tunaGrey"
-                        android:textSize="24sp" />
-                    <TextView
-                        android:id="@+id/txtCurrency"
-                        android:layout_width="wrap_content"
+                        android:orientation="horizontal">
+                        <RadioButton
+                            android:id="@+id/btnBills"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="@drawable/custom_tab_button_selector"
+                            android:button="@drawable/custom_tab_button_selector"
+                            android:checked="true"
+                            android:gravity="center_horizontal"
+                            android:paddingBottom="15dp"
+                            android:paddingTop="15dp"
+                            android:text="@string/bill_menu_btn_bills"
+                            android:textAllCaps="false"
+                            android:textColor="@drawable/custom_tab_button_text_selector" />
+                        <RadioButton
+                            android:id="@+id/btnPayment"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="@drawable/custom_tab_button_selector"
+                            android:button="@drawable/custom_tab_button_selector"
+                            android:gravity="center_horizontal"
+                            android:paddingBottom="15dp"
+                            android:paddingTop="15dp"
+                            android:text="@string/bill_menu_btn_payment"
+                            android:textAllCaps="false"
+                            android:textColor="@drawable/custom_tab_button_text_selector" />
+                    </RadioGroup>
+                    <FrameLayout
+                        android:layout_height="match_parent"
+                        android:layout_width="match_parent"
+                        android:id="@+id/layoutReplacement"
+                        android:background="@color/silverChalice"
+                        android:layout_marginLeft="@dimen/_9sdp"
+                        android:layout_marginRight="@dimen/_9sdp" />
+                    <LinearLayout
+                        android:id="@+id/weblinkLayout"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_alignBaseline="@+id/txtTotalDueContent"
-                        android:layout_alignBottom="@+id/txtTotalDueContent"
-                        android:layout_toLeftOf="@+id/txtTotalDueContent"
-                        android:layout_toStartOf="@+id/txtTotalDueContent"
-                        android:text="RM"
-                        android:textColor="@color/tunaGrey"
-                        android:textSize="14sp" />
-                    <TextView
-                        android:id="@+id/txtDueDate"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentStart="true"
-                        android:layout_below="@+id/txtTotalDueTitle"
-                        android:textSize="12sp"
-                        android:paddingTop="@dimen/_1sdp"
-                        android:textColor="@color/silverChalice"
-                        android:text="@string/dashboard_chartview_due_date_not_available" />
-                </RelativeLayout>
-                <Button
-                    android:id="@+id/btnPay"
-                    android:text="@string/dashboard_chartview_pay"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textAllCaps="false"
-                    style="@style/Theme.PayButton"
-                    android:layout_marginLeft="30dp"
-                    android:layout_marginRight="30dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginBottom="40dp" />
-                <TextView
-                    android:id="@+id/txtBillPaymentHistoryTitle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/lightGrey"
-                    android:paddingBottom="10dp"
-                    android:paddingLeft="30dp"
-                    android:paddingRight="30dp"
-                    android:paddingTop="20dp"
-                    android:text="@string/bill_menu_payment_history"
-                    android:textColor="@color/powerBlue"
-                    android:textSize="16sp" />
-                <RadioGroup
-                    android:id="@+id/tabButtonLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-                    <RadioButton
-                        android:id="@+id/btnBills"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:background="@drawable/custom_tab_button_selector"
-                        android:button="@drawable/custom_tab_button_selector"
-                        android:checked="true"
+                        android:layout_alignParentBottom="true"
+                        android:layout_gravity="bottom|center_horizontal"
+                        android:background="@color/greyBackground"
                         android:gravity="center_horizontal"
-                        android:paddingBottom="15dp"
-                        android:paddingTop="15dp"
-                        android:text="@string/bill_menu_btn_bills"
-                        android:textAllCaps="false"
-                        android:textColor="@drawable/custom_tab_button_text_selector" />
-                    <RadioButton
-                        android:id="@+id/btnPayment"
-                        android:layout_width="0dp"
+                        android:orientation="vertical"
+                        android:paddingBottom="32dp"
+                        android:paddingTop="16dp">
+                        <TextView
+                            android:id="@+id/txtFooter"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_horizontal"
+                            android:text="@string/billing_list_fragment_footer_text"
+                            android:textColor="@color/silverChalice"
+                            android:textSize="12sp" />
+                        <TextView
+                            android:id="@+id/txtFooter1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:autoLink="all"
+                            android:gravity="center_horizontal"
+                            android:text="@string/billing_list_fragment_footer_text1"
+                            android:textColor="@color/powerBlue"
+                            android:textColorLink="@color/powerBlue"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:id="@+id/onlyAccountOwnersLayout"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:background="@drawable/custom_tab_button_selector"
-                        android:button="@drawable/custom_tab_button_selector"
+                        android:layout_alignParentBottom="true"
+                        android:layout_gravity="bottom|center_horizontal"
+                        android:background="@color/greyBackground"
                         android:gravity="center_horizontal"
-                        android:paddingBottom="15dp"
-                        android:paddingTop="15dp"
-                        android:text="@string/bill_menu_btn_payment"
-                        android:textAllCaps="false"
-                        android:textColor="@drawable/custom_tab_button_text_selector" />
-                </RadioGroup>
-                <FrameLayout
-                    android:layout_height="match_parent"
-                    android:layout_width="match_parent"
-                    android:id="@+id/layoutReplacement"
-                    android:background="@color/silverChalice"
-                    android:layout_marginLeft="@dimen/_9sdp"
-                    android:layout_marginRight="@dimen/_9sdp" />
-                <LinearLayout
-                    android:id="@+id/weblinkLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
-                    android:layout_gravity="bottom|center_horizontal"
-                    android:background="@color/greyBackground"
-                    android:gravity="center_horizontal"
-                    android:orientation="vertical"
-                    android:paddingBottom="32dp"
-                    android:paddingTop="16dp">
-                    <TextView
-                        android:id="@+id/txtFooter"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_horizontal"
-                        android:text="@string/billing_list_fragment_footer_text"
-                        android:textColor="@color/silverChalice"
-                        android:textSize="12sp" />
-                    <TextView
-                        android:id="@+id/txtFooter1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:autoLink="all"
-                        android:gravity="center_horizontal"
-                        android:text="@string/billing_list_fragment_footer_text1"
-                        android:textColor="@color/powerBlue"
-                        android:textColorLink="@color/powerBlue"
-                        android:textSize="12sp" />
-                </LinearLayout>
-                <LinearLayout
-                    android:id="@+id/onlyAccountOwnersLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
-                    android:layout_gravity="bottom|center_horizontal"
-                    android:background="@color/greyBackground"
-                    android:gravity="center_horizontal"
-                    android:orientation="vertical"
-                    android:paddingBottom="32dp"
-                    android:paddingTop="16dp"
-                    android:visibility="gone">
-                    <TextView
-                        android:id="@+id/txtFooter2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_horizontal"
-                        android:text="@string/billing_list_fragment_footer_text2"
-                        android:textColor="@color/silverChalice"
-                        android:textSize="12sp" />
+                        android:orientation="vertical"
+                        android:paddingBottom="32dp"
+                        android:paddingTop="16dp"
+                        android:visibility="gone">
+                        <TextView
+                            android:id="@+id/txtFooter2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_horizontal"
+                            android:text="@string/billing_list_fragment_footer_text2"
+                            android:textColor="@color/silverChalice"
+                            android:textSize="12sp" />
+                    </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
-<!-- </android.support.v4.widget.SwipeRefreshLayout>-->
 </android.support.design.widget.CoordinatorLayout>

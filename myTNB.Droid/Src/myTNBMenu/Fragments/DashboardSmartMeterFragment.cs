@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -49,6 +49,7 @@ using myTNB_Android.Src.FAQ.Activity;
 using AFollestad.MaterialDialogs;
 using Android.Text.Style;
 using static myTNB_Android.Src.myTNBMenu.Models.GetInstallationDetailsResponse;
+using Android.Text.Method;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments
 {
@@ -89,8 +90,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         [BindView(Resource.Id.no_data_layout)]
         LinearLayout mNoDataLayout;
 
-        [BindView(Resource.Id.no_internet_layout)]
-        LinearLayout mNoInternetLayout;
+        [BindView(Resource.Id.scroll_view_content)]
+        LinearLayout scrollViewContent;
 
         [BindView(Resource.Id.usageMetricsDetails)]
         LinearLayout mUsageMetricsDetails;
@@ -122,6 +123,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         [BindView(Resource.Id.txtTotalPayableTitle)]
         TextView txtTotalPayableTitle;
 
+        [BindView(Resource.Id.txtWhyThisAmt)]
+        TextView txtWhyThisAmt;
+
         [BindView(Resource.Id.txtTotalPayableCurrency)]
         TextView txtTotalPayableCurrency;
 
@@ -144,15 +148,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         [BindView(Resource.Id.btnLearnMore)]
         Button btnLearnMore;
 
-        [BindView(Resource.Id.dashboard_chartview_no_internet_title)]
-        TextView txtTitleNoInternet;
-
-        [BindView(Resource.Id.dashboard_chartview_no_internet_content)]
-        TextView txtContentNoInternet;
-
-        [BindView(Resource.Id.btnTapRefresh)]
-        Button btnTapRefresh;
-
         [BindView(Resource.Id.btnLeft)]
         ImageButton btnLeft;
 
@@ -165,9 +160,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         [BindView(Resource.Id.shadow_layout)]
         ImageView shadowLayout;
 
-        /// <summary>
-        /// Smart Meter UI components
-        /// </summary>
 
         private static BottomSheetBehavior bottomSheetBehavior;
 
@@ -242,11 +234,24 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         TextView txtWhatIsThis;
 
 
-        /// <summary>
-        /// Flag to disable/enable CO2 view
-        /// </summary>
+        [BindView(Resource.Id.layout_graph_total)]
+        LinearLayout allGraphLayout;
+
+        [BindView(Resource.Id.layout_api_refresh)]
+        LinearLayout refreshLayout;
+
+        [BindView(Resource.Id.btnRefresh)]
+        Button btnNewRefresh;
+
+        [BindView(Resource.Id.refresh_content)]
+        TextView txtNewRefreshMessage;
+
+        private string txtRefreshMsg = "";
+        private string txtBtnRefreshTitle = "";
+
         private bool IsCO2Disabled = true;
 
+        private bool hasAmtDue = false;
 
         private DashboardSmartMeterContract.IUserActionsListener userActionsListener;
         private DashboardSmartMeterPresenter mPresenter;
@@ -256,6 +261,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         SimpleDateFormat dateFormatter = new SimpleDateFormat("dd MMM yyyy");
         IAxisValueFormatter XLabelsFormatter;
         private int currentParentIndex = 0;
+        AccountDueAmount accountDueAmountData;
+        private MaterialDialog mWhyThisAmtCardDialog;
 
         public override int ResourceId()
         {
@@ -267,21 +274,41 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             base.OnCreate(savedInstanceState);
             Bundle extras = Arguments;
 
-            if (extras != null && extras.Size() > 0) {
-            if (extras.ContainsKey(Constants.NO_INTERNET_CONNECTION))
+            if (extras != null && extras.Size() > 0)
             {
-                hasNoInternet = extras.GetBoolean(Constants.NO_INTERNET_CONNECTION);
-            }
-            if (extras.ContainsKey(Constants.NO_SM_DATA_FOUND))
-            {
-                noSMDataFOund = extras.GetBoolean(Constants.NO_SM_DATA_FOUND);
+                if (extras.ContainsKey(Constants.NO_INTERNET_CONNECTION))
+                {
+                    hasNoInternet = extras.GetBoolean(Constants.NO_INTERNET_CONNECTION);
+                }
+                if (extras.ContainsKey(Constants.NO_SM_DATA_FOUND))
+                {
+                    noSMDataFOund = extras.GetBoolean(Constants.NO_SM_DATA_FOUND);
+                }
+                else
+                {
+                    noSMDataFOund = false;
+                }
             }
             else
             {
                 noSMDataFOund = false;
             }
-            } else {
-                noSMDataFOund = false;
+
+            if (extras.ContainsKey(Constants.REFRESH_MSG) && !string.IsNullOrEmpty(extras.GetString(Constants.REFRESH_MSG)))
+            {
+                txtRefreshMsg = extras.GetString(Constants.REFRESH_MSG);
+            }
+            else
+            {
+                txtRefreshMsg = Activity.GetString(Resource.String.text_new_refresh_content);
+            }
+            if(extras.ContainsKey(Constants.REFRESH_BTN_MSG) && !string.IsNullOrEmpty(extras.GetString(Constants.REFRESH_BTN_MSG)))
+            {
+                txtBtnRefreshTitle = extras.GetString(Constants.REFRESH_BTN_MSG);
+            }
+            else
+            {
+                txtBtnRefreshTitle = Activity.GetString(Resource.String.text_new_refresh);
             }
 
             if (!hasNoInternet)
@@ -294,7 +321,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 if (extras.ContainsKey(Constants.SELECTED_ACCOUNT_USAGE))
                 {
                     selectedHistoryData = JsonConvert.DeserializeObject<SMUsageHistoryData>(extras.GetString(Constants.SELECTED_ACCOUNT_USAGE));
-
                 }
             }
 
@@ -351,17 +377,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             if (!hasNoInternet)
             {
                 txtTotalPayable.Text = decimalFormat.Format(selectedAccount.AmtCustBal);
-                //if(selectedAccount.AmtCustBal <= 0)
-                //{
-                //    btnPay.Enabled = false;
-                //    btnPay.Background = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.silver_chalice_button_background);
-                //}
             }
 
-            TextViewUtils.SetMuseoSans300Typeface(noteTextView);
-            TextViewUtils.SetMuseoSans300Typeface(txtUsageHistory, txtAddress, txtTotalPayable, txtContentNoData, txtContentNoInternet, txtDueDate);
-            TextViewUtils.SetMuseoSans300Typeface(btnToggleDay, btnToggleMonth);
-            TextViewUtils.SetMuseoSans500Typeface(txtRange, txtTotalPayableTitle, txtTotalPayableCurrency, btnViewBill, btnPay, btnLearnMore, btnTapRefresh, txtTitleNoData, txtTitleNoInternet);
+            TextViewUtils.SetMuseoSans300Typeface(noteTextView);    
+            TextViewUtils.SetMuseoSans300Typeface(txtUsageHistory, txtAddress, txtTotalPayable, txtContentNoData, txtDueDate);
+            TextViewUtils.SetMuseoSans300Typeface(btnToggleDay, btnToggleMonth, txtNewRefreshMessage);
+            TextViewUtils.SetMuseoSans500Typeface(txtRange, txtTotalPayableTitle, txtTotalPayableCurrency, btnViewBill, btnPay, btnLearnMore, txtTitleNoData, txtWhyThisAmt, btnNewRefresh);
 
             //smart meter
             TextViewUtils.SetMuseoSans500Typeface(txtCurrentCharges, txtCurretnChargesValue, txtProjectedCost, txtProjectedCostValue);
@@ -373,12 +394,24 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             bottomSheetBehavior.State = BottomSheetBehavior.StateHidden;
             bottomSheetBehavior.SetBottomSheetCallback(new DashboardBottomSheetCallBack());
 
-
             DownTimeEntity bcrmEntity = DownTimeEntity.GetByCode(Constants.BCRM_SYSTEM);
             DownTimeEntity pgCCEntity = DownTimeEntity.GetByCode(Constants.PG_CC_SYSTEM);
             DownTimeEntity pgFPXEntity = DownTimeEntity.GetByCode(Constants.PG_FPX_SYSTEM);
-            txtWhatIsThis.Text = selectedHistoryData.ToolTips[0].SMLink;
+            if(selectedHistoryData != null && selectedHistoryData.ToolTips != null && selectedHistoryData.ToolTips.Count() > 0)
+            {
+                txtWhatIsThis.Text = selectedHistoryData.ToolTips[0].SMLink;
+            }
             txtWhatIsThis.SetOnClickListener(this);
+
+            btnNewRefresh.Text = txtBtnRefreshTitle;
+            if (Build.VERSION.SdkInt >= BuildVersionCodes.N)
+            {
+                txtNewRefreshMessage.TextFormatted = Html.FromHtml(txtRefreshMsg, FromHtmlOptions.ModeLegacy);
+            }
+            else
+            {
+                txtNewRefreshMessage.TextFormatted = Html.FromHtml(txtRefreshMsg);
+            }
 
             this.userActionsListener.Start();
             if (selectedAccount != null)
@@ -417,6 +450,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     if (pgCCEntity.IsDown && pgFPXEntity.IsDown)
                     {
                         DisablePayButton();
+                        txtDueDate.Text = GetString(Resource.String.dashboard_chartview_due_date_not_available);
+                        txtTotalPayable.Text = GetString(Resource.String.dashboard_chartview_due_date_not_available);
+                        btnViewBill.Enabled = false;
+                        btnViewBill.Background = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.silver_chalice_button_outline);
+                        btnViewBill.SetTextColor(ContextCompat.GetColorStateList(this.Activity, Resource.Color.silverChalice));
+                        txtRange.Visibility = ViewStates.Gone;
                         Snackbar downtimeSnackBar = Snackbar.Make(rootView,
                                 bcrmEntity.DowntimeTextMessage,
                                 Snackbar.LengthLong);
@@ -447,7 +486,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 mNoDataLayout.Visibility = ViewStates.Gone;
                 mSMNoDataLayout.Visibility = ViewStates.Gone;
                 mChart.Visibility = ViewStates.Visible;
-                mNoInternetLayout.Visibility = ViewStates.Gone;
 
                 mLayoutSegmentGroup.Visibility = ViewStates.Visible;
                 shadowLayout.Visibility = ViewStates.Visible;
@@ -468,6 +506,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 scrollView.SmoothScrollingEnabled = true;
                 scrollView.setOnScrollViewListener(this);
 
+                mNoDataLayout.Visibility = ViewStates.Gone;
+                mSMNoDataLayout.Visibility = ViewStates.Gone;
+                mChart.Visibility = ViewStates.Visible;
+                refreshLayout.Visibility = ViewStates.Gone;
+                allGraphLayout.Visibility = ViewStates.Visible;
 
                 radioGroupSMGraph.CheckedChange += (s, e) =>
                 {
@@ -505,7 +548,17 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     {
                         txtAddress.TextFormatted = Html.FromHtml(bcrmEntity.DowntimeMessage);
                     }
+                    mUsageMetricsDetails.Visibility = ViewStates.Gone;
+                    radioGroupSMGraph.Visibility = ViewStates.Gone;
+                    shadowLayout.Visibility = ViewStates.Gone;
+                    bottomSheetBehavior.State = BottomSheetBehavior.StateExpanded;
+                    bottomSheet.SetOnClickListener(null);
 
+                    mNoDataLayout.Visibility = ViewStates.Gone;
+                    mSMNoDataLayout.Visibility = ViewStates.Visible;
+                    mChart.Visibility = ViewStates.Gone;
+                    refreshLayout.Visibility = ViewStates.Gone;
+                    allGraphLayout.Visibility = ViewStates.Visible;
                 }
                 else
                 {
@@ -520,7 +573,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 mNoDataLayout.Visibility = ViewStates.Gone;
                 mSMNoDataLayout.Visibility = ViewStates.Visible;
                 mChart.Visibility = ViewStates.Gone;
-                mNoInternetLayout.Visibility = ViewStates.Gone;
             }
 
             txtAddress.Click += delegate {
@@ -554,8 +606,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                             string faqid = textMessage.Substring(startIndex, lengthOfId);
                             if (!string.IsNullOrEmpty(faqid))
                             {
-                                    Intent faqIntent = GetIntentObject(typeof(FAQListActivity));
-                                //Intent faqIntent = new Intent(this.Activity, typeof(FAQListActivity));
+                                Intent faqIntent = GetIntentObject(typeof(FAQListActivity));
                                 if (faqIntent != null && IsAdded)
                                 {
                                     faqIntent.PutExtra(Constants.FAQ_ID_PARAM, faqid);
@@ -587,8 +638,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         {
             this.userActionsListener.OnArrowForwardClick();
         }
-
-
 
         private void SetNoteVisiBility(bool isVisible) {
             noteTextLayout.Visibility = isVisible ? ViewStates.Visible : ViewStates.Gone;
@@ -691,7 +740,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 SetUpMarkerHourView();
 
                 // ADD DATA
-                //SetHourData(currentParentIndex, 7);
                 SetDayData(currentParentIndex, selectedHistoryData.ByDay[currentParentIndex].Days.Count);
             }
 
@@ -723,7 +771,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             xAxis.AxisLineWidth = 2f;
             xAxis.AxisLineColor = Color.ParseColor("#77a3ea");
 
-            //xAxis.Typeface = (mTfLight);
             xAxis.SetDrawGridLines(false);
 
             xAxis.Granularity = 1f; // only intervals of 1 day
@@ -751,7 +798,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             xAxis.AxisLineWidth = 2f;
             xAxis.AxisLineColor = Color.ParseColor("#77a3ea");
 
-            //xAxis.Typeface = (mTfLight);
             xAxis.SetDrawGridLines(false);
 
             xAxis.Granularity = 1f; // only intervals of 1 day
@@ -785,7 +831,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             xAxis.AxisLineWidth = 2f;
             xAxis.AxisLineColor = Color.ParseColor("#77a3ea");
 
-            //xAxis.Typeface = (mTfLight);
             xAxis.SetDrawGridLines(false);
 
             xAxis.Granularity = 1f; // only intervals of 1 day
@@ -837,38 +882,29 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         #region SETUP Y AXIS BOTH DAY
         internal void SetUpYAxisDay()
         {
-            try {
-            IAxisValueFormatter custom = new MyAxisValueFormatter();
-            float maxVal = GetMaxDaysValues();
-            float lowestPossibleSpace = (5f / 100f) * -maxVal;
-            Console.WriteLine("Space {0}", lowestPossibleSpace);
+            try
+            {
+                IAxisValueFormatter custom = new MyAxisValueFormatter();
+                float maxVal = GetMaxDaysValues();
+                float lowestPossibleSpace = (5f / 100f) * -maxVal;
+                Console.WriteLine("Space {0}", lowestPossibleSpace);
 
-            YAxis leftAxis = mChart.AxisLeft; ;
-            leftAxis.Enabled = false;
-            leftAxis.SetPosition(YAxisLabelPosition.OutsideChart);
-            leftAxis.SetDrawGridLines(false);
-            leftAxis.SpaceTop = 10f;
-            leftAxis.SpaceBottom = 10f;
-            leftAxis.AxisMinimum = lowestPossibleSpace;
-            leftAxis.AxisMaximum = maxVal;
-            //leftAxis.AxisMinimum = 0f;
-            //leftAxis.AxisMaximum = 100f;
-            //leftAxis.SetLabelCount(5 , true);
-            //leftAxis.SetStartAtZero(true);
+                YAxis leftAxis = mChart.AxisLeft; ;
+                leftAxis.Enabled = false;
+                leftAxis.SetPosition(YAxisLabelPosition.OutsideChart);
+                leftAxis.SetDrawGridLines(false);
+                leftAxis.SpaceTop = 10f;
+                leftAxis.SpaceBottom = 10f;
+                leftAxis.AxisMinimum = lowestPossibleSpace;
+                leftAxis.AxisMaximum = maxVal;
 
-
-            YAxis rightAxis = mChart.AxisRight;
-            rightAxis.Enabled = false;
-            rightAxis.SetDrawGridLines(false);
-            rightAxis.SpaceTop = 10f;
-            rightAxis.SpaceBottom = 10f;
-            rightAxis.AxisMinimum = lowestPossibleSpace;
-            rightAxis.AxisMaximum = maxVal;
-            //rightAxis.AxisMinimum = 0f;
-            //rightAxis.AxisMaximum = 100f;
-            //rightAxis.SetLabelCount(5, true);
-            //rightAxis.ValueFormatter = custom;
-            //rightAxis.SetStartAtZero(true);
+                YAxis rightAxis = mChart.AxisRight;
+                rightAxis.Enabled = false;
+                rightAxis.SetDrawGridLines(false);
+                rightAxis.SpaceTop = 10f;
+                rightAxis.SpaceBottom = 10f;
+                rightAxis.AxisMinimum = lowestPossibleSpace;
+                rightAxis.AxisMaximum = maxVal;
             }
             catch (Exception e)
             {
@@ -880,38 +916,29 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         #region SETUP Y AXIS BOTH Hour
         internal void SetUpYAxisHour()
         {
-            try {
-            IAxisValueFormatter custom = new MyAxisValueFormatter();
-            float maxVal = GetMaxHoursValues();
-            float lowestPossibleSpace = (5f / 100f) * -maxVal;
-            Console.WriteLine("Space {0}", lowestPossibleSpace);
+            try
+            {
+                IAxisValueFormatter custom = new MyAxisValueFormatter();
+                float maxVal = GetMaxHoursValues();
+                float lowestPossibleSpace = (5f / 100f) * -maxVal;
+                Console.WriteLine("Space {0}", lowestPossibleSpace);
 
-            YAxis leftAxis = mChart.AxisLeft; ;
-            leftAxis.Enabled = false;
-            leftAxis.SetPosition(YAxisLabelPosition.OutsideChart);
-            leftAxis.SetDrawGridLines(false);
-            leftAxis.SpaceTop = 10f;
-            leftAxis.SpaceBottom = 10f;
-            leftAxis.AxisMinimum = lowestPossibleSpace;
-            leftAxis.AxisMaximum = maxVal;
-            //leftAxis.AxisMinimum = 0f;
-            //leftAxis.AxisMaximum = 100f;
-            //leftAxis.SetLabelCount(5 , true);
-            //leftAxis.SetStartAtZero(true);
+                YAxis leftAxis = mChart.AxisLeft; ;
+                leftAxis.Enabled = false;
+                leftAxis.SetPosition(YAxisLabelPosition.OutsideChart);
+                leftAxis.SetDrawGridLines(false);
+                leftAxis.SpaceTop = 10f;
+                leftAxis.SpaceBottom = 10f;
+                leftAxis.AxisMinimum = lowestPossibleSpace;
+                leftAxis.AxisMaximum = maxVal;
 
-
-            YAxis rightAxis = mChart.AxisRight;
-            rightAxis.Enabled = false;
-            rightAxis.SetDrawGridLines(false);
-            rightAxis.SpaceTop = 10f;
-            rightAxis.SpaceBottom = 10f;
-            rightAxis.AxisMinimum = lowestPossibleSpace;
-            rightAxis.AxisMaximum = maxVal;
-            //rightAxis.AxisMinimum = 0f;
-            //rightAxis.AxisMaximum = 100f;
-            //rightAxis.SetLabelCount(5, true);
-            //rightAxis.ValueFormatter = custom;
-            //rightAxis.SetStartAtZero(true);
+                YAxis rightAxis = mChart.AxisRight;
+                rightAxis.Enabled = false;
+                rightAxis.SetDrawGridLines(false);
+                rightAxis.SpaceTop = 10f;
+                rightAxis.SpaceBottom = 10f;
+                rightAxis.AxisMinimum = lowestPossibleSpace;
+                rightAxis.AxisMaximum = maxVal;
             }
             catch (Exception e)
             {
@@ -1025,7 +1052,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
                 set1.HighLightColor = Color.Argb(255, 255, 255, 255);
 
-                //set1.SetColor(Resource.Color.sunGlow , 255);
                 int[] color = { Color.Argb(50, 255, 255, 255) };
                 set1.SetColors(color);
                 List<IBarDataSet> dataSets = new List<IBarDataSet>();
@@ -1039,7 +1065,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 data.HighlightEnabled = true;
                 data.SetValueTextSize(10f);
                 data.SetDrawValues(false);
-                //data.setValueTypeface(mTfLight);
 
                 mChart.Data = data;
             }
@@ -1107,7 +1132,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
                 set1.HighLightColor = Color.Argb(255, 255, 255, 255);
 
-                //set1.SetColor(Resource.Color.sunGlow , 255);
                 int[] color = { Color.Argb(50, 255, 255, 255) };
                 set1.SetColors(color);
                 List<IBarDataSet> dataSets = new List<IBarDataSet>();
@@ -1121,7 +1145,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 data.HighlightEnabled = true;
                 data.SetValueTextSize(10f);
                 data.SetDrawValues(false);
-                //data.setValueTypeface(mTfLight);
 
                 mChart.Data = data;
             }
@@ -1174,7 +1197,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
                 set1.HighLightColor = Color.Argb(255, 255, 255, 255);
 
-                //set1.SetColor(Resource.Color.sunGlow , 255);
                 int[] color = { Color.Argb(50, 255, 255, 255) };
                 set1.SetColors(color);
                 List<IBarDataSet> dataSets = new List<IBarDataSet>();
@@ -1188,7 +1210,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 data.HighlightEnabled = true;
                 data.SetValueTextSize(10f);
                 data.SetDrawValues(false);
-                //data.setValueTypeface(mTfLight);
 
                 mChart.Data = data;
             }
@@ -1378,7 +1399,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             }
 
             Intent viewBill = GetIntentObject(typeof(ViewBillActivity));
-            //Intent viewBill = new Intent(this.Activity, typeof(ViewBillActivity));
             if (viewBill != null && IsAdded)
             {
                 viewBill.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccount));
@@ -1390,12 +1410,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         public void ShowPayment()
         {
             Intent payment_activity = GetIntentObject(typeof(SelectAccountsActivity));
-            //Intent payment_activity = new Intent(this.Activity, typeof(MakePaymentActivity));
-            //Intent payment_activity = new Intent(this.Activity, typeof(SelectAccountsActivity));
             if (payment_activity != null && IsAdded)
             {
                 payment_activity.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccount));
-                //StartActivity(payment_activity);
                 StartActivityForResult(payment_activity, DashboardActivity.PAYMENT_RESULT_CODE);
             }
         }
@@ -1414,8 +1431,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
         private void OnWhatIsThisTap()
         {
-            string textMessage = selectedHistoryData.ToolTips[0].Message;
-            string btnLabel = selectedHistoryData.ToolTips[0].SMBtnText;
+
+            string textMessage = (selectedHistoryData != null && selectedHistoryData.ToolTips != null && selectedHistoryData.ToolTips.Count() > 0) ? selectedHistoryData.ToolTips[0].Message : "";
+            string btnLabel = (selectedHistoryData != null && selectedHistoryData.ToolTips != null && selectedHistoryData.ToolTips.Count() > 0) ? selectedHistoryData.ToolTips[0].SMBtnText : "";
             MaterialDialog materialDialog = new MaterialDialog.Builder(Activity)
                     .CustomView(Resource.Layout.WhatIsThisDialogView,false)
                     .Cancelable(false)
@@ -1424,19 +1442,25 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             View view = materialDialog.View;
             TextView dialogDetailsText = view.FindViewById<TextView>(Resource.Id.txtDialogMessage);
             TextView dialogBtnLabel = view.FindViewById<TextView>(Resource.Id.txtBtnLabel);
-            dialogBtnLabel.Text = btnLabel;
+            if(btnLabel != "")
+            {
+                dialogBtnLabel.Text = btnLabel;
+            }
             dialogBtnLabel.Click += delegate
             {
                 materialDialog.Dismiss();
             };
 
-            if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.N)
+            if(textMessage != "")
             {
-                dialogDetailsText.TextFormatted = Html.FromHtml(textMessage, FromHtmlOptions.ModeLegacy);
-            }
-            else
-            {
-                dialogDetailsText.TextFormatted = Html.FromHtml(textMessage);
+                if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.N)
+                {
+                    dialogDetailsText.TextFormatted = Html.FromHtml(textMessage, FromHtmlOptions.ModeLegacy);
+                }
+                else
+                {
+                    dialogDetailsText.TextFormatted = Html.FromHtml(textMessage);
+                }
             }
 
             if (dialogDetailsText != null)
@@ -1485,10 +1509,17 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             this.userActionsListener.OnViewBill(selectedAccount);
         }
 
-        [OnClick(Resource.Id.btnTapRefresh)]
-        internal void OnTapRefresh(object sender, EventArgs e)
+        [OnClick(Resource.Id.btnRefresh)]
+        internal void OnRefresh(object sender, EventArgs e)
         {
-            this.userActionsListener.OnTapRefresh();
+            if (hasNoInternet || noSMDataFOund)
+            {
+                this.userActionsListener.OnTapRefresh();
+            }
+            else
+            {
+                this.userActionsListener.OnLoadAmount(selectedAccount.AccountNum);
+            }
         }
 
         [OnClick(Resource.Id.btnPay)]
@@ -1501,6 +1532,59 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         internal void OnLearnMore(object sender, EventArgs e)
         {
             this.userActionsListener.OnLearnMore();
+        }
+
+        [OnClick(Resource.Id.txtWhyThisAmt)]
+        void OnWhyThisAmtClick(object sender, EventArgs eventArgs)
+        {
+            try
+            {
+                mWhyThisAmtCardDialog = new MaterialDialog.Builder(Activity)
+                    .CustomView(Resource.Layout.CustomDialogDoubleButtonLayout, false)
+                    .Cancelable(false)
+                    .CanceledOnTouchOutside(false)
+                    .Build();
+
+                View dialogView = mWhyThisAmtCardDialog.Window.DecorView;
+                dialogView.SetBackgroundResource(Android.Resource.Color.Transparent);
+
+                TextView txtItemizedTitle = mWhyThisAmtCardDialog.FindViewById<TextView>(Resource.Id.txtTitle);
+                TextView txtItemizedMessage = mWhyThisAmtCardDialog.FindViewById<TextView>(Resource.Id.txtMessage);
+                TextView btnGotIt = mWhyThisAmtCardDialog.FindViewById<TextView>(Resource.Id.txtBtnSecond);
+                TextView btnBringMeThere = mWhyThisAmtCardDialog.FindViewById<TextView>(Resource.Id.txtBtnFirst);
+                txtItemizedMessage.MovementMethod = new ScrollingMovementMethod();
+                if (Build.VERSION.SdkInt >= BuildVersionCodes.N)
+                {
+                    txtItemizedMessage.TextFormatted = string.IsNullOrEmpty(accountDueAmountData.WhyThisAmountMessage) ? Html.FromHtml(Activity.GetString(Resource.String.itemized_bill_message), FromHtmlOptions.ModeLegacy) : Html.FromHtml(accountDueAmountData.WhyThisAmountMessage, FromHtmlOptions.ModeLegacy);
+                }
+                else
+                {
+                    txtItemizedMessage.TextFormatted = string.IsNullOrEmpty(accountDueAmountData.WhyThisAmountMessage) ? Html.FromHtml(Activity.GetString(Resource.String.itemized_bill_message)) : Html.FromHtml(accountDueAmountData.WhyThisAmountMessage);
+                }
+                txtItemizedTitle.Text = string.IsNullOrEmpty(accountDueAmountData.WhyThisAmountTitle) ? Activity.GetString(Resource.String.itemized_bill_title) : accountDueAmountData.WhyThisAmountTitle;
+                btnGotIt.Text = string.IsNullOrEmpty(accountDueAmountData.WhyThisAmountSecButtonText) ? Activity.GetString(Resource.String.itemized_bill_got_it) : accountDueAmountData.WhyThisAmountSecButtonText;
+                btnBringMeThere.Text = string.IsNullOrEmpty(accountDueAmountData.WhyThisAmountPriButtonText) ? Activity.GetString(Resource.String.itemized_bill_bring_me_there) : accountDueAmountData.WhyThisAmountPriButtonText;
+                TextViewUtils.SetMuseoSans500Typeface(txtItemizedTitle, btnGotIt, btnBringMeThere);
+                TextViewUtils.SetMuseoSans300Typeface(txtItemizedMessage);
+                btnGotIt.Click += delegate
+                {
+                    mWhyThisAmtCardDialog.Dismiss();
+                };
+                btnBringMeThere.Click += delegate
+                {
+                    ((DashboardActivity)Activity).BillsMenuAccess();
+                    mWhyThisAmtCardDialog.Dismiss();
+                };
+
+                if (IsActive())
+                {
+                    mWhyThisAmtCardDialog.Show();
+                }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public void SetPresenter(DashboardSmartMeterContract.IUserActionsListener userActionListener)
@@ -1567,7 +1651,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
         public override void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
         {
-            //base.OnActivityResult(requestCode, resultCode, data);
             if (requestCode == DashboardActivity.PAYMENT_RESULT_CODE)
             {
                 if (resultCode == Result.Ok)
@@ -1579,11 +1662,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
         public void ShowNotAvailableDayData()
         {
-            //txtRange.Text = GetString(Resource.String.dashboard_chartview_no_day_data_available);
             mNoDataLayout.Visibility = ViewStates.Visible;
             mSMNoDataLayout.Visibility = ViewStates.Gone;
             mChart.Visibility = ViewStates.Gone;
-            mNoInternetLayout.Visibility = ViewStates.Gone;
+            refreshLayout.Visibility = ViewStates.Gone;
+            allGraphLayout.Visibility = ViewStates.Visible;
         }
 
         public bool IsByDayEmpty()
@@ -1593,14 +1676,46 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
         public void ShowNoInternet()
         {
-            //txtRange.Text = GetString(Resource.String.dashboard_chartview_no_day_data_available);
+            
             mNoDataLayout.Visibility = ViewStates.Gone;
             mSMNoDataLayout.Visibility = ViewStates.Gone;
             mChart.Visibility = ViewStates.Gone;
-            mNoInternetLayout.Visibility = ViewStates.Visible;
-            txtDueDate.Text = GetString(Resource.String.dashboard_chartview_due_date_not_available);
-
+            refreshLayout.Visibility = ViewStates.Visible;
+            allGraphLayout.Visibility = ViewStates.Gone;
+            if(!hasAmtDue)
+            {
+                txtDueDate.Text = GetString(Resource.String.dashboard_chartview_due_date_not_available);
+                btnViewBill.Enabled = false;
+                btnViewBill.Background = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.silver_chalice_button_outline);
+                btnViewBill.SetTextColor(ContextCompat.GetColorStateList(this.Activity, Resource.Color.silverChalice));
+            }
         }
+
+        public void ShowNoInternetWithWord(string contentTxt, string buttonTxt)
+        {
+            hasAmtDue = false;
+            mNoDataLayout.Visibility = ViewStates.Gone;
+            mSMNoDataLayout.Visibility = ViewStates.Gone;
+            mChart.Visibility = ViewStates.Gone;
+            refreshLayout.Visibility = ViewStates.Visible;
+            allGraphLayout.Visibility = ViewStates.Gone;
+            btnNewRefresh.Text = string.IsNullOrEmpty(buttonTxt)? txtBtnRefreshTitle : buttonTxt;
+            if (Build.VERSION.SdkInt >= BuildVersionCodes.N)
+            {
+                txtNewRefreshMessage.TextFormatted = string.IsNullOrEmpty(contentTxt)? Html.FromHtml(txtRefreshMsg, FromHtmlOptions.ModeLegacy) : Html.FromHtml(contentTxt, FromHtmlOptions.ModeLegacy);
+            }
+            else
+            {
+                txtNewRefreshMessage.TextFormatted = string.IsNullOrEmpty(contentTxt)? Html.FromHtml(txtRefreshMsg) : Html.FromHtml(contentTxt);
+            }
+            txtDueDate.Text = GetString(Resource.String.dashboard_chartview_due_date_not_available);
+            txtTotalPayable.Text = GetString(Resource.String.dashboard_chartview_due_date_not_available);
+            DisablePayButton();
+            btnViewBill.Enabled = false;
+            btnViewBill.Background = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.silver_chalice_button_outline);
+            btnViewBill.SetTextColor(ContextCompat.GetColorStateList(this.Activity, Resource.Color.silverChalice));
+        }
+
         public bool HasNoInternet()
         {
             return hasNoInternet;
@@ -1761,8 +1876,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             var act = this.Activity as AppCompatActivity;
 
             var actionBar = act.SupportActionBar;
-            //actionBar.SetDisplayHomeAsUpEnabled(true);
-            //actionBar.SetDisplayShowHomeEnabled(true);
         }
 
 
@@ -1820,26 +1933,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
         public void HideAmountProgress()
         {
-            try {
-            progressBar.Visibility = ViewStates.Gone;
-            totalPayableLayout.Visibility = ViewStates.Visible;
-            bottomSheetBehavior.State = BottomSheetBehavior.StateExpanded;
-
-            ///<summary>
-            /// Scroll animation
-            ///</summary>
-
-            //ScrollUpDownScrollView(0);
-            //System.Timers.Timer waitTimer = new System.Timers.Timer(800);
-            //waitTimer.Elapsed += delegate {
-            //    ScrollUpDownScrollView(1);
-            //    if(waitTimer != null)
-            //    {
-            //        waitTimer.Stop();
-            //    }
-            //};
-            //waitTimer.Start();
-
+            try
+            {
+                progressBar.Visibility = ViewStates.Gone;
+                totalPayableLayout.Visibility = ViewStates.Visible;
+                bottomSheetBehavior.State = BottomSheetBehavior.StateExpanded;
             }
             catch (Exception e)
             {
@@ -1849,71 +1947,107 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
         public void ShowAmountDue(AccountDueAmount accountDueAmount)
         {
-            try {
-            Date d = null;
             try
             {
-                d = dateParser.Parse(accountDueAmount.BillDueDate);
-            }
-            catch (ParseException e)
-            {
-                    Utility.LoggingNonFatalError(e);
-            }
-
-            if (d != null)
-            {
-                if (selectedAccount != null)
+                Date d = null;
+                try
                 {
-                    if (selectedAccount.AccountCategoryId.Equals("2"))
+                    accountDueAmountData = accountDueAmount;
+                    txtWhyThisAmt.Text = string.IsNullOrEmpty(accountDueAmount.WhyThisAmountLink) ? Activity.GetString(Resource.String.why_this_amount) : accountDueAmount.WhyThisAmountLink;
+                    d = dateParser.Parse(accountDueAmount.BillDueDate);
+                }
+                catch (ParseException e)
+                {
+                    Utility.LoggingNonFatalError(e);
+                }
+
+                if (d != null)
+                {
+                    if (selectedAccount != null)
                     {
-                        selectedAccount.AmtCustBal = accountDueAmount.AmountDue;
-                        double calAmt = selectedAccount.AmtCustBal * -1;
-                        if (calAmt <= 0)
+                        hasAmtDue = true;
+                        DownTimeEntity pgCCEntity = DownTimeEntity.GetByCode(Constants.PG_CC_SYSTEM);
+                        DownTimeEntity pgFPXEntity = DownTimeEntity.GetByCode(Constants.PG_FPX_SYSTEM);
+                        if (!pgCCEntity.IsDown || !pgFPXEntity.IsDown)
                         {
-                            calAmt = 0.00;
+                            EnablePayButton();
+                        }
+                        btnViewBill.Enabled = true;
+                        btnViewBill.SetTextColor(ContextCompat.GetColorStateList(this.Activity, Resource.Color.freshGreen));
+                        btnViewBill.Background = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.light_green_outline_button_background);
+                        if (!hasNoInternet && !noSMDataFOund)
+                        {
+                            refreshLayout.Visibility = ViewStates.Gone;
+                            allGraphLayout.Visibility = ViewStates.Visible;
+                            mNoDataLayout.Visibility = ViewStates.Gone;
+                            mSMNoDataLayout.Visibility = ViewStates.Gone;
+                            mChart.Visibility = ViewStates.Visible;
+                        }
+                        if (selectedAccount.AccountCategoryId.Equals("2"))
+                        {
+                            txtWhyThisAmt.Visibility = ViewStates.Gone;
+                            selectedAccount.AmtCustBal = accountDueAmount.AmountDue;
+                            double calAmt = selectedAccount.AmtCustBal * -1;
+                            if (calAmt <= 0)
+                            {
+                                calAmt = 0.00;
+                            }
+                            else
+                            {
+                                calAmt = Math.Abs(selectedAccount.AmtCustBal);
+                            }
+                            txtTotalPayable.Text = decimalFormat.Format(calAmt);
+
+
+                            int incrementDays = int.Parse(accountDueAmount.IncrementREDueDateByDays == null ? "0" : accountDueAmount.IncrementREDueDateByDays);
+                            Constants.RE_ACCOUNT_DATE_INCREMENT_DAYS = incrementDays;
+                            Calendar c = Calendar.Instance;
+                            c.Time = d;
+                            c.Add(CalendarField.Date, incrementDays);
+                            Date newDate = c.Time;
+                            if (calAmt == 0.00)
+                            {
+                                txtDueDate.Text = "--";
+                            }
+                            else
+                            {
+                                txtDueDate.Text = GetString(Resource.String.dashboard_chartview_by_date_wildcard, dateFormatter.Format(newDate));
+                            }
                         }
                         else
                         {
-                            calAmt = Math.Abs(selectedAccount.AmtCustBal);
-                        }
-                        txtTotalPayable.Text = decimalFormat.Format(calAmt);
-
-
-                        int incrementDays = int.Parse(accountDueAmount.IncrementREDueDateByDays == null ? "0" : accountDueAmount.IncrementREDueDateByDays);
-                        Constants.RE_ACCOUNT_DATE_INCREMENT_DAYS = incrementDays;
-                        Calendar c = Calendar.Instance;
-                        c.Time = d;
-                        c.Add(CalendarField.Date, incrementDays);
-                        Date newDate = c.Time;
-                        if (calAmt == 0.00)
-                        {
-                            txtDueDate.Text = "--";
-                        }
-                        else
-                        {
-                            txtDueDate.Text = GetString(Resource.String.dashboard_chartview_by_date_wildcard, dateFormatter.Format(newDate));
+                            if (accountDueAmount.OpenChargesTotal == 0)
+                            {
+                                txtWhyThisAmt.Visibility = ViewStates.Gone;
+                            }
+                            else
+                            {
+                                txtWhyThisAmt.Visibility = ViewStates.Visible;
+                            }
+                            txtTotalPayable.Text = decimalFormat.Format(accountDueAmount.AmountDue);
+                            selectedAccount.AmtCustBal = accountDueAmount.AmountDue;
+                            double calAmt = selectedAccount.AmtCustBal;
+                            if (calAmt <= 0.00)
+                            {
+                                txtDueDate.Text = "--";
+                            }
+                            else
+                            {
+                                txtDueDate.Text = GetString(Resource.String.dashboard_chartview_due_date_wildcard, dateFormatter.Format(d));
+                            }
                         }
                     }
                     else
                     {
-                        txtTotalPayable.Text = decimalFormat.Format(accountDueAmount.AmountDue);
-                        selectedAccount.AmtCustBal = accountDueAmount.AmountDue;
-                        double calAmt = selectedAccount.AmtCustBal;
-                        if (calAmt <= 0.00)
-                        {
-                            txtDueDate.Text = "--";
-                        }
-                        else
-                        {
-                            txtDueDate.Text = GetString(Resource.String.dashboard_chartview_due_date_wildcard, dateFormatter.Format(d));
-                        }
+                        txtWhyThisAmt.Visibility = ViewStates.Gone;
                     }
                 }
-            }
-            else
-            {
-                txtDueDate.Text = GetString(Resource.String.dashboard_chartview_due_date_not_available);
-            }
+                else
+                {
+                    txtTotalPayable.Text = GetString(Resource.String.dashboard_chartview_due_date_not_available);
+                    txtDueDate.Text = GetString(Resource.String.dashboard_chartview_due_date_not_available);
+                    txtWhyThisAmt.Visibility = ViewStates.Gone;
+                }
             }
             catch (Exception e)
             {
@@ -1939,6 +2073,30 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             );
             mCancelledExceptionSnackBar.Show();
         } catch (Exception e)  {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        private Snackbar mLoadBillSnackBar;
+        public void ShowLoadBillRetryOptions()
+        {
+            try
+            {
+                if (mLoadBillSnackBar != null && mLoadBillSnackBar.IsShown)
+                {
+                    mLoadBillSnackBar.Dismiss();
+                }
+
+                mLoadBillSnackBar = Snackbar.Make(rootView, GetString(Resource.String.dashboard_chart_cancelled_exception_error), Snackbar.LengthIndefinite)
+                .SetAction(GetString(Resource.String.dashboard_chartview_data_not_available_no_internet_btn_close), delegate
+                {
+                    mLoadBillSnackBar.Dismiss();
+                }
+                );
+                mLoadBillSnackBar.Show();
+            }
+            catch (System.Exception e)
+            {
                 Utility.LoggingNonFatalError(e);
             }
         }
@@ -2094,14 +2252,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             base.OnAttach(context);
             try
             {
-                //if (context is DashboardActivity)
-                //{
-
                 activity = context as DashboardActivity;
-                //activity = context as DashboardActivity;
-                //// SETS THE WINDOW BACKGROUND TO HORIZONTAL GRADIENT AS PER UI ALIGNMENT
-                //activity.Window.SetBackgroundDrawable(Activity.GetDrawable(Resource.Drawable.HorizontalGradientBackground));
-                //}
             }
             catch (Java.Lang.ClassCastException e)
             {
@@ -2114,14 +2265,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             base.OnAttach(activity);
             try
             {
-                //if (context is DashboardActivity)
-                //{
-
                 activity = activity as DashboardActivity;
-                //activity = context as DashboardActivity;
-                //// SETS THE WINDOW BACKGROUND TO HORIZONTAL GRADIENT AS PER UI ALIGNMENT
-                //activity.Window.SetBackgroundDrawable(Activity.GetDrawable(Resource.Drawable.HorizontalGradientBackground));
-                //}
             }
             catch (Java.Lang.ClassCastException e)
             {

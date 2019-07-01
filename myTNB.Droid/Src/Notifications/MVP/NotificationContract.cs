@@ -83,6 +83,10 @@ namespace myTNB_Android.Src.Notifications.MVP
             /// </summary>
             void ClearAdapter();
 
+            void ShowView();
+
+            void ShowRefreshView(string contentTxt, string btnTxt);
+
 
             /// <summary>
             /// Shows a cancelled exception with an option to retry

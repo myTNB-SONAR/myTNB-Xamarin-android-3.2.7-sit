@@ -16,6 +16,15 @@ namespace myTNB_Android.Src.myTNBMenu.Models
             [JsonProperty(PropertyName = "status")]
             public string Status { get; set; }
 
+            [JsonProperty(PropertyName = "RefreshTitle")]
+            public string RefreshTitle { get; set; }
+
+            [JsonProperty(PropertyName = "RefreshMessage")]
+            public string RefreshMessage { get; set; }
+
+            [JsonProperty(PropertyName = "RefreshBtnText")]
+            public string RefreshBtnText { get; set; }
+
             [JsonProperty(PropertyName = "isError")]
             public bool IsError { get; set; }
 

@@ -124,11 +124,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 TextViewUtils.SetMuseoSans500Typeface(txtTitle, btnGetAccess, btnPay, txtTotalPayableTitle, txtTotalPayableCurrency, txtWhyThisAmt);
 
                 txtTotalPayable.Text = decimalFormat.Format(selectedAccount.AmtCustBal);
-                //if (selectedAccount.AmtCustBal <= 0)
-                //{
-                //    btnPay.Enabled = false;
-                //    btnPay.Background = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.silver_chalice_button_background);
-                //}
 
                 if (selectedAccount != null)
                 {
@@ -234,7 +229,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                     if (!string.IsNullOrEmpty(faqid))
                                     {
                                         Intent faqIntent = GetIntentObject(typeof(FAQListActivity));
-                                        //Intent faqIntent = new Intent(this.Activity, typeof(FAQListActivity));
                                         if (faqIntent != null && IsAdded)
                                         {
                                             faqIntent.PutExtra(Constants.FAQ_ID_PARAM, faqid);
@@ -280,8 +274,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             var act = this.Activity as AppCompatActivity;
 
             var actionBar = act.SupportActionBar;
-            //actionBar.SetDisplayHomeAsUpEnabled(true);
-            //actionBar.SetDisplayShowHomeEnabled(true);
         }
 
         public override bool OnOptionsItemSelected(IMenuItem item)
@@ -298,19 +290,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         public void ShowGetAccessForm()
         {
             Intent access_form_activity = GetIntentObject(typeof(GetAccessFormActivity));
-            //Intent access_form_activity = new Intent(this.Activity , typeof(GetAccessFormActivity));
             if (access_form_activity != null && IsAdded)
             {
                 access_form_activity.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccount));
                 StartActivity(access_form_activity);
             }
         }
-
-        //[OnClick(Resource.Id.btnGetAccess)]
-        //void OnGetAccess(object sender , EventArgs eventArgs)
-        //{
-        //    this.userActionsListener.OnGetAccess();
-        //}
 
         public void SetPresenter(DashboardNonOwnerContract.IUserActionsListener userActionListener)
         {
@@ -325,12 +310,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         public void ShowSelectPaymentScreen()
         {
             Intent payment_activity = GetIntentObject(typeof(SelectAccountsActivity));
-            //Intent payment_activity = new Intent(this.Activity, typeof(MakePaymentActivity));
-            //Intent payment_activity = new Intent(this.Activity, typeof(SelectAccountsActivity));
             if (payment_activity != null && IsAdded)
             {
                 payment_activity.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccount));
-                //StartActivity(payment_activity);
                 StartActivityForResult(payment_activity, DashboardActivity.PAYMENT_RESULT_CODE);
             }
         }
@@ -402,7 +384,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
         public override void OnActivityResult(int requestCode, Result resultCode, Intent data)
         {
-            //base.OnActivityResult(requestCode, resultCode, data);
             if (requestCode == DashboardActivity.PAYMENT_RESULT_CODE)
             {
                 if (resultCode == Result.Ok)
@@ -527,6 +508,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 {
                     if (selectedAccount != null)
                     {
+                        EnablePayButton();
+                        btnViewBill.Enabled = true;
+                        btnViewBill.SetTextColor(ContextCompat.GetColorStateList(this.Activity, Resource.Color.freshGreen));
+                        btnViewBill.Background = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.light_green_outline_button_background);
                         if (selectedAccount.AccountCategoryId.Equals("2"))
                         {
                             txtWhyThisAmt.Visibility = ViewStates.Gone;
@@ -588,6 +573,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 }
                 else
                 {
+                    txtTotalPayable.Text = GetString(Resource.String.dashboard_chartview_due_date_not_available);
                     txtDueDate.Text = GetString(Resource.String.dashboard_chartview_due_date_not_available);
                     txtWhyThisAmt.Visibility = ViewStates.Gone;
                 }
@@ -697,14 +683,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             base.OnAttach(context);
             try
             {
-                //if (context is DashboardActivity)
-                //{
-
                 activity = context as DashboardActivity;
-                //activity = context as DashboardActivity;
-                //// SETS THE WINDOW BACKGROUND TO HORIZONTAL GRADIENT AS PER UI ALIGNMENT
-                //activity.Window.SetBackgroundDrawable(Activity.GetDrawable(Resource.Drawable.HorizontalGradientBackground));
-                //}
             }
             catch (ClassCastException e)
             {
@@ -717,14 +696,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             base.OnAttach(activity);
             try
             {
-                //if (context is DashboardActivity)
-                //{
-
                 activity = activity as DashboardActivity;
-                //activity = context as DashboardActivity;
-                //// SETS THE WINDOW BACKGROUND TO HORIZONTAL GRADIENT AS PER UI ALIGNMENT
-                //activity.Window.SetBackgroundDrawable(Activity.GetDrawable(Resource.Drawable.HorizontalGradientBackground));
-                //}
             }
             catch (ClassCastException e)
             {
@@ -755,7 +727,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 }
 
                 Intent viewBill = GetIntentObject(typeof(ViewBillActivity));
-                //Intent viewBill = new Intent(this.Activity, typeof(ViewBillActivity));
                 if (viewBill != null && IsAdded)
                 {
                     viewBill.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccount));

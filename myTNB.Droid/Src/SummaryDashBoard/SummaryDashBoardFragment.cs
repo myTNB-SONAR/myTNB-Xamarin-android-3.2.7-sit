@@ -107,14 +107,7 @@ namespace myTNB_Android.Src.SummaryDashBoard
             base.OnAttach(context);
             try
             {
-                //if (context is DashboardActivity)
-                //{
-
                 mCallBack = context as ISummaryFragmentToDashBoardActivtyListener;
-                //activity = context as DashboardActivity;
-                //// SETS THE WINDOW BACKGROUND TO HORIZONTAL GRADIENT AS PER UI ALIGNMENT
-                //activity.Window.SetBackgroundDrawable(Activity.GetDrawable(Resource.Drawable.HorizontalGradientBackground));
-                //}
             }
             catch (ClassCastException e)
             {
@@ -129,14 +122,7 @@ namespace myTNB_Android.Src.SummaryDashBoard
 
             try
             {
-                //if (context is DashboardActivity)
-                //{
-
                 mCallBack = activity as ISummaryFragmentToDashBoardActivtyListener;
-                //activity = context as DashboardActivity;
-                //// SETS THE WINDOW BACKGROUND TO HORIZONTAL GRADIENT AS PER UI ALIGNMENT
-                //activity.Window.SetBackgroundDrawable(Activity.GetDrawable(Resource.Drawable.HorizontalGradientBackground));
-                //}
             }
             catch (ClassCastException e)
             {
@@ -211,8 +197,6 @@ namespace myTNB_Android.Src.SummaryDashBoard
 
                 presenter = new SummaryDashboardPresenter(this);
 
-
-
                 loadMore.Click += delegate
                 {
                     if (HasNetworkConnection())
@@ -248,7 +232,6 @@ namespace myTNB_Android.Src.SummaryDashBoard
                         ShowNoInternetSnackbar();
                     }
                 };
-
 
                 addAcount.Click += delegate
                 {
@@ -315,7 +298,6 @@ namespace myTNB_Android.Src.SummaryDashBoard
         {
             try
             {
-                //listener.FetchUserData();
                 if (HasNetworkConnection())
                 {
                     DownTimeEntity bcrmDownTime = DownTimeEntity.GetByCode(Constants.BCRM_SYSTEM);
@@ -491,7 +473,6 @@ namespace myTNB_Android.Src.SummaryDashBoard
 
         public void ShowRefreshSummaryDashboard(bool yesno)
         {
-
             layoutRefresh.Visibility = yesno ? ViewStates.Visible : ViewStates.Gone;
         }
 

@@ -63,20 +63,18 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                 if (this.mView.IsActive())
                 {
                     this.mView.HideAmountProgress();
-                    if (!amountDueResponse.Data.IsError)
-                    {
-                        //if (amountDueResponse.Data.Data.AmountDue > 0.00)
-                        //{
-                        this.mView.EnablePayButton();
-                        //}
-                        this.mView.ShowAmountDue(amountDueResponse.Data.Data);
-                    }
-                    else
-                    {
-                        this.mView.ShowRetryOptionsApiException(null);
-
-                    }
-
+                }
+                if (!amountDueResponse.Data.IsError)
+                {
+                    //if (amountDueResponse.Data.Data.AmountDue > 0.00)
+                    //{
+                    this.mView.EnablePayButton();
+                    //}
+                    this.mView.ShowAmountDue(amountDueResponse.Data.Data);
+                }
+                else
+                {
+                    this.mView.ShowRetryOptionsApiException(null);
 
                 }
             }
@@ -133,19 +131,17 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
 
         public void OnViewBill(AccountData selectedAccount)
         {
-            if (this.mView.HasInternet())
-            {
-                LoadingBillsHistory(selectedAccount);
-            }
-            else
-            {
-                this.mView.ShowNoInternetSnackbar();
-            }
+            LoadingBillsHistory(selectedAccount);
         }
 
 
         private async void LoadingBillsHistory(AccountData selectedAccount)
         {
+
+            if (this.mView.IsActive())
+            {
+                this.mView.ShowAmountProgress();
+            }
 
             cts = new CancellationTokenSource();
 #if DEBUG || STUB
@@ -166,6 +162,11 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
 
                 var billsHistoryResponseV5 = billsHistoryResponseApi;
 
+                if (this.mView.IsActive())
+                {
+                    this.mView.HideAmountProgress();
+                }
+
                 if (billsHistoryResponseV5 != null && billsHistoryResponseV5.Data != null)
                 {
                     if (!billsHistoryResponseV5.Data.IsError && !string.IsNullOrEmpty(billsHistoryResponseV5.Data.Status)
@@ -176,40 +177,27 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                             this.mView.ShowViewBill(billsHistoryResponseV5.Data.BillHistory[0]);
                             return;
                         }
-
-
-                        /*** Save Bill History For the Day ***/
-                        //BillHistoryEntity smUsageModel = new BillHistoryEntity();
-                        //smUsageModel.Timestamp = DateTime.Now.ToLocalTime();
-                        //smUsageModel.JsonResponse = JsonConvert.SerializeObject(billsHistoryResponseV5);
-                        //smUsageModel.AccountNo = selectedAccount.AccountNum;
-                        //BillHistoryEntity.InsertItem(smUsageModel);
-                        /*****/
-
-                        //if (IsActive())
-                        //{
-                        //    this.mView.ShowBillsList(billsHistoryResponseV5);
-                        //}
-                    }
+                        else
+                        {
+                            this.mView.ShowViewBill();
+                        }
+                    }                    
                     else
                     {
-                        //if (this.mView.IsActive())
-                        //{
-                        //    this.mView.ShowEmptyBillList();
-                        //}
+                        this.mView.ShowViewBill();
                     }
                 }
-                //if (this.mView.IsActive())
-                //{
-                //    this.mView.EnableTabs();
-                //}
-
+                else
+                {
+                    this.mView.ShowViewBill();
+                }
             }
             catch (System.OperationCanceledException e)
             {
                 Log.Debug("BillPayment Presenter", "Cancelled Exception");
                 if (this.mView.IsActive())
                 {
+                    this.mView.HideAmountProgress();
                     this.mView.ShowNoInternetSnackbar();
                 }
                 Utility.LoggingNonFatalError(e);
@@ -217,10 +205,10 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
             catch (ApiException apiException)
             {
                 // ADD HTTP CONNECTION EXCEPTION HERE
-                //this.mView.ShowRetryOptionsApiException(apiException);
                 Log.Debug("BillPayment Presenter", "Stack " + apiException.StackTrace);
                 if (this.mView.IsActive())
                 {
+                    this.mView.HideAmountProgress();
                     this.mView.ShowNoInternetSnackbar();
                 }
                 Utility.LoggingNonFatalError(apiException);
@@ -229,17 +217,13 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
             {
                 // ADD UNKNOWN EXCEPTION HERE
                 Log.Debug("BillPayment Presenter", "Stack " + e.StackTrace);
-                //this.mView.ShowRetryOptionsUnknownException(e);
                 if (this.mView.IsActive())
                 {
+                    this.mView.HideAmountProgress();
                     this.mView.ShowNoInternetSnackbar();
                 }
                 Utility.LoggingNonFatalError(e);
             }
-
-            this.mView.ShowViewBill();
-
-
         }
 
 

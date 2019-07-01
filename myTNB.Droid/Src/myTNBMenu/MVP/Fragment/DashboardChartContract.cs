@@ -42,6 +42,8 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
             /// </summary>
             void ShowNoInternet();
 
+            void ShowNoInternetWithWord(string contentTxt, string buttonTxt);
+
             /// <summary>
             ///  Show no internet snackbar
             /// </summary>
@@ -140,6 +142,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
             /// </summary>
             void DisablePayButton();
 
+            void ShowLoadBillRetryOptions();
 
             /// <summary>
             /// Shows a cancelled exception with an option to retry
