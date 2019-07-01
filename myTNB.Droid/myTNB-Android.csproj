@@ -2944,6 +2944,7 @@
     <GoogleServicesJson Include="google-services-sit.json" Condition=" '$(Configuration)' == 'Debug' " />
     <GoogleServicesJson Include="google-services-stub.json" Condition=" '$(Configuration)' == 'Stub' " />
     <GoogleServicesJson Include="google-services-sit.json" Condition=" '$(Configuration)' == 'Release' " />
+    <GoogleServicesJson Include="google-services.json" Condition=" '$(Configuration)' == 'Release' " />
     <!-- <GoogleServicesJson Include="google-services.json" /> -->
   </ItemGroup>
   <ItemGroup>
