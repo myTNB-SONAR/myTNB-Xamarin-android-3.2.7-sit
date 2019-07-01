@@ -321,8 +321,19 @@ namespace myTNB_Android.Src.Notifications.MVP
                                 {
                                     this.mView.ShowRefreshView(userNotificationResponse.Data.RefreshMessage, userNotificationResponse.Data.RefreshBtnText);
                                 }
-                                else if (!userNotificationResponse.Data.IsError)
+                                else if (userNotificationResponse != null && userNotificationResponse.Data != null && !userNotificationResponse.Data.IsError)
                                 {
+                                    if (userNotificationResponse.Data.Data.Count() > 0)
+                                    {
+                                        try
+                                        {
+                                            UserNotificationEntity.RemoveAll();
+                                        }
+                                        catch (System.Exception ne)
+                                        {
+                                            Utility.LoggingNonFatalError(ne);
+                                        }
+                                    }
                                     foreach (UserNotification userNotification in userNotificationResponse.Data.Data)
                                     {
                                         // tODO : SAVE ALL NOTIFICATIONs
@@ -415,7 +426,7 @@ namespace myTNB_Android.Src.Notifications.MVP
 
         }
 
-        void ShowFilteredList()
+        public void ShowFilteredList()
         {
             try
             {

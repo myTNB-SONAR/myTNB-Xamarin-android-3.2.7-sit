@@ -189,6 +189,8 @@ namespace myTNB_Android.Src.Notifications.MVP
             /// Read all selected notifications.
             /// </summary>
             void ReadAllSelectedNotifications();
+
+            void ShowFilteredList();
         }
 
         public interface IApiNotification
