@@ -536,12 +536,13 @@ namespace myTNB.DataManager
             DueAmountDataModel model = null;
             if (!string.IsNullOrEmpty(key))
             {
-                var entity = DueEntity.GetItem(key);
+                model = AmountDueCache.GetDues(key);
+                /*var entity = DueEntity.GetItem(key);
                 if (entity != null)
                 {
                     model = new DueAmountDataModel();
                     model.UpdateFromEntity(entity);
-                }
+                }*/
             }
             return model;
         }
@@ -554,8 +555,9 @@ namespace myTNB.DataManager
         {
             foreach (var item in accountDues)
             {
-                var entity = item.ToEntity();
-                DueEntity.InsertItem(entity);
+                AmountDueCache.SaveDues(item);
+                //var entity = item.ToEntity();
+                //DueEntity.InsertItem(entity);
             }
         }
 
@@ -565,8 +567,9 @@ namespace myTNB.DataManager
         /// <param name="item">Item.</param>
         public void SaveDue(DueAmountDataModel item)
         {
-            var entity = item.ToEntity();
-            DueEntity.InsertItem(entity);
+            AmountDueCache.SaveDues(item);
+            //var entity = item.ToEntity();
+            //DueEntity.InsertItem(entity);
         }
 
         /// <summary>
@@ -578,12 +581,13 @@ namespace myTNB.DataManager
         {
             if (!string.IsNullOrEmpty(key) && !string.IsNullOrEmpty(newName))
             {
-                var entity = DueEntity.GetItem(key);
+                AmountDueCache.UpdateNickname(key, newName);
+                /*var entity = DueEntity.GetItem(key);
                 if (entity != null)
                 {
                     entity.accNickName = newName;
                     DueEntity.UpdateItem(entity);
-                }
+                }*/
             }
         }
 
@@ -595,7 +599,8 @@ namespace myTNB.DataManager
         {
             if (!string.IsNullOrEmpty(key))
             {
-                DueEntity.DeleteItem(key);
+                AmountDueCache.DeleteDue(key);
+                //DueEntity.DeleteItem(key);
             }
         }
 

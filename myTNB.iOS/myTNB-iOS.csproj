@@ -1141,6 +1141,7 @@
     <Folder Include="Model\GetAppLaunchMasterData\" />
     <Folder Include="Model\GetInstallationDetails\" />
     <Folder Include="Payment\Select Payment Method\" />
+    <Folder Include="Session Cache\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -1841,6 +1842,7 @@
     <Compile Include="Payment\Select Bills\NonConsumptionTableViewCell.designer.cs">
       <DependentUpon>NonConsumptionTableViewCell.cs</DependentUpon>
     </Compile>
+    <Compile Include="Session Cache\AmoutDueCache.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />
