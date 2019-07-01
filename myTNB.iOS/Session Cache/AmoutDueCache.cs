@@ -63,6 +63,14 @@ namespace myTNB
                 }
             }
         }
+
+        public static void Reset()
+        {
+            if (AmountDueDictionary != null)
+            {
+                AmountDueDictionary.Clear();
+            }
+        }
         #endregion
         #region Private Functions
         private AmountDueCache() { }

@@ -117,7 +117,8 @@ namespace myTNB.Payment.SelectBills
             return isItemizedBilling ? 257 : 205;
         }
 
-        void UpdateCheckBox(SelectBillsTableViewCell cell)
+        #region UpdateCheckBox
+        private void UpdateCheckBox(SelectBillsTableViewCell cell)
         {
             int index = _accounts.FindIndex(x => x.accNum.Equals(cell._lblAccountNo.Text));
             if (index > -1)
@@ -144,7 +145,7 @@ namespace myTNB.Payment.SelectBills
             }
         }
 
-        void UpdateCheckBox(NonConsumptionTableViewCell cell)
+        private void UpdateCheckBox(NonConsumptionTableViewCell cell)
         {
             int index = _accounts.FindIndex(x => x.accNum.Equals(cell._lblAccountNo.Text));
             if (index > -1)
@@ -170,8 +171,9 @@ namespace myTNB.Payment.SelectBills
 #endif
             }
         }
-
-        void SetTextField(UITextField textField, UILabel error, SelectBillsTableViewCell cell)
+        #endregion
+        #region SetTextField
+        private void SetTextField(UITextField textField, UILabel error, SelectBillsTableViewCell cell)
         {
             textField.ShouldReturn = (sender) =>
             {
@@ -259,7 +261,7 @@ namespace myTNB.Payment.SelectBills
             };
         }
 
-        void SetTextField(UITextField textField, UILabel error, NonConsumptionTableViewCell cell)
+        private void SetTextField(UITextField textField, UILabel error, NonConsumptionTableViewCell cell)
         {
             textField.ShouldReturn = (sender) =>
             {
@@ -346,8 +348,8 @@ namespace myTNB.Payment.SelectBills
                 ShowErrorMessage(error, index, cell, true);
             };
         }
-
-        bool ShowErrorMessage(UILabel lblError, int index, SelectBillsTableViewCell cell, bool endEditing = false)
+        #endregion
+        private bool ShowErrorMessage(UILabel lblError, int index, SelectBillsTableViewCell cell, bool endEditing = false)
         {
             bool isValid = false;
             if (index < 0 || index >= _accounts.Count)
@@ -369,7 +371,7 @@ namespace myTNB.Payment.SelectBills
             return isValid;
         }
 
-        bool ShowErrorMessage(UILabel lblError, int index, NonConsumptionTableViewCell cell, bool endEditing = false)
+        private bool ShowErrorMessage(UILabel lblError, int index, NonConsumptionTableViewCell cell, bool endEditing = false)
         {
             bool isValid = false;
             if (index < 0 || index >= _accounts.Count)
@@ -395,7 +397,7 @@ namespace myTNB.Payment.SelectBills
         /// </summary>
         /// <param name="isError">If set to <c>true</c> is error.</param>
         /// <param name="cell">Cell.</param>
-        void UpdateUIForInputError(bool isError, SelectBillsTableViewCell cell, bool endEditing = false)
+        private void UpdateUIForInputError(bool isError, SelectBillsTableViewCell cell, bool endEditing = false)
         {
             string acctNumber = cell._lblAccountNo.Text;
             if (!string.IsNullOrEmpty(acctNumber))
@@ -424,7 +426,7 @@ namespace myTNB.Payment.SelectBills
         /// </summary>
         /// <param name="isError">If set to <c>true</c> is error.</param>
         /// <param name="cell">Cell.</param>
-        void UpdateUIForInputError(bool isError, NonConsumptionTableViewCell cell, bool endEditing = false)
+        private void UpdateUIForInputError(bool isError, NonConsumptionTableViewCell cell, bool endEditing = false)
         {
             string acctNumber = cell._lblAccountNo.Text;
             if (!string.IsNullOrEmpty(acctNumber))

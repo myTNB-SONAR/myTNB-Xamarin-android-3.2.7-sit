@@ -210,6 +210,9 @@ namespace myTNB.DataManager
             //Account Related
             InstallationDetails = new InstallationDetailDataModel();
             AccountIsActive = false;
+
+            //ResetAmountDues
+            AmountDueCache.Reset();
         }
 
         /// <summary>
