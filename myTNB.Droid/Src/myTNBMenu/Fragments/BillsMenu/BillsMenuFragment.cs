@@ -21,6 +21,7 @@ using myTNB_Android.Src.myTNBMenu.Adapter.BillsMenu;
 using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.myTNBMenu.MVP.Fragment;
 using myTNB_Android.Src.Utils;
+using myTNB_Android.Src.Utils.Custom.ProgressDialog;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -151,12 +152,28 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.BillsMenu
         [BindView(Resource.Id.divider)]
         View divider;
 
-        //[BindView(Resource.Id.swipeRefreshLayout)]
-        //SwipeRefreshLayout swipeRefreshLayout;
+        [BindView(Resource.Id.layout_bill_total)]
+        LinearLayout allBillLayout;
+
+        [BindView(Resource.Id.layout_api_refresh)]
+        LinearLayout refreshLayout;
+
+        [BindView(Resource.Id.btnRefresh)]
+        Button btnNewRefresh;
+
+        [BindView(Resource.Id.refresh_content)]
+        TextView txtNewRefreshMessage;
+
+        private LoadingOverlay loadingOverlay;
+
 
         bool noInternet = false;
 
         private MaterialDialog mMandatoryPaymentCardDialog;
+        bool failedFetch = false;
+
+        private string txtRefreshContent = "";
+        private string txtBtnContent = "";
 
         DecimalFormat decimalFormatter = new DecimalFormat("###,###,###,###,##0.00");
         SimpleDateFormat dateParser = new SimpleDateFormat("dd/MM/yyyy");
@@ -182,12 +199,23 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.BillsMenu
             return billsMenuFragment;
         }
 
+        internal static BillsMenuFragment NewInstance(string contextTxt, string btnTxt, AccountData selectedAccount)
+        {
+            BillsMenuFragment billsMenuFragment = new BillsMenuFragment();
+            Bundle args = new Bundle();
+            args.PutString(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccount));
+            args.PutBoolean(Constants.REFRESH_MODE, true);
+            args.PutString(Constants.REFRESH_MSG, contextTxt);
+            args.PutString(Constants.REFRESH_BTN_MSG, btnTxt);
+            billsMenuFragment.Arguments = args;
+            return billsMenuFragment;
+        }
+
 
         public override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
 
-            // Create your fragment here
             Bundle args = Arguments;
             if (args.ContainsKey(Constants.SELECTED_ACCOUNT))
             {
@@ -197,6 +225,22 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.BillsMenu
             if (args.ContainsKey(Constants.NO_INTERNET_CONNECTION))
             {
                 noInternet = args.GetBoolean(Constants.NO_INTERNET_CONNECTION);
+            }
+
+            failedFetch = false;
+
+            if (args.ContainsKey(Constants.REFRESH_MODE))
+            {
+                failedFetch = true;
+                if (args.ContainsKey(Constants.REFRESH_MSG))
+                {
+                    txtRefreshContent = args.GetString(Constants.REFRESH_MSG);
+                }
+
+                if (args.ContainsKey(Constants.REFRESH_BTN_MSG))
+                {
+                    txtBtnContent = args.GetString(Constants.REFRESH_BTN_MSG);
+                }
             }
 
             mPresenter = new BillsPaymentFragmentPresenter(this, selectedAccount);
@@ -211,7 +255,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.BillsMenu
                 if (context is DashboardActivity)
                 {
                     var activity = context as DashboardActivity;
-                    // SETS THE WINDOW BACKGROUND TO HORIZONTAL GRADIENT AS PER UI ALIGNMENT
                     activity.Window.SetBackgroundDrawable(Activity.GetDrawable(Resource.Drawable.HorizontalGradientBackground));
                 }
             }
@@ -225,6 +268,54 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.BillsMenu
         public override int ResourceId()
         {
             return Resource.Layout.BillsView;
+        }
+
+        [OnClick(Resource.Id.btnRefresh)]
+        internal void OnRefresh(object sender, EventArgs e)
+        {
+            CustomerBillingAccount customerAccount = CustomerBillingAccount.FindByAccNum(selectedAccount.AccountNum);
+            this.userActionsListener.OnSelectAccount(customerAccount);
+        }
+
+        public void ShowDashboardChart(UsageHistoryResponse response, AccountData accountData)
+        {
+            try
+            {
+                ((DashboardActivity)Activity).BillsMenuRefresh(accountData);
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void ShowView()
+        {
+            allBillLayout.Visibility = ViewStates.Visible;
+            refreshLayout.Visibility = ViewStates.Gone;
+        }
+
+        public void ShowRefreshView(string contentTxt, string btnTxt)
+        {
+            try
+            {
+                allBillLayout.Visibility = ViewStates.Gone;
+                refreshLayout.Visibility = ViewStates.Visible;
+                btnNewRefresh.Text = string.IsNullOrEmpty(btnTxt) ? GetString(Resource.String.text_new_refresh) : btnTxt;
+
+                if (Build.VERSION.SdkInt >= BuildVersionCodes.N)
+                {
+                    txtNewRefreshMessage.TextFormatted = string.IsNullOrEmpty(contentTxt) ? Html.FromHtml(GetString(Resource.String.text_new_refresh_content), FromHtmlOptions.ModeLegacy) : Html.FromHtml(contentTxt, FromHtmlOptions.ModeLegacy);
+                }
+                else
+                {
+                    txtNewRefreshMessage.TextFormatted = string.IsNullOrEmpty(contentTxt) ? Html.FromHtml(GetString(Resource.String.text_new_refresh_content)) : Html.FromHtml(contentTxt);
+                }
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public override void OnActivityCreated(Bundle savedInstanceState)
@@ -249,23 +340,40 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.BillsMenu
                   btnPay,
                   txtBillPaymentHistoryTitle,
                   txtTotalDueContent,
-                  txtTotalDueTitle);
+                  txtTotalDueTitle,
+                  btnNewRefresh);
                 TextViewUtils.SetMuseoSans300Typeface(txtAccountNum,
                     txtAddress,
                     txtFooter, txtFooter1, txtFooter2,
                     txtCurrentChargesRM, txtOutstandingChargesRM, 
-                    txtMandatoryPaymentsRM
+                    txtMandatoryPaymentsRM, txtNewRefreshMessage
                     );
 
                 layoutManager = new LinearLayoutManager(Activity, LinearLayoutManager.Vertical, false);
                 mMandatoryPaymentDetailRecyclerView.SetLayoutManager(layoutManager);
                 mMandatoryPaymentDetailRecyclerView.SetAdapter(adapter);
+                allBillLayout.Visibility = ViewStates.Visible;
+                refreshLayout.Visibility = ViewStates.Gone;
+
+                btnNewRefresh.Text = string.IsNullOrEmpty(txtBtnContent) ? GetString(Resource.String.text_new_refresh) : txtBtnContent;
+
+                if (Build.VERSION.SdkInt >= BuildVersionCodes.N)
+                {
+                    txtNewRefreshMessage.TextFormatted = string.IsNullOrEmpty(txtRefreshContent) ? Html.FromHtml(GetString(Resource.String.text_new_refresh_content), FromHtmlOptions.ModeLegacy) : Html.FromHtml(txtRefreshContent, FromHtmlOptions.ModeLegacy);
+                }
+                else
+                {
+                    txtNewRefreshMessage.TextFormatted = string.IsNullOrEmpty(txtRefreshContent) ? Html.FromHtml(GetString(Resource.String.text_new_refresh_content)) : Html.FromHtml(txtRefreshContent);
+                }
 
                 SetBillDetails(selectedAccount);
 
-                //swipeRefreshLayout.Refresh += RefreshLayout_Refresh;
-
                 this.userActionsListener.Start();
+
+                if(failedFetch)
+                {
+                    ShowRefreshView(null, null);
+                }
             }
             catch (System.Exception e)
             {
@@ -273,15 +381,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.BillsMenu
             }
         }
 
-
-        //private void RefreshLayout_Refresh(object sender, EventArgs e)
-        //{
-        //    if (ConnectionUtils.HasInternetConnection(this.Activity))
-        //    {
-        //        swipeRefreshLayout.Refreshing = true;
-        //        this.userActionsListener.RefreshData();
-        //    }
-        //}
 
         [OnClick(Resource.Id.btnBills)]
         void OnBills(object sender, EventArgs eventArgs)
@@ -340,6 +439,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.BillsMenu
                 Utility.LoggingNonFatalError(e);
             }
         }
+        public void ToggleFetch(bool yesno)
+        {
+            failedFetch = yesno;
+        }
 
         public void ShowBillsList(BillHistoryResponseV5 billsHistoryResponse)
         {
@@ -366,19 +469,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.BillsMenu
             return IsAdded && IsVisible && !IsDetached && !IsRemoving;
         }
 
-
-        //[OnClick(Resource.Id.btnBills)]
-        //void OnBillsClick(object sender, EventArgs args)
-        //{
-        //    this.userActionsListener.OnShowBills();
-        //}
-
-        //[OnClick(Resource.Id.btnPayment)]
-        //void OnPaymentClick(object sender, EventArgs args)
-        //{
-        //    this.userActionsListener.OnShowPayment();
-        //}
-
         [OnClick(Resource.Id.btnPay)]
         void OnPay(object sender, EventArgs args)
         {
@@ -399,17 +489,13 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.BillsMenu
 
         public void ShowPayment()
         {
-            //Intent payment_activity = new Intent(Activity, typeof(MakePaymentActivity));
             Intent payment_activity = new Intent(this.Activity, typeof(SelectAccountsActivity));
             payment_activity.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccount));
-            //StartActivity(payment_activity);
             StartActivityForResult(payment_activity, DashboardActivity.PAYMENT_RESULT_CODE);
-
         }
 
         public override void OnActivityResult(int requestCode, Result resultCode, Intent data)
         {
-            //base.OnActivityResult(requestCode, resultCode, data);
             if (requestCode == DashboardActivity.PAYMENT_RESULT_CODE)
             {
                 if (resultCode == Result.Ok)
@@ -500,6 +586,39 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.BillsMenu
                .CommitAllowingStateLoss();
         }
 
+        public void ShowProgressDialog()
+        {
+            try
+            {
+                if (loadingOverlay != null && loadingOverlay.IsShowing)
+                {
+                    loadingOverlay.Dismiss();
+                }
+
+                loadingOverlay = new LoadingOverlay(Activity.ApplicationContext, Resource.Style.LoadingOverlyDialogStyle);
+                loadingOverlay.Show();
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void HideProgressDialog()
+        {
+            try
+            {
+                if (loadingOverlay != null && loadingOverlay.IsShowing)
+                {
+                    loadingOverlay.Dismiss();
+                }
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
         public void SetBillDetails(AccountData selectedAccount)
         {
             if (selectedAccount != null)
@@ -508,7 +627,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.BillsMenu
                 txtAccountNum.Text = (!string.IsNullOrEmpty(selectedAccount?.AccountNum)) ? selectedAccount?.AccountNum : "";
 
                 txtAddress.Text = selectedAccount?.AddStreet;
-
                 txtCurrentChargesContent.Text = decimalFormatter.Format(selectedAccount?.AmtCurrentChg);
                 txtOutstandingChargesContent.Text = decimalFormatter.Format(selectedAccount?.AmtOutstandingChg);
 
@@ -599,11 +717,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.BillsMenu
                     }
 
                 }
-                //if (selectedAccount.AmtCustBal <= 0)
-                //{
-                //    btnPay.Enabled = false;
-                //    btnPay.Background = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.silver_chalice_button_background);
-                //}
 
                 if (!selectedAccount.IsOwner)
                 {
@@ -616,18 +729,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.BillsMenu
                     onlyAccountOwnersLayout.Visibility = ViewStates.Gone;
                 }
 
-                //if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.N)
-                //{
-                //    txtFooter.TextFormatted = Html.FromHtml(GetString(Resource.String.billing_list_fragment_footer_text), FromHtmlOptions.ModeLegacy);
-                //    txtFooter1.TextFormatted = Html.FromHtml(GetString(Resource.String.billing_list_fragment_footer_text1), FromHtmlOptions.ModeLegacy);
-
-                //}
-                //else
-                //{
-                //    txtFooter.TextFormatted = Html.FromHtml(GetString(Resource.String.billing_list_fragment_footer_text));
-                //    txtFooter1.TextFormatted = Html.FromHtml(GetString(Resource.String.billing_list_fragment_footer_text1));
-
-                //}
                 txtFooter.Visibility = ViewStates.Gone;
                 txtFooter1.Visibility = ViewStates.Gone;
                 txtFooter2.Visibility = ViewStates.Gone;

@@ -5,6 +5,7 @@ using Android.Content.PM;
 using Android.OS;
 using Android.Runtime;
 using Android.Support.Design.Widget;
+using Android.Text;
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
@@ -37,6 +38,12 @@ namespace myTNB_Android.Src.Notifications.Activity
 
         [BindView(Resource.Id.notification_listview)]
         ListView notificationListView;
+    
+        [BindView(Resource.Id.layout_api_refresh)]
+        LinearLayout refreshLayout;
+
+        [BindView(Resource.Id.notification_total_listview)]
+        LinearLayout notificationsLayout;
 
         [BindView(Resource.Id.txt_notification_name)]
         TextView txtNotificationName;
@@ -46,6 +53,12 @@ namespace myTNB_Android.Src.Notifications.Activity
 
         [BindView(Resource.Id.emptyLayout)]
         LinearLayout emptyLayout;
+
+        [BindView(Resource.Id.btnRefresh)]
+        Button btnNewRefresh;
+
+        [BindView(Resource.Id.refresh_content)]
+        TextView txtNewRefreshMessage;
 
         NotificationAdapter notificationAdapter;
 
@@ -114,15 +127,22 @@ namespace myTNB_Android.Src.Notifications.Activity
 
                 TextViewUtils.SetMuseoSans500Typeface(txtNotificationName);
                 TextViewUtils.SetMuseoSans300Typeface(txtNotificationsContent);
+                TextViewUtils.SetMuseoSans300Typeface(txtNewRefreshMessage);
+                TextViewUtils.SetMuseoSans500Typeface(btnNewRefresh);
 
                 this.mPresenter = new NotificationPresenter(this);
                 notificationAdapter = new NotificationAdapter(this, true);
                 notificationListView.Adapter = notificationAdapter;
                 notificationListView.EmptyView = emptyLayout;
 
+                notificationsLayout.Visibility = ViewStates.Visible;
+                refreshLayout.Visibility = ViewStates.Gone;
+
                 int count = UserNotificationEntity.Count();
                 if (count == 0)
                 {
+                    ShowQueryProgress();
+                    this.userActionsListener.QueryOnLoad(this.DeviceId());
                     ME.Leolin.Shortcutbadger.ShortcutBadger.RemoveCount(this.ApplicationContext);
                 }
                 else
@@ -180,6 +200,41 @@ namespace myTNB_Android.Src.Notifications.Activity
                 Utility.LoggingNonFatalError(e);
             }
         }
+
+        public void ShowView()
+        {
+            notificationsLayout.Visibility = ViewStates.Visible;
+            refreshLayout.Visibility = ViewStates.Gone;
+        }
+
+        public void ShowRefreshView(string contentTxt, string btnTxt)
+        {
+            try
+            {
+                notificationsLayout.Visibility = ViewStates.Gone;
+                refreshLayout.Visibility = ViewStates.Visible;
+                btnNewRefresh.Text = string.IsNullOrEmpty(btnTxt) ? GetString(Resource.String.text_new_refresh) : btnTxt;
+                if (Build.VERSION.SdkInt >= BuildVersionCodes.N)
+                {
+                    txtNewRefreshMessage.TextFormatted = string.IsNullOrEmpty(contentTxt) ? Html.FromHtml(GetString(Resource.String.text_new_refresh_content), FromHtmlOptions.ModeLegacy) : Html.FromHtml(contentTxt, FromHtmlOptions.ModeLegacy);
+                }
+                else
+                {
+                    txtNewRefreshMessage.TextFormatted = string.IsNullOrEmpty(contentTxt) ? Html.FromHtml(GetString(Resource.String.text_new_refresh_content)) : Html.FromHtml(contentTxt);
+                }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        [OnClick(Resource.Id.btnRefresh)]
+        internal void OnRefresh(object sender, EventArgs e)
+        {
+            this.userActionsListener.QueryOnLoad(this.DeviceId());
+        }
+
 
         public void HideProgress()
         {

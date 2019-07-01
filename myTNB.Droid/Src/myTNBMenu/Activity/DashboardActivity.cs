@@ -70,9 +70,6 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
         [BindView(Resource.Id.txt_account_name)]
         TextView txtAccountName;
-        //[BindView(Resource.Id.txtWelcome)]
-        //TextView txtWelcome;
-
 
         [BindView(Resource.Id.bottom_navigation)]
         BottomNavigationView bottomNavigationView;
@@ -96,33 +93,6 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
         public static Fragment currentFragment;
 
         public static bool GO_TO_INNER_DASHBOARD = false;
-
-        //    =  new AccountData () {
-        //              AccountNum = "240000876706",
-        //              AccountName = "CHONG MING LUEN CHONG MING LUEN CHONG MING LUEN CHONG MING LUEN ",
-        //              AccICNo = null,
-        //              AccICNoNew = "830311045007",
-        //              AccComno = null,
-        //              AmtDeposit = 0,
-        //              AmtCurrentChg = -746.12,
-        //              AmtOutstandingChg = 0,
-        //              AmtPayableChg = -746.12,
-        //              AmtLastPay = 0,
-        //              DateBill = "04/08/2017",
-        //              DatePaymentDue = "03/09/2017",
-        //              DateLastPay = "N/A",
-        //              SttSupply = "Active",
-        //              AddStreet = "JLN MACAP UMBOO, KG BARU MACAP, 76100, MACHAP",
-        //              AddArea = null,
-        //              AddTown = null,
-        //              AddState = null,
-        //              StnName = "PC Jasin",
-        //              StnAddTown = null,
-        //              StnAddState = null,
-        //              AmtCustBal = -746.12,
-        //              IsSelected = true
-
-        //};
 
         public bool IsActive()
         {
@@ -151,10 +121,6 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             StartActivity(PreLoginIntent);
         }
 
-        /// <summary>
-        /// Disable the back arrow button
-        /// </summary>
-        /// <returns></returns>
         public override bool ShowBackArrowIndicator()
         {
             return isBackButtonVisible;
@@ -169,11 +135,10 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
         {
             base.OnCreate(savedInstanceState);
             dashboardActivity = this;
-            // Create your application here
+
             base.SetToolBarTitle(GetString(Resource.String.dashboard_activity_title));
             mPresenter = new DashboardPresenter(this, PreferenceManager.GetDefaultSharedPreferences(this));
             TextViewUtils.SetMuseoSans500Typeface(txtAccountName);
-            //TextViewUtils.SetMuseoSans500Typeface(btnLogout);
 
             // Get CategoryBrowsable intent data 
             var data = Intent?.Data?.EncodedAuthority;
@@ -184,31 +149,12 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 urlSchemaCalled = true;
                 urlSchemaData = data;
             }
-            else
-            {
-                ///<summary>
-                /// Display myAccount page after phone number verification success
-                /// #verfication done #1
-                ///</summary>
-                //Bundle extras = Intent.Extras;
-                //if (extras != null && extras.ContainsKey(Constants.FORCE_UPDATE_PHONE_NO))
-                //{
-                //    mobileNoUpdated = extras.GetBoolean(Constants.FORCE_UPDATE_PHONE_NO);
-                //}
-            }
 
             bottomNavigationView.SetShiftMode(false, false);
             bottomNavigationView.SetImageSize(28, 5);
             bottomNavigationView.ItemIconTintList = null;
 
             bottomNavigationView.NavigationItemSelected += BottomNavigationView_NavigationItemSelected;
-
-            /// #verfication done #2
-            //if (mobileNoUpdated)
-            //{
-            //    bottomNavigationView.Menu.FindItem(Resource.Id.menu_more).SetChecked(true);
-            //    this.userActionsListener.OnMenuSelect(Resource.Id.menu_more);
-            //}
 
             Bundle extras = Intent?.Extras;
             if (extras != null && extras.ContainsKey(Constants.PROMOTION_NOTIFICATION_VIEW))
@@ -217,39 +163,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 this.userActionsListener?.OnMenuSelect(Resource.Id.menu_promotion);
             }
 
-            //List<AccountData> accountList = new List<AccountData>()
-            //{
-            //    { new AccountData () {
-            //          AccountNum = "240000876706",
-            //          AccountName = "CHONG MING LUEN",
-            //          AccICNo = null,
-            //          AccICNoNew = "830311045007",
-            //          AccComno = null,
-            //          AmtDeposit = 0,
-            //          AmtCurrentChg = -746.12,
-            //          AmtOutstandingChg = 0,
-            //          AmtPayableChg = -746.12,
-            //          AmtLastPay = 0,
-            //          DateBill = "04/08/2017",
-            //          DatePaymentDue = "03/09/2017",
-            //          DateLastPay = "N/A",
-            //          SttSupply = "Active",
-            //          AddStreet = "JLN MACAP UMBOO, KG BARU MACAP, 76100, MACHAP",
-            //          AddArea = null,
-            //          AddTown = null,
-            //          AddState = null,
-            //          StnName = "PC Jasin",
-            //          StnAddTown = null,
-            //          StnAddState = null,
-            //          AmtCustBal = -746.12,
-            //          IsSelected = true
-            //    } }
-            //};  
-
-
-            // TODO : ADD DRAWABLE RIGHT IF ACCOUNTS IN DATABASE IS GREATER THAN 1
             this.userActionsListener?.OnNotificationCount();
-            
         }
 
         public void ClearFragmentStack()
@@ -270,22 +184,16 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
         {
             try
             {
-                //if (getFragmentManager().getBackStackEntryCount() > 0)
-                //    getFragmentManager().popBackStack();
-                //else
-                //super.onBackPressed();
                 List<CustomerBillingAccount> accountList = new List<CustomerBillingAccount>();
                 accountList = CustomerBillingAccount.List();
                 if (accountList?.Count > 1 &&
                                 currentFragment.GetType() == typeof(DashboardChartFragment) ||
-                                //currentFragment.GetType() == typeof(DashboardChartNoTNBAccount) || 
                                 currentFragment.GetType() == typeof(DashboardChartNonOwnerNoAccess) ||
                                 currentFragment.GetType() == typeof(DashboardSmartMeterFragment))
                 {
                     EnableDropDown(false);
                     HideAccountName();
                     ShowBackButton(false);
-                    //ClearFragmentStack();
 
                     SetToolbarTitle(Resource.String.all_accounts);
                     ShowSummaryDashBoard();
@@ -315,7 +223,6 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
         protected override void OnResume()
         {
             base.OnResume();
-            //base.SetToolBarTitle(GetString(Resource.String.dashboard_activity_title));
             if (this.mPresenter != null)
             {
                 this.mPresenter.OnValidateData();
@@ -324,11 +231,9 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
         public void ShowNoAccountDashboardChartMenu()
         {
-            //contentLayout.RemoveAllViews();
             currentFragment = new DashboardChartNoTNBAccount();
             FragmentManager.BeginTransaction()
                            .Replace(Resource.Id.content_layout, new DashboardChartNoTNBAccount())
-                           //.AddToBackStack(null)
                            .CommitAllowingStateLoss();
             ShowBackButton(false);
         }
@@ -336,22 +241,19 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
         public void ShowNoAccountBillMenu()
         {
-            //contentLayout.RemoveAllViews();
             ShowBackButton(false);
             FragmentManager.BeginTransaction()
                    .Replace(Resource.Id.content_layout, new BillingMenuNoTNBAccount())
                    .CommitAllowingStateLoss();
         }
 
-        public void ShowOwnerDashboardNoInternetConnection(string accountName)
+        public void ShowOwnerDashboardNoInternetConnection(string accountName, UsageHistoryResponse response, AccountData selectedAccount)
         {
-            //contentLayout.RemoveAllViews();
             txtAccountName.Text = accountName;
             currentFragment = new DashboardChartFragment();
             FragmentManager.BeginTransaction()
-                           .Replace(Resource.Id.content_layout, DashboardChartFragment.NewInstance(true),
+                           .Replace(Resource.Id.content_layout, DashboardChartFragment.NewInstance(true, response, selectedAccount),
                                     typeof(DashboardChartFragment).Name)
-                           //.AddToBackStack(null)
                            .CommitAllowingStateLoss();
             if (CustomerBillingAccount.List().Count <= 1)
             {
@@ -365,7 +267,6 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
         public void ShowOwnerBillsNoInternetConnection(AccountData selectedAccount)
         {
-            //contentLayout.RemoveAllViews();
             ShowBackButton(false);
             this.SelectedAccountData = selectedAccount;
             txtAccountName.Text = SelectedAccountData.AccountName;
@@ -388,13 +289,11 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
         public void ShowNonOWner(AccountData selectedAccount)
         {
-            //contentLayout.RemoveAllViews();
             this.SelectedAccountData = selectedAccount;
             txtAccountName.Text = SelectedAccountData.AccountName;
             currentFragment = new DashboardChartNonOwnerNoAccess();
             FragmentManager.BeginTransaction()
                            .Replace(Resource.Id.content_layout, DashboardChartNonOwnerNoAccess.NewInstance(selectedAccount))
-                           //.AddToBackStack(null)
                            .CommitAllowingStateLoss();
             if (CustomerBillingAccount.List().Count <= 1)
             {
@@ -483,14 +382,12 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
         public void ShowChart(UsageHistoryData data, AccountData selectedAccount)
         {
-            //contentLayout.RemoveAllViews();
             this.SelectedAccountData = selectedAccount;
             txtAccountName.Text = SelectedAccountData.AccountName;
             currentFragment = new DashboardChartFragment();
             FragmentManager.BeginTransaction()
                            .Replace(Resource.Id.content_layout, DashboardChartFragment.NewInstance(data, SelectedAccountData),
                                     typeof(DashboardChartFragment).Name)
-                           //.AddToBackStack(null)
                            .CommitAllowingStateLoss();
             if (CustomerBillingAccount.List().Count <= 1)
             {
@@ -504,14 +401,12 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
         public void ShowChartWithError(UsageHistoryData data, AccountData selectedAccount, string errorCode, string errorMessage)
         {
-            //contentLayout.RemoveAllViews();
             this.SelectedAccountData = selectedAccount;
             txtAccountName.Text = SelectedAccountData.AccountName;
             currentFragment = new DashboardChartFragment();
             FragmentManager.BeginTransaction()
                            .Replace(Resource.Id.content_layout, DashboardChartFragment.NewInstance(data, SelectedAccountData, errorCode, errorMessage),
                          typeof(DashboardChartFragment).Name)
-                           //.AddToBackStack(null)
                            .CommitAllowingStateLoss();
             if (CustomerBillingAccount.List().Count <= 1)
             {
@@ -525,14 +420,12 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
         public void ShowSMChart(SMUsageHistoryData data, AccountData selectedAccount)
         {
-            //contentLayout.RemoveAllViews();
             this.SelectedAccountData = selectedAccount;
             txtAccountName.Text = SelectedAccountData.AccountName;
             currentFragment = new DashboardSmartMeterFragment();
             FragmentManager.BeginTransaction()
                            .Replace(Resource.Id.content_layout, DashboardSmartMeterFragment.NewInstance(data, SelectedAccountData),
                                     typeof(DashboardSmartMeterFragment).Name)
-                           //.AddToBackStack(null)
                            .CommitAllowingStateLoss();
             if (CustomerBillingAccount.List().Count <= 1)
             {
@@ -546,14 +439,12 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
         public void ShowSMChartWithError(SMUsageHistoryData data, AccountData selectedAccount, bool noSMData)
         {
-            //contentLayout.RemoveAllViews();
             this.SelectedAccountData = selectedAccount;
             txtAccountName.Text = SelectedAccountData.AccountName;
             currentFragment = new DashboardSmartMeterFragment();
             FragmentManager.BeginTransaction()
                 .Replace(Resource.Id.content_layout, DashboardSmartMeterFragment.NewInstance(data, SelectedAccountData, noSMData),
                          typeof(DashboardSmartMeterFragment).Name)
-                           //.AddToBackStack(null)
                            .CommitAllowingStateLoss();
             if (CustomerBillingAccount.List().Count <= 1)
             {
@@ -585,7 +476,6 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
         public void ShowSelectSupplyAccount()
         {
-            // TODO : SHOW SELECT ACCOUNT ACTIVITY
             Intent supplyAccount = new Intent(this, typeof(SelectSupplyAccountActivity));
             StartActivityForResult(supplyAccount, Constants.SELECT_ACCOUNT_REQUEST_CODE);
         }
@@ -599,13 +489,21 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
         public void ShowBillMenu(AccountData selectedAccount)
         {
-            //contentLayout.RemoveAllViews();
             ShowBackButton(false);
             this.SelectedAccountData = selectedAccount;
             txtAccountName.Text = SelectedAccountData.AccountName;
             currentFragment = new BillsMenuFragment();
             FragmentManager.BeginTransaction()
                 .Replace(Resource.Id.content_layout, BillsMenuFragment.NewInstance(selectedAccount))
+                .CommitAllowingStateLoss();
+        }
+
+        public void ShowBillMenuWithError(string contextTxt, string btnTxt, AccountData selectedAccount)
+        {
+            ShowBackButton(false);
+            currentFragment = new BillsMenuFragment();
+            FragmentManager.BeginTransaction()
+                .Replace(Resource.Id.content_layout, BillsMenuFragment.NewInstance(contextTxt, btnTxt, selectedAccount))
                 .CommitAllowingStateLoss();
         }
 
@@ -616,10 +514,16 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
         public void SetBottomMenu(int resourceId)
         {
-            //bottomNavigationView.getMenu().getItem(0).setChecked(false);
             this.bottomNavigationView.Menu.FindItem(resourceId).SetChecked(true);
         }
 
+        public void BillsMenuRefresh(AccountData accountData)
+        {
+            bottomNavigationView.Menu.FindItem(Resource.Id.menu_bill).SetChecked(true);
+            ShowAccountName();
+            SetToolbarTitle(Resource.String.bill_menu_activity_title);
+            ShowBillMenu(accountData);
+        }
         public void EnableDropDown(bool enable)
         {
             if (enable)
@@ -638,7 +542,6 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
         internal void OnTapRefresh()
         {
-            //this.userActionsListener.Start();
             this.userActionsListener.OnTapToRefresh();
         }
 
@@ -649,19 +552,6 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
         public void ShowProgressDialog()
         {
-            //if (materialDialog != null && materialDialog.IsShowing)
-            //{
-            //    materialDialog.Dismiss();
-            //}
-
-            //materialDialog = new MaterialDialog.Builder(this)
-            //    .Title(GetString(Resource.String.dashboard_activity_progress_title))
-            //    .Content(GetString(Resource.String.dashboard_activity_progress_content))
-            //    .Progress(true, 0)
-            //    .Cancelable(false)
-            //    .Build();
-
-            //materialDialog.Show();
             try
             {
                 if (loadingOverlay != null && loadingOverlay.IsShowing)
@@ -680,13 +570,6 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
         public void HideProgressDialog()
         {
-            //if (materialDialog != null && materialDialog.IsShowing)
-            //{
-            //    materialDialog.Dismiss();
-            //}
-            //Handler h = new Handler();
-            //Action myAction = () =>
-            //{
             try
             {
                 if (IsActive())
@@ -696,9 +579,6 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                         loadingOverlay.Dismiss();
                     }
                 }
-
-                //};
-                //h.PostDelayed(myAction, 1000);
 
                 if (urlSchemaCalled)
                 {
@@ -739,7 +619,6 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
         public void ShowFeedbackMenu()
         {
-            //contentLayout.RemoveAllViews();
             ShowBackButton(false);
             FeedbackMenuFragment fragment = new FeedbackMenuFragment();
             currentFragment = fragment;
@@ -750,19 +629,6 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
         public void ShowPromotionsMenu(Weblink weblink)
         {
-            //if (weblink.OpenWith.Equals("APP"))
-            //{
-            //    FragmentManager.BeginTransaction()
-            //             .Replace(Resource.Id.content_layout, PromotionsMenuFragment.NewInstance(weblink))
-            //             .CommitAllowingStateLoss();
-            //}
-            //else
-            //{
-            //    var uri = Android.Net.Uri.Parse(weblink.Url);
-            //    var intent = new Intent(Intent.ActionView, uri);
-            //    StartActivity(intent);
-            //}
-            //contentLayout.RemoveAllViews();
             ShowBackButton(false);
             PromotionListFragment fragment = new PromotionListFragment();
             currentFragment = fragment;
@@ -774,7 +640,6 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
         public void ShowMoreMenu()
         {
-            //contentLayout.RemoveAllViews();
             ShowBackButton(false);
             MoreMenuFragment moreMenuFragment = new MoreMenuFragment();
             currentFragment = moreMenuFragment;
@@ -810,16 +675,6 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             this.Finish();
         }
 
-        //public override bool CameraPermissionRequired()
-        //{
-        //    return true;
-        //}
-
-        //public override bool StoragePermissionRequired()
-        //{
-        //    return true;
-        //}
-
         public override bool TelephonyPermissionRequired()
         {
             return false;
@@ -832,7 +687,6 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             {
                 this.userActionsListener.Start();
                 alreadyStarted = true;
-                //this.userActionsListener.GetSavedPromotionTimeStamp();
                 ShowPromotion(true);
             }
 
@@ -994,23 +848,19 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
         public void ShowDownTimeView(string system, string accountName)
         {
-            //contentLayout.RemoveAllViews();
             txtAccountName.Text = accountName;
             FragmentManager.BeginTransaction()
-                           .Replace(Resource.Id.content_layout, DashboardChartFragment.NewInstance(true),
+                           .Replace(Resource.Id.content_layout, DashboardChartFragment.NewInstance(true, null, null),
                                     typeof(DashboardChartFragment).Name)
-                           //.AddToBackStack(null)
                            .CommitAllowingStateLoss();
         }
 
         public void ShowSummaryDashBoard()
         {
-            //contentLayout.RemoveAllViews();
             DashboardActivity.GO_TO_INNER_DASHBOARD = false;
             currentFragment = new SummaryDashBoardFragment();
             FragmentManager.BeginTransaction()
                            .Replace(Resource.Id.content_layout, new SummaryDashBoardFragment())
-                           //.AddToBackStack(null)
                            .CommitAllowingStateLoss();
         }
 

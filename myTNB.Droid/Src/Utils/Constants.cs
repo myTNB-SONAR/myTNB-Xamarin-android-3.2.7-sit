@@ -200,5 +200,9 @@ namespace myTNB_Android.Src.Utils
         internal static readonly string ITEMZIED_BILLING_VIEW_KEY = "itemizedBilling";
 
 
+        //Refresh View
+        internal static readonly string REFRESH_MODE = "FAILED";
+        internal static readonly string REFRESH_MSG = "refreshMsg";
+        internal static readonly string REFRESH_BTN_MSG = "refreshBtnTxt";
     }
 }

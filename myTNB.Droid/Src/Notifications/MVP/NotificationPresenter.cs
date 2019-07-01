@@ -172,12 +172,6 @@ namespace myTNB_Android.Src.Notifications.MVP
                     ApiKeyId = Constants.APP_CONFIG.API_KEY_ID
                 }, cts.Token);
 
-
-                if (mView.IsActive())
-                {
-                    this.mView.HideQueryProgress();
-                }
-
                 if (!appNotificationChannelsResponse.Data.IsError)
                 {
                     if (!appNotificationTypesResponse.Data.IsError)
@@ -198,35 +192,89 @@ namespace myTNB_Android.Src.Notifications.MVP
 
                         if (UserEntity.IsCurrentlyActive())
                         {
-                            UserEntity loggedUser = UserEntity.GetActive();
-                            var userNotificationResponse = await api.GetUserNotifications(new UserNotificationRequest()
+                            try
                             {
-                                ApiKeyId = Constants.APP_CONFIG.API_KEY_ID,
-                                Email = loggedUser.Email,
-                                DeviceId = deviceId
-
-                            }, cts.Token);
-
-                            if (!userNotificationResponse.Data.IsError)
-                            {
-                                foreach (UserNotification userNotification in userNotificationResponse.Data.Data)
+                                UserEntity loggedUser = UserEntity.GetActive();
+                                var userNotificationResponse = await api.GetUserNotifications(new UserNotificationRequest()
                                 {
-                                    // tODO : SAVE ALL NOTIFICATIONs
-                                    UserNotificationEntity.InsertOrReplace(userNotification);
+                                    ApiKeyId = Constants.APP_CONFIG.API_KEY_ID,
+                                    Email = loggedUser.Email,
+                                    DeviceId = deviceId
+
+                                }, cts.Token);
+
+                                if (mView.IsActive())
+                                {
+                                    this.mView.HideQueryProgress();
                                 }
 
+                                if (userNotificationResponse != null && userNotificationResponse.Data != null && userNotificationResponse.Data.Status.ToUpper() == Constants.REFRESH_MODE)
+                                {
+                                    this.mView.ShowRefreshView(userNotificationResponse.Data.RefreshMessage, userNotificationResponse.Data.RefreshBtnText);
+                                }
+                                else if (!userNotificationResponse.Data.IsError)
+                                {
+                                    foreach (UserNotification userNotification in userNotificationResponse.Data.Data)
+                                    {
+                                        // tODO : SAVE ALL NOTIFICATIONs
+                                        UserNotificationEntity.InsertOrReplace(userNotification);
+                                    }
+                                    this.mView.ShowView();
+                                    this.mView.ClearAdapter();
+                                    this.ShowFilteredList();
+                                }
+                                else
+                                {
+                                    this.mView.ShowRefreshView(null, null);
+                                }
                             }
+                            catch (ApiException apiException)
+                            {
 
-                            this.mView.ClearAdapter();
-                            this.ShowFilteredList();
-
-
+                                if (mView.IsActive())
+                                {
+                                    this.mView.HideQueryProgress();
+                                }
+                                this.mView.ShowRefreshView(null, null);
+                                Utility.LoggingNonFatalError(apiException);
+                            }
+                            catch (Exception e)
+                            {
+                                if (mView.IsActive())
+                                {
+                                    this.mView.HideQueryProgress();
+                                }
+                                this.mView.ShowRefreshView(null, null);
+                                Utility.LoggingNonFatalError(e);
+                            }
+                        }
+                        else
+                        {
+                            if (mView.IsActive())
+                            {
+                                this.mView.HideQueryProgress();
+                            }
                         }
 
                     }
+                    else
+                    {
+                        if (mView.IsActive())
+                        {
+                            this.mView.HideQueryProgress();
+                        }
+                        this.mView.ShowRefreshView(null, null);
+                    }
 
                 }
-
+                else
+                {
+                    if (mView.IsActive())
+                    {
+                        this.mView.HideQueryProgress();
+                    }
+                    this.mView.ShowRefreshView(null, null);
+                }
             }
             catch (ApiException apiException)
             {
@@ -235,6 +283,7 @@ namespace myTNB_Android.Src.Notifications.MVP
                 {
                     this.mView.HideQueryProgress();
                 }
+                this.mView.ShowRefreshView(null, null);
                 Utility.LoggingNonFatalError(apiException);
             }
             catch (Exception e)
@@ -244,6 +293,7 @@ namespace myTNB_Android.Src.Notifications.MVP
                 {
                     this.mView.HideQueryProgress();
                 }
+                this.mView.ShowRefreshView(null, null);
                 Utility.LoggingNonFatalError(e);
             }
 
