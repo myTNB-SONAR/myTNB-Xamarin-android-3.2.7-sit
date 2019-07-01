@@ -134,7 +134,6 @@ namespace myTNB
             {
                 BillHistoryEntity.DeleteTable();
                 ChartEntity.DeleteTable();
-                DueEntity.DeleteTable();
             }
         }
 
@@ -418,7 +417,6 @@ namespace myTNB
         /// </summary>
         private void CreateCacheTables()
         {
-            DataManager.DataManager.SharedInstance.CreateDuesTable();
             DataManager.DataManager.SharedInstance.CreateUsageHistoryTable();
             DataManager.DataManager.SharedInstance.CreateBillingAccountsTable();
             DataManager.DataManager.SharedInstance.CreateBillHistoryTable();

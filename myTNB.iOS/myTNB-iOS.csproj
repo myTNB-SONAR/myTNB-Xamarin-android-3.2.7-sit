@@ -1757,7 +1757,6 @@
     <Compile Include="Home\Components\GreetingComponent.cs" />
     <Compile Include="Enums\GreetingModeEnum.cs" />
     <Compile Include="Enums\NotificationEnum.cs" />
-    <Compile Include="SQLite\SQLite Data Manager\DueEntity.cs" />
     <Compile Include="SQLite\SQLite Data Manager\BillingAccountEntity.cs" />
     <Compile Include="SQLite\SQLite Data Manager\BillHistoryEntity.cs" />
     <Compile Include="SQLite\SQLite Data Manager\PaymentHistoryEntity.cs" />

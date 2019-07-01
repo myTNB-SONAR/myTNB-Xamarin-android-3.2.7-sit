@@ -143,7 +143,6 @@ namespace myTNB.DataManager
             BillHistoryEntity.DeleteTable();
             BillingAccountEntity.DeleteTable();
             ChartEntity.DeleteTable();
-            DueEntity.DeleteTable();
             PaymentHistoryEntity.DeleteTable();
             PromotionsEntity.DeleteTable();
             var sharedPreference = NSUserDefaults.StandardUserDefaults;
@@ -522,14 +521,6 @@ namespace myTNB.DataManager
 
         #region Dues
         /// <summary>
-        /// Creates the dues table.
-        /// </summary>
-        public void CreateDuesTable()
-        {
-            DueEntity.CreateTable();
-        }
-
-        /// <summary>
         /// Gets the due.
         /// </summary>
         /// <returns>The due.</returns>
@@ -540,12 +531,6 @@ namespace myTNB.DataManager
             if (!string.IsNullOrEmpty(key))
             {
                 model = AmountDueCache.GetDues(key);
-                /*var entity = DueEntity.GetItem(key);
-                if (entity != null)
-                {
-                    model = new DueAmountDataModel();
-                    model.UpdateFromEntity(entity);
-                }*/
             }
             return model;
         }
@@ -559,8 +544,6 @@ namespace myTNB.DataManager
             foreach (var item in accountDues)
             {
                 AmountDueCache.SaveDues(item);
-                //var entity = item.ToEntity();
-                //DueEntity.InsertItem(entity);
             }
         }
 
@@ -571,8 +554,6 @@ namespace myTNB.DataManager
         public void SaveDue(DueAmountDataModel item)
         {
             AmountDueCache.SaveDues(item);
-            //var entity = item.ToEntity();
-            //DueEntity.InsertItem(entity);
         }
 
         /// <summary>
@@ -585,12 +566,6 @@ namespace myTNB.DataManager
             if (!string.IsNullOrEmpty(key) && !string.IsNullOrEmpty(newName))
             {
                 AmountDueCache.UpdateNickname(key, newName);
-                /*var entity = DueEntity.GetItem(key);
-                if (entity != null)
-                {
-                    entity.accNickName = newName;
-                    DueEntity.UpdateItem(entity);
-                }*/
             }
         }
 
@@ -603,7 +578,6 @@ namespace myTNB.DataManager
             if (!string.IsNullOrEmpty(key))
             {
                 AmountDueCache.DeleteDue(key);
-                //DueEntity.DeleteItem(key);
             }
         }
 

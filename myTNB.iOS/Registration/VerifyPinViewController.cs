@@ -542,7 +542,7 @@ namespace myTNB.Registration
             {
                 InvokeOnMainThread(() =>
                 {
-                    _resendLabel.Text = string.Format("ResendBtnTimerTxt".Translate(), timerCtr);
+                    _resendLabel.Text = string.Format("Login_ResendTimer".Translate(), timerCtr);
                 });
                 timerCtr = timerCtr - 1;
             }
