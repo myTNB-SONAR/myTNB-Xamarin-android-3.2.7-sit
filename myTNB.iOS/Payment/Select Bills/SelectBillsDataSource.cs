@@ -349,6 +349,7 @@ namespace myTNB.Payment.SelectBills
             };
         }
         #endregion
+        #region ShowErrorMessage 
         private bool ShowErrorMessage(UILabel lblError, int index, SelectBillsTableViewCell cell, bool endEditing = false)
         {
             bool isValid = false;
@@ -370,7 +371,6 @@ namespace myTNB.Payment.SelectBills
             }
             return isValid;
         }
-
         private bool ShowErrorMessage(UILabel lblError, int index, NonConsumptionTableViewCell cell, bool endEditing = false)
         {
             bool isValid = false;
@@ -392,6 +392,8 @@ namespace myTNB.Payment.SelectBills
             }
             return isValid;
         }
+        #endregion
+        #region UpdateUIForInputError
         /// <summary>
         /// Updates the UI based on user input validity.
         /// </summary>
@@ -449,5 +451,6 @@ namespace myTNB.Payment.SelectBills
                 viewLine.BackgroundColor = (endEditing) ? MyTNBColor.PlatinumGrey : MyTNBColor.PowerBlue;
             }
         }
+        #endregion
     }
 }
