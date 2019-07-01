@@ -382,7 +382,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
             var installDetailsApi = RestService.For<IGetInstallationDetailsApi>(httpClient);
 
 #else
-            var installDetailsApi = RestService.For<GetInstallationDetails>(Constants.SERVER_URL.END_POINT);
+            var installDetailsApi = RestService.For<IGetInstallationDetailsApi>(Constants.SERVER_URL.END_POINT);
 
 #endif 
 

@@ -266,7 +266,7 @@ namespace myTNB_Android.Src.Notifications.MVP
             var httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
             var api = RestService.For<AppLaunch.Api.INotificationApi>(httpClient);
 #else
-            var api = RestService.For<INotificationApi>(Constants.SERVER_URL.END_POINT);
+            var api = RestService.For<AppLaunch.Api.INotificationApi>(Constants.SERVER_URL.END_POINT);
 #endif
 
             try
