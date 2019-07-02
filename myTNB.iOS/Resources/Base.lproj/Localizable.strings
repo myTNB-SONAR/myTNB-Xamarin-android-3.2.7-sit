@@ -471,8 +471,8 @@
 /*Registration*/
 "Registration_AccountNumberLocation"="Your 12-digit account no. can be found on the top left corner of your monthly paper bill.";
 "Registration_AddAccountSuccessMessage"="Add Account(s) Successful";
-"Registration_AddingAccountMessage"="This may take a while as we our\r\nadding your TNB account.";		/*Singular*/
-"Registration_AddingAccountsMessage"="This may take a while as we our\r\nadding your TNB accounts.";	/*Plural*/
+"Registration_AddingAccountMessage"="This may take a while as we are\r\nadding your TNB account.";		/*Singular*/
+"Registration_AddingAccountsMessage"="This may take a while as we are\r\nadding your TNB accounts.";	/*Plural*/
 "Registration_AddingAccountTitle"="Adding {0} Account";		/*Singular*/
 "Registration_AddingAccountsTitle"="Adding {0} Accounts";	/*Plural*/
 "Registration_AdditionalAccounts"="Additional account(s)";
