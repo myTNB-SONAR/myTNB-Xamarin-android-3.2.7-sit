@@ -888,6 +888,17 @@ namespace myTNB
 
         internal void ShowRefreshScreen(string msg, string btnText)
         {
+            _accountSelectionComponent?.SetAccountName(DataManager.DataManager.SharedInstance.SelectedAccount?.accDesc);
+            if (IsFromNavigation)
+            {
+                _accountSelectionComponent?.SetDropdownVisibility(IsFromNavigation);
+            }
+            else
+            {
+                _accountSelectionComponent?.SetDropdownVisibility(false);
+            }
+            _accountSelectionComponent?.SetLeafVisibility(!isREAccount);
+
             if (_refreshViewComponent != null)
             {
                 if (_refreshViewComponent.GetView().IsDescendantOfView(View))
