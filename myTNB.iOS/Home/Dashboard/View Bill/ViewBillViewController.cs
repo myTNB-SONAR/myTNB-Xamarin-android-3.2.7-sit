@@ -162,18 +162,33 @@ namespace myTNB
 
         private async Task ExecuteGetBillHistoryCall()
         {
+            ActivityIndicator.Show();
             await GetBillHistory().ContinueWith(task =>
             {
                 InvokeOnMainThread(async () =>
                 {
-                    SetNavigationTitle();
-                    GetFilePath();
-                    await GetUrlString().ContinueWith(getURLTask =>
+                    if (_billHistory != null
+                        && _billHistory?.d?.didSucceed == true
+                        && _billHistory?.d?.data != null
+                        && _billHistory?.d?.data?.Count > 0)
                     {
-                        InvokeOnMainThread(SetSubviews);
-                    });
+                        SetNavigationTitle();
+                        GetFilePath();
+                        await GetUrlString().ContinueWith(getURLTask =>
+                        {
+                            InvokeOnMainThread(SetSubviews);
+                        });
+                    }
+                    else
+                    {
+                        AlertHandler.DisplayServiceError(this, _billHistory?.d?.message, (obj) =>
+                        {
+                            DismissViewController(true, null);
+                        });
+                    }
                 });
             });
+            ActivityIndicator.Hide();
         }
 
         internal Task GetBillHistory()
