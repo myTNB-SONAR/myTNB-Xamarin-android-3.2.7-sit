@@ -41,6 +41,8 @@
     <AndroidSupportedAbis />
     <EnableLLVM>false</EnableLLVM>
     <MandroidI18n />
+    <AotAssemblies>false</AotAssemblies>
+    <BundleAssemblies>false</BundleAssemblies>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugSymbols>True</DebugSymbols>
