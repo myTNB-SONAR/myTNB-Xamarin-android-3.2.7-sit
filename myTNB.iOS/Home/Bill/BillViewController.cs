@@ -402,34 +402,9 @@ namespace myTNB
         private async Task LoadAmountDue()
         {
             ActivityIndicator.Show();
-               var due = DataManager.DataManager.SharedInstance.GetDue(DataManager.DataManager.SharedInstance.SelectedAccount.accNum);
             string _dateDue;
             double _amountDue, _dueIncrementDays;
-            await GetBillingAccountDetails().ContinueWith(task =>
-             {
-                 InvokeOnMainThread(() =>
-                 {
-                     if (_billingAccountDetailsList?.d?.didSucceed == true
-                        && _billingAccountDetailsList != null
-                        && _billingAccountDetailsList?.d != null
-                        && _billingAccountDetailsList?.d?.data != null)
-                     {
-                         var billDetails = _billingAccountDetailsList.d.data;
-                         DataManager.DataManager.SharedInstance.BillingAccountDetails = billDetails;
-                         if (!isREAccount)
-                         {
-                             DataManager.DataManager.SharedInstance.SaveToBillingAccounts(billDetails, billDetails.accNum);
-                         }
-                         ResetUI();
-                     }
-                     else
-                     {
-                         var msg = !string.IsNullOrWhiteSpace(_billingAccountDetailsList?.d?.RefreshMessage) ? _billingAccountDetailsList?.d?.RefreshMessage : "Error_RefreshMessage".Translate();
-                         var btnText = !string.IsNullOrWhiteSpace(_billingAccountDetailsList?.d?.RefreshBtnText) ? _billingAccountDetailsList?.d?.RefreshBtnText : "Error_RefreshBtnTitle".Translate();
-                         ShowRefreshScreen(msg, btnText);
-                     }
-                 });
-             });
+
             await GetAccountDueAmount().ContinueWith(dueTask =>
             {
                 InvokeOnMainThread(() =>
