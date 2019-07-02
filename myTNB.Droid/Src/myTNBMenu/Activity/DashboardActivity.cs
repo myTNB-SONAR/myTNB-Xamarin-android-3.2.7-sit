@@ -502,6 +502,8 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
         {
             ShowBackButton(false);
             currentFragment = new BillsMenuFragment();
+            this.SelectedAccountData = selectedAccount;
+            txtAccountName.Text = SelectedAccountData.AccountName;
             FragmentManager.BeginTransaction()
                 .Replace(Resource.Id.content_layout, BillsMenuFragment.NewInstance(contextTxt, btnTxt, selectedAccount))
                 .CommitAllowingStateLoss();
