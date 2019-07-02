@@ -473,6 +473,7 @@ namespace myTNB_Android.Src.SummaryDashBoard
 
         public void ShowRefreshSummaryDashboard(bool yesno)
         {
+            layoutContent.Visibility = ViewStates.Visible;
             layoutRefresh.Visibility = yesno ? ViewStates.Visible : ViewStates.Gone;
         }
 

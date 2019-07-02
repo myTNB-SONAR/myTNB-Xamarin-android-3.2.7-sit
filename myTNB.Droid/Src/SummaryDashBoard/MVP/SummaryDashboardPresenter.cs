@@ -43,13 +43,10 @@ namespace myTNB_Android.Src.SummaryDashBoard.MVP
         {
             try
             {
-                //if (CustomerBillingAccount.List().Count() != SummaryDashBoardAccountEntity.GetAllItems().Count())
                 if (SummaryDashBoardAccountEntity.GetAllItems().Count() == 0 || makeSummaryApiCall)
                 {
-                    //if (mView.IsActive())
-                    //{
                     this.mView.ShowProgressDialog();
-                    //}
+
                     FetchUserData();
                     if (summaryDashboardRequest != null)
                     {
@@ -180,7 +177,7 @@ namespace myTNB_Android.Src.SummaryDashBoard.MVP
 
                 if (response != null)
                 {
-                    if (response.Data != null)
+                    if (response.Data != null && !response.Data.isError)
                     {
                         var summaryDetails = response.Data.data;
                         if (summaryDetails != null && summaryDetails.Count > 0)
@@ -202,9 +199,21 @@ namespace myTNB_Android.Src.SummaryDashBoard.MVP
                             }
 
                             SummaryData(summaryDetails);
+                            mView.ShowRefreshSummaryDashboard(false);
+                        }
+                        else
+                        {
+                            mView.ShowRefreshSummaryDashboard(true);
                         }
                     }
-                    mView.ShowRefreshSummaryDashboard(false);
+                    else
+                    {
+                        mView.ShowRefreshSummaryDashboard(true);
+                    }
+                }
+                else
+                {
+                    mView.ShowRefreshSummaryDashboard(true);
                 }
             }
             catch (System.OperationCanceledException e)
@@ -410,9 +419,6 @@ namespace myTNB_Android.Src.SummaryDashBoard.MVP
 
         private List<CustomerBillingAccount> FindSelectedAccountAndMoveToTop(List<CustomerBillingAccount> customerBillingAccount)
         {
-            //var selectedAccount = (from item in summaryDetailList 
-            //where item.IsAccSelected == true select item).ToList();
-
             try
             {
                 int i = customerBillingAccount.FindIndex(x => x.IsSelected);
