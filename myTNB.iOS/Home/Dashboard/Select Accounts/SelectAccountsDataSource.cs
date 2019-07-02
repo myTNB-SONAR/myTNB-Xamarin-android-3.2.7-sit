@@ -72,41 +72,11 @@ namespace myTNB.Dashboard.SelectAccounts
 
         public override void RowSelected(UITableView tableView, NSIndexPath indexPath)
         {
-#if true
             var selected = _accountList[indexPath.Row];
             DataManager.DataManager.SharedInstance.IsSameAccount = DataManager.DataManager.SharedInstance.GetAccountsCount() > 1
                 && string.Compare(selected.accNum, DataManager.DataManager.SharedInstance.SelectedAccount?.accNum) == 0;
             DataManager.DataManager.SharedInstance.SelectAccount(selected.accNum);
-#else
-            DataManager.DataManager.SharedInstance.SelectedAccount = _accountList[indexPath.Row];
-            DataManager.DataManager.SharedInstance.CurrentSelectedAccountIndex = indexPath.Row;
-            if (DataManager.DataManager.SharedInstance.CurrentSelectedAccountIndex
-               == DataManager.DataManager.SharedInstance.PreviousSelectedAccountIndex)
-            {
-                DataManager.DataManager.SharedInstance.IsSameAccount = true;
-            }
-            else
-            {
-                DataManager.DataManager.SharedInstance.PreviousSelectedAccountIndex
-                           = DataManager.DataManager.SharedInstance.CurrentSelectedAccountIndex;
-                DataManager.DataManager.SharedInstance.IsSameAccount = false;
-            }
-#endif
-            if (!_controller.selectionIsFromDashboard)
-            {
-                if (DataManager.DataManager.SharedInstance.IsSameAccount)
-                {
-                    _controller.DismissViewController(true, null);
-                }
-                else
-                {
-                    _controller.LoadBillingAccountDetails();
-                }
-            }
-            else
-            {
-                _controller.DismissViewController(true, null);
-            }
+            _controller.DismissViewController(true, null);
         }
 
         public override nfloat GetHeightForRow(UITableView tableView, NSIndexPath indexPath)

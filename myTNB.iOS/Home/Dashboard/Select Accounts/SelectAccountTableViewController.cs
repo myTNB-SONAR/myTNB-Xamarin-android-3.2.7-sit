@@ -16,7 +16,6 @@ namespace myTNB
         {
         }
         BillingAccountDetailsResponseModel _billingAccountDetailsList = new BillingAccountDetailsResponseModel();
-        public bool selectionIsFromDashboard = false;
         public override void ViewDidLoad()
         {
             base.ViewDidLoad();
