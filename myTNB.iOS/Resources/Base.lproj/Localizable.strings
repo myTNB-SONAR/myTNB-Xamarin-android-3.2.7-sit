@@ -433,7 +433,7 @@
 "PushNotification_DeleteTitle"="Delete Notification";
 "PushNotification_DeleteMessageMultiple"="Are you sure you want to delete all notifications?";
 "PushNotification_DeleteTitleMultiple"="Delete All Notifications";
-"PushNotification_NoNotification"="No notifications yet.";
+"PushNotification_NoNotification"="Looks like you have no new notifications today.";
 "PushNotification_NotificationDeleted"="Notification deleted.";
 "PushNotification_NotificationsDeleted"="Notifications deleted.";
 "PushNotification_ReadNotificationsMessage"="Are you sure you want to mark all notifications as read?";

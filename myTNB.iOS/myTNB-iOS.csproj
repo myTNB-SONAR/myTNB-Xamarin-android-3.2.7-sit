@@ -505,9 +505,6 @@
     <ImageAsset Include="Assets.xcassets\Direction.imageset\ic_button_direction%402x.png" />
     <ImageAsset Include="Assets.xcassets\Direction.imageset\ic_button_direction%403x.png" />
     <ImageAsset Include="Assets.xcassets\Notification-Empty.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Notification-Empty.imageset\icEmptyNotification.png" />
-    <ImageAsset Include="Assets.xcassets\Notification-Empty.imageset\icEmptyNotification%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Notification-Empty.imageset\icEmptyNotification%403x.png" />
     <ImageAsset Include="Assets.xcassets\Card-Empty.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Card-Empty.imageset\icEmptyCreditcards.png" />
     <ImageAsset Include="Assets.xcassets\Card-Empty.imageset\icEmptyCreditcards%402x.png" />
@@ -882,6 +879,9 @@
     <ImageAsset Include="Assets.xcassets\Refresh-Error-White.imageset\Refresh-Error-White.png" />
     <ImageAsset Include="Assets.xcassets\Refresh-Error-White.imageset\Refresh-Error-White%402x.png" />
     <ImageAsset Include="Assets.xcassets\Refresh-Error-White.imageset\Refresh-Error-White%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Empty.imageset\Notification-Empty.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Empty.imageset\Notification-Empty%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Empty.imageset\Notification-Empty%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
