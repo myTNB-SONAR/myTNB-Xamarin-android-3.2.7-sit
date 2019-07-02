@@ -28,7 +28,14 @@ namespace myTNB.Dashboard.DashboardComponents
 
             if (DeviceHelper.IsIphoneXUpResolution())
             {
-                viewPercentage = 0.45f;
+                if (DeviceHelper.IsIphoneXOrXs())
+                {
+                    viewPercentage = 0.40f;
+                }
+                else
+                {
+                    viewPercentage = 0.45f;
+                }
             }
             else if (DeviceHelper.IsIphone6UpResolution())
             {

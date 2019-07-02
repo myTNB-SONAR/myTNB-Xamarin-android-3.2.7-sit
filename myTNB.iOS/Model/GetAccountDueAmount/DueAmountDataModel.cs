@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using myTNB.DataManager;
-using myTNB.SQLite.SQLiteDataManager;
 using SQLite;
 
 namespace myTNB.Model
@@ -92,37 +91,5 @@ namespace myTNB.Model
             billDueDate = model.billDueDate;
             IncrementREDueDateByDays = model.IncrementREDueDateByDays;
         }
-
-        /// <summary>
-        /// Converts to an entity.
-        /// </summary>
-        /// <returns>The entity.</returns>
-        public DueEntity ToEntity()
-        {
-            var entity = new DueEntity();
-            entity.accNickName = accNickName;
-            entity.accNum = accNum;
-            entity.amountDue = amountDue;
-            entity.billDueDate = billDueDate;
-            entity.IncrementREDueDateByDays = IncrementREDueDateByDays;
-            entity.IsReAccount = IsReAccount;
-
-            return entity;
-        }
-
-        /// <summary>
-        /// Updates from an entity.
-        /// </summary>
-        /// <param name="entity">Entity.</param>
-        public void UpdateFromEntity(DueEntity entity)
-        {
-            accNickName = entity.accNickName;
-            accNum = entity.accNum;
-            amountDue = entity.amountDue;
-            billDueDate = entity.billDueDate;
-            IncrementREDueDateByDays = entity.IncrementREDueDateByDays;
-            IsReAccount = entity.IsReAccount;
-        }
-
     }
 }

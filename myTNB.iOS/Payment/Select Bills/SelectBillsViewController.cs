@@ -18,18 +18,17 @@ namespace myTNB
 
         public double SelectedAccountDueAmount;
         public List<CustomerAccountRecordModel> _accountsForPayment = new List<CustomerAccountRecordModel>();
-        public double totalAmount = 0.00;
+        public double totalAmount;
 
-        MultiAccountDueAmountResponseModel _multiAccountDueAmount = new MultiAccountDueAmountResponseModel();
-        List<CustomerAccountRecordModel> _accounts = new List<CustomerAccountRecordModel>();
-        List<PaymentRecordModel> _accountsForDisplay = new List<PaymentRecordModel>();
-        CustomerAccountRecordModel _selectedAccount = new CustomerAccountRecordModel();
+        private MultiAccountDueAmountResponseModel _multiAccountDueAmount = new MultiAccountDueAmountResponseModel();
+        private List<CustomerAccountRecordModel> _accounts = new List<CustomerAccountRecordModel>();
+        private List<PaymentRecordModel> _accountsForDisplay = new List<PaymentRecordModel>();
+        private CustomerAccountRecordModel _selectedAccount = new CustomerAccountRecordModel();
 
         private UIView _viewAmount, _viewFooter;
         private UILabel _lblTotalAmountValue, _lblCurrency;
-
-        int loadMoreCount, lastStartIndex, lastEndIndex;
-        bool isViewDidLoad, isItemisedTooltipDisplayed;
+        private int loadMoreCount, lastStartIndex, lastEndIndex;
+        private bool isViewDidLoad, isItemisedTooltipDisplayed;
 
         public override void ViewDidLoad()
         {

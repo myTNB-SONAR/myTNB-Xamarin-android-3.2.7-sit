@@ -47,6 +47,12 @@ namespace myTNB
             return UIScreen.MainScreen.NativeBounds.Height >= 2436
                 || UIScreen.MainScreen.NativeBounds.Height == 1792;
         }
+
+        public static bool IsIphoneXOrXs() {
+            return UIScreen.MainScreen.NativeBounds.Height == 2436
+                && UIScreen.MainScreen.NativeBounds.Width == 1125;
+        }
+
         /// <summary>
         /// Checks if device is iPhone X
         /// </summary>

@@ -485,7 +485,7 @@ namespace myTNB.PushNotification
                                         _imgCheckbox.Image = UIImage.FromBundle("Payment-Checkbox-Inactive");
                                     }
                                     _isDeletionMode = false;
-                                    _isSelectionMode = true;
+                                    _isSelectionMode = isMultiple;
                                     _isAllSelected = false;
                                 }
                                 else
