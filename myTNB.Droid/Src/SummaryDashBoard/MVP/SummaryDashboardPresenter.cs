@@ -177,43 +177,39 @@ namespace myTNB_Android.Src.SummaryDashBoard.MVP
 
                 if (response != null)
                 {
-                    if (response.Data != null && !response.Data.isError)
+                    if (response.Data != null && !response.Data.isError && response.Data.data != null && response.Data.data.Count > 0)
                     {
                         var summaryDetails = response.Data.data;
-                        if (summaryDetails != null && summaryDetails.Count > 0)
+                        summaryDetailList.Clear();
+                        for (int i = 0; i < summaryDetails.Count; i++)
                         {
-                            for (int i = 0; i < summaryDetails.Count; i++)
-                            {
-                                CustomerBillingAccount cbAccount = CustomerBillingAccount.FindByAccNum(summaryDetails[i].AccNumber);
-                                summaryDetails[i].AccName = cbAccount.AccDesc;
-                                summaryDetails[i].AccType = cbAccount.AccountCategoryId;
-                                summaryDetails[i].IsAccSelected = cbAccount.IsSelected;
+                            CustomerBillingAccount cbAccount = CustomerBillingAccount.FindByAccNum(summaryDetails[i].AccNumber);
+                            summaryDetails[i].AccName = cbAccount.AccDesc;
+                            summaryDetails[i].AccType = cbAccount.AccountCategoryId;
+                            summaryDetails[i].IsAccSelected = cbAccount.IsSelected;
 
-                                /*** Save account data For the Day***/
-                                SummaryDashBoardAccountEntity accountModel = new SummaryDashBoardAccountEntity();
-                                accountModel.Timestamp = DateTime.Now.ToLocalTime();
-                                accountModel.JsonResponse = JsonConvert.SerializeObject(summaryDetails[i]);
-                                accountModel.AccountNo = summaryDetails[i].AccNumber;
-                                SummaryDashBoardAccountEntity.InsertItem(accountModel);
-                                /*****/
-                            }
+                            /*** Save account data For the Day***/
+                            SummaryDashBoardAccountEntity accountModel = new SummaryDashBoardAccountEntity();
+                            accountModel.Timestamp = DateTime.Now.ToLocalTime();
+                            accountModel.JsonResponse = JsonConvert.SerializeObject(summaryDetails[i]);
+                            accountModel.AccountNo = summaryDetails[i].AccNumber;
+                            SummaryDashBoardAccountEntity.InsertItem(accountModel);
+                            /*****/
+                        }
 
-                            SummaryData(summaryDetails);
-                            mView.ShowRefreshSummaryDashboard(false);
-                        }
-                        else
-                        {
-                            mView.ShowRefreshSummaryDashboard(true);
-                        }
+                        SummaryData(summaryDetails);
+                        mView.ShowRefreshSummaryDashboard(false);
                     }
                     else
                     {
                         mView.ShowRefreshSummaryDashboard(true);
+                        LoadEmptySummaryDetails();
                     }
                 }
                 else
                 {
                     mView.ShowRefreshSummaryDashboard(true);
+                    LoadEmptySummaryDetails();
                 }
             }
             catch (System.OperationCanceledException e)
@@ -225,6 +221,7 @@ namespace myTNB_Android.Src.SummaryDashBoard.MVP
                     this.mView.HideProgressDialog();
                 }
                 Utility.LoggingNonFatalError(e);
+
                 this.mView.ShowRefreshSummaryDashboard(true); //Show retry option for summary dashboard
                 LoadEmptySummaryDetails();
             }
@@ -484,7 +481,6 @@ namespace myTNB_Android.Src.SummaryDashBoard.MVP
 
         public void RefreshAccountSummary()
         {
-            summaryDetailList.Clear();
             SummaryDashBoardApiCall();
         }
 
