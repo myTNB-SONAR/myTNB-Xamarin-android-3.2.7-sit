@@ -336,14 +336,7 @@ namespace myTNB
         void SetupContent()
         {
             _accountSelectionComponent?.SetAccountName(DataManager.DataManager.SharedInstance.SelectedAccount?.accDesc);
-            if (IsFromNavigation)
-            {
-                _accountSelectionComponent?.SetDropdownVisibility(IsFromNavigation);
-            }
-            else
-            {
-                _accountSelectionComponent?.SetDropdownVisibility(false);//ServiceCall.GetAccountListCount() > 1 ? IsFromNavigation : true);
-            }
+            _accountSelectionComponent?.SetDropdownVisibility(IsFromNavigation);
             _accountSelectionComponent?.SetLeafVisibility(!isREAccount);
 
             _lblAccountName.Text = DataManager.DataManager.SharedInstance.CurrentSelectedAccountIndex < DataManager.DataManager.SharedInstance.AccountRecordsList?.d?.Count
@@ -889,6 +882,10 @@ namespace myTNB
 
         internal void ShowRefreshScreen(string msg, string btnText)
         {
+            _accountSelectionComponent?.SetAccountName(DataManager.DataManager.SharedInstance.SelectedAccount?.accDesc);
+            _accountSelectionComponent?.SetDropdownVisibility(IsFromNavigation);
+            _accountSelectionComponent?.SetLeafVisibility(!isREAccount);
+
             if (_refreshViewComponent != null)
             {
                 if (_refreshViewComponent.GetView().IsDescendantOfView(View))
