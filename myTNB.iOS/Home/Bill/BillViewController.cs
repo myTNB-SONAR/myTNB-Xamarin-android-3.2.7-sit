@@ -97,6 +97,10 @@ namespace myTNB
 
         void InitializeValues()
         {
+            isREAccount = DataManager.DataManager.SharedInstance.SelectedAccount.IsREAccount;
+            isOwnedAccount = DataManager.DataManager.SharedInstance.SelectedAccount.IsOwnedAccount;
+            isBcrmAvailable = DataManager.DataManager.SharedInstance.IsBcrmAvailable;
+
             InitializedSubviews();
             titleBarComponent.SetBackVisibility(!IsFromNavigation);
             DataManager.DataManager.SharedInstance.selectedTag = 0;
@@ -104,10 +108,6 @@ namespace myTNB
             {
                 _lblAmount.Text = TNBGlobal.DEFAULT_VALUE;
             }
-
-            isREAccount = DataManager.DataManager.SharedInstance.SelectedAccount.IsREAccount;
-            isOwnedAccount = DataManager.DataManager.SharedInstance.SelectedAccount.IsOwnedAccount;
-            isBcrmAvailable = DataManager.DataManager.SharedInstance.IsBcrmAvailable;
 
             SetDetailsView();
 
@@ -408,7 +408,8 @@ namespace myTNB
         /// </summary>
         private async Task LoadAmountDue()
         {
-            var due = DataManager.DataManager.SharedInstance.GetDue(DataManager.DataManager.SharedInstance.SelectedAccount.accNum);
+            ActivityIndicator.Show();
+               var due = DataManager.DataManager.SharedInstance.GetDue(DataManager.DataManager.SharedInstance.SelectedAccount.accNum);
             string _dateDue;
             double _amountDue, _dueIncrementDays;
             await GetBillingAccountDetails().ContinueWith(task =>
@@ -449,6 +450,7 @@ namespace myTNB
                         SetAmountInBillingDetails(_amountDue);
                         SaveDueToCache(_dueAmount.d.data);
                         SetBillAndPaymentDetails(_dateDue, _dueIncrementDays);
+                        ActivityIndicator.Hide();
                     }
                 });
             });
@@ -777,7 +779,6 @@ namespace myTNB
             }
 
         }
-
 
         void ExecuteGetBillAccountDetailsCall()
         {
