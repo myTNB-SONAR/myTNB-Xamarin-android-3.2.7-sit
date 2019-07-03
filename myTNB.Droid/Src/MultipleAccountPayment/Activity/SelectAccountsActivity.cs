@@ -308,6 +308,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
                 };
                 btnBringMeThere.Click += delegate
                 {
+                    mWhyThisAmtCardDialog.Dismiss();
                     try
                     {
                         NavigateBillScreen(item);
@@ -316,7 +317,6 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
                     {
                         Utility.LoggingNonFatalError(e);
                     }
-                    mWhyThisAmtCardDialog.Dismiss();
                 };
 
                 mWhyThisAmtCardDialog.Show();
@@ -331,6 +331,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
         {
             try
             {
+                ShowProgressDialog();
                 CustomerBillingAccount customerAccount = CustomerBillingAccount.FindByAccNum(item.accountNumber);
                 this.userActionsListener.OnSelectAccount(customerAccount);
             }
