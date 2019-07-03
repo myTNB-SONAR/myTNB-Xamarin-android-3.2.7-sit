@@ -220,15 +220,16 @@ namespace myTNB_Android.Src.SummaryDashBoard
 
                     if (!string.IsNullOrEmpty(amount))
                     {
-                        //if (amount.Equals("0.00"))
-                        //{
-                        //    amountText.Text = " " + decimalFormat.Format(amount);
-                        //}
-                        //else
-                        //{
-                        double amt = Convert.ToDouble(amount);
-                        amountText.Text = " " + decimalFormat.Format(amt);
-                        //}
+                        if (amount != "--")
+                        {
+                            double amt = Convert.ToDouble(amount);
+                            amountText.Text = " " + decimalFormat.Format(amt);
+                        }
+                        else
+                        {
+                            rmCurrencyText.Text = "";
+                            amountText.Text = "--";
+                        }
 
                     }
                 }
@@ -242,30 +243,37 @@ namespace myTNB_Android.Src.SummaryDashBoard
             {
                 try
                 {
-                    double amt = Convert.ToDouble(amount);
-
-                    dueDate.Text = "--";
-
-                    if (!string.IsNullOrEmpty(dueDateValue) && amt > 0)
+                    if (amount != "--")
                     {
+                        double amt = Convert.ToDouble(amount);
 
-                        Date d = null;
-                        try
-                        {
-                            d = dateParser.Parse(dueDateValue);
-                        }
-                        catch (ParseException e)
+                        dueDate.Text = "--";
+
+                        if (!string.IsNullOrEmpty(dueDateValue) && amt > 0)
                         {
 
-                            Utility.LoggingNonFatalError(e);
+                            Date d = null;
+                            try
+                            {
+                                d = dateParser.Parse(dueDateValue);
+                            }
+                            catch (ParseException e)
+                            {
 
+                                Utility.LoggingNonFatalError(e);
+
+                            }
+                            string dt = dateFormatter.Format(d);
+
+                            //DateTime dt = Convert.ToDateTime(dueDateValue);
+                            //dueDate.Text = dt.ToString("dd MMM");
+
+                            dueDate.Text = dt;
                         }
-                        string dt = dateFormatter.Format(d);
-
-                        //DateTime dt = Convert.ToDateTime(dueDateValue);
-                        //dueDate.Text = dt.ToString("dd MMM");
-
-                        dueDate.Text = dt;
+                    }
+                    else
+                    {
+                        dueDate.Text = "-";
                     }
 
                 }
