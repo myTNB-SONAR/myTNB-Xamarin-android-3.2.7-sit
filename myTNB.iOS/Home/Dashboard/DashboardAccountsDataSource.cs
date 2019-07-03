@@ -161,7 +161,7 @@ namespace myTNB
         {
             var title = keys[(int)section];
             var amountTitle = string.Compare(title, "Dashboard_RESectionHeader".Translate()) == 0
-                ? "Dashboard_RESectionSubHeader".Translate() : "Dashboard_SectionHeader".Translate();
+                ? "Dashboard_RESectionSubHeader".Translate() : "Dashboard_NormalSectionSubHeader".Translate();
             float sectionHeight = 36.0f;
 
             UIView sectionView = new UIView(new CGRect(0, 0, tableView.Bounds.Width, sectionHeight));
