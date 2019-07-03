@@ -42,10 +42,6 @@ namespace myTNB_Android.Src.MultipleAccountPayment.MVP
         {
             try
             {
-            if (mView.IsActive())
-            {
-                this.mView.ShowProgressDialog();
-            }
             AccountData accountData = AccountData.Copy(selectedCustomerBilling, true);
             this.mView.ShowDashboardChart(accountData);
             }

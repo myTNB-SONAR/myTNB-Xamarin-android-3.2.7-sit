@@ -341,10 +341,6 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
             result.PutExtra(Constants.ITEMZIED_BILLING_VIEW_KEY, true);
             SetResult(Result.FirstUser, result);
             Finish();
-            if(IsActive())
-            {
-                HideProgressDialog();
-            }
         }
 
 
