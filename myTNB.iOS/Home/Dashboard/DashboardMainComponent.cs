@@ -530,13 +530,35 @@ namespace myTNB.Dashboard.DashboardComponents
             _billAndPaymentComponent = new BillAndPaymentComponent(_parentView);
             _parentView.AddSubview(_billAndPaymentComponent.GetUI());
         }
-
+        /// <summary>
+        /// Construct Refresh Screen For Graph
+        /// </summary>
+        /// <param name="buttonAction"></param>
+        /// <param name="chartModel"></param>
+        public void ConstructRefreshScreenForGraph(Action buttonAction, ChartModel chartModel)
+        {
+            string msg = !string.IsNullOrWhiteSpace(chartModel?.RefreshMessage) ? chartModel?.RefreshMessage : "Error_RefreshMessage".Translate();
+            string btnText = !string.IsNullOrWhiteSpace(chartModel?.RefreshBtnText) ? chartModel?.RefreshBtnText : "Error_RefreshBtnTitle".Translate();
+            ConstructRefreshScreen(buttonAction, msg, btnText);
+        }
+        /// <summary>
+        /// Construct General Refresh Screen
+        /// </summary>
+        /// <param name="buttonAction"></param>
+        /// <param name="baseModel"></param>
+        public void ConstructGeneralRefreshScreen(Action buttonAction, BaseModel baseModel)
+        {
+            string msg = !string.IsNullOrWhiteSpace(baseModel?.RefreshMessage) ? baseModel?.RefreshMessage : "Error_RefreshMessage".Translate();
+            string btnText = !string.IsNullOrWhiteSpace(baseModel?.RefreshBtnText) ? baseModel?.RefreshBtnText : "Error_RefreshBtnTitle".Translate();
+            ConstructRefreshScreen(buttonAction, msg, btnText);
+        }
         /// <summary>
         /// Constructs the refresh screen when API call is failed.
         /// </summary>
         /// <param name="buttonAction"></param>
-        /// <param name="baseModel"></param>
-        public void ConstructRefreshScreen(Action buttonAction, BaseModel baseModel)
+        /// <param name="message"></param>
+        /// <param name="buttonText"></param>
+        public void ConstructRefreshScreen(Action buttonAction, string message, string buttonText)
         {
             RemoveAllSubviews();
 
@@ -558,14 +580,11 @@ namespace myTNB.Dashboard.DashboardComponents
             UIView accountSelectionView = _accountSelectionComponent.GetUI();
             _gradientView.AddSubview(accountSelectionView);
 
-            var msg = !string.IsNullOrWhiteSpace(baseModel?.RefreshMessage) ? baseModel?.RefreshMessage : "Error_RefreshMessage".Translate();
-            var btnText = !string.IsNullOrWhiteSpace(baseModel?.RefreshBtnText) ? baseModel?.RefreshBtnText : "Error_RefreshBtnTitle".Translate();
-
             //Add Refresh screen view
             _refreshViewComponent = new RefreshViewComponent(_parentView, _accountSelectionComponent.GetView());
             _refreshViewComponent.SetIconImage("Refresh-Error-White");
-            _refreshViewComponent.SetDescription(msg);
-            _refreshViewComponent.SetButtonText(btnText);
+            _refreshViewComponent.SetDescription(message);
+            _refreshViewComponent.SetButtonText(buttonText);
             _refreshViewComponent.OnButtonTap = buttonAction;
             _gradientView.AddSubview(_refreshViewComponent.GetUIForGradientBG());
             _parentView.AddSubview(_gradientView);
