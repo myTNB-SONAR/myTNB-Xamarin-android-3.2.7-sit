@@ -46,7 +46,7 @@ namespace myTNB.Dashboard.DashboardComponents
             _lblTitle.TextColor = UIColor.White;
             _viewTitleBar.AddSubview(_lblTitle);
 
-            _viewPrimaryAction = new UIView(new CGRect(_parentView.Frame.Width - 48, 0, 24, HEIGHT));
+            _viewPrimaryAction = new UIView(new CGRect(_parentView.Frame.Width - 40, 0, 24, HEIGHT));
             _imgViewPrimaryAction = new UIImageView(new CGRect(0, 0, 24, HEIGHT))
             {
                 Image = UIImage.FromBundle("Notification")
@@ -54,7 +54,7 @@ namespace myTNB.Dashboard.DashboardComponents
             _viewPrimaryAction.AddSubview(_imgViewPrimaryAction);
             _viewTitleBar.AddSubview(_viewPrimaryAction);
 
-            _viewSecondaryAction = new UIView(new CGRect(_parentView.Frame.Width - 80, 0, 24, HEIGHT))
+            _viewSecondaryAction = new UIView(new CGRect(_parentView.Frame.Width - 72, 0, 24, HEIGHT))
             {
                 Hidden = true
             };

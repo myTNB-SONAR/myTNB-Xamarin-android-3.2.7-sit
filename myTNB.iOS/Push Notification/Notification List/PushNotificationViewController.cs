@@ -86,7 +86,7 @@ namespace myTNB.PushNotification
                     }
                     else
                     {
-                        AlertHandler.DisplayNoDataAlert(this);
+                       DisplayNoDataAlert();
                     }
                 });
             });
@@ -104,6 +104,7 @@ namespace myTNB.PushNotification
                 var btnText = !string.IsNullOrWhiteSpace(userNotificationResponse?.d?.RefreshBtnText) ? userNotificationResponse?.d?.RefreshBtnText : "Error_RefreshBtnTitle".Translate();
                 DisplayRefreshScreen(msg, btnText);
                 _titleBarComponent.SetPrimaryVisibility(true);
+                _titleBarComponent.SetSecondaryVisibility(true);
                 pushNotificationTableView.Hidden = true;
             }
             else
@@ -117,7 +118,7 @@ namespace myTNB.PushNotification
             GetUserNotif();
         }
 
-        private void UpdateNotificationDisplay()
+        private void UpdateNotificationDisplay(bool isDelete = false)
         {
             string filterID = "all";
             if (DataManager.DataManager.SharedInstance.CurrentSelectedNotificationTypeIndex
@@ -170,6 +171,10 @@ namespace myTNB.PushNotification
                 DisplayNoNotification();
             }
             _titleBarComponent.SetPrimaryVisibility(_notifications == null || _notifications.Count == 0);
+            if (isDelete)
+            {
+                _titleBarComponent.SetSecondaryVisibility(_notifications == null || _notifications.Count == 0);
+            }
         }
 
         public override void ViewWillAppear(bool animated)
@@ -545,9 +550,9 @@ namespace myTNB.PushNotification
                                     && deleteNotifResponse?.d?.didSucceed == true)
                                 {
                                     UpdateNotifications(updateNotificationList, isMultiple, indexPath);
-                                    UpdateNotificationDisplay();
                                     pushNotificationTableView.ReloadData();
                                     UpdateTitleRightIconImage();
+                                    UpdateNotificationDisplay(true);
                                     NSNotificationCenter.DefaultCenter.PostNotificationName("NotificationDidChange", new NSObject());
                                     DisplayToast("PushNotification_NotificationsDeleted".Translate());
                                 }
