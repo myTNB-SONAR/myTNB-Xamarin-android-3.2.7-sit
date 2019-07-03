@@ -882,6 +882,10 @@
     <ImageAsset Include="Assets.xcassets\Notification-Empty.imageset\Notification-Empty.png" />
     <ImageAsset Include="Assets.xcassets\Notification-Empty.imageset\Notification-Empty%402x.png" />
     <ImageAsset Include="Assets.xcassets\Notification-Empty.imageset\Notification-Empty%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-MarkAsReadDisabled.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Notification-MarkAsReadDisabled.imageset\icHeaderMarkreadDisabled.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-MarkAsReadDisabled.imageset\icHeaderMarkreadDisabled%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-MarkAsReadDisabled.imageset\icHeaderMarkreadDisabled%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -1142,6 +1146,7 @@
     <Folder Include="Model\GetInstallationDetails\" />
     <Folder Include="Payment\Select Payment Method\" />
     <Folder Include="Session Cache\" />
+    <Folder Include="Assets.xcassets\Notification-MarkAsReadDisabled.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />

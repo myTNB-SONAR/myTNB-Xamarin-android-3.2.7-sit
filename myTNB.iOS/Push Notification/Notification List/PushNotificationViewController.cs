@@ -46,7 +46,7 @@ namespace myTNB.PushNotification
             SetSubViews();
         }
 
-        internal void OnReceiveNotificationFromDashboard(NSNotification notification)
+        private void OnReceiveNotificationFromDashboard(NSNotification notification)
         {
             Debug.WriteLine("OnReceiveNotificationFromDashboard");
             ValidateResponse();
@@ -60,7 +60,7 @@ namespace myTNB.PushNotification
             pushNotificationTableView.TableHeaderView = null;
         }
 
-        void OnReset()
+        private void OnReset()
         {
             _isDeletionMode = false;
             _isSelectionMode = false;
@@ -109,7 +109,7 @@ namespace myTNB.PushNotification
             }
         }
 
-        void OnRefreshTap()
+        private void OnRefreshTap()
         {
             GetUserNotif();
         }
@@ -194,7 +194,7 @@ namespace myTNB.PushNotification
             }
         }
 
-        void DisplayNoNotification()
+        private void DisplayNoNotification()
         {
             pushNotificationTableView.Hidden = true;
 
@@ -214,7 +214,7 @@ namespace myTNB.PushNotification
             View.AddSubview(_refreshViewComponent.GetUI());
         }
 
-        internal void DisplayRefreshScreen(string msg, string btnText)
+        private void DisplayRefreshScreen(string msg, string btnText)
         {
             if (_refreshViewComponent != null)
             {
@@ -233,7 +233,7 @@ namespace myTNB.PushNotification
             View.AddSubview(_refreshViewComponent.GetUI());
         }
 
-        internal void SetNavigationBar()
+        private void SetNavigationBar()
         {
             NavigationController?.SetNavigationBarHidden(true, false);
             GradientViewComponent gradientViewComponent = new GradientViewComponent(View, true, 89, true);
@@ -250,28 +250,7 @@ namespace myTNB.PushNotification
                 {
                     return;
                 }
-                int count = _notificationsForUpdate != null ? _notificationsForUpdate.Count : 0;
-                if (count > 1)
-                {
-                    var readAlert = UIAlertController.Create("PushNotification_ReadNotificationsTitle".Translate()
-                        , "PushNotification_ReadNotificationsMessage".Translate(), UIAlertControllerStyle.Alert);
-                    readAlert.AddAction(UIAlertAction.Create("Common_Yes".Translate(), UIAlertActionStyle.Default, (args) =>
-                    {
-                        if (_notificationsForUpdate != null)
-                        {
-                            ReadNotification(_notificationsForUpdate, true);
-                        }
-                    }));
-                    readAlert.AddAction(UIAlertAction.Create("Common_No".Translate(), UIAlertActionStyle.Cancel, null));
-                    PresentViewController(readAlert, animated: true, completionHandler: null);
-                }
-                else
-                {
-                    if (_notificationsForUpdate != null)
-                    {
-                        ReadNotification(_notificationsForUpdate, true);
-                    }
-                }
+                ReadNotification(_notificationsForUpdate, true);
             }));
             _titleBarComponent.SetPrimaryVisibility(false);
             _titleBarComponent.SetPrimaryImage("Notification-Select");
@@ -318,9 +297,7 @@ namespace myTNB.PushNotification
             _titleBarComponent.SetBackVisibility(false);
             _titleBarComponent.SetBackAction(new UITapGestureRecognizer(() =>
             {
-                OnReset();
-                DataManager.DataManager.SharedInstance.CurrentSelectedNotificationTypeIndex = 0;
-                DismissViewController(true, null);
+                OnBack();
             }));
             headerView.AddSubview(titleBarView);
 
@@ -348,7 +325,26 @@ namespace myTNB.PushNotification
             View.AddSubview(headerView);
         }
 
-        void OnSelectAction(int index)
+        private void OnBack()
+        {
+            OnReset();
+            DataManager.DataManager.SharedInstance.CurrentSelectedNotificationTypeIndex = 0;
+            DismissViewController(true, null);
+        }
+
+        private void OnDismiss()
+        {
+            OnReset();
+            _titleBarComponent.SetPrimaryImage("Notification-Select");
+            pushNotificationTableView.TableHeaderView = null;
+            UpdateTitleRightIconImage();
+            pushNotificationTableView.ReloadData();
+            _titleBarComponent.SetSecondaryVisibility(true);
+            OnReset();
+            _titleBarComponent.SetTitle("PushNotification_Title".Translate());
+        }
+
+        private void OnSelectAction(int index)
         {
             DataManager.DataManager.SharedInstance.CurrentSelectedNotificationTypeIndex = index;
             NSNotificationCenter.DefaultCenter.PostNotificationName("OnNotificationFilterDidChange", new NSObject());
@@ -699,7 +695,11 @@ namespace myTNB.PushNotification
 
         void OnCheckboxSelect(bool isCellSelected = false)
         {
-            _isAllSelected = !_isAllSelected;
+            if (!isCellSelected)
+            {
+                _isAllSelected = !_isAllSelected;
+                UpdateSelectAllFlags(_isAllSelected);
+            }
             if (_imgCheckbox != null)
             {
                 _imgCheckbox.Image = UIImage.FromBundle(_isAllSelected ? "Payment-Checkbox-Active" : "Payment-Checkbox-Inactive");
@@ -708,16 +708,13 @@ namespace myTNB.PushNotification
             {
                 _lblTitle.Text = _isAllSelected ? "Feedback_UnselectAll".Translate() : "Feedback_SelectAll".Translate();
             }
-            if (!isCellSelected)
-            {
-                UpdateSelectAllFlags(_isAllSelected);
-            }
         }
 
         internal void UpdateSectionHeaderWidget()
         {
             int selectedCount = _notifications.FindAll(x => x.IsSelected == true).Count;
-            _isAllSelected = selectedCount != _notifications.Count;
+            _isAllSelected = selectedCount == _notifications.Count;
+            Debug.WriteLine("UpdateSectionHeaderWidget isAllSelected: " + _isAllSelected);
             OnCheckboxSelect(true);
         }
 
@@ -769,8 +766,41 @@ namespace myTNB.PushNotification
             _titleBarComponent.SetPrimaryImage(icon);
             UpdateNotificationForDeletionList(notifModel);
             int count = _notificationsForUpdate != null ? _notificationsForUpdate.Count : 0;
-            _titleBarComponent.SetTitle(count > 0 ? string.Format("PushNotification_Selected".Translate(), count)
-                : "PushNotification_Select".Translate());
+
+            string title = "PushNotification_Title".Translate();
+            if (_isSelectionMode)
+            {
+                title = count > 0 ? string.Format("PushNotification_Selected".Translate(), count)
+                : "PushNotification_Select".Translate();
+            }
+            _titleBarComponent.SetTitle(title);
+            _titleBarComponent.SetSecondaryImage(IsAtleastOneRead() ? "Notification-MarkAsRead" : "Notification-MarkAsReadDisabled");
+            _titleBarComponent.SetBackAction(new UITapGestureRecognizer(() =>
+            {
+                if (_isSelectionMode)
+                {
+                    OnDismiss();
+                }
+                else
+                {
+                    OnBack();
+                }
+            }));
+        }
+
+        private bool IsAtleastOneRead()
+        {
+            if (_notifications != null)
+            {
+                foreach (UserNotificationDataModel obj in _notifications)
+                {
+                    if (obj.IsSelected && obj.IsRead.ToLower() == "false")
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
         }
 
         /// <summary>
