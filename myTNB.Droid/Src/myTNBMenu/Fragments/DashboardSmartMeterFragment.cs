@@ -1511,6 +1511,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             };
 
             s.SetSpan(clickableSpan, i, i+8, SpanTypes.ExclusiveExclusive);
+            s.SetSpan(new URLSpanNoUnderline(dialogDetailsText.Text), i, i + 8, SpanTypes.ExclusiveExclusive);
             dialogDetailsText.TextFormatted = s;
             dialogDetailsText.MovementMethod = new LinkMovementMethod();
 
