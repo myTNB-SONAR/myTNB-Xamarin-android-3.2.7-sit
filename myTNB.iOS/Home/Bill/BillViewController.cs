@@ -221,8 +221,11 @@ namespace myTNB
             {
                 isEnabled = false;
             }
-            _btnPay.Enabled = isEnabled;
-            _btnPay.BackgroundColor = isEnabled ? MyTNBColor.FreshGreen : MyTNBColor.SilverChalice;
+            if (_btnPay != null)
+            {
+                _btnPay.Enabled = isEnabled;
+                _btnPay.BackgroundColor = isEnabled ? MyTNBColor.FreshGreen : MyTNBColor.SilverChalice;
+            }
         }
 
         void SetSubviews()
@@ -580,33 +583,35 @@ namespace myTNB
                 DataManager.DataManager.SharedInstance.selectedTag = 1;
                 ToggleButtons();
             };
-
-            _btnPay.TouchUpInside += (sender, e) =>
+            if (_btnPay != null)
             {
-                NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
+                _btnPay.TouchUpInside += (sender, e) =>
                 {
-                    InvokeOnMainThread(() =>
+                    NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
                     {
-                        if (NetworkUtility.isReachable)
+                        InvokeOnMainThread(() =>
                         {
-                            UIStoryboard storyBoard = UIStoryboard.FromName("Payment", null);
-                            SelectBillsViewController selectBillsVC =
-                                storyBoard.InstantiateViewController("SelectBillsViewController") as SelectBillsViewController;
-                            if (selectBillsVC != null)
+                            if (NetworkUtility.isReachable)
                             {
-                                selectBillsVC.SelectedAccountDueAmount = DataManager.DataManager.SharedInstance.BillingAccountDetails.amCustBal;
-                                var navController = new UINavigationController(selectBillsVC);
-                                PresentViewController(navController, true, null);
+                                UIStoryboard storyBoard = UIStoryboard.FromName("Payment", null);
+                                SelectBillsViewController selectBillsVC =
+                                    storyBoard.InstantiateViewController("SelectBillsViewController") as SelectBillsViewController;
+                                if (selectBillsVC != null)
+                                {
+                                    selectBillsVC.SelectedAccountDueAmount = DataManager.DataManager.SharedInstance.BillingAccountDetails.amCustBal;
+                                    var navController = new UINavigationController(selectBillsVC);
+                                    PresentViewController(navController, true, null);
+                                }
                             }
-                        }
-                        else
-                        {
-                            Debug.WriteLine("No Network");
-                            DisplayNoDataAlert();
-                        }
+                            else
+                            {
+                                Debug.WriteLine("No Network");
+                                DisplayNoDataAlert();
+                            }
+                        });
                     });
-                });
-            };
+                };
+            }
         }
 
         void ToggleButtons()
