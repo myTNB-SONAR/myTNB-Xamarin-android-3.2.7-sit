@@ -66,7 +66,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.MVP
             /// </summary>
             void GetAccountDueAmountResult(List<MPAccount> accounts);
 
-            void ShowDashboardChart(UsageHistoryResponse response, AccountData accountData);
+            void ShowDashboardChart(AccountData accountData);
         }
 
         public interface IUserActionsListener : IBasePresenter

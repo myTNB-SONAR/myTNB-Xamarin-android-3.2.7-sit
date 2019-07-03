@@ -196,6 +196,14 @@ namespace myTNB_Android.Src.SelectSupplyAccount.Activity
             Finish();
         }
 
+        public void ShowDashboardChartWithError()
+        {
+            Intent result = new Intent();
+            result.PutExtra(Constants.REFRESH_MODE, true);
+            SetResult(Result.FirstUser, result);
+            Finish();
+        }
+
         public void ShowProgressDialog()
         {
             //if (materialDialog != null && materialDialog.IsShowing)

@@ -162,7 +162,54 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                     // NO INTERNET RESPONSE
                     else if (resultCode == Result.FirstUser)
                     {
-                        if (CustomerBillingAccount.HasSelected())
+                        Bundle extras = data.Extras;
+                        if (extras.ContainsKey(Constants.ITEMZIED_BILLING_VIEW_KEY) && extras.GetBoolean(Constants.ITEMZIED_BILLING_VIEW_KEY))
+                        {
+                            AccountData selectedAccount = JsonConvert.DeserializeObject<AccountData>(extras.GetString(Constants.SELECTED_ACCOUNT));
+                            bool isOwned = true;
+                            CustomerBillingAccount customerBillingAccount = CustomerBillingAccount.FindByAccNum(selectedAccount.AccountNum);
+                            if (customerBillingAccount != null)
+                            {
+                                isOwned = customerBillingAccount.isOwned;
+                                selectedAccount.IsOwner = isOwned;
+                                selectedAccount.AccountCategoryId = customerBillingAccount.AccountCategoryId;
+
+                            }
+                            try
+                            {
+                                this.mView.BillsMenuAccess(selectedAccount);
+                            }
+                            catch (System.Exception e)
+                            {
+                                Utility.LoggingNonFatalError(e);
+                            }
+                        }
+                        else if (extras.ContainsKey(Constants.REFRESH_MODE) && extras.GetBoolean(Constants.REFRESH_MODE))
+                        {
+                            CustomerBillingAccount customerBillingAccount = CustomerBillingAccount.GetSelectedOrFirst();
+                            if (currentBottomNavigationMenu == Resource.Id.menu_bill)
+                            {
+                                CustomerBillingAccount selectedCustomerAccount = CustomerBillingAccount.GetSelectedOrFirst();
+                                AccountData selectedAccount = AccountData.Copy(selectedCustomerAccount, true);
+                                bool isOwned = true;
+                                if (customerBillingAccount != null)
+                                {
+                                    isOwned = customerBillingAccount.isOwned;
+                                    selectedAccount.IsOwner = isOwned;
+                                    selectedAccount.AccountCategoryId = customerBillingAccount.AccountCategoryId;
+
+                                }
+                                try
+                                {
+                                    this.mView.BillsMenuAccess(selectedAccount);
+                                }
+                                catch (System.Exception e)
+                                {
+                                    Utility.LoggingNonFatalError(e);
+                                }
+                            }
+                        }
+                        else if (CustomerBillingAccount.HasSelected())
                         {
                             CustomerBillingAccount customerBillingAccount = CustomerBillingAccount.GetSelectedOrFirst();
                             if (currentBottomNavigationMenu == Resource.Id.menu_dashboard)
@@ -502,11 +549,11 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                     }
                     if(accountSelected != null && !string.IsNullOrEmpty(accountSelected.AccNum))
                     {
-                        this.mView.ShowOwnerDashboardNoInternetConnection(accountSelected.AccDesc, null,  AccountData.Copy(accountSelected, true));
+                        this.mView.ShowOwnerDashboardNoInternetConnection(accountSelected.AccDesc, usageHistoryResponse,  AccountData.Copy(accountSelected, true));
                     }
                     else
                     {
-                        this.mView.ShowOwnerDashboardNoInternetConnection(accountSelected.AccDesc, null, null);
+                        this.mView.ShowOwnerDashboardNoInternetConnection(accountSelected.AccDesc, usageHistoryResponse, null);
                     }
                 }
                 else if (usageHistoryResponse != null && usageHistoryResponse.Data.Status.Equals("success") && !usageHistoryResponse.Data.IsError)
@@ -777,32 +824,16 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                 }
                 if (customerBillingDetails != null && customerBillingDetails.Data != null && customerBillingDetails.Data.Status.ToUpper() == Constants.REFRESH_MODE)
                 {
-                    AccountData accountData = AccountData.Copy(accountSelected, true);
-                    this.mView.ShowBillMenuWithError(customerBillingDetails.Data.RefreshMessage, customerBillingDetails.Data.RefreshBtnText, accountData);
+                    NavigateBllMenu(accountSelected, true, customerBillingDetails);
                 }
                 else if (!customerBillingDetails.Data.IsError)
                 {
-                    AccountData accountData = AccountData.Copy(customerBillingDetails.Data.AccountData, true);
-                    CustomerBillingAccount customerBillingAccount = CustomerBillingAccount.FindByAccNum(accountData.AccountNum);
-                    accountData.AccountNickName = accountSelected.AccDesc;
-                    accountData.AccountName = accountSelected.OwnerName;
-                    accountData.AddStreet = accountSelected.AccountStAddress;
-                    accountData.IsOwner = customerBillingAccount.isOwned;
-                    accountData.AccountCategoryId = customerBillingAccount.AccountCategoryId;
-
-                    this.mView.ShowAccountName();
-                    //this.mView.EnableDropDown(true);
-                    this.mView.SetToolbarTitle(Resource.String.bill_menu_activity_title);
-                    currentBottomNavigationMenu = Resource.Id.menu_bill;
-                    this.mView.ShowBillMenu(accountData);
+                    NavigateBllMenu(accountSelected, false, customerBillingDetails);
                 }
                 else
                 {
-                    // TODO : SHOW ERROR WHEN NO BILLING IS RETURNED
-                    AccountData accountData = AccountData.Copy(accountSelected, true);
-                    this.mView.ShowBillMenuWithError(null, null, accountData);
+                    NavigateBllMenu(accountSelected, true, null);
                 }
-                this.mView.SetAccountName(accountSelected.AccDesc);
             }
             catch (System.OperationCanceledException e)
             {
@@ -812,8 +843,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                 {
                     this.mView.HideProgressDialog();
                 }
-                AccountData accountData = AccountData.Copy(accountSelected, true);
-                this.mView.ShowBillMenuWithError(null, null, accountData);
+                NavigateBllMenu(accountSelected, true, null);
                 Utility.LoggingNonFatalError(e);
                 //this.mView.ShowRetryOptionsCancelledException(e);
             }
@@ -824,8 +854,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                 {
                     this.mView.HideProgressDialog();
                 }
-                AccountData accountData = AccountData.Copy(accountSelected, true);
-                this.mView.ShowBillMenuWithError(null, null, accountData);
+                NavigateBllMenu(accountSelected, true, null);
                 //this.mView.ShowRetryOptionsApiException(apiException);
                 Utility.LoggingNonFatalError(apiException);
             }
@@ -837,8 +866,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                 {
                     this.mView.HideProgressDialog();
                 }
-                AccountData accountData = AccountData.Copy(accountSelected, true);
-                this.mView.ShowBillMenuWithError(null, null, accountData);
+                NavigateBllMenu(accountSelected, true, null);
                 //this.mView.ShowRetryOptionsUnknownException(e);
 
                 Utility.LoggingNonFatalError(e);
@@ -851,6 +879,47 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
         public void OnNotificationCount()
         {
             this.mView.ShowNotificationCount(UserNotificationEntity.Count());
+        }
+
+        private void NavigateBllMenu(CustomerBillingAccount selectedAccount, bool hasError, AccountDetailsResponse response)
+        {
+            try
+            {
+                AccountData accountData = AccountData.Copy(selectedAccount, true);
+                this.mView.SetAccountName(selectedAccount.AccDesc);
+                if(hasError)
+                {
+                    if(response != null && response.Data != null && !string.IsNullOrEmpty(response.Data.RefreshMessage) && !string.IsNullOrEmpty(response.Data.RefreshBtnText))
+                    {
+                        this.mView.ShowBillMenuWithError(response.Data.RefreshMessage, response.Data.RefreshBtnText, accountData);
+                    }
+                    else
+                    {
+                        this.mView.ShowBillMenuWithError(null, null, accountData);
+                    }
+                }
+                else
+                {
+                    if(response != null && response.Data != null && response.Data.AccountData != null)
+                    {
+                        accountData = AccountData.Copy(response.Data.AccountData, true);
+                    }
+                    CustomerBillingAccount customerBillingAccount = CustomerBillingAccount.FindByAccNum(accountData.AccountNum);
+                    accountData.AccountNickName = selectedAccount.AccDesc;
+                    accountData.AccountName = selectedAccount.OwnerName;
+                    accountData.AddStreet = selectedAccount.AccountStAddress;
+                    accountData.IsOwner = customerBillingAccount.isOwned;
+                    accountData.AccountCategoryId = customerBillingAccount.AccountCategoryId;
+                    this.mView.ShowBillMenu(accountData);
+                }
+                this.mView.ShowAccountName();
+                this.mView.SetToolbarTitle(Resource.String.bill_menu_activity_title);
+                currentBottomNavigationMenu = Resource.Id.menu_bill;
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public void OnValidateData()

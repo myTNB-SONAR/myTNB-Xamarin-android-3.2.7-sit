@@ -423,11 +423,17 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     btnViewBill.Text = GetString(Resource.String.dashboard_chart_view_payment_advice);
                     txtUsageHistory.Visibility = ViewStates.Gone;
                     txtTotalPayableTitle.Text = GetString(Resource.String.title_payment_advice_amount);
+                    txtWhyThisAmt.Visibility = ViewStates.Gone;
                 }
                 else
                 {
                     btnPay.Visibility = ViewStates.Visible;
                     btnViewBill.Text = GetString(Resource.String.dashboard_chartview_view_bill);
+
+                    if (selectedAccount.OpenChargesTotal == 0.00)
+                    {
+                        txtWhyThisAmt.Visibility = ViewStates.Gone;
+                    }
                 }
 
                 if (bcrmEntity.IsDown)
@@ -1656,6 +1662,32 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 if (resultCode == Result.Ok)
                 {
                     ((DashboardActivity)Activity).OnTapRefresh();
+                }
+                else if (resultCode == Result.FirstUser)
+                {
+                    Bundle extras = data.Extras;
+                    if(extras.ContainsKey(Constants.ITEMZIED_BILLING_VIEW_KEY) && extras.GetBoolean(Constants.ITEMZIED_BILLING_VIEW_KEY))
+                    {
+                        AccountData selectedAccount = JsonConvert.DeserializeObject<AccountData>(extras.GetString(Constants.SELECTED_ACCOUNT));
+
+                        bool isOwned = true;
+                        CustomerBillingAccount customerBillingAccount = CustomerBillingAccount.FindByAccNum(selectedAccount.AccountNum);
+                        if (customerBillingAccount != null)
+                        {
+                            isOwned = customerBillingAccount.isOwned;
+                            selectedAccount.IsOwner = isOwned;
+                            selectedAccount.AccountCategoryId = customerBillingAccount.AccountCategoryId;
+
+                        }
+                        try
+                        {
+                            ((DashboardActivity)Activity).BillsMenuAccess(selectedAccount);
+                        }
+                        catch (System.Exception e)
+                        {
+                            Utility.LoggingNonFatalError(e);
+                        }
+                    }
                 }
             }
         }

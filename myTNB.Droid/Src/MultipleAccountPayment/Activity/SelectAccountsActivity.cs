@@ -341,11 +341,10 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
             }
         }
 
-        public void ShowDashboardChart(UsageHistoryResponse response, AccountData accountData)
+        public void ShowDashboardChart(AccountData accountData)
         {
             Intent result = new Intent();
             result.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(accountData));
-            result.PutExtra(Constants.SELECTED_ACCOUNT_USAGE, JsonConvert.SerializeObject(response.Data.UsageHistoryData));
             result.PutExtra(Constants.ITEMZIED_BILLING_VIEW_KEY, true);
             SetResult(Result.FirstUser, result);
             Finish();

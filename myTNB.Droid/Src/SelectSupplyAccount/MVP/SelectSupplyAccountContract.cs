@@ -49,6 +49,8 @@ namespace myTNB_Android.Src.SelectSupplyAccount.MVP
             /// <param name="accountData">AccountData</param>
             void ShowDashboardChart(UsageHistoryResponse response, AccountData accountData);
 
+            void ShowDashboardChartWithError();
+
             /// <summary>
             /// Show progress dialog
             /// </summary>

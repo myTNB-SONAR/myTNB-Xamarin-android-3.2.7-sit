@@ -259,8 +259,19 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             bundle.PutBoolean(Constants.NO_INTERNET_CONNECTION, hasNoInternet);
             if(response != null && response.Data != null)
             {
-                bundle.PutString(Constants.REFRESH_MSG, response.Data.RefreshMessage);
-                bundle.PutString(Constants.REFRESH_BTN_MSG, response.Data.RefreshBtnText);
+                if(string.IsNullOrEmpty(response.Data.RefreshMessage))
+                {
+                    bundle.PutString(Constants.REFRESH_MSG, "The graph must be tired. Tap the button below to help it out.");
+                }
+                else
+                {
+                    bundle.PutString(Constants.REFRESH_MSG, response.Data.RefreshMessage);
+                }
+
+                if(!string.IsNullOrEmpty(response.Data.RefreshBtnText))
+                {
+                    bundle.PutString(Constants.REFRESH_BTN_MSG, response.Data.RefreshBtnText);
+                }
             }
             if(accountData != null)
             {
@@ -1035,11 +1046,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 else if (resultCode == Result.FirstUser)
                 {
                     Bundle extras = data.Extras;
-                    if(extras.ContainsKey(Constants.ITEMZIED_BILLING_VIEW_KEY))
+                    if(extras.ContainsKey(Constants.ITEMZIED_BILLING_VIEW_KEY) && extras.GetBoolean(Constants.ITEMZIED_BILLING_VIEW_KEY))
                     {
                         AccountData selectedAccount = JsonConvert.DeserializeObject<AccountData>(extras.GetString(Constants.SELECTED_ACCOUNT));
-                        UsageHistoryData selectedHistoryData = JsonConvert.DeserializeObject<UsageHistoryData>(extras.GetString(Constants.SELECTED_ACCOUNT_USAGE));
-
                         bool isOwned = true;
                         CustomerBillingAccount customerBillingAccount = CustomerBillingAccount.FindByAccNum(selectedAccount.AccountNum);
                         if (customerBillingAccount != null)

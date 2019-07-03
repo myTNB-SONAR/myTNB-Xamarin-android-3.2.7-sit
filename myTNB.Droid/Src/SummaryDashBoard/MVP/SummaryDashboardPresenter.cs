@@ -177,10 +177,14 @@ namespace myTNB_Android.Src.SummaryDashBoard.MVP
 
                 if (response != null)
                 {
-                    if (response.Data != null && !response.Data.isError && response.Data.data != null && response.Data.data.Count > 0)
+                    if (response.Data != null && response.Data.Status.ToUpper() == Constants.REFRESH_MODE)
+                    {
+                        mView.ShowRefreshSummaryDashboard(true, response.Data.RefreshMessage, response.Data.RefreshBtnText);
+                        LoadEmptySummaryDetails();
+                    }
+                    else if (response.Data != null && !response.Data.isError && response.Data.data != null && response.Data.data.Count > 0)
                     {
                         var summaryDetails = response.Data.data;
-                        summaryDetailList.Clear();
                         for (int i = 0; i < summaryDetails.Count; i++)
                         {
                             CustomerBillingAccount cbAccount = CustomerBillingAccount.FindByAccNum(summaryDetails[i].AccNumber);
@@ -198,17 +202,17 @@ namespace myTNB_Android.Src.SummaryDashBoard.MVP
                         }
 
                         SummaryData(summaryDetails);
-                        mView.ShowRefreshSummaryDashboard(false);
+                        mView.ShowRefreshSummaryDashboard(false, null, null);
                     }
                     else
                     {
-                        mView.ShowRefreshSummaryDashboard(true);
+                        mView.ShowRefreshSummaryDashboard(true, null, null);
                         LoadEmptySummaryDetails();
                     }
                 }
                 else
                 {
-                    mView.ShowRefreshSummaryDashboard(true);
+                    mView.ShowRefreshSummaryDashboard(true, null, null);
                     LoadEmptySummaryDetails();
                 }
             }
@@ -222,7 +226,7 @@ namespace myTNB_Android.Src.SummaryDashBoard.MVP
                 }
                 Utility.LoggingNonFatalError(e);
 
-                this.mView.ShowRefreshSummaryDashboard(true); //Show retry option for summary dashboard
+                this.mView.ShowRefreshSummaryDashboard(true, null, null); //Show retry option for summary dashboard
                 LoadEmptySummaryDetails();
             }
             catch (ApiException apiException)
@@ -234,7 +238,7 @@ namespace myTNB_Android.Src.SummaryDashBoard.MVP
                 }
 
                 Utility.LoggingNonFatalError(apiException);
-                this.mView.ShowRefreshSummaryDashboard(true); //Show retry option for summary dashboard
+                this.mView.ShowRefreshSummaryDashboard(true, null, null); //Show retry option for summary dashboard
                 LoadEmptySummaryDetails();
             }
             catch (Exception e)
@@ -246,7 +250,7 @@ namespace myTNB_Android.Src.SummaryDashBoard.MVP
                     this.mView.HideProgressDialog();
                 }
                 Utility.LoggingNonFatalError(e);
-                this.mView.ShowRefreshSummaryDashboard(true); //Show retry option for summary dashboard
+                this.mView.ShowRefreshSummaryDashboard(true, null, null); //Show retry option for summary dashboard
                 LoadEmptySummaryDetails();
             }
         }
@@ -481,6 +485,7 @@ namespace myTNB_Android.Src.SummaryDashBoard.MVP
 
         public void RefreshAccountSummary()
         {
+            summaryDetailList.Clear();
             SummaryDashBoardApiCall();
         }
 
@@ -503,7 +508,7 @@ namespace myTNB_Android.Src.SummaryDashBoard.MVP
                     smDetails.AccNumber = cbAccount.AccNum;
                     smDetails.AccType = cbAccount.AccountCategoryId;
                     smDetails.IsAccSelected = cbAccount.IsSelected;
-                    smDetails.AmountDue = "0.00";
+                    smDetails.AmountDue = "--";
                     smDetails.BillDueDate = "--";
                     summaryDetails.Add(smDetails);
                 }
