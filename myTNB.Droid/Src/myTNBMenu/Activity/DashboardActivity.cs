@@ -743,10 +743,12 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
         public void BillsMenuAccess(AccountData selectedAccount)
         {
+            ShowProgressDialog();
             bottomNavigationView.Menu.FindItem(Resource.Id.menu_bill).SetChecked(true);
             ShowAccountName();
             SetToolbarTitle(Resource.String.bill_menu_activity_title);
             ShowBillMenu(selectedAccount);
+            this.userActionsListener?.OnMenuSelect(Resource.Id.menu_bill);
         }
 
         public void ShowUnreadPromotions()
