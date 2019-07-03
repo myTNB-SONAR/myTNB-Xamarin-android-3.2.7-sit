@@ -185,7 +185,6 @@ namespace myTNB_Android.Src.SummaryDashBoard.MVP
                     else if (response.Data != null && !response.Data.isError && response.Data.data != null && response.Data.data.Count > 0)
                     {
                         var summaryDetails = response.Data.data;
-                        summaryDetailList.Clear();
                         for (int i = 0; i < summaryDetails.Count; i++)
                         {
                             CustomerBillingAccount cbAccount = CustomerBillingAccount.FindByAccNum(summaryDetails[i].AccNumber);
@@ -486,6 +485,7 @@ namespace myTNB_Android.Src.SummaryDashBoard.MVP
 
         public void RefreshAccountSummary()
         {
+            summaryDetailList.Clear();
             SummaryDashBoardApiCall();
         }
 
