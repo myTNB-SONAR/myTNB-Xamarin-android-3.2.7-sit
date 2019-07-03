@@ -16,6 +16,7 @@ namespace myTNB
 
         const string CellIdentifier = "DashboardAccountCell";
         float horizontalMargin = 24.0f;
+        bool _isTimeOut = false;
 
         Dictionary<string, List<DueAmountDataModel>> DisplayedAccounts
         {
@@ -45,11 +46,12 @@ namespace myTNB
         /// <param name="onSelectRow">On select row.</param>
         /// <param name="onScroll">On scroll.</param>
         public DashboardAccountsDataSource(Dictionary<string, List<DueAmountDataModel>> accountsForDisplay
-            , Action<DueAmountDataModel> onSelectRow, EventHandler onScroll)
+            , Action<DueAmountDataModel> onSelectRow, EventHandler onScroll, bool isTimeout = false)
         {
             DisplayedAccounts = accountsForDisplay;
             OnRowSelected = onSelectRow;
             OnTableViewScroll = onScroll;
+            _isTimeOut = isTimeout;
         }
 
         /// <summary>
@@ -71,7 +73,7 @@ namespace myTNB
             {
                 var accts = DisplayedAccounts[keys[indexPath.Section]];
                 var acct = accts[indexPath.Row];
-                cell.UpdateCell(acct);
+                cell.UpdateCell(acct, _isTimeOut);
             }
             return cell;
         }
