@@ -1086,11 +1086,11 @@ namespace myTNB.Dashboard
             {
                 ToolTipsModel toolTipData = (DataManager.DataManager.SharedInstance.CurrentChart
                     as SmartChartDataModel).ToolTips?.Find(x => string.Compare(x.Type.ToUpper(), "PROJECTEDCOST") > -1);
-                _toolTipMessage = toolTipData?.Message;
+                _toolTipMessage = toolTipData?.Message ?? "Dashboard_ProjectedCostMessage".Translate();
                 _toolTipBtnTitle = toolTipData?.SMBtnText ?? "Common_GotIt".Translate();
                 _dashboardMainComponent._chartCompanionComponent.SetUsageMetric(smartMeterMetric);
                 _dashboardMainComponent._chartCompanionComponent.SetChartMode(DataManager.DataManager.SharedInstance.CurrentChartMode);
-                _dashboardMainComponent._chartCompanionComponent.SetTooltipLink(toolTipData?.SMLink);
+                _dashboardMainComponent._chartCompanionComponent.SetTooltipLink(toolTipData?.SMLink ?? "Dashboard_ProjectedCostLinkTitle".Translate());
             }
             if (_dashboardMainComponent._dashboardScrollView != null)
             {
