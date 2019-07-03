@@ -88,7 +88,15 @@ namespace myTNB_Android.Src.SelectSupplyAccount.MVP
                 UsageHistoryEntity.InsertItem(smUsageModel);
                 /*****/
 
-                if (response != null && response.Data.Status.Equals("success") && !response.Data.IsError)
+                if(response != null && response.Data != null && response.Data.Status.ToUpper() == Constants.REFRESH_MODE)
+                {
+                    if (this.mView.IsActive())
+                    {
+                        this.mView.HideShowProgressDialog();
+                    }
+                    CloseSelectAccountsWithError();
+                }
+                else if (response != null && response.Data.Status.Equals("success") && !response.Data.IsError)
                 {
 
                     var customerBillingDetails = await detailedAccountApi.GetDetailedAccount(new AddAccount.Requests.AccountDetailsRequest()
@@ -102,7 +110,11 @@ namespace myTNB_Android.Src.SelectSupplyAccount.MVP
                         this.mView.HideShowProgressDialog();
                     }
 
-                    if (!customerBillingDetails.Data.IsError)
+                    if (customerBillingDetails != null && customerBillingDetails.Data != null && customerBillingDetails.Data.Status.ToUpper() == Constants.REFRESH_MODE)
+                    {
+                        CloseSelectAccountsWithError();
+                    }
+                    else if (!customerBillingDetails.Data.IsError)
                     {
                         /*** Save account data For the Day***/
                         AccountDataEntity accountModel = new AccountDataEntity();
@@ -123,8 +135,7 @@ namespace myTNB_Android.Src.SelectSupplyAccount.MVP
                     }
                     else
                     {
-                        // TODO : SHOW ERROR WHEN NO BILLING IS RETURNED
-                        this.mView.ShowQueryError(customerBillingDetails.Data.Message);
+                        CloseSelectAccountsWithError();
                     }
 
 
@@ -135,6 +146,7 @@ namespace myTNB_Android.Src.SelectSupplyAccount.MVP
                     {
                         this.mView.HideShowProgressDialog();
                     }
+                    CloseSelectAccountsWithError();
                 }
 
 
@@ -146,8 +158,7 @@ namespace myTNB_Android.Src.SelectSupplyAccount.MVP
                     this.mView.HideShowProgressDialog();
                 }
                 // ADD OPERATION CANCELLED HERE
-                Log.Debug("SelectSupplyAccountPresenter", e.Message + " " + e.StackTrace);
-                this.mView.ShowRetryOptionsCancelledException(e);
+                CloseSelectAccountsWithError();
                 Utility.LoggingNonFatalError(e);
             }
             catch (ApiException apiException)
@@ -157,8 +168,7 @@ namespace myTNB_Android.Src.SelectSupplyAccount.MVP
                     this.mView.HideShowProgressDialog();
                 }
                 // ADD HTTP CONNECTION EXCEPTION HERE
-                Log.Debug("SelectSupplyAccountPresenter", apiException.Message + " " + apiException.StackTrace);
-                this.mView.ShowRetryOptionsApiException(apiException);
+                CloseSelectAccountsWithError();
                 Utility.LoggingNonFatalError(apiException);
             }
             catch (Exception e)
@@ -168,21 +178,16 @@ namespace myTNB_Android.Src.SelectSupplyAccount.MVP
                     this.mView.HideShowProgressDialog();
                 }
                 // ADD UNKNOWN EXCEPTION HERE
-                if (!this.mView.HasInternetConnection())
-                {
-                    CustomerBillingAccount.RemoveSelected();
-                    CustomerBillingAccount.Update(customerBillingAccount.AccNum, true);
-                    this.mView.ShowNoInternetConnection();
-                }
-                else
-                {
-                    Log.Debug("SelectSupplyAccountPresenter", e.Message + " " + e.StackTrace);
-                    this.mView.ShowRetryOptionsUnknownException(e);
-                }
+                CloseSelectAccountsWithError();
                 Utility.LoggingNonFatalError(e);
             }
 
 
+        }
+
+        private void CloseSelectAccountsWithError()
+        {
+            this.mView.ShowDashboardChartWithError();
         }
 
         public void Start()

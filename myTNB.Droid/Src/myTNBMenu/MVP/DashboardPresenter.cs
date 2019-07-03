@@ -184,6 +184,31 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                                 Utility.LoggingNonFatalError(e);
                             }
                         }
+                        else if (extras.ContainsKey(Constants.REFRESH_MODE) && extras.GetBoolean(Constants.REFRESH_MODE))
+                        {
+                            CustomerBillingAccount customerBillingAccount = CustomerBillingAccount.GetSelectedOrFirst();
+                            if (currentBottomNavigationMenu == Resource.Id.menu_bill)
+                            {
+                                CustomerBillingAccount selectedCustomerAccount = CustomerBillingAccount.GetSelectedOrFirst();
+                                AccountData selectedAccount = AccountData.Copy(selectedCustomerAccount, true);
+                                bool isOwned = true;
+                                if (customerBillingAccount != null)
+                                {
+                                    isOwned = customerBillingAccount.isOwned;
+                                    selectedAccount.IsOwner = isOwned;
+                                    selectedAccount.AccountCategoryId = customerBillingAccount.AccountCategoryId;
+
+                                }
+                                try
+                                {
+                                    this.mView.BillsMenuAccess(selectedAccount);
+                                }
+                                catch (System.Exception e)
+                                {
+                                    Utility.LoggingNonFatalError(e);
+                                }
+                            }
+                        }
                         else if (CustomerBillingAccount.HasSelected())
                         {
                             CustomerBillingAccount customerBillingAccount = CustomerBillingAccount.GetSelectedOrFirst();
