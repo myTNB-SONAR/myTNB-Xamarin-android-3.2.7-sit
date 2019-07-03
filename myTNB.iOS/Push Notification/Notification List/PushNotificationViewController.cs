@@ -693,36 +693,33 @@ namespace myTNB.PushNotification
             return viewHeader;
         }
 
-        void OnCheckboxSelect(bool isCellSelected = false)
+        private void SetTableHeader(bool areAllSelected)
         {
-            if (!isCellSelected)
-            {
-                _isAllSelected = !_isAllSelected;
-                UpdateSelectAllFlags(_isAllSelected);
-            }
             if (_imgCheckbox != null)
             {
-                _imgCheckbox.Image = UIImage.FromBundle(_isAllSelected ? "Payment-Checkbox-Active" : "Payment-Checkbox-Inactive");
+                _imgCheckbox.Image = UIImage.FromBundle(areAllSelected ? "Payment-Checkbox-Active" : "Payment-Checkbox-Inactive");
             }
             if (_lblTitle != null)
             {
-                _lblTitle.Text = _isAllSelected ? "Feedback_UnselectAll".Translate() : "Feedback_SelectAll".Translate();
+                _lblTitle.Text = areAllSelected ? "Feedback_UnselectAll".Translate() : "Feedback_SelectAll".Translate();
             }
         }
 
-        internal void UpdateSectionHeaderWidget()
+        private void OnCheckboxSelect(bool isCellSelected = false)
         {
-            int selectedCount = _notifications.FindAll(x => x.IsSelected == true).Count;
-            _isAllSelected = selectedCount == _notifications.Count;
-            Debug.WriteLine("UpdateSectionHeaderWidget isAllSelected: " + _isAllSelected);
-            OnCheckboxSelect(true);
+            _isAllSelected = !_isAllSelected;
+            SetTableHeader(_isAllSelected);
+            if (!isCellSelected)
+            {
+                UpdateSelectAllFlags(_isAllSelected);
+            }
         }
 
         /// <summary>
         /// Updates the select all flags.
         /// </summary>
         /// <param name="flag">If set to <c>true</c> flag.</param>
-        internal void UpdateSelectAllFlags(bool flag)
+        private void UpdateSelectAllFlags(bool flag)
         {
             _notificationsForUpdate = null;
             if (flag)
@@ -771,7 +768,12 @@ namespace myTNB.PushNotification
             if (_isSelectionMode)
             {
                 title = count > 0 ? string.Format("PushNotification_Selected".Translate(), count)
-                : "PushNotification_Select".Translate();
+                    : "PushNotification_Select".Translate();
+                if (notifModel != null)
+                {
+                    bool areAllSelected = count == _notifications.Count;
+                    SetTableHeader(areAllSelected);
+                }
             }
             _titleBarComponent.SetTitle(title);
             _titleBarComponent.SetSecondaryImage(IsAtleastOneRead() ? "Notification-MarkAsRead" : "Notification-MarkAsReadDisabled");

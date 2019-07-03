@@ -436,8 +436,6 @@
 "PushNotification_NoNotification"="Looks like you have no new notifications today.";
 "PushNotification_NotificationDeleted"="Notification deleted.";
 "PushNotification_NotificationsDeleted"="Notifications deleted.";
-"PushNotification_ReadNotificationsMessage"="Are you sure you want to mark all notifications as read?";
-"PushNotification_ReadNotificationsTitle"="Mark All As Read";
 "PushNotification_Select"="Select";
 "PushNotification_Selected"="Selected ({0})";
 "PushNotification_SelectNotification"="Select Notification";

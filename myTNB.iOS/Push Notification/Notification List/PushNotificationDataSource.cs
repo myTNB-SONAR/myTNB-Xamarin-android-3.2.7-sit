@@ -53,7 +53,6 @@ namespace myTNB.PushNotification
                 _controller.UpdateTitleRightIconImage(notification);
                 cell.imgCheckbox.Image = UIImage.FromBundle(notification.IsSelected
                     ? "Payment-Checkbox-Active" : "Payment-Checkbox-Inactive");
-                _controller.UpdateSectionHeaderWidget();
             }));
 
             return cell;
@@ -135,7 +134,7 @@ namespace myTNB.PushNotification
                 {
                     UITableViewRowAction readAction = UITableViewRowAction.Create(UITableViewRowActionStyle.Default, "        ", delegate
                     {
-                        //Todo: Read Notification
+                        ReadNotification(indexPath);
                     });
                     readAction.BackgroundColor = UIColor.FromPatternImage(RowActionImage(MyTNBColor.Denim.CGColor, "Notification-MarkAsRead"));
                     return new UITableViewRowAction[] { deleteAction, readAction };
