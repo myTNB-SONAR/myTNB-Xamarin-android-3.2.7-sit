@@ -259,8 +259,19 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             bundle.PutBoolean(Constants.NO_INTERNET_CONNECTION, hasNoInternet);
             if(response != null && response.Data != null)
             {
-                bundle.PutString(Constants.REFRESH_MSG, response.Data.RefreshMessage);
-                bundle.PutString(Constants.REFRESH_BTN_MSG, response.Data.RefreshBtnText);
+                if(string.IsNullOrEmpty(response.Data.RefreshMessage))
+                {
+                    bundle.PutString(Constants.REFRESH_MSG, "The graph must be tired. Tap the button below to help it out.");
+                }
+                else
+                {
+                    bundle.PutString(Constants.REFRESH_MSG, response.Data.RefreshMessage);
+                }
+
+                if(!string.IsNullOrEmpty(response.Data.RefreshBtnText))
+                {
+                    bundle.PutString(Constants.REFRESH_BTN_MSG, response.Data.RefreshBtnText);
+                }
             }
             if(accountData != null)
             {

@@ -524,11 +524,11 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                     }
                     if(accountSelected != null && !string.IsNullOrEmpty(accountSelected.AccNum))
                     {
-                        this.mView.ShowOwnerDashboardNoInternetConnection(accountSelected.AccDesc, null,  AccountData.Copy(accountSelected, true));
+                        this.mView.ShowOwnerDashboardNoInternetConnection(accountSelected.AccDesc, usageHistoryResponse,  AccountData.Copy(accountSelected, true));
                     }
                     else
                     {
-                        this.mView.ShowOwnerDashboardNoInternetConnection(accountSelected.AccDesc, null, null);
+                        this.mView.ShowOwnerDashboardNoInternetConnection(accountSelected.AccDesc, usageHistoryResponse, null);
                     }
                 }
                 else if (usageHistoryResponse != null && usageHistoryResponse.Data.Status.Equals("success") && !usageHistoryResponse.Data.IsError)
