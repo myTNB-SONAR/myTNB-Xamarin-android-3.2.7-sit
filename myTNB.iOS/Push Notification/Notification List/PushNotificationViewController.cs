@@ -65,7 +65,10 @@ namespace myTNB.PushNotification
             _isDeletionMode = false;
             _isSelectionMode = false;
             _isAllSelected = false;
-            _notificationsForUpdate?.Clear();
+            if (_notificationsForUpdate != null)
+            {
+                _notificationsForUpdate?.Clear();
+            }
         }
 
         private void GetUserNotif()
@@ -245,6 +248,10 @@ namespace myTNB.PushNotification
             _titleBarComponent.SetSecondaryImage("Notification-MarkAsRead");
             _titleBarComponent.SetSecondaryAction(new UITapGestureRecognizer((obj) =>
             {
+                if (_notificationsForUpdate == null)
+                {
+                    return;
+                }
                 bool isNotRead = _notificationsForUpdate.FindIndex(x => !x.IsRead) > -1;
                 if (!isNotRead)
                 {
@@ -254,53 +261,72 @@ namespace myTNB.PushNotification
             }));
             _titleBarComponent.SetPrimaryVisibility(false);
             _titleBarComponent.SetPrimaryImage("Notification-Select");
+            SetPrimaryActionEvent();
+
+            _titleBarComponent.SetBackVisibility(false);
+            _titleBarComponent.SetBackAction(new UITapGestureRecognizer(() =>
+            {
+                if (_isSelectionMode)
+                {
+                    OnDismiss();
+                }
+                else
+                {
+                    OnBack();
+                }
+            }));
+            headerView.AddSubview(titleBarView);
+            SetSelectorEvent();
+        }
+
+        private void SetPrimaryActionEvent()
+        {
             _titleBarComponent.SetPrimaryAction(new UITapGestureRecognizer(() =>
             {
                 if (_isDeletionMode)
                 {
                     Debug.WriteLine("_isDeletionMode");
                     int count = _notificationsForUpdate != null ? _notificationsForUpdate.Count : 0;
-                    string alertTitle = count > 1 ? "PushNotification_DeleteTitleMultiple" : "PushNotification_DeleteMessage";
-                    string alertMsg = count > 1 ? "PushNotification_DeleteMessageMultiple" : "PushNotification_DeleteMessage";
-                    var deleteAlert = UIAlertController.Create(alertTitle.Translate(), alertMsg.Translate(), UIAlertControllerStyle.Alert);
-                    deleteAlert.AddAction(UIAlertAction.Create("Common_Yes".Translate(), UIAlertActionStyle.Default, (args) =>
+                    if (count == 1)
                     {
-                        if (_notificationsForUpdate != null)
+                        DeleteNotification(_notificationsForUpdate, true);
+                    }
+                    else if (count > 1)
+                    {
+                        bool areAllTobeDeleted = count == _notifications.Count;
+                        string alertTitle = areAllTobeDeleted ? "PushNotification_DeleteTitleAll" : "PushNotification_DeleteTitleMultiple";
+                        string alertMsg = areAllTobeDeleted ? "PushNotification_DeleteMessageAll" : "PushNotification_DeleteMessageMultiple";
+                        var deleteAlert = UIAlertController.Create(alertTitle.Translate(), alertMsg.Translate(), UIAlertControllerStyle.Alert);
+                        deleteAlert.AddAction(UIAlertAction.Create("Common_Yes".Translate(), UIAlertActionStyle.Default, (args) =>
                         {
-                            DeleteNotification(_notificationsForUpdate, true);
-                        }
-                    }));
-                    deleteAlert.AddAction(UIAlertAction.Create("Common_No".Translate(), UIAlertActionStyle.Cancel, null));
-                    PresentViewController(deleteAlert, animated: true, completionHandler: null);
+                            if (_notificationsForUpdate != null)
+                            {
+                                DeleteNotification(_notificationsForUpdate, true);
+                            }
+                        }));
+                        deleteAlert.AddAction(UIAlertAction.Create("Common_No".Translate(), UIAlertActionStyle.Cancel, null));
+                        PresentViewController(deleteAlert, animated: true, completionHandler: null);
+                    }
                 }
                 else
                 {
                     if (_isSelectionMode)
                     {
-                        _titleBarComponent.SetPrimaryImage("Notification-Select");
-                        pushNotificationTableView.TableHeaderView = null;
-                        _isAllSelected = false;
+                        return;
                     }
-                    else
-                    {
-                        _titleBarComponent.SetPrimaryImage("IC-Header-Cancel");
-                        UpdateSelectAllFlags(false);
-                        pushNotificationTableView.TableHeaderView = GetTableViewHeader();
-                    }
+                    _titleBarComponent.SetPrimaryImage("IC-Header-Cancel");
+                    UpdateSelectAllFlags(false);
+                    pushNotificationTableView.TableHeaderView = GetTableViewHeader();
                     _titleBarComponent.SetTitle(_isSelectionMode ? "PushNotification_Title".Translate() : "PushNotification_Select".Translate());
                     _isSelectionMode = !_isSelectionMode;
                     UpdateTitleRightIconImage();
                     pushNotificationTableView.ReloadData();
                 }
             }));
+        }
 
-            _titleBarComponent.SetBackVisibility(false);
-            _titleBarComponent.SetBackAction(new UITapGestureRecognizer(() =>
-            {
-                OnBack();
-            }));
-            headerView.AddSubview(titleBarView);
-
+        private void SetSelectorEvent()
+        {
             _notificationSelectionComponent = new AccountSelectionComponent(headerView);
             UIView accountSelectionView = _notificationSelectionComponent.GetUI();
 
@@ -335,13 +361,13 @@ namespace myTNB.PushNotification
         private void OnDismiss()
         {
             OnReset();
-            _titleBarComponent.SetPrimaryImage("Notification-Select");
             pushNotificationTableView.TableHeaderView = null;
             UpdateTitleRightIconImage();
             pushNotificationTableView.ReloadData();
             _titleBarComponent.SetSecondaryVisibility(true);
-            OnReset();
             _titleBarComponent.SetTitle("PushNotification_Title".Translate());
+            _titleBarComponent.SetPrimaryImage("Notification-Select");
+            _isDeletionMode = false;
         }
 
         private void OnSelectAction(int index)
@@ -754,21 +780,19 @@ namespace myTNB.PushNotification
         internal void UpdateTitleRightIconImage(UserNotificationDataModel notifModel = null)
         {
             _isDeletionMode = IsAtLeastOneIsSelected();
-            string icon = "Notification-Select";
             if (_isSelectionMode)
             {
-                icon = _isDeletionMode ? "Notification-Delete" : "IC-Header-Cancel";
-                _titleBarComponent.SetSecondaryVisibility(!_isDeletionMode);
+                _titleBarComponent.SetSecondaryVisibility(false);
+                _titleBarComponent.SetPrimaryImage(_isDeletionMode ? "Notification-Delete" : "Notification-DeleteDisabled");
             }
-            _titleBarComponent.SetPrimaryImage(icon);
+
             UpdateNotificationForDeletionList(notifModel);
             int count = _notificationsForUpdate != null ? _notificationsForUpdate.Count : 0;
 
             string title = "PushNotification_Title".Translate();
             if (_isSelectionMode)
             {
-                title = count > 0 ? string.Format("PushNotification_Selected".Translate(), count)
-                    : "PushNotification_Select".Translate();
+                title = count > 0 ? string.Format("PushNotification_Selected".Translate(), count) : "PushNotification_Select".Translate();
                 if (notifModel != null)
                 {
                     bool areAllSelected = count == _notifications.Count;
@@ -777,17 +801,7 @@ namespace myTNB.PushNotification
             }
             _titleBarComponent.SetTitle(title);
             _titleBarComponent.SetSecondaryImage(IsAtleastOneRead() ? "Notification-MarkAsRead" : "Notification-MarkAsReadDisabled");
-            _titleBarComponent.SetBackAction(new UITapGestureRecognizer(() =>
-            {
-                if (_isSelectionMode)
-                {
-                    OnDismiss();
-                }
-                else
-                {
-                    OnBack();
-                }
-            }));
+            _titleBarComponent.SetPrimaryImage(IsAtLeastOneIsSelected() ? "Notification-Delete" : "Notification-DeleteDisabled");
         }
 
         private bool IsAtleastOneRead()

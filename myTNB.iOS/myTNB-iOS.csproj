@@ -886,10 +886,10 @@
     <ImageAsset Include="Assets.xcassets\Notification-MarkAsReadDisabled.imageset\icHeaderMarkreadDisabled.png" />
     <ImageAsset Include="Assets.xcassets\Notification-MarkAsReadDisabled.imageset\icHeaderMarkreadDisabled%402x.png" />
     <ImageAsset Include="Assets.xcassets\Notification-MarkAsReadDisabled.imageset\icHeaderMarkreadDisabled%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Image.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Image.imageset\icHeaderDeleteDisabled.png" />
-    <ImageAsset Include="Assets.xcassets\Image.imageset\icHeaderDeleteDisabled%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Image.imageset\icHeaderDeleteDisabled%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-DeleteDisabled.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Notification-DeleteDisabled.imageset\icHeaderDeleteDisabled.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-DeleteDisabled.imageset\icHeaderDeleteDisabled%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-DeleteDisabled.imageset\icHeaderDeleteDisabled%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -1151,6 +1151,7 @@
     <Folder Include="Payment\Select Payment Method\" />
     <Folder Include="Session Cache\" />
     <Folder Include="Assets.xcassets\Notification-MarkAsReadDisabled.imageset\" />
+    <Folder Include="Assets.xcassets\Notification-DeleteDisabled.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
