@@ -254,13 +254,13 @@ namespace myTNB
         /// <summary>
         /// Updates the header.
         /// </summary>
-        private void UpdateHeader()
+        private void UpdateHeader(BaseModel baseModelResponse = null)
         {
             ViewHelper.RemoveAllSubviews(_viewHeader);
 
             if (isBcrmAvailable)
             {
-                _greetingView = _greetingComponent.GetUI(isTimeOut);
+                _greetingView = _greetingComponent.GetUI(isTimeOut, baseModelResponse);
                 SetGreeting();
                 maxHeaderHeight = _greetingView.Frame.Height + 1f;
                 _viewHeader.Frame = new CGRect(0, 0, _greetingView.Frame.Width, _greetingView.Frame.Height + 1f);
@@ -548,7 +548,7 @@ namespace myTNB
                         accountsToRefresh = accounts;
                     }
                     isTimeOut = true;
-                    UpdateHeader();
+                    UpdateHeader(response);
                     // hide load more
                     _viewLoadMore.Hidden = true;
                     ViewHelper.AdjustFrameSetY(btnAdd, verticalMargin);
@@ -557,7 +557,7 @@ namespace myTNB
 
                 tableViewAccounts.SeparatorStyle = UITableViewCellSeparatorStyle.SingleLine;
                 tableViewAccounts.SeparatorColor = UIColor.FromWhiteAlpha(1, 0.4f);
-                InitializeAccountsTable();
+                InitializeAccountsTable(isTimeOut);
                 ActivityIndicator.Hide();
                 isRefreshing = false;
             }
@@ -567,9 +567,9 @@ namespace myTNB
         /// <summary>
         /// Initializes the accounts table.
         /// </summary>
-        private void InitializeAccountsTable()
+        private void InitializeAccountsTable(bool timeOut = false)
         {
-            tableViewAccounts.Source = new DashboardAccountsDataSource(displayedAccounts, OnAccountRowSelected, OnTableViewAccountsScrolled);
+            tableViewAccounts.Source = new DashboardAccountsDataSource(displayedAccounts, OnAccountRowSelected, OnTableViewAccountsScrolled, timeOut);
             tableViewAccounts.ReloadData();
         }
 

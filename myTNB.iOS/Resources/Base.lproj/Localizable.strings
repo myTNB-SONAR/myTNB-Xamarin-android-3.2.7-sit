@@ -180,7 +180,7 @@
 "Error_RegistraionTokenTitle"="Registration Token Failed";
 "Error_ShareNotAvailable"="Sharing is not available right now. Please try again later.";
 "Error_TelephoneNumberNotAvailable"="Number is not available right now. Please try again later.";
-"Error_TimeOut"="We can't get your account details at the moment. Please refresh this page.";
+"Error_TimeOut"="This page must be tired. Tap the button below to help it out.";
 "Error_UpdateNickname"="Cannot update nickname. Please try again.";
 "Error_VerifyDevice"="Cannot verify device. Please try again.";
 "Error_RefreshMessage"="This page must be tired. Tap the button below to help it out.";

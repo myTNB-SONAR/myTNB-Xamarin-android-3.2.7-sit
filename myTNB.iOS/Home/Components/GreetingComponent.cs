@@ -1,6 +1,8 @@
 ﻿using System;
 using CoreGraphics;
+using Foundation;
 using myTNB.Enums;
+using myTNB.Model;
 using UIKit;
 
 namespace myTNB.Dashboard.DashboardComponents
@@ -13,6 +15,7 @@ namespace myTNB.Dashboard.DashboardComponents
         UIImageView greetingImage;
         UILabel _lblMsg;
         UIButton _btnRefresh;
+        UIImageView _imgViewRefreshIcon;
 
         public Action OnRefresh { get; set; }
 
@@ -24,69 +27,99 @@ namespace myTNB.Dashboard.DashboardComponents
         /// <summary>
         /// Creates the component.
         /// </summary>
-        private void CreateComponent(bool isTimeOut = false)
+        private void CreateComponent(bool isTimeOut = false, BaseModel baseModelResponse = null)
         {
-            var topMargin = 20f;
-            greetingMessage = new UILabel
-            {
-                Frame = new CGRect(0, topMargin, parentView.Frame.Width, 50),
-                Font = MyTNBFont.MuseoSans16_500,
-                TextColor = MyTNBColor.SunGlow,
-                TextAlignment = UITextAlignment.Center,
-                Lines = 0,
-            };
-
-            nfloat origImageRatio = 117.0f / 320.0f; // height / width
-            nfloat imageHeight = parentView.Frame.Width * origImageRatio;
-            greetingImage = new UIImageView
-            {
-                Frame = new CGRect(0, greetingMessage.Frame.GetMaxY() + 1, parentView.Frame.Width, imageHeight),
-                ContentMode = UIViewContentMode.ScaleAspectFit,
-            };
-
-            var addtlHeight = 0f;
             if (isTimeOut)
             {
-                _lblMsg = new UILabel
+                float imageTopMargin = 24f;
+                float iconWidth = DeviceHelper.GetScaledWidth(96f);
+                float iconHeight = DeviceHelper.GetScaledHeight(96f);
+                nfloat bottomMargin = DeviceHelper.GetScaledHeight(24f);
+                nfloat lineTextHeight = 24f;
+                nfloat labelWidth = parentView.Frame.Width - 50;
+
+                _imgViewRefreshIcon = new UIImageView()
                 {
-                    Frame = new CGRect(25, greetingImage.Frame.GetMaxY() + 10f, parentView.Frame.Width - 50, 50),
-                    Font = MyTNBFont.MuseoSans12_300,
-                    TextColor = UIColor.White,
-                    TextAlignment = UITextAlignment.Center,
-                    Lines = 0,
-                    Text = "Error_TimeOut".Translate(),
-                    BackgroundColor = UIColor.Clear
+                    Frame = new CGRect(DeviceHelper.GetCenterXWithObjWidth(iconWidth, parentView), DeviceHelper.GetScaledHeightWithY(imageTopMargin), iconWidth, iconHeight),
+                    Image = UIImage.FromBundle("Refresh-Error-White")
                 };
+
+                var descMsg = !string.IsNullOrWhiteSpace(baseModelResponse?.RefreshMessage) ? baseModelResponse?.RefreshMessage : "Error_TimeOut".Translate();
+                var btnText = !string.IsNullOrWhiteSpace(baseModelResponse?.RefreshBtnText) ? baseModelResponse?.RefreshMessage : "Error_RefreshBtnTitle".Translate();
+
+                NSMutableParagraphStyle msgParagraphStyle = new NSMutableParagraphStyle
+                {
+                    Alignment = UITextAlignment.Center,
+                    MinimumLineHeight = lineTextHeight,
+                    MaximumLineHeight = lineTextHeight
+                };
+
+                UIStringAttributes msgAttributes = new UIStringAttributes
+                {
+                    Font = MyTNBFont.MuseoSans16_300,
+                    ForegroundColor = UIColor.White,
+                    BackgroundColor = UIColor.Clear,
+                    ParagraphStyle = msgParagraphStyle
+                };
+
+                var attributedText = new NSMutableAttributedString(descMsg);
+                attributedText.AddAttributes(msgAttributes, new NSRange(0, descMsg.Length));
+
+                _lblMsg = new UILabel()
+                {
+                    AttributedText = attributedText,
+                    Lines = 0
+                };
+
+                CGSize cGSize = _lblMsg.SizeThatFits(new CGSize(labelWidth, 1000f));
+                _lblMsg.Frame = new CGRect(14f, _imgViewRefreshIcon.Frame.GetMaxY() + 24f, labelWidth, cGSize.Height);
 
                 _btnRefresh = new UIButton(UIButtonType.Custom)
                 {
-                    Frame = new CGRect(25, _lblMsg.Frame.GetMaxY(), parentView.Frame.Width - 50, 44f)
+                    Frame = new CGRect(25, _lblMsg.Frame.GetMaxY() + 16f, parentView.Frame.Width - 50, 48f)
                 };
                 _btnRefresh.Layer.CornerRadius = 4;
-                _btnRefresh.Layer.BorderColor = UIColor.White.CGColor;
-                _btnRefresh.BackgroundColor = UIColor.Clear;
-                _btnRefresh.Layer.BorderWidth = 1;
-                _btnRefresh.SetTitle("Common_Refresh".Translate(), UIControlState.Normal);
-                _btnRefresh.Font = MyTNBFont.MuseoSans18_300;
-                _btnRefresh.SetTitleColor(UIColor.White, UIControlState.Normal);
+                _btnRefresh.BackgroundColor = UIColor.White;
+                _btnRefresh.SetTitle(btnText, UIControlState.Normal);
+                _btnRefresh.Font = MyTNBFont.MuseoSans16_500;
+                _btnRefresh.SetTitleColor(MyTNBColor.PowerBlue, UIControlState.Normal);
                 _btnRefresh.TouchUpInside += (sender, e) =>
                 {
                     OnRefresh?.Invoke();
                 };
 
-                addtlHeight = (float)(_lblMsg.Frame.Height + _btnRefresh.Frame.Height + topMargin);
-            }
+                baseView = new UIView(new CGRect(0, 0, parentView.Frame.Width
+                , _btnRefresh.Frame.GetMaxY() + bottomMargin));
 
-            baseView = new UIView(new CGRect(0, 0, parentView.Frame.Width
-                , topMargin + greetingMessage.Frame.Height + greetingImage.Frame.Height + addtlHeight));
-
-            baseView.AddSubview(greetingMessage);
-            baseView.AddSubview(greetingImage);
-
-            if (isTimeOut)
-            {
+                baseView.AddSubview(_imgViewRefreshIcon);
                 baseView.AddSubview(_lblMsg);
                 baseView.AddSubview(_btnRefresh);
+            }
+            else
+            {
+                nfloat topMargin = 20f;
+                greetingMessage = new UILabel
+                {
+                    Frame = new CGRect(0, topMargin, parentView.Frame.Width, 50),
+                    Font = MyTNBFont.MuseoSans16_500,
+                    TextColor = MyTNBColor.SunGlow,
+                    TextAlignment = UITextAlignment.Center,
+                    Lines = 0,
+                };
+
+                nfloat origImageRatio = 117.0f / 320.0f; // height / width
+                nfloat imageHeight = parentView.Frame.Width * origImageRatio;
+                greetingImage = new UIImageView
+                {
+                    Frame = new CGRect(0, greetingMessage.Frame.GetMaxY() + 1, parentView.Frame.Width, imageHeight),
+                    ContentMode = UIViewContentMode.ScaleAspectFit,
+                };
+
+                baseView = new UIView(new CGRect(0, 0, parentView.Frame.Width
+                , topMargin + greetingMessage.Frame.Height + greetingImage.Frame.Height));
+
+                baseView.AddSubview(greetingMessage);
+                baseView.AddSubview(greetingImage);
             }
         }
 
@@ -94,9 +127,9 @@ namespace myTNB.Dashboard.DashboardComponents
         /// Gets the user interface.
         /// </summary>
         /// <returns>The user interface.</returns>
-        public UIView GetUI(bool isTimeOut = false)
+        public UIView GetUI(bool isTimeOut = false, BaseModel baseModelResponse = null)
         {
-            CreateComponent(isTimeOut);
+            CreateComponent(isTimeOut, baseModelResponse);
             return baseView;
         }
 

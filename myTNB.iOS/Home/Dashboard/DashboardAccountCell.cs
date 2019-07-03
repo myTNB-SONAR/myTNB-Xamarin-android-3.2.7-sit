@@ -16,7 +16,7 @@ namespace myTNB
         {
         }
 
-        public void UpdateCell(DueAmountDataModel model)
+        public void UpdateCell(DueAmountDataModel model, bool isTimeout = false)
         {
             UpdateStyle();
 
@@ -24,36 +24,45 @@ namespace myTNB
             lblAccountTitle.Text = model.accNickName;
             lblAccountSubTitle.Text = model.accNum;
 
-            var amount = !model.IsReAccount ? model.amountDue : ChartHelper.UpdateValueForRE(model.amountDue);
-            lblAmountTitle.AttributedText = TextHelper.CreateValuePairString(amount.ToString("N2", CultureInfo.InvariantCulture)
-                , TNBGlobal.UNIT_CURRENCY + " ", true, MyTNBFont.MuseoSans14_500
-                , UIColor.White, MyTNBFont.MuseoSans14_500, UIColor.White);
-
             string formattedDate = string.Empty;
 
-            var dateString = amount > 0 ? model.billDueDate : string.Empty;
-            if (string.IsNullOrEmpty(dateString) || dateString.ToUpper().Equals("N/A"))
+            if (isTimeout)
             {
+                lblAmountTitle.Text = TNBGlobal.EMPTY_AMOUNT;
                 formattedDate = TNBGlobal.EMPTY_DATE;
             }
             else
             {
-                if (model.IsReAccount && model.IncrementREDueDateByDays > 0)
+                var amount = !model.IsReAccount ? model.amountDue : ChartHelper.UpdateValueForRE(model.amountDue);
+                lblAmountTitle.AttributedText = TextHelper.CreateValuePairString(amount.ToString("N2", CultureInfo.InvariantCulture)
+                    , TNBGlobal.UNIT_CURRENCY + " ", true, MyTNBFont.MuseoSans14_500
+                    , UIColor.White, MyTNBFont.MuseoSans14_500, UIColor.White);
+
+                var dateString = amount > 0 ? model.billDueDate : string.Empty;
+                if (string.IsNullOrEmpty(dateString) || dateString.ToUpper().Equals("N/A"))
                 {
-                    try
-                    {
-                        var format = @"dd/MM/yyyy";
-                        DateTime due = DateTime.ParseExact(dateString, format, System.Globalization.CultureInfo.InvariantCulture);
-                        due = due.AddDays(model.IncrementREDueDateByDays);
-                        dateString = due.ToString(format);
-                    }
-                    catch (FormatException)
-                    {
-                        Debug.WriteLine("Unable to parse '{0}'", dateString);
-                    }
+                    formattedDate = TNBGlobal.EMPTY_DATE;
                 }
-                formattedDate = DateHelper.GetFormattedDate(dateString, "dd MMM");
+                else
+                {
+                    if (model.IsReAccount && model.IncrementREDueDateByDays > 0)
+                    {
+                        try
+                        {
+                            var format = @"dd/MM/yyyy";
+                            DateTime due = DateTime.ParseExact(dateString, format, System.Globalization.CultureInfo.InvariantCulture);
+                            due = due.AddDays(model.IncrementREDueDateByDays);
+                            dateString = due.ToString(format);
+                        }
+                        catch (FormatException)
+                        {
+                            Debug.WriteLine("Unable to parse '{0}'", dateString);
+                        }
+                    }
+                    formattedDate = DateHelper.GetFormattedDate(dateString, "dd MMM");
+                }
             }
+
             lblAmountSubTitle.Text = formattedDate;
         }
 
@@ -70,8 +79,6 @@ namespace myTNB
 
             lblAmountSubTitle.Font = MyTNBFont.MuseoSans12_300;
             lblAmountSubTitle.TextColor = new UIColor(red: 1.0f, green: 1.0f, blue: 1.0f, alpha: 0.7f);
-
-            //viewLine.BackgroundColor = UIColor.FromWhiteAlpha(1, 0.3f);
         }
     }
 }
