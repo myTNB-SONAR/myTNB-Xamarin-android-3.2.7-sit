@@ -243,7 +243,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
                 {
                     ShowError(this.GetString(Resource.String.error_select_5_accounts));
                 }
-                else
+                else if (position != -2)
                 {
                     List<MPAccount> list = adapter.GetSelectedAccounts();
                     Log.Debug("Selected Accounts", " List " + list);
@@ -256,6 +256,12 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
                             list[position].isTooltipShow = true;
                         }
                     }
+                    UpdateTotal(list);
+                }
+                else
+                {
+                    List<MPAccount> list = adapter.GetSelectedAccounts();
+                    Log.Debug("Selected Accounts", " List " + list);
                     UpdateTotal(list);
                 }
             }

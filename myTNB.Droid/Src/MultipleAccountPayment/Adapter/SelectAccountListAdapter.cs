@@ -122,7 +122,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Adapter
                         item.isSelected = false;
                         item.tooltipPopUp = false;
                         vh.SelectAccountView.Checked = false;
-                        CheckChanged(this, position);
+                        CheckChanged(this, -2);
                     }
 
                     else
@@ -132,7 +132,15 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Adapter
                         item.isValidAmount = true;
                         item.amount = newAmount;
                         item.tooltipPopUp = tooltipShow;
-                        CheckChanged(this, position);
+                        int selectedPosition = GetSelectedAccounts().FindIndex(x => x.accountNumber == item.accountNumber);
+                        if (selectedPosition == -1)
+                        {
+                            CheckChanged(this, -2);
+                        }
+                        else
+                        {
+                            CheckChanged(this, selectedPosition);
+                        }
                     }
                 }
                 else
@@ -144,7 +152,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Adapter
                     item.isSelected = false;
                     item.tooltipPopUp = false;
                     vh.SelectAccountView.Checked = false;
-                    CheckChanged(this, position);
+                    CheckChanged(this, -2);
                 }
             }
             catch (System.Exception e)
