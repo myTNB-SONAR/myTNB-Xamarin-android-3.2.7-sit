@@ -241,6 +241,10 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 
             string GetDeviceId();
 
+            void BillsMenuAccess();
+
+            void BillsMenuAccess(AccountData selectedAccount);
+
         }
 
         public interface IUserActionsListener : IBasePresenter
