@@ -243,7 +243,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
                 {
                     ShowError(this.GetString(Resource.String.error_select_5_accounts));
                 }
-                else
+                else if (position != -2)
                 {
                     List<MPAccount> list = adapter.GetSelectedAccounts();
                     Log.Debug("Selected Accounts", " List " + list);
@@ -256,6 +256,12 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
                             list[position].isTooltipShow = true;
                         }
                     }
+                    UpdateTotal(list);
+                }
+                else
+                {
+                    List<MPAccount> list = adapter.GetSelectedAccounts();
+                    Log.Debug("Selected Accounts", " List " + list);
                     UpdateTotal(list);
                 }
             }
@@ -302,6 +308,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
                 };
                 btnBringMeThere.Click += delegate
                 {
+                    mWhyThisAmtCardDialog.Dismiss();
                     try
                     {
                         NavigateBillScreen(item);
@@ -310,7 +317,6 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
                     {
                         Utility.LoggingNonFatalError(e);
                     }
-                    mWhyThisAmtCardDialog.Dismiss();
                 };
 
                 mWhyThisAmtCardDialog.Show();
@@ -325,6 +331,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
         {
             try
             {
+                ShowProgressDialog();
                 CustomerBillingAccount customerAccount = CustomerBillingAccount.FindByAccNum(item.accountNumber);
                 this.userActionsListener.OnSelectAccount(customerAccount);
             }
