@@ -70,14 +70,14 @@ namespace myTNB_Android.Src.SummaryDashBoard
         [BindView(Resource.Id.summaryFooter)]
         TextView addAcount;
 
-        [BindView(Resource.Id.layout_refresh)]
-        LinearLayout layoutRefresh;
+        [BindView(Resource.Id.layout_api_refresh)]
+        LinearLayout layoutNewRefresh;
 
-        [BindView(Resource.Id.btnTapRefresh)]
-        Button btnRefresh;
+        [BindView(Resource.Id.btnRefresh)]
+        Button btnNewRefresh;
 
-        [BindView(Resource.Id.txtRefreshMessage)]
-        TextView txtRefreshMessage;
+        [BindView(Resource.Id.refresh_content)]
+        TextView txtNewRefreshMessage;
 
         List<SummaryDashBoardDetails> itemList = null;
 
@@ -186,8 +186,8 @@ namespace myTNB_Android.Src.SummaryDashBoard
                 activity = ((DashboardActivity)Activity);
 
                 TextViewUtils.SetMuseoSans500Typeface(greetingTxt, loadMore, userNameTxt);
-                TextViewUtils.SetMuseoSans500Typeface(addAcount, btnRefresh);
-                TextViewUtils.SetMuseoSans300Typeface(txtDowntimeMessage, txtRefreshMessage);
+                TextViewUtils.SetMuseoSans500Typeface(addAcount, btnNewRefresh);
+                TextViewUtils.SetMuseoSans300Typeface(txtDowntimeMessage, txtNewRefreshMessage);
 
                 reAccRecyclerView.SetLayoutManager(new LinearLayoutManager(this.Activity));
                 normalRecyclerView.SetLayoutManager(new LinearLayoutManager(this.Activity));
@@ -210,27 +210,20 @@ namespace myTNB_Android.Src.SummaryDashBoard
                     }
                 };
 
-                btnRefresh.Click += delegate
+                btnNewRefresh.Click += delegate
                 {
-                    btnRefresh.Enabled = false;
-                    btnRefresh.Clickable = false;
+                    btnNewRefresh.Enabled = false;
+                    btnNewRefresh.Clickable = false;
                     Handler h = new Handler();
                     Action myAction = () =>
                     {
-                        btnRefresh.Enabled = true;
-                        btnRefresh.Clickable = true;
+                        btnNewRefresh.Enabled = true;
+                        btnNewRefresh.Clickable = true;
                     };
                     h.PostDelayed(myAction, 2000);
 
-                    if (HasNetworkConnection())
-                    {
-                        ShowProgressDialog();
-                        this.listener.RefreshAccountSummary();
-                    }
-                    else
-                    {
-                        ShowNoInternetSnackbar();
-                    }
+                    ShowProgressDialog();
+                    this.listener.RefreshAccountSummary();
                 };
 
                 addAcount.Click += delegate
@@ -305,6 +298,7 @@ namespace myTNB_Android.Src.SummaryDashBoard
                     {
                         downtimeLayout.Visibility = ViewStates.Visible;
                         greetingLayout.Visibility = ViewStates.Gone;
+                        layoutNewRefresh.Visibility = ViewStates.Gone;
                         if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.N)
                         {
                             txtDowntimeMessage.TextFormatted = Html.FromHtml(bcrmDownTime.DowntimeMessage, FromHtmlOptions.ModeLegacy);
@@ -318,7 +312,7 @@ namespace myTNB_Android.Src.SummaryDashBoard
                     {
                         downtimeLayout.Visibility = ViewStates.Gone;
                         greetingLayout.Visibility = ViewStates.Visible;
-                        layoutRefresh.Visibility = ViewStates.Gone;
+                        layoutNewRefresh.Visibility = ViewStates.Gone;
                     }
                     listener.FetchAccountSummary();
 
@@ -465,16 +459,37 @@ namespace myTNB_Android.Src.SummaryDashBoard
             }
             );
             mNoInternetSnackbar.Show();
-            ShowRefreshSummaryDashboard(true);
+            ShowRefreshSummaryDashboard(true, null, null);
             layoutContent.Visibility = ViewStates.Visible;
             listener.LoadEmptySummaryDetails();
         }
 
 
-        public void ShowRefreshSummaryDashboard(bool yesno)
+        public void ShowRefreshSummaryDashboard(bool yesno, string contentMsg, string buttonMsg)
         {
-            layoutContent.Visibility = ViewStates.Visible;
-            layoutRefresh.Visibility = yesno ? ViewStates.Visible : ViewStates.Gone;
+            try
+            {
+                layoutContent.Visibility = ViewStates.Visible;
+                greetingLayout.Visibility = yesno ? ViewStates.Gone : ViewStates.Visible;
+                layoutNewRefresh.Visibility = yesno ? ViewStates.Visible : ViewStates.Gone;
+                if (yesno)
+                {
+                    btnNewRefresh.Text = string.IsNullOrEmpty(buttonMsg) ? GetString(Resource.String.text_new_refresh) : buttonMsg;
+
+                    if (Build.VERSION.SdkInt >= BuildVersionCodes.N)
+                    {
+                        txtNewRefreshMessage.TextFormatted = string.IsNullOrEmpty(contentMsg) ? Html.FromHtml(GetString(Resource.String.text_new_refresh_content), FromHtmlOptions.ModeLegacy) : Html.FromHtml(contentMsg, FromHtmlOptions.ModeLegacy);
+                    }
+                    else
+                    {
+                        txtNewRefreshMessage.TextFormatted = string.IsNullOrEmpty(contentMsg) ? Html.FromHtml(GetString(Resource.String.text_new_refresh_content)) : Html.FromHtml(contentMsg);
+                    }
+                }
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public void SetGreetingImageAndText(eGreeting greeting, string text)
