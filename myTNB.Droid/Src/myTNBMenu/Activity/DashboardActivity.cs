@@ -747,6 +747,8 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             bottomNavigationView.Menu.FindItem(Resource.Id.menu_bill).SetChecked(true);
             ShowAccountName();
             SetToolbarTitle(Resource.String.bill_menu_activity_title);
+            CustomerBillingAccount.RemoveSelected();
+            CustomerBillingAccount.SetSelected(selectedAccount.AccountNum);
             ShowBillMenu(selectedAccount);
             this.userActionsListener?.OnMenuSelect(Resource.Id.menu_bill);
         }
