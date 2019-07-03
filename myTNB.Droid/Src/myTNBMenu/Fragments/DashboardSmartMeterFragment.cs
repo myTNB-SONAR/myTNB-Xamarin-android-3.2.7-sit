@@ -379,7 +379,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 txtTotalPayable.Text = decimalFormat.Format(selectedAccount.AmtCustBal);
             }
 
-            TextViewUtils.SetMuseoSans300Typeface(noteTextView);    
+            TextViewUtils.SetMuseoSans300Typeface(noteTextView);
             TextViewUtils.SetMuseoSans300Typeface(txtUsageHistory, txtAddress, txtTotalPayable, txtContentNoData, txtDueDate);
             TextViewUtils.SetMuseoSans300Typeface(btnToggleDay, btnToggleMonth, txtNewRefreshMessage);
             TextViewUtils.SetMuseoSans500Typeface(txtRange, txtTotalPayableTitle, txtTotalPayableCurrency, btnViewBill, btnPay, btnLearnMore, txtTitleNoData, txtWhyThisAmt, btnNewRefresh);
@@ -1435,6 +1435,18 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             this.userActionsListener.OnByMonth();
         }
 
+        class ClickSpan : ClickableSpan
+        {
+            public Action<View> Click;
+            public override void OnClick(View widget)
+            {
+                if (Click != null)
+                {
+                    Click(widget);
+                }
+            }
+        }
+
         private void OnWhatIsThisTap()
         {
 
@@ -1473,13 +1485,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             {
                 TextViewUtils.SetMuseoSans300Typeface(dialogDetailsText);
             }
-
             SpannableString s = new SpannableString(dialogDetailsText.Text);
             string st = s.ToString();
             int i = st.IndexOf("FAQ");
-            s.SetSpan(new URLSpanNoUnderline(dialogDetailsText.Text),i,i+8,SpanTypes.ExclusiveExclusive);
-            dialogDetailsText.SetText(s,TextView.BufferType.Spannable);
-            dialogDetailsText.Click += delegate
+            var clickableSpan = new ClickSpan();
+            clickableSpan.Click += v =>
             {
                 if (textMessage != null && textMessage.Contains("faq"))
                 {
@@ -1499,6 +1509,36 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     }
                 }
             };
+
+            s.SetSpan(clickableSpan, i, i+8, SpanTypes.ExclusiveExclusive);
+            dialogDetailsText.TextFormatted = s;
+            dialogDetailsText.MovementMethod = new LinkMovementMethod();
+
+            //SpannableString s = new SpannableString(dialogDetailsText.Text);
+            //string st = s.ToString();
+            //int i = st.IndexOf("FAQ");
+            //s.SetSpan(new URLSpanNoUnderline(dialogDetailsText.Text),i,i+8,SpanTypes.ExclusiveExclusive);
+            //dialogDetailsText.SetText(s,TextView.BufferType.Spannable);
+            // dialogDetailsText.Click += delegate
+            // {
+            //     if (textMessage != null && textMessage.Contains("faq"))
+            //     {
+            //         //Lauch FAQ
+            //         int startIndex = textMessage.LastIndexOf("=") + 1;
+            //         int lastIndex = textMessage.LastIndexOf("}");
+            //         int lengthOfId = (lastIndex - startIndex) + 1;
+            //         if (lengthOfId < textMessage.Length)
+            //         {
+            //             string faqid = textMessage.Substring(startIndex, lengthOfId);
+            //             if (!string.IsNullOrEmpty(faqid))
+            //             {
+            //                 Intent faqIntent = new Intent(this.Activity, typeof(FAQListActivity));
+            //                 faqIntent.PutExtra(Constants.FAQ_ID_PARAM, faqid);
+            //                 Activity.StartActivity(faqIntent);
+            //             }
+            //         }
+            //     }
+            // };
             materialDialog.Show();
         }
 
@@ -1708,7 +1748,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
         public void ShowNoInternet()
         {
-            
+
             mNoDataLayout.Visibility = ViewStates.Gone;
             mSMNoDataLayout.Visibility = ViewStates.Gone;
             mChart.Visibility = ViewStates.Gone;
