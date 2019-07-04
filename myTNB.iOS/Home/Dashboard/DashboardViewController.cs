@@ -820,7 +820,7 @@ namespace myTNB.Dashboard
                 {
                     _dashboardMainComponent._billAndPaymentComponent._activity.Hide();
                 }
-#if true
+#if false
                 if (_dueAmount != null && _dueAmount?.d != null && _dueAmount?.d?.didSucceed == true
                         && _dueAmount?.d?.data != null)
                 {

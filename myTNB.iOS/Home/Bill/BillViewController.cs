@@ -364,6 +364,7 @@ namespace myTNB
                         _lblAddress.Text = string.Empty;
                         SetChargesValues(string.Format("{0} {1}", TNBGlobal.UNIT_CURRENCY, TNBGlobal.DEFAULT_VALUE)
                             , string.Format("{0} {1}", TNBGlobal.UNIT_CURRENCY, TNBGlobal.DEFAULT_VALUE)
+                            , string.Format("{0} {1}", TNBGlobal.UNIT_CURRENCY, TNBGlobal.DEFAULT_VALUE)
                             , TNBGlobal.DEFAULT_VALUE);
                         DisplayNoDataAlert();
                     }
@@ -387,8 +388,9 @@ namespace myTNB
 
             SetChargesValues(string.Format("{0} {1}", TNBGlobal.UNIT_CURRENCY, current.ToString("N2", CultureInfo.InvariantCulture))
                 , string.Format("{0} {1}", TNBGlobal.UNIT_CURRENCY, outstanding.ToString("N2", CultureInfo.InvariantCulture))
+                , string.Format("{0} {1}", TNBGlobal.UNIT_CURRENCY, payable.ToString("N2", CultureInfo.InvariantCulture))
                 , balance.ToString("N2", CultureInfo.InvariantCulture));
-#if true
+#if false
             if (_billingAccountDetailsList != null && _billingAccountDetailsList?.d != null && _billingAccountDetailsList?.d?.didSucceed == true
                 && _billingAccountDetailsList?.d?.data != null && _billingAccountDetailsList.d.data.IsItemisedBilling)
             {
