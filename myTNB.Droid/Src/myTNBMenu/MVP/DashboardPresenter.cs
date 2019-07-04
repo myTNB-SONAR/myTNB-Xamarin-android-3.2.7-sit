@@ -520,7 +520,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 
 #else
                 var amountDueApi = RestService.For<IAmountDueApi>(Constants.SERVER_URL.END_POINT);
-                var api = RestService.For<IUsageHistoryApi>(httpClient);
+                var api = RestService.For<IUsageHistoryApi>(Constants.SERVER_URL.END_POINT);
 #endif
 
                 var amountDueResponse = await amountDueApi.GetAccountDueAmount(new Requests.AccountDueAmountRequest()
