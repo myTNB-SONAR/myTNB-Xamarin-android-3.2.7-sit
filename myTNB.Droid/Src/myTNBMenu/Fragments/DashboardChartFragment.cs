@@ -1620,6 +1620,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     txtAccountStatus.TextFormatted = Html.FromHtml(accountStatusData.AccountStatusMessage);
                 }
                 txtWhatAccountStatus.Text = accountStatusData.AccountStatusModalTitle;
+                TextViewUtils.SetMuseoSans500Typeface(txtAccountStatus);
+                TextViewUtils.SetMuseoSans500Typeface(txtWhatAccountStatus);
                 txtWhatAccountStatus.Click += delegate
                 {
                     OnWhatIsThisAccountStatusTap(accountStatusData.AccountStatusModalMessage, accountStatusData.AccountStatusModalBtnText);
