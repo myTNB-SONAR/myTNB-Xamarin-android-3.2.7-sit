@@ -31,6 +31,8 @@ namespace myTNB
             , isFromReceiptScreen, isRefreshing;
         bool isBcrmAvailable = true;
 
+        bool hasBillHistoryData = false;
+
         public BillViewController(IntPtr handle) : base(handle)
         {
 
@@ -256,10 +258,19 @@ namespace myTNB
             ActivityIndicator.Show();
             GetBillHistory().ContinueWith(task =>
             {
-                if (_billingHistory?.d?.didSucceed == true && _billingHistory?.d?.data != null
-                   && _billingHistory?.d?.data?.Count > 0)
+                if (_billingHistory?.d?.didSucceed == true
+                && _billingHistory?.d?.status?.ToLower() == "success")
                 {
-                    DataManager.DataManager.SharedInstance.SaveToBillHistory(_billingHistory.d, DataManager.DataManager.SharedInstance.SelectedAccount.accNum);
+                    hasBillHistoryData = true;
+                    if (_billingHistory?.d?.data != null
+                    && _billingHistory?.d?.data?.Count > 0)
+                    {
+                        DataManager.DataManager.SharedInstance.SaveToBillHistory(_billingHistory.d, DataManager.DataManager.SharedInstance.SelectedAccount.accNum);
+                    }
+                }
+                else
+                {
+                    hasBillHistoryData = false;
                 }
                 InvokeOnMainThread(DisplayBillHistory);
             });
@@ -522,8 +533,13 @@ namespace myTNB
             {
                 InvokeOnMainThread(() =>
                 {
+                    bool isSuccessful = false;
+                    if (NetworkUtility.isReachable && hasBillHistoryData)
+                    {
+                        isSuccessful = true;
+                    }
                     billTableView.Source = new BillTableViewDataSource(_billingHistory
-                        , _paymentHistory, this, NetworkUtility.isReachable, isREAccount, isOwnedAccount);
+                        , _paymentHistory, this, isSuccessful, isREAccount, isOwnedAccount);
                     billTableView.ReloadData();
                 });
             });
@@ -747,6 +763,7 @@ namespace myTNB
                 _billingHistory = new BillHistoryResponseModel();
                 _billingHistory.d = cachedDetails;
                 DisplayBillHistory();
+                hasBillHistoryData = true;
             }
             else
             {
