@@ -5,6 +5,7 @@ using myTNB_Android.Src.AppLaunch.Models;
 using myTNB_Android.Src.Base.MVP;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.myTNBMenu.Models;
+using myTNB_Android.Src.myTNBMenu.Requests;
 using System;
 using System.Threading.Tasks;
 
@@ -102,6 +103,8 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
             /// </summary>
             /// <param name="selectedAccount"></param>
             void ShowOwnerBillsNoInternetConnection(AccountData selectedAccount);
+
+            void ShowOwnerDashboardNoInternetConnection(string accountName, bool amountDueFailed, string contentText, string btnText);
 
             /// <summary>
             /// NOT USED

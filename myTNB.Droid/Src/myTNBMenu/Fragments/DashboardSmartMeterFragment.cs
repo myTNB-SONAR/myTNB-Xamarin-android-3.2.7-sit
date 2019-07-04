@@ -1774,11 +1774,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             btnNewRefresh.Text = string.IsNullOrEmpty(buttonTxt)? txtBtnRefreshTitle : buttonTxt;
             if (Build.VERSION.SdkInt >= BuildVersionCodes.N)
             {
-                txtNewRefreshMessage.TextFormatted = string.IsNullOrEmpty(contentTxt)? Html.FromHtml(txtRefreshMsg, FromHtmlOptions.ModeLegacy) : Html.FromHtml(contentTxt, FromHtmlOptions.ModeLegacy);
+                txtNewRefreshMessage.TextFormatted = string.IsNullOrEmpty(contentTxt)? Html.FromHtml(GetString(Resource.String.text_new_refresh_content), FromHtmlOptions.ModeLegacy) : Html.FromHtml(contentTxt, FromHtmlOptions.ModeLegacy);
             }
             else
             {
-                txtNewRefreshMessage.TextFormatted = string.IsNullOrEmpty(contentTxt)? Html.FromHtml(txtRefreshMsg) : Html.FromHtml(contentTxt);
+                txtNewRefreshMessage.TextFormatted = string.IsNullOrEmpty(contentTxt)? Html.FromHtml(GetString(Resource.String.text_new_refresh_content)) : Html.FromHtml(contentTxt);
             }
             txtDueDate.Text = GetString(Resource.String.dashboard_chartview_due_date_not_available);
             txtTotalPayable.Text = GetString(Resource.String.dashboard_chartview_due_date_not_available);
