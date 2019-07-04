@@ -175,6 +175,8 @@ namespace myTNB_Android.Src.Notifications.MVP
             /// <param name="deviceId">string</param>
             void QueryOnLoad(string deviceId);
 
+            void QueryNotifications(string deviceId);
+
             /// <summary>
             /// Action to edit notification list
             /// </summary>

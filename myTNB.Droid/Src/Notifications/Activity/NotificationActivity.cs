@@ -134,6 +134,10 @@ namespace myTNB_Android.Src.Notifications.Activity
                 {
                     this.userActionsListener.QueryOnLoad(this.DeviceId());
                 }
+                else
+                {
+                    this.userActionsListener.QueryNotifications(this.DeviceId());
+                }
             }
             catch (Exception e)
             {
