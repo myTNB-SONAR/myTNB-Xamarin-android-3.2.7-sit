@@ -355,6 +355,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 DownTimeEntity pgCCEntity = DownTimeEntity.GetByCode(Constants.PG_CC_SYSTEM);
                 DownTimeEntity pgFPXEntity = DownTimeEntity.GetByCode(Constants.PG_FPX_SYSTEM);
                 
+                txtWhyThisAmt.Visibility = ViewStates.Gone;
+
                 if (selectedAccount != null)
                 {
 
@@ -364,17 +366,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         btnViewBill.Text = GetString(Resource.String.dashboard_chart_view_payment_advice);
                         txtUsageHistory.Visibility = ViewStates.Gone;
                         txtTotalPayableTitle.Text = GetString(Resource.String.title_payment_advice_amount);
-                        txtWhyThisAmt.Visibility = ViewStates.Gone;
                     }
                     else
                     {
                         btnPay.Visibility = ViewStates.Visible;
                         btnViewBill.Text = GetString(Resource.String.dashboard_chartview_view_bill);
-
-                        if (selectedAccount.OpenChargesTotal == 0.00)
-                        {
-                            txtWhyThisAmt.Visibility = ViewStates.Gone;
-                        }
                     }
 
 
@@ -1401,11 +1397,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         {
             try
             {
+                accountDueAmountData = accountDueAmount;
+                txtWhyThisAmt.Text = string.IsNullOrEmpty(accountDueAmount.WhyThisAmountLink) ? Activity.GetString(Resource.String.why_this_amount) : accountDueAmount.WhyThisAmountLink;
                 Date d = null;
                 try
                 {
-                    accountDueAmountData = accountDueAmount;
-                    txtWhyThisAmt.Text = string.IsNullOrEmpty(accountDueAmount.WhyThisAmountLink) ? Activity.GetString(Resource.String.why_this_amount) : accountDueAmount.WhyThisAmountLink;
                     d = dateParser.Parse(accountDueAmount.BillDueDate);
                 }
                 catch (ParseException e)
@@ -1468,6 +1464,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         }
                         else
                         {
+#if STUB
                             if(accountDueAmount.OpenChargesTotal == 0)
                             {
                                 txtWhyThisAmt.Visibility = ViewStates.Gone;
@@ -1476,6 +1473,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                             {
                                 txtWhyThisAmt.Visibility = ViewStates.Visible;
                             }
+#endif
                             txtTotalPayable.Text = decimalFormat.Format(accountDueAmount.AmountDue);
                             selectedAccount.AmtCustBal = accountDueAmount.AmountDue;
                             double calAmt = selectedAccount.AmtCustBal;

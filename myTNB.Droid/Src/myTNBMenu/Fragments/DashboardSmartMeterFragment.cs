@@ -415,6 +415,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 txtNewRefreshMessage.TextFormatted = Html.FromHtml(txtRefreshMsg);
             }
 
+            txtWhyThisAmt.Visibility = ViewStates.Gone;
+
             this.userActionsListener.Start();
             if (selectedAccount != null)
             {
@@ -425,17 +427,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     btnViewBill.Text = GetString(Resource.String.dashboard_chart_view_payment_advice);
                     txtUsageHistory.Visibility = ViewStates.Gone;
                     txtTotalPayableTitle.Text = GetString(Resource.String.title_payment_advice_amount);
-                    txtWhyThisAmt.Visibility = ViewStates.Gone;
                 }
                 else
                 {
                     btnPay.Visibility = ViewStates.Visible;
                     btnViewBill.Text = GetString(Resource.String.dashboard_chartview_view_bill);
-
-                    if (selectedAccount.OpenChargesTotal == 0.00)
-                    {
-                        txtWhyThisAmt.Visibility = ViewStates.Gone;
-                    }
                 }
 
                 if (bcrmEntity.IsDown)
@@ -2106,6 +2102,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         }
                         else
                         {
+#if STUB
                             if (accountDueAmount.OpenChargesTotal == 0)
                             {
                                 txtWhyThisAmt.Visibility = ViewStates.Gone;
@@ -2114,6 +2111,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                             {
                                 txtWhyThisAmt.Visibility = ViewStates.Visible;
                             }
+#endif
                             txtTotalPayable.Text = decimalFormat.Format(accountDueAmount.AmountDue);
                             selectedAccount.AmtCustBal = accountDueAmount.AmountDue;
                             double calAmt = selectedAccount.AmtCustBal;

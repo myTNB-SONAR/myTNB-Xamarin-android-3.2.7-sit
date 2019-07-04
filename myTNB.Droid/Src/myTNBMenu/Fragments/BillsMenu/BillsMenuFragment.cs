@@ -76,6 +76,13 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.BillsMenu
         [BindView(Resource.Id.txtOutstandingChargesRM)]
         TextView txtOutstandingChargesRM;
 
+	    [BindView(Resource.Id.txtTotalPayableTitle)]		
+        TextView txtTotalPayableTitle;		
+        [BindView(Resource.Id.txtTotalPayableContent)]		
+        TextView txtTotalPayableContent;		
+        [BindView(Resource.Id.txtTotalPayableRM)]		
+        TextView txtTotalPayableRM;
+
         [BindView(Resource.Id.txtTotalDueTitle)]
         TextView txtTotalDueTitle;
 
@@ -348,6 +355,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.BillsMenu
                     txtCurrentChargesRM, txtOutstandingChargesRM, 
                     txtMandatoryPaymentsRM, txtNewRefreshMessage
                     );
+
+                TextViewUtils.SetMuseoSans500Typeface(txtTotalPayableTitle);
+                TextViewUtils.SetMuseoSans300Typeface(txtTotalPayableContent, txtTotalPayableRM);
 
                 layoutManager = new LinearLayoutManager(Activity, LinearLayoutManager.Vertical, false);
                 mMandatoryPaymentDetailRecyclerView.SetLayoutManager(layoutManager);
@@ -628,7 +638,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.BillsMenu
                 txtAddress.Text = selectedAccount?.AddStreet;
                 txtCurrentChargesContent.Text = decimalFormatter.Format(selectedAccount?.AmtCurrentChg);
                 txtOutstandingChargesContent.Text = decimalFormatter.Format(selectedAccount?.AmtOutstandingChg);
+                txtTotalPayableContent.Text = decimalFormatter.Format(selectedAccount?.AmtPayableChg);
 
+#if STUB
                 if (selectedAccount?.OpenChargesTotal == 0)
                 {
                     mandatoryPaymentsLayout.Visibility = ViewStates.Gone;
@@ -655,6 +667,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.BillsMenu
                         mandatoryPaymentsToolTipsLayout.Visibility = ViewStates.Gone;
                     }
                 }
+#else
+                mandatoryPaymentsLayout.Visibility = ViewStates.Gone;
+                mMandatoryPaymentDetailRecyclerView.Visibility = ViewStates.Gone;
+                mandatoryPaymentsToolTipsLayout.Visibility = ViewStates.Gone;
+#endif
 
                 Date d = null;
                 try

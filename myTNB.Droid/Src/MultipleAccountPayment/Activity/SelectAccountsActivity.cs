@@ -243,6 +243,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
                 {
                     ShowError(this.GetString(Resource.String.error_select_5_accounts));
                 }
+#if STUB
                 else if (position != -2)
                 {
                     List<MPAccount> list = adapter.GetSelectedAccounts();
@@ -258,6 +259,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
                     }
                     UpdateTotal(list);
                 }
+#endif
                 else
                 {
                     List<MPAccount> list = adapter.GetSelectedAccounts();
@@ -359,7 +361,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
                 foreach (MPAccount account in selectedAccounts)
                 {
                     total += account.amount;
-#if true
+#if STUB
                     if (account.OpenChargeTotal != 0)
                     {
                         total += account.OpenChargeTotal;
@@ -528,7 +530,11 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
                                     accountAddress = customerBillingAccount.AccountStAddress,
                                     isSelected = selectedAccount.AccountNum.Equals(customerBillingAccount.AccNum) ? true && dueAmount > 0 : false,
                                     isTooltipShow = false,
+#if STUB
                                     OpenChargeTotal = account.OpenChargesTotal == 0.00 ? 0.00 : account.OpenChargesTotal,
+#else
+                                    OpenChargeTotal = 0.00,
+#endif
                                     amount = dueAmount,
                                     MandatoryChargesTitle = response.accountDueAmountResponse.MandatoryChargesTitle,
                                     MandatoryChargesMessage = response.accountDueAmountResponse.MandatoryChargesMessage,
