@@ -300,6 +300,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 DownTimeEntity bcrmEntity = DownTimeEntity.GetByCode(Constants.BCRM_SYSTEM);
                 DownTimeEntity pgCCEntity = DownTimeEntity.GetByCode(Constants.PG_CC_SYSTEM);
                 DownTimeEntity pgFPXEntity = DownTimeEntity.GetByCode(Constants.PG_FPX_SYSTEM);
+                
+                txtTotalPayableCurrency.Visibility = ViewStates.Gone;
 
                 btnNewRefresh.Text = txtBtnRefreshTitle;
                 if (Build.VERSION.SdkInt >= BuildVersionCodes.N)
@@ -1086,61 +1088,76 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
         public void ShowNoInternet()
         {
-            DownTimeEntity bcrmEnrity = DownTimeEntity.GetByCode(Constants.BCRM_SYSTEM);
-            txtDueDate.Text = GetString(Resource.String.dashboard_chartview_due_date_not_available);
-            if (bcrmEnrity != null && bcrmEnrity.IsDown)
+            try
             {
-                allGraphLayout.Visibility = ViewStates.Visible;
-                mNoDataLayout.Visibility = ViewStates.Gone;
-                mChart.Visibility = ViewStates.Gone;
-                mDownTimeLayout.Visibility = ViewStates.Visible;
-                txtAddress.Text = bcrmEnrity.DowntimeMessage;
-                txtAddress.Visibility = ViewStates.Visible;
-                refreshLayout.Visibility = ViewStates.Gone;
-            }
-            else
-            {
-                mNoDataLayout.Visibility = ViewStates.Gone;
-                mChart.Visibility = ViewStates.Gone;
-                mDownTimeLayout.Visibility = ViewStates.Gone;
-                refreshLayout.Visibility = ViewStates.Visible;
-                allGraphLayout.Visibility = ViewStates.Gone;
-                if(!hasAmtDue)
+                DownTimeEntity bcrmEnrity = DownTimeEntity.GetByCode(Constants.BCRM_SYSTEM);
+                txtDueDate.Text = GetString(Resource.String.dashboard_chartview_due_date_not_available);
+                if (bcrmEnrity != null && bcrmEnrity.IsDown)
                 {
-                    txtDueDate.Text = GetString(Resource.String.dashboard_chartview_due_date_not_available);
-                    txtTotalPayable.Text = GetString(Resource.String.dashboard_chartview_due_date_not_available);
-                    DisablePayButton();
-                    btnViewBill.Enabled = false;
-                    btnViewBill.Background = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.silver_chalice_button_outline);
-                    btnViewBill.SetTextColor(ContextCompat.GetColorStateList(this.Activity, Resource.Color.silverChalice));
+                    allGraphLayout.Visibility = ViewStates.Visible;
+                    mNoDataLayout.Visibility = ViewStates.Gone;
+                    mChart.Visibility = ViewStates.Gone;
+                    mDownTimeLayout.Visibility = ViewStates.Visible;
+                    txtAddress.Text = bcrmEnrity.DowntimeMessage;
+                    txtAddress.Visibility = ViewStates.Visible;
+                    refreshLayout.Visibility = ViewStates.Gone;
                 }
+                else
+                {
+                    mNoDataLayout.Visibility = ViewStates.Gone;
+                    mChart.Visibility = ViewStates.Gone;
+                    mDownTimeLayout.Visibility = ViewStates.Gone;
+                    refreshLayout.Visibility = ViewStates.Visible;
+                    allGraphLayout.Visibility = ViewStates.Gone;
+                    if(!hasAmtDue)
+                    {
+                        txtTotalPayableCurrency.Visibility = ViewStates.Gone;
+                        txtDueDate.Text = GetString(Resource.String.dashboard_chartview_due_date_not_available);
+                        txtTotalPayable.Text = GetString(Resource.String.dashboard_chartview_due_date_not_available);
+                        DisablePayButton();
+                        btnViewBill.Enabled = false;
+                        btnViewBill.Background = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.silver_chalice_button_outline);
+                        btnViewBill.SetTextColor(ContextCompat.GetColorStateList(this.Activity, Resource.Color.silverChalice));
+                    }
+                }
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
             }
         }
 
         public void ShowNoInternetWithWord(string contentTxt, string buttonTxt)
         {
-            hasAmtDue = false;
-            btnNewRefresh.Text = string.IsNullOrEmpty(buttonTxt)? txtBtnRefreshTitle : buttonTxt;
-            
-            if (Build.VERSION.SdkInt >= BuildVersionCodes.N)
+            try
             {
-                txtNewRefreshMessage.TextFormatted = string.IsNullOrEmpty(contentTxt)? Html.FromHtml(txtRefreshMsg, FromHtmlOptions.ModeLegacy) : Html.FromHtml(contentTxt, FromHtmlOptions.ModeLegacy);
+                hasAmtDue = false;
+                btnNewRefresh.Text = string.IsNullOrEmpty(buttonTxt)? txtBtnRefreshTitle : buttonTxt;
+                txtTotalPayableCurrency.Visibility = ViewStates.Gone;
+                if (Build.VERSION.SdkInt >= BuildVersionCodes.N)
+                {
+                    txtNewRefreshMessage.TextFormatted = string.IsNullOrEmpty(contentTxt)? Html.FromHtml(txtRefreshMsg, FromHtmlOptions.ModeLegacy) : Html.FromHtml(contentTxt, FromHtmlOptions.ModeLegacy);
+                }
+                else
+                {
+                    txtNewRefreshMessage.TextFormatted = string.IsNullOrEmpty(contentTxt)? Html.FromHtml(txtRefreshMsg) : Html.FromHtml(contentTxt);
+                }
+                mNoDataLayout.Visibility = ViewStates.Gone;
+                mChart.Visibility = ViewStates.Gone;
+                mDownTimeLayout.Visibility = ViewStates.Gone;
+                refreshLayout.Visibility = ViewStates.Visible;
+                allGraphLayout.Visibility = ViewStates.Gone;
+                txtDueDate.Text = GetString(Resource.String.dashboard_chartview_due_date_not_available);
+                txtTotalPayable.Text = GetString(Resource.String.dashboard_chartview_due_date_not_available);
+                DisablePayButton();
+                btnViewBill.Enabled = false;
+                btnViewBill.Background = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.silver_chalice_button_outline);
+                btnViewBill.SetTextColor(ContextCompat.GetColorStateList(this.Activity, Resource.Color.silverChalice));
             }
-            else
+            catch (System.Exception e)
             {
-                txtNewRefreshMessage.TextFormatted = string.IsNullOrEmpty(contentTxt)? Html.FromHtml(txtRefreshMsg) : Html.FromHtml(contentTxt);
+                Utility.LoggingNonFatalError(e);
             }
-            mNoDataLayout.Visibility = ViewStates.Gone;
-            mChart.Visibility = ViewStates.Gone;
-            mDownTimeLayout.Visibility = ViewStates.Gone;
-            refreshLayout.Visibility = ViewStates.Visible;
-            allGraphLayout.Visibility = ViewStates.Gone;
-            txtDueDate.Text = GetString(Resource.String.dashboard_chartview_due_date_not_available);
-            txtTotalPayable.Text = GetString(Resource.String.dashboard_chartview_due_date_not_available);
-            DisablePayButton();
-            btnViewBill.Enabled = false;
-            btnViewBill.Background = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.silver_chalice_button_outline);
-            btnViewBill.SetTextColor(ContextCompat.GetColorStateList(this.Activity, Resource.Color.silverChalice));
         }
 
         public bool HasNoInternet()
@@ -1363,6 +1380,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                             EnablePayButton();
                         }
                         btnViewBill.Enabled = true;
+                        txtTotalPayableCurrency.Visibility = ViewStates.Visible;
                         btnViewBill.SetTextColor(ContextCompat.GetColorStateList(this.Activity, Resource.Color.freshGreen));
                         btnViewBill.Background = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.light_green_outline_button_background);
                         if(!hasNoInternet)
