@@ -162,6 +162,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
         private bool hasAmtDue = false;
 
+        private bool amountDueFailed = false;
+
         DecimalFormat decimalFormat = new DecimalFormat("#,###,###,###,##0.00");
         SimpleDateFormat dateParser = new SimpleDateFormat("dd/MM/yyyy");
         SimpleDateFormat dateFormatter = new SimpleDateFormat("dd MMM yyyy");
@@ -207,6 +209,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             if (extras.ContainsKey(Constants.SELECTED_ACCOUNT))
             {
                 selectedAccount = JsonConvert.DeserializeObject<AccountData>(extras.GetString(Constants.SELECTED_ACCOUNT));
+            }
+
+            if (extras.ContainsKey(Constants.AMOUNT_DUE_FAILED_KEY))
+            {
+                amountDueFailed = extras.GetBoolean(Constants.AMOUNT_DUE_FAILED_KEY);
             }
 
             if (!hasNoInternet)
@@ -273,9 +280,38 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     bundle.PutString(Constants.REFRESH_BTN_MSG, response.Data.RefreshBtnText);
                 }
             }
+            else
+            {
+                bundle.PutString(Constants.REFRESH_MSG, "The graph must be tired. Tap the button below to help it out.");
+                bundle.PutString(Constants.REFRESH_BTN_MSG, "Refresh Now");
+            }
             if(accountData != null)
             {
                 bundle.PutString(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(accountData));
+            }
+            chartFragment.Arguments = bundle;
+            return chartFragment;
+        }
+
+        internal static DashboardChartFragment NewInstance(bool hasNoInternet, bool amountDueFailed, string contentTxt, string btnTxt)
+        {
+            DashboardChartFragment chartFragment = new DashboardChartFragment();
+            Bundle bundle = new Bundle();
+
+            bundle.PutBoolean(Constants.AMOUNT_DUE_FAILED_KEY, amountDueFailed);
+            bundle.PutBoolean(Constants.NO_INTERNET_CONNECTION, hasNoInternet);
+            if(string.IsNullOrEmpty(contentTxt))
+            {
+                bundle.PutString(Constants.REFRESH_MSG, "This page must be tired. Tap the button below to help it out.");
+            }
+            else
+            {
+                bundle.PutString(Constants.REFRESH_MSG, contentTxt);
+            }
+
+            if(!string.IsNullOrEmpty(btnTxt))
+            {
+                bundle.PutString(Constants.REFRESH_BTN_MSG, btnTxt);
             }
             chartFragment.Arguments = bundle;
             return chartFragment;
@@ -295,21 +331,31 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 TextViewUtils.SetMuseoSans300Typeface(btnToggleDay, btnToggleMonth, txtNewRefreshMessage);
                 TextViewUtils.SetMuseoSans500Typeface(txtRange, txtTotalPayableTitle, txtTotalPayableCurrency, btnViewBill, btnPay, btnLearnMore, txtTitleNoData, txtWhyThisAmt, btnNewRefresh);
 
+                if(amountDueFailed)
+                {
+                    txtWhyThisAmt.Visibility = ViewStates.Gone;
+                    ShowNoInternetWithWord(txtRefreshMsg, txtBtnRefreshTitle);
+                }
+                else
+                {
+                    btnNewRefresh.Text = txtBtnRefreshTitle;
+                    if (Build.VERSION.SdkInt >= BuildVersionCodes.N)
+                    {
+                        txtNewRefreshMessage.TextFormatted = Html.FromHtml(txtRefreshMsg, FromHtmlOptions.ModeLegacy);
+                    }
+                    else
+                    {
+                        txtNewRefreshMessage.TextFormatted = Html.FromHtml(txtRefreshMsg);
+                    }
+                }
+
                 this.userActionsListener?.Start();
 
                 DownTimeEntity bcrmEntity = DownTimeEntity.GetByCode(Constants.BCRM_SYSTEM);
                 DownTimeEntity pgCCEntity = DownTimeEntity.GetByCode(Constants.PG_CC_SYSTEM);
                 DownTimeEntity pgFPXEntity = DownTimeEntity.GetByCode(Constants.PG_FPX_SYSTEM);
-
-                btnNewRefresh.Text = txtBtnRefreshTitle;
-                if (Build.VERSION.SdkInt >= BuildVersionCodes.N)
-                {
-                    txtNewRefreshMessage.TextFormatted = Html.FromHtml(txtRefreshMsg, FromHtmlOptions.ModeLegacy);
-                }
-                else
-                {
-                    txtNewRefreshMessage.TextFormatted = Html.FromHtml(txtRefreshMsg);
-                }
+                
+                txtWhyThisAmt.Visibility = ViewStates.Gone;
 
                 if (selectedAccount != null)
                 {
@@ -320,17 +366,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         btnViewBill.Text = GetString(Resource.String.dashboard_chart_view_payment_advice);
                         txtUsageHistory.Visibility = ViewStates.Gone;
                         txtTotalPayableTitle.Text = GetString(Resource.String.title_payment_advice_amount);
-                        txtWhyThisAmt.Visibility = ViewStates.Gone;
                     }
                     else
                     {
                         btnPay.Visibility = ViewStates.Visible;
                         btnViewBill.Text = GetString(Resource.String.dashboard_chartview_view_bill);
-
-                        if (selectedAccount.OpenChargesTotal == 0.00)
-                        {
-                            txtWhyThisAmt.Visibility = ViewStates.Gone;
-                        }
                     }
 
 
@@ -380,7 +420,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                             }
                         }
                         this.userActionsListener.GetAccountStatus(selectedAccount.AccountNum);
-                        this.userActionsListener.OnLoadAmount(selectedAccount.AccountNum);
+                        if (!amountDueFailed)
+                        {
+                            this.userActionsListener.OnLoadAmount(selectedAccount.AccountNum);
+                        }
                     }
 
                     txtAddress.Click += delegate
@@ -1086,61 +1129,76 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
         public void ShowNoInternet()
         {
-            DownTimeEntity bcrmEnrity = DownTimeEntity.GetByCode(Constants.BCRM_SYSTEM);
-            txtDueDate.Text = GetString(Resource.String.dashboard_chartview_due_date_not_available);
-            if (bcrmEnrity != null && bcrmEnrity.IsDown)
+            try
             {
-                allGraphLayout.Visibility = ViewStates.Visible;
-                mNoDataLayout.Visibility = ViewStates.Gone;
-                mChart.Visibility = ViewStates.Gone;
-                mDownTimeLayout.Visibility = ViewStates.Visible;
-                txtAddress.Text = bcrmEnrity.DowntimeMessage;
-                txtAddress.Visibility = ViewStates.Visible;
-                refreshLayout.Visibility = ViewStates.Gone;
-            }
-            else
-            {
-                mNoDataLayout.Visibility = ViewStates.Gone;
-                mChart.Visibility = ViewStates.Gone;
-                mDownTimeLayout.Visibility = ViewStates.Gone;
-                refreshLayout.Visibility = ViewStates.Visible;
-                allGraphLayout.Visibility = ViewStates.Gone;
-                if(!hasAmtDue)
+                DownTimeEntity bcrmEnrity = DownTimeEntity.GetByCode(Constants.BCRM_SYSTEM);
+                txtDueDate.Text = GetString(Resource.String.dashboard_chartview_due_date_not_available);
+                if (bcrmEnrity != null && bcrmEnrity.IsDown)
                 {
-                    txtDueDate.Text = GetString(Resource.String.dashboard_chartview_due_date_not_available);
-                    txtTotalPayable.Text = GetString(Resource.String.dashboard_chartview_due_date_not_available);
-                    DisablePayButton();
-                    btnViewBill.Enabled = false;
-                    btnViewBill.Background = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.silver_chalice_button_outline);
-                    btnViewBill.SetTextColor(ContextCompat.GetColorStateList(this.Activity, Resource.Color.silverChalice));
+                    allGraphLayout.Visibility = ViewStates.Visible;
+                    mNoDataLayout.Visibility = ViewStates.Gone;
+                    mChart.Visibility = ViewStates.Gone;
+                    mDownTimeLayout.Visibility = ViewStates.Visible;
+                    txtAddress.Text = bcrmEnrity.DowntimeMessage;
+                    txtAddress.Visibility = ViewStates.Visible;
+                    refreshLayout.Visibility = ViewStates.Gone;
                 }
+                else
+                {
+                    mNoDataLayout.Visibility = ViewStates.Gone;
+                    mChart.Visibility = ViewStates.Gone;
+                    mDownTimeLayout.Visibility = ViewStates.Gone;
+                    refreshLayout.Visibility = ViewStates.Visible;
+                    allGraphLayout.Visibility = ViewStates.Gone;
+                    if(!hasAmtDue)
+                    {
+                        txtTotalPayableCurrency.Visibility = ViewStates.Gone;
+                        txtDueDate.Text = GetString(Resource.String.dashboard_chartview_due_date_not_available);
+                        txtTotalPayable.Text = GetString(Resource.String.dashboard_chartview_due_date_not_available);
+                        DisablePayButton();
+                        btnViewBill.Enabled = false;
+                        btnViewBill.Background = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.silver_chalice_button_outline);
+                        btnViewBill.SetTextColor(ContextCompat.GetColorStateList(this.Activity, Resource.Color.silverChalice));
+                    }
+                }
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
             }
         }
 
         public void ShowNoInternetWithWord(string contentTxt, string buttonTxt)
         {
-            hasAmtDue = false;
-            btnNewRefresh.Text = string.IsNullOrEmpty(buttonTxt)? txtBtnRefreshTitle : buttonTxt;
-            
-            if (Build.VERSION.SdkInt >= BuildVersionCodes.N)
+            try
             {
-                txtNewRefreshMessage.TextFormatted = string.IsNullOrEmpty(contentTxt)? Html.FromHtml(txtRefreshMsg, FromHtmlOptions.ModeLegacy) : Html.FromHtml(contentTxt, FromHtmlOptions.ModeLegacy);
+                hasAmtDue = false;
+                btnNewRefresh.Text = string.IsNullOrEmpty(buttonTxt)? txtBtnRefreshTitle : buttonTxt;
+                txtTotalPayableCurrency.Visibility = ViewStates.Gone;
+                if (Build.VERSION.SdkInt >= BuildVersionCodes.N)
+                {
+                    txtNewRefreshMessage.TextFormatted = string.IsNullOrEmpty(contentTxt)? Html.FromHtml(GetString(Resource.String.text_new_refresh_content), FromHtmlOptions.ModeLegacy) : Html.FromHtml(contentTxt, FromHtmlOptions.ModeLegacy);
+                }
+                else
+                {
+                    txtNewRefreshMessage.TextFormatted = string.IsNullOrEmpty(contentTxt)? Html.FromHtml(GetString(Resource.String.text_new_refresh_content)) : Html.FromHtml(contentTxt);
+                }
+                mNoDataLayout.Visibility = ViewStates.Gone;
+                mChart.Visibility = ViewStates.Gone;
+                mDownTimeLayout.Visibility = ViewStates.Gone;
+                refreshLayout.Visibility = ViewStates.Visible;
+                allGraphLayout.Visibility = ViewStates.Gone;
+                txtDueDate.Text = GetString(Resource.String.dashboard_chartview_due_date_not_available);
+                txtTotalPayable.Text = GetString(Resource.String.dashboard_chartview_due_date_not_available);
+                DisablePayButton();
+                btnViewBill.Enabled = false;
+                btnViewBill.Background = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.silver_chalice_button_outline);
+                btnViewBill.SetTextColor(ContextCompat.GetColorStateList(this.Activity, Resource.Color.silverChalice));
             }
-            else
+            catch (System.Exception e)
             {
-                txtNewRefreshMessage.TextFormatted = string.IsNullOrEmpty(contentTxt)? Html.FromHtml(txtRefreshMsg) : Html.FromHtml(contentTxt);
+                Utility.LoggingNonFatalError(e);
             }
-            mNoDataLayout.Visibility = ViewStates.Gone;
-            mChart.Visibility = ViewStates.Gone;
-            mDownTimeLayout.Visibility = ViewStates.Gone;
-            refreshLayout.Visibility = ViewStates.Visible;
-            allGraphLayout.Visibility = ViewStates.Gone;
-            txtDueDate.Text = GetString(Resource.String.dashboard_chartview_due_date_not_available);
-            txtTotalPayable.Text = GetString(Resource.String.dashboard_chartview_due_date_not_available);
-            DisablePayButton();
-            btnViewBill.Enabled = false;
-            btnViewBill.Background = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.silver_chalice_button_outline);
-            btnViewBill.SetTextColor(ContextCompat.GetColorStateList(this.Activity, Resource.Color.silverChalice));
         }
 
         public bool HasNoInternet()
@@ -1339,11 +1397,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         {
             try
             {
+                accountDueAmountData = accountDueAmount;
+                txtWhyThisAmt.Text = string.IsNullOrEmpty(accountDueAmount.WhyThisAmountLink) ? Activity.GetString(Resource.String.why_this_amount) : accountDueAmount.WhyThisAmountLink;
                 Date d = null;
                 try
                 {
-                    accountDueAmountData = accountDueAmount;
-                    txtWhyThisAmt.Text = string.IsNullOrEmpty(accountDueAmount.WhyThisAmountLink) ? Activity.GetString(Resource.String.why_this_amount) : accountDueAmount.WhyThisAmountLink;
                     d = dateParser.Parse(accountDueAmount.BillDueDate);
                 }
                 catch (ParseException e)
@@ -1363,6 +1421,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                             EnablePayButton();
                         }
                         btnViewBill.Enabled = true;
+                        txtTotalPayableCurrency.Visibility = ViewStates.Visible;
                         btnViewBill.SetTextColor(ContextCompat.GetColorStateList(this.Activity, Resource.Color.freshGreen));
                         btnViewBill.Background = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.light_green_outline_button_background);
                         if(!hasNoInternet)
@@ -1405,6 +1464,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         }
                         else
                         {
+#if STUB
                             if(accountDueAmount.OpenChargesTotal == 0)
                             {
                                 txtWhyThisAmt.Visibility = ViewStates.Gone;
@@ -1413,6 +1473,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                             {
                                 txtWhyThisAmt.Visibility = ViewStates.Visible;
                             }
+#endif
                             txtTotalPayable.Text = decimalFormat.Format(accountDueAmount.AmountDue);
                             selectedAccount.AmtCustBal = accountDueAmount.AmountDue;
                             double calAmt = selectedAccount.AmtCustBal;

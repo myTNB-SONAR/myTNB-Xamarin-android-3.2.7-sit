@@ -514,7 +514,6 @@ namespace myTNB_Android.Src.SummaryDashBoard.MVP
                 }
 
                 SummaryData(summaryDetails);
-                mView.IsLoadMoreButtonVisible(false);
             }
         }
     }

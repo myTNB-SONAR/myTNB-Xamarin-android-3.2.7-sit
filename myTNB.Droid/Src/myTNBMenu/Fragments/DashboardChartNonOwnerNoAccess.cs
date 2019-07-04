@@ -125,6 +125,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
                 txtTotalPayable.Text = decimalFormat.Format(selectedAccount.AmtCustBal);
 
+                txtWhyThisAmt.Visibility = ViewStates.Gone;
+
                 if (selectedAccount != null)
                 {
                     if (selectedAccount.AccountCategoryId.Equals("2"))
@@ -132,17 +134,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         btnPay.Visibility = ViewStates.Gone;
                         btnViewBill.Text = GetString(Resource.String.dashboard_chart_view_payment_advice);
                         txtTotalPayableTitle.Text = GetString(Resource.String.title_payment_advice_amount);
-                        txtWhyThisAmt.Visibility = ViewStates.Gone;
                     }
                     else
                     {
                         btnPay.Visibility = ViewStates.Visible;
                         btnViewBill.Text = GetString(Resource.String.dashboard_chartview_view_bill);
-
-                        if (selectedAccount.OpenChargesTotal == 0.00)
-                        {
-                            txtWhyThisAmt.Visibility = ViewStates.Gone;
-                        }
                     }
 
                     DownTimeEntity bcrmEntity = DownTimeEntity.GetByCode(Constants.BCRM_SYSTEM);
@@ -544,6 +540,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         }
                         else
                         {
+#if STUB
                             if(accountDueAmount.OpenChargesTotal == 0)
                             {
                                 txtWhyThisAmt.Visibility = ViewStates.Gone;
@@ -552,6 +549,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                             {
                                 txtWhyThisAmt.Visibility = ViewStates.Visible;
                             }
+#endif
                             txtTotalPayable.Text = decimalFormat.Format(accountDueAmount.AmountDue);
                             selectedAccount.AmtCustBal = accountDueAmount.AmountDue;
                             double calAmt = selectedAccount.AmtCustBal;

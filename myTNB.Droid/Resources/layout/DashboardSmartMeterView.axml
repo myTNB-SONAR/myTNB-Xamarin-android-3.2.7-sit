@@ -700,7 +700,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentStart="true"
                     android:layout_alignParentTop="true"
-                    android:text="@string/total_amount_due_bill"
+                    android:text="@string/total_amount_due"
                     android:textColor="@color/tunaGrey"
                     android:textSize="16sp" />
                 <TextView

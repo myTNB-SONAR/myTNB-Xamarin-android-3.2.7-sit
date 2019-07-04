@@ -419,6 +419,90 @@ namespace myTNB_Android.Src.Notifications.MVP
 
         }
 
+        public async void QueryNotifications(string deviceId)
+        {
+            cts = new CancellationTokenSource();
+            if (mView.IsActive())
+            {
+                this.mView.ShowQueryProgress();
+            }
+#if DEBUG
+            var httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
+            var api = RestService.For<AppLaunch.Api.INotificationApi>(httpClient);
+#else
+            var api = RestService.For<AppLaunch.Api.INotificationApi>(Constants.SERVER_URL.END_POINT);
+#endif
+
+            try
+            {
+                UserEntity loggedUser = UserEntity.GetActive();
+                var userNotificationResponse = await api.GetUserNotifications(new UserNotificationRequest()
+                {
+                    ApiKeyId = Constants.APP_CONFIG.API_KEY_ID,
+                    Email = loggedUser.Email,
+                    DeviceId = deviceId
+
+                }, cts.Token);
+
+                if (mView.IsActive())
+                {
+                    this.mView.HideQueryProgress();
+                }
+
+                if (userNotificationResponse != null && userNotificationResponse.Data != null && userNotificationResponse.Data.Status.ToUpper() == Constants.REFRESH_MODE)
+                {
+                    this.mView.ShowRefreshView(userNotificationResponse.Data.RefreshMessage, userNotificationResponse.Data.RefreshBtnText);
+                }
+                else if (userNotificationResponse != null && userNotificationResponse.Data != null && !userNotificationResponse.Data.IsError)
+                {
+                    if (userNotificationResponse.Data.Data.Count() > 0)
+                    {
+                        try
+                        {
+                            UserNotificationEntity.RemoveAll();
+                        }
+                        catch (System.Exception ne)
+                        {
+                            Utility.LoggingNonFatalError(ne);
+                        }
+                    }
+                    foreach (UserNotification userNotification in userNotificationResponse.Data.Data)
+                    {
+                        // tODO : SAVE ALL NOTIFICATIONs
+                        UserNotificationEntity.InsertOrReplace(userNotification);
+                    }
+                    this.mView.ShowView();
+                    this.mView.ClearAdapter();
+                    this.ShowFilteredList();
+                }
+                else
+                {
+                    this.mView.ShowRefreshView(null, null);
+                }
+            }
+            catch (ApiException apiException)
+            {
+
+                if (mView.IsActive())
+                {
+                    this.mView.HideQueryProgress();
+                }
+                this.mView.ShowRefreshView(null, null);
+                Utility.LoggingNonFatalError(apiException);
+            }
+            catch (Exception e)
+            {
+
+                if (mView.IsActive())
+                {
+                    this.mView.HideQueryProgress();
+                }
+                this.mView.ShowRefreshView(null, null);
+                Utility.LoggingNonFatalError(e);
+            }
+
+        }
+
         public void Start()
         {
             notificationApi = new NotificationApiCall();

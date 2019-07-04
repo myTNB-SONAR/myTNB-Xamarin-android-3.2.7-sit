@@ -508,82 +508,169 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 
         private async void LoadUsageHistory(CustomerBillingAccount accountSelected)
         {
-
-            cts = new CancellationTokenSource();
-#if STUB
-            var api = RestService.For<IUsageHistoryApi>(Constants.SERVER_URL.END_POINT);
-#elif DEBUG
-            var httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
-            var api = RestService.For<IUsageHistoryApi>(httpClient);
-
-#elif DEVELOP
-            var api = RestService.For<IUsageHistoryApi>(Constants.SERVER_URL.END_POINT);
-#else
-            var api = RestService.For<IUsageHistoryApi>(Constants.SERVER_URL.END_POINT);
-#endif
-
             try
             {
-                if (usageHistoryResponse == null)
-                {
-                    this.mView.ShowProgressDialog();
-                    usageHistoryResponse = await api.DoQuery(new Requests.UsageHistoryRequest(Constants.APP_CONFIG.API_KEY_ID)
-                    {
-                        AccountNum = accountSelected.AccNum
-                    }, cts.Token);
-                    if (usageHistoryResponse != null && usageHistoryResponse.Data.Status.Equals("success") && !usageHistoryResponse.Data.IsError)
-                    {
-                        UsageHistoryEntity smUsageModel = new UsageHistoryEntity();
-                        smUsageModel.Timestamp = DateTime.Now.ToLocalTime();
-                        smUsageModel.JsonResponse = JsonConvert.SerializeObject(usageHistoryResponse);
-                        smUsageModel.AccountNo = accountSelected.AccNum;
-                        UsageHistoryEntity.InsertItem(smUsageModel);
-                    }
-                }
+                cts = new CancellationTokenSource();
+                this.mView.ShowProgressDialog();
+                ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
+#if DEBUG
+                var httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
+                var amountDueApi = RestService.For<IAmountDueApi>(httpClient);
+                var api = RestService.For<IUsageHistoryApi>(httpClient);
 
-                if(usageHistoryResponse != null && usageHistoryResponse.Data != null && usageHistoryResponse.Data.Status.ToUpper() == Constants.REFRESH_MODE)
+#else
+                var amountDueApi = RestService.For<IAmountDueApi>(Constants.SERVER_URL.END_POINT);
+                var api = RestService.For<IUsageHistoryApi>(httpClient);
+#endif
+
+                var amountDueResponse = await amountDueApi.GetAccountDueAmount(new Requests.AccountDueAmountRequest()
+                {
+                    ApiKeyId = Constants.APP_CONFIG.API_KEY_ID,
+                    AccNum = accountSelected.AccNum
+
+                }, cts.Token);
+
+                if (amountDueResponse != null && amountDueResponse.Data != null && amountDueResponse.Data.Status.ToUpper() == Constants.REFRESH_MODE)
                 {
                     if (this.mView.IsActive())
                     {
                         this.mView.HideProgressDialog();
                     }
-                    if(accountSelected != null && !string.IsNullOrEmpty(accountSelected.AccNum))
-                    {
-                        this.mView.ShowOwnerDashboardNoInternetConnection(accountSelected.AccDesc, usageHistoryResponse,  AccountData.Copy(accountSelected, true));
-                    }
-                    else
-                    {
-                        this.mView.ShowOwnerDashboardNoInternetConnection(accountSelected.AccDesc, usageHistoryResponse, null);
-                    }
+                    this.mView.ShowOwnerDashboardNoInternetConnection(accountSelected.AccDesc, true, amountDueResponse.Data.RefreshMessage, amountDueResponse.Data.RefreshBtnText);
                 }
-                else if (usageHistoryResponse != null && usageHistoryResponse.Data.Status.Equals("success") && !usageHistoryResponse.Data.IsError)
+                else if (!amountDueResponse.Data.IsError)
                 {
-                    if (this.mView.IsActive())
+                    cts = new CancellationTokenSource();
+
+                    try
                     {
-                        this.mView.HideProgressDialog();
-                    }
-                    if (currentBottomNavigationMenu == Resource.Id.menu_dashboard)
-                    {
-                        this.mView.ShowAccountName();
-                        this.mView.SetToolbarTitle(Resource.String.dashboard_menu_activity_title);
-                        if (smDataError)
+                        if (usageHistoryResponse == null)
                         {
-                            smDataError = false;
-                            this.mView.ShowChartWithError(usageHistoryResponse.Data.UsageHistoryData, AccountData.Copy(accountSelected, true), smErrorCode, smErrorMessage);
+                            usageHistoryResponse = await api.DoQuery(new Requests.UsageHistoryRequest(Constants.APP_CONFIG.API_KEY_ID)
+                            {
+                                AccountNum = accountSelected.AccNum
+                            }, cts.Token);
+                            if (usageHistoryResponse != null && usageHistoryResponse.Data.Status.Equals("success") && !usageHistoryResponse.Data.IsError)
+                            {
+                                UsageHistoryEntity smUsageModel = new UsageHistoryEntity();
+                                smUsageModel.Timestamp = DateTime.Now.ToLocalTime();
+                                smUsageModel.JsonResponse = JsonConvert.SerializeObject(usageHistoryResponse);
+                                smUsageModel.AccountNo = accountSelected.AccNum;
+                                UsageHistoryEntity.InsertItem(smUsageModel);
+                            }
+                        }
+
+                        if (usageHistoryResponse != null && usageHistoryResponse.Data != null && usageHistoryResponse.Data.Status.ToUpper() == Constants.REFRESH_MODE)
+                        {
+                            if (this.mView.IsActive())
+                            {
+                                this.mView.HideProgressDialog();
+                            }
+                            if (accountSelected != null && !string.IsNullOrEmpty(accountSelected.AccNum))
+                            {
+                                this.mView.ShowOwnerDashboardNoInternetConnection(accountSelected.AccDesc, usageHistoryResponse, AccountData.Copy(accountSelected, true));
+                            }
+                            else
+                            {
+                                this.mView.ShowOwnerDashboardNoInternetConnection(accountSelected.AccDesc, usageHistoryResponse, null);
+                            }
+                        }
+                        else if (usageHistoryResponse != null && usageHistoryResponse.Data.Status.Equals("success") && !usageHistoryResponse.Data.IsError)
+                        {
+                            if (this.mView.IsActive())
+                            {
+                                this.mView.HideProgressDialog();
+                            }
+                            if (currentBottomNavigationMenu == Resource.Id.menu_dashboard)
+                            {
+                                this.mView.ShowAccountName();
+                                this.mView.SetToolbarTitle(Resource.String.dashboard_menu_activity_title);
+                                if (smDataError)
+                                {
+                                    smDataError = false;
+                                    this.mView.ShowChartWithError(usageHistoryResponse.Data.UsageHistoryData, AccountData.Copy(accountSelected, true), smErrorCode, smErrorMessage);
+                                }
+                                else
+                                {
+                                    this.mView.ShowChart(usageHistoryResponse.Data.UsageHistoryData, AccountData.Copy(accountSelected, true));
+                                }
+                                usageHistoryResponse = null;
+                            }
+                            else if (currentBottomNavigationMenu == Resource.Id.menu_bill)
+                            {
+                                this.mView.ShowAccountName();
+                                this.mView.SetToolbarTitle(Resource.String.bill_menu_activity_title);
+                                LoadBills(accountSelected);
+                            }
+                            this.mView.SetAccountName(accountSelected.AccDesc);
                         }
                         else
                         {
-                            this.mView.ShowChart(usageHistoryResponse.Data.UsageHistoryData, AccountData.Copy(accountSelected, true));
+                            if (this.mView.IsActive())
+                            {
+                                this.mView.HideProgressDialog();
+                            }
+                            if (accountSelected != null && !string.IsNullOrEmpty(accountSelected.AccNum))
+                            {
+                                this.mView.ShowOwnerDashboardNoInternetConnection(accountSelected.AccDesc, null, AccountData.Copy(accountSelected, true));
+                            }
+                            else
+                            {
+                                this.mView.ShowOwnerDashboardNoInternetConnection(accountSelected.AccDesc, null, null);
+                            }
+                            this.mView.SetAccountName(accountSelected.AccDesc);
                         }
-                        usageHistoryResponse = null;
                     }
-                    else if (currentBottomNavigationMenu == Resource.Id.menu_bill)
+                    catch (System.OperationCanceledException e)
                     {
-                        this.mView.ShowAccountName();
-                        this.mView.SetToolbarTitle(Resource.String.bill_menu_activity_title);
-                        LoadBills(accountSelected);
+                        if (this.mView.IsActive())
+                        {
+                            this.mView.HideProgressDialog();
+                        }
+                        Log.Debug(TAG, "Cancelled Exception");
+                        if (accountSelected != null && !string.IsNullOrEmpty(accountSelected.AccNum))
+                        {
+                            this.mView.ShowOwnerDashboardNoInternetConnection(accountSelected.AccDesc, null, AccountData.Copy(accountSelected, true));
+                        }
+                        else
+                        {
+                            this.mView.ShowOwnerDashboardNoInternetConnection(accountSelected.AccDesc, null, null);
+                        }
+                        Utility.LoggingNonFatalError(e);
                     }
-                    this.mView.SetAccountName(accountSelected.AccDesc);
+                    catch (ApiException apiException)
+                    {
+                        if (this.mView.IsActive())
+                        {
+                            this.mView.HideProgressDialog();
+                        }
+                        if (accountSelected != null && !string.IsNullOrEmpty(accountSelected.AccNum))
+                        {
+                            this.mView.ShowOwnerDashboardNoInternetConnection(accountSelected.AccDesc, null, AccountData.Copy(accountSelected, true));
+                        }
+                        else
+                        {
+                            this.mView.ShowOwnerDashboardNoInternetConnection(accountSelected.AccDesc, null, null);
+                        }
+                        Utility.LoggingNonFatalError(apiException);
+                    }
+                    catch (System.Exception e)
+                    {
+                        Log.Debug(TAG, "Stack " + e.StackTrace);
+                        if (this.mView.IsActive())
+                        {
+                            this.mView.HideProgressDialog();
+                        }
+                        if (accountSelected != null && !string.IsNullOrEmpty(accountSelected.AccNum))
+                        {
+                            this.mView.ShowOwnerDashboardNoInternetConnection(accountSelected.AccDesc, null, AccountData.Copy(accountSelected, true));
+                        }
+                        else
+                        {
+                            this.mView.ShowOwnerDashboardNoInternetConnection(accountSelected.AccDesc, null, null);
+                        }
+                        Utility.LoggingNonFatalError(e);
+                    }
                 }
                 else
                 {
@@ -591,15 +678,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                     {
                         this.mView.HideProgressDialog();
                     }
-                    if(accountSelected != null && !string.IsNullOrEmpty(accountSelected.AccNum))
-                    {
-                        this.mView.ShowOwnerDashboardNoInternetConnection(accountSelected.AccDesc, null,  AccountData.Copy(accountSelected, true));
-                    }
-                    else
-                    {
-                        this.mView.ShowOwnerDashboardNoInternetConnection(accountSelected.AccDesc, null, null);
-                    }
-                    this.mView.SetAccountName(accountSelected.AccDesc);
+                    this.mView.ShowOwnerDashboardNoInternetConnection(accountSelected.AccDesc, true, null, null);
                 }
             }
             catch (System.OperationCanceledException e)
@@ -608,50 +687,30 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                 {
                     this.mView.HideProgressDialog();
                 }
-                Log.Debug(TAG, "Cancelled Exception");
-                if(accountSelected != null && !string.IsNullOrEmpty(accountSelected.AccNum))
-                {
-                    this.mView.ShowOwnerDashboardNoInternetConnection(accountSelected.AccDesc, null,  AccountData.Copy(accountSelected, true));
-                }
-                else
-                {
-                    this.mView.ShowOwnerDashboardNoInternetConnection(accountSelected.AccDesc, null, null);
-                }
+                this.mView.ShowOwnerDashboardNoInternetConnection(accountSelected.AccDesc, true, null, null);
                 Utility.LoggingNonFatalError(e);
             }
             catch (ApiException apiException)
             {
+                // ADD HTTP CONNECTION EXCEPTION HERE
                 if (this.mView.IsActive())
                 {
                     this.mView.HideProgressDialog();
                 }
-                if(accountSelected != null && !string.IsNullOrEmpty(accountSelected.AccNum))
-                {
-                    this.mView.ShowOwnerDashboardNoInternetConnection(accountSelected.AccDesc, null,  AccountData.Copy(accountSelected, true));
-                }
-                else
-                {
-                    this.mView.ShowOwnerDashboardNoInternetConnection(accountSelected.AccDesc, null, null);
-                }
+                this.mView.ShowOwnerDashboardNoInternetConnection(accountSelected.AccDesc, true, null, null);
                 Utility.LoggingNonFatalError(apiException);
             }
-            catch (System.Exception e)
+            catch (Exception e)
             {
-                Log.Debug(TAG, "Stack " + e.StackTrace);
+                // ADD UNKNOWN EXCEPTION HERE
                 if (this.mView.IsActive())
                 {
                     this.mView.HideProgressDialog();
                 }
-                if(accountSelected != null && !string.IsNullOrEmpty(accountSelected.AccNum))
-                {
-                    this.mView.ShowOwnerDashboardNoInternetConnection(accountSelected.AccDesc, null,  AccountData.Copy(accountSelected, true));
-                }
-                else
-                {
-                    this.mView.ShowOwnerDashboardNoInternetConnection(accountSelected.AccDesc, null, null);
-                }
+                this.mView.ShowOwnerDashboardNoInternetConnection(accountSelected.AccDesc, true, null, null);
                 Utility.LoggingNonFatalError(e);
             }
+
         }
 
 
