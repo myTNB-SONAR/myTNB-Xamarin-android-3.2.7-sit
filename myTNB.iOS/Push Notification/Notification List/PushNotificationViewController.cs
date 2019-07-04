@@ -514,6 +514,7 @@ namespace myTNB.PushNotification
                                     _isDeletionMode = false;
                                     _isSelectionMode = isMultiple;
                                     _isAllSelected = false;
+                                    OnDismiss();
                                 }
                                 else
                                 {
@@ -555,6 +556,7 @@ namespace myTNB.PushNotification
                                     UpdateNotificationDisplay(true);
                                     NSNotificationCenter.DefaultCenter.PostNotificationName("NotificationDidChange", new NSObject());
                                     DisplayToast("PushNotification_NotificationsDeleted".Translate());
+                                    OnDismiss();
                                 }
                                 else
                                 {
