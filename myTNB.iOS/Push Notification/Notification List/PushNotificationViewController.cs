@@ -86,7 +86,7 @@ namespace myTNB.PushNotification
                     }
                     else
                     {
-                       DisplayNoDataAlert();
+                        DisplayNoDataAlert();
                     }
                 });
             });
@@ -777,6 +777,13 @@ namespace myTNB.PushNotification
                 pushNotificationTableView.ReloadData();
                 UpdateTitleRightIconImage();
             }
+        }
+
+        internal void UpdateSectionHeaderWidget()
+        {
+            int selectedCount = _notifications.FindAll(x => x.IsSelected == true).Count;
+            _isAllSelected = selectedCount != _notifications.Count;
+            OnCheckboxSelect(true);
         }
 
         /// <summary>
