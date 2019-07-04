@@ -36,6 +36,12 @@ namespace myTNB_Android.Src.Notifications.Activity
         HIDE
     }
 
+    enum EnableNotificationState
+    {
+        ENABLE,
+        DISABLED
+    }
+
     enum SelectNotificationStates
     {
         SELECTED,
@@ -96,6 +102,7 @@ namespace myTNB_Android.Src.Notifications.Activity
         private MaterialDialog deleteAllDialog;
         private MaterialDialog markReadAllDialog;
         private int selectedNotification;
+        private static EnableNotificationState enableNotificationState = EnableNotificationState.DISABLED;
 
         //========================================== FORM LIFECYCLE ==================================================================================
 
@@ -158,7 +165,8 @@ namespace myTNB_Android.Src.Notifications.Activity
                 case Resource.Id.action_notification_edit_delete:
                     if (editState == EditNotificationStates.HIDE)
                     {
-                        notificationMenu.FindItem(Resource.Id.action_notification_edit_delete).SetIcon(Resource.Drawable.ic_header_cancel);
+                        notificationMenu.FindItem(Resource.Id.action_notification_read).SetIcon(Resource.Drawable.ic_header_markread_disabled).SetVisible(true);
+                        notificationMenu.FindItem(Resource.Id.action_notification_edit_delete).SetIcon(Resource.Drawable.ic_header_delete_disabled).SetVisible(true);
                         ShowSelectAllOption(ViewStates.Visible);
                         notificationRecyclerAdapter.ShowSelectButtons(true);
                         editState = EditNotificationStates.SHOW;
@@ -168,26 +176,47 @@ namespace myTNB_Android.Src.Notifications.Activity
                     }
                     else
                     {
-                        itemTouchHelper.AttachToRecyclerView(notificationRecyclerView);
-                        if (GetSelectedNotificationCount() > 0)
+                        if (enableNotificationState == EnableNotificationState.ENABLE)
                         {
-                            ShowDeleteAllNotificationDialog();
-                        }
-                        else
-                        {
-                            notificationMenu.FindItem(Resource.Id.action_notification_edit_delete).SetIcon(Resource.Drawable.ic_action_select_all);
-                            ShowSelectAllOption(ViewStates.Gone);
-                            notificationRecyclerAdapter.ShowSelectButtons(false);
-                            editState = EditNotificationStates.HIDE;
-                            SetToolBarTitle(GetString(Resource.String.notification_activity_title));
-                            notificationRecyclerAdapter.SetClickable(true);
+                            itemTouchHelper.AttachToRecyclerView(notificationRecyclerView);
+                            if (GetSelectedNotificationCount() > 0)
+                            {
+                                ShowDeleteAllNotificationDialog();
+                            }
+                            else
+                            {
+                                notificationMenu.FindItem(Resource.Id.action_notification_edit_delete).SetIcon(Resource.Drawable.ic_action_select_all);
+                                ShowSelectAllOption(ViewStates.Gone);
+                                notificationRecyclerAdapter.ShowSelectButtons(false);
+                                editState = EditNotificationStates.HIDE;
+                                SetToolBarTitle(GetString(Resource.String.notification_activity_title));
+                                notificationRecyclerAdapter.SetClickable(true);
+                            }
                         }
                     }
                     break;
                 case Resource.Id.action_notification_read:
-                    if (IsValidReadNotifications())
+                    if (enableNotificationState == EnableNotificationState.ENABLE)
                     {
-                        ShowReadAllNotificationDialog();
+                        if (IsValidReadNotifications())
+                        {
+                            this.mPresenter.ReadAllSelectedNotifications();
+                        }
+                    }
+                    break;
+                default:
+                    {
+                        if (editState == EditNotificationStates.SHOW)
+                        {
+                            editState = EditNotificationStates.HIDE;
+                            notificationMenu.FindItem(Resource.Id.action_notification_edit_delete).SetIcon(Resource.Drawable.ic_action_select_all);
+                            notificationMenu.FindItem(Resource.Id.action_notification_read).SetVisible(false);
+                            ShowSelectAllOption(ViewStates.Gone);
+                            notificationRecyclerAdapter.ShowSelectButtons(false);
+                            SetToolBarTitle(GetString(Resource.String.notification_activity_title));
+                            notificationRecyclerAdapter.SetClickable(true);
+                            return true;
+                        }
                     }
                     break;
             }
@@ -404,6 +433,7 @@ namespace myTNB_Android.Src.Notifications.Activity
             ShowSelectAllOption(ViewStates.Gone);
             editState = EditNotificationStates.HIDE;
             selectNotificationState = SelectNotificationStates.UNSELECTED;
+            enableNotificationState = EnableNotificationState.DISABLED;
             selectAllCheckboxButton.SetOnCheckedChangeListener(null);
             selectAllCheckboxButton.Checked = false;
             selectAllCheckboxButton.SetOnCheckedChangeListener(this);
@@ -792,7 +822,7 @@ namespace myTNB_Android.Src.Notifications.Activity
 				UpdatedSelectedNotifications();
             }
         }
-
+        
         private void ShowReadAndDeleteOption(bool show)
         {
             if (editState == EditNotificationStates.SHOW)
@@ -800,12 +830,26 @@ namespace myTNB_Android.Src.Notifications.Activity
                 if (show)
                 {
                     notificationMenu.FindItem(Resource.Id.action_notification_edit_delete).SetIcon(Resource.Drawable.ic_header_delete);
-                    notificationMenu.FindItem(Resource.Id.action_notification_read).SetVisible(true);
+                    notificationMenu.FindItem(Resource.Id.action_notification_edit_delete).SetEnabled(true);
+                    if (IsValidReadNotifications())
+                    {
+                        notificationMenu.FindItem(Resource.Id.action_notification_read).SetIcon(Resource.Drawable.ic_header_mark_read);
+                        notificationMenu.FindItem(Resource.Id.action_notification_read).SetEnabled(true);
+                    }
+                    else
+                    {
+                        notificationMenu.FindItem(Resource.Id.action_notification_read).SetIcon(Resource.Drawable.ic_header_markread_disabled);
+                        notificationMenu.FindItem(Resource.Id.action_notification_read).SetEnabled(false);
+                    }
+                    enableNotificationState = EnableNotificationState.ENABLE;
                 }
                 else
                 {
-                    notificationMenu.FindItem(Resource.Id.action_notification_edit_delete).SetIcon(Resource.Drawable.ic_header_cancel);
-                    notificationMenu.FindItem(Resource.Id.action_notification_read).SetVisible(false);
+                    notificationMenu.FindItem(Resource.Id.action_notification_read).SetIcon(Resource.Drawable.ic_header_markread_disabled);
+                    notificationMenu.FindItem(Resource.Id.action_notification_edit_delete).SetIcon(Resource.Drawable.ic_header_delete_disabled);
+                    notificationMenu.FindItem(Resource.Id.action_notification_edit_delete).SetEnabled(false);
+                    notificationMenu.FindItem(Resource.Id.action_notification_read).SetEnabled(false);
+                    enableNotificationState = EnableNotificationState.DISABLED;
                 }
             }
         }
