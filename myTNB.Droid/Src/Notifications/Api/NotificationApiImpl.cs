@@ -36,16 +36,6 @@ namespace myTNB_Android.Src.Notifications.Api
                     NotificationType = userNotificationData.NotificationType
                 });
 			}
-            //var response = await notificationApi.DeleteUserNotification(new NotificationDeleteRequest
-            //{
-            //    ApiKeyID = Constants.APP_CONFIG.API_KEY_ID,
-            //    Email = UserEntity.GetActive().Email,
-            //    DeviceId = deviceId,
-            //    SSPUserId = UserEntity.GetActive().UserID,
-            //    UpdatedNotifications = updatedNotifications
-            //}, new CancellationTokenSource());
-
-            //return response;
             return notificationApi.DeleteUserNotification(new NotificationDeleteRequest
             {
                 ApiKeyID = Constants.APP_CONFIG.API_KEY_ID,

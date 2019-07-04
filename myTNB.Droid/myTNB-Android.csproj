@@ -41,8 +41,6 @@
     <AndroidSupportedAbis />
     <EnableLLVM>false</EnableLLVM>
     <MandroidI18n />
-    <AotAssemblies>false</AotAssemblies>
-    <BundleAssemblies>false</BundleAssemblies>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugSymbols>True</DebugSymbols>
@@ -1117,6 +1115,16 @@
     <AndroidResource Include="Resources\drawable-xxxhdpi\empty_state_notification.png" />
     <AndroidResource Include="Resources\drawable-xxxhdpi\ic_action_select_all.png" />
     <AndroidResource Include="Resources\drawable-xxxhdpi\ic_header_markread.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\ic_header_delete_disabled.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\ic_header_markread_disabled.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\ic_header_delete_disabled.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\ic_header_markread_disabled.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_header_delete_disabled.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_header_markread_disabled.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_header_delete_disabled.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_header_markread_disabled.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\ic_header_delete_disabled.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\ic_header_markread_disabled.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

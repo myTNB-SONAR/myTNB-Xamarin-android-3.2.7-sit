@@ -209,12 +209,13 @@ namespace myTNB_Android.Src.Notifications.Activity
                         if (editState == EditNotificationStates.SHOW)
                         {
                             editState = EditNotificationStates.HIDE;
-                            notificationMenu.FindItem(Resource.Id.action_notification_edit_delete).SetIcon(Resource.Drawable.ic_action_select_all);
+                            notificationMenu.FindItem(Resource.Id.action_notification_edit_delete).SetIcon(Resource.Drawable.ic_action_select_all).SetEnabled(true);
                             notificationMenu.FindItem(Resource.Id.action_notification_read).SetVisible(false);
                             ShowSelectAllOption(ViewStates.Gone);
                             notificationRecyclerAdapter.ShowSelectButtons(false);
                             SetToolBarTitle(GetString(Resource.String.notification_activity_title));
                             notificationRecyclerAdapter.SetClickable(true);
+                            notificationRecyclerAdapter.SelectAllNotifications(false);
                             return true;
                         }
                     }
@@ -319,37 +320,44 @@ namespace myTNB_Android.Src.Notifications.Activity
             string dialogTitle, dialogContent;
             if (GetSelectedNotificationCount() == 1)
             {
-                dialogTitle = GetString(Resource.String.Notification_Delete_Dialog_Title);
-                dialogContent = GetString(Resource.String.Notification_Delete_Dialog_Content);
+                this.mPresenter.DeleteAllSelectedNotifications();
             }
             else
             {
-                dialogTitle = GetString(Resource.String.Notification_Delete_All_Dialog_Title);
-                dialogContent = GetString(Resource.String.Notification_Delete_All_Dialog_Content);
-            }
+                if (GetSelectedNotificationCount() == notificationRecyclerAdapter.GetAllNotifications().Count)
+                {
+                    dialogTitle = GetString(Resource.String.Notification_Delete_All_Dialog_Title);
+                    dialogContent = GetString(Resource.String.Notification_Delete_All_Dialog_Content);
+                }
+                else
+                {
+                    dialogTitle = GetString(Resource.String.Notification_Delete_Dialog_Title);
+                    dialogContent = GetString(Resource.String.Notification_Delete_Dialog_Content);
+                }
 
-            if (deleteAllDialog != null)
-            {
-                deleteAllDialog.SetTitle(dialogTitle);
-                deleteAllDialog.SetContent(dialogContent);
-                deleteAllDialog.Show();
-            }
-            else
-            {
-                deleteAllDialog = new MaterialDialog.Builder(this)
-                    .Title(dialogTitle)
-                    .Content(dialogContent)
-                    .PositiveText(GetString(Resource.String.Common_Dialog_Yes))
-                    .PositiveColor(Resource.Color.blue)
-                    .NegativeText(GetString(Resource.String.Common_Dialog_No))
-                    .NegativeColor(Resource.Color.blue)
-                    .OnPositive((dialog, which) =>
-                    {
-                        dialog.Dismiss();
-                        this.mPresenter.DeleteAllSelectedNotifications();
-                    })
-                    .Cancelable(false)
-                    .Show();
+                if (deleteAllDialog != null)
+                {
+                    deleteAllDialog.SetTitle(dialogTitle);
+                    deleteAllDialog.SetContent(dialogContent);
+                    deleteAllDialog.Show();
+                }
+                else
+                {
+                    deleteAllDialog = new MaterialDialog.Builder(this)
+                        .Title(dialogTitle)
+                        .Content(dialogContent)
+                        .PositiveText(GetString(Resource.String.Common_Dialog_Yes))
+                        .PositiveColor(Resource.Color.blue)
+                        .NegativeText(GetString(Resource.String.Common_Dialog_No))
+                        .NegativeColor(Resource.Color.blue)
+                        .OnPositive((dialog, which) =>
+                        {
+                            dialog.Dismiss();
+                            this.mPresenter.DeleteAllSelectedNotifications();
+                        })
+                        .Cancelable(false)
+                        .Show();
+                }
             }
         }
 
@@ -542,27 +550,43 @@ namespace myTNB_Android.Src.Notifications.Activity
                     notificationData.IsRead = true;
                 }
             }
+            notificationRecyclerAdapter.NotifyDataSetChanged();
+            editState = EditNotificationStates.HIDE;
+            notificationMenu.FindItem(Resource.Id.action_notification_edit_delete).SetIcon(Resource.Drawable.ic_action_select_all).SetEnabled(true);
+            notificationMenu.FindItem(Resource.Id.action_notification_read).SetVisible(false);
+            ShowSelectAllOption(ViewStates.Gone);
+            notificationRecyclerAdapter.ShowSelectButtons(false);
+            SetToolBarTitle(GetString(Resource.String.notification_activity_title));
+            notificationRecyclerAdapter.SetClickable(true);
+            notificationRecyclerAdapter.SelectAllNotifications(false);
             if (IsActive())
             {
                 HideProgress();
             }
-            notificationRecyclerAdapter.NotifyDataSetChanged();
         }
 
         public void UpdateDeleteNotifications()
         {
             notificationRecyclerAdapter.GetAllNotifications().RemoveAll(notification => notification.IsSelected == true);
-            if (IsActive())
-            {
-                HideProgress();
-            }
             notificationRecyclerAdapter.NotifyDataSetChanged();
+            editState = EditNotificationStates.HIDE;
+            notificationMenu.FindItem(Resource.Id.action_notification_edit_delete).SetIcon(Resource.Drawable.ic_action_select_all).SetEnabled(true);
+            notificationMenu.FindItem(Resource.Id.action_notification_read).SetVisible(false);
+            ShowSelectAllOption(ViewStates.Gone);
+            notificationRecyclerAdapter.ShowSelectButtons(false);
+            SetToolBarTitle(GetString(Resource.String.notification_activity_title));
+            notificationRecyclerAdapter.SetClickable(true);
+            notificationRecyclerAdapter.SelectAllNotifications(false);
             if (notificationRecyclerAdapter.GetAllNotifications().Count == 0)
             {
                 ClearAdapter();
                 notificationMenu.FindItem(Resource.Id.action_notification_edit_delete).SetVisible(false);
                 FindViewById(Resource.Id.emptyLayout).Visibility = ViewStates.Visible;
                 notificationRecyclerView.Visibility = ViewStates.Gone;
+            }
+            if (IsActive())
+            {
+                HideProgress();
             }
         }
 
