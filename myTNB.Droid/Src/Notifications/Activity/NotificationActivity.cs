@@ -104,6 +104,8 @@ namespace myTNB_Android.Src.Notifications.Activity
         private int selectedNotification;
         private static EnableNotificationState enableNotificationState = EnableNotificationState.DISABLED;
 
+        private bool hasNotification = false;
+
         //========================================== FORM LIFECYCLE ==================================================================================
 
         protected override void OnCreate(Bundle savedInstanceState)
@@ -135,15 +137,10 @@ namespace myTNB_Android.Src.Notifications.Activity
                 SetNotificationRecyclerView();
                 SetInitialNotificationState();
                 this.userActionsListener.Start();
-
                 Bundle extras = Intent.Extras;
                 if (extras != null && extras.ContainsKey(Constants.HAS_NOTIFICATION) && extras.GetBoolean(Constants.HAS_NOTIFICATION))
                 {
-                    this.userActionsListener.QueryOnLoad(this.DeviceId());
-                }
-                else
-                {
-                    this.userActionsListener.QueryNotifications(this.DeviceId());
+                    hasNotification = true;
                 }
             }
             catch (Exception e)
@@ -159,6 +156,22 @@ namespace myTNB_Android.Src.Notifications.Activity
             notificationMenu = menu;
             notificationMenu.FindItem(Resource.Id.action_notification_read).SetIcon(GetDrawable(Resource.Drawable.ic_header_markread)).SetVisible(false);
             notificationMenu.FindItem(Resource.Id.action_notification_edit_delete).SetIcon(GetDrawable(Resource.Drawable.ic_action_select_all)).SetVisible(true);
+            int count = UserNotificationEntity.Count();
+            if (hasNotification)
+            {
+                this.userActionsListener.QueryOnLoad(this.DeviceId());
+            }
+            else if (count == 0)
+            {
+                ShowQueryProgress();
+                this.userActionsListener.QueryOnLoad(this.DeviceId());
+                ME.Leolin.Shortcutbadger.ShortcutBadger.RemoveCount(this.ApplicationContext);
+            }
+            else
+            {
+                ShowQueryProgress();
+                this.userActionsListener.QueryNotifications(this.DeviceId());
+            }
             return base.OnCreateOptionsMenu(menu);
         }
 
@@ -409,8 +422,6 @@ namespace myTNB_Android.Src.Notifications.Activity
             int count = UserNotificationEntity.Count();
             if (count == 0)
             {
-                ShowQueryProgress();
-                this.userActionsListener.QueryOnLoad(this.DeviceId());
                 ME.Leolin.Shortcutbadger.ShortcutBadger.RemoveCount(this.ApplicationContext);
             }
             else
