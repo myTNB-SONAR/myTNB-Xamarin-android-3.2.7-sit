@@ -282,8 +282,8 @@ namespace myTNB.Dashboard.DashboardComponents
                         bool hasChange;
                         bool isUp;
                         GetUsageComparisonAttributes(_usageMetrics?.StatsByUsage?.UsageComparedToPrevious, out value, out hasChange, out isUp);
-                        _metricCmp2.ValueLabel.AttributedText = TextHelper.CreateValuePairString(value, "%", false, MyTNBFont.MuseoSans16_300
-                            , UIColor.White, MyTNBFont.MuseoSans12_300, UIColor.White);
+                        _metricCmp2.ValueLabel.AttributedText = TextHelper.CreateValuePairString(value, "%", false, MyTNBFont.MuseoSans14_300
+                            , UIColor.White, MyTNBFont.MuseoSans14_300, UIColor.White);
                         _metricCmp2.ValuePairIcon.Image = isUp ? UIImage.FromBundle("Arrow-Up") : UIImage.FromBundle("Arrow-Down");
                         _metricCmp2.ValuePairIcon.Hidden = !hasChange;
                         string compareText = Same;

@@ -58,7 +58,7 @@ namespace myTNB.Dashboard.DashboardComponents
                 Font = MyTNBFont.MuseoSans16_500,
                 TextColor = MyTNBColor.TunaGrey(),
                 TextAlignment = UITextAlignment.Left,
-                Text = "Common_AmountDue".Translate()
+                Text = "Common_TotalAmountDue".Translate()
             };
 
             _lblDate = new UILabel(new CGRect(17, _lblPaymentTitle.Frame.GetMaxY() + 4, _viewPaymentContainer.Frame.Width - 20, 14))
@@ -305,8 +305,8 @@ namespace myTNB.Dashboard.DashboardComponents
         {
             CGSize newSize = LabelHelper.GetLabelSize(_lblAmount, _viewPaymentContainer.Frame.Width / 2, _lblAmount.Frame.Height);
             double newWidth = Math.Ceiling(newSize.Width);
-            _lblAmount.Frame = new CGRect(24, 0, newWidth, _lblAmount.Frame.Height);
-            _viewAmount.Frame = new CGRect(_viewPaymentContainer.Frame.Width - (newWidth + 24 + 17), 23 + adjustment, newWidth + 24, 24);
+            _lblAmount.Frame = new CGRect(28, 0, newWidth, _lblAmount.Frame.Height);
+            _viewAmount.Frame = new CGRect(_viewPaymentContainer.Frame.Width - (newWidth + 28 + 17), 23 + adjustment, newWidth + 28, 24);
         }
 
         /// <summary>
