@@ -455,6 +455,10 @@ namespace myTNB_Android.Src.Notifications.Activity
         public void ShowView()
         {
             this.userActionsListener.ShowFilteredList();
+            ShowSelectAllOption(ViewStates.Visible);
+            notificationMenu.FindItem(Resource.Id.action_notification_edit_delete).SetIcon(Resource.Drawable.ic_header_delete);
+            notificationMenu.FindItem(Resource.Id.action_notification_edit_delete).SetVisible(false);
+            notificationMenu.FindItem(Resource.Id.action_notification_read).SetVisible(true);
             refreshLayout.Visibility = ViewStates.Gone;
         }
 
@@ -466,6 +470,9 @@ namespace myTNB_Android.Src.Notifications.Activity
                 notificationRecyclerView.Visibility = ViewStates.Gone;
                 refreshLayout.Visibility = ViewStates.Visible;
                 btnNewRefresh.Text = string.IsNullOrEmpty(btnTxt) ? GetString(Resource.String.text_new_refresh) : btnTxt;
+                ShowSelectAllOption(ViewStates.Gone);
+                notificationMenu.FindItem(Resource.Id.action_notification_edit_delete).SetVisible(false);
+                notificationMenu.FindItem(Resource.Id.action_notification_read).SetVisible(false);
                 if (Build.VERSION.SdkInt >= BuildVersionCodes.N)
                 {
                     txtNewRefreshMessage.TextFormatted = string.IsNullOrEmpty(contentTxt) ? Html.FromHtml(GetString(Resource.String.text_new_refresh_content), FromHtmlOptions.ModeLegacy) : Html.FromHtml(contentTxt, FromHtmlOptions.ModeLegacy);
