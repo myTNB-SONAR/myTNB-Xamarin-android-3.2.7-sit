@@ -37,6 +37,7 @@ namespace myTNB.DataManager
         public bool IsMontView = true; //Default to Month View
         public ChartModeEnum CurrentChartMode = ChartModeEnum.Cost;
         public int CurrentChartIndex = 0; //Default to current chart
+        public bool IsSmartMeterAvailable = false;
         /// <summary>
         /// Account Number as key and chart response data as value
         /// </summary>
