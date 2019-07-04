@@ -41,7 +41,7 @@ namespace myTNB.Dashboard.DashboardComponents
         private void Initialize()
         {
             int topMargin = 12;
-            double titleWidth = _parentView.Frame.Width * 0.60;
+            double titleWidth = _parentView.Frame.Width * 0.80;
             double valueWidth = _parentView.Frame.Width * 0.30;
             Icon = new UIImageView(new CGRect(7, topMargin + 5, 24, 24));
 

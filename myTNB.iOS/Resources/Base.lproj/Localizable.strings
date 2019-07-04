@@ -124,7 +124,7 @@
 "Component_GreetingEvening"="Good Evening";
 "Component_GreetingMorning"="Good Morning";
 "Component_MyCostLikelyToBe"="My cost is likely to be";
-"Component_MyCostSoFar"="My cost so far";
+"Component_MyCostSoFar"="My bill amount so far";
 "Component_MyCurrentUsage"="My current usage";
 "Component_MyCurrentUsageTrend"="My current usage trend is";
 "Component_ProjectedCost"="Projected cost";
@@ -154,6 +154,8 @@
 "Dashboard_AccountStatusToolTip"="What does this mean?";
 "Dashboard_AccountStatusMessage"="Your electricity has been disconnected and is unavailable. This was not caused by a power outage. If you’ve made a payment, please give us some time for this to be reflected.";
 "Dashboard_WhatAreTheseCost"="What are these costs?";
+"Dashboard_ProjectedCostMessage"="<strong>My bill amount so far:</strong><br><br>Your bill amount so far is the amount you have used up until yesterday.<br><br><strong> My bill may reach:</strong><br><br>This is calculated based on your average daily consumption for the past one (1) month, your actual bill may differ. To find out more, please visit our <strong><a style=\"text-decoration:none\" href =\"faqid={B8EBBADE-0918-43B7-8093-BB2B19614033}\">FAQ page.</a></strong><br><br>Note: The amount shown is before applicable taxes / additional charges.";
+"Dashboard_ProjectedCostLinkTitle"="What are these costs?";
 
 /*Error*/
 "Error_BCRMMessage"="BRCM will be down for maintenance purpose";

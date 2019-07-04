@@ -29,29 +29,29 @@ namespace myTNB.PushNotification
 
             imgIcon = new UIImageView(new CGRect(18, 17, 24, 24));
 
-            lblTitle = new UILabel(new CGRect(48, 17, cellWidth - 96 - 60, 18));
+            lblTitle = new UILabel(new CGRect(48, 16, cellWidth - 96 - 60, 20));
             lblTitle.TextColor = MyTNBColor.TunaGrey();
-            lblTitle.Font = MyTNBFont.MuseoSans14;
+            lblTitle.Font = MyTNBFont.MuseoSans14_500;
 
-            lblDetails = new UILabel(new CGRect(48, 34, cellWidth - 96, 14))
+            lblDate = new UILabel(new CGRect(cellWidth - 94, (cellHeight - 14) / 2, 60, 14))
             {
                 TextColor = MyTNBColor.SilverChalice,
-                Font = MyTNBFont.MuseoSans9,
-                Lines = 1,
-                LineBreakMode = UILineBreakMode.TailTruncation
-            };
-
-            lblDate = new UILabel(new CGRect(cellWidth - 94, 17, 60, 14))
-            {
-                TextColor = MyTNBColor.SilverChalice,
-                Font = MyTNBFont.MuseoSans9,
+                Font = MyTNBFont.MuseoSans10_300,
                 TextAlignment = UITextAlignment.Right
             };
 
-            imgUnread = new UIImageView(new CGRect(cellWidth - 34, 16, 16, 16))
+            imgUnread = new UIImageView(new CGRect(cellWidth - 34, (cellHeight - 16) / 2, 16, 16))
             {
                 Image = UIImage.FromBundle("Notification-Unread"),
                 Hidden = true
+            };
+
+            lblDetails = new UILabel(new CGRect(48, 40, cellWidth - (48 + lblDate.Frame.Width + 34 + 12), 14))
+            {
+                TextColor = MyTNBColor.SilverChalice,
+                Font = MyTNBFont.MuseoSans10_300,
+                Lines = 1,
+                LineBreakMode = UILineBreakMode.TailTruncation
             };
 
             UIView viewLine = new UIView(new CGRect(0, cellHeight - 1, cellWidth, 1))
@@ -87,6 +87,16 @@ namespace myTNB.PushNotification
             CGRect readFrame = imgUnread.Frame;
             readFrame.X = xRead;
             imgUnread.Frame = readFrame;
+
+            if (isSelectionMode) {
+                lblDetails.Frame = new CGRect(lblDetails.Frame.X, lblDetails.Frame.Y
+                    , cellWidth - (48 + lblDate.Frame.Width + 34 + 12 + 40), lblDetails.Frame.Height);   
+            }
+            else
+            {
+                lblDetails.Frame = new CGRect(lblDetails.Frame.X, lblDetails.Frame.Y
+                    , cellWidth - (48 + lblDate.Frame.Width + 34 + 12), lblDetails.Frame.Height);
+            }
         }
     }
 }

@@ -53,6 +53,7 @@ namespace myTNB.PushNotification
                 _controller.UpdateTitleRightIconImage(notification);
                 cell.imgCheckbox.Image = UIImage.FromBundle(notification.IsSelected
                     ? "Payment-Checkbox-Active" : "Payment-Checkbox-Inactive");
+                _controller.UpdateSectionHeaderWidget();
             }));
 
             return cell;

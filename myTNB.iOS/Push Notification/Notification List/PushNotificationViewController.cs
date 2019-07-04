@@ -86,7 +86,7 @@ namespace myTNB.PushNotification
                     }
                     else
                     {
-                       DisplayNoDataAlert();
+                        DisplayNoDataAlert();
                     }
                 });
             });
@@ -514,6 +514,7 @@ namespace myTNB.PushNotification
                                     _isDeletionMode = false;
                                     _isSelectionMode = isMultiple;
                                     _isAllSelected = false;
+                                    OnDismiss();
                                 }
                                 else
                                 {
@@ -555,6 +556,7 @@ namespace myTNB.PushNotification
                                     UpdateNotificationDisplay(true);
                                     NSNotificationCenter.DefaultCenter.PostNotificationName("NotificationDidChange", new NSObject());
                                     DisplayToast("PushNotification_NotificationsDeleted".Translate());
+                                    OnDismiss();
                                 }
                                 else
                                 {
@@ -777,6 +779,13 @@ namespace myTNB.PushNotification
                 pushNotificationTableView.ReloadData();
                 UpdateTitleRightIconImage();
             }
+        }
+
+        internal void UpdateSectionHeaderWidget()
+        {
+            int selectedCount = _notifications.FindAll(x => x.IsSelected == true).Count;
+            _isAllSelected = selectedCount != _notifications.Count;
+            OnCheckboxSelect(true);
         }
 
         /// <summary>
