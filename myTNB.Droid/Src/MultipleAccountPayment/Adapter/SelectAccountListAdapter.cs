@@ -69,6 +69,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Adapter
                 vh.AccountLabel.Text = item.accountLabel;
                 vh.Amount.Text = payableFormatter.Format(item.amount);
 
+#if STUB
                 if(item.OpenChargeTotal != 0)
                 {
                     vh.MandatoryPaymentContent.Text = payableFormatter.Format(item.OpenChargeTotal);
@@ -77,6 +78,9 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Adapter
                 {
                     vh.MandatoryPaymentDetailView.Visibility = ViewStates.Gone;
                 }
+#else
+                vh.MandatoryPaymentDetailView.Visibility = ViewStates.Gone;
+#endif
 
                 if (item.amount < 1)
                 {
