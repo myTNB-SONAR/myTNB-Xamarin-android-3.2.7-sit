@@ -32,7 +32,7 @@ namespace myTNB.Payment.SelectBills
         {
             string CELLIDENTIFIER = _accounts[indexPath.Row].IsItemisedBilling ? "nonConsumptionCell" : "SelectBillsTableViewCell";
             string acctNumber = _accounts[indexPath.Row].accNum;
-#if true
+#if false
             if (_accounts[indexPath.Row].IsItemisedBilling)
             {
                 var cell = tableView.DequeueReusableCell(CELLIDENTIFIER, indexPath) as NonConsumptionTableViewCell;
@@ -101,7 +101,7 @@ namespace myTNB.Payment.SelectBills
                 cell._viewLineAmount.BackgroundColor = isValidAmount ? MyTNBColor.PlatinumGrey : MyTNBColor.Tomato;
                 SetTextField(cell._txtFieldAmount, cell._lblAmountError, cell);
                 return cell;
-#if true
+#if false
             }
 #endif
         }
@@ -136,7 +136,7 @@ namespace myTNB.Payment.SelectBills
                 cell._imgViewCheckBox.Image = UIImage.FromBundle(!isAccountSelected
                     ? "Payment-Checkbox-Active" : "Payment-Checkbox-Inactive");
                 _controller.UpDateTotalAmount();
-#if true
+#if false
                 if (!isAccountSelected && _accounts[index].IsItemisedBilling)
                 {
                     _controller.OnShowItemisedTooltip(_accounts[index].accNum);
@@ -163,7 +163,7 @@ namespace myTNB.Payment.SelectBills
                 cell._imgViewCheckBox.Image = UIImage.FromBundle(!isAccountSelected
                     ? "Payment-Checkbox-Active" : "Payment-Checkbox-Inactive");
                 _controller.UpDateTotalAmount();
-#if true
+#if false
                 if (!isAccountSelected && _accounts[index].IsItemisedBilling)
                 {
                     _controller.OnShowItemisedTooltip(_accounts[index].accNum);

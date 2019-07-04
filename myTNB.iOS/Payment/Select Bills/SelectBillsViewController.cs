@@ -218,7 +218,7 @@ namespace myTNB
                 {
                     double otherCharges = 0;
                     selectedAccountCount++;
-#if true
+#if false
                     int accIndex = _multiAccountDueAmount.d.data.FindIndex(x => x.accNum == item.accNum);
                     if (accIndex > -1 && _multiAccountDueAmount.d.data[accIndex].IsItemisedBilling)
                     {
