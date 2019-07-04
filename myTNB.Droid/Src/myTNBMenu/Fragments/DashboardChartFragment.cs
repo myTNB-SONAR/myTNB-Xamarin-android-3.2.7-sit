@@ -162,6 +162,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
         private bool hasAmtDue = false;
 
+        private bool amountDueFailed = false;
+
         DecimalFormat decimalFormat = new DecimalFormat("#,###,###,###,##0.00");
         SimpleDateFormat dateParser = new SimpleDateFormat("dd/MM/yyyy");
         SimpleDateFormat dateFormatter = new SimpleDateFormat("dd MMM yyyy");
@@ -207,6 +209,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             if (extras.ContainsKey(Constants.SELECTED_ACCOUNT))
             {
                 selectedAccount = JsonConvert.DeserializeObject<AccountData>(extras.GetString(Constants.SELECTED_ACCOUNT));
+            }
+
+            if (extras.ContainsKey(Constants.AMOUNT_DUE_FAILED_KEY))
+            {
+                amountDueFailed = extras.GetBoolean(Constants.AMOUNT_DUE_FAILED_KEY);
             }
 
             if (!hasNoInternet)
@@ -273,9 +280,38 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     bundle.PutString(Constants.REFRESH_BTN_MSG, response.Data.RefreshBtnText);
                 }
             }
+            else
+            {
+                bundle.PutString(Constants.REFRESH_MSG, "The graph must be tired. Tap the button below to help it out.");
+                bundle.PutString(Constants.REFRESH_BTN_MSG, "Refresh Now");
+            }
             if(accountData != null)
             {
                 bundle.PutString(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(accountData));
+            }
+            chartFragment.Arguments = bundle;
+            return chartFragment;
+        }
+
+        internal static DashboardChartFragment NewInstance(bool hasNoInternet, bool amountDueFailed, string contentTxt, string btnTxt)
+        {
+            DashboardChartFragment chartFragment = new DashboardChartFragment();
+            Bundle bundle = new Bundle();
+
+            bundle.PutBoolean(Constants.AMOUNT_DUE_FAILED_KEY, amountDueFailed);
+            bundle.PutBoolean(Constants.NO_INTERNET_CONNECTION, hasNoInternet);
+            if(string.IsNullOrEmpty(contentTxt))
+            {
+                bundle.PutString(Constants.REFRESH_MSG, "This page must be tired. Tap the button below to help it out.");
+            }
+            else
+            {
+                bundle.PutString(Constants.REFRESH_MSG, contentTxt);
+            }
+
+            if(!string.IsNullOrEmpty(btnTxt))
+            {
+                bundle.PutString(Constants.REFRESH_BTN_MSG, btnTxt);
             }
             chartFragment.Arguments = bundle;
             return chartFragment;
@@ -295,24 +331,30 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 TextViewUtils.SetMuseoSans300Typeface(btnToggleDay, btnToggleMonth, txtNewRefreshMessage);
                 TextViewUtils.SetMuseoSans500Typeface(txtRange, txtTotalPayableTitle, txtTotalPayableCurrency, btnViewBill, btnPay, btnLearnMore, txtTitleNoData, txtWhyThisAmt, btnNewRefresh);
 
+                if(amountDueFailed)
+                {
+                    txtWhyThisAmt.Visibility = ViewStates.Gone;
+                    ShowNoInternetWithWord(txtRefreshMsg, txtBtnRefreshTitle);
+                }
+                else
+                {
+                    btnNewRefresh.Text = txtBtnRefreshTitle;
+                    if (Build.VERSION.SdkInt >= BuildVersionCodes.N)
+                    {
+                        txtNewRefreshMessage.TextFormatted = Html.FromHtml(txtRefreshMsg, FromHtmlOptions.ModeLegacy);
+                    }
+                    else
+                    {
+                        txtNewRefreshMessage.TextFormatted = Html.FromHtml(txtRefreshMsg);
+                    }
+                }
+
                 this.userActionsListener?.Start();
 
                 DownTimeEntity bcrmEntity = DownTimeEntity.GetByCode(Constants.BCRM_SYSTEM);
                 DownTimeEntity pgCCEntity = DownTimeEntity.GetByCode(Constants.PG_CC_SYSTEM);
                 DownTimeEntity pgFPXEntity = DownTimeEntity.GetByCode(Constants.PG_FPX_SYSTEM);
                 
-                txtTotalPayableCurrency.Visibility = ViewStates.Gone;
-
-                btnNewRefresh.Text = txtBtnRefreshTitle;
-                if (Build.VERSION.SdkInt >= BuildVersionCodes.N)
-                {
-                    txtNewRefreshMessage.TextFormatted = Html.FromHtml(txtRefreshMsg, FromHtmlOptions.ModeLegacy);
-                }
-                else
-                {
-                    txtNewRefreshMessage.TextFormatted = Html.FromHtml(txtRefreshMsg);
-                }
-
                 if (selectedAccount != null)
                 {
 
@@ -382,7 +424,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                             }
                         }
                         this.userActionsListener.GetAccountStatus(selectedAccount.AccountNum);
-                        this.userActionsListener.OnLoadAmount(selectedAccount.AccountNum);
+                        if (!amountDueFailed)
+                        {
+                            this.userActionsListener.OnLoadAmount(selectedAccount.AccountNum);
+                        }
                     }
 
                     txtAddress.Click += delegate
@@ -1136,11 +1181,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 txtTotalPayableCurrency.Visibility = ViewStates.Gone;
                 if (Build.VERSION.SdkInt >= BuildVersionCodes.N)
                 {
-                    txtNewRefreshMessage.TextFormatted = string.IsNullOrEmpty(contentTxt)? Html.FromHtml(txtRefreshMsg, FromHtmlOptions.ModeLegacy) : Html.FromHtml(contentTxt, FromHtmlOptions.ModeLegacy);
+                    txtNewRefreshMessage.TextFormatted = string.IsNullOrEmpty(contentTxt)? Html.FromHtml(GetString(Resource.String.text_new_refresh_content), FromHtmlOptions.ModeLegacy) : Html.FromHtml(contentTxt, FromHtmlOptions.ModeLegacy);
                 }
                 else
                 {
-                    txtNewRefreshMessage.TextFormatted = string.IsNullOrEmpty(contentTxt)? Html.FromHtml(txtRefreshMsg) : Html.FromHtml(contentTxt);
+                    txtNewRefreshMessage.TextFormatted = string.IsNullOrEmpty(contentTxt)? Html.FromHtml(GetString(Resource.String.text_new_refresh_content)) : Html.FromHtml(contentTxt);
                 }
                 mNoDataLayout.Visibility = ViewStates.Gone;
                 mChart.Visibility = ViewStates.Gone;

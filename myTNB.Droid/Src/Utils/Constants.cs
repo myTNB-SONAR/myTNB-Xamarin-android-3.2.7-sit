@@ -204,5 +204,7 @@ namespace myTNB_Android.Src.Utils
         internal static readonly string REFRESH_MODE = "FAILED";
         internal static readonly string REFRESH_MSG = "refreshMsg";
         internal static readonly string REFRESH_BTN_MSG = "refreshBtnTxt";
+
+        internal static readonly string AMOUNT_DUE_FAILED_KEY = "AmountDueFailedKey";
     }
 }
