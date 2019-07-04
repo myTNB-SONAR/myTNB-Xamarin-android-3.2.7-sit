@@ -124,7 +124,7 @@
 "Component_GreetingEvening"="Good Evening";
 "Component_GreetingMorning"="Good Morning";
 "Component_MyCostLikelyToBe"="My cost is likely to be";
-"Component_MyCostSoFar"="My cost so far";
+"Component_MyCostSoFar"="My bill amount so far";
 "Component_MyCurrentUsage"="My current usage";
 "Component_MyCurrentUsageTrend"="My current usage trend is";
 "Component_ProjectedCost"="Projected cost";
