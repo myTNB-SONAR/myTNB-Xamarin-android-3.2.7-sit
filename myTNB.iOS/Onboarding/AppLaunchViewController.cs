@@ -295,7 +295,7 @@ namespace myTNB
                     if (data?.NotificationTypes != null)
                     {
                         NotificationPreferenceModel allNotificationItem = new NotificationPreferenceModel();
-                        allNotificationItem.Title = "All notifications";
+                        allNotificationItem.Title = "PushNotification_AllNotifications".Translate();
                         allNotificationItem.Id = "all";
                         if (DataManager.DataManager.SharedInstance.NotificationGeneralTypes != null)
                         {
