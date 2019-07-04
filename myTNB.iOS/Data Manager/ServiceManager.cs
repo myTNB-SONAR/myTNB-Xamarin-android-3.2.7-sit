@@ -122,6 +122,10 @@ namespace myTNB
             {
                 Debug.WriteLine(ex);
             }
+            catch (Exception e)
+            {
+                Debug.WriteLine(string.Format("Error in {0}. Message: {1}", suffix, e.Message));
+            }
             return new ChartModel();
         }
 
@@ -167,6 +171,10 @@ namespace myTNB
             {
                 Debug.WriteLine(ex);
             }
+            catch (Exception e)
+            {
+                Debug.WriteLine(string.Format("Error in {0}. Message: {1}", suffix, e.Message));
+            }
             return new SmartChartModel();
         }
 
@@ -193,9 +201,9 @@ namespace myTNB
             {
                 Debug.WriteLine(ex);
             }
-            catch
+            catch (Exception e)
             {
-                Debug.WriteLine("General JSON parsing error");
+                Debug.WriteLine(string.Format("General JSON parsing error: {0}", e.Message));
             }
             return false;
         }
@@ -238,6 +246,10 @@ namespace myTNB
             {
                 Debug.WriteLine(ex);
             }
+            catch (Exception e)
+            {
+                Debug.WriteLine(string.Format("Error in {0}. Message: {1}", suffix, e.Message));
+            }
             return new FeedbackQuestionRequestModel();
         }
 
@@ -278,6 +290,10 @@ namespace myTNB
             catch (JsonSerializationException ex)
             {
                 Debug.WriteLine(ex);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(string.Format("Error in {0}. Message: {1}", suffix, e.Message));
             }
             return new AmountDueStatusResponseModel();
         }
@@ -322,7 +338,7 @@ namespace myTNB
             }
             catch (Exception e)
             {
-                Debug.WriteLine("APP LAUNCH MASTER DATE EXCEPTION");
+                Debug.WriteLine(string.Format("Error in {0}. Message: {1}", suffix, e.Message));
             }
             return new MasterDataResponseModel();
         }
@@ -364,6 +380,10 @@ namespace myTNB
             catch (JsonSerializationException ex)
             {
                 Debug.WriteLine(ex);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(string.Format("Error in {0}. Message: {1}", suffix, e.Message));
             }
             return new PhoneVerificationStatusResponseModel();
         }
