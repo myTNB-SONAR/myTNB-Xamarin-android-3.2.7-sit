@@ -22,6 +22,10 @@ namespace myTNB.Dashboard.DashboardComponents
         internal void CreateComponent(bool isNormalMeter)
         {
             var isAccountActive = DataManager.DataManager.SharedInstance.AccountIsActive;
+            if (!DataManager.DataManager.SharedInstance.IsSmartMeterAvailable && !isNormalMeter)
+            {
+                isNormalMeter = true;
+            }
             int yLocation = GetChartYLocation(isNormalMeter);
 
             float viewPercentage = isAccountActive ? 0.33f : 0.30f;
@@ -30,7 +34,7 @@ namespace myTNB.Dashboard.DashboardComponents
             {
                 if (DeviceHelper.IsIphoneXOrXs())
                 {
-                    viewPercentage = 0.40f;
+                    viewPercentage = 0.42f;
                 }
                 else
                 {
@@ -395,6 +399,10 @@ namespace myTNB.Dashboard.DashboardComponents
             var isAccountActive = DataManager.DataManager.SharedInstance.AccountIsActive;
             var yValue = isAccountActive ? 51f : 30f;
             int yLocation = (int)DeviceHelper.GetScaledHeight(yValue);
+            if (!DataManager.DataManager.SharedInstance.IsSmartMeterAvailable && !isNormalMeter)
+            {
+                isNormalMeter = true;
+            }
             if (!isNormalMeter)
             {
                 if (!DeviceHelper.IsIphoneXUpResolution())

@@ -313,6 +313,7 @@ namespace myTNB.Dashboard
                         DataManager.DataManager.SharedInstance.SaveChartToUsageHistory(dataModel, accNum);
                     }
                 }
+                DataManager.DataManager.SharedInstance.IsSmartMeterAvailable = false;
             }
             else
             {
@@ -323,6 +324,7 @@ namespace myTNB.Dashboard
                     isResultSuccess = true;
                     ChartHelper.RemoveExcessSmartMonthData(ref cachedData);
                     DataManager.DataManager.SharedInstance.CurrentChart = cachedData;
+                    DataManager.DataManager.SharedInstance.IsSmartMeterAvailable = true;
                 }
                 else
                 {
@@ -340,6 +342,7 @@ namespace myTNB.Dashboard
                             ChartHelper.RemoveExcessSmartMonthData(ref dataModel);
                             DataManager.DataManager.SharedInstance.CurrentChart = dataModel;
                             DataManager.DataManager.SharedInstance.SaveSmartChartToUsageHistory(dataModel, accNum);
+                            DataManager.DataManager.SharedInstance.IsSmartMeterAvailable = true;
                         }
                         else
                         {
@@ -356,10 +359,12 @@ namespace myTNB.Dashboard
                         chartModelResponse = normalChartResponse;
                         isResultSuccess = normalChartResponse.didSucceed;
                         DataManager.DataManager.SharedInstance.CurrentChart = normalChartResponse.data;
+                        DataManager.DataManager.SharedInstance.IsSmartMeterAvailable = false;
                     }
                     else
                     {
                         DataManager.DataManager.SharedInstance.CurrentChart = chartResponse.data;
+                        DataManager.DataManager.SharedInstance.IsSmartMeterAvailable = false;
                     }
                 }
             }
@@ -820,7 +825,7 @@ namespace myTNB.Dashboard
                 {
                     _dashboardMainComponent._billAndPaymentComponent._activity.Hide();
                 }
-#if true
+#if false
                 if (_dueAmount != null && _dueAmount?.d != null && _dueAmount?.d?.didSucceed == true
                         && _dueAmount?.d?.data != null)
                 {
@@ -1104,12 +1109,23 @@ namespace myTNB.Dashboard
             _dashboardMainComponent._billAndPaymentComponent?.SetMaskHidden(isNormalMeter);
 
             float yLoc;
+            if (!DataManager.DataManager.SharedInstance.IsSmartMeterAvailable && !isNormalMeter)
+            {
+                isNormalMeter = true;
+            }
             if (isNormalMeter)
             {
                 yLoc = (float)_dashboardMainComponent._viewChart.Frame.GetMaxY();
                 if (DeviceHelper.IsIphoneXUpResolution())
                 {
-                    yLoc = (float)_dashboardMainComponent._viewChart.Frame.GetMaxY() + 5f;
+                    if (DeviceHelper.IsIphoneXOrXs())
+                    {
+                        yLoc = (float)_dashboardMainComponent._viewChart.Frame.GetMaxY();
+                    }
+                    else
+                    {
+                        yLoc = (float)_dashboardMainComponent._viewChart.Frame.GetMaxY() + 5f;
+                    }
                 }
             }
             else

@@ -21,15 +21,15 @@ namespace myTNB
         //Parent Container
         public UIView _viewAccountDetails, _viewCharges, _viewHistory                               //Parent Container
             , _viewBreakdownTitle, _viewCurrentCharges, _viewOutstandingCharges                     //Field Container
-            , _viewItemizedBilling, _viewTotalAmountDue, _viewHistoryHeader;
+            , _viewTotalPayable, _viewItemizedBilling, _viewTotalAmountDue, _viewHistoryHeader;
 
         public UILabel _lblAccountName, _lblAccountNumber, _lblAddress                              //Value Account Details
             , _lblBreakdownHeader, _lblCurrentChargesTitle, _lblOutstandingChargesTitle             //Title Charges
-            , _lblTotalDueAmountTitle, _lblHistoryHeader
+            , _lblTotalDueAmountTitle, _lblHistoryHeader, _lblTotalPayableTitle
             , _lblMandatoryPayments, _lblSecurityDeposit                                            //Title Itemized Billing
             , _lblDisconnection, _lblReconnection, _lblStampDuty
             , _lblCurrentChargesValue, _lblOutstandingChargesValue                                  //Value Charges
-            , _lblDueDateTitle, _lblAmount
+            , _lblDueDateTitle, _lblAmount, _lblTotalPayableValue
             , _lblMandatoryPaymentsValue, _lblSecurityDepositValue                                  //Value Itemized Billing
             , _lblDisconnectionValue, _lblReconnectionValue, _lblStampDutyValue;
         //Button
@@ -54,7 +54,7 @@ namespace myTNB
             CreateHistorySection();
         }
 
-        public void SetChargesValues(string currentCharge, string outstandingCharge, string amount)
+        public void SetChargesValues(string currentCharge, string outstandingCharge, string totalPayable, string amount)
         {
             if (_lblCurrentChargesValue != null)
             {
@@ -63,6 +63,10 @@ namespace myTNB
             if (_lblOutstandingChargesValue != null)
             {
                 _lblOutstandingChargesValue.Text = outstandingCharge;
+            }
+            if (_lblTotalPayableValue != null)
+            {
+                _lblTotalPayableValue.Text = totalPayable;
             }
             if (_lblAmount != null)
             {
@@ -217,6 +221,8 @@ namespace myTNB
                 _viewItemizedBilling = new UIView();
                 _viewOutstandingCharges = new UIView(new CGRect(18, widgetY, _contentWidth, 16));
                 widgetY += 32;
+                _viewTotalPayable = new UIView(new CGRect(18, widgetY, _contentWidth, 16));
+                widgetY += 32;
                 _viewLine = GenericLine.GetLine(new CGRect(18, widgetY, _contentWidth, 1));
                 widgetY += 1;
                 _viewTotalAmountDue = new UIView(new CGRect(18, widgetY, _contentWidth, 64));
@@ -227,7 +233,7 @@ namespace myTNB
                 nfloat containerViewHeight = widgetY + _btnPay.Frame.Height + 24;
                 _viewCharges.Frame = new CGRect(0, _viewAccountDetails.Frame.GetMaxY(), _frameWidth, containerViewHeight);
                 _viewCharges.AddSubviews(new UIView[] { _viewBreakdownTitle, _viewItemizedBilling, _viewOutstandingCharges
-                    , _viewCurrentCharges, _viewLine, _viewTotalAmountDue, _btnPay });
+                    , _viewCurrentCharges,_viewTotalPayable, _viewLine, _viewTotalAmountDue, _btnPay });
             }
             AddChildrenViews(isREAccount);
         }
@@ -244,11 +250,16 @@ namespace myTNB
                     , childWidthValue, 16), string.Empty, UITextAlignment.Right);
 
                 _lblOutstandingChargesTitle = GetKeyValueLabel(new CGRect(0, 0, childWidthTitle, 16), "Bill_OutstandingCharges");
-                _lblOutstandingChargesValue = GetKeyValueLabel(new CGRect(_lblCurrentChargesTitle.Frame.Width, 0
+                _lblOutstandingChargesValue = GetKeyValueLabel(new CGRect(_lblOutstandingChargesTitle.Frame.Width, 0
+                    , childWidthValue, 16), string.Empty, UITextAlignment.Right);
+
+                _lblTotalPayableTitle = GetKeyValueLabel(new CGRect(0, 0, childWidthTitle, 16), "Bill_TotalPayable");
+                _lblTotalPayableValue = GetKeyValueLabel(new CGRect(_lblTotalPayableTitle.Frame.Width, 0
                     , childWidthValue, 16), string.Empty, UITextAlignment.Right);
 
                 _viewCurrentCharges.AddSubviews(new UIView[] { _lblCurrentChargesTitle, _lblCurrentChargesValue });
                 _viewOutstandingCharges.AddSubviews(new UIView[] { _lblOutstandingChargesTitle, _lblOutstandingChargesValue });
+                _viewTotalPayable.AddSubviews(new UIView[] { _lblTotalPayableTitle, _lblTotalPayableValue });
             }
 
             _lblTotalDueAmountTitle = GetUILabelField(new CGRect(0, 16, childWidthTitle, 18), "Common_TotalAmountDue"
