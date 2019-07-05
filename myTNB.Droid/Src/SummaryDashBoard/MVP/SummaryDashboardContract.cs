@@ -45,8 +45,6 @@ namespace myTNB_Android.Src.SummaryDashBoard.MVP
 
             void ShowRefreshSummaryDashboard(bool flag, string contentMsg, string buttonMsg);
 
-            void OnRefreshData();
-
         }
 
 

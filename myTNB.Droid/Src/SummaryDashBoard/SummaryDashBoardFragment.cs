@@ -151,10 +151,6 @@ namespace myTNB_Android.Src.SummaryDashBoard
             }
             catch (System.Exception e)
             {
-                if (IsActive())
-                {
-                    HideProgressDialog();
-                }
                 Utility.LoggingNonFatalError(e);
             }
 
@@ -287,24 +283,6 @@ namespace myTNB_Android.Src.SummaryDashBoard
         }
 
 
-        public void OnRefreshData()
-        {
-            try
-            {
-                listener.Start();
-                loadData();
-            }
-            catch (System.Exception e)
-            {
-                if (IsActive())
-                {
-                    HideProgressDialog();
-                }
-                Utility.LoggingNonFatalError(e);
-            }
-        }
-
-
         private void loadData()
         {
             try
@@ -334,10 +312,6 @@ namespace myTNB_Android.Src.SummaryDashBoard
             }
             catch (System.Exception e)
             {
-                if (IsActive())
-                {
-                    HideProgressDialog();
-                }
                 Utility.LoggingNonFatalError(e);
             }
         }

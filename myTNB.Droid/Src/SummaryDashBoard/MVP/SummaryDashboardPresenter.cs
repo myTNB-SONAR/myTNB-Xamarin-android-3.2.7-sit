@@ -45,10 +45,7 @@ namespace myTNB_Android.Src.SummaryDashBoard.MVP
             {
                 if (SummaryDashBoardAccountEntity.GetAllItems().Count() == 0 || makeSummaryApiCall)
                 {
-                    if(this.mView.IsActive())
-                    {
-                        this.mView.ShowProgressDialog();
-                    }
+                    this.mView.ShowProgressDialog();
 
                     FetchUserData();
                     if (summaryDashboardRequest != null)
@@ -160,7 +157,6 @@ namespace myTNB_Android.Src.SummaryDashBoard.MVP
             var api = RestService.For<ISummaryDashBoard>(Constants.SERVER_URL.END_POINT);
 #elif DEBUG
             var httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
-            httpClient.Timeout = TimeSpan.FromSeconds(10);
             var api = RestService.For<ISummaryDashBoard>(httpClient);
 #elif DEVELOP
             var api = RestService.For<ISummaryDashBoard>(Constants.SERVER_URL.END_POINT);
@@ -221,7 +217,6 @@ namespace myTNB_Android.Src.SummaryDashBoard.MVP
             }
             catch (System.OperationCanceledException e)
             {
-                Log.Debug(TAG, "Cancelled Exception");
                 // ADD OPERATION CANCELLED HERE
                 if (mView.IsActive())
                 {
@@ -247,7 +242,6 @@ namespace myTNB_Android.Src.SummaryDashBoard.MVP
             catch (Exception e)
             {
                 // ADD UNKNOWN EXCEPTION HERE
-                Log.Debug(TAG, "Stack " + e.StackTrace);
                 if (this.mView.IsActive())
                 {
                     this.mView.HideProgressDialog();
@@ -276,24 +270,8 @@ namespace myTNB_Android.Src.SummaryDashBoard.MVP
         {
             try
             {
-                if (summaryDetailList == null)
-                {
-                    summaryDetailList = new List<SummaryDashBoardDetails>();
-                }
-                else
-                {
-                    summaryDetailList.Clear();
-                }
-                
-                if (customerBillingAccounts == null)
-                {
-                    customerBillingAccounts = new List<CustomerBillingAccount>();
-                }
-                else
-                {
-                    customerBillingAccounts.Clear();
-                }
-                
+                summaryDetailList = new List<SummaryDashBoardDetails>();
+                customerBillingAccounts = new List<CustomerBillingAccount>();
 
                 userEntity = UserEntity.GetActive();
 
@@ -502,7 +480,26 @@ namespace myTNB_Android.Src.SummaryDashBoard.MVP
                 totalLoadMoreCount = 0;
                 curentLoadMoreCount = 0;
                 billingAccoutCount = 0;
-                this.mView.OnRefreshData();
+                summaryDetailList.Clear();
+                customerBillingAccounts.Clear();
+                var reAccount = CustomerBillingAccount.REAccountList();
+
+                var nonReAccount = CustomerBillingAccount.NonREAccountList();
+
+                if (reAccount != null && reAccount.Count() > 0)
+                {
+                    customerBillingAccounts.AddRange(reAccount);
+                }
+
+
+                if (nonReAccount != null && nonReAccount.Count() > 0)
+                {
+                    customerBillingAccounts.AddRange(nonReAccount);
+                }
+
+                billingAccoutCount = customerBillingAccounts.Count();
+
+                FetchAccountSummary(true);
             }
             catch (Exception e)
             {
