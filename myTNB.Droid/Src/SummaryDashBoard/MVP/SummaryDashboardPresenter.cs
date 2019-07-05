@@ -45,7 +45,10 @@ namespace myTNB_Android.Src.SummaryDashBoard.MVP
             {
                 if (SummaryDashBoardAccountEntity.GetAllItems().Count() == 0 || makeSummaryApiCall)
                 {
-                    this.mView.ShowProgressDialog();
+                    if(this.mView.IsActive())
+                    {
+                        this.mView.ShowProgressDialog();
+                    }
 
                     FetchUserData();
                     if (summaryDashboardRequest != null)
@@ -273,8 +276,24 @@ namespace myTNB_Android.Src.SummaryDashBoard.MVP
         {
             try
             {
-                summaryDetailList = new List<SummaryDashBoardDetails>();
-                customerBillingAccounts = new List<CustomerBillingAccount>();
+                if (summaryDetailList == null)
+                {
+                    summaryDetailList = new List<SummaryDashBoardDetails>();
+                }
+                else
+                {
+                    summaryDetailList.Clear();
+                }
+                
+                if (customerBillingAccounts == null)
+                {
+                    customerBillingAccounts = new List<CustomerBillingAccount>();
+                }
+                else
+                {
+                    customerBillingAccounts.Clear();
+                }
+                
 
                 userEntity = UserEntity.GetActive();
 
@@ -408,14 +427,7 @@ namespace myTNB_Android.Src.SummaryDashBoard.MVP
 
         public void OnNotification()
         {
-            if (this.mView.HasNetworkConnection())
-            {
-                this.mView.ShowNotification();
-            }
-            else
-            {
-                this.mView.ShowNoInternetSnackbar();
-            }
+            this.mView.ShowNotification();
         }
 
         private List<CustomerBillingAccount> FindSelectedAccountAndMoveToTop(List<CustomerBillingAccount> customerBillingAccount)
@@ -485,8 +497,17 @@ namespace myTNB_Android.Src.SummaryDashBoard.MVP
 
         public void RefreshAccountSummary()
         {
-            summaryDetailList.Clear();
-            SummaryDashBoardApiCall();
+            try
+            {
+                totalLoadMoreCount = 0;
+                curentLoadMoreCount = 0;
+                billingAccoutCount = 0;
+                this.mView.OnRefreshData();
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public void LoadEmptySummaryDetails()

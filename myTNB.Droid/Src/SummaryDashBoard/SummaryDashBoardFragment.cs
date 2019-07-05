@@ -142,10 +142,21 @@ namespace myTNB_Android.Src.SummaryDashBoard
 
         public override void OnStart()
         {
-            base.OnStart();
+            try
+            {
+                base.OnStart();
 
-            listener.Start();
-            loadData();
+                listener.Start();
+                loadData();
+            }
+            catch (System.Exception e)
+            {
+                if (IsActive())
+                {
+                    HideProgressDialog();
+                }
+                Utility.LoggingNonFatalError(e);
+            }
 
         }
 
@@ -199,15 +210,7 @@ namespace myTNB_Android.Src.SummaryDashBoard
 
                 loadMore.Click += delegate
                 {
-                    if (HasNetworkConnection())
-                    {
-                        listener.DoLoadMoreAccount();
-                    }
-                    else
-                    {
-                        ShowNoInternetSnackbar();
-
-                    }
+                    listener.DoLoadMoreAccount();
                 };
 
                 btnNewRefresh.Click += delegate
@@ -284,46 +287,57 @@ namespace myTNB_Android.Src.SummaryDashBoard
         }
 
 
-
+        public void OnRefreshData()
+        {
+            try
+            {
+                listener.Start();
+                loadData();
+            }
+            catch (System.Exception e)
+            {
+                if (IsActive())
+                {
+                    HideProgressDialog();
+                }
+                Utility.LoggingNonFatalError(e);
+            }
+        }
 
 
         private void loadData()
         {
             try
             {
-                if (HasNetworkConnection())
+                DownTimeEntity bcrmDownTime = DownTimeEntity.GetByCode(Constants.BCRM_SYSTEM);
+                if (bcrmDownTime != null && bcrmDownTime.IsDown)
                 {
-                    DownTimeEntity bcrmDownTime = DownTimeEntity.GetByCode(Constants.BCRM_SYSTEM);
-                    if (bcrmDownTime != null && bcrmDownTime.IsDown)
+                    downtimeLayout.Visibility = ViewStates.Visible;
+                    greetingLayout.Visibility = ViewStates.Gone;
+                    layoutNewRefresh.Visibility = ViewStates.Gone;
+                    if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.N)
                     {
-                        downtimeLayout.Visibility = ViewStates.Visible;
-                        greetingLayout.Visibility = ViewStates.Gone;
-                        layoutNewRefresh.Visibility = ViewStates.Gone;
-                        if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.N)
-                        {
-                            txtDowntimeMessage.TextFormatted = Html.FromHtml(bcrmDownTime.DowntimeMessage, FromHtmlOptions.ModeLegacy);
-                        }
-                        else
-                        {
-                            txtDowntimeMessage.TextFormatted = Html.FromHtml(bcrmDownTime.DowntimeMessage);
-                        }
+                        txtDowntimeMessage.TextFormatted = Html.FromHtml(bcrmDownTime.DowntimeMessage, FromHtmlOptions.ModeLegacy);
                     }
                     else
                     {
-                        downtimeLayout.Visibility = ViewStates.Gone;
-                        greetingLayout.Visibility = ViewStates.Visible;
-                        layoutNewRefresh.Visibility = ViewStates.Gone;
+                        txtDowntimeMessage.TextFormatted = Html.FromHtml(bcrmDownTime.DowntimeMessage);
                     }
-                    listener.FetchAccountSummary();
-
                 }
                 else
                 {
-                    ShowNoInternetSnackbar();
+                    downtimeLayout.Visibility = ViewStates.Gone;
+                    greetingLayout.Visibility = ViewStates.Visible;
+                    layoutNewRefresh.Visibility = ViewStates.Gone;
                 }
+                listener.FetchAccountSummary();
             }
             catch (System.Exception e)
             {
+                if (IsActive())
+                {
+                    HideProgressDialog();
+                }
                 Utility.LoggingNonFatalError(e);
             }
         }
@@ -443,27 +457,6 @@ namespace myTNB_Android.Src.SummaryDashBoard
         {
             StartActivity(new Intent(this.Activity, typeof(NotificationActivity)));
         }
-        private Snackbar mNoInternetSnackbar;
-        public void ShowNoInternetSnackbar()
-        {
-            if (mNoInternetSnackbar != null && mNoInternetSnackbar.IsShown)
-            {
-                mNoInternetSnackbar.Dismiss();
-            }
-
-            mNoInternetSnackbar = Snackbar.Make(rootView, GetString(Resource.String.no_internet_connection), Snackbar.LengthShort)
-            .SetAction(GetString(Resource.String.dashboard_chartview_data_not_available_no_internet_btn_close), delegate
-            {
-
-                mNoInternetSnackbar.Dismiss();
-            }
-            );
-            mNoInternetSnackbar.Show();
-            ShowRefreshSummaryDashboard(true, null, null);
-            layoutContent.Visibility = ViewStates.Visible;
-            listener.LoadEmptySummaryDetails();
-        }
-
 
         public void ShowRefreshSummaryDashboard(bool yesno, string contentMsg, string buttonMsg)
         {
