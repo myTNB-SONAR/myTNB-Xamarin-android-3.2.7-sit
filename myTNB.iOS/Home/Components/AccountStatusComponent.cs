@@ -12,8 +12,8 @@ namespace myTNB.Home.Components
         UIView _statusView;
         UIView _lineView;
         UITextView _txtStatus;
-        UILabel _lblStatus;
         UILabel _lblToolTip;
+        UITapGestureRecognizer _tapGestureRecognizer = new UITapGestureRecognizer();
         string _statusMsg = string.Empty;
         string _tooltipText = string.Empty;
 
@@ -34,59 +34,31 @@ namespace myTNB.Home.Components
             };
             _statusView.AddSubviews(new UIView { _lineView });
 
-            //_txtStatus = new UITextView(new CGRect(0, _lineView.Frame.GetMaxY() + 8f
-            //    , (float)_statusView.Frame.Width, 25))
-            //{
-            //    BackgroundColor = UIColor.Clear,
-            //    Editable = false,
-            //    ScrollEnabled = false,
-            //    Hidden = true
-            //};
-
-            //NSMutableParagraphStyle msgParagraphStyle = new NSMutableParagraphStyle
-            //{
-            //    Alignment = UITextAlignment.Center
-            //};
-
-            //UIStringAttributes msgAttributes = new UIStringAttributes
-            //{
-            //    ForegroundColor = UIColor.White,
-            //    ParagraphStyle = msgParagraphStyle
-            //};
-
-            //UIStringAttributes linkAttributes = new UIStringAttributes
-            //{
-            //    Font = MyTNBFont.MuseoSans12_300,
-            //    ForegroundColor = UIColor.White,
-            //    UnderlineStyle = NSUnderlineStyle.Single,
-            //    BackgroundColor = UIColor.Clear
-            //};
-
-            //NSError htmlBodyError = null;
-            //NSAttributedString htmlBody = TextHelper.ConvertToHtmlWithFont(_statusMsg
-            //    , ref htmlBodyError, MyTNBFont.FONTNAME_300, 12f);
-            //NSMutableAttributedString mutableHTMLBody = new NSMutableAttributedString(htmlBody);
-            //mutableHTMLBody.AddAttributes(new UIStringAttributes
-            //{
-            //    ForegroundColor = UIColor.White
-            //}, new NSRange(0, htmlBody.Length));
-
-
-            //_txtStatus.AttributedText = mutableHTMLBody;
-            //_txtStatus.WeakLinkTextAttributes = linkAttributes.Dictionary;
-
-            //_statusView.AddSubview(_txtStatus);
-
-            _lblStatus = new UILabel(new CGRect(0, _lineView.Frame.GetMaxY() + 8f, (float)_statusView.Frame.Width, 25))
+            NSError htmlBodyError = null;
+            NSAttributedString htmlBody = TextHelper.ConvertToHtmlWithFont(_statusMsg
+                , ref htmlBodyError, MyTNBFont.FONTNAME_300, 12f);
+            NSMutableAttributedString mutableHTMLBody = new NSMutableAttributedString(htmlBody);
+            mutableHTMLBody.AddAttributes(new UIStringAttributes
             {
-                AttributedText = TextHelper.CreateValuePairString("Electricity Connection: "
-                , "Unavailable", false, MyTNBFont.MuseoSans12_300
-                , UIColor.White, MyTNBFont.MuseoSans12_500, UIColor.White),
-                TextAlignment = UITextAlignment.Center
-            };
-            _statusView.AddSubview(_lblStatus);
+                ForegroundColor = UIColor.White,
+                ParagraphStyle = new NSMutableParagraphStyle
+                {
+                    Alignment = UITextAlignment.Center
+                }
+            }, new NSRange(0, htmlBody.Length));
 
-            _lblToolTip = new UILabel(new CGRect(0, _lblStatus.Frame.GetMaxY() + 2f, (float)_statusView.Frame.Width, 16))
+            _txtStatus = new UITextView(new CGRect(0, _lineView.Frame.GetMaxY() + 8f
+                , (float)_statusView.Frame.Width, 25))
+            {
+                BackgroundColor = UIColor.Clear,
+                Editable = false,
+                ScrollEnabled = false,
+                AttributedText = mutableHTMLBody
+            };
+
+            _statusView.AddSubview(_txtStatus);
+
+            _lblToolTip = new UILabel(new CGRect(0, _txtStatus.Frame.GetMaxY() + 4f, (float)_statusView.Frame.Width, 16))
             {
                 TextAlignment = UITextAlignment.Center,
                 Font = MyTNBFont.MuseoSans12_500,
@@ -94,6 +66,7 @@ namespace myTNB.Home.Components
                 Text = _tooltipText,
                 UserInteractionEnabled = true
             };
+            _lblToolTip.AddGestureRecognizer(_tapGestureRecognizer);
             _statusView.AddSubview(_lblToolTip);
 
             _parentView.AddSubview(_statusView);
@@ -122,7 +95,7 @@ namespace myTNB.Home.Components
         {
             if (!string.IsNullOrWhiteSpace(label))
             {
-                _lblToolTip.Text = label;
+                _tooltipText = label;
             }
         }
 
@@ -135,7 +108,7 @@ namespace myTNB.Home.Components
 
         public void SetEvent(UITapGestureRecognizer tapEvent)
         {
-            _lblToolTip.AddGestureRecognizer(tapEvent);
+            _tapGestureRecognizer = tapEvent;
         }
     }
 }
