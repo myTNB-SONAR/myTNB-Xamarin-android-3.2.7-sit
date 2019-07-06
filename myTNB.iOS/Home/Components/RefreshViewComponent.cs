@@ -31,7 +31,7 @@ namespace myTNB.Home.Components
         internal void CreateComponent(bool forGradientBG = false)
         {
             float viewMargin = 10f;
-            float imageTopMargin = forGradientBG ? 14f : 70f;
+            float imageTopMargin = forGradientBG ? 14f : 75f;
             float imageWidth = DeviceHelper.GetScaledWidth(96f);
             float imageHeight = DeviceHelper.GetScaledHeight(96f);
             float lineTextHeight = 24f;
@@ -41,7 +41,14 @@ namespace myTNB.Home.Components
 
             if (DeviceHelper.IsIphoneXUpResolution())
             {
-                yPos += 70f;
+                if (DeviceHelper.IsIphoneXOrXs())
+                {
+                    yPos += 35f;
+                }
+                else
+                {
+                    yPos += 50f;
+                }
             }
             else if (DeviceHelper.IsIphone6UpResolution())
             {

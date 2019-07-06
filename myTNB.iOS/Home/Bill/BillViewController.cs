@@ -74,15 +74,28 @@ namespace myTNB
         public override void ViewWillAppear(bool animated)
         {
             base.ViewWillAppear(animated);
-            ResetUI();
-            if (!isFromReceiptScreen)
+            NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
             {
-                InitializeValues();
-            }
-            else
-            {
-                isFromReceiptScreen = false;
-            }
+                InvokeOnMainThread(() =>
+                {
+                    if (NetworkUtility.isReachable)
+                    {
+                        ResetUI();
+                        if (!isFromReceiptScreen)
+                        {
+                            InitializeValues();
+                        }
+                        else
+                        {
+                            isFromReceiptScreen = false;
+                        }
+                    }
+                    else
+                    {
+                        ShowRefreshScreen("Error_RefreshMessage".Translate(), "Error_RefreshBtnTitle".Translate());
+                    }
+                });
+            });
         }
 
         void ResetUI()
@@ -904,8 +917,20 @@ namespace myTNB
 
         async void OnRefreshTap()
         {
-            Debug.WriteLine("OnRefreshTap");
-            await RefreshScreen();
+            await NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
+            {
+                InvokeOnMainThread(async () =>
+                {
+                    if (NetworkUtility.isReachable)
+                    {
+                        await RefreshScreen();
+                    }
+                    else
+                    {
+                        DisplayNoDataAlert();
+                    }
+                });
+            });
         }
 
         private void ItemisedBillingTooltipAction()

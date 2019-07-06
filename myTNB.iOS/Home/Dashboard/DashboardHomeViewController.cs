@@ -173,24 +173,10 @@ namespace myTNB
             {
                 UITapGestureRecognizer notificationTap = new UITapGestureRecognizer(() =>
                 {
-                    NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
-                    {
-                        InvokeOnMainThread(() =>
-                        {
-                            if (NetworkUtility.isReachable)
-                            {
-                                UIStoryboard storyBoard = UIStoryboard.FromName("PushNotification", null);
-                                var viewController = storyBoard.InstantiateViewController("PushNotificationViewController") as PushNotificationViewController;
-                                var navController = new UINavigationController(viewController);
-                                PresentViewController(navController, true, null);
-                            }
-                            else
-                            {
-                                Debug.WriteLine("No Network");
-                                AlertHandler.DisplayNoDataAlert(this);
-                            }
-                        });
-                    });
+                    UIStoryboard storyBoard = UIStoryboard.FromName("PushNotification", null);
+                    var viewController = storyBoard.InstantiateViewController("PushNotificationViewController") as PushNotificationViewController;
+                    var navController = new UINavigationController(viewController);
+                    PresentViewController(navController, true, null);
                 });
                 _titleBarComponent.SetPrimaryAction(notificationTap);
             }
