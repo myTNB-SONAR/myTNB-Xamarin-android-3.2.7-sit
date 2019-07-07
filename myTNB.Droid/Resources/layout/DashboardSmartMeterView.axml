@@ -700,7 +700,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentStart="true"
                     android:layout_alignParentTop="true"
-                    android:text="@string/total_amount_due"
+                    android:text="@string/total_amount_due_bill"
                     android:textColor="@color/tunaGrey"
                     android:textSize="16sp" />
                 <TextView
@@ -722,7 +722,7 @@
                     android:layout_toLeftOf="@+id/txtTotalPayable"
                     android:layout_toStartOf="@+id/txtTotalPayable"
                     android:text="RM"
-                    android:layout_marginRight="4dp"
+                    android:layout_marginRight="7dp"
                     android:textColor="@color/tunaGrey"
                     android:textSize="14sp" />
                 <TextView

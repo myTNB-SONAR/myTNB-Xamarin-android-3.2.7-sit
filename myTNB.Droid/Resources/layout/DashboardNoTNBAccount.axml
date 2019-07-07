@@ -88,7 +88,7 @@
                     android:layout_height="wrap_content"
                     android:textColor="@color/tunaGrey"
                     android:textSize="16sp"
-                    android:text="@string/total_amount_due"
+                    android:text="@string/total_amount_due_bill"
                     android:layout_centerVertical="true"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentStart="true" />
@@ -112,6 +112,7 @@
                     android:layout_toStartOf="@+id/txtTotalPayable"
                     android:text="RM"
                     android:textSize="14sp"
+                    android:layout_marginRight="7dp"
                     android:textColor="@color/tunaGrey" />
             </RelativeLayout>
             <LinearLayout
