@@ -147,15 +147,13 @@ namespace myTNB_Android.Src.FAQ.Activity
                 {
                     FAQ_ID = extras.GetString(Constants.FAQ_ID_PARAM);
                 }
-
+                loadingOverlay = new LoadingOverlay(this, Resource.Style.LoadingOverlyDialogStyle);
+                ShowProgressBar();
                 layoutManager = new LinearLayoutManager(this, LinearLayoutManager.Vertical, false);
                 mFAQRecyclerView.SetLayoutManager(layoutManager);
                 adapter = new FAQListAdapter(this, faqs);
                 mFAQRecyclerView.SetAdapter(adapter);
-
-                loadingOverlay = new LoadingOverlay(this, Resource.Style.LoadingOverlyDialogStyle);
                 mProgressBar.Visibility = ViewStates.Gone;
-                ShowProgressBar();
                 this.userActionsListener.GetSavedFAQTimeStamp();
             }
             catch (Exception e)
