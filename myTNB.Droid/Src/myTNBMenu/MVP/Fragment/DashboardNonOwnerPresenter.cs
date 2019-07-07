@@ -114,14 +114,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
 
         public void OnNotification()
         {
-            if (this.mView.HasInternet())
-            {
-                this.mView.ShowNotification();
-            }
-            else
-            {
-                this.mView.ShowNoInternetSnackbar();
-            }
+            this.mView.ShowNotification();
         }
 
         public void OnPay()
