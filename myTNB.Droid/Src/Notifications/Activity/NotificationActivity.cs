@@ -233,6 +233,10 @@ namespace myTNB_Android.Src.Notifications.Activity
                             SetToolBarTitle(GetString(Resource.String.notification_activity_title));
                             notificationRecyclerAdapter.SetClickable(true);
                             notificationRecyclerAdapter.SelectAllNotifications(false);
+                            selectAllCheckboxButton.SetOnCheckedChangeListener(null);
+                            selectAllCheckboxButton.Checked = false;
+                            selectAllCheckboxButton.SetOnCheckedChangeListener(this);
+                            ShowEditMode(false);
                             return true;
                         }
                     }
