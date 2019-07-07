@@ -221,8 +221,8 @@ namespace myTNB.Dashboard.DashboardComponents
             {
                 //Add Account Status
                 _accountStatusComponent = new AccountStatusComponent(_dashboardScrollView, _addressComponent.GetView());
-                _dashboardScrollView.AddSubview(_accountStatusComponent.GetUI());
                 AddAccountStatusComponent();
+                _dashboardScrollView.AddSubview(_accountStatusComponent.GetUI());
             }
 
             //Add smart meter
@@ -330,8 +330,8 @@ namespace myTNB.Dashboard.DashboardComponents
             {
                 //Add Account Status
                 _accountStatusComponent = new AccountStatusComponent(_gradientView, _addressComponent.GetView());
-                _gradientView.AddSubview(_accountStatusComponent.GetUI());
                 AddAccountStatusComponent();
+                _gradientView.AddSubview(_accountStatusComponent.GetUI());
             }
 
             _parentView.AddSubview(_gradientView);
@@ -474,8 +474,8 @@ namespace myTNB.Dashboard.DashboardComponents
             {
                 //Add Account Status
                 _accountStatusComponent = new AccountStatusComponent(_gradientView, _addressComponent.GetView());
-                _gradientView.AddSubview(_accountStatusComponent.GetUI());
                 AddAccountStatusComponent();
+                _gradientView.AddSubview(_accountStatusComponent.GetUI());
             }
 
             _parentView.AddSubview(_gradientView);
