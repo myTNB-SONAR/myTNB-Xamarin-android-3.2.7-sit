@@ -182,8 +182,8 @@ namespace myTNB_Android.Src.Notifications.Activity
                 case Resource.Id.action_notification_edit_delete:
                     if (editState == EditNotificationStates.HIDE)
                     {
-                        notificationMenu.FindItem(Resource.Id.action_notification_read).SetIcon(Resource.Drawable.ic_header_markread_disabled).SetVisible(true);
-                        notificationMenu.FindItem(Resource.Id.action_notification_edit_delete).SetIcon(Resource.Drawable.ic_header_delete_disabled).SetVisible(true);
+                        notificationMenu.FindItem(Resource.Id.action_notification_read).SetIcon(Resource.Drawable.ic_header_markread_disabled).SetVisible(true).SetEnabled(false);
+                        notificationMenu.FindItem(Resource.Id.action_notification_edit_delete).SetIcon(Resource.Drawable.ic_header_delete_disabled).SetVisible(true).SetEnabled(false);
                         ShowSelectAllOption(ViewStates.Visible);
                         notificationRecyclerAdapter.ShowSelectButtons(true);
                         editState = EditNotificationStates.SHOW;
@@ -236,6 +236,7 @@ namespace myTNB_Android.Src.Notifications.Activity
                             selectAllCheckboxButton.SetOnCheckedChangeListener(null);
                             selectAllCheckboxButton.Checked = false;
                             selectAllCheckboxButton.SetOnCheckedChangeListener(this);
+                            itemTouchHelper.AttachToRecyclerView(notificationRecyclerView);
                             ShowEditMode(false);
                             return true;
                         }
