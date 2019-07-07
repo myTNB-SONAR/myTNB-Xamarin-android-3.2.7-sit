@@ -1443,6 +1443,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     Click(widget);
                 }
             }
+
+            public override void UpdateDrawState(TextPaint ds)
+            {
+                base.UpdateDrawState(ds);
+                ds.UnderlineText = false;
+            }
         }
 
         private void OnWhatIsThisTap()
@@ -1483,9 +1489,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             {
                 TextViewUtils.SetMuseoSans300Typeface(dialogDetailsText);
             }
-            SpannableString s = new SpannableString(dialogDetailsText.Text);
-            string st = s.ToString();
-            int i = st.IndexOf("FAQ");
+            SpannableString s = new SpannableString(dialogDetailsText.TextFormatted);
             var clickableSpan = new ClickSpan();
             clickableSpan.Click += v =>
             {
@@ -1507,37 +1511,13 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     }
                 }
             };
-
-            s.SetSpan(clickableSpan, i, i+8, SpanTypes.ExclusiveExclusive);
-            s.SetSpan(new URLSpanNoUnderline(dialogDetailsText.Text), i, i + 8, SpanTypes.ExclusiveExclusive);
+            var urlSpans = s.GetSpans(0, s.Length(), Java.Lang.Class.FromType(typeof(URLSpan)));
+            int startFAQLink = s.GetSpanStart(urlSpans[0]);
+            int endFAQLink = s.GetSpanEnd(urlSpans[0]);
+            s.RemoveSpan(urlSpans[0]);
+            s.SetSpan(clickableSpan, startFAQLink, endFAQLink, SpanTypes.ExclusiveExclusive);
             dialogDetailsText.TextFormatted = s;
             dialogDetailsText.MovementMethod = new LinkMovementMethod();
-
-            //SpannableString s = new SpannableString(dialogDetailsText.Text);
-            //string st = s.ToString();
-            //int i = st.IndexOf("FAQ");
-            //s.SetSpan(new URLSpanNoUnderline(dialogDetailsText.Text),i,i+8,SpanTypes.ExclusiveExclusive);
-            //dialogDetailsText.SetText(s,TextView.BufferType.Spannable);
-            // dialogDetailsText.Click += delegate
-            // {
-            //     if (textMessage != null && textMessage.Contains("faq"))
-            //     {
-            //         //Lauch FAQ
-            //         int startIndex = textMessage.LastIndexOf("=") + 1;
-            //         int lastIndex = textMessage.LastIndexOf("}");
-            //         int lengthOfId = (lastIndex - startIndex) + 1;
-            //         if (lengthOfId < textMessage.Length)
-            //         {
-            //             string faqid = textMessage.Substring(startIndex, lengthOfId);
-            //             if (!string.IsNullOrEmpty(faqid))
-            //             {
-            //                 Intent faqIntent = new Intent(this.Activity, typeof(FAQListActivity));
-            //                 faqIntent.PutExtra(Constants.FAQ_ID_PARAM, faqid);
-            //                 Activity.StartActivity(faqIntent);
-            //             }
-            //         }
-            //     }
-            // };
             materialDialog.Show();
         }
 
