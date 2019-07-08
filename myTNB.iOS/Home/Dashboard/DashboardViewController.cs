@@ -820,7 +820,7 @@ namespace myTNB.Dashboard
                 }
 
                 _dashboardMainComponent._billAndPaymentComponent.SetPaymentTitle(isREAccount
-                    ? "Bill_MyEarnings".Translate() : "Common_AmountDue".Translate());
+                    ? "Bill_MyEarnings".Translate() : "Common_TotalAmountDue".Translate());
                 if (_dashboardMainComponent._billAndPaymentComponent._activity != null)
                 {
                     _dashboardMainComponent._billAndPaymentComponent._activity.Hide();
