@@ -30,6 +30,8 @@ namespace myTNB_Android.Src.SummaryDashBoard.MVP
         int curentLoadMoreCount = 0;
         int billingAccoutCount = 0;
 
+        bool refreshContent = false;
+
         public SummaryDashboardPresenter(SummaryDashboardContract.IView mView)
         {
             this.mView = mView;
@@ -340,7 +342,24 @@ namespace myTNB_Android.Src.SummaryDashBoard.MVP
             {
                 if (summaryDetails != null && summaryDetails.Count > 0)
                 {
-                    summaryDetailList.AddRange(summaryDetails);
+                    if (refreshContent)
+                    {
+                        refreshContent = false;
+                        foreach(SummaryDashBoardDetails detail in summaryDetails)
+                        {
+                            int selectedIndex = summaryDetailList.FindIndex(x => x.AccNumber == detail.AccNumber);
+                            if (selectedIndex >= 0)
+                            {
+                                summaryDetailList.RemoveAt(selectedIndex);
+                            }
+
+                            summaryDetailList.Add(detail);
+                        }
+                    }
+                    else
+                    {
+                        summaryDetailList.AddRange(summaryDetails);
+                    }
                 }
 
 
@@ -384,8 +403,21 @@ namespace myTNB_Android.Src.SummaryDashBoard.MVP
             {
                 if (billingAccoutCount > summaryDetailList.Count())
                 {
-                    //FetchUserData();
-                    FetchAccountSummary(true);
+                    this.mView.ShowProgressDialog();
+                    LoadMoreAccountPrepare();
+                    if (summaryDashboardRequest != null)
+                    {
+                        refreshContent = true;
+                        SummaryDashBoardApiCall();
+                    }
+                    else
+                    {
+                        refreshContent = false;
+                        if (mView.IsActive())
+                        {
+                            this.mView.HideProgressDialog();
+                        }
+                    }
                     if (billingAccoutCount == summaryDetailList.Count())
                     {
                         mView.IsLoadMoreButtonVisible(false);
@@ -473,33 +505,131 @@ namespace myTNB_Android.Src.SummaryDashBoard.MVP
 
         }
 
+        private void LoadMoreAccountPrepare()
+        {
+            try
+            {
+                int forLoopCount = 0;
+
+                int previousCount = 0;
+
+                int i = 0;
+
+                List<String> accounts = new List<string>();
+
+                if (summaryDetailList != null && summaryDetailList.Count() > 0)
+                {
+                    List<SummaryDashBoardAccountEntity> list = SummaryDashBoardAccountEntity.GetAllItems();
+                    foreach(SummaryDashBoardDetails account in summaryDetailList)
+                    {
+                        int searchedIndex = list.FindIndex(x => x.AccountNo == account.AccNumber);
+                        if (searchedIndex < 0)
+                        {
+                            accounts.Add(account.AccNumber);
+                        }
+                    }
+                }
+
+                if (summaryDetailList != null && summaryDetailList.Count() > 0)
+                {
+                    curentLoadMoreCount = (summaryDetailList.Count() / Constants.SUMMARY_DASHBOARD_PAGE_COUNT);
+                }
+
+                if (billingAccoutCount > Constants.SUMMARY_DASHBOARD_PAGE_COUNT)
+                {
+                    previousCount = curentLoadMoreCount;
+                    curentLoadMoreCount = curentLoadMoreCount + 1;
+                    forLoopCount = curentLoadMoreCount * Constants.SUMMARY_DASHBOARD_PAGE_COUNT;
+                    i = previousCount * Constants.SUMMARY_DASHBOARD_PAGE_COUNT;
+                    if (billingAccoutCount < forLoopCount)
+                    {
+                        int diff = forLoopCount - billingAccoutCount;
+                        diff = Constants.SUMMARY_DASHBOARD_PAGE_COUNT - diff;
+                        forLoopCount = i + diff;
+                    }
+                }
+                else
+                {
+                    forLoopCount = billingAccoutCount;
+                }
+
+                for (; i < forLoopCount; i++)
+                {
+                    if (!string.IsNullOrEmpty(customerBillingAccounts[i].AccNum))
+                    {
+                        accounts.Add(customerBillingAccounts[i].AccNum);
+                    }
+                }
+
+                summaryDashboardRequest = new SummaryDashBordRequest();
+                if (accounts != null && accounts.Count() > 0)
+                {
+                    summaryDashboardRequest.AccNum = accounts;
+                    summaryDashboardRequest.SspUserId = userEntity.UserID;
+                    summaryDashboardRequest.ApiKeyId = Constants.APP_CONFIG.API_KEY_ID;
+                }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
         public void RefreshAccountSummary()
         {
             try
             {
-                totalLoadMoreCount = 0;
-                curentLoadMoreCount = 0;
-                billingAccoutCount = 0;
-                summaryDetailList.Clear();
-                customerBillingAccounts.Clear();
-                var reAccount = CustomerBillingAccount.REAccountList();
+                int forLoopCount = 0;
 
-                var nonReAccount = CustomerBillingAccount.NonREAccountList();
+                int i = 0;
 
-                if (reAccount != null && reAccount.Count() > 0)
+                List<String> accounts = new List<string>();
+
+                if (summaryDetailList != null && summaryDetailList.Count() > 0)
                 {
-                    customerBillingAccounts.AddRange(reAccount);
+                    List<SummaryDashBoardAccountEntity> list = SummaryDashBoardAccountEntity.GetAllItems();
+                    foreach(SummaryDashBoardDetails account in summaryDetailList)
+                    {
+                        int searchedIndex = list.FindIndex(x => x.AccountNo == account.AccNumber);
+                        if (searchedIndex < 0)
+                        {
+                            accounts.Add(account.AccNumber);
+                        }
+                    }
+                }
+                else
+                {
+                    forLoopCount = 5;
+                    for (; i < forLoopCount; i++)
+                    {
+                        if (!string.IsNullOrEmpty(customerBillingAccounts[i].AccNum))
+                        {
+                            accounts.Add(customerBillingAccounts[i].AccNum);
+                        }
+                    }
                 }
 
-
-                if (nonReAccount != null && nonReAccount.Count() > 0)
+                summaryDashboardRequest = new SummaryDashBordRequest();
+                if (accounts != null && accounts.Count() > 0)
                 {
-                    customerBillingAccounts.AddRange(nonReAccount);
+                    summaryDashboardRequest.AccNum = accounts;
+                    summaryDashboardRequest.SspUserId = userEntity.UserID;
+                    summaryDashboardRequest.ApiKeyId = Constants.APP_CONFIG.API_KEY_ID;
                 }
 
-                billingAccoutCount = customerBillingAccounts.Count();
-
-                FetchAccountSummary(true);
+                if (summaryDashboardRequest != null)
+                {
+                    refreshContent = true;
+                    SummaryDashBoardApiCall();
+                }
+                else
+                {
+                    refreshContent = false;
+                    if (mView.IsActive())
+                    {
+                        this.mView.HideProgressDialog();
+                    }
+                }
             }
             catch (Exception e)
             {
