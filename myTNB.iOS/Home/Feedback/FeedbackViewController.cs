@@ -160,7 +160,7 @@ namespace myTNB
                     email = _email,
                     deviceId = DataManager.DataManager.SharedInstance.UDID
                 };
-                _submittedFeedback = serviceManager.GetSubmittedFeedbackList("GetSubmittedFeedbackList", requestParameter);
+                _submittedFeedback = serviceManager.OnExecuteAPI<SubmittedFeedbackResponseModel>("GetSubmittedFeedbackList", requestParameter);
             });
         }
     }

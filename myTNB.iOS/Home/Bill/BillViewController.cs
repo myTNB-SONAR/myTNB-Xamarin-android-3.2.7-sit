@@ -319,7 +319,7 @@ namespace myTNB
                     isOwner = DataManager.DataManager.SharedInstance.SelectedAccount.isOwned,
                     email = emailAddress
                 };
-                _billingHistory = serviceManager.GetBillHistory("GetBillHistory", requestParameter);
+                _billingHistory = serviceManager.OnExecuteAPI<BillHistoryResponseModel>("GetBillHistory", requestParameter);
             });
         }
 
@@ -356,7 +356,7 @@ namespace myTNB
                     };
                 }
 
-                _paymentHistory = serviceManager.GetPaymentHistory(!isREAccount ? "GetPaymentHistory" : "GetREPaymentHistory", requestParameter);
+                _paymentHistory = serviceManager.OnExecuteAPI<PaymentHistoryResponseModel>(!isREAccount ? "GetPaymentHistory" : "GetREPaymentHistory", requestParameter);
             });
         }
 
@@ -466,7 +466,7 @@ namespace myTNB
                     apiKeyID = TNBGlobal.API_KEY_ID,
                     accNum = DataManager.DataManager.SharedInstance.SelectedAccount.accNum
                 };
-                _dueAmount = serviceManager.GetAccountDueAmount("GetAccountDueAmount", requestParameter);
+                _dueAmount = serviceManager.OnExecuteAPI<DueAmountResponseModel>("GetAccountDueAmount", requestParameter);
             });
         }
         /// <summary>
@@ -829,7 +829,7 @@ namespace myTNB
                     apiKeyID = TNBGlobal.API_KEY_ID,
                     CANum = DataManager.DataManager.SharedInstance.SelectedAccount.accNum
                 };
-                _billingAccountDetailsList = serviceManager.GetBillingAccountDetails("GetBillingAccountDetails", requestParameter);
+                _billingAccountDetailsList = serviceManager.OnExecuteAPI<BillingAccountDetailsResponseModel>("GetBillingAccountDetails", requestParameter);
             });
         }
 

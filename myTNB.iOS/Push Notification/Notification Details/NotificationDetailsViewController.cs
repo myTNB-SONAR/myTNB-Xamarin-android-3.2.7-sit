@@ -187,7 +187,7 @@ namespace myTNB
                     apiKeyID = TNBGlobal.API_KEY_ID,
                     CANum = NotificationInfo.AccountNum
                 };
-                _billingAccountDetailsList = serviceManager.GetBillingAccountDetails("GetBillingAccountDetails", requestParameter);
+                _billingAccountDetailsList = serviceManager.OnExecuteAPI<BillingAccountDetailsResponseModel>("GetBillingAccountDetails", requestParameter);
             });
         }
 
@@ -201,7 +201,7 @@ namespace myTNB
                     apiKeyID = TNBGlobal.API_KEY_ID,
                     accNum = NotificationInfo.AccountNum
                 };
-                _dueAmount = serviceManager.GetAccountDueAmount("GetAccountDueAmount", requestParameter);
+                _dueAmount = serviceManager.OnExecuteAPI<DueAmountResponseModel>("GetAccountDueAmount", requestParameter);
             });
         }
         /// <summary>
@@ -452,7 +452,7 @@ namespace myTNB
                     DeviceId = DataManager.DataManager.SharedInstance.UDID,
                     SSPUserId = user?.userID
                 };
-                _deleteNotificationResponse = serviceManager.DeleteUserNotification("DeleteUserNotification_V3", requestParameter);
+                _deleteNotificationResponse = serviceManager.OnExecuteAPI<DeleteNotificationResponseModel>("DeleteUserNotification_V3", requestParameter);
             });
         }
 

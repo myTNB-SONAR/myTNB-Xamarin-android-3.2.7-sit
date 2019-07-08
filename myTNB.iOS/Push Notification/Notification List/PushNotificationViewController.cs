@@ -492,7 +492,7 @@ namespace myTNB.PushNotification
                     DeviceId = DataManager.DataManager.SharedInstance.UDID,
                     SSPUserId = userId
                 };
-                _detailedInfo = serviceManager.GetNotificationDetailedInfo("GetNotificationDetailedInfo_V2", requestParameter);
+                _detailedInfo = serviceManager.OnExecuteAPI<NotificationDetailedInfoResponseModel>("GetNotificationDetailedInfo_V2", requestParameter);
             });
         }
 
@@ -674,7 +674,7 @@ namespace myTNB.PushNotification
                     DeviceId = DataManager.DataManager.SharedInstance.UDID,
                     SSPUserId = user?.userID
                 };
-                _deleteNotificationResponse = serviceManager.DeleteUserNotification("DeleteUserNotification_V3", requestParameter);
+                _deleteNotificationResponse = serviceManager.OnExecuteAPI<DeleteNotificationResponseModel>("DeleteUserNotification_V3", requestParameter);
             });
         }
 
@@ -694,7 +694,7 @@ namespace myTNB.PushNotification
                     DeviceId = DataManager.DataManager.SharedInstance.UDID,
                     SSPUserId = user?.userID
                 };
-                _readNotificationResponse = serviceManager.ReadUserNotification("ReadUserNotification", requestParameter);
+                _readNotificationResponse = serviceManager.OnExecuteAPI<ReadNotificationResponseModel>("ReadUserNotification", requestParameter);
             });
         }
 

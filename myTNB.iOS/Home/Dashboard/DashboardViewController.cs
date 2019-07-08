@@ -1186,7 +1186,7 @@ namespace myTNB.Dashboard
                     apiKeyID = TNBGlobal.API_KEY_ID,
                     accNum = DataManager.DataManager.SharedInstance.SelectedAccount?.accNum
                 };
-                _dueAmount = serviceManager.GetAccountDueAmount("GetAccountDueAmount", requestParameter);
+                _dueAmount = serviceManager.OnExecuteAPI<DueAmountResponseModel>("GetAccountDueAmount", requestParameter);
             });
         }
 
@@ -1335,7 +1335,7 @@ namespace myTNB.Dashboard
                     apiKeyID = TNBGlobal.API_KEY_ID,
                     CANum = DataManager.DataManager.SharedInstance.SelectedAccount.accNum
                 };
-                _billingAccountDetailsList = serviceManager.GetBillingAccountDetails("GetBillingAccountDetails", requestParameter);
+                _billingAccountDetailsList = serviceManager.OnExecuteAPI<BillingAccountDetailsResponseModel>("GetBillingAccountDetails", requestParameter);
             });
         }
 
@@ -1373,7 +1373,7 @@ namespace myTNB.Dashboard
                     apiKeyID = TNBGlobal.API_KEY_ID,
                     accNum = DataManager.DataManager.SharedInstance.SelectedAccount.accNum
                 };
-                _installationDetails = serviceManager.GetInstallationDetail("GetInstallationDetails", requestParameter);
+                _installationDetails = serviceManager.OnExecuteAPI<InstallationDetailResponseModel>("GetInstallationDetails", requestParameter);
             });
         }
     }

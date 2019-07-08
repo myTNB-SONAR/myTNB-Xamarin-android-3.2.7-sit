@@ -208,7 +208,7 @@ namespace myTNB
                     isOwner = DataManager.DataManager.SharedInstance.SelectedAccount.isOwned,
                     email = emailAddress
                 };
-                _billHistory = serviceManager.GetBillHistory("GetBillHistory", requestParameter);
+                _billHistory = serviceManager.OnExecuteAPI<BillHistoryResponseModel>("GetBillHistory", requestParameter);
             });
         }
 

@@ -577,7 +577,7 @@ namespace myTNB
             return Task.Factory.StartNew(() =>
             {
                 ServiceManager serviceManager = new ServiceManager();
-                _submitFeedback = serviceManager.SubmitFeedback("SubmitFeedback", requestParameter);
+                _submitFeedback = serviceManager.OnExecuteAPI<SubmitFeedbackResponseModel>("SubmitFeedback", requestParameter);
             });
         }
 

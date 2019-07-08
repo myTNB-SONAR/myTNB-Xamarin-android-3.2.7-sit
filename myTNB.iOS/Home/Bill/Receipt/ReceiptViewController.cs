@@ -403,7 +403,7 @@ namespace myTNB
                     apiKeyID = TNBGlobal.API_KEY_ID,
                     merchant_transId = MerchatTransactionID
                 };
-                _receipt = serviceManager.GetReceipt("GetMultiReceiptByTransId", requestParameter);
+                _receipt = serviceManager.OnExecuteAPI<ReceiptResponseModel>("GetMultiReceiptByTransId", requestParameter);
             });
         }
     }

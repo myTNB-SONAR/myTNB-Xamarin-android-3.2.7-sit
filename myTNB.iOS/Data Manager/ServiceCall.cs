@@ -28,7 +28,7 @@ namespace myTNB.DataManager
                     email = emailAddress
                 };
                 DataManager.SharedInstance.RegisteredCards = serviceManager
-                    .GetRegisteredCards("GetRegisteredCards", requestParameter);
+                    .OnExecuteAPI<RegisteredCardsResponseModel>("GetRegisteredCards", requestParameter);
             });
         }
 
@@ -51,8 +51,8 @@ namespace myTNB.DataManager
                     apiKeyID = TNBGlobal.API_KEY_ID,
                     userID = userId
                 };
-                DataManager.SharedInstance.CustomerAccounts = serviceManager
-                    .GetCustomerBillingAccountList("GetCustomerBillingAccountList", requestParameter);
+                DataManager.SharedInstance.CustomerAccounts =
+                serviceManager.OnExecuteAPI<CustomerAccountResponseModel>("GetCustomerBillingAccountList", requestParameter);
             });
         }
 
@@ -204,7 +204,7 @@ namespace myTNB.DataManager
             };
             response = await Task.Run(() =>
             {
-                return serviceManager.GetBillingAccountDetails("GetBillingAccountDetails", requestParameter);
+                return serviceManager.OnExecuteAPI<BillingAccountDetailsResponseModel>("GetBillingAccountDetails", requestParameter);
             });
 
             return response;
