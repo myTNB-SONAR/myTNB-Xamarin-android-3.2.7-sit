@@ -477,29 +477,37 @@ namespace myTNB_Android.Src.SummaryDashBoard.MVP
         {
             try
             {
-                totalLoadMoreCount = 0;
-                curentLoadMoreCount = 0;
-                billingAccoutCount = 0;
-                summaryDetailList.Clear();
-                customerBillingAccounts.Clear();
-                var reAccount = CustomerBillingAccount.REAccountList();
+                int forLoopCount = 0;
 
-                var nonReAccount = CustomerBillingAccount.NonREAccountList();
+                int i = 0;
 
-                if (reAccount != null && reAccount.Count() > 0)
+                if (summaryDetailList != null && summaryDetailList.Count() > 0)
                 {
-                    customerBillingAccounts.AddRange(reAccount);
+                    forLoopCount = summaryDetailList.Count();
+                }
+                else
+                {
+                    forLoopCount = 5;
                 }
 
 
-                if (nonReAccount != null && nonReAccount.Count() > 0)
+                List<String> accounts = new List<string>();
+                for (; i < forLoopCount; i++)
                 {
-                    customerBillingAccounts.AddRange(nonReAccount);
+                    if (!string.IsNullOrEmpty(customerBillingAccounts[i].AccNum))
+                    {
+                        accounts.Add(customerBillingAccounts[i].AccNum);
+                    }
                 }
 
-                billingAccoutCount = customerBillingAccounts.Count();
-
-                FetchAccountSummary(true);
+                summaryDashboardRequest = new SummaryDashBordRequest();
+                if (accounts != null && accounts.Count() > 0)
+                {
+                    summaryDashboardRequest.AccNum = accounts;
+                    summaryDashboardRequest.SspUserId = userEntity.UserID;
+                    summaryDashboardRequest.ApiKeyId = Constants.APP_CONFIG.API_KEY_ID;
+                }
+                SummaryDashBoardApiCall();
             }
             catch (Exception e)
             {
