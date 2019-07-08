@@ -558,7 +558,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                             {
                                 this.mView.HideProgressDialog();
                             }
-                            usageHistoryResponse = null;
                             if (accountSelected != null && !string.IsNullOrEmpty(accountSelected.AccNum))
                             {
                                 this.mView.ShowOwnerDashboardNoInternetConnection(accountSelected.AccDesc, usageHistoryResponse, AccountData.Copy(accountSelected, true));
@@ -567,6 +566,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                             {
                                 this.mView.ShowOwnerDashboardNoInternetConnection(accountSelected.AccDesc, usageHistoryResponse, null);
                             }
+                            usageHistoryResponse = null;
                         }
                         else if (usageHistoryResponse != null && usageHistoryResponse.Data.Status.Equals("success") && !usageHistoryResponse.Data.IsError)
                         {
@@ -610,7 +610,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                             {
                                 this.mView.HideProgressDialog();
                             }
-                            usageHistoryResponse = null;
                             if (accountSelected != null && !string.IsNullOrEmpty(accountSelected.AccNum))
                             {
                                 this.mView.ShowOwnerDashboardNoInternetConnection(accountSelected.AccDesc, null, AccountData.Copy(accountSelected, true));
@@ -620,6 +619,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                                 this.mView.ShowOwnerDashboardNoInternetConnection(accountSelected.AccDesc, null, null);
                             }
                             this.mView.SetAccountName(accountSelected.AccDesc);
+                            usageHistoryResponse = null;
                         }
                     }
                     catch (System.OperationCanceledException e)
@@ -628,7 +628,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                         {
                             this.mView.HideProgressDialog();
                         }
-                        usageHistoryResponse = null;
                         if (accountSelected != null && !string.IsNullOrEmpty(accountSelected.AccNum))
                         {
                             this.mView.ShowOwnerDashboardNoInternetConnection(accountSelected.AccDesc, null, AccountData.Copy(accountSelected, true));
@@ -637,6 +636,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                         {
                             this.mView.ShowOwnerDashboardNoInternetConnection(accountSelected.AccDesc, null, null);
                         }
+                        usageHistoryResponse = null;
                         Utility.LoggingNonFatalError(e);
                     }
                     catch (ApiException apiException)
@@ -645,7 +645,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                         {
                             this.mView.HideProgressDialog();
                         }
-                        usageHistoryResponse = null;
                         if (accountSelected != null && !string.IsNullOrEmpty(accountSelected.AccNum))
                         {
                             this.mView.ShowOwnerDashboardNoInternetConnection(accountSelected.AccDesc, null, AccountData.Copy(accountSelected, true));
@@ -654,6 +653,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                         {
                             this.mView.ShowOwnerDashboardNoInternetConnection(accountSelected.AccDesc, null, null);
                         }
+                        usageHistoryResponse = null;
                         Utility.LoggingNonFatalError(apiException);
                     }
                     catch (System.Exception e)
@@ -662,7 +662,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                         {
                             this.mView.HideProgressDialog();
                         }
-                        usageHistoryResponse = null;
                         if (accountSelected != null && !string.IsNullOrEmpty(accountSelected.AccNum))
                         {
                             this.mView.ShowOwnerDashboardNoInternetConnection(accountSelected.AccDesc, null, AccountData.Copy(accountSelected, true));
@@ -671,6 +670,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                         {
                             this.mView.ShowOwnerDashboardNoInternetConnection(accountSelected.AccDesc, null, null);
                         }
+                        usageHistoryResponse = null;
                         Utility.LoggingNonFatalError(e);
                     }
                 }
