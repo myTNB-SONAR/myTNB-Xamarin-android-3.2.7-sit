@@ -1587,7 +1587,6 @@
     <Compile Include="Rating\RatingViewController.designer.cs">
       <DependentUpon>RatingViewController.cs</DependentUpon>
     </Compile>
-    <Compile Include="Model\Feedback\SubmitFeedbackResponseModel.cs" />
     <Compile Include="Model\GetFeedbackCategory\FeedbackCategoryDataModel.cs" />
     <Compile Include="Model\GetFeedbackCategory\FeedbackCategoryModel.cs" />
     <Compile Include="Model\GetFeedbackCategory\FeedbackCategoryResponseModel.cs" />

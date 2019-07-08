@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using myTNB.Enums;
 using Newtonsoft.Json;
 
@@ -92,7 +91,7 @@ namespace myTNB.Model
             {
                 QuestionTypeEnum kind = default(QuestionTypeEnum);
 
-                switch(QuestionType)
+                switch (QuestionType)
                 {
                     case "Rating":
                         kind = QuestionTypeEnum.Rating;
@@ -102,7 +101,6 @@ namespace myTNB.Model
                         kind = QuestionTypeEnum.MultilineComment;
                         break;
                 }
-
                 return kind;
             }
         }

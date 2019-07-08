@@ -164,7 +164,7 @@ namespace myTNB.Dashboard.DashboardComponents
 
                 var lblText = FormatChartValue(chartValueDbl, chartMode);
                 var maxLines = 1;
-                var lblOffset = 5;
+                var lblOffset = 8;
 
                 if (isREAccount)
                 {
@@ -178,7 +178,7 @@ namespace myTNB.Dashboard.DashboardComponents
                 var lblHeight = 14;
                 var lblY = (barHeight - barHeightByValues * Math.Abs(chartValueDbl) - lblOffset * maxLines);
                 UILabel lblCost = new UILabel(new CGRect(-15, lblY
-                    , viewSegment.Frame.Width + 30, lblHeight * maxLines))
+                    , viewSegment.Frame.Width + 36, lblHeight * maxLines))
                 {
                     Font = MyTNBFont.MuseoSans10_500,
                     TextColor = UIColor.White,

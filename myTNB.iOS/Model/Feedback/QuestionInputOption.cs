@@ -1,5 +1,4 @@
-﻿
-namespace myTNB.Model
+﻿namespace myTNB.Model
 {
     public class QuestionInputOption
     {
