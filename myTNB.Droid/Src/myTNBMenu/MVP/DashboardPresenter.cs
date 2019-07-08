@@ -1165,6 +1165,10 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                                             CustomerBillingAccount.Update(selected.AccNum, true);
                                         }
                                         usageHistoryResponse = JsonConvert.DeserializeObject<UsageHistoryResponse>(storedEntity.JsonResponse);
+                                        if ((usageHistoryResponse != null && usageHistoryResponse.Data != null && usageHistoryResponse.Data.Status.ToUpper() == Constants.REFRESH_MODE) || !(usageHistoryResponse != null && usageHistoryResponse.Data.Status.Equals("success") && !usageHistoryResponse.Data.IsError))
+                                        {
+                                            usageHistoryResponse = null;
+                                        }
                                         LoadUsageHistory(selected);
                                     }
                                     else
@@ -1333,6 +1337,10 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                                         CustomerBillingAccount.RemoveSelected();
                                         CustomerBillingAccount.Update(selected.AccNum, true);
                                         usageHistoryResponse = JsonConvert.DeserializeObject<UsageHistoryResponse>(storedEntity.JsonResponse);
+                                        if ((usageHistoryResponse != null && usageHistoryResponse.Data != null && usageHistoryResponse.Data.Status.ToUpper() == Constants.REFRESH_MODE) || !(usageHistoryResponse != null && usageHistoryResponse.Data.Status.Equals("success") && !usageHistoryResponse.Data.IsError))
+                                        {
+                                            usageHistoryResponse = null;
+                                        }
                                         LoadUsageHistory(selected);
                                     }
                                     else
