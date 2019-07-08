@@ -81,6 +81,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.FeedbackMenu
         FeedbackMenuContract.IUserActionsListener userActionsListener;
         FeedbackMenuPresenter mPresenter;
 
+        string feedbackBillRelatedTitle = "";
+        string feedbackStreetLampTitle = "";
+        string feedbackOthersTitle = "";
+
 
         public override int ResourceId()
         {
@@ -159,6 +163,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.FeedbackMenu
         public void ShowBillingPayment()
         {
             var billingPaymentFeedback = new Intent(this.Activity, typeof(FeedbackLoginBillRelatedActivity));
+            billingPaymentFeedback.PutExtra("TITLE", feedbackBillRelatedTitle);
             StartActivity(billingPaymentFeedback);
         }
 
@@ -167,6 +172,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.FeedbackMenu
         {
             // TODO : ADD FAULTY STREE
             var faultyStreetLamps = new Intent(this.Activity, typeof(FeedbackLoginFaultyStreetLampsActivity));
+            faultyStreetLamps.PutExtra("TITLE",feedbackStreetLampTitle);
             StartActivity(faultyStreetLamps);
         }
 
@@ -174,6 +180,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.FeedbackMenu
         {
             // TODO : ADD OTHERS
             var feedbackOthers = new Intent(this.Activity, typeof(FeedbackLoginOthersActivity));
+            feedbackOthers.PutExtra("TITLE",feedbackOthersTitle);
             StartActivity(feedbackOthers);
         }
 
@@ -369,6 +376,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.FeedbackMenu
                     {
                         billRelatedConstraint.Visibility = ViewStates.Visible;
                         spaceBillRelated.Visibility = ViewStates.Visible;
+                        feedbackBillRelatedTitle = fc.Name;
                         txtFeedbackBillingAndPayment.Text = fc.Name;
                         txtFeedbackBillingAndPaymentContent.Text = fc.Desc;
                     }
@@ -376,6 +384,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.FeedbackMenu
                     {
                         faultyStreetLampsContraint.Visibility = ViewStates.Visible;
                         spaceFaultyStreetLamps.Visibility = ViewStates.Visible;
+                        feedbackStreetLampTitle = fc.Name;
                         txtFeedbackFaultyStreetLamps.Text = fc.Name;
                         txtFeedbackFaultyStreetLampsContent.Text = fc.Desc;
                     }
@@ -383,6 +392,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.FeedbackMenu
                     {
                         othersContraint.Visibility = ViewStates.Visible;
                         spaceOthers.Visibility = ViewStates.Visible;
+                        feedbackOthersTitle = fc.Name;
                         txtFeedbackOthers.Text = fc.Name;
                         txtFeedbackOthersContent.Text = fc.Desc;
                     }
