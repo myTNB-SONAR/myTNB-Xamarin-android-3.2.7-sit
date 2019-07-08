@@ -403,8 +403,21 @@ namespace myTNB_Android.Src.SummaryDashBoard.MVP
             {
                 if (billingAccoutCount > summaryDetailList.Count())
                 {
-                    //FetchUserData();
-                    FetchAccountSummary(true);
+                    this.mView.ShowProgressDialog();
+                    LoadMoreAccountPrepare();
+                    if (summaryDashboardRequest != null)
+                    {
+                        refreshContent = true;
+                        SummaryDashBoardApiCall();
+                    }
+                    else
+                    {
+                        refreshContent = false;
+                        if (mView.IsActive())
+                        {
+                            this.mView.HideProgressDialog();
+                        }
+                    }
                     if (billingAccoutCount == summaryDetailList.Count())
                     {
                         mView.IsLoadMoreButtonVisible(false);
@@ -492,6 +505,76 @@ namespace myTNB_Android.Src.SummaryDashBoard.MVP
 
         }
 
+        private void LoadMoreAccountPrepare()
+        {
+            try
+            {
+                int forLoopCount = 0;
+
+                int previousCount = 0;
+
+                int i = 0;
+
+                List<String> accounts = new List<string>();
+
+                if (summaryDetailList != null && summaryDetailList.Count() > 0)
+                {
+                    List<SummaryDashBoardAccountEntity> list = SummaryDashBoardAccountEntity.GetAllItems();
+                    foreach(SummaryDashBoardDetails account in summaryDetailList)
+                    {
+                        int searchedIndex = list.FindIndex(x => x.AccountNo == account.AccNumber);
+                        if (searchedIndex < 0)
+                        {
+                            accounts.Add(account.AccNumber);
+                        }
+                    }
+                }
+
+                if (summaryDetailList != null && summaryDetailList.Count() > 0)
+                {
+                    curentLoadMoreCount = (summaryDetailList.Count() / Constants.SUMMARY_DASHBOARD_PAGE_COUNT);
+                }
+
+                if (billingAccoutCount > Constants.SUMMARY_DASHBOARD_PAGE_COUNT)
+                {
+                    previousCount = curentLoadMoreCount;
+                    curentLoadMoreCount = curentLoadMoreCount + 1;
+                    forLoopCount = curentLoadMoreCount * Constants.SUMMARY_DASHBOARD_PAGE_COUNT;
+                    i = previousCount * Constants.SUMMARY_DASHBOARD_PAGE_COUNT;
+                    if (billingAccoutCount < forLoopCount)
+                    {
+                        int diff = forLoopCount - billingAccoutCount;
+                        diff = Constants.SUMMARY_DASHBOARD_PAGE_COUNT - diff;
+                        forLoopCount = i + diff;
+                    }
+                }
+                else
+                {
+                    forLoopCount = billingAccoutCount;
+                }
+
+                for (; i < forLoopCount; i++)
+                {
+                    if (!string.IsNullOrEmpty(customerBillingAccounts[i].AccNum))
+                    {
+                        accounts.Add(customerBillingAccounts[i].AccNum);
+                    }
+                }
+
+                summaryDashboardRequest = new SummaryDashBordRequest();
+                if (accounts != null && accounts.Count() > 0)
+                {
+                    summaryDashboardRequest.AccNum = accounts;
+                    summaryDashboardRequest.SspUserId = userEntity.UserID;
+                    summaryDashboardRequest.ApiKeyId = Constants.APP_CONFIG.API_KEY_ID;
+                }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
         public void RefreshAccountSummary()
         {
             try
@@ -533,8 +616,20 @@ namespace myTNB_Android.Src.SummaryDashBoard.MVP
                     summaryDashboardRequest.SspUserId = userEntity.UserID;
                     summaryDashboardRequest.ApiKeyId = Constants.APP_CONFIG.API_KEY_ID;
                 }
-                refreshContent = true;
-                SummaryDashBoardApiCall();
+
+                if (summaryDashboardRequest != null)
+                {
+                    refreshContent = true;
+                    SummaryDashBoardApiCall();
+                }
+                else
+                {
+                    refreshContent = false;
+                    if (mView.IsActive())
+                    {
+                        this.mView.HideProgressDialog();
+                    }
+                }
             }
             catch (Exception e)
             {
