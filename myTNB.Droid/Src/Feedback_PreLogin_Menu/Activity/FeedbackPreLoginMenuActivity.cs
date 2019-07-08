@@ -352,16 +352,22 @@ namespace myTNB_Android.Src.Feedback_PreLogin_Menu.Activity
                     {
                         billRelatedConstraint.Visibility = ViewStates.Visible;
                         spaceBillRelated.Visibility = ViewStates.Visible;
+                        txtFeedbackBillingAndPayment.Text = fc.Name;
+                        txtFeedbackBillingAndPaymentContent.Text = fc.Desc;
                     }
                     else if (fc.Id.Equals("2"))
                     {
                         faultyStreetLampsContraint.Visibility = ViewStates.Visible;
                         spaceFaultyStreetLamps.Visibility = ViewStates.Visible;
+                        txtFeedbackFaultyStreetLamps.Text = fc.Name;
+                        txtFeedbackFaultyStreetLampsContent.Text = fc.Desc;
                     }
                     else if (fc.Id.Equals("3"))
                     {
                         othersContraint.Visibility = ViewStates.Visible;
                         spaceOthers.Visibility = ViewStates.Visible;
+                        txtFeedbackOthers.Text = fc.Name;
+                        txtFeedbackOthersContent.Text = fc.Desc;
                     }
 
                 }

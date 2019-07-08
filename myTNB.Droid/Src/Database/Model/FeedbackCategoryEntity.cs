@@ -14,6 +14,9 @@ namespace myTNB_Android.Src.Database.Model
         [Column("FeedbackCategoryName")]
         public string Name { get; set; }
 
+        [Column("FeedbackCategoryDesc")]
+        public string Desc { get; set; }
+
 
         public static int CreateTable()
         {
@@ -32,7 +35,8 @@ namespace myTNB_Android.Src.Database.Model
             var newRecord = new FeedbackCategoryEntity()
             {
                 Id = feedback.FeedbackCategoryId,
-                Name = feedback.FeedbackCategoryName
+                Name = feedback.FeedbackCategoryName,
+                Desc = "Description"
             };
 
 
