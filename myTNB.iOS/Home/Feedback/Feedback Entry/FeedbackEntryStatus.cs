@@ -53,7 +53,8 @@ namespace myTNB.Home.Feedback.FeedbackEntry
 
         void InitilizedViews()
         {
-            viewContainer = new UIView(new CGRect(18, 36, View.Frame.Width - 36, 203))
+            nfloat yOffset = DeviceHelper.IsIphoneXUpResolution() ? 50 : 0;
+            viewContainer = new UIView(new CGRect(18, 36 + yOffset, View.Frame.Width - 36, 203))
             {
                 BackgroundColor = UIColor.White,
                 Layer = { CornerRadius = 4f }
