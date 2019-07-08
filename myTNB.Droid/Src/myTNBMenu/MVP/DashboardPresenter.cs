@@ -47,7 +47,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
         private string smErrorMessage = "Sorry, Something went wrong. Please try again later";
 
         private string preSelectedAccount;
-        private UsageHistoryResponse usageHistoryResponse;
 
         public DashboardPresenter(DashboardContract.IView mView, ISharedPreferences preferences)
         {
@@ -544,21 +543,10 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 
                     try
                     {
-                        if (usageHistoryResponse == null)
+                        var usageHistoryResponse = await api.DoQuery(new Requests.UsageHistoryRequest(Constants.APP_CONFIG.API_KEY_ID)
                         {
-                            usageHistoryResponse = await api.DoQuery(new Requests.UsageHistoryRequest(Constants.APP_CONFIG.API_KEY_ID)
-                            {
-                                AccountNum = accountSelected.AccNum
-                            }, cts.Token);
-                            if (usageHistoryResponse != null && usageHistoryResponse.Data.Status.Equals("success") && !usageHistoryResponse.Data.IsError)
-                            {
-                                UsageHistoryEntity smUsageModel = new UsageHistoryEntity();
-                                smUsageModel.Timestamp = DateTime.Now.ToLocalTime();
-                                smUsageModel.JsonResponse = JsonConvert.SerializeObject(usageHistoryResponse);
-                                smUsageModel.AccountNo = accountSelected.AccNum;
-                                UsageHistoryEntity.InsertItem(smUsageModel);
-                            }
-                        }
+                            AccountNum = accountSelected.AccNum
+                        }, cts.Token);
 
                         if (usageHistoryResponse != null && usageHistoryResponse.Data != null && usageHistoryResponse.Data.Status.ToUpper() == Constants.REFRESH_MODE)
                         {
@@ -581,6 +569,13 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                             {
                                 this.mView.HideProgressDialog();
                             }
+
+                            UsageHistoryEntity smUsageModel = new UsageHistoryEntity();
+                            smUsageModel.Timestamp = DateTime.Now.ToLocalTime();
+                            smUsageModel.JsonResponse = JsonConvert.SerializeObject(usageHistoryResponse);
+                            smUsageModel.AccountNo = accountSelected.AccNum;
+                            UsageHistoryEntity.InsertItem(smUsageModel);
+
                             if (currentBottomNavigationMenu == Resource.Id.menu_dashboard)
                             {
                                 this.mView.ShowAccountName();
@@ -594,7 +589,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                                 {
                                     this.mView.ShowChart(usageHistoryResponse.Data.UsageHistoryData, AccountData.Copy(accountSelected, true));
                                 }
-                                usageHistoryResponse = null;
                             }
                             else if (currentBottomNavigationMenu == Resource.Id.menu_bill)
                             {
@@ -1162,7 +1156,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                                         {
                                             CustomerBillingAccount.Update(selected.AccNum, true);
                                         }
-                                        usageHistoryResponse = JsonConvert.DeserializeObject<UsageHistoryResponse>(storedEntity.JsonResponse);
                                         LoadUsageHistory(selected);
                                     }
                                     else
@@ -1330,7 +1323,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                                     {
                                         CustomerBillingAccount.RemoveSelected();
                                         CustomerBillingAccount.Update(selected.AccNum, true);
-                                        usageHistoryResponse = JsonConvert.DeserializeObject<UsageHistoryResponse>(storedEntity.JsonResponse);
                                         LoadUsageHistory(selected);
                                     }
                                     else
