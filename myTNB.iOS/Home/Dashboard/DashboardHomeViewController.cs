@@ -173,24 +173,10 @@ namespace myTNB
             {
                 UITapGestureRecognizer notificationTap = new UITapGestureRecognizer(() =>
                 {
-                    NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
-                    {
-                        InvokeOnMainThread(() =>
-                        {
-                            if (NetworkUtility.isReachable)
-                            {
-                                UIStoryboard storyBoard = UIStoryboard.FromName("PushNotification", null);
-                                var viewController = storyBoard.InstantiateViewController("PushNotificationViewController") as PushNotificationViewController;
-                                var navController = new UINavigationController(viewController);
-                                PresentViewController(navController, true, null);
-                            }
-                            else
-                            {
-                                Debug.WriteLine("No Network");
-                                AlertHandler.DisplayNoDataAlert(this);
-                            }
-                        });
-                    });
+                    UIStoryboard storyBoard = UIStoryboard.FromName("PushNotification", null);
+                    var viewController = storyBoard.InstantiateViewController("PushNotificationViewController") as PushNotificationViewController;
+                    var navController = new UINavigationController(viewController);
+                    PresentViewController(navController, true, null);
                 });
                 _titleBarComponent.SetPrimaryAction(notificationTap);
             }
@@ -441,8 +427,13 @@ namespace myTNB
                     if (NetworkUtility.isReachable)
                     {
                         ActivityIndicator.Show();
+                        await UpdateDues();
                         await LoadDues();
                         ActivityIndicator.Hide();
+                    }
+                    else
+                    {
+                        DisplayNoDataAlert();
                     }
                 });
             });
@@ -453,7 +444,6 @@ namespace myTNB
         /// </summary>
         private void OnRefresh()
         {
-            Debug.WriteLine("Tap to refresh on click");
             NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
             {
                 InvokeOnMainThread(async () =>
@@ -463,6 +453,10 @@ namespace myTNB
                         ActivityIndicator.Show();
                         await GetAccountsSummary(accountsToRefresh, false);
                         ActivityIndicator.Hide();
+                    }
+                    else
+                    {
+                        DisplayNoDataAlert();
                     }
                 });
             });
@@ -549,10 +543,9 @@ namespace myTNB
                     }
                     isTimeOut = true;
                     UpdateHeader(response);
-                    // hide load more
-                    _viewLoadMore.Hidden = true;
-                    ViewHelper.AdjustFrameSetY(btnAdd, verticalMargin);
-                    ViewHelper.AdjustFrameSetHeight(_viewFooter, addAccountHeight);
+                    _viewLoadMore.Hidden = false;
+                    ViewHelper.AdjustFrameSetY(btnAdd, _viewLoadMore.Frame.GetMaxY() + verticalMargin);
+                    ViewHelper.AdjustFrameSetHeight(_viewFooter, _viewLoadMore.Frame.GetMaxY() + addAccountHeight);
                 }
 
                 tableViewAccounts.SeparatorStyle = UITableViewCellSeparatorStyle.SingleLine;

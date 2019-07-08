@@ -174,9 +174,10 @@ namespace myTNB.Dashboard
                         }
                         else
                         {
-                            DisplayNoDataAlert();
-                            _dashboardMainComponent.ConstructNoDataConnectionDashboard();
+                            amountDueIsAvailable = false;
+                            _dashboardMainComponent.ConstructGeneralRefreshScreen(RefreshScreen);
                             SetEventsAndText();
+                            SetBillAndPaymentDetails();
                         }
                     });
                 });
@@ -434,7 +435,6 @@ namespace myTNB.Dashboard
             SetBillAndPaymentEvent();
             SetNoAccountEvent();
             SetAccessEvent();
-            SetNoDataConnectionEvent();
             SetTitleBarEvent();
             SetScrollEvent();
         }
@@ -678,24 +678,10 @@ namespace myTNB.Dashboard
                 UITapGestureRecognizer notificationTap = new UITapGestureRecognizer(() =>
                 {
                     DataManager.DataManager.SharedInstance.IsSameAccount = true;
-                    NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
-                    {
-                        InvokeOnMainThread(() =>
-                        {
-                            if (NetworkUtility.isReachable)
-                            {
-                                UIStoryboard storyBoard = UIStoryboard.FromName("PushNotification", null);
-                                PushNotificationViewController viewController = storyBoard.InstantiateViewController("PushNotificationViewController") as PushNotificationViewController;
-                                var navController = new UINavigationController(viewController);
-                                PresentViewController(navController, true, null);
-                            }
-                            else
-                            {
-                                Debug.WriteLine("No Network");
-                                DisplayNoDataAlert();
-                            }
-                        });
-                    });
+                    UIStoryboard storyBoard = UIStoryboard.FromName("PushNotification", null);
+                    PushNotificationViewController viewController = storyBoard.InstantiateViewController("PushNotificationViewController") as PushNotificationViewController;
+                    var navController = new UINavigationController(viewController);
+                    PresentViewController(navController, true, null);
                 });
                 _dashboardMainComponent._titleBarComponent.SetPrimaryAction(notificationTap);
             }
@@ -942,7 +928,7 @@ namespace myTNB.Dashboard
             }
             else
             {
-                _dashboardMainComponent.ConstructNoDataConnectionDashboard();
+                _dashboardMainComponent.ConstructGeneralRefreshScreen(RefreshScreen);
             }
             SetEventsAndText();
             SetBillAndPaymentDetails();
@@ -1365,6 +1351,10 @@ namespace myTNB.Dashboard
                         await LoadDashboard();
                         SetEventsAndText();
                         ActivityIndicator.Hide();
+                    }
+                    else
+                    {
+                        DisplayNoDataAlert();
                     }
                 });
             });

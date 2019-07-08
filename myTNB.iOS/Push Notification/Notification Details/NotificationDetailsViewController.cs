@@ -85,34 +85,37 @@ namespace myTNB
                     , "PushNotification_DeleteMessage".Translate(), UIAlertControllerStyle.Alert);
                 alert.AddAction(UIAlertAction.Create("Common_Ok".Translate(), UIAlertActionStyle.Default, (obj) =>
                 {
-                    ActivityIndicator.Show();
-                    InvokeOnMainThread(async () =>
+                    NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
                     {
-                        if (NetworkUtility.isReachable)
+                        InvokeOnMainThread(async () =>
                         {
-                            await DeleteUserNotification(NotificationInfo?.Id);
-                            if (_deleteNotificationResponse != null && _deleteNotificationResponse?.d != null
-                                && _deleteNotificationResponse?.d?.status?.ToLower() == "success"
-                                && _deleteNotificationResponse?.d?.didSucceed == true)
+                            if (NetworkUtility.isReachable)
                             {
-                                DataManager.DataManager.SharedInstance.IsNotificationDeleted = true;
-                                var index = DataManager.DataManager.SharedInstance.UserNotifications.FindIndex(x => x.Id == NotificationInfo?.Id);
-                                if (index > -1)
+                                ActivityIndicator.Show();
+                                await DeleteUserNotification(NotificationInfo?.Id);
+                                if (_deleteNotificationResponse != null && _deleteNotificationResponse?.d != null
+                                    && _deleteNotificationResponse?.d?.status?.ToLower() == "success"
+                                    && _deleteNotificationResponse?.d?.didSucceed == true)
                                 {
-                                    DataManager.DataManager.SharedInstance.UserNotifications.RemoveAt(index);
+                                    DataManager.DataManager.SharedInstance.IsNotificationDeleted = true;
+                                    var index = DataManager.DataManager.SharedInstance.UserNotifications.FindIndex(x => x.Id == NotificationInfo?.Id);
+                                    if (index > -1)
+                                    {
+                                        DataManager.DataManager.SharedInstance.UserNotifications.RemoveAt(index);
+                                    }
+                                    NavigationController?.PopViewController(true);
                                 }
-                                NavigationController?.PopViewController(true);
+                                else
+                                {
+                                    DisplayServiceError(_deleteNotificationResponse?.d?.message);
+                                }
                             }
                             else
                             {
-                                DisplayServiceError(_deleteNotificationResponse?.d?.message);
+                                DisplayNoDataAlert();
                             }
-                        }
-                        else
-                        {
-                            DisplayNoDataAlert();
-                        }
-                        ActivityIndicator.Hide();
+                            ActivityIndicator.Hide();
+                        });
                     });
                 }));
                 alert.AddAction(UIAlertAction.Create("Common_Cancel".Translate(), UIAlertActionStyle.Cancel, (obj) => { }));

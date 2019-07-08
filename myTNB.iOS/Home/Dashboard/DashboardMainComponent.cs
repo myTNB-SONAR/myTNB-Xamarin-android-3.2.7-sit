@@ -221,8 +221,8 @@ namespace myTNB.Dashboard.DashboardComponents
             {
                 //Add Account Status
                 _accountStatusComponent = new AccountStatusComponent(_dashboardScrollView, _addressComponent.GetView());
-                _dashboardScrollView.AddSubview(_accountStatusComponent.GetUI());
                 AddAccountStatusComponent();
+                _dashboardScrollView.AddSubview(_accountStatusComponent.GetUI());
             }
 
             //Add smart meter
@@ -330,8 +330,8 @@ namespace myTNB.Dashboard.DashboardComponents
             {
                 //Add Account Status
                 _accountStatusComponent = new AccountStatusComponent(_gradientView, _addressComponent.GetView());
-                _gradientView.AddSubview(_accountStatusComponent.GetUI());
                 AddAccountStatusComponent();
+                _gradientView.AddSubview(_accountStatusComponent.GetUI());
             }
 
             _parentView.AddSubview(_gradientView);
@@ -474,8 +474,8 @@ namespace myTNB.Dashboard.DashboardComponents
             {
                 //Add Account Status
                 _accountStatusComponent = new AccountStatusComponent(_gradientView, _addressComponent.GetView());
-                _gradientView.AddSubview(_accountStatusComponent.GetUI());
                 AddAccountStatusComponent();
+                _gradientView.AddSubview(_accountStatusComponent.GetUI());
             }
 
             _parentView.AddSubview(_gradientView);
@@ -535,7 +535,7 @@ namespace myTNB.Dashboard.DashboardComponents
         /// </summary>
         /// <param name="buttonAction"></param>
         /// <param name="chartModel"></param>
-        public void ConstructRefreshScreenForGraph(Action buttonAction, ChartModel chartModel)
+        public void ConstructRefreshScreenForGraph(Action buttonAction, ChartModel chartModel = null)
         {
             string msg = !string.IsNullOrWhiteSpace(chartModel?.RefreshMessage) ? chartModel?.RefreshMessage : "Error_RefreshMessage".Translate();
             string btnText = !string.IsNullOrWhiteSpace(chartModel?.RefreshBtnText) ? chartModel?.RefreshBtnText : "Error_RefreshBtnTitle".Translate();
@@ -546,7 +546,7 @@ namespace myTNB.Dashboard.DashboardComponents
         /// </summary>
         /// <param name="buttonAction"></param>
         /// <param name="baseModel"></param>
-        public void ConstructGeneralRefreshScreen(Action buttonAction, BaseModel baseModel)
+        public void ConstructGeneralRefreshScreen(Action buttonAction, BaseModel baseModel = null)
         {
             string msg = !string.IsNullOrWhiteSpace(baseModel?.RefreshMessage) ? baseModel?.RefreshMessage : "Error_RefreshMessage".Translate();
             string btnText = !string.IsNullOrWhiteSpace(baseModel?.RefreshBtnText) ? baseModel?.RefreshBtnText : "Error_RefreshBtnTitle".Translate();

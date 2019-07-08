@@ -180,26 +180,42 @@ namespace myTNB.PushNotification
         public override void ViewWillAppear(bool animated)
         {
             base.ViewWillAppear(animated);
-            if (DataManager.DataManager.SharedInstance.IsLoadingFromDashboard)
+            NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
             {
-                ActivityIndicator.Show();
-            }
-            else
-            {
-                if (DataManager.DataManager.SharedInstance.IsNotificationDeleted)
+                InvokeOnMainThread(() =>
                 {
-                    DisplayToast("PushNotification_NotificationDeleted".Translate());
-                    DataManager.DataManager.SharedInstance.IsNotificationDeleted = false;
-                }
-                if (DataManager.DataManager.SharedInstance.NotificationNeedsUpdate)
-                {
-                    GetUserNotif();
-                }
-                else
-                {
-                    ValidateResponse();
-                }
-            }
+                    if (NetworkUtility.isReachable)
+                    {
+                        if (DataManager.DataManager.SharedInstance.IsLoadingFromDashboard)
+                        {
+                            ActivityIndicator.Show();
+                        }
+                        else
+                        {
+                            if (DataManager.DataManager.SharedInstance.IsNotificationDeleted)
+                            {
+                                DisplayToast("PushNotification_NotificationDeleted".Translate());
+                                DataManager.DataManager.SharedInstance.IsNotificationDeleted = false;
+                            }
+                            if (DataManager.DataManager.SharedInstance.NotificationNeedsUpdate)
+                            {
+                                GetUserNotif();
+                            }
+                            else
+                            {
+                                ValidateResponse();
+                            }
+                        }
+                    }
+                    else
+                    {
+                        pushNotificationTableView.Hidden = true;
+                        _titleBarComponent.SetPrimaryVisibility(true);
+                        OnReset();
+                        DisplayRefreshScreen("Error_RefreshMessage".Translate(), "Error_RefreshBtnTitle".Translate());
+                    }
+                });
+            });
         }
 
         private void DisplayNoNotification()
