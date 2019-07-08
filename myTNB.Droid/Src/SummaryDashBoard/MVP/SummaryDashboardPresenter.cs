@@ -30,6 +30,8 @@ namespace myTNB_Android.Src.SummaryDashBoard.MVP
         int curentLoadMoreCount = 0;
         int billingAccoutCount = 0;
 
+        bool refreshContent = false;
+
         public SummaryDashboardPresenter(SummaryDashboardContract.IView mView)
         {
             this.mView = mView;
@@ -340,7 +342,24 @@ namespace myTNB_Android.Src.SummaryDashBoard.MVP
             {
                 if (summaryDetails != null && summaryDetails.Count > 0)
                 {
-                    summaryDetailList.AddRange(summaryDetails);
+                    if (refreshContent)
+                    {
+                        refreshContent = false;
+                        foreach(SummaryDashBoardDetails detail in summaryDetails)
+                        {
+                            int selectedIndex = summaryDetailList.FindIndex(x => x.AccNumber == detail.AccNumber);
+                            if (selectedIndex >= 0)
+                            {
+                                summaryDetailList.RemoveAt(selectedIndex);
+                            }
+
+                            summaryDetailList.Add(detail);
+                        }
+                    }
+                    else
+                    {
+                        summaryDetailList.AddRange(summaryDetails);
+                    }
                 }
 
 
@@ -481,22 +500,29 @@ namespace myTNB_Android.Src.SummaryDashBoard.MVP
 
                 int i = 0;
 
+                List<String> accounts = new List<string>();
+
                 if (summaryDetailList != null && summaryDetailList.Count() > 0)
                 {
-                    forLoopCount = summaryDetailList.Count();
+                    List<SummaryDashBoardAccountEntity> list = SummaryDashBoardAccountEntity.GetAllItems();
+                    foreach(SummaryDashBoardDetails account in summaryDetailList)
+                    {
+                        int searchedIndex = list.FindIndex(x => x.AccountNo == account.AccNumber);
+                        if (searchedIndex < 0)
+                        {
+                            accounts.Add(account.AccNumber);
+                        }
+                    }
                 }
                 else
                 {
                     forLoopCount = 5;
-                }
-
-
-                List<String> accounts = new List<string>();
-                for (; i < forLoopCount; i++)
-                {
-                    if (!string.IsNullOrEmpty(customerBillingAccounts[i].AccNum))
+                    for (; i < forLoopCount; i++)
                     {
-                        accounts.Add(customerBillingAccounts[i].AccNum);
+                        if (!string.IsNullOrEmpty(customerBillingAccounts[i].AccNum))
+                        {
+                            accounts.Add(customerBillingAccounts[i].AccNum);
+                        }
                     }
                 }
 
@@ -507,6 +533,7 @@ namespace myTNB_Android.Src.SummaryDashBoard.MVP
                     summaryDashboardRequest.SspUserId = userEntity.UserID;
                     summaryDashboardRequest.ApiKeyId = Constants.APP_CONFIG.API_KEY_ID;
                 }
+                refreshContent = true;
                 SummaryDashBoardApiCall();
             }
             catch (Exception e)
