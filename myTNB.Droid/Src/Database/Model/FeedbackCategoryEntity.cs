@@ -36,7 +36,7 @@ namespace myTNB_Android.Src.Database.Model
             {
                 Id = feedback.FeedbackCategoryId,
                 Name = feedback.FeedbackCategoryName,
-                Desc = "Description"
+                Desc = feedback.FeedbackCategoryDesc
             };
 
 
