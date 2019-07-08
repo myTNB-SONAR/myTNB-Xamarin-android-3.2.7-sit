@@ -93,10 +93,15 @@ namespace myTNB_Android.Src.Feedback_Login_Others.Activity
         [BindView(Resource.Id.rootView)]
         CoordinatorLayout rootView;
 
+        public override Boolean ShowCustomToolbarTitle()
+        {
+            return true;
+        }
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-
+            Intent intent = Intent;
+            SetToolBarTitle(Intent.GetStringExtra("TITLE"));
             submitDialog = new MaterialDialog.Builder(this)
                 .Title(Resource.String.feedback_submit_dialog_title)
                 .Content(Resource.String.feedback_submit_dialog_message)
@@ -211,12 +216,6 @@ namespace myTNB_Android.Src.Feedback_Login_Others.Activity
         public override int ResourceId()
         {
             return Resource.Layout.FeedbackLoginOthersView;
-        }
-
-
-        public override bool ShowCustomToolbarTitle()
-        {
-            return true;
         }
 
         [OnClick(Resource.Id.btnSubmit)]

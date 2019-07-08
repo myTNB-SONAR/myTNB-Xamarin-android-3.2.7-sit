@@ -86,6 +86,10 @@ namespace myTNB_Android.Src.Feedback_PreLogin_Menu.Activity
         MaterialDialog progressDialog;
         LoadingOverlay loadingOverlay;
 
+        string feedbackBillRelatedTitle = "";
+        string feedbackStreetLampTitle = "";
+        string feedbackOthersTitle = "";
+
         public override int ResourceId()
         {
             return Resource.Layout.FeedbackPreloginMenuView;
@@ -135,6 +139,7 @@ namespace myTNB_Android.Src.Feedback_PreLogin_Menu.Activity
         public void ShowBillingPayment()
         {
             var billingPaymentFeedback = new Intent(this, typeof(FeedbackPreLoginBillRelatedActivity));
+            billingPaymentFeedback.PutExtra("TITLE", feedbackBillRelatedTitle);
             StartActivity(billingPaymentFeedback);
         }
 
@@ -143,6 +148,7 @@ namespace myTNB_Android.Src.Feedback_PreLogin_Menu.Activity
         {
             // TODO : ADD FAULTY STREE
             var faultyStreetLamps = new Intent(this, typeof(FeedbackPreLoginFaultyStreetLampsActivity));
+            faultyStreetLamps.PutExtra("TITLE", feedbackStreetLampTitle);
             StartActivity(faultyStreetLamps);
         }
 
@@ -150,6 +156,7 @@ namespace myTNB_Android.Src.Feedback_PreLogin_Menu.Activity
         {
             // TODO : ADD OTHERS
             var feedbackOthers = new Intent(this, typeof(FeedbackPreLoginOthersActivity));
+            feedbackOthers.PutExtra("TITLE", feedbackOthersTitle);
             StartActivity(feedbackOthers);
         }
 
@@ -352,16 +359,25 @@ namespace myTNB_Android.Src.Feedback_PreLogin_Menu.Activity
                     {
                         billRelatedConstraint.Visibility = ViewStates.Visible;
                         spaceBillRelated.Visibility = ViewStates.Visible;
+                        feedbackBillRelatedTitle = fc.Name;
+                        txtFeedbackBillingAndPayment.Text = fc.Name;
+                        txtFeedbackBillingAndPaymentContent.Text = fc.Desc;
                     }
                     else if (fc.Id.Equals("2"))
                     {
                         faultyStreetLampsContraint.Visibility = ViewStates.Visible;
                         spaceFaultyStreetLamps.Visibility = ViewStates.Visible;
+                        feedbackStreetLampTitle = fc.Name;
+                        txtFeedbackFaultyStreetLamps.Text = fc.Name;
+                        txtFeedbackFaultyStreetLampsContent.Text = fc.Desc;
                     }
                     else if (fc.Id.Equals("3"))
                     {
                         othersContraint.Visibility = ViewStates.Visible;
                         spaceOthers.Visibility = ViewStates.Visible;
+                        feedbackOthersTitle = fc.Name;
+                        txtFeedbackOthers.Text = fc.Name;
+                        txtFeedbackOthersContent.Text = fc.Desc;
                     }
 
                 }

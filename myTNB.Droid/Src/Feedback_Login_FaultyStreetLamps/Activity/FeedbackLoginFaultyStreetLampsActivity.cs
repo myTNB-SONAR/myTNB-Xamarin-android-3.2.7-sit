@@ -110,9 +110,15 @@ namespace myTNB_Android.Src.Feedback_Login_FaultyStreetLamps.Activity
         FeedbackState currentFeedbackState;
 
 
+        public override Boolean ShowCustomToolbarTitle()
+        {
+            return true;
+        }
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
+            Intent intent = Intent;
+            SetToolBarTitle(Intent.GetStringExtra("TITLE"));
             submitDialog = new MaterialDialog.Builder(this)
                 .Title(Resource.String.feedback_submit_dialog_title)
                 .Content(Resource.String.feedback_submit_dialog_message)
@@ -262,13 +268,6 @@ namespace myTNB_Android.Src.Feedback_Login_FaultyStreetLamps.Activity
         {
             return Resource.Layout.FeedbackLoginFaultyStreetLampsView;
         }
-
-        public override bool ShowCustomToolbarTitle()
-        {
-            return true;
-        }
-
-
 
         [OnAfterTextChanged(Resource.Id.txtLocation)]
         private void TxtLocation_AfterTextChanged(object sender, AfterTextChangedEventArgs e)
