@@ -293,7 +293,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             return chartFragment;
         }
 
-        internal static DashboardChartFragment NewInstance(bool hasNoInternet, bool amountDueFailed, string contentTxt, string btnTxt)
+        internal static DashboardChartFragment NewInstance(bool hasNoInternet, bool amountDueFailed, string contentTxt, string btnTxt, AccountData accountData)
         {
             DashboardChartFragment chartFragment = new DashboardChartFragment();
             Bundle bundle = new Bundle();
@@ -312,6 +312,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             if(!string.IsNullOrEmpty(btnTxt))
             {
                 bundle.PutString(Constants.REFRESH_BTN_MSG, btnTxt);
+            }
+            if(accountData != null)
+            {
+                bundle.PutString(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(accountData));
             }
             chartFragment.Arguments = bundle;
             return chartFragment;
@@ -419,9 +423,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                 downtimeSnackBar.Show();
                             }
                         }
-                        this.userActionsListener.GetAccountStatus(selectedAccount.AccountNum);
                         if (!amountDueFailed)
                         {
+                            this.userActionsListener.GetAccountStatus(selectedAccount.AccountNum);
                             this.userActionsListener.OnLoadAmount(selectedAccount.AccountNum);
                         }
                     }

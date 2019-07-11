@@ -265,12 +265,12 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             }
         }
 
-        public void ShowOwnerDashboardNoInternetConnection(string accountName, bool amountDueFailed, string contentTxt, string btnTxt)
+        public void ShowOwnerDashboardNoInternetConnection(string accountName, bool amountDueFailed, string contentTxt, string btnTxt, AccountData selectedAccount)
         {
             txtAccountName.Text = accountName;
             currentFragment = new DashboardChartFragment();
             FragmentManager.BeginTransaction()
-                           .Replace(Resource.Id.content_layout, DashboardChartFragment.NewInstance(true, amountDueFailed, contentTxt, btnTxt),
+                           .Replace(Resource.Id.content_layout, DashboardChartFragment.NewInstance(true, amountDueFailed, contentTxt, btnTxt, selectedAccount),
                                     typeof(DashboardChartFragment).Name)
                            .CommitAllowingStateLoss();
             if (CustomerBillingAccount.List().Count <= 1)

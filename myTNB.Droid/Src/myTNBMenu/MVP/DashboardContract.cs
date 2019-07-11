@@ -104,7 +104,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
             /// <param name="selectedAccount"></param>
             void ShowOwnerBillsNoInternetConnection(AccountData selectedAccount);
 
-            void ShowOwnerDashboardNoInternetConnection(string accountName, bool amountDueFailed, string contentText, string btnText);
+            void ShowOwnerDashboardNoInternetConnection(string accountName, bool amountDueFailed, string contentText, string btnText, AccountData selectedAccount);
 
             /// <summary>
             /// NOT USED

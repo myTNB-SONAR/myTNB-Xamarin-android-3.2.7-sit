@@ -437,21 +437,42 @@ namespace myTNB_Android.Src.SummaryDashBoard
             try
             {
                 layoutContent.Visibility = ViewStates.Visible;
-                greetingLayout.Visibility = yesno ? ViewStates.Gone : ViewStates.Visible;
-                layoutNewRefresh.Visibility = yesno ? ViewStates.Visible : ViewStates.Gone;
-                if (yesno)
+                DownTimeEntity bcrmDownTime = DownTimeEntity.GetByCode(Constants.BCRM_SYSTEM);
+                if (bcrmDownTime != null && bcrmDownTime.IsDown)
                 {
-                    btnNewRefresh.Text = string.IsNullOrEmpty(buttonMsg) ? GetString(Resource.String.text_new_refresh) : buttonMsg;
-
-                    if (Build.VERSION.SdkInt >= BuildVersionCodes.N)
+                    downtimeLayout.Visibility = ViewStates.Visible;
+                    greetingLayout.Visibility = ViewStates.Gone;
+                    layoutNewRefresh.Visibility = ViewStates.Gone;
+                    if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.N)
                     {
-                        txtNewRefreshMessage.TextFormatted = string.IsNullOrEmpty(contentMsg) ? Html.FromHtml(GetString(Resource.String.text_new_refresh_content), FromHtmlOptions.ModeLegacy) : Html.FromHtml(contentMsg, FromHtmlOptions.ModeLegacy);
+                        txtDowntimeMessage.TextFormatted = Html.FromHtml(bcrmDownTime.DowntimeMessage, FromHtmlOptions.ModeLegacy);
                     }
                     else
                     {
-                        txtNewRefreshMessage.TextFormatted = string.IsNullOrEmpty(contentMsg) ? Html.FromHtml(GetString(Resource.String.text_new_refresh_content)) : Html.FromHtml(contentMsg);
+                        txtDowntimeMessage.TextFormatted = Html.FromHtml(bcrmDownTime.DowntimeMessage);
                     }
                 }
+                else
+                {
+                    downtimeLayout.Visibility = ViewStates.Gone;
+                    greetingLayout.Visibility = yesno ? ViewStates.Gone : ViewStates.Visible;
+                    layoutNewRefresh.Visibility = yesno ? ViewStates.Visible : ViewStates.Gone;
+                    if (yesno)
+                    {
+                        btnNewRefresh.Text = string.IsNullOrEmpty(buttonMsg) ? GetString(Resource.String.text_new_refresh) : buttonMsg;
+
+                        if (Build.VERSION.SdkInt >= BuildVersionCodes.N)
+                        {
+                            txtNewRefreshMessage.TextFormatted = string.IsNullOrEmpty(contentMsg) ? Html.FromHtml(GetString(Resource.String.text_new_refresh_content), FromHtmlOptions.ModeLegacy) : Html.FromHtml(contentMsg, FromHtmlOptions.ModeLegacy);
+                        }
+                        else
+                        {
+                            txtNewRefreshMessage.TextFormatted = string.IsNullOrEmpty(contentMsg) ? Html.FromHtml(GetString(Resource.String.text_new_refresh_content)) : Html.FromHtml(contentMsg);
+                        }
+                    }
+                }
+
+
             }
             catch (System.Exception e)
             {
