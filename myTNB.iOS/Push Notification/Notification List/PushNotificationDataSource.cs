@@ -47,15 +47,6 @@ namespace myTNB.PushNotification
             cell.SelectionStyle = UITableViewCellSelectionStyle.None;
             cell.imgCheckbox.Image = UIImage.FromBundle(notification.IsSelected
                 ? "Payment-Checkbox-Active" : "Payment-Checkbox-Inactive");
-            cell.viewCheckBox.AddGestureRecognizer(new UITapGestureRecognizer(() =>
-            {
-                notification.IsSelected = !notification.IsSelected;
-                _controller.UpdateTitleRightIconImage(notification);
-                cell.imgCheckbox.Image = UIImage.FromBundle(notification.IsSelected
-                    ? "Payment-Checkbox-Active" : "Payment-Checkbox-Inactive");
-                _controller.UpdateSectionHeaderWidget();
-            }));
-
             return cell;
         }
 
@@ -66,9 +57,10 @@ namespace myTNB.PushNotification
                 UserNotificationDataModel notification = _data[indexPath.Row];
                 notification.IsSelected = !notification.IsSelected;
                 _controller.UpdateTitleRightIconImage(notification);
-                NSIndexPath[] rowsToReload = new NSIndexPath[] {
+                NSIndexPath[] rowsToReload = {
                     indexPath
                 };
+                _controller.UpdateSectionHeaderWidget();
                 tableView.ReloadRows(rowsToReload, UITableViewRowAnimation.None);
             }
             else
