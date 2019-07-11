@@ -11,9 +11,8 @@ namespace myTNB.Home.Feedback
 {
     public class FeedbackDataSource : UITableViewSource
     {
-        readonly List<FeedbackRowModel> _feedbacks = new List<FeedbackRowModel>();
+        readonly List<FeedbackRowModel> _feedbackList = new List<FeedbackRowModel>();
         readonly List<SubmittedFeedbackDataModel> _submittedFeedbackList = new List<SubmittedFeedbackDataModel>();
-        readonly bool _isFromPrelogin;
         readonly bool _isBcrmAvailable;
         readonly FeedbackViewController _controller;
 
@@ -32,35 +31,26 @@ namespace myTNB.Home.Feedback
                         ID = f.FeedbackCategoryId,
                         Subtitle = f.FeedbackCategoryDesc
                     };
-
-                    if (f.FeedbackCategoryId == "1")
+                    switch (f.FeedbackCategoryId)
                     {
-                        feedBackRowModel.Icon = "Feedback-Bill";
+                        case "1":
+                            feedBackRowModel.Icon = "Feedback-Bill";
+                            break;
+                        case "2":
+                            feedBackRowModel.Icon = "Feedback-Streetlamp";
+                            break;
+                        case "3":
+                            feedBackRowModel.Icon = "Feedback-Others";
+                            break;
+                        case "10":
+                            feedBackRowModel.Icon = "Feedback-Submitted";
+                            break;
                     }
-                    else if (f.FeedbackCategoryId == "2")
-                    {
-                        feedBackRowModel.Icon = "Feedback-Streetlamp";
-                    }
-                    else if (f.FeedbackCategoryId == "3")
-                    {
-                        feedBackRowModel.Icon = "Feedback-Others";
-                    }
-                    _feedbacks.Add(feedBackRowModel);
+                    _feedbackList.Add(feedBackRowModel);
                 }
             }
-
-            FeedbackRowModel submittedfeedBackRowModel = new FeedbackRowModel
-            {
-                Name = "Feedback_SubmittedFeedbackTitle".Translate(),
-                ID = "4",
-                Icon = "Feedback-Submitted",
-                Subtitle = "Feedback_SubmittedFeedbackSubTitle".Translate()
-            };
-            _feedbacks.Add(submittedfeedBackRowModel);
-
             _controller = controller;
             _submittedFeedbackList = submittedFeedbackList;
-            _isFromPrelogin = isFromPrelogin;
             _isBcrmAvailable = isBcrmAvailable;
         }
 
@@ -71,17 +61,17 @@ namespace myTNB.Home.Feedback
 
         public override nint RowsInSection(UITableView tableview, nint section)
         {
-            return _feedbacks.Count;
+            return _feedbackList.Count;
         }
 
         public override UITableViewCell GetCell(UITableView tableView, NSIndexPath indexPath)
         {
-            var feedBack = _feedbacks[indexPath.Row];
+            var feedBack = _feedbackList[indexPath.Row];
             var cell = tableView.DequeueReusableCell("FeedbackViewCell", indexPath) as FeedbackViewCell;
 
             cell.lblTitle.Text = feedBack.Name;
             cell.lblSubtTitle.Text = feedBack.Subtitle;
-            cell.imgViewIcon.Image = UIImage.FromBundle(feedBack.Icon);
+            cell.imgViewIcon.Image = UIImage.FromBundle(feedBack.Icon ?? string.Empty);
             if (indexPath.Section == 1)
             {
                 if (_submittedFeedbackList != null)
@@ -97,10 +87,10 @@ namespace myTNB.Home.Feedback
 
         public override void RowSelected(UITableView tableView, NSIndexPath indexPath)
         {
-            var feedback = _feedbacks[indexPath.Row];
-            if (feedback.ID == "4")
+            var feedback = _feedbackList[indexPath.Row];
+            if (feedback.ID == "10")
             {
-                _controller.DisplaySubmittedFeedback();
+                _controller.DisplaySubmittedFeedback(feedback.Name);
             }
             else
             {
@@ -109,13 +99,7 @@ namespace myTNB.Home.Feedback
                     ShowBRCMAlert();
                     return;
                 }
-                UIStoryboard storyBoard = UIStoryboard.FromName("Feedback", null);
-                FeedbackEntryViewController feedbackEntryViewController =
-                 storyBoard.InstantiateViewController("FeedbackEntryViewController") as FeedbackEntryViewController;
-                feedbackEntryViewController.FeedbackID = feedback.ID;
-                feedbackEntryViewController.IsLoggedIn = !_isFromPrelogin;
-                var navController = new UINavigationController(feedbackEntryViewController);
-                _controller.PresentViewController(navController, true, null);
+                _controller.DisplayFeedbackEntry(feedback.ID);
             }
         }
 
