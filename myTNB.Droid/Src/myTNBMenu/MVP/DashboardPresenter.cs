@@ -536,7 +536,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                     {
                         this.mView.HideProgressDialog();
                     }
-                    this.mView.ShowOwnerDashboardNoInternetConnection(accountSelected.AccDesc, true, amountDueResponse.Data.RefreshMessage, amountDueResponse.Data.RefreshBtnText);
+                    this.mView.ShowOwnerDashboardNoInternetConnection(accountSelected.AccDesc, true, amountDueResponse.Data.RefreshMessage, amountDueResponse.Data.RefreshBtnText, AccountData.Copy(accountSelected, true));
                 }
                 else if (!amountDueResponse.Data.IsError)
                 {
@@ -680,7 +680,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                     {
                         this.mView.HideProgressDialog();
                     }
-                    this.mView.ShowOwnerDashboardNoInternetConnection(accountSelected.AccDesc, true, null, null);
+                    this.mView.ShowOwnerDashboardNoInternetConnection(accountSelected.AccDesc, true, null, null, AccountData.Copy(accountSelected, true));
                 }
             }
             catch (System.OperationCanceledException e)
@@ -689,7 +689,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                 {
                     this.mView.HideProgressDialog();
                 }
-                this.mView.ShowOwnerDashboardNoInternetConnection(accountSelected.AccDesc, true, null, null);
+                this.mView.ShowOwnerDashboardNoInternetConnection(accountSelected.AccDesc, true, null, null, AccountData.Copy(accountSelected, true));
                 Utility.LoggingNonFatalError(e);
             }
             catch (ApiException apiException)
@@ -699,7 +699,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                 {
                     this.mView.HideProgressDialog();
                 }
-                this.mView.ShowOwnerDashboardNoInternetConnection(accountSelected.AccDesc, true, null, null);
+                this.mView.ShowOwnerDashboardNoInternetConnection(accountSelected.AccDesc, true, null, null, AccountData.Copy(accountSelected, true));
                 Utility.LoggingNonFatalError(apiException);
             }
             catch (Exception e)
@@ -709,7 +709,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                 {
                     this.mView.HideProgressDialog();
                 }
-                this.mView.ShowOwnerDashboardNoInternetConnection(accountSelected.AccDesc, true, null, null);
+                this.mView.ShowOwnerDashboardNoInternetConnection(accountSelected.AccDesc, true, null, null, AccountData.Copy(accountSelected, true));
                 Utility.LoggingNonFatalError(e);
             }
 

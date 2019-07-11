@@ -55,6 +55,10 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.Activity
             // Create your application here
             try
             {
+                if(Intent.HasExtra("TITLE") && !string.IsNullOrEmpty(Intent.GetStringExtra("TITLE")))
+                {
+                    SetToolBarTitle(Intent.GetStringExtra("TITLE"));
+                }
                 progressDialog = new MaterialDialog.Builder(this)
                     .Title(Resource.String.select_submitted_feedback_dialog_title)
                     .Content(Resource.String.select_submitted_feedback_dialog_content)
