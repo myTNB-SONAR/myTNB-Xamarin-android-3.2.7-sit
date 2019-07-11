@@ -253,6 +253,7 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.Activity
         public void ShowFeedbackDetailsBillRelated(SubmittedFeedbackDetails submittedFeedback)
         {
             var billIntent = new Intent(this, typeof(FeedbackDetailsBillRelatedActivity));
+            billIntent.PutExtra("TITLE", submittedFeedback.FeedbackTypeName);
             StartActivity(billIntent);
         }
 
