@@ -1006,8 +1006,8 @@ You acknowledge that you have been provided with and have read and understood th
   <string name="bill_related_fullname_hint">Full name</string>
   <string name="bill_related_mobile_no_hint">Mobile No.</string>
   <string name="bill_related_email_hint">Email</string>
-  <string name="bill_related_account_no_hint">Account No.</string>
-  <string name="bill_related_feedback">Feedback</string>
+  <string name="bill_related_account_no_hint">ACCOUNT NO.</string>
+  <string name="bill_related_feedback">FEEDBACK</string>
   <string name="bill_related_screenshot_title">Attach Photo / Screenshot (Optional)</string>
   <string name="bill_related_screenshot_detailed_title">Photo / Screenshot</string>
   <string name="bill_related_btn_submit">Submit</string>
