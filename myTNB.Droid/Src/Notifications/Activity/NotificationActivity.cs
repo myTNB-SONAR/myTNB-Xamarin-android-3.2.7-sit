@@ -754,7 +754,7 @@ namespace myTNB_Android.Src.Notifications.Activity
         {
             SetInitialNotificationState();
             notificationMenu.FindItem(Resource.Id.action_notification_read).SetIcon(GetDrawable(Resource.Drawable.ic_header_markread)).SetVisible(false);
-            notificationMenu.FindItem(Resource.Id.action_notification_edit_delete).SetIcon(GetDrawable(Resource.Drawable.ic_action_select_all)).SetVisible(true);
+            notificationMenu.FindItem(Resource.Id.action_notification_edit_delete).SetIcon(GetDrawable(Resource.Drawable.ic_action_select_all)).SetVisible(true).SetEnabled(true);
             notificationRecyclerAdapter.ClearAll();
             SetToolBarTitle(GetString(Resource.String.notification_activity_title));
         }
