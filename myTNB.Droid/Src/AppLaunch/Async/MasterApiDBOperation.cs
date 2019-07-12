@@ -34,9 +34,19 @@ namespace myTNB_Android.Src.AppLaunch.Async
                     }
 
                     FeedbackCategoryEntity.RemoveActive();
-                    foreach (FeedbackCategory cat in masterDataResponse.Data.MasterData.FeedbackCategorys)
+                    if (masterDataResponse.Data.MasterData.FeedbackCategorysV2 != null && masterDataResponse.Data.MasterData.FeedbackCategorysV2.Count > 0)
                     {
-                        int newRecord = FeedbackCategoryEntity.InsertOrReplace(cat);
+                        foreach (FeedbackCategory cat in masterDataResponse.Data.MasterData.FeedbackCategorysV2)
+                        {
+                            int newRecord = FeedbackCategoryEntity.InsertOrReplace(cat);
+                        }
+                    }
+                    else
+                    {
+                        foreach (FeedbackCategory cat in masterDataResponse.Data.MasterData.FeedbackCategorys)
+                        {
+                            int newRecord = FeedbackCategoryEntity.InsertOrReplace(cat);
+                        }
                     }
 
                     int ctr = 0;

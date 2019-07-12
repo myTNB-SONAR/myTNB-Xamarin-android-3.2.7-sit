@@ -68,7 +68,7 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.Adapter
                     Utility.LoggingNonFatalError(e);
                 }
 
-                vh.txtFeedbackTitle.Text = item.FeedbackCategoryName;
+                vh.txtFeedbackTitle.Text = !string.IsNullOrEmpty(item.FeedbackNameInListView) ? item.FeedbackNameInListView : item.FeedbackCategoryName;
                 vh.txtFeedbackContent.Text = item.FeedbackMessage;
 
                 if (item.FeedbackCategoryId.Equals("1"))

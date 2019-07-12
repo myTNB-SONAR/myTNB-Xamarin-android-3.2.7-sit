@@ -250,10 +250,10 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.Activity
             }
         }
 
-        public void ShowFeedbackDetailsBillRelated(SubmittedFeedbackDetails submittedFeedback)
+        public void ShowFeedbackDetailsBillRelated(SubmittedFeedbackDetails submittedFeedbackDetail, SubmittedFeedback submittedFeedback)
         {
             var billIntent = new Intent(this, typeof(FeedbackDetailsBillRelatedActivity));
-            billIntent.PutExtra("TITLE", submittedFeedback.FeedbackTypeName);
+            billIntent.PutExtra("TITLE", !string.IsNullOrEmpty(submittedFeedback.FeedbackNameInListView) ? submittedFeedback.FeedbackNameInListView : submittedFeedback.FeedbackCategoryName);
             StartActivity(billIntent);
         }
 
