@@ -107,7 +107,7 @@
                             <constraint firstItem="5348" firstAttribute="bottom" secondItem="5245" secondAttribute="bottom" constant="1" id="5354"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="Submitted Feedback" id="5341"/>
+                    <navigationItem key="navigationItem" id="5341"/>
                     <connections>
                         <outlet property="SubmittedFeedbackTableView" destination="5348" id="name-outlet-5348"/>
                     </connections>

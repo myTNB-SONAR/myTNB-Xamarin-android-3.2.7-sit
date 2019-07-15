@@ -14,18 +14,15 @@ namespace myTNB
         }
 
         public SubmittedFeedbackResponseModel SubmittedFeedback = new SubmittedFeedbackResponseModel();
-        SubmittedFeedbackDetailsResponseModel _feedbackDetails = new SubmittedFeedbackDetailsResponseModel();
+        private SubmittedFeedbackDetailsResponseModel _feedbackDetails = new SubmittedFeedbackDetailsResponseModel();
 
-        UIImageView _imgNoFeedback;
-        UILabel _lblNoFeedback;
-        string _email = string.Empty;
+        private UIImageView _imgNoFeedback;
+        private UILabel _lblNoFeedback;
 
         public override void ViewDidLoad()
         {
             base.ViewDidLoad();
             AddBackButton();
-            _email = DataManager.DataManager.SharedInstance.IsPreloginFeedback
-                ? string.Empty : DataManager.DataManager.SharedInstance.UserEntity[0].email;
         }
 
         public override void ViewWillAppear(bool animated)
@@ -66,21 +63,21 @@ namespace myTNB
             }
         }
 
-        internal void SetTable()
+        private void SetTable()
         {
             SubmittedFeedbackTableView.Source = new SubmittedFeedbackDataSource(this, SubmittedFeedback.d.data);
             SubmittedFeedbackTableView.ReloadData();
             SubmittedFeedbackTableView.TableFooterView = new UIView();
         }
 
-        internal void AddBackButton()
+        private void AddBackButton()
         {
             UIImage backImg = UIImage.FromBundle("Back-White");
             UIBarButtonItem btnBack = new UIBarButtonItem(backImg, UIBarButtonItemStyle.Done, (sender, e) =>
             {
-                this.DismissViewController(true, null);
+                DismissViewController(true, null);
             });
-            this.NavigationItem.LeftBarButtonItem = btnBack;
+            NavigationItem.LeftBarButtonItem = btnBack;
         }
 
         //Call from on row select
@@ -108,6 +105,7 @@ namespace myTNB
                                         storyBoard.InstantiateViewController("FeedbackDetailsViewController")
                                                   as FeedbackDetailsViewController;
                                     viewController.FeedbackDetails = _feedbackDetails.d.data;
+                                    viewController.Title = feedback.FeedbackNameInListView;
                                     var navController = new UINavigationController(viewController);
                                     PresentViewController(navController, true, null);
                                 }
@@ -127,7 +125,7 @@ namespace myTNB
             });
         }
 
-        Task GetSubmittedFeedbackDetails(string serviceReq)
+        private Task GetSubmittedFeedbackDetails(string serviceReq)
         {
             return Task.Factory.StartNew(() =>
             {

@@ -31,7 +31,7 @@ namespace myTNB
         /// </summary>
         /// <param name="textField">Text field.</param>
         /// <param name="imageName">Image name.</param>
-		public void CreateTextFieldLeftView(UITextField textField, String imageName)
+		public void CreateTextFieldLeftView(UITextField textField, string imageName)
         {
             var leftView = new UIImageView(UIImage.FromBundle(imageName));
             leftView.Frame = new CGRect(leftView.Frame.X, leftView.Frame.Y, leftView.Frame.Width + 10, leftView.Frame.Height);
@@ -44,7 +44,7 @@ namespace myTNB
         /// </summary>
         /// <param name="textField">Text field.</param>
         /// <param name="imageName">Image name.</param>
-        public void CreateTextFieldRightView(UITextField textField, String imageName)
+        public void CreateTextFieldRightView(UITextField textField, string imageName)
         {
             var rightView = new UIImageView(UIImage.FromBundle(imageName));
             rightView.Frame = new CGRect(rightView.Frame.X, rightView.Frame.Y, rightView.Frame.Width + 15, rightView.Frame.Height);

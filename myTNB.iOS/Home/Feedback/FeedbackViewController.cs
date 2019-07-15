@@ -17,21 +17,20 @@ namespace myTNB
         {
         }
 
-        TitleBarComponent _titleBarComponent;
-        SubmittedFeedbackResponseModel _submittedFeedback = new SubmittedFeedbackResponseModel();
-        string _email = string.Empty;
-
         public bool isFromPreLogin;
+        private TitleBarComponent _titleBarComponent;
+        private SubmittedFeedbackResponseModel _submittedFeedback = new SubmittedFeedbackResponseModel();
+        private string _email = string.Empty;
 
         public override void ViewDidLoad()
         {
             base.ViewDidLoad();
-            NSNotificationCenter.DefaultCenter.AddObserver((Foundation.NSString)"LanguageDidChange", LanguageDidChange);
+            NSNotificationCenter.DefaultCenter.AddObserver((NSString)"LanguageDidChange", LanguageDidChange);
             if (isFromPreLogin == true)
             {
                 feedbackTableView.Frame = new CGRect(0, 0, View.Frame.Width, View.Frame.Height - (114 - 64));
                 AddBackButton();
-                this.Title = "Feedback_Title".Translate();
+                Title = "Feedback_Title".Translate();
             }
             else
             {
@@ -110,17 +109,17 @@ namespace myTNB
             });
         }
 
-        internal void AddBackButton()
+        private void AddBackButton()
         {
             UIImage backImg = UIImage.FromBundle("Back-White");
             UIBarButtonItem btnBack = new UIBarButtonItem(backImg, UIBarButtonItemStyle.Done, (sender, e) =>
             {
-                this.DismissViewController(true, null);
+                DismissViewController(true, null);
             });
-            this.NavigationItem.LeftBarButtonItem = btnBack;
+            NavigationItem.LeftBarButtonItem = btnBack;
         }
 
-        internal void SetNavigationBar()
+        private void SetNavigationBar()
         {
             GradientViewComponent gradientViewComponent = new GradientViewComponent(View, true, 64, true); ;
             UIView headerView = gradientViewComponent.GetUI();
@@ -132,7 +131,7 @@ namespace myTNB
             View.AddSubview(headerView);
         }
 
-        internal void DisplaySubmittedFeedback()
+        internal void DisplaySubmittedFeedback(string title)
         {
             if (_submittedFeedback != null && _submittedFeedback?.d != null
                 && _submittedFeedback?.d?.data != null && _submittedFeedback?.d?.didSucceed == true)
@@ -143,13 +142,29 @@ namespace myTNB
                 if (submittedFeedbackVC != null)
                 {
                     submittedFeedbackVC.SubmittedFeedback = _submittedFeedback;
+                    submittedFeedbackVC.Title = title;
                     var navController = new UINavigationController(submittedFeedbackVC);
                     PresentViewController(navController, true, null);
                 }
             }
         }
 
-        Task GetSubmittedFeedbackList()
+        internal void DisplayFeedbackEntry(string id)
+        {
+            if (_submittedFeedback != null && _submittedFeedback?.d != null
+                && _submittedFeedback?.d?.data != null && _submittedFeedback?.d?.didSucceed == true)
+            {
+                UIStoryboard storyBoard = UIStoryboard.FromName("Feedback", null);
+                FeedbackEntryViewController feedbackEntryViewController =
+                 storyBoard.InstantiateViewController("FeedbackEntryViewController") as FeedbackEntryViewController;
+                feedbackEntryViewController.FeedbackID = id;
+                feedbackEntryViewController.IsLoggedIn = !isFromPreLogin;
+                var navController = new UINavigationController(feedbackEntryViewController);
+                PresentViewController(navController, true, null);
+            }
+        }
+
+        private Task GetSubmittedFeedbackList()
         {
             return Task.Factory.StartNew(() =>
             {
