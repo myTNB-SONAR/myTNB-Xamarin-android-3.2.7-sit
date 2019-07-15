@@ -36,6 +36,12 @@ namespace myTNB
         private const string COMMON = "common";
         private const string LANGUAGE_RESOURCE_PATH = "myTNB.Mobile.Resources.Language_{0}.json";
 
+        /// <summary>
+        /// Sets the language to be used by the app.
+        /// Advisable to call on app launch.
+        /// </summary>
+        /// <param name="src">src is ENUM of sources, either file or sitecore</param>
+        /// <param name="lang">lang is ENUM of language, options are en and ms</param>
         public void SetLanguage(Source src = Source.FILE, Language lang = Language.EN)
         {
             if (src == Source.FILE)
@@ -72,6 +78,7 @@ namespace myTNB
         }
         /// <summary>
         /// Gets the key-value pair of texts of a page.
+        /// Asvisable to call on intialisation of the page.
         /// </summary>
         /// <param name="pageName">Name of the page, iOS and Android should be the same.</param>
         /// <returns>Key-value pair of page's strings</returns>
