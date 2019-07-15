@@ -1207,7 +1207,7 @@ namespace myTNB.Dashboard
             //_dashboardMainComponent?._componentActivity?.Show();
             chartResponse = await Task.Run(() =>
             {
-                return serviceManager.GetAccountUsageHistoryForGraph("GetAccountUsageHistoryForGraph", requestParameter);
+                return serviceManager.OnExecuteAPIV2<ChartModel>("GetAccountUsageHistoryForGraph", requestParameter);
             });
             //_dashboardMainComponent?._componentActivity?.Hide();
 
@@ -1239,7 +1239,7 @@ namespace myTNB.Dashboard
             //_dashboardMainComponent?._componentActivity?.Show();
             chartResponse = await Task.Run(() =>
             {
-                return serviceManager.GetSmartMeterAccountData("GetSmartMeterAccountData_V3", requestParameter);
+                return serviceManager.OnExecuteAPIV2<SmartChartModel>("GetSmartMeterAccountData_V3", requestParameter);
             });
 
             //_dashboardMainComponent?._componentActivity?.Hide();

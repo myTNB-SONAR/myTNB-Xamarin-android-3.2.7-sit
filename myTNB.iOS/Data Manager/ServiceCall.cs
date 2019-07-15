@@ -226,7 +226,7 @@ namespace myTNB.DataManager
             };
             questionResponse = await Task.Run(() =>
             {
-                return serviceManager.GetRateUsQuestions("GetRateUsQuestions", requestParameter);
+                return serviceManager.OnExecuteAPIV2<FeedbackQuestionRequestModel>("GetRateUsQuestions", requestParameter);
             });
 
             return questionResponse;
@@ -277,7 +277,7 @@ namespace myTNB.DataManager
             };
             response = await Task.Run(() =>
             {
-                return serviceManager.GetLinkedAccountsSummaryInfo("GetLinkedAccountsSummaryInfo", requestParameter);
+                return serviceManager.OnExecuteAPIV2<AmountDueStatusResponseModel>("GetLinkedAccountsSummaryInfo", requestParameter);
             });
 
             return response;
@@ -311,7 +311,7 @@ namespace myTNB.DataManager
             };
             response = await Task.Run(() =>
             {
-                return serviceManager.GetAppLaunchMasterData("GetAppLaunchMasterData", requestParameter);
+                return serviceManager.OnExecuteAPIV2<MasterDataResponseModel>("GetAppLaunchMasterData", requestParameter);
             });
 
             return response;
@@ -343,7 +343,7 @@ namespace myTNB.DataManager
             };
             response = await Task.Run(() =>
             {
-                return serviceManager.GetPhoneVerificationStatus("GetPhoneVerifyStatus", requestParameter);
+                return serviceManager.OnExecuteAPIV2<PhoneVerificationStatusResponseModel>("GetPhoneVerifyStatus", requestParameter);
             });
 
             return response;
