@@ -36,7 +36,7 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.MVP
             /// Show bill related feedback details 
             /// </summary>
             /// <param name="submittedFeedback">SubmittedFeedbackDetails</param>
-            void ShowFeedbackDetailsBillRelated(SubmittedFeedbackDetails submittedFeedback);
+            void ShowFeedbackDetailsBillRelated(SubmittedFeedbackDetails submittedFeedbackDetail, SubmittedFeedback submittedFeedback);
 
             /// <summary>
             /// Show faulty street lamps feedback details

@@ -59,7 +59,7 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.MVP
                     if (submittedFeedback.FeedbackCategoryId.Equals("1"))
                     {
                         UserSessions.SaveSelectedFeedback(mSharedPref, JsonConvert.SerializeObject(detailsResponse.Data.Data));
-                        this.mView.ShowFeedbackDetailsBillRelated(detailsResponse.Data.Data);
+                        this.mView.ShowFeedbackDetailsBillRelated(detailsResponse.Data.Data, submittedFeedback);
                     }
                     else if (submittedFeedback.FeedbackCategoryId.Equals("2"))
                     {

@@ -89,6 +89,7 @@ namespace myTNB_Android.Src.Feedback_PreLogin_Menu.Activity
         string feedbackBillRelatedTitle = "";
         string feedbackStreetLampTitle = "";
         string feedbackOthersTitle = "";
+        string submittedFeedbackTitle = "";
 
         public override int ResourceId()
         {
@@ -163,6 +164,7 @@ namespace myTNB_Android.Src.Feedback_PreLogin_Menu.Activity
         public void ShowSubmittedFeedback()
         {
             var submittedFeedback = new Intent(this, typeof(SelectSubmittedFeedbackActivity));
+            submittedFeedback.PutExtra("TITLE", submittedFeedbackTitle);
             StartActivity(submittedFeedback);
         }
 
@@ -378,6 +380,12 @@ namespace myTNB_Android.Src.Feedback_PreLogin_Menu.Activity
                         feedbackOthersTitle = fc.Name;
                         txtFeedbackOthers.Text = fc.Name;
                         txtFeedbackOthersContent.Text = fc.Desc;
+                    }
+                    else if (fc.Id.Equals("10"))
+                    {
+                        submittedFeedbackTitle = fc.Name;
+                        txtSubmittedFeedback.Text = fc.Name;
+                        txtSubmittedFeedbackContent.Text = fc.Desc;
                     }
 
                 }

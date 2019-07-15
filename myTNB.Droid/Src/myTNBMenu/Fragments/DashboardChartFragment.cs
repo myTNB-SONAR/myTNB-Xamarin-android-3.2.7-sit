@@ -335,7 +335,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 TextViewUtils.SetMuseoSans300Typeface(btnToggleDay, btnToggleMonth, txtNewRefreshMessage);
                 TextViewUtils.SetMuseoSans500Typeface(txtRange, txtTotalPayableTitle, txtTotalPayableCurrency, btnViewBill, btnPay, btnLearnMore, txtTitleNoData, txtWhyThisAmt, btnNewRefresh);
 
-                if(amountDueFailed)
+                if (amountDueFailed)
                 {
                     txtWhyThisAmt.Visibility = ViewStates.Gone;
                     ShowNoInternetWithWord(txtRefreshMsg, txtBtnRefreshTitle);
@@ -354,7 +354,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 }
 
                 this.userActionsListener?.Start();
-
+                
                 DownTimeEntity bcrmEntity = DownTimeEntity.GetByCode(Constants.BCRM_SYSTEM);
                 DownTimeEntity pgCCEntity = DownTimeEntity.GetByCode(Constants.PG_CC_SYSTEM);
                 DownTimeEntity pgFPXEntity = DownTimeEntity.GetByCode(Constants.PG_FPX_SYSTEM);
