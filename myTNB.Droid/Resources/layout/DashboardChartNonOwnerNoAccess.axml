@@ -98,7 +98,7 @@
                     android:layout_alignParentTop="true"
                     android:text="@string/total_amount_due_bill"
                     android:textColor="@color/tunaGrey"
-                    android:textSize="16sp" />
+                    android:textSize="16dp" />
                 <TextView
                     android:id="@+id/txtTotalPayable"
                     android:layout_width="wrap_content"
@@ -108,7 +108,7 @@
                     android:layout_alignParentTop="true"
                     android:text="0.00"
                     android:textColor="@color/tunaGrey"
-                    android:textSize="24sp" />
+                    android:textSize="24dp" />
                 <TextView
                     android:id="@+id/txtTotalPayableCurrency"
                     android:layout_width="wrap_content"
@@ -120,7 +120,7 @@
                     android:layout_marginRight="7dp"
                     android:text="RM"
                     android:textColor="@color/tunaGrey"
-                    android:textSize="14sp" />
+                    android:textSize="14dp" />
                 <TextView
                     android:id="@+id/txtDueDate"
                     android:layout_width="wrap_content"
