@@ -152,7 +152,7 @@ namespace myTNB.Home.Components
 
         public void SetIconImage(string img)
         {
-            _imgRefreshIcon = UIImage.FromBundle(img);
+            _imgRefreshIcon = UIImage.FromBundle(img ?? string.Empty);
         }
 
         public void SetIconImageHidden(bool flag)

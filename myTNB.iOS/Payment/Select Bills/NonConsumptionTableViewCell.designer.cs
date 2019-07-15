@@ -14,5 +14,8 @@ namespace myTNB
     [Register ("NonConsumptionTableViewCell")]
     partial class NonConsumptionTableViewCell
     {
+        void ReleaseDesignerOutlets ()
+        {
+        }
     }
 }

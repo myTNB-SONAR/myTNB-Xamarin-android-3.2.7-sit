@@ -341,7 +341,7 @@ namespace myTNB.Home.Feedback.FeedbackEntry
                 ? MyTNBColor.PlatinumGrey : MyTNBColor.Tomato;
         }
 
-        void CreateTextFieldRightView(UITextField textField, String imageName)
+        void CreateTextFieldRightView(UITextField textField, string imageName)
         {
             UIView rightView = new UIView((new CGRect(0, 0, 24, 24)));
 
