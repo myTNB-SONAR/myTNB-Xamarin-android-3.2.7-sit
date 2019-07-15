@@ -105,6 +105,7 @@ namespace myTNB
                                         storyBoard.InstantiateViewController("FeedbackDetailsViewController")
                                                   as FeedbackDetailsViewController;
                                     viewController.FeedbackDetails = _feedbackDetails.d.data;
+                                    viewController.Title = feedback.FeedbackNameInListView;
                                     var navController = new UINavigationController(viewController);
                                     PresentViewController(navController, true, null);
                                 }
