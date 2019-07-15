@@ -52,6 +52,7 @@
                             android:layout_height="wrap_content"
                             android:drawableLeft="@drawable/ic_field_account_no"
                             android:drawableRight="@drawable/ic_action_dropdown1"
+                            android:paddingTop="5dp"
                             android:clickable="true"
                             android:cursorVisible="false"
                             android:focusable="false"
@@ -73,6 +74,7 @@
                         android:layout_height="wrap_content"
                         android:importantForAutofill="noExcludeDescendants"
                         android:drawableLeft="@drawable/placeholder_mobile"
+                        android:paddingTop="5dp"
                         android:drawablePadding="6dp"
                         android:hint="@string/faulty_street_lamps_mobile_no_hint"
                         android:inputType="phone"
@@ -97,6 +99,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:drawableLeft="@drawable/ic_field_text"
+                            android:paddingTop="5dp"
                             android:drawablePadding="6dp"
                             android:hint="@string/bill_related_feedback"
                             android:inputType="text|textMultiLine"
@@ -124,12 +127,16 @@
                     android:layout_weight="1"
                     android:text="@string/bill_related_screenshot_title"
                     android:textAllCaps="true"
+                    android:layout_marginLeft="3dp"
+                    android:layout_marginRight="3dp"
                     android:layout_marginBottom="8dp"
                     android:textSize="9sp" />
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/recyclerView"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_marginLeft="3dp"
+                    android:layout_marginRight="3dp"
                     android:layout_marginBottom="8dp" />
                 <TextView
                     android:id="@+id/txtMaxImageContent"
@@ -137,6 +144,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="@string/bill_related_feedback_max_image_hint"
+                    android:layout_marginLeft="3dp"
+                    android:layout_marginRight="3dp"
                     android:textSize="9sp" />
             </LinearLayout>
         </ScrollView>
