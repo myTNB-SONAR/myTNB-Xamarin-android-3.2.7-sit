@@ -1125,6 +1125,8 @@
     <AndroidResource Include="Resources\drawable-xxhdpi\ic_header_markread_disabled.png" />
     <AndroidResource Include="Resources\drawable-xxxhdpi\ic_header_delete_disabled.png" />
     <AndroidResource Include="Resources\drawable-xxxhdpi\ic_header_markread_disabled.png" />
+    <Compile Include="Src\myTNBMenu\Activity\DashboardHomeActivity.cs" />
+    <AndroidResource Include="Resources\layout\DashboardHomeView.axml" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
