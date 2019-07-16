@@ -309,7 +309,7 @@
 
   <!-- Reset Password Dialog -->
   <string name="reset_password_alert_dialog_title">Resetting Password...</string>
-  <string name="reset_password_alert_dialog_message">Resetting Password...</string>
+  <string name="reset_password_alert_dialog_message">Please wait...</string>
   <string name="reset_password_alert_dialog_negative_button">Cancel</string>
   <!-- End Reset Password Dialog -->
 
