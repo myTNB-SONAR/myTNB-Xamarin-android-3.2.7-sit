@@ -20,9 +20,9 @@
         ]
     },
     "DashboardHome":{
-        "greeting_afternoon": "Good Afternoon",
-        "greeting_evening": "Good Evening",
-        "greeting_morning": "Good Morning",
+        "greeting_afternoon": "Good Afternoon,",
+        "greeting_evening": "Good Evening,",
+        "greeting_morning": "Good Morning,",
         "myAccounts": "My Accounts",
         "myServices": "My Services",
         "needHelp": "Need Help?"
