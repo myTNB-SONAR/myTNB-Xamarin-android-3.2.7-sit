@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Diagnostics;
+using myTNB.Model;
 
 namespace myTNB.SQLite.SQLiteDataManager
 {
-    public class DueEntity
+    public class DueEntity : DueAmountDataModel
     {
         /// <summary>
         /// Deletes the table.
@@ -13,6 +14,7 @@ namespace myTNB.SQLite.SQLiteDataManager
             try
             {
                 SQLiteHelper._db.DeleteAll<DueEntity>();
+                Debug.WriteLine("Due Entity Table Deleted");
             }
             catch (Exception e)
             {
