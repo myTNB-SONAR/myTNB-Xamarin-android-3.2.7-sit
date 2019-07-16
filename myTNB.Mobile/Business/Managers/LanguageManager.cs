@@ -100,6 +100,10 @@ namespace myTNB
         private T GetValues<T>(string pageName) where T : new()
         {
             T valuesDictionary = new T();
+            if (string.IsNullOrEmpty(pageName) || string.IsNullOrWhiteSpace(pageName))
+            {
+                return valuesDictionary;
+            }
             try
             {
                 var jsonObj = JObject.Parse(JSONLang);
