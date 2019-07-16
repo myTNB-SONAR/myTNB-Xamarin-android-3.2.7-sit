@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Diagnostics;
 using myTNB.Model;
+using SQLite;
 
 namespace myTNB.SQLite.SQLiteDataManager
 {
+    [Table("Dues")]
     public class DueEntity : DueAmountDataModel
     {
         /// <summary>
