@@ -4,8 +4,10 @@ using Android.App;
 using Android.Content.PM;
 using Android.OS;
 using Android.Support.Design.Widget;
+using Android.Widget;
 using CheeseBind;
 using myTNB_Android.Src.Base.Activity;
+using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP;
 
 namespace myTNB_Android.Src.myTNBMenu.Activity
 {
@@ -14,6 +16,8 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
         ,Theme = "@style/Theme.Dashboard")]
     public class DashboardHomeActivity : BaseToolbarAppCompatActivity
     {
+        public static Fragment currentFragment;
+
         public override int ResourceId()
         {
             return Resource.Layout.DashboardHomeView;
@@ -33,6 +37,9 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
         {
             base.OnCreate(savedInstanceState);
             // Create your application here
+            FragmentManager.BeginTransaction()
+                           .Replace(Resource.Id.content_layout, new HomeMenuFragment())
+                           .CommitAllowingStateLoss();
         }
     }
 }

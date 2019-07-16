@@ -1127,6 +1127,8 @@
     <AndroidResource Include="Resources\drawable-xxxhdpi\ic_header_markread_disabled.png" />
     <Compile Include="Src\myTNBMenu\Activity\DashboardHomeActivity.cs" />
     <AndroidResource Include="Resources\layout\DashboardHomeView.axml" />
+    <Compile Include="Src\myTNBMenu\Fragments\HomeMenu\MVP\HomeMenuFragment.cs" />
+    <AndroidResource Include="Resources\layout\HomeMenuFragmentView.axml" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -1479,6 +1481,8 @@
     <Folder Include="Src\MyAccount\Models\" />
     <Folder Include="Src\SelectNotification\Models\" />
     <Folder Include="Src\Utils\Images\Picasso\" />
+    <Folder Include="Src\myTNBMenu\Fragments\HomeMenu\" />
+    <Folder Include="Src\myTNBMenu\Fragments\HomeMenu\MVP\" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\GradientStatusBar.xml" />
