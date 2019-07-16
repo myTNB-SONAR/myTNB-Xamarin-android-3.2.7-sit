@@ -42,20 +42,20 @@
                 android:textColor="@color/powerBlue"
                 android:textSize="16sp" />
 
-            <ScrollView
-                android:id="@+id/notificationContentScrollView"
-                android:layout_height="match_parent"
-                android:layout_width="match_parent"
-                android:layout_marginBottom="16dp"
-                android:fitsSystemWindows="true"
-                android:fillViewport="true">
-                <TextView
-                    android:id="@+id/txtNotificationContent"
+                <ScrollView
+                    android:id="@+id/notificationContentScrollView"
+                    android:layout_height="match_parent"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Sample Notification Content"
-                    android:textColor="@color/tunaGrey"/>
-            </ScrollView>
+                    android:layout_marginBottom="16dp"
+                    android:fitsSystemWindows="true"
+                    android:fillViewport="true">
+                    <TextView
+                        android:id="@+id/txtNotificationContent"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Sample Notification Content"
+                        android:textColor="@color/tunaGrey"/>
+                </ScrollView>
 
             <FrameLayout
                 android:layout_width="match_parent"

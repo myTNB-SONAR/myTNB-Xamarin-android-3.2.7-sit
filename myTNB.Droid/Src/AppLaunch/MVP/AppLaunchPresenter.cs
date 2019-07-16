@@ -237,7 +237,8 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                                     BillHistoryEntity.RemoveAll();
                                     PaymentHistoryEntity.RemoveAll();
 
-                                    if (UserSessions.HasNotification(mSharedPref) && loggedUser.Email.Equals(UserSessions.GetUserEmailNotification(mSharedPref)))
+                                    if (UserSessions.HasNotification(mSharedPref) && (loggedUser.Email.Equals(UserSessions.GetUserEmailNotification(mSharedPref)) ||
+                                        "ALL_MYTNB_USERS".Equals(UserSessions.GetUserEmailNotification(mSharedPref))))
                                     {
                                         UserSessions.RemoveNotificationSession(mSharedPref);
                                         this.mView.ShowNotification();
