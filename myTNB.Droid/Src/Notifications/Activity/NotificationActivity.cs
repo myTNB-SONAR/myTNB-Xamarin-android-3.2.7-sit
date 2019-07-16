@@ -442,7 +442,8 @@ namespace myTNB_Android.Src.Notifications.Activity
             //NotificationSimpleCallback notificationSimpleCallback = new NotificationSimpleCallback(notificationRecyclerAdapter,0, ItemTouchHelper.Left);
 
             notificationSwipeDelete = new NotificationSwipeDeleteCallback(this, GetDrawable(Resource.Drawable.ic_header_delete), GetDrawable(Resource.Drawable.ic_header_markread));
-            itemTouchHelper = new ItemTouchHelper(notificationSwipeDelete);
+			notificationSwipeDelete.SetInitialState();
+			itemTouchHelper = new ItemTouchHelper(notificationSwipeDelete);
             itemTouchHelper.AttachToRecyclerView(notificationRecyclerView);
         }
 
@@ -873,7 +874,7 @@ namespace myTNB_Android.Src.Notifications.Activity
 				UpdatedSelectedNotifications();
             }
         }
-        
+
         private void ShowReadAndDeleteOption(bool show)
         {
             if (editState == EditNotificationStates.SHOW)

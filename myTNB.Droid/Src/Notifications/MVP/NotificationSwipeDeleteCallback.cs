@@ -42,6 +42,11 @@ namespace myTNB_Android.Src.Notifications.MVP
             SetIconsLayout();
         }
 
+        public void SetInitialState(){
+          swipeBack = false;
+          buttonShowedState = ButtonState.GONE;
+        }
+
         private void SetIconsLayout()
         {
             intrinsicDeleteWidth = mDeleteIcon.IntrinsicWidth;
