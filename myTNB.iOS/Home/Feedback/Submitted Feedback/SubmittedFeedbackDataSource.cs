@@ -34,7 +34,7 @@ namespace myTNB.Home.Feedback
 
                 if (feedback.FeedbackCategoryId == "1")
                 {
-                    cell.imgViewIcon.Image = UIImage.FromBundle("Feedback-Submitted-Bill");
+                    cell.imgViewIcon.Image = UIImage.FromBundle("Feedback-Submitted-Generic");
                 }
                 else if (feedback.FeedbackCategoryId == "2")
                 {
