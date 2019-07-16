@@ -134,6 +134,7 @@ namespace myTNB
             {
                 BillHistoryEntity.DeleteTable();
                 ChartEntity.DeleteTable();
+                DueEntity.DeleteTable();
             }
         }
 
