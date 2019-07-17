@@ -178,7 +178,7 @@ namespace myTNB
                 BackgroundColor = UIColor.White,
                 ClipsToBounds = true
             };
-            alertView.Layer.CornerRadius = 4.0F;
+            alertView.Layer.CornerRadius = 6.0F;
             alertView.Center = new CGPoint(UIScreen.MainScreen.Bounds.GetMidX(), UIScreen.MainScreen.Bounds.GetMidY());
             alertView.AddSubviews(new UIView[] { lblTitle, txtViewDetails, ctaContainer });
 

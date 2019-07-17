@@ -1862,6 +1862,7 @@
     <Compile Include="Customs\Generic Tableview Selector\GenericSelectorDataSource.cs" />
     <Compile Include="Customs\Generic Tableview Selector\GenericSelectorViewController.cs" />
     <Compile Include="Customs\Generic Tableview Selector\GenericSelectorViewController.designer.cs" />
+    <Compile Include="SQLite\SQLite Data Manager\DueEntity.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />

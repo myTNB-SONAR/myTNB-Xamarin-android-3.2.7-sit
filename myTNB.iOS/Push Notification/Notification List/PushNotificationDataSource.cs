@@ -193,7 +193,7 @@ namespace myTNB.PushNotification
             contextualAction.Image = UIImage.FromBundle("Notification-MarkAsRead");
             contextualAction.BackgroundColor = MyTNBColor.Denim;
             UISwipeActionsConfiguration leadingSwipe = UISwipeActionsConfiguration.FromActions(new UIContextualAction[] { contextualAction });
-            leadingSwipe.PerformsFirstActionWithFullSwipe = true;
+            leadingSwipe.PerformsFirstActionWithFullSwipe = false;
             return leadingSwipe;
 #pragma warning restore XI0002 // Notifies you from using newer Apple APIs when targeting an older OS version
         }
@@ -214,7 +214,7 @@ namespace myTNB.PushNotification
             contextualAction.Image = UIImage.FromBundle("Notification-Delete");
             contextualAction.BackgroundColor = MyTNBColor.HarleyDavidsonOrange;
             UISwipeActionsConfiguration trailingSwipe = UISwipeActionsConfiguration.FromActions(new UIContextualAction[] { contextualAction });
-            trailingSwipe.PerformsFirstActionWithFullSwipe = true;
+            trailingSwipe.PerformsFirstActionWithFullSwipe = false;
             return trailingSwipe;
 #pragma warning restore XI0002 // Notifies you from using newer Apple APIs when targeting an older OS version
         }
