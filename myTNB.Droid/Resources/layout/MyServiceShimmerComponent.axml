@@ -25,14 +25,13 @@
         android:id="@+id/service_title"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
-        android:layout_marginLeft="13dp"
-        android:layout_marginRight="13dp"
+        android:layout_marginLeft="28dp"
+        android:layout_marginRight="28dp"
         android:layout_marginTop="12dp"
         android:layout_marginBottom="20dp"
         android:textColor="@color/grey_two"
         android:background="@color/grey_two"
         android:gravity="center"
-        android:text="Set Appointments"
         android:textSize="12sp"
         android:lineSpacingExtra="2sp"/>
   </LinearLayout>
