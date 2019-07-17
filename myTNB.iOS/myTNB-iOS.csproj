@@ -901,6 +901,22 @@
     <ImageAsset Include="Assets.xcassets\Feedback-Submitted-Generic.imageset\icTileSubmittedFeedback.png" />
     <ImageAsset Include="Assets.xcassets\Feedback-Submitted-Generic.imageset\icTileSubmittedFeedback%402x.png" />
     <ImageAsset Include="Assets.xcassets\Feedback-Submitted-Generic.imageset\icTileSubmittedFeedback%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Services-ApplySSMR.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Services-ApplySSMR.imageset\submitMeter.png" />
+    <ImageAsset Include="Assets.xcassets\Services-ApplySSMR.imageset\submitMeter%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Services-ApplySSMR.imageset\submitMeter%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Services-CheckStatus.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Services-CheckStatus.imageset\checkStatus.png" />
+    <ImageAsset Include="Assets.xcassets\Services-CheckStatus.imageset\checkStatus%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Services-CheckStatus.imageset\checkStatus%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Services-SetAppointments.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Services-SetAppointments.imageset\setAppointments.png" />
+    <ImageAsset Include="Assets.xcassets\Services-SetAppointments.imageset\setAppointments%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Services-SetAppointments.imageset\setAppointments%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Services-ApplyAutoPay.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Services-ApplyAutoPay.imageset\applyAutopay.png" />
+    <ImageAsset Include="Assets.xcassets\Services-ApplyAutoPay.imageset\applyAutopay%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Services-ApplyAutoPay.imageset\applyAutopay%403x-1.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -1168,6 +1184,10 @@
     <Folder Include="Home\Dashboard\DashboardHome\" />
     <Folder Include="Home\Dashboard\DashboardHome\Help\" />
     <Folder Include="Home\Dashboard\DashboardHome\Services\" />
+    <Folder Include="Assets.xcassets\Services-ApplySSMR.imageset\" />
+    <Folder Include="Assets.xcassets\Services-CheckStatus.imageset\" />
+    <Folder Include="Assets.xcassets\Services-SetAppointments.imageset\" />
+    <Folder Include="Assets.xcassets\Services-ApplyAutoPay.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -1874,6 +1894,7 @@
       <DependentUpon>HelpTableViewCell.cs</DependentUpon>
     </Compile>
     <Compile Include="Home\Dashboard\DashboardHome\Services\ServicesTableViewCell.cs" />
+    <Compile Include="Home\Dashboard\DashboardHome\DashboardHomeConstants.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />

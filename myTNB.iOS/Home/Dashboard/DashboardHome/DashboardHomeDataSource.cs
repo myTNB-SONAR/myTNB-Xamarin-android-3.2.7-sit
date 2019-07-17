@@ -47,13 +47,13 @@ namespace myTNB
         {
             if (indexPath.Section == 1)
             {
-                ServicesTableViewCell cell = tableView.DequeueReusableCell("servicesTableViewCell") as ServicesTableViewCell;
+                ServicesTableViewCell cell = tableView.DequeueReusableCell(DashboardHomeConstants.Cell_Services) as ServicesTableViewCell;
                 cell.AddCards();
                 return cell;
             }
             if (indexPath.Section == 2)
             {
-                HelpTableViewCell cell = tableView.DequeueReusableCell("helpTableViewCell") as HelpTableViewCell;
+                HelpTableViewCell cell = tableView.DequeueReusableCell(DashboardHomeConstants.Cell_Help) as HelpTableViewCell;
                 cell.AddCards();
                 return cell;
             }
@@ -67,14 +67,14 @@ namespace myTNB
 
         private string GetSectionTitle(int sectionIndex)
         {
-            string key = "needHelp";
+            string key = DashboardHomeConstants.I18N_NeedHelp;
             if (sectionIndex == 0)
             {
-                key = "myAccounts";
+                key = DashboardHomeConstants.I18N_MyAccounts;
             }
             else if (sectionIndex == 1)
             {
-                key = "myServices";
+                key = DashboardHomeConstants.I18N_MyServices;
             }
             return _controller.I18NDictionary[key];
         }

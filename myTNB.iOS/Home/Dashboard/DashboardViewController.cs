@@ -1371,7 +1371,8 @@ namespace myTNB.Dashboard
                 object requestParameter = new
                 {
                     apiKeyID = TNBGlobal.API_KEY_ID,
-                    accNum = DataManager.DataManager.SharedInstance.SelectedAccount.accNum
+                    accNum = DataManager.DataManager.SharedInstance.SelectedAccount.accNum,
+                    param = "hehehe"
                 };
                 _installationDetails = serviceManager.GetInstallationDetail("GetInstallationDetails", requestParameter);
             });

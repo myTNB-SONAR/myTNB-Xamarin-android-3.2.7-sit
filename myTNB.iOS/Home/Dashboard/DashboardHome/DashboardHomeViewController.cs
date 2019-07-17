@@ -1,6 +1,5 @@
 using System;
 using CoreGraphics;
-using Foundation;
 using UIKit;
 
 namespace myTNB
@@ -18,8 +17,8 @@ namespace myTNB
             {
                 v.RemoveFromSuperview();
             }
-            PageName = "DashboardHome";
-            //IsGradientRequired = true;
+            PageName = DashboardHomeConstants.PageName;
+            IsGradientRequired = true;
             base.ViewDidLoad();
 
             AddHeader();
@@ -47,8 +46,8 @@ namespace myTNB
             _homeTableView.SeparatorStyle = UITableViewCellSeparatorStyle.None;
             _homeTableView.RowHeight = UITableView.AutomaticDimension;
             _homeTableView.EstimatedRowHeight = 600.0F;
-            _homeTableView.RegisterClassForCellReuse(typeof(HelpTableViewCell), "helpTableViewCell");
-            _homeTableView.RegisterClassForCellReuse(typeof(ServicesTableViewCell), "servicesTableViewCell");
+            _homeTableView.RegisterClassForCellReuse(typeof(HelpTableViewCell), DashboardHomeConstants.Cell_Help);
+            _homeTableView.RegisterClassForCellReuse(typeof(ServicesTableViewCell), DashboardHomeConstants.Cell_Services);
             View.AddSubview(_homeTableView);
         }
 
@@ -60,10 +59,10 @@ namespace myTNB
                 yLoc += 20.0F;
             }
             _viewHeader = new UIView(new CGRect(0, yLoc, View.Frame.Width, 48.0F))
-            { BackgroundColor = UIColor.Cyan, ClipsToBounds = true };
+            { BackgroundColor = UIColor.Clear, ClipsToBounds = true };
             UIView viewNotification = new UIView(new CGRect(View.Frame.Width - (24 + 16), 12, 24, 24));
             UIImageView imgNotification = new UIImageView(new CGRect(0, 0, viewNotification.Frame.Width, viewNotification.Frame.Height))
-            { Image = UIImage.FromBundle("Notification") };
+            { Image = UIImage.FromBundle(DashboardHomeConstants.Img_Notification) };
             viewNotification.AddGestureRecognizer(new UITapGestureRecognizer());
             viewNotification.AddSubview(imgNotification);
             UILabel lblGreeting = new UILabel(new CGRect(16, 8, _viewHeader.Frame.Width * 0.60F, 16))
@@ -72,7 +71,7 @@ namespace myTNB
                 Font = MyTNBFont.MuseoSans16_500,
                 Text = GetGreeting()
             };
-            UILabel lblName = new UILabel(new CGRect(16, 24, _viewHeader.Frame.Width * 0.60F, 16))
+            UILabel lblName = new UILabel(new CGRect(16, 24, _viewHeader.Frame.Width - 40, 16))
             {
                 TextColor = MyTNBColor.SunGlow,
                 Font = MyTNBFont.MuseoSans16_500,
@@ -86,14 +85,14 @@ namespace myTNB
         private string GetGreeting()
         {
             DateTime now = DateTime.Now;
-            string key = "greeting_evening";
+            string key = DashboardHomeConstants.I18N_Evening;
             if (now.Hour < 12)
             {
-                key = "greeting_morning";
+                key = DashboardHomeConstants.I18N_Morning;
             }
             else if (now.Hour < 18)
             {
-                key = "greeting_afternoon";
+                key = DashboardHomeConstants.I18N_Afternoon;
             }
             return I18NDictionary[key];
         }

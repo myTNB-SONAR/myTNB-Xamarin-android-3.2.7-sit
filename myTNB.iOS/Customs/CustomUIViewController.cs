@@ -200,7 +200,7 @@ namespace myTNB
 
         private void CreateBackgroundGradient()
         {
-            UIView gradientView = new UIView(new CGRect(0, 0, View.Frame.Width, View.Frame.Height * 0.30F));
+            UIView gradientView = new UIView(new CGRect(0, 0, View.Frame.Width, View.Frame.Height * 0.50F));
             CAGradientLayer gradientLayer = new CAGradientLayer
             {
                 Colors = new[] { MyTNBColor.GradientPurpleLightElement.CGColor, MyTNBColor.GradientPurpleDarkElement.CGColor }
