@@ -1,65 +1,50 @@
-using Foundation;
-using System;
-using UIKit;
-using CoreGraphics;
-using CoreAnimation;
-using Cirrious.FluentLayouts.Touch;
+﻿using System;
 using System.Diagnostics;
+using Cirrious.FluentLayouts.Touch;
+using CoreAnimation;
+using CoreGraphics;
+using Foundation;
+using UIKit;
 
 namespace myTNB
 {
-    public partial class OnboardingRootViewController : UIViewController
+    public class OnboardingController : GenericPageViewRootController
     {
-        public ModelController ModelController
+        public OnboardingController(UIViewController controller) : base(controller) { }
+        public override void OnViewDidLoad()
         {
-            get; private set;
-        }
-
-        public UIPageViewController PageViewController
-        {
-            get; private set;
-        }
-
-        protected OnboardingRootViewController(IntPtr handle) : base(handle)
-        {
-            // Note: this .ctor should not contain any initialization logic.
-        }
-
-        public override void ViewDidLoad()
-        {
-            base.ViewDidLoad();
             ModelController = new ModelController();
             ModelController.SetPageData().ContinueWith(task =>
             {
-                InvokeOnMainThread(() =>
+                that.InvokeOnMainThread(() =>
                 {
                     try
                     {
                         // Configure the page view controller and add it as a child view controller.
                         PageViewController = new UIPageViewController(UIPageViewControllerTransitionStyle.Scroll, UIPageViewControllerNavigationOrientation.Horizontal, UIPageViewControllerSpineLocation.Min)
                         {
-                            WeakDelegate = this
+                            WeakDelegate = that
                         };
-                        var startingViewController = ModelController?.GetViewController(0, Storyboard);
+                        var startingViewController = ModelController?.GetViewController(0, that.Storyboard);
                         if (startingViewController != null)
                         {
                             var viewControllers = new UIViewController[] { startingViewController };
                             PageViewController.SetViewControllers(viewControllers, UIPageViewControllerNavigationDirection.Forward, false, null);
                             PageViewController.WeakDataSource = ModelController;
 
-                            AddChildViewController(PageViewController);
-                            View.AddSubview(PageViewController.View);
+                            that.AddChildViewController(PageViewController);
+                            that.View.AddSubview(PageViewController.View);
 
                             // Set the page view controller's bounds using an inset rect so that self's view is visible around the edges of the pages.
-                            var pageViewRect = View.Bounds;
+                            var pageViewRect = that.View.Bounds;
                             if (UIDevice.CurrentDevice.UserInterfaceIdiom == UIUserInterfaceIdiom.Pad)
                                 pageViewRect = new CGRect(pageViewRect.X + 20, pageViewRect.Y + 20, pageViewRect.Width - 40, pageViewRect.Height - 40);
                             PageViewController.View.Frame = pageViewRect;
 
-                            PageViewController.DidMoveToParentViewController(this);
+                            PageViewController.DidMoveToParentViewController(that);
 
                             // Add the page view controller's gesture recognizers to the book view controller's view so that the gestures are started more easily.
-                            View.GestureRecognizers = PageViewController.GestureRecognizers;
+                            that.View.GestureRecognizers = PageViewController.GestureRecognizers;
 
 
                             UIButton btnSkip = new UIButton(UIButtonType.Custom)
@@ -70,7 +55,7 @@ namespace myTNB
                             btnSkip.BackgroundColor = UIColor.Clear;
                             btnSkip.TitleLabel.Font = MyTNBFont.MuseoSans14;
                             btnSkip.TitleLabel.TextAlignment = UITextAlignment.Left;
-                            View.AddSubview(btnSkip);
+                            that.View.AddSubview(btnSkip);
                             btnSkip.TouchUpInside += (sender, e) =>
                             {
                                 OnSkip();
@@ -84,7 +69,7 @@ namespace myTNB
                             btnDone.BackgroundColor = UIColor.Clear;
                             btnDone.TitleLabel.Font = MyTNBFont.MuseoSans14;
                             btnDone.TitleLabel.TextAlignment = UITextAlignment.Right;
-                            View.AddSubview(btnDone);
+                            that.View.AddSubview(btnDone);
                             btnDone.TouchUpInside += (sender, e) =>
                             {
                                 OnSkip();
@@ -109,7 +94,7 @@ namespace myTNB
                                     btnSkip.Hidden = index == ModelController.pageData.Count - 1;
                                     btnDone.Hidden = index != ModelController.pageData.Count - 1;
                                     viewNext.Hidden = index == ModelController.pageData.Count - 1;
-                                    var nextVC = ModelController.GetViewController(index, Storyboard);
+                                    var nextVC = ModelController.GetViewController(index, that.Storyboard);
                                     if (nextVC != null)
                                     {
                                         var vc = new UIViewController[] { nextVC };
@@ -118,25 +103,25 @@ namespace myTNB
                                 }
                             });
                             viewNext.AddGestureRecognizer(onNextTap);
-                            View.AddSubview(viewNext);
+                            that.View.AddSubview(viewNext);
 
-                            View.AddConstraints(
-                                btnSkip.AtLeftOf(View, 18),
-                                btnSkip.AtBottomOf(View, 19),
+                            that.View.AddConstraints(
+                                btnSkip.AtLeftOf(that.View, 18),
+                                btnSkip.AtBottomOf(that.View, 19),
                                 btnSkip.Width().EqualTo(50),
                                 btnSkip.Height().EqualTo(18),
 
-                                btnDone.AtRightOf(View, 18),
-                                btnDone.AtBottomOf(View, 19),
+                                btnDone.AtRightOf(that.View, 18),
+                                btnDone.AtBottomOf(that.View, 19),
                                 btnDone.Width().EqualTo(50),
                                 btnDone.Height().EqualTo(18),
 
-                                viewNext.AtRightOf(View, 19),
-                                viewNext.AtBottomOf(View, 16),
+                                viewNext.AtRightOf(that.View, 19),
+                                viewNext.AtBottomOf(that.View, 16),
                                 viewNext.Width().EqualTo(24),
                                 viewNext.Height().EqualTo(24)
                             );
-                            View.SubviewsDoNotTranslateAutoresizingMaskIntoConstraints();
+                            that.View.SubviewsDoNotTranslateAutoresizingMaskIntoConstraints();
 
                             ModelController.btnDone = btnDone;
                             ModelController.btnSkip = btnSkip;
@@ -151,14 +136,13 @@ namespace myTNB
             });
         }
 
-        public override void ViewDidLayoutSubviews()
+        public override void OnViewDidLayoutSubViews()
         {
-            base.ViewDidLayoutSubviews();
             SetupSuperViewBackground();
         }
 
         [Export("pageViewController:spineLocationForInterfaceOrientation:")]
-        public UIPageViewControllerSpineLocation GetSpineLocation(UIPageViewController pageViewController, UIInterfaceOrientation orientation)
+        public override UIPageViewControllerSpineLocation GetSpineLocation(UIPageViewController pageViewController, UIInterfaceOrientation orientation)
         {
             UIViewController currentViewController;
             UIViewController[] viewControllers;
@@ -193,24 +177,21 @@ namespace myTNB
             }
 
             pageViewController.SetViewControllers(viewControllers, UIPageViewControllerNavigationDirection.Forward, true, null);
-
             return UIPageViewControllerSpineLocation.Mid;
         }
 
-        internal void SetupSuperViewBackground()
+        private void SetupSuperViewBackground()
         {
             var startColor = MyTNBColor.GradientPurpleDarkElement;
             var endColor = MyTNBColor.GradientPurpleLightElement;
-
             var gradientLayer = new CAGradientLayer();
             gradientLayer.Colors = new[] { startColor.CGColor, endColor.CGColor };
             gradientLayer.Locations = new NSNumber[] { 0, 1 };
-            gradientLayer.Frame = View.Bounds;
-
-            View.Layer.InsertSublayer(gradientLayer, 0);
+            gradientLayer.Frame = that.View.Bounds;
+            that.View.Layer.InsertSublayer(gradientLayer, 0);
         }
 
-        internal void OnSkip()
+        private void OnSkip()
         {
             var sharedPreference = NSUserDefaults.StandardUserDefaults;
             sharedPreference.SetBool(true, "isWalkthroughDone");
@@ -218,7 +199,7 @@ namespace myTNB
             UIStoryboard loginStoryboard = UIStoryboard.FromName("Login", null);
             UIViewController preLoginVC = (UIViewController)loginStoryboard.InstantiateViewController("PreloginViewController");
             preLoginVC.ModalTransitionStyle = UIModalTransitionStyle.CrossDissolve;
-            this.PresentViewController(preLoginVC, true, null);
+            that.PresentViewController(preLoginVC, true, null);
         }
     }
 }

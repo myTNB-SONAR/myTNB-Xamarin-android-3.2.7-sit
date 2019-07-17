@@ -26,7 +26,7 @@
         <!--Onboarding Root View Controller-->
         <scene sceneID="1557">
             <objects>
-                <viewController storyboardIdentifier="OnboardingRootViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="1558" customClass="OnboardingRootViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="GenericPageRootViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="1558" customClass="GenericPageRootViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="1555"/>
                         <viewControllerLayoutGuide type="bottom" id="1556"/>

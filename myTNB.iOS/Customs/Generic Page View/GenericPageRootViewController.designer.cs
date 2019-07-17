@@ -7,12 +7,11 @@
 using Foundation;
 using System;
 using System.CodeDom.Compiler;
-using UIKit;
 
 namespace myTNB
 {
-    [Register ("OnboardingRootViewController")]
-    partial class OnboardingRootViewController
+    [Register ("GenericPageRootViewController")]
+    partial class GenericPageRootViewController
     {
         void ReleaseDesignerOutlets ()
         {

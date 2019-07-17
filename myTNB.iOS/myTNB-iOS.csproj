@@ -1163,6 +1163,7 @@
     <Folder Include="Assets.xcassets\Feedback-Submitted-Generic.imageset\" />
     <Folder Include="Customs\Generic Line\" />
     <Folder Include="Customs\Generic Tableview Selector\" />
+    <Folder Include="Customs\Generic Page View\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -1251,10 +1252,6 @@
     <Compile Include="Onboarding\OnboardingDataViewController.cs" />
     <Compile Include="Onboarding\OnboardingDataViewController.designer.cs">
       <DependentUpon>OnboardingDataViewController.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Onboarding\OnboardingRootViewController.cs" />
-    <Compile Include="Onboarding\OnboardingRootViewController.designer.cs">
-      <DependentUpon>OnboardingRootViewController.cs</DependentUpon>
     </Compile>
     <Compile Include="Model\OnboardingModel.cs" />
     <Compile Include="Helpers\NetworkUtility.cs" />
@@ -1863,6 +1860,12 @@
     <Compile Include="Customs\Generic Tableview Selector\GenericSelectorViewController.cs" />
     <Compile Include="Customs\Generic Tableview Selector\GenericSelectorViewController.designer.cs" />
     <Compile Include="SQLite\SQLite Data Manager\DueEntity.cs" />
+    <Compile Include="Onboarding\OnboardingController.cs" />
+    <Compile Include="Customs\Generic Page View\GenericPageViewRootController.cs" />
+    <Compile Include="Customs\Generic Page View\GenericPageRootViewController.cs" />
+    <Compile Include="Customs\Generic Page View\GenericPageRootViewController.designer.cs">
+      <DependentUpon>GenericPageRootViewController.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />
