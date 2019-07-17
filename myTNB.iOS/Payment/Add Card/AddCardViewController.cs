@@ -595,7 +595,7 @@ namespace myTNB
                     totalAmount = TotalAmount,
                     paymentItems = paymentItemList
                 };
-                _requestPayBill = serviceManager.RequestMultiPayBill("RequestMultiPayBill", requestParameter);
+                _requestPayBill = serviceManager.OnExecuteAPI<RequestPayBillResponseModel>("RequestMultiPayBill", requestParameter);
             });
         }
 

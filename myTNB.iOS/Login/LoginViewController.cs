@@ -495,7 +495,7 @@ namespace myTNB
                         && !string.IsNullOrWhiteSpace(DataManager.DataManager.SharedInstance.FCMToken)
                             ? DataManager.DataManager.SharedInstance.FCMToken : string.Empty
                 };
-                _authenticationList = serviceManager.GetUserAuthentication("IsUserAuthenticate", requestParameter);
+                _authenticationList = serviceManager.OnExecuteAPI<UserAuthenticationResponseModel>("IsUserAuthenticate", requestParameter);
             });
         }
 
@@ -540,7 +540,7 @@ namespace myTNB
                     apiKeyID = TNBGlobal.API_KEY_ID,
                     CANum = DataManager.DataManager.SharedInstance.SelectedAccount.accNum
                 };
-                _billingAccountDetailsList = serviceManager.GetBillingAccountDetails("GetBillingAccountDetails", requestParameter);
+                _billingAccountDetailsList = serviceManager.OnExecuteAPI<BillingAccountDetailsResponseModel>("GetBillingAccountDetails", requestParameter);
             });
         }
 

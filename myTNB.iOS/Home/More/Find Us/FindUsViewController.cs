@@ -503,7 +503,7 @@ namespace myTNB
                     locationType = locType,
                     keyword = isSearch ? _searchLoc : string.Empty
                 };
-                _locations = serviceManager.GetLocations(isSearch ? "GetLocationsByKeyword" : "GetLocations", requestParameter);
+                _locations = serviceManager.OnExecuteAPI<GetLocationsResponseModel>(isSearch ? "GetLocationsByKeyword" : "GetLocations", requestParameter);
             });
         }
     }

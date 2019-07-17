@@ -274,7 +274,7 @@ namespace myTNB.Registration
                     suppliedMotherName = maidenName,
                     isOwner = isOwner ? "TRUE" : "FALSE"
                 };
-                _validateManualAccountLinkingResponseModel = serviceManager.ValidateManualAccountLinking("ValidateManualAccountLinking", requestParameter);
+                _validateManualAccountLinkingResponseModel = serviceManager.OnExecuteAPI<ValidateManualAccountLinkingResponseModel>("ValidateManualAccountLinking", requestParameter);
             });
         }
 

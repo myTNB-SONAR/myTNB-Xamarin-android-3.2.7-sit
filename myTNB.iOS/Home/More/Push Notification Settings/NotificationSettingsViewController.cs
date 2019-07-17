@@ -133,7 +133,7 @@ namespace myTNB
                     isOpted = preference.IsOpted
                 };
                 string suffix = isNotificationType ? "SaveUserNotificationTypePreference" : "SaveUserNotificationChannelPreference";
-                _notificationPreferenceUpdate = serviceManager.SaveUserNotificationPreference(suffix, requestParameter);
+                _notificationPreferenceUpdate = serviceManager.OnExecuteAPI<NotificationPreferenceUpdateResponseModel>(suffix, requestParameter);
             });
         }
     }

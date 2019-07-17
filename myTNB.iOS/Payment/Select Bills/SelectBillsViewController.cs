@@ -440,7 +440,7 @@ namespace myTNB
                     apiKeyID = TNBGlobal.API_KEY_ID,
                     accounts = accountList
                 };
-                _multiAccountDueAmount = serviceManager.GetMultiAccountDueAmount("GetMultiAccountDueAmount", requestParameter);
+                _multiAccountDueAmount = serviceManager.OnExecuteAPI<MultiAccountDueAmountResponseModel>("GetMultiAccountDueAmount", requestParameter);
             });
         }
     }
