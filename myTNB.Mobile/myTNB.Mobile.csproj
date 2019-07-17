@@ -15,5 +15,14 @@
   <ItemGroup>
     <Folder Include="Data\Entities\" />
     <Folder Include="Business\Managers\" />
+    <Folder Include="Resources\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="Resources\Language_EN.json" />
+    <None Remove="Resources\Language_MS.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\Language_EN.json" />
+    <EmbeddedResource Include="Resources\Language_MS.json" />
   </ItemGroup>
 </Project>

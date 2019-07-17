@@ -1,0 +1,30 @@
+﻿{
+    "page": {
+        "title": "Title",
+        "submit": "Submit"
+    },
+    "page_selector": {
+        "date": [
+            {
+                "id": "0",
+                "key": "hour",
+                "value": "Hourly",
+                "description":  "Hourly Description"
+            },
+            {
+                "id": "1",
+                "key": "week",
+                "value": "Weekly",
+                "description": "Weekly Description"
+            }
+        ]
+    },
+    "DashboardHome":{
+        "greeting_afternoon": "Good Afternoon,",
+        "greeting_evening": "Good Evening,",
+        "greeting_morning": "Good Morning,",
+        "myAccounts": "My Accounts",
+        "myServices": "My Services",
+        "needHelp": "Need Help?"
+    }
+}
