@@ -421,7 +421,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 		{
 			this.mView.ShowHomeDashBoard();
 			currentBottomNavigationMenu = Resource.Id.menu_dashboard;
-
+			this.mView.SetToolbarTitle(Resource.String.dashboard_activity_title);
 			this.mView.EnableDropDown(false);
 			this.mView.HideAccountName();
 		}

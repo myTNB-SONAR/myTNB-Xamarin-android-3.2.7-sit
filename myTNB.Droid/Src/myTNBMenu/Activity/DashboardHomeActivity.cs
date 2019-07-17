@@ -188,7 +188,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                     EnableDropDown(false);
                     HideAccountName();
                     ShowBackButton(false);
-                    
+                    SetToolbarTitle(Resource.String.dashboard_activity_title);
                     ShowHomeDashBoard();
 
                 }

@@ -1137,6 +1137,7 @@
     <AndroidResource Include="Resources\drawable-xhdpi\ic_menu_reward.png" />
     <AndroidResource Include="Resources\drawable-xxhdpi\ic_menu_reward.png" />
     <AndroidResource Include="Resources\drawable-xxxhdpi\ic_menu_reward.png" />
+    <AndroidResource Include="Resources\drawable\ic_menu_bill_unread_selector.xml" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -2652,9 +2653,6 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\ic_menu_bill_selector.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable\ic_menu_bill_unread_selector.xml" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\ic_menu_dashboard_selector.xml" />
