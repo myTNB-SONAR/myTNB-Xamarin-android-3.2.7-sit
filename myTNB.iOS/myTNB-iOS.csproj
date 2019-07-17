@@ -1868,6 +1868,7 @@
     <Compile Include="Customs\Generic Page View\GenericPageDataViewController.designer.cs">
       <DependentUpon>GenericPageDataViewController.cs</DependentUpon>
     </Compile>
+    <Compile Include="Customs\Generic Page View\GenericPageViewEnum.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />

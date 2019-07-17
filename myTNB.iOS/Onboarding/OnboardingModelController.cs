@@ -79,8 +79,9 @@ namespace myTNB
             }
 
             // Create a new view controller and pass suitable data.
-            var dataViewController = (GenericPageDataViewController)storyboard.InstantiateViewController("GenericPageDataViewController");
+            GenericPageDataViewController dataViewController = storyboard.InstantiateViewController("GenericPageDataViewController") as GenericPageDataViewController;
             dataViewController.DataObject = pageData[index];
+            dataViewController.PageType = GenericPageViewEnum.Type.Onboarding;
             return dataViewController;
         }
 

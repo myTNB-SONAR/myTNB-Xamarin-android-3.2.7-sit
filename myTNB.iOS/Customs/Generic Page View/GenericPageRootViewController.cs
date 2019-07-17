@@ -8,12 +8,17 @@ namespace myTNB
     {
         protected GenericPageRootViewController(IntPtr handle) : base(handle) { }
 
-        BasePageViewRootController _pageViewController;
+        private BasePageViewRootController _pageViewController;
+
+        public GenericPageViewEnum.Type PageType;
 
         public override void ViewDidLoad()
         {
             base.ViewDidLoad();
-            _pageViewController = new OnboardingController(this);
+            if (PageType == GenericPageViewEnum.Type.Onboarding)
+            {
+                _pageViewController = new OnboardingController(this);
+            }
             _pageViewController.OnViewDidLoad();
         }
 

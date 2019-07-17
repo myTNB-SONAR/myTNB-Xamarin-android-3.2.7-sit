@@ -11,15 +11,19 @@ namespace myTNB
         {
             get; set;
         }
-        BaseDataViewController _dataController;
+        private BaseDataViewController _dataController;
+        public GenericPageViewEnum.Type PageType;
         public override void ViewDidLoad()
         {
             base.ViewDidLoad();
             // Perform any additional setup after loading the view, typically from a nib
-            _dataController = new OnboardingDataController(this)
+            if (PageType == GenericPageViewEnum.Type.Onboarding)
             {
-                DataObject = DataObject
-            };
+                _dataController = new OnboardingDataController(this)
+                {
+                    DataObject = DataObject
+                };
+            }
             _dataController.OnViewDidLoad();
             _dataController.SetSubViews();
         }

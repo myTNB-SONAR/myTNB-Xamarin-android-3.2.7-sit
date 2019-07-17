@@ -350,8 +350,9 @@ namespace myTNB
         internal void ShowOnboarding()
         {
             UIStoryboard onboardingStoryboard = UIStoryboard.FromName("Onboarding", null);
-            UIViewController onboardingVC = (UIViewController)onboardingStoryboard.InstantiateViewController("GenericPageRootViewController");
+            GenericPageRootViewController onboardingVC = onboardingStoryboard.InstantiateViewController("GenericPageRootViewController") as GenericPageRootViewController;
             onboardingVC.ModalTransitionStyle = UIModalTransitionStyle.CrossDissolve;
+            onboardingVC.PageType = GenericPageViewEnum.Type.Onboarding;
             PresentViewController(onboardingVC, true, null);
         }
 
