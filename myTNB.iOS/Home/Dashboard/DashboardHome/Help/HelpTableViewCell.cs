@@ -9,13 +9,20 @@ namespace myTNB
     {
         private UIScrollView _scrollView;
         private nfloat cellWidth = UIApplication.SharedApplication.KeyWindow.Frame.Width;
+        public UILabel _titleLabel;
         public HelpTableViewCell(IntPtr handle) : base(handle)
         {
-            UIView view = new UIView(new CGRect(0, 0, cellWidth, 64.0F))
+            _titleLabel = new UILabel(new CGRect(16f, 16f, cellWidth - 32, 20f))
+            {
+                Font = MyTNBFont.MuseoSans14_500,
+                TextColor = MyTNBColor.PowerBlue
+            };
+            AddSubview(_titleLabel);
+            UIView view = new UIView(new CGRect(0, _titleLabel.Frame.GetMaxY() + 8f, cellWidth, 64.0F))
             {
                 BackgroundColor = UIColor.Clear
             };
-            _scrollView = new UIScrollView(new CGRect(16, 0, view.Frame.Width - 16, 40.0F));
+            _scrollView = new UIScrollView(new CGRect(0, 0, view.Frame.Width, 40.0F));
             _scrollView.ScrollEnabled = true;
             _scrollView.ShowsHorizontalScrollIndicator = false;
             view.AddSubview(_scrollView);
@@ -31,7 +38,7 @@ namespace myTNB
         public void AddCards()
         {
             List<string> helpList = new List<string>() { "How to read meter?", "How to reset password?", "How to apply for AutoPay ?" };
-            nfloat xLoc = 0;
+            nfloat xLoc = 16f;
             nfloat cardWidth = cellWidth * 0.312F;
             for (int i = 0; i < helpList.Count; i++)
             {

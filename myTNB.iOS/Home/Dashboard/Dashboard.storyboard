@@ -1,11 +1,7 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="76W-3G-VcO">
-    <device id="retina4_7" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="76W-3G-VcO">
     <dependencies>
-        <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -18,14 +14,14 @@
                         <viewControllerLayoutGuide type="bottom" id="385"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="388">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view hidden="YES" tag="100" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MAx-X7-V4c">
-                                <rect key="frame" x="18" y="72" width="339" height="64"/>
+                                <rect key="frame" x="18" y="72" width="378" height="64"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" tag="102" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Unable to fetch smart meter data! Please try later." textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="17X-49-oNX">
-                                        <rect key="frame" x="16" y="16" width="307" height="32"/>
+                                        <rect key="frame" x="16" y="16" width="346" height="32"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="32" id="o2k-Yc-Wny"/>
                                         </constraints>
@@ -102,14 +98,14 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="389" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1200.8" y="-939.58019999999999"/>
+            <point key="canvasLocation" x="1200.8" y="-939.5802"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="829">
             <objects>
                 <navigationController id="830" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="832">
-                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                        <rect key="frame" x="0.0" y="20" width="414" height="50"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
@@ -125,7 +121,7 @@
             <objects>
                 <tabBarController storyboardIdentifier="HomeTabBarController" id="2036" customClass="HomeTabBarController" sceneMemberID="viewController">
                     <tabBar key="tabBar" contentMode="scaleToFill" id="2039">
-                        <rect key="frame" x="0.0" y="618" width="375" height="49"/>
+                        <rect key="frame" x="0.0" y="686" width="414" height="50"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     </tabBar>
@@ -151,27 +147,27 @@
                         <viewControllerLayoutGuide type="bottom" id="3080"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="3083">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="5749">
-                                <rect key="frame" x="-3" y="89" width="381" height="528"/>
+                                <rect key="frame" x="1" y="89" width="412" height="596"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <edgeInsets key="layoutMargins" top="0.0" left="0.0" bottom="0.0" right="0.0"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="billCell" rowHeight="62" id="5750" customClass="BillTableViewCell">
-                                        <rect key="frame" x="0.0" y="28" width="381" height="62"/>
+                                        <rect key="frame" x="0.0" y="28" width="412" height="62"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="5750" id="5751">
-                                            <rect key="frame" x="0.0" y="0.0" width="381" height="61.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="412" height="61.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="NoDataViewCell" rowHeight="44" id="19356" customClass="NoDataViewCell">
-                                        <rect key="frame" x="0.0" y="90" width="381" height="44"/>
+                                        <rect key="frame" x="0.0" y="90" width="412" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="19356" id="19357">
-                                            <rect key="frame" x="0.0" y="0.0" width="381" height="43.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="412" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -179,10 +175,10 @@
                                 <variation key="heightClass=regular-widthClass=compact" preservesSuperviewLayoutMargins="YES"/>
                             </tableView>
                             <view hidden="YES" tag="100" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="27216">
-                                <rect key="frame" x="18" y="52" width="339" height="64"/>
+                                <rect key="frame" x="18" y="52" width="378" height="64"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" tag="102" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Our systems are currently undergoing a maintenance activity. Please see FAQs section for other payment options." textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="27217">
-                                        <rect key="frame" x="16" y="16" width="307" height="32"/>
+                                        <rect key="frame" x="16" y="16" width="346" height="32"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="32" id="27222"/>
                                         </constraints>
@@ -289,7 +285,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3084" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1788" y="-890.10490000000004"/>
+            <point key="canvasLocation" x="1788" y="-890.1049"/>
         </scene>
         <!--Feedback-->
         <scene sceneID="3088">
@@ -300,7 +296,7 @@
                         <viewControllerLayoutGuide type="bottom" id="3087"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="3090">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="18039">
@@ -340,7 +336,7 @@
                         <viewControllerLayoutGuide type="bottom" id="3094"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="3097">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="21327">
@@ -369,7 +365,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3098" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2386.4000000000001" y="-296.40179999999998"/>
+            <point key="canvasLocation" x="2386.4" y="-296.4018"/>
         </scene>
         <!--More-->
         <scene sceneID="3102">
@@ -380,7 +376,7 @@
                         <viewControllerLayoutGuide type="bottom" id="3101"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="3104">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="16511">
@@ -416,7 +412,7 @@
             <objects>
                 <navigationController id="17420" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="17422">
-                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                        <rect key="frame" x="0.0" y="20" width="414" height="50"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
@@ -436,7 +432,7 @@
                         <viewControllerLayoutGuide type="bottom" id="20722"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="20725">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="20758">
@@ -475,7 +471,7 @@
                         <viewControllerLayoutGuide type="bottom" id="21891"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="21894">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="23643">
@@ -485,7 +481,7 @@
                                 <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="DashboardAccountCell" rowHeight="66" id="23644" customClass="DashboardAccountCell">
-                                        <rect key="frame" x="0.0" y="55.5" width="370" height="66"/>
+                                        <rect key="frame" x="0.0" y="63" width="370" height="66"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="23644" id="23645">
                                             <rect key="frame" x="0.0" y="0.0" width="370" height="65.5"/>
@@ -557,10 +553,10 @@
                                 </prototypes>
                             </tableView>
                             <view hidden="YES" tag="100" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="26545">
-                                <rect key="frame" x="34" y="52" width="307" height="64"/>
+                                <rect key="frame" x="38" y="52" width="338" height="64"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" tag="102" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="BRCM will be down for maintenance purpose" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="26546">
-                                        <rect key="frame" x="16" y="16" width="275" height="32"/>
+                                        <rect key="frame" x="16" y="16" width="306" height="32"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="32" id="26551"/>
                                         </constraints>
@@ -633,7 +629,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="21895" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-471.19999999999999" y="484.40780000000001"/>
+            <point key="canvasLocation" x="-471.2" y="484.4078"/>
         </scene>
         <!--Dashboard-->
         <scene sceneID="7Rc-LG-kEx">
@@ -642,7 +638,7 @@
                     <tabBarItem key="tabBarItem" title="Dashboard" image="Tab-Dashboard" id="2103"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="v1u-Z0-h8q">
-                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                        <rect key="frame" x="0.0" y="20" width="414" height="50"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
@@ -652,7 +648,24 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lyc-AY-B9Q" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="261.60000000000002" y="-939.58019999999999"/>
+            <point key="canvasLocation" x="261.6" y="-939.5802"/>
+        </scene>
+        <scene sceneID="27823">
+            <objects>
+                <viewController id="27824" sceneMemberID="viewController" customClass="AccountsContentViewController" storyboardIdentifier="AccountsContentViewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="27821"/>
+                        <viewControllerLayoutGuide type="bottom" id="27822"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="27825">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="27826" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="263" y="-1742"/>
         </scene>
     </scenes>
     <resources>

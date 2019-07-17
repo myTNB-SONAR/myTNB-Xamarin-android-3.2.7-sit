@@ -9,9 +9,16 @@ namespace myTNB
     {
         private nfloat cellWidth = UIApplication.SharedApplication.KeyWindow.Frame.Width;
         private UIView _view;
+        public UILabel _titleLabel;
         public ServicesTableViewCell(IntPtr handle) : base(handle)
         {
-            _view = new UIView(new CGRect(16, 0, cellWidth - 32, 60.0F))
+            _titleLabel = new UILabel(new CGRect(16f, 0, cellWidth - 32, 20f))
+            {
+                Font = MyTNBFont.MuseoSans14_500,
+                TextColor = MyTNBColor.PowerBlue
+            };
+            AddSubview(_titleLabel);
+            _view = new UIView(new CGRect(16, _titleLabel.Frame.GetMaxY() + 8f, cellWidth - 32, 60.0F))
             {
                 BackgroundColor = UIColor.Clear
             };

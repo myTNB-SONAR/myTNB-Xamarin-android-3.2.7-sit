@@ -1,5 +1,9 @@
 using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 using CoreGraphics;
+using myTNB.Model;
 using UIKit;
 
 namespace myTNB
@@ -8,8 +12,10 @@ namespace myTNB
     {
         public DashboardHomeViewController(IntPtr handle) : base(handle) { }
 
+        List<List<CustomerAccountRecordModel>> _groupedAccountsList;
+
         private UITableView _homeTableView;
-        private UIView _viewHeader;
+        UIPageViewController _accountsPageViewController;
 
         public override void ViewDidLoad()
         {
@@ -21,15 +27,19 @@ namespace myTNB
             IsGradientRequired = true;
             base.ViewDidLoad();
 
-            AddHeader();
+            SetStatusBarNoOverlap();
             AddTableView();
+            AddTableViewHeader();
+            GetGroupedAccountsList();
+            LoadAccounts();
+
+            _homeTableView.Source = new DashboardHomeDataSource(this, _accountsPageViewController);
+            _homeTableView.ReloadData();
         }
 
         public override void ViewWillAppear(bool animated)
         {
             base.ViewWillAppear(animated);
-            _homeTableView.Source = new DashboardHomeDataSource(this);
-            _homeTableView.ReloadData();
         }
 
         public override void ViewDidAppear(bool animated)
@@ -37,49 +47,85 @@ namespace myTNB
             base.ViewDidAppear(animated);
         }
 
+        private void GetGroupedAccountsList()
+        {
+            var sortedAccounts = new List<CustomerAccountRecordModel>();
+
+            var accountsList = DataManager.DataManager.SharedInstance.AccountRecordsList.d;
+            var results = accountsList.GroupBy(x => x.IsREAccount);
+
+            if (results != null && results?.Count() > 0)
+            {
+                var reAccts = results.Where(x => x.Key == true).SelectMany(y => y).OrderBy(o => o.accountNickName).ToList();
+                var normalAccts = results.Where(x => x.Key == false).SelectMany(y => y).OrderBy(o => o.accountNickName).ToList();
+                reAccts.AddRange(normalAccts);
+                sortedAccounts = reAccts;
+            }
+
+            var groupedAccountsList = new List<List<CustomerAccountRecordModel>>();
+
+            int count = 0;
+            List<CustomerAccountRecordModel> batchList = new List<CustomerAccountRecordModel>();
+            for (int i = 0; i < sortedAccounts.Count; i++)
+            {
+                if (count < DashboardHomeConstants.MaxAccountPerCard)
+                {
+                    batchList.Add(sortedAccounts[i]);
+                    count++;
+                }
+                else
+                {
+                    groupedAccountsList.Add(batchList);
+                    batchList = new List<CustomerAccountRecordModel>();
+                    batchList.Add(sortedAccounts[i]);
+                    count = 1;
+                }
+
+                if (i + 1 == sortedAccounts.Count)
+                {
+                    groupedAccountsList.Add(batchList);
+                }
+            }
+
+            _groupedAccountsList = groupedAccountsList;
+        }
+
+        private void LoadAccounts()
+        {
+            _accountsPageViewController = new UIPageViewController(UIPageViewControllerTransitionStyle.Scroll, UIPageViewControllerNavigationOrientation.Horizontal, UIPageViewControllerSpineLocation.Min)
+            {
+                WeakDelegate = this
+            };
+            _accountsPageViewController.DataSource = new AccountsPageViewDataSource(this, _groupedAccountsList);
+
+            var startingViewController = ViewControllerAtIndex(0) as AccountsContentViewController;
+            var viewControllers = new UIViewController[] { startingViewController };
+
+            _accountsPageViewController.SetViewControllers(viewControllers, UIPageViewControllerNavigationDirection.Forward, false, null);
+            _accountsPageViewController.View.Frame = new CGRect(0, 0, View.Frame.Width, 395f);
+        }
+
         private void AddTableView()
         {
             nfloat tabbarHeight = TabBarController.TabBar.Frame.Height + 20.0F;
-            _homeTableView = new UITableView(new CGRect(0, _viewHeader.Frame.GetMaxY(), View.Frame.Width
-                , View.Frame.Height - _viewHeader.Frame.GetMaxY() - tabbarHeight))
+            _homeTableView = new UITableView(new CGRect(0, DeviceHelper.GetStatusBarHeight(), View.Frame.Width
+                , View.Frame.Height - DeviceHelper.GetStatusBarHeight() - tabbarHeight))
             { BackgroundColor = UIColor.Clear };
             _homeTableView.SeparatorStyle = UITableViewCellSeparatorStyle.None;
             _homeTableView.RowHeight = UITableView.AutomaticDimension;
             _homeTableView.EstimatedRowHeight = 600.0F;
+            _homeTableView.RegisterClassForCellReuse(typeof(AccountsTableViewCell), DashboardHomeConstants.Cell_Accounts);
             _homeTableView.RegisterClassForCellReuse(typeof(HelpTableViewCell), DashboardHomeConstants.Cell_Help);
             _homeTableView.RegisterClassForCellReuse(typeof(ServicesTableViewCell), DashboardHomeConstants.Cell_Services);
             View.AddSubview(_homeTableView);
         }
 
-        private void AddHeader()
+        private void AddTableViewHeader()
         {
-            float yLoc = 36.0F;
-            if (DeviceHelper.IsIphoneXUpResolution())
-            {
-                yLoc += 20.0F;
-            }
-            _viewHeader = new UIView(new CGRect(0, yLoc, View.Frame.Width, 48.0F))
-            { BackgroundColor = UIColor.Clear, ClipsToBounds = true };
-            UIView viewNotification = new UIView(new CGRect(View.Frame.Width - (24 + 16), 12, 24, 24));
-            UIImageView imgNotification = new UIImageView(new CGRect(0, 0, viewNotification.Frame.Width, viewNotification.Frame.Height))
-            { Image = UIImage.FromBundle(DashboardHomeConstants.Img_Notification) };
-            viewNotification.AddGestureRecognizer(new UITapGestureRecognizer());
-            viewNotification.AddSubview(imgNotification);
-            UILabel lblGreeting = new UILabel(new CGRect(16, 8, _viewHeader.Frame.Width * 0.60F, 16))
-            {
-                TextColor = MyTNBColor.SunGlow,
-                Font = MyTNBFont.MuseoSans16_500,
-                Text = GetGreeting()
-            };
-            UILabel lblName = new UILabel(new CGRect(16, 24, _viewHeader.Frame.Width - 40, 16))
-            {
-                TextColor = MyTNBColor.SunGlow,
-                Font = MyTNBFont.MuseoSans16_500,
-                LineBreakMode = UILineBreakMode.TailTruncation,
-                Text = GetDisplayName()
-            };
-            _viewHeader.AddSubviews(new UIView[] { lblGreeting, lblName, viewNotification });
-            View.AddSubview(_viewHeader);
+            DashboardHomeHeader dashboardHomeHeader = new DashboardHomeHeader(View);
+            dashboardHomeHeader.SetGreetingText(GetGreeting());
+            dashboardHomeHeader.SetNameText(GetDisplayName());
+            _homeTableView.TableHeaderView = dashboardHomeHeader.GetUI();
         }
 
         private string GetGreeting()
@@ -105,5 +151,13 @@ namespace myTNB
             }
             return string.Empty;
         }
+
+        public UIViewController ViewControllerAtIndex(int index)
+        {
+            var vc = Storyboard.InstantiateViewController("AccountsContentViewController") as AccountsContentViewController;
+            vc.pageIndex = index;
+            return vc;
+        }
+
     }
 }

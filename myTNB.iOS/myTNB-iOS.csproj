@@ -917,6 +917,10 @@
     <ImageAsset Include="Assets.xcassets\Services-ApplyAutoPay.imageset\applyAutopay.png" />
     <ImageAsset Include="Assets.xcassets\Services-ApplyAutoPay.imageset\applyAutopay%402x.png" />
     <ImageAsset Include="Assets.xcassets\Services-ApplyAutoPay.imageset\applyAutopay%403x-1.png" />
+    <ImageAsset Include="Assets.xcassets\Accounts-Smart-Meter-Icon.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Accounts-Smart-Meter-Icon.imageset\Accounts-Smart-Meter-Icon.png" />
+    <ImageAsset Include="Assets.xcassets\Accounts-Smart-Meter-Icon.imageset\Accounts-Smart-Meter-Icon%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Accounts-Smart-Meter-Icon.imageset\Accounts-Smart-Meter-Icon%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -1188,6 +1192,9 @@
     <Folder Include="Assets.xcassets\Services-CheckStatus.imageset\" />
     <Folder Include="Assets.xcassets\Services-SetAppointments.imageset\" />
     <Folder Include="Assets.xcassets\Services-ApplyAutoPay.imageset\" />
+    <Folder Include="Customs\DashboardHome\" />
+    <Folder Include="Home\Dashboard\DashboardHome\Accounts\" />
+    <Folder Include="Assets.xcassets\Accounts-Smart-Meter-Icon.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -1895,6 +1902,14 @@
     </Compile>
     <Compile Include="Home\Dashboard\DashboardHome\Services\ServicesTableViewCell.cs" />
     <Compile Include="Home\Dashboard\DashboardHome\DashboardHomeConstants.cs" />
+    <Compile Include="Customs\DashboardHome\DashboardHomeHeader.cs" />
+    <Compile Include="Customs\DashboardHome\DashboardHomeAccountCard.cs" />
+    <Compile Include="Home\Dashboard\DashboardHome\Accounts\AccountsTableViewCell.cs" />
+    <Compile Include="Home\Dashboard\DashboardHome\Accounts\AccountsPageViewDataSource.cs" />
+    <Compile Include="Home\Dashboard\DashboardHome\Accounts\AccountsContentViewController.cs" />
+    <Compile Include="Home\Dashboard\DashboardHome\Accounts\AccountsContentViewController.designer.cs">
+      <DependentUpon>AccountsContentViewController.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />

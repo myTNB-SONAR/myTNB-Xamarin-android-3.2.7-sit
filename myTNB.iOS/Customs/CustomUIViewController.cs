@@ -13,7 +13,7 @@ namespace myTNB
         internal Dictionary<string, string> I18NDictionary;
         internal string PageName;
         internal bool IsGradientRequired;
-        private UIView _viewToast, _viewToastOverlay;
+        private UIView _viewToast, _viewToastOverlay, _statusBarView;
         private UILabel _lblToastDetails;
         private bool _isAnimating;
 
@@ -211,6 +211,13 @@ namespace myTNB
             View.AddSubview(gradientView);
         }
 
+        #endregion
+        #region Customize View
+        public void SetStatusBarNoOverlap()
+        {
+            _statusBarView = new UIView(new CGRect(0, 0, View.Frame.Width, DeviceHelper.GetStatusBarHeight()));
+            View.AddSubview(_statusBarView);
+        }
         #endregion
     }
 }

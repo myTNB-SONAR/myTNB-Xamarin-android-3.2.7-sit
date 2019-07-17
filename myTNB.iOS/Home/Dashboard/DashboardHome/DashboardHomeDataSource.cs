@@ -8,90 +8,48 @@ namespace myTNB
     public class DashboardHomeDataSource : UITableViewSource
     {
         DashboardHomeViewController _controller;
-        public DashboardHomeDataSource(DashboardHomeViewController controller)
+        UIPageViewController _accountsPageViewController;
+        public DashboardHomeDataSource(DashboardHomeViewController controller, UIPageViewController accountsPageViewController)
         {
             _controller = controller;
+            _accountsPageViewController = accountsPageViewController;
         }
 
         public override nint NumberOfSections(UITableView tableView)
         {
-            return 3;
+            return 1;
         }
 
         public override nint RowsInSection(UITableView tableview, nint section)
         {
-            if (section == 0)
-            {
-                return 2;
-            }
-            else if (section == 1)
-            {
-                return 1;
-            }
-            else
-            {
-                return 1;
-            }
-        }
-        public override UIView GetViewForHeader(UITableView tableView, nint section)
-        {
-            return GetViewForSectionHeader(tableView, (int)section);
-        }
-
-        public override nfloat GetHeightForHeader(UITableView tableView, nint section)
-        {
-            return 36.0F;
+            return 3;
         }
 
         public override UITableViewCell GetCell(UITableView tableView, NSIndexPath indexPath)
         {
-            if (indexPath.Section == 1)
+            if (indexPath.Row == 0)
+            {
+                AccountsTableViewCell cell = tableView.DequeueReusableCell(DashboardHomeConstants.Cell_Accounts) as AccountsTableViewCell;
+                cell.AddCards(_accountsPageViewController);
+                return cell;
+            }
+            if (indexPath.Row == 1)
             {
                 ServicesTableViewCell cell = tableView.DequeueReusableCell(DashboardHomeConstants.Cell_Services) as ServicesTableViewCell;
+                cell._titleLabel.Text = _controller.I18NDictionary[DashboardHomeConstants.I18N_MyServices];
                 cell.AddCards();
                 return cell;
             }
-            if (indexPath.Section == 2)
+            if (indexPath.Row == 2)
             {
                 HelpTableViewCell cell = tableView.DequeueReusableCell(DashboardHomeConstants.Cell_Help) as HelpTableViewCell;
+                cell._titleLabel.Text = _controller.I18NDictionary[DashboardHomeConstants.I18N_NeedHelp];
                 cell.AddCards();
                 return cell;
             }
             return new UITableViewCell() { BackgroundColor = UIColor.Clear };
         }
 
-        public override void RowSelected(UITableView tableView, NSIndexPath indexPath)
-        {
-
-        }
-
-        private string GetSectionTitle(int sectionIndex)
-        {
-            string key = DashboardHomeConstants.I18N_NeedHelp;
-            if (sectionIndex == 0)
-            {
-                key = DashboardHomeConstants.I18N_MyAccounts;
-            }
-            else if (sectionIndex == 1)
-            {
-                key = DashboardHomeConstants.I18N_MyServices;
-            }
-            return _controller.I18NDictionary[key];
-        }
-
-        private UIView GetViewForSectionHeader(UITableView tableView, int sectionIndex)
-        {
-            UIView viewSection = new UIView(new CGRect(0, 0, tableView.Frame.Width, 36.0F)) { BackgroundColor = UIColor.Clear };
-            UILabel lblTitle = new UILabel(new CGRect(16, 8, viewSection.Frame.Width, 20.0F))
-            {
-                TextColor = MyTNBColor.PowerBlue,
-                Font = MyTNBFont.MuseoSans14_500,
-                Text = GetSectionTitle(sectionIndex)
-            };
-            CGSize newSize = _controller.GetLabelSize(lblTitle, viewSection.Frame.Width / 2, 20.0F);
-            lblTitle.Frame = new CGRect(lblTitle.Frame.X, lblTitle.Frame.Y, newSize.Width, lblTitle.Frame.Height);
-            viewSection.AddSubview(lblTitle);
-            return viewSection;
-        }
+        public override void RowSelected(UITableView tableView, NSIndexPath indexPath) { }
     }
 }

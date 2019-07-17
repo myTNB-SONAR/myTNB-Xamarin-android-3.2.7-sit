@@ -1,4 +1,5 @@
-﻿using UIKit;
+﻿using System;
+using UIKit;
 
 namespace myTNB
 {
@@ -48,7 +49,8 @@ namespace myTNB
                 || UIScreen.MainScreen.NativeBounds.Height == 1792;
         }
 
-        public static bool IsIphoneXOrXs() {
+        public static bool IsIphoneXOrXs()
+        {
             return UIScreen.MainScreen.NativeBounds.Height == 2436
                 && UIScreen.MainScreen.NativeBounds.Width == 1125;
         }
@@ -195,6 +197,14 @@ namespace myTNB
         public static string GetOSVersion()
         {
             return UIDevice.CurrentDevice.SystemVersion;
+        }
+        /// <summary>
+        /// Gets the Device Status Bar Height
+        /// </summary>
+        /// <returns></returns>
+        public static nfloat GetStatusBarHeight()
+        {
+            return UIApplication.SharedApplication.StatusBarFrame.Size.Height;
         }
     }
 }
