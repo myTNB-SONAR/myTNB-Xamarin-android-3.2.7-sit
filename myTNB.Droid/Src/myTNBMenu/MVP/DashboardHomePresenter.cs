@@ -420,7 +420,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 		public void DoLoadHomeDashBoardFragment()
 		{
 			this.mView.ShowHomeDashBoard();
-			this.mView.SetToolbarTitle(Resource.String.all_accounts);
 			currentBottomNavigationMenu = Resource.Id.menu_dashboard;
 
 			this.mView.EnableDropDown(false);
