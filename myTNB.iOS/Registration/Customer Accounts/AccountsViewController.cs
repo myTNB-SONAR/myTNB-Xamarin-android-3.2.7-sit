@@ -388,7 +388,7 @@ namespace myTNB.Registration.CustomerAccounts
                     email = user?.email,
                     identificationNo = user?.identificationNo
                 };
-                _customerAccountResponseModel = serviceManager.GetCustomerBillingAccountList("GetCustomerAccountsForICNum", requestParameter);
+                _customerAccountResponseModel = serviceManager.OnExecuteAPI<CustomerAccountResponseModel>("GetCustomerAccountsForICNum", requestParameter);
             });
         }
 
@@ -517,7 +517,7 @@ namespace myTNB.Registration.CustomerAccounts
                         billAccounts = billAccs,
                         user?.email
                     };
-                    _addMultipleSupplyAccountsResponseModel = serviceManager.GetCustomerBillingAccountList("AddMultipleSupplyAccountsToUserReg", requestParams);
+                    _addMultipleSupplyAccountsResponseModel = serviceManager.OnExecuteAPI<CustomerAccountResponseModel>("AddMultipleSupplyAccountsToUserReg", requestParams);
                 }
             });
 
@@ -533,7 +533,7 @@ namespace myTNB.Registration.CustomerAccounts
                     apiKeyID = TNBGlobal.API_KEY_ID,
                     CANum = DataManager.DataManager.SharedInstance.SelectedAccount.accNum
                 };
-                _billingAccountDetailsList = serviceManager.GetBillingAccountDetails("GetBillingAccountDetails", requestParameter);
+                _billingAccountDetailsList = serviceManager.OnExecuteAPI<BillingAccountDetailsResponseModel>("GetBillingAccountDetails", requestParameter);
             });
         }
 

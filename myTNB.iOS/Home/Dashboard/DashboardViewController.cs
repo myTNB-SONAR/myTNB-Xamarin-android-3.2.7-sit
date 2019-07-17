@@ -1186,7 +1186,7 @@ namespace myTNB.Dashboard
                     apiKeyID = TNBGlobal.API_KEY_ID,
                     accNum = DataManager.DataManager.SharedInstance.SelectedAccount?.accNum
                 };
-                _dueAmount = serviceManager.GetAccountDueAmount("GetAccountDueAmount", requestParameter);
+                _dueAmount = serviceManager.OnExecuteAPI<DueAmountResponseModel>("GetAccountDueAmount", requestParameter);
             });
         }
 
@@ -1207,7 +1207,7 @@ namespace myTNB.Dashboard
             //_dashboardMainComponent?._componentActivity?.Show();
             chartResponse = await Task.Run(() =>
             {
-                return serviceManager.GetAccountUsageHistoryForGraph("GetAccountUsageHistoryForGraph", requestParameter);
+                return serviceManager.OnExecuteAPIV2<ChartModel>("GetAccountUsageHistoryForGraph", requestParameter);
             });
             //_dashboardMainComponent?._componentActivity?.Hide();
 
@@ -1239,7 +1239,7 @@ namespace myTNB.Dashboard
             //_dashboardMainComponent?._componentActivity?.Show();
             chartResponse = await Task.Run(() =>
             {
-                return serviceManager.GetSmartMeterAccountData("GetSmartMeterAccountData_V3", requestParameter);
+                return serviceManager.OnExecuteAPIV2<SmartChartModel>("GetSmartMeterAccountData_V3", requestParameter);
             });
 
             //_dashboardMainComponent?._componentActivity?.Hide();
@@ -1335,7 +1335,7 @@ namespace myTNB.Dashboard
                     apiKeyID = TNBGlobal.API_KEY_ID,
                     CANum = DataManager.DataManager.SharedInstance.SelectedAccount.accNum
                 };
-                _billingAccountDetailsList = serviceManager.GetBillingAccountDetails("GetBillingAccountDetails", requestParameter);
+                _billingAccountDetailsList = serviceManager.OnExecuteAPI<BillingAccountDetailsResponseModel>("GetBillingAccountDetails", requestParameter);
             });
         }
 
@@ -1374,7 +1374,7 @@ namespace myTNB.Dashboard
                     accNum = DataManager.DataManager.SharedInstance.SelectedAccount.accNum,
                     param = "hehehe"
                 };
-                _installationDetails = serviceManager.GetInstallationDetail("GetInstallationDetails", requestParameter);
+                _installationDetails = serviceManager.OnExecuteAPI<InstallationDetailResponseModel>("GetInstallationDetails", requestParameter);
             });
         }
     }

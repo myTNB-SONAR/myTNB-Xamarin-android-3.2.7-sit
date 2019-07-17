@@ -135,7 +135,7 @@ namespace myTNB
                     apiKeyID = TNBGlobal.API_KEY_ID,
                     serviceReqNo = serviceReq
                 };
-                _feedbackDetails = serviceManager.GetSubmittedFeedbackDetails("GetSubmittedFeedbackDetails", requestParameter);
+                _feedbackDetails = serviceManager.OnExecuteAPI<SubmittedFeedbackDetailsResponseModel>("GetSubmittedFeedbackDetails", requestParameter);
             });
         }
     }

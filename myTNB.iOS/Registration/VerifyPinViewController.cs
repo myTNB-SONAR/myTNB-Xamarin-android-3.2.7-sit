@@ -497,7 +497,7 @@ namespace myTNB.Registration
                     userEmail = DataManager.DataManager.SharedInstance.User.Email,
                     mobileNo = DataManager.DataManager.SharedInstance.User.MobileNo
                 };
-                _smsToken = serviceManager.SendRegistrationTokenSMS("SendRegistrationTokenSMS_V2", requestParameter);
+                _smsToken = serviceManager.OnExecuteAPI<RegistrationTokenSMSResponseModel>("SendRegistrationTokenSMS_V2", requestParameter);
             });
         }
 
@@ -634,7 +634,7 @@ namespace myTNB.Registration
                     icNo = DataManager.DataManager.SharedInstance.User.ICNo,
                     mobileNo = DataManager.DataManager.SharedInstance.User.MobileNo
                 };
-                _registerAccountList = serviceManager.RegisterNewCustomer("CreateNewUserWithToken", requestParameter);
+                _registerAccountList = serviceManager.OnExecuteAPI<NewUserResponseModel>("CreateNewUserWithToken", requestParameter);
             });
         }
 
@@ -710,7 +710,7 @@ namespace myTNB.Registration
                                           ? DataManager.DataManager.SharedInstance.FCMToken
                                           : ""
                 };
-                _authenticationList = serviceManager.GetUserAuthentication("IsUserAuthenticate", requestParameter);
+                _authenticationList = serviceManager.OnExecuteAPI<UserAuthenticationResponseModel>("IsUserAuthenticate", requestParameter);
             });
         }
 

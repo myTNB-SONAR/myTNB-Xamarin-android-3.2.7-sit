@@ -661,7 +661,7 @@ namespace myTNB.Registration
                     userEmail = _eMail,
                     mobileNo = _mobileNo
                 };
-                _smsToken = serviceManager.SendRegistrationTokenSMS("SendRegistrationTokenSMS_V2", requestParameter);
+                _smsToken = serviceManager.OnExecuteAPI<RegistrationTokenSMSResponseModel>("SendRegistrationTokenSMS_V2", requestParameter);
             });
         }
 

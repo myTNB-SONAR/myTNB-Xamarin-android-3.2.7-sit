@@ -177,7 +177,7 @@ namespace myTNB
                     apiKeyID = TNBGlobal.API_KEY_ID,
                     email = DataManager.DataManager.SharedInstance.UserEntity[0].email  //"rohanbomle@gmail.com" //For Testing
                 };
-                _registeredCards = serviceManager.GetRegisteredCards("GetRegisteredCards", requestParameter);
+                _registeredCards = serviceManager.OnExecuteAPI<RegisteredCardsResponseModel>("GetRegisteredCards", requestParameter);
             });
         }
 
@@ -204,29 +204,6 @@ namespace myTNB
                     }
                     ActivityIndicator.Hide();
                 });
-            });
-        }
-
-        internal Task RequestPayBill(int thePlatform, string thePaymentMode, string cardID, bool isNewCard, string amountDue)
-        {
-            return Task.Factory.StartNew(() =>
-            {
-                ServiceManager serviceManager = new ServiceManager();
-                object requestParameter = new
-                {
-                    apiKeyID = TNBGlobal.API_KEY_ID,
-                    customerName = DataManager.DataManager.SharedInstance.UserEntity[0].displayName,
-                    accNum = DataManager.DataManager.SharedInstance.BillingAccountDetails.accNum,
-                    amount = amountDue,
-                    email = DataManager.DataManager.SharedInstance.UserEntity[0].email,
-                    phoneNo = DataManager.DataManager.SharedInstance.UserEntity[0].mobileNo != null
-                        ? DataManager.DataManager.SharedInstance.UserEntity[0].mobileNo : string.Empty,
-                    sspUserId = DataManager.DataManager.SharedInstance.User.UserID,
-                    platform = thePlatform,
-                    registeredCardId = cardID,
-                    paymentMode = thePaymentMode
-                };
-                _requestPayBill = serviceManager.RequestPayBill("RequestPayBill", requestParameter);
             });
         }
 
@@ -265,7 +242,7 @@ namespace myTNB
 
             return Task.Factory.StartNew(() =>
             {
-                _requestPayBill = serviceManager.RequestMultiPayBill("RequestMultiPayBill", requestParameter);
+                _requestPayBill = serviceManager.OnExecuteAPI<RequestPayBillResponseModel>("RequestMultiPayBill", requestParameter);
             });
         }
 

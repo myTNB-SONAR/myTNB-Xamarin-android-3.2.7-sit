@@ -1166,7 +1166,6 @@
     <Folder Include="Home\Feedback\Feedback Location and State\" />
     <Folder Include="Home\Feedback\Feedback Image\" />
     <Folder Include="Home\More\Language\" />
-    <Folder Include="Helpers\Generic Line\" />
     <Folder Include="Assets.xcassets\Notification-Check.imageset\" />
     <Folder Include="Assets.xcassets\Notification-MarkAsRead.imageset\" />
     <Folder Include="Model\UpdateNotification\" />
@@ -1195,6 +1194,8 @@
     <Folder Include="Customs\DashboardHome\" />
     <Folder Include="Home\Dashboard\DashboardHome\Accounts\" />
     <Folder Include="Assets.xcassets\Accounts-Smart-Meter-Icon.imageset\" />
+    <Folder Include="Customs\Generic Line\" />
+    <Folder Include="Customs\Generic Tableview Selector\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -1228,7 +1229,7 @@
     <InterfaceDefinition Include="Home\Feedback\Feedback Details\FeedbackDetails.storyboard" />
     <InterfaceDefinition Include="Home\More\FAQ\FAQ.storyboard" />
     <InterfaceDefinition Include="Home\Promotions\Promotion Details\PromotionDetails.storyboard" />
-    <InterfaceDefinition Include="Helpers\Generic Tableview Selector\GenericSelector.storyboard" />
+    <InterfaceDefinition Include="Customs\Generic Tableview Selector\GenericSelector.storyboard" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Info.plist" />
@@ -1847,11 +1848,7 @@
     <Compile Include="Home\Feedback\Feedback Image\ImageDataModel.cs" />
     <Compile Include="Home\Feedback\Feedback Image\ImagePickerDelegate.cs" />
     <Compile Include="Home\Feedback\Feedback Image\UIImageHelper.cs" />
-    <Compile Include="Helpers\Generic Tableview Selector\GenericSelectorDataSource.cs" />
-    <Compile Include="Helpers\Generic Tableview Selector\GenericSelectorViewController.cs" />
-    <Compile Include="Helpers\Generic Tableview Selector\GenericSelectorViewController.designer.cs" />
     <Compile Include="Home\More\Language\LanguageSettings.cs" />
-    <Compile Include="Helpers\Generic Line\GenericLine.cs" />
     <Compile Include="Model\UpdateNotification\UpdateNotificationModel.cs" />
     <Compile Include="Customs\CustomUIViewController.cs" />
     <Compile Include="Model\Modify Notification\DeleteNotificationResponseModel.cs" />
@@ -1890,6 +1887,10 @@
       <DependentUpon>NonConsumptionTableViewCell.cs</DependentUpon>
     </Compile>
     <Compile Include="Session Cache\AmoutDueCache.cs" />
+    <Compile Include="Customs\Generic Line\GenericLine.cs" />
+    <Compile Include="Customs\Generic Tableview Selector\GenericSelectorDataSource.cs" />
+    <Compile Include="Customs\Generic Tableview Selector\GenericSelectorViewController.cs" />
+    <Compile Include="Customs\Generic Tableview Selector\GenericSelectorViewController.designer.cs" />
     <Compile Include="SQLite\SQLite Data Manager\DueEntity.cs" />
     <Compile Include="Home\Dashboard\DashboardHome\DashboardHomeViewController.cs" />
     <Compile Include="Home\Dashboard\DashboardHome\DashboardHomeViewController.designer.cs">

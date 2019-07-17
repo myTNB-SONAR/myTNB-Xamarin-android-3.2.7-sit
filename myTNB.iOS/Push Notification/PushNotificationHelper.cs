@@ -169,7 +169,7 @@ namespace myTNB
                     email = DataManager.DataManager.SharedInstance.UserEntity[0].email,
                     deviceId = DataManager.DataManager.SharedInstance.UDID
                 };
-                _userNotifications = serviceManager.GetUserNotifications("GetUserNotifications", requestParameter);
+                _userNotifications = serviceManager.OnExecuteAPI<UserNotificationResponseModel>("GetUserNotifications", requestParameter);
             });
         }
         /// <summary>
@@ -185,7 +185,7 @@ namespace myTNB
                 {
                     apiKeyID = TNBGlobal.API_KEY_ID
                 };
-                var response = serviceManager.GetNotificationTypes("GetAppNotificationTypes", requestParameter);
+                var response = serviceManager.OnExecuteAPI<NotificationTypeResponseModel>("GetAppNotificationTypes", requestParameter);
                 DataManager.DataManager.SharedInstance.NotificationGeneralTypes = response?.d?.data;
                 NotificationPreferenceModel allNotificationItem = new NotificationPreferenceModel
                 {
@@ -222,7 +222,7 @@ namespace myTNB
                     deviceId = DataManager.DataManager.SharedInstance.UDID
                 };
                 DataManager.DataManager.SharedInstance.NotificationTypeResponse =
-                serviceManager.GetNotificationTypes("GetUserNotificationTypePreferences", requestParameter);
+                serviceManager.OnExecuteAPI<NotificationTypeResponseModel>("GetUserNotificationTypePreferences", requestParameter);
             });
         }
 
@@ -237,7 +237,7 @@ namespace myTNB
                     email = DataManager.DataManager.SharedInstance.UserEntity[0].email
                 };
                 DataManager.DataManager.SharedInstance.NotificationChannelResponse =
-                serviceManager.GetNotificationChannels("GetUserNotificationChannelPreferences", requestParameter);
+                serviceManager.OnExecuteAPI<NotificationChannelResponseModel>("GetUserNotificationChannelPreferences", requestParameter);
             });
         }
 
