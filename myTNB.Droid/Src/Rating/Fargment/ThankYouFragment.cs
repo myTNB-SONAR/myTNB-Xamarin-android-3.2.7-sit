@@ -60,7 +60,7 @@ namespace myTNB_Android.Src.Rating.Fargment
                 btnBackToFeedback.Click += delegate
                 {
                     //ratingActivity.Finish();
-                    Intent DashboardIntent = new Intent(ratingActivity, typeof(DashboardActivity));
+                    Intent DashboardIntent = new Intent(ratingActivity, typeof(DashboardHomeActivity));
                     DashboardIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
                     StartActivity(DashboardIntent);
                 };

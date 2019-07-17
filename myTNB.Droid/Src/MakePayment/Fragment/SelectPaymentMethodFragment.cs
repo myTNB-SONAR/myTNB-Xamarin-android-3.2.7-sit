@@ -574,7 +574,7 @@ namespace myTNB_Android.Src.MakePayment.Fragment
             StartActivity(intent);
             ((MakePaymentActivity)Activity).SetResult(Result.Ok);
             ((MakePaymentActivity)Activity).Finish();
-            DashboardActivity activity = DashboardActivity.dashboardActivity;
+            DashboardHomeActivity activity = DashboardHomeActivity.dashboardHomeActivity;
             activity.OnFinish();
 
         }

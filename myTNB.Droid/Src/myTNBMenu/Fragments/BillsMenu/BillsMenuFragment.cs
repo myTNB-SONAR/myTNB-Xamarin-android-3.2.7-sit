@@ -259,9 +259,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.BillsMenu
 
             try
             {
-                if (context is DashboardActivity)
+                if (context is DashboardHomeActivity)
                 {
-                    var activity = context as DashboardActivity;
+                    var activity = context as DashboardHomeActivity;
                     activity.Window.SetBackgroundDrawable(Activity.GetDrawable(Resource.Drawable.HorizontalGradientBackground));
                 }
             }
@@ -288,7 +288,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.BillsMenu
         {
             try
             {
-                ((DashboardActivity)Activity).BillsMenuRefresh(accountData);
+                ((DashboardHomeActivity)Activity).BillsMenuRefresh(accountData);
             }
             catch (System.Exception e)
             {
@@ -501,18 +501,18 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.BillsMenu
         {
             Intent payment_activity = new Intent(this.Activity, typeof(SelectAccountsActivity));
             payment_activity.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccount));
-            StartActivityForResult(payment_activity, DashboardActivity.PAYMENT_RESULT_CODE);
+            StartActivityForResult(payment_activity, DashboardHomeActivity.PAYMENT_RESULT_CODE);
         }
 
         public override void OnActivityResult(int requestCode, Result resultCode, Intent data)
         {
-            if (requestCode == DashboardActivity.PAYMENT_RESULT_CODE)
+            if (requestCode == DashboardHomeActivity.PAYMENT_RESULT_CODE)
             {
                 if (resultCode == Result.Ok)
                 {
-                    if (Activity is DashboardActivity)
+                    if (Activity is DashboardHomeActivity)
                     {
-                        ((DashboardActivity)Activity).OnTapRefresh();
+                        ((DashboardHomeActivity)Activity).OnTapRefresh();
                     }
                 }
                 else if (resultCode == Result.FirstUser)
@@ -533,7 +533,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.BillsMenu
                         }
                         try
                         {
-                            ((DashboardActivity)Activity).BillsMenuAccess(selectedAccount);
+                            ((DashboardHomeActivity)Activity).BillsMenuAccess(selectedAccount);
                         }
                         catch (System.Exception e)
                         {

@@ -320,7 +320,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                         /* This call inject JavaScript into the page which just finished loading. */
                         //((PaymentActivity)this.mActivity).SetResult(Result.Ok);
                         //((PaymentActivity)this.mActivity).Finish();
-                        Intent DashboardIntent = new Intent(mActivity, typeof(DashboardActivity));
+                        Intent DashboardIntent = new Intent(mActivity, typeof(DashboardHomeActivity));
                         DashboardIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
                         mActivity.StartActivity(DashboardIntent);
                         //view.loadUrl("javascript:window.HTMLOUT.processHTML('<html>'+document.getElementsByTagName('html')[0].innerHTML+'</html>');");
@@ -384,7 +384,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                 else if (url.ToLower().Contains("mytnbapp://payment/"))
                 {
                     progressBar.Visibility = ViewStates.Gone;
-                    Intent DashboardIntent = new Intent(mActivity, typeof(DashboardActivity));
+                    Intent DashboardIntent = new Intent(mActivity, typeof(DashboardHomeActivity));
                     DashboardIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
                     mActivity.StartActivity(DashboardIntent);
                 }

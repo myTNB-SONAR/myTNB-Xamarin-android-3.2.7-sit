@@ -429,7 +429,7 @@ namespace myTNB_Android.Src.AddAccount.Activity
 
         public void ShowDashboard()
         {
-            Intent DashboardIntent = new Intent(this, typeof(DashboardActivity));
+            Intent DashboardIntent = new Intent(this, typeof(DashboardHomeActivity));
             DashboardIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
             StartActivity(DashboardIntent);
         }

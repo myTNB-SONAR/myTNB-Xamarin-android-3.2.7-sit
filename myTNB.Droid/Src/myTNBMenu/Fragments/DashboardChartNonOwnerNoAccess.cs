@@ -309,7 +309,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             if (payment_activity != null && IsAdded)
             {
                 payment_activity.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccount));
-                StartActivityForResult(payment_activity, DashboardActivity.PAYMENT_RESULT_CODE);
+                StartActivityForResult(payment_activity, DashboardHomeActivity.PAYMENT_RESULT_CODE);
             }
         }
 
@@ -363,7 +363,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 };
                 btnBringMeThere.Click += delegate
                 {
-                    ((DashboardActivity)Activity).BillsMenuAccess();
+                    ((DashboardHomeActivity)Activity).BillsMenuAccess();
                     mWhyThisAmtCardDialog.Dismiss();
                 };
 
@@ -380,11 +380,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
         public override void OnActivityResult(int requestCode, Result resultCode, Intent data)
         {
-            if (requestCode == DashboardActivity.PAYMENT_RESULT_CODE)
+            if (requestCode == DashboardHomeActivity.PAYMENT_RESULT_CODE)
             {
                 if (resultCode == Result.Ok)
                 {
-                    ((DashboardActivity)Activity).OnTapRefresh();
+                    ((DashboardHomeActivity)Activity).OnTapRefresh();
                 }
                 else if (resultCode == Result.FirstUser)
                 {
@@ -404,7 +404,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         }
                         try
                         {
-                            ((DashboardActivity)Activity).BillsMenuAccess(selectedAccount);
+                            ((DashboardHomeActivity)Activity).BillsMenuAccess(selectedAccount);
                         }
                         catch (System.Exception e)
                         {
@@ -674,13 +674,13 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         }
 
 
-        DashboardActivity activity = null;
+        DashboardHomeActivity activity = null;
         public override void OnAttach(Context context)
         {
             base.OnAttach(context);
             try
             {
-                activity = context as DashboardActivity;
+                activity = context as DashboardHomeActivity;
             }
             catch (ClassCastException e)
             {
@@ -693,7 +693,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             base.OnAttach(activity);
             try
             {
-                activity = activity as DashboardActivity;
+                activity = activity as DashboardHomeActivity;
             }
             catch (ClassCastException e)
             {

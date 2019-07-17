@@ -1127,6 +1127,16 @@
     <AndroidResource Include="Resources\drawable\custom_round_rec_shadow.xml" />
     <AndroidResource Include="Resources\layout\MyServiceComponentView.axml" />
     <AndroidResource Include="Resources\drawable\round_circle.xml" />
+    <AndroidResource Include="Resources\menu\DashboardNewBottonMenu.xml" />
+    <Compile Include="Src\myTNBMenu\MVP\DashboardHomeContract.cs" />
+    <Compile Include="Src\myTNBMenu\MVP\DashboardHomePresenter.cs" />
+    <AndroidResource Include="Resources\drawable\ic_menu_reward_selector.xml" />
+    <AndroidResource Include="Resources\drawable\ic_menu_reward_unread_selector.xml" />
+    <AndroidResource Include="Resources\drawable-hdpi\ic_menu_reward.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\ic_menu_reward.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_menu_reward.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_menu_reward.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\ic_menu_reward.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -1889,9 +1899,6 @@
     <AndroidResource Include="Resources\drawable-hdpi\ic_menu_more.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable-hdpi\ic_menu_promotions.png" />
-  </ItemGroup>
-  <ItemGroup>
     <AndroidResource Include="Resources\drawable-xhdpi\ic_menu_bill.png" />
   </ItemGroup>
   <ItemGroup>
@@ -2083,9 +2090,6 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-hdpi\ic_menu_feedback_unread.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-hdpi\ic_menu_promotions_unread.png" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-mdpi\ic_menu_bill_unread.png" />

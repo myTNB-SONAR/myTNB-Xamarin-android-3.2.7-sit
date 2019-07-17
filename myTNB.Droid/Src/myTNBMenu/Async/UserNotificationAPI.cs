@@ -21,11 +21,18 @@ namespace myTNB_Android.Src.myTNBMenu.Async
 #endif
         private string deviceId = null;
         private DashboardContract.IUserActionsListener listener = null;
+        private DashboardHomeContract.IUserActionsListener homeListener = null;
 
         public UserNotificationAPI(string deviceId, DashboardContract.IUserActionsListener listener)
         {
             this.deviceId = deviceId;
             this.listener = listener;
+        }
+
+        public UserNotificationAPI(string deviceId, DashboardHomeContract.IUserActionsListener listener)
+        {
+            this.deviceId = deviceId;
+            this.homeListener = listener;
         }
 
 
@@ -144,8 +151,14 @@ namespace myTNB_Android.Src.myTNBMenu.Async
         {
             base.OnPostExecute(result);
 
-
-            listener.OnNotificationCount();
+            if (listener != null)
+            {
+                listener.OnNotificationCount();
+            }
+            if (homeListener != null)
+            {
+                homeListener.OnNotificationCount();
+            }
         }
 
     }
