@@ -16,13 +16,16 @@ namespace myTNB
         public override void ViewDidLoad()
         {
             base.ViewDidLoad();
-            // Perform any additional setup after loading the view, typically from a nib
             if (PageType == GenericPageViewEnum.Type.Onboarding)
             {
                 _dataController = new OnboardingDataController(this)
                 {
                     DataObject = DataObject
                 };
+            }
+            if(PageType == GenericPageViewEnum.Type.SSMR)
+            {
+                _dataController = new SSMROnboardingDataController(this);
             }
             _dataController.OnViewDidLoad();
             _dataController.SetSubViews();

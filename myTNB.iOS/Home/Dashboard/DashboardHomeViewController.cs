@@ -359,7 +359,7 @@ namespace myTNB
             btnAdd.SetTitleColor(UIColor.White, UIControlState.Normal);
             btnAdd.TouchUpInside += (sender, e) =>
             {
-                UIStoryboard storyBoard = UIStoryboard.FromName("AccountRecords", null);
+               /* UIStoryboard storyBoard = UIStoryboard.FromName("AccountRecords", null);
                 var viewController = storyBoard.InstantiateViewController("AccountsViewController") as AccountsViewController;
                 if (viewController != null)
                 {
@@ -367,7 +367,13 @@ namespace myTNB
                     viewController._needsUpdate = true;
                     var navController = new UINavigationController(viewController);
                     PresentViewController(navController, true, null);
-                }
+                }*/
+
+                UIStoryboard onboardingStoryboard = UIStoryboard.FromName("Onboarding", null);
+                GenericPageRootViewController onboardingVC = onboardingStoryboard.InstantiateViewController("GenericPageRootViewController") as GenericPageRootViewController;
+                onboardingVC.ModalTransitionStyle = UIModalTransitionStyle.CrossDissolve;
+                onboardingVC.PageType = GenericPageViewEnum.Type.SSMR;
+                PresentViewController(onboardingVC, true, null);
             };
 
             _viewFooter.AddSubview(btnAdd);

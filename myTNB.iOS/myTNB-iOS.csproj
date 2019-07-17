@@ -1164,6 +1164,8 @@
     <Folder Include="Customs\Generic Line\" />
     <Folder Include="Customs\Generic Tableview Selector\" />
     <Folder Include="Customs\Generic Page View\" />
+    <Folder Include="SSMR\" />
+    <Folder Include="SSMR\Onboarding\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -1869,6 +1871,9 @@
       <DependentUpon>GenericPageDataViewController.cs</DependentUpon>
     </Compile>
     <Compile Include="Customs\Generic Page View\GenericPageViewEnum.cs" />
+    <Compile Include="SSMR\Onboarding\SSMROnboardingController.cs" />
+    <Compile Include="SSMR\Onboarding\SSMROnboardingDataController.cs" />
+    <Compile Include="SSMR\Onboarding\SSMROnboardingModelController.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />

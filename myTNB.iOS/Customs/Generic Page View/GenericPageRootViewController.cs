@@ -19,6 +19,10 @@ namespace myTNB
             {
                 _pageViewController = new OnboardingController(this);
             }
+            if (PageType == GenericPageViewEnum.Type.SSMR)
+            {
+                _pageViewController = new SSMROnboardingController(this);
+            }
             _pageViewController.OnViewDidLoad();
         }
 
