@@ -9,7 +9,7 @@
                 "id": "0",
                 "key": "hour",
                 "value": "Hourly",
-                "description":  "Hourly Description"
+                "description": "Hourly Description"
             },
             {
                 "id": "1",
@@ -19,10 +19,10 @@
             }
         ]
     },
-    "DashboardHome":{
-        "greeting_afternoon": "Good Afternoon",
-        "greeting_evening": "Good Evening",
-        "greeting_morning": "Good Morning",
+    "DashboardHome": {
+        "greeting_afternoon": "Good Afternoon,",
+        "greeting_evening": "Good Evening,",
+        "greeting_morning": "Good Morning,",
         "myAccounts": "My Accounts",
         "myServices": "My Services",
         "needHelp": "Need Help?"

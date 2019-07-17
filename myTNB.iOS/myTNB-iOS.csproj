@@ -236,6 +236,9 @@
     <Reference Include="Refit">
       <HintPath>..\packages\Refit.4.6.58\lib\netstandard2.0\Refit.dll</HintPath>
     </Reference>
+    <Reference Include="Xamarin.Facebook.Shimmer.iOS">
+      <HintPath>..\packages\Xamarin.Facebook.Shimmer.1.0.0\lib\xamarinios10\Xamarin.Facebook.Shimmer.iOS.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Contents.json" />
@@ -1162,6 +1165,9 @@
     <Folder Include="Assets.xcassets\Notification-DeleteDisabled.imageset\" />
     <Folder Include="Assets.xcassets\Feedback-Generic.imageset\" />
     <Folder Include="Assets.xcassets\Feedback-Submitted-Generic.imageset\" />
+    <Folder Include="Home\Dashboard\DashboardHome\" />
+    <Folder Include="Home\Dashboard\DashboardHome\Help\" />
+    <Folder Include="Home\Dashboard\DashboardHome\Services\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -1759,10 +1765,6 @@
       <DependentUpon>RatingResultsViewController.cs</DependentUpon>
     </Compile>
     <Compile Include="Helpers\TextHelper.cs" />
-    <Compile Include="Home\Dashboard\DashboardHomeViewController.cs" />
-    <Compile Include="Home\Dashboard\DashboardHomeViewController.designer.cs">
-      <DependentUpon>DashboardHomeViewController.cs</DependentUpon>
-    </Compile>
     <Compile Include="Home\Dashboard\DashboardNavigationController.cs" />
     <Compile Include="Home\Dashboard\DashboardNavigationController.designer.cs">
       <DependentUpon>DashboardNavigationController.cs</DependentUpon>
@@ -1862,6 +1864,16 @@
     </Compile>
     <Compile Include="Session Cache\AmoutDueCache.cs" />
     <Compile Include="SQLite\SQLite Data Manager\DueEntity.cs" />
+    <Compile Include="Home\Dashboard\DashboardHome\DashboardHomeViewController.cs" />
+    <Compile Include="Home\Dashboard\DashboardHome\DashboardHomeViewController.designer.cs">
+      <DependentUpon>DashboardHomeViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Home\Dashboard\DashboardHome\DashboardHomeDataSource.cs" />
+    <Compile Include="Home\Dashboard\DashboardHome\Help\HelpTableViewCell.cs" />
+    <Compile Include="Home\Dashboard\DashboardHome\Help\HelpTableViewCell.designer.cs">
+      <DependentUpon>HelpTableViewCell.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Home\Dashboard\DashboardHome\Services\ServicesTableViewCell.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />
