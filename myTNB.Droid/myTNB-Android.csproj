@@ -384,6 +384,9 @@
     <Reference Include="Refit">
       <HintPath>..\packages\Refit.4.6.58\lib\netstandard2.0\Refit.dll</HintPath>
     </Reference>
+    <Reference Include="Xamarin.Facebook.Shimmer.Android">
+      <HintPath>..\packages\Xamarin.Facebook.Shimmer.1.0.0\lib\monoandroid50\Xamarin.Facebook.Shimmer.Android.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Resources\Resource.Designer.cs" />
@@ -1129,6 +1132,28 @@
     <AndroidResource Include="Resources\layout\DashboardHomeView.axml" />
     <Compile Include="Src\myTNBMenu\Fragments\HomeMenu\MVP\HomeMenuFragment.cs" />
     <AndroidResource Include="Resources\layout\HomeMenuFragmentView.axml" />
+    <AndroidResource Include="Resources\drawable-hdpi\add_account.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\search.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\add_account.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\search.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\add_account.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\search.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\add_account.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\search.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\add_account.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\search.png" />
+    <AndroidResource Include="Resources\drawable\search_edit_bg.axml" />
+    <Compile Include="Src\myTNBMenu\Fragments\HomeMenu\Adapter\AccountsRecyclerViewAdapter.cs" />
+    <AndroidResource Include="Resources\layout\account_container_adapter.axml" />
+    <AndroidResource Include="Resources\layout\card_layout.axml" />
+    <AndroidResource Include="Resources\drawable-hdpi\ic_display_smart_meter.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\ic_display_smart_meter.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_display_smart_meter.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_display_smart_meter.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\ic_display_smart_meter.png" />
+    <Compile Include="Src\myTNBMenu\Fragments\HomeMenu\Listener\AccountsRecyclerViewOnScrollListener.cs" />
+    <AndroidResource Include="Resources\drawable\circle.axml" />
+    <AndroidResource Include="Resources\drawable\circle_active.axml" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -1483,6 +1508,8 @@
     <Folder Include="Src\Utils\Images\Picasso\" />
     <Folder Include="Src\myTNBMenu\Fragments\HomeMenu\" />
     <Folder Include="Src\myTNBMenu\Fragments\HomeMenu\MVP\" />
+    <Folder Include="Src\myTNBMenu\Fragments\HomeMenu\Adapter\" />
+    <Folder Include="Src\myTNBMenu\Fragments\HomeMenu\Listener\" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\GradientStatusBar.xml" />
