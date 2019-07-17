@@ -71,7 +71,7 @@ namespace myTNB
             });
         }
 
-        public OnboardingDataViewController GetViewController(int index, UIStoryboard storyboard)
+        public GenericPageDataViewController GetViewController(int index, UIStoryboard storyboard)
         {
             if (index >= pageData.Count)
             {
@@ -79,12 +79,12 @@ namespace myTNB
             }
 
             // Create a new view controller and pass suitable data.
-            var dataViewController = (OnboardingDataViewController)storyboard.InstantiateViewController("OnboardingDataViewController");
+            var dataViewController = (GenericPageDataViewController)storyboard.InstantiateViewController("GenericPageDataViewController");
             dataViewController.DataObject = pageData[index];
             return dataViewController;
         }
 
-        public int IndexOf(OnboardingDataViewController viewController)
+        public int IndexOf(GenericPageDataViewController viewController)
         {
             return pageData.IndexOf(viewController.DataObject);
         }
@@ -93,7 +93,7 @@ namespace myTNB
 
         public override UIViewController GetNextViewController(UIPageViewController pageViewController, UIViewController referenceViewController)
         {
-            int index = IndexOf((OnboardingDataViewController)referenceViewController);
+            int index = IndexOf((GenericPageDataViewController)referenceViewController);
             currentIndex = index;
             btnSkip.Hidden = index == pageData.Count - 1;
             btnDone.Hidden = index != pageData.Count - 1;
@@ -107,7 +107,7 @@ namespace myTNB
 
         public override UIViewController GetPreviousViewController(UIPageViewController pageViewController, UIViewController referenceViewController)
         {
-            int index = IndexOf((OnboardingDataViewController)referenceViewController);
+            int index = IndexOf((GenericPageDataViewController)referenceViewController);
             currentIndex = index;
             btnSkip.Hidden = index == pageData.Count - 1;
             btnDone.Hidden = index != pageData.Count - 1;

@@ -6,30 +6,27 @@ namespace myTNB
 {
     public partial class GenericPageRootViewController : UIViewController
     {
-        protected GenericPageRootViewController(IntPtr handle) : base(handle)
-        {
-            // Note: this .ctor should not contain any initialization logic.
-        }
+        protected GenericPageRootViewController(IntPtr handle) : base(handle) { }
 
-        GenericPageViewRootController test;
+        BasePageViewRootController _pageViewController;
 
         public override void ViewDidLoad()
         {
             base.ViewDidLoad();
-            test = new OnboardingController(this);
-            test.OnViewDidLoad();
+            _pageViewController = new OnboardingController(this);
+            _pageViewController.OnViewDidLoad();
         }
 
         public override void ViewDidLayoutSubviews()
         {
             base.ViewDidLayoutSubviews();
-            test.OnViewDidLayoutSubViews();
+            _pageViewController.OnViewDidLayoutSubViews();
         }
 
         [Export("pageViewController:spineLocationForInterfaceOrientation:")]
         public UIPageViewControllerSpineLocation GetSpineLocation(UIPageViewController pageViewController, UIInterfaceOrientation orientation)
         {
-            return test.GetSpineLocation(pageViewController, orientation);
+            return _pageViewController.GetSpineLocation(pageViewController, orientation);
         }
     }
 }

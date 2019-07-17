@@ -8,7 +8,7 @@ using UIKit;
 
 namespace myTNB
 {
-    public class OnboardingController : GenericPageViewRootController
+    public class OnboardingController : BasePageViewRootController
     {
         public OnboardingController(UIViewController controller) : base(controller) { }
         public override void OnViewDidLoad()
@@ -164,7 +164,7 @@ namespace myTNB
             // If the current page is even, set it to contain the current and next view controllers; if it is odd, set the array to contain the previous and current view controllers.
             currentViewController = pageViewController.ViewControllers[0];
 
-            int index = ModelController.IndexOf((OnboardingDataViewController)currentViewController);
+            int index = ModelController.IndexOf((GenericPageDataViewController)currentViewController);
             if (index == 0 || index % 2 == 0)
             {
                 var nextViewController = ModelController.GetNextViewController(pageViewController, currentViewController);

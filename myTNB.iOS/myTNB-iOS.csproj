@@ -1249,10 +1249,6 @@
     <Compile Include="Data Manager\DataManager.cs" />
     <Compile Include="Model\UserModel.cs" />
     <Compile Include="Onboarding\OnboardingModelController.cs" />
-    <Compile Include="Onboarding\OnboardingDataViewController.cs" />
-    <Compile Include="Onboarding\OnboardingDataViewController.designer.cs">
-      <DependentUpon>OnboardingDataViewController.cs</DependentUpon>
-    </Compile>
     <Compile Include="Model\OnboardingModel.cs" />
     <Compile Include="Helpers\NetworkUtility.cs" />
     <Compile Include="Login\Forgot Password\ForgotPasswordViewController.cs" />
@@ -1861,10 +1857,16 @@
     <Compile Include="Customs\Generic Tableview Selector\GenericSelectorViewController.designer.cs" />
     <Compile Include="SQLite\SQLite Data Manager\DueEntity.cs" />
     <Compile Include="Onboarding\OnboardingController.cs" />
-    <Compile Include="Customs\Generic Page View\GenericPageViewRootController.cs" />
+    <Compile Include="Customs\Generic Page View\BasePageViewRootController.cs" />
     <Compile Include="Customs\Generic Page View\GenericPageRootViewController.cs" />
     <Compile Include="Customs\Generic Page View\GenericPageRootViewController.designer.cs">
       <DependentUpon>GenericPageRootViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Customs\Generic Page View\BaseDataViewController.cs" />
+    <Compile Include="Onboarding\OnboardingDataController.cs" />
+    <Compile Include="Customs\Generic Page View\GenericPageDataViewController.cs" />
+    <Compile Include="Customs\Generic Page View\GenericPageDataViewController.designer.cs">
+      <DependentUpon>GenericPageDataViewController.cs</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>

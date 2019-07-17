@@ -11,8 +11,8 @@ using UIKit;
 
 namespace myTNB
 {
-    [Register ("OnboardingDataViewController")]
-    partial class OnboardingDataViewController
+    [Register ("GenericPageDataViewController")]
+    partial class GenericPageDataViewController
     {
         void ReleaseDesignerOutlets ()
         {

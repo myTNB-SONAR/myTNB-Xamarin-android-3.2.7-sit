@@ -44,7 +44,7 @@
         <!--Onboarding Data View Controller-->
         <scene sceneID="1564">
             <objects>
-                <viewController storyboardIdentifier="OnboardingDataViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="1565" customClass="OnboardingDataViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="GenericPageDataViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="1565" customClass="GenericPageDataViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="1562"/>
                         <viewControllerLayoutGuide type="bottom" id="1563"/>
