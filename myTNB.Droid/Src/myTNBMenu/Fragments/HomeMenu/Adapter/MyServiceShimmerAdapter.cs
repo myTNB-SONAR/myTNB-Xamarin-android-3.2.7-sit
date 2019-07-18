@@ -48,10 +48,13 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
 
             public TextView serviceTitle { get; private set; }
 
+            public CardView myServiceCardView { get; private set; }
+
             public MyServiceShimmerViewHolder(View itemView) : base(itemView)
             {
                 serviceImg = itemView.FindViewById<ImageView>(Resource.Id.service_img);
                 serviceTitle = itemView.FindViewById<TextView>(Resource.Id.service_title);
+                myServiceCardView = itemView.FindViewById<CardView>(Resource.Id.card_view_click);
             }
         }
 

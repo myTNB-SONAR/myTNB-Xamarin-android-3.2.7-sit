@@ -1168,6 +1168,35 @@
     <AndroidResource Include="Resources\drawable-mdpi\ic_menu_reward_toggled.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\ic_menu_reward_toggled.png" />
     <AndroidResource Include="Resources\drawable-xxhdpi\ic_menu_reward_toggled.png" />
+    <AndroidResource Include="Resources\drawable\blue_shadow.png" />
+    <AndroidResource Include="Resources\drawable\blue_filled_shadow.png" />
+    <AndroidResource Include="Resources\drawable\custom_card_view.xml" />
+    <AndroidResource Include="Resources\drawable-hdpi\apply_autopay.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\check_status.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\feedback.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\set_appointments.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\submit_meter.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\apply_autopay.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\check_status.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\feedback.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\set_appointments.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\submit_meter.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\apply_autopay.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\check_status.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\feedback.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\set_appointments.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\submit_meter.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\apply_autopay.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\check_status.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\feedback.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\set_appointments.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\submit_meter.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\apply_autopay.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\check_status.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\feedback.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\set_appointments.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\submit_meter.png" />
+    <Compile Include="Src\myTNBMenu\Fragments\HomeMenu\Adapter\MyServiceAdapter.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

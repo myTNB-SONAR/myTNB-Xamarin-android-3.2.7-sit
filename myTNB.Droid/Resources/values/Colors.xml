@@ -81,4 +81,6 @@
     <color name="blue_shadow">#9CD0FF</color>
 	
 	   <color name="grey_two">#D0D0D0</color>
+    
+    <color name="shimmer_color">#bed9f1</color>
 </resources>

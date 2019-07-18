@@ -18,8 +18,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 {
     public class HomeMenuFragment : BaseFragment
 	{
-        [BindView(Resource.Id.myServiceShimmerView)]
-        ShimmerFrameLayout myServiceShimmerView;
+        //[BindView(Resource.Id.myServiceShimmerView)]
+        //ShimmerFrameLayout myServiceShimmerView;
 
         [BindView(Resource.Id.myServiceList)]
         RecyclerView myServiceListRecycleView;
@@ -59,16 +59,22 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             {
                 SetAccountsRecyclerView();
                 SetAccountActionHeader();
-                GridLayoutManager layoutManager = new GridLayoutManager(this.Activity, 2);
-                layoutManager.Orientation = RecyclerView.Horizontal;
-                myServiceListRecycleView.SetLayoutManager(layoutManager);
-                LoadShimmerServiceList(null);
+                SetMyServiceRecycleView();
                 TextViewUtils.SetMuseoSans500Typeface(myServiceTitle);
             }
             catch (System.Exception e)
             {
                 Utility.LoggingNonFatalError(e);
             }
+        }
+
+        private void SetMyServiceRecycleView()
+        {
+            GridLayoutManager layoutManager = new GridLayoutManager(this.Activity, 3);
+            layoutManager.Orientation = RecyclerView.Vertical;
+            myServiceListRecycleView.SetLayoutManager(layoutManager);
+            // LoadShimmerServiceList(null);
+            LoadServiceList(null);
         }
 
         private void SetAccountActionHeader()
@@ -131,7 +137,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
         public void LoadShimmerServiceList(List<MyService> serviceList)
         {
-            myServiceShimmerView.Visibility = ViewStates.Visible;
+            //myServiceShimmerView.Visibility = ViewStates.Visible;
             if (serviceList != null && serviceList.Count() > 0)
             {
                 MyServiceShimmerAdapter adapter = new MyServiceShimmerAdapter(serviceList);
@@ -150,7 +156,67 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 MyServiceShimmerAdapter adapter = new MyServiceShimmerAdapter(dummyList);
                 myServiceListRecycleView.SetAdapter(adapter);
             }
-            myServiceShimmerView.StopShimmer();
+            //myServiceShimmerView.StopShimmer();
+        }
+
+        public void LoadServiceList(List<MyService> serviceList)
+        {
+            //myServiceShimmerView.Visibility = ViewStates.Visible;
+            if (serviceList != null && serviceList.Count() > 0)
+            {
+                MyServiceAdapter adapter = new MyServiceAdapter(serviceList);
+                myServiceListRecycleView.SetAdapter(adapter);
+            }
+            else
+            {
+                List<MyService> dummyList = new List<MyService>();
+                for (int i = 0; i < 5; i++)
+                {
+                    if(i == 0)
+                    {
+                        dummyList.Add(new MyService()
+                        {
+                            Id = "0",
+                            MyServiceTitle = "Apply for Self Meter Reading"
+                        });
+                    }
+                    else if (i == 1)
+                    {
+                        dummyList.Add(new MyService()
+                        {
+                            Id = "1",
+                            MyServiceTitle = "Check Status"
+                        });
+                    }
+                    else if (i == 2)
+                    {
+                        dummyList.Add(new MyService()
+                        {
+                            Id = "2",
+                            MyServiceTitle = "Give Us Feedback"
+                        });
+                    }
+                    else if (i == 3)
+                    {
+                        dummyList.Add(new MyService()
+                        {
+                            Id = "3",
+                            MyServiceTitle = "Set Appointments"
+                        });
+                    }
+                    else if (i == 4)
+                    {
+                        dummyList.Add(new MyService()
+                        {
+                            Id = "4",
+                            MyServiceTitle = "Apply for AutoPay"
+                        });
+                    }
+                }
+                MyServiceAdapter adapter = new MyServiceAdapter(dummyList);
+                myServiceListRecycleView.SetAdapter(adapter);
+            }
+            //myServiceShimmerView.StopShimmer();
         }
 
         private Shimmer.AlphaHighlightBuilder ShimmerEffectSetup()
