@@ -61,19 +61,32 @@ namespace myTNB
         /// Handles the app did become active.
         /// </summary>
         /// <param name="notification">Notification.</param>
-        internal void HandleAppDidBecomeActive(NSNotification notification)
+        private void HandleAppDidBecomeActive(NSNotification notification)
         {
             PushNotificationHelper.HandlePushNotification();
         }
 
-        void SetTabbarTitle()
+        private void SetTabbarTitle()
         {
+            if (TabBar == null || TabBar.Items == null || TabBar.Items.Length < 1)
+            {
+                return;
+            }
+
             UITabBarItem[] tabbarItem = TabBar.Items;
             tabbarItem[0].Title = GetI18NValue(TabbarConstants.Tab_Home);
             tabbarItem[1].Title = GetI18NValue(TabbarConstants.Tab_Bill);
             tabbarItem[2].Title = GetI18NValue(TabbarConstants.Tab_Promotion);
             tabbarItem[3].Title = GetI18NValue(TabbarConstants.Tab_Rewards);
             tabbarItem[4].Title = GetI18NValue(TabbarConstants.Tab_Profile);
+
+            foreach (UITabBarItem item in tabbarItem)
+            {
+                UIImage imgUnselected = item.Image.ImageWithRenderingMode(UIImageRenderingMode.AlwaysOriginal);
+                item.Image = imgUnselected;
+                UIImage imgSelected = item.SelectedImage.ImageWithRenderingMode(UIImageRenderingMode.AlwaysOriginal);
+                item.SelectedImage = imgSelected;
+            }
         }
 
         private string GetI18NValue(string key)
@@ -85,6 +98,7 @@ namespace myTNB
             return string.Empty;
         }
 
+
         public override void ItemSelected(UITabBar tabbar, UITabBarItem item)
         {
 
@@ -92,15 +106,6 @@ namespace myTNB
 
         public bool ShouldSelectTab(UITabBarController tabBarController, UIViewController viewController)
         {
-#if false
-            if (viewController is DashboardNavigationController && DataManager.DataManager.SharedInstance.GetAccountsCount() > 1)
-            {
-                var storyBoard = UIStoryboard.FromName("Dashboard", null);
-                var vc = storyBoard.InstantiateViewController("DashboardHomeViewController") as DashboardHomeViewController;
-                var nav = viewController as UINavigationController;
-                nav.SetViewControllers(new UIViewController[] { vc }, false);
-            }
-#endif
             return true;
         }
 
@@ -132,7 +137,6 @@ namespace myTNB
                     }
                 }
             }
-
         }
 
         /// <summary>
@@ -173,17 +177,8 @@ namespace myTNB
         /// <param name="promo">Promo.</param>
         private bool ShouldDisplayAppLaunch(PromotionsModelV2 promo)
         {
-            bool res = false;
-            if (promo == null)
-            {
-                return res;
-            }
-
-            if (promo.ShowAtAppLaunch && !promo.IsPromoExpired && IsPromoWithinCampaignPeriod(promo)
-                && IsPromoOutsideDisplayInterval(promo))
-            {
-                res = true;
-            }
+            bool res = false || (promo != null && promo.ShowAtAppLaunch && !promo.IsPromoExpired && IsPromoWithinCampaignPeriod(promo)
+                && IsPromoOutsideDisplayInterval(promo));
             return res;
         }
 
@@ -312,11 +307,10 @@ namespace myTNB
         }
 
 
-        void UpdatePromotionTabBarIcon()
+        private void UpdatePromotionTabBarIcon()
         {
             PromotionsEntity wsManager = new PromotionsEntity();
-            List<PromotionsModelV2> promotionList = new List<PromotionsModelV2>();
-            promotionList = wsManager.GetAllItemsV2();
+            List<PromotionsModelV2> promotionList = wsManager.GetAllItemsV2();
             if (promotionList != null && promotionList.Count > 0 && HasUnreadPromotion(promotionList))
             {
                 TabBar.Items[2].SelectedImage = UIImage.FromBundle("Tab-Promotions-Unread-Active");
@@ -329,14 +323,13 @@ namespace myTNB
             }
         }
 
-        Task GetPromotions()
+        private Task GetPromotions()
         {
             return Task.Factory.StartNew(() =>
             {
 
                 GetItemsService iService = new GetItemsService(TNBGlobal.OS, _imageSize, TNBGlobal.SITECORE_URL, TNBGlobal.DEFAULT_LANGUAGE);
                 bool isValidTimeStamp = false;
-#if true
                 string promotionTS = iService.GetPromotionsTimestampItem();
                 PromotionsTimestampResponseModel promotionTimeStamp = JsonConvert.DeserializeObject<PromotionsTimestampResponseModel>(promotionTS);
                 if (promotionTimeStamp != null && promotionTimeStamp.Status.Equals("Success")
@@ -366,17 +359,12 @@ namespace myTNB
                         }
                     }
                 }
-#endif
 
                 if (isValidTimeStamp)
                 {
                     string promotionsItems = iService.GetPromotionsItem();
                     //Debug.WriteLine("debug: promo items: " + promotionsItems);
-#if true
                     PromotionsV2ResponseModel promotionResponse = JsonConvert.DeserializeObject<PromotionsV2ResponseModel>(promotionsItems);
-#else
-                    PromotionsResponseModel promotionResponse = JsonConvert.DeserializeObject<PromotionsResponseModel>(promotionsItems);
-#endif
                     if (promotionResponse != null && promotionResponse.Status.Equals("Success")
                         && promotionResponse.Data != null && promotionResponse.Data.Count > 0)
                     {

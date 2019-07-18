@@ -14,5 +14,8 @@ namespace myTNB
     [Register ("RewardsViewController")]
     partial class RewardsViewController
     {
+        void ReleaseDesignerOutlets ()
+        {
+        }
     }
 }

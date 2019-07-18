@@ -679,7 +679,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Item" id="29657" selectedImage="Tab-Rewards" image="Tab-Rewards-Selected"/>
+                    <tabBarItem key="tabBarItem" title="Item" id="29657" selectedImage="Tab-Rewards-Selected" image="Tab-Rewards"/>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="28997" userLabel="First Responder" sceneMemberID="firstResponder"/>

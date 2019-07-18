@@ -4,7 +4,7 @@ using UIKit;
 
 namespace myTNB
 {
-    public partial class RewardsViewController : UIViewController
+    public partial class RewardsViewController : CustomUIViewController
     {
         public RewardsViewController (IntPtr handle) : base (handle)
         {
