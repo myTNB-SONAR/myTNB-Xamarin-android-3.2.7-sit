@@ -1154,6 +1154,12 @@
     <Compile Include="Src\myTNBMenu\Fragments\HomeMenu\Listener\AccountsRecyclerViewOnScrollListener.cs" />
     <AndroidResource Include="Resources\drawable\circle.axml" />
     <AndroidResource Include="Resources\drawable\circle_active.axml" />
+    <AndroidResource Include="Resources\drawable\dashboard_home_bg.xml" />
+    <AndroidResource Include="Resources\drawable-hdpi\fluid_background.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\fluid_background.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\fluid_background.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\fluid_background.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\fluid_background.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
