@@ -13,6 +13,8 @@ namespace myTNB
         internal Dictionary<string, string> I18NDictionary;
         internal string PageName;
         internal bool IsGradientRequired;
+        internal bool IsGradientImageRequired;
+        internal UIImageView ImageViewGradientImage;
         private UIView _viewToast, _viewToastOverlay, _statusBarView;
         private UILabel _lblToastDetails;
         private bool _isAnimating;
@@ -28,6 +30,10 @@ namespace myTNB
             if (IsGradientRequired)
             {
                 CreateBackgroundGradient();
+            }
+            if (IsGradientImageRequired)
+            {
+                CreateImageGradient();
             }
         }
 
@@ -209,6 +215,15 @@ namespace myTNB
             gradientLayer.Frame = gradientView.Bounds;
             gradientView.Layer.InsertSublayer(gradientLayer, 0);
             View.AddSubview(gradientView);
+        }
+
+        private void CreateImageGradient()
+        {
+            ImageViewGradientImage = new UIImageView(new CGRect(0, 0, View.Frame.Width, View.Frame.Height / 2))
+            {
+                Image = UIImage.FromBundle("Background-Home")
+            };
+            View.AddSubview(ImageViewGradientImage);
         }
 
         #endregion

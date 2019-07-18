@@ -27,7 +27,7 @@ namespace myTNB
                 v.RemoveFromSuperview();
             }
             PageName = DashboardHomeConstants.PageName;
-            IsGradientRequired = true;
+            IsGradientImageRequired = true;
             base.ViewDidLoad();
             NSNotificationCenter.DefaultCenter.AddObserver((NSString)"LanguageDidChange", LanguageDidChange);
             NSNotificationCenter.DefaultCenter.AddObserver((NSString)"NotificationDidChange", NotificationDidChange);
@@ -155,6 +155,7 @@ namespace myTNB
             _homeTableView.SeparatorStyle = UITableViewCellSeparatorStyle.None;
             _homeTableView.RowHeight = UITableView.AutomaticDimension;
             _homeTableView.EstimatedRowHeight = 600.0F;
+            _homeTableView.Bounces = false;
             _homeTableView.RegisterClassForCellReuse(typeof(AccountsTableViewCell), DashboardHomeConstants.Cell_Accounts);
             _homeTableView.RegisterClassForCellReuse(typeof(HelpTableViewCell), DashboardHomeConstants.Cell_Help);
             _homeTableView.RegisterClassForCellReuse(typeof(ServicesTableViewCell), DashboardHomeConstants.Cell_Services);
@@ -207,6 +208,22 @@ namespace myTNB
             var vc = Storyboard.InstantiateViewController("AccountsContentViewController") as AccountsContentViewController;
             vc.pageIndex = index;
             return vc;
+        }
+
+
+        nfloat previousScrollOffset;
+        internal void OnTableViewScroll(UIScrollView scrollView)
+        {
+            if (ImageViewGradientImage == null)
+            {
+                return;
+            }
+            var scrollDiff = scrollView.ContentOffset.Y - previousScrollOffset;
+            var isScrollingDown = scrollDiff > 0;
+            previousScrollOffset = tableViewAccounts.ContentOffset.Y;
+            CGRect frame = ImageViewGradientImage.Frame;
+            frame.Y = isScrollingDown ? 0 - scrollDiff : frame.Y + scrollDiff;
+            ImageViewGradientImage.Frame = frame;
         }
     }
 }

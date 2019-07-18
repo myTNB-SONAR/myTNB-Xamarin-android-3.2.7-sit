@@ -956,6 +956,10 @@
     <ImageAsset Include="Assets.xcassets\Tab-Home.imageset\home.png" />
     <ImageAsset Include="Assets.xcassets\Tab-Home.imageset\home%402x.png" />
     <ImageAsset Include="Assets.xcassets\Tab-Home.imageset\home%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Background-Home.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Background-Home.imageset\fluidBackground%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Background-Home.imageset\fluidBackground%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Background-Home.imageset\fluidBackground.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -1241,6 +1245,7 @@
     <Folder Include="Rewards\" />
     <Folder Include="Tab Bar\" />
     <Folder Include="Assets.xcassets\Services-Feedback.imageset\" />
+    <Folder Include="Assets.xcassets\Background-Home.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />

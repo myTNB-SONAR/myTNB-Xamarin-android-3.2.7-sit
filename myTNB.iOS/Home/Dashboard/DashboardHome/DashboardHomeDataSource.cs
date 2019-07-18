@@ -1,5 +1,4 @@
 ﻿using System;
-using CoreGraphics;
 using Foundation;
 using UIKit;
 
@@ -51,5 +50,10 @@ namespace myTNB
         }
 
         public override void RowSelected(UITableView tableView, NSIndexPath indexPath) { }
+
+        public override void Scrolled(UIScrollView scrollView)
+        {
+            _controller.OnTableViewScroll(scrollView);
+        }
     }
 }
