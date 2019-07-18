@@ -356,7 +356,6 @@
     <ImageAsset Include="Assets.xcassets\Tab-Bill.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Tab-Promotions.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Tab-Feedback.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Tab-More.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Download.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Download.imageset\save.png" />
     <ImageAsset Include="Assets.xcassets\Download.imageset\save%402x.png" />
@@ -644,23 +643,14 @@
     <ImageAsset Include="Assets.xcassets\Tab-Feedback.imageset\ic_menu_feedback.png" />
     <ImageAsset Include="Assets.xcassets\Tab-Feedback.imageset\ic_menu_feedback%402x.png" />
     <ImageAsset Include="Assets.xcassets\Tab-Feedback.imageset\ic_menu_feedback%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Tab-Promotions.imageset\ic_menu_promo.png" />
-    <ImageAsset Include="Assets.xcassets\Tab-Promotions.imageset\ic_menu_promo%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Tab-Promotions.imageset\ic_menu_promo%403x.png" />
     <ImageAsset Include="Assets.xcassets\Tab-Dashboard.imageset\ic_menu_dashboard.png" />
     <ImageAsset Include="Assets.xcassets\Tab-Dashboard.imageset\ic_menu_dashboard%402x.png" />
     <ImageAsset Include="Assets.xcassets\Tab-Dashboard.imageset\ic_menu_dashboard%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Tab-More.imageset\ic_menu_more.png" />
-    <ImageAsset Include="Assets.xcassets\Tab-More.imageset\ic_menu_more%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Tab-More.imageset\ic_menu_more%403x.png" />
     <ImageAsset Include="Assets.xcassets\Payment-Checkbox-Active.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Payment-Checkbox-Inactive.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Payment-Checkbox-Active.imageset\ic_action_checkbox_active.png" />
     <ImageAsset Include="Assets.xcassets\Payment-Checkbox-Active.imageset\ic_action_checkbox_active%402x.png" />
     <ImageAsset Include="Assets.xcassets\Payment-Checkbox-Active.imageset\ic_action_checkbox_active%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Tab-Bill.imageset\ic_menu_bill.png" />
-    <ImageAsset Include="Assets.xcassets\Tab-Bill.imageset\ic_menu_bill%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Tab-Bill.imageset\ic_menu_bill%403x.png" />
     <ImageAsset Include="Assets.xcassets\IC-Action-Show-Password.imageset\icActionShowPassword.png" />
     <ImageAsset Include="Assets.xcassets\IC-Action-Show-Password.imageset\icActionShowPassword%402x.png" />
     <ImageAsset Include="Assets.xcassets\IC-Action-Show-Password.imageset\icActionShowPassword%403x.png" />
@@ -921,6 +911,47 @@
     <ImageAsset Include="Assets.xcassets\Notification-New.imageset\icHeaderNotificationUnread.png" />
     <ImageAsset Include="Assets.xcassets\Notification-New.imageset\icHeaderNotificationUnread%402x.png" />
     <ImageAsset Include="Assets.xcassets\Notification-New.imageset\icHeaderNotificationUnread%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Tab-Home-Selected.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Tab-Home-Selected.imageset\homeSelected.png" />
+    <ImageAsset Include="Assets.xcassets\Tab-Home-Selected.imageset\homeSelected%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Tab-Home-Selected.imageset\homeSelected%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Tab-Home.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Tab-Home.imageset\homeSelected.png" />
+    <ImageAsset Include="Assets.xcassets\Tab-Home.imageset\homeSelected%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Tab-Home.imageset\homeSelected%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Tab-Bill.imageset\bill.png" />
+    <ImageAsset Include="Assets.xcassets\Tab-Bill.imageset\bill%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Tab-Bill.imageset\bill%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Tab-Bill-Selected.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Tab-Bill-Selected.imageset\billSelected.png" />
+    <ImageAsset Include="Assets.xcassets\Tab-Bill-Selected.imageset\billSelected%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Tab-Bill-Selected.imageset\billSelected%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Tab-Profile-Selected.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Tab-Profile-Selected.imageset\profileSelected.png" />
+    <ImageAsset Include="Assets.xcassets\Tab-Profile-Selected.imageset\profileSelected%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Tab-Profile-Selected.imageset\profileSelected%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Tab-Profile.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Tab-Profile.imageset\ic_menu_more.png" />
+    <ImageAsset Include="Assets.xcassets\Tab-Profile.imageset\ic_menu_more%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Tab-Profile.imageset\ic_menu_more%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Tab-Profile.imageset\profile.png" />
+    <ImageAsset Include="Assets.xcassets\Tab-Profile.imageset\profile%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Tab-Profile.imageset\profile%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Tab-Promotions-Selected.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Tab-Promotions-Selected.imageset\whatSNewSelected.png" />
+    <ImageAsset Include="Assets.xcassets\Tab-Promotions-Selected.imageset\whatSNewSelected%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Tab-Promotions-Selected.imageset\whatSNewSelected%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Tab-Promotions.imageset\whatSNew.png" />
+    <ImageAsset Include="Assets.xcassets\Tab-Promotions.imageset\whatSNew%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Tab-Promotions.imageset\whatSNew%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Tab-Rewards.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Tab-Rewards.imageset\rewards.png" />
+    <ImageAsset Include="Assets.xcassets\Tab-Rewards.imageset\rewards%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Tab-Rewards.imageset\rewards%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Tab-Rewards-Selected.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Tab-Rewards-Selected.imageset\rewardsSelected.png" />
+    <ImageAsset Include="Assets.xcassets\Tab-Rewards-Selected.imageset\rewardsSelected%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Tab-Rewards-Selected.imageset\rewardsSelected%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -981,7 +1012,6 @@
     <Folder Include="Assets.xcassets\Tab-Bill.imageset\" />
     <Folder Include="Assets.xcassets\Tab-Promotions.imageset\" />
     <Folder Include="Assets.xcassets\Tab-Feedback.imageset\" />
-    <Folder Include="Assets.xcassets\Tab-More.imageset\" />
     <Folder Include="Home\" />
     <Folder Include="Home\Dashboard\" />
     <Folder Include="Home\Bill\" />
@@ -1196,6 +1226,16 @@
     <Folder Include="Assets.xcassets\Accounts-Smart-Meter-Icon.imageset\" />
     <Folder Include="Customs\Generic Line\" />
     <Folder Include="Customs\Generic Tableview Selector\" />
+    <Folder Include="Assets.xcassets\Tab-Home-Selected.imageset\" />
+    <Folder Include="Assets.xcassets\Tab-Home.imageset\" />
+    <Folder Include="Assets.xcassets\Tab-Bill-Selected.imageset\" />
+    <Folder Include="Assets.xcassets\Tab-Profile-Selected.imageset\" />
+    <Folder Include="Assets.xcassets\Tab-Profile.imageset\" />
+    <Folder Include="Assets.xcassets\Tab-Promotions-Selected.imageset\" />
+    <Folder Include="Assets.xcassets\Tab-Rewards.imageset\" />
+    <Folder Include="Assets.xcassets\Tab-Rewards-Selected.imageset\" />
+    <Folder Include="Rewards\" />
+    <Folder Include="Tab Bar\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -1667,10 +1707,6 @@
     <Compile Include="Home\Bill\NoDataViewCell.designer.cs">
       <DependentUpon>NoDataViewCell.cs</DependentUpon>
     </Compile>
-    <Compile Include="Home\Dashboard\HomeTabBarController.cs" />
-    <Compile Include="Home\Dashboard\HomeTabBarController.designer.cs">
-      <DependentUpon>HomeTabBarController.cs</DependentUpon>
-    </Compile>
     <Compile Include="Helpers\LabelHelper.cs" />
     <Compile Include="Home\Feedback\FeedbackFileNameHelper.cs" />
     <Compile Include="Sitecore CMS\Model\TimestampResponseModel.cs" />
@@ -1911,6 +1947,15 @@
     <Compile Include="Home\Dashboard\DashboardHome\Accounts\AccountsContentViewController.designer.cs">
       <DependentUpon>AccountsContentViewController.cs</DependentUpon>
     </Compile>
+    <Compile Include="Rewards\RewardsViewController.cs" />
+    <Compile Include="Rewards\RewardsViewController.designer.cs">
+      <DependentUpon>RewardsViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Tab Bar\HomeTabBarController.cs" />
+    <Compile Include="Tab Bar\HomeTabBarController.designer.cs">
+      <DependentUpon>HomeTabBarController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Tab Bar\TabbarConstants.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />

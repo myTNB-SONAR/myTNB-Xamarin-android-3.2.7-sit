@@ -9,6 +9,7 @@ using myTNB.SQLite.SQLiteDataManager;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Diagnostics;
+using myTNB.TabBar;
 
 namespace myTNB
 {
@@ -18,13 +19,15 @@ namespace myTNB
         {
         }
 
-        string _imageSize = string.Empty;
+        private string _imageSize = string.Empty;
+        private Dictionary<string, string> I18NDictionary;
 
         public override void ViewDidLoad()
         {
             base.ViewDidLoad();
             //Debug.WriteLine("HOME DID LOAD");
-            NSNotificationCenter.DefaultCenter.AddObserver((Foundation.NSString)"LanguageDidChange", LanguageDidChange);
+            I18NDictionary = LanguageManager.Instance.GetValuesByPage("Tabbar");
+            NSNotificationCenter.DefaultCenter.AddObserver((NSString)"LanguageDidChange", LanguageDidChange);
             NSNotificationCenter.DefaultCenter.AddObserver(UIApplication.DidBecomeActiveNotification, HandleAppDidBecomeActive);
             TabBar.Translucent = false;
             TabBar.BackgroundColor = UIColor.White;
@@ -66,11 +69,20 @@ namespace myTNB
         void SetTabbarTitle()
         {
             UITabBarItem[] tabbarItem = TabBar.Items;
-            tabbarItem[0].Title = "Tabbar_Dashboard".Translate();
-            tabbarItem[1].Title = "Tabbar_Bills".Translate();
-            tabbarItem[2].Title = "Tabbar_Promotions".Translate();
-            tabbarItem[3].Title = "Tabbar_Feedback".Translate();
-            tabbarItem[4].Title = "Tabbar_More".Translate();
+            tabbarItem[0].Title = GetI18NValue(TabbarConstants.Tab_Home);
+            tabbarItem[1].Title = GetI18NValue(TabbarConstants.Tab_Bill);
+            tabbarItem[2].Title = GetI18NValue(TabbarConstants.Tab_Promotion);
+            tabbarItem[3].Title = GetI18NValue(TabbarConstants.Tab_Rewards);
+            tabbarItem[4].Title = GetI18NValue(TabbarConstants.Tab_Profile);
+        }
+
+        private string GetI18NValue(string key)
+        {
+            if (I18NDictionary != null && I18NDictionary.ContainsKey(key))
+            {
+                return I18NDictionary[key];
+            }
+            return string.Empty;
         }
 
         public override void ItemSelected(UITabBar tabbar, UITabBarItem item)
@@ -107,9 +119,9 @@ namespace myTNB
 
                 if (filtered?.Count > 0)
                 {
-                    UIStoryboard storyBoard = UIStoryboard.FromName("PromotionDetails", null);
+                    UIStoryboard storyBoard = UIStoryboard.FromName(TabbarConstants.Storyboard_Promotion, null);
                     var viewController =
-                        storyBoard.InstantiateViewController("PromotionsModalViewController") as PromotionsModalViewController;
+                        storyBoard.InstantiateViewController(TabbarConstants.Controller_Promotion) as PromotionsModalViewController;
                     if (viewController != null)
                     {
                         viewController.Promotions = filtered;
@@ -262,7 +274,7 @@ namespace myTNB
                 {
                     var nowDate = DateTime.Today.Date;
                     DateTime endDate = nowDate.AddDays(90);
-                    promo.PromoEndDate = endDate.ToString("yyyyMMdd");
+                    promo.PromoEndDate = endDate.ToString(TabbarConstants.Format_Date);
                 }
                 promotionList.Add(promo);
             }
@@ -333,10 +345,10 @@ namespace myTNB
                     && !string.IsNullOrWhiteSpace(promotionTimeStamp.Data[0].Timestamp))
                 {
                     var sharedPreference = NSUserDefaults.StandardUserDefaults;
-                    string currentTS = sharedPreference.StringForKey("SiteCorePromotionTimeStamp");
+                    string currentTS = sharedPreference.StringForKey(TabbarConstants.Sitecore_Timestamp);
                     if (string.IsNullOrEmpty(currentTS) || string.IsNullOrWhiteSpace(currentTS))
                     {
-                        sharedPreference.SetString(promotionTimeStamp.Data[0].Timestamp, "SiteCorePromotionTimeStamp");
+                        sharedPreference.SetString(promotionTimeStamp.Data[0].Timestamp, TabbarConstants.Sitecore_Timestamp);
                         sharedPreference.Synchronize();
                         isValidTimeStamp = true;
                     }
@@ -348,7 +360,7 @@ namespace myTNB
                         }
                         else
                         {
-                            sharedPreference.SetString(promotionTimeStamp.Data[0].Timestamp, "SiteCorePromotionTimeStamp");
+                            sharedPreference.SetString(promotionTimeStamp.Data[0].Timestamp, TabbarConstants.Sitecore_Timestamp);
                             sharedPreference.Synchronize();
                             isValidTimeStamp = true;
                         }
