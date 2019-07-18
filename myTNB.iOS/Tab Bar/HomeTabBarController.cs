@@ -311,23 +311,18 @@ namespace myTNB
         {
             PromotionsEntity wsManager = new PromotionsEntity();
             List<PromotionsModelV2> promotionList = wsManager.GetAllItemsV2();
-            if (promotionList != null && promotionList.Count > 0 && HasUnreadPromotion(promotionList))
-            {
-                TabBar.Items[2].SelectedImage = UIImage.FromBundle("Tab-Promotions-Unread-Active");
-                TabBar.Items[2].Image = UIImage.FromBundle("Tab-Promotions-Unread-Inactive");
-            }
-            else
-            {
-                TabBar.Items[2].Image = UIImage.FromBundle("Tab-Promotions");
-                TabBar.Items[2].SelectedImage = UIImage.FromBundle("Tab-Promotions");
-            }
+            string img = promotionList != null && promotionList.Count > 0 && HasUnreadPromotion(promotionList)
+                ? TabbarConstants.Img_InactivePromotionsUnread : TabbarConstants.Img_Promotions;
+            string imgSelected = promotionList != null && promotionList.Count > 0 && HasUnreadPromotion(promotionList)
+                ? TabbarConstants.Img_ActivePromotionsUnread : TabbarConstants.Img_PromotionsSelected;
+            TabBar.Items[2].Image = UIImage.FromBundle(img).ImageWithRenderingMode(UIImageRenderingMode.AlwaysOriginal);
+            TabBar.Items[2].SelectedImage = UIImage.FromBundle(imgSelected).ImageWithRenderingMode(UIImageRenderingMode.AlwaysOriginal);
         }
 
         private Task GetPromotions()
         {
             return Task.Factory.StartNew(() =>
             {
-
                 GetItemsService iService = new GetItemsService(TNBGlobal.OS, _imageSize, TNBGlobal.SITECORE_URL, TNBGlobal.DEFAULT_LANGUAGE);
                 bool isValidTimeStamp = false;
                 string promotionTS = iService.GetPromotionsTimestampItem();

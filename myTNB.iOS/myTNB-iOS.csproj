@@ -684,12 +684,6 @@
     <ImageAsset Include="Assets.xcassets\Notification-Banner-Reconnection.imageset\img_notifications_reconnection%403x.png" />
     <ImageAsset Include="Assets.xcassets\Tab-Promotions-Unread-Active.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Tab-Promotions-Unread-Inactive.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Tab-Promotions-Unread-Inactive.imageset\ic_menu_promo_unread.png" />
-    <ImageAsset Include="Assets.xcassets\Tab-Promotions-Unread-Inactive.imageset\ic_menu_promo_unread%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Tab-Promotions-Unread-Inactive.imageset\ic_menu_promo_unread%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Tab-Promotions-Unread-Active.imageset\ic_menu_promo_toggled_unread.png" />
-    <ImageAsset Include="Assets.xcassets\Tab-Promotions-Unread-Active.imageset\ic_menu_promo_toggled_unread%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Tab-Promotions-Unread-Active.imageset\ic_menu_promo_toggled_unread%403x.png" />
     <ImageAsset Include="Assets.xcassets\IC-RE-Leaf-Green.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\IC-RE-Leaf-White.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\IC-RE-Leaf-White.imageset\icDisplayReDashboard.png" />
@@ -916,9 +910,6 @@
     <ImageAsset Include="Assets.xcassets\Tab-Home-Selected.imageset\homeSelected%402x.png" />
     <ImageAsset Include="Assets.xcassets\Tab-Home-Selected.imageset\homeSelected%403x.png" />
     <ImageAsset Include="Assets.xcassets\Tab-Home.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Tab-Home.imageset\homeSelected.png" />
-    <ImageAsset Include="Assets.xcassets\Tab-Home.imageset\homeSelected%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Tab-Home.imageset\homeSelected%403x.png" />
     <ImageAsset Include="Assets.xcassets\Tab-Bill.imageset\bill.png" />
     <ImageAsset Include="Assets.xcassets\Tab-Bill.imageset\bill%402x.png" />
     <ImageAsset Include="Assets.xcassets\Tab-Bill.imageset\bill%403x.png" />
@@ -938,9 +929,6 @@
     <ImageAsset Include="Assets.xcassets\Tab-Profile.imageset\profile%402x.png" />
     <ImageAsset Include="Assets.xcassets\Tab-Profile.imageset\profile%403x.png" />
     <ImageAsset Include="Assets.xcassets\Tab-Promotions-Selected.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Tab-Promotions-Selected.imageset\whatSNewSelected.png" />
-    <ImageAsset Include="Assets.xcassets\Tab-Promotions-Selected.imageset\whatSNewSelected%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Tab-Promotions-Selected.imageset\whatSNewSelected%403x.png" />
     <ImageAsset Include="Assets.xcassets\Tab-Promotions.imageset\whatSNew.png" />
     <ImageAsset Include="Assets.xcassets\Tab-Promotions.imageset\whatSNew%402x.png" />
     <ImageAsset Include="Assets.xcassets\Tab-Promotions.imageset\whatSNew%403x.png" />
@@ -956,6 +944,18 @@
     <ImageAsset Include="Assets.xcassets\Services-Feedback.imageset\feedback.png" />
     <ImageAsset Include="Assets.xcassets\Services-Feedback.imageset\feedback%402x.png" />
     <ImageAsset Include="Assets.xcassets\Services-Feedback.imageset\feedback%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Tab-Promotions-Selected.imageset\whatSNewSelected-1.png" />
+    <ImageAsset Include="Assets.xcassets\Tab-Promotions-Selected.imageset\whatSNewSelected%402x-1.png" />
+    <ImageAsset Include="Assets.xcassets\Tab-Promotions-Selected.imageset\whatSNewSelected%403x-1.png" />
+    <ImageAsset Include="Assets.xcassets\Tab-Promotions-Unread-Active.imageset\whatSNewSelectedNotification.png" />
+    <ImageAsset Include="Assets.xcassets\Tab-Promotions-Unread-Active.imageset\whatSNewSelectedNotification%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Tab-Promotions-Unread-Active.imageset\whatSNewSelectedNotification%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Tab-Promotions-Unread-Inactive.imageset\whatSNewNotification.png" />
+    <ImageAsset Include="Assets.xcassets\Tab-Promotions-Unread-Inactive.imageset\whatSNewNotification%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Tab-Promotions-Unread-Inactive.imageset\whatSNewNotification%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Tab-Home.imageset\home.png" />
+    <ImageAsset Include="Assets.xcassets\Tab-Home.imageset\home%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Tab-Home.imageset\home%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
