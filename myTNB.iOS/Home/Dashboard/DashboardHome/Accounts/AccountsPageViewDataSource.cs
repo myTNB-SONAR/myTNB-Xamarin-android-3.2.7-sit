@@ -8,9 +8,9 @@ namespace myTNB
     public class AccountsPageViewDataSource : UIPageViewControllerDataSource
     {
         private DashboardHomeViewController _parentViewController;
-        private List<List<CustomerAccountRecordModel>> _groupedAccountsList;
+        private List<List<DueAmountDataModel>> _groupedAccountsList;
 
-        public AccountsPageViewDataSource(UIViewController parentViewController, List<List<CustomerAccountRecordModel>> groupedAccountsList)
+        public AccountsPageViewDataSource(UIViewController parentViewController, List<List<DueAmountDataModel>> groupedAccountsList)
         {
             _parentViewController = parentViewController as DashboardHomeViewController;
             _groupedAccountsList = groupedAccountsList;

@@ -918,9 +918,17 @@
     <ImageAsset Include="Assets.xcassets\Services-ApplyAutoPay.imageset\applyAutopay%402x.png" />
     <ImageAsset Include="Assets.xcassets\Services-ApplyAutoPay.imageset\applyAutopay%403x-1.png" />
     <ImageAsset Include="Assets.xcassets\Accounts-Smart-Meter-Icon.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Accounts-Smart-Meter-Icon.imageset\Accounts-Smart-Meter-Icon.png" />
-    <ImageAsset Include="Assets.xcassets\Accounts-Smart-Meter-Icon.imageset\Accounts-Smart-Meter-Icon%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Accounts-Smart-Meter-Icon.imageset\Accounts-Smart-Meter-Icon%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Accounts-RE-Icon.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Accounts-RE-Icon.imageset\Accounts-RE-Icon.png" />
+    <ImageAsset Include="Assets.xcassets\Accounts-RE-Icon.imageset\Accounts-RE-Icon%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Accounts-RE-Icon.imageset\Accounts-RE-Icon%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Accounts-Normal-Icon.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Accounts-Normal-Icon.imageset\Accounts-Normal-Icon.png" />
+    <ImageAsset Include="Assets.xcassets\Accounts-Normal-Icon.imageset\Accounts-Normal-Icon%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Accounts-Normal-Icon.imageset\Accounts-Normal-Icon%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Accounts-Smart-Meter-Icon.imageset\Accounts-Smart-Meter-Icon-1.png" />
+    <ImageAsset Include="Assets.xcassets\Accounts-Smart-Meter-Icon.imageset\Accounts-Smart-Meter-Icon%402x-1.png" />
+    <ImageAsset Include="Assets.xcassets\Accounts-Smart-Meter-Icon.imageset\Accounts-Smart-Meter-Icon%403x-1.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -1196,6 +1204,8 @@
     <Folder Include="Assets.xcassets\Accounts-Smart-Meter-Icon.imageset\" />
     <Folder Include="Customs\Generic Line\" />
     <Folder Include="Customs\Generic Tableview Selector\" />
+    <Folder Include="Assets.xcassets\Accounts-RE-Icon.imageset\" />
+    <Folder Include="Assets.xcassets\Accounts-Normal-Icon.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />

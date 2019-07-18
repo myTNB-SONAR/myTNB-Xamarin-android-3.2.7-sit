@@ -12,8 +12,6 @@ namespace myTNB
     {
         public DashboardHomeViewController(IntPtr handle) : base(handle) { }
 
-        List<List<CustomerAccountRecordModel>> _groupedAccountsList;
-
         private UITableView _homeTableView;
         UIPageViewController _accountsPageViewController;
 
@@ -31,20 +29,41 @@ namespace myTNB
             AddTableView();
             AddTableViewHeader();
             GetGroupedAccountsList();
-            LoadAccounts();
-
-            _homeTableView.Source = new DashboardHomeDataSource(this, _accountsPageViewController);
-            _homeTableView.ReloadData();
+            InitializePageView();
+            InitializeAccountsPageView();
         }
 
         public override void ViewWillAppear(bool animated)
         {
             base.ViewWillAppear(animated);
+            if (DataManager.DataManager.SharedInstance.SummaryNeedsRefresh)
+            {
+                DataManager.DataManager.SharedInstance.AccountsGroupList.Clear();
+                DataManager.DataManager.SharedInstance.SummaryNeedsRefresh = false;
+                GetGroupedAccountsList();
+                if (_accountsPageViewController != null)
+                {
+                    _accountsPageViewController.DataSource = new AccountsPageViewDataSource(this, DataManager.DataManager.SharedInstance.AccountsGroupList);
+                    var startingViewController = ViewControllerAtIndex(0) as AccountsContentViewController;
+                    var viewControllers = new UIViewController[] { startingViewController };
+                    _accountsPageViewController.SetViewControllers(viewControllers, UIPageViewControllerNavigationDirection.Forward, false, null);
+                }
+                InitializeAccountsPageView();
+            }
         }
 
         public override void ViewDidAppear(bool animated)
         {
             base.ViewDidAppear(animated);
+        }
+
+        // <summary>
+        // Initializes the accounts page view.
+        // </summary>
+        private void InitializeAccountsPageView()
+        {
+            _homeTableView.Source = new DashboardHomeDataSource(this, _accountsPageViewController);
+            _homeTableView.ReloadData();
         }
 
         private void GetGroupedAccountsList()
@@ -62,22 +81,37 @@ namespace myTNB
                 sortedAccounts = reAccts;
             }
 
-            var groupedAccountsList = new List<List<CustomerAccountRecordModel>>();
+            var groupedAccountsList = new List<List<DueAmountDataModel>>();
 
             int count = 0;
-            List<CustomerAccountRecordModel> batchList = new List<CustomerAccountRecordModel>();
+            List<DueAmountDataModel> batchList = new List<DueAmountDataModel>();
             for (int i = 0; i < sortedAccounts.Count; i++)
             {
                 if (count < DashboardHomeConstants.MaxAccountPerCard)
                 {
-                    batchList.Add(sortedAccounts[i]);
+                    DueAmountDataModel item = new DueAmountDataModel
+                    {
+                        accNum = sortedAccounts[i].accNum,
+                        accNickName = sortedAccounts[i].accountNickName,
+                        IsReAccount = sortedAccounts[i].IsREAccount,
+                        IsNormalAccount = sortedAccounts[i].IsNormalMeter
+                    };
+
+                    batchList.Add(item);
                     count++;
                 }
                 else
                 {
                     groupedAccountsList.Add(batchList);
-                    batchList = new List<CustomerAccountRecordModel>();
-                    batchList.Add(sortedAccounts[i]);
+                    batchList = new List<DueAmountDataModel>();
+                    DueAmountDataModel item = new DueAmountDataModel
+                    {
+                        accNum = sortedAccounts[i].accNum,
+                        accNickName = sortedAccounts[i].accountNickName,
+                        IsReAccount = sortedAccounts[i].IsREAccount,
+                        IsNormalAccount = sortedAccounts[i].IsNormalMeter
+                    };
+                    batchList.Add(item);
                     count = 1;
                 }
 
@@ -86,23 +120,26 @@ namespace myTNB
                     groupedAccountsList.Add(batchList);
                 }
             }
-
-            _groupedAccountsList = groupedAccountsList;
+            DataManager.DataManager.SharedInstance.AccountsGroupList = new List<List<DueAmountDataModel>>();
+            DataManager.DataManager.SharedInstance.AccountsGroupList = groupedAccountsList;
         }
 
-        private void LoadAccounts()
+        private void InitializePageView()
         {
             _accountsPageViewController = new UIPageViewController(UIPageViewControllerTransitionStyle.Scroll, UIPageViewControllerNavigationOrientation.Horizontal, UIPageViewControllerSpineLocation.Min)
             {
                 WeakDelegate = this
             };
-            _accountsPageViewController.DataSource = new AccountsPageViewDataSource(this, _groupedAccountsList);
+            _accountsPageViewController.DataSource = new AccountsPageViewDataSource(this, DataManager.DataManager.SharedInstance.AccountsGroupList);
 
             var startingViewController = ViewControllerAtIndex(0) as AccountsContentViewController;
             var viewControllers = new UIViewController[] { startingViewController };
 
             _accountsPageViewController.SetViewControllers(viewControllers, UIPageViewControllerNavigationDirection.Forward, false, null);
             _accountsPageViewController.View.Frame = new CGRect(0, 0, View.Frame.Width, 395f);
+
+            AddChildViewController(_accountsPageViewController);
+            _accountsPageViewController.DidMoveToParentViewController(this);
         }
 
         private void AddTableView()
@@ -154,8 +191,10 @@ namespace myTNB
 
         public UIViewController ViewControllerAtIndex(int index)
         {
-            var vc = Storyboard.InstantiateViewController("AccountsContentViewController") as AccountsContentViewController;
+            UIStoryboard storyBoard = UIStoryboard.FromName("Dashboard", null);
+            var vc = storyBoard.InstantiateViewController("AccountsContentViewController") as AccountsContentViewController;
             vc.pageIndex = index;
+            Debug.WriteLine("index: " + index);
             return vc;
         }
 
