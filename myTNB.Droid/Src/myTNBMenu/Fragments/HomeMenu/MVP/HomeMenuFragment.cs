@@ -13,6 +13,7 @@ using Android.Util;
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
+using Facebook.Shimmer;
 using myTNB_Android.Src.Base.Fragments;
 using myTNB_Android.Src.myTNBMenu.Adapter;
 using myTNB_Android.Src.myTNBMenu.Models;
@@ -22,6 +23,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 {
     public class HomeMenuFragment : BaseFragment
 	{
+        [BindView(Resource.Id.myServiceShimmerView)]
+        ShimmerFrameLayout myServiceShimmerView;
+
         [BindView(Resource.Id.myServiceList)]
         RecyclerView myServiceListRecycleView;
 
@@ -61,7 +65,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
         public void LoadShimmerServiceList(List<MyService> serviceList)
         {
-            myServiceListRecycleView.Visibility = ViewStates.Visible;
+            myServiceShimmerView.Visibility = ViewStates.Visible;
             if (serviceList != null && serviceList.Count() > 0)
             {
                 MyServiceShimmerAdapter adapter = new MyServiceShimmerAdapter(serviceList);
@@ -80,7 +84,15 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 MyServiceShimmerAdapter adapter = new MyServiceShimmerAdapter(dummyList);
                 myServiceListRecycleView.SetAdapter(adapter);
             }
+            myServiceShimmerView.StartShimmer();
+        }
 
+        private Shimmer.AlphaHighlightBuilder ShimmerEffectSetup()
+        {
+            Shimmer.AlphaHighlightBuilder shimmerBuilder = new Shimmer.AlphaHighlightBuilder();
+            shimmerBuilder.SetBaseAlpha(0.1f);
+            shimmerBuilder.SetTilt(0f);
+            return shimmerBuilder;
         }
     }
 }

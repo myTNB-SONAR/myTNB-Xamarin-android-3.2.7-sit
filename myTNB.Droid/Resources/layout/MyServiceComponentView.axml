@@ -1,17 +1,20 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:gravity="center"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_width="140dp"
+    android:layout_height="110dp"
+    app:cardCornerRadius="8dp"
+    android:layout_margin="4dp"
+    app:cardBackgroundColor="@color/white"
+    android:elevation="8dp"
+    android:id="@+id/card_view_click">
   <LinearLayout
       android:orientation="vertical"
-      android:layout_width="140dp"
-      android:layout_height="110dp"
+      android:layout_width="wrap_content"
+      android:layout_height="match_parent"
       android:gravity="center"
-      android:id="@+id/rootView"
-      android:clickable="true"
-      android:background="@drawable/custom_round_rec_shadow">
+      android:id="@+id/rootView">
     <ImageView
         android:id="@+id/service_img"
         android:layout_height="48dp"
@@ -25,15 +28,14 @@
         android:id="@+id/service_title"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
-        android:layout_marginLeft="13dp"
-        android:layout_marginRight="13dp"
+        android:layout_marginLeft="28dp"
+        android:layout_marginRight="28dp"
         android:layout_marginTop="12dp"
         android:layout_marginBottom="20dp"
         android:textColor="@color/grey_two"
         android:background="@color/grey_two"
         android:gravity="center"
-        android:text="Set Appointments"
         android:textSize="12sp"
         android:lineSpacingExtra="2sp"/>
   </LinearLayout>
-</LinearLayout>
+</android.support.v7.widget.CardView>
