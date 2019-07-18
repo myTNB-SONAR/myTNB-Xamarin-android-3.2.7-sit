@@ -1134,16 +1134,40 @@
     <Compile Include="Src\myTNBMenu\MVP\DashboardHomeContract.cs" />
     <Compile Include="Src\myTNBMenu\MVP\DashboardHomePresenter.cs" />
     <AndroidResource Include="Resources\drawable\ic_menu_reward_selector.xml" />
-    <AndroidResource Include="Resources\drawable\ic_menu_reward_unread_selector.xml" />
     <AndroidResource Include="Resources\drawable-hdpi\ic_menu_reward.png" />
     <AndroidResource Include="Resources\drawable-mdpi\ic_menu_reward.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\ic_menu_reward.png" />
     <AndroidResource Include="Resources\drawable-xxhdpi\ic_menu_reward.png" />
     <AndroidResource Include="Resources\drawable-xxxhdpi\ic_menu_reward.png" />
-    <AndroidResource Include="Resources\drawable\ic_menu_bill_unread_selector.xml" />
     <AndroidResource Include="Resources\layout\MyServiceShimmerComponent.axml" />
-    <Compile Include="Src\myTNBMenu\Models\MyService.cs" />
-    <Compile Include="Src\myTNBMenu\Adapter\MyServiceShimmerAdapter.cs" />
+    <AndroidResource Include="Resources\drawable-hdpi\add_account.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\search.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\add_account.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\search.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\add_account.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\search.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\add_account.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\search.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\add_account.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\search.png" />
+    <AndroidResource Include="Resources\drawable\search_edit_bg.axml" />
+    <Compile Include="Src\myTNBMenu\Fragments\HomeMenu\Adapter\AccountsRecyclerViewAdapter.cs" />
+    <AndroidResource Include="Resources\layout\account_container_adapter.axml" />
+    <AndroidResource Include="Resources\layout\card_layout.axml" />
+    <AndroidResource Include="Resources\drawable-hdpi\ic_display_smart_meter.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\ic_display_smart_meter.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_display_smart_meter.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_display_smart_meter.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\ic_display_smart_meter.png" />
+    <Compile Include="Src\myTNBMenu\Fragments\HomeMenu\Listener\AccountsRecyclerViewOnScrollListener.cs" />
+    <AndroidResource Include="Resources\drawable\circle.axml" />
+    <AndroidResource Include="Resources\drawable\circle_active.axml" />
+    <Compile Include="Src\myTNBMenu\Fragments\HomeMenu\Adapter\MyServiceShimmerAdapter.cs" />
+    <Compile Include="Src\myTNBMenu\Fragments\HomeMenu\Models\MyService.cs" />
+    <AndroidResource Include="Resources\drawable-hdpi\ic_menu_reward_toggled.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\ic_menu_reward_toggled.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_menu_reward_toggled.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_menu_reward_toggled.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -1498,6 +1522,9 @@
     <Folder Include="Src\Utils\Images\Picasso\" />
     <Folder Include="Src\myTNBMenu\Fragments\HomeMenu\" />
     <Folder Include="Src\myTNBMenu\Fragments\HomeMenu\MVP\" />
+    <Folder Include="Src\myTNBMenu\Fragments\HomeMenu\Adapter\" />
+    <Folder Include="Src\myTNBMenu\Fragments\HomeMenu\Listener\" />
+    <Folder Include="Src\myTNBMenu\Fragments\HomeMenu\Models\" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\GradientStatusBar.xml" />
@@ -1918,9 +1945,6 @@
     <AndroidResource Include="Resources\drawable-xhdpi\ic_menu_more.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xhdpi\ic_menu_promotions.png" />
-  </ItemGroup>
-  <ItemGroup>
     <AndroidResource Include="Resources\drawable-xxhdpi\ic_menu_bill.png" />
   </ItemGroup>
   <ItemGroup>
@@ -1931,9 +1955,6 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-xxhdpi\ic_menu_more.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxhdpi\ic_menu_promotions.png" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-xxxhdpi\ic_menu_bill.png" />
@@ -1948,9 +1969,6 @@
     <AndroidResource Include="Resources\drawable-xxxhdpi\ic_menu_more.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxxhdpi\ic_menu_promotions.png" />
-  </ItemGroup>
-  <ItemGroup>
     <AndroidResource Include="Resources\drawable-mdpi\ic_menu_bill.png" />
   </ItemGroup>
   <ItemGroup>
@@ -1961,9 +1979,6 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-mdpi\ic_menu_more.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-mdpi\ic_menu_promotions.png" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\BottomMenuSelector.xml" />
@@ -2093,46 +2108,19 @@
     <AndroidResource Include="Resources\drawable-hdpi\ic_notifications_unread.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable-hdpi\ic_menu_bill_unread.png" />
-  </ItemGroup>
-  <ItemGroup>
     <AndroidResource Include="Resources\drawable-hdpi\ic_menu_feedback_unread.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-mdpi\ic_menu_bill_unread.png" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-mdpi\ic_menu_feedback_unread.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable-mdpi\ic_menu_promotions_unread.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xhdpi\ic_menu_promotions_unread.png" />
-  </ItemGroup>
-  <ItemGroup>
     <AndroidResource Include="Resources\drawable-xhdpi\ic_menu_feedback_unread.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xhdpi\ic_menu_bill_unread.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxhdpi\ic_menu_bill_unread.png" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-xxhdpi\ic_menu_feedback_unread.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxhdpi\ic_menu_promotions_unread.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxxhdpi\ic_menu_bill_unread.png" />
-  </ItemGroup>
-  <ItemGroup>
     <AndroidResource Include="Resources\drawable-xxxhdpi\ic_menu_feedback_unread.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxxhdpi\ic_menu_promotions_unread.png" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-hdpi\ic_navigation_arrow_left.png" />
@@ -2703,9 +2691,6 @@
     <AndroidResource Include="Resources\drawable-hdpi\ic_menu_dashboard_toggled.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable-hdpi\ic_menu_bill_toggled_unread.png" />
-  </ItemGroup>
-  <ItemGroup>
     <AndroidResource Include="Resources\drawable-hdpi\ic_menu_bill_toggled.png" />
   </ItemGroup>
   <ItemGroup>
@@ -2731,9 +2716,6 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-mdpi\ic_menu_dashboard_toggled.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-mdpi\ic_menu_bill_toggled_unread.png" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-mdpi\ic_menu_bill_toggled.png" />
@@ -2763,9 +2745,6 @@
     <AndroidResource Include="Resources\drawable-xhdpi\ic_menu_dashboard_toggled.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xhdpi\ic_menu_bill_toggled_unread.png" />
-  </ItemGroup>
-  <ItemGroup>
     <AndroidResource Include="Resources\drawable-xhdpi\ic_menu_bill_toggled.png" />
   </ItemGroup>
   <ItemGroup>
@@ -2791,9 +2770,6 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-xxhdpi\ic_menu_dashboard_toggled.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxhdpi\ic_menu_bill_toggled_unread.png" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-xxhdpi\ic_menu_bill_toggled.png" />
@@ -2824,9 +2800,6 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-xxxhdpi\ic_menu_bill_toggled.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxxhdpi\ic_menu_bill_toggled_unread.png" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\menu\ViewBillReceiptMenu.xml" />

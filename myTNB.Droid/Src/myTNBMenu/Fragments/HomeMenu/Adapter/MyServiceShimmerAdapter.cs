@@ -1,16 +1,11 @@
 ﻿using Android.Support.V7.Widget;
 using Android.Views;
 using Android.Widget;
-using CheeseBind;
-using Java.Text;
-using Java.Util;
-using myTNB_Android.Src.Base.Adapter;
-using myTNB_Android.Src.myTNBMenu.Models;
+using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Models;
 using myTNB_Android.Src.Utils;
-using System;
 using System.Collections.Generic;
 
-namespace myTNB_Android.Src.myTNBMenu.Adapter
+namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
 {
     public class MyServiceShimmerAdapter : RecyclerView.Adapter
     {

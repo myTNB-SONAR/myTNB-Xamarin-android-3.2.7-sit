@@ -1,22 +1,17 @@
 ﻿
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
-using Android.App;
-using Android.Content;
 using Android.OS;
-using Android.Runtime;
 using Android.Support.V7.Widget;
-using Android.Util;
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
 using Facebook.Shimmer;
 using myTNB_Android.Src.Base.Fragments;
-using myTNB_Android.Src.myTNBMenu.Adapter;
-using myTNB_Android.Src.myTNBMenu.Models;
+using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter;
+using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Listener;
+using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Models;
 using myTNB_Android.Src.Utils;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
@@ -28,18 +23,30 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
         [BindView(Resource.Id.myServiceList)]
         RecyclerView myServiceListRecycleView;
+        //[BindView(Resource.Id.shimmer_view_container)]
+        //ShimmerFrameLayout shimmerViewContainer;
+        [BindView(Resource.Id.accountsHeaderTitle)]
+        TextView accountHeaderTitle;
+        
+        [BindView(Resource.Id.searchAction)]
+        ImageView searchActionIcon;
+
+        [BindView(Resource.Id.addAction)]
+        ImageView addAccountActionIcon;
+
+        [BindView(Resource.Id.searchEdit)]
+        EditText searchEditText;
+
+        [BindView(Resource.Id.accountRecyclerViewContainer)]
+        RecyclerView accountsRecyclerView;
+
+        [BindView(Resource.Id.indicatorContainer)]
+        LinearLayout indicatorContainer;
+
 
         public override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-        }
-
-        public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
-        {
-            // Use this to return your custom view for this Fragment
-            // return inflater.Inflate(Resource.Layout.YourFragment, container, false);
-
-            return base.OnCreateView(inflater, container, savedInstanceState);
         }
 
         public override void OnViewCreated(View view, Bundle savedInstanceState)
@@ -47,6 +54,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             base.OnViewCreated(view, savedInstanceState);
             try
             {
+                SetAccountsRecyclerView();
+                SetAccountActionHeader();
                 GridLayoutManager layoutManager = new GridLayoutManager(this.Activity, 2);
                 layoutManager.Orientation = RecyclerView.Horizontal;
                 myServiceListRecycleView.SetLayoutManager(layoutManager);
@@ -56,6 +65,59 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             {
                 Utility.LoggingNonFatalError(e);
             }
+        }
+
+        private void SetAccountActionHeader()
+        {
+            TextViewUtils.SetMuseoSans500Typeface(accountHeaderTitle);
+
+            searchActionIcon.Click += (s, e) =>
+            {
+                accountHeaderTitle.Visibility = ViewStates.Gone;
+                searchEditText.Visibility = ViewStates.Visible;
+                searchActionIcon.Visibility = ViewStates.Gone;
+            };
+
+            addAccountActionIcon.Click += (s, e) =>
+            {
+                accountHeaderTitle.Visibility = ViewStates.Visible;
+                searchEditText.Visibility = ViewStates.Gone;
+                searchActionIcon.Visibility = ViewStates.Visible;
+            };
+        }
+
+        private void SetAccountsRecyclerView()
+        {
+            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(Activity, LinearLayoutManager.Horizontal, false);
+            accountsRecyclerView.SetLayoutManager(linearLayoutManager);
+
+            AccountsRecyclerViewAdapter accountsAdapter = new AccountsRecyclerViewAdapter(2);
+            accountsRecyclerView.SetAdapter(accountsAdapter);
+
+            accountsRecyclerView.AddOnScrollListener(new AccountsRecyclerViewOnScrollListener(linearLayoutManager, indicatorContainer));
+        }
+        private void SetShimmer()
+        {
+            //var shimmerBuilder = new Shimmer.AlphaHighlightBuilder();
+            //shimmerBuilder = default(Shimmer.AlphaHighlightBuilder);
+            //shimmerViewContainer.SetShimmer(shimmerBuilder?.Build());
+        }
+
+        public override void OnResume()
+        {
+            base.OnResume();
+            //var shimmerBuilder = new Shimmer.AlphaHighlightBuilder();
+            //shimmerBuilder = default(Shimmer.AlphaHighlightBuilder);
+            //shimmerViewContainer.SetShimmer(shimmerBuilder?.Build());
+            //shimmerViewContainer.StartShimmer();
+        }
+
+        public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+        {
+            // Use this to return your custom view for this Fragment
+            // return inflater.Inflate(Resource.Layout.YourFragment, container, false);
+
+            return base.OnCreateView(inflater, container, savedInstanceState);
         }
 
         public override int ResourceId()
