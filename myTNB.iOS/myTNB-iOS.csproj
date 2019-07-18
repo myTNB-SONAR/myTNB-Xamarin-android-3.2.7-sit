@@ -460,9 +460,6 @@
     <ImageAsset Include="Assets.xcassets\IC-Payment-FPX.imageset\ic_payment_fpx%402x.png" />
     <ImageAsset Include="Assets.xcassets\IC-Payment-FPX.imageset\ic_payment_fpx%403x.png" />
     <ImageAsset Include="Assets.xcassets\Notification-New.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Notification-New.imageset\ic_header_notification_unread.png" />
-    <ImageAsset Include="Assets.xcassets\Notification-New.imageset\ic_header_notification_unread%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Notification-New.imageset\ic_header_notification_unread%403x.png" />
     <ImageAsset Include="Assets.xcassets\Call.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Call.imageset\ic_display_call.png" />
     <ImageAsset Include="Assets.xcassets\Call.imageset\ic_display_call%402x.png" />
@@ -921,6 +918,9 @@
     <ImageAsset Include="Assets.xcassets\Accounts-Smart-Meter-Icon.imageset\Accounts-Smart-Meter-Icon.png" />
     <ImageAsset Include="Assets.xcassets\Accounts-Smart-Meter-Icon.imageset\Accounts-Smart-Meter-Icon%402x.png" />
     <ImageAsset Include="Assets.xcassets\Accounts-Smart-Meter-Icon.imageset\Accounts-Smart-Meter-Icon%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-New.imageset\icHeaderNotificationUnread.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-New.imageset\icHeaderNotificationUnread%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-New.imageset\icHeaderNotificationUnread%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
