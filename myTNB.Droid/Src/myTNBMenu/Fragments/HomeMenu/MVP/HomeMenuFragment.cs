@@ -25,6 +25,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         RecyclerView myServiceListRecycleView;
         //[BindView(Resource.Id.shimmer_view_container)]
         //ShimmerFrameLayout shimmerViewContainer;
+        [BindView(Resource.Id.myServiceTitle)]
+        TextView myServiceTitle;
+        
         [BindView(Resource.Id.accountsHeaderTitle)]
         TextView accountHeaderTitle;
         
@@ -60,6 +63,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 layoutManager.Orientation = RecyclerView.Horizontal;
                 myServiceListRecycleView.SetLayoutManager(layoutManager);
                 LoadShimmerServiceList(null);
+                TextViewUtils.SetMuseoSans500Typeface(myServiceTitle);
             }
             catch (System.Exception e)
             {
@@ -146,7 +150,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 MyServiceShimmerAdapter adapter = new MyServiceShimmerAdapter(dummyList);
                 myServiceListRecycleView.SetAdapter(adapter);
             }
-            myServiceShimmerView.StartShimmer();
+            myServiceShimmerView.StopShimmer();
         }
 
         private Shimmer.AlphaHighlightBuilder ShimmerEffectSetup()

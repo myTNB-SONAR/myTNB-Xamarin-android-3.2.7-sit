@@ -84,25 +84,41 @@
                     android:src="@drawable/circle"
                 />
             </LinearLayout>
-            <com.facebook.shimmer.ShimmerFrameLayout
-                android:id="@+id/myServiceShimmerView"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:visibility="gone"
-                android:layout_gravity="center">
-                <LinearLayout
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:id="@+id/myServiceContainer">
+                <TextView
+                    android:id="@+id/myServiceTitle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp"
-                    android:orientation="vertical">
-                    <android.support.v7.widget.RecyclerView
-                        android:id="@+id/myServiceList"
+                    android:textSize="14dp"
+                    android:text="My Services"
+                    android:textColor="@android:color/white"
+                    android:layout_gravity="left"/>
+                <com.facebook.shimmer.ShimmerFrameLayout
+                    android:id="@+id/myServiceShimmerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="11dp"
+                    android:visibility="gone"
+                    android:layout_gravity="center">
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:scrollIndicators="none" />
-                </LinearLayout>
-            </com.facebook.shimmer.ShimmerFrameLayout>
+                        android:orientation="vertical">
+                        <android.support.v7.widget.RecyclerView
+                            android:id="@+id/myServiceList"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:scrollIndicators="none" />
+                    </LinearLayout>
+                </com.facebook.shimmer.ShimmerFrameLayout>
+            </LinearLayout>
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
 
