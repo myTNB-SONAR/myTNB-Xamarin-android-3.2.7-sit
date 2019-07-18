@@ -952,6 +952,10 @@
     <ImageAsset Include="Assets.xcassets\Tab-Rewards-Selected.imageset\rewardsSelected.png" />
     <ImageAsset Include="Assets.xcassets\Tab-Rewards-Selected.imageset\rewardsSelected%402x.png" />
     <ImageAsset Include="Assets.xcassets\Tab-Rewards-Selected.imageset\rewardsSelected%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Services-Feedback.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Services-Feedback.imageset\feedback.png" />
+    <ImageAsset Include="Assets.xcassets\Services-Feedback.imageset\feedback%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Services-Feedback.imageset\feedback%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -1236,6 +1240,7 @@
     <Folder Include="Assets.xcassets\Tab-Rewards-Selected.imageset\" />
     <Folder Include="Rewards\" />
     <Folder Include="Tab Bar\" />
+    <Folder Include="Assets.xcassets\Services-Feedback.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />

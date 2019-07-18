@@ -37,6 +37,7 @@ namespace myTNB
             {
                 new ServicesTemp(){Title = "Apply for Self Meter Reading", Img = "Services-ApplySSMR"}
                 , new ServicesTemp(){Title = "Check Status", Img = "Services-CheckStatus"}
+                , new ServicesTemp(){Title = "Give Us Feedback", Img = "Services-Feedback"}
                 , new ServicesTemp(){Title = "Set Appointments", Img = "Services-SetAppointments"}
                 , new ServicesTemp(){Title = "Apply AutoPay", Img = "Services-ApplyAutoPay"}
             };
@@ -48,7 +49,7 @@ namespace myTNB
                 _view.AddSubview(card);
                 if (i == tempData.Count - 1)
                 {
-                    height = card.Frame.GetMaxY() + 8;
+                    height = card.Frame.GetMaxY() + 12;
                 }
             }
             CGRect newFrame = _view.Frame;
@@ -56,14 +57,24 @@ namespace myTNB
             _view.Frame = newFrame;
         }
 
+        private int rowFactor = -1;
+        nfloat xLoc;
         private UIView GetCard(ServicesTemp serviceItem, int index, Action action = null)
         {
-            nfloat cardWidth = (_view.Frame.Width - 8) / 2;
-            nfloat cardHeight = cardWidth * 0.7857F;
-            nfloat margin = 8;
-            nfloat xLoc = IsEvenCard(index) ? 0 : cardWidth + margin;
+            nfloat cardWidth = (_view.Frame.Width - 24) / 3;
+            nfloat cardHeight = cardWidth * 0.9545F;
+            nfloat margin = 12;
             nfloat yLoc = (cardHeight + margin);
             yLoc *= GetFactor(index);
+            if (rowFactor == GetFactor(index))
+            {
+                xLoc +=  cardWidth + margin;
+            }
+            else
+            {
+                rowFactor = (int)GetFactor(index);
+                xLoc = 0;
+            }
 
             UIView view = new UIView(new CGRect(xLoc, yLoc, cardWidth, cardHeight)) { BackgroundColor = UIColor.White };
             view.Layer.CornerRadius = 5.0F;
@@ -82,17 +93,13 @@ namespace myTNB
             {
                 TextAlignment = UITextAlignment.Center,
                 TextColor = MyTNBColor.PowerBlue,
-                Font = MyTNBFont.MuseoSans12_500,
+                Font = MyTNBFont.MuseoSans10_500,
                 Lines = 0,
+                LineBreakMode = UILineBreakMode.WordWrap,
                 Text = serviceItem.Title
             };
             view.AddSubviews(new UIView[] { imgView, lblTitle });
             return view;
-        }
-
-        private bool IsEvenCard(int index)
-        {
-            return index % 2 == 0;
         }
 
         private nfloat GetFactor(int index)
@@ -101,7 +108,7 @@ namespace myTNB
             {
                 return 0;
             }
-            return (nfloat)Math.Floor((decimal)index / 2);
+            return (nfloat)Math.Floor((decimal)index / 3);
         }
 
         private void AddCardShadow(ref UIView view)

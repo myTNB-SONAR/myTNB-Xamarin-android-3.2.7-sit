@@ -148,7 +148,7 @@ namespace myTNB
 
         private void AddTableView()
         {
-            nfloat tabbarHeight = TabBarController.TabBar.Frame.Height + 20.0F;
+            nfloat tabbarHeight = TabBarController.TabBar.Frame.Height + 10.0F;
             _homeTableView = new UITableView(new CGRect(0, DeviceHelper.GetStatusBarHeight(), View.Frame.Width
                 , View.Frame.Height - DeviceHelper.GetStatusBarHeight() - tabbarHeight))
             { BackgroundColor = UIColor.Clear };

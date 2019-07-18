@@ -9,20 +9,24 @@ namespace myTNB
     {
         private UIScrollView _scrollView;
         private nfloat cellWidth = UIApplication.SharedApplication.KeyWindow.Frame.Width;
+        private nfloat cardWidth;
+        private nfloat cardHeight;
         public UILabel _titleLabel;
         public HelpTableViewCell(IntPtr handle) : base(handle)
         {
+            cardWidth = cellWidth * 0.30F;
+            cardHeight = cardWidth;
             _titleLabel = new UILabel(new CGRect(16f, 16f, cellWidth - 32, 20f))
             {
                 Font = MyTNBFont.MuseoSans14_500,
                 TextColor = MyTNBColor.PowerBlue
             };
             AddSubview(_titleLabel);
-            UIView view = new UIView(new CGRect(0, _titleLabel.Frame.GetMaxY() + 8f, cellWidth, 64.0F))
+            UIView view = new UIView(new CGRect(0, _titleLabel.Frame.GetMaxY() + 8f, cellWidth, cardHeight + 24.0F))
             {
                 BackgroundColor = UIColor.Clear
             };
-            _scrollView = new UIScrollView(new CGRect(0, 0, view.Frame.Width, 40.0F));
+            _scrollView = new UIScrollView(new CGRect(0, 0, view.Frame.Width, cardHeight));
             _scrollView.ScrollEnabled = true;
             _scrollView.ShowsHorizontalScrollIndicator = false;
             view.AddSubview(_scrollView);
@@ -39,10 +43,9 @@ namespace myTNB
         {
             List<string> helpList = new List<string>() { "How to read meter?", "How to reset password?", "How to apply for AutoPay ?" };
             nfloat xLoc = 16f;
-            nfloat cardWidth = cellWidth * 0.312F;
             for (int i = 0; i < helpList.Count; i++)
             {
-                UIView helpCardView = new UIView(new CGRect(xLoc, 0, cardWidth, 40))
+                UIView helpCardView = new UIView(new CGRect(xLoc, 0, cardWidth, cardHeight))
                 {
                     BackgroundColor = UIColor.Blue
                 };
@@ -59,7 +62,7 @@ namespace myTNB
                 };
                 helpCardView.AddSubview(lblHelp);
                 _scrollView.Add(helpCardView);
-                xLoc += cardWidth + 8.0F;
+                xLoc += cardWidth + 12.0F;
             }
             _scrollView.ContentSize = new CGSize(xLoc, 40);
         }
