@@ -1,12 +1,20 @@
 using CoreGraphics;
+using myTNB.Dashboard;
+using myTNB.DataManager;
+using myTNB.Model;
 using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Threading.Tasks;
 using UIKit;
 
 namespace myTNB
 {
-    public partial class AccountsContentViewController : UIViewController
+    public partial class AccountsContentViewController : CustomUIViewController
     {
         public int pageIndex = 0;
+        List<string> _accountNumberList = new List<string>();
+        UIView _viewContainer;
 
         public AccountsContentViewController(IntPtr handle) : base(handle)
         {
@@ -15,16 +23,233 @@ namespace myTNB
         public override void ViewDidLoad()
         {
             base.ViewDidLoad();
-
-            UIView viewContainer = new UIView(new CGRect(0, 0, View.Frame.Width, 395f));
-            viewContainer.BackgroundColor = UIColor.Clear;
-
-            for (int i = 0; i < 5; i++)
+            AddUpdateCards();
+            var groupAccountList = DataManager.DataManager.SharedInstance.AccountsGroupList[pageIndex];
+            for (int i = 0; i < groupAccountList.Count; i++)
             {
-                DashboardHomeAccountCard _homeAccountCard = new DashboardHomeAccountCard(View, 68f * i);
-                viewContainer.AddSubview(_homeAccountCard.GetUI());
+                _accountNumberList.Add(groupAccountList[i].accNum);
             }
-            View.AddSubview(viewContainer);
+        }
+
+        public override void ViewWillAppear(bool animated)
+        {
+            base.ViewWillAppear(animated);
+            LoadAccountsWithDues();
+        }
+
+        private void AddUpdateCards()
+        {
+            if (_viewContainer != null)
+            {
+                _viewContainer.RemoveFromSuperview();
+            }
+            _viewContainer = new UIView(new CGRect(0, 0, View.Frame.Width, 395f));
+            _viewContainer.BackgroundColor = UIColor.Clear;
+
+            var groupAccountList = DataManager.DataManager.SharedInstance.AccountsGroupList[pageIndex];
+
+            for (int i = 0; i < groupAccountList.Count; i++)
+            {
+                DashboardHomeAccountCard _homeAccountCard = new DashboardHomeAccountCard(_viewContainer, 68f * i);
+                string iconName = "Accounts-Smart-Meter-Icon";
+                if (groupAccountList[i].IsReAccount)
+                {
+                    iconName = "Accounts-RE-Icon";
+                }
+                else if (groupAccountList[i].IsNormalAccount)
+                {
+                    iconName = "Accounts-Normal-Icon";
+                }
+                _homeAccountCard.SetAccountIcon(iconName);
+                _homeAccountCard.SetNickname(groupAccountList[i].accNickName);
+                _homeAccountCard.SetAccountNo(groupAccountList[i].accNum);
+                _viewContainer.AddSubview(_homeAccountCard.GetUI());
+                _homeAccountCard.AdjustLabels(groupAccountList[i]);
+                _homeAccountCard.SetTapAccountCardEvent(new UITapGestureRecognizer(() =>
+                {
+                    Debug.WriteLine("i========= " + i);
+                    //var g = groupAccountList[i];
+                    //OnAccountCardSelected(groupAccountList[i]);
+                }));
+            }
+            View.AddSubview(_viewContainer);
+        }
+
+        private void UpdateDueForDisplayedAccounts(List<DueAmountDataModel> dueDetails)
+        {
+            var groupAccountList = DataManager.DataManager.SharedInstance.AccountsGroupList[pageIndex];
+
+            foreach (var due in dueDetails)
+            {
+                foreach (var account in groupAccountList)
+                {
+                    if (account.accNum == due.accNum)
+                    {
+                        var item = account;
+                        item.UpdateValues(due);
+                        DataManager.DataManager.SharedInstance.SaveDue(item);
+                        break;
+                    }
+                }
+            }
+        }
+
+        private async Task<bool> GetAccountsSummary(List<string> accounts, bool willGetNew = false)
+        {
+            bool res = false;
+
+            var response = await ServiceCall.GetLinkedAccountsSummaryInfo(accounts);
+            res = response.didSucceed;
+
+            if (response.didSucceed && response.AccountDues?.Count > 0)
+            {
+                UpdateDueForDisplayedAccounts(response.AccountDues);
+            }
+            else
+            {
+                //FAIL scenarios here...
+            }
+            return res;
+        }
+
+        /// <summary>
+        /// Loads the Accounts with Dues
+        /// </summary>
+        private void LoadAccountsWithDues()
+        {
+            NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
+            {
+                InvokeOnMainThread(async () =>
+                {
+                    if (NetworkUtility.isReachable)
+                    {
+                        bool shouldReload = false;
+                        var accounts = GetAccountsToUpdate(ref shouldReload);
+
+                        if (accounts?.Count > 0)
+                        {
+                            //ActivityIndicator.Show();
+                            await GetAccountsSummary(accounts);
+                            AddUpdateCards();
+                            //ActivityIndicator.Hide();
+                        }
+                        else if (shouldReload)
+                        {
+                            AddUpdateCards();
+                        }
+                    }
+                    else
+                    {
+                        DisplayNoDataAlert();
+                    }
+                });
+            });
+        }
+
+        /// <summary>
+        /// Gets the accounts to update.
+        /// </summary>
+        /// <returns>The accounts to update.</returns>
+        private List<string> GetAccountsToUpdate(ref bool shouldReload)
+        {
+            var acctsToGetLatestDues = new List<string>();
+            shouldReload = RemoveDeletedAccounts() > 0;
+
+            var groupAccountList = DataManager.DataManager.SharedInstance.AccountsGroupList[pageIndex];
+
+            // cache updates
+            for (int i = 0; i < groupAccountList.Count; i++)
+            {
+                var account = groupAccountList[i];
+                var acctCached = DataManager.DataManager.SharedInstance.GetDue(account.accNum);
+                if (acctCached == null)
+                {
+                    // get latest if not in cache
+                    acctsToGetLatestDues.Add(account.accNum);
+                }
+                else if (account.amountDue != acctCached.amountDue
+                       || string.Compare(account.accNickName, acctCached.accNickName) != 0)
+                {
+                    // update nickname
+                    account.amountDue = acctCached.amountDue;
+                    account.accNickName = acctCached.accNickName;
+                    groupAccountList[i] = account;
+                    shouldReload = true;
+                }
+            }
+
+            return acctsToGetLatestDues;
+        }
+
+        /// <summary>
+        /// Removes the deleted accounts.
+        /// </summary>
+        /// <returns>The deleted accounts.</returns>
+        private int RemoveDeletedAccounts()
+        {
+            int removedAccounts = 0;
+            List<string> keysToDelete = new List<string>();
+            var accountsList = DataManager.DataManager.SharedInstance.AccountRecordsList.d;
+            var groupAccountList = DataManager.DataManager.SharedInstance.AccountsGroupList[pageIndex];
+
+            // remove deleted accounts
+            foreach (var delAccNum in DataManager.DataManager.SharedInstance.AccountsDeleted)
+            {
+                var deleteIndex = groupAccountList.FindIndex(x => x.accNum == delAccNum);
+                if (deleteIndex > -1)
+                {
+                    groupAccountList.RemoveAt(deleteIndex);
+                    removedAccounts++;
+                }
+            }
+
+            // for accounts deleted in backend or encountered remove error
+            var acctsToDelete = new List<string>();
+            foreach (var item in groupAccountList)
+            {
+                // delete later if cannot find in main list
+                var index = accountsList?.FindIndex(x => x.accNum == item.accNum);
+                if (index < 0)
+                {
+                    acctsToDelete.Add(item.accNum);
+                }
+            }
+
+            foreach (var delAccNum in acctsToDelete)
+            {
+                var deleteIndex = groupAccountList.FindIndex(x => x.accNum == delAccNum);
+                if (deleteIndex > -1)
+                {
+                    groupAccountList.RemoveAt(deleteIndex);
+                    removedAccounts++;
+                }
+            }
+
+            if (removedAccounts > 0)
+            {
+                DataManager.DataManager.SharedInstance.AccountsDeleted.Clear();
+            }
+
+            return removedAccounts;
+        }
+
+        private void OnAccountCardSelected(DueAmountDataModel account)
+        {
+            var index = DataManager.DataManager.SharedInstance.AccountRecordsList?.d?.FindIndex(x => x.accNum == account.accNum) ?? -1;
+
+            if (index >= 0)
+            {
+                var selected = DataManager.DataManager.SharedInstance.AccountRecordsList.d[index];
+                DataManager.DataManager.SharedInstance.SelectAccount(selected.accNum);
+                DataManager.DataManager.SharedInstance.IsSameAccount = false;
+                UIStoryboard storyBoard = UIStoryboard.FromName("Dashboard", null);
+                var vc = storyBoard.InstantiateViewController("DashboardViewController") as DashboardViewController;
+                if (vc != null)
+                {
+                    vc.ShouldShowBackButton = true;
+                    ShowViewController(vc, null);
+                }
+            }
         }
 
         public override void ViewDidLayoutSubviews()
@@ -32,6 +257,5 @@ namespace myTNB
             base.ViewDidLayoutSubviews();
             View.BackgroundColor = UIColor.Clear;
         }
-
     }
 }

@@ -898,10 +898,6 @@
     <ImageAsset Include="Assets.xcassets\Services-ApplyAutoPay.imageset\applyAutopay.png" />
     <ImageAsset Include="Assets.xcassets\Services-ApplyAutoPay.imageset\applyAutopay%402x.png" />
     <ImageAsset Include="Assets.xcassets\Services-ApplyAutoPay.imageset\applyAutopay%403x-1.png" />
-    <ImageAsset Include="Assets.xcassets\Accounts-Smart-Meter-Icon.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Accounts-Smart-Meter-Icon.imageset\Accounts-Smart-Meter-Icon.png" />
-    <ImageAsset Include="Assets.xcassets\Accounts-Smart-Meter-Icon.imageset\Accounts-Smart-Meter-Icon%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Accounts-Smart-Meter-Icon.imageset\Accounts-Smart-Meter-Icon%403x.png" />
     <ImageAsset Include="Assets.xcassets\Notification-New.imageset\icHeaderNotificationUnread.png" />
     <ImageAsset Include="Assets.xcassets\Notification-New.imageset\icHeaderNotificationUnread%402x.png" />
     <ImageAsset Include="Assets.xcassets\Notification-New.imageset\icHeaderNotificationUnread%403x.png" />
@@ -960,6 +956,18 @@
     <ImageAsset Include="Assets.xcassets\Background-Home.imageset\fluidBackground%403x.png" />
     <ImageAsset Include="Assets.xcassets\Background-Home.imageset\fluidBackground%402x.png" />
     <ImageAsset Include="Assets.xcassets\Background-Home.imageset\fluidBackground.png" />
+    <ImageAsset Include="Assets.xcassets\Accounts-RE-Icon.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Accounts-RE-Icon.imageset\Accounts-RE-Icon.png" />
+    <ImageAsset Include="Assets.xcassets\Accounts-RE-Icon.imageset\Accounts-RE-Icon%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Accounts-RE-Icon.imageset\Accounts-RE-Icon%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Accounts-Normal-Icon.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Accounts-Normal-Icon.imageset\Accounts-Normal-Icon.png" />
+    <ImageAsset Include="Assets.xcassets\Accounts-Normal-Icon.imageset\Accounts-Normal-Icon%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Accounts-Normal-Icon.imageset\Accounts-Normal-Icon%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Accounts-Smart-Meter-Icon.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Accounts-Smart-Meter-Icon.imageset\icDisplaySmartMeter.png" />
+    <ImageAsset Include="Assets.xcassets\Accounts-Smart-Meter-Icon.imageset\icDisplaySmartMeter%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Accounts-Smart-Meter-Icon.imageset\icDisplaySmartMeter%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -1246,6 +1254,9 @@
     <Folder Include="Tab Bar\" />
     <Folder Include="Assets.xcassets\Services-Feedback.imageset\" />
     <Folder Include="Assets.xcassets\Background-Home.imageset\" />
+    <Folder Include="Assets.xcassets\Accounts-RE-Icon.imageset\" />
+    <Folder Include="Assets.xcassets\Accounts-Normal-Icon.imageset\" />
+    <Folder Include="Assets.xcassets\Accounts-Smart-Meter-Icon.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
