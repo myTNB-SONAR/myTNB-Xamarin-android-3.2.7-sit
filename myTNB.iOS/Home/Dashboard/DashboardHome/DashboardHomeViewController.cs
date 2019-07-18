@@ -165,7 +165,6 @@ namespace myTNB
             _homeTableView.SeparatorStyle = UITableViewCellSeparatorStyle.None;
             _homeTableView.RowHeight = UITableView.AutomaticDimension;
             _homeTableView.EstimatedRowHeight = 600.0F;
-            _homeTableView.Bounces = false;
             _homeTableView.RegisterClassForCellReuse(typeof(AccountsTableViewCell), DashboardHomeConstants.Cell_Accounts);
             _homeTableView.RegisterClassForCellReuse(typeof(HelpTableViewCell), DashboardHomeConstants.Cell_Help);
             _homeTableView.RegisterClassForCellReuse(typeof(ServicesTableViewCell), DashboardHomeConstants.Cell_Services);
@@ -224,6 +223,7 @@ namespace myTNB
         {
             if (ImageViewGradientImage == null) { return; }
             var scrollDiff = scrollView.ContentOffset.Y - _previousScrollOffset;
+            if (scrollDiff < 0 || (scrollDiff > (scrollView.ContentSize.Height - scrollView.Frame.Size.Height))) { return; }
             _previousScrollOffset = tableViewAccounts.ContentOffset.Y;
             CGRect frame = ImageViewGradientImage.Frame;
             frame.Y = scrollDiff > 0 ? 0 - scrollDiff : frame.Y + scrollDiff;
