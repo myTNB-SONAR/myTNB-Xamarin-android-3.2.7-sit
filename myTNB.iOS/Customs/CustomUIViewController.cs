@@ -15,7 +15,8 @@ namespace myTNB
         internal bool IsGradientRequired;
         internal bool IsGradientImageRequired;
         internal UIImageView ImageViewGradientImage;
-        private UIView _viewToast, _viewToastOverlay, _statusBarView;
+        internal UIView _statusBarView;
+        private UIView _viewToast, _viewToastOverlay;
         private UILabel _lblToastDetails;
         private bool _isAnimating;
 
@@ -219,7 +220,8 @@ namespace myTNB
 
         private void CreateImageGradient()
         {
-            ImageViewGradientImage = new UIImageView(new CGRect(0, 0, View.Frame.Width, View.Frame.Height / 2))
+            ImageViewGradientImage = new UIImageView(new CGRect(0, 0
+                , View.Frame.Width, UIApplication.SharedApplication.KeyWindow.Frame.Height * 0.61F))
             {
                 Image = UIImage.FromBundle("Background-Home")
             };
@@ -228,7 +230,7 @@ namespace myTNB
 
         #endregion
         #region Customize View
-        public void SetStatusBarNoOverlap()
+        public virtual void SetStatusBarNoOverlap()
         {
             _statusBarView = new UIView(new CGRect(0, 0, View.Frame.Width, DeviceHelper.GetStatusBarHeight()));
             View.AddSubview(_statusBarView);

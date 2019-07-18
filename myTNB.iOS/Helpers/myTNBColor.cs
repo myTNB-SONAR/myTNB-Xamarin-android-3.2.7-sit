@@ -22,7 +22,8 @@ using UIKit;  namespace myTNB {
         readonly static UIColor _grey = new UIColor(red: 0.55f, green: 0.55f, blue: 0.55f, alpha: 1.0f);
         readonly static UIColor _babyBlue = new UIColor(red: 0.61f, green: 0.82f, blue: 1f, alpha: 1.0f);
         readonly static UIColor _waterBlue = new UIColor(red: 0.11f, green: 0.27f, blue: 0.79f, alpha: 1.0f);
-        
+        readonly static UIColor _clearBlue = new UIColor(red: 0.16f, green: 0.59f, blue: 0.98f, alpha: 1.0f);
+
         /// <summary>         /// A color with RGBA of (0.47, 0.19, 0.83, 1).         /// </summary>         public static UIColor GradientPurpleDarkElement
         {
             get
@@ -196,6 +197,14 @@ using UIKit;  namespace myTNB {
             get
             {
                 return _waterBlue;
+            }
+        }
+
+        public static UIColor ClearBlue
+        {
+            get
+            {
+                return _clearBlue;
             }
         }
     } }

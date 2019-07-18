@@ -18,6 +18,8 @@ namespace myTNB
 
         private UITableView _homeTableView;
         private DashboardHomeHeader _dashboardHomeHeader;
+        private nfloat _previousScrollOffset;
+        private nfloat _imageGradientHeight;
         UIPageViewController _accountsPageViewController;
 
         public override void ViewDidLoad()
@@ -40,6 +42,7 @@ namespace myTNB
             _homeTableView.Source = new DashboardHomeDataSource(this, _accountsPageViewController);
             _homeTableView.ReloadData();
             OnUpdateNotification();
+            _imageGradientHeight = IsGradientImageRequired ? ImageViewGradientImage.Frame.Height : 0;
         }
 
         public override void ViewWillAppear(bool animated)
@@ -50,6 +53,13 @@ namespace myTNB
         public override void ViewDidAppear(bool animated)
         {
             base.ViewDidAppear(animated);
+        }
+
+        public override void SetStatusBarNoOverlap()
+        {
+            base.SetStatusBarNoOverlap();
+            _statusBarView.BackgroundColor = MyTNBColor.ClearBlue;
+            _statusBarView.Hidden = true;
         }
 
         private void NotificationDidChange(NSNotification notification)
@@ -210,20 +220,15 @@ namespace myTNB
             return vc;
         }
 
-
-        nfloat previousScrollOffset;
         internal void OnTableViewScroll(UIScrollView scrollView)
         {
-            if (ImageViewGradientImage == null)
-            {
-                return;
-            }
-            var scrollDiff = scrollView.ContentOffset.Y - previousScrollOffset;
-            var isScrollingDown = scrollDiff > 0;
-            previousScrollOffset = tableViewAccounts.ContentOffset.Y;
+            if (ImageViewGradientImage == null) { return; }
+            var scrollDiff = scrollView.ContentOffset.Y - _previousScrollOffset;
+            _previousScrollOffset = tableViewAccounts.ContentOffset.Y;
             CGRect frame = ImageViewGradientImage.Frame;
-            frame.Y = isScrollingDown ? 0 - scrollDiff : frame.Y + scrollDiff;
+            frame.Y = scrollDiff > 0 ? 0 - scrollDiff : frame.Y + scrollDiff;
             ImageViewGradientImage.Frame = frame;
+            _statusBarView.Hidden = !(scrollDiff > 0 && scrollDiff > _imageGradientHeight / 2);
         }
     }
 }
