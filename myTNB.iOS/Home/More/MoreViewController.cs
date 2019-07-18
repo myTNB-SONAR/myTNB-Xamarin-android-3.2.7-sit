@@ -11,7 +11,7 @@ using System.Diagnostics;
 
 namespace myTNB
 {
-    public partial class MoreViewController : UIViewController
+    public partial class MoreViewController : CustomUIViewController
     {
         public MoreViewController(IntPtr handle) : base(handle)
         {

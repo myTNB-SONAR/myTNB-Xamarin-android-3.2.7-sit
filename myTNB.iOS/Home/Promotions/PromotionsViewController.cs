@@ -14,7 +14,7 @@ using System.Diagnostics;
 
 namespace myTNB
 {
-    public partial class PromotionsViewController : UIViewController
+    public partial class PromotionsViewController : CustomUIViewController
     {
         public PromotionsViewController(IntPtr handle) : base(handle)
         {

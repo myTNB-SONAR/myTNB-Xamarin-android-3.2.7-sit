@@ -236,6 +236,9 @@
     <Reference Include="Refit">
       <HintPath>..\packages\Refit.4.6.58\lib\netstandard2.0\Refit.dll</HintPath>
     </Reference>
+    <Reference Include="Xamarin.Facebook.Shimmer.iOS">
+      <HintPath>..\packages\Xamarin.Facebook.Shimmer.1.0.0\lib\xamarinios10\Xamarin.Facebook.Shimmer.iOS.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Contents.json" />
@@ -353,7 +356,6 @@
     <ImageAsset Include="Assets.xcassets\Tab-Bill.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Tab-Promotions.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Tab-Feedback.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Tab-More.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Download.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Download.imageset\save.png" />
     <ImageAsset Include="Assets.xcassets\Download.imageset\save%402x.png" />
@@ -457,9 +459,6 @@
     <ImageAsset Include="Assets.xcassets\IC-Payment-FPX.imageset\ic_payment_fpx%402x.png" />
     <ImageAsset Include="Assets.xcassets\IC-Payment-FPX.imageset\ic_payment_fpx%403x.png" />
     <ImageAsset Include="Assets.xcassets\Notification-New.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Notification-New.imageset\ic_header_notification_unread.png" />
-    <ImageAsset Include="Assets.xcassets\Notification-New.imageset\ic_header_notification_unread%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Notification-New.imageset\ic_header_notification_unread%403x.png" />
     <ImageAsset Include="Assets.xcassets\Call.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Call.imageset\ic_display_call.png" />
     <ImageAsset Include="Assets.xcassets\Call.imageset\ic_display_call%402x.png" />
@@ -644,23 +643,14 @@
     <ImageAsset Include="Assets.xcassets\Tab-Feedback.imageset\ic_menu_feedback.png" />
     <ImageAsset Include="Assets.xcassets\Tab-Feedback.imageset\ic_menu_feedback%402x.png" />
     <ImageAsset Include="Assets.xcassets\Tab-Feedback.imageset\ic_menu_feedback%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Tab-Promotions.imageset\ic_menu_promo.png" />
-    <ImageAsset Include="Assets.xcassets\Tab-Promotions.imageset\ic_menu_promo%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Tab-Promotions.imageset\ic_menu_promo%403x.png" />
     <ImageAsset Include="Assets.xcassets\Tab-Dashboard.imageset\ic_menu_dashboard.png" />
     <ImageAsset Include="Assets.xcassets\Tab-Dashboard.imageset\ic_menu_dashboard%402x.png" />
     <ImageAsset Include="Assets.xcassets\Tab-Dashboard.imageset\ic_menu_dashboard%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Tab-More.imageset\ic_menu_more.png" />
-    <ImageAsset Include="Assets.xcassets\Tab-More.imageset\ic_menu_more%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Tab-More.imageset\ic_menu_more%403x.png" />
     <ImageAsset Include="Assets.xcassets\Payment-Checkbox-Active.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Payment-Checkbox-Inactive.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Payment-Checkbox-Active.imageset\ic_action_checkbox_active.png" />
     <ImageAsset Include="Assets.xcassets\Payment-Checkbox-Active.imageset\ic_action_checkbox_active%402x.png" />
     <ImageAsset Include="Assets.xcassets\Payment-Checkbox-Active.imageset\ic_action_checkbox_active%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Tab-Bill.imageset\ic_menu_bill.png" />
-    <ImageAsset Include="Assets.xcassets\Tab-Bill.imageset\ic_menu_bill%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Tab-Bill.imageset\ic_menu_bill%403x.png" />
     <ImageAsset Include="Assets.xcassets\IC-Action-Show-Password.imageset\icActionShowPassword.png" />
     <ImageAsset Include="Assets.xcassets\IC-Action-Show-Password.imageset\icActionShowPassword%402x.png" />
     <ImageAsset Include="Assets.xcassets\IC-Action-Show-Password.imageset\icActionShowPassword%403x.png" />
@@ -694,12 +684,6 @@
     <ImageAsset Include="Assets.xcassets\Notification-Banner-Reconnection.imageset\img_notifications_reconnection%403x.png" />
     <ImageAsset Include="Assets.xcassets\Tab-Promotions-Unread-Active.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Tab-Promotions-Unread-Inactive.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Tab-Promotions-Unread-Inactive.imageset\ic_menu_promo_unread.png" />
-    <ImageAsset Include="Assets.xcassets\Tab-Promotions-Unread-Inactive.imageset\ic_menu_promo_unread%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Tab-Promotions-Unread-Inactive.imageset\ic_menu_promo_unread%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Tab-Promotions-Unread-Active.imageset\ic_menu_promo_toggled_unread.png" />
-    <ImageAsset Include="Assets.xcassets\Tab-Promotions-Unread-Active.imageset\ic_menu_promo_toggled_unread%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Tab-Promotions-Unread-Active.imageset\ic_menu_promo_toggled_unread%403x.png" />
     <ImageAsset Include="Assets.xcassets\IC-RE-Leaf-Green.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\IC-RE-Leaf-White.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\IC-RE-Leaf-White.imageset\icDisplayReDashboard.png" />
@@ -898,6 +882,92 @@
     <ImageAsset Include="Assets.xcassets\Feedback-Submitted-Generic.imageset\icTileSubmittedFeedback.png" />
     <ImageAsset Include="Assets.xcassets\Feedback-Submitted-Generic.imageset\icTileSubmittedFeedback%402x.png" />
     <ImageAsset Include="Assets.xcassets\Feedback-Submitted-Generic.imageset\icTileSubmittedFeedback%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Services-ApplySSMR.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Services-ApplySSMR.imageset\submitMeter.png" />
+    <ImageAsset Include="Assets.xcassets\Services-ApplySSMR.imageset\submitMeter%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Services-ApplySSMR.imageset\submitMeter%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Services-CheckStatus.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Services-CheckStatus.imageset\checkStatus.png" />
+    <ImageAsset Include="Assets.xcassets\Services-CheckStatus.imageset\checkStatus%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Services-CheckStatus.imageset\checkStatus%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Services-SetAppointments.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Services-SetAppointments.imageset\setAppointments.png" />
+    <ImageAsset Include="Assets.xcassets\Services-SetAppointments.imageset\setAppointments%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Services-SetAppointments.imageset\setAppointments%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Services-ApplyAutoPay.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Services-ApplyAutoPay.imageset\applyAutopay.png" />
+    <ImageAsset Include="Assets.xcassets\Services-ApplyAutoPay.imageset\applyAutopay%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Services-ApplyAutoPay.imageset\applyAutopay%403x-1.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-New.imageset\icHeaderNotificationUnread.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-New.imageset\icHeaderNotificationUnread%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-New.imageset\icHeaderNotificationUnread%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Tab-Home-Selected.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Tab-Home-Selected.imageset\homeSelected.png" />
+    <ImageAsset Include="Assets.xcassets\Tab-Home-Selected.imageset\homeSelected%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Tab-Home-Selected.imageset\homeSelected%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Tab-Home.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Tab-Bill.imageset\bill.png" />
+    <ImageAsset Include="Assets.xcassets\Tab-Bill.imageset\bill%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Tab-Bill.imageset\bill%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Tab-Bill-Selected.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Tab-Bill-Selected.imageset\billSelected.png" />
+    <ImageAsset Include="Assets.xcassets\Tab-Bill-Selected.imageset\billSelected%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Tab-Bill-Selected.imageset\billSelected%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Tab-Profile-Selected.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Tab-Profile-Selected.imageset\profileSelected.png" />
+    <ImageAsset Include="Assets.xcassets\Tab-Profile-Selected.imageset\profileSelected%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Tab-Profile-Selected.imageset\profileSelected%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Tab-Profile.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Tab-Profile.imageset\ic_menu_more.png" />
+    <ImageAsset Include="Assets.xcassets\Tab-Profile.imageset\ic_menu_more%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Tab-Profile.imageset\ic_menu_more%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Tab-Profile.imageset\profile.png" />
+    <ImageAsset Include="Assets.xcassets\Tab-Profile.imageset\profile%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Tab-Profile.imageset\profile%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Tab-Promotions-Selected.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Tab-Promotions.imageset\whatSNew.png" />
+    <ImageAsset Include="Assets.xcassets\Tab-Promotions.imageset\whatSNew%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Tab-Promotions.imageset\whatSNew%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Tab-Rewards.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Tab-Rewards.imageset\rewards.png" />
+    <ImageAsset Include="Assets.xcassets\Tab-Rewards.imageset\rewards%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Tab-Rewards.imageset\rewards%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Tab-Rewards-Selected.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Tab-Rewards-Selected.imageset\rewardsSelected.png" />
+    <ImageAsset Include="Assets.xcassets\Tab-Rewards-Selected.imageset\rewardsSelected%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Tab-Rewards-Selected.imageset\rewardsSelected%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Services-Feedback.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Services-Feedback.imageset\feedback.png" />
+    <ImageAsset Include="Assets.xcassets\Services-Feedback.imageset\feedback%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Services-Feedback.imageset\feedback%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Tab-Promotions-Selected.imageset\whatSNewSelected-1.png" />
+    <ImageAsset Include="Assets.xcassets\Tab-Promotions-Selected.imageset\whatSNewSelected%402x-1.png" />
+    <ImageAsset Include="Assets.xcassets\Tab-Promotions-Selected.imageset\whatSNewSelected%403x-1.png" />
+    <ImageAsset Include="Assets.xcassets\Tab-Promotions-Unread-Active.imageset\whatSNewSelectedNotification.png" />
+    <ImageAsset Include="Assets.xcassets\Tab-Promotions-Unread-Active.imageset\whatSNewSelectedNotification%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Tab-Promotions-Unread-Active.imageset\whatSNewSelectedNotification%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Tab-Promotions-Unread-Inactive.imageset\whatSNewNotification.png" />
+    <ImageAsset Include="Assets.xcassets\Tab-Promotions-Unread-Inactive.imageset\whatSNewNotification%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Tab-Promotions-Unread-Inactive.imageset\whatSNewNotification%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Tab-Home.imageset\home.png" />
+    <ImageAsset Include="Assets.xcassets\Tab-Home.imageset\home%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Tab-Home.imageset\home%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Background-Home.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Background-Home.imageset\fluidBackground%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Background-Home.imageset\fluidBackground%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Background-Home.imageset\fluidBackground.png" />
+    <ImageAsset Include="Assets.xcassets\Accounts-RE-Icon.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Accounts-RE-Icon.imageset\Accounts-RE-Icon.png" />
+    <ImageAsset Include="Assets.xcassets\Accounts-RE-Icon.imageset\Accounts-RE-Icon%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Accounts-RE-Icon.imageset\Accounts-RE-Icon%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Accounts-Normal-Icon.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Accounts-Normal-Icon.imageset\Accounts-Normal-Icon.png" />
+    <ImageAsset Include="Assets.xcassets\Accounts-Normal-Icon.imageset\Accounts-Normal-Icon%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Accounts-Normal-Icon.imageset\Accounts-Normal-Icon%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Accounts-Smart-Meter-Icon.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Accounts-Smart-Meter-Icon.imageset\icDisplaySmartMeter.png" />
+    <ImageAsset Include="Assets.xcassets\Accounts-Smart-Meter-Icon.imageset\icDisplaySmartMeter%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Accounts-Smart-Meter-Icon.imageset\icDisplaySmartMeter%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -958,7 +1028,6 @@
     <Folder Include="Assets.xcassets\Tab-Bill.imageset\" />
     <Folder Include="Assets.xcassets\Tab-Promotions.imageset\" />
     <Folder Include="Assets.xcassets\Tab-Feedback.imageset\" />
-    <Folder Include="Assets.xcassets\Tab-More.imageset\" />
     <Folder Include="Home\" />
     <Folder Include="Home\Dashboard\" />
     <Folder Include="Home\Bill\" />
@@ -1161,11 +1230,36 @@
     <Folder Include="Assets.xcassets\Notification-DeleteDisabled.imageset\" />
     <Folder Include="Assets.xcassets\Feedback-Generic.imageset\" />
     <Folder Include="Assets.xcassets\Feedback-Submitted-Generic.imageset\" />
+    <Folder Include="Home\Dashboard\DashboardHome\" />
+    <Folder Include="Home\Dashboard\DashboardHome\Help\" />
+    <Folder Include="Home\Dashboard\DashboardHome\Services\" />
+    <Folder Include="Assets.xcassets\Services-ApplySSMR.imageset\" />
+    <Folder Include="Assets.xcassets\Services-CheckStatus.imageset\" />
+    <Folder Include="Assets.xcassets\Services-SetAppointments.imageset\" />
+    <Folder Include="Assets.xcassets\Services-ApplyAutoPay.imageset\" />
+    <Folder Include="Customs\DashboardHome\" />
+    <Folder Include="Home\Dashboard\DashboardHome\Accounts\" />
+    <Folder Include="Assets.xcassets\Accounts-Smart-Meter-Icon.imageset\" />
     <Folder Include="Customs\Generic Line\" />
     <Folder Include="Customs\Generic Tableview Selector\" />
     <Folder Include="Customs\Generic Page View\" />
     <Folder Include="SSMR\" />
     <Folder Include="SSMR\Onboarding\" />
+    <Folder Include="Assets.xcassets\Tab-Home-Selected.imageset\" />
+    <Folder Include="Assets.xcassets\Tab-Home.imageset\" />
+    <Folder Include="Assets.xcassets\Tab-Bill-Selected.imageset\" />
+    <Folder Include="Assets.xcassets\Tab-Profile-Selected.imageset\" />
+    <Folder Include="Assets.xcassets\Tab-Profile.imageset\" />
+    <Folder Include="Assets.xcassets\Tab-Promotions-Selected.imageset\" />
+    <Folder Include="Assets.xcassets\Tab-Rewards.imageset\" />
+    <Folder Include="Assets.xcassets\Tab-Rewards-Selected.imageset\" />
+    <Folder Include="Rewards\" />
+    <Folder Include="Tab Bar\" />
+    <Folder Include="Assets.xcassets\Services-Feedback.imageset\" />
+    <Folder Include="Assets.xcassets\Background-Home.imageset\" />
+    <Folder Include="Assets.xcassets\Accounts-RE-Icon.imageset\" />
+    <Folder Include="Assets.xcassets\Accounts-Normal-Icon.imageset\" />
+    <Folder Include="Assets.xcassets\Accounts-Smart-Meter-Icon.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -1629,10 +1723,6 @@
     <Compile Include="Home\Bill\NoDataViewCell.designer.cs">
       <DependentUpon>NoDataViewCell.cs</DependentUpon>
     </Compile>
-    <Compile Include="Home\Dashboard\HomeTabBarController.cs" />
-    <Compile Include="Home\Dashboard\HomeTabBarController.designer.cs">
-      <DependentUpon>HomeTabBarController.cs</DependentUpon>
-    </Compile>
     <Compile Include="Helpers\LabelHelper.cs" />
     <Compile Include="Home\Feedback\FeedbackFileNameHelper.cs" />
     <Compile Include="Sitecore CMS\Model\TimestampResponseModel.cs" />
@@ -1755,10 +1845,6 @@
       <DependentUpon>RatingResultsViewController.cs</DependentUpon>
     </Compile>
     <Compile Include="Helpers\TextHelper.cs" />
-    <Compile Include="Home\Dashboard\DashboardHomeViewController.cs" />
-    <Compile Include="Home\Dashboard\DashboardHomeViewController.designer.cs">
-      <DependentUpon>DashboardHomeViewController.cs</DependentUpon>
-    </Compile>
     <Compile Include="Home\Dashboard\DashboardNavigationController.cs" />
     <Compile Include="Home\Dashboard\DashboardNavigationController.designer.cs">
       <DependentUpon>DashboardNavigationController.cs</DependentUpon>
@@ -1874,6 +1960,34 @@
     <Compile Include="SSMR\Onboarding\SSMROnboardingController.cs" />
     <Compile Include="SSMR\Onboarding\SSMROnboardingDataController.cs" />
     <Compile Include="SSMR\Onboarding\SSMROnboardingModelController.cs" />
+    <Compile Include="Home\Dashboard\DashboardHome\DashboardHomeViewController.cs" />
+    <Compile Include="Home\Dashboard\DashboardHome\DashboardHomeViewController.designer.cs">
+      <DependentUpon>DashboardHomeViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Home\Dashboard\DashboardHome\DashboardHomeDataSource.cs" />
+    <Compile Include="Home\Dashboard\DashboardHome\Help\HelpTableViewCell.cs" />
+    <Compile Include="Home\Dashboard\DashboardHome\Help\HelpTableViewCell.designer.cs">
+      <DependentUpon>HelpTableViewCell.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Home\Dashboard\DashboardHome\Services\ServicesTableViewCell.cs" />
+    <Compile Include="Home\Dashboard\DashboardHome\DashboardHomeConstants.cs" />
+    <Compile Include="Customs\DashboardHome\DashboardHomeHeader.cs" />
+    <Compile Include="Customs\DashboardHome\DashboardHomeAccountCard.cs" />
+    <Compile Include="Home\Dashboard\DashboardHome\Accounts\AccountsTableViewCell.cs" />
+    <Compile Include="Home\Dashboard\DashboardHome\Accounts\AccountsPageViewDataSource.cs" />
+    <Compile Include="Home\Dashboard\DashboardHome\Accounts\AccountsContentViewController.cs" />
+    <Compile Include="Home\Dashboard\DashboardHome\Accounts\AccountsContentViewController.designer.cs">
+      <DependentUpon>AccountsContentViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Rewards\RewardsViewController.cs" />
+    <Compile Include="Rewards\RewardsViewController.designer.cs">
+      <DependentUpon>RewardsViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Tab Bar\HomeTabBarController.cs" />
+    <Compile Include="Tab Bar\HomeTabBarController.designer.cs">
+      <DependentUpon>HomeTabBarController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Tab Bar\TabbarConstants.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />
