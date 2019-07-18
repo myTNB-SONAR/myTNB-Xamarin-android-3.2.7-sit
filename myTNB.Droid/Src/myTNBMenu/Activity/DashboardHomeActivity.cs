@@ -614,7 +614,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 IMenuItem promotionMenuItem = bottomMenu.FindItem(Resource.Id.menu_promotion);
                 if (promotionMenuItem != null)
                 {
-                    promotionMenuItem.SetIcon(Resource.Drawable.ic_menu_promotions_unread_selector);
+                    // promotionMenuItem.SetIcon(Resource.Drawable.ic_menu_promotions_unread_selector);
                 }
             }
         }
@@ -628,7 +628,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 IMenuItem promotionMenuItem = bottomMenu.FindItem(Resource.Id.menu_promotion);
                 if (promotionMenuItem != null)
                 {
-                    promotionMenuItem.SetIcon(Resource.Drawable.ic_menu_promotions_selector);
+                    // promotionMenuItem.SetIcon(Resource.Drawable.ic_menu_promotions_selector);
 
                 }
             }
