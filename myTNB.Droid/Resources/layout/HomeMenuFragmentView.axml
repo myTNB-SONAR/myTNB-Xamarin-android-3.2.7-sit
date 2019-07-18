@@ -101,7 +101,7 @@
                     android:layout_height="wrap_content"
                     android:textSize="14dp"
                     android:text="My Services"
-                    android:textColor="@android:color/white"
+                    android:textColor="@color/powerBlue"
                     android:layout_gravity="left"/>
                 <com.facebook.shimmer.ShimmerFrameLayout
                     android:id="@+id/myServiceShimmerView"
@@ -149,7 +149,7 @@
                     android:layout_height="wrap_content"
                     android:textSize="14dp"
                     android:text="Need Help?"
-                    android:textColor="@android:color/white"
+                    android:textColor="@color/powerBlue"
                     android:layout_gravity="left"/>
                 <com.facebook.shimmer.ShimmerFrameLayout
                     android:id="@+id/newFAQShimmerView"

@@ -206,7 +206,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 
             void UpdateIsInnerDashboard(bool yesno);
 
-
+			void BillsMenuRefresh(AccountData accountData);
         }
 
 		public interface IUserActionsListener : IBasePresenter
