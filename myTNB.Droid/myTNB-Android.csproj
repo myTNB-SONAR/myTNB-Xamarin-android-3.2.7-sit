@@ -1206,6 +1206,10 @@
     <AndroidResource Include="Resources\drawable-xhdpi\ic_menu_promotion.png" />
     <AndroidResource Include="Resources\drawable-xxhdpi\ic_menu_promotion.png" />
     <AndroidResource Include="Resources\drawable-xxxhdpi\ic_menu_promotion.png" />
+    <AndroidResource Include="Resources\layout\NewFAQShimmerComponentView.axml" />
+    <Compile Include="Src\myTNBMenu\Fragments\HomeMenu\Adapter\NewFAQAdapter.cs" />
+    <Compile Include="Src\myTNBMenu\Fragments\HomeMenu\Models\NewFAQ.cs" />
+    <Compile Include="Src\myTNBMenu\Fragments\HomeMenu\Adapter\NewFAQShimmerAdapter.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

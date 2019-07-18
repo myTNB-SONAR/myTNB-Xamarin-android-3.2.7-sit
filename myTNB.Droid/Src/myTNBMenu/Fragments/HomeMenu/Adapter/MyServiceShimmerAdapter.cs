@@ -26,8 +26,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
         {
             MyServiceShimmerViewHolder vh = holder as MyServiceShimmerViewHolder;
 
-            MyService model = shimmerList[position];
-
             TextViewUtils.SetMuseoSans500Typeface(vh.serviceTitle);
         }
 

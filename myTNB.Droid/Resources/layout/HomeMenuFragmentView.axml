@@ -91,7 +91,7 @@
                 android:layout_marginTop="16dp"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
-                android:layout_marginBottom="4dp"
+                android:layout_marginBottom="8dp"
                 android:id="@+id/myServiceContainer">
                 <TextView
                     android:id="@+id/myServiceTitle"
@@ -127,6 +127,54 @@
                     android:visibility="gone">
                     <android.support.v7.widget.RecyclerView
                         android:id="@+id/myServiceList"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:scrollIndicators="none" />
+                </LinearLayout>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="8dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginBottom="33dp"
+                android:id="@+id/newFAQContainer">
+                <TextView
+                    android:id="@+id/newFAQTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="14dp"
+                    android:text="Need Help?"
+                    android:textColor="@android:color/white"
+                    android:layout_gravity="left"/>
+                <com.facebook.shimmer.ShimmerFrameLayout
+                    android:id="@+id/newFAQShimmerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="7dp"
+                        android:orientation="vertical">
+                        <android.support.v7.widget.RecyclerView
+                            android:id="@+id/newFAQShimmerList"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:scrollIndicators="none" />
+                    </LinearLayout>
+                </com.facebook.shimmer.ShimmerFrameLayout>
+                <LinearLayout
+                    android:id="@+id/newFAQView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="7dp"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/newFAQList"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:scrollIndicators="none" />

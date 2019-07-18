@@ -18,6 +18,21 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 {
     public class HomeMenuFragment : BaseFragment
 	{
+        [BindView(Resource.Id.newFAQShimmerView)]
+        ShimmerFrameLayout newFAQShimmerView;
+
+        [BindView(Resource.Id.newFAQList)]
+        RecyclerView newFAQListRecycleView;
+
+        [BindView(Resource.Id.newFAQShimmerList)]
+        RecyclerView newFAQShimmerList;
+
+        [BindView(Resource.Id.newFAQView)]
+        LinearLayout newFAQView;
+
+        [BindView(Resource.Id.newFAQTitle)]
+        TextView newFAQTitle;
+
         [BindView(Resource.Id.myServiceShimmerView)]
         ShimmerFrameLayout myServiceShimmerView;
 
@@ -67,7 +82,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 SetAccountsRecyclerView();
                 SetAccountActionHeader();
                 SetMyServiceRecycleView();
-                TextViewUtils.SetMuseoSans500Typeface(myServiceTitle);
+                SetNewFAQRecycleView();
+                TextViewUtils.SetMuseoSans500Typeface(myServiceTitle, newFAQTitle);
             }
             catch (System.Exception e)
             {
@@ -86,6 +102,17 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             myServiceShimmerList.SetLayoutManager(layoutShimmerManager);
             // LoadShimmerServiceList(null);
             LoadServiceList(null);
+        }
+
+        private void SetNewFAQRecycleView()
+        {
+            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this.Activity, LinearLayoutManager.Horizontal, false);
+            newFAQListRecycleView.SetLayoutManager(linearLayoutManager);
+
+            LinearLayoutManager linearShimmerLayoutManager = new LinearLayoutManager(this.Activity, LinearLayoutManager.Horizontal, false);
+            newFAQShimmerList.SetLayoutManager(linearShimmerLayoutManager);
+            // LoadShimmerFAQList(null);
+            LoadFAQList(null);
         }
 
         private void SetAccountActionHeader()
@@ -158,7 +185,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             else
             {
                 List<MyService> dummyList = new List<MyService>();
-                for(int i = 0; i < 6; i++)
+                for (int i = 0; i < 6; i++)
                 {
                     dummyList.Add(new MyService()
                     {
@@ -186,7 +213,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 List<MyService> dummyList = new List<MyService>();
                 for (int i = 0; i < 5; i++)
                 {
-                    if(i == 0)
+                    if (i == 0)
                     {
                         dummyList.Add(new MyService()
                         {
@@ -230,7 +257,76 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 MyServiceAdapter adapter = new MyServiceAdapter(dummyList);
                 myServiceListRecycleView.SetAdapter(adapter);
             }
-            //myServiceShimmerView.StopShimmer();
+        }
+
+        public void LoadShimmerFAQList(List<NewFAQ> faqList)
+        {
+            newFAQShimmerView.Visibility = ViewStates.Visible;
+            newFAQView.Visibility = ViewStates.Gone;
+            if (faqList != null && faqList.Count() > 0)
+            {
+                NewFAQShimmerAdapter adapter = new NewFAQShimmerAdapter(faqList);
+                newFAQShimmerList.SetAdapter(adapter);
+            }
+            else
+            {
+                List<NewFAQ> dummyList = new List<NewFAQ>();
+                for(int i = 0; i < 3; i++)
+                {
+                    dummyList.Add(new NewFAQ()
+                    {
+                        NewFAQString = ""
+                    });
+                }
+                NewFAQShimmerAdapter adapter = new NewFAQShimmerAdapter(dummyList);
+                newFAQShimmerList.SetAdapter(adapter);
+            }
+            newFAQShimmerView.StartShimmer();
+        }
+
+        public void LoadFAQList(List<NewFAQ> faqList)
+        {
+            newFAQShimmerView.StopShimmer();
+            newFAQShimmerView.Visibility = ViewStates.Gone;
+            newFAQView.Visibility = ViewStates.Visible;
+            if (faqList != null && faqList.Count() > 0)
+            {
+                NewFAQAdapter adapter = new NewFAQAdapter(faqList);
+                newFAQListRecycleView.SetAdapter(adapter);
+            }
+            else
+            {
+                List<NewFAQ> dummyList = new List<NewFAQ>();
+                for (int i = 0; i < 3; i++)
+                {
+                    if(i == 0)
+                    {
+                        dummyList.Add(new NewFAQ()
+                        {
+                            Id = "0",
+                            NewFAQString = "How do I reset<br/>my password?"
+                        });
+                    }
+                    else if (i == 1)
+                    {
+                        dummyList.Add(new NewFAQ()
+                        {
+                            Id = "1",
+                            NewFAQString = "Learn how to<br/>read your<br/>meter."
+                        });
+                    }
+                    else if (i == 2)
+                    {
+                        dummyList.Add(new NewFAQ()
+                        {
+                            Id = "2",
+                            NewFAQString = "Check out how<br/>you can apply<br/>for AutoPay."
+                        });
+                    }
+                }
+                NewFAQAdapter adapter = new NewFAQAdapter(dummyList);
+                newFAQListRecycleView.SetAdapter(adapter);
+            }
         }
 
         private Shimmer.AlphaHighlightBuilder ShimmerEffectSetup()
