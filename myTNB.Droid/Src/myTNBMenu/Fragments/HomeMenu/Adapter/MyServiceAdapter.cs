@@ -1,4 +1,5 @@
 ﻿using Android.Support.V7.Widget;
+using Android.Text;
 using Android.Views;
 using Android.Widget;
 using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Models;
@@ -28,7 +29,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
 
 			MyService model = myServiceList[position];
 
-			vh.serviceTitle.Text = model.MyServiceTitle;
+            if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
+            {
+                vh.serviceTitle.TextFormatted = Html.FromHtml(model.MyServiceTitle, FromHtmlOptions.ModeLegacy);
+            }
+            else
+            {
+                vh.serviceTitle.TextFormatted = Html.FromHtml(model.MyServiceTitle);
+            }
 
             switch(model.Id)
             {

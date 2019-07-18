@@ -1168,8 +1168,6 @@
     <AndroidResource Include="Resources\drawable-mdpi\ic_menu_reward_toggled.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\ic_menu_reward_toggled.png" />
     <AndroidResource Include="Resources\drawable-xxhdpi\ic_menu_reward_toggled.png" />
-    <AndroidResource Include="Resources\drawable\blue_shadow.png" />
-    <AndroidResource Include="Resources\drawable\blue_filled_shadow.png" />
     <AndroidResource Include="Resources\drawable\custom_card_view.xml" />
     <AndroidResource Include="Resources\drawable-hdpi\apply_autopay.png" />
     <AndroidResource Include="Resources\drawable-hdpi\check_status.png" />

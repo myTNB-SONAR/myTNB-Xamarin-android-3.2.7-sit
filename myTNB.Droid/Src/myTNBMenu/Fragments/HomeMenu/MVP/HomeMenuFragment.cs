@@ -177,7 +177,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                         dummyList.Add(new MyService()
                         {
                             Id = "0",
-                            MyServiceTitle = "Apply for Self Meter Reading"
+                            MyServiceTitle = "Apply for Self<br/>Meter Reading"
                         });
                     }
                     else if (i == 1)
@@ -185,7 +185,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                         dummyList.Add(new MyService()
                         {
                             Id = "1",
-                            MyServiceTitle = "Check Status"
+                            MyServiceTitle = "Check<br/>Status"
                         });
                     }
                     else if (i == 2)
@@ -193,7 +193,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                         dummyList.Add(new MyService()
                         {
                             Id = "2",
-                            MyServiceTitle = "Give Us Feedback"
+                            MyServiceTitle = "Give Us<br/>Feedback"
                         });
                     }
                     else if (i == 3)
@@ -201,7 +201,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                         dummyList.Add(new MyService()
                         {
                             Id = "3",
-                            MyServiceTitle = "Set Appointments"
+                            MyServiceTitle = "Set<br/>Appointments"
                         });
                     }
                     else if (i == 4)
@@ -209,7 +209,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                         dummyList.Add(new MyService()
                         {
                             Id = "4",
-                            MyServiceTitle = "Apply for AutoPay"
+                            MyServiceTitle = "Apply for<br/>AutoPay"
                         });
                     }
                 }
