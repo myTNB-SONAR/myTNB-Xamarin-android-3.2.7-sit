@@ -18,11 +18,18 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 {
     public class HomeMenuFragment : BaseFragment
 	{
-        //[BindView(Resource.Id.myServiceShimmerView)]
-        //ShimmerFrameLayout myServiceShimmerView;
+        [BindView(Resource.Id.myServiceShimmerView)]
+        ShimmerFrameLayout myServiceShimmerView;
 
         [BindView(Resource.Id.myServiceList)]
         RecyclerView myServiceListRecycleView;
+
+        [BindView(Resource.Id.myServiceShimmerList)]
+        RecyclerView myServiceShimmerList;
+
+        [BindView(Resource.Id.myServiceView)]
+        LinearLayout myServiceView;
+
         //[BindView(Resource.Id.shimmer_view_container)]
         //ShimmerFrameLayout shimmerViewContainer;
         [BindView(Resource.Id.myServiceTitle)]
@@ -73,6 +80,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             GridLayoutManager layoutManager = new GridLayoutManager(this.Activity, 3);
             layoutManager.Orientation = RecyclerView.Vertical;
             myServiceListRecycleView.SetLayoutManager(layoutManager);
+
+            GridLayoutManager layoutShimmerManager = new GridLayoutManager(this.Activity, 3);
+            layoutShimmerManager.Orientation = RecyclerView.Vertical;
+            myServiceShimmerList.SetLayoutManager(layoutShimmerManager);
             // LoadShimmerServiceList(null);
             LoadServiceList(null);
         }
@@ -137,16 +148,17 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
         public void LoadShimmerServiceList(List<MyService> serviceList)
         {
-            //myServiceShimmerView.Visibility = ViewStates.Visible;
+            myServiceShimmerView.Visibility = ViewStates.Visible;
+            myServiceView.Visibility = ViewStates.Gone;
             if (serviceList != null && serviceList.Count() > 0)
             {
                 MyServiceShimmerAdapter adapter = new MyServiceShimmerAdapter(serviceList);
-                myServiceListRecycleView.SetAdapter(adapter);
+                myServiceShimmerList.SetAdapter(adapter);
             }
             else
             {
                 List<MyService> dummyList = new List<MyService>();
-                for(int i = 0; i < 4; i++)
+                for(int i = 0; i < 6; i++)
                 {
                     dummyList.Add(new MyService()
                     {
@@ -154,14 +166,16 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     });
                 }
                 MyServiceShimmerAdapter adapter = new MyServiceShimmerAdapter(dummyList);
-                myServiceListRecycleView.SetAdapter(adapter);
+                myServiceShimmerList.SetAdapter(adapter);
             }
-            //myServiceShimmerView.StopShimmer();
+            myServiceShimmerView.StartShimmer();
         }
 
         public void LoadServiceList(List<MyService> serviceList)
         {
-            //myServiceShimmerView.Visibility = ViewStates.Visible;
+            myServiceShimmerView.StopShimmer();
+            myServiceShimmerView.Visibility = ViewStates.Gone;
+            myServiceView.Visibility = ViewStates.Visible;
             if (serviceList != null && serviceList.Count() > 0)
             {
                 MyServiceAdapter adapter = new MyServiceAdapter(serviceList);
