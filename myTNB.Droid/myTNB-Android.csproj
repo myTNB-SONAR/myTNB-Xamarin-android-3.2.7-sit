@@ -1195,6 +1195,17 @@
     <AndroidResource Include="Resources\drawable-xxxhdpi\set_appointments.png" />
     <AndroidResource Include="Resources\drawable-xxxhdpi\submit_meter.png" />
     <Compile Include="Src\myTNBMenu\Fragments\HomeMenu\Adapter\MyServiceAdapter.cs" />
+    <AndroidResource Include="Resources\layout\NewFAQComponentView.axml" />
+    <AndroidResource Include="Resources\drawable-hdpi\faq_color_1.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\faq_color_1.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\faq_color_1.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\faq_color_1.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\faq_color_1.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\ic_menu_promotion.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\ic_menu_promotion.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_menu_promotion.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_menu_promotion.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\ic_menu_promotion.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
