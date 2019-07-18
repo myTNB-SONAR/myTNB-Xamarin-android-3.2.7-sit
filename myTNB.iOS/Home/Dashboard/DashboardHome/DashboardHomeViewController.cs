@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using CoreGraphics;
+using Foundation;
 using myTNB.Model;
+using myTNB.PushNotification;
 using UIKit;
 
 namespace myTNB
@@ -15,6 +17,7 @@ namespace myTNB
         List<List<CustomerAccountRecordModel>> _groupedAccountsList;
 
         private UITableView _homeTableView;
+        private DashboardHomeHeader _dashboardHomeHeader;
         UIPageViewController _accountsPageViewController;
 
         public override void ViewDidLoad()
@@ -26,15 +29,17 @@ namespace myTNB
             PageName = DashboardHomeConstants.PageName;
             IsGradientRequired = true;
             base.ViewDidLoad();
-
+            NSNotificationCenter.DefaultCenter.AddObserver((NSString)"LanguageDidChange", LanguageDidChange);
+            NSNotificationCenter.DefaultCenter.AddObserver((NSString)"NotificationDidChange", NotificationDidChange);
+            NSNotificationCenter.DefaultCenter.AddObserver((NSString)"OnReceiveNotificationFromDashboard", NotificationDidChange);
             SetStatusBarNoOverlap();
             AddTableView();
             AddTableViewHeader();
             GetGroupedAccountsList();
             LoadAccounts();
-
             _homeTableView.Source = new DashboardHomeDataSource(this, _accountsPageViewController);
             _homeTableView.ReloadData();
+            OnUpdateNotification();
         }
 
         public override void ViewWillAppear(bool animated)
@@ -45,6 +50,42 @@ namespace myTNB
         public override void ViewDidAppear(bool animated)
         {
             base.ViewDidAppear(animated);
+        }
+
+        private void NotificationDidChange(NSNotification notification)
+        {
+            Debug.WriteLine("DEBUG >>> SUMMARY DASHBOARD NotificationDidChange");
+            if (_dashboardHomeHeader != null)
+            {
+                _dashboardHomeHeader.SetNotificationImage(PushNotificationHelper.GetNotificationImage());
+            }
+            PushNotificationHelper.UpdateApplicationBadge();
+        }
+
+        private void LanguageDidChange(NSNotification notification)
+        {
+            Debug.WriteLine("DEBUG >>> SUMMARY DASHBOARD LanguageDidChange");
+        }
+
+        private void OnUpdateNotification()
+        {
+            NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
+            {
+                InvokeOnMainThread(async () =>
+                {
+                    if (NetworkUtility.isReachable)
+                    {
+                        DataManager.DataManager.SharedInstance.IsLoadingFromDashboard = true;
+                        await PushNotificationHelper.GetNotifications();
+                        NSNotificationCenter.DefaultCenter.PostNotificationName("OnReceiveNotificationFromDashboard", new NSObject());
+                    }
+                    else
+                    {
+                        //Todo: user don't need to see no data connection?
+                        Debug.WriteLine("No Data connection");
+                    }
+                });
+            });
         }
 
         private void GetGroupedAccountsList()
@@ -122,10 +163,19 @@ namespace myTNB
 
         private void AddTableViewHeader()
         {
-            DashboardHomeHeader dashboardHomeHeader = new DashboardHomeHeader(View);
-            dashboardHomeHeader.SetGreetingText(GetGreeting());
-            dashboardHomeHeader.SetNameText(GetDisplayName());
-            _homeTableView.TableHeaderView = dashboardHomeHeader.GetUI();
+            _dashboardHomeHeader = new DashboardHomeHeader(View);
+            _dashboardHomeHeader.SetGreetingText(GetGreeting());
+            _dashboardHomeHeader.SetNameText(GetDisplayName());
+            _homeTableView.TableHeaderView = _dashboardHomeHeader.GetUI();
+            _dashboardHomeHeader.AddNotificationAction(OnNotificationAction);
+        }
+
+        private void OnNotificationAction()
+        {
+            UIStoryboard storyBoard = UIStoryboard.FromName("PushNotification", null);
+            PushNotificationViewController viewController = storyBoard.InstantiateViewController("PushNotificationViewController") as PushNotificationViewController;
+            UINavigationController navController = new UINavigationController(viewController);
+            PresentViewController(navController, true, null);
         }
 
         private string GetGreeting()
@@ -158,6 +208,5 @@ namespace myTNB
             vc.pageIndex = index;
             return vc;
         }
-
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using CoreGraphics;
 using UIKit;
 
@@ -7,7 +8,7 @@ namespace myTNB
     public class DashboardHomeHeader
     {
         private readonly UIView _parentView;
-        UIView _accountHeaderView, _greetingView, _searchView;
+        UIView _accountHeaderView, _greetingView, _searchView, _notificationView;
         UILabel _greetingLabel, _accountName, _headerTitle;
         UIImageView _notificationIcon, _addAccountIcon, _searchIcon;
         string _strGreeting, _strName;
@@ -42,21 +43,21 @@ namespace myTNB
                 Text = _strGreeting
             };
 
-            _accountName = new UILabel(new CGRect(padding, _greetingLabel.Frame.GetMaxY(), _greetingView.Frame.Width - 40, labelHeight))
+            _accountName = new UILabel(new CGRect(padding, _greetingLabel.Frame.GetMaxY(), _greetingView.Frame.Width - (imageWidth + (padding * 3))
+                , labelHeight))
             {
                 Font = MyTNBFont.MuseoSans16_500,
                 TextColor = MyTNBColor.SunGlow,
-                LineBreakMode = UILineBreakMode.TailTruncation,
+                LineBreakMode = UILineBreakMode.MiddleTruncation,
                 Text = _strName
             };
-
-            _notificationIcon = new UIImageView(new CGRect(parentWidth - (imageWidth + padding), GetCenterYForIcon(_greetingView.Frame.Height - padding, imageHeight) + padding, imageWidth, imageHeight))
+            _notificationView = new UIView(new CGRect(parentWidth - (imageWidth + padding), padding + labelHeight / 2, imageWidth, imageHeight));
+            _notificationIcon = new UIImageView(new CGRect(0, 0, imageWidth, imageHeight))
             {
                 Image = UIImage.FromBundle("Notification")
             };
-
-            _greetingView.AddSubviews(new UIView { _greetingLabel, _accountName, _notificationIcon });
-
+            _notificationView.AddSubview(_notificationIcon);
+            _greetingView.AddSubviews(new UIView { _greetingLabel, _accountName, _notificationView });
             _searchView = new UIView(new CGRect(0, _greetingView.Frame.GetMaxY() + padding, _accountHeaderView.Frame.Width, 24f));
             _searchView.BackgroundColor = UIColor.Clear;
 
@@ -96,6 +97,16 @@ namespace myTNB
         public void SetNameText(string text)
         {
             _strName = text ?? string.Empty;
+        }
+
+        public void SetNotificationImage(string image)
+        {
+            _notificationIcon.Image = UIImage.FromBundle(image);
+        }
+
+        public void AddNotificationAction(Action action)
+        {
+            _notificationView.AddGestureRecognizer(new UITapGestureRecognizer(action));
         }
     }
 }
