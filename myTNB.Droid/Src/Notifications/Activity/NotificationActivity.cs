@@ -586,11 +586,13 @@ namespace myTNB_Android.Src.Notifications.Activity
 			selectAllCheckboxButton.SetOnCheckedChangeListener(null);
 			selectAllCheckboxButton.Checked = false;
 			selectAllCheckboxButton.SetOnCheckedChangeListener(this);
+			ShowEditMode(false);
 			notificationRecyclerAdapter.ShowSelectButtons(false);
             SetToolBarTitle(GetString(Resource.String.notification_activity_title));
             notificationRecyclerAdapter.SetClickable(true);
             notificationRecyclerAdapter.SelectAllNotifications(false);
-            if (IsActive())
+			itemTouchHelper.AttachToRecyclerView(notificationRecyclerView);
+			if (IsActive())
             {
                 HideProgress();
             }
@@ -608,7 +610,8 @@ namespace myTNB_Android.Src.Notifications.Activity
             SetToolBarTitle(GetString(Resource.String.notification_activity_title));
             notificationRecyclerAdapter.SetClickable(true);
             notificationRecyclerAdapter.SelectAllNotifications(false);
-            if (notificationRecyclerAdapter.GetAllNotifications().Count == 0)
+			itemTouchHelper.AttachToRecyclerView(notificationRecyclerView);
+			if (notificationRecyclerAdapter.GetAllNotifications().Count == 0)
             {
                 ClearAdapter();
                 notificationMenu.FindItem(Resource.Id.action_notification_edit_delete).SetVisible(false);
