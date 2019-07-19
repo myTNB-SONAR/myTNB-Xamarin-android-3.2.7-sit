@@ -868,9 +868,6 @@
     <ImageAsset Include="Assets.xcassets\Maintenance-Image.imageset\Maintenance-Image-1.png" />
     <ImageAsset Include="Assets.xcassets\Maintenance-Image.imageset\Maintenance-Image%402x-1.png" />
     <ImageAsset Include="Assets.xcassets\Maintenance-Image.imageset\Maintenance-Image%403x-1.png" />
-    <ImageAsset Include="Assets.xcassets\Notification-Select.imageset\icActionSelectAll.png" />
-    <ImageAsset Include="Assets.xcassets\Notification-Select.imageset\icActionSelectAll%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Notification-Select.imageset\icActionSelectAll%403x.png" />
     <ImageAsset Include="Assets.xcassets\Refresh-Error-Normal.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Refresh-Error-White.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Refresh-Error-Normal.imageset\Refresh-Error-Normal.png" />
@@ -898,6 +895,9 @@
     <ImageAsset Include="Assets.xcassets\Feedback-Submitted-Generic.imageset\icTileSubmittedFeedback.png" />
     <ImageAsset Include="Assets.xcassets\Feedback-Submitted-Generic.imageset\icTileSubmittedFeedback%402x.png" />
     <ImageAsset Include="Assets.xcassets\Feedback-Submitted-Generic.imageset\icTileSubmittedFeedback%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Select.imageset\icActionSelectAll-1.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Select.imageset\icActionSelectAll%402x-1.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Select.imageset\icActionSelectAll%403x-1.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
