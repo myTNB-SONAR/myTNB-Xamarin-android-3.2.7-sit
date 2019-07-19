@@ -352,7 +352,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                         dummyList.Add(new NewFAQ()
                         {
                             Id = "0",
-                            NewFAQString = "How do I reset<br/>my password?"
+                            NewFAQString = "How do I reset my password?"
                         });
                     }
                     else if (i == 1)
@@ -360,7 +360,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                         dummyList.Add(new NewFAQ()
                         {
                             Id = "1",
-                            NewFAQString = "Learn how to<br/>read your<br/>meter."
+                            NewFAQString = "Learn how to read your meter."
                         });
                     }
                     else if (i == 2)
@@ -368,7 +368,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                         dummyList.Add(new NewFAQ()
                         {
                             Id = "2",
-                            NewFAQString = "Check out how<br/>you can apply<br/>for AutoPay."
+                            NewFAQString = "Check out how you can apply for AutoPay."
                         });
                     }
                 }
