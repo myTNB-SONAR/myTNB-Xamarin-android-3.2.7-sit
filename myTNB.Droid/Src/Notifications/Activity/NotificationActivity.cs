@@ -583,7 +583,10 @@ namespace myTNB_Android.Src.Notifications.Activity
             notificationMenu.FindItem(Resource.Id.action_notification_edit_delete).SetIcon(Resource.Drawable.ic_action_select_all_1).SetEnabled(true);
             notificationMenu.FindItem(Resource.Id.action_notification_read).SetVisible(false);
             ShowSelectAllOption(ViewStates.Gone);
-            notificationRecyclerAdapter.ShowSelectButtons(false);
+			selectAllCheckboxButton.SetOnCheckedChangeListener(null);
+			selectAllCheckboxButton.Checked = false;
+			selectAllCheckboxButton.SetOnCheckedChangeListener(this);
+			notificationRecyclerAdapter.ShowSelectButtons(false);
             SetToolBarTitle(GetString(Resource.String.notification_activity_title));
             notificationRecyclerAdapter.SetClickable(true);
             notificationRecyclerAdapter.SelectAllNotifications(false);

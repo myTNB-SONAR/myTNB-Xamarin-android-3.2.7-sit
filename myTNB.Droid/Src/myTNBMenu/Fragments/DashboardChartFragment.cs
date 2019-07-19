@@ -1688,7 +1688,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 {
                     txtAccountStatus.TextFormatted = Html.FromHtml(accountStatusMessage);
                 }
+
                 txtWhatAccountStatus.Text = whatDoesThisMeanLabel;
+                TextViewUtils.SetMuseoSans500Typeface(txtAccountStatus, txtWhatAccountStatus);
                 txtWhatAccountStatus.Click += delegate
                 {
                     OnWhatIsThisAccountStatusTap(whatDoesThisToolTipMessage, whatDoesThisToolTipBtnLabel);
