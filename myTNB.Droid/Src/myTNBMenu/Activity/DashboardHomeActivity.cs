@@ -173,7 +173,8 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             {
                 if (currentFragment.GetType() == typeof(DashboardChartFragment) ||
                     currentFragment.GetType() == typeof(DashboardChartNonOwnerNoAccess) ||
-                    currentFragment.GetType() == typeof(DashboardSmartMeterFragment))
+                    currentFragment.GetType() == typeof(DashboardSmartMeterFragment) || 
+                    currentFragment.GetType() == typeof(FeedbackMenuFragment))
                 {
                     EnableDropDown(false);
                     HideAccountName();

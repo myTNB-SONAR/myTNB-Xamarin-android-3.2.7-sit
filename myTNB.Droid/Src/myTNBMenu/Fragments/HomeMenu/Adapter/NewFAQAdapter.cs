@@ -32,14 +32,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
 
 			if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
 			{
-				vh.faqTitle.TextFormatted = Html.FromHtml(model.NewFAQString, FromHtmlOptions.ModeLegacy);
+				vh.faqTitle.TextFormatted = Html.FromHtml(model.Title, FromHtmlOptions.ModeLegacy);
 			}
 			else
 			{
-				vh.faqTitle.TextFormatted = Html.FromHtml(model.NewFAQString);
+				vh.faqTitle.TextFormatted = Html.FromHtml(model.Title);
 			}
 
-			switch (model.Id)
+			switch (model.ID)
 			{
 				default:
 					vh.backgroundImg.SetBackgroundResource(Resource.Drawable.faq_color_1);

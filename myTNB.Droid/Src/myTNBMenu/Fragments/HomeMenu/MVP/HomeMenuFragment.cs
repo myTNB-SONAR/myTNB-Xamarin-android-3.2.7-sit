@@ -11,6 +11,8 @@ using Android.Widget;
 using CheeseBind;
 using Facebook.Shimmer;
 using myTNB_Android.Src.Base.Fragments;
+using myTNB_Android.Src.myTNBMenu.Activity;
+using myTNB_Android.Src.myTNBMenu.Fragments.FeedbackMenu;
 using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter;
 using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Listener;
 using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Models;
@@ -184,6 +186,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
             var actionBar = act.SupportActionBar;
             actionBar.Hide();
+            ShowBackButton(false);
             //var shimmerBuilder = new Shimmer.AlphaHighlightBuilder();
             //shimmerBuilder = default(Shimmer.AlphaHighlightBuilder);
             //shimmerViewContainer.SetShimmer(shimmerBuilder?.Build());
@@ -295,11 +298,15 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             {
                 if (position == -1)
                 {
-                    Toast.MakeText(this.Activity, "My Service Position Unknown", ToastLength.Long).Show();
+                    // Toast.MakeText(this.Activity, "My Service Position Unknown", ToastLength.Long).Show();
                 }
                 else
                 {
-                    Toast.MakeText(this.Activity, "My Service Position: " + position.ToString(), ToastLength.Long).Show();
+                    if (position == 2)
+                    {
+                        ShowFeedbackMenu();
+                    }
+                    // Toast.MakeText(this.Activity, "My Service Position: " + position.ToString(), ToastLength.Long).Show();
                 }
             }
             catch (Exception e)
@@ -324,7 +331,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 {
                     dummyList.Add(new NewFAQ()
                     {
-                        NewFAQString = ""
+                        Title = ""
                     });
                 }
                 NewFAQShimmerAdapter adapter = new NewFAQShimmerAdapter(dummyList);
@@ -351,24 +358,24 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     {
                         dummyList.Add(new NewFAQ()
                         {
-                            Id = "0",
-                            NewFAQString = "How do I reset my password?"
+                            ID = "0",
+                            Title = "How do I reset my password?"
                         });
                     }
                     else if (i == 1)
                     {
                         dummyList.Add(new NewFAQ()
                         {
-                            Id = "1",
-                            NewFAQString = "Learn how to read your meter."
+                            ID = "1",
+                            Title = "Learn how to read your meter."
                         });
                     }
                     else if (i == 2)
                     {
                         dummyList.Add(new NewFAQ()
                         {
-                            Id = "2",
-                            NewFAQString = "Check out how you can apply for AutoPay."
+                            ID = "2",
+                            Title = "Check out how you can apply for AutoPay."
                         });
                     }
                 }
@@ -384,17 +391,42 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             {
                 if (position == -1)
                 {
-                    Toast.MakeText(this.Activity, "FAQ Position Unknown", ToastLength.Long).Show();
+                    // Toast.MakeText(this.Activity, "FAQ Position Unknown", ToastLength.Long).Show();
                 }
                 else
                 {
-                    Toast.MakeText(this.Activity, "FAQ Position: " + position.ToString(), ToastLength.Long).Show();
+                    // Toast.MakeText(this.Activity, "FAQ Position: " + position.ToString(), ToastLength.Long).Show();
                 }
             }
             catch (Exception e)
             {
                 Utility.LoggingNonFatalError(e);
             }
+        }
+
+        public void ShowFeedbackMenu()
+        {
+            ShowBackButton(true);
+            FeedbackMenuFragment fragment = new FeedbackMenuFragment();
+
+            if (((DashboardHomeActivity)Activity) != null)
+            {
+                ((DashboardHomeActivity)Activity).SetCurrentFragment(fragment);
+                ((DashboardHomeActivity)Activity).HideAccountName();
+                ((DashboardHomeActivity)Activity).SetToolbarTitle(Resource.String.feedback_menu_activity_title);
+            }
+            FragmentManager.BeginTransaction()
+                           .Replace(Resource.Id.content_layout, fragment)
+                     .CommitAllowingStateLoss();
+        }
+
+        public void ShowBackButton(bool flag)
+        {
+            var act = this.Activity as AppCompatActivity;
+
+            var actionBar = act.SupportActionBar;
+            actionBar.SetDisplayHomeAsUpEnabled(flag);
+            actionBar.SetDisplayShowHomeEnabled(flag);
         }
 
     }
