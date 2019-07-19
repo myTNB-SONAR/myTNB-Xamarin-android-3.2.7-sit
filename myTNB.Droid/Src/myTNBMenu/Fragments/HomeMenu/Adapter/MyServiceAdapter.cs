@@ -4,6 +4,7 @@ using Android.Views;
 using Android.Widget;
 using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Models;
 using myTNB_Android.Src.Utils;
+using System;
 using System.Collections.Generic;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
@@ -13,9 +14,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
 
 		List<MyService> myServiceList = null;
 
+        public event EventHandler<int> ClickChanged;
 
 
-		public MyServiceAdapter(List<MyService> data)
+        public MyServiceAdapter(List<MyService> data)
 		{
 			this.myServiceList = new List<MyService>();
 			this.myServiceList = data;
@@ -68,13 +70,23 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
 		{
 			var id = Resource.Layout.MyServiceComponentView;
 			var itemView = LayoutInflater.From(parent.Context).Inflate(id, parent, false);
-			return new MyServiceViewHolder(itemView);
+			return new MyServiceViewHolder(itemView, OnClick);
 		}
 
+        void OnClick(MyServiceViewHolder sender, int position)
+        {
+            try
+            {
+                ClickChanged(this, position);
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
 
 
-
-		public class MyServiceViewHolder : RecyclerView.ViewHolder
+        public class MyServiceViewHolder : RecyclerView.ViewHolder
 		{
 
 			public ImageView serviceImg { get; private set; }
@@ -83,12 +95,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
 
 			public CardView myServiceCardView { get; private set; }
 
-			public MyServiceViewHolder(View itemView) : base(itemView)
+			public MyServiceViewHolder(View itemView, Action<MyServiceViewHolder, int> listener) : base(itemView)
 			{
 				serviceImg = itemView.FindViewById<ImageView>(Resource.Id.service_img);
 				serviceTitle = itemView.FindViewById<TextView>(Resource.Id.service_title);
 				myServiceCardView = itemView.FindViewById<CardView>(Resource.Id.card_view_click);
-			}
+
+                myServiceCardView.Click += (s, e) => listener((this), base.LayoutPosition);
+            }
 		}
 
 	}

@@ -4,6 +4,7 @@ using Android.Views;
 using Android.Widget;
 using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Models;
 using myTNB_Android.Src.Utils;
+using System;
 using System.Collections.Generic;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
@@ -13,9 +14,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
 
 		List<NewFAQ> faqList = null;
 
+        public event EventHandler<int> ClickChanged;
 
-
-		public NewFAQAdapter(List<NewFAQ> data)
+        public NewFAQAdapter(List<NewFAQ> data)
 		{
 			this.faqList = new List<NewFAQ>();
 			this.faqList = data;
@@ -53,13 +54,23 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
 		{
 			var id = Resource.Layout.NewFAQComponentView;
 			var itemView = LayoutInflater.From(parent.Context).Inflate(id, parent, false);
-			return new NewFAQViewHolder(itemView);
+			return new NewFAQViewHolder(itemView, OnClick);
 		}
 
+        void OnClick(NewFAQViewHolder sender, int position)
+        {
+            try
+            {
+                ClickChanged(this, position);
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
 
 
-
-		public class NewFAQViewHolder : RecyclerView.ViewHolder
+        public class NewFAQViewHolder : RecyclerView.ViewHolder
 		{
 
 			public LinearLayout backgroundImg { get; private set; }
@@ -68,12 +79,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
 
 			public CardView faqCardView { get; private set; }
 
-			public NewFAQViewHolder(View itemView) : base(itemView)
+			public NewFAQViewHolder(View itemView, Action<NewFAQViewHolder, int> listener) : base(itemView)
 			{
                 backgroundImg = itemView.FindViewById<LinearLayout>(Resource.Id.rootView);
                 faqTitle = itemView.FindViewById<TextView>(Resource.Id.faq_title);
                 faqCardView = itemView.FindViewById<CardView>(Resource.Id.card_view_click);
-			}
+
+                faqCardView.Click += (s, e) => listener((this), base.LayoutPosition);
+            }
 		}
 
 	}

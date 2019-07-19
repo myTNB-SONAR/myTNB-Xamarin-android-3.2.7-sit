@@ -1,4 +1,5 @@
 ﻿
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -234,6 +235,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             {
                 MyServiceAdapter adapter = new MyServiceAdapter(serviceList);
                 myServiceListRecycleView.SetAdapter(adapter);
+                adapter.ClickChanged += OnClickChanged;
             }
             else
             {
@@ -283,6 +285,26 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 }
                 MyServiceAdapter adapter = new MyServiceAdapter(dummyList);
                 myServiceListRecycleView.SetAdapter(adapter);
+                adapter.ClickChanged += OnClickChanged;
+            }
+        }
+
+        void OnClickChanged(object sender, int position)
+        {
+            try
+            {
+                if (position == -1)
+                {
+                    Toast.MakeText(this.Activity, "My Service Position Unknown", ToastLength.Long).Show();
+                }
+                else
+                {
+                    Toast.MakeText(this.Activity, "My Service Position: " + position.ToString(), ToastLength.Long).Show();
+                }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
             }
         }
 
@@ -318,6 +340,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             {
                 NewFAQAdapter adapter = new NewFAQAdapter(faqList);
                 newFAQListRecycleView.SetAdapter(adapter);
+                adapter.ClickChanged += OnFAQClickChanged;
             }
             else
             {
@@ -351,6 +374,26 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 }
                 NewFAQAdapter adapter = new NewFAQAdapter(dummyList);
                 newFAQListRecycleView.SetAdapter(adapter);
+                adapter.ClickChanged += OnFAQClickChanged;
+            }
+        }
+
+        void OnFAQClickChanged(object sender, int position)
+        {
+            try
+            {
+                if (position == -1)
+                {
+                    Toast.MakeText(this.Activity, "FAQ Position Unknown", ToastLength.Long).Show();
+                }
+                else
+                {
+                    Toast.MakeText(this.Activity, "FAQ Position: " + position.ToString(), ToastLength.Long).Show();
+                }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
             }
         }
 
