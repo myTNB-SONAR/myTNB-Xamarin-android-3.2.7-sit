@@ -1977,6 +1977,7 @@
       <DependentUpon>HomeTabBarController.cs</DependentUpon>
     </Compile>
     <Compile Include="Tab Bar\TabbarConstants.cs" />
+    <Compile Include="Customs\CustomShimmerView.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />

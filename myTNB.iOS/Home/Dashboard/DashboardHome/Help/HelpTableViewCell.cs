@@ -39,7 +39,58 @@ namespace myTNB
             SelectionStyle = UITableViewCellSelectionStyle.None;
         }
 
-        public void AddCards()
+        public void AddCards(bool hasData = false)
+        {
+            for (int i = _scrollView.Subviews.Length; i-- > 0;)
+            {
+                _scrollView.Subviews[i].RemoveFromSuperview();
+            }
+
+            if (hasData)
+            {
+                AddContentData();
+            }
+            else
+            {
+                AddShimmer();
+                InvokeInBackground(() =>
+                {
+                    System.Threading.Thread.Sleep(8000);
+                    InvokeOnMainThread(() =>
+                    {
+                        AddCards(true);
+                    });
+                });
+            }
+        }
+
+        private void AddShimmer()
+        {
+            nfloat xLoc = 16f;
+            for (int i = 0; i < 3; i++)
+            {
+                CustomShimmerView shimmeringView = new CustomShimmerView();
+                UIView viewParent = new UIView(new CGRect(xLoc, 0, cardWidth, cardHeight)) { BackgroundColor = UIColor.Clear };
+                UIView viewShimmerParent = new UIView(new CGRect(0, 0, cardWidth, cardHeight)) { BackgroundColor = UIColor.Clear };
+                UIView viewShimmerContent = new UIView(new CGRect(0, 0, cardWidth, cardHeight)) { BackgroundColor = UIColor.Clear };
+                viewParent.AddSubviews(new UIView[] { viewShimmerParent, viewShimmerContent });
+
+                UIView viewShimmerUI = new UIView(new CGRect(0, 0, cardWidth, cardHeight)) { BackgroundColor = MyTNBColor.PowderBlue };
+                viewShimmerContent.AddSubview(viewShimmerUI);
+
+                viewShimmerParent.AddSubview(shimmeringView);
+                shimmeringView.ContentView = viewShimmerContent;
+                shimmeringView.Shimmering = true;
+
+                _scrollView.Add(viewParent);
+                xLoc += cardWidth + 12.0F;
+            }
+            _scrollView.ContentSize = new CGSize(xLoc, cardHeight);
+        }
+
+
+
+        private void AddContentData()
         {
             List<string> helpList = new List<string>() { "How to read meter?", "How to reset password?", "How to apply for AutoPay ?" };
             nfloat xLoc = 16f;
