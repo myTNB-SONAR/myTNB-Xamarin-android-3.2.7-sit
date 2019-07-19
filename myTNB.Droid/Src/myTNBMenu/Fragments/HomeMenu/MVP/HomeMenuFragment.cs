@@ -25,7 +25,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         ImageView addAccountActionIcon;
 
         [BindView(Resource.Id.searchEdit)]
-        EditText searchEditText;
+        Android.Widget.SearchView searchEditText;
 
         [BindView(Resource.Id.accountRecyclerViewContainer)]
         RecyclerView accountsRecyclerView;
@@ -33,7 +33,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         [BindView(Resource.Id.indicatorContainer)]
         LinearLayout indicatorContainer;
 
-
+        AccountsRecyclerViewAdapter accountsAdapter;
         public override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -55,6 +55,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             {
                 accountHeaderTitle.Visibility = ViewStates.Gone;
                 searchEditText.Visibility = ViewStates.Visible;
+                searchEditText.SetOnQueryTextListener(new AccountsSearchOnQueryTextListener(accountsAdapter));
                 searchActionIcon.Visibility = ViewStates.Gone;
             };
 
@@ -71,7 +72,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(Activity, LinearLayoutManager.Horizontal, false);
             accountsRecyclerView.SetLayoutManager(linearLayoutManager);
 
-            AccountsRecyclerViewAdapter accountsAdapter = new AccountsRecyclerViewAdapter(2);
+            accountsAdapter = new AccountsRecyclerViewAdapter(16);
+            accountsAdapter.SetAccountCards(13);
             accountsRecyclerView.SetAdapter(accountsAdapter);
 
             accountsRecyclerView.AddOnScrollListener(new AccountsRecyclerViewOnScrollListener(linearLayoutManager, indicatorContainer));

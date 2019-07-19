@@ -1,75 +1,149 @@
 ﻿using System;
+using System.Collections.Generic;
 using Android.Support.Design.Widget;
 using Android.Support.V7.Widget;
 using Android.Views;
 using Android.Widget;
+using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP;
 using myTNB_Android.Src.Utils;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
 {
-    public class AccountsRecyclerViewAdapter : RecyclerView.Adapter
+    public class AccountsRecyclerViewAdapter : RecyclerView.Adapter, IFilterable
     {
-        int accountsContainer = 0;
+        int accountsCardContainer = 0;
+        int MAX_ACCOUNT_PER_CARD = 5;
+        public int accountsContainer = 0;
+        Filter accountsFilter;
+
+        List<List<AccountCardModel>> cardList = new List<List<AccountCardModel>>();
+        List<AccountCardModel> accountModelList = new List<AccountCardModel>();
+        public List<AccountCardModel> accountCardModelList;
         ViewGroup parentGroup;
+
         public AccountsRecyclerViewAdapter(int count)
         {
             accountsContainer = count;
         }
 
-        public override int ItemCount => accountsContainer;
+        public int GetAccountCardCount(List<AccountCardModel> list)
+        {
+            int cardCount;
+            if (list.Count > 0)
+            {
+                cardCount = list.Count / MAX_ACCOUNT_PER_CARD;
+                if ((list.Count % MAX_ACCOUNT_PER_CARD) > 0)
+                {
+                    cardCount++;
+                }
+            }
+            else
+            {
+                cardCount = 1;
+            }
+            return cardCount;
+        }
+
+        public void UpdatedCardList()
+        {
+            cardList = new List<List<AccountCardModel>>();
+            int cardsCounter = 0;
+            int cardContainerCount = GetAccountCardCount(accountCardModelList);
+            for (int i = 0; i < cardContainerCount; i++)
+            {
+                accountModelList = new List<AccountCardModel>();
+                for (int j = cardsCounter; j < accountCardModelList.Count; j++)
+                {
+                    AccountCardModel model = accountCardModelList.ToArray()[j];
+                    accountModelList.Add(model);
+                    if (accountModelList.Count == MAX_ACCOUNT_PER_CARD)
+                    {
+                        cardsCounter = j;
+                        cardsCounter++;
+                        break;
+                    }
+                }
+                cardList.Add(accountModelList);
+            }
+
+        }
+
+        public void SetAccountCards(int accountCount)
+        {
+            accountCardModelList = GetAccountCardModelList(accountCount);
+            UpdatedCardList();
+        }
+
+        private List<AccountCardModel> GetAccountCardModelList(int size)
+        {
+            List<AccountCardModel> returnAccountCardModelList = new List<AccountCardModel>();
+            AccountCardModel model;
+            for (int i = 0; i < size; i++)
+            {
+                model = new AccountCardModel();
+                if (i > 9)
+                {
+                    model.AccountName = "Bakit Kiara";
+                }
+                else
+                {
+                    model.AccountName = "Bukit Kiara";
+                }
+                model.AccountNumber = "101010101101010" + i;
+                model.BillDueAmount = "RM 2,041.90";
+                model.BillDueNote = "Due 30 Jul";
+                returnAccountCardModelList.Add(model);
+            }
+            return returnAccountCardModelList;
+        }
+
+        public override int ItemCount => GetAccountCardCount(accountCardModelList);
+
+        public Filter Filter => GetFilter();
+
+        private Filter GetFilter()
+        {
+            if (accountsFilter == null)
+            {
+                accountsFilter = new AccountCardsFilter(this, accountCardModelList);
+            }
+            return accountsFilter;
+        }
 
         public override void OnBindViewHolder(RecyclerView.ViewHolder holder, int position)
         {
             AccountsContainerViewHolder viewHolder = holder as AccountsContainerViewHolder;
-
-            viewHolder.linearLayout.AddView(CreateAccountCard());
-            viewHolder.linearLayout.AddView(CreateAccountCard());
-            viewHolder.linearLayout.AddView(CreateAccountCard());
-            viewHolder.linearLayout.AddView(CreateAccountCard());
-            viewHolder.linearLayout.AddView(CreateAccountCard());
-
+            viewHolder.IsRecyclable = false;
+            List<AccountCardModel> accountCardModel = cardList.ToArray()[position];
+            foreach (AccountCardModel cardModel in accountCardModel)
+            {
+                viewHolder.linearLayout.AddView(CreateAccountCard(cardModel));
+            }
         }
 
-        private CoordinatorLayout CreateAccountCard()
+        private CoordinatorLayout CreateAccountCard(AccountCardModel cardModel)
         {
             CoordinatorLayout card = (CoordinatorLayout)LayoutInflater.From(parentGroup.Context).Inflate(Resource.Layout.card_layout, parentGroup, false);
             TextView accountName = card.FindViewById(Resource.Id.accountName) as TextView;
             TextView accountNumber = card.FindViewById(Resource.Id.accountNumber) as TextView;
             TextView billDueAmount = card.FindViewById(Resource.Id.billDueAmount) as TextView;
-            TextView billDueDate = card.FindViewById(Resource.Id.billDueDate) as TextView;
+            TextView billDueNote = card.FindViewById(Resource.Id.billDueDate) as TextView;
+
+            accountName.Id = cardModel.Id + 1;
+            accountNumber.Id = cardModel.Id + 2;
+            billDueAmount.Id = cardModel.Id + 3;
+            billDueNote.Id = cardModel.Id + 4;
+            card.Id = cardModel.Id + 5;
+
+            accountName.Text = cardModel.AccountName;
+            accountNumber.Text = cardModel.AccountNumber;
+            billDueAmount.Text = cardModel.BillDueAmount;
+            billDueNote.Text = cardModel.BillDueNote;
+
             TextViewUtils.SetMuseoSans500Typeface(accountName, billDueAmount);
-            TextViewUtils.SetMuseoSans300Typeface(accountNumber, billDueDate);
+            TextViewUtils.SetMuseoSans300Typeface(accountNumber, billDueNote);
             return card;
         }
-
-        //private CardView CreateCard()
-        //{
-        //    CardView card = new CardView(parentGroup.Context);
-        //    LayoutParams layoutParams = new LayoutParams(LayoutParams.MatchParent, LayoutParams.WrapContent);
-        //    layoutParams.SetMargins(15, 12, 15, 12);
-        //    card.LayoutParameters = layoutParams;
-        //    card.UseCompatPadding = true;
-        //    card.Elevation = 4;
-        //    card.Radius = 3;
-        //    return card;
-        //}
-
-        //private ViewGroup CreateCardContainer()
-        //{
-        //    ConstraintLayout constraintLayout = new ConstraintLayout(parentGroup.Context);
-        //    LayoutParams layoutParams = new LayoutParams(LayoutParams.MatchParent, LayoutParams.WrapContent);
-        //    layoutParams.SetMargins(15, 12, 15, 12);
-        //    constraintLayout.LayoutParameters = layoutParams;
-
-
-        //    ImageView accountImage = new ImageView(parentGroup.Context);
-        //    LayoutParams imageLayoutParams = new LayoutParams(LayoutParams.MatchParent, LayoutParams.WrapContent);
-        //    accountImage.LayoutParameters = imageLayoutParams;
-
-        //    return constraintLayout;
-        //}
-
-
 
         public override RecyclerView.ViewHolder OnCreateViewHolder(ViewGroup parent, int viewType)
         {
