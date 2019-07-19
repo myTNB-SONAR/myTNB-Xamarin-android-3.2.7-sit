@@ -4,12 +4,10 @@
     android:orientation="vertical"
     android:layout_width="99dp"
     android:layout_height="94dp"
-    app:cardCornerRadius="8dp"
-    android:layout_marginRight="3dp"    
+    app:cardCornerRadius="8dp"   
     android:layout_marginBottom="12dp"
     app:cardBackgroundColor="@color/white"
-    app:cardElevation="8dp"
-    app:cardMaxElevation="14dp"
+    app:cardElevation="4dp"
     android:id="@+id/card_view_click">
   <LinearLayout 
       android:orientation="vertical"

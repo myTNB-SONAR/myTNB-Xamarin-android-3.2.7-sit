@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 using Android.OS;
+using Android.Support.V7.App;
 using Android.Support.V7.Widget;
 using Android.Views;
 using Android.Widget;
@@ -154,10 +155,24 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         public override void OnResume()
         {
             base.OnResume();
+
+            var act = this.Activity as AppCompatActivity;
+
+            var actionBar = act.SupportActionBar;
+            actionBar.Hide();
             //var shimmerBuilder = new Shimmer.AlphaHighlightBuilder();
             //shimmerBuilder = default(Shimmer.AlphaHighlightBuilder);
             //shimmerViewContainer.SetShimmer(shimmerBuilder?.Build());
             //shimmerViewContainer.StartShimmer();
+        }
+
+        public override void OnDestroy()
+        {
+            base.OnDestroy();
+            var act = this.Activity as AppCompatActivity;
+
+            var actionBar = act.SupportActionBar;
+            actionBar.Show();
         }
 
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
