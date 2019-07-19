@@ -14,11 +14,20 @@ namespace myTNB
     {
         public DashboardHomeViewController(IntPtr handle) : base(handle) { }
 
+        DashboardHomeHelper _dashboardHomeHelper = new DashboardHomeHelper();
+
         private UITableView _homeTableView;
         UIPageViewController _accountsPageViewController;
         private DashboardHomeHeader _dashboardHomeHeader;
         private nfloat _previousScrollOffset;
         private nfloat _imageGradientHeight;
+        UITapGestureRecognizer _tapGestureAddAccount;
+        UITapGestureRecognizer _tapGestureSearch;
+        UIView _headerView;
+
+        UIView _textFieldView;
+        UITextField _textFieldSearch;
+        TextFieldHelper _textFieldHelper = new TextFieldHelper();
 
         public override void ViewDidLoad()
         {
@@ -35,12 +44,55 @@ namespace myTNB
             _imageGradientHeight = IsGradientImageRequired ? ImageViewGradientImage.Frame.Height : 0;
 
             SetStatusBarNoOverlap();
+            SetTapGestureRecognizers();
             AddTableView();
             AddTableViewHeader();
-            GetGroupedAccountsList();
+            _dashboardHomeHelper.GroupAccountsList(DataManager.DataManager.SharedInstance.AccountRecordsList.d);
             InitializePageView();
-            InitializeAccountsPageView();
+            InitializeTableView();
             OnUpdateNotification();
+
+            _textFieldView = new UIView(new CGRect(16f, DeviceHelper.GetStatusBarHeight(), View.Frame.Width - 32f, 24f))
+            {
+                BackgroundColor = UIColor.White
+            };
+            _textFieldView.Layer.CornerRadius = 12f;
+            _textFieldSearch = new UITextField(new CGRect(12f, 0, View.Frame.Width - 24f - 24d / 2, 24f))
+            {
+                AttributedPlaceholder = new NSAttributedString(
+                   "Search by account nickname or number"
+                   , font: MyTNBFont.MuseoSans12_500
+                   , foregroundColor: MyTNBColor.WhiteTwo
+                   , strokeWidth: 0
+               ),
+                TextColor = MyTNBColor.TunaGrey(),
+                Font = MyTNBFont.MuseoSans14_500
+            };
+            SetTextFieldEvents(_textFieldSearch);
+            _textFieldView.AddSubview(_textFieldSearch);
+            View.AddSubview(_textFieldView);
+        }
+
+        private void SetTextFieldEvents(UITextField textField)
+        {
+            _textFieldHelper.SetKeyboard(textField);
+            textField.EditingChanged += (sender, e) =>
+            {
+                Debug.WriteLine("textField*** " + textField.Text);
+                SearchFromAccountList(textField.Text);
+            };
+            textField.ShouldReturn = (sender) =>
+            {
+                sender.ResignFirstResponder();
+                return false;
+            };
+        }
+
+        private void SearchFromAccountList(string searchString)
+        {
+            var accountsList = DataManager.DataManager.SharedInstance.AccountRecordsList.d;
+            var searchResults = accountsList.FindAll(x => x.accountNickName.Contains(searchString) || x.accNum.Contains(searchString));
+            ResetAccountCardsView(searchResults);
         }
 
         public override void ViewWillAppear(bool animated)
@@ -48,17 +100,8 @@ namespace myTNB
             base.ViewWillAppear(animated);
             if (DataManager.DataManager.SharedInstance.SummaryNeedsRefresh)
             {
-                DataManager.DataManager.SharedInstance.AccountsGroupList.Clear();
+                ResetAccountCardsView(DataManager.DataManager.SharedInstance.AccountRecordsList.d);
                 DataManager.DataManager.SharedInstance.SummaryNeedsRefresh = false;
-                GetGroupedAccountsList();
-                if (_accountsPageViewController != null)
-                {
-                    _accountsPageViewController.DataSource = new AccountsPageViewDataSource(this, DataManager.DataManager.SharedInstance.AccountsGroupList);
-                    var startingViewController = ViewControllerAtIndex(0) as AccountsContentViewController;
-                    var viewControllers = new UIViewController[] { startingViewController };
-                    _accountsPageViewController.SetViewControllers(viewControllers, UIPageViewControllerNavigationDirection.Forward, false, null);
-                }
-                InitializeAccountsPageView();
             }
         }
 
@@ -89,72 +132,25 @@ namespace myTNB
             Debug.WriteLine("DEBUG >>> SUMMARY DASHBOARD LanguageDidChange");
         }
 
-
-        // <summary>
-        // Initializes the accounts page view.
-        // </summary>
-        private void InitializeAccountsPageView()
+        private void ResetAccountCardsView(List<CustomerAccountRecordModel> accountsList)
         {
-            _homeTableView.Source = new DashboardHomeDataSource(this, _accountsPageViewController);
-            _homeTableView.ReloadData();
+            DataManager.DataManager.SharedInstance.AccountsGroupList.Clear();
+            _dashboardHomeHelper.GroupAccountsList(accountsList);
+            if (_accountsPageViewController != null)
+            {
+                _accountsPageViewController.View.RemoveFromSuperview();
+                InitializePageView();
+            }
+            InitializeTableView();
         }
 
-        private void GetGroupedAccountsList()
+        // <summary>
+        // Initializes the table view.
+        // </summary>
+        private void InitializeTableView()
         {
-            var sortedAccounts = new List<CustomerAccountRecordModel>();
-
-            var accountsList = DataManager.DataManager.SharedInstance.AccountRecordsList.d;
-            var results = accountsList.GroupBy(x => x.IsREAccount);
-
-            if (results != null && results?.Count() > 0)
-            {
-                var reAccts = results.Where(x => x.Key == true).SelectMany(y => y).OrderBy(o => o.accountNickName).ToList();
-                var normalAccts = results.Where(x => x.Key == false).SelectMany(y => y).OrderBy(o => o.accountNickName).ToList();
-                reAccts.AddRange(normalAccts);
-                sortedAccounts = reAccts;
-            }
-
-            var groupedAccountsList = new List<List<DueAmountDataModel>>();
-
-            int count = 0;
-            List<DueAmountDataModel> batchList = new List<DueAmountDataModel>();
-            for (int i = 0; i < sortedAccounts.Count; i++)
-            {
-                if (count < DashboardHomeConstants.MaxAccountPerCard)
-                {
-                    DueAmountDataModel item = new DueAmountDataModel
-                    {
-                        accNum = sortedAccounts[i].accNum,
-                        accNickName = sortedAccounts[i].accountNickName,
-                        IsReAccount = sortedAccounts[i].IsREAccount,
-                        IsNormalAccount = sortedAccounts[i].IsNormalMeter
-                    };
-
-                    batchList.Add(item);
-                    count++;
-                }
-                else
-                {
-                    groupedAccountsList.Add(batchList);
-                    batchList = new List<DueAmountDataModel>();
-                    DueAmountDataModel item = new DueAmountDataModel
-                    {
-                        accNum = sortedAccounts[i].accNum,
-                        accNickName = sortedAccounts[i].accountNickName,
-                        IsReAccount = sortedAccounts[i].IsREAccount,
-                        IsNormalAccount = sortedAccounts[i].IsNormalMeter
-                    };
-                    batchList.Add(item);
-                    count = 1;
-                }
-
-                if (i + 1 == sortedAccounts.Count)
-                {
-                    groupedAccountsList.Add(batchList);
-                }
-            }
-            DataManager.DataManager.SharedInstance.AccountsGroupList = new List<List<DueAmountDataModel>>();
-            DataManager.DataManager.SharedInstance.AccountsGroupList = groupedAccountsList;
+            _homeTableView.Source = new DashboardHomeDataSource(this, _accountsPageViewController, _headerView);
+            _homeTableView.ReloadData();
         }
 
         private void InitializePageView()
@@ -169,16 +165,14 @@ namespace myTNB
             var viewControllers = new UIViewController[] { startingViewController };
 
             _accountsPageViewController.SetViewControllers(viewControllers, UIPageViewControllerNavigationDirection.Forward, false, null);
-            _accountsPageViewController.View.Frame = new CGRect(0, 0, View.Frame.Width, 395f);
-
-            AddChildViewController(_accountsPageViewController);
-            _accountsPageViewController.DidMoveToParentViewController(this);
+            _accountsPageViewController.View.Frame = new CGRect(0, 0, View.Frame.Width, _dashboardHomeHelper.GetHeightForAccountCards());
+            _accountsPageViewController.View.BackgroundColor = UIColor.Clear;
         }
 
         private void AddTableView()
         {
             nfloat tabbarHeight = TabBarController.TabBar.Frame.Height + 20.0F;
-            _homeTableView = new UITableView(new CGRect(0, DeviceHelper.GetStatusBarHeight(), View.Frame.Width
+            _homeTableView = new UITableView(new CGRect(0, DeviceHelper.GetStatusBarHeight() + 30f, View.Frame.Width
                 , View.Frame.Height - DeviceHelper.GetStatusBarHeight() - tabbarHeight))
             { BackgroundColor = UIColor.Clear };
             _homeTableView.SeparatorStyle = UITableViewCellSeparatorStyle.None;
@@ -194,9 +188,23 @@ namespace myTNB
         {
             _dashboardHomeHeader = new DashboardHomeHeader(View);
             _dashboardHomeHeader.SetGreetingText(GetGreeting());
-            _dashboardHomeHeader.SetNameText(GetDisplayName());
-            _homeTableView.TableHeaderView = _dashboardHomeHeader.GetUI();
+            _dashboardHomeHeader.SetNameText(_dashboardHomeHelper.GetDisplayName());
+            _headerView = _dashboardHomeHeader.GetUI();
             _dashboardHomeHeader.AddNotificationAction(OnNotificationAction);
+            _dashboardHomeHeader.SetAddAccountAction(_tapGestureAddAccount);
+            _dashboardHomeHeader.SetSearchAction(_tapGestureSearch);
+        }
+
+        private void SetTapGestureRecognizers()
+        {
+            _tapGestureAddAccount = new UITapGestureRecognizer(() =>
+            {
+                OnAddAccountAction();
+            });
+            _tapGestureSearch = new UITapGestureRecognizer(() =>
+            {
+                OnSearchAction();
+            });
         }
 
         private void OnNotificationAction()
@@ -205,6 +213,16 @@ namespace myTNB
             PushNotificationViewController viewController = storyBoard.InstantiateViewController("PushNotificationViewController") as PushNotificationViewController;
             UINavigationController navController = new UINavigationController(viewController);
             PresentViewController(navController, true, null);
+        }
+
+        private void OnAddAccountAction()
+        {
+            Debug.WriteLine("OnAddAccountAction");
+        }
+
+        private void OnSearchAction()
+        {
+            Debug.WriteLine("OnSearchAction");
         }
 
         private string GetGreeting()
@@ -222,21 +240,12 @@ namespace myTNB
             return I18NDictionary[key];
         }
 
-        private string GetDisplayName()
-        {
-            if (DataManager.DataManager.SharedInstance.UserEntity?.Count > 0 && DataManager.DataManager.SharedInstance.UserEntity[0] != null)
-            {
-                return string.Format("{0}!", DataManager.DataManager.SharedInstance.UserEntity[0]?.displayName);
-            }
-            return string.Empty;
-        }
-
         public UIViewController ViewControllerAtIndex(int index)
         {
             UIStoryboard storyBoard = UIStoryboard.FromName("Dashboard", null);
             var vc = storyBoard.InstantiateViewController("AccountsContentViewController") as AccountsContentViewController;
             vc.pageIndex = index;
-            Debug.WriteLine("index: " + index);
+            vc._groupAccountList = DataManager.DataManager.SharedInstance.AccountsGroupList;
             return vc;
         }
 

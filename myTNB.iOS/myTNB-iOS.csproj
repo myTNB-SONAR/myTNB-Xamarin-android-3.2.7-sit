@@ -968,6 +968,14 @@
     <ImageAsset Include="Assets.xcassets\Accounts-Smart-Meter-Icon.imageset\icDisplaySmartMeter.png" />
     <ImageAsset Include="Assets.xcassets\Accounts-Smart-Meter-Icon.imageset\icDisplaySmartMeter%402x.png" />
     <ImageAsset Include="Assets.xcassets\Accounts-Smart-Meter-Icon.imageset\icDisplaySmartMeter%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Search-Icon.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Add-Account-Icon.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Add-Account-Icon.imageset\Add-Account-Icon.png" />
+    <ImageAsset Include="Assets.xcassets\Add-Account-Icon.imageset\Add-Account-Icon%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Add-Account-Icon.imageset\Add-Account-Icon%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Search-Icon.imageset\Search-Icon.png" />
+    <ImageAsset Include="Assets.xcassets\Search-Icon.imageset\Search-Icon2x.png" />
+    <ImageAsset Include="Assets.xcassets\Search-Icon.imageset\Search-Icon3x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -1257,6 +1265,8 @@
     <Folder Include="Assets.xcassets\Accounts-RE-Icon.imageset\" />
     <Folder Include="Assets.xcassets\Accounts-Normal-Icon.imageset\" />
     <Folder Include="Assets.xcassets\Accounts-Smart-Meter-Icon.imageset\" />
+    <Folder Include="Assets.xcassets\Search-Icon.imageset\" />
+    <Folder Include="Assets.xcassets\Add-Account-Icon.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -1977,6 +1987,7 @@
       <DependentUpon>HomeTabBarController.cs</DependentUpon>
     </Compile>
     <Compile Include="Tab Bar\TabbarConstants.cs" />
+    <Compile Include="Home\Dashboard\DashboardHome\DashboardHomeHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />

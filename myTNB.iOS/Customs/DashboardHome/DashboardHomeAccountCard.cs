@@ -30,7 +30,7 @@ namespace myTNB
             nfloat parentHeight = _parentView.Frame.Height;
             nfloat parentWidth = _parentView.Frame.Width;
             nfloat padding = 16f;
-            nfloat margin = 15f;
+            nfloat margin = 16f;
 
             _shimmerView = new UIView(new CGRect(16f, _yLocation + margin, parentWidth - (padding * 2), 60f))
             {
