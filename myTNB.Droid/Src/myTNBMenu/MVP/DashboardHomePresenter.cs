@@ -1157,9 +1157,27 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 
 		public void OnTapToRefresh()
 		{
-			DoLoadHomeDashBoardFragment();
 			// TODO: Enabled back if the My Accounts flow is done
 			// OnAccountSelectDashBoard();
+
+			if (currentBottomNavigationMenu == Resource.Id.menu_dashboard)
+			{
+				DoLoadHomeDashBoardFragment();
+			}
+			else if (currentBottomNavigationMenu == Resource.Id.menu_bill)
+			{
+				this.mView.ShowProgressDialog();
+				LoadBills(CustomerBillingAccount.GetSelectedOrFirst());
+				this.mView.SetAccountName(CustomerBillingAccount.GetSelected().AccDesc);
+				if (CustomerBillingAccount.GetSelectedOrFirst().AccountCategoryId.Equals("2"))
+				{
+					this.mView.ShowREAccount(true);
+				}
+				else
+				{
+					this.mView.EnableDropDown(true);
+				}
+			}
 		}
 	}
 
