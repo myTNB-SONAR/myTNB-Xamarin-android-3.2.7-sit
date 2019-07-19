@@ -72,6 +72,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         [BindView(Resource.Id.indicatorContainer)]
         LinearLayout indicatorContainer;
 
+        System.Timers.Timer timer;
+        System.Timers.Timer FAQTimer;
 
         public override void OnCreate(Bundle savedInstanceState)
         {
@@ -105,7 +107,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             layoutShimmerManager.Orientation = RecyclerView.Vertical;
             myServiceShimmerList.SetLayoutManager(layoutShimmerManager);
             LoadShimmerServiceList(null);
-            System.Timers.Timer timer = new System.Timers.Timer();
+            timer = new System.Timers.Timer();
             timer.Interval = 3000;
             timer.Elapsed += OnMyServiceTimedEvent;
             timer.Enabled = true;
@@ -115,6 +117,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         {
             this.Activity.RunOnUiThread(() =>
             {
+                timer.Stop();
+                timer.Close();
                 LoadServiceList(null);
             });
         }
@@ -127,16 +131,18 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             LinearLayoutManager linearShimmerLayoutManager = new LinearLayoutManager(this.Activity, LinearLayoutManager.Horizontal, false);
             newFAQShimmerList.SetLayoutManager(linearShimmerLayoutManager);
             LoadShimmerFAQList(null);
-            System.Timers.Timer timer = new System.Timers.Timer();
-            timer.Interval = 3000;
-            timer.Elapsed += OnNewFAQTimedEvent;
-            timer.Enabled = true;
+            FAQTimer = new System.Timers.Timer();
+            FAQTimer.Interval = 3000;
+            FAQTimer.Elapsed += OnNewFAQTimedEvent;
+            FAQTimer.Enabled = true;
         }
 
         private void OnNewFAQTimedEvent(object sender, System.Timers.ElapsedEventArgs e)
         {
             this.Activity.RunOnUiThread(() =>
             {
+                FAQTimer.Stop();
+                FAQTimer.Close();
                 LoadFAQList(null);
             });
         }
@@ -352,7 +358,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             else
             {
                 List<NewFAQ> dummyList = new List<NewFAQ>();
-                for (int i = 0; i < 3; i++)
+                for (int i = 0; i < 6; i++)
                 {
                     if(i == 0)
                     {
@@ -376,6 +382,30 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                         {
                             ID = "2",
                             Title = "Check out how you can apply for AutoPay."
+                        });
+                    }
+                    else if (i == 3)
+                    {
+                        dummyList.Add(new NewFAQ()
+                        {
+                            ID = "3",
+                            Title = "How can I contact TNB?"
+                        });
+                    }
+                    else if (i == 4)
+                    {
+                        dummyList.Add(new NewFAQ()
+                        {
+                            ID = "4",
+                            Title = "How do i pay my bills through myTNB app?"
+                        });
+                    }
+                    else if (i == 5)
+                    {
+                        dummyList.Add(new NewFAQ()
+                        {
+                            ID = "5",
+                            Title = "What’s new on this app?"
                         });
                     }
                 }

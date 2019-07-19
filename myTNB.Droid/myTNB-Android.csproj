@@ -1217,6 +1217,31 @@
     <AndroidResource Include="Resources\drawable-xxhdpi\fluid_background.png" />
     <AndroidResource Include="Resources\drawable-xxxhdpi\fluid_background.png" />
     <Compile Include="Src\Utils\ShimmerUtils.cs" />
+    <AndroidResource Include="Resources\drawable-hdpi\faq_color_2.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\faq_color_3.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\faq_color_4.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\faq_color_5.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\faq_color_6.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\faq_color_2.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\faq_color_3.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\faq_color_4.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\faq_color_5.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\faq_color_6.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\faq_color_2.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\faq_color_3.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\faq_color_4.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\faq_color_5.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\faq_color_6.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\faq_color_2.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\faq_color_3.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\faq_color_4.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\faq_color_5.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\faq_color_6.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\faq_color_2.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\faq_color_3.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\faq_color_4.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\faq_color_5.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\faq_color_6.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

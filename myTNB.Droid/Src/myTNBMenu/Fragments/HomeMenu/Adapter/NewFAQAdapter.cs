@@ -41,7 +41,25 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
 
 			switch (model.ID)
 			{
-				default:
+                case "0":
+                    vh.backgroundImg.SetBackgroundResource(Resource.Drawable.faq_color_1);
+                    break;
+                case "1":
+                    vh.backgroundImg.SetBackgroundResource(Resource.Drawable.faq_color_2);
+                    break;
+                case "2":
+                    vh.backgroundImg.SetBackgroundResource(Resource.Drawable.faq_color_3);
+                    break;
+                case "3":
+                    vh.backgroundImg.SetBackgroundResource(Resource.Drawable.faq_color_4);
+                    break;
+                case "4":
+                    vh.backgroundImg.SetBackgroundResource(Resource.Drawable.faq_color_5);
+                    break;
+                case "5":
+                    vh.backgroundImg.SetBackgroundResource(Resource.Drawable.faq_color_6);
+                    break;
+                default:
 					vh.backgroundImg.SetBackgroundResource(Resource.Drawable.faq_color_1);
 					break;
 
