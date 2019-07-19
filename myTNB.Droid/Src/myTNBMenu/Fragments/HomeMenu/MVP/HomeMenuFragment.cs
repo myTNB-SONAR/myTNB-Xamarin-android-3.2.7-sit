@@ -20,7 +20,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
     public class HomeMenuFragment : BaseFragment
 	{
         [BindView(Resource.Id.newFAQShimmerView)]
-        ShimmerFrameLayout newFAQShimmerView;
+        LinearLayout newFAQShimmerView;
 
         [BindView(Resource.Id.newFAQList)]
         RecyclerView newFAQListRecycleView;
@@ -35,7 +35,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         TextView newFAQTitle;
 
         [BindView(Resource.Id.myServiceShimmerView)]
-        ShimmerFrameLayout myServiceShimmerView;
+        LinearLayout myServiceShimmerView;
 
         [BindView(Resource.Id.myServiceList)]
         RecyclerView myServiceListRecycleView;
@@ -224,12 +224,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 MyServiceShimmerAdapter adapter = new MyServiceShimmerAdapter(dummyList);
                 myServiceShimmerList.SetAdapter(adapter);
             }
-            myServiceShimmerView.StartShimmer();
         }
 
         public void LoadServiceList(List<MyService> serviceList)
         {
-            myServiceShimmerView.StopShimmer();
             myServiceShimmerView.Visibility = ViewStates.Gone;
             myServiceView.Visibility = ViewStates.Visible;
             if (serviceList != null && serviceList.Count() > 0)
@@ -310,12 +308,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 NewFAQShimmerAdapter adapter = new NewFAQShimmerAdapter(dummyList);
                 newFAQShimmerList.SetAdapter(adapter);
             }
-            newFAQShimmerView.StartShimmer();
         }
 
         public void LoadFAQList(List<NewFAQ> faqList)
         {
-            newFAQShimmerView.StopShimmer();
             newFAQShimmerView.Visibility = ViewStates.Gone;
             newFAQView.Visibility = ViewStates.Visible;
             if (faqList != null && faqList.Count() > 0)

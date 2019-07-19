@@ -1216,6 +1216,7 @@
     <AndroidResource Include="Resources\drawable-xhdpi\fluid_background.png" />
     <AndroidResource Include="Resources\drawable-xxhdpi\fluid_background.png" />
     <AndroidResource Include="Resources\drawable-xxxhdpi\fluid_background.png" />
+    <Compile Include="Src\Utils\ShimmerUtils.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
