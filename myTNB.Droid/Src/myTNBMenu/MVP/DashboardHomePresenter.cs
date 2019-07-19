@@ -323,7 +323,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 					}
 					else
 					{
-						if (this.mView.GetIsInnerDashboard())
+						if (DashboardHomeActivity.GO_TO_INNER_DASHBOARD)
 						{
 							OnAccountSelectDashBoard();
 						}
@@ -1014,7 +1014,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 		{
 			try
 			{
-				this.mView.UpdateIsInnerDashboard(true);
+				DashboardHomeActivity.GO_TO_INNER_DASHBOARD = true;
 				List<CustomerBillingAccount> accountList = new List<CustomerBillingAccount>();
 				accountList = CustomerBillingAccount.List();
 				this.mView.ShowAccountName();
@@ -1157,7 +1157,8 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 
 		public void OnTapToRefresh()
 		{
-			if (currentBottomNavigationMenu == Resource.Id.menu_dashboard)
+			DoLoadHomeDashBoardFragment();
+			/* if (currentBottomNavigationMenu == Resource.Id.menu_dashboard)
 			{
 				DoLoadHomeDashBoardFragment();
 			}
@@ -1173,7 +1174,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 				{
 					this.mView.EnableDropDown(true);
 				}
-			}
+			}*/
 		}
 	}
 

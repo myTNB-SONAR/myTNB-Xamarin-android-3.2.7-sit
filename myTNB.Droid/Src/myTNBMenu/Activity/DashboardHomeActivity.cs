@@ -111,16 +111,6 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             return true;
         }
 
-        public bool GetIsInnerDashboard()
-        {
-            return GO_TO_INNER_DASHBOARD;
-        }
-
-        public void UpdateIsInnerDashboard(bool yesno)
-        {
-            GO_TO_INNER_DASHBOARD = yesno;
-        }
-
         public void ShowPreLogin()
         {
             Intent PreLoginIntent = new Intent(this, typeof(PreLoginActivity));
@@ -706,7 +696,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
         public void ShowHomeDashBoard()
         {
-            UpdateIsInnerDashboard(false);
+            DashboardHomeActivity.GO_TO_INNER_DASHBOARD = false;
             currentFragment = new HomeMenuFragment();
             FragmentManager.BeginTransaction()
                            .Replace(Resource.Id.content_layout, new HomeMenuFragment())

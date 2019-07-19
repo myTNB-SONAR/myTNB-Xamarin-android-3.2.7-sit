@@ -202,10 +202,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 
 			void BillsMenuAccess(AccountData selectedAccount);
 
-            bool GetIsInnerDashboard();
-
-            void UpdateIsInnerDashboard(bool yesno);
-
 			void BillsMenuRefresh(AccountData accountData);
         }
 

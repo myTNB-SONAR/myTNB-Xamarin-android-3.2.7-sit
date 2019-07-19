@@ -103,7 +103,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             myServiceShimmerList.SetLayoutManager(layoutShimmerManager);
             LoadShimmerServiceList(null);
             System.Timers.Timer timer = new System.Timers.Timer();
-            timer.Interval = 5000;
+            timer.Interval = 3000;
             timer.Elapsed += OnMyServiceTimedEvent;
             timer.Enabled = true;
         }
@@ -125,7 +125,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             newFAQShimmerList.SetLayoutManager(linearShimmerLayoutManager);
             LoadShimmerFAQList(null);
             System.Timers.Timer timer = new System.Timers.Timer();
-            timer.Interval = 5000;
+            timer.Interval = 3000;
             timer.Elapsed += OnNewFAQTimedEvent;
             timer.Enabled = true;
         }
