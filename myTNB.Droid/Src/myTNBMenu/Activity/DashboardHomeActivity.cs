@@ -701,7 +701,6 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             FragmentManager.BeginTransaction()
                            .Replace(Resource.Id.content_layout, new HomeMenuFragment())
                            .CommitAllowingStateLoss();
-            SupportActionBar.Hide();
         }
 
         public override void OnTrimMemory(TrimMemory level)
