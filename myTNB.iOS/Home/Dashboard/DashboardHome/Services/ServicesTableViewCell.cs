@@ -180,7 +180,6 @@ namespace myTNB
             shimmeringView.ContentView = viewShimmerContent;
             shimmeringView.Shimmering = true;
 
-            viewParent.AddSubviews(new UIView[] { });
             return viewParent;
         }
 

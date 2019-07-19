@@ -13,11 +13,13 @@ namespace myTNB
         FBShimmeringView _shimmeringView = new FBShimmeringView();
 
         private readonly UIView _parentView;
-        UIView _accountCardView, _shimmerView;
+        UIView _accountCardView;
         UIImageView _accountIcon;
         UILabel _accountNickname, _accountNo, _amountDue, _dueDate;
         string _strAccountIcon, _strNickname, _strAccountNo;
         nfloat _yLocation = 0f;
+
+        public bool IsUpdating { set; get; }
 
         public DashboardHomeAccountCard(UIView view, nfloat yLocation)
         {
@@ -32,35 +34,32 @@ namespace myTNB
             nfloat padding = 16f;
             nfloat margin = 16f;
 
-            _shimmerView = new UIView(new CGRect(16f, _yLocation + margin, parentWidth - (padding * 2), 60f))
-            {
-                BackgroundColor = UIColor.White
-            };
-
             _accountCardView = new UIView(new CGRect(16f, _yLocation + margin, parentWidth - (padding * 2), 60f))
             {
                 BackgroundColor = UIColor.White
             };
             _accountCardView.Layer.CornerRadius = 5f;
+            _accountCardView.ClipsToBounds = true;
+
             AddCardShadow(ref _accountCardView);
 
             _accountIcon = new UIImageView(new CGRect(12f, DeviceHelper.GetCenterYWithObjHeight(28f, _accountCardView), 28f, 28f))
             {
-                Image = UIImage.FromBundle(_strAccountIcon)
+                Image = UIImage.FromBundle(_strAccountIcon ?? string.Empty)
             };
 
             _accountNickname = new UILabel(new CGRect(_accountIcon.Frame.GetMaxX() + 12f, 12f, 150f, 20f))
             {
                 Font = MyTNBFont.MuseoSans14_500,
                 TextColor = MyTNBColor.TunaGrey(),
-                Text = _strNickname
+                Text = _strNickname ?? string.Empty
             };
 
             _accountNo = new UILabel(new CGRect(_accountIcon.Frame.GetMaxX() + 12f, _accountNickname.Frame.GetMaxY(), 110f, 20f))
             {
                 Font = MyTNBFont.MuseoSans12_300,
                 TextColor = UIColor.LightGray,
-                Text = _strAccountNo
+                Text = _strAccountNo ?? string.Empty
             };
 
             _amountDue = new UILabel(new CGRect(parentWidth - 100f - 12f - (16f * 2), 12f, 100f, 20f))
@@ -77,18 +76,43 @@ namespace myTNB
                 TextAlignment = UITextAlignment.Right
             };
 
-            _accountCardView.AddSubviews(new UIView { _accountIcon, _accountNickname, _accountNo, _amountDue, _dueDate });
+            OnUpdateWidget();
 
-            //_accountIcon.Layer.CornerRadius = _accountIcon.Frame.Width / 2;
-            //_accountIcon.ClipsToBounds = true;
-            //_accountNickname.Layer.CornerRadius = 5.0f;
-            //_accountNickname.ClipsToBounds = true;
-            //_accountNo.Layer.CornerRadius = 5.0f;
-            //_accountNo.ClipsToBounds = true;
+            CustomShimmerView shimmeringView = new CustomShimmerView();
+            UIView viewShimmerParent = new UIView(new CGRect(0, 0, _accountCardView.Frame.Width
+                , _accountCardView.Frame.Height))
+            { BackgroundColor = UIColor.Clear };
+            UIView viewShimmerContent = new UIView(new CGRect(0, 0, _accountCardView.Frame.Width
+                , _accountCardView.Frame.Height))
+            { BackgroundColor = UIColor.Clear };
+            viewShimmerParent.AddSubview(shimmeringView);
+            shimmeringView.ContentView = viewShimmerContent;
+            shimmeringView.Shimmering = IsUpdating;
 
-            //_shimmerView.AddSubview(_shimmeringView);
-            //_shimmeringView.ContentView = _parentView;
-            //SetUIForLoading(true);
+            viewShimmerContent.AddSubviews(new UIView { _accountIcon, _accountNickname, _accountNo, _amountDue, _dueDate });
+            _accountCardView.AddSubview(viewShimmerParent);
+        }
+
+        private void OnUpdateWidget()
+        {
+            _accountIcon.BackgroundColor = IsUpdating ? MyTNBColor.PowderBlue : UIColor.Clear;
+            _accountIcon.Layer.CornerRadius = IsUpdating ? _accountIcon.Frame.Width / 2 : 0;
+
+            _accountNickname.BackgroundColor = IsUpdating ? MyTNBColor.PowderBlue : UIColor.Clear;
+            _accountNickname.Frame = IsUpdating ? new CGRect(_accountNickname.Frame.X, 16, _accountNickname.Frame.Width, 14)
+                : new CGRect(_accountNickname.Frame.X, 12, _accountNickname.Frame.Width, 20);
+
+            _accountNo.BackgroundColor = IsUpdating ? MyTNBColor.PowderBlue : UIColor.Clear;
+            _accountNo.Frame = IsUpdating ? new CGRect(_accountNo.Frame.X, _accountNickname.Frame.GetMaxY() + 6, _accountNo.Frame.Width, 8)
+                : new CGRect(_accountNo.Frame.X, _accountNickname.Frame.GetMaxY(), _accountNo.Frame.Width, 20);
+
+            _amountDue.BackgroundColor = IsUpdating ? MyTNBColor.PowderBlue : UIColor.Clear;
+            _amountDue.Frame = IsUpdating ? new CGRect(_amountDue.Frame.X, 16, _amountDue.Frame.Width, 14)
+                : new CGRect(_amountDue.Frame.X, 12, _amountDue.Frame.Width, 20);
+
+            _dueDate.BackgroundColor = IsUpdating ? MyTNBColor.PowderBlue : UIColor.Clear;
+            _dueDate.Frame = IsUpdating ? new CGRect(_dueDate.Frame.X, _amountDue.Frame.GetMaxY() + 6, _dueDate.Frame.Width, 8)
+                : new CGRect(_dueDate.Frame.X, _amountDue.Frame.GetMaxY(), _dueDate.Frame.Width, 20);
         }
 
         public UIView GetUI()

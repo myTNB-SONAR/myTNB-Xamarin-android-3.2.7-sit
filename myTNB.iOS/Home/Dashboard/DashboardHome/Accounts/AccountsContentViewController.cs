@@ -51,10 +51,12 @@ namespace myTNB
             }
         }
 
-        private void AddUpdateCards()
+        private void AddUpdateCards(bool isUpdating = true)
         {
             if (_groupAccountList.Count <= 0)
+            {
                 return;
+            }
 
             if (_viewContainer != null)
             {
@@ -71,7 +73,10 @@ namespace myTNB
                 _viewContainer.Frame = new CGRect(0, 0, View.Frame.Width, 68 * groupAccountList.Count + 16f * 2);
                 for (int i = 0; i < groupAccountList.Count; i++)
                 {
-                    DashboardHomeAccountCard _homeAccountCard = new DashboardHomeAccountCard(_viewContainer, 68f * i);
+                    DashboardHomeAccountCard _homeAccountCard = new DashboardHomeAccountCard(_viewContainer, 68f * i)
+                    {
+                        IsUpdating = isUpdating
+                    };
                     string iconName = "Accounts-Smart-Meter-Icon";
                     if (groupAccountList[i].IsReAccount)
                     {
@@ -81,17 +86,23 @@ namespace myTNB
                     {
                         iconName = "Accounts-Normal-Icon";
                     }
-                    _homeAccountCard.SetAccountIcon(iconName);
-                    _homeAccountCard.SetNickname(groupAccountList[i].accNickName);
-                    _homeAccountCard.SetAccountNo(groupAccountList[i].accNum);
-                    _viewContainer.AddSubview(_homeAccountCard.GetUI());
-                    _homeAccountCard.AdjustLabels(groupAccountList[i]);
-                    _homeAccountCard.SetTapAccountCardEvent(new UITapGestureRecognizer(() =>
+                    if (!isUpdating)
                     {
-                        Debug.WriteLine("i========= " + i);
-                        //var g = groupAccountList[i];
-                        //OnAccountCardSelected(groupAccountList[i]);
-                    }));
+                        _homeAccountCard.SetAccountIcon(iconName);
+                        _homeAccountCard.SetNickname(groupAccountList[i].accNickName);
+                        _homeAccountCard.SetAccountNo(groupAccountList[i].accNum);
+                    }
+                    _viewContainer.AddSubview(_homeAccountCard.GetUI());
+                    if (!isUpdating)
+                    {
+                        _homeAccountCard.AdjustLabels(groupAccountList[i]);
+                        _homeAccountCard.SetTapAccountCardEvent(new UITapGestureRecognizer(() =>
+                        {
+                            Debug.WriteLine("i========= " + i);
+                            //var g = groupAccountList[i];
+                            //OnAccountCardSelected(groupAccountList[i]);
+                        }));
+                    }
                 }
                 View.AddSubview(_viewContainer);
             }
@@ -158,12 +169,12 @@ namespace myTNB
                         {
                             //ActivityIndicator.Show();
                             await GetAccountsSummary(accounts);
-                            AddUpdateCards();
+                            AddUpdateCards(false);
                             //ActivityIndicator.Hide();
                         }
                         else if (shouldReload)
                         {
-                            AddUpdateCards();
+                            AddUpdateCards(false);
                         }
                     }
                     else
