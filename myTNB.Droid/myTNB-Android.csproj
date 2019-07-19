@@ -1516,6 +1516,8 @@
     <Folder Include="Src\myTNBMenu\Fragments\HomeMenu\MVP\" />
     <Folder Include="Src\myTNBMenu\Fragments\HomeMenu\Adapter\" />
     <Folder Include="Src\myTNBMenu\Fragments\HomeMenu\Listener\" />
+    <Folder Include="Src\myTNBMenu\Fragments\SSMRMenu\" />
+    <Folder Include="Src\myTNBMenu\Fragments\SSMRMenu\MVP\" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\GradientStatusBar.xml" />
