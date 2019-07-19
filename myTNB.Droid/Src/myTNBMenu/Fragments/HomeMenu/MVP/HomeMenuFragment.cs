@@ -397,12 +397,5 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             }
         }
 
-        private Shimmer.AlphaHighlightBuilder ShimmerEffectSetup()
-        {
-            Shimmer.AlphaHighlightBuilder shimmerBuilder = new Shimmer.AlphaHighlightBuilder();
-            shimmerBuilder.SetBaseAlpha(0.1f);
-            shimmerBuilder.SetTilt(0f);
-            return shimmerBuilder;
-        }
     }
 }
