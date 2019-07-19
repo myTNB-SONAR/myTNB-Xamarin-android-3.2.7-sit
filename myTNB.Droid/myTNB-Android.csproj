@@ -1154,6 +1154,21 @@
     <Compile Include="Src\myTNBMenu\Fragments\HomeMenu\Listener\AccountsRecyclerViewOnScrollListener.cs" />
     <AndroidResource Include="Resources\drawable\circle.axml" />
     <AndroidResource Include="Resources\drawable\circle_active.axml" />
+    <Compile Include="Src\myTNBMenu\Fragments\HomeMenu\MVP\AccountCardModel.cs" />
+    <AndroidResource Include="Resources\drawable-hdpi\search_blue.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\search_blue.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\search_blue.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\search_blue.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\search_blue.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\fluid_background.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\fluid_background.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\fluid_background.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\fluid_background.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\fluid_background.png" />
+    <AndroidResource Include="Resources\drawable\dashboard_home_new_bg.xml" />
+    <Compile Include="Src\myTNBMenu\Fragments\HomeMenu\MVP\AccountCardsFilter.cs" />
+    <Compile Include="Src\myTNBMenu\Fragments\HomeMenu\MVP\ObjectExtensions.cs" />
+    <Compile Include="Src\myTNBMenu\Fragments\HomeMenu\Listener\AccountsSearchOnQueryTextListener.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
