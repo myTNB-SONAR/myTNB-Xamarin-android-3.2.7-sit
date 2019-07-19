@@ -3,6 +3,7 @@ using Android.Content;
 using Android.OS;
 using Android.Support.Constraints;
 using Android.Support.Design.Widget;
+using Android.Support.V7.App;
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
@@ -149,6 +150,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.FeedbackMenu
         {
             base.OnResume();
             this.userActionsListener.OnResume();
+            var act = this.Activity as AppCompatActivity;
+
+            var actionBar = act.SupportActionBar;
+            actionBar.Show();
         }
 
         public void SetPresenter(FeedbackMenuContract.IUserActionsListener userActionListener)

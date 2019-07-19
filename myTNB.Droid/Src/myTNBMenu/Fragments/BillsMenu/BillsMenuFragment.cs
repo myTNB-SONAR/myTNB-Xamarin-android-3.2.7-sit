@@ -4,6 +4,7 @@ using Android.Content;
 using Android.OS;
 using Android.Support.Design.Widget;
 using Android.Support.V4.Content;
+using Android.Support.V7.App;
 using Android.Support.V7.Widget;
 using Android.Text;
 using Android.Text.Method;
@@ -294,6 +295,16 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.BillsMenu
             {
                 Utility.LoggingNonFatalError(e);
             }
+        }
+
+        public override void OnResume()
+        {
+            base.OnResume();
+
+            var act = this.Activity as AppCompatActivity;
+
+            var actionBar = act.SupportActionBar;
+            actionBar.Show();
         }
 
         public void ShowView()

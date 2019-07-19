@@ -1,6 +1,7 @@
 ﻿using Android.Content;
 using Android.OS;
 using Android.Support.Design.Widget;
+using Android.Support.V7.App;
 using Android.Views;
 using Android.Webkit;
 using Android.Widget;
@@ -103,6 +104,16 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.PromotionsMenu
             {
                 Utility.LoggingNonFatalError(e);
             }
+        }
+
+        public override void OnResume()
+        {
+            base.OnResume();
+
+            var act = this.Activity as AppCompatActivity;
+
+            var actionBar = act.SupportActionBar;
+            actionBar.Show();
         }
 
         class PromotionsWebViewClient : WebViewClient

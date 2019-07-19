@@ -270,6 +270,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             var act = this.Activity as AppCompatActivity;
 
             var actionBar = act.SupportActionBar;
+            actionBar.Show();
         }
 
         public override bool OnOptionsItemSelected(IMenuItem item)

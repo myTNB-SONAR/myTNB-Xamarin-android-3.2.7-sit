@@ -101,8 +101,19 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             GridLayoutManager layoutShimmerManager = new GridLayoutManager(this.Activity, 3);
             layoutShimmerManager.Orientation = RecyclerView.Vertical;
             myServiceShimmerList.SetLayoutManager(layoutShimmerManager);
-            // LoadShimmerServiceList(null);
-            LoadServiceList(null);
+            LoadShimmerServiceList(null);
+            System.Timers.Timer timer = new System.Timers.Timer();
+            timer.Interval = 5000;
+            timer.Elapsed += OnMyServiceTimedEvent;
+            timer.Enabled = true;
+        }
+
+        private void OnMyServiceTimedEvent(object sender, System.Timers.ElapsedEventArgs e)
+        {
+            this.Activity.RunOnUiThread(() =>
+            {
+                LoadServiceList(null);
+            });
         }
 
         private void SetNewFAQRecycleView()
@@ -112,9 +123,21 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
             LinearLayoutManager linearShimmerLayoutManager = new LinearLayoutManager(this.Activity, LinearLayoutManager.Horizontal, false);
             newFAQShimmerList.SetLayoutManager(linearShimmerLayoutManager);
-            // LoadShimmerFAQList(null);
-            LoadFAQList(null);
+            LoadShimmerFAQList(null);
+            System.Timers.Timer timer = new System.Timers.Timer();
+            timer.Interval = 5000;
+            timer.Elapsed += OnNewFAQTimedEvent;
+            timer.Enabled = true;
         }
+
+        private void OnNewFAQTimedEvent(object sender, System.Timers.ElapsedEventArgs e)
+        {
+            this.Activity.RunOnUiThread(() =>
+            {
+                LoadFAQList(null);
+            });
+        }
+
 
         private void SetAccountActionHeader()
         {
@@ -164,15 +187,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             //shimmerBuilder = default(Shimmer.AlphaHighlightBuilder);
             //shimmerViewContainer.SetShimmer(shimmerBuilder?.Build());
             //shimmerViewContainer.StartShimmer();
-        }
-
-        public override void OnDestroy()
-        {
-            base.OnDestroy();
-            var act = this.Activity as AppCompatActivity;
-
-            var actionBar = act.SupportActionBar;
-            actionBar.Show();
         }
 
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)

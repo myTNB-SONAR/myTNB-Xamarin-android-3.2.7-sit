@@ -3,6 +3,7 @@ using Android.App;
 using Android.Content;
 using Android.OS;
 using Android.Support.Design.Widget;
+using Android.Support.V7.App;
 using Android.Util;
 using Android.Views;
 using Android.Widget;
@@ -261,6 +262,16 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.MoreMenu
         public bool IsActive()
         {
             return IsResumed;
+        }
+
+        public override void OnResume()
+        {
+            base.OnResume();
+
+            var act = this.Activity as AppCompatActivity;
+
+            var actionBar = act.SupportActionBar;
+            actionBar.Show();
         }
 
 
