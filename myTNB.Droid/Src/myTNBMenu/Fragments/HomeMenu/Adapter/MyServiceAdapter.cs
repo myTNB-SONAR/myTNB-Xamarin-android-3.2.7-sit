@@ -33,14 +33,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
 
             if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
             {
-                vh.serviceTitle.TextFormatted = Html.FromHtml(model.MyServiceTitle, FromHtmlOptions.ModeLegacy);
+                vh.serviceTitle.TextFormatted = Html.FromHtml(model.serviceCategoryName, FromHtmlOptions.ModeLegacy);
             }
             else
             {
-                vh.serviceTitle.TextFormatted = Html.FromHtml(model.MyServiceTitle);
+                vh.serviceTitle.TextFormatted = Html.FromHtml(model.serviceCategoryName);
             }
 
-            switch(model.Id)
+            switch(model.ServiceCategoryId)
             {
                 case "0":
                     vh.serviceImg.SetImageResource(Resource.Drawable.submit_meter);

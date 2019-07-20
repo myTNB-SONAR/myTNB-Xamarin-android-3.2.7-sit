@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <com.facebook.shimmer.ShimmerFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/shimmerContainer"
-    android:layout_width="106dp"
-    android:layout_height="106dp"
+    android:layout_width="96dp"
+    android:layout_height="96dp"
     android:layout_marginRight="12dp">
     <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"

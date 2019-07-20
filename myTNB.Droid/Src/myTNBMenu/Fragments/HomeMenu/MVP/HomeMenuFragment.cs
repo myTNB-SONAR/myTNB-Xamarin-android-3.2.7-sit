@@ -228,7 +228,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 {
                     dummyList.Add(new MyService()
                     {
-                        MyServiceTitle = ""
+                        serviceCategoryName = ""
                     });
                 }
                 MyServiceShimmerAdapter adapter = new MyServiceShimmerAdapter(dummyList);
@@ -255,40 +255,40 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     {
                         dummyList.Add(new MyService()
                         {
-                            Id = "0",
-                            MyServiceTitle = "Apply for Self<br/>Meter Reading"
+                            ServiceCategoryId = "0",
+                            serviceCategoryName = "Apply for Self<br/>Meter Reading"
                         });
                     }
                     else if (i == 1)
                     {
                         dummyList.Add(new MyService()
                         {
-                            Id = "1",
-                            MyServiceTitle = "Check<br/>Status"
+                            ServiceCategoryId = "1",
+                            serviceCategoryName = "Check<br/>Status"
                         });
                     }
                     else if (i == 2)
                     {
                         dummyList.Add(new MyService()
                         {
-                            Id = "2",
-                            MyServiceTitle = "Give Us<br/>Feedback"
+                            ServiceCategoryId = "2",
+                            serviceCategoryName = "Give Us<br/>Feedback"
                         });
                     }
                     else if (i == 3)
                     {
                         dummyList.Add(new MyService()
                         {
-                            Id = "3",
-                            MyServiceTitle = "Set<br/>Appointments"
+                            ServiceCategoryId = "3",
+                            serviceCategoryName = "Set<br/>Appointments"
                         });
                     }
                     else if (i == 4)
                     {
                         dummyList.Add(new MyService()
                         {
-                            Id = "4",
-                            MyServiceTitle = "Apply for<br/>AutoPay"
+                            ServiceCategoryId = "4",
+                            serviceCategoryName = "Apply for<br/>AutoPay"
                         });
                     }
                 }

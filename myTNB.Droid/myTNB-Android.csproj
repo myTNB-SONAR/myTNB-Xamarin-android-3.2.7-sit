@@ -1097,7 +1097,6 @@
     <Compile Include="Src\Notifications\Api\NotificationReadRequest.cs" />
     <Compile Include="Src\Notifications\Models\NotificationData.cs" />
     <AndroidResource Include="Resources\menu\NotificationToolbarMenu.xml" />
-    <AndroidResource Include="Resources\layout\NotificationEmptyView.axml" />
     <AndroidResource Include="Resources\drawable-hdpi\empty_state_notification.png" />
     <AndroidResource Include="Resources\drawable-hdpi\ic_action_select_all.png" />
     <AndroidResource Include="Resources\drawable-hdpi\ic_header_markread.png" />
