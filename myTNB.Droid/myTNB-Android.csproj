@@ -1241,6 +1241,8 @@
     <AndroidResource Include="Resources\drawable-xxxhdpi\faq_color_4.png" />
     <AndroidResource Include="Resources\drawable-xxxhdpi\faq_color_5.png" />
     <AndroidResource Include="Resources\drawable-xxxhdpi\faq_color_6.png" />
+    <Compile Include="Src\myTNBMenu\Fragments\HomeMenu\MVP\HomeMenuContract.cs" />
+    <Compile Include="Src\myTNBMenu\Fragments\HomeMenu\MVP\HomeMenuPresenter.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -1598,6 +1600,7 @@
     <Folder Include="Src\myTNBMenu\Fragments\HomeMenu\Adapter\" />
     <Folder Include="Src\myTNBMenu\Fragments\HomeMenu\Listener\" />
     <Folder Include="Src\myTNBMenu\Fragments\HomeMenu\Models\" />
+    <Folder Include="Src\myTNBMenu\Fragments\HomeMenu\Api\" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\GradientStatusBar.xml" />

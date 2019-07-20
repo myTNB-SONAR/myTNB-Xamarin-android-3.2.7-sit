@@ -20,8 +20,8 @@ using myTNB_Android.Src.Utils;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 {
-    public class HomeMenuFragment : BaseFragment
-	{
+    public class HomeMenuFragment : BaseFragment, HomeMenuContract.IView
+    {
         [BindView(Resource.Id.newFAQShimmerView)]
         LinearLayout newFAQShimmerView;
 
@@ -75,6 +75,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         System.Timers.Timer timer;
         System.Timers.Timer FAQTimer;
 
+        HomeMenuContract.IUserActionsListener userActionsListener;
+
         public override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -90,11 +92,22 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 SetMyServiceRecycleView();
                 SetNewFAQRecycleView();
                 TextViewUtils.SetMuseoSans500Typeface(myServiceTitle, newFAQTitle);
+                this.userActionsListener.Start();
             }
             catch (System.Exception e)
             {
                 Utility.LoggingNonFatalError(e);
             }
+        }
+
+        public void SetPresenter(HomeMenuContract.IUserActionsListener userActionListener)
+        {
+            this.userActionsListener = userActionListener;
+        }
+
+        public bool IsActive()
+        {
+            return IsAdded && IsVisible && !IsDetached && !IsRemoving;
         }
 
         private void SetMyServiceRecycleView()
@@ -238,6 +251,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
         public void LoadServiceList(List<MyService> serviceList)
         {
+            MyServiceShimmerAdapter shimmerAdapter = new MyServiceShimmerAdapter(null);
+            myServiceShimmerList.SetAdapter(shimmerAdapter);
             myServiceShimmerView.Visibility = ViewStates.Gone;
             myServiceView.Visibility = ViewStates.Visible;
             if (serviceList != null && serviceList.Count() > 0)
@@ -347,6 +362,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
         public void LoadFAQList(List<NewFAQ> faqList)
         {
+            NewFAQShimmerAdapter shimmerAdapter = new NewFAQShimmerAdapter(null);
+            newFAQShimmerList.SetAdapter(shimmerAdapter);
             newFAQShimmerView.Visibility = ViewStates.Gone;
             newFAQView.Visibility = ViewStates.Visible;
             if (faqList != null && faqList.Count() > 0)
