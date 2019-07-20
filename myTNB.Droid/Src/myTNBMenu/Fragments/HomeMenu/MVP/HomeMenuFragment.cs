@@ -11,13 +11,17 @@ using myTNB_Android.Src.Utils;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 {
-    public class HomeMenuFragment : BaseFragment
+    public class HomeMenuFragment : BaseFragment, HomeMenuContract.IView
 	{
-        //[BindView(Resource.Id.shimmer_view_container)]
-        //ShimmerFrameLayout shimmerViewContainer;
         [BindView(Resource.Id.accountsHeaderTitle)]
         TextView accountHeaderTitle;
-        
+
+        [BindView(Resource.Id.accountGreeting)]
+        TextView accountGreeting;
+
+        [BindView(Resource.Id.accountGreetingName)]
+        TextView accountGreetingName;
+
         [BindView(Resource.Id.searchAction)]
         ImageView searchActionIcon;
 
@@ -34,6 +38,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         LinearLayout indicatorContainer;
 
         AccountsRecyclerViewAdapter accountsAdapter;
+
         public override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -45,25 +50,38 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             base.OnViewCreated(view, savedInstanceState);
             SetAccountsRecyclerView();
             SetAccountActionHeader();
+            OnUpdateAccountListChanged(false);
         }
 
-        private void SetAccountActionHeader()
+        public void ShowSearchAction(bool isShow)
         {
-            TextViewUtils.SetMuseoSans500Typeface(accountHeaderTitle);
-
-            searchActionIcon.Click += (s, e) =>
+            if (isShow)
             {
                 accountHeaderTitle.Visibility = ViewStates.Gone;
                 searchEditText.Visibility = ViewStates.Visible;
-                searchEditText.SetOnQueryTextListener(new AccountsSearchOnQueryTextListener(accountsAdapter));
                 searchActionIcon.Visibility = ViewStates.Gone;
-            };
-
-            addAccountActionIcon.Click += (s, e) =>
+                searchEditText.ClearFocus();
+            }
+            else
             {
                 accountHeaderTitle.Visibility = ViewStates.Visible;
                 searchEditText.Visibility = ViewStates.Gone;
                 searchActionIcon.Visibility = ViewStates.Visible;
+            }
+        }
+
+        private void SetAccountActionHeader()
+        {
+            TextViewUtils.SetMuseoSans500Typeface(accountHeaderTitle, accountGreeting, accountGreetingName);
+            searchEditText.SetOnQueryTextListener(new AccountsSearchOnQueryTextListener(this,accountsAdapter));
+            searchActionIcon.Click += (s, e) =>
+            {
+                ShowSearchAction(true);
+            };
+
+            addAccountActionIcon.Click += (s, e) =>
+            {
+                ShowSearchAction(false);
             };
         }
 
@@ -72,7 +90,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(Activity, LinearLayoutManager.Horizontal, false);
             accountsRecyclerView.SetLayoutManager(linearLayoutManager);
 
-            accountsAdapter = new AccountsRecyclerViewAdapter(16);
+            accountsAdapter = new AccountsRecyclerViewAdapter(this,16);
             accountsAdapter.SetAccountCards(13);
             accountsRecyclerView.SetAdapter(accountsAdapter);
 
@@ -106,5 +124,46 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         {
             return Resource.Layout.HomeMenuFragmentView;
         }
+
+        private void UpdateAccountListIndicator()
+        {
+            indicatorContainer.RemoveAllViews();
+            int accountsCount = accountsAdapter.ItemCount;// accountCardModelList.Count;
+            if (accountsCount > 1)
+            {
+                indicatorContainer.Visibility = ViewStates.Visible;
+                for (int i = 0; i < accountsCount; i++)
+                {
+                    ImageView image = new ImageView(Activity);
+                    image.Id = i;
+                    LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WrapContent, ViewGroup.LayoutParams.WrapContent);
+                    layoutParams.RightMargin = 5;
+                    layoutParams.LeftMargin = 5;
+                    image.LayoutParameters = layoutParams;
+                    if (i == 0)
+                    {
+                        image.SetImageResource(Resource.Drawable.circle_active);
+                    }
+                    else
+                    {
+                        image.SetImageResource(Resource.Drawable.circle);
+                    }
+                    indicatorContainer.AddView(image, i);
+                }
+            }
+            else
+            {
+                indicatorContainer.Visibility = ViewStates.Gone;
+            }
+        }
+
+        public void OnUpdateAccountListChanged(bool isSearchSubmit)
+		{
+            if (isSearchSubmit)
+            {
+                ShowSearchAction(false);
+            }
+            UpdateAccountListIndicator();
+		}
     }
 }

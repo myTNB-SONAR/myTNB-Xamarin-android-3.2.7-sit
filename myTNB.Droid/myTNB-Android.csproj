@@ -1169,6 +1169,19 @@
     <Compile Include="Src\myTNBMenu\Fragments\HomeMenu\MVP\AccountCardsFilter.cs" />
     <Compile Include="Src\myTNBMenu\Fragments\HomeMenu\MVP\ObjectExtensions.cs" />
     <Compile Include="Src\myTNBMenu\Fragments\HomeMenu\Listener\AccountsSearchOnQueryTextListener.cs" />
+    <AndroidResource Include="Resources\drawable\dashboard_home_bg.xml" />
+    <AndroidResource Include="Resources\drawable-hdpi\add_account_no_gradient.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\search_no_gradient.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\add_account_no_gradient.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\search_no_gradient.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\add_account_no_gradient.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\search_no_gradient.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\add_account_no_gradient.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\search_no_gradient.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\add_account_no_gradient.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\search_no_gradient.png" />
+    <Compile Include="Src\myTNBMenu\Fragments\HomeMenu\MVP\HomeMenuContract.cs" />
+    <Compile Include="Src\myTNBMenu\Fragments\HomeMenu\MVP\HomeMenuPresenter.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

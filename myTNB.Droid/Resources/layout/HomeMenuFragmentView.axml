@@ -19,10 +19,49 @@
             android:background="@drawable/dashboard_home_bg"
             android:orientation="vertical">
 
+          <android.support.constraint.ConstraintLayout
+            android:id="@+id/accountContainer"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="20dp">
+
+            <TextView
+                android:id="@+id/accountGreeting"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textSize="16dp"
+                android:text="Good Morning,"
+                android:textColor="@android:color/white"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+            />
+            <TextView
+                android:id="@+id/accountGreetingName"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textSize="16dp"
+                android:text="Account Name"
+                android:textColor="@android:color/white"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/accountGreeting"
+            />
+            <ImageView
+                android:id="@+id/notificationHeaderIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@@drawable/ic_header_notification_unread"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+            />
+          </android.support.constraint.ConstraintLayout>
             <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:layout_marginTop="16dp"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:id="@+id/accountsActionsContainer">
@@ -30,7 +69,7 @@
             android:id="@+id/accountsHeaderTitle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:textSize="12dp"
+            android:textSize="14dp"
             android:layout_weight=".8"
             android:text="My Accounts"
             android:textColor="@android:color/white"
@@ -39,25 +78,10 @@
         <ImageView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:src="@drawable/add_account"
+            android:src="@drawable/add_account_no_gradient"
             android:layout_weight=".1"
             android:id="@+id/addAction"
             android:layout_gravity="left|center_vertical"/>
-        <!-- <EditText
-            android:id="@+id/searchEdit"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight=".9"
-            android:paddingTop="4dp"
-            android:paddingBottom="4dp"
-            android:paddingLeft="12dp"
-            android:textSize="12dp"
-            android:visibility="gone"
-            android:background="@drawable/search_edit_bg"
-            android:layout_gravity="left|center_vertical"
-            android:hint="Search account nickname or number"
-            android:drawableRight="@drawable/search_blue"
-        /> -->
         <SearchView
             android:id="@+id/searchEdit"
             android:layout_width="0dp"
@@ -74,7 +98,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight=".1"
-            android:src="@drawable/search"
+            android:src="@drawable/search_no_gradient"
             android:layout_gravity="left|center_vertical"
             android:id="@+id/searchAction"/>
     </LinearLayout>
@@ -82,70 +106,15 @@
         android:id="@+id/accountRecyclerViewContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
         android:paddingLeft="16dp"/>
         <LinearLayout
             android:id="@+id/indicatorContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:orientation="horizontal"
             android:gravity="center">
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="5dp"
-                android:src="@drawable/circle_active"
-            />
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/circle"
-            />
         </LinearLayout>
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
-
-
-
-
-    <!-- <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:orientation="horizontal">
-        <TextView
-            android:id="@+id/myAccountHeaderTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="14dp"
-            android:textColor="@color/white"
-            android:gravity="left"
-            android:text="My Accounts"/>
-    </LinearLayout>
-    <android.support.v4.widget.NestedScrollView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <com.facebook.shimmer.ShimmerFrameLayout
-            android:id="@+id/shimmer_view_container"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            app:shimmer_duration="5000">
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:background="@color/toolBar_gradientTopFill"
-                android:orientation="horizontal">
-                <TextView
-                    android:id="@+id/accountTitle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="14dp"
-                    android:textColor="@color/white"
-                    android:gravity="left"
-                    android:text="ACCOUNT 1"/>
-            </LinearLayout>
-        </com.facebook.shimmer.ShimmerFrameLayout>
-    </android.support.v4.widget.NestedScrollView> -->
 </android.support.design.widget.CoordinatorLayout>

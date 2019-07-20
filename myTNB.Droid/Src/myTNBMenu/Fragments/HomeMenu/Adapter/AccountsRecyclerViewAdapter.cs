@@ -15,15 +15,17 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
         int MAX_ACCOUNT_PER_CARD = 5;
         public int accountsContainer = 0;
         Filter accountsFilter;
+        HomeMenuContract.IView viewListener;
 
         List<List<AccountCardModel>> cardList = new List<List<AccountCardModel>>();
         List<AccountCardModel> accountModelList = new List<AccountCardModel>();
         public List<AccountCardModel> accountCardModelList;
         ViewGroup parentGroup;
 
-        public AccountsRecyclerViewAdapter(int count)
+        public AccountsRecyclerViewAdapter(HomeMenuContract.IView listener, int count)
         {
             accountsContainer = count;
+            viewListener = listener;
         }
 
         public int GetAccountCardCount(List<AccountCardModel> list)
@@ -65,7 +67,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
                 }
                 cardList.Add(accountModelList);
             }
-
+            this.viewListener.OnUpdateAccountListChanged(false);
         }
 
         public void SetAccountCards(int accountCount)
