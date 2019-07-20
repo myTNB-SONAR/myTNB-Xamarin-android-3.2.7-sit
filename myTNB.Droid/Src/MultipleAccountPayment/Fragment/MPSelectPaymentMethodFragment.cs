@@ -631,22 +631,11 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
             try
             {
                 var uri = Android.Net.Uri.Parse(Constants.SERVER_URL.FPX_PAYMENT + response.requestPayBill.initiatePaymentResult.payMerchant_transID + "&" + PARAM3 + param3);
-                //var intent = new Intent(Intent.ActionView, uri);
-                //StartActivity(intent);
 
                 Bundle bundle = new Bundle();
                 bundle.PutString("html_fpx", uri.ToString());
                 bundle.PutString("SummaryDashBoardRequest", JsonConvert.SerializeObject(summaryDashBoardRequest));
                 ((PaymentActivity)Activity).nextFragment(this, bundle);
-
-                //((PaymentActivity)Activity).SetResult(Result.Ok);
-                //((PaymentActivity)Activity).Finish();
-                //SelectAccountsActivity selectAccountsActivity = SelectAccountsActivity.selectAccountsActivity;
-                //selectAccountsActivity.Finish();
-                //DashboardActivity activity = DashboardActivity.dashboardActivity;
-                //activity.OnFinish();
-
-
             }
             catch (Exception e)
             {

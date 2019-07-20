@@ -15,6 +15,23 @@
         <include
             layout="@layout/toolbar"
             android:id="@+id/toolbar" />
+        <TextView
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="3dp"
+            android:id="@+id/txt_account_name"
+            android:drawablePadding="3dp"
+            android:textSize="18sp"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:maxLines="1"
+            android:maxEms="20"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="16dp"
+            android:text="Account Name"
+            android:ellipsize="end" />
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -26,9 +43,9 @@
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/bottom_navigation"
         android:layout_width="match_parent"
-        android:layout_height="45dp"
+        android:layout_height="48dp"
         android:layout_gravity="bottom"
         android:background="@android:color/white"
-        app:itemTextColor="@drawable/bottommenuselector"/>
-        <!-- app:menu="@menu/dashboardbottommenu" /> -->
+        app:itemTextColor="@drawable/bottommenuselector"
+        app:menu="@menu/dashboardnewbottonmenu" /> 
 </android.support.design.widget.CoordinatorLayout>
