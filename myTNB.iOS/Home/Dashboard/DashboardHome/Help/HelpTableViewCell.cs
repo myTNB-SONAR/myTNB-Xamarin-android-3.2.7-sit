@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using CoreGraphics;
 using UIKit;
 
@@ -11,6 +12,7 @@ namespace myTNB
         private nfloat cellWidth = UIApplication.SharedApplication.KeyWindow.Frame.Width;
         private nfloat cardWidth;
         private nfloat cardHeight;
+        private int _imgIndex;
         public UILabel _titleLabel;
         public HelpTableViewCell(IntPtr handle) : base(handle)
         {
@@ -88,19 +90,22 @@ namespace myTNB
             _scrollView.ContentSize = new CGSize(xLoc, cardHeight);
         }
 
-
-
         private void AddContentData()
         {
-            List<string> helpList = new List<string>() { "How to read meter?", "How to reset password?", "How to apply for AutoPay ?" };
+            List<string> helpList = new List<string>() { "How do I reset my password?"
+                , "Learn how to read your meter.", "Check out how you can apply for AutoPay."
+                , "How can I contact TNB?","How do i pay my bills through myTNB app?"
+                , "What’s new on this app?"
+            };
             nfloat xLoc = 16f;
+            _imgIndex = -1;
             for (int i = 0; i < helpList.Count; i++)
             {
-                UIView helpCardView = new UIView(new CGRect(xLoc, 0, cardWidth, cardHeight))
+                UIView helpCardView = new UIView(new CGRect(xLoc, 0, cardWidth, cardHeight)) { ClipsToBounds = true };
+                UIImageView imgView = new UIImageView(new CGRect(0, 0, cardWidth, cardHeight))
                 {
-                    BackgroundColor = UIColor.Blue
+                    Image = UIImage.FromBundle(string.Format("Help-Background-{0}", GetBackgroundImage(i)))
                 };
-                helpCardView.Layer.CornerRadius = 4.0F;
                 AddCardShadow(ref helpCardView);
                 UILabel lblHelp = new UILabel(new CGRect(8, 8, helpCardView.Frame.Width - 16, helpCardView.Frame.Height - 16))
                 {
@@ -111,15 +116,23 @@ namespace myTNB
                     LineBreakMode = UILineBreakMode.WordWrap,
                     Text = helpList[i]
                 };
-                helpCardView.AddSubview(lblHelp);
+                helpCardView.AddSubviews(new UIView[] { imgView, lblHelp });
                 _scrollView.Add(helpCardView);
                 xLoc += cardWidth + 12.0F;
             }
             _scrollView.ContentSize = new CGSize(xLoc, 40);
         }
 
+        private int GetBackgroundImage(int index)
+        {
+            _imgIndex = (index / 6) % 1 == 0 ? _imgIndex + 1 : 0;
+            _imgIndex = _imgIndex > 5 || _imgIndex < 0 ? 0 : _imgIndex;
+            return _imgIndex;
+        }
+
         private void AddCardShadow(ref UIView view)
         {
+            view.Layer.CornerRadius = 4.0F;
             view.Layer.MasksToBounds = true;
             view.Layer.ShadowColor = MyTNBColor.SilverChalice.CGColor;
             view.Layer.ShadowOpacity = 1;
