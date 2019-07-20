@@ -976,6 +976,10 @@
     <ImageAsset Include="Assets.xcassets\Search-Icon.imageset\Search-Icon.png" />
     <ImageAsset Include="Assets.xcassets\Search-Icon.imageset\Search-Icon2x.png" />
     <ImageAsset Include="Assets.xcassets\Search-Icon.imageset\Search-Icon3x.png" />
+    <ImageAsset Include="Assets.xcassets\SMR-Icon.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\SMR-Icon.imageset\SMR-Icon.png" />
+    <ImageAsset Include="Assets.xcassets\SMR-Icon.imageset\SMR-Icon%402x.png" />
+    <ImageAsset Include="Assets.xcassets\SMR-Icon.imageset\SMR-Icon%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -1267,6 +1271,7 @@
     <Folder Include="Assets.xcassets\Accounts-Smart-Meter-Icon.imageset\" />
     <Folder Include="Assets.xcassets\Search-Icon.imageset\" />
     <Folder Include="Assets.xcassets\Add-Account-Icon.imageset\" />
+    <Folder Include="Assets.xcassets\SMR-Icon.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />

@@ -70,7 +70,7 @@ namespace myTNB
             {
                 Font = MyTNBFont.MuseoSans14_500,
                 TextColor = UIColor.White,
-                Text = @"My Accounts"
+                Text = "Dashboard_MyAccounts".Translate()
             };
 
             _searchIcon = new UIImageView(new CGRect(_searchView.Frame.Width - imageWidth - padding, 0, imageWidth, imageHeight))
@@ -92,7 +92,7 @@ namespace myTNB
             _textFieldSearch = new UITextField(new CGRect(12f, 0, _textFieldView.Frame.Width - 24f - imageWidth / 2, 24f))
             {
                 AttributedPlaceholder = new NSAttributedString(
-                    "Search by account nickname or number"
+                    "Dashboard_SearchPlacehoder".Translate()
                     , font: MyTNBFont.MuseoSans12_500
                     , foregroundColor: MyTNBColor.WhiteTwo
                     , strokeWidth: 0

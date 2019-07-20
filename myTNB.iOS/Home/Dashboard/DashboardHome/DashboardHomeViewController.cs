@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using CoreGraphics;
 using Foundation;
+using myTNB.Dashboard;
 using myTNB.Model;
 using myTNB.PushNotification;
 using UIKit;
@@ -60,7 +61,7 @@ namespace myTNB
             _textFieldSearch = new UITextField(new CGRect(12f, 0, View.Frame.Width - 24f - 24d / 2, 24f))
             {
                 AttributedPlaceholder = new NSAttributedString(
-                   "Search by account nickname or number"
+                   "Dashboard_SearchPlacehoder".Translate()
                    , font: MyTNBFont.MuseoSans12_500
                    , foregroundColor: MyTNBColor.WhiteTwo
                    , strokeWidth: 0
@@ -246,6 +247,7 @@ namespace myTNB
             var vc = storyBoard.InstantiateViewController("AccountsContentViewController") as AccountsContentViewController;
             vc.pageIndex = index;
             vc._groupAccountList = DataManager.DataManager.SharedInstance.AccountsGroupList;
+            vc._homeViewController = this;
             return vc;
         }
 
@@ -280,6 +282,22 @@ namespace myTNB
             frame.Y = scrollDiff > 0 ? 0 - scrollDiff : frame.Y + scrollDiff;
             ImageViewGradientImage.Frame = frame;
             _statusBarView.Hidden = !(scrollDiff > 0 && scrollDiff > _imageGradientHeight / 2);
+        }
+
+        public void OnAccountCardSelected(DueAmountDataModel model)
+        {
+            var index = DataManager.DataManager.SharedInstance.AccountRecordsList?.d?.FindIndex(x => x.accNum == model.accNum) ?? -1;
+
+            if (index >= 0)
+            {
+                var selected = DataManager.DataManager.SharedInstance.AccountRecordsList.d[index];
+                DataManager.DataManager.SharedInstance.SelectAccount(selected.accNum);
+                DataManager.DataManager.SharedInstance.IsSameAccount = false;
+                UIStoryboard storyBoard = UIStoryboard.FromName("Dashboard", null);
+                var vc = storyBoard.InstantiateViewController("DashboardViewController") as DashboardViewController;
+                vc.ShouldShowBackButton = true;
+                ShowViewController(vc, null);
+            }
         }
     }
 }

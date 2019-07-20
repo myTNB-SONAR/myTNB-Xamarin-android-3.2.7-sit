@@ -16,10 +16,9 @@ namespace myTNB
         List<string> _accountNumberList = new List<string>();
         public List<List<DueAmountDataModel>> _groupAccountList;
         UIView _viewContainer;
+        public DashboardHomeViewController _homeViewController;
 
-        public AccountsContentViewController(IntPtr handle) : base(handle)
-        {
-        }
+        public AccountsContentViewController(IntPtr handle) : base(handle) { }
 
         public override void ViewDidLoad()
         {
@@ -71,7 +70,7 @@ namespace myTNB
                 _viewContainer.Frame = new CGRect(0, 0, View.Frame.Width, 68 * groupAccountList.Count + 16f * 2);
                 for (int i = 0; i < groupAccountList.Count; i++)
                 {
-                    DashboardHomeAccountCard _homeAccountCard = new DashboardHomeAccountCard(_viewContainer, 68f * i);
+                    DashboardHomeAccountCard _homeAccountCard = new DashboardHomeAccountCard(this, _viewContainer, 68f * i);
                     string iconName = "Accounts-Smart-Meter-Icon";
                     if (groupAccountList[i].IsReAccount)
                     {
@@ -86,12 +85,7 @@ namespace myTNB
                     _homeAccountCard.SetAccountNo(groupAccountList[i].accNum);
                     _viewContainer.AddSubview(_homeAccountCard.GetUI());
                     _homeAccountCard.AdjustLabels(groupAccountList[i]);
-                    _homeAccountCard.SetTapAccountCardEvent(new UITapGestureRecognizer(() =>
-                    {
-                        Debug.WriteLine("i========= " + i);
-                        //var g = groupAccountList[i];
-                        //OnAccountCardSelected(groupAccountList[i]);
-                    }));
+                    _homeAccountCard.SetModel(groupAccountList[i]);
                 }
                 View.AddSubview(_viewContainer);
             }
@@ -278,23 +272,9 @@ namespace myTNB
             return removedAccounts;
         }
 
-        private void OnAccountCardSelected(DueAmountDataModel account)
+        public void OnAccountCardSelected(DueAmountDataModel model)
         {
-            var index = DataManager.DataManager.SharedInstance.AccountRecordsList?.d?.FindIndex(x => x.accNum == account.accNum) ?? -1;
-
-            if (index >= 0)
-            {
-                var selected = DataManager.DataManager.SharedInstance.AccountRecordsList.d[index];
-                DataManager.DataManager.SharedInstance.SelectAccount(selected.accNum);
-                DataManager.DataManager.SharedInstance.IsSameAccount = false;
-                UIStoryboard storyBoard = UIStoryboard.FromName("Dashboard", null);
-                var vc = storyBoard.InstantiateViewController("DashboardViewController") as DashboardViewController;
-                if (vc != null)
-                {
-                    vc.ShouldShowBackButton = true;
-                    ShowViewController(vc, null);
-                }
-            }
+            _homeViewController.OnAccountCardSelected(model);
         }
 
         public override void ViewDidLayoutSubviews()

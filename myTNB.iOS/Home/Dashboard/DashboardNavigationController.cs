@@ -13,40 +13,27 @@ namespace myTNB
         public override void ViewDidLoad()
         {
             base.ViewDidLoad();
-
-            if (DataManager.DataManager.SharedInstance.GetAccountsCount() > 1)
-            {
-                ShowDashboardHome();
-            }
         }
 
         public override void ViewWillAppear(bool animated)
         {
             base.ViewWillAppear(animated);
 
-            if (DataManager.DataManager.SharedInstance.GetAccountsCount() > 1)
+            bool isHomeInNavigationStack = false;
+
+            foreach (var vc in ViewControllers)
             {
-                bool isHomeInNavigationStack = false;
-
-                foreach (var vc in ViewControllers)
+                if (vc is DashboardHomeViewController)
                 {
-                    if (vc is DashboardHomeViewController)
-                    {
-                        isHomeInNavigationStack = true;
-                        break;
-                    }
-                }
-
-                if (!isHomeInNavigationStack)
-                {
-                    ShowDashboardHome();
+                    isHomeInNavigationStack = true;
+                    break;
                 }
             }
-            else
-            {
-                ShowDashboard();
-            }
 
+            if (!isHomeInNavigationStack)
+            {
+                ShowDashboardHome();
+            }
         }
 
         /// <summary>
