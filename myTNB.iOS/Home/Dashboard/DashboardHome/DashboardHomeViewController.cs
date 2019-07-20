@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
+using System.Threading.Tasks;
 using CoreGraphics;
 using Foundation;
 using myTNB.Model;
@@ -71,6 +71,8 @@ namespace myTNB
             SetTextFieldEvents(_textFieldSearch);
             _textFieldView.AddSubview(_textFieldSearch);
             View.AddSubview(_textFieldView);
+            // Temporary place in view didload
+            OnGetServices();
         }
 
         private void SetTextFieldEvents(UITextField textField)
@@ -149,7 +151,7 @@ namespace myTNB
         // </summary>
         private void InitializeTableView()
         {
-            _homeTableView.Source = new DashboardHomeDataSource(this, _accountsPageViewController, _headerView);
+            _homeTableView.Source = new DashboardHomeDataSource(this, _accountsPageViewController, _headerView, new ServicesResponseModel());
             _homeTableView.ReloadData();
         }
 
@@ -280,6 +282,64 @@ namespace myTNB
             frame.Y = scrollDiff > 0 ? 0 - scrollDiff : frame.Y + scrollDiff;
             ImageViewGradientImage.Frame = frame;
             _statusBarView.Hidden = !(scrollDiff > 0 && scrollDiff > _imageGradientHeight / 2);
+        }
+
+        private void OnGetServices()
+        {
+            InvokeInBackground(async () =>
+            {
+                //Todo: Remove sleep.
+                System.Threading.Thread.Sleep(5000);
+                ServicesResponseModel services = await GetServices();
+                InvokeOnMainThread(() =>
+                {
+                    _homeTableView.BeginUpdates();
+                    _homeTableView.Source = new DashboardHomeDataSource(this, _accountsPageViewController, _headerView, services);
+                    NSIndexPath indexPath = NSIndexPath.Create(0, 1);
+                    _homeTableView.ReloadRows(new NSIndexPath[] { indexPath }, UITableViewRowAnimation.None);
+                    _homeTableView.EndUpdates();
+                });
+            });
+        }
+
+        private async Task<ServicesResponseModel> GetServices()
+        {
+            ServiceManager serviceManager = new ServiceManager();
+            ServicesResponseModel response = serviceManager.OnExecuteAPIV2<ServicesResponseModel>("services", new object());
+
+            //tempdata
+            response = new ServicesResponseModel();
+            response.d = new HomeServicesModel();
+            response.d.ErrorCode = "7002";
+            response.d.data = new List<ServiceItemModel>() {
+                new ServiceItemModel()
+                {
+                    ServiceCategoryId = "1001",
+                    ServiceCategoryName = "Apply for Self Meter Reading"
+                },
+                new ServiceItemModel()
+                {
+                    ServiceCategoryId = "1002",
+                    ServiceCategoryName = "Check Status"
+                },
+                new ServiceItemModel()
+                {
+                    ServiceCategoryId = "1003",
+                    ServiceCategoryName = "Give Us Feedback"
+                },
+                new ServiceItemModel()
+                {
+                    ServiceCategoryId = "1004",
+                    ServiceCategoryName = "Set Appointments"
+                },
+                new ServiceItemModel()
+                {
+                    ServiceCategoryId = "1005",
+                    ServiceCategoryName = "Apply for AutoPay"
+                }
+
+            };
+            return response;
         }
     }
 }

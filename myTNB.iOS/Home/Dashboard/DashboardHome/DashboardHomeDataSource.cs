@@ -1,20 +1,26 @@
 ﻿using System;
 using Foundation;
+using myTNB.Model;
 using UIKit;
 
 namespace myTNB
 {
     public class DashboardHomeDataSource : UITableViewSource
     {
-        DashboardHomeViewController _controller;
-        UIPageViewController _accountsPageViewController;
-        UIView _headerView;
-        DashboardHomeHelper _dashboardHomeHelper = new DashboardHomeHelper();
-        public DashboardHomeDataSource(DashboardHomeViewController controller, UIPageViewController accountsPageViewController, UIView headerView)
+        private DashboardHomeViewController _controller;
+        private UIPageViewController _accountsPageViewController;
+        private UIView _headerView;
+        private DashboardHomeHelper _dashboardHomeHelper = new DashboardHomeHelper();
+        private ServicesResponseModel _services;
+
+        public DashboardHomeDataSource(DashboardHomeViewController controller
+            , UIPageViewController accountsPageViewController, UIView headerView
+            , ServicesResponseModel services)
         {
             _controller = controller;
             _accountsPageViewController = accountsPageViewController;
             _headerView = headerView;
+            _services = services;
         }
 
         public override nint NumberOfSections(UITableView tableView)
@@ -40,7 +46,7 @@ namespace myTNB
             {
                 ServicesTableViewCell cell = tableView.DequeueReusableCell(DashboardHomeConstants.Cell_Services) as ServicesTableViewCell;
                 cell._titleLabel.Text = _controller.I18NDictionary[DashboardHomeConstants.I18N_MyServices];
-                cell.AddCards();
+                cell.AddCards(_services);
                 return cell;
             }
             if (indexPath.Row == 2)

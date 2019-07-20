@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using CoreGraphics;
 using UIKit;
 
@@ -28,16 +27,21 @@ namespace myTNB
             {
                 BackgroundColor = UIColor.Clear
             };
-            _scrollView = new UIScrollView(new CGRect(0, 0, view.Frame.Width, cardHeight));
-            _scrollView.ScrollEnabled = true;
-            _scrollView.ShowsHorizontalScrollIndicator = false;
+            _scrollView = new UIScrollView(new CGRect(0, 0, view.Frame.Width, cardHeight))
+            {
+                ScrollEnabled = true,
+                ShowsHorizontalScrollIndicator = false
+            };
             view.AddSubview(_scrollView);
             AddSubview(view);
             BackgroundColor = UIColor.Clear;
-            view.LeftAnchor.ConstraintEqualTo(LeftAnchor).Active = true;
-            view.RightAnchor.ConstraintEqualTo(RightAnchor).Active = true;
-            view.TopAnchor.ConstraintEqualTo(TopAnchor).Active = true;
-            view.BottomAnchor.ConstraintEqualTo(BottomAnchor).Active = true;
+            if (view != null)
+            {
+                view.LeftAnchor.ConstraintEqualTo(LeftAnchor).Active = true;
+                view.RightAnchor.ConstraintEqualTo(RightAnchor).Active = true;
+                view.TopAnchor.ConstraintEqualTo(TopAnchor).Active = true;
+                view.BottomAnchor.ConstraintEqualTo(BottomAnchor).Active = true;
+            }
             SelectionStyle = UITableViewCellSelectionStyle.None;
         }
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using CoreGraphics;
+using myTNB.Model;
 using UIKit;
 
 namespace myTNB
@@ -26,14 +27,17 @@ namespace myTNB
             };
             AddSubview(_view);
             BackgroundColor = UIColor.Clear;
-            _view.LeftAnchor.ConstraintEqualTo(LeftAnchor).Active = true;
-            _view.RightAnchor.ConstraintEqualTo(RightAnchor).Active = true;
-            _view.TopAnchor.ConstraintEqualTo(TopAnchor).Active = true;
-            _view.BottomAnchor.ConstraintEqualTo(BottomAnchor).Active = true;
+            if (_view != null)
+            {
+                _view.LeftAnchor.ConstraintEqualTo(LeftAnchor).Active = true;
+                _view.RightAnchor.ConstraintEqualTo(RightAnchor).Active = true;
+                _view.TopAnchor.ConstraintEqualTo(TopAnchor).Active = true;
+                _view.BottomAnchor.ConstraintEqualTo(BottomAnchor).Active = true;
+            }
             SelectionStyle = UITableViewCellSelectionStyle.None;
         }
 
-        public void AddCards(bool hasData = false)
+        public void AddCards(ServicesResponseModel services)
         {
             rowFactor = -1;
             xLoc = 0;
@@ -42,21 +46,16 @@ namespace myTNB
                 _view.Subviews[i].RemoveFromSuperview();
             }
 
+            bool hasData = services != null && services.d != null && services.d.IsSuccess
+                && services.d.data != null && services.d.data.Count > 0;
+
             if (hasData)
             {
-                AddContentData();
+                AddContentData(services.d.data);
             }
             else
             {
                 AddShimmer();
-                InvokeInBackground(() =>
-                {
-                    System.Threading.Thread.Sleep(5000);
-                    InvokeOnMainThread(() =>
-                    {
-                        AddCards(true);
-                    });
-                });
             }
         }
 
@@ -77,23 +76,14 @@ namespace myTNB
             _view.Frame = newFrame;
         }
 
-        private void AddContentData()
+        private void AddContentData(List<ServiceItemModel> serviceList)
         {
-            List<ServicesTemp> tempData = new List<ServicesTemp>()
-            {
-                new ServicesTemp(){Title = "Apply for Self Meter Reading", Img = "Services-ApplySSMR"}
-                , new ServicesTemp(){Title = "Check Status", Img = "Services-CheckStatus"}
-                , new ServicesTemp(){Title = "Give Us Feedback", Img = "Services-Feedback"}
-                , new ServicesTemp(){Title = "Set Appointments", Img = "Services-SetAppointments"}
-                , new ServicesTemp(){Title = "Apply AutoPay", Img = "Services-ApplyAutoPay"}
-            };
-
             nfloat height = 0F;
-            for (int i = 0; i < tempData.Count; i++)
+            for (int i = 0; i < serviceList.Count; i++)
             {
-                UIView card = GetCard(tempData[i], i);
+                UIView card = GetCard(serviceList[i], i);
                 _view.AddSubview(card);
-                if (i == tempData.Count - 1)
+                if (i == serviceList.Count - 1)
                 {
                     height = card.Frame.GetMaxY() + 12;
                 }
@@ -103,7 +93,7 @@ namespace myTNB
             _view.Frame = newFrame;
         }
 
-        private UIView GetCard(ServicesTemp serviceItem, int index, Action action = null)
+        private UIView GetCard(ServiceItemModel serviceItem, int index, Action action = null)
         {
             nfloat cardWidth = (_view.Frame.Width - 24) / 3;
             nfloat cardHeight = cardWidth * 0.9545F;
@@ -127,7 +117,7 @@ namespace myTNB
             nfloat imgYLoc = cardHeight * 0.11F;
             UIImageView imgView = new UIImageView(new CGRect((view.Frame.Width - imgSize) / 2, imgYLoc, imgSize, imgSize))
             {
-                Image = UIImage.FromBundle(serviceItem.Img)
+                Image = UIImage.FromBundle(GetImage(serviceItem.ServiceCategoryId))
             };
 
             nfloat xLblLoc = 16.0F;
@@ -139,7 +129,7 @@ namespace myTNB
                 Font = MyTNBFont.MuseoSans10_500,
                 Lines = 0,
                 LineBreakMode = UILineBreakMode.WordWrap,
-                Text = serviceItem.Title
+                Text = serviceItem.ServiceCategoryName
             };
             view.AddSubviews(new UIView[] { imgView, lblTitle });
             return view;
@@ -202,12 +192,44 @@ namespace myTNB
             view.Layer.ShadowRadius = 8;
             view.Layer.ShadowPath = UIBezierPath.FromRect(view.Bounds).CGPath;
         }
-    }
 
-    //Todo: to be deleted
-    public class ServicesTemp
-    {
-        public string Title { set; get; }
-        public string Img { set; get; }
+        private string GetImage(string serviceID)
+        {
+            string img;
+            switch (serviceID)
+            {
+                case "1001":
+                    {
+                        img = "Services-ApplySSMR";
+                        break;
+                    }
+                case "1002":
+                    {
+                        img = "Services-CheckStatus";
+                        break;
+                    }
+                case "1003":
+                    {
+                        img = "Services-Feedback";
+                        break;
+                    }
+                case "1004":
+                    {
+                        img = "Services-SetAppointments";
+                        break;
+                    }
+                case "1005":
+                    {
+                        img = "Services-ApplyAutoPay";
+                        break;
+                    }
+                default:
+                    {
+                        img = string.Empty;
+                        break;
+                    }
+            }
+            return img;
+        }
     }
 }

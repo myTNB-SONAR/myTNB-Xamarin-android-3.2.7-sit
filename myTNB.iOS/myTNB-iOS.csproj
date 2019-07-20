@@ -1297,6 +1297,7 @@
     <Folder Include="Assets.xcassets\Help-Background-4.imageset\" />
     <Folder Include="Assets.xcassets\Help-Background-5.imageset\" />
     <Folder Include="Assets.xcassets\Help-Background-0.imageset\" />
+    <Folder Include="Model\Services\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -1680,8 +1681,6 @@
     <Compile Include="Home\More\Find Us\Select Store Type\SelectStoreTypeDataSource.cs" />
     <Compile Include="Home\More\Find Us\AnnotationModel.cs" />
     <Compile Include="Model\GetWebLinks\WebLinksDataModel.cs" />
-    <Compile Include="Model\GetWebLinks\WebLinksModel.cs" />
-    <Compile Include="Model\GetWebLinks\WebLinksResponseModel.cs" />
     <Compile Include="Browser\BrowserViewController.cs" />
     <Compile Include="Browser\BrowserViewController.designer.cs">
       <DependentUpon>BrowserViewController.cs</DependentUpon>
@@ -1739,8 +1738,6 @@
     <Compile Include="Model\SubmitFeedback\SubmitFeedbackModel.cs" />
     <Compile Include="Model\SubmitFeedback\SubmitFeedbackResponseModel.cs" />
     <Compile Include="Model\GetStatesForFeedback\StatesForFeedbackDataModel.cs" />
-    <Compile Include="Model\GetStatesForFeedback\StatesForFeedbackModel.cs" />
-    <Compile Include="Model\GetStatesForFeedback\StatesForFeedbackResponseModel.cs" />
     <Compile Include="Model\GetBillHistory\BillHistoryDataModel.cs" />
     <Compile Include="Model\GetBillHistory\BillHistoryModel.cs" />
     <Compile Include="Model\GetBillHistory\BillHistoryResponseModel.cs" />
@@ -2019,6 +2016,8 @@
     <Compile Include="Tab Bar\TabbarConstants.cs" />
     <Compile Include="Customs\CustomShimmerView.cs" />
     <Compile Include="Home\Dashboard\DashboardHome\DashboardHomeHelper.cs" />
+    <Compile Include="Model\Services\ServicesResponseModel.cs" />
+    <Compile Include="Model\Base Model\BaseModelV2.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />
