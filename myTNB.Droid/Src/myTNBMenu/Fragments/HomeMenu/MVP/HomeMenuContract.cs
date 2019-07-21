@@ -1,18 +1,11 @@
-﻿using myTNB_Android.Src.Base.MVP;
-
+﻿using System;
 namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 {
-	public class HomeMenuContract
-	{
-		public interface IView : IBaseView<IUserActionsListener>
-		{
-
-
-		}
-
-		public interface IUserActionsListener : IBasePresenter
-		{
-
-		}
-	}
+    public class HomeMenuContract
+    {
+        public interface IView
+        {
+            void OnUpdateAccountListChanged(bool isSearchSubmit);
+        }
+    }
 }

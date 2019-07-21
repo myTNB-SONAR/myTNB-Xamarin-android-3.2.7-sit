@@ -21,7 +21,7 @@ using myTNB_Android.Src.Utils;
 namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 {
     public class HomeMenuFragment : BaseFragment, HomeMenuContract.IView
-    {
+	{
         [BindView(Resource.Id.newFAQShimmerView)]
         LinearLayout newFAQShimmerView;
 
@@ -53,10 +53,15 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         //ShimmerFrameLayout shimmerViewContainer;
         [BindView(Resource.Id.myServiceTitle)]
         TextView myServiceTitle;
-        
         [BindView(Resource.Id.accountsHeaderTitle)]
         TextView accountHeaderTitle;
-        
+
+        [BindView(Resource.Id.accountGreeting)]
+        TextView accountGreeting;
+
+        [BindView(Resource.Id.accountGreetingName)]
+        TextView accountGreetingName;
+
         [BindView(Resource.Id.searchAction)]
         ImageView searchActionIcon;
 
@@ -64,18 +69,19 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         ImageView addAccountActionIcon;
 
         [BindView(Resource.Id.searchEdit)]
-        EditText searchEditText;
+        Android.Widget.SearchView searchEditText;
 
         [BindView(Resource.Id.accountRecyclerViewContainer)]
         RecyclerView accountsRecyclerView;
 
         [BindView(Resource.Id.indicatorContainer)]
         LinearLayout indicatorContainer;
+        AccountsRecyclerViewAdapter accountsAdapter;
 
         System.Timers.Timer timer;
         System.Timers.Timer FAQTimer;
 
-        HomeMenuContract.IUserActionsListener userActionsListener;
+        // HomeMenuContract.IUserActionsListener userActionsListener;
 
         public override void OnCreate(Bundle savedInstanceState)
         {
@@ -92,7 +98,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 SetMyServiceRecycleView();
                 SetNewFAQRecycleView();
                 TextViewUtils.SetMuseoSans500Typeface(myServiceTitle, newFAQTitle);
-                this.userActionsListener.Start();
+                // this.userActionsListener.Start();
             }
             catch (System.Exception e)
             {
@@ -100,10 +106,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             }
         }
 
-        public void SetPresenter(HomeMenuContract.IUserActionsListener userActionListener)
-        {
-            this.userActionsListener = userActionListener;
-        }
+        // public void SetPresenter(HomeMenuContract.IUserActionsListener userActionListener)
+        // {
+        //    this.userActionsListener = userActionListener;
+        //}
 
         public bool IsActive()
         {
@@ -159,24 +165,35 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 LoadFAQList(null);
             });
         }
-
-
-        private void SetAccountActionHeader()
+        public void ShowSearchAction(bool isShow)
         {
-            TextViewUtils.SetMuseoSans500Typeface(accountHeaderTitle);
-
-            searchActionIcon.Click += (s, e) =>
+            if (isShow)
             {
                 accountHeaderTitle.Visibility = ViewStates.Gone;
                 searchEditText.Visibility = ViewStates.Visible;
                 searchActionIcon.Visibility = ViewStates.Gone;
-            };
-
-            addAccountActionIcon.Click += (s, e) =>
+                searchEditText.ClearFocus();
+            }
+            else
             {
                 accountHeaderTitle.Visibility = ViewStates.Visible;
                 searchEditText.Visibility = ViewStates.Gone;
                 searchActionIcon.Visibility = ViewStates.Visible;
+            }
+        }
+
+        private void SetAccountActionHeader()
+        {
+            TextViewUtils.SetMuseoSans500Typeface(accountHeaderTitle, accountGreeting, accountGreetingName);
+            searchEditText.SetOnQueryTextListener(new AccountsSearchOnQueryTextListener(this,accountsAdapter));
+            searchActionIcon.Click += (s, e) =>
+            {
+                ShowSearchAction(true);
+            };
+
+            addAccountActionIcon.Click += (s, e) =>
+            {
+                ShowSearchAction(false);
             };
         }
 
@@ -185,7 +202,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(Activity, LinearLayoutManager.Horizontal, false);
             accountsRecyclerView.SetLayoutManager(linearLayoutManager);
 
-            AccountsRecyclerViewAdapter accountsAdapter = new AccountsRecyclerViewAdapter(2);
+            accountsAdapter = new AccountsRecyclerViewAdapter(this,16);
+            accountsAdapter.SetAccountCards(13);
             accountsRecyclerView.SetAdapter(accountsAdapter);
 
             accountsRecyclerView.AddOnScrollListener(new AccountsRecyclerViewOnScrollListener(linearLayoutManager, indicatorContainer));
@@ -224,7 +242,46 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         {
             return Resource.Layout.HomeMenuFragmentView;
         }
+        private void UpdateAccountListIndicator()
+        {
+            indicatorContainer.RemoveAllViews();
+            int accountsCount = accountsAdapter.ItemCount;// accountCardModelList.Count;
+            if (accountsCount > 1)
+            {
+                indicatorContainer.Visibility = ViewStates.Visible;
+                for (int i = 0; i < accountsCount; i++)
+                {
+                    ImageView image = new ImageView(Activity);
+                    image.Id = i;
+                    LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WrapContent, ViewGroup.LayoutParams.WrapContent);
+                    layoutParams.RightMargin = 5;
+                    layoutParams.LeftMargin = 5;
+                    image.LayoutParameters = layoutParams;
+                    if (i == 0)
+                    {
+                        image.SetImageResource(Resource.Drawable.circle_active);
+                    }
+                    else
+                    {
+                        image.SetImageResource(Resource.Drawable.circle);
+                    }
+                    indicatorContainer.AddView(image, i);
+                }
+            }
+            else
+            {
+                indicatorContainer.Visibility = ViewStates.Gone;
+            }
+        }
 
+        public void OnUpdateAccountListChanged(bool isSearchSubmit)
+		{
+            if (isSearchSubmit)
+            {
+                ShowSearchAction(false);
+            }
+            UpdateAccountListIndicator();
+		}
         public void LoadShimmerServiceList(List<MyService> serviceList)
         {
             myServiceShimmerView.Visibility = ViewStates.Visible;
@@ -475,6 +532,5 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             actionBar.SetDisplayHomeAsUpEnabled(flag);
             actionBar.SetDisplayShowHomeEnabled(flag);
         }
-
     }
 }
