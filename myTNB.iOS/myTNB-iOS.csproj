@@ -1272,6 +1272,7 @@
     <Folder Include="Assets.xcassets\Search-Icon.imageset\" />
     <Folder Include="Assets.xcassets\Add-Account-Icon.imageset\" />
     <Folder Include="Assets.xcassets\SMR-Icon.imageset\" />
+    <Folder Include="Home\Dashboard\DashboardHome\Accounts\Scroll\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -1994,6 +1995,10 @@
     <Compile Include="Tab Bar\TabbarConstants.cs" />
     <Compile Include="Customs\CustomShimmerView.cs" />
     <Compile Include="Home\Dashboard\DashboardHome\DashboardHomeHelper.cs" />
+    <Compile Include="Home\Dashboard\DashboardHome\Accounts\Scroll\AccountsCardContentViewController.cs" />
+    <Compile Include="Home\Dashboard\DashboardHome\Accounts\Scroll\AccountsCardContentViewController.designer.cs">
+      <DependentUpon>AccountsCardContentViewController.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />

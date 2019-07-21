@@ -70,22 +70,22 @@ namespace myTNB
                 _viewContainer.Frame = new CGRect(0, 0, View.Frame.Width, 68 * groupAccountList.Count + 16f * 2);
                 for (int i = 0; i < groupAccountList.Count; i++)
                 {
-                    DashboardHomeAccountCard _homeAccountCard = new DashboardHomeAccountCard(this, _viewContainer, 68f * i);
-                    string iconName = "Accounts-Smart-Meter-Icon";
-                    if (groupAccountList[i].IsReAccount)
-                    {
-                        iconName = "Accounts-RE-Icon";
-                    }
-                    else if (groupAccountList[i].IsNormalAccount)
-                    {
-                        iconName = "Accounts-Normal-Icon";
-                    }
-                    _homeAccountCard.SetAccountIcon(iconName);
-                    _homeAccountCard.SetNickname(groupAccountList[i].accNickName);
-                    _homeAccountCard.SetAccountNo(groupAccountList[i].accNum);
-                    _viewContainer.AddSubview(_homeAccountCard.GetUI());
-                    _homeAccountCard.AdjustLabels(groupAccountList[i]);
-                    _homeAccountCard.SetModel(groupAccountList[i]);
+                    //DashboardHomeAccountCard _homeAccountCard = new DashboardHomeAccountCard(this, _viewContainer, 68f * i);
+                    //string iconName = "Accounts-Smart-Meter-Icon";
+                    //if (groupAccountList[i].IsReAccount)
+                    //{
+                    //    iconName = "Accounts-RE-Icon";
+                    //}
+                    //else if (groupAccountList[i].IsNormalAccount)
+                    //{
+                    //    iconName = "Accounts-Normal-Icon";
+                    //}
+                    //_homeAccountCard.SetAccountIcon(iconName);
+                    //_homeAccountCard.SetNickname(groupAccountList[i].accNickName);
+                    //_homeAccountCard.SetAccountNo(groupAccountList[i].accNum);
+                    //_viewContainer.AddSubview(_homeAccountCard.GetUI());
+                    //_homeAccountCard.AdjustLabels(groupAccountList[i]);
+                    //_homeAccountCard.SetModel(groupAccountList[i]);
                 }
                 View.AddSubview(_viewContainer);
             }

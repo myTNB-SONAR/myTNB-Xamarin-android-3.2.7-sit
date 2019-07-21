@@ -12,7 +12,7 @@ namespace myTNB
     {
         FBShimmeringView _shimmeringView = new FBShimmeringView();
 
-        AccountsContentViewController _contentViewController;
+        AccountsCardContentViewController _contentViewController;
         private readonly UIView _parentView;
         UIView _accountCardView;
         UIImageView _accountIcon;
@@ -21,7 +21,7 @@ namespace myTNB
         nfloat _yLocation = 0f;
         DueAmountDataModel _model = new DueAmountDataModel();
 
-        public DashboardHomeAccountCard(AccountsContentViewController controller, UIView parentView, nfloat yLocation)
+        public DashboardHomeAccountCard(AccountsCardContentViewController controller, UIView parentView, nfloat yLocation)
         {
             _contentViewController = controller;
             _parentView = parentView;
@@ -35,7 +35,7 @@ namespace myTNB
             nfloat padding = 16f;
             nfloat margin = 16f;
 
-            _accountCardView = new UIView(new CGRect(16f, _yLocation + margin, parentWidth - (padding * 2), 60f))
+            _accountCardView = new UIView(new CGRect(0, _yLocation + margin, parentWidth, 60f))
             {
                 BackgroundColor = UIColor.White
             };

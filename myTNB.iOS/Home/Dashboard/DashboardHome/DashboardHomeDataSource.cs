@@ -8,13 +8,15 @@ namespace myTNB
     {
         DashboardHomeViewController _controller;
         UIPageViewController _accountsPageViewController;
+        AccountsCardContentViewController _accountsCardContentViewController;
         UIView _headerView;
         DashboardHomeHelper _dashboardHomeHelper = new DashboardHomeHelper();
-        public DashboardHomeDataSource(DashboardHomeViewController controller, UIPageViewController accountsPageViewController, UIView headerView)
+        public DashboardHomeDataSource(DashboardHomeViewController controller, UIPageViewController accountsPageViewController, UIView headerView, AccountsCardContentViewController accountsCardContentViewController)
         {
             _controller = controller;
             _accountsPageViewController = accountsPageViewController;
             _headerView = headerView;
+            _accountsCardContentViewController = accountsCardContentViewController;
         }
 
         public override nint NumberOfSections(UITableView tableView)
@@ -33,7 +35,8 @@ namespace myTNB
             {
                 AccountsTableViewCell cell = tableView.DequeueReusableCell(DashboardHomeConstants.Cell_Accounts) as AccountsTableViewCell;
                 cell.UpdateCell(_dashboardHomeHelper.GetHeightForAccountCards());
-                cell.AddViewsToContainers(_accountsPageViewController, _headerView);
+                cell.AddViewsToContainersV2(_accountsCardContentViewController);
+                //cell.AddViewsToContainers(_accountsPageViewController, _headerView);
                 return cell;
             }
             if (indexPath.Row == 1)

@@ -19,6 +19,7 @@ namespace myTNB
 
         private UITableView _homeTableView;
         UIPageViewController _accountsPageViewController;
+        AccountsCardContentViewController _accountsCardContentViewController;
         private DashboardHomeHeader _dashboardHomeHeader;
         private nfloat _previousScrollOffset;
         private nfloat _imageGradientHeight;
@@ -36,6 +37,7 @@ namespace myTNB
             {
                 v.RemoveFromSuperview();
             }
+
             PageName = DashboardHomeConstants.PageName;
             IsGradientImageRequired = true;
             base.ViewDidLoad();
@@ -49,6 +51,7 @@ namespace myTNB
             AddTableView();
             AddTableViewHeader();
             _dashboardHomeHelper.GroupAccountsList(DataManager.DataManager.SharedInstance.AccountRecordsList.d);
+            _accountsCardContentViewController = ViewControllerAtIndexV2(0) as AccountsCardContentViewController;
             InitializePageView();
             InitializeTableView();
             OnUpdateNotification();
@@ -71,7 +74,7 @@ namespace myTNB
             };
             SetTextFieldEvents(_textFieldSearch);
             _textFieldView.AddSubview(_textFieldSearch);
-            View.AddSubview(_textFieldView);
+            //View.AddSubview(_textFieldView);
         }
 
         private void SetTextFieldEvents(UITextField textField)
@@ -150,7 +153,7 @@ namespace myTNB
         private void InitializeTableView()
         {
             UpdateDotsColor();
-            _homeTableView.Source = new DashboardHomeDataSource(this, _accountsPageViewController, _headerView);
+            _homeTableView.Source = new DashboardHomeDataSource(this, _accountsPageViewController, _headerView, _accountsCardContentViewController);
             _homeTableView.ReloadData();
         }
 
@@ -173,7 +176,7 @@ namespace myTNB
         private void AddTableView()
         {
             nfloat tabbarHeight = TabBarController.TabBar.Frame.Height + 20.0F;
-            _homeTableView = new UITableView(new CGRect(0, DeviceHelper.GetStatusBarHeight() + 30f, View.Frame.Width
+            _homeTableView = new UITableView(new CGRect(0, DeviceHelper.GetStatusBarHeight(), View.Frame.Width
                 , View.Frame.Height - DeviceHelper.GetStatusBarHeight() - tabbarHeight))
             { BackgroundColor = UIColor.Clear };
             _homeTableView.SeparatorStyle = UITableViewCellSeparatorStyle.None;
@@ -246,6 +249,16 @@ namespace myTNB
             UIStoryboard storyBoard = UIStoryboard.FromName("Dashboard", null);
             var vc = storyBoard.InstantiateViewController("AccountsContentViewController") as AccountsContentViewController;
             vc.pageIndex = index;
+            vc._groupAccountList = DataManager.DataManager.SharedInstance.AccountsGroupList;
+            vc._homeViewController = this;
+            return vc;
+        }
+
+        public UIViewController ViewControllerAtIndexV2(int index)
+        {
+            UIStoryboard storyBoard = UIStoryboard.FromName("Dashboard", null);
+            var vc = storyBoard.InstantiateViewController("AccountsCardContentViewController") as AccountsCardContentViewController;
+            //vc.pageIndex = index;
             vc._groupAccountList = DataManager.DataManager.SharedInstance.AccountsGroupList;
             vc._homeViewController = this;
             return vc;

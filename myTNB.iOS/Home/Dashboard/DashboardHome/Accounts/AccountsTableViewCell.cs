@@ -16,11 +16,12 @@ namespace myTNB
             {
                 BackgroundColor = UIColor.Clear
             };
-            _pageViewContainer = new UIView(new CGRect(0, _headerViewContainer.Frame.GetMaxY(), cellWidth, _dashboardHomeHelper.GetHeightForAccountCards()))
+            //_pageViewContainer = new UIView(new CGRect(0, _headerViewContainer.Frame.GetMaxY(), cellWidth, _dashboardHomeHelper.GetHeightForAccountCards()))
+            _pageViewContainer = new UIView(new CGRect(0, 0, cellWidth, _dashboardHomeHelper.GetHeightForAccountCards()))
             {
                 BackgroundColor = UIColor.Clear
             };
-            AddSubview(_headerViewContainer);
+            //AddSubview(_headerViewContainer);
             AddSubview(_pageViewContainer);
             BackgroundColor = UIColor.Clear;
             _pageViewContainer.LeftAnchor.ConstraintEqualTo(LeftAnchor).Active = true;
@@ -41,6 +42,11 @@ namespace myTNB
             CGRect frame = _pageViewContainer.Frame;
             frame.Height = updatedHeight;
             _pageViewContainer.Frame = frame;
+        }
+
+        public void AddViewsToContainersV2(UIViewController accountsCardViewController)
+        {
+            _pageViewContainer.AddSubview(accountsCardViewController.View);
         }
     }
 }
