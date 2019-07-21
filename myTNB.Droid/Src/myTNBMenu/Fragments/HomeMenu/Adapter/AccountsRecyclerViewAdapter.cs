@@ -86,13 +86,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
                 if (i > 9)
                 {
                     model.AccountName = "Bakit Kiara";
+                    model.BillDueAmount = null;
                 }
                 else
                 {
                     model.AccountName = "Bukit Kiara";
+                    model.BillDueAmount = "RM 2,041.90";
                 }
                 model.AccountNumber = "101010101101010" + i;
-                model.BillDueAmount = "RM 2,041.90";
                 model.BillDueNote = "Due 30 Jul";
                 returnAccountCardModelList.Add(model);
             }
@@ -119,7 +120,13 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
             List<AccountCardModel> accountCardModel = cardList.ToArray()[position];
             foreach (AccountCardModel cardModel in accountCardModel)
             {
-                viewHolder.linearLayout.AddView(CreateAccountCard(cardModel));
+
+                ShimmerLoadingLayout.GetInstance().AddViewWithShimmer(parentGroup.Context,viewHolder.linearLayout,CreateAccountCard(cardModel),
+                    (CoordinatorLayout)LayoutInflater.From(parentGroup.Context).Inflate(Resource.Layout.account_card_shimmer_layout, parentGroup, false),
+                    () =>
+                    {
+                        return cardModel.BillDueAmount != null;
+                    });
             }
         }
 

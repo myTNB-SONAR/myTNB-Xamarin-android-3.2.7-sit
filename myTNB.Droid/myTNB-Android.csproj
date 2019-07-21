@@ -1265,6 +1265,9 @@
     <AndroidResource Include="Resources\drawable-xxxhdpi\faq_color_4.png" />
     <AndroidResource Include="Resources\drawable-xxxhdpi\faq_color_5.png" />
     <AndroidResource Include="Resources\drawable-xxxhdpi\faq_color_6.png" />
+    <Compile Include="Src\Utils\ShimmerLoadingLayout.cs" />
+    <AndroidResource Include="Resources\layout\account_card_shimmer_layout.axml" />
+    <AndroidResource Include="Resources\drawable\account_icon_default.xml" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
