@@ -21,12 +21,13 @@ using UIKit;  namespace myTNB {
         readonly static UIColor _denim = new UIColor(red: 0.11F, green: 0.47F, blue: 0.79F, alpha: 1.0f);
         readonly static UIColor _grey = new UIColor(red: 0.55f, green: 0.55f, blue: 0.55f, alpha: 1.0f);
         readonly static UIColor _babyBlue = new UIColor(red: 0.61f, green: 0.82f, blue: 1f, alpha: 1.0f);
-        readonly static UIColor _waterBlue = new UIColor(red: 0.11f, green: 0.27f, blue: 0.79f, alpha: 1.0f);
+        readonly static UIColor _waterBlue = new UIColor(red: 0.11f, green: 0.47f, blue: 0.79f, alpha: 1.0f);
         readonly static UIColor _clearBlue = new UIColor(red: 0.16f, green: 0.59f, blue: 0.98f, alpha: 1.0f);
         readonly static UIColor _powderBlue = new UIColor(red: 0.75f, green: 0.85f, blue: 0.95f, alpha: 1.0f);
         readonly static UIColor _whiteTwo = new UIColor(red: 0.82f, green: 0.82f, blue: 0.82f, alpha: 1.0f);
         readonly static UIColor _greyishBrown = new UIColor(red: 0.26f, green: 0.25f, blue: 0.25f, alpha: 1.0f);
         readonly static UIColor _charcoalGrey = new UIColor(red: 0.29f, green: 0.29f, blue: 0.29f, alpha: 1.0f);
+        readonly static UIColor _veryLightPinkTwo = new UIColor(red: 0.89f, green: 0.89f, blue: 0.89f, alpha: 1.0f);
 
         /// <summary>         /// A color with RGBA of (0.47, 0.19, 0.83, 1).         /// </summary>         public static UIColor GradientPurpleDarkElement
         {
@@ -240,6 +241,14 @@ using UIKit;  namespace myTNB {
             get
             {
                 return _charcoalGrey;
+            }
+        }
+
+        public static UIColor VeryLightPinkTwo
+        {
+            get
+            {
+                return _veryLightPinkTwo;
             }
         }
     } }
