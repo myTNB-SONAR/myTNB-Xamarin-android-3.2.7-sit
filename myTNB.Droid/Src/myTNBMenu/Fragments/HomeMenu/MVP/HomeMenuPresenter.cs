@@ -15,6 +15,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         HomeMenuContract.IHomeMenuView mView;
         HomeMenuContract.IHomeMenuService serviceApi;
         private Constants.GREETING greeting;
+        private List<SummaryDashBoardDetails> summaryDashboardInfoList;
         public HomeMenuPresenter(HomeMenuContract.IHomeMenuView view)
         {
             this.mView = view;
@@ -51,6 +52,24 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             return greeting;
         }
 
+        private void SortAccounts(List<SummaryDashBoardDetails> summaryDetails)
+        {
+            List<SummaryDashBoardDetails> reAccount = (from item in summaryDetails
+                                                       where item.AccType == "2"
+                                                       select item).ToList();
+
+
+            List<SummaryDashBoardDetails> normalAccount = (from item in summaryDetails
+                                                           where item.AccType != "2"
+                                                           select item).ToList();
+
+
+            List<SummaryDashBoardDetails> totalAccountList = new List<SummaryDashBoardDetails>();
+            totalAccountList.AddRange(reAccount.OrderBy(x => x.AccName).ToList());
+            totalAccountList.AddRange(normalAccount.OrderBy(x => x.AccName).ToList());
+            summaryDashboardInfoList.AddRange(totalAccountList);
+        }
+
         private async Task GetAccountSummaryInfo(SummaryDashBordRequest request)
         {
             SummaryDashBoardResponse response = await this.serviceApi.GetLinkedSummaryInfo(request);
@@ -71,30 +90,16 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                         summaryDetails[i].AccType = cbAccount.AccountCategoryId;
                         summaryDetails[i].IsAccSelected = cbAccount.IsSelected;
 
-                        /*** Save account data For the Day***/
-                        SummaryDashBoardAccountEntity accountModel = new SummaryDashBoardAccountEntity();
-                        accountModel.Timestamp = DateTime.Now.ToLocalTime();
-                        accountModel.JsonResponse = JsonConvert.SerializeObject(summaryDetails[i]);
-                        accountModel.AccountNo = summaryDetails[i].AccNumber;
-                        SummaryDashBoardAccountEntity.InsertItem(accountModel);
-                        /*****/
+                        ///*** Save account data For the Day***/
+                        //SummaryDashBoardAccountEntity accountModel = new SummaryDashBoardAccountEntity();
+                        //accountModel.Timestamp = DateTime.Now.ToLocalTime();
+                        //accountModel.JsonResponse = JsonConvert.SerializeObject(summaryDetails[i]);
+                        //accountModel.AccountNo = summaryDetails[i].AccNumber;
+                        //SummaryDashBoardAccountEntity.InsertItem(accountModel);
+                        ///*****/
                     }
-
-
-                    List<SummaryDashBoardDetails> reAccount = (from item in summaryDetails
-                                                               where item.AccType == "2"
-                                                               select item).ToList();
-
-
-                    List<SummaryDashBoardDetails> normalAccount = (from item in summaryDetails
-                                                                   where item.AccType != "2"
-                                                                   select item).ToList();
-
-
-                    List<SummaryDashBoardDetails> totalAccountList = new List<SummaryDashBoardDetails>();
-                    totalAccountList.AddRange(reAccount.OrderBy(x => x.AccName).ToList());
-                    totalAccountList.AddRange(normalAccount.OrderBy(x => x.AccName).ToList());
-                    this.mView.UpdateAccountListCards(totalAccountList);
+                    SortAccounts(summaryDetails);
+                    this.mView.UpdateAccountListCards(summaryDashboardInfoList);
                     //SummaryData(summaryDetails);
                     //mView.ShowRefreshSummaryDashboard(false, null, null);
 
@@ -107,6 +112,61 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             }
         }
 
+        private void LoadSummaryDetails(List<string> accountList)
+        {
+            if (accountList.Count > 0)
+            {
+                SummaryDashBordRequest request = new SummaryDashBordRequest();
+                request.AccNum = accountList;
+                request.SspUserId = UserEntity.GetActive().UserID;
+                request.ApiKeyId = Constants.APP_CONFIG.API_KEY_ID;
+                _ = GetAccountSummaryInfo(request);
+            }
+        }
+
+        private void BatchLoadSummaryDetails(List<CustomerBillingAccount> customerBillingAccountList)
+        {
+            List<string> accountList = new List<string>();
+            for (int i = 0; i < customerBillingAccountList.Count; i++)
+            {
+                if (!string.IsNullOrEmpty(customerBillingAccountList[i].AccNum))
+                {
+                    accountList.Add(customerBillingAccountList[i].AccNum);
+                }
+            }
+            //if (customerBillingAccountList.Count > 5)
+            //{
+            //    for (int i = 0; i < customerBillingAccountList.Count; i++)
+            //    {
+            //        accountList.Add(customerBillingAccountList[i].AccNum);
+            //    }
+            //}
+            //else
+            //{
+            //    for (int i = 0; i < customerBillingAccountList.Count; i++)
+            //    {
+            //        accountList.Add(customerBillingAccountList[i].AccNum);
+            //    }
+            //}
+
+            //for (int i=0; i< customerBillingAccountList.Count; i++)
+            //{
+            //    accountList.Add(customerBillingAccountList[i].AccNum);
+            //}
+
+            //if (accountList.Count)
+            //{
+
+            //}
+            var group = accountList.Select((x, index) => new { x, index })
+                   .GroupBy(x => x.index / 5, y => y.x);
+
+            foreach (var block in group)
+            {
+                LoadSummaryDetails(block.ToList());
+            }
+        }
+
         public void LoadAccounts()
         {
             var RenewableAccountList = CustomerBillingAccount.REAccountList();
@@ -116,33 +176,17 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             customerBillingAccountList.AddRange(RenewableAccountList);
             customerBillingAccountList.AddRange(NonRenewableAccountList);
 
-            List<SummaryDashBoardDetails> summaryDashboardDetailList = new List<SummaryDashBoardDetails>();
+            summaryDashboardInfoList = new List<SummaryDashBoardDetails>();
             foreach (CustomerBillingAccount customerBillintAccount in customerBillingAccountList)
             {
                 SummaryDashBoardDetails summaryDashBoardDetails = new SummaryDashBoardDetails();
                 summaryDashBoardDetails.AccNumber = customerBillintAccount.AccNum;
-                summaryDashboardDetailList.Add(summaryDashBoardDetails);
+                summaryDashboardInfoList.Add(summaryDashBoardDetails);
             }
 
-            this.mView.SetAccountListCards(summaryDashboardDetailList);
-
-            List<string> accountList = new List<string>();
-            foreach (CustomerBillingAccount customerBillingAccount in customerBillingAccountList)
-            {
-                if (!string.IsNullOrEmpty(customerBillingAccount.AccNum))
-                {
-                    accountList.Add(customerBillingAccount.AccNum);
-                }
-            }
-
-            if (accountList.Count > 0)
-            {
-                SummaryDashBordRequest request = new SummaryDashBordRequest();
-                request.AccNum = accountList;
-                request.SspUserId = UserEntity.GetActive().UserID;
-                request.ApiKeyId = Constants.APP_CONFIG.API_KEY_ID;
-                _ = GetAccountSummaryInfo(request);
-            }
+            this.mView.SetAccountListCards(summaryDashboardInfoList);
+            summaryDashboardInfoList.Clear();
+            BatchLoadSummaryDetails(customerBillingAccountList);
         }
     }
 }

@@ -77,6 +77,23 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
             UpdatedCardList();
         }
 
+        public void UpdateAccountCards(List<SummaryDashBoardDetails> accountList)
+        {
+            foreach (SummaryDashBoardDetails summaryDashBoardDetails in accountList)
+            {
+                foreach (AccountCardModel cardModel in accountCardModelList)
+                {
+                    if (cardModel.AccountNumber == summaryDashBoardDetails.AccNumber)
+                    {
+                        cardModel.AccountName = summaryDashBoardDetails.AccName;
+                        cardModel.BillDueAmount = summaryDashBoardDetails.AmountDue;
+                        cardModel.BillDueNote = summaryDashBoardDetails.BillDueDate;
+                    }
+                }
+            }
+            UpdatedCardList();
+        }
+
         private List<AccountCardModel> GetAccountCardModelList(List<SummaryDashBoardDetails> accountList)
         {
             List<AccountCardModel> returnAccountCardModelList = new List<AccountCardModel>();

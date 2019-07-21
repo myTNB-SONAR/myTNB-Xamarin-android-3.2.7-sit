@@ -525,7 +525,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
         public void UpdateAccountListCards(List<SummaryDashBoardDetails> accountList)
         {
-            accountsAdapter.SetAccountCards(accountList);
+            accountsAdapter.UpdateAccountCards(accountList);
             accountsAdapter.NotifyDataSetChanged();
         }
 
