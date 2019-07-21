@@ -23,9 +23,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
         public interface IUserActionsListener : IBasePresenter
         {
-            Task GetMyServiceService();
+            Task InitiateMyService();
 
-            Task GetNewFAQService();
+            Task InitiateNewFAQ();
 
             List<MyService> LoadShimmerServiceList(int count);
 

@@ -1265,6 +1265,8 @@
     <AndroidResource Include="Resources\drawable-xxxhdpi\faq_color_5.png" />
     <AndroidResource Include="Resources\drawable-xxxhdpi\faq_color_6.png" />
     <Compile Include="Src\myTNBMenu\Fragments\HomeMenu\MVP\HomeMenuFragment.cs" />
+    <Compile Include="Src\Database\Model\MyServiceEntity.cs" />
+    <Compile Include="Src\Database\Model\NewFAQEntity.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

@@ -140,7 +140,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
             myServiceShimmerView.Visibility = ViewStates.Visible;
             myServiceView.Visibility = ViewStates.Gone;
-            this.userActionsListener.GetMyServiceService();
+            this.userActionsListener.InitiateMyService();
             
         }
 
@@ -169,7 +169,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             newFAQShimmerView.Visibility = ViewStates.Visible;
             newFAQView.Visibility = ViewStates.Gone;
 
-            this.userActionsListener.GetNewFAQService();
+            this.userActionsListener.InitiateNewFAQ();
         }
 
         public void SetNewFAQResult(List<NewFAQ> list)
@@ -373,12 +373,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
         public void OnScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY)
         {
-            int currentDP = scrollY / (int) Resources.DisplayMetrics.Density;
+            float currentDP = scrollY / Resources.DisplayMetrics.Density;
             ChangeMyServiceTextColor(true, currentDP);
 
         }
 
-        private void ChangeMyServiceTextColor(bool onScroll, int currentDP)
+        private void ChangeMyServiceTextColor(bool onScroll, float currentDP)
         {
             try
             {
