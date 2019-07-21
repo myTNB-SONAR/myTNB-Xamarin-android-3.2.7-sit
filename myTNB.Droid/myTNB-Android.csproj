@@ -1269,6 +1269,21 @@
     <AndroidResource Include="Resources\layout\account_card_shimmer_layout.axml" />
     <AndroidResource Include="Resources\drawable\account_icon_default.xml" />
     <Compile Include="Src\myTNBMenu\Fragments\HomeMenu\Service\HomeMenuServiceImpl.cs" />
+    <AndroidResource Include="Resources\drawable-mdpi\ic_display_normal_meter.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\ic_display_r_eleaf.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\smr_48_x_48.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\ic_display_normal_meter.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\ic_display_r_eleaf.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\smr_48_x_48.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_display_normal_meter.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_display_r_eleaf.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\smr_48_x_48.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\ic_display_normal_meter.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\ic_display_r_eleaf.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\smr_48_x_48.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_display_normal_meter.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_display_r_eleaf.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\smr_48_x_48.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
