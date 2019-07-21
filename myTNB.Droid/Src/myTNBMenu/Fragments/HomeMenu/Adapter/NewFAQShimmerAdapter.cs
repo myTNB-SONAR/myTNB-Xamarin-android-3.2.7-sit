@@ -18,8 +18,15 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
 
 		public NewFAQShimmerAdapter(List<NewFAQ> data)
 		{
-			this.faqList = new List<NewFAQ>();
-			this.faqList = data;
+            if (data == null)
+            {
+                this.faqList = new List<NewFAQ>();
+            }
+            else
+            {
+                this.faqList = new List<NewFAQ>();
+                this.faqList = data;
+            }
 		}
 
 		public override int ItemCount => faqList.Count;

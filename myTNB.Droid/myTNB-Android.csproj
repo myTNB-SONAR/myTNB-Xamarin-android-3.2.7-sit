@@ -1124,7 +1124,6 @@
     <AndroidResource Include="Resources\drawable-xxxhdpi\ic_header_markread_disabled.png" />
     <Compile Include="Src\myTNBMenu\Activity\DashboardHomeActivity.cs" />
     <AndroidResource Include="Resources\layout\DashboardHomeView.axml" />
-    <Compile Include="Src\myTNBMenu\Fragments\HomeMenu\MVP\HomeMenuFragment.cs" />
     <AndroidResource Include="Resources\layout\HomeMenuFragmentView.axml" />
     <AndroidResource Include="Resources\drawable\custom_round_rec_shadow.xml" />
     <AndroidResource Include="Resources\layout\MyServiceComponentView.axml" />
@@ -1265,8 +1264,7 @@
     <AndroidResource Include="Resources\drawable-xxxhdpi\faq_color_4.png" />
     <AndroidResource Include="Resources\drawable-xxxhdpi\faq_color_5.png" />
     <AndroidResource Include="Resources\drawable-xxxhdpi\faq_color_6.png" />
-    <Compile Include="Src\myTNBMenu\Fragments\HomeMenu\MVP\HomeMenuContract.cs" />
-    <Compile Include="Src\myTNBMenu\Fragments\HomeMenu\MVP\HomeMenuPresenter.cs" />
+    <Compile Include="Src\myTNBMenu\Fragments\HomeMenu\MVP\HomeMenuFragment.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

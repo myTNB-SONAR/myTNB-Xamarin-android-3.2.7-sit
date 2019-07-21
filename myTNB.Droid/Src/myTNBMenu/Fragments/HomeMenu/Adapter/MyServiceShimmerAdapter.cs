@@ -17,8 +17,15 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
 
         public MyServiceShimmerAdapter(List<MyService> data)
         {
-            this.shimmerList = new List<MyService>();
-            this.shimmerList = data;
+            if (data == null)
+            {
+                this.shimmerList = new List<MyService>();
+            }
+            else
+            {
+                this.shimmerList = new List<MyService>();
+                this.shimmerList = data;
+            }
         }
 
         public override int ItemCount => shimmerList.Count;

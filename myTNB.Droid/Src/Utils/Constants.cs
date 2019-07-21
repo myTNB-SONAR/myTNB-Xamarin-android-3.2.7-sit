@@ -206,5 +206,13 @@ namespace myTNB_Android.Src.Utils
         internal static readonly string REFRESH_BTN_MSG = "refreshBtnTxt";
 
         internal static readonly string AMOUNT_DUE_FAILED_KEY = "AmountDueFailedKey";
+
+        internal static readonly int ACCOUNT_LIST_MORE_THAN_FIVE_DP_LIMIT = 190;
+
+        internal static readonly int ACCOUNT_LIST_FIVE_DP_LIMIT = 180;
+
+        internal static readonly int ACCOUNT_LIST_FOUR_DP_LIMIT = 120;
+
+        internal static readonly int ACCOUNT_LIST_THREE_DP_LIMIT = 60;
     }
 }

@@ -8,201 +8,201 @@
     android:layout_alignParentBottom="true"
     android:layout_centerHorizontal="true"
     android:background="@color/white">
-
     <android.support.v4.widget.NestedScrollView
       android:layout_width="match_parent"
       android:layout_height="match_parent"
-      android:background="@drawable/dashboard_home_new_bg">
+      android:background="@drawable/dashboard_home_new_bg"
+      android:id="@+id/summaryNestScrollView">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/dashboard_home_bg"
             android:orientation="vertical">
+              <android.support.constraint.ConstraintLayout
+                android:id="@+id/accountContainer"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="20dp">
 
-          <android.support.constraint.ConstraintLayout
-            android:id="@+id/accountContainer"
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:layout_marginTop="20dp">
-
-            <TextView
-                android:id="@+id/accountGreeting"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:textSize="16dp"
-                android:text="Good Morning,"
-                android:textColor="@android:color/white"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-            />
-            <TextView
-                android:id="@+id/accountGreetingName"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:textSize="16dp"
-                android:text="Account Name"
-                android:textColor="@android:color/white"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/accountGreeting"
-            />
-            <ImageView
-                android:id="@+id/notificationHeaderIcon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@@drawable/ic_header_notification_unread"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-            />
-          </android.support.constraint.ConstraintLayout>
+                <TextView
+                    android:id="@+id/accountGreeting"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:textSize="16dp"
+                    android:text="Good Morning,"
+                    android:textColor="@android:color/white"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                />
+                <TextView
+                    android:id="@+id/accountGreetingName"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:textSize="16dp"
+                    android:text="Account Name"
+                    android:textColor="@android:color/white"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/accountGreeting"
+                />
+                <ImageView
+                    android:id="@+id/notificationHeaderIcon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@@drawable/ic_header_notification_unread"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                />
+              </android.support.constraint.ConstraintLayout>
             <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:id="@+id/accountsActionsContainer">
-        <TextView
-            android:id="@+id/accountsHeaderTitle"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:textSize="14dp"
-            android:layout_weight=".8"
-            android:text="My Accounts"
-            android:textColor="@android:color/white"
-            android:layout_gravity="left|center_vertical"
-        />
-        <ImageView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:src="@drawable/add_account_no_gradient"
-            android:layout_weight=".1"
-            android:id="@+id/addAction"
-            android:layout_gravity="left|center_vertical"/>
-        <SearchView
-            android:id="@+id/searchEdit"
-            android:layout_width="0dp"
-            android:layout_height="24dp"
-            android:visibility="gone"
-            android:layout_weight=".9"
-            android:iconifiedByDefault="false"
-            android:searchIcon="@null"
-            android:layout_gravity="left|center_vertical"
-            android:queryHint="Search account nickname or number"
-            android:background="@drawable/search_edit_bg"
-            android:theme="@style/AppSearchView"/>
-        <ImageView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight=".1"
-            android:src="@drawable/search_no_gradient"
-            android:layout_gravity="left|center_vertical"
-            android:id="@+id/searchAction"/>
-    </LinearLayout>
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/accountRecyclerViewContainer"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:paddingLeft="16dp"/>
-        <LinearLayout
-            android:id="@+id/indicatorContainer"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center">
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginTop="16dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:layout_marginBottom="2dp"
-            android:id="@+id/myServiceContainer">
-            <TextView
-                android:id="@+id/myServiceTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="14dp"
-                android:text="My Services"
-                android:textColor="@color/powerBlue"
-                android:layout_gravity="left"/>
-            <LinearLayout
-                android:id="@+id/myServiceShimmerView"
+                android:orientation="horizontal"
+                android:layout_marginTop="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:id="@+id/accountsActionsContainer">
+                <TextView
+                    android:id="@+id/accountsHeaderTitle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:textSize="14dp"
+                    android:layout_weight=".8"
+                    android:text="My Accounts"
+                    android:textColor="@android:color/white"
+                    android:layout_gravity="left|center_vertical"
+                />
+                <ImageView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/add_account_no_gradient"
+                    android:layout_weight=".1"
+                    android:id="@+id/addAction"
+                    android:layout_gravity="left|center_vertical"/>
+                <SearchView
+                    android:id="@+id/searchEdit"
+                    android:layout_width="0dp"
+                    android:layout_height="24dp"
+                    android:visibility="gone"
+                    android:layout_weight=".9"
+                    android:iconifiedByDefault="false"
+                    android:searchIcon="@null"
+                    android:layout_gravity="left|center_vertical"
+                    android:queryHint="Search account nickname or number"
+                    android:background="@drawable/search_edit_bg"
+                    android:theme="@style/AppSearchView"/>
+                <ImageView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".1"
+                    android:src="@drawable/search_no_gradient"
+                    android:layout_gravity="left|center_vertical"
+                    android:id="@+id/searchAction"/>
+            </LinearLayout>
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/accountRecyclerViewContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:orientation="vertical"
-                android:visibility="gone">
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/myServiceShimmerList"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:scrollIndicators="none" />
+                android:paddingLeft="16dp"/>
+            <LinearLayout
+                android:id="@+id/indicatorContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:orientation="horizontal"
+                android:gravity="center">
             </LinearLayout>
             <LinearLayout
-                android:id="@+id/myServiceView"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_height="match_parent"
                 android:orientation="vertical"
-                android:visibility="gone">
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/myServiceList"
+                android:layout_marginTop="8dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginBottom="2dp"
+                android:id="@+id/myServiceContainer">
+                <TextView
+                    android:id="@+id/myServiceTitle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:scrollIndicators="none" />
+                    android:textSize="14dp"
+                    android:text="My Services"
+                    android:textColor="@color/powerBlue"
+                    android:layout_gravity="left"/>
+                <LinearLayout
+                    android:id="@+id/myServiceShimmerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="16dp"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/myServiceShimmerList"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scrollIndicators="none" />
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/myServiceView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="16dp"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/myServiceList"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scrollIndicators="none" />
+                </LinearLayout>
             </LinearLayout>
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginTop="2dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:layout_marginBottom="33dp"
-            android:id="@+id/newFAQContainer">
-            <TextView
-                android:id="@+id/newFAQTitle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="14dp"
-                android:text="Need Help?"
-                android:textColor="@color/powerBlue"
-                android:layout_gravity="left"/>
             <LinearLayout
-                android:id="@+id/newFAQShimmerView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="7dp"
                 android:orientation="vertical"
-                android:visibility="gone">
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/newFAQShimmerList"
+                android:layout_marginTop="2dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginBottom="33dp"
+                android:id="@+id/newFAQContainer">
+                <TextView
+                    android:id="@+id/newFAQTitle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:scrollIndicators="none" />
-            </LinearLayout>
-            <LinearLayout
-                android:id="@+id/newFAQView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="7dp"
-                android:orientation="vertical"
-                android:visibility="gone">
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/newFAQList"
+                    android:textSize="14dp"
+                    android:text="Need Help?"
+                    android:textColor="@color/powerBlue"
+                    android:layout_gravity="left"/>
+                <LinearLayout
+                    android:id="@+id/newFAQShimmerView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:scrollIndicators="none" />
+                    android:layout_marginTop="7dp"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/newFAQShimmerList"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:scrollIndicators="none" />
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/newFAQView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="7dp"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/newFAQList"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:scrollIndicators="none" />
+                </LinearLayout>
             </LinearLayout>
-        </LinearLayout>
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
 </android.support.design.widget.CoordinatorLayout>
