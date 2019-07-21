@@ -1268,6 +1268,7 @@
     <Compile Include="Src\Utils\ShimmerLoadingLayout.cs" />
     <AndroidResource Include="Resources\layout\account_card_shimmer_layout.axml" />
     <AndroidResource Include="Resources\drawable\account_icon_default.xml" />
+    <Compile Include="Src\myTNBMenu\Fragments\HomeMenu\Service\HomeMenuServiceImpl.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -1625,6 +1626,7 @@
     <Folder Include="Src\myTNBMenu\Fragments\HomeMenu\Adapter\" />
     <Folder Include="Src\myTNBMenu\Fragments\HomeMenu\Listener\" />
     <Folder Include="Src\myTNBMenu\Fragments\HomeMenu\Models\" />
+    <Folder Include="Src\myTNBMenu\Fragments\HomeMenu\Service\" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\GradientStatusBar.xml" />

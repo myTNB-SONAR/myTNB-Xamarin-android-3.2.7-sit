@@ -11,17 +11,19 @@ using Android.Widget;
 using CheeseBind;
 using Facebook.Shimmer;
 using myTNB_Android.Src.Base.Fragments;
+using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.myTNBMenu.Activity;
 using myTNB_Android.Src.myTNBMenu.Fragments.FeedbackMenu;
 using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter;
 using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Listener;
 using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Models;
+using myTNB_Android.Src.SummaryDashBoard.Models;
 using myTNB_Android.Src.Utils;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 {
-    public class HomeMenuFragment : BaseFragment, HomeMenuContract.IView
-	{
+    public class HomeMenuFragment : BaseFragment, HomeMenuContract.IHomeMenuView
+    {
         [BindView(Resource.Id.newFAQShimmerView)]
         LinearLayout newFAQShimmerView;
 
@@ -49,8 +51,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         [BindView(Resource.Id.myServiceView)]
         LinearLayout myServiceView;
 
-        //[BindView(Resource.Id.shimmer_view_container)]
-        //ShimmerFrameLayout shimmerViewContainer;
         [BindView(Resource.Id.myServiceTitle)]
         TextView myServiceTitle;
         [BindView(Resource.Id.accountsHeaderTitle)]
@@ -81,9 +81,28 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         System.Timers.Timer timer;
         System.Timers.Timer FAQTimer;
 
+        HomeMenuContract.IHomeMenuPresenter presenter;
+
         public override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
+            presenter = new HomeMenuPresenter(this);
+        }
+
+        private void UpdateGreetingsHeader(Constants.GREETING greeting)
+        {
+            switch (greeting)
+            {
+                case Constants.GREETING.MORNING:
+                    accountGreeting.Text = GetString(Resource.String.greeting_text_morning);
+                    break;
+                case Constants.GREETING.AFTERNOON:
+                    accountGreeting.Text = GetString(Resource.String.greeting_text_afternoon);
+                    break;
+                default:
+                    accountGreeting.Text = GetString(Resource.String.greeting_text_evening);
+                    break;
+            }
         }
 
         public override void OnViewCreated(View view, Bundle savedInstanceState)
@@ -91,11 +110,15 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             base.OnViewCreated(view, savedInstanceState);
             try
             {
+                UpdateGreetingsHeader(this.presenter.GetGreeting());
+                accountGreetingName.Text = this.presenter.GetAccountDisplay();
                 SetAccountsRecyclerView();
                 SetAccountActionHeader();
                 SetMyServiceRecycleView();
                 SetNewFAQRecycleView();
                 TextViewUtils.SetMuseoSans500Typeface(myServiceTitle, newFAQTitle);
+
+                this.presenter.LoadAccounts();
             }
             catch (System.Exception e)
             {
@@ -189,17 +212,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(Activity, LinearLayoutManager.Horizontal, false);
             accountsRecyclerView.SetLayoutManager(linearLayoutManager);
 
-            accountsAdapter = new AccountsRecyclerViewAdapter(this,16);
-            accountsAdapter.SetAccountCards(13);
-            accountsRecyclerView.SetAdapter(accountsAdapter);
-
+            accountsAdapter = new AccountsRecyclerViewAdapter(this);
             accountsRecyclerView.AddOnScrollListener(new AccountsRecyclerViewOnScrollListener(linearLayoutManager, indicatorContainer));
-        }
-        private void SetShimmer()
-        {
-            //var shimmerBuilder = new Shimmer.AlphaHighlightBuilder();
-            //shimmerBuilder = default(Shimmer.AlphaHighlightBuilder);
-            //shimmerViewContainer.SetShimmer(shimmerBuilder?.Build());
         }
 
         public override void OnResume()
@@ -211,17 +225,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             var actionBar = act.SupportActionBar;
             actionBar.Hide();
             ShowBackButton(false);
-            //var shimmerBuilder = new Shimmer.AlphaHighlightBuilder();
-            //shimmerBuilder = default(Shimmer.AlphaHighlightBuilder);
-            //shimmerViewContainer.SetShimmer(shimmerBuilder?.Build());
-            //shimmerViewContainer.StartShimmer();
         }
 
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
-            // Use this to return your custom view for this Fragment
-            // return inflater.Inflate(Resource.Layout.YourFragment, container, false);
-
             return base.OnCreateView(inflater, container, savedInstanceState);
         }
 
@@ -232,7 +239,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         private void UpdateAccountListIndicator()
         {
             indicatorContainer.RemoveAllViews();
-            int accountsCount = accountsAdapter.ItemCount;// accountCardModelList.Count;
+            int accountsCount = accountsAdapter.ItemCount;
             if (accountsCount > 1)
             {
                 indicatorContainer.Visibility = ViewStates.Visible;
@@ -514,6 +521,18 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             var actionBar = act.SupportActionBar;
             actionBar.SetDisplayHomeAsUpEnabled(flag);
             actionBar.SetDisplayShowHomeEnabled(flag);
+        }
+
+        public void UpdateAccountListCards(List<SummaryDashBoardDetails> accountList)
+        {
+            accountsAdapter.SetAccountCards(accountList);
+            accountsAdapter.NotifyDataSetChanged();
+        }
+
+        public void SetAccountListCards(List<SummaryDashBoardDetails> accountList)
+        {
+            accountsAdapter.SetAccountCards(accountList);
+            accountsRecyclerView.SetAdapter(accountsAdapter);
         }
     }
 }

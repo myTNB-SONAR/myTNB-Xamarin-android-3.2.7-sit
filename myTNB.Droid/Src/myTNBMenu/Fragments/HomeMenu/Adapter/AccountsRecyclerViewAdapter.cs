@@ -4,7 +4,9 @@ using Android.Support.Design.Widget;
 using Android.Support.V7.Widget;
 using Android.Views;
 using Android.Widget;
+using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP;
+using myTNB_Android.Src.SummaryDashBoard.Models;
 using myTNB_Android.Src.Utils;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
@@ -13,18 +15,16 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
     {
         int accountsCardContainer = 0;
         int MAX_ACCOUNT_PER_CARD = 5;
-        public int accountsContainer = 0;
         Filter accountsFilter;
-        HomeMenuContract.IView viewListener;
+        HomeMenuContract.IHomeMenuView viewListener;
 
         List<List<AccountCardModel>> cardList = new List<List<AccountCardModel>>();
         List<AccountCardModel> accountModelList = new List<AccountCardModel>();
         public List<AccountCardModel> accountCardModelList;
         ViewGroup parentGroup;
 
-        public AccountsRecyclerViewAdapter(HomeMenuContract.IView listener, int count)
+        public AccountsRecyclerViewAdapter(HomeMenuContract.IHomeMenuView listener)
         {
-            accountsContainer = count;
             viewListener = listener;
         }
 
@@ -70,31 +70,25 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
             this.viewListener.OnUpdateAccountListChanged(false);
         }
 
-        public void SetAccountCards(int accountCount)
+        public void SetAccountCards(List<SummaryDashBoardDetails> accountList)
         {
-            accountCardModelList = GetAccountCardModelList(accountCount);
+
+            accountCardModelList = GetAccountCardModelList(accountList);
             UpdatedCardList();
         }
 
-        private List<AccountCardModel> GetAccountCardModelList(int size)
+        private List<AccountCardModel> GetAccountCardModelList(List<SummaryDashBoardDetails> accountList)
         {
             List<AccountCardModel> returnAccountCardModelList = new List<AccountCardModel>();
             AccountCardModel model;
-            for (int i = 0; i < size; i++)
+
+            foreach (SummaryDashBoardDetails summaryDashBoardDetails in accountList)
             {
                 model = new AccountCardModel();
-                if (i > 9)
-                {
-                    model.AccountName = "Bakit Kiara";
-                    model.BillDueAmount = null;
-                }
-                else
-                {
-                    model.AccountName = "Bukit Kiara";
-                    model.BillDueAmount = "RM 2,041.90";
-                }
-                model.AccountNumber = "101010101101010" + i;
-                model.BillDueNote = "Due 30 Jul";
+                model.AccountName = summaryDashBoardDetails.AccName;
+                model.AccountNumber = summaryDashBoardDetails.AccNumber;
+                model.BillDueAmount = summaryDashBoardDetails.AmountDue;
+                model.BillDueNote = summaryDashBoardDetails.BillDueDate;
                 returnAccountCardModelList.Add(model);
             }
             return returnAccountCardModelList;
