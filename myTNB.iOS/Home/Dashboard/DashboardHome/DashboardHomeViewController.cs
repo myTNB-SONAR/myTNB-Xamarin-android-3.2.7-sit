@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using CoreGraphics;
 using Foundation;
 using myTNB.Dashboard;
+using myTNB.Home.Dashboard.DashboardHome;
 using myTNB.Model;
 using myTNB.PushNotification;
 using UIKit;
@@ -30,6 +31,8 @@ namespace myTNB
         UITextField _textFieldSearch;
         TextFieldHelper _textFieldHelper = new TextFieldHelper();
 
+        internal Dictionary<string, Action> _servicesActionDictionary;
+
         public override void ViewDidLoad()
         {
             foreach (UIView v in View.Subviews)
@@ -44,6 +47,7 @@ namespace myTNB
             NSNotificationCenter.DefaultCenter.AddObserver((NSString)"OnReceiveNotificationFromDashboard", NotificationDidChange);
             _imageGradientHeight = IsGradientImageRequired ? ImageViewGradientImage.Frame.Height : 0;
 
+            SetActionsDictionary();
             SetStatusBarNoOverlap();
             SetTapGestureRecognizers();
             AddTableView();
@@ -358,6 +362,12 @@ namespace myTNB
                 vc.ShouldShowBackButton = true;
                 ShowViewController(vc, null);
             }
+        }
+
+        private void SetActionsDictionary()
+        {
+            DashboardHomeActions actions = new DashboardHomeActions(this);
+            _servicesActionDictionary = actions.GetActionsDictionary();
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using CoreGraphics;
+using myTNB.Home.Dashboard.DashboardHome.Services;
 using myTNB.Model;
 using UIKit;
 
@@ -12,6 +13,7 @@ namespace myTNB
         private UIView _view;
         private int rowFactor = -1;
         private nfloat xLoc;
+        private Dictionary<string, Action> _actionsDictionary;
         public UILabel _titleLabel;
         public ServicesTableViewCell(IntPtr handle) : base(handle)
         {
@@ -37,8 +39,9 @@ namespace myTNB
             SelectionStyle = UITableViewCellSelectionStyle.None;
         }
 
-        public void AddCards(ServicesResponseModel services)
+        public void AddCards(ServicesResponseModel services, Dictionary<string, Action> actionsDictionary)
         {
+            _actionsDictionary = actionsDictionary;
             rowFactor = -1;
             xLoc = 0;
             for (int i = _view.Subviews.Length; i-- > 0;)
@@ -82,6 +85,7 @@ namespace myTNB
             for (int i = 0; i < serviceList.Count; i++)
             {
                 UIView card = GetCard(serviceList[i], i);
+                SetCardAction(ref card, serviceList[i].ServiceCategoryId);
                 _view.AddSubview(card);
                 if (i == serviceList.Count - 1)
                 {
@@ -160,9 +164,13 @@ namespace myTNB
             viewParent.AddSubviews(new UIView[] { viewShimmerParent, viewShimmerContent });
 
             nfloat viewImgWidth = viewShimmerContent.Frame.Width * 0.27F;
-            UIView viewImg = new UIView(new CGRect((viewShimmerContent.Frame.Width - viewImgWidth) / 2, 16, viewImgWidth, viewImgWidth)) { BackgroundColor = MyTNBColor.PowderBlue };
+            UIView viewImg = new UIView(new CGRect((viewShimmerContent.Frame.Width - viewImgWidth) / 2
+                , 16, viewImgWidth, viewImgWidth))
+            { BackgroundColor = MyTNBColor.PowderBlue };
             viewImg.Layer.CornerRadius = viewImgWidth / 2;
-            UIView viewLbl = new UIView(new CGRect(12, viewImgWidth + 32, viewShimmerContent.Frame.Width - 24, 14)) { BackgroundColor = MyTNBColor.PowderBlue };
+            UIView viewLbl = new UIView(new CGRect(12, viewImgWidth + 32
+                , viewShimmerContent.Frame.Width - 24, 14))
+            { BackgroundColor = MyTNBColor.PowderBlue };
 
             viewShimmerContent.AddSubviews(new UIView[] { viewImg, viewLbl });
 
@@ -175,11 +183,7 @@ namespace myTNB
 
         private nfloat GetFactor(int index)
         {
-            if (index < 1)
-            {
-                return 0;
-            }
-            return (nfloat)Math.Floor((decimal)index / 3);
+            return index < 1 ? 0 : (nfloat)Math.Floor((decimal)index / 3);
         }
 
         private void AddCardShadow(ref UIView view)
@@ -195,41 +199,18 @@ namespace myTNB
 
         private string GetImage(string serviceID)
         {
-            string img;
-            switch (serviceID)
-            {
-                case "1001":
-                    {
-                        img = "Services-ApplySSMR";
-                        break;
-                    }
-                case "1002":
-                    {
-                        img = "Services-CheckStatus";
-                        break;
-                    }
-                case "1003":
-                    {
-                        img = "Services-Feedback";
-                        break;
-                    }
-                case "1004":
-                    {
-                        img = "Services-SetAppointments";
-                        break;
-                    }
-                case "1005":
-                    {
-                        img = "Services-ApplyAutoPay";
-                        break;
-                    }
-                default:
-                    {
-                        img = string.Empty;
-                        break;
-                    }
-            }
-            return img;
+            return ServicesConstants.ImageDictionary.ContainsKey(serviceID) ? ServicesConstants.ImageDictionary[serviceID] : string.Empty;
+        }
+
+        private void SetCardAction(ref UIView view, string id)
+        {
+            Action action = _actionsDictionary.ContainsKey(id) ? _actionsDictionary[id] : null;
+            view.AddGestureRecognizer(new UITapGestureRecognizer(()=> {
+                if (action != null)
+                {
+                    action.Invoke();
+                }
+            }));
         }
     }
 }

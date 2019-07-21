@@ -2023,6 +2023,8 @@
     <Compile Include="Home\Dashboard\DashboardHome\DashboardHomeHelper.cs" />
     <Compile Include="Model\Services\ServicesResponseModel.cs" />
     <Compile Include="Model\Base Model\BaseModelV2.cs" />
+    <Compile Include="Home\Dashboard\DashboardHome\Services\ServicesConstants.cs" />
+    <Compile Include="Home\Dashboard\DashboardHome\DashboardHomeActions.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />

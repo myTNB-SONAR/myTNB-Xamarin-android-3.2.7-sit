@@ -46,7 +46,7 @@ namespace myTNB
             {
                 ServicesTableViewCell cell = tableView.DequeueReusableCell(DashboardHomeConstants.Cell_Services) as ServicesTableViewCell;
                 cell._titleLabel.Text = _controller.I18NDictionary[DashboardHomeConstants.I18N_MyServices];
-                cell.AddCards(_services);
+                cell.AddCards(_services, _controller._servicesActionDictionary);
                 return cell;
             }
             if (indexPath.Row == 2)
