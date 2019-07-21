@@ -12,18 +12,21 @@ namespace myTNB
     {
         FBShimmeringView _shimmeringView = new FBShimmeringView();
 
+        AccountsContentViewController _contentViewController;
         private readonly UIView _parentView;
         UIView _accountCardView;
         UIImageView _accountIcon;
         UILabel _accountNickname, _accountNo, _amountDue, _dueDate;
         string _strAccountIcon, _strNickname, _strAccountNo;
         nfloat _yLocation = 0f;
+        DueAmountDataModel _model = new DueAmountDataModel();
 
         public bool IsUpdating { set; get; }
 
-        public DashboardHomeAccountCard(UIView view, nfloat yLocation)
+        public DashboardHomeAccountCard(AccountsContentViewController controller, UIView parentView, nfloat yLocation)
         {
-            _parentView = view;
+            _contentViewController = controller;
+            _parentView = parentView;
             _yLocation = yLocation;
         }
 
@@ -38,9 +41,6 @@ namespace myTNB
             {
                 BackgroundColor = UIColor.White
             };
-            _accountCardView.Layer.CornerRadius = 5f;
-            _accountCardView.ClipsToBounds = true;
-
             AddCardShadow(ref _accountCardView);
 
             _accountIcon = new UIImageView(new CGRect(12f, DeviceHelper.GetCenterYWithObjHeight(28f, _accountCardView), 28f, 28f))
@@ -51,33 +51,32 @@ namespace myTNB
             _accountNickname = new UILabel(new CGRect(_accountIcon.Frame.GetMaxX() + 12f, 12f, 150f, 20f))
             {
                 Font = MyTNBFont.MuseoSans14_500,
-                TextColor = MyTNBColor.TunaGrey(),
+                TextColor = MyTNBColor.GreyishBrown,
                 Text = _strNickname ?? string.Empty
             };
 
             _accountNo = new UILabel(new CGRect(_accountIcon.Frame.GetMaxX() + 12f, _accountNickname.Frame.GetMaxY(), 110f, 20f))
             {
                 Font = MyTNBFont.MuseoSans12_300,
-                TextColor = UIColor.LightGray,
+                TextColor = MyTNBColor.CharcoalGrey,
                 Text = _strAccountNo ?? string.Empty
             };
 
             _amountDue = new UILabel(new CGRect(parentWidth - 100f - 12f - (16f * 2), 12f, 100f, 20f))
             {
                 Font = MyTNBFont.MuseoSans14_500,
-                TextColor = MyTNBColor.TunaGrey(),
+                TextColor = MyTNBColor.GreyishBrown,
                 TextAlignment = UITextAlignment.Right
             };
 
             _dueDate = new UILabel(new CGRect(parentWidth - 100f - 12f - (16f * 2), _amountDue.Frame.GetMaxY(), 100f, 20f))
             {
                 Font = MyTNBFont.MuseoSans12_300,
-                TextColor = UIColor.LightGray,
+                TextColor = MyTNBColor.CharcoalGrey,
                 TextAlignment = UITextAlignment.Right
             };
 
             OnUpdateWidget();
-
             CustomShimmerView shimmeringView = new CustomShimmerView();
             UIView viewShimmerParent = new UIView(new CGRect(0, 0, _accountCardView.Frame.Width
                 , _accountCardView.Frame.Height))
@@ -91,6 +90,11 @@ namespace myTNB
 
             viewShimmerContent.AddSubviews(new UIView { _accountIcon, _accountNickname, _accountNo, _amountDue, _dueDate });
             _accountCardView.AddSubview(viewShimmerParent);
+
+            _accountCardView.AddGestureRecognizer(new UITapGestureRecognizer(() =>
+            {
+                _contentViewController.OnAccountCardSelected(_model);
+            }));
         }
 
         private void OnUpdateWidget()
@@ -126,6 +130,11 @@ namespace myTNB
             return _accountCardView;
         }
 
+        public void SetModel(DueAmountDataModel model)
+        {
+            _model = model ?? new DueAmountDataModel();
+        }
+
         public void SetAccountIcon(string text)
         {
             _strAccountIcon = text ?? string.Empty;
@@ -148,50 +157,48 @@ namespace myTNB
 
         public void AdjustLabels(DueAmountDataModel model)
         {
-            string formattedDate = string.Empty;
-            var amount = !model.IsReAccount ? model.amountDue : ChartHelper.UpdateValueForRE(model.amountDue);
-            _amountDue.AttributedText = TextHelper.CreateValuePairString(amount.ToString("N2", CultureInfo.InvariantCulture)
-                , TNBGlobal.UNIT_CURRENCY + " ", true, MyTNBFont.MuseoSans14_500
-                , MyTNBColor.TunaGrey(), MyTNBFont.MuseoSans14_500, MyTNBColor.TunaGrey());
+            if (model != null)
+            {
+                var amount = !model.IsReAccount ? model.amountDue : ChartHelper.UpdateValueForRE(model.amountDue);
+                _amountDue.AttributedText = TextHelper.CreateValuePairString(amount.ToString("N2", CultureInfo.InvariantCulture)
+                    , TNBGlobal.UNIT_CURRENCY + " ", true, MyTNBFont.MuseoSans14_500
+                    , MyTNBColor.TunaGrey(), MyTNBFont.MuseoSans14_500, MyTNBColor.TunaGrey());
 
-            var dateString = amount > 0 ? model.billDueDate : string.Empty;
-            if (string.IsNullOrEmpty(dateString) || dateString.ToUpper().Equals("N/A"))
-            {
-                formattedDate = TNBGlobal.EMPTY_DATE;
-            }
-            else
-            {
-                if (model.IsReAccount && model.IncrementREDueDateByDays > 0)
+                var dateString = amount > 0 ? model.billDueDate : string.Empty;
+                if (string.IsNullOrEmpty(dateString) || dateString.ToUpper().Equals("N/A"))
                 {
-                    try
-                    {
-                        var format = @"dd/MM/yyyy";
-                        DateTime due = DateTime.ParseExact(dateString, format, System.Globalization.CultureInfo.InvariantCulture);
-                        due = due.AddDays(model.IncrementREDueDateByDays);
-                        dateString = due.ToString(format);
-                    }
-                    catch (FormatException)
-                    {
-                        Debug.WriteLine("Unable to parse '{0}'", dateString);
-                    }
+                    _dueDate.Text = "Dashboard_AllCleared".Translate();
+                    _dueDate.TextColor = MyTNBColor.CharcoalGrey;
+                    _amountDue.TextColor = MyTNBColor.Grey;
                 }
-                formattedDate = DateHelper.GetFormattedDate(dateString, "dd MMM");
+                else
+                {
+                    string datePrefix = model.IsReAccount ? "Dashboard_GetBy".Translate() : "Dashboard_PayBy".Translate();
+                    if (model.IsReAccount && model.IncrementREDueDateByDays > 0)
+                    {
+                        try
+                        {
+                            var format = @"dd/MM/yyyy";
+                            DateTime due = DateTime.ParseExact(dateString, format, System.Globalization.CultureInfo.InvariantCulture);
+                            due = due.AddDays(model.IncrementREDueDateByDays);
+                            dateString = due.ToString(format);
+                        }
+                        catch (FormatException)
+                        {
+                            Debug.WriteLine("Unable to parse '{0}'", dateString);
+                        }
+                    }
+                    string formattedDate = DateHelper.GetFormattedDate(dateString, "dd MMM");
+                    _dueDate.AttributedText = TextHelper.CreateValuePairString(formattedDate
+                    , datePrefix + " ", true, MyTNBFont.MuseoSans12_300
+                    , MyTNBColor.CharcoalGrey, MyTNBFont.MuseoSans12_300, MyTNBColor.CharcoalGrey);
+                }
             }
-            _dueDate.Text = formattedDate;
-        }
-
-        private void SetUIForLoading(bool isLoading)
-        {
-            _shimmeringView.Shimmering = isLoading;
-
-            UIColor shimmerColor = isLoading ? UIColor.LightGray : UIColor.Clear;
-            _accountIcon.BackgroundColor = shimmerColor;
-            _accountNickname.BackgroundColor = shimmerColor;
-            _accountNo.BackgroundColor = shimmerColor;
         }
 
         private void AddCardShadow(ref UIView view)
         {
+            view.Layer.CornerRadius = 5f;
             view.Layer.MasksToBounds = false;
             view.Layer.ShadowColor = MyTNBColor.BabyBlue.CGColor;
             view.Layer.ShadowOpacity = 1;

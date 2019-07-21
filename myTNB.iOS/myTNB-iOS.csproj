@@ -1000,6 +1000,10 @@
     <ImageAsset Include="Assets.xcassets\Help-Background-5.imageset\faqColor6.png" />
     <ImageAsset Include="Assets.xcassets\Help-Background-5.imageset\faqColor6%402x.png" />
     <ImageAsset Include="Assets.xcassets\Help-Background-5.imageset\faqColor6%403x.png" />
+    <ImageAsset Include="Assets.xcassets\SMR-Icon.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\SMR-Icon.imageset\SMR-Icon.png" />
+    <ImageAsset Include="Assets.xcassets\SMR-Icon.imageset\SMR-Icon%402x.png" />
+    <ImageAsset Include="Assets.xcassets\SMR-Icon.imageset\SMR-Icon%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -1298,6 +1302,7 @@
     <Folder Include="Assets.xcassets\Help-Background-5.imageset\" />
     <Folder Include="Assets.xcassets\Help-Background-0.imageset\" />
     <Folder Include="Model\Services\" />
+    <Folder Include="Assets.xcassets\SMR-Icon.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
