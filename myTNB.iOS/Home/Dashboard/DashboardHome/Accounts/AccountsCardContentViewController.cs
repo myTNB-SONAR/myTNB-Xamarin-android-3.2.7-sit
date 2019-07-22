@@ -33,6 +33,7 @@ namespace myTNB
         UIImageView _searchIcon, _addAccountIcon;
         UITextField _textFieldSearch;
         bool _isSearchMode = false;
+        bool _isUpdating = true;
 
         public override void ViewDidLoad()
         {
@@ -187,7 +188,7 @@ namespace myTNB
         {
             DataManager.DataManager.SharedInstance.AccountsGroupList.Clear();
             _dashboardHomeHelper.GroupAccountsList(accountsList);
-            _groupAccountList = new List<List<DueAmountDataModel>>();
+            _groupAccountList.Clear();
             _groupAccountList = DataManager.DataManager.SharedInstance.AccountsGroupList;
             ClearScrollViewSubViews();
             SetCardScrollView();
@@ -255,10 +256,12 @@ namespace myTNB
                         if (accounts?.Count > 0)
                         {
                             await GetAccountsSummary(accounts);
+                            _isUpdating = false;
                             UpdateCardsWithTag(_currentPageIndex);
                         }
                         else if (shouldReload)
                         {
+                            _isUpdating = false;
                             UpdateCardsWithTag(_currentPageIndex);
                         }
                     }
@@ -311,6 +314,48 @@ namespace myTNB
                 //FAIL scenarios here...
             }
             return res;
+        }
+
+        /// <summary>
+        /// Gets the accounts to update.
+        /// </summary>
+        /// <returns>The accounts to update.</returns>
+        private List<string> GetAccountsToUpdate(int index)
+        {
+            var acctsToGetLatestDues = new List<string>();
+
+            if (_groupAccountList.Count <= 0)
+                return acctsToGetLatestDues;
+
+            if (index > -1 && index < _groupAccountList.Count)
+            {
+                var groupAccountList = _groupAccountList[index];
+
+                // cache updates
+                for (int i = 0; i < groupAccountList.Count; i++)
+                {
+                    if (i > -1 && i < groupAccountList.Count)
+                    {
+                        var account = groupAccountList[i];
+                        var acctCached = DataManager.DataManager.SharedInstance.GetDue(account.accNum);
+                        if (acctCached == null)
+                        {
+                            // get latest if not in cache
+                            acctsToGetLatestDues.Add(account.accNum);
+                        }
+                        else if (account.amountDue != acctCached.amountDue
+                               || string.Compare(account.accNickName, acctCached.accNickName) != 0)
+                        {
+                            // update nickname
+                            account.amountDue = acctCached.amountDue;
+                            account.accNickName = acctCached.accNickName;
+                            groupAccountList[i] = account;
+                        }
+                    }
+                }
+            }
+
+            return acctsToGetLatestDues;
         }
 
         /// <summary>
@@ -459,7 +504,8 @@ namespace myTNB
                 frame.Width = width - (padding * 1);
                 _viewContainer.Frame = frame;
                 _accountsCardScrollView.AddSubview(_viewContainer);
-                AddAccountsCardInContainerView(_viewContainer, i);
+                var accounts = GetAccountsToUpdate(i);
+                AddAccountsCardInContainerView(_viewContainer, i, accounts?.Count > 0);
             }
             _accountsCardScrollView.ContentSize = new CGSize(_accountsCardScrollView.Frame.Width * _groupAccountList.Count, _accountsCardScrollView.Frame.Height);
             AddPageControl();
@@ -496,7 +542,7 @@ namespace myTNB
                     if (view.Tag == tag)
                     {
                         RemoveAccountCardsFromView(view);
-                        AddAccountsCardInContainerView(view, tag);
+                        AddAccountsCardInContainerView(view, tag, _isUpdating);
                         break;
                     }
                 }
@@ -512,13 +558,12 @@ namespace myTNB
             }
         }
 
-        private void AddAccountsCardInContainerView(UIView containerView, int pageIndex)
+        private void AddAccountsCardInContainerView(UIView containerView, int pageIndex, bool isUpdating)
         {
             var groupAccountList = _groupAccountList[pageIndex];
             for (int i = 0; i < groupAccountList.Count; i++)
             {
                 DashboardHomeAccountCard _homeAccountCard = new DashboardHomeAccountCard(this, containerView, 68f * i);
-                _homeAccountCard.SetTag(i);
                 string iconName = "Accounts-Smart-Meter-Icon";
                 if (groupAccountList[i].IsReAccount)
                 {
@@ -531,9 +576,10 @@ namespace myTNB
                 _homeAccountCard.SetAccountIcon(iconName);
                 _homeAccountCard.SetNickname(groupAccountList[i].accNickName);
                 _homeAccountCard.SetAccountNo(groupAccountList[i].accNum);
-                containerView.AddSubview(_homeAccountCard.GetUI());
-                _homeAccountCard.AdjustLabels(groupAccountList[i]);
+                _homeAccountCard.IsUpdating = isUpdating;
                 _homeAccountCard.SetModel(groupAccountList[i]);
+                containerView.AddSubview(_homeAccountCard.GetUI());
+
             }
         }
 

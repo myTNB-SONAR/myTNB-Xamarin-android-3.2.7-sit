@@ -20,7 +20,6 @@ namespace myTNB
         string _strAccountIcon, _strNickname, _strAccountNo;
         nfloat _yLocation = 0f;
         DueAmountDataModel _model = new DueAmountDataModel();
-        int _tag;
 
         public bool IsUpdating { set; get; }
 
@@ -77,7 +76,7 @@ namespace myTNB
                 TextAlignment = UITextAlignment.Right
             };
 
-            OnUpdateWidget();
+            OnUpdateWidget(_model);
             CustomShimmerView shimmeringView = new CustomShimmerView();
             UIView viewShimmerParent = new UIView(new CGRect(0, 0, _accountCardView.Frame.Width
                 , _accountCardView.Frame.Height))
@@ -98,26 +97,23 @@ namespace myTNB
             }));
         }
 
-        private void OnUpdateWidget()
+        private void OnUpdateWidget(DueAmountDataModel model)
         {
             _accountIcon.BackgroundColor = IsUpdating ? MyTNBColor.PowderBlue : UIColor.Clear;
             _accountIcon.Layer.CornerRadius = IsUpdating ? _accountIcon.Frame.Width / 2 : 0;
+            _accountIcon.Image = IsUpdating ? null : UIImage.FromBundle(_strAccountIcon ?? string.Empty);
 
             _accountNickname.BackgroundColor = IsUpdating ? MyTNBColor.PowderBlue : UIColor.Clear;
             _accountNickname.Frame = IsUpdating ? new CGRect(_accountNickname.Frame.X, 16, _accountNickname.Frame.Width, 14)
                 : new CGRect(_accountNickname.Frame.X, 12, _accountNickname.Frame.Width, 20);
+            _accountNickname.Text = IsUpdating ? string.Empty : _strNickname ?? string.Empty;
 
             _accountNo.BackgroundColor = IsUpdating ? MyTNBColor.PowderBlue : UIColor.Clear;
             _accountNo.Frame = IsUpdating ? new CGRect(_accountNo.Frame.X, _accountNickname.Frame.GetMaxY() + 6, _accountNo.Frame.Width, 8)
                 : new CGRect(_accountNo.Frame.X, _accountNickname.Frame.GetMaxY(), _accountNo.Frame.Width, 20);
+            _accountNo.Text = IsUpdating ? string.Empty : _strAccountNo ?? string.Empty;
 
-            _amountDue.BackgroundColor = IsUpdating ? MyTNBColor.PowderBlue : UIColor.Clear;
-            _amountDue.Frame = IsUpdating ? new CGRect(_amountDue.Frame.X, 16, _amountDue.Frame.Width, 14)
-                : new CGRect(_amountDue.Frame.X, 12, _amountDue.Frame.Width, 20);
-
-            _dueDate.BackgroundColor = IsUpdating ? MyTNBColor.PowderBlue : UIColor.Clear;
-            _dueDate.Frame = IsUpdating ? new CGRect(_dueDate.Frame.X, _amountDue.Frame.GetMaxY() + 6, _dueDate.Frame.Width, 8)
-                : new CGRect(_dueDate.Frame.X, _amountDue.Frame.GetMaxY(), _dueDate.Frame.Width, 20);
+            AdjustLabels(model);
         }
 
         public UIView GetUI()
@@ -133,7 +129,7 @@ namespace myTNB
 
         public void SetModel(DueAmountDataModel model)
         {
-            _model = model ?? new DueAmountDataModel();
+            _model = model;
         }
 
         public void SetAccountIcon(string text)
@@ -156,48 +152,63 @@ namespace myTNB
             _accountCardView.AddGestureRecognizer(tapGesture);
         }
 
-        public void SetTag(int tag)
-        {
-            _tag = tag;
-        }
-
         public void AdjustLabels(DueAmountDataModel model)
         {
-            if (model != null)
+            if (IsUpdating)
             {
-                var amount = !model.IsReAccount ? model.amountDue : ChartHelper.UpdateValueForRE(model.amountDue);
-                _amountDue.AttributedText = TextHelper.CreateValuePairString(amount.ToString("N2", CultureInfo.InvariantCulture)
-                    , TNBGlobal.UNIT_CURRENCY + " ", true, MyTNBFont.MuseoSans14_500
-                    , MyTNBColor.TunaGrey(), MyTNBFont.MuseoSans14_500, MyTNBColor.TunaGrey());
+                _amountDue.Text = string.Empty;
+                _dueDate.Text = string.Empty;
+                _amountDue.BackgroundColor = MyTNBColor.PowderBlue;
+                _amountDue.Frame = new CGRect(_amountDue.Frame.X, 16, _amountDue.Frame.Width, 14);
+                _dueDate.BackgroundColor = MyTNBColor.PowderBlue;
+                _dueDate.Frame = new CGRect(_dueDate.Frame.X, _amountDue.Frame.GetMaxY() + 6, _dueDate.Frame.Width, 8);
 
-                var dateString = amount > 0 ? model.billDueDate : string.Empty;
-                if (string.IsNullOrEmpty(dateString) || dateString.ToUpper().Equals("N/A"))
+            }
+            else
+            {
+                _amountDue.BackgroundColor = UIColor.Clear;
+                _amountDue.Frame = new CGRect(_amountDue.Frame.X, 12, _amountDue.Frame.Width, 20);
+                _dueDate.BackgroundColor = UIColor.Clear;
+                _dueDate.Frame = new CGRect(_dueDate.Frame.X, _amountDue.Frame.GetMaxY(), _dueDate.Frame.Width, 20);
+
+                if (model != null)
                 {
-                    _dueDate.Text = "Dashboard_AllCleared".Translate();
-                    _dueDate.TextColor = MyTNBColor.CharcoalGrey;
-                    _amountDue.TextColor = MyTNBColor.Grey;
-                }
-                else
-                {
-                    string datePrefix = model.IsReAccount ? "Dashboard_GetBy".Translate() : "Dashboard_PayBy".Translate();
-                    if (model.IsReAccount && model.IncrementREDueDateByDays > 0)
+                    var amount = !model.IsReAccount ? model.amountDue : ChartHelper.UpdateValueForRE(model.amountDue);
+                    _amountDue.AttributedText = TextHelper.CreateValuePairString(amount.ToString("N2", CultureInfo.InvariantCulture)
+                        , TNBGlobal.UNIT_CURRENCY + " ", true, MyTNBFont.MuseoSans14_500
+                        , MyTNBColor.TunaGrey(), MyTNBFont.MuseoSans14_500, MyTNBColor.TunaGrey());
+                    var dateString = amount > 0 ? model.billDueDate : string.Empty;
+                    if (string.IsNullOrEmpty(dateString) || dateString.ToUpper().Equals("N/A"))
                     {
-                        try
-                        {
-                            var format = @"dd/MM/yyyy";
-                            DateTime due = DateTime.ParseExact(dateString, format, System.Globalization.CultureInfo.InvariantCulture);
-                            due = due.AddDays(model.IncrementREDueDateByDays);
-                            dateString = due.ToString(format);
-                        }
-                        catch (FormatException)
-                        {
-                            Debug.WriteLine("Unable to parse '{0}'", dateString);
-                        }
+                        _dueDate.Text = "Dashboard_AllCleared".Translate();
+                        _dueDate.TextColor = MyTNBColor.CharcoalGrey;
+                        _amountDue.TextColor = MyTNBColor.Grey;
                     }
-                    string formattedDate = DateHelper.GetFormattedDate(dateString, "dd MMM");
-                    _dueDate.AttributedText = TextHelper.CreateValuePairString(formattedDate
-                    , datePrefix + " ", true, MyTNBFont.MuseoSans12_300
-                    , MyTNBColor.CharcoalGrey, MyTNBFont.MuseoSans12_300, MyTNBColor.CharcoalGrey);
+                    else
+                    {
+                        _dueDate.TextColor = MyTNBColor.CharcoalGrey;
+                        _amountDue.TextColor = MyTNBColor.GreyishBrown;
+
+                        string datePrefix = model.IsReAccount ? "Dashboard_GetBy".Translate() : "Dashboard_PayBy".Translate();
+                        if (model.IsReAccount && model.IncrementREDueDateByDays > 0)
+                        {
+                            try
+                            {
+                                var format = @"dd/MM/yyyy";
+                                DateTime due = DateTime.ParseExact(dateString, format, System.Globalization.CultureInfo.InvariantCulture);
+                                due = due.AddDays(model.IncrementREDueDateByDays);
+                                dateString = due.ToString(format);
+                            }
+                            catch (FormatException)
+                            {
+                                Debug.WriteLine("Unable to parse '{0}'", dateString);
+                            }
+                        }
+                        string formattedDate = DateHelper.GetFormattedDate(dateString, "dd MMM");
+                        _dueDate.AttributedText = TextHelper.CreateValuePairString(formattedDate
+                        , datePrefix + " ", true, MyTNBFont.MuseoSans12_300
+                        , MyTNBColor.CharcoalGrey, MyTNBFont.MuseoSans12_300, MyTNBColor.CharcoalGrey);
+                    }
                 }
             }
         }
