@@ -27,5 +27,10 @@ namespace myTNB
 
         //PageName
         public static string PageName = "DashboardHome";
+
+        //Cell Index
+        public static int CellIndex_Accounts = 0;
+        public static int CellIndex_Services = 1;
+        public static int CellIndex_Help = 2;
     }
 }

@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using Foundation;
 using myTNB.Model;
+using myTNB.SitecoreCMS.Model;
 using UIKit;
 
 namespace myTNB
@@ -11,13 +13,16 @@ namespace myTNB
         private AccountsCardContentViewController _accountsCardContentViewController;
         private DashboardHomeHelper _dashboardHomeHelper = new DashboardHomeHelper();
         private ServicesResponseModel _services;
+        private List<HelpModel> _helpList;
 
-        public DashboardHomeDataSource(DashboardHomeViewController controller, AccountsCardContentViewController accountsCardContentViewController
-           , ServicesResponseModel services)
+        public DashboardHomeDataSource(DashboardHomeViewController controller
+            , AccountsCardContentViewController accountsCardContentViewController
+           , ServicesResponseModel services, List<HelpModel> helpList)
         {
             _controller = controller;
             _accountsCardContentViewController = accountsCardContentViewController;
             _services = services;
+            _helpList = helpList;
         }
 
         public override nint NumberOfSections(UITableView tableView)
@@ -50,7 +55,7 @@ namespace myTNB
             {
                 HelpTableViewCell cell = tableView.DequeueReusableCell(DashboardHomeConstants.Cell_Help) as HelpTableViewCell;
                 cell._titleLabel.Text = _controller.I18NDictionary[DashboardHomeConstants.I18N_NeedHelp];
-                cell.AddCards();
+                cell.AddCards(_helpList);
                 return cell;
             }
             return new UITableViewCell() { BackgroundColor = UIColor.Clear };

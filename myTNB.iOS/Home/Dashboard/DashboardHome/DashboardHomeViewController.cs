@@ -8,10 +8,10 @@ using myTNB.Dashboard;
 using myTNB.Home.Dashboard.DashboardHome;
 using myTNB.Model;
 using myTNB.PushNotification;
+using myTNB.SitecoreCMS.Model;
+using myTNB.SitecoreCMS.Services;
+using myTNB.SQLite.SQLiteDataManager;
 using UIKit;
-
-using CMSService = myTNB.Core.Sitecore.Services;
-using CMSModel = myTNB.Core.Sitecore.Model;
 
 namespace myTNB
 {
@@ -22,7 +22,9 @@ namespace myTNB
         DashboardHomeHelper _dashboardHomeHelper = new DashboardHomeHelper();
 
         private UITableView _homeTableView;
-        AccountsCardContentViewController _accountsCardContentViewController;
+        private AccountsCardContentViewController _accountsCardContentViewController;
+        private ServicesResponseModel _services;
+        private List<HelpModel> _helpList;
         private DashboardHomeHeader _dashboardHomeHeader;
         private nfloat _previousScrollOffset;
         private nfloat _imageGradientHeight;
@@ -48,7 +50,8 @@ namespace myTNB
             NSNotificationCenter.DefaultCenter.AddObserver((NSString)"NotificationDidChange", NotificationDidChange);
             NSNotificationCenter.DefaultCenter.AddObserver((NSString)"OnReceiveNotificationFromDashboard", NotificationDidChange);
             _imageGradientHeight = IsGradientImageRequired ? ImageViewGradientImage.Frame.Height : 0;
-
+            _services = new ServicesResponseModel();
+            _helpList = new List<HelpModel>();
             SetActionsDictionary();
             SetStatusBarNoOverlap();
             AddTableView();
@@ -159,7 +162,7 @@ namespace myTNB
         // </summary>
         private void InitializeTableView()
         {
-            _homeTableView.Source = new DashboardHomeDataSource(this, _accountsCardContentViewController, new ServicesResponseModel());
+            _homeTableView.Source = new DashboardHomeDataSource(this, _accountsCardContentViewController, _services, _helpList);
             _homeTableView.ReloadData();
         }
 
@@ -253,21 +256,16 @@ namespace myTNB
             ImageViewGradientImage.Frame = frame;
             _statusBarView.Hidden = !(scrollDiff > 0 && scrollDiff > _imageGradientHeight / 2);
         }
-
         private void OnGetServices()
         {
             InvokeInBackground(async () =>
             {
-                ServicesResponseModel services = await GetServices();
+                _services = await GetServices();
                 InvokeOnMainThread(() =>
                 {
-                    if (services != null && services.d != null && services.d.IsSuccess)
+                    if (_services != null && _services.d != null && _services.d.IsSuccess)
                     {
-                        _homeTableView.BeginUpdates();
-                        _homeTableView.Source = new DashboardHomeDataSource(this, _accountsCardContentViewController, services);
-                        NSIndexPath indexPath = NSIndexPath.Create(0, 1);
-                        _homeTableView.ReloadRows(new NSIndexPath[] { indexPath }, UITableViewRowAnimation.None);
-                        _homeTableView.EndUpdates();
+                        OnUpdateCell(DashboardHomeConstants.CellIndex_Services);
                     }
                     else
                     {
@@ -281,9 +279,12 @@ namespace myTNB
         {
             InvokeInBackground(async () =>
             {
-                CMSService.GetItemsService iService = new CMSService.GetItemsService(TNBGlobal.OS
+                Debug.WriteLine("OnGetHelpInfo 0");
+                GetItemsService iService = new GetItemsService(TNBGlobal.OS
                     , string.Empty, TNBGlobal.SITECORE_URL, TNBGlobal.DEFAULT_LANGUAGE);
-                CMSModel.HelpTimeStampResponseModel timeStamp = iService.GetHelpTimestampItem();
+                Debug.WriteLine("OnGetHelpInfo 1");
+                HelpTimeStampResponseModel timeStamp = iService.GetHelpTimestampItem();
+                Debug.WriteLine("OnGetHelpInfo 2");
                 bool needsUpdate = true;
                 if (timeStamp != null && timeStamp.Data != null && timeStamp.Data.Count > 0 && timeStamp.Data[0] != null
                     && !string.IsNullOrEmpty(timeStamp.Data[0].Timestamp))
@@ -308,23 +309,29 @@ namespace myTNB
                         }
                     }
                 }
-
+                else
+                {
+                    //Todo: Handle fail scenario
+                }
+                
                 if (needsUpdate)
                 {
-                   /* string faqItems = iService.GetFAQsItem();
-                    FAQsResponseModel faqResponse = JsonConvert.DeserializeObject<FAQsResponseModel>(faqItems);
-                    if (faqResponse != null && faqResponse.Status.Equals("Success")
-                        && faqResponse.Data != null && faqResponse.Data.Count > 0)
+                    HelpResponseModel helpItems = iService.GetHelpItems();
+                    if (helpItems != null && helpItems.Data != null && helpItems.Data.Count > 0)
                     {
-                        FAQEntity wsManager = new FAQEntity();
+                        HelpEntity wsManager = new HelpEntity();
                         wsManager.DeleteTable();
                         wsManager.CreateTable();
-                        wsManager.InsertListOfItems(faqResponse.Data);
-                    }*/
+                        wsManager.InsertListOfItems(helpItems.Data);
+                        List<HelpModel> test = wsManager.GetAllItems();
+                    }
                 }
 
-
-
+                InvokeOnMainThread(() =>
+                {
+                    _helpList = new HelpEntity().GetAllItems();
+                    OnUpdateCell(DashboardHomeConstants.CellIndex_Help);
+                });
             });
         }
 
@@ -368,6 +375,15 @@ namespace myTNB
         {
             DashboardHomeActions actions = new DashboardHomeActions(this);
             _servicesActionDictionary = actions.GetActionsDictionary();
+        }
+
+        private void OnUpdateCell(int row)
+        {
+            _homeTableView.BeginUpdates();
+            _homeTableView.Source = new DashboardHomeDataSource(this, _accountsCardContentViewController, _services, _helpList);
+            NSIndexPath indexPath = NSIndexPath.Create(0, row);
+            _homeTableView.ReloadRows(new NSIndexPath[] { indexPath }, UITableViewRowAnimation.None);
+            _homeTableView.EndUpdates();
         }
     }
 }

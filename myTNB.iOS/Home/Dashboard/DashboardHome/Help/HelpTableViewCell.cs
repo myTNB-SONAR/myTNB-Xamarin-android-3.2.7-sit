@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using CoreGraphics;
+using myTNB.SitecoreCMS.Model;
 using UIKit;
 
 namespace myTNB
@@ -45,28 +47,22 @@ namespace myTNB
             SelectionStyle = UITableViewCellSelectionStyle.None;
         }
 
-        public void AddCards(bool hasData = false)
+        public void AddCards(List<HelpModel> helpList)
         {
             for (int i = _scrollView.Subviews.Length; i-- > 0;)
             {
                 _scrollView.Subviews[i].RemoveFromSuperview();
             }
 
+            bool hasData = helpList != null;
+
             if (hasData)
             {
-                AddContentData();
+                AddContentData(helpList);
             }
             else
             {
                 AddShimmer();
-                InvokeInBackground(() =>
-                {
-                    System.Threading.Thread.Sleep(8000);
-                    InvokeOnMainThread(() =>
-                    {
-                        AddCards(true);
-                    });
-                });
             }
         }
 
@@ -94,18 +90,19 @@ namespace myTNB
             _scrollView.ContentSize = new CGSize(xLoc, cardHeight);
         }
 
-        private void AddContentData()
+        private void AddContentData(List<HelpModel> helpList)
         {
-            List<string> helpList = new List<string>() { "How do I reset my password?"
-                , "Learn how to read your meter.", "Check out how you can apply for AutoPay."
-                , "How can I contact TNB?","How do i pay my bills through myTNB app?"
-                , "What’s new on this app?"
-            };
             nfloat xLoc = 16f;
             _imgIndex = -1;
             for (int i = 0; i < helpList.Count; i++)
             {
+                Debug.WriteLine("Index: " + i);
                 UIView helpCardView = new UIView(new CGRect(xLoc, 0, cardWidth, cardHeight)) { ClipsToBounds = true };
+                //string helpKey = helpList[i].TargetItem;
+                helpCardView.AddGestureRecognizer(new UITapGestureRecognizer(() =>
+                {
+                    //ViewHelper.GoToFAQScreenWithId(helpKey);
+                }));
                 UIImageView imgView = new UIImageView(new CGRect(0, 0, cardWidth, cardHeight))
                 {
                     Image = UIImage.FromBundle(string.Format("Help-Background-{0}", GetBackgroundImage(i)))
@@ -118,7 +115,7 @@ namespace myTNB
                     TextAlignment = UITextAlignment.Left,
                     Lines = 0,
                     LineBreakMode = UILineBreakMode.WordWrap,
-                    Text = helpList[i]
+                    Text = helpList[i]?.Title ?? string.Empty
                 };
                 helpCardView.AddSubviews(new UIView[] { imgView, lblHelp });
                 _scrollView.Add(helpCardView);

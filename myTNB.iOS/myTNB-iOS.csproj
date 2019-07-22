@@ -239,9 +239,6 @@
     <Reference Include="Xamarin.Facebook.Shimmer.iOS">
       <HintPath>..\packages\Xamarin.Facebook.Shimmer.1.0.0\lib\xamarinios10\Xamarin.Facebook.Shimmer.iOS.dll</HintPath>
     </Reference>
-    <Reference Include="myTNB.Core">
-      <HintPath>..\packages\myTNB.Core\myTNB.Core.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Contents.json" />
@@ -1306,6 +1303,7 @@
     <Folder Include="Assets.xcassets\Help-Background-0.imageset\" />
     <Folder Include="Model\Services\" />
     <Folder Include="Assets.xcassets\SMR-Icon.imageset\" />
+    <Folder Include="Sitecore CMS\Model\Help\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -2027,6 +2025,9 @@
     <Compile Include="Home\Dashboard\DashboardHome\Accounts\AccountsCardContentViewController.designer.cs">
       <DependentUpon>AccountsCardContentViewController.cs</DependentUpon>
     </Compile>
+    <Compile Include="Sitecore CMS\Service\HelpService.cs" />
+    <Compile Include="Sitecore CMS\Model\Help\HelpModel.cs" />
+    <Compile Include="SQLite\SQLite Data Manager\HelpEntity.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />
