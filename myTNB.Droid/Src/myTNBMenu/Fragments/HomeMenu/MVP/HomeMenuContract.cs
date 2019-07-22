@@ -20,6 +20,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             Constants.GREETING GetGreeting();
             string GetAccountDisplay();
             void LoadAccounts();
+            void LoadBatchSummaryAccounts();
         }
 
         public interface IHomeMenuService

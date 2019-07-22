@@ -214,6 +214,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
             accountsAdapter = new AccountsRecyclerViewAdapter(this);
             accountsRecyclerView.AddOnScrollListener(new AccountsRecyclerViewOnScrollListener(linearLayoutManager, indicatorContainer));
+
+            SnapHelper snapHelper = new LinearSnapHelper();
+            snapHelper.AttachToRecyclerView(accountsRecyclerView);
         }
 
         public override void OnResume()

@@ -5,6 +5,7 @@ using Android.Support.V7.Widget;
 using Android.Views;
 using Android.Widget;
 using myTNB_Android.Src.Database.Model;
+using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Helper;
 using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP;
 using myTNB_Android.Src.SummaryDashBoard.Models;
 using myTNB_Android.Src.Utils;
@@ -85,9 +86,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
                 {
                     if (cardModel.AccountNumber == summaryDashBoardDetails.AccNumber)
                     {
+                        int accountType = Int32.Parse(summaryDashBoardDetails.AccType);
                         cardModel.AccountName = summaryDashBoardDetails.AccName;
-                        cardModel.BillDueAmount = summaryDashBoardDetails.AmountDue;
-                        cardModel.BillDueNote = summaryDashBoardDetails.BillDueDate;
+                        cardModel.BillDueAmount = AccountModelFormatter.GetFormatAmount(summaryDashBoardDetails.AmountDue);
+                        cardModel.BillDueNote = AccountModelFormatter.GetBillDueNote(accountType,
+                            summaryDashBoardDetails.AmountDue, summaryDashBoardDetails.BillDueDate);
+                        cardModel.AccountType = accountType;
                     }
                 }
             }
@@ -102,6 +106,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
             foreach (SummaryDashBoardDetails summaryDashBoardDetails in accountList)
             {
                 model = new AccountCardModel();
+                //model.AccountType = Int32.Parse(summaryDashBoardDetails.AccType);
                 model.AccountName = summaryDashBoardDetails.AccName;
                 model.AccountNumber = summaryDashBoardDetails.AccNumber;
                 model.BillDueAmount = summaryDashBoardDetails.AmountDue;
@@ -131,7 +136,18 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
             List<AccountCardModel> accountCardModel = cardList.ToArray()[position];
             foreach (AccountCardModel cardModel in accountCardModel)
             {
-
+                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MatchParent, LinearLayout.LayoutParams.WrapContent);
+                if (position == 0)
+                {
+                    layoutParams.LeftMargin = 32;
+                    layoutParams.RightMargin = 16;
+                    viewHolder.linearLayout.LayoutParameters = layoutParams;
+                }
+                else
+                {
+                    layoutParams.RightMargin = 16;
+                    viewHolder.linearLayout.LayoutParameters = layoutParams;
+                }
                 ShimmerLoadingLayout.GetInstance().AddViewWithShimmer(parentGroup.Context,viewHolder.linearLayout,CreateAccountCard(cardModel),
                     (CoordinatorLayout)LayoutInflater.From(parentGroup.Context).Inflate(Resource.Layout.account_card_shimmer_layout, parentGroup, false),
                     () =>
@@ -141,9 +157,28 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
             }
         }
 
+        private int GetAccountIcon(int AccountType)
+        {
+            int iconResource;
+            switch (AccountType)
+            {
+                case 1:
+                    iconResource = Resource.Drawable.ic_display_normal_meter;
+                    break;
+                case 2:
+                    iconResource = Resource.Drawable.ic_display_r_eleaf;
+                    break;
+                default:
+                    iconResource = Resource.Drawable.ic_display_smart_meter;
+                    break;
+            }
+            return iconResource;
+        }
+
         private CoordinatorLayout CreateAccountCard(AccountCardModel cardModel)
         {
             CoordinatorLayout card = (CoordinatorLayout)LayoutInflater.From(parentGroup.Context).Inflate(Resource.Layout.card_layout, parentGroup, false);
+            ImageView accountTypeIcon = card.FindViewById(Resource.Id.accountIcon) as ImageView;
             TextView accountName = card.FindViewById(Resource.Id.accountName) as TextView;
             TextView accountNumber = card.FindViewById(Resource.Id.accountNumber) as TextView;
             TextView billDueAmount = card.FindViewById(Resource.Id.billDueAmount) as TextView;
@@ -159,6 +194,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
             accountNumber.Text = cardModel.AccountNumber;
             billDueAmount.Text = cardModel.BillDueAmount;
             billDueNote.Text = cardModel.BillDueNote;
+
+            accountTypeIcon.SetImageResource(GetAccountIcon(cardModel.AccountType));
 
             TextViewUtils.SetMuseoSans500Typeface(accountName, billDueAmount);
             TextViewUtils.SetMuseoSans300Typeface(accountNumber, billDueNote);

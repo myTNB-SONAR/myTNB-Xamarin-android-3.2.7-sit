@@ -1284,6 +1284,8 @@
     <AndroidResource Include="Resources\drawable-xxhdpi\ic_display_normal_meter.png" />
     <AndroidResource Include="Resources\drawable-xxhdpi\ic_display_r_eleaf.png" />
     <AndroidResource Include="Resources\drawable-xxhdpi\smr_48_x_48.png" />
+    <Compile Include="Src\myTNBMenu\Fragments\HomeMenu\Helper\AccountModelFormatter.cs" />
+    <Compile Include="Src\Base\Helper\ModelFormatter.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -1642,6 +1644,8 @@
     <Folder Include="Src\myTNBMenu\Fragments\HomeMenu\Listener\" />
     <Folder Include="Src\myTNBMenu\Fragments\HomeMenu\Models\" />
     <Folder Include="Src\myTNBMenu\Fragments\HomeMenu\Service\" />
+    <Folder Include="Src\myTNBMenu\Fragments\HomeMenu\Helper\" />
+    <Folder Include="Src\Base\Helper\" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\GradientStatusBar.xml" />

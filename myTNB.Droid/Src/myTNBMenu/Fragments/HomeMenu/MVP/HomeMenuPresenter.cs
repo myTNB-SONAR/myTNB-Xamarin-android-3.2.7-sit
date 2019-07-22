@@ -15,6 +15,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         HomeMenuContract.IHomeMenuView mView;
         HomeMenuContract.IHomeMenuService serviceApi;
         private Constants.GREETING greeting;
+        private IEnumerable<IGrouping<int, string>> batchAccountList;
         private List<SummaryDashBoardDetails> summaryDashboardInfoList;
         public HomeMenuPresenter(HomeMenuContract.IHomeMenuView view)
         {
@@ -134,36 +135,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     accountList.Add(customerBillingAccountList[i].AccNum);
                 }
             }
-            //if (customerBillingAccountList.Count > 5)
-            //{
-            //    for (int i = 0; i < customerBillingAccountList.Count; i++)
-            //    {
-            //        accountList.Add(customerBillingAccountList[i].AccNum);
-            //    }
-            //}
-            //else
-            //{
-            //    for (int i = 0; i < customerBillingAccountList.Count; i++)
-            //    {
-            //        accountList.Add(customerBillingAccountList[i].AccNum);
-            //    }
-            //}
 
-            //for (int i=0; i< customerBillingAccountList.Count; i++)
-            //{
-            //    accountList.Add(customerBillingAccountList[i].AccNum);
-            //}
-
-            //if (accountList.Count)
-            //{
-
-            //}
-            var group = accountList.Select((x, index) => new { x, index })
+            batchAccountList = accountList.Select((x, index) => new { x, index })
                    .GroupBy(x => x.index / 5, y => y.x);
 
-            foreach (var block in group)
+            //LoadSummaryDetails(batchAccountList.ToList()[0].ToList());
+            for (int i = 0; i < batchAccountList.ToList().Count; i++)
             {
-                LoadSummaryDetails(block.ToList());
+                LoadSummaryDetails(batchAccountList.ToList()[i].ToList());
             }
         }
 
@@ -187,6 +166,17 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             this.mView.SetAccountListCards(summaryDashboardInfoList);
             summaryDashboardInfoList.Clear();
             BatchLoadSummaryDetails(customerBillingAccountList);
+        }
+
+        public void LoadBatchSummaryAccounts()
+        {
+            if (batchAccountList.ToList().Count > 1)
+            {
+                for (int i = 1; i < batchAccountList.ToList().Count; i++)
+                {
+                    LoadSummaryDetails(batchAccountList.ToList()[i].ToList());
+                }
+            }
         }
     }
 }
