@@ -10,7 +10,7 @@
         {
             get
             {
-                return ErrorCode == "7002";
+                return ErrorCode == "7200";
             }
         }
     }

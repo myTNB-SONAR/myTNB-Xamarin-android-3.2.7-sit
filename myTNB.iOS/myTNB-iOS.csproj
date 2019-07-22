@@ -1585,7 +1585,6 @@
     <Compile Include="Model\GetCustomerBillingAccountList\CustomerAccountRecordModel.cs" />
     <Compile Include="Model\GetCustomerBillingAccountList\CustomerAccountResponseModel.cs" />
     <Compile Include="Model\GetAccountUsageHistoryForGraph\SegmentDetailsModel.cs" />
-    <Compile Include="Enums\APIVersionEnum.cs" />
     <Compile Include="Home\More\My Account\MyAccountViewController.cs" />
     <Compile Include="Home\More\My Account\MyAccountViewController.designer.cs">
       <DependentUpon>MyAccountViewController.cs</DependentUpon>
@@ -2025,6 +2024,7 @@
     <Compile Include="Model\Base Model\BaseModelV2.cs" />
     <Compile Include="Home\Dashboard\DashboardHome\Services\ServicesConstants.cs" />
     <Compile Include="Home\Dashboard\DashboardHome\DashboardHomeActions.cs" />
+    <Compile Include="Data Manager\ServiceEnum.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />

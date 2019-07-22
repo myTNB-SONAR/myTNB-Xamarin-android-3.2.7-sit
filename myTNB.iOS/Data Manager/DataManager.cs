@@ -121,6 +121,9 @@ namespace myTNB.DataManager
         public InstallationDetailDataModel InstallationDetails = new InstallationDetailDataModel();
         public bool AccountIsActive = false;
 
+        //Language
+        public string LANGUAGE = "EN";
+
         public static DataManager SharedInstance
         {
             get

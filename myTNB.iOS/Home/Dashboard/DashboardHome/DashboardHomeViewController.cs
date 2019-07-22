@@ -294,16 +294,21 @@ namespace myTNB
         {
             InvokeInBackground(async () =>
             {
-                //Todo: Remove sleep.
-                System.Threading.Thread.Sleep(5000);
                 ServicesResponseModel services = await GetServices();
                 InvokeOnMainThread(() =>
                 {
-                    _homeTableView.BeginUpdates();
-                    _homeTableView.Source = new DashboardHomeDataSource(this, _accountsPageViewController, _headerView, services);
-                    NSIndexPath indexPath = NSIndexPath.Create(0, 1);
-                    _homeTableView.ReloadRows(new NSIndexPath[] { indexPath }, UITableViewRowAnimation.None);
-                    _homeTableView.EndUpdates();
+                    if (services != null && services.d != null && services.d.IsSuccess)
+                    {
+                        _homeTableView.BeginUpdates();
+                        _homeTableView.Source = new DashboardHomeDataSource(this, _accountsPageViewController, _headerView, services);
+                        NSIndexPath indexPath = NSIndexPath.Create(0, 1);
+                        _homeTableView.ReloadRows(new NSIndexPath[] { indexPath }, UITableViewRowAnimation.None);
+                        _homeTableView.EndUpdates();
+                    }
+                    else
+                    {
+                        //Todo: Handle fail scenario
+                    }
                 });
             });
         }
@@ -311,40 +316,23 @@ namespace myTNB
         private async Task<ServicesResponseModel> GetServices()
         {
             ServiceManager serviceManager = new ServiceManager();
-            ServicesResponseModel response = serviceManager.OnExecuteAPIV2<ServicesResponseModel>("services", new object());
-
-            //tempdata
-            response = new ServicesResponseModel();
-            response.d = new HomeServicesModel();
-            response.d.ErrorCode = "7002";
-            response.d.data = new List<ServiceItemModel>() {
-                new ServiceItemModel()
-                {
-                    ServiceCategoryId = "1001",
-                    ServiceCategoryName = "Apply for Self Meter Reading"
-                },
-                new ServiceItemModel()
-                {
-                    ServiceCategoryId = "1002",
-                    ServiceCategoryName = "Check Status"
-                },
-                new ServiceItemModel()
-                {
-                    ServiceCategoryId = "1003",
-                    ServiceCategoryName = "Give Us Feedback"
-                },
-                new ServiceItemModel()
-                {
-                    ServiceCategoryId = "1004",
-                    ServiceCategoryName = "Set Appointments"
-                },
-                new ServiceItemModel()
-                {
-                    ServiceCategoryId = "1005",
-                    ServiceCategoryName = "Apply for AutoPay"
-                }
-
+            object usrInf = new
+            {
+                eid = DataManager.DataManager.SharedInstance.User.Email,
+                sspuid = DataManager.DataManager.SharedInstance.User.UserID,
+                did = DataManager.DataManager.SharedInstance.UDID,
+                ft = DataManager.DataManager.SharedInstance.FCMToken,
+                lang = DataManager.DataManager.SharedInstance.LANGUAGE,
+                sec_auth_k1 = TNBGlobal.API_KEY_ID,
+                sec_auth_k2 = string.Empty,
+                ses_param1 = string.Empty,
+                ses_param2 = string.Empty
             };
+            object request = new
+            {
+                usrInf = usrInf
+            };
+            ServicesResponseModel response = serviceManager.OnExecuteAPIV6<ServicesResponseModel>("GetServices", request);
             return response;
         }
 
