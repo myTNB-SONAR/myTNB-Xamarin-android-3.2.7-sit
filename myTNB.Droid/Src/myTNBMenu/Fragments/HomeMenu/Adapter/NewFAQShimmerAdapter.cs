@@ -3,7 +3,7 @@ using Android.Text;
 using Android.Views;
 using Android.Widget;
 using Facebook.Shimmer;
-using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Models;
+using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP.Models;
 using myTNB_Android.Src.Utils;
 using System.Collections.Generic;
 
@@ -25,7 +25,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
             else
             {
                 this.faqList = new List<NewFAQ>();
-                this.faqList = data;
+                this.faqList.AddRange(data);
             }
 		}
 

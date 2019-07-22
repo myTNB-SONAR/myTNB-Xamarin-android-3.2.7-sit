@@ -2,7 +2,7 @@
 using Android.Views;
 using Android.Widget;
 using Facebook.Shimmer;
-using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Models;
+using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP.Models;
 using myTNB_Android.Src.Utils;
 using System.Collections.Generic;
 
@@ -24,7 +24,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
             else
             {
                 this.shimmerList = new List<MyService>();
-                this.shimmerList = data;
+                this.shimmerList.AddRange(data);
             }
         }
 

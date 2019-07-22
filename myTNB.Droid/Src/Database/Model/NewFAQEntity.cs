@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Models;
+using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP.Models;
 using SQLite;
 
 namespace myTNB_Android.Src.Database.Model
@@ -14,14 +14,14 @@ namespace myTNB_Android.Src.Database.Model
         [Column("Image")]
         public string Image { set; get; }
 
-        [Column("BgStartColor")]
-        public string BgStartColor { set; get; }
+        [Column("BGStartColor")]
+        public string BGStartColor { set; get; }
 
-        [Column("BgEndColor")]
-        public string BgEndColor { set; get; }
+        [Column("BGEndColor")]
+        public string BGEndColor { set; get; }
 
-        [Column("BgDirection")]
-        public string BgDirection { set; get; }
+        [Column("BGDirection")]
+        public string BGDirection { set; get; }
 
         [Column("Title")]
         public string Title { set; get; }
@@ -38,8 +38,11 @@ namespace myTNB_Android.Src.Database.Model
         [Column("CTA")]
         public string CTA { set; get; }
 
-        [Column("Tag")]
-        public string Tag { set; get; }
+        [Column("Tags")]
+        public string Tags { set; get; }
+
+        [Column("TargetItem")]
+        public string TargetItem { set; get; }
 
         public static int CreateTable()
         {
@@ -59,15 +62,16 @@ namespace myTNB_Android.Src.Database.Model
             {
                 ID = newFAQ.ID,
                 Image = newFAQ.Image,
-                BgStartColor = newFAQ.BgStartColor,
-                BgEndColor = newFAQ.BgEndColor,
-                BgDirection = newFAQ.BgDirection,
+                BGStartColor = newFAQ.BGStartColor,
+                BGEndColor = newFAQ.BGEndColor,
+                BGDirection = newFAQ.BGDirection,
                 Title = newFAQ.Title,
                 Description = newFAQ.Description,
                 TopicBodyTitle = newFAQ.TopicBodyTitle,
                 TopicBodyContent = newFAQ.TopicBodyContent,
                 CTA = newFAQ.CTA,
-                Tag = newFAQ.Tag,
+                Tags = newFAQ.Tags,
+                TargetItem = newFAQ.TargetItem
             };
 
             int rows = db.InsertOrReplace(newRecord);

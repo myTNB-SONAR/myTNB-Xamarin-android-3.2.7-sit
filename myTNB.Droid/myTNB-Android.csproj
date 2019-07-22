@@ -1167,7 +1167,6 @@
     <AndroidResource Include="Resources\drawable-xxhdpi\search_blue.png" />
     <AndroidResource Include="Resources\drawable-xxxhdpi\search_blue.png" />
     <Compile Include="Src\myTNBMenu\Fragments\HomeMenu\Adapter\MyServiceShimmerAdapter.cs" />
-    <Compile Include="Src\myTNBMenu\Fragments\HomeMenu\Models\MyService.cs" />
     <AndroidResource Include="Resources\drawable-hdpi\ic_menu_reward_toggled.png" />
     <AndroidResource Include="Resources\drawable-mdpi\ic_menu_reward_toggled.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\ic_menu_reward_toggled.png" />
@@ -1212,7 +1211,6 @@
     <AndroidResource Include="Resources\drawable-xxxhdpi\ic_menu_promotion.png" />
     <AndroidResource Include="Resources\layout\NewFAQShimmerComponentView.axml" />
     <Compile Include="Src\myTNBMenu\Fragments\HomeMenu\Adapter\NewFAQAdapter.cs" />
-    <Compile Include="Src\myTNBMenu\Fragments\HomeMenu\Models\NewFAQ.cs" />
     <Compile Include="Src\myTNBMenu\Fragments\HomeMenu\Adapter\NewFAQShimmerAdapter.cs" />
     <AndroidResource Include="Resources\drawable\dashboard_home_bg.xml" />
     <AndroidResource Include="Resources\drawable-hdpi\fluid_background.png" />
@@ -1267,6 +1265,12 @@
     <Compile Include="Src\myTNBMenu\Fragments\HomeMenu\MVP\HomeMenuFragment.cs" />
     <Compile Include="Src\Database\Model\MyServiceEntity.cs" />
     <Compile Include="Src\Database\Model\NewFAQEntity.cs" />
+    <Compile Include="Src\myTNBMenu\Fragments\HomeMenu\Api\IGetServiceApi.cs" />
+    <Compile Include="Src\Base\Models\UserInterface.cs" />
+    <Compile Include="Src\myTNBMenu\Fragments\HomeMenu\MVP\Models\GetServicesResponse.cs" />
+    <Compile Include="Src\myTNBMenu\Fragments\HomeMenu\MVP\Models\MyService.cs" />
+    <Compile Include="Src\myTNBMenu\Fragments\HomeMenu\MVP\Models\NewFAQ.cs" />
+    <Compile Include="Src\myTNBMenu\Fragments\HomeMenu\MVP\Requests\MyServiceRequest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -1623,8 +1627,9 @@
     <Folder Include="Src\myTNBMenu\Fragments\HomeMenu\MVP\" />
     <Folder Include="Src\myTNBMenu\Fragments\HomeMenu\Adapter\" />
     <Folder Include="Src\myTNBMenu\Fragments\HomeMenu\Listener\" />
-    <Folder Include="Src\myTNBMenu\Fragments\HomeMenu\Models\" />
     <Folder Include="Src\myTNBMenu\Fragments\HomeMenu\Api\" />
+    <Folder Include="Src\myTNBMenu\Fragments\HomeMenu\MVP\Models\" />
+    <Folder Include="Src\myTNBMenu\Fragments\HomeMenu\MVP\Requests\" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\GradientStatusBar.xml" />

@@ -1,0 +1,15 @@
+﻿using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP.Models;
+using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP.Requests;
+using Refit;
+using System.Threading;
+using System.Threading.Tasks;
+
+namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Api
+{
+	public interface IGetServiceApi
+    {
+		[Headers("Content-Type:application/json; charset=utf-8")]
+		[Post("/v6/mytnbappws.asmx/GetServices")]
+		Task<GetServicesResponse> GetService([Body] GetServiceRequests request, CancellationToken cancellationToken);
+	}
+}

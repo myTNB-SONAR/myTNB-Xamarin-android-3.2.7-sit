@@ -1,8 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
+using myTNB_Android.Src.Base.Models;
 using myTNB_Android.Src.Database.Model;
-using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Models;
+using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Api;
+using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP.Models;
+using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP.Requests;
+using myTNB_Android.Src.Utils;
+using Refit;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 {
@@ -15,7 +24,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
         private static bool FirstTimeNewFAQInitiate = true;
 
-        System.Timers.Timer timer;
+        CancellationTokenSource cts;
 
         public HomeMenuPresenter(HomeMenuContract.IView mView)
         {
@@ -40,6 +49,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             {
                 ReadMyServiceFromCache();
             }
+        }
+
+        public async Task RetryMyService()
+        {
+            await GetMyServiceService();
         }
 
         public async Task InitiateNewFAQ()
@@ -67,6 +81,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     serviceCategoryName = cachedDBList[i].serviceCategoryName
                 });
             }
+            cachedList.Sort((a, b) => {
+                int bValue = int.Parse(b.ServiceCategoryId);
+                int aValue = int.Parse(a.ServiceCategoryId);
+                return aValue.CompareTo(bValue);
+            });
             this.mView.SetMyServiceResult(cachedList);
         }
 
@@ -81,15 +100,16 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 {
                     ID = cachedDBList[i].ID,
                     Image = cachedDBList[i].Image,
-                    BgStartColor = cachedDBList[i].BgStartColor,
-                    BgEndColor = cachedDBList[i].BgEndColor,
-                    BgDirection = cachedDBList[i].BgDirection,
+                    BGStartColor = cachedDBList[i].BGStartColor,
+                    BGEndColor = cachedDBList[i].BGEndColor,
+                    BGDirection = cachedDBList[i].BGDirection,
                     Title = cachedDBList[i].Title,
                     Description = cachedDBList[i].Description,
                     TopicBodyTitle = cachedDBList[i].TopicBodyTitle,
                     TopicBodyContent = cachedDBList[i].TopicBodyContent,
                     CTA = cachedDBList[i].CTA,
-                    Tag = cachedDBList[i].Tag,
+                    Tags = cachedDBList[i].Tags,
+                    TargetItem = cachedDBList[i].TargetItem
                 });
             }
             this.mView.SetNewFAQResult(cachedList);
@@ -99,68 +119,83 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         {
             try
             {
-                await Task.Delay(3000);
-                MyServiceEntity.RemoveAll();
-                List<MyService> dummyList = new List<MyService>();
-                MyService newItem = new MyService();
-                for (int i = 0; i < 5; i++)
+                cts = new CancellationTokenSource();
+                ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
+#if DEBUG
+                var httpClient = new HttpClient(new HttpLoggingHandler()) { BaseAddress = new Uri("http://10.215.128.191:89") };
+                var getServiceAPI = RestService.For<IGetServiceApi>(httpClient);
+
+#else
+                var getServiceAPI = RestService.For<IGetServiceApi>(Constants.SERVER_URL.END_POINT);
+#endif
+                UserInterface currentUsrInf = new UserInterface()
                 {
-                    if (i == 0)
+                    eid = UserEntity.GetActive().Email,
+                    sspuid = UserEntity.GetActive().UserID,
+                    did = this.mView.GetDeviceId(),
+                    ft = FirebaseTokenEntity.GetLatest().FBToken,
+                    lang = Constants.DEFAULT_LANG.ToUpper(),
+                    sec_auth_k1 = Constants.APP_CONFIG.API_KEY_ID,
+                    sec_auth_k2 = "",
+                    ses_param1 = "",
+                    ses_param2 = ""
+                };
+
+                GetServicesResponse getServicesResponse = await getServiceAPI.GetService(new GetServiceRequests()
+                {
+                    usrInf = currentUsrInf
+                }, cts.Token);
+
+
+                if (getServicesResponse.Data.ErrorCode == "7200" && getServicesResponse.Data.Data.Count > 0)
+                {
+                    MyServiceEntity.RemoveAll();
+                    List<MyService> fetchList = new List<MyService>();
+                    foreach(MyService service in getServicesResponse.Data.Data)
                     {
-                        newItem = new MyService()
-                        {
-                            ServiceCategoryId = "0",
-                            serviceCategoryName = "Apply for Self<br/>Meter Reading"
-                        };
+                        fetchList.Add(service);
+                        MyServiceEntity.InsertOrReplace(service);
                     }
-                    else if (i == 1)
-                    {
-                        newItem = new MyService()
-                        {
-                            ServiceCategoryId = "1",
-                            serviceCategoryName = "Check<br/>Status"
-                        };
-                    }
-                    else if (i == 2)
-                    {
-                        newItem = new MyService()
-                        {
-                            ServiceCategoryId = "2",
-                            serviceCategoryName = "Give Us<br/>Feedback"
-                        };
-                    }
-                    else if (i == 3)
-                    {
-                        newItem = new MyService()
-                        {
-                            ServiceCategoryId = "3",
-                            serviceCategoryName = "Set<br/>Appointments"
-                        };
-                    }
-                    else if (i == 4)
-                    {
-                        newItem = new MyService()
-                        {
-                            ServiceCategoryId = "4",
-                            serviceCategoryName = "Apply for<br/>AutoPay"
-                        };
-                    }
-                    dummyList.Add(newItem);
-                    MyServiceEntity.InsertOrReplace(newItem);
+                    fetchList.Sort((a, b) => {
+                        int bValue = int.Parse(b.ServiceCategoryId);
+                        int aValue = int.Parse(a.ServiceCategoryId);
+                        return aValue.CompareTo(bValue);
+                    });
+                    this.mView.SetMyServiceResult(fetchList);
                 }
-
-                this.mView.SetMyServiceResult(dummyList);
-
+                else
+                {
+                    ReadMyServiceFromCache();
+                    if (int.Parse(getServicesResponse.Data.ErrorCode) >= 8000 && int.Parse(getServicesResponse.Data.ErrorCode) < 9000)
+                    {
+                        this.mView.ShowMyServiceRetryOptions(getServicesResponse.Data.DisplayMessage);
+                    }
+                    else
+                    {
+                        this.mView.ShowMyServiceRetryOptions(null);
+                    }
+                }
+                
                 FirstTimeMyServiceInitiate = false;
 
             }
-            catch (TaskCanceledException timeoutEx)
+            catch (System.OperationCanceledException cancelledException)
             {
-                System.Diagnostics.Debug.WriteLine(timeoutEx);
+                ReadMyServiceFromCache();
+                this.mView.ShowMyServiceRetryOptions(null);
+                Utility.LoggingNonFatalError(cancelledException);
             }
-            catch (Exception ex)
+            catch (ApiException apiException)
             {
-                System.Diagnostics.Debug.WriteLine("Error {0}", ex.Message);
+                ReadMyServiceFromCache();
+                this.mView.ShowMyServiceRetryOptions(null);
+                Utility.LoggingNonFatalError(apiException);
+            }
+            catch (Exception unknownException)
+            {
+                ReadMyServiceFromCache();
+                this.mView.ShowMyServiceRetryOptions(null);
+                Utility.LoggingNonFatalError(unknownException);
             }
         }
 

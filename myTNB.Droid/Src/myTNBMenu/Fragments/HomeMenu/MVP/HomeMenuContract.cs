@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using myTNB_Android.Src.Base.MVP;
-using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Models;
+using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP.Models;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 {
@@ -19,6 +19,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             void SetMyServiceResult(List<MyService> list);
 
             void SetNewFAQResult(List<NewFAQ> list);
+
+            string GetDeviceId();
+
+            void ShowMyServiceRetryOptions(string msg);
         }
 
         public interface IUserActionsListener : IBasePresenter
@@ -26,6 +30,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             Task InitiateMyService();
 
             Task InitiateNewFAQ();
+
+            Task RetryMyService();
 
             List<MyService> LoadShimmerServiceList(int count);
 

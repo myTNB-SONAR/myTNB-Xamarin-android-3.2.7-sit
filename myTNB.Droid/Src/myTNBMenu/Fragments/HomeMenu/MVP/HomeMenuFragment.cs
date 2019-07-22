@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Android.Graphics;
 using Android.OS;
+using Android.Support.Design.Widget;
 using Android.Support.V4.Widget;
 using Android.Support.V7.App;
 using Android.Support.V7.Widget;
@@ -17,8 +18,9 @@ using myTNB_Android.Src.myTNBMenu.Activity;
 using myTNB_Android.Src.myTNBMenu.Fragments.FeedbackMenu;
 using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter;
 using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Listener;
-using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Models;
+using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP.Models;
 using myTNB_Android.Src.Utils;
+using Refit;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 {
@@ -82,6 +84,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         [BindView(Resource.Id.summaryNestScrollView)]
         NestedScrollView summaryNestScrollView;
 
+        [BindView(Resource.Id.summaryRootView)]
+        CoordinatorLayout summaryRootView;
+
         AccountsRecyclerViewAdapter accountsAdapter;
 
         HomeMenuContract.IUserActionsListener userActionsListener;
@@ -89,6 +94,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         private bool isTextViewColorUpdateNeeded = true;
 
         private HomeMenuPresenter mPresenter;
+
+        private static List<MyService> currentMyServiceList = new List<MyService>();
 
         public override void OnCreate(Bundle savedInstanceState)
         {
@@ -102,12 +109,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             {
                 mPresenter = new HomeMenuPresenter(this);
                 TextViewUtils.SetMuseoSans500Typeface(myServiceTitle, newFAQTitle);
-                myServiceTitle.SetTextColor(Color.White);
                 SetAccountsRecyclerView();
                 SetAccountActionHeader();
                 summaryNestScrollView.SetOnScrollChangeListener(this);
                 this.userActionsListener.Start();
-                ChangeMyServiceTextColor(false, 0);
             }
             catch (System.Exception e)
             {
@@ -152,6 +157,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             myServiceView.Visibility = ViewStates.Visible;
             MyServiceAdapter adapter = new MyServiceAdapter(list);
             myServiceListRecycleView.SetAdapter(adapter);
+            currentMyServiceList.AddRange(list);
             adapter.ClickChanged += OnClickChanged;
         }
 
@@ -291,7 +297,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             {
                 indicatorContainer.Visibility = ViewStates.Gone;
             }
-            ChangeMyServiceTextColor(false, 0);
         }
 
         public void OnUpdateAccountListChanged(bool isSearchSubmit)
@@ -310,15 +315,15 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             {
                 if (position == -1)
                 {
-                    // Toast.MakeText(this.Activity, "My Service Position Unknown", ToastLength.Long).Show();
+
                 }
                 else
                 {
-                    if (position == 2)
+                    MyService selectedService = currentMyServiceList[position];
+                    if (selectedService.ServiceCategoryId == "1003")
                     {
                         ShowFeedbackMenu();
                     }
-                    // Toast.MakeText(this.Activity, "My Service Position: " + position.ToString(), ToastLength.Long).Show();
                 }
             }
             catch (Exception e)
@@ -373,8 +378,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
         public void OnScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY)
         {
-            float currentDP = scrollY / Resources.DisplayMetrics.Density;
-            ChangeMyServiceTextColor(true, currentDP);
 
         }
 
@@ -400,33 +403,13 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 {
                     if (isTextViewColorUpdateNeeded)
                     {
-                        if (count > 5)
+                        switch (count)
                         {
-                            if (currentDP < Constants.ACCOUNT_LIST_MORE_THAN_FIVE_DP_LIMIT)
-                            {
-                                myServiceTitle.SetTextColor(Resources.GetColor(Resource.Color.powerBlue));
-                            }
-                            else
-                            {
-                                myServiceTitle.SetTextColor(Color.White);
-                            }
-                        }
-                        else if (count == 5)
-                        {
-                            if (currentDP < Constants.ACCOUNT_LIST_FIVE_DP_LIMIT)
-                            {
-                                myServiceTitle.SetTextColor(Resources.GetColor(Resource.Color.powerBlue));
-                            }
-                            else
-                            {
-                                myServiceTitle.SetTextColor(Color.White);
-                            }
-                        }
-                        else if (count > 2 && count < 5)
-                        {
-                            if (count == 3)
-                            {
-                                if (currentDP < Constants.ACCOUNT_LIST_THREE_DP_LIMIT)
+                            case 5:
+                            case 4:
+                            case 3:
+                                int dpLimit = (count - 2) * Constants.ACCOUNT_LIST_CARD_DP;
+                                if (currentDP < dpLimit)
                                 {
                                     myServiceTitle.SetTextColor(Resources.GetColor(Resource.Color.powerBlue));
                                 }
@@ -434,10 +417,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                                 {
                                     myServiceTitle.SetTextColor(Color.White);
                                 }
-                            }
-                            else
-                            {
-                                if (currentDP < Constants.ACCOUNT_LIST_FOUR_DP_LIMIT)
+                                break;
+                            default:
+                                int maxDPLimit = (Constants.ACCOUNT_LIST_SERVICE_MAX_BOUNDARY * Constants.ACCOUNT_LIST_CARD_DP) + Constants.ACCOUNT_LIST_INDICATOR_DP;
+                                if (currentDP < maxDPLimit)
                                 {
                                     myServiceTitle.SetTextColor(Resources.GetColor(Resource.Color.powerBlue));
                                 }
@@ -445,7 +428,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                                 {
                                     myServiceTitle.SetTextColor(Color.White);
                                 }
-                            }
+                                break;
+
                         }
                     }
                 }
@@ -454,6 +438,97 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             {
                 Utility.LoggingNonFatalError(e);
             }
+        }
+
+        private void ChangeNeedHelpTextColor(float currentDP)
+        {
+            try
+            {
+                int count = accountsAdapter.accountCardModelList.Count;
+                switch (count)
+                {
+                    case 5:
+                    case 4:
+                    case 3:
+                    case 2:
+                    case 1:
+                        int dpLimit = ((count) * Constants.ACCOUNT_LIST_CARD_DP) + Constants.ACCOUNT_LIST_HELP_NO_ACC_DP_LIMIT - Constants.ACCOUNT_LIST_INDICATOR_DP;
+                        if (currentDP < dpLimit)
+                        {
+                            newFAQTitle.SetTextColor(Resources.GetColor(Resource.Color.powerBlue));
+                        }
+                        else
+                        {
+                            newFAQTitle.SetTextColor(Color.White);
+                        }
+                        break;
+                    default:
+                        int maxDPLimit = 0;
+                        if (count > 5)
+                        {
+                            maxDPLimit = (Constants.ACCOUNT_LIST_HELP_MAX_BOUNDARY * Constants.ACCOUNT_LIST_CARD_DP) + Constants.ACCOUNT_LIST_HELP_NO_ACC_DP_LIMIT + Constants.ACCOUNT_LIST_INDICATOR_DP;
+                        }
+                        else
+                        {
+                            maxDPLimit = Constants.ACCOUNT_LIST_HELP_NO_ACC_DP_LIMIT;
+                        }
+                        if (currentDP < maxDPLimit)
+                        {
+                            newFAQTitle.SetTextColor(Resources.GetColor(Resource.Color.powerBlue));
+                        }
+                        else
+                        {
+                            newFAQTitle.SetTextColor(Color.White);
+                        }
+                        break;
+
+                }
+
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public string GetDeviceId()
+        {
+            return this.DeviceId();
+        }
+
+        private Snackbar mMyServiceRetrySnakebar;
+        public void ShowMyServiceRetryOptions(string msg)
+        {
+            if (mMyServiceRetrySnakebar != null && mMyServiceRetrySnakebar.IsShown)
+            {
+                mMyServiceRetrySnakebar.Dismiss();
+            }
+
+            if (string.IsNullOrEmpty(msg))
+            {
+                msg = GetString(Resource.String.my_service_error);
+            }
+
+            mMyServiceRetrySnakebar = Snackbar.Make(summaryRootView, msg, Snackbar.LengthIndefinite)
+            .SetAction(GetString(Resource.String.my_service_btn_retry), delegate
+            {
+
+                mMyServiceRetrySnakebar.Dismiss();
+                RetryMyService();
+            }
+            );
+            mMyServiceRetrySnakebar.Show();
+        }
+
+        private void RetryMyService()
+        {
+            MyServiceShimmerAdapter adapter = new MyServiceShimmerAdapter(this.userActionsListener.LoadShimmerServiceList(6));
+            myServiceShimmerList.SetAdapter(adapter);
+
+            myServiceShimmerView.Visibility = ViewStates.Visible;
+            myServiceView.Visibility = ViewStates.Gone;
+
+            this.userActionsListener.RetryMyService();
         }
     }
 }

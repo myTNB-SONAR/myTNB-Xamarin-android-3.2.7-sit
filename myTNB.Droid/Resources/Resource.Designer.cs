@@ -13755,6 +13755,12 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f0802a7
 			public const int my_account_unknown_exception_error = 2131231399;
 			
+			// aapt resource value: 0x7f080434
+			public const int my_service_btn_retry = 2131231796;
+			
+			// aapt resource value: 0x7f080435
+			public const int my_service_error = 2131231797;
+			
 			// aapt resource value: 0x7f080421
 			public const int name_error = 2131231777;
 			
