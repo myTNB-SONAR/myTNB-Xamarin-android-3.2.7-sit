@@ -88,16 +88,15 @@ namespace myTNB
         public nfloat GetHeightForAccountCards()
         {
             nfloat pageViewHeight = 0f;
-            nfloat addtlMargin = 24f;
             var groupAccountsList = DataManager.DataManager.SharedInstance.AccountsGroupList;
             if (groupAccountsList.Count > 1)
             {
-                pageViewHeight = 5 * 68 + 32f + addtlMargin;
+                pageViewHeight = 5 * 68 + 20f;
             }
             else if (groupAccountsList.Count == 1)
             {
                 var accountsList = groupAccountsList[0];
-                pageViewHeight = accountsList.Count * 68 + 32f + addtlMargin;
+                pageViewHeight = accountsList.Count * 68 + 20f;
             }
             return pageViewHeight;
         }

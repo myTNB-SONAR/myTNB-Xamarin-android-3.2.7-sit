@@ -12,7 +12,7 @@ namespace myTNB
     {
         FBShimmeringView _shimmeringView = new FBShimmeringView();
 
-        AccountsContentViewController _contentViewController;
+        AccountsCardContentViewController _contentViewController;
         private readonly UIView _parentView;
         UIView _accountCardView;
         UIImageView _accountIcon;
@@ -20,10 +20,11 @@ namespace myTNB
         string _strAccountIcon, _strNickname, _strAccountNo;
         nfloat _yLocation = 0f;
         DueAmountDataModel _model = new DueAmountDataModel();
+        int _tag;
 
         public bool IsUpdating { set; get; }
 
-        public DashboardHomeAccountCard(AccountsContentViewController controller, UIView parentView, nfloat yLocation)
+        public DashboardHomeAccountCard(AccountsCardContentViewController controller, UIView parentView, nfloat yLocation)
         {
             _contentViewController = controller;
             _parentView = parentView;
@@ -37,7 +38,7 @@ namespace myTNB
             nfloat padding = 16f;
             nfloat margin = 16f;
 
-            _accountCardView = new UIView(new CGRect(16f, _yLocation + margin, parentWidth - (padding * 2), 60f))
+            _accountCardView = new UIView(new CGRect(0, _yLocation + margin, parentWidth, 60f))
             {
                 BackgroundColor = UIColor.White
             };
@@ -62,14 +63,14 @@ namespace myTNB
                 Text = _strAccountNo ?? string.Empty
             };
 
-            _amountDue = new UILabel(new CGRect(parentWidth - 100f - 12f - (16f * 2), 12f, 100f, 20f))
+            _amountDue = new UILabel(new CGRect(parentWidth - 100f - 12f, 12f, 100f, 20f))
             {
                 Font = MyTNBFont.MuseoSans14_500,
                 TextColor = MyTNBColor.GreyishBrown,
                 TextAlignment = UITextAlignment.Right
             };
 
-            _dueDate = new UILabel(new CGRect(parentWidth - 100f - 12f - (16f * 2), _amountDue.Frame.GetMaxY(), 100f, 20f))
+            _dueDate = new UILabel(new CGRect(parentWidth - 100f - 12f, _amountDue.Frame.GetMaxY(), 100f, 20f))
             {
                 Font = MyTNBFont.MuseoSans12_300,
                 TextColor = MyTNBColor.CharcoalGrey,
@@ -153,6 +154,11 @@ namespace myTNB
         public void SetTapAccountCardEvent(UITapGestureRecognizer tapGesture)
         {
             _accountCardView.AddGestureRecognizer(tapGesture);
+        }
+
+        public void SetTag(int tag)
+        {
+            _tag = tag;
         }
 
         public void AdjustLabels(DueAmountDataModel model)

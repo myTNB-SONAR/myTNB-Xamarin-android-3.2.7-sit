@@ -50,11 +50,12 @@ namespace myTNB
             }
 
             bool hasData = services != null && services.d != null && services.d.IsSuccess
-                && services.d.data != null && services.d.data.Count > 0;
+                && services.d.data != null && services.d.data.services != null
+                && services.d.data.services.Count > 0;
 
             if (hasData)
             {
-                AddContentData(services.d.data);
+                AddContentData(services.d.data.services);
             }
             else
             {
@@ -85,7 +86,7 @@ namespace myTNB
             for (int i = 0; i < serviceList.Count; i++)
             {
                 UIView card = GetCard(serviceList[i], i);
-                SetCardAction(ref card, serviceList[i].ServiceCategoryId);
+                SetCardAction(ref card, serviceList[i].ServiceId);
                 _view.AddSubview(card);
                 if (i == serviceList.Count - 1)
                 {
@@ -121,7 +122,7 @@ namespace myTNB
             nfloat imgYLoc = cardHeight * 0.11F;
             UIImageView imgView = new UIImageView(new CGRect((view.Frame.Width - imgSize) / 2, imgYLoc, imgSize, imgSize))
             {
-                Image = UIImage.FromBundle(GetImage(serviceItem.ServiceCategoryId))
+                Image = UIImage.FromBundle(GetImage(serviceItem.ServiceId))
             };
 
             nfloat xLblLoc = 16.0F;
@@ -133,7 +134,7 @@ namespace myTNB
                 Font = MyTNBFont.MuseoSans10_500,
                 Lines = 0,
                 LineBreakMode = UILineBreakMode.WordWrap,
-                Text = serviceItem.ServiceCategoryName
+                Text = serviceItem.ServiceName
             };
             view.AddSubviews(new UIView[] { imgView, lblTitle });
             return view;

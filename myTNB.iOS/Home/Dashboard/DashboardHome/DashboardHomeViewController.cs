@@ -19,12 +19,10 @@ namespace myTNB
         DashboardHomeHelper _dashboardHomeHelper = new DashboardHomeHelper();
 
         private UITableView _homeTableView;
-        UIPageViewController _accountsPageViewController;
+        AccountsCardContentViewController _accountsCardContentViewController;
         private DashboardHomeHeader _dashboardHomeHeader;
         private nfloat _previousScrollOffset;
         private nfloat _imageGradientHeight;
-        UITapGestureRecognizer _tapGestureAddAccount;
-        UITapGestureRecognizer _tapGestureSearch;
         UIView _headerView;
 
         UIView _textFieldView;
@@ -39,6 +37,7 @@ namespace myTNB
             {
                 v.RemoveFromSuperview();
             }
+
             PageName = DashboardHomeConstants.PageName;
             IsGradientImageRequired = true;
             base.ViewDidLoad();
@@ -49,11 +48,10 @@ namespace myTNB
 
             SetActionsDictionary();
             SetStatusBarNoOverlap();
-            SetTapGestureRecognizers();
             AddTableView();
             AddTableViewHeader();
             _dashboardHomeHelper.GroupAccountsList(DataManager.DataManager.SharedInstance.AccountRecordsList.d);
-            InitializePageView();
+            SetAccountsCardViewController();
             InitializeTableView();
             OnUpdateNotification();
 
@@ -75,8 +73,7 @@ namespace myTNB
             };
             SetTextFieldEvents(_textFieldSearch);
             _textFieldView.AddSubview(_textFieldSearch);
-            View.AddSubview(_textFieldView);
-            // Temporary place in view didload
+            //View.AddSubview(_textFieldView);
             OnGetServices();
         }
 
@@ -99,6 +96,14 @@ namespace myTNB
             var accountsList = DataManager.DataManager.SharedInstance.AccountRecordsList.d;
             var searchResults = accountsList.FindAll(x => x.accountNickName.ToLower().Contains(searchString.ToLower()) || x.accNum.Contains(searchString));
             ResetAccountCardsView(searchResults);
+        }
+
+        private void SetAccountsCardViewController()
+        {
+            UIStoryboard storyBoard = UIStoryboard.FromName("Dashboard", null);
+            _accountsCardContentViewController = storyBoard.InstantiateViewController("AccountsCardContentViewController") as AccountsCardContentViewController;
+            _accountsCardContentViewController._groupAccountList = DataManager.DataManager.SharedInstance.AccountsGroupList;
+            _accountsCardContentViewController._homeViewController = this;
         }
 
         public override void ViewWillAppear(bool animated)
@@ -142,12 +147,7 @@ namespace myTNB
         {
             DataManager.DataManager.SharedInstance.AccountsGroupList.Clear();
             _dashboardHomeHelper.GroupAccountsList(accountsList);
-            if (_accountsPageViewController != null)
-            {
-                _accountsPageViewController.View.RemoveFromSuperview();
-                InitializePageView();
-            }
-            InitializeTableView();
+            // refresh the uiscrollview based on search results
         }
 
         // <summary>
@@ -155,31 +155,14 @@ namespace myTNB
         // </summary>
         private void InitializeTableView()
         {
-            UpdateDotsColor();
-            _homeTableView.Source = new DashboardHomeDataSource(this, _accountsPageViewController, _headerView, new ServicesResponseModel());
+            _homeTableView.Source = new DashboardHomeDataSource(this, _accountsCardContentViewController, new ServicesResponseModel());
             _homeTableView.ReloadData();
-        }
-
-        private void InitializePageView()
-        {
-            _accountsPageViewController = new UIPageViewController(UIPageViewControllerTransitionStyle.Scroll, UIPageViewControllerNavigationOrientation.Horizontal, UIPageViewControllerSpineLocation.Min)
-            {
-                WeakDelegate = this
-            };
-            _accountsPageViewController.DataSource = new AccountsPageViewDataSource(this, DataManager.DataManager.SharedInstance.AccountsGroupList);
-
-            var startingViewController = ViewControllerAtIndex(0) as AccountsContentViewController;
-            var viewControllers = new UIViewController[] { startingViewController };
-
-            _accountsPageViewController.SetViewControllers(viewControllers, UIPageViewControllerNavigationDirection.Forward, false, null);
-            _accountsPageViewController.View.Frame = new CGRect(0, 0, View.Frame.Width, _dashboardHomeHelper.GetHeightForAccountCards());
-            _accountsPageViewController.View.BackgroundColor = UIColor.Clear;
         }
 
         private void AddTableView()
         {
             nfloat tabbarHeight = TabBarController.TabBar.Frame.Height + 20.0F;
-            _homeTableView = new UITableView(new CGRect(0, DeviceHelper.GetStatusBarHeight() + 30f, View.Frame.Width
+            _homeTableView = new UITableView(new CGRect(0, DeviceHelper.GetStatusBarHeight(), View.Frame.Width
                 , View.Frame.Height - DeviceHelper.GetStatusBarHeight() - tabbarHeight))
             { BackgroundColor = UIColor.Clear };
             _homeTableView.SeparatorStyle = UITableViewCellSeparatorStyle.None;
@@ -198,20 +181,7 @@ namespace myTNB
             _dashboardHomeHeader.SetNameText(_dashboardHomeHelper.GetDisplayName());
             _headerView = _dashboardHomeHeader.GetUI();
             _dashboardHomeHeader.AddNotificationAction(OnNotificationAction);
-            _dashboardHomeHeader.SetAddAccountAction(_tapGestureAddAccount);
-            _dashboardHomeHeader.SetSearchAction(_tapGestureSearch);
-        }
-
-        private void SetTapGestureRecognizers()
-        {
-            _tapGestureAddAccount = new UITapGestureRecognizer(() =>
-            {
-                OnAddAccountAction();
-            });
-            _tapGestureSearch = new UITapGestureRecognizer(() =>
-            {
-                OnSearchAction();
-            });
+            _homeTableView.TableHeaderView = _headerView;
         }
 
         private void OnNotificationAction()
@@ -245,16 +215,6 @@ namespace myTNB
                 key = DashboardHomeConstants.I18N_Afternoon;
             }
             return I18NDictionary[key];
-        }
-
-        public UIViewController ViewControllerAtIndex(int index)
-        {
-            UIStoryboard storyBoard = UIStoryboard.FromName("Dashboard", null);
-            var vc = storyBoard.InstantiateViewController("AccountsContentViewController") as AccountsContentViewController;
-            vc.pageIndex = index;
-            vc._groupAccountList = DataManager.DataManager.SharedInstance.AccountsGroupList;
-            vc._homeViewController = this;
-            return vc;
         }
 
         private void OnUpdateNotification()
@@ -300,7 +260,7 @@ namespace myTNB
                     if (services != null && services.d != null && services.d.IsSuccess)
                     {
                         _homeTableView.BeginUpdates();
-                        _homeTableView.Source = new DashboardHomeDataSource(this, _accountsPageViewController, _headerView, services);
+                        _homeTableView.Source = new DashboardHomeDataSource(this, _accountsCardContentViewController, services);
                         NSIndexPath indexPath = NSIndexPath.Create(0, 1);
                         _homeTableView.ReloadRows(new NSIndexPath[] { indexPath }, UITableViewRowAnimation.None);
                         _homeTableView.EndUpdates();
@@ -328,10 +288,7 @@ namespace myTNB
                 ses_param1 = string.Empty,
                 ses_param2 = string.Empty
             };
-            object request = new
-            {
-                usrInf = usrInf
-            };
+            object request = new { usrInf };
             ServicesResponseModel response = serviceManager.OnExecuteAPIV6<ServicesResponseModel>("GetServices", request);
             return response;
         }
@@ -356,22 +313,6 @@ namespace myTNB
         {
             DashboardHomeActions actions = new DashboardHomeActions(this);
             _servicesActionDictionary = actions.GetActionsDictionary();
-        }
-
-        private void UpdateDotsColor()
-        {
-            var subviews = _accountsPageViewController.View.Subviews;
-            foreach (var views in subviews)
-            {
-                var pagecontrol = views as UIPageControl;
-                if (pagecontrol != null)
-                {
-                    pagecontrol.TintColor = MyTNBColor.WaterBlue;
-                    pagecontrol.PageIndicatorTintColor = MyTNBColor.VeryLightPinkTwo;
-                    pagecontrol.CurrentPageIndicatorTintColor = MyTNBColor.WaterBlue;
-                    break;
-                }
-            }
         }
     }
 }

@@ -2004,11 +2004,6 @@
     <Compile Include="Customs\DashboardHome\DashboardHomeHeader.cs" />
     <Compile Include="Customs\DashboardHome\DashboardHomeAccountCard.cs" />
     <Compile Include="Home\Dashboard\DashboardHome\Accounts\AccountsTableViewCell.cs" />
-    <Compile Include="Home\Dashboard\DashboardHome\Accounts\AccountsPageViewDataSource.cs" />
-    <Compile Include="Home\Dashboard\DashboardHome\Accounts\AccountsContentViewController.cs" />
-    <Compile Include="Home\Dashboard\DashboardHome\Accounts\AccountsContentViewController.designer.cs">
-      <DependentUpon>AccountsContentViewController.cs</DependentUpon>
-    </Compile>
     <Compile Include="Rewards\RewardsViewController.cs" />
     <Compile Include="Rewards\RewardsViewController.designer.cs">
       <DependentUpon>RewardsViewController.cs</DependentUpon>
@@ -2025,6 +2020,10 @@
     <Compile Include="Home\Dashboard\DashboardHome\Services\ServicesConstants.cs" />
     <Compile Include="Home\Dashboard\DashboardHome\DashboardHomeActions.cs" />
     <Compile Include="Data Manager\ServiceEnum.cs" />
+    <Compile Include="Home\Dashboard\DashboardHome\Accounts\AccountsCardContentViewController.cs" />
+    <Compile Include="Home\Dashboard\DashboardHome\Accounts\AccountsCardContentViewController.designer.cs">
+      <DependentUpon>AccountsCardContentViewController.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />

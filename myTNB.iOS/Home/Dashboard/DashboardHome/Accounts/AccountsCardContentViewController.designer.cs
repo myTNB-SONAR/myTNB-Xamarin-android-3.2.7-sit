@@ -11,8 +11,8 @@ using UIKit;
 
 namespace myTNB
 {
-    [Register ("AccountsContentViewController")]
-    partial class AccountsContentViewController
+    [Register ("AccountsCardContentViewController")]
+    partial class AccountsCardContentViewController
     {
         void ReleaseDesignerOutlets ()
         {
