@@ -71,7 +71,17 @@ namespace myTNB
         {
             base.ViewWillAppear(animated);
             OnGetServices();
-            OnGetHelpInfo();
+            InvokeInBackground(() =>
+            {
+                OnGetHelpInfo().ContinueWith(task =>
+                {
+                    InvokeOnMainThread(() =>
+                    {
+                        _helpList = new HelpEntity().GetAllItems();
+                        OnUpdateCell(DashboardHomeConstants.CellIndex_Help);
+                    });
+                });
+            });
         }
 
         public override void ViewDidAppear(bool animated)
@@ -219,16 +229,13 @@ namespace myTNB
             });
         }
 
-        private void OnGetHelpInfo()
+        private Task OnGetHelpInfo()
         {
-            InvokeInBackground(async () =>
+            return Task.Factory.StartNew(() =>
             {
-                Debug.WriteLine("OnGetHelpInfo 0");
                 GetItemsService iService = new GetItemsService(TNBGlobal.OS
                     , string.Empty, TNBGlobal.SITECORE_URL, TNBGlobal.DEFAULT_LANGUAGE);
-                Debug.WriteLine("OnGetHelpInfo 1");
                 HelpTimeStampResponseModel timeStamp = iService.GetHelpTimestampItem();
-                Debug.WriteLine("OnGetHelpInfo 2");
                 bool needsUpdate = true;
                 if (timeStamp != null && timeStamp.Data != null && timeStamp.Data.Count > 0 && timeStamp.Data[0] != null
                     && !string.IsNullOrEmpty(timeStamp.Data[0].Timestamp))
@@ -257,7 +264,7 @@ namespace myTNB
                 {
                     //Todo: Handle fail scenario
                 }
-                
+
                 if (needsUpdate)
                 {
                     HelpResponseModel helpItems = iService.GetHelpItems();
@@ -267,15 +274,8 @@ namespace myTNB
                         wsManager.DeleteTable();
                         wsManager.CreateTable();
                         wsManager.InsertListOfItems(helpItems.Data);
-                        List<HelpModel> test = wsManager.GetAllItems();
                     }
                 }
-
-                InvokeOnMainThread(() =>
-                {
-                    _helpList = new HelpEntity().GetAllItems();
-                    OnUpdateCell(DashboardHomeConstants.CellIndex_Help);
-                });
             });
         }
 

@@ -96,12 +96,11 @@ namespace myTNB
             _imgIndex = -1;
             for (int i = 0; i < helpList.Count; i++)
             {
-                Debug.WriteLine("Index: " + i);
+                string helpKey = helpList[i].TargetItem;
                 UIView helpCardView = new UIView(new CGRect(xLoc, 0, cardWidth, cardHeight)) { ClipsToBounds = true };
-                //string helpKey = helpList[i].TargetItem;
                 helpCardView.AddGestureRecognizer(new UITapGestureRecognizer(() =>
                 {
-                    //ViewHelper.GoToFAQScreenWithId(helpKey);
+                    ViewHelper.GoToFAQScreenWithId(helpKey);
                 }));
                 UIImageView imgView = new UIImageView(new CGRect(0, 0, cardWidth, cardHeight))
                 {

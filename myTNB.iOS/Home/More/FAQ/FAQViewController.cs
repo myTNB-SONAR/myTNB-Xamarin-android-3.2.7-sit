@@ -141,7 +141,6 @@ namespace myTNB
                         }
                     }
                 }
-                isValidTimeStamp = true;
                 if (isValidTimeStamp)
                 {
                     string faqItems = iService.GetFAQsItem();

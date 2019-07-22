@@ -1304,6 +1304,10 @@
     <Folder Include="Model\Services\" />
     <Folder Include="Assets.xcassets\SMR-Icon.imageset\" />
     <Folder Include="Sitecore CMS\Model\Help\" />
+    <Folder Include="Sitecore CMS\Model\Promotions\" />
+    <Folder Include="Sitecore CMS\Model\Walkthrough\" />
+    <Folder Include="Sitecore CMS\Model\FAQ\" />
+    <Folder Include="Sitecore CMS\Model\TnC\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -1409,17 +1413,9 @@
     </Compile>
     <Compile Include="Model\NewUserModel.cs" />
     <Compile Include="Model\NewUserResponseModel.cs" />
-    <Compile Include="Sitecore CMS\Model\EnergyTipsModel.cs" />
-    <Compile Include="Sitecore CMS\Model\FullRTEPagesModel.cs" />
-    <Compile Include="Sitecore CMS\Model\LocationsModel.cs" />
-    <Compile Include="Sitecore CMS\Model\PreLoginPromoModel.cs" />
-    <Compile Include="Sitecore CMS\Model\WalkthroughScreensModel.cs" />
     <Compile Include="Sitecore CMS\Extensions\SitecoreItemExtensions.cs" />
-    <Compile Include="Sitecore CMS\Service\EnergyTipsService.cs" />
     <Compile Include="Sitecore CMS\Service\FullRTEPagesService.cs" />
     <Compile Include="Sitecore CMS\Service\GetItemsService.cs" />
-    <Compile Include="Sitecore CMS\Service\LocationsService.cs" />
-    <Compile Include="Sitecore CMS\Service\PreLoginPromoService.cs" />
     <Compile Include="Sitecore CMS\Service\SitecoreService.cs" />
     <Compile Include="Sitecore CMS\Service\WalkthroughScreenService.cs" />
     <Compile Include="Sitecore CMS\Constants.cs" />
@@ -1433,9 +1429,7 @@
       <DependentUpon>SelectAccountByRightsViewController.cs</DependentUpon>
     </Compile>
     <Compile Include="Sitecore CMS\Model\BaseModel.cs" />
-    <Compile Include="Sitecore CMS\Model\TimestampModel.cs" />
     <Compile Include="Sitecore CMS\Service\TimestampService.cs" />
-    <Compile Include="Sitecore CMS\Model\WalkthroughScreensResponseModel.cs" />
     <Compile Include="SQLite\SQLite Data Manager\WalkthroughScreensEntity.cs" />
     <Compile Include="Helpers\DeviceHelper.cs" />
     <Compile Include="Registration\BarcodeScannerViewController.cs" />
@@ -1772,8 +1766,6 @@
     </Compile>
     <Compile Include="Helpers\LabelHelper.cs" />
     <Compile Include="Home\Feedback\FeedbackFileNameHelper.cs" />
-    <Compile Include="Sitecore CMS\Model\TimestampResponseModel.cs" />
-    <Compile Include="Sitecore CMS\Model\TermsAndConditionResponseModel.cs" />
     <Compile Include="SQLite\SQLite Data Manager\TermsAndConditionEntity.cs" />
     <Compile Include="Home\More\FAQ\FAQViewController.cs" />
     <Compile Include="Home\More\FAQ\FAQViewController.designer.cs">
@@ -1791,14 +1783,7 @@
       <DependentUpon>PromotionDetailsViewController.cs</DependentUpon>
     </Compile>
     <Compile Include="Home\Promotions\PromotionsDataSource.cs" />
-    <Compile Include="Sitecore CMS\Model\FAQsModel.cs" />
-    <Compile Include="Sitecore CMS\Model\FAQsResponseModel.cs" />
-    <Compile Include="Sitecore CMS\Model\FAQTimestampResponseModel.cs" />
-    <Compile Include="Sitecore CMS\Model\PromotionsModel.cs" />
-    <Compile Include="Sitecore CMS\Model\PromotionsResponseModel.cs" />
-    <Compile Include="Sitecore CMS\Model\PromotionsTimestampResponseModel.cs" />
     <Compile Include="Sitecore CMS\Service\FAQsService.cs" />
-    <Compile Include="Sitecore CMS\Service\PromotionsService.cs" />
     <Compile Include="SQLite\SQLite Data Manager\FAQEntity.cs" />
     <Compile Include="SQLite\SQLite Data Manager\PromotionsEntity.cs" />
     <Compile Include="Home\More\FAQ\FAQViewCell.cs" />
@@ -1868,10 +1853,7 @@
     <Compile Include="Home\Promotions\PromotionsModalViewController.designer.cs">
       <DependentUpon>PromotionsModalViewController.cs</DependentUpon>
     </Compile>
-    <Compile Include="Sitecore CMS\Model\PromotionsModelV2.cs" />
     <Compile Include="Sitecore CMS\Service\PromotionsV2Service.cs" />
-    <Compile Include="Sitecore CMS\Model\PromotionsV2ResponseModel.cs" />
-    <Compile Include="Sitecore CMS\Model\PromotionsParentV2ResponseModel.cs" />
     <Compile Include="Home\Promotions\PromotionsModalDataSource.cs" />
     <Compile Include="Model\Feedback\FeedbackQuestionRequestModel.cs" />
     <Compile Include="Model\Feedback\FeedbackQuestionModel.cs" />
@@ -2028,6 +2010,20 @@
     <Compile Include="Sitecore CMS\Service\HelpService.cs" />
     <Compile Include="Sitecore CMS\Model\Help\HelpModel.cs" />
     <Compile Include="SQLite\SQLite Data Manager\HelpEntity.cs" />
+    <Compile Include="Sitecore CMS\Model\Promotions\PromotionsModel.cs" />
+    <Compile Include="Sitecore CMS\Model\Promotions\PromotionsModelV2.cs" />
+    <Compile Include="Sitecore CMS\Model\Promotions\PromotionsParentV2ResponseModel.cs" />
+    <Compile Include="Sitecore CMS\Model\Promotions\PromotionsTimestampResponseModel.cs" />
+    <Compile Include="Sitecore CMS\Model\Promotions\PromotionsV2ResponseModel.cs" />
+    <Compile Include="Sitecore CMS\Model\Walkthrough\WalkthroughScreensModel.cs" />
+    <Compile Include="Sitecore CMS\Model\Walkthrough\WalkthroughScreensResponseModel.cs" />
+    <Compile Include="Sitecore CMS\Model\FAQ\FAQsModel.cs" />
+    <Compile Include="Sitecore CMS\Model\FAQ\FAQsResponseModel.cs" />
+    <Compile Include="Sitecore CMS\Model\FAQ\FAQTimestampResponseModel.cs" />
+    <Compile Include="Sitecore CMS\Model\TnC\FullRTEPagesModel.cs" />
+    <Compile Include="Sitecore CMS\Model\TnC\TermsAndConditionResponseModel.cs" />
+    <Compile Include="Sitecore CMS\Model\TnC\TimestampModel.cs" />
+    <Compile Include="Sitecore CMS\Model\TnC\TimestampResponseModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />

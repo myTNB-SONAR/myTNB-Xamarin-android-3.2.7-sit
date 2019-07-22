@@ -31,35 +31,10 @@ namespace myTNB.SitecoreCMS.Services
             return JsonConvert.SerializeObject(resp);
         }
 
-        public string GetPreLoginPromoItem()
-        {
-            PreLoginPromoService service = new PreLoginPromoService();
-            var data = service.GetPreLoginPromo(OS, ImageSize, WebsiteUrl, Language);
-            var listData = AddDataToList(data);
-            var resp = CheckData(listData);
-            return JsonConvert.SerializeObject(resp);
-        }
-
         public string GetFullRTEPagesItems()
         {
             FullRTEPagesService service = new FullRTEPagesService();
             var data = service.GetFullRTEPages(WebsiteUrl, Language);
-            var resp = CheckData(data.ToList<object>());
-            return JsonConvert.SerializeObject(resp);
-        }
-
-        public string GetEnergyTipsItems()
-        {
-            EnergyTipsService service = new EnergyTipsService();
-            var data = service.GetEnergyTips(OS, ImageSize, WebsiteUrl, Language);
-            var resp = CheckData(data.ToList<object>());
-            return JsonConvert.SerializeObject(resp);
-        }
-
-        public string GetLocationsItems()
-        {
-            LocationsService service = new LocationsService();
-            var data = service.GetLocations(WebsiteUrl, Language);
             var resp = CheckData(data.ToList<object>());
             return JsonConvert.SerializeObject(resp);
         }
@@ -118,30 +93,6 @@ namespace myTNB.SitecoreCMS.Services
                 isAnyIdNull = isAnyIdNull && isNull;
             }
 
-            if (!isAnyIdNull)
-            {
-                bm.Status = "Success";
-                bm.Data = data.ToList<object>();
-            }
-            return bm;
-        }
-
-        private BaseModel CheckDataByProperty(List<object> data)
-        {
-            BaseModel bm = new BaseModel();
-            bool isAnyIdNull = data.Any(x => x.GetType().GetProperty("ID").GetValue(x) == null);
-            if (!isAnyIdNull)
-            {
-                bm.Status = "Success";
-                bm.Data = data.ToList<object>();
-            }
-            return bm;
-        }
-
-        private BaseModel CheckDataByField(List<object> data)
-        {
-            BaseModel bm = new BaseModel();
-            bool isAnyIdNull = data.Any(x => x.GetType().GetField("ID").GetValue(x) == null);
             if (!isAnyIdNull)
             {
                 bm.Status = "Success";
