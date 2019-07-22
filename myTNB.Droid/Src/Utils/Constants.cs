@@ -219,6 +219,8 @@ namespace myTNB_Android.Src.Utils
         //Language
         internal static readonly string DEFAULT_LANG = "EN";
 
+        internal static readonly string DEV_END_POINT = "http://10.215.128.191:89";
+
         public enum GREETING
         {
             MORNING,

@@ -12,7 +12,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
 	public class NewFAQShimmerAdapter : RecyclerView.Adapter
 	{
 
-		List<NewFAQ> faqList = null;
+		List<NewFAQ> faqList = new List<NewFAQ>();
 
 
 
@@ -20,12 +20,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
 		{
             if (data == null)
             {
-                this.faqList = new List<NewFAQ>();
+                this.faqList.Clear();
             }
             else
             {
-                this.faqList = new List<NewFAQ>();
-                this.faqList.AddRange(data);
+                this.faqList = data;
             }
 		}
 

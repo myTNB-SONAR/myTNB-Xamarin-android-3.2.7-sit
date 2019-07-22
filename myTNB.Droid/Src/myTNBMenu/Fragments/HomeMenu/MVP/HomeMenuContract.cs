@@ -20,8 +20,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             void SetNewFAQResult(List<NewFAQ> list);
             string GetDeviceId();
             void ShowMyServiceRetryOptions(string msg);
-            //void OnSavedTimeStamp(string savedTimeStamp);
-            //void ShowFAQTimestamp(bool success);
+            void OnSavedTimeStamp(string savedTimeStamp);
+            void ShowFAQTimestamp(bool success);
         }
 
         public interface IHomeMenuPresenter
@@ -32,14 +32,13 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             void LoadBatchSummaryAccounts();
             void InitiateService();
             Task InitiateMyService();
-            Task InitiateNewFAQ();
             Task RetryMyService();
             List<MyService> LoadShimmerServiceList(int count);
             List<NewFAQ> LoadShimmerFAQList(int count);
-            //void GetSavedNewFAQTimeStamp();
-            //Task OnGetFAQTimeStamp();
-            //void ReadNewFAQFromCache();
-            //Task OnGetFAQs();
+            void GetSavedNewFAQTimeStamp();
+            Task OnGetFAQTimeStamp();
+            void ReadNewFAQFromCache();
+            Task OnGetFAQs();
         }
 
         public interface IHomeMenuService
