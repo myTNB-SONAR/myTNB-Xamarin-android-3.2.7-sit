@@ -1124,7 +1124,6 @@
     <AndroidResource Include="Resources\drawable-xxxhdpi\ic_header_markread_disabled.png" />
     <Compile Include="Src\myTNBMenu\Activity\DashboardHomeActivity.cs" />
     <AndroidResource Include="Resources\layout\DashboardHomeView.axml" />
-    <Compile Include="Src\myTNBMenu\Fragments\HomeMenu\MVP\HomeMenuFragment.cs" />
     <AndroidResource Include="Resources\layout\HomeMenuFragmentView.axml" />
     <AndroidResource Include="Resources\drawable\custom_round_rec_shadow.xml" />
     <AndroidResource Include="Resources\layout\MyServiceComponentView.axml" />
@@ -1168,7 +1167,6 @@
     <AndroidResource Include="Resources\drawable-xxhdpi\search_blue.png" />
     <AndroidResource Include="Resources\drawable-xxxhdpi\search_blue.png" />
     <Compile Include="Src\myTNBMenu\Fragments\HomeMenu\Adapter\MyServiceShimmerAdapter.cs" />
-    <Compile Include="Src\myTNBMenu\Fragments\HomeMenu\Models\MyService.cs" />
     <AndroidResource Include="Resources\drawable-hdpi\ic_menu_reward_toggled.png" />
     <AndroidResource Include="Resources\drawable-mdpi\ic_menu_reward_toggled.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\ic_menu_reward_toggled.png" />
@@ -1213,7 +1211,6 @@
     <AndroidResource Include="Resources\drawable-xxxhdpi\ic_menu_promotion.png" />
     <AndroidResource Include="Resources\layout\NewFAQShimmerComponentView.axml" />
     <Compile Include="Src\myTNBMenu\Fragments\HomeMenu\Adapter\NewFAQAdapter.cs" />
-    <Compile Include="Src\myTNBMenu\Fragments\HomeMenu\Models\NewFAQ.cs" />
     <Compile Include="Src\myTNBMenu\Fragments\HomeMenu\Adapter\NewFAQShimmerAdapter.cs" />
     <AndroidResource Include="Resources\drawable\dashboard_home_bg.xml" />
     <AndroidResource Include="Resources\drawable-hdpi\fluid_background.png" />
@@ -1265,6 +1262,11 @@
     <AndroidResource Include="Resources\drawable-xxxhdpi\faq_color_4.png" />
     <AndroidResource Include="Resources\drawable-xxxhdpi\faq_color_5.png" />
     <AndroidResource Include="Resources\drawable-xxxhdpi\faq_color_6.png" />
+    <Compile Include="Src\myTNBMenu\Fragments\HomeMenu\MVP\HomeMenuFragment.cs" />
+    <Compile Include="Src\Database\Model\MyServiceEntity.cs" />
+    <Compile Include="Src\Database\Model\NewFAQEntity.cs" />
+    <Compile Include="Src\myTNBMenu\Fragments\HomeMenu\Api\IGetServiceApi.cs" />
+    <Compile Include="Src\Base\Models\UserInterface.cs" />
     <Compile Include="Src\Utils\ShimmerLoadingLayout.cs" />
     <AndroidResource Include="Resources\layout\account_card_shimmer_layout.axml" />
     <AndroidResource Include="Resources\drawable\account_icon_default.xml" />
@@ -1286,6 +1288,10 @@
     <AndroidResource Include="Resources\drawable-xxhdpi\smr_48_x_48.png" />
     <Compile Include="Src\myTNBMenu\Fragments\HomeMenu\Helper\AccountModelFormatter.cs" />
     <Compile Include="Src\Base\Helper\ModelFormatter.cs" />
+    <Compile Include="Src\myTNBMenu\Fragments\HomeMenu\MVP\GetServicesResponse.cs" />
+    <Compile Include="Src\myTNBMenu\Fragments\HomeMenu\MVP\MyService.cs" />
+    <Compile Include="Src\myTNBMenu\Fragments\HomeMenu\MVP\NewFAQ.cs" />
+    <Compile Include="Src\myTNBMenu\Fragments\HomeMenu\Requests\MyServiceRequest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -1641,11 +1647,12 @@
     <Folder Include="Src\myTNBMenu\Fragments\HomeMenu\" />
     <Folder Include="Src\myTNBMenu\Fragments\HomeMenu\MVP\" />
     <Folder Include="Src\myTNBMenu\Fragments\HomeMenu\Adapter\" />
+    <Folder Include="Src\myTNBMenu\Fragments\HomeMenu\Api\" />
     <Folder Include="Src\myTNBMenu\Fragments\HomeMenu\Listener\" />
-    <Folder Include="Src\myTNBMenu\Fragments\HomeMenu\Models\" />
     <Folder Include="Src\myTNBMenu\Fragments\HomeMenu\Service\" />
     <Folder Include="Src\myTNBMenu\Fragments\HomeMenu\Helper\" />
     <Folder Include="Src\Base\Helper\" />
+    <Folder Include="Src\myTNBMenu\Fragments\HomeMenu\Requests\" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\GradientStatusBar.xml" />

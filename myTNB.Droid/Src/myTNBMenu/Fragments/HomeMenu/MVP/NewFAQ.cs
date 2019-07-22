@@ -1,6 +1,6 @@
 ﻿using SQLite;
 
-namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Models
+namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 {
     public class NewFAQ
     {
@@ -9,11 +9,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Models
 
         public string Image { set; get; }
 
-        public string BgStartColor { set; get; }
+        public string BGStartColor { set; get; }
 
-        public string BgEndColor { set; get; }
+        public string BGEndColor { set; get; }
 
-        public string BgDirection { set; get; }
+        public string BGDirection { set; get; }
 
         public string Title { set; get; }
 
@@ -25,6 +25,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Models
 
         public string CTA { set; get; }
 
-        public string Tag { set; get; }
+        public string Tags { set; get; }
+
+        public string TargetItem { set; get; }
     }
 }

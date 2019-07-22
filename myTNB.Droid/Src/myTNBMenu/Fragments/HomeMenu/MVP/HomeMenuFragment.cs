@@ -2,10 +2,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-
+using Android.Graphics;
 using Android.OS;
+using Android.Support.Design.Widget;
+using Android.Support.V4.Widget;
 using Android.Support.V7.App;
 using Android.Support.V7.Widget;
+using Android.Util;
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
@@ -16,9 +19,10 @@ using myTNB_Android.Src.myTNBMenu.Activity;
 using myTNB_Android.Src.myTNBMenu.Fragments.FeedbackMenu;
 using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter;
 using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Listener;
-using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Models;
+using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP.Models;
 using myTNB_Android.Src.SummaryDashBoard.Models;
 using myTNB_Android.Src.Utils;
+using Refit;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 {
@@ -76,10 +80,25 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
         [BindView(Resource.Id.indicatorContainer)]
         LinearLayout indicatorContainer;
+
+        [BindView(Resource.Id.summaryNestScrollView)]
+        NestedScrollView summaryNestScrollView;
+
+        [BindView(Resource.Id.summaryRootView)]
+        CoordinatorLayout summaryRootView;
+
+        [BindView(Resource.Id.shimmerMyServiceView)]
+        ShimmerFrameLayout shimmerMyServiceView;
+
+        [BindView(Resource.Id.shimmerFAQView)]
+        ShimmerFrameLayout shimmerFAQView;
+
+
         AccountsRecyclerViewAdapter accountsAdapter;
 
-        System.Timers.Timer timer;
-        System.Timers.Timer FAQTimer;
+        private string mSavedTimeStamp = "0000000";
+
+        private static List<MyService> currentMyServiceList = new List<MyService>();
 
         HomeMenuContract.IHomeMenuPresenter presenter;
 
@@ -119,6 +138,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 TextViewUtils.SetMuseoSans500Typeface(myServiceTitle, newFAQTitle);
 
                 this.presenter.LoadAccounts();
+                this.presenter.InitiateService();
             }
             catch (System.Exception e)
             {
@@ -126,7 +146,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             }
         }
 
-        private void SetMyServiceRecycleView()
+        public bool IsActive()
+        {
+            return IsAdded && IsVisible && !IsDetached && !IsRemoving;
+        }
+
+        public void SetMyServiceRecycleView()
         {
             GridLayoutManager layoutManager = new GridLayoutManager(this.Activity, 3);
             layoutManager.Orientation = RecyclerView.Vertical;
@@ -135,46 +160,71 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             GridLayoutManager layoutShimmerManager = new GridLayoutManager(this.Activity, 3);
             layoutShimmerManager.Orientation = RecyclerView.Vertical;
             myServiceShimmerList.SetLayoutManager(layoutShimmerManager);
-            LoadShimmerServiceList(null);
-            timer = new System.Timers.Timer();
-            timer.Interval = 3000;
-            timer.Elapsed += OnMyServiceTimedEvent;
-            timer.Enabled = true;
-        }
 
-        private void OnMyServiceTimedEvent(object sender, System.Timers.ElapsedEventArgs e)
-        {
-            this.Activity.RunOnUiThread(() =>
+            MyServiceShimmerAdapter adapter = new MyServiceShimmerAdapter(this.presenter.LoadShimmerServiceList(6));
+            myServiceShimmerList.SetAdapter(adapter);
+
+            myServiceShimmerView.Visibility = ViewStates.Visible;
+            myServiceView.Visibility = ViewStates.Gone;
+            var shimmerBuilder = ShimmerUtils.ShimmerBuilderConfig();
+            if (shimmerBuilder != null)
             {
-                timer.Stop();
-                timer.Close();
-                LoadServiceList(null);
-            });
+                shimmerMyServiceView.SetShimmer(shimmerBuilder?.Build());
+            }
+            shimmerMyServiceView.StartShimmer();
+            this.presenter.InitiateMyService();
+            
         }
 
-        private void SetNewFAQRecycleView()
+        public void SetMyServiceResult(List<MyService> list)
+        {
+            shimmerMyServiceView.StopShimmer();
+            MyServiceShimmerAdapter shimmerAdapter = new MyServiceShimmerAdapter(null);
+            myServiceShimmerList.SetAdapter(shimmerAdapter);
+            myServiceShimmerView.Visibility = ViewStates.Gone;
+            myServiceView.Visibility = ViewStates.Visible;
+            MyServiceAdapter adapter = new MyServiceAdapter(list);
+            myServiceListRecycleView.SetAdapter(adapter);
+            currentMyServiceList.AddRange(list);
+            adapter.ClickChanged += OnClickChanged;
+        }
+
+        public void SetNewFAQRecycleView()
         {
             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this.Activity, LinearLayoutManager.Horizontal, false);
             newFAQListRecycleView.SetLayoutManager(linearLayoutManager);
 
             LinearLayoutManager linearShimmerLayoutManager = new LinearLayoutManager(this.Activity, LinearLayoutManager.Horizontal, false);
             newFAQShimmerList.SetLayoutManager(linearShimmerLayoutManager);
-            LoadShimmerFAQList(null);
-            FAQTimer = new System.Timers.Timer();
-            FAQTimer.Interval = 3000;
-            FAQTimer.Elapsed += OnNewFAQTimedEvent;
-            FAQTimer.Enabled = true;
+
+            NewFAQShimmerAdapter adapter = new NewFAQShimmerAdapter(this.presenter.LoadShimmerFAQList(3));
+            newFAQShimmerList.SetAdapter(adapter);
+
+            newFAQShimmerView.Visibility = ViewStates.Visible;
+            newFAQView.Visibility = ViewStates.Gone;
+            var shimmerBuilder = ShimmerUtils.ShimmerBuilderConfig();
+            if (shimmerBuilder != null)
+            {
+                shimmerFAQView.SetShimmer(shimmerBuilder?.Build());
+            }
+            shimmerFAQView.StartShimmer();
+            this.presenter.InitiateNewFAQ();
+            // this.presenter.GetSavedNewFAQTimeStamp();
         }
 
-        private void OnNewFAQTimedEvent(object sender, System.Timers.ElapsedEventArgs e)
+        public void SetNewFAQResult(List<NewFAQ> list)
         {
-            this.Activity.RunOnUiThread(() =>
-            {
-                FAQTimer.Stop();
-                FAQTimer.Close();
-                LoadFAQList(null);
-            });
+            shimmerFAQView.StopShimmer();
+            NewFAQShimmerAdapter shimmerAdapter = new NewFAQShimmerAdapter(null);
+            newFAQShimmerList.SetAdapter(shimmerAdapter);
+            newFAQShimmerView.Visibility = ViewStates.Gone;
+            newFAQView.Visibility = ViewStates.Visible;
+            NewFAQAdapter adapter = new NewFAQAdapter(list);
+            newFAQListRecycleView.SetAdapter(adapter);
+            adapter.ClickChanged += OnFAQClickChanged;
         }
+
+
         public void ShowSearchAction(bool isShow)
         {
             if (isShow)
@@ -269,6 +319,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             {
                 indicatorContainer.Visibility = ViewStates.Gone;
             }
+            ChangeMyServiceTextColor();
         }
 
         public void OnUpdateAccountListChanged(bool isSearchSubmit)
@@ -279,91 +330,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             }
             UpdateAccountListIndicator();
 		}
-        public void LoadShimmerServiceList(List<MyService> serviceList)
-        {
-            myServiceShimmerView.Visibility = ViewStates.Visible;
-            myServiceView.Visibility = ViewStates.Gone;
-            if (serviceList != null && serviceList.Count() > 0)
-            {
-                MyServiceShimmerAdapter adapter = new MyServiceShimmerAdapter(serviceList);
-                myServiceShimmerList.SetAdapter(adapter);
-            }
-            else
-            {
-                List<MyService> dummyList = new List<MyService>();
-                for (int i = 0; i < 6; i++)
-                {
-                    dummyList.Add(new MyService()
-                    {
-                        serviceCategoryName = ""
-                    });
-                }
-                MyServiceShimmerAdapter adapter = new MyServiceShimmerAdapter(dummyList);
-                myServiceShimmerList.SetAdapter(adapter);
-            }
-        }
 
-        public void LoadServiceList(List<MyService> serviceList)
-        {
-            myServiceShimmerView.Visibility = ViewStates.Gone;
-            myServiceView.Visibility = ViewStates.Visible;
-            if (serviceList != null && serviceList.Count() > 0)
-            {
-                MyServiceAdapter adapter = new MyServiceAdapter(serviceList);
-                myServiceListRecycleView.SetAdapter(adapter);
-                adapter.ClickChanged += OnClickChanged;
-            }
-            else
-            {
-                List<MyService> dummyList = new List<MyService>();
-                for (int i = 0; i < 5; i++)
-                {
-                    if (i == 0)
-                    {
-                        dummyList.Add(new MyService()
-                        {
-                            ServiceCategoryId = "0",
-                            serviceCategoryName = "Apply for Self<br/>Meter Reading"
-                        });
-                    }
-                    else if (i == 1)
-                    {
-                        dummyList.Add(new MyService()
-                        {
-                            ServiceCategoryId = "1",
-                            serviceCategoryName = "Check<br/>Status"
-                        });
-                    }
-                    else if (i == 2)
-                    {
-                        dummyList.Add(new MyService()
-                        {
-                            ServiceCategoryId = "2",
-                            serviceCategoryName = "Give Us<br/>Feedback"
-                        });
-                    }
-                    else if (i == 3)
-                    {
-                        dummyList.Add(new MyService()
-                        {
-                            ServiceCategoryId = "3",
-                            serviceCategoryName = "Set<br/>Appointments"
-                        });
-                    }
-                    else if (i == 4)
-                    {
-                        dummyList.Add(new MyService()
-                        {
-                            ServiceCategoryId = "4",
-                            serviceCategoryName = "Apply for<br/>AutoPay"
-                        });
-                    }
-                }
-                MyServiceAdapter adapter = new MyServiceAdapter(dummyList);
-                myServiceListRecycleView.SetAdapter(adapter);
-                adapter.ClickChanged += OnClickChanged;
-            }
-        }
 
         void OnClickChanged(object sender, int position)
         {
@@ -371,114 +338,20 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             {
                 if (position == -1)
                 {
-                    // Toast.MakeText(this.Activity, "My Service Position Unknown", ToastLength.Long).Show();
+
                 }
                 else
                 {
-                    if (position == 2)
+                    MyService selectedService = currentMyServiceList[position];
+                    if (selectedService.ServiceCategoryId == "1003")
                     {
                         ShowFeedbackMenu();
                     }
-                    // Toast.MakeText(this.Activity, "My Service Position: " + position.ToString(), ToastLength.Long).Show();
                 }
             }
             catch (Exception e)
             {
                 Utility.LoggingNonFatalError(e);
-            }
-        }
-
-        public void LoadShimmerFAQList(List<NewFAQ> faqList)
-        {
-            newFAQShimmerView.Visibility = ViewStates.Visible;
-            newFAQView.Visibility = ViewStates.Gone;
-            if (faqList != null && faqList.Count() > 0)
-            {
-                NewFAQShimmerAdapter adapter = new NewFAQShimmerAdapter(faqList);
-                newFAQShimmerList.SetAdapter(adapter);
-            }
-            else
-            {
-                List<NewFAQ> dummyList = new List<NewFAQ>();
-                for(int i = 0; i < 3; i++)
-                {
-                    dummyList.Add(new NewFAQ()
-                    {
-                        Title = ""
-                    });
-                }
-                NewFAQShimmerAdapter adapter = new NewFAQShimmerAdapter(dummyList);
-                newFAQShimmerList.SetAdapter(adapter);
-            }
-        }
-
-        public void LoadFAQList(List<NewFAQ> faqList)
-        {
-            newFAQShimmerView.Visibility = ViewStates.Gone;
-            newFAQView.Visibility = ViewStates.Visible;
-            if (faqList != null && faqList.Count() > 0)
-            {
-                NewFAQAdapter adapter = new NewFAQAdapter(faqList);
-                newFAQListRecycleView.SetAdapter(adapter);
-                adapter.ClickChanged += OnFAQClickChanged;
-            }
-            else
-            {
-                List<NewFAQ> dummyList = new List<NewFAQ>();
-                for (int i = 0; i < 6; i++)
-                {
-                    if(i == 0)
-                    {
-                        dummyList.Add(new NewFAQ()
-                        {
-                            ID = "0",
-                            Title = "How do I reset my password?"
-                        });
-                    }
-                    else if (i == 1)
-                    {
-                        dummyList.Add(new NewFAQ()
-                        {
-                            ID = "1",
-                            Title = "Learn how to read your meter."
-                        });
-                    }
-                    else if (i == 2)
-                    {
-                        dummyList.Add(new NewFAQ()
-                        {
-                            ID = "2",
-                            Title = "Check out how you can apply for AutoPay."
-                        });
-                    }
-                    else if (i == 3)
-                    {
-                        dummyList.Add(new NewFAQ()
-                        {
-                            ID = "3",
-                            Title = "How can I contact TNB?"
-                        });
-                    }
-                    else if (i == 4)
-                    {
-                        dummyList.Add(new NewFAQ()
-                        {
-                            ID = "4",
-                            Title = "How do i pay my bills through myTNB app?"
-                        });
-                    }
-                    else if (i == 5)
-                    {
-                        dummyList.Add(new NewFAQ()
-                        {
-                            ID = "5",
-                            Title = "What’s new on this app?"
-                        });
-                    }
-                }
-                NewFAQAdapter adapter = new NewFAQAdapter(dummyList);
-                newFAQListRecycleView.SetAdapter(adapter);
-                adapter.ClickChanged += OnFAQClickChanged;
             }
         }
 
@@ -526,6 +399,65 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             actionBar.SetDisplayShowHomeEnabled(flag);
         }
 
+        private void ChangeMyServiceTextColor()
+        {
+            try
+            {
+                int count = accountsAdapter.accountCardModelList.Count;
+                if (count <= 2)
+                {
+                    myServiceTitle.SetTextColor(Color.White);
+                }
+                else
+                {
+                    myServiceTitle.SetTextColor(Resources.GetColor(Resource.Color.powerBlue));
+                }
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+        public string GetDeviceId()
+        {
+            return this.DeviceId();
+        }
+
+        private Snackbar mMyServiceRetrySnakebar;
+        public void ShowMyServiceRetryOptions(string msg)
+        {
+            if (mMyServiceRetrySnakebar != null && mMyServiceRetrySnakebar.IsShown)
+            {
+                mMyServiceRetrySnakebar.Dismiss();
+            }
+
+            if (string.IsNullOrEmpty(msg))
+            {
+                msg = GetString(Resource.String.my_service_error);
+            }
+
+            mMyServiceRetrySnakebar = Snackbar.Make(summaryRootView, msg, Snackbar.LengthIndefinite)
+            .SetAction(GetString(Resource.String.my_service_btn_retry), delegate
+            {
+
+                mMyServiceRetrySnakebar.Dismiss();
+                RetryMyService();
+            }
+            );
+            mMyServiceRetrySnakebar.Show();
+        }
+
+        private void RetryMyService()
+        {
+            MyServiceShimmerAdapter adapter = new MyServiceShimmerAdapter(this.presenter.LoadShimmerServiceList(6));
+            myServiceShimmerList.SetAdapter(adapter);
+
+            myServiceShimmerView.Visibility = ViewStates.Visible;
+            myServiceView.Visibility = ViewStates.Gone;
+
+            this.presenter.RetryMyService();
+        }
+
         public void UpdateAccountListCards(List<SummaryDashBoardDetails> accountList)
         {
             accountsAdapter.UpdateAccountCards(accountList);
@@ -537,5 +469,50 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             accountsAdapter.SetAccountCards(accountList);
             accountsRecyclerView.SetAdapter(accountsAdapter);
         }
+
+        /*public void OnSavedTimeStamp(string savedTimeStamp)
+        {
+            if (savedTimeStamp != null)
+            {
+                this.mSavedTimeStamp = savedTimeStamp;
+            }
+            this.presenter.OnGetFAQTimeStamp();
+        }
+
+        public void ShowFAQTimestamp(bool success)
+        {
+            try
+            {
+                if (success)
+                {
+                    NewFAQParentEntity wtManager = new NewFAQParentEntity();
+                    List<NewFAQParentEntity> items = wtManager.GetAllItems();
+                    if (items != null)
+                    {
+                        NewFAQParentEntity entity = items[0];
+                        if (entity != null)
+                        {
+                            if (!entity.Timestamp.Equals(mSavedTimeStamp))
+                            {
+                                this.presenter.OnGetFAQs();
+                            }
+                            else
+                            {
+                                this.presenter.ReadNewFAQFromCache();
+                            }
+                        }
+                    }
+
+                }
+                else
+                {
+                    this.presenter.ReadNewFAQFromCache();
+                }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }*/
     }
 }

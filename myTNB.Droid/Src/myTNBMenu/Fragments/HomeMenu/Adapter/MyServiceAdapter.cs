@@ -2,7 +2,7 @@
 using Android.Text;
 using Android.Views;
 using Android.Widget;
-using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Models;
+using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP;
 using myTNB_Android.Src.Utils;
 using System;
 using System.Collections.Generic;
@@ -20,10 +20,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
         public MyServiceAdapter(List<MyService> data)
 		{
 			this.myServiceList = new List<MyService>();
-			this.myServiceList = data;
+			this.myServiceList.AddRange(data);
 		}
 
-		public override int ItemCount => myServiceList.Count;
+        public override int ItemCount => myServiceList.Count;
 
 		public override void OnBindViewHolder(RecyclerView.ViewHolder holder, int position)
 		{
@@ -42,19 +42,19 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
 
             switch(model.ServiceCategoryId)
             {
-                case "0":
+                case "1001":
                     vh.serviceImg.SetImageResource(Resource.Drawable.submit_meter);
                     break;
-                case "1":
+                case "1002":
                     vh.serviceImg.SetImageResource(Resource.Drawable.check_status);
                     break;
-                case "2":
+                case "1003":
                     vh.serviceImg.SetImageResource(Resource.Drawable.feedback);
                     break;
-                case "3":
+                case "1004":
                     vh.serviceImg.SetImageResource(Resource.Drawable.set_appointments);
                     break;
-                case "4":
+                case "1005":
                     vh.serviceImg.SetImageResource(Resource.Drawable.apply_autopay);
                     break;
                 default:

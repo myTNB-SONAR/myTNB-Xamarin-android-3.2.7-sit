@@ -2,7 +2,7 @@
 using Android.Text;
 using Android.Views;
 using Android.Widget;
-using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Models;
+using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP;
 using myTNB_Android.Src.Utils;
 using System;
 using System.Collections.Generic;
@@ -19,7 +19,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
         public NewFAQAdapter(List<NewFAQ> data)
 		{
 			this.faqList = new List<NewFAQ>();
-			this.faqList = data;
+			this.faqList.AddRange(data);
 		}
 
 		public override int ItemCount => faqList.Count;
