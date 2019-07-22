@@ -42,6 +42,7 @@ namespace myTNB
             IsGradientImageRequired = true;
             base.ViewDidLoad();
             NSNotificationCenter.DefaultCenter.AddObserver((NSString)"LanguageDidChange", LanguageDidChange);
+            NSNotificationCenter.DefaultCenter.AddObserver(UIApplication.WillEnterForegroundNotification, OnEnterForeground);
             _imageGradientHeight = IsGradientImageRequired ? ImageViewGradientImage.Frame.Height : 0;
             _services = new ServicesResponseModel();
             _helpList = new List<HelpModel>();
@@ -65,18 +66,7 @@ namespace myTNB
         public override void ViewWillAppear(bool animated)
         {
             base.ViewWillAppear(animated);
-            OnGetServices();
-            InvokeInBackground(() =>
-            {
-                OnGetHelpInfo().ContinueWith(task =>
-                {
-                    InvokeOnMainThread(() =>
-                    {
-                        _helpList = new HelpEntity().GetAllItems();
-                        OnUpdateCell(DashboardHomeConstants.CellIndex_Help);
-                    });
-                });
-            });
+            OnLoadHomeData();
         }
 
         public override void ViewDidAppear(bool animated)
@@ -94,6 +84,39 @@ namespace myTNB
         private void LanguageDidChange(NSNotification notification)
         {
             Debug.WriteLine("DEBUG >>> SUMMARY DASHBOARD LanguageDidChange");
+        }
+
+        private void OnEnterForeground(NSNotification notification)
+        {
+            Debug.WriteLine("On Enter Foreground");
+            OnLoadHomeData();
+        }
+
+        private void OnLoadHomeData()
+        {
+            NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
+            {
+                if (NetworkUtility.isReachable)
+                {
+                    OnGetServices();
+                    InvokeInBackground(() =>
+                    {
+                        OnGetHelpInfo().ContinueWith(task =>
+                        {
+                            InvokeOnMainThread(() =>
+                            {
+                                _helpList = new HelpEntity().GetAllItems();
+                                OnUpdateCell(DashboardHomeConstants.CellIndex_Help);
+                            });
+                        });
+                    });
+                }
+                else
+                {
+                    //Todo: handling?
+                    Debug.WriteLine("No data connection");
+                }
+            });
         }
 
         // <summary>
@@ -155,6 +178,7 @@ namespace myTNB
 
         private void OnUpdateNotification()
         {
+            
             NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
             {
                 InvokeOnMainThread(async () =>

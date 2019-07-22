@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using CoreGraphics;
 using Foundation;
 using myTNB.Model;
 using myTNB.SitecoreCMS.Model;
@@ -46,6 +47,7 @@ namespace myTNB
             }
             if (indexPath.Row == 1)
             {
+                CGRect accountHeight = tableView.RectForRowAtIndexPath(NSIndexPath.Create(0, 0));
                 ServicesTableViewCell cell = tableView.DequeueReusableCell(DashboardHomeConstants.Cell_Services) as ServicesTableViewCell;
                 cell._titleLabel.Text = _controller.I18NDictionary[DashboardHomeConstants.I18N_MyServices];
                 cell.AddCards(_services, _controller._servicesActionDictionary);
