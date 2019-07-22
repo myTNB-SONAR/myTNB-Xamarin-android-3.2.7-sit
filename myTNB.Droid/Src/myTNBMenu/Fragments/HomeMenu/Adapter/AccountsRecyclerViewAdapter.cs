@@ -17,7 +17,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
         int accountsCardContainer = 0;
         int MAX_ACCOUNT_PER_CARD = 5;
         Filter accountsFilter;
-        HomeMenuContract.IHomeMenuView viewListener;
+        static HomeMenuContract.IHomeMenuView viewListener;
 
         List<List<AccountCardModel>> cardList = new List<List<AccountCardModel>>();
         List<AccountCardModel> accountModelList = new List<AccountCardModel>();
@@ -27,6 +27,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
         public AccountsRecyclerViewAdapter(HomeMenuContract.IHomeMenuView listener)
         {
             viewListener = listener;
+
+            //BitmapFactory.Options dimensions = new BitmapFactory.Options();
+            //dimensions.inJustDecodeBounds = true;
+            //Bitmap mBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.bitmap, dimensions);
+            //int height = dimensions.outHeight;
+            //int width = dimensions.outWidth;
         }
 
         public int GetAccountCardCount(List<AccountCardModel> list)
@@ -68,7 +74,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
                 }
                 cardList.Add(accountModelList);
             }
-            this.viewListener.OnUpdateAccountListChanged(false);
+            viewListener.OnUpdateAccountListChanged(false);
         }
 
         public void SetAccountCards(List<SummaryDashBoardDetails> accountList)
@@ -148,8 +154,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
                     layoutParams.RightMargin = 16;
                     viewHolder.linearLayout.LayoutParameters = layoutParams;
                 }
+                CoordinatorLayout shimmerLayoutContainer = (CoordinatorLayout)LayoutInflater.From(parentGroup.Context).Inflate(Resource.Layout.account_card_shimmer_layout, parentGroup, false);
+
                 ShimmerLoadingLayout.GetInstance().AddViewWithShimmer(parentGroup.Context,viewHolder.linearLayout,CreateAccountCard(cardModel),
-                    (CoordinatorLayout)LayoutInflater.From(parentGroup.Context).Inflate(Resource.Layout.account_card_shimmer_layout, parentGroup, false),
+                    shimmerLayoutContainer,
                     () =>
                     {
                         return cardModel.BillDueAmount != null;
@@ -178,6 +186,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
         private CoordinatorLayout CreateAccountCard(AccountCardModel cardModel)
         {
             CoordinatorLayout card = (CoordinatorLayout)LayoutInflater.From(parentGroup.Context).Inflate(Resource.Layout.card_layout, parentGroup, false);
+            card.SetOnClickListener(new OnAccountCardClickListener(cardModel.AccountNumber));
             ImageView accountTypeIcon = card.FindViewById(Resource.Id.accountIcon) as ImageView;
             TextView accountName = card.FindViewById(Resource.Id.accountName) as TextView;
             TextView accountNumber = card.FindViewById(Resource.Id.accountNumber) as TextView;
@@ -216,6 +225,19 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
             public AccountsContainerViewHolder(View itemView) : base(itemView)
             {
                 linearLayout = itemView as LinearLayout;
+            }
+        }
+
+        public class OnAccountCardClickListener : Java.Lang.Object, View.IOnClickListener
+        {
+            private string mAccountNumber = null;
+            public OnAccountCardClickListener(string accountNumber)
+            {
+                mAccountNumber = accountNumber;
+            }
+            public void OnClick(View v)
+            {
+                viewListener.ShowAccountDetails(mAccountNumber);
             }
         }
     }

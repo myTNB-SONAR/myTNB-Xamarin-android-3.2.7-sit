@@ -13,6 +13,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             void OnUpdateAccountListChanged(bool isSearchSubmit);
             void SetAccountListCards(List<SummaryDashBoardDetails> accountList);
             void UpdateAccountListCards(List<SummaryDashBoardDetails> accountList);
+            void ShowAccountDetails(string accountNumber);
         }
 
         public interface IHomeMenuPresenter

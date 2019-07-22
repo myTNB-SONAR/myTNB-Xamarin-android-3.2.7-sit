@@ -21,7 +21,7 @@ namespace myTNB_Android.Src.Utils
             shimmerBuilder = new Shimmer.AlphaHighlightBuilder();
             shimmerBuilder.SetAutoStart(false);
             shimmerBuilder.SetBaseAlpha(1);
-            shimmerBuilder.SetHighlightAlpha(0.8f);
+            shimmerBuilder.SetHighlightAlpha(0.5f);
             shimmerBuilder.SetDropoff(1);
             shimmerViewList = new List<ShimmerViewContainer>();
         }

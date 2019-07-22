@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-
+using Android.Content;
 using Android.OS;
 using Android.Support.V7.App;
 using Android.Support.V7.Widget;
@@ -18,6 +18,7 @@ using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter;
 using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Listener;
 using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Models;
 using myTNB_Android.Src.SummaryDashBoard.Models;
+using myTNB_Android.Src.SummaryDashBoard.SummaryListener;
 using myTNB_Android.Src.Utils;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
@@ -82,11 +83,26 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         System.Timers.Timer FAQTimer;
 
         HomeMenuContract.IHomeMenuPresenter presenter;
+        ISummaryFragmentToDashBoardActivtyListener mCallBack;
 
         public override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
             presenter = new HomeMenuPresenter(this);
+        }
+
+        public override void OnAttach(Context context)
+        {
+            base.OnAttach(context);
+            try
+            {
+                mCallBack = context as ISummaryFragmentToDashBoardActivtyListener;
+            }
+            catch (Java.Lang.ClassCastException e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+
         }
 
         private void UpdateGreetingsHeader(Constants.GREETING greeting)
@@ -536,6 +552,21 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         {
             accountsAdapter.SetAccountCards(accountList);
             accountsRecyclerView.SetAdapter(accountsAdapter);
+        }
+
+        public void ShowAccountDetails(string accountNumber)
+        {
+            if (accountNumber != null)
+            {
+                CustomerBillingAccount.RemoveSelected();
+                CustomerBillingAccount.Update(accountNumber,true);
+
+                if (mCallBack != null)
+                {
+                    mCallBack.NavigateToDashBoardFragment();
+                    //ShowBackArrowIndicator()
+                }
+            }
         }
     }
 }

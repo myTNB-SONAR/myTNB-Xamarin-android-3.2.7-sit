@@ -32,6 +32,7 @@ using myTNB_Android.Src.Promotions.Fragments;
 using myTNB_Android.Src.Rating.Activity;
 using myTNB_Android.Src.Rating.Model;
 using myTNB_Android.Src.SelectSupplyAccount.Activity;
+using myTNB_Android.Src.SummaryDashBoard.SummaryListener;
 using myTNB_Android.Src.Utils;
 using myTNB_Android.Src.Utils.Custom.ProgressDialog;
 using myTNB_Android.Src.ViewReceipt.Activity;
@@ -46,7 +47,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
     [IntentFilter(new[] { Android.Content.Intent.ActionView },
             DataScheme = "mytnbapp",
             Categories = new[] { Android.Content.Intent.CategoryDefault, Android.Content.Intent.CategoryBrowsable })]
-    public class DashboardHomeActivity : BaseToolbarAppCompatActivity, DashboardHomeContract.IView
+    public class DashboardHomeActivity : BaseToolbarAppCompatActivity, DashboardHomeContract.IView, ISummaryFragmentToDashBoardActivtyListener
     {
         internal readonly string TAG = typeof(DashboardHomeActivity).Name;
 
@@ -137,7 +138,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             TextViewUtils.SetMuseoSans500Typeface(txtAccountName);
 
 
-            // Get CategoryBrowsable intent data 
+            // Get CategoryBrowsable intent data
             var data = Intent?.Data?.EncodedAuthority;
             if (!String.IsNullOrEmpty(data))
             {
@@ -173,7 +174,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             {
                 if (currentFragment.GetType() == typeof(DashboardChartFragment) ||
                     currentFragment.GetType() == typeof(DashboardChartNonOwnerNoAccess) ||
-                    currentFragment.GetType() == typeof(DashboardSmartMeterFragment) || 
+                    currentFragment.GetType() == typeof(DashboardSmartMeterFragment) ||
                     currentFragment.GetType() == typeof(FeedbackMenuFragment))
                 {
                     EnableDropDown(false);
@@ -691,7 +692,6 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
         public void NavigateToDashBoardFragment()
         {
-
             mPresenter.OnAccountSelectDashBoard();
         }
 

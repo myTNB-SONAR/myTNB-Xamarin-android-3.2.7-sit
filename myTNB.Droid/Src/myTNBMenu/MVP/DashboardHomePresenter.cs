@@ -1017,8 +1017,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 				DashboardHomeActivity.GO_TO_INNER_DASHBOARD = true;
 				List<CustomerBillingAccount> accountList = new List<CustomerBillingAccount>();
 				accountList = CustomerBillingAccount.List();
-				this.mView.ShowAccountName();
-				this.mView.SetToolbarTitle(Resource.String.dashboard_menu_activity_title);
 				currentBottomNavigationMenu = Resource.Id.menu_dashboard;
 				if (accountList != null && accountList.Count > 0)
 				{
@@ -1105,7 +1103,9 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 								this.mView.SetAccountName(selected.AccDesc);
 							}
 						}
-					}
+                        this.mView.ShowAccountName();
+                        this.mView.SetToolbarTitle(Resource.String.dashboard_menu_activity_title);
+                    }
 					else
 					{
 						if (!string.IsNullOrEmpty(accountList[0].AccNum))

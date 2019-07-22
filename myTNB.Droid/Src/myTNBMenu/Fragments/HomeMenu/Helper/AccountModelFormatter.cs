@@ -25,7 +25,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Helper
             }
             else
             {
-                if (amountDue.Contains("-") || Math.Abs(double.Parse(amountDue)) < 0)
+                if (amountDue.Contains("-") || amountDue == "0.00")
                 {
                     dueAmountNote = "All cleared";
                 }
