@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
+using myTNB.Enums;
 using RestSharp;
 
 namespace myTNB

@@ -11,6 +11,7 @@ using myTNB.PushNotification;
 using myTNB.SitecoreCMS.Model;
 using myTNB.SitecoreCMS.Services;
 using myTNB.SQLite.SQLiteDataManager;
+using myTNB.Registration.CustomerAccounts;
 using UIKit;
 
 namespace myTNB
@@ -29,10 +30,6 @@ namespace myTNB
         private nfloat _previousScrollOffset;
         private nfloat _imageGradientHeight;
         UIView _headerView;
-
-        UIView _textFieldView;
-        UITextField _textFieldSearch;
-        TextFieldHelper _textFieldHelper = new TextFieldHelper();
 
         internal Dictionary<string, Action> _servicesActionDictionary;
 
@@ -60,49 +57,6 @@ namespace myTNB
             SetAccountsCardViewController();
             InitializeTableView();
             OnUpdateNotification();
-
-            _textFieldView = new UIView(new CGRect(16f, DeviceHelper.GetStatusBarHeight(), View.Frame.Width - 32f, 24f))
-            {
-                BackgroundColor = UIColor.White
-            };
-            _textFieldView.Layer.CornerRadius = 12f;
-            _textFieldSearch = new UITextField(new CGRect(12f, 0, View.Frame.Width - 24f - 24d / 2, 24f))
-            {
-                AttributedPlaceholder = new NSAttributedString(
-                   "Dashboard_SearchPlacehoder".Translate()
-                   , font: MyTNBFont.MuseoSans12_500
-                   , foregroundColor: MyTNBColor.WhiteTwo
-                   , strokeWidth: 0
-               ),
-                TextColor = MyTNBColor.TunaGrey(),
-                Font = MyTNBFont.MuseoSans14_500
-            };
-            SetTextFieldEvents(_textFieldSearch);
-            _textFieldView.AddSubview(_textFieldSearch);
-            //View.AddSubview(_textFieldView);
-            OnGetServices();
-            OnGetHelpInfo();
-        }
-
-        private void SetTextFieldEvents(UITextField textField)
-        {
-            _textFieldHelper.SetKeyboard(textField);
-            textField.EditingChanged += (sender, e) =>
-            {
-                SearchFromAccountList(textField.Text);
-            };
-            textField.ShouldReturn = (sender) =>
-            {
-                sender.ResignFirstResponder();
-                return false;
-            };
-        }
-
-        private void SearchFromAccountList(string searchString)
-        {
-            var accountsList = DataManager.DataManager.SharedInstance.AccountRecordsList.d;
-            var searchResults = accountsList.FindAll(x => x.accountNickName.ToLower().Contains(searchString.ToLower()) || x.accNum.Contains(searchString));
-            ResetAccountCardsView(searchResults);
         }
 
         private void SetAccountsCardViewController()
@@ -116,11 +70,8 @@ namespace myTNB
         public override void ViewWillAppear(bool animated)
         {
             base.ViewWillAppear(animated);
-            if (DataManager.DataManager.SharedInstance.SummaryNeedsRefresh)
-            {
-                ResetAccountCardsView(DataManager.DataManager.SharedInstance.AccountRecordsList.d);
-                DataManager.DataManager.SharedInstance.SummaryNeedsRefresh = false;
-            }
+            OnGetServices();
+            OnGetHelpInfo();
         }
 
         public override void ViewDidAppear(bool animated)
@@ -148,13 +99,6 @@ namespace myTNB
         private void LanguageDidChange(NSNotification notification)
         {
             Debug.WriteLine("DEBUG >>> SUMMARY DASHBOARD LanguageDidChange");
-        }
-
-        private void ResetAccountCardsView(List<CustomerAccountRecordModel> accountsList)
-        {
-            DataManager.DataManager.SharedInstance.AccountsGroupList.Clear();
-            _dashboardHomeHelper.GroupAccountsList(accountsList);
-            // refresh the uiscrollview based on search results
         }
 
         // <summary>
@@ -199,14 +143,14 @@ namespace myTNB
             PresentViewController(navController, true, null);
         }
 
-        private void OnAddAccountAction()
+        public void OnAddAccountAction()
         {
-            Debug.WriteLine("OnAddAccountAction");
-        }
-
-        private void OnSearchAction()
-        {
-            Debug.WriteLine("OnSearchAction");
+            UIStoryboard storyBoard = UIStoryboard.FromName("AccountRecords", null);
+            var viewController = storyBoard.InstantiateViewController("AccountsViewController") as AccountsViewController;
+            viewController.isDashboardFlow = true;
+            viewController._needsUpdate = true;
+            var navController = new UINavigationController(viewController);
+            PresentViewController(navController, true, null);
         }
 
         private string GetGreeting()

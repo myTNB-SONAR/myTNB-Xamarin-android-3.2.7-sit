@@ -44,6 +44,7 @@ namespace myTNB
             List<DueAmountDataModel> batchList = new List<DueAmountDataModel>();
             for (int i = 0; i < sortedAccounts.Count; i++)
             {
+                var acctCached = DataManager.DataManager.SharedInstance.GetDue(sortedAccounts[i].accNum);
                 if (count < DashboardHomeConstants.MaxAccountPerCard)
                 {
                     DueAmountDataModel item = new DueAmountDataModel
@@ -51,7 +52,9 @@ namespace myTNB
                         accNum = sortedAccounts[i].accNum,
                         accNickName = sortedAccounts[i].accountNickName,
                         IsReAccount = sortedAccounts[i].IsREAccount,
-                        IsNormalAccount = sortedAccounts[i].IsNormalMeter
+                        IsNormalAccount = sortedAccounts[i].IsNormalMeter,
+                        amountDue = acctCached != null ? acctCached.amountDue : 0.00,
+                        billDueDate = acctCached != null ? acctCached.billDueDate : string.Empty
                     };
 
                     batchList.Add(item);
@@ -66,7 +69,9 @@ namespace myTNB
                         accNum = sortedAccounts[i].accNum,
                         accNickName = sortedAccounts[i].accountNickName,
                         IsReAccount = sortedAccounts[i].IsREAccount,
-                        IsNormalAccount = sortedAccounts[i].IsNormalMeter
+                        IsNormalAccount = sortedAccounts[i].IsNormalMeter,
+                        amountDue = acctCached != null ? acctCached.amountDue : 0.00,
+                        billDueDate = acctCached != null ? acctCached.billDueDate : string.Empty
                     };
                     batchList.Add(item);
                     count = 1;
