@@ -85,7 +85,6 @@ namespace myTNB
             _textFieldHelper.SetKeyboard(textField);
             textField.EditingChanged += (sender, e) =>
             {
-                Debug.WriteLine("textField*** " + textField.Text);
                 SearchFromAccountList(textField.Text);
             };
             textField.ShouldReturn = (sender) =>
@@ -98,7 +97,7 @@ namespace myTNB
         private void SearchFromAccountList(string searchString)
         {
             var accountsList = DataManager.DataManager.SharedInstance.AccountRecordsList.d;
-            var searchResults = accountsList.FindAll(x => x.accountNickName.Contains(searchString) || x.accNum.Contains(searchString));
+            var searchResults = accountsList.FindAll(x => x.accountNickName.ToLower().Contains(searchString.ToLower()) || x.accNum.Contains(searchString));
             ResetAccountCardsView(searchResults);
         }
 
@@ -156,6 +155,7 @@ namespace myTNB
         // </summary>
         private void InitializeTableView()
         {
+            UpdateDotsColor();
             _homeTableView.Source = new DashboardHomeDataSource(this, _accountsPageViewController, _headerView, new ServicesResponseModel());
             _homeTableView.ReloadData();
         }
@@ -356,6 +356,22 @@ namespace myTNB
         {
             DashboardHomeActions actions = new DashboardHomeActions(this);
             _servicesActionDictionary = actions.GetActionsDictionary();
+        }
+
+        private void UpdateDotsColor()
+        {
+            var subviews = _accountsPageViewController.View.Subviews;
+            foreach (var views in subviews)
+            {
+                var pagecontrol = views as UIPageControl;
+                if (pagecontrol != null)
+                {
+                    pagecontrol.TintColor = MyTNBColor.WaterBlue;
+                    pagecontrol.PageIndicatorTintColor = MyTNBColor.VeryLightPinkTwo;
+                    pagecontrol.CurrentPageIndicatorTintColor = MyTNBColor.WaterBlue;
+                    break;
+                }
+            }
         }
     }
 }
