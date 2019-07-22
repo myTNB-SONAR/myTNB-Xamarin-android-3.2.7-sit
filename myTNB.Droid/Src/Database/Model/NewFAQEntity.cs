@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP.Models;
+using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP;
 using SQLite;
 
 namespace myTNB_Android.Src.Database.Model

@@ -2,38 +2,192 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Net.Http;
-using System.Threading;
 using System.Threading.Tasks;
 using myTNB_Android.Src.Base.Models;
 using myTNB_Android.Src.Database.Model;
-using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Api;
 using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP.Models;
-using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP.Requests;
+using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Requests;
+using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Service;
+using myTNB_Android.Src.SummaryDashBoard.Models;
 using myTNB_Android.Src.Utils;
+using Newtonsoft.Json;
 using Refit;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 {
-    public class HomeMenuPresenter : HomeMenuContract.IUserActionsListener
+    public class HomeMenuPresenter : HomeMenuContract.IHomeMenuPresenter
     {
-        internal readonly string TAG = typeof(HomeMenuPresenter).Name;
-        private HomeMenuContract.IView mView;
-
+        HomeMenuContract.IHomeMenuView mView;
+        HomeMenuContract.IHomeMenuService serviceApi;
+        private Constants.GREETING greeting;
+        private IEnumerable<IGrouping<int, string>> batchAccountList;
+        private List<SummaryDashBoardDetails> summaryDashboardInfoList;
         private static bool FirstTimeMyServiceInitiate = true;
-
         private static bool FirstTimeNewFAQInitiate = true;
 
-        CancellationTokenSource cts;
-
-        public HomeMenuPresenter(HomeMenuContract.IView mView)
+        public HomeMenuPresenter(HomeMenuContract.IHomeMenuView view)
         {
-            this.mView = mView;
-            this.mView?.SetPresenter(this);
+            this.mView = view;
+            this.serviceApi = new HomeMenuServiceImpl();
         }
 
+        public string GetAccountDisplay()
+        {
+            return UserEntity.GetActive().DisplayName;
+        }
 
-        public void Start()
+        public Constants.GREETING GetGreeting()
+        {
+            DateTime dt = DateTime.Now.ToLocalTime();
+            int hour_only = dt.Hour;
+
+            if (hour_only >= 6 && hour_only < 12)
+            {
+                greeting = Constants.GREETING.MORNING;
+            }
+            else if (hour_only >= 12 && hour_only < 18)
+            {
+                greeting = Constants.GREETING.AFTERNOON;
+            }
+            else if (hour_only >= 0 && hour_only < 6)
+            {
+                greeting = Constants.GREETING.EVENING;
+            }
+            else
+            {
+                greeting = Constants.GREETING.EVENING;
+            }
+
+            return greeting;
+        }
+
+        private void SortAccounts(List<SummaryDashBoardDetails> summaryDetails)
+        {
+            List<SummaryDashBoardDetails> reAccount = (from item in summaryDetails
+                                                       where item.AccType == "2"
+                                                       select item).ToList();
+
+
+            List<SummaryDashBoardDetails> normalAccount = (from item in summaryDetails
+                                                           where item.AccType != "2"
+                                                           select item).ToList();
+
+
+            List<SummaryDashBoardDetails> totalAccountList = new List<SummaryDashBoardDetails>();
+            totalAccountList.AddRange(reAccount.OrderBy(x => x.AccName).ToList());
+            totalAccountList.AddRange(normalAccount.OrderBy(x => x.AccName).ToList());
+            summaryDashboardInfoList.AddRange(totalAccountList);
+        }
+
+        private async Task GetAccountSummaryInfo(SummaryDashBordRequest request)
+        {
+            SummaryDashBoardResponse response = await this.serviceApi.GetLinkedSummaryInfo(request);
+            if (response != null)
+            {
+                if (response.Data != null && response.Data.Status.ToUpper() == Constants.REFRESH_MODE)
+                {
+                    //mView.ShowRefreshSummaryDashboard(true, response.Data.RefreshMessage, response.Data.RefreshBtnText);
+                    //LoadEmptySummaryDetails();
+                }
+                else if (response.Data != null && !response.Data.isError && response.Data.data != null && response.Data.data.Count > 0)
+                {
+                    List<SummaryDashBoardDetails> summaryDetails = response.Data.data;
+                    for (int i = 0; i < summaryDetails.Count; i++)
+                    {
+                        CustomerBillingAccount cbAccount = CustomerBillingAccount.FindByAccNum(summaryDetails[i].AccNumber);
+                        summaryDetails[i].AccName = cbAccount.AccDesc;
+                        summaryDetails[i].AccType = cbAccount.AccountCategoryId;
+                        summaryDetails[i].IsAccSelected = cbAccount.IsSelected;
+
+                        ///*** Save account data For the Day***/
+                        //SummaryDashBoardAccountEntity accountModel = new SummaryDashBoardAccountEntity();
+                        //accountModel.Timestamp = DateTime.Now.ToLocalTime();
+                        //accountModel.JsonResponse = JsonConvert.SerializeObject(summaryDetails[i]);
+                        //accountModel.AccountNo = summaryDetails[i].AccNumber;
+                        //SummaryDashBoardAccountEntity.InsertItem(accountModel);
+                        ///*****/
+                    }
+                    SortAccounts(summaryDetails);
+                    this.mView.UpdateAccountListCards(summaryDashboardInfoList);
+                    //SummaryData(summaryDetails);
+                    //mView.ShowRefreshSummaryDashboard(false, null, null);
+
+                }
+                else
+                {
+                    //mView.ShowRefreshSummaryDashboard(true, null, null);
+                    //LoadEmptySummaryDetails();
+                }
+            }
+        }
+
+        private void LoadSummaryDetails(List<string> accountList)
+        {
+            if (accountList.Count > 0)
+            {
+                SummaryDashBordRequest request = new SummaryDashBordRequest();
+                request.AccNum = accountList;
+                request.SspUserId = UserEntity.GetActive().UserID;
+                request.ApiKeyId = Constants.APP_CONFIG.API_KEY_ID;
+                _ = GetAccountSummaryInfo(request);
+            }
+        }
+
+        private void BatchLoadSummaryDetails(List<CustomerBillingAccount> customerBillingAccountList)
+        {
+            List<string> accountList = new List<string>();
+            for (int i = 0; i < customerBillingAccountList.Count; i++)
+            {
+                if (!string.IsNullOrEmpty(customerBillingAccountList[i].AccNum))
+                {
+                    accountList.Add(customerBillingAccountList[i].AccNum);
+                }
+            }
+
+            batchAccountList = accountList.Select((x, index) => new { x, index })
+                   .GroupBy(x => x.index / 5, y => y.x);
+
+            //LoadSummaryDetails(batchAccountList.ToList()[0].ToList());
+            for (int i = 0; i < batchAccountList.ToList().Count; i++)
+            {
+                LoadSummaryDetails(batchAccountList.ToList()[i].ToList());
+            }
+        }
+
+        public void LoadAccounts()
+        {
+            var RenewableAccountList = CustomerBillingAccount.REAccountList();
+            var NonRenewableAccountList = CustomerBillingAccount.NonREAccountList();
+
+            List<CustomerBillingAccount> customerBillingAccountList = new List<CustomerBillingAccount>();
+            customerBillingAccountList.AddRange(RenewableAccountList);
+            customerBillingAccountList.AddRange(NonRenewableAccountList);
+
+            summaryDashboardInfoList = new List<SummaryDashBoardDetails>();
+            foreach (CustomerBillingAccount customerBillintAccount in customerBillingAccountList)
+            {
+                SummaryDashBoardDetails summaryDashBoardDetails = new SummaryDashBoardDetails();
+                summaryDashBoardDetails.AccNumber = customerBillintAccount.AccNum;
+                summaryDashboardInfoList.Add(summaryDashBoardDetails);
+            }
+
+            this.mView.SetAccountListCards(summaryDashboardInfoList);
+            summaryDashboardInfoList.Clear();
+            BatchLoadSummaryDetails(customerBillingAccountList);
+        }
+
+        public void LoadBatchSummaryAccounts()
+        {
+            if (batchAccountList.ToList().Count > 1)
+            {
+                for (int i = 1; i < batchAccountList.ToList().Count; i++)
+                {
+                    LoadSummaryDetails(batchAccountList.ToList()[i].ToList());
+                }
+            }
+        }
+
+        public void InitiateService()
         {
             this.mView.SetMyServiceRecycleView();
             this.mView.SetNewFAQRecycleView();
@@ -119,15 +273,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         {
             try
             {
-                cts = new CancellationTokenSource();
                 ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
-#if DEBUG
-                var httpClient = new HttpClient(new HttpLoggingHandler()) { BaseAddress = new Uri("http://10.215.128.191:89") };
-                var getServiceAPI = RestService.For<IGetServiceApi>(httpClient);
-
-#else
-                var getServiceAPI = RestService.For<IGetServiceApi>(Constants.SERVER_URL.END_POINT);
-#endif
                 UserInterface currentUsrInf = new UserInterface()
                 {
                     eid = UserEntity.GetActive().Email,
@@ -140,13 +286,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     ses_param1 = "",
                     ses_param2 = ""
                 };
-
-                GetServicesResponse getServicesResponse = await getServiceAPI.GetService(new GetServiceRequests()
+                GetServicesResponse getServicesResponse = await this.serviceApi.GetServices(new GetServiceRequests()
                 {
                     usrInf = currentUsrInf
-                }, cts.Token);
-
-
+                });
+                
                 if (getServicesResponse.Data.ErrorCode == "7200" && getServicesResponse.Data.Data.Count > 0)
                 {
                     MyServiceEntity.RemoveAll();
@@ -162,21 +306,13 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                         return aValue.CompareTo(bValue);
                     });
                     this.mView.SetMyServiceResult(fetchList);
+                    FirstTimeMyServiceInitiate = false;
                 }
                 else
                 {
                     ReadMyServiceFromCache();
-                    if (int.Parse(getServicesResponse.Data.ErrorCode) >= 8000 && int.Parse(getServicesResponse.Data.ErrorCode) < 9000)
-                    {
-                        this.mView.ShowMyServiceRetryOptions(getServicesResponse.Data.DisplayMessage);
-                    }
-                    else
-                    {
-                        this.mView.ShowMyServiceRetryOptions(null);
-                    }
+                    this.mView.ShowMyServiceRetryOptions(getServicesResponse.Data.DisplayMessage);
                 }
-                
-                FirstTimeMyServiceInitiate = false;
 
             }
             catch (System.OperationCanceledException cancelledException)

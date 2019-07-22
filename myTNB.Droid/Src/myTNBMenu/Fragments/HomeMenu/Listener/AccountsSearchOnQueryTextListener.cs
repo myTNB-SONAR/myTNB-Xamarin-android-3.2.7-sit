@@ -8,8 +8,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Listener
 	public class AccountsSearchOnQueryTextListener : Java.Lang.Object, SearchView.IOnQueryTextListener
 	{
         AccountsRecyclerViewAdapter mAdapter;
-        HomeMenuContract.IView mViewListerner;
-		public AccountsSearchOnQueryTextListener(HomeMenuContract.IView viewListerner, AccountsRecyclerViewAdapter adapter)
+        HomeMenuContract.IHomeMenuView mViewListerner;
+		public AccountsSearchOnQueryTextListener(HomeMenuContract.IHomeMenuView viewListerner, AccountsRecyclerViewAdapter adapter)
 		{
             this.mAdapter = adapter;
             this.mViewListerner = viewListerner;

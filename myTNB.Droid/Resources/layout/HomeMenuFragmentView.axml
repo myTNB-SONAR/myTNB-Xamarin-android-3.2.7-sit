@@ -11,14 +11,13 @@
     <android.support.v4.widget.NestedScrollView
       android:layout_width="match_parent"
       android:layout_height="match_parent"
-      android:background="@drawable/dashboard_home_new_bg"
       android:id="@+id/summaryNestScrollView">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/dashboard_home_bg"
             android:orientation="vertical">
-              <android.support.constraint.ConstraintLayout
+            <android.support.constraint.ConstraintLayout
                 android:id="@+id/accountContainer"
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
@@ -31,8 +30,8 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:textSize="16dp"
-                    android:text="Good Morning,"
-                    android:textColor="@android:color/white"
+                    android:text=" "
+                    android:textColor="@color/sunGlow"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                 />
@@ -42,7 +41,7 @@
                     android:layout_height="wrap_content"
                     android:textSize="16dp"
                     android:text="Account Name"
-                    android:textColor="@android:color/white"
+                    android:textColor="@color/sunGlow"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/accountGreeting"
                 />
@@ -55,7 +54,7 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
                 />
-              </android.support.constraint.ConstraintLayout>
+            </android.support.constraint.ConstraintLayout>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -105,8 +104,7 @@
                 android:id="@+id/accountRecyclerViewContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:paddingLeft="16dp"/>
+                android:layout_marginTop="16dp"/>
             <LinearLayout
                 android:id="@+id/indicatorContainer"
                 android:layout_width="match_parent"
@@ -139,11 +137,16 @@
                     android:layout_marginTop="16dp"
                     android:orientation="vertical"
                     android:visibility="gone">
-                    <android.support.v7.widget.RecyclerView
-                        android:id="@+id/myServiceShimmerList"
+                    <com.facebook.shimmer.ShimmerFrameLayout
+                        android:id="@+id/shimmerMyServiceView"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:scrollIndicators="none" />
+                        android:layout_height="wrap_content">
+                        <android.support.v7.widget.RecyclerView
+                            android:id="@+id/myServiceShimmerList"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:scrollIndicators="none" />
+                    </com.facebook.shimmer.ShimmerFrameLayout>
                 </LinearLayout>
                 <LinearLayout
                     android:id="@+id/myServiceView"
@@ -183,11 +186,16 @@
                     android:layout_marginTop="7dp"
                     android:orientation="vertical"
                     android:visibility="gone">
-                    <android.support.v7.widget.RecyclerView
-                        android:id="@+id/newFAQShimmerList"
+                    <com.facebook.shimmer.ShimmerFrameLayout
+                        android:id="@+id/shimmerFAQView"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:scrollIndicators="none" />
+                        android:layout_height="wrap_content">
+                        <android.support.v7.widget.RecyclerView
+                            android:id="@+id/newFAQShimmerList"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:scrollIndicators="none" />
+                    </com.facebook.shimmer.ShimmerFrameLayout>
                 </LinearLayout>
                 <LinearLayout
                     android:id="@+id/newFAQView"

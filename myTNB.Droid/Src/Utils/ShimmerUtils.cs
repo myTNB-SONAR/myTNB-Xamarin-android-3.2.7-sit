@@ -7,7 +7,11 @@ namespace myTNB_Android.Src.Utils
 	{
 		public static Shimmer.AlphaHighlightBuilder ShimmerBuilderConfig()
 		{
-            Shimmer.AlphaHighlightBuilder shimmerBuilder = null;
+            Shimmer.AlphaHighlightBuilder shimmerBuilder = new Shimmer.AlphaHighlightBuilder();
+            shimmerBuilder.SetAutoStart(false);
+            shimmerBuilder.SetBaseAlpha(1);
+            shimmerBuilder.SetHighlightAlpha(0.8f);
+            shimmerBuilder.SetDropoff(1);
             return shimmerBuilder;
 		}
 	}

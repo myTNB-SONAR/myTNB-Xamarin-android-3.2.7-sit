@@ -170,7 +170,7 @@ namespace myTNB_Android.Src.AddAccount.MVP
                 var api = RestService.For<AddMultipleAccountsToUserApi>(httpClient);
 
 #else
-            var api = RestService.For<AddMultipleAccountsToUserApi>(Constants.SERVER_URL.END_POINT);
+                var api = RestService.For<AddMultipleAccountsToUserApi>(Constants.SERVER_URL.END_POINT);
 
 #endif
 

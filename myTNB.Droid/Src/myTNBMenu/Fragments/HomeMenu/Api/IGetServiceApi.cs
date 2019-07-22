@@ -1,5 +1,5 @@
 ﻿using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP.Models;
-using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP.Requests;
+using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Requests;
 using Refit;
 using System.Threading;
 using System.Threading.Tasks;

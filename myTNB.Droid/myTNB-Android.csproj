@@ -1267,10 +1267,31 @@
     <Compile Include="Src\Database\Model\NewFAQEntity.cs" />
     <Compile Include="Src\myTNBMenu\Fragments\HomeMenu\Api\IGetServiceApi.cs" />
     <Compile Include="Src\Base\Models\UserInterface.cs" />
-    <Compile Include="Src\myTNBMenu\Fragments\HomeMenu\MVP\Models\GetServicesResponse.cs" />
-    <Compile Include="Src\myTNBMenu\Fragments\HomeMenu\MVP\Models\MyService.cs" />
-    <Compile Include="Src\myTNBMenu\Fragments\HomeMenu\MVP\Models\NewFAQ.cs" />
-    <Compile Include="Src\myTNBMenu\Fragments\HomeMenu\MVP\Requests\MyServiceRequest.cs" />
+    <Compile Include="Src\Utils\ShimmerLoadingLayout.cs" />
+    <AndroidResource Include="Resources\layout\account_card_shimmer_layout.axml" />
+    <AndroidResource Include="Resources\drawable\account_icon_default.xml" />
+    <Compile Include="Src\myTNBMenu\Fragments\HomeMenu\Service\HomeMenuServiceImpl.cs" />
+    <AndroidResource Include="Resources\drawable-mdpi\ic_display_normal_meter.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\ic_display_r_eleaf.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\smr_48_x_48.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\ic_display_normal_meter.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\ic_display_r_eleaf.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\smr_48_x_48.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_display_normal_meter.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_display_r_eleaf.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\smr_48_x_48.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\ic_display_normal_meter.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\ic_display_r_eleaf.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\smr_48_x_48.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_display_normal_meter.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_display_r_eleaf.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\smr_48_x_48.png" />
+    <Compile Include="Src\myTNBMenu\Fragments\HomeMenu\Helper\AccountModelFormatter.cs" />
+    <Compile Include="Src\Base\Helper\ModelFormatter.cs" />
+    <Compile Include="Src\myTNBMenu\Fragments\HomeMenu\MVP\GetServicesResponse.cs" />
+    <Compile Include="Src\myTNBMenu\Fragments\HomeMenu\MVP\MyService.cs" />
+    <Compile Include="Src\myTNBMenu\Fragments\HomeMenu\MVP\NewFAQ.cs" />
+    <Compile Include="Src\myTNBMenu\Fragments\HomeMenu\Requests\MyServiceRequest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -1626,10 +1647,12 @@
     <Folder Include="Src\myTNBMenu\Fragments\HomeMenu\" />
     <Folder Include="Src\myTNBMenu\Fragments\HomeMenu\MVP\" />
     <Folder Include="Src\myTNBMenu\Fragments\HomeMenu\Adapter\" />
-    <Folder Include="Src\myTNBMenu\Fragments\HomeMenu\Listener\" />
     <Folder Include="Src\myTNBMenu\Fragments\HomeMenu\Api\" />
-    <Folder Include="Src\myTNBMenu\Fragments\HomeMenu\MVP\Models\" />
-    <Folder Include="Src\myTNBMenu\Fragments\HomeMenu\MVP\Requests\" />
+    <Folder Include="Src\myTNBMenu\Fragments\HomeMenu\Listener\" />
+    <Folder Include="Src\myTNBMenu\Fragments\HomeMenu\Service\" />
+    <Folder Include="Src\myTNBMenu\Fragments\HomeMenu\Helper\" />
+    <Folder Include="Src\Base\Helper\" />
+    <Folder Include="Src\myTNBMenu\Fragments\HomeMenu\Requests\" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\GradientStatusBar.xml" />

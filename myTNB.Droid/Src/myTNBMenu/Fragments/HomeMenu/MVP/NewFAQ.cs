@@ -1,6 +1,6 @@
 ﻿using SQLite;
 
-namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP.Models
+namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 {
     public class NewFAQ
     {

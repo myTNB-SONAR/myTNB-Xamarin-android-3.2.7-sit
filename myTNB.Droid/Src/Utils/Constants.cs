@@ -219,5 +219,11 @@ namespace myTNB_Android.Src.Utils
         //Language
         internal static readonly string DEFAULT_LANG = "EN";
 
+        public enum GREETING
+        {
+            MORNING,
+            AFTERNOON,
+            EVENING
+        }
     }
 }
