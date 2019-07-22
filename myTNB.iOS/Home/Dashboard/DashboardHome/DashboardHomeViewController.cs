@@ -10,6 +10,9 @@ using myTNB.Model;
 using myTNB.PushNotification;
 using UIKit;
 
+using CMSService = myTNB.Core.Sitecore.Services;
+using CMSModel = myTNB.Core.Sitecore.Model;
+
 namespace myTNB
 {
     public partial class DashboardHomeViewController : CustomUIViewController
@@ -75,6 +78,7 @@ namespace myTNB
             _textFieldView.AddSubview(_textFieldSearch);
             //View.AddSubview(_textFieldView);
             OnGetServices();
+            OnGetHelpInfo();
         }
 
         private void SetTextFieldEvents(UITextField textField)
@@ -273,6 +277,57 @@ namespace myTNB
             });
         }
 
+        private void OnGetHelpInfo()
+        {
+            InvokeInBackground(async () =>
+            {
+                CMSService.GetItemsService iService = new CMSService.GetItemsService(TNBGlobal.OS
+                    , string.Empty, TNBGlobal.SITECORE_URL, TNBGlobal.DEFAULT_LANGUAGE);
+                CMSModel.HelpTimeStampResponseModel timeStamp = iService.GetHelpTimestampItem();
+                bool needsUpdate = true;
+                if (timeStamp != null && timeStamp.Data != null && timeStamp.Data.Count > 0 && timeStamp.Data[0] != null
+                    && !string.IsNullOrEmpty(timeStamp.Data[0].Timestamp))
+                {
+                    NSUserDefaults sharedPreference = NSUserDefaults.StandardUserDefaults;
+                    string currentTS = sharedPreference.StringForKey("SiteCoreHelpTimeStamp");
+                    if (string.IsNullOrEmpty(currentTS) || string.IsNullOrWhiteSpace(currentTS))
+                    {
+                        sharedPreference.SetString(timeStamp.Data[0].Timestamp, "SiteCoreHelpTimeStamp");
+                        sharedPreference.Synchronize();
+                    }
+                    else
+                    {
+                        if (currentTS.Equals(timeStamp.Data[0].Timestamp))
+                        {
+                            needsUpdate = false;
+                        }
+                        else
+                        {
+                            sharedPreference.SetString(timeStamp.Data[0].Timestamp, "SiteCoreHelpTimeStamp");
+                            sharedPreference.Synchronize();
+                        }
+                    }
+                }
+
+                if (needsUpdate)
+                {
+                   /* string faqItems = iService.GetFAQsItem();
+                    FAQsResponseModel faqResponse = JsonConvert.DeserializeObject<FAQsResponseModel>(faqItems);
+                    if (faqResponse != null && faqResponse.Status.Equals("Success")
+                        && faqResponse.Data != null && faqResponse.Data.Count > 0)
+                    {
+                        FAQEntity wsManager = new FAQEntity();
+                        wsManager.DeleteTable();
+                        wsManager.CreateTable();
+                        wsManager.InsertListOfItems(faqResponse.Data);
+                    }*/
+                }
+
+
+
+            });
+        }
+
         private async Task<ServicesResponseModel> GetServices()
         {
             ServiceManager serviceManager = new ServiceManager();
@@ -282,7 +337,7 @@ namespace myTNB
                 sspuid = DataManager.DataManager.SharedInstance.User.UserID,
                 did = DataManager.DataManager.SharedInstance.UDID,
                 ft = DataManager.DataManager.SharedInstance.FCMToken,
-                lang = DataManager.DataManager.SharedInstance.LANGUAGE,
+                lang = TNBGlobal.DEFAULT_LANGUAGE,
                 sec_auth_k1 = TNBGlobal.API_KEY_ID,
                 sec_auth_k2 = string.Empty,
                 ses_param1 = string.Empty,
