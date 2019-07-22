@@ -5,6 +5,7 @@ using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using Android.App;
+using Android.Util;
 using myTNB.SitecoreCMS.Services;
 using myTNB_Android.Src.Base.Models;
 using myTNB_Android.Src.Database.Model;
@@ -240,7 +241,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             {
                 cachedList.Add(new NewFAQ()
                 {
-                    ID = i.ToString(),
+                    ID = cachedDBList[i].ID,
                     Image = cachedDBList[i].Image,
                     BGStartColor = cachedDBList[i].BGStartColor,
                     BGEndColor = cachedDBList[i].BGEndColor,
@@ -372,13 +373,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 if (items != null && items.Count() > 0)
                 {
                     NewFAQParentEntity entity = items[0];
-                    if (entity != null && !string.IsNullOrEmpty(entity?.Timestamp))
+                    if (entity != null && entity.Timestamp != null)
                     {
                         mView.OnSavedTimeStamp(entity?.Timestamp);
-                    }
-                    else
-                    {
-                        mView.OnSavedTimeStamp(null);
                     }
                 }
                 else

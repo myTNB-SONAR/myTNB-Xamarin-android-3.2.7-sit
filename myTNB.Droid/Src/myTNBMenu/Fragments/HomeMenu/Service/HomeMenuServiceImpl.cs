@@ -20,7 +20,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Service
         {
 #if STUB
             summaryDashboardInfoApi = RestService.For<ISummaryDashBoard>(Constants.SERVER_URL.END_POINT);
-            getServiceApi = RestService.For<IGetServiceApi>("http://10.215.128.191:89");
+            getServiceApi = RestService.For<IGetServiceApi>(Constants.SERVER_URL.END_POINT);
 #elif DEBUG
             var httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
             summaryDashboardInfoApi = RestService.For<ISummaryDashBoard>(httpClient);

@@ -105,12 +105,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
         HomeMenuContract.IHomeMenuPresenter presenter;
 
-        private static bool isRefreshNeeded = false;
-
-        private static bool isFirstCreated = true;
-
-        private static bool isNavigated = false;
-
         MyServiceShimmerAdapter myServiceShimmerAdapter;
 
         MyServiceAdapter myServiceAdapter;
@@ -152,13 +146,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 SetAccountActionHeader();
                 SetupMyServiceView();
                 SetupNewFAQView();
-                SetMyServiceRecycleView();
-                SetNewFAQRecycleView();
                 TextViewUtils.SetMuseoSans500Typeface(myServiceTitle, newFAQTitle);
 
                 this.presenter.LoadAccounts();
-                this.presenter.InitiateService();
-                isFirstCreated = false;
             }
             catch (System.Exception e)
             {
@@ -225,6 +215,15 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     currentMyServiceList.Clear();
                     currentMyServiceList.AddRange(list);
                     myServiceAdapter.ClickChanged += OnClickChanged;
+                    int count = accountsAdapter.accountCardModelList.Count;
+                    if (count < 1 && myServiceAdapter.ItemCount == 0)
+                    {
+                        newFAQTitle.SetTextColor(Color.White);
+                    }
+                    else
+                    {
+                        newFAQTitle.SetTextColor(Resources.GetColor(Resource.Color.powerBlue));
+                    }
                 });
             }
             catch (System.Exception e)
@@ -235,18 +234,33 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
         public void SetNewFAQRecycleView()
         {
-            newFAQShimmerAdapter = new NewFAQShimmerAdapter(this.presenter.LoadShimmerFAQList(3));
-            newFAQShimmerList.SetAdapter(newFAQShimmerAdapter);
-
-            newFAQShimmerView.Visibility = ViewStates.Visible;
-            newFAQView.Visibility = ViewStates.Gone;
-            var shimmerBuilder = ShimmerUtils.ShimmerBuilderConfig();
-            if (shimmerBuilder != null)
-            {
-                shimmerFAQView.SetShimmer(shimmerBuilder?.Build());
-            }
-            shimmerFAQView.StartShimmer();
+            SetupNewFAQShimmerEffect();
             this.presenter.GetSavedNewFAQTimeStamp();
+        }
+
+        private void SetupNewFAQShimmerEffect()
+        {
+            try
+            {
+                Activity.RunOnUiThread(() =>
+                {
+                    newFAQShimmerAdapter = new NewFAQShimmerAdapter(this.presenter.LoadShimmerFAQList(3));
+                    newFAQShimmerList.SetAdapter(newFAQShimmerAdapter);
+
+                    newFAQShimmerView.Visibility = ViewStates.Visible;
+                    newFAQView.Visibility = ViewStates.Gone;
+                    var shimmerBuilder = ShimmerUtils.ShimmerBuilderConfig();
+                    if (shimmerBuilder != null)
+                    {
+                        shimmerFAQView.SetShimmer(shimmerBuilder?.Build());
+                    }
+                    shimmerFAQView.StartShimmer();
+                });
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public void SetNewFAQResult(List<NewFAQ> list)
@@ -327,18 +341,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             var actionBar = act.SupportActionBar;
             actionBar.Hide();
             ShowBackButton(false);
-        }
 
-        public override void OnPause()
-        {
-            isRefreshNeeded = true;
-            base.OnPause();
-        }
-
-        public override void OnDestroy()
-        {
-            isRefreshNeeded = false;
-            base.OnDestroy();
+            this.presenter.InitiateService();
         }
 
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -403,7 +407,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     if (selectedService.ServiceCategoryId == "1003")
                     {
                         ShowFeedbackMenu();
-                        isNavigated = true;
                     }
                 }
             }
@@ -423,7 +426,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     Intent faqIntent = new Intent(this.Activity, typeof(FAQListActivity));
                     faqIntent.PutExtra(Constants.FAQ_ID_PARAM, selectedNewFAQ.TargetItem);
                     Activity.StartActivity(faqIntent);
-                    isNavigated = true;
                 }
             }
             catch (System.Exception e)
@@ -469,6 +471,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 else
                 {
                     myServiceTitle.SetTextColor(Resources.GetColor(Resource.Color.powerBlue));
+                }
+                if (count < 1 && myServiceAdapter.ItemCount == 0)
+                {
+                    newFAQTitle.SetTextColor(Color.White);
+                }
+                else
+                {
+                    newFAQTitle.SetTextColor(Resources.GetColor(Resource.Color.powerBlue));
                 }
             }
             catch (System.Exception e)
