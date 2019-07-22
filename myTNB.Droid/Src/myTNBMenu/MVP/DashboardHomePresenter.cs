@@ -540,8 +540,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 
 							if (currentBottomNavigationMenu == Resource.Id.menu_dashboard)
 							{
-								this.mView.ShowAccountName();
-								this.mView.SetToolbarTitle(Resource.String.dashboard_menu_activity_title);
 								if (smDataError)
 								{
 									smDataError = false;
@@ -552,7 +550,9 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 									this.mView.ShowChart(usageHistoryResponse.Data.UsageHistoryData, AccountData.Copy(accountSelected, true));
 								}
 								usageHistoryResponse = null;
-							}
+                                this.mView.ShowAccountName();
+                                this.mView.SetToolbarTitle(Resource.String.dashboard_menu_activity_title);
+                            }
 							else if (currentBottomNavigationMenu == Resource.Id.menu_bill)
 							{
 								this.mView.ShowAccountName();
@@ -1104,8 +1104,8 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 								this.mView.SetAccountName(selected.AccDesc);
 							}
 						}
-                        this.mView.ShowAccountName();
-                        this.mView.SetToolbarTitle(Resource.String.dashboard_menu_activity_title);
+                        //this.mView.ShowAccountName();
+                        //this.mView.SetToolbarTitle(Resource.String.dashboard_menu_activity_title);
                     }
 					else
 					{
