@@ -5,12 +5,14 @@ using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using Android.App;
+using myTNB.SitecoreCMS.Services;
 using myTNB_Android.Src.Base.Models;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP.Models;
 using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Requests;
 using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Service;
 using myTNB_Android.Src.SiteCore;
+using myTNB_Android.Src.SitecoreCMS.Model;
 using myTNB_Android.Src.SummaryDashBoard.Models;
 using myTNB_Android.Src.Utils;
 using Newtonsoft.Json;
@@ -199,31 +201,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
         public async Task InitiateMyService()
         {
-            if (MyServiceEntity.Count() == 0 || FirstTimeMyServiceInitiate)
-            {
-                await GetMyServiceService();
-            }
-            else
-            {
-                ReadMyServiceFromCache();
-            }
+            await GetMyServiceService();
         }
 
         public async Task RetryMyService()
         {
             await GetMyServiceService();
-        }
-
-        public async Task InitiateNewFAQ()
-        {
-            if (NewFAQEntity.Count() == 0 || FirstTimeNewFAQInitiate)
-            {
-                await GetNewFAQService();
-            }
-            else
-            {
-                ReadNewFAQFromCache();
-            }
         }
 
         private void ReadMyServiceFromCache()
@@ -257,7 +240,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             {
                 cachedList.Add(new NewFAQ()
                 {
-                    ID = cachedDBList[i].ID,
+                    ID = i.ToString(),
                     Image = cachedDBList[i].Image,
                     BGStartColor = cachedDBList[i].BGStartColor,
                     BGEndColor = cachedDBList[i].BGEndColor,
@@ -317,103 +300,27 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 else
                 {
                     ReadMyServiceFromCache();
-                    this.mView.ShowMyServiceRetryOptions(getServicesResponse.Data.DisplayMessage);
+                    // this.mView.ShowMyServiceRetryOptions(getServicesResponse.Data.DisplayMessage);
                 }
 
             }
             catch (System.OperationCanceledException cancelledException)
             {
                 ReadMyServiceFromCache();
-                this.mView.ShowMyServiceRetryOptions(null);
+                // this.mView.ShowMyServiceRetryOptions(null);
                 Utility.LoggingNonFatalError(cancelledException);
             }
             catch (ApiException apiException)
             {
                 ReadMyServiceFromCache();
-                this.mView.ShowMyServiceRetryOptions(null);
+                // this.mView.ShowMyServiceRetryOptions(null);
                 Utility.LoggingNonFatalError(apiException);
             }
             catch (Exception unknownException)
             {
                 ReadMyServiceFromCache();
-                this.mView.ShowMyServiceRetryOptions(null);
+                // this.mView.ShowMyServiceRetryOptions(null);
                 Utility.LoggingNonFatalError(unknownException);
-            }
-        }
-
-        private async Task GetNewFAQService()
-        {
-            try
-            {
-                await Task.Delay(3000);
-                NewFAQEntity.RemoveAll();
-                List<NewFAQ> dummyList = new List<NewFAQ>();
-                NewFAQ newItem = new NewFAQ();
-                for (int i = 0; i < 6; i++)
-                {
-                    if (i == 0)
-                    {
-                        newItem = new NewFAQ()
-                        {
-                            ID = "0",
-                            Title = "How do I reset my password?"
-                        };
-                    }
-                    else if (i == 1)
-                    {
-                        newItem = new NewFAQ()
-                        {
-                            ID = "1",
-                            Title = "Learn how to read your meter."
-                        };
-                    }
-                    else if (i == 2)
-                    {
-                        newItem = new NewFAQ()
-                        {
-                            ID = "2",
-                            Title = "Check out how you can apply for AutoPay."
-                        };
-
-                    }
-                    else if (i == 3)
-                    {
-                        newItem = new NewFAQ()
-                        {
-                            ID = "3",
-                            Title = "How can I contact TNB?"
-                        };
-                    }
-                    else if (i == 4)
-                    {
-                        newItem = new NewFAQ()
-                        {
-                            ID = "4",
-                            Title = "How do i pay my bills through myTNB app?"
-                        };
-                    }
-                    else if (i == 5)
-                    {
-                        newItem = new NewFAQ()
-                        {
-                            ID = "5",
-                            Title = "What’s new on this app?"
-                        };
-                    }
-                    dummyList.Add(newItem);
-                    NewFAQEntity.InsertOrReplace(newItem);
-                }
-                this.mView.SetNewFAQResult(dummyList);
-
-                FirstTimeNewFAQInitiate = false;
-            }
-            catch (TaskCanceledException timeoutEx)
-            {
-                System.Diagnostics.Debug.WriteLine(timeoutEx);
-            }
-            catch (Exception ex)
-            {
-                System.Diagnostics.Debug.WriteLine("Error {0}", ex.Message);
             }
         }
 
@@ -455,7 +362,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             return list;
         }
 
-        /*public void GetSavedNewFAQTimeStamp()
+        public void GetSavedNewFAQTimeStamp()
         {
             try
             {
@@ -468,6 +375,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     if (entity != null && !string.IsNullOrEmpty(entity?.Timestamp))
                     {
                         mView.OnSavedTimeStamp(entity?.Timestamp);
+                    }
+                    else
+                    {
+                        mView.OnSavedTimeStamp(null);
                     }
                 }
                 else
@@ -490,8 +401,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 try
                 {
                     string density = DPUtils.GetDeviceDensity(Application.Context);
-                    myTNB.Core.Sitecore.Services.GetItemsService getItemsService = new myTNB.Core.Sitecore.Services.GetItemsService(SiteCoreConfig.OS, density, SiteCoreConfig.SITECORE_URL, SiteCoreConfig.DEFAULT_LANGUAGE);
-                    myTNB.Core.Sitecore.Model.HelpTimeStampResponseModel responseModel = getItemsService.GetHelpTimestampItem();
+                    GetItemsService getItemsService = new GetItemsService(SiteCoreConfig.OS, density, SiteCoreConfig.SITECORE_URL, SiteCoreConfig.DEFAULT_LANGUAGE);
+                    HelpTimeStampResponseModel responseModel = getItemsService.GetHelpTimestampItem();
                     if (responseModel.Status.Equals("Success"))
                     {
                         NewFAQParentEntity wtManager = new NewFAQParentEntity();
@@ -520,10 +431,32 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             cts = new CancellationTokenSource();
             return Task.Factory.StartNew(() =>
             {
-                
+                try
+                {
+                    string density = DPUtils.GetDeviceDensity(Application.Context);
+                    GetItemsService getItemsService = new GetItemsService(SiteCoreConfig.OS, density, SiteCoreConfig.SITECORE_URL, SiteCoreConfig.DEFAULT_LANGUAGE);
+                    HelpResponseModel responseModel = getItemsService.GetHelpItems();
+                    if (responseModel.Status.Equals("Success"))
+                    {
+                        NewFAQEntity wtManager = new NewFAQEntity();
+                        wtManager.DeleteTable();
+                        wtManager.CreateTable();
+                        wtManager.InsertListOfItems(responseModel.Data);
+                        ReadNewFAQFromCache();
+                    }
+                    else
+                    {
+                        ReadNewFAQFromCache();
+                    }
+                }
+                catch (Exception e)
+                {
+                    ReadNewFAQFromCache();
+                    Utility.LoggingNonFatalError(e);
+                }
             }).ContinueWith((Task previous) =>
             {
             }, cts.Token);
-        }*/
+        }
     }
 }

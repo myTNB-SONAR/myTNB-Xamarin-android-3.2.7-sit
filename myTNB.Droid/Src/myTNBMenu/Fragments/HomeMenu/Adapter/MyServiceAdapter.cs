@@ -12,15 +12,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
 	public class MyServiceAdapter : RecyclerView.Adapter
 	{
 
-		List<MyService> myServiceList = null;
+		List<MyService> myServiceList = new List<MyService>();
 
         public event EventHandler<int> ClickChanged;
 
 
         public MyServiceAdapter(List<MyService> data)
 		{
-			this.myServiceList = new List<MyService>();
-			this.myServiceList.AddRange(data);
+			this.myServiceList = data;
 		}
 
         public override int ItemCount => myServiceList.Count;

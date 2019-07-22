@@ -1,7 +1,10 @@
 ﻿using myTNB.SitecoreCM.Services;
 using myTNB.SitecoreCMS.Model;
+using myTNB_Android.Src.SitecoreCMS.Model;
 using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 namespace myTNB.SitecoreCMS.Services
@@ -109,6 +112,43 @@ namespace myTNB.SitecoreCMS.Services
             var listData = AddDataToList(data);
             var resp = CheckData(listData);
             return JsonConvert.SerializeObject(resp);
+        }
+
+        public HelpResponseModel GetHelpItems()
+        {
+            HelpResponseModel respModel = new HelpResponseModel();
+            try
+            {
+                HelpService service = new HelpService(OS, ImageSize, WebsiteUrl, Language);
+                var data = service.GetItems();
+                var resp = CheckData(data.ToList<object>());
+                string serializedObj = JsonConvert.SerializeObject(resp);
+                respModel = JsonConvert.DeserializeObject<HelpResponseModel>(serializedObj);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("Exception in GetItemsService/HelpResponseModel: " + e.Message);
+            }
+            return respModel;
+        }
+
+        public HelpTimeStampResponseModel GetHelpTimestampItem()
+        {
+            HelpTimeStampResponseModel respModel = new HelpTimeStampResponseModel();
+            try
+            {
+                HelpService service = new HelpService(OS, ImageSize, WebsiteUrl, Language);
+                var data = service.GetTimeStamp();
+                var listData = AddDataToList(data);
+                var resp = CheckData(listData);
+                string serializedObj = JsonConvert.SerializeObject(resp);
+                respModel = JsonConvert.DeserializeObject<HelpTimeStampResponseModel>(serializedObj);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("Exception in GetItemsService/GetFAQsTimestampItem: " + e.Message);
+            }
+            return respModel;
         }
 
         private BaseModel CheckData(List<object> data)

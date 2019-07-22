@@ -1,7 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP;
 using SQLite;
+using myTNB_Android.Src.Utils;
+using myTNB_Android.Src.SitecoreCMS.Model;
 
 namespace myTNB_Android.Src.Database.Model
 {
@@ -44,10 +47,26 @@ namespace myTNB_Android.Src.Database.Model
         [Column("TargetItem")]
         public string TargetItem { set; get; }
 
-        public static int CreateTable()
+        public void CreateTable()
         {
             var db = DBHelper.GetSQLiteConnection();
-            return (int)db.CreateTable<NewFAQEntity>();
+            List<SQLiteConnection.ColumnInfo> info = db.GetTableInfo("NewFAQEntity");
+            db.CreateTable<NewFAQEntity>();
+        }
+
+        public void DeleteTable()
+        {
+            try
+            {
+                using (var db = new SQLiteConnection(Constants.DB_PATH))
+                {
+                    db.DeleteAll<NewFAQEntity>();
+                }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public static void CreateTableAsync(SQLiteAsyncConnection db)
@@ -55,28 +74,41 @@ namespace myTNB_Android.Src.Database.Model
             db.CreateTableAsync<NewFAQEntity>();
         }
 
-        public static int InsertOrReplace(NewFAQ newFAQ)
+        public void InsertListOfItems(List<HelpModel> itemList)
         {
-            var db = DBHelper.GetSQLiteConnection();
-            var newRecord = new NewFAQEntity()
+            if (itemList != null)
             {
-                ID = newFAQ.ID,
-                Image = newFAQ.Image,
-                BGStartColor = newFAQ.BGStartColor,
-                BGEndColor = newFAQ.BGEndColor,
-                BGDirection = newFAQ.BGDirection,
-                Title = newFAQ.Title,
-                Description = newFAQ.Description,
-                TopicBodyTitle = newFAQ.TopicBodyTitle,
-                TopicBodyContent = newFAQ.TopicBodyContent,
-                CTA = newFAQ.CTA,
-                Tags = newFAQ.Tags,
-                TargetItem = newFAQ.TargetItem
-            };
+                foreach (HelpModel obj in itemList)
+                {
+                    NewFAQEntity item = new NewFAQEntity();
+                    item.ID = obj.ID;
+                    item.Image = obj.TopicBGImage;
+                    item.BGStartColor = obj.BGStartColor;
+                    item.BGEndColor = obj.BGEndColor;
+                    item.BGDirection = obj.BGGradientDirection;
+                    item.Title = obj.Title;
+                    item.Description = obj.Description;
+                    item.TopicBodyTitle = obj.TopicBodyTitle;
+                    item.TopicBodyContent = obj.TopicBodyContent;
+                    item.CTA = obj.CTA;
+                    item.Tags = obj.Tags;
+                    item.TargetItem = obj.TargetItem;
+                    InsertItem(item);
+                }
+            }
+        }
 
-            int rows = db.InsertOrReplace(newRecord);
-
-            return rows;
+        public void InsertItem(NewFAQEntity item)
+        {
+            try
+            {
+                var db = DBHelper.GetSQLiteConnection();
+                int newRecord = db.InsertOrReplace(item);
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public static void RemoveAll()

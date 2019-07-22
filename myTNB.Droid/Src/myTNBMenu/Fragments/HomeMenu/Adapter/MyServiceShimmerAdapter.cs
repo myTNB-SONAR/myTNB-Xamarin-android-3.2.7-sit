@@ -11,7 +11,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
     public class MyServiceShimmerAdapter : RecyclerView.Adapter
     {
 
-        List<MyService> shimmerList = null;
+        List<MyService> shimmerList = new List<MyService>();
 
 
 
@@ -19,12 +19,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
         {
             if (data == null)
             {
-                this.shimmerList = new List<MyService>();
+                this.shimmerList.Clear();
             }
             else
             {
-                this.shimmerList = new List<MyService>();
-                this.shimmerList.AddRange(data);
+                this.shimmerList = data;
             }
         }
 

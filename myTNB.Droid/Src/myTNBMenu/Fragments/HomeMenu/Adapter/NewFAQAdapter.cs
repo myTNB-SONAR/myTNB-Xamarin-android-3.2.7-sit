@@ -12,14 +12,13 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
 	public class NewFAQAdapter : RecyclerView.Adapter
 	{
 
-		List<NewFAQ> faqList = null;
+		List<NewFAQ> faqList = new List<NewFAQ>();
 
         public event EventHandler<int> ClickChanged;
 
         public NewFAQAdapter(List<NewFAQ> data)
 		{
-			this.faqList = new List<NewFAQ>();
-			this.faqList.AddRange(data);
+			this.faqList = data;
 		}
 
 		public override int ItemCount => faqList.Count;

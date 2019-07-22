@@ -173,9 +173,6 @@
     <Reference Include="Sitecore.MobileSDK, Version=1.0.6116.30256, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Sitecore.MobileSDK.Xamarin.1.3.0\lib\portable-net45+win8+wpa81\Sitecore.MobileSDK.dll</HintPath>
     </Reference>
-    <Reference Include="Sitecore.MobileSDK.PasswordProvider.Android, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Sitecore.MobileSDK.PasswordProvider.1.3.0\lib\MonoAndroid\Sitecore.MobileSDK.PasswordProvider.Android.dll</HintPath>
-    </Reference>
     <Reference Include="Sitecore.MobileSDK.PasswordProvider.Interface, Version=1.0.6116.30255, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Sitecore.MobileSDK.Xamarin.1.3.0\lib\portable-net45+win8+wpa81\Sitecore.MobileSDK.PasswordProvider.Interface.dll</HintPath>
     </Reference>
@@ -381,6 +378,9 @@
     </Reference>
     <Reference Include="Xamarin.Facebook.Shimmer.Android">
       <HintPath>..\packages\Xamarin.Facebook.Shimmer.1.0.0\lib\monoandroid50\Xamarin.Facebook.Shimmer.Android.dll</HintPath>
+    </Reference>
+    <Reference Include="Sitecore.MobileSDK.PasswordProvider.Android">
+      <HintPath>packages\Sitecore.MobileSDK.PasswordProvider.1.3.0\lib\MonoAndroid\Sitecore.MobileSDK.PasswordProvider.Android.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -1292,6 +1292,9 @@
     <Compile Include="Src\myTNBMenu\Fragments\HomeMenu\MVP\MyService.cs" />
     <Compile Include="Src\myTNBMenu\Fragments\HomeMenu\MVP\NewFAQ.cs" />
     <Compile Include="Src\myTNBMenu\Fragments\HomeMenu\Requests\MyServiceRequest.cs" />
+    <Compile Include="Src\Database\Model\NewFAQParentEntity.cs" />
+    <Compile Include="Src\SitecoreCMS\Service\HelpService.cs" />
+    <Compile Include="Src\SitecoreCMS\Model\HelpModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -4488,7 +4491,7 @@
     <AndroidResource Include="Resources\values\facebook-strings.xml" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\myTNB.Mobile\myTNB.Mobile.csproj">
+      <ProjectReference Include="..\myTNB.Mobile\myTNB.Mobile.csproj">
       <Project>{A27A3842-1A8F-47F0-B333-94875BC922ED}</Project>
       <Name>myTNB.Mobile</Name>
     </ProjectReference>
