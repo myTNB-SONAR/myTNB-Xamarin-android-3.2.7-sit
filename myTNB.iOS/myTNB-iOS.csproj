@@ -1272,7 +1272,6 @@
     <Folder Include="Assets.xcassets\Search-Icon.imageset\" />
     <Folder Include="Assets.xcassets\Add-Account-Icon.imageset\" />
     <Folder Include="Assets.xcassets\SMR-Icon.imageset\" />
-    <Folder Include="Home\Dashboard\DashboardHome\Accounts\Scroll\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -1979,11 +1978,6 @@
     <Compile Include="Customs\DashboardHome\DashboardHomeHeader.cs" />
     <Compile Include="Customs\DashboardHome\DashboardHomeAccountCard.cs" />
     <Compile Include="Home\Dashboard\DashboardHome\Accounts\AccountsTableViewCell.cs" />
-    <Compile Include="Home\Dashboard\DashboardHome\Accounts\AccountsPageViewDataSource.cs" />
-    <Compile Include="Home\Dashboard\DashboardHome\Accounts\AccountsContentViewController.cs" />
-    <Compile Include="Home\Dashboard\DashboardHome\Accounts\AccountsContentViewController.designer.cs">
-      <DependentUpon>AccountsContentViewController.cs</DependentUpon>
-    </Compile>
     <Compile Include="Rewards\RewardsViewController.cs" />
     <Compile Include="Rewards\RewardsViewController.designer.cs">
       <DependentUpon>RewardsViewController.cs</DependentUpon>
@@ -1995,8 +1989,8 @@
     <Compile Include="Tab Bar\TabbarConstants.cs" />
     <Compile Include="Customs\CustomShimmerView.cs" />
     <Compile Include="Home\Dashboard\DashboardHome\DashboardHomeHelper.cs" />
-    <Compile Include="Home\Dashboard\DashboardHome\Accounts\Scroll\AccountsCardContentViewController.cs" />
-    <Compile Include="Home\Dashboard\DashboardHome\Accounts\Scroll\AccountsCardContentViewController.designer.cs">
+    <Compile Include="Home\Dashboard\DashboardHome\Accounts\AccountsCardContentViewController.cs" />
+    <Compile Include="Home\Dashboard\DashboardHome\Accounts\AccountsCardContentViewController.designer.cs">
       <DependentUpon>AccountsCardContentViewController.cs</DependentUpon>
     </Compile>
   </ItemGroup>

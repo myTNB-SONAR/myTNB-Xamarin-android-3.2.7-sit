@@ -7,15 +7,11 @@ namespace myTNB
     public class DashboardHomeDataSource : UITableViewSource
     {
         DashboardHomeViewController _controller;
-        UIPageViewController _accountsPageViewController;
         AccountsCardContentViewController _accountsCardContentViewController;
-        UIView _headerView;
         DashboardHomeHelper _dashboardHomeHelper = new DashboardHomeHelper();
-        public DashboardHomeDataSource(DashboardHomeViewController controller, UIPageViewController accountsPageViewController, UIView headerView, AccountsCardContentViewController accountsCardContentViewController)
+        public DashboardHomeDataSource(DashboardHomeViewController controller, AccountsCardContentViewController accountsCardContentViewController)
         {
             _controller = controller;
-            _accountsPageViewController = accountsPageViewController;
-            _headerView = headerView;
             _accountsCardContentViewController = accountsCardContentViewController;
         }
 
@@ -34,9 +30,8 @@ namespace myTNB
             if (indexPath.Row == 0)
             {
                 AccountsTableViewCell cell = tableView.DequeueReusableCell(DashboardHomeConstants.Cell_Accounts) as AccountsTableViewCell;
-                cell.UpdateCell(_dashboardHomeHelper.GetHeightForAccountCards());
-                cell.AddViewsToContainersV2(_accountsCardContentViewController);
-                //cell.AddViewsToContainers(_accountsPageViewController, _headerView);
+                //cell.UpdateCell(_dashboardHomeHelper.GetHeightForAccountCards());
+                cell.AddViewsToContainers(_accountsCardContentViewController);
                 return cell;
             }
             if (indexPath.Row == 1)

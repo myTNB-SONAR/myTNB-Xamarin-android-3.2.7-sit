@@ -20,6 +20,7 @@ namespace myTNB
         string _strAccountIcon, _strNickname, _strAccountNo;
         nfloat _yLocation = 0f;
         DueAmountDataModel _model = new DueAmountDataModel();
+        int _tag;
 
         public DashboardHomeAccountCard(AccountsCardContentViewController controller, UIView parentView, nfloat yLocation)
         {
@@ -61,14 +62,14 @@ namespace myTNB
                 Text = _strAccountNo
             };
 
-            _amountDue = new UILabel(new CGRect(parentWidth - 100f - 12f - (16f * 2), 12f, 100f, 20f))
+            _amountDue = new UILabel(new CGRect(parentWidth - 100f - 12f, 12f, 100f, 20f))
             {
                 Font = MyTNBFont.MuseoSans14_500,
                 TextColor = MyTNBColor.GreyishBrown,
                 TextAlignment = UITextAlignment.Right
             };
 
-            _dueDate = new UILabel(new CGRect(parentWidth - 100f - 12f - (16f * 2), _amountDue.Frame.GetMaxY(), 100f, 20f))
+            _dueDate = new UILabel(new CGRect(parentWidth - 100f - 12f, _amountDue.Frame.GetMaxY(), 100f, 20f))
             {
                 Font = MyTNBFont.MuseoSans12_300,
                 TextColor = MyTNBColor.CharcoalGrey,
@@ -117,6 +118,11 @@ namespace myTNB
         public void SetTapAccountCardEvent(UITapGestureRecognizer tapGesture)
         {
             _accountCardView.AddGestureRecognizer(tapGesture);
+        }
+
+        public void SetTag(int tag)
+        {
+            _tag = tag;
         }
 
         public void AdjustLabels(DueAmountDataModel model)

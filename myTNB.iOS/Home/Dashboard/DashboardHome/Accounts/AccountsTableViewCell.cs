@@ -8,45 +8,32 @@ namespace myTNB
     {
         DashboardHomeHelper _dashboardHomeHelper = new DashboardHomeHelper();
         private nfloat cellWidth = UIApplication.SharedApplication.KeyWindow.Frame.Width;
-        private UIView _headerViewContainer, _pageViewContainer;
+        private UIView _contentView;
         public AccountsTableViewCell(IntPtr handle) : base(handle)
         {
-            nfloat headerHeight = 110f;
-            _headerViewContainer = new UIView(new CGRect(0, 0, cellWidth, headerHeight))
+            _contentView = new UIView(new CGRect(0, 0, cellWidth, _dashboardHomeHelper.GetHeightForAccountCards() + DashboardHomeConstants.SearchViewHeight + DashboardHomeConstants.PageControlHeight))
             {
                 BackgroundColor = UIColor.Clear
             };
-            //_pageViewContainer = new UIView(new CGRect(0, _headerViewContainer.Frame.GetMaxY(), cellWidth, _dashboardHomeHelper.GetHeightForAccountCards()))
-            _pageViewContainer = new UIView(new CGRect(0, 0, cellWidth, _dashboardHomeHelper.GetHeightForAccountCards()))
-            {
-                BackgroundColor = UIColor.Clear
-            };
-            //AddSubview(_headerViewContainer);
-            AddSubview(_pageViewContainer);
+            AddSubview(_contentView);
             BackgroundColor = UIColor.Clear;
-            _pageViewContainer.LeftAnchor.ConstraintEqualTo(LeftAnchor).Active = true;
-            _pageViewContainer.RightAnchor.ConstraintEqualTo(RightAnchor).Active = true;
-            _pageViewContainer.TopAnchor.ConstraintEqualTo(TopAnchor).Active = true;
-            _pageViewContainer.BottomAnchor.ConstraintEqualTo(BottomAnchor).Active = true;
+            _contentView.LeftAnchor.ConstraintEqualTo(LeftAnchor).Active = true;
+            _contentView.RightAnchor.ConstraintEqualTo(RightAnchor).Active = true;
+            _contentView.TopAnchor.ConstraintEqualTo(TopAnchor).Active = true;
+            _contentView.BottomAnchor.ConstraintEqualTo(BottomAnchor).Active = true;
             SelectionStyle = UITableViewCellSelectionStyle.None;
         }
 
-        public void AddViewsToContainers(UIPageViewController pageViewController, UIView headerView)
+        public void AddViewsToContainers(UIViewController accountsCardViewController)
         {
-            _headerViewContainer.AddSubview(headerView);
-            _pageViewContainer.AddSubview(pageViewController.View);
+            _contentView.AddSubview(accountsCardViewController.View);
         }
 
         public void UpdateCell(nfloat updatedHeight)
         {
-            CGRect frame = _pageViewContainer.Frame;
-            frame.Height = updatedHeight;
-            _pageViewContainer.Frame = frame;
-        }
-
-        public void AddViewsToContainersV2(UIViewController accountsCardViewController)
-        {
-            _pageViewContainer.AddSubview(accountsCardViewController.View);
+            CGRect frame = _contentView.Frame;
+            frame.Height = updatedHeight + DashboardHomeConstants.SearchViewHeight + DashboardHomeConstants.PageControlHeight;
+            _contentView.Frame = frame;
         }
     }
 }
