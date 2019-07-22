@@ -364,9 +364,8 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 					}
 					else
 					{
-						this.mView.HideAccountName();
-						this.mView.ShowNoAccountBillMenu();
-					}
+                        this.mView.DisableBillMenu();
+                    }
 
 
 					break;
@@ -738,7 +737,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 			}
 			catch (System.OperationCanceledException e)
 			{
-				Log.Debug(TAG, "Cancelled Exception");
 				if (this.mView.IsActive())
 				{
 					this.mView.HideProgressDialog();
@@ -762,7 +760,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 			catch (System.Exception e)
 			{
 				// ADD UNKNOWN EXCEPTION HERE
-				Log.Debug(TAG, "Stack " + e.StackTrace);
 				if (this.mView.IsActive())
 				{
 					this.mView.HideProgressDialog();
@@ -836,7 +833,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 			}
 			catch (System.Exception e)
 			{
-				Log.Debug(TAG, "Stack " + e.StackTrace);
 				if (this.mView.IsActive())
 				{
 					this.mView.HideProgressDialog();
@@ -907,7 +903,13 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 				this.mView.HideUnreadPromotions();
 
 			}
-		}
+
+            List<CustomerBillingAccount> accountList = CustomerBillingAccount.List();
+            if(accountList.Count == 0)
+            {
+                this.mView.DisableBillMenu();
+            }
+        }
 
 		public Task OnGetPromotionsTimeStamp()
 		{
@@ -929,7 +931,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 						wtManager.CreateTable();
 						wtManager.InsertListOfItems(responseModel.Data);
 						mView.ShowPromotionTimestamp(true);
-						Log.Debug("WalkThroughResponse", responseModel.Data.ToString());
 					}
 					else
 					{
@@ -1014,13 +1015,13 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 		{
 			try
 			{
-				DashboardHomeActivity.GO_TO_INNER_DASHBOARD = true;
 				List<CustomerBillingAccount> accountList = new List<CustomerBillingAccount>();
 				accountList = CustomerBillingAccount.List();
 				currentBottomNavigationMenu = Resource.Id.menu_dashboard;
 				if (accountList != null && accountList.Count > 0)
 				{
-					if (CustomerBillingAccount.HasSelected())
+                    DashboardHomeActivity.GO_TO_INNER_DASHBOARD = true;
+                    if (CustomerBillingAccount.HasSelected())
 					{
 						CustomerBillingAccount selected = new CustomerBillingAccount();
 						selected = CustomerBillingAccount.GetSelected();
@@ -1144,8 +1145,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 				}
 				else
 				{
-					this.mView.HideAccountName();
-					this.mView.ShowNoAccountDashboardChartMenu();
+					DoLoadHomeDashBoardFragment();
 					this.mView.DisableBillMenu();
 				}
 			}

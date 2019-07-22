@@ -2,7 +2,7 @@
 using Android.Text;
 using Android.Views;
 using Android.Widget;
-using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Models;
+using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP;
 using myTNB_Android.Src.Utils;
 using System;
 using System.Collections.Generic;
@@ -12,13 +12,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
 	public class NewFAQAdapter : RecyclerView.Adapter
 	{
 
-		List<NewFAQ> faqList = null;
+		List<NewFAQ> faqList = new List<NewFAQ>();
 
         public event EventHandler<int> ClickChanged;
 
         public NewFAQAdapter(List<NewFAQ> data)
 		{
-			this.faqList = new List<NewFAQ>();
 			this.faqList = data;
 		}
 
@@ -39,24 +38,26 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
 				vh.faqTitle.TextFormatted = Html.FromHtml(model.Title);
 			}
 
-			switch (model.ID)
+            int currentCount = position % 6;
+
+			switch (currentCount)
 			{
-                case "0":
+                case 0:
                     vh.backgroundImg.SetBackgroundResource(Resource.Drawable.faq_color_1);
                     break;
-                case "1":
+                case 1:
                     vh.backgroundImg.SetBackgroundResource(Resource.Drawable.faq_color_2);
                     break;
-                case "2":
+                case 2:
                     vh.backgroundImg.SetBackgroundResource(Resource.Drawable.faq_color_3);
                     break;
-                case "3":
+                case 3:
                     vh.backgroundImg.SetBackgroundResource(Resource.Drawable.faq_color_4);
                     break;
-                case "4":
+                case 4:
                     vh.backgroundImg.SetBackgroundResource(Resource.Drawable.faq_color_5);
                     break;
-                case "5":
+                case 5:
                     vh.backgroundImg.SetBackgroundResource(Resource.Drawable.faq_color_6);
                     break;
                 default:

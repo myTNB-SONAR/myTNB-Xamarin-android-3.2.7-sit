@@ -207,6 +207,20 @@ namespace myTNB_Android.Src.Utils
 
         internal static readonly string AMOUNT_DUE_FAILED_KEY = "AmountDueFailedKey";
 
+        //Home Menu Scroll
+        internal static readonly int ACCOUNT_LIST_CARD_DP = 60;
+        internal static readonly int ACCOUNT_LIST_INDICATOR_DP = 10;
+        internal static readonly int ACCOUNT_LIST_SERVICE_MAX_BOUNDARY = 3;
+        internal static readonly int MY_SERVICE_CARD_DP = 90;
+        internal static readonly int MY_SERVICE_NO_CARD_DP = 5;
+        internal static readonly int ACCOUNT_LIST_HELP_NO_ACC_DP_LIMIT = 110;
+        internal static readonly int ACCOUNT_LIST_HELP_MAX_BOUNDARY = 5;
+
+        //Language
+        internal static readonly string DEFAULT_LANG = "EN";
+
+        internal static readonly string DEV_END_POINT = "http://10.215.128.191:89";
+
         public enum GREETING
         {
             MORNING,

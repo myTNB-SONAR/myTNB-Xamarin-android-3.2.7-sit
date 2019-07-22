@@ -173,9 +173,6 @@
     <Reference Include="Sitecore.MobileSDK, Version=1.0.6116.30256, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Sitecore.MobileSDK.Xamarin.1.3.0\lib\portable-net45+win8+wpa81\Sitecore.MobileSDK.dll</HintPath>
     </Reference>
-    <Reference Include="Sitecore.MobileSDK.PasswordProvider.Android, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Sitecore.MobileSDK.PasswordProvider.1.3.0\lib\MonoAndroid\Sitecore.MobileSDK.PasswordProvider.Android.dll</HintPath>
-    </Reference>
     <Reference Include="Sitecore.MobileSDK.PasswordProvider.Interface, Version=1.0.6116.30255, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Sitecore.MobileSDK.Xamarin.1.3.0\lib\portable-net45+win8+wpa81\Sitecore.MobileSDK.PasswordProvider.Interface.dll</HintPath>
     </Reference>
@@ -381,6 +378,9 @@
     </Reference>
     <Reference Include="Xamarin.Facebook.Shimmer.Android">
       <HintPath>..\packages\Xamarin.Facebook.Shimmer.1.0.0\lib\monoandroid50\Xamarin.Facebook.Shimmer.Android.dll</HintPath>
+    </Reference>
+    <Reference Include="Sitecore.MobileSDK.PasswordProvider.Android">
+      <HintPath>packages\Sitecore.MobileSDK.PasswordProvider.1.3.0\lib\MonoAndroid\Sitecore.MobileSDK.PasswordProvider.Android.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -1124,7 +1124,6 @@
     <AndroidResource Include="Resources\drawable-xxxhdpi\ic_header_markread_disabled.png" />
     <Compile Include="Src\myTNBMenu\Activity\DashboardHomeActivity.cs" />
     <AndroidResource Include="Resources\layout\DashboardHomeView.axml" />
-    <Compile Include="Src\myTNBMenu\Fragments\HomeMenu\MVP\HomeMenuFragment.cs" />
     <AndroidResource Include="Resources\layout\HomeMenuFragmentView.axml" />
     <AndroidResource Include="Resources\drawable\custom_round_rec_shadow.xml" />
     <AndroidResource Include="Resources\layout\MyServiceComponentView.axml" />
@@ -1168,7 +1167,6 @@
     <AndroidResource Include="Resources\drawable-xxhdpi\search_blue.png" />
     <AndroidResource Include="Resources\drawable-xxxhdpi\search_blue.png" />
     <Compile Include="Src\myTNBMenu\Fragments\HomeMenu\Adapter\MyServiceShimmerAdapter.cs" />
-    <Compile Include="Src\myTNBMenu\Fragments\HomeMenu\Models\MyService.cs" />
     <AndroidResource Include="Resources\drawable-hdpi\ic_menu_reward_toggled.png" />
     <AndroidResource Include="Resources\drawable-mdpi\ic_menu_reward_toggled.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\ic_menu_reward_toggled.png" />
@@ -1213,7 +1211,6 @@
     <AndroidResource Include="Resources\drawable-xxxhdpi\ic_menu_promotion.png" />
     <AndroidResource Include="Resources\layout\NewFAQShimmerComponentView.axml" />
     <Compile Include="Src\myTNBMenu\Fragments\HomeMenu\Adapter\NewFAQAdapter.cs" />
-    <Compile Include="Src\myTNBMenu\Fragments\HomeMenu\Models\NewFAQ.cs" />
     <Compile Include="Src\myTNBMenu\Fragments\HomeMenu\Adapter\NewFAQShimmerAdapter.cs" />
     <AndroidResource Include="Resources\drawable\dashboard_home_bg.xml" />
     <AndroidResource Include="Resources\drawable-hdpi\fluid_background.png" />
@@ -1265,6 +1262,11 @@
     <AndroidResource Include="Resources\drawable-xxxhdpi\faq_color_4.png" />
     <AndroidResource Include="Resources\drawable-xxxhdpi\faq_color_5.png" />
     <AndroidResource Include="Resources\drawable-xxxhdpi\faq_color_6.png" />
+    <Compile Include="Src\myTNBMenu\Fragments\HomeMenu\MVP\HomeMenuFragment.cs" />
+    <Compile Include="Src\Database\Model\MyServiceEntity.cs" />
+    <Compile Include="Src\Database\Model\NewFAQEntity.cs" />
+    <Compile Include="Src\myTNBMenu\Fragments\HomeMenu\Api\IGetServiceApi.cs" />
+    <Compile Include="Src\Base\Models\UserInterface.cs" />
     <Compile Include="Src\Utils\ShimmerLoadingLayout.cs" />
     <AndroidResource Include="Resources\layout\account_card_shimmer_layout.axml" />
     <AndroidResource Include="Resources\drawable\account_icon_default.xml" />
@@ -1286,6 +1288,13 @@
     <AndroidResource Include="Resources\drawable-xxhdpi\smr_48_x_48.png" />
     <Compile Include="Src\myTNBMenu\Fragments\HomeMenu\Helper\AccountModelFormatter.cs" />
     <Compile Include="Src\Base\Helper\ModelFormatter.cs" />
+    <Compile Include="Src\myTNBMenu\Fragments\HomeMenu\MVP\GetServicesResponse.cs" />
+    <Compile Include="Src\myTNBMenu\Fragments\HomeMenu\MVP\MyService.cs" />
+    <Compile Include="Src\myTNBMenu\Fragments\HomeMenu\MVP\NewFAQ.cs" />
+    <Compile Include="Src\myTNBMenu\Fragments\HomeMenu\Requests\MyServiceRequest.cs" />
+    <Compile Include="Src\Database\Model\NewFAQParentEntity.cs" />
+    <Compile Include="Src\SitecoreCMS\Service\HelpService.cs" />
+    <Compile Include="Src\SitecoreCMS\Model\HelpModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -1641,11 +1650,12 @@
     <Folder Include="Src\myTNBMenu\Fragments\HomeMenu\" />
     <Folder Include="Src\myTNBMenu\Fragments\HomeMenu\MVP\" />
     <Folder Include="Src\myTNBMenu\Fragments\HomeMenu\Adapter\" />
+    <Folder Include="Src\myTNBMenu\Fragments\HomeMenu\Api\" />
     <Folder Include="Src\myTNBMenu\Fragments\HomeMenu\Listener\" />
-    <Folder Include="Src\myTNBMenu\Fragments\HomeMenu\Models\" />
     <Folder Include="Src\myTNBMenu\Fragments\HomeMenu\Service\" />
     <Folder Include="Src\myTNBMenu\Fragments\HomeMenu\Helper\" />
     <Folder Include="Src\Base\Helper\" />
+    <Folder Include="Src\myTNBMenu\Fragments\HomeMenu\Requests\" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\GradientStatusBar.xml" />
@@ -4481,7 +4491,7 @@
     <AndroidResource Include="Resources\values\facebook-strings.xml" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\myTNB.Mobile\myTNB.Mobile.csproj">
+      <ProjectReference Include="..\myTNB.Mobile\myTNB.Mobile.csproj">
       <Project>{A27A3842-1A8F-47F0-B333-94875BC922ED}</Project>
       <Name>myTNB.Mobile</Name>
     </ProjectReference>

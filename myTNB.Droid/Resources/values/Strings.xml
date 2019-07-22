@@ -1398,4 +1398,7 @@ Please try again later.]]>
   <!-- Refresh -->
   <string name="text_new_refresh">Refresh Now</string>
   <string name="text_new_refresh_content">This page must be tired. Tap the button below to help it out.</string>
+
+  <string name="my_service_btn_retry">Retry</string>
+  <string name="my_service_error">Something went wrong, Please try again.</string>
 </resources>
