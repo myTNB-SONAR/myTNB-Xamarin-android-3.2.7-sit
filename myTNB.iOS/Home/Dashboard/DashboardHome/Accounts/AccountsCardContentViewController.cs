@@ -133,8 +133,10 @@ namespace myTNB
                     , strokeWidth: 0
                 ),
                 TextColor = MyTNBColor.TunaGrey(),
-                Font = MyTNBFont.MuseoSans14_500
+                Font = MyTNBFont.MuseoSans14_500,
+                ReturnKeyType = UIReturnKeyType.Search
             };
+            _textFieldHelper.SetKeyboard(_textFieldSearch);
             _textFieldView.Hidden = true;
 
             _textFieldView.AddSubview(_textFieldSearch);
@@ -185,6 +187,14 @@ namespace myTNB
         #region Search Methods
         private void SetViewForActiveSearch(bool isSearchMode)
         {
+            if (isSearchMode)
+            {
+                _textFieldSearch.BecomeFirstResponder();
+            }
+            else
+            {
+                _textFieldSearch.ResignFirstResponder();
+            }
             _headerTitle.Hidden = isSearchMode;
             _textFieldView.Hidden = !isSearchMode;
             CGRect frame = _addAccountIcon.Frame;
@@ -249,6 +259,15 @@ namespace myTNB
             {
                 OnNotificationAction();
             }
+            else
+            {
+                if (_isSearchMode)
+                {
+                    _textFieldSearch.ResignFirstResponder();
+                    _isSearchMode = false;
+                    SetViewForActiveSearch(_isSearchMode);
+                }
+            }
         }
         #endregion
 
@@ -264,12 +283,12 @@ namespace myTNB
             Debug.WriteLine("OnSearchAction");
             _isSearchMode = !_isSearchMode;
             SetViewForActiveSearch(_isSearchMode);
-            _textFieldSearch.BecomeFirstResponder();
         }
 
         private void OnTypeSearchAction()
         {
             Debug.WriteLine("OnTypeSearchAction");
+            _isSearchMode = true;
             _textFieldSearch.BecomeFirstResponder();
         }
 
