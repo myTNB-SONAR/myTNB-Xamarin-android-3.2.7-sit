@@ -11,7 +11,6 @@ using Android.Preferences;
 using Android.Runtime;
 using Android.Support.Design.Widget;
 using Android.Support.V4.Content;
-using Android.Util;
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
@@ -42,7 +41,8 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
     [Activity(Label = "@string/dashboard_activity_title"
               , Icon = "@drawable/ic_launcher"
         , ScreenOrientation = ScreenOrientation.Portrait
-        ,Theme = "@style/Theme.Dashboard")]
+        ,Theme = "@style/Theme.Dashboard"
+        ,WindowSoftInputMode = SoftInput.AdjustNothing)]
     [IntentFilter(new[] { Android.Content.Intent.ActionView },
             DataScheme = "mytnbapp",
             Categories = new[] { Android.Content.Intent.CategoryDefault, Android.Content.Intent.CategoryBrowsable })]
@@ -221,7 +221,6 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                            .CommitAllowingStateLoss();
             ShowBackButton(false);
         }
-
 
         public void ShowNoAccountBillMenu()
         {
