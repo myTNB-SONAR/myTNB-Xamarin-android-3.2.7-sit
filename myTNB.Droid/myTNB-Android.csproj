@@ -173,6 +173,9 @@
     <Reference Include="Sitecore.MobileSDK, Version=1.0.6116.30256, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Sitecore.MobileSDK.Xamarin.1.3.0\lib\portable-net45+win8+wpa81\Sitecore.MobileSDK.dll</HintPath>
     </Reference>
+    <Reference Include="Sitecore.MobileSDK.PasswordProvider.Android, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Sitecore.MobileSDK.PasswordProvider.1.3.0\lib\MonoAndroid\Sitecore.MobileSDK.PasswordProvider.Android.dll</HintPath>
+    </Reference>
     <Reference Include="Sitecore.MobileSDK.PasswordProvider.Interface, Version=1.0.6116.30255, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Sitecore.MobileSDK.Xamarin.1.3.0\lib\portable-net45+win8+wpa81\Sitecore.MobileSDK.PasswordProvider.Interface.dll</HintPath>
     </Reference>
@@ -378,9 +381,6 @@
     </Reference>
     <Reference Include="Xamarin.Facebook.Shimmer.Android">
       <HintPath>..\packages\Xamarin.Facebook.Shimmer.1.0.0\lib\monoandroid50\Xamarin.Facebook.Shimmer.Android.dll</HintPath>
-    </Reference>
-    <Reference Include="Sitecore.MobileSDK.PasswordProvider.Android">
-      <HintPath>packages\Sitecore.MobileSDK.PasswordProvider.1.3.0\lib\MonoAndroid\Sitecore.MobileSDK.PasswordProvider.Android.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
