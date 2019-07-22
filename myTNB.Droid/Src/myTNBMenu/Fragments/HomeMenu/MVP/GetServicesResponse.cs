@@ -24,7 +24,13 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP.Models
 			public string DisplayType { get; set; }
 
 			[JsonProperty(PropertyName = "data")]
-			public List<MyService> Data { get; set; }
+			public Services Data { get; set; }
 		}
+
+        public class Services
+        {
+            [JsonProperty(PropertyName = "services")]
+            public List<MyService> CurrentServices { get; set; }
+        }
 	}
 }

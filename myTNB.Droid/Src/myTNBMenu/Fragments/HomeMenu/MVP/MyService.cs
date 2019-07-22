@@ -4,19 +4,19 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 {
 	public class MyService
 	{
-		[JsonProperty("ServiceCategoryId")]
+		[JsonProperty("ServiceId")]
 		public string ServiceCategoryId { get; set; }
 
-		[JsonProperty("serviceCategoryName")]
+		[JsonProperty("ServiceName")]
 		public string serviceCategoryName { get; set; }
 
-        [JsonProperty("serviceCategoryIcon")]
+        [JsonProperty("ServiceIcon")]
         public string serviceCategoryIcon { get; set; }
 
-        [JsonProperty("serviceCategoryIconUrl")]
+        [JsonProperty("ServiceIconUrl")]
         public string serviceCategoryIconUrl { get; set; }
 
-        [JsonProperty("serviceCategoryDesc")]
+        [JsonProperty("ServiceDescription")]
         public string serviceCategoryDesc { get; set; }
 
     }

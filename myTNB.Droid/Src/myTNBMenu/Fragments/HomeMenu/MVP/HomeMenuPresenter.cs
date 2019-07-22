@@ -2,12 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Threading;
 using System.Threading.Tasks;
+using Android.App;
 using myTNB_Android.Src.Base.Models;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP.Models;
 using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Requests;
 using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Service;
+using myTNB_Android.Src.SiteCore;
 using myTNB_Android.Src.SummaryDashBoard.Models;
 using myTNB_Android.Src.Utils;
 using Newtonsoft.Json;
@@ -24,6 +27,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         private List<SummaryDashBoardDetails> summaryDashboardInfoList;
         private static bool FirstTimeMyServiceInitiate = true;
         private static bool FirstTimeNewFAQInitiate = true;
+        private CancellationTokenSource cts;
 
         public HomeMenuPresenter(HomeMenuContract.IHomeMenuView view)
         {
@@ -235,7 +239,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     serviceCategoryName = cachedDBList[i].serviceCategoryName
                 });
             }
-            cachedList.Sort((a, b) => {
+            cachedList.Sort((a, b) =>
+            {
                 int bValue = int.Parse(b.ServiceCategoryId);
                 int aValue = int.Parse(a.ServiceCategoryId);
                 return aValue.CompareTo(bValue);
@@ -243,7 +248,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             this.mView.SetMyServiceResult(cachedList);
         }
 
-        private void ReadNewFAQFromCache()
+        public void ReadNewFAQFromCache()
         {
             List<NewFAQEntity> cachedDBList = new List<NewFAQEntity>();
             List<NewFAQ> cachedList = new List<NewFAQ>();
@@ -290,17 +295,18 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 {
                     usrInf = currentUsrInf
                 });
-                
-                if (getServicesResponse.Data.ErrorCode == "7200" && getServicesResponse.Data.Data.Count > 0)
+
+                if (getServicesResponse.Data.ErrorCode == "7200" && getServicesResponse.Data.Data.CurrentServices.Count > 0)
                 {
                     MyServiceEntity.RemoveAll();
                     List<MyService> fetchList = new List<MyService>();
-                    foreach(MyService service in getServicesResponse.Data.Data)
+                    foreach (MyService service in getServicesResponse.Data.Data.CurrentServices)
                     {
                         fetchList.Add(service);
                         MyServiceEntity.InsertOrReplace(service);
                     }
-                    fetchList.Sort((a, b) => {
+                    fetchList.Sort((a, b) =>
+                    {
                         int bValue = int.Parse(b.ServiceCategoryId);
                         int aValue = int.Parse(a.ServiceCategoryId);
                         return aValue.CompareTo(bValue);
@@ -368,7 +374,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                             ID = "2",
                             Title = "Check out how you can apply for AutoPay."
                         };
-                        
+
                     }
                     else if (i == 3)
                     {
@@ -413,7 +419,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
         public List<MyService> LoadShimmerServiceList(int count)
         {
-            if(count <= 0)
+            if (count <= 0)
             {
                 count = 1;
             }
@@ -448,5 +454,76 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
             return list;
         }
+
+        /*public void GetSavedNewFAQTimeStamp()
+        {
+            try
+            {
+                NewFAQParentEntity wtManager = new NewFAQParentEntity();
+                List<NewFAQParentEntity> items = new List<NewFAQParentEntity>();
+                items = wtManager.GetAllItems();
+                if (items != null && items.Count() > 0)
+                {
+                    NewFAQParentEntity entity = items[0];
+                    if (entity != null && !string.IsNullOrEmpty(entity?.Timestamp))
+                    {
+                        mView.OnSavedTimeStamp(entity?.Timestamp);
+                    }
+                }
+                else
+                {
+                    mView.OnSavedTimeStamp(null);
+                }
+            }
+            catch (Exception e)
+            {
+                mView.OnSavedTimeStamp(null);
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public Task OnGetFAQTimeStamp()
+        {
+            cts = new CancellationTokenSource();
+            return Task.Factory.StartNew(() =>
+            {
+                try
+                {
+                    string density = DPUtils.GetDeviceDensity(Application.Context);
+                    myTNB.Core.Sitecore.Services.GetItemsService getItemsService = new myTNB.Core.Sitecore.Services.GetItemsService(SiteCoreConfig.OS, density, SiteCoreConfig.SITECORE_URL, SiteCoreConfig.DEFAULT_LANGUAGE);
+                    myTNB.Core.Sitecore.Model.HelpTimeStampResponseModel responseModel = getItemsService.GetHelpTimestampItem();
+                    if (responseModel.Status.Equals("Success"))
+                    {
+                        NewFAQParentEntity wtManager = new NewFAQParentEntity();
+                        wtManager.DeleteTable();
+                        wtManager.CreateTable();
+                        wtManager.InsertListOfItems(responseModel.Data);
+                        mView.ShowFAQTimestamp(true);
+                    }
+                    else
+                    {
+                        mView.ShowFAQTimestamp(false);
+                    }
+                }
+                catch (Exception e)
+                {
+                    mView.ShowFAQTimestamp(false);
+                    Utility.LoggingNonFatalError(e);
+                }
+            }).ContinueWith((Task previous) =>
+            {
+            }, cts.Token);
+        }
+
+        public Task OnGetFAQs()
+        {
+            cts = new CancellationTokenSource();
+            return Task.Factory.StartNew(() =>
+            {
+                
+            }).ContinueWith((Task previous) =>
+            {
+            }, cts.Token);
+        }*/
     }
 }

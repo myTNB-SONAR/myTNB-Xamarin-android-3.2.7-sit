@@ -96,7 +96,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
         AccountsRecyclerViewAdapter accountsAdapter;
 
-
+        private string mSavedTimeStamp = "0000000";
 
         private static List<MyService> currentMyServiceList = new List<MyService>();
 
@@ -209,6 +209,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             }
             shimmerFAQView.StartShimmer();
             this.presenter.InitiateNewFAQ();
+            // this.presenter.GetSavedNewFAQTimeStamp();
         }
 
         public void SetNewFAQResult(List<NewFAQ> list)
@@ -468,5 +469,50 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             accountsAdapter.SetAccountCards(accountList);
             accountsRecyclerView.SetAdapter(accountsAdapter);
         }
+
+        /*public void OnSavedTimeStamp(string savedTimeStamp)
+        {
+            if (savedTimeStamp != null)
+            {
+                this.mSavedTimeStamp = savedTimeStamp;
+            }
+            this.presenter.OnGetFAQTimeStamp();
+        }
+
+        public void ShowFAQTimestamp(bool success)
+        {
+            try
+            {
+                if (success)
+                {
+                    NewFAQParentEntity wtManager = new NewFAQParentEntity();
+                    List<NewFAQParentEntity> items = wtManager.GetAllItems();
+                    if (items != null)
+                    {
+                        NewFAQParentEntity entity = items[0];
+                        if (entity != null)
+                        {
+                            if (!entity.Timestamp.Equals(mSavedTimeStamp))
+                            {
+                                this.presenter.OnGetFAQs();
+                            }
+                            else
+                            {
+                                this.presenter.ReadNewFAQFromCache();
+                            }
+                        }
+                    }
+
+                }
+                else
+                {
+                    this.presenter.ReadNewFAQFromCache();
+                }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }*/
     }
 }
