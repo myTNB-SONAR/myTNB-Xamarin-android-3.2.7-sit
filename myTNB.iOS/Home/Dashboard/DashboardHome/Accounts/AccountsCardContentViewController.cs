@@ -15,6 +15,7 @@ namespace myTNB
         public AccountsCardContentViewController(IntPtr handle) : base(handle) { }
 
         public DashboardHomeViewController _homeViewController;
+        DashboardHomeHeader _dashboardHomeHeader;
         DashboardHomeHelper _dashboardHomeHelper = new DashboardHomeHelper();
         public List<List<DueAmountDataModel>> _groupAccountList;
         TextFieldHelper _textFieldHelper = new TextFieldHelper();
@@ -38,7 +39,10 @@ namespace myTNB
         public override void ViewDidLoad()
         {
             base.ViewDidLoad();
+            NSNotificationCenter.DefaultCenter.AddObserver((NSString)"NotificationDidChange", NotificationDidChange);
+            NSNotificationCenter.DefaultCenter.AddObserver((NSString)"OnReceiveNotificationFromDashboard", NotificationDidChange);
             SetParentView();
+            SetGreetingView();
             SetSearchView();
             SetCardScrollView();
             SetScrollViewSubViews();
@@ -54,10 +58,27 @@ namespace myTNB
             }
         }
 
+        #region Observer Methods
+        private void NotificationDidChange(NSNotification notification)
+        {
+            Debug.WriteLine("DEBUG >>> SUMMARY DASHBOARD NotificationDidChange");
+            if (_dashboardHomeHeader != null)
+            {
+                _dashboardHomeHeader.SetNotificationImage(PushNotificationHelper.GetNotificationImage());
+            }
+            PushNotificationHelper.UpdateApplicationBadge();
+        }
+        #endregion
+
         #region View Initialization Methods
         private void SetParentView()
         {
-            _parentView = new UIView(new CGRect(0, 0, View.Frame.Width, _dashboardHomeHelper.GetHeightForAccountCards() + DashboardHomeConstants.SearchViewHeight + DashboardHomeConstants.PageControlHeight))
+            _parentView = new UIView(new CGRect(0,
+                0, View.Frame.Width,
+                _dashboardHomeHelper.GetHeightForAccountCards() +
+                DashboardHomeConstants.GreetingViewHeight +
+                DashboardHomeConstants.SearchViewHeight +
+                DashboardHomeConstants.PageControlHeight))
             {
                 BackgroundColor = UIColor.Clear,
                 UserInteractionEnabled = true
@@ -65,9 +86,17 @@ namespace myTNB
             View.AddSubview(_parentView);
         }
 
+        private void SetGreetingView()
+        {
+            _dashboardHomeHeader = new DashboardHomeHeader(_parentView);
+            _dashboardHomeHeader.SetGreetingText(_homeViewController.GetGreeting());
+            _dashboardHomeHeader.SetNameText(_dashboardHomeHelper.GetDisplayName());
+            _parentView.AddSubview(_dashboardHomeHeader.GetUI());
+        }
+
         private void SetSearchView()
         {
-            _searchView = new UIView(new CGRect(0, 0, _parentView.Frame.Width, DashboardHomeConstants.SearchViewHeight))
+            _searchView = new UIView(new CGRect(0, _dashboardHomeHeader.GetView().Frame.GetMaxY(), _parentView.Frame.Width, DashboardHomeConstants.SearchViewHeight))
             {
                 BackgroundColor = UIColor.Clear
             };
@@ -190,10 +219,12 @@ namespace myTNB
             _dashboardHomeHelper.GroupAccountsList(accountsList);
             _groupAccountList.Clear();
             _groupAccountList = DataManager.DataManager.SharedInstance.AccountsGroupList;
+            //_homeViewController.UpdateAccountsTableViewCell();
             ClearScrollViewSubViews();
             SetCardScrollView();
             SetScrollViewSubViews();
             LoadAccountsWithDues();
+            //_textFieldSearch.BecomeFirstResponder();
         }
         #endregion
 
@@ -213,6 +244,10 @@ namespace myTNB
             else if (_textFieldView.Frame.Contains(touch.LocationInView(_searchView)))
             {
                 OnTypeSearchAction();
+            }
+            else if (_dashboardHomeHeader._notificationView.Frame.Contains(touch.LocationInView(_dashboardHomeHeader.GetView())))
+            {
+                OnNotificationAction();
             }
         }
         #endregion
@@ -236,6 +271,12 @@ namespace myTNB
         {
             Debug.WriteLine("OnTypeSearchAction");
             _textFieldSearch.BecomeFirstResponder();
+        }
+
+        private void OnNotificationAction()
+        {
+            Debug.WriteLine("OnNotificationAction");
+            _homeViewController.OnNotificationAction();
         }
         #endregion
 

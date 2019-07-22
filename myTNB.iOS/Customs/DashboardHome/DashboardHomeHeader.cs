@@ -7,7 +7,7 @@ namespace myTNB
     public class DashboardHomeHeader
     {
         private readonly UIView _parentView;
-        UIView _accountHeaderView, _greetingView, _notificationView;
+        public UIView _accountHeaderView, _greetingView, _notificationView;
         UILabel _greetingLabel, _accountName;
         UIImageView _notificationIcon;
         string _strGreeting, _strName;

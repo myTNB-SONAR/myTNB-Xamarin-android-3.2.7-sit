@@ -11,7 +11,13 @@ namespace myTNB
         private UIView _contentView;
         public AccountsTableViewCell(IntPtr handle) : base(handle)
         {
-            _contentView = new UIView(new CGRect(0, 0, cellWidth, _dashboardHomeHelper.GetHeightForAccountCards() + DashboardHomeConstants.SearchViewHeight + DashboardHomeConstants.PageControlHeight))
+            _contentView = new UIView(new CGRect(0,
+                0,
+                cellWidth,
+                DashboardHomeConstants.GreetingViewHeight +
+                _dashboardHomeHelper.GetHeightForAccountCards() +
+                DashboardHomeConstants.SearchViewHeight +
+                DashboardHomeConstants.PageControlHeight))
             {
                 BackgroundColor = UIColor.Clear
             };
@@ -32,7 +38,10 @@ namespace myTNB
         public void UpdateCell(nfloat updatedHeight)
         {
             CGRect frame = _contentView.Frame;
-            frame.Height = updatedHeight + DashboardHomeConstants.SearchViewHeight + DashboardHomeConstants.PageControlHeight;
+            frame.Height = updatedHeight +
+                DashboardHomeConstants.GreetingViewHeight +
+                DashboardHomeConstants.SearchViewHeight +
+                DashboardHomeConstants.PageControlHeight;
             _contentView.Frame = frame;
         }
     }

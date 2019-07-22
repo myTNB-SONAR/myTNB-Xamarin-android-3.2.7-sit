@@ -26,10 +26,8 @@ namespace myTNB
         private AccountsCardContentViewController _accountsCardContentViewController;
         private ServicesResponseModel _services;
         private List<HelpModel> _helpList;
-        private DashboardHomeHeader _dashboardHomeHeader;
         private nfloat _previousScrollOffset;
         private nfloat _imageGradientHeight;
-        UIView _headerView;
 
         internal Dictionary<string, Action> _servicesActionDictionary;
 
@@ -44,15 +42,12 @@ namespace myTNB
             IsGradientImageRequired = true;
             base.ViewDidLoad();
             NSNotificationCenter.DefaultCenter.AddObserver((NSString)"LanguageDidChange", LanguageDidChange);
-            NSNotificationCenter.DefaultCenter.AddObserver((NSString)"NotificationDidChange", NotificationDidChange);
-            NSNotificationCenter.DefaultCenter.AddObserver((NSString)"OnReceiveNotificationFromDashboard", NotificationDidChange);
             _imageGradientHeight = IsGradientImageRequired ? ImageViewGradientImage.Frame.Height : 0;
             _services = new ServicesResponseModel();
             _helpList = new List<HelpModel>();
             SetActionsDictionary();
             SetStatusBarNoOverlap();
             AddTableView();
-            AddTableViewHeader();
             _dashboardHomeHelper.GroupAccountsList(DataManager.DataManager.SharedInstance.AccountRecordsList.d);
             SetAccountsCardViewController();
             InitializeTableView();
@@ -96,16 +91,6 @@ namespace myTNB
             _statusBarView.Hidden = true;
         }
 
-        private void NotificationDidChange(NSNotification notification)
-        {
-            Debug.WriteLine("DEBUG >>> SUMMARY DASHBOARD NotificationDidChange");
-            if (_dashboardHomeHeader != null)
-            {
-                _dashboardHomeHeader.SetNotificationImage(PushNotificationHelper.GetNotificationImage());
-            }
-            PushNotificationHelper.UpdateApplicationBadge();
-        }
-
         private void LanguageDidChange(NSNotification notification)
         {
             Debug.WriteLine("DEBUG >>> SUMMARY DASHBOARD LanguageDidChange");
@@ -135,17 +120,7 @@ namespace myTNB
             View.AddSubview(_homeTableView);
         }
 
-        private void AddTableViewHeader()
-        {
-            _dashboardHomeHeader = new DashboardHomeHeader(View);
-            _dashboardHomeHeader.SetGreetingText(GetGreeting());
-            _dashboardHomeHeader.SetNameText(_dashboardHomeHelper.GetDisplayName());
-            _headerView = _dashboardHomeHeader.GetUI();
-            _dashboardHomeHeader.AddNotificationAction(OnNotificationAction);
-            _homeTableView.TableHeaderView = _headerView;
-        }
-
-        private void OnNotificationAction()
+        public void OnNotificationAction()
         {
             UIStoryboard storyBoard = UIStoryboard.FromName("PushNotification", null);
             PushNotificationViewController viewController = storyBoard.InstantiateViewController("PushNotificationViewController") as PushNotificationViewController;
@@ -163,7 +138,7 @@ namespace myTNB
             PresentViewController(navController, true, null);
         }
 
-        private string GetGreeting()
+        public string GetGreeting()
         {
             DateTime now = DateTime.Now;
             string key = DashboardHomeConstants.I18N_Evening;
@@ -210,6 +185,16 @@ namespace myTNB
             ImageViewGradientImage.Frame = frame;
             _statusBarView.Hidden = !(scrollDiff > 0 && scrollDiff > _imageGradientHeight / 2);
         }
+
+        public void UpdateAccountsTableViewCell()
+        {
+            _homeTableView.BeginUpdates();
+            _homeTableView.Source = new DashboardHomeDataSource(this, _accountsCardContentViewController, _services, _helpList);
+            NSIndexPath indexPath = NSIndexPath.Create(0, 0);
+            _homeTableView.ReloadRows(new NSIndexPath[] { indexPath }, UITableViewRowAnimation.None);
+            _homeTableView.EndUpdates();
+        }
+
         private void OnGetServices()
         {
             InvokeInBackground(async () =>

@@ -40,7 +40,7 @@ namespace myTNB
             if (indexPath.Row == 0)
             {
                 AccountsTableViewCell cell = tableView.DequeueReusableCell(DashboardHomeConstants.Cell_Accounts) as AccountsTableViewCell;
-                //cell.UpdateCell(_dashboardHomeHelper.GetHeightForAccountCards());
+                cell.UpdateCell(_dashboardHomeHelper.GetHeightForAccountCards());
                 cell.AddViewsToContainers(_accountsCardContentViewController);
                 return cell;
             }

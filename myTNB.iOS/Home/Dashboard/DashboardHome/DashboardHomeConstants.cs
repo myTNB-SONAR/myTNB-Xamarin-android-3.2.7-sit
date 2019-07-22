@@ -8,6 +8,7 @@ namespace myTNB
         public static int MaxAccountPerCard = 5;
         public static nfloat SearchViewHeight = 24f;
         public static nfloat PageControlHeight = 20f;
+        public static nfloat GreetingViewHeight = 64f;
 
         //Cell
         public static string Cell_Accounts = "accountsTableViewCell";
