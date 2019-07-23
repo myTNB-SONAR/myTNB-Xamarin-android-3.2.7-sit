@@ -100,8 +100,10 @@ namespace myTNB
             }
             else if (groupAccountsList.Count == 1)
             {
-                var accountsList = groupAccountsList[0];
-                pageViewHeight = accountsList.Count * 68 + 20f;
+                // Commented for now to fix the height
+                //var accountsList = groupAccountsList[0];
+                //pageViewHeight = accountsList.Count * 68 + 20f;
+                pageViewHeight = 5 * 68 + 20f;
             }
             return pageViewHeight;
         }
