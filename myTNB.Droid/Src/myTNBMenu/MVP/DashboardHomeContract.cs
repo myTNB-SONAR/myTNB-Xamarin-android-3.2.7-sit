@@ -203,6 +203,8 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 			void BillsMenuAccess(AccountData selectedAccount);
 
 			void BillsMenuRefresh(AccountData accountData);
+
+            void SetDashboardHomeCheck();
         }
 
 		public interface IUserActionsListener : IBasePresenter
@@ -259,6 +261,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 			Task OnGetPromotions();
 
 			void OnTapToRefresh();
-		}
+
+        }
 	}
 }

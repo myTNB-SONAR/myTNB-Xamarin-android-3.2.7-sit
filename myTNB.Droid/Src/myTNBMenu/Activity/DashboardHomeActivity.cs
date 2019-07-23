@@ -725,5 +725,10 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             return this.DeviceId();
         }
 
+        public void SetDashboardHomeCheck()
+        {
+            bottomNavigationView.Menu.FindItem(Resource.Id.menu_dashboard).SetChecked(true);
+        }
+
     }
 }

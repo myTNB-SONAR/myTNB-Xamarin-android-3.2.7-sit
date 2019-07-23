@@ -1017,7 +1017,8 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 			{
 				List<CustomerBillingAccount> accountList = new List<CustomerBillingAccount>();
 				accountList = CustomerBillingAccount.List();
-				if (accountList != null && accountList.Count > 0)
+                this.mView.SetDashboardHomeCheck();
+                if (accountList != null && accountList.Count > 0)
 				{
                     DashboardHomeActivity.GO_TO_INNER_DASHBOARD = true;
 					this.mView.ShowAccountName();
