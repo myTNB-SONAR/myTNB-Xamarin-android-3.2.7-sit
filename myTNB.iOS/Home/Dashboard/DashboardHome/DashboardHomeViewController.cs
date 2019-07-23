@@ -57,6 +57,10 @@ namespace myTNB
 
         private void SetAccountsCardViewController()
         {
+            if (_accountsCardContentViewController != null)
+            {
+                _accountsCardContentViewController.View.RemoveFromSuperview();
+            }
             UIStoryboard storyBoard = UIStoryboard.FromName("Dashboard", null);
             _accountsCardContentViewController = storyBoard.InstantiateViewController("AccountsCardContentViewController") as AccountsCardContentViewController;
             _accountsCardContentViewController._groupAccountList = DataManager.DataManager.SharedInstance.AccountsGroupList;
@@ -66,6 +70,11 @@ namespace myTNB
         public override void ViewWillAppear(bool animated)
         {
             base.ViewWillAppear(animated);
+            if (DataManager.DataManager.SharedInstance.SummaryNeedsRefresh)
+            {
+                SetAccountsCardViewController();
+                ReloadAccountsTable();
+            }
             OnLoadHomeData();
         }
 
@@ -178,7 +187,6 @@ namespace myTNB
 
         private void OnUpdateNotification()
         {
-            
             NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
             {
                 InvokeOnMainThread(async () =>
@@ -217,6 +225,12 @@ namespace myTNB
             NSIndexPath indexPath = NSIndexPath.Create(0, 0);
             _homeTableView.ReloadRows(new NSIndexPath[] { indexPath }, UITableViewRowAnimation.None);
             _homeTableView.EndUpdates();
+        }
+
+        private void ReloadAccountsTable()
+        {
+            _homeTableView.Source = new DashboardHomeDataSource(this, _accountsCardContentViewController, _services, _helpList);
+            _homeTableView.ReloadData();
         }
 
         private void OnGetServices()
