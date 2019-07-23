@@ -1,5 +1,6 @@
 ﻿using Android.Support.V7.Widget;
 using Android.Text;
+using Android.Util;
 using Android.Views;
 using Android.Widget;
 using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP;
@@ -16,9 +17,19 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
 
         public event EventHandler<int> ClickChanged;
 
-        public NewFAQAdapter(List<NewFAQ> data)
+        private Android.App.Activity mActivity;
+
+        public NewFAQAdapter(List<NewFAQ> data, Android.App.Activity Activity)
 		{
-			this.faqList = data;
+            if (data == null)
+            {
+                this.faqList.Clear();
+            }
+            else
+            {
+                this.faqList = data;
+            }
+            this.mActivity = Activity;
 		}
 
 		public override int ItemCount => faqList.Count;
@@ -67,7 +78,15 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
 			}
 
 			TextViewUtils.SetMuseoSans500Typeface(vh.faqTitle);
-		}
+
+            ViewGroup.LayoutParams currentCard = vh.faqCardView.LayoutParameters;
+
+            DisplayMetrics displaymetrics = new DisplayMetrics();
+            this.mActivity.WindowManager.DefaultDisplay.GetMetrics(displaymetrics);
+            int devicewidth = (int) ((displaymetrics.WidthPixels / 2.85) - DPUtils.ConvertDPToPx(20f));
+            currentCard.Height = devicewidth;
+            currentCard.Width = devicewidth;
+        }
 
 		public override RecyclerView.ViewHolder OnCreateViewHolder(ViewGroup parent, int viewType)
 		{

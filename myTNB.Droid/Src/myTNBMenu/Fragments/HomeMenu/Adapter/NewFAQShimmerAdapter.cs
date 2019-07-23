@@ -1,5 +1,6 @@
 ﻿using Android.Support.V7.Widget;
 using Android.Text;
+using Android.Util;
 using Android.Views;
 using Android.Widget;
 using Facebook.Shimmer;
@@ -14,9 +15,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
 
 		List<NewFAQ> faqList = new List<NewFAQ>();
 
+        private Android.App.Activity mActivity;
 
-
-		public NewFAQShimmerAdapter(List<NewFAQ> data)
+        public NewFAQShimmerAdapter(List<NewFAQ> data, Android.App.Activity Activity)
 		{
             if (data == null)
             {
@@ -26,13 +27,21 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
             {
                 this.faqList = data;
             }
-		}
+            this.mActivity = Activity;
+        }
 
 		public override int ItemCount => faqList.Count;
 
 		public override void OnBindViewHolder(RecyclerView.ViewHolder holder, int position)
 		{
 			NewFAQShimmerViewHolder vh = holder as NewFAQShimmerViewHolder;
+            ViewGroup.LayoutParams currentCard = vh.faqCardView.LayoutParameters;
+
+            DisplayMetrics displaymetrics = new DisplayMetrics();
+            this.mActivity.WindowManager.DefaultDisplay.GetMetrics(displaymetrics);
+            int devicewidth = (int)((displaymetrics.WidthPixels / 2.85) - DPUtils.ConvertDPToPx(20f));
+            currentCard.Height = devicewidth;
+            currentCard.Width = devicewidth;
         }
 
 		public override RecyclerView.ViewHolder OnCreateViewHolder(ViewGroup parent, int viewType)

@@ -23,7 +23,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
 
         public MyServiceAdapter(List<MyService> data, Android.App.Activity Activity)
 		{
-			this.myServiceList = data;
+            if (data == null)
+            {
+                this.myServiceList.Clear();
+            }
+            else
+            {
+                this.myServiceList = data;
+            }
             this.mActivity = Activity;
         }
 
