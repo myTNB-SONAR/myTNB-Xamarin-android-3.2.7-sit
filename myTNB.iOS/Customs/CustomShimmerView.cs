@@ -5,20 +5,12 @@ namespace myTNB
 {
     public class CustomShimmerView : FBShimmeringView
     {
-        public override nfloat ShimmeringSpeed
+        public void SetValues()
         {
-            get
-            {
-                return 1000;
-            }
-        }
-
-        public override double ShimmeringBeginFadeDuration
-        {
-            get
-            {
-                return 0.3;
-            }
+            ShimmeringSpeed = 2000;
+            ShimmeringBeginFadeDuration = 0.3;
+            ShimmeringEndFadeDuration = 0.3;
+            ShimmeringPauseDuration = 1;
         }
     }
 }

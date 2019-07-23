@@ -178,6 +178,7 @@ namespace myTNB
             viewShimmerParent.AddSubview(shimmeringView);
             shimmeringView.ContentView = viewShimmerContent;
             shimmeringView.Shimmering = true;
+            shimmeringView.SetValues();
 
             return viewParent;
         }
@@ -206,7 +207,8 @@ namespace myTNB
         private void SetCardAction(ref UIView view, string id)
         {
             Action action = _actionsDictionary.ContainsKey(id) ? _actionsDictionary[id] : null;
-            view.AddGestureRecognizer(new UITapGestureRecognizer(()=> {
+            view.AddGestureRecognizer(new UITapGestureRecognizer(() =>
+            {
                 if (action != null)
                 {
                     action.Invoke();

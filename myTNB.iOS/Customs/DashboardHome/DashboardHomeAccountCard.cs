@@ -87,6 +87,7 @@ namespace myTNB
             viewShimmerParent.AddSubview(shimmeringView);
             shimmeringView.ContentView = viewShimmerContent;
             shimmeringView.Shimmering = IsUpdating;
+            shimmeringView.SetValues();
 
             viewShimmerContent.AddSubviews(new UIView { _accountIcon, _accountNickname, _accountNo, _amountDue, _dueDate });
             _accountCardView.AddSubview(viewShimmerParent);

@@ -83,6 +83,7 @@ namespace myTNB
                 viewShimmerParent.AddSubview(shimmeringView);
                 shimmeringView.ContentView = viewShimmerContent;
                 shimmeringView.Shimmering = true;
+                shimmeringView.SetValues();
 
                 _scrollView.Add(viewParent);
                 xLoc += cardWidth + 12.0F;
