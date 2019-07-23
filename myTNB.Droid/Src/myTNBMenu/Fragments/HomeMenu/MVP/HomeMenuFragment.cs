@@ -221,7 +221,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     myServiceAdapter.ClickChanged += OnClickChanged;
                     try
                     {
-                        if (accountsAdapter.accountCardModelList != null && myServiceAdapter != null)
+                        if (accountsAdapter != null && accountsAdapter.accountCardModelList != null && myServiceAdapter != null)
                         {
                             int count = accountsAdapter.accountCardModelList.Count;
                             if (count < 1 && myServiceAdapter.ItemCount == 0)
@@ -477,7 +477,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         {
             try
             {
-                if (accountsAdapter.accountCardModelList != null && myServiceAdapter != null)
+                if (accountsAdapter != null && accountsAdapter.accountCardModelList != null && myServiceAdapter != null)
                 {
                     int count = accountsAdapter.accountCardModelList.Count;
                     if (count <= 2)
