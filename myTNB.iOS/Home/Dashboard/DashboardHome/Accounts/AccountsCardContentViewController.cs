@@ -568,8 +568,11 @@ namespace myTNB
                 AddAccountsCardInContainerView(_viewContainer, i, accounts?.Count > 0);
             }
             _accountsCardScrollView.ContentSize = new CGSize(_accountsCardScrollView.Frame.Width * _groupAccountList.Count, _accountsCardScrollView.Frame.Height);
-            AddPageControl();
-            UpdatePageControl(_pageControl, _currentPageIndex, _groupAccountList.Count, GetContainerViewWithTag(_currentPageIndex));
+            if (_groupAccountList.Count > 1)
+            {
+                AddPageControl();
+                UpdatePageControl(_pageControl, _currentPageIndex, _groupAccountList.Count, GetContainerViewWithTag(_currentPageIndex));
+            }
         }
 
         private UIView GetContainerViewWithTag(int tag)

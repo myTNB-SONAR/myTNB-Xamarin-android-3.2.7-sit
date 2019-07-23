@@ -1,4 +1,6 @@
-﻿namespace myTNB.Model
+﻿using Newtonsoft.Json;
+
+namespace myTNB.Model
 {
     public class BaseModelV2
     {
@@ -13,5 +15,18 @@
                 return ErrorCode == "7200";
             }
         }
+        [JsonIgnore]
+        public bool didSucceed
+        {
+            get
+            {
+                if (!string.IsNullOrEmpty(isError))
+                {
+                    return IsSuccess || !bool.Parse(isError);
+                }
+                return IsSuccess;
+            }
+        }
+        public string isError { set; get; }
     }
 }

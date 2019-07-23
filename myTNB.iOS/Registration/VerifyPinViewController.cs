@@ -716,7 +716,7 @@ namespace myTNB.Registration
 
         void ExecuteGetCutomerRecordsCall()
         {
-            ServiceCall.GetCustomerBillingAccountList().ContinueWith(task =>
+            ServiceCall.GetAccounts().ContinueWith(task =>
             {
                 InvokeOnMainThread(async () =>
                 {
