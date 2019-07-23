@@ -133,10 +133,10 @@ namespace myTNB
                     , strokeWidth: 0
                 ),
                 TextColor = MyTNBColor.TunaGrey(),
-                Font = MyTNBFont.MuseoSans14_500,
-                ReturnKeyType = UIReturnKeyType.Search
+                Font = MyTNBFont.MuseoSans14_500
             };
             _textFieldHelper.SetKeyboard(_textFieldSearch);
+            _textFieldSearch.ReturnKeyType = UIReturnKeyType.Search;
             _textFieldView.Hidden = true;
 
             _textFieldView.AddSubview(_textFieldSearch);
@@ -204,7 +204,6 @@ namespace myTNB
 
         private void SetTextFieldEvents(UITextField textField)
         {
-            _textFieldHelper.SetKeyboard(textField);
             textField.EditingChanged += (sender, e) =>
             {
                 SearchFromAccountList(textField.Text);
@@ -632,9 +631,13 @@ namespace myTNB
                 {
                     iconName = "Accounts-RE-Icon";
                 }
-                else if (groupAccountList[i].IsNormalAccount)
+                else if (groupAccountList[i].IsNormalAccount && !groupAccountList[i].IsSSMR)
                 {
                     iconName = "Accounts-Normal-Icon";
+                }
+                else if (groupAccountList[i].IsNormalAccount && groupAccountList[i].IsSSMR)
+                {
+                    iconName = "SMR-Icon";
                 }
                 _homeAccountCard.SetAccountIcon(iconName);
                 _homeAccountCard.SetNickname(groupAccountList[i].accNickName);

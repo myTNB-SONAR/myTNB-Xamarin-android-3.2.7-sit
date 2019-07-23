@@ -68,6 +68,12 @@ namespace myTNB.Model
             set;
         }
 
+        public bool IsSSMR
+        {
+            get;
+            set;
+        }
+
         public List<ItemisedBilling> ItemizedBillings { set; get; }
         public double OpenChargesTotal { set; get; }
         public bool IsItemisedBilling

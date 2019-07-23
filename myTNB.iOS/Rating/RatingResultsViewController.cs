@@ -81,26 +81,8 @@ namespace myTNB
         {
             _btnDashBoard.TouchUpInside += (sender, e) =>
             {
-#if true // CREATE_TABBAR
+                DataManager.DataManager.SharedInstance.SummaryNeedsRefresh = true;
                 ViewHelper.DismissControllersAndSelectTab(this, 0, true, true);
-#else
-                var baseRootVc = UIApplication.SharedApplication.KeyWindow?.RootViewController;
-                var topVc = AppDelegate.GetTopViewController(baseRootVc);
-
-                var newtopVc = AppDelegate.GetTopViewController(baseRootVc);
-                var newPresenting = newtopVc?.PresentingViewController;
-                if (!(newPresenting is HomeTabBarController))
-                {
-                    Debug.WriteLine("newPresenting = " + newPresenting.GetType().ToString());
-                    //UIStoryboard storyBoard = UIStoryboard.FromName("Dashboard", null);
-                    //var vc = storyBoard.InstantiateViewController("HomeTabBarController") as UIViewController;
-                    //ShowViewController(vc, this);
-                }
-
-                UIStoryboard storyBoard = UIStoryboard.FromName("Dashboard", null);
-                var vc = storyBoard.InstantiateViewController("HomeTabBarController") as UIViewController;
-                ShowViewController(vc, this);
-#endif
             };
         }
     }
