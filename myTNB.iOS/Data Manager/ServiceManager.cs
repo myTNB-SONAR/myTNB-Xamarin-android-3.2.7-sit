@@ -20,6 +20,9 @@ namespace myTNB
             T customClass = new T();
             try
             {
+#if DEBUG
+                isDev = true;
+#endif
                 BaseService baseService = new BaseService();
                 APIEnvironment env = TNBGlobal.IsProduction ? APIEnvironment.PROD : APIEnvironment.SIT;
                 env = isDev ? APIEnvironment.DEV : env;
@@ -37,11 +40,7 @@ namespace myTNB
 
         public T OnExecuteAPIV6<T>(string suffix, object requestParams) where T : new()
         {
-            bool isDev = false;
-#if DEBUG
-            isDev = true;
-#endif
-            return OnExecuteAPI<T>(suffix, requestParams, APIVersion.V6, isDev);
+            return OnExecuteAPI<T>(suffix, requestParams, APIVersion.V6);
         }
 
         public T OnExecuteAPIV2<T>(string suffix, object requestParams) where T : new()

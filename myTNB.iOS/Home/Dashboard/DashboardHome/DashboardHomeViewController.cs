@@ -52,7 +52,6 @@ namespace myTNB
             _dashboardHomeHelper.GroupAccountsList(DataManager.DataManager.SharedInstance.AccountRecordsList.d);
             SetAccountsCardViewController();
             InitializeTableView();
-            OnUpdateNotification();
         }
 
         private void SetAccountsCardViewController()
@@ -99,17 +98,18 @@ namespace myTNB
                 if (NetworkUtility.isReachable)
                 {
                     OnGetServices();
-                    InvokeInBackground(() =>
-                    {
-                        OnGetHelpInfo().ContinueWith(task =>
-                        {
-                            InvokeOnMainThread(() =>
-                            {
-                                _helpList = new HelpEntity().GetAllItems();
-                                OnUpdateCell(DashboardHomeConstants.CellIndex_Help);
-                            });
-                        });
-                    });
+                    OnUpdateNotification();
+                    InvokeOnMainThread(() =>
+                   {
+                       OnGetHelpInfo().ContinueWith(task =>
+                       {
+                           InvokeOnMainThread(() =>
+                           {
+                               _helpList = new HelpEntity().GetAllItems();
+                               OnUpdateCell(DashboardHomeConstants.CellIndex_Help);
+                           });
+                       });
+                   });
                 }
                 else
                 {
@@ -178,22 +178,14 @@ namespace myTNB
 
         private void OnUpdateNotification()
         {
-            
-            NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
+            InvokeInBackground(async () =>
             {
-                InvokeOnMainThread(async () =>
+                DataManager.DataManager.SharedInstance.IsLoadingFromDashboard = true;
+                await PushNotificationHelper.GetNotifications(false);
+                InvokeOnMainThread(() =>
                 {
-                    if (NetworkUtility.isReachable)
-                    {
-                        DataManager.DataManager.SharedInstance.IsLoadingFromDashboard = true;
-                        await PushNotificationHelper.GetNotifications();
-                        NSNotificationCenter.DefaultCenter.PostNotificationName("OnReceiveNotificationFromDashboard", new NSObject());
-                    }
-                    else
-                    {
-                        //Todo: user don't need to see no data connection?
-                        Debug.WriteLine("No Data connection");
-                    }
+                    PushNotificationHelper.UpdateApplicationBadge();
+                    NSNotificationCenter.DefaultCenter.PostNotificationName("OnReceiveNotificationFromDashboard", new NSObject());
                 });
             });
         }

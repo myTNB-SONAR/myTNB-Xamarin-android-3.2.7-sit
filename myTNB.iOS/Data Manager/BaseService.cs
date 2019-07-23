@@ -1,6 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Diagnostics;
-using myTNB.Enums;
 using RestSharp;
 
 namespace myTNB
@@ -16,7 +14,7 @@ namespace myTNB
         readonly Dictionary<string, string> DomainDictionary = new Dictionary<string, string>
         {
             { "DEV", "http://10.215.128.191:89"}
-            , { "SIT", "https://mobiletestingws.tnb.com.my"}
+            , { "SIT", "http://10.215.128.162:88/" }//New //{ "SIT", "https://mobiletestingws.tnb.com.my"} //OLD
             , { "PROD", "https://mytnbapp.tnb.com.my"}
         };
 
