@@ -31,6 +31,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         private static bool FirstTimeMyServiceInitiate = true;
         private static bool FirstTimeNewFAQInitiate = true;
         private CancellationTokenSource cts;
+        private static List<MyService> currentMyServiceList = new List<MyService>();
 
         public HomeMenuPresenter(HomeMenuContract.IHomeMenuView view)
         {
@@ -212,15 +213,15 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
         private void ReadMyServiceFromCache()
         {
-            List<MyServiceEntity> cachedDBList = new List<MyServiceEntity>();
+            // List<MyServiceEntity> cachedDBList = new List<MyServiceEntity>();
             List<MyService> cachedList = new List<MyService>();
-            cachedDBList = MyServiceEntity.GetAll();
-            for (int i = 0; i < cachedDBList.Count; i++)
+            // cachedDBList = MyServiceEntity.GetAll();
+            for (int i = 0; i < currentMyServiceList.Count; i++)
             {
                 cachedList.Add(new MyService()
                 {
-                    ServiceCategoryId = cachedDBList[i].ServiceCategoryId,
-                    serviceCategoryName = cachedDBList[i].serviceCategoryName
+                    ServiceCategoryId = currentMyServiceList[i].ServiceCategoryId,
+                    serviceCategoryName = currentMyServiceList[i].serviceCategoryName
                 });
             }
             cachedList.Sort((a, b) =>
@@ -282,12 +283,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
                 if (getServicesResponse.Data.ErrorCode == "7200" && getServicesResponse.Data.Data.CurrentServices.Count > 0)
                 {
-                    MyServiceEntity.RemoveAll();
+                    // MyServiceEntity.RemoveAll();
+                    currentMyServiceList.Clear();
                     List<MyService> fetchList = new List<MyService>();
                     foreach (MyService service in getServicesResponse.Data.Data.CurrentServices)
                     {
                         fetchList.Add(service);
-                        MyServiceEntity.InsertOrReplace(service);
+                        currentMyServiceList.Add(service);
+                        // MyServiceEntity.InsertOrReplace(service);
                     }
                     fetchList.Sort((a, b) =>
                     {
