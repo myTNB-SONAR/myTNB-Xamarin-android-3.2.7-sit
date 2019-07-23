@@ -236,5 +236,12 @@ namespace myTNB
             View.AddSubview(_statusBarView);
         }
         #endregion
+
+        #region Utilities
+        public string GetI18NValue(string key)
+        {
+            return I18NDictionary.ContainsKey(key) ? I18NDictionary[key] : string.Empty;
+        }
+        #endregion
     }
 }

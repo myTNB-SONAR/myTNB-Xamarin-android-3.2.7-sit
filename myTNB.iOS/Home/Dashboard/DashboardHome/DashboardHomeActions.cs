@@ -26,7 +26,11 @@ namespace myTNB.Home.Dashboard.DashboardHome
 
         private void On_1001_Action()
         {
-
+            UIStoryboard onboardingStoryboard = UIStoryboard.FromName("Onboarding", null);
+            GenericPageRootViewController onboardingVC = onboardingStoryboard.InstantiateViewController("GenericPageRootViewController") as GenericPageRootViewController;
+            onboardingVC.ModalTransitionStyle = UIModalTransitionStyle.CrossDissolve;
+            onboardingVC.PageType = GenericPageViewEnum.Type.SSMR;
+            _controller.PresentViewController(onboardingVC, true, null);
         }
 
         private void On_1002_Action()

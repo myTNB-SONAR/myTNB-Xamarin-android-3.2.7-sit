@@ -1004,6 +1004,27 @@
     <ImageAsset Include="Assets.xcassets\SMR-Icon.imageset\SMR-Icon.png" />
     <ImageAsset Include="Assets.xcassets\SMR-Icon.imageset\SMR-Icon%402x.png" />
     <ImageAsset Include="Assets.xcassets\SMR-Icon.imageset\SMR-Icon%403x.png" />
+    <ImageAsset Include="Assets.xcassets\SSMR_Background_1.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\SSMR_Background_1.imageset\onboardingBg1.png" />
+    <ImageAsset Include="Assets.xcassets\SSMR_Background_1.imageset\onboardingBg1%402x.png" />
+    <ImageAsset Include="Assets.xcassets\SSMR_Background_1.imageset\onboardingBg1%403x.png" />
+    <ImageAsset Include="Assets.xcassets\SSMR_Background_2.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\SSMR_Background_3.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\SSMR_Background_3.imageset\onboardingBg3.png" />
+    <ImageAsset Include="Assets.xcassets\SSMR_Background_3.imageset\onboardingBg3%402x.png" />
+    <ImageAsset Include="Assets.xcassets\SSMR_Background_3.imageset\onboardingBg3%403x.png" />
+    <ImageAsset Include="Assets.xcassets\SSMR_Main_1.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\SSMR_Main_2.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\SSMR_Main_3.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\SSMR_Main_3.imageset\onboarding3.png" />
+    <ImageAsset Include="Assets.xcassets\SSMR_Main_3.imageset\onboarding3%402x.png" />
+    <ImageAsset Include="Assets.xcassets\SSMR_Main_3.imageset\onboarding3%403x.png" />
+    <ImageAsset Include="Assets.xcassets\SSMR_Main_1.imageset\onboarding1.png" />
+    <ImageAsset Include="Assets.xcassets\SSMR_Main_1.imageset\onboarding1%402x.png" />
+    <ImageAsset Include="Assets.xcassets\SSMR_Main_1.imageset\onboarding1%403x.png" />
+    <ImageAsset Include="Assets.xcassets\SSMR_Main_2.imageset\onboarding2.png" />
+    <ImageAsset Include="Assets.xcassets\SSMR_Main_2.imageset\onboarding2%402x.png" />
+    <ImageAsset Include="Assets.xcassets\SSMR_Main_2.imageset\onboarding2%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -1311,6 +1332,12 @@
     <Folder Include="Sitecore CMS\Model\Walkthrough\" />
     <Folder Include="Sitecore CMS\Model\FAQ\" />
     <Folder Include="Sitecore CMS\Model\TnC\" />
+    <Folder Include="Assets.xcassets\SSMR_Background_1.imageset\" />
+    <Folder Include="Assets.xcassets\SSMR_Background_2.imageset\" />
+    <Folder Include="Assets.xcassets\SSMR_Background_3.imageset\" />
+    <Folder Include="Assets.xcassets\SSMR_Main_1.imageset\" />
+    <Folder Include="Assets.xcassets\SSMR_Main_2.imageset\" />
+    <Folder Include="Assets.xcassets\SSMR_Main_3.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -2035,6 +2062,8 @@
     <Compile Include="Sitecore CMS\Model\TnC\TermsAndConditionResponseModel.cs" />
     <Compile Include="Sitecore CMS\Model\TnC\TimestampModel.cs" />
     <Compile Include="Sitecore CMS\Model\TnC\TimestampResponseModel.cs" />
+    <Compile Include="SSMR\SSMRConstants.cs" />
+    <Compile Include="SSMR\Onboarding\SSMROnboardingModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />

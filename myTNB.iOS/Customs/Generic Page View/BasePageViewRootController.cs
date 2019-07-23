@@ -1,4 +1,8 @@
-﻿using Foundation;
+﻿using System;
+using System.Collections.Generic;
+using CoreGraphics;
+using Foundation;
+using myTNB.SSMR.Onboarding;
 using UIKit;
 
 namespace myTNB
@@ -6,15 +10,21 @@ namespace myTNB
     public class BasePageViewRootController
     {
         public UIViewController that;
+        public string PageName;
+        public Dictionary<string, string> I18NDictionary;
         public BasePageViewRootController(UIViewController controller)
         {
             that = controller;
         }
         public ModelController ModelController { set; get; }
+        public SSMROnboardingModelController SSMRModelController { set; get; }
 
         public UIPageViewController PageViewController { set; get; }
 
-        public virtual void OnViewDidLoad() { }
+        public virtual void OnViewDidLoad()
+        {
+            I18NDictionary = LanguageManager.Instance.GetValuesByPage(PageName);
+        }
 
         public virtual void OnViewDidLayoutSubViews() { }
 
@@ -55,6 +65,16 @@ namespace myTNB
 
             pageViewController.SetViewControllers(viewControllers, UIPageViewControllerNavigationDirection.Forward, true, null);
             return UIPageViewControllerSpineLocation.Mid;
+        }
+
+        public CGSize GetLabelSize(UILabel label, nfloat width, nfloat height)
+        {
+            return CustomUILabel.GetLabelSize(label, width, height);
+        }
+
+        public string GetI18NValue(string key)
+        {
+            return I18NDictionary.ContainsKey(key) ? I18NDictionary[key] : string.Empty;
         }
     }
 }

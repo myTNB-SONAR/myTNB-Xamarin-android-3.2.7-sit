@@ -1,5 +1,6 @@
 using System;
 using myTNB.Model;
+using myTNB.SSMR;
 using UIKit;
 
 namespace myTNB
@@ -8,6 +9,10 @@ namespace myTNB
     {
         protected GenericPageDataViewController(IntPtr handle) : base(handle) { }
         public OnboardingModel DataObject
+        {
+            get; set;
+        }
+        public SSMROnboardingModel SSMRDataObject
         {
             get; set;
         }
@@ -23,9 +28,12 @@ namespace myTNB
                     DataObject = DataObject
                 };
             }
-            if(PageType == GenericPageViewEnum.Type.SSMR)
+            if (PageType == GenericPageViewEnum.Type.SSMR)
             {
-                _dataController = new SSMROnboardingDataController(this);
+                _dataController = new SSMROnboardingDataController(this)
+                {
+                    SSMRDataObject = SSMRDataObject
+                };
             }
             _dataController.OnViewDidLoad();
             _dataController.SetSubViews();

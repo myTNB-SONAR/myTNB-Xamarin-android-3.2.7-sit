@@ -121,6 +121,9 @@ namespace myTNB.DataManager
         public InstallationDetailDataModel InstallationDetails = new InstallationDetailDataModel();
         public bool AccountIsActive = false;
 
+        //SSMR
+        public bool DontShowSSMROnboarding = false;
+
         public static DataManager SharedInstance
         {
             get
@@ -216,6 +219,9 @@ namespace myTNB.DataManager
 
             //ResetAmountDues
             AmountDueCache.Reset();
+
+            //SSMR
+            DontShowSSMROnboarding = false;
         }
 
         /// <summary>
