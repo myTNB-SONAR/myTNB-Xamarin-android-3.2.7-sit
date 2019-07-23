@@ -18,7 +18,7 @@ namespace myTNB_Android.Src.Utils
         private const string SHIMMER_ID = "shimmerContainer-";
         private ShimmerLoadingLayout()
         {
-            shimmerBuilder = ShimmerUtils.ShimmerBuilderConfig();
+          shimmerBuilder = ShimmerUtils.ShimmerBuilderConfig();
             shimmerViewList = new List<ShimmerViewContainer>();
         }
         public static ShimmerLoadingLayout GetInstance()
@@ -30,18 +30,22 @@ namespace myTNB_Android.Src.Utils
             return instance;
         }
 
-        public void AddViewWithShimmer(Context context, ViewGroup parentContainer, ViewGroup baseLayout, ViewGroup shimmerLayout)
-        {
-            ShimmerFrameLayout shimmerFrameLayout = new ShimmerFrameLayout(context);
-            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MatchParent, LinearLayout.LayoutParams.MatchParent);
-            shimmerFrameLayout.LayoutParameters = layoutParams;
-            shimmerFrameLayout.AddView(shimmerLayout);
-            parentContainer.AddView(shimmerFrameLayout);
-            shimmerFrameLayout.SetShimmer(this.shimmerBuilder.Build());
-            string shimmerId = SHIMMER_ID + parentContainer.Id;
-            shimmerViewList.Add(new ShimmerViewContainer(shimmerId, baseLayout, shimmerFrameLayout));
-            shimmerFrameLayout.StartShimmer();
-        }
+        //public void AddViewWithShimmer(Context context, ViewGroup parentContainer, ViewGroup baseLayout, ViewGroup shimmerLayout)
+        //{
+        //    ShimmerFrameLayout shimmerFrameLayout = new ShimmerFrameLayout(context);
+        //    LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MatchParent, LinearLayout.LayoutParams.MatchParent);
+        //    shimmerFrameLayout.LayoutParameters = layoutParams;
+
+        //    ViewGroup shimmerChildContainer = (ViewGroup)shimmerLayout.FindViewById(Resource.Id.accountShimmerContainer);
+        //    int childIndex = shimmerLayout.IndexOfChild(shimmerChildContainer);
+        //    shimmerFrameLayout.AddView(shimmerChildContainer);
+        //    shimmerLayout.AddView(shimmerFrameLayout,childIndex);
+        //    parentContainer.AddView(shimmerLayout);
+        //    shimmerFrameLayout.SetShimmer(this.shimmerBuilder.Build());
+        //    string shimmerId = SHIMMER_ID + parentContainer.Id;
+        //    shimmerViewList.Add(new ShimmerViewContainer(shimmerId, baseLayout, shimmerFrameLayout));
+        //    shimmerFrameLayout.StartShimmer();
+        //}
 
         public void AddViewWithShimmer(Context context, ViewGroup parentContainer, ViewGroup baseLayout, ViewGroup shimmerLayout, StopShimmerCondition stopShimmerCondition)
         {
@@ -51,11 +55,8 @@ namespace myTNB_Android.Src.Utils
             }
             else
             {
-                ShimmerFrameLayout shimmerFrameLayout = new ShimmerFrameLayout(context);
-                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MatchParent, LinearLayout.LayoutParams.MatchParent);
-                shimmerFrameLayout.LayoutParameters = layoutParams;
-                shimmerFrameLayout.AddView(shimmerLayout);
-                parentContainer.AddView(shimmerFrameLayout);
+                ShimmerFrameLayout shimmerFrameLayout = shimmerLayout.FindViewById(Resource.Id.shimmerConstainer) as ShimmerFrameLayout;
+                parentContainer.AddView(shimmerLayout);
                 shimmerFrameLayout.SetShimmer(this.shimmerBuilder.Build());
                 string shimmerId = SHIMMER_ID + parentContainer.Id;
                 shimmerViewList.Add(new ShimmerViewContainer(shimmerId, baseLayout, shimmerFrameLayout));

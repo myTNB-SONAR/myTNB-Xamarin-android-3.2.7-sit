@@ -14,6 +14,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             void OnUpdateAccountListChanged(bool isSearchSubmit);
             void SetAccountListCards(List<SummaryDashBoardDetails> accountList);
             void UpdateAccountListCards(List<SummaryDashBoardDetails> accountList);
+            void ShowAccountDetails(string accountNumber);
             void SetMyServiceRecycleView();
             void SetNewFAQRecycleView();
             void SetMyServiceResult(List<MyService> list);
@@ -22,6 +23,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             void ShowMyServiceRetryOptions(string msg);
             void OnSavedTimeStamp(string savedTimeStamp);
             void ShowFAQTimestamp(bool success);
+			void LoadSummaryDetailsByBatchIndex(int batchIndex);
         }
 
         public interface IHomeMenuPresenter
@@ -39,6 +41,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             Task OnGetFAQTimeStamp();
             void ReadNewFAQFromCache();
             Task OnGetFAQs();
+            List<string> GetBatchAccountNumnberList(int batchIndex);
+            void LoadBatchedSummaryDetails(List<string> accountNumberList);
         }
 
         public interface IHomeMenuService

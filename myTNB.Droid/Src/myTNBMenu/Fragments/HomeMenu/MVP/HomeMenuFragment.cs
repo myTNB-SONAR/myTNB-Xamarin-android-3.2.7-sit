@@ -15,6 +15,7 @@ using Android.Widget;
 using CheeseBind;
 using Facebook.Shimmer;
 using Java.Lang;
+using myTNB_Android.Src.AddAccount.Activity;
 using myTNB_Android.Src.Base.Fragments;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.FAQ.Activity;
@@ -22,10 +23,13 @@ using myTNB_Android.Src.myTNBMenu.Activity;
 using myTNB_Android.Src.myTNBMenu.Fragments.FeedbackMenu;
 using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter;
 using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Listener;
+using myTNB_Android.Src.Notifications.Activity;
 using myTNB_Android.Src.SummaryDashBoard.Models;
+using myTNB_Android.Src.SummaryDashBoard.SummaryListener;
 using myTNB_Android.Src.Utils;
 using static myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter.MyServiceAdapter;
 using static myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter.MyServiceShimmerAdapter;
+using myTNB_Android.Src.Utils.Custom.ProgressDialog;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 {
@@ -72,9 +76,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         [BindView(Resource.Id.searchAction)]
         ImageView searchActionIcon;
 
-        [BindView(Resource.Id.addAction)]
-        ImageView addAccountActionIcon;
-
         [BindView(Resource.Id.searchEdit)]
         Android.Widget.SearchView searchEditText;
 
@@ -96,6 +97,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         [BindView(Resource.Id.shimmerFAQView)]
         ShimmerFrameLayout shimmerFAQView;
 
+        [BindView(Resource.Id.notificationHeaderIcon)]
+        ImageView notificationHeaderIcon;
+
+        [BindView(Resource.Id.addAction)]
+        ImageView addActionImage;
+
 
         AccountsRecyclerViewAdapter accountsAdapter;
 
@@ -106,6 +113,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         private static List<NewFAQ> currentNewFAQList = new List<NewFAQ>();
 
         HomeMenuContract.IHomeMenuPresenter presenter;
+        ISummaryFragmentToDashBoardActivtyListener mCallBack;
 
         MyServiceShimmerAdapter myServiceShimmerAdapter;
 
@@ -115,10 +123,26 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
         NewFAQAdapter newFAQAdapter;
 
+        private LoadingOverlay loadingOverlay;
+
         public override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
             presenter = new HomeMenuPresenter(this);
+        }
+
+        public override void OnAttach(Context context)
+        {
+            base.OnAttach(context);
+            try
+            {
+                mCallBack = context as ISummaryFragmentToDashBoardActivtyListener;
+            }
+            catch (Java.Lang.ClassCastException e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+
         }
 
         private void UpdateGreetingsHeader(Constants.GREETING greeting)
@@ -137,6 +161,22 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             }
         }
 
+        private void SetNotificationIndicator()
+        {
+            if (UserNotificationEntity.HasNotifications())
+            {
+                notificationHeaderIcon.SetImageResource(Resource.Drawable.ic_header_notification_unread);
+            }
+            else
+            {
+                notificationHeaderIcon.SetImageResource(Resource.Drawable.ic_header_notification);
+            }
+            notificationHeaderIcon.Click += delegate
+            {
+                StartActivity(new Intent(this.Activity, typeof(NotificationActivity)));
+            };
+        }
+
         public override void OnViewCreated(View view, Bundle savedInstanceState)
         {
             base.OnViewCreated(view, savedInstanceState);
@@ -144,13 +184,20 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             {
                 UpdateGreetingsHeader(this.presenter.GetGreeting());
                 accountGreetingName.Text = this.presenter.GetAccountDisplay();
+                SetNotificationIndicator();
                 SetAccountsRecyclerView();
                 SetAccountActionHeader();
                 SetupMyServiceView();
                 SetupNewFAQView();
                 TextViewUtils.SetMuseoSans500Typeface(myServiceTitle, newFAQTitle);
-
                 this.presenter.LoadAccounts();
+
+                addActionImage.Click += delegate
+                {
+                    Intent linkAccount = new Intent(this.Activity, typeof(LinkAccountActivity));
+                    linkAccount.PutExtra("fromDashboard", true);
+                    StartActivity(linkAccount);
+                };
             }
             catch (System.Exception e)
             {
@@ -200,7 +247,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             }
             shimmerMyServiceView.StartShimmer();
             this.presenter.InitiateMyService();
-            
+
         }
 
         public void SetMyServiceResult(List<MyService> list)
@@ -327,11 +374,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             {
                 ShowSearchAction(true);
             };
-
-            addAccountActionIcon.Click += (s, e) =>
-            {
-                ShowSearchAction(false);
-            };
         }
 
         private void SetAccountsRecyclerView()
@@ -340,7 +382,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             accountsRecyclerView.SetLayoutManager(linearLayoutManager);
 
             accountsAdapter = new AccountsRecyclerViewAdapter(this);
-            accountsRecyclerView.AddOnScrollListener(new AccountsRecyclerViewOnScrollListener(linearLayoutManager, indicatorContainer));
+            accountsRecyclerView.AddOnScrollListener(new AccountsRecyclerViewOnScrollListener(this, linearLayoutManager, indicatorContainer));
 
             SnapHelper snapHelper = new LinearSnapHelper();
             snapHelper.AttachToRecyclerView(accountsRecyclerView);
@@ -380,8 +422,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     ImageView image = new ImageView(Activity);
                     image.Id = i;
                     LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WrapContent, ViewGroup.LayoutParams.WrapContent);
-                    layoutParams.RightMargin = 5;
-                    layoutParams.LeftMargin = 5;
+                    layoutParams.RightMargin = 8;
+                    layoutParams.LeftMargin = 8;
                     image.LayoutParameters = layoutParams;
                     if (i == 0)
                     {
@@ -570,11 +612,20 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         public void UpdateAccountListCards(List<SummaryDashBoardDetails> accountList)
         {
             accountsAdapter.UpdateAccountCards(accountList);
-            accountsAdapter.NotifyDataSetChanged();
+            //accountsAdapter.NotifyDataSetChanged();
         }
 
         public void SetAccountListCards(List<SummaryDashBoardDetails> accountList)
         {
+            if (accountList.Count <= 5)
+            {
+                searchActionIcon.Visibility = ViewStates.Gone;
+                searchEditText.Visibility = ViewStates.Gone;
+            }
+            else
+            {
+                searchActionIcon.Visibility = ViewStates.Visible;
+            }
             accountsAdapter.SetAccountCards(accountList);
             accountsRecyclerView.SetAdapter(accountsAdapter);
             ChangeMyServiceTextColor();
@@ -623,6 +674,60 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             {
                 Utility.LoggingNonFatalError(e);
             }
+        }
+
+        public void ShowAccountDetails(string accountNumber)
+        {
+            if (accountNumber != null)
+            {
+                CustomerBillingAccount.RemoveSelected();
+                CustomerBillingAccount.Update(accountNumber,true);
+
+                if (mCallBack != null)
+                {
+                    mCallBack.NavigateToDashBoardFragment();
+                    //ShowBackArrowIndicator()
+                }
+            }
+        }
+
+        public void ShowProgressDialog()
+        {
+            try
+            {
+                if (loadingOverlay != null && loadingOverlay.IsShowing)
+                {
+                    loadingOverlay.Dismiss();
+                }
+
+                loadingOverlay = new LoadingOverlay(this.Activity, Resource.Style.LoadingOverlyDialogStyle);
+                loadingOverlay.Show();
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void HideProgressDialog()
+        {
+            try
+            {
+                if (loadingOverlay != null && loadingOverlay.IsShowing)
+                {
+                    loadingOverlay.Dismiss();
+                }
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void LoadSummaryDetailsByBatchIndex(int batchIndex)
+        {
+            List<string> accountList = this.presenter.GetBatchAccountNumnberList(batchIndex);
+            this.presenter.LoadBatchedSummaryDetails(accountList);
         }
     }
 }
