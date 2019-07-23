@@ -1,17 +1,29 @@
 ﻿using System;
+using System.Collections.Generic;
+using CoreGraphics;
 using Foundation;
+using myTNB.Model;
+using myTNB.SitecoreCMS.Model;
 using UIKit;
 
 namespace myTNB
 {
     public class DashboardHomeDataSource : UITableViewSource
     {
-        DashboardHomeViewController _controller;
-        UIPageViewController _accountsPageViewController;
-        public DashboardHomeDataSource(DashboardHomeViewController controller, UIPageViewController accountsPageViewController)
+        private DashboardHomeViewController _controller;
+        private AccountsCardContentViewController _accountsCardContentViewController;
+        private DashboardHomeHelper _dashboardHomeHelper = new DashboardHomeHelper();
+        private ServicesResponseModel _services;
+        private List<HelpModel> _helpList;
+
+        public DashboardHomeDataSource(DashboardHomeViewController controller
+            , AccountsCardContentViewController accountsCardContentViewController
+           , ServicesResponseModel services, List<HelpModel> helpList)
         {
             _controller = controller;
-            _accountsPageViewController = accountsPageViewController;
+            _accountsCardContentViewController = accountsCardContentViewController;
+            _services = services;
+            _helpList = helpList;
         }
 
         public override nint NumberOfSections(UITableView tableView)
@@ -29,21 +41,24 @@ namespace myTNB
             if (indexPath.Row == 0)
             {
                 AccountsTableViewCell cell = tableView.DequeueReusableCell(DashboardHomeConstants.Cell_Accounts) as AccountsTableViewCell;
-                cell.AddCards(_accountsPageViewController);
+                cell.UpdateCell(_dashboardHomeHelper.GetHeightForAccountCards());
+                cell.AddViewsToContainers(_accountsCardContentViewController);
                 return cell;
             }
             if (indexPath.Row == 1)
             {
+                CGRect accountHeight = tableView.RectForRowAtIndexPath(NSIndexPath.Create(0, 0));
                 ServicesTableViewCell cell = tableView.DequeueReusableCell(DashboardHomeConstants.Cell_Services) as ServicesTableViewCell;
                 cell._titleLabel.Text = _controller.I18NDictionary[DashboardHomeConstants.I18N_MyServices];
-                cell.AddCards();
+                cell._titleLabel.TextColor = accountHeight.Height < tableView.Frame.Height * 0.40F ? UIColor.White : MyTNBColor.PowerBlue;
+                cell.AddCards(_services, _controller._servicesActionDictionary);
                 return cell;
             }
             if (indexPath.Row == 2)
             {
                 HelpTableViewCell cell = tableView.DequeueReusableCell(DashboardHomeConstants.Cell_Help) as HelpTableViewCell;
                 cell._titleLabel.Text = _controller.I18NDictionary[DashboardHomeConstants.I18N_NeedHelp];
-                cell.AddCards();
+                cell.AddCards(_helpList);
                 return cell;
             }
             return new UITableViewCell() { BackgroundColor = UIColor.Clear };

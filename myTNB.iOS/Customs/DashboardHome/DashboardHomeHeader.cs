@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using CoreGraphics;
 using UIKit;
 
@@ -8,9 +7,9 @@ namespace myTNB
     public class DashboardHomeHeader
     {
         private readonly UIView _parentView;
-        UIView _accountHeaderView, _greetingView, _searchView, _notificationView;
-        UILabel _greetingLabel, _accountName, _headerTitle;
-        UIImageView _notificationIcon, _addAccountIcon, _searchIcon;
+        public UIView _accountHeaderView, _greetingView, _notificationView;
+        UILabel _greetingLabel, _accountName;
+        UIImageView _notificationIcon;
         string _strGreeting, _strName;
 
         public DashboardHomeHeader(UIView view)
@@ -23,12 +22,12 @@ namespace myTNB
             nfloat parentHeight = _parentView.Frame.Height;
             nfloat parentWidth = _parentView.Frame.Width;
             nfloat padding = 16f;
-            nfloat headerHeight = 110f;
+            nfloat headerHeight = 80f;
             nfloat labelHeight = 24f;
             nfloat imageWidth = 24f;
             nfloat imageHeight = 24f;
 
-            _accountHeaderView = new UIView(new CGRect(0, DeviceHelper.GetStatusBarHeight(), parentWidth, headerHeight))
+            _accountHeaderView = new UIView(new CGRect(0, 0, parentWidth, headerHeight))
             {
                 BackgroundColor = UIColor.Clear
             };
@@ -58,19 +57,8 @@ namespace myTNB
             };
             _notificationView.AddSubview(_notificationIcon);
             _greetingView.AddSubviews(new UIView { _greetingLabel, _accountName, _notificationView });
-            _searchView = new UIView(new CGRect(0, _greetingView.Frame.GetMaxY() + padding, _accountHeaderView.Frame.Width, 24f));
-            _searchView.BackgroundColor = UIColor.Clear;
 
-            _headerTitle = new UILabel(new CGRect(padding, 0, 186f, labelHeight))
-            {
-                Font = MyTNBFont.MuseoSans14_500,
-                TextColor = UIColor.White,
-                Text = @"My Accounts"
-            };
-
-            _searchView.AddSubviews(new UIView { _headerTitle });
-
-            _accountHeaderView.AddSubviews(new UIView { _greetingView, _searchView });
+            _accountHeaderView.AddSubview(_greetingView);
         }
 
         public UIView GetUI()
@@ -82,11 +70,6 @@ namespace myTNB
         public UIView GetView()
         {
             return _accountHeaderView;
-        }
-
-        private nfloat GetCenterYForIcon(nfloat parentHeight, nfloat iconHeight)
-        {
-            return parentHeight / 2 - iconHeight / 2;
         }
 
         public void SetGreetingText(string text)

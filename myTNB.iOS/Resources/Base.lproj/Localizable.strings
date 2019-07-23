@@ -139,23 +139,28 @@
 "Component_WhyThisAmount"="Why this amount?";
 
 /*Dashboard*/
-"Dashboard_AllAccounts"="All Accounts";
-"Dashboard_BringMeThere"="Bring me there.";
-"Dashboard_DateRangeAvailableSoon"="Available Soon";
-"Dashboard_DateRangeNotAvailable"="";
-"Dashboard_LoadMoreAccounts"="Load More Accounts";
-"Dashboard_NormalSectionSubHeader"="Due";
-"Dashboard_RESectionHeader"="Renewable Energy";
-"Dashboard_RESectionSubHeader"="My Earnings";
-"Dashboard_SectionHeader"="Accounts";
-"Dashboard_TooltipMessage"="It includes your current month’s bill, outstanding charges plus other mandatory charges. You may check out the Bills tab for a detailed view.";
-"Dashboard_TooltipTitle"="What is included in my bill?";
 "Dashboard_AccountStatus"="Electricity Connection: <strong>Unavailable</strong>";
 "Dashboard_AccountStatusToolTip"="What does this mean?";
 "Dashboard_AccountStatusMessage"="<strong>What does this mean?</strong><br><br>Your electricity has been disconnected and is unavailable. This was not caused by a power outage.<br><br>If you’ve made a payment, please give us some time for this to be reflected.";
-"Dashboard_WhatAreTheseCost"="What are these costs?";
+"Dashboard_AllAccounts"="All Accounts";
+"Dashboard_AllCleared"="All Cleared";
+"Dashboard_BringMeThere"="Bring me there.";
+"Dashboard_DateRangeAvailableSoon"="Available Soon";
+"Dashboard_DateRangeNotAvailable"="";
+"Dashboard_GetBy"="Get by";
+"Dashboard_LoadMoreAccounts"="Load More Accounts";
+"Dashboard_MyAccounts"="My Accounts";
+"Dashboard_NormalSectionSubHeader"="Due";
+"Dashboard_PayBy"="Pay by";
 "Dashboard_ProjectedCostMessage"="<strong>My bill amount so far:</strong><br><br>Your bill amount so far is the amount you have used up until yesterday.<br><br><strong> My bill may reach:</strong><br><br>This is calculated based on your average daily consumption for the past one (1) month, your actual bill may differ. To find out more, please visit our <strong><a style=\"text-decoration:none\" href =\"faqid={B8EBBADE-0918-43B7-8093-BB2B19614033}\">FAQ page.</a></strong><br><br>Note: The amount shown is before applicable taxes / additional charges.";
 "Dashboard_ProjectedCostLinkTitle"="What are these costs?";
+"Dashboard_RESectionHeader"="Renewable Energy";
+"Dashboard_RESectionSubHeader"="My Earnings";
+"Dashboard_SearchPlacehoder"="Search by account nickname or number";
+"Dashboard_SectionHeader"="Accounts";
+"Dashboard_TooltipMessage"="It includes your current month’s bill, outstanding charges plus other mandatory charges. You may check out the Bills tab for a detailed view.";
+"Dashboard_TooltipTitle"="What is included in my bill?";
+"Dashboard_WhatAreTheseCost"="What are these costs?";
 
 /*Error*/
 "Error_BCRMMessage"="BRCM will be down for maintenance purpose";

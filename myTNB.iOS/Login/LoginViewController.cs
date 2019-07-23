@@ -628,13 +628,12 @@ namespace myTNB
 
         void ExecuteGetCutomerRecordsCall()
         {
-            ServiceCall.GetCustomerBillingAccountList().ContinueWith(task =>
+            ServiceCall.GetAccounts().ContinueWith(task =>
             {
                 InvokeOnMainThread(() =>
                 {
                     if (DataManager.DataManager.SharedInstance.CustomerAccounts?.d != null
-                        && DataManager.DataManager.SharedInstance.CustomerAccounts?.d?.didSucceed == true
-                        && DataManager.DataManager.SharedInstance.CustomerAccounts?.d?.status == "success")
+                        && DataManager.DataManager.SharedInstance.CustomerAccounts?.d?.IsSuccess == true)
                     {
                         if (DataManager.DataManager.SharedInstance.CustomerAccounts?.d?.data != null)
                         {
@@ -684,7 +683,7 @@ namespace myTNB
                     }
                     else
                     {
-                        ShowServerError(DataManager.DataManager.SharedInstance.CustomerAccounts?.d?.message);
+                        ShowServerError(DataManager.DataManager.SharedInstance.CustomerAccounts?.d?.DisplayMessage);
                         ActivityIndicator.Hide();
                     }
                 });

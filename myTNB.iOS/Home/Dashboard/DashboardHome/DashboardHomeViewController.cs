@@ -1,11 +1,17 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
+using System.Threading.Tasks;
 using CoreGraphics;
 using Foundation;
+using myTNB.Dashboard;
+using myTNB.Home.Dashboard.DashboardHome;
 using myTNB.Model;
 using myTNB.PushNotification;
+using myTNB.SitecoreCMS.Model;
+using myTNB.SitecoreCMS.Services;
+using myTNB.SQLite.SQLiteDataManager;
+using myTNB.Registration.CustomerAccounts;
 using UIKit;
 
 namespace myTNB
@@ -14,11 +20,16 @@ namespace myTNB
     {
         public DashboardHomeViewController(IntPtr handle) : base(handle) { }
 
+        DashboardHomeHelper _dashboardHomeHelper = new DashboardHomeHelper();
+
         private UITableView _homeTableView;
-        UIPageViewController _accountsPageViewController;
-        private DashboardHomeHeader _dashboardHomeHeader;
+        private AccountsCardContentViewController _accountsCardContentViewController;
+        private ServicesResponseModel _services;
+        private List<HelpModel> _helpList;
         private nfloat _previousScrollOffset;
         private nfloat _imageGradientHeight;
+
+        internal Dictionary<string, Action> _servicesActionDictionary;
 
         public override void ViewDidLoad()
         {
@@ -26,21 +37,33 @@ namespace myTNB
             {
                 v.RemoveFromSuperview();
             }
+
             PageName = DashboardHomeConstants.PageName;
             IsGradientImageRequired = true;
             base.ViewDidLoad();
             NSNotificationCenter.DefaultCenter.AddObserver((NSString)"LanguageDidChange", LanguageDidChange);
-            NSNotificationCenter.DefaultCenter.AddObserver((NSString)"NotificationDidChange", NotificationDidChange);
-            NSNotificationCenter.DefaultCenter.AddObserver((NSString)"OnReceiveNotificationFromDashboard", NotificationDidChange);
+            NSNotificationCenter.DefaultCenter.AddObserver(UIApplication.WillEnterForegroundNotification, OnEnterForeground);
             _imageGradientHeight = IsGradientImageRequired ? ImageViewGradientImage.Frame.Height : 0;
-
+            _services = new ServicesResponseModel();
+            _helpList = new List<HelpModel>();
+            SetActionsDictionary();
             SetStatusBarNoOverlap();
             AddTableView();
-            AddTableViewHeader();
-            GetGroupedAccountsList();
-            InitializePageView();
-            InitializeAccountsPageView();
-            OnUpdateNotification();
+            _dashboardHomeHelper.GroupAccountsList(DataManager.DataManager.SharedInstance.AccountRecordsList.d);
+            SetAccountsCardViewController();
+            InitializeTableView();
+        }
+
+        private void SetAccountsCardViewController()
+        {
+            if (_accountsCardContentViewController != null)
+            {
+                _accountsCardContentViewController.View.RemoveFromSuperview();
+            }
+            UIStoryboard storyBoard = UIStoryboard.FromName("Dashboard", null);
+            _accountsCardContentViewController = storyBoard.InstantiateViewController("AccountsCardContentViewController") as AccountsCardContentViewController;
+            _accountsCardContentViewController._groupAccountList = DataManager.DataManager.SharedInstance.AccountsGroupList;
+            _accountsCardContentViewController._homeViewController = this;
         }
 
         public override void ViewWillAppear(bool animated)
@@ -48,18 +71,10 @@ namespace myTNB
             base.ViewWillAppear(animated);
             if (DataManager.DataManager.SharedInstance.SummaryNeedsRefresh)
             {
-                DataManager.DataManager.SharedInstance.AccountsGroupList.Clear();
-                DataManager.DataManager.SharedInstance.SummaryNeedsRefresh = false;
-                GetGroupedAccountsList();
-                if (_accountsPageViewController != null)
-                {
-                    _accountsPageViewController.DataSource = new AccountsPageViewDataSource(this, DataManager.DataManager.SharedInstance.AccountsGroupList);
-                    var startingViewController = ViewControllerAtIndex(0) as AccountsContentViewController;
-                    var viewControllers = new UIViewController[] { startingViewController };
-                    _accountsPageViewController.SetViewControllers(viewControllers, UIPageViewControllerNavigationDirection.Forward, false, null);
-                }
-                InitializeAccountsPageView();
+                SetAccountsCardViewController();
+                ReloadAccountsTable();
             }
+            OnLoadHomeData();
         }
 
         public override void ViewDidAppear(bool animated)
@@ -74,105 +89,52 @@ namespace myTNB
             _statusBarView.Hidden = true;
         }
 
-        private void NotificationDidChange(NSNotification notification)
-        {
-            Debug.WriteLine("DEBUG >>> SUMMARY DASHBOARD NotificationDidChange");
-            if (_dashboardHomeHeader != null)
-            {
-                _dashboardHomeHeader.SetNotificationImage(PushNotificationHelper.GetNotificationImage());
-            }
-            PushNotificationHelper.UpdateApplicationBadge();
-        }
-
         private void LanguageDidChange(NSNotification notification)
         {
             Debug.WriteLine("DEBUG >>> SUMMARY DASHBOARD LanguageDidChange");
         }
 
-
-        // <summary>
-        // Initializes the accounts page view.
-        // </summary>
-        private void InitializeAccountsPageView()
+        private void OnEnterForeground(NSNotification notification)
         {
-            _homeTableView.Source = new DashboardHomeDataSource(this, _accountsPageViewController);
-            _homeTableView.ReloadData();
+            Debug.WriteLine("On Enter Foreground");
+            OnLoadHomeData();
         }
 
-        private void GetGroupedAccountsList()
+        private void OnLoadHomeData()
         {
-            var sortedAccounts = new List<CustomerAccountRecordModel>();
-
-            var accountsList = DataManager.DataManager.SharedInstance.AccountRecordsList.d;
-            var results = accountsList.GroupBy(x => x.IsREAccount);
-
-            if (results != null && results?.Count() > 0)
+            NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
             {
-                var reAccts = results.Where(x => x.Key == true).SelectMany(y => y).OrderBy(o => o.accountNickName).ToList();
-                var normalAccts = results.Where(x => x.Key == false).SelectMany(y => y).OrderBy(o => o.accountNickName).ToList();
-                reAccts.AddRange(normalAccts);
-                sortedAccounts = reAccts;
-            }
-
-            var groupedAccountsList = new List<List<DueAmountDataModel>>();
-
-            int count = 0;
-            List<DueAmountDataModel> batchList = new List<DueAmountDataModel>();
-            for (int i = 0; i < sortedAccounts.Count; i++)
-            {
-                if (count < DashboardHomeConstants.MaxAccountPerCard)
+                if (NetworkUtility.isReachable)
                 {
-                    DueAmountDataModel item = new DueAmountDataModel
-                    {
-                        accNum = sortedAccounts[i].accNum,
-                        accNickName = sortedAccounts[i].accountNickName,
-                        IsReAccount = sortedAccounts[i].IsREAccount,
-                        IsNormalAccount = sortedAccounts[i].IsNormalMeter
-                    };
-
-                    batchList.Add(item);
-                    count++;
+                    OnGetServices();
+                    OnUpdateNotification();
+                    InvokeOnMainThread(() =>
+                   {
+                       OnGetHelpInfo().ContinueWith(task =>
+                       {
+                           InvokeOnMainThread(() =>
+                           {
+                               _helpList = new HelpEntity().GetAllItems();
+                               OnUpdateCell(DashboardHomeConstants.CellIndex_Help);
+                           });
+                       });
+                   });
                 }
                 else
                 {
-                    groupedAccountsList.Add(batchList);
-                    batchList = new List<DueAmountDataModel>();
-                    DueAmountDataModel item = new DueAmountDataModel
-                    {
-                        accNum = sortedAccounts[i].accNum,
-                        accNickName = sortedAccounts[i].accountNickName,
-                        IsReAccount = sortedAccounts[i].IsREAccount,
-                        IsNormalAccount = sortedAccounts[i].IsNormalMeter
-                    };
-                    batchList.Add(item);
-                    count = 1;
+                    //Todo: handling?
+                    Debug.WriteLine("No data connection");
                 }
-
-                if (i + 1 == sortedAccounts.Count)
-                {
-                    groupedAccountsList.Add(batchList);
-                }
-            }
-            DataManager.DataManager.SharedInstance.AccountsGroupList = new List<List<DueAmountDataModel>>();
-            DataManager.DataManager.SharedInstance.AccountsGroupList = groupedAccountsList;
+            });
         }
 
-        private void InitializePageView()
+        // <summary>
+        // Initializes the table view.
+        // </summary>
+        private void InitializeTableView()
         {
-            _accountsPageViewController = new UIPageViewController(UIPageViewControllerTransitionStyle.Scroll, UIPageViewControllerNavigationOrientation.Horizontal, UIPageViewControllerSpineLocation.Min)
-            {
-                WeakDelegate = this
-            };
-            _accountsPageViewController.DataSource = new AccountsPageViewDataSource(this, DataManager.DataManager.SharedInstance.AccountsGroupList);
-
-            var startingViewController = ViewControllerAtIndex(0) as AccountsContentViewController;
-            var viewControllers = new UIViewController[] { startingViewController };
-
-            _accountsPageViewController.SetViewControllers(viewControllers, UIPageViewControllerNavigationDirection.Forward, false, null);
-            _accountsPageViewController.View.Frame = new CGRect(0, 0, View.Frame.Width, 395f);
-
-            AddChildViewController(_accountsPageViewController);
-            _accountsPageViewController.DidMoveToParentViewController(this);
+            _homeTableView.Source = new DashboardHomeDataSource(this, _accountsCardContentViewController, _services, _helpList);
+            _homeTableView.ReloadData();
         }
 
         private void AddTableView()
@@ -190,16 +152,7 @@ namespace myTNB
             View.AddSubview(_homeTableView);
         }
 
-        private void AddTableViewHeader()
-        {
-            _dashboardHomeHeader = new DashboardHomeHeader(View);
-            _dashboardHomeHeader.SetGreetingText(GetGreeting());
-            _dashboardHomeHeader.SetNameText(GetDisplayName());
-            _homeTableView.TableHeaderView = _dashboardHomeHeader.GetUI();
-            _dashboardHomeHeader.AddNotificationAction(OnNotificationAction);
-        }
-
-        private void OnNotificationAction()
+        public void OnNotificationAction()
         {
             UIStoryboard storyBoard = UIStoryboard.FromName("PushNotification", null);
             PushNotificationViewController viewController = storyBoard.InstantiateViewController("PushNotificationViewController") as PushNotificationViewController;
@@ -207,7 +160,17 @@ namespace myTNB
             PresentViewController(navController, true, null);
         }
 
-        private string GetGreeting()
+        public void OnAddAccountAction()
+        {
+            UIStoryboard storyBoard = UIStoryboard.FromName("AccountRecords", null);
+            var viewController = storyBoard.InstantiateViewController("AccountsViewController") as AccountsViewController;
+            viewController.isDashboardFlow = true;
+            viewController._needsUpdate = true;
+            var navController = new UINavigationController(viewController);
+            PresentViewController(navController, true, null);
+        }
+
+        public string GetGreeting()
         {
             DateTime now = DateTime.Now;
             string key = DashboardHomeConstants.I18N_Evening;
@@ -222,41 +185,16 @@ namespace myTNB
             return I18NDictionary[key];
         }
 
-        private string GetDisplayName()
-        {
-            if (DataManager.DataManager.SharedInstance.UserEntity?.Count > 0 && DataManager.DataManager.SharedInstance.UserEntity[0] != null)
-            {
-                return string.Format("{0}!", DataManager.DataManager.SharedInstance.UserEntity[0]?.displayName);
-            }
-            return string.Empty;
-        }
-
-        public UIViewController ViewControllerAtIndex(int index)
-        {
-            UIStoryboard storyBoard = UIStoryboard.FromName("Dashboard", null);
-            var vc = storyBoard.InstantiateViewController("AccountsContentViewController") as AccountsContentViewController;
-            vc.pageIndex = index;
-            Debug.WriteLine("index: " + index);
-            return vc;
-        }
-
         private void OnUpdateNotification()
         {
-            NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
+            InvokeInBackground(async () =>
             {
-                InvokeOnMainThread(async () =>
+                DataManager.DataManager.SharedInstance.IsLoadingFromDashboard = true;
+                await PushNotificationHelper.GetNotifications(false);
+                InvokeOnMainThread(() =>
                 {
-                    if (NetworkUtility.isReachable)
-                    {
-                        DataManager.DataManager.SharedInstance.IsLoadingFromDashboard = true;
-                        await PushNotificationHelper.GetNotifications();
-                        NSNotificationCenter.DefaultCenter.PostNotificationName("OnReceiveNotificationFromDashboard", new NSObject());
-                    }
-                    else
-                    {
-                        //Todo: user don't need to see no data connection?
-                        Debug.WriteLine("No Data connection");
-                    }
+                    PushNotificationHelper.UpdateApplicationBadge();
+                    NSNotificationCenter.DefaultCenter.PostNotificationName("OnReceiveNotificationFromDashboard", new NSObject());
                 });
             });
         }
@@ -271,6 +209,141 @@ namespace myTNB
             frame.Y = scrollDiff > 0 ? 0 - scrollDiff : frame.Y + scrollDiff;
             ImageViewGradientImage.Frame = frame;
             _statusBarView.Hidden = !(scrollDiff > 0 && scrollDiff > _imageGradientHeight / 2);
+        }
+
+        public void UpdateAccountsTableViewCell()
+        {
+            _homeTableView.BeginUpdates();
+            _homeTableView.Source = new DashboardHomeDataSource(this, _accountsCardContentViewController, _services, _helpList);
+            NSIndexPath indexPath = NSIndexPath.Create(0, 0);
+            _homeTableView.ReloadRows(new NSIndexPath[] { indexPath }, UITableViewRowAnimation.None);
+            _homeTableView.EndUpdates();
+        }
+
+        private void ReloadAccountsTable()
+        {
+            _homeTableView.Source = new DashboardHomeDataSource(this, _accountsCardContentViewController, _services, _helpList);
+            _homeTableView.ReloadData();
+        }
+
+        private void OnGetServices()
+        {
+            InvokeInBackground(async () =>
+            {
+                _services = await GetServices();
+                InvokeOnMainThread(() =>
+                {
+                    if (_services != null && _services.d != null && _services.d.IsSuccess)
+                    {
+                        OnUpdateCell(DashboardHomeConstants.CellIndex_Services);
+                    }
+                    else
+                    {
+                        //Todo: Handle fail scenario
+                    }
+                });
+            });
+        }
+
+        private Task OnGetHelpInfo()
+        {
+            return Task.Factory.StartNew(() =>
+            {
+                GetItemsService iService = new GetItemsService(TNBGlobal.OS
+                    , string.Empty, TNBGlobal.SITECORE_URL, TNBGlobal.DEFAULT_LANGUAGE);
+                HelpTimeStampResponseModel timeStamp = iService.GetHelpTimestampItem();
+                bool needsUpdate = true;
+                if (timeStamp != null && timeStamp.Data != null && timeStamp.Data.Count > 0 && timeStamp.Data[0] != null
+                    && !string.IsNullOrEmpty(timeStamp.Data[0].Timestamp))
+                {
+                    NSUserDefaults sharedPreference = NSUserDefaults.StandardUserDefaults;
+                    string currentTS = sharedPreference.StringForKey("SiteCoreHelpTimeStamp");
+                    if (string.IsNullOrEmpty(currentTS) || string.IsNullOrWhiteSpace(currentTS))
+                    {
+                        sharedPreference.SetString(timeStamp.Data[0].Timestamp, "SiteCoreHelpTimeStamp");
+                        sharedPreference.Synchronize();
+                    }
+                    else
+                    {
+                        if (currentTS.Equals(timeStamp.Data[0].Timestamp))
+                        {
+                            needsUpdate = false;
+                        }
+                        else
+                        {
+                            sharedPreference.SetString(timeStamp.Data[0].Timestamp, "SiteCoreHelpTimeStamp");
+                            sharedPreference.Synchronize();
+                        }
+                    }
+                }
+                else
+                {
+                    //Todo: Handle fail scenario
+                }
+
+                if (needsUpdate)
+                {
+                    HelpResponseModel helpItems = iService.GetHelpItems();
+                    if (helpItems != null && helpItems.Data != null && helpItems.Data.Count > 0)
+                    {
+                        HelpEntity wsManager = new HelpEntity();
+                        wsManager.DeleteTable();
+                        wsManager.CreateTable();
+                        wsManager.InsertListOfItems(helpItems.Data);
+                    }
+                }
+            });
+        }
+
+        private async Task<ServicesResponseModel> GetServices()
+        {
+            ServiceManager serviceManager = new ServiceManager();
+            object usrInf = new
+            {
+                eid = DataManager.DataManager.SharedInstance.User.Email,
+                sspuid = DataManager.DataManager.SharedInstance.User.UserID,
+                did = DataManager.DataManager.SharedInstance.UDID,
+                ft = DataManager.DataManager.SharedInstance.FCMToken,
+                lang = TNBGlobal.DEFAULT_LANGUAGE,
+                sec_auth_k1 = TNBGlobal.API_KEY_ID,
+                sec_auth_k2 = string.Empty,
+                ses_param1 = string.Empty,
+                ses_param2 = string.Empty
+            };
+            object request = new { usrInf };
+            ServicesResponseModel response = serviceManager.OnExecuteAPIV6<ServicesResponseModel>("GetServices", request);
+            return response;
+        }
+
+        public void OnAccountCardSelected(DueAmountDataModel model)
+        {
+            var index = DataManager.DataManager.SharedInstance.AccountRecordsList?.d?.FindIndex(x => x.accNum == model.accNum) ?? -1;
+
+            if (index >= 0)
+            {
+                var selected = DataManager.DataManager.SharedInstance.AccountRecordsList.d[index];
+                DataManager.DataManager.SharedInstance.SelectAccount(selected.accNum);
+                DataManager.DataManager.SharedInstance.IsSameAccount = false;
+                UIStoryboard storyBoard = UIStoryboard.FromName("Dashboard", null);
+                var vc = storyBoard.InstantiateViewController("DashboardViewController") as DashboardViewController;
+                vc.ShouldShowBackButton = true;
+                ShowViewController(vc, null);
+            }
+        }
+
+        private void SetActionsDictionary()
+        {
+            DashboardHomeActions actions = new DashboardHomeActions(this);
+            _servicesActionDictionary = actions.GetActionsDictionary();
+        }
+
+        private void OnUpdateCell(int row)
+        {
+            _homeTableView.BeginUpdates();
+            _homeTableView.Source = new DashboardHomeDataSource(this, _accountsCardContentViewController, _services, _helpList);
+            NSIndexPath indexPath = NSIndexPath.Create(0, row);
+            _homeTableView.ReloadRows(new NSIndexPath[] { indexPath }, UITableViewRowAnimation.None);
+            _homeTableView.EndUpdates();
         }
     }
 }

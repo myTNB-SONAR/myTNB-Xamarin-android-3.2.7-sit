@@ -100,14 +100,14 @@ namespace myTNB
         /// Gets the notifications.
         /// </summary>
         /// <returns>The notif.</returns>
-        public static async Task<bool> GetNotifications()
+        public static async Task<bool> GetNotifications(bool needsBadgeUpdate = true)
         {
             bool res = false;
             await GetUserNotifications();
             if (DataManager.DataManager.SharedInstance.IsLoadingFromDashboard)
             {
                 DataManager.DataManager.SharedInstance.IsLoadingFromDashboard = false;
-                NSNotificationCenter.DefaultCenter.PostNotificationName("OnReceiveNotificationFromDashboard", new NSObject());
+                //NSNotificationCenter.DefaultCenter.PostNotificationName("OnReceiveNotificationFromDashboard", new NSObject());
             }
             DataManager.DataManager.SharedInstance.UserNotificationResponse = _userNotifications;
             res = _userNotifications?.d?.didSucceed == true;
@@ -131,8 +131,10 @@ namespace myTNB
             {
                 DataManager.DataManager.SharedInstance.HasNewNotification = false;
             }
-            UpdateApplicationBadge();
-
+            if (needsBadgeUpdate)
+            {
+                UpdateApplicationBadge();
+            }
             return res;
         }
         /// <summary>

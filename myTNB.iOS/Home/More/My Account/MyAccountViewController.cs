@@ -32,7 +32,7 @@ namespace myTNB
             ActivityIndicator.Show();
             if (DataManager.DataManager.SharedInstance.IsAccountDeleted)
             {
-                Task[] taskList = new Task[] { ServiceCall.GetCustomerBillingAccountList() };
+                Task[] taskList = new Task[] { ServiceCall.GetAccounts() };
                 Task.WaitAll(taskList);
             }
             myAccountTableView.Source = new MyAccountDataSource(this);

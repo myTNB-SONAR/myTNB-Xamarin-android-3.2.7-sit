@@ -650,23 +650,6 @@
             </objects>
             <point key="canvasLocation" x="261.6" y="-939.5802"/>
         </scene>
-        <scene sceneID="27823">
-            <objects>
-                <viewController id="27824" sceneMemberID="viewController" customClass="AccountsContentViewController" storyboardIdentifier="AccountsContentViewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="27821"/>
-                        <viewControllerLayoutGuide type="bottom" id="27822"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="27825">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    </view>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="27826" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="263" y="-1742"/>
-        </scene>
         <scene sceneID="28994">
             <objects>
                 <viewController id="28995" sceneMemberID="viewController" customClass="RewardsViewController" storyboardIdentifier="RewardsViewController">
@@ -685,6 +668,23 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="28997" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="919" y="183"/>
+        </scene>
+        <scene sceneID="30312">
+            <objects>
+                <viewController id="30313" sceneMemberID="viewController" customClass="AccountsCardContentViewController" storyboardIdentifier="AccountsCardContentViewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="30310"/>
+                        <viewControllerLayoutGuide type="bottom" id="30311"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="30314">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="30315" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="259" y="-1743"/>
         </scene>
     </scenes>
     <resources>

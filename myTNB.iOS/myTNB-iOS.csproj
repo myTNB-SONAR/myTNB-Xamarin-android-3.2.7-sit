@@ -852,9 +852,6 @@
     <ImageAsset Include="Assets.xcassets\Maintenance-Image.imageset\Maintenance-Image-1.png" />
     <ImageAsset Include="Assets.xcassets\Maintenance-Image.imageset\Maintenance-Image%402x-1.png" />
     <ImageAsset Include="Assets.xcassets\Maintenance-Image.imageset\Maintenance-Image%403x-1.png" />
-    <ImageAsset Include="Assets.xcassets\Notification-Select.imageset\icActionSelectAll.png" />
-    <ImageAsset Include="Assets.xcassets\Notification-Select.imageset\icActionSelectAll%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Notification-Select.imageset\icActionSelectAll%403x.png" />
     <ImageAsset Include="Assets.xcassets\Refresh-Error-Normal.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Refresh-Error-White.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Refresh-Error-Normal.imageset\Refresh-Error-Normal.png" />
@@ -968,6 +965,45 @@
     <ImageAsset Include="Assets.xcassets\Accounts-Smart-Meter-Icon.imageset\icDisplaySmartMeter.png" />
     <ImageAsset Include="Assets.xcassets\Accounts-Smart-Meter-Icon.imageset\icDisplaySmartMeter%402x.png" />
     <ImageAsset Include="Assets.xcassets\Accounts-Smart-Meter-Icon.imageset\icDisplaySmartMeter%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Select.imageset\icActionSelectAll-1.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Select.imageset\icActionSelectAll%402x-1.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Select.imageset\icActionSelectAll%403x-1.png" />
+    <ImageAsset Include="Assets.xcassets\Search-Icon.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Add-Account-Icon.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Add-Account-Icon.imageset\Add-Account-Icon.png" />
+    <ImageAsset Include="Assets.xcassets\Add-Account-Icon.imageset\Add-Account-Icon%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Add-Account-Icon.imageset\Add-Account-Icon%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Search-Icon.imageset\Search-Icon.png" />
+    <ImageAsset Include="Assets.xcassets\Search-Icon.imageset\Search-Icon2x.png" />
+    <ImageAsset Include="Assets.xcassets\Search-Icon.imageset\Search-Icon3x.png" />
+    <ImageAsset Include="Assets.xcassets\Help-Background-1.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Help-Background-2.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Help-Background-3.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Help-Background-4.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Help-Background-5.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Help-Background-0.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Help-Background-0.imageset\faqColor1.png" />
+    <ImageAsset Include="Assets.xcassets\Help-Background-0.imageset\faqColor1%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Help-Background-0.imageset\faqColor1%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Help-Background-1.imageset\faqColor2.png" />
+    <ImageAsset Include="Assets.xcassets\Help-Background-1.imageset\faqColor2%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Help-Background-1.imageset\faqColor2%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Help-Background-2.imageset\faqColor3.png" />
+    <ImageAsset Include="Assets.xcassets\Help-Background-2.imageset\faqColor3%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Help-Background-2.imageset\faqColor3%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Help-Background-3.imageset\faqColor4.png" />
+    <ImageAsset Include="Assets.xcassets\Help-Background-3.imageset\faqColor4%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Help-Background-3.imageset\faqColor4%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Help-Background-4.imageset\faqColor5.png" />
+    <ImageAsset Include="Assets.xcassets\Help-Background-4.imageset\faqColor5%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Help-Background-4.imageset\faqColor5%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Help-Background-5.imageset\faqColor6.png" />
+    <ImageAsset Include="Assets.xcassets\Help-Background-5.imageset\faqColor6%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Help-Background-5.imageset\faqColor6%403x.png" />
+    <ImageAsset Include="Assets.xcassets\SMR-Icon.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\SMR-Icon.imageset\SMR-Icon.png" />
+    <ImageAsset Include="Assets.xcassets\SMR-Icon.imageset\SMR-Icon%402x.png" />
+    <ImageAsset Include="Assets.xcassets\SMR-Icon.imageset\SMR-Icon%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -1260,6 +1296,21 @@
     <Folder Include="Assets.xcassets\Accounts-RE-Icon.imageset\" />
     <Folder Include="Assets.xcassets\Accounts-Normal-Icon.imageset\" />
     <Folder Include="Assets.xcassets\Accounts-Smart-Meter-Icon.imageset\" />
+    <Folder Include="Assets.xcassets\Search-Icon.imageset\" />
+    <Folder Include="Assets.xcassets\Add-Account-Icon.imageset\" />
+    <Folder Include="Assets.xcassets\Help-Background-1.imageset\" />
+    <Folder Include="Assets.xcassets\Help-Background-2.imageset\" />
+    <Folder Include="Assets.xcassets\Help-Background-3.imageset\" />
+    <Folder Include="Assets.xcassets\Help-Background-4.imageset\" />
+    <Folder Include="Assets.xcassets\Help-Background-5.imageset\" />
+    <Folder Include="Assets.xcassets\Help-Background-0.imageset\" />
+    <Folder Include="Model\Services\" />
+    <Folder Include="Assets.xcassets\SMR-Icon.imageset\" />
+    <Folder Include="Sitecore CMS\Model\Help\" />
+    <Folder Include="Sitecore CMS\Model\Promotions\" />
+    <Folder Include="Sitecore CMS\Model\Walkthrough\" />
+    <Folder Include="Sitecore CMS\Model\FAQ\" />
+    <Folder Include="Sitecore CMS\Model\TnC\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -1357,17 +1408,9 @@
     </Compile>
     <Compile Include="Model\NewUserModel.cs" />
     <Compile Include="Model\NewUserResponseModel.cs" />
-    <Compile Include="Sitecore CMS\Model\EnergyTipsModel.cs" />
-    <Compile Include="Sitecore CMS\Model\FullRTEPagesModel.cs" />
-    <Compile Include="Sitecore CMS\Model\LocationsModel.cs" />
-    <Compile Include="Sitecore CMS\Model\PreLoginPromoModel.cs" />
-    <Compile Include="Sitecore CMS\Model\WalkthroughScreensModel.cs" />
     <Compile Include="Sitecore CMS\Extensions\SitecoreItemExtensions.cs" />
-    <Compile Include="Sitecore CMS\Service\EnergyTipsService.cs" />
     <Compile Include="Sitecore CMS\Service\FullRTEPagesService.cs" />
     <Compile Include="Sitecore CMS\Service\GetItemsService.cs" />
-    <Compile Include="Sitecore CMS\Service\LocationsService.cs" />
-    <Compile Include="Sitecore CMS\Service\PreLoginPromoService.cs" />
     <Compile Include="Sitecore CMS\Service\SitecoreService.cs" />
     <Compile Include="Sitecore CMS\Service\WalkthroughScreenService.cs" />
     <Compile Include="Sitecore CMS\Constants.cs" />
@@ -1381,9 +1424,7 @@
       <DependentUpon>SelectAccountByRightsViewController.cs</DependentUpon>
     </Compile>
     <Compile Include="Sitecore CMS\Model\BaseModel.cs" />
-    <Compile Include="Sitecore CMS\Model\TimestampModel.cs" />
     <Compile Include="Sitecore CMS\Service\TimestampService.cs" />
-    <Compile Include="Sitecore CMS\Model\WalkthroughScreensResponseModel.cs" />
     <Compile Include="SQLite\SQLite Data Manager\WalkthroughScreensEntity.cs" />
     <Compile Include="Helpers\DeviceHelper.cs" />
     <Compile Include="Registration\BarcodeScannerViewController.cs" />
@@ -1534,7 +1575,6 @@
     <Compile Include="Model\GetCustomerBillingAccountList\CustomerAccountRecordModel.cs" />
     <Compile Include="Model\GetCustomerBillingAccountList\CustomerAccountResponseModel.cs" />
     <Compile Include="Model\GetAccountUsageHistoryForGraph\SegmentDetailsModel.cs" />
-    <Compile Include="Enums\APIVersionEnum.cs" />
     <Compile Include="Home\More\My Account\MyAccountViewController.cs" />
     <Compile Include="Home\More\My Account\MyAccountViewController.designer.cs">
       <DependentUpon>MyAccountViewController.cs</DependentUpon>
@@ -1635,8 +1675,6 @@
     <Compile Include="Home\More\Find Us\Select Store Type\SelectStoreTypeDataSource.cs" />
     <Compile Include="Home\More\Find Us\AnnotationModel.cs" />
     <Compile Include="Model\GetWebLinks\WebLinksDataModel.cs" />
-    <Compile Include="Model\GetWebLinks\WebLinksModel.cs" />
-    <Compile Include="Model\GetWebLinks\WebLinksResponseModel.cs" />
     <Compile Include="Browser\BrowserViewController.cs" />
     <Compile Include="Browser\BrowserViewController.designer.cs">
       <DependentUpon>BrowserViewController.cs</DependentUpon>
@@ -1694,8 +1732,6 @@
     <Compile Include="Model\SubmitFeedback\SubmitFeedbackModel.cs" />
     <Compile Include="Model\SubmitFeedback\SubmitFeedbackResponseModel.cs" />
     <Compile Include="Model\GetStatesForFeedback\StatesForFeedbackDataModel.cs" />
-    <Compile Include="Model\GetStatesForFeedback\StatesForFeedbackModel.cs" />
-    <Compile Include="Model\GetStatesForFeedback\StatesForFeedbackResponseModel.cs" />
     <Compile Include="Model\GetBillHistory\BillHistoryDataModel.cs" />
     <Compile Include="Model\GetBillHistory\BillHistoryModel.cs" />
     <Compile Include="Model\GetBillHistory\BillHistoryResponseModel.cs" />
@@ -1725,8 +1761,6 @@
     </Compile>
     <Compile Include="Helpers\LabelHelper.cs" />
     <Compile Include="Home\Feedback\FeedbackFileNameHelper.cs" />
-    <Compile Include="Sitecore CMS\Model\TimestampResponseModel.cs" />
-    <Compile Include="Sitecore CMS\Model\TermsAndConditionResponseModel.cs" />
     <Compile Include="SQLite\SQLite Data Manager\TermsAndConditionEntity.cs" />
     <Compile Include="Home\More\FAQ\FAQViewController.cs" />
     <Compile Include="Home\More\FAQ\FAQViewController.designer.cs">
@@ -1744,14 +1778,7 @@
       <DependentUpon>PromotionDetailsViewController.cs</DependentUpon>
     </Compile>
     <Compile Include="Home\Promotions\PromotionsDataSource.cs" />
-    <Compile Include="Sitecore CMS\Model\FAQsModel.cs" />
-    <Compile Include="Sitecore CMS\Model\FAQsResponseModel.cs" />
-    <Compile Include="Sitecore CMS\Model\FAQTimestampResponseModel.cs" />
-    <Compile Include="Sitecore CMS\Model\PromotionsModel.cs" />
-    <Compile Include="Sitecore CMS\Model\PromotionsResponseModel.cs" />
-    <Compile Include="Sitecore CMS\Model\PromotionsTimestampResponseModel.cs" />
     <Compile Include="Sitecore CMS\Service\FAQsService.cs" />
-    <Compile Include="Sitecore CMS\Service\PromotionsService.cs" />
     <Compile Include="SQLite\SQLite Data Manager\FAQEntity.cs" />
     <Compile Include="SQLite\SQLite Data Manager\PromotionsEntity.cs" />
     <Compile Include="Home\More\FAQ\FAQViewCell.cs" />
@@ -1821,10 +1848,7 @@
     <Compile Include="Home\Promotions\PromotionsModalViewController.designer.cs">
       <DependentUpon>PromotionsModalViewController.cs</DependentUpon>
     </Compile>
-    <Compile Include="Sitecore CMS\Model\PromotionsModelV2.cs" />
     <Compile Include="Sitecore CMS\Service\PromotionsV2Service.cs" />
-    <Compile Include="Sitecore CMS\Model\PromotionsV2ResponseModel.cs" />
-    <Compile Include="Sitecore CMS\Model\PromotionsParentV2ResponseModel.cs" />
     <Compile Include="Home\Promotions\PromotionsModalDataSource.cs" />
     <Compile Include="Model\Feedback\FeedbackQuestionRequestModel.cs" />
     <Compile Include="Model\Feedback\FeedbackQuestionModel.cs" />
@@ -1974,11 +1998,6 @@
     <Compile Include="Customs\DashboardHome\DashboardHomeHeader.cs" />
     <Compile Include="Customs\DashboardHome\DashboardHomeAccountCard.cs" />
     <Compile Include="Home\Dashboard\DashboardHome\Accounts\AccountsTableViewCell.cs" />
-    <Compile Include="Home\Dashboard\DashboardHome\Accounts\AccountsPageViewDataSource.cs" />
-    <Compile Include="Home\Dashboard\DashboardHome\Accounts\AccountsContentViewController.cs" />
-    <Compile Include="Home\Dashboard\DashboardHome\Accounts\AccountsContentViewController.designer.cs">
-      <DependentUpon>AccountsContentViewController.cs</DependentUpon>
-    </Compile>
     <Compile Include="Rewards\RewardsViewController.cs" />
     <Compile Include="Rewards\RewardsViewController.designer.cs">
       <DependentUpon>RewardsViewController.cs</DependentUpon>
@@ -1988,6 +2007,34 @@
       <DependentUpon>HomeTabBarController.cs</DependentUpon>
     </Compile>
     <Compile Include="Tab Bar\TabbarConstants.cs" />
+    <Compile Include="Customs\CustomShimmerView.cs" />
+    <Compile Include="Home\Dashboard\DashboardHome\DashboardHomeHelper.cs" />
+    <Compile Include="Model\Services\ServicesResponseModel.cs" />
+    <Compile Include="Model\Base Model\BaseModelV2.cs" />
+    <Compile Include="Home\Dashboard\DashboardHome\Services\ServicesConstants.cs" />
+    <Compile Include="Home\Dashboard\DashboardHome\DashboardHomeActions.cs" />
+    <Compile Include="Data Manager\ServiceEnum.cs" />
+    <Compile Include="Home\Dashboard\DashboardHome\Accounts\AccountsCardContentViewController.cs" />
+    <Compile Include="Home\Dashboard\DashboardHome\Accounts\AccountsCardContentViewController.designer.cs">
+      <DependentUpon>AccountsCardContentViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Sitecore CMS\Service\HelpService.cs" />
+    <Compile Include="Sitecore CMS\Model\Help\HelpModel.cs" />
+    <Compile Include="SQLite\SQLite Data Manager\HelpEntity.cs" />
+    <Compile Include="Sitecore CMS\Model\Promotions\PromotionsModel.cs" />
+    <Compile Include="Sitecore CMS\Model\Promotions\PromotionsModelV2.cs" />
+    <Compile Include="Sitecore CMS\Model\Promotions\PromotionsParentV2ResponseModel.cs" />
+    <Compile Include="Sitecore CMS\Model\Promotions\PromotionsTimestampResponseModel.cs" />
+    <Compile Include="Sitecore CMS\Model\Promotions\PromotionsV2ResponseModel.cs" />
+    <Compile Include="Sitecore CMS\Model\Walkthrough\WalkthroughScreensModel.cs" />
+    <Compile Include="Sitecore CMS\Model\Walkthrough\WalkthroughScreensResponseModel.cs" />
+    <Compile Include="Sitecore CMS\Model\FAQ\FAQsModel.cs" />
+    <Compile Include="Sitecore CMS\Model\FAQ\FAQsResponseModel.cs" />
+    <Compile Include="Sitecore CMS\Model\FAQ\FAQTimestampResponseModel.cs" />
+    <Compile Include="Sitecore CMS\Model\TnC\FullRTEPagesModel.cs" />
+    <Compile Include="Sitecore CMS\Model\TnC\TermsAndConditionResponseModel.cs" />
+    <Compile Include="Sitecore CMS\Model\TnC\TimestampModel.cs" />
+    <Compile Include="Sitecore CMS\Model\TnC\TimestampResponseModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />

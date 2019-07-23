@@ -286,8 +286,7 @@ namespace myTNB.Registration.CustomerAccounts
                 InvokeOnMainThread(() =>
                 {
                     if (_customerAccountResponseModel?.d != null
-                       && _customerAccountResponseModel?.d?.didSucceed == true
-                       && _customerAccountResponseModel?.d?.status == "success")
+                       && _customerAccountResponseModel?.d?.didSucceed == true)
                     {
                         DataManager.DataManager.SharedInstance.AccountsToBeAddedList.d = _customerAccountResponseModel?.d?.data;
                         int currentCount = ServiceCall.GetAccountListCount();
@@ -311,7 +310,7 @@ namespace myTNB.Registration.CustomerAccounts
                     {
                         if (!isDashboardFlow)
                         {
-                            AlertHandler.DisplayServiceError(this, _customerAccountResponseModel?.d?.message, (obj) =>
+                            AlertHandler.DisplayServiceError(this, _customerAccountResponseModel?.d?.DisplayMessage, (obj) =>
                              {
                                  if (DataManager.DataManager.SharedInstance.AccountRecordsList == null
                                     || DataManager.DataManager.SharedInstance.AccountRecordsList?.d == null)
@@ -326,7 +325,7 @@ namespace myTNB.Registration.CustomerAccounts
                         }
                         else
                         {
-                            AlertHandler.DisplayServiceError(this, _customerAccountResponseModel?.d?.message, (obj) =>
+                            AlertHandler.DisplayServiceError(this, _customerAccountResponseModel?.d?.DisplayMessage, (obj) =>
                             {
                                 DismissViewController(true, null);
                             });
@@ -403,7 +402,7 @@ namespace myTNB.Registration.CustomerAccounts
                     if (NetworkUtility.isReachable)
                     {
                         DisplayProgessView((int)DataManager.DataManager.SharedInstance.AccountsToBeAddedList?.d?.Count);
-                        AddMultipleSupplyAccountsToUserReg().ContinueWith(task =>
+                        AddAccounts().ContinueWith(task =>
                         {
                             InvokeOnMainThread(() =>
                             {
@@ -431,7 +430,7 @@ namespace myTNB.Registration.CustomerAccounts
                                 else
                                 {
                                     HideProgressView();
-                                    AlertHandler.DisplayServiceError(this, _addMultipleSupplyAccountsResponseModel?.d?.message);
+                                    AlertHandler.DisplayServiceError(this, _addMultipleSupplyAccountsResponseModel?.d?.DisplayMessage);
                                 }
                             });
                         });
@@ -518,6 +517,55 @@ namespace myTNB.Registration.CustomerAccounts
                         user?.email
                     };
                     _addMultipleSupplyAccountsResponseModel = serviceManager.OnExecuteAPI<CustomerAccountResponseModel>("AddMultipleSupplyAccountsToUserReg", requestParams);
+                }
+            });
+
+        }
+
+        internal Task AddAccounts()
+        {
+            return Task.Factory.StartNew(() =>
+            {
+                ServiceManager serviceManager = new ServiceManager();
+
+                List<CustomerAccountRecordModel> accountList = DataManager.DataManager.SharedInstance.AccountsToBeAddedList?.d;
+
+                if (accountList != null)
+                {
+                    object usrInf = new
+                    {
+                        eid = DataManager.DataManager.SharedInstance.User.Email,
+                        sspuid = DataManager.DataManager.SharedInstance.User.UserID,
+                        did = DataManager.DataManager.SharedInstance.UDID,
+                        ft = DataManager.DataManager.SharedInstance.FCMToken,
+                        lang = TNBGlobal.DEFAULT_LANGUAGE,
+                        sec_auth_k1 = TNBGlobal.API_KEY_ID,
+                        sec_auth_k2 = string.Empty,
+                        ses_param1 = string.Empty,
+                        ses_param2 = string.Empty
+                    };
+
+                    List<object> billAccs = new List<object>();
+                    foreach (var item in accountList)
+                    {
+                        billAccs.Add(new
+                        {
+                            accNum = item.accNum ?? string.Empty,
+                            accountTypeId = item.accountTypeId ?? "1",
+                            accountStAddress = item.accountStAddress ?? string.Empty,
+                            icNum = item.icNum ?? string.Empty,
+                            item.isOwned,
+                            accountNickName = item.accountNickName ?? string.Empty,
+                            accountCategoryId = item.accountCategoryId ?? string.Empty
+                        });
+                    }
+
+                    object requestParams = new
+                    {
+                        billAccounts = billAccs,
+                        usrInf
+                    };
+                    _addMultipleSupplyAccountsResponseModel = serviceManager.OnExecuteAPIV6<CustomerAccountResponseModel>("AddAccounts", requestParams);
                 }
             });
 

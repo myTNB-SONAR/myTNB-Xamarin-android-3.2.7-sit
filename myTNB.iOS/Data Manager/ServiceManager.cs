@@ -2,7 +2,6 @@
 using Newtonsoft.Json;
 using myTNB.Model;
 using System.Collections.Generic;
-using myTNB.Enum;
 using Newtonsoft.Json.Linq;
 using System.Diagnostics;
 using System;
@@ -16,13 +15,18 @@ namespace myTNB
             return OnExecuteAPI<BaseResponseModel>(suffix, requestParams);
         }
 
-        public T OnExecuteAPI<T>(string suffix, object requestParams) where T : new()
+        public T OnExecuteAPI<T>(string suffix, object requestParams, APIVersion version = APIVersion.V5, bool isDev = false) where T : new()
         {
             T customClass = new T();
             try
             {
+#if DEBUG
+                isDev = true;
+#endif
                 BaseService baseService = new BaseService();
-                RestResponse rawResponse = baseService.ExecuteWebservice(suffix, requestParams, APIVersion.V5);
+                APIEnvironment env = TNBGlobal.IsProduction ? APIEnvironment.PROD : APIEnvironment.SIT;
+                env = isDev ? APIEnvironment.DEV : env;
+                RestResponse rawResponse = baseService.ExecuteWebservice(suffix, requestParams, version, env);
                 return (string.IsNullOrEmpty(rawResponse.Content)
                     || string.IsNullOrWhiteSpace(rawResponse.Content)) ? customClass
                     : JsonConvert.DeserializeObject<T>(rawResponse.Content);
@@ -34,10 +38,16 @@ namespace myTNB
             return customClass;
         }
 
+        public T OnExecuteAPIV6<T>(string suffix, object requestParams) where T : new()
+        {
+            return OnExecuteAPI<T>(suffix, requestParams, APIVersion.V6);
+        }
+
         public T OnExecuteAPIV2<T>(string suffix, object requestParams) where T : new()
         {
             BaseService baseService = new BaseService();
-            RestResponse rawResponse = baseService.ExecuteWebservice(suffix, requestParams, APIVersion.V5);
+            APIEnvironment env = TNBGlobal.IsProduction ? APIEnvironment.PROD : APIEnvironment.SIT;
+            RestResponse rawResponse = baseService.ExecuteWebservice(suffix, requestParams, APIVersion.V5, env);
             try
             {
                 if (!string.IsNullOrEmpty(rawResponse.Content) && !string.IsNullOrWhiteSpace(rawResponse.Content))
@@ -79,7 +89,8 @@ namespace myTNB
         public string GetPDFServiceURL(string suffix, Dictionary<string, string> requestParams)
         {
             BaseService baseService = new BaseService();
-            return baseService.GetFormattedURL(suffix, requestParams, APIVersion.V5);
+            APIEnvironment env = TNBGlobal.IsProduction ? APIEnvironment.PROD : APIEnvironment.SIT;
+            return baseService.GetFormattedURL(suffix, requestParams, APIVersion.V5, env);
         }
 
         /// <summary>
@@ -91,7 +102,8 @@ namespace myTNB
         public string GetPaymentURL(Dictionary<string, string> requestParams, string paymentURL)
         {
             BaseService baseService = new BaseService();
-            return baseService.GetFormattedURL(requestParams, true, paymentURL);
+            APIEnvironment env = TNBGlobal.IsProduction ? APIEnvironment.PROD : APIEnvironment.SIT;
+            return baseService.GetFormattedURL(requestParams, true, paymentURL, env);
         }
     }
 }

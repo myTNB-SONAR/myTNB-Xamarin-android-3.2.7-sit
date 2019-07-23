@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using myTNB.Enum;
 using RestSharp;
 
 namespace myTNB
@@ -9,31 +8,40 @@ namespace myTNB
         const string CONTENT_TYPE = "Content-Type";
         const string APPLICATION_JSON = "application/json";
         const int TIMEOUT = 60000;
-        readonly int DOMAINTYPE = TNBGlobal.IsProduction ? 1 : 0; // Set to 1 for Prod
-        bool _isPayment = false;
+        bool _isPayment;
         string _paymentURL = string.Empty;
-        readonly string[] _domain = new string[]{
-            "https://mobiletestingws.tnb.com.my",
-            "https://mytnbapp.tnb.com.my"
+
+        readonly Dictionary<string, string> DomainDictionary = new Dictionary<string, string>
+        {
+            { "DEV", "http://10.215.128.191:89"}
+            , { "SIT", "http://10.215.128.162:88/" }//New //{ "SIT", "https://mobiletestingws.tnb.com.my"} //OLD
+            , { "PROD", "https://mytnbapp.tnb.com.my"}
         };
-        readonly string[] _endpointDevURL = new string[]{
-            "/v4/my_billingssp.asmx/",
-            "/v5/my_billingssp.asmx/"
+
+        readonly Dictionary<string, string> EndPointDictionaryDev = new Dictionary<string, string>
+        {
+            {"V4", "/v5/my_billingssp.asmx/"}
+            , {"V5", "/v5/my_billingssp.asmx/"}
+            , {"V6", "/v6/mytnbappws.asmx/"}
         };
-        readonly string[] _endpointProdURL = new string[]{
-            "/v4/my_BillingSSP.asmx/",
-            "/v5/my_BillingSSP.asmx/"
+
+        readonly Dictionary<string, string> EndPointDictionaryProd = new Dictionary<string, string>
+        {
+            {"V4", "/v5/my_billingssp.asmx/"}
+            , {"V5", "/v5/my_billingssp.asmx/"}
+            , {"V6", "/v6/mytnbappws.asmx/"}
         };
 
         string GetURLEndpoint(APIVersion version)
         {
+            string ver = version.ToString();
             if (TNBGlobal.IsProduction)
             {
-                return version == APIVersion.V4 ? _endpointProdURL[0] : _endpointProdURL[1];
+                return EndPointDictionaryProd.ContainsKey(ver) ? EndPointDictionaryProd[ver] : string.Empty;
             }
             else
             {
-                return version == APIVersion.V4 ? _endpointDevURL[0] : _endpointDevURL[1];
+                return EndPointDictionaryDev.ContainsKey(ver) ? EndPointDictionaryDev[ver] : string.Empty;
             }
         }
 
@@ -44,9 +52,9 @@ namespace myTNB
         /// <param name="suffix">The name of the API.</param>
         /// <param name="requestParams">Request parameters.</param>
         /// <param name="version">Version of API to be used.</param>
-        public RestResponse ExecuteWebservice(string suffix, object requestParams, APIVersion version)
+        public RestResponse ExecuteWebservice(string suffix, object requestParams, APIVersion version, APIEnvironment env)
         {
-            string domain = _domain[DOMAINTYPE];
+            string domain = GetDomain(env);
             string url = domain + GetURLEndpoint(version) + suffix;
 
             var client = new RestClient(url)
@@ -66,9 +74,9 @@ namespace myTNB
             return response;
         }
 
-        public string GetFormattedURL(string suffix, Dictionary<string, string> requestParams, APIVersion version)
+        public string GetFormattedURL(string suffix, Dictionary<string, string> requestParams, APIVersion version, APIEnvironment env)
         {
-            return GetURL(suffix, requestParams, version);
+            return GetURL(suffix, requestParams, version, env);
         }
 
         /// <summary>
@@ -78,14 +86,14 @@ namespace myTNB
         /// <param name="requestParams">Request parameters.</param>
         /// <param name="isPayment">If set to <c>true</c> is payment.</param>
         /// <param name="paymentURL">Payment URL.</param>
-        public string GetFormattedURL(Dictionary<string, string> requestParams, bool isPayment, string paymentURL)
+        public string GetFormattedURL(Dictionary<string, string> requestParams, bool isPayment, string paymentURL, APIEnvironment env)
         {
             _isPayment = isPayment;
             _paymentURL = paymentURL;
-            return GetURL(string.Empty, requestParams, 0);
+            return GetURL(string.Empty, requestParams, 0, env);
         }
 
-        internal string GetURL(string suffix, Dictionary<string, string> requestParams, APIVersion version)
+        internal string GetURL(string suffix, Dictionary<string, string> requestParams, APIVersion version, APIEnvironment env)
         {
             string url = string.Empty;
             if (_isPayment)
@@ -94,7 +102,7 @@ namespace myTNB
             }
             else
             {
-                string domain = _domain[DOMAINTYPE];
+                string domain = GetDomain(env);
                 url = domain + GetURLEndpoint(version) + suffix + "?";
             }
 
@@ -113,6 +121,12 @@ namespace myTNB
                 index++;
             }
             return url;
+        }
+
+        private string GetDomain(APIEnvironment environment)
+        {
+            string env = environment.ToString();
+            return DomainDictionary.ContainsKey(env) ? DomainDictionary[env] : string.Empty;
         }
     }
 }

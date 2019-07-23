@@ -6,26 +6,43 @@ namespace myTNB
 {
     public class AccountsTableViewCell : UITableViewCell
     {
+        DashboardHomeHelper _dashboardHomeHelper = new DashboardHomeHelper();
         private nfloat cellWidth = UIApplication.SharedApplication.KeyWindow.Frame.Width;
-        private UIView _view;
+        private UIView _contentView;
         public AccountsTableViewCell(IntPtr handle) : base(handle)
         {
-            _view = new UIView(new CGRect(0, 0, cellWidth, 395.0F))
+            _contentView = new UIView(new CGRect(0,
+                0,
+                cellWidth,
+                DashboardHomeConstants.GreetingViewHeight +
+                _dashboardHomeHelper.GetHeightForAccountCards() +
+                DashboardHomeConstants.SearchViewHeight +
+                DashboardHomeConstants.PageControlHeight))
             {
                 BackgroundColor = UIColor.Clear
             };
-            AddSubview(_view);
+            AddSubview(_contentView);
             BackgroundColor = UIColor.Clear;
-            _view.LeftAnchor.ConstraintEqualTo(LeftAnchor).Active = true;
-            _view.RightAnchor.ConstraintEqualTo(RightAnchor).Active = true;
-            _view.TopAnchor.ConstraintEqualTo(TopAnchor).Active = true;
-            _view.BottomAnchor.ConstraintEqualTo(BottomAnchor).Active = true;
+            _contentView.LeftAnchor.ConstraintEqualTo(LeftAnchor).Active = true;
+            _contentView.RightAnchor.ConstraintEqualTo(RightAnchor).Active = true;
+            _contentView.TopAnchor.ConstraintEqualTo(TopAnchor).Active = true;
+            _contentView.BottomAnchor.ConstraintEqualTo(BottomAnchor).Active = true;
             SelectionStyle = UITableViewCellSelectionStyle.None;
         }
 
-        public void AddCards(UIPageViewController pageViewController)
+        public void AddViewsToContainers(UIViewController accountsCardViewController)
         {
-            _view.AddSubview(pageViewController.View);
+            _contentView.AddSubview(accountsCardViewController.View);
+        }
+
+        public void UpdateCell(nfloat updatedHeight)
+        {
+            CGRect frame = _contentView.Frame;
+            frame.Height = updatedHeight +
+                DashboardHomeConstants.GreetingViewHeight +
+                DashboardHomeConstants.SearchViewHeight +
+                DashboardHomeConstants.PageControlHeight;
+            _contentView.Frame = frame;
         }
     }
 }

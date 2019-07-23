@@ -16,7 +16,7 @@ namespace myTNB.Home.Feedback
         readonly bool _isBcrmAvailable;
         readonly FeedbackViewController _controller;
 
-        public FeedbackDataSource(FeedbackViewController controller, List<SubmittedFeedbackDataModel> submittedFeedbackList, bool isFromPrelogin, bool isBcrmAvailable)
+        public FeedbackDataSource(FeedbackViewController controller, List<SubmittedFeedbackDataModel> submittedFeedbackList, bool isBcrmAvailable)
         {
             if (DataManager.DataManager.SharedInstance.FeedbackCategory != null)
             {
