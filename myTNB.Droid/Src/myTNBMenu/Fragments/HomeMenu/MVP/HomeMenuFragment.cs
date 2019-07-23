@@ -219,14 +219,24 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     currentMyServiceList.Clear();
                     currentMyServiceList.AddRange(list);
                     myServiceAdapter.ClickChanged += OnClickChanged;
-                    int count = accountsAdapter.accountCardModelList.Count;
-                    if (count < 1 && myServiceAdapter.ItemCount == 0)
+                    try
                     {
-                        newFAQTitle.SetTextColor(Color.White);
+                        if (accountsAdapter.accountCardModelList != null && myServiceAdapter != null)
+                        {
+                            int count = accountsAdapter.accountCardModelList.Count;
+                            if (count < 1 && myServiceAdapter.ItemCount == 0)
+                            {
+                                newFAQTitle.SetTextColor(Color.White);
+                            }
+                            else
+                            {
+                                newFAQTitle.SetTextColor(Resources.GetColor(Resource.Color.powerBlue));
+                            }
+                        }
                     }
-                    else
+                    catch (System.Exception e)
                     {
-                        newFAQTitle.SetTextColor(Resources.GetColor(Resource.Color.powerBlue));
+                        Utility.LoggingNonFatalError(e);
                     }
                 });
             }
@@ -248,7 +258,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             {
                 Activity.RunOnUiThread(() =>
                 {
-                    newFAQShimmerAdapter = new NewFAQShimmerAdapter(this.presenter.LoadShimmerFAQList(3));
+                    newFAQShimmerAdapter = new NewFAQShimmerAdapter(this.presenter.LoadShimmerFAQList(3), this.Activity);
                     newFAQShimmerList.SetAdapter(newFAQShimmerAdapter);
 
                     newFAQShimmerView.Visibility = ViewStates.Visible;
@@ -274,11 +284,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 Activity.RunOnUiThread(() =>
                 {
                     shimmerFAQView.StopShimmer();
-                    newFAQShimmerAdapter = new NewFAQShimmerAdapter(null);
+                    newFAQShimmerAdapter = new NewFAQShimmerAdapter(null, this.Activity);
                     newFAQShimmerList.SetAdapter(newFAQShimmerAdapter);
                     newFAQShimmerView.Visibility = ViewStates.Gone;
                     newFAQView.Visibility = ViewStates.Visible;
-                    newFAQAdapter = new NewFAQAdapter(list);
+                    newFAQAdapter = new NewFAQAdapter(list, this.Activity);
                     newFAQListRecycleView.SetAdapter(newFAQAdapter);
                     currentNewFAQList.Clear();
                     currentNewFAQList.AddRange(list);
@@ -467,22 +477,25 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         {
             try
             {
-                int count = accountsAdapter.accountCardModelList.Count;
-                if (count <= 2)
+                if (accountsAdapter.accountCardModelList != null && myServiceAdapter != null)
                 {
-                    myServiceTitle.SetTextColor(Color.White);
-                }
-                else
-                {
-                    myServiceTitle.SetTextColor(Resources.GetColor(Resource.Color.powerBlue));
-                }
-                if (count < 1 && myServiceAdapter.ItemCount == 0)
-                {
-                    newFAQTitle.SetTextColor(Color.White);
-                }
-                else
-                {
-                    newFAQTitle.SetTextColor(Resources.GetColor(Resource.Color.powerBlue));
+                    int count = accountsAdapter.accountCardModelList.Count;
+                    if (count <= 2)
+                    {
+                        myServiceTitle.SetTextColor(Color.White);
+                    }
+                    else
+                    {
+                        myServiceTitle.SetTextColor(Resources.GetColor(Resource.Color.powerBlue));
+                    }
+                    if (count < 1 && myServiceAdapter.ItemCount == 0)
+                    {
+                        newFAQTitle.SetTextColor(Color.White);
+                    }
+                    else
+                    {
+                        newFAQTitle.SetTextColor(Resources.GetColor(Resource.Color.powerBlue));
+                    }
                 }
             }
             catch (System.Exception e)
