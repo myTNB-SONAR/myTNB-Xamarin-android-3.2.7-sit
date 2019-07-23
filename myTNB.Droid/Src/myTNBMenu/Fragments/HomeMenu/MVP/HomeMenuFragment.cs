@@ -398,7 +398,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             {
                 indicatorContainer.Visibility = ViewStates.Gone;
             }
-            ChangeMyServiceTextColor();
+            ChangeMyServiceFAQTextColor();
         }
 
         public void OnUpdateAccountListChanged(bool isSearchSubmit)
@@ -473,7 +473,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             actionBar.SetDisplayShowHomeEnabled(flag);
         }
 
-        private void ChangeMyServiceTextColor()
+        private void ChangeMyServiceFAQTextColor()
         {
             try
             {
@@ -503,6 +503,30 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 Utility.LoggingNonFatalError(e);
             }
         }
+
+        private void ChangeMyServiceTextColor()
+        {
+            try
+            {
+                if (accountsAdapter != null && accountsAdapter.accountCardModelList != null)
+                {
+                    int count = accountsAdapter.accountCardModelList.Count;
+                    if (count <= 2)
+                    {
+                        myServiceTitle.SetTextColor(Color.White);
+                    }
+                    else
+                    {
+                        myServiceTitle.SetTextColor(Resources.GetColor(Resource.Color.powerBlue));
+                    }
+                }
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
         public string GetDeviceId()
         {
             return this.DeviceId();
@@ -553,6 +577,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         {
             accountsAdapter.SetAccountCards(accountList);
             accountsRecyclerView.SetAdapter(accountsAdapter);
+            ChangeMyServiceTextColor();
         }
 
         public void OnSavedTimeStamp(string savedTimeStamp)
