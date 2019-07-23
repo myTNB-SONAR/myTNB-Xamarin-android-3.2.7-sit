@@ -14,6 +14,13 @@ namespace myTNB_Android.Src.Utils
             return px;
         }
 
+        internal static float ConvertDPToPx(float dp)
+        {
+            var scale = global::Android.App.Application.Context.Resources.DisplayMetrics.Density;
+            var px = dp * scale;
+            return px;
+        }
+
         internal static float ConvertPxToDP(float px)
         {
             var scale = Android.App.Application.Context.Resources.DisplayMetrics.Density;

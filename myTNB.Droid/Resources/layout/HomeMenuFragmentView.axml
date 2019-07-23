@@ -115,7 +115,7 @@
             </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:layout_marginTop="8dp"
                 android:layout_marginLeft="16dp"
@@ -133,7 +133,7 @@
                 <LinearLayout
                     android:id="@+id/myServiceShimmerView"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:orientation="vertical"
                     android:visibility="gone">
@@ -144,8 +144,7 @@
                         <android.support.v7.widget.RecyclerView
                             android:id="@+id/myServiceShimmerList"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:scrollIndicators="none" />
+                            android:layout_height="wrap_content"/>
                     </com.facebook.shimmer.ShimmerFrameLayout>
                 </LinearLayout>
                 <LinearLayout
@@ -158,15 +157,14 @@
                     <android.support.v7.widget.RecyclerView
                         android:id="@+id/myServiceList"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:scrollIndicators="none" />
+                        android:layout_height="wrap_content"/>
                 </LinearLayout>
             </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:layout_marginTop="2dp"
+                android:layout_marginTop="8dp"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
                 android:layout_marginBottom="33dp"

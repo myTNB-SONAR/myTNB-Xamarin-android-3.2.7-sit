@@ -24,6 +24,8 @@ using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter;
 using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Listener;
 using myTNB_Android.Src.SummaryDashBoard.Models;
 using myTNB_Android.Src.Utils;
+using static myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter.MyServiceAdapter;
+using static myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter.MyServiceShimmerAdapter;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 {
@@ -166,10 +168,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             GridLayoutManager layoutManager = new GridLayoutManager(this.Activity, 3);
             layoutManager.Orientation = RecyclerView.Vertical;
             myServiceListRecycleView.SetLayoutManager(layoutManager);
+            myServiceListRecycleView.AddItemDecoration(new MyServiceItemDecoration(3, 12, false));
 
             GridLayoutManager layoutShimmerManager = new GridLayoutManager(this.Activity, 3);
             layoutShimmerManager.Orientation = RecyclerView.Vertical;
             myServiceShimmerList.SetLayoutManager(layoutShimmerManager);
+            myServiceShimmerList.AddItemDecoration(new MyServiceShimmerItemDecoration(3, 12, false));
         }
 
         private void SetupNewFAQView()
@@ -184,7 +188,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
         public void SetMyServiceRecycleView()
         {
-            myServiceShimmerAdapter = new MyServiceShimmerAdapter(this.presenter.LoadShimmerServiceList(6));
+            myServiceShimmerAdapter = new MyServiceShimmerAdapter(this.presenter.LoadShimmerServiceList(6), this.Activity);
             myServiceShimmerList.SetAdapter(myServiceShimmerAdapter);
 
             myServiceShimmerView.Visibility = ViewStates.Visible;
@@ -206,11 +210,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 Activity.RunOnUiThread(() =>
                 {
                     shimmerMyServiceView.StopShimmer();
-                    myServiceShimmerAdapter = new MyServiceShimmerAdapter(null);
+                    myServiceShimmerAdapter = new MyServiceShimmerAdapter(null, this.Activity);
                     myServiceShimmerList.SetAdapter(myServiceShimmerAdapter);
                     myServiceShimmerView.Visibility = ViewStates.Gone;
                     myServiceView.Visibility = ViewStates.Visible;
-                    myServiceAdapter = new MyServiceAdapter(list);
+                    myServiceAdapter = new MyServiceAdapter(list, this.Activity);
                     myServiceListRecycleView.SetAdapter(myServiceAdapter);
                     currentMyServiceList.Clear();
                     currentMyServiceList.AddRange(list);
@@ -517,7 +521,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
         private void RetryMyService()
         {
-            MyServiceShimmerAdapter adapter = new MyServiceShimmerAdapter(this.presenter.LoadShimmerServiceList(6));
+            MyServiceShimmerAdapter adapter = new MyServiceShimmerAdapter(this.presenter.LoadShimmerServiceList(6), this.Activity);
             myServiceShimmerList.SetAdapter(adapter);
 
             myServiceShimmerView.Visibility = ViewStates.Visible;
