@@ -13,6 +13,7 @@ namespace myTNB.Model
         string _isOwned = string.Empty;
         string _accountCategoryId = string.Empty;
         string _smartMeterCode = string.Empty;
+        string _isTaggedSMR = string.Empty;
 
         public string __type { set; get; }
         public string accNum
@@ -130,7 +131,17 @@ namespace myTNB.Model
                 return _smartMeterCode;
             }
         }
-
+        public string isTaggedSMR
+        {
+            set
+            {
+                _isTaggedSMR = ServiceCall.ValidateResponseItem(value);
+            }
+            get
+            {
+                return _isTaggedSMR.ToLower();
+            }
+        }
         [JsonIgnore]
         public bool IsNormalMeter
         {
@@ -152,6 +163,21 @@ namespace myTNB.Model
             get
             {
                 return accountCategoryId != null && accountCategoryId.Equals("2");
+            }
+        }
+
+        [JsonIgnore]
+        public bool IsSSMR
+        {
+            get
+            {
+                var res = false;
+
+                if (!string.IsNullOrEmpty(isTaggedSMR))
+                {
+                    res = string.Compare(isTaggedSMR, "true") == 0;
+                }
+                return res;
             }
         }
 

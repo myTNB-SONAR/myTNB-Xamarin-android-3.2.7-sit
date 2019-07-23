@@ -87,6 +87,7 @@ namespace myTNB
                 {
                     loadingOverlay?.Hide();
                     DataManager.DataManager.SharedInstance.IsPaymentDone = true;
+                    DataManager.DataManager.SharedInstance.SummaryNeedsRefresh = true;
                     ViewHelper.DismissControllersAndSelectTab(Controller, 0, true, true);
                 }
 

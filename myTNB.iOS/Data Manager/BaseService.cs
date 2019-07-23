@@ -14,7 +14,7 @@ namespace myTNB
         readonly Dictionary<string, string> DomainDictionary = new Dictionary<string, string>
         {
             { "DEV", "http://10.215.128.191:89"}
-            , { "SIT", "http://10.215.128.162:88/" }//New //{ "SIT", "https://mobiletestingws.tnb.com.my"} //OLD
+            , { "SIT", "http://10.215.128.162" }//New //{ "SIT", "https://mobiletestingws.tnb.com.my"} //OLD
             , { "PROD", "https://mytnbapp.tnb.com.my"}
         };
 

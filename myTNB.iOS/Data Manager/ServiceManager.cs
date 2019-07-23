@@ -15,17 +15,16 @@ namespace myTNB
             return OnExecuteAPI<BaseResponseModel>(suffix, requestParams);
         }
 
-        public T OnExecuteAPI<T>(string suffix, object requestParams, APIVersion version = APIVersion.V5, bool isDev = false) where T : new()
+        public T OnExecuteAPI<T>(string suffix, object requestParams, APIVersion version = APIVersion.V5) where T : new()
         {
             T customClass = new T();
             try
             {
-#if DEBUG
-                isDev = true;
-#endif
                 BaseService baseService = new BaseService();
                 APIEnvironment env = TNBGlobal.IsProduction ? APIEnvironment.PROD : APIEnvironment.SIT;
-                env = isDev ? APIEnvironment.DEV : env;
+#if DEBUG
+                env = APIEnvironment.DEV;
+#endif
                 RestResponse rawResponse = baseService.ExecuteWebservice(suffix, requestParams, version, env);
                 return (string.IsNullOrEmpty(rawResponse.Content)
                     || string.IsNullOrWhiteSpace(rawResponse.Content)) ? customClass
@@ -47,6 +46,9 @@ namespace myTNB
         {
             BaseService baseService = new BaseService();
             APIEnvironment env = TNBGlobal.IsProduction ? APIEnvironment.PROD : APIEnvironment.SIT;
+#if DEBUG
+            env = APIEnvironment.DEV;
+#endif
             RestResponse rawResponse = baseService.ExecuteWebservice(suffix, requestParams, APIVersion.V5, env);
             try
             {
@@ -90,6 +92,9 @@ namespace myTNB
         {
             BaseService baseService = new BaseService();
             APIEnvironment env = TNBGlobal.IsProduction ? APIEnvironment.PROD : APIEnvironment.SIT;
+#if DEBUG
+            env = APIEnvironment.DEV;
+#endif
             return baseService.GetFormattedURL(suffix, requestParams, APIVersion.V5, env);
         }
 
@@ -103,6 +108,9 @@ namespace myTNB
         {
             BaseService baseService = new BaseService();
             APIEnvironment env = TNBGlobal.IsProduction ? APIEnvironment.PROD : APIEnvironment.SIT;
+#if DEBUG
+            env = APIEnvironment.DEV;
+#endif
             return baseService.GetFormattedURL(requestParams, true, paymentURL, env);
         }
     }

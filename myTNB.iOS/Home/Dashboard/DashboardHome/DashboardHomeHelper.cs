@@ -53,6 +53,7 @@ namespace myTNB
                         accNickName = sortedAccounts[i].accountNickName,
                         IsReAccount = sortedAccounts[i].IsREAccount,
                         IsNormalAccount = sortedAccounts[i].IsNormalMeter,
+                        IsSSMR = sortedAccounts[i].IsSSMR,
                         amountDue = acctCached != null ? acctCached.amountDue : 0.00,
                         billDueDate = acctCached != null ? acctCached.billDueDate : string.Empty
                     };
@@ -70,6 +71,7 @@ namespace myTNB
                         accNickName = sortedAccounts[i].accountNickName,
                         IsReAccount = sortedAccounts[i].IsREAccount,
                         IsNormalAccount = sortedAccounts[i].IsNormalMeter,
+                        IsSSMR = sortedAccounts[i].IsSSMR,
                         amountDue = acctCached != null ? acctCached.amountDue : 0.00,
                         billDueDate = acctCached != null ? acctCached.billDueDate : string.Empty
                     };
