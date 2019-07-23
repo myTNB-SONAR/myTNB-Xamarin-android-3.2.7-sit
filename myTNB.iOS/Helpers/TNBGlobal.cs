@@ -82,7 +82,7 @@ namespace myTNB
                 return "http://10.215.128.191:89/v5/PayRedirect.aspx";
 #else
                 return IsProduction ? "https://mytnbapp.tnb.com.my/v5/PayRedirect.aspx"
-                    : "http://10.215.128.162:88/v5/PayRedirect.aspx"; //https://mobiletestingws.tnb.com.my/v5/PayRedirect.aspx
+                    : "http://10.215.128.162/v5/PayRedirect.aspx"; //https://mobiletestingws.tnb.com.my/v5/PayRedirect.aspx
 #endif
             }
         }
