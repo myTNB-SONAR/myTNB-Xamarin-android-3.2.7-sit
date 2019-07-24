@@ -107,6 +107,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                         summaryDetails[i].AccType = cbAccount.AccountCategoryId;
                         summaryDetails[i].IsAccSelected = cbAccount.IsSelected;
                         summaryDetails[i].SmartMeterCode = cbAccount.SmartMeterCode;
+                        summaryDetails[i].IsTaggedSMR = cbAccount.IsTaggedSMR;
                         /*** Save account data For the Day***/
                         SummaryDashBoardAccountEntity accountModel = new SummaryDashBoardAccountEntity();
                         accountModel.Timestamp = DateTime.Now.ToLocalTime();
@@ -148,6 +149,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                         summaryDetails[i].AccType = cbAccount.AccountCategoryId;
                         summaryDetails[i].IsAccSelected = cbAccount.IsSelected;
                         summaryDetails[i].SmartMeterCode = cbAccount.SmartMeterCode;
+                        summaryDetails[i].IsTaggedSMR = cbAccount.IsTaggedSMR;
                         /*** Save account data For the Day***/
                         SummaryDashBoardAccountEntity accountModel = new SummaryDashBoardAccountEntity();
                         accountModel.Timestamp = DateTime.Now.ToLocalTime();

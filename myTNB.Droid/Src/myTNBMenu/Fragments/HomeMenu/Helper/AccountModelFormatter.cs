@@ -16,7 +16,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Helper
             return "RM " + amountDue;
         }
 
-        public static string GetBillDueNote(int accountType, string amountDue, string dueDate)
+        public static string GetBillDueNote(int accountType, string amountDue, string dueDate, bool isTaggedSMR)
         {
             string dueAmountNote;
             if (accountType == 2)
@@ -31,7 +31,15 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Helper
                 }
                 else
                 {
-                    dueAmountNote = "Pay by " + GetFormattedDate(dueDate, DATE_ORIGINAL_FORMAT, DATE_RESULT_FORMAT);
+                    if (isTaggedSMR)
+                    {
+                        dueAmountNote = "Get bill by " + GetFormattedDate(dueDate, DATE_ORIGINAL_FORMAT, DATE_RESULT_FORMAT);
+                    }
+                    else
+                    {
+                        dueAmountNote = "Pay by " + GetFormattedDate(dueDate, DATE_ORIGINAL_FORMAT, DATE_RESULT_FORMAT);
+                    }
+                    
                 }
             }
             return dueAmountNote;

@@ -96,8 +96,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
                         cardModel.AccountName = summaryDashBoardDetails.AccName;
                         cardModel.BillDueAmount = AccountModelFormatter.GetFormatAmount(summaryDashBoardDetails.AmountDue);
                         cardModel.BillDueNote = AccountModelFormatter.GetBillDueNote(accountType,
-                            summaryDashBoardDetails.AmountDue, summaryDashBoardDetails.BillDueDate);
+                            summaryDashBoardDetails.AmountDue, summaryDashBoardDetails.BillDueDate, summaryDashBoardDetails.IsTaggedSMR);
                         cardModel.AccountType = accountType;
+                        cardModel.IsTaggedSMR = summaryDashBoardDetails.IsTaggedSMR;
                         if (summaryDashBoardDetails.SmartMeterCode == "0")
                         {
                             cardModel.SmartMeterCode = Int32.Parse(summaryDashBoardDetails.SmartMeterCode);
@@ -126,6 +127,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
                 model.BillDueAmount = summaryDashBoardDetails.AmountDue;
                 model.BillDueNote = summaryDashBoardDetails.BillDueDate;
                 model.AccountType = accountType;
+                model.IsTaggedSMR = summaryDashBoardDetails.IsTaggedSMR;
                 if (summaryDashBoardDetails.SmartMeterCode == "0")
                 {
                     model.SmartMeterCode = Int32.Parse(summaryDashBoardDetails.SmartMeterCode);
@@ -175,7 +177,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
                     }
                     else
                     {
-                        layoutParams.RightMargin = (int)(16 * scale + 0.5f);
+                        layoutParams.RightMargin = (int)(8 * scale + 0.5f);
                         viewHolder.linearLayout.LayoutParameters = layoutParams;
                     }
                 }
@@ -199,7 +201,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
             }
         }
 
-        private int GetAccountIcon(int AccountType, int SmartMeterCode)
+        private int GetAccountIcon(int AccountType, int SmartMeterCode, bool IsTaggedSMR)
         {
             int iconResource;
             if (AccountType == 1)
@@ -210,12 +212,19 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
                 }
                 else
                 {
-                    iconResource = Resource.Drawable.ic_display_normal_meter;
+                    if (IsTaggedSMR)
+                    {
+                        iconResource = Resource.Drawable.smr_48_x_48;
+                    }
+                    else
+                    {
+                        iconResource = Resource.Drawable.ic_display_normal_meter;
+                    }
                 }
             }
             else
             {
-                iconResource = Resource.Drawable.smr_48_x_48; //ic_display_r_eleaf;
+                iconResource = Resource.Drawable.ic_display_r_eleaf;
             }
             return iconResource;
         }
@@ -241,7 +250,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
             billDueAmount.Text = cardModel.BillDueAmount;
             billDueNote.Text = cardModel.BillDueNote;
 
-            accountTypeIcon.SetImageResource(GetAccountIcon(cardModel.AccountType, cardModel.SmartMeterCode));
+            accountTypeIcon.SetImageResource(GetAccountIcon(cardModel.AccountType, cardModel.SmartMeterCode, cardModel.IsTaggedSMR));
 
             TextViewUtils.SetMuseoSans500Typeface(accountName, billDueAmount);
             TextViewUtils.SetMuseoSans300Typeface(accountNumber, billDueNote);

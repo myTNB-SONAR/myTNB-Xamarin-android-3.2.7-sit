@@ -37,5 +37,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         {
             get; set;
         }
+
+        public bool IsTaggedSMR
+        {
+            get; set;
+        }
     }
 }
