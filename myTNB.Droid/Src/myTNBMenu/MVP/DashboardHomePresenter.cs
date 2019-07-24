@@ -336,6 +336,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 					}
 					break;
 				case Resource.Id.menu_bill:
+                    this.mView.ShowHideActionBar(true);
 					if (accountList.Count > 0)
 					{
 						CustomerBillingAccount selected;
@@ -372,11 +373,11 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 				case Resource.Id.menu_promotion:
 
 
-					WeblinkEntity weblinkEntity = WeblinkEntity.GetByCode("PROMO");
+                    WeblinkEntity weblinkEntity = WeblinkEntity.GetByCode("PROMO");
 					if (weblinkEntity != null)
 					{
 						currentBottomNavigationMenu = Resource.Id.menu_promotion;
-
+						this.mView.ShowHideActionBar(true);
 						this.mView.HideAccountName();
 						this.mView.SetToolbarTitle(Resource.String.promotion_menu_activity_title);
 						this.mView.ShowPromotionsMenu(Weblink.Copy(weblinkEntity));
@@ -397,18 +398,19 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 					}
 					break;
 				case Resource.Id.menu_reward:
-					currentBottomNavigationMenu = Resource.Id.menu_reward;
+                    this.mView.ShowHideActionBar(true);
+                    currentBottomNavigationMenu = Resource.Id.menu_reward;
 					break;
 				case Resource.Id.menu_feedback:
-
-					currentBottomNavigationMenu = Resource.Id.menu_feedback;
+                    this.mView.ShowHideActionBar(true);
+                    currentBottomNavigationMenu = Resource.Id.menu_feedback;
 					this.mView.HideAccountName();
 					this.mView.SetToolbarTitle(Resource.String.feedback_menu_activity_title);
 					this.mView.ShowFeedbackMenu();
 					break;
 				case Resource.Id.menu_more:
-
-					currentBottomNavigationMenu = Resource.Id.menu_more;
+                    this.mView.ShowHideActionBar(true);
+                    currentBottomNavigationMenu = Resource.Id.menu_more;
 					this.mView.HideAccountName();
 					this.mView.SetToolbarTitle(Resource.String.more_menu_activity_title);
 					this.mView.ShowMoreMenu();

@@ -730,5 +730,17 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             bottomNavigationView.Menu.FindItem(Resource.Id.menu_dashboard).SetChecked(true);
         }
 
+        public void ShowHideActionBar(bool flag)
+        {
+            if(flag)
+            {
+                this.SupportActionBar.Show();
+            }
+            else
+            {
+                this.SupportActionBar.Hide();
+            }
+        }
+
     }
 }
