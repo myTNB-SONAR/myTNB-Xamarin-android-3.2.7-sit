@@ -28,6 +28,16 @@ namespace myTNB
         /// <param name="accountsList"></param>
         public void GroupAccountsList(List<CustomerAccountRecordModel> accountsList)
         {
+            DataManager.DataManager.SharedInstance.AccountsGroupList = new List<List<DueAmountDataModel>>();
+            DataManager.DataManager.SharedInstance.AccountsGroupList = GetGroupAccountsList(accountsList);
+        }
+
+        /// <summary>
+        /// Returns the Grouped Linked CAs
+        /// </summary>
+        /// <param name="accountsList"></param>
+        public List<List<DueAmountDataModel>> GetGroupAccountsList(List<CustomerAccountRecordModel> accountsList)
+        {
             var sortedAccounts = new List<CustomerAccountRecordModel>();
 
             var results = accountsList.GroupBy(x => x.IsREAccount);
@@ -86,8 +96,8 @@ namespace myTNB
                     groupedAccountsList.Add(batchList);
                 }
             }
-            DataManager.DataManager.SharedInstance.AccountsGroupList = new List<List<DueAmountDataModel>>();
-            DataManager.DataManager.SharedInstance.AccountsGroupList = groupedAccountsList;
+
+            return groupedAccountsList;
         }
 
         /// <summary>
