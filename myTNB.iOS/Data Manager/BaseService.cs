@@ -14,7 +14,7 @@ namespace myTNB
         readonly Dictionary<string, string> DomainDictionary = new Dictionary<string, string>
         {
             { "DEV", "http://10.215.128.191:89"}
-            , { "SIT", "https://mobiletestingws.tnb.com.my"} //OLD{ "SIT", "http://10.215.128.162" }//New //
+            , { "SIT", "https://mobiletestingws.tnb.com.my" }
             , { "PROD", "https://mytnbapp.tnb.com.my"}
         };
 
@@ -54,7 +54,6 @@ namespace myTNB
         /// <param name="version">Version of API to be used.</param>
         public RestResponse ExecuteWebservice(string suffix, object requestParams, APIVersion version, APIEnvironment env)
         {
-            env = APIEnvironment.SIT;
             string domain = GetDomain(env);
             string url = domain + GetURLEndpoint(version) + suffix;
 

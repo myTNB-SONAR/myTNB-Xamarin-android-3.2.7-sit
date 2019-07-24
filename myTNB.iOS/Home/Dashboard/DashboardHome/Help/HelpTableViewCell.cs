@@ -54,7 +54,7 @@ namespace myTNB
                 _scrollView.Subviews[i].RemoveFromSuperview();
             }
 
-            bool hasData = helpList != null;
+            bool hasData = helpList.Count > 0;
 
             if (hasData)
             {

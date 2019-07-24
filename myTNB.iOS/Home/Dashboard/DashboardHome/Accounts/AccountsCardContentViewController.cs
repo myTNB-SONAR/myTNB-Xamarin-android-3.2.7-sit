@@ -75,10 +75,7 @@ namespace myTNB
         {
             _parentView = new UIView(new CGRect(0,
                 0, View.Frame.Width,
-                _dashboardHomeHelper.GetHeightForAccountCards() +
-                DashboardHomeConstants.GreetingViewHeight +
-                DashboardHomeConstants.SearchViewHeight +
-                DashboardHomeConstants.PageControlHeight))
+                _dashboardHomeHelper.GetHeightForAccountCards()))
             {
                 BackgroundColor = UIColor.Clear,
                 UserInteractionEnabled = true
@@ -146,20 +143,28 @@ namespace myTNB
             SetTextFieldEvents(_textFieldSearch);
         }
 
+        private void AdjustParentFrame()
+        {
+            CGRect frame = _parentView.Frame;
+            frame.Height = _dashboardHomeHelper.GetHeightForAccountCards();
+            _parentView.Frame = frame;
+        }
+
         private void SetCardScrollView()
         {
             if (_accountsCardScrollView != null)
             {
                 _accountsCardScrollView.RemoveFromSuperview();
             }
-            _accountsCardScrollView = new UIScrollView(new CGRect(0, _searchView.Frame.GetMaxY(), _parentView.Frame.Width, _dashboardHomeHelper.GetHeightForAccountCards()))
+            _accountsCardScrollView = new UIScrollView(new CGRect(0, _searchView.Frame.GetMaxY(), _parentView.Frame.Width, _dashboardHomeHelper.GetHeightForAccountCardsOnly()))
             {
                 Delegate = new AccountsScrollViewDelegate(this),
                 PagingEnabled = true,
                 ShowsHorizontalScrollIndicator = false,
                 ShowsVerticalScrollIndicator = false,
                 ClipsToBounds = false,
-                BackgroundColor = UIColor.Clear
+                BackgroundColor = UIColor.Clear,
+                Hidden = false
             };
 
             AdjustFrame(_accountsCardScrollView, padding, 0, -padding * 3, 0);
@@ -172,7 +177,7 @@ namespace myTNB
             {
                 _pageControl.RemoveFromSuperview();
             }
-            _pageControl = new UIPageControl(new CGRect(8, _accountsCardScrollView.Frame.GetMaxY(), View.Frame.Width - 16f, DashboardHomeConstants.PageControlHeight))
+            _pageControl = new UIPageControl(new CGRect(8, _accountsCardScrollView.Frame.GetMaxY(), _parentView.Frame.Width - 16f, DashboardHomeConstants.PageControlHeight))
             {
                 BackgroundColor = UIColor.Clear,
                 TintColor = MyTNBColor.WaterBlue,
@@ -228,12 +233,24 @@ namespace myTNB
             _dashboardHomeHelper.GroupAccountsList(accountsList);
             _groupAccountList.Clear();
             _groupAccountList = DataManager.DataManager.SharedInstance.AccountsGroupList;
-            //_homeViewController.UpdateAccountsTableViewCell();
+            _homeViewController.OnReloadTableForSearch();
             ClearScrollViewSubViews();
+            AdjustParentFrame();
             SetCardScrollView();
             SetScrollViewSubViews();
             LoadAccountsWithDues();
-            //_textFieldSearch.BecomeFirstResponder();
+            OnTypeSearchAction();
+        }
+
+        public void ResetAccountCardsView()
+        {
+            _groupAccountList.Clear();
+            _groupAccountList = DataManager.DataManager.SharedInstance.AccountsGroupList;
+            ClearScrollViewSubViews();
+            AdjustParentFrame();
+            SetCardScrollView();
+            SetScrollViewSubViews();
+            LoadAccountsWithDues();
         }
         #endregion
 
@@ -273,27 +290,23 @@ namespace myTNB
         #region Action Methods
         private void OnAddAccountAction()
         {
-            Debug.WriteLine("OnAddAccountAction");
             _homeViewController.OnAddAccountAction();
         }
 
         private void OnSearchAction()
         {
-            Debug.WriteLine("OnSearchAction");
             _isSearchMode = !_isSearchMode;
             SetViewForActiveSearch(_isSearchMode);
         }
 
         private void OnTypeSearchAction()
         {
-            Debug.WriteLine("OnTypeSearchAction");
             _isSearchMode = true;
             _textFieldSearch.BecomeFirstResponder();
         }
 
         private void OnNotificationAction()
         {
-            Debug.WriteLine("OnNotificationAction");
             _homeViewController.OnNotificationAction();
         }
         #endregion
@@ -305,18 +318,18 @@ namespace myTNB
         {
             NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
             {
-                InvokeOnMainThread(async () =>
+                InvokeInBackground(async () =>
                 {
                     if (NetworkUtility.isReachable)
                     {
                         bool shouldReload = false;
-                        var accounts = GetAccountsToUpdate(ref shouldReload);
+                        var accounts = GetAccountsToUpdate(ref shouldReload, _currentPageIndex);
 
                         if (accounts?.Count > 0)
                         {
-                            await GetAccountsSummary(accounts);
+                            int currentIndex = await GetAccountsSummary(accounts, _currentPageIndex);
                             _isUpdating = false;
-                            UpdateCardsWithTag(_currentPageIndex);
+                            UpdateCardsWithTag(currentIndex);
                         }
                         else if (shouldReload)
                         {
@@ -332,14 +345,14 @@ namespace myTNB
             });
         }
 
-        private void UpdateDueForDisplayedAccounts(List<DueAmountDataModel> dueDetails)
+        private void UpdateDueForDisplayedAccounts(List<DueAmountDataModel> dueDetails, int currentIndex)
         {
             if (_groupAccountList.Count <= 0)
                 return;
 
-            if (_currentPageIndex > -1 && _currentPageIndex < _groupAccountList.Count)
+            if (currentIndex > -1 && currentIndex < _groupAccountList.Count)
             {
-                var groupAccountList = _groupAccountList[_currentPageIndex];
+                var groupAccountList = _groupAccountList[currentIndex];
 
                 foreach (var due in dueDetails)
                 {
@@ -357,22 +370,19 @@ namespace myTNB
             }
         }
 
-        private async Task<bool> GetAccountsSummary(List<string> accounts)
+        private async Task<int> GetAccountsSummary(List<string> accounts, int currentIndex)
         {
-            bool res = false;
-
             var response = await ServiceCall.GetLinkedAccountsSummaryInfo(accounts);
-            res = response.didSucceed;
 
             if (response.didSucceed && response.AccountDues?.Count > 0)
             {
-                UpdateDueForDisplayedAccounts(response.AccountDues);
+                UpdateDueForDisplayedAccounts(response.AccountDues, currentIndex);
             }
             else
             {
                 //FAIL scenarios here...
             }
-            return res;
+            return currentIndex;
         }
 
         /// <summary>
@@ -421,18 +431,18 @@ namespace myTNB
         /// Gets the accounts to update.
         /// </summary>
         /// <returns>The accounts to update.</returns>
-        private List<string> GetAccountsToUpdate(ref bool shouldReload)
+        private List<string> GetAccountsToUpdate(ref bool shouldReload, int currentIndex)
         {
             var acctsToGetLatestDues = new List<string>();
 
             if (_groupAccountList.Count <= 0)
                 return acctsToGetLatestDues;
 
-            shouldReload = RemoveDeletedAccounts() > 0;
+            shouldReload = RemoveDeletedAccounts(currentIndex) > 0;
 
-            if (_currentPageIndex > -1 && _currentPageIndex < _groupAccountList.Count)
+            if (currentIndex > -1 && currentIndex < _groupAccountList.Count)
             {
-                var groupAccountList = _groupAccountList[_currentPageIndex];
+                var groupAccountList = _groupAccountList[currentIndex];
 
                 // cache updates
                 for (int i = 0; i < groupAccountList.Count; i++)
@@ -466,18 +476,18 @@ namespace myTNB
         /// Removes the deleted accounts.
         /// </summary>
         /// <returns>The deleted accounts.</returns>
-        private int RemoveDeletedAccounts()
+        private int RemoveDeletedAccounts(int currentIndex)
         {
             int removedAccounts = 0;
 
             if (_groupAccountList.Count <= 0)
                 return removedAccounts;
 
-            if (_currentPageIndex > -1 && _currentPageIndex < _groupAccountList.Count)
+            if (currentIndex > -1 && currentIndex < _groupAccountList.Count)
             {
                 List<string> keysToDelete = new List<string>();
                 var accountsList = DataManager.DataManager.SharedInstance.AccountRecordsList.d;
-                var groupAccountList = _groupAccountList[_currentPageIndex];
+                var groupAccountList = _groupAccountList[currentIndex];
 
                 // remove deleted accounts
                 foreach (var delAccNum in DataManager.DataManager.SharedInstance.AccountsDeleted)
@@ -572,6 +582,13 @@ namespace myTNB
                 AddPageControl();
                 UpdatePageControl(_pageControl, _currentPageIndex, _groupAccountList.Count, GetContainerViewWithTag(_currentPageIndex));
             }
+            else
+            {
+                if (_pageControl != null)
+                {
+                    _pageControl.Hidden = true;
+                }
+            }
         }
 
         private UIView GetContainerViewWithTag(int tag)
@@ -595,20 +612,23 @@ namespace myTNB
 
         private void UpdateCardsWithTag(int tag)
         {
-            var subviews = _accountsCardScrollView.Subviews;
-            foreach (var views in subviews)
+            InvokeOnMainThread(() =>
             {
-                var view = views as UIView;
-                if (view != null)
+                var subviews = _accountsCardScrollView.Subviews;
+                foreach (var views in subviews)
                 {
-                    if (view.Tag == tag)
+                    var view = views as UIView;
+                    if (view != null)
                     {
-                        RemoveAccountCardsFromView(view);
-                        AddAccountsCardInContainerView(view, tag, _isUpdating);
-                        break;
+                        if (view.Tag == tag)
+                        {
+                            RemoveAccountCardsFromView(view);
+                            AddAccountsCardInContainerView(view, tag, _isUpdating);
+                            break;
+                        }
                     }
                 }
-            }
+            });
         }
 
         private void RemoveAccountCardsFromView(UIView containerView)

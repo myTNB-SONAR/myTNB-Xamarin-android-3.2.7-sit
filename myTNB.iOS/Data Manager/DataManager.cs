@@ -25,6 +25,10 @@ namespace myTNB.DataManager
         public bool SummaryNeedsRefresh = false;
         public int AccountRecordIndex = -1;
 
+        //Dashboard Home
+        public List<HelpModel> HelpList = new List<HelpModel>();
+        public List<ServiceItemModel> ServicesList = new List<ServiceItemModel>();
+
         //Chart Related Data
         //Contains selected account from AccountRecordsList
         public CustomerAccountRecordModel SelectedAccount = new CustomerAccountRecordModel();
@@ -168,6 +172,9 @@ namespace myTNB.DataManager
             AccountsGroupList = new List<List<DueAmountDataModel>>();
             AccountNumber = string.Empty;
             AccountsAddedCount = 0;
+
+            HelpList = new List<HelpModel>();
+            ServicesList = new List<ServiceItemModel>();
 
             SelectedAccount = new CustomerAccountRecordModel();
             BillingAccountDetails = new BillingAccountDetailsDataModel();
