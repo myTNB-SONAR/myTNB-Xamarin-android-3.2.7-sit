@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
@@ -10,131 +11,136 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
         <TextView
-            android:id="@+id/myServiceTitle"
+            android:id="@+id/disconnectionTtile"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginBottom="8dp"
+            android:lineSpacingExtra="8sp"
             android:textSize="16sp"
-            android:text="My Services"
+            android:text="I am discountinuing my service for:"
             android:textColor="@color/powerBlue"
             android:layout_gravity="left"/>
         <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@color/white"
+            android:id="@+id/disconnectionAccountContainer">
+            <TextView
+                android:id="@+id/disconnectionAccountTtile"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="16dp"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
-                android:layout_marginBottom="2dp"
-                android:id="@+id/myServiceContainer">
+                android:layout_marginBottom="4dp"
+                android:lineSpacingExtra="6sp"
+                android:textSize="14sp"
+                android:text="My House"
+                android:textColor="@color/tunaGrey"
+                android:layout_gravity="left"/>
+            <TextView
+                android:id="@+id/disconnectionAccountAddress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginBottom="16dp"
+                android:lineSpacingExtra="6sp"
+                android:textSize="14sp"
+                android:text="No. 3 Jalan Melur, 12 Taman Melur, 68000 Ampang, Selangor"
+                android:textColor="@color/tunaGrey"
+                android:layout_gravity="left"/> 
         </LinearLayout>
-    </LinearLayout>
-</ScrollView>
-<android.support.v4.widget.NestedScrollView  
-      android:layout_width="match_parent"
-      android:layout_height="match_parent"
-      android:id="@+id/summaryNestScrollView">
+        <TextView
+            android:id="@+id/contactDetailTtile"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginBottom="8dp"
+            android:lineSpacingExtra="8sp"
+            android:textSize="16sp"
+            android:text="My contact details:"
+            android:textColor="@color/powerBlue"
+            android:layout_gravity="left"/>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:orientation="vertical"
             android:background="@color/white"
-            android:orientation="vertical">
-            <LinearLayout
+            android:paddingTop="16dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:paddingEnd="16dp"
+            android:paddingBottom="16dp"
+            android:paddingStart="16dp"
+            android:id="@+id/contactDetailContainer">
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/txtInputLayoutEmail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginTop="8dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:layout_marginBottom="2dp"
-                android:id="@+id/myServiceContainer">
-                <TextView
-                    android:id="@+id/myServiceTitle"
+                android:layout_marginBottom="23dp"
+                app:errorEnabled="true"
+                app:hintTextAppearance="@style/TextInputLayout.TextAppearance.LightBackground">
+                <EditText
+                    android:id="@+id/txtEmail"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="14dp"
-                    android:text="My Services"
-                    android:textColor="@color/powerBlue"
-                    android:layout_gravity="left"/>
-                <LinearLayout
-                    android:id="@+id/myServiceShimmerView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:orientation="vertical"
-                    android:visibility="gone">
-                    <com.facebook.shimmer.ShimmerFrameLayout
-                        android:id="@+id/shimmerMyServiceView"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-                        <android.support.v7.widget.RecyclerView
-                            android:id="@+id/myServiceShimmerList"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"/>
-                    </com.facebook.shimmer.ShimmerFrameLayout>
-                </LinearLayout>
-                <LinearLayout
-                    android:id="@+id/myServiceView"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="16dp"
-                    android:orientation="vertical"
-                    android:visibility="gone">
-                    <android.support.v7.widget.RecyclerView
-                        android:id="@+id/myServiceList"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"/>
-                </LinearLayout>
-            </LinearLayout>
-            <LinearLayout
+                    android:drawableLeft="@drawable/placeholder_email"
+                    android:paddingTop="5dp"
+                    android:drawablePadding="6dp"
+                    android:hint="@string/ssmr_disconnection_email_hint"
+                    android:inputType="textEmailAddress"
+                    android:maxLines="1" />
+            </android.support.design.widget.TextInputLayout>
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/txtInputLayoutMobileNo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginTop="8dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:layout_marginBottom="33dp"
-                android:id="@+id/newFAQContainer">
-                <TextView
-                    android:id="@+id/newFAQTitle"
+                app:errorEnabled="true"
+                android:layout_marginBottom="27dp"
+                app:hintTextAppearance="@style/TextInputLayout.TextAppearance.LightBackground">
+                <EditText
+                    android:id="@+id/txtMobileNo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="14dp"
-                    android:text="Need Help?"
-                    android:textColor="@color/powerBlue"
-                    android:layout_gravity="left"/>
-                <LinearLayout
-                    android:id="@+id/newFAQShimmerView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="7dp"
-                    android:orientation="vertical"
-                    android:visibility="gone">
-                    <com.facebook.shimmer.ShimmerFrameLayout
-                        android:id="@+id/shimmerFAQView"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-                        <android.support.v7.widget.RecyclerView
-                            android:id="@+id/newFAQShimmerList"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:scrollIndicators="none" />
-                    </com.facebook.shimmer.ShimmerFrameLayout>
-                </LinearLayout>
-                <LinearLayout
-                    android:id="@+id/newFAQView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="7dp"
-                    android:orientation="vertical"
-                    android:visibility="gone">
-                    <android.support.v7.widget.RecyclerView
-                        android:id="@+id/newFAQList"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:scrollIndicators="none" />
-                </LinearLayout>
-            </LinearLayout>
+                    android:drawableLeft="@drawable/placeholder_mobile"
+                    android:paddingTop="5dp"
+                    android:drawablePadding="6dp"
+                    android:hint="@string/ssmr_disconnection_mobile_no_hint"
+                    android:inputType="phone"
+                    android:digits="0123456789+"
+                    android:importantForAutofill="noExcludeDescendants"
+                    android:maxLines="1"  />
+            </android.support.design.widget.TextInputLayout>
+            <TextView
+                android:id="@+id/contactDetailConsent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:lineSpacingExtra="4sp"
+                android:textSize="12sp"
+                android:text="By editing you will update your myTNB profile and electricity account contact details."
+                android:textColor="@color/tunaGrey"
+                android:layout_gravity="left"/>
         </LinearLayout>
-</android.support.v4.widget.NestedScrollView>
+        <TextView
+            android:id="@+id/terminationReasonTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginBottom="8dp"
+            android:lineSpacingExtra="8sp"
+            android:textSize="16sp"
+            android:text="My contact details:"
+            android:textColor="@color/powerBlue"
+            android:layout_gravity="left"/>
+    </LinearLayout>
+</ScrollView>
