@@ -106,7 +106,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                         summaryDetails[i].AccName = cbAccount.AccDesc;
                         summaryDetails[i].AccType = cbAccount.AccountCategoryId;
                         summaryDetails[i].IsAccSelected = cbAccount.IsSelected;
-
+                        summaryDetails[i].SmartMeterCode = cbAccount.SmartMeterCode;
                         ///*** Save account data For the Day***/
                         //SummaryDashBoardAccountEntity accountModel = new SummaryDashBoardAccountEntity();
                         //accountModel.Timestamp = DateTime.Now.ToLocalTime();
@@ -155,7 +155,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             batchAccountList = accountList.Select((x, index) => new { x, index })
                    .GroupBy(x => x.index / 5, y => y.x);
 
-            //LoadSummaryDetails(batchAccountList.ToList()[0].ToList());
             for (int i = 0; i < batchAccountList.ToList().Count; i++)
             {
                 LoadSummaryDetails(batchAccountList.ToList()[i].ToList());

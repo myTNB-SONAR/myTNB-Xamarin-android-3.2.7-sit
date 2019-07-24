@@ -23,7 +23,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             void ShowMyServiceRetryOptions(string msg);
             void OnSavedTimeStamp(string savedTimeStamp);
             void ShowFAQTimestamp(bool success);
-			void LoadSummaryDetailsByBatchIndex(int batchIndex);
         }
 
         public interface IHomeMenuPresenter
@@ -41,8 +40,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             Task OnGetFAQTimeStamp();
             void ReadNewFAQFromCache();
             Task OnGetFAQs();
-            List<string> GetBatchAccountNumnberList(int batchIndex);
-            void LoadBatchedSummaryDetails(List<string> accountNumberList);
         }
 
         public interface IHomeMenuService

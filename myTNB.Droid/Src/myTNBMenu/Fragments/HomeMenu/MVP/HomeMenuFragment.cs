@@ -382,7 +382,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             accountsRecyclerView.SetLayoutManager(linearLayoutManager);
 
             accountsAdapter = new AccountsRecyclerViewAdapter(this);
-            accountsRecyclerView.AddOnScrollListener(new AccountsRecyclerViewOnScrollListener(this, linearLayoutManager, indicatorContainer));
+            accountsRecyclerView.AddOnScrollListener(new AccountsRecyclerViewOnScrollListener(linearLayoutManager, indicatorContainer));
 
             SnapHelper snapHelper = new LinearSnapHelper();
             snapHelper.AttachToRecyclerView(accountsRecyclerView);
@@ -612,7 +612,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         public void UpdateAccountListCards(List<SummaryDashBoardDetails> accountList)
         {
             accountsAdapter.UpdateAccountCards(accountList);
-            //accountsAdapter.NotifyDataSetChanged();
+            accountsAdapter.NotifyDataSetChanged();
         }
 
         public void SetAccountListCards(List<SummaryDashBoardDetails> accountList)
@@ -722,12 +722,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             {
                 Utility.LoggingNonFatalError(e);
             }
-        }
-
-        public void LoadSummaryDetailsByBatchIndex(int batchIndex)
-        {
-            List<string> accountList = this.presenter.GetBatchAccountNumnberList(batchIndex);
-            this.presenter.LoadBatchedSummaryDetails(accountList);
         }
     }
 }
