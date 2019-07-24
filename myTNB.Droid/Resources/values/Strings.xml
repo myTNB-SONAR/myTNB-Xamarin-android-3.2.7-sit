@@ -421,11 +421,12 @@ You acknowledge that you have been provided with and have read and understood th
   <string name="barcode_form_btn_snackbar_close">Close</string>
 
   <!-- Dashboard Menu-->
-  <string name="menu_dashboard">Dashboard</string>
-  <string name="menu_bills">Bills</string>
-  <string name="menu_promotions">Promotions</string>
+  <string name="menu_dashboard">Home</string>
+  <string name="menu_bills">My Bills</string>
+  <string name="menu_promotions">What\'s New</string>
   <string name="menu_feedback">Feedback</string>
-  <string name="menu_more">More</string>
+  <string name="menu_reward">Rewards</string>
+  <string name="menu_more">Profile</string>
   <!-- End of Dashboard Menu-->
 
   <!-- Dashboard Notification Toolbar Menu -->
@@ -1397,4 +1398,7 @@ Please try again later.]]>
   <!-- Refresh -->
   <string name="text_new_refresh">Refresh Now</string>
   <string name="text_new_refresh_content">This page must be tired. Tap the button below to help it out.</string>
+
+  <string name="my_service_btn_retry">Retry</string>
+  <string name="my_service_error">Something went wrong, Please try again.</string>
 </resources>

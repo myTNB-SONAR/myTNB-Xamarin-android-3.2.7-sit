@@ -14,7 +14,8 @@
         android:gravity="center">
         <include
             layout="@layout/toolbar"
-            android:id="@+id/toolbar" />
+            android:id="@+id/toolbar"
+            android:visibility="gone"/>
         <TextView
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:layout_width="wrap_content"
@@ -31,7 +32,8 @@
             android:layout_marginRight="20dp"
             android:layout_marginBottom="16dp"
             android:text="Account Name"
-            android:ellipsize="end" />
+            android:ellipsize="end"
+            android:visibility="gone"/>
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"

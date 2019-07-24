@@ -23,9 +23,16 @@ namespace myTNB_Android.Src.myTNBMenu.Async
 
         private DashboardContract.IView mView = null;
 
+        private DashboardHomeContract.IView mHomeView = null;
+
         public SiteCorePromotioAPI(DashboardContract.IView mView)
         {
             this.mView = mView;
+        }
+
+        public SiteCorePromotioAPI(DashboardHomeContract.IView mView)
+        {
+            this.mHomeView = mView;
         }
 
         protected override void OnPreExecute()
@@ -162,8 +169,14 @@ namespace myTNB_Android.Src.myTNBMenu.Async
         {
             base.OnPostExecute(result);
 
-
-            mView.ShowPromotion(true);
+            if (mView != null)
+            {
+                mView.ShowPromotion(true);
+            }
+            if (mHomeView != null)
+            {
+                mHomeView.ShowPromotion(true);
+            }
         }
 
     }

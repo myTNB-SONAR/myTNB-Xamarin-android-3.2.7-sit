@@ -289,7 +289,7 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
             }
             else
             {
-                Intent dashbaord_activity = new Intent(this, typeof(DashboardActivity));
+                Intent dashbaord_activity = new Intent(this, typeof(DashboardHomeActivity));
                 dashbaord_activity.PutExtra(Constants.PROMOTION_NOTIFICATION_VIEW, true);
                 dashbaord_activity.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
                 StartActivity(dashbaord_activity);

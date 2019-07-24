@@ -110,11 +110,16 @@ namespace myTNB_Android.Src.Utils
 
         internal struct SERVER_URL
         {
-#if DEBUG || STUB || DEVELOP 
+#if DEBUG || STUB
+            //internal static readonly string END_POINT = "http://10.215.128.191:89";
+            //internal static readonly string FPX_PAYMENT = "http://10.215.128.191:89/v5/PayRedirect.aspx?Param1=3&Param2=";
             internal static readonly string END_POINT = "https://mobiletestingws.tnb.com.my";
             internal static readonly string FPX_PAYMENT = "https://mobiletestingws.tnb.com.my/v5/PayRedirect.aspx?Param1=3&Param2=";
             //internal static readonly string END_POINT = "https://mytnbapp.tnb.com.my";
             //internal static readonly string FPX_PAYMENT = "https://mytnbapp.tnb.com.my/v5/PayRedirect.aspx?Param1=3&Param2=";
+#elif RELEASE
+            internal static readonly string END_POINT = "http://10.215.128.162";
+            internal static readonly string FPX_PAYMENT = "http://10.215.128.162/v5/PayRedirect.aspx?Param1=3&Param2=";
 #else 
            internal static readonly string END_POINT = "https://mytnbapp.tnb.com.my";
             internal static readonly string FPX_PAYMENT = "https://mytnbapp.tnb.com.my/v5/PayRedirect.aspx?Param1=3&Param2=";
@@ -206,5 +211,24 @@ namespace myTNB_Android.Src.Utils
         internal static readonly string REFRESH_BTN_MSG = "refreshBtnTxt";
 
         internal static readonly string AMOUNT_DUE_FAILED_KEY = "AmountDueFailedKey";
+
+        //Home Menu Scroll
+        internal static readonly int ACCOUNT_LIST_CARD_DP = 60;
+        internal static readonly int ACCOUNT_LIST_INDICATOR_DP = 10;
+        internal static readonly int ACCOUNT_LIST_SERVICE_MAX_BOUNDARY = 3;
+        internal static readonly int MY_SERVICE_CARD_DP = 90;
+        internal static readonly int MY_SERVICE_NO_CARD_DP = 5;
+        internal static readonly int ACCOUNT_LIST_HELP_NO_ACC_DP_LIMIT = 110;
+        internal static readonly int ACCOUNT_LIST_HELP_MAX_BOUNDARY = 5;
+
+        //Language
+        internal static readonly string DEFAULT_LANG = "EN";
+
+        public enum GREETING
+        {
+            MORNING,
+            AFTERNOON,
+            EVENING
+        }
     }
 }

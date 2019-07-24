@@ -7,11 +7,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Listener
     public class AccountsRecyclerViewOnScrollListener : RecyclerView.OnScrollListener
 	{
 		LinearLayoutManager mLinearLayoutManager;
-		LinearLayout mLinearLayout;
-		public AccountsRecyclerViewOnScrollListener(LinearLayoutManager linearLayoutManager, LinearLayout linearLayout)
+		LinearLayout mIndicatorContainer;
+		public AccountsRecyclerViewOnScrollListener(LinearLayoutManager linearLayoutManager, LinearLayout indicatorContainer)
 		{
 			mLinearLayoutManager = linearLayoutManager;
-			mLinearLayout = linearLayout;
+            mIndicatorContainer = indicatorContainer;
 		}
 		public override void OnScrolled(RecyclerView recyclerView, int dx, int dy)
 		{
@@ -20,9 +20,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Listener
 			if (pos >= 0)
 			{
 				ImageView imageView;
-				for (int i = 0; i < mLinearLayout.ChildCount; i++)
+				for (int i = 0; i < mIndicatorContainer.ChildCount; i++)
 				{
-					imageView = (ImageView)mLinearLayout.GetChildAt(i);
+					imageView = (ImageView)mIndicatorContainer.GetChildAt(i);
 					if (i == pos)
 					{
 						imageView.SetImageResource(Resource.Drawable.circle_active);
