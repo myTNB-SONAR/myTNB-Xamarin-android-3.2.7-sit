@@ -75,10 +75,7 @@ namespace myTNB
         {
             _parentView = new UIView(new CGRect(0,
                 0, View.Frame.Width,
-                _dashboardHomeHelper.GetHeightForAccountCards() +
-                DashboardHomeConstants.GreetingViewHeight +
-                DashboardHomeConstants.SearchViewHeight +
-                DashboardHomeConstants.PageControlHeight))
+                _dashboardHomeHelper.GetHeightForAccountCards()))
             {
                 BackgroundColor = UIColor.Clear,
                 UserInteractionEnabled = true
@@ -146,20 +143,28 @@ namespace myTNB
             SetTextFieldEvents(_textFieldSearch);
         }
 
+        private void AdjustParentFrame()
+        {
+            CGRect frame = _parentView.Frame;
+            frame.Height = _dashboardHomeHelper.GetHeightForAccountCards();
+            _parentView.Frame = frame;
+        }
+
         private void SetCardScrollView()
         {
             if (_accountsCardScrollView != null)
             {
                 _accountsCardScrollView.RemoveFromSuperview();
             }
-            _accountsCardScrollView = new UIScrollView(new CGRect(0, _searchView.Frame.GetMaxY(), _parentView.Frame.Width, _dashboardHomeHelper.GetHeightForAccountCards()))
+            _accountsCardScrollView = new UIScrollView(new CGRect(0, _searchView.Frame.GetMaxY(), _parentView.Frame.Width, _dashboardHomeHelper.GetHeightForAccountCardsOnly()))
             {
                 Delegate = new AccountsScrollViewDelegate(this),
                 PagingEnabled = true,
                 ShowsHorizontalScrollIndicator = false,
                 ShowsVerticalScrollIndicator = false,
                 ClipsToBounds = false,
-                BackgroundColor = UIColor.Clear
+                BackgroundColor = UIColor.Clear,
+                Hidden = false
             };
 
             AdjustFrame(_accountsCardScrollView, padding, 0, -padding * 3, 0);
@@ -172,7 +177,7 @@ namespace myTNB
             {
                 _pageControl.RemoveFromSuperview();
             }
-            _pageControl = new UIPageControl(new CGRect(8, _accountsCardScrollView.Frame.GetMaxY(), View.Frame.Width - 16f, DashboardHomeConstants.PageControlHeight))
+            _pageControl = new UIPageControl(new CGRect(8, _accountsCardScrollView.Frame.GetMaxY(), _parentView.Frame.Width - 16f, DashboardHomeConstants.PageControlHeight))
             {
                 BackgroundColor = UIColor.Clear,
                 TintColor = MyTNBColor.WaterBlue,
@@ -228,12 +233,24 @@ namespace myTNB
             _dashboardHomeHelper.GroupAccountsList(accountsList);
             _groupAccountList.Clear();
             _groupAccountList = DataManager.DataManager.SharedInstance.AccountsGroupList;
-            //_homeViewController.UpdateAccountsTableViewCell();
+            _homeViewController.OnReloadTableForSearch();
             ClearScrollViewSubViews();
+            AdjustParentFrame();
             SetCardScrollView();
             SetScrollViewSubViews();
             LoadAccountsWithDues();
-            //_textFieldSearch.BecomeFirstResponder();
+            OnTypeSearchAction();
+        }
+
+        public void ResetAccountCardsView()
+        {
+            _groupAccountList.Clear();
+            _groupAccountList = DataManager.DataManager.SharedInstance.AccountsGroupList;
+            ClearScrollViewSubViews();
+            AdjustParentFrame();
+            SetCardScrollView();
+            SetScrollViewSubViews();
+            LoadAccountsWithDues();
         }
         #endregion
 
@@ -273,27 +290,23 @@ namespace myTNB
         #region Action Methods
         private void OnAddAccountAction()
         {
-            Debug.WriteLine("OnAddAccountAction");
             _homeViewController.OnAddAccountAction();
         }
 
         private void OnSearchAction()
         {
-            Debug.WriteLine("OnSearchAction");
             _isSearchMode = !_isSearchMode;
             SetViewForActiveSearch(_isSearchMode);
         }
 
         private void OnTypeSearchAction()
         {
-            Debug.WriteLine("OnTypeSearchAction");
             _isSearchMode = true;
             _textFieldSearch.BecomeFirstResponder();
         }
 
         private void OnNotificationAction()
         {
-            Debug.WriteLine("OnNotificationAction");
             _homeViewController.OnNotificationAction();
         }
         #endregion
@@ -571,6 +584,10 @@ namespace myTNB
             {
                 AddPageControl();
                 UpdatePageControl(_pageControl, _currentPageIndex, _groupAccountList.Count, GetContainerViewWithTag(_currentPageIndex));
+            }
+            else
+            {
+                _pageControl.Hidden = true;
             }
         }
 

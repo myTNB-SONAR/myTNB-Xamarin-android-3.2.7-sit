@@ -24,12 +24,13 @@ namespace myTNB
 
         private UITableView _homeTableView;
         private AccountsCardContentViewController _accountsCardContentViewController;
-        private ServicesResponseModel _services;
-        private List<HelpModel> _helpList;
+        public ServicesResponseModel _services;
+        public List<HelpModel> _helpList;
         private nfloat _previousScrollOffset;
         private nfloat _imageGradientHeight;
-
         internal Dictionary<string, Action> _servicesActionDictionary;
+        private bool _servicesIsShimmering = true;
+        private bool _helpIsShimmering = true;
 
         public override void ViewDidLoad()
         {
@@ -59,6 +60,7 @@ namespace myTNB
             if (_accountsCardContentViewController != null)
             {
                 _accountsCardContentViewController.View.RemoveFromSuperview();
+                _accountsCardContentViewController = null;
             }
             UIStoryboard storyBoard = UIStoryboard.FromName("Dashboard", null);
             _accountsCardContentViewController = storyBoard.InstantiateViewController("AccountsCardContentViewController") as AccountsCardContentViewController;
@@ -106,15 +108,20 @@ namespace myTNB
             {
                 if (NetworkUtility.isReachable)
                 {
+                    _services = new ServicesResponseModel();
+                    _helpList = new List<HelpModel>();
                     OnGetServices();
                     OnUpdateNotification();
                     InvokeOnMainThread(() =>
                    {
+                       _helpIsShimmering = true;
                        OnGetHelpInfo().ContinueWith(task =>
                        {
                            InvokeOnMainThread(() =>
                            {
                                _helpList = new HelpEntity().GetAllItems();
+                               DataManager.DataManager.SharedInstance.HelpList = _helpList;
+                               _helpIsShimmering = false;
                                OnUpdateCell(DashboardHomeConstants.CellIndex_Help);
                            });
                        });
@@ -133,7 +140,7 @@ namespace myTNB
         // </summary>
         private void InitializeTableView()
         {
-            _homeTableView.Source = new DashboardHomeDataSource(this, _accountsCardContentViewController, _services, _helpList);
+            _homeTableView.Source = new DashboardHomeDataSource(this, _accountsCardContentViewController, _services, _helpList, _servicesIsShimmering, _helpIsShimmering);
             _homeTableView.ReloadData();
         }
 
@@ -144,8 +151,6 @@ namespace myTNB
                 , View.Frame.Height - DeviceHelper.GetStatusBarHeight() - tabbarHeight))
             { BackgroundColor = UIColor.Clear };
             _homeTableView.SeparatorStyle = UITableViewCellSeparatorStyle.None;
-            _homeTableView.RowHeight = UITableView.AutomaticDimension;
-            _homeTableView.EstimatedRowHeight = 600.0F;
             _homeTableView.RegisterClassForCellReuse(typeof(AccountsTableViewCell), DashboardHomeConstants.Cell_Accounts);
             _homeTableView.RegisterClassForCellReuse(typeof(HelpTableViewCell), DashboardHomeConstants.Cell_Help);
             _homeTableView.RegisterClassForCellReuse(typeof(ServicesTableViewCell), DashboardHomeConstants.Cell_Services);
@@ -214,15 +219,15 @@ namespace myTNB
         public void UpdateAccountsTableViewCell()
         {
             _homeTableView.BeginUpdates();
-            _homeTableView.Source = new DashboardHomeDataSource(this, _accountsCardContentViewController, _services, _helpList);
-            NSIndexPath indexPath = NSIndexPath.Create(0, 0);
+            _homeTableView.Source = new DashboardHomeDataSource(this, _accountsCardContentViewController, _services, _helpList, _servicesIsShimmering, _helpIsShimmering);
+            NSIndexPath indexPath = NSIndexPath.Create(0, 1);
             _homeTableView.ReloadRows(new NSIndexPath[] { indexPath }, UITableViewRowAnimation.None);
             _homeTableView.EndUpdates();
         }
 
         private void ReloadAccountsTable()
         {
-            _homeTableView.Source = new DashboardHomeDataSource(this, _accountsCardContentViewController, _services, _helpList);
+            _homeTableView.Source = new DashboardHomeDataSource(this, _accountsCardContentViewController, _services, _helpList, _servicesIsShimmering, _helpIsShimmering);
             _homeTableView.ReloadData();
         }
 
@@ -230,11 +235,14 @@ namespace myTNB
         {
             InvokeInBackground(async () =>
             {
+                _servicesIsShimmering = true;
                 _services = await GetServices();
                 InvokeOnMainThread(() =>
                 {
+                    _servicesIsShimmering = false;
                     if (_services != null && _services.d != null && _services.d.IsSuccess)
                     {
+                        DataManager.DataManager.SharedInstance.ServicesList = _services.d.data?.services;
                         OnUpdateCell(DashboardHomeConstants.CellIndex_Services);
                     }
                     else
@@ -340,9 +348,15 @@ namespace myTNB
         private void OnUpdateCell(int row)
         {
             _homeTableView.BeginUpdates();
-            _homeTableView.Source = new DashboardHomeDataSource(this, _accountsCardContentViewController, _services, _helpList);
+            _homeTableView.Source = new DashboardHomeDataSource(this, _accountsCardContentViewController, _services, _helpList, _servicesIsShimmering, _helpIsShimmering);
             NSIndexPath indexPath = NSIndexPath.Create(0, row);
             _homeTableView.ReloadRows(new NSIndexPath[] { indexPath }, UITableViewRowAnimation.None);
+            _homeTableView.EndUpdates();
+        }
+
+        public void OnReloadTableForSearch()
+        {
+            _homeTableView.BeginUpdates();
             _homeTableView.EndUpdates();
         }
     }
