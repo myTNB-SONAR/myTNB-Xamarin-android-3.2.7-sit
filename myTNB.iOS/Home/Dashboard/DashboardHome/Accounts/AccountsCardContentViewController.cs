@@ -19,6 +19,7 @@ namespace myTNB
         DashboardHomeHelper _dashboardHomeHelper = new DashboardHomeHelper();
         public List<List<DueAmountDataModel>> _groupAccountList;
         TextFieldHelper _textFieldHelper = new TextFieldHelper();
+        private List<List<DueAmountDataModel>> _unfilteredAccountList = new List<List<DueAmountDataModel>>();
 
         nfloat padding = 8f;
         nfloat searchPadding = 16f;
@@ -41,6 +42,7 @@ namespace myTNB
             base.ViewDidLoad();
             NSNotificationCenter.DefaultCenter.AddObserver((NSString)"NotificationDidChange", NotificationDidChange);
             NSNotificationCenter.DefaultCenter.AddObserver((NSString)"OnReceiveNotificationFromDashboard", NotificationDidChange);
+            _unfilteredAccountList = _dashboardHomeHelper.GetGroupAccountsList(DataManager.DataManager.SharedInstance.AccountRecordsList.d);
             SetParentView();
             SetGreetingView();
             SetSearchView();
@@ -105,12 +107,14 @@ namespace myTNB
                 Text = "Dashboard_MyAccounts".Translate()
             };
 
-            _searchIcon = new UIImageView(new CGRect(_searchView.Frame.Width - imageWidth - searchPadding, 0, imageWidth, imageHeight))
+            var sideIconXValue = _searchView.Frame.Width - imageWidth - searchPadding;
+            _searchIcon = new UIImageView(new CGRect(sideIconXValue, 0, imageWidth, imageHeight))
             {
-                Image = UIImage.FromBundle("Search-Icon")
+                Image = UIImage.FromBundle("Search-Icon"),
+                Hidden = NoPaginationNeeded()
             };
 
-            _addAccountIcon = new UIImageView(new CGRect(_searchIcon.Frame.GetMinX() - imageWidth - 8f, 0, imageWidth, imageHeight))
+            _addAccountIcon = new UIImageView(new CGRect(NoPaginationNeeded() ? sideIconXValue : sideIconXValue - imageWidth - 8f, 0, imageWidth, imageHeight))
             {
                 Image = UIImage.FromBundle("Add-Account-Icon")
             };
@@ -137,10 +141,16 @@ namespace myTNB
             _textFieldView.Hidden = true;
 
             _textFieldView.AddSubview(_textFieldSearch);
-            _searchView.AddSubviews(new UIView { _headerTitle, _textFieldView, _addAccountIcon, _searchIcon });
+            if (NoPaginationNeeded())
+            {
+                _searchView.AddSubviews(new UIView { _headerTitle, _addAccountIcon });
+            }
+            else
+            {
+                _searchView.AddSubviews(new UIView { _headerTitle, _textFieldView, _addAccountIcon, _searchIcon });
+                SetTextFieldEvents(_textFieldSearch);
+            }
             _parentView.AddSubview(_searchView);
-
-            SetTextFieldEvents(_textFieldSearch);
         }
 
         private void AdjustParentFrame()
@@ -203,7 +213,8 @@ namespace myTNB
             _headerTitle.Hidden = isSearchMode;
             _textFieldView.Hidden = !isSearchMode;
             CGRect frame = _addAccountIcon.Frame;
-            frame.X = isSearchMode ? searchPadding : _searchIcon.Frame.GetMinX() - imageWidth - 8f;
+            var sideIconXValue = NoPaginationNeeded() ? _searchView.Frame.Width - imageWidth - searchPadding : _searchIcon.Frame.GetMinX() - imageWidth - 8f;
+            frame.X = isSearchMode ? searchPadding : sideIconXValue;
             _addAccountIcon.Frame = frame;
         }
 
@@ -239,7 +250,6 @@ namespace myTNB
             SetCardScrollView();
             SetScrollViewSubViews();
             LoadAccountsWithDues();
-            OnTypeSearchAction();
         }
 
         public void ResetAccountCardsView()
@@ -259,17 +269,24 @@ namespace myTNB
         {
             base.TouchesBegan(touches, evt);
             var touch = touches.AnyObject as UITouch;
-            if (_searchIcon.Frame.Contains(touch.LocationInView(_searchView)))
+
+            if (_searchIcon.Frame.Contains(touch.LocationInView(_searchView)) && !_searchIcon.Hidden && _searchIcon.Superview != null)
             {
-                OnSearchAction();
+                if (!NoPaginationNeeded())
+                {
+                    OnSearchAction();
+                }
             }
             else if (_addAccountIcon.Frame.Contains(touch.LocationInView(_searchView)))
             {
                 OnAddAccountAction();
             }
-            else if (_textFieldView.Frame.Contains(touch.LocationInView(_searchView)))
+            else if (_textFieldView.Frame.Contains(touch.LocationInView(_searchView)) && !_textFieldView.Hidden && _textFieldView.Superview != null)
             {
-                OnTypeSearchAction();
+                if (!NoPaginationNeeded())
+                {
+                    OnTypeSearchAction();
+                }
             }
             else if (_dashboardHomeHeader._notificationView.Frame.Contains(touch.LocationInView(_dashboardHomeHeader.GetView())))
             {
@@ -685,6 +702,11 @@ namespace myTNB
         public void OnAccountCardSelected(DueAmountDataModel model)
         {
             _homeViewController.OnAccountCardSelected(model);
+        }
+
+        private bool NoPaginationNeeded()
+        {
+            return _unfilteredAccountList?.Count <= 1;
         }
 
         public override void ViewDidLayoutSubviews()
