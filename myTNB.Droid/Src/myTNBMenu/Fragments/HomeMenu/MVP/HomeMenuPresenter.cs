@@ -314,12 +314,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     serviceCategoryName = currentMyServiceList[i].serviceCategoryName
                 });
             }
-            cachedList.Sort((a, b) =>
-            {
-                int bValue = int.Parse(b.ServiceCategoryId);
-                int aValue = int.Parse(a.ServiceCategoryId);
-                return aValue.CompareTo(bValue);
-            });
             this.mView.SetMyServiceResult(cachedList);
         }
 
@@ -382,12 +376,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                         currentMyServiceList.Add(service);
                         // MyServiceEntity.InsertOrReplace(service);
                     }
-                    fetchList.Sort((a, b) =>
-                    {
-                        int bValue = int.Parse(b.ServiceCategoryId);
-                        int aValue = int.Parse(a.ServiceCategoryId);
-                        return aValue.CompareTo(bValue);
-                    });
                     this.mView.SetMyServiceResult(fetchList);
                     FirstTimeMyServiceInitiate = false;
                 }
