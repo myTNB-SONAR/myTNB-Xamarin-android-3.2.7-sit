@@ -30,6 +30,7 @@ using myTNB_Android.Src.Utils;
 using static myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter.MyServiceAdapter;
 using static myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter.MyServiceShimmerAdapter;
 using myTNB_Android.Src.Utils.Custom.ProgressDialog;
+using Newtonsoft.Json;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 {
@@ -190,8 +191,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 SetupMyServiceView();
                 SetupNewFAQView();
                 TextViewUtils.SetMuseoSans500Typeface(myServiceTitle, newFAQTitle);
-                this.presenter.LoadAccounts();
-
+                if (SummaryDashBoardAccountEntity.GetAllItems().Count == 0)
+                {
+                    this.presenter.LoadAccounts();
+                }
+                else
+                {
+                    this.presenter.LoadLocalAccounts();
+                }
                 addActionImage.Click += delegate
                 {
                     Intent linkAccount = new Intent(this.Activity, typeof(LinkAccountActivity));
@@ -382,7 +389,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             accountsRecyclerView.SetLayoutManager(linearLayoutManager);
 
             accountsAdapter = new AccountsRecyclerViewAdapter(this);
-            accountsRecyclerView.AddOnScrollListener(new AccountsRecyclerViewOnScrollListener(linearLayoutManager, indicatorContainer));
+            accountsRecyclerView.AddOnScrollListener(new AccountsRecyclerViewOnScrollListener(this.presenter, linearLayoutManager, indicatorContainer));
 
             SnapHelper snapHelper = new LinearSnapHelper();
             snapHelper.AttachToRecyclerView(accountsRecyclerView);
@@ -612,7 +619,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         public void UpdateAccountListCards(List<SummaryDashBoardDetails> accountList)
         {
             accountsAdapter.UpdateAccountCards(accountList);
-            accountsAdapter.NotifyDataSetChanged();
         }
 
         public void SetAccountListCards(List<SummaryDashBoardDetails> accountList)

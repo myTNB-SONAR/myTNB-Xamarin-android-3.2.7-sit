@@ -98,14 +98,18 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
                         cardModel.BillDueNote = AccountModelFormatter.GetBillDueNote(accountType,
                             summaryDashBoardDetails.AmountDue, summaryDashBoardDetails.BillDueDate);
                         cardModel.AccountType = accountType;
-                        if (summaryDashBoardDetails.SmartMeterCode != null)
+                        if (summaryDashBoardDetails.SmartMeterCode == "0")
                         {
                             cardModel.SmartMeterCode = Int32.Parse(summaryDashBoardDetails.SmartMeterCode);
+                        }
+                        else
+                        {
+                            cardModel.SmartMeterCode = 3;
                         }
                     }
                 }
             }
-            UpdatedCardList();
+            NotifyDataSetChanged();
         }
 
         private List<AccountCardModel> GetAccountCardModelList(List<SummaryDashBoardDetails> accountList)
@@ -115,12 +119,21 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
 
             foreach (SummaryDashBoardDetails summaryDashBoardDetails in accountList)
             {
+                int accountType = Int32.Parse(summaryDashBoardDetails.AccType);
                 model = new AccountCardModel();
-                //model.AccountType = Int32.Parse(summaryDashBoardDetails.AccType);
                 model.AccountName = summaryDashBoardDetails.AccName;
                 model.AccountNumber = summaryDashBoardDetails.AccNumber;
                 model.BillDueAmount = summaryDashBoardDetails.AmountDue;
                 model.BillDueNote = summaryDashBoardDetails.BillDueDate;
+                model.AccountType = accountType;
+                if (summaryDashBoardDetails.SmartMeterCode == "0")
+                {
+                    model.SmartMeterCode = Int32.Parse(summaryDashBoardDetails.SmartMeterCode);
+                }
+                else
+                {
+                    model.SmartMeterCode = 3;
+                }
                 returnAccountCardModelList.Add(model);
             }
             return returnAccountCardModelList;
@@ -191,7 +204,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
             int iconResource;
             if (AccountType == 1)
             {
-                if (SmartMeterCode == 0)
+                if (SmartMeterCode != 0)
                 {
                     iconResource = Resource.Drawable.ic_display_smart_meter;
                 }
@@ -202,7 +215,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
             }
             else
             {
-                iconResource = Resource.Drawable.ic_display_r_eleaf;
+                iconResource = Resource.Drawable.smr_48_x_48; //ic_display_r_eleaf;
             }
             return iconResource;
         }

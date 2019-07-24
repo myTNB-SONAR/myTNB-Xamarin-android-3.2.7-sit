@@ -40,6 +40,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             Task OnGetFAQTimeStamp();
             void ReadNewFAQFromCache();
             Task OnGetFAQs();
+            void LoadBatchSummarDetailsByIndex(int batchIndex);
+            void LoadLocalAccounts();
         }
 
         public interface IHomeMenuService
