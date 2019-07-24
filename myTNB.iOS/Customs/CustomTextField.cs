@@ -21,6 +21,7 @@ namespace myTNB
         public Action TypingAction { set; get; }
         public Type TextFieldType { set; get; }
         public bool IsFieldValid { get { return _isFieldValid; } }
+        public string Value { set; get; }
 
         public UIView ViewContainer;
         public UILabel LblTitle, LblError, LblHint;
@@ -69,7 +70,8 @@ namespace myTNB
                 AttributedPlaceholder = AttributedStringUtility.GetAttributedStringV2(Title, AttributedStringUtility.AttributedStringType.Value),
                 TextColor = TextColor,
                 SecureTextEntry = IsSecureEntry,
-                KeyboardType = KeyboardType
+                KeyboardType = KeyboardType,
+                Text = Value ?? string.Empty
             };
             _txtFieldHelper.CreateTextFieldLeftView(TextField, LeftIcon);
             _txtFieldHelper.SetKeyboard(TextField, ReturnKeyType);

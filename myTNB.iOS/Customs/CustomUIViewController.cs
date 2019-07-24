@@ -84,10 +84,7 @@ namespace myTNB
             {
                 ViewHeight -= NavigationController.NavigationBar.Frame.Height;
             }
-            if (DeviceHelper.IsIphoneXUpResolution())
-            {
-                ViewHeight -= DeviceHelper.GetStatusBarHeight();
-            }
+            ViewHeight -= DeviceHelper.GetStatusBarHeight();
         }
         #endregion
         #region Alerts

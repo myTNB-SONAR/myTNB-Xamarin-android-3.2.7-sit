@@ -1,7 +1,10 @@
 using CoreGraphics;
 using Foundation;
+using myTNB.Model;
 using myTNB.SSMR;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using UIKit;
 
 namespace myTNB
@@ -18,6 +21,9 @@ namespace myTNB
         private CGRect _scrollViewFrame;
         private CustomTextField _customMobileField;
         private CustomTextField _customEmailField;
+        protected List<CustomerAccountRecordModel> _eligibleAccountList;
+        private int _selectedAccountIndex = 0;
+        private UILabel _lblAccountName, _lblAddress;
 
         public override void ViewDidLoad()
         {
@@ -28,7 +34,9 @@ namespace myTNB
             ConfigureNavigationBar();
             SetFrames();
             AddTnCSection();
+            PrepareEligibleAccounts();
             AddDetailsSection();
+            ToggleCTA();
         }
 
         private void ConfigureNavigationBar()
@@ -159,36 +167,54 @@ namespace myTNB
                 Font = MyTNBFont.MuseoSans9_300,
                 Text = GetCommonI18NValue(SSMRConstants.I18N_Account).ToUpper()
             };
-
-            UIImageView imgDropdown = new UIImageView(new CGRect(ViewWidth - 46, 28, 24, 24))
+            UIView viewAccountName = new UIView(new CGRect(16, 28, ViewWidth - 32, 24));
+            viewAccountName.AddGestureRecognizer(new UITapGestureRecognizer(() =>
+            {
+                if (_eligibleAccountList != null && _eligibleAccountList.Count > 0)
+                {
+                    UIStoryboard storyBoard = UIStoryboard.FromName("GenericSelector", null);
+                    GenericSelectorViewController viewController = (GenericSelectorViewController)storyBoard
+                        .InstantiateViewController("GenericSelectorViewController");
+                    viewController.Title = "Select Accounts";
+                    viewController.Items = _eligibleAccountList.Select(x => x.accountNickName).ToList();
+                    viewController.OnSelect = OnSelectAccount;
+                    viewController.SelectedIndex = _selectedAccountIndex;
+                    var navController = new UINavigationController(viewController);
+                    PresentViewController(navController, true, null);
+                }
+            }));
+            UIImageView imgDropdown = new UIImageView(new CGRect(viewAccountName.Frame.Width - 30, 0, 24, 24))
             {
                 Image = UIImage.FromBundle(SSMRConstants.IMG_Dropdow)
             };
-
-            UILabel lblAccountName = new UILabel(new CGRect(16, 28, imgDropdown.Frame.GetMinX() - 20, 24))
+            CustomerAccountRecordModel initialAccount = GetFirstAccount();
+            _lblAccountName = new UILabel(new CGRect(0, 0, viewAccountName.Frame.Width - 32, 24))
             {
                 TextColor = MyTNBColor.CharcoalGrey,
                 TextAlignment = UITextAlignment.Left,
                 Font = MyTNBFont.MuseoSans16_300,
-                Text = "Saujana Heights"
+                Text = initialAccount != null && !string.IsNullOrEmpty(initialAccount.accountNickName)
+                   ? initialAccount.accountNickName : string.Empty
             };
+            viewAccountName.AddSubviews(new UIView[] { _lblAccountName, imgDropdown });
 
-            UIView viewLine = new UIView(new CGRect(16, lblAccountName.Frame.GetMaxY() + 1, ViewWidth - 32, 1))
+            UIView viewLine = new UIView(new CGRect(16, viewAccountName.Frame.GetMaxY() + 1, ViewWidth - 32, 1))
             {
                 BackgroundColor = MyTNBColor.VeryLightPinkTwo
             };
 
-            UILabel lblAddress = new UILabel(new CGRect(16, viewLine.Frame.GetMaxY() + 22, ViewWidth - 32, 40))
+            _lblAddress = new UILabel(new CGRect(16, viewLine.Frame.GetMaxY() + 22, ViewWidth - 32, 40))
             {
                 TextColor = MyTNBColor.CharcoalGrey,
                 TextAlignment = UITextAlignment.Left,
                 Font = MyTNBFont.MuseoSans14_300,
                 Lines = 0,
                 LineBreakMode = UILineBreakMode.WordWrap,
-                Text = "No. 3 Jalan Melur, 12 Taman Melur, 68000 Ampang, Selangor"
+                Text = initialAccount != null && !string.IsNullOrEmpty(initialAccount.accountStAddress)
+                   ? initialAccount.accountStAddress : string.Empty
             };
 
-            viewMainDetails.AddSubviews(new UIView[] { lblAccountTitle, lblAccountName, imgDropdown, viewLine, lblAddress });
+            viewMainDetails.AddSubviews(new UIView[] { lblAccountTitle, viewAccountName, viewLine, _lblAddress });
 
             UIView viewContactDetailsTitle = new UIView(new CGRect(0, viewMainDetails.Frame.GetMaxY(), ViewWidth, 48))
             {
@@ -216,7 +242,8 @@ namespace myTNB
                 KeyboardType = UIKeyboardType.EmailAddress,
                 Error = GetErrorI18NValue(SSMRConstants.I18N_InvalidEmail),
                 TypingAction = ToggleCTA,
-                TextFieldType = CustomTextField.Type.EmailAddress
+                TextFieldType = CustomTextField.Type.EmailAddress,
+                Value = DataManager.DataManager.SharedInstance.UserEntity[0].email
             };
 
             UIView viewEmail = _customEmailField.GetUI();
@@ -229,7 +256,8 @@ namespace myTNB
                 Error = GetErrorI18NValue(SSMRConstants.I18N_InvalidMobileNumber),
                 Hint = GetHintI18NValue(SSMRConstants.I18N_HintMobileNumber),
                 TypingAction = ToggleCTA,
-                TextFieldType = CustomTextField.Type.MobileNumber
+                TextFieldType = CustomTextField.Type.MobileNumber,
+                Value = DataManager.DataManager.SharedInstance.UserEntity[0].mobileNo
             };
 
             UIView viewMobile = _customMobileField.GetUI();
@@ -249,6 +277,35 @@ namespace myTNB
                 bool isValid = _customEmailField.IsFieldValid && _customMobileField.IsFieldValid;
                 _btnSubmit.Enabled = isValid;
                 _btnSubmit.BackgroundColor = isValid ? MyTNBColor.FreshGreen : MyTNBColor.SilverChalice;
+            }
+        }
+
+        private void PrepareEligibleAccounts()
+        {
+            if (DataManager.DataManager.SharedInstance.AccountRecordsList != null
+                && DataManager.DataManager.SharedInstance.AccountRecordsList.d != null)
+            {
+                _eligibleAccountList
+                    = DataManager.DataManager.SharedInstance.AccountRecordsList.d.FindAll(x => !x.IsREAccount && (x.IsNormalMeter || x.IsOwnedAccount));
+            }
+        }
+
+        private CustomerAccountRecordModel GetFirstAccount()
+        {
+            if (_eligibleAccountList != null && _eligibleAccountList.Count > 0)
+            {
+                return _eligibleAccountList[0];
+            }
+            return null;
+        }
+
+        private void OnSelectAccount(int index)
+        {
+            if (index > -1)
+            {
+                _selectedAccountIndex = index;
+                _lblAccountName.Text = _eligibleAccountList[index].accountNickName;
+                _lblAddress.Text = _eligibleAccountList[index].accountStAddress;
             }
         }
     }
