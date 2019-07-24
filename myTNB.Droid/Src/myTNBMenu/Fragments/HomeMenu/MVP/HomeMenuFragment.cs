@@ -172,10 +172,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             {
                 notificationHeaderIcon.SetImageResource(Resource.Drawable.ic_header_notification);
             }
-            notificationHeaderIcon.Click += delegate
-            {
-                StartActivity(new Intent(this.Activity, typeof(NotificationActivity)));
-            };
         }
 
         public override void OnViewCreated(View view, Bundle savedInstanceState)
@@ -184,7 +180,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             try
             {
                 UpdateGreetingsHeader(this.presenter.GetGreeting());
-                accountGreetingName.Text = this.presenter.GetAccountDisplay();
+                accountGreetingName.Text = this.presenter.GetAccountDisplay() + "!";
                 SetNotificationIndicator();
                 SetAccountsRecyclerView();
                 SetAccountActionHeader();
@@ -204,6 +200,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     Intent linkAccount = new Intent(this.Activity, typeof(LinkAccountActivity));
                     linkAccount.PutExtra("fromDashboard", true);
                     StartActivity(linkAccount);
+                };
+                notificationHeaderIcon.Click += delegate
+                {
+                    StartActivity(new Intent(this.Activity, typeof(NotificationActivity)));
                 };
             }
             catch (System.Exception e)
@@ -406,6 +406,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             ShowBackButton(false);
 
             this.presenter.InitiateService();
+            SetNotificationIndicator();
         }
 
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
