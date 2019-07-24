@@ -13,12 +13,15 @@ namespace myTNB
     public class SSMROnboardingController : BasePageViewRootController
     {
         public SSMROnboardingController(UIViewController controller) : base(controller) { }
+        private UIView _viewBottomContainer;
+        private UIButton _btnStart;
         public override void OnViewDidLoad()
         {
             PageName = "SSMROnboarding";
             base.OnViewDidLoad();
 
             SSMRModelController = new SSMROnboardingModelController();
+            SSMRModelController.UpdateWidgets = OnUpdateMainWidgets;
             SSMRModelController.SetPageData().ContinueWith(task =>
             {
                 that.InvokeOnMainThread(() =>
@@ -100,7 +103,8 @@ namespace myTNB
             {
                 baseHeight -= 20;
             }
-            UIView viewDontShow = new UIView(new CGRect(26, baseHeight - 38, that.View.Frame.Width / 2, 20));
+            _viewBottomContainer = new UIView(new CGRect(26, baseHeight - 38, that.View.Frame.Width - 52, 20));
+            UIView viewDontShow = new UIView(new CGRect(0, 0, _viewBottomContainer.Frame.Width / 2, 20));
             UIImageView imgViewCheckBox = new UIImageView(new CGRect(0, 0, 20, 20))
             {
                 Image = UIImage.FromBundle(DataManager.DataManager.SharedInstance.DontShowSSMROnboarding
@@ -122,7 +126,7 @@ namespace myTNB
             viewDontShow.AddSubviews(new UIView[] { imgViewCheckBox, lblDontShow });
             ResizeView(ref viewDontShow, ref lblDontShow, that.View.Frame.Width / 2, 20, true);
 
-            UIView viewSkip = new UIView(new CGRect(0, baseHeight - 35, 50, 14));
+            UIView viewSkip = new UIView(new CGRect(0, 3, 50, 14));
             UILabel lblSkip = new UILabel(new CGRect(0, 0, 24, 14))
             {
                 TextColor = MyTNBColor.BrownGrey,
@@ -133,12 +137,12 @@ namespace myTNB
             ResizeView(ref viewSkip, ref lblSkip, 50, 14);
             viewSkip.AddSubview(lblSkip);
 
-            UIButton btnStart = CustomUIButton.GetUIButton(new CGRect(16, baseHeight - 64, that.View.Frame.Width - 32, 48)
-                , GetI18NValue(SSMRConstants.I18N_StartApplication));
-            btnStart.Enabled = true;
-            btnStart.BackgroundColor = MyTNBColor.FreshGreen;
-            btnStart.Hidden = true;
-            btnStart.TouchUpInside += (sender, e) =>
+            _btnStart = CustomUIButton.GetUIButton(new CGRect(16, baseHeight - 64, that.View.Frame.Width - 32, 48)
+               , GetI18NValue(SSMRConstants.I18N_StartApplication));
+            _btnStart.Enabled = true;
+            _btnStart.BackgroundColor = MyTNBColor.FreshGreen;
+            _btnStart.Hidden = true;
+            _btnStart.TouchUpInside += (sender, e) =>
             {
             };
             viewSkip.AddGestureRecognizer(new UITapGestureRecognizer(() =>
@@ -148,9 +152,8 @@ namespace myTNB
                     int lastIndex = SSMRModelController.pageData.Count - 1;
                     SSMRModelController.currentIndex = lastIndex;
                     SSMRModelController.isSkipTapped = true;
-                    viewSkip.Hidden = true;
-                    viewDontShow.Hidden = true;
-                    btnStart.Hidden = false;
+                    _viewBottomContainer.Hidden = true;
+                    _btnStart.Hidden = false;
                     var nextVC = SSMRModelController.GetViewController(lastIndex, that.Storyboard);
                     if (nextVC != null)
                     {
@@ -159,14 +162,26 @@ namespace myTNB
                     }
                 }
             }));
-            that.View.AddSubviews(new UIView[] { viewDontShow, viewSkip, btnStart });
+
+            _viewBottomContainer.AddSubviews(new UIView[] { viewDontShow, viewSkip });
+            that.View.AddSubviews(new UIView[] { _viewBottomContainer, _btnStart });
+        }
+
+        private void OnUpdateMainWidgets(int index)
+        {
+            int dataCount = SSMRModelController.pageData.Count;
+            _viewBottomContainer.Hidden = index == dataCount - 1;
+            _btnStart.Hidden = index != dataCount - 1;
+
+            Debug.WriteLine("_viewBottomContainer: " + _viewBottomContainer.Hidden);
+            Debug.WriteLine("_btnStart: " + _btnStart.Hidden);
         }
 
         private void ResizeView(ref UIView view, ref UILabel lbl, nfloat maxWidth, nfloat maxHeight, bool isOriginalX = false)
         {
             CGSize size = GetLabelSize(lbl, maxWidth, maxHeight);
             lbl.Frame = new CGRect(lbl.Frame.X, lbl.Frame.Y, size.Width, size.Height);
-            view.Frame = new CGRect(isOriginalX ? view.Frame.X : that.View.Frame.Width - 24 - size.Width
+            view.Frame = new CGRect(isOriginalX ? view.Frame.X : _viewBottomContainer.Frame.Width - size.Width
                 , view.Frame.Y, size.Width + lbl.Frame.X, size.Height);
         }
     }

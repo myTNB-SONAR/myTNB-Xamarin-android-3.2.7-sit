@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using UIKit;
 
@@ -9,9 +10,9 @@ namespace myTNB.SSMR.Onboarding
     {
         public List<SSMROnboardingModel> pageData;
         public int currentIndex;
-        public bool isNextTapped;
         public bool isSkipTapped;
-        private Dictionary<string, string> I18NDictionary;
+        public Action<int> UpdateWidgets;
+        private readonly Dictionary<string, string> I18NDictionary;
 
         public SSMROnboardingModelController()
         {
@@ -100,9 +101,7 @@ namespace myTNB.SSMR.Onboarding
         {
             int index = IndexOf((GenericPageDataViewController)referenceViewController);
             currentIndex = index;
-            // btnSkip.Hidden = index == pageData.Count - 1;
-            // btnDone.Hidden = index != pageData.Count - 1;
-            // viewNext.Hidden = index == pageData.Count - 1;
+            UpdateWidgets(index);
             if (index == -1 || index == pageData.Count - 1)
             {
                 return null;
@@ -114,9 +113,7 @@ namespace myTNB.SSMR.Onboarding
         {
             int index = IndexOf((GenericPageDataViewController)referenceViewController);
             currentIndex = index;
-            // btnSkip.Hidden = index == pageData.Count - 1;
-            // btnDone.Hidden = index != pageData.Count - 1;
-            // viewNext.Hidden = index == pageData.Count - 1;
+            UpdateWidgets(index);
             if (index == -1 || index == 0)
             {
                 return null;
@@ -138,7 +135,6 @@ namespace myTNB.SSMR.Onboarding
             if (isSkipTapped)
             {
                 isSkipTapped = false;
-               // currentIndex++;
                 return currentIndex;
             }
             else
