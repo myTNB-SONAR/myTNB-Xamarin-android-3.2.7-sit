@@ -216,8 +216,8 @@ namespace myTNB
             }
             PushNotificationHelper.RegisterDevice();
             Crashlytics.Configure();
+            LanguageManager.Instance.SetLanguage();
             ApplicationDelegate.SharedInstance.FinishedLaunching(application, launchOptions);
-
             return true;
         }
 

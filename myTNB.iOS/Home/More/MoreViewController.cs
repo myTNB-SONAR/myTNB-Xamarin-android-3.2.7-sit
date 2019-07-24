@@ -11,7 +11,7 @@ using System.Diagnostics;
 
 namespace myTNB
 {
-    public partial class MoreViewController : UIViewController
+    public partial class MoreViewController : CustomUIViewController
     {
         public MoreViewController(IntPtr handle) : base(handle)
         {
@@ -43,10 +43,12 @@ namespace myTNB
         {
             Debug.WriteLine("DEBUG >>> MORE LanguageDidChange");
             _titleBarComponent?.SetTitle("More_Title".Translate());
-            _lblAppVersion.Text = string.Format("{0} {1}", "More_AppVersion".Translate()
-                , NSBundle.MainBundle.ObjectForInfoDictionary("CFBundleShortVersionString").ToString());
+            _lblAppVersion.Text = string.Format("{0} {1}", "More_AppVersion".Translate(), AppVersionHelper.GetAppShortVersion());
+            if (!TNBGlobal.IsProduction)
+            {
+                _lblAppVersion.Text += string.Format("({0})", AppVersionHelper.GetBuildVersion());
+            }
         }
-
 
         Dictionary<string, List<string>> GetMoreList()
         {
@@ -102,9 +104,13 @@ namespace myTNB
             {
                 TextColor = MyTNBColor.SilverChalice,
                 Font = MyTNBFont.MuseoSans9_300,
-                Text = string.Format("{0} {1}", "More_AppVersion".Translate()
-               , NSBundle.MainBundle.ObjectForInfoDictionary("CFBundleShortVersionString").ToString())
+                Text = string.Format("{0} {1}", "More_AppVersion".Translate(), AppVersionHelper.GetAppShortVersion())
             };
+
+            if (!TNBGlobal.IsProduction)
+            {
+                _lblAppVersion.Text += string.Format("({0})", AppVersionHelper.GetBuildVersion());
+            }
 
             moreTableView.TableFooterView = _lblAppVersion;
         }

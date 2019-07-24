@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using myTNB.SitecoreCMS.Service;
 using myTNB.SitecoreCMS.Model;
+using System;
+using System.Diagnostics;
 
 namespace myTNB.SitecoreCMS.Services
 {
@@ -29,15 +31,6 @@ namespace myTNB.SitecoreCMS.Services
             return JsonConvert.SerializeObject(resp);
         }
 
-        public string GetPreLoginPromoItem()
-        {
-            PreLoginPromoService service = new PreLoginPromoService();
-            var data = service.GetPreLoginPromo(OS, ImageSize, WebsiteUrl, Language);
-            var listData = AddDataToList(data);
-            var resp = CheckData(listData);
-            return JsonConvert.SerializeObject(resp);
-        }
-
         public string GetFullRTEPagesItems()
         {
             FullRTEPagesService service = new FullRTEPagesService();
@@ -46,40 +39,16 @@ namespace myTNB.SitecoreCMS.Services
             return JsonConvert.SerializeObject(resp);
         }
 
-        public string GetEnergyTipsItems()
-        {
-            EnergyTipsService service = new EnergyTipsService();
-            var data = service.GetEnergyTips(OS, ImageSize, WebsiteUrl, Language);
-            var resp = CheckData(data.ToList<object>());
-            return JsonConvert.SerializeObject(resp);
-        }
-
-        public string GetLocationsItems()
-        {
-            LocationsService service = new LocationsService();
-            var data = service.GetLocations(WebsiteUrl, Language);
-            var resp = CheckData(data.ToList<object>());
-            return JsonConvert.SerializeObject(resp);
-        }
-
         public string GetPromotionsItem()
         {
-#if true
             PromotionsV2Service service = new PromotionsV2Service();
-#else
-            PromotionsService service = new PromotionsService();
-#endif
             var data = service.GetPromotionsService(OS, ImageSize, WebsiteUrl, Language);
             var resp = CheckData(data.ToList<object>());
             return JsonConvert.SerializeObject(resp);
         }
         public string GetPromotionsTimestampItem()
         {
-#if true
             PromotionsV2Service service = new PromotionsV2Service();
-#else
-            PromotionsService service = new PromotionsService();
-#endif
             var data = service.GetTimestamp(WebsiteUrl, Language);
             var listData = AddDataToList(data);
             var resp = CheckData(listData);
@@ -110,10 +79,12 @@ namespace myTNB.SitecoreCMS.Services
             return JsonConvert.SerializeObject(resp);
         }
 
-        BaseModel CheckData(List<object> data){
+        private BaseModel CheckData(List<object> data)
+        {
             BaseModel bm = new BaseModel();
             bool isAnyIdNull = true;
-            foreach(var item in data){
+            foreach (var item in data)
+            {
                 var type = item.GetType();
                 var prop = type.GetProperty("ID");
                 var field = type.GetField("ID");
@@ -130,35 +101,48 @@ namespace myTNB.SitecoreCMS.Services
             return bm;
         }
 
-        BaseModel CheckDataByProperty(List<object> data)
-        {
-            BaseModel bm = new BaseModel();
-            bool isAnyIdNull = data.Any(x => x.GetType().GetProperty("ID").GetValue(x) == null);
-            if (!isAnyIdNull)
-            {
-                bm.Status = "Success";
-                bm.Data = data.ToList<object>();
-            }
-            return bm;
-        }
-
-        BaseModel CheckDataByField(List<object> data)
-        {
-            BaseModel bm = new BaseModel();
-            bool isAnyIdNull = data.Any(x => x.GetType().GetField("ID").GetValue(x) == null);
-            if (!isAnyIdNull)
-            {
-                bm.Status = "Success";
-                bm.Data = data.ToList<object>();
-            }
-            return bm;
-        }
-
-        List<object> AddDataToList(object data)
+        private List<object> AddDataToList(object data)
         {
             List<object> listData = new List<object>();
             listData.Add(data);
             return listData;
+        }
+
+        public HelpResponseModel GetHelpItems()
+        {
+            HelpResponseModel respModel = new HelpResponseModel();
+            try
+            {
+                HelpService service = new HelpService(OS, ImageSize, WebsiteUrl, Language);
+                var data = service.GetItems();
+                var resp = CheckData(data.ToList<object>());
+                string serializedObj = JsonConvert.SerializeObject(resp);
+                respModel = JsonConvert.DeserializeObject<HelpResponseModel>(serializedObj);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("Exception in GetItemsService/GetHelpItems: " + e.Message);
+            }
+            return respModel;
+        }
+
+        public HelpTimeStampResponseModel GetHelpTimestampItem()
+        {
+            HelpTimeStampResponseModel respModel = new HelpTimeStampResponseModel();
+            try
+            {
+                HelpService service = new HelpService(OS, ImageSize, WebsiteUrl, Language);
+                var data = service.GetTimeStamp();
+                var listData = AddDataToList(data);
+                var resp = CheckData(listData);
+                string serializedObj = JsonConvert.SerializeObject(resp);
+                respModel = JsonConvert.DeserializeObject<HelpTimeStampResponseModel>(serializedObj);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("Exception in GetItemsService/GetHelpTimestampItem: " + e.Message);
+            }
+            return respModel;
         }
     }
 }

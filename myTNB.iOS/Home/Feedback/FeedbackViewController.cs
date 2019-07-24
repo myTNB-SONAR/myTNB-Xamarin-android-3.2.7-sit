@@ -93,7 +93,7 @@ namespace myTNB
                                 feedbackTableView.RowHeight = 80f;
                                 feedbackTableView.SeparatorStyle = UITableViewCellSeparatorStyle.None;
                                 feedbackTableView.Source = new FeedbackDataSource(this, _submittedFeedback?.d?.data
-                                    , isFromPreLogin, DataManager.DataManager.SharedInstance.IsBcrmAvailable);
+                                    , DataManager.DataManager.SharedInstance.IsBcrmAvailable);
                                 feedbackTableView.ReloadData();
                                 feedbackTableView.TableFooterView = new UIView();
                                 feedbackTableView.ScrollEnabled = feedbackTableView.ContentSize.Height > feedbackTableView.Frame.Height;
@@ -158,7 +158,7 @@ namespace myTNB
                 FeedbackEntryViewController feedbackEntryViewController =
                  storyBoard.InstantiateViewController("FeedbackEntryViewController") as FeedbackEntryViewController;
                 feedbackEntryViewController.FeedbackID = id;
-                feedbackEntryViewController.IsLoggedIn = !isFromPreLogin;
+                feedbackEntryViewController.IsLoggedIn = DataManager.DataManager.SharedInstance.IsLoggedIn();//!isFromPreLogin;
                 var navController = new UINavigationController(feedbackEntryViewController);
                 PresentViewController(navController, true, null);
             }
