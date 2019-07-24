@@ -1025,6 +1025,9 @@
     <ImageAsset Include="Assets.xcassets\SSMR_Main_2.imageset\onboarding2.png" />
     <ImageAsset Include="Assets.xcassets\SSMR_Main_2.imageset\onboarding2%402x.png" />
     <ImageAsset Include="Assets.xcassets\SSMR_Main_2.imageset\onboarding2%403x.png" />
+    <ImageAsset Include="Assets.xcassets\SSMR_Background_2.imageset\onboardingBg2%402x.png" />
+    <ImageAsset Include="Assets.xcassets\SSMR_Background_2.imageset\onboardingBg2%403x.png" />
+    <ImageAsset Include="Assets.xcassets\SSMR_Background_2.imageset\onboardingBg2-1.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -1338,6 +1341,7 @@
     <Folder Include="Assets.xcassets\SSMR_Main_1.imageset\" />
     <Folder Include="Assets.xcassets\SSMR_Main_2.imageset\" />
     <Folder Include="Assets.xcassets\SSMR_Main_3.imageset\" />
+    <Folder Include="SSMR\Application\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -1372,6 +1376,7 @@
     <InterfaceDefinition Include="Home\More\FAQ\FAQ.storyboard" />
     <InterfaceDefinition Include="Home\Promotions\Promotion Details\PromotionDetails.storyboard" />
     <InterfaceDefinition Include="Customs\Generic Tableview Selector\GenericSelector.storyboard" />
+    <InterfaceDefinition Include="SSMR\SSMR.storyboard" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Info.plist" />
@@ -2064,6 +2069,11 @@
     <Compile Include="Sitecore CMS\Model\TnC\TimestampResponseModel.cs" />
     <Compile Include="SSMR\SSMRConstants.cs" />
     <Compile Include="SSMR\Onboarding\SSMROnboardingModel.cs" />
+    <Compile Include="SSMR\Application\SSMRApplicationViewController.cs" />
+    <Compile Include="SSMR\Application\SSMRApplicationViewController.designer.cs">
+      <DependentUpon>SSMRApplicationViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Customs\CustomTextField.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />

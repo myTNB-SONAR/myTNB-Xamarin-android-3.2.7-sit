@@ -1,14 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using CoreAnimation;
 using CoreGraphics;
-using Foundation;
-using myTNB.SSMR;
-using myTNB.SSMR.Onboarding;
 using UIKit;
 
-namespace myTNB
+namespace myTNB.SSMR
 {
     public class SSMROnboardingController : BasePageViewRootController
     {
@@ -144,6 +139,11 @@ namespace myTNB
             _btnStart.Hidden = true;
             _btnStart.TouchUpInside += (sender, e) =>
             {
+                UIStoryboard storyBoard = UIStoryboard.FromName("SSMR", null);
+                SSMRApplicationViewController viewController =
+                    storyBoard.InstantiateViewController("SSMRApplicationViewController") as SSMRApplicationViewController;
+                var navController = new UINavigationController(viewController);
+                that.PresentViewController(navController, true, null);
             };
             viewSkip.AddGestureRecognizer(new UITapGestureRecognizer(() =>
             {

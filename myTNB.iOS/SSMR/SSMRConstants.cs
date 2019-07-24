@@ -1,5 +1,4 @@
-﻿using System;
-namespace myTNB.SSMR
+﻿namespace myTNB.SSMR
 {
     public static class SSMRConstants
     {
@@ -15,6 +14,18 @@ namespace myTNB.SSMR
         public static string I18N_Description3 = "onboardingDescription3";
         public static string I18N_StartApplication = "startApplication";
 
+        //Common
+        public static string I18N_NavTitle = "navTitle";
+        public static string I18N_Submit = "submit";
+        public static string I18N_Account = "account";
+        public static string I18N_MobileNumber = "mobileNumber";
+        public static string I18N_Email = "emailAddress";
+
+        //Application
+        public static string I18N_ApplyingFor = "applyingFor";
+        public static string I18N_ContactDetails = "contactDetails";
+        public static string I18N_TnC = "tnc";
+
         //Image
         public static string IMG_BGOnboarding1 = "SSMR_Background_1";
         public static string IMG_BGOnboarding2 = "SSMR_Background_2";
@@ -24,5 +35,15 @@ namespace myTNB.SSMR
         public static string IMG_Onboarding3 = "SSMR_Main_3";
         public static string IMG_Mark = "Payment-Checkbox-Active";
         public static string IMG_Unmark = "Payment-Checkbox-Inactive";
+        public static string IMG_Dropdow = "IC-Action-Dropdown";
+        public static string IMG_MobileNumber = "Mobile";
+        public static string IMG_Email = "Email";
+
+        //Error
+        public static string I18N_InvalidEmail = "invalid_email";
+        public static string I18N_InvalidMobileNumber = "invalid_mobileNumber";
+
+        //Hint
+        public static string I18N_HintMobileNumber= "mobileNumberSample";
     }
 }

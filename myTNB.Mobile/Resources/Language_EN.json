@@ -19,6 +19,20 @@
             }
         ]
     },
+    "Common": {
+        "account": "Account",
+        "emailAddress": "Email Address",
+        "mobileNumber": "Mobile Number",
+        "submit": "Submit"
+    },
+    "Hint": {
+        "mobileNumber": "Please include the country code of your phone number.",
+        "mobileNumberSample": "Example: +6012 345 6789"
+    },
+    "Error": {
+        "invalid_email": "Invalid email address",
+        "invalid_mobileNumber": "Invalid mobile number"
+    },
     "DashboardHome": {
         "greeting_afternoon": "Good Afternoon,",
         "greeting_evening": "Good Evening,",
@@ -44,5 +58,11 @@
         "onboardingDescription2": "You get estimated bills when TNB meter readers can’t get access to your meter. With SMR, you will always get bills with accurate readings.",
         "onboardingDescription3": "We'll show you the accounts which are eligible for this service. Simply click Start Application and get started.",
         "startApplication": "Start Application"
+    },
+    "SSMRApplication": {
+        "navTitle": "Apply Self Meter Reading",
+        "applyingFor": "I am applying for:",
+        "contactDetails": "My contact details:",
+        "tnc": "By applying, you are agreeing to the Self Meter Reading Terms and Conditions, TNB’s Terms of Use, Privacy policy, Anti-Spam Policy and Personal Data Protection Policy."
     }
 }

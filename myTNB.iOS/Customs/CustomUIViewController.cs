@@ -16,6 +16,7 @@ namespace myTNB
         internal bool IsGradientImageRequired;
         internal UIImageView ImageViewGradientImage;
         internal UIView _statusBarView;
+        internal nfloat ViewWidth, ViewHeight;
         private UIView _viewToast, _viewToastOverlay;
         private UILabel _lblToastDetails;
         private bool _isAnimating;
@@ -73,6 +74,20 @@ namespace myTNB
         public void MakeTopCornerRadius(UIButton button)
         {
             CustomUIButton.MakeTopCornerRadius(button);
+        }
+
+        public void SetFrames()
+        {
+            ViewWidth = View.Frame.Width;
+            ViewHeight = View.Frame.Height;
+            if (NavigationController != null && NavigationController.NavigationBar != null)
+            {
+                ViewHeight -= NavigationController.NavigationBar.Frame.Height;
+            }
+            if (DeviceHelper.IsIphoneXUpResolution())
+            {
+                ViewHeight -= DeviceHelper.GetStatusBarHeight();
+            }
         }
         #endregion
         #region Alerts
@@ -241,6 +256,21 @@ namespace myTNB
         public string GetI18NValue(string key)
         {
             return I18NDictionary.ContainsKey(key) ? I18NDictionary[key] : string.Empty;
+        }
+        public string GetCommonI18NValue(string key)
+        {
+            return DataManager.DataManager.SharedInstance.CommonI18NDictionary.ContainsKey(key)
+                ? DataManager.DataManager.SharedInstance.CommonI18NDictionary[key] : string.Empty;
+        }
+        public string GetHintI18NValue(string key)
+        {
+            return DataManager.DataManager.SharedInstance.HintI18NDictionary.ContainsKey(key)
+                ? DataManager.DataManager.SharedInstance.HintI18NDictionary[key] : string.Empty;
+        }
+        public string GetErrorI18NValue(string key)
+        {
+            return DataManager.DataManager.SharedInstance.ErrorI18NDictionary.ContainsKey(key)
+                ? DataManager.DataManager.SharedInstance.ErrorI18NDictionary[key] : string.Empty;
         }
         #endregion
     }

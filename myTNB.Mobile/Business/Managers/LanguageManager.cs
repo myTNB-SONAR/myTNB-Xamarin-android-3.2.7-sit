@@ -33,7 +33,9 @@ namespace myTNB
 
         private string JSONLang = string.Empty;
         private const string SELECTOR = "_selector";
-        private const string COMMON = "common";
+        private const string COMMON = "Common";
+        private const string Hint = "Hint";
+        private const string Error = "Error";
         private const string LANGUAGE_RESOURCE_PATH = "myTNB.Mobile.Resources.Language_{0}.json";
 
         /// <summary>
@@ -75,6 +77,16 @@ namespace myTNB
         public Dictionary<string, string> GetCommonValuePairs()
         {
             return GetValuesByPage(COMMON);
+        }
+
+        public Dictionary<string, string> GetHintValuePairs()
+        {
+            return GetValuesByPage(Hint);
+        }
+
+        public Dictionary<string, string> GetErrorValuePairs()
+        {
+            return GetValuesByPage(Error);
         }
         /// <summary>
         /// Gets the key-value pair of texts of a page.

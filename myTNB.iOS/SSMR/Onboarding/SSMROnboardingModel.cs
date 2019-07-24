@@ -1,5 +1,4 @@
-﻿using System;
-namespace myTNB.SSMR
+﻿namespace myTNB.SSMR
 {
     public class SSMROnboardingModel
     {

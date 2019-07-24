@@ -1,8 +1,7 @@
-﻿using System;
-using CoreGraphics;
+﻿using CoreGraphics;
 using UIKit;
 
-namespace myTNB
+namespace myTNB.SSMR
 {
     public class SSMROnboardingDataController : BaseDataViewController
     {

@@ -124,6 +124,11 @@ namespace myTNB.DataManager
         //SSMR
         public bool DontShowSSMROnboarding = false;
 
+        //Language
+        public Dictionary<string, string> CommonI18NDictionary;
+        public Dictionary<string, string> HintI18NDictionary;
+        public Dictionary<string, string> ErrorI18NDictionary;
+
         public static DataManager SharedInstance
         {
             get

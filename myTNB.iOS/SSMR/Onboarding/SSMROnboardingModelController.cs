@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Threading.Tasks;
 using UIKit;
 
-namespace myTNB.SSMR.Onboarding
+namespace myTNB.SSMR
 {
     public class SSMROnboardingModelController : UIPageViewControllerDataSource
     {
