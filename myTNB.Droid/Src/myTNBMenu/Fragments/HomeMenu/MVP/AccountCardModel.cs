@@ -32,5 +32,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         {
             get; set;
         }
+
+        public int SmartMeterCode
+        {
+            get; set;
+        }
     }
 }

@@ -175,8 +175,21 @@ namespace myTNB_Android.Src.AddAccount.MVP
 #endif
 
 
-
-                var result = await api.AddMultipleAccounts(new AddMultipleAccountRequest(apiKeyId, sspUserID, email, accounts));
+            var reqObject = new
+            {
+                billAccounts = accounts,
+                usrInf = new
+                {
+                    eid = email,
+                    sspuid = sspUserID,
+                    lang = "EN",
+                    sec_auth_k1 = apiKeyId,
+                    sec_auth_k2 = "test",
+                    ses_param1 = "test",
+                    ses_param2 = "test"
+                }
+            };
+                var result = await api.AddMultipleAccounts(reqObject);
 
                 if (result.response.IsError)
                 {

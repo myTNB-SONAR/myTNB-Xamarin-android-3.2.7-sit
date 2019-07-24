@@ -31,7 +31,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             {
                 results.AddRange((
                     this.originalCardModelList.Where(
-                        cardModel => cardModel.AccountNumber.ToLower().Contains(constraint.ToString()) || cardModel.AccountName.ToLower().Contains(constraint.ToString()))));
+                        cardModel => cardModel.AccountNumber.ToLower().Contains(constraint.ToString()) ||
+                        (cardModel.AccountName != null && cardModel.AccountName.ToLower().Contains(constraint.ToString())))));
             }
 
             filterResults.Values = FromArray(results.Select(r => r.ToJavaObject()).ToArray());

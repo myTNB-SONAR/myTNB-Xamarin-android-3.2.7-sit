@@ -242,9 +242,21 @@ namespace myTNB_Android.Src.Login.MVP
 #else
                         var customerAccountsApi = RestService.For<GetCustomerAccounts>(Constants.SERVER_URL.END_POINT);
 #endif
-
-                            var customerAccountsResponse = await customerAccountsApi.GetCustomerAccountV5(new AddAccount.Requests.GetCustomerAccountsRequest(Constants.APP_CONFIG.API_KEY_ID, userResponse.Data.User.UserId));
-                            if (!customerAccountsResponse.D.IsError && customerAccountsResponse.D.AccountListData.Count > 0)
+                            var newObject = new
+                            {
+                                usrInf = new
+                                {
+                                    eid = UserEntity.GetActive().UserName,
+                                    sspuid = userResponse.Data.User.UserId,
+                                    lang = "EN",
+                                    sec_auth_k1 = Constants.APP_CONFIG.API_KEY_ID,
+                                    sec_auth_k2 = "test",
+                                    ses_param1 = "test",
+                                    ses_param2 = "test"
+                                }
+                            };
+                            var customerAccountsResponse = await customerAccountsApi.GetCustomerAccountV6(newObject);// new AddAccount.Requests.GetCustomerAccountsRequest(Constants.APP_CONFIG.API_KEY_ID, userResponse.Data.User.UserId));
+                            if (customerAccountsResponse.D.ErrorCode == "7200" && customerAccountsResponse.D.AccountListData.Count > 0)
                             {
                                 int ctr = 0;
                                 foreach (Account acc in customerAccountsResponse.D.AccountListData)
@@ -252,7 +264,6 @@ namespace myTNB_Android.Src.Login.MVP
                                     bool isSelected = ctr == 0 ? true : false;
                                     int rowChange = CustomerBillingAccount.InsertOrReplace(acc, isSelected);
                                     ctr++;
-
                                 }
                             }
 
