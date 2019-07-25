@@ -1,35 +1,55 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using CoreAnimation;
 using CoreGraphics;
 using Foundation;
 using UIKit;
+using myTNB.Customs.GenericStatusPage;
+
 
 namespace myTNB
 {
-    public partial class GenericStatusPageViewController : UIViewController
+    public partial class GenericStatusPageViewController : CustomUIViewController
     {
         public GenericStatusPageViewController(IntPtr handle) : base(handle)
         {
         }
 
-        public string ServiceRequestNumber = string.Empty;
-        public string DateCreated = string.Empty;
-        public bool IsSuccess;
+        public string ReferenceNumber { set; get; } = string.Empty;
+        public string ReferenceDate { set; get; } = string.Empty;
+        public bool IsSuccess { set; get; }
+        public StatusType StatusDisplayType { set; get; }
 
-        UIView viewContainer;
+        public string StatusTitle { set; get; } = string.Empty;
+        public string StatusMessage { set; get; } = string.Empty;
+
+        private StatusPageActions _actions;
+
+        public enum StatusType
+        {
+            Feedback,
+            SSMRApply,
+            SSMRDiscontinue,
+            SSMRReading
+        }
 
         public override void ViewDidLoad()
         {
-            base.ViewDidLoad();
-            // Perform any additional setup after loading the view, typically from a nib.
             foreach (var view in this.View.Subviews)
             {
                 view.RemoveFromSuperview();
             }
-            SetupSuperViewBackground();
-            InitilizedViews();
-            this.NavigationController.NavigationBarHidden = true;
+            IsGradientRequired = true;
+            IsFullGradient = true;
+            IsReversedGradient = true;
+            PageName = "Status";
+            base.ViewDidLoad();
+            NavigationController.NavigationBarHidden = true;
+            SetFrames();
+            _actions = new StatusPageActions(this);
+            SetStatusCard();
+            AddCTA();
         }
 
         public override void DidReceiveMemoryWarning()
@@ -38,81 +58,16 @@ namespace myTNB
             // Release any cached data, images, etc that aren't in use.
         }
 
-        void SetupSuperViewBackground()
-        {
-            var startColor = MyTNBColor.GradientPurpleDarkElement;
-            var endColor = MyTNBColor.GradientPurpleLightElement;
-            CAGradientLayer gradientLayer = new CAGradientLayer
-            {
-                Colors = new[] { startColor.CGColor, endColor.CGColor },
-                Locations = new NSNumber[] { 0, 1 },
-                Frame = View.Bounds
-            };
-            View.Layer.InsertSublayer(gradientLayer, 0);
-        }
-
-        void InitilizedViews()
-        {
-            nfloat yOffset = DeviceHelper.IsIphoneXUpResolution() ? 50 : 0;
-            viewContainer = new UIView(new CGRect(18, 36 + yOffset, View.Frame.Width - 36, 203))
-            {
-                BackgroundColor = UIColor.White,
-                Layer = { CornerRadius = 4f }
-            };
-
-            UIImageView imgViewStatus = new UIImageView(new CGRect((viewContainer.Frame.Width - 64) / 2, 16, 64, 64))
-            {
-                Image = UIImage.FromBundle(IsSuccess ? "Circle-With-Check-Green" : "Red-Cross")
-            };
-
-            UILabel lblFeedback = new UILabel(new CGRect(0, 80, viewContainer.Frame.Width, 18))
-            {
-                Font = IsSuccess ? MyTNBFont.MuseoSans16_500 : MyTNBFont.MuseoSans16,
-                TextColor = MyTNBColor.PowerBlue,
-                Text = IsSuccess ? "Feedback_Successful".Translate() : "Feedback_Unsuccessful".Translate(),
-                TextAlignment = UITextAlignment.Center
-            };
-            if (IsSuccess)
-            {
-                UILabel lblThankYou = new UILabel(new CGRect(0, 98, viewContainer.Frame.Width, 16))
-                {
-                    Font = MyTNBFont.MuseoSans12_300,
-                    TextColor = MyTNBColor.TunaGrey(),
-                    Text = "Feedback_SuccessfulMessage".Translate(),
-                    TextAlignment = UITextAlignment.Center
-                };
-                viewContainer.AddSubview(lblThankYou);
-            }
-
-            UIView viewLine = new UIView((new CGRect(14, IsSuccess ? 130 : 114, viewContainer.Frame.Width - 28, 1)))
-            {
-                BackgroundColor = MyTNBColor.LightGrayBG
-            };
-
-            viewContainer.AddSubviews(new UIView[] { imgViewStatus, lblFeedback, viewLine });
-
-            if (IsSuccess)
-            {
-                AddSuccessDetails();
-            }/*
-            else
-            {
-                AddFailedDetails();
-            }*/
-
-            View.AddSubview(viewContainer);
-        }
-
         string GetDate()
         {
-            if (string.IsNullOrEmpty(DateCreated) || string.IsNullOrWhiteSpace(DateCreated))
+            if (string.IsNullOrEmpty(ReferenceDate) || string.IsNullOrWhiteSpace(ReferenceDate))
             {
                 return TNBGlobal.EMPTY_DATE;
             }
             try
             {
-                string date = DateHelper.GetFormattedDate(DateCreated.Split(' ')[0], "dd MMM yyyy");
-                string time = DateCreated.Split(' ')[1];
+                string date = DateHelper.GetFormattedDate(ReferenceDate.Split(' ')[0], "dd MMM yyyy");
+                string time = ReferenceDate.Split(' ')[1];
                 int hr = int.Parse(time.Split(':')[0]);
                 int min = int.Parse(time.Split(':')[1]);
                 int sec = int.Parse(time.Split(':')[2]);
@@ -130,111 +85,179 @@ namespace myTNB
             }
         }
 
-        void AddSuccessDetails()
+        private void SetStatusCard()
         {
-            var lblFeedbackDateTitleWidth = ((viewContainer.Frame.Width - 28) * 2) / 3;
-            var lblFeedbackDateTitle = new UILabel(new CGRect(14, 147, lblFeedbackDateTitleWidth, 14))
+            UIView viewCard = new UIView(new CGRect(16, DeviceHelper.GetStatusBarHeight() + 16, ViewWidth - 32, ViewHeight / 2))
             {
-                Font = MyTNBFont.MuseoSans9_300,
-                TextColor = MyTNBColor.SilverChalice,
-                Text = "Feedback_DateTimeTitle".Translate().ToUpper(),
-                TextAlignment = UITextAlignment.Left
+                BackgroundColor = UIColor.White
             };
-
-            var lblFeedbackIDTitleWidth = (viewContainer.Frame.Width - 28) / 3;
-            var lblFeedbackIDTitle = new UILabel(new CGRect(lblFeedbackDateTitleWidth + 14, 147, lblFeedbackIDTitleWidth, 14))
+            viewCard.Layer.CornerRadius = 2.0F;
+            nfloat imgWidth = viewCard.Frame.Width * 0.2222F;
+            nfloat imgXLoc = (viewCard.Frame.Width - imgWidth) / 2;
+            UIImageView imgStatus = new UIImageView(new CGRect(imgXLoc, 16, imgWidth, imgWidth))
             {
-                Font = MyTNBFont.MuseoSans9_300,
-                TextColor = MyTNBColor.SilverChalice,
-                Text = "Feedback_ID".Translate().ToUpper(),
-                TextAlignment = UITextAlignment.Right
+                Image = UIImage.FromBundle(IsSuccess ? StatusPageConstants.IMG_Success : StatusPageConstants.IMG_Fail)
             };
-
-            string createdDate = GetDate();
-            UILabel lblFeedbackDateValue = new UILabel(new CGRect(14, 161, lblFeedbackDateTitleWidth, 18))
+            UILabel lblTitle = new UILabel(new CGRect(16, imgStatus.Frame.GetMaxY(), viewCard.Frame.Width - 32, 24))
             {
-                Font = MyTNBFont.MuseoSans14_300,
-                TextColor = MyTNBColor.TunaGrey(),
-                Text = createdDate,
-                TextAlignment = UITextAlignment.Left
+                TextAlignment = UITextAlignment.Center,
+                TextColor = MyTNBColor.WaterBlue,
+                Font = MyTNBFont.MuseoSans16_500,
+                Text = string.IsNullOrEmpty(StatusTitle) ? GetText(IsSuccess ? StatusPageConstants.Success : StatusPageConstants.Fail) : StatusTitle
             };
-
-            UILabel _lblFeedbackIDValue = new UILabel(new CGRect(lblFeedbackDateTitleWidth + 14, 161, lblFeedbackIDTitleWidth, 18))
+            ResizeLabel(ref lblTitle, 24.0F);
+            UILabel lblMessage = new UILabel(new CGRect(16, lblTitle.Frame.GetMaxY() + 4, viewCard.Frame.Width - 32, 24))
             {
-                Font = MyTNBFont.MuseoSans14_300,
-                TextColor = MyTNBColor.TunaGrey(),
-                Text = ServiceRequestNumber ?? TNBGlobal.EMPTY_DATE,
-                TextAlignment = UITextAlignment.Right
+                TextAlignment = UITextAlignment.Center,
+                TextColor = MyTNBColor.CharcoalGrey,
+                LineBreakMode = UILineBreakMode.WordWrap,
+                Lines = 0,
+                Font = MyTNBFont.MuseoSans12_300,
+                Text = string.IsNullOrEmpty(StatusMessage) ? GetText(IsSuccess ? StatusPageConstants.SuccessMessage : StatusPageConstants.FailMessage) : StatusMessage
             };
+            ResizeLabel(ref lblMessage, 16.0F);
 
-            //Back to Feedback Button
-            UIButton btnBackToFeedback = new UIButton(UIButtonType.Custom)
+            viewCard.AddSubviews(new UIView[] { imgStatus, lblTitle, lblMessage });
+            nfloat viewCardHeight = lblMessage.Frame.GetMaxY() + 16.0F;
+            if (IsSuccess)
             {
-                Frame = new CGRect(18, View.Frame.Height - DeviceHelper.GetScaledHeight(64), View.Frame.Width - 36, DeviceHelper.GetScaledHeight(48))
-            };
-            btnBackToFeedback.SetTitle("Feedback_BackToFeedback".Translate(), UIControlState.Normal);
-            btnBackToFeedback.Font = MyTNBFont.MuseoSans16_500;
-            btnBackToFeedback.Layer.CornerRadius = 5.0f;
-            btnBackToFeedback.BackgroundColor = MyTNBColor.FreshGreen;
-            btnBackToFeedback.TouchUpInside += (sender, e) =>
-            {
-                DismissViewController(true, null);
-            };
-
-            viewContainer.AddSubviews(new UIView[] { lblFeedbackDateTitle, lblFeedbackIDTitle
-                , lblFeedbackDateValue, _lblFeedbackIDValue });
-
-            View.AddSubview(btnBackToFeedback);
+                UIView viewLine = GenericLine.GetLine(new CGRect(16, lblMessage.Frame.GetMaxY() + 16, viewCard.Frame.Width - 32, 1));
+                UILabel lblRef = new UILabel(new CGRect(16, viewLine.Frame.GetMaxY() + 16, viewCard.Frame.Width * 0.60F, 14))
+                {
+                    TextAlignment = UITextAlignment.Left,
+                    TextColor = MyTNBColor.SilverChalice,
+                    Font = MyTNBFont.MuseoSans10_300,
+                    Text = GetText(StatusPageConstants.ReferenceTitle).ToUpper()
+                };
+                UILabel lblDate = new UILabel(new CGRect(viewCard.Frame.Width - (viewCard.Frame.Width * 0.40F) - 16
+                    , viewLine.Frame.GetMaxY() + 16, viewCard.Frame.Width * 0.40F, 14))
+                {
+                    TextAlignment = UITextAlignment.Right,
+                    TextColor = MyTNBColor.SilverChalice,
+                    Font = MyTNBFont.MuseoSans10_300,
+                    Text = GetText(StatusPageConstants.DateTitle).ToUpper()
+                };
+                UILabel lblRefVal = new UILabel(new CGRect(16, lblRef.Frame.GetMaxY() + 1, viewCard.Frame.Width * 0.60F, 18))
+                {
+                    TextAlignment = UITextAlignment.Left,
+                    TextColor = MyTNBColor.CharcoalGrey,
+                    Font = MyTNBFont.MuseoSans14_300,
+                    Text = ReferenceNumber.ToUpper() ?? TNBGlobal.EMPTY_DATE
+                };
+                string refDate = ReferenceDate ?? TNBGlobal.EMPTY_DATE;
+                if (StatusDisplayType == StatusType.Feedback)
+                {
+                    refDate = GetDate();
+                }
+                UILabel lblDateVal = new UILabel(new CGRect(viewCard.Frame.Width - (viewCard.Frame.Width * 0.40F) - 16
+                    , lblDate.Frame.GetMaxY() + 1, viewCard.Frame.Width * 0.40F, 18))
+                {
+                    TextAlignment = UITextAlignment.Right,
+                    TextColor = MyTNBColor.CharcoalGrey,
+                    Font = MyTNBFont.MuseoSans14_300,
+                    Text = refDate
+                };
+                viewCard.AddSubviews(new UIView[] { viewLine, lblRef, lblDate, lblRefVal, lblDateVal });
+                viewCardHeight = lblDateVal.Frame.GetMaxY() + 16.0F;
+            }
+            viewCard.Frame = new CGRect(viewCard.Frame.X, viewCard.Frame.Y, viewCard.Frame.Width, viewCardHeight);
+            View.AddSubview(viewCard);
         }
 
-        /*void AddFailedDetails()
+        private void ResizeLabel(ref UILabel label, nfloat minHeight)
         {
-            viewContainer.AddSubviews(new UIView[] { new UILabel(new CGRect(0, 131, viewContainer.Frame.Width, 16))
+            CGSize newLblMsgSize = GetLabelSize(label, label.Frame.Width, ViewHeight / 2);
+            CGRect newMsgFrame = label.Frame;
+            newMsgFrame.Height = newLblMsgSize.Height < minHeight ? minHeight : newLblMsgSize.Height;
+            label.Frame = newMsgFrame;
+        }
+
+        private string GetText(string key)
+        {
+            string value = string.Empty;
+            if (StatusDisplayType == StatusType.Feedback)
+            {
+                bool isKeyExist = StatusPageConstants.FeedbackI18NDictionary.ContainsKey(key);
+                if (isKeyExist)
                 {
-                    Font = MyTNBFont.MuseoSans12,
-                    TextColor = MyTNBColor.TunaGrey(),
-                    Text = "Feedback_UnsuccessfulMessage".Translate(),
-                    TextAlignment = UITextAlignment.Center
-                }, new UILabel(new CGRect(0, 150, viewContainer.Frame.Width, 16))
-                {
-                    Font = MyTNBFont.MuseoSans12,
-                    TextColor = MyTNBColor.TunaGrey(),
-                    Text = "Error_DefaultMessage".Translate(),
-                    TextAlignment = UITextAlignment.Center
+                    value = GetI18NValue(StatusPageConstants.FeedbackI18NDictionary[key]);
                 }
-            });
+            }
+            else if (StatusDisplayType == StatusType.SSMRApply)
+            {
+                bool isKeyExist = StatusPageConstants.SSMRApplyI18NDictionary.ContainsKey(key);
+                if (isKeyExist)
+                {
+                    value = GetI18NValue(StatusPageConstants.SSMRApplyI18NDictionary[key]);
+                }
+            }
+            else if (StatusDisplayType == StatusType.SSMRDiscontinue)
+            {
+                bool isKeyExist = StatusPageConstants.SSMRDiscontinueI18NDictionary.ContainsKey(key);
+                if (isKeyExist)
+                {
+                    value = GetI18NValue(StatusPageConstants.SSMRDiscontinueI18NDictionary[key]);
+                }
+            }
+            else if (StatusDisplayType == StatusType.SSMRReading)
+            {
+                bool isKeyExist = StatusPageConstants.SSMRReadingI18NDictionary.ContainsKey(key);
+                if (isKeyExist)
+                {
+                    value = GetI18NValue(StatusPageConstants.SSMRReadingI18NDictionary[key]);
+                }
+            }
+            return value;
+        }
 
-            //Back to Dashboard Button
-            UIButton btnDashBoard = new UIButton(UIButtonType.Custom)
+        private void AddCTA()
+        {
+            UIButton btnPrimary = new UIButton();
+            UIButton btnSecondary = new UIButton();
+            if (StatusDisplayType == StatusType.Feedback)
             {
-                Frame = new CGRect(18, View.Frame.Height - 118, View.Frame.Width - 36, 48)
-            };
-            btnDashBoard.SetTitle("Common_BackToDashboard".Translate(), UIControlState.Normal);
-            btnDashBoard.Layer.CornerRadius = 5.0f;
-            btnDashBoard.Layer.BorderWidth = 1.0f;
-            btnDashBoard.Layer.BorderColor = UIColor.White.CGColor;
-            btnDashBoard.BackgroundColor = UIColor.Clear;
-            btnDashBoard.TouchUpInside += (sender, e) =>
+                GetCTA(ref btnPrimary, GetI18NValue(StatusPageConstants.I18N_BackToFeedback), true, _actions.BackToFeedback);
+                btnPrimary.BackgroundColor = MyTNBColor.FreshGreen;
+                btnPrimary.Layer.BorderWidth = 0;
+            }
+            else if (StatusDisplayType == StatusType.SSMRApply)
             {
-                DismissViewController(true, null);
-            };
+                GetCTA(ref btnSecondary, GetI18NValue(StatusPageConstants.I18N_BacktoHome), false, _actions.BackToHome);
+                if (IsSuccess)
+                {
+                    GetCTA(ref btnPrimary, GetI18NValue(StatusPageConstants.I18N_SSMRTrackApplication), true, _actions.TrackApplication);
+                }
+                else
+                {
+                    GetCTA(ref btnPrimary, GetCommonI18NValue(StatusPageConstants.I18N_TryAgain), true, _actions.SSMRTryAgain);
 
-            //Try Again Button
-            UIButton btnTryAgain = new UIButton(UIButtonType.Custom)
+                }
+            }
+            else if (StatusDisplayType == StatusType.SSMRDiscontinue)
             {
-                Frame = new CGRect(18, View.Frame.Height - 64, View.Frame.Width - 36, 48)
-            };
-            btnTryAgain.SetTitle("Common_TryAgain".Translate(), UIControlState.Normal);
-            btnTryAgain.Font = MyTNBFont.MuseoSans16;
-            btnTryAgain.Layer.CornerRadius = 5.0f;
-            btnTryAgain.BackgroundColor = MyTNBColor.FreshGreen;
-            btnTryAgain.TouchUpInside += (sender, e) =>
-            {
-                this.NavigationController.NavigationBarHidden = false;
-                NavigationController.PopViewController(false);
-            };
 
-            View.AddSubviews(new UIView[] { btnDashBoard, btnTryAgain });
-        }*/
+            }
+            else if (StatusDisplayType == StatusType.SSMRReading)
+            {
+
+            }
+
+            View.AddSubviews(new UIView[] { btnPrimary, btnSecondary });
+        }
+
+        private void GetCTA(ref UIButton btn, string title, bool isPrimary, Action ctaAction)
+        {
+            CGSize size = new CGSize(ViewWidth - 32, 48);
+            CGPoint point = new CGPoint(16, isPrimary ? ViewHeight - 64 : ViewHeight - 118);
+            btn = new CustomUIButtonV2()
+            {
+                Frame = new CGRect(point, size)
+            };
+            btn.SetTitle(title, UIControlState.Normal);
+            btn.TouchUpInside += (sender, e) =>
+            {
+                if (ctaAction != null) { ctaAction.Invoke(); }
+            };
+        }
     }
 }

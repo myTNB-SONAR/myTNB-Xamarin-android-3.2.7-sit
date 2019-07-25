@@ -12,7 +12,7 @@ namespace myTNB
     {
         internal Dictionary<string, string> I18NDictionary;
         internal string PageName;
-        internal bool IsGradientRequired;
+        internal bool IsGradientRequired, IsFullGradient, IsReversedGradient;
         internal bool IsGradientImageRequired;
         internal UIImageView ImageViewGradientImage;
         internal UIView _statusBarView;
@@ -80,7 +80,7 @@ namespace myTNB
         {
             ViewWidth = View.Frame.Width;
             ViewHeight = View.Frame.Height;
-            if (NavigationController != null && NavigationController.NavigationBar != null)
+            if (NavigationController != null && !NavigationController.NavigationBarHidden && NavigationController.NavigationBar != null)
             {
                 ViewHeight -= NavigationController.NavigationBar.Frame.Height;
             }
@@ -219,10 +219,12 @@ namespace myTNB
 
         private void CreateBackgroundGradient()
         {
-            UIView gradientView = new UIView(new CGRect(0, 0, View.Frame.Width, View.Frame.Height * 0.50F));
+            UIView gradientView = new UIView(new CGRect(0, 0, View.Frame.Width, View.Frame.Height * (IsFullGradient ? 1.0F : 0.50F)));
+            CGColor startColor = (IsReversedGradient ? MyTNBColor.GradientPurpleDarkElement : MyTNBColor.GradientPurpleLightElement).CGColor;
+            CGColor endColor = (IsReversedGradient ? MyTNBColor.GradientPurpleLightElement : MyTNBColor.GradientPurpleDarkElement).CGColor;
             CAGradientLayer gradientLayer = new CAGradientLayer
             {
-                Colors = new[] { MyTNBColor.GradientPurpleLightElement.CGColor, MyTNBColor.GradientPurpleDarkElement.CGColor }
+                Colors = new[] { startColor, endColor }
             };
             gradientLayer.Locations = new NSNumber[] { 0, 1 };
             gradientLayer.Frame = gradientView.Bounds;

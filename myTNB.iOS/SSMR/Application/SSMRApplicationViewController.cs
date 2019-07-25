@@ -101,11 +101,12 @@ namespace myTNB
             {
                 //Execute Service Call
                 UIStoryboard storyBoard = UIStoryboard.FromName("Feedback", null);
-                GenericStatusPageViewController feedbackStatusVS = storyBoard.InstantiateViewController("GenericStatusPageViewController") as GenericStatusPageViewController;
-                feedbackStatusVS.IsSuccess = true;
-                feedbackStatusVS.ServiceRequestNumber = "123";//_submitFeedback?.d?.data?.ServiceReqNo;
-                //feedbackStatusVS.DateCreated = //_submitFeedback?.d?.data?.DateCreated;
-                NavigationController.PushViewController(feedbackStatusVS, true);
+                GenericStatusPageViewController status = storyBoard.InstantiateViewController("GenericStatusPageViewController") as GenericStatusPageViewController;
+                status.IsSuccess = true;
+                status.StatusDisplayType = GenericStatusPageViewController.StatusType.SSMRApply;
+                status.ReferenceNumber = "SMR-000-000-0000";
+                status.ReferenceDate = "16 Jul 2019";
+                NavigationController.PushViewController(status, true);
             };
             _viewBottomContainer.AddSubviews(new UIView[] { viewPadding, txtFieldInfo, _btnSubmit });
             nfloat containerHeight = _btnSubmit.Frame.GetMaxY() + (DeviceHelper.IsIphoneXUpResolution() ? 36 : 16);

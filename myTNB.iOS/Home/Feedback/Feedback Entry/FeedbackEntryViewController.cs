@@ -528,11 +528,12 @@ namespace myTNB
                                    && _submitFeedback?.d?.data != null)
                                 {
                                     UIStoryboard storyBoard = UIStoryboard.FromName("Feedback", null);
-                                    GenericStatusPageViewController feedbackStatusVS = storyBoard.InstantiateViewController("GenericStatusPageViewController") as GenericStatusPageViewController;
-                                    feedbackStatusVS.IsSuccess = true;
-                                    feedbackStatusVS.ServiceRequestNumber = _submitFeedback?.d?.data?.ServiceReqNo;
-                                    feedbackStatusVS.DateCreated = _submitFeedback?.d?.data?.DateCreated;
-                                    NavigationController.PushViewController(feedbackStatusVS, true);
+                                    GenericStatusPageViewController status = storyBoard.InstantiateViewController("GenericStatusPageViewController") as GenericStatusPageViewController;
+                                    status.IsSuccess = true;
+                                    status.ReferenceNumber = _submitFeedback?.d?.data?.ServiceReqNo;
+                                    status.ReferenceDate = _submitFeedback?.d?.data?.DateCreated;
+                                    status.StatusDisplayType = GenericStatusPageViewController.StatusType.Feedback;
+                                    NavigationController.PushViewController(status, true);
                                 }
                                 else
                                 {

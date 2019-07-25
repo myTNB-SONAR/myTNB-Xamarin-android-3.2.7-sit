@@ -340,7 +340,6 @@
     <ImageAsset Include="Assets.xcassets\Scan.imageset\scan%402x.png" />
     <ImageAsset Include="Assets.xcassets\Scan.imageset\scan%403x.png" />
     <ImageAsset Include="Assets.xcassets\Circle-With-Check-Green.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Circle-With-Check-Green.imageset\Circle-With-Check-Green.png" />
     <ImageAsset Include="Assets.xcassets\Arrow-Left.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Arrow-Right.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Logo-Title.imageset\Contents.json" />
@@ -544,7 +543,6 @@
     <ImageAsset Include="Assets.xcassets\IC-Field-Text.imageset\icFieldText%402x.png" />
     <ImageAsset Include="Assets.xcassets\IC-Field-Text.imageset\icFieldText%403x.png" />
     <ImageAsset Include="Assets.xcassets\Red-Cross.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Red-Cross.imageset\Red-Cross.png" />
     <ImageAsset Include="Assets.xcassets\Loading-Circle.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Loading-Circle.imageset\loadingCircle.png" />
     <ImageAsset Include="Assets.xcassets\Loading-Circle.imageset\loadingCircle%402x.png" />
@@ -1028,6 +1026,12 @@
     <ImageAsset Include="Assets.xcassets\SSMR_Background_2.imageset\onboardingBg2%402x.png" />
     <ImageAsset Include="Assets.xcassets\SSMR_Background_2.imageset\onboardingBg2%403x.png" />
     <ImageAsset Include="Assets.xcassets\SSMR_Background_2.imageset\onboardingBg2-1.png" />
+    <ImageAsset Include="Assets.xcassets\Circle-With-Check-Green.imageset\icDisplaySuccessful.png" />
+    <ImageAsset Include="Assets.xcassets\Circle-With-Check-Green.imageset\icDisplaySuccessful%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Circle-With-Check-Green.imageset\icDisplaySuccessful%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Red-Cross.imageset\icDisplayUnsuccessful.png" />
+    <ImageAsset Include="Assets.xcassets\Red-Cross.imageset\icDisplayUnsuccessful%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Red-Cross.imageset\icDisplayUnsuccessful%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -2075,6 +2079,9 @@
     <Compile Include="Customs\Generic Status Page\GenericStatusPageViewController.designer.cs">
       <DependentUpon>GenericStatusPageViewController.cs</DependentUpon>
     </Compile>
+    <Compile Include="Customs\Generic Status Page\StatusPageConstants.cs" />
+    <Compile Include="Customs\Generic Status Page\StatusPageActions.cs" />
+    <Compile Include="Customs\CustomUIButtonV2.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />
