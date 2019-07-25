@@ -47,7 +47,7 @@ namespace myTNB.Home.Dashboard.DashboardHome
 
         private void On_1002_Action()
         {
-            On_1003_Action();//Stub
+
         }
 
         private void On_1003_Action()
