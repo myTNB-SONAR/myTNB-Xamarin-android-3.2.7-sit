@@ -191,7 +191,7 @@ namespace myTNB
             {
                 key = DashboardHomeConstants.I18N_Afternoon;
             }
-            return I18NDictionary[key];
+            return GetI18NValue(key);
         }
 
         private void OnUpdateNotification()

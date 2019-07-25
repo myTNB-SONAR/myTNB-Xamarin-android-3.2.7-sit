@@ -37,6 +37,7 @@ namespace myTNB
             {
                 CreateImageGradient();
             }
+            SetFrames();
         }
 
         public override void ViewWillAppear(bool animated)

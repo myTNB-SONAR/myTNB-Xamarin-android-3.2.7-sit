@@ -44,9 +44,8 @@ namespace myTNB
             IsFullGradient = true;
             IsReversedGradient = true;
             PageName = "Status";
-            base.ViewDidLoad();
             NavigationController.NavigationBarHidden = true;
-            SetFrames();
+            base.ViewDidLoad();
             _actions = new StatusPageActions(this);
             SetStatusCard();
             AddCTA();
@@ -222,7 +221,7 @@ namespace myTNB
             }
             else if (StatusDisplayType == StatusType.SSMRApply)
             {
-                GetCTA(ref btnSecondary, GetI18NValue(StatusPageConstants.I18N_BacktoHome), false, _actions.BackToHome);
+                GetCTA(ref btnSecondary, GetCommonI18NValue(StatusPageConstants.I18N_BacktoHome), false, _actions.BackToHome);
                 if (IsSuccess)
                 {
                     GetCTA(ref btnPrimary, GetI18NValue(StatusPageConstants.I18N_SSMRTrackApplication), true, _actions.TrackApplication);

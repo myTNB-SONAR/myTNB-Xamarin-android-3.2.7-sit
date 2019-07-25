@@ -38,5 +38,38 @@
             </objects>
             <point key="canvasLocation" x="572" y="-87"/>
         </scene>
+        <scene sceneID="1224">
+            <objects>
+                <navigationController id="1225" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="1227">
+                        <rect key="frame" x="0.0" y="20" width="414" height="50"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue id="1284" destination="1234" kind="relationship" relationship="rootViewController"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="1228" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-5" y="788"/>
+        </scene>
+        <scene sceneID="1233">
+            <objects>
+                <viewController id="1234" sceneMemberID="viewController" customClass="SSMRCaptureMeterViewController" storyboardIdentifier="SSMRCaptureMeterViewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="1231"/>
+                        <viewControllerLayoutGuide type="bottom" id="1232"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="1235">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem title="Title" id="1283" key="navigationItem"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="1236" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="576" y="784"/>
+        </scene>
     </scenes>
 </document>

@@ -1347,6 +1347,7 @@
     <Folder Include="Assets.xcassets\SSMR_Main_3.imageset\" />
     <Folder Include="SSMR\Application\" />
     <Folder Include="Customs\Generic Status Page\" />
+    <Folder Include="SSMR\Meter Reading\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -2082,6 +2083,10 @@
     <Compile Include="Customs\Generic Status Page\StatusPageConstants.cs" />
     <Compile Include="Customs\Generic Status Page\StatusPageActions.cs" />
     <Compile Include="Customs\CustomUIButtonV2.cs" />
+    <Compile Include="SSMR\Meter Reading\SSMRCaptureMeterViewController.cs" />
+    <Compile Include="SSMR\Meter Reading\SSMRCaptureMeterViewController.designer.cs">
+      <DependentUpon>SSMRCaptureMeterViewController.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />
