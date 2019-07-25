@@ -71,6 +71,10 @@ namespace myTNB
         public override void ViewWillAppear(bool animated)
         {
             base.ViewWillAppear(animated);
+            if (_accountsCardContentViewController != null)
+            {
+                _accountsCardContentViewController.UpdateGreeting(GetGreeting());
+            }
             if (DataManager.DataManager.SharedInstance.SummaryNeedsRefresh)
             {
                 SetAccountsCardViewController();
@@ -357,6 +361,8 @@ namespace myTNB
         public void OnReloadTableForSearch()
         {
             _homeTableView.BeginUpdates();
+            NSIndexPath indexPath = NSIndexPath.Create(0, DashboardHomeConstants.CellIndex_Services);
+            _homeTableView.ReloadRows(new NSIndexPath[] { indexPath }, UITableViewRowAnimation.None);
             _homeTableView.EndUpdates();
         }
     }

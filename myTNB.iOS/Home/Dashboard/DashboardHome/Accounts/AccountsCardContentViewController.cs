@@ -93,6 +93,14 @@ namespace myTNB
             _parentView.AddSubview(_dashboardHomeHeader.GetUI());
         }
 
+        public void UpdateGreeting(string greeting)
+        {
+            if (_dashboardHomeHeader != null)
+            {
+                _dashboardHomeHeader.SetGreetingText(greeting);
+            }
+        }
+
         private void SetSearchView()
         {
             _searchView = new UIView(new CGRect(0, _dashboardHomeHeader.GetView().Frame.GetMaxY(), _parentView.Frame.Width, DashboardHomeConstants.SearchViewHeight))
