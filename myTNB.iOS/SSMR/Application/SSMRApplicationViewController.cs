@@ -1,5 +1,6 @@
 using CoreGraphics;
 using Foundation;
+using myTNB.Home.Feedback.FeedbackEntry;
 using myTNB.Model;
 using myTNB.SSMR;
 using System;
@@ -96,7 +97,16 @@ namespace myTNB
                 , GetCommonI18NValue(SSMRConstants.I18N_Submit));
             _btnSubmit.Enabled = true;
             _btnSubmit.BackgroundColor = MyTNBColor.FreshGreen;
-
+            _btnSubmit.TouchUpInside += (sender, e) =>
+            {
+                //Execute Service Call
+                UIStoryboard storyBoard = UIStoryboard.FromName("Feedback", null);
+                GenericStatusPageViewController feedbackStatusVS = storyBoard.InstantiateViewController("GenericStatusPageViewController") as GenericStatusPageViewController;
+                feedbackStatusVS.IsSuccess = true;
+                feedbackStatusVS.ServiceRequestNumber = "123";//_submitFeedback?.d?.data?.ServiceReqNo;
+                //feedbackStatusVS.DateCreated = //_submitFeedback?.d?.data?.DateCreated;
+                NavigationController.PushViewController(feedbackStatusVS, true);
+            };
             _viewBottomContainer.AddSubviews(new UIView[] { viewPadding, txtFieldInfo, _btnSubmit });
             nfloat containerHeight = _btnSubmit.Frame.GetMaxY() + (DeviceHelper.IsIphoneXUpResolution() ? 36 : 16);
             _viewBottomContainer.Frame = new CGRect(0, ViewHeight - containerHeight, ViewWidth, containerHeight);

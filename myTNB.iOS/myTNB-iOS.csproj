@@ -1342,6 +1342,7 @@
     <Folder Include="Assets.xcassets\SSMR_Main_2.imageset\" />
     <Folder Include="Assets.xcassets\SSMR_Main_3.imageset\" />
     <Folder Include="SSMR\Application\" />
+    <Folder Include="Customs\Generic Status Page\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -1947,10 +1948,6 @@
     <Compile Include="Home\Feedback\Feedback Entry\BillRelatedFeedbackComponent.cs" />
     <Compile Include="Home\Feedback\Feedback Entry\StreetLampFeedbackComponent.cs" />
     <Compile Include="Helpers\AttributedStringUtility.cs" />
-    <Compile Include="Home\Feedback\Feedback Entry\FeedbackEntryStatus.cs" />
-    <Compile Include="Home\Feedback\Feedback Entry\FeedbackEntryStatus.designer.cs">
-      <DependentUpon>FeedbackEntryStatus.cs</DependentUpon>
-    </Compile>
     <Compile Include="Home\Feedback\Feedback Location and State\LocationManager.cs" />
     <Compile Include="Home\Feedback\Feedback Location and State\LocationUpdateEventArgs.cs" />
     <Compile Include="Home\Feedback\Feedback Image\ImageDataModel.cs" />
@@ -2074,6 +2071,10 @@
       <DependentUpon>SSMRApplicationViewController.cs</DependentUpon>
     </Compile>
     <Compile Include="Customs\CustomTextField.cs" />
+    <Compile Include="Customs\Generic Status Page\GenericStatusPageViewController.cs" />
+    <Compile Include="Customs\Generic Status Page\GenericStatusPageViewController.designer.cs">
+      <DependentUpon>GenericStatusPageViewController.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />

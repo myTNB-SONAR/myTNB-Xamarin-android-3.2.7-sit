@@ -528,7 +528,7 @@ namespace myTNB
                                    && _submitFeedback?.d?.data != null)
                                 {
                                     UIStoryboard storyBoard = UIStoryboard.FromName("Feedback", null);
-                                    FeedbackEntryStatus feedbackStatusVS = storyBoard.InstantiateViewController("FeedbackEntryStatus") as FeedbackEntryStatus;
+                                    GenericStatusPageViewController feedbackStatusVS = storyBoard.InstantiateViewController("GenericStatusPageViewController") as GenericStatusPageViewController;
                                     feedbackStatusVS.IsSuccess = true;
                                     feedbackStatusVS.ServiceRequestNumber = _submitFeedback?.d?.data?.ServiceReqNo;
                                     feedbackStatusVS.DateCreated = _submitFeedback?.d?.data?.DateCreated;

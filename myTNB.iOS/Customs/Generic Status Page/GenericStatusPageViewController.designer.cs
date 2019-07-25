@@ -9,10 +9,10 @@ using System;
 using System.CodeDom.Compiler;
 using UIKit;
 
-namespace myTNB.Home.Feedback.FeedbackEntry
+namespace myTNB
 {
-    [Register ("FeedbackEntryStatus")]
-    partial class FeedbackEntryStatus
+    [Register ("GenericStatusPageViewController")]
+    partial class GenericStatusPageViewController
     {
         void ReleaseDesignerOutlets ()
         {

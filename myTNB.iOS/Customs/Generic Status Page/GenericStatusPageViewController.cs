@@ -5,11 +5,11 @@ using CoreGraphics;
 using Foundation;
 using UIKit;
 
-namespace myTNB.Home.Feedback.FeedbackEntry
+namespace myTNB
 {
-    public partial class FeedbackEntryStatus : UIViewController
+    public partial class GenericStatusPageViewController : UIViewController
     {
-        public FeedbackEntryStatus(IntPtr handle) : base(handle)
+        public GenericStatusPageViewController(IntPtr handle) : base(handle)
         {
         }
 
