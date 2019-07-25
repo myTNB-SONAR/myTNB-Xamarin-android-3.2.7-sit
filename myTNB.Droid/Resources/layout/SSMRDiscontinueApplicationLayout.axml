@@ -95,7 +95,7 @@
                     android:drawableLeft="@drawable/placeholder_email"
                     android:paddingTop="5dp"
                     android:drawablePadding="6dp"
-                    android:hint="@string/ssmr_disconnection_email_hint"
+                    android:hint="@string/ssmr_discontinue_email_hint"
                     android:inputType="textEmailAddress"
                     android:maxLines="1" />
             </android.support.design.widget.TextInputLayout>
@@ -113,7 +113,7 @@
                     android:drawableLeft="@drawable/placeholder_mobile"
                     android:paddingTop="5dp"
                     android:drawablePadding="6dp"
-                    android:hint="@string/ssmr_disconnection_mobile_no_hint"
+                    android:hint="@string/ssmr_discontinue_mobile_no_hint"
                     android:inputType="phone"
                     android:digits="0123456789+"
                     android:importantForAutofill="noExcludeDescendants"
@@ -139,8 +139,79 @@
             android:layout_marginBottom="8dp"
             android:lineSpacingExtra="8sp"
             android:textSize="16sp"
-            android:text="My contact details:"
+            android:text="We’re sorry to see you go! Can you tell us why you want to discontinue this service?"
             android:textColor="@color/powerBlue"
             android:layout_gravity="left"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@color/white"
+            android:paddingTop="16dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:paddingEnd="31dp"
+            android:paddingBottom="31dp"
+            android:paddingStart="16dp"
+            android:id="@+id/contactDetailContainer">
+            <FrameLayout
+                android:id="@+id/accountLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/txtInputLayoutAccountNo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:errorEnabled="true"
+                    app:hintTextAppearance="@style/TextInputLayout.TextAppearance.LightBackground">
+                    <EditText
+                        android:id="@+id/txtAccountNo"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:drawableLeft="@drawable/ic_field_account_no"
+                        android:drawableRight="@drawable/ic_action_dropdown1"
+                        android:paddingTop="5dp"
+                        android:clickable="true"
+                        android:cursorVisible="false"
+                        android:focusable="false"
+                        android:importantForAutofill="noExcludeDescendants"
+                        android:hint="@string/ssmr_select_discontinue_reason_hint"
+                        android:inputType="text"
+                        android:maxLines="1" />
+                </android.support.design.widget.TextInputLayout>
+            </FrameLayout>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:orientation="vertical"
+            android:background="@color/white"
+            android:layout_gravity="bottom"
+            android:id="@+id/disconnectionConfirmationContainer">
+            <TextView
+                android:text="@string/ssmr_terms_conditions"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginBottom="8dp"
+                android:textSize="12sp"
+                android:lineSpacingExtra="4sp"
+                android:id="@+id/txtTermsConditions"
+                android:gravity="bottom" />
+            <Button
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/ssmr_discontinue_btn_submit"
+                android:id="@+id/btnDisconnectionSubmit"
+                android:layout_marginTop="8dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginBottom="16dp"
+                style="@style/Theme.RegisterButton" />
+        </LinearLayout>
     </LinearLayout>
 </ScrollView>

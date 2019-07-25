@@ -1402,6 +1402,9 @@ Please try again later.]]>
   <string name="my_service_btn_retry">Retry</string>
   <string name="my_service_error">Something went wrong, Please try again.</string>
 
-  <string name="ssmr_disconnection_email_hint">EMAIL ADDRESS</string>
-  <string name="ssmr_disconnection_mobile_no_hint">MOBILE NUMBER</string>
+  <string name="ssmr_discontinue_email_hint">EMAIL ADDRESS</string>
+  <string name="ssmr_discontinue_mobile_no_hint">MOBILE NUMBER</string>
+  <string name="ssmr_select_discontinue_reason_hint">SELECT REASON</string>
+  <string name="ssmr_terms_conditions">By applying, you are agreeing to the <font color='#1c79ca'>TNB’s Terms of Use, Privacy policy, Anti-Spam Policy</font> and <font color='#1c79ca'>Personal Data Protection Policy</font>.</string>
+  <string name="ssmr_discontinue_btn_submit">Submit</string>
 </resources>

@@ -1219,7 +1219,7 @@
     <AndroidResource Include="Resources\drawable-xhdpi\fluid_background.png" />
     <AndroidResource Include="Resources\drawable-xxhdpi\fluid_background.png" />
     <AndroidResource Include="Resources\drawable-xxxhdpi\fluid_background.png" />
-    <AndroidResource Include="Resources\layout\SmartMeterApplicationLayout.axml" />
+    <AndroidResource Include="Resources\layout\SSMRDiscontinueApplicationLayout.axml" />
     <AndroidResource Include="Resources\drawable\dashboard_home_new_bg.xml" />
     <Compile Include="Src\myTNBMenu\Fragments\HomeMenu\MVP\AccountCardsFilter.cs" />
     <Compile Include="Src\myTNBMenu\Fragments\HomeMenu\MVP\ObjectExtensions.cs" />
