@@ -331,7 +331,7 @@ namespace myTNB.DataManager
                 SSPUserId = string.Empty,
                 Email = userEmail,
                 DeviceId = DataManager.SharedInstance.UDID,
-                AppVersion = AppVersionHelper.GetBuildVersion(),
+                AppVersion = AppVersionHelper.GetAppShortVersion(),
                 OsType = TNBGlobal.DEVICE_PLATFORM_IOS,
                 OsVersion = DeviceHelper.GetOSVersion()
             };

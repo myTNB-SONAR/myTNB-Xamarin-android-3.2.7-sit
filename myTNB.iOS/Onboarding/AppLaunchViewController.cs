@@ -59,6 +59,8 @@ namespace myTNB
             BillingAccountEntity.DeleteTable();
             PaymentHistoryEntity.DeleteTable();
 
+            GetUserEntity();
+
             // clear cached data on Version Update
             ClearCacheForVersionUpdate();
             NSNotificationCenter.DefaultCenter.AddObserver(UIApplication.WillEnterForegroundNotification, HandleAppWillEnterForeground);
@@ -135,6 +137,49 @@ namespace myTNB
                 BillHistoryEntity.DeleteTable();
                 ChartEntity.DeleteTable();
                 DueEntity.DeleteTable();
+                GetAccountsForAppUpdate();
+            }
+        }
+
+        public void GetAccountsForAppUpdate()
+        {
+            var sharedPreference = NSUserDefaults.StandardUserDefaults;
+            var isLogin = sharedPreference.BoolForKey(TNBGlobal.PreferenceKeys.LoginState);
+            if (isLogin && DataManager.DataManager.SharedInstance.UserEntity != null && DataManager.DataManager.SharedInstance.UserEntity?.Count > 0)
+            {
+                DataManager.DataManager.SharedInstance.User.UserID = DataManager.DataManager.SharedInstance.UserEntity[0]?.userID;
+                ServiceCall.GetAccounts().ContinueWith(task =>
+                {
+                    InvokeOnMainThread(() =>
+                    {
+                        if (DataManager.DataManager.SharedInstance.CustomerAccounts?.d != null
+                            && DataManager.DataManager.SharedInstance.CustomerAccounts?.d?.IsSuccess == true)
+                        {
+                            if (DataManager.DataManager.SharedInstance.CustomerAccounts?.d?.data != null)
+                            {
+                                DataManager.DataManager.SharedInstance.AccountRecordsList.d
+                                           = DataManager.DataManager.SharedInstance.CustomerAccounts.d.data;
+                            }
+
+                            if (DataManager.DataManager.SharedInstance.AccountRecordsList != null
+                                && DataManager.DataManager.SharedInstance.AccountRecordsList?.d != null)
+                            {
+                                UserAccountsEntity uaManager = new UserAccountsEntity();
+                                uaManager.DeleteTable();
+                                uaManager.CreateTable();
+                                uaManager.InsertListOfItems(DataManager.DataManager.SharedInstance.AccountRecordsList);
+                                DataManager.DataManager.SharedInstance.AccountRecordsList = uaManager.GetCustomerAccountRecordList();
+                            }
+
+                            if (DataManager.DataManager.SharedInstance.AccountRecordsList == null
+                               || DataManager.DataManager.SharedInstance.AccountRecordsList?.d == null)
+                            {
+                                DataManager.DataManager.SharedInstance.AccountRecordsList = new CustomerAccountRecordListModel();
+                                DataManager.DataManager.SharedInstance.AccountRecordsList.d = new List<CustomerAccountRecordModel>();
+                            }
+                        }
+                    });
+                });
             }
         }
 
@@ -165,7 +210,6 @@ namespace myTNB
                 {
                     if (NetworkUtility.isReachable)
                     {
-                        GetUserEntity();
                         await LoadMasterData();
                     }
                     else
