@@ -529,7 +529,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 if (accountsAdapter != null && accountsAdapter.accountCardModelList != null && myServiceAdapter != null)
                 {
                     int count = accountsAdapter.accountCardModelList.Count;
-                    if (count <= 2)
+                    if (count < 2)
                     {
                         myServiceTitle.SetTextColor(Color.White);
                     }
@@ -560,7 +560,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 if (accountsAdapter != null && accountsAdapter.accountCardModelList != null)
                 {
                     int count = accountsAdapter.accountCardModelList.Count;
-                    if (count <= 2)
+                    if (count < 2)
                     {
                         myServiceTitle.SetTextColor(Color.White);
                     }
