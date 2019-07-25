@@ -461,7 +461,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             if (isSearchSubmit)
             {
                 ShowSearchAction(false);
-            }
+                LinearLayoutManager manager = accountsRecyclerView.GetLayoutManager() as LinearLayoutManager;
+                int position = manager.FindFirstCompletelyVisibleItemPosition();
+
+                List<string> accountNumberList = accountsAdapter.GetAccountCardNumberListByPosition(position);
+                this.presenter.LoadSummaryDetailsInBatch(accountNumberList);
+			}
             UpdateAccountListIndicator();
 		}
 
@@ -757,8 +762,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 {
                     searchEditText.ClearFocus();
                     ShowSearchAction(false);
+                    OnUpdateAccountListChanged(true);
                 }
             }
+        }
+
+        public AccountsRecyclerViewAdapter GetAccountAdapter()
+        {
+            return accountsAdapter;
         }
     }
 }

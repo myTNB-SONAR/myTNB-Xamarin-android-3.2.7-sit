@@ -329,5 +329,34 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
                 viewListener.ShowAccountDetails(mAccountNumber);
             }
         }
+
+        public List<string> GetFirstCardModelList()
+		{
+            List<string> accountNumberList = new List<string>();
+            if (cardList.Count > 0)
+			{
+				foreach(AccountCardModel cardModel in cardList.ToArray()[0])
+				{
+					accountNumberList.Add(cardModel.AccountNumber);
+				}
+			}
+            return accountNumberList;
+        }
+
+        public List<string> GetAccountCardNumberListByPosition(int position)
+        {
+            List<string> accountNumberList = new List<string>();
+            if (cardList.Count > 0)
+            {
+                foreach (AccountCardModel cardModel in cardList.ToArray()[position])
+                {
+                    if (cardModel.BillDueAmount == null)
+                    {
+                        accountNumberList.Add(cardModel.AccountNumber);
+                    }
+                }
+            }
+            return accountNumberList;
+        }
     }
 }
