@@ -1297,6 +1297,7 @@
     <Compile Include="Src\SitecoreCMS\Service\HelpService.cs" />
     <Compile Include="Src\SitecoreCMS\Model\HelpModel.cs" />
     <Compile Include="Src\SSMRTerminate\MVP\SSMRTerminateActivity.cs" />
+    <AndroidResource Include="Resources\values\SSMRTerminateStyle.xml" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
