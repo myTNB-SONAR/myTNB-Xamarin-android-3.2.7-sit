@@ -357,6 +357,8 @@ namespace myTNB
         public void OnReloadTableForSearch()
         {
             _homeTableView.BeginUpdates();
+            NSIndexPath indexPath = NSIndexPath.Create(0, DashboardHomeConstants.CellIndex_Services);
+            _homeTableView.ReloadRows(new NSIndexPath[] { indexPath }, UITableViewRowAnimation.None);
             _homeTableView.EndUpdates();
         }
     }
