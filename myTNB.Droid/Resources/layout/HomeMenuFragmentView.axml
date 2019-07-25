@@ -118,14 +118,14 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:layout_marginTop="8dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
                 android:layout_marginBottom="2dp"
                 android:id="@+id/myServiceContainer">
                 <TextView
                     android:id="@+id/myServiceTitle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
                     android:textSize="14dp"
                     android:text="My Services"
                     android:textColor="@color/powerBlue"
@@ -134,8 +134,10 @@
                     android:id="@+id/myServiceShimmerView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="6dp"
                     android:orientation="vertical"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="14dp"
                     android:visibility="gone">
                     <com.facebook.shimmer.ShimmerFrameLayout
                         android:id="@+id/shimmerMyServiceView"
@@ -151,8 +153,10 @@
                     android:id="@+id/myServiceView"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="6dp"
                     android:orientation="vertical"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="14dp"
                     android:visibility="gone">
                     <android.support.v7.widget.RecyclerView
                         android:id="@+id/myServiceList"
@@ -164,7 +168,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="6dp"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
                 android:layout_marginBottom="33dp"

@@ -14,6 +14,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             void OnUpdateAccountListChanged(bool isSearchSubmit);
             void SetAccountListCards(List<SummaryDashBoardDetails> accountList);
             void UpdateAccountListCards(List<SummaryDashBoardDetails> accountList);
+            void SetAccountListCardsFromLocal(List<SummaryDashBoardDetails> accountList);
             void ShowAccountDetails(string accountNumber);
             void SetMyServiceRecycleView();
             void SetNewFAQRecycleView();

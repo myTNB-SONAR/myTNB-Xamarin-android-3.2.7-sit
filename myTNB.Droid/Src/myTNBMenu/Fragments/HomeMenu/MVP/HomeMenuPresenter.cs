@@ -237,7 +237,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
             batchAccountList = accountList.Select((x, index) => new { x, index })
                    .GroupBy(x => x.index / 5, y => y.x);
-            this.mView.SetAccountListCards(summaryDashboardInfoList);
+            this.mView.SetAccountListCardsFromLocal(summaryDashboardInfoList);
         }
 
         public void LoadAccounts()
@@ -271,7 +271,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             batchAccountList = accountList.Select((x, index) => new { x, index })
                    .GroupBy(x => x.index / 5, y => y.x);
             this.mView.SetAccountListCards(summaryDashboardInfoList);
-            BatchLoadSummaryDetails(customerBillingAccountList);
+            if (batchAccountList.ToList().Count > 0)
+            {
+                BatchLoadSummaryDetails(customerBillingAccountList);
+            }
         }
 
         public void LoadBatchSummaryAccounts()
