@@ -196,6 +196,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 {
                     this.presenter.LoadLocalAccounts();
                 }
+                addActionImage.SetOnClickListener(null);
+                notificationHeaderIcon.SetOnClickListener(null);
                 addActionImage.Click += delegate
                 {
                     Intent linkAccount = new Intent(this.Activity, typeof(LinkAccountActivity));
@@ -625,7 +627,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             accountsAdapter.UpdateAccountCards(accountList);
         }
 
-        public void SetAccountListCards(List<SummaryDashBoardDetails> accountList)
+        private void SetHeaderActionVisiblity(List<SummaryDashBoardDetails> accountList)
         {
             if (accountList.Count <= 5)
             {
@@ -636,7 +638,20 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             {
                 searchActionIcon.Visibility = ViewStates.Visible;
             }
+        }
+
+        public void SetAccountListCards(List<SummaryDashBoardDetails> accountList)
+        {
+            SetHeaderActionVisiblity(accountList);
             accountsAdapter.SetAccountCards(accountList);
+            accountsRecyclerView.SetAdapter(accountsAdapter);
+            ChangeMyServiceTextColor();
+        }
+
+        public void SetAccountListCardsFromLocal(List<SummaryDashBoardDetails> accountList)
+        {
+            SetHeaderActionVisiblity(accountList);
+            accountsAdapter.SetAccountCardsFromLocal(accountList);
             accountsRecyclerView.SetAdapter(accountsAdapter);
             ChangeMyServiceTextColor();
         }
@@ -738,8 +753,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         {
             if (searchEditText != null)
             {
-                searchEditText.ClearFocus();
-                ShowSearchAction(false);
+                if(searchEditText.Visibility == ViewStates.Visible)
+                {
+                    searchEditText.ClearFocus();
+                    ShowSearchAction(false);
+                }
             }
         }
     }
