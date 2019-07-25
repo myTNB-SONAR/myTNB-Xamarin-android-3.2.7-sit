@@ -137,15 +137,10 @@
                     android:layout_marginTop="16dp"
                     android:orientation="vertical"
                     android:visibility="gone">
-                    <com.facebook.shimmer.ShimmerFrameLayout
-                        android:id="@+id/shimmerMyServiceView"
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/myServiceShimmerList"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-                        <android.support.v7.widget.RecyclerView
-                            android:id="@+id/myServiceShimmerList"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"/>
-                    </com.facebook.shimmer.ShimmerFrameLayout>
+                        android:layout_height="wrap_content"/>
                 </LinearLayout>
                 <LinearLayout
                     android:id="@+id/myServiceView"

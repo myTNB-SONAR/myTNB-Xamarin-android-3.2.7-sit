@@ -92,9 +92,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         [BindView(Resource.Id.summaryRootView)]
         CoordinatorLayout summaryRootView;
 
-        [BindView(Resource.Id.shimmerMyServiceView)]
-        ShimmerFrameLayout shimmerMyServiceView;
-
         [BindView(Resource.Id.shimmerFAQView)]
         ShimmerFrameLayout shimmerFAQView;
 
@@ -247,12 +244,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
             myServiceShimmerView.Visibility = ViewStates.Visible;
             myServiceView.Visibility = ViewStates.Gone;
-            var shimmerBuilder = ShimmerUtils.ShimmerBuilderConfig();
-            if (shimmerBuilder != null)
-            {
-                shimmerMyServiceView.SetShimmer(shimmerBuilder?.Build());
-            }
-            shimmerMyServiceView.StartShimmer();
             this.presenter.InitiateMyService();
 
         }
@@ -263,7 +254,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             {
                 Activity.RunOnUiThread(() =>
                 {
-                    shimmerMyServiceView.StopShimmer();
                     myServiceShimmerAdapter = new MyServiceShimmerAdapter(null, this.Activity);
                     myServiceShimmerList.SetAdapter(myServiceShimmerAdapter);
                     myServiceShimmerView.Visibility = ViewStates.Gone;
