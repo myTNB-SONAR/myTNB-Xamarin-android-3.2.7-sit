@@ -16,14 +16,14 @@ namespace myTNB
         }
 
         private UIButton _btnSubmit;
-        private UIView _viewBottomContainer;
+        private UIView _viewBottomContainer, _viewContactDetails;
         private UIScrollView _scrollContainer;
         private CGRect _scrollViewFrame;
         private CustomTextField _customMobileField;
         private CustomTextField _customEmailField;
         protected List<CustomerAccountRecordModel> _eligibleAccountList;
         private int _selectedAccountIndex = 0;
-        private UILabel _lblAccountName, _lblAddress;
+        private UILabel _lblAccountName, _lblAddress, _lblEditInfo;
 
         public override void ViewDidLoad()
         {
@@ -79,7 +79,7 @@ namespace myTNB
 
             UIView.CommitAnimations();
         }
-
+        #region TNC Section
         private void AddTnCSection()
         {
             _viewBottomContainer = new UIView(new CGRect(0, View.Frame.Height - 160, View.Frame.Width, 160))
@@ -133,12 +133,14 @@ namespace myTNB
             txtFieldInfo.Frame = new CGRect(16, 32, size.Width, size.Height);
             return txtFieldInfo;
         }
+        #endregion
 
+        #region Details Section
         private void AddDetailsSection()
         {
             _scrollContainer = new UIScrollView(new CGRect(0, 0, ViewWidth, ViewHeight - _viewBottomContainer.Frame.Height))
             {
-                BackgroundColor = UIColor.White
+                BackgroundColor = MyTNBColor.SectionGrey
             };
 
             UIView viewApplyForTitle = new UIView(new CGRect(0, 0, ViewWidth, 48))
@@ -155,7 +157,7 @@ namespace myTNB
             };
             viewApplyForTitle.AddSubview(lblApplyFor);
 
-            UIView viewMainDetails = new UIView(new CGRect(0, viewApplyForTitle.Frame.GetMaxY() + 8, ViewWidth, 131))
+            UIView viewMainDetails = new UIView(new CGRect(0, viewApplyForTitle.Frame.GetMaxY(), ViewWidth, 131))
             {
                 BackgroundColor = UIColor.White
             };
@@ -175,7 +177,7 @@ namespace myTNB
                     UIStoryboard storyBoard = UIStoryboard.FromName("GenericSelector", null);
                     GenericSelectorViewController viewController = (GenericSelectorViewController)storyBoard
                         .InstantiateViewController("GenericSelectorViewController");
-                    viewController.Title = "Select Accounts";
+                    viewController.Title = GetCommonI18NValue(SSMRConstants.I18N_SelectAccounts);
                     viewController.Items = _eligibleAccountList.Select(x => x.accountNickName).ToList();
                     viewController.OnSelect = OnSelectAccount;
                     viewController.SelectedIndex = _selectedAccountIndex;
@@ -230,45 +232,62 @@ namespace myTNB
             };
             viewContactDetailsTitle.AddSubview(lblContactDetails);
 
-            UIView viewContactDetails = new UIView(new CGRect(0, viewContactDetailsTitle.Frame.GetMaxY() + 8, ViewWidth, 131))
+            _viewContactDetails = new UIView(new CGRect(0, viewContactDetailsTitle.Frame.GetMaxY(), ViewWidth, 142))
             {
                 BackgroundColor = UIColor.White
             };
 
-            _customEmailField = new CustomTextField(viewContactDetails, new CGPoint(16, 16))
+            _customEmailField = new CustomTextField(_viewContactDetails, new CGPoint(16, 16))
             {
                 Title = GetCommonI18NValue(SSMRConstants.I18N_Email),
                 LeftIcon = SSMRConstants.IMG_Email,
                 KeyboardType = UIKeyboardType.EmailAddress,
                 Error = GetErrorI18NValue(SSMRConstants.I18N_InvalidEmail),
-                TypingAction = ToggleCTA,
+                TypingEndAction = ToggleCTA,
+                TypingBeginAction = OnEdit,
                 TextFieldType = CustomTextField.Type.EmailAddress,
-                Value = DataManager.DataManager.SharedInstance.UserEntity[0].email
+                Value = DataManager.DataManager.SharedInstance.UserEntity[0].email,
+                OnCreateValidation = true
             };
-
             UIView viewEmail = _customEmailField.GetUI();
 
-            _customMobileField = new CustomTextField(viewContactDetails, new CGPoint(16, 75))
+            _customMobileField = new CustomTextField(_viewContactDetails, new CGPoint(16, 75))
             {
                 Title = GetCommonI18NValue(SSMRConstants.I18N_MobileNumber),
                 LeftIcon = SSMRConstants.IMG_MobileNumber,
                 KeyboardType = UIKeyboardType.PhonePad,
                 Error = GetErrorI18NValue(SSMRConstants.I18N_InvalidMobileNumber),
                 Hint = GetHintI18NValue(SSMRConstants.I18N_HintMobileNumber),
-                TypingAction = ToggleCTA,
+                TypingEndAction = ToggleCTA,
+                TypingBeginAction = OnEdit,
                 TextFieldType = CustomTextField.Type.MobileNumber,
-                Value = DataManager.DataManager.SharedInstance.UserEntity[0].mobileNo
+                Value = DataManager.DataManager.SharedInstance.UserEntity[0].mobileNo,
+                OnCreateValidation = true
             };
-
             UIView viewMobile = _customMobileField.GetUI();
 
-            viewContactDetails.AddSubviews(new UIView[] { viewEmail, viewMobile });
+            _lblEditInfo = new UILabel(new CGRect(16, viewMobile.Frame.GetMaxY() + 12, _viewContactDetails.Frame.Width - 32, 32))
+            {
+                TextColor = MyTNBColor.CharcoalGrey,
+                TextAlignment = UITextAlignment.Left,
+                Font = MyTNBFont.MuseoSans12_300,
+                Text = GetI18NValue(SSMRConstants.I18N_EditInfo),
+                Lines = 0,
+                LineBreakMode = UILineBreakMode.WordWrap,
+                Hidden = true
+            };
 
-            _scrollContainer.AddSubviews(new UIView[] { viewApplyForTitle, viewMainDetails, viewContactDetailsTitle, viewContactDetails });
-            _scrollContainer.ContentSize = new CGSize(ViewWidth, viewContactDetails.Frame.GetMaxY());
+            CGSize newLblEditInfoSize = GetLabelSize(_lblEditInfo, _lblEditInfo.Frame.Width, 300);
+            _lblEditInfo.Frame = new CGRect(_lblEditInfo.Frame.X, _lblEditInfo.Frame.Y, _lblEditInfo.Frame.Width, newLblEditInfoSize.Height);
+
+            _viewContactDetails.AddSubviews(new UIView[] { viewEmail, viewMobile, _lblEditInfo });
+
+            _scrollContainer.AddSubviews(new UIView[] { viewApplyForTitle, viewMainDetails, viewContactDetailsTitle, _viewContactDetails });
+            _scrollContainer.ContentSize = new CGSize(ViewWidth, _viewContactDetails.Frame.GetMaxY());
             View.AddSubview(_scrollContainer);
             _scrollViewFrame = _scrollContainer.Frame;
         }
+        #endregion
 
         private void ToggleCTA()
         {
@@ -277,6 +296,18 @@ namespace myTNB
                 bool isValid = _customEmailField.IsFieldValid && _customMobileField.IsFieldValid;
                 _btnSubmit.Enabled = isValid;
                 _btnSubmit.BackgroundColor = isValid ? MyTNBColor.FreshGreen : MyTNBColor.SilverChalice;
+            }
+        }
+
+        private void OnEdit()
+        {
+            if (_lblEditInfo.Hidden)
+            {
+                _lblEditInfo.Hidden = false;
+                CGRect detailsFrame = _viewContactDetails.Frame;
+                detailsFrame.Height = _lblEditInfo.Frame.GetMaxY() + 16;
+                _viewContactDetails.Frame = detailsFrame;
+                _scrollContainer.ContentSize = new CGSize(ViewWidth, _viewContactDetails.Frame.GetMaxY());
             }
         }
 

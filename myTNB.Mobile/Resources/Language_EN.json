@@ -23,7 +23,8 @@
         "account": "Account",
         "emailAddress": "Email Address",
         "mobileNumber": "Mobile Number",
-        "submit": "Submit"
+        "submit": "Submit",
+        "selectAccounts": "Select Accounts"
     },
     "Hint": {
         "mobileNumber": "Please include the country code of your phone number.",
@@ -63,6 +64,7 @@
         "navTitle": "Apply Self Meter Reading",
         "applyingFor": "I am applying for:",
         "contactDetails": "My contact details:",
-        "tnc": "By applying, you are agreeing to the Self Meter Reading Terms and Conditions, TNB’s Terms of Use, Privacy policy, Anti-Spam Policy and Personal Data Protection Policy."
+        "tnc": "By applying, you are agreeing to the Self Meter Reading Terms and Conditions, TNB’s Terms of Use, Privacy policy, Anti-Spam Policy and Personal Data Protection Policy.",
+        "editContactInfo": "By editing you will update your myTNB profile but not your owner’s electricity account contact details."
     }
 }

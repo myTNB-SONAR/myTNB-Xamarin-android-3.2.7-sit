@@ -20,11 +20,13 @@
         public static string I18N_Account = "account";
         public static string I18N_MobileNumber = "mobileNumber";
         public static string I18N_Email = "emailAddress";
+        public static string I18N_SelectAccounts = "selectAccounts";
 
         //Application
         public static string I18N_ApplyingFor = "applyingFor";
         public static string I18N_ContactDetails = "contactDetails";
         public static string I18N_TnC = "tnc";
+        public static string I18N_EditInfo = "editContactInfo";
 
         //Image
         public static string IMG_BGOnboarding1 = "SSMR_Background_1";
@@ -44,6 +46,6 @@
         public static string I18N_InvalidMobileNumber = "invalid_mobileNumber";
 
         //Hint
-        public static string I18N_HintMobileNumber= "mobileNumberSample";
+        public static string I18N_HintMobileNumber = "mobileNumberSample";
     }
 }
