@@ -1296,6 +1296,7 @@
     <Compile Include="Src\Database\Model\NewFAQParentEntity.cs" />
     <Compile Include="Src\SitecoreCMS\Service\HelpService.cs" />
     <Compile Include="Src\SitecoreCMS\Model\HelpModel.cs" />
+    <Compile Include="Src\SSMRTerminate\MVP\SSMRTerminateActivity.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -1653,12 +1654,12 @@
     <Folder Include="Src\myTNBMenu\Fragments\HomeMenu\Adapter\" />
     <Folder Include="Src\myTNBMenu\Fragments\HomeMenu\Api\" />
     <Folder Include="Src\myTNBMenu\Fragments\HomeMenu\Listener\" />
-    <Folder Include="Src\myTNBMenu\Fragments\SSMRMenu\" />
-    <Folder Include="Src\myTNBMenu\Fragments\SSMRMenu\MVP\" />
     <Folder Include="Src\myTNBMenu\Fragments\HomeMenu\Service\" />
     <Folder Include="Src\myTNBMenu\Fragments\HomeMenu\Helper\" />
     <Folder Include="Src\Base\Helper\" />
     <Folder Include="Src\myTNBMenu\Fragments\HomeMenu\Requests\" />
+    <Folder Include="Src\SSMRTerminate\" />
+    <Folder Include="Src\SSMRTerminate\MVP\" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\GradientStatusBar.xml" />
