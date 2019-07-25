@@ -44,9 +44,8 @@ namespace myTNB
             IsFullGradient = true;
             IsReversedGradient = true;
             PageName = "Status";
-            base.ViewDidLoad();
             NavigationController.NavigationBarHidden = true;
-            SetFrames();
+            base.ViewDidLoad();
             _actions = new StatusPageActions(this);
             SetStatusCard();
             AddCTA();

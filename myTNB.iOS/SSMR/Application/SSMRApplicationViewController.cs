@@ -1,6 +1,5 @@
 using CoreGraphics;
 using Foundation;
-using myTNB.Home.Feedback.FeedbackEntry;
 using myTNB.Model;
 using myTNB.SSMR;
 using System;
@@ -33,7 +32,6 @@ namespace myTNB
             NSNotificationCenter.DefaultCenter.AddObserver(UIKeyboard.WillHideNotification, OnKeyboardNotification);
             NSNotificationCenter.DefaultCenter.AddObserver(UIKeyboard.WillShowNotification, OnKeyboardNotification);
             ConfigureNavigationBar();
-            SetFrames();
             AddTnCSection();
             PrepareEligibleAccounts();
             AddDetailsSection();
