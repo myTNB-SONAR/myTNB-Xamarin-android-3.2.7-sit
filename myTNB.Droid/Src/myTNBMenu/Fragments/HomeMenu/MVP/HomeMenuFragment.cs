@@ -222,12 +222,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             GridLayoutManager layoutManager = new GridLayoutManager(this.Activity, 3);
             layoutManager.Orientation = RecyclerView.Vertical;
             myServiceListRecycleView.SetLayoutManager(layoutManager);
-            myServiceListRecycleView.AddItemDecoration(new MyServiceItemDecoration(3, 12, false));
+            myServiceListRecycleView.AddItemDecoration(new MyServiceItemDecoration(3, 8, false));
 
             GridLayoutManager layoutShimmerManager = new GridLayoutManager(this.Activity, 3);
             layoutShimmerManager.Orientation = RecyclerView.Vertical;
             myServiceShimmerList.SetLayoutManager(layoutShimmerManager);
-            myServiceShimmerList.AddItemDecoration(new MyServiceShimmerItemDecoration(3, 12, false));
+            myServiceShimmerList.AddItemDecoration(new MyServiceShimmerItemDecoration(3, 8, false));
         }
 
         private void SetupNewFAQView()
