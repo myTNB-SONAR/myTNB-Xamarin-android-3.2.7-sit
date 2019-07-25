@@ -31,6 +31,7 @@ using static myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter.MyServiceAda
 using static myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter.MyServiceShimmerAdapter;
 using myTNB_Android.Src.Utils.Custom.ProgressDialog;
 using Newtonsoft.Json;
+using Android.App;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 {
@@ -363,6 +364,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 accountHeaderTitle.Visibility = ViewStates.Gone;
                 searchEditText.Visibility = ViewStates.Visible;
                 searchActionIcon.Visibility = ViewStates.Gone;
+                searchEditText.RequestFocus();
                 searchEditText.ClearFocus();
             }
             else
@@ -414,6 +416,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             return base.OnCreateView(inflater, container, savedInstanceState);
         }
 
+        
         public override int ResourceId()
         {
             return Resource.Layout.HomeMenuFragmentView;
@@ -728,6 +731,15 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             catch (System.Exception e)
             {
                 Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void OnSearchOutFocus()
+        {
+            if (searchEditText != null)
+            {
+                searchEditText.ClearFocus();
+                ShowSearchAction(false);
             }
         }
     }
