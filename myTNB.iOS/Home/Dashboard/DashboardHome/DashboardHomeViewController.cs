@@ -71,6 +71,10 @@ namespace myTNB
         public override void ViewWillAppear(bool animated)
         {
             base.ViewWillAppear(animated);
+            if (_accountsCardContentViewController != null)
+            {
+                _accountsCardContentViewController.UpdateGreeting(GetGreeting());
+            }
             if (DataManager.DataManager.SharedInstance.SummaryNeedsRefresh)
             {
                 SetAccountsCardViewController();
