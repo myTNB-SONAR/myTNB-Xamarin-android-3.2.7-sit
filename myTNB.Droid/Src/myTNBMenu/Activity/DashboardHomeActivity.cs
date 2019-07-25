@@ -730,6 +730,11 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             bottomNavigationView.Menu.FindItem(Resource.Id.menu_dashboard).SetChecked(true);
         }
 
+        public void ShowToBeAddedToast()
+        {
+            Toast.MakeText(this, "Stay Tune!", ToastLength.Long).Show();
+        }
+
         public void ShowHideActionBar(bool flag)
         {
             if(flag)
