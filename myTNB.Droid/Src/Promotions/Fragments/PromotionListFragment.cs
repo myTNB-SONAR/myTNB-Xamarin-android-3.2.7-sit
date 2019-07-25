@@ -2,6 +2,7 @@
 using Android.Content;
 using Android.OS;
 using Android.Runtime;
+using Android.Support.V7.App;
 using Android.Support.V7.Widget;
 using Android.Views;
 using Android.Widget;
@@ -267,6 +268,10 @@ namespace myTNB_Android.Src.Promotions.Fragments
                     adapter.ItemClick += OnItemClick;
                     adapter.NotifyDataSetChanged();
                 }
+                var act = this.Activity as AppCompatActivity;
+
+                var actionBar = act.SupportActionBar;
+                actionBar.Show();
             }
             catch (Exception ex)
             {

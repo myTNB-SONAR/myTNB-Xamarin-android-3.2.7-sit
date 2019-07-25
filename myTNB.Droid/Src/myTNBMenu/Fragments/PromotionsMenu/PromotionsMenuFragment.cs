@@ -49,6 +49,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.PromotionsMenu
 
             weblink = JsonConvert.DeserializeObject<Weblink>(Arguments.GetString(Constants.PROMOTIONS_LINK));
 
+            var act = this.Activity as AppCompatActivity;
+
+            var actionBar = act.SupportActionBar;
+            actionBar.Show();
 
         }
 
