@@ -42,7 +42,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
 
             DisplayMetrics displaymetrics = new DisplayMetrics();
             this.mActivity.WindowManager.DefaultDisplay.GetMetrics(displaymetrics);
-            int devicewidth = (displaymetrics.WidthPixels / 3) - (int)DPUtils.ConvertDPToPx(20f);
+            int devicewidth = (displaymetrics.WidthPixels / 3) - (int)DPUtils.ConvertDPToPx(12f);
             currentCard.Height = devicewidth - (int)DPUtils.ConvertDPToPx(4f);
             currentCard.Width = devicewidth;
             //currentCard.Height = vh.myServiceCardView.LayoutParameters.Width - (int)DPUtils.ConvertDPToPx(4f);
@@ -110,10 +110,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
                     
                     if (position >= spanCount)
                     {
-                        outRect.Top = (int)spacing / 2; // item top
+                        outRect.Top = (int)spacing / 4; // item top
                     }
 
-                    outRect.Bottom = (int)spacing / 2; // item bottom
+                    outRect.Bottom = (int)spacing / 4; // item bottom
                 }
             }
         }
