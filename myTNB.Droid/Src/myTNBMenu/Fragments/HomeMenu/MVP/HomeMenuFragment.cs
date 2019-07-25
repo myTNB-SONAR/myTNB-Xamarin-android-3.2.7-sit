@@ -31,6 +31,7 @@ using static myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter.MyServiceAda
 using static myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter.MyServiceShimmerAdapter;
 using myTNB_Android.Src.Utils.Custom.ProgressDialog;
 using Newtonsoft.Json;
+using Android.App;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 {
@@ -195,6 +196,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 {
                     this.presenter.LoadLocalAccounts();
                 }
+                addActionImage.SetOnClickListener(null);
+                notificationHeaderIcon.SetOnClickListener(null);
                 addActionImage.Click += delegate
                 {
                     Intent linkAccount = new Intent(this.Activity, typeof(LinkAccountActivity));
@@ -363,6 +366,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 accountHeaderTitle.Visibility = ViewStates.Gone;
                 searchEditText.Visibility = ViewStates.Visible;
                 searchActionIcon.Visibility = ViewStates.Gone;
+                searchEditText.RequestFocus();
                 searchEditText.ClearFocus();
             }
             else
@@ -414,6 +418,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             return base.OnCreateView(inflater, container, savedInstanceState);
         }
 
+        
         public override int ResourceId()
         {
             return Resource.Layout.HomeMenuFragmentView;
@@ -622,7 +627,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             accountsAdapter.UpdateAccountCards(accountList);
         }
 
-        public void SetAccountListCards(List<SummaryDashBoardDetails> accountList)
+        private void SetHeaderActionVisiblity(List<SummaryDashBoardDetails> accountList)
         {
             if (accountList.Count <= 5)
             {
@@ -633,7 +638,20 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             {
                 searchActionIcon.Visibility = ViewStates.Visible;
             }
+        }
+
+        public void SetAccountListCards(List<SummaryDashBoardDetails> accountList)
+        {
+            SetHeaderActionVisiblity(accountList);
             accountsAdapter.SetAccountCards(accountList);
+            accountsRecyclerView.SetAdapter(accountsAdapter);
+            ChangeMyServiceTextColor();
+        }
+
+        public void SetAccountListCardsFromLocal(List<SummaryDashBoardDetails> accountList)
+        {
+            SetHeaderActionVisiblity(accountList);
+            accountsAdapter.SetAccountCardsFromLocal(accountList);
             accountsRecyclerView.SetAdapter(accountsAdapter);
             ChangeMyServiceTextColor();
         }
@@ -728,6 +746,18 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             catch (System.Exception e)
             {
                 Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void OnSearchOutFocus()
+        {
+            if (searchEditText != null)
+            {
+                if(searchEditText.Visibility == ViewStates.Visible)
+                {
+                    searchEditText.ClearFocus();
+                    ShowSearchAction(false);
+                }
             }
         }
     }

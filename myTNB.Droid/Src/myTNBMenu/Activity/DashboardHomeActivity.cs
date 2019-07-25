@@ -5,6 +5,7 @@ using System.Runtime;
 using Android.App;
 using Android.Content;
 using Android.Content.PM;
+using Android.Graphics;
 using Android.Graphics.Drawables;
 using Android.OS;
 using Android.Preferences;
@@ -745,6 +746,25 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             {
                 this.SupportActionBar.Hide();
             }
+        }
+
+        public override bool DispatchTouchEvent(MotionEvent ev)
+        {
+            if (ev.Action == MotionEventActions.Down)
+            {
+                View view = CurrentFocus;
+                if (view != null && view.GetType() != typeof(EditText))
+                {
+                    Rect rect = new Rect();
+                    view.GetGlobalVisibleRect(rect);
+                    if (!rect.Contains((int)ev.RawX, (int)ev.RawY))
+                    {
+                        HomeMenuFragment fragment = (HomeMenuFragment) FragmentManager.FindFragmentById(Resource.Id.content_layout);
+                        fragment.OnSearchOutFocus();
+                    }
+                }
+            }
+            return base.DispatchTouchEvent(ev);
         }
 
     }
