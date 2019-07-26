@@ -12,7 +12,7 @@ namespace myTNB_Android.Src.Utils
             shimmerBuilder.SetBaseAlpha(0.1f);
             shimmerBuilder.SetHighlightAlpha(0.9f);
             shimmerBuilder.SetDropoff(1);
-            shimmerBuilder.SetDuration(1500);
+            shimmerBuilder.SetDuration(500);
             return shimmerBuilder;
 		}
 	}
