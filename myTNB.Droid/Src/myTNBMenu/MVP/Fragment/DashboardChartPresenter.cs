@@ -405,6 +405,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                     }
                     else
                     {
+                        this.mView.InitiateSSMRStatus();
                         this.mView.ShowRetryOptionsApiException(null);
                     }
 
@@ -416,6 +417,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                 if (this.mView.IsActive())
                 {
                     this.mView.HideAmountProgress();
+                    this.mView.InitiateSSMRStatus();
                     this.mView.ShowRetryOptionsCancelledException(e);
 
                 }
@@ -427,6 +429,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                 if (this.mView.IsActive())
                 {
                     this.mView.HideAmountProgress();
+                    this.mView.InitiateSSMRStatus();
                     this.mView.ShowRetryOptionsApiException(apiException);
                 }
                 Utility.LoggingNonFatalError(apiException);
@@ -437,6 +440,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                 if (this.mView.IsActive())
                 {
                     this.mView.HideAmountProgress();
+                    this.mView.InitiateSSMRStatus();
                     this.mView.ShowRetryOptionsUnknownException(e);
                 }
                 Utility.LoggingNonFatalError(e);

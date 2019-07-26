@@ -41,12 +41,6 @@ using System;
 using System.Collections.Generic;
 using static MikePhil.Charting.Components.XAxis;
 using static MikePhil.Charting.Components.YAxis;
-using myTNB_Android.Src.AppLaunch.Models;
-using myTNB_Android.Src.MultipleAccountPayment.Activity;
-using Android.Support.V7.App;
-using Android.Text;
-using myTNB_Android.Src.FAQ.Activity;
-using Java.Lang;
 using static myTNB_Android.Src.myTNBMenu.Models.GetInstallationDetailsResponse;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments
@@ -153,6 +147,18 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
         [BindView(Resource.Id.refresh_content)]
         TextView txtNewRefreshMessage;
+
+        [BindView(Resource.Id.ssmrHistoryContainer)]
+        LinearLayout SsmrHistoryContainer;
+
+        [BindView(Resource.Id.ssmrAccountStatusText)]
+        TextView SsmrAccountStatusText;
+
+        [BindView(Resource.Id.btnTxtSsmrViewHistory)]
+        TextView btnTxtSsmrViewHistory;
+
+        [BindView(Resource.Id.btnReadingHistory)]
+        Button btnReadingHistory;
 
         private DashboardChartContract.IUserActionsListener userActionsListener;
         private DashboardChartPresenter mPresenter;
@@ -332,8 +338,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 }
 
                 TextViewUtils.SetMuseoSans300Typeface(txtUsageHistory, txtAddress, txtTotalPayable, txtContentNoData, txtDueDate);
-                TextViewUtils.SetMuseoSans300Typeface(btnToggleDay, btnToggleMonth, txtNewRefreshMessage);
-                TextViewUtils.SetMuseoSans500Typeface(txtRange, txtTotalPayableTitle, txtTotalPayableCurrency, btnViewBill, btnPay, btnLearnMore, txtTitleNoData, txtWhyThisAmt, btnNewRefresh);
+                TextViewUtils.SetMuseoSans300Typeface(btnToggleDay, btnToggleMonth, txtNewRefreshMessage, SsmrAccountStatusText);
+                TextViewUtils.SetMuseoSans500Typeface(txtRange, txtTotalPayableTitle, txtTotalPayableCurrency, btnViewBill, btnPay, btnLearnMore, txtTitleNoData, txtWhyThisAmt, btnNewRefresh, btnTxtSsmrViewHistory);
 
                 if (amountDueFailed)
                 {
@@ -550,6 +556,18 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             {
                 Utility.LoggingNonFatalError(e);
             }
+        }
+
+        [OnClick(Resource.Id.btnTxtSsmrViewHistory)]
+        void OnSsmrViewHistory(object sender, EventArgs eventArgs)
+        {
+            // TODO: OnClickNavigate
+        }
+
+        [OnClick(Resource.Id.btnReadingHistory)]
+        void OnBtnSsmrViewHistory(object sender, EventArgs eventArgs)
+        {
+            // TODO: OnClickNavigate
         }
 
         internal void SetUp()
@@ -1701,5 +1719,74 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             }
         }
 
+        public void ShowSSMRDashboardView(string contentTxt, bool isDisableBtn, bool isShowTxtViewHistory, bool isShowSubmitBtn)
+        {
+            try
+            {
+                SsmrHistoryContainer.Visibility = ViewStates.Visible;
+                SetAccountStatusVisibility(ViewStates.Gone);
+
+                if (!string.IsNullOrEmpty(contentTxt))
+                {
+                    if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.N)
+                    {
+                        SsmrAccountStatusText.TextFormatted = Html.FromHtml(contentTxt, FromHtmlOptions.ModeLegacy);
+                    }
+                    else
+                    {
+                        SsmrAccountStatusText.TextFormatted = Html.FromHtml(contentTxt);
+                    }
+                }
+
+                if (isDisableBtn)
+                {
+                    btnReadingHistory.Enabled = false;
+                    btnReadingHistory.Background = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.silver_chalice_button_outline);
+                    btnReadingHistory.SetTextColor(ContextCompat.GetColorStateList(this.Activity, Resource.Color.silverChalice));
+                    btnReadingHistory.Text = this.Activity.GetString(Resource.String.ssmr_submit_meter);
+                    btnTxtSsmrViewHistory.Visibility = ViewStates.Gone;
+                }
+                else
+                {
+                    btnReadingHistory.Enabled = true;
+                    btnReadingHistory.SetTextColor(ContextCompat.GetColorStateList(this.Activity, Resource.Color.freshGreen));
+                    btnReadingHistory.Background = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.light_green_outline_button_background);
+                    if (isShowTxtViewHistory)
+                    {
+                        btnTxtSsmrViewHistory.Visibility = ViewStates.Visible;
+                    }
+                    else
+                    {
+                        btnTxtSsmrViewHistory.Visibility = ViewStates.Gone;
+                    }
+
+                    if (isShowSubmitBtn)
+                    {
+                        btnReadingHistory.Text = this.Activity.GetString(Resource.String.ssmr_submit_meter);
+                    }
+                    else
+                    {
+                        btnReadingHistory.Text = this.Activity.GetString(Resource.String.ssmr_view_meter);
+                    }
+                }
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void HideSSMRDashboardView()
+        {
+            SsmrHistoryContainer.Visibility = ViewStates.Gone;
+        }
+
+        public void InitiateSSMRStatus()
+        {
+            if (selectedAccount.IsOwner && !selectedAccount.AccountCategoryId.Equals("2") && string.IsNullOrEmpty(errorMSG))
+            {
+                // TODO: Api Calling
+            }
+        }
     }
 }
