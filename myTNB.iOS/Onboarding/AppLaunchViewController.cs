@@ -369,6 +369,53 @@ namespace myTNB
             }
         }
 
+        private Task LoadSSMRWalkthrough()
+        {
+            return Task.Factory.StartNew(() =>
+            {
+                GetItemsService iService = new GetItemsService(TNBGlobal.OS
+                    , DataManager.DataManager.SharedInstance.ImageSize, TNBGlobal.SITECORE_URL, TNBGlobal.DEFAULT_LANGUAGE);
+                ApplySSMRTimeStampResponseModel timeStamp = iService.GetApplySSMRWalkthroughTimestampItem();
+
+                bool needsUpdate = true;
+                if (timeStamp != null && timeStamp.Data != null && timeStamp.Data.Count > 0 && timeStamp.Data[0] != null
+                    && !string.IsNullOrEmpty(timeStamp.Data[0].Timestamp))
+                {
+                    NSUserDefaults sharedPreference = NSUserDefaults.StandardUserDefaults;
+                    string currentTS = sharedPreference.StringForKey("SiteCoreApplySSMRWalkthroughTimeStamp");
+                    if (string.IsNullOrEmpty(currentTS) || string.IsNullOrWhiteSpace(currentTS))
+                    {
+                        sharedPreference.SetString(timeStamp.Data[0].Timestamp, "SiteCoreApplySSMRWalkthroughTimeStamp");
+                        sharedPreference.Synchronize();
+                    }
+                    else
+                    {
+                        if (currentTS.Equals(timeStamp.Data[0].Timestamp))
+                        {
+                            needsUpdate = false;
+                        }
+                        else
+                        {
+                            sharedPreference.SetString(timeStamp.Data[0].Timestamp, "SiteCoreApplySSMRWalkthroughTimeStamp");
+                            sharedPreference.Synchronize();
+                        }
+                    }
+                }
+
+                if (needsUpdate)
+                {
+                    ApplySSMRResponseModel applySSMrWalkthroughItems = iService.GetApplySSMRWalkthroughItems();
+                    if (applySSMrWalkthroughItems != null && applySSMrWalkthroughItems.Data != null && applySSMrWalkthroughItems.Data.Count > 0)
+                    {
+                        ApplySSMRWalkthroughEntity wsManager = new ApplySSMRWalkthroughEntity();
+                        wsManager.DeleteTable();
+                        wsManager.CreateTable();
+                        wsManager.InsertListOfItems(applySSMrWalkthroughItems.Data);
+                    }
+                }
+            });
+        }
+
         private void OpenUpdateLink()
         {
             int index = DataManager.DataManager.SharedInstance.WebLinks?.FindIndex(x => x.Code.ToLower().Equals("ios")) ?? -1;
@@ -426,6 +473,7 @@ namespace myTNB
             GetUserEntity();
             if (isWalkthroughDone)
             {
+                await LoadSSMRWalkthrough();
                 var isLogin = sharedPreference.BoolForKey(TNBGlobal.PreferenceKeys.LoginState);
                 if (isLogin && DataManager.DataManager.SharedInstance.UserEntity != null && DataManager.DataManager.SharedInstance.UserEntity?.Count > 0)
                 {
