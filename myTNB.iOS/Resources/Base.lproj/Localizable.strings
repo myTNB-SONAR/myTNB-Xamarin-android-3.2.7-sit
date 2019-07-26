@@ -143,7 +143,7 @@
 "Dashboard_AccountStatusToolTip"="What does this mean?";
 "Dashboard_AccountStatusMessage"="<strong>What does this mean?</strong><br><br>Your electricity has been disconnected and is unavailable. This was not caused by a power outage.<br><br>If you’ve made a payment, please give us some time for this to be reflected.";
 "Dashboard_AllAccounts"="All Accounts";
-"Dashboard_AllCleared"="All Cleared";
+"Dashboard_AllCleared"="All cleared";
 "Dashboard_BringMeThere"="Bring me there.";
 "Dashboard_DateRangeAvailableSoon"="Available Soon";
 "Dashboard_DateRangeNotAvailable"="";
