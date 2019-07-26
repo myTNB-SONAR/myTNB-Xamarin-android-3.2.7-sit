@@ -1310,6 +1310,11 @@
     <Compile Include="Src\Database\Model\NewFAQParentEntity.cs" />
     <Compile Include="Src\SitecoreCMS\Service\HelpService.cs" />
     <Compile Include="Src\SitecoreCMS\Model\HelpModel.cs" />
+    <AndroidResource Include="Resources\drawable-hdpi\gradient_background.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\gradient_background.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\gradient_background.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\gradient_background.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\gradient_background.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
