@@ -359,7 +359,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 searchEditText.SetMaxWidth(Integer.MaxValue);
                 searchActionIcon.Visibility = ViewStates.Gone;
                 searchEditText.RequestFocus();
-                searchEditText.ClearFocus();
             }
             else
             {
