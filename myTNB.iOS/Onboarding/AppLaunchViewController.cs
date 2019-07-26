@@ -69,6 +69,7 @@ namespace myTNB
             DataManager.DataManager.SharedInstance.CommonI18NDictionary = LanguageManager.Instance.GetCommonValuePairs();
             DataManager.DataManager.SharedInstance.HintI18NDictionary = LanguageManager.Instance.GetHintValuePairs();
             DataManager.DataManager.SharedInstance.ErrorI18NDictionary = LanguageManager.Instance.GetErrorValuePairs();
+            DataManager.DataManager.SharedInstance.ImageSize = DeviceHelper.GetImageSize();
         }
 
         void HandleAppWillEnterForeground(NSNotification notification)

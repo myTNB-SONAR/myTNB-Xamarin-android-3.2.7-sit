@@ -1,4 +1,7 @@
-﻿using CoreGraphics;
+﻿using System;
+using System.Diagnostics;
+using CoreGraphics;
+using Foundation;
 using UIKit;
 
 namespace myTNB.SSMR
@@ -24,24 +27,33 @@ namespace myTNB.SSMR
 
         public override void SetSubViews()
         {
-            if (SSMRDataObject.IsSitecoreData)
+            UIImage displayImage;             if (SSMRDataObject.IsSitecoreData)             {                 if (string.IsNullOrEmpty(SSMRDataObject.Image) || string.IsNullOrWhiteSpace(SSMRDataObject.Image))                 {                     displayImage = UIImage.FromBundle(string.Empty);                 }                 else                 {
+                    try
+                    {
+                        SSMRDataObject.Image = "https://sitecore.tnb.com.my//-/media/Experience%20Explorer/Presets/Emilie%20128x128.ashx";
+
+                        displayImage = UIImage.LoadFromData(NSData.FromUrl(new NSUrl(SSMRDataObject.Image)));
+                    }
+                    catch (Exception e)
+                    {
+                        Debug.WriteLine("Image load Error: " + e.Message);
+                        displayImage = UIImage.FromBundle(string.Empty);
+                    }                 }             }             else             {
+                if (string.IsNullOrEmpty(SSMRDataObject.Image) || string.IsNullOrWhiteSpace(SSMRDataObject.Image))
+                {
+                    displayImage = UIImage.FromBundle(string.Empty);
+                }
+                else
+                {
+                    displayImage = UIImage.FromBundle(SSMRDataObject.Image);
+                }             }
+
+
+            UIImageView imgBackground = new UIImageView(new CGRect(0, 0, that.View.Frame.Width, that.View.Frame.Height * 0.60F))
             {
-                //Todo: sitecore parse
-            }
-            else
-            {
-                //Todo: local parse
-            }
-            UIImageView imgBackground = new UIImageView(new CGRect(0, 0, that.View.Frame.Width, that.View.Frame.Height * 0.50F))
-            {
-                Image = UIImage.FromBundle(SSMRDataObject.BGImage ?? string.Empty)
+                Image = displayImage
             };
-            UIImageView imgItem = new UIImageView(new CGRect(49, 85 + DeviceHelper.GetStatusBarHeight()
-                , that.View.Frame.Width - 98, (that.View.Frame.Width - 98) * 1.04329F))
-            {
-                Image = UIImage.FromBundle(SSMRDataObject.MainImage ?? string.Empty)
-            };
-            UILabel lblTitle = new UILabel(new CGRect(16, imgItem.Frame.GetMaxY() + 23, that.View.Frame.Width - 31, 19))
+            UILabel lblTitle = new UILabel(new CGRect(16, imgBackground.Frame.GetMaxY() + 23, that.View.Frame.Width - 31, 19))
             {
                 TextColor = MyTNBColor.PowerBlue,
                 TextAlignment = UITextAlignment.Center,
@@ -58,7 +70,7 @@ namespace myTNB.SSMR
                 Text = SSMRDataObject.Description ?? string.Empty
             };
 
-            that.View.AddSubviews(new UIView[] { imgBackground, imgItem, lblTitle, lblDescription });
+            that.View.AddSubviews(new UIView[] { imgBackground, lblTitle, lblDescription });
         }
     }
 }

@@ -1348,6 +1348,7 @@
     <Folder Include="SSMR\Application\" />
     <Folder Include="Customs\Generic Status Page\" />
     <Folder Include="SSMR\Meter Reading\" />
+    <Folder Include="Sitecore CMS\Model\Apply SSMR Walkthrough\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -2087,6 +2088,9 @@
     <Compile Include="SSMR\Meter Reading\SSMRCaptureMeterViewController.designer.cs">
       <DependentUpon>SSMRCaptureMeterViewController.cs</DependentUpon>
     </Compile>
+    <Compile Include="Sitecore CMS\Model\Apply SSMR Walkthrough\ApplySSMRWalkthroughModel.cs" />
+    <Compile Include="Sitecore CMS\Service\ApplySSMRWalkthroughService.cs" />
+    <Compile Include="SQLite\SQLite Data Manager\ApplySSMRWalkthroughEntity.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />
