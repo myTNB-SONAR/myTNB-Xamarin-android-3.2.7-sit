@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using CoreGraphics;
@@ -22,13 +23,15 @@ namespace myTNB.Dashboard.DashboardComponents
         internal void CreateComponent(bool isNormalMeter)
         {
             var isAccountActive = DataManager.DataManager.SharedInstance.AccountIsActive;
+            var isAccountSSMR = DataManager.DataManager.SharedInstance.AccountIsSSMR;
+            nfloat adj = isAccountSSMR ? 0.8f : 1.0f;
             if (!DataManager.DataManager.SharedInstance.IsSmartMeterAvailable && !isNormalMeter)
             {
                 isNormalMeter = true;
             }
             int yLocation = GetChartYLocation(isNormalMeter);
 
-            float viewPercentage = isAccountActive ? 0.33f : 0.30f;
+            nfloat viewPercentage = isAccountActive ? 0.33f : 0.30f;
 
             if (DeviceHelper.IsIphoneXUpResolution())
             {
@@ -45,9 +48,13 @@ namespace myTNB.Dashboard.DashboardComponents
             {
                 viewPercentage = isAccountActive ? 0.40f : 0.35f;
             }
-
-            float viewHeight = (float)_parentView.Frame.Height * viewPercentage;
+            if (isAccountActive)
+            {
+                viewPercentage = viewPercentage * adj;
+            }
+            nfloat viewHeight = _parentView.Frame.Height * viewPercentage;
             _viewChart = new UIView(new CGRect(42, yLocation, _parentView.Frame.Width - 84, viewHeight));
+            _viewChart.BackgroundColor = UIColor.Clear;
         }
 
         internal void RemoveChartViewSubViews()

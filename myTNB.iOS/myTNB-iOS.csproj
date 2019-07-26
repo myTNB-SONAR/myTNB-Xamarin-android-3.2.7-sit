@@ -1032,6 +1032,10 @@
     <ImageAsset Include="Assets.xcassets\Red-Cross.imageset\icDisplayUnsuccessful.png" />
     <ImageAsset Include="Assets.xcassets\Red-Cross.imageset\icDisplayUnsuccessful%402x.png" />
     <ImageAsset Include="Assets.xcassets\Red-Cross.imageset\icDisplayUnsuccessful%403x.png" />
+    <ImageAsset Include="Assets.xcassets\SMR-Medium-Icon.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\SMR-Medium-Icon.imageset\SMR-Medium-Icon.png" />
+    <ImageAsset Include="Assets.xcassets\SMR-Medium-Icon.imageset\SMR-Medium-Icon%402x.png" />
+    <ImageAsset Include="Assets.xcassets\SMR-Medium-Icon.imageset\SMR-Icon%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -1301,7 +1305,7 @@
     <Folder Include="Assets.xcassets\Services-CheckStatus.imageset\" />
     <Folder Include="Assets.xcassets\Services-SetAppointments.imageset\" />
     <Folder Include="Assets.xcassets\Services-ApplyAutoPay.imageset\" />
-    <Folder Include="Customs\DashboardHome\" />
+    <Folder Include="Customs\Dashboard Home\" />
     <Folder Include="Home\Dashboard\DashboardHome\Accounts\" />
     <Folder Include="Assets.xcassets\Accounts-Smart-Meter-Icon.imageset\" />
     <Folder Include="Customs\Generic Line\" />
@@ -1348,6 +1352,9 @@
     <Folder Include="SSMR\Application\" />
     <Folder Include="Customs\Generic Status Page\" />
     <Folder Include="SSMR\Meter Reading\" />
+    <Folder Include="Assets.xcassets\SMR-Medium-Icon.imageset\" />
+    <Folder Include="Customs\SSMR\" />
+    <Folder Include="SSMR\History\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -2029,8 +2036,8 @@
     </Compile>
     <Compile Include="Home\Dashboard\DashboardHome\Services\ServicesTableViewCell.cs" />
     <Compile Include="Home\Dashboard\DashboardHome\DashboardHomeConstants.cs" />
-    <Compile Include="Customs\DashboardHome\DashboardHomeHeader.cs" />
-    <Compile Include="Customs\DashboardHome\DashboardHomeAccountCard.cs" />
+    <Compile Include="Customs\Dashboard Home\DashboardHomeHeader.cs" />
+    <Compile Include="Customs\Dashboard Home\DashboardHomeAccountCard.cs" />
     <Compile Include="Home\Dashboard\DashboardHome\Accounts\AccountsTableViewCell.cs" />
     <Compile Include="Rewards\RewardsViewController.cs" />
     <Compile Include="Rewards\RewardsViewController.designer.cs">
@@ -2087,6 +2094,12 @@
     <Compile Include="SSMR\Meter Reading\SSMRCaptureMeterViewController.designer.cs">
       <DependentUpon>SSMRCaptureMeterViewController.cs</DependentUpon>
     </Compile>
+    <Compile Include="Customs\SSMR\SMRComponent.cs" />
+    <Compile Include="SSMR\History\SSMRReadingHistoryViewController.cs" />
+    <Compile Include="SSMR\History\SSMRReadingHistoryViewController.designer.cs">
+      <DependentUpon>SSMRReadingHistoryViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SSMR\History\SSMRReadingHistoryDataSource.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />

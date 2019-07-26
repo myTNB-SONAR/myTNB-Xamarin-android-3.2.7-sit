@@ -144,6 +144,7 @@ namespace myTNB.Dashboard
                     _dashboardMainComponent.ConstructInitialView(isNormalChart, isFromForeground);
                 }
                 isFromForeground = false;
+                SetAddressDetails();
                 SetEventsAndText();
             }
             else if (isFromViewBillAdvice)
@@ -169,6 +170,7 @@ namespace myTNB.Dashboard
                                 await LoadInstallationDetails();
                                 await LoadAmountDue();
                                 await LoadDashboard();
+                                SetAddressDetails();
                                 SetEventsAndText();
                             }
                         }
@@ -176,6 +178,7 @@ namespace myTNB.Dashboard
                         {
                             amountDueIsAvailable = false;
                             _dashboardMainComponent.ConstructGeneralRefreshScreen(RefreshScreen);
+                            SetAddressDetails();
                             SetEventsAndText();
                             SetBillAndPaymentDetails();
                         }
@@ -743,14 +746,18 @@ namespace myTNB.Dashboard
             {
                 _dashboardMainComponent._accountSelectionComponent.SetAccountName(DataManager.DataManager.SharedInstance.SelectedAccount.accDesc);
             }
+            if (_dashboardMainComponent._titleBarComponent != null)
+            {
+                _dashboardMainComponent._titleBarComponent.SetPrimaryImage(PushNotificationHelper.GetNotificationImage());
+            }
+        }
+
+        internal void SetAddressDetails()
+        {
             if (_dashboardMainComponent._addressComponent != null)
             {
                 string address = NetworkUtility.isReachable ? DataManager.DataManager.SharedInstance.SelectedAccount.accountStAddress : "";
                 _dashboardMainComponent._addressComponent.SetAddress(address);
-            }
-            if (_dashboardMainComponent._titleBarComponent != null)
-            {
-                _dashboardMainComponent._titleBarComponent.SetPrimaryImage(PushNotificationHelper.GetNotificationImage());
             }
         }
 
@@ -923,6 +930,7 @@ namespace myTNB.Dashboard
                     {
                         ShowToast(errorMessage);
                     }
+                    SetAddressDetails();
                     DisplayCurrentChart();
                 }
             }
@@ -930,6 +938,7 @@ namespace myTNB.Dashboard
             {
                 _dashboardMainComponent.ConstructGeneralRefreshScreen(RefreshScreen);
             }
+            SetAddressDetails();
             SetEventsAndText();
             SetBillAndPaymentDetails();
         }
@@ -1113,6 +1122,10 @@ namespace myTNB.Dashboard
                         yLoc = (float)_dashboardMainComponent._viewChart.Frame.GetMaxY() + 5f;
                     }
                 }
+                else if (DeviceHelper.IsIphone6UpResolution())
+                {
+                    yLoc = (float)_dashboardMainComponent._viewChart.Frame.GetMaxY() + 18f;
+                }
             }
             else
             {
@@ -1129,6 +1142,10 @@ namespace myTNB.Dashboard
             if (_dashboardMainComponent._accountStatusComponent != null)
             {
                 _dashboardMainComponent._accountStatusComponent.SetFrameByPrecedingView((float)_dashboardMainComponent._addressComponent.GetView().Frame.GetMaxY());
+            }
+            if (_dashboardMainComponent._sMRComponent != null)
+            {
+                _dashboardMainComponent._sMRComponent.SetFrameByPrecedingView((float)_dashboardMainComponent._addressComponent.GetView().Frame.GetMaxY());
             }
             _dashboardMainComponent._lblEstimatedReading.Hidden = (isMonthView) ? !IsEstimatedReading(chartData) : true;
             _dashboardMainComponent._usageHistoryComponent.SetDateRange(dateRange);
@@ -1349,6 +1366,7 @@ namespace myTNB.Dashboard
                     {
                         await LoadAmountDue();
                         await LoadDashboard();
+                        SetAddressDetails();
                         SetEventsAndText();
                         ActivityIndicator.Hide();
                     }

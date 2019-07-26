@@ -24,6 +24,7 @@ namespace myTNB.DataManager
         public int AccountsAddedCount = 0;
         public bool SummaryNeedsRefresh = false;
         public int AccountRecordIndex = -1;
+        public bool AccountIsSSMR = false;
 
         //Dashboard Home
         public List<HelpModel> HelpList = new List<HelpModel>();
