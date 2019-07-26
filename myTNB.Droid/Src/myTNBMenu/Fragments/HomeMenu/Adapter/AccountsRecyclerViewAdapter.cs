@@ -205,7 +205,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
             foreach (AccountCardModel cardModel in accountCardModel)
             {
                 float scale = parentGroup.Context.Resources.DisplayMetrics.Density;
-                int width = (int)((deviceWidth - 32) * scale + 0.5f);
+                int width = (int)((deviceWidth - 24) * scale + 0.5f);
                 LinearLayout.LayoutParams layoutParams;
                 if (cardList.Count > 1)
                 {
@@ -214,13 +214,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
                     layoutParams.BottomMargin = (int)(10 * scale + 0.5f);
                     if (position == 0)
                     {
-                        layoutParams.LeftMargin = (int)(16 * scale + 0.5f);
-                        layoutParams.RightMargin = (int)(8 * scale + 0.5f);
+                        layoutParams.LeftMargin = (int)(12 * scale + 0.5f);
+                        layoutParams.RightMargin = (int)(4 * scale + 0.5f);
                         viewHolder.linearLayout.LayoutParameters = layoutParams;
                     }
                     else
                     {
-                        layoutParams.RightMargin = (int)(8 * scale + 0.5f);
+                        layoutParams.RightMargin = (int)(4 * scale + 0.5f);
+                        layoutParams.RightMargin = (int)(4 * scale + 0.5f);
                         viewHolder.linearLayout.LayoutParameters = layoutParams;
                     }
                 }
@@ -228,12 +229,19 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
                 {
                     layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MatchParent,
                     LinearLayout.LayoutParams.WrapContent);
-                    layoutParams.LeftMargin = (int)(16 * scale + 0.5f);
-                    layoutParams.RightMargin = (int)(16 * scale + 0.5f);
+                    layoutParams.LeftMargin = (int)(12 * scale + 0.5f);
+                    layoutParams.RightMargin = (int)(12 * scale + 0.5f);
                     viewHolder.linearLayout.LayoutParameters = layoutParams;
                 }
 
                 CoordinatorLayout shimmerLayoutContainer = (CoordinatorLayout)LayoutInflater.From(parentGroup.Context).Inflate(Resource.Layout.account_card_shimmer_layout, parentGroup, false);
+                TextView accountNameShimmer = shimmerLayoutContainer.FindViewById(Resource.Id.accountNameShimmer) as TextView;
+                TextView accountNumberShimmer = shimmerLayoutContainer.FindViewById(Resource.Id.accountNumberShimmer) as TextView;
+                TextView billDueAmountShimmer = shimmerLayoutContainer.FindViewById(Resource.Id.billDueAmountShimmer) as TextView;
+                TextView billDueNoteShimmer = shimmerLayoutContainer.FindViewById(Resource.Id.billDueDateShimmer) as TextView;
+
+                TextViewUtils.SetMuseoSans500Typeface(accountNameShimmer, billDueAmountShimmer);
+                TextViewUtils.SetMuseoSans300Typeface(accountNumberShimmer, billDueNoteShimmer);
 
                 ShimmerLoadingLayout.GetInstance().AddViewWithShimmer(parentGroup.Context,viewHolder.linearLayout,CreateAccountCard(cardModel),
                     shimmerLayoutContainer,

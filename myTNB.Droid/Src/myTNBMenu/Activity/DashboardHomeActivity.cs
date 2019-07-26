@@ -767,5 +767,15 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             return base.DispatchTouchEvent(ev);
         }
 
+        public void SetStatusBarBackground()
+        {
+            if (Build.VERSION.SdkInt >= Build.VERSION_CODES.Lollipop)
+            {
+                Drawable drawable = Resources.GetDrawable(Resource.Drawable.gradient_background);
+                Window.AddFlags(WindowManagerFlags.DrawsSystemBarBackgrounds);
+                Window.SetBackgroundDrawable(drawable);
+            }
+        }
+
     }
 }

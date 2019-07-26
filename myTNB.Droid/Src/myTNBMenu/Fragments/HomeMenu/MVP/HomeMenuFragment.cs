@@ -205,6 +205,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 {
                     StartActivity(new Intent(this.Activity, typeof(NotificationActivity)));
                 };
+                ((DashboardHomeActivity)Activity).SetStatusBarBackground();
             }
             catch (System.Exception e)
             {
@@ -355,6 +356,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             {
                 accountHeaderTitle.Visibility = ViewStates.Gone;
                 searchEditText.Visibility = ViewStates.Visible;
+                searchEditText.SetMaxWidth(Integer.MaxValue);
                 searchActionIcon.Visibility = ViewStates.Gone;
                 searchEditText.RequestFocus();
                 searchEditText.ClearFocus();
