@@ -14,5 +14,8 @@ namespace myTNB
     [Register ("SSMRCaptureMeterViewController")]
     partial class SSMRCaptureMeterViewController
     {
+        void ReleaseDesignerOutlets ()
+        {
+        }
     }
 }

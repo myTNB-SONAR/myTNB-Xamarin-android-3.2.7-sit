@@ -4,6 +4,10 @@ using myTNB.SSMR;
 using System;
 using System.Diagnostics;
 using UIKit;
+using AVFoundation;
+using System.Threading.Tasks;
+using CoreMedia;
+using CoreVideo;
 
 namespace myTNB
 {
@@ -16,7 +20,7 @@ namespace myTNB
         public bool IsThreePhase = true;
 
         private UILabel _lblDescription;
-        private UIView _viewPreview;
+        private UIView _viewPreview, _viewCamera, _viewCapture;
 
         public override void ViewDidLoad()
         {
@@ -24,11 +28,13 @@ namespace myTNB
             SetDescription();
             SetPreview();
             SetCamera();
+            AuthorizeCameraUse();
         }
 
         public override void ViewWillAppear(bool animated)
         {
             base.ViewWillAppear(animated);
+            SetupLiveCameraStream();
         }
 
         public override void ViewDidAppear(bool animated)
@@ -100,15 +106,15 @@ namespace myTNB
 
         private void SetCamera()
         {
-            UIView viewCamera = new UIView(new CGRect(0, _lblDescription.Frame.GetMaxY() + 16
-                , ViewWidth, ViewHeight - _lblDescription.Frame.GetMaxY() - 16 - _viewPreview.Frame.Height))
+            _viewCamera = new UIView(new CGRect(0, _lblDescription.Frame.GetMaxY() + 16
+               , ViewWidth, ViewHeight - _lblDescription.Frame.GetMaxY() - 16 - _viewPreview.Frame.Height))
             {
-                BackgroundColor = UIColor.Red
+                //BackgroundColor = UIColor.Red
             };
-            UIView viewDelete = GetDeleteSection(viewCamera);
-            UIView viewCameraActions = GetCameraActions(viewCamera);
-            viewCamera.AddSubviews(new UIView[] { viewDelete, viewCameraActions });
-            View.AddSubview(viewCamera);
+            UIView viewDelete = GetDeleteSection(_viewCamera);
+            UIView viewCameraActions = GetCameraActions(_viewCamera);
+            _viewCamera.AddSubviews(new UIView[] { viewDelete, viewCameraActions });
+            View.AddSubview(_viewCamera);
         }
 
         private UIView GetDeleteSection(UIView viewBase)
@@ -138,6 +144,7 @@ namespace myTNB
             //Need image thumb
             UISlider zoomSlider = new UISlider(new CGRect(16, 0, ViewWidth - 32, 20)) { };
             zoomSlider.MinimumTrackTintColor = UIColor.White;
+            zoomSlider.SetThumbImage(UIImage.FromBundle("Camera-Thumb"), UIControlState.Normal);
             zoomSlider.ValueChanged += (sender, e) =>
             {
                 Debug.WriteLine("zoomSlider ValueChanged");
@@ -152,22 +159,66 @@ namespace myTNB
                 Debug.WriteLine("viewGallery tapped");
             }));
 
-            UIView viewCapture = new UIView(new CGRect((ViewWidth - size) / 2
-                , zoomSlider.Frame.GetMaxY() + 22, size, size))
+            _viewCapture = new UIView(new CGRect((ViewWidth - size) / 2
+               , zoomSlider.Frame.GetMaxY() + 22, size, size))
             { BackgroundColor = UIColor.FromWhiteAlpha(1, 0.80F) };
-            viewCapture.Layer.CornerRadius = viewCapture.Frame.Width / 2;
-            viewCapture.Layer.BorderWidth = 3.0F;
-            viewCapture.Layer.BorderColor = UIColor.White.CGColor;
-            viewCapture.AddGestureRecognizer(new UITapGestureRecognizer(() =>
+            _viewCapture.Layer.CornerRadius = _viewCapture.Frame.Width / 2;
+            _viewCapture.Layer.BorderWidth = 3.0F;
+            _viewCapture.Layer.BorderColor = UIColor.White.CGColor;
+
+            view.AddSubviews(new UIView[] { viewGallery, _viewCapture, zoomSlider });
+            CGRect viewFrame = new CGRect(0, viewBase.Frame.Height - _viewCapture.Frame.GetMaxY() - 16
+                , ViewWidth, _viewCapture.Frame.GetMaxY() + 16);
+            view.Frame = viewFrame;
+            return view;
+        }
+
+        private async Task AuthorizeCameraUse()
+        {
+            AVAuthorizationStatus authorizationStatus = AVCaptureDevice.GetAuthorizationStatus(AVMediaType.Video);
+            if (authorizationStatus != AVAuthorizationStatus.Authorized)
+            {
+                await AVCaptureDevice.RequestAccessForMediaTypeAsync(AVMediaType.Video);
+            }
+        }
+
+        #region Computed Properties
+        public bool CameraAvailable;
+        public AVCaptureSession _captureSession;
+        public AVCaptureDevice _captureDevice;
+        public AVCaptureDeviceInput _input;
+        public AVCapturePhotoOutput _output;
+        #endregion
+
+        public void SetupLiveCameraStream()
+        {
+            _captureDevice = AVCaptureDevice.GetDefaultDevice(AVMediaTypes.Video);
+            NSError nsError;
+
+            try
+            {
+                _input = new AVCaptureDeviceInput(_captureDevice, out nsError);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("Error in camera: " + e.Message);
+            }
+            _captureSession = new AVCaptureSession();
+            _captureSession.AddInput(_input);
+            AVCaptureVideoPreviewLayer videoPreviewLayer = new AVCaptureVideoPreviewLayer(_captureSession)
+            {
+                Frame = new CGRect(0, 0, _viewCamera.Frame.Width, _viewCamera.Frame.Height),
+                VideoGravity = AVLayerVideoGravity.ResizeAspectFill,
+                ZPosition = -1
+            };
+
+            _viewCamera.Layer.AddSublayer(videoPreviewLayer);
+            _captureSession.StartRunning();
+
+            _viewCapture.AddGestureRecognizer(new UITapGestureRecognizer(() =>
             {
                 Debug.WriteLine("viewCapture tapped");
             }));
-
-            view.AddSubviews(new UIView[] { viewGallery, viewCapture, zoomSlider });
-            CGRect viewFrame = new CGRect(0, viewBase.Frame.Height - viewCapture.Frame.GetMaxY() - 16
-                , ViewWidth, viewCapture.Frame.GetMaxY() + 16);
-            view.Frame = viewFrame;
-            return view;
         }
     }
 }

@@ -1032,6 +1032,10 @@
     <ImageAsset Include="Assets.xcassets\Red-Cross.imageset\icDisplayUnsuccessful.png" />
     <ImageAsset Include="Assets.xcassets\Red-Cross.imageset\icDisplayUnsuccessful%402x.png" />
     <ImageAsset Include="Assets.xcassets\Red-Cross.imageset\icDisplayUnsuccessful%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Camera-Thumb.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Camera-Thumb.imageset\oval.png" />
+    <ImageAsset Include="Assets.xcassets\Camera-Thumb.imageset\oval%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Camera-Thumb.imageset\oval%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -1349,6 +1353,7 @@
     <Folder Include="Customs\Generic Status Page\" />
     <Folder Include="SSMR\Meter Reading\" />
     <Folder Include="Sitecore CMS\Model\Apply SSMR Walkthrough\" />
+    <Folder Include="Assets.xcassets\Camera-Thumb.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
