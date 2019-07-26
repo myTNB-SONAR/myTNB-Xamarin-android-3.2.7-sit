@@ -80,6 +80,21 @@
                 {
                     public const string TimestampField = "Timestamp";
                 }
+
+                public struct Help
+                {
+                    public const string TopicBGImage = "TopicBGImage";
+                    public const string BGStartColor = "BGStartColor";
+                    public const string BGEndColor = "BGEndColor";
+                    public const string BGGradientDirection = "BGGradientDirection";
+                    public const string Title = "Title";
+                    public const string Description = "Description";
+                    public const string TopicBodyTitle = "TopicBodyTitle";
+                    public const string TopicBodyContent = "TopicBodyContent";
+                    public const string CTA = "CTA";
+                    public const string Tags = "Tags";
+                    public const string TargetItem = "Target-item";
+                }
             }
 
             public struct ItemID
@@ -104,6 +119,7 @@
                 public const string WalkthroughScreens = "/sitecore/content/myTNBapp/Contents/Walkthrough Screens";
                 public const string FullRTEPages = "/sitecore/content/myTNBapp/Contents/Full RTE Pages/Terms Condition";
 
+                public const string Help = "/sitecore/content/myTNBapp/Contents/Need Help";
             }
         }
     }

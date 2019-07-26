@@ -77,6 +77,10 @@
 	<color name="white_two">#D8D8D8</color>
 
     <color name="resend_progress">#C9EFD4</color>
+    
+    <color name="blue_shadow">#9CD0FF</color>
 	
-	
+	   <color name="grey_two">#D0D0D0</color>
+    
+    <color name="shimmer_color">#bed9f1</color>
 </resources>

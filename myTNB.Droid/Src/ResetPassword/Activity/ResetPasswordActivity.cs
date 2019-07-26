@@ -347,7 +347,7 @@ namespace myTNB_Android.Src.ResetPassword.Activity
                     // TODO : START ACTIVITY DASHBOARD
                     if (UserSessions.HasResetFlag(PreferenceManager.GetDefaultSharedPreferences(this)))
                     {
-                        Intent DashboardIntent = new Intent(this, typeof(DashboardActivity));
+                        Intent DashboardIntent = new Intent(this, typeof(DashboardHomeActivity));
                         DashboardIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
                         StartActivity(DashboardIntent);
                     }

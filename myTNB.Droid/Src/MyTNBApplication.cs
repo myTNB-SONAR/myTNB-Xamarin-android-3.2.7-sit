@@ -62,6 +62,7 @@ namespace myTNB_Android.Src
             AccountDataEntity.CreateTable();
             SummaryDashBoardAccountEntity.CreateTable();
             SelectBillsEntity.CreateTable();
+            MyServiceEntity.CreateTable();
         }
     }
 }

@@ -29,5 +29,8 @@ namespace myTNB_Android.Src.SummaryDashBoard.Models
         public string AccName { get; set; }
 
         public bool IsAccSelected { get; set; }
+
+        public string SmartMeterCode { get; set; }
+        public bool IsTaggedSMR { get; set; }
     }
 }

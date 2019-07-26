@@ -110,7 +110,10 @@ namespace myTNB_Android.Src.Utils
 
         internal struct SERVER_URL
         {
-#if DEBUG || STUB || DEVELOP 
+#if DEBUG || STUB
+            internal static readonly string END_POINT = "http://10.215.128.191:89";
+            internal static readonly string FPX_PAYMENT = "http://10.215.128.191:89/v5/PayRedirect.aspx?Param1=3&Param2=";
+#elif DEVELOP || SIT
             internal static readonly string END_POINT = "https://mobiletestingws.tnb.com.my";
             internal static readonly string FPX_PAYMENT = "https://mobiletestingws.tnb.com.my/v5/PayRedirect.aspx?Param1=3&Param2=";
             //internal static readonly string END_POINT = "https://mytnbapp.tnb.com.my";
@@ -125,7 +128,7 @@ namespace myTNB_Android.Src.Utils
 
         internal struct APP_CONFIG
         {
-#if DEBUG || STUB || DEVELOP
+#if DEBUG || STUB || DEVELOP || SIT
             internal static readonly string API_KEY_ID = "9515F2FA-C267-42C9-8087-FABA77CB84DF";
             //internal static readonly string API_KEY_ID = "E6148656-205B-494C-BC95-CC241423E72F";
             internal static readonly int MAX_IMAGE_QUALITY_IN_PERCENT = 100;
@@ -154,7 +157,7 @@ namespace myTNB_Android.Src.Utils
         internal static readonly int REQUEST_VERIFICATION_SMS_TOEKN_CODE = 4812;
 
         //Promotions 
-#if DEBUG || STUB || DEVELOP
+#if DEBUG || STUB || DEVELOP || SIT
         internal static readonly int PROMOTION_DAYS_COUNTER_LIMIT = 1;
 #else
         internal static readonly int PROMOTION_DAYS_COUNTER_LIMIT = 15;
@@ -206,5 +209,24 @@ namespace myTNB_Android.Src.Utils
         internal static readonly string REFRESH_BTN_MSG = "refreshBtnTxt";
 
         internal static readonly string AMOUNT_DUE_FAILED_KEY = "AmountDueFailedKey";
+
+        //Home Menu Scroll
+        internal static readonly int ACCOUNT_LIST_CARD_DP = 60;
+        internal static readonly int ACCOUNT_LIST_INDICATOR_DP = 10;
+        internal static readonly int ACCOUNT_LIST_SERVICE_MAX_BOUNDARY = 3;
+        internal static readonly int MY_SERVICE_CARD_DP = 90;
+        internal static readonly int MY_SERVICE_NO_CARD_DP = 5;
+        internal static readonly int ACCOUNT_LIST_HELP_NO_ACC_DP_LIMIT = 110;
+        internal static readonly int ACCOUNT_LIST_HELP_MAX_BOUNDARY = 5;
+
+        //Language
+        internal static readonly string DEFAULT_LANG = "EN";
+
+        public enum GREETING
+        {
+            MORNING,
+            AFTERNOON,
+            EVENING
+        }
     }
 }

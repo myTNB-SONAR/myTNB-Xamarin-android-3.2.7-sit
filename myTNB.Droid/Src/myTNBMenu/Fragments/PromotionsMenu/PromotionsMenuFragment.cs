@@ -1,6 +1,7 @@
 ﻿using Android.Content;
 using Android.OS;
 using Android.Support.Design.Widget;
+using Android.Support.V7.App;
 using Android.Views;
 using Android.Webkit;
 using Android.Widget;
@@ -48,6 +49,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.PromotionsMenu
 
             weblink = JsonConvert.DeserializeObject<Weblink>(Arguments.GetString(Constants.PROMOTIONS_LINK));
 
+            var act = this.Activity as AppCompatActivity;
+
+            var actionBar = act.SupportActionBar;
+            actionBar.Show();
 
         }
 
@@ -64,9 +69,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.PromotionsMenu
 
             try
             {
-                if (context is DashboardActivity)
+                if (context is DashboardHomeActivity)
                 {
-                    var activity = context as DashboardActivity;
+                    var activity = context as DashboardHomeActivity;
                     // SETS THE WINDOW BACKGROUND TO HORIZONTAL GRADIENT AS PER UI ALIGNMENT
                     activity.Window.SetBackgroundDrawable(Activity.GetDrawable(Resource.Drawable.HorizontalGradientBackground));
                 }
@@ -103,6 +108,16 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.PromotionsMenu
             {
                 Utility.LoggingNonFatalError(e);
             }
+        }
+
+        public override void OnResume()
+        {
+            base.OnResume();
+
+            var act = this.Activity as AppCompatActivity;
+
+            var actionBar = act.SupportActionBar;
+            actionBar.Show();
         }
 
         class PromotionsWebViewClient : WebViewClient

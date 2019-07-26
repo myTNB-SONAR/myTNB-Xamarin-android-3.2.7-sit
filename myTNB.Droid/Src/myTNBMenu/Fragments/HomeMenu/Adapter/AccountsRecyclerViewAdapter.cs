@@ -1,75 +1,304 @@
 ﻿using System;
+using System.Collections.Generic;
 using Android.Support.Design.Widget;
 using Android.Support.V7.Widget;
+using Android.Util;
 using Android.Views;
 using Android.Widget;
+using myTNB_Android.Src.Database.Model;
+using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Helper;
+using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP;
+using myTNB_Android.Src.SummaryDashBoard.Models;
 using myTNB_Android.Src.Utils;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
 {
-    public class AccountsRecyclerViewAdapter : RecyclerView.Adapter
+    public class AccountsRecyclerViewAdapter : RecyclerView.Adapter, IFilterable
     {
-        int accountsContainer = 0;
+        int accountsCardContainer = 0;
+        int MAX_ACCOUNT_PER_CARD = 5;
+        Filter accountsFilter;
+        static HomeMenuContract.IHomeMenuView viewListener;
+
+        List<List<AccountCardModel>> cardList = new List<List<AccountCardModel>>();
+        List<AccountCardModel> accountModelList = new List<AccountCardModel>();
+        public List<AccountCardModel> accountCardModelList;
         ViewGroup parentGroup;
-        public AccountsRecyclerViewAdapter(int count)
+
+        public AccountsRecyclerViewAdapter(HomeMenuContract.IHomeMenuView listener)
         {
-            accountsContainer = count;
+            viewListener = listener;
+
+            //BitmapFactory.Options dimensions = new BitmapFactory.Options();
+            //dimensions.inJustDecodeBounds = true;
+            //Bitmap mBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.bitmap, dimensions);
+            //int height = dimensions.outHeight;
+            //int width = dimensions.outWidth;
         }
 
-        public override int ItemCount => accountsContainer;
+        public int GetAccountCardCount(List<AccountCardModel> list)
+        {
+            int cardCount;
+            if (list.Count > 0)
+            {
+                cardCount = list.Count / MAX_ACCOUNT_PER_CARD;
+                if ((list.Count % MAX_ACCOUNT_PER_CARD) > 0)
+                {
+                    cardCount++;
+                }
+            }
+            else
+            {
+                cardCount = 1;
+            }
+            return cardCount;
+        }
+
+        public void UpdatedCardList()
+        {
+            cardList = new List<List<AccountCardModel>>();
+            int cardsCounter = 0;
+            int cardContainerCount = GetAccountCardCount(accountCardModelList);
+            for (int i = 0; i < cardContainerCount; i++)
+            {
+                accountModelList = new List<AccountCardModel>();
+                for (int j = cardsCounter; j < accountCardModelList.Count; j++)
+                {
+                    AccountCardModel model = accountCardModelList.ToArray()[j];
+                    accountModelList.Add(model);
+                    if (accountModelList.Count == MAX_ACCOUNT_PER_CARD)
+                    {
+                        cardsCounter = j;
+                        cardsCounter++;
+                        break;
+                    }
+                }
+                cardList.Add(accountModelList);
+            }
+            viewListener.OnUpdateAccountListChanged(false);
+        }
+
+        public void SetAccountCards(List<SummaryDashBoardDetails> accountList)
+        {
+
+            accountCardModelList = GetAccountCardModelList(accountList);
+            UpdatedCardList();
+        }
+
+        public void SetAccountCardsFromLocal(List<SummaryDashBoardDetails> accountList)
+        {
+
+            accountCardModelList = GetAccountCardModelListFromLocal(accountList);
+            UpdatedCardList();
+        }
+
+        public void UpdateAccountCards(List<SummaryDashBoardDetails> accountList)
+        {
+            foreach (SummaryDashBoardDetails summaryDashBoardDetails in accountList)
+            {
+                foreach (AccountCardModel cardModel in accountCardModelList)
+                {
+                    if (cardModel.AccountNumber == summaryDashBoardDetails.AccNumber)
+                    {
+                        int accountType = Int32.Parse(summaryDashBoardDetails.AccType);
+                        cardModel.AccountNumber = summaryDashBoardDetails.AccNumber;
+                        cardModel.AccountName = summaryDashBoardDetails.AccName;
+                        cardModel.BillDueAmount = AccountModelFormatter.GetFormatAmount(summaryDashBoardDetails.AmountDue);
+                        cardModel.BillDueNote = AccountModelFormatter.GetBillDueNote(accountType,
+                            summaryDashBoardDetails.AmountDue, summaryDashBoardDetails.BillDueDate, summaryDashBoardDetails.IsTaggedSMR);
+                        cardModel.AccountType = accountType;
+                        cardModel.IsTaggedSMR = summaryDashBoardDetails.IsTaggedSMR;
+                        if (summaryDashBoardDetails.SmartMeterCode == "0")
+                        {
+                            cardModel.SmartMeterCode = Int32.Parse(summaryDashBoardDetails.SmartMeterCode);
+                        }
+                        else
+                        {
+                            cardModel.SmartMeterCode = 3;
+                        }
+                    }
+                }
+            }
+            NotifyDataSetChanged();
+        }
+
+        private List<AccountCardModel> GetAccountCardModelListFromLocal(List<SummaryDashBoardDetails> accountList)
+        {
+            List<AccountCardModel> returnAccountCardModelList = new List<AccountCardModel>();
+            AccountCardModel cardModel;
+
+            foreach (SummaryDashBoardDetails summaryDashBoardDetails in accountList)
+            {
+                int accountType = Int32.Parse(summaryDashBoardDetails.AccType);
+                cardModel = new AccountCardModel();
+                cardModel.AccountNumber = summaryDashBoardDetails.AccNumber;
+                if (summaryDashBoardDetails.AmountDue != null)
+                {
+                    cardModel.AccountName = summaryDashBoardDetails.AccName;
+                    cardModel.BillDueAmount = AccountModelFormatter.GetFormatAmount(summaryDashBoardDetails.AmountDue);
+                    cardModel.BillDueNote = AccountModelFormatter.GetBillDueNote(accountType,
+                        summaryDashBoardDetails.AmountDue, summaryDashBoardDetails.BillDueDate, summaryDashBoardDetails.IsTaggedSMR);
+                    cardModel.AccountType = accountType;
+                    cardModel.IsTaggedSMR = summaryDashBoardDetails.IsTaggedSMR;
+                    if (summaryDashBoardDetails.SmartMeterCode == "0")
+                    {
+                        cardModel.SmartMeterCode = Int32.Parse(summaryDashBoardDetails.SmartMeterCode);
+                    }
+                    else
+                    {
+                        cardModel.SmartMeterCode = 3;
+                    }
+                }
+                returnAccountCardModelList.Add(cardModel);
+            }
+            return returnAccountCardModelList;
+        }
+
+        private List<AccountCardModel> GetAccountCardModelList(List<SummaryDashBoardDetails> accountList)
+        {
+            List<AccountCardModel> returnAccountCardModelList = new List<AccountCardModel>();
+            AccountCardModel model;
+
+            foreach (SummaryDashBoardDetails summaryDashBoardDetails in accountList)
+            {
+                int accountType = Int32.Parse(summaryDashBoardDetails.AccType);
+                model = new AccountCardModel();
+                model.AccountName = summaryDashBoardDetails.AccName;
+                model.AccountNumber = summaryDashBoardDetails.AccNumber;
+                model.BillDueAmount = summaryDashBoardDetails.AmountDue;
+                model.BillDueNote = summaryDashBoardDetails.BillDueDate;
+                model.AccountType = accountType;
+                model.IsTaggedSMR = summaryDashBoardDetails.IsTaggedSMR;
+                if (summaryDashBoardDetails.SmartMeterCode == "0")
+                {
+                    model.SmartMeterCode = Int32.Parse(summaryDashBoardDetails.SmartMeterCode);
+                }
+                else
+                {
+                    model.SmartMeterCode = 3;
+                }
+                returnAccountCardModelList.Add(model);
+            }
+            return returnAccountCardModelList;
+        }
+
+        public override int ItemCount => GetAccountCardCount(accountCardModelList);
+
+        public Filter Filter => GetFilter();
+
+        private Filter GetFilter()
+        {
+            if (accountsFilter == null)
+            {
+                accountsFilter = new AccountCardsFilter(this, accountCardModelList);
+            }
+            return accountsFilter;
+        }
 
         public override void OnBindViewHolder(RecyclerView.ViewHolder holder, int position)
         {
             AccountsContainerViewHolder viewHolder = holder as AccountsContainerViewHolder;
+            viewHolder.IsRecyclable = false;
+            List<AccountCardModel> accountCardModel = cardList.ToArray()[position];
+            DisplayMetrics displayMetrics = new DisplayMetrics();
+            int deviceWidth = (int) (parentGroup.Context.Resources.DisplayMetrics.WidthPixels / parentGroup.Context.Resources.DisplayMetrics.Density);
+            foreach (AccountCardModel cardModel in accountCardModel)
+            {
+                float scale = parentGroup.Context.Resources.DisplayMetrics.Density;
+                int width = (int)((deviceWidth - 32) * scale + 0.5f);
+                LinearLayout.LayoutParams layoutParams;
+                if (cardList.Count > 1)
+                {
+                    layoutParams = new LinearLayout.LayoutParams(width,
+                    LinearLayout.LayoutParams.WrapContent);
+                    layoutParams.BottomMargin = (int)(10 * scale + 0.5f);
+                    if (position == 0)
+                    {
+                        layoutParams.LeftMargin = (int)(16 * scale + 0.5f);
+                        layoutParams.RightMargin = (int)(8 * scale + 0.5f);
+                        viewHolder.linearLayout.LayoutParameters = layoutParams;
+                    }
+                    else
+                    {
+                        layoutParams.RightMargin = (int)(8 * scale + 0.5f);
+                        viewHolder.linearLayout.LayoutParameters = layoutParams;
+                    }
+                }
+                else
+                {
+                    layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MatchParent,
+                    LinearLayout.LayoutParams.WrapContent);
+                    layoutParams.LeftMargin = (int)(16 * scale + 0.5f);
+                    layoutParams.RightMargin = (int)(16 * scale + 0.5f);
+                    viewHolder.linearLayout.LayoutParameters = layoutParams;
+                }
 
-            viewHolder.linearLayout.AddView(CreateAccountCard());
-            viewHolder.linearLayout.AddView(CreateAccountCard());
-            viewHolder.linearLayout.AddView(CreateAccountCard());
-            viewHolder.linearLayout.AddView(CreateAccountCard());
-            viewHolder.linearLayout.AddView(CreateAccountCard());
+                CoordinatorLayout shimmerLayoutContainer = (CoordinatorLayout)LayoutInflater.From(parentGroup.Context).Inflate(Resource.Layout.account_card_shimmer_layout, parentGroup, false);
 
+                ShimmerLoadingLayout.GetInstance().AddViewWithShimmer(parentGroup.Context,viewHolder.linearLayout,CreateAccountCard(cardModel),
+                    shimmerLayoutContainer,
+                    () =>
+                    {
+                        return cardModel.BillDueAmount != null;
+                    });
+            }
         }
 
-        private CoordinatorLayout CreateAccountCard()
+        private int GetAccountIcon(int AccountType, int SmartMeterCode, bool IsTaggedSMR)
+        {
+            int iconResource;
+            if (AccountType == 2)
+            {
+                iconResource = Resource.Drawable.ic_display_r_eleaf;
+            }
+            else
+            {
+                if (SmartMeterCode != 0)
+                {
+                    iconResource = Resource.Drawable.ic_display_smart_meter;
+                }
+                else
+                {
+                    if (IsTaggedSMR)
+                    {
+                        iconResource = Resource.Drawable.smr_48_x_48;
+                    }
+                    else
+                    {
+                        iconResource = Resource.Drawable.ic_display_normal_meter;
+                    }
+                }
+            }
+            return iconResource;
+        }
+
+        private CoordinatorLayout CreateAccountCard(AccountCardModel cardModel)
         {
             CoordinatorLayout card = (CoordinatorLayout)LayoutInflater.From(parentGroup.Context).Inflate(Resource.Layout.card_layout, parentGroup, false);
+            card.SetOnClickListener(new OnAccountCardClickListener(cardModel.AccountNumber));
+            ImageView accountTypeIcon = card.FindViewById(Resource.Id.accountIcon) as ImageView;
             TextView accountName = card.FindViewById(Resource.Id.accountName) as TextView;
             TextView accountNumber = card.FindViewById(Resource.Id.accountNumber) as TextView;
             TextView billDueAmount = card.FindViewById(Resource.Id.billDueAmount) as TextView;
-            TextView billDueDate = card.FindViewById(Resource.Id.billDueDate) as TextView;
+            TextView billDueNote = card.FindViewById(Resource.Id.billDueDate) as TextView;
+
+            accountName.Id = cardModel.Id + 1;
+            accountNumber.Id = cardModel.Id + 2;
+            billDueAmount.Id = cardModel.Id + 3;
+            billDueNote.Id = cardModel.Id + 4;
+            card.Id = cardModel.Id + 5;
+
+            accountName.Text = cardModel.AccountName;
+            accountNumber.Text = cardModel.AccountNumber;
+            billDueAmount.Text = cardModel.BillDueAmount;
+            billDueNote.Text = cardModel.BillDueNote;
+
+            accountTypeIcon.SetImageResource(GetAccountIcon(cardModel.AccountType, cardModel.SmartMeterCode, cardModel.IsTaggedSMR));
+
             TextViewUtils.SetMuseoSans500Typeface(accountName, billDueAmount);
-            TextViewUtils.SetMuseoSans300Typeface(accountNumber, billDueDate);
+            TextViewUtils.SetMuseoSans300Typeface(accountNumber, billDueNote);
             return card;
         }
-
-        //private CardView CreateCard()
-        //{
-        //    CardView card = new CardView(parentGroup.Context);
-        //    LayoutParams layoutParams = new LayoutParams(LayoutParams.MatchParent, LayoutParams.WrapContent);
-        //    layoutParams.SetMargins(15, 12, 15, 12);
-        //    card.LayoutParameters = layoutParams;
-        //    card.UseCompatPadding = true;
-        //    card.Elevation = 4;
-        //    card.Radius = 3;
-        //    return card;
-        //}
-
-        //private ViewGroup CreateCardContainer()
-        //{
-        //    ConstraintLayout constraintLayout = new ConstraintLayout(parentGroup.Context);
-        //    LayoutParams layoutParams = new LayoutParams(LayoutParams.MatchParent, LayoutParams.WrapContent);
-        //    layoutParams.SetMargins(15, 12, 15, 12);
-        //    constraintLayout.LayoutParameters = layoutParams;
-
-
-        //    ImageView accountImage = new ImageView(parentGroup.Context);
-        //    LayoutParams imageLayoutParams = new LayoutParams(LayoutParams.MatchParent, LayoutParams.WrapContent);
-        //    accountImage.LayoutParameters = imageLayoutParams;
-
-        //    return constraintLayout;
-        //}
-
-
 
         public override RecyclerView.ViewHolder OnCreateViewHolder(ViewGroup parent, int viewType)
         {
@@ -86,6 +315,48 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
             {
                 linearLayout = itemView as LinearLayout;
             }
+        }
+
+        public class OnAccountCardClickListener : Java.Lang.Object, View.IOnClickListener
+        {
+            private string mAccountNumber = null;
+            public OnAccountCardClickListener(string accountNumber)
+            {
+                mAccountNumber = accountNumber;
+            }
+            public void OnClick(View v)
+            {
+                viewListener.ShowAccountDetails(mAccountNumber);
+            }
+        }
+
+        public List<string> GetFirstCardModelList()
+		{
+            List<string> accountNumberList = new List<string>();
+            if (cardList.Count > 0)
+			{
+				foreach(AccountCardModel cardModel in cardList.ToArray()[0])
+				{
+					accountNumberList.Add(cardModel.AccountNumber);
+				}
+			}
+            return accountNumberList;
+        }
+
+        public List<string> GetAccountCardNumberListByPosition(int position)
+        {
+            List<string> accountNumberList = new List<string>();
+            if (cardList.Count > 0)
+            {
+                foreach (AccountCardModel cardModel in cardList.ToArray()[position])
+                {
+                    if (cardModel.BillDueAmount == null)
+                    {
+                        accountNumberList.Add(cardModel.AccountNumber);
+                    }
+                }
+            }
+            return accountNumberList;
         }
     }
 }

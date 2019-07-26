@@ -61,6 +61,9 @@ namespace myTNB_Android.Src.Database.Model
         [Column("smartMeterCode")]
         public string SmartMeterCode { get; set; }
 
+        [Column("isTaggedSMR")]
+        public bool IsTaggedSMR { get; set; }
+
         public static int CreateTable()
         {
             //using (var db = new SQLiteConnection(Constants.DB_PATH))
@@ -220,6 +223,7 @@ namespace myTNB_Android.Src.Database.Model
                 OwnerName = accountResponse.OwnerName,
                 AccountCategoryId = accountResponse.AccountCategoryId,
                 SmartMeterCode = accountResponse.SmartMeterCode == null ? "0" : accountResponse.SmartMeterCode,
+                IsTaggedSMR = accountResponse.IsTaggedSMR == "true" ? true : false,
                 isOwned = accountResponse.IsOwned
             };
 

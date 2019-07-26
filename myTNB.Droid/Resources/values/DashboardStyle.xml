@@ -3,7 +3,7 @@
   <!-- See values-v21 for App.BaseTheme in Styles.xml this is for backward compatibility -->
   <style name="Theme.Dashboard" parent="@style/App.ScreenTheme">
     <!-- Window Background-->
-    <item name="android:windowBackground">@drawable/DashboardGradientBackground</item>
+    <!-- <item name="android:windowBackground">@drawable/DashboardGradientBackground</item> -->
     <!-- End Window Background-->
     <item name="android:textColorPrimary">@color/tunaGrey</item>
     <item name="android:textColorSecondary">@color/tunaGrey</item>

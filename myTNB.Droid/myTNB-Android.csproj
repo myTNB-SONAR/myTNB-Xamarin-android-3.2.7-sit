@@ -36,10 +36,9 @@
     <WarningLevel>4</WarningLevel>
     <AndroidUseSharedRuntime>True</AndroidUseSharedRuntime>
     <AndroidLinkMode>None</AndroidLinkMode>
-    <EmbedAssembliesIntoApk>False</EmbedAssembliesIntoApk>
+    <EmbedAssembliesIntoApk>true</EmbedAssembliesIntoApk>
     <AndroidCreatePackagePerAbi>true</AndroidCreatePackagePerAbi>
     <AndroidSupportedAbis />
-    <EnableLLVM>false</EnableLLVM>
     <MandroidI18n />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -56,7 +55,21 @@
     <EmbedAssembliesIntoApk>True</EmbedAssembliesIntoApk>
     <AndroidSupportedAbis>armeabi-v7a;x86;x86_64;arm64-v8a</AndroidSupportedAbis>
     <MandroidI18n>West</MandroidI18n>
-    <EnableLLVM>true</EnableLLVM>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'SIT|AnyCPU' ">
+    <DebugSymbols>True</DebugSymbols>
+    <DebugType>PdbOnly</DebugType>
+    <Optimize>True</Optimize>
+    <OutputPath>bin\SIT\</OutputPath>
+    <DefineConstants>TRACE;SIT</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AndroidManagedSymbols>true</AndroidManagedSymbols>
+    <AndroidUseSharedRuntime>False</AndroidUseSharedRuntime>
+    <AndroidLinkMode>SdkOnly</AndroidLinkMode>
+    <EmbedAssembliesIntoApk>True</EmbedAssembliesIntoApk>
+    <AndroidSupportedAbis>armeabi-v7a;x86;x86_64;arm64-v8a</AndroidSupportedAbis>
+    <MandroidI18n>West</MandroidI18n>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Develop|AnyCPU'">
     <DebugSymbols>true</DebugSymbols>
@@ -72,7 +85,6 @@
     <AndroidSupportedAbis>armeabi-v7a;x86;x86_64;arm64-v8a</AndroidSupportedAbis>
     <AndroidLinkMode>SdkOnly</AndroidLinkMode>
     <MandroidI18n>West</MandroidI18n>
-    <EnableLLVM>false</EnableLLVM>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Stub|AnyCPU'">
     <OutputPath>bin\Stub\</OutputPath>
@@ -80,7 +92,6 @@
     <DebugType>full</DebugType>
     <DebugSymbols>true</DebugSymbols>
     <ErrorReport>prompt</ErrorReport>
-    <EnableLLVM>false</EnableLLVM>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Master|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -95,7 +106,6 @@
     <AndroidSupportedAbis>armeabi-v7a;x86;x86_64;arm64-v8a</AndroidSupportedAbis>
     <AndroidLinkMode>SdkOnly</AndroidLinkMode>
     <MandroidI18n>West</MandroidI18n>
-    <EnableLLVM>false</EnableLLVM>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="AFollestad.MaterialDialogs.Core, Version=0.9.4.4, Culture=neutral, processorArchitecture=MSIL">
@@ -1102,7 +1112,6 @@
     <Compile Include="Src\Notifications\Api\NotificationReadRequest.cs" />
     <Compile Include="Src\Notifications\Models\NotificationData.cs" />
     <AndroidResource Include="Resources\menu\NotificationToolbarMenu.xml" />
-    <AndroidResource Include="Resources\layout\NotificationEmptyView.axml" />
     <AndroidResource Include="Resources\drawable-hdpi\empty_state_notification.png" />
     <AndroidResource Include="Resources\drawable-hdpi\ic_action_select_all.png" />
     <AndroidResource Include="Resources\drawable-hdpi\ic_header_markread.png" />
@@ -1130,8 +1139,20 @@
     <AndroidResource Include="Resources\drawable-xxxhdpi\ic_header_markread_disabled.png" />
     <Compile Include="Src\myTNBMenu\Activity\DashboardHomeActivity.cs" />
     <AndroidResource Include="Resources\layout\DashboardHomeView.axml" />
-    <Compile Include="Src\myTNBMenu\Fragments\HomeMenu\MVP\HomeMenuFragment.cs" />
     <AndroidResource Include="Resources\layout\HomeMenuFragmentView.axml" />
+    <AndroidResource Include="Resources\drawable\custom_round_rec_shadow.xml" />
+    <AndroidResource Include="Resources\layout\MyServiceComponentView.axml" />
+    <AndroidResource Include="Resources\drawable\round_circle.xml" />
+    <AndroidResource Include="Resources\menu\DashboardNewBottonMenu.xml" />
+    <Compile Include="Src\myTNBMenu\MVP\DashboardHomeContract.cs" />
+    <Compile Include="Src\myTNBMenu\MVP\DashboardHomePresenter.cs" />
+    <AndroidResource Include="Resources\drawable\ic_menu_reward_selector.xml" />
+    <AndroidResource Include="Resources\drawable-hdpi\ic_menu_reward.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\ic_menu_reward.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_menu_reward.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_menu_reward.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\ic_menu_reward.png" />
+    <AndroidResource Include="Resources\layout\MyServiceShimmerComponent.axml" />
     <AndroidResource Include="Resources\drawable-hdpi\add_account.png" />
     <AndroidResource Include="Resources\drawable-hdpi\search.png" />
     <AndroidResource Include="Resources\drawable-mdpi\add_account.png" />
@@ -1154,6 +1175,141 @@
     <Compile Include="Src\myTNBMenu\Fragments\HomeMenu\Listener\AccountsRecyclerViewOnScrollListener.cs" />
     <AndroidResource Include="Resources\drawable\circle.axml" />
     <AndroidResource Include="Resources\drawable\circle_active.axml" />
+    <Compile Include="Src\myTNBMenu\Fragments\HomeMenu\MVP\AccountCardModel.cs" />
+    <AndroidResource Include="Resources\drawable-hdpi\search_blue.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\search_blue.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\search_blue.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\search_blue.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\search_blue.png" />
+    <Compile Include="Src\myTNBMenu\Fragments\HomeMenu\Adapter\MyServiceShimmerAdapter.cs" />
+    <AndroidResource Include="Resources\drawable-hdpi\ic_menu_reward_toggled.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\ic_menu_reward_toggled.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_menu_reward_toggled.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_menu_reward_toggled.png" />
+    <AndroidResource Include="Resources\drawable\custom_card_view.xml" />
+    <AndroidResource Include="Resources\drawable-hdpi\apply_autopay.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\check_status.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\feedback.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\set_appointments.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\submit_meter.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\apply_autopay.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\check_status.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\feedback.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\set_appointments.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\submit_meter.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\apply_autopay.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\check_status.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\feedback.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\set_appointments.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\submit_meter.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\apply_autopay.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\check_status.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\feedback.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\set_appointments.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\submit_meter.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\apply_autopay.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\check_status.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\feedback.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\set_appointments.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\submit_meter.png" />
+    <Compile Include="Src\myTNBMenu\Fragments\HomeMenu\Adapter\MyServiceAdapter.cs" />
+    <AndroidResource Include="Resources\layout\NewFAQComponentView.axml" />
+    <AndroidResource Include="Resources\drawable-hdpi\faq_color_1.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\faq_color_1.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\faq_color_1.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\faq_color_1.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\faq_color_1.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\ic_menu_promotion.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\ic_menu_promotion.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_menu_promotion.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_menu_promotion.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\ic_menu_promotion.png" />
+    <AndroidResource Include="Resources\layout\NewFAQShimmerComponentView.axml" />
+    <Compile Include="Src\myTNBMenu\Fragments\HomeMenu\Adapter\NewFAQAdapter.cs" />
+    <Compile Include="Src\myTNBMenu\Fragments\HomeMenu\Adapter\NewFAQShimmerAdapter.cs" />
+    <AndroidResource Include="Resources\drawable\dashboard_home_bg.xml" />
+    <AndroidResource Include="Resources\drawable-hdpi\fluid_background.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\fluid_background.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\fluid_background.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\fluid_background.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\fluid_background.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\fluid_background.png" />
+    <AndroidResource Include="Resources\drawable\dashboard_home_new_bg.xml" />
+    <Compile Include="Src\myTNBMenu\Fragments\HomeMenu\MVP\AccountCardsFilter.cs" />
+    <Compile Include="Src\myTNBMenu\Fragments\HomeMenu\MVP\ObjectExtensions.cs" />
+    <Compile Include="Src\myTNBMenu\Fragments\HomeMenu\Listener\AccountsSearchOnQueryTextListener.cs" />
+    <AndroidResource Include="Resources\drawable\dashboard_home_bg.xml" />
+    <AndroidResource Include="Resources\drawable-hdpi\add_account_no_gradient.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\search_no_gradient.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\add_account_no_gradient.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\search_no_gradient.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\add_account_no_gradient.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\search_no_gradient.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\add_account_no_gradient.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\search_no_gradient.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\add_account_no_gradient.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\search_no_gradient.png" />
+    <Compile Include="Src\myTNBMenu\Fragments\HomeMenu\MVP\HomeMenuContract.cs" />
+    <Compile Include="Src\myTNBMenu\Fragments\HomeMenu\MVP\HomeMenuPresenter.cs" />
+    <Compile Include="Src\Utils\ShimmerUtils.cs" />
+    <AndroidResource Include="Resources\drawable-hdpi\faq_color_2.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\faq_color_3.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\faq_color_4.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\faq_color_5.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\faq_color_6.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\faq_color_2.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\faq_color_3.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\faq_color_4.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\faq_color_5.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\faq_color_6.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\faq_color_2.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\faq_color_3.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\faq_color_4.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\faq_color_5.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\faq_color_6.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\faq_color_2.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\faq_color_3.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\faq_color_4.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\faq_color_5.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\faq_color_6.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\faq_color_2.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\faq_color_3.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\faq_color_4.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\faq_color_5.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\faq_color_6.png" />
+    <Compile Include="Src\myTNBMenu\Fragments\HomeMenu\MVP\HomeMenuFragment.cs" />
+    <Compile Include="Src\Database\Model\MyServiceEntity.cs" />
+    <Compile Include="Src\Database\Model\NewFAQEntity.cs" />
+    <Compile Include="Src\myTNBMenu\Fragments\HomeMenu\Api\IGetServiceApi.cs" />
+    <Compile Include="Src\Base\Models\UserInterface.cs" />
+    <Compile Include="Src\Utils\ShimmerLoadingLayout.cs" />
+    <AndroidResource Include="Resources\layout\account_card_shimmer_layout.axml" />
+    <AndroidResource Include="Resources\drawable\account_icon_default.xml" />
+    <Compile Include="Src\myTNBMenu\Fragments\HomeMenu\Service\HomeMenuServiceImpl.cs" />
+    <AndroidResource Include="Resources\drawable-mdpi\ic_display_normal_meter.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\ic_display_r_eleaf.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\smr_48_x_48.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\ic_display_normal_meter.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\ic_display_r_eleaf.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\smr_48_x_48.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_display_normal_meter.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_display_r_eleaf.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\smr_48_x_48.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\ic_display_normal_meter.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\ic_display_r_eleaf.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\smr_48_x_48.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_display_normal_meter.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_display_r_eleaf.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\smr_48_x_48.png" />
+    <Compile Include="Src\myTNBMenu\Fragments\HomeMenu\Helper\AccountModelFormatter.cs" />
+    <Compile Include="Src\Base\Helper\ModelFormatter.cs" />
+    <Compile Include="Src\myTNBMenu\Fragments\HomeMenu\MVP\GetServicesResponse.cs" />
+    <Compile Include="Src\myTNBMenu\Fragments\HomeMenu\MVP\MyService.cs" />
+    <Compile Include="Src\myTNBMenu\Fragments\HomeMenu\MVP\NewFAQ.cs" />
+    <Compile Include="Src\myTNBMenu\Fragments\HomeMenu\Requests\MyServiceRequest.cs" />
+    <Compile Include="Src\Database\Model\NewFAQParentEntity.cs" />
+    <Compile Include="Src\SitecoreCMS\Service\HelpService.cs" />
+    <Compile Include="Src\SitecoreCMS\Model\HelpModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -1509,7 +1665,12 @@
     <Folder Include="Src\myTNBMenu\Fragments\HomeMenu\" />
     <Folder Include="Src\myTNBMenu\Fragments\HomeMenu\MVP\" />
     <Folder Include="Src\myTNBMenu\Fragments\HomeMenu\Adapter\" />
+    <Folder Include="Src\myTNBMenu\Fragments\HomeMenu\Api\" />
     <Folder Include="Src\myTNBMenu\Fragments\HomeMenu\Listener\" />
+    <Folder Include="Src\myTNBMenu\Fragments\HomeMenu\Service\" />
+    <Folder Include="Src\myTNBMenu\Fragments\HomeMenu\Helper\" />
+    <Folder Include="Src\Base\Helper\" />
+    <Folder Include="Src\myTNBMenu\Fragments\HomeMenu\Requests\" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\GradientStatusBar.xml" />
@@ -1918,9 +2079,6 @@
     <AndroidResource Include="Resources\drawable-hdpi\ic_menu_more.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable-hdpi\ic_menu_promotions.png" />
-  </ItemGroup>
-  <ItemGroup>
     <AndroidResource Include="Resources\drawable-xhdpi\ic_menu_bill.png" />
   </ItemGroup>
   <ItemGroup>
@@ -1931,9 +2089,6 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-xhdpi\ic_menu_more.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xhdpi\ic_menu_promotions.png" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-xxhdpi\ic_menu_bill.png" />
@@ -1948,9 +2103,6 @@
     <AndroidResource Include="Resources\drawable-xxhdpi\ic_menu_more.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxhdpi\ic_menu_promotions.png" />
-  </ItemGroup>
-  <ItemGroup>
     <AndroidResource Include="Resources\drawable-xxxhdpi\ic_menu_bill.png" />
   </ItemGroup>
   <ItemGroup>
@@ -1963,9 +2115,6 @@
     <AndroidResource Include="Resources\drawable-xxxhdpi\ic_menu_more.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxxhdpi\ic_menu_promotions.png" />
-  </ItemGroup>
-  <ItemGroup>
     <AndroidResource Include="Resources\drawable-mdpi\ic_menu_bill.png" />
   </ItemGroup>
   <ItemGroup>
@@ -1976,9 +2125,6 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-mdpi\ic_menu_more.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-mdpi\ic_menu_promotions.png" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\BottomMenuSelector.xml" />
@@ -2108,49 +2254,19 @@
     <AndroidResource Include="Resources\drawable-hdpi\ic_notifications_unread.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable-hdpi\ic_menu_bill_unread.png" />
-  </ItemGroup>
-  <ItemGroup>
     <AndroidResource Include="Resources\drawable-hdpi\ic_menu_feedback_unread.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-hdpi\ic_menu_promotions_unread.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-mdpi\ic_menu_bill_unread.png" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-mdpi\ic_menu_feedback_unread.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable-mdpi\ic_menu_promotions_unread.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xhdpi\ic_menu_promotions_unread.png" />
-  </ItemGroup>
-  <ItemGroup>
     <AndroidResource Include="Resources\drawable-xhdpi\ic_menu_feedback_unread.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xhdpi\ic_menu_bill_unread.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxhdpi\ic_menu_bill_unread.png" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-xxhdpi\ic_menu_feedback_unread.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxhdpi\ic_menu_promotions_unread.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxxhdpi\ic_menu_bill_unread.png" />
-  </ItemGroup>
-  <ItemGroup>
     <AndroidResource Include="Resources\drawable-xxxhdpi\ic_menu_feedback_unread.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxxhdpi\ic_menu_promotions_unread.png" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-hdpi\ic_navigation_arrow_left.png" />
@@ -2679,9 +2795,6 @@
     <AndroidResource Include="Resources\drawable\ic_menu_bill_selector.xml" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable\ic_menu_bill_unread_selector.xml" />
-  </ItemGroup>
-  <ItemGroup>
     <AndroidResource Include="Resources\drawable\ic_menu_dashboard_selector.xml" />
   </ItemGroup>
   <ItemGroup>
@@ -2724,9 +2837,6 @@
     <AndroidResource Include="Resources\drawable-hdpi\ic_menu_dashboard_toggled.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable-hdpi\ic_menu_bill_toggled_unread.png" />
-  </ItemGroup>
-  <ItemGroup>
     <AndroidResource Include="Resources\drawable-hdpi\ic_menu_bill_toggled.png" />
   </ItemGroup>
   <ItemGroup>
@@ -2752,9 +2862,6 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-mdpi\ic_menu_dashboard_toggled.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-mdpi\ic_menu_bill_toggled_unread.png" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-mdpi\ic_menu_bill_toggled.png" />
@@ -2784,9 +2891,6 @@
     <AndroidResource Include="Resources\drawable-xhdpi\ic_menu_dashboard_toggled.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xhdpi\ic_menu_bill_toggled_unread.png" />
-  </ItemGroup>
-  <ItemGroup>
     <AndroidResource Include="Resources\drawable-xhdpi\ic_menu_bill_toggled.png" />
   </ItemGroup>
   <ItemGroup>
@@ -2812,9 +2916,6 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-xxhdpi\ic_menu_dashboard_toggled.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxhdpi\ic_menu_bill_toggled_unread.png" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-xxhdpi\ic_menu_bill_toggled.png" />
@@ -2845,9 +2946,6 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-xxxhdpi\ic_menu_bill_toggled.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxxhdpi\ic_menu_bill_toggled_unread.png" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\menu\ViewBillReceiptMenu.xml" />
@@ -3040,6 +3138,7 @@
   </ItemGroup>
   <ItemGroup>
     <GoogleServicesJson Include="google-services-develop.json" Condition=" '$(Configuration)' == 'Develop' " />
+    <GoogleServicesJson Include="google-services-debug.json" Condition=" '$(Configuration)' == 'SIT' " />
     <GoogleServicesJson Include="google-services-debug.json" Condition=" '$(Configuration)' == 'Debug' " />
     <GoogleServicesJson Include="google-services-stub.json" Condition=" '$(Configuration)' == 'Stub' " />
     <GoogleServicesJson Include="google-services.json" Condition=" '$(Configuration)' == 'Release' " />
@@ -4408,7 +4507,7 @@
     <AndroidResource Include="Resources\values\facebook-strings.xml" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\myTNB.Mobile\myTNB.Mobile.csproj">
+      <ProjectReference Include="..\myTNB.Mobile\myTNB.Mobile.csproj">
       <Project>{A27A3842-1A8F-47F0-B333-94875BC922ED}</Project>
       <Name>myTNB.Mobile</Name>
     </ProjectReference>

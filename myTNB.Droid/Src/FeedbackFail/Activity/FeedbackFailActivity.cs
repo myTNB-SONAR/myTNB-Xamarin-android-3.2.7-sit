@@ -60,7 +60,7 @@ namespace myTNB_Android.Src.FeedbackFail.Activity
         [OnClick(Resource.Id.btnBackToDashboard)]
         void BackToDashboard(object sender, EventArgs eventArgs)
         {
-            var dashboardIntent = new Intent(this, typeof(DashboardActivity));
+            var dashboardIntent = new Intent(this, typeof(DashboardHomeActivity));
             dashboardIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
             StartActivity(dashboardIntent);
         }

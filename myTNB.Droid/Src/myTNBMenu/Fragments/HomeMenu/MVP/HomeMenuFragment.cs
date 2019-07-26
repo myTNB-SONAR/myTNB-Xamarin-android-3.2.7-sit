@@ -1,31 +1,85 @@
-﻿using Android.OS;
+﻿
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using Android.Content;
+using Android.Graphics;
+using Android.OS;
+using Android.Support.Design.Widget;
+using Android.Support.V4.Widget;
+using Android.Support.V7.App;
 using Android.Support.V7.Widget;
+using Android.Util;
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
 using Facebook.Shimmer;
+using Java.Lang;
+using myTNB_Android.Src.AddAccount.Activity;
 using myTNB_Android.Src.Base.Fragments;
+using myTNB_Android.Src.Database.Model;
+using myTNB_Android.Src.FAQ.Activity;
+using myTNB_Android.Src.myTNBMenu.Activity;
+using myTNB_Android.Src.myTNBMenu.Fragments.FeedbackMenu;
 using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter;
 using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Listener;
+using myTNB_Android.Src.Notifications.Activity;
+using myTNB_Android.Src.SummaryDashBoard.Models;
+using myTNB_Android.Src.SummaryDashBoard.SummaryListener;
 using myTNB_Android.Src.Utils;
+using static myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter.MyServiceAdapter;
+using static myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter.MyServiceShimmerAdapter;
+using myTNB_Android.Src.Utils.Custom.ProgressDialog;
+using Newtonsoft.Json;
+using Android.App;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 {
-    public class HomeMenuFragment : BaseFragment
-	{
-        //[BindView(Resource.Id.shimmer_view_container)]
-        //ShimmerFrameLayout shimmerViewContainer;
+    public class HomeMenuFragment : BaseFragment, HomeMenuContract.IHomeMenuView
+    {
+        [BindView(Resource.Id.newFAQShimmerView)]
+        LinearLayout newFAQShimmerView;
+
+        [BindView(Resource.Id.newFAQList)]
+        RecyclerView newFAQListRecycleView;
+
+        [BindView(Resource.Id.newFAQShimmerList)]
+        RecyclerView newFAQShimmerList;
+
+        [BindView(Resource.Id.newFAQView)]
+        LinearLayout newFAQView;
+
+        [BindView(Resource.Id.newFAQTitle)]
+        TextView newFAQTitle;
+
+        [BindView(Resource.Id.myServiceShimmerView)]
+        LinearLayout myServiceShimmerView;
+
+        [BindView(Resource.Id.myServiceList)]
+        RecyclerView myServiceListRecycleView;
+
+        [BindView(Resource.Id.myServiceShimmerList)]
+        RecyclerView myServiceShimmerList;
+
+        [BindView(Resource.Id.myServiceView)]
+        LinearLayout myServiceView;
+
+        [BindView(Resource.Id.myServiceTitle)]
+        TextView myServiceTitle;
         [BindView(Resource.Id.accountsHeaderTitle)]
         TextView accountHeaderTitle;
-        
+
+        [BindView(Resource.Id.accountGreeting)]
+        TextView accountGreeting;
+
+        [BindView(Resource.Id.accountGreetingName)]
+        TextView accountGreetingName;
+
         [BindView(Resource.Id.searchAction)]
         ImageView searchActionIcon;
 
-        [BindView(Resource.Id.addAction)]
-        ImageView addAccountActionIcon;
-
         [BindView(Resource.Id.searchEdit)]
-        EditText searchEditText;
+        Android.Widget.SearchView searchEditText;
 
         [BindView(Resource.Id.accountRecyclerViewContainer)]
         RecyclerView accountsRecyclerView;
@@ -33,36 +87,303 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         [BindView(Resource.Id.indicatorContainer)]
         LinearLayout indicatorContainer;
 
+        [BindView(Resource.Id.summaryNestScrollView)]
+        NestedScrollView summaryNestScrollView;
+
+        [BindView(Resource.Id.summaryRootView)]
+        CoordinatorLayout summaryRootView;
+
+        [BindView(Resource.Id.shimmerMyServiceView)]
+        ShimmerFrameLayout shimmerMyServiceView;
+
+        [BindView(Resource.Id.shimmerFAQView)]
+        ShimmerFrameLayout shimmerFAQView;
+
+        [BindView(Resource.Id.notificationHeaderIcon)]
+        ImageView notificationHeaderIcon;
+
+        [BindView(Resource.Id.addAction)]
+        ImageView addActionImage;
+
+
+        AccountsRecyclerViewAdapter accountsAdapter;
+
+        private string mSavedTimeStamp = "0000000";
+
+        private static List<MyService> currentMyServiceList = new List<MyService>();
+
+        private static List<NewFAQ> currentNewFAQList = new List<NewFAQ>();
+
+        HomeMenuContract.IHomeMenuPresenter presenter;
+        ISummaryFragmentToDashBoardActivtyListener mCallBack;
+
+        MyServiceShimmerAdapter myServiceShimmerAdapter;
+
+        MyServiceAdapter myServiceAdapter;
+
+        NewFAQShimmerAdapter newFAQShimmerAdapter;
+
+        NewFAQAdapter newFAQAdapter;
+
+        private LoadingOverlay loadingOverlay;
 
         public override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-            // Create your fragment here
+            presenter = new HomeMenuPresenter(this);
+        }
+
+        public override void OnAttach(Context context)
+        {
+            base.OnAttach(context);
+            try
+            {
+                mCallBack = context as ISummaryFragmentToDashBoardActivtyListener;
+            }
+            catch (Java.Lang.ClassCastException e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+
+        }
+
+        private void UpdateGreetingsHeader(Constants.GREETING greeting)
+        {
+            switch (greeting)
+            {
+                case Constants.GREETING.MORNING:
+                    accountGreeting.Text = GetString(Resource.String.greeting_text_morning);
+                    break;
+                case Constants.GREETING.AFTERNOON:
+                    accountGreeting.Text = GetString(Resource.String.greeting_text_afternoon);
+                    break;
+                default:
+                    accountGreeting.Text = GetString(Resource.String.greeting_text_evening);
+                    break;
+            }
+        }
+
+        private void SetNotificationIndicator()
+        {
+            if (UserNotificationEntity.HasNotifications())
+            {
+                notificationHeaderIcon.SetImageResource(Resource.Drawable.ic_header_notification_unread);
+            }
+            else
+            {
+                notificationHeaderIcon.SetImageResource(Resource.Drawable.ic_header_notification);
+            }
         }
 
         public override void OnViewCreated(View view, Bundle savedInstanceState)
         {
             base.OnViewCreated(view, savedInstanceState);
-            SetAccountsRecyclerView();
-            SetAccountActionHeader();
+            try
+            {
+                UpdateGreetingsHeader(this.presenter.GetGreeting());
+                accountGreetingName.Text = this.presenter.GetAccountDisplay() + "!";
+                SetNotificationIndicator();
+                SetAccountsRecyclerView();
+                SetAccountActionHeader();
+                SetupMyServiceView();
+                SetupNewFAQView();
+                TextViewUtils.SetMuseoSans500Typeface(myServiceTitle, newFAQTitle);
+                if (SummaryDashBoardAccountEntity.GetAllItems().Count == 0)
+                {
+                    this.presenter.LoadAccounts();
+                }
+                else
+                {
+                    this.presenter.LoadLocalAccounts();
+                }
+                addActionImage.SetOnClickListener(null);
+                notificationHeaderIcon.SetOnClickListener(null);
+                addActionImage.Click += delegate
+                {
+                    Intent linkAccount = new Intent(this.Activity, typeof(LinkAccountActivity));
+                    linkAccount.PutExtra("fromDashboard", true);
+                    StartActivity(linkAccount);
+                };
+                notificationHeaderIcon.Click += delegate
+                {
+                    StartActivity(new Intent(this.Activity, typeof(NotificationActivity)));
+                };
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
-        private void SetAccountActionHeader()
+        public bool IsActive()
         {
-            TextViewUtils.SetMuseoSans500Typeface(accountHeaderTitle);
+            return IsAdded && IsVisible && !IsDetached && !IsRemoving;
+        }
 
-            searchActionIcon.Click += (s, e) =>
+        private void SetupMyServiceView()
+        {
+            GridLayoutManager layoutManager = new GridLayoutManager(this.Activity, 3);
+            layoutManager.Orientation = RecyclerView.Vertical;
+            myServiceListRecycleView.SetLayoutManager(layoutManager);
+            myServiceListRecycleView.AddItemDecoration(new MyServiceItemDecoration(3, 8, false));
+
+            GridLayoutManager layoutShimmerManager = new GridLayoutManager(this.Activity, 3);
+            layoutShimmerManager.Orientation = RecyclerView.Vertical;
+            myServiceShimmerList.SetLayoutManager(layoutShimmerManager);
+            myServiceShimmerList.AddItemDecoration(new MyServiceShimmerItemDecoration(3, 8, false));
+        }
+
+        private void SetupNewFAQView()
+        {
+            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this.Activity, LinearLayoutManager.Horizontal, false);
+            newFAQListRecycleView.SetLayoutManager(linearLayoutManager);
+
+            LinearLayoutManager linearShimmerLayoutManager = new LinearLayoutManager(this.Activity, LinearLayoutManager.Horizontal, false);
+            newFAQShimmerList.SetLayoutManager(linearShimmerLayoutManager);
+
+        }
+
+        public void SetMyServiceRecycleView()
+        {
+            myServiceShimmerAdapter = new MyServiceShimmerAdapter(this.presenter.LoadShimmerServiceList(6), this.Activity);
+            myServiceShimmerList.SetAdapter(myServiceShimmerAdapter);
+
+            myServiceShimmerView.Visibility = ViewStates.Visible;
+            myServiceView.Visibility = ViewStates.Gone;
+            var shimmerBuilder = ShimmerUtils.ShimmerBuilderConfig();
+            if (shimmerBuilder != null)
+            {
+                shimmerMyServiceView.SetShimmer(shimmerBuilder?.Build());
+            }
+            shimmerMyServiceView.StartShimmer();
+            this.presenter.InitiateMyService();
+
+        }
+
+        public void SetMyServiceResult(List<MyService> list)
+        {
+            try
+            {
+                Activity.RunOnUiThread(() =>
+                {
+                    shimmerMyServiceView.StopShimmer();
+                    myServiceShimmerAdapter = new MyServiceShimmerAdapter(null, this.Activity);
+                    myServiceShimmerList.SetAdapter(myServiceShimmerAdapter);
+                    myServiceShimmerView.Visibility = ViewStates.Gone;
+                    myServiceView.Visibility = ViewStates.Visible;
+                    myServiceAdapter = new MyServiceAdapter(list, this.Activity);
+                    myServiceListRecycleView.SetAdapter(myServiceAdapter);
+                    currentMyServiceList.Clear();
+                    currentMyServiceList.AddRange(list);
+                    myServiceAdapter.ClickChanged += OnClickChanged;
+                    try
+                    {
+                        if (accountsAdapter != null && accountsAdapter.accountCardModelList != null && myServiceAdapter != null)
+                        {
+                            int count = accountsAdapter.accountCardModelList.Count;
+                            if (count < 1 && myServiceAdapter.ItemCount == 0)
+                            {
+                                newFAQTitle.SetTextColor(Color.White);
+                            }
+                            else
+                            {
+                                newFAQTitle.SetTextColor(Resources.GetColor(Resource.Color.powerBlue));
+                            }
+                        }
+                    }
+                    catch (System.Exception e)
+                    {
+                        Utility.LoggingNonFatalError(e);
+                    }
+                });
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void SetNewFAQRecycleView()
+        {
+            SetupNewFAQShimmerEffect();
+            this.presenter.GetSavedNewFAQTimeStamp();
+        }
+
+        private void SetupNewFAQShimmerEffect()
+        {
+            try
+            {
+                Activity.RunOnUiThread(() =>
+                {
+                    newFAQShimmerAdapter = new NewFAQShimmerAdapter(this.presenter.LoadShimmerFAQList(3), this.Activity);
+                    newFAQShimmerList.SetAdapter(newFAQShimmerAdapter);
+
+                    newFAQShimmerView.Visibility = ViewStates.Visible;
+                    newFAQView.Visibility = ViewStates.Gone;
+                    var shimmerBuilder = ShimmerUtils.ShimmerBuilderConfig();
+                    if (shimmerBuilder != null)
+                    {
+                        shimmerFAQView.SetShimmer(shimmerBuilder?.Build());
+                    }
+                    shimmerFAQView.StartShimmer();
+                });
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void SetNewFAQResult(List<NewFAQ> list)
+        {
+            try
+            {
+                Activity.RunOnUiThread(() =>
+                {
+                    shimmerFAQView.StopShimmer();
+                    newFAQShimmerAdapter = new NewFAQShimmerAdapter(null, this.Activity);
+                    newFAQShimmerList.SetAdapter(newFAQShimmerAdapter);
+                    newFAQShimmerView.Visibility = ViewStates.Gone;
+                    newFAQView.Visibility = ViewStates.Visible;
+                    newFAQAdapter = new NewFAQAdapter(list, this.Activity);
+                    newFAQListRecycleView.SetAdapter(newFAQAdapter);
+                    currentNewFAQList.Clear();
+                    currentNewFAQList.AddRange(list);
+                    newFAQAdapter.ClickChanged += OnFAQClickChanged;
+                });
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+
+        public void ShowSearchAction(bool isShow)
+        {
+            if (isShow)
             {
                 accountHeaderTitle.Visibility = ViewStates.Gone;
                 searchEditText.Visibility = ViewStates.Visible;
                 searchActionIcon.Visibility = ViewStates.Gone;
-            };
-
-            addAccountActionIcon.Click += (s, e) =>
+                searchEditText.RequestFocus();
+                searchEditText.ClearFocus();
+            }
+            else
             {
                 accountHeaderTitle.Visibility = ViewStates.Visible;
                 searchEditText.Visibility = ViewStates.Gone;
                 searchActionIcon.Visibility = ViewStates.Visible;
+            }
+        }
+
+        private void SetAccountActionHeader()
+        {
+            TextViewUtils.SetMuseoSans500Typeface(accountHeaderTitle, accountGreeting, accountGreetingName);
+            searchEditText.SetOnQueryTextListener(new AccountsSearchOnQueryTextListener(this,accountsAdapter));
+            searchActionIcon.Click += (s, e) =>
+            {
+                ShowSearchAction(true);
             };
         }
 
@@ -71,38 +392,384 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(Activity, LinearLayoutManager.Horizontal, false);
             accountsRecyclerView.SetLayoutManager(linearLayoutManager);
 
-            AccountsRecyclerViewAdapter accountsAdapter = new AccountsRecyclerViewAdapter(2);
-            accountsRecyclerView.SetAdapter(accountsAdapter);
+            accountsAdapter = new AccountsRecyclerViewAdapter(this);
+            accountsRecyclerView.AddOnScrollListener(new AccountsRecyclerViewOnScrollListener(this.presenter, linearLayoutManager, indicatorContainer));
 
-            accountsRecyclerView.AddOnScrollListener(new AccountsRecyclerViewOnScrollListener(linearLayoutManager, indicatorContainer));
-        }
-        private void SetShimmer()
-        {
-            //var shimmerBuilder = new Shimmer.AlphaHighlightBuilder();
-            //shimmerBuilder = default(Shimmer.AlphaHighlightBuilder);
-            //shimmerViewContainer.SetShimmer(shimmerBuilder?.Build());
+            SnapHelper snapHelper = new LinearSnapHelper();
+            snapHelper.AttachToRecyclerView(accountsRecyclerView);
         }
 
         public override void OnResume()
         {
             base.OnResume();
-            //var shimmerBuilder = new Shimmer.AlphaHighlightBuilder();
-            //shimmerBuilder = default(Shimmer.AlphaHighlightBuilder);
-            //shimmerViewContainer.SetShimmer(shimmerBuilder?.Build());
-            //shimmerViewContainer.StartShimmer();
+
+            var act = this.Activity as AppCompatActivity;
+
+            var actionBar = act.SupportActionBar;
+            actionBar.Hide();
+            ShowBackButton(false);
+
+            this.presenter.InitiateService();
+            SetNotificationIndicator();
         }
 
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
-            // Use this to return your custom view for this Fragment
-            // return inflater.Inflate(Resource.Layout.YourFragment, container, false);
-
             return base.OnCreateView(inflater, container, savedInstanceState);
         }
 
+        
         public override int ResourceId()
         {
             return Resource.Layout.HomeMenuFragmentView;
+        }
+        private void UpdateAccountListIndicator()
+        {
+            indicatorContainer.RemoveAllViews();
+            int accountsCount = accountsAdapter.ItemCount;
+            if (accountsCount > 1)
+            {
+                indicatorContainer.Visibility = ViewStates.Visible;
+                for (int i = 0; i < accountsCount; i++)
+                {
+                    ImageView image = new ImageView(Activity);
+                    image.Id = i;
+                    LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WrapContent, ViewGroup.LayoutParams.WrapContent);
+                    layoutParams.RightMargin = 8;
+                    layoutParams.LeftMargin = 8;
+                    image.LayoutParameters = layoutParams;
+                    if (i == 0)
+                    {
+                        image.SetImageResource(Resource.Drawable.circle_active);
+                    }
+                    else
+                    {
+                        image.SetImageResource(Resource.Drawable.circle);
+                    }
+                    indicatorContainer.AddView(image, i);
+                }
+            }
+            else
+            {
+                indicatorContainer.Visibility = ViewStates.Gone;
+            }
+            ChangeMyServiceFAQTextColor();
+        }
+
+        public void OnUpdateAccountListChanged(bool isSearchSubmit)
+		{
+            if (isSearchSubmit)
+            {
+                ShowSearchAction(false);
+                LinearLayoutManager manager = accountsRecyclerView.GetLayoutManager() as LinearLayoutManager;
+                int position = manager.FindFirstCompletelyVisibleItemPosition();
+
+                List<string> accountNumberList = accountsAdapter.GetAccountCardNumberListByPosition(position);
+                this.presenter.LoadSummaryDetailsInBatch(accountNumberList);
+			}
+            UpdateAccountListIndicator();
+		}
+
+
+        void OnClickChanged(object sender, int position)
+        {
+            try
+            {
+                if (position != -1)
+                {
+                    MyService selectedService = currentMyServiceList[position];
+                    if (selectedService.ServiceCategoryId == "1003")
+                    {
+                        ShowFeedbackMenu();
+                    }
+                }
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        void OnFAQClickChanged(object sender, int position)
+        {
+            try
+            {
+                if (position != -1)
+                {
+                    NewFAQ selectedNewFAQ = currentNewFAQList[position];
+                    Intent faqIntent = new Intent(this.Activity, typeof(FAQListActivity));
+                    faqIntent.PutExtra(Constants.FAQ_ID_PARAM, selectedNewFAQ.TargetItem);
+                    Activity.StartActivity(faqIntent);
+                }
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void ShowFeedbackMenu()
+        {
+            ShowBackButton(true);
+            FeedbackMenuFragment fragment = new FeedbackMenuFragment();
+
+            if (((DashboardHomeActivity)Activity) != null)
+            {
+                ((DashboardHomeActivity)Activity).SetCurrentFragment(fragment);
+                ((DashboardHomeActivity)Activity).HideAccountName();
+                ((DashboardHomeActivity)Activity).SetToolbarTitle(Resource.String.feedback_menu_activity_title);
+            }
+            FragmentManager.BeginTransaction()
+                           .Replace(Resource.Id.content_layout, fragment)
+                     .CommitAllowingStateLoss();
+        }
+
+        public void ShowBackButton(bool flag)
+        {
+            var act = this.Activity as AppCompatActivity;
+
+            var actionBar = act.SupportActionBar;
+            actionBar.SetDisplayHomeAsUpEnabled(flag);
+            actionBar.SetDisplayShowHomeEnabled(flag);
+        }
+
+        private void ChangeMyServiceFAQTextColor()
+        {
+            try
+            {
+                if (accountsAdapter != null && accountsAdapter.accountCardModelList != null && myServiceAdapter != null)
+                {
+                    int count = accountsAdapter.accountCardModelList.Count;
+                    if (count < 2)
+                    {
+                        myServiceTitle.SetTextColor(Color.White);
+                    }
+                    else
+                    {
+                        myServiceTitle.SetTextColor(Resources.GetColor(Resource.Color.powerBlue));
+                    }
+                    if (count < 1 && myServiceAdapter.ItemCount == 0)
+                    {
+                        newFAQTitle.SetTextColor(Color.White);
+                    }
+                    else
+                    {
+                        newFAQTitle.SetTextColor(Resources.GetColor(Resource.Color.powerBlue));
+                    }
+                }
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        private void ChangeMyServiceTextColor()
+        {
+            try
+            {
+                if (accountsAdapter != null && accountsAdapter.accountCardModelList != null)
+                {
+                    int count = accountsAdapter.accountCardModelList.Count;
+                    if (count < 2)
+                    {
+                        myServiceTitle.SetTextColor(Color.White);
+                    }
+                    else
+                    {
+                        myServiceTitle.SetTextColor(Resources.GetColor(Resource.Color.powerBlue));
+                    }
+                }
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public string GetDeviceId()
+        {
+            return this.DeviceId();
+        }
+
+        private Snackbar mMyServiceRetrySnakebar;
+        public void ShowMyServiceRetryOptions(string msg)
+        {
+            if (mMyServiceRetrySnakebar != null && mMyServiceRetrySnakebar.IsShown)
+            {
+                mMyServiceRetrySnakebar.Dismiss();
+            }
+
+            if (string.IsNullOrEmpty(msg))
+            {
+                msg = GetString(Resource.String.my_service_error);
+            }
+
+            mMyServiceRetrySnakebar = Snackbar.Make(summaryRootView, msg, Snackbar.LengthIndefinite)
+            .SetAction(GetString(Resource.String.my_service_btn_retry), delegate
+            {
+
+                mMyServiceRetrySnakebar.Dismiss();
+                RetryMyService();
+            }
+            );
+            mMyServiceRetrySnakebar.Show();
+        }
+
+        private void RetryMyService()
+        {
+            MyServiceShimmerAdapter adapter = new MyServiceShimmerAdapter(this.presenter.LoadShimmerServiceList(6), this.Activity);
+            myServiceShimmerList.SetAdapter(adapter);
+
+            myServiceShimmerView.Visibility = ViewStates.Visible;
+            myServiceView.Visibility = ViewStates.Gone;
+
+            this.presenter.RetryMyService();
+        }
+
+        public void UpdateAccountListCards(List<SummaryDashBoardDetails> accountList)
+        {
+            accountsAdapter.UpdateAccountCards(accountList);
+        }
+
+        private void SetHeaderActionVisiblity(List<SummaryDashBoardDetails> accountList)
+        {
+            if (accountList.Count <= 5)
+            {
+                searchActionIcon.Visibility = ViewStates.Gone;
+                searchEditText.Visibility = ViewStates.Gone;
+            }
+            else
+            {
+                searchActionIcon.Visibility = ViewStates.Visible;
+            }
+        }
+
+        public void SetAccountListCards(List<SummaryDashBoardDetails> accountList)
+        {
+            SetHeaderActionVisiblity(accountList);
+            accountsAdapter.SetAccountCards(accountList);
+            accountsRecyclerView.SetAdapter(accountsAdapter);
+            ChangeMyServiceTextColor();
+        }
+
+        public void SetAccountListCardsFromLocal(List<SummaryDashBoardDetails> accountList)
+        {
+            SetHeaderActionVisiblity(accountList);
+            accountsAdapter.SetAccountCardsFromLocal(accountList);
+            accountsRecyclerView.SetAdapter(accountsAdapter);
+            ChangeMyServiceTextColor();
+        }
+
+        public void OnSavedTimeStamp(string savedTimeStamp)
+        {
+            if (savedTimeStamp != null)
+            {
+                this.mSavedTimeStamp = savedTimeStamp;
+            }
+            this.presenter.OnGetFAQTimeStamp();
+        }
+
+        public void ShowFAQTimestamp(bool success)
+        {
+            try
+            {
+                if (success)
+                {
+                    NewFAQParentEntity wtManager = new NewFAQParentEntity();
+                    List<NewFAQParentEntity> items = wtManager.GetAllItems();
+                    if (items != null)
+                    {
+                        NewFAQParentEntity entity = items[0];
+                        if (entity != null)
+                        {
+                            if (!entity.Timestamp.Equals(mSavedTimeStamp))
+                            {
+                                this.presenter.OnGetFAQs();
+                            }
+                            else
+                            {
+                                this.presenter.ReadNewFAQFromCache();
+                            }
+                        }
+                    }
+
+                }
+                else
+                {
+                    this.presenter.ReadNewFAQFromCache();
+                }
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void ShowAccountDetails(string accountNumber)
+        {
+            if (accountNumber != null)
+            {
+                CustomerBillingAccount.RemoveSelected();
+                CustomerBillingAccount.Update(accountNumber,true);
+
+                if (mCallBack != null)
+                {
+                    mCallBack.NavigateToDashBoardFragment();
+                    //ShowBackArrowIndicator()
+                }
+            }
+        }
+
+        public void ShowProgressDialog()
+        {
+            try
+            {
+                if (loadingOverlay != null && loadingOverlay.IsShowing)
+                {
+                    loadingOverlay.Dismiss();
+                }
+
+                loadingOverlay = new LoadingOverlay(this.Activity, Resource.Style.LoadingOverlyDialogStyle);
+                loadingOverlay.Show();
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void HideProgressDialog()
+        {
+            try
+            {
+                if (loadingOverlay != null && loadingOverlay.IsShowing)
+                {
+                    loadingOverlay.Dismiss();
+                }
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void OnSearchOutFocus()
+        {
+            if (searchEditText != null)
+            {
+                if(searchEditText.Visibility == ViewStates.Visible)
+                {
+                    searchEditText.ClearFocus();
+                    ShowSearchAction(false);
+                    OnUpdateAccountListChanged(true);
+                }
+            }
+        }
+
+        public AccountsRecyclerViewAdapter GetAccountAdapter()
+        {
+            return accountsAdapter;
         }
     }
 }
