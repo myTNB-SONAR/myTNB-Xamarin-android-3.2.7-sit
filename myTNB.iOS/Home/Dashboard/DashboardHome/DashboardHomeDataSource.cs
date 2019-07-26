@@ -42,6 +42,11 @@ namespace myTNB
             return 3;
         }
 
+        public override nfloat EstimatedHeight(UITableView tableView, NSIndexPath indexPath)
+        {
+            return GetHeightForRow(tableView, indexPath);
+        }
+
         public override nfloat GetHeightForRow(UITableView tableView, NSIndexPath indexPath)
         {
             if (indexPath.Row == 0)
