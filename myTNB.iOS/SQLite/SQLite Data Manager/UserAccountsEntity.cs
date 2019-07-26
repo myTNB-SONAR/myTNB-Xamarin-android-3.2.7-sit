@@ -73,6 +73,7 @@ namespace myTNB.SQLite.SQLiteDataManager
                     item.accountCategoryId = obj.accountCategoryId;
                     item.ownerName = obj.ownerName;
                     item.smartMeterCode = obj.smartMeterCode;
+                    item.isTaggedSMR = obj.isTaggedSMR;
                     InsertItem(item);
                 }
             }
@@ -140,6 +141,7 @@ namespace myTNB.SQLite.SQLiteDataManager
                     item.accountCategoryId = obj.accountCategoryId;
                     item.ownerName = obj.ownerName;
                     item.smartMeterCode = obj.smartMeterCode;
+                    item.isTaggedSMR = obj.isTaggedSMR;
                     customerAccountList.d.Add(item);
                 }
             }
