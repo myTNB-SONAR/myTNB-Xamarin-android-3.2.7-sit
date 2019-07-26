@@ -1310,6 +1310,8 @@
     <Compile Include="Src\Database\Model\NewFAQParentEntity.cs" />
     <Compile Include="Src\SitecoreCMS\Service\HelpService.cs" />
     <Compile Include="Src\SitecoreCMS\Model\HelpModel.cs" />
+    <Compile Include="Src\SitecoreCMS\Model\ApplySSMRWalkthroughModel.cs" />
+    <Compile Include="Src\SitecoreCMS\Service\ApplySSMRWalkthroughService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
