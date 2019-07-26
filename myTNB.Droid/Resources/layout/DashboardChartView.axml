@@ -62,12 +62,12 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical"
                 android:weightSum="4"
-                android:layout_marginLeft="30dp"
-                android:layout_marginRight="30dp"
                 android:visibility="visible">
                 <TextView
                     android:layout_height="0dp"
                     android:layout_width="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
                     android:layout_weight="0.2"
                     android:textSize="9sp"
                     android:textAllCaps="true"
@@ -80,6 +80,8 @@
                     android:layout_height="0dp"
                     android:layout_width="wrap_content"
                     android:layout_weight="0.3"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
                     android:textSize="16dp"
                     android:textStyle="bold"
                     android:layout_gravity="center"
@@ -89,8 +91,8 @@
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:layout_marginLeft="53dp"
-                    android:layout_marginRight="53dp"
+                    android:layout_marginLeft="68dp"
+                    android:layout_marginRight="68dp"
                     android:layout_weight="0.4"
                     android:gravity="center"
                     android:minHeight="50dp"
@@ -125,6 +127,8 @@
                 <com.github.mikephil.charting.charts.BarChart
                     android:id="@+id/bar_chart"
                     android:layout_width="match_parent"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
                     android:layout_height="0dp"
                     android:layout_weight="2.5"
                     android:visibility="visible" />
@@ -132,6 +136,8 @@
                     android:id="@+id/no_data_layout"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
                     android:layout_weight="2.5"
                     android:gravity="center"
                     android:padding="10dp"
@@ -169,6 +175,8 @@
                     android:id="@+id/downtime_layout"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
                     android:layout_weight="2.5"
                     android:gravity="center"
                     android:padding="28dp"
@@ -186,6 +194,8 @@
                 <TextView
                     android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
                     android:layout_weight="0.7"
                     android:textSize="14sp"
                     android:textStyle="bold"
@@ -196,40 +206,116 @@
                     android:layout_marginTop="@dimen/_10sdp"
                     android:textColorLink="@color/white"
                     android:gravity="center" />
-                    <View
-                            android:id="@+id/addressDivider"
-                            android:layout_height="1dp"
+                <View
+                    android:id="@+id/addressDivider"
+                    android:layout_height="1dp"
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="@dimen/_2sdp"
+                    android:layout_marginBottom="@dimen/_2sdp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:alpha="0.3"
+                    android:visibility="gone"
+                    android:background="@color/barchartColorHighlighted" />
+                <TextView
+                    android:id="@+id/txtAccountStatus"
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:textColor="@color/white"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:gravity="center"
+                    android:text="Electricity Connection:"
+                    android:textSize="12sp"
+                    android:visibility="gone"/>
+                <TextView
+                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent"
+                        android:textSize="12sp"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginRight="15dp"
+                        android:textColor="@color/sunGlow"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:id="@+id/txtWhatAccountStatus"
+                        android:clickable="true"
+                        android:text="What does this mean?"
+                        android:visibility="gone"/>
+                <LinearLayout
+                    android:id="@+id/ssmrHistoryContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginBottom="24dp"
+                    android:visibility="visible">
+                    <android.support.v7.widget.CardView
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        segmentedgroup:cardCornerRadius="4dp"
+                        segmentedgroup:cardBackgroundColor="@color/white"
+                        segmentedgroup:cardUseCompatPadding="true"
+                        segmentedgroup:cardElevation="4dp"
+                        android:id="@+id/ssmr_account_status">
+                        <LinearLayout 
+                            android:id="@+id/ssmr_account_status"
                             android:layout_width="match_parent"
-                            android:layout_marginTop="@dimen/_2sdp"
-                            android:layout_marginBottom="@dimen/_2sdp"
-                            android:layout_marginLeft="@dimen/_5sdp"
-                            android:layout_marginRight="@dimen/_5sdp"
-                            android:alpha="0.3"
-                            android:visibility="gone"
-                            android:background="@color/barchartColorHighlighted" />
-                            <TextView
-                                android:id="@+id/txtAccountStatus"
-                                android:layout_height="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+                            <LinearLayout
+                                android:id="@+id/ssmr_account_message"
                                 android:layout_width="match_parent"
-                                android:textColor="@color/white"
-                                android:layout_gravity="center"
-                                android:layout_marginTop="12dp"
-                                android:gravity="center"
-                                android:text="Electricity Connection:"
-                                android:textSize="12sp"
-                                android:visibility="gone"/>
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:layout_marginTop="16dp"
+                                android:layout_marginLeft="12dp"
+                                android:layout_marginRight="12dp"
+                                android:layout_marginBottom="8dp">
+                                <ImageView
+                                    android:id="@+id/ssmr_img"
+                                    android:src="@drawable/smr_48_x_48"
+                                    android:layout_width="32dp"
+                                    android:layout_height="32dp"
+                                    android:layout_marginLeft="2dp"
+                                    android:layout_marginRight="14dp"
+                                    android:scaleType="fitCenter" />
                                 <TextView
-                                        android:layout_height="wrap_content"
-                                        android:layout_width="match_parent"
-                                        android:textSize="12sp"
-                                        android:layout_marginTop="4dp"
-                                        android:textColor="@color/sunGlow"
-                                        android:layout_gravity="center"
-                                        android:gravity="center"
-                                        android:id="@+id/txtWhatAccountStatus"
-                                        android:clickable="true"
-                                        android:text="What does this mean?"
-                                        android:visibility="gone"/>
+                                    android:id="@+id/ssmrAccountStatusText"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:textColor="@color/charcoalGrey"
+                                    android:text=""
+                                    android:textSize="12dp"/>
+                            </LinearLayout>
+                            <TextView
+                                android:id="@+id/ssmrAccountStatusText"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="60dp"
+                                android:layout_marginRight="98dp"
+                                android:layout_marginBottom="8dp"
+                                android:textColor="@color/powerBlue"
+                                android:text="View my reading history"
+                                android:visibility="gone"
+                                android:textSize="12dp"/>
+                            <Button
+                                android:id="@+id/btnReadingHistory"
+                                style="@style/Theme.MeterReading"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="8dp"
+                                android:layout_marginLeft="18dp"
+                                android:layout_marginRight="18dp"
+                                android:layout_marginBottom="16dp"
+                                android:layout_weight="1"
+                                android:text="@string/ssmr_submit_meter"
+                                android:textAllCaps="false" />
+                        </LinearLayout>
+                    </android.support.v7.widget.CardView>
+                </LinearLayout>
             </LinearLayout>
             <ImageButton
                 android:src="@drawable/ic_navigation_arrow_left"
