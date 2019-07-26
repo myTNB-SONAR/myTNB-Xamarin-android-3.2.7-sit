@@ -36,7 +36,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Listener
                         imageView.SetImageResource(Resource.Drawable.circle);
                     }
                 }
-                if ((currentPosition - previousPos) > 0)
+                if (previousPos != currentPosition)
                 {
                     this.mPresenter.LoadBatchSummarDetailsByIndex(currentPosition);
                 }

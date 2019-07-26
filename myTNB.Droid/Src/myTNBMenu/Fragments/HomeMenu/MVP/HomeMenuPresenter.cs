@@ -181,7 +181,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             }
         }
 
-        private void LoadSummaryDetailsInBatch(List<string> accountList)
+        public void LoadSummaryDetailsInBatch(List<string> accountList)
         {
             if (accountList.Count > 0)
             {
@@ -237,7 +237,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
             batchAccountList = accountList.Select((x, index) => new { x, index })
                    .GroupBy(x => x.index / 5, y => y.x);
-            this.mView.SetAccountListCards(summaryDashboardInfoList);
+            this.mView.SetAccountListCardsFromLocal(summaryDashboardInfoList);
         }
 
         public void LoadAccounts()
@@ -253,6 +253,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             foreach (CustomerBillingAccount customerBillintAccount in customerBillingAccountList)
             {
                 SummaryDashBoardDetails summaryDashBoardDetails = new SummaryDashBoardDetails();
+                summaryDashBoardDetails.AccName = customerBillintAccount.AccDesc;
                 summaryDashBoardDetails.AccNumber = customerBillintAccount.AccNum;
                 summaryDashBoardDetails.AccType = customerBillintAccount.AccountCategoryId;
                 summaryDashboardInfoList.Add(summaryDashBoardDetails);
@@ -271,7 +272,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             batchAccountList = accountList.Select((x, index) => new { x, index })
                    .GroupBy(x => x.index / 5, y => y.x);
             this.mView.SetAccountListCards(summaryDashboardInfoList);
-            BatchLoadSummaryDetails(customerBillingAccountList);
+            if (batchAccountList.ToList().Count > 0)
+            {
+                BatchLoadSummaryDetails(customerBillingAccountList);
+            }
         }
 
         public void LoadBatchSummaryAccounts()
@@ -539,11 +543,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
         public void LoadBatchSummarDetailsByIndex(int batchIndex)
         {
-            SummaryDashBoardAccountEntity summaryDashBoardEntity = SummaryDashBoardAccountEntity.GetItemByAccountNo(batchAccountList.ToList()[batchIndex].ToList().First());
-            if (summaryDashBoardEntity == null)
-            {
-                LoadSummaryDetailsInBatch(batchAccountList.ToList()[batchIndex].ToList());
-            }
+            LoadSummaryDetailsInBatch(this.mView.GetAccountAdapter().GetAccountCardNumberListByPosition(batchIndex));
         }
     }
 }

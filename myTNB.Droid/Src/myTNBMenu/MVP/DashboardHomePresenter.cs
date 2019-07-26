@@ -336,7 +336,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 					}
 					break;
 				case Resource.Id.menu_bill:
-                    this.mView.ShowHideActionBar(true);
 					if (accountList.Count > 0)
 					{
 						CustomerBillingAccount selected;
@@ -353,7 +352,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 							LoadBills(accountList[0]);
 							this.mView.SetAccountName(accountList[0].AccDesc);
 						}
-						if (selected.AccountCategoryId.Equals("2"))
+                        if (selected.AccountCategoryId.Equals("2"))
 						{
 							this.mView.ShowREAccount(true);
 						}
@@ -377,7 +376,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 					if (weblinkEntity != null)
 					{
 						currentBottomNavigationMenu = Resource.Id.menu_promotion;
-						this.mView.ShowHideActionBar(true);
 						this.mView.HideAccountName();
 						this.mView.SetToolbarTitle(Resource.String.promotion_menu_activity_title);
 						this.mView.ShowPromotionsMenu(Weblink.Copy(weblinkEntity));
@@ -398,18 +396,15 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 					}
 					break;
 				case Resource.Id.menu_reward:
-                    this.mView.ShowHideActionBar(true);
-                    currentBottomNavigationMenu = Resource.Id.menu_reward;
+                    this.mView.ShowToBeAddedToast();
 					break;
 				case Resource.Id.menu_feedback:
-                    this.mView.ShowHideActionBar(true);
                     currentBottomNavigationMenu = Resource.Id.menu_feedback;
 					this.mView.HideAccountName();
 					this.mView.SetToolbarTitle(Resource.String.feedback_menu_activity_title);
 					this.mView.ShowFeedbackMenu();
 					break;
 				case Resource.Id.menu_more:
-                    this.mView.ShowHideActionBar(true);
                     currentBottomNavigationMenu = Resource.Id.menu_more;
 					this.mView.HideAccountName();
 					this.mView.SetToolbarTitle(Resource.String.more_menu_activity_title);
@@ -884,7 +879,8 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 					this.mView.ShowBillMenu(accountData);
 				}
 				this.mView.ShowAccountName();
-				this.mView.SetToolbarTitle(Resource.String.bill_menu_activity_title);
+                this.mView.ShowHideActionBar(true);
+                this.mView.SetToolbarTitle(Resource.String.bill_menu_activity_title);
 				currentBottomNavigationMenu = Resource.Id.menu_bill;
 			}
 			catch (System.Exception e)
@@ -1165,6 +1161,11 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 		{
 			OnAccountSelectDashBoard();
 		}
+
+        public int CheckCurrentDashboardMenu()
+        {
+            return currentBottomNavigationMenu;
+        }
 	}
 
 }
