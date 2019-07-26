@@ -36,7 +36,7 @@ namespace myTNB.Dashboard.DashboardComponents
         public ActivityIndicatorComponent _componentActivity;
         public RefreshViewComponent _refreshViewComponent;
         public AccountStatusComponent _accountStatusComponent;
-        public SMRComponent _sMRComponent;
+        public SSMRComponent _sSMRComponent;
         public UIView _viewChartCompanion;
         public UIView _viewSmartMeter;
         public UIView _viewChart;
@@ -235,9 +235,9 @@ namespace myTNB.Dashboard.DashboardComponents
             //Add SSMR
             if (DataManager.DataManager.SharedInstance.AccountIsActive && DataManager.DataManager.SharedInstance.AccountIsSSMR)
             {
-                _sMRComponent = new SMRComponent(_dashboardScrollView, _addressComponent.GetView().Frame.GetMaxY());
-                _dashboardScrollView.AddSubview(_sMRComponent.GetUI());
-                _sMRComponent.SetDescription("You missed 2 reading months! Check back in for the next reading period or your service will be discontinued.");
+                _sSMRComponent = new SSMRComponent(_dashboardScrollView, _addressComponent.GetView().Frame.GetMaxY());
+                _dashboardScrollView.AddSubview(_sSMRComponent.GetUI());
+                _sSMRComponent.SetDescription("You missed 2 reading months! Check back in for the next reading period or your service will be discontinued.");
             }
 
             CGSize contentSize = _dashboardScrollView.ContentSize;

@@ -47,5 +47,8 @@
 
         //Hint
         public static string I18N_HintMobileNumber = "mobileNumberSample";
+
+        //Cell
+        public static string Cell_ReadingHistory = "readingHistoryTableViewCell";
     }
 }

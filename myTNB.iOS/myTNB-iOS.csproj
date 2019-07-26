@@ -1036,6 +1036,18 @@
     <ImageAsset Include="Assets.xcassets\SMR-Medium-Icon.imageset\SMR-Medium-Icon.png" />
     <ImageAsset Include="Assets.xcassets\SMR-Medium-Icon.imageset\SMR-Medium-Icon%402x.png" />
     <ImageAsset Include="Assets.xcassets\SMR-Medium-Icon.imageset\SMR-Icon%403x.png" />
+    <ImageAsset Include="Assets.xcassets\SSMRPrimaryIcon.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\SSMRPrimaryIcon.imageset\SSMRPrimaryIcon.png" />
+    <ImageAsset Include="Assets.xcassets\SSMRPrimaryIcon.imageset\SSMRPrimaryIcon%402x.png" />
+    <ImageAsset Include="Assets.xcassets\SSMRPrimaryIcon.imageset\SSMRPrimaryIcon%403x.png" />
+    <ImageAsset Include="Assets.xcassets\SMR-Closed-BG.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\SMR-Closed-BG.imageset\SMR-Closed-BG.png" />
+    <ImageAsset Include="Assets.xcassets\SMR-Closed-BG.imageset\SMR-Closed-BG%402x.png" />
+    <ImageAsset Include="Assets.xcassets\SMR-Closed-BG.imageset\SMR-Closed-BG%403x.png" />
+    <ImageAsset Include="Assets.xcassets\SMR-Open-Submitted-BG.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\SMR-Open-Submitted-BG.imageset\SMR-Open-Submitted-BG.png" />
+    <ImageAsset Include="Assets.xcassets\SMR-Open-Submitted-BG.imageset\SMR-Open-Submitted-BG%402x.png" />
+    <ImageAsset Include="Assets.xcassets\SMR-Open-Submitted-BG.imageset\SMR-Open-Submitted-BG%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -1353,8 +1365,11 @@
     <Folder Include="Customs\Generic Status Page\" />
     <Folder Include="SSMR\Meter Reading\" />
     <Folder Include="Assets.xcassets\SMR-Medium-Icon.imageset\" />
-    <Folder Include="Customs\SSMR\" />
     <Folder Include="SSMR\History\" />
+    <Folder Include="Home\Components\SSMR\" />
+    <Folder Include="Assets.xcassets\SSMRPrimaryIcon.imageset\" />
+    <Folder Include="Assets.xcassets\SMR-Closed-BG.imageset\" />
+    <Folder Include="Assets.xcassets\SMR-Open-Submitted-BG.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -2094,12 +2109,14 @@
     <Compile Include="SSMR\Meter Reading\SSMRCaptureMeterViewController.designer.cs">
       <DependentUpon>SSMRCaptureMeterViewController.cs</DependentUpon>
     </Compile>
-    <Compile Include="Customs\SSMR\SMRComponent.cs" />
     <Compile Include="SSMR\History\SSMRReadingHistoryViewController.cs" />
     <Compile Include="SSMR\History\SSMRReadingHistoryViewController.designer.cs">
       <DependentUpon>SSMRReadingHistoryViewController.cs</DependentUpon>
     </Compile>
     <Compile Include="SSMR\History\SSMRReadingHistoryDataSource.cs" />
+    <Compile Include="SSMR\History\SSMRReadingHistoryCell.cs" />
+    <Compile Include="Home\Components\SSMR\SSMRComponent.cs" />
+    <Compile Include="Home\Components\SSMR\SSMRReadingHistoryHeaderComponent.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />

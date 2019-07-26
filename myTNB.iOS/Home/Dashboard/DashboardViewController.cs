@@ -440,6 +440,7 @@ namespace myTNB.Dashboard
             SetAccessEvent();
             SetTitleBarEvent();
             SetScrollEvent();
+            SetSSMREvent();
         }
 
         private void SetAccountSelectionEvent()
@@ -680,11 +681,20 @@ namespace myTNB.Dashboard
                 }
                 UITapGestureRecognizer notificationTap = new UITapGestureRecognizer(() =>
                 {
+                    //DataManager.DataManager.SharedInstance.IsSameAccount = true;
+                    //UIStoryboard storyBoard = UIStoryboard.FromName("PushNotification", null);
+                    //PushNotificationViewController viewController = storyBoard.InstantiateViewController("PushNotificationViewController") as PushNotificationViewController;
+                    //var navController = new UINavigationController(viewController);
+                    //PresentViewController(navController, true, null);
                     DataManager.DataManager.SharedInstance.IsSameAccount = true;
-                    UIStoryboard storyBoard = UIStoryboard.FromName("PushNotification", null);
-                    PushNotificationViewController viewController = storyBoard.InstantiateViewController("PushNotificationViewController") as PushNotificationViewController;
-                    var navController = new UINavigationController(viewController);
-                    PresentViewController(navController, true, null);
+                    UIStoryboard storyBoard = UIStoryboard.FromName("SSMR", null);
+                    SSMRReadingHistoryViewController viewController =
+                        storyBoard.InstantiateViewController("SSMRReadingHistoryViewController") as SSMRReadingHistoryViewController;
+                    if (viewController != null)
+                    {
+                        var navController = new UINavigationController(viewController);
+                        PresentViewController(navController, true, null);
+                    }
                 });
                 _dashboardMainComponent._titleBarComponent.SetPrimaryAction(notificationTap);
             }
@@ -695,6 +705,26 @@ namespace myTNB.Dashboard
             if (_dashboardMainComponent._dashboardScrollView != null)
             {
                 _dashboardMainComponent._dashboardScrollView.Scrolled += OnScrollDashboard;
+            }
+        }
+
+        private void SetSSMREvent()
+        {
+            if (_dashboardMainComponent._sSMRComponent != null)
+            {
+                _dashboardMainComponent._sSMRComponent._smrButton.TouchUpInside += (sender, e) =>
+                {
+                    Debug.WriteLine("_smrButton pressed");
+                    DataManager.DataManager.SharedInstance.IsSameAccount = true;
+                    UIStoryboard storyBoard = UIStoryboard.FromName("SSMR", null);
+                    SSMRReadingHistoryViewController viewController =
+                        storyBoard.InstantiateViewController("SSMRReadingHistoryViewController") as SSMRReadingHistoryViewController;
+                    if (viewController != null)
+                    {
+                        var navController = new UINavigationController(viewController);
+                        PresentViewController(navController, true, null);
+                    }
+                };
             }
         }
 
@@ -1143,9 +1173,9 @@ namespace myTNB.Dashboard
             {
                 _dashboardMainComponent._accountStatusComponent.SetFrameByPrecedingView((float)_dashboardMainComponent._addressComponent.GetView().Frame.GetMaxY());
             }
-            if (_dashboardMainComponent._sMRComponent != null)
+            if (_dashboardMainComponent._sSMRComponent != null)
             {
-                _dashboardMainComponent._sMRComponent.SetFrameByPrecedingView((float)_dashboardMainComponent._addressComponent.GetView().Frame.GetMaxY());
+                _dashboardMainComponent._sSMRComponent.SetFrameByPrecedingView((float)_dashboardMainComponent._addressComponent.GetView().Frame.GetMaxY());
             }
             _dashboardMainComponent._lblEstimatedReading.Hidden = (isMonthView) ? !IsEstimatedReading(chartData) : true;
             _dashboardMainComponent._usageHistoryComponent.SetDateRange(dateRange);

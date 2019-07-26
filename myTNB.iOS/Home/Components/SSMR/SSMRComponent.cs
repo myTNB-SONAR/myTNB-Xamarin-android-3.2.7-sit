@@ -1,22 +1,23 @@
 ﻿using System;
+using System.Diagnostics;
 using CoreGraphics;
 using UIKit;
 
 namespace myTNB
 {
-    public class SMRComponent
+    public class SSMRComponent
     {
         private readonly UIView _parentView;
         UIView _containerView;
         UIImageView _iconView;
         UILabel _labelViewHistory;
         UILabel _description;
-        UIButton _smrButton;
+        public UIButton _smrButton;
         nfloat _yLocation = 0f;
         nfloat _descWidth = 0f;
         nfloat _padding = 16f;
 
-        public SMRComponent(UIView parentView, nfloat yLocation)
+        public SSMRComponent(UIView parentView, nfloat yLocation)
         {
             _parentView = parentView;
             _yLocation = yLocation;
@@ -62,7 +63,11 @@ namespace myTNB
             _smrButton.SetTitle("Dashboard_ViewReadingHistory".Translate(), UIControlState.Normal);
             _smrButton.Font = MyTNBFont.MuseoSans16_500;
             _smrButton.SetTitleColor(MyTNBColor.FreshGreen, UIControlState.Normal);
-
+            _smrButton.Enabled = true;
+            _smrButton.TouchUpInside += (sender, e) =>
+            {
+                Debug.WriteLine("_smrButton pressed!!!!!!!");
+            };
             _containerView.AddSubviews(new UIView { _iconView, _description, _smrButton });
         }
 
@@ -94,9 +99,9 @@ namespace myTNB
             btnFrame.Y = _description.Frame.GetMaxY() + _padding;
             _smrButton.Frame = btnFrame;
 
-            CGRect parentFrame = _containerView.Frame;
-            parentFrame.Height = _smrButton.Frame.GetMaxY() + _padding;
-            _containerView.Frame = parentFrame;
+            CGRect containerFrame = _containerView.Frame;
+            containerFrame.Height = _smrButton.Frame.GetMaxY() + _padding;
+            _containerView.Frame = containerFrame;
         }
 
         public void SetFrameByPrecedingView(float yLocation)
