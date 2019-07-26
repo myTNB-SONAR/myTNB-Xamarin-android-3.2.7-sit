@@ -750,7 +750,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
         public override bool DispatchTouchEvent(MotionEvent ev)
         {
-            if (ev.Action == MotionEventActions.Down)
+            if (ev.Action == MotionEventActions.Down && this.userActionsListener?.CheckCurrentDashboardMenu() == Resource.Id.menu_dashboard)
             {
                 View view = CurrentFocus;
                 if (view != null && view.GetType() != typeof(EditText))

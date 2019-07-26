@@ -15,23 +15,33 @@
       android:layout_height="match_parent"
       android:gravity="center"
       android:id="@+id/rootView">
-        <ImageView
-            android:id="@+id/service_img"
-            android:layout_height="24dp"
-            android:layout_width="24dp"
-            android:layout_gravity="center_horizontal"
-            android:src="@drawable/round_circle"/>
+        <com.facebook.shimmer.ShimmerFrameLayout
+            android:id="@+id/shimmerMyServiceImg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:id="@+id/service_img"
+                android:layout_height="24dp"
+                android:layout_width="24dp"
+                android:layout_gravity="center_horizontal"
+                android:src="@drawable/round_circle"/>
+        </com.facebook.shimmer.ShimmerFrameLayout>
+        <com.facebook.shimmer.ShimmerFrameLayout
+            android:id="@+id/shimmerMyServiceTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="14dp"
+            android:layout_marginRight="14dp"
+            android:layout_marginTop="8dp">
             <TextView
                 android:id="@+id/service_title"
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
-                android:layout_marginLeft="14dp"
-                android:layout_marginRight="14dp"
-                android:layout_marginTop="8dp"
                 android:textColor="@color/shimmer_color"
                 android:background="@color/shimmer_color"
                 android:gravity="center"
-                android:textSize="12dp"
-                android:lineSpacingExtra="2dp"/>
+                android:textSize="12sp"
+                android:lineSpacingExtra="2sp"/>
+        </com.facebook.shimmer.ShimmerFrameLayout>
   </LinearLayout>
 </android.support.v7.widget.CardView>
