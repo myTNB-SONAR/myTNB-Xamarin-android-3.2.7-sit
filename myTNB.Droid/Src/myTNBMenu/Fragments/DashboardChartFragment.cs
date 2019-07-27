@@ -32,6 +32,7 @@ using myTNB_Android.Src.myTNBMenu.Charts.SelectedMarkerView;
 using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.myTNBMenu.MVP.Fragment;
 using myTNB_Android.Src.Notifications.Activity;
+using myTNB_Android.Src.SSMRMeterHistory.MVP;
 using myTNB_Android.Src.Utils;
 using myTNB_Android.Src.Utils.Custom.Charts;
 using myTNB_Android.Src.ViewBill.Activity;
@@ -170,6 +171,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
         private bool amountDueFailed = false;
 
+        private bool isSubmitMeter = false;
+
+        private bool isSMRReady = false;
+
         DecimalFormat decimalFormat = new DecimalFormat("#,###,###,###,##0.00");
         SimpleDateFormat dateParser = new SimpleDateFormat("dd/MM/yyyy");
         SimpleDateFormat dateFormatter = new SimpleDateFormat("dd MMM yyyy");
@@ -178,6 +183,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         private string errorMSG = null;
 
         private MaterialDialog mWhyThisAmtCardDialog;
+
+        public readonly static int SSMR_METER_HISTORY_ACTIVITY_CODE = 8796;
+
+        private SMRActivityInfoResponse smrResponse;
 
         public override int ResourceId()
         {
@@ -221,6 +230,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             {
                 amountDueFailed = extras.GetBoolean(Constants.AMOUNT_DUE_FAILED_KEY);
             }
+
+            errorMSG = "";
 
             if (!hasNoInternet)
             {
@@ -560,13 +571,41 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         [OnClick(Resource.Id.btnTxtSsmrViewHistory)]
         void OnSsmrViewHistory(object sender, EventArgs eventArgs)
         {
-            // TODO: OnClickNavigate
+            try
+            {
+                StartSSMRMeterHistoryPage();
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         [OnClick(Resource.Id.btnReadingHistory)]
         void OnBtnSsmrViewHistory(object sender, EventArgs eventArgs)
         {
-            // TODO: OnClickNavigate
+            try
+            {
+                if (isSubmitMeter)
+                {
+                    // REMARK TO CHRIS TODO: Submit Meter Goes Here;
+                }
+                else
+                {
+                    StartSSMRMeterHistoryPage();
+                }
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        private void StartSSMRMeterHistoryPage()
+        {
+            Intent ssmr_history_activity = new Intent(this.Activity, typeof(SSMRMeterHistoryActivity));
+            ssmr_history_activity.PutExtra(Constants.SMR_RESPONSE_KEY, JsonConvert.SerializeObject(smrResponse));
+            StartActivityForResult(ssmr_history_activity, SSMR_METER_HISTORY_ACTIVITY_CODE);
         }
 
         internal void SetUp()
@@ -1660,6 +1699,33 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
         }
 
+        private Snackbar mSMRSnackbar;
+        public void ShowSMRRetrySnakebar()
+        {
+            try
+            {
+                if (mSMRSnackbar != null && mSMRSnackbar.IsShown)
+                {
+                    mSMRSnackbar.Dismiss();
+                }
+
+                mSMRSnackbar = Snackbar.Make(rootView, GetString(Resource.String.dashboard_chart_cancelled_exception_error), Snackbar.LengthIndefinite)
+                .SetAction(GetString(Resource.String.dashboard_chart_cancelled_exception_btn_retry), delegate
+                {
+
+                    mSMRSnackbar.Dismiss();
+                    InitiateSSMRStatus();
+                }
+                );
+                mSMRSnackbar.Show();
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+
+        }
+
         public void EnablePayButton()
         {
             btnPay.Enabled = true;
@@ -1711,6 +1777,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
         private void SetAccountStatusVisibility(ViewStates viewStates)
         {
+            if (viewStates == ViewStates.Visible)
+            {
+                isSMRReady = false;
+            }
+            else
+            {
+                isSMRReady = true;
+            }
             addressDivider.Visibility = viewStates;
             txtAccountStatus.Visibility = viewStates;
             txtWhatAccountStatus.Visibility = viewStates;
@@ -1746,54 +1820,75 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             }
         }
 
-        public void ShowSSMRDashboardView(string contentTxt, bool isDisableBtn, bool isShowTxtViewHistory, bool isShowSubmitBtn)
+        public void ShowSSMRDashboardView(SMRActivityInfoResponse response)
         {
             try
             {
-                SsmrHistoryContainer.Visibility = ViewStates.Visible;
                 SetAccountStatusVisibility(ViewStates.Gone);
-
-                if (!string.IsNullOrEmpty(contentTxt))
+                if (response != null && response.Response != null && response.Response.Data != null)
                 {
-                    if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.N)
+                    SsmrHistoryContainer.Visibility = ViewStates.Visible;
+                    smrResponse = response;
+                    if (!string.IsNullOrEmpty(response.Response.Data.DashboardMessage))
                     {
-                        SsmrAccountStatusText.TextFormatted = Html.FromHtml(contentTxt, FromHtmlOptions.ModeLegacy);
+                        if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.N)
+                        {
+                            SsmrAccountStatusText.TextFormatted = Html.FromHtml(response.Response.Data.DashboardMessage, FromHtmlOptions.ModeLegacy);
+                        }
+                        else
+                        {
+                            SsmrAccountStatusText.TextFormatted = Html.FromHtml(response.Response.Data.DashboardMessage);
+                        }
+                    }
+
+                    if (response.Response.Data.isDashboardCTADisabled == "true")
+                    {
+                        btnReadingHistory.Enabled = false;
+                        btnReadingHistory.Background = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.silver_chalice_button_outline);
+                        btnReadingHistory.SetTextColor(ContextCompat.GetColorStateList(this.Activity, Resource.Color.silverChalice));
                     }
                     else
                     {
-                        SsmrAccountStatusText.TextFormatted = Html.FromHtml(contentTxt);
+                        btnReadingHistory.Enabled = true;
+                        btnReadingHistory.SetTextColor(ContextCompat.GetColorStateList(this.Activity, Resource.Color.freshGreen));
+                        btnReadingHistory.Background = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.light_green_outline_button_background);
                     }
-                }
-
-                if (isDisableBtn)
-                {
-                    btnReadingHistory.Enabled = false;
-                    btnReadingHistory.Background = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.silver_chalice_button_outline);
-                    btnReadingHistory.SetTextColor(ContextCompat.GetColorStateList(this.Activity, Resource.Color.silverChalice));
-                    btnReadingHistory.Text = this.Activity.GetString(Resource.String.ssmr_submit_meter);
-                    btnTxtSsmrViewHistory.Visibility = ViewStates.Gone;
-                }
-                else
-                {
-                    btnReadingHistory.Enabled = true;
-                    btnReadingHistory.SetTextColor(ContextCompat.GetColorStateList(this.Activity, Resource.Color.freshGreen));
-                    btnReadingHistory.Background = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.light_green_outline_button_background);
-                    if (isShowTxtViewHistory)
+                    if (response.Response.Data.showReadingHistoryLink == "true")
                     {
                         btnTxtSsmrViewHistory.Visibility = ViewStates.Visible;
+                        if (!string.IsNullOrEmpty(response.Response.Data.ReadingHistoryLinkText))
+                        {
+                            btnTxtSsmrViewHistory.Text = response.Response.Data.ReadingHistoryLinkText;
+                        }
                     }
                     else
                     {
                         btnTxtSsmrViewHistory.Visibility = ViewStates.Gone;
                     }
 
-                    if (isShowSubmitBtn)
+                    if (response.Response.Data.DashboardCTAType.ToUpper() == Constants.SMR_SUBMIT_METER_KEY)
                     {
-                        btnReadingHistory.Text = this.Activity.GetString(Resource.String.ssmr_submit_meter);
+                        isSubmitMeter = true;
                     }
                     else
                     {
-                        btnReadingHistory.Text = this.Activity.GetString(Resource.String.ssmr_view_meter);
+                        isSubmitMeter = false;
+                    }
+
+                    if (!string.IsNullOrEmpty(response.Response.Data.DashboardCTAText))
+                    {
+                        btnReadingHistory.Text = response.Response.Data.DashboardCTAText;
+                    }
+                    else
+                    {
+                        if (response.Response.Data.DashboardCTAType.ToUpper() == Constants.SMR_SUBMIT_METER_KEY)
+                        {
+                            btnReadingHistory.Text = this.Activity.GetString(Resource.String.ssmr_submit_meter);
+                        }
+                        else
+                        {
+                            btnReadingHistory.Text = this.Activity.GetString(Resource.String.ssmr_view_meter);
+                        }
                     }
                 }
             }
@@ -1811,10 +1906,16 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         public void InitiateSSMRStatus()
         {
             SetAccountStatusVisibility(ViewStates.Gone);
-            if (selectedAccount.IsOwner && !selectedAccount.AccountCategoryId.Equals("2") && string.IsNullOrEmpty(errorMSG))
+            CustomerBillingAccount cbAccount = CustomerBillingAccount.FindByAccNum(selectedAccount.AccountNum);
+            if (selectedAccount.IsOwner && !selectedAccount.AccountCategoryId.Equals("2") && string.IsNullOrEmpty(errorMSG) && cbAccount.IsTaggedSMR)
             {
                 this.userActionsListener.GetSSMRAccountStatus(selectedAccount.AccountNum);
             }
+        }
+
+        public string GetDeviceId()
+        {
+            return this.DeviceId();
         }
     }
 }

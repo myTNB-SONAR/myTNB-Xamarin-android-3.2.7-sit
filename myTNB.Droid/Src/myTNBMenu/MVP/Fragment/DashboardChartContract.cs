@@ -168,13 +168,17 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
             /// <param name="accountStatus">AccountStatusData</param>
             void ShowAccountStatus(AccountStatusData accountStatus);
 
-            void ShowSSMRDashboardView(string contentTxt, bool isDisableBtn, bool isShowTxtViewHistory, bool isShowSubmitBtn);
+            void ShowSSMRDashboardView(SMRActivityInfoResponse response);
 
             void HideSSMRDashboardView();
 
             void InitiateSSMRStatus();
 
             void ShowDisconnectionRetrySnakebar();
+
+            void ShowSMRRetrySnakebar();
+
+            string GetDeviceId();
 
         }
 

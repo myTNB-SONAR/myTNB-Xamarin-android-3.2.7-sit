@@ -85,4 +85,10 @@
     <color name="shimmer_color">#bed9f1</color>
     
     <color name="charcoalGrey">#424141</color>
+    
+    <color name="babyGrey">#545454</color>
+    
+    <color name="action_color">#5b54e1</color>
+    
+    <color name="ssmr_header_background">#f9f8f8</color>
 </resources>

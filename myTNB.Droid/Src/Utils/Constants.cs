@@ -111,8 +111,10 @@ namespace myTNB_Android.Src.Utils
         internal struct SERVER_URL
         {
 #if DEBUG || STUB
-            internal static readonly string END_POINT = "http://10.215.128.191:89";
-            internal static readonly string FPX_PAYMENT = "http://10.215.128.191:89/v5/PayRedirect.aspx?Param1=3&Param2=";
+            //internal static readonly string END_POINT = "http://10.215.128.191:89";
+            //internal static readonly string FPX_PAYMENT = "http://10.215.128.191:89/v5/PayRedirect.aspx?Param1=3&Param2=";
+            internal static readonly string END_POINT = "https://mobiletestingws.tnb.com.my";
+            internal static readonly string FPX_PAYMENT = "https://mobiletestingws.tnb.com.my/v5/PayRedirect.aspx?Param1=3&Param2=";
 #elif DEVELOP || SIT
             internal static readonly string END_POINT = "https://mobiletestingws.tnb.com.my";
             internal static readonly string FPX_PAYMENT = "https://mobiletestingws.tnb.com.my/v5/PayRedirect.aspx?Param1=3&Param2=";
@@ -221,6 +223,11 @@ namespace myTNB_Android.Src.Utils
 
         //Language
         internal static readonly string DEFAULT_LANG = "EN";
+
+        // SMR
+        internal static readonly string SMR_RESPONSE_KEY = "smrReponse";
+        internal static readonly string SMR_SUBMIT_METER_KEY = "S";
+        internal static readonly string SMR_VIEW_METER_KEY = "V";
 
         public enum GREETING
         {

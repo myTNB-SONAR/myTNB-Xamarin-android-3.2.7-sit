@@ -403,6 +403,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 					}
 					break;
 				case Resource.Id.menu_reward:
+                    currentBottomNavigationMenu = Resource.Id.menu_reward;
                     this.mView.ShowToBeAddedToast();
 					break;
 				case Resource.Id.menu_feedback:

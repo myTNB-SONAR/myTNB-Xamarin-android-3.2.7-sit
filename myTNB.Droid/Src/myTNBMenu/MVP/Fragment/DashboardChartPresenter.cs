@@ -1,5 +1,6 @@
 ﻿using Android.Util;
 using myTNB_Android.Src.AppLaunch.Models;
+using myTNB_Android.Src.Base.Models;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.myTNBMenu.Api;
 using myTNB_Android.Src.myTNBMenu.Models;
@@ -399,24 +400,22 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                 if (this.mView.IsActive())
                 {
                     this.mView.HideAmountProgress();
+                }
 
-                    if (!installDetailsResponse.Data.IsError)
-                    {
-                        if (installDetailsResponse.Data.Data.DisconnectionStatus == "Available")
-                        {
-                            this.mView.InitiateSSMRStatus();
-                        }
-                        else
-                        {
-                            this.mView.ShowAccountStatus(installDetailsResponse.Data.Data);
-                        }
-                    }
-                    else
+                if (!installDetailsResponse.Data.IsError)
+                {
+                    if (installDetailsResponse.Data.Data.DisconnectionStatus == "Available")
                     {
                         this.mView.InitiateSSMRStatus();
                     }
-
-
+                    else
+                    {
+                        this.mView.ShowAccountStatus(installDetailsResponse.Data.Data);
+                    }
+                }
+                else
+                {
+                    this.mView.InitiateSSMRStatus();
                 }
             }
             catch (System.OperationCanceledException e)
@@ -424,9 +423,94 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                 if (this.mView.IsActive())
                 {
                     this.mView.HideAmountProgress();
-                    this.mView.InitiateSSMRStatus();
-                    this.mView.ShowDisconnectionRetrySnakebar();
+                }
+                this.mView.InitiateSSMRStatus();
+                this.mView.ShowDisconnectionRetrySnakebar();
+                Utility.LoggingNonFatalError(e);
+            }
+            catch (ApiException apiException)
+            {
+                // ADD HTTP CONNECTION EXCEPTION HERE
+                if (this.mView.IsActive())
+                {
+                    this.mView.HideAmountProgress();
+                }
+                this.mView.InitiateSSMRStatus();
+                this.mView.ShowDisconnectionRetrySnakebar();
+                Utility.LoggingNonFatalError(apiException);
+            }
+            catch (Exception e)
+            {
+                // ADD UNKNOWN EXCEPTION HERE
+                if (this.mView.IsActive())
+                {
+                    this.mView.HideAmountProgress();
+                }
+                this.mView.InitiateSSMRStatus();
+                this.mView.ShowDisconnectionRetrySnakebar();
+                Utility.LoggingNonFatalError(e);
+            }
 
+        }
+
+        public async void GetSSMRAccountStatus(string accountNum)
+        {
+            cts = new CancellationTokenSource();
+            if (mView.IsActive())
+            {
+                this.mView.ShowAmountProgress();
+            }
+
+            ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
+            UserInterface currentUsrInf = new UserInterface()
+            {
+                eid = UserEntity.GetActive().Email,
+                sspuid = UserEntity.GetActive().UserID,
+                did = this.mView.GetDeviceId(),
+                ft = FirebaseTokenEntity.GetLatest().FBToken,
+                lang = Constants.DEFAULT_LANG.ToUpper(),
+                sec_auth_k1 = Constants.APP_CONFIG.API_KEY_ID,
+                sec_auth_k2 = "",
+                ses_param1 = "",
+                ses_param2 = ""
+            };
+#if DEBUG
+            var httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
+            var ssmrAccountAPI = RestService.For<ISMRAccountActivityInfoApi>(httpClient);
+
+#else
+            var ssmrAccountAPI = RestService.For<ISMRAccountActivityInfoApi>(Constants.SERVER_URL.END_POINT);
+#endif 
+
+            try
+            {
+                SMRActivityInfoResponse SMRAccountActivityInfoResponse = await ssmrAccountAPI.GetSMRAccountActivityInfo(new Requests.SMRAccountActivityInfoRequest()
+                {
+                    AccountNumber = accountNum,
+                    IsOwnedAccount = "true",
+                    userInterface = currentUsrInf
+                }, cts.Token);
+
+
+                if (this.mView.IsActive())
+                {
+                    this.mView.HideAmountProgress();
+                }
+
+                if (SMRAccountActivityInfoResponse.Response.ErrorCode == "7200")
+                {
+                    this.mView.ShowSSMRDashboardView(SMRAccountActivityInfoResponse);
+                }
+                else
+                {
+                    this.mView.HideSSMRDashboardView();
+                }
+            }
+            catch (System.OperationCanceledException e)
+            {
+                if (this.mView.IsActive())
+                {
+                    this.mView.HideAmountProgress();
                 }
                 Utility.LoggingNonFatalError(e);
             }
@@ -436,9 +520,9 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                 if (this.mView.IsActive())
                 {
                     this.mView.HideAmountProgress();
-                    this.mView.InitiateSSMRStatus();
-                    this.mView.ShowDisconnectionRetrySnakebar();
                 }
+                this.mView.HideSSMRDashboardView();
+                this.mView.ShowSMRRetrySnakebar();
                 Utility.LoggingNonFatalError(apiException);
             }
             catch (Exception e)
@@ -447,18 +531,11 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                 if (this.mView.IsActive())
                 {
                     this.mView.HideAmountProgress();
-                    this.mView.InitiateSSMRStatus();
-                    this.mView.ShowDisconnectionRetrySnakebar();
                 }
+                this.mView.HideSSMRDashboardView();
+                this.mView.ShowSMRRetrySnakebar();
                 Utility.LoggingNonFatalError(e);
             }
-
-        }
-
-        public async void GetSSMRAccountStatus(string accountNum)
-        {
-            await Task.Delay(1000);
-            this.mView.ShowSSMRDashboardView("You missed 2 reading months! Check back in for the next reading period or your service will be discontinued.", false, false, false);
         }
 
 
