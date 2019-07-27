@@ -2096,6 +2096,7 @@
     <Compile Include="Sitecore CMS\Model\Apply SSMR Walkthrough\ApplySSMRWalkthroughModel.cs" />
     <Compile Include="Sitecore CMS\Service\ApplySSMRWalkthroughService.cs" />
     <Compile Include="SQLite\SQLite Data Manager\ApplySSMRWalkthroughEntity.cs" />
+    <Compile Include="Session Cache\SSMRAccounts.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />

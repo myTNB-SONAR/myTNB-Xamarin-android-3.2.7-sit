@@ -48,11 +48,12 @@ namespace myTNB.Home.Dashboard.DashboardHome
         private void On_1002_Action()
         {
             //Stub
-            UIStoryboard storyBoard = UIStoryboard.FromName("SSMR", null);
+            /*UIStoryboard storyBoard = UIStoryboard.FromName("SSMR", null);
             SSMRCaptureMeterViewController viewController =
                 storyBoard.InstantiateViewController("SSMRCaptureMeterViewController") as SSMRCaptureMeterViewController;
             var navController = new UINavigationController(viewController);
             _controller.PresentViewController(navController, true, null);
+            */
         }
 
         private void On_1003_Action()

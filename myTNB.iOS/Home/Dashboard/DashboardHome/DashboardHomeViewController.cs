@@ -80,6 +80,7 @@ namespace myTNB
                 SetAccountsCardViewController();
                 ReloadAccountsTable();
             }
+            SSMRAccounts.SetEligibleAccounts();
             OnLoadHomeData();
         }
 
