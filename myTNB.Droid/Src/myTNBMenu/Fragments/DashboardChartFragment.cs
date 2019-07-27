@@ -1853,23 +1853,23 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         btnReadingHistory.SetTextColor(ContextCompat.GetColorStateList(this.Activity, Resource.Color.freshGreen));
                         btnReadingHistory.Background = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.light_green_outline_button_background);
                     }
-                    if (response.Response.Data.showReadingHistoryLink == "true")
-                    {
-                        btnTxtSsmrViewHistory.Visibility = ViewStates.Visible;
-                        if (!string.IsNullOrEmpty(response.Response.Data.ReadingHistoryLinkText))
-                        {
-                            btnTxtSsmrViewHistory.Text = response.Response.Data.ReadingHistoryLinkText;
-                        }
-                    }
-                    else
-                    {
-                        btnTxtSsmrViewHistory.Visibility = ViewStates.Gone;
-                    }
 
                     if (response.Response.Data.DashboardCTAType.ToUpper() == Constants.SMR_SUBMIT_METER_KEY)
                     {
                         txtTotalPayableTitle.Text = GetString(Resource.String.ssmr_need_pay);
                         isSubmitMeter = true;
+                        if (response.Response.Data.showReadingHistoryLink == "true")
+                        {
+                            btnTxtSsmrViewHistory.Visibility = ViewStates.Visible;
+                            if (!string.IsNullOrEmpty(response.Response.Data.ReadingHistoryLinkText))
+                            {
+                                btnTxtSsmrViewHistory.Text = response.Response.Data.ReadingHistoryLinkText;
+                            }
+                        }
+                        else
+                        {
+                            btnTxtSsmrViewHistory.Visibility = ViewStates.Gone;
+                        }
                     }
                     else
                     {
