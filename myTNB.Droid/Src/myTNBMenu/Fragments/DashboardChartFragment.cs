@@ -369,7 +369,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
                 if (selectedAccount != null)
                 {
-
                     if (selectedAccount.AccountCategoryId.Equals("2"))
                     {
                         btnPay.Visibility = ViewStates.Gone;
@@ -1634,6 +1633,33 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             }
         }
 
+        private Snackbar mDisconnectionSnackbar;
+        public void ShowDisconnectionRetrySnakebar()
+        {
+            try
+            {
+                if (mDisconnectionSnackbar != null && mDisconnectionSnackbar.IsShown)
+                {
+                    mDisconnectionSnackbar.Dismiss();
+                }
+
+                mDisconnectionSnackbar = Snackbar.Make(rootView, GetString(Resource.String.dashboard_chart_cancelled_exception_error), Snackbar.LengthIndefinite)
+                .SetAction(GetString(Resource.String.dashboard_chart_cancelled_exception_btn_retry), delegate
+                {
+
+                    mDisconnectionSnackbar.Dismiss();
+                    this.userActionsListener.GetAccountStatus(selectedAccount.AccountNum);
+                }
+                );
+                mDisconnectionSnackbar.Show();
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+
+        }
+
         public void EnablePayButton()
         {
             btnPay.Enabled = true;
@@ -1695,6 +1721,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             if (accountStatusData.DisconnectionStatus != "Available")
             {
                 SetAccountStatusVisibility(ViewStates.Visible);
+                HideSSMRDashboardView();
                 string accountStatusMessage = accountStatusData?.AccountStatusMessage ?? Activity.GetString(Resource.String.chart_electricity_status_message);
                 string whatDoesThisMeanLabel = accountStatusData?.AccountStatusModalTitle ?? Activity.GetString(Resource.String.tooltip_what_does_this_link);
                 string whatDoesThisToolTipMessage = accountStatusData?.AccountStatusModalMessage ?? Activity.GetString(Resource.String.tooltip_what_does_this_message);
@@ -1783,9 +1810,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
         public void InitiateSSMRStatus()
         {
+            SetAccountStatusVisibility(ViewStates.Gone);
             if (selectedAccount.IsOwner && !selectedAccount.AccountCategoryId.Equals("2") && string.IsNullOrEmpty(errorMSG))
             {
-                // TODO: Api Calling
+                this.userActionsListener.GetSSMRAccountStatus(selectedAccount.AccountNum);
             }
         }
     }

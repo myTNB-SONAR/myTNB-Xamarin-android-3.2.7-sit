@@ -174,6 +174,8 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
 
             void InitiateSSMRStatus();
 
+            void ShowDisconnectionRetrySnakebar();
+
         }
 
         public interface IUserActionsListener : IBasePresenter
@@ -234,6 +236,9 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
             /// </summary>
             /// <param name="accountNum">string</param>
             void GetAccountStatus(string accountNum);
+
+            void GetSSMRAccountStatus(string accountNum);
+
         }
     }
 }

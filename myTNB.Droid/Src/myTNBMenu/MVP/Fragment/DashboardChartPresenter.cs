@@ -11,6 +11,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
 {
@@ -375,7 +376,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
             {
                 this.mView.ShowAmountProgress();
             }
-            //this.mView.DisablePayButton();
+
             ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
 #if DEBUG
             var httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
@@ -401,12 +402,18 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
 
                     if (!installDetailsResponse.Data.IsError)
                     {
-                        this.mView.ShowAccountStatus(installDetailsResponse.Data.Data);
+                        if (installDetailsResponse.Data.Data.DisconnectionStatus == "Available")
+                        {
+                            this.mView.InitiateSSMRStatus();
+                        }
+                        else
+                        {
+                            this.mView.ShowAccountStatus(installDetailsResponse.Data.Data);
+                        }
                     }
                     else
                     {
                         this.mView.InitiateSSMRStatus();
-                        this.mView.ShowRetryOptionsApiException(null);
                     }
 
 
@@ -418,7 +425,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                 {
                     this.mView.HideAmountProgress();
                     this.mView.InitiateSSMRStatus();
-                    this.mView.ShowRetryOptionsCancelledException(e);
+                    this.mView.ShowDisconnectionRetrySnakebar();
 
                 }
                 Utility.LoggingNonFatalError(e);
@@ -430,7 +437,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                 {
                     this.mView.HideAmountProgress();
                     this.mView.InitiateSSMRStatus();
-                    this.mView.ShowRetryOptionsApiException(apiException);
+                    this.mView.ShowDisconnectionRetrySnakebar();
                 }
                 Utility.LoggingNonFatalError(apiException);
             }
@@ -441,18 +448,17 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                 {
                     this.mView.HideAmountProgress();
                     this.mView.InitiateSSMRStatus();
-                    this.mView.ShowRetryOptionsUnknownException(e);
+                    this.mView.ShowDisconnectionRetrySnakebar();
                 }
                 Utility.LoggingNonFatalError(e);
             }
 
-            //if (this.mView.IsActive())
-            //{
-            //    this.mView.HideAmountProgress();
+        }
 
-            //}
-
-
+        public async void GetSSMRAccountStatus(string accountNum)
+        {
+            await Task.Delay(1000);
+            this.mView.ShowSSMRDashboardView("You missed 2 reading months! Check back in for the next reading period or your service will be discontinued.", false, false, false);
         }
 
 
