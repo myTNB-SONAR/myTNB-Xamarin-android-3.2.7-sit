@@ -101,7 +101,7 @@ namespace myTNB
 
         private bool RemoveServiceItem(string serviceID)
         {
-            return SSMRAccounts.HasSSMREligibleAccount && serviceID == "1001" && serviceID == "1002";
+            return !SSMRAccounts.HasSSMREligibleAccount && (serviceID == "1001" || serviceID == "1002");
         }
 
         private UIView GetCard(ServiceItemModel serviceItem, int index, Action action = null)
