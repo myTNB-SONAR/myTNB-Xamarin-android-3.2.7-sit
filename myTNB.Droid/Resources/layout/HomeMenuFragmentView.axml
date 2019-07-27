@@ -42,6 +42,7 @@
                     android:textSize="16dp"
                     android:text="Account Name"
                     android:textColor="@color/sunGlow"
+                    android:layout_marginTop="4dp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/accountGreeting"
                 />
@@ -68,36 +69,36 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:textSize="14dp"
-                    android:layout_weight=".8"
+                    android:layout_weight="1"
                     android:text="My Accounts"
                     android:textColor="@android:color/white"
                     android:layout_gravity="left|center_vertical"
                 />
                 <ImageView
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/add_account_no_gradient"
-                    android:layout_weight=".1"
                     android:id="@+id/addAction"
-                    android:layout_gravity="left|center_vertical"/>
+                    android:layout_gravity="right|center_vertical"/>
                 <SearchView
                     android:id="@+id/searchEdit"
                     android:layout_width="0dp"
                     android:layout_height="24dp"
                     android:visibility="gone"
-                    android:layout_weight=".9"
+                    android:layout_weight="1"
                     android:iconifiedByDefault="false"
                     android:searchIcon="@null"
-                    android:layout_gravity="left|center_vertical"
-                    android:queryHint="Search account nickname or number"
+                    android:layout_marginLeft="8dp"
+                    android:layout_gravity="right|center_vertical"
+                    android:queryHint="Search by account nickname or number"
                     android:background="@drawable/search_edit_bg"
                     android:theme="@style/AppSearchView"/>
                 <ImageView
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight=".1"
                     android:src="@drawable/search_no_gradient"
-                    android:layout_gravity="left|center_vertical"
+                    android:layout_gravity="right|center_vertical"
+                    android:layout_marginLeft="8dp"
                     android:id="@+id/searchAction"/>
             </LinearLayout>
             <android.support.v7.widget.RecyclerView
