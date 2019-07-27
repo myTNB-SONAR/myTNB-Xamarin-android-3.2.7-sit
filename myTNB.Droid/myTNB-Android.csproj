@@ -1315,6 +1315,8 @@
     <AndroidResource Include="Resources\drawable-xhdpi\gradient_background.png" />
     <AndroidResource Include="Resources\drawable-xxhdpi\gradient_background.png" />
     <AndroidResource Include="Resources\drawable-xxxhdpi\gradient_background.png" />
+    <Compile Include="Src\SitecoreCMS\Model\ApplySSMRWalkthroughModel.cs" />
+    <Compile Include="Src\SitecoreCMS\Service\ApplySSMRWalkthroughService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

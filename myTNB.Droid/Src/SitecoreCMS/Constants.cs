@@ -95,6 +95,13 @@
                     public const string Tags = "Tags";
                     public const string TargetItem = "Target-item";
                 }
+
+                public struct ApplySSMRWalkthrough
+                {
+                    public const string Title = "Title";
+                    public const string Description = "Description";
+                    public const string Image = "Image";
+                }
             }
 
             public struct ItemID
@@ -120,6 +127,8 @@
                 public const string FullRTEPages = "/sitecore/content/myTNBapp/Contents/Full RTE Pages/Terms Condition";
 
                 public const string Help = "/sitecore/content/myTNBapp/Contents/Need Help";
+                public const string ApplySSMRWalkthrough = "/sitecore/content/myTNBapp/Contents/Walkthrough SSMR Apply";
+
             }
         }
     }
