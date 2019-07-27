@@ -204,7 +204,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 hasNoInternet = extras.GetBoolean(Constants.NO_INTERNET_CONNECTION);
             }
 
-            if(extras.ContainsKey(Constants.REFRESH_MSG) && !string.IsNullOrEmpty(extras.GetString(Constants.REFRESH_MSG)))
+            if (extras.ContainsKey(Constants.REFRESH_MSG) && !string.IsNullOrEmpty(extras.GetString(Constants.REFRESH_MSG)))
             {
                 txtRefreshMsg = extras.GetString(Constants.REFRESH_MSG);
             }
@@ -212,7 +212,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             {
                 txtRefreshMsg = Activity.GetString(Resource.String.text_new_refresh_content);
             }
-            if(extras.ContainsKey(Constants.REFRESH_BTN_MSG) && !string.IsNullOrEmpty(extras.GetString(Constants.REFRESH_BTN_MSG)))
+            if (extras.ContainsKey(Constants.REFRESH_BTN_MSG) && !string.IsNullOrEmpty(extras.GetString(Constants.REFRESH_BTN_MSG)))
             {
                 txtBtnRefreshTitle = extras.GetString(Constants.REFRESH_BTN_MSG);
             }
@@ -281,9 +281,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             Bundle bundle = new Bundle();
 
             bundle.PutBoolean(Constants.NO_INTERNET_CONNECTION, hasNoInternet);
-            if(response != null && response.Data != null)
+            if (response != null && response.Data != null)
             {
-                if(string.IsNullOrEmpty(response.Data.RefreshMessage))
+                if (string.IsNullOrEmpty(response.Data.RefreshMessage))
                 {
                     bundle.PutString(Constants.REFRESH_MSG, "The graph must be tired. Tap the button below to help it out.");
                 }
@@ -292,7 +292,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     bundle.PutString(Constants.REFRESH_MSG, response.Data.RefreshMessage);
                 }
 
-                if(!string.IsNullOrEmpty(response.Data.RefreshBtnText))
+                if (!string.IsNullOrEmpty(response.Data.RefreshBtnText))
                 {
                     bundle.PutString(Constants.REFRESH_BTN_MSG, response.Data.RefreshBtnText);
                 }
@@ -302,7 +302,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 bundle.PutString(Constants.REFRESH_MSG, "The graph must be tired. Tap the button below to help it out.");
                 bundle.PutString(Constants.REFRESH_BTN_MSG, "Refresh Now");
             }
-            if(accountData != null)
+            if (accountData != null)
             {
                 bundle.PutString(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(accountData));
             }
@@ -317,7 +317,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
             bundle.PutBoolean(Constants.AMOUNT_DUE_FAILED_KEY, amountDueFailed);
             bundle.PutBoolean(Constants.NO_INTERNET_CONNECTION, hasNoInternet);
-            if(string.IsNullOrEmpty(contentTxt))
+            if (string.IsNullOrEmpty(contentTxt))
             {
                 bundle.PutString(Constants.REFRESH_MSG, "This page must be tired. Tap the button below to help it out.");
             }
@@ -326,11 +326,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 bundle.PutString(Constants.REFRESH_MSG, contentTxt);
             }
 
-            if(!string.IsNullOrEmpty(btnTxt))
+            if (!string.IsNullOrEmpty(btnTxt))
             {
                 bundle.PutString(Constants.REFRESH_BTN_MSG, btnTxt);
             }
-            if(accountData != null)
+            if (accountData != null)
             {
                 bundle.PutString(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(accountData));
             }
@@ -371,11 +371,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 }
 
                 this.userActionsListener?.Start();
-                
+
                 DownTimeEntity bcrmEntity = DownTimeEntity.GetByCode(Constants.BCRM_SYSTEM);
                 DownTimeEntity pgCCEntity = DownTimeEntity.GetByCode(Constants.PG_CC_SYSTEM);
                 DownTimeEntity pgFPXEntity = DownTimeEntity.GetByCode(Constants.PG_FPX_SYSTEM);
-                
+
                 txtWhyThisAmt.Visibility = ViewStates.Gone;
 
                 if (selectedAccount != null)
@@ -557,7 +557,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     mWhyThisAmtCardDialog.Dismiss();
                 };
 
-                if(IsActive())
+                if (IsActive())
                 {
                     mWhyThisAmtCardDialog.Show();
                 }
@@ -1149,7 +1149,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 else if (resultCode == Result.FirstUser)
                 {
                     Bundle extras = data.Extras;
-                    if(extras.ContainsKey(Constants.ITEMZIED_BILLING_VIEW_KEY) && extras.GetBoolean(Constants.ITEMZIED_BILLING_VIEW_KEY))
+                    if (extras.ContainsKey(Constants.ITEMZIED_BILLING_VIEW_KEY) && extras.GetBoolean(Constants.ITEMZIED_BILLING_VIEW_KEY))
                     {
                         AccountData selectedAccount = JsonConvert.DeserializeObject<AccountData>(extras.GetString(Constants.SELECTED_ACCOUNT));
                         bool isOwned = true;
@@ -1210,7 +1210,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     mDownTimeLayout.Visibility = ViewStates.Gone;
                     refreshLayout.Visibility = ViewStates.Visible;
                     allGraphLayout.Visibility = ViewStates.Gone;
-                    if(!hasAmtDue)
+                    if (!hasAmtDue)
                     {
                         txtTotalPayableCurrency.Visibility = ViewStates.Gone;
                         txtDueDate.Text = GetString(Resource.String.dashboard_chartview_due_date_not_available);
@@ -1233,15 +1233,15 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             try
             {
                 hasAmtDue = false;
-                btnNewRefresh.Text = string.IsNullOrEmpty(buttonTxt)? txtBtnRefreshTitle : buttonTxt;
+                btnNewRefresh.Text = string.IsNullOrEmpty(buttonTxt) ? txtBtnRefreshTitle : buttonTxt;
                 txtTotalPayableCurrency.Visibility = ViewStates.Gone;
                 if (Build.VERSION.SdkInt >= BuildVersionCodes.N)
                 {
-                    txtNewRefreshMessage.TextFormatted = string.IsNullOrEmpty(contentTxt)? Html.FromHtml(GetString(Resource.String.text_new_refresh_content), FromHtmlOptions.ModeLegacy) : Html.FromHtml(contentTxt, FromHtmlOptions.ModeLegacy);
+                    txtNewRefreshMessage.TextFormatted = string.IsNullOrEmpty(contentTxt) ? Html.FromHtml(GetString(Resource.String.text_new_refresh_content), FromHtmlOptions.ModeLegacy) : Html.FromHtml(contentTxt, FromHtmlOptions.ModeLegacy);
                 }
                 else
                 {
-                    txtNewRefreshMessage.TextFormatted = string.IsNullOrEmpty(contentTxt)? Html.FromHtml(GetString(Resource.String.text_new_refresh_content)) : Html.FromHtml(contentTxt);
+                    txtNewRefreshMessage.TextFormatted = string.IsNullOrEmpty(contentTxt) ? Html.FromHtml(GetString(Resource.String.text_new_refresh_content)) : Html.FromHtml(contentTxt);
                 }
                 mNoDataLayout.Visibility = ViewStates.Gone;
                 mChart.Visibility = ViewStates.Gone;
@@ -1473,11 +1473,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 if (d != null)
                 {
                     if (selectedAccount != null)
-                    {   
+                    {
                         hasAmtDue = true;
                         DownTimeEntity pgCCEntity = DownTimeEntity.GetByCode(Constants.PG_CC_SYSTEM);
                         DownTimeEntity pgFPXEntity = DownTimeEntity.GetByCode(Constants.PG_FPX_SYSTEM);
-                        if(!pgCCEntity.IsDown || !pgFPXEntity.IsDown)
+                        if (!pgCCEntity.IsDown || !pgFPXEntity.IsDown)
                         {
                             EnablePayButton();
                         }
@@ -1485,7 +1485,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         txtTotalPayableCurrency.Visibility = ViewStates.Visible;
                         btnViewBill.SetTextColor(ContextCompat.GetColorStateList(this.Activity, Resource.Color.freshGreen));
                         btnViewBill.Background = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.light_green_outline_button_background);
-                        if(!hasNoInternet)
+                        if (!hasNoInternet)
                         {
                             allGraphLayout.Visibility = ViewStates.Visible;
                             refreshLayout.Visibility = ViewStates.Gone;
@@ -1868,10 +1868,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
                     if (response.Response.Data.DashboardCTAType.ToUpper() == Constants.SMR_SUBMIT_METER_KEY)
                     {
+                        txtTotalPayableTitle.Text = GetString(Resource.String.ssmr_need_pay);
                         isSubmitMeter = true;
                     }
                     else
                     {
+                        txtTotalPayableTitle.Text = GetString(Resource.String.total_amount_due_bill);
                         isSubmitMeter = false;
                     }
 

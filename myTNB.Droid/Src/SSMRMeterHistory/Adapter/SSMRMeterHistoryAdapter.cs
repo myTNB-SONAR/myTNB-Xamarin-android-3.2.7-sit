@@ -55,6 +55,11 @@ namespace myTNB_Android.Src.SSMRMeterHistory.Adapter
 
 			TextViewUtils.SetMuseoSans500Typeface(vh.ssmrDate, vh.ssmrKWhValue);
             TextViewUtils.SetMuseoSans500Typeface(vh.ssmrDescription, vh.ssmrForDate);
+
+            if (model.ReadingType == "Estimated Reading")
+            {
+                vh.ssmrDescription.SetTextColor(Color.ParseColor("#e44b21"));
+            }
         }
 
 		public override RecyclerView.ViewHolder OnCreateViewHolder(ViewGroup parent, int viewType)

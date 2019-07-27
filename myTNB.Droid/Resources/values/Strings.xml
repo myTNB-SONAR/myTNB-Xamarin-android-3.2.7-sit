@@ -1406,4 +1406,6 @@ Please try again later.]]>
   <string name="ssmr_view_meter">View Reading History</string>
   
   <string name="ssmr_meter_history_activity_title">Self Meter Reading</string>
+    
+   <string name="ssmr_need_pay">I Need To Pay</string>
 </resources>

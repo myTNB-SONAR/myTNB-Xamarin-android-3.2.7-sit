@@ -1346,6 +1346,12 @@
     <AndroidResource Include="Resources\drawable-xhdpi\gradient_background.png" />
     <AndroidResource Include="Resources\drawable-xxhdpi\gradient_background.png" />
     <AndroidResource Include="Resources\drawable-xxxhdpi\gradient_background.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\ic_action_delete_white.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\ic_action_delete_white.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_action_delete_white.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_action_delete_white.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\ic_action_delete_white.png" />
+    <AndroidResource Include="Resources\layout\SSMRMenuListLayout.axml" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

@@ -1,4 +1,5 @@
-﻿using Android.App;
+﻿using AFollestad.MaterialDialogs;
+using Android.App;
 using Android.Content;
 using Android.Content.PM;
 using Android.Graphics;
@@ -45,6 +46,8 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
 
         private SMRActivityInfoResponse smrResponse;
 
+        private MaterialDialog SSMRMenuDialog;
+
         public override int ResourceId()
 		{
 			return Resource.Layout.SSMRMeterHistoryLayout;
@@ -63,6 +66,9 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
 			try
 			{
                 this.toolbar.SetBackgroundColor(Resources.GetColor(Resource.Color.action_color));
+                this.Window.AddFlags(WindowManagerFlags.DrawsSystemBarBackgrounds);
+                this.Window.ClearFlags(WindowManagerFlags.TranslucentStatus);
+                this.Window.SetStatusBarColor(Resources.GetColor(Resource.Color.action_color));
 
                 TextViewUtils.SetMuseoSans500Typeface(SMRMainTitle, SMRListHeader);
                 TextViewUtils.SetMuseoSans300Typeface(SMRMainContent);
@@ -121,6 +127,78 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
             MenuInflater.Inflate(Resource.Menu.SSMRMeterReadingMenu, menu);
             ssmrMenu = menu;
             return base.OnCreateOptionsMenu(menu);
+        }
+
+
+        public override bool OnOptionsItemSelected(IMenuItem item)
+        {
+            switch (item.ItemId)
+            {
+                case Resource.Id.action_ssmr_more:
+                    ssmrMenu.FindItem(Resource.Id.action_ssmr_more).SetVisible(false);
+                    OnClickSMRMenuMore();
+                    break;
+            }
+            return base.OnOptionsItemSelected(item);
+        }
+
+        private void OnClickSMRMenuMore()
+        {
+            try
+            {
+                SSMRMenuDialog = new MaterialDialog.Builder(this)
+                    .CustomView(Resource.Layout.SSMRMenuListLayout, false)
+                    .Cancelable(false)
+                    .CanceledOnTouchOutside(false)
+                    .Build();
+
+                View dialogView = SSMRMenuDialog.Window.DecorView;
+                dialogView.SetBackgroundResource(Android.Resource.Color.Transparent);
+                WindowManagerLayoutParams wlp = SSMRMenuDialog.Window.Attributes;
+                wlp.Gravity = GravityFlags.Top;
+                wlp.Width = ViewGroup.LayoutParams.MatchParent;
+                wlp.Height = ViewGroup.LayoutParams.WrapContent;
+                SSMRMenuDialog.Window.Attributes = wlp;
+
+                ImageView btnSMRMenuClose = SSMRMenuDialog.FindViewById<ImageView>(Resource.Id.btnSMRMenuClose);
+                TextView btnReadMeter = SSMRMenuDialog.FindViewById<TextView>(Resource.Id.btnReadMeter);
+                TextView btnWhenSubmitMeter = SSMRMenuDialog.FindViewById<TextView>(Resource.Id.btnWhenSubmitMeter);
+                TextView btnWhyReadingRejected = SSMRMenuDialog.FindViewById<TextView>(Resource.Id.btnWhyReadingRejected);
+                TextView btnDiscontinueSMR = SSMRMenuDialog.FindViewById<TextView>(Resource.Id.btnDiscontinueSMR);
+                TextViewUtils.SetMuseoSans500Typeface(btnDiscontinueSMR);
+                TextViewUtils.SetMuseoSans300Typeface(btnWhyReadingRejected, btnWhenSubmitMeter, btnReadMeter);
+                btnSMRMenuClose.Click += delegate
+                {
+                    ssmrMenu.FindItem(Resource.Id.action_ssmr_more).SetVisible(true);
+                    SSMRMenuDialog.Dismiss();
+                };
+                btnReadMeter.Click += delegate
+                {
+                    ssmrMenu.FindItem(Resource.Id.action_ssmr_more).SetVisible(true);
+                    SSMRMenuDialog.Dismiss();
+                };
+                btnWhenSubmitMeter.Click += delegate
+                {
+                    ssmrMenu.FindItem(Resource.Id.action_ssmr_more).SetVisible(true);
+                    SSMRMenuDialog.Dismiss();
+                };
+                btnWhyReadingRejected.Click += delegate
+                {
+                    ssmrMenu.FindItem(Resource.Id.action_ssmr_more).SetVisible(true);
+                    SSMRMenuDialog.Dismiss();
+                };
+                btnDiscontinueSMR.Click += delegate
+                {
+                    ssmrMenu.FindItem(Resource.Id.action_ssmr_more).SetVisible(true);
+                    SSMRMenuDialog.Dismiss();
+                };
+
+                SSMRMenuDialog.Show();
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
 
