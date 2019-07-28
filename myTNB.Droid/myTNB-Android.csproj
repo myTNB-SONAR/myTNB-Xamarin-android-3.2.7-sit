@@ -1317,6 +1317,8 @@
     <AndroidResource Include="Resources\drawable-xxxhdpi\gradient_background.png" />
     <Compile Include="Src\SitecoreCMS\Model\ApplySSMRWalkthroughModel.cs" />
     <Compile Include="Src\SitecoreCMS\Service\ApplySSMRWalkthroughService.cs" />
+    <Compile Include="Src\SSMR\SMRApplication\MVP\OnBoardingActivity.cs" />
+    <AndroidResource Include="Resources\layout\OnboardingSSMRView.axml" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -1678,6 +1680,9 @@
     <Folder Include="Src\myTNBMenu\Fragments\HomeMenu\Helper\" />
     <Folder Include="Src\Base\Helper\" />
     <Folder Include="Src\myTNBMenu\Fragments\HomeMenu\Requests\" />
+    <Folder Include="Src\SSMR\" />
+    <Folder Include="Src\SSMR\SMRApplication\" />
+    <Folder Include="Src\SSMR\SMRApplication\MVP\" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\GradientStatusBar.xml" />
