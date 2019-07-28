@@ -12,7 +12,7 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
             for (int i = 0; i < 3; i++)
             {
                 OnBoardingDataModel model = new OnBoardingDataModel();
-                model.ImageURL = "";
+                model.ImageURL = "onboarding_bg_"+(i+1);
                 model.Title = "Title";
                 model.Description = "Description";
                 this.onBoardingDataModelList.Add(model);

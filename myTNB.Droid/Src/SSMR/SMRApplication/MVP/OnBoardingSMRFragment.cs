@@ -49,7 +49,24 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
             TextView titleView = viewGroup.FindViewById(Resource.Id.applyTitle) as TextView;
             TextView descriptionView = viewGroup.FindViewById(Resource.Id.applyDescription) as TextView;
 
-            //imageSource.SetImageDrawable();
+            int imageUrlResource = Resource.Drawable.onboarding_bg_1;
+            if (imageUrl!=null)
+            {
+                if (imageUrl == "onboarding_bg_1")
+                {
+                    imageUrlResource = Resource.Drawable.onboarding_bg_1;
+                }
+                else if (imageUrl == "onboarding_bg_2")
+                {
+                    imageUrlResource = Resource.Drawable.onboarding_bg_2;
+                }
+                else
+                {
+                    imageUrlResource = Resource.Drawable.onboarding_bg_3;
+                }
+            }
+
+            imageSource.SetImageResource(imageUrlResource);
             titleView.Text = title;
             descriptionView.Text = description;
             return viewGroup;

@@ -1340,6 +1340,8 @@
     <AndroidResource Include="Resources\drawable-xxxhdpi\onboarding_bg_1.png" />
     <AndroidResource Include="Resources\drawable-xxxhdpi\onboarding_bg_2.png" />
     <AndroidResource Include="Resources\drawable-xxxhdpi\onboarding_bg_3.png" />
+    <AndroidResource Include="Resources\drawable\onboarding_circle_active.axml" />
+    <AndroidResource Include="Resources\drawable\onboarding_circle_inactive.axml" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
