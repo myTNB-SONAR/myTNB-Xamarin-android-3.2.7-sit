@@ -151,10 +151,7 @@ namespace myTNB
 
         private void AddTableView()
         {
-            nfloat tabbarHeight = TabBarController.TabBar.Frame.Height + 20.0F;
-            _homeTableView = new UITableView(new CGRect(0, DeviceHelper.GetStatusBarHeight(), View.Frame.Width
-                , View.Frame.Height - DeviceHelper.GetStatusBarHeight() - tabbarHeight))
-            { BackgroundColor = UIColor.Clear };
+            _homeTableView = new UITableView(new CGRect(0, DeviceHelper.GetStatusBarHeight(), ViewWidth, ViewHeight)) { BackgroundColor = UIColor.Clear };
             _homeTableView.SeparatorStyle = UITableViewCellSeparatorStyle.None;
             _homeTableView.RegisterClassForCellReuse(typeof(AccountsTableViewCell), DashboardHomeConstants.Cell_Accounts);
             _homeTableView.RegisterClassForCellReuse(typeof(HelpTableViewCell), DashboardHomeConstants.Cell_Help);

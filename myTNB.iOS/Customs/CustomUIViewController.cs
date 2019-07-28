@@ -85,6 +85,14 @@ namespace myTNB
             {
                 ViewHeight -= NavigationController.NavigationBar.Frame.Height;
             }
+            if (TabBarController != null && TabBarController.TabBar != null && !TabBarController.TabBar.Hidden)
+            {
+                ViewHeight -= TabBarController.TabBar.Frame.Height;
+            }
+            if (DeviceHelper.IsIphoneXUpResolution())
+            {
+                ViewHeight -= 20;
+            }
             ViewHeight -= DeviceHelper.GetStatusBarHeight();
         }
         #endregion

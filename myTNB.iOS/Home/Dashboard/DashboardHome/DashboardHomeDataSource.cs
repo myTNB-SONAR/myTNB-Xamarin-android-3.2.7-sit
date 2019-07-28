@@ -76,7 +76,7 @@ namespace myTNB
             {
                 CGRect accountHeight = tableView.RectForRowAtIndexPath(NSIndexPath.Create(0, 0));
                 ServicesTableViewCell cell = tableView.DequeueReusableCell(DashboardHomeConstants.Cell_Services) as ServicesTableViewCell;
-                cell._titleLabel.Text = _controller.I18NDictionary[DashboardHomeConstants.I18N_MyServices];
+                cell._titleLabel.Text = _controller.GetI18NValue(DashboardHomeConstants.I18N_MyServices);
                 cell._titleLabel.TextColor = accountHeight.Height < tableView.Frame.Height * 0.40F ? UIColor.White : MyTNBColor.PowerBlue;
                 cell.AddCards(_services, _controller._servicesActionDictionary);
                 return cell;
@@ -84,7 +84,7 @@ namespace myTNB
             if (indexPath.Row == 2)
             {
                 HelpTableViewCell cell = tableView.DequeueReusableCell(DashboardHomeConstants.Cell_Help) as HelpTableViewCell;
-                cell._titleLabel.Text = _controller.I18NDictionary[DashboardHomeConstants.I18N_NeedHelp];
+                cell._titleLabel.Text = _controller.GetI18NValue(DashboardHomeConstants.I18N_NeedHelp);
                 cell.AddCards(_helpList);
                 return cell;
             }

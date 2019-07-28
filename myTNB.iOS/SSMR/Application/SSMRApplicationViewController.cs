@@ -54,7 +54,6 @@ namespace myTNB
             UIImage backImg = UIImage.FromBundle("Back-White");
             UIBarButtonItem btnBack = new UIBarButtonItem(backImg, UIBarButtonItemStyle.Done, (sender, e) =>
             {
-                //DismissViewController(true, null);
                 ViewHelper.DismissControllersAndSelectTab(this, 0, true);
             });
             NavigationItem.LeftBarButtonItem = btnBack;
