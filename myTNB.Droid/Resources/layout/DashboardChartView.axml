@@ -79,7 +79,7 @@
             <TextView
                 android:layout_height="0dp"
                 android:layout_width="wrap_content"
-                android:layout_weight="0.5"
+                android:layout_weight="0.8"
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
                 android:textSize="12dp"
@@ -272,31 +272,33 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal"
-                            android:layout_marginTop="16dp"
-                            android:layout_marginLeft="12dp"
-                            android:layout_marginRight="12dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginLeft="6dp"
+                            android:layout_marginRight="6dp"
                             android:layout_marginBottom="8dp">
-                            <ImageView
-                                android:id="@+id/ssmr_img"
-                                android:src="@drawable/smr_48_x_48"
-                                android:layout_width="32dp"
-                                android:layout_height="32dp"
-                                android:layout_marginLeft="2dp"
-                                android:layout_marginRight="14dp"
-                                android:scaleType="fitCenter" />
-                            <TextView
-                                android:id="@+id/ssmrAccountStatusText"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:textColor="@color/charcoalGrey"
-                                android:text=""
-                                android:textSize="12dp"/>
+                        <ImageView
+                            android:id="@+id/ssmr_img"
+                            android:src="@drawable/smr_48_x_48"
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:layout_marginLeft="2dp"
+                            android:layout_marginRight="14dp"
+                            android:scaleType="fitCenter" />
+                        <TextView
+                            android:id="@+id/ssmrAccountStatusText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="2dp"
+                            android:layout_marginRight="6dp"
+                            android:textColor="@color/charcoalGrey"
+                            android:text=""
+                            android:textSize="12dp"/>
                         </LinearLayout>
                         <TextView
                             android:id="@+id/btnTxtSsmrViewHistory"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="60dp"
+                            android:layout_marginLeft="54dp"
                             android:layout_marginRight="98dp"
                             android:layout_marginBottom="8dp"
                             android:textColor="@color/powerBlue"
@@ -310,9 +312,9 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="8dp"
-                            android:layout_marginLeft="18dp"
-                            android:layout_marginRight="18dp"
-                            android:layout_marginBottom="16dp"
+                            android:layout_marginLeft="12dp"
+                            android:layout_marginRight="12dp"
+                            android:layout_marginBottom="10dp"
                             android:layout_weight="1"
                             android:text="@string/ssmr_submit_meter"
                             android:textAllCaps="false" />
@@ -352,7 +354,7 @@
             android:layout_marginBottom="@dimen/_10sdp"
             android:layout_marginTop="@dimen/_10sdp"
             android:paddingBottom="5dp"
-            android:paddingTop="5dp"/>
+            android:paddingTop="2dp"/>
         <RelativeLayout
             android:id="@+id/totalPayableLayout"
             android:layout_width="match_parent"
@@ -362,7 +364,7 @@
             android:minHeight="25px"
             android:minWidth="25px"
             android:paddingBottom="5dp"
-            android:paddingTop="5dp"
+            android:paddingTop="2dp"
             android:visibility="visible">
             <TextView
                 android:id="@+id/txtTotalPayableTitle"

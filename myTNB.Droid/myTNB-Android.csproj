@@ -1352,6 +1352,10 @@
     <AndroidResource Include="Resources\drawable-xxhdpi\ic_action_delete_white.png" />
     <AndroidResource Include="Resources\drawable-xxxhdpi\ic_action_delete_white.png" />
     <AndroidResource Include="Resources\layout\SSMRMenuListLayout.axml" />
+    <Compile Include="Src\AppLaunch\Requests\AccountsSMRStatusRequest.cs" />
+    <Compile Include="Src\AppLaunch\Models\AccountSMRStatus.cs" />
+    <Compile Include="Src\AppLaunch\Models\AccountSMRStatusResponse.cs" />
+    <Compile Include="Src\AppLaunch\Api\IAccountsSMRStatusApi.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

@@ -588,7 +588,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             {
                 if (isSubmitMeter)
                 {
-                    // REMARK TO CHRIS TODO: Submit Meter Goes Here;
+                    // REMARK TODO for Chris from LinSiong: Submit Meter Goes Here;
                 }
                 else
                 {
@@ -1827,71 +1827,88 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 SetAccountStatusVisibility(ViewStates.Gone);
                 if (response != null && response.Response != null && response.Response.Data != null)
                 {
-                    SsmrHistoryContainer.Visibility = ViewStates.Visible;
                     smrResponse = response;
-                    if (!string.IsNullOrEmpty(response.Response.Data.DashboardMessage))
+                    Activity.RunOnUiThread(() =>
                     {
-                        if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.N)
-                        {
-                            SsmrAccountStatusText.TextFormatted = Html.FromHtml(response.Response.Data.DashboardMessage, FromHtmlOptions.ModeLegacy);
-                        }
-                        else
-                        {
-                            SsmrAccountStatusText.TextFormatted = Html.FromHtml(response.Response.Data.DashboardMessage);
-                        }
-                    }
+                        SsmrHistoryContainer.Visibility = ViewStates.Visible;
 
-                    if (response.Response.Data.isDashboardCTADisabled == "true")
-                    {
-                        btnReadingHistory.Enabled = false;
-                        btnReadingHistory.Background = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.silver_chalice_button_outline);
-                        btnReadingHistory.SetTextColor(ContextCompat.GetColorStateList(this.Activity, Resource.Color.silverChalice));
-                    }
-                    else
-                    {
-                        btnReadingHistory.Enabled = true;
-                        btnReadingHistory.SetTextColor(ContextCompat.GetColorStateList(this.Activity, Resource.Color.freshGreen));
-                        btnReadingHistory.Background = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.light_green_outline_button_background);
-                    }
-
-                    if (response.Response.Data.DashboardCTAType.ToUpper() == Constants.SMR_SUBMIT_METER_KEY)
-                    {
-                        txtTotalPayableTitle.Text = GetString(Resource.String.ssmr_need_pay);
-                        isSubmitMeter = true;
-                        if (response.Response.Data.showReadingHistoryLink == "true")
+                        if (response.Response.Data.DashboardCTAType.ToUpper() == Constants.SMR_SUBMIT_METER_KEY)
                         {
-                            btnTxtSsmrViewHistory.Visibility = ViewStates.Visible;
-                            if (!string.IsNullOrEmpty(response.Response.Data.ReadingHistoryLinkText))
+                            txtTotalPayableTitle.Text = GetString(Resource.String.ssmr_need_pay);
+                            isSubmitMeter = true;
+                            if (response.Response.Data.showReadingHistoryLink == "true")
                             {
-                                btnTxtSsmrViewHistory.Text = response.Response.Data.ReadingHistoryLinkText;
+                                btnTxtSsmrViewHistory.Visibility = ViewStates.Visible;
+                                if (!string.IsNullOrEmpty(response.Response.Data.ReadingHistoryLinkText))
+                                {
+                                    btnTxtSsmrViewHistory.Text = response.Response.Data.ReadingHistoryLinkText;
+                                }
+                            }
+                            else
+                            {
+                                btnTxtSsmrViewHistory.Visibility = ViewStates.Gone;
                             }
                         }
                         else
                         {
-                            btnTxtSsmrViewHistory.Visibility = ViewStates.Gone;
+                            txtTotalPayableTitle.Text = GetString(Resource.String.total_amount_due_bill);
+                            isSubmitMeter = false;
                         }
-                    }
-                    else
-                    {
-                        txtTotalPayableTitle.Text = GetString(Resource.String.total_amount_due_bill);
-                        isSubmitMeter = false;
-                    }
 
-                    if (!string.IsNullOrEmpty(response.Response.Data.DashboardCTAText))
-                    {
-                        btnReadingHistory.Text = response.Response.Data.DashboardCTAText;
-                    }
-                    else
-                    {
-                        if (response.Response.Data.DashboardCTAType.ToUpper() == Constants.SMR_SUBMIT_METER_KEY)
+                        if (!string.IsNullOrEmpty(response.Response.Data.DashboardMessage))
                         {
-                            btnReadingHistory.Text = this.Activity.GetString(Resource.String.ssmr_submit_meter);
+                            if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.N)
+                            {
+                                SsmrAccountStatusText.TextFormatted = Html.FromHtml(response.Response.Data.DashboardMessage, FromHtmlOptions.ModeLegacy);
+                            }
+                            else
+                            {
+                                SsmrAccountStatusText.TextFormatted = Html.FromHtml(response.Response.Data.DashboardMessage);
+                            }
+                        }
+
+                        if (response.Response.Data.isDashboardCTADisabled == "true")
+                        {
+                            btnReadingHistory.Enabled = false;
+                            btnReadingHistory.Background = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.silver_chalice_button_outline);
+                            btnReadingHistory.SetTextColor(ContextCompat.GetColorStateList(this.Activity, Resource.Color.silverChalice));
                         }
                         else
                         {
-                            btnReadingHistory.Text = this.Activity.GetString(Resource.String.ssmr_view_meter);
+                            btnReadingHistory.Enabled = true;
+                            btnReadingHistory.SetTextColor(ContextCompat.GetColorStateList(this.Activity, Resource.Color.freshGreen));
+                            btnReadingHistory.Background = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.light_green_outline_button_background);
                         }
+
+                        if (!string.IsNullOrEmpty(response.Response.Data.DashboardCTAText))
+                        {
+                            btnReadingHistory.Text = response.Response.Data.DashboardCTAText;
+                        }
+                        else
+                        {
+                            if (response.Response.Data.DashboardCTAType.ToUpper() == Constants.SMR_SUBMIT_METER_KEY)
+                            {
+                                btnReadingHistory.Text = this.Activity.GetString(Resource.String.ssmr_submit_meter);
+                            }
+                            else
+                            {
+                                btnReadingHistory.Text = this.Activity.GetString(Resource.String.ssmr_view_meter);
+                            }
+                        }
+                    });
+
+                    if (IsActive())
+                    {
+                        HideAmountProgress();
                     }
+                }
+                else
+                {
+                    if (IsActive())
+                    {
+                        HideAmountProgress();
+                    }
+                    HideSSMRDashboardView();
                 }
             }
             catch (System.Exception e)
@@ -1912,6 +1929,13 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             if (selectedAccount.IsOwner && !selectedAccount.AccountCategoryId.Equals("2") && string.IsNullOrEmpty(errorMSG) && cbAccount.IsTaggedSMR)
             {
                 this.userActionsListener.GetSSMRAccountStatus(selectedAccount.AccountNum);
+            }
+            else
+            {
+                if (IsActive())
+                {
+                    HideAmountProgress();
+                }
             }
         }
 

@@ -397,11 +397,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                 }, cts.Token);
 
 
-                if (this.mView.IsActive())
-                {
-                    this.mView.HideAmountProgress();
-                }
-
                 if (!installDetailsResponse.Data.IsError)
                 {
                     if (installDetailsResponse.Data.Data.DisconnectionStatus == "Available")
@@ -410,6 +405,10 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                     }
                     else
                     {
+                        if (this.mView.IsActive())
+                        {
+                            this.mView.HideAmountProgress();
+                        }
                         this.mView.ShowAccountStatus(installDetailsResponse.Data.Data);
                     }
                 }
@@ -424,7 +423,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                 {
                     this.mView.HideAmountProgress();
                 }
-                this.mView.InitiateSSMRStatus();
                 this.mView.ShowDisconnectionRetrySnakebar();
                 Utility.LoggingNonFatalError(e);
             }
@@ -435,7 +433,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                 {
                     this.mView.HideAmountProgress();
                 }
-                this.mView.InitiateSSMRStatus();
                 this.mView.ShowDisconnectionRetrySnakebar();
                 Utility.LoggingNonFatalError(apiException);
             }
@@ -446,7 +443,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                 {
                     this.mView.HideAmountProgress();
                 }
-                this.mView.InitiateSSMRStatus();
                 this.mView.ShowDisconnectionRetrySnakebar();
                 Utility.LoggingNonFatalError(e);
             }
@@ -492,17 +488,16 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                 }, cts.Token);
 
 
-                if (this.mView.IsActive())
-                {
-                    this.mView.HideAmountProgress();
-                }
-
                 if (SMRAccountActivityInfoResponse.Response.ErrorCode == "7200")
                 {
                     this.mView.ShowSSMRDashboardView(SMRAccountActivityInfoResponse);
                 }
                 else
                 {
+                    if (this.mView.IsActive())
+                    {
+                        this.mView.HideAmountProgress();
+                    }
                     this.mView.HideSSMRDashboardView();
                 }
             }
@@ -512,6 +507,8 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                 {
                     this.mView.HideAmountProgress();
                 }
+                this.mView.HideSSMRDashboardView();
+                this.mView.ShowSMRRetrySnakebar();
                 Utility.LoggingNonFatalError(e);
             }
             catch (ApiException apiException)

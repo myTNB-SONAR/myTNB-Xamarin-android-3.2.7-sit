@@ -13,6 +13,7 @@ using myTNB_Android.Src.AppLaunch.Async;
 using myTNB_Android.Src.AppLaunch.Models;
 using myTNB_Android.Src.AppLaunch.Requests;
 using myTNB_Android.Src.Base.Api;
+using myTNB_Android.Src.Base.Models;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.SiteCore;
 using myTNB_Android.Src.Utils;
@@ -111,6 +112,7 @@ namespace myTNB_Android.Src.AppLaunch.MVP
 
             var getPhoneVerifyApi = RestService.For<GetPhoneVerifyStatusApi>(httpClient);
 
+            var getAccountSMRStatusApi = RestService.For<IAccountsSMRStatusApi>(httpClient);
 
 #else
             var api = RestService.For<INotificationApi>(Constants.SERVER_URL.END_POINT);
@@ -119,6 +121,8 @@ namespace myTNB_Android.Src.AppLaunch.MVP
             var masterDataApi = RestService.For<GetMasterDataApi>(Constants.SERVER_URL.END_POINT);
 
             var getPhoneVerifyApi = RestService.For<GetPhoneVerifyStatusApi>(Constants.SERVER_URL.END_POINT);
+
+            var getAccountSMRStatusApi = RestService.For<IAccountsSMRStatusApi>(Constants.SERVER_URL.END_POINT);
 #endif
             try
             {
@@ -268,6 +272,52 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                                         }
                                         else
                                         {
+                                            // TODO for Chris from LinSiong: Please check this for AccountsSMRStatusApi
+                                            try
+                                            {
+                                                UserInterface currentUsrInf = new UserInterface()
+                                                {
+                                                    eid = UserEntity.GetActive().Email,
+                                                    sspuid = UserEntity.GetActive().UserID,
+                                                    did = this.mView.GetDeviceId(),
+                                                    ft = FirebaseTokenEntity.GetLatest().FBToken,
+                                                    lang = Constants.DEFAULT_LANG.ToUpper(),
+                                                    sec_auth_k1 = Constants.APP_CONFIG.API_KEY_ID,
+                                                    sec_auth_k2 = "",
+                                                    ses_param1 = "",
+                                                    ses_param2 = ""
+                                                };
+
+                                                List<string> accountList = new List<string>();
+                                                foreach (CustomerBillingAccount customerAccount in CustomerBillingAccount.List())
+                                                {
+                                                    accountList.Add(customerAccount.AccNum);
+                                                }
+
+                                                AccountSMRStatusResponse accountSMRResponse = await getAccountSMRStatusApi.AccountsSMRStatusApi(new AccountsSMRStatusRequest()
+                                                {
+                                                    ContractAccounts = accountList,
+                                                    UserInterface = currentUsrInf
+                                                }, cts.Token);
+
+                                                if (accountSMRResponse.Response.ErrorCode == "7200" && accountSMRResponse.Response.Data.Count > 0)
+                                                {
+                                                    foreach (AccountSMRStatus accountSMRStatus in accountSMRResponse.Response.Data)
+                                                    {
+                                                        bool IsTaggedSMR = false;
+                                                        if (accountSMRStatus.IsTaggedSMR == "true")
+                                                        {
+                                                            IsTaggedSMR = true;
+                                                        }
+                                                        CustomerBillingAccount.UpdateIsSMRTagged(accountSMRStatus.ContractAccount, IsTaggedSMR);
+                                                    }
+                                                }
+                                            }
+                                            catch (System.Exception e)
+                                            {
+                                                Utility.LoggingNonFatalError(e);
+                                            }
+
                                             this.mView.ShowNotificationCount(UserNotificationEntity.Count());
                                             this.mView.ShowDashboard();
                                         }
