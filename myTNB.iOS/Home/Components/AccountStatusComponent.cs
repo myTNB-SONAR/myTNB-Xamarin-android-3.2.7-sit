@@ -25,7 +25,7 @@ namespace myTNB.Home.Components
 
         public void CreateComponent()
         {
-            _statusView = new UIView(new CGRect(16, _precedingView.Frame.GetMaxY()
+            _statusView = new UIView(new CGRect(16, _precedingView.Frame.GetMaxY() + 12f
                 , _parentView.Frame.Width - 32, 75));
 
             _lineView = new UIView(new CGRect(0, 0, (float)_statusView.Frame.Width, 1))
@@ -102,7 +102,7 @@ namespace myTNB.Home.Components
         public void SetFrameByPrecedingView(float yLocation)
         {
             var newFrame = _statusView.Frame;
-            newFrame.Y = yLocation;
+            newFrame.Y = yLocation + 12f;
             _statusView.Frame = newFrame;
         }
 

@@ -24,6 +24,11 @@ namespace myTNB.DataManager
         public int AccountsAddedCount = 0;
         public bool SummaryNeedsRefresh = false;
         public int AccountRecordIndex = -1;
+        public bool AccountIsSSMR = false;
+
+        //SSMR
+        public MeterReadingHistoryModel MeterReadingHistory = new MeterReadingHistoryModel();
+        public List<MeterReadingHistoryItemModel> ReadingHistoryList = new List<MeterReadingHistoryItemModel>();
 
         //Dashboard Home
         public List<HelpModel> HelpList = new List<HelpModel>();
@@ -175,6 +180,9 @@ namespace myTNB.DataManager
             AccountsGroupList = new List<List<DueAmountDataModel>>();
             AccountNumber = string.Empty;
             AccountsAddedCount = 0;
+
+            MeterReadingHistory = new MeterReadingHistoryModel();
+            ReadingHistoryList = new List<MeterReadingHistoryItemModel>();
 
             HelpList = new List<HelpModel>();
             ServicesList = new List<ServiceItemModel>();

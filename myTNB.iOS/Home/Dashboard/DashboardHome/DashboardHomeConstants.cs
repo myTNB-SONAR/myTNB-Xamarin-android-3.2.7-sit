@@ -33,5 +33,9 @@ namespace myTNB
         public static int CellIndex_Accounts = 0;
         public static int CellIndex_Services = 1;
         public static int CellIndex_Help = 2;
+
+        //SMR CTA
+        public static string CTA_ShowReadingHistory = "v";
+        public static string CTA_ShowSubmitReading = "s";
     }
 }

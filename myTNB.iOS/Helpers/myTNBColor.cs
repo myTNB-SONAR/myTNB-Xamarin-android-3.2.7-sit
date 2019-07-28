@@ -30,6 +30,8 @@ using UIKit;  namespace myTNB {
         readonly static UIColor _veryLightPinkTwo = new UIColor(red: 0.89f, green: 0.89f, blue: 0.89f, alpha: 1.0f);
         readonly static UIColor _brownGrey = new UIColor(red: 0.59f, green: 0.59f, blue: 0.59f, alpha: 1.0f);
         readonly static UIColor _warmGrey = new UIColor(red: 0.45f, green: 0.44f, blue: 0.44f, alpha: 1.0f);
+        readonly static UIColor _greyishBrownTwo = new UIColor(red: 0.33f, green: 0.33f, blue: 0.33f, alpha: 1.0f);
+        readonly static UIColor _veryLightPinkThree = new UIColor(red: 0.89f, green: 0.89f, blue: 0.89f, alpha: 1.0f);
 
         /// <summary>         /// A color with RGBA of (0.47, 0.19, 0.83, 1).         /// </summary>         public static UIColor GradientPurpleDarkElement
         {
@@ -267,6 +269,22 @@ using UIKit;  namespace myTNB {
             get
             {
                 return _warmGrey;
+            }
+        }
+
+        public static UIColor GreyishBrownTwo
+        {
+            get
+            {
+                return _greyishBrownTwo;
+            }
+        }
+
+        public static UIColor VeryLightPinkThree
+        {
+            get
+            {
+                return _veryLightPinkThree;
             }
         }
     } }

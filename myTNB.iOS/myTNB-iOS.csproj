@@ -1032,6 +1032,22 @@
     <ImageAsset Include="Assets.xcassets\Red-Cross.imageset\icDisplayUnsuccessful.png" />
     <ImageAsset Include="Assets.xcassets\Red-Cross.imageset\icDisplayUnsuccessful%402x.png" />
     <ImageAsset Include="Assets.xcassets\Red-Cross.imageset\icDisplayUnsuccessful%403x.png" />
+    <ImageAsset Include="Assets.xcassets\SMR-Medium-Icon.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\SMR-Medium-Icon.imageset\SMR-Medium-Icon.png" />
+    <ImageAsset Include="Assets.xcassets\SMR-Medium-Icon.imageset\SMR-Medium-Icon%402x.png" />
+    <ImageAsset Include="Assets.xcassets\SMR-Medium-Icon.imageset\SMR-Icon%403x.png" />
+    <ImageAsset Include="Assets.xcassets\SSMRPrimaryIcon.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\SSMRPrimaryIcon.imageset\SSMRPrimaryIcon.png" />
+    <ImageAsset Include="Assets.xcassets\SSMRPrimaryIcon.imageset\SSMRPrimaryIcon%402x.png" />
+    <ImageAsset Include="Assets.xcassets\SSMRPrimaryIcon.imageset\SSMRPrimaryIcon%403x.png" />
+    <ImageAsset Include="Assets.xcassets\SMR-Closed-BG.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\SMR-Closed-BG.imageset\SMR-Closed-BG.png" />
+    <ImageAsset Include="Assets.xcassets\SMR-Closed-BG.imageset\SMR-Closed-BG%402x.png" />
+    <ImageAsset Include="Assets.xcassets\SMR-Closed-BG.imageset\SMR-Closed-BG%403x.png" />
+    <ImageAsset Include="Assets.xcassets\SMR-Open-Submitted-BG.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\SMR-Open-Submitted-BG.imageset\SMR-Open-Submitted-BG.png" />
+    <ImageAsset Include="Assets.xcassets\SMR-Open-Submitted-BG.imageset\SMR-Open-Submitted-BG%402x.png" />
+    <ImageAsset Include="Assets.xcassets\SMR-Open-Submitted-BG.imageset\SMR-Open-Submitted-BG%403x.png" />
     <ImageAsset Include="Assets.xcassets\Camera-Thumb.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Camera-Thumb.imageset\oval.png" />
     <ImageAsset Include="Assets.xcassets\Camera-Thumb.imageset\oval%402x.png" />
@@ -1305,7 +1321,6 @@
     <Folder Include="Assets.xcassets\Services-CheckStatus.imageset\" />
     <Folder Include="Assets.xcassets\Services-SetAppointments.imageset\" />
     <Folder Include="Assets.xcassets\Services-ApplyAutoPay.imageset\" />
-    <Folder Include="Customs\DashboardHome\" />
     <Folder Include="Home\Dashboard\DashboardHome\Accounts\" />
     <Folder Include="Assets.xcassets\Accounts-Smart-Meter-Icon.imageset\" />
     <Folder Include="Customs\Generic Line\" />
@@ -1352,10 +1367,18 @@
     <Folder Include="SSMR\Application\" />
     <Folder Include="Customs\Generic Status Page\" />
     <Folder Include="SSMR\Meter Reading\" />
+    <Folder Include="Assets.xcassets\SMR-Medium-Icon.imageset\" />
+    <Folder Include="SSMR\Reading History\" />
+    <Folder Include="Home\Components\SSMR\" />
+    <Folder Include="Assets.xcassets\SSMRPrimaryIcon.imageset\" />
+    <Folder Include="Assets.xcassets\SMR-Closed-BG.imageset\" />
+    <Folder Include="Assets.xcassets\SMR-Open-Submitted-BG.imageset\" />
+    <Folder Include="Model\SSMR\" />
     <Folder Include="Sitecore CMS\Model\Apply SSMR Walkthrough\" />
     <Folder Include="Assets.xcassets\Camera-Thumb.imageset\" />
     <Folder Include="Model\GetCARegisteredContactInfo\" />
     <Folder Include="Model\SSMRApplicationStatus\" />
+    <Folder Include="Home\Components\Dashboard Home\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -2037,8 +2060,6 @@
     </Compile>
     <Compile Include="Home\Dashboard\DashboardHome\Services\ServicesTableViewCell.cs" />
     <Compile Include="Home\Dashboard\DashboardHome\DashboardHomeConstants.cs" />
-    <Compile Include="Customs\DashboardHome\DashboardHomeHeader.cs" />
-    <Compile Include="Customs\DashboardHome\DashboardHomeAccountCard.cs" />
     <Compile Include="Home\Dashboard\DashboardHome\Accounts\AccountsTableViewCell.cs" />
     <Compile Include="Rewards\RewardsViewController.cs" />
     <Compile Include="Rewards\RewardsViewController.designer.cs">
@@ -2095,12 +2116,24 @@
     <Compile Include="SSMR\Meter Reading\SSMRCaptureMeterViewController.designer.cs">
       <DependentUpon>SSMRCaptureMeterViewController.cs</DependentUpon>
     </Compile>
+    <Compile Include="SSMR\Reading History\SSMRReadingHistoryViewController.cs" />
+    <Compile Include="SSMR\Reading History\SSMRReadingHistoryViewController.designer.cs">
+      <DependentUpon>SSMRReadingHistoryViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SSMR\Reading History\SSMRReadingHistoryDataSource.cs" />
+    <Compile Include="SSMR\Reading History\SSMRReadingHistoryCell.cs" />
+    <Compile Include="Home\Components\SSMR\SSMRComponent.cs" />
+    <Compile Include="Home\Components\SSMR\SSMRReadingHistoryHeaderComponent.cs" />
+    <Compile Include="Model\SSMR\SMRAccountActivityInfoResponseModel.cs" />
     <Compile Include="Sitecore CMS\Model\Apply SSMR Walkthrough\ApplySSMRWalkthroughModel.cs" />
     <Compile Include="Sitecore CMS\Service\ApplySSMRWalkthroughService.cs" />
     <Compile Include="SQLite\SQLite Data Manager\ApplySSMRWalkthroughEntity.cs" />
     <Compile Include="Session Cache\SSMRAccounts.cs" />
     <Compile Include="Model\GetCARegisteredContactInfo\CARegisteredContactInfoResponseModel.cs" />
     <Compile Include="Model\SSMRApplicationStatus\SSMRApplicationStatus.cs" />
+    <Compile Include="SSMR\SSMRHelper.cs" />
+    <Compile Include="Home\Components\Dashboard Home\DashboardHomeAccountCard.cs" />
+    <Compile Include="Home\Components\Dashboard Home\DashboardHomeHeader.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />

@@ -36,6 +36,7 @@ namespace myTNB.Dashboard.DashboardComponents
         public ActivityIndicatorComponent _componentActivity;
         public RefreshViewComponent _refreshViewComponent;
         public AccountStatusComponent _accountStatusComponent;
+        public SSMRComponent _sSMRComponent;
         public UIView _viewChartCompanion;
         public UIView _viewSmartMeter;
         public UIView _viewChart;
@@ -231,6 +232,12 @@ namespace myTNB.Dashboard.DashboardComponents
             //_viewSmartMeter.Hidden = true;
             //_dashboardScrollView.AddSubview(_viewSmartMeter);
 
+            //Add SSMR
+            if (DataManager.DataManager.SharedInstance.AccountIsActive && DataManager.DataManager.SharedInstance.AccountIsSSMR)
+            {
+                _sSMRComponent = new SSMRComponent(_dashboardScrollView, _addressComponent.GetView().Frame.GetMaxY());
+                _dashboardScrollView.AddSubview(_sSMRComponent.GetUI());
+            }
 
             CGSize contentSize = _dashboardScrollView.ContentSize;
             contentSize.Height = contentSize.Height + 20;
@@ -240,7 +247,6 @@ namespace myTNB.Dashboard.DashboardComponents
 
             _parentView.AddSubview(_gradientView);
             _parentView.AddSubview(_billAndPaymentView);
-
         }
 
         public void ConstructNoAccountDashboard()
