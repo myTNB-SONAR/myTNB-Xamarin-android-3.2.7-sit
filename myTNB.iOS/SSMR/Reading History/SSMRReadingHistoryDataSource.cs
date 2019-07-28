@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using CoreGraphics;
 using Foundation;
+using myTNB.Model;
 using myTNB.SSMR;
 using UIKit;
 
@@ -9,15 +11,24 @@ namespace myTNB
     public class SSMRReadingHistoryDataSource : UITableViewSource
     {
         private SSMRReadingHistoryViewController _controller;
+        private List<MeterReadingHistoryItemModel> _readingHistoryList;
+        EventHandler _onScroll;
 
-        public SSMRReadingHistoryDataSource(SSMRReadingHistoryViewController controller)
+        public SSMRReadingHistoryDataSource(SSMRReadingHistoryViewController controller, EventHandler onScroll, List<MeterReadingHistoryItemModel> readingHistoryList)
         {
             _controller = controller;
+            _onScroll = onScroll;
+            _readingHistoryList = readingHistoryList;
         }
 
         public override UITableViewCell GetCell(UITableView tableView, NSIndexPath indexPath)
         {
+            var readingHistory = _readingHistoryList[indexPath.Row];
             SSMRReadingHistoryCell cell = tableView.DequeueReusableCell(SSMRConstants.Cell_ReadingHistory) as SSMRReadingHistoryCell;
+            cell._dateLabel.Text = readingHistory?.ReadingDate ?? string.Empty;
+            cell._descLabel.Text = readingHistory?.ReadingType ?? string.Empty;
+            cell._kwhLabel.Text = readingHistory?.Consumption ?? string.Empty;
+            cell._monthYearLabel.Text = readingHistory?.ReadingForMonth ?? string.Empty;
             return cell;
         }
 
@@ -28,7 +39,7 @@ namespace myTNB
 
         public override nint RowsInSection(UITableView tableview, nint section)
         {
-            return 20;
+            return _readingHistoryList?.Count ?? 0;
         }
 
         public override nfloat GetHeightForRow(UITableView tableView, NSIndexPath indexPath)
@@ -56,6 +67,11 @@ namespace myTNB
 
             sectionView.AddSubviews(new UIView[] { lblTitle });
             return sectionView;
+        }
+
+        public override void Scrolled(UIScrollView scrollView)
+        {
+            _onScroll?.Invoke(scrollView, null);
         }
     }
 }

@@ -334,9 +334,9 @@ namespace myTNB
             if (index >= 0)
             {
                 var selected = DataManager.DataManager.SharedInstance.AccountRecordsList.d[index];
+                DataManager.DataManager.SharedInstance.AccountIsSSMR = _dashboardHomeHelper.IsSSMR(selected);
                 DataManager.DataManager.SharedInstance.SelectAccount(selected.accNum);
                 DataManager.DataManager.SharedInstance.IsSameAccount = false;
-                DataManager.DataManager.SharedInstance.AccountIsSSMR = true; //selected.IsSSMR;
                 UIStoryboard storyBoard = UIStoryboard.FromName("Dashboard", null);
                 var vc = storyBoard.InstantiateViewController("DashboardViewController") as DashboardViewController;
                 vc.ShouldShowBackButton = true;

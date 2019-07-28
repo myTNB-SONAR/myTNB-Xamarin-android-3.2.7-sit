@@ -237,7 +237,6 @@ namespace myTNB.Dashboard.DashboardComponents
             {
                 _sSMRComponent = new SSMRComponent(_dashboardScrollView, _addressComponent.GetView().Frame.GetMaxY());
                 _dashboardScrollView.AddSubview(_sSMRComponent.GetUI());
-                _sSMRComponent.SetDescription("You missed 2 reading months! Check back in for the next reading period or your service will be discontinued.");
             }
 
             CGSize contentSize = _dashboardScrollView.ContentSize;

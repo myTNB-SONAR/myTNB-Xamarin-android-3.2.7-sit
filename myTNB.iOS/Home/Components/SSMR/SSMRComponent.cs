@@ -10,7 +10,7 @@ namespace myTNB
         private readonly UIView _parentView;
         UIView _containerView;
         UIImageView _iconView;
-        UILabel _labelViewHistory;
+        public UILabel _labelViewHistory;
         UILabel _description;
         public UIButton _smrButton;
         nfloat _yLocation = 0f;
@@ -52,7 +52,17 @@ namespace myTNB
                 Lines = 0,
                 LineBreakMode = UILineBreakMode.TailTruncation
             };
-
+            _labelViewHistory = new UILabel(new CGRect(_iconView.Frame.GetMaxX() + iconPadding, _description.Frame.GetMaxY() + 8f, _descWidth, 20f))
+            {
+                UserInteractionEnabled = true,
+                BackgroundColor = UIColor.Clear,
+                TextAlignment = UITextAlignment.Left,
+                Font = MyTNBFont.MuseoSans12_500,
+                TextColor = MyTNBColor.WaterBlue,
+                Lines = 0,
+                LineBreakMode = UILineBreakMode.TailTruncation,
+                Hidden = true
+            };
             _smrButton = new UIButton(UIButtonType.Custom)
             {
                 Frame = new CGRect(_padding, _description.Frame.GetMaxY() + _padding, _containerView.Frame.Width - (_padding * 2), buttonHeight)
@@ -60,15 +70,13 @@ namespace myTNB
             _smrButton.Layer.CornerRadius = 4;
             _smrButton.Layer.BorderColor = MyTNBColor.FreshGreen.CGColor;
             _smrButton.Layer.BorderWidth = 1;
-            _smrButton.SetTitle("Dashboard_ViewReadingHistory".Translate(), UIControlState.Normal);
             _smrButton.Font = MyTNBFont.MuseoSans16_500;
             _smrButton.SetTitleColor(MyTNBColor.FreshGreen, UIControlState.Normal);
             _smrButton.Enabled = true;
-            _smrButton.TouchUpInside += (sender, e) =>
-            {
-                Debug.WriteLine("_smrButton pressed!!!!!!!");
-            };
-            _containerView.AddSubviews(new UIView { _iconView, _description, _smrButton });
+
+            _containerView.AddSubviews(new UIView { _iconView, _description });
+            _containerView.AddSubview(_labelViewHistory);
+            _containerView.AddSubview(_smrButton);
         }
 
         public UIView GetUI()
@@ -93,10 +101,10 @@ namespace myTNB
             AdjustViewFrames();
         }
 
-        private void AdjustViewFrames()
+        private void AdjustViewFrames(bool linkIsVisible = false)
         {
             CGRect btnFrame = _smrButton.Frame;
-            btnFrame.Y = _description.Frame.GetMaxY() + _padding;
+            btnFrame.Y = linkIsVisible ? _labelViewHistory.Frame.GetMaxY() + _padding : _description.Frame.GetMaxY() + _padding;
             _smrButton.Frame = btnFrame;
 
             CGRect containerFrame = _containerView.Frame;
@@ -109,6 +117,33 @@ namespace myTNB
             var newFrame = _containerView.Frame;
             newFrame.Y = yLocation + 18f;
             _containerView.Frame = newFrame;
+        }
+
+        public void SetSRMButtonEnable(bool isEnable)
+        {
+            _smrButton.Enabled = isEnable;
+            _smrButton.SetTitleColor(isEnable ? MyTNBColor.FreshGreen : MyTNBColor.SilverChalice, UIControlState.Normal);
+            _smrButton.Layer.BorderColor = isEnable ? MyTNBColor.FreshGreen.CGColor : MyTNBColor.SilverChalice.CGColor;
+        }
+
+        public void SetButtonText(string text)
+        {
+            _smrButton.SetTitle(text, UIControlState.Normal);
+        }
+
+        public void ShowHistoryLink(bool showLink, string text)
+        {
+            _labelViewHistory.Hidden = !showLink;
+            if (showLink)
+            {
+                _labelViewHistory.Text = text;
+                CGSize labelNewSize = _labelViewHistory.SizeThatFits(new CGSize(_descWidth, 1000f));
+                CGRect frame = _labelViewHistory.Frame;
+                frame.Y = _description.Frame.GetMaxY() + 8f;
+                frame.Height = labelNewSize.Height;
+                _labelViewHistory.Frame = frame;
+            }
+            AdjustViewFrames(showLink);
         }
     }
 }

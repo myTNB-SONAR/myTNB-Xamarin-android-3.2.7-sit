@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading.Tasks;
 using myTNB.Model;
 using UIKit;
 
@@ -98,6 +99,52 @@ namespace myTNB
             }
 
             return groupedAccountsList;
+        }
+
+        /// <summary>
+        /// Returns the account model using account number
+        /// </summary>
+        /// <param name="accountNo"></param>
+        /// <returns></returns>
+        public DueAmountDataModel GetModelWithAccountNumber(string accountNo)
+        {
+            DueAmountDataModel model = new DueAmountDataModel();
+            if (!string.IsNullOrEmpty(accountNo))
+            {
+                var groupAccountList = DataManager.DataManager.SharedInstance.AccountsGroupList;
+                foreach (var accountList in groupAccountList)
+                {
+                    foreach (var account in accountList)
+                    {
+                        if (account.accNum == accountNo)
+                        {
+                            model = account;
+                            break;
+                        }
+                    }
+                }
+            }
+            return model;
+        }
+
+        /// <summary>
+        /// Returns if the account is SSMR or not
+        /// </summary>
+        /// <param name="customerModel"></param>
+        /// <returns></returns>
+        public bool IsSSMR(CustomerAccountRecordModel customerModel)
+        {
+            bool res = false;
+
+            if (customerModel != null)
+            {
+                if (customerModel.IsNormalMeter)
+                {
+                    var model = GetModelWithAccountNumber(customerModel.accNum);
+                    res = model?.IsSSMR ?? false;
+                }
+            }
+            return res;
         }
 
         /// <summary>

@@ -1,5 +1,6 @@
 ﻿using System;
 using CoreGraphics;
+using myTNB.Model;
 using UIKit;
 
 namespace myTNB
@@ -10,7 +11,7 @@ namespace myTNB
         nfloat cellHeight = 67;
         nfloat padding = 16f;
         UIView _containerView;
-        UILabel _dateLabel, descLabel, _kwhLabel, monthYearLabel;
+        public UILabel _dateLabel, _descLabel, _kwhLabel, _monthYearLabel;
         public SSMRReadingHistoryCell(IntPtr handle) : base(handle)
         {
             _containerView = new UIView(new CGRect(0, 0, cellWidth, cellHeight))
@@ -24,16 +25,26 @@ namespace myTNB
             _dateLabel = new UILabel(new CGRect(padding, padding, cellWidth / 2, 16f))
             {
                 Font = MyTNBFont.MuseoSans12_500,
-                TextColor = MyTNBColor.CharcoalGrey,
-                Text = "08 Aug 2019"
+                TextColor = MyTNBColor.CharcoalGrey
             };
-            descLabel = new UILabel(new CGRect(padding, _dateLabel.Frame.GetMaxY() + 4f, cellWidth / 2, 14f))
+            _descLabel = new UILabel(new CGRect(padding, _dateLabel.Frame.GetMaxY() + 4f, cellWidth / 2, 14f))
+            {
+                Font = MyTNBFont.MuseoSans10_300,
+                TextColor = MyTNBColor.Grey
+            };
+            _kwhLabel = new UILabel(new CGRect(cellWidth - (cellWidth / 2) - padding, padding, cellWidth / 2, 16f))
+            {
+                Font = MyTNBFont.MuseoSans12_500,
+                TextColor = MyTNBColor.CharcoalGrey,
+                TextAlignment = UITextAlignment.Right
+            };
+            _monthYearLabel = new UILabel(new CGRect(cellWidth - (cellWidth / 2) - padding, _kwhLabel.Frame.GetMaxY() + 4f, cellWidth / 2, 14f))
             {
                 Font = MyTNBFont.MuseoSans10_300,
                 TextColor = MyTNBColor.Grey,
-                Text = "via Self Reading"
+                TextAlignment = UITextAlignment.Right
             };
-            _containerView.AddSubviews(new UIView { _dateLabel, descLabel, line });
+            _containerView.AddSubviews(new UIView { _dateLabel, _descLabel, _kwhLabel, _monthYearLabel, line });
             AddSubview(_containerView);
             SelectionStyle = UITableViewCellSelectionStyle.None;
         }

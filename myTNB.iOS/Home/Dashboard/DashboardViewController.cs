@@ -27,6 +27,7 @@ namespace myTNB.Dashboard
         DueAmountResponseModel _dueAmount = new DueAmountResponseModel();
         BillingAccountDetailsResponseModel _billingAccountDetailsList = new BillingAccountDetailsResponseModel();
         InstallationDetailResponseModel _installationDetails = new InstallationDetailResponseModel();
+        SMRAccountActivityInfoResponseModel _smrActivityInfoResponse = new SMRAccountActivityInfoResponseModel();
         bool isAnimating, isFromViewBillAdvice, isFromForeground, isREAccount, amountDueIsAvailable;
         bool isBcrmAvailable = true, isNormalChart = true;
         double _amountDue, _dueIncrementDays, _lastContentOffset;
@@ -167,6 +168,10 @@ namespace myTNB.Dashboard
                             if (!DataManager.DataManager.SharedInstance.IsSameAccount)
                             {
                                 ActivityIndicator.Show();
+                                if (DataManager.DataManager.SharedInstance.AccountIsSSMR)
+                                {
+                                    await LoadSMRAccountActivityInfo(DataManager.DataManager.SharedInstance.SelectedAccount);
+                                }
                                 await LoadInstallationDetails();
                                 await LoadAmountDue();
                                 await LoadDashboard();
@@ -195,6 +200,36 @@ namespace myTNB.Dashboard
         public override void ViewWillDisappear(bool animated)
         {
             DataManager.DataManager.SharedInstance.IsSameAccount = true;
+        }
+
+        /// <summary>
+        /// Loads the SSMR's Account Activity Info
+        /// </summary>
+        /// <param name="account"></param>
+        /// <returns></returns>
+        private async Task LoadSMRAccountActivityInfo(CustomerAccountRecordModel account)
+        {
+            ActivityIndicator.Show();
+            await GetSMRAccountActivityInfo(account).ContinueWith(task =>
+            {
+                InvokeOnMainThread(() =>
+                {
+                    if (_smrActivityInfoResponse.d.IsSuccess &&
+                        _smrActivityInfoResponse != null &&
+                        _smrActivityInfoResponse.d != null &&
+                        _smrActivityInfoResponse.d.data != null)
+                    {
+                        DataManager.DataManager.SharedInstance.MeterReadingHistory = _smrActivityInfoResponse.d.data;
+                        DataManager.DataManager.SharedInstance.ReadingHistoryList = _smrActivityInfoResponse.d.data.MeterReadingHistory;
+                    }
+                    else
+                    {
+                        DataManager.DataManager.SharedInstance.MeterReadingHistory = new MeterReadingHistoryModel();
+                        DataManager.DataManager.SharedInstance.ReadingHistoryList = new List<MeterReadingHistoryItemModel>();
+                        DataManager.DataManager.SharedInstance.AccountIsSSMR = false;
+                    }
+                });
+            });
         }
 
         /// <summary>
@@ -681,20 +716,11 @@ namespace myTNB.Dashboard
                 }
                 UITapGestureRecognizer notificationTap = new UITapGestureRecognizer(() =>
                 {
-                    //DataManager.DataManager.SharedInstance.IsSameAccount = true;
-                    //UIStoryboard storyBoard = UIStoryboard.FromName("PushNotification", null);
-                    //PushNotificationViewController viewController = storyBoard.InstantiateViewController("PushNotificationViewController") as PushNotificationViewController;
-                    //var navController = new UINavigationController(viewController);
-                    //PresentViewController(navController, true, null);
                     DataManager.DataManager.SharedInstance.IsSameAccount = true;
-                    UIStoryboard storyBoard = UIStoryboard.FromName("SSMR", null);
-                    SSMRReadingHistoryViewController viewController =
-                        storyBoard.InstantiateViewController("SSMRReadingHistoryViewController") as SSMRReadingHistoryViewController;
-                    if (viewController != null)
-                    {
-                        var navController = new UINavigationController(viewController);
-                        PresentViewController(navController, true, null);
-                    }
+                    UIStoryboard storyBoard = UIStoryboard.FromName("PushNotification", null);
+                    PushNotificationViewController viewController = storyBoard.InstantiateViewController("PushNotificationViewController") as PushNotificationViewController;
+                    var navController = new UINavigationController(viewController);
+                    PresentViewController(navController, true, null);
                 });
                 _dashboardMainComponent._titleBarComponent.SetPrimaryAction(notificationTap);
             }
@@ -710,22 +736,51 @@ namespace myTNB.Dashboard
 
         private void SetSSMREvent()
         {
+            var smrAcountInfo = DataManager.DataManager.SharedInstance.MeterReadingHistory;
             if (_dashboardMainComponent._sSMRComponent != null)
             {
-                _dashboardMainComponent._sSMRComponent._smrButton.TouchUpInside += (sender, e) =>
+                if (smrAcountInfo != null)
                 {
-                    Debug.WriteLine("_smrButton pressed");
-                    DataManager.DataManager.SharedInstance.IsSameAccount = true;
-                    UIStoryboard storyBoard = UIStoryboard.FromName("SSMR", null);
-                    SSMRReadingHistoryViewController viewController =
-                        storyBoard.InstantiateViewController("SSMRReadingHistoryViewController") as SSMRReadingHistoryViewController;
-                    if (viewController != null)
+                    _dashboardMainComponent._sSMRComponent.SetDescription(smrAcountInfo.DashboardMessage);
+                    _dashboardMainComponent._sSMRComponent.SetButtonText(smrAcountInfo.DashboardCTAText);
+                    _dashboardMainComponent._sSMRComponent.SetSRMButtonEnable(smrAcountInfo.IsDashboardCTADisabled);
+                    _dashboardMainComponent._sSMRComponent.ShowHistoryLink(smrAcountInfo.ShowReadingHistoryLink, smrAcountInfo.ReadingHistoryLinkText);
+                    _dashboardMainComponent._sSMRComponent._labelViewHistory.AddGestureRecognizer(new UITapGestureRecognizer(() =>
                     {
-                        var navController = new UINavigationController(viewController);
-                        PresentViewController(navController, true, null);
-                    }
-                };
+                        ShowSMRReadingHistoryView();
+                    }));
+                    _dashboardMainComponent._sSMRComponent._smrButton.TouchUpInside += (sender, e) =>
+                    {
+                        var ctaChar = smrAcountInfo.DashboardCTAType.ToLower();
+                        if (ctaChar == DashboardHomeConstants.CTA_ShowReadingHistory)
+                        {
+                            ShowSMRReadingHistoryView();
+                        }
+                        else if (ctaChar == DashboardHomeConstants.CTA_ShowSubmitReading)
+                        {
+                            ShowSubmitMeterView();
+                        }
+                    };
+                }
             }
+        }
+
+        private void ShowSMRReadingHistoryView()
+        {
+            DataManager.DataManager.SharedInstance.IsSameAccount = true;
+            UIStoryboard storyBoard = UIStoryboard.FromName("SSMR", null);
+            SSMRReadingHistoryViewController viewController =
+                storyBoard.InstantiateViewController("SSMRReadingHistoryViewController") as SSMRReadingHistoryViewController;
+            if (viewController != null)
+            {
+                var navController = new UINavigationController(viewController);
+                PresentViewController(navController, true, null);
+            }
+        }
+
+        private void ShowSubmitMeterView()
+        {
+            //Present Submit Meter Reading View Controller here...
         }
 
         private void SetNoDataConnectionEvent()
@@ -741,6 +796,10 @@ namespace myTNB.Dashboard
                             if (NetworkUtility.isReachable)
                             {
                                 ActivityIndicator.Show();
+                                if (DataManager.DataManager.SharedInstance.AccountIsSSMR)
+                                {
+                                    await LoadSMRAccountActivityInfo(DataManager.DataManager.SharedInstance.SelectedAccount);
+                                }
                                 await LoadInstallationDetails();
                                 await LoadAmountDue();
                                 await LoadDashboard();
@@ -1423,6 +1482,38 @@ namespace myTNB.Dashboard
                 };
                 _installationDetails = serviceManager.OnExecuteAPI<InstallationDetailResponseModel>("GetInstallationDetails", requestParameter);
             });
+        }
+
+        private Task GetSMRAccountActivityInfo(CustomerAccountRecordModel account)
+        {
+            return Task.Factory.StartNew(() =>
+            {
+                ServiceManager serviceManager = new ServiceManager();
+                object usrInf = new
+                {
+                    eid = DataManager.DataManager.SharedInstance.User.Email,
+                    sspuid = DataManager.DataManager.SharedInstance.User.UserID,
+                    did = DataManager.DataManager.SharedInstance.UDID,
+                    ft = DataManager.DataManager.SharedInstance.FCMToken,
+                    lang = TNBGlobal.DEFAULT_LANGUAGE,
+                    sec_auth_k1 = TNBGlobal.API_KEY_ID,
+                    sec_auth_k2 = string.Empty,
+                    ses_param1 = string.Empty,
+                    ses_param2 = string.Empty
+                };
+                object request = new
+                {
+                    contractAccount = account.accNum,
+                    isOwnedAccount = account.IsOwnedAccount,
+                    usrInf
+                };
+                _smrActivityInfoResponse = serviceManager.OnExecuteAPIV6<SMRAccountActivityInfoResponseModel>("GetSMRAccountActivityInfo", request);
+            });
+        }
+
+        private void OnViewReadingHistoryTap(object sender, EventArgs e)
+        {
+            Debug.WriteLine("OnViewReadingHistoryTap");
         }
     }
 }

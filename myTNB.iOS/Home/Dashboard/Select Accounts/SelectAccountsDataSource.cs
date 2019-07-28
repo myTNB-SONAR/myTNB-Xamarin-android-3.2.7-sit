@@ -12,6 +12,7 @@ namespace myTNB.Dashboard.SelectAccounts
     {
         List<CustomerAccountRecordModel> _accountList = new List<CustomerAccountRecordModel>();
         SelectAccountTableViewController _controller;
+        DashboardHomeHelper _dashboardHomeHelper = new DashboardHomeHelper();
         public SelectAccountsDataSource(SelectAccountTableViewController controller)
         {
             _controller = controller;
@@ -73,6 +74,7 @@ namespace myTNB.Dashboard.SelectAccounts
         public override void RowSelected(UITableView tableView, NSIndexPath indexPath)
         {
             var selected = _accountList[indexPath.Row];
+            DataManager.DataManager.SharedInstance.AccountIsSSMR = _dashboardHomeHelper.IsSSMR(selected);
             DataManager.DataManager.SharedInstance.IsSameAccount = DataManager.DataManager.SharedInstance.GetAccountsCount() > 1
                 && string.Compare(selected.accNum, DataManager.DataManager.SharedInstance.SelectedAccount?.accNum) == 0;
             DataManager.DataManager.SharedInstance.SelectAccount(selected.accNum);

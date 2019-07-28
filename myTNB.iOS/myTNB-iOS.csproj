@@ -1365,11 +1365,12 @@
     <Folder Include="Customs\Generic Status Page\" />
     <Folder Include="SSMR\Meter Reading\" />
     <Folder Include="Assets.xcassets\SMR-Medium-Icon.imageset\" />
-    <Folder Include="SSMR\History\" />
+    <Folder Include="SSMR\Reading History\" />
     <Folder Include="Home\Components\SSMR\" />
     <Folder Include="Assets.xcassets\SSMRPrimaryIcon.imageset\" />
     <Folder Include="Assets.xcassets\SMR-Closed-BG.imageset\" />
     <Folder Include="Assets.xcassets\SMR-Open-Submitted-BG.imageset\" />
+    <Folder Include="Model\SSMR\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -2109,14 +2110,15 @@
     <Compile Include="SSMR\Meter Reading\SSMRCaptureMeterViewController.designer.cs">
       <DependentUpon>SSMRCaptureMeterViewController.cs</DependentUpon>
     </Compile>
-    <Compile Include="SSMR\History\SSMRReadingHistoryViewController.cs" />
-    <Compile Include="SSMR\History\SSMRReadingHistoryViewController.designer.cs">
+    <Compile Include="SSMR\Reading History\SSMRReadingHistoryViewController.cs" />
+    <Compile Include="SSMR\Reading History\SSMRReadingHistoryViewController.designer.cs">
       <DependentUpon>SSMRReadingHistoryViewController.cs</DependentUpon>
     </Compile>
-    <Compile Include="SSMR\History\SSMRReadingHistoryDataSource.cs" />
-    <Compile Include="SSMR\History\SSMRReadingHistoryCell.cs" />
+    <Compile Include="SSMR\Reading History\SSMRReadingHistoryDataSource.cs" />
+    <Compile Include="SSMR\Reading History\SSMRReadingHistoryCell.cs" />
     <Compile Include="Home\Components\SSMR\SSMRComponent.cs" />
     <Compile Include="Home\Components\SSMR\SSMRReadingHistoryHeaderComponent.cs" />
+    <Compile Include="Model\SSMR\SMRAccountActivityInfoResponseModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />
