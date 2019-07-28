@@ -1,0 +1,146 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent" 
+    android:layout_height="match_parent"
+    android:background="@color/material_grey_300"
+    android:id="@+id/rootView">
+    <ScrollView
+        android:minWidth="25px"
+        android:minHeight="25px"
+        android:layout_width="match_parent"
+        android:overScrollMode="never"
+        android:layout_height="wrap_content"
+        android:id="@+id/scrollView1"
+        android:fillViewport="true">
+        <LinearLayout
+            android:id="@+id/smrApplicationContainer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:minHeight="25px"
+            android:minWidth="25px"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/applyForAccountHeader"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="I am applying for:"
+                android:textColor="@android:color/holo_blue_dark"
+                android:textSize="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginBottom="8dp"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="131dp"
+                android:orientation="vertical"
+                android:background="@android:color/white">
+                <TextView
+                    android:id="@+id/applyForAccountHeader"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Account"/>
+               <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Saujana Heights"/>
+                </LinearLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/material_grey_600"/>
+                <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="No. 3 Jalan Melur, 12 Taman Melur, 68000 Ampang, Selangor"/>
+            </LinearLayout>
+            <TextView
+                android:id="@+id/applyForAccountHeader"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="My contact details:"
+                android:textColor="@android:color/holo_blue_dark"
+                android:textSize="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginLeft="16dp"
+            android:layout_marginBottom="8dp"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="142dp"
+                android:background="@android:color/white">
+            </LinearLayout>
+            
+            
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="142dp"
+                android:background="@android:color/white">
+            </LinearLayout>
+            
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="142dp"
+                android:background="@android:color/white">
+            </LinearLayout>
+            
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="142dp"
+                android:background="@android:color/white">
+            </LinearLayout>
+            
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="142dp"
+                android:background="@android:color/white">
+            </LinearLayout>
+            
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="142dp"
+                android:background="@android:color/white">
+            </LinearLayout>
+            
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="142dp"
+                android:background="@android:color/white">
+            </LinearLayout>
+            
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="142dp"
+                android:background="@android:color/white">
+            </LinearLayout>
+            
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="142dp"
+                android:background="@android:color/white">
+            </LinearLayout>
+            
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="142dp"
+                android:background="@android:color/white">
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+    <LinearLayout
+        android:id="@+id/submitActionContainer"
+        android:layout_height="160dp"
+        android:layout_width="match_parent"
+        android:background="@@android:color/holo_blue_bright"
+        android:layout_alignParentBottom="true">
+        <Button
+            android:layout_height="30dp"
+            android:layout_width="match_parent"
+            android:text="Submit"
+        />
+    </LinearLayout>
+</RelativeLayout>

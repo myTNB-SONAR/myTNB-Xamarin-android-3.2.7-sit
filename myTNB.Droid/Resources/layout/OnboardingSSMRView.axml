@@ -5,15 +5,21 @@
   android:layout_height="match_parent"
   android:background="@android:color/white">
   <LinearLayout
+      android:id="@+id/applicationContent"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:layout_above="@+id/applicationIndicator"
       android:orientation="vertical">
+      <include
+        layout="@layout/toolbar"
+        android:id="@+id/toolbar"
+        android:layout_weight=".1"
+        android:visibility="gone"/>
       <android.support.v4.view.ViewPager
           android:id="@+id/onBoardingSMRViewPager"
           android:layout_width="match_parent"
           android:layout_height="0dp"
-          android:layout_weight=".9"/>
+          android:layout_weight=".8"/>
       <LinearLayout
           android:id="@+id/indicatorContainer"
           android:layout_width="match_parent"

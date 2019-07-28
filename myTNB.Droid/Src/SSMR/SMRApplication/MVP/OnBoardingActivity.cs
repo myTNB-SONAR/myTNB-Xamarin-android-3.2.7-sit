@@ -18,7 +18,7 @@ using myTNB_Android.Src.SSMR.SMRApplication.Adapter;
 namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
 {
     [Activity(Label = "OnBoardingActivity", Theme = "@style/Theme.Dashboard")]
-    public class OnBoardingActivity : BaseAppCompatActivity, ViewPager.IOnPageChangeListener
+    public class OnBoardingActivity : BaseToolbarAppCompatActivity, ViewPager.IOnPageChangeListener
     {
         [BindView(Resource.Id.viewpager)]
         ViewPager onBoardViewPager;
@@ -97,6 +97,13 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
             onBoardViewPager.Adapter = onBoardingSMRAdapter;
 
             UpdateAccountListIndicator();
+
+            btnStartApplication.Click += delegate
+            {
+                Intent intent = new Intent(this, typeof(ApplicationFormSMRActivity));
+                intent.PutExtra("fromDashboard", true);
+                StartActivity(intent);
+            };
         }
 
         private void ShowSubmitButton(bool isShow)
@@ -138,6 +145,11 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
                 }
                 indicatorContainer.AddView(image, i);
             }
+        }
+
+        public override bool ShowCustomToolbarTitle()
+        {
+            return true;
         }
     }
 }

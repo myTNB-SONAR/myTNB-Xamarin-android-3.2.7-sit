@@ -1342,6 +1342,8 @@
     <AndroidResource Include="Resources\drawable-xxxhdpi\onboarding_bg_3.png" />
     <AndroidResource Include="Resources\drawable\onboarding_circle_active.axml" />
     <AndroidResource Include="Resources\drawable\onboarding_circle_inactive.axml" />
+    <Compile Include="Src\SSMR\SMRApplication\MVP\ApplicationFormSMRActivity.cs" />
+    <AndroidResource Include="Resources\layout\ApplicationFormSMRLayout.axml" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
