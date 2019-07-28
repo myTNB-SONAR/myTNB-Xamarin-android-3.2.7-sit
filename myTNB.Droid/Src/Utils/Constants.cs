@@ -222,6 +222,11 @@ namespace myTNB_Android.Src.Utils
         //Language
         internal static readonly string DEFAULT_LANG = "EN";
 
+        // SMR
+        internal static readonly string SMR_RESPONSE_KEY = "smrReponse";
+        internal static readonly string SMR_SUBMIT_METER_KEY = "S";
+        internal static readonly string SMR_VIEW_METER_KEY = "V";
+
         public enum GREETING
         {
             MORNING,

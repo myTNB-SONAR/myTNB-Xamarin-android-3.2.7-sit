@@ -68,9 +68,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
                 case "1005":
                     vh.serviceImg.SetImageResource(Resource.Drawable.apply_autopay);
                     break;
-                default:
-                    vh.serviceImg.SetImageResource(Resource.Drawable.submit_meter);
-                    break;
 
             }
 
@@ -79,7 +76,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
             DisplayMetrics displaymetrics = new DisplayMetrics();
             this.mActivity.WindowManager.DefaultDisplay.GetMetrics(displaymetrics);
             int devicewidth = (displaymetrics.WidthPixels / 3) - (int)DPUtils.ConvertDPToPx(12f);
-            currentCard.Height = devicewidth - (int)DPUtils.ConvertDPToPx(4f);
+            currentCard.Height = devicewidth - (int)DPUtils.ConvertDPToPx(2f);
             currentCard.Width = devicewidth;
 
             TextViewUtils.SetMuseoSans500Typeface(vh.serviceTitle);

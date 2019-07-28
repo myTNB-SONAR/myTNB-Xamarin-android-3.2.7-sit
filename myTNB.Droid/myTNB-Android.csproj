@@ -1310,11 +1310,52 @@
     <Compile Include="Src\Database\Model\NewFAQParentEntity.cs" />
     <Compile Include="Src\SitecoreCMS\Service\HelpService.cs" />
     <Compile Include="Src\SitecoreCMS\Model\HelpModel.cs" />
+    <Compile Include="Src\SSMRMeterHistory\MVP\SSMRMeterHistoryActivity.cs" />
+    <AndroidResource Include="Resources\values\SSMRMeterHistoryStyle.xml" />
+    <AndroidResource Include="Resources\layout\SSMRMeterHistoryLayout.axml" />
+    <AndroidResource Include="Resources\drawable-hdpi\bg_smr.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\bg_smr.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\bg_smr.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\bg_smr.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\bg_smr.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\smr_submitted.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\smr_submitted.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\smr_submitted.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\smr_submitted.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\smr_submitted.png" />
+    <AndroidResource Include="Resources\layout\SSMRMeterReadingCardLayout.axml" />
+    <AndroidResource Include="Resources\menu\SSMRMeterReadingMenu.xml" />
+    <AndroidResource Include="Resources\drawable-hdpi\ic_header_more_white.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\smr_closed.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\ic_header_more_white.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\smr_closed.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_header_more_white.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\smr_closed.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_header_more_white.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\smr_closed.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\ic_header_more_white.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\smr_closed.png" />
+    <Compile Include="Src\SSMRMeterHistory\Adapter\SSMRMeterHistoryAdapter.cs" />
+    <Compile Include="Src\SSMRMeterHistory\MVP\SSMRMeterHistoryModel.cs" />
+    <Compile Include="Src\myTNBMenu\Models\SMRActivityInfoResponse.cs" />
+    <Compile Include="Src\myTNBMenu\Models\SMRDashboardHistory.cs" />
+    <Compile Include="Src\myTNBMenu\Requests\SMRAccountActivityInfoRequest.cs" />
+    <Compile Include="Src\myTNBMenu\Api\ISMRAccountActivityInfoApi.cs" />
     <AndroidResource Include="Resources\drawable-hdpi\gradient_background.png" />
     <AndroidResource Include="Resources\drawable-mdpi\gradient_background.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\gradient_background.png" />
     <AndroidResource Include="Resources\drawable-xxhdpi\gradient_background.png" />
     <AndroidResource Include="Resources\drawable-xxxhdpi\gradient_background.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\ic_action_delete_white.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\ic_action_delete_white.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_action_delete_white.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_action_delete_white.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\ic_action_delete_white.png" />
+    <AndroidResource Include="Resources\layout\SSMRMenuListLayout.axml" />
+    <Compile Include="Src\AppLaunch\Requests\AccountsSMRStatusRequest.cs" />
+    <Compile Include="Src\AppLaunch\Models\AccountSMRStatus.cs" />
+    <Compile Include="Src\AppLaunch\Models\AccountSMRStatusResponse.cs" />
+    <Compile Include="Src\myTNBMenu\Fragments\HomeMenu\Api\IGetSMRAccountStatusApi.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -1676,6 +1717,9 @@
     <Folder Include="Src\myTNBMenu\Fragments\HomeMenu\Helper\" />
     <Folder Include="Src\Base\Helper\" />
     <Folder Include="Src\myTNBMenu\Fragments\HomeMenu\Requests\" />
+    <Folder Include="Src\SSMRMeterHistory\" />
+    <Folder Include="Src\SSMRMeterHistory\MVP\" />
+    <Folder Include="Src\SSMRMeterHistory\Adapter\" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\GradientStatusBar.xml" />
