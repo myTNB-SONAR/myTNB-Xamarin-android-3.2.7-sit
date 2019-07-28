@@ -353,6 +353,11 @@ namespace myTNB
                         if (accounts?.Count > 0)
                         {
                             int currentIndex = await GetAccountsSummary(accounts, _currentPageIndex);
+                            var filteredAccounts = _dashboardHomeHelper.FilterAccountNoForSSMR(accounts, _groupAccountList[currentIndex]);
+                            if (filteredAccounts?.Count > 0)
+                            {
+                                currentIndex = await GetAccountsSMRStatus(filteredAccounts, currentIndex);
+                            }
                             _isUpdating = false;
                             UpdateCardsWithTag(currentIndex);
                         }
@@ -395,6 +400,37 @@ namespace myTNB
             }
         }
 
+        private void UpdateIsSSMRForDisplayedAccounts(List<SMRAccountStatusModel> statusDetails, int currentIndex)
+        {
+            if (_groupAccountList.Count <= 0)
+                return;
+
+            if (currentIndex > -1 && currentIndex < _groupAccountList.Count)
+            {
+                var groupAccountList = _groupAccountList[currentIndex];
+
+                foreach (var status in statusDetails)
+                {
+                    foreach (var account in groupAccountList)
+                    {
+                        if (account.accNum == status.ContractAccount)
+                        {
+                            var item = account;
+                            item.UpdateIsSSMRValue(status);
+                            DataManager.DataManager.SharedInstance.UpdateDueIsSSMR(account.accNum, status.IsTaggedSMR);
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Calls the GetLinkedAccountsSummaryInfo API
+        /// </summary>
+        /// <param name="accounts"></param>
+        /// <param name="currentIndex"></param>
+        /// <returns></returns>
         private async Task<int> GetAccountsSummary(List<string> accounts, int currentIndex)
         {
             var response = await ServiceCall.GetLinkedAccountsSummaryInfo(accounts);
@@ -402,6 +438,30 @@ namespace myTNB
             if (response.didSucceed && response.AccountDues?.Count > 0)
             {
                 UpdateDueForDisplayedAccounts(response.AccountDues, currentIndex);
+            }
+            else
+            {
+                //FAIL scenarios here...
+            }
+            return currentIndex;
+        }
+
+        /// <summary>
+        /// Calls the GetAccountsSMRStatus API
+        /// </summary>
+        /// <param name="accounts"></param>
+        /// <param name="currentIndex"></param>
+        /// <returns></returns>
+        private async Task<int> GetAccountsSMRStatus(List<string> accounts, int currentIndex)
+        {
+            var response = await ServiceCall.GetAccountsSMRStatus(accounts);
+
+            if (response != null &&
+                response.d != null &&
+                response.d.IsSuccess &&
+                response.d.data.Count > 0)
+            {
+                UpdateIsSSMRForDisplayedAccounts(response.d.data, currentIndex);
             }
             else
             {
@@ -558,10 +618,10 @@ namespace myTNB
 
         private CGRect AdjustFrame(CGRect f, nfloat x, nfloat y, nfloat w, nfloat h)
         {
-            f.X = f.X + x;
-            f.Y = f.Y + y;
-            f.Width = f.Width + w;
-            f.Height = f.Height + h;
+            f.X += x;
+            f.Y += y;
+            f.Width += w;
+            f.Height += h;
 
             return f;
         }
@@ -676,13 +736,13 @@ namespace myTNB
                 {
                     iconName = "Accounts-RE-Icon";
                 }
-                else if (groupAccountList[i].IsNormalAccount && !groupAccountList[i].IsSSMR)
+                else if (groupAccountList[i].IsNormalAccount && groupAccountList[i].IsSSMR && groupAccountList[i].IsOwnedAccount)
+                {
+                    iconName = "Accounts-SMR-Icon";
+                }
+                else if (groupAccountList[i].IsNormalAccount)
                 {
                     iconName = "Accounts-Normal-Icon";
-                }
-                else if (groupAccountList[i].IsNormalAccount && groupAccountList[i].IsSSMR)
-                {
-                    iconName = "SMR-Icon";
                 }
                 _homeAccountCard.SetAccountIcon(iconName);
                 _homeAccountCard.SetNickname(groupAccountList[i].accNickName);
