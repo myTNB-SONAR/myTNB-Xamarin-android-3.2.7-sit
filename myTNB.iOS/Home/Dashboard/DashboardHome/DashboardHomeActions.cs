@@ -39,9 +39,10 @@ namespace myTNB.Home.Dashboard.DashboardHome
                 UIStoryboard onboardingStoryboard = UIStoryboard.FromName("Onboarding", null);
                 GenericPageRootViewController onboardingVC =
                     onboardingStoryboard.InstantiateViewController("GenericPageRootViewController") as GenericPageRootViewController;
-                onboardingVC.ModalTransitionStyle = UIModalTransitionStyle.CrossDissolve;
+                //onboardingVC.ModalTransitionStyle = UIModalTransitionStyle.CrossDissolve;
                 onboardingVC.PageType = GenericPageViewEnum.Type.SSMR;
-                _controller.PresentViewController(onboardingVC, true, null);
+                var navController = new UINavigationController(onboardingVC);
+                _controller.PresentViewController(navController, true, null);
             }
         }
 

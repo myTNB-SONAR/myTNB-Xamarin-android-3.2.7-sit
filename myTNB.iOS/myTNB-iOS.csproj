@@ -1336,7 +1336,7 @@
     <Folder Include="Assets.xcassets\Help-Background-4.imageset\" />
     <Folder Include="Assets.xcassets\Help-Background-5.imageset\" />
     <Folder Include="Assets.xcassets\Help-Background-0.imageset\" />
-    <Folder Include="Model\Services\" />
+    <Folder Include="Model\GetServices\" />
     <Folder Include="Assets.xcassets\SMR-Icon.imageset\" />
     <Folder Include="Sitecore CMS\Model\Help\" />
     <Folder Include="Sitecore CMS\Model\Promotions\" />
@@ -1354,6 +1354,8 @@
     <Folder Include="SSMR\Meter Reading\" />
     <Folder Include="Sitecore CMS\Model\Apply SSMR Walkthrough\" />
     <Folder Include="Assets.xcassets\Camera-Thumb.imageset\" />
+    <Folder Include="Model\GetCARegisteredContactInfo\" />
+    <Folder Include="Model\SSMRApplicationStatus\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -2049,7 +2051,7 @@
     <Compile Include="Tab Bar\TabbarConstants.cs" />
     <Compile Include="Customs\CustomShimmerView.cs" />
     <Compile Include="Home\Dashboard\DashboardHome\DashboardHomeHelper.cs" />
-    <Compile Include="Model\Services\ServicesResponseModel.cs" />
+    <Compile Include="Model\GetServices\ServicesResponseModel.cs" />
     <Compile Include="Model\Base Model\BaseModelV2.cs" />
     <Compile Include="Home\Dashboard\DashboardHome\Services\ServicesConstants.cs" />
     <Compile Include="Home\Dashboard\DashboardHome\DashboardHomeActions.cs" />
@@ -2097,6 +2099,8 @@
     <Compile Include="Sitecore CMS\Service\ApplySSMRWalkthroughService.cs" />
     <Compile Include="SQLite\SQLite Data Manager\ApplySSMRWalkthroughEntity.cs" />
     <Compile Include="Session Cache\SSMRAccounts.cs" />
+    <Compile Include="Model\GetCARegisteredContactInfo\CARegisteredContactInfoResponseModel.cs" />
+    <Compile Include="Model\SSMRApplicationStatus\SSMRApplicationStatus.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />

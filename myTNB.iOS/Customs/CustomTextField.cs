@@ -121,12 +121,24 @@ namespace myTNB
 
         public void SetValue(string value)
         {
+            bool hasValue = false;
             if (string.IsNullOrEmpty(value) || string.IsNullOrWhiteSpace(value))
             {
-                return;
+                value = string.Empty;
+                hasValue = true;
+            }
+            if (TextFieldType == Type.MobileNumber)
+            {
+                value = _txtFieldHelper.FormatMobileNo(value);
             }
             TextField.Text = value;
-            LblTitle.Hidden = false;
+            LblTitle.Hidden = hasValue;
+            ValidateField();
+        }
+
+        public string GetValue()
+        {
+            return TextField.Text ?? string.Empty;
         }
 
         private bool HasValue

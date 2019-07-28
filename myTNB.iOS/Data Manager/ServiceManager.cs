@@ -113,5 +113,24 @@ namespace myTNB
 #endif
             return baseService.GetFormattedURL(requestParams, true, paymentURL, env);
         }
+
+        public object usrInf
+        {
+            get
+            {
+                return new
+                {
+                    eid = DataManager.DataManager.SharedInstance.User.Email,
+                    sspuid = DataManager.DataManager.SharedInstance.User.UserID,
+                    did = DataManager.DataManager.SharedInstance.UDID,
+                    ft = DataManager.DataManager.SharedInstance.FCMToken,
+                    lang = TNBGlobal.DEFAULT_LANGUAGE,
+                    sec_auth_k1 = TNBGlobal.API_KEY_ID,
+                    sec_auth_k2 = string.Empty,
+                    ses_param1 = string.Empty,
+                    ses_param2 = string.Empty
+                };
+            }
+        }
     }
 }

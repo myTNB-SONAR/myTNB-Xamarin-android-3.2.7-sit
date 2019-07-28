@@ -8,32 +8,32 @@ namespace myTNB
     {
         private static readonly Lazy<SSMRAccounts> lazy = new Lazy<SSMRAccounts>(() => new SSMRAccounts());
         public static SSMRAccounts Instance { get { return lazy.Value; } }
-        private static List<CustomerAccountRecordModel> EligibleAccount = new List<CustomerAccountRecordModel>();
+        private static List<CustomerAccountRecordModel> EligibleAccountList = new List<CustomerAccountRecordModel>();
 
         public static void SetEligibleAccounts()
         {
             if (DataManager.DataManager.SharedInstance.AccountRecordsList != null
                 && DataManager.DataManager.SharedInstance.AccountRecordsList.d != null)
             {
-                EligibleAccount = DataManager.DataManager.SharedInstance.AccountRecordsList.d.FindAll
+                EligibleAccountList = DataManager.DataManager.SharedInstance.AccountRecordsList.d.FindAll
                     (x => !x.IsREAccount && !x.IsSSMR && (x.IsNormalMeter || x.IsOwnedAccount));
             }
         }
 
         public static CustomerAccountRecordModel GetFirstAccount()
         {
-            if (EligibleAccount != null && EligibleAccount.Count > 0 && EligibleAccount[0] != null)
+            if (EligibleAccountList != null && EligibleAccountList.Count > 0 && EligibleAccountList[0] != null)
             {
-                return EligibleAccount[0];
+                return EligibleAccountList[0];
             }
             return null;
         }
 
         public static CustomerAccountRecordModel GetAccountByIndex(int index)
         {
-            if (index > -1 && EligibleAccount != null && EligibleAccount.Count > 0 && index < EligibleAccount.Count)
+            if (index > -1 && EligibleAccountList != null && EligibleAccountList.Count > 0 && index < EligibleAccountList.Count)
             {
-                return EligibleAccount[index];
+                return EligibleAccountList[index];
             }
             return null;
         }
@@ -42,8 +42,17 @@ namespace myTNB
         {
             get
             {
-                return EligibleAccount != null && EligibleAccount.Count > 0;
+                return EligibleAccountList != null && EligibleAccountList.Count > 0;
             }
+        }
+
+        public static List<CustomerAccountRecordModel> GetAccounts()
+        {
+            if (EligibleAccountList != null && EligibleAccountList.Count > 0)
+            {
+                return EligibleAccountList;
+            }
+            return new List<CustomerAccountRecordModel>();
         }
     }
 }

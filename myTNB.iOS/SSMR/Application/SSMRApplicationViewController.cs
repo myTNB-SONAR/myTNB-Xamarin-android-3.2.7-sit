@@ -5,6 +5,7 @@ using myTNB.SSMR;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using UIKit;
 
 namespace myTNB
@@ -22,6 +23,9 @@ namespace myTNB
         private CustomTextField _customMobileField;
         private CustomTextField _customEmailField;
         protected List<CustomerAccountRecordModel> _eligibleAccountList;
+        protected CustomerAccountRecordModel _selectedAccount;
+        protected ContactDetailsResponseModel _contactDetails;
+        protected SSMRApplicationStatusResponseModel _ssmrApplicationStatus;
         private int _selectedAccountIndex = 0;
         private UILabel _lblAccountName, _lblAddress, _lblEditInfo;
 
@@ -33,9 +37,15 @@ namespace myTNB
             NSNotificationCenter.DefaultCenter.AddObserver(UIKeyboard.WillShowNotification, OnKeyboardNotification);
             ConfigureNavigationBar();
             AddTnCSection();
-            PrepareEligibleAccounts();
+            GetEligibleAccounts();
             AddDetailsSection();
             ToggleCTA();
+        }
+
+        public override void ViewWillAppear(bool animated)
+        {
+            base.ViewWillAppear(animated);
+            OnGetContactInfo();
         }
 
         private void ConfigureNavigationBar()
@@ -97,14 +107,7 @@ namespace myTNB
             _btnSubmit.BackgroundColor = MyTNBColor.FreshGreen;
             _btnSubmit.TouchUpInside += (sender, e) =>
             {
-                //Execute Service Call
-                UIStoryboard storyBoard = UIStoryboard.FromName("Feedback", null);
-                GenericStatusPageViewController status = storyBoard.InstantiateViewController("GenericStatusPageViewController") as GenericStatusPageViewController;
-                status.IsSuccess = true;
-                status.StatusDisplayType = GenericStatusPageViewController.StatusType.SSMRApply;
-                status.ReferenceNumber = "SMR-000-000-0000";
-                status.ReferenceDate = "16 Jul 2019";
-                NavigationController.PushViewController(status, true);
+                OnSubmitSMRApplication();
             };
             _viewBottomContainer.AddSubviews(new UIView[] { viewPadding, txtFieldInfo, _btnSubmit });
             nfloat containerHeight = _btnSubmit.Frame.GetMaxY() + (DeviceHelper.IsIphoneXUpResolution() ? 36 : 16);
@@ -198,14 +201,13 @@ namespace myTNB
             {
                 Image = UIImage.FromBundle(SSMRConstants.IMG_Dropdow)
             };
-            CustomerAccountRecordModel initialAccount = GetFirstAccount();
             _lblAccountName = new UILabel(new CGRect(0, 0, viewAccountName.Frame.Width - 32, 24))
             {
                 TextColor = MyTNBColor.CharcoalGrey,
                 TextAlignment = UITextAlignment.Left,
                 Font = MyTNBFont.MuseoSans16_300,
-                Text = initialAccount != null && !string.IsNullOrEmpty(initialAccount.accountNickName)
-                   ? initialAccount.accountNickName : string.Empty
+                Text = _selectedAccount != null && !string.IsNullOrEmpty(_selectedAccount.accountNickName)
+                   ? _selectedAccount.accountNickName : string.Empty
             };
             viewAccountName.AddSubviews(new UIView[] { _lblAccountName, imgDropdown });
 
@@ -221,8 +223,8 @@ namespace myTNB
                 Font = MyTNBFont.MuseoSans14_300,
                 Lines = 0,
                 LineBreakMode = UILineBreakMode.WordWrap,
-                Text = initialAccount != null && !string.IsNullOrEmpty(initialAccount.accountStAddress)
-                   ? initialAccount.accountStAddress : string.Empty
+                Text = _selectedAccount != null && !string.IsNullOrEmpty(_selectedAccount.accountStAddress)
+                   ? _selectedAccount.accountStAddress : string.Empty
             };
 
             viewMainDetails.AddSubviews(new UIView[] { lblAccountTitle, viewAccountName, viewLine, _lblAddress });
@@ -255,7 +257,6 @@ namespace myTNB
                 TypingEndAction = ToggleCTA,
                 TypingBeginAction = OnEdit,
                 TextFieldType = CustomTextField.Type.EmailAddress,
-                Value = DataManager.DataManager.SharedInstance.UserEntity[0].email,
                 OnCreateValidation = true
             };
             UIView viewEmail = _customEmailField.GetUI();
@@ -270,7 +271,6 @@ namespace myTNB
                 TypingEndAction = ToggleCTA,
                 TypingBeginAction = OnEdit,
                 TextFieldType = CustomTextField.Type.MobileNumber,
-                Value = DataManager.DataManager.SharedInstance.UserEntity[0].mobileNo,
                 OnCreateValidation = true
             };
             UIView viewMobile = _customMobileField.GetUI();
@@ -320,23 +320,10 @@ namespace myTNB
             }
         }
 
-        private void PrepareEligibleAccounts()
+        private void GetEligibleAccounts()
         {
-            if (DataManager.DataManager.SharedInstance.AccountRecordsList != null
-                && DataManager.DataManager.SharedInstance.AccountRecordsList.d != null)
-            {
-                _eligibleAccountList
-                    = DataManager.DataManager.SharedInstance.AccountRecordsList.d.FindAll(x => !x.IsREAccount && (x.IsNormalMeter || x.IsOwnedAccount));
-            }
-        }
-
-        private CustomerAccountRecordModel GetFirstAccount()
-        {
-            if (_eligibleAccountList != null && _eligibleAccountList.Count > 0)
-            {
-                return _eligibleAccountList[0];
-            }
-            return null;
+            _eligibleAccountList = SSMRAccounts.GetAccounts();
+            _selectedAccount = SSMRAccounts.GetFirstAccount();
         }
 
         private void OnSelectAccount(int index)
@@ -344,9 +331,111 @@ namespace myTNB
             if (index > -1)
             {
                 _selectedAccountIndex = index;
-                _lblAccountName.Text = _eligibleAccountList[index].accountNickName;
-                _lblAddress.Text = _eligibleAccountList[index].accountStAddress;
+                _selectedAccount = SSMRAccounts.GetAccountByIndex(index);
+                _lblAccountName.Text = _selectedAccount.accountNickName;
+                _lblAddress.Text = _selectedAccount.accountStAddress;
             }
+        }
+
+        private void OnGetContactInfo()
+        {
+            ActivityIndicator.Show();
+            NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
+            {
+                if (NetworkUtility.isReachable)
+                {
+                    InvokeOnMainThread(async () =>
+                    {
+                        _contactDetails = await GetContactInfo();
+                        if (_contactDetails != null && _contactDetails.d != null
+                            && _contactDetails.d.IsSuccess && _contactDetails.d.data != null)
+                        {
+                            _customEmailField.SetValue(_contactDetails.d.data.Email);
+                            _customMobileField.SetValue(_contactDetails.d.data.Mobile);
+                            ToggleCTA();
+                        }
+                        ActivityIndicator.Hide();
+                    });
+                }
+                else
+                {
+                    DisplayNoDataAlert();
+                    ActivityIndicator.Hide();
+                }
+
+            });
+        }
+
+        private void OnSubmitSMRApplication()
+        {
+            ActivityIndicator.Show();
+            NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
+            {
+                if (NetworkUtility.isReachable)
+                {
+                    InvokeOnMainThread(async () =>
+                    {
+                        _ssmrApplicationStatus = await SubmitSMRApplication();
+                        if (_ssmrApplicationStatus != null && _ssmrApplicationStatus.d != null
+                             && _ssmrApplicationStatus.d.data != null)
+                        {
+                            UIStoryboard storyBoard = UIStoryboard.FromName("Feedback", null);
+                            GenericStatusPageViewController status = storyBoard.InstantiateViewController("GenericStatusPageViewController") as GenericStatusPageViewController;
+                            status.StatusDisplayType = GenericStatusPageViewController.StatusType.SSMRApply;
+                            status.IsSuccess = _ssmrApplicationStatus.d.IsSuccess;
+                            status.StatusTitle = _ssmrApplicationStatus.d.DisplayTitle;
+                            status.StatusMessage = _ssmrApplicationStatus.d.DisplayMessage;
+                            status.ReferenceNumber = _ssmrApplicationStatus.d.data.ServiceReqNo;
+                            status.ReferenceDate = _ssmrApplicationStatus.d.data.AppliedOn;
+                            NavigationController.PushViewController(status, true);
+                        }
+                        ActivityIndicator.Hide();
+                    });
+                }
+                else
+                {
+                    DisplayNoDataAlert();
+                    ActivityIndicator.Hide();
+                }
+
+            });
+        }
+
+        private async Task<ContactDetailsResponseModel> GetContactInfo()
+        {
+            ServiceManager serviceManager = new ServiceManager();
+            object request = new
+            {
+                serviceManager.usrInf,
+                contractAccount = _selectedAccount.accNum,
+                isOwnedAccount = _selectedAccount.IsOwnedAccount
+            };
+            ContactDetailsResponseModel response = serviceManager
+                .OnExecuteAPIV6<ContactDetailsResponseModel>("GetCARegisteredContactInfo", request);
+            return response;
+        }
+
+        private async Task<SSMRApplicationStatusResponseModel> SubmitSMRApplication()
+        {
+            ServiceManager serviceManager = new ServiceManager();
+            object request = new
+            {
+                serviceManager.usrInf,
+                contractAccount = _selectedAccount.accNum,
+                oldPhone = _contactDetails != null && _contactDetails.d != null
+                    && _contactDetails.d.IsSuccess && _contactDetails.d.data != null
+                        ? _contactDetails.d.data.Mobile : string.Empty,
+                newPhone = _customMobileField.GetValue(),
+                oldEmail = _contactDetails != null && _contactDetails.d != null
+                    && _contactDetails.d.IsSuccess && _contactDetails.d.data != null
+                        ? _contactDetails.d.data.Email : string.Empty,
+                newEmail = _customEmailField.GetValue(),
+                SMRMode = "R",
+                reason = "",
+            };
+            SSMRApplicationStatusResponseModel response = serviceManager
+                .OnExecuteAPIV6<SSMRApplicationStatusResponseModel>("SubmitSMRApplication", request);
+            return response;
         }
     }
 }

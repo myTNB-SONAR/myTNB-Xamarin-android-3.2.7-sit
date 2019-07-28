@@ -14,7 +14,6 @@ namespace myTNB.SSMR
         {
             PageName = "SSMROnboarding";
             base.OnViewDidLoad();
-
             SSMRModelController = new SSMROnboardingModelController();
             SSMRModelController.UpdateWidgets = OnUpdateMainWidgets;
             SSMRModelController.SetPageData().ContinueWith(task =>
@@ -143,7 +142,8 @@ namespace myTNB.SSMR
                 SSMRApplicationViewController viewController =
                     storyBoard.InstantiateViewController("SSMRApplicationViewController") as SSMRApplicationViewController;
                 var navController = new UINavigationController(viewController);
-                that.PresentViewController(navController, true, null);
+                that.ShowViewController(navController, null);
+                //that.PresentViewController(navController, true, null);
             };
             viewSkip.AddGestureRecognizer(new UITapGestureRecognizer(() =>
             {

@@ -5,7 +5,7 @@ using UIKit;
 
 namespace myTNB
 {
-    public partial class GenericPageRootViewController : UIViewController
+    public partial class GenericPageRootViewController : CustomUIViewController
     {
         protected GenericPageRootViewController(IntPtr handle) : base(handle) { }
 
@@ -15,6 +15,10 @@ namespace myTNB
 
         public override void ViewDidLoad()
         {
+            if (NavigationController != null)
+            {
+                NavigationController.NavigationBarHidden = true;
+            }
             base.ViewDidLoad();
             if (PageType == GenericPageViewEnum.Type.Onboarding)
             {
