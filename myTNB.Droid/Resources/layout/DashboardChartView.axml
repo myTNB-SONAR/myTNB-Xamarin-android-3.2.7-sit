@@ -9,12 +9,11 @@
     <LinearLayout
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:weightSum="2">
+    android:layout_height="match_parent">
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1.45"
+        android:layout_weight="1"
         android:paddingRight="18dp"
         android:paddingLeft="18dp">
         <LinearLayout
@@ -43,8 +42,8 @@
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="24dp"
                     android:gravity="center"
-                    android:lineSpacingExtra="4sp"
-                    android:textSize="16sp"
+                    android:lineSpacingExtra="4dp"
+                    android:textSize="16dp"
                     android:text="@string/text_new_refresh_content"
                     android:textColor="@color/white"/>
                 <Button
@@ -69,7 +68,7 @@
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
                 android:layout_weight="0.2"
-                android:textSize="9sp"
+                android:textSize="9dp"
                 android:textAllCaps="true"
                 android:layout_gravity="center"
                 android:visibility="gone"
@@ -113,7 +112,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="@string/dashboard_chartview_day"
-                        android:textSize="12sp" />
+                        android:textSize="12dp" />
                     <RadioButton
                         android:id="@+id/btnToggleMonth"
                         style="@style/RadioButton"
@@ -122,7 +121,7 @@
                         android:layout_weight="1"
                         android:checked="true"
                         android:text="@string/dashboard_chartview_month"
-                        android:textSize="12sp" />
+                        android:textSize="12dp" />
                 </info.hoang8f.android.segmented.SegmentedGroup>
             </RelativeLayout>
             <com.github.mikephil.charting.charts.BarChart
@@ -151,14 +150,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/white"
-                    android:textSize="16sp" />
+                    android:textSize="16dp" />
                 <TextView
                     android:id="@+id/dashboard_chartview_no_data_content"
                     android:text="@string/dashboard_chartview_no_data_content"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/white"
-                    android:textSize="14sp" />
+                    android:textSize="14dp" />
                 <Button
                     android:id="@+id/btnLearnMore"
                     android:text="@string/dashboard_chartview_no_data_learnmore"
@@ -203,6 +202,7 @@
                 android:textSize="10dp"
                 android:textStyle="bold"
                 android:layout_gravity="center"
+                android:layout_marginBottom="8dp"
                 android:textColor="@color/white"
                 android:text="@string/dashboard_chartview_address_sample"
                 android:id="@+id/txtAddress"
@@ -231,12 +231,12 @@
                 android:layout_marginRight="15dp"
                 android:gravity="center"
                 android:text="Electricity Connection:"
-                android:textSize="12sp"
+                android:textSize="12dp"
                 android:visibility="gone"/>
             <TextView
                     android:layout_height="wrap_content"
                     android:layout_width="match_parent"
-                    android:textSize="12sp"
+                    android:textSize="12dp"
                     android:layout_marginTop="4dp"
                     android:layout_marginLeft="15dp"
                     android:layout_marginRight="15dp"
@@ -252,6 +252,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
+                android:layout_marginBottom="8dp"
                 android:visibility="gone">
                 <android.support.v7.widget.CardView
                     android:orientation="vertical"
@@ -273,8 +274,8 @@
                             android:layout_height="wrap_content"
                             android:orientation="horizontal"
                             android:layout_marginTop="10dp"
-                            android:layout_marginLeft="6dp"
-                            android:layout_marginRight="6dp"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
                             android:layout_marginBottom="8dp">
                         <ImageView
                             android:id="@+id/ssmr_img"
@@ -282,14 +283,14 @@
                             android:layout_width="32dp"
                             android:layout_height="32dp"
                             android:layout_marginLeft="2dp"
-                            android:layout_marginRight="14dp"
+                            android:layout_marginRight="12dp"
                             android:scaleType="fitCenter" />
                         <TextView
                             android:id="@+id/ssmrAccountStatusText"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="2dp"
-                            android:layout_marginRight="6dp"
+                            android:layout_marginRight="4dp"
                             android:textColor="@color/charcoalGrey"
                             android:text=""
                             android:textSize="12dp"/>
@@ -298,9 +299,9 @@
                             android:id="@+id/btnTxtSsmrViewHistory"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="54dp"
+                            android:layout_marginLeft="56dp"
                             android:layout_marginRight="98dp"
-                            android:layout_marginBottom="8dp"
+                            android:layout_marginBottom="6dp"
                             android:textColor="@color/powerBlue"
                             android:text="View my reading history"
                             android:clickable="true"
@@ -311,9 +312,9 @@
                             style="@style/Theme.MeterReading"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:layout_marginLeft="12dp"
-                            android:layout_marginRight="12dp"
+                            android:layout_marginTop="6dp"
+                            android:layout_marginLeft="14dp"
+                            android:layout_marginRight="14dp"
                             android:layout_marginBottom="10dp"
                             android:layout_weight="1"
                             android:text="@string/ssmr_submit_meter"
@@ -338,27 +339,26 @@
             android:background="@null" />
     </FrameLayout>
     <LinearLayout
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:layout_width="match_parent"
-        android:layout_weight="0.55"
         android:orientation="vertical"
         android:background="@color/white"
-        android:paddingLeft="17dp"
-        android:paddingRight="17dp">
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp">
         <ProgressBar
             android:id="@+id/progressBar"
             style="?android:attr/progressBarStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:visibility="gone"
-            android:layout_marginBottom="10dp"
-            android:layout_marginTop="14dp"/>
+            android:layout_marginTop="14dp"
+            android:layout_marginBottom="10dp"/>
         <RelativeLayout
             android:id="@+id/totalPayableLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:layout_marginTop="12dp"
+            android:layout_marginBottom="16dp"
+            android:layout_marginTop="16dp"
             android:minHeight="25px"
             android:minWidth="25px"
             android:visibility="visible">
@@ -370,7 +370,7 @@
                 android:layout_alignParentTop="true"
                 android:text="@string/total_amount_due_bill"
                 android:textColor="@color/tunaGrey"
-                android:textSize="16dp" />
+                android:textSize="14dp" />
             <TextView
                 android:id="@+id/txtTotalPayable"
                 android:layout_width="wrap_content"
@@ -399,7 +399,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
                 android:layout_below="@+id/txtTotalPayableTitle"
-                android:textSize="11sp"
+                android:textSize="12dp"
                 android:layout_marginTop="9dp"
                 android:paddingTop="@dimen/_1sdp"
                 android:textColor="@color/silverChalice"
@@ -407,7 +407,7 @@
             <TextView
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
-                android:textSize="12sp"
+                android:textSize="12dp"
                 android:textStyle="normal"
                 android:layout_alignBaseline="@+id/txtDueDate"
                 android:textColor="@color/powerBlue"
@@ -420,8 +420,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginBottom="14dp">
+            android:layout_marginBottom="18dp"
+            android:orientation="horizontal">
             <Button
                 android:id="@+id/btnViewBill"
                 style="@style/Theme.ViewBill"
