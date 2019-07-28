@@ -1355,7 +1355,7 @@
     <Compile Include="Src\AppLaunch\Requests\AccountsSMRStatusRequest.cs" />
     <Compile Include="Src\AppLaunch\Models\AccountSMRStatus.cs" />
     <Compile Include="Src\AppLaunch\Models\AccountSMRStatusResponse.cs" />
-    <Compile Include="Src\AppLaunch\Api\IAccountsSMRStatusApi.cs" />
+    <Compile Include="Src\myTNBMenu\Fragments\HomeMenu\Api\IGetSMRAccountStatusApi.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

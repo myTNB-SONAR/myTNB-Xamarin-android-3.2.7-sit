@@ -752,7 +752,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
         {
             if (ev.Action == MotionEventActions.Down
                 && this.userActionsListener?.CheckCurrentDashboardMenu() == Resource.Id.menu_dashboard
-                && DashboardHomeActivity.currentFragment.GetType() == typeof(HomeMenuFragment))
+                && currentFragment.GetType() == typeof(HomeMenuFragment))
             {
                 View view = CurrentFocus;
                 if (view != null && view.GetType() != typeof(EditText))

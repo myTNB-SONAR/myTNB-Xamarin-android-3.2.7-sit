@@ -66,9 +66,12 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
 			try
 			{
                 this.toolbar.SetBackgroundColor(Resources.GetColor(Resource.Color.action_color));
-                this.Window.AddFlags(WindowManagerFlags.DrawsSystemBarBackgrounds);
-                this.Window.ClearFlags(WindowManagerFlags.TranslucentStatus);
-                this.Window.SetStatusBarColor(Resources.GetColor(Resource.Color.action_color));
+                if (Build.VERSION.SdkInt >= Build.VERSION_CODES.Lollipop)
+                {
+                    this.Window.AddFlags(WindowManagerFlags.DrawsSystemBarBackgrounds);
+                    this.Window.ClearFlags(WindowManagerFlags.TranslucentStatus);
+                    this.Window.SetStatusBarColor(Resources.GetColor(Resource.Color.action_color));
+                }
 
                 TextViewUtils.SetMuseoSans500Typeface(SMRMainTitle, SMRListHeader);
                 TextViewUtils.SetMuseoSans300Typeface(SMRMainContent);
