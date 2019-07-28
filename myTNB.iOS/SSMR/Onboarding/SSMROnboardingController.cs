@@ -12,7 +12,7 @@ namespace myTNB.SSMR
         private UIButton _btnStart;
         public override void OnViewDidLoad()
         {
-            PageName = "SSMROnboarding";
+            PageName = SSMRConstants.Pagename_SSMRWalkthrough;
             base.OnViewDidLoad();
             SSMRModelController = new SSMROnboardingModelController();
             SSMRModelController.UpdateWidgets = OnUpdateMainWidgets;
@@ -84,7 +84,7 @@ namespace myTNB.SSMR
 
             UIImageView imgBack = new UIImageView(new CGRect(0, 0, 24, 24))
             {
-                Image = UIImage.FromBundle("Back-White")
+                Image = UIImage.FromBundle(SSMRConstants.IMG_BackIcon)
             };
             viewBack.AddSubview(imgBack);
             that.View.AddSubview(viewBack);
@@ -170,9 +170,6 @@ namespace myTNB.SSMR
             int dataCount = SSMRModelController.pageData.Count;
             _viewBottomContainer.Hidden = index == dataCount - 1;
             _btnStart.Hidden = index != dataCount - 1;
-
-            Debug.WriteLine("_viewBottomContainer: " + _viewBottomContainer.Hidden);
-            Debug.WriteLine("_btnStart: " + _btnStart.Hidden);
         }
 
         private void ResizeView(ref UIView view, ref UILabel lbl, nfloat maxWidth, nfloat maxHeight, bool isOriginalX = false)

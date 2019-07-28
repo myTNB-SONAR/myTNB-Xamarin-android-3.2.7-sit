@@ -31,7 +31,7 @@ namespace myTNB
 
         public override void ViewDidLoad()
         {
-            PageName = "SSMRApplication";
+            PageName = SSMRConstants.Pagename_SSMRApplication;
             NavigationController.NavigationBarHidden = false;
             base.ViewDidLoad();
             NSNotificationCenter.DefaultCenter.AddObserver(UIKeyboard.WillHideNotification, OnKeyboardNotification);
@@ -51,7 +51,7 @@ namespace myTNB
 
         private void ConfigureNavigationBar()
         {
-            UIImage backImg = UIImage.FromBundle("Back-White");
+            UIImage backImg = UIImage.FromBundle(SSMRConstants.IMG_BackIcon);
             UIBarButtonItem btnBack = new UIBarButtonItem(backImg, UIBarButtonItemStyle.Done, (sender, e) =>
             {
                 ViewHelper.DismissControllersAndSelectTab(this, 0, true);
@@ -411,7 +411,7 @@ namespace myTNB
                 isOwnedAccount = _selectedAccount.IsOwnedAccount
             };
             ContactDetailsResponseModel response = serviceManager
-                .OnExecuteAPIV6<ContactDetailsResponseModel>("GetCARegisteredContactInfo", request);
+                .OnExecuteAPIV6<ContactDetailsResponseModel>(SSMRConstants.Service_GetCARegisteredContact, request);
             return response;
         }
 
@@ -434,7 +434,7 @@ namespace myTNB
                 reason = "",
             };
             SSMRApplicationStatusResponseModel response = serviceManager
-                .OnExecuteAPIV6<SSMRApplicationStatusResponseModel>("SubmitSMRApplication", request);
+                .OnExecuteAPIV6<SSMRApplicationStatusResponseModel>(SSMRConstants.Service_SubmitSSMRApplication, request);
             return response;
         }
     }

@@ -2,6 +2,14 @@
 {
     public static class SSMRConstants
     {
+        //Page name
+        public static string Pagename_SSMRApplication = "SSMRApplication";
+        public static string Pagename_SSMRWalkthrough = "SSMROnboarding";
+
+        //Service name
+        public static string Service_SubmitSSMRApplication = "SubmitSMRApplication";
+        public static string Service_GetCARegisteredContact = "GetCARegisteredContactInfo";
+
         //Onboarding
         //i18n
         public static string I18N_Skip = "skip";

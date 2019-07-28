@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Foundation;
 using myTNB.SitecoreCMS.Model;
-using myTNB.SitecoreCMS.Services;
 using myTNB.SQLite.SQLiteDataManager;
 using UIKit;
 
@@ -19,7 +17,7 @@ namespace myTNB.SSMR
 
         public SSMROnboardingModelController()
         {
-            I18NDictionary = LanguageManager.Instance.GetValuesByPage("SSMROnboarding");
+            I18NDictionary = LanguageManager.Instance.GetValuesByPage(SSMRConstants.Pagename_SSMRWalkthrough);
             pageData = new List<SSMROnboardingModel>();
             var item1 = new SSMROnboardingModel
             {

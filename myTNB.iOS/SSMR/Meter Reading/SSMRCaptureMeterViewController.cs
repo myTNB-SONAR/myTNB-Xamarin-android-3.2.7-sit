@@ -25,6 +25,7 @@ namespace myTNB
         public override void ViewDidLoad()
         {
             base.ViewDidLoad();
+            ConfigureNavigationBar();
             SetDescription();
             SetPreview();
             SetCamera();
@@ -40,6 +41,17 @@ namespace myTNB
         public override void ViewDidAppear(bool animated)
         {
             base.ViewDidAppear(animated);
+        }
+
+        private void ConfigureNavigationBar()
+        {
+            UIImage backImg = UIImage.FromBundle(SSMRConstants.IMG_BackIcon);
+            UIBarButtonItem btnBack = new UIBarButtonItem(backImg, UIBarButtonItemStyle.Done, (sender, e) =>
+            {
+                ViewHelper.DismissControllersAndSelectTab(this, 0, true);
+            });
+            NavigationItem.LeftBarButtonItem = btnBack;
+            Title = "Take Photo";//GetI18NValue(SSMRConstants.I18N_NavTitle);
         }
 
         private void SetDescription()
@@ -233,14 +245,39 @@ namespace myTNB
                     settings.IsHighResolutionPhotoEnabled = true;
                     settings.IsAutoStillImageStabilizationEnabled = true;
                     settings.FlashMode = AVCaptureFlashMode.Auto;
-                    _output.CapturePhoto(settings, new CapturePhotoDelegate());
+                    _output.CapturePhoto(settings, new CapturePhotoDelegate(viewPreviewOne));
                 }
             }));
         }
 
         public class CapturePhotoDelegate : AVCapturePhotoCaptureDelegate
         {
+            private UIView viewPreviewOne;
+            public CapturePhotoDelegate(UIView viewPreviewOne)
+            {
+                this.viewPreviewOne = viewPreviewOne;
+            }
+            public override void DidFinishCapture(AVCapturePhotoOutput captureOutput, AVCaptureResolvedPhotoSettings resolvedSettings, NSError error)
+            {
+            }
 
+            public override void DidFinishProcessingPhoto(AVCapturePhotoOutput captureOutput
+                , CMSampleBuffer photoSampleBuffer, CMSampleBuffer previewPhotoSampleBuffer
+                , AVCaptureResolvedPhotoSettings resolvedSettings, AVCaptureBracketedStillImageSettings bracketSettings
+                , NSError error)
+            {
+                if (photoSampleBuffer == null)
+                {
+                    return;
+                }
+                NSData imgData = AVCapturePhotoOutput.GetJpegPhotoDataRepresentation(photoSampleBuffer, previewPhotoSampleBuffer);
+                UIImage image = UIImage.LoadFromData(imgData, 1.0F);
+                UIImageView imgView = new UIImageView(new CGRect(0, 0, viewPreviewOne.Frame.Width, viewPreviewOne.Frame.Height))
+                {
+                    Image = image
+                };
+                viewPreviewOne.AddSubview(imgView);
+            }
         }
     }
 }
