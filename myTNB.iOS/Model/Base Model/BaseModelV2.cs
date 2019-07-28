@@ -8,6 +8,7 @@ namespace myTNB.Model
         public string ErrorMessage { set; get; }
         public string DisplayMessage { set; get; }
         public string DisplayType { set; get; }
+        public string DisplayTitle { set; get; }
         public bool IsSuccess
         {
             get

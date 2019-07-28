@@ -39,20 +39,22 @@ namespace myTNB.Home.Dashboard.DashboardHome
                 UIStoryboard onboardingStoryboard = UIStoryboard.FromName("Onboarding", null);
                 GenericPageRootViewController onboardingVC =
                     onboardingStoryboard.InstantiateViewController("GenericPageRootViewController") as GenericPageRootViewController;
-                onboardingVC.ModalTransitionStyle = UIModalTransitionStyle.CrossDissolve;
+                //onboardingVC.ModalTransitionStyle = UIModalTransitionStyle.CrossDissolve;
                 onboardingVC.PageType = GenericPageViewEnum.Type.SSMR;
-                _controller.PresentViewController(onboardingVC, true, null);
+                var navController = new UINavigationController(onboardingVC);
+                _controller.PresentViewController(navController, true, null);
             }
         }
 
         private void On_1002_Action()
         {
             //Stub
-            UIStoryboard storyBoard = UIStoryboard.FromName("SSMR", null);
+            /*UIStoryboard storyBoard = UIStoryboard.FromName("SSMR", null);
             SSMRCaptureMeterViewController viewController =
                 storyBoard.InstantiateViewController("SSMRCaptureMeterViewController") as SSMRCaptureMeterViewController;
             var navController = new UINavigationController(viewController);
             _controller.PresentViewController(navController, true, null);
+            */
         }
 
         private void On_1003_Action()

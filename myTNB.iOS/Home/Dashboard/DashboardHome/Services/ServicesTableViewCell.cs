@@ -85,6 +85,7 @@ namespace myTNB
             nfloat height = 0F;
             for (int i = 0; i < serviceList.Count; i++)
             {
+                if (RemoveServiceItem(serviceList[i].ServiceId)) { continue; }
                 UIView card = GetCard(serviceList[i], i);
                 SetCardAction(ref card, serviceList[i].ServiceId);
                 _view.AddSubview(card);
@@ -96,6 +97,11 @@ namespace myTNB
             CGRect newFrame = _view.Frame;
             newFrame.Height = height;
             _view.Frame = newFrame;
+        }
+
+        private bool RemoveServiceItem(string serviceID)
+        {
+            return !SSMRAccounts.HasSSMREligibleAccount && (serviceID == "1001" || serviceID == "1002");
         }
 
         private UIView GetCard(ServiceItemModel serviceItem, int index, Action action = null)

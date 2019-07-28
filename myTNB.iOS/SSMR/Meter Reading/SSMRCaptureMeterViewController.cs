@@ -60,15 +60,17 @@ namespace myTNB
             View.AddSubview(_lblDescription);
         }
 
+        private UIView viewPreviewOne;
         private void SetPreview()
         {
             nfloat previewBaseWidth = ViewWidth - 88 - 64;
             nfloat previewWidth = previewBaseWidth / 3;
             _viewPreview = new UIView() { BackgroundColor = UIColor.White };
-            UIView viewPreviewOne = new UIView(new CGRect(44, 16, previewWidth, previewWidth)) { ClipsToBounds = true };
+            viewPreviewOne = new UIView(new CGRect(44, 16, previewWidth, previewWidth)) { ClipsToBounds = true };
             viewPreviewOne.Layer.CornerRadius = 4.0F;
             viewPreviewOne.Layer.BorderWidth = 2.0F;
             viewPreviewOne.Layer.BorderColor = MyTNBColor.WaterBlue.CGColor;
+
             _viewPreview.AddSubview(viewPreviewOne);
             if (IsThreePhase)
             {
@@ -198,27 +200,47 @@ namespace myTNB
             try
             {
                 _input = new AVCaptureDeviceInput(_captureDevice, out nsError);
+
+                _output = new AVCapturePhotoOutput();
+                _output.IsHighResolutionCaptureEnabled = true;
+
+                _captureSession = new AVCaptureSession();
+                _captureSession.AddInput(_input);
+                _captureSession.AddOutput(_output);
+
+                AVCaptureVideoPreviewLayer videoPreviewLayer = new AVCaptureVideoPreviewLayer(_captureSession)
+                {
+                    Frame = new CGRect(0, 0, _viewCamera.Frame.Width, _viewCamera.Frame.Height),
+                    VideoGravity = AVLayerVideoGravity.ResizeAspectFill,
+                    ZPosition = -1
+                };
+                _viewCamera.Layer.AddSublayer(videoPreviewLayer);
+                _captureSession.StartRunning();
             }
             catch (Exception e)
             {
                 Debug.WriteLine("Error in camera: " + e.Message);
             }
-            _captureSession = new AVCaptureSession();
-            _captureSession.AddInput(_input);
-            AVCaptureVideoPreviewLayer videoPreviewLayer = new AVCaptureVideoPreviewLayer(_captureSession)
-            {
-                Frame = new CGRect(0, 0, _viewCamera.Frame.Width, _viewCamera.Frame.Height),
-                VideoGravity = AVLayerVideoGravity.ResizeAspectFill,
-                ZPosition = -1
-            };
 
-            _viewCamera.Layer.AddSublayer(videoPreviewLayer);
-            _captureSession.StartRunning();
+
 
             _viewCapture.AddGestureRecognizer(new UITapGestureRecognizer(() =>
             {
                 Debug.WriteLine("viewCapture tapped");
+                if (_output != null)
+                {
+                    AVCapturePhotoSettings settings = AVCapturePhotoSettings.Create();
+                    settings.IsHighResolutionPhotoEnabled = true;
+                    settings.IsAutoStillImageStabilizationEnabled = true;
+                    settings.FlashMode = AVCaptureFlashMode.Auto;
+                    _output.CapturePhoto(settings, new CapturePhotoDelegate());
+                }
             }));
+        }
+
+        public class CapturePhotoDelegate : AVCapturePhotoCaptureDelegate
+        {
+
         }
     }
 }

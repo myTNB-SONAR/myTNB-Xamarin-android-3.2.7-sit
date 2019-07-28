@@ -16,13 +16,50 @@ namespace myTNB
         {
         }
 
-        public string ReferenceNumber { set; get; } = string.Empty;
-        public string ReferenceDate { set; get; } = string.Empty;
-        public bool IsSuccess { set; get; }
-        public StatusType StatusDisplayType { set; get; }
+        private string refNumber;
+        private string refDate;
+        private string refTitle;
+        private string refMessage;
 
-        public string StatusTitle { set; get; } = string.Empty;
-        public string StatusMessage { set; get; } = string.Empty;
+        public string ReferenceNumber
+        {
+            set
+            {
+                refNumber = string.IsNullOrEmpty(value) ? string.Empty : value;
+            }
+            get { return refNumber; }
+        }
+        public string ReferenceDate
+        {
+            set
+            {
+                refDate = string.IsNullOrEmpty(value) ? string.Empty : value;
+            }
+            get { return refDate; }
+        }
+
+        public string StatusTitle
+        {
+            set
+            {
+                refTitle = string.IsNullOrEmpty(value) ? string.Empty : value;
+            }
+            get { return refTitle; }
+        }
+        public string StatusMessage
+        {
+            set
+            {
+                refMessage = string.IsNullOrEmpty(value) ? string.Empty : value;
+            }
+            get { return refMessage; }
+        }
+
+        public bool IsSuccess { set; get; }
+        public StatusType StatusDisplayType
+        {
+            set; get;
+        }
 
         private StatusPageActions _actions;
 
