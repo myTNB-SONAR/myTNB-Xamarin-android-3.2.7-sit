@@ -40,6 +40,10 @@
         public static string IMG_Dropdow = "IC-Action-Dropdown";
         public static string IMG_MobileNumber = "Mobile";
         public static string IMG_Email = "Email";
+        public static string IMG_SMRMediumIcon = "SMR-Medium-Icon";
+        public static string IMG_SMROpenSubmittedBG = "SMR-Open-Submitted-BG";
+        public static string IMG_BackIcon = "Back-White";
+        public static string IMG_PrimaryIcon = "SSMRPrimaryIcon";
 
         //Error
         public static string I18N_InvalidEmail = "invalid_email";
@@ -50,5 +54,9 @@
 
         //Cell
         public static string Cell_ReadingHistory = "readingHistoryTableViewCell";
+
+        //Reading History
+        public static string I18N_SectionTitle = "headerTitle";
+        public static string STR_EstimatedReading = "estimated";
     }
 }

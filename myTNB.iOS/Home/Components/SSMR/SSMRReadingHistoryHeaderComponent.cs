@@ -1,5 +1,6 @@
 ﻿using System;
 using CoreGraphics;
+using myTNB.SSMR;
 using UIKit;
 
 namespace myTNB
@@ -26,7 +27,7 @@ namespace myTNB
             _containerView = new UIView(new CGRect(0, 0, _parentView.Frame.Width, 300f));
             _imageView = new UIImageView(new CGRect(0, 0, _parentView.Frame.Width, imageHeight))
             {
-                Image = UIImage.FromBundle("SMR-Open-Submitted-BG"),
+                Image = UIImage.FromBundle(SSMRConstants.IMG_SMROpenSubmittedBG),
                 ContentMode = UIViewContentMode.ScaleAspectFill,
                 BackgroundColor = UIColor.Clear
             };

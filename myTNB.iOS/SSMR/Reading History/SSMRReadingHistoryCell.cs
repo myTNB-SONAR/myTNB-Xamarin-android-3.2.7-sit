@@ -48,5 +48,10 @@ namespace myTNB
             AddSubview(_containerView);
             SelectionStyle = UITableViewCellSelectionStyle.None;
         }
+
+        public void UpdateCell(bool flag)
+        {
+            _descLabel.TextColor = flag ? MyTNBColor.Tomato : MyTNBColor.Grey;
+        }
     }
 }

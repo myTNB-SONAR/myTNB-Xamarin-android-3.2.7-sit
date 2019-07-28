@@ -25,6 +25,7 @@ namespace myTNB
 
         public override void ViewDidLoad()
         {
+            PageName = "SSMRReadingHistory";
             base.ViewDidLoad();
             _meterReadingHistory = DataManager.DataManager.SharedInstance.MeterReadingHistory;
             _readingHistoryList = DataManager.DataManager.SharedInstance.ReadingHistoryList;
@@ -35,8 +36,8 @@ namespace myTNB
 
         private void SetNavigation()
         {
-            UIImage backImg = UIImage.FromBundle("Back-White");
-            UIImage btnRightImg = UIImage.FromBundle("SSMRPrimaryIcon");
+            UIImage backImg = UIImage.FromBundle(SSMRConstants.IMG_BackIcon);
+            UIImage btnRightImg = UIImage.FromBundle(SSMRConstants.IMG_PrimaryIcon);
             UIBarButtonItem btnBack = new UIBarButtonItem(backImg, UIBarButtonItemStyle.Done, (sender, e) =>
             {
                 DismissViewController(true, null);
@@ -47,7 +48,7 @@ namespace myTNB
             });
             NavigationItem.LeftBarButtonItem = btnBack;
             NavigationItem.RightBarButtonItem = btnRight;
-            Title = "Self Meter Reading";
+            Title = GetI18NValue(SSMRConstants.I18N_NavTitle);
         }
 
         private void PrepareHeaderView()
@@ -74,7 +75,7 @@ namespace myTNB
         {
             _readingHistoryTableView = new UITableView(new CGRect(0, 0, View.Frame.Width, View.Frame.Height));
             _readingHistoryTableView.RegisterClassForCellReuse(typeof(SSMRReadingHistoryCell), SSMRConstants.Cell_ReadingHistory);
-            _readingHistoryTableView.Source = new SSMRReadingHistoryDataSource(this, OnTableViewScrolled, _readingHistoryList);
+            _readingHistoryTableView.Source = new SSMRReadingHistoryDataSource(OnTableViewScrolled, _readingHistoryList);
             _readingHistoryTableView.BackgroundColor = UIColor.Clear;
             _readingHistoryTableView.RowHeight = UITableView.AutomaticDimension;
             _readingHistoryTableView.EstimatedRowHeight = 67f;

@@ -10,13 +10,14 @@ namespace myTNB
 {
     public class SSMRReadingHistoryDataSource : UITableViewSource
     {
-        private SSMRReadingHistoryViewController _controller;
         private List<MeterReadingHistoryItemModel> _readingHistoryList;
+        private SSMRHelper _sSMRHelper = new SSMRHelper();
         EventHandler _onScroll;
+        private readonly Dictionary<string, string> I18NDictionary;
 
-        public SSMRReadingHistoryDataSource(SSMRReadingHistoryViewController controller, EventHandler onScroll, List<MeterReadingHistoryItemModel> readingHistoryList)
+        public SSMRReadingHistoryDataSource(EventHandler onScroll, List<MeterReadingHistoryItemModel> readingHistoryList)
         {
-            _controller = controller;
+            I18NDictionary = LanguageManager.Instance.GetValuesByPage("SSMRReadingHistory");
             _onScroll = onScroll;
             _readingHistoryList = readingHistoryList;
         }
@@ -29,6 +30,7 @@ namespace myTNB
             cell._descLabel.Text = readingHistory?.ReadingType ?? string.Empty;
             cell._kwhLabel.Text = readingHistory?.Consumption ?? string.Empty;
             cell._monthYearLabel.Text = readingHistory?.ReadingForMonth ?? string.Empty;
+            cell.UpdateCell(_sSMRHelper.IsEstimatedReading(readingHistory.ReadingType));
             return cell;
         }
 
@@ -60,7 +62,7 @@ namespace myTNB
             UILabel lblTitle = new UILabel
             {
                 Frame = new CGRect(padding, 0, sectionView.Frame.Width, sectionView.Frame.Height),
-                Text = "My Meter Reading History",
+                Text = GetI18NValue(SSMRConstants.I18N_SectionTitle),
                 Font = MyTNBFont.MuseoSans16_500,
                 TextColor = MyTNBColor.WaterBlue
             };
@@ -72,6 +74,11 @@ namespace myTNB
         public override void Scrolled(UIScrollView scrollView)
         {
             _onScroll?.Invoke(scrollView, null);
+        }
+
+        public string GetI18NValue(string key)
+        {
+            return I18NDictionary.ContainsKey(key) ? I18NDictionary[key] : string.Empty;
         }
     }
 }

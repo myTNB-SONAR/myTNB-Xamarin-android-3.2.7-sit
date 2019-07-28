@@ -1321,7 +1321,6 @@
     <Folder Include="Assets.xcassets\Services-CheckStatus.imageset\" />
     <Folder Include="Assets.xcassets\Services-SetAppointments.imageset\" />
     <Folder Include="Assets.xcassets\Services-ApplyAutoPay.imageset\" />
-    <Folder Include="Customs\Dashboard Home\" />
     <Folder Include="Home\Dashboard\DashboardHome\Accounts\" />
     <Folder Include="Assets.xcassets\Accounts-Smart-Meter-Icon.imageset\" />
     <Folder Include="Customs\Generic Line\" />
@@ -1377,6 +1376,7 @@
     <Folder Include="Model\SSMR\" />
     <Folder Include="Sitecore CMS\Model\Apply SSMR Walkthrough\" />
     <Folder Include="Assets.xcassets\Camera-Thumb.imageset\" />
+    <Folder Include="Home\Components\Dashboard Home\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -2058,8 +2058,6 @@
     </Compile>
     <Compile Include="Home\Dashboard\DashboardHome\Services\ServicesTableViewCell.cs" />
     <Compile Include="Home\Dashboard\DashboardHome\DashboardHomeConstants.cs" />
-    <Compile Include="Customs\Dashboard Home\DashboardHomeHeader.cs" />
-    <Compile Include="Customs\Dashboard Home\DashboardHomeAccountCard.cs" />
     <Compile Include="Home\Dashboard\DashboardHome\Accounts\AccountsTableViewCell.cs" />
     <Compile Include="Rewards\RewardsViewController.cs" />
     <Compile Include="Rewards\RewardsViewController.designer.cs">
@@ -2128,6 +2126,9 @@
     <Compile Include="Sitecore CMS\Model\Apply SSMR Walkthrough\ApplySSMRWalkthroughModel.cs" />
     <Compile Include="Sitecore CMS\Service\ApplySSMRWalkthroughService.cs" />
     <Compile Include="SQLite\SQLite Data Manager\ApplySSMRWalkthroughEntity.cs" />
+    <Compile Include="SSMR\SSMRHelper.cs" />
+    <Compile Include="Home\Components\Dashboard Home\DashboardHomeAccountCard.cs" />
+    <Compile Include="Home\Components\Dashboard Home\DashboardHomeHeader.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />

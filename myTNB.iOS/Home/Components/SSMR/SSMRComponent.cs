@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using CoreGraphics;
+using myTNB.SSMR;
 using UIKit;
 
 namespace myTNB
@@ -40,7 +41,7 @@ namespace myTNB
 
             _iconView = new UIImageView(new CGRect(iconPadding, _padding, imageWidth, imageHeight))
             {
-                Image = UIImage.FromBundle("SMR-Medium-Icon")
+                Image = UIImage.FromBundle(SSMRConstants.IMG_SMRMediumIcon)
             };
             _descWidth = _containerView.Frame.Width - (_iconView.Frame.GetMaxX() + (iconPadding * 2));
             _description = new UILabel(new CGRect(_iconView.Frame.GetMaxX() + iconPadding, _padding, _descWidth, 48))
