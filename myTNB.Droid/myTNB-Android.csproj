@@ -1319,6 +1319,27 @@
     <Compile Include="Src\SitecoreCMS\Service\ApplySSMRWalkthroughService.cs" />
     <Compile Include="Src\SSMR\SMRApplication\MVP\OnBoardingActivity.cs" />
     <AndroidResource Include="Resources\layout\OnboardingSSMRView.axml" />
+    <Compile Include="Src\SSMR\SMRApplication\MVP\OnBoardingSMRPresenter.cs" />
+    <Compile Include="Src\SSMR\SMRApplication\MVP\OnBoardingSMRContract.cs" />
+    <Compile Include="Src\SSMR\SMRApplication\Adapter\OnBoardingSMRAdapter.cs" />
+    <Compile Include="Src\SSMR\SMRApplication\MVP\OnBoardingDataModel.cs" />
+    <Compile Include="Src\SSMR\SMRApplication\MVP\OnBoardingSMRFragment.cs" />
+    <AndroidResource Include="Resources\layout\OnBoardingSMRFragmentLayout.axml" />
+    <AndroidResource Include="Resources\drawable-hdpi\onboarding_bg_1.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\onboarding_bg_2.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\onboarding_bg_3.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\onboarding_bg_1.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\onboarding_bg_2.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\onboarding_bg_3.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\onboarding_bg_1.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\onboarding_bg_2.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\onboarding_bg_3.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\onboarding_bg_1.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\onboarding_bg_2.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\onboarding_bg_3.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\onboarding_bg_1.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\onboarding_bg_2.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\onboarding_bg_3.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -1683,6 +1704,7 @@
     <Folder Include="Src\SSMR\" />
     <Folder Include="Src\SSMR\SMRApplication\" />
     <Folder Include="Src\SSMR\SMRApplication\MVP\" />
+    <Folder Include="Src\SSMR\SMRApplication\Adapter\" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\GradientStatusBar.xml" />
