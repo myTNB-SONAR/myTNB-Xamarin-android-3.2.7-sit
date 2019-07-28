@@ -141,9 +141,7 @@ namespace myTNB.SSMR
                 UIStoryboard storyBoard = UIStoryboard.FromName("SSMR", null);
                 SSMRApplicationViewController viewController =
                     storyBoard.InstantiateViewController("SSMRApplicationViewController") as SSMRApplicationViewController;
-                var navController = new UINavigationController(viewController);
-                that.ShowViewController(navController, null);
-                //that.PresentViewController(navController, true, null);
+                that.NavigationController.PushViewController(viewController, true);
             };
             viewSkip.AddGestureRecognizer(new UITapGestureRecognizer(() =>
             {
