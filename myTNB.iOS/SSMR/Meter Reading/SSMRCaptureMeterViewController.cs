@@ -150,18 +150,24 @@ namespace myTNB
             return view;
         }
 
+        private UISlider zoomSlider;
         private UIView GetCameraActions(UIView viewBase)
         {
             nfloat size = ViewWidth * 0.15F;
             UIView view = new UIView() { BackgroundColor = UIColor.Clear };
 
             //Need image thumb
-            UISlider zoomSlider = new UISlider(new CGRect(16, 0, ViewWidth - 32, 20)) { };
+            zoomSlider = new UISlider(new CGRect(16, 0, ViewWidth - 32, 20)) { };
             zoomSlider.MinimumTrackTintColor = UIColor.White;
             zoomSlider.SetThumbImage(UIImage.FromBundle("Camera-Thumb"), UIControlState.Normal);
             zoomSlider.ValueChanged += (sender, e) =>
             {
-                Debug.WriteLine("zoomSlider ValueChanged");
+                Debug.WriteLine("zoomSlider ValueChanged: " + ((UISlider)sender).Value);
+                nfloat zoomFactor = (nfloat)((UISlider)sender).Value;
+                NSError nsError;
+                _captureDevice.LockForConfiguration(out nsError);
+                _captureDevice.VideoZoomFactor = zoomFactor;
+                _captureDevice.UnlockForConfiguration();
             };
 
             UIView viewGallery = new UIView(new CGRect(16, zoomSlider.Frame.GetMaxY() + 22, size, size));
@@ -207,8 +213,13 @@ namespace myTNB
         public void SetupLiveCameraStream()
         {
             _captureDevice = AVCaptureDevice.GetDefaultDevice(AVMediaTypes.Video);
-            NSError nsError;
+            Debug.WriteLine("Min: " + _captureDevice.MinAvailableVideoZoomFactor);
+            Debug.WriteLine("Max: " + _captureDevice.MaxAvailableVideoZoomFactor);
 
+            zoomSlider.MinValue = (float)_captureDevice.MinAvailableVideoZoomFactor;
+            zoomSlider.MaxValue = (float)_captureDevice.MaxAvailableVideoZoomFactor;
+
+            NSError nsError;
             try
             {
                 _input = new AVCaptureDeviceInput(_captureDevice, out nsError);
