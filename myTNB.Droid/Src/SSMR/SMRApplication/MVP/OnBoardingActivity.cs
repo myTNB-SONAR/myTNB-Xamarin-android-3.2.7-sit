@@ -13,12 +13,14 @@ using Android.Views;
 using Android.Widget;
 using CheeseBind;
 using myTNB_Android.Src.Base.Activity;
+using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.SSMR.SMRApplication.Adapter;
+using myTNB_Android.Src.Utils;
 
 namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
 {
     [Activity(Label = "OnBoardingActivity", Theme = "@style/Theme.Dashboard")]
-    public class OnBoardingActivity : BaseToolbarAppCompatActivity, ViewPager.IOnPageChangeListener
+    public class OnBoardingActivity : BaseToolbarAppCompatActivity, ViewPager.IOnPageChangeListener, OnBoardingSMRContract.IView
     {
         [BindView(Resource.Id.viewpager)]
         ViewPager onBoardViewPager;
@@ -35,7 +37,7 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
         [BindView(Resource.Id.dontShowMeAgainLabel)]
         TextView dontShowMeAgainLabel;
 
-         [BindView(Resource.Id.btnStartApplication)]
+        [BindView(Resource.Id.btnStartApplication)]
         Button btnStartApplication;
 
 
@@ -87,10 +89,10 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
             base.OnCreate(savedInstanceState);
 
             // Create your application here
-            presenter = new OnBoardingSMRPresenter();
+            presenter = new OnBoardingSMRPresenter(this);
             onBoardViewPager = (ViewPager)FindViewById(Resource.Id.onBoardingSMRViewPager);
             onBoardViewPager.AddOnPageChangeListener(this);
-
+            this.presenter.OnBoardingList();
             onBoardingSMRAdapter = new OnBoardingSMRAdapter(SupportFragmentManager);
             onBoardingSMRAdapter.SetData(this.presenter.GetOnBoardingSMRData());
 
@@ -100,10 +102,16 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
 
             btnStartApplication.Click += delegate
             {
-                Intent intent = new Intent(this, typeof(ApplicationFormSMRActivity));
-                intent.PutExtra("fromDashboard", true);
-                StartActivity(intent);
+
+                _ = presenter.GetCARegisteredContactInfo();
             };
+
+            skipOnboarding.Click += delegate
+            {
+                onBoardViewPager.SetCurrentItem(3,true);
+            };
+
+            TextViewUtils.SetMuseoSans500Typeface(dontShowMeAgainLabel, skipOnboarding, btnStartApplication);
         }
 
         private void ShowSubmitButton(bool isShow)
@@ -150,6 +158,14 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
         public override bool ShowCustomToolbarTitle()
         {
             return true;
+        }
+
+        public void StartSMRApplication(string email, string mobileNumber)
+        {
+            Intent intent = new Intent(this, typeof(ApplicationFormSMRActivity));
+            intent.PutExtra("email", email);
+            intent.PutExtra("mobileNumber", mobileNumber);
+            StartActivity(intent);
         }
     }
 }

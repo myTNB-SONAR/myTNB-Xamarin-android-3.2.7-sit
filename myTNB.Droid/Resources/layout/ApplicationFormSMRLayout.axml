@@ -1,19 +1,31 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent" 
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/material_grey_300"
+    android:layout_alignParentBottom="true"
+    android:layout_centerHorizontal="true"
     android:id="@+id/rootView">
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/appBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        android:background="@null"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        app:elevation="0dp">
+        <include
+            layout="@layout/toolbar" />
+    </android.support.design.widget.AppBarLayout>
     <ScrollView
         android:minWidth="25px"
         android:minHeight="25px"
         android:layout_width="match_parent"
         android:overScrollMode="never"
         android:layout_height="wrap_content"
+        android:layout_marginTop="?attr/actionBarSize"
         android:id="@+id/scrollView1"
-        android:fillViewport="true">
+        android:background="@color/grey_two">
         <LinearLayout
             android:id="@+id/smrApplicationContainer"
             android:layout_width="match_parent"
@@ -33,114 +45,118 @@
                 android:layout_marginBottom="8dp"/>
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="131dp"
+                android:layout_height="wrap_content"
                 android:orientation="vertical"
+                android:padding="16dp"
                 android:background="@android:color/white">
                 <TextView
                     android:id="@+id/applyForAccountHeader"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:textSize="9dp"
                     android:text="Account"/>
                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
                     <TextView
-                        android:layout_width="match_parent"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_weight=".8"
+                        android:textSize="16dp"
                         android:text="Saujana Heights"/>
+                    <ImageView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".2"
+                        android:src="@drawable/ic_action_dropdown"/>
                 </LinearLayout>
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:background="@color/material_grey_600"/>
+                    android:background="#e4e4e4"/>
                 <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="No. 3 Jalan Melur, 12 Taman Melur, 68000 Ampang, Selangor"/>
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="14dp"
+                    android:text="No. 3 Jalan Melur, 12 Taman Melur, 68000 Ampang, Selangor"
+                    android:paddingTop="16dp"
+                    android:paddingBottom="16dp"
+                />
             </LinearLayout>
             <TextView
-                android:id="@+id/applyForAccountHeader"
+                android:id="@+id/myAccountDetailsHeader"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="My contact details:"
+                android:text="My account details:"
                 android:textColor="@android:color/holo_blue_dark"
                 android:textSize="16dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginLeft="16dp"
-            android:layout_marginBottom="8dp"/>
+                android:layout_marginBottom="8dp"/>
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="142dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp"
                 android:background="@android:color/white">
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:hintTextAppearance="@style/TextInputLayout.TextAppearance.LightBackground"
+                    app:errorEnabled="true"
+                    android:id="@+id/textInputEmail">
+                    <EditText
+                        android:hint="EMAIL ADDRESS"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/txtEmail"
+                        android:drawablePadding="6dp"
+                        android:drawableLeft="@drawable/placeholder_email"
+                        android:maxLines="1"
+                        android:inputType="text" />
+                </android.support.design.widget.TextInputLayout>
+                
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:hintTextAppearance="@style/TextInputLayout.TextAppearance.LightBackground"
+                    app:errorEnabled="true"
+                    android:id="@+id/textInputMobileNumber">
+                    <EditText
+                        android:hint="MOBILE NUMBER"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/txtMobileNumber"
+                        android:drawablePadding="6dp"
+                        android:drawableLeft="@drawable/placeholder_mobile"
+                        android:maxLines="1"
+                        android:digits="0123456789+"
+                        android:inputType="phone" />
+                </android.support.design.widget.TextInputLayout>
             </LinearLayout>
-            
-            
             <LinearLayout
+                android:id="@+id/submitActionContainer"
+                android:layout_height="160dp"
                 android:layout_width="match_parent"
-                android:layout_height="142dp"
-                android:background="@android:color/white">
-            </LinearLayout>
-            
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="142dp"
-                android:background="@android:color/white">
-            </LinearLayout>
-            
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="142dp"
-                android:background="@android:color/white">
-            </LinearLayout>
-            
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="142dp"
-                android:background="@android:color/white">
-            </LinearLayout>
-            
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="142dp"
-                android:background="@android:color/white">
-            </LinearLayout>
-            
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="142dp"
-                android:background="@android:color/white">
-            </LinearLayout>
-            
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="142dp"
-                android:background="@android:color/white">
-            </LinearLayout>
-            
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="142dp"
-                android:background="@android:color/white">
-            </LinearLayout>
-            
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="142dp"
-                android:background="@android:color/white">
+                android:padding="16dp"
+                android:orientation="vertical"
+                android:background="@android:color/white"
+                android:layout_marginTop="16dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_weight=".6"
+                    android:text="By applying, you are agreeing to the Self Meter Reading Terms and Conditions, TNB’s Terms of Use, Privacy policy, Anti-Spam Policy and Personal Data Protection Policy."/>
+                <Button
+                    android:id="@+id/btnStartApplication"
+                    android:layout_height="0dp"
+                    android:layout_width="match_parent"
+                    android:layout_weight=".4"
+                    android:text="Submit"
+                    android:textAllCaps="false"
+                style="@style/DarkButton"/>
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
-    <LinearLayout
-        android:id="@+id/submitActionContainer"
-        android:layout_height="160dp"
-        android:layout_width="match_parent"
-        android:background="@@android:color/holo_blue_bright"
-        android:layout_alignParentBottom="true">
-        <Button
-            android:layout_height="30dp"
-            android:layout_width="match_parent"
-            android:text="Submit"
-        />
-    </LinearLayout>
-</RelativeLayout>
+</android.support.design.widget.CoordinatorLayout>

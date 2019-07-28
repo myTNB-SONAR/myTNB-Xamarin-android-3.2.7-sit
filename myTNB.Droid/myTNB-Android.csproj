@@ -1344,6 +1344,13 @@
     <AndroidResource Include="Resources\drawable\onboarding_circle_inactive.axml" />
     <Compile Include="Src\SSMR\SMRApplication\MVP\ApplicationFormSMRActivity.cs" />
     <AndroidResource Include="Resources\layout\ApplicationFormSMRLayout.axml" />
+    <Compile Include="Src\Database\Model\UserLoginAccountEntity.cs" />
+    <Compile Include="Src\SSMR\SMRApplication\MVP\SSMRWalkthroughData.cs" />
+    <Compile Include="Src\Database\Model\OnboardingSSMREntity.cs" />
+    <Compile Include="Src\SitecoreCMS\Model\OnboardingSSMRModel.cs" />
+    <Compile Include="Src\SSMR\SMRApplication\Api\CARegisteredContactInfoResponse.cs" />
+    <Compile Include="Src\SSMR\SMRApplication\Api\CARegisteredApiImpl.cs" />
+    <Compile Include="Src\SSMR\SMRApplication\Api\CARegisteredContactInfoApi.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -1709,6 +1716,7 @@
     <Folder Include="Src\SSMR\SMRApplication\" />
     <Folder Include="Src\SSMR\SMRApplication\MVP\" />
     <Folder Include="Src\SSMR\SMRApplication\Adapter\" />
+    <Folder Include="Src\SSMR\SMRApplication\Api\" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\GradientStatusBar.xml" />

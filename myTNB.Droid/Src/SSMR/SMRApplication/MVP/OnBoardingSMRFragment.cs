@@ -4,12 +4,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Android.Content;
+using Android.Graphics;
 using Android.OS;
 using Android.Runtime;
 using Android.Support.V4.App;
 using Android.Util;
 using Android.Views;
 using Android.Widget;
+using myTNB_Android.Src.Utils;
 
 namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
 {
@@ -49,24 +51,36 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
             TextView titleView = viewGroup.FindViewById(Resource.Id.applyTitle) as TextView;
             TextView descriptionView = viewGroup.FindViewById(Resource.Id.applyDescription) as TextView;
 
-            int imageUrlResource = Resource.Drawable.onboarding_bg_1;
-            if (imageUrl!=null)
+            TextViewUtils.SetMuseoSans500Typeface(titleView);
+            TextViewUtils.SetMuseoSans300Typeface(descriptionView);
+
+            if (imageUrl.Contains("onboarding_bg_"))
             {
-                if (imageUrl == "onboarding_bg_1")
+                int imageUrlResource = Resource.Drawable.onboarding_bg_1;
+                if (imageUrl != null)
                 {
-                    imageUrlResource = Resource.Drawable.onboarding_bg_1;
+                    if (imageUrl == "onboarding_bg_1")
+                    {
+                        imageUrlResource = Resource.Drawable.onboarding_bg_1;
+                    }
+                    else if (imageUrl == "onboarding_bg_2")
+                    {
+                        imageUrlResource = Resource.Drawable.onboarding_bg_2;
+                    }
+                    else
+                    {
+                        imageUrlResource = Resource.Drawable.onboarding_bg_3;
+                    }
                 }
-                else if (imageUrl == "onboarding_bg_2")
-                {
-                    imageUrlResource = Resource.Drawable.onboarding_bg_2;
-                }
-                else
-                {
-                    imageUrlResource = Resource.Drawable.onboarding_bg_3;
-                }
+
+                imageSource.SetImageResource(imageUrlResource);
+            }
+            else
+            {
+                Bitmap bitmap = ImageUtils.GetImageBitmapFromUrl(imageUrl);
+                imageSource.SetImageBitmap(bitmap);
             }
 
-            imageSource.SetImageResource(imageUrlResource);
             titleView.Text = title;
             descriptionView.Text = description;
             return viewGroup;

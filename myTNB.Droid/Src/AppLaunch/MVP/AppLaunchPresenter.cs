@@ -76,7 +76,7 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                 {
                     Console.WriteLine("GooglePlayServices is Installed");
                     ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
-
+                    GetSSMRWalkThrough();
                     LoadAccounts();
                 }
             }
@@ -464,6 +464,58 @@ namespace myTNB_Android.Src.AppLaunch.MVP
         public void OnUpdateApp()
         {
             this.mView.OnAppUpdateClick();
+        }
+
+        public Task GetSSMRWalkThrough()
+        {
+            return Task.Factory.StartNew(() =>
+            {
+                try
+                {
+                    string density = DPUtils.GetDeviceDensity(Application.Context);
+                    GetItemsService getItemsService = new GetItemsService(SiteCoreConfig.OS, density, SiteCoreConfig.SITECORE_URL, SiteCoreConfig.DEFAULT_LANGUAGE);
+                    ApplySSMRTimeStampResponseModel test = getItemsService.GetApplySSMRWalkthroughTimestampItem();
+                    ApplySSMRResponseModel responseModel = getItemsService.GetApplySSMRWalkthroughItems();
+
+                    if (responseModel.Status.Equals("Success"))
+                    {
+                        OnboardingSSMREntity wtManager = new OnboardingSSMREntity();
+                        wtManager.DeleteTable();
+                        wtManager.CreateTable();
+                        wtManager.InsertListOfItems(responseModel.Data);
+                        Log.Debug("WalkThroughResponse", responseModel.Data.ToString());
+                    }
+
+
+                    //UserLoginAccountEntity.UserLoginAccountData data = new UserLoginAccountEntity.UserLoginAccountData();
+                    //data.SSMRData = JsonConvert.SerializeObject(t.Data);
+                    //UserLoginAccountEntity.InsertItem(data);
+
+                    //string json = getItemsService.GetTimestampItem();
+                    //TimestampResponseModel responseModel = JsonConvert.DeserializeObject<TimestampResponseModel>(json);
+                    //if (responseModel.Status.Equals("Success"))
+                    //{
+                    //    TimeStampEntity wtManager = new TimeStampEntity();
+                    //    wtManager.DeleteTable();
+                    //    wtManager.CreateTable();
+                    //    wtManager.InsertListOfItems(responseModel.Data);
+                    //    mView.OnTimeStampRecieved(responseModel.Data[0].Timestamp);
+                    //}
+                    //else
+                    //{
+                    //    mView.OnTimeStampRecieved(null);
+                    //}
+
+                    
+
+                }
+                catch (Exception e)
+                {
+                    Log.Error("API Exception", e.StackTrace);
+                    mView.OnTimeStampRecieved(null);
+                    Utility.LoggingNonFatalError(e);
+                }
+            });
         }
 
     }

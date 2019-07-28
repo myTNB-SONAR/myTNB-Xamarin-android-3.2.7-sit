@@ -64,6 +64,9 @@ namespace myTNB_Android.Src.Database.Model
         [Column("isTaggedSMR")]
         public bool IsTaggedSMR { get; set; }
 
+        [Column("IsSMROnBoardingDontShowAgain")]
+        public bool IsSMROnBoardingDontShowAgain { get; set; }
+
         public static int CreateTable()
         {
             //using (var db = new SQLiteConnection(Constants.DB_PATH))
@@ -224,7 +227,8 @@ namespace myTNB_Android.Src.Database.Model
                 AccountCategoryId = accountResponse.AccountCategoryId,
                 SmartMeterCode = accountResponse.SmartMeterCode == null ? "0" : accountResponse.SmartMeterCode,
                 IsTaggedSMR = accountResponse.IsTaggedSMR == "true" ? true : false,
-                isOwned = accountResponse.IsOwned
+                isOwned = accountResponse.IsOwned,
+                IsSMROnBoardingDontShowAgain = false
             };
 
             int newRecordRow = db.InsertOrReplace(newRecord);
@@ -378,6 +382,16 @@ namespace myTNB_Android.Src.Database.Model
             //}
         }
 
+        public static int UpdateDontShowAgainSMROnboarding(string accountNumber, bool isDontShow)
+        {
+            //using (var db = new SQLiteConnection(Constants.DB_PATH, SQLiteOpenFlags.ReadWrite | SQLiteOpenFlags.Create | SQLiteOpenFlags.FullMutex, true))
+            //using (var db = DBHelper.GetSQLiteConnection())
+            //{
+            var db = DBHelper.GetSQLiteConnection();
+            return db.Execute("Update CustomerBillingAccountEntity SET IsSMROnBoardingDontShowAgain = ? WHERE accNum = ?", isDontShow, accountNumber);
+            //}
+        }
+
         public static void SetSelected(string accNum)
         {
             //using(var db = DBHelper.GetSQLiteConnection()) {
@@ -439,6 +453,21 @@ namespace myTNB_Android.Src.Database.Model
             nonREAccountList = db.Query<CustomerBillingAccount>("SELECT * FROM CustomerBillingAccountEntity WHERE accountCategoryId != 2 ORDER BY accDesc ASC").ToList().OrderBy(x => x.AccDesc).ToList();
             //db.Close();
             return nonREAccountList;
+            //}
+        }
+
+        public static List<CustomerBillingAccount> EligibleSMRAccountList()
+        {
+            //using (var db = new SQLiteConnection(Constants.DB_PATH, SQLiteOpenFlags.ReadWrite | SQLiteOpenFlags.Create | SQLiteOpenFlags.FullMutex, true))
+            //{
+            //using (var db = DBHelper.GetSQLiteConnection())
+            //{
+            var db = DBHelper.GetSQLiteConnection();
+            //return db.Query<CustomerBillingAccount>("SELECT * FROM CustomerBillingAccountEntity WHERE accountCategoryId != 2 ORDER BY accDesc ASC").ToList().OrderBy(x => x.AccDesc).ToList();
+            List<CustomerBillingAccount> eligibleSMRAccounts = new List<CustomerBillingAccount>();
+            eligibleSMRAccounts = db.Query<CustomerBillingAccount>("SELECT * FROM CustomerBillingAccountEntity WHERE accountCategoryId != 2 AND isTaggedSMR = 1 AND isOwned = 1").ToList().OrderBy(x => x.AccDesc).ToList();
+            //db.Close();
+            return eligibleSMRAccounts;
             //}
         }
 
