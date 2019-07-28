@@ -1,6 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Foundation;
+using myTNB.SitecoreCMS.Model;
+using myTNB.SitecoreCMS.Services;
+using myTNB.SQLite.SQLiteDataManager;
 using UIKit;
 
 namespace myTNB.SSMR
@@ -19,8 +23,7 @@ namespace myTNB.SSMR
             pageData = new List<SSMROnboardingModel>();
             var item1 = new SSMROnboardingModel
             {
-                BGImage = SSMRConstants.IMG_BGOnboarding1,
-                MainImage = SSMRConstants.IMG_Onboarding1,
+                Image = SSMRConstants.IMG_BGOnboarding1,
                 Title = GetI18NValue(SSMRConstants.I18N_Title1),
                 Description = GetI18NValue(SSMRConstants.I18N_Description1),
             };
@@ -28,8 +31,7 @@ namespace myTNB.SSMR
 
             var item2 = new SSMROnboardingModel
             {
-                BGImage = SSMRConstants.IMG_BGOnboarding2,
-                MainImage = SSMRConstants.IMG_Onboarding2,
+                Image = SSMRConstants.IMG_BGOnboarding2,
                 Title = GetI18NValue(SSMRConstants.I18N_Title2),
                 Description = GetI18NValue(SSMRConstants.I18N_Description2),
             };
@@ -37,8 +39,7 @@ namespace myTNB.SSMR
 
             var item3 = new SSMROnboardingModel
             {
-                BGImage = SSMRConstants.IMG_BGOnboarding3,
-                MainImage = SSMRConstants.IMG_Onboarding3,
+                Image = SSMRConstants.IMG_BGOnboarding3,
                 Title = GetI18NValue(SSMRConstants.I18N_Title3),
                 Description = GetI18NValue(SSMRConstants.I18N_Description3),
             };
@@ -49,23 +50,23 @@ namespace myTNB.SSMR
         {
             return Task.Factory.StartNew(() =>
             {
-                /*WalkthroughScreensEntity wsManager = new WalkthroughScreensEntity();
-                List<WalkthroughScreensModel> walkThroughScreenList = wsManager.GetAllItems();
-                if (walkThroughScreenList.Count > 0)
+                ApplySSMRWalkthroughEntity wsManager = new ApplySSMRWalkthroughEntity();
+                List<ApplySSMRModel> walkThroughList = wsManager.GetAllItems();
+                if (walkThroughList != null && walkThroughList.Count > 0)
                 {
-                    pageData = new List<OnboardingModel>();
-                    foreach (var entity in walkThroughScreenList)
+                    pageData.Clear();
+                    for (int i = 0; i < walkThroughList.Count; i++)
                     {
-                        OnboardingModel item = new OnboardingModel
+                        SSMROnboardingModel item = new SSMROnboardingModel
                         {
-                            Title = entity.Text,
-                            Message = entity.SubText,
-                            ImageName = entity.Image,
+                            Title = walkThroughList[i].Title,
+                            Description = walkThroughList[i].Description,
+                            Image = walkThroughList[i].Image,
                             IsSitecoreData = true
                         };
                         pageData.Add(item);
                     }
-                }*/
+                }
             });
         }
 

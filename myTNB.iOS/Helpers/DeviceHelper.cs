@@ -36,6 +36,11 @@ namespace myTNB
             return size;
         }
 
+        public static string GetImageSize()
+        {
+            return GetImageSize(0);
+        }
+
         /// <summary>
         /// Checks if device is iPhone X and higher resolution
         /// </summary>

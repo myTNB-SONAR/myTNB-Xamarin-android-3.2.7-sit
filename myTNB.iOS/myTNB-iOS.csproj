@@ -1048,6 +1048,10 @@
     <ImageAsset Include="Assets.xcassets\SMR-Open-Submitted-BG.imageset\SMR-Open-Submitted-BG.png" />
     <ImageAsset Include="Assets.xcassets\SMR-Open-Submitted-BG.imageset\SMR-Open-Submitted-BG%402x.png" />
     <ImageAsset Include="Assets.xcassets\SMR-Open-Submitted-BG.imageset\SMR-Open-Submitted-BG%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Camera-Thumb.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Camera-Thumb.imageset\oval.png" />
+    <ImageAsset Include="Assets.xcassets\Camera-Thumb.imageset\oval%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Camera-Thumb.imageset\oval%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -1371,6 +1375,8 @@
     <Folder Include="Assets.xcassets\SMR-Closed-BG.imageset\" />
     <Folder Include="Assets.xcassets\SMR-Open-Submitted-BG.imageset\" />
     <Folder Include="Model\SSMR\" />
+    <Folder Include="Sitecore CMS\Model\Apply SSMR Walkthrough\" />
+    <Folder Include="Assets.xcassets\Camera-Thumb.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -2119,6 +2125,9 @@
     <Compile Include="Home\Components\SSMR\SSMRComponent.cs" />
     <Compile Include="Home\Components\SSMR\SSMRReadingHistoryHeaderComponent.cs" />
     <Compile Include="Model\SSMR\SMRAccountActivityInfoResponseModel.cs" />
+    <Compile Include="Sitecore CMS\Model\Apply SSMR Walkthrough\ApplySSMRWalkthroughModel.cs" />
+    <Compile Include="Sitecore CMS\Service\ApplySSMRWalkthroughService.cs" />
+    <Compile Include="SQLite\SQLite Data Manager\ApplySSMRWalkthroughEntity.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />

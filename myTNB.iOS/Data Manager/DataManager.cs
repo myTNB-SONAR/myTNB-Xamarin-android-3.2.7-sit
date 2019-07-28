@@ -138,6 +138,9 @@ namespace myTNB.DataManager
         public Dictionary<string, string> HintI18NDictionary;
         public Dictionary<string, string> ErrorI18NDictionary;
 
+        //ImageSize
+        public string ImageSize = string.Empty;
+
         public static DataManager SharedInstance
         {
             get
