@@ -67,6 +67,7 @@ namespace myTNB
                         IsReAccount = sortedAccounts[i].IsREAccount,
                         IsNormalAccount = sortedAccounts[i].IsNormalMeter,
                         IsSSMR = sortedAccounts[i].IsSSMR,
+                        IsOwnedAccount = sortedAccounts[i].IsOwnedAccount,
                         amountDue = acctCached != null ? acctCached.amountDue : 0.00,
                         billDueDate = acctCached != null ? acctCached.billDueDate : string.Empty
                     };
@@ -85,6 +86,7 @@ namespace myTNB
                         IsReAccount = sortedAccounts[i].IsREAccount,
                         IsNormalAccount = sortedAccounts[i].IsNormalMeter,
                         IsSSMR = sortedAccounts[i].IsSSMR,
+                        IsOwnedAccount = sortedAccounts[i].IsOwnedAccount,
                         amountDue = acctCached != null ? acctCached.amountDue : 0.00,
                         billDueDate = acctCached != null ? acctCached.billDueDate : string.Empty
                     };
@@ -135,16 +137,44 @@ namespace myTNB
         public bool IsSSMR(CustomerAccountRecordModel customerModel)
         {
             bool res = false;
-
             if (customerModel != null)
             {
                 if (customerModel.IsNormalMeter)
                 {
                     var model = GetModelWithAccountNumber(customerModel.accNum);
-                    res = model?.IsSSMR ?? false;
+                    if (model != null)
+                    {
+                        res = model.IsSSMR && model.IsOwnedAccount;
+                    }
                 }
             }
             return res;
+        }
+
+        /// <summary>
+        /// Returns the list of account numbers that is SSMR
+        /// </summary>
+        /// <param name="acctList"></param>
+        /// <param name="groupedAcctList"></param>
+        /// <returns></returns>
+        public List<string> FilterAccountNoForSSMR(List<string> acctList, List<DueAmountDataModel> groupedAcctList)
+        {
+            List<string> accounts = new List<string>();
+
+            foreach (var acct in groupedAcctList)
+            {
+                foreach (string accNo in acctList)
+                {
+                    if (acct.accNum == accNo)
+                    {
+                        if (acct.IsNormalAccount && acct.IsSSMR && acct.IsOwnedAccount)
+                        {
+                            accounts.Add(accNo);
+                        }
+                    }
+                }
+            }
+            return accounts;
         }
 
         /// <summary>

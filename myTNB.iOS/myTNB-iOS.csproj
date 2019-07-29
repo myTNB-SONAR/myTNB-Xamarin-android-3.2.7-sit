@@ -998,10 +998,6 @@
     <ImageAsset Include="Assets.xcassets\Help-Background-5.imageset\faqColor6.png" />
     <ImageAsset Include="Assets.xcassets\Help-Background-5.imageset\faqColor6%402x.png" />
     <ImageAsset Include="Assets.xcassets\Help-Background-5.imageset\faqColor6%403x.png" />
-    <ImageAsset Include="Assets.xcassets\SMR-Icon.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\SMR-Icon.imageset\SMR-Icon.png" />
-    <ImageAsset Include="Assets.xcassets\SMR-Icon.imageset\SMR-Icon%402x.png" />
-    <ImageAsset Include="Assets.xcassets\SMR-Icon.imageset\SMR-Icon%403x.png" />
     <ImageAsset Include="Assets.xcassets\SSMR_Background_1.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\SSMR_Background_2.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\SSMR_Background_3.imageset\Contents.json" />
@@ -1040,6 +1036,10 @@
     <ImageAsset Include="Assets.xcassets\SSMR_Background_3.imageset\onboardingBg3-1.png" />
     <ImageAsset Include="Assets.xcassets\SSMR_Background_3.imageset\onboardingBg3%402x-1.png" />
     <ImageAsset Include="Assets.xcassets\SSMR_Background_3.imageset\onboardingBg3%403x-1.png" />
+    <ImageAsset Include="Assets.xcassets\Accounts-SMR-Icon.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Accounts-SMR-Icon.imageset\Accounts-SMR-Icon.png" />
+    <ImageAsset Include="Assets.xcassets\Accounts-SMR-Icon.imageset\Accounts-SMR-Icon%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Accounts-SMR-Icon.imageset\Accounts-SMR-Icon%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -1367,6 +1367,7 @@
     <Folder Include="Model\GetCARegisteredContactInfo\" />
     <Folder Include="Model\SSMRApplicationStatus\" />
     <Folder Include="Home\Components\Dashboard Home\" />
+    <Folder Include="Assets.xcassets\Accounts-SMR-Icon.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -2122,6 +2123,7 @@
     <Compile Include="SSMR\SSMRHelper.cs" />
     <Compile Include="Home\Components\Dashboard Home\DashboardHomeAccountCard.cs" />
     <Compile Include="Home\Components\Dashboard Home\DashboardHomeHeader.cs" />
+    <Compile Include="Model\SSMR\SMRAccountStatusResponseModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />

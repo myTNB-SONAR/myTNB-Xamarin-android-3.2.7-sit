@@ -2,7 +2,6 @@
 using System.Diagnostics;
 using System.Globalization;
 using CoreGraphics;
-using Facebook.Shimmer;
 using myTNB.Model;
 using UIKit;
 
@@ -10,8 +9,6 @@ namespace myTNB
 {
     public class DashboardHomeAccountCard
     {
-        FBShimmeringView _shimmeringView = new FBShimmeringView();
-
         AccountsCardContentViewController _contentViewController;
         private readonly UIView _parentView;
         UIView _accountCardView;

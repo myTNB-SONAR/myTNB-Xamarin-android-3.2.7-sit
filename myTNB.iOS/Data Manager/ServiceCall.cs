@@ -375,5 +375,41 @@ namespace myTNB.DataManager
             return response;
         }
 
+        /// <summary>
+        /// Gets the Accounts SMR Status
+        /// </summary>
+        /// <param name="accountsList"></param>
+        /// <returns></returns>
+        public static async Task<SMRAccountStatusResponseModel> GetAccountsSMRStatus(List<string> accountsList)
+        {
+            SMRAccountStatusResponseModel response = null;
+            ServiceManager serviceManager = new ServiceManager();
+
+            object usrInf = new
+            {
+                eid = DataManager.SharedInstance.User.Email,
+                sspuid = DataManager.SharedInstance.User.UserID,
+                did = DataManager.SharedInstance.UDID,
+                ft = DataManager.SharedInstance.FCMToken,
+                lang = TNBGlobal.DEFAULT_LANGUAGE,
+                sec_auth_k1 = TNBGlobal.API_KEY_ID,
+                sec_auth_k2 = string.Empty,
+                ses_param1 = string.Empty,
+                ses_param2 = string.Empty
+            };
+
+            object requestParameter = new
+            {
+                contractAccounts = accountsList ?? new List<string>(),
+                usrInf
+            };
+            response = await Task.Run(() =>
+            {
+                return serviceManager.OnExecuteAPIV6<SMRAccountStatusResponseModel>("GetAccountsSMRStatus", requestParameter);
+            });
+
+            return response;
+        }
+
     }
 }

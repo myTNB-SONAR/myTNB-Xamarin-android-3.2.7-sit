@@ -74,6 +74,12 @@ namespace myTNB.Model
             set;
         }
 
+        public bool IsOwnedAccount
+        {
+            get;
+            set;
+        }
+
         public List<ItemisedBilling> ItemizedBillings { set; get; }
         public double OpenChargesTotal { set; get; }
         public bool IsItemisedBilling
@@ -98,10 +104,27 @@ namespace myTNB.Model
         /// <param name="model">Model.</param>
         public void UpdateValues(DueAmountDataModel model)
         {
-            // update all except nickname and account num (key)
-            amountDue = model.amountDue;
-            billDueDate = model.billDueDate;
-            IncrementREDueDateByDays = model.IncrementREDueDateByDays;
+            if (model != null)
+            {
+                // update all except nickname and account num (key)
+                amountDue = model.amountDue;
+                billDueDate = model.billDueDate;
+                IncrementREDueDateByDays = model.IncrementREDueDateByDays;
+            }
+        }
+
+        /// <summary>
+        /// Updates the SSMR Flag
+        /// </summary>
+        /// <param name="model"></param>
+        public void UpdateIsSSMRValue(SMRAccountStatusModel model)
+        {
+            if (model != null)
+            {
+                var flag = string.Compare(model.IsTaggedSMR.ToLower(), "true") == 0;
+                IsSSMR = flag;
+
+            }
         }
     }
 }

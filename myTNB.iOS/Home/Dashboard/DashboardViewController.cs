@@ -28,6 +28,7 @@ namespace myTNB.Dashboard
         BillingAccountDetailsResponseModel _billingAccountDetailsList = new BillingAccountDetailsResponseModel();
         InstallationDetailResponseModel _installationDetails = new InstallationDetailResponseModel();
         SMRAccountActivityInfoResponseModel _smrActivityInfoResponse = new SMRAccountActivityInfoResponseModel();
+        DashboardHomeHelper _dashboardHomeHelper = new DashboardHomeHelper();
         bool isAnimating, isFromViewBillAdvice, isFromForeground, isREAccount, amountDueIsAvailable;
         bool isBcrmAvailable = true, isNormalChart = true;
         double _amountDue, _dueIncrementDays, _lastContentOffset;
@@ -126,6 +127,7 @@ namespace myTNB.Dashboard
             DataManager.DataManager.SharedInstance.AccountsToBeAddedList = new CustomerAccountRecordListModel();
             DataManager.DataManager.SharedInstance.IsBillUpdateNeeded = true;
 
+            DataManager.DataManager.SharedInstance.AccountIsSSMR = _dashboardHomeHelper.IsSSMR(DataManager.DataManager.SharedInstance.SelectedAccount);
             isREAccount = DataManager.DataManager.SharedInstance.SelectedAccount.IsREAccount;
             isNormalChart = DataManager.DataManager.SharedInstance.SelectedAccount.IsNormalMeter || isREAccount;
             isBcrmAvailable = DataManager.DataManager.SharedInstance.IsBcrmAvailable;

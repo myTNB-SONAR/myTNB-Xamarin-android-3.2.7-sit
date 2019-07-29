@@ -599,6 +599,14 @@ namespace myTNB.DataManager
             }
         }
 
+        public void UpdateDueIsSSMR(string key, string flag)
+        {
+            if (!string.IsNullOrEmpty(key) && !string.IsNullOrEmpty(flag))
+            {
+                AmountDueCache.UpdateIsSSMR(key, flag);
+            }
+        }
+
         /// <summary>
         /// Deletes the due.
         /// </summary>
