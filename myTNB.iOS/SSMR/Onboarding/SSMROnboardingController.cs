@@ -18,6 +18,10 @@ namespace myTNB.SSMR
             base.OnViewDidLoad();
             SSMRModelController = new SSMROnboardingModelController();
             SSMRModelController.UpdateWidgets = OnUpdateMainWidgets;
+            UIPageControl.UIPageControlAppearance appearance = UIPageControl.Appearance;
+            appearance.CurrentPageIndicatorTintColor = MyTNBColor.WaterBlue;
+            appearance.BackgroundColor = UIColor.Clear;
+            appearance.PageIndicatorTintColor = MyTNBColor.VeryLightPinkTwo;
             SSMRModelController.SetPageData().ContinueWith(task =>
             {
                 that.InvokeOnMainThread(() =>
@@ -49,11 +53,6 @@ namespace myTNB.SSMR
 
                             // Add the page view controller's gesture recognizers to the book view controller's view so that the gestures are started more easily.
                             that.View.GestureRecognizers = PageViewController.GestureRecognizers;
-
-                            UIPageControl.UIPageControlAppearance appearance = UIPageControl.Appearance;
-                            appearance.CurrentPageIndicatorTintColor = MyTNBColor.WaterBlue;
-                            appearance.BackgroundColor = UIColor.Clear;
-                            appearance.PageIndicatorTintColor = MyTNBColor.VeryLightPinkTwo;
                         }
                         AddBack();
                         AddSubviews();

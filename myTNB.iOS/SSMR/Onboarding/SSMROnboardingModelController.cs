@@ -121,7 +121,7 @@ namespace myTNB.SSMR
 
         public override nint GetPresentationCount(UIPageViewController pageViewController)
         {
-            var appearance = UIPageControl.Appearance;
+            UIPageControl.UIPageControlAppearance appearance = UIPageControl.Appearance;
             appearance.CurrentPageIndicatorTintColor = MyTNBColor.WaterBlue;
             appearance.BackgroundColor = UIColor.Clear;
             appearance.PageIndicatorTintColor = MyTNBColor.VeryLightPinkTwo;
