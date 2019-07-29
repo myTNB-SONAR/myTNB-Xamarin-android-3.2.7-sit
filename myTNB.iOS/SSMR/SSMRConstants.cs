@@ -8,7 +8,7 @@
 
         //Service name
         public static string Service_SubmitSSMRApplication = "SubmitSMRApplication";
-        public static string Service_GetCARegisteredContact = "GetCARegisteredContactInfo";
+        public static string Service_GetCARegisteredContact = "GetCAContactDetails";
         public static string Service_Register = "R";
         public static string Service_Terminate = "T";
 
@@ -51,6 +51,7 @@
         public static string IMG_SMROpenSubmittedBG = "SMR-Open-Submitted-BG";
         public static string IMG_BackIcon = "Back-White";
         public static string IMG_PrimaryIcon = "SSMRPrimaryIcon";
+        public static string IMG_Info = "IC-Info";
 
         //Error
         public static string I18N_InvalidEmail = "invalid_email";

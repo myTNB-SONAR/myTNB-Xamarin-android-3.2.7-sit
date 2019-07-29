@@ -1040,6 +1040,10 @@
     <ImageAsset Include="Assets.xcassets\Accounts-SMR-Icon.imageset\Accounts-SMR-Icon.png" />
     <ImageAsset Include="Assets.xcassets\Accounts-SMR-Icon.imageset\Accounts-SMR-Icon%402x.png" />
     <ImageAsset Include="Assets.xcassets\Accounts-SMR-Icon.imageset\Accounts-SMR-Icon%403x.png" />
+    <ImageAsset Include="Assets.xcassets\IC-Info.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\IC-Info.imageset\infoWhiteFull.png" />
+    <ImageAsset Include="Assets.xcassets\IC-Info.imageset\infoWhiteFull%402x.png" />
+    <ImageAsset Include="Assets.xcassets\IC-Info.imageset\infoWhiteFull%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -1368,6 +1372,7 @@
     <Folder Include="Model\SSMRApplicationStatus\" />
     <Folder Include="Home\Components\Dashboard Home\" />
     <Folder Include="Assets.xcassets\Accounts-SMR-Icon.imageset\" />
+    <Folder Include="Assets.xcassets\IC-Info.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -2124,6 +2129,8 @@
     <Compile Include="Home\Components\Dashboard Home\DashboardHomeAccountCard.cs" />
     <Compile Include="Home\Components\Dashboard Home\DashboardHomeHeader.cs" />
     <Compile Include="Model\SSMR\SMRAccountStatusResponseModel.cs" />
+    <Compile Include="Customs\CustomUISlider.cs" />
+    <Compile Include="SSMR\Meter Reading\CapturePhotoDelegate.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />

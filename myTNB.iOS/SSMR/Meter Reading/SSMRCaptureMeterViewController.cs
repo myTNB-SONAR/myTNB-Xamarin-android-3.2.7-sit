@@ -5,8 +5,7 @@ using System;
 using System.Diagnostics;
 using UIKit;
 using AVFoundation;
-using System.Threading.Tasks;
-using CoreMedia;
+using myTNB.SSMR.MeterReading;
 
 namespace myTNB
 {
@@ -16,12 +15,14 @@ namespace myTNB
         {
         }
 
-        public bool IsThreePhase = true;
+        public bool IsThreePhase = false;
 
         private UILabel _lblDescription;
         private UIView _viewPreview, _viewCamera, _viewCapture;
-        private UIView viewPreviewOne;
-        private UISlider zoomSlider;
+        private UIView _viewPreviewOne, _viewPreviewTwo, _viewPreviewThree;
+        private UIView _viewDelete, _viewCameraActions;
+        private UIImageView _imgViewMainPreview;
+        private CustomUISlider _zoomSlider;
 
         private AVCaptureSession _captureSession;
         private AVCaptureDevice _captureDevice;
@@ -35,7 +36,6 @@ namespace myTNB
             SetDescription();
             SetPreview();
             SetCamera();
-            AuthorizeCameraUse();
         }
 
         public override void ViewWillAppear(bool animated)
@@ -51,12 +51,18 @@ namespace myTNB
 
         private void ConfigureNavigationBar()
         {
-            UIImage backImg = UIImage.FromBundle(SSMRConstants.IMG_BackIcon);
-            UIBarButtonItem btnBack = new UIBarButtonItem(backImg, UIBarButtonItemStyle.Done, (sender, e) =>
+            UIBarButtonItem btnBack = new UIBarButtonItem(UIImage.FromBundle(SSMRConstants.IMG_BackIcon)
+                , UIBarButtonItemStyle.Done, (sender, e) =>
             {
                 ViewHelper.DismissControllersAndSelectTab(this, 0, true);
             });
+            UIBarButtonItem btnInfo = new UIBarButtonItem(UIImage.FromBundle(SSMRConstants.IMG_Info)
+                , UIBarButtonItemStyle.Done, (sender, e) =>
+            {
+                Debug.WriteLine("Info Tapped");
+            });
             NavigationItem.LeftBarButtonItem = btnBack;
+            NavigationItem.RightBarButtonItem = btnInfo;
             Title = "Take Photo";//GetI18NValue(SSMRConstants.I18N_NavTitle);
         }
 
@@ -83,34 +89,24 @@ namespace myTNB
             nfloat previewBaseWidth = ViewWidth - 88 - 64;
             nfloat previewWidth = previewBaseWidth / 3;
             _viewPreview = new UIView() { BackgroundColor = UIColor.White };
-            viewPreviewOne = new UIView(new CGRect(44, 16, previewWidth, previewWidth)) { ClipsToBounds = true };
-            viewPreviewOne.Layer.CornerRadius = 4.0F;
-            viewPreviewOne.Layer.BorderWidth = 2.0F;
-            viewPreviewOne.Layer.BorderColor = MyTNBColor.WaterBlue.CGColor;
 
-            _viewPreview.AddSubview(viewPreviewOne);
             if (IsThreePhase)
             {
-                UIView viewPreviewTwo = new UIView(new CGRect(viewPreviewOne.Frame.GetMaxX() + 32
-                    , 16, previewWidth, previewWidth))
-                { ClipsToBounds = true };
-                viewPreviewTwo.Layer.CornerRadius = 4.0F;
-                viewPreviewTwo.Layer.BorderWidth = 2.0F;
-                viewPreviewTwo.Layer.BorderColor = MyTNBColor.WhiteTwo.CGColor;
+                _viewPreviewOne = CreatePhotoPreview(new CGRect(44, 16, previewWidth, previewWidth));
+                _viewPreview.AddSubview(_viewPreviewOne);
 
-                UIView viewPreviewThree = new UIView(new CGRect(viewPreviewTwo.Frame.GetMaxX() + 32
-                    , 16, previewWidth, previewWidth))
-                { ClipsToBounds = true };
-                viewPreviewThree.Layer.CornerRadius = 4.0F;
-                viewPreviewThree.Layer.BorderWidth = 2.0F;
-                viewPreviewThree.Layer.BorderColor = MyTNBColor.WhiteTwo.CGColor;
+                _viewPreviewTwo = CreatePhotoPreview(new CGRect(_viewPreviewOne.Frame.GetMaxX() + 32, 16, previewWidth, previewWidth));
+                _viewPreview.AddSubview(_viewPreviewTwo);
 
-                _viewPreview.AddSubviews(new UIView[] { viewPreviewTwo, viewPreviewThree });
+                _viewPreviewThree = CreatePhotoPreview(new CGRect(_viewPreviewTwo.Frame.GetMaxX() + 32, 16, previewWidth, previewWidth));
+                _viewPreview.AddSubview(_viewPreviewThree);
             }
+
+            nfloat btnYLoc = (IsThreePhase ? _viewPreviewOne.Frame.GetMaxY() : 0) + 16.0F;
 
             UIButton btnSubmit = new CustomUIButtonV2()
             {
-                Frame = new CGRect(16, viewPreviewOne.Frame.GetMaxY() + 16, ViewWidth - 32, 48),
+                Frame = new CGRect(16, btnYLoc, ViewWidth - 32, 48),
                 BackgroundColor = MyTNBColor.FreshGreen
             };
             btnSubmit.SetTitle(GetCommonI18NValue(SSMRConstants.I18N_Submit), UIControlState.Normal);
@@ -123,16 +119,22 @@ namespace myTNB
             View.AddSubview(_viewPreview);
         }
 
+        private UIView CreatePhotoPreview(CGRect frame)
+        {
+            UIView view = new UIView(frame) { ClipsToBounds = true };
+            view.Layer.CornerRadius = 4.0F;
+            view.Layer.BorderWidth = 2.0F;
+            view.Layer.BorderColor = MyTNBColor.WhiteTwo.CGColor;
+            return view;
+        }
+
         private void SetCamera()
         {
             _viewCamera = new UIView(new CGRect(0, _lblDescription.Frame.GetMaxY() + 16
-               , ViewWidth, ViewHeight - _lblDescription.Frame.GetMaxY() - 16 - _viewPreview.Frame.Height))
-            {
-                //BackgroundColor = UIColor.Red
-            };
-            UIView viewDelete = GetDeleteSection(_viewCamera);
-            UIView viewCameraActions = GetCameraActions(_viewCamera);
-            _viewCamera.AddSubviews(new UIView[] { viewDelete, viewCameraActions });
+               , ViewWidth, ViewHeight - _lblDescription.Frame.GetMaxY() - 16 - _viewPreview.Frame.Height));
+            _viewDelete = GetDeleteSection(_viewCamera);
+            _viewCameraActions = GetCameraActions(_viewCamera);
+            _viewCamera.AddSubviews(new UIView[] { _viewDelete, _viewCameraActions });
             View.AddSubview(_viewCamera);
         }
 
@@ -150,6 +152,10 @@ namespace myTNB
             view.AddGestureRecognizer(new UITapGestureRecognizer(() =>
             {
                 Debug.WriteLine("Delete tapped");
+                _imgViewMainPreview.Hidden = true;
+                _imgViewMainPreview.Image = null;
+                _viewDelete.Hidden = true;
+                _viewCameraActions.Hidden = false;
             }));
             view.AddSubview(imgDelete);
             return view;
@@ -160,11 +166,12 @@ namespace myTNB
             nfloat size = ViewWidth * 0.15F;
             UIView view = new UIView() { BackgroundColor = UIColor.Clear };
 
-            //Need image thumb
-            zoomSlider = new UISlider(new CGRect(16, 0, ViewWidth - 32, 20)) { };
-            zoomSlider.MinimumTrackTintColor = UIColor.White;
-            zoomSlider.SetThumbImage(UIImage.FromBundle("Camera-Thumb"), UIControlState.Normal);
-            zoomSlider.ValueChanged += (sender, e) =>
+            _zoomSlider = new CustomUISlider(new CGRect(16, 0, ViewWidth - 32, 3))
+            {
+                MinimumTrackTintColor = UIColor.White
+            };
+            _zoomSlider.SetThumbImage(UIImage.FromBundle("Camera-Thumb"), UIControlState.Normal);
+            _zoomSlider.ValueChanged += (sender, e) =>
             {
                 Debug.WriteLine("zoomSlider ValueChanged: " + ((UISlider)sender).Value);
                 nfloat zoomFactor = (nfloat)((UISlider)sender).Value;
@@ -174,7 +181,7 @@ namespace myTNB
                 _captureDevice.UnlockForConfiguration();
             };
 
-            UIView viewGallery = new UIView(new CGRect(16, zoomSlider.Frame.GetMaxY() + 22, size, size));
+            UIView viewGallery = new UIView(new CGRect(16, _zoomSlider.Frame.GetMaxY() + 22, size, size));
             viewGallery.Layer.CornerRadius = 4.0F;
             viewGallery.Layer.BorderWidth = 2.0F;
             viewGallery.Layer.BorderColor = UIColor.White.CGColor;
@@ -184,34 +191,25 @@ namespace myTNB
             }));
 
             _viewCapture = new UIView(new CGRect((ViewWidth - size) / 2
-               , zoomSlider.Frame.GetMaxY() + 22, size, size))
+               , _zoomSlider.Frame.GetMaxY() + 22, size, size))
             { BackgroundColor = UIColor.FromWhiteAlpha(1, 0.80F) };
             _viewCapture.Layer.CornerRadius = _viewCapture.Frame.Width / 2;
             _viewCapture.Layer.BorderWidth = 3.0F;
             _viewCapture.Layer.BorderColor = UIColor.White.CGColor;
 
-            view.AddSubviews(new UIView[] { viewGallery, _viewCapture, zoomSlider });
+            view.AddSubviews(new UIView[] { viewGallery, _viewCapture, _zoomSlider });
             CGRect viewFrame = new CGRect(0, viewBase.Frame.Height - _viewCapture.Frame.GetMaxY() - 16
                 , ViewWidth, _viewCapture.Frame.GetMaxY() + 16);
             view.Frame = viewFrame;
             return view;
         }
 
-        private async Task AuthorizeCameraUse()
-        {
-            AVAuthorizationStatus authorizationStatus = AVCaptureDevice.GetAuthorizationStatus(AVMediaType.Video);
-            if (authorizationStatus != AVAuthorizationStatus.Authorized)
-            {
-                await AVCaptureDevice.RequestAccessForMediaTypeAsync(AVMediaType.Video);
-            }
-        }
-
         public void SetupLiveCameraStream()
         {
             _captureDevice = AVCaptureDevice.GetDefaultDevice(AVMediaTypes.Video);
 
-            zoomSlider.MinValue = (float)_captureDevice.MinAvailableVideoZoomFactor;
-            zoomSlider.MaxValue = (float)_captureDevice.MaxAvailableVideoZoomFactor;
+            _zoomSlider.MinValue = (float)_captureDevice.MinAvailableVideoZoomFactor;
+            _zoomSlider.MaxValue = (float)_captureDevice.MaxAvailableVideoZoomFactor;
 
             NSError nsError;
             try
@@ -219,7 +217,7 @@ namespace myTNB
                 _input = new AVCaptureDeviceInput(_captureDevice, out nsError);
 
                 _output = new AVCapturePhotoOutput();
-                _output.IsHighResolutionCaptureEnabled = true;
+                _output.IsHighResolutionCaptureEnabled = false;
 
                 _captureSession = new AVCaptureSession();
                 _captureSession.AddInput(_input);
@@ -228,7 +226,7 @@ namespace myTNB
                 AVCaptureVideoPreviewLayer videoPreviewLayer = new AVCaptureVideoPreviewLayer(_captureSession)
                 {
                     Frame = new CGRect(0, 0, _viewCamera.Frame.Width, _viewCamera.Frame.Height),
-                    VideoGravity = AVLayerVideoGravity.ResizeAspectFill,
+                    VideoGravity = AVLayerVideoGravity.Resize,
                     ZPosition = -1
                 };
                 _viewCamera.Layer.AddSublayer(videoPreviewLayer);
@@ -239,48 +237,52 @@ namespace myTNB
                 Debug.WriteLine("Error in camera: " + e.Message);
             }
 
+            CapturePhotoDelegate capturePhotoDelegate = new CapturePhotoDelegate();
+            capturePhotoDelegate.OnCapturePhoto = OnCapturePhoto;
+
             _viewCapture.AddGestureRecognizer(new UITapGestureRecognizer(() =>
             {
                 Debug.WriteLine("viewCapture tapped");
                 if (_output != null)
                 {
+                    //Settings cannot be reused, should create at every invoke of capture
                     AVCapturePhotoSettings settings = AVCapturePhotoSettings.Create();
-                    settings.IsHighResolutionPhotoEnabled = true;
+                    settings.IsHighResolutionPhotoEnabled = false;
                     settings.IsAutoStillImageStabilizationEnabled = true;
                     settings.FlashMode = AVCaptureFlashMode.Auto;
-                    _output.CapturePhoto(settings, new CapturePhotoDelegate(viewPreviewOne));
+
+                    _output.CapturePhoto(settings, capturePhotoDelegate);
                 }
             }));
         }
 
-        public class CapturePhotoDelegate : AVCapturePhotoCaptureDelegate
+        private void OnCapturePhoto(UIImage capturedImage)
         {
-            private UIView viewPreviewOne;
-            public CapturePhotoDelegate(UIView viewPreviewOne)
+            if (IsThreePhase)
             {
-                this.viewPreviewOne = viewPreviewOne;
-            }
-            public override void DidFinishCapture(AVCapturePhotoOutput captureOutput, AVCaptureResolvedPhotoSettings resolvedSettings, NSError error)
-            {
-            }
 
-            public override void DidFinishProcessingPhoto(AVCapturePhotoOutput captureOutput
-                , CMSampleBuffer photoSampleBuffer, CMSampleBuffer previewPhotoSampleBuffer
-                , AVCaptureResolvedPhotoSettings resolvedSettings, AVCaptureBracketedStillImageSettings bracketSettings
-                , NSError error)
-            {
-                if (photoSampleBuffer == null)
-                {
-                    return;
-                }
-                NSData imgData = AVCapturePhotoOutput.GetJpegPhotoDataRepresentation(photoSampleBuffer, previewPhotoSampleBuffer);
-                UIImage image = UIImage.LoadFromData(imgData, 1.0F);
-                UIImageView imgView = new UIImageView(new CGRect(0, 0, viewPreviewOne.Frame.Width, viewPreviewOne.Frame.Height))
-                {
-                    Image = image
-                };
-                viewPreviewOne.AddSubview(imgView);
             }
+            else
+            {
+                if (_imgViewMainPreview == null)
+                {
+                    _imgViewMainPreview = new UIImageView(new CGRect(0, 0, ViewWidth, _viewCamera.Frame.Height));
+                }
+                _imgViewMainPreview.Image = capturedImage;
+                _imgViewMainPreview.Hidden = false;
+
+                _viewCamera.AddSubview(_imgViewMainPreview);
+                _viewCamera.BringSubviewToFront(_viewDelete);
+                _viewDelete.Hidden = false;
+                _viewCameraActions.Hidden = true;
+            }
+        }
+
+        private string GetBase64String(UIImage img)
+        {
+            NSData imgData = img.AsJPEG(0.0F);//Lowest Compression
+            string base64 = imgData.GetBase64EncodedString(NSDataBase64EncodingOptions.None);
+            return base64 ?? string.Empty;
         }
     }
 }
