@@ -471,9 +471,18 @@ namespace myTNB
             var sharedPreference = NSUserDefaults.StandardUserDefaults;
             var isWalkthroughDone = sharedPreference.BoolForKey("isWalkthroughDone");
             GetUserEntity();
-            if (isWalkthroughDone)
+            if (SSMRAccounts.IsHideOnboarding)
+            {
+                ApplySSMRWalkthroughEntity wsManager = new ApplySSMRWalkthroughEntity();
+                wsManager.DeleteTable();
+            }
+            else
             {
                 await LoadSSMRWalkthrough();
+            }
+            if (isWalkthroughDone)
+            {
+                await ClearWalkthroughCache();
                 var isLogin = sharedPreference.BoolForKey(TNBGlobal.PreferenceKeys.LoginState);
                 if (isLogin && DataManager.DataManager.SharedInstance.UserEntity != null && DataManager.DataManager.SharedInstance.UserEntity?.Count > 0)
                 {
@@ -519,6 +528,15 @@ namespace myTNB
             DataManager.DataManager.SharedInstance.CreateBillingAccountsTable();
             DataManager.DataManager.SharedInstance.CreateBillHistoryTable();
             DataManager.DataManager.SharedInstance.CreatePaymentHistoryTable();
+        }
+
+        private Task ClearWalkthroughCache()
+        {
+            return Task.Factory.StartNew(() =>
+            {
+                WalkthroughScreensEntity wsManager = new WalkthroughScreensEntity();
+                wsManager.DeleteTable();
+            });
         }
 
         internal Task GetWalkthroughScreens()

@@ -9,6 +9,8 @@
         //Service name
         public static string Service_SubmitSSMRApplication = "SubmitSMRApplication";
         public static string Service_GetCARegisteredContact = "GetCARegisteredContactInfo";
+        public static string Service_Register = "R";
+        public static string Service_Terminate = "T";
 
         //Onboarding
         //i18n
@@ -40,9 +42,6 @@
         public static string IMG_BGOnboarding1 = "SSMR_Background_1";
         public static string IMG_BGOnboarding2 = "SSMR_Background_2";
         public static string IMG_BGOnboarding3 = "SSMR_Background_3";
-        public static string IMG_Onboarding1 = "SSMR_Main_1";
-        public static string IMG_Onboarding2 = "SSMR_Main_2";
-        public static string IMG_Onboarding3 = "SSMR_Main_3";
         public static string IMG_Mark = "Payment-Checkbox-Active";
         public static string IMG_Unmark = "Payment-Checkbox-Inactive";
         public static string IMG_Dropdow = "IC-Action-Dropdown";

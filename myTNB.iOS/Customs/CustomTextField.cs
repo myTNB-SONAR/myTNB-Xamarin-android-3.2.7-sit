@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using CoreGraphics;
 using Foundation;
 using UIKit;
@@ -127,6 +128,10 @@ namespace myTNB
                 value = string.Empty;
                 hasValue = true;
             }
+            else
+            {
+                TextField.LeftViewMode = UITextFieldViewMode.Never;
+            }
             if (TextFieldType == Type.MobileNumber)
             {
                 value = _txtFieldHelper.FormatMobileNo(value);
@@ -136,9 +141,33 @@ namespace myTNB
             ValidateField();
         }
 
-        public string GetValue()
+        public string GetTextFieldValue()
         {
             return TextField.Text ?? string.Empty;
+        }
+
+        public string GetNonFormattedValue()
+        {
+            string value = GetTextFieldValue();
+            try
+            {
+                if (TextFieldType == Type.MobileNumber)
+                {
+                    if (!string.IsNullOrEmpty(value) && !string.IsNullOrWhiteSpace(value) && value.Length > 3)
+                    {
+                        int countryCodeIndex = value.IndexOf(@"+60", 0, StringComparison.CurrentCulture);
+                        if (countryCodeIndex > -1)
+                        {
+                            return value.Substring(2);
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("Error in GetNonFormattedValue: " + e.Message);
+            }
+            return value;
         }
 
         private bool HasValue

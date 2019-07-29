@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Foundation;
 using myTNB.Model;
 
 namespace myTNB
@@ -16,7 +17,7 @@ namespace myTNB
                 && DataManager.DataManager.SharedInstance.AccountRecordsList.d != null)
             {
                 EligibleAccountList = DataManager.DataManager.SharedInstance.AccountRecordsList.d.FindAll
-                    (x => !x.IsREAccount && !x.IsSSMR && (x.IsNormalMeter || x.IsOwnedAccount));
+                    (x => x.IsOwnedAccount && !x.IsSSMR && !x.IsREAccount && x.IsNormalMeter);
             }
         }
 
@@ -53,6 +54,21 @@ namespace myTNB
                 return EligibleAccountList;
             }
             return new List<CustomerAccountRecordModel>();
+        }
+
+        public static bool IsHideOnboarding
+        {
+            set
+            {
+                NSUserDefaults sharedPreference = NSUserDefaults.StandardUserDefaults;
+                sharedPreference.SetBool(value, "SSMROnboarding");
+                sharedPreference.Synchronize();
+            }
+            get
+            {
+                NSUserDefaults sharedPreference = NSUserDefaults.StandardUserDefaults;
+                return sharedPreference.BoolForKey("SSMROnboarding");
+            }
         }
     }
 }

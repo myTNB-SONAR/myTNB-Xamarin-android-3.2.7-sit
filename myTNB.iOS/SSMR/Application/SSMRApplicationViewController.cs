@@ -415,6 +415,25 @@ namespace myTNB
             return response;
         }
 
+        private string GetNewValue(bool isMobilePhone = true)
+        {
+            string oldValue = string.Empty;
+            if (_contactDetails != null && _contactDetails.d != null
+                    && _contactDetails.d.IsSuccess && _contactDetails.d.data != null)
+            {
+                if (isMobilePhone)
+                {
+                    oldValue = _contactDetails.d.data.Mobile != null ? _contactDetails.d.data.Mobile : string.Empty;
+                }
+                else
+                {
+                    oldValue = _contactDetails.d.data.Email != null ? _contactDetails.d.data.Email : string.Empty;
+                }
+            }
+            string newValue = isMobilePhone ? _customMobileField.GetNonFormattedValue() : _customEmailField.GetNonFormattedValue();
+            return string.Equals(oldValue, newValue) ? string.Empty : isMobilePhone ? _customMobileField.GetTextFieldValue() : newValue;
+        }
+
         private async Task<SSMRApplicationStatusResponseModel> SubmitSMRApplication()
         {
             ServiceManager serviceManager = new ServiceManager();
@@ -425,12 +444,12 @@ namespace myTNB
                 oldPhone = _contactDetails != null && _contactDetails.d != null
                     && _contactDetails.d.IsSuccess && _contactDetails.d.data != null
                         ? _contactDetails.d.data.Mobile : string.Empty,
-                newPhone = _customMobileField.GetValue(),
+                newPhone = GetNewValue(),
                 oldEmail = _contactDetails != null && _contactDetails.d != null
                     && _contactDetails.d.IsSuccess && _contactDetails.d.data != null
                         ? _contactDetails.d.data.Email : string.Empty,
-                newEmail = _customEmailField.GetValue(),
-                SMRMode = "R",
+                newEmail = GetNewValue(false),
+                SMRMode = SSMRConstants.Service_Register,
                 reason = "",
             };
             SSMRApplicationStatusResponseModel response = serviceManager

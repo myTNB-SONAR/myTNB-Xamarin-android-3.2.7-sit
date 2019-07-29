@@ -130,9 +130,6 @@ namespace myTNB.DataManager
         public InstallationDetailDataModel InstallationDetails = new InstallationDetailDataModel();
         public bool AccountIsActive = false;
 
-        //SSMR
-        public bool DontShowSSMROnboarding = false;
-
         //Language
         public Dictionary<string, string> CommonI18NDictionary;
         public Dictionary<string, string> HintI18NDictionary;
@@ -243,8 +240,8 @@ namespace myTNB.DataManager
             //ResetAmountDues
             AmountDueCache.Reset();
 
-            //SSMR
-            DontShowSSMROnboarding = false;
+            //Reset SSMR Onboarding
+            SSMRAccounts.IsHideOnboarding = false;
         }
 
         /// <summary>

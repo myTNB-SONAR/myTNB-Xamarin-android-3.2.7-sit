@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Threading.Tasks;
 using CoreGraphics;
+using myTNB.SQLite.SQLiteDataManager;
 using UIKit;
 
 namespace myTNB.SSMR
@@ -101,13 +103,13 @@ namespace myTNB.SSMR
             UIView viewDontShow = new UIView(new CGRect(0, 0, _viewBottomContainer.Frame.Width / 2, 20));
             UIImageView imgViewCheckBox = new UIImageView(new CGRect(0, 0, 20, 20))
             {
-                Image = UIImage.FromBundle(DataManager.DataManager.SharedInstance.DontShowSSMROnboarding
+                Image = UIImage.FromBundle(SSMRAccounts.IsHideOnboarding
                     ? SSMRConstants.IMG_Mark : SSMRConstants.IMG_Unmark)
             };
             viewDontShow.AddGestureRecognizer(new UITapGestureRecognizer(() =>
             {
-                DataManager.DataManager.SharedInstance.DontShowSSMROnboarding = !DataManager.DataManager.SharedInstance.DontShowSSMROnboarding;
-                imgViewCheckBox.Image = UIImage.FromBundle(DataManager.DataManager.SharedInstance.DontShowSSMROnboarding
+                SSMRAccounts.IsHideOnboarding = !SSMRAccounts.IsHideOnboarding;
+                imgViewCheckBox.Image = UIImage.FromBundle(SSMRAccounts.IsHideOnboarding
                     ? SSMRConstants.IMG_Mark : SSMRConstants.IMG_Unmark);
             }));
             UILabel lblDontShow = new UILabel(new CGRect(30, 3, 24, 14))
@@ -138,27 +140,11 @@ namespace myTNB.SSMR
             _btnStart.Hidden = true;
             _btnStart.TouchUpInside += (sender, e) =>
             {
-                UIStoryboard storyBoard = UIStoryboard.FromName("SSMR", null);
-                SSMRApplicationViewController viewController =
-                    storyBoard.InstantiateViewController("SSMRApplicationViewController") as SSMRApplicationViewController;
-                that.NavigationController.PushViewController(viewController, true);
+                DisplaySSMRApplicationForm();
             };
             viewSkip.AddGestureRecognizer(new UITapGestureRecognizer(() =>
             {
-                if (SSMRModelController?.pageData != null && SSMRModelController?.pageData?.Count > 0)
-                {
-                    int lastIndex = SSMRModelController.pageData.Count - 1;
-                    SSMRModelController.currentIndex = lastIndex;
-                    SSMRModelController.isSkipTapped = true;
-                    _viewBottomContainer.Hidden = true;
-                    _btnStart.Hidden = false;
-                    var nextVC = SSMRModelController.GetViewController(lastIndex, that.Storyboard);
-                    if (nextVC != null)
-                    {
-                        var vc = new UIViewController[] { nextVC };
-                        PageViewController.SetViewControllers(vc, UIPageViewControllerNavigationDirection.Forward, false, null);
-                    }
-                }
+                DisplaySSMRApplicationForm();
             }));
 
             _viewBottomContainer.AddSubviews(new UIView[] { viewDontShow, viewSkip });
@@ -178,6 +164,14 @@ namespace myTNB.SSMR
             lbl.Frame = new CGRect(lbl.Frame.X, lbl.Frame.Y, size.Width, size.Height);
             view.Frame = new CGRect(isOriginalX ? view.Frame.X : _viewBottomContainer.Frame.Width - size.Width
                 , view.Frame.Y, size.Width + lbl.Frame.X, size.Height);
+        }
+
+        private async void DisplaySSMRApplicationForm()
+        {
+            UIStoryboard storyBoard = UIStoryboard.FromName("SSMR", null);
+            SSMRApplicationViewController viewController =
+                storyBoard.InstantiateViewController("SSMRApplicationViewController") as SSMRApplicationViewController;
+            that.NavigationController.PushViewController(viewController, true);
         }
     }
 }

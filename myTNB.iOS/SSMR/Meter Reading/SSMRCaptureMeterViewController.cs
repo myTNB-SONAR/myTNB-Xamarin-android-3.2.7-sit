@@ -7,7 +7,6 @@ using UIKit;
 using AVFoundation;
 using System.Threading.Tasks;
 using CoreMedia;
-using CoreVideo;
 
 namespace myTNB
 {
@@ -21,6 +20,13 @@ namespace myTNB
 
         private UILabel _lblDescription;
         private UIView _viewPreview, _viewCamera, _viewCapture;
+        private UIView viewPreviewOne;
+        private UISlider zoomSlider;
+
+        private AVCaptureSession _captureSession;
+        private AVCaptureDevice _captureDevice;
+        private AVCaptureDeviceInput _input;
+        private AVCapturePhotoOutput _output;
 
         public override void ViewDidLoad()
         {
@@ -72,7 +78,6 @@ namespace myTNB
             View.AddSubview(_lblDescription);
         }
 
-        private UIView viewPreviewOne;
         private void SetPreview()
         {
             nfloat previewBaseWidth = ViewWidth - 88 - 64;
@@ -150,7 +155,6 @@ namespace myTNB
             return view;
         }
 
-        private UISlider zoomSlider;
         private UIView GetCameraActions(UIView viewBase)
         {
             nfloat size = ViewWidth * 0.15F;
@@ -202,19 +206,9 @@ namespace myTNB
             }
         }
 
-        #region Computed Properties
-        public bool CameraAvailable;
-        public AVCaptureSession _captureSession;
-        public AVCaptureDevice _captureDevice;
-        public AVCaptureDeviceInput _input;
-        public AVCapturePhotoOutput _output;
-        #endregion
-
         public void SetupLiveCameraStream()
         {
             _captureDevice = AVCaptureDevice.GetDefaultDevice(AVMediaTypes.Video);
-            Debug.WriteLine("Min: " + _captureDevice.MinAvailableVideoZoomFactor);
-            Debug.WriteLine("Max: " + _captureDevice.MaxAvailableVideoZoomFactor);
 
             zoomSlider.MinValue = (float)_captureDevice.MinAvailableVideoZoomFactor;
             zoomSlider.MaxValue = (float)_captureDevice.MaxAvailableVideoZoomFactor;
@@ -244,8 +238,6 @@ namespace myTNB
             {
                 Debug.WriteLine("Error in camera: " + e.Message);
             }
-
-
 
             _viewCapture.AddGestureRecognizer(new UITapGestureRecognizer(() =>
             {

@@ -284,7 +284,7 @@ namespace myTNB
         private void GetCTA(ref UIButton btn, string title, bool isPrimary, Action ctaAction)
         {
             CGSize size = new CGSize(ViewWidth - 32, 48);
-            CGPoint point = new CGPoint(16, isPrimary ? ViewHeight - 64 : ViewHeight - 118);
+            CGPoint point = new CGPoint(16, isPrimary ? ViewHeight - 48 : ViewHeight - 112);
             btn = new CustomUIButtonV2()
             {
                 Frame = new CGRect(point, size)

@@ -26,7 +26,7 @@ namespace myTNB.Home.Dashboard.DashboardHome
 
         private void On_1001_Action()
         {
-            if (DataManager.DataManager.SharedInstance.DontShowSSMROnboarding)
+            if (SSMRAccounts.IsHideOnboarding)
             {
                 UIStoryboard storyBoard = UIStoryboard.FromName("SSMR", null);
                 SSMRApplicationViewController viewController =
@@ -39,7 +39,6 @@ namespace myTNB.Home.Dashboard.DashboardHome
                 UIStoryboard onboardingStoryboard = UIStoryboard.FromName("Onboarding", null);
                 GenericPageRootViewController onboardingVC =
                     onboardingStoryboard.InstantiateViewController("GenericPageRootViewController") as GenericPageRootViewController;
-                //onboardingVC.ModalTransitionStyle = UIModalTransitionStyle.CrossDissolve;
                 onboardingVC.PageType = GenericPageViewEnum.Type.SSMR;
                 var navController = new UINavigationController(onboardingVC);
                 _controller.PresentViewController(navController, true, null);
@@ -53,8 +52,7 @@ namespace myTNB.Home.Dashboard.DashboardHome
             SSMRCaptureMeterViewController viewController =
                 storyBoard.InstantiateViewController("SSMRCaptureMeterViewController") as SSMRCaptureMeterViewController;
             var navController = new UINavigationController(viewController);
-            _controller.PresentViewController(navController, true, null);
-            */
+            _controller.PresentViewController(navController, true, null);*/
         }
 
         private void On_1003_Action()
