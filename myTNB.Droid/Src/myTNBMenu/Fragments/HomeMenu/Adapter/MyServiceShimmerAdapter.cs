@@ -40,12 +40,16 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
 
             ViewGroup.LayoutParams currentCard = vh.myServiceCardView.LayoutParameters;
 
-            DisplayMetrics displaymetrics = new DisplayMetrics();
-            this.mActivity.WindowManager.DefaultDisplay.GetMetrics(displaymetrics);
-            int devicewidth = (displaymetrics.WidthPixels / 3) - (int)DPUtils.ConvertDPToPx(12f);
-            currentCard.Height = devicewidth - (int)DPUtils.ConvertDPToPx(2f);
-            currentCard.Width = devicewidth;
-            //currentCard.Height = vh.myServiceCardView.LayoutParameters.Width - (int)DPUtils.ConvertDPToPx(4f);
+            int cardWidth = (this.mActivity.Resources.DisplayMetrics.WidthPixels / 3) - (int)DPUtils.ConvertDPToPx(12f);
+            float heightRatio = 84f / 88f;
+            int cardHeight = (int)(cardWidth * (heightRatio));
+            if ((DPUtils.ConvertPxToDP(cardWidth) - DPUtils.ConvertPxToDP(cardHeight)) <= 5f)
+            {
+                cardHeight = cardWidth;
+            }
+
+            currentCard.Height = cardHeight;
+            currentCard.Width = cardWidth;
 
             var shimmerBuilder = ShimmerUtils.ShimmerBuilderConfig();
             if (shimmerBuilder != null)
