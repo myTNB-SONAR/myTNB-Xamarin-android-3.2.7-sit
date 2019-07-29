@@ -12,6 +12,7 @@ using myTNB_Android.Src.AppLaunch.Api;
 using myTNB_Android.Src.AppLaunch.Async;
 using myTNB_Android.Src.AppLaunch.Models;
 using myTNB_Android.Src.AppLaunch.Requests;
+using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Base.Api;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.SiteCore;
@@ -231,6 +232,7 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                                 if (proceed)
                                 {
                                     UserEntity loggedUser = UserEntity.GetActive();
+                                    MyTNBAccountManagement.GetInstance().RemoveCustomerBillingDetails();
                                     SummaryDashBoardAccountEntity.RemoveAll();
                                     CustomerBillingAccount.RemoveSelected();
                                     CustomerBillingAccount.MakeFirstAsSelected();
@@ -259,6 +261,7 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                                             PaymentHistoryEntity.RemoveAll();
                                             REPaymentHistoryEntity.RemoveAll();
                                             AccountDataEntity.RemoveAll();
+                                            MyTNBAccountManagement.GetInstance().RemoveCustomerBillingDetails();
                                             SummaryDashBoardAccountEntity.RemoveAll();
                                             SelectBillsEntity.RemoveAll();
                                             UserSessions.UpdateDeviceId(mSharedPref);

@@ -21,7 +21,7 @@ namespace myTNB_Android.Src.Utils
         //    editor.Apply();
         //}
 
-
+        private static ISharedPreferences mPreferences;
 
         public static void SetCurrentImageCount(ISharedPreferences prefs, int count)
         {
@@ -207,6 +207,35 @@ namespace myTNB_Android.Src.Utils
         public static string GetUserEmail(ISharedPreferences preferences)
         {
             return preferences.GetString("loginEmail", "");
+        }
+
+        public static void SetSMRAccountList(string JSONSMRAccountList)
+        {
+            ISharedPreferencesEditor editor = mPreferences.Edit();
+            editor.PutString("SMR_ACCOUNT_LIST", JSONSMRAccountList);
+            editor.Apply();
+        }
+
+        public static string GetSMRAccountList()
+        {
+            return mPreferences.GetString("SMR_ACCOUNT_LIST",null);
+        }
+
+        public static void SetSharedPreference(ISharedPreferences preferences)
+        {
+            mPreferences = preferences;
+        }
+
+        public static void SetSelectAccountList(string JSONAccountList)
+        {
+            ISharedPreferencesEditor editor = mPreferences.Edit();
+            editor.PutString("SELECT_ACCOUNT_LIST", JSONAccountList);
+            editor.Apply();
+        }
+
+        public static string GetSelectAccountList()
+        {
+            return mPreferences.GetString("SELECT_ACCOUNT_LIST",null);
         }
     }
 }

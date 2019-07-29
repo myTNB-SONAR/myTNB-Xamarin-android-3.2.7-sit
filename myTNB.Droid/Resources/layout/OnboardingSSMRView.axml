@@ -3,23 +3,21 @@
   xmlns:app="http://schemas.android.com/apk/res-auto"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
-  android:background="@android:color/white">
+                android:id="@+id/rootView">
+   <include layout="@layout/toolbar"/>
   <LinearLayout
       android:id="@+id/applicationContent"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
+      android:layout_below="@+id/toolbar"
       android:layout_above="@+id/applicationIndicator"
-      android:orientation="vertical">
-      <include
-        layout="@layout/toolbar"
-        android:id="@+id/toolbar"
-        android:layout_weight=".1"
-        android:visibility="gone"/>
+      android:orientation="vertical"
+      android:background="@color/white">
       <android.support.v4.view.ViewPager
           android:id="@+id/onBoardingSMRViewPager"
           android:layout_width="match_parent"
           android:layout_height="0dp"
-          android:layout_weight=".8"/>
+          android:layout_weight=".9"/>
       <LinearLayout
           android:id="@+id/indicatorContainer"
           android:layout_width="match_parent"
@@ -33,10 +31,11 @@
       android:layout_width="match_parent"
       android:layout_height="80dp"
       android:layout_alignParentBottom="true"
-      android:layout_marginLeft="24dp"
-      android:layout_marginRight="24dp"
+      android:paddingLeft="24dp"
+      android:paddingRight="24dp"
       android:gravity="center"
-      android:orientation="horizontal">
+      android:orientation="horizontal"
+      android:background="@color/white">
       <CheckBox
           android:id="@+id/dontShowAgainCheckbox"
           android:layout_width="0dp"

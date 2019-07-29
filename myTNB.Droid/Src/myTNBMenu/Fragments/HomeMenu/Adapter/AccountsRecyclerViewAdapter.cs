@@ -5,6 +5,7 @@ using Android.Support.V7.Widget;
 using Android.Util;
 using Android.Views;
 using Android.Widget;
+using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Helper;
 using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP;
@@ -247,7 +248,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
                     shimmerLayoutContainer,
                     () =>
                     {
-                        return cardModel.BillDueAmount != null;
+                        return MyTNBAccountManagement.GetInstance().HasUpdatedBillingDetails(cardModel.AccountNumber);
                     });
             }
         }
@@ -358,7 +359,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
             {
                 foreach (AccountCardModel cardModel in cardList.ToArray()[position])
                 {
-                    if (cardModel.BillDueAmount == null)
+                    if (!MyTNBAccountManagement.GetInstance().HasUpdatedBillingDetails(cardModel.AccountNumber))
                     {
                         accountNumberList.Add(cardModel.AccountNumber);
                     }

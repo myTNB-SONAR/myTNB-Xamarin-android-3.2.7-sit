@@ -13,6 +13,8 @@ using Android.Views;
 using Android.Widget;
 using CheeseBind;
 using myTNB_Android.Src.Base.Activity;
+using myTNB_Android.Src.SelectSupplyAccount.Activity;
+using myTNB_Android.Src.Utils;
 
 namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
 {
@@ -20,13 +22,20 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
     public class ApplicationFormSMRActivity : BaseToolbarAppCompatActivity
     {
 
-        [BindView(Resource.Id.txtEmail)]
-        EditText txtEmail;
+        //[BindView(Resource.Id.txtEmail)]
+        //EditText txtEmail;
 
-        [BindView(Resource.Id.txtMobileNumber)]
-        EditText txtMobileNumber;
+        //[BindView(Resource.Id.txtMobileNumber)]
+        //EditText txtMobileNumber;
 
-        String email, mobileNumber;
+        //[OnClick(Resource.Id.selectedAccountContainer)]
+        //void OnSelectSupplyAccount(object sender, EventArgs eventArgs)
+        //{
+        //    Intent intent = new Intent(this, typeof(SelectSupplyAccountActivity));
+        //    StartActivity(intent);
+        //}
+
+        //String email, mobileNumber;
         public override int ResourceId()
         {
             return Resource.Layout.ApplicationFormSMRLayout;
@@ -41,9 +50,9 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
         {
             base.OnCreate(savedInstanceState);
 
-            // Create your application here
-            txtEmail.Text = Intent.GetStringExtra("email");
-            txtMobileNumber.Text = Intent.GetStringExtra("mobileNumber");
+			// Create your application here
+			//txtEmail.Text = Intent.GetStringExtra("email");
+   //         txtMobileNumber.Text = Intent.GetStringExtra("mobileNumber");
         }
     }
 }

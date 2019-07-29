@@ -7,15 +7,19 @@ using System.Text;
 using Android.App;
 using Android.Content;
 using Android.OS;
+using Android.Preferences;
 using Android.Runtime;
 using Android.Support.V4.View;
+using Android.Util;
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
+using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.SSMR.SMRApplication.Adapter;
 using myTNB_Android.Src.Utils;
+using Newtonsoft.Json;
 
 namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
 {
@@ -43,6 +47,20 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
 
         OnBoardingSMRPresenter presenter;
         OnBoardingSMRAdapter onBoardingSMRAdapter;
+
+        public override View OnCreateView(string name, Context context, IAttributeSet attrs)
+        {
+            if (Build.VERSION.SdkInt >= BuildVersionCodes.Lollipop)
+            {
+
+                //Drawable background = (R.drawable.gradient_theme);
+                Window.AddFlags(WindowManagerFlags.DrawsSystemBarBackgrounds);
+                Window.SetStatusBarColor(Resources.GetColor(Android.Resource.Color.Transparent));
+                //Window.SetNavigationBarColor(Resources.GetColor(Android.Resource.Color.Transparent));
+                Window.SetBackgroundDrawable(GetDrawable(Resource.Drawable.status_bar_gradient));
+            }
+            return base.OnCreateView(name, context, attrs);
+        }
 
         public void OnPageScrolled(int position, float positionOffset, int positionOffsetPixels)
         {
@@ -89,10 +107,11 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
             base.OnCreate(savedInstanceState);
 
             // Create your application here
+            SetToolBarTitle("");
             presenter = new OnBoardingSMRPresenter(this);
             onBoardViewPager = (ViewPager)FindViewById(Resource.Id.onBoardingSMRViewPager);
             onBoardViewPager.AddOnPageChangeListener(this);
-            this.presenter.OnBoardingList();
+            //this.presenter.OnBoardingList();
             onBoardingSMRAdapter = new OnBoardingSMRAdapter(SupportFragmentManager);
             onBoardingSMRAdapter.SetData(this.presenter.GetOnBoardingSMRData());
 
@@ -102,7 +121,10 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
 
             btnStartApplication.Click += delegate
             {
-
+                if (dontShowAgainCheckbox.Checked)
+                {
+                    MyTNBAccountManagement.GetInstance().UpdateIsSMROnboardingShown();
+                }
                 _ = presenter.GetCARegisteredContactInfo();
             };
 
@@ -112,6 +134,7 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
             };
 
             TextViewUtils.SetMuseoSans500Typeface(dontShowMeAgainLabel, skipOnboarding, btnStartApplication);
+            MyTNBAccountManagement.GetInstance().SetSMRCustomerBillingAccounts();
         }
 
         private void ShowSubmitButton(bool isShow)
