@@ -43,8 +43,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
             int cardWidth = (this.mActivity.Resources.DisplayMetrics.WidthPixels / 3) - (int)DPUtils.ConvertDPToPx(12f);
             float heightRatio = 84f / 88f;
             int cardHeight = (int)(cardWidth * (heightRatio));
-            if ((DPUtils.ConvertPxToDP(cardWidth) - DPUtils.ConvertPxToDP(cardHeight)) <= 5f)
+            if (DPUtils.ConvertPxToDP(cardWidth) <= 108f)
             {
+                cardWidth = (this.mActivity.Resources.DisplayMetrics.WidthPixels / 3) - (int)DPUtils.ConvertDPToPx(8f);
                 cardHeight = cardWidth;
             }
 
@@ -99,10 +100,15 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
             private float spacing;
             private bool includeEdge;
 
-            public MyServiceShimmerItemDecoration(int spanCount, int dpSpacing, bool includeEdge)
+            public MyServiceShimmerItemDecoration(int spanCount, int dpSpacing, bool includeEdge, Android.App.Activity Activity)
             {
                 this.spanCount = spanCount;
                 this.spacing = DPUtils.ConvertDPToPx(dpSpacing);
+                int cardWidth = (Activity.Resources.DisplayMetrics.WidthPixels / 3) - (int)DPUtils.ConvertDPToPx(12f);
+                if (DPUtils.ConvertPxToDP(cardWidth) <= 108f)
+                {
+                    this.spacing = DPUtils.ConvertDPToPx(dpSpacing - 2);
+                }
                 this.includeEdge = includeEdge;
             }
 
