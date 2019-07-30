@@ -101,7 +101,7 @@
                         android:layout_weight="1"
                         android:text="Submit Meter Reading"
                         android:textAllCaps="false"
-                        android:visibility="visible" />
+                        android:visibility="gone" />
                     </LinearLayout>
                 </LinearLayout>
             </android.support.design.widget.CollapsingToolbarLayout>
