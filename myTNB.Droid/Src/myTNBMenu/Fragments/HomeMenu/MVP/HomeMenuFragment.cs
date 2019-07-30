@@ -32,6 +32,8 @@ using static myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter.MyServiceShi
 using myTNB_Android.Src.Utils.Custom.ProgressDialog;
 using Newtonsoft.Json;
 using Android.App;
+using myTNB_Android.Src.SSMR.SMRApplication.MVP;
+using myTNB_Android.Src.Base;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 {
@@ -128,6 +130,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         {
             base.OnCreate(savedInstanceState);
             presenter = new HomeMenuPresenter(this);
+            MyTNBAccountManagement.GetInstance().SetMasterCustomerBillingAccountList();
         }
 
         public override void OnAttach(Context context)
@@ -185,7 +188,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 SetupMyServiceView();
                 SetupNewFAQView();
                 TextViewUtils.SetMuseoSans500Typeface(myServiceTitle, newFAQTitle);
-                if (SummaryDashBoardAccountEntity.GetAllItems().Count == 0)
+                if (MyTNBAccountManagement.GetInstance().IsNeedUpdatedBillingDetails())
                 {
                     this.presenter.LoadAccounts();
                 }
@@ -206,6 +209,24 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     StartActivity(new Intent(this.Activity, typeof(NotificationActivity)));
                 };
                 ((DashboardHomeActivity)Activity).SetStatusBarBackground();
+
+                List<CustomerBillingAccount> customerBillingAccounts = CustomerBillingAccount.EligibleSMRAccountList();
+                List<SMRAccount> smrAccountList = new List<SMRAccount>();
+                if (customerBillingAccounts.Count > 0)
+                {
+                    foreach (CustomerBillingAccount billingAccount in customerBillingAccounts)
+                    {
+                        SMRAccount smrAccount = new SMRAccount();
+                        smrAccount.accountNumber = billingAccount.AccNum;
+                        smrAccount.accountName = billingAccount.AccDesc;
+                        smrAccount.accountAddress = billingAccount.AccountStAddress;
+                        smrAccount.accountSelected = false;
+                        smrAccountList.Add(smrAccount);
+                    }
+                    smrAccountList[0].accountSelected = true; //Default Selection
+                }
+
+                UserSessions.SetSMRAccountList(smrAccountList);
             }
             catch (System.Exception e)
             {
@@ -409,7 +430,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             return base.OnCreateView(inflater, container, savedInstanceState);
         }
 
-        
+
         public override int ResourceId()
         {
             return Resource.Layout.HomeMenuFragmentView;
@@ -472,6 +493,19 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     if (selectedService.ServiceCategoryId == "1003")
                     {
                         ShowFeedbackMenu();
+                    }
+                    else if (UserSessions.GetSMRAccountList().Count > 0 && selectedService.ServiceCategoryId == "1001")
+                    {
+                        Intent applySMRIntent;
+                        if (MyTNBAccountManagement.GetInstance().IsSMROnboardingShown())
+                        {
+                            applySMRIntent = new Intent(this.Activity, typeof(ApplicationFormSMRActivity));
+                        }
+                        else
+                        {
+                            applySMRIntent = new Intent(this.Activity, typeof(OnBoardingActivity));
+                        }
+                        StartActivity(applySMRIntent);
                     }
                 }
             }
