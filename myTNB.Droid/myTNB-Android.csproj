@@ -1359,6 +1359,11 @@
     <Compile Include="Src\SSMR\SMRApplication\Adapter\SelectSMRAccountAdapter.cs" />
     <Compile Include="Src\SSMR\SMRApplication\MVP\SMRAccount.cs" />
     <AndroidResource Include="Resources\layout\SelectSMRAccountItemLayout.axml" />
+    <Compile Include="Src\SSMR\SMRApplication\MVP\SelectSMRAccountContract.cs" />
+    <Compile Include="Src\SSMR\SMRApplication\Api\SMRregistrationApi.cs" />
+    <Compile Include="Src\SSMR\SMRApplication\Api\SMRregistrationContactInfoRequest.cs" />
+    <Compile Include="Src\SSMR\SMRApplication\Api\BaseRequest.cs" />
+    <Compile Include="Src\SSMR\SMRApplication\Api\SMRregistrationApiImpl.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

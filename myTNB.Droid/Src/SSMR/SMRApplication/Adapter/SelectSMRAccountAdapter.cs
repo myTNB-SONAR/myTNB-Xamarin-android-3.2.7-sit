@@ -12,8 +12,10 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.Adapter
     public class SelectSMRAccountAdapter : RecyclerView.Adapter
     {
         List<SMRAccount> accountList = new List<SMRAccount>();
-        public SelectSMRAccountAdapter(BaseToolbarAppCompatActivity activity, List<SMRAccount> data)
+        SelectSMRAccountContract.IView mView;
+        public SelectSMRAccountAdapter(SelectSMRAccountContract.IView view, List<SMRAccount> data)
         {
+            mView = view;
             accountList = data;
         }
 
@@ -30,7 +32,9 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.Adapter
         {
             int id = Resource.Layout.SelectSMRAccountItemLayout;
             var itemView = LayoutInflater.From(parent.Context).Inflate(id, parent, false);
-            return new SelectSMRAccountViewHolder(itemView);
+            SelectSMRAccountViewHolder selectSMRAccountViewHolder = new SelectSMRAccountViewHolder(itemView);
+            itemView.SetOnClickListener(new OnAccountSelectListener(mView,selectSMRAccountViewHolder));
+            return selectSMRAccountViewHolder;
         }
 
         public class SelectSMRAccountViewHolder : RecyclerView.ViewHolder
@@ -42,6 +46,22 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.Adapter
                 accountName = itemView.FindViewById(Resource.Id.account_name_value) as TextView;
                 accountSelected = itemView.FindViewById(Resource.Id.select_smr_account) as CheckBox;
                 TextViewUtils.SetMuseoSans300Typeface(accountName);
+            }
+        }
+
+        public class OnAccountSelectListener : Java.Lang.Object, View.IOnClickListener
+        {
+            RecyclerView.ViewHolder mAdapter;
+            SelectSMRAccountContract.IView mView;
+            public OnAccountSelectListener(SelectSMRAccountContract.IView view, RecyclerView.ViewHolder adapter)
+            {
+                mView = view;
+                mAdapter = adapter;
+            }
+            public void OnClick(View v)
+            {
+                int pos = mAdapter.AdapterPosition;
+                mView.UpdateSelectedAccount(pos);
             }
         }
     }
