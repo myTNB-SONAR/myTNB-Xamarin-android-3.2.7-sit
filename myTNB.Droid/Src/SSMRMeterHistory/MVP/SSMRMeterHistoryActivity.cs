@@ -7,11 +7,13 @@ using Android.OS;
 using Android.Support.Design.Widget;
 using Android.Support.V7.Widget;
 using Android.Text;
+using Android.Util;
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
 using myTNB_Android.Src.AppLaunch.Models;
 using myTNB_Android.Src.Base.Activity;
+using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.SSMRMeterHistory.Adapter;
 using myTNB_Android.Src.Utils;
@@ -39,12 +41,17 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
         [BindView(Resource.Id.smr_content_history_header)]
         TextView SMRListHeader;
 
+        [BindView(Resource.Id.btnSubmitMeter)]
+        Button btnSubmitMeter;
+
         [BindView(Resource.Id.smr_history_recyclerview)]
         RecyclerView mSMRRecyclerView;
 
         private IMenu ssmrMenu;
 
         private SMRActivityInfoResponse smrResponse;
+
+        private AccountData selectedAccount;
 
         private MaterialDialog SSMRMenuDialog;
 
@@ -73,12 +80,18 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
                     this.Window.SetStatusBarColor(Resources.GetColor(Resource.Color.action_color));
                 }
 
-                TextViewUtils.SetMuseoSans500Typeface(SMRMainTitle, SMRListHeader);
+                TextViewUtils.SetMuseoSans500Typeface(SMRMainTitle, SMRListHeader, btnSubmitMeter);
                 TextViewUtils.SetMuseoSans300Typeface(SMRMainContent);
 
                 mSMRRecyclerView.SetLayoutManager(new LinearLayoutManager(this));
 
                 Bundle extras = Intent.Extras;
+
+                if (extras.ContainsKey(Constants.SELECTED_ACCOUNT))
+                {
+                    selectedAccount = JsonConvert.DeserializeObject<AccountData>(extras.GetString(Constants.SELECTED_ACCOUNT));
+                }
+
                 if (extras.ContainsKey(Constants.SMR_RESPONSE_KEY))
                 {
                     smrResponse = JsonConvert.DeserializeObject<SMRActivityInfoResponse>(extras.GetString(Constants.SMR_RESPONSE_KEY));
@@ -88,10 +101,29 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
                     if (smrResponse.Response.Data.DashboardCTAType == Constants.SMR_SUBMIT_METER_KEY)
                     {
                         SMRMainImg.SetImageResource(Resource.Drawable.smr_open);
+                        // TODO: Enable when confirm
+                        // btnSubmitMeter.Visibility = ViewStates.Visible;
                     }
                     else
                     {
-                        SMRMainImg.SetImageResource(Resource.Drawable.smr_closed);
+                        // TODO: Enable when confirm
+                        // btnSubmitMeter.Visibility = ViewStates.Gone;
+                        if (selectedAccount != null)
+                        {
+                            CustomerBillingAccount selectedCustomer = CustomerBillingAccount.FindByAccNum(selectedAccount.AccountNum);
+                            if (selectedCustomer.IsPeriodOpen)
+                            {
+                                SMRMainImg.SetImageResource(Resource.Drawable.smr_submitted);
+                            }
+                            else
+                            {
+                                SMRMainImg.SetImageResource(Resource.Drawable.smr_closed);
+                            }
+                        }
+                        else
+                        {
+                            SMRMainImg.SetImageResource(Resource.Drawable.smr_closed);
+                        }
                     }
 
                     if(!string.IsNullOrEmpty(smrResponse.Response.Data.HistoryViewTitle))
@@ -202,6 +234,12 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
             {
                 Utility.LoggingNonFatalError(e);
             }
+        }
+
+        [OnClick(Resource.Id.btnSubmitMeter)]
+        internal void OnSubmitMeter(object sender, EventArgs eventArgs)
+        {
+            // REMARK TODO for Chris from LinSiong: Submit Meter Goes Here;
         }
 
 

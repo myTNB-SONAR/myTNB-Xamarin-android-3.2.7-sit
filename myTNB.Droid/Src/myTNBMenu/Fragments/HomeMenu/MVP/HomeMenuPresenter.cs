@@ -171,11 +171,17 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                                 foreach (AccountSMRStatus accountSMRStatus in accountSMRResponse.Response.Data)
                                 {
                                     bool IsTaggedSMR = false;
+                                    bool IsPeriodOpen = false;
                                     if (accountSMRStatus.IsTaggedSMR == "true")
                                     {
                                         IsTaggedSMR = true;
                                     }
-                                    CustomerBillingAccount.UpdateIsSMRTagged(accountSMRStatus.ContractAccount, IsTaggedSMR);
+
+                                    if (accountSMRStatus.IsPeriodOpen == "true")
+                                    {
+                                        IsPeriodOpen = true;
+                                    }
+                                    CustomerBillingAccount.UpdateIsSMRTaggedAndPeriod(accountSMRStatus.ContractAccount, IsTaggedSMR, IsPeriodOpen);
                                 }
                             }
                         }
