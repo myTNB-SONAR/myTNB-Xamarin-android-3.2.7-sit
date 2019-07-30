@@ -14,6 +14,6 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.Api
         [Headers("Content-Type:application/json; charset=utf-8")]
         //[Post("/v6/mytnbappws.asmx/GetCAContactDetails")]
         [Post("/v6/mytnbappws.asmx/SubmitSMRApplication")]
-        Task<CARegisteredContactInfoResponse> SubmitSMRApplication([Body] BaseRequest request);
+        Task<SMRregistrationSubmitResponse> SubmitSMRApplication([Body] BaseRequest request);
     }
 }

@@ -63,6 +63,7 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
                     SMRAccount smrAccount = new SMRAccount();
                     smrAccount.accountNumber = billingAccount.AccNum;
                     smrAccount.accountName = billingAccount.AccDesc;
+                    smrAccount.accountAddress = billingAccount.AccountStAddress;
                     smrAccount.accountSelected = false;
                     smrAccountList.Add(smrAccount);
                 }

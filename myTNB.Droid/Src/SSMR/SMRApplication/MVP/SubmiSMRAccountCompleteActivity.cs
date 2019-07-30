@@ -12,7 +12,10 @@ using Android.Views;
 using Android.Widget;
 using CheeseBind;
 using myTNB_Android.Src.Base.Activity;
+using myTNB_Android.Src.myTNBMenu.Activity;
+using myTNB_Android.Src.SSMR.SMRApplication.Api;
 using myTNB_Android.Src.Utils;
+using Newtonsoft.Json;
 
 namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
 {
@@ -37,9 +40,6 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
         [BindView(Resource.Id.appliedOnDateValue)]
         TextView appliedOnDateValue;
 
-        [BindView(Resource.Id.btnTryAgain)]
-        Button btnTryAgain;
-
         [BindView(Resource.Id.btnTrackApplication)]
         Button btnTrackApplication;
 
@@ -58,9 +58,29 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
             base.OnCreate(savedInstanceState);
 
             // Create your application here
-
+            string jsonResponse = Intent.GetStringExtra("SUBMIT_RESULT");
+            SMRregistrationSubmitResponse response = JsonConvert.DeserializeObject<SMRregistrationSubmitResponse>(jsonResponse);
             TextViewUtils.SetMuseoSans500Typeface(txtTitleInfo);
             TextViewUtils.SetMuseoSans300Typeface(txtMessageInfo,refNumberLabel,appliedOnDateLabel,refNumberValue,appliedOnDateValue);
+
+            txtTitleInfo.Text = response.Data.DisplayTitle;
+            txtMessageInfo.Text = response.Data.DisplayMessage;
+
+            refNumberValue.Text = response.Data.AccountDetailsData.ApplicationID;
+            appliedOnDateValue.Text = response.Data.AccountDetailsData.AppliedOn;
+        }
+
+        [OnClick(Resource.Id.btnBackToHomeSuccess)]
+        void OnBackToHome(object sender, EventArgs eventArgs)
+        {
+            Intent intent = new Intent(this, typeof(DashboardHomeActivity));
+            StartActivity(intent);
+        }
+
+        [OnClick(Resource.Id.btnTrackApplication)]
+        void OnTrackApplication(object sender, EventArgs eventArgs)
+        {
+
         }
     }
 }

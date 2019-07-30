@@ -19,6 +19,7 @@
         <TextView 
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:id="@+id/applySMRForLabel"
             android:text="I am applying for:"
             android:textSize="16dp"
             android:textColor="#1c79ca"
@@ -36,6 +37,7 @@
                    android:layout_width="match_parent"
                    android:layout_height="wrap_content"
                    android:id="@+id/accountSMRLabel"
+                   android:textColor="#a6a6a6"
                    android:text="Accounts"
                    android:textSize="9dp"/>
             <RelativeLayout
@@ -46,7 +48,8 @@
                    android:layout_width="wrap_content"
                    android:layout_height="wrap_content"
                    android:id="@+id/accountSMRValue"
-                   android:text="Saujana Heights"
+                   android:textColor="#49494a"
+                   android:text=""
                    android:textSize="16dp"/>
                 <ImageView
                    android:layout_width="24dp"
@@ -61,14 +64,15 @@
             <TextView
                    android:layout_width="match_parent"
                    android:layout_height="wrap_content"
-                   android:id="@+id/accountSMRValue"
-                   android:layout_marginTop="8dp"
-                   android:text="No. 3 Jalan Melur, 12 Taman Melur, 68000 Ampang, Selangor"
+                   android:id="@+id/applySMRAddress"
+                   android:layout_marginTop="16dp"
+                   android:text=""
                    android:textSize="14dp"/>
         </LinearLayout>
         <TextView 
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:id="@+id/applySMRContactLabel"
             android:text="My contact details:"
             android:textSize="16dp"
             android:textColor="#1c79ca"
@@ -79,6 +83,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:padding="16dp"
             android:orientation="vertical"
             android:background="@android:color/white">
             <android.support.design.widget.TextInputLayout
@@ -103,7 +108,7 @@
                     android:layout_height="wrap_content"
                     app:hintTextAppearance="@style/TextInputLayout.TextAppearance.LightBackground"
                     app:errorEnabled="true"
-                    android:id="@+id/textInputEmail">
+                    android:id="@+id/textInputMobile">
                     <EditText
                         android:hint="EMAIL ADDRESS"
                         android:layout_width="match_parent"
@@ -130,9 +135,10 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:id="@+id/txtTermsAndCondition"
                 android:text="By applying, you are agreeing to the Self Meter Reading Terms and Conditions, TNB’s Terms of Use, Privacy policy, Anti-Spam Policy and Personal Data Protection Policy."
                 android:textColor="#49494a"
-                android:textSize="16dp"
+                android:textSize="12dp"
                 android:padding="16dp"
             />
             <Button

@@ -27,7 +27,7 @@
         android:layout_alignParentBottom="true"
         android:paddingTop="8dp">
         <Button
-            android:id="@+id/btnBackToHome"
+            android:id="@+id/btnBackToHomeFailed"
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
             android:text="Back to Home"
@@ -35,7 +35,7 @@
             android:textSize="16dp"
             style="@style/WhiteButton" />
         <Button
-            android:id="@+id/btnTryAgain"
+            android:id="@+id/btnTryAgainFailed"
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
             android:text="Try Again"

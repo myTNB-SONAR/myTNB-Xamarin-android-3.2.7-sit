@@ -68,6 +68,7 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
                 account.accountName = currentSMRAccount.accountName;
                 account.accountNumber = currentSMRAccount.accountNumber;
                 account.accountSelected = currentSMRAccount.accountSelected;
+                account.accountAddress = currentSMRAccount.accountAddress;
                 account.email = currentSMRAccount.email;
                 account.mobileNumber = currentSMRAccount.mobileNumber;
                 accountList.Add(account);

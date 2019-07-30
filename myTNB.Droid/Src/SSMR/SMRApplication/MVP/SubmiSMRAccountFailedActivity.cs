@@ -12,6 +12,7 @@ using Android.Views;
 using Android.Widget;
 using CheeseBind;
 using myTNB_Android.Src.Base.Activity;
+using myTNB_Android.Src.myTNBMenu.Activity;
 using myTNB_Android.Src.Utils;
 
 namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
@@ -42,6 +43,19 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
             // Create your application here
             TextViewUtils.SetMuseoSans500Typeface(txtTitleInfoError);
             TextViewUtils.SetMuseoSans300Typeface(txtMessageInfoError);
+        }
+
+        [OnClick(Resource.Id.btnBackToHomeFailed)]
+        void OnBackToHome(object sender, EventArgs eventArgs)
+        {
+            Intent intent = new Intent(this,typeof(DashboardHomeActivity));
+            StartActivity(intent);
+        }
+
+        [OnClick(Resource.Id.btnTryAgainFailed)]
+        void OnTryAgain(object sender, EventArgs eventArgs)
+        {
+
         }
     }
 }

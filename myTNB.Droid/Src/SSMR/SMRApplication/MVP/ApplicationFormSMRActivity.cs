@@ -24,22 +24,11 @@ using static myTNB_Android.Src.SSMR.SMRApplication.Api.SMRregistrationSubmitResp
 
 namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
 {
-    [Activity(Label = "ApplicationFormSMRActivity", Theme = "@style/Theme.Dashboard")]
+    [Activity(Label = "Apply Self Meter Reading", Theme = "@style/Theme.Dashboard")]
     public class ApplicationFormSMRActivity : BaseToolbarAppCompatActivity, ApplicationFormSMRContract.IView
     {
-
-        //[BindView(Resource.Id.txtEmail)]
-        //EditText txtEmail;
-
-        //[BindView(Resource.Id.txtMobileNumber)]
-        //EditText txtMobileNumber;
-
-        //[OnClick(Resource.Id.selectedAccountContainer)]
-        //void OnSelectSupplyAccount(object sender, EventArgs eventArgs)
-        //{
-        //    Intent intent = new Intent(this, typeof(SelectSupplyAccountActivity));
-        //    StartActivity(intent);
-        //}
+        [BindView(Resource.Id.applySMRForLabel)]
+        TextView applySMRForLabel;
 
         [BindView(Resource.Id.accountSMRLabel)]
         TextView accountSMRLabel;
@@ -47,11 +36,23 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
         [BindView(Resource.Id.accountSMRValue)]
         TextView accountSMRValue;
 
+        [BindView(Resource.Id.applySMRAddress)]
+        TextView applySMRAddress;
+
+        [BindView(Resource.Id.applySMRContactLabel)]
+        TextView applySMRContactLabel;
+
+        [BindView(Resource.Id.txtTermsAndCondition)]
+        TextView txtTermsAndCondition;
+
         [BindView(Resource.Id.txtEmail)]
         EditText txtEmail;
 
         [BindView(Resource.Id.txtMobileNumber)]
         EditText txtMobileNumber;
+
+        [BindView(Resource.Id.selectAccountContainer)]
+        RelativeLayout selectAccountContainer;
 
         ApplicationFormSMRPresenter mPresenter;
         LoadingOverlay loadingOverlay;
@@ -83,18 +84,14 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
         {
             base.OnCreate(savedInstanceState);
             mPresenter = new ApplicationFormSMRPresenter(this);
-            // Create your application here
-            //txtEmail.Text = Intent.GetStringExtra("email");
-            //         txtMobileNumber.Text = Intent.GetStringExtra("mobileNumber");
-
-            accountSMRValue.Click += delegate
+            selectAccountContainer.Click += delegate
             {
                 Intent intent = new Intent(this, typeof(SelectSMRAccountActivity));
-                //StartActivity(intent);
                 StartActivityForResult(intent,1);
             };
 
-            TextViewUtils.SetMuseoSans300Typeface(accountSMRLabel,accountSMRValue);
+            TextViewUtils.SetMuseoSans300Typeface(accountSMRLabel,accountSMRValue, applySMRAddress, txtTermsAndCondition);
+            TextViewUtils.SetMuseoSans500Typeface(applySMRForLabel, applySMRContactLabel);
             GetCARegisteredContactInfo();
         }
 
@@ -104,6 +101,8 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
             {
                 return smrAccount.accountSelected;
             });
+            accountSMRValue.Text = sMRAccount.accountName;
+            applySMRAddress.Text = sMRAccount.accountAddress;
             if (sMRAccount.email != txtEmail.Text || sMRAccount.mobileNumber != txtMobileNumber.Text)
             {
                 ShowProgressDialog();
@@ -188,23 +187,24 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
                 return smrAccount.accountSelected;
             });
 
-
+            ShowProgressDialog();
             mPresenter.SubmitSMRRegistration(sMRAccount,txtMobileNumber.Text,txtEmail.Text,"");
         }
 
-        public void ShowSubmitResult(string resultResponse)
+        public void ShowSubmitSuccessResult(string jsonResponse)
         {
-            SMRSubmitResponseData data = JsonConvert.DeserializeObject<SMRSubmitResponseData>(resultResponse);
-            if (data.DisplayTitle == "ERROR")
-            {
-                Intent intent = new Intent(this, typeof(SubmiSMRAccountFailedActivity));
-                StartActivity(intent);
-            }
-            else
-            {
-                Intent intent = new Intent(this, typeof(SubmiSMRAccountCompleteActivity));
-                StartActivity(intent);
-            }
+            Intent intent = new Intent(this, typeof(SubmiSMRAccountCompleteActivity));
+            intent.PutExtra("SUBMIT_RESULT", jsonResponse);
+            StartActivity(intent);
+            HideProgressDialog();
+        }
+
+        public void ShowSubmitFailedResult(string jsonResponse)
+        {
+            Intent intent = new Intent(this, typeof(SubmiSMRAccountFailedActivity));
+            intent.PutExtra("SUBMIT_RESULT", jsonResponse);
+            StartActivity(intent);
+            HideProgressDialog();
         }
     }
 }

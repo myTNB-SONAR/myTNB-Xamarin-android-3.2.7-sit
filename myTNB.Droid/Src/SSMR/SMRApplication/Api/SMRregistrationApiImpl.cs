@@ -25,7 +25,7 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.Api
             return api.GetRegisteredContactInfo(request);
         }
 
-        public Task<CARegisteredContactInfoResponse> SubmitSMRApplication([Body] BaseRequest request)
+        public Task<SMRregistrationSubmitResponse> SubmitSMRApplication([Body] BaseRequest request)
         {
             return api.SubmitSMRApplication(request);
         }
