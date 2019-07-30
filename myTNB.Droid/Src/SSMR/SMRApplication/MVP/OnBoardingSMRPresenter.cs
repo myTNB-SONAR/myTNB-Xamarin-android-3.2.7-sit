@@ -54,23 +54,6 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
 
         public void GetCARegisteredContactInfo()
         {
-            List<CustomerBillingAccount> customerBillingAccounts = CustomerBillingAccount.EligibleSMRAccountList();
-            List<SMRAccount> smrAccountList = new List<SMRAccount>();
-            if (customerBillingAccounts.Count > 0)
-            {
-                foreach (CustomerBillingAccount billingAccount in customerBillingAccounts)
-                {
-                    SMRAccount smrAccount = new SMRAccount();
-                    smrAccount.accountNumber = billingAccount.AccNum;
-                    smrAccount.accountName = billingAccount.AccDesc;
-                    smrAccount.accountAddress = billingAccount.AccountStAddress;
-                    smrAccount.accountSelected = false;
-                    smrAccountList.Add(smrAccount);
-                }
-                smrAccountList[0].accountSelected = true; //Default Selection
-            }
-
-            UserSessions.SetSMRAccountList(smrAccountList);
             this.mView.StartSMRApplication();
         }
     }

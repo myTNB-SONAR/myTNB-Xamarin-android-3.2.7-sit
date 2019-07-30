@@ -39,7 +39,7 @@
                    android:id="@+id/accountSMRLabel"
                    android:textColor="#a6a6a6"
                    android:text="Accounts"
-                   android:textSize="9dp"/>
+                   android:textSize="12dp"/>
             <RelativeLayout
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
@@ -66,6 +66,7 @@
                    android:layout_height="wrap_content"
                    android:id="@+id/applySMRAddress"
                    android:layout_marginTop="16dp"
+                   android:textColor="#49494a"
                    android:text=""
                    android:textSize="14dp"/>
         </LinearLayout>
@@ -97,6 +98,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:id="@+id/txtEmail"
+                        android:drawableBottom="#1c79ca"
                         android:drawablePadding="6dp"
                         android:drawableLeft="@drawable/placeholder_email"
                         android:maxLines="1"
@@ -110,15 +112,28 @@
                     app:errorEnabled="true"
                     android:id="@+id/textInputMobile">
                     <EditText
-                        android:hint="EMAIL ADDRESS"
+                        android:hint="MOBILE NUMBER"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:id="@+id/txtMobileNumber"
+                        android:drawableBottom="#1c79ca"
                         android:drawablePadding="6dp"
-                        android:drawableLeft="@drawable/placeholder_email"
+                        android:drawableLeft="@drawable/placeholder_mobile"
                         android:maxLines="1"
-                        android:inputType="text" />
+                        android:digits="0123456789+"
+                        android:inputType="phone" />
                 </android.support.design.widget.TextInputLayout>
+         <TextView 
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/txtEditingNote"
+            android:text="By editing you will update your myTNB profile but not your owner’s electricity account contact details."
+            android:textSize="12dp"
+            android:textColor="#49494a"
+            android:paddingRight="16dp"
+            android:paddingBottom="8dp"
+            android:paddingLeft="16dp"
+            android:visibility="gone"/>
         </LinearLayout>
     </LinearLayout>
         <LinearLayout

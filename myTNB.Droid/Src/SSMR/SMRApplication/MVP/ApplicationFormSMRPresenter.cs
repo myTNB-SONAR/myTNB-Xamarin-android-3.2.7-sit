@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Android.Text;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.SSMR.SMRApplication.Api;
 using myTNB_Android.Src.Utils;
@@ -46,6 +47,38 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
             else
             {
                 mView.ShowSubmitFailedResult(jsonResponseString);
+            }
+        }
+
+        public void CheckRequiredFields(string mobile_no, string email)
+        {
+
+            try
+            {
+                if (!TextUtils.IsEmpty(mobile_no) && !TextUtils.IsEmpty(email))
+                {
+                    if (!Utility.IsValidMobileNumber(mobile_no))
+                    {
+                        this.mView.ShowInvalidMobileNoError();
+                        this.mView.DisableRegisterButton();
+                        return;
+                    }
+                    else
+                    {
+                        this.mView.ClearInvalidMobileError();
+
+                    }
+
+                    this.mView.EnableRegisterButton();
+                }
+                else
+                {
+                    this.mView.DisableRegisterButton();
+                }
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
             }
         }
     }

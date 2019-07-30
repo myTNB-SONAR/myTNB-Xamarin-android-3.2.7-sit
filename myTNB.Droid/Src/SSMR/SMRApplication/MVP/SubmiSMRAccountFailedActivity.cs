@@ -55,7 +55,7 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
         [OnClick(Resource.Id.btnTryAgainFailed)]
         void OnTryAgain(object sender, EventArgs eventArgs)
         {
-
+            Finish();
         }
     }
 }

@@ -8,6 +8,9 @@ using Android.App;
 using Android.Content;
 using Android.OS;
 using Android.Runtime;
+using Android.Support.Design.Widget;
+using Android.Support.V4.Content;
+using Android.Text;
 using Android.Util;
 using Android.Views;
 using Android.Widget;
@@ -51,11 +54,25 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
         [BindView(Resource.Id.txtMobileNumber)]
         EditText txtMobileNumber;
 
+        [BindView(Resource.Id.textInputEmail)]
+        TextInputLayout textInputEmail;
+
+        [BindView(Resource.Id.textInputMobile)]
+        TextInputLayout textInputMobile; 
+
+        [BindView(Resource.Id.txtEditingNote)]
+        TextView txtEditingNote;
+
         [BindView(Resource.Id.selectAccountContainer)]
         RelativeLayout selectAccountContainer;
 
+        [BindView(Resource.Id.btnSubmitRegistration)]
+        Button btnSubmitRegistration;
+
         ApplicationFormSMRPresenter mPresenter;
         LoadingOverlay loadingOverlay;
+
+        bool checkForEditingInfo = false;
 
         //String email, mobileNumber;
         public override int ResourceId()
@@ -75,6 +92,8 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
                 if (resultCode == Result.Canceled)
                 {
                     GetCARegisteredContactInfo();
+                    checkForEditingInfo = false;
+                    txtEditingNote.Visibility = ViewStates.Gone;
                 }
             }
             base.OnActivityResult(requestCode, resultCode, data);
@@ -90,8 +109,14 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
                 StartActivityForResult(intent,1);
             };
 
-            TextViewUtils.SetMuseoSans300Typeface(accountSMRLabel,accountSMRValue, applySMRAddress, txtTermsAndCondition);
+            TextViewUtils.SetMuseoSans300Typeface(accountSMRLabel,accountSMRValue,applySMRAddress,txtTermsAndCondition,txtEmail,txtMobileNumber,txtEditingNote);
             TextViewUtils.SetMuseoSans500Typeface(applySMRForLabel, applySMRContactLabel);
+
+            txtMobileNumber.TextChanged += TextChange;
+
+            txtMobileNumber.AddTextChangedListener(new InputFilterFormField(txtMobileNumber, textInputMobile));
+            txtEmail.AddTextChangedListener(new InputFilterFormField(txtEmail, textInputEmail));
+            txtMobileNumber.SetFilters(new Android.Text.IInputFilter[] { new InputFilterPhoneNumber() });
             GetCARegisteredContactInfo();
         }
 
@@ -124,8 +149,7 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
         {
             accountSMRValue.Text = account.accountName;
             txtEmail.Text = account.email;
-            txtMobileNumber.Text = account.mobileNumber;
-
+            txtMobileNumber.Text = "+60" + account.mobileNumber;
             List<SMRAccount> updatedSMRAccountList = new List<SMRAccount>();
             foreach (SMRAccount smrAccount in UserSessions.GetSMRAccountList())
             {
@@ -205,6 +229,47 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
             intent.PutExtra("SUBMIT_RESULT", jsonResponse);
             StartActivity(intent);
             HideProgressDialog();
+        }
+
+        private void TextChange(object sender, TextChangedEventArgs e)
+        {
+            try
+            {
+                string mobile_no = txtMobileNumber.Text.ToString().Trim();
+                string email = txtEmail.Text.ToString().Trim();
+                this.mPresenter.CheckRequiredFields(mobile_no, email);
+                if (checkForEditingInfo)
+                {
+                    txtEditingNote.Visibility = ViewStates.Visible;
+                }
+                checkForEditingInfo = true;
+            }
+            catch (Exception ex)
+            {
+                Utility.LoggingNonFatalError(ex);
+            }
+        }
+
+        public void ShowInvalidMobileNoError()
+        {
+            textInputMobile.Error = GetString(Resource.String.registration_form_errors_invalid_mobile_no);
+        }
+
+        public void DisableRegisterButton()
+        {
+            btnSubmitRegistration.Enabled = false;
+            btnSubmitRegistration.Background = ContextCompat.GetDrawable(this, Resource.Drawable.silver_chalice_button_background);
+        }
+
+        public void ClearInvalidMobileError()
+        {
+            textInputMobile.Error = null;
+        }
+
+        public void EnableRegisterButton()
+        {
+            btnSubmitRegistration.Enabled = true;
+            btnSubmitRegistration.Background = ContextCompat.GetDrawable(this, Resource.Drawable.green_button_background);
         }
     }
 }

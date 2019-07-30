@@ -80,7 +80,7 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
         [OnClick(Resource.Id.btnTrackApplication)]
         void OnTrackApplication(object sender, EventArgs eventArgs)
         {
-
+            Finish();
         }
     }
 }

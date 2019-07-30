@@ -130,7 +130,12 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
 
             skipOnboarding.Click += delegate
             {
-                onBoardViewPager.SetCurrentItem(3,true);
+                //onBoardViewPager.SetCurrentItem(3,true);
+                if (dontShowAgainCheckbox.Checked)
+                {
+                    MyTNBAccountManagement.GetInstance().UpdateIsSMROnboardingShown();
+                }
+                StartSMRApplication();
             };
 
             TextViewUtils.SetMuseoSans500Typeface(dontShowMeAgainLabel, skipOnboarding, btnStartApplication);
@@ -187,6 +192,7 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
         {
             Intent intent = new Intent(this, typeof(ApplicationFormSMRActivity));
             StartActivity(intent);
+            Finish();
         }
     }
 }
