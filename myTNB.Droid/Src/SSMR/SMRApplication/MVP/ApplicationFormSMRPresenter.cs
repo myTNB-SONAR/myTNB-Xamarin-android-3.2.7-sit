@@ -3,6 +3,9 @@ using System.Threading.Tasks;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.SSMR.SMRApplication.Api;
 using myTNB_Android.Src.Utils;
+using Newtonsoft.Json;
+using static myTNB_Android.Src.SSMR.SMRApplication.Api.CARegisteredContactInfoResponse;
+using static myTNB_Android.Src.SSMR.SMRApplication.Api.SMRregistrationSubmitResponse;
 
 namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
 {
@@ -27,6 +30,21 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
             }
 
             mView.UpdateSMRInfo(smrAccount);
+        }
+
+        public async void SubmitSMRRegistration(SMRAccount smrAccount,string newPhone, string newEmail, string reason)
+        {
+            SMRregistrationSubmitRequest request = new SMRregistrationSubmitRequest(smrAccount.accountNumber, smrAccount.mobileNumber, newPhone,
+                smrAccount.email, newEmail, SUBMIT_MODE.REGISTER, reason);
+            //CARegisteredContactInfoResponse response = await api.SubmitSMRApplication(request);
+            SMRregistrationSubmitResponse response = new SMRregistrationSubmitResponse();
+            SMRSubmitResponseData accountResponseData = new SMRSubmitResponseData();// response.Data;
+            accountResponseData.DisplayTitle = "ERROR";
+            string jsonResponseString = JsonConvert.SerializeObject(accountResponseData);
+            if (true)//response.Data.ErrorCode == "7200")
+            {
+                mView.ShowSubmitResult(jsonResponseString);
+            }
         }
     }
 }

@@ -10,6 +10,7 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
         {
             void ShowSelectAccount();
             void UpdateSMRInfo(SMRAccount account);
+            void ShowSubmitResult(string jsonResponse);
         }
 
         public interface IPresenter

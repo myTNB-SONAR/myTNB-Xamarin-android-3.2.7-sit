@@ -18,6 +18,9 @@ using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.SelectSupplyAccount.Activity;
 using myTNB_Android.Src.Utils;
 using myTNB_Android.Src.Utils.Custom.ProgressDialog;
+using Newtonsoft.Json;
+using static myTNB_Android.Src.SSMR.SMRApplication.Api.CARegisteredContactInfoResponse;
+using static myTNB_Android.Src.SSMR.SMRApplication.Api.SMRregistrationSubmitResponse;
 
 namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
 {
@@ -180,7 +183,28 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
         [OnClick(Resource.Id.btnSubmitRegistration)]
         void SubmitRegistration(object sender, EventArgs eventArgs)
         {
+            SMRAccount sMRAccount = UserSessions.GetSMRAccountList().Find(smrAccount =>
+            {
+                return smrAccount.accountSelected;
+            });
 
+
+            mPresenter.SubmitSMRRegistration(sMRAccount,txtMobileNumber.Text,txtEmail.Text,"");
+        }
+
+        public void ShowSubmitResult(string resultResponse)
+        {
+            SMRSubmitResponseData data = JsonConvert.DeserializeObject<SMRSubmitResponseData>(resultResponse);
+            if (data.DisplayTitle == "ERROR")
+            {
+                Intent intent = new Intent(this, typeof(SubmiSMRAccountFailedActivity));
+                StartActivity(intent);
+            }
+            else
+            {
+                Intent intent = new Intent(this, typeof(SubmiSMRAccountCompleteActivity));
+                StartActivity(intent);
+            }
         }
     }
 }

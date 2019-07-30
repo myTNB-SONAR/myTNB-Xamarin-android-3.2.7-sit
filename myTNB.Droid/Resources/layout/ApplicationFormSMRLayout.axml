@@ -1,22 +1,19 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_alignParentBottom="true"
-    android:layout_centerHorizontal="true"
+    android:theme="@style/Theme.Dashboard"
     android:id="@+id/rootView">
     <include
         layout="@layout/toolbar"
         id="@+id/toolbar" />
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <LinearLayout
+    <LinearLayout
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-            android:layout_gravity="center_vertical"
+        android:layout_gravity="center_vertical"
+        android:layout_below="@+id/toolbar"
         android:orientation="vertical"
         android:background="#F9F9F9">
         <TextView 
@@ -33,6 +30,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
+            android:padding="16dp"
             android:background="@android:color/white">
             <TextView
                    android:layout_width="match_parent"
@@ -40,12 +38,33 @@
                    android:id="@+id/accountSMRLabel"
                    android:text="Accounts"
                    android:textSize="9dp"/>
-            <TextView
-                   android:layout_width="match_parent"
+            <RelativeLayout
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:id="@+id/selectAccountContainer">
+                <TextView
+                   android:layout_width="wrap_content"
                    android:layout_height="wrap_content"
                    android:id="@+id/accountSMRValue"
                    android:text="Saujana Heights"
                    android:textSize="16dp"/>
+                <ImageView
+                   android:layout_width="24dp"
+                   android:layout_height="24dp"
+                   android:layout_alignParentRight="true"
+                   android:src="@drawable/ic_action_dropdown1"/>
+            </RelativeLayout>
+            <View
+                android:layout_height="1dp"
+                android:layout_width="match_parent"
+                android:background="@color/hoverGrey"/>
+            <TextView
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   android:id="@+id/accountSMRValue"
+                   android:layout_marginTop="8dp"
+                   android:text="No. 3 Jalan Melur, 12 Taman Melur, 68000 Ampang, Selangor"
+                   android:textSize="14dp"/>
         </LinearLayout>
         <TextView 
             android:layout_width="match_parent"
@@ -102,6 +121,10 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_gravity="bottom"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingBottom="16dp"
+            android:layout_alignParentBottom="true"
             android:background="@android:color/white"
             >
             <TextView
@@ -119,5 +142,4 @@
                 android:id="@+id/btnSubmitRegistration"
                 style="@style/Theme.LoginButton" />
         </LinearLayout>
-    </FrameLayout>
-</android.support.design.widget.CoordinatorLayout>
+</RelativeLayout>

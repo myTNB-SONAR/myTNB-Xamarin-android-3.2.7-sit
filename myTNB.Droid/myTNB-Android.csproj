@@ -1364,6 +1364,13 @@
     <Compile Include="Src\SSMR\SMRApplication\Api\SMRregistrationContactInfoRequest.cs" />
     <Compile Include="Src\SSMR\SMRApplication\Api\BaseRequest.cs" />
     <Compile Include="Src\SSMR\SMRApplication\Api\SMRregistrationApiImpl.cs" />
+    <Compile Include="Src\SSMR\SMRApplication\Api\SMRregistrationSubmitRequest.cs" />
+    <AndroidResource Include="Resources\layout\SubmitSMRAccountSuccessView.axml" />
+    <Compile Include="Src\SSMR\SMRApplication\MVP\SubmiSMRAccountCompleteActivity.cs" />
+    <AndroidResource Include="Resources\layout\SubmitSMRAccountFailedView.axml" />
+    <Compile Include="Src\SSMR\SMRApplication\MVP\SubmiSMRAccountFailedActivity.cs" />
+    <Compile Include="Src\SSMR\SMRApplication\Api\SMRregistrationSubmitResponse.cs" />
+    <AndroidResource Include="Resources\drawable\white_button_stroke_background.xml" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
