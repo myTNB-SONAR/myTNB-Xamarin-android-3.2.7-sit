@@ -30,6 +30,8 @@ using myTNB_Android.Src.Utils;
 using static myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter.MyServiceAdapter;
 using static myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter.MyServiceShimmerAdapter;
 using myTNB_Android.Src.Utils.Custom.ProgressDialog;
+using Newtonsoft.Json;
+using Android.App;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 {
@@ -90,9 +92,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
         [BindView(Resource.Id.summaryRootView)]
         CoordinatorLayout summaryRootView;
-
-        [BindView(Resource.Id.shimmerMyServiceView)]
-        ShimmerFrameLayout shimmerMyServiceView;
 
         [BindView(Resource.Id.shimmerFAQView)]
         ShimmerFrameLayout shimmerFAQView;
@@ -171,10 +170,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             {
                 notificationHeaderIcon.SetImageResource(Resource.Drawable.ic_header_notification);
             }
-            notificationHeaderIcon.Click += delegate
-            {
-                StartActivity(new Intent(this.Activity, typeof(NotificationActivity)));
-            };
         }
 
         public override void OnViewCreated(View view, Bundle savedInstanceState)
@@ -183,21 +178,34 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             try
             {
                 UpdateGreetingsHeader(this.presenter.GetGreeting());
-                accountGreetingName.Text = this.presenter.GetAccountDisplay();
+                accountGreetingName.Text = this.presenter.GetAccountDisplay() + "!";
                 SetNotificationIndicator();
                 SetAccountsRecyclerView();
                 SetAccountActionHeader();
                 SetupMyServiceView();
                 SetupNewFAQView();
                 TextViewUtils.SetMuseoSans500Typeface(myServiceTitle, newFAQTitle);
-                this.presenter.LoadAccounts();
-
+                if (SummaryDashBoardAccountEntity.GetAllItems().Count == 0)
+                {
+                    this.presenter.LoadAccounts();
+                }
+                else
+                {
+                    this.presenter.LoadLocalAccounts();
+                }
+                addActionImage.SetOnClickListener(null);
+                notificationHeaderIcon.SetOnClickListener(null);
                 addActionImage.Click += delegate
                 {
                     Intent linkAccount = new Intent(this.Activity, typeof(LinkAccountActivity));
                     linkAccount.PutExtra("fromDashboard", true);
                     StartActivity(linkAccount);
                 };
+                notificationHeaderIcon.Click += delegate
+                {
+                    StartActivity(new Intent(this.Activity, typeof(NotificationActivity)));
+                };
+                ((DashboardHomeActivity)Activity).SetStatusBarBackground();
             }
             catch (System.Exception e)
             {
@@ -215,12 +223,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             GridLayoutManager layoutManager = new GridLayoutManager(this.Activity, 3);
             layoutManager.Orientation = RecyclerView.Vertical;
             myServiceListRecycleView.SetLayoutManager(layoutManager);
-            myServiceListRecycleView.AddItemDecoration(new MyServiceItemDecoration(3, 12, false));
+            myServiceListRecycleView.AddItemDecoration(new MyServiceItemDecoration(3, 8, false));
 
             GridLayoutManager layoutShimmerManager = new GridLayoutManager(this.Activity, 3);
             layoutShimmerManager.Orientation = RecyclerView.Vertical;
             myServiceShimmerList.SetLayoutManager(layoutShimmerManager);
-            myServiceShimmerList.AddItemDecoration(new MyServiceShimmerItemDecoration(3, 12, false));
+            myServiceShimmerList.AddItemDecoration(new MyServiceShimmerItemDecoration(3, 8, false));
         }
 
         private void SetupNewFAQView()
@@ -240,12 +248,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
             myServiceShimmerView.Visibility = ViewStates.Visible;
             myServiceView.Visibility = ViewStates.Gone;
-            var shimmerBuilder = ShimmerUtils.ShimmerBuilderConfig();
-            if (shimmerBuilder != null)
-            {
-                shimmerMyServiceView.SetShimmer(shimmerBuilder?.Build());
-            }
-            shimmerMyServiceView.StartShimmer();
             this.presenter.InitiateMyService();
 
         }
@@ -256,7 +258,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             {
                 Activity.RunOnUiThread(() =>
                 {
-                    shimmerMyServiceView.StopShimmer();
                     myServiceShimmerAdapter = new MyServiceShimmerAdapter(null, this.Activity);
                     myServiceShimmerList.SetAdapter(myServiceShimmerAdapter);
                     myServiceShimmerView.Visibility = ViewStates.Gone;
@@ -355,8 +356,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             {
                 accountHeaderTitle.Visibility = ViewStates.Gone;
                 searchEditText.Visibility = ViewStates.Visible;
+                searchEditText.SetMaxWidth(Integer.MaxValue);
                 searchActionIcon.Visibility = ViewStates.Gone;
-                searchEditText.ClearFocus();
+                searchEditText.RequestFocus();
             }
             else
             {
@@ -382,7 +384,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             accountsRecyclerView.SetLayoutManager(linearLayoutManager);
 
             accountsAdapter = new AccountsRecyclerViewAdapter(this);
-            accountsRecyclerView.AddOnScrollListener(new AccountsRecyclerViewOnScrollListener(linearLayoutManager, indicatorContainer));
+            accountsRecyclerView.AddOnScrollListener(new AccountsRecyclerViewOnScrollListener(this.presenter, linearLayoutManager, indicatorContainer));
 
             SnapHelper snapHelper = new LinearSnapHelper();
             snapHelper.AttachToRecyclerView(accountsRecyclerView);
@@ -399,6 +401,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             ShowBackButton(false);
 
             this.presenter.InitiateService();
+            SetNotificationIndicator();
         }
 
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -406,6 +409,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             return base.OnCreateView(inflater, container, savedInstanceState);
         }
 
+        
         public override int ResourceId()
         {
             return Resource.Layout.HomeMenuFragmentView;
@@ -448,7 +452,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             if (isSearchSubmit)
             {
                 ShowSearchAction(false);
-            }
+                LinearLayoutManager manager = accountsRecyclerView.GetLayoutManager() as LinearLayoutManager;
+                int position = manager.FindFirstCompletelyVisibleItemPosition();
+
+                List<string> accountNumberList = accountsAdapter.GetAccountCardNumberListByPosition(position);
+                this.presenter.LoadSummaryDetailsInBatch(accountNumberList);
+			}
             UpdateAccountListIndicator();
 		}
 
@@ -522,7 +531,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 if (accountsAdapter != null && accountsAdapter.accountCardModelList != null && myServiceAdapter != null)
                 {
                     int count = accountsAdapter.accountCardModelList.Count;
-                    if (count <= 2)
+                    if (count < 2)
                     {
                         myServiceTitle.SetTextColor(Color.White);
                     }
@@ -553,7 +562,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 if (accountsAdapter != null && accountsAdapter.accountCardModelList != null)
                 {
                     int count = accountsAdapter.accountCardModelList.Count;
-                    if (count <= 2)
+                    if (count < 2)
                     {
                         myServiceTitle.SetTextColor(Color.White);
                     }
@@ -612,10 +621,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         public void UpdateAccountListCards(List<SummaryDashBoardDetails> accountList)
         {
             accountsAdapter.UpdateAccountCards(accountList);
-            accountsAdapter.NotifyDataSetChanged();
         }
 
-        public void SetAccountListCards(List<SummaryDashBoardDetails> accountList)
+        private void SetHeaderActionVisiblity(List<SummaryDashBoardDetails> accountList)
         {
             if (accountList.Count <= 5)
             {
@@ -626,7 +634,20 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             {
                 searchActionIcon.Visibility = ViewStates.Visible;
             }
+        }
+
+        public void SetAccountListCards(List<SummaryDashBoardDetails> accountList)
+        {
+            SetHeaderActionVisiblity(accountList);
             accountsAdapter.SetAccountCards(accountList);
+            accountsRecyclerView.SetAdapter(accountsAdapter);
+            ChangeMyServiceTextColor();
+        }
+
+        public void SetAccountListCardsFromLocal(List<SummaryDashBoardDetails> accountList)
+        {
+            SetHeaderActionVisiblity(accountList);
+            accountsAdapter.SetAccountCardsFromLocal(accountList);
             accountsRecyclerView.SetAdapter(accountsAdapter);
             ChangeMyServiceTextColor();
         }
@@ -722,6 +743,24 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             {
                 Utility.LoggingNonFatalError(e);
             }
+        }
+
+        public void OnSearchOutFocus()
+        {
+            if (searchEditText != null)
+            {
+                if(searchEditText.Visibility == ViewStates.Visible)
+                {
+                    searchEditText.ClearFocus();
+                    ShowSearchAction(false);
+                    OnUpdateAccountListChanged(true);
+                }
+            }
+        }
+
+        public AccountsRecyclerViewAdapter GetAccountAdapter()
+        {
+            return accountsAdapter;
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using Android.Support.V7.Widget;
 using Android.Widget;
+using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Listener
 {
@@ -8,31 +9,40 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Listener
 	{
 		LinearLayoutManager mLinearLayoutManager;
 		LinearLayout mIndicatorContainer;
-		public AccountsRecyclerViewOnScrollListener(LinearLayoutManager linearLayoutManager, LinearLayout indicatorContainer)
+        HomeMenuContract.IHomeMenuPresenter mPresenter;
+        int previousPos;
+		public AccountsRecyclerViewOnScrollListener(HomeMenuContract.IHomeMenuPresenter presenter, LinearLayoutManager linearLayoutManager, LinearLayout indicatorContainer)
 		{
 			mLinearLayoutManager = linearLayoutManager;
             mIndicatorContainer = indicatorContainer;
-		}
+            this.mPresenter = presenter;
+        }
 		public override void OnScrolled(RecyclerView recyclerView, int dx, int dy)
 		{
 			base.OnScrolled(recyclerView, dx, dy);
-			int pos = mLinearLayoutManager.FindFirstCompletelyVisibleItemPosition();
-			if (pos >= 0)
+			int currentPosition = mLinearLayoutManager.FindFirstCompletelyVisibleItemPosition();
+			if (currentPosition >= 0)
 			{
-				ImageView imageView;
-				for (int i = 0; i < mIndicatorContainer.ChildCount; i++)
-				{
-					imageView = (ImageView)mIndicatorContainer.GetChildAt(i);
-					if (i == pos)
-					{
-						imageView.SetImageResource(Resource.Drawable.circle_active);
-					}
-					else
-					{
-						imageView.SetImageResource(Resource.Drawable.circle);
-					}
-				}
-			}
+                ImageView imageView;
+                for (int i = 0; i < mIndicatorContainer.ChildCount; i++)
+                {
+                    imageView = (ImageView)mIndicatorContainer.GetChildAt(i);
+                    if (i == currentPosition)
+                    {
+                        imageView.SetImageResource(Resource.Drawable.circle_active);
+                    }
+                    else
+                    {
+                        imageView.SetImageResource(Resource.Drawable.circle);
+                    }
+                }
+                if (previousPos != currentPosition)
+                {
+                    this.mPresenter.LoadBatchSummarDetailsByIndex(currentPosition);
+                }
+                previousPos = currentPosition;
+
+            }
 		}
 	}
 }

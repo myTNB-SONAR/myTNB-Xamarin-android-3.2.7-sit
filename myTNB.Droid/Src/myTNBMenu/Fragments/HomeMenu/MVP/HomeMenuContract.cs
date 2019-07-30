@@ -4,6 +4,9 @@ using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP.Models;
 using myTNB_Android.Src.SummaryDashBoard.Models;
 using myTNB_Android.Src.Utils;
 using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Requests;
+using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter;
+using myTNB_Android.Src.AppLaunch.Models;
+using myTNB_Android.Src.AppLaunch.Requests;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 {
@@ -14,6 +17,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             void OnUpdateAccountListChanged(bool isSearchSubmit);
             void SetAccountListCards(List<SummaryDashBoardDetails> accountList);
             void UpdateAccountListCards(List<SummaryDashBoardDetails> accountList);
+            void SetAccountListCardsFromLocal(List<SummaryDashBoardDetails> accountList);
             void ShowAccountDetails(string accountNumber);
             void SetMyServiceRecycleView();
             void SetNewFAQRecycleView();
@@ -23,6 +27,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             void ShowMyServiceRetryOptions(string msg);
             void OnSavedTimeStamp(string savedTimeStamp);
             void ShowFAQTimestamp(bool success);
+            AccountsRecyclerViewAdapter GetAccountAdapter();
         }
 
         public interface IHomeMenuPresenter
@@ -40,12 +45,16 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             Task OnGetFAQTimeStamp();
             void ReadNewFAQFromCache();
             Task OnGetFAQs();
-        }
+            void LoadBatchSummarDetailsByIndex(int batchIndex);
+            void LoadLocalAccounts();
+			void LoadSummaryDetailsInBatch(List<string> accountNumbers);
+		}
 
         public interface IHomeMenuService
         {
             Task<SummaryDashBoardResponse> GetLinkedSummaryInfo(SummaryDashBordRequest request);
             Task<GetServicesResponse> GetServices(GetServiceRequests request);
+            Task<AccountSMRStatusResponse> GetSMRAccountStatus(AccountsSMRStatusRequest request);
         }
     }
 }

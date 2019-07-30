@@ -205,6 +205,10 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 			void BillsMenuRefresh(AccountData accountData);
 
             void SetDashboardHomeCheck();
+
+            void ShowHideActionBar(bool flag);
+
+            void ShowToBeAddedToast();
         }
 
 		public interface IUserActionsListener : IBasePresenter
@@ -262,6 +266,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 
 			void OnTapToRefresh();
 
+            int CheckCurrentDashboardMenu();
         }
 	}
 }

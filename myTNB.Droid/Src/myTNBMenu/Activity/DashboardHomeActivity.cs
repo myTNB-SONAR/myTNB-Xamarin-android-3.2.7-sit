@@ -5,6 +5,7 @@ using System.Runtime;
 using Android.App;
 using Android.Content;
 using Android.Content.PM;
+using Android.Graphics;
 using Android.Graphics.Drawables;
 using Android.OS;
 using Android.Preferences;
@@ -728,6 +729,54 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
         public void SetDashboardHomeCheck()
         {
             bottomNavigationView.Menu.FindItem(Resource.Id.menu_dashboard).SetChecked(true);
+        }
+
+        public void ShowToBeAddedToast()
+        {
+            Toast.MakeText(this, "Stay Tune!", ToastLength.Long).Show();
+        }
+
+        public void ShowHideActionBar(bool flag)
+        {
+            if(flag)
+            {
+                this.SupportActionBar.Show();
+            }
+            else
+            {
+                this.SupportActionBar.Hide();
+            }
+        }
+
+        public override bool DispatchTouchEvent(MotionEvent ev)
+        {
+            if (ev.Action == MotionEventActions.Down
+                && this.userActionsListener?.CheckCurrentDashboardMenu() == Resource.Id.menu_dashboard
+                && currentFragment.GetType() == typeof(HomeMenuFragment))
+            {
+                View view = CurrentFocus;
+                if (view != null && view.GetType() != typeof(EditText))
+                {
+                    Rect rect = new Rect();
+                    view.GetGlobalVisibleRect(rect);
+                    if (!rect.Contains((int)ev.RawX, (int)ev.RawY))
+                    {
+                        HomeMenuFragment fragment = (HomeMenuFragment) FragmentManager.FindFragmentById(Resource.Id.content_layout);
+                        fragment.OnSearchOutFocus();
+                    }
+                }
+            }
+            return base.DispatchTouchEvent(ev);
+        }
+
+        public void SetStatusBarBackground()
+        {
+            if (Build.VERSION.SdkInt >= Build.VERSION_CODES.Lollipop)
+            {
+                Drawable drawable = Resources.GetDrawable(Resource.Drawable.gradient_background);
+                Window.AddFlags(WindowManagerFlags.DrawsSystemBarBackgrounds);
+                Window.SetBackgroundDrawable(drawable);
+            }
         }
 
     }

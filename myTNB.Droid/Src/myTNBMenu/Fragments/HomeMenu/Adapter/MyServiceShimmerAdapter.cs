@@ -42,10 +42,19 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
 
             DisplayMetrics displaymetrics = new DisplayMetrics();
             this.mActivity.WindowManager.DefaultDisplay.GetMetrics(displaymetrics);
-            int devicewidth = (displaymetrics.WidthPixels / 3) - (int)DPUtils.ConvertDPToPx(20f);
-            currentCard.Height = devicewidth - (int)DPUtils.ConvertDPToPx(4f);
+            int devicewidth = (displaymetrics.WidthPixels / 3) - (int)DPUtils.ConvertDPToPx(12f);
+            currentCard.Height = devicewidth - (int)DPUtils.ConvertDPToPx(2f);
             currentCard.Width = devicewidth;
             //currentCard.Height = vh.myServiceCardView.LayoutParameters.Width - (int)DPUtils.ConvertDPToPx(4f);
+
+            var shimmerBuilder = ShimmerUtils.ShimmerBuilderConfig();
+            if (shimmerBuilder != null)
+            {
+                vh.myServiceShimmerImg.SetShimmer(shimmerBuilder?.Build());
+                vh.myServiceShimmerText.SetShimmer(shimmerBuilder?.Build());
+            }
+            vh.myServiceShimmerImg.StartShimmer();
+            vh.myServiceShimmerText.StartShimmer();
         }
 
         public override RecyclerView.ViewHolder OnCreateViewHolder(ViewGroup parent, int viewType)
@@ -65,11 +74,17 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
 
             public CardView myServiceCardView { get; private set; }
 
+            public ShimmerFrameLayout myServiceShimmerImg { get; private set; }
+
+            public ShimmerFrameLayout myServiceShimmerText { get; private set; }
+
             public MyServiceShimmerViewHolder(View itemView) : base(itemView)
             {
                 serviceImg = itemView.FindViewById<ImageView>(Resource.Id.service_img);
                 serviceTitle = itemView.FindViewById<TextView>(Resource.Id.service_title);
                 myServiceCardView = itemView.FindViewById<CardView>(Resource.Id.card_view_click);
+                myServiceShimmerImg = itemView.FindViewById<ShimmerFrameLayout>(Resource.Id.shimmerMyServiceImg);
+                myServiceShimmerText = itemView.FindViewById<ShimmerFrameLayout>(Resource.Id.shimmerMyServiceTitle);
             }
         }
 
@@ -110,10 +125,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
                     
                     if (position >= spanCount)
                     {
-                        outRect.Top = (int)spacing / 2; // item top
+                        outRect.Top = (int)spacing / 4; // item top
                     }
 
-                    outRect.Bottom = (int)spacing / 2; // item bottom
+                    outRect.Bottom = (int)spacing / 4; // item bottom
                 }
             }
         }

@@ -156,8 +156,10 @@ namespace myTNB_Android.Src.MyAccount.MVP
                         SubmittedFeedbackEntity.Remove();
                         SMUsageHistoryEntity.RemoveAll();
                         UsageHistoryEntity.RemoveAll();
-                        PromotionsEntityV2.RemoveAll();
-                        PromotionsParentEntityV2.RemoveAll();
+                        PromotionsEntityV2 promotionTable = new PromotionsEntityV2();
+                        promotionTable.DeleteTable();
+                        PromotionsParentEntityV2 promotionEntityTable = new PromotionsParentEntityV2();
+                        promotionEntityTable.DeleteTable();
                         BillHistoryEntity.RemoveAll();
                         PaymentHistoryEntity.RemoveAll();
                         REPaymentHistoryEntity.RemoveAll();

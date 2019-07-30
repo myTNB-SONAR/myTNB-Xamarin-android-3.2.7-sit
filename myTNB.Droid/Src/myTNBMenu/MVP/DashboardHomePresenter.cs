@@ -101,12 +101,12 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 
 						if (currentBottomNavigationMenu == Resource.Id.menu_dashboard)
 						{
-							this.mView.ShowAccountName();
-							this.mView.SetToolbarTitle(Resource.String.dashboard_menu_activity_title);
 
 							if (customerBillingAccount != null && customerBillingAccount.SmartMeterCode != null && customerBillingAccount.SmartMeterCode.Equals("0"))
 							{
-								this.mView.ShowChart(selectedHistoryData, selectedAccount);
+                                this.mView.SetToolbarTitle(Resource.String.dashboard_menu_activity_title);
+                                this.mView.ShowAccountName();
+                                this.mView.ShowChart(selectedHistoryData, selectedAccount);
 							}
 							else
 							{
@@ -115,7 +115,9 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 									SMUsageHistoryEntity storedEntity = SMUsageHistoryEntity.GetItemByAccountNo(selectedAccount.AccountNum);
 									if (storedEntity != null)
 									{
-										SMUsageHistoryResponse storedSMData = JsonConvert.DeserializeObject<SMUsageHistoryResponse>(storedEntity.JsonResponse);
+                                        this.mView.SetToolbarTitle(Resource.String.dashboard_menu_activity_title);
+                                        this.mView.ShowAccountName();
+                                        SMUsageHistoryResponse storedSMData = JsonConvert.DeserializeObject<SMUsageHistoryResponse>(storedEntity.JsonResponse);
 										this.mView.ShowSMChart(storedSMData.Data.SMUsageHistoryData, selectedAccount);
 									}
 									else
@@ -133,7 +135,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 						}
 						else if (currentBottomNavigationMenu == Resource.Id.menu_bill)
 						{
-							this.mView.ShowAccountName();
+                            this.mView.ShowAccountName();
 							this.mView.SetToolbarTitle(Resource.String.bill_menu_activity_title);
 							this.mView.ShowBillMenu(selectedAccount);
 
@@ -174,7 +176,8 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 							}
 							try
 							{
-								this.mView.BillsMenuAccess(selectedAccount);
+                                this.mView.ShowAccountName();
+                                this.mView.BillsMenuAccess(selectedAccount);
 							}
 							catch (System.Exception e)
 							{
@@ -198,7 +201,8 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 								}
 								try
 								{
-									this.mView.BillsMenuAccess(selectedAccount);
+                                    this.mView.ShowAccountName();
+                                    this.mView.BillsMenuAccess(selectedAccount);
 								}
 								catch (System.Exception e)
 								{
@@ -211,7 +215,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 							CustomerBillingAccount customerBillingAccount = CustomerBillingAccount.GetSelectedOrFirst();
 							if (currentBottomNavigationMenu == Resource.Id.menu_dashboard)
 							{
-								if (customerBillingAccount != null && !customerBillingAccount.isOwned)
+                                if (customerBillingAccount != null && !customerBillingAccount.isOwned)
 								{
 									CustomerBillingAccount selected = CustomerBillingAccount.GetSelected();
 									this.mView.ShowAccountName();
@@ -220,7 +224,8 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 								{
 									CustomerBillingAccount selected = CustomerBillingAccount.GetSelected();
 									this.mView.ShowAccountName();
-									if (selected != null && !string.IsNullOrEmpty(selected.AccNum))
+                                    this.mView.SetToolbarTitle(Resource.String.dashboard_menu_activity_title);
+                                    if (selected != null && !string.IsNullOrEmpty(selected.AccNum))
 									{
 										this.mView.ShowOwnerDashboardNoInternetConnection(selected.AccDesc, null, AccountData.Copy(selected, true));
 									}
@@ -232,7 +237,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 							}
 							else if (currentBottomNavigationMenu == Resource.Id.menu_bill)
 							{
-								if (customerBillingAccount != null && !customerBillingAccount.isOwned)
+                                if (customerBillingAccount != null && !customerBillingAccount.isOwned)
 								{
 									CustomerBillingAccount selected = CustomerBillingAccount.GetSelected();
 
@@ -267,8 +272,9 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 						else
 						{
 							CustomerBillingAccount selected = CustomerBillingAccount.GetSelected();
-							this.mView.ShowAccountName();
-							if (selected != null && !string.IsNullOrEmpty(selected.AccNum))
+                            this.mView.ShowAccountName();
+                            this.mView.SetToolbarTitle(Resource.String.dashboard_menu_activity_title);
+                            if (selected != null && !string.IsNullOrEmpty(selected.AccNum))
 							{
 								this.mView.ShowOwnerDashboardNoInternetConnection(selected.AccDesc, null, AccountData.Copy(selected, true));
 							}
@@ -325,7 +331,8 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 					{
 						if (DashboardHomeActivity.GO_TO_INNER_DASHBOARD)
 						{
-							OnAccountSelectDashBoard();
+
+                            OnAccountSelectDashBoard();
 						}
 						else
 						{
@@ -338,7 +345,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 				case Resource.Id.menu_bill:
 					if (accountList.Count > 0)
 					{
-						CustomerBillingAccount selected;
+                        CustomerBillingAccount selected;
 						if (CustomerBillingAccount.HasSelected())
 						{
 							selected = CustomerBillingAccount.GetSelected();
@@ -352,7 +359,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 							LoadBills(accountList[0]);
 							this.mView.SetAccountName(accountList[0].AccDesc);
 						}
-						if (selected.AccountCategoryId.Equals("2"))
+                        if (selected.AccountCategoryId.Equals("2"))
 						{
 							this.mView.ShowREAccount(true);
 						}
@@ -372,11 +379,10 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 				case Resource.Id.menu_promotion:
 
 
-					WeblinkEntity weblinkEntity = WeblinkEntity.GetByCode("PROMO");
+                    WeblinkEntity weblinkEntity = WeblinkEntity.GetByCode("PROMO");
 					if (weblinkEntity != null)
 					{
-						currentBottomNavigationMenu = Resource.Id.menu_promotion;
-
+                        currentBottomNavigationMenu = Resource.Id.menu_promotion;
 						this.mView.HideAccountName();
 						this.mView.SetToolbarTitle(Resource.String.promotion_menu_activity_title);
 						this.mView.ShowPromotionsMenu(Weblink.Copy(weblinkEntity));
@@ -397,20 +403,19 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 					}
 					break;
 				case Resource.Id.menu_reward:
-					currentBottomNavigationMenu = Resource.Id.menu_reward;
+                    currentBottomNavigationMenu = Resource.Id.menu_reward;
+                    this.mView.ShowToBeAddedToast();
 					break;
 				case Resource.Id.menu_feedback:
-
-					currentBottomNavigationMenu = Resource.Id.menu_feedback;
+                    currentBottomNavigationMenu = Resource.Id.menu_feedback;
 					this.mView.HideAccountName();
-					this.mView.SetToolbarTitle(Resource.String.feedback_menu_activity_title);
+                    this.mView.SetToolbarTitle(Resource.String.feedback_menu_activity_title);
 					this.mView.ShowFeedbackMenu();
 					break;
 				case Resource.Id.menu_more:
-
-					currentBottomNavigationMenu = Resource.Id.menu_more;
+                    currentBottomNavigationMenu = Resource.Id.menu_more;
 					this.mView.HideAccountName();
-					this.mView.SetToolbarTitle(Resource.String.more_menu_activity_title);
+                    this.mView.SetToolbarTitle(Resource.String.more_menu_activity_title);
 					this.mView.ShowMoreMenu();
 					break;
 			}
@@ -500,7 +505,8 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 					{
 						this.mView.HideProgressDialog();
 					}
-					this.mView.ShowOwnerDashboardNoInternetConnection(accountSelected.AccDesc, true, amountDueResponse.Data.RefreshMessage, amountDueResponse.Data.RefreshBtnText, AccountData.Copy(accountSelected, true));
+                    this.mView.ShowAccountName();
+                    this.mView.ShowOwnerDashboardNoInternetConnection(accountSelected.AccDesc, true, amountDueResponse.Data.RefreshMessage, amountDueResponse.Data.RefreshBtnText, AccountData.Copy(accountSelected, true));
 				}
 				else if (!amountDueResponse.Data.IsError)
 				{
@@ -522,7 +528,9 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 							{
 								this.mView.HideProgressDialog();
 							}
-							this.mView.ShowOwnerDashboardNoInternetConnection(accountSelected.AccDesc, usageHistoryResponse, AccountData.Copy(accountSelected, true));
+                            this.mView.ShowAccountName();
+                            this.mView.SetToolbarTitle(Resource.String.dashboard_menu_activity_title);
+                            this.mView.ShowOwnerDashboardNoInternetConnection(accountSelected.AccDesc, usageHistoryResponse, AccountData.Copy(accountSelected, true));
 							usageHistoryResponse = null;
 						}
 						else if (usageHistoryResponse != null && usageHistoryResponse.Data.Status.Equals("success") && !usageHistoryResponse.Data.IsError)
@@ -567,7 +575,9 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 							{
 								this.mView.HideProgressDialog();
 							}
-							this.mView.ShowOwnerDashboardNoInternetConnection(accountSelected.AccDesc, null, AccountData.Copy(accountSelected, true));
+                            this.mView.ShowAccountName();
+                            this.mView.SetToolbarTitle(Resource.String.dashboard_menu_activity_title);
+                            this.mView.ShowOwnerDashboardNoInternetConnection(accountSelected.AccDesc, null, AccountData.Copy(accountSelected, true));
 							this.mView.SetAccountName(accountSelected.AccDesc);
 							usageHistoryResponse = null;
 						}
@@ -578,7 +588,9 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 						{
 							this.mView.HideProgressDialog();
 						}
-						this.mView.ShowOwnerDashboardNoInternetConnection(accountSelected.AccDesc, null, AccountData.Copy(accountSelected, true));
+                        this.mView.ShowAccountName();
+                        this.mView.SetToolbarTitle(Resource.String.dashboard_menu_activity_title);
+                        this.mView.ShowOwnerDashboardNoInternetConnection(accountSelected.AccDesc, null, AccountData.Copy(accountSelected, true));
 						usageHistoryResponse = null;
 						Utility.LoggingNonFatalError(e);
 					}
@@ -588,7 +600,9 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 						{
 							this.mView.HideProgressDialog();
 						}
-						this.mView.ShowOwnerDashboardNoInternetConnection(accountSelected.AccDesc, null, AccountData.Copy(accountSelected, true));
+                        this.mView.ShowAccountName();
+                        this.mView.SetToolbarTitle(Resource.String.dashboard_menu_activity_title);
+                        this.mView.ShowOwnerDashboardNoInternetConnection(accountSelected.AccDesc, null, AccountData.Copy(accountSelected, true));
 						usageHistoryResponse = null;
 						Utility.LoggingNonFatalError(apiException);
 					}
@@ -598,7 +612,9 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 						{
 							this.mView.HideProgressDialog();
 						}
-						this.mView.ShowOwnerDashboardNoInternetConnection(accountSelected.AccDesc, null, AccountData.Copy(accountSelected, true));
+                        this.mView.ShowAccountName();
+                        this.mView.SetToolbarTitle(Resource.String.dashboard_menu_activity_title);
+                        this.mView.ShowOwnerDashboardNoInternetConnection(accountSelected.AccDesc, null, AccountData.Copy(accountSelected, true));
 						usageHistoryResponse = null;
 						Utility.LoggingNonFatalError(e);
 					}
@@ -609,7 +625,9 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 					{
 						this.mView.HideProgressDialog();
 					}
-					this.mView.ShowOwnerDashboardNoInternetConnection(accountSelected.AccDesc, true, null, null, AccountData.Copy(accountSelected, true));
+                    this.mView.ShowAccountName();
+                    this.mView.SetToolbarTitle(Resource.String.dashboard_menu_activity_title);
+                    this.mView.ShowOwnerDashboardNoInternetConnection(accountSelected.AccDesc, true, null, null, AccountData.Copy(accountSelected, true));
 				}
 			}
 			catch (System.OperationCanceledException e)
@@ -618,7 +636,9 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 				{
 					this.mView.HideProgressDialog();
 				}
-				this.mView.ShowOwnerDashboardNoInternetConnection(accountSelected.AccDesc, true, null, null, AccountData.Copy(accountSelected, true));
+                this.mView.ShowAccountName();
+                this.mView.SetToolbarTitle(Resource.String.dashboard_menu_activity_title);
+                this.mView.ShowOwnerDashboardNoInternetConnection(accountSelected.AccDesc, true, null, null, AccountData.Copy(accountSelected, true));
 				Utility.LoggingNonFatalError(e);
 			}
 			catch (ApiException apiException)
@@ -628,7 +648,9 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 				{
 					this.mView.HideProgressDialog();
 				}
-				this.mView.ShowOwnerDashboardNoInternetConnection(accountSelected.AccDesc, true, null, null, AccountData.Copy(accountSelected, true));
+                this.mView.ShowAccountName();
+                this.mView.SetToolbarTitle(Resource.String.dashboard_menu_activity_title);
+                this.mView.ShowOwnerDashboardNoInternetConnection(accountSelected.AccDesc, true, null, null, AccountData.Copy(accountSelected, true));
 				Utility.LoggingNonFatalError(apiException);
 			}
 			catch (Exception e)
@@ -638,7 +660,9 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 				{
 					this.mView.HideProgressDialog();
 				}
-				this.mView.ShowOwnerDashboardNoInternetConnection(accountSelected.AccDesc, true, null, null, AccountData.Copy(accountSelected, true));
+                this.mView.ShowAccountName();
+                this.mView.SetToolbarTitle(Resource.String.dashboard_menu_activity_title);
+                this.mView.ShowOwnerDashboardNoInternetConnection(accountSelected.AccDesc, true, null, null, AccountData.Copy(accountSelected, true));
 				Utility.LoggingNonFatalError(e);
 			}
 
@@ -692,8 +716,9 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 
 					if (!string.IsNullOrEmpty(response.Data.StatusCode) && response.Data.StatusCode.Equals("201"))
 					{
-						///No data condition
-						this.mView.ShowSMChartWithError(response.Data.SMUsageHistoryData, AccountData.Copy(accountSelected, true), true);
+                        ///No data condition
+                        this.mView.ShowAccountName();
+                        this.mView.ShowSMChartWithError(response.Data.SMUsageHistoryData, AccountData.Copy(accountSelected, true), true);
 					}
 					else
 					{
@@ -708,8 +733,8 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 						if (currentBottomNavigationMenu == Resource.Id.menu_dashboard)
 						{
 							this.mView.ShowAccountName();
-							this.mView.SetToolbarTitle(Resource.String.dashboard_menu_activity_title);
-							this.mView.ShowSMChart(response.Data.SMUsageHistoryData, AccountData.Copy(accountSelected, true));
+                            this.mView.SetToolbarTitle(Resource.String.dashboard_menu_activity_title);
+                            this.mView.ShowSMChart(response.Data.SMUsageHistoryData, AccountData.Copy(accountSelected, true));
 						}
 						else if (currentBottomNavigationMenu == Resource.Id.menu_bill)
 						{
@@ -882,7 +907,8 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 					this.mView.ShowBillMenu(accountData);
 				}
 				this.mView.ShowAccountName();
-				this.mView.SetToolbarTitle(Resource.String.bill_menu_activity_title);
+                this.mView.ShowHideActionBar(true);
+                this.mView.SetToolbarTitle(Resource.String.bill_menu_activity_title);
 				currentBottomNavigationMenu = Resource.Id.menu_bill;
 			}
 			catch (System.Exception e)
@@ -1021,8 +1047,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                 if (accountList != null && accountList.Count > 0)
 				{
                     DashboardHomeActivity.GO_TO_INNER_DASHBOARD = true;
-					this.mView.ShowAccountName();
-					this.mView.SetToolbarTitle(Resource.String.dashboard_menu_activity_title);
 					currentBottomNavigationMenu = Resource.Id.menu_dashboard;
                     if (CustomerBillingAccount.HasSelected())
 					{
@@ -1050,8 +1074,8 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 									if (storedSMData != null && storedSMData.Data != null && storedSMData.Data.SMUsageHistoryData != null)
 									{
 										this.mView.ShowAccountName();
-										this.mView.SetToolbarTitle(Resource.String.dashboard_menu_activity_title);
-										this.mView.ShowSMChart(storedSMData.Data.SMUsageHistoryData, AccountData.Copy(selected, true));
+                                        this.mView.SetToolbarTitle(Resource.String.dashboard_menu_activity_title);
+                                        this.mView.ShowSMChart(storedSMData.Data.SMUsageHistoryData, AccountData.Copy(selected, true));
 									}
 									else
 									{
@@ -1163,6 +1187,11 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 		{
 			OnAccountSelectDashBoard();
 		}
+
+        public int CheckCurrentDashboardMenu()
+        {
+            return currentBottomNavigationMenu;
+        }
 	}
 
 }

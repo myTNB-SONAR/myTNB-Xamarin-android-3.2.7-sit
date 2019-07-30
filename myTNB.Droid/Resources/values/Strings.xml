@@ -1408,4 +1408,11 @@ Please try again later.]]>
   <string name="ssmr_select_discontinue_reason_hint">SELECT REASON</string>
   <string name="ssmr_terms_conditions">By applying, you are agreeing to the <font color='#1c79ca'>TNB’s Terms of Use, Privacy policy, Anti-Spam Policy</font> and <font color='#1c79ca'>Personal Data Protection Policy</font>.</string>
   <string name="ssmr_discontinue_btn_submit">Submit</string>
+    
+  <string name="ssmr_submit_meter">Submit Meter Reading</string>
+  <string name="ssmr_view_meter">View Reading History</string>
+  
+  <string name="ssmr_meter_history_activity_title">Self Meter Reading</string>
+    
+   <string name="ssmr_need_pay">I Need To Pay</string>
 </resources>

@@ -1,12 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools"
-   android:id="@+id/shimmerCardContainer"
    android:layout_width="match_parent"
-   android:layout_height="70dp">
+   android:layout_height="wrap_content">
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginBottom="8dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="4dp"
         app:cardElevation="5dp"
         app:cardCornerRadius="5dp"
         app:cardBackgroundColor="@color/white"
@@ -15,7 +16,7 @@
         <com.facebook.shimmer.ShimmerFrameLayout
             android:id="@+id/shimmerConstainer"
    android:layout_width="match_parent"
-   android:layout_height="wrap_content">
+   android:layout_height="match_parent">
         <android.support.constraint.ConstraintLayout
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
@@ -28,9 +29,9 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            android:id="@+id/accountIcon"/>
+            android:id="@+id/accountIconShimmer"/>
         <TextView
-            android:id="@+id/accountName"
+            android:id="@+id/accountNameShimmer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
@@ -39,11 +40,11 @@
             android:textColor="@color/shimmer_color"
             android:textSize="14dp"
             android:layout_marginTop="12dp"
-            app:layout_constraintStart_toEndOf="@+id/accountIcon"
+            app:layout_constraintStart_toEndOf="@+id/accountIconShimmer"
             app:layout_constraintTop_toTopOf="parent"
         />
         <TextView
-            android:id="@+id/accountNumber"
+            android:id="@+id/accountNumberShimmer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
@@ -53,12 +54,12 @@
             android:textColor="@color/shimmer_color"
             android:layout_marginTop="2dp"
             android:layout_marginBottom="12dp"
-            app:layout_constraintStart_toEndOf="@+id/accountIcon"
-            app:layout_constraintTop_toBottomOf="@+id/accountName"
+            app:layout_constraintStart_toEndOf="@+id/accountIconShimmer"
+            app:layout_constraintTop_toBottomOf="@+id/accountNameShimmer"
             app:layout_constraintBottom_toBottomOf="parent"
         />
         <TextView
-            android:id="@+id/billDueAmount"
+            android:id="@+id/billDueAmountShimmer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
@@ -71,7 +72,7 @@
             app:layout_constraintTop_toTopOf="parent"
         />
         <TextView
-            android:id="@+id/billDueDate"
+            android:id="@+id/billDueDateShimmer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
@@ -82,7 +83,7 @@
             android:layout_marginTop="2dp"
             android:layout_marginBottom="12dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/billDueAmount"
+            app:layout_constraintTop_toBottomOf="@+id/billDueAmountShimmer"
             app:layout_constraintBottom_toBottomOf="parent"
         />
     </android.support.constraint.ConstraintLayout>
