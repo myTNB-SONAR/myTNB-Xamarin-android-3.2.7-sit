@@ -21,7 +21,7 @@ using myTNB_Android.Src.Utils;
 
 namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
 {
-    [Activity(Label = "SelectSMRAccountActivity", Theme = "@style/Theme.Dashboard")]
+    [Activity(Label = "Select SMR Account", Theme = "@style/Theme.Dashboard")]
     public class SelectSMRAccountActivity : BaseToolbarAppCompatActivity, SelectSMRAccountContract.IView
     {
         [BindView(Resource.Id.account_list_recycler_view)]

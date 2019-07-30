@@ -11,6 +11,7 @@ namespace myTNB_Android.Src.Base
         private List<CustomerBillingAccount> masterCustomerBillingAccountList = new List<CustomerBillingAccount>();
         private bool HasLoaded = false;
         private bool IsNeeUpdate = false;
+        private List<string> UpdatedAccountNumberList = new List<string>();
         private MyTNBAccountManagement()
         {
         }
@@ -57,11 +58,19 @@ namespace myTNB_Android.Src.Base
         {
             CustomerBillingAccount.UpdateBillingDetails(summaryDetails);
             IsNeeUpdate = false;
+            foreach (SummaryDashBoardAccountEntity entity in summaryDetails)
+            {
+                if (!UpdatedAccountNumberList.Contains(entity.AccountNo))
+                {
+                    UpdatedAccountNumberList.Add(entity.AccountNo);
+                }
+            }
         }
 
         public bool HasUpdatedBillingDetails(string accountNumber)
         {
-            return CustomerBillingAccount.HasUpdatedBillingDetails(accountNumber);
+            //return CustomerBillingAccount.HasUpdatedBillingDetails(accountNumber);
+            return UpdatedAccountNumberList.Contains(accountNumber);
         }
 
         public bool IsNeedUpdatedBillingDetails()

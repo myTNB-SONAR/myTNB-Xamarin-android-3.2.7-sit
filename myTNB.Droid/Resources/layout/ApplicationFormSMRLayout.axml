@@ -37,8 +37,9 @@
                    android:layout_width="match_parent"
                    android:layout_height="wrap_content"
                    android:id="@+id/accountSMRLabel"
+                android:layout_marginBottom="5dp"
                    android:textColor="#a6a6a6"
-                   android:text="Accounts"
+                   android:text="ACCOUNT"
                    android:textSize="12dp"/>
             <RelativeLayout
                 android:layout_height="wrap_content"
@@ -86,6 +87,7 @@
             android:layout_height="wrap_content"
             android:paddingLeft="14dp"
             android:paddingRight="14dp"
+            android:paddingTop="16dp"
             android:orientation="vertical"
             android:background="@android:color/white">
             <android.support.design.widget.TextInputLayout
