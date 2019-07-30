@@ -9,7 +9,7 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
 
         public interface IView
         {
-            void StartSMRApplication(string email, string mobileNumber);
+            void StartSMRApplication();
         }
 
         public interface IApiNotification

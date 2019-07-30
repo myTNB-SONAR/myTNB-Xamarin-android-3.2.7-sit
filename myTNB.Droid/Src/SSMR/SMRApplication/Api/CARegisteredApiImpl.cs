@@ -7,7 +7,7 @@ using Refit;
 
 namespace myTNB_Android.Src.SSMR.SMRApplication.Api
 {
-    public class CARegisteredApiImpl : OnBoardingSMRContract.IApiNotification
+    public class CARegisteredApiImpl : ApplicationFormSMRContract.IApiNotification
     {
         CARegisteredContactInfoApi api = null;
         HttpClient httpClient = null;

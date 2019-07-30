@@ -125,7 +125,7 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
                 {
                     MyTNBAccountManagement.GetInstance().UpdateIsSMROnboardingShown();
                 }
-                _ = presenter.GetCARegisteredContactInfo();
+                presenter.GetCARegisteredContactInfo();
             };
 
             skipOnboarding.Click += delegate
@@ -134,7 +134,7 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
             };
 
             TextViewUtils.SetMuseoSans500Typeface(dontShowMeAgainLabel, skipOnboarding, btnStartApplication);
-            MyTNBAccountManagement.GetInstance().SetSMRCustomerBillingAccounts();
+            //MyTNBAccountManagement.GetInstance().SetSMRCustomerBillingAccounts();
         }
 
         private void ShowSubmitButton(bool isShow)
@@ -183,11 +183,9 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
             return true;
         }
 
-        public void StartSMRApplication(string email, string mobileNumber)
+        public void StartSMRApplication()
         {
             Intent intent = new Intent(this, typeof(ApplicationFormSMRActivity));
-            intent.PutExtra("email", email);
-            intent.PutExtra("mobileNumber", mobileNumber);
             StartActivity(intent);
         }
     }

@@ -14,13 +14,11 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
     public class OnBoardingSMRPresenter
     {
         List<OnBoardingDataModel> onBoardingDataModelList;
-        OnBoardingSMRContract.IApiNotification api;
         OnBoardingSMRContract.IView mView;
         public OnBoardingSMRPresenter(OnBoardingSMRContract.IView view)
         {
             this.mView = view;
             onBoardingDataModelList = new List<OnBoardingDataModel>();
-            api = new CARegisteredApiImpl();
             for (int i = 0; i < 3; i++)
             {
                 OnBoardingDataModel model = new OnBoardingDataModel();
@@ -54,30 +52,25 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
             }
         }
 
-        public async Task GetCARegisteredContactInfo()
+        public void GetCARegisteredContactInfo()
         {
             List<CustomerBillingAccount> customerBillingAccounts = CustomerBillingAccount.EligibleSMRAccountList();
-            CustomerBillingAccount customerAccount = customerBillingAccounts[0];
-            UserEntity user = UserEntity.GetActive();
-            var newObject = new
+            List<SMRAccount> smrAccountList = new List<SMRAccount>();
+            if (customerBillingAccounts.Count > 0)
             {
-                contractAccount = customerAccount.AccNum,
-                isOwnedAccount = true,
-                usrInf = new
+                foreach (CustomerBillingAccount billingAccount in customerBillingAccounts)
                 {
-                    eid = user.UserName,
-                    sspuid = user.UserID,
-                    lang = "EN",
-                    sec_auth_k1 = Constants.APP_CONFIG.API_KEY_ID,
-                    sec_auth_k2 = "test",
-                    ses_param1 = "test",
-                    ses_param2 = "test"
+                    SMRAccount smrAccount = new SMRAccount();
+                    smrAccount.accountNumber = billingAccount.AccNum;
+                    smrAccount.accountName = billingAccount.AccDesc;
+                    smrAccount.accountSelected = false;
+                    smrAccountList.Add(smrAccount);
                 }
-            };
-            CARegisteredContactInfoResponse response = await api.GetCARegisteredContactInfo(newObject);
-            string email = response.Data.AccountDetailsData.Email;
-            string mobileNumber = response.Data.AccountDetailsData.Mobile;
-            this.mView.StartSMRApplication(email, mobileNumber);
+                smrAccountList[0].accountSelected = true; //Default Selection
+            }
+
+            UserSessions.SetSMRAccountList(smrAccountList);
+            this.mView.StartSMRApplication();
         }
     }
 }

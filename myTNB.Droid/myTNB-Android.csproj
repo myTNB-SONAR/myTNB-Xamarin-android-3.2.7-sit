@@ -1354,6 +1354,11 @@
     <Compile Include="Src\SSMR\SMRApplication\MVP\ApplicationFormSMRContract.cs" />
     <Compile Include="Src\Base\MyTNBAccountManagement.cs" />
     <AndroidResource Include="Resources\drawable\status_bar_gradient.axml" />
+    <Compile Include="Src\SSMR\SMRApplication\MVP\SelectSMRAccountActivity.cs" />
+    <AndroidResource Include="Resources\layout\SelectSMRAccountLayout.axml" />
+    <Compile Include="Src\SSMR\SMRApplication\Adapter\SelectSMRAccountAdapter.cs" />
+    <Compile Include="Src\SSMR\SMRApplication\MVP\SMRAccount.cs" />
+    <AndroidResource Include="Resources\layout\SelectSMRAccountItemLayout.axml" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
