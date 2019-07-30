@@ -14,6 +14,7 @@ using myTNB_Android.Src.AppLaunch.Models;
 using myTNB_Android.Src.AppLaunch.Requests;
 using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Base.Api;
+using myTNB_Android.Src.Base.Models;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.SiteCore;
 using myTNB_Android.Src.Utils;
@@ -112,7 +113,6 @@ namespace myTNB_Android.Src.AppLaunch.MVP
 
             var getPhoneVerifyApi = RestService.For<GetPhoneVerifyStatusApi>(httpClient);
 
-
 #else
             var api = RestService.For<INotificationApi>(Constants.SERVER_URL.END_POINT);
             var feedbackApi = RestService.For<IFeedbackApi>(Constants.SERVER_URL.END_POINT);
@@ -120,6 +120,7 @@ namespace myTNB_Android.Src.AppLaunch.MVP
             var masterDataApi = RestService.For<GetMasterDataApi>(Constants.SERVER_URL.END_POINT);
 
             var getPhoneVerifyApi = RestService.For<GetPhoneVerifyStatusApi>(Constants.SERVER_URL.END_POINT);
+
 #endif
             try
             {

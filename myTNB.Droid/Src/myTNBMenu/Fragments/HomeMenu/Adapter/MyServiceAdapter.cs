@@ -68,19 +68,22 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
                 case "1005":
                     vh.serviceImg.SetImageResource(Resource.Drawable.apply_autopay);
                     break;
-                default:
-                    vh.serviceImg.SetImageResource(Resource.Drawable.submit_meter);
-                    break;
 
             }
 
             ViewGroup.LayoutParams currentCard = vh.myServiceCardView.LayoutParameters;
 
-            DisplayMetrics displaymetrics = new DisplayMetrics();
-            this.mActivity.WindowManager.DefaultDisplay.GetMetrics(displaymetrics);
-            int devicewidth = (displaymetrics.WidthPixels / 3) - (int)DPUtils.ConvertDPToPx(12f);
-            currentCard.Height = devicewidth - (int)DPUtils.ConvertDPToPx(4f);
-            currentCard.Width = devicewidth;
+            int cardWidth = (this.mActivity.Resources.DisplayMetrics.WidthPixels / 3) - (int)DPUtils.ConvertDPToPx(12f);
+            float heightRatio = 84f / 88f;
+            int cardHeight = (int)(cardWidth * (heightRatio));
+            if (DPUtils.ConvertPxToDP(cardWidth) <= 108f)
+            {
+                cardWidth = (this.mActivity.Resources.DisplayMetrics.WidthPixels / 3) - (int)DPUtils.ConvertDPToPx(8f);
+                cardHeight = cardWidth;
+            }
+
+            currentCard.Height = cardHeight;
+            currentCard.Width = cardWidth;
 
             TextViewUtils.SetMuseoSans500Typeface(vh.serviceTitle);
 		}
@@ -131,10 +134,15 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
             private float spacing;
             private bool includeEdge;
 
-            public MyServiceItemDecoration(int spanCount, int dpSpacing, bool includeEdge)
+            public MyServiceItemDecoration(int spanCount, int dpSpacing, bool includeEdge, Android.App.Activity Activity)
             {
                 this.spanCount = spanCount;
                 this.spacing = DPUtils.ConvertDPToPx(dpSpacing);
+                int cardWidth = (Activity.Resources.DisplayMetrics.WidthPixels / 3) - (int)DPUtils.ConvertDPToPx(12f);
+                if (DPUtils.ConvertPxToDP(cardWidth) <= 108f)
+                {
+                    this.spacing = DPUtils.ConvertDPToPx(dpSpacing - 2);
+                }
                 this.includeEdge = includeEdge;
             }
 

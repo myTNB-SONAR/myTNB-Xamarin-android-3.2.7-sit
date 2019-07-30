@@ -37,11 +37,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
 			NewFAQShimmerViewHolder vh = holder as NewFAQShimmerViewHolder;
             ViewGroup.LayoutParams currentCard = vh.faqCardView.LayoutParameters;
 
-            DisplayMetrics displaymetrics = new DisplayMetrics();
-            this.mActivity.WindowManager.DefaultDisplay.GetMetrics(displaymetrics);
-            int devicewidth = (int)((displaymetrics.WidthPixels / 2.85) - DPUtils.ConvertDPToPx(20f));
-            currentCard.Height = devicewidth;
-            currentCard.Width = devicewidth;
+            int cardWidth = (int)((this.mActivity.Resources.DisplayMetrics.WidthPixels / 2.85) - DPUtils.ConvertDPToPx(20f));
+            if (DPUtils.ConvertPxToDP(cardWidth) < 96f)
+            {
+                cardWidth = (int) DPUtils.ConvertDPToPx(96f);
+            }
+
+            currentCard.Height = cardWidth;
+            currentCard.Width = cardWidth;
         }
 
 		public override RecyclerView.ViewHolder OnCreateViewHolder(ViewGroup parent, int viewType)

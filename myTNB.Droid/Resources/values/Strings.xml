@@ -1401,4 +1401,11 @@ Please try again later.]]>
 
   <string name="my_service_btn_retry">Retry</string>
   <string name="my_service_error">Something went wrong, Please try again.</string>
+    
+  <string name="ssmr_submit_meter">Submit Meter Reading</string>
+  <string name="ssmr_view_meter">View Reading History</string>
+  
+  <string name="ssmr_meter_history_activity_title">Self Meter Reading</string>
+    
+   <string name="ssmr_need_pay">I Need To Pay</string>
 </resources>
