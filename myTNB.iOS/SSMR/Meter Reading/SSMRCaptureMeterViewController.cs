@@ -20,7 +20,7 @@ namespace myTNB
         private UILabel _lblDescription;
         private UIView _viewPreview, _viewCamera, _viewCapture;
         private UIView _viewPreviewOne, _viewPreviewTwo, _viewPreviewThree;
-        private UIView _viewDelete, _viewCameraActions;
+        private UIView _viewDelete, _viewCameraActions, _viewMainPreviewParent;
         private UIImageView _imgViewMainPreview;
         private CustomUISlider _zoomSlider;
 
@@ -131,7 +131,8 @@ namespace myTNB
         private void SetCamera()
         {
             _viewCamera = new UIView(new CGRect(0, _lblDescription.Frame.GetMaxY() + 16
-               , ViewWidth, ViewHeight - _lblDescription.Frame.GetMaxY() - 16 - _viewPreview.Frame.Height));
+               , ViewWidth, ViewHeight - _lblDescription.Frame.GetMaxY() - 16 - _viewPreview.Frame.Height))
+            { ClipsToBounds = true };
             _viewDelete = GetDeleteSection(_viewCamera);
             _viewCameraActions = GetCameraActions(_viewCamera);
             _viewCamera.AddSubviews(new UIView[] { _viewDelete, _viewCameraActions });
@@ -152,7 +153,7 @@ namespace myTNB
             view.AddGestureRecognizer(new UITapGestureRecognizer(() =>
             {
                 Debug.WriteLine("Delete tapped");
-                _imgViewMainPreview.Hidden = true;
+                _viewMainPreviewParent.Hidden = true;
                 _imgViewMainPreview.Image = null;
                 _viewDelete.Hidden = true;
                 _viewCameraActions.Hidden = false;
@@ -264,17 +265,57 @@ namespace myTNB
             }
             else
             {
-                if (_imgViewMainPreview == null)
+                if (_viewMainPreviewParent == null || _imgViewMainPreview == null)
                 {
-                    _imgViewMainPreview = new UIImageView(new CGRect(0, 0, ViewWidth, _viewCamera.Frame.Height));
-                }
-                _imgViewMainPreview.Image = capturedImage;
-                _imgViewMainPreview.Hidden = false;
+                    _viewMainPreviewParent = new UIView(new CGRect(0, 0, ViewWidth, _viewCamera.Frame.Height))
+                    {
+                        ClipsToBounds = true,
+                        BackgroundColor = UIColor.White
+                    };
+                    _imgViewMainPreview = new UIImageView(new CGRect(new CGPoint(0, 0), _viewMainPreviewParent.Frame.Size));
+                    _imgViewMainPreview.UserInteractionEnabled = true;
+                    _imgViewMainPreview.MultipleTouchEnabled = true;
+                    _imgViewMainPreview.AddGestureRecognizer(new UIPinchGestureRecognizer((sender) => { PinchZoomAction(sender); }));
+                    _imgViewMainPreview.AddGestureRecognizer(new UIPanGestureRecognizer((sender) => { PanAction(sender); }));
 
-                _viewCamera.AddSubview(_imgViewMainPreview);
+                    _viewMainPreviewParent.AddSubview(_imgViewMainPreview);
+                }
+                _imgViewMainPreview.Frame = new CGRect(new CGPoint(0, 0), _viewMainPreviewParent.Frame.Size);
+                _imgViewMainPreview.Image = capturedImage;
+                _viewMainPreviewParent.Hidden = false;
+
+                _viewCamera.AddSubview(_viewMainPreviewParent);
                 _viewCamera.BringSubviewToFront(_viewDelete);
                 _viewDelete.Hidden = false;
                 _viewCameraActions.Hidden = true;
+            }
+        }
+
+        private void PinchZoomAction(UIPinchGestureRecognizer sender)
+        {
+            if (sender != null && sender.View != null
+                && (sender.State == UIGestureRecognizerState.Began || sender.State == UIGestureRecognizerState.Changed))
+            {
+                nfloat currentScale = _imgViewMainPreview.Frame.Size.Width / _imgViewMainPreview.Bounds.Size.Width;
+                nfloat newScale = currentScale * sender.Scale;
+
+                if (newScale < 1) { newScale = 1; }
+                if (newScale > 5) { newScale = 5; }
+
+                CGAffineTransform transform = CGAffineTransform.MakeScale(newScale, newScale);
+                _imgViewMainPreview.Transform = transform;
+                sender.Scale = 1;
+            }
+        }
+
+        private void PanAction(UIPanGestureRecognizer sender)
+        {
+            if (sender != null && sender.View != null
+                && (sender.State == UIGestureRecognizerState.Began || sender.State == UIGestureRecognizerState.Changed))
+            {
+                CGPoint point = sender.TranslationInView(sender.View);
+                sender.View.Transform = CGAffineTransform.Translate(sender.View.Transform, point.X, point.Y);
+                sender.SetTranslation(new CGPoint(0, 0), sender.View);
             }
         }
 
