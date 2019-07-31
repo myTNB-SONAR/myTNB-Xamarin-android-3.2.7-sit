@@ -2,6 +2,7 @@
 using myTNB_Android.Src.AddAccount.Api;
 using myTNB_Android.Src.AddAccount.Models;
 using myTNB_Android.Src.AddAccount.Requests;
+using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Base.Api;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.SummaryDashBoard.Models;
@@ -219,6 +220,7 @@ namespace myTNB_Android.Src.AddAccount.MVP
                         mView.HideAddingAccountProgressDialog();
                     }
                     mView.ShowAddAccountSuccess(result.response);
+                    MyTNBAccountManagement.GetInstance().RemoveCustomerBillingDetails();
                 }
 
             }

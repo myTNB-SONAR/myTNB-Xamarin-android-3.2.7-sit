@@ -388,6 +388,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 summaryDashBoardDetails.AccName = customerBillintAccount.AccDesc;
                 summaryDashBoardDetails.AccNumber = customerBillintAccount.AccNum;
                 summaryDashBoardDetails.AccType = customerBillintAccount.AccountCategoryId;
+                summaryDashBoardDetails.SmartMeterCode = customerBillintAccount.SmartMeterCode;
+                summaryDashBoardDetails.IsTaggedSMR = customerBillintAccount.IsTaggedSMR;
                 summaryDashboardInfoList.Add(summaryDashBoardDetails);
             }
 

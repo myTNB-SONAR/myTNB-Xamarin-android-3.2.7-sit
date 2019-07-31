@@ -214,7 +214,8 @@ namespace myTNB_Android.Src.Database.Model
                 OwnerName = accountResponse.ownerName,
                 AccountCategoryId = accountResponse.accountCategoryId,
                 SmartMeterCode = accountResponse.smartMeterCode == null ? "0" : accountResponse.smartMeterCode,
-                IsSelected = isSelected
+                IsSelected = isSelected,
+                IsTaggedSMR = accountResponse.IsTaggedSMR
             };
 
             int newRecordRow = db.InsertOrReplace(newRecord);
