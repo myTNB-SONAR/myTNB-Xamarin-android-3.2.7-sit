@@ -90,6 +90,18 @@
                         android:lineSpacingExtra="6dp"
                         android:gravity="center"
                         android:layout_gravity="top" />
+                    <Button
+                        android:id="@+id/btnSubmitMeter"
+                        style="@style/Theme.SubmitMeterReading"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="16dp"
+                        android:layout_marginBottom="16dp"
+                        android:layout_weight="1"
+                        android:text="Submit Meter Reading"
+                        android:textAllCaps="false"
+                        android:visibility="gone" />
                     </LinearLayout>
                 </LinearLayout>
             </android.support.design.widget.CollapsingToolbarLayout>

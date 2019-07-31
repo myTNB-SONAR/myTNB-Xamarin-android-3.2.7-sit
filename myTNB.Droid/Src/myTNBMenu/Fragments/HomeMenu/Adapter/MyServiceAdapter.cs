@@ -44,11 +44,173 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
 
             if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
             {
-                vh.serviceTitle.TextFormatted = Html.FromHtml(model.serviceCategoryName, FromHtmlOptions.ModeLegacy);
+                if (model.serviceCategoryName.Contains("<br/>") || model.serviceCategoryName.Contains("\n"))
+                {
+                    string newStringValue = "";
+                    if (model.serviceCategoryName.Contains("\n"))
+                    {
+                        newStringValue = model.serviceCategoryName.Replace("\n", "<br/>");
+                    }
+                    else if (model.serviceCategoryName.Contains("\r\n"))
+                    {
+                        newStringValue = model.serviceCategoryName.Replace("\r\n", "<br/>");
+                    }
+                    else
+                    {
+                        newStringValue = model.serviceCategoryName;
+                    }
+                    vh.serviceTitle.TextFormatted = Html.FromHtml(newStringValue, FromHtmlOptions.ModeLegacy);
+                }
+                else
+                {
+                    string[] splittedString = model.serviceCategoryName.Trim().Split(" ");
+                    string newStringName = "";
+                    if (splittedString.Length > 3)
+                    {
+                        for (int i = 0; i < splittedString.Length; i++)
+                        {
+                            if (i == 2)
+                            {
+                                newStringName += splittedString[i] + "<br/>";
+                            }
+                            else if (i == splittedString.Length - 1)
+                            {
+                                newStringName += splittedString[i];
+                            }
+                            else
+                            {
+                                newStringName += splittedString[i] + " ";
+                            }
+                        }
+                    }
+                    else if (splittedString.Length == 3)
+                    {
+                        for (int i = 0; i < splittedString.Length; i++)
+                        {
+                            if (i == 1)
+                            {
+                                newStringName += splittedString[i] + "<br/>";
+                            }
+                            else if (i == splittedString.Length - 1)
+                            {
+                                newStringName += splittedString[i];
+                            }
+                            else
+                            {
+                                newStringName += splittedString[i] + " ";
+                            }
+                        }
+                    }
+                    else if (splittedString.Length == 2)
+                    {
+                        for (int i = 0; i < splittedString.Length; i++)
+                        {
+                            if (i == 0)
+                            {
+                                newStringName += splittedString[i] + "<br/>";
+                            }
+                            else if (i == splittedString.Length - 1)
+                            {
+                                newStringName += splittedString[i];
+                            }
+                            else
+                            {
+                                newStringName += splittedString[i] + " ";
+                            }
+                        }
+                    }
+                    else
+                    {
+                        newStringName = model.serviceCategoryName;
+                    }
+
+                    vh.serviceTitle.TextFormatted = Html.FromHtml(newStringName, FromHtmlOptions.ModeLegacy);
+                }
             }
             else
             {
-                vh.serviceTitle.TextFormatted = Html.FromHtml(model.serviceCategoryName);
+                if (model.serviceCategoryName.Contains("<br/>") || model.serviceCategoryName.Contains("\n"))
+                {
+                    string newStringValue = "";
+                    if (model.serviceCategoryName.Contains("\n"))
+                    {
+                        newStringValue = model.serviceCategoryName.Replace("\n", "<br/>");
+                    }
+                    else if (model.serviceCategoryName.Contains("\r\n"))
+                    {
+                        newStringValue = model.serviceCategoryName.Replace("\r\n", "<br/>");
+                    }
+                    else
+                    {
+                        newStringValue = model.serviceCategoryName;
+                    }
+                    vh.serviceTitle.TextFormatted = Html.FromHtml(newStringValue);
+                }
+                else
+                {
+                    string[] splittedString = model.serviceCategoryName.Trim().Split(" ");
+                    string newStringName = "";
+                    if (splittedString.Length > 3)
+                    {
+                        for (int i = 0; i < splittedString.Length; i++)
+                        {
+                            if (i == 2)
+                            {
+                                newStringName += splittedString[i] + "<br/>";
+                            }
+                            else if (i == splittedString.Length - 1)
+                            {
+                                newStringName += splittedString[i];
+                            }
+                            else
+                            {
+                                newStringName += splittedString[i] + " ";
+                            }
+                        }
+                    }
+                    else if (splittedString.Length == 3)
+                    {
+                        for (int i = 0; i < splittedString.Length; i++)
+                        {
+                            if (i == 1)
+                            {
+                                newStringName += splittedString[i] + "<br/>";
+                            }
+                            else if (i == splittedString.Length - 1)
+                            {
+                                newStringName += splittedString[i];
+                            }
+                            else
+                            {
+                                newStringName += splittedString[i] + " ";
+                            }
+                        }
+                    }
+                    else if (splittedString.Length == 2)
+                    {
+                        for (int i = 0; i < splittedString.Length; i++)
+                        {
+                            if (i == 0)
+                            {
+                                newStringName += splittedString[i] + "<br/>";
+                            }
+                            else if (i == splittedString.Length - 1)
+                            {
+                                newStringName += splittedString[i];
+                            }
+                            else
+                            {
+                                newStringName += splittedString[i] + " ";
+                            }
+                        }
+                    }
+                    else
+                    {
+                        newStringName = model.serviceCategoryName;
+                    }
+
+                    vh.serviceTitle.TextFormatted = Html.FromHtml(newStringName);
+                }
             }
 
             switch(model.ServiceCategoryId)
@@ -86,6 +248,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
             currentCard.Width = cardWidth;
 
             TextViewUtils.SetMuseoSans500Typeface(vh.serviceTitle);
+
+
 		}
 
 		public override RecyclerView.ViewHolder OnCreateViewHolder(ViewGroup parent, int viewType)
