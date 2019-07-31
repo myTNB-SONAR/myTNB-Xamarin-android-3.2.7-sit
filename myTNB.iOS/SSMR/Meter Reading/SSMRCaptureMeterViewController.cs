@@ -23,6 +23,7 @@ namespace myTNB
         private UIView _viewDelete, _viewCameraActions, _viewMainPreviewParent;
         private UIImageView _imgViewMainPreview;
         private CustomUISlider _zoomSlider;
+        private UIButton _btnSubmit;
 
         private AVCaptureSession _captureSession;
         private AVCaptureDevice _captureDevice;
@@ -104,17 +105,15 @@ namespace myTNB
 
             nfloat btnYLoc = (IsThreePhase ? _viewPreviewOne.Frame.GetMaxY() : 0) + 16.0F;
 
-            UIButton btnSubmit = new CustomUIButtonV2()
+            _btnSubmit = new CustomUIButtonV2()
             {
                 Frame = new CGRect(16, btnYLoc, ViewWidth - 32, 48),
                 BackgroundColor = MyTNBColor.FreshGreen
             };
-            btnSubmit.SetTitle(GetCommonI18NValue(SSMRConstants.I18N_Submit), UIControlState.Normal);
-            btnSubmit.TouchUpInside += (sender, e) =>
-            {
-            };
-            _viewPreview.AddSubview(btnSubmit);
-            nfloat containerHeight = btnSubmit.Frame.GetMaxY() + (DeviceHelper.IsIphoneXUpResolution() ? 36 : 16);
+            _btnSubmit.SetTitle(GetCommonI18NValue(SSMRConstants.I18N_Submit), UIControlState.Normal);
+            _btnSubmit.TouchUpInside += OnSubmit;
+            _viewPreview.AddSubview(_btnSubmit);
+            nfloat containerHeight = _btnSubmit.Frame.GetMaxY() + (DeviceHelper.IsIphoneXUpResolution() ? 36 : 16);
             _viewPreview.Frame = new CGRect(0, ViewHeight - containerHeight, ViewWidth, containerHeight);
             View.AddSubview(_viewPreview);
         }
@@ -257,8 +256,10 @@ namespace myTNB
             }));
         }
 
+        private UIImage _capturedImage;
         private void OnCapturePhoto(UIImage capturedImage)
         {
+            _capturedImage = capturedImage;
             if (IsThreePhase)
             {
 
@@ -321,9 +322,22 @@ namespace myTNB
 
         private string GetBase64String(UIImage img)
         {
-            NSData imgData = img.AsJPEG(0.0F);//Lowest Compression
-            string base64 = imgData.GetBase64EncodedString(NSDataBase64EncodingOptions.None);
-            return base64 ?? string.Empty;
+            if (img != null)
+            {
+                NSData imgData = img.AsJPEG();//0.0Lowest Compression
+                string base64 = imgData.GetBase64EncodedString(NSDataBase64EncodingOptions.None);
+                return base64 ?? string.Empty;
+            }
+            return string.Empty;
+        }
+
+        private UIImage _croppedImage;
+        private void OnSubmit(object sender, EventArgs e)
+        {
+            CGRect cropRect = new CGRect(0, 0, ViewWidth, 100);
+            CGImage subImage = _capturedImage.CGImage.WithImageInRect(cropRect);
+            _croppedImage = UIImage.FromImage(subImage);
+            GetBase64String(_croppedImage);
         }
     }
 }
