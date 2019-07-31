@@ -48,7 +48,7 @@
         public static string IMG_MobileNumber = "Mobile";
         public static string IMG_Email = "Email";
         public static string IMG_SMRMediumIcon = "SMR-Medium-Icon";
-        public static string IMG_SMROpenSubmittedBG = "SMR-Open-Submitted-BG";
+        public static string IMG_SMROpenIcon = "SMR-Open-Icon";
         public static string IMG_BackIcon = "Back-White";
         public static string IMG_PrimaryIcon = "SSMRPrimaryIcon";
         public static string IMG_Info = "IC-Info";

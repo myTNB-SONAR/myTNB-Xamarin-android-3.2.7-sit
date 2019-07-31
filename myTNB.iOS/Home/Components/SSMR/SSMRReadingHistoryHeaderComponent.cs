@@ -22,13 +22,14 @@ namespace myTNB
 
         private void CreateComponent()
         {
-            nfloat origImageRatio = 163.0f / 320.0f;
-            nfloat imageHeight = _parentView.Frame.Width * origImageRatio;
-            _containerView = new UIView(new CGRect(0, 0, _parentView.Frame.Width, 300f));
-            _imageView = new UIImageView(new CGRect(0, 0, _parentView.Frame.Width, imageHeight))
+            _containerView = new UIView(new CGRect(0, 0, _parentView.Frame.Width, 300f))
             {
-                Image = UIImage.FromBundle(SSMRConstants.IMG_SMROpenSubmittedBG),
-                ContentMode = UIViewContentMode.ScaleAspectFill,
+                BackgroundColor = UIColor.Clear
+            };
+            _imageView = new UIImageView(new CGRect(DeviceHelper.GetCenterXWithObjWidth(DeviceHelper.GetScaledWidth(131.0f), _containerView), 32, DeviceHelper.GetScaledWidth(131.0f), DeviceHelper.GetScaledHeight(144.0f)))
+            {
+                Image = UIImage.FromBundle(SSMRConstants.IMG_SMROpenIcon),
+                ContentMode = UIViewContentMode.ScaleAspectFit,
                 BackgroundColor = UIColor.Clear
             };
             _labelTitle = new UILabel(new CGRect(_padding, _imageView.Frame.GetMaxY() + _padding, _parentView.Frame.Width - (_padding * 2), 24f))
@@ -44,7 +45,8 @@ namespace myTNB
                 Font = MyTNBFont.MuseoSans14_300,
                 TextColor = MyTNBColor.GreyishBrownTwo,
                 TextAlignment = UITextAlignment.Center,
-                Editable = false
+                Editable = false,
+                BackgroundColor = UIColor.Clear
             };
             _containerView.AddSubviews(new UIView { _imageView, _labelTitle, _txtDesc });
         }

@@ -1015,14 +1015,6 @@
     <ImageAsset Include="Assets.xcassets\SSMRPrimaryIcon.imageset\SSMRPrimaryIcon.png" />
     <ImageAsset Include="Assets.xcassets\SSMRPrimaryIcon.imageset\SSMRPrimaryIcon%402x.png" />
     <ImageAsset Include="Assets.xcassets\SSMRPrimaryIcon.imageset\SSMRPrimaryIcon%403x.png" />
-    <ImageAsset Include="Assets.xcassets\SMR-Closed-BG.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\SMR-Closed-BG.imageset\SMR-Closed-BG.png" />
-    <ImageAsset Include="Assets.xcassets\SMR-Closed-BG.imageset\SMR-Closed-BG%402x.png" />
-    <ImageAsset Include="Assets.xcassets\SMR-Closed-BG.imageset\SMR-Closed-BG%403x.png" />
-    <ImageAsset Include="Assets.xcassets\SMR-Open-Submitted-BG.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\SMR-Open-Submitted-BG.imageset\SMR-Open-Submitted-BG.png" />
-    <ImageAsset Include="Assets.xcassets\SMR-Open-Submitted-BG.imageset\SMR-Open-Submitted-BG%402x.png" />
-    <ImageAsset Include="Assets.xcassets\SMR-Open-Submitted-BG.imageset\SMR-Open-Submitted-BG%403x.png" />
     <ImageAsset Include="Assets.xcassets\Camera-Thumb.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Camera-Thumb.imageset\oval.png" />
     <ImageAsset Include="Assets.xcassets\Camera-Thumb.imageset\oval%402x.png" />
@@ -1048,6 +1040,14 @@
     <ImageAsset Include="Assets.xcassets\kWh-Icon.imageset\kWh-Icon.png" />
     <ImageAsset Include="Assets.xcassets\kWh-Icon.imageset\kWh-Icon%402x.png" />
     <ImageAsset Include="Assets.xcassets\kWh-Icon.imageset\kWh-Icon%403x.png" />
+    <ImageAsset Include="Assets.xcassets\SMR-History-BG.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\SMR-Open-Icon.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\SMR-Open-Icon.imageset\SMR-Open-Icon.png" />
+    <ImageAsset Include="Assets.xcassets\SMR-Open-Icon.imageset\SMR-Open-Icon%402x.png" />
+    <ImageAsset Include="Assets.xcassets\SMR-Open-Icon.imageset\SMR-Open-Icon%403x.png" />
+    <ImageAsset Include="Assets.xcassets\SMR-History-BG.imageset\SMR-History-BG-1.png" />
+    <ImageAsset Include="Assets.xcassets\SMR-History-BG.imageset\SMR-History-BG%402x-1.png" />
+    <ImageAsset Include="Assets.xcassets\SMR-History-BG.imageset\SMR-History-BG%403x-1.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -1378,6 +1378,8 @@
     <Folder Include="Assets.xcassets\Accounts-SMR-Icon.imageset\" />
     <Folder Include="Assets.xcassets\IC-Info.imageset\" />
     <Folder Include="Assets.xcassets\kWh-Icon.imageset\" />
+    <Folder Include="Assets.xcassets\SMR-History-BG.imageset\" />
+    <Folder Include="Assets.xcassets\SMR-Open-Icon.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />

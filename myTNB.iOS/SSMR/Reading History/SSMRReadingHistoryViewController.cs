@@ -1,4 +1,6 @@
+using CoreAnimation;
 using CoreGraphics;
+using myTNB.Dashboard.DashboardComponents;
 using myTNB.Model;
 using myTNB.SSMR;
 using System;
@@ -11,15 +13,21 @@ namespace myTNB
     public partial class SSMRReadingHistoryViewController : CustomUIViewController
     {
         SSMRReadingHistoryHeaderComponent _ssmrHeaderComponent;
+        GradientViewComponent _gradientViewComponent;
+        TitleBarComponent _titleBarComponent;
         UITableView _readingHistoryTableView;
-        UIView _headerView;
+        UIView _headerView, _navbarView;
         MeterReadingHistoryModel _meterReadingHistory;
         List<MeterReadingHistoryItemModel> _readingHistoryList;
+        CAGradientLayer _gradientLayer;
 
         nfloat _headerHeight;
         nfloat _maxHeaderHeight;
         nfloat _minHeaderHeight = 0.1f;
+        nfloat _tableViewOffset = 64f;
         nfloat _previousScrollOffset;
+        nfloat btnWidth = 24f;
+        nfloat titleBarHeight = 24f;
 
         public SSMRReadingHistoryViewController(IntPtr handle) : base(handle) { }
 
@@ -36,19 +44,99 @@ namespace myTNB
 
         private void SetNavigation()
         {
-            UIImage backImg = UIImage.FromBundle(SSMRConstants.IMG_BackIcon);
-            UIImage btnRightImg = UIImage.FromBundle(SSMRConstants.IMG_PrimaryIcon);
-            UIBarButtonItem btnBack = new UIBarButtonItem(backImg, UIBarButtonItemStyle.Done, (sender, e) =>
+            if (NavigationController != null && NavigationController.NavigationBar != null)
+            {
+                NavigationController.NavigationBar.Hidden = true;
+            }
+
+            int yLocation = 26;
+            if (DeviceHelper.IsIphoneXUpResolution())
+            {
+                yLocation = 50;
+            }
+
+            _navbarView = new UIView(new CGRect(0, 0, ViewWidth, DeviceHelper.GetStatusBarHeight() + NavigationController.NavigationBar.Frame.Height))
+            {
+                BackgroundColor = UIColor.Clear
+            };
+
+            UIImageView bgImageView = new UIImageView(new CGRect(0, 0, ViewWidth, 190f))
+            {
+                Image = UIImage.FromBundle("SMR-History-BG")
+            };
+
+            View.AddSubview(bgImageView);
+
+            UIView viewTitleBar = new UIView(new CGRect(0, yLocation, _navbarView.Frame.Width, titleBarHeight));
+
+            UIView viewBack = new UIView(new CGRect(18, 0, 24, titleBarHeight));
+            UIImageView imgViewBack = new UIImageView(new CGRect(0, 0, 24, titleBarHeight))
+            {
+                Image = UIImage.FromBundle(SSMRConstants.IMG_BackIcon)
+            };
+            viewBack.AddSubview(imgViewBack);
+            viewTitleBar.AddSubview(viewBack);
+
+            UILabel lblTitle = new UILabel(new CGRect(58, 0, _navbarView.Frame.Width - 116, titleBarHeight))
+            {
+                Font = MyTNBFont.MuseoSans16_500,
+                Text = GetI18NValue(SSMRConstants.I18N_NavTitle)
+            };
+
+            lblTitle.TextAlignment = UITextAlignment.Center;
+            lblTitle.TextColor = UIColor.White;
+            viewTitleBar.AddSubview(lblTitle);
+
+            UIView viewRightBtn = new UIView(new CGRect(_navbarView.Frame.Width - 40, 0, 24, titleBarHeight));
+            UIImageView imgViewRightBtn = new UIImageView(new CGRect(0, 0, 24, titleBarHeight))
+            {
+                Image = UIImage.FromBundle(SSMRConstants.IMG_PrimaryIcon)
+            };
+            viewRightBtn.AddSubview(imgViewRightBtn);
+            viewTitleBar.AddSubview(viewRightBtn);
+
+            viewBack.AddGestureRecognizer(new UITapGestureRecognizer(() =>
             {
                 DismissViewController(true, null);
-            });
-            UIBarButtonItem btnRight = new UIBarButtonItem(btnRightImg, UIBarButtonItemStyle.Done, (sender, e) =>
+            }));
+
+            viewRightBtn.AddGestureRecognizer(new UITapGestureRecognizer(() =>
             {
                 Debug.WriteLine("btnRight tapped");
-            });
-            NavigationItem.LeftBarButtonItem = btnBack;
-            NavigationItem.RightBarButtonItem = btnRight;
-            Title = GetI18NValue(SSMRConstants.I18N_NavTitle);
+            }));
+
+            _navbarView.AddSubview(viewTitleBar);
+
+            var startColor = MyTNBColor.GradientPurpleDarkElement;
+            var endColor = MyTNBColor.GradientPurpleLightElement;
+            _gradientLayer = new CAGradientLayer
+            {
+                Colors = new[] { startColor.CGColor, endColor.CGColor }
+            };
+            _gradientLayer.StartPoint = new CGPoint(x: 0.0, y: 0.5);
+            _gradientLayer.EndPoint = new CGPoint(x: 1.0, y: 0.5);
+
+            _gradientLayer.Frame = _navbarView.Bounds;
+            _gradientLayer.Opacity = 0f;
+            _navbarView.Layer.InsertSublayer(_gradientLayer, 0);
+            View.AddSubview(_navbarView);
+        }
+
+        private void AddViewWithOpacity(float opacity)
+        {
+            var startColor = MyTNBColor.GradientPurpleDarkElement;
+            var endColor = MyTNBColor.GradientPurpleLightElement;
+            var gradientLayer = new CAGradientLayer
+            {
+                Colors = new[] { startColor.CGColor, endColor.CGColor }
+            };
+            gradientLayer.StartPoint = new CGPoint(x: 0.0, y: 0.5);
+            gradientLayer.EndPoint = new CGPoint(x: 1.0, y: 0.5);
+
+            gradientLayer.Frame = _navbarView.Bounds;
+            gradientLayer.Opacity = opacity;
+            _navbarView.Layer.ReplaceSublayer(_gradientLayer, gradientLayer);
+            _gradientLayer = gradientLayer;
         }
 
         private void PrepareHeaderView()
@@ -73,7 +161,7 @@ namespace myTNB
 
         private void AddTableView()
         {
-            _readingHistoryTableView = new UITableView(new CGRect(0, 0, ViewWidth, ViewHeight));
+            _readingHistoryTableView = new UITableView(new CGRect(0, _navbarView.Frame.GetMaxY(), ViewWidth, ViewHeight));
             _readingHistoryTableView.RegisterClassForCellReuse(typeof(SSMRReadingHistoryCell), SSMRConstants.Cell_ReadingHistory);
             _readingHistoryTableView.Source = new SSMRReadingHistoryDataSource(OnTableViewScrolled, _readingHistoryList);
             _readingHistoryTableView.BackgroundColor = UIColor.Clear;
@@ -115,6 +203,9 @@ namespace myTNB
             }
 
             _previousScrollOffset = _readingHistoryTableView.ContentOffset.Y;
+            var opac = _previousScrollOffset / _tableViewOffset;
+            var absOpacity = Math.Abs((float)opac);
+            AddViewWithOpacity(absOpacity);
         }
     }
 }
