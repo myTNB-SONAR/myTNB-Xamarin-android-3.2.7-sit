@@ -27,7 +27,7 @@ using static myTNB_Android.Src.SSMR.SMRApplication.Api.SMRregistrationSubmitResp
 
 namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
 {
-    [Activity(Label = "Apply Self Meter Reading", Theme = "@style/Theme.Dashboard")]
+    [Activity(Label = "Apply Self Meter Reading", Theme = "@style/Theme.RegisterForm")]
     public class ApplicationFormSMRActivity : BaseToolbarAppCompatActivity, ApplicationFormSMRContract.IView
     {
         [BindView(Resource.Id.applySMRForLabel)]

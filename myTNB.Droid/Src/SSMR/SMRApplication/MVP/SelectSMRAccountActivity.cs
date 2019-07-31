@@ -40,7 +40,7 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
 
         public override bool ShowCustomToolbarTitle()
         {
-            return false;
+            return true;
         }
 
         public void UpdateSelectedAccount(int position)
