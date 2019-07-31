@@ -1044,6 +1044,10 @@
     <ImageAsset Include="Assets.xcassets\IC-Info.imageset\infoWhiteFull.png" />
     <ImageAsset Include="Assets.xcassets\IC-Info.imageset\infoWhiteFull%402x.png" />
     <ImageAsset Include="Assets.xcassets\IC-Info.imageset\infoWhiteFull%403x.png" />
+    <ImageAsset Include="Assets.xcassets\kWh-Icon.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\kWh-Icon.imageset\kWh-Icon.png" />
+    <ImageAsset Include="Assets.xcassets\kWh-Icon.imageset\kWh-Icon%402x.png" />
+    <ImageAsset Include="Assets.xcassets\kWh-Icon.imageset\kWh-Icon%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -1373,6 +1377,7 @@
     <Folder Include="Home\Components\Dashboard Home\" />
     <Folder Include="Assets.xcassets\Accounts-SMR-Icon.imageset\" />
     <Folder Include="Assets.xcassets\IC-Info.imageset\" />
+    <Folder Include="Assets.xcassets\kWh-Icon.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -2131,6 +2136,12 @@
     <Compile Include="Model\SSMR\SMRAccountStatusResponseModel.cs" />
     <Compile Include="Customs\CustomUISlider.cs" />
     <Compile Include="SSMR\Meter Reading\CapturePhotoDelegate.cs" />
+    <Compile Include="Home\Components\SSMR\SSMRMeterCardComponent.cs" />
+    <Compile Include="SSMR\Meter Reading\SSMRReadMeterViewController.cs" />
+    <Compile Include="SSMR\Meter Reading\SSMRReadMeterViewController.designer.cs">
+      <DependentUpon>SSMRReadMeterViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Home\Components\SSMR\SSMRMeterFooterComponent.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />

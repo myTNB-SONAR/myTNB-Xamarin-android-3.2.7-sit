@@ -11,11 +11,8 @@ using UIKit;
 
 namespace myTNB
 {
-    [Register ("SSMRReadingHistoryViewController")]
-    partial class SSMRReadingHistoryViewController
+    [Register ("SSMRReadMeterViewController")]
+    partial class SSMRReadMeterViewController
     {
-        void ReleaseDesignerOutlets ()
-        {
-        }
     }
 }
