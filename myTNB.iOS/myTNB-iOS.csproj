@@ -2131,6 +2131,7 @@
     <Compile Include="Model\SSMR\SMRAccountStatusResponseModel.cs" />
     <Compile Include="Customs\CustomUISlider.cs" />
     <Compile Include="SSMR\Meter Reading\CapturePhotoDelegate.cs" />
+    <Compile Include="SSMR\Meter Reading\ImagePickerDelegate.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />

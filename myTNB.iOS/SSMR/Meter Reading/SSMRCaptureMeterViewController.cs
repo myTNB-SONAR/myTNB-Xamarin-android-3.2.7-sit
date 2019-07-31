@@ -6,6 +6,11 @@ using System.Diagnostics;
 using UIKit;
 using AVFoundation;
 using myTNB.SSMR.MeterReading;
+using System.Drawing;
+using System.IO;
+using Photos;
+using System.Collections.Generic;
+using AssetsLibrary;
 
 namespace myTNB
 {
@@ -20,10 +25,12 @@ namespace myTNB
         private UILabel _lblDescription;
         private UIView _viewPreview, _viewCamera, _viewCapture;
         private UIView _viewPreviewOne, _viewPreviewTwo, _viewPreviewThree;
-        private UIView _viewDelete, _viewCameraActions, _viewMainPreviewParent;
+        private UIView _viewDelete, _viewCameraActions, _viewMainPreviewParent
+            , _viewGallery, _viewOverlay;
         private UIImageView _imgViewMainPreview;
         private CustomUISlider _zoomSlider;
         private UIButton _btnSubmit;
+        private UIImage _capturedImage, _croppedImage;
 
         private AVCaptureSession _captureSession;
         private AVCaptureDevice _captureDevice;
@@ -48,6 +55,14 @@ namespace myTNB
         public override void ViewDidAppear(bool animated)
         {
             base.ViewDidAppear(animated);
+            if (PHPhotoLibrary.AuthorizationStatus != PHAuthorizationStatus.Authorized)
+            {
+                PHPhotoLibrary.RequestAuthorization((status) => { });
+            }
+            else
+            {
+                UpdateViewGallery();
+            }
         }
 
         private void ConfigureNavigationBar()
@@ -134,8 +149,16 @@ namespace myTNB
             { ClipsToBounds = true };
             _viewDelete = GetDeleteSection(_viewCamera);
             _viewCameraActions = GetCameraActions(_viewCamera);
-            _viewCamera.AddSubviews(new UIView[] { _viewDelete, _viewCameraActions });
+            _viewOverlay = GetOverlay(_viewCamera);
+            _viewCamera.AddSubviews(new UIView[] { _viewDelete, _viewCameraActions, _viewOverlay });
             View.AddSubview(_viewCamera);
+        }
+
+        private UIView GetOverlay(UIView viewBase)
+        {
+            UIView view = new UIView(new CGRect(new CGPoint(0, 0), viewBase.Frame.Size)) { BackgroundColor = UIColor.Clear };
+
+            return view;
         }
 
         private UIView GetDeleteSection(UIView viewBase)
@@ -181,13 +204,24 @@ namespace myTNB
                 _captureDevice.UnlockForConfiguration();
             };
 
-            UIView viewGallery = new UIView(new CGRect(16, _zoomSlider.Frame.GetMaxY() + 22, size, size));
-            viewGallery.Layer.CornerRadius = 4.0F;
-            viewGallery.Layer.BorderWidth = 2.0F;
-            viewGallery.Layer.BorderColor = UIColor.White.CGColor;
-            viewGallery.AddGestureRecognizer(new UITapGestureRecognizer(() =>
+            _viewGallery = new UIView(new CGRect(16, _zoomSlider.Frame.GetMaxY() + 22, size, size)) { ClipsToBounds = true };
+            _viewGallery.Layer.CornerRadius = 4.0F;
+            _viewGallery.Layer.BorderWidth = 2.0F;
+            _viewGallery.Layer.BorderColor = UIColor.White.CGColor;
+            _viewGallery.AddGestureRecognizer(new UITapGestureRecognizer(() =>
             {
                 Debug.WriteLine("viewGallery tapped");
+
+                ImagePickerDelegate pickerDelegate = new ImagePickerDelegate();
+                pickerDelegate.OnDismiss = () => { DismissViewController(true, null); };
+                pickerDelegate.OnSelect = (selectedImg) => { AddMainPreview(selectedImg); };
+                UIImagePickerController imgPicker = new UIImagePickerController
+                {
+                    Delegate = pickerDelegate,
+                    SourceType = UIImagePickerControllerSourceType.PhotoLibrary
+                };
+                PresentViewController(imgPicker, true, null);
+
             }));
 
             _viewCapture = new UIView(new CGRect((ViewWidth - size) / 2
@@ -197,11 +231,34 @@ namespace myTNB
             _viewCapture.Layer.BorderWidth = 3.0F;
             _viewCapture.Layer.BorderColor = UIColor.White.CGColor;
 
-            view.AddSubviews(new UIView[] { viewGallery, _viewCapture, _zoomSlider });
+            view.AddSubviews(new UIView[] { _viewGallery, _viewCapture, _zoomSlider });
             CGRect viewFrame = new CGRect(0, viewBase.Frame.Height - _viewCapture.Frame.GetMaxY() - 16
                 , ViewWidth, _viewCapture.Frame.GetMaxY() + 16);
             view.Frame = viewFrame;
             return view;
+        }
+
+        private void UpdateViewGallery()
+        {
+            CGSize thumbnailSize = _viewGallery.Frame.Size;
+            PHFetchResult phFetchResult = PHAsset.FetchAssets(PHAssetMediaType.Image, null);
+            if (phFetchResult == null) { return; }
+            PHAsset lastAsset = (PHAsset)phFetchResult.LastObject;
+            if (lastAsset == null) { return; }
+            PHImageManager phImageManager = new PHImageManager();
+            phImageManager.RequestImageForAsset(lastAsset, thumbnailSize
+                , PHImageContentMode.AspectFill, null
+                , (result, info) =>
+                {
+                    if (result != null)
+                    {
+                        UIImageView thumbnailView = new UIImageView(new CGRect(new CGPoint(0, 0), thumbnailSize))
+                        {
+                            Image = result
+                        };
+                        _viewGallery.AddSubview(thumbnailView);
+                    }
+                });
         }
 
         public void SetupLiveCameraStream()
@@ -256,7 +313,6 @@ namespace myTNB
             }));
         }
 
-        private UIImage _capturedImage;
         private void OnCapturePhoto(UIImage capturedImage)
         {
             _capturedImage = capturedImage;
@@ -266,30 +322,38 @@ namespace myTNB
             }
             else
             {
-                if (_viewMainPreviewParent == null || _imgViewMainPreview == null)
-                {
-                    _viewMainPreviewParent = new UIView(new CGRect(0, 0, ViewWidth, _viewCamera.Frame.Height))
-                    {
-                        ClipsToBounds = true,
-                        BackgroundColor = UIColor.White
-                    };
-                    _imgViewMainPreview = new UIImageView(new CGRect(new CGPoint(0, 0), _viewMainPreviewParent.Frame.Size));
-                    _imgViewMainPreview.UserInteractionEnabled = true;
-                    _imgViewMainPreview.MultipleTouchEnabled = true;
-                    _imgViewMainPreview.AddGestureRecognizer(new UIPinchGestureRecognizer((sender) => { PinchZoomAction(sender); }));
-                    _imgViewMainPreview.AddGestureRecognizer(new UIPanGestureRecognizer((sender) => { PanAction(sender); }));
-
-                    _viewMainPreviewParent.AddSubview(_imgViewMainPreview);
-                }
-                _imgViewMainPreview.Frame = new CGRect(new CGPoint(0, 0), _viewMainPreviewParent.Frame.Size);
-                _imgViewMainPreview.Image = capturedImage;
-                _viewMainPreviewParent.Hidden = false;
-
-                _viewCamera.AddSubview(_viewMainPreviewParent);
-                _viewCamera.BringSubviewToFront(_viewDelete);
-                _viewDelete.Hidden = false;
-                _viewCameraActions.Hidden = true;
+                AddMainPreview(capturedImage);
             }
+        }
+
+        private void AddMainPreview(UIImage previewImg)
+        {
+            if (_viewMainPreviewParent == null || _imgViewMainPreview == null)
+            {
+                _viewMainPreviewParent = new UIView(new CGRect(0, 0, ViewWidth, _viewCamera.Frame.Height))
+                {
+                    ClipsToBounds = true,
+                    BackgroundColor = UIColor.DarkGray
+                };
+                _imgViewMainPreview = new UIImageView(new CGRect(new CGPoint(0, 0), _viewMainPreviewParent.Frame.Size))
+                {
+                    UserInteractionEnabled = true,
+                    MultipleTouchEnabled = true,
+                    ClipsToBounds = true
+                };
+                _imgViewMainPreview.AddGestureRecognizer(new UIPinchGestureRecognizer((sender) => { PinchZoomAction(sender); }));
+                _imgViewMainPreview.AddGestureRecognizer(new UIPanGestureRecognizer((sender) => { PanAction(sender); }));
+
+                _viewMainPreviewParent.AddSubview(_imgViewMainPreview);
+            }
+            _imgViewMainPreview.Frame = new CGRect(new CGPoint(0, 0), _viewMainPreviewParent.Frame.Size);
+            _imgViewMainPreview.Image = previewImg;
+            _viewMainPreviewParent.Hidden = false;
+
+            _viewCamera.AddSubview(_viewMainPreviewParent);
+            _viewCamera.BringSubviewToFront(_viewDelete);
+            _viewDelete.Hidden = false;
+            _viewCameraActions.Hidden = true;
         }
 
         private void PinchZoomAction(UIPinchGestureRecognizer sender)
@@ -324,16 +388,18 @@ namespace myTNB
         {
             if (img != null)
             {
-                NSData imgData = img.AsJPEG();//0.0Lowest Compression
+                NSData imgData = img.AsJPEG(0.0F);//0.0Lowest Compression
                 string base64 = imgData.GetBase64EncodedString(NSDataBase64EncodingOptions.None);
                 return base64 ?? string.Empty;
             }
             return string.Empty;
         }
 
-        private UIImage _croppedImage;
         private void OnSubmit(object sender, EventArgs e)
         {
+            //nfloat w = _capturedImage.Size.Width;
+            //nfloat h = _capturedImage.Size.Height;
+
             CGRect cropRect = new CGRect(0, 0, ViewWidth, 100);
             CGImage subImage = _capturedImage.CGImage.WithImageInRect(cropRect);
             _croppedImage = UIImage.FromImage(subImage);
