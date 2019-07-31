@@ -1,0 +1,163 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/rootView">
+    <include
+        layout="@layout/toolbar"
+        id="@+id/toolbar" />
+    <LinearLayout
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
+        android:layout_below="@+id/toolbar"
+        android:orientation="vertical"
+        android:background="#F9F9F9">
+        <TextView 
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/applySMRForLabel"
+            android:text="I am applying for:"
+            android:textSize="16dp"
+            android:textColor="#1c79ca"
+            android:paddingTop="16dp"
+            android:paddingBottom="8dp"
+            android:paddingLeft="16dp"
+            android:layout_marginBottom="8dp"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp"
+            android:background="@android:color/white">
+            <TextView
+                    android:text="ACCOUNT"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/txtAccountType"
+                    android:textSize="12sp"
+                    android:textColor="@color/tunaGrey"
+                    android:layout_marginTop="8dp" />
+                <TextView
+                    android:id="@+id/selector_smr_account"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/tunaGrey"
+                    android:textSize="16sp"
+                    android:paddingRight="6dp"
+                    android:paddingTop="4dp"
+                    android:paddingBottom="1dp"
+                    android:text="Selected Type"
+                    android:drawablePadding="4dp"
+                    android:drawableRight="@drawable/ic_action_dropdown1"/>
+            <View 
+   android:layout_width="fill_parent"
+   android:layout_height="1dp"       
+   android:background="#e4e4e4" />
+            <TextView
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   android:id="@+id/applySMRAddress"
+                   android:layout_marginTop="22dp"
+                   android:textColor="#49494a"
+                   android:text=""
+                   android:textSize="14dp"/>
+        </LinearLayout>
+        <TextView 
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/applySMRContactLabel"
+            android:text="My contact details:"
+            android:textSize="16dp"
+            android:textColor="#1c79ca"
+            android:paddingTop="16dp"
+            android:paddingBottom="8dp"
+            android:paddingLeft="16dp"
+            android:layout_marginBottom="8dp"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="14dp"
+            android:paddingRight="14dp"
+            android:paddingTop="16dp"
+            android:orientation="vertical"
+            android:background="@android:color/white">
+            <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:hintTextAppearance="@style/TextInputLayout.TextAppearance.LightBackground"
+                    app:errorEnabled="true"
+                    android:id="@+id/textInputEmail">
+                    <EditText
+                        android:hint="EMAIL ADDRESS"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/txtEmail"
+                        android:drawableBottom="#1c79ca"
+                        android:drawablePadding="6dp"
+                        android:drawableLeft="@drawable/placeholder_email"
+                        android:maxLines="1"
+                        android:inputType="text" />
+                </android.support.design.widget.TextInputLayout>
+            
+            <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:hintTextAppearance="@style/TextInputLayout.TextAppearance.LightBackground"
+                    app:errorEnabled="true"
+                    android:id="@+id/textInputMobile">
+                    <EditText
+                        android:hint="MOBILE NUMBER"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/txtMobileNumber"
+                        android:drawableBottom="#1c79ca"
+                        android:drawablePadding="6dp"
+                        android:drawableLeft="@drawable/placeholder_mobile"
+                        android:maxLines="1"
+                        android:digits="0123456789+"
+                        android:inputType="phone" />
+                </android.support.design.widget.TextInputLayout>
+         <TextView 
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/txtEditingNote"
+            android:text="By editing you will update your myTNB profile but not your owner’s electricity account contact details."
+            android:textSize="12dp"
+            android:textColor="#49494a"
+            android:paddingRight="2dp"
+            android:paddingBottom="16dp"
+            android:paddingLeft="2dp"
+            android:visibility="gone"/>
+        </LinearLayout>
+    </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_gravity="bottom"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingBottom="16dp"
+            android:layout_alignParentBottom="true"
+            android:background="@android:color/white"
+            >
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/txtTermsAndCondition"
+                android:text="By applying, you are agreeing to the Self Meter Reading Terms and Conditions, TNB’s Terms of Use, Privacy policy, Anti-Spam Policy and Personal Data Protection Policy."
+                android:textColor="#49494a"
+                android:textSize="12dp"
+                android:padding="16dp"
+            />
+            <Button
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="Submit"
+                android:id="@+id/btnSubmitRegistration"
+                style="@style/Theme.LoginButton" />
+        </LinearLayout>
+</RelativeLayout>

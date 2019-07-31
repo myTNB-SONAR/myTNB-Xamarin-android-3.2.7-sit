@@ -5,6 +5,8 @@ using myTNB_Android.Src.SummaryDashBoard.Models;
 using myTNB_Android.Src.Utils;
 using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Requests;
 using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter;
+using myTNB_Android.Src.AppLaunch.Models;
+using myTNB_Android.Src.AppLaunch.Requests;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 {
@@ -33,7 +35,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             Constants.GREETING GetGreeting();
             string GetAccountDisplay();
             void LoadAccounts();
-            void LoadBatchSummaryAccounts();
             void InitiateService();
             Task InitiateMyService();
             Task RetryMyService();
@@ -52,6 +53,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         {
             Task<SummaryDashBoardResponse> GetLinkedSummaryInfo(SummaryDashBordRequest request);
             Task<GetServicesResponse> GetServices(GetServiceRequests request);
+            Task<AccountSMRStatusResponse> GetSMRAccountStatus(AccountsSMRStatusRequest request);
         }
     }
 }

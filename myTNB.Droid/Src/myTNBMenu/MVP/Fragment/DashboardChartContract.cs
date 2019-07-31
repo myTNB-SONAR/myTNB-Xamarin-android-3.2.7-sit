@@ -168,6 +168,18 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
             /// <param name="accountStatus">AccountStatusData</param>
             void ShowAccountStatus(AccountStatusData accountStatus);
 
+            void ShowSSMRDashboardView(SMRActivityInfoResponse response);
+
+            void HideSSMRDashboardView();
+
+            void InitiateSSMRStatus();
+
+            void ShowDisconnectionRetrySnakebar();
+
+            void ShowSMRRetrySnakebar();
+
+            string GetDeviceId();
+
         }
 
         public interface IUserActionsListener : IBasePresenter
@@ -228,6 +240,9 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
             /// </summary>
             /// <param name="accountNum">string</param>
             void GetAccountStatus(string accountNum);
+
+            void GetSSMRAccountStatus(string accountNum);
+
         }
     }
 }

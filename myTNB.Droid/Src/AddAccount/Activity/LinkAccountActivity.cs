@@ -902,6 +902,8 @@ namespace myTNB_Android.Src.AddAccount.Activity
                             newAccount.accountAddress = item.accountStAddress;
                             newAccount.ownerName = item.accountOwnerName;
                             newAccount.smartMeterCode = item.smartMeterCode == null ? "0" : item.smartMeterCode;
+                            newAccount.isOwned = item.isOwned;
+                            newAccount.IsTaggedSMR = item.IsTaggedSMR == "true" ? true : false;
                             finalAccountList.Add(newAccount);
                         }
                     }
@@ -913,6 +915,8 @@ namespace myTNB_Android.Src.AddAccount.Activity
                             extraAccount.accountAddress = item.accountStAddress;
                             extraAccount.ownerName = item.accountOwnerName;
                             extraAccount.smartMeterCode = item.smartMeterCode == null ? "0" : item.smartMeterCode;
+                            extraAccount.isOwned = item.isOwned;
+                            extraAccount.IsTaggedSMR = item.IsTaggedSMR == "true" ? true : false;
                             finalAccountList.Add(extraAccount);
                         }
                     }

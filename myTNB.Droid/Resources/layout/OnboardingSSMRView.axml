@@ -1,0 +1,73 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+                android:id="@+id/rootView">
+   <include layout="@layout/toolbar"/>
+  <LinearLayout
+      android:id="@+id/applicationContent"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:layout_alignParentTop="true"
+      android:layout_above="@+id/applicationIndicator"
+      android:orientation="vertical"
+      android:background="@color/white">
+      <android.support.v4.view.ViewPager
+          android:id="@+id/onBoardingSMRViewPager"
+          android:layout_width="match_parent"
+          android:layout_height="0dp"
+          android:layout_weight=".9"/>
+      <LinearLayout
+          android:id="@+id/indicatorContainer"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:gravity="center"
+          android:layout_marginTop="48dp"
+      />
+  </LinearLayout>
+  <LinearLayout
+      android:id="@+id/applicationIndicator"
+      android:layout_width="match_parent"
+      android:layout_height="80dp"
+      android:layout_alignParentBottom="true"
+      android:paddingLeft="24dp"
+      android:paddingRight="24dp"
+      android:gravity="center"
+      android:orientation="horizontal"
+      android:background="@color/white">
+      <CheckBox
+          android:id="@+id/dontShowAgainCheckbox"
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:button="@drawable/checkbox_selector"
+          android:checked="false"
+          android:layout_weight=".1"
+          android:text=" "/>
+      <TextView
+          android:id="@+id/dontShowMeAgainLabel"
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:text="Don't show me again"
+          android:layout_weight=".8"
+          android:textColor="#979797"
+          android:textSize="12dp"/>
+      <TextView
+          android:id="@+id/skipOnboarding"
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:text="Skip"
+          android:layout_weight=".1"
+          android:textColor="#979797"
+          android:textSize="12dp"/>
+        <Button
+            android:id="@+id/btnStartApplication"
+            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:visibility="gone"
+            android:text="Start Application"
+            android:textAllCaps="false"
+            style="@style/DarkButton"/>
+  </LinearLayout>      
+</RelativeLayout>

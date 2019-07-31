@@ -12,7 +12,9 @@ using myTNB_Android.Src.AppLaunch.Api;
 using myTNB_Android.Src.AppLaunch.Async;
 using myTNB_Android.Src.AppLaunch.Models;
 using myTNB_Android.Src.AppLaunch.Requests;
+using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Base.Api;
+using myTNB_Android.Src.Base.Models;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.SiteCore;
 using myTNB_Android.Src.Utils;
@@ -76,8 +78,8 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                 {
                     Console.WriteLine("GooglePlayServices is Installed");
                     ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
-
                     LoadAccounts();
+                    GetSSMRWalkThrough();
                 }
             }
             catch (Exception e)
@@ -111,7 +113,6 @@ namespace myTNB_Android.Src.AppLaunch.MVP
 
             var getPhoneVerifyApi = RestService.For<GetPhoneVerifyStatusApi>(httpClient);
 
-
 #else
             var api = RestService.For<INotificationApi>(Constants.SERVER_URL.END_POINT);
             var feedbackApi = RestService.For<IFeedbackApi>(Constants.SERVER_URL.END_POINT);
@@ -119,6 +120,7 @@ namespace myTNB_Android.Src.AppLaunch.MVP
             var masterDataApi = RestService.For<GetMasterDataApi>(Constants.SERVER_URL.END_POINT);
 
             var getPhoneVerifyApi = RestService.For<GetPhoneVerifyStatusApi>(Constants.SERVER_URL.END_POINT);
+
 #endif
             try
             {
@@ -231,6 +233,7 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                                 if (proceed)
                                 {
                                     UserEntity loggedUser = UserEntity.GetActive();
+                                    MyTNBAccountManagement.GetInstance().RemoveCustomerBillingDetails();
                                     SummaryDashBoardAccountEntity.RemoveAll();
                                     CustomerBillingAccount.RemoveSelected();
                                     CustomerBillingAccount.MakeFirstAsSelected();
@@ -464,6 +467,35 @@ namespace myTNB_Android.Src.AppLaunch.MVP
         public void OnUpdateApp()
         {
             this.mView.OnAppUpdateClick();
+        }
+
+        public Task GetSSMRWalkThrough()
+        {
+            return Task.Factory.StartNew(() =>
+            {
+                try
+                {
+                    string density = DPUtils.GetDeviceDensity(Application.Context);
+                    GetItemsService getItemsService = new GetItemsService(SiteCoreConfig.OS, density, SiteCoreConfig.SITECORE_URL, SiteCoreConfig.DEFAULT_LANGUAGE);
+                    ApplySSMRTimeStampResponseModel test = getItemsService.GetApplySSMRWalkthroughTimestampItem();
+                    ApplySSMRResponseModel responseModel = getItemsService.GetApplySSMRWalkthroughItems();
+
+                    if (responseModel.Status.Equals("Success"))
+                    {
+                        OnboardingSSMREntity wtManager = new OnboardingSSMREntity();
+                        wtManager.DeleteTable();
+                        wtManager.CreateTable();
+                        wtManager.InsertListOfItems(responseModel.Data);
+                        Log.Debug("WalkThroughResponse", responseModel.Data.ToString());
+                    }
+                }
+                catch (Exception e)
+                {
+                    Log.Error("API Exception", e.StackTrace);
+                    mView.OnTimeStampRecieved(null);
+                    Utility.LoggingNonFatalError(e);
+                }
+            });
         }
 
     }
