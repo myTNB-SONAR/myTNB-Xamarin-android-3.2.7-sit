@@ -29,6 +29,9 @@
         public string accountTypeId { get; set; }
 
         public string smartMeterCode { get; set; }
+        
+        public bool IsTaggedSMR { get; set; }
 
+        public bool isOwned { get; set; }
     }
 }
