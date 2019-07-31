@@ -150,14 +150,24 @@ namespace myTNB
             _viewDelete = GetDeleteSection(_viewCamera);
             _viewCameraActions = GetCameraActions(_viewCamera);
             _viewOverlay = GetOverlay(_viewCamera);
-            _viewCamera.AddSubviews(new UIView[] { _viewDelete, _viewCameraActions, _viewOverlay });
+            _viewCamera.AddSubviews(new UIView[] { _viewOverlay, _viewDelete, _viewCameraActions });
             View.AddSubview(_viewCamera);
         }
 
         private UIView GetOverlay(UIView viewBase)
         {
-            UIView view = new UIView(new CGRect(new CGPoint(0, 0), viewBase.Frame.Size)) { BackgroundColor = UIColor.Clear };
-
+            nfloat baseHeight = viewBase.Frame.Height;
+            UIView view = new UIView(new CGRect(new CGPoint(0, 0), viewBase.Frame.Size))
+            { BackgroundColor = UIColor.Clear, UserInteractionEnabled = false };
+            UIView viewTop = new UIView(new CGRect(0, 0, ViewWidth, baseHeight * 0.2F))
+            { BackgroundColor = UIColor.Black.ColorWithAlpha(0.60F), UserInteractionEnabled = false };
+            UIView viewLeft = new UIView(new CGRect(0, viewTop.Frame.GetMaxY(), 18, baseHeight * 0.3F))
+            { BackgroundColor = UIColor.Black.ColorWithAlpha(0.60F), UserInteractionEnabled = false };
+            UIView viewRight = new UIView(new CGRect(ViewWidth - 18, viewTop.Frame.GetMaxY(), 18, baseHeight * 0.3F))
+            { BackgroundColor = UIColor.Black.ColorWithAlpha(0.60F), UserInteractionEnabled = false };
+            UIView viewBottom = new UIView(new CGRect(0, viewLeft.Frame.GetMaxY(), ViewWidth, baseHeight - viewLeft.Frame.GetMaxY()))
+            { BackgroundColor = UIColor.Black.ColorWithAlpha(0.60F), UserInteractionEnabled = false };
+            view.AddSubviews(new UIView[] { viewTop, viewLeft, viewRight, viewBottom });
             return view;
         }
 
@@ -179,6 +189,8 @@ namespace myTNB
                 _imgViewMainPreview.Image = null;
                 _viewDelete.Hidden = true;
                 _viewCameraActions.Hidden = false;
+
+                _viewCamera.SendSubviewToBack(_viewOverlay);
             }));
             view.AddSubview(imgDelete);
             return view;
@@ -351,6 +363,7 @@ namespace myTNB
             _viewMainPreviewParent.Hidden = false;
 
             _viewCamera.AddSubview(_viewMainPreviewParent);
+            _viewCamera.BringSubviewToFront(_viewOverlay);
             _viewCamera.BringSubviewToFront(_viewDelete);
             _viewDelete.Hidden = false;
             _viewCameraActions.Hidden = true;
@@ -397,13 +410,20 @@ namespace myTNB
 
         private void OnSubmit(object sender, EventArgs e)
         {
-            //nfloat w = _capturedImage.Size.Width;
-            //nfloat h = _capturedImage.Size.Height;
 
             CGRect cropRect = new CGRect(0, 0, ViewWidth, 100);
             CGImage subImage = _capturedImage.CGImage.WithImageInRect(cropRect);
             _croppedImage = UIImage.FromImage(subImage);
             GetBase64String(_croppedImage);
+        }
+
+        private UIImage cropImage(UIImage img, RectangleF rect)
+        {
+            using (CGImage cgImage = img.CGImage.WithImageInRect(rect))
+            {
+                UIImage croppedImg = UIImage.FromImage(cgImage);
+                return croppedImg;
+            }
         }
     }
 }
