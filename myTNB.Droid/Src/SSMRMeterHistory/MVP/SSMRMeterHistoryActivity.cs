@@ -47,9 +47,6 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
         [BindView(Resource.Id.smr_history_recyclerview)]
         RecyclerView mSMRRecyclerView;
 
-
-        RecyclerView mSMRMenuView;
-
         private IMenu ssmrMenu;
 
         private SMRActivityInfoResponse smrResponse;
@@ -239,6 +236,7 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
                     if (selectedMenu.MenuId == "1004")
                     {
                         Intent SSMRTerminateActivity = new Intent(this, typeof(SSMRTerminateActivity));
+                        SSMRTerminateActivity.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccount));
                         StartActivity(SSMRTerminateActivity);
                     }
                 }

@@ -1466,6 +1466,8 @@
       <Generator></Generator>
     </AndroidResource>
     <Compile Include="Src\SSMRMeterHistory\Adapter\SSMRMeterHistoryMenuAdapter.cs" />
+    <Compile Include="Src\SSMRTerminate\MVP\SSMRTerminateContract.cs" />
+    <Compile Include="Src\SSMRTerminate\MVP\SSMRTerminatePresenter.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
