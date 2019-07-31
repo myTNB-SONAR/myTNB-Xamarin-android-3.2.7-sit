@@ -11,6 +11,7 @@ using myTNB_Android.Src.AddAccount.Models;
 using myTNB_Android.Src.AppLaunch.Api;
 using myTNB_Android.Src.AppLaunch.Models;
 using myTNB_Android.Src.AppLaunch.Requests;
+using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.Login.Api;
 using myTNB_Android.Src.Login.Requests;
@@ -228,6 +229,8 @@ namespace myTNB_Android.Src.Login.MVP
                         AccountDataEntity.RemoveAll();
                         SummaryDashBoardAccountEntity.RemoveAll();
                         SelectBillsEntity.RemoveAll();
+                        MyTNBAccountManagement.GetInstance().RemoveCustomerBillingDetails();
+                        UserSessions.RemoveSessionData();
                         int Id = UserEntity.InsertOrReplace(userResponse.Data.User);
                         if (Id > 0)
                         {

@@ -81,6 +81,7 @@ namespace myTNB_Android.Src.Base
         public void RemoveCustomerBillingDetails()
         {
             CustomerBillingAccount.RemoveCustomerBillingDetails();
+            UpdatedAccountNumberList = new List<string>();
             IsNeeUpdate = true;
         }
 
