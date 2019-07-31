@@ -1229,6 +1229,8 @@ namespace myTNB.Dashboard
                     yLoc = (float)_dashboardMainComponent._viewChartCompanion.Frame.GetMaxY() + 18f;
                 }
             }
+            var isAccountSSMR = DataManager.DataManager.SharedInstance.AccountIsSSMR;
+            yLoc = isAccountSSMR ? yLoc = (float)_dashboardMainComponent._viewChart.Frame.GetMaxY() + 10f : yLoc;
             _dashboardMainComponent._addressComponent.SetFrameByPrecedingView(yLoc);
             if (_dashboardMainComponent._accountStatusComponent != null)
             {

@@ -73,7 +73,7 @@ namespace myTNB
 
         private void AddTableView()
         {
-            _readingHistoryTableView = new UITableView(new CGRect(0, 0, View.Frame.Width, View.Frame.Height));
+            _readingHistoryTableView = new UITableView(new CGRect(0, 0, ViewWidth, ViewHeight));
             _readingHistoryTableView.RegisterClassForCellReuse(typeof(SSMRReadingHistoryCell), SSMRConstants.Cell_ReadingHistory);
             _readingHistoryTableView.Source = new SSMRReadingHistoryDataSource(OnTableViewScrolled, _readingHistoryList);
             _readingHistoryTableView.BackgroundColor = UIColor.Clear;

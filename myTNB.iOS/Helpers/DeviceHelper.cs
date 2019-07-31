@@ -78,6 +78,15 @@ namespace myTNB
         }
 
         /// <summary>
+        /// Checks if device is iPhone 6, 7 or 8
+        /// </summary>
+        /// <returns></returns>
+        public static bool IsIphone678()
+        {
+            return UIScreen.MainScreen.NativeBounds.Height == 1334;
+        }
+
+        /// <summary>
         /// Checks if device is iPhone 5/5s
         /// </summary>
         /// <returns><c>true</c>, if iPhone5/5s, <c>false</c> otherwise.</returns>

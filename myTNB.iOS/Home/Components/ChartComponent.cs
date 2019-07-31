@@ -24,7 +24,7 @@ namespace myTNB.Dashboard.DashboardComponents
         {
             var isAccountActive = DataManager.DataManager.SharedInstance.AccountIsActive;
             var isAccountSSMR = DataManager.DataManager.SharedInstance.AccountIsSSMR;
-            nfloat adj = isAccountSSMR ? 0.8f : 1.0f;
+            nfloat adjustHeightSSMR = isAccountSSMR ? 0.8f : 1.0f;
             if (!DataManager.DataManager.SharedInstance.IsSmartMeterAvailable && !isNormalMeter)
             {
                 isNormalMeter = true;
@@ -48,9 +48,34 @@ namespace myTNB.Dashboard.DashboardComponents
             {
                 viewPercentage = isAccountActive ? 0.40f : 0.35f;
             }
-            if (isAccountActive)
+            if (isAccountSSMR)
             {
-                viewPercentage = viewPercentage * adj;
+                if (DeviceHelper.IsIphoneXUpResolution())
+                {
+                    if (DeviceHelper.IsIphoneXOrXs())
+                    {
+                        viewPercentage = viewPercentage * adjustHeightSSMR * 0.9f;
+                    }
+                    else
+                    {
+                        viewPercentage = viewPercentage * adjustHeightSSMR;
+                    }
+                }
+                else if (DeviceHelper.IsIphone6UpResolution())
+                {
+                    if (DeviceHelper.IsIphone678())
+                    {
+                        viewPercentage = viewPercentage * adjustHeightSSMR * 0.8f;
+                    }
+                    else
+                    {
+                        viewPercentage = viewPercentage * adjustHeightSSMR * 0.9f;
+                    }
+                }
+                else
+                {
+                    viewPercentage = viewPercentage * adjustHeightSSMR;
+                }
             }
             nfloat viewHeight = _parentView.Frame.Height * viewPercentage;
             _viewChart = new UIView(new CGRect(42, yLocation, _parentView.Frame.Width - 84, viewHeight));
@@ -73,6 +98,20 @@ namespace myTNB.Dashboard.DashboardComponents
         public void ConstructSegmentViews(List<SegmentDetailsModel> chartData, bool isNormalMeter = true
             , ChartModeEnum chartMode = ChartModeEnum.Cost, bool isREAccount = false)
         {
+            var isAccountSSMR = DataManager.DataManager.SharedInstance.AccountIsSSMR;
+            nfloat adjustHeightSSMR = 1f;
+            if (isAccountSSMR)
+            {
+                if (DeviceHelper.IsIphoneXOrXs())
+                {
+                    adjustHeightSSMR = 0.8f;
+                }
+                else
+                {
+                    adjustHeightSSMR = 0.9f;
+                }
+            }
+
             RemoveChartViewSubViews();
             double chartContainerWidth = (double)_viewChart.Frame.Width;
             double chartContainerHeight = (double)_viewChart.Frame.Height;
@@ -87,12 +126,7 @@ namespace myTNB.Dashboard.DashboardComponents
 
             double maxValue = chartData.Any() ? GetMaxValue(chartData, chartMode)
                                               : 0;
-            double barHeight = chartContainerHeight * 0.74;
-
-            //if(DeviceHelper.IsIphoneXUpResolution())
-            //{
-            //    barHeight -= 18;
-            //}
+            double barHeight = chartContainerHeight * 0.74 * adjustHeightSSMR;
 
             double divisor = maxValue <= 0 ? barHeight : maxValue;
             double barHeightByValues = barHeight / divisor;
@@ -404,28 +438,50 @@ namespace myTNB.Dashboard.DashboardComponents
         private int GetChartYLocation(bool isNormalMeter = true)
         {
             var isAccountActive = DataManager.DataManager.SharedInstance.AccountIsActive;
+            var isAccountSSMR = DataManager.DataManager.SharedInstance.AccountIsSSMR;
             var yValue = isAccountActive ? 51f : 30f;
             int yLocation = (int)DeviceHelper.GetScaledHeight(yValue);
             if (!DataManager.DataManager.SharedInstance.IsSmartMeterAvailable && !isNormalMeter)
             {
                 isNormalMeter = true;
             }
-            if (!isNormalMeter)
+            if (!isAccountSSMR)
             {
-                if (!DeviceHelper.IsIphoneXUpResolution())
+                if (!isNormalMeter)
                 {
-                    if (DeviceHelper.IsIphone5())
+                    if (!DeviceHelper.IsIphoneXUpResolution())
                     {
-                        yLocation += 25;
+                        if (DeviceHelper.IsIphone5())
+                        {
+                            yLocation += 25;
+                        }
+                        else
+                        {
+                            yLocation += 20;
+                        }
                     }
                     else
                     {
-                        yLocation += 20;
+                        yLocation = 70;
                     }
+                }
+            }
+            else
+            {
+                if (DeviceHelper.IsIphoneXUpResolution())
+                {
+                    if (DeviceHelper.IsIphoneXOrXs())
+                    {
+                        yLocation -= 20;
+                    }
+                }
+                else if (DeviceHelper.IsIphone6UpResolution())
+                {
+                    yLocation -= 25;
                 }
                 else
                 {
-                    yLocation = 70;// 101 - 35;
+                    yLocation -= 25;
                 }
             }
 
