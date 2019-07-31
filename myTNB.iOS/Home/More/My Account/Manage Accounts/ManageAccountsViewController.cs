@@ -134,6 +134,7 @@ namespace myTNB
                     {
                         if (NetworkUtility.isReachable)
                         {
+                            ActivityIndicator.Show();
                             ExecuteRemoveTNBAccountForUserFavCall();
                         }
                         else
