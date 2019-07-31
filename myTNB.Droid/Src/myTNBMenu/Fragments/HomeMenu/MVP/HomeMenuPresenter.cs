@@ -145,6 +145,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     }
                     else if (response.Data != null && !response.Data.isError && response.Data.data != null && response.Data.data.Count > 0)
                     {
+                        List<AccountSMRStatus> updateSMRStatus = new List<AccountSMRStatus>();
+
                         try
                         {
                             UserInterface currentUsrInf = new UserInterface()
@@ -168,21 +170,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
                             if (accountSMRResponse.Response.ErrorCode == "7200" && accountSMRResponse.Response.Data.Count > 0)
                             {
-                                foreach (AccountSMRStatus accountSMRStatus in accountSMRResponse.Response.Data)
-                                {
-                                    bool IsTaggedSMR = false;
-                                    bool IsPeriodOpen = false;
-                                    if (accountSMRStatus.IsTaggedSMR == "true")
-                                    {
-                                        IsTaggedSMR = true;
-                                    }
-
-                                    if (accountSMRStatus.IsPeriodOpen == "true")
-                                    {
-                                        IsPeriodOpen = true;
-                                    }
-                                    CustomerBillingAccount.UpdateIsSMRTaggedAndPeriod(accountSMRStatus.ContractAccount, IsTaggedSMR, IsPeriodOpen);
-                                }
+                                updateSMRStatus = accountSMRResponse.Response.Data;
                             }
                         }
                         catch (System.OperationCanceledException cancelledException)
@@ -201,12 +189,36 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                         List<SummaryDashBoardDetails> summaryDetails = response.Data.data;
                         for (int i = 0; i < summaryDetails.Count; i++)
                         {
+                            AccountSMRStatus selectedUpdateAccount = new AccountSMRStatus();
                             CustomerBillingAccount cbAccount = CustomerBillingAccount.FindByAccNum(summaryDetails[i].AccNumber);
                             summaryDetails[i].AccName = cbAccount.AccDesc;
                             summaryDetails[i].AccType = cbAccount.AccountCategoryId;
                             summaryDetails[i].IsAccSelected = cbAccount.IsSelected;
                             summaryDetails[i].SmartMeterCode = cbAccount.SmartMeterCode;
-                            summaryDetails[i].IsTaggedSMR = cbAccount.IsTaggedSMR;
+                            if (updateSMRStatus.Count > 0)
+                            {
+                                selectedUpdateAccount = updateSMRStatus.Find(x => (x.ContractAccount == summaryDetails[i].AccNumber));
+                                bool selectedUpdateIsTaggedSMR = false;
+                                if (selectedUpdateAccount.IsTaggedSMR == "true")
+                                {
+                                    selectedUpdateIsTaggedSMR = true;
+                                }
+
+                                if (selectedUpdateIsTaggedSMR != cbAccount.IsTaggedSMR)
+                                {
+                                    summaryDetails[i].IsTaggedSMR = selectedUpdateIsTaggedSMR;
+                                    CustomerBillingAccount.UpdateIsSMRTagged(selectedUpdateAccount.ContractAccount, selectedUpdateIsTaggedSMR);
+                                }
+                                else
+                                {
+                                    summaryDetails[i].IsTaggedSMR = cbAccount.IsTaggedSMR;
+                                }
+                            }
+                            else
+                            {
+                                summaryDetails[i].IsTaggedSMR = cbAccount.IsTaggedSMR;
+                            }
+
                             /*** Save account data For the Day***/
                             SummaryDashBoardAccountEntity accountModel = new SummaryDashBoardAccountEntity();
                             accountModel.Timestamp = DateTime.Now.ToLocalTime();

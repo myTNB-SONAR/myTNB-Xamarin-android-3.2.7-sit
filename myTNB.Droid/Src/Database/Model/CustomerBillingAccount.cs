@@ -352,7 +352,7 @@ namespace myTNB_Android.Src.Database.Model
             //}
         }
 
-        public static int UpdateIsSMRTaggedAndPeriod(string accNum, bool isTaggedSMR, bool IsPeriodOpen)
+        public static int UpdateIsSMRTagged(string accNum, bool isTaggedSMR)
         {
             var db = DBHelper.GetSQLiteConnection();
             var existingRecord = db.Query<CustomerBillingAccount>("SELECT * FROM CustomerBillingAccountEntity WHERE accNum = ? ", accNum);
@@ -361,6 +361,21 @@ namespace myTNB_Android.Src.Database.Model
             {
                 var customerBARecord = existingRecord[0];
                 customerBARecord.IsTaggedSMR = isTaggedSMR;
+                return db.Update(customerBARecord);
+            }
+
+            return 0;
+            //}
+        }
+
+        public static int UpdateIsPeriodOpen(string accNum, bool IsPeriodOpen)
+        {
+            var db = DBHelper.GetSQLiteConnection();
+            var existingRecord = db.Query<CustomerBillingAccount>("SELECT * FROM CustomerBillingAccountEntity WHERE accNum = ? ", accNum);
+
+            if (existingRecord != null && existingRecord.Count > 0)
+            {
+                var customerBARecord = existingRecord[0];
                 customerBARecord.IsPeriodOpen = IsPeriodOpen;
                 return db.Update(customerBARecord);
             }

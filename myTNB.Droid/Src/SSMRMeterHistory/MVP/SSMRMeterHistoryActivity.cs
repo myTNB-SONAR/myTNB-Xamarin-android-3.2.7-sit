@@ -98,7 +98,8 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
                     SSMRMeterHistoryAdapter adapter = new SSMRMeterHistoryAdapter(smrResponse.Response.Data.MeterReadingHistory);
                     mSMRRecyclerView.SetAdapter(adapter);
 
-                    if (smrResponse.Response.Data.DashboardCTAType == Constants.SMR_SUBMIT_METER_KEY)
+                    // TODO: Enable when confirm
+                    /*if (smrResponse.Response.Data.DashboardCTAType == Constants.SMR_SUBMIT_METER_KEY)
                     {
                         SMRMainImg.SetImageResource(Resource.Drawable.smr_open);
                         // TODO: Enable when confirm
@@ -124,7 +125,7 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
                         {
                             SMRMainImg.SetImageResource(Resource.Drawable.smr_closed);
                         }
-                    }
+                    }*/
 
                     if(!string.IsNullOrEmpty(smrResponse.Response.Data.HistoryViewTitle))
                     {
