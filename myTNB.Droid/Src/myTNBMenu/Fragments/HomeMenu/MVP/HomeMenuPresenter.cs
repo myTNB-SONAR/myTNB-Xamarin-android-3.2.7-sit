@@ -88,7 +88,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     {
                         List<AccountSMRStatus> updateSMRStatus = new List<AccountSMRStatus>();
 
-                        /*try
+                        try
                         {
                             UserInterface currentUsrInf = new UserInterface()
                             {
@@ -125,7 +125,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                         catch (Exception unknownException)
                         {
                             Utility.LoggingNonFatalError(unknownException);
-                        }*/
+                        }
 
                         List<SummaryDashBoardDetails> summaryDetails = response.Data.data;
                         List<SummaryDashBoardAccountEntity> billingDetails = new List<SummaryDashBoardAccountEntity>();
@@ -148,8 +148,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
                                 if (selectedUpdateIsTaggedSMR != cbAccount.IsTaggedSMR)
                                 {
-                                    summaryDetails[i].IsTaggedSMR = selectedUpdateIsTaggedSMR;
                                     CustomerBillingAccount.UpdateIsSMRTagged(selectedUpdateAccount.ContractAccount, selectedUpdateIsTaggedSMR);
+                                    cbAccount.IsTaggedSMR = selectedUpdateIsTaggedSMR;
+                                    summaryDetails[i].IsTaggedSMR = cbAccount.IsTaggedSMR;
                                 }
                                 else
                                 {
@@ -214,7 +215,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     {
                         List<AccountSMRStatus> updateSMRStatus = new List<AccountSMRStatus>();
 
-                        /*try
+                        try
                         {
                             UserInterface currentUsrInf = new UserInterface()
                             {
@@ -251,7 +252,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                         catch (Exception unknownException)
                         {
                             Utility.LoggingNonFatalError(unknownException);
-                        }*/
+                        }
 
                         List<SummaryDashBoardDetails> summaryDetails = response.Data.data;
                         List<SummaryDashBoardAccountEntity> billingDetails = new List<SummaryDashBoardAccountEntity>();
@@ -274,8 +275,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
                                 if (selectedUpdateIsTaggedSMR != cbAccount.IsTaggedSMR)
                                 {
-                                    summaryDetails[i].IsTaggedSMR = selectedUpdateIsTaggedSMR;
                                     CustomerBillingAccount.UpdateIsSMRTagged(selectedUpdateAccount.ContractAccount, selectedUpdateIsTaggedSMR);
+                                    cbAccount.IsTaggedSMR = selectedUpdateIsTaggedSMR;
+                                    summaryDetails[i].IsTaggedSMR = cbAccount.IsTaggedSMR;
                                 }
                                 else
                                 {
@@ -503,26 +505,26 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 }
                 else
                 {
-                    ReadMyServiceFromCache();
+                    // ReadMyServiceFromCache();
                     // this.mView.ShowMyServiceRetryOptions(getServicesResponse.Data.DisplayMessage);
                 }
 
             }
             catch (System.OperationCanceledException cancelledException)
             {
-                ReadMyServiceFromCache();
+                // ReadMyServiceFromCache();
                 // this.mView.ShowMyServiceRetryOptions(null);
                 Utility.LoggingNonFatalError(cancelledException);
             }
             catch (ApiException apiException)
             {
-                ReadMyServiceFromCache();
+                // ReadMyServiceFromCache();
                 // this.mView.ShowMyServiceRetryOptions(null);
                 Utility.LoggingNonFatalError(apiException);
             }
             catch (Exception unknownException)
             {
-                ReadMyServiceFromCache();
+                // ReadMyServiceFromCache();
                 // this.mView.ShowMyServiceRetryOptions(null);
                 Utility.LoggingNonFatalError(unknownException);
             }

@@ -249,7 +249,8 @@ namespace myTNB_Android.Src.Database.Model
                 SmartMeterCode = accountResponse.SmartMeterCode == null ? "0" : accountResponse.SmartMeterCode,
                 IsTaggedSMR = accountResponse.IsTaggedSMR == "true" ? true : false,
                 isOwned = accountResponse.IsOwned,
-                IsSMROnBoardingDontShowAgain = false
+                IsSMROnBoardingDontShowAgain = false,
+                IsPeriodOpen = false
             };
 
             int newRecordRow = db.InsertOrReplace(newRecord);
