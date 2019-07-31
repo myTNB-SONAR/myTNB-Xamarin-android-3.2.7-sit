@@ -6,12 +6,14 @@ using System.Text;
 
 using Android.App;
 using Android.Content;
+using Android.Content.PM;
 using Android.OS;
 using Android.Runtime;
 using Android.Support.V7.Widget;
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
+using myTNB_Android.Src.AddAccount.Adapter;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.MultipleAccountPayment.Adapter;
@@ -21,13 +23,16 @@ using myTNB_Android.Src.Utils;
 
 namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
 {
-    [Activity(Label = "Select SMR Account", Theme = "@style/Theme.Dashboard")]
+    [Activity(Label = "Select Account"
+    , ScreenOrientation = ScreenOrientation.Portrait
+    , Theme = "@style/Theme.Dashboard")]
     public class SelectSMRAccountActivity : BaseToolbarAppCompatActivity, SelectSMRAccountContract.IView
     {
-        [BindView(Resource.Id.account_list_recycler_view)]
-        RecyclerView accountListRecyclerView;
+        [BindView(Resource.Id.account_list_view)]
+        ListView accountSMRList;
 
         List<SMRAccount> accountList = new List<SMRAccount>();
+        private SelectAccountAdapter selectAccountAdapter;
         public override int ResourceId()
         {
             return Resource.Layout.SelectSMRAccountLayout;
@@ -73,12 +78,13 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
                 account.mobileNumber = currentSMRAccount.mobileNumber;
                 accountList.Add(account);
             }
-            SelectSMRAccountAdapter adapter = new SelectSMRAccountAdapter(this,accountList);
-            LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.Vertical, false);
-            accountListRecyclerView.SetLayoutManager(layoutManager);
-            accountListRecyclerView.AddItemDecoration(new DividerItemDecoration(accountListRecyclerView.Context, DividerItemDecoration.Vertical));
-            accountListRecyclerView.SetAdapter(adapter);
+
+            selectAccountAdapter = new SelectAccountAdapter(this, accountList);
+            accountSMRList.Adapter = selectAccountAdapter;
+
+            accountSMRList.ItemClick += OnItemClick;
         }
+
 
         public class OnSelectAccountListener : Java.Lang.Object, RecyclerView.IOnClickListener
         {
@@ -86,6 +92,18 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
             {
                 throw new NotImplementedException();
             }
+        }
+
+        internal void OnItemClick(object sender, AdapterView.ItemClickEventArgs e)
+        {
+            //SMRAccount smrAccount = selectAccountAdapter.GetItemObject(e.Position);
+            //smrAccount.accountSelected = true;
+            //Intent link_activity = new Intent(this, typeof(AddAccountActivity));
+            //link_activity.PutExtra("selectedAccountType", JsonConvert.SerializeObject(selectedAccountType));
+            //SetResult(Result.Ok, link_activity);
+            //Finish();
+
+            UpdateSelectedAccount(e.Position);
         }
     }
 }

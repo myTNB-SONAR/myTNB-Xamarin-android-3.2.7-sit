@@ -34,39 +34,34 @@
             android:padding="16dp"
             android:background="@android:color/white">
             <TextView
-                   android:layout_width="match_parent"
-                   android:layout_height="wrap_content"
-                   android:id="@+id/accountSMRLabel"
-                android:layout_marginBottom="5dp"
-                   android:textColor="#a6a6a6"
-                   android:text="ACCOUNT"
-                   android:textSize="12dp"/>
-            <RelativeLayout
-                android:layout_height="wrap_content"
-                android:layout_width="match_parent"
-                android:id="@+id/selectAccountContainer">
+                    android:text="ACCOUNT"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/txtAccountType"
+                    android:textSize="12sp"
+                    android:textColor="@color/tunaGrey"
+                    android:layout_marginTop="8dp" />
                 <TextView
-                   android:layout_width="wrap_content"
-                   android:layout_height="wrap_content"
-                   android:id="@+id/accountSMRValue"
-                   android:textColor="#49494a"
-                   android:text=""
-                   android:textSize="16dp"/>
-                <ImageView
-                   android:layout_width="24dp"
-                   android:layout_height="24dp"
-                   android:layout_alignParentRight="true"
-                   android:src="@drawable/ic_action_dropdown1"/>
-            </RelativeLayout>
-            <View
-                android:layout_height="1dp"
-                android:layout_width="match_parent"
-                android:background="@color/hoverGrey"/>
+                    android:id="@+id/selector_smr_account"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/tunaGrey"
+                    android:textSize="16sp"
+                    android:paddingRight="6dp"
+                    android:paddingTop="4dp"
+                    android:paddingBottom="1dp"
+                    android:text="Selected Type"
+                    android:drawablePadding="4dp"
+                    android:drawableRight="@drawable/ic_action_dropdown1"/>
+            <View 
+   android:layout_width="fill_parent"
+   android:layout_height="1dp"       
+   android:background="#e4e4e4" />
             <TextView
                    android:layout_width="match_parent"
                    android:layout_height="wrap_content"
                    android:id="@+id/applySMRAddress"
-                   android:layout_marginTop="16dp"
+                   android:layout_marginTop="22dp"
                    android:textColor="#49494a"
                    android:text=""
                    android:textSize="14dp"/>
@@ -133,9 +128,9 @@
             android:text="By editing you will update your myTNB profile but not your owner’s electricity account contact details."
             android:textSize="12dp"
             android:textColor="#49494a"
-            android:paddingRight="16dp"
-            android:paddingBottom="8dp"
-            android:paddingLeft="16dp"
+            android:paddingRight="2dp"
+            android:paddingBottom="16dp"
+            android:paddingLeft="2dp"
             android:visibility="gone"/>
         </LinearLayout>
     </LinearLayout>

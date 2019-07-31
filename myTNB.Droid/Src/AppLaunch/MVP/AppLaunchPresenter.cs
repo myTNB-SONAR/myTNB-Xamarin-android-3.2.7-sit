@@ -78,8 +78,8 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                 {
                     Console.WriteLine("GooglePlayServices is Installed");
                     ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
-                    GetSSMRWalkThrough();
                     LoadAccounts();
+                    GetSSMRWalkThrough();
                 }
             }
             catch (Exception e)
@@ -488,29 +488,6 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                         wtManager.InsertListOfItems(responseModel.Data);
                         Log.Debug("WalkThroughResponse", responseModel.Data.ToString());
                     }
-
-
-                    //UserLoginAccountEntity.UserLoginAccountData data = new UserLoginAccountEntity.UserLoginAccountData();
-                    //data.SSMRData = JsonConvert.SerializeObject(t.Data);
-                    //UserLoginAccountEntity.InsertItem(data);
-
-                    //string json = getItemsService.GetTimestampItem();
-                    //TimestampResponseModel responseModel = JsonConvert.DeserializeObject<TimestampResponseModel>(json);
-                    //if (responseModel.Status.Equals("Success"))
-                    //{
-                    //    TimeStampEntity wtManager = new TimeStampEntity();
-                    //    wtManager.DeleteTable();
-                    //    wtManager.CreateTable();
-                    //    wtManager.InsertListOfItems(responseModel.Data);
-                    //    mView.OnTimeStampRecieved(responseModel.Data[0].Timestamp);
-                    //}
-                    //else
-                    //{
-                    //    mView.OnTimeStampRecieved(null);
-                    //}
-
-
-
                 }
                 catch (Exception e)
                 {

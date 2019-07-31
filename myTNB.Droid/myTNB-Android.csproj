@@ -1452,6 +1452,7 @@
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
+    <Compile Include="Src\SSMR\SMRApplication\Adapter\SelectAccountAdapter.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
