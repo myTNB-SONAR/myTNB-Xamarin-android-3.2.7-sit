@@ -14,7 +14,7 @@ namespace myTNB
 
         readonly Dictionary<string, string> DomainDictionary = new Dictionary<string, string>
         {
-            { "DEV", "https://mobiletestingws.tnb.com.my"} //http://10.215.128.191:89
+            { "DEV", "http://10.215.128.191:89"}
             , { "SIT", "https://mobiletestingws.tnb.com.my" }
             , { "PROD", "https://mytnbapp.tnb.com.my"}
         };
@@ -73,10 +73,7 @@ namespace myTNB
             request.AddHeader(CONTENT_TYPE, APPLICATION_JSON);
             request.AddJsonBody(requestParams);
 
-            Debug.WriteLine("*****URL: " + url);
-            Debug.WriteLine("*****PARAMETERS: " + requestParams);
             RestResponse response = (RestResponse)client.Execute(request);
-            Debug.WriteLine("*****RESPONSE: " + response.Content.ToString());
             return response;
         }
 
