@@ -33,12 +33,6 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
         [BindView(Resource.Id.applySMRForLabel)]
         TextView applySMRForLabel;
 
-        [BindView(Resource.Id.accountSMRLabel)]
-        TextView accountSMRLabel;
-
-        [BindView(Resource.Id.accountSMRValue)]
-        TextView accountSMRValue;
-
         [BindView(Resource.Id.applySMRAddress)]
         TextView applySMRAddress;
 
@@ -63,8 +57,8 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
         [BindView(Resource.Id.txtEditingNote)]
         TextView txtEditingNote;
 
-        [BindView(Resource.Id.selectAccountContainer)]
-        RelativeLayout selectAccountContainer;
+        [BindView(Resource.Id.selector_smr_account)]
+        TextView selectAccountContainer;
 
         [BindView(Resource.Id.btnSubmitRegistration)]
         Button btnSubmitRegistration;
@@ -109,7 +103,7 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
                 StartActivityForResult(intent,1);
             };
 
-            TextViewUtils.SetMuseoSans300Typeface(accountSMRLabel,accountSMRValue,applySMRAddress,txtTermsAndCondition,txtEmail,txtMobileNumber,txtEditingNote);
+            TextViewUtils.SetMuseoSans300Typeface(selectAccountContainer,applySMRAddress,txtTermsAndCondition,txtEmail,txtMobileNumber,txtEditingNote);
             TextViewUtils.SetMuseoSans500Typeface(applySMRForLabel, applySMRContactLabel);
 
             txtMobileNumber.TextChanged += TextChange;
@@ -126,7 +120,7 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
             {
                 return smrAccount.accountSelected;
             });
-            accountSMRValue.Text = sMRAccount.accountName;
+            selectAccountContainer.Text = sMRAccount.accountName;
             applySMRAddress.Text = sMRAccount.accountAddress;
             if (sMRAccount.email != txtEmail.Text || sMRAccount.mobileNumber != txtMobileNumber.Text)
             {
@@ -147,7 +141,7 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
 
         public void UpdateSMRInfo(SMRAccount account)
         {
-            accountSMRValue.Text = account.accountName;
+            selectAccountContainer.Text = account.accountName;
             txtEmail.Text = account.email;
             txtMobileNumber.Text = "+60" + account.mobileNumber;
             List<SMRAccount> updatedSMRAccountList = new List<SMRAccount>();

@@ -139,7 +139,7 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
             };
 
             TextViewUtils.SetMuseoSans500Typeface(dontShowMeAgainLabel, skipOnboarding, btnStartApplication);
-            //MyTNBAccountManagement.GetInstance().SetSMRCustomerBillingAccounts();
+            toolbar.BringToFront();
         }
 
         private void ShowSubmitButton(bool isShow)
