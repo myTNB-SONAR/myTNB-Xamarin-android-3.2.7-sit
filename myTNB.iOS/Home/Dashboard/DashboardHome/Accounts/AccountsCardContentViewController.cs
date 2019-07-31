@@ -727,30 +727,32 @@ namespace myTNB
 
         private void AddAccountsCardInContainerView(UIView containerView, int pageIndex, bool isUpdating)
         {
-            var groupAccountList = _groupAccountList[pageIndex];
-            for (int i = 0; i < groupAccountList.Count; i++)
+            if (pageIndex > -1 && pageIndex < _groupAccountList.Count)
             {
-                DashboardHomeAccountCard _homeAccountCard = new DashboardHomeAccountCard(this, containerView, 68f * i);
-                string iconName = "Accounts-Smart-Meter-Icon";
-                if (groupAccountList[i].IsReAccount)
+                var groupAccountList = _groupAccountList[pageIndex];
+                for (int i = 0; i < groupAccountList.Count; i++)
                 {
-                    iconName = "Accounts-RE-Icon";
+                    DashboardHomeAccountCard _homeAccountCard = new DashboardHomeAccountCard(this, containerView, 68f * i);
+                    string iconName = "Accounts-Smart-Meter-Icon";
+                    if (groupAccountList[i].IsReAccount)
+                    {
+                        iconName = "Accounts-RE-Icon";
+                    }
+                    else if (groupAccountList[i].IsNormalAccount && groupAccountList[i].IsSSMR && groupAccountList[i].IsOwnedAccount)
+                    {
+                        iconName = "Accounts-SMR-Icon";
+                    }
+                    else if (groupAccountList[i].IsNormalAccount)
+                    {
+                        iconName = "Accounts-Normal-Icon";
+                    }
+                    _homeAccountCard.SetAccountIcon(iconName);
+                    _homeAccountCard.SetNickname(groupAccountList[i].accNickName);
+                    _homeAccountCard.SetAccountNo(groupAccountList[i].accNum);
+                    _homeAccountCard.IsUpdating = isUpdating;
+                    _homeAccountCard.SetModel(groupAccountList[i]);
+                    containerView.AddSubview(_homeAccountCard.GetUI());
                 }
-                else if (groupAccountList[i].IsNormalAccount && groupAccountList[i].IsSSMR && groupAccountList[i].IsOwnedAccount)
-                {
-                    iconName = "Accounts-SMR-Icon";
-                }
-                else if (groupAccountList[i].IsNormalAccount)
-                {
-                    iconName = "Accounts-Normal-Icon";
-                }
-                _homeAccountCard.SetAccountIcon(iconName);
-                _homeAccountCard.SetNickname(groupAccountList[i].accNickName);
-                _homeAccountCard.SetAccountNo(groupAccountList[i].accNum);
-                _homeAccountCard.IsUpdating = isUpdating;
-                _homeAccountCard.SetModel(groupAccountList[i]);
-                containerView.AddSubview(_homeAccountCard.GetUI());
-
             }
         }
 
