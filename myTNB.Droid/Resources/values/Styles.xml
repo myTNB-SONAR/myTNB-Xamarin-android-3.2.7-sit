@@ -46,7 +46,7 @@
   <style name="Theme.PayButton" parent="@android:style/Widget.Button">
     <item name="android:textColor">#FFFFFF</item>
     <item name="android:hint">#FFFFFF</item>
-    <item name="android:textSize">16sp</item>
+    <item name="android:textSize">16dp</item>
     <item name="android:stateListAnimator">@null</item>
     <item name="android:background">@drawable/green_button_background</item>
   </style>
@@ -55,7 +55,7 @@
   <style name="Theme.DisabledPayButton" parent="@android:style/Widget.Button">
     <item name="android:textColor">#FFFFFF</item>
     <item name="android:hint">#FFFFFF</item>
-    <item name="android:textSize">16sp</item>
+    <item name="android:textSize">16dp</item>
     <item name="android:stateListAnimator">@null</item>
     <item name="android:background">@drawable/silver_chalice_button_background</item>
   </style>
@@ -63,7 +63,7 @@
   <style name="Theme.RefreshButton" parent="@android:style/Widget.Button">
     <item name="android:textColor">#FFFFFF</item>
     <item name="android:hint">#FFFFFF</item>
-    <item name="android:textSize">16sp</item>
+    <item name="android:textSize">16dp</item>
     <item name="android:stateListAnimator">@null</item>
     <item name="android:background">@drawable/green_button_background</item>
   </style>
@@ -71,7 +71,7 @@
   <style name="Theme.RefreshWhiteButton" parent="@android:style/Widget.Button">
     <item name="android:textColor">#1c79ca</item>
     <item name="android:hint">#1c79ca</item>
-    <item name="android:textSize">16sp</item>
+    <item name="android:textSize">16dp</item>
     <item name="android:stateListAnimator">@null</item>
     <item name="android:background">@drawable/white_filled_button_background</item>
   </style>
@@ -79,7 +79,7 @@
   <style name="Theme.ViewBill" parent="@android:style/Widget.Button">
     <item name="android:textColor">@color/freshGreen</item>
     <item name="android:hint">@color/freshGreen</item>
-    <item name="android:textSize">16sp</item>
+    <item name="android:textSize">16dp</item>
     <item name="android:stateListAnimator">@null</item>
     <item name="android:background">@drawable/light_green_outline_button_background</item>
   </style>
@@ -93,6 +93,14 @@
   </style>
 
   <style name="Theme.SSMRDiscontinue" parent="@android:style/Widget.Button">
+    <item name="android:textColor">#FFFFFF</item>
+    <item name="android:hint">#FFFFFF</item>
+    <item name="android:textSize">16dp</item>
+    <item name="android:stateListAnimator">@null</item>
+    <item name="android:background">@drawable/green_button_background</item>
+  </style>
+  
+  <style name="Theme.SubmitMeterReading" parent="@android:style/Widget.Button">
     <item name="android:textColor">#FFFFFF</item>
     <item name="android:hint">#FFFFFF</item>
     <item name="android:textSize">16dp</item>

@@ -604,6 +604,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         private void StartSSMRMeterHistoryPage()
         {
             Intent ssmr_history_activity = new Intent(this.Activity, typeof(SSMRMeterHistoryActivity));
+            ssmr_history_activity.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccount));
             ssmr_history_activity.PutExtra(Constants.SMR_RESPONSE_KEY, JsonConvert.SerializeObject(smrResponse));
             StartActivityForResult(ssmr_history_activity, SSMR_METER_HISTORY_ACTIVITY_CODE);
         }

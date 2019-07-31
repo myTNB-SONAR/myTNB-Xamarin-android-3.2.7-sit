@@ -65,6 +65,8 @@ namespace myTNB_Android.Src.Database.Model
         [Column("isTaggedSMR")]
         public bool IsTaggedSMR { get; set; }
 
+        [Column("IsPeriodOpen")]
+        public bool IsPeriodOpen { get; set; }
         [Column("IsSMROnBoardingDontShowAgain")]
         public bool IsSMROnBoardingDontShowAgain { get; set; }
 
@@ -247,7 +249,8 @@ namespace myTNB_Android.Src.Database.Model
                 SmartMeterCode = accountResponse.SmartMeterCode == null ? "0" : accountResponse.SmartMeterCode,
                 IsTaggedSMR = accountResponse.IsTaggedSMR == "true" ? true : false,
                 isOwned = accountResponse.IsOwned,
-                IsSMROnBoardingDontShowAgain = false
+                IsSMROnBoardingDontShowAgain = false,
+                IsPeriodOpen = false
             };
 
             int newRecordRow = db.InsertOrReplace(newRecord);
@@ -391,6 +394,22 @@ namespace myTNB_Android.Src.Database.Model
             {
                 var customerBARecord = existingRecord[0];
                 customerBARecord.IsTaggedSMR = isTaggedSMR;
+                return db.Update(customerBARecord);
+            }
+
+            return 0;
+            //}
+        }
+
+        public static int UpdateIsPeriodOpen(string accNum, bool IsPeriodOpen)
+        {
+            var db = DBHelper.GetSQLiteConnection();
+            var existingRecord = db.Query<CustomerBillingAccount>("SELECT * FROM CustomerBillingAccountEntity WHERE accNum = ? ", accNum);
+
+            if (existingRecord != null && existingRecord.Count > 0)
+            {
+                var customerBARecord = existingRecord[0];
+                customerBARecord.IsPeriodOpen = IsPeriodOpen;
                 return db.Update(customerBARecord);
             }
 
