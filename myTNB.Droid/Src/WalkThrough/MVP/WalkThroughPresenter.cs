@@ -138,6 +138,11 @@ namespace myTNB_Android.Src.WalkThrough.MVP
                     string density = DPUtils.GetDeviceDensity(Application.Context);
                     GetItemsService getItemsService = new GetItemsService(SiteCoreConfig.OS, density, SiteCoreConfig.SITECORE_URL, SiteCoreConfig.DEFAULT_LANGUAGE);
 
+                    // Testing Start: SSMR Walkthrough
+                    ApplySSMRTimeStampResponseModel test = getItemsService.GetApplySSMRWalkthroughTimestampItem();
+                    ApplySSMRResponseModel t = getItemsService.GetApplySSMRWalkthroughItems();
+                    // Testing End: SSMR Walkthrough
+
                     string json = getItemsService.GetWalkthroughScreenItems();
                     WalkthroughScreensResponseModel responseModel = JsonConvert.DeserializeObject<WalkthroughScreensResponseModel>(json);
                     if (responseModel.Status.Equals("Success"))

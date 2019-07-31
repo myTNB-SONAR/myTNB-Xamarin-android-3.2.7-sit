@@ -1349,6 +1349,62 @@
     <AndroidResource Include="Resources\drawable-xhdpi\gradient_background.png" />
     <AndroidResource Include="Resources\drawable-xxhdpi\gradient_background.png" />
     <AndroidResource Include="Resources\drawable-xxxhdpi\gradient_background.png" />
+    <Compile Include="Src\SitecoreCMS\Model\ApplySSMRWalkthroughModel.cs" />
+    <Compile Include="Src\SitecoreCMS\Service\ApplySSMRWalkthroughService.cs" />
+    <Compile Include="Src\SSMR\SMRApplication\MVP\OnBoardingActivity.cs" />
+    <AndroidResource Include="Resources\layout\OnboardingSSMRView.axml" />
+    <Compile Include="Src\SSMR\SMRApplication\MVP\OnBoardingSMRPresenter.cs" />
+    <Compile Include="Src\SSMR\SMRApplication\MVP\OnBoardingSMRContract.cs" />
+    <Compile Include="Src\SSMR\SMRApplication\Adapter\OnBoardingSMRAdapter.cs" />
+    <Compile Include="Src\SSMR\SMRApplication\MVP\OnBoardingDataModel.cs" />
+    <Compile Include="Src\SSMR\SMRApplication\MVP\OnBoardingSMRFragment.cs" />
+    <AndroidResource Include="Resources\layout\OnBoardingSMRFragmentLayout.axml" />
+    <AndroidResource Include="Resources\drawable-hdpi\onboarding_bg_1.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\onboarding_bg_2.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\onboarding_bg_3.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\onboarding_bg_1.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\onboarding_bg_2.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\onboarding_bg_3.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\onboarding_bg_1.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\onboarding_bg_2.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\onboarding_bg_3.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\onboarding_bg_1.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\onboarding_bg_2.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\onboarding_bg_3.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\onboarding_bg_1.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\onboarding_bg_2.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\onboarding_bg_3.png" />
+    <AndroidResource Include="Resources\drawable\onboarding_circle_active.axml" />
+    <AndroidResource Include="Resources\drawable\onboarding_circle_inactive.axml" />
+    <Compile Include="Src\SSMR\SMRApplication\MVP\ApplicationFormSMRActivity.cs" />
+    <AndroidResource Include="Resources\layout\ApplicationFormSMRLayout.axml" />
+    <Compile Include="Src\SSMR\SMRApplication\MVP\SSMRWalkthroughData.cs" />
+    <Compile Include="Src\Database\Model\OnboardingSSMREntity.cs" />
+    <Compile Include="Src\SitecoreCMS\Model\OnboardingSSMRModel.cs" />
+    <Compile Include="Src\SSMR\SMRApplication\Api\CARegisteredContactInfoResponse.cs" />
+    <Compile Include="Src\SSMR\SMRApplication\Api\CARegisteredApiImpl.cs" />
+    <Compile Include="Src\SSMR\SMRApplication\Api\CARegisteredContactInfoApi.cs" />
+    <Compile Include="Src\SSMR\SMRApplication\MVP\ApplicationFormSMRPresenter.cs" />
+    <Compile Include="Src\SSMR\SMRApplication\MVP\ApplicationFormSMRContract.cs" />
+    <Compile Include="Src\Base\MyTNBAccountManagement.cs" />
+    <AndroidResource Include="Resources\drawable\status_bar_gradient.axml" />
+    <Compile Include="Src\SSMR\SMRApplication\MVP\SelectSMRAccountActivity.cs" />
+    <AndroidResource Include="Resources\layout\SelectSMRAccountLayout.axml" />
+    <Compile Include="Src\SSMR\SMRApplication\Adapter\SelectSMRAccountAdapter.cs" />
+    <Compile Include="Src\SSMR\SMRApplication\MVP\SMRAccount.cs" />
+    <AndroidResource Include="Resources\layout\SelectSMRAccountItemLayout.axml" />
+    <Compile Include="Src\SSMR\SMRApplication\MVP\SelectSMRAccountContract.cs" />
+    <Compile Include="Src\SSMR\SMRApplication\Api\SMRregistrationApi.cs" />
+    <Compile Include="Src\SSMR\SMRApplication\Api\SMRregistrationContactInfoRequest.cs" />
+    <Compile Include="Src\SSMR\SMRApplication\Api\BaseRequest.cs" />
+    <Compile Include="Src\SSMR\SMRApplication\Api\SMRregistrationApiImpl.cs" />
+    <Compile Include="Src\SSMR\SMRApplication\Api\SMRregistrationSubmitRequest.cs" />
+    <AndroidResource Include="Resources\layout\SubmitSMRAccountSuccessView.axml" />
+    <Compile Include="Src\SSMR\SMRApplication\MVP\SubmiSMRAccountCompleteActivity.cs" />
+    <AndroidResource Include="Resources\layout\SubmitSMRAccountFailedView.axml" />
+    <Compile Include="Src\SSMR\SMRApplication\MVP\SubmiSMRAccountFailedActivity.cs" />
+    <Compile Include="Src\SSMR\SMRApplication\Api\SMRregistrationSubmitResponse.cs" />
+    <AndroidResource Include="Resources\drawable\white_button_stroke_background.xml" />
     <AndroidResource Include="Resources\drawable-hdpi\ic_action_delete_white.png" />
     <AndroidResource Include="Resources\drawable-mdpi\ic_action_delete_white.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\ic_action_delete_white.png" />
@@ -1359,6 +1415,46 @@
     <Compile Include="Src\AppLaunch\Models\AccountSMRStatus.cs" />
     <Compile Include="Src\AppLaunch\Models\AccountSMRStatusResponse.cs" />
     <Compile Include="Src\myTNBMenu\Fragments\HomeMenu\Api\IGetSMRAccountStatusApi.cs" />
+    <AndroidResource Include="Resources\drawable-hdpi\faq_color_7.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\faq_color_7.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\faq_color_7.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\faq_color_7.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\smr_open.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\faq_color_7.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\smr_open.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-hdpi\smr_open.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\smr_open.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\smr_open.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -1722,6 +1818,11 @@
     <Folder Include="Src\myTNBMenu\Fragments\HomeMenu\Requests\" />
     <Folder Include="Src\SSMRTerminate\" />
     <Folder Include="Src\SSMRTerminate\MVP\" />
+    <Folder Include="Src\SSMR\" />
+    <Folder Include="Src\SSMR\SMRApplication\" />
+    <Folder Include="Src\SSMR\SMRApplication\MVP\" />
+    <Folder Include="Src\SSMR\SMRApplication\Adapter\" />
+    <Folder Include="Src\SSMR\SMRApplication\Api\" />
     <Folder Include="Src\SSMRMeterHistory\" />
     <Folder Include="Src\SSMRMeterHistory\MVP\" />
     <Folder Include="Src\SSMRMeterHistory\Adapter\" />

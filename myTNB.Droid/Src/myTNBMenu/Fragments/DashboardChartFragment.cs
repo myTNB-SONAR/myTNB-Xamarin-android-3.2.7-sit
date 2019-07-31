@@ -350,7 +350,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
                 TextViewUtils.SetMuseoSans300Typeface(txtUsageHistory, txtAddress, txtTotalPayable, txtContentNoData, txtDueDate);
                 TextViewUtils.SetMuseoSans300Typeface(btnToggleDay, btnToggleMonth, txtNewRefreshMessage, SsmrAccountStatusText);
-                TextViewUtils.SetMuseoSans500Typeface(txtRange, txtTotalPayableTitle, txtTotalPayableCurrency, btnViewBill, btnPay, btnLearnMore, txtTitleNoData, txtWhyThisAmt, btnNewRefresh, btnTxtSsmrViewHistory);
+                TextViewUtils.SetMuseoSans500Typeface(txtRange, txtTotalPayableTitle, txtTotalPayableCurrency, btnViewBill, btnPay, btnLearnMore, txtTitleNoData, txtWhyThisAmt, btnNewRefresh, btnTxtSsmrViewHistory, btnReadingHistory);
 
                 if (amountDueFailed)
                 {
@@ -1834,7 +1834,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
                         if (response.Response.Data.DashboardCTAType.ToUpper() == Constants.SMR_SUBMIT_METER_KEY)
                         {
-                            txtTotalPayableTitle.Text = GetString(Resource.String.ssmr_need_pay);
+                            // txtTotalPayableTitle.Text = GetString(Resource.String.ssmr_need_pay);
                             isSubmitMeter = true;
                             if (response.Response.Data.showReadingHistoryLink == "true")
                             {
@@ -1851,7 +1851,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         }
                         else
                         {
-                            txtTotalPayableTitle.Text = GetString(Resource.String.total_amount_due_bill);
+                            // txtTotalPayableTitle.Text = GetString(Resource.String.total_amount_due_bill);
                             isSubmitMeter = false;
                         }
 

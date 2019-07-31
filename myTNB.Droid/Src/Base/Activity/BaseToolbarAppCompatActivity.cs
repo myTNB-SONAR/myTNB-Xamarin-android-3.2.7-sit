@@ -1,5 +1,6 @@
 ﻿using Android.Content;
 using Android.OS;
+using Android.Preferences;
 using Android.Widget;
 using CheeseBind;
 using myTNB_Android.Src.Utils;
@@ -53,6 +54,8 @@ namespace myTNB_Android.Src.Base.Activity
                     SupportActionBar.SetDisplayShowTitleEnabled(false);
                 }
             }
+
+            UserSessions.SetSharedPreference(PreferenceManager.GetDefaultSharedPreferences(this));
         }
 
         /// <summary>

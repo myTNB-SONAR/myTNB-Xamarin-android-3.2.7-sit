@@ -300,7 +300,6 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="56dp"
-                            android:layout_marginRight="98dp"
                             android:layout_marginBottom="6dp"
                             android:textColor="@color/powerBlue"
                             android:text="View my reading history"
