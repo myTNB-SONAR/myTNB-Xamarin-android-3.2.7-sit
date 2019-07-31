@@ -1,7 +1,11 @@
-﻿using Android.Content;
+﻿using System.Collections.Generic;
+using Android.Content;
 using Java.Lang;
 using Java.Text;
 using Java.Util;
+using myTNB_Android.Src.Database.Model;
+using myTNB_Android.Src.SSMR.SMRApplication.MVP;
+using Newtonsoft.Json;
 
 namespace myTNB_Android.Src.Utils
 {
@@ -21,7 +25,7 @@ namespace myTNB_Android.Src.Utils
         //    editor.Apply();
         //}
 
-
+        private static ISharedPreferences mPreferences;
 
         public static void SetCurrentImageCount(ISharedPreferences prefs, int count)
         {
@@ -207,6 +211,55 @@ namespace myTNB_Android.Src.Utils
         public static string GetUserEmail(ISharedPreferences preferences)
         {
             return preferences.GetString("loginEmail", "");
+        }
+
+        public static void SetSelectAccountList(List<CustomerBillingAccount> accountList)
+        {
+            if (accountList.Count > 0)
+            {
+                ISharedPreferencesEditor editor = mPreferences.Edit();
+                string jsonAccountList = JsonConvert.SerializeObject(accountList);
+                editor.PutString("SELECT_ACCOUNT_LIST", jsonAccountList);
+                editor.Apply();
+            }
+        }
+
+        public static List<CustomerBillingAccount> GetSelectAccountList()
+        {
+            string accountList = mPreferences.GetString("SELECT_ACCOUNT_LIST", null);
+            List<CustomerBillingAccount> selectAccountList = new List<CustomerBillingAccount>();
+            if (accountList != null)
+            {
+                selectAccountList = JsonConvert.DeserializeObject<List<CustomerBillingAccount>>(accountList);
+            }
+            return selectAccountList;
+        }
+
+        public static void SetSMRAccountList(List<SMRAccount> sMRAccounts)
+        {
+            if (sMRAccounts.Count > 0)
+            {
+                ISharedPreferencesEditor editor = mPreferences.Edit();
+                string jsonAccountList = JsonConvert.SerializeObject(sMRAccounts);
+                editor.PutString("SMR_ACCOUNT_LIST", jsonAccountList);
+                editor.Apply();
+            }
+        }
+
+        public static List<SMRAccount> GetSMRAccountList()
+        {
+            string accountList = mPreferences.GetString("SMR_ACCOUNT_LIST", null);
+            List<SMRAccount> selectAccountList = new List<SMRAccount>();
+            if (accountList != null)
+            {
+                selectAccountList = JsonConvert.DeserializeObject<List<SMRAccount>>(accountList);
+            }
+            return selectAccountList;
+        }
+
+        public static void SetSharedPreference(ISharedPreferences preferences)
+        {
+            mPreferences = preferences;
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using myTNB_Android.Src.AddAccount.Models;
+using myTNB_Android.Src.SummaryDashBoard.Models;
 using SQLite;
 using System.Collections.Generic;
 using System.Linq;
@@ -66,6 +67,14 @@ namespace myTNB_Android.Src.Database.Model
 
         [Column("IsPeriodOpen")]
         public bool IsPeriodOpen { get; set; }
+        [Column("IsSMROnBoardingDontShowAgain")]
+        public bool IsSMROnBoardingDontShowAgain { get; set; }
+
+        [Column("billingDetails")]
+        public string billingDetails { get; set; }
+
+        [Column("IsSMROnboardingShown")]
+        public bool IsSMROnboardingShown { get; set; }
 
         public static int CreateTable()
         {
@@ -83,7 +92,7 @@ namespace myTNB_Android.Src.Database.Model
         }
 
         /// <summary>
-        /// Insert or Replace 
+        /// Insert or Replace
         /// </summary>
         /// <param name="type"></param>
         /// <param name="accNum"></param>
@@ -139,6 +148,18 @@ namespace myTNB_Android.Src.Database.Model
             //}
         }
 
+        public static void Replace(List<CustomerBillingAccount> customerBillingAccounts)
+        {
+            var db = DBHelper.GetSQLiteConnection();
+            RemoveAll();
+            if (customerBillingAccounts.Count > 0)
+            {
+                foreach (CustomerBillingAccount billingAccount in customerBillingAccounts)
+                {
+                    int newRecordRow = db.InsertOrReplace(billingAccount);
+                }
+            }
+        }
 
         public static int InsertOrReplace(Account accountResponse)
         {
@@ -227,7 +248,8 @@ namespace myTNB_Android.Src.Database.Model
                 AccountCategoryId = accountResponse.AccountCategoryId,
                 SmartMeterCode = accountResponse.SmartMeterCode == null ? "0" : accountResponse.SmartMeterCode,
                 IsTaggedSMR = accountResponse.IsTaggedSMR == "true" ? true : false,
-                isOwned = accountResponse.IsOwned
+                isOwned = accountResponse.IsOwned,
+                IsSMROnBoardingDontShowAgain = false
             };
 
             int newRecordRow = db.InsertOrReplace(newRecord);
@@ -333,6 +355,16 @@ namespace myTNB_Android.Src.Database.Model
             //}
         }
 
+        public static void RemoveAll()
+        {
+            //using (var db = new SQLiteConnection(Constants.DB_PATH, SQLiteOpenFlags.ReadWrite | SQLiteOpenFlags.Create | SQLiteOpenFlags.FullMutex, true))
+            //using (var db = DBHelper.GetSQLiteConnection())
+            //{
+            var db = DBHelper.GetSQLiteConnection();
+            db.Execute("DELETE FROM CustomerBillingAccountEntity");
+            //}
+        }
+
         public static int Update(string accNum, bool isSelected)
         {
             //using (var db = new SQLiteConnection(Constants.DB_PATH, SQLiteOpenFlags.ReadWrite | SQLiteOpenFlags.Create | SQLiteOpenFlags.FullMutex, true))
@@ -414,6 +446,31 @@ namespace myTNB_Android.Src.Database.Model
             //}
         }
 
+        public static int UpdateDontShowAgainSMROnboarding(string accountNumber, bool isDontShow)
+        {
+            //using (var db = new SQLiteConnection(Constants.DB_PATH, SQLiteOpenFlags.ReadWrite | SQLiteOpenFlags.Create | SQLiteOpenFlags.FullMutex, true))
+            //using (var db = DBHelper.GetSQLiteConnection())
+            //{
+            var db = DBHelper.GetSQLiteConnection();
+            return db.Execute("Update CustomerBillingAccountEntity SET IsSMROnBoardingDontShowAgain = ? WHERE accNum = ?", isDontShow, accountNumber);
+            //}
+        }
+
+        public static void UpdateBillingDetails(List<SummaryDashBoardAccountEntity> summaryDetails)
+        {
+            var db = DBHelper.GetSQLiteConnection();
+            foreach(SummaryDashBoardAccountEntity billingDetails in summaryDetails)
+            {
+                db.Execute("Update CustomerBillingAccountEntity SET billingDetails = ? WHERE accNum = ?", billingDetails.JsonResponse, billingDetails.AccountNo);
+            }
+        }
+
+        public static void RemoveCustomerBillingDetails()
+        {
+            var db = DBHelper.GetSQLiteConnection();
+            db.Execute("Update CustomerBillingAccountEntity SET billingDetails = null");
+        }
+
         public static void SetSelected(string accNum)
         {
             //using(var db = DBHelper.GetSQLiteConnection()) {
@@ -478,6 +535,29 @@ namespace myTNB_Android.Src.Database.Model
             //}
         }
 
+        public static List<CustomerBillingAccount> GetSortedCustomerBillingAccounts()
+        {
+            List<CustomerBillingAccount> sortedList = new List<CustomerBillingAccount>();
+            sortedList.AddRange(REAccountList());
+            sortedList.AddRange(NonREAccountList());
+            return sortedList;
+        }
+
+        public static List<CustomerBillingAccount> EligibleSMRAccountList()
+        {
+            //using (var db = new SQLiteConnection(Constants.DB_PATH, SQLiteOpenFlags.ReadWrite | SQLiteOpenFlags.Create | SQLiteOpenFlags.FullMutex, true))
+            //{
+            //using (var db = DBHelper.GetSQLiteConnection())
+            //{
+            var db = DBHelper.GetSQLiteConnection();
+            //return db.Query<CustomerBillingAccount>("SELECT * FROM CustomerBillingAccountEntity WHERE accountCategoryId != 2 ORDER BY accDesc ASC").ToList().OrderBy(x => x.AccDesc).ToList();
+            List<CustomerBillingAccount> eligibleSMRAccounts = new List<CustomerBillingAccount>();
+            eligibleSMRAccounts = db.Query<CustomerBillingAccount>("SELECT * FROM CustomerBillingAccountEntity WHERE accountCategoryId != 2 AND isTaggedSMR = 1 AND isOwned = 1").ToList().OrderBy(x => x.AccDesc).ToList();
+            //db.Close();
+            return eligibleSMRAccounts;
+            //}
+        }
+
         public static void MakeFirstAsSelected()
         {
             List<CustomerBillingAccount> ReAccount = REAccountList();
@@ -495,6 +575,36 @@ namespace myTNB_Android.Src.Database.Model
             }
 
 
+        }
+
+        public static bool HasUpdatedBillingDetails(string accountNumber)
+        {
+            bool isUpdated = false;
+            var db = DBHelper.GetSQLiteConnection();
+            List<CustomerBillingAccount> customerBillingAccounts = db.Query<CustomerBillingAccount>("SELECT billingDetails FROM CustomerBillingAccountEntity WHERE accNum = ?", accountNumber);
+            if (customerBillingAccounts.Count > 0)
+            {
+                isUpdated = customerBillingAccounts[0].billingDetails != null;
+            }
+            return isUpdated;
+        }
+
+        public static void UpdateIsSMROnboardingShown()
+        {
+            var db = DBHelper.GetSQLiteConnection();
+            db.Execute("Update CustomerBillingAccountEntity SET IsSMROnboardingShown = 1");
+        }
+
+        public static bool GetIsSMROnboardingShown()
+        {
+            var db = DBHelper.GetSQLiteConnection();
+            bool isShown = false;
+            List<CustomerBillingAccount> customerBillingAccounts = db.Query<CustomerBillingAccount>("Select IsSMROnboardingShown from CustomerBillingAccountEntity");
+            if (customerBillingAccounts.Count > 0)
+            {
+                isShown = customerBillingAccounts[0].IsSMROnboardingShown;
+            }
+            return isShown;
         }
 
     }

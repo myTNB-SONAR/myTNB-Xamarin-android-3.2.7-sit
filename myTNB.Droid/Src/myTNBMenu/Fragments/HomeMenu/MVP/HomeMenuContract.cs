@@ -35,7 +35,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             Constants.GREETING GetGreeting();
             string GetAccountDisplay();
             void LoadAccounts();
-            void LoadBatchSummaryAccounts();
             void InitiateService();
             Task InitiateMyService();
             Task RetryMyService();

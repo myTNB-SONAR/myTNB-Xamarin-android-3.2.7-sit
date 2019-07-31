@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Android.App;
 using Android.Util;
 using myTNB.SitecoreCMS.Services;
+using myTNB_Android.Src.Base;
 using myTNB_Android.Src.AppLaunch.Models;
 using myTNB_Android.Src.AppLaunch.Requests;
 using myTNB_Android.Src.Base.Models;
@@ -71,24 +72,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             return greeting;
         }
 
-        private void SortAccounts(List<SummaryDashBoardDetails> summaryDetails)
-        {
-            List<SummaryDashBoardDetails> reAccount = (from item in summaryDetails
-                                                       where item.AccType == "2"
-                                                       select item).ToList();
-
-
-            List<SummaryDashBoardDetails> normalAccount = (from item in summaryDetails
-                                                           where item.AccType != "2"
-                                                           select item).ToList();
-
-
-            List<SummaryDashBoardDetails> totalAccountList = new List<SummaryDashBoardDetails>();
-            totalAccountList.AddRange(reAccount.OrderBy(x => x.AccName).ToList());
-            totalAccountList.AddRange(normalAccount.OrderBy(x => x.AccName).ToList());
-            summaryDashboardInfoList = totalAccountList;
-        }
-
         private async Task GetAccountSummaryInfo(SummaryDashBordRequest request)
         {
             SummaryDashBoardResponse response = await this.serviceApi.GetLinkedSummaryInfo(request);
@@ -102,6 +85,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 else if (response.Data != null && !response.Data.isError && response.Data.data != null && response.Data.data.Count > 0)
                 {
                     List<SummaryDashBoardDetails> summaryDetails = response.Data.data;
+                    List<SummaryDashBoardAccountEntity> billingDetails = new List<SummaryDashBoardAccountEntity>();
                     for (int i = 0; i < summaryDetails.Count; i++)
                     {
                         CustomerBillingAccount cbAccount = CustomerBillingAccount.FindByAccNum(summaryDetails[i].AccNumber);
@@ -115,10 +99,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                         accountModel.Timestamp = DateTime.Now.ToLocalTime();
                         accountModel.JsonResponse = JsonConvert.SerializeObject(summaryDetails[i]);
                         accountModel.AccountNo = summaryDetails[i].AccNumber;
+                        billingDetails.Add(accountModel);
                         SummaryDashBoardAccountEntity.InsertItem(accountModel);
                         /*****/
                     }
+                    MyTNBAccountManagement.GetInstance().UpdateCustomerBillingDetails(billingDetails);
                     this.mView.UpdateAccountListCards(summaryDetails);
+
+
                     //SummaryData(summaryDetails);
                     //mView.ShowRefreshSummaryDashboard(false, null, null);
 
@@ -138,7 +126,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 SummaryDashBoardResponse response = await this.serviceApi.GetLinkedSummaryInfo(request);
                 if (response != null)
                 {
-                    if (response.Data != null && response.Data.Status.ToUpper() == Constants.REFRESH_MODE)
+                  if (response.Data != null && response.Data.Status.ToUpper() == Constants.REFRESH_MODE)
                     {
                         //mView.ShowRefreshSummaryDashboard(true, response.Data.RefreshMessage, response.Data.RefreshBtnText);
                         //LoadEmptySummaryDetails();
@@ -187,6 +175,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                         }
 
                         List<SummaryDashBoardDetails> summaryDetails = response.Data.data;
+                        List<SummaryDashBoardAccountEntity> billingDetails = new List<SummaryDashBoardAccountEntity>();
                         for (int i = 0; i < summaryDetails.Count; i++)
                         {
                             AccountSMRStatus selectedUpdateAccount = new AccountSMRStatus();
@@ -226,9 +215,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                             accountModel.AccountNo = summaryDetails[i].AccNumber;
                             SummaryDashBoardAccountEntity.InsertItem(accountModel);
                             /*****/
+                            billingDetails.Add(accountModel);
                         }
+                        MyTNBAccountManagement.GetInstance().UpdateCustomerBillingDetails(billingDetails);
                         this.mView.UpdateAccountListCards(summaryDetails);
 
+                        List<CustomerBillingAccount> list = CustomerBillingAccount.List();
                     }
                     else
                     {
@@ -282,55 +274,32 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
         public void LoadLocalAccounts()
         {
-            var RenewableAccountList = CustomerBillingAccount.REAccountList();
-            var NonRenewableAccountList = CustomerBillingAccount.NonREAccountList();
-
-            List<CustomerBillingAccount> customerBillingAccountList = new List<CustomerBillingAccount>();
-            customerBillingAccountList.AddRange(RenewableAccountList);
-            customerBillingAccountList.AddRange(NonRenewableAccountList);
-
             summaryDashboardInfoList = new List<SummaryDashBoardDetails>();
+            List<CustomerBillingAccount> customerBillingAccountList = CustomerBillingAccount.GetSortedCustomerBillingAccounts();
+            SummaryDashBoardDetails summaryDashBoardDetails;
             foreach (CustomerBillingAccount customerBillingAccount in customerBillingAccountList)
             {
 
-                SummaryDashBoardAccountEntity summaryDashBoardDetailsEntity = SummaryDashBoardAccountEntity.GetItemByAccountNo(customerBillingAccount.AccNum);
-                SummaryDashBoardDetails summaryDashBoardDetails = new SummaryDashBoardDetails();
-                if (summaryDashBoardDetailsEntity != null)
+                if (customerBillingAccount.billingDetails != null)
                 {
-                    summaryDashBoardDetails = JsonConvert.DeserializeObject<SummaryDashBoardDetails>(summaryDashBoardDetailsEntity.JsonResponse);
+                    summaryDashBoardDetails = JsonConvert.DeserializeObject<SummaryDashBoardDetails>(customerBillingAccount.billingDetails);
+                    summaryDashboardInfoList.Add(summaryDashBoardDetails);
                 }
                 else
                 {
+                    summaryDashBoardDetails = new SummaryDashBoardDetails();
+                    summaryDashBoardDetails.AccName = customerBillingAccount.AccDesc;
                     summaryDashBoardDetails.AccNumber = customerBillingAccount.AccNum;
                     summaryDashBoardDetails.AccType = customerBillingAccount.AccountCategoryId;
-                }
-                summaryDashboardInfoList.Add(summaryDashBoardDetails);
-            }
-
-            //SortAccounts(summaryDashboardInfoList);
-            List<string> accountList = new List<string>();
-            for (int i = 0; i < customerBillingAccountList.Count; i++)
-            {
-                if (!string.IsNullOrEmpty(customerBillingAccountList[i].AccNum))
-                {
-                    accountList.Add(customerBillingAccountList[i].AccNum);
+                    summaryDashboardInfoList.Add(summaryDashBoardDetails);
                 }
             }
-
-            batchAccountList = accountList.Select((x, index) => new { x, index })
-                   .GroupBy(x => x.index / 5, y => y.x);
             this.mView.SetAccountListCardsFromLocal(summaryDashboardInfoList);
         }
 
         public void LoadAccounts()
         {
-            var RenewableAccountList = CustomerBillingAccount.REAccountList();
-            var NonRenewableAccountList = CustomerBillingAccount.NonREAccountList();
-
-            List<CustomerBillingAccount> customerBillingAccountList = new List<CustomerBillingAccount>();
-            customerBillingAccountList.AddRange(RenewableAccountList);
-            customerBillingAccountList.AddRange(NonRenewableAccountList);
-
+            List<CustomerBillingAccount> customerBillingAccountList = CustomerBillingAccount.GetSortedCustomerBillingAccounts();
             summaryDashboardInfoList = new List<SummaryDashBoardDetails>();
             foreach (CustomerBillingAccount customerBillintAccount in customerBillingAccountList)
             {
@@ -341,7 +310,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 summaryDashboardInfoList.Add(summaryDashBoardDetails);
             }
 
-            SortAccounts(summaryDashboardInfoList);
             List<string> accountList = new List<string>();
             for (int i = 0; i < customerBillingAccountList.Count; i++)
             {
@@ -357,17 +325,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             if (batchAccountList.ToList().Count > 0)
             {
                 BatchLoadSummaryDetails(customerBillingAccountList);
-            }
-        }
-
-        public void LoadBatchSummaryAccounts()
-        {
-            if (batchAccountList.ToList().Count > 1)
-            {
-                for (int i = 1; i < batchAccountList.ToList().Count; i++)
-                {
-                    LoadSummaryDetails(batchAccountList.ToList()[i].ToList());
-                }
             }
         }
 
