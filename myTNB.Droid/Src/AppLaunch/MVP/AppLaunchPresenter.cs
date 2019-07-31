@@ -262,7 +262,6 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                                             PaymentHistoryEntity.RemoveAll();
                                             REPaymentHistoryEntity.RemoveAll();
                                             AccountDataEntity.RemoveAll();
-                                            MyTNBAccountManagement.GetInstance().RemoveCustomerBillingDetails();
                                             SummaryDashBoardAccountEntity.RemoveAll();
                                             SelectBillsEntity.RemoveAll();
                                             UserSessions.UpdateDeviceId(mSharedPref);
@@ -510,7 +509,7 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                     //    mView.OnTimeStampRecieved(null);
                     //}
 
-                    
+
 
                 }
                 catch (Exception e)

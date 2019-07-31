@@ -237,13 +237,10 @@ namespace myTNB_Android.Src.Utils
 
         public static void SetSMRAccountList(List<SMRAccount> sMRAccounts)
         {
-            if (sMRAccounts.Count > 0)
-            {
-                ISharedPreferencesEditor editor = mPreferences.Edit();
-                string jsonAccountList = JsonConvert.SerializeObject(sMRAccounts);
-                editor.PutString("SMR_ACCOUNT_LIST", jsonAccountList);
-                editor.Apply();
-            }
+            ISharedPreferencesEditor editor = mPreferences.Edit();
+            string jsonAccountList = JsonConvert.SerializeObject(sMRAccounts);
+            editor.PutString("SMR_ACCOUNT_LIST", jsonAccountList);
+            editor.Apply();
         }
 
         public static List<SMRAccount> GetSMRAccountList()
@@ -260,6 +257,11 @@ namespace myTNB_Android.Src.Utils
         public static void SetSharedPreference(ISharedPreferences preferences)
         {
             mPreferences = preferences;
+        }
+
+        public static void RemoveSessionData()
+        {
+            SetSMRAccountList(new List<SMRAccount>());
         }
     }
 }
