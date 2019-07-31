@@ -10,10 +10,10 @@ using Android.Text;
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
-using myTNB_Android.Src.AppLaunch.Models;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.SSMRMeterHistory.Adapter;
+using myTNB_Android.Src.SSMRTerminate.MVP;
 using myTNB_Android.Src.Utils;
 using Newtonsoft.Json;
 using System;
@@ -42,11 +42,18 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
         [BindView(Resource.Id.smr_history_recyclerview)]
         RecyclerView mSMRRecyclerView;
 
+
+        RecyclerView mSMRMenuView;
+
         private IMenu ssmrMenu;
 
         private SMRActivityInfoResponse smrResponse;
 
         private MaterialDialog SSMRMenuDialog;
+
+        SSMRMeterHistoryMenuAdapter meterHistoryMenuAdapter;
+
+        private List<SSMRMeterHistoryMenuModel> ssmrMeterHistoryMenuList = new List<SSMRMeterHistoryMenuModel>();
 
         public override int ResourceId()
 		{
@@ -164,39 +171,46 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
                 SSMRMenuDialog.Window.Attributes = wlp;
 
                 ImageView btnSMRMenuClose = SSMRMenuDialog.FindViewById<ImageView>(Resource.Id.btnSMRMenuClose);
-                TextView btnReadMeter = SSMRMenuDialog.FindViewById<TextView>(Resource.Id.btnReadMeter);
-                TextView btnWhenSubmitMeter = SSMRMenuDialog.FindViewById<TextView>(Resource.Id.btnWhenSubmitMeter);
-                TextView btnWhyReadingRejected = SSMRMenuDialog.FindViewById<TextView>(Resource.Id.btnWhyReadingRejected);
-                TextView btnDiscontinueSMR = SSMRMenuDialog.FindViewById<TextView>(Resource.Id.btnDiscontinueSMR);
-                TextViewUtils.SetMuseoSans500Typeface(btnDiscontinueSMR);
-                TextViewUtils.SetMuseoSans300Typeface(btnWhyReadingRejected, btnWhenSubmitMeter, btnReadMeter);
+                RecyclerView mSMRMenuRecyclerView = SSMRMenuDialog.FindViewById<RecyclerView>(Resource.Id.smrMenuList);
+                mSMRMenuRecyclerView.SetLayoutManager(new LinearLayoutManager(this));
+                if (smrResponse.Response.Data.MeterReadingMenu.Count > 0)
+                {
+                    ssmrMeterHistoryMenuList.Clear();
+                    ssmrMeterHistoryMenuList.AddRange(smrResponse.Response.Data.MeterReadingMenu);
+                    meterHistoryMenuAdapter = new SSMRMeterHistoryMenuAdapter(smrResponse.Response.Data.MeterReadingMenu);
+                    mSMRMenuRecyclerView.SetAdapter(meterHistoryMenuAdapter);
+                    meterHistoryMenuAdapter.ClickChanged += OnClickChanged;
+                }
+
                 btnSMRMenuClose.Click += delegate
-                {
-                    ssmrMenu.FindItem(Resource.Id.action_ssmr_more).SetVisible(true);
-                    SSMRMenuDialog.Dismiss();
-                };
-                btnReadMeter.Click += delegate
-                {
-                    ssmrMenu.FindItem(Resource.Id.action_ssmr_more).SetVisible(true);
-                    SSMRMenuDialog.Dismiss();
-                };
-                btnWhenSubmitMeter.Click += delegate
-                {
-                    ssmrMenu.FindItem(Resource.Id.action_ssmr_more).SetVisible(true);
-                    SSMRMenuDialog.Dismiss();
-                };
-                btnWhyReadingRejected.Click += delegate
-                {
-                    ssmrMenu.FindItem(Resource.Id.action_ssmr_more).SetVisible(true);
-                    SSMRMenuDialog.Dismiss();
-                };
-                btnDiscontinueSMR.Click += delegate
                 {
                     ssmrMenu.FindItem(Resource.Id.action_ssmr_more).SetVisible(true);
                     SSMRMenuDialog.Dismiss();
                 };
 
                 SSMRMenuDialog.Show();
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        void OnClickChanged(object sender, int position)
+        {
+            try
+            {
+                if (position != -1)
+                {
+                    SSMRMeterHistoryMenuModel selectedMenu = ssmrMeterHistoryMenuList[position];
+                    if (selectedMenu.MenuId == "1004")
+                    {
+                        Intent SSMRTerminateActivity = new Intent(this, typeof(SSMRTerminateActivity));
+                        StartActivity(SSMRTerminateActivity);
+                    }
+                }
+                ssmrMenu.FindItem(Resource.Id.action_ssmr_more).SetVisible(true);
+                SSMRMenuDialog.Dismiss();
             }
             catch (System.Exception e)
             {

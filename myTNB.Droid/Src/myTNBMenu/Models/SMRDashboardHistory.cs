@@ -59,5 +59,9 @@ namespace myTNB_Android.Src.myTNBMenu.Models
         [JsonProperty("MeterReadingHistory")]
         [AliasAs("MeterReadingHistory")]
         public List<SSMRMeterHistoryModel> MeterReadingHistory { get; set; }
+
+        [JsonProperty("MoreOptions")]
+        [AliasAs("MoreOptions")]
+        public List<SSMRMeterHistoryMenuModel> MeterReadingMenu { get; set; }
     }
 }

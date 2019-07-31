@@ -1455,6 +1455,17 @@
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
+    <AndroidResource Include="Resources\layout\SSMRMenuItemLayout.axml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <Compile Include="Src\SSMRTerminate\MVP\SSMRTerminationReasonModel.cs" />
+    <Compile Include="Src\SSMRMeterHistory\MVP\SSMRMeterHistoryMenuModel.cs" />
+    <AndroidResource Include="Resources\drawable\custom_round_white_background.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <Compile Include="Src\SSMRMeterHistory\Adapter\SSMRMeterHistoryMenuAdapter.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

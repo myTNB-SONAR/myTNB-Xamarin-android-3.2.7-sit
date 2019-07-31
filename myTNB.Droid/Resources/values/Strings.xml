@@ -1406,7 +1406,7 @@ Please try again later.]]>
   <string name="ssmr_discontinue_email_hint">EMAIL ADDRESS</string>
   <string name="ssmr_discontinue_mobile_no_hint">MOBILE NUMBER</string>
   <string name="ssmr_select_discontinue_reason_hint">SELECT REASON</string>
-  <string name="ssmr_terms_conditions">By applying, you are agreeing to the <font color='#1c79ca'>TNB’s Terms of Use, Privacy policy, Anti-Spam Policy</font> and <font color='#1c79ca'>Personal Data Protection Policy</font>.</string>
+  <string name="ssmr_terms_conditions"><font color='#49494a'>By applying, you are agreeing to the </font><font color='#1c79ca'>TNB’s Terms of Use, Privacy policy, Anti-Spam Policy </font><font color='#49494a'>and </font><font color='#1c79ca'>Personal Data Protection Policy</font>.</string>
   <string name="ssmr_discontinue_btn_submit">Submit</string>
     
   <string name="ssmr_submit_meter">Submit Meter Reading</string>
