@@ -530,7 +530,7 @@ namespace myTNB
         private void GetEligibleAccounts()
         {
             _eligibleAccountList = SSMRAccounts.GetAccounts();
-            _selectedAccount = SSMRAccounts.GetFirstAccount();
+            _selectedAccount = IsApplication ? SSMRAccounts.GetFirstAccount() : DataManager.DataManager.SharedInstance.SelectedAccount;
         }
 
         private void OnSelectAccount(int index)
