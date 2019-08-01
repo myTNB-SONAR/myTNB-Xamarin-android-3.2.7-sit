@@ -129,7 +129,7 @@ namespace myTNB.Model
         public string MenuCTA { set; get; }
         public string MenuDescription { set; get; }
         public string OrderId { set; get; }
-        public string isHighlighted
+        public string IsHighlighted
         {
             set
             {
@@ -141,15 +141,15 @@ namespace myTNB.Model
             }
         }
         [JsonIgnore]
-        public bool IsHighlighted
+        public bool isHighlighted
         {
             get
             {
                 var res = false;
 
-                if (!string.IsNullOrEmpty(isHighlighted))
+                if (!string.IsNullOrEmpty(IsHighlighted))
                 {
-                    res = string.Compare(isHighlighted, "true") == 0;
+                    res = string.Compare(IsHighlighted, "true") == 0;
                 }
                 return res;
             }
