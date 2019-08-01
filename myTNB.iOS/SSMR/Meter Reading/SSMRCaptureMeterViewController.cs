@@ -6,11 +6,9 @@ using System.Diagnostics;
 using UIKit;
 using AVFoundation;
 using myTNB.SSMR.MeterReading;
-using System.Drawing;
 using System.IO;
 using Photos;
 using System.Collections.Generic;
-using AssetsLibrary;
 using System.Threading.Tasks;
 using myTNB.Model;
 using System.Linq;
@@ -26,12 +24,7 @@ namespace myTNB
         /// <summary>
         /// Key as kWh, KVarh or KW and Value as isValid based on textbox validation
         /// </summary>
-        public Dictionary<string, bool> ReadingDictionary = new Dictionary<string, bool>
-        {
-            {"kWh",false },
-            { "kVARh",false},
-            { "kW",false}
-        };
+        public Dictionary<string, bool> ReadingDictionary;
 
         private UILabel _lblDescription;
         private UIView _viewPreview, _viewCamera, _viewCapture;
@@ -49,7 +42,7 @@ namespace myTNB
         private AVCapturePhotoOutput _output;
 
         private bool _isMultiPhase;
-        private List<ImageModel> ImageModelList;
+        private List<ImageModel> _imageModelList;
 
         private class ImageModel
         {
@@ -114,7 +107,7 @@ namespace myTNB
         {
             if (_isMultiPhase)
             {
-                ImageModelList = new List<ImageModel>();
+                _imageModelList = new List<ImageModel>();
                 List<string> keys = ReadingDictionary.Keys.ToList();
                 for (int i = 0; i < keys.Count; i++)
                 {
@@ -124,7 +117,7 @@ namespace myTNB
                         ReadingUnit = keys[i],
                         Tag = 1001 + i
                     };
-                    ImageModelList.Add(imgModel);
+                    _imageModelList.Add(imgModel);
                 }
             }
         }
@@ -182,28 +175,30 @@ namespace myTNB
                     {
                         _viewPreviewOne = CreatePhotoPreview(new CGRect(GetPreviewXLoc(expectedReadingCount, previewWidth)
                             , 16, previewWidth, previewWidth), i);
+                        _viewPreviewOne.AddGestureRecognizer(new UITapGestureRecognizer(() => { PreviewAction(_viewPreviewOne.Tag); }));
                         _viewPreview.AddSubview(_viewPreviewOne);
                     }
                     else if (i == 1)
                     {
                         _viewPreviewTwo = CreatePhotoPreview(new CGRect(_viewPreviewOne.Frame.GetMaxX() + 32, 16, previewWidth, previewWidth), i);
+                        _viewPreviewTwo.AddGestureRecognizer(new UITapGestureRecognizer(() => { PreviewAction(_viewPreviewTwo.Tag); }));
                         _viewPreview.AddSubview(_viewPreviewTwo);
-
                     }
                     else
                     {
                         _viewPreviewThree = CreatePhotoPreview(new CGRect(_viewPreviewTwo.Frame.GetMaxX() + 32, 16, previewWidth, previewWidth), i);
+                        _viewPreviewThree.AddGestureRecognizer(new UITapGestureRecognizer(() => { PreviewAction(_viewPreviewThree.Tag); }));
                         _viewPreview.AddSubview(_viewPreviewThree);
                     }
                 }
             }
 
             nfloat btnYLoc = (_isMultiPhase ? _viewPreviewOne.Frame.GetMaxY() : 0) + 16.0F;
-
             _btnSubmit = new CustomUIButtonV2()
             {
                 Frame = new CGRect(16, btnYLoc, ViewWidth - 32, 48),
-                BackgroundColor = MyTNBColor.FreshGreen
+                BackgroundColor = MyTNBColor.FreshGreen,
+                Tag = 1004
             };
             _btnSubmit.SetTitle(GetCommonI18NValue(SSMRConstants.I18N_Submit), UIControlState.Normal);
             _btnSubmit.TouchUpInside += OnSubmit;
@@ -211,6 +206,38 @@ namespace myTNB
             nfloat containerHeight = _btnSubmit.Frame.GetMaxY() + (DeviceHelper.IsIphoneXUpResolution() ? 36 : 16);
             _viewPreview.Frame = new CGRect(0, ViewHeight - containerHeight, ViewWidth, containerHeight);
             View.AddSubview(_viewPreview);
+        }
+
+        private void PreviewAction(nint tag)
+        {
+            Debug.WriteLine("PreviewAction: " + tag);
+            for (int i = 0; i < _viewPreview.Subviews.Length; i++)
+            {
+                UIView view = _viewPreview.Subviews[i];
+                if (view == null || view.Tag == 1004) { continue; }
+                UIImageView imgView = view.ViewWithTag(99) as UIImageView;
+                if (imgView != null && imgView.Hidden)
+                {
+                    if (view.Tag == tag) { continue; }
+                    view.Layer.BorderColor = MyTNBColor.WhiteTwo.CGColor;
+                }
+                if (imgView != null && !imgView.Hidden) { view.Layer.BorderColor = MyTNBColor.FreshGreen.CGColor; }
+                if (view.Tag == tag && imgView != null && !imgView.Hidden)
+                {
+                    view.Layer.BorderColor = MyTNBColor.WaterBlue.CGColor;
+                    AddMainPreview(imgView.Image);
+                }
+            }
+            /*UIView view = _viewPreview.ViewWithTag(tag);
+            if (view != null)
+            {
+                UIImageView imgView = view.ViewWithTag(99) as UIImageView;
+                if (imgView == null || imgView.Hidden) { return; }
+                Debug.WriteLine("PreviewAction with img: " + tag);
+
+                AddMainPreview(imgView.Image);
+                view.Layer.BorderColor = MyTNBColor.WaterBlue.CGColor;
+            }*/
         }
 
         private UIView CreatePhotoPreview(CGRect frame, int index)
@@ -325,7 +352,7 @@ namespace myTNB
                 {
                     if (_isMultiPhase)
                     {
-                        UpdateImageList(selectedImg);
+                        UpdateImagePreview(selectedImg);
                     }
                     else
                     {
@@ -356,12 +383,12 @@ namespace myTNB
             return view;
         }
 
-        private void UpdateImageList(UIImage image)
+        private void UpdateImagePreview(UIImage image)
         {
-            int count = ImageModelList.Count;
+            int count = _imageModelList.Count;
             for (int i = 0; i < count; i++)
             {
-                ImageModel model = ImageModelList[i];
+                ImageModel model = _imageModelList[i];
                 if (model.NeedsPhoto)
                 {
                     UIView parent = _viewPreview.ViewWithTag(model.Tag);
@@ -374,7 +401,19 @@ namespace myTNB
                     model.Image = image;
                     model.NeedsPhoto = false;
 
-                    ImageModelList[i] = model;
+                    _imageModelList[i] = model;
+
+                    if (i + 1 < count)
+                    {
+                        UIView nextParent = _viewPreview.ViewWithTag(_imageModelList[i + 1].Tag);
+                        nextParent.Layer.BorderColor = MyTNBColor.WaterBlue.CGColor;
+                    }
+
+                    if (i + 1 == count)
+                    {
+                        parent.Layer.BorderColor = MyTNBColor.WaterBlue.CGColor;
+                        AddMainPreview(image);
+                    }
                     break;
                 }
             }
@@ -489,7 +528,7 @@ namespace myTNB
             _capturedImage = capturedImage;
             if (_isMultiPhase)
             {
-
+                UpdateImagePreview(capturedImage);
             }
             else
             {
@@ -580,7 +619,23 @@ namespace myTNB
 
         private void GetMultiPhaseTasks(ref List<Task> taskList)
         {
-
+            for (int i = 0; i < _imageModelList.Count; i++)
+            {
+                ImageModel model = _imageModelList[i];
+                if (model.Image != null)
+                {
+                    string base64Value = GetImageData(model.Image, out double imgFileSize);
+                    string key = model.ReadingUnit;
+                    object meterImage = new
+                    {
+                        RequestReadingUnit = key,
+                        ImageId = string.Format(SSMRConstants.Pattern_ImageName, key, i),
+                        ImageSize = imgFileSize,
+                        ImageData = base64Value
+                    };
+                    taskList.Add(GetMeterReadingOCRValue(meterImage));
+                }
+            }
         }
 
         private void OnSubmitAllImages()
