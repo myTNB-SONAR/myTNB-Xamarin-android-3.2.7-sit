@@ -43,6 +43,7 @@ namespace myTNB
 
         private bool _isMultiPhase;
         private List<ImageModel> _imageModelList;
+        private nint _selectedTag;
 
         private class ImageModel
         {
@@ -210,6 +211,7 @@ namespace myTNB
 
         private void PreviewAction(nint tag)
         {
+            _selectedTag = tag;
             Debug.WriteLine("PreviewAction: " + tag);
             for (int i = 0; i < _viewPreview.Subviews.Length; i++)
             {
@@ -311,8 +313,25 @@ namespace myTNB
                 _imgViewMainPreview.Image = null;
                 _viewDelete.Hidden = true;
                 _viewCameraActions.Hidden = false;
-
                 _viewCamera.SendSubviewToBack(_viewOverlay);
+
+                UIView viewPreview = _viewPreview.ViewWithTag(_selectedTag);
+                if (viewPreview != null)
+                {
+                    UIImageView imgView = viewPreview.ViewWithTag(99) as UIImageView;
+                    if (imgView != null && !imgView.Hidden)
+                    {
+                        imgView.Image = null;
+                        int index = _imageModelList.FindIndex(x => x.Tag == _selectedTag);
+                        if (index > -1)
+                        {
+                            ImageModel model = _imageModelList[index];
+                            model.NeedsPhoto = true;
+                            model.Image = null;
+                            _imageModelList[index] = model;
+                        }
+                    }
+                }
             }));
             view.AddSubview(imgDelete);
             return view;
