@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using AssetsLibrary;
 using System.Threading.Tasks;
 using myTNB.Model;
+using System.Linq;
 
 namespace myTNB
 {
@@ -22,8 +23,15 @@ namespace myTNB
         {
         }
 
-        public bool IsThreePhase = false;
-        public List<string> MissingReadingList;
+        /// <summary>
+        /// Key as kWh, KVarh or KW and Value as isValid based on textbox validation
+        /// </summary>
+        public Dictionary<string, bool> ReadingDictionary = new Dictionary<string, bool>
+        {
+            {"kWh",false },
+            { "kVARh",false},
+            { "kW",false}
+        };
 
         private UILabel _lblDescription;
         private UIView _viewPreview, _viewCamera, _viewCapture;
@@ -33,21 +41,35 @@ namespace myTNB
         private UIImageView _imgViewMainPreview;
         private CustomUISlider _zoomSlider;
         private UIButton _btnSubmit;
-        private UIImage _capturedImage, _croppedImage;
+        private UIImage _capturedImage;
 
         private AVCaptureSession _captureSession;
         private AVCaptureDevice _captureDevice;
         private AVCaptureDeviceInput _input;
         private AVCapturePhotoOutput _output;
 
+        private bool _isMultiPhase;
+        private List<ImageModel> ImageModelList;
+
+        private class ImageModel
+        {
+            public bool NeedsPhoto { set; get; }
+            public UIImage Image { set; get; }
+            public string ReadingUnit { set; get; }
+            public int Tag { set; get; }
+        }
+
         public override void ViewDidLoad()
         {
             PageName = SSMRConstants.Pagename_SSMRCaptureMeter;
             base.ViewDidLoad();
+            _isMultiPhase = ReadingDictionary != null && ReadingDictionary.Count > 1;
+            SetImageList();
             ConfigureNavigationBar();
             SetDescription();
             SetPreview();
             SetCamera();
+            Debug.WriteLine("Viewdidload");
         }
 
         public override void ViewWillAppear(bool animated)
@@ -88,22 +110,61 @@ namespace myTNB
             Title = GetI18NValue(SSMRConstants.I18N_NavTitleTakePhoto);
         }
 
-        private void SetDescription()
+        private void SetImageList()
         {
-            _lblDescription = new UILabel(new CGRect(16, 16, ViewWidth - 32, 38))
+            if (_isMultiPhase)
             {
-                TextAlignment = UITextAlignment.Left,
-                Font = MyTNBFont.MuseoSans14_300,
-                TextColor = MyTNBColor.CharcoalGrey,
-                Lines = 0,
-                LineBreakMode = UILineBreakMode.WordWrap,
-                Text = "Get ready, you'll have 10 seconds between each value being flashed."
-            };
-            CGSize newLblSize = GetLabelSize(_lblDescription, _lblDescription.Frame.Width, ViewHeight / 2);
-            CGRect newFrame = _lblDescription.Frame;
-            newFrame.Height = newLblSize.Height < 38 ? 38 : newLblSize.Height;
-            _lblDescription.Frame = newFrame;
-            View.AddSubview(_lblDescription);
+                ImageModelList = new List<ImageModel>();
+                List<string> keys = ReadingDictionary.Keys.ToList();
+                for (int i = 0; i < keys.Count; i++)
+                {
+                    ImageModel imgModel = new ImageModel
+                    {
+                        NeedsPhoto = !ReadingDictionary[keys[i]],
+                        ReadingUnit = keys[i],
+                        Tag = 1001 + i
+                    };
+                    ImageModelList.Add(imgModel);
+                }
+            }
+        }
+
+        private void SetDescription(string description = "")
+        {
+            if (_lblDescription == null)
+            {
+                _lblDescription = new UILabel(new CGRect(16, 16, ViewWidth - 32, 38))
+                {
+                    TextAlignment = UITextAlignment.Left,
+                    Font = MyTNBFont.MuseoSans14_300,
+                    TextColor = MyTNBColor.CharcoalGrey,
+                    Lines = 0,
+                    LineBreakMode = UILineBreakMode.WordWrap
+                };
+                View.AddSubview(_lblDescription);
+            }
+            if (string.IsNullOrEmpty(description) || string.IsNullOrWhiteSpace(description))
+            {
+                description = GetI18NValue(_isMultiPhase ? SSMRConstants.I18N_MultiTakePhotoDescription
+                    : SSMRConstants.I18N_SingleTakePhotoDescription);
+            }
+            _lblDescription.Text = description;
+        }
+
+        private nfloat GetPreviewXLoc(int count, nfloat refWidth)
+        {
+            if (count == 1)
+            {
+                return (ViewWidth - refWidth) / 2;
+            }
+            else if (count == 2)
+            {
+                return (ViewWidth - (refWidth * 2) - 32) / 2;
+            }
+            else
+            {
+                return 44;
+            }
         }
 
         private void SetPreview()
@@ -112,19 +173,32 @@ namespace myTNB
             nfloat previewWidth = previewBaseWidth / 3;
             _viewPreview = new UIView() { BackgroundColor = UIColor.White };
 
-            if (IsThreePhase)
+            if (_isMultiPhase)
             {
-                _viewPreviewOne = CreatePhotoPreview(new CGRect(44, 16, previewWidth, previewWidth));
-                _viewPreview.AddSubview(_viewPreviewOne);
+                int expectedReadingCount = ReadingDictionary.Count(x => !x.Value);
+                for (int i = 0; i < expectedReadingCount; i++)
+                {
+                    if (i == 0)
+                    {
+                        _viewPreviewOne = CreatePhotoPreview(new CGRect(GetPreviewXLoc(expectedReadingCount, previewWidth)
+                            , 16, previewWidth, previewWidth), i);
+                        _viewPreview.AddSubview(_viewPreviewOne);
+                    }
+                    else if (i == 1)
+                    {
+                        _viewPreviewTwo = CreatePhotoPreview(new CGRect(_viewPreviewOne.Frame.GetMaxX() + 32, 16, previewWidth, previewWidth), i);
+                        _viewPreview.AddSubview(_viewPreviewTwo);
 
-                _viewPreviewTwo = CreatePhotoPreview(new CGRect(_viewPreviewOne.Frame.GetMaxX() + 32, 16, previewWidth, previewWidth));
-                _viewPreview.AddSubview(_viewPreviewTwo);
-
-                _viewPreviewThree = CreatePhotoPreview(new CGRect(_viewPreviewTwo.Frame.GetMaxX() + 32, 16, previewWidth, previewWidth));
-                _viewPreview.AddSubview(_viewPreviewThree);
+                    }
+                    else
+                    {
+                        _viewPreviewThree = CreatePhotoPreview(new CGRect(_viewPreviewTwo.Frame.GetMaxX() + 32, 16, previewWidth, previewWidth), i);
+                        _viewPreview.AddSubview(_viewPreviewThree);
+                    }
+                }
             }
 
-            nfloat btnYLoc = (IsThreePhase ? _viewPreviewOne.Frame.GetMaxY() : 0) + 16.0F;
+            nfloat btnYLoc = (_isMultiPhase ? _viewPreviewOne.Frame.GetMaxY() : 0) + 16.0F;
 
             _btnSubmit = new CustomUIButtonV2()
             {
@@ -139,12 +213,27 @@ namespace myTNB
             View.AddSubview(_viewPreview);
         }
 
-        private UIView CreatePhotoPreview(CGRect frame)
+        private UIView CreatePhotoPreview(CGRect frame, int index)
         {
+            index++;
             UIView view = new UIView(frame) { ClipsToBounds = true };
             view.Layer.CornerRadius = 4.0F;
             view.Layer.BorderWidth = 2.0F;
-            view.Layer.BorderColor = MyTNBColor.WhiteTwo.CGColor;
+            view.Layer.BorderColor = (index == 1 ? MyTNBColor.WaterBlue : MyTNBColor.WhiteTwo).CGColor;
+            UILabel label = new UILabel(new CGRect(0, (frame.Height - 24) / 2, frame.Width, 24))
+            {
+                TextAlignment = UITextAlignment.Center,
+                Font = MyTNBFont.MuseoSans16_500,
+                TextColor = index == 1 ? MyTNBColor.WaterBlue : MyTNBColor.GreyishBrown,
+                Text = index.ToString()
+            };
+            UIImageView imgView = new UIImageView(new CGRect(new CGPoint(0, 0), frame.Size))
+            {
+                Hidden = true,
+                Tag = 99
+            };
+            view.AddSubviews(new UIView[] { label, imgView });
+            view.Tag = 1000 + index;
             return view;
         }
 
@@ -186,7 +275,7 @@ namespace myTNB
             };
             UIImageView imgDelete = new UIImageView(new CGRect((ViewWidth - 24) / 2, 14, 24, 24))
             {
-                Image = UIImage.FromBundle("Notification-Delete")
+                Image = UIImage.FromBundle(SSMRConstants.IMG_Delete)
             };
             view.AddGestureRecognizer(new UITapGestureRecognizer(() =>
             {
@@ -211,7 +300,7 @@ namespace myTNB
             {
                 MinimumTrackTintColor = UIColor.White
             };
-            _zoomSlider.SetThumbImage(UIImage.FromBundle("Camera-Thumb"), UIControlState.Normal);
+            _zoomSlider.SetThumbImage(UIImage.FromBundle(SSMRConstants.IMG_CameraThumb), UIControlState.Normal);
             _zoomSlider.ValueChanged += (sender, e) =>
             {
                 Debug.WriteLine("zoomSlider ValueChanged: " + ((UISlider)sender).Value);
@@ -234,8 +323,15 @@ namespace myTNB
                 pickerDelegate.OnDismiss = () => { DismissViewController(true, null); };
                 pickerDelegate.OnSelect = (selectedImg) =>
                 {
-                    AddMainPreview(selectedImg);
-                    _capturedImage = selectedImg;
+                    if (_isMultiPhase)
+                    {
+                        UpdateImageList(selectedImg);
+                    }
+                    else
+                    {
+                        AddMainPreview(selectedImg);
+                        _capturedImage = selectedImg;
+                    }
                 };
                 UIImagePickerController imgPicker = new UIImagePickerController
                 {
@@ -258,6 +354,57 @@ namespace myTNB
                 , ViewWidth, _viewCapture.Frame.GetMaxY() + 16);
             view.Frame = viewFrame;
             return view;
+        }
+
+        private void UpdateImageList(UIImage image)
+        {
+            int count = ImageModelList.Count;
+            for (int i = 0; i < count; i++)
+            {
+                ImageModel model = ImageModelList[i];
+                if (model.NeedsPhoto)
+                {
+                    UIView parent = _viewPreview.ViewWithTag(model.Tag);
+
+                    UIImageView imgView = parent.ViewWithTag(99) as UIImageView;
+                    parent.Layer.BorderColor = MyTNBColor.FreshGreen.CGColor;
+
+                    imgView.Hidden = false;
+                    imgView.Image = image;
+                    model.Image = image;
+                    model.NeedsPhoto = false;
+
+                    ImageModelList[i] = model;
+                    break;
+                }
+            }
+        }
+
+        private void DisplayLoadingPage()
+        {
+            if (_viewLoading == null)
+            {
+                _viewLoading = new UIView(new CGRect(0, 0, ViewWidth, ViewHeight)) { BackgroundColor = UIColor.White, Hidden = true };
+                UIImageView imgLoading = new UIImageView(new CGRect((ViewWidth - 156) / 2, ViewHeight * 0.16F, 156, 146))
+                { Image = UIImage.FromBundle(SSMRConstants.IMG_OCRReading) };
+
+                UILabel lblDescription = new UILabel(new CGRect(20, imgLoading.Frame.GetMaxY() + 24, ViewWidth - 40, 48))
+                {
+                    TextAlignment = UITextAlignment.Center,
+                    Font = MyTNBFont.MuseoSans16_300,
+                    TextColor = MyTNBColor.Grey,
+                    Lines = 0,
+                    LineBreakMode = UILineBreakMode.WordWrap,
+                    Text = GetI18NValue(SSMRConstants.I18N_OCRReading)
+                };
+
+                CGSize newSize = GetLabelSize(lblDescription, lblDescription.Frame.Width, 120);
+                lblDescription.Frame = new CGRect(lblDescription.Frame.X, lblDescription.Frame.Y, lblDescription.Frame.Width, newSize.Height);
+
+                _viewLoading.AddSubviews(new UIView[] { imgLoading, lblDescription });
+                View.AddSubview(_viewLoading);
+            }
+            _viewLoading.Hidden = false;
         }
 
         private void UpdateViewGallery()
@@ -295,8 +442,10 @@ namespace myTNB
             {
                 _input = new AVCaptureDeviceInput(_captureDevice, out nsError);
 
-                _output = new AVCapturePhotoOutput();
-                _output.IsHighResolutionCaptureEnabled = false;
+                _output = new AVCapturePhotoOutput
+                {
+                    IsHighResolutionCaptureEnabled = false
+                };
 
                 _captureSession = new AVCaptureSession();
                 _captureSession.AddInput(_input);
@@ -338,7 +487,7 @@ namespace myTNB
         private void OnCapturePhoto(UIImage capturedImage)
         {
             _capturedImage = capturedImage;
-            if (IsThreePhase)
+            if (_isMultiPhase)
             {
 
             }
@@ -412,7 +561,7 @@ namespace myTNB
             fileSize = 0;
             if (img != null)
             {
-                NSData imgData = img.AsJPEG(0.0F);//0.0Lowest Compression
+                NSData imgData = img.AsJPEG(0.0F);
                 if (imgData != null)
                 {
                     fileSize = imgData.Length / 1000;
@@ -426,66 +575,58 @@ namespace myTNB
         private void OnSubmit(object sender, EventArgs e)
         {
             DisplayLoadingPage();
-            double imgFileSize;
-            string base64Value = GetImageData(_capturedImage, out imgFileSize);
-            Debug.WriteLine("Image Size: " + imgFileSize);
             OnSubmitAllImages();
         }
 
-        private void DisplayLoadingPage()
+        private void GetMultiPhaseTasks(ref List<Task> taskList)
         {
-            if (_viewLoading == null)
-            {
-                _viewLoading = new UIView(new CGRect(0, 0, ViewWidth, ViewHeight)) { BackgroundColor = UIColor.White, Hidden = true };
-                UIImageView imgLoading = new UIImageView(new CGRect((ViewWidth - 156) / 2, ViewHeight * 0.16F, 156, 146))
-                { Image = UIImage.FromBundle(SSMRConstants.IMG_OCRReading) };
 
-                UILabel lblDescription = new UILabel(new CGRect(20, imgLoading.Frame.GetMaxY() + 24, ViewWidth - 40, 48))
-                {
-                    TextAlignment = UITextAlignment.Center,
-                    Font = MyTNBFont.MuseoSans16_300,
-                    TextColor = MyTNBColor.Grey,
-                    Lines = 0,
-                    LineBreakMode = UILineBreakMode.WordWrap,
-                    Text = GetI18NValue(SSMRConstants.I18N_OCRReading)
-                };
-
-                CGSize newSize = GetLabelSize(lblDescription, lblDescription.Frame.Width, 120);
-                lblDescription.Frame = new CGRect(lblDescription.Frame.X, lblDescription.Frame.Y, lblDescription.Frame.Width, newSize.Height);
-
-                _viewLoading.AddSubviews(new UIView[] { imgLoading, lblDescription });
-                View.AddSubview(_viewLoading);
-            }
-            _viewLoading.Hidden = false;
         }
 
         private void OnSubmitAllImages()
         {
             InvokeInBackground(() =>
             {
-                List<Task> TaskList = new List<Task>();
-                TaskList.Add(GetMeterReadingOCRValue());
-                Task.WaitAll(TaskList.ToArray());
+                try
+                {
+                    List<Task> TaskList = new List<Task>();
+                    if (_isMultiPhase)
+                    {
+                        GetMultiPhaseTasks(ref TaskList);
+                    }
+                    else
+                    {
+                        string base64Value = GetImageData(_capturedImage, out double imgFileSize);
+                        string key = ReadingDictionary.Keys.ToArray()[0];
+                        object meterImage = new
+                        {
+                            RequestReadingUnit = key,
+                            ImageId = string.Format(SSMRConstants.Pattern_ImageName, key, 1),
+                            ImageSize = imgFileSize,
+                            ImageData = base64Value
+                        };
+                        TaskList.Add(GetMeterReadingOCRValue(meterImage));
+                    }
+                    Task.WaitAll(TaskList.ToArray());
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine("Error in OnSubmitAllImages: " + e.Message);
+                }
                 InvokeOnMainThread(() =>
                 {
                     if (_viewLoading != null) { _viewLoading.Hidden = true; }
+                    var test = OCRReadingCache.Instance.GetOCRReadings();
                     Debug.WriteLine("ResponseList: ");
                 });
             });
         }
 
-        private Task<GetOCRReadingResponseModel> GetMeterReadingOCRValue()
+        private Task<GetOCRReadingResponseModel> GetMeterReadingOCRValue(object meterImage)
         {
             return Task.Factory.StartNew(() =>
             {
                 ServiceManager serviceManager = new ServiceManager();
-                object meterImage = new
-                {
-                    RequestReadingUnit = "",
-                    ImageId = "",
-                    ImageSize = "",
-                    ImageData = ""
-                };
                 object request = new
                 {
                     serviceManager.usrInf,

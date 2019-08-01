@@ -48,10 +48,6 @@
         public static string I18N_SelectReason = "selectReason";
         public static string I18N_StateReason = "stateReason";
 
-        //Capture Meter
-        public static string I18N_OCRReading = "ocrReading";
-        public static string I18N_NavTitleTakePhoto = "navTitleTakePhoto";
-
         //Image
         public static string IMG_BGOnboarding1 = "SSMR_Background_1";
         public static string IMG_BGOnboarding2 = "SSMR_Background_2";
@@ -67,6 +63,8 @@
         public static string IMG_PrimaryIcon = "SSMRPrimaryIcon";
         public static string IMG_Info = "IC-Info";
         public static string IMG_OCRReading = "OCR-Reading";
+        public static string IMG_CameraThumb = "Camera-Thumb";
+        public static string IMG_Delete = "Notification-Delete";
 
         //Error
         public static string I18N_InvalidEmail = "invalid_email";
@@ -81,5 +79,15 @@
         //Reading History
         public static string I18N_SectionTitle = "headerTitle";
         public static string STR_EstimatedReading = "estimated";
+
+        //Capture Meter
+        public static string I18N_OCRReading = "ocrReading";
+        public static string I18N_NavTitleTakePhoto = "navTitleTakePhoto";
+        public static string I18N_SingleTakePhotoDescription = "singleTakePhotoDescription";
+        public static string I18N_EditDescription = "editDescription";
+        public static string I18N_MultiTakePhotoDescription = "multiTakePhotoDescription";
+
+        //Patterns
+        public static string Pattern_ImageName = "MYTNBAPP_SSMR_OCR_{0}_{1}";
     }
 }

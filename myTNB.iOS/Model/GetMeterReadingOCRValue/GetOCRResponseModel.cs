@@ -16,6 +16,11 @@
         public string ImageId { set; get; }
         public string OCRValue { set; get; }
         public string OCRUnit { set; get; }
+    }
+
+    public class OCRReadingModel : GetOCRReadingModel
+    {
         public bool IsSuccess { set; get; } = true;
+        public string Message { set; get; }
     }
 }
