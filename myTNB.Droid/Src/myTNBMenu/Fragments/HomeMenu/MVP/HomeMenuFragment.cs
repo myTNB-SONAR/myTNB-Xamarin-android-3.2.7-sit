@@ -273,23 +273,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
         }
 
-        public List<MyService> EvaluteForSMREligibility(List<MyService> list)
-        {
-            List<MyService> newList = list;
-            if (UserSessions.GetSMRAccountList().Count == 0)
-            {
-                newList = new List<MyService>();
-                foreach (MyService myService in list)
-                {
-                    if (myService.ServiceCategoryId != "1001")
-                    {
-                        newList.Add(myService);
-                    }
-                }
-            }
-            return newList;
-        }
-
         public void SetMyServiceResult(List<MyService> list)
         {
             try
@@ -300,7 +283,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     myServiceShimmerList.SetAdapter(myServiceShimmerAdapter);
                     myServiceShimmerView.Visibility = ViewStates.Gone;
                     myServiceView.Visibility = ViewStates.Visible;
-                    list = EvaluteForSMREligibility(list); //Checks for eligible SMR application
                     myServiceAdapter = new MyServiceAdapter(list, this.Activity);
                     myServiceListRecycleView.SetAdapter(myServiceAdapter);
                     currentMyServiceList.Clear();
