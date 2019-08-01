@@ -1454,6 +1454,10 @@
     </AndroidResource>
     <Compile Include="Src\SSMR\SMRApplication\Adapter\SelectAccountAdapter.cs" />
     <Compile Include="Src\SSMR\SubmitMeterReading\SubmitMeterReadingHelper.cs" />
+    <AndroidResource Include="Resources\layout\SubmitMeterReadingLayout.axml" />
+    <Compile Include="Src\SSMR\SubmitMeterReading\MVP\SubmitMeterReadingActivity.cs" />
+    <AndroidResource Include="Resources\layout\SubmitMeterReadingCardLayout.axml" />
+    <AndroidResource Include="Resources\drawable\meter_reading_label_background.xml" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -1824,6 +1828,7 @@
     <Folder Include="Src\SSMRMeterHistory\MVP\" />
     <Folder Include="Src\SSMRMeterHistory\Adapter\" />
     <Folder Include="Src\SSMR\SubmitMeterReading\" />
+    <Folder Include="Src\SSMR\SubmitMeterReading\MVP\" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\GradientStatusBar.xml" />
