@@ -1048,6 +1048,10 @@
     <ImageAsset Include="Assets.xcassets\SMR-History-BG.imageset\SMR-History-BG-1.png" />
     <ImageAsset Include="Assets.xcassets\SMR-History-BG.imageset\SMR-History-BG%402x-1.png" />
     <ImageAsset Include="Assets.xcassets\SMR-History-BG.imageset\SMR-History-BG%403x-1.png" />
+    <ImageAsset Include="Assets.xcassets\IC-Action-Delete-White.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\IC-Action-Delete-White.imageset\IC-Action-Delete-White.png" />
+    <ImageAsset Include="Assets.xcassets\IC-Action-Delete-White.imageset\IC-Action-Delete-White%402x.png" />
+    <ImageAsset Include="Assets.xcassets\IC-Action-Delete-White.imageset\IC-Action-Delete-White%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -1380,6 +1384,7 @@
     <Folder Include="Assets.xcassets\kWh-Icon.imageset\" />
     <Folder Include="Assets.xcassets\SMR-History-BG.imageset\" />
     <Folder Include="Assets.xcassets\SMR-Open-Icon.imageset\" />
+    <Folder Include="Assets.xcassets\IC-Action-Delete-White.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -2144,6 +2149,7 @@
       <DependentUpon>SSMRReadMeterViewController.cs</DependentUpon>
     </Compile>
     <Compile Include="Home\Components\SSMR\SSMRMeterFooterComponent.cs" />
+    <Compile Include="Home\Components\SSMR\SSMRDropDownComponent.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />

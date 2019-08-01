@@ -107,6 +107,7 @@ namespace myTNB.Model
         }
 
         public List<MeterReadingHistoryItemModel> MeterReadingHistory { set; get; }
+        public List<MoreOptionsItemModel> MoreOptions { set; get; }
     }
 
     public class MeterReadingHistoryItemModel
@@ -117,5 +118,41 @@ namespace myTNB.Model
         public string Consumption { set; get; }
         public string ReadingReason { set; get; }
         public string ReadingForMonth { set; get; }
+    }
+
+    public class MoreOptionsItemModel
+    {
+        string _isHighlighted = string.Empty;
+        public string MenuId { set; get; }
+        public string MenuName { set; get; }
+        public string MenuIcon { set; get; }
+        public string MenuCTA { set; get; }
+        public string MenuDescription { set; get; }
+        public string OrderId { set; get; }
+        public string isHighlighted
+        {
+            set
+            {
+                _isHighlighted = ServiceCall.ValidateResponseItem(value);
+            }
+            get
+            {
+                return _isHighlighted.ToLower();
+            }
+        }
+        [JsonIgnore]
+        public bool IsHighlighted
+        {
+            get
+            {
+                var res = false;
+
+                if (!string.IsNullOrEmpty(isHighlighted))
+                {
+                    res = string.Compare(isHighlighted, "true") == 0;
+                }
+                return res;
+            }
+        }
     }
 }

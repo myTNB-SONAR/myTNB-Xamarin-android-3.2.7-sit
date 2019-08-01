@@ -1,6 +1,5 @@
 using CoreAnimation;
 using CoreGraphics;
-using myTNB.Dashboard.DashboardComponents;
 using myTNB.Model;
 using myTNB.SSMR;
 using System;
@@ -13,12 +12,12 @@ namespace myTNB
     public partial class SSMRReadingHistoryViewController : CustomUIViewController
     {
         SSMRReadingHistoryHeaderComponent _ssmrHeaderComponent;
-        GradientViewComponent _gradientViewComponent;
-        TitleBarComponent _titleBarComponent;
+        SSMRDropDownComponent _sSMRDropDownComponent;
         UITableView _readingHistoryTableView;
-        UIView _headerView, _navbarView;
+        UIView _headerView, _navbarView, _viewRightBtn;
         MeterReadingHistoryModel _meterReadingHistory;
         List<MeterReadingHistoryItemModel> _readingHistoryList;
+        List<MoreOptionsItemModel> _moreOptionsList;
         CAGradientLayer _gradientLayer;
 
         nfloat _headerHeight;
@@ -26,7 +25,6 @@ namespace myTNB
         nfloat _minHeaderHeight = 0.1f;
         nfloat _tableViewOffset = 64f;
         nfloat _previousScrollOffset;
-        nfloat btnWidth = 24f;
         nfloat titleBarHeight = 24f;
 
         public SSMRReadingHistoryViewController(IntPtr handle) : base(handle) { }
@@ -37,6 +35,7 @@ namespace myTNB
             base.ViewDidLoad();
             _meterReadingHistory = DataManager.DataManager.SharedInstance.MeterReadingHistory;
             _readingHistoryList = DataManager.DataManager.SharedInstance.ReadingHistoryList;
+            _moreOptionsList = DataManager.DataManager.SharedInstance.MoreOptionsList;
             SetNavigation();
             PrepareHeaderView();
             AddTableView();
@@ -87,22 +86,22 @@ namespace myTNB
             lblTitle.TextColor = UIColor.White;
             viewTitleBar.AddSubview(lblTitle);
 
-            UIView viewRightBtn = new UIView(new CGRect(_navbarView.Frame.Width - 40, 0, 24, titleBarHeight));
+            _viewRightBtn = new UIView(new CGRect(_navbarView.Frame.Width - 40, 0, 24, titleBarHeight));
             UIImageView imgViewRightBtn = new UIImageView(new CGRect(0, 0, 24, titleBarHeight))
             {
                 Image = UIImage.FromBundle(SSMRConstants.IMG_PrimaryIcon)
             };
-            viewRightBtn.AddSubview(imgViewRightBtn);
-            viewTitleBar.AddSubview(viewRightBtn);
+            _viewRightBtn.AddSubview(imgViewRightBtn);
+            viewTitleBar.AddSubview(_viewRightBtn);
 
             viewBack.AddGestureRecognizer(new UITapGestureRecognizer(() =>
             {
                 DismissViewController(true, null);
             }));
 
-            viewRightBtn.AddGestureRecognizer(new UITapGestureRecognizer(() =>
+            _viewRightBtn.AddGestureRecognizer(new UITapGestureRecognizer(() =>
             {
-                Debug.WriteLine("btnRight tapped");
+                ShowDropDownComponent();
             }));
 
             _navbarView.AddSubview(viewTitleBar);
@@ -120,6 +119,38 @@ namespace myTNB
             _gradientLayer.Opacity = 0f;
             _navbarView.Layer.InsertSublayer(_gradientLayer, 0);
             View.AddSubview(_navbarView);
+        }
+
+        private void SetRightButtonVisible(bool flag)
+        {
+            _viewRightBtn.Hidden = flag;
+        }
+
+        private void ShowDropDownComponent()
+        {
+            SetRightButtonVisible(true);
+            _sSMRDropDownComponent = new SSMRDropDownComponent(this, View);
+            View.AddSubview(_sSMRDropDownComponent.GetUI());
+            _sSMRDropDownComponent.CreateMoreOptions(_moreOptionsList);
+            _sSMRDropDownComponent.SetRightButtonRecognizer(new UITapGestureRecognizer(() =>
+            {
+                DismissDropDownComponent();
+            }));
+        }
+
+        private void DismissDropDownComponent()
+        {
+            SetRightButtonVisible(false);
+            if (_sSMRDropDownComponent != null)
+            {
+                _sSMRDropDownComponent.GetView().RemoveFromSuperview();
+            }
+        }
+
+        public void OnMoreOptionSelected(MoreOptionsItemModel model)
+        {
+            Debug.WriteLine("model.MenuName: " + model.MenuName);
+            //Tap events for more options..
         }
 
         private void AddViewWithOpacity(float opacity)
