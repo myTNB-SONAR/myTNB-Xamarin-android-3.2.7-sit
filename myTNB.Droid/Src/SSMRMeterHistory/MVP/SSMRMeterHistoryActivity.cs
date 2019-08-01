@@ -233,12 +233,12 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
         {
             try
             {
+                ShowProgressDialog();
                 if (position != -1)
                 {
                     SSMRMeterHistoryMenuModel selectedMenu = ssmrMeterHistoryMenuList[position];
                     if (selectedMenu.MenuId == "1004")
                     {
-                        ShowProgressDialog();
                         Intent SSMRTerminateActivity = new Intent(this, typeof(SSMRTerminateActivity));
                         SSMRTerminateActivity.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccount));
                         StartActivity(SSMRTerminateActivity);
@@ -246,6 +246,7 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
                 }
                 ssmrMenu.FindItem(Resource.Id.action_ssmr_more).SetVisible(true);
                 SSMRMenuDialog.Dismiss();
+                HideProgressDialog();
             }
             catch (System.Exception e)
             {
@@ -264,6 +265,21 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
 
                 loadingOverlay = new LoadingOverlay(this, Resource.Style.LoadingOverlyDialogStyle);
                 loadingOverlay.Show();
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void HideProgressDialog()
+        {
+            try
+            {
+                if (loadingOverlay != null && loadingOverlay.IsShowing)
+                {
+                    loadingOverlay.Dismiss();
+                }
             }
             catch (Exception e)
             {

@@ -27,6 +27,7 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
             void HideProgressDialog();
             void UpdateSMRData(string email, string mobile_no);
             void SetTerminationReasonsList(List<TerminationReasonModel> list);
+            void ShowTermsAndConditions();
         }
 
         public interface IPresenter
@@ -36,6 +37,8 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
             void InitiateCAInfo(AccountData selectedAccount);
 
             void InitiateTerminationReasonsList();
+
+            void NavigateToTermsAndConditions();
         }
 
         public interface SSMRTerminateApiPresenter

@@ -1402,7 +1402,7 @@ Please try again later.]]>
   <string name="my_service_btn_retry">Retry</string>
   <string name="my_service_error">Something went wrong, Please try again.</string>
   
-  <string name="ssmr_discontinue_activity_title">Discontinue Self Reading</string>
+  <string name="ssmr_discontinue_activity_title">Unsubscribe Self Reading</string>
   <string name="ssmr_discontinue_email_hint"><font size="10">EMAIL ADDRESS</font></string>
   <string name="ssmr_discontinue_mobile_no_hint"><font size="10">MOBILE NUMBER</font></string>
   <string name="ssmr_select_discontinue_reason_hint"><font size="10">SELECT REASON</font></string>

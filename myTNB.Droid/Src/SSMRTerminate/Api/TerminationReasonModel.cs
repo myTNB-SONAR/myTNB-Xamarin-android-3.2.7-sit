@@ -23,5 +23,8 @@ namespace myTNB_Android.Src.SSMRTerminate.Api
 
         [JsonProperty(PropertyName = "OrderId")]
         public string OrderId { get; set; }
+
+        [JsonProperty(PropertyName = "IsSelected")]
+        public bool IsSelected { get; set; }
     }
 }

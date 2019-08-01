@@ -20,13 +20,15 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Android.Content.PM;
 using myTNB_Android.Src.SSMRTerminate.Api;
+using Android.Runtime;
+using myTNB_Android.Src.TermsAndConditions.Activity;
 
 namespace myTNB_Android.Src.SSMRTerminate.MVP
 {
-    [Activity(Label = "Discontinue Self Reading"
+    [Activity(Label = "Unsubscribe Self Reading"
         , ScreenOrientation = ScreenOrientation.Portrait
         , Theme = "@style/Theme.SMRApplication")]
-    public class SSMRTerminateActivity : BaseToolbarAppCompatActivity, SSMRTerminateContract.IView
+    public class SSMRTerminateActivity : BaseToolbarAppCompatActivity, SSMRTerminateContract.IView, View.IOnTouchListener
     {
         LoadingOverlay loadingOverlay;
 
@@ -86,9 +88,15 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
 
         bool isOtherReasonSelected = false;
 
+        bool isFetchCAComplete = false;
+
+        bool isFetchTerminationListComplete = false;
+
         private TerminationReasonModel selectedReason;
 
         private List<TerminationReasonModel> terminationList = new List<TerminationReasonModel>();
+
+        private static int SELECT_TERMINATION_ACTIVITY_CODE = 4321;
 
         public override int ResourceId()
         {
@@ -98,6 +106,56 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
         public override bool ShowCustomToolbarTitle()
         {
             return true;
+        }
+
+        protected override void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
+        {
+            if (requestCode == SELECT_TERMINATION_ACTIVITY_CODE)
+            {
+                if (resultCode == Result.Ok)
+                {
+                    Bundle extras = data.Extras;
+
+                    if (extras.ContainsKey(Constants.SMR_TERMINATION_REASON_KEY))
+                    {
+                        this.terminationList = JsonConvert.DeserializeObject<List<TerminationReasonModel>>(extras.GetString(Constants.SMR_TERMINATION_REASON_KEY));
+                        UpdateTerminationIsSelectList();
+                    }
+                }
+            }
+            base.OnActivityResult(requestCode, resultCode, data);
+        }
+
+        private void UpdateTerminationIsSelectList()
+        {
+            try
+            {
+                for(int i = 0; i < terminationList.Count; i++)
+                {
+                    if (terminationList[i].IsSelected)
+                    {
+                        selectedReason = this.terminationList[i];
+                        txtSelectReason.Text = selectedReason.ReasonName;
+                        if (selectedReason.ReasonId == "1007")
+                        {
+                            isOtherReasonSelected = true;
+                            txtInputLayoutTxtReason.Visibility = ViewStates.Visible;
+                            txtReason.Text = "";
+                        }
+                        else
+                        {
+                            isOtherReasonSelected = false;
+                            txtInputLayoutTxtReason.Visibility = ViewStates.Gone;
+                            txtReason.Text = "";
+                        }
+                        break;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Utility.LoggingNonFatalError(ex);
+            }
         }
 
         protected override void OnCreate(Bundle savedInstanceState)
@@ -121,13 +179,15 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
             txtEmail.AddTextChangedListener(new InputFilterFormField(txtEmail, txtInputLayoutEmail));
             txtMobileNo.SetFilters(new Android.Text.IInputFilter[] { new InputFilterPhoneNumber() });
 
-            // txtSelectReason.EnableClick();
-            // txtSelectReason.SetOnTouchListener(this);
+            txtSelectReason.EnableClick();
+            txtSelectReason.SetOnTouchListener(this);
 
             if (string.IsNullOrEmpty(txtMobileNo.Text))
             {
                 txtMobileNo.Text = "+60";
             }
+
+            ShowProgressDialog();
 
             if (extras.ContainsKey(Constants.SELECTED_ACCOUNT))
             {
@@ -199,6 +259,37 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
             }
         }
 
+        public bool OnTouch(View v, MotionEvent e)
+        {
+            const int DRAWABLE_LEFT = 0;
+            const int DRAWABLE_TOP = 1;
+            const int DRAWABLE_RIGHT = 2;
+            const int DRAWABLE_BOTTOM = 3;
+            if (v is EditText)
+            {
+                EditText eTxtView = v as EditText;
+                if (eTxtView.Id == Resource.Id.txtSelectReason)
+                {
+
+                    if (e.Action == MotionEventActions.Up)
+                    {
+                        if (e.RawX >= (txtSelectReason.Right - txtSelectReason.GetCompoundDrawables()[DRAWABLE_RIGHT].Bounds.Width()))
+                        {
+                            
+                        }
+                        Intent intent = new Intent(this, typeof(SSMRTerminationReasonSelectionActivity));
+                        intent.PutExtra(Constants.SMR_TERMINATION_REASON_KEY, JsonConvert.SerializeObject(terminationList));
+                        StartActivityForResult(intent, SELECT_TERMINATION_ACTIVITY_CODE);
+
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+
+
+
         public void HideProgressDialog()
         {
             try
@@ -262,6 +353,17 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
             {
                 Utility.LoggingNonFatalError(e);
             }
+        }
+
+        [OnClick(Resource.Id.txtTermsConditions)]
+        void OnTermsConditions(object sender, EventArgs eventArgs)
+        {
+            this.mPresenter.NavigateToTermsAndConditions();
+        }
+
+        public void ShowTermsAndConditions()
+        {
+            StartActivity(typeof(TermsAndConditionActivity));
         }
 
         public void DisableSubmitButton()
@@ -361,23 +463,42 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
                 txtMobileNo.Text = mobile_no;
                 contactDetailConsent.Visibility = ViewStates.Gone;
                 checkForEditingInfo = false;
+                isFetchCAComplete = true;
+                if (isFetchCAComplete && isFetchTerminationListComplete)
+                {
+                    HideProgressDialog();
+                }
             }
             catch (Exception e)
             {
                 Utility.LoggingNonFatalError(e);
+                isFetchCAComplete = true;
+                if (isFetchCAComplete && isFetchTerminationListComplete)
+                {
+                    HideProgressDialog();
+                }
             }
         }
 
         public void SetTerminationReasonsList(List<TerminationReasonModel> list)
         {
-            this.terminationList.Clear();
-            this.terminationList.AddRange(list);
-            if (this.terminationList.Count > 0)
+            if (list != null)
             {
-                selectedReason = this.terminationList[0];
-                txtSelectReason.Text = selectedReason.ReasonName;
+                this.terminationList.Clear();
+                this.terminationList.AddRange(list);
+                if (this.terminationList.Count > 0)
+                {
+                    selectedReason = this.terminationList[0];
+                    selectedReason.IsSelected = true;
+                    this.terminationList[0] = selectedReason;
+                    txtSelectReason.Text = selectedReason.ReasonName;
+                }
             }
-            HideProgressDialog();
+            isFetchTerminationListComplete = true;
+            if (isFetchCAComplete && isFetchTerminationListComplete)
+            {
+                HideProgressDialog();
+            }
         }
 
         public override void OnTrimMemory(TrimMemory level)

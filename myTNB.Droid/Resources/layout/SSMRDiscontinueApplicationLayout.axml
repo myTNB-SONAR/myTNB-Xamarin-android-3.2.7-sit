@@ -1,23 +1,34 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/rootView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_alignParentBottom="true"
+    android:layout_centerHorizontal="true"
+    android:descendantFocusability="beforeDescendants"
     android:theme="@style/Theme.SMRApplication"
-    android:id="@+id/rootView">
+    android:focusableInTouchMode="true"
+    android:orientation="vertical">
     <include
         layout="@layout/toolbar"
         id="@+id/toolbar" />
-    <ScrollView 
+    <FrameLayout
+        android:id="@+id/rootview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fillViewport="true"
-        android:layout_below="@+id/toolbar"
-        android:overScrollMode="never">
-        <LinearLayout
+        android:layout_marginTop="?actionBarSize"
+        android:background="@color/greyBackground">
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:overScrollMode="never"
+            android:scrollbars="none"
+            android:fillViewport="false">
+            <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/greyBackground"
             android:orientation="vertical">
             <TextView
                 android:id="@+id/disconnectionTtile"
@@ -29,7 +40,7 @@
                 android:layout_marginBottom="12dp"
                 android:lineSpacingExtra="4dp"
                 android:textSize="16dp"
-                android:text="I am discountinuing my service for:"
+                android:text="I am unsubscribing my service for:"
                 android:textColor="@color/powerBlue"
                 android:layout_gravity="left"/>
             <LinearLayout
@@ -113,7 +124,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:errorEnabled="true"
-                    android:layout_marginBottom="6dp"
                     android:layout_marginRight="17dp"
                     app:hintTextAppearance="@style/TextInputLayout.TextAppearance.LightBackground">
                     <EditText
@@ -133,6 +143,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:lineSpacingExtra="2dp"
+                    android:layout_marginTop="6dp"
                     android:layout_marginLeft="4dp"
                     android:layout_marginRight="16dp"
                     android:textSize="12dp"
@@ -150,7 +161,7 @@
                 android:layout_marginBottom="12dp"
                 android:lineSpacingExtra="4dp"
                 android:textSize="16dp"
-                android:text="We’re sorry to see you go! Can you tell us why you want to discontinue this service?"
+                android:text="We’re sorry to see you go! Can you tell us why you want to unsubscribe this service?"
                 android:textColor="@color/powerBlue"
                 android:layout_gravity="left"/>
             <LinearLayout
@@ -186,9 +197,10 @@
                             android:focusable="false"
                             android:hint="@string/ssmr_select_discontinue_reason_hint"
                             android:inputType="text"
+                            android:scrollHorizontally="true"
                             android:ellipsize="end"
-                            android:maxEms="20"
-                            android:maxLines="1" />
+                            android:singleLine="true"
+                            android:editable="false" />
                     </android.support.design.widget.TextInputLayout>
                 </FrameLayout>
                 <android.support.design.widget.TextInputLayout
@@ -249,5 +261,6 @@
                     style="@style/Theme.SSMRDiscontinue" />
             </LinearLayout>
             </LinearLayout>
-    </ScrollView>
-</RelativeLayout>
+        </ScrollView>
+    </FrameLayout>
+</android.support.design.widget.CoordinatorLayout>

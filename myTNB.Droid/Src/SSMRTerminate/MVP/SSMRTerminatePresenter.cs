@@ -64,24 +64,29 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
                 }
                 else
                 {
-                    this.mView.HideProgressDialog();
+                    this.mView.SetTerminationReasonsList(null);
                 }
             }
             catch (System.OperationCanceledException cancelledException)
             {
-                this.mView.HideProgressDialog();
+                this.mView.SetTerminationReasonsList(null);
                 Utility.LoggingNonFatalError(cancelledException);
             }
             catch (ApiException apiException)
             {
-                this.mView.HideProgressDialog();
+                this.mView.SetTerminationReasonsList(null);
                 Utility.LoggingNonFatalError(apiException);
             }
             catch (Exception unknownException)
             {
-                this.mView.HideProgressDialog();
+                this.mView.SetTerminationReasonsList(null);
                 Utility.LoggingNonFatalError(unknownException);
             }
+        }
+
+        public void NavigateToTermsAndConditions()
+        {
+            this.mView.ShowTermsAndConditions();
         }
 
         private async void GetCARegisteredContactInfoAsync(AccountData selectedAccount)
@@ -113,17 +118,24 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
                 {
                     this.mView.UpdateSMRData(response.Data.AccountDetailsData.Email, response.Data.AccountDetailsData.Mobile);
                 }
+                else
+                {
+                    this.mView.UpdateSMRData("", "");
+                }
             }
             catch (System.OperationCanceledException cancelledException)
             {
+                this.mView.UpdateSMRData("", "");
                 Utility.LoggingNonFatalError(cancelledException);
             }
             catch (ApiException apiException)
             {
+                this.mView.UpdateSMRData("", "");
                 Utility.LoggingNonFatalError(apiException);
             }
             catch (Exception unknownException)
             {
+                this.mView.UpdateSMRData("", "");
                 Utility.LoggingNonFatalError(unknownException);
             }
 
@@ -146,7 +158,6 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
                     else
                     {
                         this.mView.ClearEmailError();
-                        isError = false;
                     }
 
                     if (mobile_no == "+60")
@@ -162,6 +173,13 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
                         this.mView.DisableSubmitButton();
                         isError = true;
                     }
+                    else if (mobile_no.Length < 3)
+                    {
+                        this.mView.UpdateMobileNumber("+60");
+                        this.mView.ClearInvalidMobileError();
+                        this.mView.DisableSubmitButton();
+                        isError = true;
+                    }
                     else if (!Utility.IsValidMobileNumber(mobile_no))
                     {
                         this.mView.ShowInvalidMobileNoError();
@@ -171,10 +189,27 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
                     else
                     {
                         this.mView.ClearInvalidMobileError();
-                        isError = false;
                     }
 
-                    if(isError == true)
+                    if (isOtherReasonSelected)
+                    {
+                        if (TextUtils.IsEmpty(otherReason))
+                        {
+                            this.mView.ShowEmptyReasonError();
+                            this.mView.DisableSubmitButton();
+                            isError = true;
+                        }
+                        else
+                        {
+                            this.mView.ClearReasonError();
+                        }
+                    }
+                    else
+                    {
+                        this.mView.ClearReasonError();
+                    }
+
+                    if (isError == true)
                     {
                         return;
                     }
