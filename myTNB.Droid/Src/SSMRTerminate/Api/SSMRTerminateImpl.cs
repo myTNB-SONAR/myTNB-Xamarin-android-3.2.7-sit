@@ -31,5 +31,10 @@ namespace myTNB_Android.Src.SSMRTerminate.Api
         {
             return api.GetSMRTerminationReasons(request, new System.Threading.CancellationToken());
         }
+
+        public Task<SMRregistrationSubmitResponse> SubmitSMRApplication(SubmitSMRApplicationRequest request)
+        {
+            return api.SubmitSMRApplication(request, new System.Threading.CancellationToken());
+        }
     }
 }

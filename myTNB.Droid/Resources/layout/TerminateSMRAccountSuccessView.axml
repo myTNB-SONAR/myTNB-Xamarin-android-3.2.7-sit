@@ -1,0 +1,138 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <LinearLayout
+        android:id="@+id/bottomLayout"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingBottom="16dp"
+        android:layout_alignParentBottom="true">
+        <Button
+            android:id="@+id/btnBackToHomeSuccess"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:text="Back to My Usage"
+            android:textAllCaps="false"
+            style="@style/Theme.SMRApplicationButton" />
+        <Button
+            android:id="@+id/btnTrackApplication"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:text="Track Application"
+            android:layout_marginTop="6dp"
+            android:textAllCaps="false"
+            style="@style/Theme.TryAgainButton" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:orientation="vertical"
+        android:layout_alignParentTop="true"
+        android:layout_above="@+id/bottomLayout">
+        <LinearLayout
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_gravity="center"
+            android:background="@drawable/smr_application_white_background">
+            <ImageView
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:layout_marginTop="16dp"
+                android:src="@drawable/ic_display_successful_new"
+                android:layout_gravity="center|center_vertical"
+                android:gravity="center" />
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:textSize="16dp"
+                android:textColor="@color/blue"
+                android:text="Application Submitted"
+                android:id="@+id/txtTitleInfo"
+                android:layout_gravity="center|center_vertical"
+                android:gravity="center"/>
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:textSize="12dp"
+                android:lineSpacingExtra="4dp"
+                android:id="@+id/txtMessageInfo"
+                android:textColor="@color/tunaGrey"
+                android:gravity="center"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:text="We have received your request for this Self Meter Reading Service. For your reference you may keep the application number below."
+                android:layout_gravity="center|center_vertical"
+                android:layout_marginTop="8dp" />
+            <View
+                android:layout_height="1dp"
+                android:layout_width="match_parent"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="20dp"
+                android:background="@color/platinumGrey"/>
+            <LinearLayout
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:gravity="center_vertical|center_horizontal"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="16dp">
+                 <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:textSize="10dp"
+                    android:gravity="left"
+                    android:layout_weight=".6"
+                    android:textColor="@color/silverChalice"
+                    android:text="APPLICATION REFERENCE NUMBER"
+                    android:id="@+id/refNumberLabel"/>
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:textSize="10dp"
+                    android:gravity="right"
+                    android:layout_weight=".4"
+                    android:textColor="@color/silverChalice"
+                    android:text="APPLIED ON"
+                    android:id="@+id/appliedOnDateLabel"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:gravity="center_vertical|center_horizontal"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginBottom="16dp">
+                 <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:textSize="14dp"
+                    android:gravity="left"
+                    android:layout_weight=".6"
+                    android:textColor="@color/tunaGrey"
+                    android:text="SMR-000-000-0000"
+                    android:id="@+id/refNumberValue"/>
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:textSize="14dp"
+                    android:gravity="right"
+                    android:layout_weight=".4"
+                    android:textColor="@color/tunaGrey"
+                    android:text="16 Jul 2019"
+                    android:id="@+id/appliedOnDateValue"/>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</RelativeLayout>

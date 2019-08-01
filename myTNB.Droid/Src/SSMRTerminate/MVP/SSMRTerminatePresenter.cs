@@ -141,6 +141,69 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
 
         }
 
+        public async void OnSubmitApplication(string accountNum, string oldEmail, string oldPhoneNum, string newEmail, string newPhoneNum, string terminationReason)
+        {
+            try
+            {
+                this.mView.ShowProgressDialog();
+                ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
+                UserInterface currentUsrInf = new UserInterface()
+                {
+                    eid = UserEntity.GetActive().Email,
+                    sspuid = UserEntity.GetActive().UserID,
+                    did = this.mView.GetDeviceId(),
+                    ft = FirebaseTokenEntity.GetLatest().FBToken,
+                    lang = Constants.DEFAULT_LANG.ToUpper(),
+                    sec_auth_k1 = Constants.APP_CONFIG.API_KEY_ID,
+                    sec_auth_k2 = "",
+                    ses_param1 = "",
+                    ses_param2 = ""
+                };
+
+
+                SMRregistrationSubmitResponse response = await this.terminationApi.SubmitSMRApplication(new SubmitSMRApplicationRequest()
+                {
+                    AccountNumber = accountNum,
+                    OldPhone = oldPhoneNum,
+                    NewPhone = newPhoneNum,
+                    OldEmail = oldEmail,
+                    NewEmail = newEmail,
+                    SMRMode = "T",
+                    TerminationReason = terminationReason,
+                    usrInf = currentUsrInf
+                });
+
+                this.mView.HideProgressDialog();
+                if (response.Data.ErrorCode == "7200" /*&& response.Data.AccountDetailsData.Status == "S"*/)
+                {
+                    this.mView.OnRequestSuccessful(response);
+                }
+                else
+                {
+                    this.mView.OnRequestFailed(response);
+                }
+            }
+            catch (System.OperationCanceledException cancelledException)
+            {
+                this.mView.HideProgressDialog();
+                this.mView.OnRequestFailed(null);
+                Utility.LoggingNonFatalError(cancelledException);
+            }
+            catch (ApiException apiException)
+            {
+                this.mView.HideProgressDialog();
+                this.mView.OnRequestFailed(null);
+                Utility.LoggingNonFatalError(apiException);
+            }
+            catch (Exception unknownException)
+            {
+                this.mView.HideProgressDialog();
+                this.mView.OnRequestFailed(null);
+                Utility.LoggingNonFatalError(unknownException);
+            }
+
+        }
+
         public void CheckRequiredFields(string mobile_no, string email, bool isOtherReasonSelected, string otherReason)
         {
 

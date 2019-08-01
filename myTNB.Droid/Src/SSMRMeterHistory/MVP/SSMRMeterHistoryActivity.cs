@@ -4,6 +4,7 @@ using Android.Content;
 using Android.Content.PM;
 using Android.Graphics;
 using Android.OS;
+using Android.Runtime;
 using Android.Support.Design.Widget;
 using Android.Support.V7.Widget;
 using Android.Text;
@@ -61,6 +62,8 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
         SSMRMeterHistoryMenuAdapter meterHistoryMenuAdapter;
 
         private List<SSMRMeterHistoryMenuModel> ssmrMeterHistoryMenuList = new List<SSMRMeterHistoryMenuModel>();
+
+        public readonly static int SSMR_METER_HISTORY_ACTIVITY_CODE = 8796;
 
         public override int ResourceId()
 		{
@@ -165,6 +168,20 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
 			}
 		}
 
+
+        protected override void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
+        {
+            if (requestCode == SSMR_METER_HISTORY_ACTIVITY_CODE)
+            {
+                if (resultCode == Result.Ok)
+                {
+                    SetResult(Result.Ok);
+                    Finish();
+                }
+            }
+            base.OnActivityResult(requestCode, resultCode, data);
+        }
+
         public override bool OnCreateOptionsMenu(IMenu menu)
         {
             MenuInflater.Inflate(Resource.Menu.SSMRMeterReadingMenu, menu);
@@ -241,7 +258,7 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
                     {
                         Intent SSMRTerminateActivity = new Intent(this, typeof(SSMRTerminateActivity));
                         SSMRTerminateActivity.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccount));
-                        StartActivity(SSMRTerminateActivity);
+                        StartActivityForResult(SSMRTerminateActivity, SSMR_METER_HISTORY_ACTIVITY_CODE);
                     }
                 }
                 ssmrMenu.FindItem(Resource.Id.action_ssmr_more).SetVisible(true);
