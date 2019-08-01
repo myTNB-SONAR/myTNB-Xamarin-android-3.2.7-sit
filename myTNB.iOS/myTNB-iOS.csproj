@@ -1052,6 +1052,10 @@
     <ImageAsset Include="Assets.xcassets\IC-Action-Delete-White.imageset\IC-Action-Delete-White.png" />
     <ImageAsset Include="Assets.xcassets\IC-Action-Delete-White.imageset\IC-Action-Delete-White%402x.png" />
     <ImageAsset Include="Assets.xcassets\IC-Action-Delete-White.imageset\IC-Action-Delete-White%403x.png" />
+    <ImageAsset Include="Assets.xcassets\OCR-Reading.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\OCR-Reading.imageset\ocrReading.png" />
+    <ImageAsset Include="Assets.xcassets\OCR-Reading.imageset\ocrReading%402x.png" />
+    <ImageAsset Include="Assets.xcassets\OCR-Reading.imageset\ocrReading%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -1386,6 +1390,8 @@
     <Folder Include="Assets.xcassets\SMR-History-BG.imageset\" />
     <Folder Include="Assets.xcassets\SMR-Open-Icon.imageset\" />
     <Folder Include="Assets.xcassets\IC-Action-Delete-White.imageset\" />
+    <Folder Include="Assets.xcassets\OCR-Reading.imageset\" />
+    <Folder Include="Model\GetMeterReadingOCRValue\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -2153,6 +2159,8 @@
     </Compile>
     <Compile Include="Home\Components\SSMR\SSMRMeterFooterComponent.cs" />
     <Compile Include="Home\Components\SSMR\SSMRDropDownComponent.cs" />
+    <Compile Include="Model\GetMeterReadingOCRValue\GetOCRResponseModel.cs" />
+    <Compile Include="Session Cache\OCRReadingCache.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />

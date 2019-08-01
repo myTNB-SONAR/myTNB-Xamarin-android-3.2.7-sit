@@ -11,6 +11,8 @@ using System.IO;
 using Photos;
 using System.Collections.Generic;
 using AssetsLibrary;
+using System.Threading.Tasks;
+using myTNB.Model;
 
 namespace myTNB
 {
@@ -21,12 +23,13 @@ namespace myTNB
         }
 
         public bool IsThreePhase = false;
+        public List<string> MissingReadingList;
 
         private UILabel _lblDescription;
         private UIView _viewPreview, _viewCamera, _viewCapture;
         private UIView _viewPreviewOne, _viewPreviewTwo, _viewPreviewThree;
         private UIView _viewDelete, _viewCameraActions, _viewMainPreviewParent
-            , _viewGallery, _viewOverlay;
+            , _viewGallery, _viewOverlay, _viewLoading;
         private UIImageView _imgViewMainPreview;
         private CustomUISlider _zoomSlider;
         private UIButton _btnSubmit;
@@ -39,6 +42,7 @@ namespace myTNB
 
         public override void ViewDidLoad()
         {
+            PageName = SSMRConstants.Pagename_SSMRCaptureMeter;
             base.ViewDidLoad();
             ConfigureNavigationBar();
             SetDescription();
@@ -49,6 +53,8 @@ namespace myTNB
         public override void ViewWillAppear(bool animated)
         {
             base.ViewWillAppear(animated);
+            OCRReadingCache.Instance.ClearReadings();
+            if (_viewLoading != null) { _viewLoading.Hidden = true; }
             SetupLiveCameraStream();
         }
 
@@ -79,7 +85,7 @@ namespace myTNB
             });
             NavigationItem.LeftBarButtonItem = btnBack;
             NavigationItem.RightBarButtonItem = btnInfo;
-            Title = "Take Photo";//GetI18NValue(SSMRConstants.I18N_NavTitle);
+            Title = GetI18NValue(SSMRConstants.I18N_NavTitleTakePhoto);
         }
 
         private void SetDescription()
@@ -226,7 +232,11 @@ namespace myTNB
 
                 ImagePickerDelegate pickerDelegate = new ImagePickerDelegate();
                 pickerDelegate.OnDismiss = () => { DismissViewController(true, null); };
-                pickerDelegate.OnSelect = (selectedImg) => { AddMainPreview(selectedImg); };
+                pickerDelegate.OnSelect = (selectedImg) =>
+                {
+                    AddMainPreview(selectedImg);
+                    _capturedImage = selectedImg;
+                };
                 UIImagePickerController imgPicker = new UIImagePickerController
                 {
                     Delegate = pickerDelegate,
@@ -318,7 +328,7 @@ namespace myTNB
                     AVCapturePhotoSettings settings = AVCapturePhotoSettings.Create();
                     settings.IsHighResolutionPhotoEnabled = false;
                     settings.IsAutoStillImageStabilizationEnabled = true;
-                    settings.FlashMode = AVCaptureFlashMode.Auto;
+                    settings.FlashMode = AVCaptureFlashMode.Off;
 
                     _output.CapturePhoto(settings, capturePhotoDelegate);
                 }
@@ -397,33 +407,96 @@ namespace myTNB
             }
         }
 
-        private string GetBase64String(UIImage img)
+        private string GetImageData(UIImage img, out double fileSize)
         {
+            fileSize = 0;
             if (img != null)
             {
                 NSData imgData = img.AsJPEG(0.0F);//0.0Lowest Compression
-                string base64 = imgData.GetBase64EncodedString(NSDataBase64EncodingOptions.None);
-                return base64 ?? string.Empty;
+                if (imgData != null)
+                {
+                    fileSize = imgData.Length / 1000;
+                    string base64 = imgData.GetBase64EncodedString(NSDataBase64EncodingOptions.None);
+                    return base64 ?? string.Empty;
+                }
             }
             return string.Empty;
         }
 
         private void OnSubmit(object sender, EventArgs e)
         {
-
-            CGRect cropRect = new CGRect(0, 0, ViewWidth, 100);
-            CGImage subImage = _capturedImage.CGImage.WithImageInRect(cropRect);
-            _croppedImage = UIImage.FromImage(subImage);
-            GetBase64String(_croppedImage);
+            DisplayLoadingPage();
+            double imgFileSize;
+            string base64Value = GetImageData(_capturedImage, out imgFileSize);
+            Debug.WriteLine("Image Size: " + imgFileSize);
+            OnSubmitAllImages();
         }
 
-        private UIImage cropImage(UIImage img, RectangleF rect)
+        private void DisplayLoadingPage()
         {
-            using (CGImage cgImage = img.CGImage.WithImageInRect(rect))
+            if (_viewLoading == null)
             {
-                UIImage croppedImg = UIImage.FromImage(cgImage);
-                return croppedImg;
+                _viewLoading = new UIView(new CGRect(0, 0, ViewWidth, ViewHeight)) { BackgroundColor = UIColor.White, Hidden = true };
+                UIImageView imgLoading = new UIImageView(new CGRect((ViewWidth - 156) / 2, ViewHeight * 0.16F, 156, 146))
+                { Image = UIImage.FromBundle(SSMRConstants.IMG_OCRReading) };
+
+                UILabel lblDescription = new UILabel(new CGRect(20, imgLoading.Frame.GetMaxY() + 24, ViewWidth - 40, 48))
+                {
+                    TextAlignment = UITextAlignment.Center,
+                    Font = MyTNBFont.MuseoSans16_300,
+                    TextColor = MyTNBColor.Grey,
+                    Lines = 0,
+                    LineBreakMode = UILineBreakMode.WordWrap,
+                    Text = GetI18NValue(SSMRConstants.I18N_OCRReading)
+                };
+
+                CGSize newSize = GetLabelSize(lblDescription, lblDescription.Frame.Width, 120);
+                lblDescription.Frame = new CGRect(lblDescription.Frame.X, lblDescription.Frame.Y, lblDescription.Frame.Width, newSize.Height);
+
+                _viewLoading.AddSubviews(new UIView[] { imgLoading, lblDescription });
+                View.AddSubview(_viewLoading);
             }
+            _viewLoading.Hidden = false;
+        }
+
+        private void OnSubmitAllImages()
+        {
+            InvokeInBackground(() =>
+            {
+                List<Task> TaskList = new List<Task>();
+                TaskList.Add(GetMeterReadingOCRValue());
+                Task.WaitAll(TaskList.ToArray());
+                InvokeOnMainThread(() =>
+                {
+                    if (_viewLoading != null) { _viewLoading.Hidden = true; }
+                    Debug.WriteLine("ResponseList: ");
+                });
+            });
+        }
+
+        private Task<GetOCRReadingResponseModel> GetMeterReadingOCRValue()
+        {
+            return Task.Factory.StartNew(() =>
+            {
+                ServiceManager serviceManager = new ServiceManager();
+                object meterImage = new
+                {
+                    RequestReadingUnit = "",
+                    ImageId = "",
+                    ImageSize = "",
+                    ImageData = ""
+                };
+                object request = new
+                {
+                    serviceManager.usrInf,
+                    contractAccount = DataManager.DataManager.SharedInstance.SelectedAccount.accNum,
+                    meterImage
+                };
+                GetOCRReadingResponseModel response = serviceManager
+                    .OnExecuteAPIV6<GetOCRReadingResponseModel>(SSMRConstants.Service_GetMeterReadingOCRValue, request);
+                OCRReadingCache.Instance.AddOCRReading(response);
+                return response;
+            });
         }
     }
 }

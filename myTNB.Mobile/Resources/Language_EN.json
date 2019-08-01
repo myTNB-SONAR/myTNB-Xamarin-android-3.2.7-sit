@@ -112,5 +112,9 @@
     },
     "SSMRSubmitMeterReading": {
         "navTitle": "Submit Meter Reading"
+    },
+    "SSMRCaptureMeter": {
+        "ocrReading": "Please wait for a moment while we read your photos…",
+        "navTitleTakePhoto": "Take Photo"
     }
 }

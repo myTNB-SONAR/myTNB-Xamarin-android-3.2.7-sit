@@ -5,11 +5,13 @@
         //Page name
         public static string Pagename_SSMRApplication = "SSMRApplication";
         public static string Pagename_SSMRWalkthrough = "SSMROnboarding";
+        public static string Pagename_SSMRCaptureMeter = "SSMRCaptureMeter";
 
         //Service name
         public static string Service_SubmitSSMRApplication = "SubmitSMRApplication";
         public static string Service_GetTerminationReasons = "GetSMRTerminationReasons";
         public static string Service_GetCARegisteredContact = "GetCAContactDetails";
+        public static string Service_GetMeterReadingOCRValue = "GetMeterReadingOCRValue";
         public static string Service_Register = "R";
         public static string Service_Terminate = "T";
         public static string Service_OthersID = "1007";
@@ -46,6 +48,10 @@
         public static string I18N_SelectReason = "selectReason";
         public static string I18N_StateReason = "stateReason";
 
+        //Capture Meter
+        public static string I18N_OCRReading = "ocrReading";
+        public static string I18N_NavTitleTakePhoto = "navTitleTakePhoto";
+
         //Image
         public static string IMG_BGOnboarding1 = "SSMR_Background_1";
         public static string IMG_BGOnboarding2 = "SSMR_Background_2";
@@ -60,6 +66,7 @@
         public static string IMG_BackIcon = "Back-White";
         public static string IMG_PrimaryIcon = "SSMRPrimaryIcon";
         public static string IMG_Info = "IC-Info";
+        public static string IMG_OCRReading = "OCR-Reading";
 
         //Error
         public static string I18N_InvalidEmail = "invalid_email";
