@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Drawing;
 using CoreGraphics;
 using UIKit;
 
@@ -8,8 +9,9 @@ namespace myTNB
     public class SSMRMeterCardComponent
     {
         private readonly UIView _parentView;
-        UIView _containerView, _prevReadingView, _viewBoxContainer, _viewBox;
+        UIView _containerView, _prevReadingView, _viewBoxContainer;
         UIImageView _iconView;
+        UILabel _errorLabel;
         nfloat containerRatio = 112.0f / 288.0f;
         nfloat viewBoxContainerRatio = 40.0f / 256.0f;
         float imgHeight = 20.0f;
@@ -18,6 +20,7 @@ namespace myTNB
         nfloat halfPadding = 8f;
         int boxMaxCount = 9;
         nfloat _yLocation;
+        public string _meterReadingValue = string.Empty;
 
         public SSMRMeterCardComponent(UIView parentView, nfloat yLocation)
         {
@@ -44,6 +47,10 @@ namespace myTNB
             {
                 _viewBoxContainer.AddSubview(CreateViewBox(_viewBoxContainer, i));
             }
+            _viewBoxContainer.AddGestureRecognizer(new UITapGestureRecognizer(() =>
+            {
+                BoxContainerOnTap();
+            }));
             _containerView.AddSubview(_viewBoxContainer);
 
             nfloat prevReadingHeight = _viewBoxContainer.Frame.GetMinY() - (halfPadding * 2);
@@ -65,8 +72,7 @@ namespace myTNB
             _containerView.AddSubview(_iconView);
 
             AddCardShadow(ref _containerView);
-
-            ShowPreviousReading("1234567");
+            _meterReadingValue = string.Empty;
         }
 
         public UIView GetUI()
@@ -80,6 +86,25 @@ namespace myTNB
             return _containerView;
         }
 
+        private void BoxContainerOnTap()
+        {
+            UIView[] subViews = _viewBoxContainer.Subviews;
+            foreach (UIView view in subViews)
+            {
+                if (view.Tag == 1)
+                {
+                    UIView[] subSubViews = view.Subviews;
+                    if (subSubViews.Length > 0)
+                    {
+                        UITextField txtField = subSubViews[0] as UITextField;
+                        txtField.Enabled = true;
+                        txtField.BecomeFirstResponder();
+                    }
+                    break;
+                }
+            }
+        }
+
         public UIView CreateViewBox(UIView containerView, int index)
         {
             var width = (containerView.Frame.Width / boxMaxCount) - 1;
@@ -88,9 +113,187 @@ namespace myTNB
             UIView viewBox = new UIView(new CGRect(xPos, 0, width, height))
             {
                 BackgroundColor = MyTNBColor.VeryLightPinkFour,
-                Tag = index
+                Tag = boxMaxCount - index
             };
+            UITextField txtFieldDigit = new UITextField(new CGRect(0, 0, width, height))
+            {
+                Enabled = false,
+                TextColor = MyTNBColor.TunaGrey(),
+                Font = MyTNBFont.MuseoSans16_500,
+                Tag = index + 1,
+                KeyboardType = UIKeyboardType.NumberPad,
+                AutocorrectionType = UITextAutocorrectionType.No,
+                AutocapitalizationType = UITextAutocapitalizationType.None,
+                SpellCheckingType = UITextSpellCheckingType.No,
+                ReturnKeyType = UIReturnKeyType.Done,
+                TextAlignment = UITextAlignment.Center
+            };
+            CreateDoneButton(txtFieldDigit);
+            SetTextFieldEvents(txtFieldDigit);
+            viewBox.AddSubview(txtFieldDigit);
+            if (index == 7)
+            {
+                UILabel dotLabel = new UILabel(new CGRect(width / 2, 0, width, height))
+                {
+                    Font = MyTNBFont.MuseoSans16_500,
+                    TextColor = MyTNBColor.TunaGrey(),
+                    TextAlignment = UITextAlignment.Center,
+                    Text = "."
+                };
+                viewBox.AddSubview(dotLabel);
+            }
             return viewBox;
+        }
+
+        private void SetTextFieldEvents(UITextField textField)
+        {
+            textField.EditingChanged += (sender, e) =>
+            {
+                string textStr = textField.Text;
+
+                if (textField.Text.Length > 1)
+                {
+                    int nextTag = (int)textField.Tag - 1;
+                    if (nextTag > 0)
+                    {
+                        if (textField.Tag == boxMaxCount)
+                        {
+                            UpdateReadingValueText(textStr.Substring(1, 1));
+                        }
+                        textField.Text = textStr.Substring(1, 1);
+                        PopulateTextFields();
+                        textField.BecomeFirstResponder();
+                    }
+                }
+                else
+                {
+                    UpdateReadingValueText(textField.Text);
+                }
+                UpdateMeterReadingValue();
+            };
+            textField.EditingDidEnd += (sender, e) =>
+            {
+                if (textField.Text.Length == 0)
+                {
+                    textField.Enabled = false;
+                }
+                RepopulateTextFields();
+            };
+        }
+
+        private void UpdateReadingValueText(string digit)
+        {
+            if (string.IsNullOrEmpty(digit) || string.IsNullOrWhiteSpace(digit))
+            {
+                var len = _meterReadingValue.Length;
+                _meterReadingValue = _meterReadingValue.Substring(0, len - 1);
+            }
+            else
+            {
+                _meterReadingValue += digit;
+            }
+        }
+
+        private void UpdateMeterReadingValue()
+        {
+            string strValue = string.Empty;
+            UIView[] subViews = _viewBoxContainer.Subviews;
+            foreach (UIView view in subViews)
+            {
+                UIView[] subSubViews = view.Subviews;
+                if (subSubViews.Length > 0)
+                {
+                    UITextField txtField = subSubViews[0] as UITextField;
+                    if (!string.IsNullOrEmpty(txtField.Text) && !string.IsNullOrWhiteSpace(txtField.Text))
+                    {
+                        strValue += txtField.Text;
+                    }
+                }
+            }
+            _meterReadingValue = strValue;
+            Debug.WriteLine("_meterReadingValue==== " + _meterReadingValue);
+        }
+
+        private void RepopulateTextFields()
+        {
+            ResetTextFields();
+            var len = _meterReadingValue.Length;
+            for (int i = 1; i <= _meterReadingValue.Length; i++)
+            {
+                UIView[] subViews = _viewBoxContainer.Subviews;
+                foreach (UIView view in subViews)
+                {
+                    UIView[] subSubViews = view.Subviews;
+                    if (subSubViews.Length > 0)
+                    {
+                        UITextField txtField = subSubViews[0] as UITextField;
+                        if (txtField != null)
+                        {
+                            if (view.Tag == i)
+                            {
+                                txtField.Enabled = true;
+                                txtField.Text = _meterReadingValue.Substring(len - i, 1);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        private void ResetTextFields()
+        {
+            UIView[] subViews = _viewBoxContainer.Subviews;
+            foreach (UIView view in subViews)
+            {
+                UIView[] subSubViews = view.Subviews;
+                if (subSubViews.Length > 0)
+                {
+                    UITextField txtField = subSubViews[0] as UITextField;
+                    if (txtField != null)
+                    {
+                        txtField.Enabled = false;
+                        txtField.Text = string.Empty;
+                    }
+                }
+            }
+        }
+
+        private void PopulateTextFields()
+        {
+            var readingValueLength = _meterReadingValue.Length - 1;
+            for (int i = 1; i <= readingValueLength; i++)
+            {
+                UIView[] subViews = _viewBoxContainer.Subviews;
+                foreach (UIView view in subViews)
+                {
+                    if (view.Tag == (i + 1))
+                    {
+                        UIView[] subSubViews = view.Subviews;
+                        if (subSubViews.Length > 0)
+                        {
+                            UITextField txtField = subSubViews[0] as UITextField;
+                            txtField.Enabled = true;
+                            txtField.Text = _meterReadingValue.Substring(readingValueLength - i, 1);
+                        }
+                        break;
+                    }
+                }
+            }
+        }
+
+        private void CreateDoneButton(UITextField textField)
+        {
+            UIToolbar toolbar = new UIToolbar(new RectangleF(0.0f, 0.0f, 50.0f, 44.0f));
+            var doneButton = new UIBarButtonItem(UIBarButtonSystemItem.Done, delegate
+            {
+                textField.ResignFirstResponder();
+            });
+
+            toolbar.Items = new UIBarButtonItem[] {
+                new UIBarButtonItem (UIBarButtonSystemItem.FlexibleSpace),
+                doneButton
+            };
+            textField.InputAccessoryView = toolbar;
         }
 
         public UIView CreateViewBoxForPrevReading(UIView containerView, int index, char digit)
@@ -111,22 +314,49 @@ namespace myTNB
                 TextAlignment = UITextAlignment.Center,
                 Text = digit.ToString()
             };
+
+            if (index == 8)
+            {
+                UILabel dotLabel = new UILabel(new CGRect(0, 0, width, height))
+                {
+                    Font = MyTNBFont.MuseoSans14_300,
+                    TextColor = MyTNBColor.Grey,
+                    TextAlignment = UITextAlignment.Left,
+                    Text = "."
+                };
+                viewBox.AddSubview(dotLabel);
+            }
+
             viewBox.AddSubview(digitLabel);
 
             return viewBox;
         }
 
-        private void ShowPreviousReading(string text)
+        public void SetPreviousReading(string prevReading)
+        {
+            //string readingStr = "1234567.5";
+            string[] readingList = prevReading.Split(".");
+            string combinedString = readingList[0] + readingList[1];
+            PopulatePreviousReading(combinedString);
+        }
+
+        private void PopulatePreviousReading(string text)
         {
             int startIndx = boxMaxCount - text.Length;
             for (int i = 0; i < text.Length; i++)
             {
-                if (i < startIndx)
-                {
-                    continue;
-                }
-                _prevReadingView.AddSubview(CreateViewBoxForPrevReading(_prevReadingView, i, text[i]));
+                _prevReadingView.AddSubview(CreateViewBoxForPrevReading(_prevReadingView, i + startIndx, text[i]));
             }
+        }
+
+        private void ValidateTextField()
+        {
+
+        }
+
+        public string GetMeterReadingValue()
+        {
+            return _meterReadingValue;
         }
 
         private void AddCardShadow(ref UIView view)
