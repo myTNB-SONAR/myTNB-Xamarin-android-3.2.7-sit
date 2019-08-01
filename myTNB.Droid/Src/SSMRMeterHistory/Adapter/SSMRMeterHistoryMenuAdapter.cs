@@ -42,7 +42,7 @@ namespace myTNB_Android.Src.SSMRMeterHistory.Adapter
 
             vh.btnMenu.Text = model.MenuName;
 
-            if (model.MenuId == "1004")
+            if (model.IsHighlighted == "true")
             {
                 vh.btnMenu.SetTextColor(Color.ParseColor("#e44b21"));
                 TextViewUtils.SetMuseoSans500Typeface(vh.btnMenu);

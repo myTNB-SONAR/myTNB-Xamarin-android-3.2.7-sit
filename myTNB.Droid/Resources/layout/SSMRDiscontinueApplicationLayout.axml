@@ -1,23 +1,22 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fillViewport="true"
-    android:overScrollMode="never">
-    <RelativeLayout 
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:theme="@style/Theme.Dashboard"
-        android:id="@+id/rootView">
-        <include
+    android:theme="@style/Theme.SMRApplication"
+    android:id="@+id/rootView">
+    <include
         layout="@layout/toolbar"
         id="@+id/toolbar" />
+    <ScrollView 
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:layout_below="@+id/toolbar"
+        android:overScrollMode="never">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_below="@+id/toolbar"
             android:background="@color/greyBackground"
             android:orientation="vertical">
             <TextView
@@ -73,6 +72,7 @@
                 android:layout_marginTop="16dp"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
+                android:paddingEnd="12dp"
                 android:layout_marginBottom="12dp"
                 android:lineSpacingExtra="4dp"
                 android:textSize="16dp"
@@ -85,9 +85,7 @@
                 android:orientation="vertical"
                 android:background="@color/white"
                 android:paddingTop="16dp"
-                android:paddingLeft="16dp"
-                android:paddingRight="16dp"
-                android:paddingEnd="16dp"
+                android:paddingLeft="12dp"
                 android:paddingBottom="18dp"
                 android:paddingStart="16dp"
                 android:id="@+id/contactDetailContainer">
@@ -95,7 +93,8 @@
                     android:id="@+id/txtInputLayoutEmail"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
+                    android:layout_marginBottom="4dp"
+                    android:layout_marginRight="17dp"
                     app:errorEnabled="true"
                     app:hintTextAppearance="@style/TextInputLayout.TextAppearance.LightBackground">
                     <EditText
@@ -114,7 +113,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:errorEnabled="true"
-                    android:layout_marginBottom="16dp"
+                    android:layout_marginBottom="6dp"
+                    android:layout_marginRight="17dp"
                     app:hintTextAppearance="@style/TextInputLayout.TextAppearance.LightBackground">
                     <EditText
                         android:id="@+id/txtMobileNo"
@@ -126,7 +126,6 @@
                         android:hint="@string/ssmr_discontinue_mobile_no_hint"
                         android:inputType="phone"
                         android:digits="0123456789+"
-                        android:importantForAutofill="noExcludeDescendants"
                         android:maxLines="1"  />
                 </android.support.design.widget.TextInputLayout>
                 <TextView
@@ -134,6 +133,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:lineSpacingExtra="2dp"
+                    android:layout_marginLeft="4dp"
+                    android:layout_marginRight="16dp"
                     android:textSize="12dp"
                     android:text="By editing you will update your myTNB profile and electricity account contact details."
                     android:textColor="@color/tunaGrey"
@@ -158,17 +159,16 @@
                 android:orientation="vertical"
                 android:background="@color/white"
                 android:paddingTop="16dp"
-                android:paddingLeft="16dp"
-                android:paddingRight="16dp"
-                android:paddingEnd="31dp"
-                android:paddingBottom="31dp"
+                android:paddingLeft="12dp"
+                android:paddingEnd="8dp"
+                android:paddingBottom="8dp"
                 android:paddingStart="16dp"
                 android:id="@+id/contactDetailContainer">
                 <FrameLayout
                     android:id="@+id/accountLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp">
+                    android:layout_marginRight="2dp">
                     <android.support.design.widget.TextInputLayout
                         android:id="@+id/txtInputLayoutReason"
                         android:layout_width="match_parent"
@@ -179,13 +179,11 @@
                             android:id="@+id/txtSelectReason"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:drawableLeft="@drawable/ic_field_account_no"
                             android:drawableRight="@drawable/ic_action_dropdown1"
                             android:paddingTop="5dp"
                             android:clickable="true"
                             android:cursorVisible="false"
                             android:focusable="false"
-                            android:importantForAutofill="noExcludeDescendants"
                             android:hint="@string/ssmr_select_discontinue_reason_hint"
                             android:inputType="text"
                             android:ellipsize="end"
@@ -197,6 +195,8 @@
                     android:id="@+id/txtInputLayoutTxtReason"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginRight="2dp"
                     app:errorEnabled="true"
                     app:hintTextAppearance="@style/TextInputLayout.TextAppearance.LightBackground">
                     <EditText
@@ -204,11 +204,15 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:paddingTop="5dp"
-                        android:hint="PLEASE STATE YOUR REASON"
-                        android:inputType="textMultiLine"
+                        android:hint="@string/ssmr_select_discontinue_txt_reason_hint"
+                        android:drawableLeft="@drawable/ic_field_text"
+                        android:drawablePadding="6dp"
+                        android:inputType="text|textMultiLine"
+                        android:maxLength="250"
+                        android:maxLines="5"
                         android:importantForAutofill="noExcludeDescendants"
-                        android:lines="4"
-                        android:maxLines="10"
+                        android:overScrollMode="always"
+                        android:scrollbarStyle="insideInset"
                         android:scrollbars="vertical"/>
                 </android.support.design.widget.TextInputLayout>
             </LinearLayout>
@@ -245,5 +249,5 @@
                     style="@style/Theme.SSMRDiscontinue" />
             </LinearLayout>
             </LinearLayout>
-    </RelativeLayout>
-</ScrollView>
+    </ScrollView>
+</RelativeLayout>

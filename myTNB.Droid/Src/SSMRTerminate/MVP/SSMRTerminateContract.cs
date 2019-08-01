@@ -1,4 +1,8 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using myTNB_Android.Src.myTNBMenu.Models;
+using myTNB_Android.Src.SSMR.SMRApplication.Api;
+using myTNB_Android.Src.SSMRTerminate.Api;
 
 namespace myTNB_Android.Src.SSMRTerminate.MVP
 {
@@ -17,18 +21,28 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
             void ShowEmptyReasonError();
             void ClearReasonError();
             void UpdateMobileNumber(string mobile_no);
+            string GetDeviceId();
+            bool IsActive();
+            void ShowProgressDialog();
+            void HideProgressDialog();
+            void UpdateSMRData(string email, string mobile_no);
+            void SetTerminationReasonsList(List<TerminationReasonModel> list);
         }
 
         public interface IPresenter
         {
             void CheckRequiredFields(string mobile_no, string email, bool isOtherReasonSelected, string otherReason);
 
-            void Start();
+            void InitiateCAInfo(AccountData selectedAccount);
+
+            void InitiateTerminationReasonsList();
         }
 
-        /* public interface IApiNotification
+        public interface SSMRTerminateApiPresenter
         {
-            Task<CARegisteredContactInfoResponse> GetCARegisteredContactInfo(object requestObject);
-        }*/
+            Task<CARegisteredContactInfoResponse> GetCARegisteredContactInfo(GetRegisteredContactInfoRequest request);
+
+            Task<SMRTerminationReasonsResponse> GetSMRTerminationReasons(GetSMRTerminationReasonsRequest request);
+        }
     }
 }

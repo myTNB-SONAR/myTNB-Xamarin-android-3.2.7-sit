@@ -17,6 +17,7 @@ using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.SSMRMeterHistory.Adapter;
 using myTNB_Android.Src.SSMRTerminate.MVP;
 using myTNB_Android.Src.Utils;
+using myTNB_Android.Src.Utils.Custom.ProgressDialog;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -54,6 +55,8 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
         private AccountData selectedAccount;
 
         private MaterialDialog SSMRMenuDialog;
+
+        LoadingOverlay loadingOverlay;
 
         SSMRMeterHistoryMenuAdapter meterHistoryMenuAdapter;
 
@@ -235,6 +238,7 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
                     SSMRMeterHistoryMenuModel selectedMenu = ssmrMeterHistoryMenuList[position];
                     if (selectedMenu.MenuId == "1004")
                     {
+                        ShowProgressDialog();
                         Intent SSMRTerminateActivity = new Intent(this, typeof(SSMRTerminateActivity));
                         SSMRTerminateActivity.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccount));
                         StartActivity(SSMRTerminateActivity);
@@ -248,7 +252,25 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
                 Utility.LoggingNonFatalError(e);
             }
         }
-        
+
+        public void ShowProgressDialog()
+        {
+            try
+            {
+                if (loadingOverlay != null && loadingOverlay.IsShowing)
+                {
+                    loadingOverlay.Dismiss();
+                }
+
+                loadingOverlay = new LoadingOverlay(this, Resource.Style.LoadingOverlyDialogStyle);
+                loadingOverlay.Show();
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
         [OnClick(Resource.Id.btnSubmitMeter)]
         internal void OnSubmitMeter(object sender, EventArgs eventArgs)
         {

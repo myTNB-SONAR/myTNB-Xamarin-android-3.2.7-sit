@@ -28,5 +28,9 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
         [JsonProperty(PropertyName = "OrderId")]
         [AliasAs("OrderId")]
         public string OrderId { get; set; }
+
+        [JsonProperty(PropertyName = "IsHighlighted")]
+        [AliasAs("IsHighlighted")]
+        public string IsHighlighted { get; set; }
     }
 }
