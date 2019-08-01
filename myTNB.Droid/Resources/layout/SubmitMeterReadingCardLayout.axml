@@ -268,6 +268,7 @@
                             android:digits="0123456789"/>
                     </LinearLayout>
                     <TextView
+                        android:id="@+id/reading_error_validation_msg"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
@@ -276,6 +277,7 @@
                         android:textColor="#e44b21"
                         android:text="This value is too high!"/>  
                     <TextView
+                        android:id="@+id/reading_meter_type"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"

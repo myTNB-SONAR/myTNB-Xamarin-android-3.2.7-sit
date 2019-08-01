@@ -48,14 +48,37 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:layout_marginBottom="20dp"
-        android:orientation="vertical"
-        android:layout_below="@+id/appBar">
-        <include android:id="@+id/kwhCard"
-        layout="@layout/SubmitMeterReadingCardLayout"/>
-        <include android:id="@+id/kVARhCard"
-        layout="@layout/SubmitMeterReadingCardLayout"/>
-        <include android:id="@+id/kwCard"
-        layout="@layout/SubmitMeterReadingCardLayout"/>
+        android:background="#F9F9F9"
+        android:layout_below="@+id/appBar"
+        android:layout_above="@+id/bottomLayout"
+        android:orientation="vertical">
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fillViewport="true">
+            <LinearLayout android:id="@+id/scroll_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
+                <TextView 
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/meterReadingTitle"
+                    android:text="Please enter your meter reading for each respective units."
+                    android:textSize="16dp"
+                    android:textColor="#1c79ca"
+                    android:paddingTop="16dp"
+                    android:paddingBottom="8dp"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
+                    android:layout_marginBottom="4dp"/>
+                <include android:id="@+id/kwhCard"
+                layout="@layout/SubmitMeterReadingCardLayout"/>
+                <include android:id="@+id/kVARhCard"
+                layout="@layout/SubmitMeterReadingCardLayout"/>
+                <include android:id="@+id/kwCard"
+                layout="@layout/SubmitMeterReadingCardLayout"/>
+            </LinearLayout>
+        </ScrollView>
     </LinearLayout>
 </RelativeLayout>
