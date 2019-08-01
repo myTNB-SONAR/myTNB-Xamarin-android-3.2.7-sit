@@ -1458,6 +1458,11 @@
     <Compile Include="Src\SSMR\SubmitMeterReading\MVP\SubmitMeterReadingActivity.cs" />
     <AndroidResource Include="Resources\layout\SubmitMeterReadingCardLayout.axml" />
     <AndroidResource Include="Resources\drawable\meter_reading_label_background.xml" />
+    <Compile Include="Src\SSMR\SubmitMeterReading\MVP\SubmitMeterTakePhotoActivity.cs" />
+    <AndroidResource Include="Resources\layout\SubmitMeterTakePhotoLayout.axml" />
+    <Compile Include="Src\SSMR\SubmitMeterReading\MVP\CameraTakePhotoFragment.cs" />
+    <AndroidResource Include="Resources\layout\CameraTakePhotoFragmentLayout.axml" />
+    <Compile Include="Src\SSMR\SubmitMeterReading\Listener\CameraPreview.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -1829,6 +1834,7 @@
     <Folder Include="Src\SSMRMeterHistory\Adapter\" />
     <Folder Include="Src\SSMR\SubmitMeterReading\" />
     <Folder Include="Src\SSMR\SubmitMeterReading\MVP\" />
+    <Folder Include="Src\SSMR\SubmitMeterReading\Listener\" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\GradientStatusBar.xml" />

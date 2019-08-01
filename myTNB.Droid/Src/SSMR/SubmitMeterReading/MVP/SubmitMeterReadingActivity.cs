@@ -11,6 +11,7 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using myTNB_Android.Src.Base.Activity;
+using myTNB_Android.Src.Utils;
 
 namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
 {
@@ -41,6 +42,16 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             PopulateMeterReadingCard(METER_READING_TYPE.KWH);
             PopulateMeterReadingCard(METER_READING_TYPE.KVARH);
             PopulateMeterReadingCard(METER_READING_TYPE.KW);
+
+            TextView meterReadingTitle = FindViewById(Resource.Id.meterReadingTitle) as TextView;
+            TextViewUtils.SetMuseoSans500Typeface(meterReadingTitle);
+
+            Button btnTakePhoto = FindViewById(Resource.Id.btnTakePhoto) as Button;
+            btnTakePhoto.Click += delegate
+            {
+                Intent photoIntent = new Intent(this, typeof(SubmitMeterTakePhotoActivity));
+                StartActivity(photoIntent);
+            };
         }
 
         public void PopulateMeterReadingCard(METER_READING_TYPE type)
@@ -86,6 +97,12 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
 
             TextView readingErrorMessage = linearLayoutContainer.FindViewById(Resource.Id.reading_error_validation_msg) as TextView;
             TextView readingMeterType = linearLayoutContainer.FindViewById(Resource.Id.reading_meter_type) as TextView;
+
+            TextViewUtils.SetMuseoSans300Typeface(firstPrevDigit, secondPrevDigit, thirdPrevDigit, fourthPrevDigit, fifthPrevDigit, sixthPrevDigit,
+                seventhPrevDigit, eigthPrevDigit, ninethPrevDigit);
+            TextViewUtils.SetMuseoSans500Typeface(readingMeterType, readingErrorMessage, firstDigit, secondDigit, thirdDigit, fourthDigit,
+                fifthDigit, sixthDigit, seventhDigit, eigthDigit, ninethDigit);
+
 
             readingErrorMessage.Text = "";
             readingMeterType.Text = typeId;
