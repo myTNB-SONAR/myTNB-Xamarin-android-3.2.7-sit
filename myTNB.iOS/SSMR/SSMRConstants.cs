@@ -8,9 +8,11 @@
 
         //Service name
         public static string Service_SubmitSSMRApplication = "SubmitSMRApplication";
+        public static string Service_GetTerminationReasons = "GetSMRTerminationReasons";
         public static string Service_GetCARegisteredContact = "GetCAContactDetails";
         public static string Service_Register = "R";
         public static string Service_Terminate = "T";
+        public static string Service_OthersID = "1007";
 
         //Onboarding
         //i18n
@@ -25,7 +27,8 @@
         public static string I18N_StartApplication = "startApplication";
 
         //Common
-        public static string I18N_NavTitle = "navTitle";
+        public static string I18N_NavTitleApply = "navTitleApply";
+        public static string I18N_NavTitleTerminate = "navTitleTerminate";
         public static string I18N_Submit = "submit";
         public static string I18N_Account = "account";
         public static string I18N_MobileNumber = "mobileNumber";
@@ -34,9 +37,13 @@
 
         //Application
         public static string I18N_ApplyingFor = "applyingFor";
+        public static string I18N_TerminateFor = "terminateFor";
         public static string I18N_ContactDetails = "contactDetails";
+        public static string I18N_TerminateTitle = "terminateTitle";
         public static string I18N_TnC = "tnc";
         public static string I18N_EditInfo = "editContactInfo";
+        public static string I18N_SelectReason = "selectReason";
+        public static string I18N_StateReason = "stateReason";
 
         //Image
         public static string IMG_BGOnboarding1 = "SSMR_Background_1";

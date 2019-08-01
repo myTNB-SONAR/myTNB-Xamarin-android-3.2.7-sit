@@ -61,20 +61,8 @@ namespace myTNB.SitecoreCMS.Service
                     {
                         Title = item.GetValueFromField(Constants.Sitecore.Fields.ApplySSMRWalkthrough.Title),
                         Description = item.GetValueFromField(Constants.Sitecore.Fields.ApplySSMRWalkthrough.Description),
-                        Image = item.GetImageUrlFromItemWithSize(Constants.Sitecore.Fields.ApplySSMRWalkthrough.Image, _os, _imgSize, _websiteURL, _language),
+                        Image = item.GetImageUrlFromItemWithSize(Constants.Sitecore.Fields.ApplySSMRWalkthrough.Image, _os, _imgSize, _websiteURL, _language).Replace(" ", "%20"),
                         ID = item.Id
-                        /*TopicBGImage = item.GetImageUrlFromItemWithSize(Constants.Sitecore.Fields.Help.TopicBGImage, _os, _imgSize, _websiteURL, _language),
-                        BGStartColor = item.GetValueFromField(Constants.Sitecore.Fields.Help.BGStartColor),
-                        BGEndColor = item.GetValueFromField(Constants.Sitecore.Fields.Help.BGEndColor),
-                        BGGradientDirection = item.GetValueFromField(Constants.Sitecore.Fields.Help.BGGradientDirection),
-                        Title = item.GetValueFromField(Constants.Sitecore.Fields.Help.Title),
-                        Description = item.GetValueFromField(Constants.Sitecore.Fields.Help.Description),
-                        TopicBodyTitle = item.GetValueFromField(Constants.Sitecore.Fields.Help.TopicBodyTitle),
-                        TopicBodyContent = item.GetValueFromField(Constants.Sitecore.Fields.Help.TopicBodyContent),
-                        CTA = item.GetValueFromField(Constants.Sitecore.Fields.Help.CTA),
-                        Tags = item.GetValueFromField(Constants.Sitecore.Fields.Help.Tags),
-                        TargetItem = item.GetValueFromField(Constants.Sitecore.Fields.Help.TargetItem),
-                        ID = item.Id*/
                     });
                 }
             }

@@ -30,8 +30,6 @@ namespace myTNB.SSMR
             UIImage displayImage;             if (SSMRDataObject.IsSitecoreData)             {                 if (string.IsNullOrEmpty(SSMRDataObject.Image) || string.IsNullOrWhiteSpace(SSMRDataObject.Image))                 {                     displayImage = UIImage.FromBundle(string.Empty);                 }                 else                 {
                     try
                     {
-                        SSMRDataObject.Image = "https://sitecore.tnb.com.my//-/media/Experience%20Explorer/Presets/Emilie%20128x128.ashx";
-
                         displayImage = UIImage.LoadFromData(NSData.FromUrl(new NSUrl(SSMRDataObject.Image)));
                     }
                     catch (Exception e)

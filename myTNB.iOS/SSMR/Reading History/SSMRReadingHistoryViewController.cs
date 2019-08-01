@@ -48,7 +48,7 @@ namespace myTNB
             });
             NavigationItem.LeftBarButtonItem = btnBack;
             NavigationItem.RightBarButtonItem = btnRight;
-            Title = GetI18NValue(SSMRConstants.I18N_NavTitle);
+            Title = GetI18NValue(SSMRConstants.I18N_NavTitleApply);
         }
 
         private void PrepareHeaderView()

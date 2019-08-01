@@ -1373,6 +1373,7 @@
     <Folder Include="Home\Components\Dashboard Home\" />
     <Folder Include="Assets.xcassets\Accounts-SMR-Icon.imageset\" />
     <Folder Include="Assets.xcassets\IC-Info.imageset\" />
+    <Folder Include="Model\GetSMRTerminationReasons\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -2132,6 +2133,7 @@
     <Compile Include="Customs\CustomUISlider.cs" />
     <Compile Include="SSMR\Meter Reading\CapturePhotoDelegate.cs" />
     <Compile Include="SSMR\Meter Reading\ImagePickerDelegate.cs" />
+    <Compile Include="Model\GetSMRTerminationReasons\TerminationReasonsResponseModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />

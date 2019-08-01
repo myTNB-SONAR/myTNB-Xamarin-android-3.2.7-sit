@@ -1,15 +1,12 @@
-﻿using Foundation;
-using System;
+﻿using System;
 using UIKit;
 using CoreGraphics;
 using myTNB.Home.Feedback;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using myTNB.Model;
-using System.Drawing;
 using myTNB.Customs;
 using myTNB.Home.Feedback.FeedbackEntry;
-using System.Diagnostics;
 
 namespace myTNB
 {
