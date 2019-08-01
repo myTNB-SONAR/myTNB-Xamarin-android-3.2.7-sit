@@ -1453,6 +1453,7 @@
       <Generator></Generator>
     </AndroidResource>
     <Compile Include="Src\SSMR\SMRApplication\Adapter\SelectAccountAdapter.cs" />
+    <Compile Include="Src\SSMR\SubmitMeterReading\SubmitMeterReadingHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -1822,6 +1823,7 @@
     <Folder Include="Src\SSMRMeterHistory\" />
     <Folder Include="Src\SSMRMeterHistory\MVP\" />
     <Folder Include="Src\SSMRMeterHistory\Adapter\" />
+    <Folder Include="Src\SSMR\SubmitMeterReading\" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\GradientStatusBar.xml" />
