@@ -62,7 +62,7 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
             TextViewUtils.SetMuseoSans300Typeface(txtMessageInfo, refNumberLabel, appliedOnDateLabel, refNumberValue, appliedOnDateValue);
 
             btnBackToHomeSuccess.Text = "Back to My Usage";
-            btnTrackApplication.Text = "Track Application Usage";
+            btnTrackApplication.Text = "Track Application";
 
             Bundle extras = Intent.Extras;
 
