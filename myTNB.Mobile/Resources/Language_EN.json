@@ -109,5 +109,8 @@
     "SSMRReadingHistory": {
         "navTitle": "Self Meter Reading",
         "headerTitle": "My Meter Reading History"
+    },
+    "SSMRSubmitMeterReading": {
+        "navTitle": "Submit Meter Reading"
     }
 }

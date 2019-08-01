@@ -27,8 +27,7 @@
         public static string I18N_StartApplication = "startApplication";
 
         //Common
-        public static string I18N_NavTitleApply = "navTitleApply";
-        public static string I18N_NavTitleTerminate = "navTitleTerminate";
+        public static string I18N_NavTitle = "navTitle";
         public static string I18N_Submit = "submit";
         public static string I18N_Account = "account";
         public static string I18N_MobileNumber = "mobileNumber";
@@ -36,6 +35,8 @@
         public static string I18N_SelectAccounts = "selectAccounts";
 
         //Application
+        public static string I18N_NavTitleApply = "navTitleApply";
+        public static string I18N_NavTitleTerminate = "navTitleTerminate";
         public static string I18N_ApplyingFor = "applyingFor";
         public static string I18N_TerminateFor = "terminateFor";
         public static string I18N_ContactDetails = "contactDetails";
@@ -55,7 +56,7 @@
         public static string IMG_MobileNumber = "Mobile";
         public static string IMG_Email = "Email";
         public static string IMG_SMRMediumIcon = "SMR-Medium-Icon";
-        public static string IMG_SMROpenSubmittedBG = "SMR-Open-Submitted-BG";
+        public static string IMG_SMROpenIcon = "SMR-Open-Icon";
         public static string IMG_BackIcon = "Back-White";
         public static string IMG_PrimaryIcon = "SSMRPrimaryIcon";
         public static string IMG_Info = "IC-Info";

@@ -16,8 +16,8 @@ namespace myTNB.Dashboard.DashboardComponents
         internal void CreateCommponent()
         {
 
-            _lblAddress = new UILabel(new CGRect(42, _parentView.Frame.Height - 56
-                , _parentView.Frame.Width - 84, 72))
+            _lblAddress = new UILabel(new CGRect(16, _parentView.Frame.Height - 56
+                , _parentView.Frame.Width - 32, 72))
             {
                 Font = MyTNBFont.MuseoSans12,
                 TextAlignment = UITextAlignment.Center,

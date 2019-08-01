@@ -115,8 +115,9 @@ namespace myTNB
 
         public void SetFrameByPrecedingView(float yLocation)
         {
+            nfloat addtl = DeviceHelper.IsIphone678() ? 0 : 8f;
             var newFrame = _containerView.Frame;
-            newFrame.Y = yLocation + 18f;
+            newFrame.Y = yLocation + 10f + addtl;
             _containerView.Frame = newFrame;
         }
 
