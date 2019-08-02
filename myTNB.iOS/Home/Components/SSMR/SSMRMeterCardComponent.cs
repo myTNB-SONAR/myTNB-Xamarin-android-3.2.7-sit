@@ -20,6 +20,8 @@ namespace myTNB
         nfloat halfPadding = 8f;
         int boxMaxCount = 9;
         nfloat _yLocation;
+        nfloat _iconYposOriginal;
+        nfloat _containerHeightOriginal;
         public string _meterReadingValue = string.Empty;
 
         public SSMRMeterCardComponent(UIView parentView, nfloat yLocation)
@@ -30,8 +32,8 @@ namespace myTNB
 
         private void CreateComponent()
         {
-            nfloat containerHeight = _parentView.Frame.Width * containerRatio;
-            _containerView = new UIView(new CGRect(padding, _yLocation, _parentView.Frame.Width - (padding * 2), containerHeight))
+            _containerHeightOriginal = _parentView.Frame.Width * containerRatio;
+            _containerView = new UIView(new CGRect(padding, _yLocation, _parentView.Frame.Width - (padding * 2), _containerHeightOriginal))
             {
                 BackgroundColor = UIColor.White
             };
@@ -53,6 +55,16 @@ namespace myTNB
             }));
             _containerView.AddSubview(_viewBoxContainer);
 
+            _errorLabel = new UILabel(new CGRect(padding, _viewBoxContainer.Frame.GetMaxY() + 4f, viewBoxContainerWidth, 14f))
+            {
+                BackgroundColor = UIColor.Clear,
+                Font = MyTNBFont.MuseoSans10_500,
+                TextColor = MyTNBColor.Tomato,
+                TextAlignment = UITextAlignment.Right,
+                Hidden = true
+            };
+            _containerView.AddSubview(_errorLabel);
+
             nfloat prevReadingHeight = _viewBoxContainer.Frame.GetMinY() - (halfPadding * 2);
             _prevReadingView = new UIView(new CGRect(padding, halfPadding, _viewBoxContainer.Frame.Width, prevReadingHeight))
             {
@@ -63,8 +75,8 @@ namespace myTNB
 
             nfloat iconHeight = DeviceHelper.GetScaledHeight(imgHeight);
             nfloat iconWidth = DeviceHelper.GetScaledWidth(imgWidth);
-            nfloat yPos = _viewBoxContainer.Frame.GetMaxY() + (containerHeight - _viewBoxContainer.Frame.GetMaxY()) / 2 - (iconHeight / 2);
-            _iconView = new UIImageView(new CGRect(_containerView.Frame.Width - padding - iconWidth, yPos, iconWidth, iconHeight))
+            _iconYposOriginal = _viewBoxContainer.Frame.GetMaxY() + (_containerHeightOriginal - _viewBoxContainer.Frame.GetMaxY()) / 2 - (iconHeight / 2);
+            _iconView = new UIImageView(new CGRect(_containerView.Frame.Width - padding - iconWidth, _iconYposOriginal, iconWidth, iconHeight))
             {
                 Image = UIImage.FromBundle("kWh-Icon")
             };
@@ -84,6 +96,14 @@ namespace myTNB
         public UIView GetView()
         {
             return _containerView;
+        }
+
+        public void SetIconImage(string imageStr)
+        {
+            if (!string.IsNullOrEmpty(imageStr))
+            {
+                _iconView.Image = UIImage.FromBundle(imageStr);
+            }
         }
 
         private void BoxContainerOnTap()
@@ -334,10 +354,16 @@ namespace myTNB
 
         public void SetPreviousReading(string prevReading)
         {
-            //string readingStr = "1234567.5";
             string[] readingList = prevReading.Split(".");
-            string combinedString = readingList[0] + readingList[1];
-            PopulatePreviousReading(combinedString);
+            if (readingList.Length > 1)
+            {
+                string combinedString = readingList[0] + readingList[1];
+                PopulatePreviousReading(combinedString);
+            }
+            else
+            {
+                PopulatePreviousReading(readingList[0]);
+            }
         }
 
         private void PopulatePreviousReading(string text)
@@ -352,6 +378,35 @@ namespace myTNB
         private void ValidateTextField()
         {
 
+        }
+
+        public void ShowErrorLabel(bool isError, string message)
+        {
+            if (isError)
+            {
+                _errorLabel.Hidden = false;
+                _errorLabel.Text = message ?? string.Empty;
+                CGRect iconFrame = _iconView.Frame;
+                iconFrame.Y = _errorLabel.Frame.GetMaxY() + 8f;
+                _iconView.Frame = iconFrame;
+
+                CGRect containerFrame = _containerView.Frame;
+                containerFrame.Height = _iconView.Frame.GetMaxY() + 8f;
+                _containerView.Frame = containerFrame;
+            }
+            else
+            {
+                _errorLabel.Hidden = true;
+                _errorLabel.Text = string.Empty;
+                CGRect iconFrame = _iconView.Frame;
+                iconFrame.Y = _iconYposOriginal;
+                _iconView.Frame = iconFrame;
+
+                CGRect containerFrame = _containerView.Frame;
+                containerFrame.Height = _containerHeightOriginal;
+                _containerView.Frame = containerFrame;
+            }
+            AddCardShadow(ref _containerView);
         }
 
         public string GetMeterReadingValue()

@@ -26,7 +26,7 @@ namespace myTNB
             {
                 BackgroundColor = UIColor.Clear
             };
-            _imageView = new UIImageView(new CGRect(DeviceHelper.GetCenterXWithObjWidth(DeviceHelper.GetScaledWidth(131.0f), _containerView), 32, DeviceHelper.GetScaledWidth(131.0f), DeviceHelper.GetScaledHeight(144.0f)))
+            _imageView = new UIImageView(new CGRect(DeviceHelper.GetCenterXWithObjWidth(DeviceHelper.GetScaledWidth(131.0f), _containerView), 25, DeviceHelper.GetScaledWidth(131.0f), DeviceHelper.GetScaledHeight(144.0f)))
             {
                 Image = UIImage.FromBundle(SSMRConstants.IMG_SMROpenIcon),
                 ContentMode = UIViewContentMode.ScaleAspectFit,

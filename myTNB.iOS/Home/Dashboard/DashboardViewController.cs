@@ -784,7 +784,14 @@ namespace myTNB.Dashboard
 
         private void ShowSubmitMeterView()
         {
-            //Present Submit Meter Reading View Controller here...
+            UIStoryboard storyBoard = UIStoryboard.FromName("SSMR", null);
+            SSMRReadMeterViewController viewController =
+                storyBoard.InstantiateViewController("SSMRReadMeterViewController") as SSMRReadMeterViewController;
+            if (viewController != null)
+            {
+                var navController = new UINavigationController(viewController);
+                PresentViewController(navController, true, null);
+            }
         }
 
         private void SetNoDataConnectionEvent()

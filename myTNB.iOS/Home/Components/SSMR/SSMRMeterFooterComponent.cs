@@ -64,6 +64,11 @@ namespace myTNB
             return _containerView;
         }
 
+        public UIView GetView()
+        {
+            return _containerView;
+        }
+
         private void AddCardShadow(ref UIView view)
         {
             view.Layer.MasksToBounds = false;

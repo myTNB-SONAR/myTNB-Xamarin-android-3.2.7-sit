@@ -339,14 +339,6 @@ namespace myTNB
                 vc.ShouldShowBackButton = true;
                 ShowViewController(vc, null);
             }
-            //UIStoryboard storyBoard = UIStoryboard.FromName("SSMR", null);
-            //SSMRReadMeterViewController viewController =
-            //    storyBoard.InstantiateViewController("SSMRReadMeterViewController") as SSMRReadMeterViewController;
-            //if (viewController != null)
-            //{
-            //    var navController = new UINavigationController(viewController);
-            //    PresentViewController(navController, true, null);
-            //}
         }
 
         private void SetActionsDictionary()
