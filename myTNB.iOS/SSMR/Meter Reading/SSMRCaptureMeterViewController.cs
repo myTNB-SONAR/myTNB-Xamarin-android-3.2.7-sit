@@ -65,7 +65,7 @@ namespace myTNB
             SetDescription();
             SetPreview();
             SetCamera();
-            Debug.WriteLine("Viewdidload");
+            ToggleCTA();
         }
 
         public override void ViewWillAppear(bool animated)
@@ -398,6 +398,8 @@ namespace myTNB
                         }
                     }
                 }
+                PreviewAction(_currentTag);
+                ToggleCTA();
             }));
             view.AddSubview(imgDelete);
             return view;
@@ -417,8 +419,7 @@ namespace myTNB
             {
                 Debug.WriteLine("zoomSlider ValueChanged: " + ((UISlider)sender).Value);
                 nfloat zoomFactor = (nfloat)((UISlider)sender).Value;
-                NSError nsError;
-                _captureDevice.LockForConfiguration(out nsError);
+                _captureDevice.LockForConfiguration(out NSError nsError);
                 _captureDevice.VideoZoomFactor = zoomFactor;
                 _captureDevice.UnlockForConfiguration();
             };
@@ -470,6 +471,7 @@ namespace myTNB
                     AddMainPreview(selectedImg);
                     _capturedImage = selectedImg;
                 }
+                ToggleCTA();
             };
             UIImagePickerController imgPicker = new UIImagePickerController
             {
@@ -510,6 +512,7 @@ namespace myTNB
                         parent.Layer.BorderColor = MyTNBColor.WaterBlue.CGColor;
                         AddMainPreview(image);
                     }
+                    _currentTag = model.Tag;
                     break;
                 }
             }
@@ -572,10 +575,9 @@ namespace myTNB
             _zoomSlider.MinValue = (float)_captureDevice.MinAvailableVideoZoomFactor;
             _zoomSlider.MaxValue = (float)_captureDevice.MaxAvailableVideoZoomFactor;
 
-            NSError nsError;
             try
             {
-                _input = new AVCaptureDeviceInput(_captureDevice, out nsError);
+                _input = new AVCaptureDeviceInput(_captureDevice, out NSError nsError);
 
                 _output = new AVCapturePhotoOutput
                 {
@@ -630,6 +632,7 @@ namespace myTNB
             {
                 AddMainPreview(capturedImage);
             }
+            ToggleCTA();
         }
 
         private void AddMainPreview(UIImage previewImg)
@@ -661,6 +664,19 @@ namespace myTNB
             _viewCamera.BringSubviewToFront(_viewDelete);
             _viewDelete.Hidden = false;
             _viewCameraActions.Hidden = true;
+        }
+
+        private void ToggleCTA()
+        {
+            bool isValid = false;
+            int count = _imageModelList.Count;
+            for (int i = 0; i < count; i++)
+            {
+                ImageModel item = _imageModelList[i];
+                isValid = isValid || !item.NeedsPhoto;
+            }
+            _btnSubmit.Enabled = isValid;
+            _btnSubmit.BackgroundColor = isValid ? MyTNBColor.FreshGreen : MyTNBColor.SilverChalice;
         }
 
         #region Gestures
