@@ -32,6 +32,8 @@ namespace myTNB
             cell.TextLabel.Text = _controller.Items[indexPath.Row];
             cell.TextLabel.TextColor = MyTNBColor.TunaGrey();
             cell.TextLabel.Font = MyTNBFont.MuseoSans16;
+            cell.TextLabel.Lines = 0;
+            cell.TextLabel.LineBreakMode = UILineBreakMode.WordWrap;
             if (_controller.SelectedIndex > -1 && indexPath.Row == _controller.SelectedIndex)
             {
                 cell.Accessory = UITableViewCellAccessory.None;

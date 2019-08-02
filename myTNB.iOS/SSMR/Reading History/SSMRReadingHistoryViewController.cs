@@ -151,6 +151,15 @@ namespace myTNB
         {
             Debug.WriteLine("model.MenuName: " + model.MenuName);
             //Tap events for more options..
+            if (model.MenuId == "1004")
+            {
+                UIStoryboard storyBoard = UIStoryboard.FromName("SSMR", null);
+                SSMRApplicationViewController viewController =
+                    storyBoard.InstantiateViewController("SSMRApplicationViewController") as SSMRApplicationViewController;
+                viewController.IsApplication = false;
+                UINavigationController navController = new UINavigationController(viewController);
+                PresentViewController(navController, true, null);
+            }
         }
 
         private void AddViewWithOpacity(float opacity)

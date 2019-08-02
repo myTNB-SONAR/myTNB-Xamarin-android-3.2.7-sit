@@ -1,5 +1,6 @@
 ﻿using System;
 using AVFoundation;
+using CoreGraphics;
 using CoreMedia;
 using Foundation;
 using UIKit;
@@ -23,8 +24,17 @@ namespace myTNB.SSMR.MeterReading
             UIImage capturedImage = UIImage.LoadFromData(imgData, 1.0F);
             if (OnCapturePhoto != null)
             {
-                OnCapturePhoto.Invoke(capturedImage);
+                OnCapturePhoto.Invoke(GetPortraitImage(capturedImage));
             }
+        }
+
+        private UIImage GetPortraitImage(UIImage img)
+        {
+            UIGraphics.BeginImageContextWithOptions(img.Size, false, img.CurrentScale);
+            img.Draw(new CGRect(new CGPoint(0, 0), img.Size));
+            UIImage newImg = UIGraphics.GetImageFromCurrentImageContext();
+            UIGraphics.EndImageContext();
+            return newImg != null ? newImg : img;
         }
     }
 }

@@ -16,43 +16,43 @@ namespace myTNB
         {
         }
 
-        private string refNumber;
-        private string refDate;
-        private string refTitle;
-        private string refMessage;
+        private string _refNumber;
+        private string _refDate;
+        private string _refTitle;
+        private string _refMessage;
 
         public string ReferenceNumber
         {
             set
             {
-                refNumber = string.IsNullOrEmpty(value) ? string.Empty : value;
+                _refNumber = string.IsNullOrEmpty(value) ? string.Empty : value;
             }
-            get { return refNumber; }
+            get { return _refNumber; }
         }
         public string ReferenceDate
         {
             set
             {
-                refDate = string.IsNullOrEmpty(value) ? string.Empty : value;
+                _refDate = string.IsNullOrEmpty(value) ? string.Empty : value;
             }
-            get { return refDate; }
+            get { return _refDate; }
         }
 
         public string StatusTitle
         {
             set
             {
-                refTitle = string.IsNullOrEmpty(value) ? string.Empty : value;
+                _refTitle = string.IsNullOrEmpty(value) ? string.Empty : value;
             }
-            get { return refTitle; }
+            get { return _refTitle; }
         }
         public string StatusMessage
         {
             set
             {
-                refMessage = string.IsNullOrEmpty(value) ? string.Empty : value;
+                _refMessage = string.IsNullOrEmpty(value) ? string.Empty : value;
             }
-            get { return refMessage; }
+            get { return _refMessage; }
         }
 
         public bool IsSuccess { set; get; }
@@ -80,7 +80,7 @@ namespace myTNB
             IsGradientRequired = true;
             IsFullGradient = true;
             IsReversedGradient = true;
-            PageName = "Status";
+            PageName = StatusPageConstants.PageName;
             NavigationController.NavigationBarHidden = true;
             base.ViewDidLoad();
             _actions = new StatusPageActions(this);
@@ -266,12 +266,20 @@ namespace myTNB
                 else
                 {
                     GetCTA(ref btnPrimary, GetCommonI18NValue(StatusPageConstants.I18N_TryAgain), true, _actions.SSMRTryAgain);
-
                 }
             }
             else if (StatusDisplayType == StatusType.SSMRDiscontinue)
             {
+                GetCTA(ref btnSecondary, GetI18NValue(StatusPageConstants.I18N_SSMRBacktoUsage), false, _actions.BackToHome);
+                if (IsSuccess)
+                {
+                    GetCTA(ref btnPrimary, GetI18NValue(StatusPageConstants.I18N_SSMRTrackUsage), true, _actions.TrackApplication);
+                }
+                else
+                {
+                    GetCTA(ref btnPrimary, GetCommonI18NValue(StatusPageConstants.I18N_TryAgain), true, _actions.SSMRTryAgain);
 
+                }
             }
             else if (StatusDisplayType == StatusType.SSMRReading)
             {

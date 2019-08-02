@@ -63,11 +63,16 @@
         "startApplication": "Start Application"
     },
     "SSMRApplication": {
-        "navTitle": "Apply Self Meter Reading",
-        "applyingFor": "I am applying for:",
+        "navTitleApply": "Subscribe Self Meter Reading",
+        "navTitleTerminate": "Unsubscribe Self Reading",
+        "applyingFor": "I am subscribing for:",
+        "terminateFor": "I am unsubscribing my service for:",
         "contactDetails": "My contact details:",
-        "tnc": "By applying, you are agreeing to the Self Meter Reading Terms and Conditions, TNB’s Terms of Use, Privacy policy, Anti-Spam Policy and Personal Data Protection Policy.",
-        "editContactInfo": "By editing you will update your myTNB profile but not your owner’s electricity account contact details."
+        "terminateTitle": "We’re sorry to see you go! Can you tell us why you want to unsubscribe this service?",
+        "tnc": "By subscribing, you are agreeing to the Self Meter Reading Terms and Conditions, TNB’s Terms of Use, Privacy policy, Anti-Spam Policy and Personal Data Protection Policy.",
+        "editContactInfo": "By editing you will update your myTNB profile but not your owner’s electricity account contact details.",
+        "selectReason": "Select Reason",
+        "stateReason": "Please state your reason"
     },
     "Status": {
         "feedbackSuccessTitle": "Feedback Successful",
@@ -107,5 +112,12 @@
     },
     "SSMRSubmitMeterReading": {
         "navTitle": "Submit Meter Reading"
+    },
+    "SSMRCaptureMeter": {
+        "ocrReading": "Please wait for a moment while we read your photos…",
+        "navTitleTakePhoto": "Take Photo",
+        "singleTakePhotoDescription": "Take a clear photo of the reading value flashed on your meter.",
+        "editDescription": "You can delete and retake the photo or adjust it before submission.",
+        "multiTakePhotoDescription": "Get ready, you'll have 10 seconds between each value being flashed."
     }
 }

@@ -1052,6 +1052,10 @@
     <ImageAsset Include="Assets.xcassets\IC-Action-Delete-White.imageset\IC-Action-Delete-White.png" />
     <ImageAsset Include="Assets.xcassets\IC-Action-Delete-White.imageset\IC-Action-Delete-White%402x.png" />
     <ImageAsset Include="Assets.xcassets\IC-Action-Delete-White.imageset\IC-Action-Delete-White%403x.png" />
+    <ImageAsset Include="Assets.xcassets\OCR-Reading.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\OCR-Reading.imageset\ocrReading.png" />
+    <ImageAsset Include="Assets.xcassets\OCR-Reading.imageset\ocrReading%402x.png" />
+    <ImageAsset Include="Assets.xcassets\OCR-Reading.imageset\ocrReading%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -1381,10 +1385,13 @@
     <Folder Include="Home\Components\Dashboard Home\" />
     <Folder Include="Assets.xcassets\Accounts-SMR-Icon.imageset\" />
     <Folder Include="Assets.xcassets\IC-Info.imageset\" />
+    <Folder Include="Model\GetSMRTerminationReasons\" />
     <Folder Include="Assets.xcassets\kWh-Icon.imageset\" />
     <Folder Include="Assets.xcassets\SMR-History-BG.imageset\" />
     <Folder Include="Assets.xcassets\SMR-Open-Icon.imageset\" />
     <Folder Include="Assets.xcassets\IC-Action-Delete-White.imageset\" />
+    <Folder Include="Assets.xcassets\OCR-Reading.imageset\" />
+    <Folder Include="Model\GetMeterReadingOCRValue\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -2143,6 +2150,8 @@
     <Compile Include="Model\SSMR\SMRAccountStatusResponseModel.cs" />
     <Compile Include="Customs\CustomUISlider.cs" />
     <Compile Include="SSMR\Meter Reading\CapturePhotoDelegate.cs" />
+    <Compile Include="SSMR\Meter Reading\ImagePickerDelegate.cs" />
+    <Compile Include="Model\GetSMRTerminationReasons\TerminationReasonsResponseModel.cs" />
     <Compile Include="Home\Components\SSMR\SSMRMeterCardComponent.cs" />
     <Compile Include="SSMR\Meter Reading\SSMRReadMeterViewController.cs" />
     <Compile Include="SSMR\Meter Reading\SSMRReadMeterViewController.designer.cs">
@@ -2150,6 +2159,8 @@
     </Compile>
     <Compile Include="Home\Components\SSMR\SSMRMeterFooterComponent.cs" />
     <Compile Include="Home\Components\SSMR\SSMRDropDownComponent.cs" />
+    <Compile Include="Model\GetMeterReadingOCRValue\GetOCRResponseModel.cs" />
+    <Compile Include="Session Cache\OCRReadingCache.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />

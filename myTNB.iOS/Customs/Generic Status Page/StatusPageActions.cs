@@ -23,12 +23,12 @@ namespace myTNB.Customs.GenericStatusPage
 
         internal void SSMRTryAgain()
         {
-
+            ViewHelper.DismissControllersAndSelectTab(_controller, 0, true);
         }
 
         internal void BackToUsage()
         {
-
+            ViewHelper.DismissControllersAndSelectTab(_controller, 0, true);
         }
 
         internal void ViewReadingHistory()
