@@ -63,7 +63,8 @@ namespace myTNB
 
         public static void DisplayCustomAlert(string title, string message, Dictionary<string, Action> ctaButtons
             , UITextAlignment titleAlignment = UITextAlignment.Left, UITextAlignment descriptionAlignment = UITextAlignment.Left
-            , bool shouldDismissAlert = true, float marginPercentage = 0.056F, bool isDefaultURLAction = true)
+            , bool shouldDismissAlert = true, float marginPercentage = 0.056F, bool isDefaultURLAction = true
+            , UIImage image = null)
         {
             nfloat margin = UIScreen.MainScreen.Bounds.Width * marginPercentage;
             nfloat width = UIScreen.MainScreen.Bounds.Width - (margin * 2);
@@ -95,6 +96,12 @@ namespace myTNB
                 ForegroundColor = MyTNBColor.TunaGrey()
             }, new NSRange(0, htmlBody.Length));
 
+            UIImageView imgView = new UIImageView(new CGRect(0, 0, width, image == null ? 0 : width / 1.33F));
+            if (image != null)
+            {
+                imgView.Image = image;
+            }
+
             //Title
             UILabel lblTitle = new UILabel(new CGRect(16, 0, width - 32, 0))
             {
@@ -109,8 +116,8 @@ namespace myTNB
             if (!string.IsNullOrEmpty(title) && !string.IsNullOrWhiteSpace(title))
             {
                 CGSize titleSize = LabelHelper.GetLabelSize(lblTitle, width - 32, 60);
-                lblTitle.Frame = new CGRect(16, 16, width - 32, titleSize.Height);
-                txtViewY = 26 + titleSize.Height;
+                lblTitle.Frame = new CGRect(16, imgView.Frame.GetMaxY() + 16, width - 32, titleSize.Height);
+                txtViewY += lblTitle.Frame.GetMaxY();
                 maxDescriptionHeight -= (16 + titleSize.Height);
             }
 
@@ -133,7 +140,7 @@ namespace myTNB
             {
                 BackgroundColor = MyTNBColor.LightGrayBG
             };
-            nfloat containerY = txtViewDetails.Frame.Y + txtViewDetails.Frame.Height + 10;
+            nfloat containerY = txtViewDetails.Frame.GetMaxY() + 10;
 
             UIView ctaContainer = new UIView(new CGRect(0, containerY, width, 51))
             {
@@ -172,7 +179,7 @@ namespace myTNB
                 ctaItemX += ctaItemWidth + 1;
             }
 
-            nfloat viewHeight = ctaContainer.Frame.Y + ctaContainer.Frame.Height;
+            nfloat viewHeight = ctaContainer.Frame.GetMaxY();
             UIView alertView = new UIView(new CGRect(margin, 0, width, viewHeight))
             {
                 BackgroundColor = UIColor.White,
@@ -180,7 +187,7 @@ namespace myTNB
             };
             alertView.Layer.CornerRadius = 6.0F;
             alertView.Center = new CGPoint(UIScreen.MainScreen.Bounds.GetMidX(), UIScreen.MainScreen.Bounds.GetMidY());
-            alertView.AddSubviews(new UIView[] { lblTitle, txtViewDetails, ctaContainer });
+            alertView.AddSubviews(new UIView[] { imgView, lblTitle, txtViewDetails, ctaContainer });
 
             viewParent.AddSubview(alertView);
             if (!isDefaultURLAction)

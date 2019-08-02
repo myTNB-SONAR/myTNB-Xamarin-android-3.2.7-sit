@@ -6,11 +6,9 @@ using System.Diagnostics;
 using UIKit;
 using AVFoundation;
 using myTNB.SSMR.MeterReading;
-using System.Drawing;
 using System.IO;
 using Photos;
 using System.Collections.Generic;
-using AssetsLibrary;
 using System.Threading.Tasks;
 using myTNB.Model;
 using System.Linq;
@@ -26,12 +24,7 @@ namespace myTNB
         /// <summary>
         /// Key as kWh, KVarh or KW and Value as isValid based on textbox validation
         /// </summary>
-        public Dictionary<string, bool> ReadingDictionary = new Dictionary<string, bool>
-        {
-            {"kWh",false },
-            { "kVARh",false},
-            { "kW",false}
-        };
+        public Dictionary<string, bool> ReadingDictionary;
 
         private UILabel _lblDescription;
         private UIView _viewPreview, _viewCamera, _viewCapture;
@@ -49,7 +42,10 @@ namespace myTNB
         private AVCapturePhotoOutput _output;
 
         private bool _isMultiPhase;
-        private List<ImageModel> ImageModelList;
+        private List<ImageModel> _imageModelList;
+        private nint _currentTag;
+
+        private bool _isGalleryTooltipDisplayed;
 
         private class ImageModel
         {
@@ -69,7 +65,7 @@ namespace myTNB
             SetDescription();
             SetPreview();
             SetCamera();
-            Debug.WriteLine("Viewdidload");
+            ToggleCTA();
         }
 
         public override void ViewWillAppear(bool animated)
@@ -104,28 +100,54 @@ namespace myTNB
                 , UIBarButtonItemStyle.Done, (sender, e) =>
             {
                 Debug.WriteLine("Info Tapped");
+                DisplayTooltip();
             });
             NavigationItem.LeftBarButtonItem = btnBack;
             NavigationItem.RightBarButtonItem = btnInfo;
             Title = GetI18NValue(SSMRConstants.I18N_NavTitleTakePhoto);
         }
 
+        private void DisplayTooltip(bool isGallery = false, Action action = null)
+        {
+            string type;
+            string image = _isMultiPhase ? SSMRConstants.IMG_MultiPhase : SSMRConstants.IMG_SinglePhase;
+            if (isGallery)
+            {
+                type = _isMultiPhase ? SSMRConstants.Tooltips_MultiPhaseGallery : SSMRConstants.Tooltips_SinglePhaseGallery;
+            }
+            else
+            {
+                type = _isMultiPhase ? SSMRConstants.Tooltips_MultiPhaseTakePhoto : SSMRConstants.Tooltips_SinglePhaseTakePhoto;
+            }
+            PopupModel popupData = SSMRActivityInfoCache.Instance.GetPopupDetailsByType(type);
+            DisplayCustomAlert(popupData.Title, popupData.Description
+                , new Dictionary<string, Action> { { popupData.CTA, action } }, UIImage.FromBundle(image));
+        }
+
         private void SetImageList()
         {
-            if (_isMultiPhase)
+            _imageModelList = new List<ImageModel>();
+            List<string> keys = ReadingDictionary.Keys.ToList();
+            List<string> doneList = new List<string>();
+            List<string> ontoList = new List<string>();
+            for (int i = 0; i < keys.Count; i++)
             {
-                ImageModelList = new List<ImageModel>();
-                List<string> keys = ReadingDictionary.Keys.ToList();
-                for (int i = 0; i < keys.Count; i++)
+                string key = keys[i];
+                ImageModel imgModel = new ImageModel
                 {
-                    ImageModel imgModel = new ImageModel
-                    {
-                        NeedsPhoto = !ReadingDictionary[keys[i]],
-                        ReadingUnit = keys[i],
-                        Tag = 1001 + i
-                    };
-                    ImageModelList.Add(imgModel);
+                    NeedsPhoto = !ReadingDictionary[key],
+                    ReadingUnit = key,
+                    Tag = 1001 + i
+                };
+                if (ReadingDictionary[key])
+                {
+                    doneList.Add(key);
                 }
+                else
+                {
+                    ontoList.Add(key);
+                }
+                _imageModelList.Add(imgModel);
             }
         }
 
@@ -182,28 +204,30 @@ namespace myTNB
                     {
                         _viewPreviewOne = CreatePhotoPreview(new CGRect(GetPreviewXLoc(expectedReadingCount, previewWidth)
                             , 16, previewWidth, previewWidth), i);
+                        _viewPreviewOne.AddGestureRecognizer(new UITapGestureRecognizer(() => { PreviewAction(_viewPreviewOne.Tag); }));
                         _viewPreview.AddSubview(_viewPreviewOne);
                     }
                     else if (i == 1)
                     {
                         _viewPreviewTwo = CreatePhotoPreview(new CGRect(_viewPreviewOne.Frame.GetMaxX() + 32, 16, previewWidth, previewWidth), i);
+                        _viewPreviewTwo.AddGestureRecognizer(new UITapGestureRecognizer(() => { PreviewAction(_viewPreviewTwo.Tag); }));
                         _viewPreview.AddSubview(_viewPreviewTwo);
-
                     }
                     else
                     {
                         _viewPreviewThree = CreatePhotoPreview(new CGRect(_viewPreviewTwo.Frame.GetMaxX() + 32, 16, previewWidth, previewWidth), i);
+                        _viewPreviewThree.AddGestureRecognizer(new UITapGestureRecognizer(() => { PreviewAction(_viewPreviewThree.Tag); }));
                         _viewPreview.AddSubview(_viewPreviewThree);
                     }
                 }
             }
 
             nfloat btnYLoc = (_isMultiPhase ? _viewPreviewOne.Frame.GetMaxY() : 0) + 16.0F;
-
             _btnSubmit = new CustomUIButtonV2()
             {
                 Frame = new CGRect(16, btnYLoc, ViewWidth - 32, 48),
-                BackgroundColor = MyTNBColor.FreshGreen
+                BackgroundColor = MyTNBColor.FreshGreen,
+                Tag = 1004
             };
             _btnSubmit.SetTitle(GetCommonI18NValue(SSMRConstants.I18N_Submit), UIControlState.Normal);
             _btnSubmit.TouchUpInside += OnSubmit;
@@ -211,6 +235,85 @@ namespace myTNB
             nfloat containerHeight = _btnSubmit.Frame.GetMaxY() + (DeviceHelper.IsIphoneXUpResolution() ? 36 : 16);
             _viewPreview.Frame = new CGRect(0, ViewHeight - containerHeight, ViewWidth, containerHeight);
             View.AddSubview(_viewPreview);
+        }
+
+        private bool IsPreviosPreviewHasImage(int index, out int noImageIndex)
+        {
+            noImageIndex = index;
+            for (int i = 0; i < index; i++)
+            {
+                ImageModel data = _imageModelList[i];
+                if (data.Image == null)
+                {
+                    noImageIndex = i;
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        private void PreviewAction(nint tag)
+        {
+            _currentTag = tag;
+            int count = _imageModelList.Count;
+            for (int i = 0; i < count; i++)
+            {
+                ImageModel data = _imageModelList[i];
+                UIView currentView = _viewPreview.ViewWithTag(data.Tag);
+                bool isSameTag = data.Tag == tag;
+                if (currentView != null)
+                {
+                    currentView.Layer.BorderColor = MyTNBColor.WhiteTwo.CGColor;
+                    if (data.Image != null) { currentView.Layer.BorderColor = MyTNBColor.FreshGreen.CGColor; }
+                    if (isSameTag)
+                    {
+                        currentView.Layer.BorderColor = MyTNBColor.WaterBlue.CGColor;
+                        if (data.Image == null)
+                        {
+                            RemovePreview();
+                        }
+                        else
+                        {
+                            AddMainPreview(data.Image);
+                        }
+                        SetDescription(GetI18NValue(data.Image == null
+                            ? SSMRConstants.I18N_MultiTakePhotoDescription : SSMRConstants.I18N_EditDescription));
+                    }
+
+                    if (isSameTag)
+                    {
+                        bool isPrevHasImg = IsPreviosPreviewHasImage(i, out int noImageIndex);
+                        bool isCurHasImg = data.Image != null;
+                        if (isPrevHasImg)
+                        {
+                            currentView.Layer.BorderColor = MyTNBColor.WaterBlue.CGColor;
+                        }
+                        else
+                        {
+                            if (!isCurHasImg)
+                            {
+                                _currentTag = _imageModelList[noImageIndex].Tag;
+                                UIView pView = _viewPreview.ViewWithTag(_currentTag);
+                                currentView.Layer.BorderColor = MyTNBColor.WhiteTwo.CGColor;
+                                pView.Layer.BorderColor = MyTNBColor.WaterBlue.CGColor;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        private void RemovePreview()
+        {
+            if (_viewMainPreviewParent != null)
+            {
+                _viewMainPreviewParent.Hidden = true;
+                _imgViewMainPreview.Image = null;
+                _viewDelete.Hidden = true;
+                _viewCameraActions.Hidden = false;
+                _viewCamera.SendSubviewToBack(_viewOverlay);
+                _capturedImage = null;
+            }
         }
 
         private UIView CreatePhotoPreview(CGRect frame, int index)
@@ -252,17 +355,24 @@ namespace myTNB
         private UIView GetOverlay(UIView viewBase)
         {
             nfloat baseHeight = viewBase.Frame.Height;
+            nfloat baseWidth = viewBase.Frame.Width;
+            nfloat boxHeight = viewBase.Frame.Height - _viewCameraActions.Frame.Height - (baseHeight * 0.028F * 2);
             UIView view = new UIView(new CGRect(new CGPoint(0, 0), viewBase.Frame.Size))
             { BackgroundColor = UIColor.Clear, UserInteractionEnabled = false };
-            UIView viewTop = new UIView(new CGRect(0, 0, ViewWidth, baseHeight * 0.2F))
+            UIView viewTop = new UIView(new CGRect(0, 0, ViewWidth, baseHeight * 0.028F))
             { BackgroundColor = UIColor.Black.ColorWithAlpha(0.60F), UserInteractionEnabled = false };
-            UIView viewLeft = new UIView(new CGRect(0, viewTop.Frame.GetMaxY(), 18, baseHeight * 0.3F))
+            UIView viewLeft = new UIView(new CGRect(0, viewTop.Frame.GetMaxY(), baseWidth * 0.22F, boxHeight))
             { BackgroundColor = UIColor.Black.ColorWithAlpha(0.60F), UserInteractionEnabled = false };
-            UIView viewRight = new UIView(new CGRect(ViewWidth - 18, viewTop.Frame.GetMaxY(), 18, baseHeight * 0.3F))
+            UIView viewClear = new UIView(new CGRect(viewLeft.Frame.GetMaxX(), viewTop.Frame.GetMaxY(), baseWidth - (baseWidth * 0.22F * 2), boxHeight))
+            { BackgroundColor = UIColor.Clear, UserInteractionEnabled = false };
+            viewClear.Layer.BorderColor = MyTNBColor.WaterBlue.CGColor;
+            viewClear.Layer.BorderWidth = 1.0F;
+            viewClear.Layer.CornerRadius = 4.0F;
+            UIView viewRight = new UIView(new CGRect(viewClear.Frame.GetMaxX(), viewTop.Frame.GetMaxY(), baseWidth * 0.22F, boxHeight))
             { BackgroundColor = UIColor.Black.ColorWithAlpha(0.60F), UserInteractionEnabled = false };
             UIView viewBottom = new UIView(new CGRect(0, viewLeft.Frame.GetMaxY(), ViewWidth, baseHeight - viewLeft.Frame.GetMaxY()))
             { BackgroundColor = UIColor.Black.ColorWithAlpha(0.60F), UserInteractionEnabled = false };
-            view.AddSubviews(new UIView[] { viewTop, viewLeft, viewRight, viewBottom });
+            view.AddSubviews(new UIView[] { viewTop, viewLeft, viewClear, viewRight, viewBottom });
             return view;
         }
 
@@ -280,12 +390,29 @@ namespace myTNB
             view.AddGestureRecognizer(new UITapGestureRecognizer(() =>
             {
                 Debug.WriteLine("Delete tapped");
-                _viewMainPreviewParent.Hidden = true;
-                _imgViewMainPreview.Image = null;
-                _viewDelete.Hidden = true;
-                _viewCameraActions.Hidden = false;
-
-                _viewCamera.SendSubviewToBack(_viewOverlay);
+                RemovePreview();
+                UIView viewPreview = _viewPreview.ViewWithTag(_currentTag);
+                if (viewPreview != null)
+                {
+                    UIImageView imgView = viewPreview.ViewWithTag(99) as UIImageView;
+                    if (imgView != null && !imgView.Hidden)
+                    {
+                        imgView.Image = null;
+                        imgView.Hidden = true;
+                        int index = _imageModelList.FindIndex(x => x.Tag == _currentTag);
+                        if (index > -1)
+                        {
+                            ImageModel model = _imageModelList[index];
+                            model.NeedsPhoto = true;
+                            model.Image = null;
+                            _imageModelList[index] = model;
+                        }
+                    }
+                }
+                PreviewAction(_currentTag);
+                ToggleCTA();
+                string key = SSMRConstants.I18N_SingleTakePhotoDescription;
+                SetDescription(GetI18NValue(key));
             }));
             view.AddSubview(imgDelete);
             return view;
@@ -305,8 +432,7 @@ namespace myTNB
             {
                 Debug.WriteLine("zoomSlider ValueChanged: " + ((UISlider)sender).Value);
                 nfloat zoomFactor = (nfloat)((UISlider)sender).Value;
-                NSError nsError;
-                _captureDevice.LockForConfiguration(out nsError);
+                _captureDevice.LockForConfiguration(out NSError nsError);
                 _captureDevice.VideoZoomFactor = zoomFactor;
                 _captureDevice.UnlockForConfiguration();
             };
@@ -318,28 +444,15 @@ namespace myTNB
             _viewGallery.AddGestureRecognizer(new UITapGestureRecognizer(() =>
             {
                 Debug.WriteLine("viewGallery tapped");
-
-                ImagePickerDelegate pickerDelegate = new ImagePickerDelegate();
-                pickerDelegate.OnDismiss = () => { DismissViewController(true, null); };
-                pickerDelegate.OnSelect = (selectedImg) =>
+                if (_isGalleryTooltipDisplayed)
                 {
-                    if (_isMultiPhase)
-                    {
-                        UpdateImageList(selectedImg);
-                    }
-                    else
-                    {
-                        AddMainPreview(selectedImg);
-                        _capturedImage = selectedImg;
-                    }
-                };
-                UIImagePickerController imgPicker = new UIImagePickerController
+                    OnShowGallery();
+                }
+                else
                 {
-                    Delegate = pickerDelegate,
-                    SourceType = UIImagePickerControllerSourceType.PhotoLibrary
-                };
-                PresentViewController(imgPicker, true, null);
-
+                    _isGalleryTooltipDisplayed = true;
+                    DisplayTooltip(true, OnShowGallery);
+                }
             }));
 
             _viewCapture = new UIView(new CGRect((ViewWidth - size) / 2
@@ -356,12 +469,38 @@ namespace myTNB
             return view;
         }
 
-        private void UpdateImageList(UIImage image)
+        private void OnShowGallery()
         {
-            int count = ImageModelList.Count;
+            ImagePickerDelegate pickerDelegate = new ImagePickerDelegate();
+            pickerDelegate.OnDismiss = () => { DismissViewController(true, null); };
+            pickerDelegate.OnSelect = (selectedImg) =>
+            {
+                if (_isMultiPhase)
+                {
+                    UpdateImagePreview(selectedImg);
+                }
+                else
+                {
+                    AddMainPreview(selectedImg);
+                    _capturedImage = selectedImg;
+                    SetDescription(GetI18NValue(SSMRConstants.I18N_EditDescription));
+                }
+                ToggleCTA();
+            };
+            UIImagePickerController imgPicker = new UIImagePickerController
+            {
+                Delegate = pickerDelegate,
+                SourceType = UIImagePickerControllerSourceType.PhotoLibrary
+            };
+            PresentViewController(imgPicker, true, null);
+        }
+
+        private void UpdateImagePreview(UIImage image)
+        {
+            int count = _imageModelList.Count;
             for (int i = 0; i < count; i++)
             {
-                ImageModel model = ImageModelList[i];
+                ImageModel model = _imageModelList[i];
                 if (model.NeedsPhoto)
                 {
                     UIView parent = _viewPreview.ViewWithTag(model.Tag);
@@ -374,7 +513,20 @@ namespace myTNB
                     model.Image = image;
                     model.NeedsPhoto = false;
 
-                    ImageModelList[i] = model;
+                    _imageModelList[i] = model;
+
+                    if (i + 1 < count)
+                    {
+                        UIView nextParent = _viewPreview.ViewWithTag(_imageModelList[i + 1].Tag);
+                        nextParent.Layer.BorderColor = MyTNBColor.WaterBlue.CGColor;
+                    }
+
+                    if (i + 1 == count)
+                    {
+                        parent.Layer.BorderColor = MyTNBColor.WaterBlue.CGColor;
+                        AddMainPreview(image);
+                    }
+                    _currentTag = model.Tag;
                     break;
                 }
             }
@@ -437,10 +589,9 @@ namespace myTNB
             _zoomSlider.MinValue = (float)_captureDevice.MinAvailableVideoZoomFactor;
             _zoomSlider.MaxValue = (float)_captureDevice.MaxAvailableVideoZoomFactor;
 
-            NSError nsError;
             try
             {
-                _input = new AVCaptureDeviceInput(_captureDevice, out nsError);
+                _input = new AVCaptureDeviceInput(_captureDevice, out NSError nsError);
 
                 _output = new AVCapturePhotoOutput
                 {
@@ -489,12 +640,14 @@ namespace myTNB
             _capturedImage = capturedImage;
             if (_isMultiPhase)
             {
-
+                UpdateImagePreview(capturedImage);
             }
             else
             {
                 AddMainPreview(capturedImage);
+                SetDescription(GetI18NValue(SSMRConstants.I18N_EditDescription));
             }
+            ToggleCTA();
         }
 
         private void AddMainPreview(UIImage previewImg)
@@ -504,7 +657,7 @@ namespace myTNB
                 _viewMainPreviewParent = new UIView(new CGRect(0, 0, ViewWidth, _viewCamera.Frame.Height))
                 {
                     ClipsToBounds = true,
-                    BackgroundColor = UIColor.DarkGray
+                    BackgroundColor = MyTNBColor.WhiteTwo
                 };
                 _imgViewMainPreview = new UIImageView(new CGRect(new CGPoint(0, 0), _viewMainPreviewParent.Frame.Size))
                 {
@@ -528,6 +681,27 @@ namespace myTNB
             _viewCameraActions.Hidden = true;
         }
 
+        private void ToggleCTA()
+        {
+            bool isValid = false;
+            if (_isMultiPhase)
+            {
+                int count = _imageModelList.Count;
+                for (int i = 0; i < count; i++)
+                {
+                    ImageModel item = _imageModelList[i];
+                    isValid = isValid || !item.NeedsPhoto;
+                }
+            }
+            else
+            {
+                isValid = _capturedImage != null;
+            }
+            _btnSubmit.Enabled = isValid;
+            _btnSubmit.BackgroundColor = isValid ? MyTNBColor.FreshGreen : MyTNBColor.SilverChalice;
+        }
+
+        #region Gestures
         private void PinchZoomAction(UIPinchGestureRecognizer sender)
         {
             if (sender != null && sender.View != null
@@ -555,7 +729,9 @@ namespace myTNB
                 sender.SetTranslation(new CGPoint(0, 0), sender.View);
             }
         }
+        #endregion
 
+        #region Service
         private string GetImageData(UIImage img, out double fileSize)
         {
             fileSize = 0;
@@ -580,7 +756,23 @@ namespace myTNB
 
         private void GetMultiPhaseTasks(ref List<Task> taskList)
         {
-
+            for (int i = 0; i < _imageModelList.Count; i++)
+            {
+                ImageModel model = _imageModelList[i];
+                if (model.Image != null)
+                {
+                    string base64Value = GetImageData(model.Image, out double imgFileSize);
+                    string key = model.ReadingUnit;
+                    object meterImage = new
+                    {
+                        RequestReadingUnit = key,
+                        ImageId = string.Format(SSMRConstants.Pattern_ImageName, key, i),
+                        ImageSize = imgFileSize,
+                        ImageData = base64Value
+                    };
+                    taskList.Add(GetMeterReadingOCRValue(meterImage));
+                }
+            }
         }
 
         private void OnSubmitAllImages()
@@ -639,5 +831,6 @@ namespace myTNB
                 return response;
             });
         }
+        #endregion
     }
 }

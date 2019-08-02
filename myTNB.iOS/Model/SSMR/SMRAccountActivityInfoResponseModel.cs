@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using myTNB.DataManager;
 using Newtonsoft.Json;
 
@@ -108,6 +107,7 @@ namespace myTNB.Model
 
         public List<MeterReadingHistoryItemModel> MeterReadingHistory { set; get; }
         public List<MoreOptionsItemModel> MoreOptions { set; get; }
+        public List<PopupModel> SMRPhotoPopUpDetails { set; get; }
         public List<SMRMROValidateRegisterDetailsInfoModel> SMRMROValidateRegisterDetails { set; get; }
     }
 
@@ -155,6 +155,14 @@ namespace myTNB.Model
                 return res;
             }
         }
+    }
+
+    public class PopupModel
+    {
+        public string Title { set; get; }
+        public string Description { set; get; }
+        public string CTA { set; get; }
+        public string Type { set; get; }
     }
 
     public class SMRMROValidateRegisterDetailsInfoModel

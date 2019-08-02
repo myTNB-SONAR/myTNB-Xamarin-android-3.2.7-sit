@@ -1056,6 +1056,14 @@
     <ImageAsset Include="Assets.xcassets\OCR-Reading.imageset\ocrReading.png" />
     <ImageAsset Include="Assets.xcassets\OCR-Reading.imageset\ocrReading%402x.png" />
     <ImageAsset Include="Assets.xcassets\OCR-Reading.imageset\ocrReading%403x.png" />
+    <ImageAsset Include="Assets.xcassets\SSMR-MultiPhase.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\SSMR-SinglePhase.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\SSMR-MultiPhase.imageset\threePhase.png" />
+    <ImageAsset Include="Assets.xcassets\SSMR-MultiPhase.imageset\threePhase%402x.png" />
+    <ImageAsset Include="Assets.xcassets\SSMR-MultiPhase.imageset\threePhase%403x.png" />
+    <ImageAsset Include="Assets.xcassets\SSMR-SinglePhase.imageset\singlePhase.png" />
+    <ImageAsset Include="Assets.xcassets\SSMR-SinglePhase.imageset\singlePhase%402x.png" />
+    <ImageAsset Include="Assets.xcassets\SSMR-SinglePhase.imageset\singlePhase%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -1392,6 +1400,8 @@
     <Folder Include="Assets.xcassets\IC-Action-Delete-White.imageset\" />
     <Folder Include="Assets.xcassets\OCR-Reading.imageset\" />
     <Folder Include="Model\GetMeterReadingOCRValue\" />
+    <Folder Include="Assets.xcassets\SSMR-MultiPhase.imageset\" />
+    <Folder Include="Assets.xcassets\SSMR-SinglePhase.imageset\" />
     <Folder Include="Sitecore CMS\Model\Meter Read SSMR Walkthrough\" />
   </ItemGroup>
   <ItemGroup>
@@ -2162,6 +2172,7 @@
     <Compile Include="Home\Components\SSMR\SSMRDropDownComponent.cs" />
     <Compile Include="Model\GetMeterReadingOCRValue\GetOCRResponseModel.cs" />
     <Compile Include="Session Cache\OCRReadingCache.cs" />
+    <Compile Include="Session Cache\SSMRActivityInfoCache.cs" />
     <Compile Include="Sitecore CMS\Model\Meter Read SSMR Walkthrough\MeterReadSSMRWalkthroughModel.cs" />
     <Compile Include="Sitecore CMS\Service\MeterReadSSMRWalkthroughService.cs" />
     <Compile Include="SQLite\SQLite Data Manager\MeterReadSSMRWalkthroughEntity.cs" />

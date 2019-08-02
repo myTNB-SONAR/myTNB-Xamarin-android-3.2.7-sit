@@ -116,8 +116,13 @@
     "SSMRCaptureMeter": {
         "ocrReading": "Please wait for a moment while we read your photos…",
         "navTitleTakePhoto": "Take Photo",
+        "navTitleAdjustPhoto": "Adjust Photo",
         "singleTakePhotoDescription": "Take a clear photo of the reading value flashed on your meter.",
         "editDescription": "You can delete and retake the photo or adjust it before submission.",
-        "multiTakePhotoDescription": "Get ready, you'll have 10 seconds between each value being flashed."
+        "multiTakePhotoDescription": "Get ready, you'll have 10 seconds between each value being flashed.",
+        "singularDone": "You're done with {0}!",
+        "pluralDone": "You're done with {0} and {1}!",
+        "singularOnto": "On to {0} reading now.",
+        "pluralOnto": "On to {0} and {1} readings now."
     }
 }

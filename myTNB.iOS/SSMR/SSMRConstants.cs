@@ -16,6 +16,12 @@
         public static string Service_Terminate = "T";
         public static string Service_OthersID = "1007";
 
+        //Tooltips
+        public static string Tooltips_MultiPhaseGallery = "Multi_UploadPhoto";
+        public static string Tooltips_MultiPhaseTakePhoto = "Multi_TakePhoto";
+        public static string Tooltips_SinglePhaseGallery = "Single_UploadPhoto";
+        public static string Tooltips_SinglePhaseTakePhoto = "Single_TakePhoto";
+
         //Onboarding
         //i18n
         public static string I18N_Skip = "skip";
@@ -65,6 +71,8 @@
         public static string IMG_OCRReading = "OCR-Reading";
         public static string IMG_CameraThumb = "Camera-Thumb";
         public static string IMG_Delete = "Notification-Delete";
+        public static string IMG_MultiPhase = "SSMR-MultiPhase";
+        public static string IMG_SinglePhase = "SSMR-SinglePhase";
 
         //Error
         public static string I18N_InvalidEmail = "invalid_email";
@@ -83,9 +91,14 @@
         //Capture Meter
         public static string I18N_OCRReading = "ocrReading";
         public static string I18N_NavTitleTakePhoto = "navTitleTakePhoto";
+        public static string I18N_NavTitleAdjustPhoto = "navTitleAdjustPhoto";
         public static string I18N_SingleTakePhotoDescription = "singleTakePhotoDescription";
         public static string I18N_EditDescription = "editDescription";
         public static string I18N_MultiTakePhotoDescription = "multiTakePhotoDescription";
+        public static string I18N_SingularDone = "singularDone";
+        public static string I18N_PluralDone = "pluralDone";
+        public static string I18N_SingularOnto = "singularOnto";
+        public static string I18N_PluralOnto = "pluralOnto";
 
         //Patterns
         public static string Pattern_ImageName = "MYTNBAPP_SSMR_OCR_{0}_{1}";
