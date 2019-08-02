@@ -121,11 +121,11 @@ namespace myTNB
             _containerView.Frame = newFrame;
         }
 
-        public void SetSRMButtonEnable(bool isEnable)
+        public void SetSRMButtonEnable(bool isDisabled)
         {
-            _smrButton.Enabled = isEnable;
-            _smrButton.SetTitleColor(isEnable ? MyTNBColor.FreshGreen : MyTNBColor.SilverChalice, UIControlState.Normal);
-            _smrButton.Layer.BorderColor = isEnable ? MyTNBColor.FreshGreen.CGColor : MyTNBColor.SilverChalice.CGColor;
+            _smrButton.Enabled = !isDisabled;
+            _smrButton.SetTitleColor(!isDisabled ? MyTNBColor.FreshGreen : MyTNBColor.SilverChalice, UIControlState.Normal);
+            _smrButton.Layer.BorderColor = !isDisabled ? MyTNBColor.FreshGreen.CGColor : MyTNBColor.SilverChalice.CGColor;
         }
 
         public void SetButtonText(string text)

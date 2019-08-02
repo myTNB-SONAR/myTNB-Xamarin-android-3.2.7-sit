@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Drawing;
+using System.Globalization;
 using CoreGraphics;
 using myTNB.Model;
 using UIKit;
@@ -24,7 +25,6 @@ namespace myTNB
         nfloat _yLocation;
         nfloat _iconYposOriginal;
         nfloat _containerHeightOriginal;
-        const int dotTag = 1001;
         string _previousMeterReadingValue = string.Empty;
         public string _meterReadingValue = string.Empty;
 
@@ -194,7 +194,6 @@ namespace myTNB
             {
                 UILabel dotLabel = new UILabel(new CGRect(width / 2, 0, width, height))
                 {
-                    Tag = dotTag,
                     Font = MyTNBFont.MuseoSans16_500,
                     TextColor = MyTNBColor.TunaGrey(),
                     TextAlignment = UITextAlignment.Center,
@@ -276,7 +275,7 @@ namespace myTNB
 
         private void RepopulateTextFields()
         {
-            ResetTextFields();
+            UpdateUIForNormalState();
             var len = _meterReadingValue.Length;
             for (int i = 1; i <= _meterReadingValue.Length; i++)
             {
@@ -298,26 +297,6 @@ namespace myTNB
                     }
                 }
             }
-        }
-
-        private void ResetTextFields()
-        {
-            UIView[] subViews = _viewBoxContainer.Subviews;
-            foreach (UIView view in subViews)
-            {
-                UIView[] subSubViews = view.Subviews;
-                if (subSubViews.Length > 0)
-                {
-                    UITextField txtField = subSubViews[0] as UITextField;
-                    if (txtField != null)
-                    {
-                        txtField.Enabled = false;
-                        txtField.Text = string.Empty;
-                        txtField.TextColor = MyTNBColor.TunaGrey();
-                    }
-                }
-            }
-            _iconView.BackgroundColor = MyTNBColor.WaterBlue;
         }
 
         private void PopulateTextFields()
@@ -426,21 +405,25 @@ namespace myTNB
             int len = _meterReadingValue.Length;
             if (len > 0)
             {
-                float prevReadingFloatVal = float.Parse(_previousMeterReadingValue);
                 string currentReadingWithDecimal = _meterReadingValue.Insert(len - 1, ".");
-                float currentReadingFloatVal = float.Parse(currentReadingWithDecimal);
-                if (prevReadingFloatVal > currentReadingFloatVal)
+                if (double.TryParse(_previousMeterReadingValue, out double previousValue))
                 {
-                    UpdateUI(true, "This value is less than your previous reading.");
-                }
-                else
-                {
-                    UpdateUI(false, string.Empty);
+                    if (double.TryParse(currentReadingWithDecimal, out double currentValue))
+                    {
+                        if (previousValue > currentValue)
+                        {
+                            UpdateUI(true, "This value is less than your previous reading.", currentValue);
+                        }
+                        else
+                        {
+                            UpdateUI(false, string.Empty, currentValue);
+                        }
+                    }
                 }
             }
         }
 
-        private void UpdateUI(bool isError, string message)
+        private void UpdateUI(bool isError, string message, double currentReading)
         {
             if (isError)
             {
@@ -473,15 +456,37 @@ namespace myTNB
             _controller.SetIsValidManualReadingFlags(_model, isError);
             if (!isError)
             {
-                //Debug.WriteLine("_meterReadingValue== " + _meterReadingValue);
-                //float floatValue = float.Parse(_meterReadingValue);
-                //float floatValueDec = 
-                //_controller.SetCurrentReadingValue(_model, _meterReadingValue);
+                string currentReadingValue = currentReading.ToString("0.00", CultureInfo.InvariantCulture);
+                _controller.SetCurrentReadingValue(_model, currentReadingValue);
             }
         }
 
         private void UpdateUIForNormalState()
         {
+            UIView[] subViews = _viewBoxContainer.Subviews;
+            foreach (UIView view in subViews)
+            {
+                UIView[] subSubViews = view.Subviews;
+                if (subSubViews.Length > 0)
+                {
+                    UITextField txtField = subSubViews[0] as UITextField;
+                    if (txtField != null)
+                    {
+                        txtField.Enabled = false;
+                        txtField.Text = string.Empty;
+                        txtField.TextColor = MyTNBColor.TunaGrey();
+                    }
+                    if (view.Tag == 2)
+                    {
+                        UILabel label = subSubViews[1] as UILabel;
+                        if (label != null)
+                        {
+                            label.TextColor = MyTNBColor.TunaGrey();
+                        }
+                    }
+                }
+            }
+
             _errorLabel.Hidden = true;
             _errorLabel.Text = string.Empty;
             CGRect iconFrame = _iconView.Frame;
@@ -502,11 +507,6 @@ namespace myTNB
             foreach (UIView view in subViews)
             {
                 UIView[] subSubViews = view.Subviews;
-                Debug.WriteLine("view.Tag== " + view.Tag);
-                if (view.Tag == 2)
-                {
-                    Debug.WriteLine("subSubViews.Length==== " + subSubViews.Length);
-                }
                 if (subSubViews.Length > 0)
                 {
                     UITextField txtField = subSubViews[0] as UITextField;
@@ -514,13 +514,16 @@ namespace myTNB
                     {
                         txtField.TextColor = isError ? MyTNBColor.Tomato : MyTNBColor.FreshGreen;
                     }
+                    if (view.Tag == 2)
+                    {
+                        UILabel label = subSubViews[1] as UILabel;
+                        if (label != null)
+                        {
+                            label.TextColor = isError ? MyTNBColor.Tomato : MyTNBColor.FreshGreen;
+                        }
+                    }
                 }
             }
-        }
-
-        public string GetMeterReadingValue()
-        {
-            return _meterReadingValue;
         }
 
         private void AddCardShadow(ref UIView view)

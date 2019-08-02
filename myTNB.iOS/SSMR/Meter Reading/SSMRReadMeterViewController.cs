@@ -129,10 +129,10 @@ namespace myTNB
                     }
                 }
             }
-            UpdateSubmitButtonState();
+            UpdateButtonsState();
         }
 
-        private void UpdateSubmitButtonState()
+        private void UpdateButtonsState()
         {
             var res = true;
             if (_previousMeterList != null)
@@ -147,6 +147,7 @@ namespace myTNB
                 }
             }
             _sSMRMeterFooterComponent.SetSubmitButtonEnabled(res);
+            _sSMRMeterFooterComponent.SetTakePhotoButtonEnabled(!res);
         }
 
         private void AddFooterView()
@@ -166,11 +167,54 @@ namespace myTNB
         private void OnTapTakePhoto()
         {
             Debug.WriteLine("OnTapTakePhoto");
+            Dictionary<string, bool> ReadingDictionary = new Dictionary<string, bool>();
+            if (_previousMeterList != null)
+            {
+                foreach (var previousMeter in _previousMeterList)
+                {
+                    Debug.WriteLine("previousMeter.RegisterNumber== " + previousMeter.RegisterNumber);
+                    Debug.WriteLine("previousMeter.IsValidManualReading== " + previousMeter.IsValidManualReading);
+                    Debug.WriteLine("previousMeter.PrevMeterReading== " + previousMeter.PrevMeterReading);
+                    Debug.WriteLine("previousMeter.CurrentReading== " + previousMeter.CurrentReading);
+                    Debug.WriteLine("====================================== ");
+                    string registerStr = string.Empty;
+                    switch (previousMeter.RegisterNumberType)
+                    {
+                        case RegisterNumberEnum.kWh:
+                            registerStr = "kWh";
+                            break;
+                        case RegisterNumberEnum.kVARh:
+                            registerStr = "kVARh";
+                            break;
+                        case RegisterNumberEnum.kW:
+                            registerStr = "kW";
+                            break;
+                    }
+                    ReadingDictionary.Add(registerStr, previousMeter.IsValidManualReading);
+                }
+                UIStoryboard storyBoard = UIStoryboard.FromName("SSMR", null);
+                SSMRCaptureMeterViewController viewController =
+                    storyBoard.InstantiateViewController("SSMRCaptureMeterViewController") as SSMRCaptureMeterViewController;
+                viewController.ReadingDictionary = ReadingDictionary;
+                var navController = new UINavigationController(viewController);
+                PresentViewController(navController, true, null);
+            }
         }
 
         private void OnTapSubmitReading()
         {
             Debug.WriteLine("OnTapSubmitReading");
+            if (_previousMeterList != null)
+            {
+                foreach (var previousMeter in _previousMeterList)
+                {
+                    Debug.WriteLine("previousMeter.RegisterNumber== " + previousMeter.RegisterNumber);
+                    Debug.WriteLine("previousMeter.IsValidManualReading== " + previousMeter.IsValidManualReading);
+                    Debug.WriteLine("previousMeter.PrevMeterReading== " + previousMeter.PrevMeterReading);
+                    Debug.WriteLine("previousMeter.CurrentReading== " + previousMeter.CurrentReading);
+                    Debug.WriteLine("====================================== ");
+                }
+            }
         }
 
         void OnKeyboardNotification(NSNotification notification)

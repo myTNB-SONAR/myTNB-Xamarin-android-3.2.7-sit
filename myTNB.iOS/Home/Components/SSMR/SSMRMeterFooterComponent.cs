@@ -76,6 +76,13 @@ namespace myTNB
             _submitBtn.Layer.BorderColor = isEnable ? MyTNBColor.FreshGreen.CGColor : MyTNBColor.SilverChalice.CGColor;
         }
 
+        public void SetTakePhotoButtonEnabled(bool isEnable)
+        {
+            _takePhotoBtn.Enabled = isEnable;
+            _takePhotoBtn.Layer.BorderColor = isEnable ? MyTNBColor.FreshGreen.CGColor : MyTNBColor.SilverChalice.CGColor;
+            _takePhotoBtn.SetTitleColor(isEnable ? MyTNBColor.FreshGreen : MyTNBColor.SilverChalice, UIControlState.Normal);
+        }
+
         private void AddCardShadow(ref UIView view)
         {
             view.Layer.MasksToBounds = false;
