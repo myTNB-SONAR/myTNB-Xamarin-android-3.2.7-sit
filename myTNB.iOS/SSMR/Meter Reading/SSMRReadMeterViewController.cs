@@ -1,7 +1,9 @@
 using CoreGraphics;
 using Foundation;
+using myTNB.Model;
 using myTNB.SSMR;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using UIKit;
 
@@ -11,13 +13,11 @@ namespace myTNB
     {
         public SSMRReadMeterViewController(IntPtr handle) : base(handle) { }
 
-        SSMRMeterCardComponent _sSMRMeterCardComponent;
-        SSMRMeterCardComponent _sSMRMeterCardComponent2;
-        SSMRMeterCardComponent _sSMRMeterCardComponent3;
         SSMRMeterFooterComponent _sSMRMeterFooterComponent;
 
-        UIScrollView _meterReadScrollView;
+        List<SMRMROValidateRegisterDetailsInfoModel> _previousMeterList;
 
+        UIScrollView _meterReadScrollView;
         UILabel _descriptionLabel;
         nfloat _padding = 16f;
         CGRect scrollViewFrame;
@@ -26,13 +26,16 @@ namespace myTNB
         {
             PageName = "SSMRSubmitMeterReading";
             base.ViewDidLoad();
+
+            NSNotificationCenter.DefaultCenter.AddObserver(UIKeyboard.WillHideNotification, OnKeyboardNotification);
+            NSNotificationCenter.DefaultCenter.AddObserver(UIKeyboard.WillShowNotification, OnKeyboardNotification);
+
+            _previousMeterList = DataManager.DataManager.SharedInstance.SSMRPreviousMeterReadingList;
+
             SetNavigation();
             AddFooterView();
             Initialization();
             PrepareMeterReadingCard();
-
-            NSNotificationCenter.DefaultCenter.AddObserver(UIKeyboard.WillHideNotification, OnKeyboardNotification);
-            NSNotificationCenter.DefaultCenter.AddObserver(UIKeyboard.WillShowNotification, OnKeyboardNotification);
         }
 
         public override void ViewWillAppear(bool animated)
@@ -43,7 +46,7 @@ namespace myTNB
         private void SetNavigation()
         {
             UIImage backImg = UIImage.FromBundle(SSMRConstants.IMG_BackIcon);
-            UIImage btnRightImg = UIImage.FromBundle(SSMRConstants.IMG_PrimaryIcon);
+            UIImage btnRightImg = UIImage.FromBundle(SSMRConstants.IMG_Info);
             UIBarButtonItem btnBack = new UIBarButtonItem(backImg, UIBarButtonItemStyle.Done, (sender, e) =>
             {
                 DismissViewController(true, null);
@@ -80,20 +83,70 @@ namespace myTNB
 
         private void PrepareMeterReadingCard()
         {
-            _sSMRMeterCardComponent = new SSMRMeterCardComponent(_meterReadScrollView, _descriptionLabel.Frame.GetMaxY() + _padding);
-            _meterReadScrollView.AddSubview(_sSMRMeterCardComponent.GetUI());
-            _sSMRMeterCardComponent.SetPreviousReading("1324176.7");
+            if (_previousMeterList != null)
+            {
+                nfloat yPos = _descriptionLabel.Frame.GetMaxY() + _padding;
+                foreach (var previousMeter in _previousMeterList)
+                {
+                    SSMRMeterCardComponent sSMRMeterCardComponent = new SSMRMeterCardComponent(this, _meterReadScrollView, yPos);
+                    _meterReadScrollView.AddSubview(sSMRMeterCardComponent.GetUI());
+                    sSMRMeterCardComponent.SetModel(previousMeter);
+                    sSMRMeterCardComponent.SetPreviousReading(previousMeter.PrevMeterReading);
+                    sSMRMeterCardComponent.SetIconText(previousMeter);
 
-            _sSMRMeterCardComponent2 = new SSMRMeterCardComponent(_meterReadScrollView, _sSMRMeterCardComponent.GetView().Frame.GetMaxY() + _padding);
-            _meterReadScrollView.AddSubview(_sSMRMeterCardComponent2.GetUI());
-            _sSMRMeterCardComponent2.SetPreviousReading("34613478.0");
+                    yPos = sSMRMeterCardComponent.GetView().Frame.GetMaxY() + _padding;
+                    _meterReadScrollView.ContentSize = new CGSize(ViewWidth, yPos);
+                    scrollViewFrame = _meterReadScrollView.Frame;
+                }
+            }
+        }
 
-            _sSMRMeterCardComponent3 = new SSMRMeterCardComponent(_meterReadScrollView, _sSMRMeterCardComponent2.GetView().Frame.GetMaxY() + _padding);
-            _meterReadScrollView.AddSubview(_sSMRMeterCardComponent3.GetUI());
-            _sSMRMeterCardComponent3.SetPreviousReading("2364798");
+        public void SetCurrentReadingValue(SMRMROValidateRegisterDetailsInfoModel model, string currentReading)
+        {
+            if (_previousMeterList != null)
+            {
+                foreach (var previousMeter in _previousMeterList)
+                {
+                    if (previousMeter.RegisterNumber == model.RegisterNumber)
+                    {
+                        previousMeter.CurrentReading = currentReading;
+                        break;
+                    }
+                }
+            }
+        }
 
-            _meterReadScrollView.ContentSize = new CGSize(ViewWidth, _sSMRMeterCardComponent3.GetView().Frame.GetMaxY() + _padding);
-            scrollViewFrame = _meterReadScrollView.Frame;
+        public void SetIsValidManualReadingFlags(SMRMROValidateRegisterDetailsInfoModel model, bool isError)
+        {
+            if (_previousMeterList != null)
+            {
+                foreach (var previousMeter in _previousMeterList)
+                {
+                    if (previousMeter.RegisterNumber == model.RegisterNumber)
+                    {
+                        previousMeter.IsValidManualReading = !isError;
+                        break;
+                    }
+                }
+            }
+            UpdateSubmitButtonState();
+        }
+
+        private void UpdateSubmitButtonState()
+        {
+            var res = true;
+            if (_previousMeterList != null)
+            {
+                foreach (var previousMeter in _previousMeterList)
+                {
+                    if (!previousMeter.IsValidManualReading)
+                    {
+                        res = false;
+                        break;
+                    }
+                }
+            }
+            _sSMRMeterFooterComponent.SetSubmitButtonEnabled(res);
         }
 
         private void AddFooterView()
@@ -104,7 +157,6 @@ namespace myTNB
 
         void OnKeyboardNotification(NSNotification notification)
         {
-            Debug.WriteLine("OnKeyboardNotification");
             if (!IsViewLoaded)
                 return;
 

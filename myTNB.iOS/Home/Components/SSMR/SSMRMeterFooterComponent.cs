@@ -46,13 +46,13 @@ namespace myTNB
                 Frame = new CGRect(padding, _takePhotoBtn.Frame.GetMaxY() + 8f, _containerView.Frame.Width - (padding * 2), buttonHeight)
             };
             _submitBtn.Layer.CornerRadius = 4;
-            _submitBtn.Layer.BorderColor = MyTNBColor.FreshGreen.CGColor;
+            _submitBtn.Layer.BorderColor = MyTNBColor.SilverChalice.CGColor;
             _submitBtn.Layer.BorderWidth = 1;
-            _submitBtn.BackgroundColor = MyTNBColor.FreshGreen;
+            _submitBtn.BackgroundColor = MyTNBColor.SilverChalice;
             _submitBtn.Font = MyTNBFont.MuseoSans16_500;
             _submitBtn.SetTitleColor(UIColor.White, UIControlState.Normal);
             _submitBtn.SetTitle("Submit Reading", UIControlState.Normal);
-            _submitBtn.Enabled = true;
+            _submitBtn.Enabled = false;
 
             _containerView.AddSubview(_takePhotoBtn);
             _containerView.AddSubview(_submitBtn);
@@ -67,6 +67,13 @@ namespace myTNB
         public UIView GetView()
         {
             return _containerView;
+        }
+
+        public void SetSubmitButtonEnabled(bool isEnable)
+        {
+            _submitBtn.Enabled = isEnable;
+            _submitBtn.BackgroundColor = isEnable ? MyTNBColor.FreshGreen : MyTNBColor.SilverChalice;
+            _submitBtn.Layer.BorderColor = isEnable ? MyTNBColor.FreshGreen.CGColor : MyTNBColor.SilverChalice.CGColor;
         }
 
         private void AddCardShadow(ref UIView view)

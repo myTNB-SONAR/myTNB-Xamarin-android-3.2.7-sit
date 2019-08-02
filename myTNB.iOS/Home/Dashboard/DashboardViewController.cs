@@ -224,12 +224,14 @@ namespace myTNB.Dashboard
                         DataManager.DataManager.SharedInstance.MeterReadingHistory = _smrActivityInfoResponse.d.data;
                         DataManager.DataManager.SharedInstance.ReadingHistoryList = _smrActivityInfoResponse.d.data.MeterReadingHistory;
                         DataManager.DataManager.SharedInstance.MoreOptionsList = _smrActivityInfoResponse.d.data.MoreOptions;
+                        DataManager.DataManager.SharedInstance.SSMRPreviousMeterReadingList = _smrActivityInfoResponse.d.data.SMRMROValidateRegisterDetails;
                     }
                     else
                     {
                         DataManager.DataManager.SharedInstance.MeterReadingHistory = new MeterReadingHistoryModel();
                         DataManager.DataManager.SharedInstance.ReadingHistoryList = new List<MeterReadingHistoryItemModel>();
                         DataManager.DataManager.SharedInstance.MoreOptionsList = new List<MoreOptionsItemModel>();
+                        DataManager.DataManager.SharedInstance.SSMRPreviousMeterReadingList = new List<SMRMROValidateRegisterDetailsInfoModel>();
                         DataManager.DataManager.SharedInstance.AccountIsSSMR = false;
                     }
                 });

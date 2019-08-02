@@ -181,5 +181,42 @@ namespace myTNB.SitecoreCMS.Services
             }
             return respModel;
         }
+
+        public MeterReadSSMRResponseModel GetMeterReadSSMRWalkthroughItems()
+        {
+            MeterReadSSMRResponseModel respModel = new MeterReadSSMRResponseModel();
+            try
+            {
+                MeterReadSSMRWalkthroughService service = new MeterReadSSMRWalkthroughService(OS, ImageSize, WebsiteUrl, Language);
+                var data = service.GetItems();
+                var resp = CheckData(data.ToList<object>());
+                string serializedObj = JsonConvert.SerializeObject(resp);
+                respModel = JsonConvert.DeserializeObject<MeterReadSSMRResponseModel>(serializedObj);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("Exception in GetItemsService/GetMeterReadSSMRWalkthroughItems: " + e.Message);
+            }
+            return respModel;
+        }
+
+        public MeterReadSSMRTimeStampResponseModel GetMeterReadSSMRWalkthroughTimestampItem()
+        {
+            MeterReadSSMRTimeStampResponseModel respModel = new MeterReadSSMRTimeStampResponseModel();
+            try
+            {
+                ApplySSMRWalkthroughService service = new ApplySSMRWalkthroughService(OS, ImageSize, WebsiteUrl, Language);
+                var data = service.GetTimeStamp();
+                var listData = AddDataToList(data);
+                var resp = CheckData(listData);
+                string serializedObj = JsonConvert.SerializeObject(resp);
+                respModel = JsonConvert.DeserializeObject<MeterReadSSMRTimeStampResponseModel>(serializedObj);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("Exception in GetItemsService/GetMeterReadSSMRWalkthroughTimestampItem: " + e.Message);
+            }
+            return respModel;
+        }
     }
 }

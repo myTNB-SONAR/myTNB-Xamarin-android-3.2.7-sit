@@ -108,6 +108,7 @@ namespace myTNB.Model
 
         public List<MeterReadingHistoryItemModel> MeterReadingHistory { set; get; }
         public List<MoreOptionsItemModel> MoreOptions { set; get; }
+        public List<SMRMROValidateRegisterDetailsInfoModel> SMRMROValidateRegisterDetails { set; get; }
     }
 
     public class MeterReadingHistoryItemModel
@@ -154,5 +155,51 @@ namespace myTNB.Model
                 return res;
             }
         }
+    }
+
+    public class SMRMROValidateRegisterDetailsInfoModel
+    {
+        public string RegisterNumber { set; get; }
+        public string MroID { set; get; }
+        public string PrevMrDate { set; get; }
+        public string SchMrDate { set; get; }
+        public string PrevMeterReading { set; get; }
+        [JsonIgnore]
+        public RegisterNumberEnum RegisterNumberType
+        {
+            get
+            {
+                RegisterNumberEnum registerNumberType = default(RegisterNumberEnum);
+
+                if (!string.IsNullOrEmpty(RegisterNumber))
+                {
+                    switch (RegisterNumber)
+                    {
+                        case "001":
+                            registerNumberType = RegisterNumberEnum.kWh;
+                            break;
+                        case "002":
+                            registerNumberType = RegisterNumberEnum.kVARh;
+                            break;
+                        case "003":
+                            registerNumberType = RegisterNumberEnum.kW;
+                            break;
+                    }
+                }
+                return registerNumberType;
+            }
+        }
+        [JsonIgnore]
+        public bool IsValidManualReading { set; get; }
+        [JsonIgnore]
+        public string CurrentReading { set; get; }
+    }
+
+    public enum RegisterNumberEnum
+    {
+        None = 0,
+        kWh,
+        kVARh,
+        kW
     }
 }

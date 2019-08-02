@@ -30,6 +30,7 @@ namespace myTNB.DataManager
         public MeterReadingHistoryModel MeterReadingHistory = new MeterReadingHistoryModel();
         public List<MeterReadingHistoryItemModel> ReadingHistoryList = new List<MeterReadingHistoryItemModel>();
         public List<MoreOptionsItemModel> MoreOptionsList = new List<MoreOptionsItemModel>();
+        public List<SMRMROValidateRegisterDetailsInfoModel> SSMRPreviousMeterReadingList = new List<SMRMROValidateRegisterDetailsInfoModel>();
 
         //Dashboard Home
         public List<HelpModel> HelpList = new List<HelpModel>();
@@ -182,6 +183,7 @@ namespace myTNB.DataManager
             MeterReadingHistory = new MeterReadingHistoryModel();
             ReadingHistoryList = new List<MeterReadingHistoryItemModel>();
             MoreOptionsList = new List<MoreOptionsItemModel>();
+            SSMRPreviousMeterReadingList = new List<SMRMROValidateRegisterDetailsInfoModel>();
 
             HelpList = new List<HelpModel>();
             ServicesList = new List<ServiceItemModel>();

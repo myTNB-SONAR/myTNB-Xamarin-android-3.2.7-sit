@@ -2,16 +2,18 @@
 using System.Diagnostics;
 using System.Drawing;
 using CoreGraphics;
+using myTNB.Model;
 using UIKit;
 
 namespace myTNB
 {
     public class SSMRMeterCardComponent
     {
+        SSMRReadMeterViewController _controller;
+        SMRMROValidateRegisterDetailsInfoModel _model;
         private readonly UIView _parentView;
-        UIView _containerView, _prevReadingView, _viewBoxContainer;
-        UIImageView _iconView;
-        UILabel _errorLabel;
+        UIView _containerView, _prevReadingView, _viewBoxContainer, _iconView;
+        UILabel _errorLabel, _iconLabel;
         nfloat containerRatio = 112.0f / 288.0f;
         nfloat viewBoxContainerRatio = 40.0f / 256.0f;
         float imgHeight = 20.0f;
@@ -22,10 +24,13 @@ namespace myTNB
         nfloat _yLocation;
         nfloat _iconYposOriginal;
         nfloat _containerHeightOriginal;
+        const int dotTag = 1001;
+        string _previousMeterReadingValue = string.Empty;
         public string _meterReadingValue = string.Empty;
 
-        public SSMRMeterCardComponent(UIView parentView, nfloat yLocation)
+        public SSMRMeterCardComponent(SSMRReadMeterViewController controller, UIView parentView, nfloat yLocation)
         {
+            _controller = controller;
             _parentView = parentView;
             _yLocation = yLocation;
         }
@@ -76,11 +81,20 @@ namespace myTNB
             nfloat iconHeight = DeviceHelper.GetScaledHeight(imgHeight);
             nfloat iconWidth = DeviceHelper.GetScaledWidth(imgWidth);
             _iconYposOriginal = _viewBoxContainer.Frame.GetMaxY() + (_containerHeightOriginal - _viewBoxContainer.Frame.GetMaxY()) / 2 - (iconHeight / 2);
-            _iconView = new UIImageView(new CGRect(_containerView.Frame.Width - padding - iconWidth, _iconYposOriginal, iconWidth, iconHeight))
+            _iconView = new UIView(new CGRect(_containerView.Frame.Width - padding - iconWidth, _iconYposOriginal, iconWidth, iconHeight))
             {
-                Image = UIImage.FromBundle("kWh-Icon")
+                BackgroundColor = MyTNBColor.WaterBlue
+            };
+            _iconView.Layer.CornerRadius = 5f;
+
+            _iconLabel = new UILabel(new CGRect(0, 0, _iconView.Frame.Width, _iconView.Frame.Height))
+            {
+                Font = MyTNBFont.MuseoSans14_500,
+                TextColor = UIColor.White,
+                TextAlignment = UITextAlignment.Center
             };
 
+            _iconView.AddSubview(_iconLabel);
             _containerView.AddSubview(_iconView);
 
             AddCardShadow(ref _containerView);
@@ -98,11 +112,35 @@ namespace myTNB
             return _containerView;
         }
 
-        public void SetIconImage(string imageStr)
+        public void SetModel(SMRMROValidateRegisterDetailsInfoModel model)
         {
-            if (!string.IsNullOrEmpty(imageStr))
+            if (model != null)
             {
-                _iconView.Image = UIImage.FromBundle(imageStr);
+                _model = model;
+            }
+        }
+
+        public void SetIconText(SMRMROValidateRegisterDetailsInfoModel model)
+        {
+            if (model != null)
+            {
+                if (!string.IsNullOrEmpty(model.RegisterNumber) && !string.IsNullOrWhiteSpace(model.RegisterNumber))
+                {
+                    string stringLabel = string.Empty;
+                    switch (model.RegisterNumberType)
+                    {
+                        case RegisterNumberEnum.kWh:
+                            stringLabel = "kWh";
+                            break;
+                        case RegisterNumberEnum.kVARh:
+                            stringLabel = "kVARh";
+                            break;
+                        case RegisterNumberEnum.kW:
+                            stringLabel = "kW";
+                            break;
+                    }
+                    _iconLabel.Text = stringLabel;
+                }
             }
         }
 
@@ -146,7 +184,8 @@ namespace myTNB
                 AutocapitalizationType = UITextAutocapitalizationType.None,
                 SpellCheckingType = UITextSpellCheckingType.No,
                 ReturnKeyType = UIReturnKeyType.Done,
-                TextAlignment = UITextAlignment.Center
+                TextAlignment = UITextAlignment.Center,
+                TintColor = MyTNBColor.PowerBlue
             };
             CreateDoneButton(txtFieldDigit);
             SetTextFieldEvents(txtFieldDigit);
@@ -155,6 +194,7 @@ namespace myTNB
             {
                 UILabel dotLabel = new UILabel(new CGRect(width / 2, 0, width, height))
                 {
+                    Tag = dotTag,
                     Font = MyTNBFont.MuseoSans16_500,
                     TextColor = MyTNBColor.TunaGrey(),
                     TextAlignment = UITextAlignment.Center,
@@ -198,6 +238,7 @@ namespace myTNB
                     textField.Enabled = false;
                 }
                 RepopulateTextFields();
+                ValidateTextField();
             };
         }
 
@@ -231,7 +272,6 @@ namespace myTNB
                 }
             }
             _meterReadingValue = strValue;
-            Debug.WriteLine("_meterReadingValue==== " + _meterReadingValue);
         }
 
         private void RepopulateTextFields()
@@ -273,9 +313,11 @@ namespace myTNB
                     {
                         txtField.Enabled = false;
                         txtField.Text = string.Empty;
+                        txtField.TextColor = MyTNBColor.TunaGrey();
                     }
                 }
             }
+            _iconView.BackgroundColor = MyTNBColor.WaterBlue;
         }
 
         private void PopulateTextFields()
@@ -354,15 +396,19 @@ namespace myTNB
 
         public void SetPreviousReading(string prevReading)
         {
-            string[] readingList = prevReading.Split(".");
-            if (readingList.Length > 1)
+            if (!string.IsNullOrEmpty(prevReading) && !string.IsNullOrWhiteSpace(prevReading))
             {
-                string combinedString = readingList[0] + readingList[1];
-                PopulatePreviousReading(combinedString);
-            }
-            else
-            {
-                PopulatePreviousReading(readingList[0]);
+                _previousMeterReadingValue = prevReading;
+                string[] readingList = prevReading.Split(".");
+                if (readingList.Length > 1)
+                {
+                    string combinedString = readingList[0] + readingList[1];
+                    PopulatePreviousReading(combinedString);
+                }
+                else
+                {
+                    PopulatePreviousReading(readingList[0] + "0");
+                }
             }
         }
 
@@ -377,10 +423,24 @@ namespace myTNB
 
         private void ValidateTextField()
         {
-
+            int len = _meterReadingValue.Length;
+            if (len > 0)
+            {
+                float prevReadingFloatVal = float.Parse(_previousMeterReadingValue);
+                string currentReadingWithDecimal = _meterReadingValue.Insert(len - 1, ".");
+                float currentReadingFloatVal = float.Parse(currentReadingWithDecimal);
+                if (prevReadingFloatVal > currentReadingFloatVal)
+                {
+                    UpdateUI(true, "This value is less than your previous reading.");
+                }
+                else
+                {
+                    UpdateUI(false, string.Empty);
+                }
+            }
         }
 
-        public void ShowErrorLabel(bool isError, string message)
+        private void UpdateUI(bool isError, string message)
         {
             if (isError)
             {
@@ -389,6 +449,7 @@ namespace myTNB
                 CGRect iconFrame = _iconView.Frame;
                 iconFrame.Y = _errorLabel.Frame.GetMaxY() + 8f;
                 _iconView.Frame = iconFrame;
+                _iconView.BackgroundColor = MyTNBColor.Tomato;
 
                 CGRect containerFrame = _containerView.Frame;
                 containerFrame.Height = _iconView.Frame.GetMaxY() + 8f;
@@ -401,12 +462,60 @@ namespace myTNB
                 CGRect iconFrame = _iconView.Frame;
                 iconFrame.Y = _iconYposOriginal;
                 _iconView.Frame = iconFrame;
+                _iconView.BackgroundColor = MyTNBColor.FreshGreen;
 
                 CGRect containerFrame = _containerView.Frame;
                 containerFrame.Height = _containerHeightOriginal;
                 _containerView.Frame = containerFrame;
             }
             AddCardShadow(ref _containerView);
+            UpdateTextFieldTextColor(isError);
+            _controller.SetIsValidManualReadingFlags(_model, isError);
+            if (!isError)
+            {
+                //Debug.WriteLine("_meterReadingValue== " + _meterReadingValue);
+                //float floatValue = float.Parse(_meterReadingValue);
+                //float floatValueDec = 
+                //_controller.SetCurrentReadingValue(_model, _meterReadingValue);
+            }
+        }
+
+        private void UpdateUIForNormalState()
+        {
+            _errorLabel.Hidden = true;
+            _errorLabel.Text = string.Empty;
+            CGRect iconFrame = _iconView.Frame;
+            iconFrame.Y = _iconYposOriginal;
+            _iconView.Frame = iconFrame;
+            _iconView.BackgroundColor = MyTNBColor.WaterBlue;
+
+            CGRect containerFrame = _containerView.Frame;
+            containerFrame.Height = _containerHeightOriginal;
+            _containerView.Frame = containerFrame;
+
+            AddCardShadow(ref _containerView);
+        }
+
+        private void UpdateTextFieldTextColor(bool isError)
+        {
+            UIView[] subViews = _viewBoxContainer.Subviews;
+            foreach (UIView view in subViews)
+            {
+                UIView[] subSubViews = view.Subviews;
+                Debug.WriteLine("view.Tag== " + view.Tag);
+                if (view.Tag == 2)
+                {
+                    Debug.WriteLine("subSubViews.Length==== " + subSubViews.Length);
+                }
+                if (subSubViews.Length > 0)
+                {
+                    UITextField txtField = subSubViews[0] as UITextField;
+                    if (txtField != null)
+                    {
+                        txtField.TextColor = isError ? MyTNBColor.Tomato : MyTNBColor.FreshGreen;
+                    }
+                }
+            }
         }
 
         public string GetMeterReadingValue()
