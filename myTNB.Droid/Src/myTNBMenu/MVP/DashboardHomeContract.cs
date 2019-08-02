@@ -209,6 +209,10 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
             void ShowHideActionBar(bool flag);
 
             void ShowToBeAddedToast();
+
+            void CheckSSMRMeterReadingTimeStamp();
+
+            void OnSavedSSMRMeterReadingTimeStamp(string mSavedTimeStamp);
         }
 
 		public interface IUserActionsListener : IBasePresenter
@@ -267,6 +271,12 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 			void OnTapToRefresh();
 
             int CheckCurrentDashboardMenu();
+
+            void GetSmartMeterReadingWalkthroughtTimeStamp();
+
+            Task OnGetSmartMeterReadingWalkthroughtTimeStamp();
+
+            Task OnGetSSMRMeterReadingScreens();
         }
 	}
 }

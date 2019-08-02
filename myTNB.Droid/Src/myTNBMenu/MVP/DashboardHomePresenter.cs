@@ -1192,6 +1192,85 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
         {
             return currentBottomNavigationMenu;
         }
-	}
+
+        public void GetSmartMeterReadingWalkthroughtTimeStamp()
+        {
+            try
+            {
+                SSMRMeterReadingScreensParentEntity wtManager = new SSMRMeterReadingScreensParentEntity();
+                List<SSMRMeterReadingScreensParentEntity> items = new List<SSMRMeterReadingScreensParentEntity>();
+                items = wtManager.GetAllItems();
+                if (items != null && items.Count > 0)
+                {
+                    SSMRMeterReadingScreensParentEntity entity = items[0];
+                    if (entity != null && entity.Timestamp != null)
+                    {
+                        this.mView.OnSavedSSMRMeterReadingTimeStamp(entity?.Timestamp);
+                    }
+                }
+                else
+                {
+                    this.mView.OnSavedSSMRMeterReadingTimeStamp(null);
+                }
+            }
+            catch (Exception e)
+            {
+                this.mView.OnSavedSSMRMeterReadingTimeStamp(null);
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public Task OnGetSmartMeterReadingWalkthroughtTimeStamp()
+        {
+            return Task.Factory.StartNew(() =>
+            {
+                try
+                {
+                    string density = DPUtils.GetDeviceDensity(Application.Context);
+                    GetItemsService getItemsService = new GetItemsService(SiteCoreConfig.OS, density, SiteCoreConfig.SITECORE_URL, SiteCoreConfig.DEFAULT_LANGUAGE);
+                    SSMRMeterReadingTimeStampResponseModel responseModel = getItemsService.GetSSMRMeterReadingWalkthroughTimestampItem();
+                    if (responseModel.Status.Equals("Success"))
+                    {
+                        SSMRMeterReadingScreensParentEntity wtManager = new SSMRMeterReadingScreensParentEntity();
+                        wtManager.DeleteTable();
+                        wtManager.CreateTable();
+                        wtManager.InsertListOfItems(responseModel.Data);
+                        this.mView.CheckSSMRMeterReadingTimeStamp();
+                    }
+                }
+                catch (Exception e)
+                {
+                    Utility.LoggingNonFatalError(e);
+                }
+            });
+        }
+
+        public Task OnGetSSMRMeterReadingScreens()
+        {
+            cts = new CancellationTokenSource();
+            return Task.Factory.StartNew(() =>
+            {
+                try
+                {
+                    string density = DPUtils.GetDeviceDensity(Application.Context);
+                    GetItemsService getItemsService = new GetItemsService(SiteCoreConfig.OS, density, SiteCoreConfig.SITECORE_URL, SiteCoreConfig.DEFAULT_LANGUAGE);
+                    SSMRMeterReadingResponseModel responseModel = getItemsService.GetSSMRMeterReadingWalkthroughItems();
+                    if (responseModel.Status.Equals("Success"))
+                    {
+                        SSMRMeterReadingScreensEntity wtManager = new SSMRMeterReadingScreensEntity();
+                        wtManager.DeleteTable();
+                        wtManager.CreateTable();
+                        wtManager.InsertListOfItems(responseModel.Data);
+                    }
+                }
+                catch (Exception e)
+                {
+                    Utility.LoggingNonFatalError(e);
+                }
+            }).ContinueWith((Task previous) =>
+            {
+            }, cts.Token);
+        }
+    }
 
 }

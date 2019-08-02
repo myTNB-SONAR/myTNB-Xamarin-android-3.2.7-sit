@@ -1,0 +1,76 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_gravity="center"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+  <LinearLayout
+      android:orientation="vertical"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginLeft="18dp"
+      android:layout_marginRight="18dp"
+      android:id="@+id/rootView"
+      android:background="@drawable/custom_round_white_dialog_shadow">
+    <LinearLayout
+        android:id="@+id/applicationContent"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+			<android.support.v4.view.ViewPager
+				android:id="@+id/onBoardingSMRViewPager"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"/>
+        <LinearLayout
+            android:id="@+id/indicatorContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginTop="36dp"/>
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/applicationIndicator"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:paddingLeft="18dp"
+        android:paddingRight="18dp"
+        android:layout_marginTop="34dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:background="@color/white">
+        <CheckBox
+            android:id="@+id/dontShowAgainCheckbox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:button="@drawable/checkbox_selector"
+            android:checked="false"
+            android:layout_weight=".1"
+            android:text=" "/>
+        <TextView
+            android:id="@+id/dontShowMeAgainLabel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Don't show me again"
+            android:layout_weight=".8"
+            android:textColor="#979797"
+            android:textSize="12dp"/>
+    </LinearLayout> 
+    <View
+        android:layout_height="1dp"
+        android:layout_width="match_parent"
+        android:alpha="0.2"
+        android:layout_marginTop="9dp"
+        android:background="@color/tunaGrey" />
+    <TextView
+        android:id="@+id/txtBtnFirst"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:gravity="center"
+        android:textColor="@color/powerBlue"
+        android:layout_marginTop="16dp"
+        android:paddingBottom="16dp"
+        android:text="I'm Ready!"
+        android:textSize="16dp" />
+  </LinearLayout>
+</LinearLayout>

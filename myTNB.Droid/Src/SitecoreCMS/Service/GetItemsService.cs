@@ -188,6 +188,43 @@ namespace myTNB.SitecoreCMS.Services
             return respModel;
         }
 
+        public SSMRMeterReadingResponseModel GetSSMRMeterReadingWalkthroughItems()
+        {
+            SSMRMeterReadingResponseModel respModel = new SSMRMeterReadingResponseModel();
+            try
+            {
+                SSMRMeterReadingWalkthroughService service = new SSMRMeterReadingWalkthroughService(OS, ImageSize, WebsiteUrl, Language);
+                var data = service.GetItems();
+                var resp = CheckData(data.ToList<object>());
+                string serializedObj = JsonConvert.SerializeObject(resp);
+                respModel = JsonConvert.DeserializeObject<SSMRMeterReadingResponseModel>(serializedObj);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("Exception in GetItemsService/GetApplySSMRWalkthroughItems: " + e.Message);
+            }
+            return respModel;
+        }
+
+        public SSMRMeterReadingTimeStampResponseModel GetSSMRMeterReadingWalkthroughTimestampItem()
+        {
+            SSMRMeterReadingTimeStampResponseModel respModel = new SSMRMeterReadingTimeStampResponseModel();
+            try
+            {
+                SSMRMeterReadingWalkthroughService service = new SSMRMeterReadingWalkthroughService(OS, ImageSize, WebsiteUrl, Language);
+                var data = service.GetTimeStamp();
+                var listData = AddDataToList(data);
+                var resp = CheckData(listData);
+                string serializedObj = JsonConvert.SerializeObject(resp);
+                respModel = JsonConvert.DeserializeObject<SSMRMeterReadingTimeStampResponseModel>(serializedObj);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("Exception in GetItemsService/GetApplySSMRWalkthroughTimestampItem: " + e.Message);
+            }
+            return respModel;
+        }
+
         private BaseModel CheckData(List<object> data)
         {
             BaseModel bm = new BaseModel();
