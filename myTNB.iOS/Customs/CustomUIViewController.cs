@@ -123,6 +123,12 @@ namespace myTNB
                 { string.IsNullOrEmpty(btnTitle) ? "Common_Ok".Translate() : btnTitle, btnAction } }
             , UITextAlignment.Left, UITextAlignment.Left, true, 0.056F, false);
         }
+
+        public void DisplayCustomAlert(string title, string message, Dictionary<string, Action> ctaButtons, UIImage image)
+        {
+            AlertHandler.DisplayCustomAlert(title, message, ctaButtons, UITextAlignment.Left
+                , UITextAlignment.Left, true, 0.056F, false, image);
+        }
         #endregion
         #region Toast
         public void DisplayToast(string message)

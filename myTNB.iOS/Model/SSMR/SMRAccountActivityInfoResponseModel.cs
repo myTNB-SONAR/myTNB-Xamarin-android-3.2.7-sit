@@ -108,6 +108,7 @@ namespace myTNB.Model
 
         public List<MeterReadingHistoryItemModel> MeterReadingHistory { set; get; }
         public List<MoreOptionsItemModel> MoreOptions { set; get; }
+        public List<PopupModel> SMRPhotoPopUpDetails { set; get; }
     }
 
     public class MeterReadingHistoryItemModel
@@ -154,5 +155,13 @@ namespace myTNB.Model
                 return res;
             }
         }
+    }
+
+    public class PopupModel
+    {
+        public string Title { set; get; }
+        public string Description { set; get; }
+        public string CTA { set; get; }
+        public string Type { set; get; }
     }
 }

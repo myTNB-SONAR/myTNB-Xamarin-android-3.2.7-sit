@@ -98,10 +98,28 @@ namespace myTNB
                 , UIBarButtonItemStyle.Done, (sender, e) =>
             {
                 Debug.WriteLine("Info Tapped");
+                DisplayTooltip();
             });
             NavigationItem.LeftBarButtonItem = btnBack;
             NavigationItem.RightBarButtonItem = btnInfo;
             Title = GetI18NValue(SSMRConstants.I18N_NavTitleTakePhoto);
+        }
+
+        private void DisplayTooltip(bool isGallery = false, Action action = null)
+        {
+            string type;
+            string image = _isMultiPhase ? SSMRConstants.IMG_MultiPhase : SSMRConstants.IMG_SinglePhase;
+            if (isGallery)
+            {
+                type = _isMultiPhase ? SSMRConstants.Tooltips_MultiPhaseGallery : SSMRConstants.Tooltips_SinglePhaseGallery;
+            }
+            else
+            {
+                type = _isMultiPhase ? SSMRConstants.Tooltips_MultiPhaseTakePhoto : SSMRConstants.Tooltips_SinglePhaseTakePhoto;
+            }
+            PopupModel popupData = SSMRActivityInfoCache.Instance.GetPopupDetailsByType(type);
+            DisplayCustomAlert(popupData.Title, popupData.Description
+                , new Dictionary<string, Action> { { popupData.CTA, action } }, UIImage.FromBundle(image));
         }
 
         private void SetImageList()
@@ -364,28 +382,7 @@ namespace myTNB
             _viewGallery.AddGestureRecognizer(new UITapGestureRecognizer(() =>
             {
                 Debug.WriteLine("viewGallery tapped");
-
-                ImagePickerDelegate pickerDelegate = new ImagePickerDelegate();
-                pickerDelegate.OnDismiss = () => { DismissViewController(true, null); };
-                pickerDelegate.OnSelect = (selectedImg) =>
-                {
-                    if (_isMultiPhase)
-                    {
-                        UpdateImagePreview(selectedImg);
-                    }
-                    else
-                    {
-                        AddMainPreview(selectedImg);
-                        _capturedImage = selectedImg;
-                    }
-                };
-                UIImagePickerController imgPicker = new UIImagePickerController
-                {
-                    Delegate = pickerDelegate,
-                    SourceType = UIImagePickerControllerSourceType.PhotoLibrary
-                };
-                PresentViewController(imgPicker, true, null);
-
+                DisplayTooltip(true, OnShowGallery);
             }));
 
             _viewCapture = new UIView(new CGRect((ViewWidth - size) / 2
@@ -400,6 +397,30 @@ namespace myTNB
                 , ViewWidth, _viewCapture.Frame.GetMaxY() + 16);
             view.Frame = viewFrame;
             return view;
+        }
+
+        private void OnShowGallery()
+        {
+            ImagePickerDelegate pickerDelegate = new ImagePickerDelegate();
+            pickerDelegate.OnDismiss = () => { DismissViewController(true, null); };
+            pickerDelegate.OnSelect = (selectedImg) =>
+            {
+                if (_isMultiPhase)
+                {
+                    UpdateImagePreview(selectedImg);
+                }
+                else
+                {
+                    AddMainPreview(selectedImg);
+                    _capturedImage = selectedImg;
+                }
+            };
+            UIImagePickerController imgPicker = new UIImagePickerController
+            {
+                Delegate = pickerDelegate,
+                SourceType = UIImagePickerControllerSourceType.PhotoLibrary
+            };
+            PresentViewController(imgPicker, true, null);
         }
 
         private void UpdateImagePreview(UIImage image)

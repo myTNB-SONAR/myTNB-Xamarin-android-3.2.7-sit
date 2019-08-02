@@ -16,6 +16,12 @@
         public static string Service_Terminate = "T";
         public static string Service_OthersID = "1007";
 
+        //Tooltips
+        public static string Tooltips_MultiPhaseGallery = "UploadPhoto";
+        public static string Tooltips_MultiPhaseTakePhoto = "TakePhoto";
+        public static string Tooltips_SinglePhaseGallery = "UploadPhoto";
+        public static string Tooltips_SinglePhaseTakePhoto = "TakePhoto";
+
         //Onboarding
         //i18n
         public static string I18N_Skip = "skip";
@@ -65,6 +71,8 @@
         public static string IMG_OCRReading = "OCR-Reading";
         public static string IMG_CameraThumb = "Camera-Thumb";
         public static string IMG_Delete = "Notification-Delete";
+        public static string IMG_MultiPhase = "SSMR-MultiPhase";
+        public static string IMG_SinglePhase = "SSMR-SinglePhase";
 
         //Error
         public static string I18N_InvalidEmail = "invalid_email";
