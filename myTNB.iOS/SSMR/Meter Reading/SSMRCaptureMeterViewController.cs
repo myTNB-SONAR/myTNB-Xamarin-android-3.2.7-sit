@@ -44,8 +44,10 @@ namespace myTNB
         private bool _isMultiPhase;
         private List<ImageModel> _imageModelList;
         private nint _currentTag;
+        private int _expectedReadingCount;
 
         private bool _isGalleryTooltipDisplayed;
+        private string _multiPhaseDescription;
 
         private class ImageModel
         {
@@ -120,8 +122,15 @@ namespace myTNB
                 type = _isMultiPhase ? SSMRConstants.Tooltips_MultiPhaseTakePhoto : SSMRConstants.Tooltips_SinglePhaseTakePhoto;
             }
             PopupModel popupData = SSMRActivityInfoCache.Instance.GetPopupDetailsByType(type);
-            DisplayCustomAlert(popupData.Title, popupData.Description
-                , new Dictionary<string, Action> { { popupData.CTA, action } }, UIImage.FromBundle(image));
+            if (popupData != null)
+            {
+                DisplayCustomAlert(popupData.Title, popupData.Description
+                    , new Dictionary<string, Action> { { popupData.CTA, action } }, UIImage.FromBundle(image));
+            }
+            else
+            {
+                if (action != null) { action.Invoke(); }
+            }
         }
 
         private void SetImageList()
@@ -133,6 +142,7 @@ namespace myTNB
             for (int i = 0; i < keys.Count; i++)
             {
                 string key = keys[i];
+                if (ReadingDictionary[key]) { continue; }
                 ImageModel imgModel = new ImageModel
                 {
                     NeedsPhoto = !ReadingDictionary[key],
@@ -148,6 +158,30 @@ namespace myTNB
                     ontoList.Add(key);
                 }
                 _imageModelList.Add(imgModel);
+            }
+            _multiPhaseDescription = GetI18NValue(SSMRConstants.I18N_MultiTakePhotoDescription);
+            if (_isMultiPhase && doneList.Count > 0)
+            {
+                string done;
+                string onto;
+
+                if (doneList.Count > 1)
+                {
+                    done = string.Format(GetI18NValue(SSMRConstants.I18N_PluralDone), doneList[0], doneList[1]);
+                }
+                else
+                {
+                    done = string.Format(GetI18NValue(SSMRConstants.I18N_SingularDone), doneList[0]);
+                }
+                if (ontoList.Count > 1)
+                {
+                    onto = string.Format(GetI18NValue(SSMRConstants.I18N_PluralOnto), ontoList[0], ontoList[1]);
+                }
+                else
+                {
+                    onto = string.Format(GetI18NValue(SSMRConstants.I18N_SingularOnto), ontoList[0]);
+                }
+                _multiPhaseDescription = string.Format("{0} {1}", done, onto);
             }
         }
 
@@ -167,8 +201,7 @@ namespace myTNB
             }
             if (string.IsNullOrEmpty(description) || string.IsNullOrWhiteSpace(description))
             {
-                description = GetI18NValue(_isMultiPhase ? SSMRConstants.I18N_MultiTakePhotoDescription
-                    : SSMRConstants.I18N_SingleTakePhotoDescription);
+                description = _isMultiPhase ? _multiPhaseDescription : GetI18NValue(SSMRConstants.I18N_SingleTakePhotoDescription);
             }
             _lblDescription.Text = description;
         }
@@ -197,25 +230,29 @@ namespace myTNB
 
             if (_isMultiPhase)
             {
-                int expectedReadingCount = ReadingDictionary.Count(x => !x.Value);
-                for (int i = 0; i < expectedReadingCount; i++)
+                _expectedReadingCount = _imageModelList.Count;
+                for (int i = 0; i < _expectedReadingCount; i++)
                 {
+                    ImageModel item = _imageModelList[i];
                     if (i == 0)
                     {
-                        _viewPreviewOne = CreatePhotoPreview(new CGRect(GetPreviewXLoc(expectedReadingCount, previewWidth)
+                        _viewPreviewOne = CreatePhotoPreview(new CGRect(GetPreviewXLoc(_expectedReadingCount, previewWidth)
                             , 16, previewWidth, previewWidth), i);
+                        _viewPreviewOne.Tag = item.Tag;
                         _viewPreviewOne.AddGestureRecognizer(new UITapGestureRecognizer(() => { PreviewAction(_viewPreviewOne.Tag); }));
                         _viewPreview.AddSubview(_viewPreviewOne);
                     }
                     else if (i == 1)
                     {
                         _viewPreviewTwo = CreatePhotoPreview(new CGRect(_viewPreviewOne.Frame.GetMaxX() + 32, 16, previewWidth, previewWidth), i);
+                        _viewPreviewTwo.Tag = item.Tag;
                         _viewPreviewTwo.AddGestureRecognizer(new UITapGestureRecognizer(() => { PreviewAction(_viewPreviewTwo.Tag); }));
                         _viewPreview.AddSubview(_viewPreviewTwo);
                     }
                     else
                     {
                         _viewPreviewThree = CreatePhotoPreview(new CGRect(_viewPreviewTwo.Frame.GetMaxX() + 32, 16, previewWidth, previewWidth), i);
+                        _viewPreviewThree.Tag = item.Tag;
                         _viewPreviewThree.AddGestureRecognizer(new UITapGestureRecognizer(() => { PreviewAction(_viewPreviewThree.Tag); }));
                         _viewPreview.AddSubview(_viewPreviewThree);
                     }
@@ -276,8 +313,7 @@ namespace myTNB
                         {
                             AddMainPreview(data.Image);
                         }
-                        SetDescription(GetI18NValue(data.Image == null
-                            ? SSMRConstants.I18N_MultiTakePhotoDescription : SSMRConstants.I18N_EditDescription));
+                        SetDescription(GetI18NValue(data.Image == null ? _multiPhaseDescription : SSMRConstants.I18N_EditDescription));
                     }
 
                     if (isSameTag)
@@ -336,7 +372,7 @@ namespace myTNB
                 Tag = 99
             };
             view.AddSubviews(new UIView[] { label, imgView });
-            view.Tag = 1000 + index;
+            //view.Tag = 1000 + index;
             return view;
         }
 
@@ -411,8 +447,7 @@ namespace myTNB
                 }
                 PreviewAction(_currentTag);
                 ToggleCTA();
-                string key = SSMRConstants.I18N_SingleTakePhotoDescription;
-                SetDescription(GetI18NValue(key));
+                SetDescription(_isMultiPhase ? _multiPhaseDescription : GetI18NValue(SSMRConstants.I18N_SingleTakePhotoDescription));
             }));
             view.AddSubview(imgDelete);
             return view;
@@ -497,6 +532,7 @@ namespace myTNB
 
         private void UpdateImagePreview(UIImage image)
         {
+            List<ImageModel> imageModelList = _imageModelList.Where(x => x.NeedsPhoto).ToList();
             int count = _imageModelList.Count;
             for (int i = 0; i < count; i++)
             {
@@ -586,8 +622,11 @@ namespace myTNB
         {
             _captureDevice = AVCaptureDevice.GetDefaultDevice(AVMediaTypes.Video);
 
-            _zoomSlider.MinValue = (float)_captureDevice.MinAvailableVideoZoomFactor;
-            _zoomSlider.MaxValue = (float)_captureDevice.MaxAvailableVideoZoomFactor;
+            if (_captureDevice != null)
+            {
+                _zoomSlider.MinValue = (float)_captureDevice.MinAvailableVideoZoomFactor;
+                _zoomSlider.MaxValue = (float)_captureDevice.MaxAvailableVideoZoomFactor;
+            }
 
             try
             {

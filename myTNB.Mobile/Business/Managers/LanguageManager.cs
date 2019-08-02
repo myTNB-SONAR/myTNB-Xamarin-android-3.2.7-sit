@@ -109,6 +109,17 @@ namespace myTNB
             return GetValues<Dictionary<string, List<SelectorModel>>>(pageName);
         }
 
+        /// <summary>
+        /// Gets the selector of a page.
+        /// </summary>
+        /// <param name="pageName">Name of the page, iOS and Android should be the same</param>
+        /// <returns>Key-List Value of selectors used by the page</returns>
+        public Dictionary<string, List<PopupSelectorModel>> GetPopupSelectorsByPage(string pageName)
+        {
+            pageName += SELECTOR;
+            return GetValues<Dictionary<string, List<PopupSelectorModel>>>(pageName);
+        }
+
         private T GetValues<T>(string pageName) where T : new()
         {
             T valuesDictionary = new T();

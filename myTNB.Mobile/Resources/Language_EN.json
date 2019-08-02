@@ -124,5 +124,33 @@
         "pluralDone": "You're done with {0} and {1}!",
         "singularOnto": "On to {0} reading now.",
         "pluralOnto": "On to {0} and {1} readings now."
+    },
+    "SSMRCaptureMeter_selector": {
+        "SMRPhotoPopUpDetails": [
+            {
+                "Title": "Uploading from your album?",
+                "Description": "Be sure to upload a <strong>clear, straight-facing photo of the entire meter box</strong> with no shadows, reflections or flashes and the image can’t be skewed. Any of these may cause the value to be unreadable.",
+                "CTA": "Got it!",
+                "Type": "Single_UploadPhoto"
+            },
+            {
+                "Title": "How do I take these photos?",
+                "Description": "You'll need to submit 3 different meter reading values (kWh, kVARh, kW). <br><br>Capture the <strong>entire meter box with your camera directly facing it.</strong> Be sure to take full, clear photos with no shadows, reflections or flashes and the images can’t be skewed. Any of these may cause the values to be unreadable.",
+                "CTA": "Got it!",
+                "Type": "Multi_TakePhoto"
+            },
+            {
+                "Title": "How do I take these photos?",
+                "Description": "Capture the <strong>entire meter box with your camera directly facing it.</strong> Be sure to take a full, clear photo with no shadows, reflections or flashes and the image can’t be skewed. Any of these may cause the value to be unreadable.",
+                "CTA": "Got it!",
+                "Type": "Single_TakePhoto"
+            },
+            {
+                "Title": "Uploading from your album?",
+                "Description": "You'll need to submit 3 different meter reading values (kWh, kVARh, kW).<br><br>Be sure to upload <strong>clear, straight-facing photos of the entire meter box</strong> with no shadows, reflections or flashes and the images can’t be skewed. Any of these may cause the values to be unreadable.",
+                "CTA": "Got it!",
+                "Type": "Multi_UploadPhoto"
+            }
+        ]
     }
 }

@@ -6,6 +6,7 @@
         public static string Pagename_SSMRApplication = "SSMRApplication";
         public static string Pagename_SSMRWalkthrough = "SSMROnboarding";
         public static string Pagename_SSMRCaptureMeter = "SSMRCaptureMeter";
+        public static string Popup_SMRPhotoPopUpDetails = "SMRPhotoPopUpDetails";
 
         //Service name
         public static string Service_SubmitSSMRApplication = "SubmitSMRApplication";
