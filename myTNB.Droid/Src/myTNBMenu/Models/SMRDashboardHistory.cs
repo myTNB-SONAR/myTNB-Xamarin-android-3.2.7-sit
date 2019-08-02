@@ -56,6 +56,10 @@ namespace myTNB_Android.Src.myTNBMenu.Models
         [AliasAs("previousReadingKw")]
         public string previousReadingKw { get; set; }
 
+        [JsonProperty("SMRMROValidateRegisterDetails")]
+        [AliasAs("SMRMROValidateRegisterDetails")]
+        public List<SMRMROValidateRegisterDetails> SMRMROValidateRegisterDetails { get; set; }
+
         [JsonProperty("MeterReadingHistory")]
         [AliasAs("MeterReadingHistory")]
         public List<SSMRMeterHistoryModel> MeterReadingHistory { get; set; }

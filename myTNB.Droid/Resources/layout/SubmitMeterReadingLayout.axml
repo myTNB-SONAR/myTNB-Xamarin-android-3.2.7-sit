@@ -74,10 +74,13 @@
                     android:paddingRight="16dp"
                     android:layout_marginBottom="4dp"/>
                 <include android:id="@+id/kwhCard"
+                         android:visibility="gone"
                 layout="@layout/SubmitMeterReadingCardLayout"/>
                 <include android:id="@+id/kVARhCard"
+                         android:visibility="gone"
                 layout="@layout/SubmitMeterReadingCardLayout"/>
                 <include android:id="@+id/kwCard"
+                         android:visibility="gone"
                 layout="@layout/SubmitMeterReadingCardLayout"/>
             </LinearLayout>
         </ScrollView>

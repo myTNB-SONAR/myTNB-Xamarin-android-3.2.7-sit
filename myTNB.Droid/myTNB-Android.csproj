@@ -1463,6 +1463,14 @@
     <Compile Include="Src\SSMR\SubmitMeterReading\MVP\CameraTakePhotoFragment.cs" />
     <AndroidResource Include="Resources\layout\CameraTakePhotoFragmentLayout.axml" />
     <Compile Include="Src\SSMR\SubmitMeterReading\Listener\CameraPreview.cs" />
+    <AndroidResource Include="Resources\drawable\capture_camera_button.xml" />
+    <Compile Include="Src\myTNBMenu\Models\SMRMROValidateRegisterDetails.cs" />
+    <Compile Include="Src\SSMR\SubmitMeterReading\Api\SubmitMeterReadingRequest.cs" />
+    <Compile Include="Src\SSMR\SubmitMeterReading\Api\SubmitMeterReadingResponse.cs" />
+    <Compile Include="Src\SSMR\SubmitMeterReading\Api\SubmitMeterReadingApi.cs" />
+    <Compile Include="Src\SSMR\SubmitMeterReading\Api\SubmitMeterReadingImpl.cs" />
+    <Compile Include="Src\SSMR\SubmitMeterReading\MVP\SubmitMeterReadingPresenter.cs" />
+    <Compile Include="Src\SSMR\SubmitMeterReading\MVP\SubmitMeterReadingContract.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -1835,6 +1843,7 @@
     <Folder Include="Src\SSMR\SubmitMeterReading\" />
     <Folder Include="Src\SSMR\SubmitMeterReading\MVP\" />
     <Folder Include="Src\SSMR\SubmitMeterReading\Listener\" />
+    <Folder Include="Src\SSMR\SubmitMeterReading\Api\" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\GradientStatusBar.xml" />

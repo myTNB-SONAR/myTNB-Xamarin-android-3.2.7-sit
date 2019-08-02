@@ -1,7 +1,7 @@
 ﻿<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
    xmlns:app="http://schemas.android.com/apk/res-auto"  
     xmlns:tools="http://schemas.android.com/tools"
-                android:orientation="vertical"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:minWidth="25px"
@@ -13,11 +13,45 @@
         android:layout_height="fill_parent"
         android:layout_weight="1">
     </FrameLayout>
-    <!--<SeekBar  
-        android:id="@+id/seekBar"  
+    <LinearLayout
         android:layout_width="match_parent"  
-        android:layout_height="wrap_content"  
-        android:layout_marginEnd="8dp"  
-        android:layout_marginStart="8dp"  
-        android:layout_marginTop="372dp"/> -->
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/camera_preview"
+        android:orientation="vertical">
+        <SeekBar  
+            android:id="@+id/seekBar"  
+            android:layout_width="match_parent"  
+            android:layout_height="wrap_content"  
+            android:layout_marginEnd="20dp"  
+            android:layout_marginStart="20dp"/>
+        <LinearLayout
+            android:layout_width="match_parent"  
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="3">
+            <ImageView
+                android:id="@+id/imageGallery"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/camera"
+                android:layout_gravity="left"
+                android:layout_weight="1"
+            />
+            <ImageView
+                android:id="@+id/imageGallery"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/capture_camera_button"
+                android:layout_weight="1"
+            />
+            <ImageView
+                android:id="@+id/placeholder"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:visibility="gone"
+                android:src="@drawable/camera"
+                android:layout_weight="1"
+            />
+        </LinearLayout>
+    </LinearLayout>
 </RelativeLayout>
