@@ -1402,6 +1402,7 @@
     <Folder Include="Model\GetMeterReadingOCRValue\" />
     <Folder Include="Assets.xcassets\SSMR-MultiPhase.imageset\" />
     <Folder Include="Assets.xcassets\SSMR-SinglePhase.imageset\" />
+    <Folder Include="Sitecore CMS\Model\Meter Read SSMR Walkthrough\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -2172,6 +2173,9 @@
     <Compile Include="Model\GetMeterReadingOCRValue\GetOCRResponseModel.cs" />
     <Compile Include="Session Cache\OCRReadingCache.cs" />
     <Compile Include="Session Cache\SSMRActivityInfoCache.cs" />
+    <Compile Include="Sitecore CMS\Model\Meter Read SSMR Walkthrough\MeterReadSSMRWalkthroughModel.cs" />
+    <Compile Include="Sitecore CMS\Service\MeterReadSSMRWalkthroughService.cs" />
+    <Compile Include="SQLite\SQLite Data Manager\MeterReadSSMRWalkthroughEntity.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />

@@ -124,8 +124,8 @@ namespace myTNB
             UILabel label = new UILabel(new CGRect(0, padding, width, 20f))
             {
                 BackgroundColor = UIColor.Clear,
-                Font = model.IsHighlighted ? MyTNBFont.MuseoSans14_500 : MyTNBFont.MuseoSans14_300,
-                TextColor = model.IsHighlighted ? MyTNBColor.Tomato : MyTNBColor.CharcoalGrey,
+                Font = model.isHighlighted ? MyTNBFont.MuseoSans14_500 : MyTNBFont.MuseoSans14_300,
+                TextColor = model.isHighlighted ? MyTNBColor.Tomato : MyTNBColor.CharcoalGrey,
                 Text = model?.MenuName ?? string.Empty
             };
             CGSize labelNewSize = label.SizeThatFits(new CGSize(width, 1000f));
