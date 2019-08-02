@@ -43,7 +43,9 @@ namespace myTNB
 
         private bool _isMultiPhase;
         private List<ImageModel> _imageModelList;
-        private nint _selectedTag;
+        private nint _currentTag;
+
+        private bool _isGalleryTooltipDisplayed;
 
         private class ImageModel
         {
@@ -227,37 +229,80 @@ namespace myTNB
             View.AddSubview(_viewPreview);
         }
 
-        private void PreviewAction(nint tag)
+        private bool IsPreviosPreviewHasImage(int index, out int noImageIndex)
         {
-            _selectedTag = tag;
-            Debug.WriteLine("PreviewAction: " + tag);
-            for (int i = 0; i < _viewPreview.Subviews.Length; i++)
+            noImageIndex = index;
+            for (int i = 0; i < index; i++)
             {
-                UIView view = _viewPreview.Subviews[i];
-                if (view == null || view.Tag == 1004) { continue; }
-                UIImageView imgView = view.ViewWithTag(99) as UIImageView;
-                if (imgView != null && imgView.Hidden)
+                ImageModel data = _imageModelList[i];
+                if (data.Image == null)
                 {
-                    if (view.Tag == tag) { continue; }
-                    view.Layer.BorderColor = MyTNBColor.WhiteTwo.CGColor;
-                }
-                if (imgView != null && !imgView.Hidden) { view.Layer.BorderColor = MyTNBColor.FreshGreen.CGColor; }
-                if (view.Tag == tag && imgView != null && !imgView.Hidden)
-                {
-                    view.Layer.BorderColor = MyTNBColor.WaterBlue.CGColor;
-                    AddMainPreview(imgView.Image);
+                    noImageIndex = i;
+                    return false;
                 }
             }
-            /*UIView view = _viewPreview.ViewWithTag(tag);
-            if (view != null)
-            {
-                UIImageView imgView = view.ViewWithTag(99) as UIImageView;
-                if (imgView == null || imgView.Hidden) { return; }
-                Debug.WriteLine("PreviewAction with img: " + tag);
+            return true;
+        }
 
-                AddMainPreview(imgView.Image);
-                view.Layer.BorderColor = MyTNBColor.WaterBlue.CGColor;
-            }*/
+        private void PreviewAction(nint tag)
+        {
+            _currentTag = tag;
+            int count = _imageModelList.Count;
+            for (int i = 0; i < count; i++)
+            {
+                ImageModel data = _imageModelList[i];
+                UIView currentView = _viewPreview.ViewWithTag(data.Tag);
+                bool isSameTag = data.Tag == tag;
+                if (currentView != null)
+                {
+                    currentView.Layer.BorderColor = MyTNBColor.WhiteTwo.CGColor;
+                    if (data.Image != null) { currentView.Layer.BorderColor = MyTNBColor.FreshGreen.CGColor; }
+                    if (isSameTag)
+                    {
+                        currentView.Layer.BorderColor = MyTNBColor.WaterBlue.CGColor;
+                        if (data.Image == null)
+                        {
+                            RemovePreview();
+                        }
+                        else
+                        {
+                            AddMainPreview(data.Image);
+                        }
+                    }
+
+                    if (isSameTag)
+                    {
+                        bool isPrevHasImg = IsPreviosPreviewHasImage(i, out int noImageIndex);
+                        bool isCurHasImg = data.Image != null;
+                        if (isPrevHasImg)
+                        {
+                            currentView.Layer.BorderColor = MyTNBColor.WaterBlue.CGColor;
+                        }
+                        else
+                        {
+                            if (!isCurHasImg)
+                            {
+                                _currentTag = _imageModelList[noImageIndex].Tag;
+                                UIView pView = _viewPreview.ViewWithTag(_currentTag);
+                                currentView.Layer.BorderColor = MyTNBColor.WhiteTwo.CGColor;
+                                pView.Layer.BorderColor = MyTNBColor.WaterBlue.CGColor;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        private void RemovePreview()
+        {
+            if (_viewMainPreviewParent != null)
+            {
+                _viewMainPreviewParent.Hidden = true;
+                _imgViewMainPreview.Image = null;
+                _viewDelete.Hidden = true;
+                _viewCameraActions.Hidden = false;
+                _viewCamera.SendSubviewToBack(_viewOverlay);
+            }
         }
 
         private UIView CreatePhotoPreview(CGRect frame, int index)
@@ -299,17 +344,24 @@ namespace myTNB
         private UIView GetOverlay(UIView viewBase)
         {
             nfloat baseHeight = viewBase.Frame.Height;
+            nfloat baseWidth = viewBase.Frame.Width;
+            nfloat boxHeight = viewBase.Frame.Height - _viewCameraActions.Frame.Height - (baseHeight * 0.028F * 2);
             UIView view = new UIView(new CGRect(new CGPoint(0, 0), viewBase.Frame.Size))
             { BackgroundColor = UIColor.Clear, UserInteractionEnabled = false };
-            UIView viewTop = new UIView(new CGRect(0, 0, ViewWidth, baseHeight * 0.2F))
+            UIView viewTop = new UIView(new CGRect(0, 0, ViewWidth, baseHeight * 0.028F))
             { BackgroundColor = UIColor.Black.ColorWithAlpha(0.60F), UserInteractionEnabled = false };
-            UIView viewLeft = new UIView(new CGRect(0, viewTop.Frame.GetMaxY(), 18, baseHeight * 0.3F))
+            UIView viewLeft = new UIView(new CGRect(0, viewTop.Frame.GetMaxY(), baseWidth * 0.22F, boxHeight))
             { BackgroundColor = UIColor.Black.ColorWithAlpha(0.60F), UserInteractionEnabled = false };
-            UIView viewRight = new UIView(new CGRect(ViewWidth - 18, viewTop.Frame.GetMaxY(), 18, baseHeight * 0.3F))
+            UIView viewClear = new UIView(new CGRect(viewLeft.Frame.GetMaxX(), viewTop.Frame.GetMaxY(), baseWidth - (baseWidth * 0.22F * 2), boxHeight))
+            { BackgroundColor = UIColor.Clear, UserInteractionEnabled = false };
+            viewClear.Layer.BorderColor = MyTNBColor.WaterBlue.CGColor;
+            viewClear.Layer.BorderWidth = 1.0F;
+            viewClear.Layer.CornerRadius = 4.0F;
+            UIView viewRight = new UIView(new CGRect(viewClear.Frame.GetMaxX(), viewTop.Frame.GetMaxY(), baseWidth * 0.22F, boxHeight))
             { BackgroundColor = UIColor.Black.ColorWithAlpha(0.60F), UserInteractionEnabled = false };
             UIView viewBottom = new UIView(new CGRect(0, viewLeft.Frame.GetMaxY(), ViewWidth, baseHeight - viewLeft.Frame.GetMaxY()))
             { BackgroundColor = UIColor.Black.ColorWithAlpha(0.60F), UserInteractionEnabled = false };
-            view.AddSubviews(new UIView[] { viewTop, viewLeft, viewRight, viewBottom });
+            view.AddSubviews(new UIView[] { viewTop, viewLeft, viewClear, viewRight, viewBottom });
             return view;
         }
 
@@ -327,20 +379,16 @@ namespace myTNB
             view.AddGestureRecognizer(new UITapGestureRecognizer(() =>
             {
                 Debug.WriteLine("Delete tapped");
-                _viewMainPreviewParent.Hidden = true;
-                _imgViewMainPreview.Image = null;
-                _viewDelete.Hidden = true;
-                _viewCameraActions.Hidden = false;
-                _viewCamera.SendSubviewToBack(_viewOverlay);
-
-                UIView viewPreview = _viewPreview.ViewWithTag(_selectedTag);
+                RemovePreview();
+                UIView viewPreview = _viewPreview.ViewWithTag(_currentTag);
                 if (viewPreview != null)
                 {
                     UIImageView imgView = viewPreview.ViewWithTag(99) as UIImageView;
                     if (imgView != null && !imgView.Hidden)
                     {
                         imgView.Image = null;
-                        int index = _imageModelList.FindIndex(x => x.Tag == _selectedTag);
+                        imgView.Hidden = true;
+                        int index = _imageModelList.FindIndex(x => x.Tag == _currentTag);
                         if (index > -1)
                         {
                             ImageModel model = _imageModelList[index];
@@ -382,7 +430,15 @@ namespace myTNB
             _viewGallery.AddGestureRecognizer(new UITapGestureRecognizer(() =>
             {
                 Debug.WriteLine("viewGallery tapped");
-                DisplayTooltip(true, OnShowGallery);
+                if (_isGalleryTooltipDisplayed)
+                {
+                    OnShowGallery();
+                }
+                else
+                {
+                    _isGalleryTooltipDisplayed = true;
+                    DisplayTooltip(true, OnShowGallery);
+                }
             }));
 
             _viewCapture = new UIView(new CGRect((ViewWidth - size) / 2
@@ -583,7 +639,7 @@ namespace myTNB
                 _viewMainPreviewParent = new UIView(new CGRect(0, 0, ViewWidth, _viewCamera.Frame.Height))
                 {
                     ClipsToBounds = true,
-                    BackgroundColor = UIColor.DarkGray
+                    BackgroundColor = MyTNBColor.WhiteTwo
                 };
                 _imgViewMainPreview = new UIImageView(new CGRect(new CGPoint(0, 0), _viewMainPreviewParent.Frame.Size))
                 {
@@ -607,6 +663,7 @@ namespace myTNB
             _viewCameraActions.Hidden = true;
         }
 
+        #region Gestures
         private void PinchZoomAction(UIPinchGestureRecognizer sender)
         {
             if (sender != null && sender.View != null
@@ -634,7 +691,9 @@ namespace myTNB
                 sender.SetTranslation(new CGPoint(0, 0), sender.View);
             }
         }
+        #endregion
 
+        #region Service
         private string GetImageData(UIImage img, out double fileSize)
         {
             fileSize = 0;
@@ -734,5 +793,6 @@ namespace myTNB
                 return response;
             });
         }
+        #endregion
     }
 }
