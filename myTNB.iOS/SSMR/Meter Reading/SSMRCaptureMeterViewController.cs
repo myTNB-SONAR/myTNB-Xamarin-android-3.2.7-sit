@@ -126,20 +126,28 @@ namespace myTNB
 
         private void SetImageList()
         {
-            if (_isMultiPhase)
+            _imageModelList = new List<ImageModel>();
+            List<string> keys = ReadingDictionary.Keys.ToList();
+            List<string> doneList = new List<string>();
+            List<string> ontoList = new List<string>();
+            for (int i = 0; i < keys.Count; i++)
             {
-                _imageModelList = new List<ImageModel>();
-                List<string> keys = ReadingDictionary.Keys.ToList();
-                for (int i = 0; i < keys.Count; i++)
+                string key = keys[i];
+                ImageModel imgModel = new ImageModel
                 {
-                    ImageModel imgModel = new ImageModel
-                    {
-                        NeedsPhoto = !ReadingDictionary[keys[i]],
-                        ReadingUnit = keys[i],
-                        Tag = 1001 + i
-                    };
-                    _imageModelList.Add(imgModel);
+                    NeedsPhoto = !ReadingDictionary[key],
+                    ReadingUnit = key,
+                    Tag = 1001 + i
+                };
+                if (ReadingDictionary[key])
+                {
+                    doneList.Add(key);
                 }
+                else
+                {
+                    ontoList.Add(key);
+                }
+                _imageModelList.Add(imgModel);
             }
         }
 
@@ -268,6 +276,8 @@ namespace myTNB
                         {
                             AddMainPreview(data.Image);
                         }
+                        SetDescription(GetI18NValue(data.Image == null
+                            ? SSMRConstants.I18N_MultiTakePhotoDescription : SSMRConstants.I18N_EditDescription));
                     }
 
                     if (isSameTag)
@@ -302,6 +312,7 @@ namespace myTNB
                 _viewDelete.Hidden = true;
                 _viewCameraActions.Hidden = false;
                 _viewCamera.SendSubviewToBack(_viewOverlay);
+                _capturedImage = null;
             }
         }
 
@@ -400,6 +411,8 @@ namespace myTNB
                 }
                 PreviewAction(_currentTag);
                 ToggleCTA();
+                string key = SSMRConstants.I18N_SingleTakePhotoDescription;
+                SetDescription(GetI18NValue(key));
             }));
             view.AddSubview(imgDelete);
             return view;
@@ -470,6 +483,7 @@ namespace myTNB
                 {
                     AddMainPreview(selectedImg);
                     _capturedImage = selectedImg;
+                    SetDescription(GetI18NValue(SSMRConstants.I18N_EditDescription));
                 }
                 ToggleCTA();
             };
@@ -631,6 +645,7 @@ namespace myTNB
             else
             {
                 AddMainPreview(capturedImage);
+                SetDescription(GetI18NValue(SSMRConstants.I18N_EditDescription));
             }
             ToggleCTA();
         }
@@ -669,11 +684,18 @@ namespace myTNB
         private void ToggleCTA()
         {
             bool isValid = false;
-            int count = _imageModelList.Count;
-            for (int i = 0; i < count; i++)
+            if (_isMultiPhase)
             {
-                ImageModel item = _imageModelList[i];
-                isValid = isValid || !item.NeedsPhoto;
+                int count = _imageModelList.Count;
+                for (int i = 0; i < count; i++)
+                {
+                    ImageModel item = _imageModelList[i];
+                    isValid = isValid || !item.NeedsPhoto;
+                }
+            }
+            else
+            {
+                isValid = _capturedImage != null;
             }
             _btnSubmit.Enabled = isValid;
             _btnSubmit.BackgroundColor = isValid ? MyTNBColor.FreshGreen : MyTNBColor.SilverChalice;

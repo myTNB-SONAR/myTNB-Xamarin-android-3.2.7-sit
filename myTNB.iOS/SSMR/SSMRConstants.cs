@@ -17,10 +17,10 @@
         public static string Service_OthersID = "1007";
 
         //Tooltips
-        public static string Tooltips_MultiPhaseGallery = "UploadPhoto";
-        public static string Tooltips_MultiPhaseTakePhoto = "TakePhoto";
-        public static string Tooltips_SinglePhaseGallery = "UploadPhoto";
-        public static string Tooltips_SinglePhaseTakePhoto = "TakePhoto";
+        public static string Tooltips_MultiPhaseGallery = "Multi_UploadPhoto";
+        public static string Tooltips_MultiPhaseTakePhoto = "Multi_TakePhoto";
+        public static string Tooltips_SinglePhaseGallery = "Single_UploadPhoto";
+        public static string Tooltips_SinglePhaseTakePhoto = "Single_TakePhoto";
 
         //Onboarding
         //i18n
@@ -91,9 +91,14 @@
         //Capture Meter
         public static string I18N_OCRReading = "ocrReading";
         public static string I18N_NavTitleTakePhoto = "navTitleTakePhoto";
+        public static string I18N_NavTitleAdjustPhoto = "navTitleAdjustPhoto";
         public static string I18N_SingleTakePhotoDescription = "singleTakePhotoDescription";
         public static string I18N_EditDescription = "editDescription";
         public static string I18N_MultiTakePhotoDescription = "multiTakePhotoDescription";
+        public static string I18N_SingularDone = "singularDone";
+        public static string I18N_PluralDone = "pluralDone";
+        public static string I18N_SingularOnto = "singularOnto";
+        public static string I18N_PluralOnto = "pluralOnto";
 
         //Patterns
         public static string Pattern_ImageName = "MYTNBAPP_SSMR_OCR_{0}_{1}";
