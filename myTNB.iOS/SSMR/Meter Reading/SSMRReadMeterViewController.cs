@@ -153,6 +153,24 @@ namespace myTNB
         {
             _sSMRMeterFooterComponent = new SSMRMeterFooterComponent(View, ViewHeight);
             View.AddSubview(_sSMRMeterFooterComponent.GetUI());
+            _sSMRMeterFooterComponent._takePhotoBtn.TouchUpInside += (sender, e) =>
+            {
+                OnTapTakePhoto();
+            };
+            _sSMRMeterFooterComponent._submitBtn.TouchUpInside += (sender, e) =>
+            {
+                OnTapTakePhoto();
+            };
+        }
+
+        private void OnTapTakePhoto()
+        {
+            Debug.WriteLine("OnTapTakePhoto");
+        }
+
+        private void OnTapSubmitReading()
+        {
+            Debug.WriteLine("OnTapSubmitReading");
         }
 
         void OnKeyboardNotification(NSNotification notification)

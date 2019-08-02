@@ -8,7 +8,7 @@ namespace myTNB
     {
         private readonly UIView _parentView;
         UIView _containerView;
-        UIButton _takePhotoBtn, _submitBtn;
+        public UIButton _takePhotoBtn, _submitBtn;
         nfloat containerHeight = 136.0f;
         nfloat buttonHeight = 48.0f;
         nfloat _parentHeight;
