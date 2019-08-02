@@ -1,4 +1,4 @@
-using CoreGraphics;
+﻿using CoreGraphics;
 using Foundation;
 using myTNB.Model;
 using myTNB.SSMR;
@@ -159,7 +159,7 @@ namespace myTNB
             };
             _sSMRMeterFooterComponent._submitBtn.TouchUpInside += (sender, e) =>
             {
-                OnTapTakePhoto();
+                OnTapSubmitReading();
             };
         }
 
