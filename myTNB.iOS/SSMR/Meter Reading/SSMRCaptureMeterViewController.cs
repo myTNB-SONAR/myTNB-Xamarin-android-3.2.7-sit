@@ -68,6 +68,7 @@ namespace myTNB
             SetPreview();
             SetCamera();
             ToggleCTA();
+            Debug.WriteLine("V Didload");
         }
 
         public override void ViewWillAppear(bool animated)
@@ -142,13 +143,6 @@ namespace myTNB
             for (int i = 0; i < keys.Count; i++)
             {
                 string key = keys[i];
-                if (ReadingDictionary[key]) { continue; }
-                ImageModel imgModel = new ImageModel
-                {
-                    NeedsPhoto = !ReadingDictionary[key],
-                    ReadingUnit = key,
-                    Tag = 1001 + i
-                };
                 if (ReadingDictionary[key])
                 {
                     doneList.Add(key);
@@ -157,6 +151,13 @@ namespace myTNB
                 {
                     ontoList.Add(key);
                 }
+                if (ReadingDictionary[key]) { continue; }
+                ImageModel imgModel = new ImageModel
+                {
+                    NeedsPhoto = !ReadingDictionary[key],
+                    ReadingUnit = key,
+                    Tag = 1001 + i
+                };
                 _imageModelList.Add(imgModel);
             }
             _multiPhaseDescription = GetI18NValue(SSMRConstants.I18N_MultiTakePhotoDescription);
