@@ -7,16 +7,14 @@
     android:minWidth="25px"
     android:minHeight="25px">
   
-    <FrameLayout
-        android:id="@+id/camera_preview"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1">
-    </FrameLayout>
+    <myTNB_Android.Src.SSMR.SubmitMeterReading.MVP.AutoFitTextureView
+        android:id="@+id/texture_view_autofit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
     <LinearLayout
         android:layout_width="match_parent"  
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/camera_preview"
+        android:layout_alignBottom="@+id/texture_view_autofit"
         android:orientation="vertical">
         <SeekBar  
             android:id="@+id/seekBar"  

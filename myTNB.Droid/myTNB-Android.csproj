@@ -1471,6 +1471,16 @@
     <Compile Include="Src\SSMR\SubmitMeterReading\Api\SubmitMeterReadingImpl.cs" />
     <Compile Include="Src\SSMR\SubmitMeterReading\MVP\SubmitMeterReadingPresenter.cs" />
     <Compile Include="Src\SSMR\SubmitMeterReading\MVP\SubmitMeterReadingContract.cs" />
+    <Compile Include="Src\SSMR\SubmitMeterReading\MVP\SubmitMeterTakePhotoFragment.cs" />
+    <AndroidResource Include="Resources\layout\SubmitMeterTakePhotoFragmentLayout.axml" />
+    <Compile Include="Src\SSMR\SubmitMeterReading\Listener\CameraStateListener.cs" />
+    <Compile Include="Src\SSMR\SubmitMeterReading\Listener\Camera2SurfaceTextureListener.cs" />
+    <Compile Include="Src\SSMR\SubmitMeterReading\MVP\AutoFitTextureView.cs" />
+    <Compile Include="Src\SSMR\SubmitMeterReading\Listener\CameraCaptureSessionCallback.cs" />
+    <Compile Include="Src\SSMR\SubmitMeterReading\Listener\CameraCaptureListener.cs" />
+    <Compile Include="Src\SSMR\SubmitMeterReading\Listener\CameraCaptureStillPictureSessionCallback.cs" />
+    <Compile Include="Src\SSMR\SubmitMeterReading\Listener\ImageAvailableListener.cs" />
+    <Compile Include="Src\SSMR\SubmitMeterReading\MVP\SubmitMeterAdjustPhotoFragment.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

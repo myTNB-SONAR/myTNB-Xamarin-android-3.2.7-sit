@@ -14,7 +14,7 @@ using myTNB_Android.Src.Base.Activity;
 
 namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
 {
-    [Activity(Label = "Take Photo", Theme = "@style/Theme.Dashboard")]
+    [Activity(Label = "Take Photo", Theme = "@style/Theme.Dashboard", MainLauncher = true)]
     public class SubmitMeterTakePhotoActivity : BaseToolbarAppCompatActivity
     {
         public override int ResourceId()
@@ -27,14 +27,23 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             return true;
         }
 
+        public override bool CameraPermissionRequired()
+        {
+            return true;
+        }
+
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
 
             // Create your application here
-            FragmentManager.BeginTransaction()
-              .Replace(Resource.Id.photoContainer, new CameraTakePhotoFragment())
-              .Commit();
+            //FragmentManager.BeginTransaction()
+            //  .Replace(Resource.Id.photoContainer, new CameraTakePhotoFragment())
+            //  .Commit();
+            if (savedInstanceState == null)
+            {
+                FragmentManager.BeginTransaction().Replace(Resource.Id.photoContainer, SubmitMeterTakePhotoFragment.NewInstance()).Commit();
+            }
         }
     }
 }
