@@ -6,15 +6,17 @@
     android:layout_height="wrap_content">
   <LinearLayout
       android:orientation="vertical"
-      android:layout_width="wrap_content"
+      android:layout_width="match_parent"
       android:layout_height="wrap_content"
+      android:layout_marginLeft="20dp"
+      android:layout_marginRight="20dp"
       android:layout_gravity="center"
       android:id="@+id/rootView"
       android:background="@drawable/custom_round_white_dialog_shadow">
     <ImageView
         android:id="@+id/imgPhasePhoto"
-        android:layout_width="284dp"
-        android:layout_height="214dp"
+        android:layout_width="match_parent"
+        android:layout_height="264dp"
         android:scaleType="fitXY"
         android:src="@drawable/single_phase"/>
     <TextView
@@ -40,7 +42,6 @@
         android:layout_marginRight="16dp"
         android:layout_marginTop="15dp"
         android:layout_marginBottom="9dp"
-        android:minLines="5"
         android:maxLines="12"
         android:scrollbars="vertical"
         android:text="Be sure to upload a clear, straight-facing photo of the entire meter box with no shadows, reflections or flashes and the image can’t be skewed. Any of these may cause the value to be unreadable."
