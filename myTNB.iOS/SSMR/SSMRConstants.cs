@@ -1,4 +1,6 @@
-﻿namespace myTNB.SSMR
+﻿using Foundation;
+
+namespace myTNB.SSMR
 {
     public static class SSMRConstants
     {
@@ -50,7 +52,8 @@
         public static string I18N_TerminateFor = "terminateFor";
         public static string I18N_ContactDetails = "contactDetails";
         public static string I18N_TerminateTitle = "terminateTitle";
-        public static string I18N_TnC = "tnc";
+        public static string I18N_TnCSubscribe = "tncSubscribe";
+        public static string I18N_TnCUnsubscribe = "tncUnsubscribe";
         public static string I18N_EditInfo = "editContactInfo";
         public static string I18N_SelectReason = "selectReason";
         public static string I18N_StateReason = "stateReason";
@@ -103,5 +106,11 @@
 
         //Patterns
         public static string Pattern_ImageName = "MYTNBAPP_SSMR_OCR_{0}_{1}";
+
+        //More IDs
+        public static string More_Unsubscribe = "1004";
+
+        //Notification IDs
+        public static NSString Notification_SelectSSMRAccount = (NSString)"SelectSSMRAccount";
     }
 }

@@ -68,7 +68,6 @@ namespace myTNB
             SetPreview();
             SetCamera();
             ToggleCTA();
-            Debug.WriteLine("V Didload");
         }
 
         public override void ViewWillAppear(bool animated)

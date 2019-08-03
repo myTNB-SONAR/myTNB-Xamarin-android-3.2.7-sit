@@ -127,6 +127,7 @@ namespace myTNB
             {
                 value = string.Empty;
                 hasValue = true;
+                TextField.LeftViewMode = UITextFieldViewMode.UnlessEditing;
             }
             else
             {

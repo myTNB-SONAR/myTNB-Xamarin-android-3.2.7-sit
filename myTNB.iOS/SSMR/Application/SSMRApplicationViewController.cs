@@ -1,9 +1,11 @@
 using CoreGraphics;
 using Foundation;
 using myTNB.Model;
+using myTNB.Registration;
 using myTNB.SSMR;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Threading.Tasks;
@@ -44,6 +46,7 @@ namespace myTNB
             base.ViewDidLoad();
             NSNotificationCenter.DefaultCenter.AddObserver(UIKeyboard.WillHideNotification, OnKeyboardNotification);
             NSNotificationCenter.DefaultCenter.AddObserver(UIKeyboard.WillShowNotification, OnKeyboardNotification);
+            NSNotificationCenter.DefaultCenter.AddObserver(SSMRConstants.Notification_SelectSSMRAccount, OnSelectSSMRAccount);
             ConfigureNavigationBar();
             AddTnCSection();
             GetEligibleAccounts();
@@ -57,11 +60,17 @@ namespace myTNB
             {
                 OnGetTerminateReasons();
             }
+            OnGetContactInfo();
         }
 
         public override void ViewWillAppear(bool animated)
         {
             base.ViewWillAppear(animated);
+        }
+
+        private void OnSelectSSMRAccount(NSNotification notification)
+        {
+            Debug.WriteLine("DEBUG >>> SSMRApplicationViewController OnSelectSSMRAccount");
             OnGetContactInfo();
         }
 
@@ -101,7 +110,6 @@ namespace myTNB
             {
                 _scrollContainer.Frame = _scrollViewFrame;
             }
-
             UIView.CommitAnimations();
         }
 
@@ -112,7 +120,7 @@ namespace myTNB
             {
                 BackgroundColor = UIColor.White
             };
-            UIView viewPadding = new UIView(new CGRect(0, 0, ViewWidth, 16))
+            UIView viewPadding = new UIView(new CGRect(0, 0, ViewWidth, 1))
             {
                 BackgroundColor = MyTNBColor.SectionGrey
             };
@@ -135,7 +143,8 @@ namespace myTNB
         private UITextView GetInfo()
         {
             NSError htmlBodyError = null;
-            NSAttributedString htmlBody = TextHelper.ConvertToHtmlWithFont(GetI18NValue(SSMRConstants.I18N_TnC)
+            NSAttributedString htmlBody = TextHelper.ConvertToHtmlWithFont(GetI18NValue(IsApplication
+                ? SSMRConstants.I18N_TnCSubscribe : SSMRConstants.I18N_TnCUnsubscribe)
                 , ref htmlBodyError, MyTNBFont.FONTNAME_300, 12f);
             UIStringAttributes linkAttributes = new UIStringAttributes
             {
@@ -157,9 +166,21 @@ namespace myTNB
                 WeakLinkTextAttributes = linkAttributes.Dictionary,
                 TextAlignment = UITextAlignment.Left
             };
+            txtFieldInfo.Delegate = new TextViewDelegate(new Action<NSUrl>((url) =>
+            {
+                UIStoryboard storyBoard = UIStoryboard.FromName("Registration", null);
+                TermsAndConditionViewController viewController =
+                    storyBoard.InstantiateViewController("TermsAndConditionViewController") as TermsAndConditionViewController;
+                if (viewController != null)
+                {
+                    viewController.isPresentedVC = true;
+                    var navController = new UINavigationController(viewController);
+                    PresentViewController(navController, true, null);
+                }
+            }));
             //Resize
             CGSize size = txtFieldInfo.SizeThatFits(new CGSize(ViewWidth - 32, 160));
-            txtFieldInfo.Frame = new CGRect(16, 32, size.Width, size.Height);
+            txtFieldInfo.Frame = new CGRect(16, 17, size.Width, size.Height);
             return txtFieldInfo;
         }
         #endregion
@@ -541,6 +562,7 @@ namespace myTNB
                 _selectedAccount = SSMRAccounts.GetAccountByIndex(index);
                 _lblAccountName.Text = _selectedAccount.accountNickName;
                 _lblAddress.Text = _selectedAccount.accountStAddress;
+                NSNotificationCenter.DefaultCenter.PostNotificationName(SSMRConstants.Notification_SelectSSMRAccount, new NSObject());
             }
         }
 
