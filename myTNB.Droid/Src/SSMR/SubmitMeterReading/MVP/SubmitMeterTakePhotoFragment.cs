@@ -149,6 +149,45 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             }
         }
 
+        public override void OnPause()
+        {
+            CloseCamera();
+            StopBackgroundThread();
+            base.OnPause();
+        }
+
+        // Closes the current {@link CameraDevice}.
+        private void CloseCamera()
+        {
+            try
+            {
+                mCameraOpenCloseLock.Acquire();
+                if (null != mCaptureSession)
+                {
+                    mCaptureSession.Close();
+                    mCaptureSession = null;
+                }
+                if (null != mCameraDevice)
+                {
+                    mCameraDevice.Close();
+                    mCameraDevice = null;
+                }
+                if (null != mImageReader)
+                {
+                    mImageReader.Close();
+                    mImageReader = null;
+                }
+            }
+            catch (InterruptedException e)
+            {
+                throw new RuntimeException("Interrupted while trying to lock camera closing.", e);
+            }
+            finally
+            {
+                mCameraOpenCloseLock.Release();
+            }
+        }
+
         public void CreateCameraPreviewSession()
         {
             try
@@ -217,9 +256,9 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                     return;
                 }
                 // This is the CaptureRequest.Builder that we use to take a picture.
-                if (stillCaptureBuilder == null)
-                    stillCaptureBuilder = mCameraDevice.CreateCaptureRequest(CameraTemplate.StillCapture);
-
+                //if (stillCaptureBuilder == null)
+                //    stillCaptureBuilder = mCameraDevice.CreateCaptureRequest(CameraTemplate.StillCapture);
+                var stillCaptureBuilder = mCameraDevice.CreateCaptureRequest(CameraTemplate.StillCapture);
                 stillCaptureBuilder.AddTarget(mImageReader.Surface);
 
                 // Use the same AE and AF modes as the preview.
@@ -617,7 +656,9 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
 
             public void Run()
             {
-                owner.UpdateImage(myBitmap);
+                //owner.CloseCamera();
+                //owner.StopBackgroundThread();
+                ((SubmitMeterTakePhotoActivity)owner.Activity).ShowAdjustFragment(myBitmap);
             }
         }
     }

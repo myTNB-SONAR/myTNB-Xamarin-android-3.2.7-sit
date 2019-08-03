@@ -6,6 +6,7 @@ using System.Text;
 
 using Android.App;
 using Android.Content;
+using Android.Graphics;
 using Android.OS;
 using Android.Runtime;
 using Android.Views;
@@ -44,6 +45,16 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             {
                 FragmentManager.BeginTransaction().Replace(Resource.Id.photoContainer, SubmitMeterTakePhotoFragment.NewInstance()).Commit();
             }
+        }
+
+        public void ShowAdjustFragment(Bitmap myBitmap)
+        {
+            FragmentTransaction transaction = FragmentManager.BeginTransaction();
+            SubmitMeterAdjustPhotoFragment adjustPhotoFragment = SubmitMeterAdjustPhotoFragment.NewIntance();
+            adjustPhotoFragment.SetCapturedImage(myBitmap);
+            transaction.Replace(Resource.Id.photoContainer, adjustPhotoFragment);
+            transaction.AddToBackStack(null);
+            transaction.Commit();
         }
     }
 }

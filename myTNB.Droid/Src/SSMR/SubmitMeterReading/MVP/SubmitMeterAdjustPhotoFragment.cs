@@ -6,6 +6,7 @@ using System.Text;
 
 using Android.App;
 using Android.Content;
+using Android.Graphics;
 using Android.OS;
 using Android.Runtime;
 using Android.Util;
@@ -16,11 +17,29 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
 {
     public class SubmitMeterAdjustPhotoFragment : Fragment
     {
+        Bitmap myBitmap;
         public override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
 
             // Create your fragment here
+            
+        }
+
+        public override void OnViewCreated(View view, Bundle savedInstanceState)
+        {
+            ImageView capturedImage = view.FindViewById<ImageView>(Resource.Id.adjust_photo_preview);
+            capturedImage.SetImageBitmap(myBitmap);
+        }
+
+        public static SubmitMeterAdjustPhotoFragment NewIntance()
+        {
+            return new SubmitMeterAdjustPhotoFragment();
+        }
+
+        public void SetCapturedImage(Bitmap capturedBitmap)
+        {
+            myBitmap = capturedBitmap;
         }
 
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -28,7 +47,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             // Use this to return your custom view for this Fragment
             // return inflater.Inflate(Resource.Layout.YourFragment, container, false);
 
-            return base.OnCreateView(inflater, container, savedInstanceState);
+            return inflater.Inflate(Resource.Layout.SubmitMeterAdjustPhotoFragmentLayout, container, false);
         }
     }
 }

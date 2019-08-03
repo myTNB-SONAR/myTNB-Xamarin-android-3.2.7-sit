@@ -19,14 +19,14 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.Api
             api = RestService.For<SubmitMeterReadingApi>(Constants.SERVER_URL.END_POINT);
 #endif
         }
-        public Task<SubmitMeterReadingResponse> GetMeterReadingOCRValue([Body] myTNB_Android.Src.SSMR.SMRApplication.Api.BaseRequest request)
-        {
-            return api.GetMeterReadingOCRValue(request);
-        }
-
         public Task<SubmitMeterReadingResponse> SubmitSMRMeetingReading([Body] myTNB_Android.Src.SSMR.SMRApplication.Api.BaseRequest request)
         {
             return api.SubmitSMRMeetingReading(request);
+        }
+
+        public Task<GetMeterReadingOCRResponse> GetMeterReadingOCRValue([Body] myTNB_Android.Src.SSMR.SMRApplication.Api.BaseRequest request)
+        {
+            return api.GetMeterReadingOCRValue(request);
         }
     }
 }

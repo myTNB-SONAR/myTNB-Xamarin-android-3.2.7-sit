@@ -12,6 +12,6 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.Api
 
         [Headers("Content-Type:application/json; charset=utf-8")]
         [Post("/v6/mytnbappws.asmx/GetMeterReadingOCRValue")]
-        Task<SubmitMeterReadingResponse> GetMeterReadingOCRValue([Body] myTNB_Android.Src.SSMR.SMRApplication.Api.BaseRequest request);
+        Task<GetMeterReadingOCRResponse> GetMeterReadingOCRValue([Body] myTNB_Android.Src.SSMR.SMRApplication.Api.BaseRequest request);
     }
 }

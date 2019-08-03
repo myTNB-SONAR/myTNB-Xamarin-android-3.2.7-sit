@@ -1481,6 +1481,14 @@
     <Compile Include="Src\SSMR\SubmitMeterReading\Listener\CameraCaptureStillPictureSessionCallback.cs" />
     <Compile Include="Src\SSMR\SubmitMeterReading\Listener\ImageAvailableListener.cs" />
     <Compile Include="Src\SSMR\SubmitMeterReading\MVP\SubmitMeterAdjustPhotoFragment.cs" />
+    <AndroidResource Include="Resources\layout\SubmitMeterAdjustPhotoFragmentLayout.axml" />
+    <AndroidResource Include="Resources\drawable-hdpi\group_3.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\group_3.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\group_3.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\group_3.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\group_3.png" />
+    <Compile Include="Src\SSMR\SubmitMeterReading\Api\GetMeterReadingOCRValueRequest.cs" />
+    <Compile Include="Src\SSMR\SubmitMeterReading\Api\GetMeterReadingOCRResponse.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -1854,6 +1862,7 @@
     <Folder Include="Src\SSMR\SubmitMeterReading\MVP\" />
     <Folder Include="Src\SSMR\SubmitMeterReading\Listener\" />
     <Folder Include="Src\SSMR\SubmitMeterReading\Api\" />
+    <Folder Include="Src\SSMR\SubmitMeterReading\Utils\" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\GradientStatusBar.xml" />
