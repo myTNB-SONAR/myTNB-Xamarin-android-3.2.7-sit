@@ -226,6 +226,8 @@ namespace myTNB_Android.Src.Utils
         internal static readonly string SMR_RESPONSE_KEY = "smrReponse";
         internal static readonly string SMR_SUBMIT_METER_KEY = "S";
         internal static readonly string SMR_VIEW_METER_KEY = "V";
+        internal static readonly string SMR_TERMINATION_REASON_KEY = "smrTerminationReason";
+        internal static readonly string SMR_TERMINATION_KEY = "smrTermination";
 
         public enum GREETING
         {

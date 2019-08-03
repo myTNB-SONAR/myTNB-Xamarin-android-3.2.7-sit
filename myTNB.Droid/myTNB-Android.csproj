@@ -1234,6 +1234,7 @@
     <AndroidResource Include="Resources\drawable-xhdpi\fluid_background.png" />
     <AndroidResource Include="Resources\drawable-xxhdpi\fluid_background.png" />
     <AndroidResource Include="Resources\drawable-xxxhdpi\fluid_background.png" />
+    <AndroidResource Include="Resources\layout\SSMRDiscontinueApplicationLayout.axml" />
     <AndroidResource Include="Resources\drawable\dashboard_home_new_bg.xml" />
     <Compile Include="Src\myTNBMenu\Fragments\HomeMenu\MVP\AccountCardsFilter.cs" />
     <Compile Include="Src\myTNBMenu\Fragments\HomeMenu\MVP\ObjectExtensions.cs" />
@@ -1310,6 +1311,8 @@
     <Compile Include="Src\Database\Model\NewFAQParentEntity.cs" />
     <Compile Include="Src\SitecoreCMS\Service\HelpService.cs" />
     <Compile Include="Src\SitecoreCMS\Model\HelpModel.cs" />
+    <Compile Include="Src\SSMRTerminate\MVP\SSMRTerminateActivity.cs" />
+    <AndroidResource Include="Resources\values\SSMRTerminateStyle.xml" />
     <Compile Include="Src\SSMRMeterHistory\MVP\SSMRMeterHistoryActivity.cs" />
     <AndroidResource Include="Resources\values\SSMRMeterHistoryStyle.xml" />
     <AndroidResource Include="Resources\layout\SSMRMeterHistoryLayout.axml" />
@@ -1452,6 +1455,19 @@
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
+    <AndroidResource Include="Resources\layout\SSMRMenuItemLayout.axml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <Compile Include="Src\SSMRTerminate\MVP\SSMRTerminationReasonModel.cs" />
+    <Compile Include="Src\SSMRMeterHistory\MVP\SSMRMeterHistoryMenuModel.cs" />
+    <AndroidResource Include="Resources\drawable\custom_round_white_background.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <Compile Include="Src\SSMRMeterHistory\Adapter\SSMRMeterHistoryMenuAdapter.cs" />
+    <Compile Include="Src\SSMRTerminate\MVP\SSMRTerminateContract.cs" />
+    <Compile Include="Src\SSMRTerminate\MVP\SSMRTerminatePresenter.cs" />
     <Compile Include="Src\SSMR\SMRApplication\Adapter\SelectAccountAdapter.cs" />
     <AndroidResource Include="Resources\layout\SMRSubmitMeterReadingFragmentLayout.axml">
       <SubType></SubType>
@@ -1580,6 +1596,81 @@
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
+    <Compile Include="Src\SSMRTerminate\Api\SSMRTerminateImpl.cs" />
+    <Compile Include="Src\SSMRTerminate\Api\SSMRTerminateApi.cs" />
+    <Compile Include="Src\SSMRTerminate\Api\GetRegisteredContactInfoRequest.cs" />
+    <Compile Include="Src\SSMRTerminate\Api\GetSMRTerminationReasonsRequest.cs" />
+    <Compile Include="Src\SSMRTerminate\Api\SMRTerminationReasonsResponse.cs" />
+    <Compile Include="Src\SSMRTerminate\Api\TerminationReasonModel.cs" />
+    <AndroidResource Include="Resources\values\SMRApplicationStyle.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\SSMRTerminationSelectionLayout.axml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\SSMRTerminationItemLayout.axml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <Compile Include="Src\SSMRTerminate\MVP\SSMRTerminationReasonSelectionActivity.cs" />
+    <Compile Include="Src\SSMRTerminate\Adapter\SSMRTerminationReasonAdapter.cs" />
+    <Compile Include="Src\SSMRTerminate\Api\SubmitSMRApplicationRequest.cs" />
+    <Compile Include="Src\SSMRTerminate\MVP\TerminateSMRAccountFailedActivity.cs" />
+    <AndroidResource Include="Resources\layout\TerminateSMRAccountFailedView.axml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-hdpi\ic_display_successful_new.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-hdpi\ic_display_unsuccessful_new.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\ic_display_successful_new.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\ic_display_unsuccessful_new.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_display_successful_new.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_display_unsuccessful_new.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_display_successful_new.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_display_unsuccessful_new.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\ic_display_successful_new.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\ic_display_unsuccessful_new.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable\smr_application_white_background.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\TerminateSMRAccountSuccessView.axml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <Compile Include="Src\SSMRTerminate\MVP\TerminateSMRAccountSuccessActivity.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -1941,6 +2032,8 @@
     <Folder Include="Src\myTNBMenu\Fragments\HomeMenu\Helper\" />
     <Folder Include="Src\Base\Helper\" />
     <Folder Include="Src\myTNBMenu\Fragments\HomeMenu\Requests\" />
+    <Folder Include="Src\SSMRTerminate\" />
+    <Folder Include="Src\SSMRTerminate\MVP\" />
     <Folder Include="Src\SSMR\" />
     <Folder Include="Src\SSMR\SMRApplication\" />
     <Folder Include="Src\SSMR\SMRApplication\MVP\" />
@@ -1952,6 +2045,8 @@
     <Folder Include="Src\SSMR\SSMRMeterReadingTooltip\" />
     <Folder Include="Src\SSMR\SSMRMeterReadingTooltip\Adapter\" />
     <Folder Include="Src\SSMR\SSMRMeterReadingTooltip\MVP\" />
+    <Folder Include="Src\SSMRTerminate\Api\" />
+    <Folder Include="Src\SSMRTerminate\Adapter\" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\GradientStatusBar.xml" />

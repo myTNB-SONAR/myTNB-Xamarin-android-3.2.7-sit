@@ -65,5 +65,8 @@ namespace myTNB_Android.Src.myTNBMenu.Models
         [JsonProperty("SMRPhotoPopUpDetails")]
         [AliasAs("SMRPhotoPopUpDetails")]
         public List<SMRPhotoPopUpDetailsModel> SMRPhotoPopUpDetails { get; set; }
+        [JsonProperty("MoreOptions")]
+        [AliasAs("MoreOptions")]
+        public List<SSMRMeterHistoryMenuModel> MeterReadingMenu { get; set; }
     }
 }

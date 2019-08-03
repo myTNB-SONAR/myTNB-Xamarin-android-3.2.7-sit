@@ -17,7 +17,7 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.Api
             httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
             api = RestService.For<CARegisteredContactInfoApi>(httpClient);
 #else
-            notificationApi = RestService.For<CARegisteredContactInfoApi>(Constants.SERVER_URL.END_POINT);
+            api = RestService.For<CARegisteredContactInfoApi>(Constants.SERVER_URL.END_POINT);
 #endif
         }
 

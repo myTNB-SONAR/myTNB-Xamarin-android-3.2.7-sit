@@ -1173,6 +1173,13 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     }
                 }
             }
+            else if (requestCode == SSMR_METER_HISTORY_ACTIVITY_CODE)
+            {
+                if (resultCode == Result.Ok)
+                {
+                    this.userActionsListener.OnTapRefresh();
+                }
+            }
         }
 
         public void ShowNotAvailableDayData()
