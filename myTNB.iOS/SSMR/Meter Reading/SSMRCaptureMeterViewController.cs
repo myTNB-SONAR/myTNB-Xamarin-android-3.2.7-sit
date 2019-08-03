@@ -390,6 +390,7 @@ namespace myTNB
             View.AddSubview(_viewCamera);
         }
 
+        #region Box Overlay
         private UIView GetOverlay(UIView viewBase)
         {
             nfloat baseHeight = viewBase.Frame.Height;
@@ -397,22 +398,26 @@ namespace myTNB
             nfloat boxHeight = viewBase.Frame.Height - _viewCameraActions.Frame.Height - (baseHeight * 0.028F * 2);
             UIView view = new UIView(new CGRect(new CGPoint(0, 0), viewBase.Frame.Size))
             { BackgroundColor = UIColor.Clear, UserInteractionEnabled = false };
-            UIView viewTop = new UIView(new CGRect(0, 0, ViewWidth, baseHeight * 0.028F))
+            UIView viewTop = new UIView(new CGRect(0, 0, ViewWidth, (baseHeight * 0.028F) + 1))
             { BackgroundColor = UIColor.Black.ColorWithAlpha(0.60F), UserInteractionEnabled = false };
-            UIView viewLeft = new UIView(new CGRect(0, viewTop.Frame.GetMaxY(), baseWidth * 0.22F, boxHeight))
+            UIView viewLeft = new UIView(new CGRect(0, viewTop.Frame.GetMaxY(), (baseWidth * 0.22F) + 1, boxHeight))
             { BackgroundColor = UIColor.Black.ColorWithAlpha(0.60F), UserInteractionEnabled = false };
-            UIView viewClear = new UIView(new CGRect(viewLeft.Frame.GetMaxX(), viewTop.Frame.GetMaxY(), baseWidth - (baseWidth * 0.22F * 2), boxHeight))
+
+            UIView viewClear = new UIView(new CGRect(viewLeft.Frame.GetMaxX() - 1, viewTop.Frame.GetMaxY() - 1, (baseWidth - (baseWidth * 0.22F * 2)) + 2, boxHeight + 2))
             { BackgroundColor = UIColor.Clear, UserInteractionEnabled = false };
             viewClear.Layer.BorderColor = MyTNBColor.WaterBlue.CGColor;
             viewClear.Layer.BorderWidth = 1.0F;
             viewClear.Layer.CornerRadius = 4.0F;
-            UIView viewRight = new UIView(new CGRect(viewClear.Frame.GetMaxX(), viewTop.Frame.GetMaxY(), baseWidth * 0.22F, boxHeight))
+
+            UIView viewRight = new UIView(new CGRect(viewClear.Frame.GetMaxX() - 1, viewTop.Frame.GetMaxY(), (baseWidth * 0.22F) + 1, boxHeight))
             { BackgroundColor = UIColor.Black.ColorWithAlpha(0.60F), UserInteractionEnabled = false };
-            UIView viewBottom = new UIView(new CGRect(0, viewLeft.Frame.GetMaxY(), ViewWidth, baseHeight - viewLeft.Frame.GetMaxY()))
+            UIView viewBottom = new UIView(new CGRect(0, viewLeft.Frame.GetMaxY(), ViewWidth, (baseHeight - viewLeft.Frame.GetMaxY()) + 1))
             { BackgroundColor = UIColor.Black.ColorWithAlpha(0.60F), UserInteractionEnabled = false };
             view.AddSubviews(new UIView[] { viewTop, viewLeft, viewClear, viewRight, viewBottom });
+            view.BringSubviewToFront(viewClear);
             return view;
         }
+        #endregion
 
         private UIView GetDeleteSection(UIView viewBase)
         {

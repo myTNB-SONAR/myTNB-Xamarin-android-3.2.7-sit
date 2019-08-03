@@ -174,7 +174,7 @@ namespace myTNB
                 if (viewController != null)
                 {
                     viewController.isPresentedVC = true;
-                    var navController = new UINavigationController(viewController);
+                    UINavigationController navController = new UINavigationController(viewController);
                     PresentViewController(navController, true, null);
                 }
             }));
