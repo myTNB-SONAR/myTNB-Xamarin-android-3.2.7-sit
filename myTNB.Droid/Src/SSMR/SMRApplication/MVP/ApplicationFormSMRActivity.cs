@@ -112,6 +112,10 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
             txtEmail.AddTextChangedListener(new InputFilterFormField(txtEmail, textInputEmail));
             txtMobileNumber.SetFilters(new Android.Text.IInputFilter[] { new InputFilterPhoneNumber() });
             GetCARegisteredContactInfo();
+
+            SMRPopUpUtils.OnShowSMRMeterReadingTooltipOnActivity(true, this, SupportFragmentManager);
+
+            // SMRPopUpUtils.OnShowSMRMeterReadingTooltipOnActivity(false, this, SupportFragmentManager);
         }
 
         public void GetCARegisteredContactInfo()

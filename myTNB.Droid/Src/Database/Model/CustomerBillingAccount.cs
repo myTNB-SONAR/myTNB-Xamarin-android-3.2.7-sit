@@ -76,6 +76,9 @@ namespace myTNB_Android.Src.Database.Model
         [Column("IsSMROnboardingShown")]
         public bool IsSMROnboardingShown { get; set; }
 
+        [Column("IsSMRMeterReadingOnBoardShown")]
+        public bool IsSMRMeterReadingOnBoardShown { get; set; }
+
         public static int CreateTable()
         {
             //using (var db = new SQLiteConnection(Constants.DB_PATH))
@@ -605,6 +608,24 @@ namespace myTNB_Android.Src.Database.Model
             if (customerBillingAccounts.Count > 0)
             {
                 isShown = customerBillingAccounts[0].IsSMROnboardingShown;
+            }
+            return isShown;
+        }
+
+        public static void UpdateIsSMRMeterReadingOnBoardShown()
+        {
+            var db = DBHelper.GetSQLiteConnection();
+            db.Execute("Update CustomerBillingAccountEntity SET IsSMRMeterReadingOnBoardShown = 1");
+        }
+
+        public static bool GetIsSMRMeterReadingOnBoardShown()
+        {
+            var db = DBHelper.GetSQLiteConnection();
+            bool isShown = false;
+            List<CustomerBillingAccount> customerBillingAccounts = db.Query<CustomerBillingAccount>("Select IsSMRMeterReadingOnBoardShown from CustomerBillingAccountEntity");
+            if (customerBillingAccounts.Count > 0)
+            {
+                isShown = customerBillingAccounts[0].IsSMRMeterReadingOnBoardShown;
             }
             return isShown;
         }

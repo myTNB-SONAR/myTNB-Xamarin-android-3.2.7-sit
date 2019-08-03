@@ -1,17 +1,31 @@
 ﻿using myTNB.SitecoreCMS.Model;
 using myTNB_Android.Src.Database;
+using myTNB_Android.Src.Utils;
 using SQLite;
 using System;
 using System.Collections.Generic;
 
-namespace myTNB.SQLite.SQLiteDataManager
+namespace myTNB_Android.Src.Database.Model
 {
-	public class SSMRMeterReadingScreensEntity : SSMRMeterReadingModel
+    [Table("SSMRMeterReadingScreensOnePhaseEntity")]
+    public class SSMRMeterReadingScreensEntity
 	{
-		public void CreateTable()
+        [Unique, Column("ID")]
+        public string ID { get; set; }
+
+        [Column("Title")]
+        public string Title { set; get; }
+
+        [Column("Description")]
+        public string Description { set; get; }
+
+        [Column("Image")]
+        public string Image { set; get; }
+
+        public void CreateTable()
 		{
 			var db = DBHelper.GetSQLiteConnection();
-			List<SQLiteConnection.ColumnInfo> info = db.GetTableInfo("WalkthroughScreensEntity");
+			List<SQLiteConnection.ColumnInfo> info = db.GetTableInfo("SSMRMeterReadingScreensOnePhaseEntity");
 			db.CreateTable<SSMRMeterReadingScreensEntity>();
 		}
 
@@ -21,12 +35,11 @@ namespace myTNB.SQLite.SQLiteDataManager
 			{
 				var db = DBHelper.GetSQLiteConnection();
 				int newRecord = db.InsertOrReplace(item);
-				Console.WriteLine("Insert Record: {0}", newRecord);
 			}
 			catch (Exception e)
 			{
-				Console.WriteLine("Error in Insert Item in Table : {0}", e.Message);
-			}
+                Utility.LoggingNonFatalError(e);
+            }
 		}
 
 		public void InsertListOfItems(List<SSMRMeterReadingModel> itemList)
@@ -51,12 +64,12 @@ namespace myTNB.SQLite.SQLiteDataManager
 			try
 			{
 				var db = DBHelper.GetSQLiteConnection();
-				itemList = db.Query<SSMRMeterReadingScreensEntity>("select * from SSMRMeterReadingScreensEntity");
+				itemList = db.Query<SSMRMeterReadingScreensEntity>("select * from SSMRMeterReadingScreensOnePhaseEntity");
 			}
 			catch (Exception e)
 			{
-				Console.WriteLine("Error in Get All Items : {0}", e.Message);
-			}
+                Utility.LoggingNonFatalError(e);
+            }
 			return itemList;
 		}
 
@@ -69,8 +82,8 @@ namespace myTNB.SQLite.SQLiteDataManager
 			}
 			catch (Exception e)
 			{
-				Console.WriteLine("Error in Delete Table : {0}", e.Message);
-			}
+                Utility.LoggingNonFatalError(e);
+            }
 		}
 	}
 }

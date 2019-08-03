@@ -136,7 +136,8 @@
                 public const string Help = "/sitecore/content/myTNBapp/Contents/Need Help";
                 public const string ApplySSMRWalkthrough = "/sitecore/content/myTNBapp/Contents/Walkthrough SSMR Apply";
 
-                public const string SSMRMeterReadingWalkthrough = "/sitecore/content/myTNBapp/Contents/Walkthrough SSMR MeterRead";
+                public const string SSMRMeterReadingOnePhaseWalkthrough = "/sitecore/content/myTNBapp/Contents/Walkthrough SSMR MeterRead OnePhase";
+                public const string SSMRMeterReadingThreePhaseWalkthrough = "/sitecore/content/myTNBapp/Contents/Walkthrough SSMR MeterRead ThreePhase";
             }
         }
     }

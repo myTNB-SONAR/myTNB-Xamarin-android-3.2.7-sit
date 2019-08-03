@@ -1498,7 +1498,7 @@
       <Generator></Generator>
     </AndroidResource>
     <Compile Include="Src\SSMR\SMRApplication\MVP\SMRPhotoPopUpDetailsModel.cs" />
-    <Compile Include="Src\Utils\SMRPhotoPopUpUtils.cs" />
+    <Compile Include="Src\Utils\SMRPopUpUtils.cs" />
     <AndroidResource Include="Resources\drawable\custom_round_white_dialog_shadow.xml">
       <SubType></SubType>
       <Generator></Generator>
@@ -1507,7 +1507,7 @@
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
-    <Compile Include="Src\SitecoreCMS\Service\SSMRMeterReadingWalkthroughService.cs" />
+    <Compile Include="Src\SitecoreCMS\Service\SSMRMeterReadingThreePhaseWalkthroughService.cs" />
     <Compile Include="Src\SitecoreCMS\Model\SSMRMeterReadingWalkthroughModel.cs" />
     <Compile Include="Src\Database\Model\SSMRMeterReadingScreensEntity.cs" />
     <AndroidResource Include="Resources\layout\CustomDialogWithImgViewPageOneButtonLayout.axml">
@@ -1515,9 +1515,6 @@
       <Generator></Generator>
     </AndroidResource>
     <Compile Include="Src\Database\Model\SSMRMeterReadingScreensParentEntity.cs" />
-    <Compile Include="Src\Utils\SMRSubmitMeterPopUpUtil.cs" />
-    <Compile Include="Src\SSMR\Adapter\SSMRMeterReadingAdapter.cs" />
-    <Compile Include="Src\SSMR\MVP\SSMRMeterReadingFragment.cs" />
     <AndroidResource Include="Resources\drawable-hdpi\tooltip_bg_2.png">
       <SubType></SubType>
       <Generator></Generator>
@@ -1558,6 +1555,12 @@
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
+    <Compile Include="Src\SitecoreCMS\Service\SSMRMeterReadingOnePhaseWalkThroughService.cs" />
+    <Compile Include="Src\Database\Model\SSMRMeterReadingThreePhaseScreensEntity.cs" />
+    <Compile Include="Src\Database\Model\SSMRMeterReadingThreePhaseScreensParentEntity.cs" />
+    <Compile Include="Src\SSMR\SSMRMeterReadingTooltip\Adapter\SSMRMeterReadingPagerAdapter.cs" />
+    <Compile Include="Src\SSMR\SSMRMeterReadingTooltip\MVP\SSMRMeterReadingDialogFragment.cs" />
+    <Compile Include="Src\SSMR\SSMRMeterReadingTooltip\MVP\SSMRMeterReadingDialogPresenter.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -1927,8 +1930,9 @@
     <Folder Include="Src\SSMRMeterHistory\" />
     <Folder Include="Src\SSMRMeterHistory\MVP\" />
     <Folder Include="Src\SSMRMeterHistory\Adapter\" />
-    <Folder Include="Src\SSMR\Adapter\" />
-    <Folder Include="Src\SSMR\MVP\" />
+    <Folder Include="Src\SSMR\SSMRMeterReadingTooltip\" />
+    <Folder Include="Src\SSMR\SSMRMeterReadingTooltip\Adapter\" />
+    <Folder Include="Src\SSMR\SSMRMeterReadingTooltip\MVP\" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\GradientStatusBar.xml" />

@@ -91,6 +91,8 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
         private string savedSSMRMeterReadingTimeStamp = "0000000";
 
+        private string savedSSMRMeterReadingThreePhaseTimeStamp = "0000000";
+
         public static Fragment currentFragment;
 
         public static bool GO_TO_INNER_DASHBOARD = false;
@@ -165,6 +167,8 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             this.userActionsListener?.OnNotificationCount();
 
             this.userActionsListener?.GetSmartMeterReadingWalkthroughtTimeStamp();
+
+            this.userActionsListener?.OnGetSmartMeterReadingThreePhaseWalkthroughtTimeStamp();
         }
 
         public void ShowBackButton(bool flag)
@@ -806,6 +810,39 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                         if (!entity.Timestamp.Equals(savedSSMRMeterReadingTimeStamp))
                         {
                             this.userActionsListener.OnGetSSMRMeterReadingScreens();
+                        }
+                    }
+                }
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void OnSavedSSMRMeterReadingThreePhaseTimeStamp(string mSavedTimeStamp)
+        {
+            if (mSavedTimeStamp != null)
+            {
+                this.savedSSMRMeterReadingThreePhaseTimeStamp = mSavedTimeStamp;
+            }
+            this.userActionsListener.OnGetSmartMeterReadingThreePhaseWalkthroughtTimeStamp();
+        }
+
+        public void CheckSSMRMeterReadingThreePhaseTimeStamp()
+        {
+            try
+            {
+                SSMRMeterReadingThreePhaseScreensParentEntity wtManager = new SSMRMeterReadingThreePhaseScreensParentEntity();
+                List<SSMRMeterReadingThreePhaseScreensParentEntity> items = wtManager.GetAllItems();
+                if (items != null)
+                {
+                    SSMRMeterReadingThreePhaseScreensParentEntity entity = items[0];
+                    if (entity != null)
+                    {
+                        if (!entity.Timestamp.Equals(savedSSMRMeterReadingTimeStamp))
+                        {
+                            this.userActionsListener.OnGetSSMRMeterReadingThreePhaseScreens();
                         }
                     }
                 }

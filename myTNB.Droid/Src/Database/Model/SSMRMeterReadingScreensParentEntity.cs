@@ -8,7 +8,7 @@ using myTNB.SitecoreCMS.Model;
 
 namespace myTNB_Android.Src.Database.Model
 {
-	[Table("SSMRMeterReadingScreensParentEntity")]
+	[Table("SSMRMeterReadingScreensOnePhaseParentEntity")]
 	public class SSMRMeterReadingScreensParentEntity
     {
 		[Unique, Column("ID")]
@@ -20,7 +20,7 @@ namespace myTNB_Android.Src.Database.Model
 		public void CreateTable()
 		{
 			var db = DBHelper.GetSQLiteConnection();
-			List<SQLiteConnection.ColumnInfo> info = db.GetTableInfo("SSMRMeterReadingScreensParentEntity");
+			List<SQLiteConnection.ColumnInfo> info = db.GetTableInfo("SSMRMeterReadingScreensOnePhaseParentEntity");
 			db.CreateTable<SSMRMeterReadingScreensParentEntity>();
 		}
 
@@ -57,7 +57,7 @@ namespace myTNB_Android.Src.Database.Model
 			try
 			{
 				var db = DBHelper.GetSQLiteConnection();
-				itemList = db.Query<SSMRMeterReadingScreensParentEntity>("select * from SSMRMeterReadingScreensParentEntity");
+				itemList = db.Query<SSMRMeterReadingScreensParentEntity>("select * from SSMRMeterReadingScreensOnePhaseParentEntity");
 			}
 			catch (Exception e)
 			{

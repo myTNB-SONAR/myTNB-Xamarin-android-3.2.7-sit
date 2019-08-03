@@ -10,10 +10,10 @@ using Sitecore.MobileSDK.API.Request.Parameters;
 
 namespace myTNB.SitecoreCMS.Services
 {
-    public class SSMRMeterReadingWalkthroughService
+    public class SSMRMeterReadingThreePhaseWalkthroughService
     {
         private string _os, _imgSize, _websiteURL, _language;
-        internal SSMRMeterReadingWalkthroughService(string os, string imageSize, string websiteUrl = null, string language = "en")
+        internal SSMRMeterReadingThreePhaseWalkthroughService(string os, string imageSize, string websiteUrl = null, string language = "en")
         {
             _os = os;
             _imgSize = imageSize;
@@ -24,7 +24,7 @@ namespace myTNB.SitecoreCMS.Services
         internal List<SSMRMeterReadingModel> GetItems()
         {
             SitecoreService sitecoreService = new SitecoreService();
-            var req = sitecoreService.GetItemByPath(Constants.Sitecore.ItemPath.SSMRMeterReadingWalkthrough
+            var req = sitecoreService.GetItemByPath(Constants.Sitecore.ItemPath.SSMRMeterReadingThreePhaseWalkthrough
                 , PayloadType.Content, new List<ScopeType> { ScopeType.Children }, _websiteURL, _language);
             var item = req.Result;
             var list = ParseToChildrenItems(item);
@@ -35,7 +35,7 @@ namespace myTNB.SitecoreCMS.Services
         internal SSMRMeterReadingTimeStamp GetTimeStamp()
         {
             SitecoreService sitecoreService = new SitecoreService();
-            var req = sitecoreService.GetItemByPath(Constants.Sitecore.ItemPath.SSMRMeterReadingWalkthrough
+            var req = sitecoreService.GetItemByPath(Constants.Sitecore.ItemPath.SSMRMeterReadingThreePhaseWalkthrough
                 , PayloadType.Content, new List<ScopeType> { ScopeType.Self }, _websiteURL, _language);
             var item = req.Result;
             var list = ParseToTimestamp(item);
@@ -67,7 +67,7 @@ namespace myTNB.SitecoreCMS.Services
             }
             catch (Exception e)
             {
-                Debug.WriteLine("Exception in SSMRMeterReadingWalkthroughService/GetChildren: " + e.Message);
+                Debug.WriteLine("Exception in SSMRMeterReadingThreePhaseWalkthroughService/GetChildren: " + e.Message);
             }
             return list;
         }
@@ -92,7 +92,7 @@ namespace myTNB.SitecoreCMS.Services
             }
             catch (Exception e)
             {
-                Debug.WriteLine("Exception in SSMRMeterReadingWalkthroughService/GenerateTimestamp: " + e.Message);
+                Debug.WriteLine("Exception in SSMRMeterReadingThreePhaseWalkthroughService/GenerateTimestamp: " + e.Message);
             }
             return new SSMRMeterReadingTimeStamp();
         }

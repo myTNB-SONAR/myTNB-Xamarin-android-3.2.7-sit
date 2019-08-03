@@ -2,12 +2,11 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:orientation="vertical" 
-        android:layout_width="match_parent" 
-        android:layout_height="wrap_content"
-        >
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
         <ImageView
             android:id="@+id/tooltipImg"
-            android:layout_height="195dp"
+            android:layout_height="185dp"
             android:layout_width="match_parent"
             android:src="@drawable/tooltip_bg_1"
             android:scaleType="fitXY"/>
@@ -32,6 +31,9 @@
             android:layout_width="match_parent"
             android:layout_marginTop="15dp"
             android:textSize="14dp"
+            android:lineSpacingExtra="3dp"
+            android:maxLines="5"
+            android:scrollbars="vertical"
             android:textColor="@color/tunaGrey"
             android:gravity="left"
             android:text="Application Description"/>

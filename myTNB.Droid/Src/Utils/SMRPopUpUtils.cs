@@ -1,10 +1,19 @@
 ﻿using Android.Graphics;
+using myTNB_Android.Src.SSMR.SSMRMeterReadingTooltip.MVP;
 using System.Net;
 
 namespace myTNB_Android.Src.Utils
 {
-    public class SMRPhotoPopUpUtils
+    public class SMRPopUpUtils
     {
+        public static SSMRMeterReadingDialogFragment OnShowSMRMeterReadingTooltipOnActivity(bool isSinglePhase, Android.App.Activity mActivity, Android.Support.V4.App.FragmentManager mManager)
+        {
+            SSMRMeterReadingDialogFragment dialogFragmnet = new SSMRMeterReadingDialogFragment(mActivity, isSinglePhase);
+            dialogFragmnet.Cancelable = false;
+            dialogFragmnet.Show(mManager, "SMRMeterReading Dialog");
+            return dialogFragmnet;
+        }
+
         public static Bitmap GetImageBitmapFromUrl(string url)
         {
             Bitmap imageBitmap = null;
