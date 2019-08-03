@@ -40,7 +40,7 @@
                 android:layout_marginBottom="12dp"
                 android:lineSpacingExtra="4dp"
                 android:textSize="16dp"
-                android:text="I am unsubscribing my service for:"
+                android:text="I am unsubscribing for:"
                 android:textColor="@color/powerBlue"
                 android:layout_gravity="left"/>
             <LinearLayout
@@ -161,7 +161,7 @@
                 android:layout_marginBottom="12dp"
                 android:lineSpacingExtra="4dp"
                 android:textSize="16dp"
-                android:text="We’re sorry to see you go! Can you tell us why you want to unsubscribe this service?"
+                android:text="We’re sorry to see you go! Can you tell us why you want to unsubscribe from this service?"
                 android:textColor="@color/powerBlue"
                 android:layout_gravity="left"/>
             <LinearLayout
@@ -196,7 +196,6 @@
                             android:cursorVisible="false"
                             android:focusable="false"
                             android:hint="@string/ssmr_select_discontinue_reason_hint"
-                            android:inputType="text"
                             android:scrollHorizontally="true"
                             android:ellipsize="end"
                             android:singleLine="true"

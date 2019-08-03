@@ -26,7 +26,7 @@ using myTNB_Android.Src.SSMR.SMRApplication.Api;
 
 namespace myTNB_Android.Src.SSMRTerminate.MVP
 {
-    [Activity(Label = "Unsubscribe Self Reading"
+    [Activity(Label = "Self Meter Reading"
         , ScreenOrientation = ScreenOrientation.Portrait
         , Theme = "@style/Theme.SMRApplication")]
     public class SSMRTerminateActivity : BaseToolbarAppCompatActivity, SSMRTerminateContract.IView, View.IOnTouchListener
