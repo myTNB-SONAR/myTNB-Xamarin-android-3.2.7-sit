@@ -75,6 +75,25 @@ namespace myTNB_Android.Src.Utils
 
 
             ImageView imgPhasePhoto = popup.FindViewById<ImageView>(Resource.Id.imgPhasePhoto);
+            RelativeLayout imgKvah = popup.FindViewById<RelativeLayout>(Resource.Id.imgKvah);
+            RelativeLayout imgKw = popup.FindViewById<RelativeLayout>(Resource.Id.imgKw);
+            RelativeLayout imgKwh = popup.FindViewById<RelativeLayout>(Resource.Id.imgKwh);
+
+            if (isSinglePhase)
+            {
+                imgPhasePhoto.SetImageResource(Resource.Drawable.single_phase);
+                imgKvah.Visibility = ViewStates.Gone;
+                imgKw.Visibility = ViewStates.Gone;
+                imgKwh.Visibility = ViewStates.Gone;
+            }
+            else
+            {
+                imgPhasePhoto.SetImageResource(Resource.Drawable.three_phase);
+                imgKvah.Visibility = ViewStates.Visible;
+                imgKw.Visibility = ViewStates.Visible;
+                imgKwh.Visibility = ViewStates.Visible;
+            }
+
             TextView txtTitle = popup.FindViewById<TextView>(Resource.Id.txtTitle);
             TextView txtMessage = popup.FindViewById<TextView>(Resource.Id.txtMessage);
             TextView txtBtnFirst = popup.FindViewById<TextView>(Resource.Id.txtBtnFirst);

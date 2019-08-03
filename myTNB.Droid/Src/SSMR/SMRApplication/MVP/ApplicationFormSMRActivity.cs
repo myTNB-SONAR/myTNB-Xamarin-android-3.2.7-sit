@@ -1,8 +1,6 @@
 ﻿
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 using Android.App;
 using Android.Content;
@@ -15,15 +13,9 @@ using Android.Util;
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
-using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Base.Activity;
-using myTNB_Android.Src.Database.Model;
-using myTNB_Android.Src.SelectSupplyAccount.Activity;
 using myTNB_Android.Src.Utils;
 using myTNB_Android.Src.Utils.Custom.ProgressDialog;
-using Newtonsoft.Json;
-using static myTNB_Android.Src.SSMR.SMRApplication.Api.CARegisteredContactInfoResponse;
-using static myTNB_Android.Src.SSMR.SMRApplication.Api.SMRregistrationSubmitResponse;
 
 namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
 {
@@ -112,27 +104,6 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
             txtEmail.AddTextChangedListener(new InputFilterFormField(txtEmail, textInputEmail));
             txtMobileNumber.SetFilters(new Android.Text.IInputFilter[] { new InputFilterPhoneNumber() });
             GetCARegisteredContactInfo();
-
-
-            /* SMRMeterReadingTooltip */
-            // How to use SMRMeterReadingTooltip
-            // SMRPopUpUtils.OnShowSMRMeterReadingTooltipOnActivity(isSinglePhase, your Activity, SupportFragmentManager);
-
-            // Only Limitation
-            // Only Can be use on Activity
-
-            // Note:
-            // Button Integration is done on this (if I did not missed)
-            // When checked on the checkbox, and click I'm Ready, it will write to here:
-            // MyTNBAccountManagement.GetInstance().UpdateIsSMRMeterReadingOnboardingShown();
-            // The checking for that flag:
-            // MyTNBAccountManagement.GetInstance().IsSMRMeterReadingOnboardingShown();
-
-            // Example
-            // SMRPopUpUtils.OnShowSMRMeterReadingTooltipOnActivity(true, this, SupportFragmentManager);
-            // SMRPopUpUtils.OnShowSMRMeterReadingTooltipOnActivity(false, this, SupportFragmentManager);
-            /* SMRMeterReadingTooltip */
-
 
         }
 
