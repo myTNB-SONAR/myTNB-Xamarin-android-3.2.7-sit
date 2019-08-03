@@ -71,7 +71,7 @@
                 android:id="@+id/txtBtnLabel"
                 android:textColor="@color/powerBlue"
                 android:layout_marginTop="16dp"
-                android:paddingBottom="16dp"
+                android:paddingBottom="18dp"
                 android:text="I'm Ready!"
                 android:textSize="16dp" />
         </LinearLayout>
