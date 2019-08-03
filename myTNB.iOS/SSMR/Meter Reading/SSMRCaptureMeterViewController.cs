@@ -96,7 +96,7 @@ namespace myTNB
             UIBarButtonItem btnBack = new UIBarButtonItem(UIImage.FromBundle(SSMRConstants.IMG_BackIcon)
                 , UIBarButtonItemStyle.Done, (sender, e) =>
             {
-                ViewHelper.DismissControllersAndSelectTab(this, 0, true);
+                NavigationController.PopViewController(true);
             });
             UIBarButtonItem btnInfo = new UIBarButtonItem(UIImage.FromBundle(SSMRConstants.IMG_Info)
                 , UIBarButtonItemStyle.Done, (sender, e) =>
@@ -289,6 +289,25 @@ namespace myTNB
             return true;
         }
 
+        private void SetPreviewColors(UIView view, bool isSelected, bool hasImg)
+        {
+            if (view != null)
+            {
+                UILabel currentLbl = view.ViewWithTag(98) as UILabel;
+                if (currentLbl == null) { currentLbl = new UILabel(); }
+                if (isSelected)
+                {
+                    view.Layer.BorderColor = MyTNBColor.WaterBlue.CGColor;
+                    currentLbl.TextColor = MyTNBColor.WaterBlue;
+                }
+                else
+                {
+                    view.Layer.BorderColor = hasImg ? MyTNBColor.FreshGreen.CGColor : MyTNBColor.WhiteTwo.CGColor;
+                    currentLbl.TextColor = MyTNBColor.GreyishBrown;
+                }
+            }
+        }
+
         private void PreviewAction(nint tag)
         {
             _currentTag = tag;
@@ -300,11 +319,17 @@ namespace myTNB
                 bool isSameTag = data.Tag == tag;
                 if (currentView != null)
                 {
-                    currentView.Layer.BorderColor = MyTNBColor.WhiteTwo.CGColor;
-                    if (data.Image != null) { currentView.Layer.BorderColor = MyTNBColor.FreshGreen.CGColor; }
+                    //currentView.Layer.BorderColor = MyTNBColor.WhiteTwo.CGColor;
+                    SetPreviewColors(currentView, false, false);
+                    if (data.Image != null)
+                    {
+                        //currentView.Layer.BorderColor = MyTNBColor.FreshGreen.CGColor;
+                        SetPreviewColors(currentView, false, true);
+                    }
                     if (isSameTag)
                     {
-                        currentView.Layer.BorderColor = MyTNBColor.WaterBlue.CGColor;
+                        //currentView.Layer.BorderColor = MyTNBColor.WaterBlue.CGColor;
+                        SetPreviewColors(currentView, true, data.Image != null);
                         if (data.Image == null)
                         {
                             RemovePreview();
@@ -314,6 +339,7 @@ namespace myTNB
                             AddMainPreview(data.Image);
                         }
                         SetDescription(GetI18NValue(data.Image == null ? _multiPhaseDescription : SSMRConstants.I18N_EditDescription));
+                        Title = GetI18NValue(data.Image == null ? SSMRConstants.I18N_NavTitleTakePhoto : SSMRConstants.I18N_NavTitleAdjustPhoto);
                     }
 
                     if (isSameTag)
@@ -322,7 +348,8 @@ namespace myTNB
                         bool isCurHasImg = data.Image != null;
                         if (isPrevHasImg)
                         {
-                            currentView.Layer.BorderColor = MyTNBColor.WaterBlue.CGColor;
+                            //currentView.Layer.BorderColor = MyTNBColor.WaterBlue.CGColor;
+                            SetPreviewColors(currentView, true, isPrevHasImg);
                         }
                         else
                         {
@@ -330,8 +357,10 @@ namespace myTNB
                             {
                                 _currentTag = _imageModelList[noImageIndex].Tag;
                                 UIView pView = _viewPreview.ViewWithTag(_currentTag);
-                                currentView.Layer.BorderColor = MyTNBColor.WhiteTwo.CGColor;
-                                pView.Layer.BorderColor = MyTNBColor.WaterBlue.CGColor;
+                                //currentView.Layer.BorderColor = MyTNBColor.WhiteTwo.CGColor;
+                                SetPreviewColors(currentView, false, false);
+                                SetPreviewColors(pView, true, false);
+                                //pView.Layer.BorderColor = MyTNBColor.WaterBlue.CGColor;
                             }
                         }
                     }
@@ -364,7 +393,8 @@ namespace myTNB
                 TextAlignment = UITextAlignment.Center,
                 Font = MyTNBFont.MuseoSans16_500,
                 TextColor = index == 1 ? MyTNBColor.WaterBlue : MyTNBColor.GreyishBrown,
-                Text = index.ToString()
+                Text = index.ToString(),
+                Tag = 98
             };
             UIImageView imgView = new UIImageView(new CGRect(new CGPoint(0, 0), frame.Size))
             {
@@ -372,7 +402,6 @@ namespace myTNB
                 Tag = 99
             };
             view.AddSubviews(new UIView[] { label, imgView });
-            //view.Tag = 1000 + index;
             return view;
         }
 
@@ -448,6 +477,7 @@ namespace myTNB
                 PreviewAction(_currentTag);
                 ToggleCTA();
                 SetDescription(_isMultiPhase ? _multiPhaseDescription : GetI18NValue(SSMRConstants.I18N_SingleTakePhotoDescription));
+                Title = GetI18NValue(SSMRConstants.I18N_NavTitleTakePhoto);
             }));
             view.AddSubview(imgDelete);
             return view;
@@ -519,6 +549,7 @@ namespace myTNB
                     AddMainPreview(selectedImg);
                     _capturedImage = selectedImg;
                     SetDescription(GetI18NValue(SSMRConstants.I18N_EditDescription));
+                    Title = GetI18NValue(SSMRConstants.I18N_NavTitleAdjustPhoto);
                 }
                 ToggleCTA();
             };
@@ -561,6 +592,9 @@ namespace myTNB
                     {
                         parent.Layer.BorderColor = MyTNBColor.WaterBlue.CGColor;
                         AddMainPreview(image);
+
+                        SetDescription(GetI18NValue(SSMRConstants.I18N_EditDescription));
+                        Title = GetI18NValue(SSMRConstants.I18N_NavTitleAdjustPhoto);
                     }
                     _currentTag = model.Tag;
                     break;
@@ -685,6 +719,7 @@ namespace myTNB
             {
                 AddMainPreview(capturedImage);
                 SetDescription(GetI18NValue(SSMRConstants.I18N_EditDescription));
+                Title = GetI18NValue(SSMRConstants.I18N_NavTitleAdjustPhoto);
             }
             ToggleCTA();
         }
@@ -848,7 +883,7 @@ namespace myTNB
                 {
                     if (_viewLoading != null) { _viewLoading.Hidden = true; }
                     var test = OCRReadingCache.Instance.GetOCRReadings();
-                    Debug.WriteLine("ResponseList: ");
+                    NavigationController.PopViewController(true);
                 });
             });
         }

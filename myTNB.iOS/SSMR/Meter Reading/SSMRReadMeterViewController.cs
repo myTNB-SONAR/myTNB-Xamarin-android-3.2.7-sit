@@ -196,8 +196,7 @@ namespace myTNB
                 SSMRCaptureMeterViewController viewController =
                     storyBoard.InstantiateViewController("SSMRCaptureMeterViewController") as SSMRCaptureMeterViewController;
                 viewController.ReadingDictionary = ReadingDictionary;
-                var navController = new UINavigationController(viewController);
-                PresentViewController(navController, true, null);
+                NavigationController.PushViewController(viewController, true);
             }
         }
 
