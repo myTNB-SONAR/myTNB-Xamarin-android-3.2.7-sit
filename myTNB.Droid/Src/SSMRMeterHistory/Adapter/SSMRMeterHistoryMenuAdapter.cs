@@ -45,8 +45,13 @@ namespace myTNB_Android.Src.SSMRMeterHistory.Adapter
             if (model.IsHighlighted == "true")
             {
                 vh.btnMenu.SetTextColor(Color.ParseColor("#e44b21"));
+                TextViewUtils.SetMuseoSans500Typeface(vh.btnMenu);
             }
-            TextViewUtils.SetMuseoSans300Typeface(vh.btnMenu);
+            else
+            {
+                TextViewUtils.SetMuseoSans300Typeface(vh.btnMenu);
+            }
+            
         }
 
         public override RecyclerView.ViewHolder OnCreateViewHolder(ViewGroup parent, int viewType)
