@@ -494,7 +494,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     {
                         ShowFeedbackMenu();
                     }
-                    else if (UserSessions.GetSMRAccountList().Count > 0 && selectedService.ServiceCategoryId == "1001")
+                    else if (selectedService.ServiceCategoryId == "1001")
                     {
                         Intent applySMRIntent;
                         if (MyTNBAccountManagement.GetInstance().IsSMROnboardingShown())
