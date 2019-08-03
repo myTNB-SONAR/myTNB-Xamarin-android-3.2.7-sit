@@ -1489,6 +1489,9 @@
     <AndroidResource Include="Resources\drawable-xxxhdpi\group_3.png" />
     <Compile Include="Src\SSMR\SubmitMeterReading\Api\GetMeterReadingOCRValueRequest.cs" />
     <Compile Include="Src\SSMR\SubmitMeterReading\Api\GetMeterReadingOCRResponse.cs" />
+    <Compile Include="Src\SSMR\SubmitMeterReading\MVP\SubmitMeterTakePhotoPresenter.cs" />
+    <Compile Include="Src\SSMR\SubmitMeterReading\MVP\SubmitMeterTakePhotoContract.cs" />
+    <Compile Include="Src\SSMR\SubmitMeterReading\MVP\MeterImageModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -1862,7 +1865,6 @@
     <Folder Include="Src\SSMR\SubmitMeterReading\MVP\" />
     <Folder Include="Src\SSMR\SubmitMeterReading\Listener\" />
     <Folder Include="Src\SSMR\SubmitMeterReading\Api\" />
-    <Folder Include="Src\SSMR\SubmitMeterReading\Utils\" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\GradientStatusBar.xml" />

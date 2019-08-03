@@ -1,23 +1,19 @@
-﻿
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
+﻿using Android.App;
 using Android.Graphics;
 using Android.OS;
-using Android.Runtime;
-using Android.Views;
 using Android.Widget;
 using myTNB_Android.Src.Base.Activity;
 
 namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
 {
     [Activity(Label = "Take Photo", Theme = "@style/Theme.Dashboard", MainLauncher = true)]
-    public class SubmitMeterTakePhotoActivity : BaseToolbarAppCompatActivity
+    public class SubmitMeterTakePhotoActivity : BaseToolbarAppCompatActivity, SubmitMeterTakePhotoContract.IView
     {
+        Button btnGetMeterReadingOCR;
+        SubmitMeterTakePhotoContract.IPresenter mPresenter;
+        const string IMAGE_ID = "MYTNBAPP_SSMR_OCR_KWH_001";
+        string contractNumber = "220098081110";
+        
         public override int ResourceId()
         {
             return Resource.Layout.SubmitMeterTakePhotoLayout;
@@ -36,19 +32,31 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-
-            // Create your application here
-            //FragmentManager.BeginTransaction()
-            //  .Replace(Resource.Id.photoContainer, new CameraTakePhotoFragment())
-            //  .Commit();
+            mPresenter = new SubmitMeterTakePhotoPresenter(this);
             if (savedInstanceState == null)
             {
                 FragmentManager.BeginTransaction().Replace(Resource.Id.photoContainer, SubmitMeterTakePhotoFragment.NewInstance()).Commit();
             }
+
+            btnGetMeterReadingOCR = FindViewById<Button>(Resource.Id.btnSubmitPhotoToOCR);
+            btnGetMeterReadingOCR.Click += delegate
+            {
+                //mPresenter.GetMeterReadingOCRValue(contractNumber);
+            };
+
+        }
+
+        protected override void OnStart()
+        {
+            base.OnStart();
+
         }
 
         public void ShowAdjustFragment(Bitmap myBitmap)
         {
+            //string base64String = Utils.ImageUtils.GetBase64FromBitmap(myBitmap);
+            //int size = myBitmap.ByteCount;
+            mPresenter.AddMeterImage(contractNumber, IMAGE_ID, myBitmap);
             FragmentTransaction transaction = FragmentManager.BeginTransaction();
             SubmitMeterAdjustPhotoFragment adjustPhotoFragment = SubmitMeterAdjustPhotoFragment.NewIntance();
             adjustPhotoFragment.SetCapturedImage(myBitmap);

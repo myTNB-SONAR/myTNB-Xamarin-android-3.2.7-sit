@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using myTNB_Android.Src.SSMR.SubmitMeterReading.Api;
+using static myTNB_Android.Src.SSMR.SubmitMeterReading.Api.GetMeterReadingOCRValueRequest;
 using static myTNB_Android.Src.SSMR.SubmitMeterReading.Api.SubmitMeterReadingRequest;
 
 namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
