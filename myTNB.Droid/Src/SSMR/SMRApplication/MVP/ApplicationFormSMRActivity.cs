@@ -113,9 +113,27 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
             txtMobileNumber.SetFilters(new Android.Text.IInputFilter[] { new InputFilterPhoneNumber() });
             GetCARegisteredContactInfo();
 
-            SMRPopUpUtils.OnShowSMRMeterReadingTooltipOnActivity(true, this, SupportFragmentManager);
 
+            /* SMRMeterReadingTooltip */
+            // How to use SMRMeterReadingTooltip
+            // SMRPopUpUtils.OnShowSMRMeterReadingTooltipOnActivity(isSinglePhase, your Activity, SupportFragmentManager);
+
+            // Only Limitation
+            // Only Can be use on Activity
+
+            // Note:
+            // Button Integration is done on this (if I did not missed)
+            // When checked on the checkbox, and click I'm Ready, it will write to here:
+            // MyTNBAccountManagement.GetInstance().UpdateIsSMRMeterReadingOnboardingShown();
+            // The checking for that flag:
+            // MyTNBAccountManagement.GetInstance().IsSMRMeterReadingOnboardingShown();
+
+            // Example
+            // SMRPopUpUtils.OnShowSMRMeterReadingTooltipOnActivity(true, this, SupportFragmentManager);
             // SMRPopUpUtils.OnShowSMRMeterReadingTooltipOnActivity(false, this, SupportFragmentManager);
+            /* SMRMeterReadingTooltip */
+
+
         }
 
         public void GetCARegisteredContactInfo()

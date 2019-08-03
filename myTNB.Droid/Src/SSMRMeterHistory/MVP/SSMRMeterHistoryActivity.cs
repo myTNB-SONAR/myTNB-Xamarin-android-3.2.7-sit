@@ -151,8 +151,25 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
                         }
                     }
                 }
+
+                /* SMRPhotoTooltip */
+                // How to use SMRPhotoTooltip
+                // 1) need to build your own function for this
+                // 2) then call that function
+                // How to build your own function, refer to down there
+                // This tooltip must be only can be use after first call of GetSMRAccountActivityInfo
+
+                // Note:
+                // Button Integration is yet done on this
+
+                // Example
+                // OnShowSMRPhotoTooltip(true, true, this);
+                // OnShowSMRPhotoTooltip(true, false, this);
+                OnShowSMRPhotoTooltip(false, true, this);
+                // OnShowSMRPhotoTooltip(false, false, this);
+                /* SMRPhotoTooltip */
             }
-			catch (Exception e)
+            catch (Exception e)
 			{
 				Utility.LoggingNonFatalError(e);
 			}
@@ -260,5 +277,22 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
 					break;
 			}
 		}
-	}
+
+        /* SMRPhotoTooltip */
+        // How to use this Tooltip
+        private void OnShowSMRPhotoTooltip(bool isTakePhoto, bool isSinglePhase, Activity mActivity)
+        {
+            MaterialDialog myDiaLog = SMRPopUpUtils.OnBuildSMRPhotoTooltip(isTakePhoto, isSinglePhase, mActivity);
+            LinearLayout btnFirst = myDiaLog.FindViewById<LinearLayout>(Resource.Id.btnFirst);
+
+            btnFirst.Click += delegate
+            {
+                // Do your handling here
+                myDiaLog.Dismiss();
+            };
+
+            myDiaLog.Show();
+        }
+        /* SMRPhotoTooltip */
+    }
 }

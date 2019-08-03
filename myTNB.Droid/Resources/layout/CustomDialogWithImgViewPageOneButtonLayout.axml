@@ -68,6 +68,7 @@
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
                 android:gravity="center"
+                android:id="@+id/txtBtnLabel"
                 android:textColor="@color/powerBlue"
                 android:layout_marginTop="16dp"
                 android:paddingBottom="16dp"

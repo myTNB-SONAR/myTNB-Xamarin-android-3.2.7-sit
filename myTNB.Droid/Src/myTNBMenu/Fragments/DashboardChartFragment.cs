@@ -1829,6 +1829,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 if (response != null && response.Response != null && response.Response.Data != null)
                 {
                     smrResponse = response;
+                    SMRPopUpUtils.OnSetSMRActivityInfoResponse(response);
                     Activity.RunOnUiThread(() =>
                     {
                         SsmrHistoryContainer.Visibility = ViewStates.Visible;
