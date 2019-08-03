@@ -107,6 +107,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
         private string mSavedTimeStamp = "0000000";
 
+        private string savedSSMRMeterReadingTimeStamp = "0000000";
+
+        private string savedSSMRMeterReadingThreePhaseTimeStamp = "0000000";
+
         private static List<MyService> currentMyServiceList = new List<MyService>();
 
         private static List<NewFAQ> currentNewFAQList = new List<NewFAQ>();
@@ -225,6 +229,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     StartActivity(new Intent(this.Activity, typeof(NotificationActivity)));
                 };
                 ((DashboardHomeActivity)Activity).SetStatusBarBackground();
+
+                this.presenter.GetSmartMeterReadingWalkthroughtTimeStamp();
+
+                this.presenter.GetSmartMeterReadingThreePhaseWalkthroughtTimeStamp();
             }
             catch (System.Exception e)
             {
@@ -811,6 +819,72 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         public AccountsRecyclerViewAdapter GetAccountAdapter()
         {
             return accountsAdapter;
+        }
+
+        public void OnSavedSSMRMeterReadingTimeStamp(string mSavedTimeStamp)
+        {
+            if (mSavedTimeStamp != null)
+            {
+                this.savedSSMRMeterReadingTimeStamp = mSavedTimeStamp;
+            }
+            this.presenter.OnGetSmartMeterReadingWalkthroughtTimeStamp();
+        }
+
+        public void CheckSSMRMeterReadingTimeStamp()
+        {
+            try
+            {
+                SSMRMeterReadingScreensParentEntity wtManager = new SSMRMeterReadingScreensParentEntity();
+                List<SSMRMeterReadingScreensParentEntity> items = wtManager.GetAllItems();
+                if (items != null)
+                {
+                    SSMRMeterReadingScreensParentEntity entity = items[0];
+                    if (entity != null)
+                    {
+                        if (!entity.Timestamp.Equals(savedSSMRMeterReadingTimeStamp))
+                        {
+                            this.presenter.OnGetSSMRMeterReadingScreens();
+                        }
+                    }
+                }
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void OnSavedSSMRMeterReadingThreePhaseTimeStamp(string mSavedTimeStamp)
+        {
+            if (mSavedTimeStamp != null)
+            {
+                this.savedSSMRMeterReadingThreePhaseTimeStamp = mSavedTimeStamp;
+            }
+            this.presenter.OnGetSmartMeterReadingThreePhaseWalkthroughtTimeStamp();
+        }
+
+        public void CheckSSMRMeterReadingThreePhaseTimeStamp()
+        {
+            try
+            {
+                SSMRMeterReadingThreePhaseScreensParentEntity wtManager = new SSMRMeterReadingThreePhaseScreensParentEntity();
+                List<SSMRMeterReadingThreePhaseScreensParentEntity> items = wtManager.GetAllItems();
+                if (items != null)
+                {
+                    SSMRMeterReadingThreePhaseScreensParentEntity entity = items[0];
+                    if (entity != null)
+                    {
+                        if (!entity.Timestamp.Equals(savedSSMRMeterReadingThreePhaseTimeStamp))
+                        {
+                            this.presenter.OnGetSSMRMeterReadingThreePhaseScreens();
+                        }
+                    }
+                }
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
     }
 }

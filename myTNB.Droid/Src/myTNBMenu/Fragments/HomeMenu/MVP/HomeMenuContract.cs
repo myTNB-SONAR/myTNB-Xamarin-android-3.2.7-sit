@@ -28,6 +28,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             void OnSavedTimeStamp(string savedTimeStamp);
             void ShowFAQTimestamp(bool success);
             AccountsRecyclerViewAdapter GetAccountAdapter();
+
+            void CheckSSMRMeterReadingTimeStamp();
+
+            void OnSavedSSMRMeterReadingTimeStamp(string mSavedTimeStamp);
+
+            void OnSavedSSMRMeterReadingThreePhaseTimeStamp(string mSavedTimeStamp);
+
+            void CheckSSMRMeterReadingThreePhaseTimeStamp();
         }
 
         public interface IHomeMenuPresenter
@@ -47,7 +55,19 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             void LoadBatchSummarDetailsByIndex(int batchIndex);
             void LoadLocalAccounts();
 			void LoadSummaryDetailsInBatch(List<string> accountNumbers);
-		}
+
+            void GetSmartMeterReadingWalkthroughtTimeStamp();
+
+            Task OnGetSmartMeterReadingWalkthroughtTimeStamp();
+
+            Task OnGetSSMRMeterReadingScreens();
+
+            void GetSmartMeterReadingThreePhaseWalkthroughtTimeStamp();
+
+            Task OnGetSmartMeterReadingThreePhaseWalkthroughtTimeStamp();
+
+            Task OnGetSSMRMeterReadingThreePhaseScreens();
+        }
 
         public interface IHomeMenuService
         {

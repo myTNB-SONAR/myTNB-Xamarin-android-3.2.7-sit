@@ -172,7 +172,7 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
                 // Note:
                 // Button Integration is yet done on this
 
-                // Example
+                // Example, please uncomment the code for review
                 // OnShowSMRPhotoTooltip(true, true, this);
                 // OnShowSMRPhotoTooltip(true, false, this);
                 // OnShowSMRPhotoTooltip(false, true, this);
@@ -194,8 +194,9 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
                 // MyTNBAccountManagement.GetInstance().UpdateIsSMRMeterReadingOnboardingShown();
                 // The checking for that flag:
                 // MyTNBAccountManagement.GetInstance().IsSMRMeterReadingOnboardingShown();
+                // For customize code, you can go to SSMRMeterReadingDialogFragment for button customization
 
-                // Example
+                // Example, please uncomment the code for review
                 // SMRPopUpUtils.OnShowSMRMeterReadingTooltipOnActivity(true, this, SupportFragmentManager);
                 // SMRPopUpUtils.OnShowSMRMeterReadingTooltipOnActivity(false, this, SupportFragmentManager);
                 /* SMRMeterReadingTooltip */

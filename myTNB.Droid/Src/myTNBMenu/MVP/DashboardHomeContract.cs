@@ -210,13 +210,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 
             void ShowToBeAddedToast();
 
-            void CheckSSMRMeterReadingTimeStamp();
-
-            void OnSavedSSMRMeterReadingTimeStamp(string mSavedTimeStamp);
-
-            void OnSavedSSMRMeterReadingThreePhaseTimeStamp(string mSavedTimeStamp);
-
-            void CheckSSMRMeterReadingThreePhaseTimeStamp();
         }
 
 		public interface IUserActionsListener : IBasePresenter
@@ -276,17 +269,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 
             int CheckCurrentDashboardMenu();
 
-            void GetSmartMeterReadingWalkthroughtTimeStamp();
-
-            Task OnGetSmartMeterReadingWalkthroughtTimeStamp();
-
-            Task OnGetSSMRMeterReadingScreens();
-
-            void GetSmartMeterReadingThreePhaseWalkthroughtTimeStamp();
-
-            Task OnGetSmartMeterReadingThreePhaseWalkthroughtTimeStamp();
-
-            Task OnGetSSMRMeterReadingThreePhaseScreens();
         }
 	}
 }
