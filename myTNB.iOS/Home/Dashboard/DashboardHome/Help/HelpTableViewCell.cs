@@ -126,8 +126,8 @@ namespace myTNB
 
         private int GetBackgroundImage(int index)
         {
-            _imgIndex = (index / 6) % 1 == 0 ? _imgIndex + 1 : 0;
-            _imgIndex = _imgIndex > 5 || _imgIndex < 0 ? 0 : _imgIndex;
+            _imgIndex = (index / 7) % 1 == 0 ? _imgIndex + 1 : 0;
+            _imgIndex = _imgIndex > 6 || _imgIndex < 0 ? 0 : _imgIndex;
             return _imgIndex;
         }
 

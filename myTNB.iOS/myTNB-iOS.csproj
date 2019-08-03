@@ -980,24 +980,6 @@
     <ImageAsset Include="Assets.xcassets\Help-Background-4.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Help-Background-5.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Help-Background-0.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Help-Background-0.imageset\faqColor1.png" />
-    <ImageAsset Include="Assets.xcassets\Help-Background-0.imageset\faqColor1%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Help-Background-0.imageset\faqColor1%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Help-Background-1.imageset\faqColor2.png" />
-    <ImageAsset Include="Assets.xcassets\Help-Background-1.imageset\faqColor2%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Help-Background-1.imageset\faqColor2%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Help-Background-2.imageset\faqColor3.png" />
-    <ImageAsset Include="Assets.xcassets\Help-Background-2.imageset\faqColor3%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Help-Background-2.imageset\faqColor3%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Help-Background-3.imageset\faqColor4.png" />
-    <ImageAsset Include="Assets.xcassets\Help-Background-3.imageset\faqColor4%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Help-Background-3.imageset\faqColor4%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Help-Background-4.imageset\faqColor5.png" />
-    <ImageAsset Include="Assets.xcassets\Help-Background-4.imageset\faqColor5%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Help-Background-4.imageset\faqColor5%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Help-Background-5.imageset\faqColor6.png" />
-    <ImageAsset Include="Assets.xcassets\Help-Background-5.imageset\faqColor6%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Help-Background-5.imageset\faqColor6%403x.png" />
     <ImageAsset Include="Assets.xcassets\SSMR_Background_1.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\SSMR_Background_2.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\SSMR_Background_3.imageset\Contents.json" />
@@ -1064,6 +1046,28 @@
     <ImageAsset Include="Assets.xcassets\SSMR-SinglePhase.imageset\singlePhase.png" />
     <ImageAsset Include="Assets.xcassets\SSMR-SinglePhase.imageset\singlePhase%402x.png" />
     <ImageAsset Include="Assets.xcassets\SSMR-SinglePhase.imageset\singlePhase%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Help-Background-6.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Help-Background-0.imageset\faqColor1-1.png" />
+    <ImageAsset Include="Assets.xcassets\Help-Background-0.imageset\faqColor1%402x-1.png" />
+    <ImageAsset Include="Assets.xcassets\Help-Background-0.imageset\faqColor1%403x-1.png" />
+    <ImageAsset Include="Assets.xcassets\Help-Background-1.imageset\faqColor2-1.png" />
+    <ImageAsset Include="Assets.xcassets\Help-Background-1.imageset\faqColor2%402x-1.png" />
+    <ImageAsset Include="Assets.xcassets\Help-Background-1.imageset\faqColor2%403x-1.png" />
+    <ImageAsset Include="Assets.xcassets\Help-Background-2.imageset\faqColor3-1.png" />
+    <ImageAsset Include="Assets.xcassets\Help-Background-2.imageset\faqColor3%402x-1.png" />
+    <ImageAsset Include="Assets.xcassets\Help-Background-2.imageset\faqColor3%403x-1.png" />
+    <ImageAsset Include="Assets.xcassets\Help-Background-3.imageset\faqColor4-1.png" />
+    <ImageAsset Include="Assets.xcassets\Help-Background-3.imageset\faqColor4%402x-1.png" />
+    <ImageAsset Include="Assets.xcassets\Help-Background-3.imageset\faqColor4%403x-1.png" />
+    <ImageAsset Include="Assets.xcassets\Help-Background-4.imageset\faqColor5-1.png" />
+    <ImageAsset Include="Assets.xcassets\Help-Background-4.imageset\faqColor5%402x-1.png" />
+    <ImageAsset Include="Assets.xcassets\Help-Background-4.imageset\faqColor5%403x-1.png" />
+    <ImageAsset Include="Assets.xcassets\Help-Background-5.imageset\faqColor6-1.png" />
+    <ImageAsset Include="Assets.xcassets\Help-Background-5.imageset\faqColor6%402x-1.png" />
+    <ImageAsset Include="Assets.xcassets\Help-Background-5.imageset\faqColor6%403x-1.png" />
+    <ImageAsset Include="Assets.xcassets\Help-Background-6.imageset\faqColor1Copy.png" />
+    <ImageAsset Include="Assets.xcassets\Help-Background-6.imageset\faqColor1Copy%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Help-Background-6.imageset\faqColor1Copy%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -1403,6 +1407,7 @@
     <Folder Include="Assets.xcassets\SSMR-MultiPhase.imageset\" />
     <Folder Include="Assets.xcassets\SSMR-SinglePhase.imageset\" />
     <Folder Include="Sitecore CMS\Model\Meter Read SSMR Walkthrough\" />
+    <Folder Include="Assets.xcassets\Help-Background-6.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
