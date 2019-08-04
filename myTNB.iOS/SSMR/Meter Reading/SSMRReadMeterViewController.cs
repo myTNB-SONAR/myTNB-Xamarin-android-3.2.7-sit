@@ -5,6 +5,7 @@ using myTNB.SSMR;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.Threading.Tasks;
 using UIKit;
 
@@ -92,7 +93,8 @@ namespace myTNB
                 TextColor = MyTNBColor.WaterBlue,
                 Lines = 0,
                 TextAlignment = UITextAlignment.Left,
-                Text = "Please enter your meter reading for each respective units."
+                Text = "Please enter your meter reading for each respective units.",
+                Tag = 1
             };
             _meterReadScrollView.AddSubview(_descriptionLabel);
             scrollViewFrame = _meterReadScrollView.Frame;
@@ -336,7 +338,19 @@ namespace myTNB
                     sSMRMeterCardComponent.SetModel(previousMeter);
                     sSMRMeterCardComponent.SetPreviousReading(previousMeter.PrevMeterReading);
                     sSMRMeterCardComponent.SetIconText(previousMeter);
-
+                    if (!string.IsNullOrEmpty(previousMeter.CurrentReading) && !string.IsNullOrWhiteSpace(previousMeter.CurrentReading))
+                    {
+                        var currentReading = previousMeter.CurrentReading;
+                        if (double.TryParse(currentReading, out double currentReadingDouble))
+                        {
+                            string currentReadingNewStr = currentReadingDouble.ToString("0.0", CultureInfo.InvariantCulture);
+                            sSMRMeterCardComponent.UpdateMeterReadingValueFromOCR(currentReadingNewStr);
+                        }
+                    }
+                    if (previousMeter.IsErrorFromOCR)
+                    {
+                        sSMRMeterCardComponent.UpdateUI(true, previousMeter.ErrorMessage, 0.00);
+                    }
                     yPos = sSMRMeterCardComponent.GetView().Frame.GetMaxY() + _padding;
                     _meterReadScrollView.ContentSize = new CGSize(ViewWidth, yPos);
                     scrollViewFrame = _meterReadScrollView.Frame;
@@ -409,17 +423,11 @@ namespace myTNB
 
         private void OnTapTakePhoto()
         {
-            Debug.WriteLine("OnTapTakePhoto");
             Dictionary<string, bool> ReadingDictionary = new Dictionary<string, bool>();
             if (_previousMeterList != null)
             {
                 foreach (var previousMeter in _previousMeterList)
                 {
-                    Debug.WriteLine("previousMeter.RegisterNumber== " + previousMeter.RegisterNumber);
-                    Debug.WriteLine("previousMeter.IsValidManualReading== " + previousMeter.IsValidManualReading);
-                    Debug.WriteLine("previousMeter.PrevMeterReading== " + previousMeter.PrevMeterReading);
-                    Debug.WriteLine("previousMeter.CurrentReading== " + previousMeter.CurrentReading);
-                    Debug.WriteLine("====================================== ");
                     string registerStr = string.Empty;
                     switch (previousMeter.RegisterNumberType)
                     {
@@ -439,7 +447,67 @@ namespace myTNB
                 SSMRCaptureMeterViewController viewController =
                     storyBoard.InstantiateViewController("SSMRCaptureMeterViewController") as SSMRCaptureMeterViewController;
                 viewController.ReadingDictionary = ReadingDictionary;
+                viewController.OCRReadingDone = OCRReadingDone;
                 NavigationController.PushViewController(viewController, true);
+            }
+        }
+
+        /// <summary>
+        /// Handler for finished OCR Reading
+        /// </summary>
+        public void OCRReadingDone()
+        {
+            UpdateReadings(OCRReadingCache.Instance.GetOCRReadings());
+        }
+
+        private void UpdateReadings(List<OCRReadingModel> ocrReadings)
+        {
+            if (ocrReadings?.Count > 0)
+            {
+                foreach (var ocr in ocrReadings)
+                {
+                    if (_previousMeterList != null)
+                    {
+                        foreach (var previousMeter in _previousMeterList)
+                        {
+                            if (ocr.IsSuccess)
+                            {
+                                if (previousMeter.RegisterNumberType == ocr.RegisterNumberTypeFromOCRUnit)
+                                {
+                                    previousMeter.IsErrorFromOCR = !ocr.IsSuccess;
+                                    previousMeter.CurrentReading = ocr.OCRValue;
+                                }
+                            }
+                            else
+                            {
+                                if (previousMeter.RegisterNumberType == ocr.RegisterNumberTypeFromOCRUnit)
+                                {
+                                    previousMeter.IsErrorFromOCR = !ocr.IsSuccess;
+                                    previousMeter.ErrorMessage = ocr.Message;
+                                }
+                            }
+                        }
+                    }
+                }
+                UpdateUIForReadings();
+            }
+        }
+
+        private void UpdateUIForReadings()
+        {
+            ClearScrollViewSubViews();
+            PrepareMeterReadingCard();
+        }
+
+        private void ClearScrollViewSubViews()
+        {
+            var subviews = _meterReadScrollView.Subviews;
+            foreach (var view in subviews)
+            {
+                if (view != null & view.Tag != 1)
+                {
+                    view.RemoveFromSuperview();
+                }
             }
         }
 
@@ -450,11 +518,6 @@ namespace myTNB
             {
                 foreach (var previousMeter in _previousMeterList)
                 {
-                    Debug.WriteLine("previousMeter.RegisterNumber== " + previousMeter.RegisterNumber);
-                    Debug.WriteLine("previousMeter.IsValidManualReading== " + previousMeter.IsValidManualReading);
-                    Debug.WriteLine("previousMeter.PrevMeterReading== " + previousMeter.PrevMeterReading);
-                    Debug.WriteLine("previousMeter.CurrentReading== " + previousMeter.CurrentReading);
-                    Debug.WriteLine("====================================== ");
                     MeterReadingRequest meterReadingRequest = new MeterReadingRequest();
                     meterReadingRequest.MroID = previousMeter.MroID;
                     meterReadingRequest.RegisterNumber = previousMeter.RegisterNumber;

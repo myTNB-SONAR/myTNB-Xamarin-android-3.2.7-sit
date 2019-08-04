@@ -49,6 +49,8 @@ namespace myTNB
         private bool _isGalleryTooltipDisplayed;
         private string _multiPhaseDescription;
 
+        public Action OCRReadingDone;
+
         private class ImageModel
         {
             public bool NeedsPhoto { set; get; }
@@ -918,6 +920,7 @@ namespace myTNB
                     if (NavigationController != null)
                     {
                         NavigationController.PopViewController(true);
+                        OCRReadingDone?.Invoke();
                     }
                 });
             });
