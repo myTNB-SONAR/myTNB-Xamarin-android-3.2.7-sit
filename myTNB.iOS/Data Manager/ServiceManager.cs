@@ -118,9 +118,15 @@ namespace myTNB
         {
             get
             {
+                string email = DataManager.DataManager.SharedInstance.User.Email ?? string.Empty;
+                if (string.IsNullOrEmpty(email) && DataManager.DataManager.SharedInstance.UserEntity != null
+                    && DataManager.DataManager.SharedInstance.UserEntity[0] != null)
+                {
+                    email = DataManager.DataManager.SharedInstance.UserEntity[0].email ?? string.Empty;
+                }
                 return new
                 {
-                    eid = DataManager.DataManager.SharedInstance.User.Email,
+                    eid = email,
                     sspuid = DataManager.DataManager.SharedInstance.User.UserID,
                     did = DataManager.DataManager.SharedInstance.UDID,
                     ft = DataManager.DataManager.SharedInstance.FCMToken,

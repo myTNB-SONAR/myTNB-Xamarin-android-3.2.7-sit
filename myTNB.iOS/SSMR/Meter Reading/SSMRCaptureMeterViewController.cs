@@ -68,6 +68,7 @@ namespace myTNB
             SetPreview();
             SetCamera();
             ToggleCTA();
+            Debug.WriteLine("V Didload");
         }
 
         public override void ViewWillAppear(bool animated)
@@ -142,6 +143,8 @@ namespace myTNB
             for (int i = 0; i < keys.Count; i++)
             {
                 string key = keys[i];
+                if (ReadingDictionary[key]) { doneList.Add(key); }
+                else { ontoList.Add(key); }
                 if (ReadingDictionary[key]) { continue; }
                 ImageModel imgModel = new ImageModel
                 {
@@ -149,38 +152,15 @@ namespace myTNB
                     ReadingUnit = key,
                     Tag = 1001 + i
                 };
-                if (ReadingDictionary[key])
-                {
-                    doneList.Add(key);
-                }
-                else
-                {
-                    ontoList.Add(key);
-                }
                 _imageModelList.Add(imgModel);
             }
             _multiPhaseDescription = GetI18NValue(SSMRConstants.I18N_MultiTakePhotoDescription);
             if (_isMultiPhase && doneList.Count > 0)
             {
-                string done;
-                string onto;
-
-                if (doneList.Count > 1)
-                {
-                    done = string.Format(GetI18NValue(SSMRConstants.I18N_PluralDone), doneList[0], doneList[1]);
-                }
-                else
-                {
-                    done = string.Format(GetI18NValue(SSMRConstants.I18N_SingularDone), doneList[0]);
-                }
-                if (ontoList.Count > 1)
-                {
-                    onto = string.Format(GetI18NValue(SSMRConstants.I18N_PluralOnto), ontoList[0], ontoList[1]);
-                }
-                else
-                {
-                    onto = string.Format(GetI18NValue(SSMRConstants.I18N_SingularOnto), ontoList[0]);
-                }
+                string done = doneList.Count > 1 ? string.Format(GetI18NValue(SSMRConstants.I18N_PluralDone), doneList[0], doneList[1])
+                    : string.Format(GetI18NValue(SSMRConstants.I18N_SingularDone), doneList[0]);
+                string onto = ontoList.Count > 1 ? string.Format(GetI18NValue(SSMRConstants.I18N_PluralOnto), ontoList[0], ontoList[1])
+                    : string.Format(GetI18NValue(SSMRConstants.I18N_SingularOnto), ontoList[0]);
                 _multiPhaseDescription = string.Format("{0} {1}", done, onto);
             }
         }
@@ -319,16 +299,13 @@ namespace myTNB
                 bool isSameTag = data.Tag == tag;
                 if (currentView != null)
                 {
-                    //currentView.Layer.BorderColor = MyTNBColor.WhiteTwo.CGColor;
                     SetPreviewColors(currentView, false, false);
                     if (data.Image != null)
                     {
-                        //currentView.Layer.BorderColor = MyTNBColor.FreshGreen.CGColor;
                         SetPreviewColors(currentView, false, true);
                     }
                     if (isSameTag)
                     {
-                        //currentView.Layer.BorderColor = MyTNBColor.WaterBlue.CGColor;
                         SetPreviewColors(currentView, true, data.Image != null);
                         if (data.Image == null)
                         {
@@ -348,7 +325,6 @@ namespace myTNB
                         bool isCurHasImg = data.Image != null;
                         if (isPrevHasImg)
                         {
-                            //currentView.Layer.BorderColor = MyTNBColor.WaterBlue.CGColor;
                             SetPreviewColors(currentView, true, isPrevHasImg);
                         }
                         else
@@ -357,10 +333,8 @@ namespace myTNB
                             {
                                 _currentTag = _imageModelList[noImageIndex].Tag;
                                 UIView pView = _viewPreview.ViewWithTag(_currentTag);
-                                //currentView.Layer.BorderColor = MyTNBColor.WhiteTwo.CGColor;
                                 SetPreviewColors(currentView, false, false);
                                 SetPreviewColors(pView, true, false);
-                                //pView.Layer.BorderColor = MyTNBColor.WaterBlue.CGColor;
                             }
                         }
                     }
@@ -561,9 +535,15 @@ namespace myTNB
             PresentViewController(imgPicker, true, null);
         }
 
+        #region Update Preview
+        private bool HasCompleteImgList()
+        {
+            int index = _imageModelList.FindIndex(x => x.NeedsPhoto);
+            return index < 0;
+        }
+
         private void UpdateImagePreview(UIImage image)
         {
-            List<ImageModel> imageModelList = _imageModelList.Where(x => x.NeedsPhoto).ToList();
             int count = _imageModelList.Count;
             for (int i = 0; i < count; i++)
             {
@@ -571,10 +551,10 @@ namespace myTNB
                 if (model.NeedsPhoto)
                 {
                     UIView parent = _viewPreview.ViewWithTag(model.Tag);
-
+                    if (parent == null) { continue; }
                     UIImageView imgView = parent.ViewWithTag(99) as UIImageView;
-                    parent.Layer.BorderColor = MyTNBColor.FreshGreen.CGColor;
-
+                    if (imgView == null) { continue; }
+                    SetPreviewColors(parent, false, true);
                     imgView.Hidden = false;
                     imgView.Image = image;
                     model.Image = image;
@@ -582,15 +562,49 @@ namespace myTNB
 
                     _imageModelList[i] = model;
 
+                    if (HasCompleteImgList())
+                    {
+                        AddMainPreview(image);
+                        SetPreviewColors(parent, true, true);
+                        _currentTag = model.Tag;
+                        break;
+                    }
+
                     if (i + 1 < count)
                     {
                         UIView nextParent = _viewPreview.ViewWithTag(_imageModelList[i + 1].Tag);
-                        nextParent.Layer.BorderColor = MyTNBColor.WaterBlue.CGColor;
+                        if (nextParent != null)
+                        {
+                            UIImageView nextImgView = nextParent.ViewWithTag(99) as UIImageView;
+                            if (nextImgView != null && nextImgView.Image != null)
+                            {
+                                SetPreviewColors(nextParent, false, true);
+                                if (i + 2 < count && _viewPreview.ViewWithTag(_imageModelList[i + 2].Tag) != null)
+                                {
+                                    UIView thirdParent = _viewPreview.ViewWithTag(_imageModelList[i + 2].Tag);
+                                    UIImageView thirdImgView = thirdParent.ViewWithTag(99) as UIImageView;
+                                    if (thirdImgView != null && thirdImgView.Image == null)
+                                    {
+                                        SetPreviewColors(thirdParent, true, false);
+                                        _currentTag = _imageModelList[i + 2].Tag;
+                                        break;
+                                    }
+                                    else
+                                    {
+                                        SetPreviewColors(thirdParent, false, false);
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                SetPreviewColors(nextParent, true, false);
+                            }
+                        }
                     }
 
                     if (i + 1 == count)
                     {
-                        parent.Layer.BorderColor = MyTNBColor.WaterBlue.CGColor;
+                        SetPreviewColors(parent, true, false);
                         AddMainPreview(image);
 
                         SetDescription(GetI18NValue(SSMRConstants.I18N_EditDescription));
@@ -601,6 +615,7 @@ namespace myTNB
                 }
             }
         }
+        #endregion
 
         private void DisplayLoadingPage()
         {
