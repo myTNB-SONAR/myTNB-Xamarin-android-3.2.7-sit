@@ -316,25 +316,29 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
         public void PopulateMeterReadingCard(METER_READING_TYPE type, SMRMROValidateRegisterDetails sMRMROValidateRegisterDetails)
         {
             LinearLayout linearLayoutContainer;
+            TextView meterType;
             switch (type)
             {
                 case METER_READING_TYPE.KWH:
                     linearLayoutContainer = FindViewById(Resource.Id.kwhCard) as LinearLayout;
                     linearLayoutContainer.Visibility = ViewStates.Visible;
+                    meterType = (TextView)linearLayoutContainer.FindViewById(Resource.Id.reading_meter_type);
+                    meterType.Text = "kWh";
                     PopulatePreviousValues(linearLayoutContainer, sMRMROValidateRegisterDetails);
-                    //PopulateCurrentValues(linearLayoutContainer, sMRMROValidateRegisterDetails);
                     break;
                 case METER_READING_TYPE.KVARH:
                     linearLayoutContainer = FindViewById(Resource.Id.kVARhCard) as LinearLayout;
                     linearLayoutContainer.Visibility = ViewStates.Visible;
+                    meterType = (TextView)linearLayoutContainer.FindViewById(Resource.Id.reading_meter_type);
+                    meterType.Text = "kVARh";
                     PopulatePreviousValues(linearLayoutContainer, sMRMROValidateRegisterDetails);
-                    //PopulateCurrentValues(linearLayoutContainer, sMRMROValidateRegisterDetails);
                     break;
                 default:
                     linearLayoutContainer = FindViewById(Resource.Id.kwCard) as LinearLayout;
                     linearLayoutContainer.Visibility = ViewStates.Visible;
+                    meterType = (TextView)linearLayoutContainer.FindViewById(Resource.Id.reading_meter_type);
+                    meterType.Text = "kW";
                     PopulatePreviousValues(linearLayoutContainer, sMRMROValidateRegisterDetails);
-                    //PopulateCurrentValues(linearLayoutContainer, sMRMROValidateRegisterDetails);
                     break;
             }
         }
@@ -423,7 +427,43 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             {
                 return detail.RegisterNumber == RegisterNumber;
             });
+            int previousReading = 0;
+            int currentReading = 0;
+            
+            if (validateRegisterDetails.PrevMeterReading != "")
+            {
+                previousReading = Int32.Parse(validateRegisterDetails.PrevMeterReading);
+            }
+            if (currentAmountInString != "")
+            {
+                currentReading = Int32.Parse(currentAmountInString);
+            }
 
+            TextView inlineError = (TextView) meterCardContainer.FindViewById(Resource.Id.reading_error_validation_msg);
+            TextView meterType = (TextView)meterCardContainer.FindViewById(Resource.Id.reading_meter_type);
+            if (currentReading == 0)
+            {
+                inlineError.Visibility = ViewStates.Gone;
+                meterType.SetBackgroundDrawable(GetDrawable(Resource.Drawable.meter_reading_label_background));
+            }
+            else
+            {
+                if (currentReading > previousReading)
+                {
+                    inlineError.Text = "This value is too high!";
+                    inlineError.Visibility = ViewStates.Visible;
+                    meterType.SetBackgroundDrawable(GetDrawable(Resource.Drawable.meter_reading_label_background_error));
+                }
+                else
+                {
+                    inlineError.Visibility = ViewStates.Gone;
+                    meterType.SetBackgroundDrawable(GetDrawable(Resource.Drawable.meter_reading_label_background_ready));
+                }
+            }
+
+            //reading_error_validation_msg
+
+            //reading_meter_type
 
         }
 

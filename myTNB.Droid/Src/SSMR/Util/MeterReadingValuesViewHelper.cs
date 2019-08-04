@@ -27,7 +27,18 @@ namespace myTNB_Android.Src.SSMR.Util
 
         public void SetEvent()
         {
-            editTextList[editTextList.Count-1].AddTextChangedListener(new TextChangeListener(this));
+            //editTextList[editTextList.Count-1].AddTextChangedListener(new TextChangeListener(this));
+            for(int i=0; i < editTextList.Count; i++)
+            {
+                if (i == (editTextList.Count-1))
+                {
+                    editTextList[i].AddTextChangedListener(new TextChangeListener(this)); //For right to left input and validation
+                }
+                else
+                {
+                    editTextList[i].AddTextChangedListener(new OnValidateTextChangeListener(this)); //For validation
+                }
+            }
         }
 
         public void SetValue(string value)
@@ -56,6 +67,29 @@ namespace myTNB_Android.Src.SSMR.Util
             mView.ValidateMeterInput(meterCard);
         }
 
+        public class OnValidateTextChangeListener : Java.Lang.Object, Android.Text.ITextWatcher
+        {
+            MeterReadingValuesViewHelper mHelper;
+            public OnValidateTextChangeListener(MeterReadingValuesViewHelper helper)
+            {
+                mHelper = helper;
+            }
+            public void AfterTextChanged(IEditable s)
+            {
+                //throw new NotImplementedException();
+            }
+
+            public void BeforeTextChanged(ICharSequence s, int start, int count, int after)
+            {
+                //throw new NotImplementedException();
+            }
+
+            public void OnTextChanged(ICharSequence s, int start, int before, int count)
+            {
+                mHelper.ValidateMeterInput();
+            }
+        }
+
         public class TextChangeListener : Java.Lang.Object, Android.Text.ITextWatcher
         {
             string meterValue = "";
@@ -63,7 +97,6 @@ namespace myTNB_Android.Src.SSMR.Util
             List<EditText> editTexts;
             bool startChange = false;
             string previousVal;
-            private SubmitMeterReadingActivity parentView;
 
             MeterReadingValuesViewHelper mHelper;
 
@@ -116,16 +149,15 @@ namespace myTNB_Android.Src.SSMR.Util
                         {
                             startChange = !startChange;
                         }
-
-                        mHelper.ValidateMeterInput();
                     }
                     else
                     {
                         editTexts[8].RemoveTextChangedListener(this);
                         editTexts[8].Text = "";
-                        editTexts[8].Text = previousVal;
                         editTexts[8].AddTextChangedListener(this);
                     }
+
+                    mHelper.ValidateMeterInput();
                 }
             }
         }
