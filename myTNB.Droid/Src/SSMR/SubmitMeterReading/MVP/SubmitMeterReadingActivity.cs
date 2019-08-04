@@ -13,6 +13,7 @@ using Android.Widget;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.SSMR.SubmitMeterReading.Api;
+using myTNB_Android.Src.SSMR.Util;
 using myTNB_Android.Src.Utils;
 using Newtonsoft.Json;
 using static myTNB_Android.Src.SSMR.SubmitMeterReading.Api.GetMeterReadingOCRResponse;
@@ -25,7 +26,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
         KWH,KVARH,KW
     }
 
-    [Activity(Label = "@string/meter_reading_title", Theme = "@style/Theme.Dashboard")]
+    [Activity(Label = "@string/meter_reading_title", Theme = "@style/Theme.Dashboard", MainLauncher = true)]
     public class SubmitMeterReadingActivity : BaseToolbarAppCompatActivity, SubmitMeterReadingContract.IView
     {
         private METER_READING_TYPE meterType;
@@ -33,6 +34,8 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
         private int[] previousMeterViews;
         private int[] currentMeterViews;
         private int MAX_DIGIT = 9;
+
+        List<SMRMROValidateRegisterDetails> SMRValidateRegisterDetailList;
 
         public override int ResourceId()
         {
@@ -108,6 +111,48 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             currentMeterViews[6] = Resource.Id.new_reading_7;
             currentMeterViews[7] = Resource.Id.new_reading_8;
             currentMeterViews[8] = Resource.Id.new_reading_9;
+
+            EditText editText;
+            List<EditText> editTextList;
+            MeterReadingValuesViewHelper editViewHelper;
+
+            //KWH
+            LinearLayout kwHContainer = FindViewById(Resource.Id.kwhCard) as LinearLayout;
+            editText = kwHContainer.FindViewById<EditText>(Resource.Id.new_reading_9);
+            editViewHelper = new MeterReadingValuesViewHelper(this, Resource.Id.kwhCard);
+
+            editTextList = new List<EditText>();
+            for (int i = 0; i < currentMeterViews.Length; i++)
+            {
+                editTextList.Add((EditText)kwHContainer.FindViewById(currentMeterViews[i]));
+            }
+            editViewHelper.SetEditTextList(editTextList);
+            editViewHelper.SetEvent();
+
+            //KVARH
+            LinearLayout kVARhContainer = FindViewById(Resource.Id.kVARhCard) as LinearLayout;
+            editText = kVARhContainer.FindViewById<EditText>(Resource.Id.new_reading_9);
+            editViewHelper = new MeterReadingValuesViewHelper(this, Resource.Id.kVARhCard);
+
+            editTextList = new List<EditText>();
+            for (int i = 0; i < currentMeterViews.Length; i++)
+            {
+                editTextList.Add((EditText)kVARhContainer.FindViewById(currentMeterViews[i]));
+            }
+            editViewHelper.SetEditTextList(editTextList);
+            editViewHelper.SetEvent();
+
+            //KW
+            LinearLayout kwContainer = FindViewById(Resource.Id.kwCard) as LinearLayout;
+            editText = kwContainer.FindViewById<EditText>(Resource.Id.new_reading_9);
+            editViewHelper = new MeterReadingValuesViewHelper(this, Resource.Id.kwCard);
+            editTextList = new List<EditText>();
+            for (int i = 0; i < currentMeterViews.Length; i++)
+            {
+                editTextList.Add((EditText)kwContainer.FindViewById(currentMeterViews[i]));
+            }
+            editViewHelper.SetEditTextList(editTextList);
+            editViewHelper.SetEvent();
         }
 
         protected override void OnStart()
@@ -117,6 +162,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             if (Intent != null)
             {
                 List<SMRMROValidateRegisterDetails> sMRMROValidateRegisterDetailsList = DummyData(); //This is coming from session
+                SMRValidateRegisterDetailList = DummyData(); //Mock
 
                 foreach (SMRMROValidateRegisterDetails validateRegisterDetails in sMRMROValidateRegisterDetailsList)
                 {
@@ -211,26 +257,9 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             }
         }
 
-        public class OnEditClickListener : Java.Lang.Object, View.IOnClickListener
-        {
-            public void OnClick(View v)
-            {
-                //throw new NotImplementedException();
-
-            }
-        }
-
-        public class OnFocusChangeListener : Java.Lang.Object, View.IOnFocusChangeListener
-        {
-            public void OnFocusChange(View v, bool hasFocus)
-            {
-                //throw new NotImplementedException();
-
-            }
-        }
-
         private void PopulateCurrentValues(LinearLayout container, SMRMROValidateRegisterDetails sMRMROValidateRegisterDetails)
         {
+            List<EditText> editTextList = new List<EditText>();
             char[] amountInArray = sMRMROValidateRegisterDetails.PrevMeterReading.ToCharArray();
             int resourceCounter = 0;
             for (int i = amountInArray.Length; i != 0; i--)
@@ -246,7 +275,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                 {
                     TextViewUtils.SetMuseoSans500Typeface(currentValueDigit);
                 }
-                currentValueDigit.OnFocusChangeListener = new OnFocusChangeListener();
+                editTextList.Add(currentValueDigit);
             }
 
             TextView readingErrorMessage = container.FindViewById(Resource.Id.reading_error_validation_msg) as TextView;
@@ -292,21 +321,20 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                 case METER_READING_TYPE.KWH:
                     linearLayoutContainer = FindViewById(Resource.Id.kwhCard) as LinearLayout;
                     linearLayoutContainer.Visibility = ViewStates.Visible;
-                    linearLayoutContainer.SetOnClickListener(new OnCardClickListener());
                     PopulatePreviousValues(linearLayoutContainer, sMRMROValidateRegisterDetails);
-                    PopulateCurrentValues(linearLayoutContainer, sMRMROValidateRegisterDetails);
+                    //PopulateCurrentValues(linearLayoutContainer, sMRMROValidateRegisterDetails);
                     break;
                 case METER_READING_TYPE.KVARH:
                     linearLayoutContainer = FindViewById(Resource.Id.kVARhCard) as LinearLayout;
                     linearLayoutContainer.Visibility = ViewStates.Visible;
                     PopulatePreviousValues(linearLayoutContainer, sMRMROValidateRegisterDetails);
-                    PopulateCurrentValues(linearLayoutContainer, sMRMROValidateRegisterDetails);
+                    //PopulateCurrentValues(linearLayoutContainer, sMRMROValidateRegisterDetails);
                     break;
                 default:
                     linearLayoutContainer = FindViewById(Resource.Id.kwCard) as LinearLayout;
                     linearLayoutContainer.Visibility = ViewStates.Visible;
                     PopulatePreviousValues(linearLayoutContainer, sMRMROValidateRegisterDetails);
-                    PopulateCurrentValues(linearLayoutContainer, sMRMROValidateRegisterDetails);
+                    //PopulateCurrentValues(linearLayoutContainer, sMRMROValidateRegisterDetails);
                     break;
             }
         }
@@ -357,6 +385,45 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                     UpdateCurrentValues(linearLayoutContainer, ocrResponse);
                 }
             }
+
+        }
+
+        public void ValidateMeterInput(int meterCardResourceId)
+        {
+            LinearLayout meterCardContainer = FindViewById(meterCardResourceId) as LinearLayout;
+
+            EditText currentValue8 = (EditText)meterCardContainer.FindViewById(currentMeterViews[8]);
+            EditText currentValue7 = (EditText)meterCardContainer.FindViewById(currentMeterViews[7]);
+            EditText currentValue6 = (EditText)meterCardContainer.FindViewById(currentMeterViews[6]);
+            EditText currentValue5 = (EditText)meterCardContainer.FindViewById(currentMeterViews[5]);
+            EditText currentValue4 = (EditText)meterCardContainer.FindViewById(currentMeterViews[4]);
+            EditText currentValue3 = (EditText)meterCardContainer.FindViewById(currentMeterViews[3]);
+            EditText currentValue2 = (EditText)meterCardContainer.FindViewById(currentMeterViews[2]);
+            EditText currentValue1 = (EditText)meterCardContainer.FindViewById(currentMeterViews[1]);
+            EditText currentValue0 = (EditText)meterCardContainer.FindViewById(currentMeterViews[0]);
+
+            string currentAmountInString = currentValue0.Text + currentValue1.Text + currentValue2.Text + currentValue3.Text + currentValue4.Text +
+                currentValue5.Text + currentValue6.Text + currentValue7.Text + currentValue8.Text;
+
+            string RegisterNumber = "";
+            if (meterCardResourceId == Resource.Id.kwhCard)
+            {
+                RegisterNumber = "001";
+            }
+            else if(meterCardResourceId == Resource.Id.kVARhCard)
+            {
+                RegisterNumber = "002";
+            }
+            else if (meterCardResourceId == Resource.Id.kwCard)
+            {
+                RegisterNumber = "003";
+            }
+
+            SMRMROValidateRegisterDetails validateRegisterDetails = SMRValidateRegisterDetailList.Find(detail =>
+            {
+                return detail.RegisterNumber == RegisterNumber;
+            });
+
 
         }
 
