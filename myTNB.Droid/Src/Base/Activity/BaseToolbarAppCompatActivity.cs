@@ -1,6 +1,8 @@
 ﻿using Android.Content;
+using Android.Graphics.Drawables;
 using Android.OS;
 using Android.Preferences;
+using Android.Views;
 using Android.Widget;
 using CheeseBind;
 using myTNB_Android.Src.Utils;
@@ -105,6 +107,31 @@ namespace myTNB_Android.Src.Base.Activity
                 toolbar = FindViewById<Toolbar>(Resource.Id.toolbar);
                 TextView txtTitle = toolbar?.FindViewById<TextView>(Resource.Id.toolbar_title);
                 txtTitle.Text = title;
+            }
+        }
+
+        public virtual void SetToolbarGradientBackground()
+        {
+            Drawable drawable = Resources.GetDrawable(Resource.Drawable.GradientToolBar);
+            if (toolbar != null)
+            {
+                toolbar?.SetBackgroundDrawable(drawable);
+            }
+            else
+            {
+                toolbar = FindViewById<Toolbar>(Resource.Id.toolbar);
+                toolbar?.SetBackgroundDrawable(drawable);
+            }
+        }
+
+        public virtual void SetStatusBarGradientBackground()
+        {
+            if (Build.VERSION.SdkInt >= Build.VERSION_CODES.Lollipop)
+            {
+                Drawable drawable = Resources.GetDrawable(Resource.Drawable.GradientStatusBar);
+                this.Window.AddFlags(WindowManagerFlags.DrawsSystemBarBackgrounds);
+                this.Window.ClearFlags(WindowManagerFlags.TranslucentStatus);
+                this.Window.SetBackgroundDrawable(drawable);
             }
         }
 

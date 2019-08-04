@@ -23,7 +23,6 @@ using myTNB_Android.Src.SSMRTerminate.Api;
 using Android.Runtime;
 using myTNB_Android.Src.TermsAndConditions.Activity;
 using myTNB_Android.Src.SSMR.SMRApplication.Api;
-using Android.Graphics.Drawables;
 
 namespace myTNB_Android.Src.SSMRTerminate.MVP
 {
@@ -186,14 +185,8 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
             TextViewUtils.SetMuseoSans500Typeface(btnDisconnectionSubmit, disconnectionTtile, disconnectionAccountTtile, contactDetailTtile, terminationReasonTitle);
             TextViewUtils.SetMuseoSans300Typeface(disconnectionAccountAddress, contactDetailConsent, txtTermsConditions, txtEmail, txtMobileNo, txtSelectReason, txtReason);
 
-            /* Drawable drawable = Resources.GetDrawable(Resource.Drawable.GradientStatusBar);
-            if (Build.VERSION.SdkInt >= Build.VERSION_CODES.Lollipop)
-            {
-                this.Window.AddFlags(WindowManagerFlags.DrawsSystemBarBackgrounds);
-                this.Window.ClearFlags(WindowManagerFlags.TranslucentStatus);
-                this.Window.SetBackgroundDrawable(drawable);
-            }
-            this.toolbar.SetBackgroundDrawable(drawable);*/
+            // SetStatusBarGradientBackground();
+            // SetToolbarGradientBackground();
 
             if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.N)
             {
