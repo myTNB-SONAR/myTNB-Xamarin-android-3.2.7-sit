@@ -154,8 +154,9 @@ namespace myTNB
             _homeTableView = new UITableView(new CGRect(0, DeviceHelper.GetStatusBarHeight(), ViewWidth, ViewHeight)) { BackgroundColor = UIColor.Clear };
             _homeTableView.SeparatorStyle = UITableViewCellSeparatorStyle.None;
             _homeTableView.RegisterClassForCellReuse(typeof(AccountsTableViewCell), DashboardHomeConstants.Cell_Accounts);
-            _homeTableView.RegisterClassForCellReuse(typeof(HelpTableViewCell), DashboardHomeConstants.Cell_Help);
             _homeTableView.RegisterClassForCellReuse(typeof(ServicesTableViewCell), DashboardHomeConstants.Cell_Services);
+            _homeTableView.RegisterClassForCellReuse(typeof(PromotionTableViewCell), DashboardHomeConstants.Cell_Promotion);
+            _homeTableView.RegisterClassForCellReuse(typeof(HelpTableViewCell), DashboardHomeConstants.Cell_Help);
             View.AddSubview(_homeTableView);
         }
 

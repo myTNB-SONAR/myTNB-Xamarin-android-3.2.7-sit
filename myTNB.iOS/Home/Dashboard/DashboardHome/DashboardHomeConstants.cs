@@ -14,6 +14,7 @@ namespace myTNB
         public static string Cell_Accounts = "accountsTableViewCell";
         public static string Cell_Help = "helpTableViewCell";
         public static string Cell_Services = "servicesTableViewCell";
+        public static string Cell_Promotion = "promotionTableViewCell";
 
         //I18N Keys
         public static string I18N_Afternoon = "greeting_afternoon";
@@ -22,6 +23,7 @@ namespace myTNB
         public static string I18N_NeedHelp = "needHelp";
         public static string I18N_MyAccounts = "myAccounts";
         public static string I18N_MyServices = "myServices";
+        public static string I18N_Promotions = "promotions";
 
         //Image
         public static string Img_Notification = "Notification";
@@ -32,7 +34,8 @@ namespace myTNB
         //Cell Index
         public static int CellIndex_Accounts = 0;
         public static int CellIndex_Services = 1;
-        public static int CellIndex_Help = 2;
+        public static int CellIndex_Promotion = 2;
+        public static int CellIndex_Help = 3;
 
         //SMR CTA
         public static string CTA_ShowReadingHistory = "v";

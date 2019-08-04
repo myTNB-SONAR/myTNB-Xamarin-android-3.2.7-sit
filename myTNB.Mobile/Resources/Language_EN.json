@@ -42,7 +42,8 @@
         "greeting_morning": "Good Morning,",
         "myAccounts": "My Accounts",
         "myServices": "My Services",
-        "needHelp": "Need Help?"
+        "needHelp": "Need Help?",
+        "promotions": "Promotions"
     },
     "Tabbar": {
         "home": "Home",
