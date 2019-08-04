@@ -110,6 +110,24 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             return inflater.Inflate(Resource.Layout.SubmitMeterTakePhotoFragmentLayout , container, false);
         }
 
+        public class OnSeekbarChangeListener : Java.Lang.Object, SeekBar.IOnSeekBarChangeListener
+        {
+            public void OnProgressChanged(SeekBar seekBar, int progress, bool fromUser)
+            {
+                throw new System.NotImplementedException();
+            }
+
+            public void OnStartTrackingTouch(SeekBar seekBar)
+            {
+                throw new System.NotImplementedException();
+            }
+
+            public void OnStopTrackingTouch(SeekBar seekBar)
+            {
+                throw new System.NotImplementedException();
+            }
+        }
+
         public override void OnViewCreated(View view, Bundle savedInstanceState)
         {
             //base.OnViewCreated(view, savedInstanceState);
@@ -119,6 +137,11 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             captureImage.Click += delegate
             {
                 TakePicture();
+            };
+
+            galleryPreview.Click += delegate
+            {
+                ((SubmitMeterTakePhotoActivity)Activity).ShowGallery();
             };
         }
 
@@ -608,10 +631,10 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
 
         public void ShowToast(string text)
         {
-            if (Activity != null)
-            {
-                Activity.RunOnUiThread(new ShowToastRunnable(Activity.ApplicationContext, text));
-            }
+            //if (Activity != null)
+            //{
+            //    Activity.RunOnUiThread(new ShowToastRunnable(Activity.ApplicationContext, text));
+            //}
         }
 
         private class ShowToastRunnable : Java.Lang.Object, IRunnable
@@ -658,7 +681,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             {
                 //owner.CloseCamera();
                 //owner.StopBackgroundThread();
-                ((SubmitMeterTakePhotoActivity)owner.Activity).ShowAdjustFragment(myBitmap);
+                ((SubmitMeterTakePhotoActivity)owner.Activity).AddCapturedImage(myBitmap);
             }
         }
     }

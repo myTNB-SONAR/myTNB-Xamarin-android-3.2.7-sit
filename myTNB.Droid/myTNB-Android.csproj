@@ -1492,6 +1492,18 @@
     <Compile Include="Src\SSMR\SubmitMeterReading\MVP\SubmitMeterTakePhotoPresenter.cs" />
     <Compile Include="Src\SSMR\SubmitMeterReading\MVP\SubmitMeterTakePhotoContract.cs" />
     <Compile Include="Src\SSMR\SubmitMeterReading\MVP\MeterImageModel.cs" />
+    <AndroidResource Include="Resources\drawable\meter_capture_holder_active.xml" />
+    <AndroidResource Include="Resources\drawable\meter_capture_holder_selected.xml" />
+    <AndroidResource Include="Resources\drawable\meter_capture_holder_inactive.xml" />
+    <Compile Include="Src\SSMR\SubmitMeterReading\MVP\CameraCropOverlay.cs" />
+    <AndroidResource Include="Resources\drawable\overlay_crop_image.xml" />
+    <AndroidResource Include="Resources\drawable-hdpi\ocr_reading.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\ocr_reading.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\ocr_reading.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\ocr_reading.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\img_register_acct_no.png" />
+    <Compile Include="Src\SSMR\SubmitMeterReading\MVP\OCRLoadingFragment.cs" />
+    <AndroidResource Include="Resources\layout\OCRLoadingFragmentLayout.axml" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

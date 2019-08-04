@@ -9,7 +9,7 @@
   
     <ImageView
         android:id="@+id/adjust_photo_preview"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:scaleType="fitXY"/>
     <LinearLayout
@@ -17,14 +17,15 @@
             android:layout_width="match_parent"  
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:background="@android:color/holo_green_light"
+            android:background="#59ffffff"
             android:layout_alignBottom="@+id/adjust_photo_preview"
             android:layout_gravity="center">
             <ImageView
                 android:id="@+id/imageDeleteCapture"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:src="@drawable/group_3"
+                android:layout_gravity="center"
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="16dp"/>
     </LinearLayout>

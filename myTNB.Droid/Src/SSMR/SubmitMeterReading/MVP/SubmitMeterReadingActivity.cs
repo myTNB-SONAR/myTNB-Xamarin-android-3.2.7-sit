@@ -12,7 +12,10 @@ using Android.Views;
 using Android.Widget;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.myTNBMenu.Models;
+using myTNB_Android.Src.SSMR.SubmitMeterReading.Api;
 using myTNB_Android.Src.Utils;
+using Newtonsoft.Json;
+using static myTNB_Android.Src.SSMR.SubmitMeterReading.Api.GetMeterReadingOCRResponse;
 using static myTNB_Android.Src.SSMR.SubmitMeterReading.Api.SubmitMeterReadingRequest;
 
 namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
@@ -22,7 +25,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
         KWH,KVARH,KW
     }
 
-    [Activity(Label = "@string/meter_reading_title", Theme = "@style/Theme.Dashboard")]
+    [Activity(Label = "@string/meter_reading_title", Theme = "@style/Theme.Dashboard", MainLauncher = true)]
     public class SubmitMeterReadingActivity : BaseToolbarAppCompatActivity, SubmitMeterReadingContract.IView
     {
         private METER_READING_TYPE meterType;
@@ -110,28 +113,61 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
         protected override void OnStart()
         {
             base.OnStart();
-            List<SMRMROValidateRegisterDetails> sMRMROValidateRegisterDetailsList = DummyData(); //This is coming from session
 
-            foreach (SMRMROValidateRegisterDetails validateRegisterDetails in sMRMROValidateRegisterDetailsList)
+            if (Intent != null)
             {
-                if (validateRegisterDetails.RegisterNumber == "001")
+                List<SMRMROValidateRegisterDetails> sMRMROValidateRegisterDetailsList = DummyData(); //This is coming from session
+
+                foreach (SMRMROValidateRegisterDetails validateRegisterDetails in sMRMROValidateRegisterDetailsList)
                 {
-                    PopulateMeterReadingCard(METER_READING_TYPE.KWH, validateRegisterDetails);
+                    if (validateRegisterDetails.RegisterNumber == "001")
+                    {
+                        PopulateMeterReadingCard(METER_READING_TYPE.KWH, validateRegisterDetails);
+                    }
+                    else if (validateRegisterDetails.RegisterNumber == "002")
+                    {
+                        PopulateMeterReadingCard(METER_READING_TYPE.KVARH, validateRegisterDetails);
+                    }
+                    else if (validateRegisterDetails.RegisterNumber == "003")
+                    {
+                        PopulateMeterReadingCard(METER_READING_TYPE.KW, validateRegisterDetails);
+                    }
+                    else
+                    {
+                        PopulateMeterReadingCard(METER_READING_TYPE.KWH, validateRegisterDetails);
+                    }
                 }
-                else if(validateRegisterDetails.RegisterNumber == "002")
+
+                string ocrResultList = Intent.GetStringExtra("OCR_RESULTS");
+                if (ocrResultList != null)
                 {
-                    PopulateMeterReadingCard(METER_READING_TYPE.KVARH, validateRegisterDetails);
-                }
-                else if(validateRegisterDetails.RegisterNumber == "003")
-                {
-                    PopulateMeterReadingCard(METER_READING_TYPE.KW, validateRegisterDetails);
-                }
-                else
-                {
-                    PopulateMeterReadingCard(METER_READING_TYPE.KWH, validateRegisterDetails);
+                    mPresenter.EvaluateOCRReadingResponse(ocrResultList);
                 }
             }
+            else
+            {
+                List<SMRMROValidateRegisterDetails> sMRMROValidateRegisterDetailsList = DummyData(); //This is coming from session
 
+                foreach (SMRMROValidateRegisterDetails validateRegisterDetails in sMRMROValidateRegisterDetailsList)
+                {
+                    if (validateRegisterDetails.RegisterNumber == "001")
+                    {
+                        PopulateMeterReadingCard(METER_READING_TYPE.KWH, validateRegisterDetails);
+                    }
+                    else if (validateRegisterDetails.RegisterNumber == "002")
+                    {
+                        PopulateMeterReadingCard(METER_READING_TYPE.KVARH, validateRegisterDetails);
+                    }
+                    else if (validateRegisterDetails.RegisterNumber == "003")
+                    {
+                        PopulateMeterReadingCard(METER_READING_TYPE.KW, validateRegisterDetails);
+                    }
+                    else
+                    {
+                        PopulateMeterReadingCard(METER_READING_TYPE.KWH, validateRegisterDetails);
+                    }
+                }
+            }
         }
 
         protected override void OnCreate(Bundle savedInstanceState)
@@ -196,7 +232,6 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
         private void PopulateCurrentValues(LinearLayout container, SMRMROValidateRegisterDetails sMRMROValidateRegisterDetails)
         {
             char[] amountInArray = sMRMROValidateRegisterDetails.PrevMeterReading.ToCharArray();
-            EditText[] editTexts = new EditText[MAX_DIGIT];
             int resourceCounter = 0;
             for (int i = amountInArray.Length; i != 0; i--)
             {
@@ -211,8 +246,6 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                 {
                     TextViewUtils.SetMuseoSans500Typeface(currentValueDigit);
                 }
-                currentValueDigit.Text = amountInArray[i - 1].ToString();
-                //currentValueDigit.SetOnClickListener(new OnEditClickListener());
                 currentValueDigit.OnFocusChangeListener = new OnFocusChangeListener();
             }
 
@@ -221,6 +254,34 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             TextViewUtils.SetMuseoSans500Typeface(readingErrorMessage, readingMeterType);
             readingErrorMessage.Visibility = ViewStates.Gone;
             readingMeterType.Text = GetType(sMRMROValidateRegisterDetails.RegisterNumber);
+        }
+
+        private void UpdateCurrentValues(LinearLayout container, GetMeterReadingOCRResponseDetails sMRMROValidateRegisterDetails)
+        {
+            char[] amountInArray = sMRMROValidateRegisterDetails.OCRValue.ToCharArray();
+            EditText[] editTexts = new EditText[MAX_DIGIT];
+            int resourceCounter = 0;
+            for (int i = amountInArray.Length; i != 0; i--)
+            {
+                resourceCounter++;
+                if (resourceCounter > MAX_DIGIT) //When more than 9 digits
+                {
+                    break;
+                }
+                EditText currentValueDigit = container.FindViewById(currentMeterViews[currentMeterViews.Length - resourceCounter]) as EditText;
+                currentValueDigit.Text = amountInArray[i - 1].ToString();
+            }
+
+            TextView readingErrorMessage = container.FindViewById(Resource.Id.reading_error_validation_msg) as TextView;
+            
+            if (sMRMROValidateRegisterDetails.IsSuccess.ToLower() == "true")
+            {
+                readingErrorMessage.Visibility = ViewStates.Gone;
+            }
+            else
+            {
+                readingErrorMessage.Visibility = ViewStates.Visible;
+            }
         }
 
         public void PopulateMeterReadingCard(METER_READING_TYPE type, SMRMROValidateRegisterDetails sMRMROValidateRegisterDetails)
@@ -256,6 +317,47 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             {
                 //throw new NotImplementedException();
             }
+        }
+
+        private string GetRegisterNumber(string data)
+        {
+            string resultString = "";
+            if (data.ToLower() == "kwh")
+            {
+                return "001";
+            }
+            else if (data.ToLower() == "kvarh")
+            {
+                return "002";
+            }
+            else if (data.ToLower() == "kw")
+            {
+                return "003";
+            }
+            return resultString;
+        }
+
+        public void UpdateCurrentMeterReading(List<GetMeterReadingOCRResponseDetails> ocrMeterReadingList)
+        {
+            foreach (GetMeterReadingOCRResponseDetails ocrResponse in ocrMeterReadingList)
+            {
+                LinearLayout linearLayoutContainer;
+                string type = ocrResponse.OCRUnit.ToLower();
+                if (type == "kwh")
+                {
+                    linearLayoutContainer = FindViewById(Resource.Id.kwhCard) as LinearLayout;
+                    UpdateCurrentValues(linearLayoutContainer, ocrResponse);
+                }else if (type == "kvarh")
+                {
+                    linearLayoutContainer = FindViewById(Resource.Id.kVARhCard) as LinearLayout;
+                    UpdateCurrentValues(linearLayoutContainer, ocrResponse);
+                }else if (type == "kw")
+                {
+                    linearLayoutContainer = FindViewById(Resource.Id.kwCard) as LinearLayout;
+                    UpdateCurrentValues(linearLayoutContainer, ocrResponse);
+                }
+            }
+            
         }
 
     }

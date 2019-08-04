@@ -38,7 +38,7 @@ namespace myTNB_Android.Src.Utils
 
             using (var stream = new MemoryStream())
             {
-                bitmap.Compress(Bitmap.CompressFormat.Jpeg, 40, stream);
+                bitmap.Compress(Bitmap.CompressFormat.Jpeg, 0, stream);
 
                 var byteArray = stream.ToArray();
                 int length = byteArray.Length;

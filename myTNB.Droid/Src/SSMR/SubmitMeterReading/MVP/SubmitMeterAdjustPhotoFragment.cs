@@ -18,6 +18,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
     public class SubmitMeterAdjustPhotoFragment : Fragment
     {
         Bitmap myBitmap;
+        ImageView capturedImage;
         public override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -28,7 +29,12 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
 
         public override void OnViewCreated(View view, Bundle savedInstanceState)
         {
-            ImageView capturedImage = view.FindViewById<ImageView>(Resource.Id.adjust_photo_preview);
+            capturedImage = view.FindViewById<ImageView>(Resource.Id.adjust_photo_preview);
+            ImageView deleteImage = view.FindViewById<ImageView>(Resource.Id.imageDeleteCapture);
+            deleteImage.Click += delegate
+            {
+                ((SubmitMeterTakePhotoActivity)Activity).DeleteCapturedImage();
+            };
             capturedImage.SetImageBitmap(myBitmap);
         }
 
@@ -40,6 +46,11 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
         public void SetCapturedImage(Bitmap capturedBitmap)
         {
             myBitmap = capturedBitmap;
+        }
+
+        public void UpdateCapturedImage(Bitmap myBitmap)
+        {
+            capturedImage.SetImageBitmap(myBitmap);
         }
 
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)

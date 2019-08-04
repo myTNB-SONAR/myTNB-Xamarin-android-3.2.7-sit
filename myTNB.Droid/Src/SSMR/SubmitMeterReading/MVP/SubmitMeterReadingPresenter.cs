@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.SSMR.SubmitMeterReading.Api;
+using Newtonsoft.Json;
+using static myTNB_Android.Src.SSMR.SubmitMeterReading.Api.GetMeterReadingOCRResponse;
 using static myTNB_Android.Src.SSMR.SubmitMeterReading.Api.GetMeterReadingOCRValueRequest;
 using static myTNB_Android.Src.SSMR.SubmitMeterReading.Api.SubmitMeterReadingRequest;
 
@@ -28,6 +31,34 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             {
 
             }
+        }
+
+        
+        public void EvaluateOCRReadingResponse(string jsonResponseList)
+        {
+            List<GetMeterReadingOCRResponse> ocrResponseList = JsonConvert.DeserializeObject<List<GetMeterReadingOCRResponse>>(jsonResponseList);
+            List<GetMeterReadingOCRResponseDetails> smrRegisterDetailList = new List<GetMeterReadingOCRResponseDetails>();
+            GetMeterReadingOCRResponseDetails details;
+            foreach (GetMeterReadingOCRResponse ocrReadingResponse in ocrResponseList)
+            {
+                if (ocrReadingResponse.Data.ErrorCode == "7200" && ocrReadingResponse.Data.ResponseDetailsData != null)
+                {
+                    details = new GetMeterReadingOCRResponseDetails();
+                    details.IsSuccess = ocrReadingResponse.Data.ResponseDetailsData.IsSuccess;
+                    details.OCRUnit = ocrReadingResponse.Data.ResponseDetailsData.OCRUnit;
+                    details.OCRValue = ocrReadingResponse.Data.ResponseDetailsData.OCRValue;
+                    smrRegisterDetailList.Add(details);
+                }
+                else
+                {
+                    details = new GetMeterReadingOCRResponseDetails();
+                    details.IsSuccess = "false";
+                    details.OCRUnit = ocrReadingResponse.Data.ResponseDetailsData.OCRUnit;
+                    details.OCRValue = ocrReadingResponse.Data.ResponseDetailsData.OCRValue;
+                    smrRegisterDetailList.Add(details);
+                }
+            }
+            mView.UpdateCurrentMeterReading(smrRegisterDetailList);
         }
     }
 }

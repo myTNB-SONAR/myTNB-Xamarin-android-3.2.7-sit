@@ -27,6 +27,39 @@
         android:layout_alignParentBottom="true"
         android:background="@color/white"
         android:paddingTop="8dp">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/meter_capture_container"
+            android:orientation="horizontal"
+            android:paddingTop="16dp"
+            android:paddingBottom="16dp"
+            android:layout_gravity="center">
+            <LinearLayout
+                android:layout_width="52dp"
+                android:layout_height="52dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:id="@+id/meter_capture_1"
+                android:background="@drawable/meter_capture_holder_inactive"
+            />
+            <LinearLayout
+                android:layout_width="52dp"
+                android:layout_height="52dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:id="@+id/meter_capture_2"
+                android:background="@drawable/meter_capture_holder_inactive"
+            />
+            <LinearLayout
+                android:layout_width="52dp"
+                android:layout_height="52dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:id="@+id/meter_capture_3"
+                android:background="@drawable/meter_capture_holder_inactive"
+            />
+        </LinearLayout>
         <Button
             android:id="@+id/btnSubmitPhotoToOCR"
             android:layout_height="wrap_content"
@@ -43,7 +76,6 @@
         android:background="#F9F9F9"
         android:layout_below="@+id/appBar"
         android:layout_above="@+id/bottomLayout"
-        android:paddingBottom="16dp"
         android:orientation="vertical">
         <TextView
             android:layout_width="match_parent"
