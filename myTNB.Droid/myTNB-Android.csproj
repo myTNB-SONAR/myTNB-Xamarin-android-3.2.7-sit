@@ -1469,6 +1469,57 @@
     <Compile Include="Src\SSMRTerminate\MVP\SSMRTerminateContract.cs" />
     <Compile Include="Src\SSMRTerminate\MVP\SSMRTerminatePresenter.cs" />
     <Compile Include="Src\SSMR\SMRApplication\Adapter\SelectAccountAdapter.cs" />
+    <Compile Include="Src\SSMR\SubmitMeterReading\SubmitMeterReadingHelper.cs" />
+    <AndroidResource Include="Resources\layout\SubmitMeterReadingLayout.axml" />
+    <Compile Include="Src\SSMR\SubmitMeterReading\MVP\SubmitMeterReadingActivity.cs" />
+    <AndroidResource Include="Resources\layout\SubmitMeterReadingCardLayout.axml" />
+    <AndroidResource Include="Resources\drawable\meter_reading_label_background.xml" />
+    <Compile Include="Src\SSMR\SubmitMeterReading\MVP\SubmitMeterTakePhotoActivity.cs" />
+    <AndroidResource Include="Resources\layout\SubmitMeterTakePhotoLayout.axml" />
+    <Compile Include="Src\SSMR\SubmitMeterReading\MVP\CameraTakePhotoFragment.cs" />
+    <AndroidResource Include="Resources\layout\CameraTakePhotoFragmentLayout.axml" />
+    <Compile Include="Src\SSMR\SubmitMeterReading\Listener\CameraPreview.cs" />
+    <AndroidResource Include="Resources\drawable\capture_camera_button.xml" />
+    <Compile Include="Src\myTNBMenu\Models\SMRMROValidateRegisterDetails.cs" />
+    <Compile Include="Src\SSMR\SubmitMeterReading\Api\SubmitMeterReadingRequest.cs" />
+    <Compile Include="Src\SSMR\SubmitMeterReading\Api\SubmitMeterReadingResponse.cs" />
+    <Compile Include="Src\SSMR\SubmitMeterReading\Api\SubmitMeterReadingApi.cs" />
+    <Compile Include="Src\SSMR\SubmitMeterReading\Api\SubmitMeterReadingImpl.cs" />
+    <Compile Include="Src\SSMR\SubmitMeterReading\MVP\SubmitMeterReadingPresenter.cs" />
+    <Compile Include="Src\SSMR\SubmitMeterReading\MVP\SubmitMeterReadingContract.cs" />
+    <Compile Include="Src\SSMR\SubmitMeterReading\MVP\SubmitMeterTakePhotoFragment.cs" />
+    <AndroidResource Include="Resources\layout\SubmitMeterTakePhotoFragmentLayout.axml" />
+    <Compile Include="Src\SSMR\SubmitMeterReading\Listener\CameraStateListener.cs" />
+    <Compile Include="Src\SSMR\SubmitMeterReading\Listener\Camera2SurfaceTextureListener.cs" />
+    <Compile Include="Src\SSMR\SubmitMeterReading\MVP\AutoFitTextureView.cs" />
+    <Compile Include="Src\SSMR\SubmitMeterReading\Listener\CameraCaptureSessionCallback.cs" />
+    <Compile Include="Src\SSMR\SubmitMeterReading\Listener\CameraCaptureListener.cs" />
+    <Compile Include="Src\SSMR\SubmitMeterReading\Listener\CameraCaptureStillPictureSessionCallback.cs" />
+    <Compile Include="Src\SSMR\SubmitMeterReading\Listener\ImageAvailableListener.cs" />
+    <Compile Include="Src\SSMR\SubmitMeterReading\MVP\SubmitMeterAdjustPhotoFragment.cs" />
+    <AndroidResource Include="Resources\layout\SubmitMeterAdjustPhotoFragmentLayout.axml" />
+    <AndroidResource Include="Resources\drawable-hdpi\group_3.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\group_3.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\group_3.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\group_3.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\group_3.png" />
+    <Compile Include="Src\SSMR\SubmitMeterReading\Api\GetMeterReadingOCRValueRequest.cs" />
+    <Compile Include="Src\SSMR\SubmitMeterReading\Api\GetMeterReadingOCRResponse.cs" />
+    <Compile Include="Src\SSMR\SubmitMeterReading\MVP\SubmitMeterTakePhotoPresenter.cs" />
+    <Compile Include="Src\SSMR\SubmitMeterReading\MVP\SubmitMeterTakePhotoContract.cs" />
+    <Compile Include="Src\SSMR\SubmitMeterReading\MVP\MeterImageModel.cs" />
+    <AndroidResource Include="Resources\drawable\meter_capture_holder_active.xml" />
+    <AndroidResource Include="Resources\drawable\meter_capture_holder_selected.xml" />
+    <AndroidResource Include="Resources\drawable\meter_capture_holder_inactive.xml" />
+    <Compile Include="Src\SSMR\SubmitMeterReading\MVP\CameraCropOverlay.cs" />
+    <AndroidResource Include="Resources\drawable\overlay_crop_image.xml" />
+    <AndroidResource Include="Resources\drawable-hdpi\ocr_reading.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\ocr_reading.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\ocr_reading.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\ocr_reading.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\img_register_acct_no.png" />
+    <Compile Include="Src\SSMR\SubmitMeterReading\MVP\OCRLoadingFragment.cs" />
+    <AndroidResource Include="Resources\layout\OCRLoadingFragmentLayout.axml" />
     <AndroidResource Include="Resources\layout\SMRSubmitMeterReadingFragmentLayout.axml">
       <SubType></SubType>
       <Generator></Generator>
@@ -1675,6 +1726,7 @@
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
+    <Compile Include="Src\SSMR\Util\MeterReadingValuesViewHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -2046,11 +2098,16 @@
     <Folder Include="Src\SSMRMeterHistory\" />
     <Folder Include="Src\SSMRMeterHistory\MVP\" />
     <Folder Include="Src\SSMRMeterHistory\Adapter\" />
+    <Folder Include="Src\SSMR\SubmitMeterReading\" />
+    <Folder Include="Src\SSMR\SubmitMeterReading\MVP\" />
+    <Folder Include="Src\SSMR\SubmitMeterReading\Listener\" />
+    <Folder Include="Src\SSMR\SubmitMeterReading\Api\" />
     <Folder Include="Src\SSMR\SSMRMeterReadingTooltip\" />
     <Folder Include="Src\SSMR\SSMRMeterReadingTooltip\Adapter\" />
     <Folder Include="Src\SSMR\SSMRMeterReadingTooltip\MVP\" />
     <Folder Include="Src\SSMRTerminate\Api\" />
     <Folder Include="Src\SSMRTerminate\Adapter\" />
+    <Folder Include="Src\SSMR\Util\" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\GradientStatusBar.xml" />

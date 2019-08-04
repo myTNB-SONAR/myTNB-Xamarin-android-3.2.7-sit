@@ -60,6 +60,9 @@ namespace myTNB_Android.Src.myTNBMenu.Models
         [JsonProperty("isCurrentPeriodSubmitted")]
         [AliasAs("isCurrentPeriodSubmitted")]
         public string isCurrentPeriodSubmitted { get; set; }
+        [JsonProperty("SMRMROValidateRegisterDetails")]
+        [AliasAs("SMRMROValidateRegisterDetails")]
+        public List<SMRMROValidateRegisterDetails> SMRMROValidateRegisterDetails { get; set; }
 
         [JsonProperty("MeterReadingHistory")]
         [AliasAs("MeterReadingHistory")]

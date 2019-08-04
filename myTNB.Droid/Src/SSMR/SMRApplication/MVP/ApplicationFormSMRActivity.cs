@@ -19,7 +19,7 @@ using myTNB_Android.Src.Utils.Custom.ProgressDialog;
 
 namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
 {
-    [Activity(Label = "Self Meter Reading", Theme = "@style/Theme.Dashboard")]
+    [Activity(Label = "Self Meter Reading", Theme = "@style/Theme.RegisterForm")]
     public class ApplicationFormSMRActivity : BaseToolbarAppCompatActivity, ApplicationFormSMRContract.IView
     {
         [BindView(Resource.Id.applySMRForLabel)]

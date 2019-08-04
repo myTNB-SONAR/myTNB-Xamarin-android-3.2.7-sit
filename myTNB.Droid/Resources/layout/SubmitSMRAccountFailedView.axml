@@ -41,7 +41,7 @@
             android:text="Try Again"
             android:textSize="16dp"
             android:textAllCaps="false"
-            style="@style/DarkButton"/>
+            style="@style/WhiteButton1"/>
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
