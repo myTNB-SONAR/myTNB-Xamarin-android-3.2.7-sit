@@ -47,11 +47,58 @@ namespace myTNB_Android.Src.SSMR.SSMRMeterReadingTooltip.Adapter
 
             SSMRMeterReadingModel model = list[position];
 
-            Bitmap bitmap = null;
-            bitmap = ImageUtils.GetImageBitmapFromUrl(model.Image);
-            if (bitmap != null)
+            if (model.Image.Contains("tooltip_bg_"))
             {
-                tooltipImg.SetImageBitmap(bitmap);
+                if (model.Image.Contains("1"))
+                {
+                    tooltipImg.SetImageResource(Resource.Drawable.tooltip_bg_1);
+                }
+                else if (model.Image.Contains("2"))
+                {
+                    tooltipImg.SetImageResource(Resource.Drawable.tooltip_bg_2);
+                }
+                else
+                {
+                    tooltipImg.SetImageResource(Resource.Drawable.tooltip_bg_3);
+                }
+            }
+            else
+            {
+                Bitmap bitmap = null;
+                bitmap = ImageUtils.GetImageBitmapFromUrl(model.Image);
+                if (bitmap != null)
+                {
+                    tooltipImg.SetImageBitmap(bitmap);
+                }
+                else
+                {
+                    if (list.Count == 2)
+                    {
+                        if (position == 0)
+                        {
+                            tooltipImg.SetImageResource(Resource.Drawable.tooltip_bg_2);
+                        }
+                        else
+                        {
+                            tooltipImg.SetImageResource(Resource.Drawable.tooltip_bg_3);
+                        }
+                    }
+                    else if (list.Count == 3)
+                    {
+                        if (position == 0)
+                        {
+                            tooltipImg.SetImageResource(Resource.Drawable.tooltip_bg_1);
+                        }
+                        else if (position == 1)
+                        {
+                            tooltipImg.SetImageResource(Resource.Drawable.tooltip_bg_2);
+                        }
+                        else
+                        {
+                            tooltipImg.SetImageResource(Resource.Drawable.tooltip_bg_3);
+                        }
+                    }
+                }
             }
 
             titleView.Text = model.Title;

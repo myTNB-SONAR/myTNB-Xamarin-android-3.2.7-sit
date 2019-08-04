@@ -12,6 +12,7 @@ using Android.Runtime;
 using Android.Util;
 using Android.Views;
 using Android.Widget;
+using myTNB_Android.Src.Utils;
 
 namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
 {
@@ -36,6 +37,15 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                 ((SubmitMeterTakePhotoActivity)Activity).DeleteCapturedImage();
             };
             capturedImage.SetImageBitmap(myBitmap);
+
+            try
+            {
+                ((SubmitMeterTakePhotoActivity)Activity).DisableMoreMenu();
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public static SubmitMeterAdjustPhotoFragment NewIntance()

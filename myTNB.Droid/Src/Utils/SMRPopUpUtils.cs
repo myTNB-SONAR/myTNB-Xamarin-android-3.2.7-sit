@@ -57,6 +57,33 @@ namespace myTNB_Android.Src.Utils
                     item = list.Find(x => x.Type.Contains("UploadPhoto"));
                 }
             }
+            else
+            {
+                if (isSinglePhase && isTakePhoto)
+                {
+                    item.Title = "How do I take these photos?";
+                    item.Description = "Capture the<strong> entire meter box with your camera directly facing it</strong>. Be sure to take a full, clear photo with no shadows, reflections or flashes and the image can’t be skewed. Any of these may cause the value to be unreadable.";
+                    item.CTA = "Got It!";
+                }
+                else if (isSinglePhase && !isTakePhoto)
+                {
+                    item.Title = "Uploading from your album?";
+                    item.Description = "Be sure to upload a<strong> clear, straight-facing photo of the entire meter box</strong> with no shadows, reflections or flashes and the image can’t be skewed. Any of these may cause the value to be unreadable.";
+                    item.CTA = "Got It!";
+                }
+                else if (!isSinglePhase && isTakePhoto)
+                {
+                    item.Title = "How do I take these photos?";
+                    item.Description = "You'll need to submit 3 different meter reading values (kWh, kVARh, kW).<br/><br/>Capture the<strong> entire meter box with your camera directly facing it</strong>. Be sure to take full, clear photos with no shadows, reflections or flashes and the images can’t be skewed.Any of these may cause the values to be unreadable.";
+                    item.CTA = "Got It!";
+                }
+                else if (!isSinglePhase && !isTakePhoto)
+                {
+                    item.Title = "Uploading from your album?";
+                    item.Description = "You'll need to submit 3 different meter reading values (kWh, kVARh, kW).<br/><br/>Be sure to upload<strong> clear, straight-facing photos of the entire meter box</strong> with no shadows, reflections or flashes and the images can’t be skewed. Any of these may cause the values to be unreadable.";
+                    item.CTA = "Got It!";
+                }
+            }
 
 
             popup = new MaterialDialog.Builder(mActivity)

@@ -10,6 +10,7 @@ using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
+using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.SSMR.SubmitMeterReading.Api;
@@ -34,6 +35,8 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
         private int[] previousMeterViews;
         private int[] currentMeterViews;
         private int MAX_DIGIT = 9;
+        private IMenu ssmrMenu;
+        private static bool isFirstLaunch = true;
 
         List<SMRMROValidateRegisterDetails> SMRValidateRegisterDetailList;
 
@@ -153,6 +156,26 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             }
             editViewHelper.SetEditTextList(editTextList);
             editViewHelper.SetEvent();
+
+        }
+
+        public override bool OnCreateOptionsMenu(IMenu menu)
+        {
+            MenuInflater.Inflate(Resource.Menu.SSMRMeterSubmitMenu, menu);
+            ssmrMenu = menu;
+            return base.OnCreateOptionsMenu(menu);
+        }
+
+
+        public override bool OnOptionsItemSelected(IMenuItem item)
+        {
+            switch (item.ItemId)
+            {
+                case Resource.Id.action_ssmr_meter_reading_more:
+                    ShowMeterReadingTooltip();
+                    break;
+            }
+            return base.OnOptionsItemSelected(item);
         }
 
         protected override void OnStart()
@@ -214,6 +237,12 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                     }
                 }
             }
+
+            if (!MyTNBAccountManagement.GetInstance().IsSMRMeterReadingOnboardingShown() && isFirstLaunch)
+            {
+                ShowMeterReadingTooltip();
+                isFirstLaunch = false;
+            }
         }
 
         protected override void OnCreate(Bundle savedInstanceState)
@@ -221,6 +250,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             base.OnCreate(savedInstanceState);
             mPresenter = new SubmitMeterReadingPresenter(this);
             InitializePage();
+            isFirstLaunch = true;
         }
 
         private string GetType(string registerNumber)
@@ -425,6 +455,18 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             });
 
 
+        }
+
+        private void ShowMeterReadingTooltip()
+        {
+            if (SMRValidateRegisterDetailList.Count > 1)
+            {
+                SMRPopUpUtils.OnShowSMRMeterReadingTooltipOnActivity(false, this, SupportFragmentManager);
+            }
+            else
+            {
+                SMRPopUpUtils.OnShowSMRMeterReadingTooltipOnActivity(true, this, SupportFragmentManager);
+            }
         }
 
     }

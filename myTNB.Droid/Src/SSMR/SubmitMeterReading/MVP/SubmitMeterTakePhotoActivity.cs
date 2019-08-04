@@ -1,4 +1,5 @@
-﻿using Android.App;
+﻿using AFollestad.MaterialDialogs;
+using Android.App;
 using Android.Content;
 using Android.Graphics;
 using Android.OS;
@@ -8,6 +9,7 @@ using Android.Views;
 using Android.Widget;
 using CheeseBind;
 using myTNB_Android.Src.Base.Activity;
+using myTNB_Android.Src.Utils;
 
 namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
 {
@@ -21,6 +23,8 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
 
         int selectedCapturedImage = 0;
 
+        private IMenu ssmrMenu;
+
         [BindView(Resource.Id.meterReadingTakePhotoTitle)]
         TextView meterReadingTakePhotoTitle;
 
@@ -31,6 +35,10 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
         LinearLayout bottomLayout;
 
         public static readonly int PickImageId = 1000;
+
+        private static bool isGalleryFirstPress = true;
+
+        private bool isSinglePhase = false;
 
         SubmitMeterAdjustPhotoFragment adjustPhotoFragment;
         OCRLoadingFragment ocrLoadingFragment;
@@ -54,6 +62,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
         {
             base.OnCreate(savedInstanceState);
             mPresenter = new SubmitMeterTakePhotoPresenter(this);
+            isGalleryFirstPress = true;
             if (savedInstanceState == null)
             {
                 FragmentManager.BeginTransaction().Replace(Resource.Id.photoContainer, SubmitMeterTakePhotoFragment.NewInstance()).Commit();
@@ -66,6 +75,8 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             };
             mPresenter.InitializeModelList();
 
+            // TODO: Logic to reflect the flag
+            isSinglePhase = false;
         }
 
         public override void OnBackPressed()
@@ -202,10 +213,18 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
 
         public void ShowGallery()
         {
-            Intent intent = new Intent();
-            intent.SetType("image/*");
-            intent.SetAction(Intent.ActionGetContent);
-            StartActivityForResult(Intent.CreateChooser(intent,"Select Picture"), PickImageId);
+            if (isGalleryFirstPress)
+            {
+                ShowUploadPhotoTooltip();
+                isGalleryFirstPress = false;
+            }
+            else
+            {
+                Intent intent = new Intent();
+                intent.SetType("image/*");
+                intent.SetAction(Intent.ActionGetContent);
+                StartActivityForResult(Intent.CreateChooser(intent, "Select Picture"), PickImageId);
+            }
         }
 
         public void ShowOCRLoading()
@@ -225,6 +244,62 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             Intent intent = new Intent(this,typeof(SubmitMeterReadingActivity));
             intent.PutExtra("OCR_RESULTS", resultOCRResponseList);
             StartActivity(intent);
+        }
+
+        public override bool OnCreateOptionsMenu(IMenu menu)
+        {
+            MenuInflater.Inflate(Resource.Menu.SSMRMeterSubmitMenu, menu);
+            ssmrMenu = menu;
+            return base.OnCreateOptionsMenu(menu);
+        }
+
+
+        public override bool OnOptionsItemSelected(IMenuItem item)
+        {
+            switch (item.ItemId)
+            {
+                case Resource.Id.action_ssmr_meter_reading_more:
+                    ShowTakePhotoTooltip();
+                    break;
+            }
+            return base.OnOptionsItemSelected(item);
+        }
+
+        private void ShowTakePhotoTooltip()
+        {
+            MaterialDialog myDiaLog = SMRPopUpUtils.OnBuildSMRPhotoTooltip(true, isSinglePhase, this);
+            LinearLayout btnFirst = myDiaLog.FindViewById<LinearLayout>(Resource.Id.btnFirst);
+
+            btnFirst.Click += delegate
+            {
+                myDiaLog.Dismiss();
+            };
+
+            myDiaLog.Show();
+        }
+
+        private void ShowUploadPhotoTooltip()
+        {
+            MaterialDialog myDiaLog = SMRPopUpUtils.OnBuildSMRPhotoTooltip(false, isSinglePhase, this);
+            LinearLayout btnFirst = myDiaLog.FindViewById<LinearLayout>(Resource.Id.btnFirst);
+
+            btnFirst.Click += delegate
+            {
+                ShowGallery();
+                myDiaLog.Dismiss();
+            };
+
+            myDiaLog.Show();
+        }
+
+        public void EnableMoreMenu()
+        {
+            ssmrMenu.FindItem(Resource.Id.action_ssmr_meter_reading_more).SetVisible(true);
+        }
+
+        public void DisableMoreMenu()
+        {
+            ssmrMenu.FindItem(Resource.Id.action_ssmr_meter_reading_more).SetVisible(false);
         }
     }
 }
