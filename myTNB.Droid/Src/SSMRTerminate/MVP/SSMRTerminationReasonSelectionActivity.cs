@@ -15,6 +15,7 @@ using myTNB_Android.Src.SSMRTerminate.Api;
 using System.Collections.Generic;
 using myTNB_Android.Src.SSMRTerminate.Adapter;
 using CheeseBind;
+using Android.Graphics.Drawables;
 
 namespace myTNB_Android.Src.SSMRTerminate.MVP
 {
@@ -55,6 +56,15 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
                 mTerminationRecyclerView.SetAdapter(adapter);
                 adapter.ClickChanged += OnClickChanged;
             }
+
+            /* Drawable drawable = Resources.GetDrawable(Resource.Drawable.GradientStatusBar);
+            if (Build.VERSION.SdkInt >= Build.VERSION_CODES.Lollipop)
+            {
+                this.Window.AddFlags(WindowManagerFlags.DrawsSystemBarBackgrounds);
+                this.Window.ClearFlags(WindowManagerFlags.TranslucentStatus);
+                this.Window.SetBackgroundDrawable(drawable);
+            }
+            this.toolbar.SetBackgroundDrawable(drawable);*/
 
         }
 

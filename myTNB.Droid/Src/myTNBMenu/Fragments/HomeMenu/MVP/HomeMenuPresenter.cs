@@ -448,7 +448,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         {
             List<NewFAQEntity> cachedDBList = new List<NewFAQEntity>();
             List<NewFAQ> cachedList = new List<NewFAQ>();
-            cachedDBList = NewFAQEntity.GetAll();
+            NewFAQEntity wtManager = new NewFAQEntity();
+            cachedDBList = wtManager.GetAll();
             for (int i = 0; i < cachedDBList.Count; i++)
             {
                 cachedList.Add(new NewFAQ()

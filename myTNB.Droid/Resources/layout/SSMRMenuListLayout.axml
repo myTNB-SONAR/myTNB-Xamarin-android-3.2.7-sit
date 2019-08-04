@@ -8,7 +8,7 @@
         android:layout_height="32dp"
         android:layout_marginTop="12dp"
         android:layout_marginLeft="12dp"
-        android:layout_marginRight="12dp"
+        android:layout_marginRight="8dp"
         android:layout_gravity="right"
         android:clickable="true"
         android:src="@drawable/ic_action_delete_white"
@@ -20,6 +20,7 @@
           android:layout_marginLeft="16dp"
           android:layout_marginRight="16dp"
           android:layout_marginTop="16dp"
+          android:paddingTop="1dp"
           android:id="@+id/rootView"
           android:background="@drawable/custom_round_white_background">
         <android.support.v7.widget.RecyclerView

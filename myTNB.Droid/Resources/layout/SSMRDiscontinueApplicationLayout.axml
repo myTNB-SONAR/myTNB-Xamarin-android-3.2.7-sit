@@ -95,16 +95,14 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:background="@color/white"
-                android:paddingTop="16dp"
+                android:paddingTop="18dp"
                 android:paddingLeft="12dp"
-                android:paddingBottom="18dp"
                 android:paddingStart="16dp"
                 android:id="@+id/contactDetailContainer">
                 <android.support.design.widget.TextInputLayout
                     android:id="@+id/txtInputLayoutEmail"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="4dp"
                     android:layout_marginRight="17dp"
                     app:errorEnabled="true"
                     app:hintTextAppearance="@style/TextInputLayout.TextAppearance.LightBackground">
@@ -143,9 +141,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:lineSpacingExtra="2dp"
-                    android:layout_marginTop="6dp"
                     android:layout_marginLeft="4dp"
                     android:layout_marginRight="16dp"
+                    android:layout_marginBottom="18dp"
                     android:textSize="12dp"
                     android:text="By editing you will update your myTNB profile and electricity account contact details."
                     android:textColor="@color/tunaGrey"
@@ -169,10 +167,8 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:background="@color/white"
-                android:paddingTop="16dp"
+                android:paddingTop="18dp"
                 android:paddingLeft="12dp"
-                android:paddingEnd="8dp"
-                android:paddingBottom="8dp"
                 android:paddingStart="16dp"
                 android:id="@+id/contactDetailContainer">
                 <FrameLayout
@@ -206,7 +202,6 @@
                     android:id="@+id/txtInputLayoutTxtReason"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
                     android:layout_marginRight="8dp"
                     app:errorEnabled="true"
                     app:hintTextAppearance="@style/TextInputLayout.TextAppearance.LightBackground">
@@ -236,7 +231,6 @@
                 android:layout_gravity="bottom"
                 android:id="@+id/disconnectionConfirmationContainer">
                 <TextView
-                    android:text="@string/ssmr_terms_conditions"
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

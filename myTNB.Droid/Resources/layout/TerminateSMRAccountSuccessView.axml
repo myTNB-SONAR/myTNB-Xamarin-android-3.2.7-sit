@@ -69,7 +69,7 @@
                 android:gravity="center"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
-                android:text="We have received your request for this Self Meter Reading Service. For your reference you may keep the application number below."
+                android:text="We have received your request to unsubscribe from this service. For your reference you may keep the application number below."
                 android:layout_gravity="center|center_vertical"
                 android:layout_marginTop="8dp" />
             <View

@@ -23,6 +23,7 @@ using myTNB_Android.Src.SSMRTerminate.Api;
 using Android.Runtime;
 using myTNB_Android.Src.TermsAndConditions.Activity;
 using myTNB_Android.Src.SSMR.SMRApplication.Api;
+using Android.Graphics.Drawables;
 
 namespace myTNB_Android.Src.SSMRTerminate.MVP
 {
@@ -184,6 +185,24 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
             TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutReason, txtInputLayoutEmail, txtInputLayoutMobileNo, txtInputLayoutTxtReason);
             TextViewUtils.SetMuseoSans500Typeface(btnDisconnectionSubmit, disconnectionTtile, disconnectionAccountTtile, contactDetailTtile, terminationReasonTitle);
             TextViewUtils.SetMuseoSans300Typeface(disconnectionAccountAddress, contactDetailConsent, txtTermsConditions, txtEmail, txtMobileNo, txtSelectReason, txtReason);
+
+            /* Drawable drawable = Resources.GetDrawable(Resource.Drawable.GradientStatusBar);
+            if (Build.VERSION.SdkInt >= Build.VERSION_CODES.Lollipop)
+            {
+                this.Window.AddFlags(WindowManagerFlags.DrawsSystemBarBackgrounds);
+                this.Window.ClearFlags(WindowManagerFlags.TranslucentStatus);
+                this.Window.SetBackgroundDrawable(drawable);
+            }
+            this.toolbar.SetBackgroundDrawable(drawable);*/
+
+            if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.N)
+            {
+                txtTermsConditions.TextFormatted = Html.FromHtml(GetString(Resource.String.ssmr_terms_conditions), FromHtmlOptions.ModeLegacy);
+            }
+            else
+            {
+                txtTermsConditions.TextFormatted = Html.FromHtml(GetString(Resource.String.ssmr_terms_conditions));
+            }
 
             contactDetailConsent.Visibility = ViewStates.Gone;
             txtInputLayoutTxtReason.Visibility = ViewStates.Gone;
