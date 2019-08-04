@@ -170,6 +170,7 @@ namespace myTNB.SSMR
             UIStoryboard storyBoard = UIStoryboard.FromName("SSMR", null);
             SSMRApplicationViewController viewController =
                 storyBoard.InstantiateViewController("SSMRApplicationViewController") as SSMRApplicationViewController;
+            viewController.IsApplication = true;
             that.NavigationController.PushViewController(viewController, true);
         }
     }

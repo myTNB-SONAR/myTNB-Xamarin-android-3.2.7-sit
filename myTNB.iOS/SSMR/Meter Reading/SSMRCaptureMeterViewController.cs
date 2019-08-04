@@ -68,7 +68,6 @@ namespace myTNB
             SetPreview();
             SetCamera();
             ToggleCTA();
-            Debug.WriteLine("V Didload");
         }
 
         public override void ViewWillAppear(bool animated)
@@ -278,13 +277,12 @@ namespace myTNB
                 if (isSelected)
                 {
                     view.Layer.BorderColor = MyTNBColor.WaterBlue.CGColor;
-                    currentLbl.TextColor = MyTNBColor.WaterBlue;
                 }
                 else
                 {
                     view.Layer.BorderColor = hasImg ? MyTNBColor.FreshGreen.CGColor : MyTNBColor.WhiteTwo.CGColor;
-                    currentLbl.TextColor = MyTNBColor.GreyishBrown;
                 }
+                currentLbl.TextColor = isSelected ? MyTNBColor.WaterBlue : MyTNBColor.GreyishBrown;
             }
         }
 
@@ -347,6 +345,7 @@ namespace myTNB
             if (_viewMainPreviewParent != null)
             {
                 _viewMainPreviewParent.Hidden = true;
+                _viewMainPreviewParent.RemoveFromSuperview();
                 _imgViewMainPreview.Image = null;
                 _viewDelete.Hidden = true;
                 _viewCameraActions.Hidden = false;
@@ -391,6 +390,7 @@ namespace myTNB
             View.AddSubview(_viewCamera);
         }
 
+        #region Box Overlay
         private UIView GetOverlay(UIView viewBase)
         {
             nfloat baseHeight = viewBase.Frame.Height;
@@ -398,22 +398,26 @@ namespace myTNB
             nfloat boxHeight = viewBase.Frame.Height - _viewCameraActions.Frame.Height - (baseHeight * 0.028F * 2);
             UIView view = new UIView(new CGRect(new CGPoint(0, 0), viewBase.Frame.Size))
             { BackgroundColor = UIColor.Clear, UserInteractionEnabled = false };
-            UIView viewTop = new UIView(new CGRect(0, 0, ViewWidth, baseHeight * 0.028F))
+            UIView viewTop = new UIView(new CGRect(0, 0, ViewWidth, (baseHeight * 0.028F) + 1))
             { BackgroundColor = UIColor.Black.ColorWithAlpha(0.60F), UserInteractionEnabled = false };
-            UIView viewLeft = new UIView(new CGRect(0, viewTop.Frame.GetMaxY(), baseWidth * 0.22F, boxHeight))
+            UIView viewLeft = new UIView(new CGRect(0, viewTop.Frame.GetMaxY(), (baseWidth * 0.22F) + 1, boxHeight))
             { BackgroundColor = UIColor.Black.ColorWithAlpha(0.60F), UserInteractionEnabled = false };
-            UIView viewClear = new UIView(new CGRect(viewLeft.Frame.GetMaxX(), viewTop.Frame.GetMaxY(), baseWidth - (baseWidth * 0.22F * 2), boxHeight))
+
+            UIView viewClear = new UIView(new CGRect(viewLeft.Frame.GetMaxX() - 1, viewTop.Frame.GetMaxY() - 1, (baseWidth - (baseWidth * 0.22F * 2)) + 2, boxHeight + 2))
             { BackgroundColor = UIColor.Clear, UserInteractionEnabled = false };
             viewClear.Layer.BorderColor = MyTNBColor.WaterBlue.CGColor;
             viewClear.Layer.BorderWidth = 1.0F;
             viewClear.Layer.CornerRadius = 4.0F;
-            UIView viewRight = new UIView(new CGRect(viewClear.Frame.GetMaxX(), viewTop.Frame.GetMaxY(), baseWidth * 0.22F, boxHeight))
+
+            UIView viewRight = new UIView(new CGRect(viewClear.Frame.GetMaxX() - 1, viewTop.Frame.GetMaxY(), (baseWidth * 0.22F) + 1, boxHeight))
             { BackgroundColor = UIColor.Black.ColorWithAlpha(0.60F), UserInteractionEnabled = false };
-            UIView viewBottom = new UIView(new CGRect(0, viewLeft.Frame.GetMaxY(), ViewWidth, baseHeight - viewLeft.Frame.GetMaxY()))
+            UIView viewBottom = new UIView(new CGRect(0, viewLeft.Frame.GetMaxY(), ViewWidth, (baseHeight - viewLeft.Frame.GetMaxY()) + 1))
             { BackgroundColor = UIColor.Black.ColorWithAlpha(0.60F), UserInteractionEnabled = false };
             view.AddSubviews(new UIView[] { viewTop, viewLeft, viewClear, viewRight, viewBottom });
+            view.BringSubviewToFront(viewClear);
             return view;
         }
+        #endregion
 
         private UIView GetDeleteSection(UIView viewBase)
         {
@@ -741,26 +745,32 @@ namespace myTNB
 
         private void AddMainPreview(UIImage previewImg)
         {
-            if (_viewMainPreviewParent == null || _imgViewMainPreview == null)
+            if (_imgViewMainPreview != null)
+            {
+                _imgViewMainPreview.RemoveFromSuperview();
+                _imgViewMainPreview = null;
+            }
+
+            if (_viewMainPreviewParent == null)
             {
                 _viewMainPreviewParent = new UIView(new CGRect(0, 0, ViewWidth, _viewCamera.Frame.Height))
                 {
                     ClipsToBounds = true,
                     BackgroundColor = MyTNBColor.WhiteTwo
                 };
-                _imgViewMainPreview = new UIImageView(new CGRect(new CGPoint(0, 0), _viewMainPreviewParent.Frame.Size))
-                {
-                    UserInteractionEnabled = true,
-                    MultipleTouchEnabled = true,
-                    ClipsToBounds = true
-                };
-                _imgViewMainPreview.AddGestureRecognizer(new UIPinchGestureRecognizer((sender) => { PinchZoomAction(sender); }));
-                _imgViewMainPreview.AddGestureRecognizer(new UIPanGestureRecognizer((sender) => { PanAction(sender); }));
-
-                _viewMainPreviewParent.AddSubview(_imgViewMainPreview);
             }
-            _imgViewMainPreview.Frame = new CGRect(new CGPoint(0, 0), _viewMainPreviewParent.Frame.Size);
-            _imgViewMainPreview.Image = previewImg;
+
+            _imgViewMainPreview = new UIImageView(new CGRect(new CGPoint(0, 0), _viewMainPreviewParent.Frame.Size))
+            {
+                UserInteractionEnabled = true,
+                MultipleTouchEnabled = true,
+                ClipsToBounds = true,
+                Image = previewImg
+            };
+            _imgViewMainPreview.AddGestureRecognizer(new UIPinchGestureRecognizer((sender) => { PinchZoomAction(sender); }));
+            _imgViewMainPreview.AddGestureRecognizer(new UIPanGestureRecognizer((sender) => { PanAction(sender); }));
+
+            _viewMainPreviewParent.AddSubview(_imgViewMainPreview);
             _viewMainPreviewParent.Hidden = false;
 
             _viewCamera.AddSubview(_viewMainPreviewParent);
@@ -813,7 +823,15 @@ namespace myTNB
             if (sender != null && sender.View != null
                 && (sender.State == UIGestureRecognizerState.Began || sender.State == UIGestureRecognizerState.Changed))
             {
+                nfloat deltaX = _imgViewMainPreview.Frame.Width - _viewMainPreviewParent.Frame.Width;
+                nfloat deltaY = _imgViewMainPreview.Frame.Height - _viewMainPreviewParent.Frame.Height;
                 CGPoint point = sender.TranslationInView(sender.View);
+
+                if (point.X + _imgViewMainPreview.Frame.X > 0 || Math.Abs(point.X + _imgViewMainPreview.Frame.X) > deltaX)
+                { return; }
+                if (point.Y + _imgViewMainPreview.Frame.Y > 0 || Math.Abs(point.Y + _imgViewMainPreview.Frame.Y) > deltaY)
+                { return; }
+
                 sender.View.Transform = CGAffineTransform.Translate(sender.View.Transform, point.X, point.Y);
                 sender.SetTranslation(new CGPoint(0, 0), sender.View);
             }
@@ -897,8 +915,10 @@ namespace myTNB
                 InvokeOnMainThread(() =>
                 {
                     if (_viewLoading != null) { _viewLoading.Hidden = true; }
-                    var test = OCRReadingCache.Instance.GetOCRReadings();
-                    NavigationController.PopViewController(true);
+                    if (NavigationController != null)
+                    {
+                        NavigationController.PopViewController(true);
+                    }
                 });
             });
         }

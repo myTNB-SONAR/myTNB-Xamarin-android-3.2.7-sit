@@ -69,7 +69,8 @@
         "terminateFor": "I am unsubscribing my service for:",
         "contactDetails": "My contact details:",
         "terminateTitle": "We’re sorry to see you go! Can you tell us why you want to unsubscribe this service?",
-        "tnc": "By subscribing, you are agreeing to the Self Meter Reading Terms and Conditions, TNB’s Terms of Use, Privacy policy, Anti-Spam Policy and Personal Data Protection Policy.",
+        "tncUnsubscribe": "By unsubscribing, you are agreeing to the <a href=\"\\\">TNB’s Terms of Use</a>, <a href=\"\\\">Privacy policy</a>, <a href=\"\\\">Anti-Spam Policy</a> and <a href=\"\\\">Personal Data Protection Policy</a>.",
+        "tncSubscribe": "By subscribing, you are agreeing to the <a href=\"\\\">Self Meter Reading Terms and Conditions</a>, <a href=\"\\\">TNB’s Terms of Use</a>, <a href=\"\\\">Privacy policy</a>, <a href=\"\\\">Anti-Spam Policy and Personal Data Protection Policy</a>.",
         "editContactInfo": "By editing you will update your myTNB profile but not your owner’s electricity account contact details.",
         "selectReason": "Select Reason",
         "stateReason": "Please state your reason"
@@ -84,14 +85,14 @@
 
         "ssmrApplySuccessTitle": "Application Submitted",
         "ssmrApplyFailTitle": "Please Try Again",
-        "ssmrApplySuccessMessage": "We have received your request for this Self Meter Reading Service. For your reference you may keep the application number below.",
+        "ssmrApplySuccessMessage": "We have received your request for this Self Meter Reading service. For your reference you may keep the application number below.",
         "ssmrApplyFailMessage": "It looks like we can't process your application at the moment.",
         "ssmrApplyReferenceTitle": "Application reference number",
         "ssmrApplyDateTitle": "Applied on",
 
         "ssmrDiscontinueSuccessTitle": "Application Submitted",
         "ssmrDiscontinueFailTitle": "Please Try Again",
-        "ssmrDiscontinueSuccessMessage": "We have received your request to discontinue this service. For your reference you may keep the application number below.",
+        "ssmrDiscontinueSuccessMessage": "We have received your request to unsubscribe from this service. For your reference you may keep the application number below.",
         "ssmrDiscontinueFailMessage": "It looks like we can't process your application at the moment.",
         "ssmrDiscontinueReferenceTitle": "Application reference number",
         "ssmrDiscontinueDateTitle": "Applied on",

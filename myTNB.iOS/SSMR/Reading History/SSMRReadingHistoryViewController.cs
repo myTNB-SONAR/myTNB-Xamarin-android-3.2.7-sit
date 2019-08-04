@@ -151,7 +151,7 @@ namespace myTNB
         {
             Debug.WriteLine("model.MenuName: " + model.MenuName);
             //Tap events for more options..
-            if (model.MenuId == "1004")
+            if (model.MenuId == SSMRConstants.More_Unsubscribe)
             {
                 UIStoryboard storyBoard = UIStoryboard.FromName("SSMR", null);
                 SSMRApplicationViewController viewController =
