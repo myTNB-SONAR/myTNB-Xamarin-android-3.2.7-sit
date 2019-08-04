@@ -57,6 +57,10 @@ namespace myTNB_Android.Src.myTNBMenu.Models
         [AliasAs("previousReadingKw")]
         public string previousReadingKw { get; set; }
 
+        [JsonProperty("isCurrentPeriodSubmitted")]
+        [AliasAs("isCurrentPeriodSubmitted")]
+        public string isCurrentPeriodSubmitted { get; set; }
+
         [JsonProperty("MeterReadingHistory")]
         [AliasAs("MeterReadingHistory")]
         public List<SSMRMeterHistoryModel> MeterReadingHistory { get; set; }

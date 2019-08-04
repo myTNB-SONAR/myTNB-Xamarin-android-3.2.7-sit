@@ -124,11 +124,36 @@ namespace myTNB_Android.Src.Base.Activity
             }
         }
 
+        public virtual void SetToolbarBackground(int resId)
+        {
+            Drawable drawable = Resources.GetDrawable(resId);
+            if (toolbar != null)
+            {
+                toolbar?.SetBackgroundDrawable(drawable);
+            }
+            else
+            {
+                toolbar = FindViewById<Toolbar>(Resource.Id.toolbar);
+                toolbar?.SetBackgroundDrawable(drawable);
+            }
+        }
+
         public virtual void SetStatusBarGradientBackground()
         {
             if (Build.VERSION.SdkInt >= Build.VERSION_CODES.Lollipop)
             {
                 Drawable drawable = Resources.GetDrawable(Resource.Drawable.GradientStatusBar);
+                this.Window.AddFlags(WindowManagerFlags.DrawsSystemBarBackgrounds);
+                this.Window.ClearFlags(WindowManagerFlags.TranslucentStatus);
+                this.Window.SetBackgroundDrawable(drawable);
+            }
+        }
+
+        public virtual void SetStatusBarBackground(int resId)
+        {
+            if (Build.VERSION.SdkInt >= Build.VERSION_CODES.Lollipop)
+            {
+                Drawable drawable = Resources.GetDrawable(resId);
                 this.Window.AddFlags(WindowManagerFlags.DrawsSystemBarBackgrounds);
                 this.Window.ClearFlags(WindowManagerFlags.TranslucentStatus);
                 this.Window.SetBackgroundDrawable(drawable);

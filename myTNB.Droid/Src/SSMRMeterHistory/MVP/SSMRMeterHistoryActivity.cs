@@ -83,13 +83,8 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
 			// Create your application here
 			try
 			{
-                if (Build.VERSION.SdkInt >= Build.VERSION_CODES.Lollipop)
-                {
-                    this.Window.AddFlags(WindowManagerFlags.DrawsSystemBarBackgrounds);
-                    this.Window.ClearFlags(WindowManagerFlags.TranslucentStatus);
-                    this.Window.SetStatusBarColor(Resources.GetColor(Resource.Color.bar_color));
-                }
-                this.toolbar.SetBackgroundColor(Resources.GetColor(Resource.Color.bar_color));
+                SetToolbarBackground(Resource.Drawable.CustomGradientToolBar);
+                SetStatusBarBackground(Resource.Drawable.bg_smr);
 
                 TextViewUtils.SetMuseoSans500Typeface(SMRMainTitle, SMRListHeader, btnSubmitMeter);
                 TextViewUtils.SetMuseoSans300Typeface(SMRMainContent);
@@ -116,24 +111,15 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
                     }
                     else
                     {
-                        // TODO: Enable when confirm
-                        // btnSubmitMeter.Visibility = ViewStates.Gone;
-                        /*if (selectedAccount != null)
+                        btnSubmitMeter.Visibility = ViewStates.Gone;
+                        if (smrResponse.Response.Data.isCurrentPeriodSubmitted != null && smrResponse.Response.Data.isCurrentPeriodSubmitted == "true")
                         {
-                            CustomerBillingAccount selectedCustomer = CustomerBillingAccount.FindByAccNum(selectedAccount.AccountNum);
-                            if (selectedCustomer.IsPeriodOpen)
-                            {
-                                SMRMainImg.SetImageResource(Resource.Drawable.smr_submitted);
-                            }
-                            else
-                            {
-                                SMRMainImg.SetImageResource(Resource.Drawable.smr_closed);
-                            }
+                            SMRMainImg.SetImageResource(Resource.Drawable.smr_submitted);
                         }
                         else
-                        {*/
+                        {
                             SMRMainImg.SetImageResource(Resource.Drawable.smr_closed);
-                        //}
+                        }
                     }
 
                     if(!string.IsNullOrEmpty(smrResponse.Response.Data.HistoryViewTitle))

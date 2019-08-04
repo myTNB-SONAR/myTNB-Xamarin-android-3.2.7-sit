@@ -1671,6 +1671,10 @@
       <Generator></Generator>
     </AndroidResource>
     <Compile Include="Src\SSMRTerminate\MVP\TerminateSMRAccountSuccessActivity.cs" />
+    <AndroidResource Include="Resources\drawable\CustomGradientToolBar.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
