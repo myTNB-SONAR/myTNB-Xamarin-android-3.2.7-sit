@@ -1407,7 +1407,8 @@ Please try again later.]]>
   <string name="ssmr_discontinue_mobile_no_hint"><font size="10">MOBILE NUMBER</font></string>
   <string name="ssmr_select_discontinue_reason_hint"><font size="10">SELECT REASON</font></string>
   <string name="ssmr_select_discontinue_txt_reason_hint"><font size="10">PLEASE STATE YOUR REASON</font></string>
-  <string name="ssmr_terms_conditions"><![CDATA[<font color="#49494a">By applying, you are agreeing to the </font><strong><font color="#1c79ca">TNB’s Terms of Use, Privacy policy, Anti-Spam Policy </font></strong><font color="#49494a">and </font><strong><font color="#1c79ca">Personal Data Protection Policy</font></strong><font color="#49494a">.</font>]]></string>
+  <string name="ssmr_terms_conditions"><![CDATA[<font color="#49494a">By unsubscribing, you are agreeing to the </font><strong><font color="#1c79ca">TNB’s Terms of Use, Privacy policy, Anti-Spam Policy </font></strong><font color="#49494a">and </font><strong><font color="#1c79ca">Personal Data Protection Policy</font></strong><font color="#49494a">.</font>]]></string>
+  <string name="ssmr_subscribe_terms_conditions"><![CDATA[<font color="#49494a">By subscribing, you are agreeing to the </font><strong><font color="#1c79ca">Self Meter Reading Terms and Conditions, TNB’s Terms of Use, Privacy policy, Anti-Spam Policy </font></strong><font color="#49494a">and </font><strong><font color="#1c79ca">Personal Data Protection Policy</font></strong><font color="#49494a">.</font>]]></string>
   <string name="ssmr_discontinue_btn_submit">Submit</string>
     
   <string name="ssmr_submit_meter">Submit Meter Reading</string>

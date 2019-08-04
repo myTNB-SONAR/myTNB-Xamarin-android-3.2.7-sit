@@ -14952,8 +14952,8 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f080436
 			public const int ssmr_discontinue_activity_title = 2131231798;
 			
-			// aapt resource value: 0x7f08043c
-			public const int ssmr_discontinue_btn_submit = 2131231804;
+			// aapt resource value: 0x7f08043d
+			public const int ssmr_discontinue_btn_submit = 2131231805;
 			
 			// aapt resource value: 0x7f080437
 			public const int ssmr_discontinue_email_hint = 2131231799;
@@ -14961,11 +14961,11 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f080438
 			public const int ssmr_discontinue_mobile_no_hint = 2131231800;
 			
-			// aapt resource value: 0x7f08043f
-			public const int ssmr_meter_history_activity_title = 2131231807;
-			
 			// aapt resource value: 0x7f080440
-			public const int ssmr_need_pay = 2131231808;
+			public const int ssmr_meter_history_activity_title = 2131231808;
+			
+			// aapt resource value: 0x7f080441
+			public const int ssmr_need_pay = 2131231809;
 			
 			// aapt resource value: 0x7f080439
 			public const int ssmr_select_discontinue_reason_hint = 2131231801;
@@ -14973,14 +14973,17 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f08043a
 			public const int ssmr_select_discontinue_txt_reason_hint = 2131231802;
 			
-			// aapt resource value: 0x7f08043d
-			public const int ssmr_submit_meter = 2131231805;
+			// aapt resource value: 0x7f08043e
+			public const int ssmr_submit_meter = 2131231806;
+			
+			// aapt resource value: 0x7f08043c
+			public const int ssmr_subscribe_terms_conditions = 2131231804;
 			
 			// aapt resource value: 0x7f08043b
 			public const int ssmr_terms_conditions = 2131231803;
 			
-			// aapt resource value: 0x7f08043e
-			public const int ssmr_view_meter = 2131231806;
+			// aapt resource value: 0x7f08043f
+			public const int ssmr_view_meter = 2131231807;
 			
 			// aapt resource value: 0x7f08005d
 			public const int status_bar_notification_info_overflow = 2131230813;
