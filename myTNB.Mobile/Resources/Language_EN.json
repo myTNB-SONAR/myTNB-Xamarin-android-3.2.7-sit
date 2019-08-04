@@ -69,8 +69,8 @@
         "terminateFor": "I am unsubscribing my service for:",
         "contactDetails": "My contact details:",
         "terminateTitle": "We’re sorry to see you go! Can you tell us why you want to unsubscribe this service?",
-        "tncUnsubscribe": "By applying, you are agreeing to the <a href=\"\\\">TNB’s Terms of Use</a>, <a href=\"\\\">Privacy policy</a>, <a href=\"\\\">Anti-Spam Policy</a> and <a href=\"\\\">Personal Data Protection Policy</a>.",
-        "tncSubscribe": "By applying, you are agreeing to the <a href=\"\\\">Self Meter Reading Terms and Conditions</a>, <a href=\"\\\">TNB’s Terms of Use</a>, <a href=\"\\\">Privacy policy</a>, <a href=\"\\\">Anti-Spam Policy and Personal Data Protection Policy</a>.",
+        "tncUnsubscribe": "By unsubscribing, you are agreeing to the <a href=\"\\\">TNB’s Terms of Use</a>, <a href=\"\\\">Privacy policy</a>, <a href=\"\\\">Anti-Spam Policy</a> and <a href=\"\\\">Personal Data Protection Policy</a>.",
+        "tncSubscribe": "By subscribing, you are agreeing to the <a href=\"\\\">Self Meter Reading Terms and Conditions</a>, <a href=\"\\\">TNB’s Terms of Use</a>, <a href=\"\\\">Privacy policy</a>, <a href=\"\\\">Anti-Spam Policy and Personal Data Protection Policy</a>.",
         "editContactInfo": "By editing you will update your myTNB profile but not your owner’s electricity account contact details.",
         "selectReason": "Select Reason",
         "stateReason": "Please state your reason"

@@ -277,13 +277,12 @@ namespace myTNB
                 if (isSelected)
                 {
                     view.Layer.BorderColor = MyTNBColor.WaterBlue.CGColor;
-                    currentLbl.TextColor = MyTNBColor.WaterBlue;
                 }
                 else
                 {
                     view.Layer.BorderColor = hasImg ? MyTNBColor.FreshGreen.CGColor : MyTNBColor.WhiteTwo.CGColor;
-                    currentLbl.TextColor = MyTNBColor.GreyishBrown;
                 }
+                currentLbl.TextColor = isSelected ? MyTNBColor.WaterBlue : MyTNBColor.GreyishBrown;
             }
         }
 
@@ -916,8 +915,10 @@ namespace myTNB
                 InvokeOnMainThread(() =>
                 {
                     if (_viewLoading != null) { _viewLoading.Hidden = true; }
-                    var test = OCRReadingCache.Instance.GetOCRReadings();
-                    NavigationController.PopViewController(true);
+                    if (NavigationController != null)
+                    {
+                        NavigationController.PopViewController(true);
+                    }
                 });
             });
         }
