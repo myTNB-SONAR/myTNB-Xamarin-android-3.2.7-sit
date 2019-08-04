@@ -1401,6 +1401,14 @@ Please try again later.]]>
 
   <string name="my_service_btn_retry">Retry</string>
   <string name="my_service_error">Something went wrong, Please try again.</string>
+  
+  <string name="ssmr_discontinue_activity_title">Unsubscribe Self Reading</string>
+  <string name="ssmr_discontinue_email_hint"><font size="10">EMAIL ADDRESS</font></string>
+  <string name="ssmr_discontinue_mobile_no_hint"><font size="10">MOBILE NUMBER</font></string>
+  <string name="ssmr_select_discontinue_reason_hint"><font size="10">SELECT REASON</font></string>
+  <string name="ssmr_select_discontinue_txt_reason_hint"><font size="10">PLEASE STATE YOUR REASON</font></string>
+  <string name="ssmr_terms_conditions"><font color='#49494a'>By applying, you are agreeing to the </font><font color='#1c79ca'>TNB’s Terms of Use, Privacy policy, Anti-Spam Policy </font><font color='#49494a'>and </font><font color='#1c79ca'>Personal Data Protection Policy</font>.</string>
+  <string name="ssmr_discontinue_btn_submit">Submit</string>
     
   <string name="ssmr_submit_meter">Submit Meter Reading</string>
   <string name="ssmr_view_meter">View Reading History</string>

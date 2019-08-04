@@ -1192,6 +1192,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
         {
             return currentBottomNavigationMenu;
         }
-	}
+
+    }
 
 }

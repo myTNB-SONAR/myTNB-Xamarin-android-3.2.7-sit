@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using myTNB_Android.Src.SSMR.SMRApplication.MVP;
 using myTNB_Android.Src.SSMRMeterHistory.MVP;
 using Newtonsoft.Json;
 using Refit;
@@ -63,5 +64,13 @@ namespace myTNB_Android.Src.myTNBMenu.Models
         [JsonProperty("MeterReadingHistory")]
         [AliasAs("MeterReadingHistory")]
         public List<SSMRMeterHistoryModel> MeterReadingHistory { get; set; }
+
+
+        [JsonProperty("SMRPhotoPopUpDetails")]
+        [AliasAs("SMRPhotoPopUpDetails")]
+        public List<SMRPhotoPopUpDetailsModel> SMRPhotoPopUpDetails { get; set; }
+        [JsonProperty("MoreOptions")]
+        [AliasAs("MoreOptions")]
+        public List<SSMRMeterHistoryMenuModel> MeterReadingMenu { get; set; }
     }
 }

@@ -94,5 +94,15 @@ namespace myTNB_Android.Src.Base
         {
             return CustomerBillingAccount.GetIsSMROnboardingShown();
         }
+
+        public void UpdateIsSMRMeterReadingOnboardingShown()
+        {
+            CustomerBillingAccount.UpdateIsSMRMeterReadingOnBoardShown();
+        }
+
+        public bool IsSMRMeterReadingOnboardingShown()
+        {
+            return CustomerBillingAccount.GetIsSMRMeterReadingOnBoardShown();
+        }
     }
 }

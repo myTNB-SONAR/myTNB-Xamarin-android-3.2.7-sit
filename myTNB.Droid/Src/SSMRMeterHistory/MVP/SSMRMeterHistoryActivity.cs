@@ -4,6 +4,7 @@ using Android.Content;
 using Android.Content.PM;
 using Android.Graphics;
 using Android.OS;
+using Android.Runtime;
 using Android.Support.Design.Widget;
 using Android.Support.V7.Widget;
 using Android.Text;
@@ -11,12 +12,13 @@ using Android.Util;
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
-using myTNB_Android.Src.AppLaunch.Models;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.SSMRMeterHistory.Adapter;
+using myTNB_Android.Src.SSMRTerminate.MVP;
 using myTNB_Android.Src.Utils;
+using myTNB_Android.Src.Utils.Custom.ProgressDialog;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -54,6 +56,14 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
         private AccountData selectedAccount;
 
         private MaterialDialog SSMRMenuDialog;
+
+        LoadingOverlay loadingOverlay;
+
+        SSMRMeterHistoryMenuAdapter meterHistoryMenuAdapter;
+
+        private List<SSMRMeterHistoryMenuModel> ssmrMeterHistoryMenuList = new List<SSMRMeterHistoryMenuModel>();
+
+        public readonly static int SSMR_METER_HISTORY_ACTIVITY_CODE = 8796;
 
         public override int ResourceId()
 		{
@@ -151,12 +161,65 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
                         }
                     }
                 }
+
+                /* SMRPhotoTooltip */
+                // How to use SMRPhotoTooltip
+                // 1) need to build your own function for this
+                // 2) then call that function
+                // How to build your own function, refer to down there
+                // This tooltip must be only can be use after first call of GetSMRAccountActivityInfo
+
+                // Note:
+                // Button Integration is yet done on this
+
+                // Example, please uncomment the code for review
+                // OnShowSMRPhotoTooltip(true, true, this);
+                // OnShowSMRPhotoTooltip(true, false, this);
+                // OnShowSMRPhotoTooltip(false, true, this);
+                // OnShowSMRPhotoTooltip(false, false, this);
+                /* SMRPhotoTooltip */
+
+
+
+                /* SMRMeterReadingTooltip */
+                // How to use SMRMeterReadingTooltip
+                // SMRPopUpUtils.OnShowSMRMeterReadingTooltipOnActivity(isSinglePhase, your Activity, SupportFragmentManager);
+
+                // Only Limitation
+                // Only Can be use on Activity
+
+                // Note:
+                // Button Integration is done on this (if I did not missed)
+                // When checked on the checkbox, and click I'm Ready, it will write to here:
+                // MyTNBAccountManagement.GetInstance().UpdateIsSMRMeterReadingOnboardingShown();
+                // The checking for that flag:
+                // MyTNBAccountManagement.GetInstance().IsSMRMeterReadingOnboardingShown();
+                // For customize code, you can go to SSMRMeterReadingDialogFragment for button customization
+
+                // Example, please uncomment the code for review
+                // SMRPopUpUtils.OnShowSMRMeterReadingTooltipOnActivity(true, this, SupportFragmentManager);
+                // SMRPopUpUtils.OnShowSMRMeterReadingTooltipOnActivity(false, this, SupportFragmentManager);
+                /* SMRMeterReadingTooltip */
             }
-			catch (Exception e)
+            catch (Exception e)
 			{
 				Utility.LoggingNonFatalError(e);
 			}
 		}
+
+
+        protected override void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
+        {
+            if (requestCode == SSMR_METER_HISTORY_ACTIVITY_CODE)
+            {
+                if (resultCode == Result.Ok)
+                {
+                    SetResult(Result.Ok);
+                    Finish();
+                }
+            }
+            base.OnActivityResult(requestCode, resultCode, data);
+        }
 
         public override bool OnCreateOptionsMenu(IMenu menu)
         {
@@ -197,33 +260,18 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
                 SSMRMenuDialog.Window.Attributes = wlp;
 
                 ImageView btnSMRMenuClose = SSMRMenuDialog.FindViewById<ImageView>(Resource.Id.btnSMRMenuClose);
-                TextView btnReadMeter = SSMRMenuDialog.FindViewById<TextView>(Resource.Id.btnReadMeter);
-                TextView btnWhenSubmitMeter = SSMRMenuDialog.FindViewById<TextView>(Resource.Id.btnWhenSubmitMeter);
-                TextView btnWhyReadingRejected = SSMRMenuDialog.FindViewById<TextView>(Resource.Id.btnWhyReadingRejected);
-                TextView btnDiscontinueSMR = SSMRMenuDialog.FindViewById<TextView>(Resource.Id.btnDiscontinueSMR);
-                TextViewUtils.SetMuseoSans500Typeface(btnDiscontinueSMR);
-                TextViewUtils.SetMuseoSans300Typeface(btnWhyReadingRejected, btnWhenSubmitMeter, btnReadMeter);
+                RecyclerView mSMRMenuRecyclerView = SSMRMenuDialog.FindViewById<RecyclerView>(Resource.Id.smrMenuList);
+                mSMRMenuRecyclerView.SetLayoutManager(new LinearLayoutManager(this));
+                if (smrResponse.Response.Data.MeterReadingMenu.Count > 0)
+                {
+                    ssmrMeterHistoryMenuList.Clear();
+                    ssmrMeterHistoryMenuList.AddRange(smrResponse.Response.Data.MeterReadingMenu);
+                    meterHistoryMenuAdapter = new SSMRMeterHistoryMenuAdapter(smrResponse.Response.Data.MeterReadingMenu);
+                    mSMRMenuRecyclerView.SetAdapter(meterHistoryMenuAdapter);
+                    meterHistoryMenuAdapter.ClickChanged += OnClickChanged;
+                }
+
                 btnSMRMenuClose.Click += delegate
-                {
-                    ssmrMenu.FindItem(Resource.Id.action_ssmr_more).SetVisible(true);
-                    SSMRMenuDialog.Dismiss();
-                };
-                btnReadMeter.Click += delegate
-                {
-                    ssmrMenu.FindItem(Resource.Id.action_ssmr_more).SetVisible(true);
-                    SSMRMenuDialog.Dismiss();
-                };
-                btnWhenSubmitMeter.Click += delegate
-                {
-                    ssmrMenu.FindItem(Resource.Id.action_ssmr_more).SetVisible(true);
-                    SSMRMenuDialog.Dismiss();
-                };
-                btnWhyReadingRejected.Click += delegate
-                {
-                    ssmrMenu.FindItem(Resource.Id.action_ssmr_more).SetVisible(true);
-                    SSMRMenuDialog.Dismiss();
-                };
-                btnDiscontinueSMR.Click += delegate
                 {
                     ssmrMenu.FindItem(Resource.Id.action_ssmr_more).SetVisible(true);
                     SSMRMenuDialog.Dismiss();
@@ -232,6 +280,64 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
                 SSMRMenuDialog.Show();
             }
             catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        void OnClickChanged(object sender, int position)
+        {
+            try
+            {
+                ShowProgressDialog();
+                if (position != -1)
+                {
+                    SSMRMeterHistoryMenuModel selectedMenu = ssmrMeterHistoryMenuList[position];
+                    if (selectedMenu.MenuId == "1004")
+                    {
+                        Intent SSMRTerminateActivity = new Intent(this, typeof(SSMRTerminateActivity));
+                        SSMRTerminateActivity.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccount));
+                        StartActivityForResult(SSMRTerminateActivity, SSMR_METER_HISTORY_ACTIVITY_CODE);
+                    }
+                }
+                ssmrMenu.FindItem(Resource.Id.action_ssmr_more).SetVisible(true);
+                SSMRMenuDialog.Dismiss();
+                HideProgressDialog();
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void ShowProgressDialog()
+        {
+            try
+            {
+                if (loadingOverlay != null && loadingOverlay.IsShowing)
+                {
+                    loadingOverlay.Dismiss();
+                }
+
+                loadingOverlay = new LoadingOverlay(this, Resource.Style.LoadingOverlyDialogStyle);
+                loadingOverlay.Show();
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void HideProgressDialog()
+        {
+            try
+            {
+                if (loadingOverlay != null && loadingOverlay.IsShowing)
+                {
+                    loadingOverlay.Dismiss();
+                }
+            }
+            catch (Exception e)
             {
                 Utility.LoggingNonFatalError(e);
             }
@@ -260,5 +366,22 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
 					break;
 			}
 		}
-	}
+
+        /* SMRPhotoTooltip */
+        // How to use this Tooltip
+        private void OnShowSMRPhotoTooltip(bool isTakePhoto, bool isSinglePhase, Activity mActivity)
+        {
+            MaterialDialog myDiaLog = SMRPopUpUtils.OnBuildSMRPhotoTooltip(isTakePhoto, isSinglePhase, mActivity);
+            LinearLayout btnFirst = myDiaLog.FindViewById<LinearLayout>(Resource.Id.btnFirst);
+
+            btnFirst.Click += delegate
+            {
+                // Do your handling here
+                myDiaLog.Dismiss();
+            };
+
+            myDiaLog.Show();
+        }
+        /* SMRPhotoTooltip */
+    }
 }

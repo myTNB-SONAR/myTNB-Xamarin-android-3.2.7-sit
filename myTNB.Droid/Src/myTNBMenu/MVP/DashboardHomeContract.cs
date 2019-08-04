@@ -209,6 +209,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
             void ShowHideActionBar(bool flag);
 
             void ShowToBeAddedToast();
+
         }
 
 		public interface IUserActionsListener : IBasePresenter
@@ -267,6 +268,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 			void OnTapToRefresh();
 
             int CheckCurrentDashboardMenu();
+
         }
 	}
 }

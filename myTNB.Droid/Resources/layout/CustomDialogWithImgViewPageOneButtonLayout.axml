@@ -1,0 +1,79 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_gravity="center"
+    android:layout_width="284dp"
+    android:layout_height="wrap_content">
+  <LinearLayout
+      android:orientation="vertical"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:id="@+id/rootView"
+      android:background="@drawable/custom_round_white_dialog_shadow">
+        <LinearLayout
+            android:id="@+id/applicationContent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+		    <android.support.v4.view.ViewPager
+			    android:id="@+id/onBoardingSMRViewPager"
+			    android:layout_width="match_parent"
+			    android:layout_height="320dp"/>
+            <LinearLayout
+                android:id="@+id/indicatorContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_marginTop="26dp"/>
+        </LinearLayout>
+        <LinearLayout
+        android:id="@+id/applicationIndicator"
+        android:layout_width="match_parent"
+        android:layout_height="76dp"
+        android:paddingLeft="18dp"
+        android:paddingRight="18dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:background="@color/white">
+        <CheckBox
+            android:id="@+id/dontShowAgainCheckbox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:button="@drawable/checkbox_selector"
+            android:checked="false"
+            android:layout_weight=".1"
+            android:text=" "/>
+        <TextView
+            android:id="@+id/dontShowMeAgainLabel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Don't show me again"
+            android:layout_weight=".8"
+            android:textColor="#979797"
+            android:textSize="12dp"/>
+        </LinearLayout> 
+        <LinearLayout
+          android:orientation="vertical"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:clickable="true"
+          android:layout_marginTop="-8dp"
+          android:id="@+id/txtBtnFirst">
+             <View
+                android:layout_height="1dp"
+                android:layout_width="match_parent"
+                android:alpha="0.2"
+                android:background="@color/tunaGrey" />
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:gravity="center"
+                android:id="@+id/txtBtnLabel"
+                android:textColor="@color/powerBlue"
+                android:layout_marginTop="16dp"
+                android:paddingBottom="18dp"
+                android:text="I'm Ready!"
+                android:textSize="16dp" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>
