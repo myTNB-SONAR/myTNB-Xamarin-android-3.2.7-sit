@@ -85,14 +85,14 @@
 
         "ssmrApplySuccessTitle": "Application Submitted",
         "ssmrApplyFailTitle": "Please Try Again",
-        "ssmrApplySuccessMessage": "We have received your request for this Self Meter Reading Service. For your reference you may keep the application number below.",
+        "ssmrApplySuccessMessage": "We have received your request for this Self Meter Reading service. For your reference you may keep the application number below.",
         "ssmrApplyFailMessage": "It looks like we can't process your application at the moment.",
         "ssmrApplyReferenceTitle": "Application reference number",
         "ssmrApplyDateTitle": "Applied on",
 
         "ssmrDiscontinueSuccessTitle": "Application Submitted",
         "ssmrDiscontinueFailTitle": "Please Try Again",
-        "ssmrDiscontinueSuccessMessage": "We have received your request to discontinue this service. For your reference you may keep the application number below.",
+        "ssmrDiscontinueSuccessMessage": "We have received your request to unsubscribe from this service. For your reference you may keep the application number below.",
         "ssmrDiscontinueFailMessage": "It looks like we can't process your application at the moment.",
         "ssmrDiscontinueReferenceTitle": "Application reference number",
         "ssmrDiscontinueDateTitle": "Applied on",
