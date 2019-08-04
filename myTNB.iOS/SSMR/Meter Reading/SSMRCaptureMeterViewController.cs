@@ -346,6 +346,7 @@ namespace myTNB
             if (_viewMainPreviewParent != null)
             {
                 _viewMainPreviewParent.Hidden = true;
+                _viewMainPreviewParent.RemoveFromSuperview();
                 _imgViewMainPreview.Image = null;
                 _viewDelete.Hidden = true;
                 _viewCameraActions.Hidden = false;
@@ -745,26 +746,32 @@ namespace myTNB
 
         private void AddMainPreview(UIImage previewImg)
         {
-            if (_viewMainPreviewParent == null || _imgViewMainPreview == null)
+            if (_imgViewMainPreview != null)
+            {
+                _imgViewMainPreview.RemoveFromSuperview();
+                _imgViewMainPreview = null;
+            }
+
+            if (_viewMainPreviewParent == null)
             {
                 _viewMainPreviewParent = new UIView(new CGRect(0, 0, ViewWidth, _viewCamera.Frame.Height))
                 {
                     ClipsToBounds = true,
                     BackgroundColor = MyTNBColor.WhiteTwo
                 };
-                _imgViewMainPreview = new UIImageView(new CGRect(new CGPoint(0, 0), _viewMainPreviewParent.Frame.Size))
-                {
-                    UserInteractionEnabled = true,
-                    MultipleTouchEnabled = true,
-                    ClipsToBounds = true
-                };
-                _imgViewMainPreview.AddGestureRecognizer(new UIPinchGestureRecognizer((sender) => { PinchZoomAction(sender); }));
-                _imgViewMainPreview.AddGestureRecognizer(new UIPanGestureRecognizer((sender) => { PanAction(sender); }));
-
-                _viewMainPreviewParent.AddSubview(_imgViewMainPreview);
             }
-            _imgViewMainPreview.Frame = new CGRect(new CGPoint(0, 0), _viewMainPreviewParent.Frame.Size);
-            _imgViewMainPreview.Image = previewImg;
+
+            _imgViewMainPreview = new UIImageView(new CGRect(new CGPoint(0, 0), _viewMainPreviewParent.Frame.Size))
+            {
+                UserInteractionEnabled = true,
+                MultipleTouchEnabled = true,
+                ClipsToBounds = true,
+                Image = previewImg
+            };
+            _imgViewMainPreview.AddGestureRecognizer(new UIPinchGestureRecognizer((sender) => { PinchZoomAction(sender); }));
+            _imgViewMainPreview.AddGestureRecognizer(new UIPanGestureRecognizer((sender) => { PanAction(sender); }));
+
+            _viewMainPreviewParent.AddSubview(_imgViewMainPreview);
             _viewMainPreviewParent.Hidden = false;
 
             _viewCamera.AddSubview(_viewMainPreviewParent);
@@ -817,7 +824,15 @@ namespace myTNB
             if (sender != null && sender.View != null
                 && (sender.State == UIGestureRecognizerState.Began || sender.State == UIGestureRecognizerState.Changed))
             {
+                nfloat deltaX = _imgViewMainPreview.Frame.Width - _viewMainPreviewParent.Frame.Width;
+                nfloat deltaY = _imgViewMainPreview.Frame.Height - _viewMainPreviewParent.Frame.Height;
                 CGPoint point = sender.TranslationInView(sender.View);
+
+                if (point.X + _imgViewMainPreview.Frame.X > 0 || Math.Abs(point.X + _imgViewMainPreview.Frame.X) > deltaX)
+                { return; }
+                if (point.Y + _imgViewMainPreview.Frame.Y > 0 || Math.Abs(point.Y + _imgViewMainPreview.Frame.Y) > deltaY)
+                { return; }
+
                 sender.View.Transform = CGAffineTransform.Translate(sender.View.Transform, point.X, point.Y);
                 sender.SetTranslation(new CGPoint(0, 0), sender.View);
             }
