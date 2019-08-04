@@ -19,7 +19,7 @@ using myTNB_Android.Src.Utils.Custom.ProgressDialog;
 
 namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
 {
-    [Activity(Label = "Apply Self Meter Reading", Theme = "@style/Theme.Dashboard")]
+    [Activity(Label = "Self Meter Reading", Theme = "@style/Theme.Dashboard")]
     public class ApplicationFormSMRActivity : BaseToolbarAppCompatActivity, ApplicationFormSMRContract.IView
     {
         [BindView(Resource.Id.applySMRForLabel)]
@@ -99,6 +99,15 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
             TextViewUtils.SetMuseoSans500Typeface(applySMRForLabel, applySMRContactLabel);
 
             txtMobileNumber.TextChanged += TextChange;
+
+            if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.N)
+            {
+                txtTermsAndCondition.TextFormatted = Html.FromHtml(GetString(Resource.String.ssmr_subscribe_terms_conditions), FromHtmlOptions.ModeLegacy);
+            }
+            else
+            {
+                txtTermsAndCondition.TextFormatted = Html.FromHtml(GetString(Resource.String.ssmr_subscribe_terms_conditions));
+            }
 
             txtMobileNumber.AddTextChangedListener(new InputFilterFormField(txtMobileNumber, textInputMobile));
             txtEmail.AddTextChangedListener(new InputFilterFormField(txtEmail, textInputEmail));
