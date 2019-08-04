@@ -25,7 +25,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
         KWH,KVARH,KW
     }
 
-    [Activity(Label = "@string/meter_reading_title", Theme = "@style/Theme.Dashboard", MainLauncher = true)]
+    [Activity(Label = "@string/meter_reading_title", Theme = "@style/Theme.Dashboard")]
     public class SubmitMeterReadingActivity : BaseToolbarAppCompatActivity, SubmitMeterReadingContract.IView
     {
         private METER_READING_TYPE meterType;
@@ -241,7 +241,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                     break;
                 }
                 EditText currentValueDigit = container.FindViewById(currentMeterViews[currentMeterViews.Length - resourceCounter]) as EditText;
-                
+
                 if (currentValueDigit != null)
                 {
                     TextViewUtils.SetMuseoSans500Typeface(currentValueDigit);
@@ -273,7 +273,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             }
 
             TextView readingErrorMessage = container.FindViewById(Resource.Id.reading_error_validation_msg) as TextView;
-            
+
             if (sMRMROValidateRegisterDetails.IsSuccess.ToLower() == "true")
             {
                 readingErrorMessage.Visibility = ViewStates.Gone;
@@ -357,7 +357,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                     UpdateCurrentValues(linearLayoutContainer, ocrResponse);
                 }
             }
-            
+
         }
 
     }

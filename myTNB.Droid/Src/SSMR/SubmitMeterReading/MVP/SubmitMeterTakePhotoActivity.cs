@@ -6,14 +6,14 @@ using myTNB_Android.Src.Base.Activity;
 
 namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
 {
-    [Activity(Label = "Take Photo", Theme = "@style/Theme.Dashboard", MainLauncher = true)]
+    [Activity(Label = "Take Photo", Theme = "@style/Theme.Dashboard")]
     public class SubmitMeterTakePhotoActivity : BaseToolbarAppCompatActivity, SubmitMeterTakePhotoContract.IView
     {
         Button btnGetMeterReadingOCR;
         SubmitMeterTakePhotoContract.IPresenter mPresenter;
         const string IMAGE_ID = "MYTNBAPP_SSMR_OCR_KWH_001";
         string contractNumber = "220098081110";
-        
+
         public override int ResourceId()
         {
             return Resource.Layout.SubmitMeterTakePhotoLayout;
