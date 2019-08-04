@@ -1064,6 +1064,10 @@
     <ImageAsset Include="Assets.xcassets\SSMR-SinglePhase.imageset\singlePhase.png" />
     <ImageAsset Include="Assets.xcassets\SSMR-SinglePhase.imageset\singlePhase%402x.png" />
     <ImageAsset Include="Assets.xcassets\SSMR-SinglePhase.imageset\singlePhase%403x.png" />
+    <ImageAsset Include="Assets.xcassets\ToolTip-BG.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\ToolTip-BG.imageset\tooltipBg1.png" />
+    <ImageAsset Include="Assets.xcassets\ToolTip-BG.imageset\tooltipBg1%402x.png" />
+    <ImageAsset Include="Assets.xcassets\ToolTip-BG.imageset\tooltipBg1%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -1403,6 +1407,7 @@
     <Folder Include="Assets.xcassets\SSMR-MultiPhase.imageset\" />
     <Folder Include="Assets.xcassets\SSMR-SinglePhase.imageset\" />
     <Folder Include="Sitecore CMS\Model\Meter Read SSMR Walkthrough\" />
+    <Folder Include="Assets.xcassets\ToolTip-BG.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
