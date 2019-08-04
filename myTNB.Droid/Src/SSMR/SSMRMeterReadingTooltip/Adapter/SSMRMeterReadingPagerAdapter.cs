@@ -47,8 +47,12 @@ namespace myTNB_Android.Src.SSMR.SSMRMeterReadingTooltip.Adapter
 
             SSMRMeterReadingModel model = list[position];
 
-            Bitmap bitmap = ImageUtils.GetImageBitmapFromUrl(model.Image);
-            tooltipImg.SetImageBitmap(bitmap);
+            Bitmap bitmap = null;
+            bitmap = ImageUtils.GetImageBitmapFromUrl(model.Image);
+            if (bitmap != null)
+            {
+                tooltipImg.SetImageBitmap(bitmap);
+            }
 
             titleView.Text = model.Title;
             descriptionView.Text = model.Description;
