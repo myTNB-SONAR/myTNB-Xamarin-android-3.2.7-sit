@@ -62,6 +62,44 @@ namespace myTNB_Android.Src.SSMR.SSMRMeterReadingTooltip.Adapter
                     tooltipImg.SetImageResource(Resource.Drawable.tooltip_bg_3);
                 }
             }
+            else if (model.ImageBitmap != null && model.ImageBitmap != "")
+            {
+                Bitmap bitmap = null;
+                bitmap = Base64ToBitmap(model.ImageBitmap);
+                if (bitmap != null)
+                {
+                    tooltipImg.SetImageBitmap(bitmap);
+                }
+                else
+                {
+                    if (list.Count == 2)
+                    {
+                        if (position == 0)
+                        {
+                            tooltipImg.SetImageResource(Resource.Drawable.tooltip_bg_2);
+                        }
+                        else
+                        {
+                            tooltipImg.SetImageResource(Resource.Drawable.tooltip_bg_3);
+                        }
+                    }
+                    else if (list.Count == 3)
+                    {
+                        if (position == 0)
+                        {
+                            tooltipImg.SetImageResource(Resource.Drawable.tooltip_bg_1);
+                        }
+                        else if (position == 1)
+                        {
+                            tooltipImg.SetImageResource(Resource.Drawable.tooltip_bg_2);
+                        }
+                        else
+                        {
+                            tooltipImg.SetImageResource(Resource.Drawable.tooltip_bg_3);
+                        }
+                    }
+                }
+            }
             else
             {
                 Bitmap bitmap = null;
@@ -123,6 +161,12 @@ namespace myTNB_Android.Src.SSMR.SSMRMeterReadingTooltip.Adapter
         public override void DestroyItem(ViewGroup container, int position, Java.Lang.Object @object)
         {
             container.RemoveView((View)@object);
+        }
+
+        private Bitmap Base64ToBitmap(String base64String)
+        {
+            byte[] imageAsBytes = Base64.Decode(base64String, Base64Flags.Default);
+            return BitmapFactory.DecodeByteArray(imageAsBytes, 0, imageAsBytes.Length);
         }
     }
 }

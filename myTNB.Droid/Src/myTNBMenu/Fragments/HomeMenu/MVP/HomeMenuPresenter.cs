@@ -22,6 +22,8 @@ using myTNB_Android.Src.SummaryDashBoard.Models;
 using myTNB_Android.Src.Utils;
 using Newtonsoft.Json;
 using Refit;
+using Android.Graphics;
+using System.IO;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 {
@@ -734,10 +736,36 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     SSMRMeterReadingResponseModel responseModel = getItemsService.GetSSMRMeterReadingOnePhaseWalkthroughItems();
                     if (responseModel.Status.Equals("Success"))
                     {
-                        SSMRMeterReadingScreensEntity wtManager = new SSMRMeterReadingScreensEntity();
-                        wtManager.DeleteTable();
-                        wtManager.CreateTable();
-                        wtManager.InsertListOfItems(responseModel.Data);
+                        cts = new CancellationTokenSource();
+                        Task.Factory.StartNew(() =>
+                        {
+                            try
+                            {
+                                SSMRMeterReadingScreensEntity wtManager = new SSMRMeterReadingScreensEntity();
+                                wtManager.DeleteTable();
+                                wtManager.CreateTable();
+                                for (int i = 0; i < responseModel.Data.Count; i++)
+                                {
+                                    string url = responseModel.Data[i].Image.Replace(" ", "%20");
+                                    Bitmap imageBitmap = ImageUtils.GetImageBitmapFromUrl(url);
+                                    string b64String = "";
+                                    MemoryStream stream = new MemoryStream();
+                                    imageBitmap.Compress(Bitmap.CompressFormat.Png, 80, stream);
+                                    byte[] ba = stream.ToArray();
+                                    b64String = Base64.EncodeToString(ba, Base64Flags.Default);
+                                   
+                                    responseModel.Data[i].ImageBitmap = b64String;
+                                }
+
+                                wtManager.InsertListOfItems(responseModel.Data);
+                            }
+                            catch (Exception e)
+                            {
+                                Utility.LoggingNonFatalError(e);
+                            }
+                        }).ContinueWith((Task previous) =>
+                        {
+                        }, cts.Token);
                     }
                 }
                 catch (Exception e)
@@ -813,10 +841,36 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     SSMRMeterReadingResponseModel responseModel = getItemsService.GetSSMRMeterReadingThreePhaseWalkthroughItems();
                     if (responseModel.Status.Equals("Success"))
                     {
-                        SSMRMeterReadingThreePhaseScreensEntity wtManager = new SSMRMeterReadingThreePhaseScreensEntity();
-                        wtManager.DeleteTable();
-                        wtManager.CreateTable();
-                        wtManager.InsertListOfItems(responseModel.Data);
+                        cts = new CancellationTokenSource();
+                        Task.Factory.StartNew(() =>
+                        {
+                            try
+                            {
+                                SSMRMeterReadingThreePhaseScreensEntity wtManager = new SSMRMeterReadingThreePhaseScreensEntity();
+                                wtManager.DeleteTable();
+                                wtManager.CreateTable();
+                                for (int i = 0; i < responseModel.Data.Count; i++)
+                                {
+                                    string url = responseModel.Data[i].Image.Replace(" ", "%20");
+                                    Bitmap imageBitmap = ImageUtils.GetImageBitmapFromUrl(url);
+                                    string b64String = "";
+                                    MemoryStream stream = new MemoryStream();
+                                    imageBitmap.Compress(Bitmap.CompressFormat.Png, 80, stream);
+                                    byte[] ba = stream.ToArray();
+                                    b64String = Base64.EncodeToString(ba, Base64Flags.Default);
+
+                                    responseModel.Data[i].ImageBitmap = b64String;
+                                }
+
+                                wtManager.InsertListOfItems(responseModel.Data);
+                            }
+                            catch (Exception e)
+                            {
+                                Utility.LoggingNonFatalError(e);
+                            }
+                        }).ContinueWith((Task previous) =>
+                        {
+                        }, cts.Token);
                     }
                 }
                 catch (Exception e)

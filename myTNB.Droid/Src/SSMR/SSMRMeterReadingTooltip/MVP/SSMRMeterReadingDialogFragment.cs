@@ -144,6 +144,7 @@ namespace myTNB_Android.Src.SSMR.SSMRMeterReadingTooltip.MVP
                     dataModel.Image = model.Image;
                     dataModel.Title = model.Title;
                     dataModel.Description = model.Description;
+                    dataModel.ImageBitmap = model.ImageBitmap;
                     items.Add(dataModel);
                 }
             }
@@ -189,6 +190,7 @@ namespace myTNB_Android.Src.SSMR.SSMRMeterReadingTooltip.MVP
                     dataModel.Image = model.Image;
                     dataModel.Title = model.Title;
                     dataModel.Description = model.Description;
+                    dataModel.ImageBitmap = model.ImageBitmap;
                     items.Add(dataModel);
                 }
             }
