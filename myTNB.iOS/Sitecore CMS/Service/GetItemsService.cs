@@ -205,7 +205,7 @@ namespace myTNB.SitecoreCMS.Services
             MeterReadSSMRTimeStampResponseModel respModel = new MeterReadSSMRTimeStampResponseModel();
             try
             {
-                ApplySSMRWalkthroughService service = new ApplySSMRWalkthroughService(OS, ImageSize, WebsiteUrl, Language);
+                MeterReadSSMRWalkthroughService service = new MeterReadSSMRWalkthroughService(OS, ImageSize, WebsiteUrl, Language);
                 var data = service.GetTimeStamp();
                 var listData = AddDataToList(data);
                 var resp = CheckData(listData);
@@ -215,6 +215,43 @@ namespace myTNB.SitecoreCMS.Services
             catch (Exception e)
             {
                 Debug.WriteLine("Exception in GetItemsService/GetMeterReadSSMRWalkthroughTimestampItem: " + e.Message);
+            }
+            return respModel;
+        }
+
+        public MeterReadSSMRResponseModel GetMeterReadSSMRWalkthroughItemsV2()
+        {
+            MeterReadSSMRResponseModel respModel = new MeterReadSSMRResponseModel();
+            try
+            {
+                MeterReadSSMRWalkthroughServiceV2 service = new MeterReadSSMRWalkthroughServiceV2(OS, ImageSize, WebsiteUrl, Language);
+                var data = service.GetItems();
+                var resp = CheckData(data.ToList<object>());
+                string serializedObj = JsonConvert.SerializeObject(resp);
+                respModel = JsonConvert.DeserializeObject<MeterReadSSMRResponseModel>(serializedObj);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("Exception in GetItemsService/GetMeterReadSSMRWalkthroughItemsV2: " + e.Message);
+            }
+            return respModel;
+        }
+
+        public MeterReadSSMRTimeStampResponseModel GetMeterReadSSMRWalkthroughTimestampItemV2()
+        {
+            MeterReadSSMRTimeStampResponseModel respModel = new MeterReadSSMRTimeStampResponseModel();
+            try
+            {
+                MeterReadSSMRWalkthroughServiceV2 service = new MeterReadSSMRWalkthroughServiceV2(OS, ImageSize, WebsiteUrl, Language);
+                var data = service.GetTimeStamp();
+                var listData = AddDataToList(data);
+                var resp = CheckData(listData);
+                string serializedObj = JsonConvert.SerializeObject(resp);
+                respModel = JsonConvert.DeserializeObject<MeterReadSSMRTimeStampResponseModel>(serializedObj);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("Exception in GetItemsService/GetMeterReadSSMRWalkthroughTimestampItemV2: " + e.Message);
             }
             return respModel;
         }

@@ -1018,10 +1018,6 @@
     <ImageAsset Include="Assets.xcassets\IC-Info.imageset\infoWhiteFull.png" />
     <ImageAsset Include="Assets.xcassets\IC-Info.imageset\infoWhiteFull%402x.png" />
     <ImageAsset Include="Assets.xcassets\IC-Info.imageset\infoWhiteFull%403x.png" />
-    <ImageAsset Include="Assets.xcassets\kWh-Icon.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\kWh-Icon.imageset\kWh-Icon.png" />
-    <ImageAsset Include="Assets.xcassets\kWh-Icon.imageset\kWh-Icon%402x.png" />
-    <ImageAsset Include="Assets.xcassets\kWh-Icon.imageset\kWh-Icon%403x.png" />
     <ImageAsset Include="Assets.xcassets\SMR-History-BG.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\SMR-Open-Icon.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\SMR-Open-Icon.imageset\SMR-Open-Icon.png" />
@@ -1046,10 +1042,6 @@
     <ImageAsset Include="Assets.xcassets\SSMR-SinglePhase.imageset\singlePhase.png" />
     <ImageAsset Include="Assets.xcassets\SSMR-SinglePhase.imageset\singlePhase%402x.png" />
     <ImageAsset Include="Assets.xcassets\SSMR-SinglePhase.imageset\singlePhase%403x.png" />
-    <ImageAsset Include="Assets.xcassets\ToolTip-BG.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\ToolTip-BG.imageset\tooltipBg1.png" />
-    <ImageAsset Include="Assets.xcassets\ToolTip-BG.imageset\tooltipBg1%402x.png" />
-    <ImageAsset Include="Assets.xcassets\ToolTip-BG.imageset\tooltipBg1%403x.png" />
     <ImageAsset Include="Assets.xcassets\Help-Background-6.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Help-Background-0.imageset\faqColor1-1.png" />
     <ImageAsset Include="Assets.xcassets\Help-Background-0.imageset\faqColor1%402x-1.png" />
@@ -1072,6 +1064,18 @@
     <ImageAsset Include="Assets.xcassets\Help-Background-6.imageset\faqColor1Copy.png" />
     <ImageAsset Include="Assets.xcassets\Help-Background-6.imageset\faqColor1Copy%402x.png" />
     <ImageAsset Include="Assets.xcassets\Help-Background-6.imageset\faqColor1Copy%403x.png" />
+    <ImageAsset Include="Assets.xcassets\SMR-ToolTip-BG1.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\SMR-ToolTip-BG1.imageset\SMR-ToolTip-BG1.png" />
+    <ImageAsset Include="Assets.xcassets\SMR-ToolTip-BG1.imageset\SMR-ToolTip-BG1%402x.png" />
+    <ImageAsset Include="Assets.xcassets\SMR-ToolTip-BG1.imageset\SMR-ToolTip-BG1%403x.png" />
+    <ImageAsset Include="Assets.xcassets\SMR-ToolTip-BG2.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\SMR-ToolTip-BG2.imageset\SMR-ToolTip-BG2.png" />
+    <ImageAsset Include="Assets.xcassets\SMR-ToolTip-BG2.imageset\SMR-ToolTip-BG2%402x.png" />
+    <ImageAsset Include="Assets.xcassets\SMR-ToolTip-BG2.imageset\SMR-ToolTip-BG2%403x.png" />
+    <ImageAsset Include="Assets.xcassets\SMR-ToolTip-BG3.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\SMR-ToolTip-BG3.imageset\SMR-ToolTip-BG3.png" />
+    <ImageAsset Include="Assets.xcassets\SMR-ToolTip-BG3.imageset\SMR-ToolTip-BG3%402x.png" />
+    <ImageAsset Include="Assets.xcassets\SMR-ToolTip-BG3.imageset\SMR-ToolTip-BG3%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -1413,6 +1417,9 @@
     <Folder Include="Sitecore CMS\Model\Meter Read SSMR Walkthrough\" />
     <Folder Include="Assets.xcassets\ToolTip-BG.imageset\" />
     <Folder Include="Assets.xcassets\Help-Background-6.imageset\" />
+    <Folder Include="Assets.xcassets\SMR-ToolTip-BG1.imageset\" />
+    <Folder Include="Assets.xcassets\SMR-ToolTip-BG2.imageset\" />
+    <Folder Include="Assets.xcassets\SMR-ToolTip-BG3.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -2187,6 +2194,9 @@
     <Compile Include="Sitecore CMS\Service\MeterReadSSMRWalkthroughService.cs" />
     <Compile Include="SQLite\SQLite Data Manager\MeterReadSSMRWalkthroughEntity.cs" />
     <Compile Include="Model\SSMR\SMRSubmitMeterReadingResponseModel.cs" />
+    <Compile Include="Sitecore CMS\Service\MeterReadSSMRWalkthroughServiceV2.cs" />
+    <Compile Include="SQLite\SQLite Data Manager\MeterReadSSMRWalkthroughEntityV2.cs" />
+    <Compile Include="SSMR\Meter Reading\SSMRMeterReadWalkthroughModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />

@@ -463,6 +463,53 @@ namespace myTNB
             });
         }
 
+        private Task LoadMeterReadSSMRWalkthroughV2()
+        {
+            return Task.Factory.StartNew(() =>
+            {
+                GetItemsService iService = new GetItemsService(TNBGlobal.OS
+                    , DataManager.DataManager.SharedInstance.ImageSize, TNBGlobal.SITECORE_URL, TNBGlobal.DEFAULT_LANGUAGE);
+                MeterReadSSMRTimeStampResponseModel timeStamp = iService.GetMeterReadSSMRWalkthroughTimestampItemV2();
+
+                bool needsUpdate = true;
+                if (timeStamp != null && timeStamp.Data != null && timeStamp.Data.Count > 0 && timeStamp.Data[0] != null
+                    && !string.IsNullOrEmpty(timeStamp.Data[0].Timestamp))
+                {
+                    NSUserDefaults sharedPreference = NSUserDefaults.StandardUserDefaults;
+                    string currentTS = sharedPreference.StringForKey("SiteCoreMeterReadSSMRWalkthroughTimeStampV2");
+                    if (string.IsNullOrEmpty(currentTS) || string.IsNullOrWhiteSpace(currentTS))
+                    {
+                        sharedPreference.SetString(timeStamp.Data[0].Timestamp, "SiteCoreMeterReadSSMRWalkthroughTimeStampV2");
+                        sharedPreference.Synchronize();
+                    }
+                    else
+                    {
+                        if (currentTS.Equals(timeStamp.Data[0].Timestamp))
+                        {
+                            needsUpdate = false;
+                        }
+                        else
+                        {
+                            sharedPreference.SetString(timeStamp.Data[0].Timestamp, "SiteCoreMeterReadSSMRWalkthroughTimeStampV2");
+                            sharedPreference.Synchronize();
+                        }
+                    }
+                }
+
+                if (needsUpdate)
+                {
+                    MeterReadSSMRResponseModel meterReadSSMrWalkthroughItems = iService.GetMeterReadSSMRWalkthroughItemsV2();
+                    if (meterReadSSMrWalkthroughItems != null && meterReadSSMrWalkthroughItems.Data != null && meterReadSSMrWalkthroughItems.Data.Count > 0)
+                    {
+                        MeterReadSSMRWalkthroughEntityV2 wsManager = new MeterReadSSMRWalkthroughEntityV2();
+                        wsManager.DeleteTable();
+                        wsManager.CreateTable();
+                        wsManager.InsertListOfItems(meterReadSSMrWalkthroughItems.Data);
+                    }
+                }
+            });
+        }
+
         private void OpenUpdateLink()
         {
             int index = DataManager.DataManager.SharedInstance.WebLinks?.FindIndex(x => x.Code.ToLower().Equals("ios")) ?? -1;
@@ -526,8 +573,9 @@ namespace myTNB
             else
             {
                 await LoadSSMRWalkthrough();
-                await LoadMeterReadSSMRWalkthrough();
             }
+            await LoadMeterReadSSMRWalkthrough();
+            await LoadMeterReadSSMRWalkthroughV2();
             if (isWalkthroughDone)
             {
                 await ClearWalkthroughCache();

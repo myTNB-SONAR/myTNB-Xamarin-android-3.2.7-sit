@@ -1,6 +1,8 @@
 ﻿using CoreGraphics;
 using Foundation;
 using myTNB.Model;
+using myTNB.SitecoreCMS.Model;
+using myTNB.SQLite.SQLiteDataManager;
 using myTNB.SSMR;
 using System;
 using System.Collections.Generic;
@@ -18,15 +20,19 @@ namespace myTNB
         SSMRMeterFooterComponent _sSMRMeterFooterComponent;
         SMRSubmitMeterReadingResponseModel _submitMeterResponse = new SMRSubmitMeterReadingResponseModel();
         List<SMRMROValidateRegisterDetailsInfoModel> _previousMeterList;
+        List<MeterReadSSMRModel> _toolTipList;
+        public List<SSMRMeterReadWalkthroughModel> pageData;
 
         UIView _toolTipParentView, _toolTipContainerView, _toolTipFooterView;
         UIScrollView _toolTipScrollView;
         UIPageControl _pageControl;
         UIScrollView _meterReadScrollView;
+        UIImageView _tickView;
         UILabel _descriptionLabel;
         nfloat _padding = 16f;
         CGRect scrollViewFrame;
         int _currentPageIndex;
+        bool _isThreePhase = false;
 
         public class MeterReadingRequest
         {
@@ -40,15 +46,17 @@ namespace myTNB
 
         public override void ViewDidLoad()
         {
-            PageName = "SSMRSubmitMeterReading";
+            PageName = SSMRConstants.Pagename_SSMRMeterRead;
             base.ViewDidLoad();
 
             NSNotificationCenter.DefaultCenter.AddObserver(UIKeyboard.WillHideNotification, OnKeyboardNotification);
             NSNotificationCenter.DefaultCenter.AddObserver(UIKeyboard.WillShowNotification, OnKeyboardNotification);
 
             _previousMeterList = DataManager.DataManager.SharedInstance.SSMRPreviousMeterReadingList;
+            _isThreePhase = _previousMeterList.Count > 1;
 
             SetNavigation();
+            SetWalkthroughData();
             AddFooterView();
             Initialization();
             PrepareMeterReadingCard();
@@ -58,6 +66,12 @@ namespace myTNB
         {
             base.ViewWillAppear(animated);
             NavigationController.NavigationBarHidden = false;
+        }
+
+        public override void ViewDidAppear(bool animated)
+        {
+            base.ViewDidAppear(animated);
+            ShowToolTipByDefault();
         }
 
         private void SetNavigation()
@@ -70,12 +84,57 @@ namespace myTNB
             });
             UIBarButtonItem btnRight = new UIBarButtonItem(btnRightImg, UIBarButtonItemStyle.Done, (sender, e) =>
             {
-                Debug.WriteLine("btnRight tapped");
                 PrepareToolTipView();
             });
             NavigationItem.LeftBarButtonItem = btnBack;
             NavigationItem.RightBarButtonItem = btnRight;
             Title = GetI18NValue(SSMRConstants.I18N_NavTitle);
+        }
+
+        private void SetWalkthroughData()
+        {
+            pageData = new List<SSMRMeterReadWalkthroughModel>();
+            var item1 = new SSMRMeterReadWalkthroughModel
+            {
+                Image = SSMRConstants.IMG_BGToolTip1,
+                Title = GetI18NValue(SSMRConstants.I18N_ToolTip1),
+                Description = GetI18NValue(SSMRConstants.I18N_ToolTipDesc1),
+            };
+            pageData.Add(item1);
+
+            var item2 = new SSMRMeterReadWalkthroughModel
+            {
+                Image = SSMRConstants.IMG_BGToolTip2,
+                Title = GetI18NValue(SSMRConstants.I18N_ToolTip2),
+                Description = GetI18NValue(SSMRConstants.I18N_ToolTipDesc2),
+            };
+            pageData.Add(item2);
+
+            var item3 = new SSMRMeterReadWalkthroughModel
+            {
+                Image = SSMRConstants.IMG_BGToolTip3,
+                Title = GetI18NValue(SSMRConstants.I18N_ToolTip3),
+                Description = GetI18NValue(SSMRConstants.I18N_ToolTipDesc3),
+            };
+            pageData.Add(item3);
+        }
+
+        private void ShowToolTipByDefault()
+        {
+            if (_isThreePhase)
+            {
+                if (!SSMRAccounts.IsHideReadMeterWalkthroughV2)
+                {
+                    PrepareToolTipView();
+                }
+            }
+            else
+            {
+                if (!SSMRAccounts.IsHideReadMeterWalkthrough)
+                {
+                    PrepareToolTipView();
+                }
+            }
         }
 
         private void Initialization()
@@ -93,11 +152,37 @@ namespace myTNB
                 TextColor = MyTNBColor.WaterBlue,
                 Lines = 0,
                 TextAlignment = UITextAlignment.Left,
-                Text = "Please enter your meter reading for each respective units.",
+                Text = GetI18NValue(SSMRConstants.I18N_HeaderDesc),
                 Tag = 1
             };
             _meterReadScrollView.AddSubview(_descriptionLabel);
             scrollViewFrame = _meterReadScrollView.Frame;
+
+            if (_isThreePhase)
+            {
+                MeterReadSSMRWalkthroughEntityV2 wsManager = new MeterReadSSMRWalkthroughEntityV2();
+                _toolTipList = wsManager.GetAllItems();
+            }
+            else
+            {
+                MeterReadSSMRWalkthroughEntity wsManager = new MeterReadSSMRWalkthroughEntity();
+                _toolTipList = wsManager.GetAllItems();
+            }
+            if (_toolTipList != null && _toolTipList.Count > 0)
+            {
+                pageData.Clear();
+                for (int i = 0; i < _toolTipList.Count; i++)
+                {
+                    SSMRMeterReadWalkthroughModel item = new SSMRMeterReadWalkthroughModel
+                    {
+                        Title = _toolTipList[i].Title,
+                        Description = _toolTipList[i].Description,
+                        Image = _toolTipList[i].Image,
+                        IsSitecoreData = true
+                    };
+                    pageData.Add(item);
+                }
+            }
         }
 
         private void PrepareToolTipView()
@@ -108,7 +193,7 @@ namespace myTNB
             nfloat height = currentWindow.Frame.Height;
             if (_toolTipParentView == null)
             {
-                _toolTipParentView = new UIView(new CGRect(0, 0, ViewWidth, currentWindow.Frame.Height))
+                _toolTipParentView = new UIView(new CGRect(0, 0, ViewWidth, height))
                 {
                     BackgroundColor = MyTNBColor.Black60,
                     Hidden = false
@@ -160,16 +245,48 @@ namespace myTNB
             nfloat padding = 16f;
             nfloat width = _toolTipScrollView.Frame.Width;
             nfloat newHeight = 0f;
-            for (int i = 0; i < 3; i++)
+            for (int i = 0; i < pageData.Count; i++)
             {
                 UIView viewContainer = new UIView(_toolTipScrollView.Bounds);
                 viewContainer.BackgroundColor = UIColor.White;
+
+                UIImage displayImage;
+                if (pageData[i].IsSitecoreData)
+                {
+                    if (string.IsNullOrEmpty(pageData[i].Image) || string.IsNullOrWhiteSpace(pageData[i].Image))
+                    {
+                        displayImage = UIImage.FromBundle(string.Empty);
+                    }
+                    else
+                    {
+                        try
+                        {
+                            displayImage = UIImage.LoadFromData(NSData.FromUrl(new NSUrl(pageData[i].Image)));
+                        }
+                        catch (Exception e)
+                        {
+                            Debug.WriteLine("Image load Error: " + e.Message);
+                            displayImage = UIImage.FromBundle(string.Empty);
+                        }
+                    }
+                }
+                else
+                {
+                    if (string.IsNullOrEmpty(pageData[i].Image) || string.IsNullOrWhiteSpace(pageData[i].Image))
+                    {
+                        displayImage = UIImage.FromBundle(string.Empty);
+                    }
+                    else
+                    {
+                        displayImage = UIImage.FromBundle(pageData[i].Image);
+                    }
+                }
 
                 nfloat origImageRatio = 155.0f / 284.0f;
                 nfloat imageHeight = viewContainer.Frame.Width * origImageRatio;
                 UIImageView imageView = new UIImageView(new CGRect(0, 0, viewContainer.Frame.Width, imageHeight))
                 {
-                    Image = UIImage.FromBundle("ToolTip-BG"),
+                    Image = displayImage,
                 };
                 viewContainer.AddSubview(imageView);
 
@@ -180,7 +297,7 @@ namespace myTNB
                     TextAlignment = UITextAlignment.Left,
                     Lines = 0,
                     LineBreakMode = UILineBreakMode.TailTruncation,
-                    Text = "Alright, what do I need to read?"
+                    Text = pageData[i]?.Title ?? string.Empty
                 };
 
                 CGSize titleNewSize = title.SizeThatFits(new CGSize(viewContainer.Frame.Width - (padding * 2), 1000f));
@@ -196,7 +313,7 @@ namespace myTNB
                     TextAlignment = UITextAlignment.Left,
                     Lines = 0,
                     LineBreakMode = UILineBreakMode.TailTruncation,
-                    Text = "You'll need to read 3 reading values (kWh, kVARh, kW). Your meter will automatically flash one after the other."
+                    Text = pageData[i]?.Description ?? string.Empty
                 };
 
                 CGSize descNewSize = description.SizeThatFits(new CGSize(viewContainer.Frame.Width - (padding * 2), 1000f));
@@ -215,7 +332,6 @@ namespace myTNB
                 {
                     newHeight = viewContainer.Frame.GetMaxY();
                 }
-                Debug.WriteLine("newHeight== " + newHeight);
             }
             _toolTipScrollView.ContentSize = new CGSize(_toolTipScrollView.Frame.Width * 3, newHeight);
             CGRect svFrame = _toolTipScrollView.Frame;
@@ -229,9 +345,10 @@ namespace myTNB
             _toolTipFooterView = new UIView(new CGRect(0, _toolTipScrollView.Frame.GetMaxY() + 5f, _toolTipContainerView.Frame.Width, 130f))
             {
                 BackgroundColor = UIColor.Clear,
-                ClipsToBounds = true
+                ClipsToBounds = true,
+                UserInteractionEnabled = true
             };
-            if (3 > 1)
+            if (pageData.Count > 1)
             {
                 AddPageControl();
                 UpdatePageControl(_pageControl, _currentPageIndex, 3);
@@ -244,24 +361,28 @@ namespace myTNB
                 }
             }
 
-            UIImageView tickView = new UIImageView(new CGRect(18f, _pageControl.Frame.GetMaxY() + 32f, 20f, 20f))
+            _tickView = new UIImageView(new CGRect(18f, _pageControl.Frame.GetMaxY() + 32f, 20f, 20f))
             {
-                Image = UIImage.FromBundle(SSMRConstants.IMG_Unmark)
+                Image = UIImage.FromBundle(SSMRConstants.IMG_Unmark),
+                UserInteractionEnabled = true
             };
-            tickView.AddGestureRecognizer(new UITapGestureRecognizer(() =>
+            _tickView.AddGestureRecognizer(new UITapGestureRecognizer(() =>
             {
-                SSMRAccounts.IsHideReadMeterWalkthrough = !SSMRAccounts.IsHideReadMeterWalkthrough;
-                tickView.Image = UIImage.FromBundle(SSMRAccounts.IsHideReadMeterWalkthrough
-                    ? SSMRConstants.IMG_Mark : SSMRConstants.IMG_Unmark);
+                DontShowAction();
             }));
-            _toolTipFooterView.AddSubview(tickView);
+            _toolTipFooterView.AddSubview(_tickView);
 
-            UILabel dontShowLabel = new UILabel(new CGRect(tickView.Frame.GetMaxX() + 8f, _pageControl.Frame.GetMaxY() + 34f, 120f, 14f))
+            UILabel dontShowLabel = new UILabel(new CGRect(_tickView.Frame.GetMaxX() + 8f, _pageControl.Frame.GetMaxY() + 34f, 120f, 14f))
             {
                 Font = MyTNBFont.MuseoSans12_500,
                 TextColor = MyTNBColor.BrownGreyTwo,
-                Text = "Don’t show me again"
+                Text = GetI18NValue(SSMRConstants.I18N_DontShowAgain),
+                UserInteractionEnabled = true
             };
+            dontShowLabel.AddGestureRecognizer(new UITapGestureRecognizer(() =>
+            {
+                DontShowAction();
+            }));
             _toolTipFooterView.AddSubview(dontShowLabel);
 
             UIView line = new UIView(new CGRect(0, dontShowLabel.Frame.GetMaxY() + 21f, _toolTipFooterView.Frame.Width, 1f))
@@ -274,14 +395,14 @@ namespace myTNB
             {
                 Font = MyTNBFont.MuseoSans16_500,
                 TextColor = MyTNBColor.WaterBlue,
-                Text = "I’m Ready!",
+                Text = GetI18NValue(SSMRConstants.I18N_ImReady),
                 TextAlignment = UITextAlignment.Center,
                 UserInteractionEnabled = true
             };
             proceedLabel.AddGestureRecognizer(new UITapGestureRecognizer(() =>
-            {
-                MakeToolTipVisible(false);
-            }));
+                {
+                    MakeToolTipVisible(false);
+                }));
             _toolTipFooterView.AddSubview(proceedLabel);
 
             CGRect tooltipViewframe = _toolTipFooterView.Frame;
@@ -295,6 +416,22 @@ namespace myTNB
             frame.Height = _toolTipFooterView.Frame.GetMaxY();
             frame.Y = (currentWindow.Frame.Height / 2) - (frame.Height / 2);
             _toolTipContainerView.Frame = frame;
+        }
+
+        private void DontShowAction()
+        {
+            if (_isThreePhase)
+            {
+                SSMRAccounts.IsHideReadMeterWalkthroughV2 = !SSMRAccounts.IsHideReadMeterWalkthroughV2;
+                _tickView.Image = UIImage.FromBundle(SSMRAccounts.IsHideReadMeterWalkthroughV2
+                    ? SSMRConstants.IMG_Mark : SSMRConstants.IMG_Unmark);
+            }
+            else
+            {
+                SSMRAccounts.IsHideReadMeterWalkthrough = !SSMRAccounts.IsHideReadMeterWalkthrough;
+                _tickView.Image = UIImage.FromBundle(SSMRAccounts.IsHideReadMeterWalkthrough
+                    ? SSMRConstants.IMG_Mark : SSMRConstants.IMG_Unmark);
+            }
         }
 
         private void AddPageControl()

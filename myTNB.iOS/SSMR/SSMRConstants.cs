@@ -8,6 +8,7 @@ namespace myTNB.SSMR
         public static string Pagename_SSMRApplication = "SSMRApplication";
         public static string Pagename_SSMRWalkthrough = "SSMROnboarding";
         public static string Pagename_SSMRCaptureMeter = "SSMRCaptureMeter";
+        public static string Pagename_SSMRMeterRead = "SSMRSubmitMeterReading";
         public static string Popup_SMRPhotoPopUpDetails = "SMRPhotoPopUpDetails";
 
         //Service name
@@ -77,6 +78,9 @@ namespace myTNB.SSMR
         public static string IMG_Delete = "Notification-Delete";
         public static string IMG_MultiPhase = "SSMR-MultiPhase";
         public static string IMG_SinglePhase = "SSMR-SinglePhase";
+        public static string IMG_BGToolTip1 = "SMR-ToolTip-BG1";
+        public static string IMG_BGToolTip2 = "SMR-ToolTip-BG2";
+        public static string IMG_BGToolTip3 = "SMR-ToolTip-BG3";
 
         //Error
         public static string I18N_InvalidEmail = "invalid_email";
@@ -103,6 +107,17 @@ namespace myTNB.SSMR
         public static string I18N_PluralDone = "pluralDone";
         public static string I18N_SingularOnto = "singularOnto";
         public static string I18N_PluralOnto = "pluralOnto";
+
+        //Meter Read
+        public static string I18N_HeaderDesc = "headerDescription";
+        public static string I18N_DontShowAgain = "dontShow";
+        public static string I18N_ToolTip1 = "tooltipTitle1";
+        public static string I18N_ToolTip2 = "tooltipTitle2";
+        public static string I18N_ToolTip3 = "tooltipTitle3";
+        public static string I18N_ToolTipDesc1 = "tooltipDescription1";
+        public static string I18N_ToolTipDesc2 = "tooltipDescription2";
+        public static string I18N_ToolTipDesc3 = "tooltipDescription3";
+        public static string I18N_ImReady = "imReady";
 
         //Patterns
         public static string Pattern_ImageName = "MYTNBAPP_SSMR_OCR_{0}_{1}";
