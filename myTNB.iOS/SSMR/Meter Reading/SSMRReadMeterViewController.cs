@@ -5,6 +5,7 @@ using myTNB.SSMR;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Threading.Tasks;
 using UIKit;
 
 namespace myTNB
@@ -14,7 +15,7 @@ namespace myTNB
         public SSMRReadMeterViewController(IntPtr handle) : base(handle) { }
 
         SSMRMeterFooterComponent _sSMRMeterFooterComponent;
-
+        SMRSubmitMeterReadingResponseModel _submitMeterResponse = new SMRSubmitMeterReadingResponseModel();
         List<SMRMROValidateRegisterDetailsInfoModel> _previousMeterList;
 
         UIView _toolTipParentView, _toolTipContainerView, _toolTipFooterView;
@@ -25,6 +26,16 @@ namespace myTNB
         nfloat _padding = 16f;
         CGRect scrollViewFrame;
         int _currentPageIndex;
+
+        public class MeterReadingRequest
+        {
+            public string MroID { set; get; }
+            public string RegisterNumber { set; get; }
+            public string MeterReadingResult { set; get; }
+            public string Channel { set; get; }
+            public string MeterReadingDate { set; get; }
+            public string MeterReadingTime { set; get; }
+        }
 
         public override void ViewDidLoad()
         {
@@ -45,6 +56,7 @@ namespace myTNB
         public override void ViewWillAppear(bool animated)
         {
             base.ViewWillAppear(animated);
+            NavigationController.NavigationBarHidden = false;
         }
 
         private void SetNavigation()
@@ -433,7 +445,7 @@ namespace myTNB
 
         private void OnTapSubmitReading()
         {
-            Debug.WriteLine("OnTapSubmitReading");
+            List<MeterReadingRequest> meterReadingRequestList = new List<MeterReadingRequest>();
             if (_previousMeterList != null)
             {
                 foreach (var previousMeter in _previousMeterList)
@@ -443,8 +455,31 @@ namespace myTNB
                     Debug.WriteLine("previousMeter.PrevMeterReading== " + previousMeter.PrevMeterReading);
                     Debug.WriteLine("previousMeter.CurrentReading== " + previousMeter.CurrentReading);
                     Debug.WriteLine("====================================== ");
+                    MeterReadingRequest meterReadingRequest = new MeterReadingRequest();
+                    meterReadingRequest.MroID = previousMeter.MroID;
+                    meterReadingRequest.RegisterNumber = previousMeter.RegisterNumber;
+                    meterReadingRequest.MeterReadingResult = previousMeter.CurrentReading;
+                    meterReadingRequest.Channel = string.Empty;
+                    meterReadingRequest.MeterReadingDate = string.Empty;
+                    meterReadingRequest.MeterReadingTime = string.Empty;
+                    meterReadingRequestList.Add(meterReadingRequest);
                 }
             }
+            NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
+            {
+                InvokeOnMainThread(async () =>
+                {
+                    if (NetworkUtility.isReachable)
+                    {
+                        ActivityIndicator.Show();
+                        await CallSubmitSMRMeterReading(DataManager.DataManager.SharedInstance.SelectedAccount, meterReadingRequestList);
+                    }
+                    else
+                    {
+                        DisplayNoDataAlert();
+                    }
+                });
+            });
         }
 
         void OnKeyboardNotification(NSNotification notification)
@@ -471,6 +506,78 @@ namespace myTNB
             }
 
             UIView.CommitAnimations();
+        }
+
+        private async Task CallSubmitSMRMeterReading(CustomerAccountRecordModel account, List<MeterReadingRequest> meterReadings)
+        {
+            ActivityIndicator.Show();
+            await SubmitSMRMeterReading(account, meterReadings).ContinueWith(task =>
+            {
+                InvokeOnMainThread(() =>
+                {
+                    if (_submitMeterResponse != null &&
+                        _submitMeterResponse.d != null &&
+                        _submitMeterResponse.d.IsSuccess &&
+                        _submitMeterResponse.d.data != null)
+                    {
+                        UIStoryboard storyBoard = UIStoryboard.FromName("Feedback", null);
+                        GenericStatusPageViewController status = storyBoard.InstantiateViewController("GenericStatusPageViewController") as GenericStatusPageViewController;
+                        status.NextViewController = GetSMRReadingHistoryView();
+                        status.StatusDisplayType = GenericStatusPageViewController.StatusType.SSMRReading;
+                        status.IsSuccess = _submitMeterResponse.d.IsSuccess;
+                        status.StatusTitle = _submitMeterResponse.d.DisplayTitle;
+                        status.StatusMessage = _submitMeterResponse.d.DisplayMessage;
+                        NavigationController.PushViewController(status, true);
+                    }
+                    else
+                    {
+                        UIStoryboard storyBoard = UIStoryboard.FromName("Feedback", null);
+                        GenericStatusPageViewController status = storyBoard.InstantiateViewController("GenericStatusPageViewController") as GenericStatusPageViewController;
+                        status.StatusDisplayType = GenericStatusPageViewController.StatusType.SSMRReading;
+                        status.IsSuccess = _submitMeterResponse.d.IsSuccess;
+                        status.StatusTitle = _submitMeterResponse.d.DisplayTitle;
+                        status.StatusMessage = _submitMeterResponse.d.DisplayMessage;
+                        NavigationController.PushViewController(status, true);
+                    }
+                    ActivityIndicator.Hide();
+                });
+            });
+        }
+
+        private Task SubmitSMRMeterReading(CustomerAccountRecordModel account, List<MeterReadingRequest> meterReadings)
+        {
+            return Task.Factory.StartNew(() =>
+            {
+                ServiceManager serviceManager = new ServiceManager();
+                object usrInf = new
+                {
+                    eid = DataManager.DataManager.SharedInstance.User.Email,
+                    sspuid = DataManager.DataManager.SharedInstance.User.UserID,
+                    did = DataManager.DataManager.SharedInstance.UDID,
+                    ft = DataManager.DataManager.SharedInstance.FCMToken,
+                    lang = TNBGlobal.DEFAULT_LANGUAGE,
+                    sec_auth_k1 = TNBGlobal.API_KEY_ID,
+                    sec_auth_k2 = string.Empty,
+                    ses_param1 = string.Empty,
+                    ses_param2 = string.Empty
+                };
+                object request = new
+                {
+                    contractAccount = account.accNum,
+                    isOwnedAccount = account.IsOwnedAccount,
+                    meterReadings,
+                    usrInf
+                };
+                _submitMeterResponse = serviceManager.OnExecuteAPIV6<SMRSubmitMeterReadingResponseModel>("SubmitSMRMeterReading", request);
+            });
+        }
+
+        private UIViewController GetSMRReadingHistoryView()
+        {
+            UIStoryboard storyBoard = UIStoryboard.FromName("SSMR", null);
+            SSMRReadingHistoryViewController viewController =
+                storyBoard.InstantiateViewController("SSMRReadingHistoryViewController") as SSMRReadingHistoryViewController;
+            return viewController;
         }
 
         private class ToolTipScrollViewDelegate : UIScrollViewDelegate

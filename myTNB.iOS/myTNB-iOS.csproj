@@ -2181,6 +2181,7 @@
     <Compile Include="Sitecore CMS\Model\Meter Read SSMR Walkthrough\MeterReadSSMRWalkthroughModel.cs" />
     <Compile Include="Sitecore CMS\Service\MeterReadSSMRWalkthroughService.cs" />
     <Compile Include="SQLite\SQLite Data Manager\MeterReadSSMRWalkthroughEntity.cs" />
+    <Compile Include="Model\SSMR\SMRSubmitMeterReadingResponseModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />

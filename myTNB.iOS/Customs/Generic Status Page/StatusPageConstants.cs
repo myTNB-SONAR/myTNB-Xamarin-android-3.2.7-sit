@@ -58,6 +58,7 @@ namespace myTNB.Customs.GenericStatusPage
         public static string I18N_SSMRTrackApplication = "ssmrTrackApplication";
         public static string I18N_SSMRBacktoUsage = "ssmrBackToUsage";
         public static string I18N_SSMRTrackUsage = "ssmrTrackUsage";
+        public static string I18N_SSMRViewReadHistory = "ssmrViewReadHistory";
         public static string I18N_BacktoHome = "backToHome";
         public static string I18N_TryAgain = "tryAgain";
 

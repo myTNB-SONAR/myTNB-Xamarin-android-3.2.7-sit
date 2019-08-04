@@ -216,10 +216,10 @@ namespace myTNB.Dashboard
             {
                 InvokeOnMainThread(() =>
                 {
-                    if (_smrActivityInfoResponse.d.IsSuccess &&
-                        _smrActivityInfoResponse != null &&
+                    if (_smrActivityInfoResponse != null &&
                         _smrActivityInfoResponse.d != null &&
-                        _smrActivityInfoResponse.d.data != null)
+                        _smrActivityInfoResponse.d.data != null &&
+                        _smrActivityInfoResponse.d.IsSuccess)
                     {
                         DataManager.DataManager.SharedInstance.MeterReadingHistory = _smrActivityInfoResponse.d.data;
                         DataManager.DataManager.SharedInstance.ReadingHistoryList = _smrActivityInfoResponse.d.data.MeterReadingHistory;
