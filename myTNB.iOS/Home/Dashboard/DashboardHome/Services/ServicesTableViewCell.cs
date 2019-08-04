@@ -52,7 +52,6 @@ namespace myTNB
             bool hasData = services != null && services.d != null && services.d.IsSuccess
                 && services.d.data != null && services.d.data.services != null
                 && services.d.data.services.Count > 0;
-
             if (hasData)
             {
                 AddContentData(services.d.data.services);
@@ -106,9 +105,9 @@ namespace myTNB
 
         private UIView GetCard(ServiceItemModel serviceItem, int index, Action action = null)
         {
-            nfloat cardWidth = (_view.Frame.Width - 24) / 3;
+            nfloat cardWidth = (_view.Frame.Width - 12) / 3;
             nfloat cardHeight = cardWidth * 0.9545F;
-            nfloat margin = 12;
+            nfloat margin = 6;
             nfloat yLoc = (cardHeight + margin);
             yLoc *= GetFactor(index);
             if (rowFactor == GetFactor(index))
@@ -148,9 +147,9 @@ namespace myTNB
 
         private UIView GetShimmerCards(int index)
         {
-            nfloat cardWidth = (_view.Frame.Width - 24) / 3;
+            nfloat cardWidth = (_view.Frame.Width - 12) / 3;
             nfloat cardHeight = cardWidth * 0.9545F;
-            nfloat margin = 12;
+            nfloat margin = 6;
             nfloat yLoc = (cardHeight + margin);
             yLoc *= GetFactor(index);
             if (rowFactor == GetFactor(index))

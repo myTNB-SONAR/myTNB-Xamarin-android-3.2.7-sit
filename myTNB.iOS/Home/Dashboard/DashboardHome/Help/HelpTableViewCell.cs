@@ -17,7 +17,7 @@ namespace myTNB
         public UILabel _titleLabel;
         public HelpTableViewCell(IntPtr handle) : base(handle)
         {
-            cardWidth = cellWidth * 0.30F;
+            cardWidth = (cellWidth - 32)/3;
             cardHeight = cardWidth;
             _titleLabel = new UILabel(new CGRect(16f, 16f, cellWidth - 32, 20f))
             {
@@ -86,7 +86,7 @@ namespace myTNB
                 shimmeringView.SetValues();
 
                 _scrollView.Add(viewParent);
-                xLoc += cardWidth + 12.0F;
+                xLoc += cardWidth + 8.0F;
             }
             _scrollView.ContentSize = new CGSize(xLoc, cardHeight);
         }
@@ -119,9 +119,9 @@ namespace myTNB
                 };
                 helpCardView.AddSubviews(new UIView[] { imgView, lblHelp });
                 _scrollView.Add(helpCardView);
-                xLoc += cardWidth + 12.0F;
+                xLoc += cardWidth + 8.0F;
             }
-            _scrollView.ContentSize = new CGSize(xLoc, 40);
+            _scrollView.ContentSize = new CGSize(xLoc, cardHeight);
         }
 
         private int GetBackgroundImage(int index)
@@ -140,6 +140,7 @@ namespace myTNB
             view.Layer.ShadowOffset = new CGSize(0, 0);
             view.Layer.ShadowRadius = 4.0F;
             view.Layer.ShadowPath = UIBezierPath.FromRect(view.Bounds).CGPath;
+            view.ClipsToBounds = true;
         }
     }
 }

@@ -89,7 +89,7 @@ namespace myTNB
             {
                 PromotionTableViewCell cell = tableView.DequeueReusableCell(DashboardHomeConstants.Cell_Promotion) as PromotionTableViewCell;
                 cell._titleLabel.Text = _controller.GetI18NValue(DashboardHomeConstants.I18N_Promotions);
-                cell.AddCards(_helpList);
+                cell.AddCards();
                 return cell;
             }
             if (indexPath.Row == 3)
