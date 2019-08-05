@@ -607,6 +607,7 @@ namespace myTNB
                     {
                         foreach (var previousMeter in _previousMeterList)
                         {
+                            previousMeter.IsValidManualReading = ocr.IsSuccess;
                             if (ocr.IsSuccess)
                             {
                                 if (previousMeter.RegisterNumberType == ocr.RegisterNumberTypeFromOCRUnit)
@@ -617,7 +618,7 @@ namespace myTNB
                             }
                             else
                             {
-                                if (previousMeter.RegisterNumberType == ocr.RegisterNumberTypeFromOCRUnit)
+                                if (previousMeter.RegisterNumberType == ocr.RegisterNumberTypeFromRRUnit)
                                 {
                                     previousMeter.IsErrorFromOCR = !ocr.IsSuccess;
                                     previousMeter.ErrorMessage = ocr.Message;
