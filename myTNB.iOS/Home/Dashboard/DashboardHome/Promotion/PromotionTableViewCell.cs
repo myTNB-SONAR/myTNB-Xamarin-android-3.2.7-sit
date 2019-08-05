@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using CoreGraphics;
+using Foundation;
 using myTNB.SitecoreCMS.Model;
+using myTNB.SQLite.SQLiteDataManager;
 using UIKit;
 
 namespace myTNB
@@ -25,11 +27,11 @@ namespace myTNB
                 TextColor = MyTNBColor.PowerBlue
             };
             AddSubview(_titleLabel);
-            UIView view = new UIView(new CGRect(0, _titleLabel.Frame.GetMaxY() + 8f, cellWidth, cardHeight + 24.0F))
+            UIView view = new UIView(new CGRect(0, _titleLabel.Frame.GetMaxY(), cellWidth, cardHeight + 24.0F))
             {
                 BackgroundColor = UIColor.Clear
             };
-            _scrollView = new UIScrollView(new CGRect(0, 0, view.Frame.Width, cardHeight))
+            _scrollView = new UIScrollView(new CGRect(0, 0, view.Frame.Width, cardHeight + 16))
             {
                 ScrollEnabled = true,
                 ShowsHorizontalScrollIndicator = false
@@ -49,9 +51,7 @@ namespace myTNB
                 _scrollView.Subviews[i].RemoveFromSuperview();
             }
 
-            bool hasData = false;
-
-            if (hasData)
+            if (DashboardHomeHelper.HasPromotion)
             {
                 AddContentData();
             }
@@ -67,13 +67,13 @@ namespace myTNB
             for (int i = 0; i < 3; i++)
             {
                 CustomShimmerView shimmeringView = new CustomShimmerView();
-                UIView viewParent = new UIView(new CGRect(xLoc, 0, cardWidth, cardHeight)) { BackgroundColor = UIColor.White };
+                UIView viewParent = new UIView(new CGRect(xLoc, 8, cardWidth, cardHeight)) { BackgroundColor = UIColor.White };
                 AddCardShadow(ref viewParent);
                 UIView viewShimmerParent = new UIView(new CGRect(0, 0, cardWidth, cardHeight)) { BackgroundColor = UIColor.Clear };
                 UIView viewShimmerContent = new UIView(new CGRect(0, 0, cardWidth, cardHeight)) { BackgroundColor = UIColor.Clear };
                 viewParent.AddSubviews(new UIView[] { viewShimmerParent, viewShimmerContent });
 
-                UIView viewImg = new UIView(new CGRect(0, 0, cardWidth, cardHeight * 0.48F)) { BackgroundColor = MyTNBColor.PowderBlue };
+                UIView viewImg = new UIView(new CGRect(0, 0, cardWidth, cardHeight * 0.50F)) { BackgroundColor = MyTNBColor.PowderBlue };
                 UIView viewTitle = new UIView(new CGRect(16, viewImg.Frame.GetMaxY() + 16, cardWidth * 0.62F, 16))
                 { BackgroundColor = MyTNBColor.PowderBlue };
                 UIView viewContent1 = new UIView(new CGRect(16, viewTitle.Frame.GetMaxY() + 4, viewTitle.Frame.Width * 0.8F, 14))
@@ -99,6 +99,46 @@ namespace myTNB
         private void AddContentData()
         {
             nfloat xLoc = 16f;
+            PromotionsEntity entity = new PromotionsEntity();
+            List<PromotionsModelV2> promotionList = entity.GetAllItemsV2();
+            nfloat promotionCount = promotionList.Count;
+
+            if (promotionCount > 1)
+            {
+
+            }
+            else
+            {
+                PromotionsModelV2 item = promotionList[0];
+                UIView viewParent = new UIView(new CGRect(xLoc, 8, Frame.Width - 32, cardHeight)) { BackgroundColor = UIColor.White };
+                AddCardShadow(ref viewParent);
+                UIImage img = UIImage.LoadFromData(NSData.FromUrl(new NSUrl(item.LandscapeImage)));
+                UIImageView imgView = new UIImageView(new CGRect(0, 0, viewParent.Frame.Width, cardHeight * 0.50F))
+                {
+                    Image = img
+                };
+
+                UILabel lblTitle = new UILabel(new CGRect(16, imgView.Frame.GetMaxY() + 16, viewParent.Frame.Width - 32, 16))
+                {
+                    TextAlignment = UITextAlignment.Left,
+                    TextColor = MyTNBColor.WaterBlue,
+                    Font = MyTNBFont.MuseoSans12_500,
+                    Text = item.Title
+                };
+
+                UILabel lblDescription = new UILabel(new CGRect(16, lblTitle.Frame.GetMaxY() + 8, viewParent.Frame.Width - 32, 48))
+                {
+                    TextAlignment = UITextAlignment.Left,
+                    TextColor = MyTNBColor.GreyishBrown,
+                    Font = MyTNBFont.MuseoSans12_300,
+                    Lines = 0,
+                    LineBreakMode = UILineBreakMode.WordWrap,
+                    Text = item.Text
+                };
+
+                viewParent.AddSubviews(new UIView[] { imgView, lblTitle, lblDescription });
+                _scrollView.Add(viewParent);
+            }
 
             _scrollView.ContentSize = new CGSize(xLoc, cardHeight);
         }
@@ -110,7 +150,7 @@ namespace myTNB
             view.Layer.ShadowColor = MyTNBColor.BabyBlue.CGColor;
             view.Layer.ShadowOpacity = 0.5F;
             view.Layer.ShadowOffset = new CGSize(0, 0);
-            view.Layer.ShadowRadius = 8;
+            view.Layer.ShadowRadius = 4;
             view.Layer.ShadowPath = UIBezierPath.FromRect(view.Bounds).CGPath;
         }
     }

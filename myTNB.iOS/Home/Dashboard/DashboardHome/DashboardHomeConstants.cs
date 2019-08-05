@@ -40,5 +40,11 @@ namespace myTNB
         //SMR CTA
         public static string CTA_ShowReadingHistory = "v";
         public static string CTA_ShowSubmitReading = "s";
+
+        //SiteCore
+        public static string Sitecore_Timestamp = "SiteCorePromotionTimeStamp";
+
+        //Format
+        public static string Format_Date = "yyyyMMdd";
     }
 }

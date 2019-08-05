@@ -4,6 +4,8 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using myTNB.Model;
+using myTNB.SitecoreCMS.Model;
+using myTNB.SQLite.SQLiteDataManager;
 using UIKit;
 
 namespace myTNB
@@ -265,6 +267,28 @@ namespace myTNB
             }
             tableViewCellHeight += cardHeight;
             return tableViewCellHeight;
+        }
+
+        public nfloat GetHeightForPromotions
+        {
+            get
+            {
+                if (HasPromotion)
+                {
+                    return 50F + (UIApplication.SharedApplication.KeyWindow.Frame.Width * 0.64F * 0.98F);
+                }
+                return 0;
+            }
+        }
+
+        public static bool HasPromotion
+        {
+            get
+            {
+                PromotionsEntity entity = new PromotionsEntity();
+                List<PromotionsModelV2> promotions = entity.GetAllItemsV2();
+                return promotions != null && promotions.Count > 0;
+            }
         }
     }
 }

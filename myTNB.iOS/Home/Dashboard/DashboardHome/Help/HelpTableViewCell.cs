@@ -134,12 +134,6 @@ namespace myTNB
         private void AddCardShadow(ref UIView view)
         {
             view.Layer.CornerRadius = 4.0F;
-            view.Layer.MasksToBounds = true;
-            view.Layer.ShadowColor = MyTNBColor.SilverChalice.CGColor;
-            view.Layer.ShadowOpacity = 1;
-            view.Layer.ShadowOffset = new CGSize(0, 0);
-            view.Layer.ShadowRadius = 4.0F;
-            view.Layer.ShadowPath = UIBezierPath.FromRect(view.Bounds).CGPath;
             view.ClipsToBounds = true;
         }
     }

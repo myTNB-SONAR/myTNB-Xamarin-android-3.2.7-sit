@@ -59,7 +59,7 @@ namespace myTNB
             }
             if (indexPath.Row == 2)
             {
-                return 24F + 20F + (UIApplication.SharedApplication.KeyWindow.Frame.Width * 0.64F * 0.98F);
+                return _dashboardHomeHelper.GetHeightForPromotions;
             }
             if (indexPath.Row == 3)
             {
