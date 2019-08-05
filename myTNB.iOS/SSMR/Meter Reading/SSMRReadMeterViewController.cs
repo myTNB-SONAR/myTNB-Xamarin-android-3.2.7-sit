@@ -550,7 +550,7 @@ namespace myTNB
                 }
             }
             _sSMRMeterFooterComponent.SetSubmitButtonEnabled(res);
-            _sSMRMeterFooterComponent.SetTakePhotoButtonEnabled(!res);
+            //_sSMRMeterFooterComponent.SetTakePhotoButtonEnabled(!res);
         }
 
         private void AddFooterView()
@@ -587,7 +587,7 @@ namespace myTNB
                             registerStr = "kW";
                             break;
                     }
-                    ReadingDictionary.Add(registerStr, previousMeter.IsValidManualReading);
+                    ReadingDictionary.Add(registerStr, false);
                 }
                 UIStoryboard storyBoard = UIStoryboard.FromName("SSMR", null);
                 SSMRCaptureMeterViewController viewController =

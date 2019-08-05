@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Drawing;
 using System.Globalization;
 using CoreGraphics;
@@ -220,12 +221,25 @@ namespace myTNB
                         }
                         textField.Text = textStr.Substring(1, 1);
                         PopulateTextFields();
+                        //int len = _meterReadingValue.Length - 1;
+                        //int indx = (int)(len - (boxMaxCount - textField.Tag));
+                        //InsertCharInString(indx, textField.Text);
+                        //RepopulateTextFields();
                         textField.BecomeFirstResponder();
                     }
                 }
-                else
+                else if (textField.Text.Length == 1)
                 {
                     UpdateReadingValueText(textField.Text);
+                }
+                else
+                {
+                    int len = _meterReadingValue.Length - 1;
+                    int indx = (int)(len - (boxMaxCount - textField.Tag));
+                    RemoveCharInString(indx);
+                    RepopulateTextFields();
+                    ValidateTextField();
+                    textField.BecomeFirstResponder();
                 }
                 UpdateMeterReadingValue();
             };
@@ -250,6 +264,22 @@ namespace myTNB
             else
             {
                 _meterReadingValue += digit;
+            }
+        }
+
+        private void RemoveCharInString(int index)
+        {
+            if (index > -1 && index < _meterReadingValue.Length)
+            {
+                _meterReadingValue = _meterReadingValue.Remove(index, 1);
+            }
+        }
+
+        private void InsertCharInString(int index, string str)
+        {
+            if (index > -1 && index < _meterReadingValue.Length)
+            {
+                _meterReadingValue = _meterReadingValue.Insert(index, str);
             }
         }
 
