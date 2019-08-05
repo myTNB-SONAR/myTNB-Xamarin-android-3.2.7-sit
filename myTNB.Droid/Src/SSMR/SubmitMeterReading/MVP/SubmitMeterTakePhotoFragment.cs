@@ -83,6 +83,8 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
         // CameraDevice.StateListener is called when a CameraDevice changes its state
         private CameraStateListener mStateCallback;
         public ImageView galleryPreview;
+        public CameraCharacteristics characteristics;
+        public float maximumZoomLevel;
 
         public static SubmitMeterTakePhotoFragment NewInstance()
         {
@@ -112,19 +114,26 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
 
         public class OnSeekbarChangeListener : Java.Lang.Object, SeekBar.IOnSeekBarChangeListener
         {
+            SubmitMeterTakePhotoFragment mFragment;
+            public OnSeekbarChangeListener(SubmitMeterTakePhotoFragment fragment)
+            {
+                mFragment = fragment;
+            }
             public void OnProgressChanged(SeekBar seekBar, int progress, bool fromUser)
             {
-                throw new System.NotImplementedException();
+                int mProgress = progress;
+                Rect rect = (Rect)mFragment.characteristics.Get(CameraCharacteristics.SensorInfoActiveArraySize);
+
             }
 
             public void OnStartTrackingTouch(SeekBar seekBar)
             {
-                throw new System.NotImplementedException();
+                //throw new System.NotImplementedException();
             }
 
             public void OnStopTrackingTouch(SeekBar seekBar)
             {
-                throw new System.NotImplementedException();
+                //throw new System.NotImplementedException();
             }
         }
 
@@ -134,6 +143,8 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             mTextureView = (AutoFitTextureView)view.FindViewById(Resource.Id.texture_view_autofit);
             ImageView captureImage = (ImageView)view.FindViewById(Resource.Id.imageTakePhoto);
             galleryPreview = (ImageView)view.FindViewById(Resource.Id.imageGallery);
+            SeekBar seekBar = (SeekBar)view.FindViewById(Resource.Id.seekBar);
+            
             captureImage.Click += delegate
             {
                 TakePicture();
@@ -143,6 +154,8 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             {
                 ((SubmitMeterTakePhotoActivity)Activity).ShowGallery();
             };
+
+            seekBar.SetOnSeekBarChangeListener(new OnSeekbarChangeListener(this));
         }
 
         public override void OnActivityCreated(Bundle savedInstanceState)
@@ -379,19 +392,6 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             }
         }
 
-        //private void RequestCameraPermission()
-        //{
-        //    if (FragmentCompat.ShouldShowRequestPermissionRationale(this, Manifest.Permission.Camera))
-        //    {
-        //        new ConfirmationDialog().Show(ChildFragmentManager, FRAGMENT_DIALOG);
-        //    }
-        //    else
-        //    {
-        //        FragmentCompat.RequestPermissions(this, new string[] { Manifest.Permission.Camera },
-        //                REQUEST_CAMERA_PERMISSION);
-        //    }
-        //}
-
         // Sets up member variables related to camera.
         private void SetUpCameraOutputs(int width, int height)
         {
@@ -402,7 +402,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                 for (var i = 0; i < manager.GetCameraIdList().Length; i++)
                 {
                     var cameraId = manager.GetCameraIdList()[i];
-                    CameraCharacteristics characteristics = manager.GetCameraCharacteristics(cameraId);
+                    characteristics = manager.GetCameraCharacteristics(cameraId);
 
                     // We don't use a front facing camera in this sample.
                     var facing = (Integer)characteristics.Get(CameraCharacteristics.LensFacing);

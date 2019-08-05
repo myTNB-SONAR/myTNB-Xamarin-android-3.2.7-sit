@@ -9,6 +9,7 @@ using Android.Content;
 using Android.OS;
 using Android.Runtime;
 using Android.Views;
+using Android.Views.InputMethods;
 using Android.Widget;
 using CheeseBind;
 using myTNB_Android.Src.Base.Activity;
@@ -309,8 +310,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
 
         private void UpdateCurrentValues(LinearLayout container, GetMeterReadingOCRResponseDetails sMRMROValidateRegisterDetails)
         {
-            char[] amountInArray = sMRMROValidateRegisterDetails.OCRValue.ToCharArray();
-            EditText[] editTexts = new EditText[MAX_DIGIT];
+            char[] amountInArray = (sMRMROValidateRegisterDetails.OCRValue + "0").ToCharArray();
             int resourceCounter = 0;
             for (int i = amountInArray.Length; i != 0; i--)
             {
@@ -333,6 +333,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             {
                 readingErrorMessage.Visibility = ViewStates.Visible;
             }
+
         }
 
         public void PopulateMeterReadingCard(METER_READING_TYPE type, SMRMROValidateRegisterDetails sMRMROValidateRegisterDetails)
@@ -401,14 +402,18 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                 {
                     linearLayoutContainer = FindViewById(Resource.Id.kwhCard) as LinearLayout;
                     UpdateCurrentValues(linearLayoutContainer, ocrResponse);
+                    ValidateMeterInput(Resource.Id.kwhCard);
                 }else if (type == "kvarh")
                 {
                     linearLayoutContainer = FindViewById(Resource.Id.kVARhCard) as LinearLayout;
                     UpdateCurrentValues(linearLayoutContainer, ocrResponse);
-                }else if (type == "kw")
+                    ValidateMeterInput(Resource.Id.kVARhCard);
+                }
+                else if (type == "kw")
                 {
                     linearLayoutContainer = FindViewById(Resource.Id.kwCard) as LinearLayout;
                     UpdateCurrentValues(linearLayoutContainer, ocrResponse);
+                    ValidateMeterInput(Resource.Id.kwCard);
                 }
             }
 
@@ -416,6 +421,12 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
 
         public void ValidateMeterInput(int meterCardResourceId)
         {
+            InputMethodManager inputManager = (InputMethodManager)GetSystemService(Context.InputMethodService);
+            var currentFocus = this.CurrentFocus;
+            if (currentFocus != null)
+            {
+              inputManager.HideSoftInputFromWindow(currentFocus.WindowToken, HideSoftInputFlags.None);
+            }
             LinearLayout meterCardContainer = FindViewById(meterCardResourceId) as LinearLayout;
 
             EditText currentValue8 = (EditText)meterCardContainer.FindViewById(currentMeterViews[8]);
@@ -430,6 +441,41 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
 
             string currentAmountInString = currentValue0.Text + currentValue1.Text + currentValue2.Text + currentValue3.Text + currentValue4.Text +
                 currentValue5.Text + currentValue6.Text + currentValue7.Text + currentValue8.Text;
+
+            currentValue7.Text = "";
+            currentValue6.Text = "";
+            currentValue5.Text = "";
+            currentValue4.Text = "";
+            currentValue3.Text = "";
+            currentValue2.Text = "";
+            currentValue1.Text = "";
+            currentValue0.Text = "";
+
+            char[] parsedReading = currentAmountInString.ToCharArray();
+            int resourceCounter = 0;
+            for (int i = parsedReading.Length; i != 0; i--)
+            {
+                resourceCounter++;
+                EditText currentValueDigit = meterCardContainer.FindViewById(currentMeterViews[currentMeterViews.Length - resourceCounter]) as EditText;
+                if (resourceCounter > MAX_DIGIT) //When more than 9 digits
+                {
+                    break;
+                }
+                if ((currentMeterViews.Length - resourceCounter) == 8)
+                {
+                    if (currentValueDigit.Text == "")
+                    {
+                        i = parsedReading.Length;
+                    }
+                    else
+                    {
+                        continue;
+                    }
+                }
+                
+                currentValueDigit.Text = parsedReading[i - 1].ToString();
+            }
+
 
             string RegisterNumber = "";
             if (meterCardResourceId == Resource.Id.kwhCard)
@@ -474,9 +520,9 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             }
             else
             {
-                if (currentReading > previousReading)
+                if (currentReading < previousReading)
                 {
-                    inlineError.Text = "This value is too high!";
+                    inlineError.Text = "This value is less than your previous reading.";
                     inlineError.Visibility = ViewStates.Visible;
                     meterType.SetBackgroundDrawable(GetDrawable(Resource.Drawable.meter_reading_label_background_error));
                     validationStateList.Find(meter =>
@@ -532,41 +578,5 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             }
             TextViewUtils.SetMuseoSans500Typeface(btnTakePhoto, btnSubmitReading);
         }
-
-        public bool IsAllUpdated()
-        {
-            List<bool> AllValidatedList = new List<bool>();
-            foreach (SMRMROValidateRegisterDetails details in SMRValidateRegisterDetailList)
-            {
-                if (details.RegisterNumber == "001")
-                {
-                    LinearLayout kwHContainer = FindViewById(Resource.Id.kwhCard) as LinearLayout;
-                    //TextView meterType = (TextView)kwHContainer.FindViewById(Resource.Id.reading_meter_type);
-                    //bool IsValid = (meterType.Background == GetDrawable(Resource.Drawable.meter_reading_label_background_ready));
-
-
-                    //AllValidatedList.Add(IsValid);
-                }
-                if (details.RegisterNumber == "002")
-                {
-                    LinearLayout kVARhContainer = FindViewById(Resource.Id.kVARhCard) as LinearLayout;
-                    TextView meterType = (TextView)kVARhContainer.FindViewById(Resource.Id.reading_meter_type);
-                    bool IsValid = (meterType.Background == GetDrawable(Resource.Drawable.meter_reading_label_background_ready));
-                    AllValidatedList.Add(IsValid);
-                }
-                if (details.RegisterNumber == "003")
-                {
-                    LinearLayout kWContainer = FindViewById(Resource.Id.kwCard) as LinearLayout;
-                    TextView meterType = (TextView)kWContainer.FindViewById(Resource.Id.reading_meter_type);
-                    bool IsValid = (meterType.Background == GetDrawable(Resource.Drawable.meter_reading_label_background_ready));
-                    AllValidatedList.Add(IsValid);
-                }
-            }
-            return AllValidatedList.TrueForAll(valid=>
-            {
-                return valid;
-            });
-        }
-
     }
 }

@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using Android.Runtime;
 using Android.Text;
+using Android.Views;
+using Android.Views.InputMethods;
 using Android.Widget;
 using Java.Lang;
 using myTNB_Android.Src.SSMR.SubmitMeterReading.MVP;
@@ -32,11 +35,14 @@ namespace myTNB_Android.Src.SSMR.Util
             {
                 if (i == (editTextList.Count-1))
                 {
+                    editTextList[i].SetOnEditorActionListener(new OnEditorActionChangeListener(this));
                     editTextList[i].AddTextChangedListener(new TextChangeListener(this)); //For right to left input and validation
                 }
                 else
                 {
-                    editTextList[i].AddTextChangedListener(new OnValidateTextChangeListener(this)); //For validation
+                    editTextList[i].SetOnEditorActionListener(new OnEditorActionChangeListener(this));
+                    //editTextList[i].AddTextChangedListener(new OnValidateTextChangeListener(this)); //For validation
+                    editTextList[i].Enabled = false;
                 }
             }
         }
@@ -62,9 +68,33 @@ namespace myTNB_Android.Src.SSMR.Util
             }
         }
 
+        public void UpdateLastDigit(string val)
+        {
+            editTextList[8].RemoveTextChangedListener(new TextChangeListener(this));
+            editTextList[8].Text = val;
+            editTextList[8].AddTextChangedListener(new TextChangeListener(this));
+        }
+
         public void ValidateMeterInput()
         {
             mView.ValidateMeterInput(meterCard);
+        }
+
+        public class OnEditorActionChangeListener : Java.Lang.Object, TextView.IOnEditorActionListener
+        {
+            MeterReadingValuesViewHelper mHelper;
+            public OnEditorActionChangeListener(MeterReadingValuesViewHelper helper)
+            {
+                mHelper = helper;
+            }
+            public bool OnEditorAction(TextView v, [GeneratedEnum] ImeAction actionId, KeyEvent e)
+            {
+                if (actionId == ImeAction.ImeNull)
+                {
+                    mHelper.ValidateMeterInput();
+                }
+                return false;
+            }
         }
 
         public class OnValidateTextChangeListener : Java.Lang.Object, Android.Text.ITextWatcher
@@ -86,7 +116,7 @@ namespace myTNB_Android.Src.SSMR.Util
 
             public void OnTextChanged(ICharSequence s, int start, int before, int count)
             {
-                mHelper.ValidateMeterInput();
+                //mHelper.ValidateMeterInput();
             }
         }
 
@@ -128,13 +158,12 @@ namespace myTNB_Android.Src.SSMR.Util
                     {
                         meterValue = meterValue + s.ToString();
                         string val = s.CharAt(0).ToString();
-                        //mHelper.UpdateMeterValue(meterValue);
                         editTexts[8].RemoveTextChangedListener(this);
                         editTexts[8].Text = "";
                         editTexts[8].Text = val;
                         editTexts[8].AddTextChangedListener(this);
 
-                        if (startChange)
+                        if (startChange && previousVal != "")
                         {
                             editTexts[0].Text = editTexts[1].Text;
                             editTexts[1].Text = editTexts[2].Text;
@@ -155,9 +184,23 @@ namespace myTNB_Android.Src.SSMR.Util
                         editTexts[8].RemoveTextChangedListener(this);
                         editTexts[8].Text = "";
                         editTexts[8].AddTextChangedListener(this);
+
                     }
 
-                    mHelper.ValidateMeterInput();
+                    for (int i=0; i < mHelper.editTextList.Count; i++)
+                    {
+                        if (i != (mHelper.editTextList.Count-1))
+                        {
+                            if (mHelper.editTextList[i].Text == "")
+                            {
+                                mHelper.editTextList[i].Enabled = false;
+                            }
+                            else
+                            {
+                                mHelper.editTextList[i].Enabled = true;
+                            }
+                        }
+                    }
                 }
             }
         }
