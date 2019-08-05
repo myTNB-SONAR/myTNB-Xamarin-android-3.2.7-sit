@@ -10,6 +10,7 @@ using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
+using CheeseBind;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.SSMR.SubmitMeterReading.Api;
@@ -34,6 +35,13 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
         private int[] previousMeterViews;
         private int[] currentMeterViews;
         private int MAX_DIGIT = 9;
+        private List<MeterValidation> validationStateList;
+
+        [BindView(Resource.Id.btnSubmitReading)]
+        Button btnSubmitReading;
+
+        [BindView(Resource.Id.btnTakePhoto)]
+        Button btnTakePhoto;
 
         List<SMRMROValidateRegisterDetails> SMRValidateRegisterDetailList;
 
@@ -83,12 +91,19 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             meterReadingTitle.Text = GetString(Resource.String.meter_reading_message);
             TextViewUtils.SetMuseoSans500Typeface(meterReadingTitle);
 
-            Button btnTakePhoto = FindViewById(Resource.Id.btnTakePhoto) as Button;
             btnTakePhoto.Click += delegate
             {
                 Intent photoIntent = new Intent(this, typeof(SubmitMeterTakePhotoActivity));
                 StartActivity(photoIntent);
             };
+
+            btnSubmitReading.Click += delegate
+            {
+
+            };
+
+            EnableSubmitButton(false);
+            TextViewUtils.SetMuseoSans500Typeface(btnTakePhoto, btnSubmitReading);
 
             previousMeterViews = new int[9];
             previousMeterViews[0] = Resource.Id.previous_reading_1;
@@ -163,24 +178,31 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             {
                 List<SMRMROValidateRegisterDetails> sMRMROValidateRegisterDetailsList = DummyData(); //This is coming from session
                 SMRValidateRegisterDetailList = DummyData(); //Mock
+                validationStateList = new List<MeterValidation>();
 
+                MeterValidation meterValidation;
                 foreach (SMRMROValidateRegisterDetails validateRegisterDetails in sMRMROValidateRegisterDetailsList)
                 {
                     if (validateRegisterDetails.RegisterNumber == "001")
                     {
+                        meterValidation = new MeterValidation();
+                        meterValidation.meterId = "001";
+                        validationStateList.Add(meterValidation);
                         PopulateMeterReadingCard(METER_READING_TYPE.KWH, validateRegisterDetails);
                     }
                     else if (validateRegisterDetails.RegisterNumber == "002")
                     {
+                        meterValidation = new MeterValidation();
+                        meterValidation.meterId = "002";
+                        validationStateList.Add(meterValidation);
                         PopulateMeterReadingCard(METER_READING_TYPE.KVARH, validateRegisterDetails);
                     }
                     else if (validateRegisterDetails.RegisterNumber == "003")
                     {
+                        meterValidation = new MeterValidation();
+                        meterValidation.meterId = "003";
+                        validationStateList.Add(meterValidation);
                         PopulateMeterReadingCard(METER_READING_TYPE.KW, validateRegisterDetails);
-                    }
-                    else
-                    {
-                        PopulateMeterReadingCard(METER_READING_TYPE.KWH, validateRegisterDetails);
                     }
                 }
 
@@ -445,6 +467,10 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             {
                 inlineError.Visibility = ViewStates.Gone;
                 meterType.SetBackgroundDrawable(GetDrawable(Resource.Drawable.meter_reading_label_background));
+                validationStateList.Find(meter =>
+                {
+                    return meter.meterId == RegisterNumber;
+                }).validated = false;
             }
             else
             {
@@ -453,18 +479,93 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                     inlineError.Text = "This value is too high!";
                     inlineError.Visibility = ViewStates.Visible;
                     meterType.SetBackgroundDrawable(GetDrawable(Resource.Drawable.meter_reading_label_background_error));
+                    validationStateList.Find(meter =>
+                    {
+                        return meter.meterId == RegisterNumber;
+                    }).validated = false;
                 }
                 else
                 {
                     inlineError.Visibility = ViewStates.Gone;
                     meterType.SetBackgroundDrawable(GetDrawable(Resource.Drawable.meter_reading_label_background_ready));
+                    validationStateList.Find(meter =>
+                    {
+                        return meter.meterId == RegisterNumber;
+                    }).validated = true;
                 }
             }
+            List<MeterValidation> test = validationStateList;
+            EnableSubmitButton(validationStateList.TrueForAll(meter => { return meter.validated == true; }));
+        }
 
-            //reading_error_validation_msg
+        public void ShowMeterReadingOCRError(string errorMessage)
+        {
+            //if (errorMessage != "")
+            //{
+            //    EnableSubmitButton(false);
+            //}
+            //else
+            //{
+            //    EnableSubmitButton(true);
+            //}
+        }
 
-            //reading_meter_type
+        public void EnableSubmitButton(bool isEnabled)
+        {
+            if (isEnabled)
+            {
+                btnSubmitReading.Enabled = true;
+                btnSubmitReading.Background = GetDrawable(Resource.Drawable.green_button_background);
 
+                btnTakePhoto.Enabled = false;
+                btnTakePhoto.Background = GetDrawable(Resource.Drawable.light_button_background_disabled);
+                btnTakePhoto.SetTextAppearance(this, Resource.Style.LightButtonDisabled);
+            }
+            else
+            {
+                btnSubmitReading.Enabled = false;
+                btnSubmitReading.Background = GetDrawable(Resource.Drawable.silver_chalice_button_background);
+
+                btnTakePhoto.Enabled = true;
+                btnTakePhoto.Background = GetDrawable(Resource.Drawable.light_button_background);
+                btnTakePhoto.SetTextAppearance(this, Resource.Style.LightButton);
+            }
+            TextViewUtils.SetMuseoSans500Typeface(btnTakePhoto, btnSubmitReading);
+        }
+
+        public bool IsAllUpdated()
+        {
+            List<bool> AllValidatedList = new List<bool>();
+            foreach (SMRMROValidateRegisterDetails details in SMRValidateRegisterDetailList)
+            {
+                if (details.RegisterNumber == "001")
+                {
+                    LinearLayout kwHContainer = FindViewById(Resource.Id.kwhCard) as LinearLayout;
+                    //TextView meterType = (TextView)kwHContainer.FindViewById(Resource.Id.reading_meter_type);
+                    //bool IsValid = (meterType.Background == GetDrawable(Resource.Drawable.meter_reading_label_background_ready));
+
+
+                    //AllValidatedList.Add(IsValid);
+                }
+                if (details.RegisterNumber == "002")
+                {
+                    LinearLayout kVARhContainer = FindViewById(Resource.Id.kVARhCard) as LinearLayout;
+                    TextView meterType = (TextView)kVARhContainer.FindViewById(Resource.Id.reading_meter_type);
+                    bool IsValid = (meterType.Background == GetDrawable(Resource.Drawable.meter_reading_label_background_ready));
+                    AllValidatedList.Add(IsValid);
+                }
+                if (details.RegisterNumber == "003")
+                {
+                    LinearLayout kWContainer = FindViewById(Resource.Id.kwCard) as LinearLayout;
+                    TextView meterType = (TextView)kWContainer.FindViewById(Resource.Id.reading_meter_type);
+                    bool IsValid = (meterType.Background == GetDrawable(Resource.Drawable.meter_reading_label_background_ready));
+                    AllValidatedList.Add(IsValid);
+                }
+            }
+            return AllValidatedList.TrueForAll(valid=>
+            {
+                return valid;
+            });
         }
 
     }

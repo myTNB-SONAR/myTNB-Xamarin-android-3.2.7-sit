@@ -283,6 +283,7 @@
                         android:layout_gravity="right"
                         android:textSize="10dp"
                         android:textColor="#e44b21"
+                        android:visibility="gone"
                         android:text="This value is too high!"/>  
                     <TextView
                         android:id="@+id/reading_meter_type"

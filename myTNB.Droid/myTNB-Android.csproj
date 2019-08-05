@@ -1725,6 +1725,8 @@
     <Compile Include="Src\SSMR\Util\MeterReadingValuesViewHelper.cs" />
     <AndroidResource Include="Resources\drawable\meter_reading_label_background_error.xml" />
     <AndroidResource Include="Resources\drawable\meter_reading_label_background_ready.xml" />
+    <Compile Include="Src\SSMR\SubmitMeterReading\MVP\MeterValidation.cs" />
+    <AndroidResource Include="Resources\drawable\light_button_background_disabled.xml" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

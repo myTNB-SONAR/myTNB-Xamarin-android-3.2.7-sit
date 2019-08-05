@@ -83,7 +83,7 @@
     <item name="android:stateListAnimator">@null</item>
     <item name="android:background">@drawable/light_green_outline_button_background</item>
   </style>
-  
+
 <style name="Theme.MeterReading" parent="@android:style/Widget.Button">
     <item name="android:textColor">@color/freshGreen</item>
     <item name="android:hint">@color/freshGreen</item>
@@ -99,7 +99,7 @@
     <item name="android:stateListAnimator">@null</item>
     <item name="android:background">@drawable/green_button_background</item>
   </style>
-  
+
   <style name="Theme.SubmitMeterReading" parent="@android:style/Widget.Button">
     <item name="android:textColor">#FFFFFF</item>
     <item name="android:hint">#FFFFFF</item>
@@ -300,7 +300,7 @@
     <item name="android:textSize">16dp</item>
     <item name="android:stateListAnimator">@null</item>
   </style>
-    
+
   <style name="WhiteButton1">
     <item name="android:layout_width">fill_parent</item>
     <item name="android:layout_height">wrap_content</item>
@@ -317,6 +317,17 @@
     <item name="android:layout_height">wrap_content</item>
     <item name="android:textColor">#20bd4c</item>
     <item name="android:background">@drawable/light_button_background</item>
+    <item name="android:gravity">center</item>
+    <item name="android:layout_margin">3dp</item>
+    <item name="android:textSize">16dp</item>
+    <item name="android:stateListAnimator">@null</item>
+  </style>
+
+  <style name="LightButtonDisabled">
+    <item name="android:layout_width">fill_parent</item>
+    <item name="android:layout_height">wrap_content</item>
+    <item name="android:textColor">#a6a6a6</item>
+    <item name="android:background">@drawable/light_button_background_disabled</item>
     <item name="android:gravity">center</item>
     <item name="android:layout_margin">3dp</item>
     <item name="android:textSize">16dp</item>

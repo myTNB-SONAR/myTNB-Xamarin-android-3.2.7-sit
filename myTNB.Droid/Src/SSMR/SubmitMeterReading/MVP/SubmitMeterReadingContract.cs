@@ -12,6 +12,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
         public interface IView
         {
             void UpdateCurrentMeterReading(List<GetMeterReadingOCRResponseDetails> ocrMeterReadingList);
+            void ShowMeterReadingOCRError(string errorMessage);
         }
 
         public interface IPresenter

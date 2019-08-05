@@ -39,6 +39,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             List<GetMeterReadingOCRResponse> ocrResponseList = JsonConvert.DeserializeObject<List<GetMeterReadingOCRResponse>>(jsonResponseList);
             List<GetMeterReadingOCRResponseDetails> smrRegisterDetailList = new List<GetMeterReadingOCRResponseDetails>();
             GetMeterReadingOCRResponseDetails details;
+            string errorMessage = "";
             foreach (GetMeterReadingOCRResponse ocrReadingResponse in ocrResponseList)
             {
                 if (ocrReadingResponse.Data.ErrorCode == "7200" && ocrReadingResponse.Data.ResponseDetailsData != null)
@@ -48,6 +49,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                     details.OCRUnit = ocrReadingResponse.Data.ResponseDetailsData.OCRUnit;
                     details.OCRValue = ocrReadingResponse.Data.ResponseDetailsData.OCRValue;
                     smrRegisterDetailList.Add(details);
+                    mView.UpdateCurrentMeterReading(smrRegisterDetailList);
                 }
                 else
                 {
@@ -56,9 +58,11 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                     details.OCRUnit = ocrReadingResponse.Data.ResponseDetailsData.OCRUnit;
                     details.OCRValue = ocrReadingResponse.Data.ResponseDetailsData.OCRValue;
                     smrRegisterDetailList.Add(details);
+                    mView.UpdateCurrentMeterReading(smrRegisterDetailList);
+                    errorMessage = ocrReadingResponse.Data.ErrorMessage;
                 }
             }
-            mView.UpdateCurrentMeterReading(smrRegisterDetailList);
+            this.mView.ShowMeterReadingOCRError(errorMessage);
         }
     }
 }
