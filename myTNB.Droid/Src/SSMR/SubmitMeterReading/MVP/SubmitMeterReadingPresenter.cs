@@ -142,7 +142,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             {
                 List<SSMRMeterReadingModel> localItems = new List<SSMRMeterReadingModel>();
                 localItems.AddRange(OnGetLocalOnePhaseData());
-                this.mView.OnUpdateThreePhaseTooltipData(localItems);
+                this.mView.OnUpdateOnePhaseTooltipData(localItems);
                 Utility.LoggingNonFatalError(e);
             }
         }
