@@ -114,6 +114,15 @@ namespace myTNB_Android.Src.SSMR.SSMRMeterReadingTooltip.MVP
 
                 txtBtnFirst.Click += GotIt_Click;
 
+                if (isSinglePhase)
+                {
+                    dontShowAgainCheckbox.Checked = MyTNBAccountManagement.GetInstance().GetSMRMeterReadingOnePhaseOnboardingShown();
+                }
+                else
+                {
+                    dontShowAgainCheckbox.Checked = MyTNBAccountManagement.GetInstance().GetSMRMeterReadingThreePhaseOnboardingShown();
+                }
+
 
             }
 			catch (Exception ex)
@@ -125,9 +134,13 @@ namespace myTNB_Android.Src.SSMR.SSMRMeterReadingTooltip.MVP
 
         private void GotIt_Click(object sender, EventArgs e)
         {
-            if (dontShowAgainCheckbox.Checked)
+            if (isSinglePhase)
             {
-                MyTNBAccountManagement.GetInstance().UpdateIsSMRMeterReadingOnboardingShown();
+                MyTNBAccountManagement.GetInstance().UpdateIsSMRMeterReadingOnePhaseOnboardingShown(dontShowAgainCheckbox.Checked);
+            }
+            else
+            {
+                MyTNBAccountManagement.GetInstance().UpdateIsSMRMeterReadingThreePhaseOnboardingShown(dontShowAgainCheckbox.Checked);
             }
             this.Dismiss();
         }

@@ -471,7 +471,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                 }
                 else
                 {
-                    if (!MyTNBAccountManagement.GetInstance().IsSMRMeterReadingOnboardingShown() && isFirstLaunch)
+                    if (!MyTNBAccountManagement.GetInstance().GetSMRMeterReadingThreePhaseOnboardingShown() && isFirstLaunch)
                     {
                         ShowMeterReadingTooltip();
                         isFirstLaunch = false;
@@ -487,7 +487,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                 }
                 else
                 {
-                    if (!MyTNBAccountManagement.GetInstance().IsSMRMeterReadingOnboardingShown() && isFirstLaunch)
+                    if (!MyTNBAccountManagement.GetInstance().GetSMRMeterReadingOnePhaseOnboardingShown() && isFirstLaunch)
                     {
                         ShowMeterReadingTooltip();
                         isFirstLaunch = false;
@@ -503,7 +503,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                 threePhaseList = list;
             }
             HideProgressDialog();
-            if (!MyTNBAccountManagement.GetInstance().IsSMRMeterReadingOnboardingShown() && isFirstLaunch)
+            if (!MyTNBAccountManagement.GetInstance().GetSMRMeterReadingThreePhaseOnboardingShown() && isFirstLaunch)
             {
                 ShowMeterReadingTooltip();
                 isFirstLaunch = false;
@@ -517,7 +517,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                 singlePhaseList = list;
             }
             HideProgressDialog();
-            if (!MyTNBAccountManagement.GetInstance().IsSMRMeterReadingOnboardingShown() && isFirstLaunch)
+            if (!MyTNBAccountManagement.GetInstance().GetSMRMeterReadingOnePhaseOnboardingShown() && isFirstLaunch)
             {
                 ShowMeterReadingTooltip();
                 isFirstLaunch = false;

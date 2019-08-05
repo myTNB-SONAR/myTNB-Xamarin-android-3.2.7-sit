@@ -237,20 +237,28 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
         {
             try
             {
-                ShowProgressDialog();
                 if (position != -1)
                 {
                     SSMRMeterHistoryMenuModel selectedMenu = ssmrMeterHistoryMenuList[position];
                     if (selectedMenu.MenuId == "1004")
                     {
+                        ShowProgressDialog();
                         Intent SSMRTerminateActivity = new Intent(this, typeof(SSMRTerminateActivity));
                         SSMRTerminateActivity.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccount));
                         StartActivityForResult(SSMRTerminateActivity, SSMR_METER_HISTORY_ACTIVITY_CODE);
+                        HideProgressDialog();
+                        SSMRMenuDialog.Dismiss();
+                    }
+                    else
+                    {
+                        SSMRMenuDialog.Dismiss();
                     }
                 }
+                else
+                {
+                    SSMRMenuDialog.Dismiss();
+                }
                 // ssmrMenu.FindItem(Resource.Id.action_ssmr_more).SetVisible(true);
-                SSMRMenuDialog.Dismiss();
-                HideProgressDialog();
             }
             catch (System.Exception e)
             {
