@@ -11662,211 +11662,214 @@ namespace myTNB_Android
 			public const int promotion_pager_item = 2130903241;
 			
 			// aapt resource value: 0x7f0300ca
-			public const int PromotionDetailsView = 2130903242;
+			public const int PromotionCardLayout = 2130903242;
 			
 			// aapt resource value: 0x7f0300cb
-			public const int PromotionListItemView = 2130903243;
+			public const int PromotionDetailsView = 2130903243;
 			
 			// aapt resource value: 0x7f0300cc
-			public const int PromotionListView = 2130903244;
+			public const int PromotionListItemView = 2130903244;
 			
 			// aapt resource value: 0x7f0300cd
-			public const int PromotionsMenuView = 2130903245;
+			public const int PromotionListView = 2130903245;
 			
 			// aapt resource value: 0x7f0300ce
-			public const int PromotionsView = 2130903246;
+			public const int PromotionsMenuView = 2130903246;
 			
 			// aapt resource value: 0x7f0300cf
-			public const int PromotionWebView = 2130903247;
+			public const int PromotionsView = 2130903247;
 			
 			// aapt resource value: 0x7f0300d0
-			public const int RateUsQuestionItemView = 2130903248;
+			public const int PromotionWebView = 2130903248;
 			
 			// aapt resource value: 0x7f0300d1
-			public const int rating_activity_view = 2130903249;
+			public const int RateUsQuestionItemView = 2130903249;
 			
 			// aapt resource value: 0x7f0300d2
-			public const int RegistrationFormView = 2130903250;
+			public const int rating_activity_view = 2130903250;
 			
 			// aapt resource value: 0x7f0300d3
-			public const int RegistrationValidationView = 2130903251;
+			public const int RegistrationFormView = 2130903251;
 			
 			// aapt resource value: 0x7f0300d4
-			public const int ResetPasswordSuccessView = 2130903252;
+			public const int RegistrationValidationView = 2130903252;
 			
 			// aapt resource value: 0x7f0300d5
-			public const int ResetPasswordView = 2130903253;
+			public const int ResetPasswordSuccessView = 2130903253;
 			
 			// aapt resource value: 0x7f0300d6
-			public const int sdp_example = 2130903254;
+			public const int ResetPasswordView = 2130903254;
 			
 			// aapt resource value: 0x7f0300d7
-			public const int select_dialog_item_material = 2130903255;
+			public const int sdp_example = 2130903255;
 			
 			// aapt resource value: 0x7f0300d8
-			public const int select_dialog_multichoice_material = 2130903256;
+			public const int select_dialog_item_material = 2130903256;
 			
 			// aapt resource value: 0x7f0300d9
-			public const int select_dialog_singlechoice_material = 2130903257;
+			public const int select_dialog_multichoice_material = 2130903257;
 			
 			// aapt resource value: 0x7f0300da
-			public const int SelectAccountListItemView = 2130903258;
+			public const int select_dialog_singlechoice_material = 2130903258;
 			
 			// aapt resource value: 0x7f0300db
-			public const int SelectAccountTypeView = 2130903259;
+			public const int SelectAccountListItemView = 2130903259;
 			
 			// aapt resource value: 0x7f0300dc
-			public const int SelectFeedbackStateRow = 2130903260;
+			public const int SelectAccountTypeView = 2130903260;
 			
 			// aapt resource value: 0x7f0300dd
-			public const int SelectFeedbackStateView = 2130903261;
+			public const int SelectFeedbackStateRow = 2130903261;
 			
 			// aapt resource value: 0x7f0300de
-			public const int SelectFeedbackTypeRow = 2130903262;
+			public const int SelectFeedbackStateView = 2130903262;
 			
 			// aapt resource value: 0x7f0300df
-			public const int SelectFeedbackTypeView = 2130903263;
+			public const int SelectFeedbackTypeRow = 2130903263;
 			
 			// aapt resource value: 0x7f0300e0
-			public const int SelectLocationTypeView = 2130903264;
+			public const int SelectFeedbackTypeView = 2130903264;
 			
 			// aapt resource value: 0x7f0300e1
-			public const int SelectMultipleAccountsView = 2130903265;
+			public const int SelectLocationTypeView = 2130903265;
 			
 			// aapt resource value: 0x7f0300e2
-			public const int SelectNotificationView = 2130903266;
+			public const int SelectMultipleAccountsView = 2130903266;
 			
 			// aapt resource value: 0x7f0300e3
-			public const int SelectPaymentMethodView = 2130903267;
+			public const int SelectNotificationView = 2130903267;
 			
 			// aapt resource value: 0x7f0300e4
-			public const int SelectSMRAccountItemLayout = 2130903268;
+			public const int SelectPaymentMethodView = 2130903268;
 			
 			// aapt resource value: 0x7f0300e5
-			public const int SelectSMRAccountLayout = 2130903269;
+			public const int SelectSMRAccountItemLayout = 2130903269;
 			
 			// aapt resource value: 0x7f0300e6
-			public const int SelectSupplyAccountRow = 2130903270;
+			public const int SelectSMRAccountLayout = 2130903270;
 			
 			// aapt resource value: 0x7f0300e7
-			public const int SelectSupplyAccountView = 2130903271;
+			public const int SelectSupplyAccountRow = 2130903271;
 			
 			// aapt resource value: 0x7f0300e8
-			public const int ServiceListItemView = 2130903272;
+			public const int SelectSupplyAccountView = 2130903272;
 			
 			// aapt resource value: 0x7f0300e9
-			public const int SmartMeterLearnMoreView = 2130903273;
+			public const int ServiceListItemView = 2130903273;
 			
 			// aapt resource value: 0x7f0300ea
-			public const int SMRSubmitMeterReadingFragmentLayout = 2130903274;
+			public const int SmartMeterLearnMoreView = 2130903274;
 			
 			// aapt resource value: 0x7f0300eb
-			public const int SSMRDiscontinueApplicationLayout = 2130903275;
+			public const int SMRSubmitMeterReadingFragmentLayout = 2130903275;
 			
 			// aapt resource value: 0x7f0300ec
-			public const int SSMRMenuItemLayout = 2130903276;
+			public const int SSMRDiscontinueApplicationLayout = 2130903276;
 			
 			// aapt resource value: 0x7f0300ed
-			public const int SSMRMenuListLayout = 2130903277;
+			public const int SSMRMenuItemLayout = 2130903277;
 			
 			// aapt resource value: 0x7f0300ee
-			public const int SSMRMeterHistoryLayout = 2130903278;
+			public const int SSMRMenuListLayout = 2130903278;
 			
 			// aapt resource value: 0x7f0300ef
-			public const int SSMRMeterReadingCardLayout = 2130903279;
+			public const int SSMRMeterHistoryLayout = 2130903279;
 			
 			// aapt resource value: 0x7f0300f0
-			public const int SSMRTerminationItemLayout = 2130903280;
+			public const int SSMRMeterReadingCardLayout = 2130903280;
 			
 			// aapt resource value: 0x7f0300f1
-			public const int SSMRTerminationSelectionLayout = 2130903281;
+			public const int SSMRTerminationItemLayout = 2130903281;
 			
 			// aapt resource value: 0x7f0300f2
-			public const int SubmitRatingView = 2130903282;
+			public const int SSMRTerminationSelectionLayout = 2130903282;
 			
 			// aapt resource value: 0x7f0300f3
-			public const int SubmitSMRAccountFailedView = 2130903283;
+			public const int SubmitRatingView = 2130903283;
 			
 			// aapt resource value: 0x7f0300f4
-			public const int SubmitSMRAccountSuccessView = 2130903284;
+			public const int SubmitSMRAccountFailedView = 2130903284;
 			
 			// aapt resource value: 0x7f0300f5
-			public const int SummaryDashboardAdapter = 2130903285;
+			public const int SubmitSMRAccountSuccessView = 2130903285;
 			
 			// aapt resource value: 0x7f0300f6
-			public const int SummaryDashBoardFooter = 2130903286;
+			public const int SummaryDashboardAdapter = 2130903286;
 			
 			// aapt resource value: 0x7f0300f7
-			public const int SummaryDashBoardHeader = 2130903287;
+			public const int SummaryDashBoardFooter = 2130903287;
 			
 			// aapt resource value: 0x7f0300f8
-			public const int SummaryDashBoardLayout = 2130903288;
+			public const int SummaryDashBoardHeader = 2130903288;
 			
 			// aapt resource value: 0x7f0300f9
-			public const int support_simple_spinner_dropdown_item = 2130903289;
+			public const int SummaryDashBoardLayout = 2130903289;
 			
 			// aapt resource value: 0x7f0300fa
-			public const int TerminateSMRAccountFailedView = 2130903290;
+			public const int support_simple_spinner_dropdown_item = 2130903290;
 			
 			// aapt resource value: 0x7f0300fb
-			public const int TerminateSMRAccountSuccessView = 2130903291;
+			public const int TerminateSMRAccountFailedView = 2130903291;
 			
 			// aapt resource value: 0x7f0300fc
-			public const int TermsAndConditionView = 2130903292;
+			public const int TerminateSMRAccountSuccessView = 2130903292;
 			
 			// aapt resource value: 0x7f0300fd
-			public const int Toolbar = 2130903293;
+			public const int TermsAndConditionView = 2130903293;
 			
 			// aapt resource value: 0x7f0300fe
-			public const int tooltip = 2130903294;
+			public const int Toolbar = 2130903294;
 			
 			// aapt resource value: 0x7f0300ff
-			public const int ToolTipSingleButtonView = 2130903295;
+			public const int tooltip = 2130903295;
 			
 			// aapt resource value: 0x7f030100
-			public const int UpdateAccountNicknameView = 2130903296;
+			public const int ToolTipSingleButtonView = 2130903296;
 			
 			// aapt resource value: 0x7f030101
-			public const int UpdateMobileView = 2130903297;
+			public const int UpdateAccountNicknameView = 2130903297;
 			
 			// aapt resource value: 0x7f030102
-			public const int UpdatePasswordView = 2130903298;
+			public const int UpdateMobileView = 2130903298;
 			
 			// aapt resource value: 0x7f030103
-			public const int UsageHistoryItem = 2130903299;
+			public const int UpdatePasswordView = 2130903299;
 			
 			// aapt resource value: 0x7f030104
-			public const int ViewBillPDFView = 2130903300;
+			public const int UsageHistoryItem = 2130903300;
 			
 			// aapt resource value: 0x7f030105
-			public const int ViewBillReceiptAccountDetails = 2130903301;
+			public const int ViewBillPDFView = 2130903301;
 			
 			// aapt resource value: 0x7f030106
-			public const int ViewBillReceiptNewDesign = 2130903302;
+			public const int ViewBillReceiptAccountDetails = 2130903302;
 			
 			// aapt resource value: 0x7f030107
-			public const int ViewBillView = 2130903303;
+			public const int ViewBillReceiptNewDesign = 2130903303;
 			
 			// aapt resource value: 0x7f030108
-			public const int WalkThroughContentView = 2130903304;
+			public const int ViewBillView = 2130903304;
 			
 			// aapt resource value: 0x7f030109
-			public const int WalkThroughView = 2130903305;
+			public const int WalkThroughContentView = 2130903305;
 			
 			// aapt resource value: 0x7f03010a
-			public const int WeblinkWebView = 2130903306;
+			public const int WalkThroughView = 2130903306;
 			
 			// aapt resource value: 0x7f03010b
-			public const int WhatIsThisDialogView = 2130903307;
+			public const int WeblinkWebView = 2130903307;
 			
 			// aapt resource value: 0x7f03010c
-			public const int WhereIsMyAccountView = 2130903308;
+			public const int WhatIsThisDialogView = 2130903308;
 			
 			// aapt resource value: 0x7f03010d
-			public const int zxingscanneractivitylayout = 2130903309;
+			public const int WhereIsMyAccountView = 2130903309;
 			
 			// aapt resource value: 0x7f03010e
-			public const int zxingscannerfragmentlayout = 2130903310;
+			public const int zxingscanneractivitylayout = 2130903310;
+			
+			// aapt resource value: 0x7f03010f
+			public const int zxingscannerfragmentlayout = 2130903311;
 			
 			static Layout()
 			{
