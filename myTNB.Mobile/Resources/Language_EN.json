@@ -60,7 +60,7 @@
         "onboardingDescription1": "Self Meter Reading (SMR) is a service where you can easily read and submit your own meter readings. We will send you a reminder when it's time to submit.",
         "onboardingDescription2": "You get estimated bills when TNB meter readers can’t get access to your meter. With SMR, you will always get bills with accurate readings.",
         "onboardingDescription3": "We'll show you the accounts which are eligible for this service. Simply click Start Application and get started.",
-        "startApplication": "Start Application"
+        "startApplication": "Start"
     },
     "SSMRApplication": {
         "navTitleApply": "Subscribe Self Meter Reading",
