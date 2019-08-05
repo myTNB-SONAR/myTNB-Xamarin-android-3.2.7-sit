@@ -1,8 +1,6 @@
 ﻿
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 using Android.App;
 using Android.Content;
@@ -15,19 +13,13 @@ using Android.Util;
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
-using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Base.Activity;
-using myTNB_Android.Src.Database.Model;
-using myTNB_Android.Src.SelectSupplyAccount.Activity;
 using myTNB_Android.Src.Utils;
 using myTNB_Android.Src.Utils.Custom.ProgressDialog;
-using Newtonsoft.Json;
-using static myTNB_Android.Src.SSMR.SMRApplication.Api.CARegisteredContactInfoResponse;
-using static myTNB_Android.Src.SSMR.SMRApplication.Api.SMRregistrationSubmitResponse;
 
 namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
 {
-    [Activity(Label = "Apply Self Meter Reading", Theme = "@style/Theme.Dashboard")]
+    [Activity(Label = "Self Meter Reading", Theme = "@style/Theme.RegisterForm")]
     public class ApplicationFormSMRActivity : BaseToolbarAppCompatActivity, ApplicationFormSMRContract.IView
     {
         [BindView(Resource.Id.applySMRForLabel)]
@@ -108,10 +100,20 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
 
             txtMobileNumber.TextChanged += TextChange;
 
+            if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.N)
+            {
+                txtTermsAndCondition.TextFormatted = Html.FromHtml(GetString(Resource.String.ssmr_subscribe_terms_conditions), FromHtmlOptions.ModeLegacy);
+            }
+            else
+            {
+                txtTermsAndCondition.TextFormatted = Html.FromHtml(GetString(Resource.String.ssmr_subscribe_terms_conditions));
+            }
+
             txtMobileNumber.AddTextChangedListener(new InputFilterFormField(txtMobileNumber, textInputMobile));
             txtEmail.AddTextChangedListener(new InputFilterFormField(txtEmail, textInputEmail));
             txtMobileNumber.SetFilters(new Android.Text.IInputFilter[] { new InputFilterPhoneNumber() });
             GetCARegisteredContactInfo();
+
         }
 
         public void GetCARegisteredContactInfo()

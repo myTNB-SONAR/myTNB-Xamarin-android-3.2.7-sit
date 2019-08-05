@@ -1234,6 +1234,7 @@
     <AndroidResource Include="Resources\drawable-xhdpi\fluid_background.png" />
     <AndroidResource Include="Resources\drawable-xxhdpi\fluid_background.png" />
     <AndroidResource Include="Resources\drawable-xxxhdpi\fluid_background.png" />
+    <AndroidResource Include="Resources\layout\SSMRDiscontinueApplicationLayout.axml" />
     <AndroidResource Include="Resources\drawable\dashboard_home_new_bg.xml" />
     <Compile Include="Src\myTNBMenu\Fragments\HomeMenu\MVP\AccountCardsFilter.cs" />
     <Compile Include="Src\myTNBMenu\Fragments\HomeMenu\MVP\ObjectExtensions.cs" />
@@ -1310,6 +1311,8 @@
     <Compile Include="Src\Database\Model\NewFAQParentEntity.cs" />
     <Compile Include="Src\SitecoreCMS\Service\HelpService.cs" />
     <Compile Include="Src\SitecoreCMS\Model\HelpModel.cs" />
+    <Compile Include="Src\SSMRTerminate\MVP\SSMRTerminateActivity.cs" />
+    <AndroidResource Include="Resources\values\SSMRTerminateStyle.xml" />
     <Compile Include="Src\SSMRMeterHistory\MVP\SSMRMeterHistoryActivity.cs" />
     <AndroidResource Include="Resources\values\SSMRMeterHistoryStyle.xml" />
     <AndroidResource Include="Resources\layout\SSMRMeterHistoryLayout.axml" />
@@ -1452,7 +1455,362 @@
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
+    <AndroidResource Include="Resources\layout\SSMRMenuItemLayout.axml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <Compile Include="Src\SSMRTerminate\MVP\SSMRTerminationReasonModel.cs" />
+    <Compile Include="Src\SSMRMeterHistory\MVP\SSMRMeterHistoryMenuModel.cs" />
+    <AndroidResource Include="Resources\drawable\custom_round_white_background.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <Compile Include="Src\SSMRMeterHistory\Adapter\SSMRMeterHistoryMenuAdapter.cs" />
+    <Compile Include="Src\SSMRTerminate\MVP\SSMRTerminateContract.cs" />
+    <Compile Include="Src\SSMRTerminate\MVP\SSMRTerminatePresenter.cs" />
     <Compile Include="Src\SSMR\SMRApplication\Adapter\SelectAccountAdapter.cs" />
+    <Compile Include="Src\SSMR\SubmitMeterReading\SubmitMeterReadingHelper.cs" />
+    <AndroidResource Include="Resources\layout\SubmitMeterReadingLayout.axml" />
+    <Compile Include="Src\SSMR\SubmitMeterReading\MVP\SubmitMeterReadingActivity.cs" />
+    <AndroidResource Include="Resources\layout\SubmitMeterReadingCardLayout.axml" />
+    <AndroidResource Include="Resources\drawable\meter_reading_label_background.xml" />
+    <Compile Include="Src\SSMR\SubmitMeterReading\MVP\SubmitMeterTakePhotoActivity.cs" />
+    <AndroidResource Include="Resources\layout\SubmitMeterTakePhotoLayout.axml" />
+    <Compile Include="Src\SSMR\SubmitMeterReading\MVP\CameraTakePhotoFragment.cs" />
+    <AndroidResource Include="Resources\layout\CameraTakePhotoFragmentLayout.axml" />
+    <Compile Include="Src\SSMR\SubmitMeterReading\Listener\CameraPreview.cs" />
+    <AndroidResource Include="Resources\drawable\capture_camera_button.xml" />
+    <Compile Include="Src\myTNBMenu\Models\SMRMROValidateRegisterDetails.cs" />
+    <Compile Include="Src\SSMR\SubmitMeterReading\Api\SubmitMeterReadingRequest.cs" />
+    <Compile Include="Src\SSMR\SubmitMeterReading\Api\SubmitMeterReadingResponse.cs" />
+    <Compile Include="Src\SSMR\SubmitMeterReading\Api\SubmitMeterReadingApi.cs" />
+    <Compile Include="Src\SSMR\SubmitMeterReading\Api\SubmitMeterReadingImpl.cs" />
+    <Compile Include="Src\SSMR\SubmitMeterReading\MVP\SubmitMeterReadingPresenter.cs" />
+    <Compile Include="Src\SSMR\SubmitMeterReading\MVP\SubmitMeterReadingContract.cs" />
+    <Compile Include="Src\SSMR\SubmitMeterReading\MVP\SubmitMeterTakePhotoFragment.cs" />
+    <AndroidResource Include="Resources\layout\SubmitMeterTakePhotoFragmentLayout.axml" />
+    <Compile Include="Src\SSMR\SubmitMeterReading\Listener\CameraStateListener.cs" />
+    <Compile Include="Src\SSMR\SubmitMeterReading\Listener\Camera2SurfaceTextureListener.cs" />
+    <Compile Include="Src\SSMR\SubmitMeterReading\MVP\AutoFitTextureView.cs" />
+    <Compile Include="Src\SSMR\SubmitMeterReading\Listener\CameraCaptureSessionCallback.cs" />
+    <Compile Include="Src\SSMR\SubmitMeterReading\Listener\CameraCaptureListener.cs" />
+    <Compile Include="Src\SSMR\SubmitMeterReading\Listener\CameraCaptureStillPictureSessionCallback.cs" />
+    <Compile Include="Src\SSMR\SubmitMeterReading\Listener\ImageAvailableListener.cs" />
+    <Compile Include="Src\SSMR\SubmitMeterReading\MVP\SubmitMeterAdjustPhotoFragment.cs" />
+    <AndroidResource Include="Resources\layout\SubmitMeterAdjustPhotoFragmentLayout.axml" />
+    <AndroidResource Include="Resources\drawable-hdpi\group_3.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\group_3.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\group_3.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\group_3.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\group_3.png" />
+    <Compile Include="Src\SSMR\SubmitMeterReading\Api\GetMeterReadingOCRValueRequest.cs" />
+    <Compile Include="Src\SSMR\SubmitMeterReading\Api\GetMeterReadingOCRResponse.cs" />
+    <Compile Include="Src\SSMR\SubmitMeterReading\MVP\SubmitMeterTakePhotoPresenter.cs" />
+    <Compile Include="Src\SSMR\SubmitMeterReading\MVP\SubmitMeterTakePhotoContract.cs" />
+    <Compile Include="Src\SSMR\SubmitMeterReading\MVP\MeterImageModel.cs" />
+    <AndroidResource Include="Resources\drawable\meter_capture_holder_active.xml" />
+    <AndroidResource Include="Resources\drawable\meter_capture_holder_selected.xml" />
+    <AndroidResource Include="Resources\drawable\meter_capture_holder_inactive.xml" />
+    <Compile Include="Src\SSMR\SubmitMeterReading\MVP\CameraCropOverlay.cs" />
+    <AndroidResource Include="Resources\drawable\overlay_crop_image.xml" />
+    <AndroidResource Include="Resources\drawable-hdpi\ocr_reading.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\ocr_reading.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\ocr_reading.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\ocr_reading.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\img_register_acct_no.png" />
+    <Compile Include="Src\SSMR\SubmitMeterReading\MVP\OCRLoadingFragment.cs" />
+    <AndroidResource Include="Resources\layout\OCRLoadingFragmentLayout.axml" />
+    <AndroidResource Include="Resources\layout\SMRSubmitMeterReadingFragmentLayout.axml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\single_phase.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\single_phase.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\single_phase.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\single_phase.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-hdpi\single_phase.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <Compile Include="Src\SSMR\SMRApplication\MVP\SMRPhotoPopUpDetailsModel.cs" />
+    <Compile Include="Src\Utils\SMRPopUpUtils.cs" />
+    <AndroidResource Include="Resources\drawable\custom_round_white_dialog_shadow.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\CustomDialogWithImgOneButtonLayout.axml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <Compile Include="Src\SitecoreCMS\Service\SSMRMeterReadingThreePhaseWalkthroughService.cs" />
+    <Compile Include="Src\SitecoreCMS\Model\SSMRMeterReadingWalkthroughModel.cs" />
+    <Compile Include="Src\Database\Model\SSMRMeterReadingScreensEntity.cs" />
+    <AndroidResource Include="Resources\layout\CustomDialogWithImgViewPageOneButtonLayout.axml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <Compile Include="Src\Database\Model\SSMRMeterReadingScreensParentEntity.cs" />
+    <Compile Include="Src\SitecoreCMS\Service\SSMRMeterReadingOnePhaseWalkThroughService.cs" />
+    <Compile Include="Src\Database\Model\SSMRMeterReadingThreePhaseScreensEntity.cs" />
+    <Compile Include="Src\Database\Model\SSMRMeterReadingThreePhaseScreensParentEntity.cs" />
+    <Compile Include="Src\SSMR\SSMRMeterReadingTooltip\Adapter\SSMRMeterReadingPagerAdapter.cs" />
+    <Compile Include="Src\SSMR\SSMRMeterReadingTooltip\MVP\SSMRMeterReadingDialogFragment.cs" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\three_phase.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\three_phase.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\three_phase.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\three_phase.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-hdpi\three_phase.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\k_va_rh.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\k_w.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\k_wh.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\k_va_rh.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\k_w.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\k_wh.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\k_va_rh.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\k_w.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\k_wh.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\k_va_rh.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\k_w.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\k_wh.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-hdpi\k_va_rh.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-hdpi\k_w.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-hdpi\k_wh.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <Compile Include="Src\SSMRTerminate\Api\SSMRTerminateImpl.cs" />
+    <Compile Include="Src\SSMRTerminate\Api\SSMRTerminateApi.cs" />
+    <Compile Include="Src\SSMRTerminate\Api\GetRegisteredContactInfoRequest.cs" />
+    <Compile Include="Src\SSMRTerminate\Api\GetSMRTerminationReasonsRequest.cs" />
+    <Compile Include="Src\SSMRTerminate\Api\SMRTerminationReasonsResponse.cs" />
+    <Compile Include="Src\SSMRTerminate\Api\TerminationReasonModel.cs" />
+    <AndroidResource Include="Resources\values\SMRApplicationStyle.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\SSMRTerminationSelectionLayout.axml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\SSMRTerminationItemLayout.axml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <Compile Include="Src\SSMRTerminate\MVP\SSMRTerminationReasonSelectionActivity.cs" />
+    <Compile Include="Src\SSMRTerminate\Adapter\SSMRTerminationReasonAdapter.cs" />
+    <Compile Include="Src\SSMRTerminate\Api\SubmitSMRApplicationRequest.cs" />
+    <Compile Include="Src\SSMRTerminate\MVP\TerminateSMRAccountFailedActivity.cs" />
+    <AndroidResource Include="Resources\layout\TerminateSMRAccountFailedView.axml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-hdpi\ic_display_successful_new.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-hdpi\ic_display_unsuccessful_new.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\ic_display_successful_new.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\ic_display_unsuccessful_new.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_display_successful_new.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_display_unsuccessful_new.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_display_successful_new.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_display_unsuccessful_new.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\ic_display_successful_new.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\ic_display_unsuccessful_new.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable\smr_application_white_background.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\TerminateSMRAccountSuccessView.axml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <Compile Include="Src\SSMRTerminate\MVP\TerminateSMRAccountSuccessActivity.cs" />
+    <AndroidResource Include="Resources\drawable\CustomGradientToolBar.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <Compile Include="Src\SSMR\Util\MeterReadingValuesViewHelper.cs" />
+    <AndroidResource Include="Resources\menu\SSMRMeterSubmitMenu.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\info_white_full.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\info_white_full.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\info_white_full.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\info_white_full.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-hdpi\info_white_full.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-hdpi\tooltip_bg_1.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-hdpi\tooltip_bg_2.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-hdpi\tooltip_bg_3.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\tooltip_bg_1.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\tooltip_bg_2.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\tooltip_bg_3.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\tooltip_bg_1.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\tooltip_bg_2.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\tooltip_bg_3.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\tooltip_bg_1.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\tooltip_bg_2.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\tooltip_bg_3.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\tooltip_bg_1.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\tooltip_bg_2.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\tooltip_bg_3.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -1814,6 +2172,8 @@
     <Folder Include="Src\myTNBMenu\Fragments\HomeMenu\Helper\" />
     <Folder Include="Src\Base\Helper\" />
     <Folder Include="Src\myTNBMenu\Fragments\HomeMenu\Requests\" />
+    <Folder Include="Src\SSMRTerminate\" />
+    <Folder Include="Src\SSMRTerminate\MVP\" />
     <Folder Include="Src\SSMR\" />
     <Folder Include="Src\SSMR\SMRApplication\" />
     <Folder Include="Src\SSMR\SMRApplication\MVP\" />
@@ -1822,6 +2182,16 @@
     <Folder Include="Src\SSMRMeterHistory\" />
     <Folder Include="Src\SSMRMeterHistory\MVP\" />
     <Folder Include="Src\SSMRMeterHistory\Adapter\" />
+    <Folder Include="Src\SSMR\SubmitMeterReading\" />
+    <Folder Include="Src\SSMR\SubmitMeterReading\MVP\" />
+    <Folder Include="Src\SSMR\SubmitMeterReading\Listener\" />
+    <Folder Include="Src\SSMR\SubmitMeterReading\Api\" />
+    <Folder Include="Src\SSMR\SSMRMeterReadingTooltip\" />
+    <Folder Include="Src\SSMR\SSMRMeterReadingTooltip\Adapter\" />
+    <Folder Include="Src\SSMR\SSMRMeterReadingTooltip\MVP\" />
+    <Folder Include="Src\SSMRTerminate\Api\" />
+    <Folder Include="Src\SSMRTerminate\Adapter\" />
+    <Folder Include="Src\SSMR\Util\" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\GradientStatusBar.xml" />

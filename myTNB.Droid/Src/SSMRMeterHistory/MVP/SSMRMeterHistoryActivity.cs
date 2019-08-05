@@ -3,7 +3,9 @@ using Android.App;
 using Android.Content;
 using Android.Content.PM;
 using Android.Graphics;
+using Android.Graphics.Drawables;
 using Android.OS;
+using Android.Runtime;
 using Android.Support.Design.Widget;
 using Android.Support.V7.Widget;
 using Android.Text;
@@ -11,12 +13,13 @@ using Android.Util;
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
-using myTNB_Android.Src.AppLaunch.Models;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.SSMRMeterHistory.Adapter;
+using myTNB_Android.Src.SSMRTerminate.MVP;
 using myTNB_Android.Src.Utils;
+using myTNB_Android.Src.Utils.Custom.ProgressDialog;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -55,6 +58,14 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
 
         private MaterialDialog SSMRMenuDialog;
 
+        LoadingOverlay loadingOverlay;
+
+        SSMRMeterHistoryMenuAdapter meterHistoryMenuAdapter;
+
+        private List<SSMRMeterHistoryMenuModel> ssmrMeterHistoryMenuList = new List<SSMRMeterHistoryMenuModel>();
+
+        public readonly static int SSMR_METER_HISTORY_ACTIVITY_CODE = 8796;
+
         public override int ResourceId()
 		{
 			return Resource.Layout.SSMRMeterHistoryLayout;
@@ -72,13 +83,8 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
 			// Create your application here
 			try
 			{
-                this.toolbar.SetBackgroundColor(Resources.GetColor(Resource.Color.action_color));
-                if (Build.VERSION.SdkInt >= Build.VERSION_CODES.Lollipop)
-                {
-                    this.Window.AddFlags(WindowManagerFlags.DrawsSystemBarBackgrounds);
-                    this.Window.ClearFlags(WindowManagerFlags.TranslucentStatus);
-                    this.Window.SetStatusBarColor(Resources.GetColor(Resource.Color.action_color));
-                }
+                SetToolbarBackground(Resource.Drawable.CustomGradientToolBar);
+                SetStatusBarBackground(Resource.Drawable.bg_smr);
 
                 TextViewUtils.SetMuseoSans500Typeface(SMRMainTitle, SMRListHeader, btnSubmitMeter);
                 TextViewUtils.SetMuseoSans300Typeface(SMRMainContent);
@@ -98,34 +104,23 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
                     SSMRMeterHistoryAdapter adapter = new SSMRMeterHistoryAdapter(smrResponse.Response.Data.MeterReadingHistory);
                     mSMRRecyclerView.SetAdapter(adapter);
 
-                    // TODO: Enable when confirm
-                    /*if (smrResponse.Response.Data.DashboardCTAType == Constants.SMR_SUBMIT_METER_KEY)
+                    if (smrResponse.Response.Data.DashboardCTAType == Constants.SMR_SUBMIT_METER_KEY)
                     {
                         SMRMainImg.SetImageResource(Resource.Drawable.smr_open);
-                        // TODO: Enable when confirm
-                        // btnSubmitMeter.Visibility = ViewStates.Visible;
+                        btnSubmitMeter.Visibility = ViewStates.Visible;
                     }
                     else
                     {
-                        // TODO: Enable when confirm
-                        // btnSubmitMeter.Visibility = ViewStates.Gone;
-                        if (selectedAccount != null)
+                        btnSubmitMeter.Visibility = ViewStates.Gone;
+                        if (smrResponse.Response.Data.isCurrentPeriodSubmitted != null && smrResponse.Response.Data.isCurrentPeriodSubmitted == "true")
                         {
-                            CustomerBillingAccount selectedCustomer = CustomerBillingAccount.FindByAccNum(selectedAccount.AccountNum);
-                            if (selectedCustomer.IsPeriodOpen)
-                            {
-                                SMRMainImg.SetImageResource(Resource.Drawable.smr_submitted);
-                            }
-                            else
-                            {
-                                SMRMainImg.SetImageResource(Resource.Drawable.smr_closed);
-                            }
+                            SMRMainImg.SetImageResource(Resource.Drawable.smr_submitted);
                         }
                         else
                         {
                             SMRMainImg.SetImageResource(Resource.Drawable.smr_closed);
                         }
-                    }*/
+                    }
 
                     if(!string.IsNullOrEmpty(smrResponse.Response.Data.HistoryViewTitle))
                     {
@@ -151,12 +146,28 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
                         }
                     }
                 }
+
+ 
             }
-			catch (Exception e)
+            catch (Exception e)
 			{
 				Utility.LoggingNonFatalError(e);
 			}
 		}
+
+
+        protected override void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
+        {
+            if (requestCode == SSMR_METER_HISTORY_ACTIVITY_CODE)
+            {
+                if (resultCode == Result.Ok)
+                {
+                    SetResult(Result.Ok);
+                    Finish();
+                }
+            }
+            base.OnActivityResult(requestCode, resultCode, data);
+        }
 
         public override bool OnCreateOptionsMenu(IMenu menu)
         {
@@ -171,7 +182,7 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
             switch (item.ItemId)
             {
                 case Resource.Id.action_ssmr_more:
-                    ssmrMenu.FindItem(Resource.Id.action_ssmr_more).SetVisible(false);
+                    // ssmrMenu.FindItem(Resource.Id.action_ssmr_more).SetVisible(false);
                     OnClickSMRMenuMore();
                     break;
             }
@@ -197,41 +208,92 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
                 SSMRMenuDialog.Window.Attributes = wlp;
 
                 ImageView btnSMRMenuClose = SSMRMenuDialog.FindViewById<ImageView>(Resource.Id.btnSMRMenuClose);
-                TextView btnReadMeter = SSMRMenuDialog.FindViewById<TextView>(Resource.Id.btnReadMeter);
-                TextView btnWhenSubmitMeter = SSMRMenuDialog.FindViewById<TextView>(Resource.Id.btnWhenSubmitMeter);
-                TextView btnWhyReadingRejected = SSMRMenuDialog.FindViewById<TextView>(Resource.Id.btnWhyReadingRejected);
-                TextView btnDiscontinueSMR = SSMRMenuDialog.FindViewById<TextView>(Resource.Id.btnDiscontinueSMR);
-                TextViewUtils.SetMuseoSans500Typeface(btnDiscontinueSMR);
-                TextViewUtils.SetMuseoSans300Typeface(btnWhyReadingRejected, btnWhenSubmitMeter, btnReadMeter);
+                RecyclerView mSMRMenuRecyclerView = SSMRMenuDialog.FindViewById<RecyclerView>(Resource.Id.smrMenuList);
+                mSMRMenuRecyclerView.SetLayoutManager(new LinearLayoutManager(this));
+                if (smrResponse.Response.Data.MeterReadingMenu.Count > 0)
+                {
+                    ssmrMeterHistoryMenuList.Clear();
+                    ssmrMeterHistoryMenuList.AddRange(smrResponse.Response.Data.MeterReadingMenu);
+                    meterHistoryMenuAdapter = new SSMRMeterHistoryMenuAdapter(smrResponse.Response.Data.MeterReadingMenu);
+                    mSMRMenuRecyclerView.SetAdapter(meterHistoryMenuAdapter);
+                    meterHistoryMenuAdapter.ClickChanged += OnClickChanged;
+                }
+
                 btnSMRMenuClose.Click += delegate
                 {
-                    ssmrMenu.FindItem(Resource.Id.action_ssmr_more).SetVisible(true);
-                    SSMRMenuDialog.Dismiss();
-                };
-                btnReadMeter.Click += delegate
-                {
-                    ssmrMenu.FindItem(Resource.Id.action_ssmr_more).SetVisible(true);
-                    SSMRMenuDialog.Dismiss();
-                };
-                btnWhenSubmitMeter.Click += delegate
-                {
-                    ssmrMenu.FindItem(Resource.Id.action_ssmr_more).SetVisible(true);
-                    SSMRMenuDialog.Dismiss();
-                };
-                btnWhyReadingRejected.Click += delegate
-                {
-                    ssmrMenu.FindItem(Resource.Id.action_ssmr_more).SetVisible(true);
-                    SSMRMenuDialog.Dismiss();
-                };
-                btnDiscontinueSMR.Click += delegate
-                {
-                    ssmrMenu.FindItem(Resource.Id.action_ssmr_more).SetVisible(true);
+                    // ssmrMenu.FindItem(Resource.Id.action_ssmr_more).SetVisible(true);
                     SSMRMenuDialog.Dismiss();
                 };
 
                 SSMRMenuDialog.Show();
             }
             catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        void OnClickChanged(object sender, int position)
+        {
+            try
+            {
+                if (position != -1)
+                {
+                    SSMRMeterHistoryMenuModel selectedMenu = ssmrMeterHistoryMenuList[position];
+                    if (selectedMenu.MenuId == "1004")
+                    {
+                        ShowProgressDialog();
+                        Intent SSMRTerminateActivity = new Intent(this, typeof(SSMRTerminateActivity));
+                        SSMRTerminateActivity.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccount));
+                        StartActivityForResult(SSMRTerminateActivity, SSMR_METER_HISTORY_ACTIVITY_CODE);
+                        HideProgressDialog();
+                        SSMRMenuDialog.Dismiss();
+                    }
+                    else
+                    {
+                        SSMRMenuDialog.Dismiss();
+                    }
+                }
+                else
+                {
+                    SSMRMenuDialog.Dismiss();
+                }
+                // ssmrMenu.FindItem(Resource.Id.action_ssmr_more).SetVisible(true);
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void ShowProgressDialog()
+        {
+            try
+            {
+                if (loadingOverlay != null && loadingOverlay.IsShowing)
+                {
+                    loadingOverlay.Dismiss();
+                }
+
+                loadingOverlay = new LoadingOverlay(this, Resource.Style.LoadingOverlyDialogStyle);
+                loadingOverlay.Show();
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void HideProgressDialog()
+        {
+            try
+            {
+                if (loadingOverlay != null && loadingOverlay.IsShowing)
+                {
+                    loadingOverlay.Dismiss();
+                }
+            }
+            catch (Exception e)
             {
                 Utility.LoggingNonFatalError(e);
             }
@@ -260,5 +322,5 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
 					break;
 			}
 		}
-	}
+    }
 }

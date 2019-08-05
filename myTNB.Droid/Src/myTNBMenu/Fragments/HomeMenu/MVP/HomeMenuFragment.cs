@@ -9,7 +9,6 @@ using Android.Support.Design.Widget;
 using Android.Support.V4.Widget;
 using Android.Support.V7.App;
 using Android.Support.V7.Widget;
-using Android.Util;
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
@@ -30,7 +29,6 @@ using myTNB_Android.Src.Utils;
 using static myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter.MyServiceAdapter;
 using static myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter.MyServiceShimmerAdapter;
 using myTNB_Android.Src.Utils.Custom.ProgressDialog;
-using Newtonsoft.Json;
 using Android.App;
 using myTNB_Android.Src.SSMR.SMRApplication.MVP;
 using myTNB_Android.Src.Base;
@@ -108,6 +106,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         AccountsRecyclerViewAdapter accountsAdapter;
 
         private string mSavedTimeStamp = "0000000";
+
+        private string savedSSMRMeterReadingTimeStamp = "0000000";
+
+        private string savedSSMRMeterReadingThreePhaseTimeStamp = "0000000";
 
         private static List<MyService> currentMyServiceList = new List<MyService>();
 
@@ -227,6 +229,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     StartActivity(new Intent(this.Activity, typeof(NotificationActivity)));
                 };
                 ((DashboardHomeActivity)Activity).SetStatusBarBackground();
+
+                this.presenter.GetSmartMeterReadingWalkthroughtTimeStamp();
+
+                this.presenter.GetSmartMeterReadingThreePhaseWalkthroughtTimeStamp();
             }
             catch (System.Exception e)
             {
@@ -813,6 +819,72 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         public AccountsRecyclerViewAdapter GetAccountAdapter()
         {
             return accountsAdapter;
+        }
+
+        public void OnSavedSSMRMeterReadingTimeStamp(string mSavedTimeStamp)
+        {
+            if (mSavedTimeStamp != null)
+            {
+                this.savedSSMRMeterReadingTimeStamp = mSavedTimeStamp;
+            }
+            this.presenter.OnGetSmartMeterReadingWalkthroughtTimeStamp();
+        }
+
+        public void CheckSSMRMeterReadingTimeStamp()
+        {
+            try
+            {
+                SSMRMeterReadingScreensParentEntity wtManager = new SSMRMeterReadingScreensParentEntity();
+                List<SSMRMeterReadingScreensParentEntity> items = wtManager.GetAllItems();
+                if (items != null)
+                {
+                    SSMRMeterReadingScreensParentEntity entity = items[0];
+                    if (entity != null)
+                    {
+                        if (!entity.Timestamp.Equals(savedSSMRMeterReadingTimeStamp))
+                        {
+                            this.presenter.OnGetSSMRMeterReadingScreens();
+                        }
+                    }
+                }
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void OnSavedSSMRMeterReadingThreePhaseTimeStamp(string mSavedTimeStamp)
+        {
+            if (mSavedTimeStamp != null)
+            {
+                this.savedSSMRMeterReadingThreePhaseTimeStamp = mSavedTimeStamp;
+            }
+            this.presenter.OnGetSmartMeterReadingThreePhaseWalkthroughtTimeStamp();
+        }
+
+        public void CheckSSMRMeterReadingThreePhaseTimeStamp()
+        {
+            try
+            {
+                SSMRMeterReadingThreePhaseScreensParentEntity wtManager = new SSMRMeterReadingThreePhaseScreensParentEntity();
+                List<SSMRMeterReadingThreePhaseScreensParentEntity> items = wtManager.GetAllItems();
+                if (items != null)
+                {
+                    SSMRMeterReadingThreePhaseScreensParentEntity entity = items[0];
+                    if (entity != null)
+                    {
+                        if (!entity.Timestamp.Equals(savedSSMRMeterReadingThreePhaseTimeStamp))
+                        {
+                            this.presenter.OnGetSSMRMeterReadingThreePhaseScreens();
+                        }
+                    }
+                }
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
     }
 }

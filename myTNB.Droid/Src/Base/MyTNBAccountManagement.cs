@@ -94,5 +94,39 @@ namespace myTNB_Android.Src.Base
         {
             return CustomerBillingAccount.GetIsSMROnboardingShown();
         }
+
+        public void UpdateIsSMRMeterReadingOnePhaseOnboardingShown(bool flag)
+        {
+            if (flag)
+            {
+                CustomerBillingAccount.SetIsSMRMeterReadingOnePhaseOnBoardShown();
+            }
+            else
+            {
+                CustomerBillingAccount.UnSetIsSMRMeterReadingOnePhaseOnBoardShown();
+            }
+        }
+
+        public bool GetSMRMeterReadingOnePhaseOnboardingShown()
+        {
+            return CustomerBillingAccount.GetIsSMRMeterReadingOnePhaseOnBoardShown();
+        }
+
+        public void UpdateIsSMRMeterReadingThreePhaseOnboardingShown(bool flag)
+        {
+            if (flag)
+            {
+                CustomerBillingAccount.SetIsSMRMeterReadingThreePhaseOnBoardShown();
+            }
+            else
+            {
+                CustomerBillingAccount.UnSetIsSMRMeterReadingThreePhaseOnBoardShown();
+            }
+        }
+
+        public bool GetSMRMeterReadingThreePhaseOnboardingShown()
+        {
+            return CustomerBillingAccount.GetIsSMRMeterReadingThreePhaseOnBoardShown();
+        }
     }
 }

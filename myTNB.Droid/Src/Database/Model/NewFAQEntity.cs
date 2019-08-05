@@ -111,23 +111,19 @@ namespace myTNB_Android.Src.Database.Model
             }
         }
 
-        public static void RemoveAll()
+        public List<NewFAQEntity> GetAll()
         {
-            var db = DBHelper.GetSQLiteConnection();
-            db.Execute("DELETE FROM NewFAQEntity");
-        }
-
-        public static int Count()
-        {
-            var db = DBHelper.GetSQLiteConnection();
-            int count = db.Query<NewFAQEntity>("SELECT * FROM NewFAQEntity").Count;
-            return count;
-        }
-
-        public static List<NewFAQEntity> GetAll()
-        {
-            var db = DBHelper.GetSQLiteConnection();
-            return db.Query<NewFAQEntity>("SELECT * FROM NewFAQEntity").ToList<NewFAQEntity>();
+            List<NewFAQEntity> itemList = new List<NewFAQEntity>();
+            try
+            {
+                var db = DBHelper.GetSQLiteConnection();
+                itemList = db.Query<NewFAQEntity>("SELECT * FROM NewFAQEntity");
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+            return itemList;
         }
     }
 }

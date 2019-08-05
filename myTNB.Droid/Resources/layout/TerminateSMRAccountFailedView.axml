@@ -1,0 +1,81 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <LinearLayout
+        android:id="@+id/bottomLayout"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingBottom="16dp"
+        android:layout_alignParentBottom="true">
+        <Button
+            android:id="@+id/btnBackToHomeFailed"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:text="Back to My Usage"
+            android:textAllCaps="false"
+            android:textSize="16dp"
+            style="@style/Theme.SMRApplicationButton" />
+        <Button
+            android:id="@+id/btnTryAgainFailed"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_marginTop="6dp"
+            android:text="Try Again"
+            android:textSize="16dp"
+            android:textAllCaps="false"
+            style="@style/Theme.TryAgainButton"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:orientation="vertical"
+        android:layout_alignParentTop="true"
+        android:layout_above="@+id/bottomLayout">
+        <LinearLayout
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_marginLeft="18dp"
+            android:layout_marginRight="18dp"
+            android:layout_gravity="center"
+            android:background="@drawable/smr_application_white_background">
+            <ImageView
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:layout_marginTop="16dp"
+                android:src="@drawable/ic_display_unsuccessful_new"
+                android:layout_gravity="center|center_vertical"
+                android:gravity="center"/>
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_marginTop="2dp"
+                android:textSize="16dp"
+                android:textColor="@color/blue"
+                android:text="Please Try Again"
+                android:id="@+id/txtTitleInfoError"
+                android:layout_gravity="center|center_vertical"
+                android:gravity="center"/>
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:textSize="12dp"
+                android:lineSpacingExtra="4dp"
+                android:id="@+id/txtMessageInfoError"
+                android:textColor="@color/tunaGrey"
+                android:gravity="center"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:text="It looks like we can't process your application at the moment."
+                android:layout_gravity="center|center_vertical"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="18dp"/>
+        </LinearLayout>
+    </LinearLayout>
+</RelativeLayout>

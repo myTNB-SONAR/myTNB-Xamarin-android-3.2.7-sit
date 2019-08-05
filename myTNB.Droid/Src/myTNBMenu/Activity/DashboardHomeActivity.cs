@@ -161,6 +161,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             }
 
             this.userActionsListener?.OnNotificationCount();
+
         }
 
         public void ShowBackButton(bool flag)

@@ -31,15 +31,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Helper
                 }
                 else
                 {
-                    if (isTaggedSMR)
-                    {
-                        dueAmountNote = "Get bill by " + GetFormattedDate(dueDate, DATE_ORIGINAL_FORMAT, DATE_RESULT_FORMAT);
-                    }
-                    else
-                    {
-                        dueAmountNote = "Pay by " + GetFormattedDate(dueDate, DATE_ORIGINAL_FORMAT, DATE_RESULT_FORMAT);
-                    }
-                    
+                    dueAmountNote = "Pay by " + GetFormattedDate(dueDate, DATE_ORIGINAL_FORMAT, DATE_RESULT_FORMAT);
                 }
             }
             return dueAmountNote;
