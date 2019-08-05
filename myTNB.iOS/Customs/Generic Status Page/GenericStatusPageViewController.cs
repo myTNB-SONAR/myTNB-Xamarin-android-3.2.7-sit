@@ -278,7 +278,7 @@ namespace myTNB
                 GetCTA(ref btnSecondary, GetI18NValue(StatusPageConstants.I18N_SSMRBacktoUsage), false, _actions.BackToHome);
                 if (IsSuccess)
                 {
-                    GetCTA(ref btnPrimary, GetI18NValue(StatusPageConstants.I18N_SSMRTrackUsage), true, _actions.TrackApplication);
+                    GetCTA(ref btnPrimary, GetI18NValue(StatusPageConstants.I18N_SSMRTrackApplication), true, _actions.TrackApplication);
                 }
                 else
                 {
