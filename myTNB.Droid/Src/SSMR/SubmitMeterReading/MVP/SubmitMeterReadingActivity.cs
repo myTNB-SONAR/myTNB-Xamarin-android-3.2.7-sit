@@ -469,6 +469,14 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                     threePhaseList = new List<SSMRMeterReadingModel>();
                     this.mPresenter.OnGetThreePhaseData();
                 }
+                else
+                {
+                    if (!MyTNBAccountManagement.GetInstance().IsSMRMeterReadingOnboardingShown() && isFirstLaunch)
+                    {
+                        ShowMeterReadingTooltip();
+                        isFirstLaunch = false;
+                    }
+                }
             }
             else
             {
@@ -476,6 +484,14 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                 {
                     singlePhaseList = new List<SSMRMeterReadingModel>();
                     this.mPresenter.OnGetOnePhaseData();
+                }
+                else
+                {
+                    if (!MyTNBAccountManagement.GetInstance().IsSMRMeterReadingOnboardingShown() && isFirstLaunch)
+                    {
+                        ShowMeterReadingTooltip();
+                        isFirstLaunch = false;
+                    }
                 }
             }
         }
