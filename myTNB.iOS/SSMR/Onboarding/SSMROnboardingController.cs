@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
-using System.Threading.Tasks;
 using CoreGraphics;
-using myTNB.SQLite.SQLiteDataManager;
 using UIKit;
 
 namespace myTNB.SSMR
@@ -70,14 +68,17 @@ namespace myTNB.SSMR
             SetupSuperViewBackground();
         }
 
-        private void SetupSuperViewBackground()
-        {
-
-        }
+        private void SetupSuperViewBackground() { }
 
         private void AddBack()
         {
-            UIView viewBack = new UIView(new CGRect(16, DeviceHelper.GetStatusBarHeight(), 24, 24));
+            nfloat yLoc = DeviceHelper.GetStatusBarHeight();
+            if (that.NavigationController != null)
+            {
+                nfloat navHeight = that.NavigationController.NavigationBar.Frame.Height;
+                yLoc += ((navHeight - 24) / 2);
+            }
+            UIView viewBack = new UIView(new CGRect(16, yLoc, 24, 24));
             viewBack.AddGestureRecognizer(new UITapGestureRecognizer(() =>
             {
                 that.DismissViewController(true, null);

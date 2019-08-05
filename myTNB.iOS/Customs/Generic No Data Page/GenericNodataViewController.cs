@@ -24,8 +24,9 @@ namespace myTNB
 
         private void SetNavigationBar()
         {
+            nfloat navHeight = NavigationController.NavigationBar.Frame.Height;
             NavigationController.NavigationBarHidden = true;
-            UIView viewBack = new UIView(new CGRect(16, DeviceHelper.GetStatusBarHeight(), 24, 24));
+            UIView viewBack = new UIView(new CGRect(16, DeviceHelper.GetStatusBarHeight() + ((navHeight - 24) / 2), 24, 24));
             viewBack.AddGestureRecognizer(new UITapGestureRecognizer(() =>
             {
                 if (NavigationController != null && IsRootPage)
@@ -36,7 +37,6 @@ namespace myTNB
                 {
                     DismissViewController(true, null);
                 }
-
             }));
 
             UIImageView imgBack = new UIImageView(new CGRect(0, 0, 24, 24))
@@ -44,7 +44,7 @@ namespace myTNB
                 Image = UIImage.FromBundle("Back-White")
             };
             viewBack.AddSubview(imgBack);
-            UILabel lblTitle = new UILabel(new CGRect(50, DeviceHelper.GetStatusBarHeight(), ViewWidth - 100, 24))
+            UILabel lblTitle = new UILabel(new CGRect(50, viewBack.Frame.Y, ViewWidth - 100, 24))
             {
                 TextAlignment = UITextAlignment.Center,
                 TextColor = UIColor.White,

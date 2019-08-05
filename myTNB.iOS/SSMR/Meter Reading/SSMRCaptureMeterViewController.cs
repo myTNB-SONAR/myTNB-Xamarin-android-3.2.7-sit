@@ -70,6 +70,7 @@ namespace myTNB
             SetPreview();
             SetCamera();
             ToggleCTA();
+            DisplayTooltip();
         }
 
         public override void ViewWillAppear(bool animated)
@@ -648,6 +649,7 @@ namespace myTNB
                 View.AddSubview(_viewLoading);
             }
             _viewLoading.Hidden = false;
+            Title = GetI18NValue(SSMRConstants.I18N_NavTitleTakePhoto);
         }
 
         private void UpdateViewGallery()
