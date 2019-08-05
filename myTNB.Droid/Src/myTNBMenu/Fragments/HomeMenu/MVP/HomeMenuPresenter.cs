@@ -199,124 +199,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             }
         }
 
-        private async Task GetAccountSMRStatus(List<string> accountNumList, List<SummaryDashBoardDetails> cacheList)
-        {
-            List<AccountSMRStatus> updateSMRStatus = new List<AccountSMRStatus>();
-
-            try
-            {
-                UserInterface currentUsrInf = new UserInterface()
-                {
-                    eid = UserEntity.GetActive().Email,
-                    sspuid = UserEntity.GetActive().UserID,
-                    did = this.mView.GetDeviceId(),
-                    ft = FirebaseTokenEntity.GetLatest().FBToken,
-                    lang = Constants.DEFAULT_LANG.ToUpper(),
-                    sec_auth_k1 = Constants.APP_CONFIG.API_KEY_ID,
-                    sec_auth_k2 = "",
-                    ses_param1 = "",
-                    ses_param2 = ""
-                };
-
-                AccountSMRStatusResponse accountSMRResponse = await this.serviceApi.GetSMRAccountStatus(new AccountsSMRStatusRequest()
-                {
-                    ContractAccounts = accountNumList,
-                    UserInterface = currentUsrInf
-                });
-
-                if (accountSMRResponse.Response.ErrorCode == "7200" && accountSMRResponse.Response.Data.Count > 0)
-                {
-                    updateSMRStatus = accountSMRResponse.Response.Data;
-                    List<SummaryDashBoardDetails> summaryDetails = new List<SummaryDashBoardDetails>();
-                    List<SummaryDashBoardAccountEntity> billingDetails = new List<SummaryDashBoardAccountEntity>();
-                    for (int i = 0; i < accountNumList.Count; i++)
-                    {
-                        AccountSMRStatus selectedUpdateAccount = new AccountSMRStatus();
-                        CustomerBillingAccount cbAccount = CustomerBillingAccount.FindByAccNum(accountNumList[i]);
-                        SummaryDashBoardDetails summaryDetail = cacheList.Find(x => x.AccNumber == accountNumList[i]);
-                        summaryDetail.AccName = cbAccount.AccDesc;
-                        summaryDetail.AccType = cbAccount.AccountCategoryId;
-                        summaryDetail.IsAccSelected = cbAccount.IsSelected;
-                        summaryDetail.SmartMeterCode = cbAccount.SmartMeterCode;
-                        if (updateSMRStatus.Count > 0)
-                        {
-                            selectedUpdateAccount = updateSMRStatus.Find(x => (x.ContractAccount == summaryDetail.AccNumber));
-                            bool selectedUpdateIsTaggedSMR = false;
-                            if (selectedUpdateAccount.IsTaggedSMR == "true")
-                            {
-                                selectedUpdateIsTaggedSMR = true;
-                            }
-
-                            if (selectedUpdateIsTaggedSMR != cbAccount.IsTaggedSMR)
-                            {
-                                CustomerBillingAccount.UpdateIsSMRTagged(selectedUpdateAccount.ContractAccount, selectedUpdateIsTaggedSMR);
-                                cbAccount.IsTaggedSMR = selectedUpdateIsTaggedSMR;
-                                summaryDetail.IsTaggedSMR = cbAccount.IsTaggedSMR;
-                            }
-                            else
-                            {
-                                summaryDetail.IsTaggedSMR = cbAccount.IsTaggedSMR;
-                            }
-                        }
-                        else
-                        {
-                            summaryDetail.IsTaggedSMR = cbAccount.IsTaggedSMR;
-                        }
-                        /*** Save account data For the Day***/
-                        SummaryDashBoardAccountEntity accountModel = new SummaryDashBoardAccountEntity();
-                        accountModel.Timestamp = DateTime.Now.ToLocalTime();
-                        accountModel.JsonResponse = JsonConvert.SerializeObject(summaryDetail);
-                        accountModel.AccountNo = summaryDetail.AccNumber;
-                        billingDetails.Add(accountModel);
-                        summaryDetails.Add(summaryDetail);
-                        SummaryDashBoardAccountEntity.InsertItem(accountModel);
-                        /*****/
-                    }
-                    MyTNBAccountManagement.GetInstance().UpdateCustomerBillingDetails(billingDetails);
-                    this.mView.UpdateAccountListCards(summaryDetails);
-                }
-                else
-                {
-                    List<SummaryDashBoardDetails> summaryDetails = new List<SummaryDashBoardDetails>();
-                    List<SummaryDashBoardAccountEntity> billingDetails = new List<SummaryDashBoardAccountEntity>();
-                    for (int i = 0; i < accountNumList.Count; i++)
-                    {
-                        AccountSMRStatus selectedUpdateAccount = new AccountSMRStatus();
-                        CustomerBillingAccount cbAccount = CustomerBillingAccount.FindByAccNum(accountNumList[i]);
-                        SummaryDashBoardDetails summaryDetail = cacheList.Find(x => x.AccNumber == accountNumList[i]);
-                        summaryDetail.AccName = cbAccount.AccDesc;
-                        summaryDetail.AccType = cbAccount.AccountCategoryId;
-                        summaryDetail.IsAccSelected = cbAccount.IsSelected;
-                        summaryDetail.SmartMeterCode = cbAccount.SmartMeterCode;
-                        summaryDetail.IsTaggedSMR = cbAccount.IsTaggedSMR;
-                        /*** Save account data For the Day***/
-                        SummaryDashBoardAccountEntity accountModel = new SummaryDashBoardAccountEntity();
-                        accountModel.Timestamp = DateTime.Now.ToLocalTime();
-                        accountModel.JsonResponse = JsonConvert.SerializeObject(summaryDetail);
-                        accountModel.AccountNo = summaryDetail.AccNumber;
-                        billingDetails.Add(accountModel);
-                        summaryDetails.Add(summaryDetail);
-                        SummaryDashBoardAccountEntity.InsertItem(accountModel);
-                        /*****/
-                    }
-                    MyTNBAccountManagement.GetInstance().UpdateCustomerBillingDetails(billingDetails);
-                    this.mView.UpdateAccountListCards(summaryDetails);
-                }
-            }
-            catch (System.OperationCanceledException cancelledException)
-            {
-                Utility.LoggingNonFatalError(cancelledException);
-            }
-            catch (ApiException apiException)
-            {
-                Utility.LoggingNonFatalError(apiException);
-            }
-            catch (Exception unknownException)
-            {
-                Utility.LoggingNonFatalError(unknownException);
-            }
-        }
-
         private async Task GetAccountSummaryInfoInBatch(SummaryDashBordRequest request)
         {
             try
@@ -442,130 +324,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             }
         }
 
-        private async Task GetAccountSMRStatusInBatch(List<string> accountNumList, List<SummaryDashBoardDetails> cacheList)
-        {
-            List<AccountSMRStatus> updateSMRStatus = new List<AccountSMRStatus>();
-
-            try
-            {
-                UserInterface currentUsrInf = new UserInterface()
-                {
-                    eid = UserEntity.GetActive().Email,
-                    sspuid = UserEntity.GetActive().UserID,
-                    did = this.mView.GetDeviceId(),
-                    ft = FirebaseTokenEntity.GetLatest().FBToken,
-                    lang = Constants.DEFAULT_LANG.ToUpper(),
-                    sec_auth_k1 = Constants.APP_CONFIG.API_KEY_ID,
-                    sec_auth_k2 = "",
-                    ses_param1 = "",
-                    ses_param2 = ""
-                };
-
-                AccountSMRStatusResponse accountSMRResponse = await this.serviceApi.GetSMRAccountStatus(new AccountsSMRStatusRequest()
-                {
-                    ContractAccounts = accountNumList,
-                    UserInterface = currentUsrInf
-                });
-
-                if (accountSMRResponse.Response.ErrorCode == "7200" && accountSMRResponse.Response.Data.Count > 0)
-                {
-                    updateSMRStatus = accountSMRResponse.Response.Data;
-                    List<SummaryDashBoardDetails> summaryDetails = new List<SummaryDashBoardDetails>();
-                    List<SummaryDashBoardAccountEntity> billingDetails = new List<SummaryDashBoardAccountEntity>();
-                    for (int i = 0; i < accountNumList.Count; i++)
-                    {
-                        AccountSMRStatus selectedUpdateAccount = new AccountSMRStatus();
-                        CustomerBillingAccount cbAccount = CustomerBillingAccount.FindByAccNum(accountNumList[i]);
-                        SummaryDashBoardDetails summaryDetail = cacheList.Find(x => x.AccNumber == accountNumList[i]);
-                        summaryDetail.AccName = cbAccount.AccDesc;
-                        summaryDetail.AccType = cbAccount.AccountCategoryId;
-                        summaryDetail.IsAccSelected = cbAccount.IsSelected;
-                        summaryDetail.SmartMeterCode = cbAccount.SmartMeterCode;
-                        if (updateSMRStatus.Count > 0)
-                        {
-                            selectedUpdateAccount = updateSMRStatus.Find(x => (x.ContractAccount == accountNumList[i]));
-                            bool selectedUpdateIsTaggedSMR = false;
-                            if (selectedUpdateAccount.IsTaggedSMR == "true")
-                            {
-                                selectedUpdateIsTaggedSMR = true;
-                            }
-
-                            if (selectedUpdateIsTaggedSMR != cbAccount.IsTaggedSMR)
-                            {
-                                CustomerBillingAccount.UpdateIsSMRTagged(selectedUpdateAccount.ContractAccount, selectedUpdateIsTaggedSMR);
-                                cbAccount.IsTaggedSMR = selectedUpdateIsTaggedSMR;
-                                summaryDetail.IsTaggedSMR = cbAccount.IsTaggedSMR;
-                            }
-                            else
-                            {
-                                summaryDetail.IsTaggedSMR = cbAccount.IsTaggedSMR;
-                            }
-                        }
-                        else
-                        {
-                            summaryDetail.IsTaggedSMR = cbAccount.IsTaggedSMR;
-                        }
-
-                        /*** Save account data For the Day***/
-                        SummaryDashBoardAccountEntity accountModel = new SummaryDashBoardAccountEntity();
-                        accountModel.Timestamp = DateTime.Now.ToLocalTime();
-                        accountModel.JsonResponse = JsonConvert.SerializeObject(summaryDetail);
-                        accountModel.AccountNo = summaryDetail.AccNumber;
-                        SummaryDashBoardAccountEntity.InsertItem(accountModel);
-                        /*****/
-                        billingDetails.Add(accountModel);
-                        summaryDetails.Add(summaryDetail);
-                    }
-                    MyTNBAccountManagement.GetInstance().UpdateCustomerBillingDetails(billingDetails);
-                    this.mView.UpdateAccountListCards(summaryDetails);
-
-                    List<CustomerBillingAccount> list = CustomerBillingAccount.List();
-                }
-                else
-                {
-                    List<SummaryDashBoardDetails> summaryDetails = new List<SummaryDashBoardDetails>();
-                    List<SummaryDashBoardAccountEntity> billingDetails = new List<SummaryDashBoardAccountEntity>();
-                    for (int i = 0; i < accountNumList.Count; i++)
-                    {
-                        AccountSMRStatus selectedUpdateAccount = new AccountSMRStatus();
-                        CustomerBillingAccount cbAccount = CustomerBillingAccount.FindByAccNum(accountNumList[i]);
-                        SummaryDashBoardDetails summaryDetail = cacheList.Find(x => x.AccNumber == accountNumList[i]);
-                        summaryDetail.AccName = cbAccount.AccDesc;
-                        summaryDetail.AccType = cbAccount.AccountCategoryId;
-                        summaryDetail.IsAccSelected = cbAccount.IsSelected;
-                        summaryDetail.SmartMeterCode = cbAccount.SmartMeterCode;
-                        summaryDetail.IsTaggedSMR = cbAccount.IsTaggedSMR;
-
-                        /*** Save account data For the Day***/
-                        SummaryDashBoardAccountEntity accountModel = new SummaryDashBoardAccountEntity();
-                        accountModel.Timestamp = DateTime.Now.ToLocalTime();
-                        accountModel.JsonResponse = JsonConvert.SerializeObject(summaryDetail);
-                        accountModel.AccountNo = summaryDetail.AccNumber;
-                        SummaryDashBoardAccountEntity.InsertItem(accountModel);
-                        /*****/
-                        billingDetails.Add(accountModel);
-                        summaryDetails.Add(summaryDetail);
-                    }
-                    MyTNBAccountManagement.GetInstance().UpdateCustomerBillingDetails(billingDetails);
-                    this.mView.UpdateAccountListCards(summaryDetails);
-
-                    List<CustomerBillingAccount> list = CustomerBillingAccount.List();
-                }
-            }
-            catch (System.OperationCanceledException cancelledException)
-            {
-                Utility.LoggingNonFatalError(cancelledException);
-            }
-            catch (ApiException apiException)
-            {
-                Utility.LoggingNonFatalError(apiException);
-            }
-            catch (Exception unknownException)
-            {
-                Utility.LoggingNonFatalError(unknownException);
-            }
-        }
-
         private void LoadSummaryDetails(List<string> accountList)
         {
             if (accountList.Count > 0)
@@ -595,16 +353,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             LoadSummaryDetails(batchAccountList.ToList()[0].ToList());
         }
 
-        private void OnLoadSMRAccountStatusInBatch(List<string> accountList)
-        {
-            _ = GetAccountSMRStatusInBatch(accountList, summaryDashboardInfoList);
-        }
-
-        private void OnLoadSMRAccountStatus()
-        {
-            _ = GetAccountSMRStatus(batchAccountList.ToList()[0].ToList(), summaryDashboardInfoList);
-        }
-
         public void LoadLocalAccounts()
         {
             summaryDashboardInfoList = new List<SummaryDashBoardDetails>();
@@ -627,23 +375,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     summaryDashboardInfoList.Add(summaryDashBoardDetails);
                 }
             }
-            // this.mView.SetAccountListCardsFromLocal(summaryDashboardInfoList);
-            List<string> accountList = new List<string>();
-            for (int i = 0; i < customerBillingAccountList.Count; i++)
-            {
-                if (!string.IsNullOrEmpty(customerBillingAccountList[i].AccNum))
-                {
-                    accountList.Add(customerBillingAccountList[i].AccNum);
-                }
-            }
-
-            batchAccountList = accountList.Select((x, index) => new { x, index })
-                   .GroupBy(x => x.index / 5, y => y.x);
-            this.mView.SetAccountListCards(summaryDashboardInfoList);
-            if (batchAccountList.ToList().Count > 0)
-            {
-                OnLoadSMRAccountStatus();
-            }
+            this.mView.SetAccountListCardsFromLocal(summaryDashboardInfoList);
         }
 
         public void LoadAccounts()
@@ -932,14 +664,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
         public void LoadBatchSummarDetailsByIndex(int batchIndex)
         {
-            if (MyTNBAccountManagement.GetInstance().IsNeedUpdatedBillingDetails())
-            {
-                LoadSummaryDetailsInBatch(this.mView.GetAccountAdapter().GetAccountCardNumberListByPosition(batchIndex));
-            }
-            else
-            {
-                OnLoadSMRAccountStatusInBatch(this.mView.GetAccountAdapter().GetAccountCardNumberListByPosition(batchIndex));
-            }
+            LoadSummaryDetailsInBatch(this.mView.GetAccountAdapter().GetAccountCardNumberListByPosition(batchIndex));
         }
 
         public void GetSmartMeterReadingWalkthroughtTimeStamp()
