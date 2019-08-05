@@ -342,7 +342,7 @@ namespace myTNB
                     newHeight = viewContainer.Frame.GetMaxY();
                 }
             }
-            _toolTipScrollView.ContentSize = new CGSize(_toolTipScrollView.Frame.Width * 3, newHeight);
+            _toolTipScrollView.ContentSize = new CGSize(_toolTipScrollView.Frame.Width * pageData.Count, newHeight);
             CGRect svFrame = _toolTipScrollView.Frame;
             svFrame.Height = newHeight;
             _toolTipScrollView.Frame = svFrame;
@@ -360,7 +360,7 @@ namespace myTNB
             if (pageData.Count > 1)
             {
                 AddPageControl();
-                UpdatePageControl(_pageControl, _currentPageIndex, 3);
+                UpdatePageControl(_pageControl, _currentPageIndex, pageData.Count);
             }
             else
             {
@@ -469,7 +469,7 @@ namespace myTNB
 
         private void ScrollViewHasPaginated()
         {
-            UpdatePageControl(_pageControl, _currentPageIndex, 3);
+            UpdatePageControl(_pageControl, _currentPageIndex, pageData.Count);
         }
 
         private void PrepareMeterReadingCard()
