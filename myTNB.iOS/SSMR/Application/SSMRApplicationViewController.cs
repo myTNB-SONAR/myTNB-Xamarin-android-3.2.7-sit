@@ -24,7 +24,8 @@ namespace myTNB
         private UIButton _btnSubmit;
         private UIView _viewBottomContainer, _viewContactDetails, _viewTerminate
             , _viewTerminateTitle, _viewTerminateContainer, _viewOthersContainer
-            , _viewLineTerminate, _viewLineReason;
+            , _viewLineTerminate, _viewLineReason, _viewMainDetails, _viewApplyForTitle
+            , _viewContactDetailsTitle, _viewAccountContainer;
         private UIScrollView _scrollContainer;
         private CGRect _scrollViewFrame;
         private CustomTextField _customMobileField;
@@ -34,7 +35,7 @@ namespace myTNB
         protected ContactDetailsResponseModel _contactDetails;
         protected SSMRApplicationStatusResponseModel _ssmrApplicationStatus;
         protected TerminationReasonsResponseModel _ssmrTerminationReasons;
-        private int _selectedAccountIndex = 0;
+        private int _selectedAccountIndex = -1;
         private int _selectedTerminateReasonIndex = 0;
         private UILabel _lblAccountName, _lblAddress, _lblEditInfo, _lblTerminateReason, _lblReason;
         private UITextView _txtViewReason;
@@ -60,7 +61,7 @@ namespace myTNB
             {
                 OnGetTerminateReasons();
             }
-            if (_selectedAccount != null)
+            if (!IsApplication && _selectedAccount != null)
             {
                 OnGetContactInfo();
             }
@@ -85,7 +86,7 @@ namespace myTNB
                 ViewHelper.DismissControllersAndSelectTab(this, 0, true);
             });
             NavigationItem.LeftBarButtonItem = btnBack;
-            Title = GetI18NValue(IsApplication ? SSMRConstants.I18N_NavTitleApply : SSMRConstants.I18N_NavTitleTerminate);
+            Title = GetI18NValue(SSMRConstants.I18N_NavTitle);
         }
 
         private void OnKeyboardNotification(NSNotification notification)
@@ -196,7 +197,7 @@ namespace myTNB
                 BackgroundColor = MyTNBColor.SectionGrey
             };
 
-            UIView viewApplyForTitle = new UIView(new CGRect(0, 0, ViewWidth, 48))
+            _viewApplyForTitle = new UIView(new CGRect(0, 0, ViewWidth, 48))
             {
                 BackgroundColor = MyTNBColor.SectionGrey
             };
@@ -208,11 +209,11 @@ namespace myTNB
                 Font = MyTNBFont.MuseoSans16_500,
                 Text = GetI18NValue(IsApplication ? SSMRConstants.I18N_ApplyingFor : SSMRConstants.I18N_TerminateFor)
             };
-            viewApplyForTitle.AddSubview(lblApplyFor);
+            _viewApplyForTitle.AddSubview(lblApplyFor);
 
-            UIView viewMainDetails = new UIView() { BackgroundColor = UIColor.White };
+            _viewMainDetails = new UIView() { BackgroundColor = UIColor.White };
 
-            UIView viewAccountContainer = new UIView();
+            _viewAccountContainer = new UIView();
 
             if (IsApplication)
             {
@@ -248,16 +249,15 @@ namespace myTNB
                     TextColor = MyTNBColor.CharcoalGrey,
                     TextAlignment = UITextAlignment.Left,
                     Font = MyTNBFont.MuseoSans16_300,
-                    Text = _selectedAccount != null && !string.IsNullOrEmpty(_selectedAccount.accountNickName)
-                       ? _selectedAccount.accountNickName : TNBGlobal.EMPTY_ADDRESS
+                    Text = GetI18NValue(SSMRConstants.I18N_SelectAnAccount)
                 };
                 viewAccountName.AddSubviews(new UIView[] { _lblAccountName, imgDropdown });
                 UIView viewLine = new UIView(new CGRect(16, viewAccountName.Frame.GetMaxY() + 1, ViewWidth - 32, 1))
                 {
                     BackgroundColor = MyTNBColor.VeryLightPinkTwo
                 };
-                viewAccountContainer = new UIView(new CGRect(0, 0, ViewWidth, viewLine.Frame.GetMaxY() + 22));
-                viewAccountContainer.AddSubviews(new UIView[] { lblAccountTitle, viewAccountName, viewLine });
+                _viewAccountContainer = new UIView(new CGRect(0, 0, ViewWidth, viewLine.Frame.GetMaxY() + 22));
+                _viewAccountContainer.AddSubviews(new UIView[] { lblAccountTitle, viewAccountName, viewLine });
             }
             else
             {
@@ -268,11 +268,12 @@ namespace myTNB
                     TextAlignment = UITextAlignment.Left,
                     Text = DataManager.DataManager.SharedInstance.SelectedAccount.accountNickName ?? TNBGlobal.EMPTY_ADDRESS
                 };
-                viewAccountContainer.AddSubview(lblAccountName);
-                viewAccountContainer.Frame = new CGRect(0, 0, ViewWidth, lblAccountName.Frame.GetMaxY() + 8);
+                _viewAccountContainer.AddSubview(lblAccountName);
+                _viewAccountContainer.Frame = new CGRect(0, 0, ViewWidth, lblAccountName.Frame.GetMaxY() + 8);
             }
 
-            _lblAddress = new UILabel(new CGRect(16, viewAccountContainer.Frame.GetMaxY(), ViewWidth - 32, 40))
+            _lblAddress = new UILabel(new CGRect(16, _viewAccountContainer.Frame.GetMaxY(), ViewWidth - 32
+                , IsApplication && _selectedAccountIndex < 0 ? 0 : 40))
             {
                 TextColor = MyTNBColor.CharcoalGrey,
                 TextAlignment = UITextAlignment.Left,
@@ -283,10 +284,10 @@ namespace myTNB
                    ? _selectedAccount.accountStAddress : TNBGlobal.EMPTY_ADDRESS
             };
 
-            viewMainDetails.AddSubviews(new UIView[] { viewAccountContainer, _lblAddress });
-            viewMainDetails.Frame = new CGRect(0, viewApplyForTitle.Frame.GetMaxY(), ViewWidth, _lblAddress.Frame.GetMaxY() + 16);
+            _viewMainDetails.AddSubviews(new UIView[] { _viewAccountContainer, _lblAddress });
+            _viewMainDetails.Frame = new CGRect(0, _viewApplyForTitle.Frame.GetMaxY(), ViewWidth, _lblAddress.Frame.GetMaxY() + 16);
 
-            UIView viewContactDetailsTitle = new UIView(new CGRect(0, viewMainDetails.Frame.GetMaxY(), ViewWidth, 48))
+            _viewContactDetailsTitle = new UIView(new CGRect(0, _viewMainDetails.Frame.GetMaxY(), ViewWidth, 48))
             {
                 BackgroundColor = MyTNBColor.SectionGrey
             };
@@ -298,9 +299,9 @@ namespace myTNB
                 Font = MyTNBFont.MuseoSans16_500,
                 Text = GetI18NValue(SSMRConstants.I18N_ContactDetails)
             };
-            viewContactDetailsTitle.AddSubview(lblContactDetails);
+            _viewContactDetailsTitle.AddSubview(lblContactDetails);
 
-            _viewContactDetails = new UIView(new CGRect(0, viewContactDetailsTitle.Frame.GetMaxY(), ViewWidth, 142))
+            _viewContactDetails = new UIView(new CGRect(0, _viewContactDetailsTitle.Frame.GetMaxY(), ViewWidth, 142))
             {
                 BackgroundColor = UIColor.White
             };
@@ -348,7 +349,7 @@ namespace myTNB
 
             _viewContactDetails.AddSubviews(new UIView[] { viewEmail, viewMobile, _lblEditInfo });
 
-            _scrollContainer.AddSubviews(new UIView[] { viewApplyForTitle, viewMainDetails, viewContactDetailsTitle, _viewContactDetails });
+            _scrollContainer.AddSubviews(new UIView[] { _viewApplyForTitle, _viewMainDetails, _viewContactDetailsTitle, _viewContactDetails });
             _scrollContainer.ContentSize = new CGSize(ViewWidth, _viewContactDetails.Frame.GetMaxY());
             View.AddSubview(_scrollContainer);
             _scrollViewFrame = _scrollContainer.Frame;
@@ -566,6 +567,14 @@ namespace myTNB
                 _selectedAccount = SSMRAccounts.GetAccountByIndex(index);
                 _lblAccountName.Text = _selectedAccount.accountNickName;
                 _lblAddress.Text = _selectedAccount.accountStAddress;
+                _lblAddress.Frame = new CGRect(16, _viewAccountContainer.Frame.GetMaxY(), ViewWidth - 32
+                    , IsApplication && _selectedAccountIndex < 0 ? 0 : 40);
+
+                _viewMainDetails.Frame = new CGRect(0, _viewApplyForTitle.Frame.GetMaxY(), ViewWidth, _lblAddress.Frame.GetMaxY() + 16);
+                _viewContactDetailsTitle.Frame = new CGRect(0, _viewMainDetails.Frame.GetMaxY(), ViewWidth, 48);
+                _viewContactDetails.Frame = new CGRect(0, _viewContactDetailsTitle.Frame.GetMaxY(), ViewWidth, 142);
+
+                _scrollContainer.ContentSize = new CGSize(ViewWidth, _viewContactDetails.Frame.GetMaxY());
                 NSNotificationCenter.DefaultCenter.PostNotificationName(SSMRConstants.Notification_SelectSSMRAccount, new NSObject());
             }
         }
@@ -687,7 +696,6 @@ namespace myTNB
                     DisplayNoDataAlert();
                     ActivityIndicator.Hide();
                 }
-
             });
         }
 

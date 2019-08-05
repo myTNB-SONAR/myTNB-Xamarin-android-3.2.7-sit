@@ -47,8 +47,6 @@ namespace myTNB.SSMR
         public static string I18N_SelectAccounts = "selectAccounts";
 
         //Application
-        public static string I18N_NavTitleApply = "navTitleApply";
-        public static string I18N_NavTitleTerminate = "navTitleTerminate";
         public static string I18N_ApplyingFor = "applyingFor";
         public static string I18N_TerminateFor = "terminateFor";
         public static string I18N_ContactDetails = "contactDetails";
@@ -58,6 +56,7 @@ namespace myTNB.SSMR
         public static string I18N_EditInfo = "editContactInfo";
         public static string I18N_SelectReason = "selectReason";
         public static string I18N_StateReason = "stateReason";
+        public static string I18N_SelectAnAccount = "selectAnAccount";
 
         //Image
         public static string IMG_BGOnboarding1 = "SSMR_Background_1";

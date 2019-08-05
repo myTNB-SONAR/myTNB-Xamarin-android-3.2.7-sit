@@ -64,8 +64,7 @@
         "startApplication": "Start"
     },
     "SSMRApplication": {
-        "navTitleApply": "Subscribe Self Meter Reading",
-        "navTitleTerminate": "Unsubscribe Self Reading",
+        "navTitle": "Self Meter Reading",
         "applyingFor": "I am subscribing for:",
         "terminateFor": "I am unsubscribing my service for:",
         "contactDetails": "My contact details:",
@@ -74,7 +73,8 @@
         "tncSubscribe": "By submitting, you are agreeing to the <a href=\"\\\">Self Meter Reading Terms and Conditions</a>, <a href=\"\\\">TNB’s Terms of Use</a>, <a href=\"\\\">Privacy policy</a>, <a href=\"\\\">Anti-Spam Policy and Personal Data Protection Policy</a>.",
         "editContactInfo": "By editing you will update your myTNB profile but not your owner’s electricity account contact details.",
         "selectReason": "Select Reason",
-        "stateReason": "Please state your reason"
+        "stateReason": "Please state your reason",
+        "selectAnAccount": "Select an account"
     },
     "Status": {
         "feedbackSuccessTitle": "Feedback Successful",
