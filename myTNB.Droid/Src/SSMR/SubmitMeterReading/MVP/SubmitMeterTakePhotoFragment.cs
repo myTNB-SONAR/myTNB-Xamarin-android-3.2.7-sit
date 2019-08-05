@@ -21,6 +21,7 @@ using Java.Util;
 using Java.IO;
 using Orientation = Android.Content.Res.Orientation;
 using Android.Content;
+using myTNB_Android.Src.Utils;
 
 namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
 {
@@ -144,7 +145,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             ImageView captureImage = (ImageView)view.FindViewById(Resource.Id.imageTakePhoto);
             galleryPreview = (ImageView)view.FindViewById(Resource.Id.imageGallery);
             SeekBar seekBar = (SeekBar)view.FindViewById(Resource.Id.seekBar);
-            
+
             captureImage.Click += delegate
             {
                 TakePicture();
@@ -156,6 +157,15 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             };
 
             seekBar.SetOnSeekBarChangeListener(new OnSeekbarChangeListener(this));
+
+            try
+            {
+                ((SubmitMeterTakePhotoActivity)Activity).EnableMoreMenu();
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public override void OnActivityCreated(Bundle savedInstanceState)

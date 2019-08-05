@@ -185,6 +185,18 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
             TextViewUtils.SetMuseoSans500Typeface(btnDisconnectionSubmit, disconnectionTtile, disconnectionAccountTtile, contactDetailTtile, terminationReasonTitle);
             TextViewUtils.SetMuseoSans300Typeface(disconnectionAccountAddress, contactDetailConsent, txtTermsConditions, txtEmail, txtMobileNo, txtSelectReason, txtReason);
 
+            // SetStatusBarGradientBackground();
+            // SetToolbarGradientBackground();
+
+            if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.N)
+            {
+                txtTermsConditions.TextFormatted = Html.FromHtml(GetString(Resource.String.ssmr_terms_conditions), FromHtmlOptions.ModeLegacy);
+            }
+            else
+            {
+                txtTermsConditions.TextFormatted = Html.FromHtml(GetString(Resource.String.ssmr_terms_conditions));
+            }
+
             contactDetailConsent.Visibility = ViewStates.Gone;
             txtInputLayoutTxtReason.Visibility = ViewStates.Gone;
 

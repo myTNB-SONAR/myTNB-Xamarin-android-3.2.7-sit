@@ -56,6 +56,9 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
                 adapter.ClickChanged += OnClickChanged;
             }
 
+            // SetStatusBarGradientBackground();
+            // SetToolbarGradientBackground();
+
         }
 
         public override View OnCreateView(string name, Context context, IAttributeSet attrs)

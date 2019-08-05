@@ -19,7 +19,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/applySMRForLabel"
-            android:text="I am applying for:"
+            android:text="I am subscribing for:"
             android:textSize="16dp"
             android:textColor="#1c79ca"
             android:paddingTop="16dp"

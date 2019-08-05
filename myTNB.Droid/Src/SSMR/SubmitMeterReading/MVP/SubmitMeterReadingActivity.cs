@@ -12,6 +12,8 @@ using Android.Views;
 using Android.Views.InputMethods;
 using Android.Widget;
 using CheeseBind;
+using myTNB.SitecoreCMS.Model;
+using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.SSMR.SSMRBase.MVP;
@@ -19,6 +21,7 @@ using myTNB_Android.Src.SSMR.SubmitMeterReading.Api;
 using myTNB_Android.Src.SSMR.Util;
 using myTNB_Android.Src.SSMRTerminate.MVP;
 using myTNB_Android.Src.Utils;
+using myTNB_Android.Src.Utils.Custom.ProgressDialog;
 using Newtonsoft.Json;
 using static myTNB_Android.Src.SSMR.SubmitMeterReading.Api.GetMeterReadingOCRResponse;
 using static myTNB_Android.Src.SSMR.SubmitMeterReading.Api.SubmitMeterReadingRequest;
@@ -48,8 +51,15 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
         Button btnTakePhoto;
 
         public readonly static int SSMR_SUBMIT_METER_ACTIVITY_CODE = 8796;
+        private IMenu ssmrMenu;
+        private static bool isFirstLaunch = true;
 
-        List<SMRMROValidateRegisterDetails> SMRValidateRegisterDetailList;
+        private static List<SSMRMeterReadingModel> singlePhaseList;
+        private static List<SSMRMeterReadingModel> threePhaseList;
+
+        LoadingOverlay loadingOverlay;
+
+        List <SMRMROValidateRegisterDetails> SMRValidateRegisterDetailList;
 
         public override int ResourceId()
         {
@@ -189,6 +199,26 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             }
             editViewHelper.SetEditTextList(editTextList);
             editViewHelper.SetEvent();
+
+        }
+
+        public override bool OnCreateOptionsMenu(IMenu menu)
+        {
+            MenuInflater.Inflate(Resource.Menu.SSMRMeterSubmitMenu, menu);
+            ssmrMenu = menu;
+            return base.OnCreateOptionsMenu(menu);
+        }
+
+
+        public override bool OnOptionsItemSelected(IMenuItem item)
+        {
+            switch (item.ItemId)
+            {
+                case Resource.Id.action_ssmr_meter_reading_more:
+                    ShowMeterReadingTooltip();
+                    break;
+            }
+            return base.OnOptionsItemSelected(item);
         }
 
         protected override void OnStart()
@@ -258,6 +288,8 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                     }
                 }
             }
+
+            OnGenerateTooltipData();
         }
 
         protected override void OnCreate(Bundle savedInstanceState)
@@ -265,6 +297,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             base.OnCreate(savedInstanceState);
             mPresenter = new SubmitMeterReadingPresenter(this);
             InitializePage();
+            isFirstLaunch = true;
         }
 
         private string GetType(string registerNumber)
@@ -493,7 +526,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                         continue;
                     }
                 }
-                
+
                 currentValueDigit.Text = parsedReading[i - 1].ToString();
             }
 
@@ -518,7 +551,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             });
             int previousReading = 0;
             int currentReading = 0;
-            
+
             if (validateRegisterDetails.PrevMeterReading != "")
             {
                 previousReading = Int32.Parse(validateRegisterDetails.PrevMeterReading);
@@ -618,6 +651,115 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                 intent.PutExtra("SUBMIT_RESULT", JsonConvert.SerializeObject(response));
             }
             StartActivityForResult(intent, SSMR_SUBMIT_METER_ACTIVITY_CODE);
+        }
+
+        private void OnGenerateTooltipData()
+        {
+            if (SMRValidateRegisterDetailList.Count > 1)
+            {
+                if (threePhaseList == null)
+                {
+                    threePhaseList = new List<SSMRMeterReadingModel>();
+                    this.mPresenter.OnGetThreePhaseData();
+                }
+                else
+                {
+                    if (!MyTNBAccountManagement.GetInstance().GetSMRMeterReadingThreePhaseOnboardingShown() && isFirstLaunch)
+                    {
+                        ShowMeterReadingTooltip();
+                        isFirstLaunch = false;
+                    }
+                }
+            }
+            else
+            {
+                if (singlePhaseList == null)
+                {
+                    singlePhaseList = new List<SSMRMeterReadingModel>();
+                    this.mPresenter.OnGetOnePhaseData();
+                }
+                else
+                {
+                    if (!MyTNBAccountManagement.GetInstance().GetSMRMeterReadingOnePhaseOnboardingShown() && isFirstLaunch)
+                    {
+                        ShowMeterReadingTooltip();
+                        isFirstLaunch = false;
+                    }
+                }
+            }
+        }
+
+        public void OnUpdateThreePhaseTooltipData(List<SSMRMeterReadingModel> list)
+        {
+            if (list != null && list.Count > 0)
+            {
+                threePhaseList = list;
+            }
+            HideProgressDialog();
+            if (!MyTNBAccountManagement.GetInstance().GetSMRMeterReadingThreePhaseOnboardingShown() && isFirstLaunch)
+            {
+                ShowMeterReadingTooltip();
+                isFirstLaunch = false;
+            }
+        }
+
+        public void OnUpdateOnePhaseTooltipData(List<SSMRMeterReadingModel> list)
+        {
+            if (list != null && list.Count > 0)
+            {
+                singlePhaseList = list;
+            }
+            HideProgressDialog();
+            if (!MyTNBAccountManagement.GetInstance().GetSMRMeterReadingOnePhaseOnboardingShown() && isFirstLaunch)
+            {
+                ShowMeterReadingTooltip();
+                isFirstLaunch = false;
+            }
+        }
+
+        private void ShowMeterReadingTooltip()
+        {
+            if (SMRValidateRegisterDetailList.Count > 1)
+            {
+                SMRPopUpUtils.OnShowSMRMeterReadingTooltipOnActivity(false, this, SupportFragmentManager, threePhaseList);
+            }
+            else
+            {
+                SMRPopUpUtils.OnShowSMRMeterReadingTooltipOnActivity(true, this, SupportFragmentManager, singlePhaseList);
+            }
+        }
+
+        public void ShowProgressDialog()
+        {
+            try
+            {
+                if (loadingOverlay != null && loadingOverlay.IsShowing)
+                {
+                    loadingOverlay.Dismiss();
+                }
+
+                loadingOverlay = new LoadingOverlay(this, Resource.Style.LoadingOverlyDialogStyle);
+                loadingOverlay.Show();
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void HideProgressDialog()
+        {
+            try
+            {
+                if (loadingOverlay != null && loadingOverlay.IsShowing)
+                {
+                    loadingOverlay.Dismiss();
+                }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
     }
 }

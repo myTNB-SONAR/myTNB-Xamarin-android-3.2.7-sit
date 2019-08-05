@@ -53,6 +53,7 @@
             <TextView
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
+                android:layout_marginTop="2dp"
                 android:textSize="16dp"
                 android:textColor="@color/blue"
                 android:text="Application Submitted"
@@ -69,7 +70,7 @@
                 android:gravity="center"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
-                android:text="We have received your request for this Self Meter Reading Service. For your reference you may keep the application number below."
+                android:text="We have received your request to unsubscribe from this service. For your reference you may keep the application number below."
                 android:layout_gravity="center|center_vertical"
                 android:layout_marginTop="8dp" />
             <View
