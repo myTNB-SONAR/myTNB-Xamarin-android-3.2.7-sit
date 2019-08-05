@@ -49,7 +49,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
 				vh.faqTitle.TextFormatted = Html.FromHtml(model.Title);
 			}
 
-            int currentCount = position % 6;
+            int currentCount = position % 7;
 
 			switch (currentCount)
 			{

@@ -250,12 +250,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             GridLayoutManager layoutManager = new GridLayoutManager(this.Activity, 3);
             layoutManager.Orientation = RecyclerView.Vertical;
             myServiceListRecycleView.SetLayoutManager(layoutManager);
-            myServiceListRecycleView.AddItemDecoration(new MyServiceItemDecoration(3, 8, false, this.Activity));
+            myServiceListRecycleView.AddItemDecoration(new MyServiceItemDecoration(3, 3, false, this.Activity));
 
             GridLayoutManager layoutShimmerManager = new GridLayoutManager(this.Activity, 3);
             layoutShimmerManager.Orientation = RecyclerView.Vertical;
             myServiceShimmerList.SetLayoutManager(layoutShimmerManager);
-            myServiceShimmerList.AddItemDecoration(new MyServiceShimmerItemDecoration(3, 8, false, this.Activity));
+            myServiceShimmerList.AddItemDecoration(new MyServiceShimmerItemDecoration(3, 3, false, this.Activity));
         }
 
         private void SetupNewFAQView()
@@ -279,23 +279,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
         }
 
-        public List<MyService> EvaluteForSMREligibility(List<MyService> list)
-        {
-            List<MyService> newList = list;
-            if (UserSessions.GetSMRAccountList().Count == 0)
-            {
-                newList = new List<MyService>();
-                foreach (MyService myService in list)
-                {
-                    if (myService.ServiceCategoryId != "1001")
-                    {
-                        newList.Add(myService);
-                    }
-                }
-            }
-            return newList;
-        }
-
         public void SetMyServiceResult(List<MyService> list)
         {
             try
@@ -306,7 +289,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     myServiceShimmerList.SetAdapter(myServiceShimmerAdapter);
                     myServiceShimmerView.Visibility = ViewStates.Gone;
                     myServiceView.Visibility = ViewStates.Visible;
-                    list = EvaluteForSMREligibility(list); //Checks for eligible SMR application
                     myServiceAdapter = new MyServiceAdapter(list, this.Activity);
                     myServiceListRecycleView.SetAdapter(myServiceAdapter);
                     currentMyServiceList.Clear();
@@ -518,7 +500,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     {
                         ShowFeedbackMenu();
                     }
-                    else if (UserSessions.GetSMRAccountList().Count > 0 && selectedService.ServiceCategoryId == "1001")
+                    else if (selectedService.ServiceCategoryId == "1001")
                     {
                         Intent applySMRIntent;
                         if (MyTNBAccountManagement.GetInstance().IsSMROnboardingShown())

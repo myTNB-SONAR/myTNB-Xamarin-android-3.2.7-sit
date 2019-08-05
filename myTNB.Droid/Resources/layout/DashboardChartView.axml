@@ -209,44 +209,52 @@
                 android:layout_marginTop="@dimen/_10sdp"
                 android:textColorLink="@color/white"
                 android:gravity="center" />
-            <View
-                android:id="@+id/addressDivider"
-                android:layout_height="1dp"
+            <LinearLayout
+                android:id="@+id/accountDisconnectionContainer"
                 android:layout_width="match_parent"
-                android:layout_marginTop="@dimen/_2sdp"
-                android:layout_marginBottom="@dimen/_2sdp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:alpha="0.3"
-                android:visibility="gone"
-                android:background="@color/barchartColorHighlighted" />
-            <TextView
-                android:id="@+id/txtAccountStatus"
                 android:layout_height="wrap_content"
-                android:layout_width="match_parent"
-                android:textColor="@color/white"
-                android:layout_gravity="center"
-                android:layout_marginTop="12dp"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"
-                android:gravity="center"
-                android:text="Electricity Connection:"
-                android:textSize="12dp"
-                android:visibility="gone"/>
-            <TextView
+                android:orientation="vertical"
+                android:layout_marginBottom="24dp"
+                android:visibility="gone">
+                <View
+                    android:id="@+id/addressDivider"
+                    android:layout_height="1dp"
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="@dimen/_2sdp"
+                    android:layout_marginBottom="@dimen/_2sdp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:alpha="0.3"
+                    android:visibility="gone"
+                    android:background="@color/barchartColorHighlighted" />
+                <TextView
+                    android:id="@+id/txtAccountStatus"
                     android:layout_height="wrap_content"
                     android:layout_width="match_parent"
-                    android:textSize="12dp"
-                    android:layout_marginTop="4dp"
+                    android:textColor="@color/white"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="12dp"
                     android:layout_marginLeft="15dp"
                     android:layout_marginRight="15dp"
-                    android:textColor="@color/sunGlow"
-                    android:layout_gravity="center"
                     android:gravity="center"
-                    android:id="@+id/txtWhatAccountStatus"
-                    android:clickable="true"
-                    android:text="What does this mean?"
+                    android:text="Electricity Connection:"
+                    android:textSize="12dp"
                     android:visibility="gone"/>
+                <TextView
+                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent"
+                        android:textSize="12dp"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginRight="15dp"
+                        android:textColor="@color/sunGlow"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:id="@+id/txtWhatAccountStatus"
+                        android:clickable="true"
+                        android:text="What does this mean?"
+                        android:visibility="gone"/>
+            </LinearLayout>
             <LinearLayout
                 android:id="@+id/ssmrHistoryContainer"
                 android:layout_width="match_parent"

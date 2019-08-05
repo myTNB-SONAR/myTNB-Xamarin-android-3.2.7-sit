@@ -65,7 +65,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
                 {
                     string[] splittedString = model.serviceCategoryName.Trim().Split(" ");
                     string newStringName = "";
-                    if (splittedString.Length > 3)
+                    if (splittedString.Length > 4)
                     {
                         for (int i = 0; i < splittedString.Length; i++)
                         {
@@ -83,7 +83,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
                             }
                         }
                     }
-                    else if (splittedString.Length == 3)
+                    else if (splittedString.Length == 3 || splittedString.Length == 4)
                     {
                         for (int i = 0; i < splittedString.Length; i++)
                         {
@@ -150,11 +150,29 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
                 {
                     string[] splittedString = model.serviceCategoryName.Trim().Split(" ");
                     string newStringName = "";
-                    if (splittedString.Length > 3)
+                    if (splittedString.Length > 4)
                     {
                         for (int i = 0; i < splittedString.Length; i++)
                         {
                             if (i == 2)
+                            {
+                                newStringName += splittedString[i] + "<br/>";
+                            }
+                            else if (i == splittedString.Length - 1)
+                            {
+                                newStringName += splittedString[i];
+                            }
+                            else
+                            {
+                                newStringName += splittedString[i] + " ";
+                            }
+                        }
+                    }
+                    else if (splittedString.Length == 3 || splittedString.Length == 4)
+                    {
+                        for (int i = 0; i < splittedString.Length; i++)
+                        {
+                            if (i == 1)
                             {
                                 newStringName += splittedString[i] + "<br/>";
                             }
@@ -235,12 +253,17 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
 
             ViewGroup.LayoutParams currentCard = vh.myServiceCardView.LayoutParameters;
 
-            int cardWidth = (this.mActivity.Resources.DisplayMetrics.WidthPixels / 3) - (int)DPUtils.ConvertDPToPx(12f);
+            int cardWidth = (this.mActivity.Resources.DisplayMetrics.WidthPixels / 3) - (int)DPUtils.ConvertDPToPx(9f);
             float heightRatio = 84f / 88f;
             int cardHeight = (int)(cardWidth * (heightRatio));
-            if (DPUtils.ConvertPxToDP(cardWidth) <= 108f)
+            if (DPUtils.ConvertDPToPixel(cardWidth) > 99f && DPUtils.ConvertPxToDP(cardWidth) <= 111f)
             {
-                cardWidth = (this.mActivity.Resources.DisplayMetrics.WidthPixels / 3) - (int)DPUtils.ConvertDPToPx(8f);
+                cardWidth = (this.mActivity.Resources.DisplayMetrics.WidthPixels / 3) - (int)DPUtils.ConvertDPToPx(7f);
+                cardHeight = cardWidth;
+            }
+            else if (DPUtils.ConvertPxToDP(cardWidth) <= 99f)
+            {
+                cardWidth = (this.mActivity.Resources.DisplayMetrics.WidthPixels / 3) - (int)DPUtils.ConvertDPToPx(6f);
                 cardHeight = cardWidth;
             }
 
@@ -302,8 +325,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
             {
                 this.spanCount = spanCount;
                 this.spacing = DPUtils.ConvertDPToPx(dpSpacing);
-                int cardWidth = (Activity.Resources.DisplayMetrics.WidthPixels / 3) - (int)DPUtils.ConvertDPToPx(12f);
-                if (DPUtils.ConvertPxToDP(cardWidth) <= 108f)
+                int cardWidth = (Activity.Resources.DisplayMetrics.WidthPixels / 3) - (int)DPUtils.ConvertDPToPx(9f);
+                if (DPUtils.ConvertDPToPixel(cardWidth) > 99f && DPUtils.ConvertPxToDP(cardWidth) <= 111f)
+                {
+                    this.spacing = DPUtils.ConvertDPToPx(dpSpacing - 1);
+                }
+                else if (DPUtils.ConvertPxToDP(cardWidth) <= 99f)
                 {
                     this.spacing = DPUtils.ConvertDPToPx(dpSpacing - 2);
                 }
@@ -315,28 +342,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
                 int position = parent.GetChildAdapterPosition(view); // item position
                 int column = position % spanCount; // item column
 
-                if (includeEdge)
-                {
-                    outRect.Left = (int) (spacing - column * spacing / spanCount); // spacing - column * ((1f / spanCount) * spacing)
-                    outRect.Right = (int) ((column + 1) * spacing / spanCount); // (column + 1) * ((1f / spanCount) * spacing)
-
-                    if (position < spanCount)
-                    { // top edge
-                        outRect.Top = (int) spacing;
-                    }
-                    outRect.Bottom = (int) spacing; // item bottom
-                }
-                else
-                {
-                    outRect.Left = (int) (column * spacing / spanCount); // column * ((1f / spanCount) * spacing)
-                    outRect.Right = (int) (spacing - (column + 1) * spacing / spanCount); // spacing - (column + 1) * ((1f /    spanCount) * spacing)
-                    if (position >= spanCount)
-                    {
-                        outRect.Top = (int)spacing / 4; // item top
-                    }
-
-                    outRect.Bottom = (int)spacing / 4; // item bottom
-                }
+                outRect.Left = (int)(column * spacing / spanCount); // column * ((1f / spanCount) * spacing)
+                outRect.Right = (int)(spacing - (column + 1) * spacing / spanCount); // spacing - (column + 1) * ((1f /    spanCount) * spacing)
             }
         }
 

@@ -34,7 +34,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         private List<SummaryDashBoardDetails> summaryDashboardInfoList;
         private static bool FirstTimeMyServiceInitiate = true;
         private static bool FirstTimeNewFAQInitiate = true;
-        private CancellationTokenSource cts;
         private static List<MyService> currentMyServiceList = new List<MyService>();
 
         public HomeMenuPresenter(HomeMenuContract.IHomeMenuView view)
@@ -601,7 +600,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
         public Task OnGetFAQTimeStamp()
         {
-            cts = new CancellationTokenSource();
             return Task.Factory.StartNew(() =>
             {
                 try
@@ -629,12 +627,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 }
             }).ContinueWith((Task previous) =>
             {
-            }, cts.Token);
+            }, new CancellationTokenSource().Token);
         }
 
         public Task OnGetFAQs()
         {
-            cts = new CancellationTokenSource();
             return Task.Factory.StartNew(() =>
             {
                 try
@@ -662,7 +659,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 }
             }).ContinueWith((Task previous) =>
             {
-            }, cts.Token);
+            }, new CancellationTokenSource().Token);
         }
 
         public void LoadBatchSummarDetailsByIndex(int batchIndex)
@@ -719,12 +716,13 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 {
                     Utility.LoggingNonFatalError(e);
                 }
-            });
+            }).ContinueWith((Task previous) =>
+            {
+            }, new CancellationTokenSource().Token);
         }
 
         public Task OnGetSSMRMeterReadingScreens()
         {
-            cts = new CancellationTokenSource();
             return Task.Factory.StartNew(() =>
             {
                 try
@@ -746,7 +744,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 }
             }).ContinueWith((Task previous) =>
             {
-            }, cts.Token);
+            }, new CancellationTokenSource().Token);
         }
 
         public void GetSmartMeterReadingThreePhaseWalkthroughtTimeStamp()
@@ -798,12 +796,13 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 {
                     Utility.LoggingNonFatalError(e);
                 }
-            });
+            }).ContinueWith((Task previous) =>
+            {
+            }, new CancellationTokenSource().Token);
         }
 
         public Task OnGetSSMRMeterReadingThreePhaseScreens()
         {
-            cts = new CancellationTokenSource();
             return Task.Factory.StartNew(() =>
             {
                 try
@@ -825,7 +824,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 }
             }).ContinueWith((Task previous) =>
             {
-            }, cts.Token);
+            }, new CancellationTokenSource().Token);
         }
     }
 }
