@@ -744,18 +744,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                                 SSMRMeterReadingScreensEntity wtManager = new SSMRMeterReadingScreensEntity();
                                 wtManager.DeleteTable();
                                 wtManager.CreateTable();
-                                for (int i = 0; i < responseModel.Data.Count; i++)
-                                {
-                                    string url = responseModel.Data[i].Image.Replace(" ", "%20");
-                                    Bitmap imageBitmap = ImageUtils.GetImageBitmapFromUrl(url);
-                                    string b64String = "";
-                                    MemoryStream stream = new MemoryStream();
-                                    imageBitmap.Compress(Bitmap.CompressFormat.Png, 80, stream);
-                                    byte[] ba = stream.ToArray();
-                                    b64String = Base64.EncodeToString(ba, Base64Flags.Default);
-                                   
-                                    responseModel.Data[i].ImageBitmap = b64String;
-                                }
 
                                 wtManager.InsertListOfItems(responseModel.Data);
                             }
@@ -849,18 +837,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                                 SSMRMeterReadingThreePhaseScreensEntity wtManager = new SSMRMeterReadingThreePhaseScreensEntity();
                                 wtManager.DeleteTable();
                                 wtManager.CreateTable();
-                                for (int i = 0; i < responseModel.Data.Count; i++)
-                                {
-                                    string url = responseModel.Data[i].Image.Replace(" ", "%20");
-                                    Bitmap imageBitmap = ImageUtils.GetImageBitmapFromUrl(url);
-                                    string b64String = "";
-                                    MemoryStream stream = new MemoryStream();
-                                    imageBitmap.Compress(Bitmap.CompressFormat.Png, 80, stream);
-                                    byte[] ba = stream.ToArray();
-                                    b64String = Base64.EncodeToString(ba, Base64Flags.Default);
-
-                                    responseModel.Data[i].ImageBitmap = b64String;
-                                }
 
                                 wtManager.InsertListOfItems(responseModel.Data);
                             }

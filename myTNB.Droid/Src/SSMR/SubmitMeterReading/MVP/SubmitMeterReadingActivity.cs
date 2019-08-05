@@ -10,12 +10,14 @@ using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
+using myTNB.SitecoreCMS.Model;
 using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.SSMR.SubmitMeterReading.Api;
 using myTNB_Android.Src.SSMR.Util;
 using myTNB_Android.Src.Utils;
+using myTNB_Android.Src.Utils.Custom.ProgressDialog;
 using Newtonsoft.Json;
 using static myTNB_Android.Src.SSMR.SubmitMeterReading.Api.GetMeterReadingOCRResponse;
 using static myTNB_Android.Src.SSMR.SubmitMeterReading.Api.SubmitMeterReadingRequest;
@@ -38,7 +40,12 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
         private IMenu ssmrMenu;
         private static bool isFirstLaunch = true;
 
-        List<SMRMROValidateRegisterDetails> SMRValidateRegisterDetailList;
+        private static List<SSMRMeterReadingModel> singlePhaseList;
+        private static List<SSMRMeterReadingModel> threePhaseList;
+
+        LoadingOverlay loadingOverlay;
+
+        List <SMRMROValidateRegisterDetails> SMRValidateRegisterDetailList;
 
         public override int ResourceId()
         {
@@ -238,11 +245,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                 }
             }
 
-            if (!MyTNBAccountManagement.GetInstance().IsSMRMeterReadingOnboardingShown() && isFirstLaunch)
-            {
-                ShowMeterReadingTooltip();
-                isFirstLaunch = false;
-            }
+            OnGenerateTooltipData();
         }
 
         protected override void OnCreate(Bundle savedInstanceState)
@@ -457,15 +460,96 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
 
         }
 
+        private void OnGenerateTooltipData()
+        {
+            if (SMRValidateRegisterDetailList.Count > 1)
+            {
+                if (threePhaseList == null)
+                {
+                    threePhaseList = new List<SSMRMeterReadingModel>();
+                    this.mPresenter.OnGetThreePhaseData();
+                }
+            }
+            else
+            {
+                if (singlePhaseList == null)
+                {
+                    singlePhaseList = new List<SSMRMeterReadingModel>();
+                    this.mPresenter.OnGetOnePhaseData();
+                }
+            }
+        }
+
+        public void OnUpdateThreePhaseTooltipData(List<SSMRMeterReadingModel> list)
+        {
+            if (list != null && list.Count > 0)
+            {
+                threePhaseList = list;
+            }
+            HideProgressDialog();
+            if (!MyTNBAccountManagement.GetInstance().IsSMRMeterReadingOnboardingShown() && isFirstLaunch)
+            {
+                ShowMeterReadingTooltip();
+                isFirstLaunch = false;
+            }
+        }
+
+        public void OnUpdateOnePhaseTooltipData(List<SSMRMeterReadingModel> list)
+        {
+            if (list != null && list.Count > 0)
+            {
+                singlePhaseList = list;
+            }
+            HideProgressDialog();
+            if (!MyTNBAccountManagement.GetInstance().IsSMRMeterReadingOnboardingShown() && isFirstLaunch)
+            {
+                ShowMeterReadingTooltip();
+                isFirstLaunch = false;
+            }
+        }
+
         private void ShowMeterReadingTooltip()
         {
             if (SMRValidateRegisterDetailList.Count > 1)
             {
-                SMRPopUpUtils.OnShowSMRMeterReadingTooltipOnActivity(false, this, SupportFragmentManager);
+                SMRPopUpUtils.OnShowSMRMeterReadingTooltipOnActivity(false, this, SupportFragmentManager, threePhaseList);
             }
             else
             {
-                SMRPopUpUtils.OnShowSMRMeterReadingTooltipOnActivity(true, this, SupportFragmentManager);
+                SMRPopUpUtils.OnShowSMRMeterReadingTooltipOnActivity(true, this, SupportFragmentManager, singlePhaseList);
+            }
+        }
+
+        public void ShowProgressDialog()
+        {
+            try
+            {
+                if (loadingOverlay != null && loadingOverlay.IsShowing)
+                {
+                    loadingOverlay.Dismiss();
+                }
+
+                loadingOverlay = new LoadingOverlay(this, Resource.Style.LoadingOverlyDialogStyle);
+                loadingOverlay.Show();
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void HideProgressDialog()
+        {
+            try
+            {
+                if (loadingOverlay != null && loadingOverlay.IsShowing)
+                {
+                    loadingOverlay.Dismiss();
+                }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
             }
         }
 

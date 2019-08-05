@@ -104,6 +104,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
 
         public void ShowAdjustFragment(int position,Bitmap myBitmap)
         {
+            DisableMoreMenu();
             FragmentTransaction transaction = FragmentManager.BeginTransaction();
             SetToolBarTitle("Adjust Photo");
             meterReadingTakePhotoTitle.Text = "You can delete and retake the photo or adjust it before submission.";
