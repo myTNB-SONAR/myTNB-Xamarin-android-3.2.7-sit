@@ -67,7 +67,14 @@ namespace myTNB
             if (_controller?.OnSelect != null)
             {
                 _controller?.OnSelect(indexPath.Row);
-                _controller?.DismissViewController(true, null);
+                if (_controller.IsRootPage && _controller.NavigationController != null)
+                {
+                    _controller.NavigationController.PopViewController(true);
+                }
+                else
+                {
+                    _controller?.DismissViewController(true, null);
+                }
             }
         }
     }

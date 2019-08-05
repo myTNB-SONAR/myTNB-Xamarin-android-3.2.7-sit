@@ -70,6 +70,10 @@ namespace myTNB
         public override void ViewWillAppear(bool animated)
         {
             base.ViewWillAppear(animated);
+            if (NavigationController != null)
+            {
+                NavigationController.NavigationBarHidden = false;
+            }
         }
 
         private void OnSelectSSMRAccount(NSNotification notification)
@@ -235,9 +239,20 @@ namespace myTNB
                         viewController.Title = GetCommonI18NValue(SSMRConstants.I18N_SelectAccounts);
                         viewController.Items = _eligibleAccountList.Select(x => x.accountNickName).ToList();
                         viewController.OnSelect = OnSelectAccount;
+                        viewController.IsRootPage = true;
                         viewController.SelectedIndex = _selectedAccountIndex;
-                        UINavigationController navController = new UINavigationController(viewController);
-                        PresentViewController(navController, true, null);
+                        NavigationController.PushViewController(viewController, true);
+                    }
+                    else
+                    {
+                        UIStoryboard storyBoard = UIStoryboard.FromName("GenericNoData", null);
+                        GenericNodataViewController viewController = (GenericNodataViewController)storyBoard
+                            .InstantiateViewController("GenericNoData");
+                        viewController.NavTitle = GetI18NValue(SSMRConstants.I18N_NavTitle);
+                        viewController.IsRootPage = true;
+                        viewController.Image = SSMRConstants.IMG_NoData;
+                        viewController.Message = GetI18NValue(SSMRConstants.I18N_NoEligibleAccount);
+                        NavigationController.PushViewController(viewController, true);
                     }
                 }));
                 UIImageView imgDropdown = new UIImageView(new CGRect(viewAccountName.Frame.Width - 30, 0, 24, 24))
@@ -647,8 +662,8 @@ namespace myTNB
                                 viewController.Items = _ssmrTerminationReasons.d.data.reasons.Select(x => x.ReasonName).ToList();
                                 viewController.OnSelect = OnSelectTerminateReason;
                                 viewController.SelectedIndex = _selectedTerminateReasonIndex;
-                                UINavigationController navController = new UINavigationController(viewController);
-                                PresentViewController(navController, true, null);
+                                viewController.IsRootPage = true;
+                                NavigationController.PushViewController(viewController, true);
                             }));
                             SetTextViewDisplay(_ssmrTerminationReasons.d.data.reasons[0].ReasonId == SSMRConstants.Service_OthersID);
                         }

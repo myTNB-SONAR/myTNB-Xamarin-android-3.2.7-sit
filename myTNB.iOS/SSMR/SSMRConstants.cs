@@ -57,6 +57,7 @@ namespace myTNB.SSMR
         public static string I18N_SelectReason = "selectReason";
         public static string I18N_StateReason = "stateReason";
         public static string I18N_SelectAnAccount = "selectAnAccount";
+        public static string I18N_NoEligibleAccount = "noEligibleAccount";
 
         //Image
         public static string IMG_BGOnboarding1 = "SSMR_Background_1";
@@ -80,6 +81,7 @@ namespace myTNB.SSMR
         public static string IMG_BGToolTip1 = "SMR-ToolTip-BG1";
         public static string IMG_BGToolTip2 = "SMR-ToolTip-BG2";
         public static string IMG_BGToolTip3 = "SMR-ToolTip-BG3";
+        public static string IMG_NoData = "SSMR-NoData";
 
         //Error
         public static string I18N_InvalidEmail = "invalid_email";

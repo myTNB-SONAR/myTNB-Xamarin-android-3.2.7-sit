@@ -74,7 +74,8 @@
         "editContactInfo": "By editing you will update your myTNB profile but not your owner’s electricity account contact details.",
         "selectReason": "Select Reason",
         "stateReason": "Please state your reason",
-        "selectAnAccount": "Select an account"
+        "selectAnAccount": "Select an account",
+        "noEligibleAccount": "Looks like your accounts aren’t eligible for the Self Meter Reading subscription."
     },
     "Status": {
         "feedbackSuccessTitle": "Feedback Successful",

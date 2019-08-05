@@ -1084,6 +1084,10 @@
     <ImageAsset Include="Assets.xcassets\Stub-Promotion-2.imageset\image2.png" />
     <ImageAsset Include="Assets.xcassets\Stub-Promotion-2.imageset\image2%402x.png" />
     <ImageAsset Include="Assets.xcassets\Stub-Promotion-2.imageset\image2%403x.png" />
+    <ImageAsset Include="Assets.xcassets\SSMR-NoData.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\SSMR-NoData.imageset\noEliglibleAcc.png" />
+    <ImageAsset Include="Assets.xcassets\SSMR-NoData.imageset\noEliglibleAcc%402x.png" />
+    <ImageAsset Include="Assets.xcassets\SSMR-NoData.imageset\noEliglibleAcc%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -1431,6 +1435,8 @@
     <Folder Include="Assets.xcassets\SMR-ToolTip-BG3.imageset\" />
     <Folder Include="Assets.xcassets\Stub-Promotion-1.imageset\" />
     <Folder Include="Assets.xcassets\Stub-Promotion-2.imageset\" />
+    <Folder Include="Customs\Generic No Data Page\" />
+    <Folder Include="Assets.xcassets\SSMR-NoData.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -1466,6 +1472,7 @@
     <InterfaceDefinition Include="Home\Promotions\Promotion Details\PromotionDetails.storyboard" />
     <InterfaceDefinition Include="Customs\Generic Tableview Selector\GenericSelector.storyboard" />
     <InterfaceDefinition Include="SSMR\SSMR.storyboard" />
+    <InterfaceDefinition Include="Customs\Generic No Data Page\GenericNoData.storyboard" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Info.plist" />
@@ -2209,6 +2216,10 @@
     <Compile Include="Sitecore CMS\Service\MeterReadSSMRWalkthroughServiceV2.cs" />
     <Compile Include="SQLite\SQLite Data Manager\MeterReadSSMRWalkthroughEntityV2.cs" />
     <Compile Include="SSMR\Meter Reading\SSMRMeterReadWalkthroughModel.cs" />
+    <Compile Include="Customs\Generic No Data Page\GenericNodataViewController.cs" />
+    <Compile Include="Customs\Generic No Data Page\GenericNodataViewController.designer.cs">
+      <DependentUpon>GenericNodataViewController.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />
