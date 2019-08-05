@@ -14,12 +14,15 @@ using Android.Widget;
 using CheeseBind;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.myTNBMenu.Models;
+using myTNB_Android.Src.SSMR.SSMRBase.MVP;
 using myTNB_Android.Src.SSMR.SubmitMeterReading.Api;
 using myTNB_Android.Src.SSMR.Util;
+using myTNB_Android.Src.SSMRTerminate.MVP;
 using myTNB_Android.Src.Utils;
 using Newtonsoft.Json;
 using static myTNB_Android.Src.SSMR.SubmitMeterReading.Api.GetMeterReadingOCRResponse;
 using static myTNB_Android.Src.SSMR.SubmitMeterReading.Api.SubmitMeterReadingRequest;
+using static myTNB_Android.Src.SSMR.SubmitMeterReading.Api.SubmitMeterReadingResponse;
 
 namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
 {
@@ -44,6 +47,8 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
         [BindView(Resource.Id.btnTakePhoto)]
         Button btnTakePhoto;
 
+        public readonly static int SSMR_SUBMIT_METER_ACTIVITY_CODE = 8796;
+
         List<SMRMROValidateRegisterDetails> SMRValidateRegisterDetailList;
 
         public override int ResourceId()
@@ -67,21 +72,21 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             sMRMROValidateRegisterDetails.PrevMeterReading = "1234567";
             sMRMROValidateRegisterDetailsList.Add(sMRMROValidateRegisterDetails);
 
-            sMRMROValidateRegisterDetails = new SMRMROValidateRegisterDetails();
-            sMRMROValidateRegisterDetails.RegisterNumber = "002";
-            sMRMROValidateRegisterDetails.MroID = "0000002432432";
-            sMRMROValidateRegisterDetails.PrevMrDate = "2-8-2019";
-            sMRMROValidateRegisterDetails.SchMrDate = "2-8-2019";
-            sMRMROValidateRegisterDetails.PrevMeterReading = "1234567";
-            sMRMROValidateRegisterDetailsList.Add(sMRMROValidateRegisterDetails);
+            //sMRMROValidateRegisterDetails = new SMRMROValidateRegisterDetails();
+            //sMRMROValidateRegisterDetails.RegisterNumber = "002";
+            //sMRMROValidateRegisterDetails.MroID = "0000002432432";
+            //sMRMROValidateRegisterDetails.PrevMrDate = "2-8-2019";
+            //sMRMROValidateRegisterDetails.SchMrDate = "2-8-2019";
+            //sMRMROValidateRegisterDetails.PrevMeterReading = "1234567";
+            //sMRMROValidateRegisterDetailsList.Add(sMRMROValidateRegisterDetails);
 
-            sMRMROValidateRegisterDetails = new SMRMROValidateRegisterDetails();
-            sMRMROValidateRegisterDetails.RegisterNumber = "003";
-            sMRMROValidateRegisterDetails.MroID = "0000002432432";
-            sMRMROValidateRegisterDetails.PrevMrDate = "2-8-2019";
-            sMRMROValidateRegisterDetails.SchMrDate = "2-8-2019";
-            sMRMROValidateRegisterDetails.PrevMeterReading = "1234567";
-            sMRMROValidateRegisterDetailsList.Add(sMRMROValidateRegisterDetails);
+            //sMRMROValidateRegisterDetails = new SMRMROValidateRegisterDetails();
+            //sMRMROValidateRegisterDetails.RegisterNumber = "003";
+            //sMRMROValidateRegisterDetails.MroID = "0000002432432";
+            //sMRMROValidateRegisterDetails.PrevMrDate = "2-8-2019";
+            //sMRMROValidateRegisterDetails.SchMrDate = "2-8-2019";
+            //sMRMROValidateRegisterDetails.PrevMeterReading = "1234567";
+            //sMRMROValidateRegisterDetailsList.Add(sMRMROValidateRegisterDetails);
 
             return sMRMROValidateRegisterDetailsList;
         }
@@ -100,7 +105,22 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
 
             btnSubmitReading.Click += delegate
             {
+                string contractAccount = "220678784308";
+                bool isOwnedAccount = true;
 
+                List<MeterReading> meterReadlingList = new List<MeterReading>();
+                foreach (MeterValidation validatedMeter in validationStateList)
+                {
+                    MeterReading meterReading = new MeterReading();
+                    meterReading.MroID = validatedMeter.mroID;
+                    meterReading.RegisterNumber = validatedMeter.meterId;
+                    meterReading.MeterReadingResult = validatedMeter.readingResult;
+                    meterReading.Channel = "MyTNBAPP";
+                    meterReading.MeterReadingDate = "";
+                    meterReading.MeterReadingTime = "";
+                    meterReadlingList.Add(meterReading);
+                }
+                mPresenter.SubmitMeterReading(contractAccount, isOwnedAccount, meterReadlingList);
             };
 
             EnableSubmitButton(false);
@@ -187,7 +207,8 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                     if (validateRegisterDetails.RegisterNumber == "001")
                     {
                         meterValidation = new MeterValidation();
-                        meterValidation.meterId = "001";
+                        meterValidation.meterId = validateRegisterDetails.RegisterNumber;
+                        meterValidation.mroID = validateRegisterDetails.MroID;
                         validationStateList.Add(meterValidation);
                         PopulateMeterReadingCard(METER_READING_TYPE.KWH, validateRegisterDetails);
                     }
@@ -577,6 +598,26 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                 btnTakePhoto.SetTextAppearance(this, Resource.Style.LightButton);
             }
             TextViewUtils.SetMuseoSans500Typeface(btnTakePhoto, btnSubmitReading);
+        }
+
+        public void OnRequestSuccessful(SMRSubmitResponseData response)
+        {
+            Intent intent = new Intent(this, typeof(ResponseSuccessActivity));
+            if (response != null)
+            {
+                intent.PutExtra("SUBMIT_RESULT", JsonConvert.SerializeObject(response));
+            }
+            StartActivityForResult(intent, SSMR_SUBMIT_METER_ACTIVITY_CODE);
+        }
+
+        public void OnRequestFailed(SMRSubmitResponseData response)
+        {
+            Intent intent = new Intent(this, typeof(ResponseFailedActivity));
+            if (response != null)
+            {
+                intent.PutExtra("SUBMIT_RESULT", JsonConvert.SerializeObject(response));
+            }
+            StartActivityForResult(intent, SSMR_SUBMIT_METER_ACTIVITY_CODE);
         }
     }
 }

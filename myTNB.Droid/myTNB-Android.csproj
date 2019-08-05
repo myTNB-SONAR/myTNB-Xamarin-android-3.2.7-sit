@@ -1727,6 +1727,13 @@
     <AndroidResource Include="Resources\drawable\meter_reading_label_background_ready.xml" />
     <Compile Include="Src\SSMR\SubmitMeterReading\MVP\MeterValidation.cs" />
     <AndroidResource Include="Resources\drawable\light_button_background_disabled.xml" />
+    <Compile Include="Src\SSMR\SubmitMeterReading\MVP\ReadingMeterFailedActivity.cs" />
+    <AndroidResource Include="Resources\layout\ReadingMeterFailedLayout.axml" />
+    <Compile Include="Src\SSMR\SSMRBase\MVP\ResponseSuccessActivity.cs" />
+    <Compile Include="Src\SSMR\SSMRBase\MVP\ResponseSuccessData.cs" />
+    <AndroidResource Include="Resources\layout\SSMRResponseSuccessLayout.axml" />
+    <Compile Include="Src\SSMR\SSMRBase\MVP\ResponseFailedActivity.cs" />
+    <AndroidResource Include="Resources\layout\ResponseFailedLayout.axml" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -2108,6 +2115,8 @@
     <Folder Include="Src\SSMRTerminate\Api\" />
     <Folder Include="Src\SSMRTerminate\Adapter\" />
     <Folder Include="Src\SSMR\Util\" />
+    <Folder Include="Src\SSMR\SSMRBase\" />
+    <Folder Include="Src\SSMR\SSMRBase\MVP\" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\GradientStatusBar.xml" />
