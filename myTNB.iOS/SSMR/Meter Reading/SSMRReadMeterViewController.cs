@@ -33,6 +33,7 @@ namespace myTNB
         CGRect scrollViewFrame;
         int _currentPageIndex;
         bool _isThreePhase = false;
+        bool _toolTipFlag = false;
 
         public class MeterReadingRequest
         {
@@ -125,14 +126,22 @@ namespace myTNB
             {
                 if (!SSMRAccounts.IsHideReadMeterWalkthroughV2)
                 {
-                    PrepareToolTipView();
+                    if (!_toolTipFlag)
+                    {
+                        PrepareToolTipView();
+                        _toolTipFlag = true;
+                    }
                 }
             }
             else
             {
                 if (!SSMRAccounts.IsHideReadMeterWalkthrough)
                 {
-                    PrepareToolTipView();
+                    if (!_toolTipFlag)
+                    {
+                        PrepareToolTipView();
+                        _toolTipFlag = true;
+                    }
                 }
             }
         }
@@ -333,7 +342,7 @@ namespace myTNB
                     newHeight = viewContainer.Frame.GetMaxY();
                 }
             }
-            _toolTipScrollView.ContentSize = new CGSize(_toolTipScrollView.Frame.Width * 3, newHeight);
+            _toolTipScrollView.ContentSize = new CGSize(_toolTipScrollView.Frame.Width * pageData.Count, newHeight);
             CGRect svFrame = _toolTipScrollView.Frame;
             svFrame.Height = newHeight;
             _toolTipScrollView.Frame = svFrame;
@@ -351,7 +360,7 @@ namespace myTNB
             if (pageData.Count > 1)
             {
                 AddPageControl();
-                UpdatePageControl(_pageControl, _currentPageIndex, 3);
+                UpdatePageControl(_pageControl, _currentPageIndex, pageData.Count);
             }
             else
             {
@@ -460,7 +469,7 @@ namespace myTNB
 
         private void ScrollViewHasPaginated()
         {
-            UpdatePageControl(_pageControl, _currentPageIndex, 3);
+            UpdatePageControl(_pageControl, _currentPageIndex, pageData.Count);
         }
 
         private void PrepareMeterReadingCard()
@@ -541,7 +550,7 @@ namespace myTNB
                 }
             }
             _sSMRMeterFooterComponent.SetSubmitButtonEnabled(res);
-            _sSMRMeterFooterComponent.SetTakePhotoButtonEnabled(!res);
+            //_sSMRMeterFooterComponent.SetTakePhotoButtonEnabled(!res);
         }
 
         private void AddFooterView()
@@ -578,7 +587,7 @@ namespace myTNB
                             registerStr = "kW";
                             break;
                     }
-                    ReadingDictionary.Add(registerStr, previousMeter.IsValidManualReading);
+                    ReadingDictionary.Add(registerStr, false);
                 }
                 UIStoryboard storyBoard = UIStoryboard.FromName("SSMR", null);
                 SSMRCaptureMeterViewController viewController =
@@ -659,7 +668,12 @@ namespace myTNB
                     MeterReadingRequest meterReadingRequest = new MeterReadingRequest();
                     meterReadingRequest.MroID = previousMeter.MroID;
                     meterReadingRequest.RegisterNumber = previousMeter.RegisterNumber;
-                    meterReadingRequest.MeterReadingResult = previousMeter.CurrentReading;
+                    string currentReadingNewStr = string.Empty;
+                    if (double.TryParse(previousMeter.CurrentReading, out double currentReadingDouble))
+                    {
+                        currentReadingNewStr = Math.Round(currentReadingDouble).ToString();
+                    }
+                    meterReadingRequest.MeterReadingResult = currentReadingNewStr;
                     meterReadingRequest.Channel = string.Empty;
                     meterReadingRequest.MeterReadingDate = string.Empty;
                     meterReadingRequest.MeterReadingTime = string.Empty;
@@ -750,24 +764,12 @@ namespace myTNB
             return Task.Factory.StartNew(() =>
             {
                 ServiceManager serviceManager = new ServiceManager();
-                object usrInf = new
-                {
-                    eid = DataManager.DataManager.SharedInstance.User.Email,
-                    sspuid = DataManager.DataManager.SharedInstance.User.UserID,
-                    did = DataManager.DataManager.SharedInstance.UDID,
-                    ft = DataManager.DataManager.SharedInstance.FCMToken,
-                    lang = TNBGlobal.DEFAULT_LANGUAGE,
-                    sec_auth_k1 = TNBGlobal.API_KEY_ID,
-                    sec_auth_k2 = string.Empty,
-                    ses_param1 = string.Empty,
-                    ses_param2 = string.Empty
-                };
                 object request = new
                 {
                     contractAccount = account.accNum,
-                    isOwnedAccount = account.IsOwnedAccount,
+                    isOwnedAccount = account.isOwned,
                     meterReadings,
-                    usrInf
+                    serviceManager.usrInf
                 };
                 _submitMeterResponse = serviceManager.OnExecuteAPIV6<SMRSubmitMeterReadingResponseModel>("SubmitSMRMeterReading", request);
             });

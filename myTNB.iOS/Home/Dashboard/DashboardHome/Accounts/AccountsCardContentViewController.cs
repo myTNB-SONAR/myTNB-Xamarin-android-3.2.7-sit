@@ -348,24 +348,25 @@ namespace myTNB
                     if (NetworkUtility.isReachable)
                     {
                         bool shouldReload = false;
+
                         var accounts = GetAccountsToUpdate(ref shouldReload, _currentPageIndex);
 
+                        int currentIndex = _currentPageIndex;
                         if (accounts?.Count > 0)
                         {
-                            int currentIndex = await GetAccountsSummary(accounts, _currentPageIndex);
-                            var filteredAccounts = _dashboardHomeHelper.FilterAccountNoForSSMR(accounts, _groupAccountList[currentIndex]);
-                            if (filteredAccounts?.Count > 0)
-                            {
-                                currentIndex = await GetAccountsSMRStatus(filteredAccounts, currentIndex);
-                            }
-                            _isUpdating = false;
-                            UpdateCardsWithTag(currentIndex);
+                            currentIndex = await GetAccountsSummary(accounts, currentIndex);
                         }
-                        else if (shouldReload)
+                        if (currentIndex > -1 && currentIndex < _groupAccountList.Count)
                         {
-                            _isUpdating = false;
-                            UpdateCardsWithTag(_currentPageIndex);
+                            var batchAccounts = GetAccountsForSMRStatusFlag(currentIndex);
+                            var eligibleSSMRAccounts = _dashboardHomeHelper.FilterAccountNoForSSMR(batchAccounts, _groupAccountList[currentIndex]);
+                            if (eligibleSSMRAccounts?.Count > 0)
+                            {
+                                currentIndex = await GetAccountsSMRStatus(eligibleSSMRAccounts, currentIndex);
+                            }
                         }
+                        _isUpdating = false;
+                        UpdateCardsWithTag(currentIndex);
                     }
                     else
                     {
@@ -555,6 +556,20 @@ namespace myTNB
             }
 
             return acctsToGetLatestDues;
+        }
+
+        private List<string> GetAccountsForSMRStatusFlag(int currentIndex)
+        {
+            var accts = new List<string>();
+            if (_groupAccountList.Count <= 0)
+                return accts;
+
+            var groupAccountList = _groupAccountList[currentIndex];
+            foreach (var acct in groupAccountList)
+            {
+                accts.Add(acct.accNum);
+            }
+            return accts;
         }
 
         /// <summary>

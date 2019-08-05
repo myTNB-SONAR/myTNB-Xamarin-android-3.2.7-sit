@@ -163,13 +163,16 @@ namespace myTNB
         {
             List<string> accounts = new List<string>();
 
+            if (acctList.Count <= 0 || groupedAcctList.Count <= 0)
+                return accounts;
+
             foreach (var acct in groupedAcctList)
             {
                 foreach (string accNo in acctList)
                 {
                     if (acct.accNum == accNo)
                     {
-                        if (acct.IsNormalAccount && acct.IsSSMR && acct.IsOwnedAccount)
+                        if (acct.IsNormalAccount && acct.IsOwnedAccount)
                         {
                             accounts.Add(accNo);
                         }

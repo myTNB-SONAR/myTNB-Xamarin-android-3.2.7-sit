@@ -1504,23 +1504,11 @@ namespace myTNB.Dashboard
             return Task.Factory.StartNew(() =>
             {
                 ServiceManager serviceManager = new ServiceManager();
-                object usrInf = new
-                {
-                    eid = DataManager.DataManager.SharedInstance.User.Email,
-                    sspuid = DataManager.DataManager.SharedInstance.User.UserID,
-                    did = DataManager.DataManager.SharedInstance.UDID,
-                    ft = DataManager.DataManager.SharedInstance.FCMToken,
-                    lang = TNBGlobal.DEFAULT_LANGUAGE,
-                    sec_auth_k1 = TNBGlobal.API_KEY_ID,
-                    sec_auth_k2 = string.Empty,
-                    ses_param1 = string.Empty,
-                    ses_param2 = string.Empty
-                };
                 object request = new
                 {
                     contractAccount = account.accNum,
                     isOwnedAccount = account.IsOwnedAccount,
-                    usrInf
+                    serviceManager.usrInf
                 };
                 _smrActivityInfoResponse = serviceManager.OnExecuteAPIV6<SMRAccountActivityInfoResponseModel>("GetSMRAccountActivityInfo", request);
             });
