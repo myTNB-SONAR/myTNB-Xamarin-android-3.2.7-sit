@@ -659,7 +659,12 @@ namespace myTNB
                     MeterReadingRequest meterReadingRequest = new MeterReadingRequest();
                     meterReadingRequest.MroID = previousMeter.MroID;
                     meterReadingRequest.RegisterNumber = previousMeter.RegisterNumber;
-                    meterReadingRequest.MeterReadingResult = previousMeter.CurrentReading;
+                    string currentReadingNewStr = string.Empty;
+                    if (double.TryParse(previousMeter.CurrentReading, out double currentReadingDouble))
+                    {
+                        currentReadingNewStr = Math.Round(currentReadingDouble).ToString();
+                    }
+                    meterReadingRequest.MeterReadingResult = currentReadingNewStr;
                     meterReadingRequest.Channel = string.Empty;
                     meterReadingRequest.MeterReadingDate = string.Empty;
                     meterReadingRequest.MeterReadingTime = string.Empty;
@@ -750,24 +755,12 @@ namespace myTNB
             return Task.Factory.StartNew(() =>
             {
                 ServiceManager serviceManager = new ServiceManager();
-                object usrInf = new
-                {
-                    eid = DataManager.DataManager.SharedInstance.User.Email,
-                    sspuid = DataManager.DataManager.SharedInstance.User.UserID,
-                    did = DataManager.DataManager.SharedInstance.UDID,
-                    ft = DataManager.DataManager.SharedInstance.FCMToken,
-                    lang = TNBGlobal.DEFAULT_LANGUAGE,
-                    sec_auth_k1 = TNBGlobal.API_KEY_ID,
-                    sec_auth_k2 = string.Empty,
-                    ses_param1 = string.Empty,
-                    ses_param2 = string.Empty
-                };
                 object request = new
                 {
                     contractAccount = account.accNum,
-                    isOwnedAccount = account.IsOwnedAccount,
+                    isOwnedAccount = account.isOwned,
                     meterReadings,
-                    usrInf
+                    serviceManager.usrInf
                 };
                 _submitMeterResponse = serviceManager.OnExecuteAPIV6<SMRSubmitMeterReadingResponseModel>("SubmitSMRMeterReading", request);
             });

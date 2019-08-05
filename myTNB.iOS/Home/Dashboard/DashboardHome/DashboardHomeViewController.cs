@@ -89,6 +89,12 @@ namespace myTNB
             base.ViewDidAppear(animated);
         }
 
+        public override void ViewDidDisappear(bool animated)
+        {
+            DataManager.DataManager.SharedInstance.SummaryNeedsRefresh = true;
+            base.ViewDidDisappear(animated);
+        }
+
         public override void SetStatusBarNoOverlap()
         {
             base.SetStatusBarNoOverlap();
@@ -308,19 +314,7 @@ namespace myTNB
         private async Task<ServicesResponseModel> GetServices()
         {
             ServiceManager serviceManager = new ServiceManager();
-            object usrInf = new
-            {
-                eid = DataManager.DataManager.SharedInstance.User.Email,
-                sspuid = DataManager.DataManager.SharedInstance.User.UserID,
-                did = DataManager.DataManager.SharedInstance.UDID,
-                ft = DataManager.DataManager.SharedInstance.FCMToken,
-                lang = TNBGlobal.DEFAULT_LANGUAGE,
-                sec_auth_k1 = TNBGlobal.API_KEY_ID,
-                sec_auth_k2 = string.Empty,
-                ses_param1 = string.Empty,
-                ses_param2 = string.Empty
-            };
-            object request = new { usrInf };
+            object request = new { serviceManager.usrInf };
             ServicesResponseModel response = serviceManager.OnExecuteAPIV6<ServicesResponseModel>("GetServices", request);
             return response;
         }
