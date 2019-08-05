@@ -33,6 +33,7 @@ namespace myTNB
         CGRect scrollViewFrame;
         int _currentPageIndex;
         bool _isThreePhase = false;
+        bool _toolTipFlag = false;
 
         public class MeterReadingRequest
         {
@@ -125,14 +126,22 @@ namespace myTNB
             {
                 if (!SSMRAccounts.IsHideReadMeterWalkthroughV2)
                 {
-                    PrepareToolTipView();
+                    if (!_toolTipFlag)
+                    {
+                        PrepareToolTipView();
+                        _toolTipFlag = true;
+                    }
                 }
             }
             else
             {
                 if (!SSMRAccounts.IsHideReadMeterWalkthrough)
                 {
-                    PrepareToolTipView();
+                    if (!_toolTipFlag)
+                    {
+                        PrepareToolTipView();
+                        _toolTipFlag = true;
+                    }
                 }
             }
         }
